@@ -28,6 +28,7 @@ import json
 import re
 import shutil
 import sys
+import time
 from pathlib import Path
 
 from tools.library import score_library as lib
@@ -153,6 +154,7 @@ def ingest_imslp(paths: list[Path], *, dry_run: bool, delay: float, offline: boo
 
     seen = _index_by_hash()
     added = skipped = 0
+    work_pages: dict[str, str] = {}   # work_id -> IMSLP page, for the roster pass
 
     for i, src in enumerate(paths):
         match = IMSLP_NAME.match(src.name)
@@ -251,13 +253,48 @@ def ingest_imslp(paths: list[Path], *, dry_run: bool, delay: float, offline: boo
         _place(src, dest, dry_run=dry_run)
         if not dry_run:
             lib.write_sidecar(dest, entry)
+        if meta.get("imslp_page"):
+            work_pages[work_id] = meta["imslp_page"]
         seen[digest] = dest
         added += 1
         pages = facts.get("pages", "?")
         print(f"  + {dest.relative_to(lib.library_root())}  ({pages}pp, {publisher or 'publisher unknown'})")
 
+    if work_pages and not offline:
+        _capture_instrumentation(work_pages, delay=delay, dry_run=dry_run)
+
     print(f"\nIMSLP: {added} added, {skipped} already held")
     return 0
+
+
+def _capture_instrumentation(work_pages: dict[str, str], *, delay: float,
+                             dry_run: bool) -> None:
+    """What each newly-ingested work is SCORED FOR, from the page we just read.
+
+    Work-level, so it is one query per WORK rather than per file, and it is the
+    same open MediaWiki API the provenance above comes from — never the download
+    gate.  A failure here must not cost a file that is already in the store, so
+    everything is caught and reported.
+    """
+    from tools.library import instrumentation as instr
+
+    catalog = lib.load_catalog()
+    for i, (work_id, page) in enumerate(sorted(work_pages.items())):
+        if catalog.get("works", {}).get(work_id, {}).get("instrumentation"):
+            continue
+        if i:
+            time.sleep(delay)
+        try:
+            fact = instr.build_fact(instr.fetch_work_instrumentation(page))
+        except Exception as exc:  # noqa: BLE001
+            print(f"  ! instrumentation lookup failed for {work_id}: {exc}", file=sys.stderr)
+            continue
+        what = instr.record(catalog, work_id, fact)
+        print(f"  ~ instrumentation {what}: {work_id} "
+              f"({fact['dialect']}, {len(fact['roster'])} parsed, "
+              f"{len(fact['unparsed'])} unparsed)")
+    if not dry_run:
+        lib.save_catalog(catalog)
 
 
 def _composer_from_descriptor(descriptor: str) -> str:
@@ -859,6 +896,12 @@ def main() -> int:
     p.add_argument("--work", default="")
     p.add_argument("--edition", default="")
 
+    p = sub.add_parser("instrumentation",
+                       help="backfill each held work's IMSLP instrumentation")
+    p.add_argument("--delay", type=float, default=6.0)
+    p.add_argument("--limit", type=int, default=None)
+    p.add_argument("--refetch", action="store_true", help="re-read recorded works")
+
     sub.add_parser("reorganize", help="re-derive names and repair the layout in place")
 
     sub.add_parser("catalog", help="rebuild data/score-library/catalog.json from sidecars")
@@ -877,6 +920,13 @@ def main() -> int:
     if args.cmd == "set":
         return cmd_set(args.paths, composer=args.composer, work=args.work,
                        edition=args.edition, dry_run=args.dry_run)
+    if args.cmd == "instrumentation":
+        from tools.library import instrumentation as instr
+
+        report = instr.backfill(delay=args.delay, dry_run=args.dry_run,
+                                limit=args.limit, refetch=args.refetch)
+        print(json.dumps(report, indent=2, ensure_ascii=False))
+        return 1 if report["errors"] else 0
     if args.cmd == "reorganize":
         return cmd_reorganize(args.dry_run)
     if args.cmd == "refresh":

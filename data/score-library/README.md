@@ -67,6 +67,9 @@ python3 -m tools.library.ingest reorganize   # re-derive names, repair the layou
 python3 -m tools.library.ingest refresh      # re-fetch IMSLP provenance for held files
 python3 -m tools.library.ingest set <path> --composer "Liszt, Franz"   # correct by hand
 python3 -m tools.library.ingest relink       # legacy benchmark paths -> store (symlinks)
+
+python3 -m tools.library.ingest instrumentation          # backfill work rosters
+python3 -m tools.library.instrumentation --page "<IMSLP page title>"   # one work
 ```
 
 Everything is **copied, never moved** — the sources are working folders and an
@@ -85,6 +88,55 @@ are spaced (`--delay`, default 5s).
 Which file on a work page an id refers to is read from the **rendered page**
 (`<div id="IMSLP19118">` names its own `File:`), not guessed from the wikitext —
 guessing picked a 2016 typeset for a 2006 upload of Mozart's first symphony.
+
+## What a work is scored for
+
+`catalog.json` also carries a top-level **`works`** map, keyed on the same
+`work_id` the entries use. It holds facts that are true of a WORK rather than of
+one file, so they are not copied onto each of its editions — today, one fact:
+the instrumentation IMSLP states on the work page.
+
+```json
+"works": {
+  "beethoven--symphony-5": {
+    "work_id": "beethoven--symphony-5",
+    "instrumentation": {
+      "source": "imslp", "source_kind": "catalog",
+      "imslp_page": "Symphony No.5, Op.67 (Beethoven, Ludwig van)",
+      "imslp_revid": 3268151, "fetched": "2026-09-05",
+      "raw": { "Instrumentation": "orchestra", "InstrDetail": "{{More}} piccolo, 2 flutes, …" },
+      "roster_field": "InstrDetail", "dialect": "prose", "parse_rate": 1.0,
+      "roster": [ { "kind": "instrument", "instrument": "Flute", "count": 2,
+                    "text": "2 flutes", "lexicon_alias": "flutes" }, … ],
+      "unparsed": []
+    }
+  }
+}
+```
+
+**The raw string is the evidence; the roster is derivative.** `raw` is stored
+verbatim, always, and an `InstrDetail` fragment the lexicon does not know lands
+in `unparsed` with its own text rather than being forced to a nearest match.
+
+⚠️ **`source_kind` is load-bearing and cannot be retrofitted.** `"catalog"`
+means the fact came from a bibliographic source that is independent of anything
+a benchmark scores against; `"encoding"` would mean it was derived from a
+MusicXML file — which IS the benchmark truth, so a measurement path must not
+read it. `validate_fact` refuses a fact that does not say which it is.
+
+⚠️ **N instruments is NOT N staves.** This describes the work. A printed score
+condenses (Flute 1+2 on one staff) and splits (divisi), and the condensed count
+is a property of the *encoding*, not derivable from the page.
+
+⚠️ **`works` has no sidecar to be rebuilt from** — it is network-fetched, which
+is the same reason the catalog is committed at all. `rebuild_catalog` carries it
+forward explicitly; nothing else in the rebuild path knows about it.
+
+⚠️ **Two IMSLP pages can share one `work_id`.** Clara Schumann's Op.7 and Robert
+Schumann's Op.54 are both `schumann--piano-concerto`, because `work_key` keys on
+genre + number and neither title carries a number. The key is not forked for
+this (see below for why title-keying is worse); a second page's roster is kept
+beside the first as `instrumentation_conflicts` and neither is trusted.
 
 ## Five things that will bite
 

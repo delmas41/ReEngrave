@@ -1,0 +1,232 @@
+  added    bach--concerto-1                         prose    5 parsed / 1 not
+  added    bach--concerto-2                         prose    5 parsed / 1 not   (no InstrDetail)
+  added    bach--concerto-3                         prose    4 parsed / 0 not   (no InstrDetail)
+  added    bach--concerto-4                         prose    6 parsed / 1 not   (no InstrDetail)
+  added    bach--concerto-5                         prose    4 parsed / 0 not
+  added    bach--concerto-6                         prose    4 parsed / 0 not   (no InstrDetail)
+  added    bach--das-wohltemperierte-klavier-i      prose    0 parsed / 1 not   (no InstrDetail)
+  added    bach--mass-in-b-minor                    prose    9 parsed / 1 not
+  added    bach--matthauspassion                    prose   21 parsed / 4 not
+  added    bach--suite-3                            prose    5 parsed / 0 not
+  added    beach--symphony-in-e-minor-op32-gaelic   prose   14 parsed / 0 not
+  added    beethoven--coriolan                      prose    8 parsed / 0 not
+  added    beethoven--egmont                        prose    9 parsed / 0 not
+  added    beethoven--missa-solemnis                prose   11 parsed / 0 not
+  added    beethoven--piano-concerto-3              prose    8 parsed / 0 not
+  added    beethoven--piano-concerto-4              prose    8 parsed / 0 not
+  added    beethoven--piano-concerto-5              prose    8 parsed / 0 not
+  added    beethoven--symphony-1                    compact  8 parsed / 0 not
+  added    beethoven--symphony-2                    prose    8 parsed / 0 not
+  added    beethoven--symphony-3                    prose    8 parsed / 0 not
+  added    beethoven--symphony-4                    prose    8 parsed / 0 not
+  added    beethoven--symphony-5                    prose   11 parsed / 0 not
+  added    beethoven--symphony-6                    prose   10 parsed / 0 not
+  added    beethoven--symphony-7                    prose    8 parsed / 0 not
+  added    beethoven--symphony-8                    prose    8 parsed / 0 not
+  added    beethoven--symphony-9                    prose   14 parsed / 0 not
+  added    beethoven--violin-concerto-in-d-major    prose    8 parsed / 0 not
+  added    berlioz--harold-en-italie                prose   12 parsed / 3 not
+  added    berlioz--le-carnaval-romain              prose   12 parsed / 2 not
+  added    berlioz--symphony-fantastique            prose   14 parsed / 2 not
+  added    bizet--suite-1                           prose   12 parsed / 1 not
+  added    bizet--symphony-in-c-major               prose    8 parsed / 0 not
+  added    borodin--in-the-steppes-of-central-asia  prose   10 parsed / 0 not
+  added    borodin--symphony-2                      prose   15 parsed / 0 not
+  added    boulanger--faust-et-helene               prose   18 parsed / 1 not
+  added    brahms--academic-festival-overture       prose   15 parsed / 0 not
+  added    brahms--ein-deutsches-requiem            prose   14 parsed / 0 not
+  added    brahms--piano-concerto-1                 prose    8 parsed / 0 not
+  added    brahms--piano-concerto-2                 prose    8 parsed / 0 not
+  added    brahms--symphony-1                       prose   10 parsed / 0 not
+  added    brahms--symphony-2                       compact 10 parsed / 0 not
+  added    brahms--symphony-3                       prose   10 parsed / 0 not
+  added    brahms--symphony-4                       prose   11 parsed / 0 not
+  added    brahms--tragic-overture                  prose   11 parsed / 0 not
+  added    brahms--variations-on-a-theme-by-haydn   prose   11 parsed / 0 not
+  added    brahms--violin-concerto                  prose    8 parsed / 0 not
+  added    bruckner--symphony-1                     prose    9 parsed / 0 not
+  added    bruckner--symphony-3                     prose    9 parsed / 0 not
+  added    bruckner--symphony-4                     prose   30 parsed / 1 not
+  added    bruckner--symphony-5                     prose    9 parsed / 0 not
+  added    bruckner--symphony-6                     prose   10 parsed / 0 not
+  added    bruckner--symphony-7                     prose   13 parsed / 0 not
+  added    bruckner--symphony-8                     prose   13 parsed / 0 not
+  added    bruckner--symphony-9                     prose   10 parsed / 0 not
+  added    bruckner--te-deum                        prose   11 parsed / 0 not
+  added    chabrier--espana                         prose   13 parsed / 1 not
+  added    chaminade--concertino-pour-flute         prose   10 parsed / 0 not
+  added    chausson--poeme                          prose   11 parsed / 0 not
+  added    coleridge-taylor--ballade-op33           prose    0 parsed / 1 not   (no InstrDetail)
+  added    debussy--la-boite-a-joujoux              prose   14 parsed / 0 not
+  added    debussy--la-mer                          compact 12 parsed / 0 not
+  added    debussy--nocturnes                       prose   14 parsed / 0 not
+  added    debussy--prelude-a-l-apres-midi-d-un-faune compact  7 parsed / 0 not
+  added    dukas--l-apprenti-sorcier                prose   17 parsed / 1 not
+  added    dvorak--cello-concerto                   prose   12 parsed / 0 not
+  added    dvorak--serenade-for-strings             prose    1 parsed / 0 not   (no InstrDetail)
+  added    dvorak--slavonic-dances                  prose   13 parsed / 0 not
+  added    dvorak--symphony-6                       prose   11 parsed / 0 not
+  added    dvorak--symphony-7                       prose   10 parsed / 0 not
+  added    dvorak--symphony-8                       prose   12 parsed / 0 not
+  added    dvorak--symphony-9                       prose   14 parsed / 0 not
+  added    elgar--cello-concerto                    prose   10 parsed / 0 not
+  added    elgar--introduction-and-allegro          prose    1 parsed / 1 not   (no InstrDetail)
+  added    elgar--symphony-1                        prose   17 parsed / 0 not
+  added    elgar--symphony-2                        prose   18 parsed / 0 not   (no InstrDetail)
+  added    elgar--variations-on-an-original-theme-enigma prose   16 parsed / 0 not
+  added    farrenc--symphony-2                      prose    8 parsed / 0 not
+  added    farrenc--symphony-3                      prose    7 parsed / 0 not
+  added    faure--pelleas-et-melisande              prose   18 parsed / 0 not
+  added    faure--requiem-op48                      compact 10 parsed / 0 not
+  added    franck--le-chasseur-maudit               prose   14 parsed / 2 not
+  added    franck--symphony-in-d-minor              prose   13 parsed / 1 not
+  added    glazunov--symphony-5                     prose   14 parsed / 1 not
+  added    grieg--holberg-suite                     prose    1 parsed / 0 not   (no InstrDetail)
+  added    grieg--suite-1                           prose   14 parsed / 0 not
+  added    grieg--piano-concerto                    prose   10 parsed / 0 not
+  added    handel--music-for-the-royal-fireworks    prose    8 parsed / 0 not
+  added    handel--water-music                      prose    8 parsed / 0 not
+  added    haydn--cello-concerto-2                  prose    3 parsed / 0 not
+  added    haydn--die-schopfung-hob-xxi-2           prose   13 parsed / 0 not
+  added    haydn--symphony-100                      prose   11 parsed / 0 not
+  added    haydn--symphony-101                      prose    8 parsed / 0 not
+  added    haydn--symphony-102                      prose    7 parsed / 0 not
+  added    haydn--symphony-103                      prose    8 parsed / 0 not
+  added    haydn--symphony-104                      prose    8 parsed / 0 not
+  added    haydn--symphony-45                       prose    4 parsed / 0 not
+  added    haydn--symphony-88                       prose    7 parsed / 0 not
+  added    haydn--symphony-92                       prose    7 parsed / 0 not
+  added    haydn--symphony-94                       prose    7 parsed / 0 not
+  added    haydn--symphony-95                       prose    7 parsed / 0 not
+  added    haydn--symphony-96                       prose    7 parsed / 0 not
+  added    haydn--symphony-99                       prose    8 parsed / 0 not
+  added    holst--st-paul-s-suite-op29-2            prose    1 parsed / 0 not   (no InstrDetail)
+  added    holst--the-planets                       prose   26 parsed / 3 not
+  added    lalo--symphony-espagnole                 prose   12 parsed / 0 not
+  added    mahler--das-lied-von-der-erde-gmw-49     prose   22 parsed / 1 not
+  added    mahler--lieder-eines-fahrenden-gesellen-gmw-10 prose   15 parsed / 0 not
+  added    mahler--symphony-1                       prose   17 parsed / 2 not
+  added    mahler--symphony-2                       prose   27 parsed / 2 not
+  added    mahler--symphony-3                       prose   18 parsed / 5 not
+  added    mahler--symphony-4                       compact 10 parsed / 0 not
+  added    mahler--symphony-6                       prose   25 parsed / 7 not
+  added    mahler--symphony-7                       prose   24 parsed / 5 not
+  added    mahler--symphony-9                       prose   20 parsed / 1 not
+  added    mendelssohn--a-midsummer-night-s-dream-incidental-music prose   13 parsed / 1 not
+  added    mendelssohn--die-hebriden                compact  8 parsed / 0 not
+  added    mendelssohn--symphony-1                  prose    8 parsed / 0 not
+  added    mendelssohn--symphony-3                  prose    8 parsed / 0 not
+  added    mendelssohn--symphony-4                  prose    8 parsed / 0 not
+  added    mendelssohn--symphony-5                  prose   10 parsed / 1 not
+  added    mendelssohn--violin-concerto             prose    8 parsed / 0 not
+  added    mozart--clarinet-concerto-in-a-major     prose    4 parsed / 0 not
+  added    mozart--die-zauberflote                  prose   27 parsed / 2 not
+  added    mozart--don-giovanni                     prose   30 parsed / 3 not
+  added    mozart--eine-kleine-nachtmusik           prose    4 parsed / 0 not   (no InstrDetail)
+  added    mozart--le-nozze-di-figaro               prose   21 parsed / 1 not
+  added    mozart--piano-concerto-20                prose    7 parsed / 0 not
+  added    mozart--piano-concerto-21                prose    7 parsed / 0 not
+  added    mozart--piano-concerto-23                prose    5 parsed / 0 not
+  added    mozart--piano-concerto-24                prose    8 parsed / 0 not
+  added    mozart--requiem-in-d-minor               prose   12 parsed / 0 not
+  added    mozart--symphony-1                       prose    3 parsed / 0 not
+  added    mozart--symphony-25                      prose    4 parsed / 0 not
+  added    mozart--symphony-33                      prose    4 parsed / 0 not
+  added    mozart--symphony-34                      prose    7 parsed / 0 not
+  added    mozart--symphony-35                      prose    8 parsed / 0 not
+  added    mozart--symphony-36                      prose    6 parsed / 0 not
+  added    mozart--symphony-38                      prose    7 parsed / 0 not
+  added    mozart--symphony-39                      prose    7 parsed / 0 not
+  added    mozart--symphony-4                       prose    3 parsed / 0 not
+  added    mozart--symphony-40                      prose    6 parsed / 0 not
+  added    mozart--symphony-41                      prose    7 parsed / 0 not
+  added    mozart--symphony-5                       prose    3 parsed / 0 not
+  added    mussorgsky--night-on-bald-mountain       prose   31 parsed / 2 not
+  added    mussorgsky--pictures-at-an-exhibition    prose    1 parsed / 0 not   (no InstrDetail)
+  added    nielsen--symphony-4                      prose   10 parsed / 0 not
+  added    nielsen--symphony-5                      prose   17 parsed / 1 not
+  added    prokofiev--symphony-1                    prose    8 parsed / 0 not
+  added    rachmaninoff--isle-of-the-dead           prose   16 parsed / 0 not
+  added    rachmaninoff--piano-concerto-2           prose   12 parsed / 0 not
+  added    rachmaninoff--symphony-2                 prose   14 parsed / 0 not
+  added    ravel--bolero                            prose   27 parsed / 0 not
+  added    ravel--daphnis-et-chloe                  prose   31 parsed / 2 not
+  added    ravel--la-valse                          prose   21 parsed / 1 not
+  added    ravel--le-tombeau-de-couperin            prose    1 parsed / 0 not   (no InstrDetail)
+  added    ravel--pavane-pour-une-infante-defunte   prose    1 parsed / 2 not   (no InstrDetail)
+  added    ravel--rapsodie-espagnole                prose   24 parsed / 0 not
+  added    respighi--fontane-di-roma                compact 15 parsed / 0 not
+  added    respighi--pini-di-roma                   prose   27 parsed / 6 not
+  added    rimsky-korsakov--capriccio-espagnol      prose   18 parsed / 0 not
+  added    rimsky-korsakov--scheherazade            prose   18 parsed / 0 not
+  added    rossini--guillaume-tell                  prose   25 parsed / 14 not
+  added    rossini--il-barbiere-di-siviglia         prose   10 parsed / 10 not
+  added    saint-saens--cello-concerto-1            prose    8 parsed / 0 not
+  added    saint-saens--danse-macabre               prose   18 parsed / 4 not
+  added    saint-saens--le-carnaval-des-animaux     prose    4 parsed / 1 not
+  added    saint-saens--piano-concerto-2            prose    9 parsed / 0 not
+  added    saint-saens--symphony-3                  prose   18 parsed / 1 not
+  added    schubert--rosamunde                      prose    9 parsed / 0 not
+  added    schubert--symphony-3                     compact  8 parsed / 0 not
+  added    schubert--symphony-4                     prose    8 parsed / 0 not
+  added    schubert--symphony-5                     prose    5 parsed / 0 not
+  added    schubert--symphony-8                     prose    9 parsed / 0 not
+  added    schubert--symphony-9                     prose    9 parsed / 0 not
+  added    schumann--cello-concerto                 prose    8 parsed / 0 not
+  added    schumann--piano-concerto                 prose    8 parsed / 0 not
+  conflict schumann--piano-concerto                 prose    9 parsed / 0 not
+  added    schumann--symphony-1                     prose   10 parsed / 0 not
+  added    schumann--symphony-2                     prose    9 parsed / 0 not
+  added    schumann--symphony-3                     prose    9 parsed / 0 not
+  added    schumann--symphony-4                     prose    9 parsed / 0 not
+  added    sibelius--finlandia                      prose   13 parsed / 0 not
+  added    sibelius--symphony-1                     prose   14 parsed / 0 not
+  added    sibelius--symphony-2                     prose   10 parsed / 0 not
+  added    sibelius--symphony-5                     prose   18 parsed / 0 not
+  added    sibelius--symphony-7                     prose    9 parsed / 0 not
+  added    sibelius--the-swan-of-tuonela-op22-2     prose    9 parsed / 0 not
+  added    sibelius--violin-concerto                prose   10 parsed / 0 not
+  added    smetana--ma-vlast-jb-1-112               prose    0 parsed / 1 not   (no InstrDetail)
+  added    smetana--prodana-nevesta-jb-1-100        prose   22 parsed / 1 not
+  added    smyth--the-wreckers                      prose    1 parsed / 2 not   (no InstrDetail)
+  added    strauss--also-sprach-zarathustra         prose   21 parsed / 1 not
+  added    strauss--don-juan                        prose   16 parsed / 0 not
+  added    strauss--don-quixote                     prose   21 parsed / 1 not
+  added    strauss--ein-heldenleben                 prose   23 parsed / 1 not
+  added    strauss--eine-alpensinfonie              prose   27 parsed / 4 not
+  added    strauss--elektra                         compact  0 parsed / 52 not
+  added    strauss--till-eulenspiegels-lustige-streiche prose   19 parsed / 1 not
+  added    strauss--tod-und-verklarung              prose   15 parsed / 0 not
+  added    stravinsky--petrushka                    prose   42 parsed / 2 not
+  added    stravinsky--the-firebird-ballet          prose   27 parsed / 1 not
+  added    tchaikovsky--1812-overture               prose   17 parsed / 5 not
+  added    tchaikovsky--piano-concerto-1            prose    9 parsed / 0 not
+  added    tchaikovsky--romeo-and-juliet-overture-fantasia prose   14 parsed / 1 not
+  added    tchaikovsky--serenade-for-string-orchestra prose    1 parsed / 0 not   (no InstrDetail)
+  added    tchaikovsky--swan-lake-ballet            prose   20 parsed / 1 not
+  added    tchaikovsky--symphony-1                  prose   13 parsed / 0 not
+  added    tchaikovsky--symphony-2                  prose   14 parsed / 0 not
+  added    tchaikovsky--symphony-4                  prose   14 parsed / 0 not
+  added    tchaikovsky--symphony-5                  prose   10 parsed / 0 not
+  added    tchaikovsky--symphony-6                  prose   13 parsed / 0 not
+  added    tchaikovsky--the-nutcracker-suite        prose   19 parsed / 0 not
+  added    tchaikovsky--the-sleeping-beauty-suite   prose   18 parsed / 1 not
+  added    tchaikovsky--violin-concerto             prose    8 parsed / 0 not
+  added    williams--fantasia-on-a-theme-by-thomas-tallis prose    0 parsed / 2 not   (no InstrDetail)
+  added    williams--the-lark-ascending             prose    7 parsed / 0 not
+  added    verdi--requiem                           prose   15 parsed / 0 not
+  added    vidal--178-basses                        prose    1 parsed / 0 not   (no InstrDetail)
+  added    wagner--die-meistersinger-von-nurnberg-wwv-96 prose   36 parsed / 21 not
+  added    wagner--siegfried-idyll-wwv-103          prose    7 parsed / 0 not
+  added    wagner--tannhauser-wwv-70                compact  0 parsed / 54 not
+  added    wagner--tristan-und-isolde-wwv-90        prose   17 parsed / 9 not
+  added    weber--der-freischutz                    prose   23 parsed / 11 not
+  added    weber--oberon-j-306                      prose   28 parsed / 6 not
+{
+  "targets": 224,
+  "added": 223,
+  "updated": 0,
+  "conflict": 1,
+  "errors": [],
+  "seconds": 1521.6
+}

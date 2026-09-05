@@ -1,0 +1,1951 @@
+{
+  "works_recorded": 223,
+  "works_with_a_roster": 223,
+  "works_with_no_roster_stated": 0,
+  "conflicted_work_ids": [
+    "schumann--piano-concerto"
+  ],
+  "fragments_total": 2518,
+  "fragments_parsed": 2419,
+  "fragments_unparsed": 99,
+  "fragment_parse_rate": 0.9607,
+  "works_parsed_completely": 171,
+  "works_parsed_partially": 48,
+  "works_parsed_not_at_all": 4,
+  "work_complete_rate": 0.7668,
+  "dialects": {
+    "prose": 214,
+    "compact": 9
+  },
+  "roster_field": {
+    "InstrDetail": 203,
+    "Instrumentation": 16,
+    "(none)": 4
+  },
+  "instrument_items": 2215,
+  "section_items": 204,
+  "depluralized_items": 195,
+  "distinct_instruments": 28,
+  "top_instruments": [
+    [
+      "Percussion",
+      325
+    ],
+    [
+      "Horn",
+      194
+    ],
+    [
+      "Bassoon",
+      190
+    ],
+    [
+      "Trumpet",
+      189
+    ],
+    [
+      "Timpani",
+      187
+    ],
+    [
+      "Clarinet",
+      184
+    ],
+    [
+      "Oboe",
+      180
+    ],
+    [
+      "Flute",
+      154
+    ],
+    [
+      "Trombone",
+      128
+    ],
+    [
+      "Piccolo",
+      99
+    ],
+    [
+      "Tuba",
+      86
+    ],
+    [
+      "Harp",
+      59
+    ],
+    [
+      "English horn",
+      52
+    ],
+    [
+      "Contrabassoon",
+      44
+    ],
+    [
+      "Bass clarinet",
+      38
+    ],
+    [
+      "Piano",
+      33
+    ],
+    [
+      "Bass voice",
+      14
+    ],
+    [
+      "Organ",
+      14
+    ],
+    [
+      "Violin",
+      9
+    ],
+    [
+      "Viola",
+      8
+    ]
+  ],
+  "sections": {
+    "Strings": 199,
+    "Continuo": 5
+  },
+  "top_unparsed": [
+    [
+      "2 cornets",
+      14
+    ],
+    [
+      "bells",
+      7
+    ],
+    [
+      "orchestra",
+      3
+    ],
+    [
+      "mandolin",
+      2
+    ],
+    [
+      "4 oboes (3rd",
+      2
+    ],
+    [
+      "rute",
+      2
+    ],
+    [
+      "cowbells",
+      2
+    ],
+    [
+      "guitar",
+      2
+    ],
+    [
+      "2 chromatic)",
+      2
+    ],
+    [
+      "wind machine",
+      2
+    ],
+    [
+      "heckelphone",
+      2
+    ],
+    [
+      "12",
+      2
+    ],
+    [
+      "recorder*",
+      1
+    ],
+    [
+      "2 recorders",
+      1
+    ],
+    [
+      "keyboard",
+      1
+    ],
+    [
+      "3 oboes (1st",
+      1
+    ],
+    [
+      "ophicleïde",
+      1
+    ],
+    [
+      "2 tambourines (3 players)",
+      1
+    ],
+    [
+      "2 tambourines)",
+      1
+    ],
+    [
+      "2 ophicleïdes",
+      1
+    ],
+    [
+      "*revised 2nd version (1878/80)",
+      1
+    ],
+    [
+      "string quartet",
+      1
+    ],
+    [
+      "euphonium",
+      1
+    ],
+    [
+      "gong",
+      1
+    ],
+    [
+      "3rd",
+      1
+    ],
+    [
+      "4th also e",
+      1
+    ],
+    [
+      "strings : 2 or more off-stage bells",
+      1
+    ],
+    [
+      "on",
+      1
+    ],
+    [
+      "off-stage cowbells",
+      1
+    ],
+    [
+      "slapstick",
+      1
+    ]
+  ],
+  "per_work": [
+    {
+      "work_id": "bach--concerto-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 2,
+      "unparsed": []
+    },
+    {
+      "work_id": "bach--concerto-2",
+      "dialect": "prose",
+      "parse_rate": 0.8333,
+      "parsed": 5,
+      "unparsed": [
+        "recorder*"
+      ]
+    },
+    {
+      "work_id": "bach--concerto-3",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 4,
+      "unparsed": []
+    },
+    {
+      "work_id": "bach--concerto-4",
+      "dialect": "prose",
+      "parse_rate": 0.8571,
+      "parsed": 6,
+      "unparsed": [
+        "2 recorders"
+      ]
+    },
+    {
+      "work_id": "bach--concerto-5",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 4,
+      "unparsed": []
+    },
+    {
+      "work_id": "bach--concerto-6",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 4,
+      "unparsed": []
+    },
+    {
+      "work_id": "bach--das-wohltemperierte-klavier-i",
+      "dialect": "prose",
+      "parse_rate": 0.0,
+      "parsed": 0,
+      "unparsed": [
+        "keyboard"
+      ]
+    },
+    {
+      "work_id": "bach--mass-in-b-minor",
+      "dialect": "prose",
+      "parse_rate": 0.9,
+      "parsed": 9,
+      "unparsed": [
+        "3 oboes (1st"
+      ]
+    },
+    {
+      "work_id": "bach--matthauspassion",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 12,
+      "unparsed": []
+    },
+    {
+      "work_id": "bach--suite-3",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 5,
+      "unparsed": []
+    },
+    {
+      "work_id": "beach--symphony-in-e-minor-op32-gaelic",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--coriolan",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--egmont",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--missa-solemnis",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 11,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--piano-concerto-3",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--piano-concerto-4",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--piano-concerto-5",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--symphony-1",
+      "dialect": "compact",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--symphony-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--symphony-3",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--symphony-4",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--symphony-5",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 11,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--symphony-6",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--symphony-7",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--symphony-8",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--symphony-9",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "beethoven--violin-concerto-in-d-major",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "berlioz--harold-en-italie",
+      "dialect": "prose",
+      "parse_rate": 0.8,
+      "parsed": 12,
+      "unparsed": [
+        "2 cornets",
+        "ophicleïde",
+        "2 tambourines (3 players)"
+      ]
+    },
+    {
+      "work_id": "berlioz--le-carnaval-romain",
+      "dialect": "prose",
+      "parse_rate": 0.8571,
+      "parsed": 12,
+      "unparsed": [
+        "2 cornets",
+        "2 tambourines)"
+      ]
+    },
+    {
+      "work_id": "berlioz--symphony-fantastique",
+      "dialect": "prose",
+      "parse_rate": 0.875,
+      "parsed": 14,
+      "unparsed": [
+        "2 cornets",
+        "2 ophicleïdes"
+      ]
+    },
+    {
+      "work_id": "bizet--suite-1",
+      "dialect": "prose",
+      "parse_rate": 0.9231,
+      "parsed": 12,
+      "unparsed": [
+        "2 cornets"
+      ]
+    },
+    {
+      "work_id": "bizet--symphony-in-c-major",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "borodin--in-the-steppes-of-central-asia",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "borodin--symphony-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 15,
+      "unparsed": []
+    },
+    {
+      "work_id": "boulanger--faust-et-helene",
+      "dialect": "prose",
+      "parse_rate": 0.9474,
+      "parsed": 18,
+      "unparsed": [
+        "2 cornets"
+      ]
+    },
+    {
+      "work_id": "brahms--academic-festival-overture",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 15,
+      "unparsed": []
+    },
+    {
+      "work_id": "brahms--ein-deutsches-requiem",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "brahms--piano-concerto-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "brahms--piano-concerto-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "brahms--symphony-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "brahms--symphony-2",
+      "dialect": "compact",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "brahms--symphony-3",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "brahms--symphony-4",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 11,
+      "unparsed": []
+    },
+    {
+      "work_id": "brahms--tragic-overture",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 11,
+      "unparsed": []
+    },
+    {
+      "work_id": "brahms--variations-on-a-theme-by-haydn",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 11,
+      "unparsed": []
+    },
+    {
+      "work_id": "brahms--violin-concerto",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "bruckner--symphony-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "bruckner--symphony-3",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "bruckner--symphony-4",
+      "dialect": "prose",
+      "parse_rate": 0.9677,
+      "parsed": 30,
+      "unparsed": [
+        "*Revised 2nd Version (1878/80)"
+      ]
+    },
+    {
+      "work_id": "bruckner--symphony-5",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "bruckner--symphony-6",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "bruckner--symphony-7",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 13,
+      "unparsed": []
+    },
+    {
+      "work_id": "bruckner--symphony-8",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 13,
+      "unparsed": []
+    },
+    {
+      "work_id": "bruckner--symphony-9",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "bruckner--te-deum",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 11,
+      "unparsed": []
+    },
+    {
+      "work_id": "chabrier--espana",
+      "dialect": "prose",
+      "parse_rate": 0.9286,
+      "parsed": 13,
+      "unparsed": [
+        "2 cornets"
+      ]
+    },
+    {
+      "work_id": "chaminade--concertino-pour-flute",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "chausson--poeme",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 11,
+      "unparsed": []
+    },
+    {
+      "work_id": "coleridge-taylor--ballade-op33",
+      "dialect": "prose",
+      "parse_rate": 0.0,
+      "parsed": 0,
+      "unparsed": [
+        "orchestra"
+      ]
+    },
+    {
+      "work_id": "debussy--la-boite-a-joujoux",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "debussy--la-mer",
+      "dialect": "compact",
+      "parse_rate": 1.0,
+      "parsed": 12,
+      "unparsed": []
+    },
+    {
+      "work_id": "debussy--nocturnes",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "debussy--prelude-a-l-apres-midi-d-un-faune",
+      "dialect": "compact",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "dukas--l-apprenti-sorcier",
+      "dialect": "prose",
+      "parse_rate": 0.9444,
+      "parsed": 17,
+      "unparsed": [
+        "2 cornets"
+      ]
+    },
+    {
+      "work_id": "dvorak--cello-concerto",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 12,
+      "unparsed": []
+    },
+    {
+      "work_id": "dvorak--serenade-for-strings",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 1,
+      "unparsed": []
+    },
+    {
+      "work_id": "dvorak--slavonic-dances",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 13,
+      "unparsed": []
+    },
+    {
+      "work_id": "dvorak--symphony-6",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 11,
+      "unparsed": []
+    },
+    {
+      "work_id": "dvorak--symphony-7",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "dvorak--symphony-8",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 12,
+      "unparsed": []
+    },
+    {
+      "work_id": "dvorak--symphony-9",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "elgar--cello-concerto",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "elgar--introduction-and-allegro",
+      "dialect": "prose",
+      "parse_rate": 0.5,
+      "parsed": 1,
+      "unparsed": [
+        "string quartet"
+      ]
+    },
+    {
+      "work_id": "elgar--symphony-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 17,
+      "unparsed": []
+    },
+    {
+      "work_id": "elgar--symphony-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 18,
+      "unparsed": []
+    },
+    {
+      "work_id": "elgar--variations-on-an-original-theme-enigma",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 16,
+      "unparsed": []
+    },
+    {
+      "work_id": "farrenc--symphony-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "farrenc--symphony-3",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "faure--pelleas-et-melisande",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "faure--requiem-op48",
+      "dialect": "compact",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "franck--le-chasseur-maudit",
+      "dialect": "prose",
+      "parse_rate": 0.875,
+      "parsed": 14,
+      "unparsed": [
+        "2 cornets",
+        "bells"
+      ]
+    },
+    {
+      "work_id": "franck--symphony-in-d-minor",
+      "dialect": "prose",
+      "parse_rate": 0.9286,
+      "parsed": 13,
+      "unparsed": [
+        "2 cornets"
+      ]
+    },
+    {
+      "work_id": "glazunov--symphony-5",
+      "dialect": "prose",
+      "parse_rate": 0.9333,
+      "parsed": 14,
+      "unparsed": [
+        "bells"
+      ]
+    },
+    {
+      "work_id": "grieg--holberg-suite",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 1,
+      "unparsed": []
+    },
+    {
+      "work_id": "grieg--piano-concerto",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "grieg--suite-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "handel--music-for-the-royal-fireworks",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "handel--water-music",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--cello-concerto-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 3,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--die-schopfung-hob-xxi-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-100",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 11,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-101",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-102",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-103",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-104",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-45",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 4,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-88",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-92",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-94",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-95",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-96",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "haydn--symphony-99",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "holst--st-paul-s-suite-op29-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 1,
+      "unparsed": []
+    },
+    {
+      "work_id": "holst--the-planets",
+      "dialect": "prose",
+      "parse_rate": 0.8929,
+      "parsed": 25,
+      "unparsed": [
+        "euphonium",
+        "gong",
+        "bells"
+      ]
+    },
+    {
+      "work_id": "lalo--symphony-espagnole",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 12,
+      "unparsed": []
+    },
+    {
+      "work_id": "mahler--das-lied-von-der-erde-gmw-49",
+      "dialect": "prose",
+      "parse_rate": 0.9545,
+      "parsed": 21,
+      "unparsed": [
+        "mandolin"
+      ]
+    },
+    {
+      "work_id": "mahler--lieder-eines-fahrenden-gesellen-gmw-10",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 15,
+      "unparsed": []
+    },
+    {
+      "work_id": "mahler--symphony-1",
+      "dialect": "prose",
+      "parse_rate": 0.8947,
+      "parsed": 17,
+      "unparsed": [
+        "3rd",
+        "4th also E"
+      ]
+    },
+    {
+      "work_id": "mahler--symphony-2",
+      "dialect": "prose",
+      "parse_rate": 0.9048,
+      "parsed": 19,
+      "unparsed": [
+        "4 oboes (3rd",
+        "bells"
+      ]
+    },
+    {
+      "work_id": "mahler--symphony-3",
+      "dialect": "prose",
+      "parse_rate": 0.9444,
+      "parsed": 17,
+      "unparsed": [
+        "rute"
+      ]
+    },
+    {
+      "work_id": "mahler--symphony-4",
+      "dialect": "compact",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "mahler--symphony-6",
+      "dialect": "prose",
+      "parse_rate": 0.7812,
+      "parsed": 25,
+      "unparsed": [
+        "4 oboes (3rd",
+        "strings : 2 or more off-stage bells",
+        "on",
+        "off-stage cowbells",
+        "slapstick",
+        "switch",
+        "hammer"
+      ]
+    },
+    {
+      "work_id": "mahler--symphony-7",
+      "dialect": "prose",
+      "parse_rate": 0.8276,
+      "parsed": 24,
+      "unparsed": [
+        "cowbells",
+        "rute",
+        "bells",
+        "mandolin",
+        "guitar"
+      ]
+    },
+    {
+      "work_id": "mahler--symphony-9",
+      "dialect": "prose",
+      "parse_rate": 0.9524,
+      "parsed": 20,
+      "unparsed": [
+        "bells (3)"
+      ]
+    },
+    {
+      "work_id": "mendelssohn--a-midsummer-night-s-dream-incidental-music",
+      "dialect": "prose",
+      "parse_rate": 0.9167,
+      "parsed": 11,
+      "unparsed": [
+        "ophicleide"
+      ]
+    },
+    {
+      "work_id": "mendelssohn--die-hebriden",
+      "dialect": "compact",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "mendelssohn--symphony-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "mendelssohn--symphony-3",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "mendelssohn--symphony-4",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "mendelssohn--symphony-5",
+      "dialect": "prose",
+      "parse_rate": 0.9091,
+      "parsed": 10,
+      "unparsed": [
+        "serpent"
+      ]
+    },
+    {
+      "work_id": "mendelssohn--violin-concerto",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--clarinet-concerto-in-a-major",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 4,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--die-zauberflote",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--don-giovanni",
+      "dialect": "prose",
+      "parse_rate": 0.9091,
+      "parsed": 10,
+      "unparsed": [
+        "continuo (keyboard"
+      ]
+    },
+    {
+      "work_id": "mozart--eine-kleine-nachtmusik",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 4,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--le-nozze-di-figaro",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--piano-concerto-20",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--piano-concerto-21",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--piano-concerto-23",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 5,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--piano-concerto-24",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--requiem-in-d-minor",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 3,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-25",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 4,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-33",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 4,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-34",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-35",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-36",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 6,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-38",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-39",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-4",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 3,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-40",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 6,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-41",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "mozart--symphony-5",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 3,
+      "unparsed": []
+    },
+    {
+      "work_id": "mussorgsky--night-on-bald-mountain",
+      "dialect": "prose",
+      "parse_rate": 0.9394,
+      "parsed": 31,
+      "unparsed": [
+        "2 cornets",
+        "tubular bell (D)"
+      ]
+    },
+    {
+      "work_id": "mussorgsky--pictures-at-an-exhibition",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 1,
+      "unparsed": []
+    },
+    {
+      "work_id": "nielsen--symphony-4",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "nielsen--symphony-5",
+      "dialect": "prose",
+      "parse_rate": 0.9444,
+      "parsed": 17,
+      "unparsed": [
+        "*only in Tuxen's revised edition of 1950"
+      ]
+    },
+    {
+      "work_id": "prokofiev--symphony-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "rachmaninoff--isle-of-the-dead",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 16,
+      "unparsed": []
+    },
+    {
+      "work_id": "rachmaninoff--piano-concerto-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 12,
+      "unparsed": []
+    },
+    {
+      "work_id": "rachmaninoff--symphony-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "ravel--bolero",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 27,
+      "unparsed": []
+    },
+    {
+      "work_id": "ravel--daphnis-et-chloe",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 4,
+      "unparsed": []
+    },
+    {
+      "work_id": "ravel--la-valse",
+      "dialect": "prose",
+      "parse_rate": 0.9545,
+      "parsed": 21,
+      "unparsed": [
+        "guiro"
+      ]
+    },
+    {
+      "work_id": "ravel--le-tombeau-de-couperin",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 1,
+      "unparsed": []
+    },
+    {
+      "work_id": "ravel--pavane-pour-une-infante-defunte",
+      "dialect": "prose",
+      "parse_rate": 0.3333,
+      "parsed": 1,
+      "unparsed": [
+        "see Arrangements",
+        "Transcriptions)"
+      ]
+    },
+    {
+      "work_id": "ravel--rapsodie-espagnole",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 24,
+      "unparsed": []
+    },
+    {
+      "work_id": "respighi--fontane-di-roma",
+      "dialect": "compact",
+      "parse_rate": 1.0,
+      "parsed": 15,
+      "unparsed": []
+    },
+    {
+      "work_id": "respighi--pini-di-roma",
+      "dialect": "prose",
+      "parse_rate": 0.9231,
+      "parsed": 24,
+      "unparsed": [
+        "ratchet",
+        "gramophone"
+      ]
+    },
+    {
+      "work_id": "rimsky-korsakov--capriccio-espagnol",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 18,
+      "unparsed": []
+    },
+    {
+      "work_id": "rimsky-korsakov--scheherazade",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 18,
+      "unparsed": []
+    },
+    {
+      "work_id": "rossini--guillaume-tell",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 13,
+      "unparsed": []
+    },
+    {
+      "work_id": "rossini--il-barbiere-di-siviglia",
+      "dialect": "prose",
+      "parse_rate": 0.5,
+      "parsed": 9,
+      "unparsed": [
+        "Manuel Garcia Bartolo",
+        "doctor of medicine",
+        "Bartolomeo Botticelli Rosina",
+        "Geltrude Righetti-Giorgi Figaro",
+        "Luigi Zamboni Basilio",
+        "Zenobio Vitarelli Berta",
+        "Elisabetta Loyselet Fiorello",
+        "Paolo Biagelli Ambrogio",
+        "A notary (silent)"
+      ]
+    },
+    {
+      "work_id": "saint-saens--cello-concerto-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "saint-saens--danse-macabre",
+      "dialect": "prose",
+      "parse_rate": 0.8182,
+      "parsed": 18,
+      "unparsed": [
+        "2 chromatic)",
+        "D",
+        "A",
+        "E ))"
+      ]
+    },
+    {
+      "work_id": "saint-saens--le-carnaval-des-animaux",
+      "dialect": "prose",
+      "parse_rate": 0.8,
+      "parsed": 4,
+      "unparsed": [
+        "glass harmonica*"
+      ]
+    },
+    {
+      "work_id": "saint-saens--piano-concerto-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "saint-saens--symphony-3",
+      "dialect": "prose",
+      "parse_rate": 0.9474,
+      "parsed": 18,
+      "unparsed": [
+        "2 chromatic)"
+      ]
+    },
+    {
+      "work_id": "schubert--rosamunde",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "schubert--symphony-3",
+      "dialect": "compact",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "schubert--symphony-4",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "schubert--symphony-5",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 5,
+      "unparsed": []
+    },
+    {
+      "work_id": "schubert--symphony-8",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "schubert--symphony-9",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "schumann--cello-concerto",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "schumann--piano-concerto",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "schumann--symphony-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "schumann--symphony-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "schumann--symphony-3",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "schumann--symphony-4",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "sibelius--finlandia",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 13,
+      "unparsed": []
+    },
+    {
+      "work_id": "sibelius--symphony-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "sibelius--symphony-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "sibelius--symphony-5",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 18,
+      "unparsed": []
+    },
+    {
+      "work_id": "sibelius--symphony-7",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "sibelius--the-swan-of-tuonela-op22-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "sibelius--violin-concerto",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "smetana--ma-vlast-jb-1-112",
+      "dialect": "prose",
+      "parse_rate": 0.0,
+      "parsed": 0,
+      "unparsed": [
+        "orchestra"
+      ]
+    },
+    {
+      "work_id": "smetana--prodana-nevesta-jb-1-100",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 11,
+      "unparsed": []
+    },
+    {
+      "work_id": "smyth--the-wreckers",
+      "dialect": "prose",
+      "parse_rate": 0.3333,
+      "parsed": 1,
+      "unparsed": [
+        "voices",
+        "orchestra"
+      ]
+    },
+    {
+      "work_id": "strauss--also-sprach-zarathustra",
+      "dialect": "prose",
+      "parse_rate": 0.9545,
+      "parsed": 21,
+      "unparsed": [
+        "bell (low E)"
+      ]
+    },
+    {
+      "work_id": "strauss--don-juan",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 16,
+      "unparsed": []
+    },
+    {
+      "work_id": "strauss--don-quixote",
+      "dialect": "prose",
+      "parse_rate": 0.9545,
+      "parsed": 21,
+      "unparsed": [
+        "wind machine"
+      ]
+    },
+    {
+      "work_id": "strauss--ein-heldenleben",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "strauss--eine-alpensinfonie",
+      "dialect": "prose",
+      "parse_rate": 0.8621,
+      "parsed": 25,
+      "unparsed": [
+        "heckelphone",
+        "cowbells",
+        "wind machine",
+        "thundersheet"
+      ]
+    },
+    {
+      "work_id": "strauss--elektra",
+      "dialect": "prose",
+      "parse_rate": 0.9032,
+      "parsed": 28,
+      "unparsed": [
+        "heckelphone",
+        "whip",
+        "8 basses)"
+      ]
+    },
+    {
+      "work_id": "strauss--till-eulenspiegels-lustige-streiche",
+      "dialect": "prose",
+      "parse_rate": 0.95,
+      "parsed": 19,
+      "unparsed": [
+        "large ratchet"
+      ]
+    },
+    {
+      "work_id": "strauss--tod-und-verklarung",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 15,
+      "unparsed": []
+    },
+    {
+      "work_id": "stravinsky--petrushka",
+      "dialect": "prose",
+      "parse_rate": 0.9545,
+      "parsed": 42,
+      "unparsed": [
+        "2 cornets",
+        "bells"
+      ]
+    },
+    {
+      "work_id": "stravinsky--the-firebird-ballet",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 25,
+      "unparsed": []
+    },
+    {
+      "work_id": "tchaikovsky--1812-overture",
+      "dialect": "prose",
+      "parse_rate": 0.85,
+      "parsed": 17,
+      "unparsed": [
+        "2 cornets",
+        "bells",
+        "cannon"
+      ]
+    },
+    {
+      "work_id": "tchaikovsky--piano-concerto-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 9,
+      "unparsed": []
+    },
+    {
+      "work_id": "tchaikovsky--romeo-and-juliet-overture-fantasia",
+      "dialect": "prose",
+      "parse_rate": 0.9333,
+      "parsed": 14,
+      "unparsed": [
+        "strings (all versions)"
+      ]
+    },
+    {
+      "work_id": "tchaikovsky--serenade-for-string-orchestra",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 1,
+      "unparsed": []
+    },
+    {
+      "work_id": "tchaikovsky--swan-lake-ballet",
+      "dialect": "prose",
+      "parse_rate": 0.9524,
+      "parsed": 20,
+      "unparsed": [
+        "2 cornets"
+      ]
+    },
+    {
+      "work_id": "tchaikovsky--symphony-1",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 13,
+      "unparsed": []
+    },
+    {
+      "work_id": "tchaikovsky--symphony-2",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "tchaikovsky--symphony-4",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "tchaikovsky--symphony-5",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "tchaikovsky--symphony-6",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 12,
+      "unparsed": []
+    },
+    {
+      "work_id": "tchaikovsky--the-nutcracker-suite",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 19,
+      "unparsed": []
+    },
+    {
+      "work_id": "tchaikovsky--the-sleeping-beauty-suite",
+      "dialect": "prose",
+      "parse_rate": 0.9474,
+      "parsed": 18,
+      "unparsed": [
+        "2 cornets"
+      ]
+    },
+    {
+      "work_id": "tchaikovsky--violin-concerto",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 8,
+      "unparsed": []
+    },
+    {
+      "work_id": "verdi--requiem",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 11,
+      "unparsed": []
+    },
+    {
+      "work_id": "vidal--178-basses",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 1,
+      "unparsed": []
+    },
+    {
+      "work_id": "wagner--die-meistersinger-von-nurnberg-wwv-96",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 17,
+      "unparsed": []
+    },
+    {
+      "work_id": "wagner--siegfried-idyll-wwv-103",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    },
+    {
+      "work_id": "wagner--tannhauser-wwv-70",
+      "dialect": "prose",
+      "parse_rate": 0.7619,
+      "parsed": 16,
+      "unparsed": [
+        "castenets",
+        "16",
+        "12",
+        "12",
+        "8)"
+      ]
+    },
+    {
+      "work_id": "wagner--tristan-und-isolde-wwv-90",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 14,
+      "unparsed": []
+    },
+    {
+      "work_id": "weber--der-freischutz",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 10,
+      "unparsed": []
+    },
+    {
+      "work_id": "weber--oberon-j-306",
+      "dialect": "prose",
+      "parse_rate": 0.9375,
+      "parsed": 15,
+      "unparsed": [
+        "guitar"
+      ]
+    },
+    {
+      "work_id": "williams--fantasia-on-a-theme-by-thomas-tallis",
+      "dialect": "prose",
+      "parse_rate": 0.0,
+      "parsed": 0,
+      "unparsed": [
+        "double string orchestra",
+        "with soloists"
+      ]
+    },
+    {
+      "work_id": "williams--the-lark-ascending",
+      "dialect": "prose",
+      "parse_rate": 1.0,
+      "parsed": 7,
+      "unparsed": []
+    }
+  ]
+}

@@ -360,8 +360,51 @@ works with no edition and no ground truth respectively.
 python3 -m tools.library.ingest imslp ~/Downloads/IMSLP*.pdf   # provenance from the wiki API
 python3 -m tools.library.ingest musicxml <dir> --source gradus
 python3 -m tools.library.ingest catalog | verify | reorganize | refresh | relink
+python3 -m tools.library.ingest instrumentation                # work rosters, backfill
 python3 -m tools.library.build_wishlist --out data/score-library/wishlist.json
 ```
+
+**What each work is SCORED FOR is captured too**, keyed on the same `work_id`,
+in a top-level `works` map in the catalog (schema version 2). The IMSLP work
+page states it (`InstrDetail`, or `Instrumentation` on works that have no
+detail line), so it is one more read of the open MediaWiki API the provenance
+already comes from — never the download gate — and it costs one query per
+WORK, not per page. It exists because roster acquisition off the printed page
+fails on a minority of documents and this is an **independent** work-level
+escalation. The raw string is stored verbatim and a parsed roster beside it
+(instrument + count, named through `tools/omr/instruments.py` so the rest of
+the pipeline recognises the words); a fragment the lexicon does not know is
+recorded `unparsed`, never forced to a nearest match.
+
+⚠️ **`source_kind` is the load-bearing field.** Every fact carries
+`source: "imslp"` / `source_kind: "catalog"`, and `"catalog"` is what makes it
+legitimate production evidence: it is independent of the MusicXML the
+benchmarks score against. A roster derived from an encoding would be
+`source_kind: "encoding"` and a measurement path may not read it. The
+distinction is enforced (`validate_fact` refuses a fact without it) rather than
+conventional, because it cannot be added to facts already written.
+
+⚠️ **N instruments is not N staves** — a printed score condenses and splits, and
+the condensed count is a property of the encoding. ⚠️ Two IMSLP pages can share
+one `work_id` (Clara Op.7 and Robert Op.54 are both `schumann--piano-concerto`);
+the key is not forked, the second roster is kept as a recorded conflict and
+neither is trusted. **Measured 2026-09-05 over all 223 held IMSLP works: 2419 of
+2518 roster fragments parse (96.1%), 171 works (76.7%) parse completely, 4 parse
+nothing** (their page states no roster — `keyboard`, `orchestra`). The
+work-complete figure is the one a staff join cares about: a roster missing a
+part joins *wrong*, not *not at all*. The residual is lexicon gaps rather than
+parser failures — `2 cornets` alone is 14 of the 99, and `instruments.py` has no
+cornet. Backfill cost 224 requests at 6 s = **25.4 min, 0 failures**. Regenerate
+the figures with
+`python3 benchmarks/omr-instrumentation-capture-2026-09/measure_parse_rate.py`
+(writes `parse-rate.json`, which carries the per-work table and the unparsed
+tail). ⚠️ Three fault shapes are pinned by tests because each produced a
+*confident wrong answer*: one field holding both dialects (Bach's B minor Mass,
+0 of 18), an opera's field opening with its CAST list (Tannhäuser, 0 of 54), and
+a prose roster ending in desk counts `strings (16, 16, 12, 12, 8)` being read as
+the numeric dialect. Fixing them took the pooled rate 0.9015 → 0.9432 → 0.9607
+**with no new IMSLP requests** — the raw string is stored verbatim, so
+`--reparse` re-derives every roster offline.
 
 **The legacy paths still work.** ~20 benchmark scripts hard-code
 `tools/omr/training/data/imslp/<work>/pdfs/imslp-<id>/score.pdf` and NOTES.md
