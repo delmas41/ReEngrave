@@ -1,0 +1,1525 @@
+{
+ "_what_this_is": [
+  "H0, a STRUCTURE metric. Three INDEPENDENT sub-scores. They are never",
+  "pooled with each other and never combined with an edit count: a",
+  "structure score and an edit count answer different questions, and",
+  "merging them is how the ES/EM repricing fooled two sessions."
+ ],
+ "provenance": {
+  "fixture_dir": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures",
+  "fixture_suffix": ".reconciliation.omr.json",
+  "n_fixtures": 20,
+  "works_json": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a33465d4058896096/benchmarks/omr-scan-e2e-2026-09/works.json",
+  "n_rows": 20,
+  "n_predicted_staves": 396,
+  "n_multi_system_rows": 11,
+  "truth_is_scoring_only": true,
+  "dossiers_used": false,
+  "detector_run": false,
+  "name_normalizer": "hand table in this file \u2014 NOT tools/omr/instruments.py"
+ },
+ "page_cardinality_all_rows": {
+  "_note": "precondition, not a sub-score: page.n_systems / page.n_staves vs what the pipeline cut. Available on all 20 rows.",
+  "rows_exact": 20,
+  "rows": 20,
+  "per_row": [
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p1",
+    "truth_systems": 1,
+    "pred_systems": 1,
+    "truth_staves": 12,
+    "pred_staves": 12,
+    "exact": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p2",
+    "truth_systems": 2,
+    "pred_systems": 2,
+    "truth_staves": 22,
+    "pred_staves": 22,
+    "exact": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p3",
+    "truth_systems": 2,
+    "pred_systems": 2,
+    "truth_staves": 19,
+    "pred_staves": 19,
+    "exact": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p4",
+    "truth_systems": 2,
+    "pred_systems": 2,
+    "truth_staves": 22,
+    "pred_staves": 22,
+    "exact": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p1",
+    "truth_systems": 1,
+    "pred_systems": 1,
+    "truth_staves": 12,
+    "pred_staves": 12,
+    "exact": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p2",
+    "truth_systems": 2,
+    "pred_systems": 2,
+    "truth_staves": 22,
+    "pred_staves": 22,
+    "exact": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p3",
+    "truth_systems": 2,
+    "pred_systems": 2,
+    "truth_staves": 19,
+    "pred_staves": 19,
+    "exact": true
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p4",
+    "truth_systems": 2,
+    "pred_systems": 2,
+    "truth_staves": 22,
+    "pred_staves": 22,
+    "exact": true
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p5",
+    "truth_systems": 1,
+    "pred_systems": 1,
+    "truth_staves": 15,
+    "pred_staves": 15,
+    "exact": true
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p6",
+    "truth_systems": 1,
+    "pred_systems": 1,
+    "truth_staves": 15,
+    "pred_staves": 15,
+    "exact": true
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p7",
+    "truth_systems": 2,
+    "pred_systems": 2,
+    "truth_staves": 30,
+    "pred_staves": 30,
+    "exact": true
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p1",
+    "truth_systems": 1,
+    "pred_systems": 1,
+    "truth_staves": 14,
+    "pred_staves": 14,
+    "exact": true
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p2",
+    "truth_systems": 2,
+    "pred_systems": 2,
+    "truth_staves": 27,
+    "pred_staves": 27,
+    "exact": true
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p3",
+    "truth_systems": 2,
+    "pred_systems": 2,
+    "truth_staves": 28,
+    "pred_staves": 28,
+    "exact": true
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p4",
+    "truth_systems": 2,
+    "pred_systems": 2,
+    "truth_staves": 28,
+    "pred_staves": 28,
+    "exact": true
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p2",
+    "truth_systems": 1,
+    "pred_systems": 1,
+    "truth_staves": 17,
+    "pred_staves": 17,
+    "exact": true
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p3",
+    "truth_systems": 1,
+    "pred_systems": 1,
+    "truth_staves": 13,
+    "pred_staves": 13,
+    "exact": true
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p4",
+    "truth_systems": 1,
+    "pred_systems": 1,
+    "truth_staves": 18,
+    "pred_staves": 18,
+    "exact": true
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p5",
+    "truth_systems": 1,
+    "pred_systems": 1,
+    "truth_staves": 17,
+    "pred_staves": 17,
+    "exact": true
+   },
+   {
+    "row_id": "bach-brandenburg3-mvt1-468678-p1",
+    "truth_systems": 2,
+    "pred_systems": 2,
+    "truth_staves": 24,
+    "pred_staves": 24,
+    "exact": true
+   }
+  ]
+ },
+ "pooled": {
+  "roster_recovery": {
+   "rows": 16,
+   "rows_with_exact_staff_count": 16,
+   "systems_with_exact_staff_count": 26,
+   "systems_scored": 26,
+   "n_truth_staves": 324,
+   "n_pred_staves": 324,
+   "over": 50,
+   "under": 50,
+   "aligned_matches": 274,
+   "aligned_accuracy": 0.845679012345679,
+   "positional_matches": 269,
+   "positional_accuracy": 0.8302469135802469
+  },
+  "continuity": {
+   "all": {
+    "rows": 10,
+    "truth_links": 112,
+    "pred_links": 112,
+    "correct_links": 105,
+    "precision": 0.9375,
+    "recall": 0.9375,
+    "unpairable_staves": 6,
+    "rows_degenerate_identical_lineups": 5,
+    "rows_informative_lineups_differ": 5
+   },
+   "tier_A_explicit_per_system_truth": {
+    "rows": 5,
+    "truth_links": 47,
+    "pred_links": 47,
+    "correct_links": 40,
+    "precision": 0.851063829787234,
+    "recall": 0.851063829787234,
+    "unpairable_staves": 6,
+    "rows_degenerate_identical_lineups": 0,
+    "rows_informative_lineups_differ": 5
+   },
+   "tier_B_derived_from_one_map": {
+    "rows": 5,
+    "truth_links": 65,
+    "pred_links": 65,
+    "correct_links": 65,
+    "precision": 1.0,
+    "recall": 1.0,
+    "unpairable_staves": 0,
+    "rows_degenerate_identical_lineups": 5,
+    "rows_informative_lineups_differ": 0
+   },
+   "informative_only_lineups_differ": {
+    "rows": 5,
+    "truth_links": 47,
+    "pred_links": 47,
+    "correct_links": 40,
+    "precision": 0.851063829787234,
+    "recall": 0.851063829787234,
+    "unpairable_staves": 6,
+    "rows_degenerate_identical_lineups": 0,
+    "rows_informative_lineups_differ": 5
+   }
+  },
+  "identity": {
+   "rows": 16,
+   "n_scoreable": 324,
+   "n_named": 295,
+   "n_correct": 269,
+   "coverage": 0.9104938271604939,
+   "precision": 0.911864406779661,
+   "unmapped_truth_names": 0
+  }
+ },
+ "global_identity_coverage": {
+  "n_staves": 396,
+  "n_named": 365,
+  "coverage": 0.9217171717171717,
+  "instrument_source_counts": {
+   "label": 245,
+   "score_order": 114,
+   "score_order_ambiguity": 6,
+   "null": 31
+  }
+ },
+ "per_row": {
+  "roster_recovery": [
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p1",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 12,
+      "n_pred": 12,
+      "cardinality_delta": 0,
+      "over": 0,
+      "under": 0,
+      "aligned_matches": 12,
+      "positional_matches": 12,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 12,
+    "n_pred": 12,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 0,
+    "under": 0,
+    "aligned_matches": 12,
+    "positional_matches": 12,
+    "truth_source": "staves_map_x_systems",
+    "truth_note": "one 12-staff map x 1 systems == page.n_staves"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p2",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 11,
+      "n_pred": 11,
+      "cardinality_delta": 0,
+      "over": 1,
+      "under": 1,
+      "aligned_matches": 10,
+      "positional_matches": 10,
+      "unmapped_truth_names": []
+     },
+     {
+      "system_index": 1,
+      "n_truth": 11,
+      "n_pred": 11,
+      "cardinality_delta": 0,
+      "over": 1,
+      "under": 1,
+      "aligned_matches": 10,
+      "positional_matches": 10,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 22,
+    "n_pred": 22,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 2,
+    "under": 2,
+    "aligned_matches": 20,
+    "positional_matches": 20,
+    "truth_source": "staves_map_x_systems",
+    "truth_note": "one 11-staff map x 2 systems == page.n_staves"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p3",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 11,
+      "n_pred": 11,
+      "cardinality_delta": 0,
+      "over": 0,
+      "under": 0,
+      "aligned_matches": 11,
+      "positional_matches": 11,
+      "unmapped_truth_names": []
+     },
+     {
+      "system_index": 1,
+      "n_truth": 8,
+      "n_pred": 8,
+      "cardinality_delta": 0,
+      "over": 0,
+      "under": 0,
+      "aligned_matches": 8,
+      "positional_matches": 8,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 19,
+    "n_pred": 19,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 0,
+    "under": 0,
+    "aligned_matches": 19,
+    "positional_matches": 19,
+    "truth_source": "systems_as_printed",
+    "truth_note": "per-system lineups stated explicitly"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p4",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 11,
+      "n_pred": 11,
+      "cardinality_delta": 0,
+      "over": 2,
+      "under": 2,
+      "aligned_matches": 9,
+      "positional_matches": 8,
+      "unmapped_truth_names": []
+     },
+     {
+      "system_index": 1,
+      "n_truth": 11,
+      "n_pred": 11,
+      "cardinality_delta": 0,
+      "over": 2,
+      "under": 2,
+      "aligned_matches": 9,
+      "positional_matches": 8,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 22,
+    "n_pred": 22,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 4,
+    "under": 4,
+    "aligned_matches": 18,
+    "positional_matches": 16,
+    "truth_source": "systems_as_printed",
+    "truth_note": "per-system lineups stated explicitly"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p1",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 12,
+      "n_pred": 12,
+      "cardinality_delta": 0,
+      "over": 0,
+      "under": 0,
+      "aligned_matches": 12,
+      "positional_matches": 12,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 12,
+    "n_pred": 12,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 0,
+    "under": 0,
+    "aligned_matches": 12,
+    "positional_matches": 12,
+    "truth_source": "staves_map_x_systems",
+    "truth_note": "one 12-staff map x 1 systems == page.n_staves"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p2",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 11,
+      "n_pred": 11,
+      "cardinality_delta": 0,
+      "over": 1,
+      "under": 1,
+      "aligned_matches": 10,
+      "positional_matches": 10,
+      "unmapped_truth_names": []
+     },
+     {
+      "system_index": 1,
+      "n_truth": 11,
+      "n_pred": 11,
+      "cardinality_delta": 0,
+      "over": 1,
+      "under": 1,
+      "aligned_matches": 10,
+      "positional_matches": 10,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 22,
+    "n_pred": 22,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 2,
+    "under": 2,
+    "aligned_matches": 20,
+    "positional_matches": 20,
+    "truth_source": "staves_map_x_systems",
+    "truth_note": "one 11-staff map x 2 systems == page.n_staves"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p3",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 11,
+      "n_pred": 11,
+      "cardinality_delta": 0,
+      "over": 0,
+      "under": 0,
+      "aligned_matches": 11,
+      "positional_matches": 11,
+      "unmapped_truth_names": []
+     },
+     {
+      "system_index": 1,
+      "n_truth": 8,
+      "n_pred": 8,
+      "cardinality_delta": 0,
+      "over": 0,
+      "under": 0,
+      "aligned_matches": 8,
+      "positional_matches": 8,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 19,
+    "n_pred": 19,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 0,
+    "under": 0,
+    "aligned_matches": 19,
+    "positional_matches": 19,
+    "truth_source": "systems_as_printed",
+    "truth_note": "per-system lineups stated explicitly"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p4",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 11,
+      "n_pred": 11,
+      "cardinality_delta": 0,
+      "over": 3,
+      "under": 3,
+      "aligned_matches": 8,
+      "positional_matches": 8,
+      "unmapped_truth_names": []
+     },
+     {
+      "system_index": 1,
+      "n_truth": 11,
+      "n_pred": 11,
+      "cardinality_delta": 0,
+      "over": 2,
+      "under": 2,
+      "aligned_matches": 9,
+      "positional_matches": 8,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 22,
+    "n_pred": 22,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 5,
+    "under": 5,
+    "aligned_matches": 17,
+    "positional_matches": 16,
+    "truth_source": "systems_as_printed",
+    "truth_note": "per-system lineups stated explicitly"
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p5",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 15,
+      "n_pred": 15,
+      "cardinality_delta": 0,
+      "over": 0,
+      "under": 0,
+      "aligned_matches": 15,
+      "positional_matches": 15,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 15,
+    "n_pred": 15,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 0,
+    "under": 0,
+    "aligned_matches": 15,
+    "positional_matches": 15,
+    "truth_source": "staves_map_x_systems",
+    "truth_note": "one 15-staff map x 1 systems == page.n_staves"
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p6",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 15,
+      "n_pred": 15,
+      "cardinality_delta": 0,
+      "over": 7,
+      "under": 7,
+      "aligned_matches": 8,
+      "positional_matches": 8,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 15,
+    "n_pred": 15,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 7,
+    "under": 7,
+    "aligned_matches": 8,
+    "positional_matches": 8,
+    "truth_source": "staves_map_x_systems",
+    "truth_note": "one 15-staff map x 1 systems == page.n_staves"
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p7",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 15,
+      "n_pred": 15,
+      "cardinality_delta": 0,
+      "over": 8,
+      "under": 8,
+      "aligned_matches": 7,
+      "positional_matches": 6,
+      "unmapped_truth_names": []
+     },
+     {
+      "system_index": 1,
+      "n_truth": 15,
+      "n_pred": 15,
+      "cardinality_delta": 0,
+      "over": 8,
+      "under": 8,
+      "aligned_matches": 7,
+      "positional_matches": 6,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 30,
+    "n_pred": 30,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 16,
+    "under": 16,
+    "aligned_matches": 14,
+    "positional_matches": 12,
+    "truth_source": "staves_map_x_systems",
+    "truth_note": "one 15-staff map x 2 systems == page.n_staves"
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p1",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 14,
+      "n_pred": 14,
+      "cardinality_delta": 0,
+      "over": 1,
+      "under": 1,
+      "aligned_matches": 13,
+      "positional_matches": 13,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 14,
+    "n_pred": 14,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 1,
+    "under": 1,
+    "aligned_matches": 13,
+    "positional_matches": 13,
+    "truth_source": "staves_map_x_systems",
+    "truth_note": "one 14-staff map x 1 systems == page.n_staves"
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p2",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 14,
+      "n_pred": 14,
+      "cardinality_delta": 0,
+      "over": 2,
+      "under": 2,
+      "aligned_matches": 12,
+      "positional_matches": 12,
+      "unmapped_truth_names": []
+     },
+     {
+      "system_index": 1,
+      "n_truth": 13,
+      "n_pred": 13,
+      "cardinality_delta": 0,
+      "over": 2,
+      "under": 2,
+      "aligned_matches": 11,
+      "positional_matches": 11,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 27,
+    "n_pred": 27,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 4,
+    "under": 4,
+    "aligned_matches": 23,
+    "positional_matches": 23,
+    "truth_source": "systems_as_printed",
+    "truth_note": "per-system lineups stated explicitly"
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p3",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 14,
+      "n_pred": 14,
+      "cardinality_delta": 0,
+      "over": 2,
+      "under": 2,
+      "aligned_matches": 12,
+      "positional_matches": 12,
+      "unmapped_truth_names": []
+     },
+     {
+      "system_index": 1,
+      "n_truth": 14,
+      "n_pred": 14,
+      "cardinality_delta": 0,
+      "over": 2,
+      "under": 2,
+      "aligned_matches": 12,
+      "positional_matches": 12,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 28,
+    "n_pred": 28,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 4,
+    "under": 4,
+    "aligned_matches": 24,
+    "positional_matches": 24,
+    "truth_source": "staves_map_x_systems",
+    "truth_note": "one 14-staff map x 2 systems == page.n_staves"
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p4",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 14,
+      "n_pred": 14,
+      "cardinality_delta": 0,
+      "over": 2,
+      "under": 2,
+      "aligned_matches": 12,
+      "positional_matches": 12,
+      "unmapped_truth_names": []
+     },
+     {
+      "system_index": 1,
+      "n_truth": 14,
+      "n_pred": 14,
+      "cardinality_delta": 0,
+      "over": 2,
+      "under": 2,
+      "aligned_matches": 12,
+      "positional_matches": 12,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 28,
+    "n_pred": 28,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 4,
+    "under": 4,
+    "aligned_matches": 24,
+    "positional_matches": 24,
+    "truth_source": "staves_map_x_systems",
+    "truth_note": "one 14-staff map x 2 systems == page.n_staves"
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p2",
+    "systems": [
+     {
+      "system_index": 0,
+      "n_truth": 17,
+      "n_pred": 17,
+      "cardinality_delta": 0,
+      "over": 1,
+      "under": 1,
+      "aligned_matches": 16,
+      "positional_matches": 16,
+      "unmapped_truth_names": []
+     }
+    ],
+    "n_truth": 17,
+    "n_pred": 17,
+    "cardinality_exact": true,
+    "cardinality_delta_total": 0,
+    "over": 1,
+    "under": 1,
+    "aligned_matches": 16,
+    "positional_matches": 16,
+    "truth_source": "condensation.staves_as_printed",
+    "truth_note": "5 one-line percussion staves excluded (a five-line detector cannot find them)"
+   }
+  ],
+  "continuity": [
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p2",
+    "lineups_identical_across_systems": true,
+    "n_truth_links": 11,
+    "n_pred_links": 11,
+    "n_correct_links": 11,
+    "precision": 1.0,
+    "recall": 1.0,
+    "unpairable_staves": [],
+    "wrong_links": [],
+    "truth_source": "staves_map_x_systems",
+    "tier": "B-derived"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p3",
+    "lineups_identical_across_systems": false,
+    "n_truth_links": 8,
+    "n_pred_links": 8,
+    "n_correct_links": 8,
+    "precision": 1.0,
+    "recall": 1.0,
+    "unpairable_staves": [],
+    "wrong_links": [],
+    "truth_source": "systems_as_printed",
+    "tier": "A-explicit"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p4",
+    "lineups_identical_across_systems": false,
+    "n_truth_links": 9,
+    "n_pred_links": 9,
+    "n_correct_links": 6,
+    "precision": 0.6666666666666666,
+    "recall": 0.6666666666666666,
+    "unpairable_staves": [
+     {
+      "system": 0,
+      "position": 9,
+      "name": "Violoncello"
+     },
+     {
+      "system": 0,
+      "position": 10,
+      "name": "Basso"
+     },
+     {
+      "system": 1,
+      "position": 10,
+      "name": "Bassi (Violoncello e Basso)"
+     }
+    ],
+    "wrong_links": [
+     {
+      "a": [
+       0,
+       6
+      ],
+      "b": [
+       1,
+       6
+      ],
+      "a_name": "Violino I",
+      "b_name": "Timpani in C.G."
+     },
+     {
+      "a": [
+       0,
+       7
+      ],
+      "b": [
+       1,
+       7
+      ],
+      "a_name": "Violino II",
+      "b_name": "Violino I"
+     },
+     {
+      "a": [
+       0,
+       8
+      ],
+      "b": [
+       1,
+       8
+      ],
+      "a_name": "Viola",
+      "b_name": "Violino II"
+     }
+    ],
+    "truth_source": "systems_as_printed",
+    "tier": "A-explicit"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p2",
+    "lineups_identical_across_systems": true,
+    "n_truth_links": 11,
+    "n_pred_links": 11,
+    "n_correct_links": 11,
+    "precision": 1.0,
+    "recall": 1.0,
+    "unpairable_staves": [],
+    "wrong_links": [],
+    "truth_source": "staves_map_x_systems",
+    "tier": "B-derived"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p3",
+    "lineups_identical_across_systems": false,
+    "n_truth_links": 8,
+    "n_pred_links": 8,
+    "n_correct_links": 8,
+    "precision": 1.0,
+    "recall": 1.0,
+    "unpairable_staves": [],
+    "wrong_links": [],
+    "truth_source": "systems_as_printed",
+    "tier": "A-explicit"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p4",
+    "lineups_identical_across_systems": false,
+    "n_truth_links": 9,
+    "n_pred_links": 9,
+    "n_correct_links": 6,
+    "precision": 0.6666666666666666,
+    "recall": 0.6666666666666666,
+    "unpairable_staves": [
+     {
+      "system": 0,
+      "position": 9,
+      "name": "Violoncello"
+     },
+     {
+      "system": 0,
+      "position": 10,
+      "name": "Basso"
+     },
+     {
+      "system": 1,
+      "position": 10,
+      "name": "Bassi (Violoncello e Basso)"
+     }
+    ],
+    "wrong_links": [
+     {
+      "a": [
+       0,
+       6
+      ],
+      "b": [
+       1,
+       6
+      ],
+      "a_name": "Violino I",
+      "b_name": "Timpani in C.G."
+     },
+     {
+      "a": [
+       0,
+       7
+      ],
+      "b": [
+       1,
+       7
+      ],
+      "a_name": "Violino II",
+      "b_name": "Violino I"
+     },
+     {
+      "a": [
+       0,
+       8
+      ],
+      "b": [
+       1,
+       8
+      ],
+      "a_name": "Viola",
+      "b_name": "Violino II"
+     }
+    ],
+    "truth_source": "systems_as_printed",
+    "tier": "A-explicit"
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p7",
+    "lineups_identical_across_systems": true,
+    "n_truth_links": 15,
+    "n_pred_links": 15,
+    "n_correct_links": 15,
+    "precision": 1.0,
+    "recall": 1.0,
+    "unpairable_staves": [],
+    "wrong_links": [],
+    "truth_source": "staves_map_x_systems",
+    "tier": "B-derived"
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p2",
+    "lineups_identical_across_systems": false,
+    "n_truth_links": 13,
+    "n_pred_links": 13,
+    "n_correct_links": 12,
+    "precision": 0.9230769230769231,
+    "recall": 0.9230769230769231,
+    "unpairable_staves": [],
+    "wrong_links": [
+     {
+      "a": [
+       0,
+       7
+      ],
+      "b": [
+       1,
+       6
+      ],
+      "a_name": "2 Trompeten in C",
+      "b_name": "4 Horner in Es 3./4."
+     }
+    ],
+    "truth_source": "systems_as_printed",
+    "tier": "A-explicit"
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p3",
+    "lineups_identical_across_systems": true,
+    "n_truth_links": 14,
+    "n_pred_links": 14,
+    "n_correct_links": 14,
+    "precision": 1.0,
+    "recall": 1.0,
+    "unpairable_staves": [],
+    "wrong_links": [],
+    "truth_source": "staves_map_x_systems",
+    "tier": "B-derived"
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p4",
+    "lineups_identical_across_systems": true,
+    "n_truth_links": 14,
+    "n_pred_links": 14,
+    "n_correct_links": 14,
+    "precision": 1.0,
+    "recall": 1.0,
+    "unpairable_staves": [],
+    "wrong_links": [],
+    "truth_source": "staves_map_x_systems",
+    "tier": "B-derived"
+   }
+  ],
+  "identity": [
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p1",
+    "n_scoreable": 12,
+    "n_named": 12,
+    "n_correct": 12,
+    "coverage": 1.0,
+    "precision": 1.0,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [],
+    "truth_source": "staves_map_x_systems"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p2",
+    "n_scoreable": 22,
+    "n_named": 22,
+    "n_correct": 20,
+    "coverage": 1.0,
+    "precision": 0.9090909090909091,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [
+     {
+      "system": 0,
+      "position": 9,
+      "printed": "Viola",
+      "truth_kind": "Viola",
+      "predicted": "Violin",
+      "source": "score_order"
+     },
+     {
+      "system": 1,
+      "position": 9,
+      "printed": "Viola",
+      "truth_kind": "Viola",
+      "predicted": "Violin",
+      "source": "score_order"
+     }
+    ],
+    "truth_source": "staves_map_x_systems"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p3",
+    "n_scoreable": 19,
+    "n_named": 19,
+    "n_correct": 19,
+    "coverage": 1.0,
+    "precision": 1.0,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [],
+    "truth_source": "systems_as_printed"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p4",
+    "n_scoreable": 22,
+    "n_named": 20,
+    "n_correct": 16,
+    "coverage": 0.9090909090909091,
+    "precision": 0.8,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [
+     {
+      "system": 0,
+      "position": 6,
+      "printed": "Violino I",
+      "truth_kind": "Violin",
+      "predicted": "Trumpet",
+      "source": "score_order_ambiguity"
+     },
+     {
+      "system": 0,
+      "position": 8,
+      "printed": "Viola",
+      "truth_kind": "Viola",
+      "predicted": "Violin",
+      "source": "score_order"
+     },
+     {
+      "system": 1,
+      "position": 6,
+      "printed": "Timpani in C.G.",
+      "truth_kind": "Timpani",
+      "predicted": "Trumpet",
+      "source": "score_order_ambiguity"
+     },
+     {
+      "system": 1,
+      "position": 9,
+      "printed": "Viola",
+      "truth_kind": "Viola",
+      "predicted": "Cello",
+      "source": "score_order"
+     }
+    ],
+    "truth_source": "systems_as_printed"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p1",
+    "n_scoreable": 12,
+    "n_named": 12,
+    "n_correct": 12,
+    "coverage": 1.0,
+    "precision": 1.0,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [],
+    "truth_source": "staves_map_x_systems"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p2",
+    "n_scoreable": 22,
+    "n_named": 22,
+    "n_correct": 20,
+    "coverage": 1.0,
+    "precision": 0.9090909090909091,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [
+     {
+      "system": 0,
+      "position": 9,
+      "printed": "Viola",
+      "truth_kind": "Viola",
+      "predicted": "Violin",
+      "source": "score_order"
+     },
+     {
+      "system": 1,
+      "position": 9,
+      "printed": "Viola",
+      "truth_kind": "Viola",
+      "predicted": "Violin",
+      "source": "score_order"
+     }
+    ],
+    "truth_source": "staves_map_x_systems"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p3",
+    "n_scoreable": 19,
+    "n_named": 19,
+    "n_correct": 19,
+    "coverage": 1.0,
+    "precision": 1.0,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [],
+    "truth_source": "systems_as_printed"
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p4",
+    "n_scoreable": 22,
+    "n_named": 18,
+    "n_correct": 16,
+    "coverage": 0.8181818181818182,
+    "precision": 0.8888888888888888,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [
+     {
+      "system": 0,
+      "position": 6,
+      "printed": "Violino I",
+      "truth_kind": "Violin",
+      "predicted": "Timpani",
+      "source": "label"
+     },
+     {
+      "system": 1,
+      "position": 8,
+      "printed": "Violino II",
+      "truth_kind": "Violin",
+      "predicted": "Viola",
+      "source": "score_order"
+     }
+    ],
+    "truth_source": "systems_as_printed"
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p5",
+    "n_scoreable": 15,
+    "n_named": 15,
+    "n_correct": 15,
+    "coverage": 1.0,
+    "precision": 1.0,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [],
+    "truth_source": "staves_map_x_systems"
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p6",
+    "n_scoreable": 15,
+    "n_named": 8,
+    "n_correct": 8,
+    "coverage": 0.5333333333333333,
+    "precision": 1.0,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [],
+    "truth_source": "staves_map_x_systems"
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p7",
+    "n_scoreable": 30,
+    "n_named": 14,
+    "n_correct": 12,
+    "coverage": 0.4666666666666667,
+    "precision": 0.8571428571428571,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [
+     {
+      "system": 0,
+      "position": 7,
+      "printed": "Tromboni I.II.",
+      "truth_kind": "Trombone",
+      "predicted": "Trumpet",
+      "source": "score_order"
+     },
+     {
+      "system": 1,
+      "position": 7,
+      "printed": "Tromboni I.II.",
+      "truth_kind": "Trombone",
+      "predicted": "Trumpet",
+      "source": "score_order"
+     }
+    ],
+    "truth_source": "staves_map_x_systems"
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p1",
+    "n_scoreable": 14,
+    "n_named": 14,
+    "n_correct": 13,
+    "coverage": 1.0,
+    "precision": 0.9285714285714286,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [
+     {
+      "system": 0,
+      "position": 6,
+      "printed": "4 Horner in Es 3./4.",
+      "truth_kind": "Horn",
+      "predicted": "Trumpet",
+      "source": "score_order"
+     }
+    ],
+    "truth_source": "staves_map_x_systems"
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p2",
+    "n_scoreable": 27,
+    "n_named": 27,
+    "n_correct": 23,
+    "coverage": 1.0,
+    "precision": 0.8518518518518519,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [
+     {
+      "system": 0,
+      "position": 4,
+      "printed": "Kontrafagott",
+      "truth_kind": "Contrabassoon",
+      "predicted": "Bassoon",
+      "source": "label"
+     },
+     {
+      "system": 0,
+      "position": 6,
+      "printed": "4 Horner in Es 3./4.",
+      "truth_kind": "Horn",
+      "predicted": "Trumpet",
+      "source": "score_order"
+     },
+     {
+      "system": 1,
+      "position": 4,
+      "printed": "Kontrafagott",
+      "truth_kind": "Contrabassoon",
+      "predicted": "Bassoon",
+      "source": "label"
+     },
+     {
+      "system": 1,
+      "position": 6,
+      "printed": "4 Horner in Es 3./4.",
+      "truth_kind": "Horn",
+      "predicted": "Trumpet",
+      "source": "score_order"
+     }
+    ],
+    "truth_source": "systems_as_printed"
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p3",
+    "n_scoreable": 28,
+    "n_named": 28,
+    "n_correct": 24,
+    "coverage": 1.0,
+    "precision": 0.8571428571428571,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [
+     {
+      "system": 0,
+      "position": 4,
+      "printed": "Kontrafagott",
+      "truth_kind": "Contrabassoon",
+      "predicted": "Bassoon",
+      "source": "label"
+     },
+     {
+      "system": 0,
+      "position": 6,
+      "printed": "4 Horner in Es 3./4.",
+      "truth_kind": "Horn",
+      "predicted": "Trumpet",
+      "source": "score_order"
+     },
+     {
+      "system": 1,
+      "position": 4,
+      "printed": "Kontrafagott",
+      "truth_kind": "Contrabassoon",
+      "predicted": "Bassoon",
+      "source": "label"
+     },
+     {
+      "system": 1,
+      "position": 6,
+      "printed": "4 Horner in Es 3./4.",
+      "truth_kind": "Horn",
+      "predicted": "Trumpet",
+      "source": "score_order"
+     }
+    ],
+    "truth_source": "staves_map_x_systems"
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p4",
+    "n_scoreable": 28,
+    "n_named": 28,
+    "n_correct": 24,
+    "coverage": 1.0,
+    "precision": 0.8571428571428571,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [
+     {
+      "system": 0,
+      "position": 4,
+      "printed": "Kontrafagott",
+      "truth_kind": "Contrabassoon",
+      "predicted": "Bassoon",
+      "source": "label"
+     },
+     {
+      "system": 0,
+      "position": 6,
+      "printed": "4 Horner in Es 3./4.",
+      "truth_kind": "Horn",
+      "predicted": "Trumpet",
+      "source": "score_order"
+     },
+     {
+      "system": 1,
+      "position": 4,
+      "printed": "Kontrafagott",
+      "truth_kind": "Contrabassoon",
+      "predicted": "Bassoon",
+      "source": "label"
+     },
+     {
+      "system": 1,
+      "position": 6,
+      "printed": "4 Horner in Es 3./4.",
+      "truth_kind": "Horn",
+      "predicted": "Trumpet",
+      "source": "score_order"
+     }
+    ],
+    "truth_source": "staves_map_x_systems"
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p2",
+    "n_scoreable": 17,
+    "n_named": 17,
+    "n_correct": 16,
+    "coverage": 1.0,
+    "precision": 0.9411764705882353,
+    "abstained_systems": 0,
+    "unmapped_truth_names": 0,
+    "wrong": [
+     {
+      "system": 0,
+      "position": 4,
+      "printed": "Contrafagott",
+      "truth_kind": "Contrabassoon",
+      "predicted": "Horn",
+      "source": "score_order"
+     }
+    ],
+    "truth_source": "condensation.staves_as_printed"
+   }
+  ]
+ },
+ "abstentions": [
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "sub_score": "roster+identity (partial)",
+   "truth_source": "condensation.staves_as_printed",
+   "reason": "5 one-line percussion staves excluded (a five-line detector cannot find them)"
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "sub_score": "roster",
+   "truth_source": "none",
+   "reason": "row carries no printed-lineup truth (OMR-NED-only row)"
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "sub_score": "identity",
+   "truth_source": "none",
+   "reason": "row carries no printed-lineup truth (OMR-NED-only row)"
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "sub_score": "roster",
+   "truth_source": "none",
+   "reason": "row carries no printed-lineup truth (OMR-NED-only row)"
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "sub_score": "identity",
+   "truth_source": "none",
+   "reason": "row carries no printed-lineup truth (OMR-NED-only row)"
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "sub_score": "roster",
+   "truth_source": "none",
+   "reason": "row carries no printed-lineup truth (OMR-NED-only row)"
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "sub_score": "identity",
+   "truth_source": "none",
+   "reason": "row carries no printed-lineup truth (OMR-NED-only row)"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "sub_score": "roster",
+   "truth_source": "none",
+   "reason": "row carries no printed-lineup truth (OMR-NED-only row)"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "sub_score": "identity",
+   "truth_source": "none",
+   "reason": "row carries no printed-lineup truth (OMR-NED-only row)"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "sub_score": "continuity",
+   "truth_source": "none",
+   "reason": "row carries no printed-lineup truth (OMR-NED-only row)"
+  }
+ ]
+}

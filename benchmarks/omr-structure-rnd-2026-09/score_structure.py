@@ -292,6 +292,10 @@ def score_roster(row_id: str, lineups: List[List[str]], pred_systems: List[List[
             "system_index": i,
             "n_truth": len(truth_kinds),
             "n_pred": len(pred_kinds),
+            # CARDINALITY is a different question from alignment: this is
+            # "did we cut the right NUMBER of staves out of this system",
+            # before any name is looked at.
+            "cardinality_delta": len(pred_kinds) - len(truth_kinds),
             "over": max(0, len(pred_kinds) - matched),
             "under": max(0, len(truth_kinds) - matched),
             "aligned_matches": matched,
@@ -303,6 +307,8 @@ def score_roster(row_id: str, lineups: List[List[str]], pred_systems: List[List[
         "systems": per_system,
         "n_truth": sum(s["n_truth"] for s in per_system),
         "n_pred": sum(s["n_pred"] for s in per_system),
+        "cardinality_exact": all(s["cardinality_delta"] == 0 for s in per_system),
+        "cardinality_delta_total": sum(s["cardinality_delta"] for s in per_system),
         "over": sum(s["over"] for s in per_system),
         "under": sum(s["under"] for s in per_system),
         "aligned_matches": sum(s["aligned_matches"] for s in per_system),
@@ -388,8 +394,16 @@ def score_continuity(row_id: str, lineups: List[List[str]], pred_systems: List[L
                 pred_links.add(((i, pa), (j, pb)))
 
     correct = truth_links & pred_links
+    # DEGENERACY FLAG.  Where every system prints the identical lineup, joining
+    # staves by ordinal — which is what the exporter does — satisfies continuity
+    # by construction.  Such a row confirms nothing is broken; it cannot show
+    # that the continuity logic WORKS.  Counted and reported so the pooled
+    # number is never read as if all rows asked the same question.
+    identical = all(lineups[0] == lineups[k] for k in range(1, n_sys))
+
     return {
         "row_id": row_id,
+        "lineups_identical_across_systems": identical,
         "n_truth_links": len(truth_links),
         "n_pred_links": len(pred_links),
         "n_correct_links": len(correct),
@@ -512,6 +526,11 @@ def main() -> int:
         assert len(lineups) == len(pred_systems), (
             f"{rid}: truth has {len(lineups)} systems, prediction has {len(pred_systems)}")
 
+        if source == "condensation.staves_as_printed":
+            abstentions.append({
+                "row_id": rid, "sub_score": "roster+identity (partial)",
+                "truth_source": source, "reason": reason})
+
         r = score_roster(rid, lineups, pred_systems)
         r["truth_source"] = source
         r["truth_note"] = reason
@@ -536,6 +555,10 @@ def main() -> int:
         nt = sum(r["n_truth"] for r in rs)
         return {
             "rows": len(rs),
+            "rows_with_exact_staff_count": sum(1 for r in rs if r["cardinality_exact"]),
+            "systems_with_exact_staff_count": sum(
+                1 for r in rs for s in r["systems"] if s["cardinality_delta"] == 0),
+            "systems_scored": sum(len(r["systems"]) for r in rs),
             "n_truth_staves": nt,
             "n_pred_staves": sum(r["n_pred"] for r in rs),
             "over": sum(r["over"] for r in rs),
@@ -552,7 +575,11 @@ def main() -> int:
         ok = sum(c["n_correct_links"] for c in cs)
         return {"rows": len(cs), "truth_links": tl, "pred_links": pl, "correct_links": ok,
                 "precision": ok / pl if pl else None, "recall": ok / tl if tl else None,
-                "unpairable_staves": sum(len(c["unpairable_staves"]) for c in cs)}
+                "unpairable_staves": sum(len(c["unpairable_staves"]) for c in cs),
+                "rows_degenerate_identical_lineups": sum(
+                    1 for c in cs if c["lineups_identical_across_systems"]),
+                "rows_informative_lineups_differ": sum(
+                    1 for c in cs if not c["lineups_identical_across_systems"])}
 
     def pool_ident(ids: List[dict]) -> dict:
         t = sum(i["n_scoreable"] for i in ids)
@@ -570,9 +597,26 @@ def main() -> int:
                 [c for c in continuity if c["tier"] == "A-explicit"]),
             "tier_B_derived_from_one_map": pool_cont(
                 [c for c in continuity if c["tier"] == "B-derived"]),
+            "informative_only_lineups_differ": pool_cont(
+                [c for c in continuity if not c["lineups_identical_across_systems"]]),
         },
         "identity": pool_ident(identity),
     }
+
+    # Page-level cardinality is available on ALL 20 rows (page.n_systems /
+    # page.n_staves), including the four with no printed-lineup truth.  It is
+    # not one of the three sub-scores — it is the precondition they rest on,
+    # reported so a reader can see whether a naming number is conditional on a
+    # segmentation that happened to be right.
+    seg_rows = []
+    for rid in order:
+        pg = rows[rid].get("page", {})
+        got_sys = len(preds[rid])
+        got_st = sum(len(s) for s in preds[rid])
+        seg_rows.append({"row_id": rid, "truth_systems": pg.get("n_systems"),
+                         "pred_systems": got_sys, "truth_staves": pg.get("n_staves"),
+                         "pred_staves": got_st,
+                         "exact": (pg.get("n_systems") == got_sys and pg.get("n_staves") == got_st)})
 
     global_named = sum(1 for sysl in preds.values() for s in sysl for st in s
                        if st.get("instrument") is not None)
@@ -598,6 +642,13 @@ def main() -> int:
             "dossiers_used": False,
             "detector_run": False,
             "name_normalizer": "hand table in this file — NOT tools/omr/instruments.py",
+        },
+        "page_cardinality_all_rows": {
+            "_note": "precondition, not a sub-score: page.n_systems / page.n_staves "
+                     "vs what the pipeline cut. Available on all 20 rows.",
+            "rows_exact": sum(1 for s in seg_rows if s["exact"]),
+            "rows": len(seg_rows),
+            "per_row": seg_rows,
         },
         "pooled": pooled,
         "global_identity_coverage": {
@@ -636,11 +687,25 @@ def print_report(out: dict) -> None:
     print(f"  staves   : {p['n_predicted_staves']}   multi-system rows: {p['n_multi_system_rows']}")
     print("  no detector run, no dossier, truth never an input\n")
 
+    pc = out["page_cardinality_all_rows"]
+    print("=== 0. PAGE CARDINALITY (precondition, not a sub-score) ===")
+    print(f"  {pc['rows_exact']}/{pc['rows']} rows: predicted system and staff counts equal "
+          "works.json page.n_systems / page.n_staves")
+    for s in pc["per_row"]:
+        if not s["exact"]:
+            print(f"    MISMATCH {s['row_id']}: sys {s['pred_systems']}/{s['truth_systems']} "
+                  f"staves {s['pred_staves']}/{s['truth_staves']}")
+    print()
+
     print("=== 1. ROSTER RECOVERY (coverage first) ===")
     r = out["pooled"]["roster_recovery"]
     print(f"  coverage: {r['rows']} of {p['n_rows']} rows carry a printed-lineup truth "
           f"({r['n_truth_staves']} truth staves)")
-    print(f"  pred staves {r['n_pred_staves']}  over {r['over']}  under {r['under']}")
+    print(f"  cardinality (staff COUNT per system, before any name is read):")
+    print(f"     {r['rows_with_exact_staff_count']}/{r['rows']} rows and "
+          f"{r['systems_with_exact_staff_count']}/{r['systems_scored']} systems exact")
+    print(f"  pred staves {r['n_pred_staves']}  over {r['over']}  under {r['under']}"
+          "   (over/under are ALIGNMENT residuals, not count errors)")
     print(f"  order-preserving alignment accuracy : {_pct(r['aligned_accuracy'])}"
           f"  ({r['aligned_matches']}/{r['n_truth_staves']})")
     print(f"  strict positional accuracy          : {_pct(r['positional_accuracy'])}"
@@ -657,14 +722,20 @@ def print_report(out: dict) -> None:
     print(f"  coverage: {c['all']['rows']} of {p['n_multi_system_rows']} multi-system rows scored")
     for label, key in (("all", "all"),
                        ("tier A (explicit per-system truth)", "tier_A_explicit_per_system_truth"),
-                       ("tier B (one map x n_systems)", "tier_B_derived_from_one_map")):
+                       ("tier B (one map x n_systems)", "tier_B_derived_from_one_map"),
+                       ("INFORMATIVE (lineups differ)", "informative_only_lineups_differ")):
         b = c[key]
         print(f"  {label:36s} rows {b['rows']:2d}  links T{b['truth_links']:3d}/P{b['pred_links']:3d}"
               f"  correct {b['correct_links']:3d}  precision {_pct(b['precision'])}"
               f"  recall {_pct(b['recall'])}")
-    print(f"  {'row':40s} {'tier':11s} {'T':>4s} {'P':>4s} {'ok':>4s} {'prec':>7s} {'rec':>7s} {'unpair':>7s}")
+    print(f"  degenerate rows (every system prints the SAME lineup, so joining by ordinal "
+          f"cannot fail): {c['all']['rows_degenerate_identical_lineups']}"
+          f"  informative: {c['all']['rows_informative_lineups_differ']}")
+    print(f"  {'row':40s} {'tier':11s} {'dgn':>4s} {'T':>4s} {'P':>4s} {'ok':>4s} {'prec':>7s} {'rec':>7s} {'unpair':>7s}")
     for row in out["per_row"]["continuity"]:
-        print(f"  {row['row_id']:40s} {row['tier']:11s} {row['n_truth_links']:4d} "
+        print(f"  {row['row_id']:40s} {row['tier']:11s} "
+              f"{('yes' if row['lineups_identical_across_systems'] else 'no'):>4s} "
+              f"{row['n_truth_links']:4d} "
               f"{row['n_pred_links']:4d} {row['n_correct_links']:4d} "
               f"{_pct(row['precision']):>7s} {_pct(row['recall']):>7s} "
               f"{len(row['unpairable_staves']):7d}")
