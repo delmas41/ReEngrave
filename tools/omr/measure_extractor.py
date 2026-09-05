@@ -859,9 +859,14 @@ CELL_LINE_MIN_WIDTH_SPACES = 4.0
 
 
 def _cell_line_trace_enabled() -> bool:
-    """`OMR_CELL_LINE_TRACE` env; default OFF while it is being measured."""
+    """`OMR_CELL_LINE_TRACE` env; ON by default since 2026-09-04. Priced on
+    the widened scan gate the day it became possible: pooled 0.8387 -> 0.8345
+    (-233 edits, -217 on exactly the three tilted rows, 8.6% of pooled cells
+    past the parity-flip line vs the old corpus's 0.4%); engraved is a no-op
+    by construction, byte-identical A/B. Set 0/false/no/off to disable.
+    benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md."""
     raw = os.environ.get(ENV_CELL_LINE_TRACE, "").strip().lower()
-    return raw in {"1", "true", "yes", "on"}
+    return raw not in {"0", "false", "no", "off"}
 
 
 def _cell_line_offset(

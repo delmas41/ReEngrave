@@ -12,7 +12,7 @@ traced: a staff is drawn with a deliberate ramp and the fit is asked to recover
 it. No PDFs, no model.
 
 ⚠️ THE FLAG-OFF PATH IS PART OF THE CONTRACT. The localization is behind
-`OMR_CELL_LINE_TRACE` while it is being measured, and a run without it must
+`OMR_CELL_LINE_TRACE` (ON by default since 2026-09-04), and a run with it disabled must
 produce the byte-identical grid it always did — every batch of hand-labeled
 cells stores its boxes in a frame derived from these numbers.
 """
@@ -216,13 +216,16 @@ class TestAbstains:
 # ─── the flag, and what a run without it must produce ────────────────────────
 
 class TestFlag:
-    def test_default_is_off(self, monkeypatch):
+    def test_default_is_on(self, monkeypatch):
+        # Shipped default-ON 2026-09-04, priced on the widened scan gate
+        # (pooled 0.8387 -> 0.8345); OFF is now the explicit opt-out.
         monkeypatch.delenv(me.ENV_CELL_LINE_TRACE, raising=False)
-        assert me._cell_line_trace_enabled() is False
+        assert me._cell_line_trace_enabled() is True
 
     @pytest.mark.parametrize("raw,want", [
         ("1", True), ("true", True), ("YES", True), ("on", True),
-        ("0", False), ("false", False), ("", False), ("maybe", False),
+        ("0", False), ("false", False), ("OFF", False), ("no", False),
+        ("", True), ("maybe", True),
     ])
     def test_env_parsing(self, monkeypatch, raw, want):
         monkeypatch.setenv(me.ENV_CELL_LINE_TRACE, raw)
@@ -231,7 +234,7 @@ class TestFlag:
     def test_flag_off_stores_the_staff_level_rows_unchanged(self, monkeypatch):
         """The contract every labeled batch depends on: with the flag off, a
         cell's grid is `staff.line_ys - y0`, exactly as before."""
-        monkeypatch.delenv(me.ENV_CELL_LINE_TRACE, raising=False)
+        monkeypatch.setenv(me.ENV_CELL_LINE_TRACE, "0")
         pws = _pws(_draw_staff(ramp_px=14))
         staff = pws.staves[0]
         cell = me._build_measure_cell(pws, staff, 0, X_END - 100, X_END - 5, 0)
@@ -271,7 +274,7 @@ class TestFlag:
         """
         pws = _pws(_draw_staff(ramp_px=14))
         staff = pws.staves[0]
-        monkeypatch.delenv(me.ENV_CELL_LINE_TRACE, raising=False)
+        monkeypatch.setenv(me.ENV_CELL_LINE_TRACE, "0")
         off = me._build_measure_cell(pws, staff, 0, X_END - 100, X_END - 5, 0)
         monkeypatch.setenv(me.ENV_CELL_LINE_TRACE, "1")
         on = me._build_measure_cell(pws, staff, 0, X_END - 100, X_END - 5, 0)
@@ -304,7 +307,7 @@ class TestComposesWithTheHeaderRefiner:
         if flag:
             monkeypatch.setenv(me.ENV_CELL_LINE_TRACE, "1")
         else:
-            monkeypatch.delenv(me.ENV_CELL_LINE_TRACE, raising=False)
+            monkeypatch.setenv(me.ENV_CELL_LINE_TRACE, "0")
         cell = me._build_measure_cell(
             pws, staff, 0, X_START, X_START + int(SPACING * 8), 0)
         assert cell is not None

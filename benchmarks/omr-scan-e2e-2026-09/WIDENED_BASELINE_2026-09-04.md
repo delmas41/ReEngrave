@@ -244,3 +244,16 @@ per-row). **The canonical baselines are therefore this doc's 10-row column:
 hollow-ft 0.8457 / 29081, production graft 0.8387 / 29082.** The 11-row
 readings above remain the record for Bach's eventual re-admission. Decision
 rationale: VERIFICATION.md, same date.
+
+---
+
+## Second addendum: cell-grid localization shipped default-ON (same day)
+
+Sean shipped `OMR_CELL_LINE_TRACE` default-ON after WIDENED_PRICING priced
+it (pooled −233 edits, on the exposure). **The deployed default-config
+baseline is therefore the flag-on arm: production (hollow-graft-shift09)
+pooled 0.8345 / 28849 over the 10-row pool.** This doc's tables were
+measured flag-OFF; they remain the flag-off record, and comparisons against
+a default-config run must use the flag-on figures (or pin
+`OMR_CELL_LINE_TRACE=0` to compare against the tables here). Per-row
+flag-on figures: WIDENED_PRICING_2026-09-04.md.

@@ -5,6 +5,21 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — Cell-grid localization SHIPPED default-ON (the tilt fix)
+
+Sean's call, same day the widened gate priced it: `OMR_CELL_LINE_TRACE` now
+defaults ON (`measure_extractor._cell_line_trace_enabled`, opt-out via
+`0/false/no/off`). Deployed default-config scan baseline moves to the
+flag-on arm's figures: **pooled 0.8345 / 28849 over the 10-row pool** (was
+0.8387 / 29082 flag-off; same graft weights — the flag is the only
+variable, and the harness is byte-deterministic). Engraved figures
+unchanged (no-op by construction, byte-identical A/B). Flag tests updated
+to pin the new default; the flag-OFF contract every labeled batch depends
+on (grid = `staff.line_ys - y0`) is still pinned via explicit `0`. Blast
+radius recorded in the knobs table (key-sig slot-fit interaction, net −15;
++2..+7 noise on three low-exposure rows). Evidence:
+`benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md`.
+
 ## 2026-09-04 — The widened scan gate prices the tilt fix: −233 edits, on the exposure
 
 The measured-but-unshipped `OMR_CELL_LINE_TRACE` (cell-grid localization, the
