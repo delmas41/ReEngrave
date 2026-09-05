@@ -139,6 +139,30 @@ local:
 - **two independent readings that appear to disagree and turn out to be two
   halves of one mechanism** — the disagreement is the diagnostic, not the noise.
 
+⚠️ **What it costs TODAY is zero edits, and saying so is part of the finding.**
+`staff["instrument"]` reaches only `<part-name>` (`export.py:3448`, `3638`), and
+part naming is recorded in CLAUDE.md as changing OMR-NED by exactly nothing. The
+visible symptom in the exported file is two `<part-name>Trumpet</part-name>` in a
+row where the page prints `Violino I`. **The harm is entirely PROSPECTIVE**: any
+future consumer keyed on that field inherits the corruption — a condensed-part
+count source would hand a Trumpet's 2 players to a Violino I staff whose printed
+truth is 1. A class-6 defect can sit at zero cost indefinitely and become
+expensive the moment something starts trusting the field, which is an argument
+for recording it rather than for fixing it immediately.
+
+⚠️ **And the obvious local fix was declined, with a reason worth keeping.** "Do
+not let the layout fit overturn a high-confidence direct lookup" would gut the
+function it guards: for an ambiguous alias the direct lookup IS the corpus-wide
+guess that `resolve_ambiguous_label` exists to replace — its docstring says the
+lexicon "picks the commoner reading for this corpus" and "the page itself
+answers". Such a guard reverts the feature on every page where it currently
+works, and neither workstream holds a label-accuracy benchmark that could price
+that regression. Same shape as the tenor symmetry floor and the corrected-constant
+ledger pitch, both refused here before. **The fix taken instead is provenance,
+not logic** — a per-staff-per-system record of whether an identity was confirmed
+*here*, built as the abstention gate of the arm that needs it, so it is measured
+by that arm rather than shipped on the strength of one page.
+
 **What it costs to find:** the two workstreams held the two halves for hours,
 each internally consistent. It was resolved only when one of them answered an
 absence-or-presence question **from its own channel** rather than re-deriving
