@@ -7,8 +7,21 @@ Timpani's now beam-perfect bars carry **four spurious slurs and one spurious tie
 and a bar differing only by an arc loses its diagonal pairing to an exact-equal
 bar elsewhere in the part. This benchmark attributes those arcs and lands the fix.
 
-**Headline (re-export basis, same fixtures, same scorer): pooled edits
-2,473 → 2,371, Brahms 1 490 → 390. No work gets worse.** Pooled slur count
+**Headline: pooled OMR-NED 0.1176 / 2,473 edits → `0.1127` / `2,371`,
+Brahms 1 490 → 390. No work gets worse.**
+
+⚠️ These figures are recorded HERE ONLY. `current-accuracy.json`, the CLAUDE.md
+OMR-NED block and `--record` are untouched by this session — the branch is not
+merged, and the headline is a property of the tree that carries it.
+
+Both bases agree to the edit. The fast loop below is a re-export of the
+recorded `.omr.json` fixtures; a full
+`orchestral_eval --omr-ned --work-dir …` run on this tree independently reports
+**0.1127, 2,371 edits over 10,665 truth + 10,373 predicted symbols**, with
+every work's per-row edit count identical to the re-export basis and every
+work's note recall, precision and duration rate **unchanged from the baseline
+table** — the pass touches no notehead, and two independent measurements say
+so. Pooled slur count
 199 → 207 against a truth of 241, so the gain is not the metric's
 under-prediction reward: the arm that scores best is also the arm that emits
 MORE arcs, and the right ones.
