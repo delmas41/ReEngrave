@@ -279,36 +279,257 @@ def propose_clef(staff: dict[str, Any], instrument: Instrument) -> ClefProposal 
     )
 
 
-def apply_proposal(staff: dict[str, Any], proposal: ClefProposal) -> int:
+def _restate_measure(measure: dict[str, Any], delta: int,
+                     staff_key_sig: dict[str, Any] | None,
+                     staff_alterations: dict[str, int] | None = None) -> int:
+    """Restate one measure's notehead pitches by `delta` diatonic steps.
+
+    The same rules `apply_proposal` always used, factored so a per-measure
+    caller (the mid-staff change veto) shares them: an explicitly engraved
+    accidental is kept as written, everything else takes the key signature's
+    alteration for its NEW letter, and `pitch_candidates` are dropped because
+    they were ranked against the old clef's reading.
+
+    `staff_alterations`, when given, replaces the staff-level alteration
+    source (see `_restatement_alterations`); a measure whose own key signature
+    differs from the staff's — a genuine mid-staff key change — still uses its
+    own.
+    """
+    detections = measure.get("detections", [])
+    explicit = _explicit_accidentals(detections)
+    m_ks = measure.get("key_signature")
+    if staff_alterations is not None and (m_ks is None or m_ks == staff_key_sig):
+        alterations = staff_alterations
+    else:
+        alterations = _key_alterations(m_ks or staff_key_sig)
+    changed = 0
+    for i, det in enumerate(detections):
+        if det.get("category") != "notehead" or det.get("pitch") is None:
+            continue
+        restated = restate_pitch(det["pitch"], delta, alterations, explicit.get(i))
+        if restated is not None:
+            det["pitch"] = restated
+            det.pop("pitch_candidates", None)
+            changed += 1
+    return changed
+
+
+def _restatement_alterations(
+    staff: dict[str, Any],
+    system_staves: list[dict[str, Any]] | None,
+    instrument: Instrument | None,
+) -> dict[str, int] | None:
+    """The alteration source a RESTATEMENT should use for this staff.
+
+    Measured on 575951-p1's viola: the override restated every letter
+    correctly and OMR-NED still rose by 2, because the staff's own signature
+    was read as 1 flat, REJECTED by the cross-page vote ("differs from the
+    system's 3 flats"), and carried as zero — so every restated E/A/B lost
+    the flat C minor gives it. The staff's own reading is trusted where it
+    was READ (`key_signature_read`); where it was not, a CONCERT-PITCH,
+    non-percussion instrument takes the majority signature among the
+    system's staves that WERE read — the same fact the vote's rejection
+    reason already cites. Transposing staves (clarinet in B, horns) are
+    excluded because their written key legitimately differs from the
+    system's, and timpani because the convention writes them unsigned.
+
+    Returns None to mean "no opinion — use the old sourcing".
+    """
+    if staff.get("key_signature_read"):
+        return None
+    if instrument is None or instrument.chromatic != 0 \
+            or instrument.family == "percussion":
+        return None
+    if not system_staves:
+        return None
+    tally: dict[str, tuple[int, dict[str, Any]]] = {}
+    for other in system_staves:
+        if other is staff or not other.get("key_signature_read"):
+            continue
+        ks = other.get("key_signature")
+        if not isinstance(ks, dict):
+            continue
+        key = f"{ks.get('sharps', 0)}#{ks.get('flats', 0)}b"
+        n, _ = tally.get(key, (0, ks))
+        tally[key] = (n + 1, ks)
+    if not tally:
+        return None
+    _, majority_ks = max(tally.values(), key=lambda t: t[0])
+    return _key_alterations(majority_ks)
+
+
+def apply_proposal(staff: dict[str, Any], proposal: ClefProposal, *,
+                   system_staves: list[dict[str, Any]] | None = None,
+                   instrument: Instrument | None = None) -> int:
     """Restate every pitch on the staff under the proposed clef, in place.
 
     Returns the number of noteheads restated. `pitch_candidates` are dropped
     rather than shifted: they exist for M4 re-ranking against the OLD clef's
     reading and would be misleading once the clef changes.
+
+    `system_staves` + `instrument`, when given, let an UNREAD key signature be
+    replaced by the system majority for the restatement — see
+    `_restatement_alterations`. Callers that omit them get the old sourcing.
     """
     delta = clef_diatonic_shift(proposal.from_clef, proposal.to_clef)
     if delta is None:
         return 0
+    staff_alts = _restatement_alterations(staff, system_staves, instrument)
     changed = 0
     for measure in staff.get("measures", []):
-        detections = measure.get("detections", [])
-        explicit = _explicit_accidentals(detections)
-        alterations = _key_alterations(measure.get("key_signature")
-                                       or staff.get("key_signature"))
-        for i, det in enumerate(detections):
-            if det.get("category") == "clef":
-                continue
-            if det.get("category") != "notehead" or det.get("pitch") is None:
-                continue
-            restated = restate_pitch(det["pitch"], delta, alterations, explicit.get(i))
-            if restated is not None:
-                det["pitch"] = restated
-                det.pop("pitch_candidates", None)
-                changed += 1
+        changed += _restate_measure(
+            measure, delta, staff.get("key_signature"), staff_alts)
         if measure.get("clef") == proposal.from_clef:
             measure["clef"] = proposal.to_clef
     staff["clef"] = proposal.to_clef
     return changed
+
+
+# ── The two mechanisms behind OMR_INSTRUMENT_CLEF_DEFAULT (2026-09-04) ──────
+#
+# Verified against the widened scan pool's `shift` damage
+# (benchmarks/omr-clef-string-staves-2026-09/FINDINGS.md): the constant-offset
+# staves are NOT positional defaults — they are (a) header clefs MISREAD as
+# treble on staves whose margin label names a non-treble instrument, and
+# (b) spurious mid-staff clef-change detections (clefF at 0.32-0.68) flipping
+# the rest of a correctly-opened staff. Both act only on identity a reader
+# actually READ off the page (never score-order deductions — measured to close
+# the loop on its own mistake, Beethoven 5 p.15), and both are off unless the
+# caller opts in.
+
+# (a) Instruments for which a DETECTED treble may be overridden by the
+# instrument's own default clef. Strictly the instruments with a verified
+# damage site in the scan pool — Viola (575951-p1 s9, alto glyph read as
+# clefG 0.72; whole staff +6), Bassoon and Timpani (brahms-p2 s4/s18/s8, all
+# read treble over register fits of 0.926/0.571/0.000 against bass's 1.0).
+# Treble-only is load-bearing: brahms-p1's cello reads TENOR correctly while
+# the instrument convention says bass (fit ties 1.0/1.0), so overriding any
+# detected non-treble clef with the convention is measured-unsafe. It is also
+# the measured asymmetry `score_layouts` already encodes
+# (SCORE_TREBLE_CONFLICT −0.3 vs −1.5): an all-treble read is the documented
+# failure mode of clef detection on degraded prints, so "this staff reads
+# treble" is weak evidence in a way "this staff reads tenor" is not.
+# Cello/Contrabass are deliberately absent: no verified treble-misread site,
+# and the pool's one cello clef error (dvorak-p5, tenor lost to bass 0.92 vs
+# 0.88) is a case the convention AGREES with the wrong reading on.
+TREBLE_OVERRIDE_INSTRUMENTS = ("Viola", "Bassoon", "Timpani")
+
+# ⚠️ A confidence ceiling on the treble read was measured and REFUSED: the
+# misread trebles score 0.34 and 0.72 while a CORRECT label-named treble
+# (mahler-p3 s11, Violin) scores 0.61 — no threshold separates them. The
+# guards are identity + the instrument's default + register fit, not the
+# detector's own confidence in the glyph it misread.
+
+# (b) Mid-staff clef CHANGES that are implausible for the named instrument.
+# (instrument name, clef in effect, detected new clef) triples, strictly the
+# verified sites: a violin staff never changes to bass (brahms-p1 s9, clefF
+# 0.32 at m3 → −12 for three bars; 575951-p2 s8, clefF 0.68 at m7 → −12 for
+# seven), and a viola staff never changes to bass (984073-p1 s9, clefF 0.59
+# at m4 → −6 for the rest of the staff). Viola→treble is deliberately NOT
+# vetoed — a viola goes to treble for high passages in real engraving — and
+# cello changes (tenor/treble) are real and never touched.
+MID_STAFF_CHANGE_VETOES = {
+    ("Violin", "treble", "bass"),
+    ("Viola", "alto", "bass"),
+}
+
+
+def _measure_clefs_uniform(staff: dict[str, Any], clef: str) -> bool:
+    """Every measure of this staff is in `clef` — i.e. no mid-staff change.
+
+    The treble-override tier requires this: a staff whose clef state changes
+    mid-line is the change-veto's business, and restating ALL its measures by
+    one header delta would also shift the measures resolved under the other
+    clef."""
+    return all(m.get("clef") == clef for m in staff.get("measures", []))
+
+
+def veto_implausible_clef_changes(
+    pages: list[dict[str, Any]],
+    instrument_by_slot: dict[int, Instrument],
+    slot_by_staff: dict[tuple[int, int, int], int],
+    instrument_source_by_slot: dict[int, str],
+) -> list[dict[str, Any]]:
+    """Undo mid-staff clef changes that are implausible for the named part.
+
+    Walks each staff's measures carrying the clef in effect; where the state
+    changes and (instrument, from, to) is in `MID_STAFF_CHANGE_VETOES`, the
+    change is treated as a spurious detection: that measure is restated back
+    under the carried clef, and the walk continues as if the change never
+    happened (so every following measure the bogus clef reached is restated
+    too, up to the next change). A change NOT in the table is accepted and
+    becomes the new carried clef — a cello stepping to tenor keeps its step.
+
+    Identity gate: only staves whose instrument came from a READ margin label
+    (`instrument_source == "label"`). Score-order deductions are exactly the
+    staves this repertoire gets wrong (the p2 violas are named "Violin" by the
+    prior), and the recorded rule stands: position-deduced identity must not
+    drive clef correction.
+
+    Returns one record per staff acted on.
+    """
+    records: list[dict[str, Any]] = []
+    for page in pages:
+        for system in page.get("systems", []):
+            for staff in system.get("staves", []):
+                key = (page.get("page_index"), system.get("system_index"),
+                       staff.get("staff_index"))
+                slot = slot_by_staff.get(key)
+                if slot is None:
+                    continue
+                if instrument_source_by_slot.get(slot) != "label":
+                    continue
+                instrument = instrument_by_slot.get(slot)
+                if instrument is None:
+                    continue
+                measures = staff.get("measures", [])
+                if len(measures) < 2:
+                    continue
+                carried = measures[0].get("clef")
+                if carried not in _CLEF_ANCHORS:
+                    continue
+                staff_alts = _restatement_alterations(
+                    staff, system.get("staves"), instrument)
+                vetoed: list[dict[str, Any]] = []
+                restated = 0
+                for m_idx in range(1, len(measures)):
+                    measure = measures[m_idx]
+                    m_clef = measure.get("clef")
+                    if m_clef == carried or m_clef not in _CLEF_ANCHORS:
+                        continue
+                    if (instrument.name, carried, m_clef) in MID_STAFF_CHANGE_VETOES:
+                        delta = clef_diatonic_shift(m_clef, carried)
+                        if delta is None:
+                            carried = m_clef
+                            continue
+                        restated += _restate_measure(
+                            measure, delta, staff.get("key_signature"),
+                            staff_alts)
+                        measure["clef"] = carried
+                        vetoed.append({"measure_index": m_idx,
+                                       "from_clef": carried, "to_clef": m_clef})
+                    else:
+                        carried = m_clef
+                if not vetoed:
+                    continue
+                # The staff-level "final" clef may now be wrong about the end
+                # of the staff; recompute it the way transcribe defines it
+                # (present only when the end differs from the staff clef).
+                end_clef = measures[-1].get("clef")
+                if end_clef == staff.get("clef"):
+                    staff.pop("clef_final", None)
+                elif staff.get("clef_final") is not None:
+                    staff["clef_final"] = end_clef
+                record = {
+                    "page_index": key[0], "system_index": key[1],
+                    "staff_index": key[2], "slot": slot,
+                    "instrument": instrument.name,
+                    "changes_vetoed": vetoed,
+                    "noteheads_restated": restated,
+                }
+                staff["clef_change_veto"] = record
+                records.append(record)
+    return records
 
 
 def correct_clefs_from_instruments(
@@ -317,6 +538,8 @@ def correct_clefs_from_instruments(
     slot_by_staff: dict[tuple[int, int, int], int],
     *,
     apply: bool = True,
+    treble_override: bool = False,
+    instrument_source_by_slot: dict[int, str] | None = None,
 ) -> list[dict[str, Any]]:
     """Propose (and optionally apply) clef corrections across built page dicts.
 
@@ -324,8 +547,23 @@ def correct_clefs_from_instruments(
     Returns one record per proposal, whether or not it was applied — a staff
     whose clef the detector actually READ is reported with `applied: False`, so
     a disagreement is surfaced without being acted on.
+
+    `treble_override` (default off — the `OMR_INSTRUMENT_CLEF_DEFAULT` tier)
+    additionally applies a proposal on a staff whose clef WAS read, when every
+    one of these holds:
+
+    - the clef in effect is **treble, uniformly** across the staff's measures
+      (a mid-staff change belongs to `veto_implausible_clef_changes`, and a
+      one-delta restatement of a mixed staff would shift the other clef's
+      measures too);
+    - the instrument was named by a READ margin label
+      (`instrument_source_by_slot[slot] == "label"`) — never by score order;
+    - the instrument is in `TREBLE_OVERRIDE_INSTRUMENTS`, and the proposal is
+      exactly its `default_clef` (which the table guarantees is not treble);
+    - the register fit does not worsen (already enforced by `propose_clef`).
     """
     records: list[dict[str, Any]] = []
+    sources = instrument_source_by_slot or {}
     for page in pages:
         for system in page.get("systems", []):
             for staff in system.get("staves", []):
@@ -340,6 +578,15 @@ def correct_clefs_from_instruments(
                     continue
                 detected = clef_was_read(staff)
                 do_apply = apply and not detected
+                overridden = False
+                if (apply and detected and not do_apply and treble_override
+                        and proposal.from_clef == "treble"
+                        and instrument.name in TREBLE_OVERRIDE_INSTRUMENTS
+                        and proposal.to_clef == instrument.default_clef
+                        and sources.get(slot) == "label"
+                        and _measure_clefs_uniform(staff, "treble")):
+                    do_apply = True
+                    overridden = True
                 record = {
                     "page_index": key[0], "system_index": key[1],
                     "staff_index": key[2], "slot": slot,
@@ -352,8 +599,14 @@ def correct_clefs_from_instruments(
                     "clef_source": staff.get("clef_source"),
                     "applied": do_apply,
                 }
+                if overridden:
+                    record["override"] = "treble_misread"
                 if do_apply:
-                    record["noteheads_restated"] = apply_proposal(staff, proposal)
+                    record["noteheads_restated"] = apply_proposal(
+                        staff, proposal,
+                        system_staves=(system.get("staves")
+                                       if treble_override else None),
+                        instrument=(instrument if treble_override else None))
                 staff["clef_proposal"] = record
                 records.append(record)
     return records

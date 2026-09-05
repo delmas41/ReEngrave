@@ -1,0 +1,282 @@
+{
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/pred-drop/mahler-sym5-mvt1.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/sad-austin-7e16e7/benchmarks/omr-orchestral-e2e/fixtures/mahler-sym5-mvt1.musicxml",
+  "total_cost": 42,
+  "n_ops": 21,
+  "ops_by_name": {
+    "extrains": 5,
+    "delbar": 4,
+    "insbar": 4,
+    "extrasymboledit": 4,
+    "extradel": 3,
+    "extrainfoedit": 1
+  },
+  "cost_by_name": {
+    "delbar": 10,
+    "extrains": 9,
+    "insbar": 8,
+    "extrasymboledit": 8,
+    "extradel": 5,
+    "extrainfoedit": 2
+  },
+  "cost_by_category": {
+    "wrong other object OMR-ED": 24,
+    "entire measure insert/delete OMR-ED": 18
+  },
+  "cost_by_part": {
+    "-1 ?": {
+      "wrong other object OMR-ED": 24
+    },
+    "14 Horn": {
+      "entire measure insert/delete OMR-ED": 2
+    },
+    "14 Sechs H\u00f6rner in F.": {
+      "entire measure insert/delete OMR-ED": 2
+    },
+    "18 Trumpet": {
+      "entire measure insert/delete OMR-ED": 6
+    },
+    "18 Vier Trompeten in B.": {
+      "entire measure insert/delete OMR-ED": 4
+    },
+    "28 Erste Violinen.": {
+      "entire measure insert/delete OMR-ED": 2
+    },
+    "28 Violin": {
+      "entire measure insert/delete OMR-ED": 2
+    }
+  },
+  "rows": [
+    {
+      "op": "extrainfoedit",
+      "category": "wrong other object OMR-ED",
+      "cost": 2,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "keysig,off=0.0,info:,sharp0=F,sharp1=C,sharp2=G,sharp3=D",
+      "truth_repr": "keysig,off=0.0,info:,sharp0=F,sharp1=C,sharp2=G,sharp3=D,sharp4=A,sharp5=E"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "keysig,off=0.0,info:,flats/sharps=none",
+      "truth_repr": null
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "keysig,off=0.0,info:,flats/sharps=none",
+      "truth_repr": null
+    },
+    {
+      "op": "delbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 2,
+      "side": "pred",
+      "part_index": 14,
+      "part_name": "Horn",
+      "measure": 4,
+      "pred_repr": "['[R]2']",
+      "truth_repr": null
+    },
+    {
+      "op": "insbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 2,
+      "side": "truth",
+      "part_index": 14,
+      "part_name": "Sechs H\u00f6rner in F.",
+      "measure": 8,
+      "pred_repr": null,
+      "truth_repr": "['[R]1']"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 3,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "keysig,off=0.0,info:,flat0=B,flat1=E,flat2=A",
+      "truth_repr": null
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "diminuendo,off=0.0,dur=4.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "dynamic,symbol=sf,off=0.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "diminuendo,off=0.0,dur=4.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 5,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "direction,content=molto,off=3.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "crescendo,off=3.0,dur=14/3"
+    },
+    {
+      "op": "delbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 18,
+      "part_name": "Trumpet",
+      "measure": 3,
+      "pred_repr": "['[R]1'] Extras:['dynamic,symbol=sf,off=0.0']",
+      "truth_repr": null
+    },
+    {
+      "op": "delbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 18,
+      "part_name": "Trumpet",
+      "measure": 6,
+      "pred_repr": "['[R]1'] Extras:['dynamic,symbol=p,off=4.0']",
+      "truth_repr": null
+    },
+    {
+      "op": "insbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 2,
+      "side": "truth",
+      "part_index": 18,
+      "part_name": "Vier Trompeten in B.",
+      "measure": 8,
+      "pred_repr": null,
+      "truth_repr": "['[R]1']"
+    },
+    {
+      "op": "insbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 2,
+      "side": "truth",
+      "part_index": 18,
+      "part_name": "Vier Trompeten in B.",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "['[R]1']"
+    },
+    {
+      "op": "extrasymboledit",
+      "category": "wrong other object OMR-ED",
+      "cost": 2,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "clef,symbol=F4,off=0.0",
+      "truth_repr": "clef,symbol=percussion0,off=0.0"
+    },
+    {
+      "op": "extrasymboledit",
+      "category": "wrong other object OMR-ED",
+      "cost": 2,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "clef,symbol=G2,off=0.0",
+      "truth_repr": "clef,symbol=percussion0,off=0.0"
+    },
+    {
+      "op": "extrasymboledit",
+      "category": "wrong other object OMR-ED",
+      "cost": 2,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "clef,symbol=G2,off=0.0",
+      "truth_repr": "clef,symbol=percussion0,off=0.0"
+    },
+    {
+      "op": "extrasymboledit",
+      "category": "wrong other object OMR-ED",
+      "cost": 2,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "clef,symbol=G2,off=0.0",
+      "truth_repr": "clef,symbol=percussion0,off=0.0"
+    },
+    {
+      "op": "delbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 2,
+      "side": "pred",
+      "part_index": 28,
+      "part_name": "Violin",
+      "measure": 4,
+      "pred_repr": "['[R]2']",
+      "truth_repr": null
+    },
+    {
+      "op": "insbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 2,
+      "side": "truth",
+      "part_index": 28,
+      "part_name": "Erste Violinen.",
+      "measure": 8,
+      "pred_repr": null,
+      "truth_repr": "['[R]1']"
+    }
+  ]
+}

@@ -65,6 +65,38 @@ ORCH_PAD_STAFF_LINES = 5.0
 
 
 @contextlib.contextmanager
+def localized_grid_on() -> Iterator[None]:
+    """Cut with cell-grid localization ON, whatever the caller's env says.
+
+    `OMR_CELL_LINE_TRACE` slides only a cell's STORED five rows onto the ink
+    beneath it — the crop, the scale and every pixel of `cell.image` are
+    byte-identical either way (measured 360/360 cells,
+    `benchmarks/omr-cell-grid-tilt-2026-09/RESULTS_TILT_COST.md`) — so cutting
+    with it on costs a per-cell comb fit and moves no box. What it buys is
+    that every fresh cell carries BOTH grids: the localized rows in
+    `staff_line_ys_canonical` and the frame's own rows in
+    `staff_line_ys_canonical_unlocalized`. `frame_mismatch` can then recognise
+    a manifest written under either flag state, and a re-cut stops depending
+    on what `OMR_CELL_LINE_TRACE` happens to say in the environment.
+
+    The one image that IS grid-derived — `image_no_staff`, erased at the
+    stored rows — is put back on the manifest's authority by
+    `_restore_manifest_grid` before anything is saved.
+    """
+    import os
+
+    before = os.environ.get(_me.ENV_CELL_LINE_TRACE)
+    os.environ[_me.ENV_CELL_LINE_TRACE] = "1"
+    try:
+        yield
+    finally:
+        if before is None:
+            os.environ.pop(_me.ENV_CELL_LINE_TRACE, None)
+        else:
+            os.environ[_me.ENV_CELL_LINE_TRACE] = before
+
+
+@contextlib.contextmanager
 def padding_mode(mode: str) -> Iterator[None]:
     """Run with `measure_extractor`'s pad constants set for *mode*.
 
@@ -127,9 +159,24 @@ def frame_mismatch(entry: dict, cell: Any) -> str | None:
         return f"height {cell.height} != manifest {want_h}"
     want_ys = entry.get("staff_line_ys_canonical")
     if want_ys:
-        got_ys = [int(y) for y in cell.staff_line_ys_canonical]
-        if got_ys != [int(y) for y in want_ys]:
-            return f"staff lines {got_ys} != manifest {list(want_ys)}"
+        # The ys check identifies the FRAME, and the frame's grid is the
+        # UNLOCALIZED one: `OMR_CELL_LINE_TRACE` localization slides only the
+        # stored rows, never the crop or a pixel of the image (measured
+        # 360/360, benchmarks/omr-cell-grid-tilt-2026-09/RESULTS_TILT_COST.md),
+        # so a manifest cut before the flag and a re-cut after it describe the
+        # same frame with different rows. Compare the frame's own grid — the
+        # `staff_line_ys_canonical_unlocalized` stash where the fresh cell
+        # localized — and accept a manifest that recorded the localized rows
+        # of that same frame instead (a batch cut with the flag on).
+        want = [int(y) for y in want_ys]
+        stored = [int(y) for y in cell.staff_line_ys_canonical]
+        frame = [
+            int(y) for y in getattr(
+                cell, "staff_line_ys_canonical_unlocalized", None
+            ) or cell.staff_line_ys_canonical
+        ]
+        if want != frame and want != stored:
+            return f"staff lines {frame} != manifest {want}"
     return None
 
 
@@ -227,10 +274,34 @@ def _save(cell: Any, png: Path, *, no_staff: bool) -> bool:
     return _save_cell_png(cell, png, no_staff=no_staff)
 
 
+def _restore_manifest_grid(entry: dict, cell: Any) -> None:
+    """Put the manifest's own grid back on a verified cell before saving.
+
+    `frame_mismatch` accepts either grid of the same frame — the frame's own
+    rows or the `OMR_CELL_LINE_TRACE`-localized ones — but `_nostaff.png` is
+    DERIVED from the grid: `staff_line_removal` erases at
+    `staff_line_ys_canonical`. Reproducing a batch byte for byte therefore
+    means erasing at the rows the batch RECORDED, not the rows this cut
+    happened to carry. The manifest is the one record of the grid the original
+    images were made with, so it is the authority; a manifest that recorded no
+    ys keeps the fresh cut's own erasure, there being nothing to restore from.
+    """
+    want_ys = entry.get("staff_line_ys_canonical")
+    if not want_ys:
+        return
+    want = [int(y) for y in want_ys]
+    if [int(y) for y in cell.staff_line_ys_canonical] == want:
+        return
+    from ..staff_line_removal import remove_staff_lines_from_cell
+
+    cell.staff_line_ys_canonical = want
+    remove_staff_lines_from_cell(cell, in_place=True)
+
+
 def cut_page(pdf: Path, page: int, *, dpi: int, mode: str) -> list[Any]:
     from .select_cells_orchestral import _run_phase1_on_page
 
-    with padding_mode(mode):
+    with padding_mode(mode), localized_grid_on():
         return _run_phase1_on_page(pdf, page, dpi=dpi)
 
 
@@ -340,6 +411,7 @@ def recut(
         if dry_run:
             report.written.append(cid)
             continue
+        _restore_manifest_grid(entry, cell)
         if _save(cell, png, no_staff=False):
             report.written.append(cid)
             if getattr(cell, "image_no_staff", None) is not None:

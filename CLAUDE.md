@@ -58,14 +58,15 @@ Site runs at **http://localhost**. Backend API at **http://localhost:8000**.
 
 ### OMR weights (required before first run)
 
-The local OMR pipeline needs a YOLOv8l weights file (`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`, ~88 MB). It's gitignored.
+The local OMR pipeline needs a YOLOv8l weights file (`deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`, ~88 MB). It's gitignored.
 
 ```bash
 # docker-compose mounts /Users/seanjohnson/Desktop/ReEngrave/omr-weights/ → /app/tools/omr/training/data/weights/
 ls /Users/seanjohnson/Desktop/ReEngrave/omr-weights/
-# Should contain: deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt  (current production;
-#   the prior deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt is kept alongside — weight
-#   routing serves it for digitally engraved input, see OMR_WEIGHT_ROUTING)
+# Should contain: deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt  (current
+#   production, scans + routing default; the prior deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt
+#   and deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt are kept alongside — weight
+#   routing serves the imgsz2048 file for digitally engraved input, see OMR_WEIGHT_ROUTING)
 ```
 
 If the file is missing, OMR jobs fail fast with a clear error in `Score.metadata_json['omr_error']`. The web app still works for direct MusicXML uploads and the Gradus / comparison flows.
@@ -184,7 +185,8 @@ ReEngrave/
 │       │   └── data/            # gitignored — DSv2 dataset, fine-tuning shards, weights
 │       └── tests/               # 156 unit tests across Phase 4 modules
 ├── omr-weights/                 # gitignored, mounted into the container
-│   ├── deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt      # ~88 MB — PRODUCTION (scans + routing default)
+│   ├── deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt  # ~88 MB — PRODUCTION (scans + routing default; head-graft + bias floor, shipped 2026-09-04)
+│   ├── deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt      # ~88 MB — prior scan production (graft source's base; in-flight benchmarks pin it by path)
 │   ├── deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt         # ~88 MB — engraved-routing target (prior production)
 │   └── deepscoresv2-yolov8l-phase-j-mix-30ep.pt    # from the collapsed catalog run — DO NOT USE
 ├── data/
@@ -300,7 +302,7 @@ ReEngrave/
 | Env var               | Default | What it tunes |
 |-----------------------|--------:|---|
 | `OMR_WEIGHTS_PATH`    | _(unset)_ | Pin ONE weights file for every input — this disables scan/engraved weight routing. Unset (the default) lets each run pick weights by input domain; see `OMR_WEIGHT_ROUTING`. |
-| `OMR_WEIGHT_ROUTING`  | `1` (on)  | **On by default since 2026-09-03.** With no pinned weights, each run classifies its input by where the ink comes from — a scanned page is one full-page raster image (total coverage ≥ 0.95 on every scan measured, incl. one tiled into 8 strips), an engraved page is vector drawings (428–2058 paths vs 0–4 on scans, the gap empty over 147 probed pages) — and picks the weights that measured best for that domain: **scans → the hollow fine-tune** (half-notes 8→27 on beet5-p1), **digitally engraved PDFs → the prior production weights** (11-work OMR-NED 0.1399 vs 0.1421 no-direction-text). Blank/ambiguous inputs abstain to the default (scan) weights, and a missing engraved-weights file falls back soft with one stderr line — routing can never fail a run that used to work. Verdict + per-page evidence are recorded in the result JSON as `weight_routing`. Set `0` to disable. Costs ≤ 77 ms per document. Implementation record: `benchmarks/omr-weight-routing-2026-09/FINDINGS.md`; strategy + the vetted process for any future specialist weights (publisher/era forks deferred behind measured triggers): `docs/weight-routing-and-specialization-2026-09-03.md`. |
+| `OMR_WEIGHT_ROUTING`  | `1` (on)  | **On by default since 2026-09-03.** With no pinned weights, each run classifies its input by where the ink comes from — a scanned page is one full-page raster image (total coverage ≥ 0.95 on every scan measured, incl. one tiled into 8 strips), an engraved page is vector drawings (428–2058 paths vs 0–4 on scans, the gap empty over 147 probed pages) — and picks the weights that measured best for that domain: **scans → the hollow graft** (since 2026-09-04 the head-graft + bias-floor checkpoint; half-notes 8→27 under the 09-03 hollow-ft, →31 under the graft on beet5-p1), **digitally engraved PDFs → the prior production weights** (11-work OMR-NED 0.1399 vs 0.1421 no-direction-text). Blank/ambiguous inputs abstain to the default (scan) weights, and a missing engraved-weights file falls back soft with one stderr line — routing can never fail a run that used to work. Verdict + per-page evidence are recorded in the result JSON as `weight_routing`. Set `0` to disable. Costs ≤ 77 ms per document. Implementation record: `benchmarks/omr-weight-routing-2026-09/FINDINGS.md`; strategy + the vetted process for any future specialist weights (publisher/era forks deferred behind measured triggers): `docs/weight-routing-and-specialization-2026-09-03.md`. |
 | `OMR_ENGRAVED_WEIGHTS`| `tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` | Override the engraved-side weights file that routing targets. |
 | `OMR_CLEF_WEIGHTS`    | _(unset)_ | Optional **clef-specialist** weights — a checkpoint fine-tuned to read clefs, **not** general-purpose detection weights. You don't need it: header reading (clef + key signature) is on by default and needs no extra files. When set, a 2nd detector reads each staff's clef from its header and overrides the main clef, which helps on some orchestral scans (decoupled; the main detector still does all symbols). **Pointing this at ordinary weights makes clefs worse.** See `benchmarks/omr-clef-demo/DEMO_AND_AUDIT_RESULTS.md`. CLI: `--clef-weights`. |
 | `OMR_MAX_PAGES`       | `5`     | Hard cap on pages per OMR job |
@@ -309,7 +311,10 @@ ReEngrave/
 | `OMR_DPI`             | `300`   | PDF rasterization DPI (CLI default is **600** — they differ on purpose). **Coupled to `OMR_IMGSZ`, and the best pair depends on the music:** 300 wins on sparse authored fixtures (ensemble precision 0.684 → 0.915), 600 wins on dense orchestral pages (Mahler recall 0.042 → 0.208, duration 0.000 → 0.200). Unifying them in either direction regresses the other family. **Do not 'fix' the inconsistency without measuring both.** See `benchmarks/omr-dpi-imgsz-2026-08/RESULTS.md` |
 | `OMR_LEFT_EDGE_SPLIT`  | `1` (on) | **On by default.** A second, narrow barline scan at each system's shared left edge that *adds* a system break where that left column is empty even though the wide connectivity window found staff-body ink — recovering two stacked systems that the wide window MERGED because a measure number, stem, or `a 2.` marking faked a connection. Union-only (never merges) and gated so it never creates a size-1 system. Measured across 964 library pages: fixed 27 over-merged symphony pages vs 1 mild residual (Mozart K22), 0 size-1 created; ground-truth eval 20/23 → 22/23. Guarded **end-to-end** by `tools/omr/tests/test_left_edge_split_e2e.py` — 4 scanned pages, 3 publishers, hand-read staff/measure truth, asserting both that the split reads the true structure and that flag-off still merges (merged, Eroica p36 reads 10 measures where the page prints 16). Set `0` to disable. See `benchmarks/omr-system-grouping-2026-09/FIX_PLAN.md`. |
 | `OMR_DIRECTION_TEXT`  | `1` (on) | **On by default since 2026-09-02.** Reads the words printed inside a system — `legato`, `Allegro con brio` — by subtracting every detection from the page's ink, refusing the curves by fill ratio, OCRing what is left with Surya and Tesseract, and gating on a lexicon of musical terms. Emitted as MusicXML `<words>`. **Worth 144 edits** on the engraved orchestral benchmark, 18.8% of the pooled figure, and `wrong direction` is the third-largest bucket. **Additive** — every word placed reaches the file and the export is identical outside its `<direction>` blocks, checked per page on engravings and on a scan. Costs 0.5-0.8 s per candidate crop; the ~70 s model load it used to be blamed for belongs to the margin-label reader, which is on by default and loads Surya first on any page without a text layer. Self-disables where neither `.venv-surya` nor Tesseract exists. CLI: `--no-direction-text`. See `benchmarks/omr-direction-text-2026-09/DEFAULT_2026-09-02.md`. |
-| `OMR_CELL_LINE_TRACE` | `0` (off) | **Measured, deliberately NOT shipped.** `Staff.line_ys` models a staff as five ideal horizontal rows and every measure cell of that staff copies those five constants — but a SCANNED staff tilts 8-17 page px across its width, so an end-of-staff cell's grid can be half a staff space off the print and `pitch_resolver` reads exactly those rows: a wrong half-step slot for every note in the bar. On this slides the cell's five rows as ONE RIGID COMB onto the ink beneath it, recovering all seven displacements traced by hand within 0.04 spaces. ⚠️ **The scan e2e benchmark cannot price it** — 4 edits of 7894, because 0.4% of its cells are affected against 8-16% of pages sampled deeper into the same editions, and a null result on a corpus without the defect is not evidence in either direction. The engraved side is a no-op by construction (0 of 291 cells move) and reproduces the recorded figure exactly. Shipping needs a scored page that actually tilts, plus the one-line `recut_cells.frame_mismatch` change (measured: one frame, two grids — 360/360 cell images byte-identical). See [benchmarks/omr-cell-grid-tilt-2026-09/RESULTS_TILT_COST.md](benchmarks/omr-cell-grid-tilt-2026-09/RESULTS_TILT_COST.md). |
+| `OMR_CELL_LINE_TRACE` | `1` (on) | **On by default since 2026-09-04.** `Staff.line_ys` models a staff as five ideal horizontal rows and every measure cell copies those constants — but a SCANNED staff tilts/bows 8-17 page px across its width, so an end-of-staff cell's grid can be half a space off the print and `pitch_resolver` reads exactly those rows. This slides the cell's five rows as ONE RIGID COMB onto the ink beneath it (recovers all seven hand-traced displacements within 0.04 spaces; per-line tracing ALIASES and was refused). **Priced on the widened scan gate the day widening made it possible**: pooled 0.8387 → 0.8345 (−233 edits), −217 of them on exactly the three tilted rows (the widened pool holds 8.6% of cells past the 0.25-space parity-flip line vs the old corpus's 0.4% — the old '4 edits of 7894' null was the corpus, not the fix), exact-pitch recall/precision +4.8/+5.9pts on the most-exposed edition, zero-exposure row unchanged to the edit; the engraved side is a no-op by construction (byte-identical A/B). Known blast radius, priced: the grid feeds the key-sig slot fit (net keysig −15, but two-directional per staff) and +2..+7 edit noise on three low-exposure rows. Labeling batches survive re-cuts: `recut_cells.frame_mismatch` compares the frame's own UNLOCALIZED grid and `_nostaff.png` is re-erased on the manifest's authority, pinned by e2e tests. Set `0` to disable. See [benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md](benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md) |
+| `OMR_ARC_ATTRIBUTION` | `move` (on) | **On by default since 2026-09-04.** Gives SLURS AND TIES the cross-staff arbitration noteheads have had since `_dedupe_cross_staff_detections`. A measure cell is padded above and below, so on a conductor's page a neighbouring staff's arc lands in this staff's cell — and unlike a notehead it need not be detected twice for that to matter: where the staves are far apart the upper cell reaches ink the lower cell does not, so the arc exists ONLY in the wrong staff and no duplicate-resolution rule can see it. On `brahms-sym1-mvt1` the Timpani exported 4 slurs and 1 tie against a truth of ZERO — they are Violin 1's, drawn over ITS four-ledger-line notes in the 7.7-space gap between the two staves. **The evidence is the arc's own job: an arc binds a run of noteheads and is drawn just clear of them, so it belongs to the staff whose NOTEHEADS IT HUGS** — asked of every staff in the system, including ones that never detected it. ⚠️ Distance to the staff LINES is the same trap it was for notes: an engraver opens the gap above a staff precisely so its ledger notes and their slurs can live there. The rule is COMPARATIVE (an arc leaves only where another staff explains it better) and both constants sit on measured plateaus. Worth **pooled 2,473 → 2,371 edits**, Brahms 1 490 → 390, no work worse, `wrong note` untouched; the scan gate's two Brahms rows are identical to the edit. ⚠️ `drop` (delete instead of regift) scores 2,388 — better arm-for-arm — and is REFUSED: it gets there by emitting 20 fewer slurs, 12 of them real, the metric's under-prediction reward. `off` disables. See [benchmarks/omr-arc-attribution-2026-09/FINDINGS.md](benchmarks/omr-arc-attribution-2026-09/FINDINGS.md). |
+| `OMR_ARC_RECLASS` | `0` (off) | **Measured, deliberately NOT shipped.** Export-time tie/slur grammar veto (`docs/position-grammar-confusables-2026-09-04.md` §2 ARC, R3 shape): a slur-classed arc covering exactly two adjacent same-pitch heads of one voice becomes a tie; a tie-classed arc whose flanked pair sits on different STAFF STEPS, or with a third event of its voice under its span, becomes a slur — the vetoed arc widened to the flanked centres and split at cell boundaries so the ordinary barline merge rejoins it. Compares steps, never spelled pitches: the far head of a cross-barline tie does not restate its accidental and the resolver spells it plain, so the naive spelled-pitch key broke truth-matched ties (+21 engraved edits, every loss a same-step `F#4→F4` pair). Priced on both families: engraved **0.1306 → 0.1306, +2 edits, 24 firings**; scan **0.8387 → 0.8391, +130 edits — REFUSED**, because a scan's resolved pitch at an arc's ends is downstream of exactly what scans get wrong (`wrong note` = 26% of that pool), and per-direction attribution puts ALL +130 in the tie→slur half while slur→tie alone is edit-free and moves the tie inventory toward truth (420 → 462 of 805 elements). If any half ever defaults on it is slur→tie; tie→slur is blocked on ANCHORS, not grammar (R4). Flag-off is byte-identical, asserted per work and per row. See [benchmarks/omr-export-gaps-2026-09/FINDINGS.md](benchmarks/omr-export-gaps-2026-09/FINDINGS.md). |
+| `OMR_CHOIR_GROUPING`  | `1` (on) | **On by default since 2026-09-05** (Sean's call, coupled with the Bach row's pool re-admission; the re-stamped 11-row baseline is recorded beside WIDENED_BASELINE_2026-09-04.md). Two cues for choir-grouped / differently-indented pages, both riding this one flag. The Bach Brandenburg 3 stress row shatters (6 "systems", 122 measure-cells vs 10) because the wide connectivity window and cue A's band are both anchored on the page-MEDIAN `x_start`, and on a page whose systems are indented differently (792–836 vs 178–200) the median lands between the modes and cuts the full-width system's bracket + systemic barline out of the scan — while the page is also choir-barred (interior barlines stop at choir edges), so nothing else crosses its choir gaps. **Cue B** (merge-only mirror of cue A, `system_grouping.py`): a break the wide rule made for lack of evidence is re-examined in the cue-A band anchored at the PAIR's own left edge; a crossing column there cancels the break. A cue-B merge is exempt from cue A's re-split (the cues act on disjoint gap sets — bridging > 0 vs == 0). **Cue C** (`measure_extractor.py`): a system whose staves form ≥2 bracket-groups (≥ half in multi-staff groups) AND that holds a **window-blind internal gap** — a gap nothing in-window crosses, the choir-barred signature, impossible for a true open score — is never flipped into open-score mode, so a merged rhythm-unison tutti's aligned stems stop out-voting its barlines. ⚠️ Bracket-groups ALONE was falsified on the engraved benchmark (LilyPond open scores manufacture "groups" from bridging jitter; pooled 0.1306 → 0.8560, nine works' barlines deleted) and repaired before shipping — do not loosen the second condition. Flag ON: Bach row 0.9241 → **0.8152** OMR-NED, 6735 → 6236 edits, 122 → 11 cells vs true 10; all ten pooled scan rows byte-identical (pooled 0.8387 untouched); the 11-work engraved benchmark **edit-for-edit identical** (0.1306 / 2745) and the `boulanger` structure canary byte-identical; 969-page library probe: 757 examined break-gaps read 0 ×735 / ≥4 ×22 with nothing at 1–3, and the 10 pages that change were each hand-adjudicated toward the truth (7 exact heals incl. both operas' vocal systems; zero false merges). Flag OFF: byte-identical by construction (Bach flag-off hash-matches the widened-graft baseline fixture). Re-admitting the Bach row to the scan pool is coupled to a default-ON decision and a re-stamped pool. See `benchmarks/omr-choir-grouping-2026-09/FINDINGS.md`. |
 
 ---
 
@@ -721,6 +726,103 @@ measured at all.
 
 ---
 
+## Hairpins — a slur is drawn OVER its notes, a hairpin BETWEEN them
+
+The **ninth** recognised-then-dropped element (2026-09-03), and the first that
+is not purely an export fix. `dynamicCrescendoHairpin` and
+`dynamicDiminuendoHairpin` fired freely and nothing downstream mentioned either
+class, so `<wedge>` was absent from every file the exporter had ever written.
+
+**The pairing is the slur pairing with one part replaced.** A hairpin is cut in
+two by the same per-measure cell crop, so it reuses
+`_merge_arcs_across_barlines`, `_voice_of_notehead` and the `number=` allocator
+unchanged. ⚠️ **What it cannot reuse is `_noteheads_under`, and that is the
+finding.** A slur is drawn over its notes; a hairpin is drawn in the space
+BETWEEN them. On the Mahler 5 fixture the Trumpet's diminuendo spans page x
+5922-6068 in a bar whose only notehead spans 5817-5897 — not one pixel of
+overlap — and an overlap test scores **0 of 4**. So `_wedge_anchors` reads the
+edges as pointers instead, and the start rule was **measured against the truth's
+own spans**, because the obvious one is wrong: the ink begins slightly BEFORE
+the note it starts on (26 px left of it, 105 px right of the previous note, on
+Tchaikovsky 6), so "the last note at or before the edge" reaches back past the
+answer. Nearest-either-side pairs **4 of 8** truth hairpins and gets all 4
+exactly right; before-the-edge pairs 1.
+
+**Emitting it is not reading it, and the gap between those is where the rest
+went.** Nine boxes detected over the eleven works, five exported, four correct:
+
+- **3 of Mahler's 4 land on the staff BELOW the one that prints them**, which
+  has zero detected noteheads. A hairpin is drawn in the gap under its staff and
+  `_dedupe_cross_staff_detections` awards a contested glyph to the nearer
+  five-line band — the same failure this file already records for ledger
+  noteheads, in the same function, and a hairpin has no ledger ladder to
+  arbitrate with; **fixed the same day**, below;
+- Brahms 4's one confident detection (0.91) abstains because the note the truth
+  starts it on was never detected; the one hairpin we get WRONG there is a
+  679×24 px box at confidence **0.28**, which is a line.
+
+Measured, export-only A/B over the same stored transcriptions: engraved pooled
+**0.1306 → 0.1304**, 2745 → 2742 edits (Mahler −1, Tchaikovsky 6 −3, Brahms 4
++1, the other eight byte-identical), `wrong crescendo` 3 → 1 and `wrong
+diminuendo` 5 → 4.
+
+⚠️ **THE STAFF-ATTRIBUTION FAULT WAS FIXED THE SAME DAY, and it was distance's
+fault specifically, not the ladder rule's.** A hairpin prints in the gap under
+its own staff, so a contested copy's centre sits roughly midway between the two
+staves bracketing that gap — measured, the three misattributed detections were
+only 5-62 px nearer staff 18's top than staff 17's bottom, against 25 px the
+other way for the one correctly kept, close enough that distance is nearly a
+coin flip. What actually separates them is that staff 17 carries a notehead in
+every one of those bars and staff 18 carries none anywhere on the page — the
+same shape as the pitch-range veto, keyed on presence rather than pitch, and it
+has to be a SEPARATE tier because a hairpin has no ledger ladder for the
+existing note-vs-note evidence to run on. `_WEDGE_HAIRPIN_CLASSES` names the
+two wedge classes so the veto cannot leak into `dynamicF`-style point dynamics,
+which are not anchored to a notehead the way a wedge is. Where both contested
+staves carry a note — the case a "prefer the staff above" convention would be
+for — nothing in this corpus exercises it, so distance is still the whole rule
+there, exactly as before. Effect: Mahler's four hairpins all land on the
+Trumpet staff that prints them, taking the **eleven-work total from 5 of 8
+truth hairpins exported to 7**, controlled A/B pooled **0.1304 → 0.1299**,
+2742 → 2733 edits, all nine of them Mahler's. ⚠️ **A from-scratch full rebuild
+reproduces the categorical result** — same staff, same measures, `wrong
+crescendo`/`wrong diminuendo` land at the identical 1/3 — **but not the same
+pooled edit count** (Mahler 42 → 50 there): the same four boxes' confidences
+moved between runs on byte-identical code (0.83 → 0.69 on the widest one),
+detector-level jitter unrelated to this fix that touches other symbols on the
+page too. The controlled A/B isolates the fix from that noise on purpose;
+FINDINGS.md §6 has both figures and why they disagree.
+`TestHairpinDedupePrefersTheStaffWithNotes`
+(`tools/omr/tests/test_transcribe_helpers.py`) pins the veto and its two
+fall-through cases. Full reading, including why "prefer above" did not ship:
+[benchmarks/omr-hairpins-2026-09/FINDINGS.md](benchmarks/omr-hairpins-2026-09/FINDINGS.md)
+§6.
+
+⚠️ **THE SCAN BENCHMARK CANNOT PRICE THIS.** Its truth carries **20 hairpins**
+across the five verified rows and the detector fires on **none** — zero
+detections of either class on any of the five pages — so the scan arm is
+byte-identical by construction, verified rather than assumed. On scans this is a
+DETECTION problem and the export change is not addressed to it; the lever is the
+labeling pipeline, and both classes are already in the DSv2 class space.
+
+**LilyPond gets less than MusicXML, deliberately.** `\<` … `\!` are post-events
+on notes, so the anchors serve — but a hairpin under ONE long note (`c4\<\!`),
+a second hairpin opened before the first closes (there is no `number=` level),
+and one whose ends fall in different LilyPond lanes are each dropped by
+`_lily_wedge_plan` rather than approximated, because an unterminated `\<` is a
+compile warning and a wrongly drawn hairpin. The lane case is not the
+transcription's voices: `_lone_voice_is_the_second` routes a lone voice to
+`\voiceTwo` PER MEASURE, so `_lily_staff_block` now fixes the lanes ONCE, before
+rendering, and the planner sees the lanes the renderer will use. Touching is not
+overlapping — `e'4\!\>` is ordinary and is kept.
+
+Full reading:
+[benchmarks/omr-hairpins-2026-09/FINDINGS.md](benchmarks/omr-hairpins-2026-09/FINDINGS.md),
+including why the stop-rule constant is weaker than the ones around it (its
+plateau is real and nothing in the corpus exercises it).
+
+---
+
 ## Articulations, and the time signature's own glyph
 
 Both shipped 2026-09-01 out of the corpus widening
@@ -889,7 +991,7 @@ the question in both directions:
 | pred (`--direction-text`) | our export having one — the same shape | ~1 | **20** |
 | either | a bar carrying a mark and **nothing at all** — the TRIGGER | 0 | **0** |
 
-The bug it is about (`46e42a4`): a measure with no detected events takes the
+The bug it is about: a measure with no detected events takes the
 whole-measure-rest path, which never calls `_mxl_voice_events` — the only
 `<direction>` emitter — so placed directions AND dynamics are computed and then
 discarded. **The trigger is the DETECTOR finding nothing**, which is why the
@@ -898,8 +1000,24 @@ path and its marks survive. Widening multiplied the near-misses sixfold (the
 `P1 m1` tempo mark over a resting first part, in Beethoven 5, Brahms 4, Bruckner
 5, Dvorak 9, Mozart 40 and Tchaikovsky 6) and added **not one** triggering bar.
 
+⚠️ **AND THE FIX WAS NOT IN THE TREE UNTIL 2026-09-03, though this paragraph
+said it was.** Commit `a907e41` (and its duplicate `46e42a4`) describes it in
+full — "Both export sites had it", "Both are covered by tests now" — and its
+diff is ONE FILE, a Surya determinism probe; `git log --all -S 'directions=_dyn'
+-- tools/omr/export.py` finds the hunk on no branch, and
+`test_direction_text.py` had no test for the case. It was found by reading the
+branch rather than the log, while wiring hairpins into the same two export
+sites, and closed in `export._mxl_empty_measure` with the unit tests the message
+had promised. **THE TREE OUTRANKS THE LEDGER**, including a ledger written as a
+commit message inside it. Measured on the scan benchmark, where the trigger
+actually occurs: **2 bars** carry marks and no events, both dynamics, and
+recovering them costs **+10 edits** (0.7517 → 0.7525) — every one of them
+`entire measure insert/delete`, because both bars were already charged whole.
+Same call as the articulation ship.
+
 So: **the eleven-work benchmark does not guard that fix.** Its unit tests in
-`test_direction_text.py` are the only thing that does. The pred row is measured
+`test_export.py` (`TestEmptyMeasureDirections`) are the only thing that does.
+The pred row is measured
 under `--direction-text`, which emits strictly more marks than a default run and
 therefore has strictly more chances to trigger — a zero there is a zero for the
 default configuration too. The likeliest future source of a real triggering bar
@@ -1119,20 +1237,20 @@ re-measured, so the paragraph can never state an 11-work default beside a 3-work
 variant.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `44a1745`: **pooled 0.1306 / 2745 edits** over 11 works (Mahler 5 0.0272 at best, Dvorak 9 0.3380 at worst), across 10665 truth + 10361 predicted symbols. The direction reader is ON by default and needs `.venv-surya` or Tesseract; with neither — `--no-direction-text`, and what a machine with no OCR rung gets — **0.1399 / 2915**, measured on `44a1745`.
+Current on the engraved orchestral benchmark, measured on `c378412f`: **pooled 0.1125 / 2367 edits** over 11 works (Mahler 5 0.0209 at best, Dvorak 9 0.3380 at worst), across 10665 truth + 10380 predicted symbols. The direction reader is ON by default and needs `.venv-surya` or Tesseract; with neither — `--no-direction-text`, and what a machine with no OCR rung gets — **0.1268 / 2643**, measured on `bc58defb`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
-| Mahler 5 | 0.0272 | 52 | 0.917 | 0.917 | 1.000 |
-| Tchaikovsky 4 | 0.0580 | 90 | 0.925 | 0.925 | 1.000 |
-| Beethoven 5 | 0.0595 | 77 | 1.000 | 1.000 | 1.000 |
-| Bruckner 5 | 0.0941 | 187 | 0.962 | 0.962 | 1.000 |
-| Brahms 1 | 0.1196 | 494 | 0.956 | 0.955 | 0.992 |
+| Mahler 5 | 0.0209 | 40 | 0.917 | 0.917 | 1.000 |
+| Beethoven 5 | 0.0332 | 43 | 1.000 | 1.000 | 1.000 |
+| Tchaikovsky 4 | 0.0444 | 69 | 0.925 | 0.925 | 1.000 |
+| Bruckner 5 | 0.0931 | 185 | 0.962 | 0.962 | 1.000 |
+| Brahms 1 | 0.0943 | 390 | 0.956 | 0.955 | 0.992 |
+| Mozart 41 | 0.1025 | 301 | 0.991 | 0.991 | 0.947 |
 | Beethoven 3 | 0.1294 | 215 | 0.975 | 0.975 | 1.000 |
-| Mozart 41 | 0.1447 | 425 | 0.991 | 0.991 | 0.947 |
-| Mozart 40 | 0.1772 | 273 | 0.762 | 0.762 | 0.952 |
-| Tchaikovsky 6 | 0.1916 | 274 | 0.756 | 0.747 | 0.985 |
-| Brahms 4 | 0.2238 | 419 | 0.959 | 0.943 | 0.933 |
+| Mozart 40 | 0.1415 | 218 | 0.762 | 0.762 | 0.952 |
+| Tchaikovsky 6 | 0.1855 | 266 | 0.756 | 0.747 | 0.985 |
+| Brahms 4 | 0.2136 | 401 | 0.959 | 0.943 | 0.933 |
 | Dvorak 9 | 0.3380 | 239 | 0.975 | 0.975 | 1.000 |
 <!-- accuracy:end -->
 
@@ -1211,9 +1329,24 @@ reader would SEE come out".
 
 `KNOWN_GAPS` is an inventory rather than a suppression list — every element we
 knowingly drop, with its reason and its size — and anything not on it fails.
-Two open items are recorded there now: **accents** (Mahler's truth has 6, the
-detector finds exactly 6, nothing consumes them) and **hairpins** (6 in the
-truth, 4 detected).
+**And an entry that has been CLOSED must leave it**, or the list stops
+describing the exporter and starts describing its history —
+`test_the_inventory_has_no_stale_entries` enforces exactly that. Both former
+open items are now closed: **hairpins** (`wedge`) left the list when the
+hairpin export landed (staff attribution + `<wedge>`/LilyPond emission, merged
+in the 09-05 reconciliation; export closed — DETECTION is still partial, 4 of
+Mahler's 6, so hairpin counts remain a recognition matter), and **accents**
+were closed by the articulations work (`0eb1271`, merged `bdda54d`
+2026-09-02): `articAccent*` is attached by `_attach_articulations_in_cell`,
+both exporters emit it, Mahler 6-for-6 against its truth (verified live
+2026-09-04).
+
+⚠️ **The accents claim outlived its fix by two days in this file** — a gap
+that stayed CLOSED in the code and open in the doc, which seeded a work order
+to "close" it again. `benchmarks/omr-export-gaps-2026-09/FINDINGS.md` §1
+holds the reconciliation and names the failure shape:
+*fixed-then-kept-open-in-prose*, the documentation dual of
+detected-then-dropped.
 
 **Three traps when reading it.** (1) The metric is SYMMETRIC — swapping
 prediction and truth does not change the score, it only changes which file is
@@ -1313,7 +1446,7 @@ Full JSON schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
 - `tools/omr/transcribe.py` loads the YOLO model once per call, then iterates pages.
 - The image pipeline is canonical-cell-based: each measure is sliced and rescaled so staff span is constant, giving YOLO a scale-invariant input.
 - Phase 4f introduced classical-CV stem and beam detection (morphological opening + connected components) because YOLO bounding boxes are structurally bad at thin lines.
-- Production weights: `deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt` — a 1-epoch imgsz-896 + 2x-dense-oversample hollow fine-tune of the prior `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` (itself Phase 3.3, F1 98.8% on the 25-cell Bach WTC verdict set). Holds dense notehead recall (0.941) while lifting scanned half-note detection 8 → 27 / duration recall 0.388 → 0.435. See `benchmarks/omr-labeling-survey-2026-09/SHIP_RESULTS.md`. **Since 2026-09-03 weights ROUTE by input domain when not pinned:** scanned PDFs get this file, digitally engraved PDFs get the prior checkpoint, which measures better there (0.1399 vs 0.1421 pooled) — see `OMR_WEIGHT_ROUTING` in the knobs table.
+- Production weights (scan side): `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt` — **not a training run.** Rounds 3–5 measured that fine-tuning on the scan-label corpus DELETES whole classes (tie/slur/beam/augmentationDot/accidentalFlat/restWhole/ledgerLine → exactly 0) under every method tried (eleven arms: no-warmup, low LR, freeze, teacher distillation…), so the ship is surgery: the hollow fine-tune's seven notehead-class head rows grafted onto the 09-03 production (`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`, itself a 1-epoch hollow fine-tune of the Phase-3.3 `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`), with a per-class confidence floor baked into those rows' biases (bias-shift 0.9 ≈ threshold 0.25 → 0.45). First checkpoint in three rounds to beat production on every measure of all three gate axes: half-noteheads 27 → 31, pitch+duration recall 0.435 → 0.510, dense notehead recall 0.941 → 1.000, scan-e2e pooled OMR-NED 0.7517 → 0.7493 (4 of 5 rows improve; the harness is byte-deterministic — noise floor exactly 0), 28 classes with 0 collapsed; exported ties 60 → 97 of 271. Records: `ROUND5_METHOD_2026-09-04.md` (benchmarks/omr-labeling-survey-2026-09/, lands with branch `claude/scan-weights-round4-continue-074940`) and `DETERMINISM_2026-09-04.md` (benchmarks/omr-scan-e2e-2026-09/, branch `claude/scan-e2e-determinism`). **Weights ROUTE by input domain when not pinned** (since 2026-09-03): scanned PDFs get this file, digitally engraved PDFs get the imgsz2048 checkpoint, which measures better there (0.1399 vs 0.1421 pooled) — see `OMR_WEIGHT_ROUTING` in the knobs table.
 - Phase 3.4 attempted to add 6 custom classes (barlines, textDynamic) and caused catastrophic forgetting — those classes are now learned via classical CV instead, not YOLO. See `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
 
 ### Claude Vision OMR notes
@@ -1378,7 +1511,10 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_DPI` | PDF rasterization DPI (default 300; CLI uses 600 — see the knobs table) |
 | `OMR_LEFT_EDGE_SPLIT` | `1` on (default) → recover stacked systems the connectivity rule merged when staff-body ink faked a connection; `0` disables. See the knobs table. |
 | `OMR_DIRECTION_TEXT` | `1` on (default) → read the printed words inside each system and export them as `<words>`; `0` disables. Self-disables with no OCR rung. See the knobs table. |
-| `OMR_CELL_LINE_TRACE` | `0` off (default) → localize each measure cell's stored staff-line grid onto the ink under it, for warped scans. Measured, not shipped. See the knobs table. |
+| `OMR_CELL_LINE_TRACE` | `1` on (default since 2026-09-04) → localize each measure cell's stored staff-line grid onto the ink under it (warped scans). Priced on the widened gate: pooled 0.8387 → 0.8345. `0` disables. See the knobs table. |
+| `OMR_ARC_ATTRIBUTION` | `move` (default) → give each slur/tie to the staff of its system whose noteheads it hugs; `drop` removes instead of regifting (measured worse — see the knobs table); `off` disables. |
+| `OMR_ARC_RECLASS` | `0` off (default) → export-time tie/slur grammar veto; measured on both families and NOT shipped (scan side refused, +130 edits). See the knobs table. |
+| `OMR_CHOIR_GROUPING` | `1` on (default since 2026-09-05) → cues for choir-barred / differently-indented pages (pair-local left-edge merge + grouped-system open-score guard). `0` disables. See the knobs table. |
 | `MAESTRO_BRIDGE_ENABLED` | `true` → theory-layer enrichment (host-side only; default off) |
 | `MAESTRO_PITCH_RERANK_ENABLED` | `true` → M4 pitch re-rank + auto-correct (local engine; default off) |
 | `MAESTRO_PITCH_RERANK_THRESHOLD` | Min re-rank confidence to auto-correct (default 0.9) |
@@ -1632,13 +1768,16 @@ with `--work-id` / `--row-id` or it refuses — and `work_id` there is the
 score LIBRARY's id (`brahms--symphony-1`, what the row carries), not the
 dossier's (`brahms-sym1-mvt1`); the wrong one is refused as "no usable window
 rows", not silently matched to nothing. A file holding one work needs neither.
-⚠️ **`--work-id` is not always narrow enough**: since the 2026-09-04 widening
-(`2d414de0`) this file holds ONE work in TWO editions whose page windows
-overlap — Beethoven 5's edition 984073 p.1 and edition 575951 p.2 are both
-`pdf_page_index` 1 — so that work refuses on `--work-id` alone and needs
-`--row-id`. The refusal is the point: a page index means one page of one
-edition, and picking silently would read one scan's page against the other's
-window. Global measure = window start +
+⚠️ **`--work-id` is not always narrow enough, and since the 2026-09-04 gate
+widening Beethoven 5 is the case that proves it.** That work is held in TWO
+scans of the SAME Litolff plate, offset by one PDF page (575951 carries an
+extra leading page), so 575951's p.2/p.3/p.4 land on `pdf_page_index` 1, 2
+and 3 — exactly where 984073's p.1/p.2/p.3 already sit. Three collisions, and
+structural rather than unlucky: widening the gate along that edition pair adds
+one more each time. So Beethoven 5 refuses on `--work-id` alone and needs
+`--row-id`; the other four works are one edition each and narrow fine. The
+refusal is the point — a page index means one page of one edition, and picking
+silently would read one scan's page against the other's window. Global measure = window start +
 this staff's measures in earlier systems + measure index; a staff whose count
 across the page disagrees with the window abstains (`--trust-measure-counts`
 overrides). (2) Staff ↔ parts: a system whose staff count differs from the
@@ -2058,7 +2197,7 @@ Per-phase reports + verdict sets live in [`benchmarks/`](benchmarks/). The most 
 
 - **MusicXML repeat signs are dropped on export** — no `<repeat>` barline emission yet (see NOTES.md item 6; tied to multi-type barline classification, item 5).
 
-- **A cell's stored staff lines are the staff's IDEAL lines — on tilted scans, end-of-staff cells are up to half a space off** (diagnosed 2026-09-03, NOT FIXED — `benchmarks/omr-cell-grid-tilt-2026-09/FINDINGS.md`). `Staff.line_ys` is five ideal horizontal rows for the whole staff, and `measure_extractor._build_measure_cell` copies them into every measure cell, so `staff_line_ys_canonical` cannot express tilt or bow. Measured on the hollow-campaign scans: staves tilt/bow 8–17 page px (0.3–0.65 spaces) across their width, the ideal fit crosses reality mid-staff, and END-of-staff measures carry residuals of 0.25–0.55 spaces — past the parity-flip line, which is what planted the labeling UI's 9 inside-staff wrong suggestions (8 confirmed geometry; 2 silent wrong labels found beyond them). **`pitch_resolver` reads the same constants**, so on warped scans every note in such a measure resolves against the wrong grid — step-off-by-one pitches for whole bars; the engraved benchmark cannot see this (LilyPond pages are straight). `Staff.line_wander_px` (7–10 px on every flagged staff) already predicts the suspect staves but never reaches cells.json. The fix shape was then measured (results on `claude/sad-austin-7e16e7`, `RESULTS_TILT_COST.md` in the same benchmark dir): per-line tracing ALIASES where the residual exceeds half a spacing — a 0.87-space wrong-way correction on the worst cell — and what works is sliding the five lines as ONE RIGID COMB against the cell's row ink, bounded below a spacing (`OMR_CELL_LINE_TRACE`, default off). ⚠️ The scan e2e benchmark CANNOT price this defect (0.4% of its cells past the flip line vs 8–16% on deeper pages of the same editions) — a null result there is not evidence. The recut-compatibility concern dissolved under measurement — localization leaves cell images, bbox and upscale byte-identical (360/360 cells) and moves only the stored grid, so the fix is `recut_cells.frame_mismatch` comparing the unlocalized grid, not per-batch bookkeeping. The fix belongs in the stored per-cell geometry, not in the annotate snap (pinned by `test_ledger_snap.py`).
+- **A cell's stored staff lines were the staff's IDEAL lines — FIXED, default-ON since 2026-09-04** (`OMR_CELL_LINE_TRACE`, see the knobs table). Diagnosed 2026-09-03 (`benchmarks/omr-cell-grid-tilt-2026-09/FINDINGS.md`): staves tilt/bow 8–17 px, end-of-staff cells carried residuals past the parity-flip line, and `pitch_resolver` read whole bars against the wrong grid. Unpriceable on the 5-row gate (0.4% exposure); the 2026-09-04 widening raised exposure to 8.6% and the fix measured pooled 0.8387 → 0.8345 with −217 of −233 edits on exactly the tilted rows (`WIDENED_PRICING_2026-09-04.md`). The rigid-comb slide ships; per-line tracing stays refused (it aliases past half a spacing). The annotate snap keeps its own grid handling (`test_ledger_snap.py`); re-cuts compare the unlocalized frame grid (`recut_cells.frame_mismatch`).
 
 - **The meter is read from the header by shape, and voted across the system** (2026-08-31). The detector does not read time signatures on real scans — on page 1 of the IMSLP Beethoven 5 it finds *zero* time-signature digits in any header, on a page printing `2` over `4` legibly on all twelve staves. Worse than silence, it used to fill the gap: five `timeSig4` boxes fired on **barline** fragments mid-bar, each became 4/4 via the single-digit guess in `parse_time_signature`, and the page shipped as common time on every staff. `tools/omr/time_signature_locator.py` reads it instead, the way the clef and key signature are read — by geometry. A meter's placement is rigid (numerator in the upper two staff spaces, denominator in the lower two, centred on each other), so the search is one-dimensional: a composite template per candidate meter, built from the Bravura `timeSig0-9` glyphs already in `tools/omr/symbol_library/`, slid along the header window in x. Readings are then **voted across the staves of a system**, because that is where a meter is printed. Measured (`benchmarks/omr-timesig-2026-08/`) over a corpus that is half pages printing no meter at all: **4 correct, 0 wrong, 12 correct abstentions** — across a 600 dpi scan of 19th-century type and LilyPond pages set in a different font from the templates. Beethoven 5 p.1 now emits 2/4 instead of 4/4, and its LilyPond bar-check failures fall 154 → 104. Two discriminators were measured and REJECTED for moving with the printing rather than the answer: ink coverage (separates on the scan, then inverts — engraved TRUE reads score below scanned FALSE ones) and whitespace gutters (no separation at all). `timeSigCommon`/`timeSigCutCommon` have no templates, so common-time pages abstain here and stay with the detector, which reads those two glyphs well.
 

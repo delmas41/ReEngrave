@@ -15,9 +15,12 @@ from tools.omr.voicing import group_chords_in_measure
 
 from tools.omr.export import (
     annotate_beams,
+    arbitrate_arcs_across_staves,
     annotate_fermatas,
     annotate_slurs_in_slot,
     annotate_slurs_in_staff,
+    annotate_wedges_in_slot,
+    annotate_wedges_in_staff,
     measure_dynamics,
     _compute_divisions,
     _direction_slots,
@@ -31,6 +34,7 @@ from tools.omr.export import (
     _lily_event,
     _lily_key_for_sig,
     _lily_measure_rest,
+    _lily_wedge_plan,
     _measure_rest_beats,
     _mxl_measure_rest,
     _parse_pitch,
@@ -381,6 +385,14 @@ class TestArticulations:
         assert "-^" in to_lilypond(self._result(["marcato"]))
         assert "--" in to_lilypond(self._result(["tenuto"]))
 
+    def test_lilypond_accent(self):
+        """The one articulation this class had not pinned on the LilyPond
+        side — and the one whose closure a stale CLAUDE.md sentence denied
+        for two days ("nothing consumes them"). The MusicXML half is pinned
+        above; the wiring's pin is a test, not a sentence.
+        benchmarks/omr-export-gaps-2026-09/FINDINGS.md §1."""
+        assert "->" in to_lilypond(self._result(["accent"]))
+
 
 # ─── to_lilypond (smoke test on a tiny synthetic JSON) ─────────────────────
 
@@ -626,6 +638,71 @@ class TestBeamAnnotation:
         events = [self._note(x, 0) for x in (100, 120)]
         annotate_beams(events, [])
         assert self._states(events) == [None, None]
+
+    def test_edge_note_within_a_notehead_width_joins_its_group(self):
+        """The box bounds beam INK, which runs stem to stem — the edge note's
+        centre sits up to a head's width outside it (stem-up first note,
+        stem-down last). Unpadded this was 430 of the 449 `wrong flag/beam`
+        edits on the 11-work benchmark: the edge note exported as a flag and
+        the group closed one note early."""
+        events = [self._note(x, 1) for x in (100, 120, 140, 160)]
+        # Centres are 105..165; the box covers only 125 and 145 outright.
+        annotate_beams(events, [self._beam(115, 158)])
+        assert self._states(events) == [
+            {1: "begin"}, {1: "continue"}, {1: "continue"}, {1: "end"}]
+
+    def test_a_two_note_group_survives_the_pad(self):
+        """Both notes of a 2-note group used to fall out — the orphan formed a
+        synthetic run of one and the survivor was alone under its box, so both
+        went flagged."""
+        events = [self._note(100, 1), self._note(130, 1)]
+        annotate_beams(events, [self._beam(112, 132)])
+        assert self._states(events) == [{1: "begin"}, {1: "end"}]
+
+    def test_stacked_stroke_boxes_do_not_fracture_the_group(self):
+        """A sixteenth group's primary and secondary strokes arrive as two
+        boxes over the same span. The group id is the box id, so any per-note
+        choice between them splits the group (a narrowest-box rule cost
+        Mozart 41 138 edits); they collapse into one."""
+        events = [self._note(x, 2, "16th", 0.25) for x in (100, 120, 140)]
+        strokes = [
+            {"category": "structural", "class": "beam",
+             "bbox_page": [95, 0, 55, 5]},
+            {"category": "structural", "class": "beam",
+             "bbox_page": [98, 12, 54, 5]},
+        ]
+        annotate_beams(events, strokes)
+        assert self._states(events) == [
+            {1: "begin", 2: "begin"}, {1: "continue", 2: "continue"},
+            {1: "end", 2: "end"}]
+
+    def test_divisi_rows_over_the_same_notes_are_one_group(self):
+        """Two voices' beams over the same double stops overlap in x offset by
+        one head width (Mozart 40's Viola, 354px apart in y). They collapse —
+        deliberately with no y test, because chord events flip which head is
+        first and a per-note y preference fractured the runs."""
+        events = [self._note(x, 1) for x in (100, 120, 140, 160)]
+        rows = [
+            {"category": "structural", "class": "beam",
+             "bbox_page": [93, 400, 62, 8]},   # stems-down voice, below
+            {"category": "structural", "class": "beam",
+             "bbox_page": [113, 40, 62, 8]},   # stems-up voice, above
+        ]
+        annotate_beams(events, rows)
+        assert self._states(events) == [
+            {1: "begin"}, {1: "continue"}, {1: "continue"}, {1: "end"}]
+
+    def test_a_bar_wide_box_over_two_groups_is_suspect(self):
+        """Brahms 1, Contrabass m4: a spurious 685px 'beam' (a hairpin) at the
+        real beams' y spanned the whole bar and swallowed all six notes into
+        one run. A box x-containing two disjoint boxes loses to them."""
+        events = [self._note(x, 1) for x in (100, 120, 300, 320)]
+        spurious = {"category": "structural", "class": "beam",
+                    "bbox_page": [90, 8, 250, 5]}
+        annotate_beams(events, [self._beam(95, 135), self._beam(295, 335),
+                                spurious])
+        assert self._states(events) == [
+            {1: "begin"}, {1: "end"}, {1: "begin"}, {1: "end"}]
 
     def test_only_the_chords_first_note_is_beamed(self):
         result = _tiny_result_empty_measure({"beats": 4, "beat_type": 4})
@@ -1806,3 +1883,708 @@ class TestTwoVoiceStaffDoesNotEcho:
         assert not _lone_voice_is_the_second(mixed)
         assert not _lone_voice_is_the_second(rests_only)
         assert not _lone_voice_is_the_second([])
+
+
+# ─── Arc reclassification (OMR_ARC_RECLASS) ─────────────────────────────────
+# A tie and a slur are the same glyph; the notes they connect tell them apart
+# (docs/position-grammar-confusables-2026-09-04.md §2 ARC, rule R3: veto the
+# impossible, abstain otherwise). Off by default; every test that wants it on
+# says so through the environment.
+
+
+def _tie_arc(x0, x1, y=41):
+    """A detector tie arc. Sits at notehead height, unlike `_slur_arc`'s
+    default, because a tie is drawn between its heads and the flank pairing
+    has a y-gate."""
+    return {"category": "structural", "class": "tie",
+            "bbox": [x0, y, x1 - x0, 8], "bbox_page": [x0, y, x1 - x0, 8]}
+
+
+def _rest_at(x, y=40):
+    return {"category": "rest", "class": "restQuarter",
+            "duration_beats": 1.0, "duration_type": "quarter", "dots": 0,
+            "bbox": [x, y, 10, 10], "bbox_page": [x, y, 10, 10],
+            "confidence": 0.9}
+
+
+def _tie_flags(staff):
+    """Every tie flag on the staff, as (measure, x, flag)."""
+    out = []
+    for m_idx, measure in enumerate(staff["measures"]):
+        for det in measure["detections"]:
+            for key in ("tied_to_next", "tied_from_prev"):
+                if det.get(key):
+                    out.append((m_idx, det["bbox_page"][0], key))
+    return sorted(out)
+
+
+@pytest.fixture
+def arc_reclass_on(monkeypatch):
+    monkeypatch.setenv("OMR_ARC_RECLASS", "1")
+    from tools.omr import export as _export
+    _export.reset_arc_reclass_stats()
+    yield
+    _export.reset_arc_reclass_stats()
+
+
+class TestArcReclassOff:
+    """The default. Nothing moves, whatever the configuration says."""
+
+    def test_a_two_note_same_pitch_slur_stays_a_slur(self, monkeypatch):
+        monkeypatch.delenv("OMR_ARC_RECLASS", raising=False)
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _slur_head(30, pitch="C4"),
+            _slur_arc(12, 38),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+
+    def test_an_impossible_tie_keeps_its_flags(self, monkeypatch):
+        monkeypatch.delenv("OMR_ARC_RECLASS", raising=False)
+        a = _slur_head(10, pitch="C4")
+        b = _slur_head(40, pitch="E4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _tie_arc(20, 40)]])
+        annotate_slurs_in_staff(staff)
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 40, "tied_from_prev")]
+        assert _states(staff) == []
+
+
+class TestSlurToTie:
+    """An arc classed `slur` whose ends land on exactly two adjacent
+    same-pitch noteheads is a tie — the duration-semantic reading, the safer
+    error where print alone cannot decide."""
+
+    def test_two_adjacent_same_pitch_heads_become_a_tie(self, arc_reclass_on):
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _slur_head(30, pitch="C4"),
+            _slur_arc(12, 38),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 0
+        assert _states(staff) == []
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 30, "tied_from_prev")]
+
+    def test_the_canonical_tie_crosses_a_barline_as_two_fragments(
+            self, arc_reclass_on):
+        """Cells are cut per measure, so the commonest tie in real music —
+        last note of one bar to first of the next — arrives as two slur
+        fragments. The veto must see the MERGED arc or it can never fire on
+        the configuration it exists for."""
+        staff = _slur_staff([
+            [_slur_head(80, pitch="G4"), _slur_arc(86, 100)],
+            [_slur_head(110, pitch="G4"), _slur_arc(100, 116)],
+        ])
+        assert annotate_slurs_in_staff(staff) == 0
+        assert _tie_flags(staff) == [
+            (0, 80, "tied_to_next"), (1, 110, "tied_from_prev")]
+
+    def test_different_pitches_stay_a_slur(self, arc_reclass_on):
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _slur_head(30, pitch="D4"),
+            _slur_arc(12, 38),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+
+    def test_three_heads_stay_a_slur_even_on_one_pitch(self, arc_reclass_on):
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _slur_head(30, pitch="C4"),
+            _slur_head(50, pitch="C4"), _slur_arc(12, 58),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+
+    def test_a_rest_between_the_heads_stays_a_slur(self, arc_reclass_on):
+        """A tie cannot cross a rest, so same-pitch heads with one between
+        them are not the tie configuration — the rest spends an event ordinal
+        and the two heads stop being adjacent."""
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _rest_at(30),
+            _slur_head(50, pitch="C4"), _slur_arc(12, 58),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+
+    def test_a_pair_the_transcription_already_tied_loses_nothing(
+            self, arc_reclass_on):
+        """Both a tie and a slur detected over one pair: the veto agrees with
+        the tie and adds no duplicate bookkeeping."""
+        a = _slur_head(10, pitch="C4")
+        b = _slur_head(30, pitch="C4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _slur_arc(12, 38)]])
+        annotate_slurs_in_staff(staff)
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 30, "tied_from_prev")]
+        assert not a.get("arc_reclass_added")
+
+
+class TestTieToSlur:
+    """An arc classed `tie` spanning more than two note events, or whose two
+    heads carry different pitches, cannot be a tie."""
+
+    @staticmethod
+    def _flagged_pair_staff(pitch_b="E4"):
+        a = _slur_head(10, pitch="C4")
+        b = _slur_head(40, pitch=pitch_b)
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        return a, b, _slur_staff([[a, b, _tie_arc(20, 40)]])
+
+    def test_a_different_pitch_pair_becomes_a_slur(self, arc_reclass_on):
+        a, b, staff = self._flagged_pair_staff()
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+        # The slur joins the SAME two notes the impossible tie claimed —
+        # the arc is widened to the flanked centres, or a flanking arc
+        # covers nothing and the promised slur degrades to a deletion.
+        assert _states(staff) == [(0, 10, 1, "start"), (0, 40, 1, "stop")]
+
+    def test_a_same_pitch_pair_is_a_legal_tie_and_stands(self, arc_reclass_on):
+        a, b, staff = self._flagged_pair_staff(pitch_b="C4")
+        assert annotate_slurs_in_staff(staff) == 0
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 40, "tied_from_prev")]
+
+    def test_a_tie_arc_over_three_events_becomes_a_slur(self, arc_reclass_on):
+        """Same pitch throughout, so only the span refutes it — a tie joins
+        two adjacent notes and nothing else."""
+        a = _slur_head(10, pitch="C4")
+        mid = _slur_head(40, pitch="C4")
+        c = _slur_head(70, pitch="C4")
+        a["tied_to_next"] = True
+        c["tied_from_prev"] = True
+        staff = _slur_staff([[a, mid, c, _tie_arc(20, 70)]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+        assert _states(staff) == [(0, 10, 1, "start"), (0, 70, 1, "stop")]
+
+    def test_an_unpaired_tie_arc_over_a_run_becomes_a_slur(
+            self, arc_reclass_on):
+        """An arc classed tie that never paired — a real tie spans a gap and
+        covers nothing, so three covered events are decisively slur-shaped."""
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _slur_head(30, pitch="D4"),
+            _slur_head(50, pitch="E4"), _slur_head(70, pitch="F4"),
+            _tie_arc(12, 78, y=20),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _states(staff) == [(0, 10, 1, "start"), (0, 70, 1, "stop")]
+
+    def test_an_unpaired_arc_over_nothing_abstains(self, arc_reclass_on):
+        """No heads under it, none flanking it: nothing is decidable, and the
+        arc exports what it always exported — nothing."""
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _tie_arc(60, 90),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 0
+        assert _tie_flags(staff) == []
+        assert _states(staff) == []
+
+
+class TestArcReclassBookkeeping:
+    def test_flag_off_after_flag_on_restores_the_transcription(
+            self, monkeypatch):
+        """The annotate pass must take back what an earlier flag-on pass did
+        — added tie flags come off, removed ones go back on — so one result
+        dict can be exported under either configuration in either order."""
+        a = _slur_head(10, pitch="C4")
+        b = _slur_head(40, pitch="E4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _tie_arc(20, 40),
+                              _slur_head(60, pitch="G4"),
+                              _slur_head(80, pitch="G4"),
+                              _slur_arc(62, 88)]])
+        monkeypatch.setenv("OMR_ARC_RECLASS", "1")
+        annotate_slurs_in_staff(staff)
+        assert _tie_flags(staff) == [
+            (0, 60, "tied_to_next"), (0, 80, "tied_from_prev")]
+        monkeypatch.setenv("OMR_ARC_RECLASS", "0")
+        annotate_slurs_in_staff(staff)
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 40, "tied_from_prev")]
+        assert _states(staff) == [(0, 60, 1, "start"), (0, 80, 1, "stop")]
+
+    def test_flag_on_annotation_is_idempotent(self, arc_reclass_on):
+        a = _slur_head(10, pitch="C4")
+        b = _slur_head(40, pitch="E4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _tie_arc(20, 40)]])
+        annotate_slurs_in_staff(staff)
+        first = (_states(staff), _tie_flags(staff))
+        annotate_slurs_in_staff(staff)
+        assert (_states(staff), _tie_flags(staff)) == first
+
+    def test_the_conversion_reaches_musicxml(self, arc_reclass_on):
+        result = _tiny_result_empty_measure({"numerator": 4, "denominator": 4})
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4", width=20),
+            _slur_head(50, pitch="C4", width=20),
+            _slur_arc(15, 55),
+        ]])
+        result["pages"][0]["systems"][0]["staves"] = [staff]
+        xml = to_musicxml(result)
+        assert '<tie type="start"/>' in xml and '<tie type="stop"/>' in xml
+        assert "<slur" not in xml
+
+    def test_flank_pair_mirrors_transcribes_pairing(self):
+        """`_tie_flank_pair` re-derives the pair `_pair_ties_in_staff` flags,
+        on the same bbox_page data — mirrored rather than imported, because
+        transcribe drags the whole detection stack in with it. If the two
+        ever disagree, the veto would clear one pair's flags and the export
+        would keep another's."""
+        from tools.omr import transcribe as tr
+        from tools.omr.export import _tie_flank_pair
+        heads = [_slur_head(x, pitch=p) for x, p in
+                 ((10, "C4"), (40, "E4"), (70, "F4"))]
+        staff = _slur_staff([[*heads, _tie_arc(20, 40)]])
+        tr._pair_ties_in_staff(staff)
+        flagged = {(det["bbox_page"][0], key)
+                   for m in staff["measures"] for det in m["detections"]
+                   for key in ("tied_to_next", "tied_from_prev")
+                   if det.get(key)}
+        pair = _tie_flank_pair([20, 41, 20, 8], heads)
+        assert pair is not None
+        left, right = pair
+        assert flagged == {(left["bbox_page"][0], "tied_to_next"),
+                           (right["bbox_page"][0], "tied_from_prev")}
+
+
+class TestArcReclassStepKey:
+    """The veto compares STAFF STEPS, never spelled pitches — measured on the
+    engraved A/B, where every losing veto was a same-step pair differing only
+    in accidental (`F#4 -> F4`): the far head of a cross-barline tie does not
+    restate its accidental and the resolver spells it plain. The conversion
+    direction keeps the STRICT key: acting needs strong evidence both ways."""
+
+    def test_a_same_step_different_accidental_tie_stands(self, arc_reclass_on):
+        a = _slur_head(10, pitch="F#4")
+        b = _slur_head(40, pitch="F4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _tie_arc(20, 40)]])
+        assert annotate_slurs_in_staff(staff) == 0
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 40, "tied_from_prev")]
+
+    def test_a_step_apart_tie_is_still_vetoed(self, arc_reclass_on):
+        a = _slur_head(10, pitch="F#4")
+        b = _slur_head(40, pitch="G4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _tie_arc(20, 40)]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+
+    def test_slur_to_tie_still_needs_the_full_pitch_to_agree(
+            self, arc_reclass_on):
+        """A slur over F#4 -> F4 is a chromatic-neighbour slur, real music;
+        step equality is not enough to assert tie-ness."""
+        staff = _slur_staff([[
+            _slur_head(10, pitch="F#4"), _slur_head(30, pitch="F4"),
+            _slur_arc(12, 38),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+
+
+# ---------------------------------------------------------------------------
+# Cross-staff arc attribution
+# ---------------------------------------------------------------------------
+
+def _arc_staff(top, heads_y, *, spacing=10.0, n_measures=1, arcs=()):
+    """A one-system staff whose cells tile [0,100), … with heads at `heads_y`.
+
+    `arcs` are `(x0, y0, x1, y1)` page boxes dropped into measure 0, which is
+    where a padding-caught neighbour's arc lands.
+    """
+    measures = []
+    for i in range(n_measures):
+        dets = [{"category": "notehead", "class": "noteheadBlack", "pitch": "C4",
+                 "duration_type": "quarter", "duration_beats": 1.0, "dots": 0,
+                 "confidence": 0.9,
+                 "bbox": [i * 100 + x, heads_y, 10, 10],
+                 "bbox_page": [i * 100 + x, heads_y, 10, 10]}
+                for x in (10, 30, 50, 70)]
+        if i == 0:
+            for (x0, y0, x1, y1) in arcs:
+                dets.append({"category": "structural", "class": "slur",
+                             "bbox": [x0, y0, x1 - x0, y1 - y0],
+                             "bbox_page": [x0, y0, x1 - x0, y1 - y0]})
+        measures.append({"measure_index": i,
+                         "bbox_page_px": [i * 100, top - 60, (i + 1) * 100, top + 60],
+                         "detections": dets})
+    return {"staff_index": 0, "clef": "treble",
+            "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+            "time_signature": {"numerator": 4, "denominator": 4},
+            "staff_geometry": {
+                "line_ys_page": [top + d for d in (0, 10, 20, 30, 40)],
+                "line_spacing_px": spacing, "x_start": 0,
+                "x_end": 100 * n_measures},
+            "n_measures": n_measures, "measures": measures}
+
+
+def _arc_result(staves):
+    return {"pages": [{"page_index": 0, "systems": [{"staves": staves}]}]}
+
+
+def _arc_classes(staff):
+    return [d["class"] for m in staff["measures"]
+            for d in m["detections"] if d["category"] == "structural"]
+
+
+class TestArcAttribution:
+    """An arc belongs to the staff whose NOTEHEADS it hugs, not the staff whose
+    cell padding happened to catch it.
+
+    The Brahms 1 shape: Violin 1 plays four ledger lines above its staff, so
+    its slurs are drawn high in the wide gap below the Timpani — inside the
+    Timpani's grown padding and above the top of Violin 1's own cell, so the
+    arc exists ONLY in the wrong staff and no duplicate-resolution rule can
+    reach it.
+    """
+
+    @staticmethod
+    def _bled():
+        """Upper staff holds an arc that hugs the LOWER staff's ledger notes."""
+        upper = _arc_staff(100, 120, arcs=[(10, 185, 90, 195)])
+        lower = _arc_staff(300, 200)
+        return upper, lower
+
+    def test_an_arc_hugging_the_neighbour_moves_to_it(self):
+        upper, lower = self._bled()
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 1
+        assert _arc_classes(upper) == []
+        assert _arc_classes(lower) == ["slur"]
+        moved = [d for m in lower["measures"] for d in m["detections"]
+                 if d["category"] == "structural"][0]
+        assert moved["arc_reattributed_from_staff"] == 0
+
+    def test_an_arc_hugging_its_own_notes_stays(self):
+        """The rival covers it in x just as well; what it does not do is hug
+        it. Distance to the staff LINES is the trap this avoids — the arc sits
+        outside its own staff, which is where slurs go."""
+        upper = _arc_staff(100, 120, arcs=[(10, 105, 90, 113)])
+        lower = _arc_staff(300, 200)
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 0
+        assert _arc_classes(upper) == ["slur"]
+        assert _arc_classes(lower) == []
+
+    def test_a_rival_that_is_near_but_not_nearer_does_not_win(self):
+        """Both staves' heads sit close to the arc. Ownership needs a decisive
+        margin, not a photo finish — otherwise a divisi pair would trade arcs
+        on rounding."""
+        upper = _arc_staff(100, 145, arcs=[(10, 160, 90, 168)])
+        lower = _arc_staff(300, 175)
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 0
+        assert _arc_classes(upper) == ["slur"]
+
+    def test_a_one_staff_system_is_never_arbitrated(self):
+        upper = _arc_staff(100, 120, arcs=[(10, 185, 90, 195)])
+        assert arbitrate_arcs_across_staves(_arc_result([upper])) == 0
+        assert _arc_classes(upper) == ["slur"]
+
+    def test_the_flag_off_is_a_no_op(self, monkeypatch):
+        monkeypatch.setenv("OMR_ARC_ATTRIBUTION", "off")
+        upper, lower = self._bled()
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 0
+        assert _arc_classes(upper) == ["slur"]
+
+    def test_drop_mode_removes_without_regifting(self, monkeypatch):
+        monkeypatch.setenv("OMR_ARC_ATTRIBUTION", "drop")
+        upper, lower = self._bled()
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 1
+        assert _arc_classes(upper) == []
+        assert _arc_classes(lower) == []
+
+    def test_it_is_idempotent(self):
+        """Exporting a result twice must not shuttle an arc back and forth: the
+        moved arc's new staff is the one that hugs it, so the pass is a fixed
+        point, and the stamp makes that cheap as well as true."""
+        upper, lower = self._bled()
+        result = _arc_result([upper, lower])
+        assert arbitrate_arcs_across_staves(result) == 1
+        assert arbitrate_arcs_across_staves(result) == 0
+        assert _arc_classes(upper) == []
+        assert _arc_classes(lower) == ["slur"]
+
+    def test_the_moved_arc_becomes_the_new_staff_s_slur(self):
+        """End to end: the arc pairs on the staff it moved to, and on nothing
+        else. Pairing is what the move is FOR."""
+        upper, lower = self._bled()
+        arbitrate_arcs_across_staves(_arc_result([upper, lower]))
+        assert annotate_slurs_in_staff(upper) == 0
+        assert annotate_slurs_in_staff(lower) == 1
+
+    def test_an_arc_over_a_lone_rival_notehead_is_not_claimed(self):
+        """A rival must cover at least two of its own heads: one stray head
+        under a long arc is not a run being bound."""
+        upper = _arc_staff(100, 120, arcs=[(10, 185, 90, 195)])
+        lower = _arc_staff(300, 200)
+        for m in lower["measures"]:
+            m["detections"] = [d for d in m["detections"]
+                               if d["bbox_page"][0] >= 70]
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 0
+        assert _arc_classes(upper) == ["slur"]
+
+
+# ─── Hairpins: the ninth export gap ─────────────────────────────────────────
+
+
+def _hairpin(x0, x1, kind="crescendo", y=60):
+    """One `dynamicCrescendoHairpin` / `dynamicDiminuendoHairpin` detection.
+
+    Drawn BELOW the staff at y=60, which is where an engraver puts one, and
+    deliberately in the SPACE BETWEEN noteheads rather than over them — that is
+    the geometry `_wedge_anchors` exists for.
+    """
+    cls = ("dynamicCrescendoHairpin" if kind == "crescendo"
+           else "dynamicDiminuendoHairpin")
+    return {"category": "dynamic", "class": cls, "confidence": 0.9,
+            "bbox": [x0, y, x1 - x0, 8], "bbox_page": [x0, y, x1 - x0, 8]}
+
+
+def _wedge_states(staff):
+    """Every hairpin mark on the staff, as (measure, x, number, kind)."""
+    out = []
+    for m_idx, measure in enumerate(staff["measures"]):
+        for det in measure["detections"]:
+            for number, kind in det.get("wedge_states") or []:
+                out.append((m_idx, det["bbox_page"][0], number, kind))
+    return sorted(out)
+
+
+class TestHairpins:
+    """`<wedge>` is the NINTH recognised-then-dropped element, and the first
+    one whose detection is partial rather than complete — so unlike the eight
+    before it, wiring the exporter cannot make the reading complete.
+
+    ⚠️ The pairing is NOT the slur pairing with a different class name. A slur
+    is drawn OVER its notes and a hairpin BETWEEN them, so an overlap test
+    finds nothing: measured on the Mahler 5 fixture, the only benchmark page
+    whose hairpins the detector reads, it scores 0 of 4.
+    """
+
+    def test_a_hairpin_between_two_notes_marks_them_both(self):
+        # noteheads centred at 15 and 75; the hairpin's ink is the gap between,
+        # ending within reach of the note it is drawn up to
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68),
+        ]])
+        assert annotate_wedges_in_staff(staff) == 1
+        assert _wedge_states(staff) == [
+            (0, 10, 1, "crescendo"), (0, 70, 1, "stop"),
+        ]
+
+    def test_the_kind_travels_from_the_detected_class(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68, "diminuendo"),
+        ]])
+        annotate_wedges_in_staff(staff)
+        assert (0, 10, 1, "diminuendo") in _wedge_states(staff)
+
+    def test_a_hairpin_under_ONE_long_note_starts_and_stops_on_it(self):
+        """Two of the three hairpins in the Mahler truth do exactly this: the
+        note fills the bar and the hairpin is drawn in the space it leaves. A
+        `<wedge>` start, one `<note>`, a `<wedge>` stop is a legal MusicXML
+        hairpin, so the degenerate case is kept rather than dropped."""
+        staff = _slur_staff([
+            [_slur_head(10), _hairpin(30, 90)],
+            [_slur_head(110)],
+        ])
+        assert annotate_wedges_in_staff(staff) == 1
+        assert _wedge_states(staff) == [
+            (0, 10, 1, "crescendo"), (0, 10, 1, "stop"),
+        ]
+
+    def test_a_staff_the_detector_found_no_notes_in_exports_nothing(self):
+        """Three of the four hairpins detected on the Mahler page sit on a
+        staff with zero noteheads — a hairpin needs a note at each end and
+        there is none to have. A ceiling of the anchoring, not a bug in it."""
+        staff = _slur_staff([[_hairpin(30, 60)]])
+        assert annotate_wedges_in_staff(staff) == 0
+        assert _wedge_states(staff) == []
+
+    def test_a_crescendo_is_never_continued_by_a_diminuendo(self):
+        """`<` then `>` at one barline is a hairpin turning around, which is
+        the commonest shape there is. Both halves are clipped by the boundary
+        exactly as one split hairpin would be, so only the CLASS keeps them
+        apart — joining them would report one long crescendo where the page
+        prints two marks."""
+        staff = _slur_staff([
+            [_slur_head(10), _slur_head(60), _hairpin(70, 100, "crescendo")],
+            [_slur_head(110), _slur_head(160), _hairpin(100, 130, "diminuendo")],
+        ])
+        assert annotate_wedges_in_staff(staff) == 2
+        kinds = {kind for _m, _x, _n, kind in _wedge_states(staff)}
+        assert kinds == {"crescendo", "diminuendo", "stop"}
+
+    def test_two_halves_of_one_hairpin_at_a_barline_are_ONE_wedge(self):
+        staff = _slur_staff([
+            [_slur_head(10), _hairpin(30, 100)],
+            [_slur_head(190), _hairpin(100, 185)],
+        ])
+        assert annotate_wedges_in_staff(staff) == 1
+        assert _wedge_states(staff) == [
+            (0, 10, 1, "crescendo"), (1, 190, 1, "stop"),
+        ]
+
+    def test_overlapping_hairpins_take_distinct_numbers(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(30), _slur_head(50), _slur_head(70),
+            _hairpin(21, 33), _hairpin(41, 53, "diminuendo"),
+        ]])
+        assert annotate_wedges_in_staff(staff) == 2
+        assert {n for _m, _x, n, _k in _wedge_states(staff)} == {1, 2}
+
+    def test_running_twice_does_not_stack_marks(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68),
+        ]])
+        annotate_wedges_in_staff(staff)
+        first = _wedge_states(staff)
+        annotate_wedges_in_staff(staff)
+        assert _wedge_states(staff) == first
+
+    def test_a_staff_with_no_five_line_geometry_abstains(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68),
+        ]])
+        staff["staff_geometry"] = None
+        assert annotate_wedges_in_staff(staff) == 0
+
+    def test_the_search_does_not_reach_past_the_neighbouring_measure(self):
+        """A staff that rests for bars must not donate an anchor from the far
+        side of them. The window is the hairpin's own measures plus one."""
+        staff = _slur_staff([
+            [_slur_head(10)],
+            [],
+            [],
+            [_hairpin(330, 360)],
+        ])
+        assert annotate_wedges_in_staff(staff) == 0
+
+    def test_marks_ride_up_onto_the_event(self):
+        """`group_chords_in_measure` lifts them the way it lifts slur marks,
+        so the exporters see them on the event and not on the notehead."""
+        head = _slur_head(10)
+        head["wedge_states"] = [(1, "crescendo")]
+        events = group_chords_in_measure([head])
+        assert events[0]["wedge_states"] == [(1, "crescendo")]
+
+    def test_musicxml_opens_before_the_note_and_closes_after_it(self):
+        """Not a style choice: music21 attaches a `crescendo` to the NEXT note
+        it parses and a `stop` to the LAST note it parsed, so the element order
+        IS the pair of notes the wedge spans — which is what musicdiff scores.
+        """
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68),
+        ]])
+        xml = to_musicxml({"pages": [{"page_index": 0, "systems": [
+            {"system_index": 0, "staves": [staff]}]}]})
+        body = xml[xml.index("<measure"):]
+        first_note = body.index("<note>")
+        assert body.index('type="crescendo"') < first_note
+        assert body.index('type="stop"') > body.rindex("</note>")
+
+    def test_lilypond_writes_the_post_events(self):
+        staff = _slur_staff([[
+            _slur_head(10), _slur_head(70), _hairpin(30, 68, "diminuendo"),
+        ]])
+        ly = to_lilypond({"pages": [{"page_index": 0, "systems": [
+            {"system_index": 0, "staves": [staff]}]}]})
+        assert "\\>" in ly and "\\!" in ly
+
+    def test_lilypond_refuses_a_hairpin_under_one_note(self):
+        """`c4\\<\\!` is not a hairpin LilyPond can draw, so the degenerate case
+        MusicXML keeps is dropped here — at the limit, rather than upstream of
+        both exporters."""
+        lane = [{"wedge_states": [(1, "crescendo"), (1, "stop")]}]
+        assert _lily_wedge_plan(lane) == {}
+
+    def test_lilypond_drops_the_second_of_two_overlapping_hairpins(self):
+        """LilyPond has no `number=` level: a second `\\<` before the first
+        `\\!` is an error, so an overlapping span is dropped rather than
+        written."""
+        lane = [{"wedge_states": [(1, "crescendo")]},
+                {"wedge_states": [(2, "crescendo")]},
+                {"wedge_states": [(1, "stop")]},
+                {"wedge_states": [(2, "stop")]}]
+        plan = _lily_wedge_plan(lane)
+        assert plan == {id(lane[0]): "\\<", id(lane[2]): "\\!"}
+
+    def test_lilypond_keeps_a_hairpin_that_merely_TOUCHES_the_next(self):
+        """A note that ends one hairpin and begins the next takes `\\!\\<`,
+        which is ordinary LilyPond — touching is not overlapping."""
+        lane = [{"wedge_states": [(1, "crescendo")]},
+                {"wedge_states": [(1, "stop"), (1, "diminuendo")]},
+                {"wedge_states": [(1, "stop")]}]
+        plan = _lily_wedge_plan(lane)
+        assert plan[id(lane[1])] == "\\!\\>"
+
+    def test_lilypond_drops_a_hairpin_whose_ends_are_in_different_lanes(self):
+        """`_lone_voice_is_the_second` routes a measure's lone voice to
+        \\voiceTwo PER MEASURE, so a wedge spanning two measures can find its
+        ends in different LilyPond voices. There is no way to write that."""
+        one = [{"wedge_states": [(1, "crescendo")]}]
+        two = [{"wedge_states": [(1, "stop")]}]
+        assert _lily_wedge_plan(one) == {}
+        assert _lily_wedge_plan(two) == {}
+
+
+# ─── A bar with no notes still carries its marks ────────────────────────────
+
+
+class TestEmptyMeasureDirections:
+    """A measure the detector found no events in takes the whole-measure-rest
+    path, which never calls `_mxl_voice_events` — the only `<direction>`
+    emitter — so its dynamics and words were computed and thrown away.
+
+    ⚠️ **Engraved pages cannot reach this branch**, which is why the orchestral
+    benchmark never saw it: they have notes in every bar. It takes a scan,
+    where a staff rests through a bar that still carries a mark — 2 such
+    measures across the five verified rows of the scan benchmark, 0 across
+    every engraved work. These tests are the only thing that guards it.
+    """
+
+    @staticmethod
+    def _staff_with_one_empty_bar(dets):
+        staff = _slur_staff([dets])
+        return {"pages": [{"page_index": 0, "systems": [
+            {"system_index": 0, "staves": [staff]}]}]}
+
+    def test_a_dynamic_survives_a_bar_with_no_notes(self):
+        ff = [{"category": "dynamic", "class": "dynamicF", "confidence": 0.9,
+               "bbox": [x, 40, 8, 10], "bbox_page": [x, 40, 8, 10]}
+              for x in (20, 30)]
+        xml = to_musicxml(self._staff_with_one_empty_bar(ff))
+        assert "<ff/>" in xml
+
+    def test_a_word_survives_a_bar_with_no_notes(self):
+        staff = _slur_staff([[]])
+        staff["measures"][0]["direction_texts"] = [
+            {"text": "sempre", "x_page": 20}]
+        staff["measures"][0]["upscale_factor"] = 1.0
+        xml = to_musicxml({"pages": [{"page_index": 0, "systems": [
+            {"system_index": 0, "staves": [staff]}]}]})
+        assert "<words>sempre</words>" in xml
+
+    def test_the_mark_comes_BEFORE_the_rest(self):
+        """It lands at offset 0 of the bar. There is no event to place it
+        against — that is what makes the bar empty — so the start of the bar is
+        the only defensible answer."""
+        ff = [{"category": "dynamic", "class": "dynamicP", "confidence": 0.9,
+               "bbox": [20, 40, 8, 10], "bbox_page": [20, 40, 8, 10]}]
+        xml = to_musicxml(self._staff_with_one_empty_bar(ff))
+        assert xml.index("<p/>") < xml.index("<rest/>")
+
+    def test_a_bar_with_no_marks_is_unchanged(self):
+        xml = to_musicxml(self._staff_with_one_empty_bar([]))
+        assert "<direction" not in xml
+        assert "<rest/>" in xml

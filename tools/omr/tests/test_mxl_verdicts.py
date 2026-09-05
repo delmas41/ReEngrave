@@ -377,25 +377,39 @@ def test_windows_accept_the_scan_benchmark_file() -> None:
     # Several editions share a page index: the file must be narrowed.
     with pytest.raises(ValueError):
         mv.load_windows(path)
-    # Since the 2026-09 widening, work_id alone is not narrow enough for a
-    # work held in two editions whose page windows overlap: Beethoven 5's
-    # edition 984073 p.1 and edition 575951 p.2 are both pdf_page_index 1,
-    # and picking one silently would read one scan's page against the
-    # other's window. The refusal is the designed behavior.
-    with pytest.raises(ValueError):
-        mv.load_windows(path, work_id="beethoven--symphony-5")
     rows = mv.load_windows(path, row_ids=["beethoven-sym5-mvt1-984073-p1"])
     assert list(rows) == [1]
     row = rows[1]
     assert row.first_ref_measure == 1 and row.last_ref_measure == 16
     assert len(row.staves) == 12 and row.staves[0].parts == [0, 1]
-    # `same-as:` references resolve to the row they name — the 575951 rows
-    # borrow their staves from the 984073 twins (same Litolff plate).
-    both = mv.load_windows(path, row_ids=["beethoven-sym5-mvt1-575951-p1",
-                                          "beethoven-sym5-mvt1-575951-p2"])
-    assert sorted(both) == [0, 1]
-    assert all(r.staves for r in both.values())
-    assert len(both[0].staves) == 12 and both[0].staves[0].parts == [0, 1]
+    # Since the 2026-09-04 gate widening, Beethoven 5's TWO editions collide
+    # on a page index (984073-p1 and 575951-p2 are both pdf index 1), so
+    # work_id narrowing alone is no longer enough for that work — the loader
+    # refuses rather than letting one edition's page silently replace the
+    # other's, exactly per its docstring. (Pre-widening this "worked" only
+    # because the two editions' indices happened to be disjoint.)
+    with pytest.raises(ValueError, match="984073-p1.*575951-p2"):
+        mv.load_windows(path, work_id="beethoven--symphony-5")
+    # work_id narrowing still works where the work's rows are one edition.
+    # ⚠️ The expected pages are DERIVED from the file, not pinned: the gate has
+    # widened twice already (5 -> 11 -> 20 rows) and a literal page list goes
+    # stale on the next tranche — which is exactly how this test broke, twice.
+    # Deriving still exercises the loader (a dropped or merged row fails here);
+    # it just stops this test from also pinning how far the gate reaches.
+    raw = json.loads(path.read_text())
+    dvorak_pages = sorted(r["page"]["pdf_page_index"]
+                          for r in (raw.get("rows", raw) if isinstance(raw, dict) else raw)
+                          if r.get("work_id") == "dvorak--symphony-9")
+    dvorak = mv.load_windows(path, work_id="dvorak--symphony-9")
+    assert len(dvorak_pages) >= 2 and sorted(dvorak) == dvorak_pages
+    # … and `same-as:` references resolve to the row they name even when the
+    # named row is OUTSIDE the narrowed selection (both 575951 rows point at
+    # their 984073 twins).
+    twins = mv.load_windows(path, row_ids=["beethoven-sym5-mvt1-575951-p1",
+                                           "beethoven-sym5-mvt1-575951-p2"])
+    assert sorted(twins) == [0, 1]
+    assert all(r.staves for r in twins.values())
+    assert len(twins[0].staves) == 12 and twins[0].staves[0].parts == [0, 1]
 
 
 # ---------------------------------------------------------------- the UI

@@ -1,0 +1,330 @@
+{
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/pred-move-m05/tchaikovsky-sym4-mvt2.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/sad-austin-7e16e7/benchmarks/omr-orchestral-e2e/fixtures/tchaikovsky-sym4-mvt2.musicxml",
+  "total_cost": 69,
+  "n_ops": 25,
+  "ops_by_name": {
+    "extrains": 7,
+    "notedel": 4,
+    "noteins": 4,
+    "accidentins": 3,
+    "delbar": 2,
+    "insbar": 2,
+    "extrasymboledit": 2,
+    "extradel": 1
+  },
+  "cost_by_name": {
+    "extrains": 23,
+    "notedel": 12,
+    "noteins": 12,
+    "delbar": 10,
+    "insbar": 4,
+    "extrasymboledit": 4,
+    "accidentins": 3,
+    "extradel": 1
+  },
+  "cost_by_category": {
+    "wrong other object OMR-ED": 28,
+    "wrong note OMR-ED": 24,
+    "entire measure insert/delete OMR-ED": 14,
+    "wrong accidental OMR-ED": 3
+  },
+  "cost_by_part": {
+    "-1 ?": {
+      "wrong other object OMR-ED": 28
+    },
+    "02 Oboe": {
+      "wrong note OMR-ED": 12
+    },
+    "02 Oboe 1": {
+      "wrong note OMR-ED": 12,
+      "wrong accidental OMR-ED": 2
+    },
+    "14 Timpani": {
+      "entire measure insert/delete OMR-ED": 9
+    },
+    "15 Violin 1": {
+      "wrong accidental OMR-ED": 1
+    },
+    "19 Contrabass": {
+      "entire measure insert/delete OMR-ED": 5
+    }
+  },
+  "rows": [
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "tempo,symbol=Quarter=55.0,off=0.0"
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 2,
+      "part_name": "Oboe",
+      "measure": 2,
+      "pred_repr": "[F5]4Bsr",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 2,
+      "part_name": "Oboe",
+      "measure": 2,
+      "pred_repr": "[F5]4Bsp",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 2,
+      "part_name": "Oboe 1",
+      "measure": 2,
+      "pred_repr": null,
+      "truth_repr": "[F5]4Bsr"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 2,
+      "part_name": "Oboe 1",
+      "measure": 2,
+      "pred_repr": null,
+      "truth_repr": "[F5]4Bsp"
+    },
+    {
+      "op": "accidentins",
+      "category": "wrong accidental OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 2,
+      "part_name": "Oboe 1",
+      "measure": 2,
+      "pred_repr": "[A4]4Bsr",
+      "truth_repr": "[A4natural]4Bsr"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "dynamic,symbol=pp,off=0.5"
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 2,
+      "part_name": "Oboe",
+      "measure": 4,
+      "pred_repr": "[C5]4Bsr",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 2,
+      "part_name": "Oboe",
+      "measure": 4,
+      "pred_repr": "[C5]4Bsp",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 2,
+      "part_name": "Oboe 1",
+      "measure": 4,
+      "pred_repr": null,
+      "truth_repr": "[C5]4Bsr"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 2,
+      "part_name": "Oboe 1",
+      "measure": 4,
+      "pred_repr": null,
+      "truth_repr": "[C5]4Bsp"
+    },
+    {
+      "op": "accidentins",
+      "category": "wrong accidental OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 2,
+      "part_name": "Oboe 1",
+      "measure": 4,
+      "pred_repr": "[A4]4Bsr",
+      "truth_repr": "[A4natural]4Bsr"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=pp,off=0.0",
+      "truth_repr": null
+    },
+    {
+      "op": "delbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 7,
+      "side": "pred",
+      "part_index": 14,
+      "part_name": "Timpani",
+      "measure": 2,
+      "pred_repr": "['[R]2'] Extras:['direction,content=pizz.,off=0.0']",
+      "truth_repr": null
+    },
+    {
+      "op": "insbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 2,
+      "side": "truth",
+      "part_index": 14,
+      "part_name": "Timpani",
+      "measure": 8,
+      "pred_repr": null,
+      "truth_repr": "['[R]2']"
+    },
+    {
+      "op": "accidentins",
+      "category": "wrong accidental OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 15,
+      "part_name": "Violin 1",
+      "measure": 3,
+      "pred_repr": "[A4]4Bpa",
+      "truth_repr": "[A4natural]4Bpa"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 5,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "direction,content=pizz.,off=0.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "dynamic,symbol=pp,off=0.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 5,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "direction,content=pizz.,off=0.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 5,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "direction,content=pizz.,off=0.0"
+    },
+    {
+      "op": "extrasymboledit",
+      "category": "wrong other object OMR-ED",
+      "cost": 2,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=p,off=0.0",
+      "truth_repr": "dynamic,symbol=pp,off=0.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 5,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "direction,content=pizz.,off=0.0"
+    },
+    {
+      "op": "extrasymboledit",
+      "category": "wrong other object OMR-ED",
+      "cost": 2,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=p,off=0.0",
+      "truth_repr": "dynamic,symbol=pp,off=0.0"
+    },
+    {
+      "op": "delbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Contrabass",
+      "measure": 2,
+      "pred_repr": "['[R]2'] Extras:['dynamic,symbol=p,off=0.0']",
+      "truth_repr": null
+    },
+    {
+      "op": "insbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 2,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Contrabass",
+      "measure": 8,
+      "pred_repr": null,
+      "truth_repr": "['[R]2']"
+    }
+  ]
+}

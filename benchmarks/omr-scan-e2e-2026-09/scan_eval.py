@@ -331,9 +331,11 @@ def main(argv: list[str] | None = None) -> int:
             win = (f"{w['first_ref_measure']}-{w['last_ref_measure']}"
                    if w.get("last_ref_measure") is not None else "—")
             why = runnable(r)
+            status = ("BLOCKED: " + why) if why else "ok"
+            if not r.get("pooled", True):
+                status += "  · stress row — excluded from the pool"
             print(f"{r['row_id']:38s} {r['page']['pdf_page_index']:>5d} "
-                  f"{win:>10s} {w['confidence']:>10s}  "
-                  f"{'BLOCKED: ' + why if why else 'ok'}")
+                  f"{win:>10s} {w['confidence']:>10s}  {status}")
         return 0
 
     FIXTURES.mkdir(parents=True, exist_ok=True)
@@ -378,6 +380,7 @@ def main(argv: list[str] | None = None) -> int:
                        row["window"]["last_ref_measure"]],
             "leading_pickup": row["window"].get("leading_pickup"),
             "confidence": row["window"]["confidence"],
+            "pooled": row.get("pooled", True),
             "seconds": result.get("_scan_eval_seconds"),
             "truth": {
                 "parts": trim_report["window"]["n_parts"],
@@ -436,7 +439,34 @@ def main(argv: list[str] | None = None) -> int:
               f"{n.get('omr_ed', 0):>7d} {n.get('truth_symbols', 0):>6d} "
               f"{n.get('pred_symbols', 0):>6d}  {r['confidence']}")
 
-    unverified = [r["row_id"] for r in results if r["confidence"] != "verified"]
+    # A row with pooled: false is a STRESS row — it runs and reports per-row
+    # (the table above) but never enters the pooled figure, because its
+    # OMR-NED measures something other than recognition (Bach: page-structure
+    # parsing, 122 detected measures against 10) and whole-measure
+    # amplification there CHARGES recognition improvements as regressions.
+    # Same call as boulanger-printemps-mvt1 in the engraved benchmark.
+    pool = [r for r in results if r.get("pooled", True)]
+    stress = [r for r in results if not r.get("pooled", True)]
+    unverified = [r["row_id"] for r in pool if r["confidence"] != "verified"]
+    unverified_stress = [r["row_id"] for r in stress
+                         if r["confidence"] != "verified"]
+    if unverified_stress:
+        print(f"note: unverified STRESS row(s) scored per-row above, never "
+              f"pooled: {', '.join(unverified_stress)}", file=sys.stderr)
+
+    pool_ned = [r.get("omr_ned") or {} for r in pool]
+    have_ned = bool(pool) and all(n.get("omr_ned") is not None
+                                  for n in pool_ned)
+    if have_ned:
+        pooled_ed = sum(n["omr_ed"] for n in pool_ned)
+        pooled_ts = sum(n["truth_symbols"] for n in pool_ned)
+        pooled_ps = sum(n["pred_symbols"] for n in pool_ned)
+        pooled_ned_val = (pooled_ed / (pooled_ts + pooled_ps)
+                          if (pooled_ts + pooled_ps) else float("nan"))
+        pooled_cats: Counter = Counter()
+        for n in pool_ned:
+            pooled_cats.update(n.get("categories") or {})
+
     print()
     if unverified:
         print("POOLED FIGURE WITHHELD — these rows' measure windows are not "
@@ -446,27 +476,34 @@ def main(argv: list[str] | None = None) -> int:
         print("  A pooled score over an unverified window is the "
               "0.8706-against-17-measures\n  mistake with more decimal places. "
               "Verify the windows, then re-run.")
-    elif scored.get("overall_omr_ned") is not None:
-        print(f"POOLED OMR-NED over {len(results)} scanned pages: "
-              f"{scored['overall_omr_ned']:.4f}")
-        print(f"  {scored.get('overall_omr_ed')} edits over "
-              f"{scored.get('overall_truth_symbols')} truth + "
-              f"{scored.get('overall_pred_symbols')} predicted symbols")
-        cats = scored.get("overall_categories") or {}
-        total = sum(cats.values()) or 1
-        for cat, count in sorted(cats.items(), key=lambda kv: -kv[1])[:6]:
+    elif have_ned:
+        print(f"POOLED OMR-NED over {len(pool)} scanned pages: "
+              f"{pooled_ned_val:.4f}")
+        print(f"  {pooled_ed} edits over {pooled_ts} truth + "
+              f"{pooled_ps} predicted symbols")
+        if stress:
+            print(f"  ({len(stress)} stress row(s) excluded from the pool, "
+                  f"reported per-row above: "
+                  f"{', '.join(r['row_id'] for r in stress)})")
+        total = sum(pooled_cats.values()) or 1
+        for cat, count in sorted(pooled_cats.items(),
+                                 key=lambda kv: -kv[1])[:6]:
             print(f"    {cat:38s} {count:>6d}  {100.0 * count / total:5.1f}%")
+    elif not pool:
+        print("no pooled figure: every scored row is a stress row")
 
     payload = {
         "protocol": protocol,
         "generated_by": "benchmarks/omr-scan-e2e-2026-09/scan_eval.py",
         "pooled_withheld_because": unverified or None,
-        "pooled": None if unverified else {
-            "omr_ned": scored.get("overall_omr_ned"),
-            "omr_ed": scored.get("overall_omr_ed"),
-            "truth_symbols": scored.get("overall_truth_symbols"),
-            "pred_symbols": scored.get("overall_pred_symbols"),
-            "categories": scored.get("overall_categories"),
+        "stress_rows_excluded": [r["row_id"] for r in stress] or None,
+        "pooled": None if (unverified or not have_ned) else {
+            "n_rows": len(pool),
+            "omr_ned": pooled_ned_val,
+            "omr_ed": pooled_ed,
+            "truth_symbols": pooled_ts,
+            "pred_symbols": pooled_ps,
+            "categories": dict(pooled_cats),
         },
         "rows": results,
     }

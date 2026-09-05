@@ -243,3 +243,67 @@ enters the default pool, and the baseline record therefore states the pooled
 figure BOTH with and without it — whether Bach keeps pool membership is an
 open decision for Sean (the Boulanger precedent: a structure-failure row can
 dominate a pool and turn it into a segmentation metric).
+
+---
+
+## 2026-09-04 — Bach excluded from the default pool (Sean's decision)
+
+The Bach stress row stays in works.json, verified and runnable, and is now
+marked `"pooled": false`: `scan_eval.py` runs and reports it per-row on every
+default invocation but keeps it out of the pooled figure. Why: the pipeline
+shatters the page (~6 "systems", 122 detected measures against a true 10), so
+its OMR-NED measures page-structure parsing rather than recognition; pooled,
+it contributed ~19% of the 11-row edit budget and CHARGED recognition
+improvements as regressions (the graft found 326 more real symbols there and
+paid +358 edits — whole-measure amplification on a shattered page). Same
+call, same signature as boulanger-printemps-mvt1 in the engraved benchmark.
+
+**The canonical scan-gate baselines are therefore the 10-row readings** from
+WIDENED_BASELINE_2026-09-04.md: prior-prod (hollow-ft) **0.8457 / 29081**,
+production (hollow-graft-shift09) **0.8387 / 29082**. The 11-row readings
+stay recorded there for the row's eventual re-admission — which happens when
+its segmentation reads ~10 measures, with a boundary note, since pool
+membership changes what the pooled figure means. The fragments align with
+the instrument choirs (3 Vni / 3 Vle / 3 Vc / Cb / Cembalo), so the row
+doubles as the tracked stress metric for choir-grouped system layouts.
+
+---
+
+## 2026-09-05 — Bach re-admitted to the pool (Sean's decision, coupled ship)
+
+`OMR_CHOIR_GROUPING` shipped default-ON and the Bach row's `pooled` flag
+flipped back to true in the same event. The exclusion rationale no longer
+holds: under the cues the page reads 2 systems [12,12] and 11 cells against
+the true 10 (the +1 a pre-existing barline defect present in both arms), so
+its errors are recognition-shaped. ⚠️ **Benchmark boundary:** from the
+re-stamped baseline onward the pool is ELEVEN rows under the composed
+default config (tilt localization ON × choir cues ON); every earlier pooled
+figure (10-row 0.8387/0.8345 included) is on the other side of the boundary
+and is never compared across it. The re-stamp run's figures are recorded in
+the second baseline addendum beside WIDENED_BASELINE_2026-09-04.md.
+
+---
+
+## 2026-09-05 — Nine more rows promoted: the gate reaches 20, in continuous spans
+
+Tranche 2 (drafted on `claude/scan-gate-rows-2`, checklist + 33 crops in
+`crops-2026-09-05/`), verified by Sean against the rendered crops after the
+advisor session pre-read every decisive crop. The engraver carried almost all
+of it: Beethoven p3/p4 close on printed 49/65/83/98/113 (both twins, windows
+transferring by the established plate identity); Brahms p3/p4 on printed
+23/29/38-with-Allegro/48/59, including the corpus's first REPEAT BARLINE
+(the m39–40 start-repeat, future repeat-export test material); Mahler p4/p5
+on printed 17/24/32 (twice per page, as always on this Peters plate); Dvořák
+p7 counted on numbered strips (mm 16–30) and anchored mid-page by the m23‖24
+double bar + "Allegro molto. M.M. ♩=136" + 2/4-with-repeat-dots. The one
+drafter correction — 984073-p4's two systems printing DIFFERENT lineups
+(system 1: no Tp., Vcl./Basso split; system 2: Tp. restored, "Bassi.") — is
+proven by the printed margins and reference-corroborated (Timpani's first
+note exactly m98). Known pipeline miscounts recorded in the rows (the Mahler
+p4 header sliver; 575951-p4's gained mm94–95 barline) are read facts, not
+window facts.
+
+⚠️ **Boundary: the pool becomes TWENTY rows at the post-reconciliation
+re-stamp**, and no pooled figure crosses that line in either direction. The
+11-row era's figures (0.8303 composed canonical included) are history the
+moment the 20-row baseline is stamped.
