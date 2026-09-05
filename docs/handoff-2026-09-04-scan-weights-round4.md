@@ -7,6 +7,41 @@ weights are UNTOUCHED and nothing has shipped.**
 
 ---
 
+## 0. ⚠️ READ THIS BEFORE COMPARING ANY NUMBER BELOW
+
+**EVERY scan-e2e figure in this document is pooled over the FIVE verified rows
+that existed on 2026-09-04** — beethoven-984073, beethoven-575951, dvorak-405834,
+brahms-317803, mahler-local. Production = 0.7517 over THAT pool.
+
+⚠️ **The scan benchmark's era moved TWICE the same day**, per the
+industry-comparison session: 5 rows -> 11 (`results-restamp-composed.json`,
+0.8303 / 35,046 edits) -> 20 (`results-reconciliation.json`, 0.8444 / 74,968).
+A pooled OMR-NED is a property of the work set it is pooled over, so **a figure
+here and a figure from the 11- or 20-row pool are measurements of different
+things and differencing them is invalid in either direction** — the same rule
+`CLAUDE.md` enforces for the engraved 3->11 boundary.
+
+If you resume this work, **re-baseline production on the current pool first**
+and re-run any candidate against it. Do not carry 0.7517 forward.
+
+⚠️ **AND ~2676 EDITS PER ARM ARE NOT A WEIGHTS SIGNAL.** `entire staff
+insert/delete` is 2676 in EVERY arm measured here — production and all
+candidates alike, identical to the edit. The industry-comparison work then
+showed that on the 11-row pool 87% of the `entire staff` bucket is
+**CONDENSATION**, with detection exactly right. So a large, constant slice of
+these pooled figures is inert to anything a checkpoint can change, and the
+weights-sensitive portion is much smaller than the headline suggests. Read the
+per-CATEGORY deltas (wrong note, note head), not the pooled ratio, when judging
+a checkpoint.
+
+For context on where the detector actually stands: the graft09 arm measured
+**0.8345 against Audiveris' 0.7919** on the 10 rows Audiveris can process,
+winning every major reading category (wrong note -88, note head -490, beams -46,
+directions -104) and losing only on `entire staff`. Full split in
+`benchmarks/omr-vs-industry-2026-09/`.
+
+---
+
 ## 1. The one-line state
 
 Round 3 and round 4 both **FAILED** the scan-e2e gate. The labeling work
