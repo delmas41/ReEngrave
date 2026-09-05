@@ -257,3 +257,24 @@ measured flag-OFF; they remain the flag-off record, and comparisons against
 a default-config run must use the flag-on figures (or pin
 `OMR_CELL_LINE_TRACE=0` to compare against the tables here). Per-row
 flag-on figures: WIDENED_PRICING_2026-09-04.md.
+
+---
+
+## Third addendum (2026-09-05): the re-stamped composed baseline — 11 rows
+
+Sean's coupled ship (choir cues default-ON + Bach re-admitted) closed with
+one fresh default-config run (tag `restamp-composed`, graft weights pinned,
+tilt localization ON x choir cues ON, all 11 rows pooled):
+
+**CANONICAL SCAN-GATE BASELINE: pooled OMR-NED 0.8303 / 35,046 edits over
+23,377 truth + 18,834 predicted symbols, 11 rows.**
+(`results-restamp-composed.json`)
+
+Internal consistency, verified: every one of the ten non-Bach rows
+reproduces the tilt-on arm's per-row figure TO THE EDIT (the choir cues'
+byte-identity guarantee holding under composition), so the 10-row subtotal
+is exactly the 0.8345 / 28,849 of the second addendum; Bach enters at
+0.8110 / 6,197 (vs 0.8152 choir-only — the tilt x choir composition is
+worth a further −39 edits there), and at 0.8110 the once-excluded stress
+row now sits BETTER than the pool average. Boundary discipline: no figure
+from the 10-row or 5-row eras compares to this one in either direction.
