@@ -1,0 +1,56 @@
+{
+  "R1_expected_absence": {
+    "hits": 2,
+    "contradicted": 0,
+    "precision": 1.0,
+    "cross_scan_jaccard": 1.0,
+    "rows_fired": [
+      "beethoven-sym5-mvt1-575951-p4",
+      "beethoven-sym5-mvt1-984073-p4"
+    ],
+    "must_fire": true,
+    "must_silent": true
+  },
+  "R2_clef": {
+    "hits": 16,
+    "contradicted": 7,
+    "precision": 0.5625,
+    "cross_scan_jaccard": 0.2,
+    "rows_fired": [
+      "bach-brandenburg3-mvt1-468678-p1",
+      "beethoven-sym5-mvt1-575951-p2",
+      "beethoven-sym5-mvt1-575951-p4",
+      "beethoven-sym5-mvt1-984073-p4",
+      "brahms-sym1-mvt1-317803-p3",
+      "brahms-sym1-mvt1-317803-p4",
+      "dvorak-sym9-mvt1-405834-p7"
+    ],
+    "must_fire": true,
+    "must_silent": false
+  },
+  "R3_raw_key": {
+    "hits": 10,
+    "contradicted": 7,
+    "precision": 0.3,
+    "cross_scan_jaccard": 0.6666666666666666,
+    "rows_fired": [
+      "beethoven-sym5-mvt1-575951-p2",
+      "beethoven-sym5-mvt1-575951-p4",
+      "beethoven-sym5-mvt1-984073-p2",
+      "beethoven-sym5-mvt1-984073-p4",
+      "brahms-sym1-mvt1-317803-p3",
+      "dvorak-sym9-mvt1-405834-p7"
+    ],
+    "must_fire": true,
+    "must_silent": false
+  },
+  "R3p_order_conditioned": {
+    "hits": 0,
+    "contradicted": 0,
+    "precision": NaN,
+    "cross_scan_jaccard": null,
+    "rows_fired": [],
+    "must_fire": false,
+    "must_silent": true
+  }
+}

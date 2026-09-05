@@ -1,0 +1,694 @@
+{
+  "inputs": {
+    "structure_dir": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures",
+    "structure_suffix": ".reconciliation.omr.json",
+    "n_structure_rows": 20,
+    "labels": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a844d0d7ab60d639c/benchmarks/omr-staff-identity-labels-2026-09/ladder.json",
+    "labels_meta": {
+      "fixtures": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-scan-e2e-2026-09/fixtures",
+      "tag": ".graft09",
+      "dpi": 600,
+      "note": "every rung run on every page; ladder early-exit defeated"
+    },
+    "n_label_records": 407,
+    "n_label_resolved": 277
+  },
+  "usable_rows": [
+    "bach-brandenburg3-mvt1-468678-p1",
+    "beethoven-sym5-mvt1-575951-p1",
+    "beethoven-sym5-mvt1-575951-p2",
+    "beethoven-sym5-mvt1-575951-p3",
+    "beethoven-sym5-mvt1-575951-p4",
+    "beethoven-sym5-mvt1-984073-p1",
+    "beethoven-sym5-mvt1-984073-p2",
+    "beethoven-sym5-mvt1-984073-p3",
+    "beethoven-sym5-mvt1-984073-p4",
+    "brahms-sym1-mvt1-317803-p1",
+    "brahms-sym1-mvt1-317803-p2",
+    "brahms-sym1-mvt1-317803-p3",
+    "brahms-sym1-mvt1-317803-p4",
+    "dvorak-sym9-mvt1-405834-p5",
+    "dvorak-sym9-mvt1-405834-p6",
+    "dvorak-sym9-mvt1-405834-p7"
+  ],
+  "fired": {
+    "bach-brandenburg3-mvt1-468678-p1": {
+      "R0": false,
+      "R1": false,
+      "R2": true,
+      "R3": false
+    },
+    "beethoven-sym5-mvt1-575951-p1": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "beethoven-sym5-mvt1-575951-p2": {
+      "R0": false,
+      "R1": false,
+      "R2": true,
+      "R3": false
+    },
+    "beethoven-sym5-mvt1-575951-p3": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "beethoven-sym5-mvt1-575951-p4": {
+      "R0": false,
+      "R1": true,
+      "R2": true,
+      "R3": false
+    },
+    "beethoven-sym5-mvt1-984073-p1": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "beethoven-sym5-mvt1-984073-p2": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "beethoven-sym5-mvt1-984073-p3": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "beethoven-sym5-mvt1-984073-p4": {
+      "R0": false,
+      "R1": true,
+      "R2": true,
+      "R3": false
+    },
+    "brahms-sym1-mvt1-317803-p1": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "brahms-sym1-mvt1-317803-p2": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "brahms-sym1-mvt1-317803-p3": {
+      "R0": false,
+      "R1": false,
+      "R2": true,
+      "R3": false
+    },
+    "brahms-sym1-mvt1-317803-p4": {
+      "R0": false,
+      "R1": false,
+      "R2": true,
+      "R3": false
+    },
+    "dvorak-sym9-mvt1-405834-p5": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "dvorak-sym9-mvt1-405834-p6": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "dvorak-sym9-mvt1-405834-p7": {
+      "R0": false,
+      "R1": false,
+      "R2": true,
+      "R3": false
+    },
+    "mahler-sym5-mvt1-local-p2": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "mahler-sym5-mvt1-local-p3": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "mahler-sym5-mvt1-local-p4": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    },
+    "mahler-sym5-mvt1-local-p5": {
+      "R0": false,
+      "R1": false,
+      "R2": false,
+      "R3": false
+    }
+  },
+  "per_row": {
+    "bach-brandenburg3-mvt1-468678-p1": {
+      "counts": [
+        12,
+        12
+      ],
+      "n_equal_pairs": 1,
+      "abstained_structure_mismatch": false,
+      "pairs": [
+        {
+          "systems": [
+            0,
+            1
+          ],
+          "n": 12,
+          "labelled_A": [
+            1,
+            4,
+            7,
+            9,
+            10
+          ],
+          "labelled_B": [],
+          "prefix_A": false,
+          "prefix_B": false,
+          "R0": [],
+          "R1": [],
+          "R2": [
+            [
+              9,
+              "treble",
+              "bass"
+            ]
+          ],
+          "R3": []
+        }
+      ]
+    },
+    "beethoven-sym5-mvt1-575951-p1": {
+      "counts": [
+        12
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": false,
+      "pairs": []
+    },
+    "beethoven-sym5-mvt1-575951-p2": {
+      "counts": [
+        11,
+        11
+      ],
+      "n_equal_pairs": 1,
+      "abstained_structure_mismatch": false,
+      "pairs": [
+        {
+          "systems": [
+            0,
+            1
+          ],
+          "n": 11,
+          "labelled_A": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "labelled_B": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "prefix_A": true,
+          "prefix_B": true,
+          "R0": [],
+          "R1": [],
+          "R2": [
+            [
+              9,
+              "treble",
+              "alto"
+            ]
+          ],
+          "R3": []
+        }
+      ]
+    },
+    "beethoven-sym5-mvt1-575951-p3": {
+      "counts": [
+        11,
+        8
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": false,
+      "pairs": []
+    },
+    "beethoven-sym5-mvt1-575951-p4": {
+      "counts": [
+        11,
+        11
+      ],
+      "n_equal_pairs": 1,
+      "abstained_structure_mismatch": false,
+      "pairs": [
+        {
+          "systems": [
+            0,
+            1
+          ],
+          "n": 11,
+          "labelled_A": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "labelled_B": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "prefix_A": true,
+          "prefix_B": true,
+          "R0": [],
+          "R1": [
+            [
+              6,
+              "Timpani",
+              "A"
+            ]
+          ],
+          "R2": [
+            [
+              1,
+              "treble",
+              "treble_8vb"
+            ],
+            [
+              6,
+              "treble",
+              "bass"
+            ],
+            [
+              7,
+              "treble",
+              "treble_8vb"
+            ],
+            [
+              8,
+              "alto",
+              "treble"
+            ],
+            [
+              9,
+              "tenor",
+              "alto"
+            ]
+          ],
+          "R3": []
+        }
+      ]
+    },
+    "beethoven-sym5-mvt1-984073-p1": {
+      "counts": [
+        12
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": false,
+      "pairs": []
+    },
+    "beethoven-sym5-mvt1-984073-p2": {
+      "counts": [
+        11,
+        11
+      ],
+      "n_equal_pairs": 1,
+      "abstained_structure_mismatch": false,
+      "pairs": [
+        {
+          "systems": [
+            0,
+            1
+          ],
+          "n": 11,
+          "labelled_A": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "labelled_B": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "prefix_A": true,
+          "prefix_B": true,
+          "R0": [],
+          "R1": [],
+          "R2": [],
+          "R3": []
+        }
+      ]
+    },
+    "beethoven-sym5-mvt1-984073-p3": {
+      "counts": [
+        11,
+        8
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": false,
+      "pairs": []
+    },
+    "beethoven-sym5-mvt1-984073-p4": {
+      "counts": [
+        11,
+        11
+      ],
+      "n_equal_pairs": 1,
+      "abstained_structure_mismatch": false,
+      "pairs": [
+        {
+          "systems": [
+            0,
+            1
+          ],
+          "n": 11,
+          "labelled_A": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "labelled_B": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "prefix_A": true,
+          "prefix_B": true,
+          "R0": [],
+          "R1": [
+            [
+              6,
+              "Timpani",
+              "A"
+            ]
+          ],
+          "R2": [
+            [
+              9,
+              "bass",
+              "alto"
+            ]
+          ],
+          "R3": []
+        }
+      ]
+    },
+    "brahms-sym1-mvt1-317803-p1": {
+      "counts": [
+        14
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": false,
+      "pairs": []
+    },
+    "brahms-sym1-mvt1-317803-p2": {
+      "counts": [
+        14,
+        13
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": false,
+      "pairs": []
+    },
+    "brahms-sym1-mvt1-317803-p3": {
+      "counts": [
+        14,
+        14
+      ],
+      "n_equal_pairs": 1,
+      "abstained_structure_mismatch": false,
+      "pairs": [
+        {
+          "systems": [
+            0,
+            1
+          ],
+          "n": 14,
+          "labelled_A": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "labelled_B": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "prefix_A": false,
+          "prefix_B": false,
+          "R0": [],
+          "R1": [],
+          "R2": [
+            [
+              4,
+              "treble",
+              "bass"
+            ],
+            [
+              8,
+              "treble",
+              "bass"
+            ],
+            [
+              12,
+              "bass",
+              "tenor"
+            ]
+          ],
+          "R3": []
+        }
+      ]
+    },
+    "brahms-sym1-mvt1-317803-p4": {
+      "counts": [
+        14,
+        14
+      ],
+      "n_equal_pairs": 1,
+      "abstained_structure_mismatch": false,
+      "pairs": [
+        {
+          "systems": [
+            0,
+            1
+          ],
+          "n": 14,
+          "labelled_A": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "labelled_B": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "prefix_A": false,
+          "prefix_B": false,
+          "R0": [],
+          "R1": [],
+          "R2": [
+            [
+              3,
+              "bass",
+              "tenor"
+            ],
+            [
+              8,
+              "treble",
+              "bass"
+            ],
+            [
+              12,
+              "bass",
+              "tenor"
+            ]
+          ],
+          "R3": []
+        }
+      ]
+    },
+    "dvorak-sym9-mvt1-405834-p5": {
+      "counts": [
+        15
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": false,
+      "pairs": []
+    },
+    "dvorak-sym9-mvt1-405834-p6": {
+      "counts": [
+        15
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": false,
+      "pairs": []
+    },
+    "dvorak-sym9-mvt1-405834-p7": {
+      "counts": [
+        15,
+        15
+      ],
+      "n_equal_pairs": 1,
+      "abstained_structure_mismatch": false,
+      "pairs": [
+        {
+          "systems": [
+            0,
+            1
+          ],
+          "n": 15,
+          "labelled_A": [],
+          "labelled_B": [],
+          "prefix_A": false,
+          "prefix_B": false,
+          "R0": [],
+          "R1": [],
+          "R2": [
+            [
+              3,
+              "treble",
+              "bass"
+            ],
+            [
+              7,
+              "treble",
+              "alto"
+            ]
+          ],
+          "R3": []
+        }
+      ]
+    },
+    "mahler-sym5-mvt1-local-p2": {
+      "counts": [
+        17
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": true,
+      "pairs": []
+    },
+    "mahler-sym5-mvt1-local-p3": {
+      "counts": [
+        13
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": true,
+      "pairs": []
+    },
+    "mahler-sym5-mvt1-local-p4": {
+      "counts": [
+        18
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": true,
+      "pairs": []
+    },
+    "mahler-sym5-mvt1-local-p5": {
+      "counts": [
+        17
+      ],
+      "n_equal_pairs": 0,
+      "abstained_structure_mismatch": true,
+      "pairs": []
+    }
+  },
+  "preregistered": {
+    "must_fire": [
+      "beethoven-sym5-mvt1-575951-p4",
+      "beethoven-sym5-mvt1-984073-p4"
+    ],
+    "must_be_silent": [
+      "brahms-sym1-mvt1-317803-p3",
+      "brahms-sym1-mvt1-317803-p4"
+    ],
+    "pass": true
+  }
+}
