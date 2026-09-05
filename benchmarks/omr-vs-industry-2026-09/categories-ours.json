@@ -1,0 +1,28 @@
+{
+ "candidate": "sad-austin-7e16e7",
+ "categories": {
+  "wrong flag/beam": 449,
+  "wrong clef": 19,
+  "wrong keysig": 19,
+  "wrong direction": 220,
+  "wrong dynamic": 106,
+  "wrong crescendo": 3,
+  "wrong diminuendo": 5,
+  "entire measure insert/delete": 279,
+  "wrong note": 1256,
+  "wrong accidental": 3,
+  "wrong tempo": 5,
+  "wrong note head": 14,
+  "wrong tie": 29,
+  "wrong lyric": 45,
+  "wrong articulation": 63,
+  "wrong slur": 123,
+  "wrong timesig": 3,
+  "wrong barline": 27,
+  "wrong ornament": 12,
+  "wrong tuplet": 2,
+  "wrong staff group": 20,
+  "wrong staff info": 1,
+  "entire staff insert/delete": 42
+ }
+}

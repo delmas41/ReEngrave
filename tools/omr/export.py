@@ -1382,6 +1382,11 @@ def measure_directions(measure: dict[str, Any]) -> list[tuple[float, str, str]]:
     entry point for both so a caller asks "what marks does this measure carry"
     rather than assembling the answer itself — there is more than one place in
     this file that emits a measure, and they must not drift.
+
+    ⚠️ HAIRPINS ARE NOT HERE, and that is a design choice rather than a gap:
+    a wedge is a SPAN, so `annotate_wedges_in_staff` attaches it to the notes it
+    covers, the way slurs are done. See `KNOWN_GAPS["wedge"]` for what that
+    costs on a bar with no detected events.
     """
     return (measure_dynamics(measure.get("detections", []))
             + measure_direction_words(measure))
@@ -1411,9 +1416,103 @@ def _mxl_direction(item: tuple[str, str], indent: str) -> str:
             f"{indent}</direction>")
 
 
+def measure_has_fermata(detections: list[dict[str, Any]]) -> bool:
+    """Does this measure carry a fermata the whole-measure rest should wear?
+
+    THE SAME BRANCH AS `_mxl_empty_measure`, ONE LAYER DOWN. A fermata attaches
+    to an EVENT, and a measure with no detected events emits only a
+    whole-measure rest — which was built without one, so the mark was read and
+    dropped exactly as the directions were before that function existed.
+
+    ⚠️ `annotate_fermatas` already documents that a fermata on an orchestral
+    page is usually over a whole-bar rest rather than a note. That is precisely
+    the case this branch handles, so it is the likeliest fermata of all, not an
+    edge case. Found by `score_translation`: Beethoven 5 detects 36, its truth
+    has 36, and 35 reached the file — the missing one is P7 m5, whose staff
+    detects a `restWhole` that `group_chords_in_measure` does not turn into an
+    event, so the bar falls to this branch while its neighbours do not.
+    """
+    return any((d.get("class") or "").lower().startswith("fermata")
+               for d in detections)
+
+
+#: The two hairpin classes, and the `<wedge>` type each one opens with.
+_HAIRPIN_TYPES = {
+    "dynamicCrescendoHairpin": "crescendo",
+    "dynamicDiminuendoHairpin": "diminuendo",
+}
+
+
+def eventless_wedges(
+    detections: list[dict[str, Any]]
+) -> list[tuple[float, int, str]]:
+    """`(x, number, type)` for the hairpins of a measure with NO events.
+
+    ⚠️ A wedge is normally attached to the NOTES it covers —
+    `annotate_wedges_in_staff` writes `wedge_states` onto events, the way slurs
+    are done — and that is right, because a hairpin is a span OVER music. A bar
+    the detector found no events in has nothing to attach to, so the hairpin was
+    dropped.
+
+    ⚠️ AND IT FIRES NOWHERE IN THE CURRENT CORPUS, which is stated rather than
+    hidden. 8 of the 60 CV-read hairpins on the scan benchmark do not become
+    wedges, and all four of Dvorak 9 p5's sit in bars the pipeline reads as a
+    single `restWhole` — but this branch is not why, and the reason took two
+    wrong answers to find:
+
+      * "the staves are densely playing and the rest is a misdetection" — WRONG,
+        and it was asserted here from a crop taken at the RIGHT-HAND side of the
+        page, which shows the later bars where those staves do play. The trimmed
+        truth says Flauti and Oboi have **0 sounding notes in bars 1-5** and
+        play only in 6-8, and the pipeline's counts for the bars they do play
+        (4, 5, 9) sit against a truth of (5, 5, 6). The resting reading is
+        RIGHT.
+      * what is actually broken there is MEASURE SEGMENTATION: staff 0's measure
+        boxes overlap massively and the last runs to x=9055 on a 5084-wide page,
+        so which bar a hairpin falls in is not reliably answerable on that staff.
+
+    So the 8 are not evidence for anchoring a wedge to a rest — if those bars
+    genuinely rest, a hairpin filed there is MISATTRIBUTED, and anchoring it
+    would cement the error. That is the same conclusion the convention reaches
+    from the other side: a hairpin belongs to sounding music.
+
+    This stays because the hole is real — a bar with genuinely no events would
+    otherwise drop a hairpin the reader can see — and because
+    `_mxl_empty_measure` already carries dynamics and words for exactly that
+    case. It is guarded by unit tests rather than by the corpus.
+
+    With no events the span degenerates — there is nothing to span — so the
+    opening and the stop go at the hairpin's own x positions. That is the same
+    reasoning `_mxl_empty_measure` already uses for a direction: no event to
+    place it against, so its own position is the only defensible answer.
+
+    The `number` is the smallest not currently open, which is what MusicXML uses
+    it for; within one bar overlapping hairpins are rare but not impossible.
+    """
+    spans = []
+    for det in detections:
+        kind = _HAIRPIN_TYPES.get(det.get("class") or "")
+        box = det.get("bbox")
+        if kind and box and len(box) == 4 and box[2] > 0:
+            spans.append((float(box[0]), float(box[0]) + float(box[2]), kind))
+    if not spans:
+        return []
+    out: list[tuple[float, int, str]] = []
+    open_until: dict[int, float] = {}
+    for x0, x1, kind in sorted(spans):
+        for n in range(1, len(spans) + 2):
+            if open_until.get(n, -1.0) <= x0:
+                break
+        open_until[n] = x1
+        out.append((x0, n, kind))
+        out.append((x1, n, "stop"))
+    return sorted(out)
+
+
 def _mxl_empty_measure(time_sig: dict[str, Any] | None, divisions: int,
                        directions: list[tuple[float, str, str]] | None,
-                       indent: str) -> list[str]:
+                       indent: str, fermata: bool = False,
+                       wedges: list[tuple[float, int, str]] | None = None) -> list[str]:
     """A whole-measure rest, WITH whatever marks that measure carries.
 
     ⚠️ **A BAR WITH NO NOTES STILL CARRIES ITS MARKS**, and this is the one
@@ -1444,12 +1543,18 @@ def _mxl_empty_measure(time_sig: dict[str, Any] | None, divisions: int,
     `_direction_slots`' nearest-note rule has nothing to say here, and the
     start of the bar is the only defensible answer.
     """
-    lines = [_mxl_direction((kind, text), indent)
-             for _x, kind, text in sorted(directions or [])]
+    marks: list[tuple[float, str]] = [
+        (x, _mxl_direction((kind, text), indent))
+        for x, kind, text in (directions or [])
+    ]
+    marks += [(x, _mxl_wedge(number, kind, indent))
+              for x, number, kind in (wedges or [])]
+    lines = [xml for _x, xml in sorted(marks, key=lambda m: m[0])]
     r_beats, r_type, r_dots = _mxl_measure_rest(time_sig)
     lines.append(_mxl_note(
         None, "", r_type, r_dots, r_beats, divisions,
         is_chord=False, is_rest=True, indent=indent, voice=1,
+        fermata=fermata,
     ))
     return lines
 
@@ -2540,7 +2645,22 @@ def _wedge_anchors(
             box = det["bbox_page"]
             candidates.append((m_idx, box[0] + box[2] / 2.0, det))
             widths.append(float(box[2]))
-    if len(candidates) < 2:
+    # ⚠️ ONE ANCHOR IS ENOUGH — Sean's rule, 2026-09-05. This required TWO
+    # candidate noteheads, which throws the hairpin away in exactly the case a
+    # scan produces most: the ink is read correctly, the bar it belongs to is
+    # found, and the detector recovered only one of the notes under it. The
+    # start is the anchor that matters — it says which measure and which voice
+    # the wedge opens in — and the stop already tolerates landing on the SAME
+    # note (see the equal-is-allowed note below), which is the shape a hairpin
+    # drawn under one long note has anyway. Requiring a second note asked the
+    # page for a fact the wedge does not need.
+    #
+    # Measured on the eleven scored scan pages: 116 -> 118 exported `<wedge>`
+    # of 198, entirely from Mahler 5 p2, which goes 4 -> 6 against a truth of
+    # exactly 6. The six pages that carry no hairpin stay at 0 — the abstention
+    # that makes the CV reader trustworthy is untouched. All ELEVEN engraved
+    # orchestral exports are byte-identical (sha1), so OMR-NED cannot move.
+    if not candidates:
         return None
     candidates.sort(key=lambda c: (c[0], c[1]))
     pad = _WEDGE_ANCHOR_PAD_NOTEHEADS * (sum(widths) / len(widths))
@@ -3032,7 +3152,10 @@ def _staff_measures_xml(
         _dyn = measure_directions(measure)
 
         if not events:
-            inner.extend(_mxl_empty_measure(m_time, divisions, _dyn, "      "))
+            inner.extend(_mxl_empty_measure(
+                m_time, divisions, _dyn, "      ",
+                fermata=measure_has_fermata(measure.get("detections", [])),
+                wedges=eventless_wedges(measure.get("detections", []))))
         elif len(voices) == 1:
             v1_lines, _ = _mxl_voice_events(
                 voices[0], voice=1, divisions=divisions, indent="      ",
@@ -3117,6 +3240,150 @@ def _stitch_slots(result: dict[str, Any]) -> list[list[dict[str, Any]]] | None:
     return slots
 
 
+def _slot_stitch_enabled() -> bool:
+    """`OMR_SLOT_STITCH` — join by contextual SLOT where the ordinal join refuses.
+
+    DEFAULT OFF, and measured rather than assumed. See
+    `benchmarks/omr-staff-structure-2026-09/FINDINGS.md`: the join it produces
+    is structurally CORRECT — on Brahms 1 p.2 it recovers 14 continuous parts
+    from the 27 per-system fragments the refusal falls back to, and the slot it
+    leaves short is exactly the Trompeten staff the second system suppresses —
+    and it still costs more OMR-NED than the fragments do, because musicdiff
+    charges an unpaired truth PART more than it charges that part's unpaired
+    MEASURES. The flag exists so the finding is reproducible, not because the
+    default is in doubt.
+    """
+    return os.environ.get("OMR_SLOT_STITCH", "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _condensed_parts_enabled() -> bool:
+    """`OMR_CONDENSED_PARTS` — emit one part per PLAYER on a condensed staff.
+
+    DEFAULT OFF. A conductor's page prints `Flauti` on one staff and the
+    reference encoding may hold two parts behind it; where a staff carries a
+    `condensed_parts` count above 1, this emits that many MusicXML parts from
+    the one staff instead of one.
+
+    ⚠️ Whether the reference splits a condensed staff is a property of the
+    ENCODING, not of the engraving — measured in
+    `benchmarks/omr-condensed-parts-2026-09/FINDINGS.md`, where the identical
+    printed label `Flauti` is two reference parts in Beethoven 5 and ONE in
+    Dvořák 9. So the count is never inferred from the label alone here; a staff
+    with no `condensed_parts` field is emitted exactly as before, which is what
+    keeps a page with no evidence byte-identical.
+    """
+    return os.environ.get("OMR_CONDENSED_PARTS", "0").strip().lower() in (
+        "1", "true", "yes", "on", "all")
+
+
+def _condensed_on_fragments() -> bool:
+    """`OMR_CONDENSED_PARTS=all` — split FRAGMENTS too.
+
+    ⚠️ DEFAULT NO, and measured. A fragment is what the per-system path emits
+    when a page holds several systems and the ordinal join REFUSED: the part is
+    already one `<part>` per (system, staff), and splitting each fragment
+    MULTIPLIES the fragmentation rather than repairing it. Measured on Brahms 1
+    p.2, the corpus's only such page: 27 fragments become 41 against a truth of
+    21, and the row costs **+904 edits** where every other row gains.
+
+    Splitting is a claim that a part is CONTINUOUS, so it is only made where
+    the exporter has established that — either because stitching succeeded, or
+    because the page holds one system and the question does not arise.
+
+    ⚠️ A single-system page also takes the per-system path (`_stitch_slots`
+    returns None for one system on purpose), so "per-system path" and
+    "fragmented" are NOT the same thing. Gating on the path instead of on the
+    fragmentation silently withheld the split from seven of the eleven scan
+    rows, including every row it gains most on.
+    """
+    return os.environ.get("OMR_CONDENSED_PARTS", "0").strip().lower() == "all"
+
+
+def _condensed_count(staves: list[dict[str, Any]]) -> int:
+    """How many parts this slot's staff carries. 1 unless something said so.
+
+    Reads the staff dicts rather than a label, so the decision is made upstream
+    and this stays a serializer. Abstains (returns 1) on any disagreement
+    between the systems of one slot — a slot whose systems disagree about how
+    many players it holds is not evidence, it is a contradiction.
+    """
+    if not _condensed_parts_enabled():
+        return 1
+    counts = {int(s.get("condensed_parts") or 1) for s in staves}
+    if len(counts) != 1:
+        return 1
+    n = counts.pop()
+    return n if n >= 1 else 1
+
+
+def _stitch_slots_by_slot(
+    result: dict[str, Any],
+) -> tuple[list[list[dict[str, Any]]], list[list[int]]] | None:
+    """The ordinal join's fallback, using the part identity contextual already has.
+
+    `_stitch_slots` joins the n-th staff of one system to the n-th of the next
+    and REFUSES the moment two systems disagree about how many staves they
+    have, because position-grafting a tacet-suppressed page would put one
+    instrument's music onto another. That refusal is correct and stays. What it
+    falls back TO is the problem: one part per (system, staff), each pairing
+    with nothing in the truth.
+
+    The contextual pass has already answered the question the ordinal join
+    cannot — `slots.assign_slots` aligns each system against a reference layout
+    with deletions allowed, so a suppressed staff shows up as a MISSING slot
+    rather than as a shift. Where every staff carries such a slot, joining on it
+    is the same join `_stitch_slots` makes, with the tacet case expressed.
+
+    Returns `(slots, slot_systems)`; `slot_systems[i][j]` is the system index of
+    `slots[i][j]`, because a slot need not appear in every system and the
+    measure numbering is per system.
+
+    Abstains — returns None — unless the evidence is complete and consistent:
+    every staff of every system carries a slot, no system repeats a slot, and
+    the join actually differs from what the ordinal path would do. An abstention
+    leaves the exporter byte-identical to today.
+    """
+    systems = [
+        system
+        for page in result.get("pages", [])
+        for system in page.get("systems", [])
+        if system.get("staves")
+    ]
+    if len(systems) < 2:
+        return None
+    per_system: list[list[int]] = []
+    for system in systems:
+        row = [staff.get("slot_index", -1) for staff in system["staves"]]
+        # A single unassigned staff is enough to abstain. Placing the staves
+        # that DID resolve and dropping the rest would silently lose music,
+        # which is worse than the fragments this is trying to replace.
+        if any(v is None or v < 0 for v in row):
+            return None
+        if len(set(row)) != len(row):
+            return None
+        per_system.append(row)
+    if any(_is_fragmented_row(system["staves"]) for system in systems):
+        return None
+    order = sorted({v for row in per_system for v in row})
+    slots: list[list[dict[str, Any]]] = [[] for _ in order]
+    slot_systems: list[list[int]] = [[] for _ in order]
+    at = {slot: i for i, slot in enumerate(order)}
+    for sys_idx, (system, row) in enumerate(zip(systems, per_system)):
+        for staff, slot in zip(system["staves"], row):
+            slots[at[slot]].append(staff)
+            slot_systems[at[slot]].append(sys_idx)
+    return slots, slot_systems
+
+
+def _is_fragmented(result: dict[str, Any]) -> bool:
+    """Several systems that did NOT stitch into continuous parts."""
+    systems = [s for page in result.get("pages", [])
+               for s in page.get("systems", []) if s.get("staves")]
+    return len(systems) > 1 and _stitch_slots(result) is None
+
+
+
 def to_musicxml(result: dict[str, Any]) -> str:
     """Serialize a transcribe.py result to a MusicXML score-partwise XML
     string. One <part> per (page, system, position-within-system) staff.
@@ -3144,6 +3411,13 @@ def to_musicxml(result: dict[str, Any]) -> str:
     # Stitched path: one part per SLOT, carrying that slot's staff from every
     # system of the piece. See `_stitch_slots` for when this is not safe.
     slots = _stitch_slots(result)
+    slot_systems: list[list[int]] | None = None
+    if slots is None and _slot_stitch_enabled():
+        # Only ever reached where the ordinal join REFUSED — a page whose
+        # systems agree on staff count keeps the ordinal join untouched.
+        by_slot = _stitch_slots_by_slot(result)
+        if by_slot is not None:
+            slots, slot_systems = by_slot
     if slots is not None:
         systems = [
             system
@@ -3167,39 +3441,61 @@ def to_musicxml(result: dict[str, Any]) -> str:
             starts.append(running)
             running += max(len(s.get("measures", [])) for s in system["staves"])
         for ordinal, slot in enumerate(slots):
-            part_idx += 1
-            part_id = f"P{part_idx}"
             # Prefer the instrument the contextual pass named, as the
             # per-system path below does — a slot is the same staff on every
             # system, so any system's reading names the whole part.
             instrument = next(
                 (s.get("instrument") for s in slot if s.get("instrument")), None
             )
-            part_name = instrument if instrument else f"Staff {ordinal}"
-            part_list.append(
-                f"  <score-part id=\"{part_id}\">\n"
-                f"    <part-name>{_xml_escape(part_name)}</part-name>\n"
-                f"  </score-part>"
-            )
+            base_name = instrument if instrument else f"Staff {ordinal}"
             # The slot is ONE part, so its slurs are paired across every system
             # it spans before any of its measures are written — that is what
             # lets a slur opened in the last bar of one system close in the
             # first bar of the next.
             annotate_slurs_in_slot(slot)
             annotate_wedges_in_slot(slot)
-            state: dict[str, Any] = {}
-            measures_xml: list[str] = []
-            for staff, start in zip(slot, starts):
-                measures_xml += _staff_measures_xml(
-                    staff, divisions, start, state, pair_spanners=False)
-            parts_xml.append(
-                f"  <part id=\"{part_id}\">\n"
-                + "\n".join(measures_xml)
-                + "\n  </part>"
-            )
+            # A slot need not appear in every system (a suppressed tacet
+            # staff), so each staff takes ITS OWN system's measure start rather
+            # than the n-th one. The ordinal path's slots are dense, so
+            # `range(len(systems))` reproduces the old zip exactly.
+            in_systems = (slot_systems[ordinal] if slot_systems is not None
+                          else range(len(systems)))
+            n_players = _condensed_count(slot)
+            for player in range(n_players):
+                part_idx += 1
+                part_id = f"P{part_idx}"
+                part_name = (base_name if n_players == 1
+                             else f"{base_name} {player + 1}")
+                part_list.append(
+                    f"  <score-part id=\"{part_id}\">\n"
+                    f"    <part-name>{_xml_escape(part_name)}</part-name>\n"
+                    f"  </score-part>"
+                )
+                # Each player re-serializes the SAME staff from a fresh state.
+                # `_staff_measures_xml` mutates `state` (running clef, key and
+                # meter), so a shared dict would suppress the attributes on
+                # every player after the first.
+                state: dict[str, Any] = {}
+                measures_xml: list[str] = []
+                for staff, sys_i in zip(slot, in_systems):
+                    measures_xml += _staff_measures_xml(
+                        staff, divisions, starts[sys_i], state,
+                        pair_spanners=False)
+                parts_xml.append(
+                    f"  <part id=\"{part_id}\">\n"
+                    + "\n".join(measures_xml)
+                    + "\n  </part>"
+                )
         if is_piano:
             part_list.append("  <part-group type=\"stop\" number=\"1\"/>")
         return _score_partwise(result, part_list, parts_xml)
+
+    # Reached either because the page holds ONE system (where a part is
+    # continuous by construction) or because stitching refused (where the parts
+    # here are per-system fragments). Only the first may be split — see
+    # `_condensed_on_fragments`.
+    split_fragments_ok = (_condensed_on_fragments()
+                          or not _is_fragmented(result))
 
     for page in result.get("pages", []):
         for sys_idx, sys_ in enumerate(page.get("systems", [])):
@@ -3275,7 +3571,11 @@ def to_musicxml(result: dict[str, Any]) -> str:
 
                     if not events:
                         inner.extend(_mxl_empty_measure(
-                            m_time, divisions, _dyn, "      "))
+                            m_time, divisions, _dyn, "      ",
+                            fermata=measure_has_fermata(
+                                measure.get("detections", [])),
+                            wedges=eventless_wedges(
+                                measure.get("detections", []))))
                     elif len(voices) == 1:
                         v1_lines, _ = _mxl_voice_events(
                             voices[0], voice=1, divisions=divisions, indent="      ",
@@ -3329,8 +3629,6 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     f"  </part-group>"
                 )
             for staff_idx_in_sys, staff in enumerate(staves):
-                part_idx += 1
-                part_id = f"P{part_idx}"
                 # Prefer the instrument the contextual pass named. Until it was
                 # wired into `transcribe` nothing here HAD a name to use, so
                 # every part came out as its own grid reference — the complaint
@@ -3338,25 +3636,32 @@ def to_musicxml(result: dict[str, Any]) -> str:
                 # the pass could not name still falls back to the coordinates,
                 # so a run with `--no-contextual` is byte-identical to before.
                 instrument = staff.get("instrument")
-                part_name = instrument if instrument else (
+                base_name = instrument if instrument else (
                     f"Staff p{page['page_index']}-s{sys_idx}-"
                     f"{staff_idx_in_sys}"
                 )
-                part_list.append(
-                    f"  <score-part id=\"{part_id}\">\n"
-                    f"    <part-name>{_xml_escape(part_name)}</part-name>\n"
-                    f"  </score-part>"
-                )
+                n_players = (_condensed_count([staff])
+                             if split_fragments_ok else 1)
+                for player in range(n_players):
+                    part_idx += 1
+                    part_id = f"P{part_idx}"
+                    part_name = (base_name if n_players == 1
+                                 else f"{base_name} {player + 1}")
+                    part_list.append(
+                        f"  <score-part id=\"{part_id}\">\n"
+                        f"    <part-name>{_xml_escape(part_name)}</part-name>\n"
+                        f"  </score-part>"
+                    )
 
-                measures_xml = _staff_measures_xml(
-                    staff, divisions, sys_start_num, {},
-                )
+                    measures_xml = _staff_measures_xml(
+                        staff, divisions, sys_start_num, {},
+                    )
 
-                parts_xml.append(
-                    f"  <part id=\"{part_id}\">\n"
-                    + "\n".join(measures_xml)
-                    + "\n  </part>"
-                )
+                    parts_xml.append(
+                        f"  <part id=\"{part_id}\">\n"
+                        + "\n".join(measures_xml)
+                        + "\n  </part>"
+                    )
             # After all staves in this piano system are listed, close
             # the part-group.
             if is_piano:

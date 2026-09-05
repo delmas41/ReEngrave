@@ -1025,6 +1025,30 @@ is a **scanned** work, where a staff genuinely rests through a marked bar and
 the detector finds nothing in it; every work here is engraved, and engraved
 pages put an event in every bar.
 
+⚠️ **THAT PREDICTION WAS CORRECT, AND THE BUG IS LIVE — measured 2026-09-04.**
+Over 11 scanned pages with hand-verified windows, the eventless-measure branch
+computes `measure_directions()`, assigns it to `_dyn`, and never uses it:
+**14 dynamics are read and discarded**, against **0** on the engraved eleven —
+the benchmark's blindness and the scan's exposure, both confirmed on the same
+run. The attribution is exact rather than inferred: `words formed − words in an
+eventless measure == words exported` on **all eleven pages, to the mark**. Both
+of `export.py`'s two measure emitters carried it identically. **FIXED
+2026-09-04** (`_mxl_directions_only`, called from both): the marks are emitted
+in x order at the head of the bar, ahead of the whole-measure rest, because a
+`<direction>` carries no duration and applies where it sits.
+
+**CONTROL: the eleven engraved works export BYTE-IDENTICALLY** — the fix cannot
+move the pooled figure, which is the same fact as the benchmark not being able
+to see the bug. On the scans it recovers the 14, on 5 pages of 11. ⚠️ **The
+benchmark therefore does not guard the repair either**, so
+`TestEventlessMeasureKeepsItsMarks` does, including a source-level anti-drift
+test asserting BOTH MusicXML emitters call it — verified to fail when either
+call site is removed. (The LilyPond exporter is deliberately excluded: it never
+calls `measure_directions` at all, so it drops dynamics on *every* measure —
+a wider gap, not this one, and not on `KNOWN_GAPS` because
+`export_coverage` compares MusicXML.) Measured by
+`benchmarks/omr-dynamics-band-2026-09/probe_dynamic_band.py --funnel`.
+
 ---
 
 ## Contextual analysis — part identity, in the pipeline
@@ -1237,6 +1261,106 @@ long string, so a tall block that should be rejected still produces a SHORT
 string. Fixed to assert on staff ASSIGNMENT directly, and run red (gate
 disabled) before green to confirm it actually exercises the mechanism. See
 [benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md](benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md).
+
+---
+
+## Reading and reproduction are different questions, and now measured apart
+
+Every figure below OMR-NED is taken at the far end — our exported MusicXML
+against a truth MusicXML — so recognition and serialisation are fused. That is
+why nine "detected, then dropped on the way out" bugs had to be found by
+forensics: in OMR-NED a signal read perfectly and lost in the exporter is
+indistinguishable from one never read.
+
+**A page we RENDER has an exact truth available for free.** Verovio draws
+MusicXML directly and, with `svgBoundingBoxes`, emits a `<rect>` per notation
+object in the same frame as the glyph, plus every glyph's SMuFL codepoint —
+image and inventory from one act, no labeling (`tools/omr/page_truth.py`).
+
+⚠️ **A PAGE TRUTH IS NOT AN ENCODING TRUTH.** On the Brahms fixture, against the
+file it was rendered from: dynamics 19 glyphs vs 19 `<dynamics>` (agree), G clefs
+**28** glyphs vs **14** `<sign>G</sign>`, slurs **82** arcs vs **164** `<slur>`
+tags. A clef is printed at every system and declared once; MusicXML writes a slur
+at each end and the engraver draws one arc. The reader sees 28 and 82.
+
+| | asks | tool |
+|---|---|---|
+| reading | did we see the ink, and call it the right kind | `page_truth` + `score_reading` |
+| translation | did what we saw reach the file | `score_translation` |
+| reproduction | does the file say what the truth says | `omr_ned` |
+
+**Reading F1 0.919** over 11 engraved works / 3220 scoreable symbols, against
+OMR-NED 0.1306 on the same works. The decomposition is the point:
+**noteheads 0.999** (856 of 856), rests 0.993, time-sig digits 0.997, flags
+0.992, clefs 0.969 — so the engraved residual is **not** a failure to see notes.
+What is left splits three ways, and the split is the actionable part.
+⚠️ **A family whose F1 climbs as the centre tolerance widens is FOUND AND
+LOOSELY PLACED, not missed** — different work entirely. **Ties 0.260 → 0.504**
+at 2 staff spaces: most ties are there. **Slurs 0.518 → 0.631**, barely moving —
+real absences; on the Brahms page 16 of 40 have no arc within TWO spaces while
+the 24 found sit at a median 0.09. And **over-emission** — dynamic letters
+precision 0.421, key accidentals 0.722, both emitting more than the page prints.
+⚠️ The tie/slur *classification* lever is NOT the answer and is already spent:
+`00b68e24` (`claude/export-accents-arcs`) built the position-grammar veto,
+measured it on both families and shipped it **default-off** — engraved neutral,
+scan refused. This measurement says why it could not have helped much: ties are
+mislocalised and slurs are absent, and neither is a labelling error.
+
+⚠️⚠️ **`accidental` IS EXCLUDED AND THE NEAR-MISS IS WORTH KEEPING.** It scores
+recall 0.257 and was about to be reported as the largest reading gap. It is not
+a pipeline result: **Verovio draws one accidental per `<alter>`, not per
+`<accidental>`** — Brahms 1 has 54 `<accidental>` and 149 `<alter>` and it drew
+149; Beethoven 5 has ZERO `<accidental>` and 13 `<alter>` and it drew 13. The
+rendered page carries accidentals a real engraver would never print. **What
+caught it was a contradiction with an existing number** — `wrong pitch` is zero
+on these works, which cannot be true of a reader missing three quarters of the
+accidentals. `page_truth.render_fidelity` now measures the disagreement per work
+and declares the family unreliable; `score_reading` marks it `(RENDER)` and
+keeps it out of the pool. Including it gave 0.898; excluding it, 0.919.
+
+⚠️⚠️ **THE HAIRPIN EXPORT BUILT ON THIS BRANCH WAS A DUPLICATE AND HAS BEEN
+REMOVED AGAIN (`2ad144fb`, undone).** `53e6f233` on `claude/mystifying-curran-613606` already wires
+`<wedge>` into both exporters AND fixes the staff attribution, and it *improves*
+pooled OMR-NED (0.1304 → 0.1299) where the duplicate costs +11 edits for want of
+exactly that fix; its findings are `benchmarks/omr-hairpins-2026-09/FINDINGS.md`.
+It was invisible to the checks made — `KNOWN_GAPS` reflects **main**, and a
+worktree scan sees only *uncommitted* work. **`git log --all --oneline -S "<the
+thing>" -- tools/omr/` before building anything.** The DETECTION half is
+genuinely unclaimed: scope in
+[docs/scope-cv-hairpin-detection-2026-09-04.md](docs/scope-cv-hairpin-detection-2026-09-04.md).
+
+⚠️ **HAIRPINS ARE PERFECT ON ENGRAVINGS AND ~1% ON SCANS, and the engraved
+corpus hid it.** Reading F1 **1.000** against exact page truth (n=3); over 11
+SCANNED pages the detector finds **1 hairpin against 198 `<wedge>` of truth** —
+Brahms 1 p2 alone encodes 136 and we read one. A three-symbol sample on clean
+pages cannot falsify a claim about a thin line on a scan. ⚠️ **This is the shape
+Phase 4f already moved to classical CV** — stems and beams left the detector on
+the stated grounds that YOLO bounding boxes are structurally bad at thin lines,
+and a hairpin is a thin diagonal line with no `line_detection` path at all
+(`staff_detector` mentions hairpins only to reject them). The discriminator such
+a reader would need is measured: **a hairpin is always BELOW its staff, 8 of 8
+in the page truth**, which is also what fixes the attribution error — 3 of
+Mahler's 4 are filed under staff 18 while standing in staff 17's band.
+
+**Stage 2 priced the open ninth export gap.** `wedge` sat in `KNOWN_GAPS` as
+un-priceable from that inventory; the funnel prices it: **9 hairpins read across
+three works and every one discarded** (Mahler 5 4-of-6, Tchaikovsky 6 3-of-6,
+Brahms 4 2-of-5) — half a reading problem, half an export problem, and the export
+half is free. It also found a **new** one no existing check can see: Beethoven 5
+detects 36 fermatas, its truth has 36, and **35** reach the file —
+`export_coverage` fires only on the categorical case (truth some, ours zero).
+
+⚠️ **The two stages read different images on purpose** (stage 1 a Verovio render
+whose ink is known, stage 2 the LilyPond fixtures the headline uses), so their
+per-family counts are NOT comparable to each other — compare within a stage.
+⚠️ **Neither says anything about scans**: renderer truth exists only where we
+make the page, and no public symbol-level ground truth for real printed scans
+exists to borrow (DeepScoresV2 is rendered, MUSCIMA++ is handwritten).
+Controls: matching is on centres, not IoU, and the pooled F1 moves 0.846→0.876
+across 0.25–1.5 spaces of tolerance; re-rendering at 600 dpi moves Brahms 1
+0.854→0.868 and Tchaikovsky 4 0.787→0.789, so it is not a resolution artefact.
+Full reading, including the two frame errors it found in itself:
+[benchmarks/omr-reading-vs-reproduction-2026-09/FINDINGS.md](benchmarks/omr-reading-vs-reproduction-2026-09/FINDINGS.md).
 
 ---
 
@@ -1511,12 +1635,46 @@ Full JSON schema + flag reference: [`tools/omr/README.md`](tools/omr/README.md).
 - Comparison uploads: `uploads/compare/{session_id}/`
 - All backed by Docker named volumes so they survive container recreation
 
+### ⚠️ Erasing the staff lines before YOLO is MEASURED AND REFUSED
+
+The natural architecture — do the classical CV first, record it, erase those
+lines, and hand YOLO a cleaner page — costs **7-13 pooled reading points and up
+to a third of the noteheads**. Measured 2026-09-04 against exact page truth, same
+page and weights, on the case most favourable to it (clean engraved pages, where
+staff-line removal is easy):
+
+| | Brahms 1 | Mozart 41 |
+|---|--:|--:|
+| staff lines intact (what ships) | **0.876** | **0.921** |
+| erased before YOLO | 0.805 | 0.793 |
+| noteheads, intact | **1.000** | **0.996** |
+| noteheads, erased | 0.870 | **0.774** (recall 0.642) |
+
+Two mechanisms, both already recorded elsewhere here: **domain shift** — the
+detector has never seen staff-less music, and the ScoreAug/Augraphy fair test
+already priced that shape (augmented 0.122 vs production 0.652) — and **the
+erasure is destructive**, since a notehead sitting ON a line loses ink when the
+line goes (the same effect that leaves "every glyph in pieces" for
+`key_signature_locator` on scans). ⚠️ And it MANUFACTURES the confusion it was
+meant to remove: YOLO's `beam` detections go 46 → **105**, precision 0.783 →
+0.343, on staff-line residue.
+
+`remove_staff_lines(cells)` already runs BEFORE detection (`transcribe.py:3986`),
+so both variants exist; **the CV rung takes the erased one and the detector takes
+the original, deliberately** (`line_detection` step 1, `staff_header`, and
+`direction_text._blank_detections`, which subtracts every detection so "find the
+text" becomes "find the ink"). **The pattern that works is: erase for the CV
+consumer, BOUND THE SEARCH for everyone else, never erase for the detector.**
+n=2 works, engraved; a scan would be worse, not better. Full reading in
+[docs/scope-cv-hairpin-detection-2026-09-04.md](docs/scope-cv-hairpin-detection-2026-09-04.md) §1b.
+
 ### Local OMR engine notes
 - `tools/omr/transcribe.py` loads the YOLO model once per call, then iterates pages.
 - The image pipeline is canonical-cell-based: each measure is sliced and rescaled so staff span is constant, giving YOLO a scale-invariant input.
 - Phase 4f introduced classical-CV stem and beam detection (morphological opening + connected components) because YOLO bounding boxes are structurally bad at thin lines.
 - Production weights (scan side): `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt` — **not a training run.** Rounds 3–5 measured that fine-tuning on the scan-label corpus DELETES whole classes (tie/slur/beam/augmentationDot/accidentalFlat/restWhole/ledgerLine → exactly 0) under every method tried (eleven arms: no-warmup, low LR, freeze, teacher distillation…), so the ship is surgery: the hollow fine-tune's seven notehead-class head rows grafted onto the 09-03 production (`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`, itself a 1-epoch hollow fine-tune of the Phase-3.3 `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`), with a per-class confidence floor baked into those rows' biases (bias-shift 0.9 ≈ threshold 0.25 → 0.45). First checkpoint in three rounds to beat production on every measure of all three gate axes: half-noteheads 27 → 31, pitch+duration recall 0.435 → 0.510, dense notehead recall 0.941 → 1.000, scan-e2e pooled OMR-NED 0.7517 → 0.7493 (4 of 5 rows improve; the harness is byte-deterministic — noise floor exactly 0), 28 classes with 0 collapsed; exported ties 60 → 97 of 271. Records: `ROUND5_METHOD_2026-09-04.md` (benchmarks/omr-labeling-survey-2026-09/, lands with branch `claude/scan-weights-round4-continue-074940`) and `DETERMINISM_2026-09-04.md` (benchmarks/omr-scan-e2e-2026-09/, branch `claude/scan-e2e-determinism`). **Weights ROUTE by input domain when not pinned** (since 2026-09-03): scanned PDFs get this file, digitally engraved PDFs get the imgsz2048 checkpoint, which measures better there (0.1399 vs 0.1421 pooled) — see `OMR_WEIGHT_ROUTING` in the knobs table.
 - Phase 3.4 attempted to add 6 custom classes (barlines, textDynamic) and caused catastrophic forgetting — those classes are now learned via classical CV instead, not YOLO. See `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
+- **The 208-class space spells 32 glyphs TWICE, under two names, and consumers read one** (fixed 2026-09-04, `tools/omr/class_aliases.py`). The vocabulary is two annotation sets concatenated — fine at ids 0-135 (`dynamicF`, `articStaccatoAbove`, `tupletBracket`), coarse at 136-207 (`dynamicLetterF`, `articulationStaccato`, `tupleBracket`). Forty classes carry the SAME name at both ids so a name lookup sees both; thirty-two do not, and every consumer here was written against the fine spelling. A detection at id 192 was a forte `export._DYNAMIC_LETTER` could not spell — dropped with no warning, the same fault as `fingering3`/`tuplet3`. Confirmed mechanically by asking each consumer what it returns for both spellings. **It cost nothing when found** (the coarse block fires ZERO times across 3 engraved fixtures and 29 scanned pages of 9 publishers); what makes it live is the LABELING side — 26 hollow-campaign boxes are classed `dynamicLetter*` and `catalog.yaml` carries the coarse spelling at ids 190-195, so the next fine-tune trains ids the exporter cannot read. Renamed at the one place the model's `names` are read, so no call site knows. ⚠️ **Only 11 EXACT TWINS are renamed.** A coarser name is not a synonym: `numeral4` is NOT `timeSig4` (one numeral class covers meters, tuplet digits, fingerings and measure numbers — and a spurious `timeSig4` once shipped a 2/4 page as common time at 390 bar-check failures), `articulationStaccato` states no SIDE, `tuple` no NUMBER, `clefC` no LINE. Those 21 are recorded in `COARSER_THAN_CANONICAL` with what closing each would take, and `unaccounted()` fails the suite on any name in neither table — so a wider class space is a loud failure, not a silent drop.
 
 ### Claude Vision OMR notes
 - Uses `claude-opus-4-6` (configurable). Two-stage prompt:
@@ -2364,6 +2522,8 @@ applying strong verdicts before weak ones changes nothing measurable.
 - **End-to-end clef accuracy is 92%, and the detector does most of the work.** Measured 2026-08-29 on 52 hand-read staves (`benchmarks/omr-clef-geometry/eval_pipeline_clefs.py`, `PIPELINE_CLEF_RESULTS.md`): the detector supplies 39 of them at 95% accuracy, the positional default 11 at 82%, the CV locator 2 at 100%. This is the number that matters downstream — a staff carries its clef into every pitch on it and into which slot table its key signature is fitted — and it is much better than the coverage figures below, which are about the CV LOCATOR alone and predate the `imgsz` fix. Every remaining error is a non-treble clef read as treble. A staff that read no clef now takes the clef its own part read in another system when every reading agrees (`contextual._fill_defaulted_clefs`), worth 48/52 → 49/52. With `--dossier`, the work's own parts are joined to the page's slots on the margin LABELS (never on the clefs, which would be circular) and supply the clef where that join is anchored by a label above and below — **50/52 (96%)**. Score-order identity driving clef correction was measured and rejected there: it fixes one staff and breaks another.
 
 - **The CV clef locator reads 8 of 24 real C clefs on hand-read orchestral pages, and declines all 163 staves that carry none** (`orchestral-clef-truth.json`, 10 pages / 187 staves / 4 publishers). An earlier 8-of-10 was a four-page sample and flattered it. Do NOT quote `located / all header cells` (58/720 = 8.1% orchestral) as coverage — most orchestral staves are treble or bass and correctly get nothing, so that ratio is not recall. `probe_cluster_too_big.py` is what separates a rejection from a loss: it cross-tabulates each staff's rejecting branch against its hand-read clef. **The fused cluster (`cluster too big`, 52.9% of orchestral header cells) costs 1 C clef against 90 correct refusals — it is a G clef being seven staff spaces tall, not a bug. Do not go after it.** The leading cost is the single-dot veto: turning `dot_single_clear_is_enough` off recovers 5 real C clefs for 1 false positive (recall 8/24 → 13/24) on that hand-read corpus, the opposite of what the sweep corpora said — **a sweep corpus is built from the candidates the locator fires on, so it oversamples staves where it produces something and cannot answer 'what does this rule cost in the wild'.** Branch shares come from `probe_clef_rejection.py` (orchestral scores only); precision from `check_clef_precision.py` (engraved reference sheet, braced piano, a scanned-orchestral spot check, and one SWEEP corpus per edition). **Nottebohm is out of every harness and test — orchestral scores only.** **Run both — never one alone**; every promising change in this area has looked like a large gain on one while losing on the other. Vertical header clustering (`ClefLocatorConfig.cluster_y_gap_spaces`) is **on** as of 2026-08-31 — Nottebohm 69 → 77 located of 206 for one extra false positive, a flat rate, with reference 5/5, coverage 7/9, `eval_score_order` and `eval_pipeline_clefs` (69/69) all unmoved. **A sweep corpus is built from the locator's own reads**, so unlike the older corpora it cannot be blind to what the locator gets wrong: adding a second edition (`mahler5-clef-sweep.json`, Edition Peters) took the reported FALSE POSITIVES from 7 to **48** without a single regression — they were always there. Twenty-four of Mahler's 41 are not misread clefs at all but the stacked instrument numbers Peters prints LEFT of the bracket, a family the Beethoven scan cannot show. **Never tune a clef threshold on one edition**: a tenor symmetry floor separates cleanly on Beethoven (gap +0.015) and is impossible on Mahler (overlap 0.137) — refused, see `clef_symmetry_populations.py`. What worked instead was POSITION, not shape (`require_cluster_on_staff`, shipped): a cluster ending before the staff's own printed lines begin is margin ink — instrument numbers, the brace — and is SKIPPED, not stopped for, so the clef behind it is still found. **FALSE POSITIVES 48 → 21** (Mahler 41 → 14, Beethoven 7 → 7 exactly neutral) for 2 Mahler misses, and Nottebohm coverage went UP 77 → 79 because skipping beats rejecting. **The F-clef dot veto was then fixed by POSITION too, not shape: FALSE POSITIVES 21 → 13 at zero cost.** The dots of a misread bass clef sit PAST the body's right edge (0.94–1.79 w) where a C clef has nothing, so a second, looser reading of the same two dots is admitted only out there (`dot_clear_right_fraction`) — and the real-clef cost is identically 0 for every height and aspect tried, on both editions, where loosening height at the old 0.55w position cost 27 clefs. It is a second tier, so every veto that fired before still fires. **Then a SINGLE clear dot was made enough on its own (`dot_single_clear_is_enough`): FALSE POSITIVES 13 → 5.** Unlike everything else here this is a TRADE, taken deliberately — 8 false positives removed for 20 declined C clefs (sweep misses 8 → 24, Nottebohm located 79 → 77, orchestral misses 5 → 7). It is defensible because a declined C clef leaves its staff on the default it would have had without the locator, while an accepted F clef transposes every note on the staff; no measurement makes it free. `eval_pipeline_clefs` still holds 69/69 (the contextual layer's `slot_continuity` picks up what the locator drops), `eval_score_order`'s read-clefs arm fell 10 named/5 correct to 8/3, and that is a COVERAGE effect, not an accuracy one: La Mer is byte-identical and the whole movement is Beethoven 5 p.15, where the veto removed one right clef (Viola/alto) and one wrong one (Violin/soprano). The 5 that remain are 3 bass + 2 treble; the G clefs are out of a dot veto's reach by construction. The staff's left edge is a horizontal run ≥ 4 spaces, and where that lands more than 4 spaces into the header window the measurement has FAILED (broken lines) and the rule ABSTAINS (`staff_left_max_spaces`) — 173 of 174 sweep staves land under 3.55 spaces, the outlier at 6.77 is the one staff the rule wrongly cost, and it is now recovered: sweep misses 9 → 8 with nothing else moving. Measuring the edge from the BAND profile instead (`staff_header._walk_left`) was built and REFUSED — it swallows the instrument name, and every variant that recovered that clef cost 2–3 false positives. The measurements, the closed approaches, and the ways the measurements themselves went wrong are in `benchmarks/omr-clef-geometry/RESULTS.md`.
+
+- **Dynamics letters are placed but never checked against where a dynamic is PRINTED** (measured 2026-09-04, NOT FIXED — [benchmarks/omr-dynamics-band-2026-09/FINDINGS.md](benchmarks/omr-dynamics-band-2026-09/FINDINGS.md)). `export.measure_dynamics` joins `f`+`f` into `ff` by x-adjacency and uses **no vertical information at all**. Measured over 1246 letters on 18 pages of 9 publishers, a placement band is there and is clean: 73% of letters stand in their own staff's band, 24% in the band of the staff **immediately above — distance exactly 1, no exceptions**, which is the measure cell's 4-6 space padding reaching into the neighbour's dynamic row. Pooled widest empty interval **−3.04 to −0.52 spaces**, and the lower edge is a plateau (−1.5 to +0.25 changes nothing). ⚠️ **A GATE IS THE WRONG FIX**: an out-of-band letter is usually the neighbour's ink, not junk, and **83% of re-attributed letters are the target staff's SOLE evidence** — because `_dedupe_cross_staff_detections` already removed the twin BY DISTANCE and kept the lower staff's copy, the same failure the ledger-ladder work found for noteheads. So this belongs in that function as another evidence tier, not as an export filter. ⚠️⚠️ **RE-ATTRIBUTION IS PROVEN ON ENGRAVINGS AND FLAT ON SCANS** — canonical 11 works: over-emission 1.19 → 1.04, staves exact by word 52 → 83 of 107, no work worse; 11 scanned pages with hand-verified windows: **16 → 16**. The scan table says why: there we **under**-emit (376 words against 491), so the dominant dynamics error on a scan is a mark never found, not one on the wrong staff. ⚠️ **The scan under-emission was then diagnosed and is NOT mainly a placement problem**: of a 129-mark shortfall, **14** are read and discarded by the eventless-measure branch (see the direction-text section above — this is that bug, live), ≤31 more are detected letters in a run that spells no dynamic and is thrown away whole (15 of them a lone `s`, an `sf` whose `f` was missed), and the rest were never read — **137 of the shortfall coming from the two Beethoven 5 p.2 scans alone**, with the other nine pages emitting 191 against a truth of 183, i.e. over-emitting slightly just like the engraved arm. Refuted on the way: **confidence** as a filter costs 233 of 911 good letters to remove half of 35 bad ones.
 
 - **Orchestral conductor's scores.** The current model was trained predominantly on DSv2 (synthetic) + 60 hand-labeled real cells. Dense conductor's scores (Mahler 5, Debussy La Mer) work but with more false negatives on small dynamics + grace notes. The labeling pipeline (`tools/omr/annotate`) is the path to fixing this.
 
