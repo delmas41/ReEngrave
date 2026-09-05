@@ -1774,18 +1774,45 @@ batch's committed transcription was made with the pre-hollow
 unexplained "extra" hints 200 → **58**. ⚠️ Noteheads fall 4260 → 2419 on the
 same pages, and the control that proves this is junk rather than loss is the
 MISSING-hint count — reference notes the reading never found — which falls
-too (20 → 15), while segmentation stays byte-identical. **A batch's hints
+too (20 → 15). ⚠️ **That control is for NOTEHEADS and does not extend to
+the class space** — corrected the same day against the training session's
+finding that hollow-family weights suppress **rests and accidentals**
+because the completion pass left them unlabeled, i.e. background
+([NEXT_ITERATION.md](benchmarks/omr-labeling-survey-2026-09/NEXT_ITERATION.md)).
+This arm shows it too: rests fall 1380 → 951. And the missing-hint control
+is nearly blind to rests by construction, since `prefill_cell` drops them
+from the alignment on condensed staves. Segmentation stays byte-identical
+either way. **A batch's hints
 age with the weights**: this one's are a checkpoint stale, and refreshing is
 `--write-hints`, which never touches `verdicts/` or `detections/`.
 
-**Phase C is registered and waiting on labels**
-([PHASE_C_PROTOCOL.md](benchmarks/omr-prefill-admission-2026-09/PHASE_C_PROTOCOL.md)):
-25 randomly drawn cells at seed 20260903, with each one's pre-fill status
-and box count recorded **before** any of them was labeled
-([PHASE_C_CELLS.json](benchmarks/omr-prefill-admission-2026-09/PHASE_C_CELLS.json)),
-so the population and the prediction are both fixed in advance. Label in
-rank order — **stopping early stays valid**, because the prefix of a shuffle
-is a uniform sample — and 15 cells is ~50 boxes.
+⚠️⚠️ **PHASE C ANSWERED IT, 2026-09-03: pre-filled boxes are NOT admissible
+as labels, and the in-sample 1.000 did not survive contact with a random
+sample.** Sean labeled 49 cells completely and blind — the 25 pre-registered
+at seed 20260903 ([PHASE_C_CELLS.json](benchmarks/omr-prefill-admission-2026-09/PHASE_C_CELLS.json),
+status and box counts recorded BEFORE labeling) plus 24 more. The committed
+analysis, the pre-registered 25: **exact 0.838, `labels` tier 0.849** over
+74 boxes. The other 24 scored 1.000, so pooled out-of-sample is **0.915 over
+141 boxes** — every honest reading is under the 0.97 bar that was set in
+advance. **The queue reading stands, now on evidence rather than caution.**
+
+⚠️ **The Phase A tiers were fitted to the six cells' error MODES and the
+random sample fails differently** — every admission policy lands between
+0.815 and 0.859, because `near` is 0 on all 12 errors, `parity_ok` is 1 on
+10 of them and `small` is 0 on 11. There is nothing for a band to separate.
+Six errors are line/space flips where the BOX sits ¼–½ a staff space off the
+hand-drawn one (so both detector and reference name a position from a
+misplaced box while the human labels the ink); **four are rest VALUE
+disagreements** — `restQuarter` against a human's `rest8th` at IoU 0.65–0.82,
+the same glyph, the reference's duration against the printed one. Rests are
+the weak class and were invisible before: out-of-sample noteheads **0.943**,
+rests **0.722**. ⚠️ The reference-variant rule from Phase A is a **no-op**
+under `hollow-ft` (0 overrides on 141 boxes) — it earned its keep on the
+older weights and costs nothing, but it is not holding the number up.
+Contamination and scorer artifacts were both ruled out: the blind server's
+log shows all 49 cells saved through it, and no error box has a human box of
+its own class overlapping it. Full reading:
+[FINDINGS.md](benchmarks/omr-prefill-admission-2026-09/FINDINGS.md) "Phase C".
 
 ⚠️ **A pass whose labels will SCORE the pre-fill must be run BLIND**
 (`annotate.server --blind`, added 2026-09-03): scoring against a human who
@@ -1795,6 +1822,18 @@ resets on each cell — "just press `h`" is not a protocol. `--blind`
 withholds the hints, `prefill_status` AND the queue order, that last one
 because "most left for me first" tells the human which cells the pre-fill
 found hard. Verdicts are untouched.
+
+⚠️ **A completion pass's PALETTE is a training decision, not a convenience.**
+The batch's active config was a stale 9-slot palette with no
+`accidentalNatural`, slur, tie or hairpin, while its six complete cells hold
+5 naturals, 8 slurs, 6 ties and 5 hairpins — labeling under it would have
+made every one of them background, which is the exact mechanism
+`NEXT_ITERATION.md` blames for the hollow weights' rest/accidental
+suppression. Use `batch_config.completion.json` (14 slots). And ⚠️ **14 is
+still not the class space**: those cells also hold `keyFlat`, `clefG`,
+`timeSig8`/`9`, `ornamentTrill`, an `accidentalNaturalSmall` and two
+grace-sized heads, all boxed through the FULL PICKER. Complete means
+complete; only staff lines, stems, beams and free text are skipped.
 
 ⚠️ **Every cell of that sample already HAS a verdict file** — from the
 hollow sweep — so an unreached cell is not empty, it holds hollow boxes and
@@ -1893,6 +1932,67 @@ noteheads) is an open training-time decision.
 The catalog is **capped at nc=208 by default** (custom-class boxes — barlines, textDynamic — are filtered into `_nc208/` copies) so fine-tuning matches the DSv2 checkpoints' class count; a mismatched `nc` silently re-initializes the classification head (the Phase 3.4 collapse). `train_yolo.py` refuses an nc mismatch unless you pass `--allow-nc-expansion`; `--emit-full-catalog` also writes an uncapped `catalog-214.yaml` for a deliberate future expansion.
 
 ⚠️ **NEVER "just re-run the converter" on an EXISTING version.** It copies each cell's PNG out of the batch's gitignored `cells/` directory, and those are not regenerable (phase-1 has drifted) and are largely gone: measured 2026-09-03, **11 of v8's 122 source PNGs still exist**, so a re-run silently writes an 11-cell version over the 122-cell one and exits 0. To correct a mislabeled class after export, hand-edit the class id in `labels/<cell>.txt` (coordinates do not move), the batch verdict, AND the version's own merged export source — then heal the version's `metadata.json`, which still records the old class, with `python3 -m tools.omr.training.heal_version_metadata --version data/user-labeled/<version> --expect-cells <cell_id> --write` (re-derives the class fields from the labels; never touches labels or images).
+
+**AUDIT a finished pass before it reaches training.** Two failure modes, neither visible to
+the other's check, both found on the Brahms completion pass and now tooled
+(`benchmarks/omr-snap-ledger-2026-09/audit_ledger_zone_labels.py`, plus
+`benchmarks/omr-cell-grid-tilt-2026-09/audit_labels_vs_measured_grid.py` for inside-staff
+parity). ⚠️ **LEDGER-ZONE PARITY: measure the INK, never the BOX** — a click-placed box
+inherits the slot the snap chose, so its centre is biased toward the grid that placed it, and
+ink-inside-the-box "confirms" whichever box you measure. Use the blob on `*_nostaff.png`.
+Rate: **6 of 76 ledger-zone labels (~8%) on Brahms, 19 of 275 (6.9%) campaign-wide, against 0
+inside-staff parity errors.** ⚠️ **SHAPE-vs-CLASS: a parity audit cannot see a wrong KIND** —
+a rest labeled a notehead has no parity to be wrong about; the box geometry separates them
+cleanly (that whole rest: 2.13 × 0.72 spaces, aspect 2.97:1, against a median notehead's
+1.19 × 1.00 at 1.19:1), and it sat INSIDE the staff where no parity check reaches. Both
+auditors write nothing — every hit is a candidate for a human.
+
+⚠️ **THE RAW FLAG RATE IS AN UPPER BOUND, NOT THE DEFECT RATE — measured
+2026-09-03 on a genuine out-of-sample batch (Simrock/Dvořák 9, labeled after
+the tool existed): 7 of 102 ledger-zone labels flagged (6.9%, matching the
+Brahms rate), but adjudicated by hand ONLY 1 was real — true rate ~0.9%.**
+The 6 false positives share one mechanism: a printed LEDGER LINE survives
+staff-line removal and print-merges into the SAME connected component as
+its neighbouring notehead, pulling `blob_centre`'s centroid toward the rung
+by up to a full half-step. **Five candidate fixes were tried against both
+the Brahms corrections and the Simrock false positives and NONE
+generalises** — including the literal fix proposed for it, which resolves
+Simrock 4/4 and breaks Brahms 0/6, because it only has room to work where
+the human's box carries generous padding around the head, a labeling
+convention that differs across batches and is recorded nowhere. Do not
+re-try a box-relative geometric fix without reading
+[LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md](benchmarks/omr-snap-ledger-2026-09/LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md)
+"The rung-merge failure mode" first — it has the numbers. `blob_centre` now
+reports the winning component's height/width in staff spaces alongside
+every parity suspect, as context only: width alone does NOT separate a
+rung-merge (Simrock's four measure 1.91–2.14sp) from a normal label (40 of
+Brahms's 76 ledger-zone labels, all uncontested, measure the same). **Every
+candidate still needs a human looking at the actual ink against the known
+step positions** — the standard both the Brahms corrections and the
+Simrock false positives were settled by, and the only thing that has
+worked twice.
+
+**A third check, and the first needing no image at all: edge fragments.**
+`transcribe._drop_clipped_notehead_fragments` already screens the
+DETECTOR's output for a notehead-shaped sliver flush against a cell's crop
+boundary — the neighbouring staff's ink bleeding into this cell's padding —
+but had never been applied to HAND-DRAWN labels, which face the identical
+ambiguous ink. Found live in the training corpus (v3-2026-06-09-mahler5,
+v4-2026-06-10-la-mer, both in `catalog-versions.txt`, both in the round-4
+run): two `notehead*` labels at 0.52–0.54sp tall — inside the measured
+fragment band (0.29–0.56sp), under the genuine floor (0.60+). ⚠️ **Height
+alone reads "rest"; WHERE in the cell settles it.** Both boxes sit flush
+against the cell's own top edge, capturing only the tip of a much larger
+shape that belongs to the staff above — not a symbol in this measure, so
+the likely correction is delete, not relabel. `audit_ledger_zone_labels.py`
+now checks this third: a sub-0.6sp notehead label whose bbox is within
+`CELL_EDGE_TOLERANCE_SPACES` (0.5sp — hand-drawn boxes leave 0.07–0.28sp
+of margin, unlike a model's box which is 1px-flush) of the cell's own top
+or bottom. Manifest-only, so it reaches every batch, including the four
+`hollow2-2026-09` batches with no re-cut `cells/`. Validated the same way:
+finds exactly the 2 known cases and **adds zero false positives across the
+full 1666-label campaign**. Credit: scanned-weights session, both for the
+two live cells and for the missing WHERE-in-the-cell field.
 
 **Then COMMIT the results** (labeling runs in the main checkout, and verdicts are irreplaceable human work — don't leave them sitting untracked):
 

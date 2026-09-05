@@ -953,6 +953,98 @@ def annotate_fermatas(events: list[dict[str, Any]],
     return marked
 
 
+def _collapse_beam_stacks(raw: list) -> list:
+    """Merge boxes that describe ONE beamed group into their union.
+
+    Two readings of a group agree on most of their x-span: a sixteenth
+    group's primary and secondary strokes (a beam pitch apart in y), and a
+    divisi staff's two rows over the same double stops (Mozart 40's Viola:
+    the lower voice's stems-down beam at 1088-1304 and the upper's stems-up
+    beam at 1137-1352 are the SAME four notes, offset one head width). The
+    test is x-overlap >= 0.6 of the smaller box, deliberately with NO y
+    term: the group id is the box id, so any per-note choice between two
+    boxes over one group fractures it — a y-banded per-note preference
+    turned Mozart 40's chords into runs broken at every flip of which head
+    came first, and a narrowest-box rule cost Mozart 41 138 edits.
+
+    The caller must EXCLUDE suspect boxes (see `_suspect_beam_boxes`)
+    before collapsing: a spurious bar-wide box overlaps every real group
+    at 1.0 of the smaller and would union the whole bar.
+    """
+    boxes = [list(b) for b in raw]
+    merged = True
+    while merged:
+        merged = False
+        for a in range(len(boxes)):
+            for b in range(a + 1, len(boxes)):
+                ax, ay, aw, ah = boxes[a]
+                bx, by, bw, bh = boxes[b]
+                overlap = min(ax + aw, bx + bw) - max(ax, bx)
+                if overlap < 0.6 * min(aw, bw):
+                    continue
+                lo, hi = min(ax, bx), max(ax + aw, bx + bw)
+                top, bot = min(ay, by), max(ay + ah, by + bh)
+                boxes[a] = [lo, top, hi - lo, bot - top]
+                del boxes[b]
+                merged = True
+                break
+            if merged:
+                break
+    return sorted((tuple(b) for b in boxes), key=lambda b: b[0])
+
+
+def _suspect_beam_boxes(boxes: list) -> set[int]:
+    """Indices of boxes that x-contain >= 2 mutually disjoint other boxes.
+
+    Two real beams at one y level cannot overlap in x, so a box spanning two
+    disjoint groups' boxes is almost surely not a beam (Brahms 1's hairpin).
+    It is deprioritized, not dropped — a note nothing honest claims may still
+    take it.
+    """
+    out: set[int] = set()
+    for i, (ix, _iy, iw, _ih) in enumerate(boxes):
+        inside = [
+            (jx, jw) for j, (jx, _jy, jw, _jh) in enumerate(boxes)
+            if j != i and jx >= ix and jx + jw <= ix + iw]
+        inside.sort()
+        disjoint = 0
+        reach = None
+        for jx, jw in inside:
+            if reach is None or jx >= reach:
+                disjoint += 1
+                reach = jx + jw
+            else:
+                reach = max(reach, jx + jw)
+        if disjoint >= 2:
+            out.add(i)
+    return out
+
+
+def _pick_beam_box(c: tuple[float, float], boxes: list, suspect: set[int],
+                   nh_width: float) -> int | None:
+    """The box a notehead at centre `c` beams under, or None.
+
+    Candidates cover x exactly or within one notehead width. Honest boxes
+    beat suspects, an exact x-cover beats a padded one, then nearer in x and
+    x-order. Deliberately no y term — see `_collapse_beam_stacks` for why a
+    per-note y preference fractures groups.
+    """
+    x, _y = c
+    cands = []  # (bi, exact, xdist)
+    for bi, (bx, _by, bw, _bh) in enumerate(boxes):
+        exact = bx <= x <= bx + bw
+        padded = nh_width > 0 and bx - nh_width <= x <= bx + bw + nh_width
+        if not (exact or padded):
+            continue
+        xdist = 0.0 if exact else max(bx - x, x - (bx + bw))
+        cands.append((bi, exact, xdist))
+    if not cands:
+        return None
+    cands.sort(key=lambda cand: (
+        cand[0] in suspect, not cand[1], cand[2], boxes[cand[0]][0]))
+    return cands[0][0]
+
+
 def annotate_beams(events: list[dict[str, Any]],
                    detections: list[dict[str, Any]]) -> None:
     """Attach MusicXML beam states to each event, in place.
@@ -975,24 +1067,77 @@ def annotate_beams(events: list[dict[str, Any]],
 
     Must be called PER VOICE. Two voices interleave in x, so a run computed
     across both would be broken by the other voice's notes.
-    """
-    boxes = sorted(
-        (d["bbox_page"] for d in detections
-         if d.get("category") == "structural" and d.get("class") == "beam"
-         and len(d.get("bbox_page") or ()) == 4),
-        key=lambda b: b[0],
-    )
 
-    def centre(event: dict[str, Any]) -> float | None:
+    THE BOX IS PADDED BY A NOTEHEAD WIDTH, the correction `rhythm._beamed_groups`
+    already makes and for the same reason: the box bounds beam INK, and a beam
+    runs from stem to stem — with stems up the first notehead's centre sits a
+    head's width left of the ink, with stems down the last sits right of it.
+    Unpadded, that edge note fell out of its group: it exported as a flag and
+    the group's begin/end landed one note early, which was the single largest
+    `wrong flag/beam` mechanism on the 11-work benchmark (430 of 449 edits are
+    `editbeam`, and the top signature on every beam-heavy work is an edge note
+    at `partial` where the truth beams it). A 2-note group lost BOTH notes: the
+    orphan formed a synthetic run of one, and the survivor was alone under its
+    box — both "a lone note is flagged".
+
+    THREE MORE RULES ABOUT WHICH BOX A NOTE BELONGS TO, each paid for by a
+    measured failure (benchmarks/omr-beam-gap-2026-09/FINDINGS.md):
+
+    - SAME-STACK BOXES ARE COLLAPSED FIRST. A sixteenth group's primary and
+      secondary strokes arrive as two boxes over the same x-span at a beam
+      pitch apart in y. A per-note choice between them FRACTURES the group —
+      the group id is the box id, so two notes picking different strokes of
+      the same beam land in different groups even though the spans agree.
+      (A "narrowest covering box wins" rule did exactly that: Mozart 41 went
+      7 -> 145 beam edits.) Boxes with x-overlap >= 0.6 of the smaller within
+      3 notehead widths in y merge into their union.
+    - A BOX THAT CONTAINS TWO DISJOINT BOXES IS SUSPECT. Brahms 1, Contrabass
+      m4: a spurious 685px "beam" (a hairpin's ink) at the real beams' own y
+      spans the whole bar and, first-by-x, swallowed all six notes into one
+      run where the page prints two groups of three. Real beams at one y level
+      cannot overlap in x, so a box x-containing >= 2 mutually disjoint boxes
+      is tried only when no honest box claims the note.
+    - A DIVISI STAFF'S TWO BEAM ROWS ARE ONE GROUP, NOT A TIE TO BREAK.
+      Mozart 40's Viola prints double stops under two beams (lower voice's
+      stems-down box 1088-1304, upper's stems-up 1137-1352, 354px apart in
+      y) — the same four notes offset one head width, so the rows collapse
+      by x-overlap like a stack's strokes. A per-note y preference was
+      measured instead and REFUSED: chord events flip which head is first,
+      so notes of one run picked different rows and the run fractured
+      (Mozart 40 47 -> 54 while it was supposed to fall).
+    """
+    raw_boxes = [
+        d["bbox_page"] for d in detections
+        if d.get("category") == "structural" and d.get("class") == "beam"
+        and len(d.get("bbox_page") or ()) == 4]
+
+    def centre(event: dict[str, Any]) -> tuple[float, float] | None:
         heads = event.get("noteheads") or []
         if not heads:
             return None
         box = heads[0].get("bbox_page")
-        return (box[0] + box[2] / 2.0) if box and len(box) == 4 else None
+        if not box or len(box) != 4:
+            return None
+        return (box[0] + box[2] / 2.0, box[1] + box[3] / 2.0)
 
     def levels(event: dict[str, Any]) -> int:
         heads = event.get("noteheads") or []
         return int(heads[0].get("beam_levels") or 0) if heads else 0
+
+    # One notehead width, from the events' own heads — the same unit
+    # `rhythm._beamed_groups` pads with (a length in the cell's frame, never
+    # the detection's own noisy bbox height).
+    head_widths = sorted(
+        h["bbox_page"][2]
+        for e in events for h in (e.get("noteheads") or [])
+        if len(h.get("bbox_page") or ()) == 4)
+    nh_width = head_widths[len(head_widths) // 2] if head_widths else 0.0
+
+    suspect_raw = _suspect_beam_boxes(raw_boxes)
+    honest = [b for i, b in enumerate(raw_boxes) if i not in suspect_raw]
+    boxes = _collapse_beam_stacks(honest)
+    suspect = set(range(len(boxes), len(boxes) + len(suspect_raw)))
+    boxes = list(boxes) + [tuple(raw_boxes[i]) for i in sorted(suspect_raw)]
 
     # Group id per event: the beam box covering it, or a synthetic run for
     # events that carry a level but sit under no detected box.
@@ -1003,13 +1148,12 @@ def annotate_beams(events: list[dict[str, Any]],
         if event.get("kind") == "rest" or levels(event) < 1:
             prev_beamed = False
             continue
-        x = centre(event)
+        c = centre(event)
         hit = None
-        if x is not None:
-            for bi, (bx, _by, bw, _bh) in enumerate(boxes):
-                if bx <= x <= bx + bw:
-                    hit = ("box", bi)
-                    break
+        if c is not None:
+            bi = _pick_beam_box(c, boxes, suspect, nh_width)
+            if bi is not None:
+                hit = ("box", bi)
         if hit is None:
             if not prev_beamed:
                 synthetic += 1

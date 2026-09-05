@@ -88,7 +88,12 @@ changes week to week.
   change** — the clearest evidence yet that this approach improves for free
   as recognition does, which is the reason to keep investing in it. All of
   those figures come from the same six cells, chosen as the ones the pre-fill
-  decided most, so the deciding measurement is a **pre-registered random
+  decided most. ⚠️ **That measurement has now been made and it came back
+  negative: on a pre-registered random sample labeled blind, precision falls
+  to 0.84 (0.92 pooled over 141 boxes), under the 0.97 bar set in advance —
+  so pre-filled boxes stay a review queue and are not admitted as labels.**
+  The rest of this paragraph describes how that measurement was set up: a
+  **pre-registered random
   sample of 25 cells labeled blind** (the UI can now withhold its own hints,
   since a human shown them cannot measure them). That sample is registered
   and waiting on labeling time; it is the step that would turn pre-filled

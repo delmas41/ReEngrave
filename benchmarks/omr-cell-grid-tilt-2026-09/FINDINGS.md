@@ -55,7 +55,11 @@ labeled cell PNG re-binarized, and the 600 dpi page binary) agree within
 — that is ALIASING: the true −0.55 displacement exceeds the 0.55-spacing match
 window, so stored line k matches printed line k+1. The overlay render shows it
 plainly: every stored line floats mid-space, half a space below its printed
-line, and stored lines 3 and 4 bracket one printed line.)
+line, and stored lines 3 and 4 bracket one printed line. This cell is also
+where the rigid comb and this per-line matcher part company by exactly one
+spacing, which is the sharpest evidence that the comb is the right mechanism —
+stated once, in [RESULTS_TILT_COST.md](RESULTS_TILT_COST.md) §1, not repeated
+here.)
 
 **beet5hr is not a geometry case.** Its grid is off by only −0.11 sp; the
 labeled whole note **straddles the bottom staff line and hangs mostly below
