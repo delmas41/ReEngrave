@@ -34,11 +34,20 @@ weights-sensitive portion is much smaller than the headline suggests. Read the
 per-CATEGORY deltas (wrong note, note head), not the pooled ratio, when judging
 a checkpoint.
 
-For context on where the detector actually stands: the graft09 arm measured
-**0.8345 against Audiveris' 0.7919** on the 10 rows Audiveris can process,
-winning every major reading category (wrong note -88, note head -490, beams -46,
-directions -104) and losing only on `entire staff`. Full split in
-`benchmarks/omr-vs-industry-2026-09/`.
+For context on where the detector actually stands against Audiveris, measured
+on our own fixtures with our own scorer (`benchmarks/omr-vs-industry-2026-09/`).
+⚠️ OMR-NED is LOWER-IS-BETTER, so read the direction carefully:
+
+    engraved            ours 0.1125   Audiveris 0.1252   -> WE LEAD
+    scan, 11-row pool   ours 0.8345   Audiveris 0.7919   -> AUDIVERIS LEADS
+
+We win every major READING category on the scan pool (wrong note -88, note head
+-490, beams -46, directions -104) and the ENTIRE pooled deficit is the `entire
+staff` bucket — of which 87% was proved to be CONDENSATION with our detection
+exactly right.
+
+⚠️ **So do NOT spend weight iterations on that gap.** It is a part-model
+artifact, not a detector or weights problem, and no checkpoint can move it.
 
 ---
 
