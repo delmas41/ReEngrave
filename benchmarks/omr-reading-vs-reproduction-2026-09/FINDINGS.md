@@ -43,22 +43,22 @@ recognition score must be taken against.
 
 ## 2. Stage 1 — how much of the page we see
 
-Eleven engraved works, page 1 of each, 3446 printed symbols.
+Eleven engraved works, page 1 of each; 3220 scoreable printed symbols (3446 drawn, less the `accidental` family — see the warning below).
 
-| work | symbols | dets | prec | rec | **F1** |
+| work | scoreable | dets | prec | rec | **F1** |
 |---|--:|--:|--:|--:|--:|
-| mahler-sym5-mvt1 | 355 | 347 | 0.991 | 0.969 | **0.980** |
-| bruckner-sym5-mvt1 | 242 | 243 | 0.951 | 0.955 | 0.953 |
-| beethoven-sym5-mvt1 | 307 | 316 | 0.930 | 0.958 | 0.944 |
-| dvorak-sym9-mvt4 | 205 | 212 | 0.920 | 0.951 | 0.935 |
-| beethoven-sym3-mvt1 | 373 | 347 | 0.965 | 0.898 | 0.931 |
-| mozart-sym41-mvt1 | 303 | 314 | 0.904 | 0.937 | 0.921 |
-| tchaikovsky-sym6-mvt2 | 231 | 240 | 0.896 | 0.931 | 0.913 |
-| brahms-sym4-mvt1 | 314 | 324 | 0.846 | 0.873 | 0.859 |
-| brahms-sym1-mvt1 | 675 | 699 | 0.840 | 0.870 | 0.854 |
-| mozart-sym40-mvt1 | 181 | 174 | 0.862 | 0.829 | 0.845 |
-| tchaikovsky-sym4-mvt2 | 260 | 345 | 0.690 | 0.915 | 0.787 |
-| **POOLED** | **3446** | **3561** | **0.884** | **0.913** | **0.898** |
+| mahler-sym5-mvt1 | 346 | 344 | | | **0.988** |
+| beethoven-sym3-mvt1 | 337 | 347 | | | 0.980 |
+| bruckner-sym5-mvt1 | 235 | 241 | | | 0.962 |
+| beethoven-sym5-mvt1 | 298 | 316 | | | 0.958 |
+| dvorak-sym9-mvt4 | 205 | 212 | | | 0.935 |
+| tchaikovsky-sym6-mvt2 | 223 | 238 | | | 0.924 |
+| mozart-sym40-mvt1 | 151 | 174 | | | 0.923 |
+| mozart-sym41-mvt1 | 303 | 314 | | | 0.921 |
+| brahms-sym4-mvt1 | 292 | 318 | | | 0.879 |
+| brahms-sym1-mvt1 | 593 | 658 | | | 0.876 |
+| tchaikovsky-sym4-mvt2 | 237 | 339 | | | 0.806 |
+| **POOLED** | **3220** | **3501** | **0.882** | **0.959** | **0.919** |
 
 ### And the per-family breakdown is the answer to "where is the error"
 
@@ -80,19 +80,29 @@ Eleven engraved works, page 1 of each, 3446 printed symbols.
 
 **Noteheads are read essentially perfectly — 856 of 856, precision 0.998.** So
 whatever OMR-NED's 0.1306 is made of on engraved pages, it is not a failure to
-see notes. The reading error lives in four places: **inline accidentals**
-(recall 0.257 — 168 printed with *nothing* detected there), **ties** (0.260),
-**slurs** (0.518), and **dynamic letters**, whose problem is the opposite —
-precision 0.421, 216 detections for 114 printed, which is the over-emission the
-dynamics work measured from the other end.
+see notes. The reading error lives in three places: **ties** (0.260), **slurs**
+(0.518), and **dynamic letters**, whose problem is the opposite of a miss —
+precision 0.421, 216 detections for 114 printed, which is the over-emission
+`omr-dynamics-band-2026-09` measured from the other end. `key_accidental` is
+third at 0.839, and also from over-detection (454 for 328).
 
-⚠️ **`accidental` and `key_accidental` are the same glyph in two roles**, and
-the detector splits them differently from the engraver: on Brahms p1 it finds 52
-key-class and 41 inline-class where the page prints 51 and 82. Its key
-signatures are complete (recall 1.000) and its inline accidentals are not. The
-confusion column rules out the easy explanation — the 168 misses have `-`, i.e.
-no detection of *any* family within tolerance, so they were not merely
-misfiled.
+⚠️⚠️ **`accidental` IS EXCLUDED, AND THE REASON IS A NEAR-MISS WORTH KEEPING.**
+It scores recall 0.257 — 226 printed, 60 detected — and was about to be reported
+as this pipeline's largest reading gap. It is not a pipeline result at all:
+**Verovio draws one accidental per `<alter>`, not per `<accidental>`.** `<alter>`
+is the SOUNDING alteration, which a key signature already supplies, so the
+rendered page carries accidentals a real engraver would never print — Brahms 1
+has 54 `<accidental>` and 149 `<alter>` and Verovio drew 149; Beethoven 5 has
+**zero** `<accidental>` and 13 `<alter>` and it drew 13.
+
+The page truth is still exactly right *about that page*; what it cannot support
+is a claim about real notation. **What caught it was a contradiction with an
+existing number**: `wrong pitch` is zero on these works in OMR-NED, which cannot
+be true of a reader missing three quarters of the accidentals. `page_truth`
+now measures the disagreement per work (`render_fidelity`) and declares the
+family unreliable, and `score_reading` keeps it out of the pooled figure and
+marks it `(RENDER)`. Including it put the pooled F1 at 0.898; excluding it,
+**0.919**.
 
 ⚠️ **`slur` loses 24 arcs to `beam`**, which is the only real class confusion in
 the table, and `barline` is 0 by construction: it is CV-detected and

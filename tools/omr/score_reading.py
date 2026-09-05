@@ -61,6 +61,10 @@ _FAMILY_PREFIXES: list[tuple[str, str]] = [
     ("beam", "beam"),
 ]
 
+#: A family the RENDERER draws differently from what the encoding says is
+#: printed is excluded too, and named by `page_truth.render_fidelity` rather
+#: than listed here — see that function for the Verovio accidental case.
+#:
 #: Families the detector is not expected to supply, with the reason. Scored
 #: anyway and reported, because "we emit none of these" is worth seeing — but
 #: flagged so a zero is not read as a regression.
@@ -216,6 +220,10 @@ def report(page_truth: dict, result: dict, page_index: int, tolerances) -> dict:
         m = match(page["symbols"], dets, tol * space)
         out["tolerances"][str(tol)] = m
 
+    unreliable = set((page_truth.get("render_fidelity") or {}).get("unreliable", []))
+    out["unreliable_families"] = sorted(unreliable)
+    excluded = set(CV_SOURCED) | unreliable
+
     main = out["tolerances"][str(tolerances[0])]
     print(f"page {page_index + 1}: {len(page['symbols'])} printed symbols, "
           f"{len(dets)} detections, staff space {space:.1f} px")
@@ -224,15 +232,16 @@ def report(page_truth: dict, result: dict, page_index: int, tolerances) -> dict:
     tt = pp = mm = 0
     for family, m in sorted(main["per_family"].items()):
         p, r, f = _prf(m)
-        note = "  (CV)" if family in CV_SOURCED else ""
+        note = ("  (CV)" if family in CV_SOURCED
+                else "  (RENDER)" if family in unreliable else "")
         print(f"{family:24s} {m['truth']:6d} {m['pred']:6d} {m['matched']:6d} "
               f"{p:6.3f} {r:6.3f} {f:6.3f}{note}")
-        if family not in CV_SOURCED:
+        if family not in excluded:
             tt += m["truth"]; pp += m["pred"]; mm += m["matched"]
     P = mm / pp if pp else 0.0
     R = mm / tt if tt else 0.0
     F = 2 * P * R / (P + R) if (P + R) else 0.0
-    print(f"{'POOLED (non-CV)':24s} {tt:6d} {pp:6d} {mm:6d} "
+    print(f"{'POOLED (scoreable)':24s} {tt:6d} {pp:6d} {mm:6d} "
           f"{P:6.3f} {R:6.3f} {F:6.3f}")
     out["pooled"] = {"truth": tt, "pred": pp, "matched": mm,
                      "precision": P, "recall": R, "f1": F}
@@ -240,9 +249,9 @@ def report(page_truth: dict, result: dict, page_index: int, tolerances) -> dict:
     print(f"\ntolerance sweep (pooled F1):")
     for tol in tolerances:
         m = out["tolerances"][str(tol)]
-        t2 = sum(v["truth"] for k, v in m["per_family"].items() if k not in CV_SOURCED)
-        p2 = sum(v["pred"] for k, v in m["per_family"].items() if k not in CV_SOURCED)
-        x2 = sum(v["matched"] for k, v in m["per_family"].items() if k not in CV_SOURCED)
+        t2 = sum(v["truth"] for k, v in m["per_family"].items() if k not in excluded)
+        p2 = sum(v["pred"] for k, v in m["per_family"].items() if k not in excluded)
+        x2 = sum(v["matched"] for k, v in m["per_family"].items() if k not in excluded)
         P2 = x2 / p2 if p2 else 0.0
         R2 = x2 / t2 if t2 else 0.0
         print(f"   {tol:4.2f} spaces -> F1 {2*P2*R2/(P2+R2) if (P2+R2) else 0:.3f}")

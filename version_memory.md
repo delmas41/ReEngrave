@@ -18,13 +18,22 @@ harness and findings in `benchmarks/omr-reading-vs-reproduction-2026-09/`.
   the file it was rendered from: dynamics 19 glyphs vs 19 `<dynamics>` (agree), G clefs **28**
   vs **14** `<sign>G</sign>`, slurs **82 arcs** vs **164 `<slur>` tags**. A clef is printed at
   every system and declared once; MusicXML writes a slur at each end.
-- **STAGE 1 — reading F1 0.898** over 11 engraved works / 3446 printed symbols, beside OMR-NED
+- **STAGE 1 — reading F1 0.919** over 11 engraved works / 3220 scoreable symbols, beside OMR-NED
   0.1306 on the same works. The decomposition is the value: **noteheads 0.999 (856 of 856)**,
   rests 0.993, time-sig digits 0.997, flags 0.992, clefs 0.969. **So the engraved residual is
-  NOT a failure to see notes.** It is inline accidentals **0.406** (recall 0.257 — 168 printed
-  with nothing detected there), ties **0.260**, slurs **0.518** (24 arcs lost to `beam`, the only
-  real class confusion), and dynamic letters **0.552** at precision 0.421 — the same
+  NOT a failure to see notes.** It is ties **0.260**, slurs **0.518** (24 arcs lost to `beam`,
+  the only real class confusion), and dynamic letters **0.552** at precision 0.421 — the same
   over-emission `omr-dynamics-band-2026-09` measured from the other end.
+- ⚠️⚠️ **A NEAR-MISS, CAUGHT BY AN EXISTING NUMBER RATHER THAN BY THE NEW TOOL.** `accidental`
+  scored recall 0.257 and was about to be written up as the largest reading gap. It is not a
+  pipeline result: **Verovio draws one accidental per `<alter>`, not per `<accidental>`** —
+  Brahms 1 has 54 `<accidental>` and 149 `<alter>` and it drew 149; Beethoven 5 has ZERO
+  `<accidental>` and 13 `<alter>` and it drew 13. `<alter>` is the SOUNDING alteration, which a
+  key signature already supplies, so the render carries accidentals no engraver would print. The
+  tell was a contradiction with OMR-NED's `wrong pitch`, which is ZERO on these works and cannot
+  be if a reader is missing three quarters of the accidentals. `page_truth.render_fidelity` now
+  measures the disagreement per work and declares the family unreliable; `score_reading` marks it
+  `(RENDER)` and excludes it. Including it gave 0.898; excluding it, **0.919**.
 - **STAGE 2 — the funnel prices the open ninth export gap.** `wedge` sat in `KNOWN_GAPS` as
   un-priceable from that inventory. It is now: **9 hairpins read across three works and every one
   discarded** (Mahler 5 4-of-6, Tchaikovsky 6 3-of-6, Brahms 4 2-of-5) — half reading, half

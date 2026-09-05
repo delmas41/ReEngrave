@@ -344,6 +344,51 @@ def _rasterize(svg_path: Path, png_path: Path, zoom: float) -> None:
     )
 
 
+#: A family whose DRAWN count must agree with what the source encoding says is
+#: printed, or the renderer is not engraving the same music the encoding
+#: describes. `element` is the MusicXML element that states it.
+_FIDELITY_CHECKS: dict[str, str] = {
+    "accidental": "accidental",
+}
+
+
+def render_fidelity(musicxml: str, pages: list[dict]) -> dict[str, Any]:
+    """Does the render draw what the encoding says is PRINTED?
+
+    ⚠️ **VEROVIO DRAWS ONE ACCIDENTAL PER `<alter>`, NOT PER `<accidental>`** —
+    measured on three fixtures: Brahms 1 has 54 `<accidental>` and 149
+    `<alter>`, and Verovio drew 149; Beethoven 5 has **0** `<accidental>` and 13
+    `<alter>`, and it drew 13. `<alter>` is the SOUNDING alteration, which a key
+    signature already supplies, so a page rendered this way carries accidentals
+    a real engraver would never print.
+
+    That page truth is still exactly right about the page — the detector read
+    those glyphs or missed them — but it is NOT a statement about real notation,
+    and the recall it produces must not be read as one. It nearly was: the
+    `accidental` family scored recall 0.257 and was about to be called this
+    pipeline's largest reading gap.
+
+    So the disagreement is measured and the family is declared unreliable rather
+    than quietly scored. The tell that caught it: `wrong pitch` is zero on these
+    works in OMR-NED, which cannot be true of a reader missing three quarters of
+    the accidentals.
+    """
+    drawn: dict[str, int] = {}
+    for page in pages:
+        for s in page["symbols"]:
+            drawn[s["family"]] = drawn.get(s["family"], 0) + 1
+    out: dict[str, Any] = {"unreliable": [], "checks": {}}
+    for family, element in _FIDELITY_CHECKS.items():
+        encoded = len(re.findall(f"<{element}[ />]", musicxml))
+        got = drawn.get(family, 0)
+        ok = got == encoded
+        out["checks"][family] = {"drawn": got, "encoded_as_printed": encoded,
+                                 "agrees": ok}
+        if not ok:
+            out["unreliable"].append(family)
+    return out
+
+
 def build(musicxml: Path, out_dir: Path, dpi: int = 300) -> dict[str, Any]:
     """Render `musicxml` and write, side by side, the page and its truth.
 
@@ -384,6 +429,7 @@ def build(musicxml: Path, out_dir: Path, dpi: int = 300) -> dict[str, Any]:
     truth = {
         "source_musicxml": str(musicxml),
         "pdf": pdf_path.name,
+        "render_fidelity": render_fidelity(musicxml.read_text(), pages),
         "renderer": "verovio",
         "verovio_options": VEROVIO_OPTIONS,
         "dpi": dpi,

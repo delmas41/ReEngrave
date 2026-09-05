@@ -14,6 +14,7 @@ from tools.omr.page_truth import (
     NOT_SCORED,
     SCORED_CLASSES,
     glyph_box_templates,
+    render_fidelity,
     symbols_in_svg,
 )
 from tools.omr.score_reading import (
@@ -219,3 +220,61 @@ def test_pitch_is_not_scored_here():
 def test_cv_sourced_families_are_declared():
     assert set(CV_SOURCED) == {"beam", "barline"}
     assert all(v for v in CV_SOURCED.values())
+
+
+# --------------------------------------------------------------------------
+# Render fidelity — does the renderer draw what the encoding says is printed
+# --------------------------------------------------------------------------
+
+
+def _pages(n_accid):
+    return [{"symbols": [{"family": "accidental"} for _ in range(n_accid)]}]
+
+
+def test_a_render_that_matches_the_encoding_is_scoreable():
+    f = render_fidelity("<accidental>sharp</accidental>" * 3, _pages(3))
+    assert f["unreliable"] == []
+    assert f["checks"]["accidental"]["agrees"] is True
+
+
+def test_a_render_that_draws_more_than_is_printed_is_declared_unreliable():
+    """⚠️ THE REAL CASE, and it nearly became a false finding. Verovio draws one
+    accidental per `<alter>` — the SOUNDING alteration, which a key signature
+    already supplies — not per `<accidental>`, which is what the engraver
+    printed. Measured: Brahms 1 has 54 `<accidental>` and 149 `<alter>` and
+    Verovio drew 149; Beethoven 5 has ZERO `<accidental>` and 13 `<alter>` and
+    it drew 13.
+
+    The page truth stays right about the page, but the recall it yields is not
+    a statement about real notation — and `accidental` scored 0.257 and was
+    about to be called this pipeline's largest reading gap. What caught it was
+    a contradiction with an existing number: `wrong pitch` is zero on these
+    works, which cannot be true of a reader missing three quarters of the
+    accidentals.
+    """
+    f = render_fidelity("<accidental>sharp</accidental>", _pages(9))
+    assert f["unreliable"] == ["accidental"]
+    assert f["checks"]["accidental"] == {
+        "drawn": 9, "encoded_as_printed": 1, "agrees": False}
+
+
+def test_zero_and_zero_agree():
+    """A work with no printed accidentals and none drawn is fine, not silent."""
+    f = render_fidelity("<note/>", _pages(0))
+    assert f["unreliable"] == []
+
+
+def test_an_unreliable_family_is_kept_out_of_the_pooled_score():
+    from tools.omr.score_reading import report
+    truth = {"render_fidelity": {"unreliable": ["accidental"]},
+             "pages": [{"symbols": [_t("accidental", 0, 0), _t("notehead", 100, 100)]}]}
+    result = {"pages": [{"systems": [{"staves": [{
+        "staff_geometry": {"line_spacing_px": 10.0},
+        "measures": [{"bbox_page_px": [0, 0, 0, 0], "upscale_factor": 1.0,
+                      "detections": [{"class": "noteheadBlackOnLine",
+                                      "bbox": [100, 100, 10, 10],
+                                      "confidence": 0.9}]}]}]}]}]}
+    out = report(truth, result, 0, [0.5])
+    assert out["unreliable_families"] == ["accidental"]
+    # the notehead is the only thing pooled; the missed accidental is excluded
+    assert out["pooled"]["truth"] == 1

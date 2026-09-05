@@ -1102,14 +1102,25 @@ at each end and the engraver draws one arc. The reader sees 28 and 82.
 | translation | did what we saw reach the file | `score_translation` |
 | reproduction | does the file say what the truth says | `omr_ned` |
 
-**Reading F1 0.898** over 11 engraved works / 3446 printed symbols, against
+**Reading F1 0.919** over 11 engraved works / 3220 scoreable symbols, against
 OMR-NED 0.1306 on the same works. The decomposition is the point:
 **noteheads 0.999** (856 of 856), rests 0.993, time-sig digits 0.997, flags
 0.992, clefs 0.969 — so the engraved residual is **not** a failure to see notes.
-It is inline **accidentals 0.406** (recall 0.257, 168 printed with nothing
-detected there), **ties 0.260**, **slurs 0.518** (24 arcs lost to `beam`, the
-only real class confusion), and **dynamic letters 0.552** — precision 0.421, the
+It is **ties 0.260**, **slurs 0.518** (24 arcs lost to `beam`, the only real
+class confusion), and **dynamic letters 0.552** — precision 0.421, the
 over-emission measured from the other end in `omr-dynamics-band-2026-09`.
+
+⚠️⚠️ **`accidental` IS EXCLUDED AND THE NEAR-MISS IS WORTH KEEPING.** It scores
+recall 0.257 and was about to be reported as the largest reading gap. It is not
+a pipeline result: **Verovio draws one accidental per `<alter>`, not per
+`<accidental>`** — Brahms 1 has 54 `<accidental>` and 149 `<alter>` and it drew
+149; Beethoven 5 has ZERO `<accidental>` and 13 `<alter>` and it drew 13. The
+rendered page carries accidentals a real engraver would never print. **What
+caught it was a contradiction with an existing number** — `wrong pitch` is zero
+on these works, which cannot be true of a reader missing three quarters of the
+accidentals. `page_truth.render_fidelity` now measures the disagreement per work
+and declares the family unreliable; `score_reading` marks it `(RENDER)` and
+keeps it out of the pool. Including it gave 0.898; excluding it, 0.919.
 
 **Stage 2 priced the open ninth export gap.** `wedge` sat in `KNOWN_GAPS` as
 un-priceable from that inventory; the funnel prices it: **9 hairpins read across
