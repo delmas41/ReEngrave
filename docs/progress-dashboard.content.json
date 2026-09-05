@@ -21,7 +21,7 @@
     {
       "label": "Vs Audiveris",
       "value": "1<span class=\"unit\"> of 2 corpora</span>",
-      "note": "engraved: ahead, 0.1125 recorded vs its 0.1252 · scans: 0.8345 vs 0.7919 on the 11-row pool the arm covers (the benchmark has since moved to a 20-row era — not comparable)"
+      "note": "AHEAD IN BOTH CONFIGS on the engraved benchmark — 0.1122 / 0.1214 vs its 0.1252, same fixtures, same scorer"
     }
   ],
   "work_flags": {
@@ -106,6 +106,12 @@
     }
   ],
   "log": [
+    {
+      "date": "09-05",
+      "title": "One tree at last — 0.1122 recorded on merged main",
+      "negative": false,
+      "body": "Everything landed on main (PRs #16, #17, #18) and both configurations were re-recorded on the merged tree: <b>0.1122 default / 0.1214 without the OCR rung</b>, against Audiveris's 0.1252 — <b>ahead in both</b>. The day opened at 0.1306. Suite 2,182 passed. First figures that describe one coherent tree rather than two diverged lines: beam-gap fix, arc attribution, the CV hairpin reader and its corner/extent fix all measured together."
+    },
     {
       "date": "09-04",
       "title": "Merge hazard caught: two dormant flags silently dropped, restored forward",

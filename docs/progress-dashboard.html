@@ -115,7 +115,7 @@
   <header>
     <div class="masthead-row">
       <h1>ReEngrave Status Board</h1>
-      <div class="stamp">generated <b>2026-09-04</b> · benchmark commit <b>c378412f</b></div>
+      <div class="stamp">generated <b>2026-09-05</b> · benchmark commit <b>6b230bd7</b></div>
     </div>
     <div class="stafflines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     <p class="subtitle">Scanned score → OMR → MusicXML / LilyPond. One number that can sit beside published work (OMR-NED, lower is better), one labeling-and-training loop that finally ships weights, and a ranked queue of what's next.</p>
@@ -124,12 +124,12 @@
   <section>
     <p class="kicker">Headline numbers</p>
     <div class="metrics">
-      <div class="metric"><div class="label">Engraved benchmark</div><div class="value">0.1125</div><div class="note">pooled OMR-NED, 11 works · 2,367 edits · direction reader on</div></div>
-      <div class="metric"><div class="label">Without OCR rung</div><div class="value">0.1268</div><div class="note">same commit, <code>--no-direction-text</code> · 2,643 edits</div></div>
+      <div class="metric"><div class="label">Engraved benchmark</div><div class="value">0.1122</div><div class="note">pooled OMR-NED, 11 works · 2,362 edits · direction reader on</div></div>
+      <div class="metric"><div class="label">Without OCR rung</div><div class="value">0.1214</div><div class="note">same commit, <code>--no-direction-text</code> · 2,532 edits</div></div>
       <div class="metric"><div class="label">Clef, end to end</div><div class="value">149<span class="unit">/166</span></div><div class="note">90% with paid margin reader · 146 free · labels are the constraint</div></div>
       <div class="metric"><div class="label">Score library</div><div class="value">235<span class="unit"> ed</span></div><div class="note">1,745 reference encodings · 27 works paired PDF ↔ truth</div></div>
       <div class="metric"><div class="label">Scan half-notes</div><div class="value">8 → 27</div><div class="note">hollow fine-tune, dense recall held 0.941 · the #1 scan weakness, moving</div></div>
-      <div class="metric"><div class="label">Vs Audiveris</div><div class="value">1<span class="unit"> of 2 corpora</span></div><div class="note">engraved: ahead, 0.1125 recorded vs its 0.1252 · scans: 0.8345 vs 0.7919 on the 11-row pool the arm covers (the benchmark has since moved to a 20-row era — not comparable)</div></div>
+      <div class="metric"><div class="label">Vs Audiveris</div><div class="value">1<span class="unit"> of 2 corpora</span></div><div class="note">AHEAD IN BOTH CONFIGS on the engraved benchmark — 0.1122 / 0.1214 vs its 0.1252, same fixtures, same scorer</div></div>
     </div>
     <p class="table-caption">⚠️ The 11-work figure opened 2026-09-02 and is <b>not comparable</b> to the closed 3-work era (last: 0.0849) — different work set, different fixture. The boundary is enforced by <code>accuracy_record --check</code>.</p>
   </section>
@@ -143,7 +143,7 @@
         </tr></thead>
         <tbody>
           <tr><td class="work">Mahler 5 i</td><td><span class="bar" style="width:12px"></span><span class="num">0.0209</span></td><td class="num">40</td><td class="num">0.917</td><td class="num">0.917</td><td class="num">1.000</td></tr>
-          <tr><td class="work">Beethoven 5 i</td><td><span class="bar" style="width:20px"></span><span class="num">0.0332</span></td><td class="num">43</td><td class="num">1.000</td><td class="num">1.000</td><td class="num">1.000</td></tr>
+          <tr><td class="work">Beethoven 5 i</td><td><span class="bar" style="width:17px"></span><span class="num">0.0293</span></td><td class="num">38</td><td class="num">1.000</td><td class="num">1.000</td><td class="num">1.000</td></tr>
           <tr><td class="work">Tchaikovsky 4 ii</td><td><span class="bar" style="width:26px"></span><span class="num">0.0444</span></td><td class="num">69</td><td class="num">0.925</td><td class="num">0.925</td><td class="num">1.000</td></tr>
           <tr><td class="work">Bruckner 5 i</td><td><span class="bar" style="width:55px"></span><span class="num">0.0931</span></td><td class="num">185</td><td class="num">0.962</td><td class="num">0.962</td><td class="num">1.000</td></tr>
           <tr><td class="work">Brahms 1 i</td><td><span class="bar" style="width:56px"></span><span class="num">0.0943</span></td><td class="num">390</td><td class="num">0.956</td><td class="num">0.955</td><td class="num">0.992</td></tr>
@@ -193,7 +193,7 @@
       <table>
         <thead><tr><th>System</th><th>Engraved benchmark (11 works)</th><th>Scan benchmark (5 pages)</th></tr></thead>
         <tbody>
-          <tr><td class="work">ReEngrave</td><td><div class="value" style="font-size:24px">0.1125</div><div class="note">2,367 edits · 11 works · recorded on c378412f</div></td><td><div class="value" style="font-size:24px">0.8345</div><div class="note">28,849 edits · composed baseline, same 10 rows Audiveris scored</div></td></tr>
+          <tr><td class="work">ReEngrave</td><td><div class="value" style="font-size:24px">0.1122</div><div class="note">2,362 edits · 11 works · recorded on 6b230bd7</div></td><td><div class="value" style="font-size:24px">0.8345</div><div class="note">28,849 edits · composed baseline, same 10 rows Audiveris scored</div></td></tr>
           <tr><td class="work">Audiveris 5.11</td><td><div class="value" style="font-size:24px">0.1252</div><div class="note">2,569 edits · 11/11 works · same fixtures + scorer</div></td><td><div class="value" style="font-size:24px">0.7919</div><div class="note">27,934 edits · 10/11 rows — cannot process Bach (internal NPE); several rows needed hand-holding</div></td></tr>
         </tbody>
       </table>
@@ -204,6 +204,7 @@
   <section>
     <p class="kicker">Shipping log · September</p>
     <div class="log">
+      <div class="log-entry"><div class="log-date">09-05</div><h3>One tree at last — 0.1122 recorded on merged main</h3><p>Everything landed on main (PRs #16, #17, #18) and both configurations were re-recorded on the merged tree: <b>0.1122 default / 0.1214 without the OCR rung</b>, against Audiveris's 0.1252 — <b>ahead in both</b>. The day opened at 0.1306. Suite 2,182 passed. First figures that describe one coherent tree rather than two diverged lines: beam-gap fix, arc attribution, the CV hairpin reader and its corner/extent fix all measured together.</p></div>
       <div class="log-entry neg"><div class="log-date">09-04</div><h3>Merge hazard caught: two dormant flags silently dropped, restored forward</h3><p>PR #15's sync merge reported conflicts only in CLAUDE.md and the accuracy record while <code>export.py</code> auto-merged to its own older version — dropping <code>OMR_SLOT_STITCH</code> and <code>OMR_CONDENSED_PARTS</code> and leaving their tests orphaned, so the suite failed <b>collection</b>. Repaired by re-applying <b>on top of</b> the newer body (wedge work and the pair_spanners rename preserved), verified by 40/40 tests and <b>flag-off byte-identity on 33/33 fixtures</b>. The lesson is now in memory with a detection recipe: <code>git show &lt;sha&gt;:file | grep -c FLAG</code> across the merge chain localizes the loss in seconds.</p></div>
       <div class="log-entry"><div class="log-date">09-04</div><h3>Condensed-staff splitting: ceiling −4,557, premise corrected</h3><p>The dispatched session measured the convention (69.8% of condensed staff-measures are exact duplication), shipped <code>OMR_CONDENSED_PARTS</code> (default off, merged dormant), and priced the ceiling: <b>scan pool −4,557 edits with <code>OMR_SLOT_STITCH</code>, entire-staff 8,453 → 2,060</b> — the two flags compose, and splitting cancels stitching's penalty. It also <b>corrected Addendum 4</b>: opening Audiveris's exports shows it never splits condensed staves (its 22-part Brahms was fragmentation coincidentally matching truth) — so this is accuracy work, not catch-up. Label-derived counts refused (+2,181 on Dvořák — an encoding property no page signal can recover); the honest count source is a dossier, which the benchmark's no-answer-key rule can't credit. <code>benchmarks/omr-condensed-parts-2026-09/FINDINGS.md</code></p></div>
       <div class="log-entry"><div class="log-date">09-04</div><h3>Staff-structure attribution: the stitching story falsified, the real lever found</h3><p>The dispatched session attributed the scan +2,591 <code>entire staff</code> bucket: <b>87% is condensation with our detection exactly right</b>; the stitch refusal (13%) fires correctly; zero slot or segmentation faults. The axis is system count, not page position. Slot stitching was built, priced (−216 pooled) and <b>withheld</b> — it doubles the very bucket it targets while paying off in measures (bucket-level attribution under-counts fragmentation). Then the open question settled from the Audiveris exports: <b>it emits exactly the reference's 22 parts from Brahms p2's 14 printed staves</b> — it splits condensed staves into parts, which is why its structural cost collapses. Condensed-staff part-splitting is the next scan lever, and it is competitive ground. <code>benchmarks/omr-staff-structure-2026-09/FINDINGS.md</code> + Addendum 4.</p></div>
@@ -239,12 +240,12 @@
   <section>
     <p class="kicker">Recent commits</p>
     <div class="commits">
-      <div><span class="sha">a1162346</span> 2026-09-04 · docs: staff-identity audit gains S9 (dynamic/slur/tie placement = ownership) and a phase-0 placement-convention survey over the 1,745 reference encodings</div>
-      <div><span class="sha">1e724fa1</span> 2026-09-04 · docs: plan a multi-signal staff-identity audit (identity / multiplicity / continuity), measurement before inference</div>
-      <div><span class="sha">b96e46f9</span> 2026-09-04 · vs-industry addendum 5 + dashboard: condensed-parts ceiling measured; Addendum 4's Audiveris-splits claim corrected in place</div>
-      <div><span class="sha">dbcdc822</span> 2026-09-04 · vs-industry addendum 4: condensation owns 87% of the scan structure bucket; Audiveris wins it by part-splitting condensed staves</div>
-      <div><span class="sha">7b169c71</span> 2026-09-04 · dashboard: arc merge recorded — 0.1127/0.1219, both configs ahead of Audiveris engraved</div>
-      <div><span class="sha">15a1fd1d</span> 2026-09-04 · docs: class 3 splits in two (arc session's correction); addendum 3 — the scan deficit is one structural bucket</div>
+      <div><span class="sha">24911c35</span> 2026-09-05 · accuracy + docs: re-record on the fully merged tree — 0.1122 / 0.1214</div>
+      <div><span class="sha">4788dc9f</span> 2026-09-04 · hairpins: a measure bbox is CORNERS, and one anchor note is enough</div>
+      <div><span class="sha">ca910d69</span> 2026-09-04 · docs: a fixture anchored at the origin cannot tell a corner from an extent</div>
+      <div><span class="sha">aac6ee45</span> 2026-09-04 · audit plan: RETRACT the phantom-rest caution — the five staves genuinely rest</div>
+      <div><span class="sha">04b34a9c</span> 2026-09-04 · correct the record: those Dvorak staves DO rest, and my crop proved nothing</div>
+      <div><span class="sha">735c6a20</span> 2026-09-04 · audit plan: a phantom rest is not silence — S4/S7/S9 must abstain on zero-detection staves</div>
     </div>
   </section>
 
