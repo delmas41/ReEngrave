@@ -39,7 +39,19 @@ three per signal.
 | S5 | vertical position / score order | `score_layouts.py`, ten standard orders | identity (prior) |
 | S6 | line continuity across systems & pages | `slots.py` alignment + register stability | continuity, identity (propagation) |
 | S7 | intra-staff texture: divisi stems, dyads, rest asymmetry, `a 2` text | `voicing.py`, direction text | **multiplicity only** |
+| S9 | **placement of dynamics, slurs and ties relative to the staff pair** — a dynamic centred in the gap, a hairpin serving two staves, an arc whose ends belong to different staves | `claude_vision`/detector boxes + the direction reader; **nothing arbitrates these today** (the taxonomy doc's seams table lists dynamics and directions as unowned) | identity (weak), **multiplicity + ownership** (a mark placed BETWEEN two staves is evidence about which staff — or both — it serves) |
 | S8 | **bracket / brace grouping** — which family block this staff sits in, and whether a brace joins it to its neighbour | `system_grouping.py` → `Staff.group_index` (already extracted; verified on Beethoven 9 p5: 4 winds \| 2 horns \| 5 strings) | identity (block prior), **multiplicity** (a brace says one section on two staves; no brace inside a block says condensed) |
+
+**S9 is Sean's addition and it is about OWNERSHIP, which is why it belongs
+here rather than in a rendering pass.** In orchestral engraving a dynamic
+printed in the gap between two staves may serve both (the section plays the
+same dynamic), and a hairpin drawn once between a braced pair is a statement
+that the pair is one section — the same fact multiplicity needs. The arc
+session proved the general shape is real and mis-owned today: Violin 1's slurs
+were exported on the Timpani because the gap they were drawn in belonged to the
+wrong cell. Dynamics and directions still have NO ownership arbitration at all.
+⚠️ The convention is publisher- and era-dependent, so it must be MEASURED, not
+assumed — see the placement survey below.
 
 **S8 is free and already computed, which makes it the cheapest thing in the
 table.** `system_grouping` separates bracket groups by the gap-and-ink signature
@@ -87,6 +99,8 @@ work, page, system, staff_index,
   s6_slot_id, s6_continuous_with_prev(bool), s6_register_delta
   s7_divisi_bars, s7_dyad_bars, s7_rest_asymmetry, s7_a2_text(bool)
   s8_group_index, s8_group_size, s8_braced_with(staff_index|none), s8_block_position
+  s9_dyn_in_gap_above, s9_dyn_in_gap_below, s9_hairpin_shared(bool),
+  s9_arc_ends_split_staves(bool), s9_marks_owned_ambiguously(int)
   TRUTH_instrument, TRUTH_parts[], TRUTH_source(works.json hand-verified)
 ```
 
@@ -95,6 +109,32 @@ per signal: **coverage** (how often it speaks at all), **precision when it
 speaks**, **and what it adds over the best cheaper signal**. That last column
 is the one that matters: a signal that is 95% right but only ever agrees with
 the label it duplicates buys nothing.
+
+## Phase 0 — the placement-convention survey (do this first)
+
+S9 cannot be defined without knowing what placement MEANS in the encodings we
+score against, and that is measurable rather than quotable. **The score
+library's 1,745 reference encodings carry placement explicitly** —
+`<direction placement="above|below">` with its `<staff>`, slur and tie
+`<staff>`/voice ownership, and `<offset>` — so survey them across publishers
+and eras and answer, with counts:
+
+- When a section is condensed onto one staff, where do its dynamics sit, and is
+  ONE direction emitted or two?
+- For a braced pair (divisi across two staves), how often does a single
+  direction serve both, and how is that encoded?
+- Do slurs/ties ever cross staves within a part, and how is ownership written?
+- Does the answer differ by publisher/era enough to matter for the scan corpus's
+  five publishers?
+
+⚠️ **This survey describes the ENCODINGS, which is what musicdiff scores us
+against — not necessarily what the printed page shows.** Where the two differ,
+the page is what the reader sees and the encoding is what we are graded on;
+record both readings rather than collapsing them. Elaine Gould's *Behind Bars*
+is the standard authority for the printed side and would be the corroborating
+source — **it is NOT in the Gradus library or the local Reference-Books folder
+(checked 2026-09-04)**; if a copy turns up, use it to explain anomalies the
+survey finds, never to override a measured count.
 
 ## Corpus, and the answer-key discipline
 
