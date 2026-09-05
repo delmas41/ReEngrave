@@ -80,6 +80,14 @@ CACHE = Path(os.getenv("IDCAL_CACHE", str(HERE / "corpus-cache")))
 # the individual EDITION and must be MEASURED. It cannot be inferred from the
 # publisher, and it cannot be inferred from the series.
 #
+# ✅ NOTE THIS IS THE ONE PLACE PUBLISHER IS LEGITIMATELY THE VARIABLE, and it
+# is the second half of the decomposition Sean drew: **composition decides who
+# is tacet; the publisher decides whether that staff disappears.** Label yield,
+# condensation and tacet suppression are engraving choices, so measuring them
+# per edition is exactly right. What may never be built from a publisher axis
+# is a prior about WHICH INSTRUMENTS a page carries -- that is compositional,
+# and this file's per-house tables say nothing about it.
+#
 # ⚠️ STATED LIMITATION OF THIS CORPUS: 3 of the 4 usable Breitkopf plates are
 # Brahms Sämtliche Werke, the same series as the CONTAMINATED development plate
 # (brahms--symphony-1, excluded by name). Different works and different plates,

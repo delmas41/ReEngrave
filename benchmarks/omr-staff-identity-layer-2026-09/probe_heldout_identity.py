@@ -65,16 +65,41 @@ label costs 0.041 precision and 0.091 coverage. ⚠️ The bar came from the pri
 11-row `.graft09` S5 figure (0.626 / 0.753) and is a REPRODUCTION bar: different
 rows, different denominator, do not difference the two.
 
-Per publisher (HELDOUT coverage / precision), and the fear runs BACKWARDS --
-Breitkopf, which labels every staff, is the WORST of the three:
+Per arm (HELDOUT coverage / precision):
 
-    Breitkopf  labels everything          0.886 / 0.806
-    Litolff    winds+brass, strings never 0.971 / 0.955
-    Simrock    first page of movement     0.483 / 0.828
+    Breitkopf / BRAHMS 1     labels everything          0.886 / 0.806
+    Litolff   / BEETHOVEN 5  winds+brass, strings never 0.971 / 0.955
+    Simrock   / DVORAK 9     first page of movement     0.483 / 0.828
 
-⚠️ Litolff's 0.955 is a TEMPLATE MATCHING, not a rule succeeding: Beethoven 5's
-12-staff lineup essentially IS `classical-condensed`, and its FLOOR arm --
-position alone, no clef, no label -- scores precision 1.000 on 38 staves.
+⚠️⚠️ THESE ROWS ARE LABELLED BY PUBLISHER AND THAT IS MISLEADING: in this
+corpus **publisher is perfectly confounded with composer** -- Breitkopf carries
+only Brahms, Litolff only Beethoven, Simrock only Dvorak (verified: each arm's
+work set is a single composer). So a "publisher" row IS a work row, and the
+COMPOSITIONAL reading is the correct one.
+
+**Which instruments stand in a system is compositional; only whether the page
+REVEALS it is a publisher fact.** Beethoven writes the timpani in and the flute
+out — no engraver has a say. The engraver decides labelling, condensation, and
+whether a tacet staff is suppressed rather than printed as rests. Publisher is
+therefore never an explanatory variable for instrumentation here, and no prior
+of the form "this house's pages carry these instruments" may be built from this
+table.
+
+Read the spread that way and it stops being about houses:
+
+  - BEETHOVEN 5 scores 0.955 because its 12-staff lineup essentially IS
+    `classical-condensed` — a fact about the standard orchestra of 1808. Its
+    FLOOR arm (position alone, no clef, no label) scores precision 1.000 on 38
+    staves. That is a TEMPLATE MATCHING, not a rule succeeding.
+  - BRAHMS 1 is the hardest at 0.806 because its 14-staff lineup includes a
+    Contrabassoon that no layout places at that position — an orchestration
+    fact about 1876. It is the same residual §5 isolates.
+
+The publisher HOLDOUT still stands, but for evidence availability rather than
+instrumentation: a house decides how much the page tells you, so a rule fitted
+where labels are rich can fail where they are sparse. That is the Simrock 45/45
+vs Litolff 2/50 shape. The Litolff arm tests whether the rule secretly depends
+on being told the answer — it is not a publisher effect on identity.
 
 REFUSED HERE. (1) `LayoutFit.agreement` cannot serve as the identity record's
 confidence: 70% of WRONG answers sit at 1.000 against 89% of right ones. It does

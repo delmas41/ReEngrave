@@ -39,9 +39,30 @@ Features are page-derived and none is a join output:
 
 ⚠️ CALIBRATED HELD OUT FROM RULE DEVELOPMENT, by LEAVE-ONE-ENGRAVING-OUT. The
 split is by engraving and not by row because two scans of one plate are ONE
-engraving, and because a rule calibrated on one house's conventions is the
-publisher-shaped trap this corpus has sprung repeatedly (Simrock 45/45 against
-Litolff 2/50 on document roster transfer).
+engraving.
+
+⚠️⚠️ THE PER-PUBLISHER BREAKOUT IS STRATIFICATION BY HOW MUCH EVIDENCE THE PAGE
+OFFERS, AND NOTHING ELSE. It is NOT a publisher effect on identity, and it must
+not be read as one. The decomposition:
+
+    which instruments stand in a system   -> COMPOSITIONAL. Beethoven writes
+                                             the timpani in and the flute out;
+                                             no engraver has a say.
+    whether the page REVEALS it           -> PUBLISHER. Labelling convention,
+                                             condensation, and whether a tacet
+                                             staff is suppressed or printed as
+                                             rests.
+
+Only the second half is a publisher fact, and it is the only half a house-wise
+split can be about. A rule fitted where labels are rich can fail where they are
+sparse -- the Simrock 45/45 vs Litolff 2/50 shape -- so the holdout tests
+whether the estimator secretly depends on being told the answer.
+
+⚠️ AND IN THIS CORPUS PUBLISHER IS PERFECTLY CONFOUNDED WITH COMPOSER:
+Breitkopf carries only Brahms, Litolff only Beethoven, Simrock only Dvorak. So
+every row below is equally a composer row, and no prior of the form "this
+house's pages carry these instruments" may be drawn from it. With three
+engravings such a prior would fit noise and read as a finding.
 
 ⚠️ n IS SMALL AND THE BINS SAY SO. 198 records over 3 engravings leaves ~60-70
 per fold. This probe reports the WIDEST bins the data supports and prints the

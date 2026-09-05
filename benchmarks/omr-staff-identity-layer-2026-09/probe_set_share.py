@@ -78,10 +78,10 @@ def main():
 
     tot = named = setonly = nothing = 0
     sizes = []
-    per_pub = Counter()
+    per_work = Counter()
     for p in paths:
         rid = Path(p).name[: -len(f"{TAG}.omr.json")].rstrip(".")
-        pub = rid.split("-")[0]
+        work = rid.split("-")[0]   # composer slug: the WORK axis, not the house
         for page in json.loads(Path(p).read_text()).get("pages", []):
             for sysd in page.get("systems", []):
                 staves = sorted(
@@ -108,7 +108,7 @@ def main():
                         named += 1
                     elif union[i]:
                         setonly += 1
-                        per_pub[pub] += 1
+                        per_work[work] += 1
                     else:
                         nothing += 1
 
@@ -123,7 +123,13 @@ def main():
     print(f"  set size  median {statistics.median(sizes):.1f}  "
           f"mean {statistics.mean(sizes):.2f}  max {max(sizes)}   "
           f"(lexicon is 28)")
-    print(f"\n  set-only staves by publisher: {dict(per_pub)}")
+    # ⚠️ Keyed by WORK, and labelled that way deliberately. These counts were
+    # once printed as "by publisher", which was doubly wrong: the keys are
+    # composer slugs, and publisher is perfectly confounded with composer in
+    # this corpus. Which instruments a system holds is COMPOSITIONAL -- the
+    # engraver has no say in it -- so an instrumentation count must never be
+    # attributed to a house.
+    print(f"\n  set-only staves by WORK: {dict(per_work)}")
 
 
 if __name__ == "__main__":
