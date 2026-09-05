@@ -73,7 +73,18 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 #: Where shared, machine-local data lives — the same directory from every worktree.
 MACHINE_ROOT = _main_worktree(REPO_ROOT)
 CATALOG_PATH = REPO_ROOT / "data" / "score-library" / "catalog.json"
-CATALOG_SCHEMA_VERSION = 1
+#: 2 adds the top-level ``works`` map: facts that are true of a WORK rather than
+#: of one file, keyed on ``work_id``.  Per-file facts stay on the entries and are
+#: rebuilt from the sidecars; a work-level fact has no sidecar to live in (it
+#: would otherwise be copied onto each of a work's editions) so it lives here,
+#: and :func:`rebuild_catalog` carries it forward rather than dropping it.
+#: 3 adds the top-level ``editions`` map, keyed on a file's ``path``: facts read
+#: from ONE PRINTING that a work-level fact cannot state, because the same
+#: ``work_id`` holds several editions that disagree (and sometimes an
+#: arrangement).  It is a separate map for the same reason ``works`` is one — a
+#: catalog entry is rebuilt from its sidecar, so a fact written onto the entry
+#: would not survive the next rebuild — and it is carried forward identically.
+CATALOG_SCHEMA_VERSION = 3
 
 #: Old per-work IMSLP layout that ~20 benchmark scripts still hard-code.
 #: :func:`legacy_link_path` keeps those paths resolving after a file moves here.
@@ -517,6 +528,11 @@ def save_catalog(catalog: dict, path: Path | None = None) -> Path:
         key=lambda e: (e.get("kind", ""), e.get("composer_slug", ""), e.get("path", "")),
     )
     catalog["count"] = len(catalog["entries"])
+    for key in ("works", "editions"):
+        if catalog.get(key):
+            catalog[key] = dict(sorted(catalog[key].items()))
+        else:
+            catalog.pop(key, None)
     return write_json_atomic(target, catalog)
 
 
@@ -559,6 +575,15 @@ def rebuild_catalog(path: Path | None = None) -> dict:
         entry["path"] = str(file_path.relative_to(root))
         entries.append(_catalog_view(entry))
     catalog = {"entries": entries}
+    # Work-level facts (``works``) and edition-level ones (``editions``) are not
+    # derived from sidecars and would be silently destroyed by a rebuild — they
+    # are network-fetched and page-read and committed, exactly the reason the
+    # catalog is tracked at all.  Carry them forward.
+    previous = load_catalog(path)
+    for key in ("works", "editions"):
+        held = previous.get(key)
+        if held:
+            catalog[key] = held
     if orphans:
         catalog["unregistered"] = sorted(orphans)
     if unreadable:

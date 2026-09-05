@@ -1,0 +1,1874 @@
+[
+ {
+  "work_id": "bach--concerto-1",
+  "publisher": "Edition Eulenburg, Leipzig, plate E.E. 3311",
+  "pages": 24,
+  "acquired": true,
+  "hit_page": 5,
+  "best_yield": 0.6667
+ },
+ {
+  "work_id": "bach--concerto-2",
+  "publisher": "BachComplete, XIX, 1871",
+  "pages": 26,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "bach--concerto-3",
+  "publisher": "''Edition Peters Nr.4412''",
+  "pages": 24,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "bach--concerto-4",
+  "publisher": "C.F. Peters, Leipzig, 1851, plate 3429",
+  "pages": 42,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.4444
+ },
+ {
+  "work_id": "bach--concerto-5",
+  "publisher": "''Breitkopf & H\u00e4rtels Partitur-Bibliothek'' (No.2343)",
+  "pages": 38,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "bach--concerto-6",
+  "publisher": "''Edition Peters Nr.4415''",
+  "pages": 24,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.3125
+ },
+ {
+  "work_id": "bach--das-wohltemperierte-klavier-i",
+  "publisher": "Knute Snortum, 2024.",
+  "pages": 115,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "bach--mass-in-b-minor",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1899, plate Part-B. 629",
+  "pages": 274,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.9375
+ },
+ {
+  "work_id": "bach--matthauspassion",
+  "publisher": "Ernst Eulenburg, Leipzig, plate E.E. 2654",
+  "pages": 336,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.8947
+ },
+ {
+  "work_id": "bach--suite-3",
+  "publisher": "C.F. Peters, Leipzig",
+  "pages": 27,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "beach--symphony-in-e-minor-op32-gaelic",
+  "publisher": "Arthur P. Schmidt, Boston, 1897, plate S. 436",
+  "pages": 219,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.9333
+ },
+ {
+  "work_id": "beethoven--coriolan",
+  "publisher": "N. Simrock, Bonn, 1847, plate 4615",
+  "pages": 58,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "beethoven--egmont",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate PB 4",
+  "pages": 82,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "beethoven--missa-solemnis",
+  "publisher": "Schott, Mainz, 1827, plate 2546",
+  "pages": 303,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "beethoven--piano-concerto-3",
+  "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke), 1862",
+  "pages": 76,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.7391
+ },
+ {
+  "work_id": "beethoven--piano-concerto-4",
+  "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke), 1862",
+  "pages": 68,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.7273
+ },
+ {
+  "work_id": "beethoven--piano-concerto-5",
+  "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke), 1862",
+  "pages": 88,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.5882
+ },
+ {
+  "work_id": "beethoven--symphony-1",
+  "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2765",
+  "pages": 43,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.6
+ },
+ {
+  "work_id": "beethoven--symphony-2",
+  "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2766",
+  "pages": 61,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.5556
+ },
+ {
+  "work_id": "beethoven--symphony-3",
+  "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2767",
+  "pages": 89,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.55
+ },
+ {
+  "work_id": "beethoven--symphony-4",
+  "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2768",
+  "pages": 73,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.5294
+ },
+ {
+  "work_id": "beethoven--symphony-5",
+  "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+  "pages": 87,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.6364
+ },
+ {
+  "work_id": "beethoven--symphony-5",
+  "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+  "pages": 88,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "beethoven--symphony-6",
+  "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2770",
+  "pages": 79,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "beethoven--symphony-7",
+  "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2771",
+  "pages": 89,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.6
+ },
+ {
+  "work_id": "beethoven--symphony-8",
+  "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2772",
+  "pages": 63,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.6364
+ },
+ {
+  "work_id": "beethoven--symphony-9",
+  "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2773",
+  "pages": 189,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.6154
+ },
+ {
+  "work_id": "beethoven--violin-concerto-in-d-major",
+  "publisher": "Breitkopf & H\u00e4rtel (Beethoven's Werke)",
+  "pages": 64,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.6667
+ },
+ {
+  "work_id": "berlioz--harold-en-italie",
+  "publisher": "Ernst Eulenburg, Leipzig, 1899, plate E.E. 3623",
+  "pages": 212,
+  "acquired": true,
+  "hit_page": 5,
+  "best_yield": 0.8421
+ },
+ {
+  "work_id": "berlioz--le-carnaval-romain",
+  "publisher": "BerliozComplete, II, 1901",
+  "pages": 45,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.8
+ },
+ {
+  "work_id": "berlioz--symphony-fantastique",
+  "publisher": "BerliozComplete, I, 1900",
+  "pages": 148,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5263
+ },
+ {
+  "work_id": "bizet--suite-1",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate 25133",
+  "pages": 54,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.4762
+ },
+ {
+  "work_id": "bizet--symphony-in-c-major",
+  "publisher": "Universal Edition, Vienna, 1935, plate U.E. 10687",
+  "pages": 89,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.6154
+ },
+ {
+  "work_id": "borodin--in-the-steppes-of-central-asia",
+  "publisher": "D. Rahter, Hamburg, plate 2202",
+  "pages": 20,
+  "acquired": true,
+  "hit_page": 3,
+  "best_yield": 0.7222
+ },
+ {
+  "work_id": "borodin--symphony-2",
+  "publisher": "V. Bessel & Co., St. Petersburg, 1888, plate 671",
+  "pages": 156,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.9375
+ },
+ {
+  "work_id": "boulanger--faust-et-helene",
+  "publisher": "Ricordi, Paris",
+  "pages": 99,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.2759
+ },
+ {
+  "work_id": "brahms--academic-festival-overture",
+  "publisher": "N. Simrock, Berlin, 1881, plate 8187",
+  "pages": 69,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.8421
+ },
+ {
+  "work_id": "brahms--ein-deutsches-requiem",
+  "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+  "pages": 190,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.8235
+ },
+ {
+  "work_id": "brahms--piano-concerto-1",
+  "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+  "pages": 91,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.9231
+ },
+ {
+  "work_id": "brahms--piano-concerto-2",
+  "publisher": "N. Simrock, Berlin, 1882, plate 8263",
+  "pages": 159,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8
+ },
+ {
+  "work_id": "brahms--symphony-1",
+  "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+  "pages": 86,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.8889
+ },
+ {
+  "work_id": "brahms--symphony-1",
+  "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+  "pages": 86,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.84
+ },
+ {
+  "work_id": "brahms--symphony-2",
+  "publisher": "N. Simrock, Berlin, 1878, plate 8028",
+  "pages": 73,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "brahms--symphony-3",
+  "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+  "pages": 86,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8846
+ },
+ {
+  "work_id": "brahms--symphony-4",
+  "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+  "pages": 99,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.8182
+ },
+ {
+  "work_id": "brahms--tragic-overture",
+  "publisher": "N. Simrock, Berlin, 1881, plate 8189",
+  "pages": 73,
+  "acquired": true,
+  "hit_page": 5,
+  "best_yield": 0.875
+ },
+ {
+  "work_id": "brahms--variations-on-a-theme-by-haydn",
+  "publisher": "N. Simrock, Berlin, 1874, plate 7395",
+  "pages": 85,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8571
+ },
+ {
+  "work_id": "brahms--violin-concerto",
+  "publisher": "N. Simrock, Berlin, 1879, plate 8133",
+  "pages": 207,
+  "acquired": true,
+  "hit_page": 3,
+  "best_yield": 0.9286
+ },
+ {
+  "work_id": "bruckner--symphony-1",
+  "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+  "pages": 170,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.8
+ },
+ {
+  "work_id": "bruckner--symphony-3",
+  "publisher": "Wiener Philharmonischer Verlag, Vienna, plate W.Ph.V. 196",
+  "pages": 222,
+  "acquired": true,
+  "hit_page": 12,
+  "best_yield": 0.8571
+ },
+ {
+  "work_id": "bruckner--symphony-4",
+  "publisher": "Ernst Eulenburg, Leipzig, plate E.E. 3636",
+  "pages": 231,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.7059
+ },
+ {
+  "work_id": "bruckner--symphony-5",
+  "publisher": "BrucknerAGA, 1935",
+  "pages": 180,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.6842
+ },
+ {
+  "work_id": "bruckner--symphony-6",
+  "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+  "pages": 166,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.7059
+ },
+ {
+  "work_id": "bruckner--symphony-7",
+  "publisher": "Ernst Eulenburg, Leipzig, 1926, plate E.E. 3637",
+  "pages": 167,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.7059
+ },
+ {
+  "work_id": "bruckner--symphony-8",
+  "publisher": "''Co-issue with Universal Edition (Philharmonia series)''",
+  "pages": 223,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.8235
+ },
+ {
+  "work_id": "bruckner--symphony-9",
+  "publisher": "C.F. Peters, Leipzig, plate 10399",
+  "pages": 155,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8824
+ },
+ {
+  "work_id": "bruckner--te-deum",
+  "publisher": "Eulenburg, Leipzig, plate E.E. 4278",
+  "pages": 33,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.5455
+ },
+ {
+  "work_id": "chabrier--espana",
+  "publisher": "Enoch, Fr\u00e8res & Costallat, Paris, 1884, plate E. F. & C. 891",
+  "pages": 64,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.56
+ },
+ {
+  "work_id": "chaminade--concertino-pour-flute",
+  "publisher": "Enoch & Cie., Paris, 1902, plate E. & C. 6683",
+  "pages": 46,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.8333
+ },
+ {
+  "work_id": "chausson--poeme",
+  "publisher": "Catalog Part.B. 2051.",
+  "pages": 34,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.5714
+ },
+ {
+  "work_id": "coleridge-taylor--ballade-op33",
+  "publisher": "Novello, London",
+  "pages": 63,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.9444
+ },
+ {
+  "work_id": "debussy--la-boite-a-joujoux",
+  "publisher": "Durand et Cie., Paris, 1913, plate D. & F. 8935",
+  "pages": 48,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "debussy--la-mer",
+  "publisher": "Durand & Fils, Paris, plate D. & F. 6532, 6838",
+  "pages": 137,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.7727
+ },
+ {
+  "work_id": "debussy--nocturnes",
+  "publisher": "E. Fromont, Paris, plate E. 1415\u20131417 F.",
+  "pages": 112,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.75
+ },
+ {
+  "work_id": "debussy--prelude-a-l-apres-midi-d-un-faune",
+  "publisher": "Ernst Eulenburg, London, plate E.E. 6012}}{{USA-C-nonotice-U",
+  "pages": 43,
+  "acquired": true,
+  "hit_page": 8,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "dukas--l-apprenti-sorcier",
+  "publisher": "Durand & Fils, Paris, plate D. & F. 5302}}<br>''Reissue (Stu",
+  "pages": 74,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.76
+ },
+ {
+  "work_id": "dvorak--cello-concerto",
+  "publisher": "N. Simrock, Berlin, 1896, plate 10548",
+  "pages": 76,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.6471
+ },
+ {
+  "work_id": "dvorak--serenade-for-strings",
+  "publisher": "Bote & Bock, Berlin, 1879, plate 12,137",
+  "pages": 50,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.3333
+ },
+ {
+  "work_id": "dvorak--slavonic-dances",
+  "publisher": "''Schirmer's Library of Musical Classics'', Vols.1028-29",
+  "pages": 89,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "dvorak--symphony-6",
+  "publisher": "N. Simrock, Berlin, 1888, plate 8215",
+  "pages": 140,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8667
+ },
+ {
+  "work_id": "dvorak--symphony-7",
+  "publisher": "N. Simrock, Berlin, 1885, plate 8604",
+  "pages": 136,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.8
+ },
+ {
+  "work_id": "dvorak--symphony-8",
+  "publisher": "Novello, Ewer & Co., London, 1892, plate 9231",
+  "pages": 182,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "dvorak--symphony-9",
+  "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+  "pages": 80,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "elgar--cello-concerto",
+  "publisher": "Novello & Co., London, 1921, plate 14737",
+  "pages": 104,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "elgar--introduction-and-allegro",
+  "publisher": "Novello and Co., London, 1905, plate 12130",
+  "pages": 61,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "elgar--symphony-1",
+  "publisher": "Novello & Co., London, 1908",
+  "pages": 172,
+  "acquired": true,
+  "hit_page": 12,
+  "best_yield": 0.52
+ },
+ {
+  "work_id": "elgar--symphony-2",
+  "publisher": "Novello & Co., London, 1911",
+  "pages": 188,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.3846
+ },
+ {
+  "work_id": "elgar--variations-on-an-original-theme-enigma",
+  "publisher": "Novello & Co., London, 1899",
+  "pages": 128,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.8182
+ },
+ {
+  "work_id": "farrenc--symphony-2",
+  "publisher": "Pierre-Antoine Renioult, 2025.",
+  "pages": 202,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "farrenc--symphony-3",
+  "publisher": "John S. Shaw, 2024.",
+  "pages": 92,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.9167
+ },
+ {
+  "work_id": "faure--pelleas-et-melisande",
+  "publisher": "Edition Peters, Leipzig, 1979, plate E.P. 13066",
+  "pages": 63,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.7333
+ },
+ {
+  "work_id": "faure--requiem-op48",
+  "publisher": "J. Hamelle, Paris, 1901, plate J. 4650 H",
+  "pages": 128,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.7391
+ },
+ {
+  "work_id": "franck--le-chasseur-maudit",
+  "publisher": "Eulenburg, London, plate E.E. 3684",
+  "pages": 118,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8947
+ },
+ {
+  "work_id": "franck--symphony-in-d-minor",
+  "publisher": "Hamelle, Paris, 1890, plate J. 3059 H",
+  "pages": 152,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.7778
+ },
+ {
+  "work_id": "glazunov--symphony-5",
+  "publisher": "M.P. Belaieff, Leipzig, 1896, plate 1332",
+  "pages": 145,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.7
+ },
+ {
+  "work_id": "grieg--holberg-suite",
+  "publisher": "C.F. Peters, Leipzig, 1884, plate 6827",
+  "pages": 22,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "grieg--piano-concerto",
+  "publisher": "C.F. Peters, Leipzig, plate 7367, 9156",
+  "pages": 80,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.65
+ },
+ {
+  "work_id": "grieg--suite-1",
+  "publisher": "Edition Peters, Leipzig, 1888, plate 7188",
+  "pages": 44,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "handel--messiah",
+  "publisher": "",
+  "pages": 287,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.2
+ },
+ {
+  "work_id": "handel--messiah",
+  "publisher": "",
+  "pages": 251,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.25
+ },
+ {
+  "work_id": "handel--music-for-the-royal-fireworks",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig",
+  "pages": 49,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8667
+ },
+ {
+  "work_id": "handel--water-music",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate 24433/H.W. 47 18",
+  "pages": 66,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.4167
+ },
+ {
+  "work_id": "haydn--cello-concerto-2",
+  "publisher": "C.F. Peters, Leipzig",
+  "pages": 48,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.75
+ },
+ {
+  "work_id": "haydn--die-schopfung-hob-xxi-2",
+  "publisher": "C.F. Peters, Leipzig",
+  "pages": 245,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.9
+ },
+ {
+  "work_id": "haydn--symphony-100",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1857, plate 9507",
+  "pages": 101,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "haydn--symphony-101",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1855, plate 8874",
+  "pages": 73,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "haydn--symphony-102",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1857, plate 9508",
+  "pages": 64,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "haydn--symphony-103",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1854, plate 8871",
+  "pages": 59,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "haydn--symphony-104",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1854, plate 8872",
+  "pages": 57,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "haydn--symphony-45",
+  "publisher": "Ernst Eulenburg, Leipzig, plate E.E. 3660",
+  "pages": 45,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.7143
+ },
+ {
+  "work_id": "haydn--symphony-88",
+  "publisher": "LinkWork, Sinfonien und Quartette, 1874",
+  "pages": 40,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "haydn--symphony-92",
+  "publisher": "''Breitkopf & H\u00e4rtels Orchester-Bibliothek'' (No.4378)",
+  "pages": 46,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "haydn--symphony-94",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1855, plate 8876",
+  "pages": 54,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "haydn--symphony-95",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1855, plate 9150",
+  "pages": 51,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "haydn--symphony-96",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig",
+  "pages": 40,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5263
+ },
+ {
+  "work_id": "haydn--symphony-99",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1855, plate 8873",
+  "pages": 55,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.4545
+ },
+ {
+  "work_id": "holst--st-paul-s-suite-op29-2",
+  "publisher": "Goodwin & Tabb, London, 1922",
+  "pages": 21,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.3333
+ },
+ {
+  "work_id": "holst--the-planets",
+  "publisher": "Goodwin & Tabb, London, 1921",
+  "pages": 190,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.48
+ },
+ {
+  "work_id": "kirchhoff--l-abc-musical",
+  "publisher": "",
+  "pages": 33,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "lalo--symphony-espagnole",
+  "publisher": "Durand, Schoenewerk & Cie., Paris, plate D.S. & Cie. 2135",
+  "pages": 147,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8235
+ },
+ {
+  "work_id": "mahler--das-lied-von-der-erde-gmw-49",
+  "publisher": "Universal Edition, Vienna, 1912, plate U.E. 3637",
+  "pages": 145,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.8846
+ },
+ {
+  "work_id": "mahler--lieder-eines-fahrenden-gesellen-gmw-10",
+  "publisher": "Josef Weinberger, Vienna, 1897",
+  "pages": 57,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.7273
+ },
+ {
+  "work_id": "mahler--symphony-1",
+  "publisher": "Universal Edition, Vienna, 1906, plate U.E. 2931",
+  "pages": 169,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.6875
+ },
+ {
+  "work_id": "mahler--symphony-2",
+  "publisher": "Friedrich Hofmeister, Leipzig, 1897",
+  "pages": 209,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8636
+ },
+ {
+  "work_id": "mahler--symphony-3",
+  "publisher": "Universal Edition, Vienna, 1906, plate U.E. 2939",
+  "pages": 233,
+  "acquired": true,
+  "hit_page": 12,
+  "best_yield": 0.5625
+ },
+ {
+  "work_id": "mahler--symphony-4",
+  "publisher": "Universal Edition, Vienna, 1911, plate U.E. 2944",
+  "pages": 125,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8333
+ },
+ {
+  "work_id": "mahler--symphony-5",
+  "publisher": "",
+  "pages": 245,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.8947
+ },
+ {
+  "work_id": "mahler--symphony-6",
+  "publisher": "C.F. Kahnt Nachfolger, Leipzig, 1906, plate 4526",
+  "pages": 263,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.7419
+ },
+ {
+  "work_id": "mahler--symphony-7",
+  "publisher": "Bote & Bock, Berlin, 1909, plate B. & B. 16867",
+  "pages": 259,
+  "acquired": true,
+  "hit_page": 8,
+  "best_yield": 0.6
+ },
+ {
+  "work_id": "mahler--symphony-9",
+  "publisher": "Universal Edition, Vienna, 1912, plate U.E. 3395",
+  "pages": 180,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.5862
+ },
+ {
+  "work_id": "mendelssohn--a-midsummer-night-s-dream-incidental-music",
+  "publisher": "C.F. Peters, Leipzig, plate 6056",
+  "pages": 141,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8
+ },
+ {
+  "work_id": "mendelssohn--die-hebriden",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate 5543",
+  "pages": 54,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "mendelssohn--symphony-1",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate Part. B. 59",
+  "pages": 64,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "mendelssohn--symphony-3",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1842, plate 6823",
+  "pages": 244,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "mendelssohn--symphony-4",
+  "publisher": "MendelssohnComplete, 1877",
+  "pages": 69,
+  "acquired": true,
+  "hit_page": 3,
+  "best_yield": 0.9231
+ },
+ {
+  "work_id": "mendelssohn--symphony-5",
+  "publisher": "MendelssohnComplete, 1877",
+  "pages": 94,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "mendelssohn--violin-concerto",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate P.B. 480",
+  "pages": 57,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "mozart--clarinet-concerto-in-a-major",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), XII, Bd.2, No.20, 1881",
+  "pages": 58,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "mozart--die-zauberflote",
+  "publisher": "N. Simrock, Bonn, plate 1092",
+  "pages": 375,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "mozart--don-giovanni",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1801",
+  "pages": 593,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "mozart--eine-kleine-nachtmusik",
+  "publisher": "Wiener Philharmonischer Verlag, Vienna, plate W.Ph.V. 366",
+  "pages": 21,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.2667
+ },
+ {
+  "work_id": "mozart--le-nozze-di-figaro",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), V, Bd.8, No.17, 1879",
+  "pages": 427,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "mozart--piano-concerto-20",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), XVI: Concerte f\u00fcr das P",
+  "pages": 56,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5789
+ },
+ {
+  "work_id": "mozart--piano-concerto-21",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), XVI, Bd.3, No.21, 1878",
+  "pages": 56,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.9167
+ },
+ {
+  "work_id": "mozart--piano-concerto-23",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), XVI, Bd.4, No.23, 1879",
+  "pages": 54,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "mozart--piano-concerto-24",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), XVI, Bd.4, No.24, 1879",
+  "pages": 64,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.9231
+ },
+ {
+  "work_id": "mozart--requiem-in-d-minor",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1812, plate 1821",
+  "pages": 131,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "mozart--symphony-1",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.1, No.1, 1879",
+  "pages": 12,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.3333
+ },
+ {
+  "work_id": "mozart--symphony-25",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.2, No.25, 1880",
+  "pages": 19,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.3333
+ },
+ {
+  "work_id": "mozart--symphony-25",
+  "publisher": "B\u00e4renreiter (Neue Mozart-Ausgabe), IV, 1960",
+  "pages": 20,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "mozart--symphony-29",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.2, No.29, 1880",
+  "pages": 24,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.3333
+ },
+ {
+  "work_id": "mozart--symphony-31",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.2,",
+  "pages": 40,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "mozart--symphony-33",
+  "publisher": "''Breitkopf & H\u00e4rtel's Partitur-Bibliothek'' (Nr. 119)",
+  "pages": 32,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "mozart--symphony-34",
+  "publisher": "Ernst Eulenburg, London, 1956, plate E.E. 6087}}{{Urtext",
+  "pages": 76,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.7647
+ },
+ {
+  "work_id": "mozart--symphony-35",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.3, No.35, 1880",
+  "pages": 36,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "mozart--symphony-36",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.3, No.36, 1880",
+  "pages": 44,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "mozart--symphony-38",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.3, No.38, 1880",
+  "pages": 40,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "mozart--symphony-39",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII, Bd.3, No.39, 1880",
+  "pages": 44,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "mozart--symphony-4",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.1,",
+  "pages": 10,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.3333
+ },
+ {
+  "work_id": "mozart--symphony-40",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3,",
+  "pages": 49,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "mozart--symphony-41",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3,",
+  "pages": 56,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "mozart--symphony-41",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3,",
+  "pages": 56,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "mozart--symphony-5",
+  "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.1,",
+  "pages": 9,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.3529
+ },
+ {
+  "work_id": "mussorgsky--night-on-bald-mountain",
+  "publisher": "V. Bessel & Co., St. Petersburg, 1886, plate 1538",
+  "pages": 65,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.9474
+ },
+ {
+  "work_id": "mussorgsky--pictures-at-an-exhibition",
+  "publisher": "Augener, London, 1914, plate 14816",
+  "pages": 48,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "nielsen--symphony-4",
+  "publisher": "Wilhelm Hansen, Leipzig, 1916, plate 16557",
+  "pages": 120,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.4348
+ },
+ {
+  "work_id": "nielsen--symphony-5",
+  "publisher": "NielsenComplete, II, 1998",
+  "pages": 190,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "prokofiev--symphony-1",
+  "publisher": "Editions Russes de Musique, Paris, 1925, plate R.M.V. 419",
+  "pages": 97,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "rachmaninoff--isle-of-the-dead",
+  "publisher": "A. Gutheil, Moscow, 1909, plate A. 9048 G.",
+  "pages": 73,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "rachmaninoff--piano-concerto-2",
+  "publisher": "A. Gutheil, Moscow, 1901, plate A. 8102 G",
+  "pages": 114,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.7647
+ },
+ {
+  "work_id": "rachmaninoff--symphony-2",
+  "publisher": "A. Gutheil, Moscow, 1908, plate A. 8899 G",
+  "pages": 231,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.7895
+ },
+ {
+  "work_id": "ravel--bolero",
+  "publisher": "2016.",
+  "pages": 41,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.6923
+ },
+ {
+  "work_id": "ravel--daphnis-et-chloe",
+  "publisher": "Durand, Paris, plate D. et F. 7937",
+  "pages": 321,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.4242
+ },
+ {
+  "work_id": "ravel--la-valse",
+  "publisher": "Durand & Cie., Paris, 1921, plate D. & F. 9885",
+  "pages": 134,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.68
+ },
+ {
+  "work_id": "ravel--le-tombeau-de-couperin",
+  "publisher": "Durand & Cie., Paris, 1918, plate D. & F. 9569",
+  "pages": 34,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.1
+ },
+ {
+  "work_id": "ravel--rapsodie-espagnole",
+  "publisher": "Durand & Fils, Paris, 1908, plate D. & F. 7128",
+  "pages": 94,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.4545
+ },
+ {
+  "work_id": "respighi--fontane-di-roma",
+  "publisher": "Ricordi, Milan, plate 117463",
+  "pages": 72,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.4074
+ },
+ {
+  "work_id": "respighi--pini-di-roma",
+  "publisher": "G. Ricordi & C., Milan, 1925, plate P.R. 439",
+  "pages": 67,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.625
+ },
+ {
+  "work_id": "rimsky-korsakov--capriccio-espagnol",
+  "publisher": "M.P. Belaieff, Leipzig, plate 3220",
+  "pages": 95,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.9444
+ },
+ {
+  "work_id": "rimsky-korsakov--scheherazade",
+  "publisher": "Ernst Eulenburg, Leipzig, plate 2957*",
+  "pages": 257,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.8333
+ },
+ {
+  "work_id": "rossini--guillaume-tell",
+  "publisher": "Breitkopf & H\u00e4rtel, Leipzig",
+  "pages": 51,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.913
+ },
+ {
+  "work_id": "rossini--il-barbiere-di-siviglia",
+  "publisher": "Wiener Philharmonischer Verlag, Vienna, plate W.Ph.V. 17",
+  "pages": 50,
+  "acquired": true,
+  "hit_page": 8,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "saint-saens--cello-concerto-1",
+  "publisher": "Durand, Schoenewerk & Cie., Paris, 1874, plate D.S. & Cie. 1",
+  "pages": 74,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.7692
+ },
+ {
+  "work_id": "saint-saens--danse-macabre",
+  "publisher": "Durand, Schoenewerk et Cie., Paris, 1875, plate D. S. & Cie.",
+  "pages": 52,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.7826
+ },
+ {
+  "work_id": "saint-saens--le-carnaval-des-animaux",
+  "publisher": "Durand, Paris, plate D. & F. 10,154",
+  "pages": 65,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.4444
+ },
+ {
+  "work_id": "saint-saens--piano-concerto-2",
+  "publisher": "Durand, Schoenewerk et Cie., Paris, 1875, plate D. S. & Cie.",
+  "pages": 111,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.7857
+ },
+ {
+  "work_id": "saint-saens--symphony-3",
+  "publisher": "Durand & Schoenewerk, Paris, 1886, plate D.S. 3700",
+  "pages": 178,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.6364
+ },
+ {
+  "work_id": "schubert--rosamunde",
+  "publisher": "SchubertComplete, XV: Dramatische Musik, Band 4, 1893",
+  "pages": 46,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "schubert--symphony-3",
+  "publisher": "SchubertComplete, I, 1884",
+  "pages": 49,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "schubert--symphony-4",
+  "publisher": "SchubertComplete, I, 1884",
+  "pages": 60,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "schubert--symphony-5",
+  "publisher": "SchubertComplete, I, 1885",
+  "pages": 48,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "schubert--symphony-8",
+  "publisher": "''Breitkopf & H\u00e4rtel's Partitur-Bibliothek'' (Part B. 154)|P",
+  "pages": 36,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "schubert--symphony-9",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1850, plate 7954",
+  "pages": 324,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.9286
+ },
+ {
+  "work_id": "schumann--cello-concerto",
+  "publisher": "SchumannComplete, III: Concerte und Concertst\u00fccke f\u00fcr Orches",
+  "pages": 40,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5294
+ },
+ {
+  "work_id": "schumann--piano-concerto",
+  "publisher": "SchumannComplete, III: Concerte und Concertst\u00fccke f\u00fcr Orches",
+  "pages": 93,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.9286
+ },
+ {
+  "work_id": "schumann--piano-concerto",
+  "publisher": "Shu-Yu Chang, 2019.",
+  "pages": 106,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.619
+ },
+ {
+  "work_id": "schumann--symphony-1",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate 8545",
+  "pages": 218,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "schumann--symphony-2",
+  "publisher": "C.F. Peters, Leipzig, 1887, plate 7085",
+  "pages": 141,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.9286
+ },
+ {
+  "work_id": "schumann--symphony-3",
+  "publisher": "C.F. Peters, Leipzig, 1887, plate 7086",
+  "pages": 93,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.6923
+ },
+ {
+  "work_id": "schumann--symphony-4",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1891, plate Part.B. 159",
+  "pages": 91,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "sibelius--finlandia",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1905, plate Part.B. 1781",
+  "pages": 24,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.8333
+ },
+ {
+  "work_id": "sibelius--symphony-1",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1902, plate 30747/Part.B. 173",
+  "pages": 160,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.8889
+ },
+ {
+  "work_id": "sibelius--symphony-2",
+  "publisher": "(Breitkopf und H\u00e4rtel from 1905)",
+  "pages": 143,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.875
+ },
+ {
+  "work_id": "sibelius--symphony-5",
+  "publisher": "Wilhelm Hansen, Copenhagen, 1921, plate 17539",
+  "pages": 134,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.8
+ },
+ {
+  "work_id": "sibelius--symphony-7",
+  "publisher": "Wilhelm Hansen, Copenhagen, 1925, plate 18658",
+  "pages": 74,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "sibelius--the-swan-of-tuonela-op22-2",
+  "publisher": "Breitkopf & H\u00e4rtel, Leipzig, 1901, plate K.F.W.48/Part.B. 16",
+  "pages": 20,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.4
+ },
+ {
+  "work_id": "sibelius--violin-concerto",
+  "publisher": "Schlesinger (Lienau), Berlin, 1905, plate S. 9336",
+  "pages": 65,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.6
+ },
+ {
+  "work_id": "smetana--ma-vlast-jb-1-112",
+  "publisher": "P2, Eulenburg",
+  "pages": 496,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.7857
+ },
+ {
+  "work_id": "smetana--prodana-nevesta-jb-1-100",
+  "publisher": "SNKLHU, Prague, 1953, plate H. 1100}}<br>{{urtext",
+  "pages": 647,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "smyth--the-wreckers",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate 18684",
+  "pages": 50,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8261
+ },
+ {
+  "work_id": "strauss--also-sprach-zarathustra",
+  "publisher": "Ernst Eulenburg, Leipzig, 1920, plate E.E. 3506",
+  "pages": 159,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.7037
+ },
+ {
+  "work_id": "strauss--don-juan",
+  "publisher": "Jos. Aibl Verlag, Munich, plate R. 2640",
+  "pages": 96,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8261
+ },
+ {
+  "work_id": "strauss--don-quixote",
+  "publisher": "Jos. Aibl Verlag, Munich, 1898, plate R. 2885",
+  "pages": 94,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.625
+ },
+ {
+  "work_id": "strauss--ein-heldenleben",
+  "publisher": "F.E.C. Leuckart, Leipzig, 1899, plate F.E.C.L. 5200",
+  "pages": 139,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "strauss--eine-alpensinfonie",
+  "publisher": "F.E.C. Leuckart, Leipzig, 1915, plate F.E.C.L. 7529}}<br>''R",
+  "pages": 160,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "strauss--elektra",
+  "publisher": "Adolph F\u00fcrstner, Berlin, 1916, plate A. 5650 5661 F",
+  "pages": 366,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.5
+ },
+ {
+  "work_id": "strauss--till-eulenspiegels-lustige-streiche",
+  "publisher": "Joseph Aibl, Munich, 1896, plate 2832",
+  "pages": 60,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.7308
+ },
+ {
+  "work_id": "strauss--tod-und-verklarung",
+  "publisher": "Josesph Aibl, Munich, 1891, plate 2676",
+  "pages": 90,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.6522
+ },
+ {
+  "work_id": "stravinsky--petrushka",
+  "publisher": "*",
+  "pages": 151,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.7222
+ },
+ {
+  "work_id": "stravinsky--the-firebird-ballet",
+  "publisher": "P. Jurgenson, Moscow, 1911, plate 34920",
+  "pages": 180,
+  "acquired": true,
+  "hit_page": 8,
+  "best_yield": 0.7586
+ },
+ {
+  "work_id": "tchaikovsky--1812-overture",
+  "publisher": "P. Jurgenson, Moscow, 1882, plate 4592",
+  "pages": 73,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.7692
+ },
+ {
+  "work_id": "tchaikovsky--piano-concerto-1",
+  "publisher": "P. Jurgenson, Moscow, plate 2590",
+  "pages": 154,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.8889
+ },
+ {
+  "work_id": "tchaikovsky--romeo-and-juliet-overture-fantasia",
+  "publisher": "Ed. Bote & G. Bock, Berlin, 1881, plate 9325",
+  "pages": 111,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.95
+ },
+ {
+  "work_id": "tchaikovsky--serenade-for-string-orchestra",
+  "publisher": "P. Jurgenson, Moscow, 1881, plate 4411",
+  "pages": 66,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.3333
+ },
+ {
+  "work_id": "tchaikovsky--swan-lake-ballet",
+  "publisher": "(#535915)",
+  "pages": 642,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "tchaikovsky--symphony-1",
+  "publisher": "P. Jurgenson, Moscow, 1875, plate 2519",
+  "pages": 123,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.4615
+ },
+ {
+  "work_id": "tchaikovsky--symphony-2",
+  "publisher": "Bessel, St. Petersburg, 1881, plate 379",
+  "pages": 181,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.7059
+ },
+ {
+  "work_id": "tchaikovsky--symphony-4",
+  "publisher": "P. Jurgenson, Moscow, plate 3376",
+  "pages": 226,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "tchaikovsky--symphony-5",
+  "publisher": "Breitkopf & H\u00e4rtel, Leipzig, 1930, plate 30388/Part.B. 3347",
+  "pages": 164,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.9524
+ },
+ {
+  "work_id": "tchaikovsky--symphony-6",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate Part.B. 4959",
+  "pages": 159,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.7143
+ },
+ {
+  "work_id": "tchaikovsky--symphony-6",
+  "publisher": "Eulenburg, Leipzig, plate 3892",
+  "pages": 224,
+  "acquired": true,
+  "hit_page": 8,
+  "best_yield": 0.8235
+ },
+ {
+  "work_id": "tchaikovsky--the-nutcracker-suite",
+  "publisher": "P. Jurgenson, Moscow, 1892, plate 17668",
+  "pages": 120,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.7778
+ },
+ {
+  "work_id": "tchaikovsky--the-sleeping-beauty-suite",
+  "publisher": "P. Jurgenson, Moscow, plate 25237",
+  "pages": 89,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 0.8182
+ },
+ {
+  "work_id": "tchaikovsky--violin-concerto",
+  "publisher": "P. Jurgenson, Moscow, 1888, plate 3338",
+  "pages": 120,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.9333
+ },
+ {
+  "work_id": "verdi--requiem",
+  "publisher": "Ernst Eulenburg, Leipzig, plate E.E. 4864",
+  "pages": 285,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.75
+ },
+ {
+  "work_id": "vidal--178-basses",
+  "publisher": "Univerzitet umetnosti u Beogradu, Belgrade",
+  "pages": 138,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.125
+ },
+ {
+  "work_id": "wagner--die-meistersinger-von-nurnberg-wwv-96",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig",
+  "pages": 40,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.0
+ },
+ {
+  "work_id": "wagner--siegfried-idyll-wwv-103",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate Part.-B. 2426",
+  "pages": 21,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.875
+ },
+ {
+  "work_id": "wagner--tannhauser-wwv-70",
+  "publisher": "C.F. Peters, Leipzig, 1920, plate 10352",
+  "pages": 415,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.6087
+ },
+ {
+  "work_id": "wagner--tristan-und-isolde-wwv-90",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, 1860, plate 10000",
+  "pages": 439,
+  "acquired": false,
+  "hit_page": null,
+  "best_yield": 0.2105
+ },
+ {
+  "work_id": "weber--der-freischutz",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate Part. B. 1688",
+  "pages": 41,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.9333
+ },
+ {
+  "work_id": "weber--oberon-j-306",
+  "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate O.B. 4732",
+  "pages": 22,
+  "acquired": true,
+  "hit_page": 2,
+  "best_yield": 0.9333
+ },
+ {
+  "work_id": "williams--fantasia-on-a-theme-by-thomas-tallis",
+  "publisher": "Goodwin & Tabb, London, 1921",
+  "pages": 19,
+  "acquired": true,
+  "hit_page": 0,
+  "best_yield": 1.0
+ },
+ {
+  "work_id": "williams--the-lark-ascending",
+  "publisher": "Oxford University Press, London, 1925",
+  "pages": 24,
+  "acquired": true,
+  "hit_page": 1,
+  "best_yield": 0.875
+ }
+]

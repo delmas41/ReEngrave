@@ -360,8 +360,95 @@ works with no edition and no ground truth respectively.
 python3 -m tools.library.ingest imslp ~/Downloads/IMSLP*.pdf   # provenance from the wiki API
 python3 -m tools.library.ingest musicxml <dir> --source gradus
 python3 -m tools.library.ingest catalog | verify | reorganize | refresh | relink
+python3 -m tools.library.ingest instrumentation                # work rosters, backfill
 python3 -m tools.library.build_wishlist --out data/score-library/wishlist.json
 ```
+
+**What each work is SCORED FOR is captured too**, keyed on the same `work_id`,
+in a top-level `works` map in the catalog (schema version 2). The IMSLP work
+page states it (`InstrDetail`, or `Instrumentation` on works that have no
+detail line), so it is one more read of the open MediaWiki API the provenance
+already comes from — never the download gate — and it costs one query per
+WORK, not per page. It exists because roster acquisition off the printed page
+fails on a minority of documents and this is an **independent** work-level
+escalation. The raw string is stored verbatim and a parsed roster beside it
+(instrument + count, named through `tools/omr/instruments.py` so the rest of
+the pipeline recognises the words); a fragment the lexicon does not know is
+recorded `unparsed`, never forced to a nearest match.
+
+⚠️ **`source_kind` is the load-bearing field.** Every fact carries
+`source: "imslp"` / `source_kind: "catalog"`, and `"catalog"` is what makes it
+legitimate production evidence: it is independent of the MusicXML the
+benchmarks score against. A roster derived from an encoding would be
+`source_kind: "encoding"` and a measurement path may not read it. The
+distinction is enforced (`validate_fact` refuses a fact without it) rather than
+conventional, because it cannot be added to facts already written.
+
+⚠️ **N instruments is not N staves** — a printed score condenses and splits, and
+the condensed count is a property of the encoding. ⚠️ Two IMSLP pages can share
+one `work_id` (Clara Op.7 and Robert Op.54 are both `schumann--piano-concerto`);
+the key is not forked, the second roster is kept as a recorded conflict and
+neither is trusted. **Measured 2026-09-05 over all 223 held IMSLP works: 2419 of
+2518 roster fragments parse (96.1%), 171 works (76.7%) parse completely, 4 parse
+nothing** (their page states no roster — `keyboard`, `orchestra`). The
+work-complete figure is the one a staff join cares about: a roster missing a
+part joins *wrong*, not *not at all*. The residual is lexicon gaps rather than
+parser failures — `2 cornets` alone is 14 of the 99, and `instruments.py` has no
+cornet. Backfill cost 224 requests at 6 s = **25.4 min, 0 failures**. Regenerate
+the figures with
+`python3 benchmarks/omr-instrumentation-capture-2026-09/measure_parse_rate.py`
+(writes `parse-rate.json`, which carries the per-work table and the unparsed
+tail). ⚠️ Three fault shapes are pinned by tests because each produced a
+*confident wrong answer*: one field holding both dialects (Bach's B minor Mass,
+0 of 18), an opera's field opening with its CAST list (Tannhäuser, 0 of 54), and
+a prose roster ending in desk counts `strings (16, 16, 12, 12, 8)` being read as
+the numeric dialect. Fixing them took the pooled rate 0.9015 → 0.9432 → 0.9607
+**with no new IMSLP requests** — the raw string is stored verbatim, so
+`--reparse` re-derives every roster offline.
+
+⚠️ **AND A FOURTH, WORSE THAN THOSE THREE, FOUND 2026-09-05: a doubling
+parenthetical DELETED THE CHAIR.** `2 flutes (2nd also piccolo)` was resolved
+whole, the lexicon matched `piccolo` *inside* the fragment, and the chair came
+back as **Piccolo, count 2** — the flutes gone, the auxiliary standing in their
+place with the flutes' own count, at `parse_rate 1.0`. **58 of 223 works write
+"also"**, and Berlioz's *Symphonie fantastique* had no flute and no oboe.
+Underneath it, fragments split on commas at *any* bracket depth, so
+`4 oboes (3rd, 4th also English horn)` was cut in half and the split lost the
+**chair**, not the aside (10 works). The head is the chair; a parenthetical is a
+`qualifier`, or a `doubles` entry when it says *also*/*doubling* — never a
+roster entry of its own, because a doubling player is ONE chair holding two
+instruments. `or` is not a doubling marker (`harp (or piano)` is a
+substitution). Measured offline over the raw strings, **0 requests**: **61
+rosters changed**, unparsed 99 → 75, fully-parsed works 171 → 178; recovered
+Flute ×39, Oboe ×18, Continuo ×6; removed the fakes Piccolo ×37, English horn
+×17, Piano ×6 (`continuo (harpsichord)` had been inventing a keyboard chair out
+of a figured-bass line). Pinned by `TestDoubling`.
+
+**And what ONE PRINTING is scored for is captured too** (2026-09-05), in a
+second top-level `editions` map keyed on the file's own `path` (schema 2 → 3),
+read from that edition's own pages: `tools.library.edition_instrumentation`.
+The work tier is generic and right about the piece; an edition tier is
+authoritative for **this PDF**, which matters because Bruckner exists in
+versions with different orchestration, publishers add and absorb parts, and one
+`work_id` can hold a full score *and* a piano reduction. ⚠️ **A page-derived
+fact is a THIRD `source_kind`, `"page"`** — not `catalog` — because a roster read
+off a raster is an **OMR output**, so a measurement path that scores OMR must
+refuse it for a different reason than it refuses `encoding`. ⚠️ The roster is
+**one SYSTEM's, not one page's** (Brahms 1 / Breitkopf p.1 is 27 staves in two
+systems and would report the roster twice), and `staves` (observed) is kept
+apart from `count_printed` (quoted), so neither tier implies a staff count.
+**Measured over all 234 held editions: roster acquired 189 (0.808), 68 min, 0
+failures, 18 of them only on a page past p.2.** The **disagreement between the
+tiers is the output**, and its mix is the finding, not its rate: of 181
+comparable rows, 0.442 are partial reads, 0.210 agree, **0.210 are one lexicon
+word** (`Basso.` → Bass *voice* — the bottom string staff of every orchestral
+score, 35 rows, the only disagreement on 30), 0.017 doubling, and **0 are a
+genuine editorial variant** — all 9 `variant_suspected` rows opened by hand are
+movement scope (Beethoven 5's trombones enter in the finale), condensation
+(`Violoncello e Contrabasso` on one staff), a bracketed optional part, or an
+opera's cast list. So **`variant_suspected` means "worth a human", never "a
+variant"**. Full reading in the docstring of
+`benchmarks/omr-edition-instrumentation-2026-09/probe_tier_disagreement.py`.
 
 **The legacy paths still work.** ~20 benchmark scripts hard-code
 `tools/omr/training/data/imslp/<work>/pdfs/imslp-<id>/score.pdf` and NOTES.md
