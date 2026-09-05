@@ -1,0 +1,43 @@
+{
+ "cell_id": "schehe-p4-sys1-s10-m4",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 218,
+    "y": 445,
+    "w": 171,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadWholeOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 244,
+    "y": 650,
+    "w": 171,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 66,
+    "y": 545,
+    "w": 129,
+    "h": 340
+   },
+   "notes": ""
+  }
+ ]
+}

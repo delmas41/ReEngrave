@@ -1,0 +1,44 @@
+{
+ "cell_id": "mahler5-p175-sys2-s15-m3",
+ "candidates": [
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8325,
+   "ink": 0.7911,
+   "bbox": {
+    "x": 1185,
+    "y": 444,
+    "w": 113,
+    "h": 102
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.682,
+   "ink": 0.8034,
+   "bbox": {
+    "x": 119,
+    "y": 355,
+    "w": 110,
+    "h": 87
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.6202,
+   "ink": 0.9394,
+   "bbox": {
+    "x": 749,
+    "y": 745,
+    "w": 113,
+    "h": 90
+   }
+  }
+ ]
+}

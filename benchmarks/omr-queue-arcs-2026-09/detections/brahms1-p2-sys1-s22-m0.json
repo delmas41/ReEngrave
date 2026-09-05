@@ -1,0 +1,45 @@
+{
+ "cell_id": "brahms1-p2-sys1-s22-m0",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 1104,
+   "y": 526,
+   "w": 311,
+   "h": 85,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "tie",
+   "category": "queue",
+   "x": 1865,
+   "y": 532,
+   "w": 167,
+   "h": 79,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 1059,
+   "y": 560,
+   "w": 625,
+   "h": 119,
+   "confidence": 1.0
+  },
+  {
+   "id": "D3",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 1841,
+   "y": 564,
+   "w": 184,
+   "h": 99,
+   "confidence": 1.0
+  }
+ ]
+}

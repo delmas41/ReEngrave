@@ -1,0 +1,19 @@
+{
+ "cell_id": "brahms1-p3-sys1-s18-m2",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 834,
+    "y": 501,
+    "w": 211,
+    "h": 71
+   },
+   "notes": " | ledger-parity audit 2026-09-03 (mxl-prefill session), verified here"
+  }
+ ]
+}

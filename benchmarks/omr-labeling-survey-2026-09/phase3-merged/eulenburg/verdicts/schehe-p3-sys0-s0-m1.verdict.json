@@ -1,0 +1,59 @@
+{
+ "cell_id": "schehe-p3-sys0-s0-m1",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 300,
+    "y": 1090,
+    "w": 574,
+    "h": 122
+   },
+   "confidence": 0.6148,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 867,
+    "y": 1243,
+    "w": 144,
+    "h": 112
+   },
+   "confidence": 0.778,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N1",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 358,
+    "y": 1257,
+    "w": 45,
+    "h": 47
+   },
+   "confidence": 0.7692,
+   "notes": "notehead completion (black heads/dots), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 696,
+    "y": 691,
+    "w": 165,
+    "h": 52
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,95 @@
+{
+  "cell_id": "dvorak9-p13-sys0-s11-m5",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T15:55:54+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 180,
+        "y": 754,
+        "w": 120,
+        "h": 101
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 420,
+        "y": 801,
+        "w": 120,
+        "h": 101
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 627,
+        "y": 801,
+        "w": 120,
+        "h": 101
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 818,
+        "y": 828,
+        "w": 48,
+        "h": 47
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 207,
+        "y": 876,
+        "w": 258,
+        "h": 133
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "dynamicDiminuendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 73,
+        "y": 1012,
+        "w": 857,
+        "h": 125
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "articTenutoBelow",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 626,
+        "y": 927,
+        "w": 146,
+        "h": 49
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

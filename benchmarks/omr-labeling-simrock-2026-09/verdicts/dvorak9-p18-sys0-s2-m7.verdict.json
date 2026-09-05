@@ -1,0 +1,71 @@
+{
+  "cell_id": "dvorak9-p18-sys0-s2-m7",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T16:06:28+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 818,
+        "y": 950,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 613,
+        "y": 876,
+        "w": 92,
+        "h": 249
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 563,
+        "y": 1104,
+        "w": 234,
+        "h": 293
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 716,
+        "y": 1104,
+        "w": 234,
+        "h": 293
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 873,
+        "y": 1053,
+        "w": 80,
+        "h": 57
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

@@ -672,3 +672,134 @@ class TestFurnitureMeasuresAreDropped:
     def test_a_single_measure_system_is_never_touched(self):
         page = self._page([[[self._brace()]], [[]]])
         assert _drop_furniture_measures(page) == (0, 0)
+
+
+# ── cue C: grouped systems are not open scores (OMR_CHOIR_GROUPING) ─────────
+#
+# detect_barlines asks "do this system's barlines cross the inter-staff gaps?"
+# by comparing connected vs unconnected vote-accepted COLUMNS, and a
+# rhythmic-unison tutti answers wrong: aligned stems pass the vote, none of
+# them connected, and the unconnected columns outnumber the true barlines, so
+# a conductor's page flips into open-score mode and every stem column stands
+# (the Brandenburg 3 family — benchmarks/omr-choir-grouping-2026-09/).
+# Cue C (opt-in) reads the answer off the STAVES instead: a system whose
+# staves form ≥2 bracket-groups, at least half of them in multi-staff groups,
+# is a grouped ensemble system, which a true open score can never be.
+
+from tools.omr.measure_extractor import _is_grouped_system, detect_barlines
+
+
+def _staff_with_group(idx: int, ys: list[int], group: int,
+                      x0: int = 40, x1: int = 960) -> Staff:
+    s = Staff(page_index=0, staff_index=idx, line_ys=ys, x_start=x0, x_end=x1)
+    s.system_index = 0
+    s.group_index = group
+    return s
+
+
+def _five(top: int) -> list[int]:
+    return [top + 20 * i for i in range(5)]
+
+
+def test_is_grouped_system_truth_table():
+    mk = _staff_with_group
+    # one group (the default everywhere the gap-size fallback grouped) → False
+    assert not _is_grouped_system([mk(i, _five(100 + 100 * i), 0) for i in range(4)])
+    # two choirs of three → True (the Bach family)
+    groups = [0, 0, 0, 1, 1, 1]
+    assert _is_grouped_system(
+        [mk(i, _five(100 + 100 * i), g) for i, g in enumerate(groups)])
+    # the full Bach structure [3, 3, 3, 1, 2] → True (11 of 12 in multi)
+    groups = [0] * 3 + [1] * 3 + [2] * 3 + [3] + [4] * 2
+    assert _is_grouped_system(
+        [mk(i, _five(100 + 100 * i), g) for i, g in enumerate(groups)])
+    # a vocal page: four singleton voices + one keyboard pair → False —
+    # most staves are NOT in multi-staff groups, so open-score mode (where
+    # per-staff barlines survive on votes alone) is preserved.
+    groups = [0, 1, 2, 3, 4, 4]
+    assert not _is_grouped_system(
+        [mk(i, _five(100 + 100 * i), g) for i, g in enumerate(groups)])
+
+
+def _choir_barred_page_with_unison_stems():
+    """Two 3-staff choirs in ONE system. Real barlines drawn through each
+    choir (never between choirs); 'stems' drawn through every staff
+    individually at x-positions aligned across all six staves — the
+    rhythm-unison signature that out-votes the barlines."""
+    img = np.full((1200, 1000), 255, np.uint8)
+    tops = [100, 200, 300, 460, 560, 660]     # choir gap between 300 and 460
+    all_ys = [_five(t) for t in tops]
+    for ys in all_ys:
+        for y in ys:
+            img[y:y + 2, 40:960] = 0
+    # real barlines: through each choir's three staves and the gaps between
+    for x in (60, 260, 460, 660, 860):
+        img[all_ys[0][0]:all_ys[2][-1] + 2, x:x + 3] = 0
+        img[all_ys[3][0]:all_ys[5][-1] + 2, x:x + 3] = 0
+    # unison "stems": through each staff alone, aligned across all six.
+    # Spaced >= BARLINE_MIN_DISTANCE_PX apart so per-staff thinning keeps
+    # them all: the flip needs the unconnected columns to OUTNUMBER twice
+    # the connected ones (9 stems vs 5 barlines here).
+    for x in (130, 195, 330, 395, 530, 595, 730, 795, 925):
+        for ys in all_ys:
+            img[ys[0]:ys[-1] + 2, x:x + 2] = 0
+    staves = []
+    for i, ys in enumerate(all_ys):
+        s = Staff(page_index=0, staff_index=i, line_ys=ys, x_start=40, x_end=960)
+        s.system_index = 0
+        s.group_index = 0 if i < 3 else 1
+        staves.append(s)
+    page = PageImage(pdf_path=Path("synthetic.pdf"), page_index=0, dpi=300,
+                     rgb=np.dstack([img] * 3), binary=img)
+    return PageWithStaves(page=page, staves=staves)
+
+
+def test_open_score_flip_accepts_unison_stems_without_cue_c(monkeypatch):
+    """The disease, pinned: flag off (explicit opt-out since the 2026-09-05
+    default flip), the unconnected stem columns outnumber the five true
+    barlines, the gate flips to open-score mode and the stems stand."""
+    monkeypatch.setenv("OMR_CHOIR_GROUPING", "0")
+    pws = detect_barlines(_choir_barred_page_with_unison_stems())
+    xs = sorted(b.x for b in pws.barlines)
+    assert len(xs) > 5, f"expected stem columns to be accepted, got {xs}"
+
+
+def test_cue_c_keeps_a_grouped_system_out_of_open_score_mode(monkeypatch):
+    monkeypatch.setenv("OMR_CHOIR_GROUPING", "1")
+    pws = detect_barlines(_choir_barred_page_with_unison_stems())
+    xs = sorted(b.x for b in pws.barlines)
+    assert len(xs) == 5, f"expected exactly the five true barlines, got {xs}"
+    assert all(abs(x - t) <= 3 for x, t in zip(xs, (60, 260, 460, 660, 860)))
+
+
+def test_cue_c_leaves_ungrouped_systems_in_open_score_mode(monkeypatch):
+    """A true open score has no bracket-groups (group_index all 0), so cue C
+    must not touch it even with the flag on: votes remain the whole of the
+    evidence there."""
+    monkeypatch.setenv("OMR_CHOIR_GROUPING", "1")
+    pws = _choir_barred_page_with_unison_stems()
+    for s in pws.staves:
+        s.group_index = 0
+    out = detect_barlines(pws)
+    xs = sorted(b.x for b in out.barlines)
+    assert len(xs) > 5, "no group evidence -> open-score mode must survive"
+
+
+def test_cue_c_requires_a_window_blind_gap(monkeypatch):
+    """The engraved-benchmark falsification, pinned (condition 2): a true
+    open score whose gaps are ALL touched by its systemic start barline —
+    the LilyPond orchestral fixture shape — must stay in open-score mode
+    even when bridging jitter has manufactured bracket-groups. Same fixture
+    as the choir page plus one left rule crossing every gap; group indices
+    unchanged. Cue C fired here before condition 2 and deleted the real
+    barlines of nine engraved works (pooled 0.1306 -> 0.8560)."""
+    monkeypatch.setenv("OMR_CHOIR_GROUPING", "1")
+    pws = _choir_barred_page_with_unison_stems()
+    img = pws.page.binary
+    top = pws.staves[0].line_ys[0]
+    bot = pws.staves[-1].line_ys[-1] + 2
+    img[top:bot, 44:46] = 0  # systemic start barline through the choir gap too
+    out = detect_barlines(pws)
+    xs = sorted(b.x for b in out.barlines)
+    assert len(xs) > 5, (
+        "no window-blind gap -> open-score mode must survive, votes stand")

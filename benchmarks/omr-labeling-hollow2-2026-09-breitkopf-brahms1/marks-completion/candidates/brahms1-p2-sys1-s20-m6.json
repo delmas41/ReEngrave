@@ -1,0 +1,31 @@
+{
+ "cell_id": "brahms1-p2-sys1-s20-m6",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7824,
+   "ink": 0.5529,
+   "bbox": {
+    "x": 197,
+    "y": 959,
+    "w": 213,
+    "h": 193
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.677,
+   "ink": 0.4593,
+   "bbox": {
+    "x": 33,
+    "y": 958,
+    "w": 224,
+    "h": 195
+   }
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+ "cell_id": "brahms1-p3-sys0-s8-m3",
+ "candidates": [
+  {
+   "smufl_name": "tie",
+   "category": "structural",
+   "family": "tie",
+   "confidence": 0.7675,
+   "ink": 0.3482,
+   "bbox": {
+    "x": 728,
+    "y": 682,
+    "w": 226,
+    "h": 47
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.7649,
+   "ink": 0.1949,
+   "bbox": {
+    "x": 14,
+    "y": 549,
+    "w": 1866,
+    "h": 321
+   }
+  }
+ ]
+}

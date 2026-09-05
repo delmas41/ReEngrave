@@ -1,0 +1,7 @@
+{
+ "pass_name": "ties-reconcile",
+ "note": "adjudicate the teacher's unmatched tie boxes: t = real, f = not. Draw any tie BOTH missed.",
+ "classes": [
+  "tie"
+ ]
+}

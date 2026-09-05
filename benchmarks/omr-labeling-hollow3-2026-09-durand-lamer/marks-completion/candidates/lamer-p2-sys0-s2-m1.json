@@ -1,0 +1,57 @@
+{
+ "cell_id": "lamer-p2-sys0-s2-m1",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8618,
+   "ink": 0.5125,
+   "bbox": {
+    "x": 240,
+    "y": 692,
+    "w": 138,
+    "h": 133
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.7583,
+   "ink": 0.257,
+   "bbox": {
+    "x": 547,
+    "y": 599,
+    "w": 253,
+    "h": 71
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.683,
+   "ink": 0.4361,
+   "bbox": {
+    "x": 119,
+    "y": 698,
+    "w": 135,
+    "h": 133
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.6139,
+   "ink": 0.3845,
+   "bbox": {
+    "x": 317,
+    "y": 628,
+    "w": 148,
+    "h": 46
+   }
+  }
+ ]
+}

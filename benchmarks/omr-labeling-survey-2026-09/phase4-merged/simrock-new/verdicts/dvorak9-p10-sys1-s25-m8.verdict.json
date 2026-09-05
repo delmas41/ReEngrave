@@ -1,0 +1,79 @@
+{
+ "cell_id": "dvorak9-p10-sys1-s25-m8",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 204,
+    "y": 546,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 315,
+    "y": 377,
+    "w": 1450,
+    "h": 128
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "dynamicP",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 0,
+    "y": 942,
+    "w": 194,
+    "h": 216
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "dynamicP",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 147,
+    "y": 942,
+    "w": 194,
+    "h": 216
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "dynamicP",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 283,
+    "y": 942,
+    "w": 194,
+    "h": 216
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "fingering0",
+   "human_category": "ornament",
+   "bbox": {
+    "x": 184,
+    "y": 351,
+    "w": 128,
+    "h": 154
+   },
+   "notes": ""
+  }
+ ]
+}

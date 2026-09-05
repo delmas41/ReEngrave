@@ -1,0 +1,44 @@
+{
+  "cell_id": "dvorak9-p16-sys0-s8-m7",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 636,
+      "y": 1330,
+      "w": 131,
+      "h": 57,
+      "x_center": 701,
+      "y_center": 1358,
+      "confidence": 0.6831848621368408,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 643,
+      "y": 0,
+      "w": 121,
+      "h": 30,
+      "x_center": 703,
+      "y_center": 15,
+      "confidence": 0.580966055393219,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 644,
+      "y": 603,
+      "w": 129,
+      "h": 50,
+      "x_center": 708,
+      "y_center": 628,
+      "confidence": 0.6689425706863403,
+      "pitch": null
+    }
+  ]
+}

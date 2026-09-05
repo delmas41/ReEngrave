@@ -1,0 +1,151 @@
+{
+ "cell_id": "brahms1-p3-sys1-s27-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 834,
+    "y": 516,
+    "w": 82,
+    "h": 69
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1029,
+    "y": 356,
+    "w": 110,
+    "h": 136
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1200,
+    "y": 342,
+    "w": 109,
+    "h": 150
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1812,
+    "y": 352,
+    "w": 116,
+    "h": 144
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "articStaccatissimoAbove",
+   "human_category": "ornament",
+   "bbox": {
+    "x": 838,
+    "y": 246,
+    "w": 75,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "clefF",
+   "human_category": "clef",
+   "bbox": {
+    "x": 127,
+    "y": 246,
+    "w": 256,
+    "h": 318
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 407,
+    "y": 359,
+    "w": 89,
+    "h": 191
+   },
+   "notes": ""
+  },
+  {
+   "id": "H7",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 482,
+    "y": 246,
+    "w": 75,
+    "h": 198
+   },
+   "notes": ""
+  },
+  {
+   "id": "H8",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 557,
+    "y": 390,
+    "w": 93,
+    "h": 195
+   },
+   "notes": ""
+  },
+  {
+   "id": "H9",
+   "human_class": "dynamicLetterS",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 711,
+    "y": 650,
+    "w": 99,
+    "h": 119
+   },
+   "notes": ""
+  },
+  {
+   "id": "H10",
+   "human_class": "dynamicF",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 759,
+    "y": 588,
+    "w": 154,
+    "h": 226
+   },
+   "notes": ""
+  },
+  {
+   "id": "H11",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1392,
+    "y": 325,
+    "w": 112,
+    "h": 212
+   },
+   "notes": ""
+  }
+ ]
+}

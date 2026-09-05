@@ -1,0 +1,59 @@
+{
+  "cell_id": "dvorak9-p13-sys1-s15-m7",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T05:59:31+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 135,
+        "y": 301,
+        "w": 118,
+        "h": 99
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 738,
+        "y": 920,
+        "w": 113,
+        "h": 59
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 249,
+        "y": 96,
+        "w": 1373,
+        "h": 174
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 5,
+        "y": 172,
+        "w": 173,
+        "h": 107
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

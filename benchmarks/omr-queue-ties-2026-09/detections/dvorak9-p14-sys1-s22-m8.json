@@ -1,0 +1,44 @@
+{
+ "cell_id": "dvorak9-p14-sys1-s22-m8",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 4,
+    "y": 482,
+    "w": 1800,
+    "h": 44
+   },
+   "confidence": 0.637,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D1",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 5,
+    "y": 683,
+    "w": 1799,
+    "h": 46
+   },
+   "confidence": 0.527,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D2",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 4,
+    "y": 883,
+    "w": 1800,
+    "h": 48
+   },
+   "confidence": 0.518,
+   "notes": "teacher: unmatched by any human box"
+  }
+ ]
+}

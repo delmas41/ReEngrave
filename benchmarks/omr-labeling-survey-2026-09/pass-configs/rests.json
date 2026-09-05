@@ -1,0 +1,15 @@
+{
+  "pass_name": "rests",
+  "note": "RESTS ONLY. Box every rest printed in the cell — that is the whole job. A rest left unboxed trains as BACKGROUND, which is exactly what suppressed rests in the 30-epoch cloud run. Number keys pick the value; drag to draw (a rest's height varies with its value, so there is no fixed click-box). MULTI-MEASURE REST: box the whole horizontal bar as restHBar, and box its number separately only if you can (otherwise leave the number). Do NOT box noteheads, accidentals, slurs or anything else in this pass — a later pass covers them, and verdicts accumulate. Tab out of a cell with no rests in it: that stamps `rests` into inspected_passes and IS the coverage record.",
+  "classes": [
+    { "name": "restQuarter", "label": "quarter rest" },
+    { "name": "rest8th",     "label": "8th rest" },
+    { "name": "restWhole",   "label": "whole rest (hangs UNDER line 4)" },
+    { "name": "restHalf",    "label": "half rest (sits ON line 3)" },
+    { "name": "rest16th",    "label": "16th rest" },
+    { "name": "restHBar",    "label": "multi-measure rest bar" },
+    { "name": "rest32nd",    "label": "32nd rest" },
+    { "name": "rest64th",    "label": "64th rest" },
+    { "name": "restDoubleWhole", "label": "breve rest" }
+  ]
+}

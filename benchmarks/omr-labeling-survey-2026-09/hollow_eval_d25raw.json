@@ -1,0 +1,36 @@
+{
+  "tag": "d25raw",
+  "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/round5-sweep/distill25/epoch0.pt",
+  "hollow_histogram": {
+    "black_total": 87,
+    "hollow_total": 46,
+    "noteheadHalfOnLine": 8,
+    "noteheadHalfInSpace": 36,
+    "noteheadWholeInSpace": 2
+  },
+  "pooled": {
+    "exact": {
+      "truth": 147,
+      "omr": 133,
+      "matched": 98,
+      "recall": 0.6667,
+      "precision": 0.7368
+    },
+    "step": {
+      "truth": 147,
+      "omr": 133,
+      "matched": 105,
+      "recall": 0.7143,
+      "precision": 0.7895
+    },
+    "with_duration": {
+      "truth": 147,
+      "omr": 133,
+      "matched": 88,
+      "recall": 0.5986,
+      "precision": 0.6617
+    }
+  },
+  "clef_accuracy": "9/12",
+  "measures_omr": 16
+}

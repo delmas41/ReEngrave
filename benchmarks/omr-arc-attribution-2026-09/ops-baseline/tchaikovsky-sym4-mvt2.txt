@@ -1,0 +1,28 @@
+
+tchaikovsky-sym4-mvt2.musicxml  ops 25  cost 69
+
+  cost by category
+    wrong other object OMR-ED                        28
+    wrong note OMR-ED                                24
+    entire measure insert/delete OMR-ED              14
+    wrong accidental OMR-ED                           3
+
+  cost by op
+    extrains                     23  (7 ops)
+    notedel                      12  (4 ops)
+    noteins                      12  (4 ops)
+    delbar                       10  (2 ops)
+    insbar                        4  (2 ops)
+    extrasymboledit               4  (2 ops)
+    accidentins                   3  (3 ops)
+    extradel                      1  (1 ops)
+
+  cost by part (top categories)
+    -1 ?                           28   wrong other object=28
+    02 Oboe 1                      14   wrong note=12  wrong accidental=2
+    02 Oboe                        12   wrong note=12
+    14 Timpani                      9   entire measure insert/delete=9
+    19 Contrabass                   5   entire measure insert/delete=5
+    15 Violin 1                     1   wrong accidental=1
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/ops-baseline/tchaikovsky-sym4-mvt2.json

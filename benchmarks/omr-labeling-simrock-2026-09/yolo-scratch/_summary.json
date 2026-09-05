@@ -1,0 +1,3416 @@
+{
+  "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+  "conf_threshold": 0.45,
+  "device": "auto",
+  "per_cell": {
+    "dvorak9-p19-sys1-s25-m2": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.47194918990135193,
+      "confidence_max": 0.7992085218429565,
+      "confidence_mean": 0.5406876802444458,
+      "confidence_median": 0.4990193843841553,
+      "category_breakdown": {
+        "notehead": 5,
+        "ornament": 1,
+        "accidental": 1,
+        "structural": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "fermataAbove",
+        "accidentalDoubleSharp",
+        "beam",
+        "noteheadBlackInSpace",
+        "beam",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          4.516378125
+        ],
+        "median_s_excluding_warmup": 4.516378125,
+        "mean_s_excluding_warmup": 4.516378125
+      }
+    },
+    "dvorak9-p18-sys0-s8-m1": {
+      "n_detections": 13,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4520029127597809,
+      "confidence_max": 0.6511673927307129,
+      "confidence_mean": 0.5242265508725092,
+      "confidence_median": 0.511982798576355,
+      "category_breakdown": {
+        "notehead": 12,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 13,
+        "all_times_s": [
+          2.1049415419999997
+        ],
+        "median_s_excluding_warmup": 2.1049415419999997,
+        "mean_s_excluding_warmup": 2.1049415419999997
+      }
+    },
+    "dvorak9-p13-sys0-s12-m6": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4582096040248871,
+      "confidence_max": 0.8397124409675598,
+      "confidence_mean": 0.589302788178126,
+      "confidence_median": 0.5824208855628967,
+      "category_breakdown": {
+        "notehead": 11,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          2.804249916
+        ],
+        "median_s_excluding_warmup": 2.804249916,
+        "mean_s_excluding_warmup": 2.804249916
+      }
+    },
+    "dvorak9-p17-sys1-s27-m8": {
+      "n_detections": 27,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4600431025028229,
+      "confidence_max": 0.8250411748886108,
+      "confidence_mean": 0.5755788165110128,
+      "confidence_median": 0.5555135607719421,
+      "category_breakdown": {
+        "notehead": 27
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 27,
+        "all_times_s": [
+          2.0949448339999996
+        ],
+        "median_s_excluding_warmup": 2.0949448339999996,
+        "mean_s_excluding_warmup": 2.0949448339999996
+      }
+    },
+    "dvorak9-p18-sys0-s7-m2": {
+      "n_detections": 19,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4783588647842407,
+      "confidence_max": 0.9999998807907104,
+      "confidence_mean": 0.7109411703912836,
+      "confidence_median": 0.678814709186554,
+      "category_breakdown": {
+        "notehead": 10,
+        "structural": 7,
+        "ornament": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "staff",
+        "staff",
+        "staff",
+        "staff",
+        "staff",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 19,
+        "all_times_s": [
+          2.0315522920000006
+        ],
+        "median_s_excluding_warmup": 2.0315522920000006,
+        "mean_s_excluding_warmup": 2.0315522920000006
+      }
+    },
+    "dvorak9-p17-sys0-s12-m10": {
+      "n_detections": 17,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45936983823776245,
+      "confidence_max": 0.682482123374939,
+      "confidence_mean": 0.5449261788059684,
+      "confidence_median": 0.52438884973526,
+      "category_breakdown": {
+        "notehead": 15,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "beam",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 17,
+        "all_times_s": [
+          2.5207335410000002
+        ],
+        "median_s_excluding_warmup": 2.5207335410000002,
+        "mean_s_excluding_warmup": 2.5207335410000002
+      }
+    },
+    "dvorak9-p18-sys0-s9-m0": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45262232422828674,
+      "confidence_max": 0.7321353554725647,
+      "confidence_mean": 0.5353212431073189,
+      "confidence_median": 0.5025549679994583,
+      "category_breakdown": {
+        "notehead": 11,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restQuarter"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          1.3247199579999993
+        ],
+        "median_s_excluding_warmup": 1.3247199579999993,
+        "mean_s_excluding_warmup": 1.3247199579999993
+      }
+    },
+    "dvorak9-p18-sys0-s10-m8": {
+      "n_detections": 18,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45135754346847534,
+      "confidence_max": 0.6707424521446228,
+      "confidence_mean": 0.5446974966261122,
+      "confidence_median": 0.5536056160926819,
+      "category_breakdown": {
+        "notehead": 17,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "brace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 18,
+        "all_times_s": [
+          2.1908450839999993
+        ],
+        "median_s_excluding_warmup": 2.1908450839999993,
+        "mean_s_excluding_warmup": 2.1908450839999993
+      }
+    },
+    "dvorak9-p10-sys0-s13-m4": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4540579617023468,
+      "confidence_max": 0.7155585885047913,
+      "confidence_mean": 0.5568928986787796,
+      "confidence_median": 0.5595087707042694,
+      "category_breakdown": {
+        "notehead": 9,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "fermataBelow",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          2.7440838330000012
+        ],
+        "median_s_excluding_warmup": 2.7440838330000012,
+        "mean_s_excluding_warmup": 2.7440838330000012
+      }
+    },
+    "dvorak9-p10-sys1-s17-m4": {
+      "n_detections": 3,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46403491497039795,
+      "confidence_max": 0.717275083065033,
+      "confidence_mean": 0.5497147142887115,
+      "confidence_median": 0.46783414483070374,
+      "category_breakdown": {
+        "notehead": 2,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 3,
+        "all_times_s": [
+          1.8545984170000018
+        ],
+        "median_s_excluding_warmup": 1.8545984170000018,
+        "mean_s_excluding_warmup": 1.8545984170000018
+      }
+    },
+    "dvorak9-p19-sys1-s23-m7": {
+      "n_detections": 15,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4525235891342163,
+      "confidence_max": 0.6770021915435791,
+      "confidence_mean": 0.5268201470375061,
+      "confidence_median": 0.49316567182540894,
+      "category_breakdown": {
+        "notehead": 15
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 15,
+        "all_times_s": [
+          1.9544249580000006
+        ],
+        "median_s_excluding_warmup": 1.9544249580000006,
+        "mean_s_excluding_warmup": 1.9544249580000006
+      }
+    },
+    "dvorak9-p15-sys0-s2-m0": {
+      "n_detections": 14,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45060640573501587,
+      "confidence_max": 0.6528800129890442,
+      "confidence_mean": 0.5584862977266312,
+      "confidence_median": 0.5776261985301971,
+      "category_breakdown": {
+        "notehead": 13,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 14,
+        "all_times_s": [
+          2.3573805839999977
+        ],
+        "median_s_excluding_warmup": 2.3573805839999977,
+        "mean_s_excluding_warmup": 2.3573805839999977
+      }
+    },
+    "dvorak9-p16-sys0-s1-m8": {
+      "n_detections": 14,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45462846755981445,
+      "confidence_max": 0.7184181213378906,
+      "confidence_mean": 0.5449910589626857,
+      "confidence_median": 0.5071877390146255,
+      "category_breakdown": {
+        "notehead": 14
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 14,
+        "all_times_s": [
+          2.048875291999998
+        ],
+        "median_s_excluding_warmup": 2.048875291999998,
+        "mean_s_excluding_warmup": 2.048875291999998
+      }
+    },
+    "dvorak9-p9-sys0-s10-m10": {
+      "n_detections": 24,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46845805644989014,
+      "confidence_max": 0.9999992847442627,
+      "confidence_mean": 0.6381391932566961,
+      "confidence_median": 0.5736780166625977,
+      "category_breakdown": {
+        "notehead": 19,
+        "structural": 5
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "staff",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "staff",
+        "staff",
+        "staff",
+        "noteheadBlackInSpace",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 24,
+        "all_times_s": [
+          2.3714413749999963
+        ],
+        "median_s_excluding_warmup": 2.3714413749999963,
+        "mean_s_excluding_warmup": 2.3714413749999963
+      }
+    },
+    "dvorak9-p19-sys0-s10-m4": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.47180861234664917,
+      "confidence_max": 0.7122587561607361,
+      "confidence_mean": 0.5572891682386398,
+      "confidence_median": 0.5457069277763367,
+      "category_breakdown": {
+        "notehead": 9,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "keyboardPedalPed",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          2.8011071250000015
+        ],
+        "median_s_excluding_warmup": 2.8011071250000015,
+        "mean_s_excluding_warmup": 2.8011071250000015
+      }
+    },
+    "dvorak9-p13-sys0-s13-m6": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46588149666786194,
+      "confidence_max": 0.7520506978034973,
+      "confidence_mean": 0.5663134530186653,
+      "confidence_median": 0.5690207481384277,
+      "category_breakdown": {
+        "notehead": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 8,
+        "all_times_s": [
+          1.9435961670000026
+        ],
+        "median_s_excluding_warmup": 1.9435961670000026,
+        "mean_s_excluding_warmup": 1.9435961670000026
+      }
+    },
+    "dvorak9-p13-sys0-s2-m1": {
+      "n_detections": 9,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45405247807502747,
+      "confidence_max": 0.8547389507293701,
+      "confidence_mean": 0.5774364173412323,
+      "confidence_median": 0.5362664461135864,
+      "category_breakdown": {
+        "notehead": 9
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 9,
+        "all_times_s": [
+          1.931704707999998
+        ],
+        "median_s_excluding_warmup": 1.931704707999998,
+        "mean_s_excluding_warmup": 1.931704707999998
+      }
+    },
+    "dvorak9-p19-sys0-s9-m1": {
+      "n_detections": 3,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4729926586151123,
+      "confidence_max": 0.6821807026863098,
+      "confidence_mean": 0.5729069511095682,
+      "confidence_median": 0.5635474920272827,
+      "category_breakdown": {
+        "rest": 1,
+        "notehead": 2
+      },
+      "sample_class_labels": [
+        "restQuarter",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 3,
+        "all_times_s": [
+          1.8660052500000006
+        ],
+        "median_s_excluding_warmup": 1.8660052500000006,
+        "mean_s_excluding_warmup": 1.8660052500000006
+      }
+    },
+    "dvorak9-p11-sys0-s0-m0": {
+      "n_detections": 14,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4625680148601532,
+      "confidence_max": 0.7802837491035461,
+      "confidence_mean": 0.5832175867898124,
+      "confidence_median": 0.5326176285743713,
+      "category_breakdown": {
+        "notehead": 12,
+        "structural": 1,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restHBar",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 14,
+        "all_times_s": [
+          1.9415557499999991
+        ],
+        "median_s_excluding_warmup": 1.9415557499999991,
+        "mean_s_excluding_warmup": 1.9415557499999991
+      }
+    },
+    "dvorak9-p15-sys0-s3-m0": {
+      "n_detections": 17,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45343875885009766,
+      "confidence_max": 0.7224525213241577,
+      "confidence_mean": 0.5384820454260882,
+      "confidence_median": 0.5037091970443726,
+      "category_breakdown": {
+        "notehead": 15,
+        "structural": 1,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 17,
+        "all_times_s": [
+          2.309553583000003
+        ],
+        "median_s_excluding_warmup": 2.309553583000003,
+        "mean_s_excluding_warmup": 2.309553583000003
+      }
+    },
+    "dvorak9-p18-sys0-s18-m0": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4939589202404022,
+      "confidence_max": 0.7963234186172485,
+      "confidence_mean": 0.6081357933580875,
+      "confidence_median": 0.5962551534175873,
+      "category_breakdown": {
+        "ornament": 1,
+        "notehead": 6,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "arpeggiato",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "accidentalDoubleSharp",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 8,
+        "all_times_s": [
+          1.334861833000005
+        ],
+        "median_s_excluding_warmup": 1.334861833000005,
+        "mean_s_excluding_warmup": 1.334861833000005
+      }
+    },
+    "dvorak9-p13-sys1-s18-m6": {
+      "n_detections": 4,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.6031110882759094,
+      "confidence_max": 0.6292794942855835,
+      "confidence_mean": 0.6136328876018524,
+      "confidence_median": 0.6110704839229584,
+      "category_breakdown": {
+        "notehead": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 4,
+        "all_times_s": [
+          2.5430147499999975
+        ],
+        "median_s_excluding_warmup": 2.5430147499999975,
+        "mean_s_excluding_warmup": 2.5430147499999975
+      }
+    },
+    "dvorak9-p18-sys0-s14-m4": {
+      "n_detections": 13,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4609561264514923,
+      "confidence_max": 0.6945130228996277,
+      "confidence_mean": 0.5785347292056451,
+      "confidence_median": 0.5785497426986694,
+      "category_breakdown": {
+        "notehead": 10,
+        "structural": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "beam",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 13,
+        "all_times_s": [
+          2.1473087089999936
+        ],
+        "median_s_excluding_warmup": 2.1473087089999936,
+        "mean_s_excluding_warmup": 2.1473087089999936
+      }
+    },
+    "dvorak9-p10-sys1-s25-m8": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4537055790424347,
+      "confidence_max": 0.8428165316581726,
+      "confidence_mean": 0.5283487836519877,
+      "confidence_median": 0.48356547951698303,
+      "category_breakdown": {
+        "notehead": 11,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "fermataAbove",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          2.470208917000001
+        ],
+        "median_s_excluding_warmup": 2.470208917000001,
+        "mean_s_excluding_warmup": 2.470208917000001
+      }
+    },
+    "dvorak9-p13-sys1-s15-m7": {
+      "n_detections": 2,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4842226207256317,
+      "confidence_max": 0.6856389045715332,
+      "confidence_mean": 0.5849307626485825,
+      "confidence_median": 0.5849307626485825,
+      "category_breakdown": {
+        "notehead": 1,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 2,
+        "all_times_s": [
+          2.7778080419999966
+        ],
+        "median_s_excluding_warmup": 2.7778080419999966,
+        "mean_s_excluding_warmup": 2.7778080419999966
+      }
+    },
+    "dvorak9-p14-sys1-s22-m8": {
+      "n_detections": 4,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4675414562225342,
+      "confidence_max": 0.5310055613517761,
+      "confidence_mean": 0.5003480538725853,
+      "confidence_median": 0.5014225989580154,
+      "category_breakdown": {
+        "notehead": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 4,
+        "all_times_s": [
+          2.5294373750000005
+        ],
+        "median_s_excluding_warmup": 2.5294373750000005,
+        "mean_s_excluding_warmup": 2.5294373750000005
+      }
+    },
+    "dvorak9-p18-sys0-s23-m4": {
+      "n_detections": 30,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4524027407169342,
+      "confidence_max": 0.6963028907775879,
+      "confidence_mean": 0.5447638104359309,
+      "confidence_median": 0.5168592631816864,
+      "category_breakdown": {
+        "flag": 1,
+        "notehead": 28,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "flag8thUp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 30,
+        "all_times_s": [
+          2.3215309589999933
+        ],
+        "median_s_excluding_warmup": 2.3215309589999933,
+        "mean_s_excluding_warmup": 2.3215309589999933
+      }
+    },
+    "dvorak9-p12-sys1-s27-m8": {
+      "n_detections": 17,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4567042291164398,
+      "confidence_max": 0.8373074531555176,
+      "confidence_mean": 0.6218588930719039,
+      "confidence_median": 0.5929417014122009,
+      "category_breakdown": {
+        "accidental": 2,
+        "notehead": 14,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "accidentalDoubleSharp",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 17,
+        "all_times_s": [
+          2.0610520839999964
+        ],
+        "median_s_excluding_warmup": 2.0610520839999964,
+        "mean_s_excluding_warmup": 2.0610520839999964
+      }
+    },
+    "dvorak9-p15-sys0-s7-m0": {
+      "n_detections": 24,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4514986276626587,
+      "confidence_max": 0.7732114195823669,
+      "confidence_mean": 0.549106739461422,
+      "confidence_median": 0.5261795818805695,
+      "category_breakdown": {
+        "notehead": 24
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 24,
+        "all_times_s": [
+          2.819914666999992
+        ],
+        "median_s_excluding_warmup": 2.819914666999992,
+        "mean_s_excluding_warmup": 2.819914666999992
+      }
+    },
+    "dvorak9-p17-sys1-s28-m9": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.460875004529953,
+      "confidence_max": 0.8908641934394836,
+      "confidence_mean": 0.5750146955251694,
+      "confidence_median": 0.5359630584716797,
+      "category_breakdown": {
+        "notehead": 27,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          1.9377794160000121
+        ],
+        "median_s_excluding_warmup": 1.9377794160000121,
+        "mean_s_excluding_warmup": 1.9377794160000121
+      }
+    },
+    "dvorak9-p19-sys1-s21-m1": {
+      "n_detections": 11,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.47091105580329895,
+      "confidence_max": 0.7740122079849243,
+      "confidence_mean": 0.5818069523031061,
+      "confidence_median": 0.5431498289108276,
+      "category_breakdown": {
+        "notehead": 11
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 11,
+        "all_times_s": [
+          1.5062325829999992
+        ],
+        "median_s_excluding_warmup": 1.5062325829999992,
+        "mean_s_excluding_warmup": 1.5062325829999992
+      }
+    },
+    "dvorak9-p10-sys0-s2-m9": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4812479615211487,
+      "confidence_max": 0.5654273629188538,
+      "confidence_mean": 0.5194937251508236,
+      "confidence_median": 0.5121789276599884,
+      "category_breakdown": {
+        "notehead": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 8,
+        "all_times_s": [
+          4.061027584000001
+        ],
+        "median_s_excluding_warmup": 4.061027584000001,
+        "mean_s_excluding_warmup": 4.061027584000001
+      }
+    },
+    "dvorak9-p10-sys0-s12-m4": {
+      "n_detections": 4,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46015074849128723,
+      "confidence_max": 0.5498867034912109,
+      "confidence_mean": 0.49902015179395676,
+      "confidence_median": 0.49302157759666443,
+      "category_breakdown": {
+        "notehead": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 4,
+        "all_times_s": [
+          2.2105553749999984
+        ],
+        "median_s_excluding_warmup": 2.2105553749999984,
+        "mean_s_excluding_warmup": 2.2105553749999984
+      }
+    },
+    "dvorak9-p11-sys1-s16-m0": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45921868085861206,
+      "confidence_max": 0.636959969997406,
+      "confidence_mean": 0.515316566824913,
+      "confidence_median": 0.4868369549512863,
+      "category_breakdown": {
+        "notehead": 10
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          1.547779250000005
+        ],
+        "median_s_excluding_warmup": 1.547779250000005,
+        "mean_s_excluding_warmup": 1.547779250000005
+      }
+    },
+    "dvorak9-p18-sys0-s0-m0": {
+      "n_detections": 16,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4503227174282074,
+      "confidence_max": 0.7816386222839355,
+      "confidence_mean": 0.5587815456092358,
+      "confidence_median": 0.5227918922901154,
+      "category_breakdown": {
+        "notehead": 15,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "rest8th",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 16,
+        "all_times_s": [
+          1.3985043750000017
+        ],
+        "median_s_excluding_warmup": 1.3985043750000017,
+        "mean_s_excluding_warmup": 1.3985043750000017
+      }
+    },
+    "dvorak9-p19-sys0-s7-m7": {
+      "n_detections": 15,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45044225454330444,
+      "confidence_max": 0.6817017197608948,
+      "confidence_mean": 0.5588885366916656,
+      "confidence_median": 0.5360701084136963,
+      "category_breakdown": {
+        "notehead": 14,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 15,
+        "all_times_s": [
+          1.880107166000002
+        ],
+        "median_s_excluding_warmup": 1.880107166000002,
+        "mean_s_excluding_warmup": 1.880107166000002
+      }
+    },
+    "dvorak9-p19-sys1-s16-m3": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4539226293563843,
+      "confidence_max": 0.6472009420394897,
+      "confidence_mean": 0.5293765254318714,
+      "confidence_median": 0.5054550468921661,
+      "category_breakdown": {
+        "flag": 1,
+        "notehead": 7
+      },
+      "sample_class_labels": [
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 8,
+        "all_times_s": [
+          3.0544032920000035
+        ],
+        "median_s_excluding_warmup": 3.0544032920000035,
+        "mean_s_excluding_warmup": 3.0544032920000035
+      }
+    },
+    "dvorak9-p10-sys1-s18-m4": {
+      "n_detections": 4,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4868479371070862,
+      "confidence_max": 0.6580153703689575,
+      "confidence_mean": 0.6008326858282089,
+      "confidence_median": 0.629233717918396,
+      "category_breakdown": {
+        "notehead": 3,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "staff",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 4,
+        "all_times_s": [
+          2.1332690839999913
+        ],
+        "median_s_excluding_warmup": 2.1332690839999913,
+        "mean_s_excluding_warmup": 2.1332690839999913
+      }
+    },
+    "dvorak9-p13-sys1-s17-m6": {
+      "n_detections": 0,
+      "n_ported_from_baseline": 0,
+      "confidence_min": null,
+      "confidence_max": null,
+      "confidence_mean": null,
+      "confidence_median": null,
+      "category_breakdown": {},
+      "sample_class_labels": [],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 0,
+        "all_times_s": [
+          2.409031167000009
+        ],
+        "median_s_excluding_warmup": 2.409031167000009,
+        "mean_s_excluding_warmup": 2.409031167000009
+      }
+    },
+    "dvorak9-p20-sys0-s6-m6": {
+      "n_detections": 7,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.48443901538848877,
+      "confidence_max": 0.7775585651397705,
+      "confidence_mean": 0.5955139483724322,
+      "confidence_median": 0.5835272669792175,
+      "category_breakdown": {
+        "notehead": 7
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadWholeInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 7,
+        "all_times_s": [
+          1.8698247920000028
+        ],
+        "median_s_excluding_warmup": 1.8698247920000028,
+        "mean_s_excluding_warmup": 1.8698247920000028
+      }
+    },
+    "dvorak9-p9-sys1-s21-m2": {
+      "n_detections": 5,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.567613422870636,
+      "confidence_max": 0.7456488609313965,
+      "confidence_mean": 0.6471539616584778,
+      "confidence_median": 0.6549922823905945,
+      "category_breakdown": {
+        "notehead": 5
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 5,
+        "all_times_s": [
+          2.4444022919999924
+        ],
+        "median_s_excluding_warmup": 2.4444022919999924,
+        "mean_s_excluding_warmup": 2.4444022919999924
+      }
+    },
+    "dvorak9-p9-sys1-s23-m6": {
+      "n_detections": 16,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4603232145309448,
+      "confidence_max": 0.6426253914833069,
+      "confidence_mean": 0.5510940197855234,
+      "confidence_median": 0.5526185929775238,
+      "category_breakdown": {
+        "notehead": 14,
+        "structural": 1,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "ledgerLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 16,
+        "all_times_s": [
+          1.9547461670000104
+        ],
+        "median_s_excluding_warmup": 1.9547461670000104,
+        "mean_s_excluding_warmup": 1.9547461670000104
+      }
+    },
+    "dvorak9-p10-sys1-s26-m8": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4520418345928192,
+      "confidence_max": 0.7679064273834229,
+      "confidence_mean": 0.5581998825073242,
+      "confidence_median": 0.5286602973937988,
+      "category_breakdown": {
+        "notehead": 10
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          2.389388083
+        ],
+        "median_s_excluding_warmup": 2.389388083,
+        "mean_s_excluding_warmup": 2.389388083
+      }
+    },
+    "dvorak9-p14-sys0-s8-m8": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45124128460884094,
+      "confidence_max": 0.7500609159469604,
+      "confidence_mean": 0.5141234882175922,
+      "confidence_median": 0.4713291674852371,
+      "category_breakdown": {
+        "notehead": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 8,
+        "all_times_s": [
+          2.4602284999999995
+        ],
+        "median_s_excluding_warmup": 2.4602284999999995,
+        "mean_s_excluding_warmup": 2.4602284999999995
+      }
+    },
+    "dvorak9-p9-sys1-s26-m2": {
+      "n_detections": 33,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46016260981559753,
+      "confidence_max": 0.8747382760047913,
+      "confidence_mean": 0.5709486964977148,
+      "confidence_median": 0.5130117535591125,
+      "category_breakdown": {
+        "notehead": 32,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 33,
+        "all_times_s": [
+          1.9795157909999972
+        ],
+        "median_s_excluding_warmup": 1.9795157909999972,
+        "mean_s_excluding_warmup": 1.9795157909999972
+      }
+    },
+    "dvorak9-p16-sys0-s12-m10": {
+      "n_detections": 21,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45324888825416565,
+      "confidence_max": 0.5853070020675659,
+      "confidence_mean": 0.5075331358682542,
+      "confidence_median": 0.5071148872375488,
+      "category_breakdown": {
+        "notehead": 19,
+        "flag": 1,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 21,
+        "all_times_s": [
+          1.799571333000003
+        ],
+        "median_s_excluding_warmup": 1.799571333000003,
+        "mean_s_excluding_warmup": 1.799571333000003
+      }
+    },
+    "dvorak9-p19-sys0-s3-m7": {
+      "n_detections": 19,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45633116364479065,
+      "confidence_max": 0.7493777275085449,
+      "confidence_mean": 0.534978692468844,
+      "confidence_median": 0.5094026923179626,
+      "category_breakdown": {
+        "notehead": 17,
+        "rest": 1,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 19,
+        "all_times_s": [
+          2.026702415999992
+        ],
+        "median_s_excluding_warmup": 2.026702415999992,
+        "mean_s_excluding_warmup": 2.026702415999992
+      }
+    },
+    "dvorak9-p19-sys0-s11-m6": {
+      "n_detections": 13,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4602464437484741,
+      "confidence_max": 0.7827295660972595,
+      "confidence_mean": 0.624246365748919,
+      "confidence_median": 0.609053909778595,
+      "category_breakdown": {
+        "notehead": 13
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 13,
+        "all_times_s": [
+          2.095674416999998
+        ],
+        "median_s_excluding_warmup": 2.095674416999998,
+        "mean_s_excluding_warmup": 2.095674416999998
+      }
+    },
+    "dvorak9-p16-sys1-s15-m6": {
+      "n_detections": 16,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4607384502887726,
+      "confidence_max": 1.0,
+      "confidence_mean": 0.6992050781846046,
+      "confidence_median": 0.6162059605121613,
+      "category_breakdown": {
+        "notehead": 9,
+        "structural": 7
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "staff",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "staff",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 16,
+        "all_times_s": [
+          1.9752826250000055
+        ],
+        "median_s_excluding_warmup": 1.9752826250000055,
+        "mean_s_excluding_warmup": 1.9752826250000055
+      }
+    },
+    "dvorak9-p18-sys0-s9-m9": {
+      "n_detections": 17,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4661303162574768,
+      "confidence_max": 0.7189850807189941,
+      "confidence_mean": 0.571760026847615,
+      "confidence_median": 0.5481669902801514,
+      "category_breakdown": {
+        "notehead": 16,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restHBar",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 17,
+        "all_times_s": [
+          2.122556582999991
+        ],
+        "median_s_excluding_warmup": 2.122556582999991,
+        "mean_s_excluding_warmup": 2.122556582999991
+      }
+    },
+    "dvorak9-p19-sys0-s6-m4": {
+      "n_detections": 18,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45958760380744934,
+      "confidence_max": 0.7688782811164856,
+      "confidence_mean": 0.5968520210848914,
+      "confidence_median": 0.6019300818443298,
+      "category_breakdown": {
+        "notehead": 18
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 18,
+        "all_times_s": [
+          2.235278416
+        ],
+        "median_s_excluding_warmup": 2.235278416,
+        "mean_s_excluding_warmup": 2.235278416
+      }
+    },
+    "dvorak9-p18-sys0-s15-m3": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4638877213001251,
+      "confidence_max": 0.7610706686973572,
+      "confidence_mean": 0.5491148109237353,
+      "confidence_median": 0.5272084474563599,
+      "category_breakdown": {
+        "notehead": 11,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          2.24309375
+        ],
+        "median_s_excluding_warmup": 2.24309375,
+        "mean_s_excluding_warmup": 2.24309375
+      }
+    },
+    "dvorak9-p13-sys1-s16-m7": {
+      "n_detections": 0,
+      "n_ported_from_baseline": 0,
+      "confidence_min": null,
+      "confidence_max": null,
+      "confidence_mean": null,
+      "confidence_median": null,
+      "category_breakdown": {},
+      "sample_class_labels": [],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 0,
+        "all_times_s": [
+          2.4515086250000024
+        ],
+        "median_s_excluding_warmup": 2.4515086250000024,
+        "mean_s_excluding_warmup": 2.4515086250000024
+      }
+    },
+    "dvorak9-p15-sys0-s25-m0": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4505454897880554,
+      "confidence_max": 0.6829342842102051,
+      "confidence_mean": 0.515069417655468,
+      "confidence_median": 0.47398824989795685,
+      "category_breakdown": {
+        "notehead": 12
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          2.4499860840000025
+        ],
+        "median_s_excluding_warmup": 2.4499860840000025,
+        "mean_s_excluding_warmup": 2.4499860840000025
+      }
+    },
+    "dvorak9-p16-sys1-s25-m2": {
+      "n_detections": 6,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4525483548641205,
+      "confidence_max": 0.6761331558227539,
+      "confidence_mean": 0.5924552530050278,
+      "confidence_median": 0.6039336621761322,
+      "category_breakdown": {
+        "notehead": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 6,
+        "all_times_s": [
+          1.6554502500000012
+        ],
+        "median_s_excluding_warmup": 1.6554502500000012,
+        "mean_s_excluding_warmup": 1.6554502500000012
+      }
+    },
+    "dvorak9-p19-sys0-s5-m2": {
+      "n_detections": 16,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.462224543094635,
+      "confidence_max": 0.7831110954284668,
+      "confidence_mean": 0.5774504505097866,
+      "confidence_median": 0.5162597000598907,
+      "category_breakdown": {
+        "notehead": 16
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 16,
+        "all_times_s": [
+          2.4835047080000123
+        ],
+        "median_s_excluding_warmup": 2.4835047080000123,
+        "mean_s_excluding_warmup": 2.4835047080000123
+      }
+    },
+    "dvorak9-p20-sys0-s12-m1": {
+      "n_detections": 7,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4565637707710266,
+      "confidence_max": 0.6374059319496155,
+      "confidence_mean": 0.5484589976923806,
+      "confidence_median": 0.5732256174087524,
+      "category_breakdown": {
+        "notehead": 6,
+        "clef": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "clefG"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 7,
+        "all_times_s": [
+          2.82035350000001
+        ],
+        "median_s_excluding_warmup": 2.82035350000001,
+        "mean_s_excluding_warmup": 2.82035350000001
+      }
+    },
+    "dvorak9-p9-sys1-s28-m6": {
+      "n_detections": 20,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45855310559272766,
+      "confidence_max": 0.8167147636413574,
+      "confidence_mean": 0.5717805176973343,
+      "confidence_median": 0.5276841521263123,
+      "category_breakdown": {
+        "notehead": 17,
+        "rest": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 20,
+        "all_times_s": [
+          1.9330546669999933
+        ],
+        "median_s_excluding_warmup": 1.9330546669999933,
+        "mean_s_excluding_warmup": 1.9330546669999933
+      }
+    },
+    "dvorak9-p11-sys1-s17-m0": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.47538334131240845,
+      "confidence_max": 0.7027179598808289,
+      "confidence_mean": 0.5769047737121582,
+      "confidence_median": 0.5544216930866241,
+      "category_breakdown": {
+        "notehead": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 8,
+        "all_times_s": [
+          1.3266605000000027
+        ],
+        "median_s_excluding_warmup": 1.3266605000000027,
+        "mean_s_excluding_warmup": 1.3266605000000027
+      }
+    },
+    "dvorak9-p12-sys1-s23-m6": {
+      "n_detections": 6,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46591490507125854,
+      "confidence_max": 0.6837994456291199,
+      "confidence_mean": 0.6110570232073466,
+      "confidence_median": 0.6223669052124023,
+      "category_breakdown": {
+        "notehead": 5,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "fermataAbove",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 6,
+        "all_times_s": [
+          2.039191875
+        ],
+        "median_s_excluding_warmup": 2.039191875,
+        "mean_s_excluding_warmup": 2.039191875
+      }
+    },
+    "dvorak9-p17-sys0-s5-m6": {
+      "n_detections": 15,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45720046758651733,
+      "confidence_max": 0.7144730687141418,
+      "confidence_mean": 0.5593194345633189,
+      "confidence_median": 0.5582425594329834,
+      "category_breakdown": {
+        "notehead": 14,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 15,
+        "all_times_s": [
+          2.8517974170000002
+        ],
+        "median_s_excluding_warmup": 2.8517974170000002,
+        "mean_s_excluding_warmup": 2.8517974170000002
+      }
+    },
+    "dvorak9-p18-sys0-s11-m7": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45086124539375305,
+      "confidence_max": 0.6283352971076965,
+      "confidence_mean": 0.5418533116579056,
+      "confidence_median": 0.5484652817249298,
+      "category_breakdown": {
+        "notehead": 7,
+        "flag": 1,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "beam",
+        "beam",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          1.8968534999999918
+        ],
+        "median_s_excluding_warmup": 1.8968534999999918,
+        "mean_s_excluding_warmup": 1.8968534999999918
+      }
+    },
+    "dvorak9-p20-sys0-s2-m2": {
+      "n_detections": 16,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4513709545135498,
+      "confidence_max": 0.7409316301345825,
+      "confidence_mean": 0.5624948926270008,
+      "confidence_median": 0.5324346721172333,
+      "category_breakdown": {
+        "notehead": 15,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 16,
+        "all_times_s": [
+          2.282767167000003
+        ],
+        "median_s_excluding_warmup": 2.282767167000003,
+        "mean_s_excluding_warmup": 2.282767167000003
+      }
+    },
+    "dvorak9-p11-sys0-s7-m0": {
+      "n_detections": 22,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4530705213546753,
+      "confidence_max": 0.7877801060676575,
+      "confidence_mean": 0.5609212720935995,
+      "confidence_median": 0.534428745508194,
+      "category_breakdown": {
+        "notehead": 22
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 22,
+        "all_times_s": [
+          1.6127450420000002
+        ],
+        "median_s_excluding_warmup": 1.6127450420000002,
+        "mean_s_excluding_warmup": 1.6127450420000002
+      }
+    },
+    "dvorak9-p17-sys1-s26-m7": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45537611842155457,
+      "confidence_max": 0.8248198628425598,
+      "confidence_mean": 0.553315204169069,
+      "confidence_median": 0.5239085555076599,
+      "category_breakdown": {
+        "notehead": 27,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "restQuarter"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          1.7284015839999824
+        ],
+        "median_s_excluding_warmup": 1.7284015839999824,
+        "mean_s_excluding_warmup": 1.7284015839999824
+      }
+    },
+    "dvorak9-p11-sys1-s27-m0": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45761892199516296,
+      "confidence_max": 0.8632814884185791,
+      "confidence_mean": 0.5595742998452022,
+      "confidence_median": 0.5450935959815979,
+      "category_breakdown": {
+        "notehead": 28,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          1.4458545829999991
+        ],
+        "median_s_excluding_warmup": 1.4458545829999991,
+        "mean_s_excluding_warmup": 1.4458545829999991
+      }
+    },
+    "dvorak9-p20-sys1-s18-m1": {
+      "n_detections": 9,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4576418399810791,
+      "confidence_max": 0.8140878081321716,
+      "confidence_mean": 0.5449461175335778,
+      "confidence_median": 0.49379196763038635,
+      "category_breakdown": {
+        "notehead": 9
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 9,
+        "all_times_s": [
+          2.1788042919999953
+        ],
+        "median_s_excluding_warmup": 2.1788042919999953,
+        "mean_s_excluding_warmup": 2.1788042919999953
+      }
+    },
+    "dvorak9-p16-sys0-s0-m9": {
+      "n_detections": 19,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.452236533164978,
+      "confidence_max": 0.8099523782730103,
+      "confidence_mean": 0.5690307428962306,
+      "confidence_median": 0.5091782808303833,
+      "category_breakdown": {
+        "notehead": 18,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 19,
+        "all_times_s": [
+          2.1907754580000187
+        ],
+        "median_s_excluding_warmup": 2.1907754580000187,
+        "mean_s_excluding_warmup": 2.1907754580000187
+      }
+    },
+    "dvorak9-p19-sys1-s17-m1": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46487417817115784,
+      "confidence_max": 0.7865345478057861,
+      "confidence_mean": 0.5520496368408203,
+      "confidence_median": 0.5149782299995422,
+      "category_breakdown": {
+        "accidental": 2,
+        "notehead": 10
+      },
+      "sample_class_labels": [
+        "accidentalDoubleSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "accidentalDoubleSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          1.8207047089999833
+        ],
+        "median_s_excluding_warmup": 1.8207047089999833,
+        "mean_s_excluding_warmup": 1.8207047089999833
+      }
+    },
+    "dvorak9-p19-sys0-s1-m2": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.47233450412750244,
+      "confidence_max": 0.6766136884689331,
+      "confidence_mean": 0.5403037369251251,
+      "confidence_median": 0.524988979101181,
+      "category_breakdown": {
+        "notehead": 7,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 8,
+        "all_times_s": [
+          1.9561969169999998
+        ],
+        "median_s_excluding_warmup": 1.9561969169999998,
+        "mean_s_excluding_warmup": 1.9561969169999998
+      }
+    },
+    "dvorak9-p11-sys0-s1-m0": {
+      "n_detections": 7,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4888034462928772,
+      "confidence_max": 0.6033985018730164,
+      "confidence_mean": 0.5409667406763349,
+      "confidence_median": 0.5303888320922852,
+      "category_breakdown": {
+        "notehead": 7
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 7,
+        "all_times_s": [
+          1.6275712080000062
+        ],
+        "median_s_excluding_warmup": 1.6275712080000062,
+        "mean_s_excluding_warmup": 1.6275712080000062
+      }
+    },
+    "dvorak9-p9-sys1-s18-m6": {
+      "n_detections": 4,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4778840243816376,
+      "confidence_max": 0.6770758032798767,
+      "confidence_mean": 0.5915023162961006,
+      "confidence_median": 0.6055247187614441,
+      "category_breakdown": {
+        "structural": 1,
+        "notehead": 3
+      },
+      "sample_class_labels": [
+        "brace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 4,
+        "all_times_s": [
+          2.1991062079999892
+        ],
+        "median_s_excluding_warmup": 2.1991062079999892,
+        "mean_s_excluding_warmup": 2.1991062079999892
+      }
+    },
+    "dvorak9-p11-sys1-s26-m0": {
+      "n_detections": 25,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46171173453330994,
+      "confidence_max": 0.7513588070869446,
+      "confidence_mean": 0.5661531865596772,
+      "confidence_median": 0.5703346133232117,
+      "category_breakdown": {
+        "ornament": 1,
+        "notehead": 22,
+        "rest": 1,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "arpeggiato",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 25,
+        "all_times_s": [
+          1.3385962499999948
+        ],
+        "median_s_excluding_warmup": 1.3385962499999948,
+        "mean_s_excluding_warmup": 1.3385962499999948
+      }
+    },
+    "dvorak9-p12-sys1-s16-m2": {
+      "n_detections": 5,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45902276039123535,
+      "confidence_max": 0.7571578621864319,
+      "confidence_mean": 0.5376740336418152,
+      "confidence_median": 0.46772193908691406,
+      "category_breakdown": {
+        "notehead": 5
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 5,
+        "all_times_s": [
+          2.0417084580000164
+        ],
+        "median_s_excluding_warmup": 2.0417084580000164,
+        "mean_s_excluding_warmup": 2.0417084580000164
+      }
+    },
+    "dvorak9-p17-sys0-s13-m9": {
+      "n_detections": 24,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45604991912841797,
+      "confidence_max": 0.6971260905265808,
+      "confidence_mean": 0.5151434453825156,
+      "confidence_median": 0.49017657339572906,
+      "category_breakdown": {
+        "structural": 3,
+        "notehead": 20,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "brace",
+        "brace",
+        "beam",
+        "noteheadBlackInSpace",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 24,
+        "all_times_s": [
+          2.8144367499999987
+        ],
+        "median_s_excluding_warmup": 2.8144367499999987,
+        "mean_s_excluding_warmup": 2.8144367499999987
+      }
+    },
+    "dvorak9-p13-sys0-s11-m5": {
+      "n_detections": 1,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.5429614186286926,
+      "confidence_max": 0.5429614186286926,
+      "confidence_mean": 0.5429614186286926,
+      "confidence_median": 0.5429614186286926,
+      "category_breakdown": {
+        "notehead": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 1,
+        "all_times_s": [
+          2.3693823330000043
+        ],
+        "median_s_excluding_warmup": 2.3693823330000043,
+        "mean_s_excluding_warmup": 2.3693823330000043
+      }
+    },
+    "dvorak9-p10-sys0-s1-m10": {
+      "n_detections": 38,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4512239694595337,
+      "confidence_max": 0.7109103202819824,
+      "confidence_mean": 0.5150855167915946,
+      "confidence_median": 0.49555279314517975,
+      "category_breakdown": {
+        "notehead": 38
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 38,
+        "all_times_s": [
+          3.406376375000008
+        ],
+        "median_s_excluding_warmup": 3.406376375000008,
+        "mean_s_excluding_warmup": 3.406376375000008
+      }
+    },
+    "dvorak9-p12-sys1-s15-m2": {
+      "n_detections": 3,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.49019575119018555,
+      "confidence_max": 0.7204732894897461,
+      "confidence_mean": 0.5678044259548187,
+      "confidence_median": 0.49274423718452454,
+      "category_breakdown": {
+        "notehead": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 3,
+        "all_times_s": [
+          2.368289374999989
+        ],
+        "median_s_excluding_warmup": 2.368289374999989,
+        "mean_s_excluding_warmup": 2.368289374999989
+      }
+    },
+    "dvorak9-p15-sys0-s4-m0": {
+      "n_detections": 9,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4588744044303894,
+      "confidence_max": 0.6229281425476074,
+      "confidence_mean": 0.5304202669196658,
+      "confidence_median": 0.5153981447219849,
+      "category_breakdown": {
+        "accidental": 1,
+        "notehead": 7,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "accidentalSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 9,
+        "all_times_s": [
+          2.378514208000013
+        ],
+        "median_s_excluding_warmup": 2.378514208000013,
+        "mean_s_excluding_warmup": 2.378514208000013
+      }
+    },
+    "dvorak9-p17-sys1-s17-m9": {
+      "n_detections": 7,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.5077738165855408,
+      "confidence_max": 0.6337345838546753,
+      "confidence_mean": 0.549261782850538,
+      "confidence_median": 0.5359049439430237,
+      "category_breakdown": {
+        "notehead": 7
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 7,
+        "all_times_s": [
+          1.7832633330000078
+        ],
+        "median_s_excluding_warmup": 1.7832633330000078,
+        "mean_s_excluding_warmup": 1.7832633330000078
+      }
+    },
+    "dvorak9-p19-sys1-s29-m2": {
+      "n_detections": 6,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4675910770893097,
+      "confidence_max": 0.6969386339187622,
+      "confidence_mean": 0.5655069301525751,
+      "confidence_median": 0.5611566603183746,
+      "category_breakdown": {
+        "notehead": 4,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restHBar",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 6,
+        "all_times_s": [
+          2.2049167499999953
+        ],
+        "median_s_excluding_warmup": 2.2049167499999953,
+        "mean_s_excluding_warmup": 2.2049167499999953
+      }
+    },
+    "dvorak9-p11-sys0-s12-m0": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46865522861480713,
+      "confidence_max": 0.7204691171646118,
+      "confidence_mean": 0.5932036489248276,
+      "confidence_median": 0.579288899898529,
+      "category_breakdown": {
+        "notehead": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 8,
+        "all_times_s": [
+          1.6236087499999883
+        ],
+        "median_s_excluding_warmup": 1.6236087499999883,
+        "mean_s_excluding_warmup": 1.6236087499999883
+      }
+    },
+    "dvorak9-p14-sys1-s24-m0": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4616164267063141,
+      "confidence_max": 0.7014127373695374,
+      "confidence_mean": 0.5903448512156805,
+      "confidence_median": 0.5900235176086426,
+      "category_breakdown": {
+        "notehead": 11,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "beam",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          2.031922709000014
+        ],
+        "median_s_excluding_warmup": 2.031922709000014,
+        "mean_s_excluding_warmup": 2.031922709000014
+      }
+    },
+    "dvorak9-p15-sys0-s27-m0": {
+      "n_detections": 15,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45994552969932556,
+      "confidence_max": 0.7621480822563171,
+      "confidence_mean": 0.5559664110342661,
+      "confidence_median": 0.526689350605011,
+      "category_breakdown": {
+        "notehead": 12,
+        "structural": 2,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "beam",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 15,
+        "all_times_s": [
+          2.8245624169999815
+        ],
+        "median_s_excluding_warmup": 2.8245624169999815,
+        "mean_s_excluding_warmup": 2.8245624169999815
+      }
+    },
+    "dvorak9-p16-sys1-s27-m5": {
+      "n_detections": 16,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.500206470489502,
+      "confidence_max": 0.7904489636421204,
+      "confidence_mean": 0.6102812327444553,
+      "confidence_median": 0.576138824224472,
+      "category_breakdown": {
+        "notehead": 13,
+        "rest": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restHBar",
+        "restHBar",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 16,
+        "all_times_s": [
+          1.946118417000008
+        ],
+        "median_s_excluding_warmup": 1.946118417000008,
+        "mean_s_excluding_warmup": 1.946118417000008
+      }
+    },
+    "dvorak9-p9-sys1-s22-m4": {
+      "n_detections": 9,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45077723264694214,
+      "confidence_max": 0.6813666820526123,
+      "confidence_mean": 0.5145830048455132,
+      "confidence_median": 0.5037140846252441,
+      "category_breakdown": {
+        "notehead": 8,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 9,
+        "all_times_s": [
+          1.8731832080000004
+        ],
+        "median_s_excluding_warmup": 1.8731832080000004,
+        "mean_s_excluding_warmup": 1.8731832080000004
+      }
+    },
+    "dvorak9-p10-sys0-s9-m6": {
+      "n_detections": 5,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.49467864632606506,
+      "confidence_max": 0.7324082851409912,
+      "confidence_mean": 0.5928740084171296,
+      "confidence_median": 0.5685039758682251,
+      "category_breakdown": {
+        "notehead": 4,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restHBar"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 5,
+        "all_times_s": [
+          2.377344375000007
+        ],
+        "median_s_excluding_warmup": 2.377344375000007,
+        "mean_s_excluding_warmup": 2.377344375000007
+      }
+    },
+    "dvorak9-p10-sys1-s19-m5": {
+      "n_detections": 13,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4503287076950073,
+      "confidence_max": 0.6699912548065186,
+      "confidence_mean": 0.4956216812133789,
+      "confidence_median": 0.47851231694221497,
+      "category_breakdown": {
+        "notehead": 12,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 13,
+        "all_times_s": [
+          1.9501042500000096
+        ],
+        "median_s_excluding_warmup": 1.9501042500000096,
+        "mean_s_excluding_warmup": 1.9501042500000096
+      }
+    },
+    "dvorak9-p13-sys0-s4-m2": {
+      "n_detections": 2,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.5537030100822449,
+      "confidence_max": 0.5897025465965271,
+      "confidence_mean": 0.571702778339386,
+      "confidence_median": 0.571702778339386,
+      "category_breakdown": {
+        "notehead": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 2,
+        "all_times_s": [
+          3.074108625000008
+        ],
+        "median_s_excluding_warmup": 3.074108625000008,
+        "mean_s_excluding_warmup": 3.074108625000008
+      }
+    },
+    "dvorak9-p13-sys0-s8-m4": {
+      "n_detections": 6,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46525174379348755,
+      "confidence_max": 0.7740381956100464,
+      "confidence_mean": 0.600461612145106,
+      "confidence_median": 0.5551446676254272,
+      "category_breakdown": {
+        "notehead": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 6,
+        "all_times_s": [
+          2.390289041999978
+        ],
+        "median_s_excluding_warmup": 2.390289041999978,
+        "mean_s_excluding_warmup": 2.390289041999978
+      }
+    },
+    "dvorak9-p14-sys1-s20-m4": {
+      "n_detections": 9,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4563392996788025,
+      "confidence_max": 0.7123464345932007,
+      "confidence_mean": 0.5242228474881914,
+      "confidence_median": 0.49165984988212585,
+      "category_breakdown": {
+        "notehead": 9
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 9,
+        "all_times_s": [
+          2.470282666000003
+        ],
+        "median_s_excluding_warmup": 2.470282666000003,
+        "mean_s_excluding_warmup": 2.470282666000003
+      }
+    },
+    "dvorak9-p15-sys0-s17-m0": {
+      "n_detections": 5,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4764305055141449,
+      "confidence_max": 0.6442245841026306,
+      "confidence_mean": 0.5371855020523071,
+      "confidence_median": 0.514139711856842,
+      "category_breakdown": {
+        "notehead": 4,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 5,
+        "all_times_s": [
+          2.8905814160000034
+        ],
+        "median_s_excluding_warmup": 2.8905814160000034,
+        "mean_s_excluding_warmup": 2.8905814160000034
+      }
+    },
+    "dvorak9-p15-sys0-s22-m0": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4536843001842499,
+      "confidence_max": 0.8013031482696533,
+      "confidence_mean": 0.5419697729604585,
+      "confidence_median": 0.5115744769573212,
+      "category_breakdown": {
+        "notehead": 27,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          2.837872333000007
+        ],
+        "median_s_excluding_warmup": 2.837872333000007,
+        "mean_s_excluding_warmup": 2.837872333000007
+      }
+    },
+    "dvorak9-p16-sys0-s8-m7": {
+      "n_detections": 5,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4581998288631439,
+      "confidence_max": 0.8092352747917175,
+      "confidence_mean": 0.544008207321167,
+      "confidence_median": 0.48658260703086853,
+      "category_breakdown": {
+        "notehead": 5
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 5,
+        "all_times_s": [
+          2.846873500000015
+        ],
+        "median_s_excluding_warmup": 2.846873500000015,
+        "mean_s_excluding_warmup": 2.846873500000015
+      }
+    },
+    "dvorak9-p18-sys0-s2-m7": {
+      "n_detections": 35,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4526229500770569,
+      "confidence_max": 0.7669063210487366,
+      "confidence_mean": 0.548387725012643,
+      "confidence_median": 0.5321810245513916,
+      "category_breakdown": {
+        "notehead": 34,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 35,
+        "all_times_s": [
+          1.8855976250000026
+        ],
+        "median_s_excluding_warmup": 1.8855976250000026,
+        "mean_s_excluding_warmup": 1.8855976250000026
+      }
+    },
+    "dvorak9-p18-sys0-s17-m1": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4556419551372528,
+      "confidence_max": 0.7869649529457092,
+      "confidence_mean": 0.5659872926771641,
+      "confidence_median": 0.5486151278018951,
+      "category_breakdown": {
+        "notehead": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 8,
+        "all_times_s": [
+          2.0887945839999986
+        ],
+        "median_s_excluding_warmup": 2.0887945839999986,
+        "mean_s_excluding_warmup": 2.0887945839999986
+      }
+    },
+    "dvorak9-p9-sys0-s3-m4": {
+      "n_detections": 41,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4513896107673645,
+      "confidence_max": 0.7905884981155396,
+      "confidence_mean": 0.5735790395155186,
+      "confidence_median": 0.5462512373924255,
+      "category_breakdown": {
+        "notehead": 39,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 41,
+        "all_times_s": [
+          2.4503407500000094
+        ],
+        "median_s_excluding_warmup": 2.4503407500000094,
+        "mean_s_excluding_warmup": 2.4503407500000094
+      }
+    },
+    "dvorak9-p19-sys0-s13-m1": {
+      "n_detections": 1,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4989200234413147,
+      "confidence_max": 0.4989200234413147,
+      "confidence_mean": 0.4989200234413147,
+      "confidence_median": 0.4989200234413147,
+      "category_breakdown": {
+        "notehead": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 1,
+        "all_times_s": [
+          1.8035105410000085
+        ],
+        "median_s_excluding_warmup": 1.8035105410000085,
+        "mean_s_excluding_warmup": 1.8035105410000085
+      }
+    },
+    "dvorak9-p18-sys0-s24-m3": {
+      "n_detections": 14,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4552982449531555,
+      "confidence_max": 0.7565323710441589,
+      "confidence_mean": 0.6037490431751523,
+      "confidence_median": 0.6127604842185974,
+      "category_breakdown": {
+        "notehead": 14
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 14,
+        "all_times_s": [
+          2.1241051659999926
+        ],
+        "median_s_excluding_warmup": 2.1241051659999926,
+        "mean_s_excluding_warmup": 2.1241051659999926
+      }
+    },
+    "dvorak9-p18-sys0-s25-m2": {
+      "n_detections": 6,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.5187143087387085,
+      "confidence_max": 0.7645406723022461,
+      "confidence_mean": 0.5752657651901245,
+      "confidence_median": 0.5367001295089722,
+      "category_breakdown": {
+        "notehead": 4,
+        "ornament": 1,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "fermataAbove",
+        "beam",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 6,
+        "all_times_s": [
+          2.060020917000003
+        ],
+        "median_s_excluding_warmup": 2.060020917000003,
+        "mean_s_excluding_warmup": 2.060020917000003
+      }
+    },
+    "dvorak9-p20-sys1-s17-m2": {
+      "n_detections": 43,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4538518786430359,
+      "confidence_max": 0.6634869575500488,
+      "confidence_mean": 0.5247589127961979,
+      "confidence_median": 0.5213212966918945,
+      "category_breakdown": {
+        "notehead": 43
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 43,
+        "all_times_s": [
+          3.0671455419999916
+        ],
+        "median_s_excluding_warmup": 3.0671455419999916,
+        "mean_s_excluding_warmup": 3.0671455419999916
+      }
+    },
+    "dvorak9-p9-sys1-s27-m4": {
+      "n_detections": 30,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45532435178756714,
+      "confidence_max": 0.7669314742088318,
+      "confidence_mean": 0.548772057890892,
+      "confidence_median": 0.5239104926586151,
+      "category_breakdown": {
+        "notehead": 30
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 30,
+        "all_times_s": [
+          1.9250945420000107
+        ],
+        "median_s_excluding_warmup": 1.9250945420000107,
+        "mean_s_excluding_warmup": 1.9250945420000107
+      }
+    },
+    "dvorak9-p12-sys1-s26-m7": {
+      "n_detections": 26,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4549570381641388,
+      "confidence_max": 0.779172420501709,
+      "confidence_mean": 0.5786151851599033,
+      "confidence_median": 0.5648985505104065,
+      "category_breakdown": {
+        "notehead": 24,
+        "ornament": 1,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 26,
+        "all_times_s": [
+          1.9512842079999757
+        ],
+        "median_s_excluding_warmup": 1.9512842079999757,
+        "mean_s_excluding_warmup": 1.9512842079999757
+      }
+    },
+    "dvorak9-p9-sys0-s0-m10": {
+      "n_detections": 16,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4523853063583374,
+      "confidence_max": 0.993963897228241,
+      "confidence_mean": 0.5683536995202303,
+      "confidence_median": 0.5230297744274139,
+      "category_breakdown": {
+        "notehead": 13,
+        "structural": 2,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "staff",
+        "beam",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "restHalf"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 16,
+        "all_times_s": [
+          2.7509159580000073
+        ],
+        "median_s_excluding_warmup": 2.7509159580000073,
+        "mean_s_excluding_warmup": 2.7509159580000073
+      }
+    },
+    "dvorak9-p12-sys0-s12-m3": {
+      "n_detections": 6,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4573379158973694,
+      "confidence_max": 0.5779204964637756,
+      "confidence_mean": 0.49507173895835876,
+      "confidence_median": 0.47603297233581543,
+      "category_breakdown": {
+        "notehead": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 6,
+        "all_times_s": [
+          2.1321769999999844
+        ],
+        "median_s_excluding_warmup": 2.1321769999999844,
+        "mean_s_excluding_warmup": 2.1321769999999844
+      }
+    },
+    "dvorak9-p12-sys1-s17-m3": {
+      "n_detections": 17,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45070692896842957,
+      "confidence_max": 0.6801300644874573,
+      "confidence_mean": 0.4843125571222866,
+      "confidence_median": 0.4702812433242798,
+      "category_breakdown": {
+        "notehead": 17
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 17,
+        "all_times_s": [
+          1.870896416999983
+        ],
+        "median_s_excluding_warmup": 1.870896416999983,
+        "mean_s_excluding_warmup": 1.870896416999983
+      }
+    },
+    "dvorak9-p9-sys0-s5-m10": {
+      "n_detections": 13,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4583132863044739,
+      "confidence_max": 0.8176133036613464,
+      "confidence_mean": 0.5706660243181082,
+      "confidence_median": 0.5350548624992371,
+      "category_breakdown": {
+        "notehead": 13
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 13,
+        "all_times_s": [
+          2.2232199999999978
+        ],
+        "median_s_excluding_warmup": 2.2232199999999978,
+        "mean_s_excluding_warmup": 2.2232199999999978
+      }
+    },
+    "dvorak9-p14-sys0-s12-m0": {
+      "n_detections": 22,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4521060883998871,
+      "confidence_max": 0.7340600490570068,
+      "confidence_mean": 0.5398880080743269,
+      "confidence_median": 0.5293477177619934,
+      "category_breakdown": {
+        "notehead": 22
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 22,
+        "all_times_s": [
+          2.3862386250000043
+        ],
+        "median_s_excluding_warmup": 2.3862386250000043,
+        "mean_s_excluding_warmup": 2.3862386250000043
+      }
+    },
+    "dvorak9-p15-sys0-s8-m0": {
+      "n_detections": 23,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45443063974380493,
+      "confidence_max": 0.74174565076828,
+      "confidence_mean": 0.5355555207832999,
+      "confidence_median": 0.5254878401756287,
+      "category_breakdown": {
+        "notehead": 22,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 23,
+        "all_times_s": [
+          2.8674025420000078
+        ],
+        "median_s_excluding_warmup": 2.8674025420000078,
+        "mean_s_excluding_warmup": 2.8674025420000078
+      }
+    },
+    "dvorak9-p19-sys0-s0-m0": {
+      "n_detections": 15,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4720885753631592,
+      "confidence_max": 0.6891266703605652,
+      "confidence_mean": 0.5441927750905354,
+      "confidence_median": 0.5228139758110046,
+      "category_breakdown": {
+        "notehead": 14,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 15,
+        "all_times_s": [
+          1.424092791999982
+        ],
+        "median_s_excluding_warmup": 1.424092791999982,
+        "mean_s_excluding_warmup": 1.424092791999982
+      }
+    }
+  }
+}

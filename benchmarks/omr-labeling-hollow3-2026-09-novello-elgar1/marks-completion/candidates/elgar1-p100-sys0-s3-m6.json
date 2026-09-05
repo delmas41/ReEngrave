@@ -1,0 +1,31 @@
+{
+ "cell_id": "elgar1-p100-sys0-s3-m6",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8732,
+   "ink": 0.607,
+   "bbox": {
+    "x": 991,
+    "y": 31,
+    "w": 174,
+    "h": 181
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7768,
+   "ink": 0.5202,
+   "bbox": {
+    "x": 840,
+    "y": 32,
+    "w": 136,
+    "h": 181
+   }
+  }
+ ]
+}

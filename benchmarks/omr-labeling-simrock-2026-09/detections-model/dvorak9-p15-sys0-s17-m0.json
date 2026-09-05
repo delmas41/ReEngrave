@@ -1,0 +1,70 @@
+{
+  "cell_id": "dvorak9-p15-sys0-s17-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "clefG",
+      "category": "clef",
+      "x": 242,
+      "y": 0,
+      "w": 281,
+      "h": 336,
+      "x_center": 382,
+      "y_center": 168,
+      "confidence": 0.9192102551460266,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "clefG",
+      "category": "clef",
+      "x": 247,
+      "y": 342,
+      "w": 273,
+      "h": 740,
+      "x_center": 383,
+      "y_center": 712,
+      "confidence": 0.936732292175293,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "keyFlat",
+      "category": "accidental",
+      "x": 625,
+      "y": 544,
+      "w": 100,
+      "h": 285,
+      "x_center": 675,
+      "y_center": 686,
+      "confidence": 0.8521388173103333,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "keyFlat",
+      "category": "accidental",
+      "x": 701,
+      "y": 386,
+      "w": 102,
+      "h": 254,
+      "x_center": 752,
+      "y_center": 513,
+      "confidence": 0.7710395455360413,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1557,
+      "y": 612,
+      "w": 121,
+      "h": 54,
+      "x_center": 1617,
+      "y_center": 639,
+      "confidence": 0.6573302745819092,
+      "pitch": null
+    }
+  ]
+}

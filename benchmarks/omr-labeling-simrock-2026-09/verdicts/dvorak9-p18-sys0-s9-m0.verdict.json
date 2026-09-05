@@ -1,0 +1,215 @@
+{
+  "cell_id": "dvorak9-p18-sys0-s9-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T02:13:58+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 673,
+        "y": 323,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 673,
+        "y": 387,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 813,
+        "y": 323,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 813,
+        "y": 387,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1257,
+        "y": 323,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1267,
+        "y": 387,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1472,
+        "y": 323,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1476,
+        "y": 387,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1626,
+        "y": 323,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1640,
+        "y": 387,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1797,
+        "y": 323,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1797,
+        "y": 387,
+        "w": 77,
+        "h": 64
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 980,
+        "y": 428,
+        "w": 64,
+        "h": 110
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 603,
+        "y": 268,
+        "w": 43,
+        "h": 175
+      },
+      "notes": ""
+    },
+    {
+      "id": "H14",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 549,
+        "y": 332,
+        "w": 43,
+        "h": 175
+      },
+      "notes": ""
+    },
+    {
+      "id": "H15",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 369,
+        "y": 302,
+        "w": 75,
+        "h": 171
+      },
+      "notes": ""
+    },
+    {
+      "id": "H16",
+      "human_class": "clefC",
+      "human_category": "clef",
+      "bbox": {
+        "x": 113,
+        "y": 310,
+        "w": 189,
+        "h": 283
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+ "cell_id": "brahms1-p3-sys0-s8-m3",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 728,
+    "y": 681,
+    "w": 226,
+    "h": 47
+   },
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 1,
+    "y": 0,
+    "w": 128,
+    "h": 33
+   },
+   "confidence": 0.489,
+   "notes": "teacher: unmatched by any human box"
+  }
+ ]
+}

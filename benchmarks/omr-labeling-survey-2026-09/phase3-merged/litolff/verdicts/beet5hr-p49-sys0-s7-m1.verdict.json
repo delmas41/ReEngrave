@@ -1,0 +1,118 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s7-m1",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1396,
+    "y": 629,
+    "w": 130,
+    "h": 133
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1158,
+    "y": 629,
+    "w": 131,
+    "h": 121
+   }
+  },
+  {
+   "id": "C2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1767,
+    "y": 630,
+    "w": 133,
+    "h": 129
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 127,
+    "y": 1161,
+    "w": 269,
+    "h": 278
+   },
+   "confidence": 0.8533,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 44,
+    "y": 0,
+    "w": 269,
+    "h": 273
+   },
+   "confidence": 0.82,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 17,
+    "y": 1147,
+    "w": 266,
+    "h": 287
+   },
+   "confidence": 0.819,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M3",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 149,
+    "y": 0,
+    "w": 267,
+    "h": 268
+   },
+   "confidence": 0.7947,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M4",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 329,
+    "y": 400,
+    "w": 842,
+    "h": 182
+   },
+   "confidence": 0.7368,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 193,
+    "y": 650,
+    "w": 124,
+    "h": 104
+   },
+   "notes": ""
+  }
+ ]
+}

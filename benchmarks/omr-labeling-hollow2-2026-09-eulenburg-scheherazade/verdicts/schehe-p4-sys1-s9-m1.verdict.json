@@ -1,7 +1,7 @@
 {
   "cell_id": "schehe-p4-sys1-s9-m1",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:20:48+00:00",
+  "labeled_at_utc": "2026-09-03T21:21:53+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -15,9 +15,34 @@
         "h": 98
       },
       "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1254,
+        "y": 611,
+        "w": 118,
+        "h": 255
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 798,
+        "y": 981,
+        "w": 177,
+        "h": 80
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

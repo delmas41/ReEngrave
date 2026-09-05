@@ -1,0 +1,83 @@
+{
+  "cell_id": "dvorak9-p11-sys0-s12-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "clefCAlto",
+      "category": "clef",
+      "x": 196,
+      "y": 394,
+      "w": 199,
+      "h": 312,
+      "x_center": 295,
+      "y_center": 550,
+      "confidence": 0.6902719140052795,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "clefG",
+      "category": "clef",
+      "x": 190,
+      "y": 0,
+      "w": 211,
+      "h": 219,
+      "x_center": 295,
+      "y_center": 109,
+      "confidence": 0.5404987931251526,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "keySharp",
+      "category": "accidental",
+      "x": 470,
+      "y": 317,
+      "w": 97,
+      "h": 247,
+      "x_center": 518,
+      "y_center": 440,
+      "confidence": 0.7719531655311584,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "noteheadHalfInSpace",
+      "category": "notehead",
+      "x": 752,
+      "y": 98,
+      "w": 101,
+      "h": 91,
+      "x_center": 802,
+      "y_center": 143,
+      "confidence": 0.7105618119239807,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 132,
+      "y": 0,
+      "w": 1916,
+      "h": 114,
+      "x_center": 1090,
+      "y_center": 57,
+      "confidence": 0.5422251224517822,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1261,
+      "y": 459,
+      "w": 101,
+      "h": 56,
+      "x_center": 1311,
+      "y_center": 487,
+      "confidence": 0.5549517273902893,
+      "pitch": null
+    }
+  ]
+}

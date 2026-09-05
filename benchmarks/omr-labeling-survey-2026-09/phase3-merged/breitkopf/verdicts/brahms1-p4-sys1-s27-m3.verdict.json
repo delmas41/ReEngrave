@@ -1,0 +1,79 @@
+{
+ "cell_id": "brahms1-p4-sys1-s27-m3",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 178,
+    "y": 750,
+    "w": 120,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 425,
+    "y": 497,
+    "w": 129,
+    "h": 201
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 603,
+    "y": 504,
+    "w": 139,
+    "h": 191
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1109,
+    "y": 513,
+    "w": 134,
+    "h": 198
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 841,
+    "y": 440,
+    "w": 114,
+    "h": 319
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "articStaccatoBelow",
+   "human_category": "ornament",
+   "bbox": {
+    "x": 180,
+    "y": 891,
+    "w": 86,
+    "h": 60
+   },
+   "notes": ""
+  }
+ ]
+}

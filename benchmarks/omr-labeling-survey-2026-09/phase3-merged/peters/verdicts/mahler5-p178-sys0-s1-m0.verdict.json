@@ -1,0 +1,108 @@
+{
+ "cell_id": "mahler5-p178-sys0-s1-m0",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1092,
+    "y": 317,
+    "w": 85,
+    "h": 67
+   },
+   "confidence": 0.8236,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 579,
+    "y": 724,
+    "w": 92,
+    "h": 77
+   },
+   "confidence": 0.8174,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1723,
+    "y": 578,
+    "w": 71,
+    "h": 68
+   },
+   "confidence": 0.7891,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N3",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 792,
+    "y": 511,
+    "w": 83,
+    "h": 62
+   },
+   "confidence": 0.5695,
+   "notes": "notehead completion (black heads/dots), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 338,
+    "y": 308,
+    "w": 79,
+    "h": 194
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "accidentalSharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 478,
+    "y": 666,
+    "w": 89,
+    "h": 195
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "accidentalSharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 711,
+    "y": 444,
+    "w": 61,
+    "h": 192
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "accidentalFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1001,
+    "y": 219,
+    "w": 72,
+    "h": 184
+   },
+   "notes": ""
+  }
+ ]
+}

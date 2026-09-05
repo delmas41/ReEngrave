@@ -1,0 +1,18 @@
+{
+ "cell_id": "schehe-p4-sys0-s4-m0",
+ "candidates": [
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8709,
+   "ink": 0.2536,
+   "bbox": {
+    "x": 742,
+    "y": 815,
+    "w": 146,
+    "h": 194
+   }
+  }
+ ]
+}

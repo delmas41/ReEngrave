@@ -1,0 +1,18 @@
+{
+ "cell_id": "schehe-p3-sys0-s2-m1",
+ "candidates": [
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.6567,
+   "ink": 0.8167,
+   "bbox": {
+    "x": 905,
+    "y": 151,
+    "w": 140,
+    "h": 126
+   }
+  }
+ ]
+}

@@ -1,0 +1,71 @@
+{
+ "cell_id": "elgar1-p99-sys0-s4-m1",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 367,
+    "y": 910,
+    "w": 156,
+    "h": 162
+   },
+   "confidence": 0.872,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 117,
+    "y": 838,
+    "w": 189,
+    "h": 215
+   },
+   "confidence": 0.8707,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 236,
+    "y": 911,
+    "w": 171,
+    "h": 155
+   },
+   "confidence": 0.6462,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 248,
+    "y": 448,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 108,
+    "y": 320,
+    "w": 107,
+    "h": 338
+   },
+   "notes": ""
+  }
+ ]
+}

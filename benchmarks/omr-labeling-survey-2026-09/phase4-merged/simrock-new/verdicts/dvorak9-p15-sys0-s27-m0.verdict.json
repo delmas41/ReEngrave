@@ -1,0 +1,79 @@
+{
+ "cell_id": "dvorak9-p15-sys0-s27-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1051,
+    "y": 100,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "tie",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1167,
+    "y": 3,
+    "w": 576,
+    "h": 88
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 641,
+    "y": 420,
+    "w": 117,
+    "h": 265
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "clefC",
+   "human_category": "clef",
+   "bbox": {
+    "x": 239,
+    "y": 485,
+    "w": 293,
+    "h": 438
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "dynamicF",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 907,
+    "y": 804,
+    "w": 234,
+    "h": 293
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "dynamicLetterZ",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 1106,
+    "y": 939,
+    "w": 120,
+    "h": 143
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,107 @@
+{
+  "cell_id": "dvorak9-p15-sys0-s3-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T02:54:52+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "clefF",
+      "human_category": "clef",
+      "bbox": {
+        "x": 162,
+        "y": 439,
+        "w": 339,
+        "h": 418
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 600,
+        "y": 414,
+        "w": 118,
+        "h": 268
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 962,
+        "y": 396,
+        "w": 120,
+        "h": 101
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 991,
+        "y": 497,
+        "w": 120,
+        "h": 101
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 789,
+        "y": 219,
+        "w": 212,
+        "h": 103
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1105,
+        "y": 236,
+        "w": 640,
+        "h": 71
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 756,
+        "y": 635,
+        "w": 272,
+        "h": 103
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1034,
+        "y": 597,
+        "w": 711,
+        "h": 153
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

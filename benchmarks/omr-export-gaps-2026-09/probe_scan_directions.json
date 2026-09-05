@@ -1,0 +1,16 @@
+[
+ {
+  "arm": "s2tonly",
+  "omr_ed": 29082,
+  "omr_ned": 0.8387506128688028,
+  "tie_elements": 462,
+  "slur_starts": 115
+ },
+ {
+  "arm": "t2sonly",
+  "omr_ed": 29213,
+  "omr_ned": 0.8391405509436131,
+  "tie_elements": 138,
+  "slur_starts": 418
+ }
+]

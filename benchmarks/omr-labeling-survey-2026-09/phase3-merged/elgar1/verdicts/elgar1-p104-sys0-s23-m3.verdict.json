@@ -1,0 +1,71 @@
+{
+ "cell_id": "elgar1-p104-sys0-s23-m3",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 637,
+    "y": 1092,
+    "w": 134,
+    "h": 108
+   },
+   "confidence": 0.8613,
+   "notes": "model completion, audited"
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 227,
+    "y": 986,
+    "w": 131,
+    "h": 115
+   },
+   "confidence": 0.7296,
+   "notes": "model completion, audited"
+  },
+  {
+   "id": "C2",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 422,
+    "y": 1022,
+    "w": 37,
+    "h": 42
+   },
+   "confidence": 0.7077,
+   "notes": "model completion, audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 243,
+    "y": 350,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 238,
+    "y": 0,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  }
+ ]
+}

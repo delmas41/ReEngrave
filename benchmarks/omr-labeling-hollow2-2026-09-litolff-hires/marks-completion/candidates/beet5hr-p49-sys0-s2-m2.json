@@ -1,0 +1,44 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s2-m2",
+ "candidates": [
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.8582,
+   "ink": 0.1722,
+   "bbox": {
+    "x": 355,
+    "y": 117,
+    "w": 612,
+    "h": 152
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.8096,
+   "ink": 0.3302,
+   "bbox": {
+    "x": 1392,
+    "y": 331,
+    "w": 263,
+    "h": 101
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.7871,
+   "ink": 0.3923,
+   "bbox": {
+    "x": 410,
+    "y": 1365,
+    "w": 254,
+    "h": 76
+   }
+  }
+ ]
+}

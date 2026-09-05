@@ -1,0 +1,33 @@
+{
+ "cell_id": "beet5-p2-sys0-s3-m6",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 43,
+    "y": 866,
+    "w": 207,
+    "h": 202
+   },
+   "confidence": 0.7485,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 102,
+    "y": 175,
+    "w": 199,
+    "h": 191
+   },
+   "notes": ""
+  }
+ ]
+}

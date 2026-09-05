@@ -1,0 +1,122 @@
+{
+  "cell_id": "dvorak9-p14-sys0-s12-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "clefCTenor",
+      "category": "clef",
+      "x": 264,
+      "y": 737,
+      "w": 236,
+      "h": 192,
+      "x_center": 382,
+      "y_center": 833,
+      "confidence": 0.5642321705818176,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "clefCAlto",
+      "category": "clef",
+      "x": 264,
+      "y": 515,
+      "w": 254,
+      "h": 411,
+      "x_center": 391,
+      "y_center": 720,
+      "confidence": 0.6558147072792053,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "keySharp",
+      "category": "accidental",
+      "x": 650,
+      "y": 411,
+      "w": 115,
+      "h": 313,
+      "x_center": 707,
+      "y_center": 567,
+      "confidence": 0.8592706322669983,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "slur",
+      "category": "structural",
+      "x": 858,
+      "y": 998,
+      "w": 252,
+      "h": 79,
+      "x_center": 984,
+      "y_center": 1037,
+      "confidence": 0.7553824186325073,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "noteheadBlackInSpace",
+      "category": "notehead",
+      "x": 1022,
+      "y": 0,
+      "w": 138,
+      "h": 84,
+      "x_center": 1091,
+      "y_center": 42,
+      "confidence": 0.8517313003540039,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadHalfOnLine",
+      "category": "notehead",
+      "x": 1033,
+      "y": 859,
+      "w": 135,
+      "h": 123,
+      "x_center": 1100,
+      "y_center": 920,
+      "confidence": 0.6189601421356201,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "noteheadHalfInSpace",
+      "category": "notehead",
+      "x": 1033,
+      "y": 863,
+      "w": 136,
+      "h": 120,
+      "x_center": 1101,
+      "y_center": 923,
+      "confidence": 0.7856988310813904,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "slur",
+      "category": "structural",
+      "x": 829,
+      "y": 124,
+      "w": 638,
+      "h": 133,
+      "x_center": 1148,
+      "y_center": 190,
+      "confidence": 0.8457712531089783,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 1412,
+      "y": 5,
+      "w": 132,
+      "h": 118,
+      "x_center": 1478,
+      "y_center": 64,
+      "confidence": 0.8461389541625977,
+      "pitch": null
+    }
+  ]
+}

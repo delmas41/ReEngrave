@@ -1,0 +1,83 @@
+{
+  "cell_id": "dvorak9-p13-sys1-s15-m7",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 0,
+      "y": 188,
+      "w": 165,
+      "h": 81,
+      "x_center": 82,
+      "y_center": 228,
+      "confidence": 0.7541464567184448,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "ledgerLine",
+      "category": "structural",
+      "x": 78,
+      "y": 482,
+      "w": 213,
+      "h": 20,
+      "x_center": 184,
+      "y_center": 492,
+      "confidence": 0.5376093983650208,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "noteheadHalfInSpace",
+      "category": "notehead",
+      "x": 121,
+      "y": 275,
+      "w": 142,
+      "h": 126,
+      "x_center": 192,
+      "y_center": 338,
+      "confidence": 0.8412637114524841,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 737,
+      "y": 1454,
+      "w": 129,
+      "h": 38,
+      "x_center": 801,
+      "y_center": 1473,
+      "confidence": 0.7650499939918518,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 1,
+      "y": 1295,
+      "w": 1617,
+      "h": 77,
+      "x_center": 809,
+      "y_center": 1333,
+      "confidence": 0.5975415706634521,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 248,
+      "y": 139,
+      "w": 1388,
+      "h": 89,
+      "x_center": 942,
+      "y_center": 183,
+      "confidence": 0.715747594833374,
+      "pitch": null
+    }
+  ]
+}

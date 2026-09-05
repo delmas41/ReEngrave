@@ -1,0 +1,17 @@
+{
+ "cell_id": "brahms1-p3-sys1-s23-m5",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 194,
+    "y": 430,
+    "w": 1653,
+    "h": 231
+   },
+   "confidence": 1.0
+  }
+ ]
+}

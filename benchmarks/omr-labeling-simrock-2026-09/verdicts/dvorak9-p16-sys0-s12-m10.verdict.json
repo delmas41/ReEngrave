@@ -1,0 +1,191 @@
+{
+  "cell_id": "dvorak9-p16-sys0-s12-m10",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T15:35:29+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 208,
+        "y": 472,
+        "w": 104,
+        "h": 87
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 516,
+        "y": 386,
+        "w": 104,
+        "h": 87
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 700,
+        "y": 386,
+        "w": 104,
+        "h": 87
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 926,
+        "y": 255,
+        "w": 104,
+        "h": 87
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1121,
+        "y": 255,
+        "w": 104,
+        "h": 87
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1309,
+        "y": 386,
+        "w": 104,
+        "h": 87
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1497,
+        "y": 386,
+        "w": 104,
+        "h": 87
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1791,
+        "y": 516,
+        "w": 104,
+        "h": 87
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 397,
+        "y": 351,
+        "w": 87,
+        "h": 243
+      },
+      "notes": ""
+    },
+    {
+      "id": "H9",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 818,
+        "y": 177,
+        "w": 87,
+        "h": 243
+      },
+      "notes": ""
+    },
+    {
+      "id": "H10",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1676,
+        "y": 483,
+        "w": 87,
+        "h": 243
+      },
+      "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 239,
+        "y": 267,
+        "w": 325,
+        "h": 147
+      },
+      "notes": ""
+    },
+    {
+      "id": "H12",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 725,
+        "y": 185,
+        "w": 225,
+        "h": 153
+      },
+      "notes": ""
+    },
+    {
+      "id": "H13",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1200,
+        "y": 198,
+        "w": 233,
+        "h": 168
+      },
+      "notes": ""
+    },
+    {
+      "id": "H14",
+      "human_class": "slur",
+      "human_category": "structural",
+      "bbox": {
+        "x": 1600,
+        "y": 315,
+        "w": 321,
+        "h": 177
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

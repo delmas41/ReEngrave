@@ -1,0 +1,70 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s13-m4",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1107,
+    "y": 1148,
+    "w": 130,
+    "h": 126
+   },
+   "confidence": 0.8245,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1479,
+    "y": 1045,
+    "w": 154,
+    "h": 137
+   },
+   "confidence": 0.7409,
+   "notes": "notehead completion (black heads/dots), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 822,
+    "y": 617,
+    "w": 103,
+    "h": 279
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "restHalf",
+   "human_category": "rest",
+   "bbox": {
+    "x": 166,
+    "y": 739,
+    "w": 148,
+    "h": 75
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1370,
+    "y": 922,
+    "w": 100,
+    "h": 380
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+ "cell_id": "brahms1-p2-sys1-s19-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1278,
+    "y": 325,
+    "w": 123,
+    "h": 65
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "clefG",
+   "human_category": "clef",
+   "bbox": {
+    "x": 103,
+    "y": 147,
+    "w": 201,
+    "h": 492
+   },
+   "notes": ""
+  }
+ ]
+}

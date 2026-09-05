@@ -1,10 +1,36 @@
 {
   "cell_id": "schehe-p2-sys1-s18-m0",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:15:17+00:00",
+  "labeled_at_utc": "2026-09-03T21:13:08+00:00",
   "detections": [],
-  "added_detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "keySharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 274,
+        "y": 161,
+        "w": 61,
+        "h": 130
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1190,
+        "y": 215,
+        "w": 99,
+        "h": 28
+      },
+      "notes": ""
+    }
+  ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

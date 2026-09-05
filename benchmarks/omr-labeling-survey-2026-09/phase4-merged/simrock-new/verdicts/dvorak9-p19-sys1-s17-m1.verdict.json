@@ -1,0 +1,139 @@
+{
+ "cell_id": "dvorak9-p19-sys1-s17-m1",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 648,
+    "y": 291,
+    "w": 86,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 631,
+    "y": 399,
+    "w": 86,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1372,
+    "y": 291,
+    "w": 86,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1372,
+    "y": 399,
+    "w": 86,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1048,
+    "y": 445,
+    "w": 72,
+    "h": 123
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1684,
+    "y": 445,
+    "w": 72,
+    "h": 123
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 289,
+    "y": 370,
+    "w": 87,
+    "h": 202
+   },
+   "notes": ""
+  },
+  {
+   "id": "H7",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 378,
+    "y": 262,
+    "w": 87,
+    "h": 202
+   },
+   "notes": ""
+  },
+  {
+   "id": "H8",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 490,
+    "y": 298,
+    "w": 87,
+    "h": 202
+   },
+   "notes": ""
+  },
+  {
+   "id": "H9",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 542,
+    "y": 190,
+    "w": 87,
+    "h": 202
+   },
+   "notes": ""
+  },
+  {
+   "id": "H10",
+   "human_class": "clefG",
+   "human_category": "clef",
+   "bbox": {
+    "x": 41,
+    "y": 236,
+    "w": 206,
+    "h": 543
+   },
+   "notes": ""
+  }
+ ]
+}

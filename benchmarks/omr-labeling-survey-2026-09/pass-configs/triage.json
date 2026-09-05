@@ -1,0 +1,15 @@
+{
+  "pass_name": "triage",
+  "note": "TRIAGE — the model has pre-labelled every cell. Confirm with `t`, reject with `f`, fix a class with `c`, redraw a box with `b`. You are NOT hunting for missed symbols in this pass; later passes do that for the families production is measured to miss. Production's coverage against truth on the scan benchmark: noteheads 0.98, accidentals 0.93, dynamics 1.03, augmentation dots 1.16 — so what the model shows you here is close to what is there, and your job is to catch the wrong ones. REJECT with `f`: any box on a letter of a printed word (`sempre`, `espress.`, `dim.` all donate letters the detector calls dynamics), any box on a staff line or beam, and any box on the cell's top or bottom edge that is bleed from the neighbouring staff. The number keys are there if you do want to add something obvious.",
+  "classes": [
+    { "label": "black notehead", "on_line": "noteheadBlackOnLine", "in_space": "noteheadBlackInSpace", "click_box": true },
+    { "label": "half notehead",  "on_line": "noteheadHalfOnLine",  "in_space": "noteheadHalfInSpace",  "click_box": true },
+    { "label": "whole notehead", "on_line": "noteheadWholeOnLine", "in_space": "noteheadWholeInSpace", "click_box": true },
+    { "name": "accidentalFlat", "label": "flat" },
+    { "name": "accidentalSharp", "label": "sharp" },
+    { "name": "accidentalNatural", "label": "natural" },
+    { "name": "augmentationDot", "label": "aug. dot", "click_box": true },
+    { "name": "keyFlat", "label": "KEY-SIG flat" },
+    { "name": "keySharp", "label": "KEY-SIG sharp" }
+  ]
+}
