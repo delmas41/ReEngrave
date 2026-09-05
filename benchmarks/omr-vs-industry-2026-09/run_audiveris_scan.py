@@ -31,7 +31,7 @@ from tools.omr import omr_ned  # noqa: E402
 
 import fitz  # noqa: E402
 
-SCAN_BENCH = ROOT / "benchmarks" / "omr-scan-e2e-2026-09"
+SCAN_BENCH = MAIN / "benchmarks" / "omr-scan-e2e-2026-09"
 # Trimmed truths are build products; the main checkout's fixtures dir has the
 # canonical set (this worktree's is empty).
 TRUTH_DIRS = [SCAN_BENCH / "fixtures",
@@ -81,7 +81,9 @@ def run_audiveris(row_id: str, pdf: Path) -> Path:
         return _produced()[0]
     env = dict(os.environ, TESSDATA_PREFIX="/Users/seanjohnson/audiveris-tessdata")
     proc = subprocess.Popen(
-        [str(AUDIVERIS), "-batch", "-export", "-output", str(out_dir), str(pdf)],
+        [str(AUDIVERIS), "-batch", "-export",
+         "-constant", "org.audiveris.omr.sheet.SheetStub.stepTimeOut=900",
+         "-output", str(out_dir), str(pdf)],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env,
     )
     t0 = time.time()
@@ -105,11 +107,11 @@ def run_audiveris(row_id: str, pdf: Path) -> Path:
 
 
 def main() -> int:
-    scan_results = json.loads((SCAN_BENCH / "results.json").read_text())
+    scan_results = json.loads((SCAN_BENCH / "results-restamp-composed.json").read_text())
     works = json.loads((SCAN_BENCH / "works.json").read_text())
     rows_meta = {r["row_id"]: r
                  for r in (works["rows"] if isinstance(works, dict) else works)}
-    ours = {r["row_id"]: r for r in scan_results["rows"]}
+    ours = {r["row_id"].split(".restamp")[0]: r for r in scan_results["rows"]}
     lib = library_root()
 
     res = json.loads(RESULTS.read_text()) if RESULTS.exists() else {"rows": {}}
@@ -130,7 +132,21 @@ def main() -> int:
         try:
             pred = run_audiveris(row_id, page_img)
             record["seconds"] = round(time.time() - t0, 1)
-            score = omr_ned.score_pair(pred=pred, truth=truth, name=row_id)
+            try:
+                score = omr_ned.score_pair(pred=pred, truth=truth, name=row_id)
+            except Exception:
+                # Some Audiveris exports (overfull measures) crash music21's
+                # makeTies inside musicdiff; a makeNotation=False pass-through
+                # re-serialization adds/removes no symbols.
+                norm = pred.with_suffix(".norm.musicxml")
+                subprocess.run(
+                    [os.environ["OMRNED_PYTHON"], "-c",
+                     "import music21,sys; s=music21.converter.parse(sys.argv[1], forceSource=True); "
+                     "s.write('musicxml', fp=sys.argv[2], makeNotation=False)",
+                     str(pred), str(norm)], check=True, capture_output=True)
+                pred = norm
+                record["normalized"] = True
+                score = omr_ned.score_pair(pred=pred, truth=truth, name=row_id)
             record.update(status="ok", omr_ned=score["omr_ned"],
                           omr_ed=score["omr_ed"],
                           truth_symbols=score["truth_symbols"],

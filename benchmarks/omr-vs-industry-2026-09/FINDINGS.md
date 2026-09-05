@@ -162,3 +162,30 @@ the OCR arm is preserved as `results-ocr-arm.json`.
   gap is `wrong flag/beam` (ours 449 vs its 48; `categories-*.json`). A
   dedicated beam session is working that bucket in its own worktree.
 - **Scan**: us 0.7482 (current weights), Audiveris 0.7845 — ahead.
+
+---
+
+# Addendum 2, 2026-09-04 evening — the widened scan pool reverses the scan verdict
+
+The scan benchmark was re-stamped to **11 rows** on the integration line
+(`ba3ad6a7`: the original five pages, their p2/p3 siblings, and a Bach
+Brandenburg row; composed baseline tilt+choir ON, graft weights: **0.8303 /
+35,046**). The Audiveris arm was widened to match (`scan-comparison.json`,
+`results-audiveris-scan.json`).
+
+**Over the same 10 rows both systems scored: Audiveris 0.7919 / 27,934 vs our
+0.8345 / 28,849 — the 5-row lead did not survive widening.** Per-row Audiveris
+wins 6, we win 4; it cannot process Bach at all (internal NPE in
+`Measure.purgeVoices` — unrecoverable from outside), and Brahms p2 needed one
+inexpressible duration snapped before musicdiff would type it (noted per-row).
+
+The reversal's shape: our wins concentrate in FIRST pages
+(984073-p1, Dvořák p5) and the added second pages go to Audiveris
+(575951-p2 by 0.077, Brahms p2 by 0.195, Mahler p3 by 0.028). *A small pool
+cannot falsify a story about its own pages* — the repo's corpus-widening lesson,
+now paid on the scan side too. The next scan lever is attributing the
+second-page gap (systems past the movement opening: carried meters, mid-page
+lineups, tacet suppression) before believing any single mechanism.
+
+Standing at end of day: **engraved ahead (0.1176 vs 0.1252, recorded on
+`bc58defb`); scans behind on the widened pool (0.8345 vs 0.7919).**

@@ -20,8 +20,8 @@
     },
     {
       "label": "Vs Audiveris",
-      "value": "2<span class=\"unit\"> of 2 corpora</span>",
-      "note": "AHEAD ON BOTH: engraved 0.1176 vs 0.1252 (recorded on the merged tree) · scans 0.7482 vs 0.7845"
+      "value": "1<span class=\"unit\"> of 2 corpora</span>",
+      "note": "engraved: ahead, 0.1176 vs 0.1252 · scans: behind on the widened 11-row pool, 0.8345 vs 0.7919 (was ahead on the old 5-row pool)"
     }
   ],
   "work_flags": {
@@ -99,13 +99,19 @@
       "body": "Template-read elements under the new labeling system (time signatures first, Sean 09-03) · multi-type barlines + MusicXML repeats · measure-level MusicXML patching port · RTMDet/yolov8x cloud run (approved, needs protocol)."
     },
     {
-      "title": "7 · Hold the lead vs Audiveris",
-      "pill": "ahead on both",
-      "pill_class": "shipped",
-      "body": "Beam fix merged + re-recorded: engraved <b>0.1176 vs 0.1252</b>, scans 0.7482 vs 0.7845. In flight: cross-staff arc attribution (~150 edits, Opus session dispatched). Next per the taxonomy (<code>docs/discussion-detector-right-output-wrong-2026-09-04.md</code>): conservation audit in export_coverage, tie attribution (29 edits), divisi voice model. Note the scan pool was re-stamped to 11 rows on main — the 5-row Audiveris arm needs widening to match. SMB corpus still HF-gated on Sean."
+      "title": "7 · Beat Audiveris on scans again",
+      "pill": "behind on scans",
+      "pill_class": "waiting",
+      "body": "Engraved: ahead (0.1176 vs 0.1252, recorded). Scans, widened 11-row pool: behind — 0.8345 vs 0.7919 over the same 10 rows. Attribute the second-page gap first (our first-page wins reversed on p2/p3 siblings). In flight: cross-staff arc attribution (Opus session). SMB corpus still HF-gated on Sean."
     }
   ],
   "log": [
+    {
+      "date": "09-04",
+      "title": "Widening the scan pool reverses the scan verdict",
+      "negative": true,
+      "body": "The Audiveris scan arm widened to the re-stamped 11-row pool: over the same 10 rows both systems scored, <b>Audiveris 0.7919 vs our 0.8345</b> — the 5-row lead did not survive widening (it wins 6 rows, we win 4, and it cannot process Bach at all — internal NPE). Our wins concentrate in first pages; the added second pages go its way. The project's own lesson, again: <em>a small pool cannot falsify a story about its own pages.</em> Next scan levers: the second-page gap (systems past the movement opening), and the shared 'entire staff' condensation floor."
+    },
     {
       "date": "09-04",
       "title": "Beam-gap session flips the engraved comparison — merged and recorded",

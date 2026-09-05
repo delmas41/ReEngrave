@@ -129,7 +129,7 @@
       <div class="metric"><div class="label">Clef, end to end</div><div class="value">149<span class="unit">/166</span></div><div class="note">90% with paid margin reader · 146 free · labels are the constraint</div></div>
       <div class="metric"><div class="label">Score library</div><div class="value">235<span class="unit"> ed</span></div><div class="note">1,745 reference encodings · 27 works paired PDF ↔ truth</div></div>
       <div class="metric"><div class="label">Scan half-notes</div><div class="value">8 → 27</div><div class="note">hollow fine-tune, dense recall held 0.941 · the #1 scan weakness, moving</div></div>
-      <div class="metric"><div class="label">Vs Audiveris</div><div class="value">2<span class="unit"> of 2 corpora</span></div><div class="note">AHEAD ON BOTH: engraved 0.1176 vs 0.1252 (recorded on the merged tree) · scans 0.7482 vs 0.7845</div></div>
+      <div class="metric"><div class="label">Vs Audiveris</div><div class="value">1<span class="unit"> of 2 corpora</span></div><div class="note">engraved: ahead, 0.1176 vs 0.1252 · scans: behind on the widened 11-row pool, 0.8345 vs 0.7919 (was ahead on the old 5-row pool)</div></div>
     </div>
     <p class="table-caption">⚠️ The 11-work figure opened 2026-09-02 and is <b>not comparable</b> to the closed 3-work era (last: 0.0849) — different work set, different fixture. The boundary is enforced by <code>accuracy_record --check</code>.</p>
   </section>
@@ -180,7 +180,7 @@
           <div class="item"><h3>4 · Catalog membership: v5–v8 <span class="pill waiting">decision open</span></h3><p>Eight label versions on main; catalog unions v1–v4 only. Deciding wants a measured run behind the forgetting eval; executing is now a one-line manifest edit.</p></div>
           <div class="item"><h3>5 · LEGATO 2 weights <span class="pill waiting">waiting on author</span></h3><p>HF access request submitted 09-01. Its segmenter already corroborated our grouping 6/6. ⚠️ AGPL — fine host-side, a problem if ever served through the Stripe gate.</p></div>
           <div class="item"><h3>6 · Parked, wanted <span class="pill queue">parked</span></h3><p>Template-read elements under the new labeling system (time signatures first, Sean 09-03) · multi-type barlines + MusicXML repeats · measure-level MusicXML patching port · RTMDet/yolov8x cloud run (approved, needs protocol).</p></div>
-          <div class="item"><h3>7 · Hold the lead vs Audiveris <span class="pill shipped">ahead on both</span></h3><p>Beam fix merged + re-recorded: engraved <b>0.1176 vs 0.1252</b>, scans 0.7482 vs 0.7845. In flight: cross-staff arc attribution (~150 edits, Opus session dispatched). Next per the taxonomy (<code>docs/discussion-detector-right-output-wrong-2026-09-04.md</code>): conservation audit in export_coverage, tie attribution (29 edits), divisi voice model. Note the scan pool was re-stamped to 11 rows on main — the 5-row Audiveris arm needs widening to match. SMB corpus still HF-gated on Sean.</p></div>
+          <div class="item"><h3>7 · Beat Audiveris on scans again <span class="pill waiting">behind on scans</span></h3><p>Engraved: ahead (0.1176 vs 0.1252, recorded). Scans, widened 11-row pool: behind — 0.8345 vs 0.7919 over the same 10 rows. Attribute the second-page gap first (our first-page wins reversed on p2/p3 siblings). In flight: cross-staff arc attribution (Opus session). SMB corpus still HF-gated on Sean.</p></div>
         </div>
       </div>
     </div>
@@ -193,17 +193,18 @@
       <table>
         <thead><tr><th>System</th><th>Engraved benchmark (11 works)</th><th>Scan benchmark (5 pages)</th></tr></thead>
         <tbody>
-          <tr><td class="work">ReEngrave</td><td><div class="value" style="font-size:24px">0.1176</div><div class="note">2,473 edits · 11 works · recorded on bc58defb</div></td><td><div class="value" style="font-size:24px">0.7482</div><div class="note">7,864 edits · current scan weights (graft09 arm; recorded pre-hollow run: 0.7960)</div></td></tr>
-          <tr><td class="work">Audiveris 5.11</td><td><div class="value" style="font-size:24px">0.1252</div><div class="note">2,569 edits · 11/11 works · same fixtures + scorer</div></td><td><div class="value" style="font-size:24px">0.7845</div><div class="note">8,393 edits · 5/5 pages — 2 needed hand-holding (raised step timeout, music21 pass-through)</div></td></tr>
+          <tr><td class="work">ReEngrave</td><td><div class="value" style="font-size:24px">0.1176</div><div class="note">2,473 edits · 11 works · recorded on bc58defb</div></td><td><div class="value" style="font-size:24px">0.8345</div><div class="note">28,849 edits · composed baseline, same 10 rows Audiveris scored</div></td></tr>
+          <tr><td class="work">Audiveris 5.11</td><td><div class="value" style="font-size:24px">0.1252</div><div class="note">2,569 edits · 11/11 works · same fixtures + scorer</div></td><td><div class="value" style="font-size:24px">0.7919</div><div class="note">27,934 edits · 10/11 rows — cannot process Bach (internal NPE); several rows needed hand-holding</div></td></tr>
         </tbody>
       </table>
     </div>
-    <p class="table-caption">Audiveris ran on the same fixtures and was scored by the same musicdiff bridge — the only valid comparison; published paper numbers are from other corpora. The scan column is the five-page scan benchmark — real IMSLP pages, no dossier, Audiveris fed page renders at its 20 MP cap; our row is the newest scan weights, pinned (the canonical recorded figure is the pre-hollow run). Lower is better. Full reading: <code>benchmarks/omr-vs-industry-2026-09/FINDINGS.md</code>.</p>
+    <p class="table-caption">Audiveris ran on the same fixtures and was scored by the same musicdiff bridge — the only valid comparison; published paper numbers are from other corpora. The scan column is the re-stamped 11-row scan benchmark (2026-09-04), pooled over the 10 rows both systems scored; real IMSLP pages, no dossier. Lower is better. Full reading: <code>benchmarks/omr-vs-industry-2026-09/FINDINGS.md</code>.</p>
   </section>
 
   <section>
     <p class="kicker">Shipping log · September</p>
     <div class="log">
+      <div class="log-entry neg"><div class="log-date">09-04</div><h3>Widening the scan pool reverses the scan verdict</h3><p>The Audiveris scan arm widened to the re-stamped 11-row pool: over the same 10 rows both systems scored, <b>Audiveris 0.7919 vs our 0.8345</b> — the 5-row lead did not survive widening (it wins 6 rows, we win 4, and it cannot process Bach at all — internal NPE). Our wins concentrate in first pages; the added second pages go its way. The project's own lesson, again: <em>a small pool cannot falsify a story about its own pages.</em> Next scan levers: the second-page gap (systems past the movement opening), and the shared 'entire staff' condensation floor.</p></div>
       <div class="log-entry"><div class="log-date">09-04</div><h3>Beam-gap session flips the engraved comparison — merged and recorded</h3><p>The dispatched session took <code>wrong flag/beam</code> <b>449 → 31</b> and pooled OMR-NED <b>0.1306 → 0.1176</b> (2,745 → 2,473 edits) — from 176 edits behind Audiveris to <b>96 ahead</b>. 430 of the 449 were export-side: the beam-box pad the rhythm layer already had never reached <code>annotate_beams</code>, plus a spurious bar-wide box and stacked-stroke group fracturing. Export-only, byte-identical A/B method, 11/11 clean, 1,931 tests green, two approaches refused with numbers. Merged (<code>bc58defb</code>), suite 1,984 green, and both configurations re-recorded on the merged tree: <b>0.1176 official</b>, 0.1268 without the OCR rung. <code>benchmarks/omr-beam-gap-2026-09/FINDINGS.md</code></p></div>
       <div class="log-entry"><div class="log-date">09-04</div><h3>Audiveris becomes the measured target</h3><p>The industrial standard ran on both benchmarks, same fixtures, same scorer. <b>Engraved: Audiveris 0.1252 vs our 0.1306</b> — the entire gap is one bucket (flag/beam: ours 449 edits vs its 48), now out with a dedicated fix session. <b>Scans: our current weights 0.7482 vs its 0.7845</b> — we lead, and it needed hand-holding (raised step timeout, export normalization) to finish 2 of 5 pages at all. Its OCR was measured and left OFF: with it, its engraved score worsens 0.1252 → 0.1579 (hallucinated lyrics). oemer and homr measured once and ruled out. <code>benchmarks/omr-vs-industry-2026-09/FINDINGS.md</code></p></div>
       <div class="log-entry"><div class="log-date">09-04</div><h3>Head-graft surgery ships as production scan weights</h3><p><code>hollow-graft-shift09</code> (0e9f005b): per-class head merge + bias floor cleared all three axes after 11 method arms failed. Scan e2e measured byte-deterministic first.</p></div>
@@ -234,12 +235,12 @@
   <section>
     <p class="kicker">Recent commits</p>
     <div class="commits">
+      <div><span class="sha">92dd70ba</span> 2026-09-04 · dashboard: beam fix merged and re-recorded — 0.1176 official, ahead of Audiveris on both corpora</div>
       <div><span class="sha">f1b36c24</span> 2026-09-04 · docs: the detector-right-output-wrong taxonomy — five classes, the guarded one, and the beam class's missing guard</div>
       <div><span class="sha">251baf87</span> 2026-09-04 · dashboard + vs-industry: the status board, and Audiveris measured on both corpora</div>
       <div><span class="sha">ddc576e2</span> 2026-09-04 · labeling: a third audit check — edge fragments, found live in the training corpus, no image needed</div>
       <div><span class="sha">aa484a30</span> 2026-09-04 · labeling: the ledger-zone auditor's raw flag rate is an upper bound, not the defect rate</div>
       <div><span class="sha">90da8ab1</span> 2026-09-03 · labeling: audit the two label faults the parity auditor cannot see</div>
-      <div><span class="sha">4003743c</span> 2026-09-03 · labeling: Brahms 1 / Breitkopf completion pass — 49 cells labeled blind, plus 7 audited corrections</div>
     </div>
   </section>
 

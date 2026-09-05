@@ -1,49 +1,78 @@
 {
-  "_comment": "Precomputed scan-side comparison for the dashboard. ours_current = OMR_SCAN_EVAL_WEIGHTS pinned to hollow-graft-shift09-2026-09-04 (results-graft09-arm.json in the scan bench); ours_recorded = the canonical Sep 2 pre-hollow run; audiveris = results-audiveris-scan.json.",
+  "_comment": "Scan-side comparison over the RE-STAMPED 11-row pool (2026-09-04, composed baseline: tilt+choir ON, graft weights). Audiveris completes 10 of 11 (Bach: internal NPE). ours_same10 excludes Bach so both pools match.",
   "ours_current": {
-    "omr_ned": 0.7481685852915992,
-    "omr_ed": 7864,
-    "label": "graft09 weights arm"
+    "omr_ned": 0.8345096904830778,
+    "omr_ed": 28849,
+    "label": "composed baseline, same 10 rows Audiveris scored"
+  },
+  "ours_all11": {
+    "omr_ned": 0.8302575158134136,
+    "omr_ed": 35046
   },
   "ours_recorded": {
-    "omr_ned": 0.7960242765414725,
-    "omr_ed": 9050
+    "omr_ned": 0.8302575158134136,
+    "omr_ed": 35046
   },
   "audiveris": {
-    "omr_ned": 0.7844658379287784,
-    "omr_ed": 8393,
-    "n_rows": 5
+    "omr_ned": 0.7918698265109423,
+    "omr_ed": 27934,
+    "n_rows": 10
   },
   "per_row": [
     {
       "row_id": "beethoven-sym5-mvt1-984073-p1",
-      "ours_graft09": 0.710789766407119,
-      "ours_recorded": 0.7119476268412439,
+      "ours": 0.710789766407119,
       "audiveris": 0.8492462311557789
     },
     {
+      "row_id": "beethoven-sym5-mvt1-984073-p2",
+      "ours": 0.8703406813627255,
+      "audiveris": 0.8510954326030449
+    },
+    {
       "row_id": "beethoven-sym5-mvt1-575951-p1",
-      "ours_graft09": 0.7595078299776287,
-      "ours_recorded": 0.7479423868312757,
+      "ours": 0.7595078299776287,
       "audiveris": 0.7268623024830699
     },
     {
+      "row_id": "beethoven-sym5-mvt1-575951-p2",
+      "ours": 0.8707765263781861,
+      "audiveris": 0.7937923653228683
+    },
+    {
       "row_id": "dvorak-sym9-mvt1-405834-p5",
-      "ours_graft09": 0.43103448275862066,
-      "ours_recorded": 0.5873308733087331,
+      "ours": 0.43103448275862066,
       "audiveris": 0.5381
     },
     {
+      "row_id": "dvorak-sym9-mvt1-405834-p6",
+      "ours": 0.7243303571428571,
+      "audiveris": 0.7317916002126529
+    },
+    {
       "row_id": "brahms-sym1-mvt1-317803-p1",
-      "ours_graft09": 0.9191648822269807,
-      "ours_recorded": 0.9351077313054499,
+      "ours": 0.9191648822269807,
       "audiveris": 0.9268
     },
     {
+      "row_id": "brahms-sym1-mvt1-317803-p2",
+      "ours": 0.9425534970558668,
+      "audiveris": 0.7479
+    },
+    {
       "row_id": "mahler-sym5-mvt1-local-p2",
-      "ours_graft09": 0.6894639556377079,
-      "ours_recorded": 0.8149430974764967,
+      "ours": 0.6894639556377079,
       "audiveris": 0.6534422403733956
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p3",
+      "ours": 0.888760473851488,
+      "audiveris": 0.8604201216141515
+    },
+    {
+      "row_id": "bach-brandenburg3-mvt1-468678-p1",
+      "ours": 0.8110195000654364,
+      "audiveris": "failed"
     }
   ]
 }

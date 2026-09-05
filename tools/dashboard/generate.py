@@ -293,17 +293,14 @@ def build_industry(record: dict) -> str:
         sc = json.loads(SCAN_COMPARISON.read_text())
         scan_cells["ReEngrave"] = cell(
             sc["ours_current"]["omr_ned"], sc["ours_current"]["omr_ed"],
-            "current scan weights (graft09 arm; recorded pre-hollow run: %.4f)"
-            % sc["ours_recorded"]["omr_ned"])
+            sc["ours_current"].get("label", ""))
         scan_cells["Audiveris 5.11"] = cell(
             sc["audiveris"]["omr_ned"], sc["audiveris"]["omr_ed"],
-            "%d/5 pages — 2 needed hand-holding (raised step timeout, music21 pass-through)"
+            "%d/11 rows — cannot process Bach (internal NPE); several rows needed hand-holding"
             % sc["audiveris"]["n_rows"])
-        scan_note = (" The scan column is the five-page scan benchmark — real "
-                     "IMSLP pages, no dossier, Audiveris fed page renders at "
-                     "its 20 MP cap; our row is the newest scan weights, "
-                     "pinned (the canonical recorded figure is the pre-hollow "
-                     "run).")
+        scan_note = (" The scan column is the re-stamped 11-row scan benchmark "
+                     "(2026-09-04), pooled over the 10 rows both systems "
+                     "scored; real IMSLP pages, no dossier.")
     body = []
     for name, pooled_v, edits, note in (
         ("ReEngrave", ours["pooled"], ours["edits"],
