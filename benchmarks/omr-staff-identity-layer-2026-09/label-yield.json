@@ -1,0 +1,162 @@
+[
+ {
+  "house": "Breitkopf",
+  "work": "brahms--symphony-3",
+  "plate": "SW-sym3",
+  "page": 6,
+  "staves": 22,
+  "labels": 22,
+  "named": 20,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--symphony-3",
+  "plate": "SW-sym3",
+  "page": 14,
+  "staves": 16,
+  "labels": 15,
+  "named": 14,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--symphony-3",
+  "plate": "SW-sym3",
+  "page": 22,
+  "staves": 16,
+  "labels": 0,
+  "named": 0,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--symphony-3",
+  "plate": "SW-sym3",
+  "page": 30,
+  "staves": 24,
+  "labels": 22,
+  "named": 22,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--symphony-4",
+  "plate": "SW-sym4",
+  "page": 6,
+  "staves": 21,
+  "labels": 20,
+  "named": 19,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--symphony-4",
+  "plate": "SW-sym4",
+  "page": 14,
+  "staves": 24,
+  "labels": 24,
+  "named": 22,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--symphony-4",
+  "plate": "SW-sym4",
+  "page": 22,
+  "staves": 23,
+  "labels": 23,
+  "named": 20,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--symphony-4",
+  "plate": "SW-sym4",
+  "page": 30,
+  "staves": 22,
+  "labels": 22,
+  "named": 19,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--ein-deutsches-requiem",
+  "plate": "SW-requiem",
+  "page": 6,
+  "staves": 15,
+  "labels": 3,
+  "named": 0,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--ein-deutsches-requiem",
+  "plate": "SW-requiem",
+  "page": 14,
+  "staves": 17,
+  "labels": 2,
+  "named": 0,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--ein-deutsches-requiem",
+  "plate": "SW-requiem",
+  "page": 22,
+  "staves": 25,
+  "labels": 2,
+  "named": 0,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--ein-deutsches-requiem",
+  "plate": "SW-requiem",
+  "page": 30,
+  "staves": 24,
+  "labels": 1,
+  "named": 0,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--piano-concerto-1",
+  "plate": "SW-pc1",
+  "page": 6,
+  "staves": 21,
+  "labels": 19,
+  "named": 17,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--piano-concerto-1",
+  "plate": "SW-pc1",
+  "page": 14,
+  "staves": 19,
+  "labels": 16,
+  "named": 15,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--piano-concerto-1",
+  "plate": "SW-pc1",
+  "page": 22,
+  "staves": 24,
+  "labels": 21,
+  "named": 20,
+  "text_layer": false
+ },
+ {
+  "house": "Breitkopf",
+  "work": "brahms--piano-concerto-1",
+  "plate": "SW-pc1",
+  "page": 30,
+  "staves": 15,
+  "labels": 8,
+  "named": 6,
+  "text_layer": false
+ }
+]

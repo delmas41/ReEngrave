@@ -42,6 +42,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--pages", type=int, nargs="*", default=PAGES)
+    ap.add_argument("--works", nargs="*", default=None,
+                    help="substring filter on work_id")
     args = ap.parse_args()
 
     from build_calibration_corpus import resolve_corpus
@@ -51,6 +53,11 @@ def main():
     from tools.omr.staff_labels import has_text_layer
 
     corpus, missing = resolve_corpus()
+    if args.works:
+        corpus = [c for c in corpus
+                  if any(w in c[1] for w in args.works)]
+        if not corpus:
+            raise SystemExit(f"no corpus entry matches {args.works}")
     if not S.available():
         raise SystemExit("Surya unavailable; this probe would report a false "
                          "zero for every page. Refusing.")

@@ -53,6 +53,45 @@ CACHE = Path(os.getenv("IDCAL_CACHE", str(HERE / "corpus-cache")))
 # Pages are spread through each score and deliberately avoid page 0 (title /
 # front matter). A page that yields no systems is reported, never silently
 # dropped.
+#
+# ⚠️⚠️ MEASURED YIELD DECIDES MEMBERSHIP, NOT THE PUBLISHER AND NOT THE SERIES.
+# `probe_label_yield.py`, 4 interior pages per plate, named labels / staves:
+#
+#     Breitkopf  brahms--symphony-4              0.89   USABLE
+#     Breitkopf  brahms--piano-concerto-1        0.71   USABLE
+#     Breitkopf  brahms--symphony-3              0.68   USABLE
+#     Breitkopf  tchaikovsky--symphony-6         0.63   USABLE
+#     Litolff    beethoven--symphony-3           0.61   USABLE
+#     Litolff    beethoven--symphony-9           0.57   partial
+#     Litolff    beethoven--symphony-7           0.47   partial
+#     Breitkopf  brahms--ein-deutsches-requiem   0.00   NO TRUTH
+#     Breitkopf  schumann--symphony-1            0.00   NO TRUTH
+#     Breitkopf  mendelssohn--symphony-3         0.00   NO TRUTH
+#     Breitkopf  sibelius--symphony-1            0.00   NO TRUTH
+#     Breitkopf  schubert--symphony-9            0.00   NO TRUTH
+#
+# Five Breitkopf plates print NOTHING across 20 interior pages with 13-25
+# staves each correctly detected and Surya working. So "Breitkopf labels every
+# staff" is false of the HOUSE. It is nearly true of Brahms Sämtliche Werke --
+# and `brahms--ein-deutsches-requiem` is in that series and prints nothing, so
+# it is not simply true of the SERIES either.
+#
+# THE RULE THAT SURVIVES: whether a page prints staff labels is a property of
+# the individual EDITION and must be MEASURED. It cannot be inferred from the
+# publisher, and it cannot be inferred from the series.
+#
+# ⚠️ STATED LIMITATION OF THIS CORPUS: 3 of the 4 usable Breitkopf plates are
+# Brahms Sämtliche Werke, the same series as the CONTAMINATED development plate
+# (brahms--symphony-1, excluded by name). Different works and different plates,
+# but one series -- so the Breitkopf arm is narrower than its plate count
+# suggests. Litolff remains a genuine cross-house holdout.
+USABLE = {  # measured mean named-label yield, from probe_label_yield.py
+    "brahms--symphony-4": 0.89, "brahms--piano-concerto-1": 0.71,
+    "brahms--symphony-3": 0.68, "tchaikovsky--symphony-6": 0.63,
+    "beethoven--symphony-3": 0.61, "beethoven--symphony-9": 0.57,
+    "beethoven--symphony-7": 0.47,
+}
+
 CORPUS = [
     # ── Breitkopf: labels EVERY staff -> truth coverage 1.00 ───────────────
     ("Breitkopf", "schumann--symphony-1", "8545",
@@ -65,6 +104,19 @@ CORPUS = [
      "editions/sibelius/symphony-1-op39/sibelius--symphony-1-op39--breitkopf--imslp"),
     ("Breitkopf", "schubert--symphony-9", "7954",
      "editions/schubert/symphony-9-d944/schubert--symphony-9-d944--breitkopf--imslp"),
+    # ── Brahms Sämtliche Werke: the series the "labels everything" finding was
+    # actually measured on. brahms--symphony-1 is the CONTAMINATED gate plate;
+    # these are different works and different plates in the SAME series, and
+    # they are the clean within-house contrast against the four Breitkopf
+    # plates above that print nothing.
+    ("Breitkopf", "brahms--symphony-3", "SW-sym3",
+     "editions/brahms/symphony-3"),
+    ("Breitkopf", "brahms--symphony-4", "SW-sym4",
+     "editions/brahms/symphony-4"),
+    ("Breitkopf", "brahms--ein-deutsches-requiem", "SW-requiem",
+     "editions/brahms/ein-deutsches-requiem"),
+    ("Breitkopf", "brahms--piano-concerto-1", "SW-pc1",
+     "editions/brahms/piano-concerto-1"),
     # ── Litolff: winds+brass only -> truth coverage 0.64, HOLDOUT house ─────
     ("Litolff", "beethoven--symphony-3", "2767",
      "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--litolff-1870--imslp"),
@@ -141,6 +193,9 @@ def main():
     ap.add_argument("--rebuild", action="store_true")
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--limit-works", type=int, default=0)
+    ap.add_argument("--all-plates", action="store_true",
+                    help="include plates measured to print no labels "
+                         "(they supply no truth; for re-measuring yield only)")
     args = ap.parse_args()
 
     CACHE.mkdir(parents=True, exist_ok=True)
@@ -149,6 +204,12 @@ def main():
         print("⚠️ COULD NOT RESOLVE (reported, not skipped silently):")
         for m in missing:
             print(f"   {m}")
+    if not args.all_plates:
+        dropped = [c[1] for c in corpus if c[1] not in USABLE]
+        corpus = [c for c in corpus if c[1] in USABLE]
+        if dropped:
+            print(f"\nDROPPED — measured to print no usable labels, so they "
+                  f"supply no held-out truth:\n   " + "\n   ".join(dropped))
     if args.limit_works:
         corpus = corpus[: args.limit_works]
 
