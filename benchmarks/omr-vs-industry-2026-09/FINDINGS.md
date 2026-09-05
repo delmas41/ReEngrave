@@ -214,3 +214,43 @@ counter-currents: key signatures +113 and dots +57 against us pool-wide.
 
 **Next scan lever, sharply posed:** attribute which staves fail to pair on the
 five p2/p3 rows. One sitting likely explains most of the 2,591.
+
+---
+
+# Addendum 4 — the staff-structure attribution falsifies the stitching story
+
+The dispatched structure session (branch `claude/staff-structure-stitch`,
+`benchmarks/omr-staff-structure-2026-09/FINDINGS.md`) attributed the +2,591
+per-staff and the hypothesis did not survive: **87% of the bucket is
+CONDENSATION** — one printed staff carrying several reference parts, with our
+detection exactly right (beethoven p2 prints 11 staves for 18 parts; musicdiff
+charges exactly the 7 sharing parts) — and only 13% is the stitch refusal,
+which fires correctly (Brahms p2 really is 14 staves then 13). Zero edits from
+slot mistakes or segmentation. The true axis is SYSTEM COUNT, not page
+position: seven single-system rows tie Audiveris's `entire staff` cost to the
+edit; the whole +2,591 sits on three two-system rows.
+
+Slot-aware stitching was built anyway, priced, and **withheld** (default-off,
+`OMR_SLOT_STITCH`): pooled 0.8283 → 0.8235 (−216) with Brahms p2 going 27
+fragments → 14 continuous parts — but the `entire staff` bucket itself
+DOUBLES while `entire measure` falls more, so ⚠️ **attributing structural work
+by the ES bucket alone systematically under-counts fragmentation**. Engraved
+side proven byte-identical (11/11) — every engraved fixture is single-system,
+so that benchmark structurally cannot see this class of change.
+
+**The open question it left is now settled** (part counts read from the
+Audiveris exports in this benchmark's `out/audiveris-scan/`): on Brahms p2
+Audiveris emits **exactly 22 parts from 14 printed staves — the reference's
+own count**. It splits condensed staves into parts; that, not stitching, is
+why its structural cost collapses on multi-system pages. So condensed-staff
+part-splitting is **competitive ground, not just accuracy** — and the
+hand-verified `staves[i].parts` rows in the scan bench's works.json show the
+mapping is learnable from labels + voicing. That is the next scan lever,
+sharply posed.
+
+| row | printed staves | truth parts | audiveris parts |
+|---|--:|--:|--:|
+| brahms p2 | 14/13 | 22 | **22** |
+| beethoven 984073 p2 | 11 | 19 | 15 |
+| beethoven 575951 p2 | 11 | 19 | 16 |
+| mahler p3 | (1 system) | 39 | 12 |

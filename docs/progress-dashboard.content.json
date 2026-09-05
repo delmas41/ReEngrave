@@ -102,10 +102,16 @@
       "title": "7 · Beat Audiveris on scans again",
       "pill": "behind on scans",
       "pill_class": "waiting",
-      "body": "Engraved: ahead (0.1176 vs 0.1252, recorded). Scans, widened 11-row pool: behind — 0.8345 vs 0.7919 over the same 10 rows. Attribute the second-page gap first (our first-page wins reversed on p2/p3 siblings). In flight: cross-staff arc attribution (Opus session). SMB corpus still HF-gated on Sean."
+      "body": "Engraved: ahead in both configs (0.1127/0.1219 vs 0.1252). Scans: behind 0.8345 vs 0.7919 — attribution complete: 87% condensation (our detection right), and Audiveris wins it by <b>splitting condensed staves into reference parts</b>. Next lever: condensed-staff part-splitting (labels + voicing know the mapping). Withheld on its branch: <code>OMR_SLOT_STITCH</code> (−216 pooled, n=1 trade, default-off). Arcs-as-CV session (Sean's) in flight."
     }
   ],
   "log": [
+    {
+      "date": "09-04",
+      "title": "Staff-structure attribution: the stitching story falsified, the real lever found",
+      "negative": false,
+      "body": "The dispatched session attributed the scan +2,591 <code>entire staff</code> bucket: <b>87% is condensation with our detection exactly right</b>; the stitch refusal (13%) fires correctly; zero slot or segmentation faults. The axis is system count, not page position. Slot stitching was built, priced (−216 pooled) and <b>withheld</b> — it doubles the very bucket it targets while paying off in measures (bucket-level attribution under-counts fragmentation). Then the open question settled from the Audiveris exports: <b>it emits exactly the reference's 22 parts from Brahms p2's 14 printed staves</b> — it splits condensed staves into parts, which is why its structural cost collapses. Condensed-staff part-splitting is the next scan lever, and it is competitive ground. <code>benchmarks/omr-staff-structure-2026-09/FINDINGS.md</code> + Addendum 4."
+    },
     {
       "date": "09-04",
       "title": "Arc attribution merged and recorded — engraved 0.1127",
