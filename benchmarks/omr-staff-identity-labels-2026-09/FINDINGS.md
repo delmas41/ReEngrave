@@ -44,6 +44,92 @@ over 11 fixture rows; this adds nine continuation pages, which is precisely
 where labels stop being printed. Different denominator — **do not difference
 them.**
 
+## ⚠️ Phase 1's coverage was OVERSTATED — corrected 2026-09-05
+
+Phase 1 scored the **best rung**: it took the first rung that resolved, which
+credits reach the pipeline does not have. `contextual._labels_for_page` merges
+Tesseract on **raw label presence, not usable presence** — a staff for which
+Surya returned `'(C)'` blocks Tesseract from supplying `'(C) Hr.'`. Re-scored on
+**the ladder's own answer**, on current main (which also includes another
+session's lexicon work):
+
+| | Phase 1 as published | corrected baseline |
+|---|--:|--:|
+| coverage, all staves | 0.631 | **0.654** |
+| coverage of reachable | 0.880 | 0.924 |
+| (e) resolved WRONG | 4 | **0** |
+| (d) refused | 29 | 16 |
+
+The other session's derived contra- cross product and `hr`/`trpt` aliases closed
+**all 13 lexicon-gap staves and all 4 class-(e) errors** (validated there over
+1,422 margin labels). Conceded rather than re-verified.
+
+⚠️ **The raw-vs-usable merge is a live defect and is NOT fixed**: the code's own
+comment records the identical inconsistency for the *Surya* rung, fixed there in
+September, still live on the Tesseract merge. The call site is `contextual.py`,
+owned by the structural workstream, so the labels workstream flagged it and did
+not touch it. Recorded here so it is not rediscovered.
+
+## Phase 2 (ii-a) SHIPPED — a block centred between two ticks belongs to both
+
+Measured before anything was written. 255 blocks lying between two ticks, 20
+pages, 5 publishers, scored as off-centre distance **in the local gap**:
+
+| population | centredness | n |
+|---|---|--:|
+| shared / brace-centred | 0.017–0.133 | 13 |
+| *(empty band)* | 0.133–0.195 | 0 |
+| ordinary one-staff labels | 0.431+ | rest |
+
+`_SHARE_CENTREDNESS = 0.15` sits in the empty band — a constant read off a gap,
+not tuned.
+
+⚠️ **The UNIT is load-bearing and it changed the answer.** An engraver opens the
+gap *between* families, so measured in mean spacings Brahms 1's `4 Hörner` sits
+0.565 from its nearer tick and was **discarded by `_TOLERANCE` as belonging to
+no staff**; in its own local gap it is 0.043 off centre. Two shared blocks were
+being thrown away, not merely misassigned.
+
+```
+same 396 | GAINED 11 | LOST 0 | CHANGED 0 | new WRONG 0
+coverage 0.654 -> 0.681      reachable 0.924 -> 0.955
+```
+
+8 of 11 truth-verified correct (5× Brahms `(Es)`/`(C)` → Horn; Mahler's
+`Sechs Hörner in F` and `Vier Trompeten in B` lower staves); 3 on rows with no
+hand-read truth. Brahms 1 p1 names **14 of 14**, `unresolved_labels` empty.
+Class (b′) closed; (d) 16 → 8 fragments.
+
+**The engraved figure cannot move, and that is proven rather than assumed:**
+every `omr-orchestral-e2e` fixture's text layer names **100%** of its staves
+(Brahms 21/21, Mahler 38/38, Beethoven 18/18), so `_well_covered` is True and
+Surya is never called. 0.1122 / 0.1214 untouched.
+
+## Phase 2 (ii-b) numeral-series inheritance — REFUSED, with the denominator
+
+```
+staves the rule could fire on   : 6
+distinct rows                   : 1
+distinct editions               : 1
+of those 6, with hand-read truth: 0
+```
+
+All six are Bach Brandenburg p1, on a row whose phase-1 segmentation is a known
+failure. It is *inference* where (ii-a) is geometry, and the donor is not always
+above (Bach prints the name on the middle staff of a bracketed three) — the
+freedom that would let a fragment cross a family boundary elsewhere. **Reopens
+if** a second edition prints a group name once with per-staff numerals.
+
+## ⚠️ (ii-a) does not buy clefs, and the workstream was opened on clefs
+
+`clefs_applied: 0` on every completed row, for a structural reason: the staves
+recovered are **horns and trumpets**, whose `default_clef` is `treble` — which
+is exactly what the positional default already guessed. The audit's clef errors
+are **bass and C-clef staves called treble**, a population this rule does not
+touch. So (ii-a) buys identity, transposition and part naming; **it does not buy
+the clef lever the workstream was opened on.** Reported as such rather than
+claimed.
+
 ## The crop is not the problem, and that is a result
 
 **(b) = 0 across 407 staves and 5 publishers.** Every continuation system *is*
