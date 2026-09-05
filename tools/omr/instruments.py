@@ -80,6 +80,40 @@ class Match:
             return "high"
         return "medium"
 
+    @property
+    def alternatives(self) -> tuple["Instrument", ...]:
+        """Every instrument this match's ALIAS could have meant, best first.
+
+        Empty when the alias is unambiguous — which is the common case, and the
+        reason a caller may simply read `.instrument`.
+
+        ⚠️ **`lookup` returns ONE answer and an ambiguous alias has more than
+        one.** `Basso` is the contrabasses at the foot of an orchestral score
+        and the bass voice under a vocal stave; the lexicon has to name one, so
+        it names the commoner, and a caller that compares `.instrument.name` to
+        a printed label scores the OTHER reading as an error. That silently
+        cost `benchmarks/omr-part-staff-join-2026-08/RESULTS.md` and two probes
+        in `benchmarks/omr-staff-identity-2026-09/` a correct `Contrabass`
+        each.
+
+        The information was always derivable — `candidates_for_alias(m.alias)`
+        — but a caller had to know to ask, and three harnesses in a row did
+        not. It is a property here so that the ambiguity travels WITH the
+        answer instead of beside it. `lookup`'s return value is unchanged, so
+        no existing call site moves.
+        """
+        return candidates_for_alias(self.alias)
+
+    @property
+    def is_ambiguous(self) -> bool:
+        """Whether the alias that fired could have named another instrument.
+
+        The question `dossier.join_parts_to_slots` asks before letting a label
+        PIN a staff, and the question a scorer should ask before calling a
+        disagreement an error.
+        """
+        return len(self.alternatives) > 1
+
 
 @dataclass(frozen=True)
 class Instrument:
@@ -135,6 +169,76 @@ _CONTRA_ALIASES: tuple[str, ...] = tuple(dict.fromkeys(
 ))
 
 
+# ── the plural is a cross product too, and the hand-list was DIRECTIONAL ─────
+#
+# A word-bounded alias cannot fire inside its own plural: `oboe` is followed by
+# an `s` in `oboes`, which is a letter, so the boundary refuses it. That is why
+# the table hand-lists `flutes`, `clarinets`, `horns`, `cors`. It lists them for
+# some instruments and not others — and the omission is not a shortfall, it is a
+# WRONG ANSWER, because the plurals that DO exist are the short generic nouns:
+#
+#     `English horns` -> **Horn** (brass!)   `horns` is listed, `english horns` is not
+#     `cors anglais`  -> **Horn** (brass!)   `cors`  is listed, `cors anglais`  is not
+#     `bass clarinets`-> **Clarinet**        `clarinets` listed, `bass clarinets` not
+#
+# So pluralising a label systematically DEFEATS the long specific compound and
+# hands the staff to the short generic noun inside it — the `Contra-Fagott`
+# failure again, and cross-family in two of the three cases above.
+# `_ALIAS_INDEX` is longest-first and can only do its job if both lengths of
+# alias have a plural; deriving them uniformly restores that ordering.
+#
+# The rule is deliberately narrow. Only the LAST word is pluralised, and only
+# when it is alphabetic and at least four letters, so the two-letter margin
+# abbreviations (`vl`, `hr`, `gr tr`) generate nothing — those are printed with
+# a stop, never an `s`. `-s` unless the word ends in a sibilant, where English
+# takes `-es` (`double bass` -> `double basses`).
+#
+# ⚠️ This does NOT widen the gate, for the same reason `_CONTRA_ALIASES` does
+# not: every generated string still has to appear in the label, word-bounded,
+# exactly. It completes the vocabulary. Non-English stems generate inert
+# strings (`corno ingleses` is on no page ever printed) and cost nothing but a
+# row in the index. Measured: 303 generated forms, ZERO colliding with an
+# existing alias of a different instrument.
+#
+# Plurals that are not formed on the last word are NOT derivable and stay
+# hand-listed beside the singular — `cors anglais` and `corni inglesi` inflect
+# the NOUN and leave the adjective, which no suffix rule produces.
+def _pluralize(alias: str) -> str | None:
+    """The English plural of an alias, or None where the rule does not apply."""
+    head, _, last = alias.rpartition(" ")
+    if len(last) < 4 or not last.isalpha():
+        return None
+    if last.endswith(("s", "x", "z", "ch", "sh")):
+        plural = last + "es"
+    else:
+        plural = last + "s"
+    return f"{head} {plural}" if head else plural
+
+
+def aliases_of(inst: "Instrument") -> tuple[str, ...]:
+    """Every string that may match this instrument: printed aliases + plurals.
+
+    The one place the vocabulary is assembled, so `_ALIAS_INDEX`,
+    `VOICE_QUALIFIERS` and `AMBIGUOUS_ALIASES` cannot drift apart.
+    """
+    out = list(inst.aliases)
+    # ⚠️ A REGISTER WORD'S PLURAL IS NOT RELIABLY THE SAME INSTRUMENT, so the
+    # voices are excluded from the derivation. In French an orchestra's `Altos`
+    # are the VIOLAS and its `Basses` are the double basses — measured, 23 of
+    # the 1422-label corpus's `Altos` are Ravel's violas and none is a singer —
+    # so deriving `altos` from the voice `alto` invents a cross-family error on
+    # the commonest French string label. Where such a plural is real it is
+    # listed on the instrument that owns it (`altos` on Viola) and declared
+    # ambiguous, which is a decision with evidence behind it rather than a
+    # suffix rule. `Chorus` is not a register and keeps its plurals.
+    pluralize = not (inst.family == "voice" and inst.name != "Chorus")
+    for alias in inst.aliases if pluralize else ():
+        plural = _pluralize(alias)
+        if plural is not None:
+            out.append(plural)
+    return tuple(dict.fromkeys(out))
+
+
 # Aliases are matched after normalization (accents stripped, lowercased,
 # punctuation and part numbers removed), so "Flöten" -> "floten", "Fl." -> "fl".
 INSTRUMENTS: tuple[Instrument, ...] = (
@@ -153,9 +257,31 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                aliases=("flute", "flutes", "flauto", "flauti", "flote", "floten", "fl", "fla", "fl gr")),
     Instrument("Oboe", "woodwind", "treble", (58, 91), 0, 0,
                aliases=("oboe", "oboen", "oboi", "hoboen", "hautbois", "ob")),
+    # `cors anglais` and `corni inglesi` inflect the NOUN and leave the
+    # adjective, so `_pluralize` cannot make them — and without them the
+    # plural resolves to **Horn**, a different FAMILY, because `cors` and
+    # `horns` are listed for the horn and the compound is not.
     Instrument("English horn", "woodwind", "treble", (52, 86), -7, 1,
-               aliases=("english horn", "cor anglais", "corno inglese", "englisch horn",
+               aliases=("english horn", "cor anglais", "cors anglais",
+                        "corno inglese", "corni inglesi", "englisch horn",
                         "englischhorn", "c ing", "c a")),
+    # A BASSET HORN IS NOT A HORN — it is the alto clarinet in F, a WOODWIND,
+    # and `Basset horn` resolved to Horn [brass] on the bare `horn` inside it
+    # at medium confidence. That is the `Tr. Alt.` shape (a qualifier beaten by
+    # a substring) with one difference that matters: there was no qualifier to
+    # lose, because the lexicon held no basset horn at all, so no longer alias
+    # existed for `_ALIAS_INDEX` to prefer.
+    #
+    # ⚠️ There is NO mechanism here to fix. That a basset horn is a clarinet
+    # and a flugelhorn is not a horn is lexical knowledge; no rule derives it
+    # from the string. The mechanism question — "which absent instruments are
+    # CAPTURED by a shorter alias rather than abstaining?" — is answered in
+    # benchmarks/omr-lexicon-2026-09/FINDINGS.md, and the answer is why these
+    # four entries exist and why the rest of the absent list needed none.
+    Instrument("Basset horn", "woodwind", "treble", (50, 86), -7, 1,
+               aliases=("basset horn", "bassett horn", "bassetthorn",
+                        "bassett horn", "corno di bassetto", "corni di bassetto",
+                        "cor de basset", "cors de basset")),
     Instrument("Clarinet", "woodwind", "treble", (50, 91), None, 2,
                aliases=("clarinet", "clarinets", "clarinetto", "clarinetti", "klarinette",
                         "klarinetten", "clarinette", "clarinettes", "cl", "clar", "kl",
@@ -180,6 +306,16 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     # "Bass" and lands in the voices, fifteen part names adrift.
     Instrument("Sarrusophone", "woodwind", "bass", (28, 67), 0, 0,
                aliases=("sarrusophone", "sarrusophon", "sarrus")),
+    # Bach and Handel score them and the lexicon abstained; `2 recorders` is in
+    # the IMSLP instrumentation residual.
+    Instrument("Recorder", "woodwind", "treble", (60, 96), 0, 0,
+               aliases=("recorder", "flauto dolce", "flauti dolci", "blockflote",
+                        "blockfloten", "flute a bec")),
+    # The baritone oboe Strauss writes for (Alpensinfonie, Salome). Absent, and
+    # it abstained rather than misresolving — a gap, not a fault. Two works in
+    # the IMSLP residual name it.
+    Instrument("Heckelphone", "woodwind", "bass", (46, 79), -12, 0,
+               aliases=("heckelphone", "heckelphon", "hckl")),
 
     # ── brass ──────────────────────────────────────────────────────────────
     Instrument("Horn", "brass", "treble", (41, 77), None, 1,
@@ -238,6 +374,35 @@ INSTRUMENTS: tuple[Instrument, ...] = (
     Instrument("Tuba", "brass", "bass", (26, 65), 0, 0,
                aliases=("tenor tuba", "tenortuba", "tuba", "tuben", "basstuba",
                         "bass tuba", "tb")),
+    # ⚠️ A CORNET SECTION CANNOT BE ENCODED WITHOUT THIS, and it is the French
+    # and Russian repertoire, not an exotic: Berlioz, Franck and Tchaikovsky
+    # all print trumpets and cornets on separate staves. `2 cornets` is the
+    # single largest line in the IMSLP instrumentation residual — 14 of 99
+    # unparsed fragments, one missing entry costing 14% of it.
+    #
+    # It ABSTAINED rather than misresolving (`cor` is blocked by the `n` after
+    # it, `corno` by the `e`), so this is a pure gap: nothing that resolves
+    # today changes. Built in B-flat or A like the trumpet, hence the same
+    # key-dependent chromatic and the same default.
+    Instrument("Cornet", "brass", "treble", (52, 84), None, 2,
+               aliases=("cornet", "cornett", "kornett", "cornetto", "cornetti",
+                        "cornetta", "piston", "pistons", "cnt")),
+    # Not a horn, and it never reached the horn either — `horn` inside
+    # `flugelhorn` is preceded by a letter, so the closed-up spelling abstained.
+    # The SPACED spelling did not: `Flügel Horn` resolved to Horn. Both forms
+    # are listed.
+    Instrument("Flugelhorn", "brass", "treble", (52, 84), None, 2,
+               aliases=("flugelhorn", "flugel horn", "flugelhorner", "fluegelhorn",
+                        "flicorno", "bugle")),
+    # Berlioz and Mendelssohn score the ophicleide where a modern edition puts
+    # a tuba; two IMSLP works name it. Absent and abstaining.
+    Instrument("Ophicleide", "brass", "bass", (28, 67), 0, 0,
+               aliases=("ophicleide", "ophicleides", "oficleide", "ophikleide")),
+    Instrument("Euphonium", "brass", "bass", (34, 72), 0, 0,
+               aliases=("euphonium", "euphonion", "eufonio")),
+    # The ophicleide's predecessor; Berlioz and Mendelssohn score both.
+    Instrument("Serpent", "brass", "bass", (28, 67), 0, 0,
+               aliases=("serpent", "serpente", "serpentone")),
 
     # ── percussion ─────────────────────────────────────────────────────────
     Instrument("Timpani", "percussion", "bass", (36, 60), 0, 0,
@@ -258,7 +423,19 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                         # a CLARINET — and the bass drum reading PINNED.
                         "gr tr", "kl tr",
                         "glockenspiel", "xylophone", "xylophon", "tubular bells",
-                        "cloches", "castanets", "cassa")),
+                        "cloches", "castanets", "cassa",
+                        # named in the IMSLP instrumentation residual and
+                        # unresolved before. `bells` is safe beside the longer
+                        # `tubular bells`, which the longest-first index still
+                        # prefers, and cannot fire inside `cowbells` because
+                        # that is one word.
+                        "bells", "cowbells", "glocken", "glocke", "gong", "tamtams",
+                        "wind machine", "windmaschine", "slapstick", "peitsche",
+                        "rute", "ruthe", "anvil", "amboss", "crotales",
+                        "marimba", "vibraphone", "chimes", "woodblock",
+                        "tenor drum", "field drum", "ratsche", "ratchet",
+                        "sleigh bells", "bell", "guiro", "hammer",
+                        "sleigh bell")),
 
     # ── keyboard / plucked ─────────────────────────────────────────────────
     Instrument("Harp", "keyboard", "treble", (24, 104), 0, 0,
@@ -268,6 +445,17 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                         "harpsichord", "clavicembalo", "celesta", "celeste")),
     Instrument("Organ", "keyboard", "treble", (24, 96), 0, 0,
                aliases=("organ", "orgel", "organo", "orgue", "org")),
+    # ⚠️ FAMILY follows the Harp's precedent, not the organology. A mandolin
+    # and a guitar are plucked strings, but `Harp` is filed "keyboard" here and
+    # the families are consumed as SCORE POSITION (a staff-identity workstream
+    # measures family precision 0.955 against instrument 0.873) — these staves
+    # sit with the harp, above the strings, never among the violins. Filing
+    # them "string" would be right about the instrument and wrong about every
+    # consumer.
+    Instrument("Mandolin", "keyboard", "treble", (55, 91), 0, 0,
+               aliases=("mandolin", "mandoline", "mandolino", "mandolina")),
+    Instrument("Guitar", "keyboard", "treble", (40, 84), -12, 0,
+               aliases=("guitar", "guitare", "gitarre", "chitarra")),
 
     # ── voice ──────────────────────────────────────────────────────────────
     Instrument("Soprano", "voice", "treble", (60, 84), 0, 0,
@@ -291,9 +479,16 @@ INSTRUMENTS: tuple[Instrument, ...] = (
                         # alias index matches on word boundaries, so it cannot
                         # fire inside "violen", "viola" or "violoncelle".
                         "violon", "violons", "vl", "vln", "vni", "viol")),
+    # `Altos` is what a FRENCH score calls its violas, and it is the largest
+    # single string in the margin corpus that resolved to nothing: 23 of
+    # Ravel's Boléro labels, plus two more in the reference part names. Listed
+    # here rather than derived from the voice `alto`, because a register word's
+    # plural belongs to whichever instrument the language gives it to — see
+    # `aliases_of`. `alti` is the Italian. Both are declared ambiguous: a
+    # chorus really does have altos.
     Instrument("Viola", "string", "alto", (48, 88), 0, 0,
                aliases=("viola", "viole", "violas", "violen", "bratsche", "bratschen",
-                        "alto viola",
+                        "alto viola", "altos", "alti",
                         "vla", "vl a", "br")),
     Instrument("Cello", "string", "bass", (36, 81), 0, 0,
                aliases=("cello", "violoncello", "violoncelli", "violoncellos",
@@ -315,7 +510,7 @@ INSTRUMENTS: tuple[Instrument, ...] = (
 # the reading a caller has already made. Keep the first entry equal to whichever
 # instrument actually carries the alias above, so nothing changes when the
 # score-order prior has no opinion.
-AMBIGUOUS_ALIASES: dict[str, tuple[str, ...]] = {
+_DECLARED_AMBIGUOUS_ALIASES: dict[str, tuple[str, ...]] = {
     "tp": ("Timpani", "Trumpet"),
     # "Cor." is Corno (horn) everywhere in the German/Italian tradition, and
     # "Cor" is French for horn too — but a French score's "Cor Anglais" is
@@ -340,6 +535,25 @@ AMBIGUOUS_ALIASES: dict[str, tuple[str, ...]] = {
     # says the reading is not certain enough to PIN a staff on
     # (`dossier.join_parts_to_slots`). Position settles it, as it does for `Tp.`.
     "tr bas": ("Trombone", "Trumpet"),
+    # French `Altos` / Italian `Alti` are the VIOLAS of an orchestra and the
+    # altos of a chorus, and the word is identical. The lexicon reads the
+    # violas, which is what every occurrence in both corpora is; listing it
+    # here says the reading may not PIN a staff.
+    "altos": ("Viola", "Alto"),
+    "alti": ("Viola", "Alto"),
+}
+
+#: The declared table plus the plurals `_pluralize` derives from it, because an
+#: ambiguity is a property of the WORD and not of its number — a French score's
+#: `Basses` is exactly as undecidable as its `Basse`, and only the singular was
+#: listed. `dossier.join_parts_to_slots` reads this as the set of aliases that
+#: may not PIN a staff, so a plural missing from it is a wrong pin, not a
+#: missing one. Declared entries always win a collision.
+AMBIGUOUS_ALIASES: dict[str, tuple[str, ...]] = {
+    **{p: names
+       for alias, names in _DECLARED_AMBIGUOUS_ALIASES.items()
+       if (p := _pluralize(alias)) is not None},
+    **_DECLARED_AMBIGUOUS_ALIASES,
 }
 
 
@@ -405,6 +619,16 @@ def takes_key(inst: "Instrument") -> bool:
     return inst.chromatic is None or inst.default_fifths_offset != 0
 
 
+def _rescued_by_a_longer_alias(inst: "Instrument", target: str) -> bool:
+    """Whether `inst` holds an alias at least as long as anything that fires on
+    `target` — the property that makes `_ALIAS_INDEX`'s longest-first ordering
+    return the right instrument. Used by the tests, not by `lookup`."""
+    return any(
+        re.search(rf"(?<![a-z]){re.escape(a)}(?![a-z])", target)
+        for a in aliases_of(inst)
+    )
+
+
 def _parse_bare_key(text: str, alias: str) -> int | None:
     """Circle-of-fifths offset from a bare key token trailing the alias."""
     tail = text[text.find(alias) + len(alias):]
@@ -421,7 +645,7 @@ def _parse_bare_key(text: str, alias: str) -> int | None:
 # Longest alias first so "bass clarinet" wins over "cl", "corno inglese" over "cor".
 _ALIAS_INDEX: tuple[tuple[str, Instrument], ...] = tuple(
     sorted(
-        ((alias, inst) for inst in INSTRUMENTS for alias in inst.aliases),
+        ((alias, inst) for inst in INSTRUMENTS for alias in aliases_of(inst)),
         key=lambda pair: -len(pair[0]),
     )
 )
@@ -494,8 +718,29 @@ VOICE_QUALIFIERS = frozenset(
     alias
     for inst in INSTRUMENTS
     if inst.family == "voice" and inst.name != "Chorus"
-    for alias in inst.aliases
+    for alias in aliases_of(inst)
 )
+
+# A VOICE IS NOT THE ONLY INSTRUMENT WHOSE NAME DOUBLES AS A SIZE WORD.
+# `Contrabass` is the string bass AND the qualifier on `Contrabass clarinet`,
+# `Contrabass trombone`, `Contrabass tuba` — and being ten letters it beats
+# every one of those nouns in a longest-first index, so all three resolved to a
+# STRING, the same cross-family error `Basset horn` made in the other
+# direction. `Contrabass tuba` did it at HIGH confidence, which is what pins a
+# staff to the wrong part.
+#
+# Only the full qualifier spellings, never `cb` / `kb` / `db`: a two-letter
+# alias next to another two-letter alias is a coin flip, and no score prints
+# `Cb. Clar.`
+SIZE_QUALIFIERS = frozenset(
+    alias
+    for inst in INSTRUMENTS
+    if inst.name == "Contrabass"
+    for alias in aliases_of(inst)
+    if alias.startswith(("contra", "kontra", "contre", "double"))
+)
+
+QUALIFIERS = VOICE_QUALIFIERS | SIZE_QUALIFIERS
 
 
 def _all_matches(text: str) -> list["Match"]:
@@ -529,28 +774,79 @@ def _all_matches(text: str) -> list["Match"]:
     return sorted(seen.values(), key=lambda m: -_letters(m.alias))
 
 
-def _prefer_instrument_over_voice(text: str, winner: "Match") -> "Match":
-    """Let an instrument noun beat a voice word in the same label.
+def _adjacent(norm: str, a: str, b: str) -> bool:
+    """Do these two aliases stand SIDE BY SIDE, in either order, in `norm`?
+
+    ⚠️ On `norm`, never on the `_STRIP_TOKENS` output, and that is the whole
+    point of the test. A CONJUNCTION is what separates a compound instrument
+    from a condensed staff — "Contrabass clarinet" is one instrument, and
+    "Contrabassi e Violoncelli" is two staves' worth printed on one — and the
+    two labels are word-for-word identical once `e` is stripped. `_STRIP_TOKENS`
+    deletes exactly the evidence that tells them apart, so the adjacency test
+    reads the string BEFORE it runs.
+    """
+    gap = r"[^a-z]+"
+    for first, second in ((a, b), (b, a)):
+        if re.search(rf"(?<![a-z]){re.escape(first)}{gap}{re.escape(second)}(?![a-z])",
+                     norm):
+            return True
+    return False
+
+
+def _prefer_instrument_over_qualifier(text: str, winner: "Match") -> "Match":
+    """Let an instrument noun beat a SIZE word standing next to it.
 
     "Bb (basso) Horn 4" names a horn. It resolved to a bass VOICE because
     "basso" is longer than "horn" and the alias index prefers length — a rule
     that is right for "Bass Clarinet" beating "Bass" and wrong here, because
-    the longer alias is the qualifier rather than the noun.
+    the longer alias is the qualifier rather than the noun. "Contrabass
+    trombone" and "Contrabass tuba" are the same sentence with the string bass
+    playing the qualifier, and they were wrong the same way.
 
-    The discriminator is whether the other reading fires on a DIFFERENT word.
-    "Bb (basso) Horn" matches `basso` and `horn`, two words, so the label names
-    an instrument and says what size it is. "Basso" alone matches `basso` for
-    both the voice and the contrabass — one word, two readings — which is
-    genuine ambiguity that only position can settle, and is left to
-    `AMBIGUOUS_ALIASES` untouched.
+    Two conditions, and the second is the one added on 2026-09-05:
+
+    1. the other reading fires on a DIFFERENT word. "Basso" ALONE matches
+       `basso` for both the voice and the contrabass — one word, two readings —
+       which is genuine ambiguity only position can settle, and is left to
+       `AMBIGUOUS_ALIASES` untouched;
+    2. for a SIZE qualifier only, the two words are ADJACENT. A qualifier
+       modifies the noun beside it; anything between them means the label is
+       naming two things, not sizing one. Without it, "Contrabassi e
+       Violoncelli" — the commonest label at the foot of an orchestral score —
+       becomes a cello.
+
+    ⚠️ **The adjacency test does NOT apply to the voice qualifiers, and that
+    asymmetry is measured, not tidy.** A condensed staff pairs two
+    INSTRUMENTS; it never pairs an instrument with a voice, so the voice half
+    of this rule has nothing to protect and adjacency only costs it reach.
+    Applied to both halves it regressed `Horn in B♭ basso` — a real part name
+    in the reference corpus — from Horn to a bass VOICE, because "in Bb"
+    stands between the noun and its qualifier. The voice half is therefore
+    left exactly as it was measured in 2026-08, and the new condition rides
+    only on the aliases that needed it.
     """
-    if winner.instrument.family != "voice" or winner.alias not in VOICE_QUALIFIERS:
+    if winner.alias not in QUALIFIERS:
         return winner
+    norm = normalize_label(text)
+    needs_adjacency = winner.alias in SIZE_QUALIFIERS
     for other in _all_matches(text):
-        if other.instrument.family != "voice" and other.alias != winner.alias:
-            return Match(other.instrument, other.instrument.default_fifths_offset,
-                         other.alias, other.coverage, other.ocr_folded)
+        # `family != "voice"` is the 2026-08 rule's own test and is kept
+        # verbatim, so a label naming a chorus beside a register word still
+        # reads as the chorus it did before.
+        if other.instrument.family == "voice" or other.alias in QUALIFIERS:
+            continue
+        if other.alias == winner.alias:
+            continue
+        if needs_adjacency and not _adjacent(norm, winner.alias, other.alias):
+            continue
+        return Match(other.instrument, other.instrument.default_fifths_offset,
+                     other.alias, other.coverage, other.ocr_folded)
     return winner
+
+
+#: Kept under the old name: it is what the tests and the findings files call it,
+#: and the voices are still the bulk of what it does.
+_prefer_instrument_over_voice = _prefer_instrument_over_qualifier
 
 
 def lookup(text: str) -> Match | None:
@@ -589,7 +885,7 @@ def lookup(text: str) -> Match | None:
             if offset is None:
                 offset = inst.default_fifths_offset
             coverage = _letters(alias) / max(1, _letters(candidate))
-            return _prefer_instrument_over_voice(
+            return _prefer_instrument_over_qualifier(
                 text, Match(inst, offset, alias, min(1.0, coverage), folded)
             )
     return None

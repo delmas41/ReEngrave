@@ -620,3 +620,180 @@ def test_a_trailing_key_after_hr_or_trpt_is_read_a_leading_one_is_not():
     leading = lookup("(E) Hr.")
     assert leading.instrument.name == "Horn"
     assert leading.fifths_offset == leading.instrument.default_fifths_offset
+
+
+# ── 2026-09-05: substring capture, plurals, and the ambiguity a Match carries ──
+
+
+def test_a_match_carries_the_ambiguity_of_the_alias_that_fired():
+    """`lookup` returns ONE answer and an ambiguous alias has more than one.
+
+    `Basso` is the contrabasses at the foot of an orchestral score and the bass
+    voice under a vocal stave; the lexicon names the commoner and a caller
+    comparing `.instrument.name` to a printed label scores the other reading as
+    an error. It cost three harnesses a correct `Contrabass` each — the join
+    RESULTS, and two staff-identity probes — before the information was made to
+    travel WITH the answer instead of beside it.
+
+    `lookup`'s return value is unchanged; these are properties."""
+    m = lookup("Basso")
+    assert m.instrument.name == "Bass voice"          # unchanged
+    assert m.is_ambiguous
+    assert [i.name for i in m.alternatives] == ["Bass voice", "Contrabass"]
+    assert lookup("Contrabasso").is_ambiguous is False
+    assert lookup("Contrabasso").alternatives == ()
+    # It is the ALIAS that is ambiguous, not the label — the same rule
+    # `dossier.join_parts_to_slots` applies before letting a label pin.
+    assert lookup("Bassi 1. 2.").is_ambiguous
+
+
+def test_a_basset_horn_is_a_woodwind_and_a_flugelhorn_is_not_a_horn():
+    """CROSS-FAMILY capture by a shorter alias, the `Tr. Alt.` shape with the
+    qualifier missing: the lexicon held no basset horn, so no alias was longer
+    than the bare `horn` inside it and `_ALIAS_INDEX` had nothing to prefer.
+
+    A staff-identity workstream measures family precision 0.955 against
+    instrument 0.873, so a cross-family error corrupts the STRONGER level."""
+    for label in ("Basset horn", "Bassetthorn", "Corno di bassetto"):
+        m = lookup(label)
+        assert m.instrument.name == "Basset horn", label
+        assert m.instrument.family == "woodwind", label
+    for label in ("Flugelhorn", "Flügelhorn", "Flügel Horn"):
+        assert lookup(label).instrument.name == "Flugelhorn", label
+    # and the real horn is untouched
+    assert lookup("Corni").instrument.name == "Horn"
+    assert lookup("Hörner in Es").instrument.name == "Horn"
+
+
+def test_contrabass_is_a_size_word_as_well_as_an_instrument():
+    """The mirror of the basset horn: here the QUALIFIER is the ten-letter
+    alias and the noun is short, so all three compounds resolved to a STRING.
+    `Contrabass tuba` did it at high confidence, which is what pins a staff."""
+    assert lookup("Contrabass clarinet").instrument.family == "woodwind"
+    assert lookup("Contrabass trombone").instrument.name == "Trombone"
+    assert lookup("Contrabass tuba").instrument.name == "Tuba"
+    # the plain instrument is unmoved
+    assert lookup("Contrabass").instrument.name == "Contrabass"
+    assert lookup("Kontrabässe").instrument.name == "Contrabass"
+
+
+def test_a_conjunction_keeps_a_condensed_bass_staff_out_of_the_qualifier_rule():
+    """⚠️ THE ADJACENCY TEST READS `norm`, NOT THE STRIPPED STRING, and that is
+    the whole point. "Contrabass clarinet" is one instrument and "Contrabassi e
+    Violoncelli" is two staves printed on one; `_STRIP_TOKENS` deletes the `e`
+    and the two become word-for-word identical. Without adjacency the
+    generalised rule turns every condensed bass staff into a cello."""
+    for label in ("Violoncello e Contrabasso", "Contrabassi e Violoncelli",
+                  "Celli e Bassi", "Violoncell u. Contrabass"):
+        assert lookup(label).instrument.family == "string", label
+    assert lookup("Contrabassi").instrument.name == "Contrabass"
+
+
+def test_the_voice_half_of_the_qualifier_rule_needs_no_adjacency():
+    """⚠️ MEASURED ASYMMETRY, not an oversight. A condensed staff pairs two
+    INSTRUMENTS and never an instrument with a voice, so the voice half has
+    nothing adjacency would protect and only loses reach to it: applied to
+    both halves it regressed `Horn in B♭ basso` — a real reference part name —
+    from Horn to a bass VOICE, because "in Bb" stands between the two."""
+    assert lookup("Horn in B♭ basso").instrument.name == "Horn"
+    assert lookup("Bb (basso) Horn 4").instrument.name == "Horn"
+    assert lookup("Fl. Alt.").instrument.name == "Flute"
+    assert lookup("Soprano Recorder").instrument.name == "Recorder"
+
+
+def test_plurals_are_derived_because_the_hand_list_was_DIRECTIONAL():
+    """A word-bounded alias cannot fire inside its own plural, so the table
+    hand-listed plurals — for the short generic nouns and not for the long
+    compounds containing them. Pluralising a label therefore DEFEATED the
+    specific compound and handed the staff to the generic noun inside it, and
+    two of the three known cases were cross-family."""
+    assert lookup("English horns").instrument.family == "woodwind"
+    assert lookup("cors anglais").instrument.name == "English horn"
+    assert lookup("bass clarinets").instrument.name == "Bass clarinet"
+    # the plain gaps the derivation closes
+    for label, expected in (("oboes", "Oboe"), ("cellos", "Cello"),
+                            ("harps", "Harp"), ("tubas", "Tuba"),
+                            ("double basses", "Contrabass"),
+                            ("piccolos", "Piccolo"), ("saxophones", "Saxophone")):
+        assert lookup(label).instrument.name == expected, label
+
+
+def test_a_register_words_plural_is_not_derived_because_french_reuses_it():
+    """⚠️ The derivation is switched OFF for the voices, and the corpus is why:
+    in French an orchestra's `Altos` are the VIOLAS and its `Basses` are the
+    double basses. 23 of the 1422-label margin corpus's `Altos` are Ravel's
+    violas and not one is a singer, so deriving `altos` from the voice `alto`
+    would invent a cross-family error on the commonest French string label."""
+    from tools.omr.instruments import aliases_of
+
+    for inst in INSTRUMENTS:
+        if inst.family == "voice" and inst.name != "Chorus":
+            assert aliases_of(inst) == inst.aliases, inst.name
+    m = lookup("Altos")
+    assert m.instrument.name == "Viola"
+    # and it is declared ambiguous, so it may not PIN a staff — a chorus
+    # really does have altos.
+    assert m.is_ambiguous
+    assert [i.name for i in m.alternatives] == ["Viola", "Alto"]
+
+
+def test_an_ambiguous_alias_stays_ambiguous_in_the_plural():
+    """An ambiguity is a property of the WORD, not of its number.
+    `dossier.join_parts_to_slots` reads `AMBIGUOUS_ALIASES` as the set that may
+    not pin, so a plural missing from it is a WRONG pin, not a missing one."""
+    from tools.omr.instruments import (AMBIGUOUS_ALIASES,
+                                       _DECLARED_AMBIGUOUS_ALIASES)
+
+    assert "basses" in AMBIGUOUS_ALIASES
+    assert AMBIGUOUS_ALIASES["basses"] == AMBIGUOUS_ALIASES["basse"]
+    # a declared entry always beats a derived one
+    for alias, names in _DECLARED_AMBIGUOUS_ALIASES.items():
+        assert AMBIGUOUS_ALIASES[alias] == names, alias
+
+
+def test_no_derived_plural_collides_with_another_instruments_alias():
+    """The gate is not widened — a generated string still has to appear in the
+    label word-bounded, exactly — but a generated string that happens to BE
+    another instrument's alias would silently re-point it."""
+    from tools.omr.instruments import aliases_of
+
+    declared: dict[str, set[str]] = {}
+    for inst in INSTRUMENTS:
+        for alias in inst.aliases:
+            declared.setdefault(alias, set()).add(inst.name)
+    for inst in INSTRUMENTS:
+        for alias in aliases_of(inst):
+            if alias in inst.aliases:
+                continue
+            assert inst.name in declared.get(alias, {inst.name}), \
+                f"derived {alias!r} collides with {declared.get(alias)}"
+
+
+def test_a_cornet_section_can_be_encoded_at_all():
+    """Trumpet -> Cornet was unencodable: the French and Russian repertoire
+    (Berlioz, Franck, Tchaikovsky) prints trumpets and cornets on separate
+    staves, and `2 cornets` was the single largest line in the IMSLP
+    instrumentation residual — 14 of 99 fragments on one missing entry.
+
+    It ABSTAINED rather than misresolving, so nothing that resolved before
+    moves: `cor` is blocked by the `n`, `corno` by the `e`."""
+    for label in ("Cornet", "2 cornets", "Cornets à pistons", "Kornett"):
+        assert lookup(label).instrument.name == "Cornet", label
+    assert lookup("Cor.").instrument.name == "Horn"
+    assert lookup("Corno").instrument.name == "Horn"
+    assert lookup("Corno inglese").instrument.name == "English horn"
+
+
+def test_the_absent_instruments_that_were_CAPTURED_rather_than_abstaining():
+    """The survey behind this batch: an instrument the lexicon does not hold is
+    harmless when it ABSTAINS and dangerous when a shorter alias captures it.
+    Every name here was captured cross-family before; the ones that abstained
+    are gaps and were filled without changing anything that already resolved."""
+    for label, family in (("Basset horn", "woodwind"),
+                          ("Corno di bassetto", "woodwind"),
+                          ("Contrabass clarinet", "woodwind"),
+                          ("Contrabass trombone", "brass"),
+                          ("Contrabass tuba", "brass"),
+                          ("English horns", "woodwind"),
+                          ("cors anglais", "woodwind")):
+        assert lookup(label).instrument.family == family, label
