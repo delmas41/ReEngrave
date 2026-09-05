@@ -1,0 +1,278 @@
+{
+  "bach-brandenburg3-mvt1-468678-p1": {
+    "staff_counts": [
+      12,
+      12
+    ],
+    "block_shapes": [
+      [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      [
+        3,
+        3,
+        3,
+        1,
+        2
+      ]
+    ],
+    "ordinal_join_succeeds": true,
+    "shapes_differ": false,
+    "join_is_wrong": null,
+    "verdict": "no truth"
+  },
+  "beethoven-sym5-mvt1-575951-p1": {
+    "skip": "single system",
+    "n_systems": 1
+  },
+  "beethoven-sym5-mvt1-575951-p2": {
+    "staff_counts": [
+      11,
+      11
+    ],
+    "block_shapes": [
+      [
+        4,
+        3,
+        4
+      ],
+      [
+        4,
+        3,
+        4
+      ]
+    ],
+    "ordinal_join_succeeds": true,
+    "shapes_differ": false,
+    "join_is_wrong": false,
+    "verdict": "TN"
+  },
+  "beethoven-sym5-mvt1-575951-p3": {
+    "staff_counts": [
+      11,
+      8
+    ],
+    "block_shapes": [
+      [
+        4,
+        3,
+        4
+      ],
+      [
+        3,
+        1,
+        4
+      ]
+    ],
+    "ordinal_join_succeeds": false,
+    "shapes_differ": true,
+    "join_is_wrong": true,
+    "verdict": "moot"
+  },
+  "beethoven-sym5-mvt1-575951-p4": {
+    "staff_counts": [
+      11,
+      11
+    ],
+    "block_shapes": [
+      [
+        4,
+        2,
+        5
+      ],
+      [
+        4,
+        3,
+        4
+      ]
+    ],
+    "ordinal_join_succeeds": true,
+    "shapes_differ": true,
+    "join_is_wrong": true,
+    "verdict": "TP"
+  },
+  "beethoven-sym5-mvt1-984073-p1": {
+    "skip": "single system",
+    "n_systems": 1
+  },
+  "beethoven-sym5-mvt1-984073-p2": {
+    "staff_counts": [
+      11,
+      11
+    ],
+    "block_shapes": [
+      [
+        4,
+        3,
+        4
+      ],
+      [
+        4,
+        3,
+        4
+      ]
+    ],
+    "ordinal_join_succeeds": true,
+    "shapes_differ": false,
+    "join_is_wrong": false,
+    "verdict": "TN"
+  },
+  "beethoven-sym5-mvt1-984073-p3": {
+    "staff_counts": [
+      11,
+      8
+    ],
+    "block_shapes": [
+      [
+        4,
+        3,
+        4
+      ],
+      [
+        3,
+        1,
+        4
+      ]
+    ],
+    "ordinal_join_succeeds": false,
+    "shapes_differ": true,
+    "join_is_wrong": true,
+    "verdict": "moot"
+  },
+  "beethoven-sym5-mvt1-984073-p4": {
+    "staff_counts": [
+      11,
+      11
+    ],
+    "block_shapes": [
+      [
+        4,
+        2,
+        5
+      ],
+      [
+        4,
+        3,
+        4
+      ]
+    ],
+    "ordinal_join_succeeds": true,
+    "shapes_differ": true,
+    "join_is_wrong": true,
+    "verdict": "TP"
+  },
+  "brahms-sym1-mvt1-317803-p1": {
+    "skip": "single system",
+    "n_systems": 1
+  },
+  "brahms-sym1-mvt1-317803-p2": {
+    "staff_counts": [
+      14,
+      13
+    ],
+    "block_shapes": [
+      [
+        9,
+        5
+      ],
+      [
+        8,
+        5
+      ]
+    ],
+    "ordinal_join_succeeds": false,
+    "shapes_differ": true,
+    "join_is_wrong": true,
+    "verdict": "moot"
+  },
+  "brahms-sym1-mvt1-317803-p3": {
+    "staff_counts": [
+      14,
+      14
+    ],
+    "block_shapes": [
+      [
+        5,
+        3,
+        6
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "ordinal_join_succeeds": true,
+    "shapes_differ": true,
+    "join_is_wrong": false,
+    "verdict": "FP"
+  },
+  "brahms-sym1-mvt1-317803-p4": {
+    "staff_counts": [
+      14,
+      14
+    ],
+    "block_shapes": [
+      [
+        9,
+        5
+      ],
+      [
+        14
+      ]
+    ],
+    "ordinal_join_succeeds": true,
+    "shapes_differ": true,
+    "join_is_wrong": false,
+    "verdict": "FP"
+  },
+  "dvorak-sym9-mvt1-405834-p5": {
+    "skip": "single system",
+    "n_systems": 1
+  },
+  "dvorak-sym9-mvt1-405834-p6": {
+    "skip": "single system",
+    "n_systems": 1
+  },
+  "dvorak-sym9-mvt1-405834-p7": {
+    "staff_counts": [
+      15,
+      15
+    ],
+    "block_shapes": [
+      [
+        4,
+        6,
+        5
+      ],
+      [
+        4,
+        6,
+        5
+      ]
+    ],
+    "ordinal_join_succeeds": true,
+    "shapes_differ": false,
+    "join_is_wrong": false,
+    "verdict": "TN"
+  },
+  "mahler-sym5-mvt1-local-p2": {
+    "skip": "single system",
+    "n_systems": 1
+  },
+  "mahler-sym5-mvt1-local-p3": {
+    "skip": "single system",
+    "n_systems": 1
+  },
+  "mahler-sym5-mvt1-local-p4": {
+    "skip": "single system",
+    "n_systems": 1
+  },
+  "mahler-sym5-mvt1-local-p5": {
+    "skip": "single system",
+    "n_systems": 1
+  }
+}
