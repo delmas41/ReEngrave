@@ -38,7 +38,13 @@ def main():
     arm_path = Path(sys.argv[1])
     tag = sys.argv[2] if len(sys.argv) > 2 else ""
     arm = json.load(open(arm_path))
+    for r in arm["rows"]:
+        if tag and r["row_id"].endswith("." + tag):
+            r["row_id"] = r["row_id"][: -len(tag) - 1]
     base = json.load(open(BASE))
+    for r in base["rows"]:
+        if r["row_id"].endswith(".widened-graft"):
+            r["row_id"] = r["row_id"][: -len(".widened-graft")]
     b_rows = {r["row_id"]: r for r in base["rows"]}
     print(f"{'row':38s} {'base':>8s} {'arm':>8s} {'d_edits':>8s}")
     for r in arm["rows"]:
@@ -53,20 +59,23 @@ def main():
     (b11, be11), (b10, be10) = pools([r for r in base["rows"] if r.get("omr_ned")])
     print(f"\n11-row pool: base {b11:.4f}/{be11}  arm {p11:.4f}/{e11}  ({p11-b11:+.4f}, {e11-be11:+d} edits)")
     print(f"10-row pool: base {b10:.4f}/{be10}  arm {p10:.4f}/{e10}  ({p10-b10:+.4f}, {e10-be10:+d} edits)")
-    # element counts, arm predictions vs truth (10-row = excl bach, and 11-row)
-    tot_t, tot_p, tot_t10, tot_p10 = {}, {}, {}, {}
+    # element counts, arm predictions vs truth AND vs the baseline graft's own
+    # prediction files (still on disk in the rebaseline worktree)
+    tot = {k: {} for k in ("t", "p", "b", "t10", "p10", "b10")}
     for r in arm["rows"]:
         rid = r["row_id"]
         t = count_elements(BENCH / "fixtures" / f"{rid}.truth.musicxml")
         p = count_elements(Path(r["pred_xml"]))
+        bsl = count_elements(Path(b_rows[rid]["pred_xml"])) if rid in b_rows else {}
         for k in ("tie", "slur", "rest", "note", "beam"):
-            tot_t[k] = tot_t.get(k, 0) + t.get(k, 0)
-            tot_p[k] = tot_p.get(k, 0) + p.get(k, 0)
-            if rid != "bach-brandenburg3-mvt1-468678-p1":
-                tot_t10[k] = tot_t10.get(k, 0) + t.get(k, 0)
-                tot_p10[k] = tot_p10.get(k, 0) + p.get(k, 0)
-    print("\nelements (11-row): truth", tot_t, "\n                   arm  ", tot_p)
-    print("elements (10-row): truth", tot_t10, "\n                   arm  ", tot_p10)
+            for key, src in (("t", t), ("p", p), ("b", bsl)):
+                tot[key][k] = tot[key].get(k, 0) + src.get(k, 0)
+                if rid != "bach-brandenburg3-mvt1-468678-p1":
+                    tot[key + "10"][k] = tot[key + "10"].get(k, 0) + src.get(k, 0)
+    print("\nelements (11-row): truth", tot["t"], "\n              baseline  ", tot["b"],
+          "\n                   arm  ", tot["p"])
+    print("elements (10-row): truth", tot["t10"], "\n              baseline  ", tot["b10"],
+          "\n                   arm  ", tot["p10"])
 
 
 if __name__ == "__main__":

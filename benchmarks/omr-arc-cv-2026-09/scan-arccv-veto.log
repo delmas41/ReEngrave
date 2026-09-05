@@ -15,3 +15,34 @@ dvorak-sym9-mvt1-405834-p6: transcribing page 5 of dvorak--symphony-9-op95--simr
 brahms-sym1-mvt1-317803-p1: transcribing page 0 of brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf …
 2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'in C  \\frac{1}{2}', 'in Es  \\frac{3}{4}' — these are the strings to add to tools/omr/instruments.py
 brahms-sym1-mvt1-317803-p2: transcribing page 1 of brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf …
+4 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(C)', '(Es)', 'Hr. (Es)', 'Trpt.' — these are the strings to add to tools/omr/instruments.py
+mahler-sym5-mvt1-local-p2: transcribing page 1 of mahler--symphony-5--unidentified-scan-2016--local.pdf …
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'Contrafagott' — these are the strings to add to tools/omr/instruments.py
+mahler-sym5-mvt1-local-p3: transcribing page 2 of mahler--symphony-5--unidentified-scan-2016--local.pdf …
+3 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '2', '3', '7' — these are the strings to add to tools/omr/instruments.py
+bach-brandenburg3-mvt1-468678-p1: transcribing page 0 of bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf …
+3 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'I', 'III', '|' — these are the strings to add to tools/omr/instruments.py
+
+row                                        win    staves    meas  OMR-NED   edits  truth   pred  conf
+beethoven-sym5-mvt1-984073-p1.arccv-veto 1-16      12/12    16/16    0.7151    1285   1064    733  verified
+beethoven-sym5-mvt1-984073-p2.arccv-veto 17-48      22/22    16/32    0.8830    4437   3004   2021  verified
+beethoven-sym5-mvt1-575951-p1.arccv-veto 1-16      12/12    16/16    0.7618    1356   1064    716  verified
+beethoven-sym5-mvt1-575951-p2.arccv-veto 17-48      22/22    17/32    0.8766    4452   3004   2075  verified
+dvorak-sym9-mvt1-405834-p5.arccv-veto  1-8       15/15     8/8     0.4306     670    792    764  verified
+dvorak-sym9-mvt1-405834-p6.arccv-veto  9-15      15/15     7/7     0.7274    2604   2022   1558  verified
+brahms-sym1-mvt1-317803-p1.arccv-veto  1-7       14/14     8/7     0.9187    3402   2083   1620  verified
+brahms-sym1-mvt1-317803-p2.arccv-veto  8-22      27/27     8/15    0.9456    6572   3399   3551  verified
+mahler-sym5-mvt1-local-p2.arccv-veto   0-8       17/17     9/9     0.6880    1116   1148    474  verified
+mahler-sym5-mvt1-local-p3.arccv-veto   9-16      13/13     8/8     0.8871    3063   2248   1205  verified
+bach-brandenburg3-mvt1-468678-p1.arccv-veto 1-10      24/24    29/10    0.9241    6716   3549   3719  verified
+
+POOLED OMR-NED over 11 scanned pages: 0.8532
+  35673 edits over 23377 truth + 18436 predicted symbols
+    entire measure insert/delete            13881   38.9%
+    entire staff insert/delete              10023   28.1%
+    wrong note                               9194   25.8%
+    wrong note head                           852    2.4%
+    wrong flag/beam                           311    0.9%
+    wrong direction                           282    0.8%
+
+wrote benchmarks/omr-arc-cv-2026-09/results-scan-arccv-veto.json
