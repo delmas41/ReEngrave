@@ -1,6 +1,40 @@
 #!/usr/bin/env python3
 """The held-out-label corpus: transcribe pages, CACHE the label reads, emit records.
 
+⚠️⚠️ STOPPED MID-RUN 2026-09-05 BY DECISION. THIS IS A PARTIAL, NOT AN ARM.
+It was sized to calibrate DERIVED identity for an identity-driven clef
+OVERRIDE. That consumer is now both circular (`probe_order_vs_clef.py`: with
+labels hidden, identity is mostly downstream of the clef it would correct) and
+superseded (`probe_page1_roster.py`: the page-1 roster reaches coverage 1.000
+at precision 0.903, so the derived tier is not the path). The build was killed
+to free CPU for the roster work at scale.
+
+ACHIEVED AT THE STOP — against a target of 28 pages / >=2 houses / >=3 plates
+and ~200 derived records minimum:
+
+    in-corpus pages   17 of 28
+    houses             2   (Breitkopf 4 plates, Litolff 1 page only)
+    plates             5 of 7
+    staves           359
+    NAMED LABELS     281   (Breitkopf 265, Litolff 16)
+
+⚠️ SO THE HOLDOUT HOUSE IS EFFECTIVELY ABSENT: 16 of 281 records. NO
+CROSS-HOUSE CLAIM MAY BE MADE FROM THIS CACHE, and no calibration curve should
+be drawn on it — that is the exact failure the sizing exercise existed to
+prevent. The cached pages are KEPT because their label reads are real evidence
+and may serve the roster work; they are not a completed corpus.
+
+⚠️ OPERATIONAL TRAP, worth a line because the next person will hit it: the
+Surya keep-alive server's worker WEDGED AT 0% CPU and blocked this build
+SILENTLY for 18 minutes. The parent process sat at 0% with no output and no
+error; `--check` reported the server healthy the whole time, because the
+llama-server was alive and it was the worker that was stuck. Diagnose with
+`ps -eo etime,pcpu` on the build process — 0.0% CPU with a long elapsed time is
+the signature — and recover with `staff_labels_surya --stop && --serve`.
+Redirecting a build's stdout through a pipe hides this: use `python3 -u` and a
+plain redirect so progress is visible while it runs.
+
+
 Builds the `derived`-tier corpus `probe_calibration.py` needs and does not have
 (that probe has label 175 / roster 22 / derived **0**). The design is the one
 this workstream was set up around:
