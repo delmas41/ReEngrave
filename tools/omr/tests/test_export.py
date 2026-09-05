@@ -2541,6 +2541,24 @@ class TestHairpins:
             (0, 10, 1, "crescendo"), (0, 10, 1, "stop"),
         ]
 
+    def test_ONE_anchor_note_is_enough(self):
+        """Sean's rule, 2026-09-05. This used to need TWO candidate noteheads
+        and dropped the hairpin otherwise — which is the commonest shape on a
+        scan: the ink read correctly, the bar found, and only one of the notes
+        under it recovered. The start says which measure and which voice the
+        wedge opens in; the stop may land on the same note, which
+        `test_a_hairpin_under_ONE_long_note_starts_and_stops_on_it` already
+        allows for a different reason.
+
+        Worth Mahler 5 p2 going 4 -> 6 exported `<wedge>` against a truth of
+        exactly 6, with all eleven engraved exports byte-identical.
+        """
+        staff = _slur_staff([[_slur_head(10), _hairpin(30, 90)]])
+        assert annotate_wedges_in_staff(staff) == 1
+        assert _wedge_states(staff) == [
+            (0, 10, 1, "crescendo"), (0, 10, 1, "stop"),
+        ]
+
     def test_a_staff_the_detector_found_no_notes_in_exports_nothing(self):
         """Three of the four hairpins detected on the Mahler page sit on a
         staff with zero noteheads — a hairpin needs a note at each end and

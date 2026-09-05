@@ -198,20 +198,105 @@ scored scan pages:
 
 **1% of the truth's wedges reached the file before; 54% do now.**
 
-⚠️ **AND THE RESIDUE IS THE SAME BUG A FOURTH TIME.** Sixty hairpins were added
-and only 52 became wedge pairs. Dvořák p5 added four and exported **zero** —
-and all four sit in measures with **0 detected noteheads**. Main's wedge export
-attaches to NOTES (`annotate_wedges_in_staff` writes `wedge_states` on events,
-as slurs are done), so a hairpin over a bar the detector found nothing in has
-nothing to attach to and is dropped.
+⚠️ **THE RESIDUE WAS READ AS "THE SAME BUG A FOURTH TIME" AND THAT WAS WRONG.**
+Sixty hairpins were added and only 52 became wedge pairs; Dvořák p5 added four
+and exported **zero**, all four in measures with 0 detected noteheads. That was
+written up as the export dropping marks on eventless bars — the branch
+`_mxl_empty_measure` fixes for dynamics and words. **Half of it was a bug in
+this module's own arithmetic, found 2026-09-04 when a peer session refused a
+claim built on it.**
 
-That is the branch `_mxl_empty_measure` already fixes for dynamics and words,
-and that this branch fixed for fermatas. Wedges are the fourth mark to meet it,
-and they meet it differently — not because the branch discards them, but because
-the export's placement model needs an event that is not there. The fix is to let
-an eventless bar carry its wedge as a positional `<direction>` pair, which
-`_mxl_empty_measure` is already the place for. **Not done here** — it is a
-design decision in the export that main owns.
+`_measure_for` read `measure["bbox_page_px"]` as `(x, y, w, h)` and tested
+`x0 <= x <= x0 + x1`. It is `(x0, y0, x1, y1)` — corners
+(`types.MeasureCell:146`, and every consumer in `transcribe` takes the width as
+`[2] - [0]`). The wrong reading inflates every measure's right edge past the
+page, so a hairpin goes to the first measure in iteration order rather than the
+containing one. Over the eleven scored pages, on the same ink with the CV
+detections stripped and re-attached under each rule:
+
+| page | hairpins | filed in the WRONG measure |
+|---|--:|--:|
+| brahms-1 p2 | 45 | 30 |
+| dvořák-9 p5 | 4 | **4** |
+| dvořák-9 p6 | 3 | 3 |
+| mahler-5 p2 | 5 | 2 |
+| mahler-5 p3 | 2 | 2 |
+| **total** | **59** | **41 (69%)** |
+
+On Dvořák p5 all four went to **m2, a bar that genuinely rests**, when their ink
+is in m6 and m7, which carry 5 and 9 noteheads.
+
+**And that is sufficient to explain the zero, without any export gap.**
+`annotate_wedges_in_slot` anchors a wedge to notes — start is the last note at
+or before the left edge, stop the first at or after the right — and bounds that
+search to *the measures the hairpin was filed in, plus one either side*. Filed
+in m2, it searches m1-m3, which rest, finds fewer than two candidates and
+returns `None`. The hairpin is lost to a wrong measure index, not to a missing
+`<direction>` emitter.
+
+Re-measured with the convention fixed:
+
+| page | truth `<wedge>` | no CV | CV, buggy | CV, **fixed** |
+|---|--:|--:|--:|--:|
+| six pages carrying none | 0 | 0 | 0 | **0** |
+| brahms-1 p2 | 136 | 2 | 94 | 92 |
+| dvořák-9 p5 | 14 | 0 | **0** | **8** |
+| dvořák-9 p6 | 8 | 0 | 6 | 6 |
+| mahler-5 p2 | 6 | 0 | **6** | **4** |
+| mahler-5 p3 | 34 | 0 | 2 | 6 |
+| **total** | **198** | **2** | **108** | **116** |
+
+**Net +8, and not a clean sweep** — Mahler p2 lost two and Brahms p2 lost two,
+because a correctly-filed hairpin can land in a measure whose notes the detector
+genuinely did not find, where the anchor search fails for the honest reason.
+
+### 7c. One anchor is enough — and it closes Mahler p2 exactly
+
+*Sean's rule, 2026-09-05, and it is the second time in this thread that the
+convention question answered the code question.* `_wedge_anchor_notes` required
+**two** candidate noteheads. But a wedge does not need two: the START says which
+measure and which voice it opens in, and the stop is already allowed to land on
+the SAME note — the shape a hairpin drawn under one long note has, which the
+export documents and tests. Requiring a second note asked the page for a fact
+the wedge does not use, and threw the hairpin away in the commonest scan case of
+all: ink read correctly, bar found, one of its notes recovered.
+
+| page | truth | no CV | buggy filing | corners fixed | **+ one anchor** |
+|---|--:|--:|--:|--:|--:|
+| six pages carrying none | 0 | 0 | 0 | 0 | **0** |
+| brahms-1 p2 | 136 | 2 | 94 | 92 | 92 |
+| dvořák-9 p5 | 14 | 0 | 0 | 8 | 8 |
+| dvořák-9 p6 | 8 | 0 | 6 | 6 | 6 |
+| mahler-5 p2 | 6 | 0 | 6 | 4 | **6** |
+| mahler-5 p3 | 34 | 0 | 2 | 6 | 6 |
+| **total** | **198** | **2** | 108 | 116 | **118** |
+
+Mahler p2 lands on **exactly its truth count**, the six blank pages stay at 0 —
+the abstention that makes this reader trustworthy is untouched — and all
+**eleven engraved orchestral exports are byte-identical by sha1**, so OMR-NED
+cannot move. 1% of the truth's wedges reached the file before this thread; 60%
+do now.
+
+⚠️ **The eventless-bar question is smaller than the eight it was credited with,
+and it is Mahler's rather than Dvořák's.** Dvořák's four were a wrong measure
+index and Mahler p2's two were a gate that wanted a second note. What is left is
+a genuinely eventless bar carrying a hairpin, which `eventless_wedges` handles
+and which still fires nowhere in this corpus.
+
+⚠️ **THE FIXTURE COULD NOT HAVE CAUGHT THIS.** `_page_dict` put the first
+measure at **x0 = 0**, where `0 + x1 == x1` and the two conventions return the
+identical answer. Nineteen tests, one of them named
+`test_a_hairpin_lands_on_the_measure_that_contains_it`, all passing, all blind.
+Moving that measure to x0 = 100 makes **four** of them fail against the old
+code — verified by restoring the bug and re-running, not assumed.
+`test_bbox_page_px_is_corners_not_width` now pins the rule directly.
+
+⚠️ **TWO CONVENTIONS LIVE IN THIS CODEBASE AND BOTH ARE LOAD-BEARING.** A
+MEASURE's `bbox_page_px` is `(x0, y0, x1, y1)`; a DETECTION's `bbox_page` is
+`[x, y, w, h]` (`transcribe.py:195`, and `export.py:1704` takes a notehead's
+centre as `x + w/2`). `attach_to_page` writes the detection form and was
+correct; only the measure read was wrong. Check which of the two you have
+before adding either.
 
 ## 7. The reader — built, tested, NOT wired
 

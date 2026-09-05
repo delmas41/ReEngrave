@@ -196,16 +196,45 @@ def test_no_staves_means_no_hairpins_not_a_crash():
 
 
 def _page_dict():
+    """⚠️ The first measure must NOT start at x0 = 0.
+
+    `bbox_page_px` is `(x0, y0, x1, y1)`, and this fixture's whole job is to
+    catch a reader that treats it as `(x, y, w, h)`. At x0 = 0 the two are the
+    same number — `0 + x1 == x1` — so the original fixture agreed under both
+    conventions and passed while `_measure_for` had the width bug, which cost
+    41 of 59 real hairpins their measure. Measures tile here as they do on a
+    page: 100..280, 280..400.
+    """
     return {"systems": [{"staves": [{
         "staff_index": 0,
         "staff_geometry": {"line_ys_page": [100, 120, 140, 160, 180],
                            "line_spacing_px": SP},
         "measures": [
-            {"measure_index": 0, "bbox_page_px": [0, 90, 280, 200],
+            {"measure_index": 0, "bbox_page_px": [100, 90, 280, 200],
              "upscale_factor": 1.0, "detections": []},
             {"measure_index": 1, "bbox_page_px": [280, 90, 400, 200],
              "upscale_factor": 1.0, "detections": []},
         ]}]}]}
+
+
+def test_bbox_page_px_is_corners_not_width():
+    """The regression test for the bug the fixture above could not see.
+
+    Under `(x, y, w, h)` measure 0 would span 100..380 and swallow a hairpin at
+    x = 300 that belongs to measure 1. Written against three tiling measures so
+    it fails loudly rather than by one-off.
+    """
+    from tools.omr.hairpin_detection import _measure_for
+    staff = {"measures": [
+        {"measure_index": 0, "bbox_page_px": [100, 0, 280, 9]},
+        {"measure_index": 1, "bbox_page_px": [280, 0, 400, 9]},
+        {"measure_index": 2, "bbox_page_px": [400, 0, 560, 9]},
+    ]}
+    assert _measure_for(staff, 300)["measure_index"] == 1
+    assert _measure_for(staff, 150)["measure_index"] == 0
+    assert _measure_for(staff, 450)["measure_index"] == 2
+    # the shape of the bug: a width reading puts every right edge past the page
+    assert _measure_for(staff, 540)["measure_index"] == 2
 
 
 def test_a_hairpin_lands_on_the_measure_that_contains_it():
