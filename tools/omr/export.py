@@ -1132,16 +1132,75 @@ def measure_direction_words(measure: dict[str, Any]) -> list[tuple[float, str, s
     return out
 
 
+#: The two hairpin classes and the `<wedge>` type each opens with.
+_HAIRPIN_TYPES = {
+    "dynamicCrescendoHairpin": "crescendo",
+    "dynamicDiminuendoHairpin": "diminuendo",
+}
+
+
+def measure_wedges(detections: list[dict[str, Any]]) -> list[tuple[float, str, str]]:
+    """`(x, "wedge", "crescendo|diminuendo|stop#N")` for each hairpin.
+
+    THE NINTH SIGNAL DETECTED AND NEVER EXPORTED, and the last one on
+    `export_coverage.KNOWN_GAPS` that could be closed without touching the
+    detector. That entry said the gap could not be priced from the inventory
+    alone because detection is only partial; `score_translation` priced it —
+    **9 hairpins read across three works and every one discarded**, against 17
+    `<wedge>` elements of truth. Detection is not the problem it was taken for:
+    Mahler 5 reads 4 where the truth has 3 hairpins, Tchaikovsky 6 reads 3 of 3.
+
+    A hairpin is a SPAN, so unlike every other direction here it emits TWO
+    elements — an opening `<wedge type="crescendo">` and a `<wedge type="stop">`
+    — and the pair carries a `number` so overlapping spans stay distinguishable.
+    The number is the smallest one not currently open, which is how MusicXML
+    itself uses it.
+
+    ⚠️ **A HAIRPIN CROSSING A BARLINE IS EXPORTED AS TWO, and that is a known
+    limitation rather than an oversight.** Cells are cut per measure, so the
+    detector sees two fragments — exactly the position slurs were in before
+    `annotate_slurs_in_staff` paired them over the staff in page pixels. One
+    case in the measured corpus is a real split (Mahler's staff 18, a crescendo
+    running to the right edge of m4 and resuming at x=0 of m5), so the cost is
+    one wedge pair over three works. Pairing them wants the slur machinery,
+    which lives at four call sites; this lives at one, and `measure_directions`
+    is that one on purpose.
+    """
+    spans = []
+    for det in detections:
+        kind = _HAIRPIN_TYPES.get(det.get("class") or "")
+        box = det.get("bbox")
+        if kind and box and len(box) == 4 and box[2] > 0:
+            spans.append((float(box[0]), float(box[0]) + float(box[2]), kind))
+    if not spans:
+        return []
+
+    events: list[tuple[float, str, str]] = []
+    open_at: dict[int, float] = {}
+    for x0, x1, kind in sorted(spans):
+        # The smallest number not spanning this x — MusicXML's own convention.
+        for n in range(1, len(spans) + 2):
+            if open_at.get(n, -1.0) <= x0:
+                break
+        open_at[n] = x1
+        events.append((x0, "wedge", f"{kind}#{n}"))
+        events.append((x1, "wedge", f"stop#{n}"))
+    return sorted(events)
+
+
 def measure_directions(measure: dict[str, Any]) -> list[tuple[float, str, str]]:
     """Every `<direction>` on a measure, as `(x_canonical, kind, text)`.
 
-    Two sources with nothing in common but where they end up: the DYNAMICS the
-    detector drew as glyphs, and the WORDS `direction_text` read with OCR. One
-    entry point for both so a caller asks "what marks does this measure carry"
-    rather than assembling the answer itself — there is more than one place in
-    this file that emits a measure, and they must not drift.
+    Three sources with nothing in common but where they end up: the DYNAMICS and
+    the HAIRPINS the detector drew as glyphs, and the WORDS `direction_text`
+    read with OCR. One entry point for all of them so a caller asks "what marks
+    does this measure carry" rather than assembling the answer itself — there is
+    more than one place in this file that emits a measure, and they must not
+    drift.
     """
-    return (measure_dynamics(measure.get("detections", []))
+    dets = measure.get("detections", [])
+    return (measure_dynamics(dets)
+            + measure_wedges(dets)
             + measure_direction_words(measure))
 
 
@@ -1154,6 +1213,14 @@ def _mxl_direction(item: tuple[str, str], indent: str) -> str:
     would be charged twice over. So the kind travels with the text.
     """
     kind, word = item
+    if kind == "wedge":
+        wedge_type, _, number = word.partition("#")
+        return (f'{indent}<direction placement="below">\n'
+                f"{indent}  <direction-type>\n"
+                f'{indent}    <wedge number="{number or 1}" '
+                f'type="{wedge_type}"/>\n'
+                f"{indent}  </direction-type>\n"
+                f"{indent}</direction>")
     if kind == "words":
         return (f'{indent}<direction placement="below">\n'
                 f"{indent}  <direction-type>\n"

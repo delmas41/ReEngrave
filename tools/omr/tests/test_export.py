@@ -14,6 +14,9 @@ import pytest
 from tools.omr.voicing import group_chords_in_measure
 
 from tools.omr.export import (
+    measure_wedges,
+    measure_directions,
+    _mxl_direction,
     annotate_beams,
     annotate_fermatas,
     annotate_slurs_in_slot,
@@ -269,6 +272,72 @@ def _tiny_result_empty_measure(time_sig):
             }],
         }],
     }
+
+
+class TestHairpinsReachTheFile:
+    """THE NINTH EXPORT GAP, and the last on `KNOWN_GAPS` closable without the
+    detector. `score_translation` priced it: 9 hairpins read across three works
+    and every one discarded, against 17 `<wedge>` of truth. Detection was never
+    the problem it was taken for — Tchaikovsky 6 reads 3 of 3.
+    """
+
+    @staticmethod
+    def _hp(cls, x, w=200):
+        return {"class": cls, "category": "dynamic", "confidence": 0.9,
+                "bbox": [x, 40, w, 20]}
+
+    def test_a_hairpin_emits_an_opening_and_a_stop(self):
+        got = measure_wedges([self._hp("dynamicCrescendoHairpin", 100)])
+        assert [(k, v) for _x, k, v in got] == [
+            ("wedge", "crescendo#1"), ("wedge", "stop#1")]
+
+    def test_the_stop_sits_at_the_hairpin_s_right_edge(self):
+        got = measure_wedges([self._hp("dynamicDiminuendoHairpin", 100, w=250)])
+        assert [x for x, _k, _v in got] == [100.0, 350.0]
+
+    def test_diminuendo_is_its_own_type(self):
+        got = measure_wedges([self._hp("dynamicDiminuendoHairpin", 10)])
+        assert got[0][2].startswith("diminuendo")
+
+    def test_two_separate_hairpins_may_share_a_number(self):
+        """They do not overlap, so one number is unambiguous — and it is what
+        MusicXML itself does."""
+        got = measure_wedges([self._hp("dynamicCrescendoHairpin", 0, 100),
+                              self._hp("dynamicDiminuendoHairpin", 500, 100)])
+        assert [v for _x, _k, v in got] == [
+            "crescendo#1", "stop#1", "diminuendo#1", "stop#1"]
+
+    def test_overlapping_hairpins_get_distinct_numbers(self):
+        """⚠️ Two spans open at once are exactly what `number` exists for; one
+        number for both would make the pairing ambiguous."""
+        got = measure_wedges([self._hp("dynamicCrescendoHairpin", 0, 800),
+                              self._hp("dynamicDiminuendoHairpin", 400, 800)])
+        numbers = {v.split("#")[1] for _x, _k, v in got}
+        assert numbers == {"1", "2"}
+
+    def test_a_detection_with_no_width_is_not_a_span(self):
+        assert measure_wedges([self._hp("dynamicCrescendoHairpin", 10, w=0)]) == []
+
+    def test_a_non_hairpin_dynamic_is_not_a_wedge(self):
+        assert measure_wedges([{"class": "dynamicF", "bbox": [0, 0, 10, 10]}]) == []
+
+    def test_they_travel_through_the_one_direction_entry_point(self):
+        """⚠️ `measure_directions` is the single place both MusicXML emitters
+        ask what marks a measure carries. Wedges go there rather than to a fifth
+        call site."""
+        m = {"detections": [self._hp("dynamicCrescendoHairpin", 100)]}
+        kinds = {k for _x, k, _v in measure_directions(m)}
+        assert "wedge" in kinds
+
+    def test_the_musicxml_is_a_direction_carrying_a_wedge(self):
+        xml = _mxl_direction(("wedge", "crescendo#2"), "  ")
+        assert '<wedge number="2" type="crescendo"/>' in xml
+        assert "<direction-type>" in xml and "</direction>" in xml
+
+    def test_a_score_with_no_hairpins_emits_no_wedge(self):
+        """Additive: the eight benchmark works without hairpins export
+        byte-identically across this change."""
+        assert "<wedge" not in to_musicxml(_tiny_result())
 
 
 class TestEventlessMeasureKeepsItsMarks:

@@ -184,15 +184,21 @@ VISIBLE: dict[str, str] = {
 #: is a new gap and fails the test.
 KNOWN_GAPS: dict[str, str] = {
     "wedge": (
-        "NINTH GAP, open — and genuinely unclaimed: `git log --all -S wedge` "
-        "and `-S hairpin` over export.py and transcribe.py return nothing on "
-        "any branch. Mahler's truth has 6 hairpins; the detector finds 4 "
-        "(dynamicCrescendoHairpin x2, dynamicDiminuendoHairpin x2). Partial "
-        "detection, so unlike the eight above this is not purely an export "
-        "fix, and closing it cannot be priced from this inventory alone. "
-        "Widened to 11 works the truth carries 17 hairpins across three of them "
-        "— Mahler 5 (6), Tchaikovsky 6 (6), Brahms 4 (5) — three times what the "
-        "three-work corpus could show."
+        "CLOSED on the export side 2026-09-04 — hairpins now reach the file as "
+        "`<wedge>` (`export.measure_wedges`). This entry stays as the record of "
+        "what remains, because the gap was half detection and only that half is "
+        "left. `score_translation` priced it before the fix: 9 hairpins read "
+        "across three works and EVERY ONE discarded, against 17 `<wedge>` of "
+        "truth. After: 18 emitted against 17, with Tchaikovsky 6 exact at 6/6. "
+        "⚠️ Two errors remain and both have fix shapes already measured "
+        "elsewhere: (1) a hairpin CROSSING A BARLINE is detected as two "
+        "fragments and exported as two hairpins — the position slurs were in "
+        "before `annotate_slurs_in_staff`, and `_merge_arcs_across_barlines` is "
+        "already generic over arcs; (2) one of Mahler's lands on the staff "
+        "BELOW its own, which is the cross-staff attribution the dynamics band "
+        "work measured (`benchmarks/omr-dynamics-band-2026-09`). Together they "
+        "cost +11 OMR-NED edits over the three works, against -3 on the one "
+        "where detection is exact."
     ),
     "barline": (
         "Documented limitation — repeat signs are dropped on export, tied to "
