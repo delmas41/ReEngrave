@@ -21,7 +21,7 @@
     {
       "label": "Vs Audiveris",
       "value": "1<span class=\"unit\"> of 2 corpora</span>",
-      "note": "engraved: ahead, 0.1176 vs 0.1252 · scans: behind on the widened 11-row pool, 0.8345 vs 0.7919 (was ahead on the old 5-row pool)"
+      "note": "engraved: ahead in BOTH configs, 0.1127 / 0.1219 vs its 0.1252 · scans: behind on the widened pool, 0.8345 vs 0.7919 — one structural bucket, session dispatched"
     }
   ],
   "work_flags": {
@@ -106,6 +106,12 @@
     }
   ],
   "log": [
+    {
+      "date": "09-04",
+      "title": "Arc attribution merged and recorded — engraved 0.1127",
+      "negative": false,
+      "body": "The Opus arc session's rule (an arc belongs to the staff whose noteheads it hugs) merged and re-recorded: <b>0.1127 default / 0.1219 no-direction — both configurations now beat Audiveris's 0.1252</b>. Its mechanism correction split the wrong-owner class in two (the arc existed ONLY in the wrong staff — no duplicate to arbitrate), and it refused a better-scoring variant that got there by deleting 12 real slurs. Tie bucket attributed: mostly excerpt-boundary artifacts + one system-wide invented tie (Mozart 41, open with coordinates). Next: the scan staff-structure session (the +2,591 entire-staff bucket) is running."
+    },
     {
       "date": "09-04",
       "title": "Widening the scan pool reverses the scan verdict",
