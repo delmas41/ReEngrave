@@ -365,6 +365,7 @@ def align_to_layout(
     staff_positions: list[float] | None = None,
     part_positions: list[float] | None = None,
     absorbed: dict[int, list[int]] | None = None,
+    balance: bool = False,
 ) -> tuple[float, list[str | None] | list[int | None]]:
     """Align `n_staves` observed staves against one layout.
 
@@ -415,6 +416,37 @@ def align_to_layout(
         part_positions = [j / p_denom for j in range(n)]
     if part_clefs is None:
         part_clefs = [_default_clef(p) for p in layout.parts]
+
+    # ── EQUAL-COUNT BALANCE (opt-in, `balance=True`) ───────────────────────
+    # When the reference is THIS WORK'S OWN ROSTER and the page prints exactly
+    # as many staves as the roster has entries, THE ONLY ORDER-PRESERVING
+    # BIJECTION IS THE IDENTITY MAP. A skip must be paid for by a continuation
+    # elsewhere, and both are wrong by construction — so the DP's freedom to do
+    # it is freedom to be wrong. It uses that freedom: 7 of the 14 errors on
+    # the page-1-roster arm sit in equal-count systems (Brahms 14 v 14, Dvorak
+    # 15 v 15), and pinning the diagonal fixes exactly those 7 (0.903 -> 0.952).
+    #
+    # ⚠️⚠️ IT IS OPT-IN, NOT A GLOBAL FLAG, AND THAT SCOPING IS MEASURED. On a
+    # GENERIC LAYOUT reference the same rule COSTS accuracy: 137 -> 135 correct
+    # staves on the 20-row gate, because a 14-staff page matching a 14-part
+    # layout is a COINCIDENCE of counts, not evidence of an identity map. Only
+    # a roster — the work's own printed lineup — makes m == n mean what the
+    # argument needs it to mean. A first implementation gated this on an env
+    # flag for every caller and would have shipped that regression.
+    #
+    # ⚠️ WHAT IT CANNOT SEE: a page that DROPS one staff and ADDS another keeps
+    # the counts equal while the map is emphatically NOT the identity. No row in
+    # the 20-row gate has that shape, so this rule's safety there is UNTESTED
+    # and must not be claimed — `R1` is the guard for it.
+    # `return_indices`, `allow_merge` and `absorbed` callers are excluded
+    # outright rather than reasoned about.
+    if (balance and m == n and not allow_merge and not return_indices
+            and absorbed is None):
+        total = sum(
+            _pair_score(labels.get(i), clefs.get(i), staff_positions[i],
+                        layout.parts[i], part_positions[i], part_clefs[i])
+            for i in range(m))
+        return total, list(layout.parts)
 
     NEG = float("-inf")
     # dp[i][j]  — first i staves against first j parts, staff i free to be
@@ -500,6 +532,7 @@ def fit_layouts(
     labels: dict[int, str] | None = None,
     clefs: dict[int, str] | None = None,
     layouts: tuple[ScoreLayout, ...] = LAYOUTS,
+    balance: bool = False,
 ) -> LayoutFit | None:
     """What this system's staves are, by position — or None if it cannot say.
 
@@ -516,7 +549,8 @@ def fit_layouts(
         return None
     scored = []
     for layout in layouts:
-        total, assignment = align_to_layout(layout, n, labels, clefs)
+        total, assignment = align_to_layout(layout, n, labels, clefs,
+                                            balance=balance)
         scored.append((total / n, layout, assignment))
     scored.sort(key=lambda t: -t[0])
 

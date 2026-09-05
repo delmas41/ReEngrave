@@ -206,6 +206,18 @@ def tier_b(staves, roster_ed, have):
     return out
 
 
+def tier_c_balanced(staves, have):
+    """Derived identity WITH the equal-count balance constraint."""
+    clefs = {i: st["clef"] for i, st in enumerate(staves)
+             if st.get("clef_source") in RAW_CLEF_SOURCES and st.get("clef")}
+    fit = fit_layouts(len(staves), labels=None, clefs=clefs or None,
+                      balance=True)
+    if fit is None:
+        return {}
+    return {i: fit.assignment[i] for i in range(len(staves))
+            if fit.assignment[i] and i not in have}
+
+
 def tier_c(staves, have):
     """Derived: the score-order prior, labels hidden, read clefs only."""
     clefs = {i: st["clef"] for i, st in enumerate(staves)
@@ -219,7 +231,7 @@ def tier_c(staves, have):
 
 # ──────────────────────────────────────────────────────────────────────── arms
 
-def apply_arm(fx, roster, rid, *, use_b, use_c):
+def apply_arm(fx, roster, rid, *, use_b, use_c, balance=False):
     """Return (mutated copy, n_staves_supplied, n_applied).
 
     Only the ADDED staves are handed to the consumer, so it can never re-act on
@@ -239,7 +251,8 @@ def apply_arm(fx, roster, rid, *, use_b, use_c):
         if use_b:
             add.update(tier_b(staves, roster.get(edition_of(rid), {}), have))
         if use_c:
-            add.update(tier_c(staves, set(have) | set(add)))
+            fn = tier_c_balanced if balance else tier_c
+            add.update(fn(staves, set(have) | set(add)))
         for i, name in add.items():
             m = INST.lookup(name)
             if not m:
@@ -307,6 +320,7 @@ def main():
         arms["B_roster"] = dict(use_b=True, use_c=False)
         arms["C_derived"] = dict(use_b=False, use_c=True)
         arms["BC"] = dict(use_b=True, use_c=True)
+        arms["C_balanced"] = dict(use_b=False, use_c=True, balance=True)
 
     results = {}
     for arm, kw in arms.items():
