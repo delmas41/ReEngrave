@@ -30,7 +30,7 @@
       "leading_pickup": true,
       "confidence": "verified",
       "pooled": false,
-      "seconds": 80.5,
+      "seconds": 61.6,
       "truth": {
         "parts": 11,
         "measures": 10,

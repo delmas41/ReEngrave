@@ -221,6 +221,13 @@ The page total (11 cells vs true 10) crosses the row's stated re-admission
 bar ("segmentation reads ~10 measures"); the residual +1 is §4's spurious
 x=1518 split, present in both arms.
 
+The flag-ON arm was **re-run under the final code** (after the cue-A
+exemption and cue C's window-blind condition, `5a38d2e0`):
+`results-bach-choiron.json` reproduced byte-identically except the `seconds`
+timing field — the two corrections change nothing on the Bach page itself,
+as designed (cue A never fired here, and system 2's choir gaps are exactly
+the window-blind gaps condition 2 names).
+
 ### Guard 2 — flag OFF is byte-identical
 
 The flag-OFF arm on this branch **hash-matches the widened-graft baseline
