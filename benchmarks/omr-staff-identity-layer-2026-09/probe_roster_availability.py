@@ -27,46 +27,51 @@ nothing and a re-run costs only the unprobed documents.
     python3 .../probe_roster_availability.py --limit 120
     python3 .../report_roster_availability.py      # read the cache, probe nothing
 
-── INTERIM RESULT 2026-09-05, 71 of 234 documents ────────────────────────────
-⚠️ PARTIAL. The sweep cycles publishers, so a partial run SPANS houses rather
-than exhausting one — informative, not complete.
+── FINAL RESULT 2026-09-05, ALL 234 DOCUMENTS ────────────────────────────────
 
-    documents probed        71
-    roster ACQUIRED         53   (0.746)
-    no page yielded one     18   (0.254)
+    documents probed       234
+    roster ACQUIRED        172   (0.735)
+    no page yielded one     62   (0.265)
 
 DISTRIBUTION of best yield (named labels / staves) — NOT a mean, and it is
 BIMODAL, which is the finding:
 
-         0.00    10   0.141   <- hard zeros: the page prints no names at all
-    0.01-0.24     1   0.014
-    0.25-0.49     7   0.099
-    0.50-0.74    28   0.394
-    0.75-0.99    22   0.310
-         1.00     3   0.042
+         0.00    33   0.141   <- hard zeros: the page prints no names at all
+    0.01-0.24     4   0.017
+    0.25-0.49    25   0.107
+    0.50-0.74    80   0.342
+    0.75-0.99    78   0.333
+         1.00    14   0.060
 
-Only 8 documents of 71 sit in the ambiguous middle. A document tends either to
-name its staves or not to, so "roster acquired" is close to a binary property
-of the edition — which is what makes a per-document fallback decision clean.
+⭑ 14 of the 172 rosters (0.081) were acquired ONLY BEYOND THE FIRST THREE PAGES
+(pages 3, 5, 8, 12). **"Page 1" is the wrong unit**, confirmed at full scale: a
+per-page measurement would have written those documents off as unservable.
 
-⭑ 10 of the 53 rosters (0.189) were acquired ONLY BEYOND THE FIRST THREE PAGES
-(pages 5, 8 and 12). **"Page 1" is the wrong unit**, confirmed: a per-page
-measurement would have called these documents unservable.
-
-BY HOUSE — and the spread is wide, so no house-level prior is safe:
-    Eulenburg 7/7 · Litolff 7/7 · Universal 7/7 · Breitkopf 6/7 · Simrock 6/7
-    Bote 2/3 · Peters 4/7 · Durand 4/7 · Novello 3/7 · Ricordi 1/3
+BY HOUSE — the spread is wide and no house-level prior is safe:
+    Eulenburg 15/15 · Litolff 10/10 · Universal 9/9  (all 1.000)
+    other/unknown 57/73 · Simrock 9/12 · Peters 13/18 · Bote 2/3
+    **Breitkopf 45/69 = 0.652** · Durand 8/13 · Novello 3/7 · Ricordi 1/3
     Schott 0/1 · Augener 0/1
 
-BY COMPOSER, which does NOT track the house axis:
-    bruckner 8/8 · mahler 4/4 · berlioz 3/3 · beethoven 13/14 · brahms 5/6
-    bach 5/10 · elgar 2/5 · ravel 1/3 · **dvorak 0/2**
+⚠️⚠️ BREITKOPF IS BELOW AVERAGE, on the largest sample in the set (69
+documents). The house whose "labels every staff" observation this workstream's
+entire measurement design was built on acquires a roster in under two thirds of
+its own documents. That is the final refutation of the house prior, and it
+comes from the house that inspired it.
 
-⚠️ Dvorak reads 0/2 while Simrock reads 6/7 — the same house that supplied the
-20-row gate's fully-labelled Dvorak page. Composer and publisher are separate
-axes here and neither predicts the other; this is the per-EDITION rule again,
-now visible from two directions at once.
-"""
+BY COMPOSER, which does NOT track the house axis:
+    mahler 10/10 · bruckner 9/9 · strauss 8/8 · beethoven 16/17 · brahms 11/12
+    tchaikovsky 11/14 · haydn 10/14 · mendelssohn 4/7
+    **mozart 15/26 = 0.577** · bach 5/10 · dvorak 3/7 = 0.429
+
+⚠️ Dvorak 3/7 against Simrock 9/12; Mozart 0.577 against Breitkopf 0.652.
+Composer and publisher are separate axes and neither predicts the other — the
+per-EDITION rule, now from a third direction and at full scale.
+
+⚠️ 0.735 IS A FLOOR, NOT A MEASUREMENT OF WHAT EDITIONS PRINT. See
+`probe_zero_population_split.py`: of the 62 misses, 29 are PARTIAL reads failed
+by this probe's own 0.50 `HIT_YIELD` bar and only 30 are genuine edition
+limits. """
 from __future__ import annotations
 
 import argparse
