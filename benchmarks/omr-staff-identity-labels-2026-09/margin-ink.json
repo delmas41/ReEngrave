@@ -950,92 +950,12 @@
   "verdict": "a_NO_INK"
  },
  {
-  "row_id": "brahms-sym1-mvt1-317803-p1",
-  "system": 0,
-  "position": 5,
-  "ink_px": 4040,
-  "band_px": 262528,
-  "xcut": 1172,
-  "spacing": 32.0,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p2",
-  "system": 0,
-  "position": 5,
-  "ink_px": 1791,
-  "band_px": 112519,
-  "xcut": 583,
-  "spacing": 27.5,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p2",
-  "system": 0,
-  "position": 6,
-  "ink_px": 2590,
-  "band_px": 111936,
-  "xcut": 583,
-  "spacing": 27.5,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p2",
-  "system": 0,
-  "position": 7,
-  "ink_px": 4922,
-  "band_px": 113102,
-  "xcut": 583,
-  "spacing": 27.5,
-  "verdict": "INK_look"
- },
- {
   "row_id": "brahms-sym1-mvt1-317803-p2",
   "system": 1,
   "position": 5,
   "ink_px": 2305,
   "band_px": 114000,
   "xcut": 600,
-  "spacing": 27.2,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p2",
-  "system": 1,
-  "position": 6,
-  "ink_px": 3114,
-  "band_px": 114600,
-  "xcut": 600,
-  "spacing": 27.2,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p3",
-  "system": 0,
-  "position": 5,
-  "ink_px": 2115,
-  "band_px": 113620,
-  "xcut": 598,
-  "spacing": 27.2,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p3",
-  "system": 0,
-  "position": 6,
-  "ink_px": 2966,
-  "band_px": 113620,
-  "xcut": 598,
-  "spacing": 27.2,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p3",
-  "system": 0,
-  "position": 7,
-  "ink_px": 5157,
-  "band_px": 113022,
-  "xcut": 598,
   "spacing": 27.2,
   "verdict": "INK_look"
  },
@@ -1050,104 +970,24 @@
   "verdict": "INK_look"
  },
  {
-  "row_id": "brahms-sym1-mvt1-317803-p3",
-  "system": 1,
-  "position": 6,
-  "ink_px": 3718,
-  "band_px": 115008,
-  "xcut": 599,
-  "spacing": 27.5,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p3",
-  "system": 1,
-  "position": 7,
-  "ink_px": 4730,
-  "band_px": 115008,
-  "xcut": 599,
-  "spacing": 27.5,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p4",
+  "row_id": "mahler-sym5-mvt1-local-p3",
   "system": 0,
-  "position": 5,
-  "ink_px": 1687,
-  "band_px": 116788,
-  "xcut": 602,
-  "spacing": 27.8,
-  "verdict": "INK_look"
+  "position": 2,
+  "ink_px": 0,
+  "band_px": 73800,
+  "xcut": 410,
+  "spacing": 25.8,
+  "verdict": "a_NO_INK"
  },
  {
-  "row_id": "brahms-sym1-mvt1-317803-p4",
-  "system": 0,
-  "position": 6,
-  "ink_px": 2436,
-  "band_px": 116788,
-  "xcut": 602,
-  "spacing": 27.8,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p4",
-  "system": 0,
-  "position": 7,
-  "ink_px": 3798,
-  "band_px": 116186,
-  "xcut": 602,
-  "spacing": 27.8,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p4",
-  "system": 1,
-  "position": 5,
-  "ink_px": 2026,
-  "band_px": 115800,
-  "xcut": 600,
-  "spacing": 27.8,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p4",
-  "system": 1,
-  "position": 6,
-  "ink_px": 1852,
-  "band_px": 116400,
-  "xcut": 600,
-  "spacing": 27.8,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "brahms-sym1-mvt1-317803-p4",
-  "system": 1,
-  "position": 7,
-  "ink_px": 3923,
-  "band_px": 117000,
-  "xcut": 600,
-  "spacing": 27.8,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "mahler-sym5-mvt1-local-p2",
+  "row_id": "mahler-sym5-mvt1-local-p3",
   "system": 0,
   "position": 4,
-  "ink_px": 11643,
-  "band_px": 145886,
-  "xcut": 806,
+  "ink_px": 0,
+  "band_px": 73390,
+  "xcut": 410,
   "spacing": 25.8,
-  "verdict": "INK_look"
- },
- {
-  "row_id": "mahler-sym5-mvt1-local-p2",
-  "system": 0,
-  "position": 6,
-  "ink_px": 1067,
-  "band_px": 145080,
-  "xcut": 806,
-  "spacing": 25.8,
-  "verdict": "INK_look"
+  "verdict": "a_NO_INK"
  },
  {
   "row_id": "mahler-sym5-mvt1-local-p4",

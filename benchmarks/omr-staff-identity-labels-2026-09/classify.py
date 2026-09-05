@@ -113,7 +113,18 @@ def main() -> int:
                     h = lookup(tname)
                     tinst = h.instrument.name if (h and h.instrument) else None
                 reads = {k: v for k, v in s["reads"].items() if v}
-                resolved = s["resolved"]
+                # ⚠️ THE LADDER'S ANSWER, not the best rung's. `_labels_for_page`
+                # stops early, replaces the text layer with Surya only on a
+                # usable-count comparison, and merges Tesseract on RAW label
+                # presence — so a staff Surya answered unresolvably is closed to
+                # the rung below. Scoring the per-rung best would credit reach
+                # the pipeline does not have. `reads` stays as the reader
+                # ceiling, and the two are reported side by side.
+                resolved = s.get("ladder_resolved")
+                if resolved is None and s.get("ladder_text"):
+                    reads = {"ladder": s["ladder_text"]}
+                elif s.get("ladder_text"):
+                    reads = {"ladder": s["ladder_text"]}
                 if resolved:
                     if tinst is None:
                         cls = "RESOLVED_no_truth"

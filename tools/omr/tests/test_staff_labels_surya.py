@@ -481,3 +481,71 @@ def test_a_block_that_swallows_the_whole_crop_is_rejected_not_assigned():
     # what the gate actually reads.
     assert "X" not in labels.values(), labels
     assert labels == {0: "Ob."}, labels
+
+
+# ── the shared-block rule ───────────────────────────────────────────────────
+# `_assign` is pure and imports nothing from surya, so these run everywhere —
+# no venv, no model, no page. They pin the RULE; the corpus measurement that
+# set the constant lives in `benchmarks/omr-staff-identity-labels-2026-09/`.
+
+def _worker():
+    import importlib.util
+    from pathlib import Path
+    path = Path(__file__).resolve().parents[1] / "_surya_worker.py"
+    spec = importlib.util.spec_from_file_location("_surya_worker_undertest", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+class TestSharedMarginBlock:
+    """A name engraved once across a braced pair belongs to BOTH staves.
+
+    An engraver writes `Sechs Hörner in F` — or a bare `Hr.` — once, centred
+    in the gap between the two horn staves, and prints only `(C)` and `(Es)`
+    beside the individual ones. Snapping that block to its nearer tick gives
+    the name to one staff and leaves the other holding a key the lexicon
+    cannot read: measured at 11 staves over 5 rows and 2 publishers.
+    """
+
+    TICKS = [100.0, 200.0, 300.0, 400.0]
+    IDX = [0, 1, 2, 3]
+
+    def test_a_midway_block_reaches_both_staves(self):
+        got = _worker()._assign(
+            [("(C)", 300.0, 20.0), ("Hr.", 350.0, 20.0), ("(Es)", 400.0, 20.0)],
+            self.TICKS, self.IDX)
+        assert got[2] == "(C) Hr."
+        assert got[3] == "(Es) Hr."
+
+    def test_a_block_on_its_own_tick_is_not_shared(self):
+        """The rule must not fire on an ordinary label. Measured, the two
+        populations are 0.017-0.133 off centre and 0.431 or more; this sits at
+        1.0, as far from midway as a block between two ticks can be."""
+        got = _worker()._assign([("Ob.", 200.0, 20.0)], self.TICKS, self.IDX)
+        assert got == {1: "Ob."}
+
+    def test_the_unit_is_the_LOCAL_gap_not_the_mean_spacing(self):
+        """An engraver opens the gap BETWEEN families, so a shared name there
+        sits further from either tick than a mean-spacing tolerance allows:
+        `4 Hörner` on Brahms 1 measures 0.565 mean spacings from its nearer
+        tick and was DISCARDED by `_TOLERANCE`, while in its own local gap it
+        is 0.043 off centre. Ticks 100/200/300/700 — the last gap is four
+        times the others, which is what makes the two units disagree."""
+        ticks = [100.0, 200.0, 300.0, 700.0]
+        got = _worker()._assign([("Hr.", 500.0, 20.0)], ticks, [0, 1, 2, 3])
+        assert got == {2: "Hr.", 3: "Hr."}, got
+
+    def test_a_label_outside_the_tick_range_is_never_shared(self):
+        """Above the first staff or below the last there is no pair to share
+        between, and the old nearest-tick path must still own that case."""
+        got = _worker()._assign([("Fl.", 60.0, 20.0)], self.TICKS, self.IDX)
+        assert got == {0: "Fl."}
+
+    def test_a_runaway_block_is_still_rejected_before_sharing(self):
+        """Sharing is additive and must not reopen the gate the blob fix
+        closed: a block that swallows the crop is dropped even when it happens
+        to sit midway between two ticks."""
+        got = _worker()._assign([("everything", 350.0, 900.0)],
+                                self.TICKS, self.IDX)
+        assert got == {}

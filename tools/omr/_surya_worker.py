@@ -86,6 +86,53 @@ def _lines(predictor, image) -> list[tuple[str, float, float]]:
 _RUNAWAY_HEIGHT_FRACTION = 0.5
 
 
+#: How far off centre, as a fraction of the LOCAL gap between two ticks, a
+#: block may sit and still be read as belonging to BOTH of them. 0.0 is exactly
+#: midway; 1.0 is exactly on a tick.
+#:
+#: An engraver writes a name that serves a braced pair ONCE, centred in the gap
+#: between the two staves — `Sechs Hörner in F` across Mahler's horn pair,
+#: `Hr.` across Breitkopf's, with only `(C)` and `(Es)` beside the individual
+#: staves. Snapping such a block to its nearer tick gives the name to one staff
+#: and leaves the other holding a key the lexicon cannot read.
+#:
+#: ⚠️ THE UNIT IS THE LOCAL GAP, NOT THE MEAN SPACING, and that is not a
+#: refinement — it changes the answer. An engraver opens the gap BETWEEN
+#: families, so Brahms 1's wind/brass boundary is half again its within-family
+#: gap: measured in mean spacings, `4 Hörner` on that page sits 0.565 from its
+#: nearer tick and is thrown away by `_TOLERANCE` as belonging to no staff,
+#: while in its own local gap it is 0.043 off centre — as centred as a shared
+#: label gets. Two of the shared blocks in the corpus were being DISCARDED for
+#: this reason, not merely misassigned.
+#:
+#: Measured over 255 blocks lying between two ticks, on 20 pages of 5
+#: publishers (`benchmarks/omr-staff-identity-labels-2026-09/`,
+#: `probe_centredness.py`): 13 blocks score 0.017-0.133 and every one is a real
+#: shared label or an unreadable numeral; the next is 0.195 and the population
+#: of ordinary one-staff labels begins at 0.431. The constant sits in the empty
+#: band between 0.133 and 0.195, and the sweep is flat either side of it.
+_SHARE_CENTREDNESS = 0.15
+
+
+def _shared_pair(y: float, tick_ys: list[float]) -> tuple[int, int] | None:
+    """The two ticks a block sits centred BETWEEN, or None.
+
+    Requires the block to lie inside the pair (not beyond either), so a label
+    printed above the first staff or below the last is never shared.
+    """
+    for i in range(len(tick_ys) - 1):
+        lo, hi = tick_ys[i], tick_ys[i + 1]
+        if not (lo <= y <= hi):
+            continue
+        gap = hi - lo
+        if gap <= 0:
+            return None
+        if abs((y - lo) - (hi - y)) / gap <= _SHARE_CENTREDNESS:
+            return i, i + 1
+        return None
+    return None
+
+
 def _assign(lines, tick_ys, staff_indices) -> dict[int, str]:
     """Map each block to the staff whose tick it sits nearest.
 
@@ -95,6 +142,11 @@ def _assign(lines, tick_ys, staff_indices) -> dict[int, str]:
     the crop at all, and forcing it onto the nearest tick turns "the OCR did
     not segment" into "this staff plays the piccolo", a confident wrong
     instrument rather than an honest abstention.
+
+    A block centred BETWEEN two ticks is given to both — see
+    `_SHARE_CENTREDNESS`. That is additive: it never takes a block away from
+    the staff that would have had it, so a page with no shared label is
+    assigned exactly as before.
     """
     if not tick_ys or len(tick_ys) != len(staff_indices):
         return {}
@@ -108,6 +160,14 @@ def _assign(lines, tick_ys, staff_indices) -> dict[int, str]:
         if height > height_cap:
             continue
         distances = [abs(y - t) for t in tick_ys]
+        pair = _shared_pair(y, tick_ys)
+        if pair is not None:
+            # Both members, each at its own distance so the join below still
+            # orders a wrapped label's lines by nearness on each staff.
+            for k in pair:
+                per_staff.setdefault(staff_indices[k], []).append(
+                    (distances[k], text))
+            continue
         best = min(range(len(distances)), key=distances.__getitem__)
         if distances[best] > tolerance:
             continue

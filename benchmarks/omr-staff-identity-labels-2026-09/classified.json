@@ -345,8 +345,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "Flauti.",
-    "tesseract": "Flauti."
+    "ladder": "Flauti."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -361,8 +360,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "Obol.",
-    "tesseract": "Oboi."
+    "ladder": "Obol."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -377,8 +375,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "Clarinetti in B.",
-    "tesseract": "Clarinetti in B."
+    "ladder": "Clarinetti in B."
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -393,8 +390,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "Fagotti.",
-    "tesseract": "Fagotti."
+    "ladder": "Fagotti."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -409,8 +405,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "Corni in Es.",
-    "tesseract": "Corni Es. in"
+    "ladder": "Corni in Es."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -425,8 +420,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "Trombe in C.",
-    "tesseract": "Trombe inC."
+    "ladder": "Trombe in C."
    },
    "resolved": "Trumpet",
    "resolved_by": "surya",
@@ -441,8 +435,7 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "surya": "Timpani in C.G.",
-    "tesseract": "inC.G,. Timpani"
+    "ladder": "Timpani in C.G."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -457,8 +450,7 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "surya": "Violino I.",
-    "tesseract": "Violino I."
+    "ladder": "Violino I."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -473,8 +465,7 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "surya": "Violino II.",
-    "tesseract": "Violino I."
+    "ladder": "Violino II."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -489,8 +480,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "surya": "Viola.",
-    "tesseract": "Viola."
+    "ladder": "Viola."
    },
    "resolved": "Viola",
    "resolved_by": "surya",
@@ -505,8 +495,7 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "surya": "Violoncello.",
-    "tesseract": "Violoncello."
+    "ladder": "Violoncello."
    },
    "resolved": "Cello",
    "resolved_by": "surya",
@@ -521,8 +510,7 @@
    "staff_index": 11,
    "position": 11,
    "reads": {
-    "surya": "Basso.",
-    "tesseract": "Basso."
+    "ladder": "Basso."
    },
    "resolved": "Bass voice",
    "resolved_by": "surya",
@@ -537,8 +525,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "Fl.",
-    "tesseract": "Fi."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -553,8 +540,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": "Od."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -569,8 +555,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "Cl.",
-    "tesseract": "Cl."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -585,8 +570,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "Fag"
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -601,8 +585,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "Cor.",
-    "tesseract": "Cor."
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -617,8 +600,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "Tr.",
-    "tesseract": "Tr."
+    "ladder": "Tr."
    },
    "resolved": "Trumpet",
    "resolved_by": "surya",
@@ -633,8 +615,7 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "surya": "Tp.",
-    "tesseract": "Tp."
+    "ladder": "Tp."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -701,8 +682,7 @@
    "staff_index": 11,
    "position": 0,
    "reads": {
-    "surya": "Fl.",
-    "tesseract": "Fi."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -717,8 +697,7 @@
    "staff_index": 12,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -733,8 +712,7 @@
    "staff_index": 13,
    "position": 2,
    "reads": {
-    "surya": "Cl.",
-    "tesseract": "C}."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -749,8 +727,7 @@
    "staff_index": 14,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -765,8 +742,7 @@
    "staff_index": 15,
    "position": 4,
    "reads": {
-    "surya": "Cor.",
-    "tesseract": "Cor."
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -781,8 +757,7 @@
    "staff_index": 16,
    "position": 5,
    "reads": {
-    "surya": "Tr.",
-    "tesseract": "Tr."
+    "ladder": "Tr."
    },
    "resolved": "Trumpet",
    "resolved_by": "surya",
@@ -797,8 +772,7 @@
    "staff_index": 17,
    "position": 6,
    "reads": {
-    "surya": "Tp.",
-    "tesseract": "Tr."
+    "ladder": "Tp."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -865,8 +839,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "Fl.",
-    "tesseract": "Fl."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -881,8 +854,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": ", | Od."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -897,7 +869,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "Cl."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -912,8 +884,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -928,8 +899,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "Cor.",
-    "tesseract": "Cor. }"
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -944,8 +914,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "Tr.",
-    "tesseract": "Tr."
+    "ladder": "Tr."
    },
    "resolved": "Trumpet",
    "resolved_by": "surya",
@@ -960,8 +929,7 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "surya": "Tp.",
-    "tesseract": "Tp."
+    "ladder": "Tp."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -1028,8 +996,7 @@
    "staff_index": 11,
    "position": 0,
    "reads": {
-    "surya": "Fl.",
-    "tesseract": "Fl."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -1044,8 +1011,7 @@
    "staff_index": 12,
    "position": 1,
    "reads": {
-    "surya": "Cl.",
-    "tesseract": "Cl."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -1060,8 +1026,7 @@
    "staff_index": 13,
    "position": 2,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "Fa"
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -1076,8 +1041,7 @@
    "staff_index": 14,
    "position": 3,
    "reads": {
-    "surya": "Cor.",
-    "tesseract": "Cor."
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -1144,8 +1108,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "Fl.",
-    "tesseract": "F}."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -1160,8 +1123,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -1176,8 +1138,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "Cl.",
-    "tesseract": "Cl."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -1192,8 +1153,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -1208,8 +1168,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "Cor.",
-    "tesseract": "Cor."
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -1224,8 +1183,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "Tr.",
-    "tesseract": "Tr."
+    "ladder": "Tr."
    },
    "resolved": "Trumpet",
    "resolved_by": "surya",
@@ -1305,8 +1263,7 @@
    "staff_index": 11,
    "position": 0,
    "reads": {
-    "surya": "Fl.",
-    "tesseract": "Fl."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -1321,8 +1278,7 @@
    "staff_index": 12,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -1337,8 +1293,7 @@
    "staff_index": 13,
    "position": 2,
    "reads": {
-    "surya": "Cl.",
-    "tesseract": "Cl."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -1353,8 +1308,7 @@
    "staff_index": 14,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -1369,8 +1323,7 @@
    "staff_index": 15,
    "position": 4,
    "reads": {
-    "surya": "Cor.",
-    "tesseract": "Cor."
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -1385,8 +1338,7 @@
    "staff_index": 16,
    "position": 5,
    "reads": {
-    "surya": "Tr.",
-    "tesseract": "Tr."
+    "ladder": "Tr."
    },
    "resolved": "Trumpet",
    "resolved_by": "surya",
@@ -1401,8 +1353,7 @@
    "staff_index": 17,
    "position": 6,
    "reads": {
-    "surya": "Tp.",
-    "tesseract": "Tp."
+    "ladder": "Tp."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -1469,9 +1420,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "text_layer": "Flauti.",
-    "surya": "Flauti.",
-    "tesseract": "Flauti."
+    "ladder": "Flauti."
    },
    "resolved": "Flute",
    "resolved_by": "text_layer",
@@ -1486,9 +1435,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "text_layer": "Oboi.",
-    "surya": "Oboi.",
-    "tesseract": "Oboi."
+    "ladder": "Oboi."
    },
    "resolved": "Oboe",
    "resolved_by": "text_layer",
@@ -1503,9 +1450,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "text_layer": "Clarinetti in B.",
-    "surya": "Clarinetti in B.",
-    "tesseract": "Clarinetti in B."
+    "ladder": "Clarinetti in B."
    },
    "resolved": "Clarinet",
    "resolved_by": "text_layer",
@@ -1520,9 +1465,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "text_layer": "Fagotti.",
-    "surya": "Fagotti.",
-    "tesseract": "Fagotti."
+    "ladder": "Fagotti."
    },
    "resolved": "Bassoon",
    "resolved_by": "text_layer",
@@ -1537,9 +1480,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "text_layer": "Corni in Es.",
-    "surya": "Corni in Es.",
-    "tesseract": "Corni Es. in"
+    "ladder": "Corni in Es."
    },
    "resolved": "Horn",
    "resolved_by": "text_layer",
@@ -1554,9 +1495,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "text_layer": "Trombe inC.",
-    "surya": "Trombe in C.",
-    "tesseract": "Trombe inC."
+    "ladder": "Trombe inC."
    },
    "resolved": "Trumpet",
    "resolved_by": "text_layer",
@@ -1571,9 +1510,7 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "text_layer": "Timpani in C.G.",
-    "surya": "Timpani in C.G.",
-    "tesseract": "inC.G. Timpani"
+    "ladder": "Timpani in C.G."
    },
    "resolved": "Timpani",
    "resolved_by": "text_layer",
@@ -1588,9 +1525,7 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "text_layer": "Violino ].",
-    "surya": "Violino I.",
-    "tesseract": "Violino I."
+    "ladder": "Violino ]."
    },
    "resolved": "Violin",
    "resolved_by": "text_layer",
@@ -1605,12 +1540,10 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "text_layer": "Yiolino II.",
-    "surya": "Violino II.",
-    "tesseract": "Violino II."
+    "ladder": "Yiolino II."
    },
    "resolved": "Violin",
-   "resolved_by": "surya",
+   "resolved_by": "text_layer",
    "truth_name": "Violino II",
    "truth_instrument": "Violin",
    "class": "RESOLVED_OK",
@@ -1622,9 +1555,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "text_layer": "Viola.",
-    "surya": "Viola.",
-    "tesseract": "Viola."
+    "ladder": "Viola."
    },
    "resolved": "Viola",
    "resolved_by": "text_layer",
@@ -1639,9 +1570,7 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "text_layer": "Violoncello.",
-    "surya": "Violoncello.",
-    "tesseract": "Violoncello."
+    "ladder": "Violoncello."
    },
    "resolved": "Cello",
    "resolved_by": "text_layer",
@@ -1656,9 +1585,7 @@
    "staff_index": 11,
    "position": 11,
    "reads": {
-    "text_layer": "Basso.",
-    "surya": "Basso.",
-    "tesseract": "Basso."
+    "ladder": "Basso."
    },
    "resolved": "Bass voice",
    "resolved_by": "text_layer",
@@ -1673,8 +1600,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "text_layer": "Fl",
-    "surya": "Fl."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "text_layer",
@@ -1689,9 +1615,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "text_layer": "Ob",
-    "surya": "Ob.",
-    "tesseract": "I Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "text_layer",
@@ -1706,9 +1630,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "text_layer": "Cl.",
-    "surya": "Cl.",
-    "tesseract": "cl."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "text_layer",
@@ -1723,8 +1645,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "Fag"
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -1739,8 +1660,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "Cor.",
-    "tesseract": "Cor."
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -1755,9 +1675,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "text_layer": "Tr",
-    "surya": "Tr.",
-    "tesseract": "Tr."
+    "ladder": "Tr."
    },
    "resolved": "Trumpet",
    "resolved_by": "text_layer",
@@ -1772,9 +1690,7 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "text_layer": "Tp",
-    "surya": "Tp.",
-    "tesseract": "Tp."
+    "ladder": "Tp."
    },
    "resolved": "Timpani",
    "resolved_by": "text_layer",
@@ -1841,8 +1757,7 @@
    "staff_index": 11,
    "position": 0,
    "reads": {
-    "surya": "Fl.",
-    "tesseract": "Fl."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -1857,8 +1772,7 @@
    "staff_index": 12,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -1873,8 +1787,7 @@
    "staff_index": 13,
    "position": 2,
    "reads": {
-    "surya": "Cl.",
-    "tesseract": "Cl."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -1889,8 +1802,7 @@
    "staff_index": 14,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -1905,8 +1817,7 @@
    "staff_index": 15,
    "position": 4,
    "reads": {
-    "surya": "Cor.",
-    "tesseract": "Cor. |"
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -1921,8 +1832,7 @@
    "staff_index": 16,
    "position": 5,
    "reads": {
-    "surya": "Tr.",
-    "tesseract": "Tr."
+    "ladder": "Tr."
    },
    "resolved": "Trumpet",
    "resolved_by": "surya",
@@ -1937,8 +1847,7 @@
    "staff_index": 17,
    "position": 6,
    "reads": {
-    "surya": "Tp.",
-    "tesseract": "Tr."
+    "ladder": "Tp."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -2005,9 +1914,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "text_layer": "Fl.",
-    "surya": "Fl.",
-    "tesseract": "Fl."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "text_layer",
@@ -2022,9 +1929,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "text_layer": "Ob.",
-    "surya": "Ob.",
-    "tesseract": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "text_layer",
@@ -2039,8 +1944,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "text_layer": "Cl.",
-    "surya": "Cl."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "text_layer",
@@ -2055,9 +1959,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "text_layer": "fag.",
-    "surya": "Fag.",
-    "tesseract": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "text_layer",
@@ -2072,9 +1974,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "text_layer": "Cor.",
-    "surya": "Cor.",
-    "tesseract": "| Cor."
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "text_layer",
@@ -2089,9 +1989,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "text_layer": "Tr.",
-    "surya": "Tr.",
-    "tesseract": "Tr."
+    "ladder": "Tr."
    },
    "resolved": "Trumpet",
    "resolved_by": "text_layer",
@@ -2106,9 +2004,7 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "text_layer": "Tp.",
-    "surya": "Tp.",
-    "tesseract": "Tp."
+    "ladder": "Tp."
    },
    "resolved": "Timpani",
    "resolved_by": "text_layer",
@@ -2175,8 +2071,7 @@
    "staff_index": 11,
    "position": 0,
    "reads": {
-    "text_layer": "Fl",
-    "surya": "Fl."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "text_layer",
@@ -2191,9 +2086,7 @@
    "staff_index": 12,
    "position": 1,
    "reads": {
-    "text_layer": "Cl",
-    "surya": "Cl.",
-    "tesseract": "Ci."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "text_layer",
@@ -2208,9 +2101,7 @@
    "staff_index": 13,
    "position": 2,
    "reads": {
-    "text_layer": "Fa",
-    "surya": "Fag.",
-    "tesseract": "Fag"
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -2225,8 +2116,7 @@
    "staff_index": 14,
    "position": 3,
    "reads": {
-    "surya": "Cor.",
-    "tesseract": "Cor."
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -2293,8 +2183,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "text_layer": "Fl.",
-    "surya": "Fl."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "text_layer",
@@ -2309,9 +2198,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "text_layer": "Ob.",
-    "surya": "Ob.",
-    "tesseract": "Ob. It"
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "text_layer",
@@ -2326,9 +2213,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "text_layer": "Cl.",
-    "surya": "Cl.",
-    "tesseract": "Cl."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "text_layer",
@@ -2343,9 +2228,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "text_layer": "Fag",
-    "surya": "Fag.",
-    "tesseract": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "text_layer",
@@ -2360,9 +2243,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "text_layer": "Cor",
-    "surya": "Cor.",
-    "tesseract": "Cor."
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "text_layer",
@@ -2377,9 +2258,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "text_layer": "Tr.",
-    "surya": "Tr.",
-    "tesseract": "Tr."
+    "ladder": "Tr."
    },
    "resolved": "Trumpet",
    "resolved_by": "text_layer",
@@ -2459,9 +2338,7 @@
    "staff_index": 11,
    "position": 0,
    "reads": {
-    "text_layer": "Fl.",
-    "surya": "Fl.",
-    "tesseract": "FI."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "text_layer",
@@ -2476,8 +2353,7 @@
    "staff_index": 12,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -2492,9 +2368,7 @@
    "staff_index": 13,
    "position": 2,
    "reads": {
-    "text_layer": "Cl.",
-    "surya": "Cl.",
-    "tesseract": "Cl."
+    "ladder": "Cl."
    },
    "resolved": "Clarinet",
    "resolved_by": "text_layer",
@@ -2509,9 +2383,7 @@
    "staff_index": 14,
    "position": 3,
    "reads": {
-    "text_layer": "Fag",
-    "surya": "Fag.",
-    "tesseract": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "text_layer",
@@ -2526,8 +2398,7 @@
    "staff_index": 15,
    "position": 4,
    "reads": {
-    "surya": "Cor.",
-    "tesseract": "Cor."
+    "ladder": "Cor."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -2542,9 +2413,7 @@
    "staff_index": 16,
    "position": 5,
    "reads": {
-    "text_layer": "Tr.",
-    "surya": "Tr.",
-    "tesseract": "Tr."
+    "ladder": "Tr."
    },
    "resolved": "Trumpet",
    "resolved_by": "text_layer",
@@ -2559,9 +2428,7 @@
    "staff_index": 17,
    "position": 6,
    "reads": {
-    "text_layer": "Tp.",
-    "surya": "Tp.",
-    "tesseract": "Tp-"
+    "ladder": "Tp."
    },
    "resolved": "Timpani",
    "resolved_by": "text_layer",
@@ -2628,8 +2495,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "Flauti.",
-    "tesseract": "Flauti."
+    "ladder": "Flauti."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -2644,8 +2510,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "Oboi.",
-    "tesseract": "Oboi."
+    "ladder": "Oboi."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -2660,8 +2525,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "Clarinetti in A.",
-    "tesseract": "Clarinetti A. in"
+    "ladder": "Clarinetti in A."
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -2676,7 +2540,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "Fagotti."
+    "ladder": "Fagotti."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -2691,8 +2555,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "Corni I. II. in E.",
-    "tesseract": "Corni II. E. in |"
+    "ladder": "Corni I. II. in E."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -2707,8 +2570,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "Corni III. IV. in C.",
-    "tesseract": "Corni in C,"
+    "ladder": "Corni III. IV. in C."
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -2723,8 +2585,7 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "surya": "Trombe in E.",
-    "tesseract": "Trombe E. in"
+    "ladder": "Trombe in E."
    },
    "resolved": "Trumpet",
    "resolved_by": "surya",
@@ -2739,8 +2600,7 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "surya": "Tromboni I. II.",
-    "tesseract": "Tromboni I.II."
+    "ladder": "Tromboni I. II."
    },
    "resolved": "Trombone",
    "resolved_by": "surya",
@@ -2755,8 +2615,7 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "surya": "Trombone basso.",
-    "tesseract": "\u2018 Trombone"
+    "ladder": "Trombone basso."
    },
    "resolved": "Trombone",
    "resolved_by": "surya",
@@ -2771,8 +2630,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "surya": "Tympani A. E. H.",
-    "tesseract": "A.E.H. Tympani"
+    "ladder": "Tympani A. E. H."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -2787,8 +2645,7 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "surya": "Violino I.",
-    "tesseract": "Violino I."
+    "ladder": "Violino I."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -2803,8 +2660,7 @@
    "staff_index": 11,
    "position": 11,
    "reads": {
-    "surya": "Violino II.",
-    "tesseract": "| I. Violino"
+    "ladder": "Violino II."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -2819,8 +2675,7 @@
    "staff_index": 12,
    "position": 12,
    "reads": {
-    "surya": "Viola.",
-    "tesseract": "Viola."
+    "ladder": "Viola."
    },
    "resolved": "Viola",
    "resolved_by": "surya",
@@ -2835,8 +2690,7 @@
    "staff_index": 13,
    "position": 13,
    "reads": {
-    "surya": "Violoncello.",
-    "tesseract": "Violoncello."
+    "ladder": "Violoncello."
    },
    "resolved": "Cello",
    "resolved_by": "surya",
@@ -2851,8 +2705,7 @@
    "staff_index": 14,
    "position": 14,
    "reads": {
-    "surya": "Contrabasso.",
-    "tesseract": "| Contrabasso."
+    "ladder": "Contrabasso."
    },
    "resolved": "Contrabass",
    "resolved_by": "surya",
@@ -3036,7 +2889,7 @@
    "staff_index": 13,
    "position": 13,
    "reads": {
-    "tesseract": "|"
+    "ladder": "|"
    },
    "resolved": null,
    "resolved_by": null,
@@ -3454,8 +3307,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "2 Fl\u00f6ten",
-    "tesseract": "Flo6ten 2"
+    "ladder": "2 Fl\u00f6ten"
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -3470,8 +3322,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "2 Oboen",
-    "tesseract": "Oboen 2 \u00a9"
+    "ladder": "2 Oboen"
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -3486,8 +3337,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "2 Klarinetten in B",
-    "tesseract": "B ? Klarinetten in"
+    "ladder": "2 Klarinetten in B"
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -3502,8 +3352,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "2 Fagotte",
-    "tesseract": "2 Fagotte"
+    "ladder": "2 Fagotte"
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -3518,8 +3367,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "Kontrafagott",
-    "tesseract": "Kontrafagott"
+    "ladder": "Kontrafagott"
    },
    "resolved": "Contrabassoon",
    "resolved_by": "surya",
@@ -3534,14 +3382,13 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "in C  \\frac{1}{2}",
-    "tesseract": "C in |"
+    "ladder": "in C 1 2 4 H\u00f6rner"
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": "4 Horner in C 1./2.",
    "truth_instrument": "Horn",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p1-sys0.png"
   },
   {
@@ -3550,11 +3397,10 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "surya": "in Es  \\frac{3}{4}",
-    "tesseract": "Horner 4 | : |"
+    "ladder": "in Es 3 4 4 H\u00f6rner"
    },
    "resolved": "Horn",
-   "resolved_by": "tesseract",
+   "resolved_by": "surya",
    "truth_name": "4 Horner in Es 3./4.",
    "truth_instrument": "Horn",
    "class": "RESOLVED_OK",
@@ -3566,8 +3412,7 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "surya": "2 Trompeten in C",
-    "tesseract": "inC 2 Trompeten |"
+    "ladder": "2 Trompeten in C"
    },
    "resolved": "Trumpet",
    "resolved_by": "surya",
@@ -3582,8 +3427,7 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "surya": "Pauken in C u. G",
-    "tesseract": "inCu.G Pauken |]"
+    "ladder": "Pauken in C u. G"
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -3598,8 +3442,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "surya": "1. Violine",
-    "tesseract": "Violine 1."
+    "ladder": "1. Violine"
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -3614,8 +3457,7 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "surya": "2. Violine",
-    "tesseract": "2.Violine"
+    "ladder": "2. Violine"
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -3630,8 +3472,7 @@
    "staff_index": 11,
    "position": 11,
    "reads": {
-    "surya": "Bratsche",
-    "tesseract": "Bratsche"
+    "ladder": "Bratsche"
    },
    "resolved": "Viola",
    "resolved_by": "surya",
@@ -3646,8 +3487,7 @@
    "staff_index": 12,
    "position": 12,
    "reads": {
-    "surya": "Violoncell",
-    "tesseract": "Violoncell |"
+    "ladder": "Violoncell"
    },
    "resolved": "Cello",
    "resolved_by": "surya",
@@ -3662,8 +3502,7 @@
    "staff_index": 13,
    "position": 13,
    "reads": {
-    "surya": "Kontraba\u00df",
-    "tesseract": "| KontrabaB"
+    "ladder": "Kontraba\u00df"
    },
    "resolved": "Contrabass",
    "resolved_by": "surya",
@@ -3678,8 +3517,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "Fl.",
-    "tesseract": "F1."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -3694,7 +3532,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -3709,8 +3547,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "Klar. (B)",
-    "tesseract": "Klar. (B)"
+    "ladder": "Klar. (B)"
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -3725,8 +3562,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "(| Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -3741,10 +3577,9 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "K-Fag.",
-    "tesseract": "|"
+    "ladder": "K-Fag."
    },
-   "resolved": "Bassoon",
+   "resolved": "Contrabassoon",
    "resolved_by": "surya",
    "truth_name": null,
    "truth_instrument": null,
@@ -3757,13 +3592,13 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "(C)"
+    "ladder": "(C) Hr."
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": null,
    "truth_instrument": null,
-   "class": "d_REFUSED",
+   "class": "RESOLVED_no_truth",
    "crop": "brahms-sym1-mvt1-317803-p2-sys0.png"
   },
   {
@@ -3772,13 +3607,13 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "surya": "(Es)"
+    "ladder": "(Es) Hr."
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": null,
    "truth_instrument": null,
-   "class": "d_REFUSED",
+   "class": "RESOLVED_no_truth",
    "crop": "brahms-sym1-mvt1-317803-p2-sys0.png"
   },
   {
@@ -3787,14 +3622,13 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "surya": "Trpt.",
-    "tesseract": "Trpt. Cc) |"
+    "ladder": "Trpt. (C)"
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Trumpet",
+   "resolved_by": "surya",
    "truth_name": null,
    "truth_instrument": null,
-   "class": "d_REFUSED",
+   "class": "RESOLVED_no_truth",
    "crop": "brahms-sym1-mvt1-317803-p2-sys0.png"
   },
   {
@@ -3803,8 +3637,7 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "surya": "Pk. (C)",
-    "tesseract": "Pk. f["
+    "ladder": "Pk. (C)"
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -3819,7 +3652,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "surya": "1.Viol."
+    "ladder": "1.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -3834,8 +3667,7 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "surya": "2.Viol.",
-    "tesseract": "2.Viol!"
+    "ladder": "2.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -3850,8 +3682,7 @@
    "staff_index": 11,
    "position": 11,
    "reads": {
-    "surya": "Br.",
-    "tesseract": "Br."
+    "ladder": "Br."
    },
    "resolved": "Viola",
    "resolved_by": "surya",
@@ -3866,8 +3697,7 @@
    "staff_index": 12,
    "position": 12,
    "reads": {
-    "surya": "Vcl.",
-    "tesseract": "Vel."
+    "ladder": "Vcl."
    },
    "resolved": "Cello",
    "resolved_by": "surya",
@@ -3882,8 +3712,7 @@
    "staff_index": 13,
    "position": 13,
    "reads": {
-    "surya": "K-B.",
-    "tesseract": "K -B."
+    "ladder": "K-B."
    },
    "resolved": "Contrabass",
    "resolved_by": "surya",
@@ -3898,7 +3727,7 @@
    "staff_index": 14,
    "position": 0,
    "reads": {
-    "surya": "Fl."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -3913,8 +3742,7 @@
    "staff_index": 15,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -3929,8 +3757,7 @@
    "staff_index": 16,
    "position": 2,
    "reads": {
-    "surya": "Klar. (B)",
-    "tesseract": "Klar. (B)"
+    "ladder": "Klar. (B)"
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -3945,8 +3772,7 @@
    "staff_index": 17,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -3961,9 +3787,9 @@
    "staff_index": 18,
    "position": 4,
    "reads": {
-    "surya": "K-Fag."
+    "ladder": "K-Fag."
    },
-   "resolved": "Bassoon",
+   "resolved": "Contrabassoon",
    "resolved_by": "surya",
    "truth_name": null,
    "truth_instrument": null,
@@ -3976,11 +3802,10 @@
    "staff_index": 19,
    "position": 5,
    "reads": {
-    "surya": "(C)",
-    "tesseract": "Hr."
+    "ladder": "(C)"
    },
    "resolved": null,
-   "resolved_by": null,
+   "resolved_by": "tesseract",
    "truth_name": null,
    "truth_instrument": null,
    "class": "d_REFUSED",
@@ -3992,14 +3817,13 @@
    "staff_index": 20,
    "position": 6,
    "reads": {
-    "surya": "Hr. (Es)",
-    "tesseract": "\u00ab (Es)"
+    "ladder": "Hr. (Es)"
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": null,
    "truth_instrument": null,
-   "class": "d_REFUSED",
+   "class": "RESOLVED_no_truth",
    "crop": "brahms-sym1-mvt1-317803-p2-sys1.png"
   },
   {
@@ -4008,8 +3832,7 @@
    "staff_index": 21,
    "position": 7,
    "reads": {
-    "surya": "Pk.",
-    "tesseract": "Pk. |"
+    "ladder": "Pk."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -4024,8 +3847,7 @@
    "staff_index": 22,
    "position": 8,
    "reads": {
-    "surya": "1.Viol.",
-    "tesseract": "1.Viol."
+    "ladder": "1.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -4040,8 +3862,7 @@
    "staff_index": 23,
    "position": 9,
    "reads": {
-    "surya": "2.Viol.",
-    "tesseract": "2.Violl}"
+    "ladder": "2.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -4056,8 +3877,7 @@
    "staff_index": 24,
    "position": 10,
    "reads": {
-    "surya": "Br.",
-    "tesseract": "| Br."
+    "ladder": "Br."
    },
    "resolved": "Viola",
    "resolved_by": "surya",
@@ -4072,8 +3892,7 @@
    "staff_index": 25,
    "position": 11,
    "reads": {
-    "surya": "Vcl.",
-    "tesseract": "Vel."
+    "ladder": "Vcl."
    },
    "resolved": "Cello",
    "resolved_by": "surya",
@@ -4088,8 +3907,7 @@
    "staff_index": 26,
    "position": 12,
    "reads": {
-    "surya": "K-B.",
-    "tesseract": "K-B."
+    "ladder": "K-B."
    },
    "resolved": "Contrabass",
    "resolved_by": "surya",
@@ -4104,8 +3922,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "Fl.",
-    "tesseract": "F1."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -4120,8 +3937,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -4136,8 +3952,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "Klar. (B)",
-    "tesseract": "Klar. (B)"
+    "ladder": "Klar. (B)"
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -4152,8 +3967,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "| Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -4168,14 +3982,13 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "K-Fag.",
-    "tesseract": "|"
+    "ladder": "K-Fag."
    },
-   "resolved": "Bassoon",
+   "resolved": "Contrabassoon",
    "resolved_by": "surya",
    "truth_name": "Kontrafagott",
    "truth_instrument": "Contrabassoon",
-   "class": "e_WRONG",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p3-sys0.png"
   },
   {
@@ -4184,13 +3997,13 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "(C) Hr."
+    "ladder": "(C) Hr."
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": "4 Horner in C 1./2.",
    "truth_instrument": "Horn",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p3-sys0.png"
   },
   {
@@ -4199,14 +4012,13 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "surya": "(Es)",
-    "tesseract": "|"
+    "ladder": "(Es) Hr."
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": "4 Horner in Es 3./4.",
    "truth_instrument": "Horn",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p3-sys0.png"
   },
   {
@@ -4215,14 +4027,13 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "surya": "Trpt. (C)",
-    "tesseract": "| | \u00a9"
+    "ladder": "Trpt. (C)"
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Trumpet",
+   "resolved_by": "surya",
    "truth_name": "2 Trompeten in C",
    "truth_instrument": "Trumpet",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p3-sys0.png"
   },
   {
@@ -4231,7 +4042,7 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "surya": "Pk."
+    "ladder": "Pk."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -4246,7 +4057,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "surya": "1.Viol."
+    "ladder": "1.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -4261,7 +4072,7 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "surya": "2.Viol."
+    "ladder": "2.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -4276,7 +4087,7 @@
    "staff_index": 11,
    "position": 11,
    "reads": {
-    "surya": "Br."
+    "ladder": "Br."
    },
    "resolved": "Viola",
    "resolved_by": "surya",
@@ -4291,8 +4102,7 @@
    "staff_index": 12,
    "position": 12,
    "reads": {
-    "surya": "Vcl.",
-    "tesseract": "Vel. |"
+    "ladder": "Vcl."
    },
    "resolved": "Cello",
    "resolved_by": "surya",
@@ -4307,8 +4117,7 @@
    "staff_index": 13,
    "position": 13,
    "reads": {
-    "surya": "K-B.",
-    "tesseract": "| | K-B."
+    "ladder": "K-B."
    },
    "resolved": "Contrabass",
    "resolved_by": "surya",
@@ -4323,8 +4132,7 @@
    "staff_index": 14,
    "position": 0,
    "reads": {
-    "surya": "F1.",
-    "tesseract": "FI."
+    "ladder": "F1."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -4339,8 +4147,7 @@
    "staff_index": 15,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -4355,8 +4162,7 @@
    "staff_index": 16,
    "position": 2,
    "reads": {
-    "surya": "Klar. (B)",
-    "tesseract": "Klar."
+    "ladder": "Klar. (B)"
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -4371,8 +4177,7 @@
    "staff_index": 17,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -4387,13 +4192,13 @@
    "staff_index": 18,
    "position": 4,
    "reads": {
-    "surya": "K-Fag."
+    "ladder": "K-Fag."
    },
-   "resolved": "Bassoon",
+   "resolved": "Contrabassoon",
    "resolved_by": "surya",
    "truth_name": "Kontrafagott",
    "truth_instrument": "Contrabassoon",
-   "class": "e_WRONG",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p3-sys1.png"
   },
   {
@@ -4402,11 +4207,10 @@
    "staff_index": 19,
    "position": 5,
    "reads": {
-    "surya": "(C)",
-    "tesseract": "(C) Hr."
+    "ladder": "(C)"
    },
    "resolved": null,
-   "resolved_by": null,
+   "resolved_by": "tesseract",
    "truth_name": "4 Horner in C 1./2.",
    "truth_instrument": "Horn",
    "class": "d_REFUSED",
@@ -4418,14 +4222,13 @@
    "staff_index": 20,
    "position": 6,
    "reads": {
-    "surya": "Hr. (Es)",
-    "tesseract": "(Es"
+    "ladder": "Hr. (Es)"
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": "4 Horner in Es 3./4.",
    "truth_instrument": "Horn",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p3-sys1.png"
   },
   {
@@ -4434,14 +4237,13 @@
    "staff_index": 21,
    "position": 7,
    "reads": {
-    "surya": "Trpt. (C)",
-    "tesseract": "Trpt. (C)"
+    "ladder": "Trpt. (C)"
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Trumpet",
+   "resolved_by": "surya",
    "truth_name": "2 Trompeten in C",
    "truth_instrument": "Trumpet",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p3-sys1.png"
   },
   {
@@ -4450,7 +4252,7 @@
    "staff_index": 22,
    "position": 8,
    "reads": {
-    "surya": "Pk."
+    "ladder": "Pk."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -4465,8 +4267,7 @@
    "staff_index": 23,
    "position": 9,
    "reads": {
-    "surya": "1.Viol.",
-    "tesseract": "1.Viol."
+    "ladder": "1.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -4481,8 +4282,7 @@
    "staff_index": 24,
    "position": 10,
    "reads": {
-    "surya": "2.Viol.",
-    "tesseract": "2.Viol!"
+    "ladder": "2.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -4497,8 +4297,7 @@
    "staff_index": 25,
    "position": 11,
    "reads": {
-    "surya": "Br.",
-    "tesseract": "Br."
+    "ladder": "Br."
    },
    "resolved": "Viola",
    "resolved_by": "surya",
@@ -4513,8 +4312,7 @@
    "staff_index": 26,
    "position": 12,
    "reads": {
-    "surya": "Vcl.",
-    "tesseract": "Vel."
+    "ladder": "Vcl."
    },
    "resolved": "Cello",
    "resolved_by": "surya",
@@ -4529,8 +4327,7 @@
    "staff_index": 27,
    "position": 13,
    "reads": {
-    "surya": "K-B.",
-    "tesseract": "K-B."
+    "ladder": "K-B."
    },
    "resolved": "Contrabass",
    "resolved_by": "surya",
@@ -4545,7 +4342,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "F1."
+    "ladder": "F1."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -4560,8 +4357,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -4576,8 +4372,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "Klar. (B)",
-    "tesseract": "Klar. (B)"
+    "ladder": "Klar. (B)"
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -4592,8 +4387,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "Fag.",
-    "tesseract": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -4608,14 +4402,13 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "K-Fag.",
-    "tesseract": "|"
+    "ladder": "K-Fag."
    },
-   "resolved": "Bassoon",
+   "resolved": "Contrabassoon",
    "resolved_by": "surya",
    "truth_name": "Kontrafagott",
    "truth_instrument": "Contrabassoon",
-   "class": "e_WRONG",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p4-sys0.png"
   },
   {
@@ -4624,14 +4417,13 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "(C)",
-    "tesseract": "| | Hr."
+    "ladder": "(C) Hr."
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": "4 Horner in C 1./2.",
    "truth_instrument": "Horn",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p4-sys0.png"
   },
   {
@@ -4640,14 +4432,13 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "surya": "(Es)",
-    "tesseract": "(Es)"
+    "ladder": "(Es) Hr."
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": "4 Horner in Es 3./4.",
    "truth_instrument": "Horn",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p4-sys0.png"
   },
   {
@@ -4656,14 +4447,13 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "surya": "Trpt. (C)",
-    "tesseract": "Trpt. (C)"
+    "ladder": "Trpt. (C)"
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Trumpet",
+   "resolved_by": "surya",
    "truth_name": "2 Trompeten in C",
    "truth_instrument": "Trumpet",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p4-sys0.png"
   },
   {
@@ -4672,8 +4462,7 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "surya": "Pk.",
-    "tesseract": "Pk."
+    "ladder": "Pk."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -4688,8 +4477,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "surya": "1.Viol.",
-    "tesseract": "1.Viol."
+    "ladder": "1.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -4704,7 +4492,7 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "surya": "2.Viol."
+    "ladder": "2.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -4719,8 +4507,7 @@
    "staff_index": 11,
    "position": 11,
    "reads": {
-    "surya": "Br.",
-    "tesseract": "Br."
+    "ladder": "Br."
    },
    "resolved": "Viola",
    "resolved_by": "surya",
@@ -4735,8 +4522,7 @@
    "staff_index": 12,
    "position": 12,
    "reads": {
-    "surya": "Vcl.",
-    "tesseract": "Vel. |"
+    "ladder": "Vcl."
    },
    "resolved": "Cello",
    "resolved_by": "surya",
@@ -4751,8 +4537,7 @@
    "staff_index": 13,
    "position": 13,
    "reads": {
-    "surya": "K-B.",
-    "tesseract": "K -B."
+    "ladder": "K-B."
    },
    "resolved": "Contrabass",
    "resolved_by": "surya",
@@ -4767,7 +4552,7 @@
    "staff_index": 14,
    "position": 0,
    "reads": {
-    "surya": "Fl."
+    "ladder": "Fl."
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -4782,8 +4567,7 @@
    "staff_index": 15,
    "position": 1,
    "reads": {
-    "surya": "Ob.",
-    "tesseract": "Ob."
+    "ladder": "Ob."
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -4798,8 +4582,7 @@
    "staff_index": 16,
    "position": 2,
    "reads": {
-    "surya": "Klar. (B)",
-    "tesseract": "K lar. (B)"
+    "ladder": "Klar. (B)"
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -4814,7 +4597,7 @@
    "staff_index": 17,
    "position": 3,
    "reads": {
-    "surya": "Fag."
+    "ladder": "Fag."
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -4829,13 +4612,13 @@
    "staff_index": 18,
    "position": 4,
    "reads": {
-    "surya": "K-Fag."
+    "ladder": "K-Fag."
    },
-   "resolved": "Bassoon",
+   "resolved": "Contrabassoon",
    "resolved_by": "surya",
    "truth_name": "Kontrafagott",
    "truth_instrument": "Contrabassoon",
-   "class": "e_WRONG",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p4-sys1.png"
   },
   {
@@ -4844,14 +4627,13 @@
    "staff_index": 19,
    "position": 5,
    "reads": {
-    "surya": "(C) Hr.",
-    "tesseract": "of"
+    "ladder": "(C) Hr."
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": "4 Horner in C 1./2.",
    "truth_instrument": "Horn",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p4-sys1.png"
   },
   {
@@ -4860,14 +4642,13 @@
    "staff_index": 20,
    "position": 6,
    "reads": {
-    "surya": "(Es)",
-    "tesseract": "(Es)"
+    "ladder": "(Es) Hr."
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": "4 Horner in Es 3./4.",
    "truth_instrument": "Horn",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p4-sys1.png"
   },
   {
@@ -4876,14 +4657,13 @@
    "staff_index": 21,
    "position": 7,
    "reads": {
-    "surya": "Trpt. (C)",
-    "tesseract": "Trpt. (C)"
+    "ladder": "Trpt. (C)"
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Trumpet",
+   "resolved_by": "surya",
    "truth_name": "2 Trompeten in C",
    "truth_instrument": "Trumpet",
-   "class": "d_REFUSED",
+   "class": "RESOLVED_OK",
    "crop": "brahms-sym1-mvt1-317803-p4-sys1.png"
   },
   {
@@ -4892,8 +4672,7 @@
    "staff_index": 22,
    "position": 8,
    "reads": {
-    "surya": "Pk.",
-    "tesseract": "Pk. |"
+    "ladder": "Pk."
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -4908,8 +4687,7 @@
    "staff_index": 23,
    "position": 9,
    "reads": {
-    "surya": "1.Viol.",
-    "tesseract": "1.Viol."
+    "ladder": "1.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -4924,8 +4702,7 @@
    "staff_index": 24,
    "position": 10,
    "reads": {
-    "surya": "2.Viol.",
-    "tesseract": "2"
+    "ladder": "2.Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -4940,8 +4717,7 @@
    "staff_index": 25,
    "position": 11,
    "reads": {
-    "surya": "Br.",
-    "tesseract": "Br."
+    "ladder": "Br."
    },
    "resolved": "Viola",
    "resolved_by": "surya",
@@ -4956,8 +4732,7 @@
    "staff_index": 26,
    "position": 12,
    "reads": {
-    "surya": "Vcl.",
-    "tesseract": "Vel."
+    "ladder": "Vcl."
    },
    "resolved": "Cello",
    "resolved_by": "surya",
@@ -4972,7 +4747,7 @@
    "staff_index": 27,
    "position": 13,
    "reads": {
-    "surya": "K-B."
+    "ladder": "K-B."
    },
    "resolved": "Contrabass",
    "resolved_by": "surya",
@@ -4987,8 +4762,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "Vier Fl\u00f6ten",
-    "tesseract": "Floten Vier"
+    "ladder": "Vier Fl\u00f6ten"
    },
    "resolved": "Flute",
    "resolved_by": "surya",
@@ -5003,8 +4777,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "Drei Hoboen",
-    "tesseract": "Hoboen Drei"
+    "ladder": "Drei Hoboen"
    },
    "resolved": "Oboe",
    "resolved_by": "surya",
@@ -5019,8 +4792,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "Drei Klarinetten in A",
-    "tesseract": "in A. Klarinetten Drei"
+    "ladder": "Drei Klarinetten in A"
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -5035,8 +4807,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "Zwei Fagotte",
-    "tesseract": "Zwei Fagotte"
+    "ladder": "Zwei Fagotte"
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -5051,14 +4822,13 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "Contrafagott",
-    "tesseract": "Contrafagott"
+    "ladder": "Contrafagott"
    },
-   "resolved": null,
-   "resolved_by": null,
+   "resolved": "Contrabassoon",
+   "resolved_by": "surya",
    "truth_name": null,
    "truth_instrument": null,
-   "class": "d_REFUSED",
+   "class": "RESOLVED_no_truth",
    "crop": "mahler-sym5-mvt1-local-p2-sys0.png"
   },
   {
@@ -5067,8 +4837,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "Sechs H\u00f6rner in F",
-    "tesseract": "F Horner in } Sechs"
+    "ladder": "Sechs H\u00f6rner in F"
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -5082,12 +4851,14 @@
    "system": 0,
    "staff_index": 6,
    "position": 6,
-   "reads": {},
-   "resolved": null,
-   "resolved_by": null,
+   "reads": {
+    "ladder": "Sechs H\u00f6rner in F"
+   },
+   "resolved": "Horn",
+   "resolved_by": "surya",
    "truth_name": null,
    "truth_instrument": null,
-   "class": "bc_EMPTY",
+   "class": "RESOLVED_no_truth",
    "crop": "mahler-sym5-mvt1-local-p2-sys0.png"
   },
   {
@@ -5096,8 +4867,7 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "surya": "Vier Trompeten in B",
-    "tesseract": "B in"
+    "ladder": "Vier Trompeten in B"
    },
    "resolved": "Trumpet",
    "resolved_by": "surya",
@@ -5112,10 +4882,10 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "tesseract": "Vier Trompeten"
+    "ladder": "Vier Trompeten in B"
    },
    "resolved": "Trumpet",
-   "resolved_by": "tesseract",
+   "resolved_by": "surya",
    "truth_name": null,
    "truth_instrument": null,
    "class": "RESOLVED_no_truth",
@@ -5127,8 +4897,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "surya": "Drei Posaunen",
-    "tesseract": "Posaunen Drei"
+    "ladder": "Drei Posaunen"
    },
    "resolved": "Trombone",
    "resolved_by": "surya",
@@ -5143,8 +4912,7 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "surya": "Tuba",
-    "tesseract": "Tuba |"
+    "ladder": "Tuba"
    },
    "resolved": "Tuba",
    "resolved_by": "surya",
@@ -5159,8 +4927,7 @@
    "staff_index": 11,
    "position": 11,
    "reads": {
-    "surya": "Pauken Becken",
-    "tesseract": "Pauken"
+    "ladder": "Pauken Becken"
    },
    "resolved": "Timpani",
    "resolved_by": "surya",
@@ -5175,8 +4942,7 @@
    "staff_index": 12,
    "position": 12,
    "reads": {
-    "surya": "Grosse Trommel Becken Gr. Trommel) von einem geschlagen",
-    "tesseract": "Becken Trommel Grosse"
+    "ladder": "Grosse Trommel Becken Gr. Trommel) von einem geschlagen Becken"
    },
    "resolved": "Percussion",
    "resolved_by": "surya",
@@ -5191,8 +4957,7 @@
    "staff_index": 13,
    "position": 13,
    "reads": {
-    "surya": "Kleine Trommel Tamtam",
-    "tesseract": "Geen @inem geschlagen Trommel Kleine Tamtam"
+    "ladder": "Kleine Trommel Becken Gr. Trommel) von einem geschlagen Tamtam"
    },
    "resolved": "Percussion",
    "resolved_by": "surya",
@@ -5207,8 +4972,7 @@
    "staff_index": 14,
    "position": 14,
    "reads": {
-    "surya": "Erste Violinen",
-    "tesseract": "Violinen Erste"
+    "ladder": "Erste Violinen"
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -5223,8 +4987,7 @@
    "staff_index": 15,
    "position": 15,
    "reads": {
-    "surya": "Zweite Violinen",
-    "tesseract": "Violinen Zweite"
+    "ladder": "Zweite Violinen"
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -5239,8 +5002,7 @@
    "staff_index": 16,
    "position": 16,
    "reads": {
-    "surya": "Violen",
-    "tesseract": "Violen"
+    "ladder": "Violen"
    },
    "resolved": "Viola",
    "resolved_by": "surya",
@@ -5255,8 +5017,7 @@
    "staff_index": 17,
    "position": 17,
    "reads": {
-    "surya": "Violoncelle",
-    "tesseract": "Violoncelle"
+    "ladder": "Violoncelle"
    },
    "resolved": "Cello",
    "resolved_by": "surya",
@@ -5271,8 +5032,7 @@
    "staff_index": 18,
    "position": 18,
    "reads": {
-    "surya": "B\u00e4sse",
-    "tesseract": "Basse"
+    "ladder": "B\u00e4sse"
    },
    "resolved": "Bass voice",
    "resolved_by": "surya",
@@ -5287,8 +5047,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "Fag. 1",
-    "tesseract": "Fag."
+    "ladder": "Fag. 1"
    },
    "resolved": "Bassoon",
    "resolved_by": "surya",
@@ -5303,11 +5062,10 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "2",
-    "tesseract": "Contraf."
+    "ladder": "2 Fag. 1"
    },
-   "resolved": "Contrabassoon",
-   "resolved_by": "tesseract",
+   "resolved": "Bassoon",
+   "resolved_by": "surya",
    "truth_name": null,
    "truth_instrument": null,
    "class": "RESOLVED_no_truth",
@@ -5319,14 +5077,13 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "3",
-    "tesseract": "4 8 5 F-Horner"
+    "ladder": "3 4"
    },
-   "resolved": "Horn",
+   "resolved": null,
    "resolved_by": "tesseract",
    "truth_name": null,
    "truth_instrument": null,
-   "class": "RESOLVED_no_truth",
+   "class": "d_REFUSED",
    "crop": "mahler-sym5-mvt1-local-p3-sys0.png"
   },
   {
@@ -5335,8 +5092,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "F-H\u00f6rner 5 4",
-    "tesseract": "2 4 6"
+    "ladder": "F-H\u00f6rner 5 4"
    },
    "resolved": "Horn",
    "resolved_by": "surya",
@@ -5351,14 +5107,13 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "7",
-    "tesseract": "4 2 B-Tromp."
+    "ladder": "7 8"
    },
-   "resolved": "Trumpet",
+   "resolved": null,
    "resolved_by": "tesseract",
    "truth_name": null,
    "truth_instrument": null,
-   "class": "RESOLVED_no_truth",
+   "class": "d_REFUSED",
    "crop": "mahler-sym5-mvt1-local-p3-sys0.png"
   },
   {
@@ -5367,8 +5122,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "B-Tromp. 9 8",
-    "tesseract": "8 &"
+    "ladder": "B-Tromp. 9 8"
    },
    "resolved": "Trumpet",
    "resolved_by": "surya",
@@ -5383,8 +5137,7 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "surya": "Posaunen 1",
-    "tesseract": "1 P OSaunen 9 8"
+    "ladder": "Posaunen 1"
    },
    "resolved": "Trombone",
    "resolved_by": "surya",
@@ -5399,8 +5152,7 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "surya": "Tuba 2",
-    "tesseract": "Tuba"
+    "ladder": "Tuba 2"
    },
    "resolved": "Tuba",
    "resolved_by": "surya",
@@ -5415,7 +5167,7 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "tesseract": "Becken"
+    "ladder": "Becken"
    },
    "resolved": "Percussion",
    "resolved_by": "tesseract",
@@ -5430,7 +5182,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "tesseract": "Gr. Tr."
+    "ladder": "Gr. Tr."
    },
    "resolved": "Percussion",
    "resolved_by": "tesseract",
@@ -5445,7 +5197,7 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "tesseract": "Viol. Erste"
+    "ladder": "Viol. Erste"
    },
    "resolved": "Violin",
    "resolved_by": "tesseract",
@@ -5460,8 +5212,7 @@
    "staff_index": 11,
    "position": 11,
    "reads": {
-    "surya": "Zweite Viol.",
-    "tesseract": "Zweite Viol."
+    "ladder": "Zweite Viol."
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -5476,7 +5227,7 @@
    "staff_index": 12,
    "position": 12,
    "reads": {
-    "tesseract": "Violen"
+    "ladder": "Violen"
    },
    "resolved": "Viola",
    "resolved_by": "tesseract",
@@ -5491,8 +5242,7 @@
    "staff_index": 13,
    "position": 13,
    "reads": {
-    "surya": "B\u00e4sse",
-    "tesseract": "Veelle."
+    "ladder": "B\u00e4sse"
    },
    "resolved": "Bass voice",
    "resolved_by": "surya",
@@ -5507,7 +5257,7 @@
    "staff_index": 14,
    "position": 14,
    "reads": {
-    "tesseract": "Basse"
+    "ladder": "Basse"
    },
    "resolved": "Bass voice",
    "resolved_by": "tesseract",
@@ -5522,7 +5272,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "tesseract": "1 Hoboen"
+    "ladder": "1 Hoboen"
    },
    "resolved": "Oboe",
    "resolved_by": "tesseract",
@@ -5537,7 +5287,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "tesseract": "4 A-Klar, 2 8"
+    "ladder": "4 A-Klar, 2 8"
    },
    "resolved": "Clarinet",
    "resolved_by": "tesseract",
@@ -5552,7 +5302,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "tesseract": "4 Fag. 2"
+    "ladder": "4 Fag. 2"
    },
    "resolved": "Bassoon",
    "resolved_by": "tesseract",
@@ -5567,7 +5317,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "tesseract": "Contraf."
+    "ladder": "Contraf."
    },
    "resolved": "Contrabassoon",
    "resolved_by": "tesseract",
@@ -5582,7 +5332,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "tesseract": "4 8 5"
+    "ladder": "4 8 5"
    },
    "resolved": null,
    "resolved_by": null,
@@ -5597,7 +5347,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "tesseract": "F-Horner 2. 4 6"
+    "ladder": "F-Horner 2. 4 6"
    },
    "resolved": "Horn",
    "resolved_by": "tesseract",
@@ -5612,7 +5362,7 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "tesseract": "4 a"
+    "ladder": "4 a"
    },
    "resolved": null,
    "resolved_by": null,
@@ -5627,7 +5377,7 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "tesseract": "B-Tromp. 8 4"
+    "ladder": "B-Tromp. 8 4"
    },
    "resolved": "Trumpet",
    "resolved_by": "tesseract",
@@ -5642,7 +5392,7 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "tesseract": "4 Posaunen $"
+    "ladder": "4 Posaunen $"
    },
    "resolved": "Trombone",
    "resolved_by": "tesseract",
@@ -5657,7 +5407,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "tesseract": "Tuba"
+    "ladder": "Tuba"
    },
    "resolved": "Tuba",
    "resolved_by": "tesseract",
@@ -5672,11 +5422,10 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "surya": "Hoboen \n  \n \n \n  \n A-Klar. \n  \n \n \n  \n Fag. \n  \n \n \n  \n Contraf. \n  \n \n \n  \n F-H\u00f6rner \n  \n \n \n  \n B-Tromp. \n  \n \n \n  \n Posaunen \n  \n \n \n  \n Tuba \n  \n \n \n  \n Pauken \n  \n \n \n  \n Becken \n  \n \n \n  \n Gr. Tr. \n  \n \n \n  \n Kl. Tr. \n  \n \n \n  \n Erste Viol. \n  \n \n \n  \n Zweite Viol. \n  \n \n \n  \n Violen \n  \n \n \n  \n Veelle \n  \n \n \n  \n get. \n  \n \n \n  \n B\u00e4sse \n  \n \n \n  \n get.",
-    "tesseract": "Pauken"
+    "ladder": "Pauken"
    },
-   "resolved": "Trombone",
-   "resolved_by": "surya",
+   "resolved": "Timpani",
+   "resolved_by": "tesseract",
    "truth_name": null,
    "truth_instrument": null,
    "class": "RESOLVED_no_truth",
@@ -5688,7 +5437,7 @@
    "staff_index": 11,
    "position": 11,
    "reads": {
-    "tesseract": "Becken"
+    "ladder": "Becken"
    },
    "resolved": "Percussion",
    "resolved_by": "tesseract",
@@ -5703,7 +5452,7 @@
    "staff_index": 12,
    "position": 12,
    "reads": {
-    "tesseract": "Gr. Tr."
+    "ladder": "Gr. Tr."
    },
    "resolved": "Percussion",
    "resolved_by": "tesseract",
@@ -5718,7 +5467,7 @@
    "staff_index": 13,
    "position": 13,
    "reads": {
-    "tesseract": "Ki. Tr."
+    "ladder": "Ki. Tr."
    },
    "resolved": "Trumpet",
    "resolved_by": "tesseract",
@@ -5733,7 +5482,7 @@
    "staff_index": 14,
    "position": 14,
    "reads": {
-    "tesseract": "Viol. Erste"
+    "ladder": "Viol. Erste"
    },
    "resolved": "Violin",
    "resolved_by": "tesseract",
@@ -5748,7 +5497,7 @@
    "staff_index": 15,
    "position": 15,
    "reads": {
-    "tesseract": "Zweite Viol."
+    "ladder": "Zweite Viol."
    },
    "resolved": "Violin",
    "resolved_by": "tesseract",
@@ -5763,7 +5512,7 @@
    "staff_index": 16,
    "position": 16,
    "reads": {
-    "tesseract": "Violen"
+    "ladder": "Violen"
    },
    "resolved": "Viola",
    "resolved_by": "tesseract",
@@ -5778,7 +5527,7 @@
    "staff_index": 17,
    "position": 17,
    "reads": {
-    "tesseract": "Veelle."
+    "ladder": "Veelle."
    },
    "resolved": null,
    "resolved_by": null,
@@ -5793,7 +5542,7 @@
    "staff_index": 18,
    "position": 18,
    "reads": {
-    "tesseract": "get."
+    "ladder": "get."
    },
    "resolved": null,
    "resolved_by": null,
@@ -5808,7 +5557,7 @@
    "staff_index": 19,
    "position": 19,
    "reads": {
-    "tesseract": "Basse )"
+    "ladder": "Basse )"
    },
    "resolved": "Bass voice",
    "resolved_by": "tesseract",
@@ -5823,7 +5572,7 @@
    "staff_index": 20,
    "position": 20,
    "reads": {
-    "tesseract": "get."
+    "ladder": "get."
    },
    "resolved": null,
    "resolved_by": null,
@@ -5838,7 +5587,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "tesseract": "; A-Klar. g"
+    "ladder": "; A-Klar. g"
    },
    "resolved": "Clarinet",
    "resolved_by": "tesseract",
@@ -5853,8 +5602,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "A-Klar.  2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47   48   49   50   51   52   53   54   55   56   57   58   59   60   61   62   63   64   65   66   67   68   69   70   71   72   73   74   75   76   77   78   79   80   81   82   83   84   85   86   87   88   89   90   91   92   93   94   95   96   97   98   99   100   101   102   103   104   105   106   107   108   109   110   111   112   113   114   115   116   117   118   119   120   121   122   123   124   125   126   127   128   129   130   131   132   133   134   134   135   136   137   138   139   140   141   142   143   144   145   146   147   148   149   150   151   152   153   154   155   156   157   158   159   160   161   162   163   164   165   166   167   168   169   169   170   171   172   173   174   175   176   177   178   179   180   181   182   183   184   185   186   187   188   189   190   191   192   193   194   195   196   197   198   199   200   201   202   203   204   205   206   207   208   209   210   211   212   213   214   215   216   217   218   219   220   221   222   223   224   225   226   227   228   229   230   231   232   233   234   234   235   236   237   238   239   240   241   242   243   244   245   246   247   248   249   250   251   252   253   254   255   256   257   258   259   260   261   262   263   264   265   266   267   268   269   269   270   271   272   273   274   275   276   277   278   279   280   281   282   283   284   285   286   287   288   289   290   291   292   293   294   295   296   297   298   299   300   301   302   303   304   305   306   307   308   309   310   311   312   313   314   315   316   317   318   319   320   321   322   323   324   325   326   327   328   329   330   331   332   333   334   334   335   336   337   338   339   340   341   342   343   344   345   346   347   348   349   350   351   352   353   354   355   356   357   358   359   360   361   362   363   364   365   366   367   368   369   370   371   372   373   374   375   376   377   378   379   380   381   382   383   384   385   386   387   388   389   390   391   392   393   394   395   396   397   398   399   400   401   402   403   404   405   406   407   408   409   410   411   412   413   414   415   416   417   418   419   420   421   422   423   424   425   426   427   428   429   430   431   432   433   434   434   435   436   437   438   439   440   441   443   444   445   446   447   448   449   450   451   452   453   454   455   456   457   458   459   460   461   462   463   464   465   466   467   468   469   470   471   472   473   474   475   476   477   478   479   480   481   482   483   484   485   486   487   488   489   490   491   492   493   494   495   496   497   498   499   500   501   502   503   504   505   506   507   508   509   510   511   512   513   514   515   516   517   518   519   521   522   523   524   525   526   527   528   529   530   531   532   533   534   534   535   536   537   538   539   540   541   543   544   545   546   547   548   549   550   551   552   553   554   554   555   556   557   558   559   560   561   562   563   564   565   566   567   568   569   569   570   571   572   573   574   574   575   576   577   578   579   580   581   582   583   584   585   586   587   588   589   590   591   592   593   594   595   596   597   598   599   600   601   602   603   604   605   606   607   608   609   610   611   612   613   614   615   616   617   618   619   621   622   623   624   625   626   627   628   629   630   631   632   633   634   634   635   636   637   638   639   640   641   643   644   645   646   647   648   649   650   651   652   653   654   655   656   657   658   659   660   661   662   663   664   665   666   667   668   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803",
-    "tesseract": "4 Fag. 2"
+    "ladder": "A-Klar.  2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47   48   49   50   51   52   53   54   55   56   57   58   59   60   61   62   63   64   65   66   67   68   69   70   71   72   73   74   75   76   77   78   79   80   81   82   83   84   85   86   87   88   89   90   91   92   93   94   95   96   97   98   99   100   101   102   103   104   105   106   107   108   109   110   111   112   113   114   115   116   117   118   119   120   121   122   123   124   125   126   127   128   129   130   131   132   133   134   134   135   136   137   138   139   140   141   142   143   144   145   146   147   148   149   150   151   152   153   154   155   156   157   158   159   160   161   162   163   164   165   166   167   168   169   169   170   171   172   173   174   175   176   177   178   179   180   181   182   183   184   185   186   187   188   189   190   191   192   193   194   195   196   197   198   199   200   201   202   203   204   205   206   207   208   209   210   211   212   213   214   215   216   217   218   219   220   221   222   223   224   225   226   227   228   229   230   231   232   233   234   234   235   236   237   238   239   240   241   242   243   244   245   246   247   248   249   250   251   252   253   254   255   256   257   258   259   260   261   262   263   264   265   266   267   268   269   269   270   271   272   273   274   275   276   277   278   279   280   281   282   283   284   285   286   287   288   289   290   291   292   293   294   295   296   297   298   299   300   301   302   303   304   305   306   307   308   309   310   311   312   313   314   315   316   317   318   319   320   321   322   323   324   325   326   327   328   329   330   331   332   333   334   334   335   336   337   338   339   340   341   342   343   344   345   346   347   348   349   350   351   352   353   354   355   356   357   358   359   360   361   362   363   364   365   366   367   368   369   370   371   372   373   374   375   376   377   378   379   380   381   382   383   384   385   386   387   388   389   390   391   392   393   394   395   396   397   398   399   400   401   402   403   404   405   406   407   408   409   410   411   412   413   414   415   416   417   418   419   420   421   422   423   424   425   426   427   428   429   430   431   432   433   434   434   435   436   437   438   439   440   441   443   444   445   446   447   448   449   450   451   452   453   454   455   456   457   458   459   460   461   462   463   464   465   466   467   468   469   470   471   472   473   474   475   476   477   478   479   480   481   482   483   484   485   486   487   488   489   490   491   492   493   494   495   496   497   498   499   500   501   502   503   504   505   506   507   508   509   510   511   512   513   514   515   516   517   518   519   521   522   523   524   525   526   527   528   529   530   531   532   533   534   534   535   536   537   538   539   540   541   543   544   545   546   547   548   549   550   551   552   553   554   554   555   556   557   558   559   560   561   562   563   564   565   566   567   568   569   569   570   571   572   573   574   574   575   576   577   578   579   580   581   582   583   584   585   586   587   588   589   590   591   592   593   594   595   596   597   598   599   600   601   602   603   604   605   606   607   608   609   610   611   612   613   614   615   616   617   618   619   621   622   623   624   625   626   627   628   629   630   631   632   633   634   634   635   636   637   638   639   640   641   643   644   645   646   647   648   649   650   651   652   653   654   655   656   657   658   659   660   661   662   663   664   665   666   667   668   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803"
    },
    "resolved": "Clarinet",
    "resolved_by": "surya",
@@ -5869,7 +5617,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "tesseract": "Contraf."
+    "ladder": "Contraf."
    },
    "resolved": "Contrabassoon",
    "resolved_by": "tesseract",
@@ -5884,7 +5632,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "tesseract": "3 \u00a5- Horner"
+    "ladder": "3 \u00a5- Horner"
    },
    "resolved": "Horn",
    "resolved_by": "tesseract",
@@ -5899,7 +5647,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "tesseract": "4 5 6"
+    "ladder": "4 5 6"
    },
    "resolved": null,
    "resolved_by": null,
@@ -5914,7 +5662,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "tesseract": "i 2 B-Tromp."
+    "ladder": "i 2 B-Tromp."
    },
    "resolved": "Trumpet",
    "resolved_by": "tesseract",
@@ -5929,7 +5677,7 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "tesseract": "8 4"
+    "ladder": "8 4"
    },
    "resolved": null,
    "resolved_by": null,
@@ -5944,7 +5692,7 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "tesseract": "i Posa osaunen"
+    "ladder": "i Posa osaunen"
    },
    "resolved": null,
    "resolved_by": null,
@@ -5959,7 +5707,7 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "tesseract": "8 Tuba"
+    "ladder": "8 Tuba"
    },
    "resolved": "Tuba",
    "resolved_by": "tesseract",
@@ -5974,7 +5722,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "tesseract": "Pauken"
+    "ladder": "Pauken"
    },
    "resolved": "Timpani",
    "resolved_by": "tesseract",
@@ -5989,7 +5737,7 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "tesseract": "Becken"
+    "ladder": "Becken"
    },
    "resolved": "Percussion",
    "resolved_by": "tesseract",
@@ -6004,7 +5752,7 @@
    "staff_index": 11,
    "position": 11,
    "reads": {
-    "tesseract": "Gr, Tr."
+    "ladder": "Gr, Tr."
    },
    "resolved": "Percussion",
    "resolved_by": "tesseract",
@@ -6032,7 +5780,7 @@
    "staff_index": 13,
    "position": 13,
    "reads": {
-    "tesseract": "Tamtam"
+    "ladder": "Tamtam"
    },
    "resolved": "Percussion",
    "resolved_by": "tesseract",
@@ -6047,7 +5795,7 @@
    "staff_index": 14,
    "position": 14,
    "reads": {
-    "tesseract": "Erste Viol."
+    "ladder": "Erste Viol."
    },
    "resolved": "Violin",
    "resolved_by": "tesseract",
@@ -6062,7 +5810,7 @@
    "staff_index": 15,
    "position": 15,
    "reads": {
-    "tesseract": "Viol."
+    "ladder": "Viol."
    },
    "resolved": "Violin",
    "resolved_by": "tesseract",
@@ -6077,7 +5825,7 @@
    "staff_index": 16,
    "position": 16,
    "reads": {
-    "tesseract": "Violen"
+    "ladder": "Violen"
    },
    "resolved": "Viola",
    "resolved_by": "tesseract",
@@ -6092,7 +5840,7 @@
    "staff_index": 17,
    "position": 17,
    "reads": {
-    "tesseract": "Veelle."
+    "ladder": "Veelle."
    },
    "resolved": null,
    "resolved_by": null,
@@ -6107,7 +5855,7 @@
    "staff_index": 18,
    "position": 18,
    "reads": {
-    "tesseract": "get."
+    "ladder": "get."
    },
    "resolved": null,
    "resolved_by": null,
@@ -6122,7 +5870,7 @@
    "staff_index": 19,
    "position": 19,
    "reads": {
-    "tesseract": "Bass }"
+    "ladder": "Bass }"
    },
    "resolved": "Bass voice",
    "resolved_by": "tesseract",
@@ -6137,7 +5885,7 @@
    "staff_index": 20,
    "position": 20,
    "reads": {
-    "tesseract": "get."
+    "ladder": "get."
    },
    "resolved": null,
    "resolved_by": null,
@@ -6152,8 +5900,7 @@
    "staff_index": 0,
    "position": 0,
    "reads": {
-    "surya": "I",
-    "tesseract": "|"
+    "ladder": "I"
    },
    "resolved": null,
    "resolved_by": null,
@@ -6168,8 +5915,7 @@
    "staff_index": 1,
    "position": 1,
    "reads": {
-    "surya": "Violini II",
-    "tesseract": "[] Violint"
+    "ladder": "Violini II"
    },
    "resolved": "Violin",
    "resolved_by": "surya",
@@ -6184,8 +5930,7 @@
    "staff_index": 2,
    "position": 2,
    "reads": {
-    "surya": "III",
-    "tesseract": "[il"
+    "ladder": "III"
    },
    "resolved": null,
    "resolved_by": null,
@@ -6200,8 +5945,7 @@
    "staff_index": 3,
    "position": 3,
    "reads": {
-    "surya": "I",
-    "tesseract": "|"
+    "ladder": "I"
    },
    "resolved": null,
    "resolved_by": null,
@@ -6216,8 +5960,7 @@
    "staff_index": 4,
    "position": 4,
    "reads": {
-    "surya": "Viole II",
-    "tesseract": "Viole il"
+    "ladder": "Viole II"
    },
    "resolved": "Viola",
    "resolved_by": "surya",
@@ -6232,8 +5975,7 @@
    "staff_index": 5,
    "position": 5,
    "reads": {
-    "surya": "III",
-    "tesseract": "HI"
+    "ladder": "III"
    },
    "resolved": null,
    "resolved_by": null,
@@ -6248,7 +5990,7 @@
    "staff_index": 6,
    "position": 6,
    "reads": {
-    "surya": "I"
+    "ladder": "I"
    },
    "resolved": null,
    "resolved_by": null,
@@ -6263,8 +6005,7 @@
    "staff_index": 7,
    "position": 7,
    "reads": {
-    "surya": "Violoncelli II",
-    "tesseract": "iH Violoncelli"
+    "ladder": "Violoncelli II"
    },
    "resolved": "Cello",
    "resolved_by": "surya",
@@ -6279,8 +6020,7 @@
    "staff_index": 8,
    "position": 8,
    "reads": {
-    "surya": "III",
-    "tesseract": "(1"
+    "ladder": "III"
    },
    "resolved": null,
    "resolved_by": null,
@@ -6295,8 +6035,7 @@
    "staff_index": 9,
    "position": 9,
    "reads": {
-    "surya": "Contrabasso",
-    "tesseract": "Contrabasso"
+    "ladder": "Contrabasso"
    },
    "resolved": "Contrabass",
    "resolved_by": "surya",
@@ -6311,8 +6050,7 @@
    "staff_index": 10,
    "position": 10,
    "reads": {
-    "surya": "Cembalo",
-    "tesseract": "Cembalo"
+    "ladder": "Cembalo"
    },
    "resolved": "Piano",
    "resolved_by": "surya",

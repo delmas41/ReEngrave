@@ -1,0 +1,3854 @@
+[
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p1",
+  "system": 0,
+  "n_staves": 12,
+  "tick_ys": [
+   47.03241412675375,
+   169.92356071601355,
+   292.8147073052734,
+   416.46444121915823,
+   568.9404934687954,
+   688.7972907595549,
+   810.1712626995646,
+   987.6806966618287,
+   1120.4334784712144,
+   1253.1862602806,
+   1387.4562167392357,
+   1520.2089985486214
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "spacing_px": 133.9,
+  "blocks": [
+   {
+    "text": "Flauti.",
+    "y": 65.856,
+    "h": 40.767999999999994,
+    "tick_units": 0.141,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.141,
+    "dist_to_second": 0.777
+   },
+   {
+    "text": "Obol.",
+    "y": 181.10399999999998,
+    "h": 39.20000000000002,
+    "tick_units": 1.001,
+    "h_in_spacings": 0.293,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.083,
+    "dist_to_second": 0.834
+   },
+   {
+    "text": "Clarinetti in B.",
+    "y": 302.624,
+    "h": 40.76799999999997,
+    "tick_units": 1.908,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.073,
+    "dist_to_second": 0.85
+   },
+   {
+    "text": "Fagotti.",
+    "y": 422.576,
+    "h": 42.335999999999956,
+    "tick_units": 2.804,
+    "h_in_spacings": 0.316,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.046,
+    "dist_to_second": 0.969
+   },
+   {
+    "text": "Corni in Es.",
+    "y": 569.184,
+    "h": 40.76800000000003,
+    "tick_units": 3.899,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.002,
+    "dist_to_second": 0.893
+   },
+   {
+    "text": "Trombe in C.",
+    "y": 686.784,
+    "h": 40.76800000000003,
+    "tick_units": 4.777,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.015,
+    "dist_to_second": 0.88
+   },
+   {
+    "text": "Timpani in C.G.",
+    "y": 805.168,
+    "h": 42.33600000000001,
+    "tick_units": 5.661,
+    "h_in_spacings": 0.316,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.037,
+    "dist_to_second": 0.869
+   },
+   {
+    "text": "Violino I.",
+    "y": 977.648,
+    "h": 42.33600000000001,
+    "tick_units": 6.949,
+    "h_in_spacings": 0.316,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.075,
+    "dist_to_second": 1.066
+   },
+   {
+    "text": "Violino II.",
+    "y": 1107.792,
+    "h": 42.33600000000001,
+    "tick_units": 7.921,
+    "h_in_spacings": 0.316,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.094,
+    "dist_to_second": 0.897
+   },
+   {
+    "text": "Viola.",
+    "y": 1234.016,
+    "h": 40.76800000000003,
+    "tick_units": 8.863,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.143,
+    "dist_to_second": 0.848
+   },
+   {
+    "text": "Violoncello.",
+    "y": 1364.16,
+    "h": 40.76800000000003,
+    "tick_units": 9.835,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.174,
+    "dist_to_second": 0.829
+   },
+   {
+    "text": "Basso.",
+    "y": 1492.7359999999999,
+    "h": 40.76800000000003,
+    "tick_units": 10.795,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.205,
+    "dist_to_second": 0.786
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p2",
+  "system": 0,
+  "n_staves": 11,
+  "tick_ys": [
+   62.01129943502824,
+   195.87696170747017,
+   313.00941619585683,
+   478.3728813559322,
+   645.7049591964845,
+   762.8374136848713,
+   910.4833647206528,
+   1072.8939108600125,
+   1216.6026365348398,
+   1363.264281230383,
+   1505.9887005649716
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "spacing_px": 144.4,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 72.91199999999999,
+    "h": 48.608,
+    "tick_units": 0.075,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.075,
+    "dist_to_second": 0.852
+   },
+   {
+    "text": "Ob.",
+    "y": 200.704,
+    "h": 47.03999999999999,
+    "tick_units": 0.96,
+    "h_in_spacings": 0.326,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.033,
+    "dist_to_second": 0.778
+   },
+   {
+    "text": "Cl.",
+    "y": 317.52,
+    "h": 48.608000000000004,
+    "tick_units": 1.769,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.031,
+    "dist_to_second": 0.842
+   },
+   {
+    "text": "Fag.",
+    "y": 488.432,
+    "h": 48.608000000000004,
+    "tick_units": 2.953,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.07,
+    "dist_to_second": 1.089
+   },
+   {
+    "text": "Cor.",
+    "y": 654.64,
+    "h": 48.60799999999995,
+    "tick_units": 4.104,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.062,
+    "dist_to_second": 0.749
+   },
+   {
+    "text": "Tr.",
+    "y": 773.808,
+    "h": 48.60799999999995,
+    "tick_units": 4.929,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.076,
+    "dist_to_second": 0.887
+   },
+   {
+    "text": "Tp.",
+    "y": 921.9839999999999,
+    "h": 50.176000000000045,
+    "tick_units": 5.956,
+    "h_in_spacings": 0.347,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.08,
+    "dist_to_second": 1.045
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p2",
+  "system": 1,
+  "n_staves": 11,
+  "tick_ys": [
+   62.0,
+   195.0,
+   331.0,
+   477.0,
+   624.0,
+   744.0,
+   867.0,
+   1034.0,
+   1174.0,
+   1320.0,
+   1454.0
+  ],
+  "staff_indices": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21
+  ],
+  "spacing_px": 139.2,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 72.105,
+    "h": 53.13,
+    "tick_units": 0.073,
+    "h_in_spacings": 0.382,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.073,
+    "dist_to_second": 0.883
+   },
+   {
+    "text": "Ob.",
+    "y": 201.135,
+    "h": 53.12999999999997,
+    "tick_units": 1.0,
+    "h_in_spacings": 0.382,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.044,
+    "dist_to_second": 0.933
+   },
+   {
+    "text": "Cl.",
+    "y": 330.16499999999996,
+    "h": 53.12999999999994,
+    "tick_units": 1.926,
+    "h_in_spacings": 0.382,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.006,
+    "dist_to_second": 0.971
+   },
+   {
+    "text": "Fag.",
+    "y": 474.375,
+    "h": 53.129999999999995,
+    "tick_units": 2.962,
+    "h_in_spacings": 0.382,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.019,
+    "dist_to_second": 1.03
+   },
+   {
+    "text": "Cor.",
+    "y": 626.175,
+    "h": 53.129999999999995,
+    "tick_units": 4.053,
+    "h_in_spacings": 0.382,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.016,
+    "dist_to_second": 0.846
+   },
+   {
+    "text": "Tr.",
+    "y": 724.845,
+    "h": 53.12999999999988,
+    "tick_units": 4.762,
+    "h_in_spacings": 0.382,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.138,
+    "dist_to_second": 0.724
+   },
+   {
+    "text": "Tp.",
+    "y": 869.0550000000001,
+    "h": 53.12999999999988,
+    "tick_units": 5.798,
+    "h_in_spacings": 0.382,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.015,
+    "dist_to_second": 0.898
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p3",
+  "system": 0,
+  "n_staves": 11,
+  "tick_ys": [
+   59.568627450980394,
+   199.84313725490196,
+   324.7450980392157,
+   459.2549019607843,
+   610.0980392156863,
+   735.9607843137255,
+   876.2352941176471,
+   1055.9019607843138,
+   1205.7843137254902,
+   1356.6274509803923,
+   1507.4705882352941
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "spacing_px": 144.8,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 65.856,
+    "h": 47.040000000000006,
+    "tick_units": 0.043,
+    "h_in_spacings": 0.325,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.043,
+    "dist_to_second": 0.925
+   },
+   {
+    "text": "Ob.",
+    "y": 198.35199999999998,
+    "h": 45.47199999999995,
+    "tick_units": 0.959,
+    "h_in_spacings": 0.314,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.01,
+    "dist_to_second": 0.873
+   },
+   {
+    "text": "Cl.",
+    "y": 320.65599999999995,
+    "h": 48.608000000000004,
+    "tick_units": 1.803,
+    "h_in_spacings": 0.336,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.028,
+    "dist_to_second": 0.834
+   },
+   {
+    "text": "Fag.",
+    "y": 458.64,
+    "h": 48.608000000000004,
+    "tick_units": 2.756,
+    "h_in_spacings": 0.336,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.004,
+    "dist_to_second": 0.925
+   },
+   {
+    "text": "Cor.",
+    "y": 609.168,
+    "h": 45.47199999999998,
+    "tick_units": 3.796,
+    "h_in_spacings": 0.314,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.006,
+    "dist_to_second": 0.876
+   },
+   {
+    "text": "Tr.",
+    "y": 736.176,
+    "h": 45.47199999999998,
+    "tick_units": 4.673,
+    "h_in_spacings": 0.314,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.001,
+    "dist_to_second": 0.871
+   },
+   {
+    "text": "Tp.",
+    "y": 879.6479999999999,
+    "h": 47.03999999999985,
+    "tick_units": 5.664,
+    "h_in_spacings": 0.325,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.024,
+    "dist_to_second": 0.992
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p3",
+  "system": 1,
+  "n_staves": 8,
+  "tick_ys": [
+   62.0,
+   231.0,
+   381.0,
+   563.0,
+   746.0,
+   905.0,
+   1065.0,
+   1258.0
+  ],
+  "staff_indices": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18
+  ],
+  "spacing_px": 170.9,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 89.828,
+    "h": 44.914000000000016,
+    "tick_units": 0.163,
+    "h_in_spacings": 0.263,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.163,
+    "dist_to_second": 0.826
+   },
+   {
+    "text": "Cl.",
+    "y": 252.9715,
+    "h": 43.59299999999999,
+    "tick_units": 1.118,
+    "h_in_spacings": 0.255,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.129,
+    "dist_to_second": 0.749
+   },
+   {
+    "text": "Fag.",
+    "y": 404.88649999999996,
+    "h": 48.87700000000001,
+    "tick_units": 2.007,
+    "h_in_spacings": 0.286,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.14,
+    "dist_to_second": 0.925
+   },
+   {
+    "text": "Cor.",
+    "y": 576.6165,
+    "h": 43.593000000000075,
+    "tick_units": 3.012,
+    "h_in_spacings": 0.255,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.08,
+    "dist_to_second": 0.991
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p4",
+  "system": 0,
+  "n_staves": 11,
+  "tick_ys": [
+   60.57071651090343,
+   211.02056074766355,
+   349.7470404984424,
+   478.70404984423675,
+   652.6006230529595,
+   779.603738317757,
+   948.6155763239875,
+   1089.2959501557632,
+   1229.976323987539,
+   1367.7258566978194,
+   1506.452336448598
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "spacing_px": 144.6,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 101.136,
+    "h": 42.33600000000001,
+    "tick_units": 0.281,
+    "h_in_spacings": 0.293,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.281,
+    "dist_to_second": 0.76
+   },
+   {
+    "text": "Ob.",
+    "y": 246.96,
+    "h": 42.33600000000007,
+    "tick_units": 1.289,
+    "h_in_spacings": 0.293,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.249,
+    "dist_to_second": 0.711
+   },
+   {
+    "text": "Cl.",
+    "y": 373.968,
+    "h": 42.33600000000001,
+    "tick_units": 2.168,
+    "h_in_spacings": 0.293,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.168,
+    "dist_to_second": 0.724
+   },
+   {
+    "text": "Fag.",
+    "y": 504.896,
+    "h": 50.176000000000045,
+    "tick_units": 3.073,
+    "h_in_spacings": 0.347,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.181,
+    "dist_to_second": 1.022
+   },
+   {
+    "text": "Cor.",
+    "y": 660.1279999999999,
+    "h": 43.90400000000011,
+    "tick_units": 4.147,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.052,
+    "dist_to_second": 0.826
+   },
+   {
+    "text": "Tr.",
+    "y": 794.976,
+    "h": 43.903999999999996,
+    "tick_units": 5.079,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.106,
+    "dist_to_second": 0.985
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-984073-p4",
+  "system": 1,
+  "n_staves": 11,
+  "tick_ys": [
+   62.0,
+   199.0,
+   335.0,
+   466.0,
+   594.0,
+   731.0,
+   860.0,
+   1012.0,
+   1145.0,
+   1279.0,
+   1414.0
+  ],
+  "staff_indices": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21
+  ],
+  "spacing_px": 135.2,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 89.35849999999999,
+    "h": 42.833,
+    "tick_units": 0.202,
+    "h_in_spacings": 0.317,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.202,
+    "dist_to_second": 0.811
+   },
+   {
+    "text": "Ob.",
+    "y": 214.9035,
+    "h": 45.78699999999998,
+    "tick_units": 1.131,
+    "h_in_spacings": 0.339,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.118,
+    "dist_to_second": 0.888
+   },
+   {
+    "text": "Cl.",
+    "y": 353.00300000000004,
+    "h": 44.31,
+    "tick_units": 2.152,
+    "h_in_spacings": 0.328,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.133,
+    "dist_to_second": 0.836
+   },
+   {
+    "text": "Fag.",
+    "y": 479.28650000000005,
+    "h": 48.74100000000004,
+    "tick_units": 3.086,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.098,
+    "dist_to_second": 0.848
+   },
+   {
+    "text": "Cor.",
+    "y": 606.3085000000001,
+    "h": 45.78699999999992,
+    "tick_units": 4.026,
+    "h_in_spacings": 0.339,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.091,
+    "dist_to_second": 0.922
+   },
+   {
+    "text": "Tr.",
+    "y": 737.0229999999999,
+    "h": 47.26400000000001,
+    "tick_units": 4.993,
+    "h_in_spacings": 0.35,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.045,
+    "dist_to_second": 0.91
+   },
+   {
+    "text": "Tp.",
+    "y": 862.568,
+    "h": 50.218000000000075,
+    "tick_units": 5.921,
+    "h_in_spacings": 0.371,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.019,
+    "dist_to_second": 0.973
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p1",
+  "system": 0,
+  "n_staves": 12,
+  "tick_ys": [
+   47.46799007444169,
+   171.585111662531,
+   295.3131513647643,
+   418.2630272952853,
+   571.1722084367245,
+   691.3985111662531,
+   812.4029776674938,
+   989.4352357320099,
+   1122.890322580645,
+   1254.3999999999999,
+   1388.2441687344913,
+   1520.5320099255582
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "spacing_px": 133.9,
+  "blocks": [
+   {
+    "text": "Flauti.",
+    "y": 67.424,
+    "h": 40.76800000000001,
+    "tick_units": 0.149,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.149,
+    "dist_to_second": 0.778
+   },
+   {
+    "text": "Oboi.",
+    "y": 182.672,
+    "h": 39.19999999999999,
+    "tick_units": 1.01,
+    "h_in_spacings": 0.293,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.083,
+    "dist_to_second": 0.841
+   },
+   {
+    "text": "Clarinetti in B.",
+    "y": 303.408,
+    "h": 39.19999999999999,
+    "tick_units": 1.911,
+    "h_in_spacings": 0.293,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.06,
+    "dist_to_second": 0.858
+   },
+   {
+    "text": "Fagotti.",
+    "y": 424.144,
+    "h": 42.335999999999956,
+    "tick_units": 2.813,
+    "h_in_spacings": 0.316,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.044,
+    "dist_to_second": 0.962
+   },
+   {
+    "text": "Corni in Es.",
+    "y": 570.752,
+    "h": 40.76800000000003,
+    "tick_units": 3.908,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.003,
+    "dist_to_second": 0.901
+   },
+   {
+    "text": "Trombe in C.",
+    "y": 686.784,
+    "h": 40.76800000000003,
+    "tick_units": 4.774,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.034,
+    "dist_to_second": 0.863
+   },
+   {
+    "text": "Timpani in C.G.",
+    "y": 805.168,
+    "h": 42.33600000000001,
+    "tick_units": 5.658,
+    "h_in_spacings": 0.316,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.054,
+    "dist_to_second": 0.85
+   },
+   {
+    "text": "Violino I.",
+    "y": 976.864,
+    "h": 40.76800000000003,
+    "tick_units": 6.94,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.094,
+    "dist_to_second": 1.09
+   },
+   {
+    "text": "Violino II.",
+    "y": 1107.008,
+    "h": 40.76800000000003,
+    "tick_units": 7.912,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.119,
+    "dist_to_second": 0.878
+   },
+   {
+    "text": "Viola.",
+    "y": 1232.448,
+    "h": 40.76800000000003,
+    "tick_units": 8.849,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.164,
+    "dist_to_second": 0.818
+   },
+   {
+    "text": "Violoncello.",
+    "y": 1361.024,
+    "h": 40.76800000000003,
+    "tick_units": 9.809,
+    "h_in_spacings": 0.304,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.203,
+    "dist_to_second": 0.796
+   },
+   {
+    "text": "Basso.",
+    "y": 1488.816,
+    "h": 39.19999999999982,
+    "tick_units": 10.763,
+    "h_in_spacings": 0.293,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.237,
+    "dist_to_second": 0.751
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p2",
+  "system": 0,
+  "n_staves": 11,
+  "tick_ys": [
+   62.39534131349078,
+   197.3316078938855,
+   314.0058233581365,
+   479.3788417987706,
+   646.7809770300873,
+   763.4551924943385,
+   911.0734390164996,
+   1072.3882238757685,
+   1216.455516014235,
+   1363.0592041410548,
+   1505.6046586865093
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "spacing_px": 144.3,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 71.344,
+    "h": 48.608,
+    "tick_units": 0.062,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.062,
+    "dist_to_second": 0.873
+   },
+   {
+    "text": "Ob.",
+    "y": 199.92000000000002,
+    "h": 48.607999999999976,
+    "tick_units": 0.953,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.018,
+    "dist_to_second": 0.791
+   },
+   {
+    "text": "Cl.",
+    "y": 318.304,
+    "h": 50.17599999999999,
+    "tick_units": 1.773,
+    "h_in_spacings": 0.348,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.03,
+    "dist_to_second": 0.838
+   },
+   {
+    "text": "Fag.",
+    "y": 487.648,
+    "h": 50.17599999999999,
+    "tick_units": 2.947,
+    "h_in_spacings": 0.348,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.057,
+    "dist_to_second": 1.103
+   },
+   {
+    "text": "Cor.",
+    "y": 654.64,
+    "h": 48.60799999999995,
+    "tick_units": 4.104,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.054,
+    "dist_to_second": 0.754
+   },
+   {
+    "text": "Tr.",
+    "y": 772.24,
+    "h": 48.60800000000006,
+    "tick_units": 4.919,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.061,
+    "dist_to_second": 0.869
+   },
+   {
+    "text": "Tp.",
+    "y": 914.9279999999999,
+    "h": 51.74400000000003,
+    "tick_units": 5.907,
+    "h_in_spacings": 0.359,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.027,
+    "dist_to_second": 1.05
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p2",
+  "system": 1,
+  "n_staves": 11,
+  "tick_ys": [
+   65.13312904324141,
+   201.805924412666,
+   343.81750085120876,
+   495.43888321416415,
+   647.0602655771196,
+   769.852230166837,
+   896.9152196118489,
+   1070.9594824651006,
+   1216.1743275451142,
+   1368.3295880149813,
+   1502.332992849847
+  ],
+  "staff_indices": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21
+  ],
+  "spacing_px": 143.7,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 73.696,
+    "h": 47.03999999999999,
+    "tick_units": 0.06,
+    "h_in_spacings": 0.327,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.06,
+    "dist_to_second": 0.891
+   },
+   {
+    "text": "Ob.",
+    "y": 208.54399999999998,
+    "h": 47.03999999999999,
+    "tick_units": 0.998,
+    "h_in_spacings": 0.327,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.047,
+    "dist_to_second": 0.941
+   },
+   {
+    "text": "Cl.",
+    "y": 347.312,
+    "h": 45.47200000000004,
+    "tick_units": 1.963,
+    "h_in_spacings": 0.316,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.024,
+    "dist_to_second": 1.012
+   },
+   {
+    "text": "Fag.",
+    "y": 499.408,
+    "h": 48.608000000000004,
+    "tick_units": 3.022,
+    "h_in_spacings": 0.338,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.028,
+    "dist_to_second": 1.027
+   },
+   {
+    "text": "Cor.",
+    "y": 648.368,
+    "h": 48.60799999999995,
+    "tick_units": 4.058,
+    "h_in_spacings": 0.338,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.009,
+    "dist_to_second": 0.845
+   },
+   {
+    "text": "Tr.",
+    "y": 773.024,
+    "h": 47.039999999999964,
+    "tick_units": 4.925,
+    "h_in_spacings": 0.327,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.022,
+    "dist_to_second": 0.862
+   },
+   {
+    "text": "Tp.",
+    "y": 901.6,
+    "h": 47.039999999999964,
+    "tick_units": 5.82,
+    "h_in_spacings": 0.327,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.033,
+    "dist_to_second": 0.917
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p3",
+  "system": 0,
+  "n_staves": 11,
+  "tick_ys": [
+   60.19383259911894,
+   202.784140969163,
+   326.62555066079295,
+   460.82819383259914,
+   611.806167400881,
+   737.1277533039647,
+   875.2775330396476,
+   1053.8854625550662,
+   1203.876651982379,
+   1355.3480176211453,
+   1507.3127753303966
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "spacing_px": 144.7,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 72.128,
+    "h": 47.04,
+    "tick_units": 0.082,
+    "h_in_spacings": 0.325,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.082,
+    "dist_to_second": 0.903
+   },
+   {
+    "text": "Ob.",
+    "y": 203.84,
+    "h": 47.039999999999964,
+    "tick_units": 0.993,
+    "h_in_spacings": 0.325,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.007,
+    "dist_to_second": 0.848
+   },
+   {
+    "text": "Cl.",
+    "y": 330.06399999999996,
+    "h": 48.608000000000004,
+    "tick_units": 1.865,
+    "h_in_spacings": 0.336,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.024,
+    "dist_to_second": 0.88
+   },
+   {
+    "text": "Fag.",
+    "y": 463.34400000000005,
+    "h": 48.608000000000004,
+    "tick_units": 2.786,
+    "h_in_spacings": 0.336,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.017,
+    "dist_to_second": 0.945
+   },
+   {
+    "text": "Cor.",
+    "y": 614.656,
+    "h": 47.039999999999964,
+    "tick_units": 3.831,
+    "h_in_spacings": 0.325,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.02,
+    "dist_to_second": 0.846
+   },
+   {
+    "text": "Tr.",
+    "y": 743.232,
+    "h": 47.039999999999964,
+    "tick_units": 4.72,
+    "h_in_spacings": 0.325,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.042,
+    "dist_to_second": 0.908
+   },
+   {
+    "text": "Tp.",
+    "y": 881.2159999999999,
+    "h": 47.03999999999985,
+    "tick_units": 5.673,
+    "h_in_spacings": 0.325,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.041,
+    "dist_to_second": 0.996
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p3",
+  "system": 1,
+  "n_staves": 8,
+  "tick_ys": [
+   74.78342455043003,
+   275.8405003909304,
+   454.21735731039877,
+   672.4378420641126,
+   891.8842845973417,
+   1080.068803752932,
+   1273.770132916341,
+   1492.6035965598123
+  ],
+  "staff_indices": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18
+  ],
+  "spacing_px": 202.5,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 104.27199999999999,
+    "h": 48.608000000000004,
+    "tick_units": 0.146,
+    "h_in_spacings": 0.24,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.146,
+    "dist_to_second": 0.847
+   },
+   {
+    "text": "Cl.",
+    "y": 297.91999999999996,
+    "h": 50.17599999999999,
+    "tick_units": 1.102,
+    "h_in_spacings": 0.248,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.109,
+    "dist_to_second": 0.772
+   },
+   {
+    "text": "Fag.",
+    "y": 475.88800000000003,
+    "h": 54.88000000000005,
+    "tick_units": 1.98,
+    "h_in_spacings": 0.271,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.107,
+    "dist_to_second": 0.97
+   },
+   {
+    "text": "Cor.",
+    "y": 678.1600000000001,
+    "h": 48.60800000000006,
+    "tick_units": 2.979,
+    "h_in_spacings": 0.24,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.028,
+    "dist_to_second": 1.055
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p4",
+  "system": 0,
+  "n_staves": 11,
+  "tick_ys": [
+   61.470437017994854,
+   212.62724935732646,
+   344.133676092545,
+   479.67095115681235,
+   640.401028277635,
+   781.9845758354755,
+   949.7686375321337,
+   1089.840616966581,
+   1229.9125964010282,
+   1367.969151670951,
+   1506.025706940874
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "spacing_px": 144.5,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 71.344,
+    "h": 48.608,
+    "tick_units": 0.068,
+    "h_in_spacings": 0.336,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.068,
+    "dist_to_second": 0.978
+   },
+   {
+    "text": "Ob.",
+    "y": 221.872,
+    "h": 48.607999999999976,
+    "tick_units": 1.11,
+    "h_in_spacings": 0.336,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.064,
+    "dist_to_second": 0.846
+   },
+   {
+    "text": "Cl.",
+    "y": 355.93600000000004,
+    "h": 47.04000000000002,
+    "tick_units": 2.038,
+    "h_in_spacings": 0.326,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.082,
+    "dist_to_second": 0.857
+   },
+   {
+    "text": "Fag.",
+    "y": 490.784,
+    "h": 50.1760000000001,
+    "tick_units": 2.972,
+    "h_in_spacings": 0.347,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.077,
+    "dist_to_second": 1.015
+   },
+   {
+    "text": "Cor.",
+    "y": 651.504,
+    "h": 48.60799999999995,
+    "tick_units": 4.085,
+    "h_in_spacings": 0.336,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.077,
+    "dist_to_second": 0.903
+   },
+   {
+    "text": "Tr.",
+    "y": 792.624,
+    "h": 48.60800000000006,
+    "tick_units": 5.061,
+    "h_in_spacings": 0.336,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.074,
+    "dist_to_second": 1.054
+   }
+  ]
+ },
+ {
+  "row_id": "beethoven-sym5-mvt1-575951-p4",
+  "system": 1,
+  "n_staves": 11,
+  "tick_ys": [
+   66.91010842952082,
+   211.15075201119274,
+   357.03672612801677,
+   496.88982161594964,
+   630.1615949632738,
+   773.305351521511,
+   910.9646729625744,
+   1070.561734872333,
+   1210.9632738719831,
+   1359.5914655473941,
+   1500.5414480587617
+  ],
+  "staff_indices": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21
+  ],
+  "spacing_px": 143.4,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 76.83200000000001,
+    "h": 47.04,
+    "tick_units": 0.069,
+    "h_in_spacings": 0.328,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.069,
+    "dist_to_second": 0.937
+   },
+   {
+    "text": "Ob.",
+    "y": 214.816,
+    "h": 50.17599999999999,
+    "tick_units": 1.032,
+    "h_in_spacings": 0.35,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.026,
+    "dist_to_second": 0.992
+   },
+   {
+    "text": "Cl.",
+    "y": 366.91200000000003,
+    "h": 50.17599999999999,
+    "tick_units": 2.093,
+    "h_in_spacings": 0.35,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.069,
+    "dist_to_second": 0.907
+   },
+   {
+    "text": "Fag.",
+    "y": 506.464,
+    "h": 53.31200000000001,
+    "tick_units": 3.066,
+    "h_in_spacings": 0.372,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.067,
+    "dist_to_second": 0.863
+   },
+   {
+    "text": "Cor.",
+    "y": 642.88,
+    "h": 47.039999999999964,
+    "tick_units": 4.018,
+    "h_in_spacings": 0.328,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.089,
+    "dist_to_second": 0.91
+   },
+   {
+    "text": "Tr.",
+    "y": 787.136,
+    "h": 50.176000000000045,
+    "tick_units": 5.024,
+    "h_in_spacings": 0.35,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.096,
+    "dist_to_second": 0.864
+   },
+   {
+    "text": "Tp.",
+    "y": 920.4159999999999,
+    "h": 53.312000000000126,
+    "tick_units": 5.953,
+    "h_in_spacings": 0.372,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.066,
+    "dist_to_second": 1.026
+   }
+  ]
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p5",
+  "system": 0,
+  "n_staves": 15,
+  "tick_ys": [
+   32.917896487216794,
+   136.88630222406985,
+   238.8991893577219,
+   353.62294741218045,
+   470.6281438370401,
+   565.4707960922885,
+   669.4392018291416,
+   773.0816877987944,
+   868.250259821243,
+   970.5890667220953,
+   1104.5420910413636,
+   1208.1845770110165,
+   1311.8270629806693,
+   1423.2916233631263,
+   1535.4080232799834
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14
+  ],
+  "spacing_px": 107.3,
+  "blocks": [
+   {
+    "text": "Flauti.",
+    "y": 31.36,
+    "h": 28.224000000000004,
+    "tick_units": -0.015,
+    "h_in_spacings": 0.263,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.015,
+    "dist_to_second": 0.983
+   },
+   {
+    "text": "Oboi.",
+    "y": 134.848,
+    "h": 28.224000000000004,
+    "tick_units": 0.95,
+    "h_in_spacings": 0.263,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.019,
+    "dist_to_second": 0.95
+   },
+   {
+    "text": "Clarinetti in A.",
+    "y": 238.336,
+    "h": 28.224000000000018,
+    "tick_units": 1.914,
+    "h_in_spacings": 0.263,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.005,
+    "dist_to_second": 0.945
+   },
+   {
+    "text": "Fagotti.",
+    "y": 352.016,
+    "h": 29.79200000000003,
+    "tick_units": 2.973,
+    "h_in_spacings": 0.278,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.015,
+    "dist_to_second": 1.054
+   },
+   {
+    "text": "Corni I. II. in E.",
+    "y": 459.424,
+    "h": 50.17599999999999,
+    "tick_units": 3.974,
+    "h_in_spacings": 0.468,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.104,
+    "dist_to_second": 0.986
+   },
+   {
+    "text": "Corni III. IV. in C.",
+    "y": 556.6400000000001,
+    "h": 53.31200000000001,
+    "tick_units": 4.88,
+    "h_in_spacings": 0.497,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.082,
+    "dist_to_second": 0.801
+   },
+   {
+    "text": "Trombe in E.",
+    "y": 667.184,
+    "h": 29.79200000000003,
+    "tick_units": 5.91,
+    "h_in_spacings": 0.278,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.021,
+    "dist_to_second": 0.948
+   },
+   {
+    "text": "Tromboni I. II.",
+    "y": 770.672,
+    "h": 29.79200000000003,
+    "tick_units": 6.874,
+    "h_in_spacings": 0.278,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.022,
+    "dist_to_second": 0.909
+   },
+   {
+    "text": "Trombone basso.",
+    "y": 867.104,
+    "h": 28.224000000000046,
+    "tick_units": 7.773,
+    "h_in_spacings": 0.263,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.011,
+    "dist_to_second": 0.876
+   },
+   {
+    "text": "Tympani A. E. H.",
+    "y": 969.808,
+    "h": 29.791999999999916,
+    "tick_units": 8.73,
+    "h_in_spacings": 0.278,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.007,
+    "dist_to_second": 0.946
+   },
+   {
+    "text": "Violino I.",
+    "y": 1104.656,
+    "h": 29.791999999999916,
+    "tick_units": 9.986,
+    "h_in_spacings": 0.278,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.001,
+    "dist_to_second": 0.965
+   },
+   {
+    "text": "Violino II.",
+    "y": 1212.0639999999999,
+    "h": 28.223999999999933,
+    "tick_units": 10.987,
+    "h_in_spacings": 0.263,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.036,
+    "dist_to_second": 0.93
+   },
+   {
+    "text": "Viola.",
+    "y": 1310.848,
+    "h": 28.22400000000016,
+    "tick_units": 11.908,
+    "h_in_spacings": 0.263,
+    "nearest_tick": 12,
+    "dist_to_nearest": 0.009,
+    "dist_to_second": 0.957
+   },
+   {
+    "text": "Violoncello.",
+    "y": 1424.528,
+    "h": 29.791999999999916,
+    "tick_units": 12.967,
+    "h_in_spacings": 0.278,
+    "nearest_tick": 13,
+    "dist_to_nearest": 0.012,
+    "dist_to_second": 1.033
+   },
+   {
+    "text": "Contrabasso.",
+    "y": 1538.208,
+    "h": 28.223999999999933,
+    "tick_units": 14.026,
+    "h_in_spacings": 0.263,
+    "nearest_tick": 14,
+    "dist_to_nearest": 0.026,
+    "dist_to_second": 1.071
+   }
+  ]
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p6",
+  "system": 0,
+  "n_staves": 15,
+  "tick_ys": [
+   29.357798165137616,
+   136.8073394495413,
+   243.6697247706422,
+   354.9357798165138,
+   477.651376146789,
+   571.8899082568807,
+   678.1651376146789,
+   782.6788990825688,
+   877.5045871559633,
+   983.7798165137615,
+   1118.532110091743,
+   1224.8073394495414,
+   1330.2018348623853,
+   1433.8348623853212,
+   1539.2293577981652
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14
+  ],
+  "spacing_px": 107.8,
+  "blocks": []
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 0,
+  "n_staves": 15,
+  "tick_ys": [
+   52.56156654497179,
+   170.17457683372055,
+   262.80783272485894,
+   370.0126120146034,
+   495.95220710255563,
+   589.6262860935944,
+   699.43312313309,
+   793.1072021241288,
+   886.7812811151676,
+   978.8941254563558,
+   1087.1397278460008,
+   1189.140391636243,
+   1306.2329903750415,
+   1411.356123464985,
+   1516.999668104879
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14
+  ],
+  "spacing_px": 104.6,
+  "blocks": []
+ },
+ {
+  "row_id": "dvorak-sym9-mvt1-405834-p7",
+  "system": 1,
+  "n_staves": 15,
+  "tick_ys": [
+   51.51116951379764,
+   158.13929040735874,
+   254.46517739816034,
+   359.54796320630754,
+   462.5703022339028,
+   557.3508541392905,
+   663.4638633377136,
+   770.0919842312748,
+   864.3574244415244,
+   943.6846254927727,
+   1078.6438896189225,
+   1184.2417871222078,
+   1293.9605781865966,
+   1406.7700394218134,
+   1516.4888304862025
+  ],
+  "staff_indices": [
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29
+  ],
+  "spacing_px": 104.6,
+  "blocks": []
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p1",
+  "system": 0,
+  "n_staves": 14,
+  "tick_ys": [
+   37.06445060018467,
+   148.54736842105262,
+   260.3198522622345,
+   372.0923361034164,
+   467.64912280701753,
+   588.1085872576177,
+   723.9150507848568,
+   825.2631578947368,
+   926.3216989843028,
+   1073.1316712834719,
+   1185.4832871652816,
+   1315.208864265928,
+   1429.2978762696214,
+   1530.9355493998153
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13
+  ],
+  "spacing_px": 114.9,
+  "blocks": [
+   {
+    "text": "2 Fl\u00f6ten",
+    "y": 36.064,
+    "h": 31.36,
+    "tick_units": -0.009,
+    "h_in_spacings": 0.273,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.009,
+    "dist_to_second": 0.979
+   },
+   {
+    "text": "2 Oboen",
+    "y": 147.392,
+    "h": 31.359999999999985,
+    "tick_units": 0.96,
+    "h_in_spacings": 0.273,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.01,
+    "dist_to_second": 0.96
+   },
+   {
+    "text": "2 Klarinetten in B",
+    "y": 259.50399999999996,
+    "h": 32.92799999999997,
+    "tick_units": 1.936,
+    "h_in_spacings": 0.287,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.007,
+    "dist_to_second": 0.966
+   },
+   {
+    "text": "2 Fagotte",
+    "y": 372.4,
+    "h": 32.92799999999994,
+    "tick_units": 2.918,
+    "h_in_spacings": 0.287,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.003,
+    "dist_to_second": 0.829
+   },
+   {
+    "text": "Kontrafagott",
+    "y": 466.48,
+    "h": 32.928000000000054,
+    "tick_units": 3.737,
+    "h_in_spacings": 0.287,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.01,
+    "dist_to_second": 0.821
+   },
+   {
+    "text": "in C  \\frac{1}{2}",
+    "y": 585.648,
+    "h": 39.200000000000045,
+    "tick_units": 4.774,
+    "h_in_spacings": 0.341,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.021,
+    "dist_to_second": 1.027
+   },
+   {
+    "text": "4 H\u00f6rner",
+    "y": 653.072,
+    "h": 32.927999999999884,
+    "tick_units": 5.361,
+    "h_in_spacings": 0.287,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.565,
+    "dist_to_second": 0.616
+   },
+   {
+    "text": "in Es  \\frac{3}{4}",
+    "y": 722.0640000000001,
+    "h": 39.19999999999993,
+    "tick_units": 5.961,
+    "h_in_spacings": 0.341,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.016,
+    "dist_to_second": 0.898
+   },
+   {
+    "text": "2 Trompeten in C",
+    "y": 823.984,
+    "h": 32.92800000000011,
+    "tick_units": 6.848,
+    "h_in_spacings": 0.287,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.011,
+    "dist_to_second": 0.871
+   },
+   {
+    "text": "Pauken in C u. G",
+    "y": 924.336,
+    "h": 32.928,
+    "tick_units": 7.721,
+    "h_in_spacings": 0.287,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.017,
+    "dist_to_second": 0.862
+   },
+   {
+    "text": "1. Violine",
+    "y": 1072.5120000000002,
+    "h": 31.3599999999999,
+    "tick_units": 9.011,
+    "h_in_spacings": 0.273,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.005,
+    "dist_to_second": 0.983
+   },
+   {
+    "text": "2. Violine",
+    "y": 1185.408,
+    "h": 31.3599999999999,
+    "tick_units": 9.993,
+    "h_in_spacings": 0.273,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.001,
+    "dist_to_second": 0.977
+   },
+   {
+    "text": "Bratsche",
+    "y": 1312.416,
+    "h": 31.360000000000127,
+    "tick_units": 11.098,
+    "h_in_spacings": 0.273,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.024,
+    "dist_to_second": 1.017
+   },
+   {
+    "text": "Violoncell",
+    "y": 1426.88,
+    "h": 31.360000000000127,
+    "tick_units": 12.094,
+    "h_in_spacings": 0.273,
+    "nearest_tick": 12,
+    "dist_to_nearest": 0.021,
+    "dist_to_second": 0.906
+   },
+   {
+    "text": "Kontraba\u00df",
+    "y": 1536.6399999999999,
+    "h": 31.3599999999999,
+    "tick_units": 13.05,
+    "h_in_spacings": 0.273,
+    "nearest_tick": 13,
+    "dist_to_nearest": 0.05,
+    "dist_to_second": 0.934
+   }
+  ]
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p2",
+  "system": 0,
+  "n_staves": 14,
+  "tick_ys": [
+   49.64643799472296,
+   168.70595133391967,
+   272.5957197302844,
+   415.5590735854588,
+   509.7953679272941,
+   599.4347698622105,
+   741.0190559953093,
+   857.7801231310466,
+   937.3063617707418,
+   1049.9302257402521,
+   1152.9006156552332,
+   1302.299618880094,
+   1420.4397537379068,
+   1517.8938727645852
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13
+  ],
+  "spacing_px": 112.9,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 47.04,
+    "h": 40.76799999999999,
+    "tick_units": -0.023,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.023,
+    "dist_to_second": 1.077
+   },
+   {
+    "text": "Ob.",
+    "y": 162.288,
+    "h": 42.33600000000001,
+    "tick_units": 0.997,
+    "h_in_spacings": 0.375,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.057,
+    "dist_to_second": 0.977
+   },
+   {
+    "text": "Klar. (B)",
+    "y": 283.024,
+    "h": 73.69599999999997,
+    "tick_units": 2.066,
+    "h_in_spacings": 0.653,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.092,
+    "dist_to_second": 1.012
+   },
+   {
+    "text": "Fag.",
+    "y": 413.952,
+    "h": 40.76800000000003,
+    "tick_units": 3.226,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.014,
+    "dist_to_second": 0.849
+   },
+   {
+    "text": "K-Fag.",
+    "y": 511.952,
+    "h": 42.33600000000001,
+    "tick_units": 4.093,
+    "h_in_spacings": 0.375,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.019,
+    "dist_to_second": 0.775
+   },
+   {
+    "text": "(C)",
+    "y": 596.624,
+    "h": 42.33600000000001,
+    "tick_units": 4.843,
+    "h_in_spacings": 0.375,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.025,
+    "dist_to_second": 0.769
+   },
+   {
+    "text": "Hr.",
+    "y": 664.832,
+    "h": 40.76800000000003,
+    "tick_units": 5.447,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.579,
+    "dist_to_second": 0.675
+   },
+   {
+    "text": "(Es)",
+    "y": 743.232,
+    "h": 40.767999999999915,
+    "tick_units": 6.141,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.02,
+    "dist_to_second": 1.014
+   },
+   {
+    "text": "Trpt.",
+    "y": 858.48,
+    "h": 42.336000000000126,
+    "tick_units": 7.161,
+    "h_in_spacings": 0.375,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.006,
+    "dist_to_second": 0.698
+   },
+   {
+    "text": "(C)",
+    "y": 900.032,
+    "h": 40.7679999999998,
+    "tick_units": 7.529,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.33,
+    "dist_to_second": 0.374
+   },
+   {
+    "text": "Pk.",
+    "y": 940.016,
+    "h": 39.200000000000045,
+    "tick_units": 7.883,
+    "h_in_spacings": 0.347,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.024,
+    "dist_to_second": 0.728
+   },
+   {
+    "text": "1.Viol.",
+    "y": 1051.344,
+    "h": 42.33600000000024,
+    "tick_units": 8.869,
+    "h_in_spacings": 0.375,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.013,
+    "dist_to_second": 0.899
+   },
+   {
+    "text": "2.Viol.",
+    "y": 1157.184,
+    "h": 40.76800000000003,
+    "tick_units": 9.806,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.038,
+    "dist_to_second": 0.95
+   },
+   {
+    "text": "Br.",
+    "y": 1301.44,
+    "h": 40.76800000000026,
+    "tick_units": 11.083,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.008,
+    "dist_to_second": 1.054
+   },
+   {
+    "text": "Vcl.",
+    "y": 1420.608,
+    "h": 40.76800000000003,
+    "tick_units": 12.139,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 12,
+    "dist_to_nearest": 0.001,
+    "dist_to_second": 0.861
+   },
+   {
+    "text": "K-B.",
+    "y": 1520.96,
+    "h": 40.76800000000003,
+    "tick_units": 13.027,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 13,
+    "dist_to_nearest": 0.027,
+    "dist_to_second": 0.89
+   }
+  ]
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p2",
+  "system": 1,
+  "n_staves": 13,
+  "tick_ys": [
+   57.93627118644067,
+   158.39457627118642,
+   271.6094915254237,
+   425.75186440677965,
+   535.777627118644,
+   636.2359322033898,
+   733.5050847457626,
+   854.6928813559322,
+   989.7003389830508,
+   1116.2033898305083,
+   1268.219661016949,
+   1396.3172881355931,
+   1510.0637288135592
+  ],
+  "staff_indices": [
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26
+  ],
+  "spacing_px": 121.0,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 79.917,
+    "h": 40.742,
+    "tick_units": 0.182,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.182,
+    "dist_to_second": 0.649
+   },
+   {
+    "text": "Ob.",
+    "y": 173.937,
+    "h": 43.876000000000005,
+    "tick_units": 0.959,
+    "h_in_spacings": 0.363,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.128,
+    "dist_to_second": 0.807
+   },
+   {
+    "text": "Klar. (B)",
+    "y": 303.998,
+    "h": 72.082,
+    "tick_units": 2.033,
+    "h_in_spacings": 0.596,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.268,
+    "dist_to_second": 1.006
+   },
+   {
+    "text": "Fag.",
+    "y": 440.327,
+    "h": 43.875999999999976,
+    "tick_units": 3.16,
+    "h_in_spacings": 0.363,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.12,
+    "dist_to_second": 0.789
+   },
+   {
+    "text": "K-Fag.",
+    "y": 546.883,
+    "h": 43.875999999999976,
+    "tick_units": 4.041,
+    "h_in_spacings": 0.363,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.092,
+    "dist_to_second": 0.738
+   },
+   {
+    "text": "(C)",
+    "y": 626.0165,
+    "h": 42.30899999999997,
+    "tick_units": 4.694,
+    "h_in_spacings": 0.35,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.084,
+    "dist_to_second": 0.746
+   },
+   {
+    "text": "Hr. (Es)",
+    "y": 707.5005,
+    "h": 95.58699999999999,
+    "tick_units": 5.368,
+    "h_in_spacings": 0.79,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.215,
+    "dist_to_second": 0.589
+   },
+   {
+    "text": "Pk.",
+    "y": 852.4480000000001,
+    "h": 40.742000000000075,
+    "tick_units": 6.566,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.019,
+    "dist_to_second": 0.983
+   },
+   {
+    "text": "1.Viol.",
+    "y": 984.076,
+    "h": 43.875999999999976,
+    "tick_units": 7.653,
+    "h_in_spacings": 0.363,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.046,
+    "dist_to_second": 1.069
+   },
+   {
+    "text": "2.Viol.",
+    "y": 1109.436,
+    "h": 43.876000000000204,
+    "tick_units": 8.689,
+    "h_in_spacings": 0.363,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.056,
+    "dist_to_second": 0.989
+   },
+   {
+    "text": "Br.",
+    "y": 1252.033,
+    "h": 40.74199999999996,
+    "tick_units": 9.868,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.134,
+    "dist_to_second": 1.122
+   },
+   {
+    "text": "Vcl.",
+    "y": 1376.6095,
+    "h": 42.3090000000002,
+    "tick_units": 10.897,
+    "h_in_spacings": 0.35,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.163,
+    "dist_to_second": 0.896
+   },
+   {
+    "text": "K-B.",
+    "y": 1487.083,
+    "h": 40.74199999999996,
+    "tick_units": 11.81,
+    "h_in_spacings": 0.337,
+    "nearest_tick": 12,
+    "dist_to_nearest": 0.19,
+    "dist_to_second": 0.75
+   }
+  ]
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p3",
+  "system": 0,
+  "n_staves": 14,
+  "tick_ys": [
+   50.716981132075475,
+   154.49895178197065,
+   255.46331236897277,
+   384.6037735849057,
+   465.37526205450735,
+   555.538784067086,
+   671.5303983228512,
+   767.7987421383648,
+   879.0943396226415,
+   1026.0796645702308,
+   1146.7672955974842,
+   1277.3165618448638,
+   1415.8490566037738,
+   1516.8134171907757
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13
+  ],
+  "spacing_px": 112.8,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 50.175999999999995,
+    "h": 37.63199999999999,
+    "tick_units": -0.005,
+    "h_in_spacings": 0.334,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.005,
+    "dist_to_second": 0.925
+   },
+   {
+    "text": "Ob.",
+    "y": 153.664,
+    "h": 37.632000000000005,
+    "tick_units": 0.913,
+    "h_in_spacings": 0.334,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.007,
+    "dist_to_second": 0.903
+   },
+   {
+    "text": "Klar. (B)",
+    "y": 272.048,
+    "h": 70.56000000000003,
+    "tick_units": 1.963,
+    "h_in_spacings": 0.626,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.147,
+    "dist_to_second": 0.998
+   },
+   {
+    "text": "Fag.",
+    "y": 387.29600000000005,
+    "h": 40.76799999999997,
+    "tick_units": 2.984,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.024,
+    "dist_to_second": 0.692
+   },
+   {
+    "text": "K-Fag.",
+    "y": 468.832,
+    "h": 40.76800000000003,
+    "tick_units": 3.707,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.031,
+    "dist_to_second": 0.747
+   },
+   {
+    "text": "(C)",
+    "y": 555.856,
+    "h": 39.19999999999993,
+    "tick_units": 4.479,
+    "h_in_spacings": 0.348,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.003,
+    "dist_to_second": 0.802
+   },
+   {
+    "text": "Hr.",
+    "y": 609.952,
+    "h": 37.63200000000006,
+    "tick_units": 4.959,
+    "h_in_spacings": 0.334,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.482,
+    "dist_to_second": 0.546
+   },
+   {
+    "text": "(Es)",
+    "y": 676.592,
+    "h": 39.200000000000045,
+    "tick_units": 5.55,
+    "h_in_spacings": 0.348,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.045,
+    "dist_to_second": 0.809
+   },
+   {
+    "text": "Trpt.",
+    "y": 769.888,
+    "h": 40.76800000000003,
+    "tick_units": 6.377,
+    "h_in_spacings": 0.361,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.019,
+    "dist_to_second": 0.872
+   },
+   {
+    "text": "(C)",
+    "y": 809.088,
+    "h": 37.63199999999995,
+    "tick_units": 6.725,
+    "h_in_spacings": 0.334,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.366,
+    "dist_to_second": 0.621
+   },
+   {
+    "text": "Pk.",
+    "y": 881.216,
+    "h": 37.631999999999834,
+    "tick_units": 7.364,
+    "h_in_spacings": 0.334,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.019,
+    "dist_to_second": 1.006
+   },
+   {
+    "text": "1.Viol.",
+    "y": 1029.392,
+    "h": 39.19999999999993,
+    "tick_units": 8.678,
+    "h_in_spacings": 0.348,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.029,
+    "dist_to_second": 1.041
+   },
+   {
+    "text": "2.Viol.",
+    "y": 1150.1280000000002,
+    "h": 39.200000000000045,
+    "tick_units": 9.749,
+    "h_in_spacings": 0.348,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.03,
+    "dist_to_second": 1.1
+   },
+   {
+    "text": "Br.",
+    "y": 1279.4879999999998,
+    "h": 37.631999999999834,
+    "tick_units": 10.896,
+    "h_in_spacings": 0.334,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.019,
+    "dist_to_second": 1.177
+   },
+   {
+    "text": "Vcl.",
+    "y": 1416.688,
+    "h": 39.200000000000045,
+    "tick_units": 12.112,
+    "h_in_spacings": 0.348,
+    "nearest_tick": 12,
+    "dist_to_nearest": 0.007,
+    "dist_to_second": 0.888
+   },
+   {
+    "text": "K-B.",
+    "y": 1520.176,
+    "h": 39.200000000000045,
+    "tick_units": 13.03,
+    "h_in_spacings": 0.348,
+    "nearest_tick": 13,
+    "dist_to_nearest": 0.03,
+    "dist_to_second": 0.925
+   }
+  ]
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p3",
+  "system": 1,
+  "n_staves": 14,
+  "tick_ys": [
+   54.55670103092783,
+   174.2783505154639,
+   295.5154639175258,
+   403.6185567010309,
+   496.06185567010306,
+   603.1546391752577,
+   702.1649484536082,
+   790.0618556701031,
+   901.1958762886597,
+   1051.2268041237112,
+   1157.3092783505153,
+   1298.2474226804122,
+   1420.4948453608247,
+   1512.9381443298969
+  ],
+  "staff_indices": [
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27
+  ],
+  "spacing_px": 112.2,
+  "blocks": [
+   {
+    "text": "F1.",
+    "y": 55.664,
+    "h": 42.33600000000001,
+    "tick_units": 0.01,
+    "h_in_spacings": 0.377,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.01,
+    "dist_to_second": 1.057
+   },
+   {
+    "text": "Ob.",
+    "y": 175.61599999999999,
+    "h": 40.768,
+    "tick_units": 1.079,
+    "h_in_spacings": 0.363,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.012,
+    "dist_to_second": 1.069
+   },
+   {
+    "text": "Klar. (B)",
+    "y": 312.816,
+    "h": 73.69600000000003,
+    "tick_units": 2.302,
+    "h_in_spacings": 0.657,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.154,
+    "dist_to_second": 0.809
+   },
+   {
+    "text": "Fag.",
+    "y": 406.896,
+    "h": 42.33600000000001,
+    "tick_units": 3.141,
+    "h_in_spacings": 0.377,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.029,
+    "dist_to_second": 0.795
+   },
+   {
+    "text": "K-Fag.",
+    "y": 492.352,
+    "h": 53.31200000000007,
+    "tick_units": 3.903,
+    "h_in_spacings": 0.475,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.033,
+    "dist_to_second": 0.791
+   },
+   {
+    "text": "(C)",
+    "y": 597.408,
+    "h": 37.63200000000006,
+    "tick_units": 4.839,
+    "h_in_spacings": 0.335,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.051,
+    "dist_to_second": 0.903
+   },
+   {
+    "text": "Hr. (Es)",
+    "y": 674.24,
+    "h": 100.35199999999998,
+    "tick_units": 5.524,
+    "h_in_spacings": 0.895,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.249,
+    "dist_to_second": 0.634
+   },
+   {
+    "text": "Trpt. (C)",
+    "y": 810.656,
+    "h": 84.67200000000014,
+    "tick_units": 6.74,
+    "h_in_spacings": 0.755,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.184,
+    "dist_to_second": 0.807
+   },
+   {
+    "text": "Pk.",
+    "y": 899.248,
+    "h": 39.19999999999982,
+    "tick_units": 7.53,
+    "h_in_spacings": 0.349,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.017,
+    "dist_to_second": 0.973
+   },
+   {
+    "text": "1.Viol.",
+    "y": 1050.56,
+    "h": 43.904000000000224,
+    "tick_units": 8.878,
+    "h_in_spacings": 0.391,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.006,
+    "dist_to_second": 0.952
+   },
+   {
+    "text": "2.Viol.",
+    "y": 1157.9679999999998,
+    "h": 42.33600000000001,
+    "tick_units": 9.836,
+    "h_in_spacings": 0.377,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.006,
+    "dist_to_second": 0.951
+   },
+   {
+    "text": "Br.",
+    "y": 1299.0879999999997,
+    "h": 42.33600000000001,
+    "tick_units": 11.094,
+    "h_in_spacings": 0.377,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.007,
+    "dist_to_second": 1.082
+   },
+   {
+    "text": "Vcl.",
+    "y": 1419.824,
+    "h": 42.33600000000001,
+    "tick_units": 12.17,
+    "h_in_spacings": 0.377,
+    "nearest_tick": 12,
+    "dist_to_nearest": 0.006,
+    "dist_to_second": 0.83
+   },
+   {
+    "text": "K-B.",
+    "y": 1514.6879999999999,
+    "h": 40.76800000000003,
+    "tick_units": 13.016,
+    "h_in_spacings": 0.363,
+    "nearest_tick": 13,
+    "dist_to_nearest": 0.016,
+    "dist_to_second": 0.84
+   }
+  ]
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p4",
+  "system": 0,
+  "n_staves": 14,
+  "tick_ys": [
+   51.81135476118955,
+   177.5716431360769,
+   279.78131571042354,
+   401.3024932412136,
+   501.628116551517,
+   597.714629017723,
+   726.7720036046861,
+   810.612195854611,
+   918.0030039050766,
+   1033.401021327726,
+   1153.5091619104837,
+   1279.269450285371,
+   1412.0949234004206,
+   1515.7176329227996
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13
+  ],
+  "spacing_px": 112.6,
+  "blocks": [
+   {
+    "text": "F1.",
+    "y": 49.391999999999996,
+    "h": 39.19999999999999,
+    "tick_units": -0.021,
+    "h_in_spacings": 0.348,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.021,
+    "dist_to_second": 1.138
+   },
+   {
+    "text": "Ob.",
+    "y": 175.61599999999999,
+    "h": 40.768,
+    "tick_units": 1.099,
+    "h_in_spacings": 0.362,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.017,
+    "dist_to_second": 0.925
+   },
+   {
+    "text": "Klar. (B)",
+    "y": 294.784,
+    "h": 72.12799999999999,
+    "tick_units": 2.158,
+    "h_in_spacings": 0.641,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.133,
+    "dist_to_second": 0.946
+   },
+   {
+    "text": "Fag.",
+    "y": 402.976,
+    "h": 43.90400000000005,
+    "tick_units": 3.118,
+    "h_in_spacings": 0.39,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.015,
+    "dist_to_second": 0.876
+   },
+   {
+    "text": "K-Fag.",
+    "y": 501.76,
+    "h": 43.903999999999996,
+    "tick_units": 3.996,
+    "h_in_spacings": 0.39,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.001,
+    "dist_to_second": 0.852
+   },
+   {
+    "text": "(C)",
+    "y": 596.624,
+    "h": 42.33600000000001,
+    "tick_units": 4.838,
+    "h_in_spacings": 0.376,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.01,
+    "dist_to_second": 0.844
+   },
+   {
+    "text": "Hr.",
+    "y": 654.6400000000001,
+    "h": 42.3359999999999,
+    "tick_units": 5.353,
+    "h_in_spacings": 0.376,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.506,
+    "dist_to_second": 0.641
+   },
+   {
+    "text": "(Es)",
+    "y": 726.768,
+    "h": 42.3359999999999,
+    "tick_units": 5.994,
+    "h_in_spacings": 0.376,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.0,
+    "dist_to_second": 0.745
+   },
+   {
+    "text": "Trpt. (C)",
+    "y": 829.472,
+    "h": 78.39999999999998,
+    "tick_units": 6.906,
+    "h_in_spacings": 0.696,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.167,
+    "dist_to_second": 0.786
+   },
+   {
+    "text": "Pk.",
+    "y": 917.28,
+    "h": 40.76800000000003,
+    "tick_units": 7.686,
+    "h_in_spacings": 0.362,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.006,
+    "dist_to_second": 0.947
+   },
+   {
+    "text": "1.Viol.",
+    "y": 1032.528,
+    "h": 42.336000000000126,
+    "tick_units": 8.709,
+    "h_in_spacings": 0.376,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.008,
+    "dist_to_second": 1.017
+   },
+   {
+    "text": "2.Viol.",
+    "y": 1155.616,
+    "h": 40.76800000000003,
+    "tick_units": 9.802,
+    "h_in_spacings": 0.362,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.019,
+    "dist_to_second": 1.085
+   },
+   {
+    "text": "Br.",
+    "y": 1281.056,
+    "h": 40.7679999999998,
+    "tick_units": 10.916,
+    "h_in_spacings": 0.362,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.016,
+    "dist_to_second": 1.133
+   },
+   {
+    "text": "Vcl.",
+    "y": 1411.2,
+    "h": 40.76800000000003,
+    "tick_units": 12.072,
+    "h_in_spacings": 0.362,
+    "nearest_tick": 12,
+    "dist_to_nearest": 0.008,
+    "dist_to_second": 0.928
+   },
+   {
+    "text": "K-B.",
+    "y": 1514.6879999999999,
+    "h": 40.76800000000003,
+    "tick_units": 12.991,
+    "h_in_spacings": 0.362,
+    "nearest_tick": 13,
+    "dist_to_nearest": 0.009,
+    "dist_to_second": 0.911
+   }
+  ]
+ },
+ {
+  "row_id": "brahms-sym1-mvt1-317803-p4",
+  "system": 1,
+  "n_staves": 14,
+  "tick_ys": [
+   55.2112676056338,
+   157.60307298335468,
+   265.01408450704224,
+   387.48271446863,
+   494.8937259923175,
+   597.787451984635,
+   707.2061459667093,
+   798.5556978233035,
+   888.3994878361075,
+   1036.4660691421254,
+   1157.93085787452,
+   1272.3687580025608,
+   1403.370038412292,
+   1512.2868117797696
+  ],
+  "staff_indices": [
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27
+  ],
+  "spacing_px": 112.1,
+  "blocks": [
+   {
+    "text": "Fl.",
+    "y": 53.312,
+    "h": 40.767999999999994,
+    "tick_units": -0.017,
+    "h_in_spacings": 0.364,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.017,
+    "dist_to_second": 0.93
+   },
+   {
+    "text": "Ob.",
+    "y": 155.232,
+    "h": 40.76800000000003,
+    "tick_units": 0.892,
+    "h_in_spacings": 0.364,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.021,
+    "dist_to_second": 0.892
+   },
+   {
+    "text": "Klar. (B)",
+    "y": 279.88800000000003,
+    "h": 73.69600000000005,
+    "tick_units": 2.005,
+    "h_in_spacings": 0.658,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.133,
+    "dist_to_second": 0.96
+   },
+   {
+    "text": "Fag.",
+    "y": 386.512,
+    "h": 45.47199999999998,
+    "tick_units": 2.956,
+    "h_in_spacings": 0.406,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.009,
+    "dist_to_second": 0.967
+   },
+   {
+    "text": "K-Fag.",
+    "y": 494.704,
+    "h": 45.472000000000094,
+    "tick_units": 3.921,
+    "h_in_spacings": 0.406,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.002,
+    "dist_to_second": 0.92
+   },
+   {
+    "text": "(C)",
+    "y": 595.056,
+    "h": 42.33600000000001,
+    "tick_units": 4.816,
+    "h_in_spacings": 0.378,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.024,
+    "dist_to_second": 0.894
+   },
+   {
+    "text": "Hr.",
+    "y": 645.232,
+    "h": 42.3359999999999,
+    "tick_units": 5.264,
+    "h_in_spacings": 0.378,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.423,
+    "dist_to_second": 0.553
+   },
+   {
+    "text": "(Es)",
+    "y": 705.6,
+    "h": 40.76800000000003,
+    "tick_units": 5.803,
+    "h_in_spacings": 0.364,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.014,
+    "dist_to_second": 0.829
+   },
+   {
+    "text": "Trpt. (C)",
+    "y": 815.36,
+    "h": 78.40000000000009,
+    "tick_units": 6.782,
+    "h_in_spacings": 0.699,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.15,
+    "dist_to_second": 0.652
+   },
+   {
+    "text": "Pk.",
+    "y": 886.704,
+    "h": 39.19999999999993,
+    "tick_units": 7.419,
+    "h_in_spacings": 0.35,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.015,
+    "dist_to_second": 0.786
+   },
+   {
+    "text": "1.Viol.",
+    "y": 1033.3120000000001,
+    "h": 43.90400000000011,
+    "tick_units": 8.727,
+    "h_in_spacings": 0.392,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.028,
+    "dist_to_second": 1.112
+   },
+   {
+    "text": "2.Viol.",
+    "y": 1154.8319999999999,
+    "h": 42.33600000000001,
+    "tick_units": 9.811,
+    "h_in_spacings": 0.378,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.028,
+    "dist_to_second": 1.049
+   },
+   {
+    "text": "Br.",
+    "y": 1270.08,
+    "h": 40.7679999999998,
+    "tick_units": 10.839,
+    "h_in_spacings": 0.364,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.02,
+    "dist_to_second": 1.001
+   },
+   {
+    "text": "Vcl.",
+    "y": 1399.44,
+    "h": 42.33600000000001,
+    "tick_units": 11.993,
+    "h_in_spacings": 0.378,
+    "nearest_tick": 12,
+    "dist_to_nearest": 0.035,
+    "dist_to_second": 1.007
+   },
+   {
+    "text": "K-B.",
+    "y": 1509.1999999999998,
+    "h": 42.33600000000001,
+    "tick_units": 12.972,
+    "h_in_spacings": 0.378,
+    "nearest_tick": 13,
+    "dist_to_nearest": 0.028,
+    "dist_to_second": 0.944
+   }
+  ]
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p2",
+  "system": 0,
+  "n_staves": 19,
+  "tick_ys": [
+   34.64067576348278,
+   110.03508771929825,
+   186.44834307992204,
+   261.16352609919863,
+   338.25601039636126,
+   436.40459172622917,
+   513.1574615551224,
+   606.551440329218,
+   691.1154429283084,
+   777.7171323370154,
+   853.1115442928308,
+   925.7890405024908,
+   1006.2776694823478,
+   1077.2570933506606,
+   1206.6502057613168,
+   1282.3842321854017,
+   1367.9670781893003,
+   1457.2856833441629,
+   1533.0197097682478
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18
+  ],
+  "spacing_px": 83.2,
+  "blocks": [
+   {
+    "text": "Vier Fl\u00f6ten",
+    "y": 29.008000000000003,
+    "h": 32.928,
+    "tick_units": -0.068,
+    "h_in_spacings": 0.396,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.068,
+    "dist_to_second": 0.973
+   },
+   {
+    "text": "Drei Hoboen",
+    "y": 102.70400000000001,
+    "h": 29.791999999999987,
+    "tick_units": 0.818,
+    "h_in_spacings": 0.358,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.088,
+    "dist_to_second": 0.818
+   },
+   {
+    "text": "Drei Klarinetten in A",
+    "y": 177.968,
+    "h": 32.928,
+    "tick_units": 1.722,
+    "h_in_spacings": 0.396,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.102,
+    "dist_to_second": 0.816
+   },
+   {
+    "text": "Zwei Fagotte",
+    "y": 256.368,
+    "h": 32.928,
+    "tick_units": 2.664,
+    "h_in_spacings": 0.396,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.058,
+    "dist_to_second": 0.84
+   },
+   {
+    "text": "Contrafagott",
+    "y": 333.20000000000005,
+    "h": 32.92799999999994,
+    "tick_units": 3.587,
+    "h_in_spacings": 0.396,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.061,
+    "dist_to_second": 0.865
+   },
+   {
+    "text": "Sechs H\u00f6rner in F",
+    "y": 471.18399999999997,
+    "h": 32.928000000000054,
+    "tick_units": 5.244,
+    "h_in_spacings": 0.396,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.418,
+    "dist_to_second": 0.504
+   },
+   {
+    "text": "Vier Trompeten in B",
+    "y": 645.232,
+    "h": 32.928,
+    "tick_units": 7.335,
+    "h_in_spacings": 0.396,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.465,
+    "dist_to_second": 0.551
+   },
+   {
+    "text": "Drei Posaunen",
+    "y": 771.4559999999999,
+    "h": 31.360000000000014,
+    "tick_units": 8.851,
+    "h_in_spacings": 0.377,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.075,
+    "dist_to_second": 0.965
+   },
+   {
+    "text": "Tuba",
+    "y": 846.72,
+    "h": 31.360000000000014,
+    "tick_units": 9.755,
+    "h_in_spacings": 0.377,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.077,
+    "dist_to_second": 0.829
+   },
+   {
+    "text": "Pauken",
+    "y": 922.768,
+    "h": 29.79200000000003,
+    "tick_units": 10.669,
+    "h_in_spacings": 0.358,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.036,
+    "dist_to_second": 0.837
+   },
+   {
+    "text": "Becken",
+    "y": 965.104,
+    "h": 29.79200000000003,
+    "tick_units": 11.178,
+    "h_in_spacings": 0.358,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.472,
+    "dist_to_second": 0.495
+   },
+   {
+    "text": "Grosse Trommel",
+    "y": 1001.1680000000001,
+    "h": 29.79200000000003,
+    "tick_units": 11.611,
+    "h_in_spacings": 0.358,
+    "nearest_tick": 12,
+    "dist_to_nearest": 0.061,
+    "dist_to_second": 0.906
+   },
+   {
+    "text": "Becken Gr. Trommel) von einem geschlagen",
+    "y": 1041.152,
+    "h": 37.63200000000006,
+    "tick_units": 12.091,
+    "h_in_spacings": 0.452,
+    "nearest_tick": 12,
+    "dist_to_nearest": 0.419,
+    "dist_to_second": 0.434
+   },
+   {
+    "text": "Kleine Trommel",
+    "y": 1078.0,
+    "h": 29.791999999999916,
+    "tick_units": 12.534,
+    "h_in_spacings": 0.358,
+    "nearest_tick": 13,
+    "dist_to_nearest": 0.009,
+    "dist_to_second": 0.862
+   },
+   {
+    "text": "Tamtam",
+    "y": 1114.0639999999999,
+    "h": 29.792000000000144,
+    "tick_units": 12.967,
+    "h_in_spacings": 0.358,
+    "nearest_tick": 13,
+    "dist_to_nearest": 0.442,
+    "dist_to_second": 1.112
+   },
+   {
+    "text": "Erste Violinen",
+    "y": 1203.44,
+    "h": 29.791999999999916,
+    "tick_units": 14.041,
+    "h_in_spacings": 0.358,
+    "nearest_tick": 14,
+    "dist_to_nearest": 0.039,
+    "dist_to_second": 0.948
+   },
+   {
+    "text": "Zweite Violinen",
+    "y": 1278.704,
+    "h": 29.791999999999916,
+    "tick_units": 14.945,
+    "h_in_spacings": 0.358,
+    "nearest_tick": 15,
+    "dist_to_nearest": 0.044,
+    "dist_to_second": 0.866
+   },
+   {
+    "text": "Violen",
+    "y": 1362.592,
+    "h": 31.3599999999999,
+    "tick_units": 15.953,
+    "h_in_spacings": 0.377,
+    "nearest_tick": 16,
+    "dist_to_nearest": 0.065,
+    "dist_to_second": 0.964
+   },
+   {
+    "text": "Violoncelle",
+    "y": 1451.968,
+    "h": 31.360000000000127,
+    "tick_units": 17.026,
+    "h_in_spacings": 0.377,
+    "nearest_tick": 17,
+    "dist_to_nearest": 0.064,
+    "dist_to_second": 0.974
+   },
+   {
+    "text": "B\u00e4sse",
+    "y": 1531.152,
+    "h": 29.792000000000144,
+    "tick_units": 17.978,
+    "h_in_spacings": 0.358,
+    "nearest_tick": 18,
+    "dist_to_nearest": 0.022,
+    "dist_to_second": 0.887
+   }
+  ]
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p3",
+  "system": 0,
+  "n_staves": 15,
+  "tick_ys": [
+   31.866108786610877,
+   138.08647140864713,
+   255.2412831241283,
+   350.83960948396094,
+   474.24267782426773,
+   567.9665271966527,
+   687.9330543933054,
+   779.4700139470013,
+   904.1227336122734,
+   992.2231520223152,
+   1108.4407252440724,
+   1208.4128312412831,
+   1321.5062761506276,
+   1436.786610878661,
+   1535.8214783821477
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14
+  ],
+  "spacing_px": 107.4,
+  "blocks": [
+   {
+    "text": "Fag. 1",
+    "y": 79.96799999999999,
+    "h": 31.36,
+    "tick_units": 0.448,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.448,
+    "dist_to_second": 0.541
+   },
+   {
+    "text": "2",
+    "y": 111.328,
+    "h": 31.360000000000014,
+    "tick_units": 0.74,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.249,
+    "dist_to_second": 0.74
+   },
+   {
+    "text": "3",
+    "y": 275.18399999999997,
+    "h": 29.791999999999973,
+    "tick_units": 2.265,
+    "h_in_spacings": 0.277,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.186,
+    "dist_to_second": 0.704
+   },
+   {
+    "text": "4",
+    "y": 305.76,
+    "h": 31.360000000000014,
+    "tick_units": 2.55,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.42,
+    "dist_to_second": 0.47
+   },
+   {
+    "text": "F-H\u00f6rner",
+    "y": 337.12,
+    "h": 31.360000000000014,
+    "tick_units": 2.842,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.128,
+    "dist_to_second": 0.762
+   },
+   {
+    "text": "5",
+    "y": 368.48,
+    "h": 31.359999999999957,
+    "tick_units": 3.133,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.164,
+    "dist_to_second": 0.985
+   },
+   {
+    "text": "7",
+    "y": 493.92,
+    "h": 31.360000000000014,
+    "tick_units": 4.301,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.183,
+    "dist_to_second": 0.689
+   },
+   {
+    "text": "8",
+    "y": 525.28,
+    "h": 31.3599999999999,
+    "tick_units": 4.593,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.397,
+    "dist_to_second": 0.475
+   },
+   {
+    "text": "B-Tromp.",
+    "y": 556.6399999999999,
+    "h": 31.360000000000014,
+    "tick_units": 4.885,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.105,
+    "dist_to_second": 0.767
+   },
+   {
+    "text": "9",
+    "y": 588.0,
+    "h": 31.360000000000127,
+    "tick_units": 5.177,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.186,
+    "dist_to_second": 0.93
+   },
+   {
+    "text": "Posaunen 1",
+    "y": 713.44,
+    "h": 31.360000000000014,
+    "tick_units": 6.345,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.237,
+    "dist_to_second": 0.615
+   },
+   {
+    "text": "2",
+    "y": 744.8,
+    "h": 31.360000000000014,
+    "tick_units": 6.637,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.323,
+    "dist_to_second": 0.529
+   },
+   {
+    "text": "Tuba",
+    "y": 776.1600000000001,
+    "h": 31.360000000000014,
+    "tick_units": 6.928,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.031,
+    "dist_to_second": 0.821
+   },
+   {
+    "text": "Zweite Viol.",
+    "y": 1168.1599999999999,
+    "h": 31.3599999999999,
+    "tick_units": 10.578,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 11,
+    "dist_to_nearest": 0.375,
+    "dist_to_second": 0.556
+   },
+   {
+    "text": "B\u00e4sse",
+    "y": 1450.4,
+    "h": 31.360000000000127,
+    "tick_units": 13.205,
+    "h_in_spacings": 0.292,
+    "nearest_tick": 13,
+    "dist_to_nearest": 0.127,
+    "dist_to_second": 0.795
+   }
+  ]
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p4",
+  "system": 0,
+  "n_staves": 21,
+  "tick_ys": [
+   30.429223744292237,
+   101.72907153729071,
+   180.78538812785388,
+   254.17351598173514,
+   333.22983257229833,
+   405.1263318112633,
+   482.69101978691015,
+   551.6042617960426,
+   630.958904109589,
+   697.7838660578386,
+   796.8280060882801,
+   877.972602739726,
+   916.1582952815829,
+   953.44901065449,
+   1017.5890410958904,
+   1095.7503805175038,
+   1188.5296803652968,
+   1282.2039573820396,
+   1363.3485540334855,
+   1458.8127853881278,
+   1537.2724505327244
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20
+  ],
+  "spacing_px": 75.3,
+  "blocks": [
+   {
+    "text": "Hoboen \n  \n \n \n  \n A-Klar. \n  \n \n \n  \n Fag. \n  \n \n \n  \n Contraf. \n  \n \n \n  \n F-H\u00f6rner \n  \n \n \n  \n B-Tromp. \n  \n \n \n  \n Posaunen \n  \n \n \n  \n Tuba \n  \n \n \n  \n Pauken \n  \n \n \n  \n Becken \n  \n \n \n  \n Gr. Tr. \n  \n \n \n  \n Kl. Tr. \n  \n \n \n  \n Erste Viol. \n  \n \n \n  \n Zweite Viol. \n  \n \n \n  \n Violen \n  \n \n \n  \n Veelle \n  \n \n \n  \n get. \n  \n \n \n  \n B\u00e4sse \n  \n \n \n  \n get.",
+    "y": 784.0,
+    "h": 1568.0,
+    "tick_units": 10.002,
+    "h_in_spacings": 20.812,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.17,
+    "dist_to_second": 1.144
+   }
+  ]
+ },
+ {
+  "row_id": "mahler-sym5-mvt1-local-p5",
+  "system": 0,
+  "n_staves": 21,
+  "tick_ys": [
+   31.208502415458938,
+   113.32019323671497,
+   193.31091787439613,
+   276.63458937198067,
+   350.5654106280193,
+   433.2830917874396,
+   508.7288888888889,
+   602.0514009661836,
+   667.4983574879227,
+   751.4280193236715,
+   836.2666666666667,
+   873.5350724637681,
+   910.1974879227052,
+   948.071884057971,
+   1013.2158454106279,
+   1086.5406763285023,
+   1173.5002898550724,
+   1270.1557487922705,
+   1350.4494685990337,
+   1456.4977777777776,
+   1536.791497584541
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20
+  ],
+  "spacing_px": 75.3,
+  "blocks": [
+   {
+    "text": "A-Klar.  2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47   48   49   50   51   52   53   54   55   56   57   58   59   60   61   62   63   64   65   66   67   68   69   70   71   72   73   74   75   76   77   78   79   80   81   82   83   84   85   86   87   88   89   90   91   92   93   94   95   96   97   98   99   100   101   102   103   104   105   106   107   108   109   110   111   112   113   114   115   116   117   118   119   120   121   122   123   124   125   126   127   128   129   130   131   132   133   134   134   135   136   137   138   139   140   141   142   143   144   145   146   147   148   149   150   151   152   153   154   155   156   157   158   159   160   161   162   163   164   165   166   167   168   169   169   170   171   172   173   174   175   176   177   178   179   180   181   182   183   184   185   186   187   188   189   190   191   192   193   194   195   196   197   198   199   200   201   202   203   204   205   206   207   208   209   210   211   212   213   214   215   216   217   218   219   220   221   222   223   224   225   226   227   228   229   230   231   232   233   234   234   235   236   237   238   239   240   241   242   243   244   245   246   247   248   249   250   251   252   253   254   255   256   257   258   259   260   261   262   263   264   265   266   267   268   269   269   270   271   272   273   274   275   276   277   278   279   280   281   282   283   284   285   286   287   288   289   290   291   292   293   294   295   296   297   298   299   300   301   302   303   304   305   306   307   308   309   310   311   312   313   314   315   316   317   318   319   320   321   322   323   324   325   326   327   328   329   330   331   332   333   334   334   335   336   337   338   339   340   341   342   343   344   345   346   347   348   349   350   351   352   353   354   355   356   357   358   359   360   361   362   363   364   365   366   367   368   369   370   371   372   373   374   375   376   377   378   379   380   381   382   383   384   385   386   387   388   389   390   391   392   393   394   395   396   397   398   399   400   401   402   403   404   405   406   407   408   409   410   411   412   413   414   415   416   417   418   419   420   421   422   423   424   425   426   427   428   429   430   431   432   433   434   434   435   436   437   438   439   440   441   443   444   445   446   447   448   449   450   451   452   453   454   455   456   457   458   459   460   461   462   463   464   465   466   467   468   469   470   471   472   473   474   475   476   477   478   479   480   481   482   483   484   485   486   487   488   489   490   491   492   493   494   495   496   497   498   499   500   501   502   503   504   505   506   507   508   509   510   511   512   513   514   515   516   517   518   519   521   522   523   524   525   526   527   528   529   530   531   532   533   534   534   535   536   537   538   539   540   541   543   544   545   546   547   548   549   550   551   552   553   554   554   555   556   557   558   559   560   561   562   563   564   565   566   567   568   569   569   570   571   572   573   574   574   575   576   577   578   579   580   581   582   583   584   585   586   587   588   589   590   591   592   593   594   595   596   597   598   599   600   601   602   603   604   605   606   607   608   609   610   611   612   613   614   615   616   617   618   619   621   622   623   624   625   626   627   628   629   630   631   632   633   634   634   635   636   637   638   639   640   641   643   644   645   646   647   648   649   650   651   652   653   654   655   656   657   658   659   660   661   662   663   664   665   666   667   668   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803",
+    "y": 90.94400000000002,
+    "h": 28.224000000000004,
+    "tick_units": 0.794,
+    "h_in_spacings": 0.375,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.297,
+    "dist_to_second": 0.794
+   }
+  ]
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "n_staves": 12,
+  "tick_ys": [
+   49.82220635487326,
+   178.01642270617637,
+   309.5694394858979,
+   437.763655837201,
+   555.3216708318457,
+   671.7600856836843,
+   801.6337022491966,
+   944.9425205283827,
+   1075.9357372367012,
+   1205.8093538022135,
+   1347.9985719385934,
+   1517.6179935737237
+  ],
+  "staff_indices": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "spacing_px": 133.4,
+  "blocks": [
+   {
+    "text": "I",
+    "y": 68.992,
+    "h": 43.904,
+    "tick_units": 0.144,
+    "h_in_spacings": 0.329,
+    "nearest_tick": 0,
+    "dist_to_nearest": 0.144,
+    "dist_to_second": 0.817
+   },
+   {
+    "text": "Violini II",
+    "y": 181.888,
+    "h": 50.17599999999999,
+    "tick_units": 0.99,
+    "h_in_spacings": 0.376,
+    "nearest_tick": 1,
+    "dist_to_nearest": 0.029,
+    "dist_to_second": 0.957
+   },
+   {
+    "text": "III",
+    "y": 309.68,
+    "h": 45.47199999999998,
+    "tick_units": 1.947,
+    "h_in_spacings": 0.341,
+    "nearest_tick": 2,
+    "dist_to_nearest": 0.001,
+    "dist_to_second": 0.96
+   },
+   {
+    "text": "I",
+    "y": 442.17600000000004,
+    "h": 43.90399999999994,
+    "tick_units": 2.94,
+    "h_in_spacings": 0.329,
+    "nearest_tick": 3,
+    "dist_to_nearest": 0.033,
+    "dist_to_second": 0.848
+   },
+   {
+    "text": "Viole II",
+    "y": 553.504,
+    "h": 47.039999999999964,
+    "tick_units": 3.775,
+    "h_in_spacings": 0.353,
+    "nearest_tick": 4,
+    "dist_to_nearest": 0.014,
+    "dist_to_second": 0.867
+   },
+   {
+    "text": "III",
+    "y": 665.616,
+    "h": 45.47199999999998,
+    "tick_units": 4.615,
+    "h_in_spacings": 0.341,
+    "nearest_tick": 5,
+    "dist_to_nearest": 0.046,
+    "dist_to_second": 0.827
+   },
+   {
+    "text": "I",
+    "y": 797.328,
+    "h": 45.472000000000094,
+    "tick_units": 5.602,
+    "h_in_spacings": 0.341,
+    "nearest_tick": 6,
+    "dist_to_nearest": 0.032,
+    "dist_to_second": 0.941
+   },
+   {
+    "text": "Violoncelli II",
+    "y": 932.1759999999999,
+    "h": 48.60800000000006,
+    "tick_units": 6.613,
+    "h_in_spacings": 0.364,
+    "nearest_tick": 7,
+    "dist_to_nearest": 0.096,
+    "dist_to_second": 0.978
+   },
+   {
+    "text": "III",
+    "y": 1062.32,
+    "h": 45.47199999999975,
+    "tick_units": 7.588,
+    "h_in_spacings": 0.341,
+    "nearest_tick": 8,
+    "dist_to_nearest": 0.102,
+    "dist_to_second": 0.88
+   },
+   {
+    "text": "Contrabasso",
+    "y": 1193.248,
+    "h": 47.039999999999964,
+    "tick_units": 8.569,
+    "h_in_spacings": 0.353,
+    "nearest_tick": 9,
+    "dist_to_nearest": 0.094,
+    "dist_to_second": 0.879
+   },
+   {
+    "text": "Cembalo",
+    "y": 1412.768,
+    "h": 47.039999999999964,
+    "tick_units": 10.214,
+    "h_in_spacings": 0.353,
+    "nearest_tick": 10,
+    "dist_to_nearest": 0.485,
+    "dist_to_second": 0.786
+   }
+  ]
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 1,
+  "n_staves": 12,
+  "tick_ys": [
+   47.56319514661274,
+   157.4870239298955,
+   282.2082912032356,
+   416.9706774519717,
+   539.5780249410179,
+   662.7138523761375,
+   797.4762386248736,
+   920.0835861139199,
+   1055.3744523087294,
+   1189.0798786653186,
+   1348.680822379508,
+   1520.4368048533875
+  ],
+  "staff_indices": [
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23
+  ],
+  "spacing_px": 133.9,
+  "blocks": []
+ }
+]

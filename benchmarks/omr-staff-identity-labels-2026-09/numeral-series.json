@@ -1,0 +1,62 @@
+[
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 0,
+  "fragment": "I",
+  "donor_position": 1,
+  "donor_text": "Violini II",
+  "donor": "Violin",
+  "truth": null
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 2,
+  "fragment": "III",
+  "donor_position": 1,
+  "donor_text": "Violini II",
+  "donor": "Violin",
+  "truth": null
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 3,
+  "fragment": "I",
+  "donor_position": 4,
+  "donor_text": "Viole II",
+  "donor": "Viola",
+  "truth": null
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 5,
+  "fragment": "III",
+  "donor_position": 4,
+  "donor_text": "Viole II",
+  "donor": "Viola",
+  "truth": null
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 6,
+  "fragment": "I",
+  "donor_position": 7,
+  "donor_text": "Violoncelli II",
+  "donor": "Cello",
+  "truth": null
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "system": 0,
+  "position": 8,
+  "fragment": "III",
+  "donor_position": 7,
+  "donor_text": "Violoncelli II",
+  "donor": "Cello",
+  "truth": null
+ }
+]

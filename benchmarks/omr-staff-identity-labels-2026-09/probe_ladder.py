@@ -150,6 +150,49 @@ def run_row(row: dict, rows_by_id: dict, lib: Path, fx: Path,
         if strip is not None:
             strip.save(crops_dir / f"{rid}-sys{sysi}-bare.png")
 
+    # ── the LADDER's own answer, not the best of the rungs ──────────────────
+    # ⚠️ "some rung read it" is NOT what the pipeline gets, and the difference
+    # is not small. `contextual._labels_for_page` stops at the first rung that
+    # covers the page, replaces the text layer with Surya only when Surya
+    # resolves MORE, and then adds Tesseract labels only for staves that have
+    # no label OBJECT yet — raw presence, not usable presence. So a staff for
+    # which Surya returned an unresolvable string ('(C)') BLOCKS Tesseract from
+    # supplying a resolvable one ('(C) Hr.'), and the per-rung view above
+    # scores it resolved while the pipeline does not.
+    #
+    # Both columns are kept. The per-rung one measures what the readers can
+    # see; this one measures what the pipeline delivers, and it is the one a
+    # coverage claim has to be made in.
+    ladder: dict[int, tuple[str, str]] = {}
+    tl = {i: t for i, t in rungs["text_layer"].items() if t}
+    sy = {i: t for i, t in rungs["surya"].items() if t}
+    ts = {i: t for i, t in rungs["tesseract"].items() if t}
+
+    def _usable(d):
+        return sum(1 for t in d.values() if (lambda h: h and h.instrument)(lookup(t)))
+
+    def _covered(d):
+        widest = max((len(v) for v in by_sys.values()), default=0)
+        if not d or not widest:
+            return bool(d) and not widest
+        named = {i for i, t in d.items()
+                 if (lambda h: h and h.instrument)(lookup(t))}
+        best = max((sum(1 for s in v if s.staff_index in named)
+                    for v in by_sys.values()), default=0)
+        return best / widest >= 0.75
+
+    chosen = dict(tl)
+    src = {i: "text_layer" for i in tl}
+    if not _covered(chosen):
+        if _usable(sy) > _usable(chosen):
+            chosen, src = dict(sy), {i: "surya" for i in sy}
+        if not _covered(chosen):
+            for i, t in ts.items():
+                if i not in chosen:          # raw presence, as the pipeline does
+                    chosen[i], src[i] = t, "tesseract"
+    for i, t in chosen.items():
+        ladder[i] = (t, src[i])
+
     truth, truth_prov = _truth_staves(row, rows_by_id)
 
     out = []
@@ -182,6 +225,11 @@ def run_row(row: dict, rows_by_id: dict, lib: Path, fx: Path,
                 "confidence": {k: (h.confidence if h else None)
                                for k, h in hits.items()},
                 "resolved": resolved, "resolved_by": resolved_by,
+                "ladder_text": ladder.get(si, ("", None))[0],
+                "ladder_rung": ladder.get(si, ("", None))[1],
+                "ladder_resolved": (lambda h: h.instrument.name
+                                    if h and h.instrument else None)(
+                    lookup(ladder[si][0])) if si in ladder else None,
                 "any_text": any(reads.values()),
                 "TRUTH_name": tname,
             })
