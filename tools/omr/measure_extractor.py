@@ -25,6 +25,7 @@ from collections import Counter
 import cv2
 import numpy as np
 
+from .system_grouping import _choir_grouping_enabled
 from .types import Barline, MeasureCell, PageWithStaves, Staff
 
 
@@ -388,6 +389,24 @@ def _intersystem_connectivity(
     return n_connected / max(n_gaps, 1)
 
 
+def _is_grouped_system(staves: list[Staff]) -> bool:
+    """Does this system carry bracket-group structure — two or more groups,
+    with at least half its staves in multi-staff groups?
+
+    `group_index` is set by `system_grouping._assign_groups` from relative
+    bridging, so it is non-trivial only where cross-staff ink (bracket,
+    barlines) crosses some gaps much more than others; a page grouped by the
+    gap-size fallback leaves every staff at the default 0 and reads False
+    here. Used by cue C (`OMR_CHOIR_GROUPING`) to keep a grouped ensemble
+    system out of open-score mode — see the comment at the call site.
+    """
+    sizes = Counter(s.group_index for s in staves)
+    if len(sizes) < 2:
+        return False
+    in_multi = sum(n for n in sizes.values() if n >= 2)
+    return in_multi * 2 >= len(staves)
+
+
 def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
     """Detect barlines via per-staff scanning + system-level voting.
 
@@ -524,6 +543,27 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
         barlines_cross_gaps = (
             len(vote_passed) < 2 or n_connected * 2 >= len(vote_passed)
         )
+        # Cue C (opt-in, OMR_CHOIR_GROUPING): the open-score question is asked
+        # of the COLUMNS — "are the vote-accepted x's mostly connected?" — and
+        # a rhythmic-unison tutti answers it wrong: stems align across enough
+        # staves to pass the vote, none of them connected, so the unconnected
+        # columns outnumber the real barlines and the gate reads a conductor's
+        # page as an open score (measured on the Brandenburg 3 merged system:
+        # 9 stem columns against 6 true barlines → 14 "bars" where the page
+        # prints 5). The STAVES already answer it right: an open score has no
+        # bracket-groups — `Staff.group_index` comes from `_assign_groups`,
+        # which only finds sub-structure where ink (bracket, barlines) crosses
+        # some gaps and not others — so a system whose staves form two or more
+        # groups, with at least half of them in multi-staff groups, is a
+        # grouped ensemble system and connectivity keeps its filter role. The
+        # half-in-multi guard keeps the true open-score family out: a vocal
+        # page whose only multi-staff group is the keyboard pair (voices
+        # singleton, most staves NOT in multi-groups) stays in open-score
+        # mode, where its per-staff barlines survive on votes alone.
+        # benchmarks/omr-choir-grouping-2026-09/FINDINGS.md.
+        if (not barlines_cross_gaps and _choir_grouping_enabled()
+                and _is_grouped_system(staves)):
+            barlines_cross_gaps = True
 
         accepted: list[int] = []
         for cluster_index, cluster in enumerate(clusters):

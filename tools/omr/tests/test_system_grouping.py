@@ -561,3 +561,111 @@ class TestCoverageShift:
     ])
     def test_shift(self, coverage, expected):
         assert _coverage_shift(coverage) == expected
+
+
+# ── cue B: pair-local left-edge merge (OMR_CHOIR_GROUPING) ──────────────────
+#
+# The Brandenburg-3 family (benchmarks/omr-choir-grouping-2026-09/FINDINGS.md):
+# two systems indented DIFFERENTLY, interior barlines drawn per instrument
+# choir. The page-median window lands between the two indentation modes and
+# cuts the full-width system's left-edge complex out of the scan, so its choir
+# gaps read bridging = 0 and the system shatters — while the same page still
+# prints a systemic barline through every within-system gap, at the pair's own
+# left edge, where cue B looks.
+
+def _choir_page():
+    """Two 6-staff systems: system 1 indented (x_start 500), system 2 full
+    width (x_start 120). Interior barlines per 3-staff choir; one systemic
+    barline at each system's own left edge crossing all six of its staves.
+    The page-median window ([~262, ...]) sees system 1's left rule (x 510)
+    but not system 2's (x 130)."""
+    img = _blank()
+    tops = [100, 200, 300, 400, 500, 600,     # system 1 (indented)
+            800, 900, 1000, 1100, 1200, 1300]  # system 2 (full width)
+    groups = [_draw_staff(img, t, x0=(500 if i < 6 else 120), x1=X1)
+              for i, t in enumerate(tops)]
+    staves = [
+        Staff(page_index=0, staff_index=i, line_ys=ys,
+              x_start=(500 if i < 6 else 120), x_end=X1)
+        for i, ys in enumerate(groups)
+    ]
+    # systemic barline at each system's own left edge, through all its staves
+    _draw_vrule(img, 510, groups[0][0], groups[5][-1])
+    _draw_vrule(img, 130, groups[6][0], groups[11][-1])
+    # interior barlines per choir: staves 0-2 / 3-5 of each system
+    for first, last in ((0, 2), (3, 5), (6, 8), (9, 11)):
+        for k in range(5):
+            _draw_vrule(img, 560 + k * 100, groups[first][0], groups[last][-1])
+    return img, staves
+
+
+def test_choir_page_shatters_without_cue_b():
+    """Fixture-validity guard (the disease, not desired behavior): with cue B
+    off, the wide window cannot see system 2's left rule, so system 2 splits
+    at its choir gap. If this starts passing as two systems, upstream grouping
+    has begun handling bimodal indentation on its own and the fixture must be
+    re-picked — a finding, not a bug."""
+    img, staves = _choir_page()
+    out, used = assign_systems(img, staves, left_edge_split=False,
+                               choir_grouping=False)
+    assert used
+    sys2 = {s.system_index for s in out if s.staff_index >= 6}
+    assert len(sys2) > 1, "system 2 must still shatter without cue B"
+    sys1 = {s.system_index for s in out if s.staff_index < 6}
+    assert len(sys1) == 1, "the indented system's left rule is in-window; it holds"
+
+
+def test_cue_b_merges_the_window_blind_break():
+    img, staves = _choir_page()
+    out, used = assign_systems(img, staves, left_edge_split=False,
+                               choir_grouping=True)
+    assert used
+    assert [s.system_index for s in out] == [0] * 6 + [1] * 6
+
+
+def test_cue_b_never_merges_the_true_system_break():
+    """The gap between the two systems is crossed by nothing, in any window —
+    cue B must leave it alone (it is also >1 gap wide in the pair band)."""
+    img, staves = _choir_page()
+    out, _ = assign_systems(img, staves, left_edge_split=False,
+                            choir_grouping=True)
+    assert out[5].system_index != out[6].system_index
+
+
+def test_cue_b_marks_merged_choir_gaps_as_group_boundaries():
+    """bridging[] stays 0 at a merged gap, so _assign_groups reads the choirs
+    as bracket groups of one system — the true structure."""
+    img, staves = _choir_page()
+    out, _ = assign_systems(img, staves, left_edge_split=False,
+                            choir_grouping=True)
+    sys2_groups = [s.group_index for s in out if s.system_index == 1]
+    assert sys2_groups == [0, 0, 0, 1, 1, 1]
+
+
+def test_cue_b_never_touches_a_multi_column_break():
+    """Two side-by-side columns share almost no x range and are different
+    systems whatever crosses at the left column's edge."""
+    img, staves = _build([100, 200], rules=[(0, 1)])
+    staves[0].x_start, staves[0].x_end = 100, 560
+    staves[1].x_start, staves[1].x_end = 640, 1100
+    # a vertical rule crossing the gap at the pair's min x_start — bait cue B
+    _draw_vrule(img, 105, 100, 200 + LINE_SPACING * 5)
+    out, used = assign_systems(img, staves, left_edge_split=False,
+                               choir_grouping=True)
+    assert used
+    assert [s.system_index for s in out] == [0, 1]
+
+
+def test_cue_b_is_off_by_default(monkeypatch):
+    monkeypatch.delenv("OMR_CHOIR_GROUPING", raising=False)
+    img, staves = _choir_page()
+    out, _ = assign_systems(img, staves, left_edge_split=False)
+    sys2 = {s.system_index for s in out if s.staff_index >= 6}
+    assert len(sys2) > 1, "flag unset means cue B must not run"
+
+
+def test_cue_b_env_flag_enables(monkeypatch):
+    monkeypatch.setenv("OMR_CHOIR_GROUPING", "1")
+    img, staves = _choir_page()
+    out, _ = assign_systems(img, staves, left_edge_split=False)
+    assert [s.system_index for s in out] == [0] * 6 + [1] * 6
