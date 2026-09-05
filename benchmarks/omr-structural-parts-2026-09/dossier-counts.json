@@ -1,0 +1,3460 @@
+{
+  "bach-brandenburg3-mvt1-468678-p1": {
+    "dossier": null,
+    "systems": []
+  },
+  "beethoven-sym5-mvt1-575951-p1": {
+    "dossier": "beethoven-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Cello",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Contrabass",
+          "instrument_source": "score_order_ambiguity",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ]
+    ]
+  },
+  "beethoven-sym5-mvt1-575951-p2": {
+    "dossier": "beethoven-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 10,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ],
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 10,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ]
+    ]
+  },
+  "beethoven-sym5-mvt1-575951-p3": {
+    "dossier": "beethoven-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Viola",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ],
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Viola",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ]
+    ]
+  },
+  "beethoven-sym5-mvt1-575951-p4": {
+    "dossier": "beethoven-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Viola",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 10,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        }
+      ],
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Viola",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 10,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        }
+      ]
+    ]
+  },
+  "beethoven-sym5-mvt1-984073-p1": {
+    "dossier": "beethoven-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "score_order",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Cello",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Contrabass",
+          "instrument_source": "score_order_ambiguity",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ]
+    ]
+  },
+  "beethoven-sym5-mvt1-984073-p2": {
+    "dossier": "beethoven-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 10,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ],
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 3,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 10,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ]
+    ]
+  },
+  "beethoven-sym5-mvt1-984073-p3": {
+    "dossier": "beethoven-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Viola",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ],
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Viola",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ]
+    ]
+  },
+  "beethoven-sym5-mvt1-984073-p4": {
+    "dossier": "beethoven-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order_ambiguity",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        }
+      ],
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order_ambiguity",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        }
+      ]
+    ]
+  },
+  "brahms-sym1-mvt1-317803-p1": {
+    "dossier": "brahms-sym1-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Contrabassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 4,
+          "parts": 4,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Cello",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 13,
+          "instrument": "Contrabass",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ]
+    ]
+  },
+  "brahms-sym1-mvt1-317803-p2": {
+    "dossier": "brahms-sym1-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 4,
+          "parts": 4,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Cello",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 13,
+          "instrument": "Contrabass",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ],
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 4,
+          "parts": 4,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Cello",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Contrabass",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ]
+    ]
+  },
+  "brahms-sym1-mvt1-317803-p3": {
+    "dossier": "brahms-sym1-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 4,
+          "parts": 4,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Cello",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 13,
+          "instrument": "Contrabass",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ],
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 4,
+          "parts": 4,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Cello",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 13,
+          "instrument": "Contrabass",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ]
+    ]
+  },
+  "brahms-sym1-mvt1-317803-p4": {
+    "dossier": "brahms-sym1-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 4,
+          "parts": 4,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Cello",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 13,
+          "instrument": "Contrabass",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ],
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 4,
+          "parts": 4,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Cello",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 13,
+          "instrument": "Contrabass",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ]
+    ]
+  },
+  "dvorak-sym9-mvt1-405834-p5": {
+    "dossier": "dvorak-sym9-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Trombone",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Trombone",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 13,
+          "instrument": "Cello",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 14,
+          "instrument": "Contrabass",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        }
+      ]
+    ]
+  },
+  "dvorak-sym9-mvt1-405834-p6": {
+    "dossier": "dvorak-sym9-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 1,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 2,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 7,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 8,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 9,
+          "instrument": "Timpani",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Viola",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 13,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 14,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        }
+      ]
+    ]
+  },
+  "dvorak-sym9-mvt1-405834-p7": {
+    "dossier": "dvorak-sym9-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 2,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 3,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 4,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 7,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 9,
+          "instrument": "Timpani",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 11,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Viola",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 13,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 14,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        }
+      ],
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 2,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 3,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 4,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 7,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 9,
+          "instrument": "Timpani",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        },
+        {
+          "position": 11,
+          "instrument": "Violin",
+          "instrument_source": "score_order",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Viola",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 13,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 14,
+          "instrument": null,
+          "instrument_source": null,
+          "players": 1,
+          "abstained": "staff instrument unreadable"
+        }
+      ]
+    ]
+  },
+  "mahler-sym5-mvt1-local-p2": {
+    "dossier": "mahler-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Flute",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 3,
+          "parts": 3,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 3,
+          "staves": 3,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 3,
+          "staves": 3,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 3,
+          "staves": 3,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 4,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 2,
+          "parts": 4,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Trombone",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Tuba",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 5,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 13,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 5,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 14,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 15,
+          "instrument": "Cello",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 16,
+          "instrument": "Contrabass",
+          "instrument_source": "score_order_ambiguity",
+          "players": 1,
+          "abstained": "instrument not in the dossier"
+        }
+      ]
+    ]
+  },
+  "mahler-sym5-mvt1-local-p3": {
+    "dossier": "mahler-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 1,
+          "instrument": "Bassoon",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 1,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 2,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 3,
+          "staves": 3,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 3,
+          "staves": 3,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 3,
+          "staves": 3,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 4,
+          "parts": 4,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trombone",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Tuba",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 5,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 9,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 5,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 10,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Bass voice",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 12,
+          "instrument": "Contrabass",
+          "instrument_source": "score_order_ambiguity",
+          "players": 1,
+          "abstained": "instrument not in the dossier"
+        }
+      ]
+    ]
+  },
+  "mahler-sym5-mvt1-local-p4": {
+    "dossier": "mahler-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Oboe",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 1,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 3,
+          "parts": 3,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 2,
+          "instrument": "Bassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Contrabassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 3,
+          "staves": 3,
+          "abstained": null
+        },
+        {
+          "position": 5,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 3,
+          "staves": 3,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 3,
+          "staves": 3,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 4,
+          "parts": 4,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Trombone",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Tuba",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Trombone",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 11,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 5,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 12,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 5,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 13,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 14,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 15,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 16,
+          "instrument": "Bass voice",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 17,
+          "instrument": "Contrabass",
+          "instrument_source": "score_order",
+          "players": 1,
+          "abstained": "instrument not in the dossier"
+        }
+      ]
+    ]
+  },
+  "mahler-sym5-mvt1-local-p5": {
+    "dossier": "mahler-sym5-mvt1",
+    "unmatched_parts": [],
+    "systems": [
+      [
+        {
+          "position": 0,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 3,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 1,
+          "instrument": "Clarinet",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 3,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 2,
+          "instrument": "Contrabassoon",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 3,
+          "instrument": "Horn",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 3,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 4,
+          "instrument": "Horn",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 3,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 5,
+          "instrument": "Trumpet",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 4,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 6,
+          "instrument": "Trumpet",
+          "instrument_source": "score_order",
+          "players": 2,
+          "parts": 4,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 7,
+          "instrument": "Trombone",
+          "instrument_source": "score_order",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 8,
+          "instrument": "Tuba",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 9,
+          "instrument": "Timpani",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 1,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 10,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 5,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 11,
+          "instrument": "Violin",
+          "instrument_source": "label",
+          "players": 1,
+          "parts": 5,
+          "staves": 2,
+          "abstained": "parts do not divide evenly by staves"
+        },
+        {
+          "position": 12,
+          "instrument": "Viola",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 13,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 14,
+          "instrument": "Cello",
+          "instrument_source": "score_order",
+          "players": 1,
+          "parts": 2,
+          "staves": 2,
+          "abstained": null
+        },
+        {
+          "position": 15,
+          "instrument": "Bass voice",
+          "instrument_source": "label",
+          "players": 2,
+          "parts": 2,
+          "staves": 1,
+          "abstained": null
+        },
+        {
+          "position": 16,
+          "instrument": "Contrabass",
+          "instrument_source": "score_order",
+          "players": 1,
+          "abstained": "instrument not in the dossier"
+        }
+      ]
+    ]
+  }
+}
