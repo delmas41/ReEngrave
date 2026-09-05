@@ -102,8 +102,21 @@ p.4:
 
 | row | system 1, position 6 | system 2, position 6 |
 |---|---|---|
-| `beethoven-sym5-mvt1-984073-p4` | *(no label printed)* | `Tp.` → **Timpani** |
+| `beethoven-sym5-mvt1-984073-p4` | *(no label printed)* | `Tp.` → **Timpani** ⚠️ CONTESTED |
 | `beethoven-sym5-mvt1-575951-p4` | *(no label printed)* | `Tp.` → **Timpani** |
+
+⚠️ **The 984073 row is CONTESTED and unresolved as of 2026-09-05.** The
+structural workstream, reading the transcription for the same page, finds
+position 6 resolving as `Trumpet` via `score_order_ambiguity` — i.e. **no label
+reached `contextual` at that position in either system** — while 575951 reads
+`Timpani` with `instrument_source: "label"`. Two possibilities, not yet
+separated: the raw reader here held a `Tp.` that the ladder discarded before
+`contextual` saw it (which would be a finding in its own right), or this table
+generalised from the 575951 edition. **Neither workstream has asserted the other
+is wrong**, and the 575951 half is not in doubt. Recorded as contested rather
+than silently averaged, because two sessions confirming each other on one page
+is exactly how this repo lost hours on 2026-09-04 —
+see [[feedback_corroboration_is_not_evidence]].
 
 Positions 0–5 read `Fl. Ob. Cl. Fag. Cor. Tr.` identically in both systems.
 Nothing in the ladder failed. **The margin already says the two systems are not
