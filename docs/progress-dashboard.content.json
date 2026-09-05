@@ -21,7 +21,7 @@
     {
       "label": "Vs Audiveris",
       "value": "2<span class=\"unit\"> of 2 corpora</span>",
-      "note": "scans 0.7482 vs 0.7845 (current weights) · engraved 0.1176 vs 0.1252 measured on the beam-fix branch, awaiting merge"
+      "note": "AHEAD ON BOTH: engraved 0.1176 vs 0.1252 (recorded on the merged tree) · scans 0.7482 vs 0.7845"
     }
   ],
   "work_flags": {
@@ -99,18 +99,18 @@
       "body": "Template-read elements under the new labeling system (time signatures first, Sean 09-03) · multi-type barlines + MusicXML repeats · measure-level MusicXML patching port · RTMDet/yolov8x cloud run (approved, needs protocol)."
     },
     {
-      "title": "7 · Land the beam fix; finish beating Audiveris",
-      "pill": "awaiting merge",
-      "pill_class": "waiting",
-      "body": "Both corpora now measured ahead: scans 0.7482 vs 0.7845 (graft09 arm), engraved 0.1176 vs 0.1252 on the beam branch. To make it official: merge the beam branch + the graft09 weights ship to main and re-record. Next levers the sessions surfaced: cross-staff arc attribution (~150 edits, Brahms 1) and the residual beam over-detection (16 edits, recognition-side). Optional outside corpus: SMB (<code>PRAIG/SMB</code>, HF-gated — needs Sean's access request)."
+      "title": "7 · Hold the lead vs Audiveris",
+      "pill": "ahead on both",
+      "pill_class": "shipped",
+      "body": "Beam fix merged + re-recorded: engraved <b>0.1176 vs 0.1252</b>, scans 0.7482 vs 0.7845. In flight: cross-staff arc attribution (~150 edits, Opus session dispatched). Next per the taxonomy (<code>docs/discussion-detector-right-output-wrong-2026-09-04.md</code>): conservation audit in export_coverage, tie attribution (29 edits), divisi voice model. Note the scan pool was re-stamped to 11 rows on main — the 5-row Audiveris arm needs widening to match. SMB corpus still HF-gated on Sean."
     }
   ],
   "log": [
     {
       "date": "09-04",
-      "title": "Beam-gap session flips the engraved comparison",
+      "title": "Beam-gap session flips the engraved comparison — merged and recorded",
       "negative": false,
-      "body": "The dispatched session took <code>wrong flag/beam</code> <b>449 → 31</b> and pooled OMR-NED <b>0.1306 → 0.1176</b> (2,745 → 2,473 edits) — from 176 edits behind Audiveris to <b>96 ahead</b>. 430 of the 449 were export-side: the beam-box pad the rhythm layer already had never reached <code>annotate_beams</code>, plus a spurious bar-wide box and stacked-stroke group fracturing. Export-only, byte-identical A/B method, 11/11 clean, 1,931 tests green, two approaches refused with numbers. Branch <code>worktree-agent-a1cfb16da98b055b7</code>, awaiting merge — the headline moves only when it lands on main. <code>benchmarks/omr-beam-gap-2026-09/FINDINGS.md</code>"
+      "body": "The dispatched session took <code>wrong flag/beam</code> <b>449 → 31</b> and pooled OMR-NED <b>0.1306 → 0.1176</b> (2,745 → 2,473 edits) — from 176 edits behind Audiveris to <b>96 ahead</b>. 430 of the 449 were export-side: the beam-box pad the rhythm layer already had never reached <code>annotate_beams</code>, plus a spurious bar-wide box and stacked-stroke group fracturing. Export-only, byte-identical A/B method, 11/11 clean, 1,931 tests green, two approaches refused with numbers. Merged (<code>bc58defb</code>), suite 1,984 green, and both configurations re-recorded on the merged tree: <b>0.1176 official</b>, 0.1268 without the OCR rung. <code>benchmarks/omr-beam-gap-2026-09/FINDINGS.md</code>"
     },
     {
       "date": "09-04",
