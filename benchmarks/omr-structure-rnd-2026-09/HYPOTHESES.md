@@ -191,7 +191,24 @@ The aligner does not see the mis-join. There is nothing to cross-tabulate, so
 the pre-registered kill criterion cannot even be evaluated. **H1 is closed
 empirically; nothing further is needed to close it.**
 
-#### INFERRED — the mechanism, which is NOT measured and must not be quoted as if it were
+#### ✅ PROMOTED TO OBSERVED, 2026-09-05 — the label half is now measured
+
+**This section was written under an "ARITHMETIC + DOCUMENTED BEHAVIOUR, NOT
+OBSERVED" banner. H1′'s probe removed the banner for the label half**, and the
+banner's own instruction — do not promote without a probe — is satisfied by
+naming the probe: `probe_union_roster.py`, field `label_provenance` in
+[`union-roster.json`](union-roster.json).
+
+**Observed:** 13 labels over the 22 staff positions of `984073-p4` — **6 in
+system 1, 7 in system 2** — with **`Tp.` read by Surya at system 2 position 6
+and nothing at system 1 position 6**. The 6 + 6 + 1 arithmetic was right, and it
+is now a reading rather than a deduction.
+
+⚠️ **What is still NOT observed:** that this asymmetry is *why* the DP took the
+diagonal. H1′ measures the deficit directly instead — see the insert margin
+below — which is a stronger statement than the causal story it replaces. The
+remainder of this subsection is kept as the original reasoning, and the
+`align`-internals half of it remains inference.
 
 `label_tiers` on `984073-p4` records **13 labels over 22 staff positions**,
 `unresolved_labels` empty, `ambiguous_labels_resolved: 1`. Thirteen is exactly
@@ -291,6 +308,58 @@ small margin is itself evidence of a bad merge or a bad correspondence — a
 self-check with no analogue today. ⚠️ Any such bound must be **read off measured
 data, not chosen**; it is named here as an opportunity, and is not a proposed
 constant.
+
+### ⚠️ MEASURED 2026-09-05: H1′ IS REFUTED TOO — and the refutation is the useful half
+
+Full reading: [`UNION_ROSTER.md`](UNION_ROSTER.md). Arm A is the shipped
+`build_reference` + `align`, unmodified; arm B swaps only the roster
+constructor. **Arm B is a strict NO-OP: identical to arm A on every row, every
+slot, every decision, with 0 insertions across all 10 scored rows.**
+
+The union is the correct *shape* — p.4's truth union really is 12, and `align`
+really does support the gap — but **the roster constructor is not where the
+information is missing.**
+
+**The deficit is a size, not a mystery: 1.5, in the DP's own units.** On
+`984073-p4` the diagonal scores 60.5 against the correct union's 58.6. Read
+against the constants that produce it — `GAP_PENALTY` 1.0, a bracket-group swing
+3.0, a label match 6.0, a label conflict −8.0 (a 14.0 swing) — **the union is
+1.5 short of a signal it does not have**, because the four string staves that
+would settle it print no label in either system.
+
+#### Arm C closes the reweighting route — it is a refutation, not a proposal
+
+Gap and insertion set to **zero**: the cheapest union obtainable from the terms
+`_pair_score` already has. It fixes both p.4 rosters and **breaks
+`brahms-…-p3`** (roster 15 against a truth of 14; 28/28 → 24/28). The two cases
+are **indistinguishable by construction — the insert margin is 1.5 on p.4 and
+1.5 on brahms-p3**, so anything that flips one flips the other.
+
+> ⚠️ **So reweighting is CLOSED, not untried.** Do not close H1′ by lowering
+> `GAP_PENALTY`: that *is* arm C, it is fitted to two rows of one engraving, and
+> it is measured to break a correct row.
+
+#### ⚠️ THE LESSON THAT GENERALISES: a shape criterion is necessary and not sufficient
+
+**Arm C reaches a 12-slot roster on p.4 and is still wrong** — it inserts at
+index 6, *before* Timpani, instead of gapping Timpani and appending Basso, so
+continuity moves only 14/22 → 15/22. **The pre-registered criterion was met in
+letter while the join stayed broken, and roster size alone would have declared
+success.** Only the continuity column caught it.
+
+> **Any future structural criterion needs a CORRECTNESS check, not just a SHAPE
+> check.** Size, count and boundary-agreement are all shape tests. This one cost
+> nothing because the arm was built to refute; the next one may not be.
+
+#### The measured constraint this hands to H3 and H5
+
+**`group_index` cannot be the discriminator.** On `brahms-…-p3` the *same*
+fourteen staves are printed in both systems, and `system_grouping` reads their
+blocks as `[0×5, 1×3, 2×6]` against `[0×9, 1×5]` — a detection disagreement
+between two systems of **one page**, which is block recall 0.523 "unevenly
+distributed across systems". On unlabelled staves `group_index` is the union's
+only discriminator, and **it cannot tell a real lineup change (p.4) from its own
+noise (brahms p.3)**.
 
 **Worth if true:** the only position-independent mis-join detector with a
 credible substrate; closes the class-6 case that three methods found and none
@@ -422,6 +491,37 @@ where labels are absent, the features are noise.
 
 ⚠️ **Run this only AFTER H1′, at the coordinator's direction** — as its control,
 not beside it, so H1′'s number is not contaminated by new `_pair_score` terms.
+
+### H3's SPEC, handed to it by H1′ — a number to beat and a row that must not move
+
+H1′ turned H3 from "a feature idea" into a specified target:
+
+| | |
+|---|---|
+| **the number to beat** | **> 1.5** in `_pair_score`'s units, on `beethoven-…-p4` |
+| **the row that must not move** | **`brahms-…-p3`, 28/28**, whose insert margin is *also* 1.5 |
+| **where the evidence must come from** | the **four unlabelled string staves** — the only place p.4's answer lives |
+
+⚠️ **THE CENTRAL DESIGN CONSTRAINT, and it is what H3 must be judged on.**
+H3's features earn their place by being **independent of BOTH labels AND
+`group_index`**:
+
+* **labels** — because the four staves that would settle p.4 print nothing in
+  either system, so a label-derived feature is silent exactly where it is
+  needed;
+* **`group_index`** — because its between-system disagreement on brahms-p3 is
+  detector noise of *the same magnitude* as p.4's real lineup change.
+
+> **If H3's evidence correlates with `group_index`, it inherits that noise and
+> H3 will have measured the same thing twice.** Testing that correlation is part
+> of H3, not a postscript to it.
+
+**H5 is now motivated by measurement rather than tidiness** — arm C is a direct
+argument for raising block recall *before* anything is built on blocks. It is
+**deliberately NOT started**: it would raise the quality of a discriminator H3
+is designed not to depend on. It stays ranked, and becomes the next build with a
+real argument behind it only if H3 lands and something still wants block
+evidence.
 
 **Worth if true:** makes the aligner work on Litolff/Simrock continuation
 systems where its dominant term is silent — the population H2 also targets, by a
