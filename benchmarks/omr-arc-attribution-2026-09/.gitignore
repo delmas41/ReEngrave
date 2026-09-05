@@ -1,0 +1,9 @@
+# Re-exported predictions and eval fixtures are build products: every one is
+# reproducible from the recorded .omr.json with `reexport_and_score.sh <tag>`
+# (or `orchestral_eval --work-dir`). The `ops-*/` dumps ARE kept — they are the
+# measurement, and they are small.
+pred-*/
+fixtures-*/
+ops-move/
+ops-move-near10/
+ops-offcheck/

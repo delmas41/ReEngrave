@@ -15,6 +15,7 @@ from tools.omr.voicing import group_chords_in_measure
 
 from tools.omr.export import (
     annotate_beams,
+    arbitrate_arcs_across_staves,
     annotate_fermatas,
     annotate_slurs_in_slot,
     annotate_slurs_in_staff,
@@ -2188,3 +2189,143 @@ class TestArcReclassStepKey:
         ]])
         assert annotate_slurs_in_staff(staff) == 1
         assert _tie_flags(staff) == []
+
+
+# ---------------------------------------------------------------------------
+# Cross-staff arc attribution
+# ---------------------------------------------------------------------------
+
+def _arc_staff(top, heads_y, *, spacing=10.0, n_measures=1, arcs=()):
+    """A one-system staff whose cells tile [0,100), … with heads at `heads_y`.
+
+    `arcs` are `(x0, y0, x1, y1)` page boxes dropped into measure 0, which is
+    where a padding-caught neighbour's arc lands.
+    """
+    measures = []
+    for i in range(n_measures):
+        dets = [{"category": "notehead", "class": "noteheadBlack", "pitch": "C4",
+                 "duration_type": "quarter", "duration_beats": 1.0, "dots": 0,
+                 "confidence": 0.9,
+                 "bbox": [i * 100 + x, heads_y, 10, 10],
+                 "bbox_page": [i * 100 + x, heads_y, 10, 10]}
+                for x in (10, 30, 50, 70)]
+        if i == 0:
+            for (x0, y0, x1, y1) in arcs:
+                dets.append({"category": "structural", "class": "slur",
+                             "bbox": [x0, y0, x1 - x0, y1 - y0],
+                             "bbox_page": [x0, y0, x1 - x0, y1 - y0]})
+        measures.append({"measure_index": i,
+                         "bbox_page_px": [i * 100, top - 60, (i + 1) * 100, top + 60],
+                         "detections": dets})
+    return {"staff_index": 0, "clef": "treble",
+            "key_signature": {"sharps": 0, "flats": 0, "alterations": {}},
+            "time_signature": {"numerator": 4, "denominator": 4},
+            "staff_geometry": {
+                "line_ys_page": [top + d for d in (0, 10, 20, 30, 40)],
+                "line_spacing_px": spacing, "x_start": 0,
+                "x_end": 100 * n_measures},
+            "n_measures": n_measures, "measures": measures}
+
+
+def _arc_result(staves):
+    return {"pages": [{"page_index": 0, "systems": [{"staves": staves}]}]}
+
+
+def _arc_classes(staff):
+    return [d["class"] for m in staff["measures"]
+            for d in m["detections"] if d["category"] == "structural"]
+
+
+class TestArcAttribution:
+    """An arc belongs to the staff whose NOTEHEADS it hugs, not the staff whose
+    cell padding happened to catch it.
+
+    The Brahms 1 shape: Violin 1 plays four ledger lines above its staff, so
+    its slurs are drawn high in the wide gap below the Timpani — inside the
+    Timpani's grown padding and above the top of Violin 1's own cell, so the
+    arc exists ONLY in the wrong staff and no duplicate-resolution rule can
+    reach it.
+    """
+
+    @staticmethod
+    def _bled():
+        """Upper staff holds an arc that hugs the LOWER staff's ledger notes."""
+        upper = _arc_staff(100, 120, arcs=[(10, 185, 90, 195)])
+        lower = _arc_staff(300, 200)
+        return upper, lower
+
+    def test_an_arc_hugging_the_neighbour_moves_to_it(self):
+        upper, lower = self._bled()
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 1
+        assert _arc_classes(upper) == []
+        assert _arc_classes(lower) == ["slur"]
+        moved = [d for m in lower["measures"] for d in m["detections"]
+                 if d["category"] == "structural"][0]
+        assert moved["arc_reattributed_from_staff"] == 0
+
+    def test_an_arc_hugging_its_own_notes_stays(self):
+        """The rival covers it in x just as well; what it does not do is hug
+        it. Distance to the staff LINES is the trap this avoids — the arc sits
+        outside its own staff, which is where slurs go."""
+        upper = _arc_staff(100, 120, arcs=[(10, 105, 90, 113)])
+        lower = _arc_staff(300, 200)
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 0
+        assert _arc_classes(upper) == ["slur"]
+        assert _arc_classes(lower) == []
+
+    def test_a_rival_that_is_near_but_not_nearer_does_not_win(self):
+        """Both staves' heads sit close to the arc. Ownership needs a decisive
+        margin, not a photo finish — otherwise a divisi pair would trade arcs
+        on rounding."""
+        upper = _arc_staff(100, 145, arcs=[(10, 160, 90, 168)])
+        lower = _arc_staff(300, 175)
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 0
+        assert _arc_classes(upper) == ["slur"]
+
+    def test_a_one_staff_system_is_never_arbitrated(self):
+        upper = _arc_staff(100, 120, arcs=[(10, 185, 90, 195)])
+        assert arbitrate_arcs_across_staves(_arc_result([upper])) == 0
+        assert _arc_classes(upper) == ["slur"]
+
+    def test_the_flag_off_is_a_no_op(self, monkeypatch):
+        monkeypatch.setenv("OMR_ARC_ATTRIBUTION", "off")
+        upper, lower = self._bled()
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 0
+        assert _arc_classes(upper) == ["slur"]
+
+    def test_drop_mode_removes_without_regifting(self, monkeypatch):
+        monkeypatch.setenv("OMR_ARC_ATTRIBUTION", "drop")
+        upper, lower = self._bled()
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 1
+        assert _arc_classes(upper) == []
+        assert _arc_classes(lower) == []
+
+    def test_it_is_idempotent(self):
+        """Exporting a result twice must not shuttle an arc back and forth: the
+        moved arc's new staff is the one that hugs it, so the pass is a fixed
+        point, and the stamp makes that cheap as well as true."""
+        upper, lower = self._bled()
+        result = _arc_result([upper, lower])
+        assert arbitrate_arcs_across_staves(result) == 1
+        assert arbitrate_arcs_across_staves(result) == 0
+        assert _arc_classes(upper) == []
+        assert _arc_classes(lower) == ["slur"]
+
+    def test_the_moved_arc_becomes_the_new_staff_s_slur(self):
+        """End to end: the arc pairs on the staff it moved to, and on nothing
+        else. Pairing is what the move is FOR."""
+        upper, lower = self._bled()
+        arbitrate_arcs_across_staves(_arc_result([upper, lower]))
+        assert annotate_slurs_in_staff(upper) == 0
+        assert annotate_slurs_in_staff(lower) == 1
+
+    def test_an_arc_over_a_lone_rival_notehead_is_not_claimed(self):
+        """A rival must cover at least two of its own heads: one stray head
+        under a long arc is not a run being bound."""
+        upper = _arc_staff(100, 120, arcs=[(10, 185, 90, 195)])
+        lower = _arc_staff(300, 200)
+        for m in lower["measures"]:
+            m["detections"] = [d for d in m["detections"]
+                               if d["bbox_page"][0] >= 70]
+        assert arbitrate_arcs_across_staves(_arc_result([upper, lower])) == 0
+        assert _arc_classes(upper) == ["slur"]

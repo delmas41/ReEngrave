@@ -566,6 +566,7 @@ def to_lilypond(result: dict[str, Any]) -> str:
         `\\voiceTwo`). Otherwise single voice.
     """
     _ensure_inferred_time_signatures(result)
+    arbitrate_arcs_across_staves(result)
     lines: list[str] = []
     lines.append('\\version "2.20.0"')
     lines.append("")
@@ -1334,6 +1335,211 @@ _MAX_SLUR_NUMBER = 6
 # How far past an arc's edge a notehead centre may sit and still be under it,
 # in notehead widths. See `_noteheads_under` for the measurement.
 _SLUR_ARC_PAD_NOTEHEADS = 0.25
+
+
+# ---------------------------------------------------------------------------
+# Cross-staff ARC attribution — the arbitration noteheads already have
+# ---------------------------------------------------------------------------
+# A measure cell is cut with padding above and below so ledger notes are not
+# sliced off (`measure_extractor.PAD_*_STAFF_LINES`), and on a conductor's page
+# that padding reaches the neighbouring staff's ink. For NOTEHEADS the
+# duplicate is arbitrated by `transcribe._dedupe_cross_staff_detections`
+# (ledger ladder, then the instrument's written range, then distance). For ARCS
+# nothing arbitrated at all, so a slur printed over one staff's music could be
+# paired and exported on ANOTHER staff — and, worse, the arc need not be
+# detected twice for this to happen: where the gap between two staves is wide
+# the upper staff's cell reaches ink the lower staff's cell does not, so the
+# arc exists ONLY in the wrong staff and no duplicate-resolution rule can see
+# it.
+#
+# WORKED EXAMPLE, and it corrects the hypothesis this work started from. On
+# `brahms-sym1-mvt1` the Timpani exports 4 slurs and 1 tie against a truth of
+# ZERO. The beam-gap findings guessed these were "the staff BELOW's arcs";
+# rendering the page shows what they actually are — Violin 1 plays four ledger
+# lines above its staff there, so ITS slurs are drawn high in the 7.7-space gap
+# between Timpani and Violin 1, inside the Timpani's grown padding and above
+# the top of Violin 1's own cell.
+#
+# THE EVIDENCE IS THE ARC'S OWN JOB: an arc binds a run of noteheads and is
+# drawn just clear of them, on the side away from the stems. So the staff an
+# arc belongs to is the one whose NOTEHEADS IT HUGS — and that question can be
+# asked of a staff that never detected the arc, because the noteheads have
+# already been arbitrated across staves and each staff's head set is the one a
+# reader would see. Distance to the staff LINES is the trap it was for notes:
+# an engraver opens the gap above a staff precisely so the ledger notes and
+# their slurs can live there, which puts them nearer the staff above.
+#
+# Measured over the 11-work engraved benchmark, clearance in staff spaces from
+# an arc's box to the nearest notehead it covers in its own staff, counting
+# only arcs covering >= 2 heads (fewer never becomes a slur):
+#
+#     own clearance     part whose truth       part whose truth
+#     (staff spaces)    has NO arc at all      does have arcs
+#     [0.00, 0.25)              5                    165
+#     [0.25, 0.50)              0                     31
+#     [0.50, 0.75)              1                      8
+#     [0.75, 1.00)              1                      0
+#     [1.00, 1.50)              2                      1
+#     [1.50, 2.00)              0                      2
+#     [2.00, 3.00)              6                      0
+#     [3.00,  inf)              2                     30
+#
+# A real slur hugs its notes: 204 of 237 arcs on arc-bearing parts sit under
+# half a space. That tail is NOT clean enough to threshold on its own, so the
+# rule is COMPARATIVE — an arc leaves a staff only when another staff of the
+# same system explains it better — which is the same shape as the notehead
+# arbitration and cannot fire at all on a page with one staff.
+#: A rival staff must itself hug the arc this closely for the arc to move.
+#: On the Brahms Timpani every rival reading is 0.00-0.52 spaces; the value
+#: is a plateau, see FINDINGS.md.
+_ARC_RIVAL_NEAR_SPACES = 0.75
+#: ...and must beat the incumbent by this much. A PLATEAU, not a tuned value:
+#: swept over the eleven works, every margin from 0.25 to 0.75 reattributes the
+#: SAME arcs (8 on parts whose truth has none, 15 elsewhere), and the answer
+#: first moves at 0.90. 0.5 is the middle of that plateau.
+_ARC_RIVAL_MARGIN_SPACES = 0.5
+#: A rival staff must cover at least this many of its own noteheads with the
+#: arc, so a single stray head cannot claim one.
+_ARC_RIVAL_MIN_COVERED = 2
+
+
+def _arc_attribution_mode() -> str:
+    """`OMR_ARC_ATTRIBUTION` = `move` (default) / `drop` / `off`."""
+    mode = os.environ.get("OMR_ARC_ATTRIBUTION", "move").strip().lower()
+    return mode if mode in ("move", "drop", "off") else "move"
+
+
+def _arcs_in_measure(measure: dict[str, Any]) -> list[dict[str, Any]]:
+    return [d for d in measure.get("detections", [])
+            if d.get("category") == "structural"
+            and d.get("class") in ("slur", "tie")
+            and len(d.get("bbox_page") or ()) == 4]
+
+
+def _vertical_gap(a: list[int], b: list[int]) -> float:
+    """Vertical clearance between two page boxes in px; 0 where they overlap."""
+    a0, a1 = a[1], a[1] + a[3]
+    b0, b1 = b[1], b[1] + b[3]
+    if a1 < b0:
+        return b0 - a1
+    if b1 < a0:
+        return a0 - b1
+    return 0.0
+
+
+def _arc_clearance(
+    arc_box: list[int],
+    heads: list[dict[str, Any]],
+) -> tuple[float | None, int]:
+    """`(px clearance to the nearest covered notehead, n covered)`.
+
+    Coverage is the same padded x test `_noteheads_under` makes, for the same
+    reason: the arc is drawn BETWEEN its outer heads, so its ink stops inside
+    both centres and an unpadded test loses the note at each end.
+    """
+    if not heads:
+        return None, 0
+    pad = _SLUR_ARC_PAD_NOTEHEADS * (
+        sum(h["bbox_page"][2] for h in heads) / len(heads))
+    ax, _ay, aw, _ah = arc_box
+    covered = [h for h in heads
+               if ax - pad <= h["bbox_page"][0] + h["bbox_page"][2] / 2.0
+               <= ax + aw + pad]
+    if not covered:
+        return None, 0
+    return min(_vertical_gap(arc_box, h["bbox_page"]) for h in covered), len(covered)
+
+
+def _staff_noteheads(staff: dict[str, Any]) -> list[dict[str, Any]]:
+    heads: list[dict[str, Any]] = []
+    for measure in staff.get("measures", []):
+        heads.extend(_measure_noteheads(measure))
+    return heads
+
+
+def _measure_holding_x(
+    staff: dict[str, Any], x: float,
+) -> dict[str, Any] | None:
+    """The staff's measure whose cell contains this page x, else the nearest."""
+    best = None
+    for measure in staff.get("measures", []):
+        box = measure.get("bbox_page_px")
+        if not box or len(box) != 4:
+            continue
+        if box[0] <= x <= box[2]:
+            return measure
+        d = min(abs(box[0] - x), abs(box[2] - x))
+        if best is None or d < best[0]:
+            best = (d, measure)
+    return best[1] if best else None
+
+
+def arbitrate_arcs_across_staves(result: dict[str, Any]) -> int:
+    """Give every arc to the staff of its system whose noteheads it hugs.
+
+    Returns the number of arcs reattributed. Idempotent — the result is
+    stamped, so a second export of the same dict is a no-op, and re-running is
+    a fixed point anyway (a moved arc's new staff is the one that hugs it).
+    """
+    if _arc_attribution_mode() == "off" or result.get("_arc_attribution"):
+        return 0
+    moved = 0
+    for page in result.get("pages", []):
+        for system in page.get("systems", []):
+            moved += _arbitrate_arcs_in_system(system.get("staves") or [])
+    result["_arc_attribution"] = {"mode": _arc_attribution_mode(),
+                                  "n_reattributed": moved}
+    return moved
+
+
+def _arbitrate_arcs_in_system(staves: list[dict[str, Any]]) -> int:
+    if len(staves) < 2:
+        return 0
+    spacings: list[float | None] = []
+    heads: list[list[dict[str, Any]]] = []
+    for staff in staves:
+        geom = staff.get("staff_geometry") or {}
+        spacings.append(geom.get("line_spacing_px") or None)
+        heads.append(_staff_noteheads(staff))
+    mode = _arc_attribution_mode()
+    moved = 0
+    for s_idx, staff in enumerate(staves):
+        sp = spacings[s_idx]
+        if not sp:
+            continue
+        for measure in staff.get("measures", []):
+            for arc in list(_arcs_in_measure(measure)):
+                own_px, _own_n = _arc_clearance(arc["bbox_page"], heads[s_idx])
+                own = None if own_px is None else own_px / sp
+                best: tuple[float, int] | None = None
+                for o_idx in range(len(staves)):
+                    o_sp = spacings[o_idx]
+                    if o_idx == s_idx or not o_sp:
+                        continue
+                    gap_px, n = _arc_clearance(arc["bbox_page"], heads[o_idx])
+                    if gap_px is None or n < _ARC_RIVAL_MIN_COVERED:
+                        continue
+                    rival = gap_px / o_sp
+                    if best is None or rival < best[0]:
+                        best = (rival, o_idx)
+                if best is None or best[0] > _ARC_RIVAL_NEAR_SPACES:
+                    continue
+                # An arc covering nothing in this staff is claimed outright:
+                # it binds no note here, so there is nothing for it to be.
+                if own is not None and (own - best[0]) < _ARC_RIVAL_MARGIN_SPACES:
+                    continue
+                measure["detections"].remove(arc)
+                moved += 1
+                if mode != "move":
+                    continue
+                ax, _ay, aw, _ah = arc["bbox_page"]
+                target = _measure_holding_x(staves[best[1]], ax + aw / 2.0)
+                if target is None:
+                    continue
+                arc = dict(arc)
+                arc["arc_reattributed_from_staff"] = s_idx
+                target.setdefault("detections", []).append(arc)
+    return moved
 
 
 def _staff_arcs_by_measure(
@@ -2434,6 +2640,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
     does with `\\voiceOne` / `\\voiceTwo`.
     """
     _ensure_inferred_time_signatures(result)
+    arbitrate_arcs_across_staves(result)
     divisions = _compute_divisions(result)
 
     parts_xml: list[str] = []

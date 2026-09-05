@@ -1,0 +1,25 @@
+
+mahler-sym5-mvt1.musicxml  ops 21  cost 42
+
+  cost by category
+    wrong other object OMR-ED                        24
+    entire measure insert/delete OMR-ED              18
+
+  cost by op
+    delbar                       10  (4 ops)
+    extrains                      9  (5 ops)
+    insbar                        8  (4 ops)
+    extrasymboledit               8  (4 ops)
+    extradel                      5  (3 ops)
+    extrainfoedit                 2  (1 ops)
+
+  cost by part (top categories)
+    -1 ?                           24   wrong other object=24
+    18 Trumpet                      6   entire measure insert/delete=6
+    18 Vier Trompeten in B.         4   entire measure insert/delete=4
+    14 Horn                         2   entire measure insert/delete=2
+    14 Sechs Hörner in F.           2   entire measure insert/delete=2
+    28 Erste Violinen.              2   entire measure insert/delete=2
+    28 Violin                       2   entire measure insert/delete=2
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/ops-move-m05/mahler-sym5-mvt1.json

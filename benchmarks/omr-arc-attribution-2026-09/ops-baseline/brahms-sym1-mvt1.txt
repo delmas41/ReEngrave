@@ -1,0 +1,40 @@
+
+brahms-sym1-mvt1.musicxml  ops 172  cost 490
+
+  cost by category
+    wrong note OMR-ED                               230
+    entire measure insert/delete OMR-ED             156
+    wrong other object OMR-ED                        84
+    wrong tie OMR-ED                                  8
+    wrong flag/beam OMR-ED                            6
+    wrong lyric OMR-ED                                6
+
+  cost by op
+    notedel                     115  (34 ops)
+    noteins                     115  (34 ops)
+    delbar                       79  (5 ops)
+    insbar                       77  (5 ops)
+    extrains                     49  (49 ops)
+    extradel                     24  (24 ops)
+    extrainfoedit                 9  (3 ops)
+    tieins                        8  (8 ops)
+    lyricins                      6  (2 ops)
+    delbeam                       4  (4 ops)
+    extradurationedit             2  (2 ops)
+    editbeam                      2  (2 ops)
+
+  cost by part (top categories)
+    15 Timpani                    149   entire measure insert/delete=149
+    -1 ?                           90   wrong other object=84  wrong lyric=6
+    19 Violoncello                 58   wrong note=58
+    19 Cello                       57   wrong note=57
+    18 Viola                       38   wrong note=36  wrong flag/beam=2
+    05 Bb Clarinet 2               10   wrong note=10
+    05 Clarinet                    10   wrong note=10
+    04 Bb Clarinet 1                9   wrong note=9
+    04 Clarinet                     9   wrong note=9
+    09 C Horn 1                     7   entire measure insert/delete=4  wrong tie=3
+    11 Eb Horn 3                    7   wrong note=6  wrong flag/beam=1
+    07 Bassoon                      6   wrong note=6
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/ops-baseline/brahms-sym1-mvt1.json
