@@ -1,0 +1,25 @@
+{
+ "topk": {
+  "1": 0.8434343434343434,
+  "3": 0.8737373737373737,
+  "5": 0.8787878787878788,
+  "99": 0.8787878787878788
+ },
+ "picks": {
+  "beethoven-sym5-mvt1-575951-p1|0": 3,
+  "beethoven-sym5-mvt1-575951-p2|0": 1,
+  "beethoven-sym5-mvt1-575951-p2|1": 0,
+  "beethoven-sym5-mvt1-984073-p1|0": 1,
+  "beethoven-sym5-mvt1-984073-p2|0": 1,
+  "beethoven-sym5-mvt1-984073-p2|1": 0,
+  "brahms-sym1-mvt1-317803-p1|0": 7,
+  "brahms-sym1-mvt1-317803-p3|0": 7,
+  "brahms-sym1-mvt1-317803-p3|1": 7,
+  "brahms-sym1-mvt1-317803-p4|0": 7,
+  "brahms-sym1-mvt1-317803-p4|1": 8,
+  "dvorak-sym9-mvt1-405834-p5|0": 11,
+  "dvorak-sym9-mvt1-405834-p6|0": 5,
+  "dvorak-sym9-mvt1-405834-p7|0": 8,
+  "dvorak-sym9-mvt1-405834-p7|1": 5
+ }
+}
