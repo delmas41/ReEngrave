@@ -1,0 +1,441 @@
+{
+  "bach-brandenburg3-mvt1-468678-p1": {
+    "dossier": null
+  },
+  "beethoven-sym5-mvt1-575951-p1": {
+    "dossier": "beethoven-sym5-mvt1",
+    "n_parts": 18,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 12,
+        "assigned": 18,
+        "n_parts": 18,
+        "sum_holds": true,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "beethoven-sym5-mvt1-575951-p2": {
+    "dossier": "beethoven-sym5-mvt1",
+    "n_parts": 18,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 11,
+        "assigned": 17,
+        "n_parts": 18,
+        "sum_holds": false,
+        "over_instruments": {
+          "Violin": [
+            3,
+            2
+          ]
+        },
+        "instr_gate_abstains": [
+          "Violin"
+        ]
+      },
+      {
+        "system": 1,
+        "staves": 11,
+        "assigned": 17,
+        "n_parts": 18,
+        "sum_holds": false,
+        "over_instruments": {
+          "Violin": [
+            3,
+            2
+          ]
+        },
+        "instr_gate_abstains": [
+          "Violin"
+        ]
+      }
+    ]
+  },
+  "beethoven-sym5-mvt1-575951-p3": {
+    "dossier": "beethoven-sym5-mvt1",
+    "n_parts": 18,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 11,
+        "assigned": 17,
+        "n_parts": 18,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      },
+      {
+        "system": 1,
+        "staves": 8,
+        "assigned": 12,
+        "n_parts": 18,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "beethoven-sym5-mvt1-575951-p4": {
+    "dossier": "beethoven-sym5-mvt1",
+    "n_parts": 18,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 11,
+        "assigned": 18,
+        "n_parts": 18,
+        "sum_holds": true,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      },
+      {
+        "system": 1,
+        "staves": 11,
+        "assigned": 18,
+        "n_parts": 18,
+        "sum_holds": true,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "beethoven-sym5-mvt1-984073-p1": {
+    "dossier": "beethoven-sym5-mvt1",
+    "n_parts": 18,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 12,
+        "assigned": 18,
+        "n_parts": 18,
+        "sum_holds": true,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "beethoven-sym5-mvt1-984073-p2": {
+    "dossier": "beethoven-sym5-mvt1",
+    "n_parts": 18,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 11,
+        "assigned": 17,
+        "n_parts": 18,
+        "sum_holds": false,
+        "over_instruments": {
+          "Violin": [
+            3,
+            2
+          ]
+        },
+        "instr_gate_abstains": [
+          "Violin"
+        ]
+      },
+      {
+        "system": 1,
+        "staves": 11,
+        "assigned": 17,
+        "n_parts": 18,
+        "sum_holds": false,
+        "over_instruments": {
+          "Violin": [
+            3,
+            2
+          ]
+        },
+        "instr_gate_abstains": [
+          "Violin"
+        ]
+      }
+    ]
+  },
+  "beethoven-sym5-mvt1-984073-p3": {
+    "dossier": "beethoven-sym5-mvt1",
+    "n_parts": 18,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 11,
+        "assigned": 17,
+        "n_parts": 18,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      },
+      {
+        "system": 1,
+        "staves": 8,
+        "assigned": 12,
+        "n_parts": 18,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "beethoven-sym5-mvt1-984073-p4": {
+    "dossier": "beethoven-sym5-mvt1",
+    "n_parts": 18,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 11,
+        "assigned": 16,
+        "n_parts": 18,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      },
+      {
+        "system": 1,
+        "staves": 11,
+        "assigned": 16,
+        "n_parts": 18,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "brahms-sym1-mvt1-317803-p1": {
+    "dossier": "brahms-sym1-mvt1",
+    "n_parts": 21,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 14,
+        "assigned": 21,
+        "n_parts": 21,
+        "sum_holds": true,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "brahms-sym1-mvt1-317803-p2": {
+    "dossier": "brahms-sym1-mvt1",
+    "n_parts": 21,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 14,
+        "assigned": 20,
+        "n_parts": 21,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      },
+      {
+        "system": 1,
+        "staves": 13,
+        "assigned": 20,
+        "n_parts": 21,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "brahms-sym1-mvt1-317803-p3": {
+    "dossier": "brahms-sym1-mvt1",
+    "n_parts": 21,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 14,
+        "assigned": 20,
+        "n_parts": 21,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      },
+      {
+        "system": 1,
+        "staves": 14,
+        "assigned": 20,
+        "n_parts": 21,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "brahms-sym1-mvt1-317803-p4": {
+    "dossier": "brahms-sym1-mvt1",
+    "n_parts": 21,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 14,
+        "assigned": 20,
+        "n_parts": 21,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      },
+      {
+        "system": 1,
+        "staves": 14,
+        "assigned": 20,
+        "n_parts": 21,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "dvorak-sym9-mvt1-405834-p5": {
+    "dossier": "dvorak-sym9-mvt1",
+    "n_parts": 15,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 15,
+        "assigned": 15,
+        "n_parts": 15,
+        "sum_holds": true,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "dvorak-sym9-mvt1-405834-p6": {
+    "dossier": "dvorak-sym9-mvt1",
+    "n_parts": 15,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 15,
+        "assigned": 15,
+        "n_parts": 15,
+        "sum_holds": true,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "dvorak-sym9-mvt1-405834-p7": {
+    "dossier": "dvorak-sym9-mvt1",
+    "n_parts": 15,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 15,
+        "assigned": 17,
+        "n_parts": 15,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      },
+      {
+        "system": 1,
+        "staves": 15,
+        "assigned": 17,
+        "n_parts": 15,
+        "sum_holds": false,
+        "over_instruments": {},
+        "instr_gate_abstains": []
+      }
+    ]
+  },
+  "mahler-sym5-mvt1-local-p2": {
+    "dossier": "mahler-sym5-mvt1",
+    "n_parts": 38,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 17,
+        "assigned": 26,
+        "n_parts": 38,
+        "sum_holds": false,
+        "over_instruments": {
+          "Contrabass": [
+            1,
+            0
+          ]
+        },
+        "instr_gate_abstains": [
+          "Contrabass"
+        ]
+      }
+    ]
+  },
+  "mahler-sym5-mvt1-local-p3": {
+    "dossier": "mahler-sym5-mvt1",
+    "n_parts": 38,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 13,
+        "assigned": 19,
+        "n_parts": 38,
+        "sum_holds": false,
+        "over_instruments": {
+          "Bassoon": [
+            2,
+            1
+          ],
+          "Contrabass": [
+            1,
+            0
+          ]
+        },
+        "instr_gate_abstains": [
+          "Bassoon",
+          "Contrabass"
+        ]
+      }
+    ]
+  },
+  "mahler-sym5-mvt1-local-p4": {
+    "dossier": "mahler-sym5-mvt1",
+    "n_parts": 38,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 18,
+        "assigned": 26,
+        "n_parts": 38,
+        "sum_holds": false,
+        "over_instruments": {
+          "Contrabass": [
+            1,
+            0
+          ]
+        },
+        "instr_gate_abstains": [
+          "Contrabass"
+        ]
+      }
+    ]
+  },
+  "mahler-sym5-mvt1-local-p5": {
+    "dossier": "mahler-sym5-mvt1",
+    "n_parts": 38,
+    "systems": [
+      {
+        "system": 0,
+        "staves": 17,
+        "assigned": 22,
+        "n_parts": 38,
+        "sum_holds": false,
+        "over_instruments": {
+          "Contrabass": [
+            1,
+            0
+          ]
+        },
+        "instr_gate_abstains": [
+          "Contrabass"
+        ]
+      }
+    ]
+  }
+}

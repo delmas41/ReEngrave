@@ -41,14 +41,18 @@ SUFFIX = ".reconciliation.omr.json"
 ES = "entire staff insert/delete"
 EM = "entire measure insert/delete"
 
-ARMS = {"base": ("0", "0", False, 0),
-        "dossier": ("0", "1", True, 0),
-        "dossier_stitch": ("1", "1", True, 0),
-        "dossier_cap2": ("0", "1", True, 2),
-        "dossier_cap2_stitch": ("1", "1", True, 2)}
+#: arm -> (OMR_SLOT_STITCH, OMR_CONDENSED_PARTS, inject?, cap, gate)
+#: gate "" none | "system" the system's assigned players must equal n_parts
+#:              | "instr"  each instrument's assigned total must equal its parts
+ARMS = {"base":                ("0", "0", False, 0, ""),
+        "dossier_stitch":      ("1", "1", True,  0, ""),
+        "dossier_cap2_stitch": ("1", "1", True,  2, ""),
+        "gate_system_stitch":  ("1", "1", True,  0, "system"),
+        "gate_instr_stitch":   ("1", "1", True,  0, "instr")}
 
 
-def inject_dossier(result: dict, parts, cap: int = 0) -> int:
+def inject_dossier(result: dict, parts, cap: int = 0, gate: str = "",
+                   dossier: dict | None = None) -> int:
     """Write `condensed_parts` from the work's parts/staves ratio.
 
     Abstains exactly where `dossier_counts.counts_for_system` abstains — an
@@ -61,16 +65,29 @@ def inject_dossier(result: dict, parts, cap: int = 0) -> int:
     not make invents parts that pair with nothing, while a split withheld only
     leaves the row at baseline.
     """
+    n_parts = int((dossier or {}).get("n_parts") or 0)
     n = 0
     for page in result.get("pages", []):
         for system in page.get("systems", []):
             if not system.get("staves"):
                 continue
-            for staff, rec in zip(system["staves"],
-                                  dc.counts_for_system(system, parts)):
+            recs = dc.counts_for_system(system, parts)
+            blocked: set[str] = set()
+            if gate == "system":
+                if sum(r["players"] for r in recs) != n_parts:
+                    continue                      # the whole system abstains
+            elif gate == "instr":
+                by: dict[str, int] = {}
+                for r in recs:
+                    if r["instrument"]:
+                        by[r["instrument"]] = by.get(r["instrument"], 0) + r["players"]
+                blocked = {k for k, v in by.items() if v != parts.get(k, 0)}
+            for staff, rec in zip(system["staves"], recs):
                 if rec["abstained"] is not None or rec["players"] <= 1:
                     continue
                 if cap and rec["players"] > cap:
+                    continue
+                if rec["instrument"] in blocked:
                     continue
                 staff["condensed_parts"] = rec["players"]
                 n += 1
@@ -90,7 +107,7 @@ def main() -> None:
 
     results: dict = {}
     cache: dict = {}
-    for arm, (stitch, cond, use, cap) in ARMS.items():
+    for arm, (stitch, cond, use, cap, gate) in ARMS.items():
         os.environ["OMR_SLOT_STITCH"] = stitch
         os.environ["OMR_CONDENSED_PARTS"] = cond
         rowscores = []
@@ -99,9 +116,9 @@ def main() -> None:
             if use:
                 dos = dc.dossier_for(r)
                 if dos:
-                    parts, _ = dc.parts_by_instrument(json.loads(
-                        (dc.DOSSIERS / f"{dos}.json").read_text()))
-                    inject_dossier(result, parts, cap)
+                    doc = json.loads((dc.DOSSIERS / f"{dos}.json").read_text())
+                    parts, _ = dc.parts_by_instrument(doc)
+                    inject_dossier(result, parts, cap, gate, doc)
             p = out / f"{r}.{arm}.musicxml"
             p.write_text(to_musicxml(result))
             key = f"{r}:{hashlib.sha256(p.read_bytes()).hexdigest()}"
