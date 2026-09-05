@@ -2625,6 +2625,82 @@ def _stitch_slots(result: dict[str, Any]) -> list[list[dict[str, Any]]] | None:
     return slots
 
 
+def _slot_stitch_enabled() -> bool:
+    """`OMR_SLOT_STITCH` — join by contextual SLOT where the ordinal join refuses.
+
+    DEFAULT OFF, and measured rather than assumed. See
+    `benchmarks/omr-staff-structure-2026-09/FINDINGS.md`: the join it produces
+    is structurally CORRECT — on Brahms 1 p.2 it recovers 14 continuous parts
+    from the 27 per-system fragments the refusal falls back to, and the slot it
+    leaves short is exactly the Trompeten staff the second system suppresses —
+    and it still costs more OMR-NED than the fragments do, because musicdiff
+    charges an unpaired truth PART more than it charges that part's unpaired
+    MEASURES. The flag exists so the finding is reproducible, not because the
+    default is in doubt.
+    """
+    return os.environ.get("OMR_SLOT_STITCH", "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _stitch_slots_by_slot(
+    result: dict[str, Any],
+) -> tuple[list[list[dict[str, Any]]], list[list[int]]] | None:
+    """The ordinal join's fallback, using the part identity contextual already has.
+
+    `_stitch_slots` joins the n-th staff of one system to the n-th of the next
+    and REFUSES the moment two systems disagree about how many staves they
+    have, because position-grafting a tacet-suppressed page would put one
+    instrument's music onto another. That refusal is correct and stays. What it
+    falls back TO is the problem: one part per (system, staff), each pairing
+    with nothing in the truth.
+
+    The contextual pass has already answered the question the ordinal join
+    cannot — `slots.assign_slots` aligns each system against a reference layout
+    with deletions allowed, so a suppressed staff shows up as a MISSING slot
+    rather than as a shift. Where every staff carries such a slot, joining on it
+    is the same join `_stitch_slots` makes, with the tacet case expressed.
+
+    Returns `(slots, slot_systems)`; `slot_systems[i][j]` is the system index of
+    `slots[i][j]`, because a slot need not appear in every system and the
+    measure numbering is per system.
+
+    Abstains — returns None — unless the evidence is complete and consistent:
+    every staff of every system carries a slot, no system repeats a slot, and
+    the join actually differs from what the ordinal path would do. An abstention
+    leaves the exporter byte-identical to today.
+    """
+    systems = [
+        system
+        for page in result.get("pages", [])
+        for system in page.get("systems", [])
+        if system.get("staves")
+    ]
+    if len(systems) < 2:
+        return None
+    per_system: list[list[int]] = []
+    for system in systems:
+        row = [staff.get("slot_index", -1) for staff in system["staves"]]
+        # A single unassigned staff is enough to abstain. Placing the staves
+        # that DID resolve and dropping the rest would silently lose music,
+        # which is worse than the fragments this is trying to replace.
+        if any(v is None or v < 0 for v in row):
+            return None
+        if len(set(row)) != len(row):
+            return None
+        per_system.append(row)
+    if any(_is_fragmented_row(system["staves"]) for system in systems):
+        return None
+    order = sorted({v for row in per_system for v in row})
+    slots: list[list[dict[str, Any]]] = [[] for _ in order]
+    slot_systems: list[list[int]] = [[] for _ in order]
+    at = {slot: i for i, slot in enumerate(order)}
+    for sys_idx, (system, row) in enumerate(zip(systems, per_system)):
+        for staff, slot in zip(system["staves"], row):
+            slots[at[slot]].append(staff)
+            slot_systems[at[slot]].append(sys_idx)
+    return slots, slot_systems
+
+
 def to_musicxml(result: dict[str, Any]) -> str:
     """Serialize a transcribe.py result to a MusicXML score-partwise XML
     string. One <part> per (page, system, position-within-system) staff.
@@ -2652,6 +2728,13 @@ def to_musicxml(result: dict[str, Any]) -> str:
     # Stitched path: one part per SLOT, carrying that slot's staff from every
     # system of the piece. See `_stitch_slots` for when this is not safe.
     slots = _stitch_slots(result)
+    slot_systems: list[list[int]] | None = None
+    if slots is None and _slot_stitch_enabled():
+        # Only ever reached where the ordinal join REFUSED — a page whose
+        # systems agree on staff count keeps the ordinal join untouched.
+        by_slot = _stitch_slots_by_slot(result)
+        if by_slot is not None:
+            slots, slot_systems = by_slot
     if slots is not None:
         systems = [
             system
@@ -2696,9 +2779,15 @@ def to_musicxml(result: dict[str, Any]) -> str:
             annotate_slurs_in_slot(slot)
             state: dict[str, Any] = {}
             measures_xml: list[str] = []
-            for staff, start in zip(slot, starts):
+            # A slot need not appear in every system (a suppressed tacet
+            # staff), so each staff takes ITS OWN system's measure start rather
+            # than the n-th one. The ordinal path's slots are dense, so
+            # `range(len(systems))` reproduces the old zip exactly.
+            in_systems = (slot_systems[ordinal] if slot_systems is not None
+                          else range(len(systems)))
+            for staff, sys_i in zip(slot, in_systems):
                 measures_xml += _staff_measures_xml(
-                    staff, divisions, start, state, pair_slurs=False)
+                    staff, divisions, starts[sys_i], state, pair_slurs=False)
             parts_xml.append(
                 f"  <part id=\"{part_id}\">\n"
                 + "\n".join(measures_xml)
