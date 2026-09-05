@@ -244,3 +244,49 @@ so it is independent corroboration rather than a restatement.
 refuse: with 115 of 407 staves printing nothing, a rule that refuses on missing
 labels would kill stitching on Litolff and Simrock outright. The fix belongs to
 the structural workstream.
+
+
+## ⚠️ THE PREMISE IS CLOSED: more label reach cannot move the clef number here
+
+`probe_clef_reach.py`, over every staff of the 20-row corpus, taking the
+**printed truth** name (what the staff IS, not what was read), resolving it, and
+cross-tabulating its conventional clef against whether the ladder resolved it:
+
+| staff family (by printed truth) | resolved | unresolved | total |
+|---|--:|--:|--:|
+| alto-default | 8 | 7 | 15 |
+| bass-default | 52 | 22 | 74 |
+| treble-default | 95 | 33 | 128 |
+| **total** | 155 | 62 | 217 |
+
+29 unresolved staves are in a family whose conventional clef is **not** treble —
+the entire population `clef_correction` could ever be handed by more reading.
+Cross-tabulated against the Phase 1 classes:
+
+```
+29 of 29   a_NO_LABEL_PRINTED
+```
+
+**Every one is behind the wall.** Not one is a lexicon refusal, a group-label
+fragment or an OCR miss: they are Litolff Beethoven's `Viola` and
+`Violoncello e Basso` on continuation systems, and Simrock Dvořák's whole p6/p7
+lineup — pages with 0 ink in the margin band.
+
+So the opening premise is **true about the machinery and false about the
+remedy**. `clef_correction` really is starved of instrument names; on the staves
+that need them the names are **not printed**, not merely unread. That also
+explains the pattern rather than leaving it a coincidence: the families labelled
+on continuation systems are winds and brass (treble — already defaulted right),
+and the families dropped are strings and low brass (bass/alto — the ones that
+need help). (ii-a)'s `clefs_applied: 0` is not the rule falling short; it is the
+shape of the whole opportunity.
+
+⚠️ Three things this does NOT say, kept explicit:
+1. it is 217 truth-carrying staves over 5 publishers — **an edition labelling
+   its strings on every system would move it**;
+2. it says nothing about whether `clef_correction` would get those staves RIGHT
+   if handed them, only that it will not be handed them;
+3. the **60 already-resolved non-treble staves are a separate question** —
+   whether their labels actually REACH `clef_correction` is about the consumer,
+   not about reach, and is unmeasured. That is the only remaining route from
+   labels to clefs.
