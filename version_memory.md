@@ -5,6 +5,31 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-05 — parked: measure-by-measure side-by-side review with a real editor
+
+Sean captured a product idea and asked that it not be lost: **each measure of the scan shown
+beside the measure the re-engraving produced, with the ability to make small adjustments — to
+move things around — rather than only to accept or reject a flagged difference.** Framed as an
+option for high-quality engraving work, explicitly against the posture other OMR programs take
+("show your problem areas and ask you to resolve those, often by multiple choice").
+
+- **Recorded in [NOTES.md](NOTES.md)** as a PARKED item with what already exists behind it:
+  `DiffCard` draws this exact side-by-side today but only for flagged measures, only as two
+  flat PNGs, with a free-text edit field; `MeasureCell.bbox_page_px` makes every measure
+  croppable for free; Verovio emits per-element SVG `id`s for click-to-select;
+  `tools/omr/annotate/` is already a per-measure-cell canvas with drawing, dragging and
+  staff-grid snapping, built for labels rather than corrections.
+- ⚠️ **The blocker is downstream of the UI and already a known limitation.**
+  `export_module.apply_corrections_to_musicxml()` is a stub that injects accepted diffs as XML
+  *comments*, so an edit made in any review surface is recorded and never reaches the exported
+  file. Noted in CLAUDE.md's limitation entry as the prerequisite for this idea rather than a
+  separate cleanup.
+- **The substrate question is left open, deliberately** — Sean's own "maybe I mean JSON and not
+  MusicXML". The OMR JSON is the only representation holding pixel geometry (so the only one in
+  which *move this* means anything spatial); MusicXML holds the semantics the export and
+  comparison flows consume. Probable answer written down: edit the JSON, render the MusicXML.
+- Docs only — no code changed.
+
 ## 2026-09-03 — a third audit check: edge fragments live in the training corpus, no image needed
 
 Two `notehead*` labels found live in **v3-2026-06-09-mahler5** and **v4-2026-06-10-la-mer** —

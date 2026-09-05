@@ -44,6 +44,76 @@ How to run it when picked up:
 - The symbol inventory (`benchmarks/omr-labeling-survey-2026-09/symbol_inventory.py`)
   carries a REVISIT flag on these rows so the list survives this file too.
 
+## 🅿️ PARKED (Sean, 2026-09-05): measure-by-measure side-by-side, with a real editor
+
+Captured verbatim in intent so it is not lost: **each measure of the SCAN
+shown beside the measure the re-engraving produced, side by side, with the
+ability to make small adjustments — to move things around — rather than only
+to accept or reject a difference somebody else flagged.** Sean's framing:
+this is probably not a standard step in the pipeline but an **option for
+high-quality engraving work** — "some of the other programs basically just
+show your problem areas and ask you to resolve those, often by multiple
+choice", and this is the opposite posture, the whole score inspectable at
+measure granularity with the human holding the pen.
+
+**A third of it already exists, and the flagged-diff flow is the thing being
+argued with.** `DiffCard` draws exactly this side-by-side today —
+`pdf_snippet_path` against `musicxml_snippet_path` — but only for a measure
+Claude Vision flagged, only as two flat PNGs, and its "edit" is a free-text
+`human_edit_value` string. That is the multiple-choice shape, not this one.
+
+⚠️ **The blocker is downstream of the UI, and it is already a known
+limitation: an edit made today does not reach the file.**
+`export_module.apply_corrections_to_musicxml()` is a stub — it copies the
+original and injects accepted diffs as XML *comments*. Real measure-level
+patching is the prerequisite for any editing surface whatever its shape, so
+that stub is step one of this idea rather than a separate cleanup.
+
+**Every measure is croppable for free.** `MeasureCell.bbox_page_px` is the
+scan crop for any measure the pipeline segmented, so "every bar" costs no
+more on the left pane than "the flagged bars" does. Verovio emits per-element
+`id`s into its SVG, which is the handle a click-to-select needs on the right
+pane. Neither half needs new recognition work.
+
+**The substrate question Sean raised and deliberately left open** — "maybe I
+mean JSON and not MusicXML":
+
+- The OMR JSON (`{stem}.omr.json`) is the only representation that holds
+  PIXEL GEOMETRY — per-detection `bbox_page`, per-cell canonical staff lines
+  — so it is the only one in which *move this thing* means something spatial.
+  Re-export regenerates MusicXML and LilyPond from it.
+- MusicXML holds the SEMANTICS (voice, tie, slur, duration) and is what the
+  export, comparison and theory flows already consume. An edit there survives
+  a re-export but cannot say "this notehead sits a step too low because its
+  box is off".
+- So probably: **edit the JSON, render the MusicXML** — the same split the
+  pipeline already makes everywhere else.
+
+**The hard half is built, for a different purpose.** `tools/omr/annotate/` is
+a per-measure-cell canvas with box drawing, dragging, class assignment,
+geometric snapping to the staff grid (including measured ledger rungs),
+hotkeys and autosave. It aims at training labels rather than at correcting a
+score, but the interaction model, the cell cutting and the frame bookkeeping
+are the same problem solved once. ⚠️ Read the `recut_cells` warning in
+CLAUDE.md before reusing any of it — **every box is stored in the cell's
+CANONICAL frame**, so a pane rendered at a different padding is the same
+music at a different scale with every coordinate silently wrong.
+
+Open questions to settle when this is picked up:
+
+- **Is it every measure, or every measure with a lane?** 22 staves × 16 bars
+  of a conductor's page, one bar at a time, is not a pass anybody finishes.
+  The flagged / theory-check / low-confidence measures probably still lead;
+  what changes is that the rest are reachable rather than invisible.
+- **Where does a correction live so it survives re-running OMR?** An edit
+  keyed to the JSON is invalidated by a re-transcription exactly the way a
+  labeling verdict keyed to a detection id is — the campaign rule ("don't
+  regenerate detections mid-campaign") has the same shape here.
+- **Does an edit feed the analytics / auto-accept learning loop** the
+  flagged-diff decisions already feed, or is it outside it?
+
+Not scoped, not scheduled. Recorded because Sean asked that it not be lost.
+
 ## 🚨 NEXT: the same scan page, transcribed twice, gives two different scores (2026-09-02)
 
 Found while measuring the `--direction-text` default, and it outranks what it

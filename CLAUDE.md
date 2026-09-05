@@ -2011,7 +2011,7 @@ Per-phase reports + verdict sets live in [`benchmarks/`](benchmarks/). The most 
 
 ## Known limitations / TODOs
 
-- **MusicXML correction patching is a stub.** `export_module.apply_corrections_to_musicxml()` copies the original file and injects accepted diffs as XML comments rather than actually patching the XML. Real measure-level patching (replacing `<measure>` elements with `human_edit_value` content) is not yet implemented.
+- **MusicXML correction patching is a stub.** `export_module.apply_corrections_to_musicxml()` copies the original file and injects accepted diffs as XML comments rather than actually patching the XML. Real measure-level patching (replacing `<measure>` elements with `human_edit_value` content) is not yet implemented. ⚠️ **This stub is the prerequisite for the parked measure-by-measure editing UI** (NOTES.md, 2026-09-05): an edit made in any review surface is recorded but never reaches the exported file, so a richer editor built on top of it would still ship the uncorrected score.
 
 - **Custom OMR classes (barlines, textDynamic) are not YOLO-learned.** Phase 3.4 tried to expand from 208 → 214 classes and caused catastrophic forgetting (F1 cratered to 79.3%). Barlines are currently detected by classical CV; textDynamic isn't detected at all. Re-introduce when there are ~200+ examples per new class, or seed via synthetic warm-up.
 
