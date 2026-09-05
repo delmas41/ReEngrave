@@ -5,6 +5,42 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-05 — The last margin-label gap closed: a whole system's margin as one label
+
+- The lexicon sweep's last open item — Beethoven 5's 17-staff margin resolving to
+  *Piccolo*, Mahler 5's 19-staff margin to *Trombone* — was a reader/assignment
+  fault, confirmed by re-reading the exact pages with the raw per-block Surya
+  output surfaced for the first time. Both pages: Surya returns **exactly one
+  OCR block for the whole crop**, every instrument name on the page glommed into
+  one block, where a healthy read splits one block per staff.
+- `_assign` was never wrong about WHICH staff the block's centroid landed
+  nearest — the input it was handed was already garbage, and nothing recorded a
+  block's own SIZE to say so. `_surya_worker._lines_with_boxes` now keeps each
+  block's height (already had the polygon, wasn't reading its y-extent),
+  threaded to `_assign`, which drops a block taller than half the SYSTEM's own
+  tick span before the nearest-tick test rather than forcing it onto whichever
+  staff it lands nearest. Scale-invariant on purpose: the ratio is to the crop's
+  own span, not a pixel count.
+- **Measured, not guessed**: both bad blocks sit at 1.04× the span (crop padding
+  pushes them slightly past 1.0); all 17 blocks Surya correctly split on
+  Boléro's own dense page — 16 of 19 staves correctly named, the SAME kind of
+  system a runaway block would target — sit at 1.5–4.7%. A ~22× gap with the
+  0.5 threshold in the middle of it.
+- ⚠️ **The first regression test attempt passed whether the fix worked or not.**
+  It asserted no returned label exceeded some LENGTH, but the real defect
+  concatenates many instrument names into one long STRING specifically because
+  the block spans many staves' worth of *text*, not just height — a single huge
+  GLYPH is one character, tall without being long. Constructed a synthetic
+  crop instead, asserted on staff ASSIGNMENT directly, and ran it red (gate
+  disabled: `{0: 'Ob.', 2: 'X'}`) before green (gate on: `{0: 'Ob.'}`) to prove
+  it exercises the mechanism.
+- Full suite 2058 → **2059 passed, 0 failed**. Both known-bad pages now report
+  no label (honest abstention) rather than a confident wrong instrument; the
+  known-good Boléro page is byte-identical.
+  [benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md](benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md).
+
+---
+
 ## 2026-09-04 — acting on the split: hairpins and a fermata reach the file, and the arc verdict
 
 Worked the three items the reading/translation split identified.
@@ -568,6 +604,76 @@ more. The pre-registered analysis is the committed one and it is negative.
   needs). Serving blind on :5053 from a worktree that has `--blind`; ⚠️ a 5.5-hour-old server
   on **:5051 is still serving this batch NON-blind with the stale palette in memory** (config
   is read at startup) — it must not be used for this pass.
+
+---
+
+## 2026-09-03 — `Hr.` / `Trpt.`: the largest gap the lexicon sweep found, closed
+
+- The lexicon sweep two entries below left `Hr.` and `Trpt.` open on purpose —
+  "that is a third lexicon change and it deserves the same multi-edition
+  measurement rather than a ride on this one." Measured separately, same day:
+  `hr` (German/English *Hörner*) and `trpt` (a distinct 4-letter shorthand from
+  the `tpt` already in the table, not a typo of it) are **0/409** collisions
+  against every existing alias and **0/1271** touches on the reference
+  part-name corpus.
+- Against the same 1422-label margin dump: **24 labels, 13 distinct strings,
+  all Brahms 1 / Breitkopf horn and trumpet staves** — the true count; the "18"
+  first reported was a `.most_common(12)` display truncation, not the real one.
+  Every committed reader benchmark (`results*.json`, `score_readers.py`) is
+  byte-identical to before.
+- ⚠️ **The instrument NAME is right in all 13 strings; the transposition
+  offset is exact only where the printed key TRAILS the abbreviation**
+  (`Hr. (E)` → fifths_offset -4, correct). `(C) Hr.` — key BEFORE the noun —
+  falls back to Horn's positional default, because `_parse_bare_key` has only
+  ever read the token AFTER a match. **Not a new gap**: `A-Klar.` has resolved
+  to Clarinet with its default transposition rather than a parsed one since
+  2026-08-31, for every key-taking instrument in the table. The dossier join
+  pins on the unambiguous NAME, not the offset, so this doesn't cost a pin.
+- `benchmarks/omr-lexicon-2026-09/FINDINGS.md` and `CLAUDE.md`'s "Instrument
+  identity" section both updated in place rather than restated.
+
+---
+
+## 2026-09-03 — three margin labels the lexicon dropped, and three different faults
+
+- `scan_eval.py` over the five verified scan rows produced three strings
+  `instruments.lookup` could not match. Each turned out to be a different kind of fault, and
+  only one was a lexicon bug. Full reading:
+  [benchmarks/omr-lexicon-2026-09/FINDINGS.md](benchmarks/omr-lexicon-2026-09/FINDINGS.md).
+- **`Contrafagott` was one hole in a family of ~25.** A contrabassoon is printed as a BASSOON
+  name with a contra- qualifier, and both halves vary independently (four languages of noun ×
+  four of qualifier × the abbreviations a crowded margin uses), so the spellings are a CROSS
+  PRODUCT and the hand-list held six. ⚠️ The missing ones did not ABSTAIN — the bassoon noun
+  inside them matched on its own, so `Contra-Fagott` read as **Bassoon** and `C. Fagotto` as
+  Bassoon at HIGH confidence, enough to pin a staff to the wrong part. `_CONTRA_ALIASES` is now
+  DERIVED from the bassoon's own aliases (the `VOICE_QUALIFIERS` move); `contraf` stays listed
+  apart as a truncation. Matching is not loosened — every generated string still has to appear
+  word-bounded and exact.
+- **The live cost was on the scan benchmark's own Brahms edition, not on Mahler.** Breitkopf
+  abbreviates Kontrafagott `K. Fag.`, and ten of those staves were reading as Bassoon on a page
+  that also prints two real bassoon staves. The reported `Contrafagott` was the cousin that
+  happened to abstain and therefore got noticed.
+- **`Yiolino II.` was already fixed and unmerged** on `claude/zen-panini-fdc5ae` (`6bfed41`,
+  2026-09-02) — merged rather than rebuilt. Its decision: the OCR fold belongs in the lexicon,
+  admitted on RARITY not plausibility (`y` occurs only in `tympani`/`xylophone`, both of which
+  resolve on the exact pass), and common-letter pairs (a/u, b/h, c/e, n/m) are refused by name
+  at a priced cost of two real corpus reads.
+- **`in C \frac{1}{2}` was not a lexicon fault.** Surya writes a STACKED part number as a LaTeX
+  fraction; the digits are part numbers `normalize_label` already drops, the control word is not
+  and it dilutes `coverage`. Folded at the READER (`staff_labels_surya._plain_text`), because
+  LaTeX is Surya's output format and `_surya_worker` already unwraps that worker's HTML at the
+  same boundary. ⚠️ Measured over 1422 labels it changes **zero** resolutions — the two Brahms
+  strings are the HORN staves, and the page prints `Hörner` once braced across them, so
+  abstaining is correct and no lexicon can recover them.
+- **Validation, three corpora** (`benchmarks/omr-lexicon-2026-09/`): 1 of 1271 reference part
+  names changes; every committed reader benchmark is unchanged to the count; **12 of 1422 real
+  margin labels across 13 editions change, all in the intended direction**. New harness:
+  `read_margin_labels.py` (dump what the readers emit), `resolve_labels.py` (replay a dump
+  through two revisions' lexicons), `reference_part_names.py`.
+- **Found and NOT fixed, each its own bug:** `Hr.` and `Trpt.` resolve to nothing on 18 Brahms
+  labels; a whole system margin can arrive as ONE label and resolve to Piccolo.
+
+---
 
 ## 2026-09-03 — snap-ledger audit: three hollow labels corrected, all Eulenburg Scheherazade / v8
 

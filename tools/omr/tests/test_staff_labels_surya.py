@@ -347,3 +347,137 @@ def test_keep_alive_is_off_unless_asked(monkeypatch):
         assert reloaded.KEEP_ALIVE is False
     finally:
         importlib.reload(staff_labels_surya)
+
+
+# ── Surya's LaTeX markup for a stacked part number ──────────────────────────
+
+class TestPlainText:
+    """Surya writes a STACKED pair of numerals as a LaTeX fraction, because a
+    stack is what the page prints. Breitkopf's Brahms 1 puts the horn part
+    numbers "1." over "2." beside "in C" and the reader returns
+    `in C \\frac{1}{2}` — surfaced 2026-09-03 by scan_eval.py.
+
+    The digits are part numbers and `instruments.normalize_label` already drops
+    those; the CONTROL WORD is not a number and survives into the matched
+    string, where it dilutes `coverage` and demotes a correct read.
+    """
+
+    def test_a_stacked_part_number_stops_demoting_the_instrument_beside_it(self):
+        assert staff_labels_surya._plain_text("Hörner in C  \\frac{1}{2}") \
+            == "Hörner in C 1 2"
+        for markup, plain in (("Clar. \\frac{1}{2}", "Clar. 1 2"),
+                              ("Fag. \\dfrac{1}{2}", "Fag. 1 2"),
+                              ("Fl. \\tfrac{3}{4}", "Fl. 3 4")):
+            assert staff_labels_surya._plain_text(markup) == plain
+            before, after = lookup(markup), lookup(plain)
+            assert before.instrument.name == after.instrument.name
+            assert before.confidence == "medium" and after.confidence == "high"
+
+    def test_ocr_damage_inside_the_braces_is_folded_too(self):
+        """`\\frac{3｜4}` — one brace pair and a fullwidth bar for the rule. The
+        markup is removed and the digits kept as plain tokens rather than the
+        numerator/denominator split being relied on."""
+        assert staff_labels_surya._plain_text("in Es  \\frac{3｜4}") == "in Es 3 4"
+        # ...and it still names no instrument, which is the right answer: the
+        # noun is printed once, braced across the pair of horn staves.
+        assert lookup("in Es 3 4") is None
+
+    def test_a_string_without_markup_is_returned_untouched(self):
+        """The braces and bars are stripped only where the control word is,
+        because `instruments._OCR_FOLD` reads a `|` as an `i` — a part number
+        `II.` comes back as `||.` often enough that deleting bars everywhere
+        would cost more than the markup does."""
+        for text in ("Tr. Alt.", "Vl. II.", "Cor. || .", "2 Clarinetti in B",
+                     "Vcelle. get.", "{Fl.}"):
+            assert staff_labels_surya._plain_text(text) == text
+
+    def test_the_fold_is_applied_to_what_the_reader_returns(self, monkeypatch):
+        """Folding at the boundary, not at the call site, is what makes the raw
+        `StaffLabel.text` a human reads back the label rather than the markup."""
+        monkeypatch.setattr(staff_labels_surya, "interpreter", lambda: "/bin/false")
+
+        def fake_run(*_args, **_kwargs):
+            return types.SimpleNamespace(
+                returncode=0, stderr="",
+                stdout='{"systems": [{"labels": {"3": "H\\u00f6rner in C \\\\frac{1}{2}"}}]}')
+
+        monkeypatch.setattr(staff_labels_surya.subprocess, "run", fake_run)
+        crop = types.SimpleNamespace(png=b"", staff_indices=[3], tick_ys=(1.0,),
+                                     gutter_px=0)
+        assert staff_labels_surya.read_crops_surya([crop]) == [{3: "Hörner in C 1 2"}]
+
+
+@needs_venv
+def test_a_block_that_swallows_the_whole_crop_is_rejected_not_assigned():
+    """Surya's own layout step occasionally fails to segment a tall, dense
+    margin at all and returns the WHOLE crop as one block — surfaced
+    2026-09-04 on real orchestral margins (17-19 staves), where a single
+    detected block spanning every instrument name on the page got forced
+    onto whichever staff its centroid happened to land nearest, reading as
+    a confident wrong instrument (Piccolo, Trombone) rather than an honest
+    abstention.
+
+    A giant font is the reliable way to construct a block that is
+    GEOMETRICALLY too tall for its system without depending on Surya's own
+    (undocumented, occasionally nondeterministic) paragraph-grouping
+    behavior — the gate rejects on the block's own height, not on why it
+    got that tall, so this exercises the same mechanism the real pages hit.
+    """
+    from PIL import Image, ImageDraw, ImageFont
+
+    import numpy as np
+    height, width = 900, 500
+    x_start, spacing = 380, 10.0
+    text_x = int(x_start - 20 * spacing) + 20
+    try:
+        small_font = ImageFont.truetype(
+            "/System/Library/Fonts/Supplemental/Times New Roman.ttf", 34)
+        giant_font = ImageFont.truetype(
+            "/System/Library/Fonts/Supplemental/Times New Roman.ttf", 420)
+    except OSError:                                       # pragma: no cover
+        small_font = giant_font = ImageFont.load_default()
+
+    image = Image.fromarray(np.full((height, width, 3), 255, dtype=np.uint8))
+    draw = ImageDraw.Draw(image)
+    # A normal-sized label near staff 0 — the control: the pipe must still work.
+    draw.text((text_x, 100 - 20), "Ob.", fill=(0, 0, 0), font=small_font)
+    # One glyph tall enough to swallow most of a 4-staff system's tick span —
+    # the shape the real pages hit, constructed deterministically instead of
+    # depending on Surya's own paragraph-grouping to reproduce it. Drawn well
+    # inside the crop's own y-bounds (the staves' span plus the 2-spacing pad
+    # `margin_strip` adds) — measured at 283px tall against a 450px span here
+    # (frac 0.63), comfortably past the 0.5 gate with the same margin the real
+    # pages showed (frac ~1.0 there) and comfortably clear of Boléro's
+    # correctly-split blocks (frac 0.03-0.04, `benchmarks/omr-margin-labels-
+    # blob-2026-09/FINDINGS.md`). Drawing it larger or later in the crop risks
+    # clipping it against the crop's bottom edge, which produced NO block at
+    # all rather than a tall one the one time this was tried.
+    draw.text((text_x, 150), "X", fill=(0, 0, 0), font=giant_font)
+
+    page = types.SimpleNamespace()
+    page.binary = np.zeros((height, width), dtype=np.uint8)
+    page.rgb = np.asarray(image)
+    pws = types.SimpleNamespace(page=page, staves=[])
+    staves = [_FakeStaff(0, 100, 140, x_start=x_start),
+              _FakeStaff(1, 250, 290, x_start=x_start),
+              _FakeStaff(2, 400, 440, x_start=x_start),
+              _FakeStaff(3, 550, 590, x_start=x_start)]
+
+    crop = build_margin_crop(pws, staves)
+    assert crop is not None
+    read = staff_labels_surya.read_crops_surya([crop])
+
+    assert len(read) == 1
+    labels = read[0]
+    # The control survives: a normal label still reaches its staff.
+    assert labels.get(0) == "Ob.", labels
+    # No staff inherits the giant glyph's text. Checking the TEXT rather than
+    # its length matters here — the glyph is one character ("X"), so a block
+    # that swallows most of the crop is not a block with a long STRING, and a
+    # length check would pass whether or not the gate fired. The real failure
+    # mode concatenates many instrument names into one long string precisely
+    # because the runaway block spans many staves' worth of TEXT as well as
+    # height; this synthetic case isolates the height signal alone, which is
+    # what the gate actually reads.
+    assert "X" not in labels.values(), labels
+    assert labels == {0: "Ob."}, labels

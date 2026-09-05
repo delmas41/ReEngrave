@@ -1197,6 +1197,75 @@ the voice instruments' own aliases, which also fixes `Fl. Alt.`, `Cl. Alt.` and
 `Trb. Tenore`. Validated on 1380 margin labels across 10 editions —
 [LEXICON_TR_ALT_2026-08-31.md](benchmarks/omr-margin-labels-2026-08/LEXICON_TR_ALT_2026-08-31.md).
 
+**The same shape again, 2026-09-03, and the same answer: DERIVE the cross
+product.** A contrabassoon is printed as a BASSOON name with a contra- qualifier
+— four languages of noun against four of qualifier plus the abbreviations a
+crowded margin uses — so its spellings are a cross product and the hand-list held
+six of about twenty-five. ⚠️ **The missing ones did not abstain**: the bassoon
+noun inside them matches on its own, so `Contra-Fagott` and `Cont. Fag.` read as
+**Bassoon** and `C. Fagotto` as Bassoon at HIGH confidence. `_CONTRA_ALIASES` is
+now generated from `_BASSOON_ALIASES`; `contraf` stays listed apart, being a
+truncation rather than qualifier-plus-noun. **This does not loosen the gate** —
+every generated string still has to appear word-bounded and exact.
+
+⚠️ **The reported string was not where the damage was.** `Contrafagott` on a
+Mahler scan is what got noticed *because it abstained*; measured over 1422 real
+margin labels the live cost was **ten staves of the scan benchmark's own Brahms 1
+/ Breitkopf**, whose `K. Fag.` read as Bassoon on a page that also prints two
+real bassoon staves. Fix the family the reported string belongs to, not the
+string.
+
+**Two more decisions recorded there.** (1) **The OCR fold belongs in the
+lexicon, admitted on RARITY**: `_OCR_FOLD` gained `y → v` (a printed `Violino`
+read as `Yiolino`) because `y` occurs in only `tympani` and `xylophone`, both of
+which resolve on the exact pass before the fold runs. Common-letter pairs —
+`a/u`, `b/h`, `c/e`, `n/m` — are **refused by name**, at the priced cost of
+`Fug.`→`Fag.`, `Oh.`→`Ob.` and Mahler's `Veelle.`; a gated single-substitution
+matcher was prototyped, measured collision-free and **not adopted**. (2)
+**Reader markup belongs to the reader.** Surya writes a stacked part number as
+`\frac{1}{2}`, which survives normalization and dilutes `coverage`; that is
+folded in `staff_labels_surya._plain_text`, not in the lexicon, because LaTeX is
+the reader's output format. It changes **zero** resolutions on 1422 labels — the
+Brahms strings are the two HORN staves and the page prints `Hörner` once braced
+across them, so abstaining is right and no lexicon can recover them.
+
+Validation harness, and the one to use for any future lexicon change (MusicXML
+part names cannot see a margin-abbreviation fix):
+[benchmarks/omr-lexicon-2026-09/FINDINGS.md](benchmarks/omr-lexicon-2026-09/FINDINGS.md)
+— `read_margin_labels.py` dumps what the readers actually emit, `resolve_labels.py`
+replays a dump through two revisions' lexicons.
+
+**`Hr.` / `Trpt.` were fixed the same day, once measured** — 0 collisions
+against the other 409 aliases and the 1271-name reference corpus, 24 of the
+1422-label dump move and all 24 are Brahms 1's own horn/trumpet staves.
+⚠️ The instrument NAME is right in every case; the transposition offset is
+exact only where the key TRAILS the alias (`Hr. (E)` → -4), because
+`_parse_bare_key` has only ever read the token AFTER a match — `(C) Hr.`
+falls back to the positional default, the same pre-existing limit `A-Klar.`
+has had since 2026-08-31.
+
+**The last open item — a whole system margin arriving as ONE label — closed
+2026-09-05, and it was a reader fault, not a lexicon one.** Re-reading the
+exact pages (Beethoven 5 → *Piccolo*, Mahler 5 → *Trombone*) with the raw
+per-block output surfaced showed Surya returning **exactly one OCR block for
+the whole crop** on both — every instrument name on the page, one block,
+where a healthy read splits one block per staff. `_assign` was never wrong
+about which staff the block's centroid landed nearest; nothing recorded a
+block's own SIZE, only its centroid, so a block spanning the whole crop
+looked identical to a normal label. `_surya_worker._lines_with_boxes` now
+also keeps each block's height, and `_assign` drops a block taller than half
+the SYSTEM's own tick span before the nearest-tick test — scale-invariant
+by construction, since the ratio is to the crop's own span, not a pixel
+count. Measured: both bad blocks sit at **1.04×** the span (padding pushes
+them slightly past 1.0); all 17 blocks Surya correctly split on Boléro's own
+dense page sit at **1.5–4.7%** — a ~22× gap with 0.5 in the middle of it.
+⚠️ **The first regression test attempt passed vacuously either way** — it
+asserted on label LENGTH, and a single huge GLYPH is one character, not a
+long string, so a tall block that should be rejected still produces a SHORT
+string. Fixed to assert on staff ASSIGNMENT directly, and run red (gate
+disabled) before green to confirm it actually exercises the mechanism. See
+[benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md](benchmarks/omr-margin-labels-blob-2026-09/FINDINGS.md).
+
 ---
 
 ## Reading and reproduction are different questions, and now measured apart

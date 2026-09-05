@@ -139,6 +139,71 @@ def test_ocr_folded_matches_are_low_confidence():
     assert m.ocr_folded and m.confidence == "low"
 
 
+def test_v_read_as_y_folds_to_the_string_it_is():
+    """A printed "Violino II." OCR'd as "Yiolino II." — a V read as Y, surfaced
+    2026-09-02 in a labelling batch. `y` folds to `v` the way the i/l/1 stroke
+    group folds to `i`: rare enough in the vocabulary to be collision-free, and
+    the whole V->Y family comes with it."""
+    for label, expected in (("Yiolino II.", "Violin"), ("Yiola", "Viola"),
+                            ("Yioloncello", "Cello"), ("Yni", "Violin")):
+        m = lookup(label)
+        assert m is not None, f"{label!r} did not match"
+        assert m.instrument.name == expected, f"{label!r} -> {m.instrument.name}"
+        # a match that needed the fold is a guess, so it is demoted like any other
+        assert m.ocr_folded and m.confidence == "low", label
+
+
+def test_the_two_y_instruments_resolve_before_the_fold_runs():
+    """Folding y->v is safe only because `tympani` and `xylophone` — the sole
+    aliases carrying a `y` — resolve on the EXACT pass, before the fold is ever
+    reached. So they keep their high confidence and are never folded."""
+    for label, expected in (("Tympani", "Timpani"), ("Xylophone", "Percussion")):
+        m = lookup(label)
+        assert m.instrument.name == expected, label
+        assert not m.ocr_folded and m.confidence == "high", label
+
+
+def test_the_ocr_fold_is_only_the_reviewed_rare_confusions():
+    """The fold set is deliberately small: the i/l/1 stroke group, o/0, and v/y.
+
+    COMMON-letter confusions are refused — folding a/u, b/h, c/e or n/m would
+    merge distinct names and widen what garbage resolves, and a folded match
+    still PINS a staff to a part (`dossier.join_parts_to_slots` pins on any
+    unambiguous alias, folded or not). The margin corpora's own unread reads
+    `Oh.`->`Ob.` (b/h) and `Fug.`->`Fag.` (a/u) are left unread rather than
+    bought at that price. See
+    benchmarks/omr-margin-labels-2026-08/OCR_CONFUSIONS_2026-09-02.md.
+
+    Pinned so a new fold cannot be added without landing here and justifying it.
+    The alias<->alias check below is a true invariant but NOT sufficient on its
+    own: a common-letter fold does its damage by pulling GARBLED reads onto an
+    alias, not by merging two aliases, so measured against this vocabulary a/u
+    and b/h both score zero here — which is exactly why the set is pinned."""
+    import re as _re
+    from tools.omr.instruments import _OCR_FOLD, _fold_ocr, INSTRUMENTS
+
+    sources = {chr(k) for k in _OCR_FOLD}
+    assert sources == set("l1|!}{][0y"), f"fold sources changed: {sorted(sources)}"
+    for common in "aubhcenm":
+        assert common not in sources, f"{common!r} must not be folded"
+
+    # The fold must not make one instrument's alias collide with another's when
+    # it did not already (pre-existing substring nesting like flute<petite flute
+    # is handled by the longest-alias-first index, so only NET-NEW counts).
+    owner = {a: inst.name for inst in INSTRUMENTS for a in inst.aliases}
+
+    def word_sub(needle, hay):
+        return _re.search(rf"(?<![a-z]){_re.escape(needle)}(?![a-z])", hay) is not None
+
+    for a in owner:
+        for b in owner:
+            if owner[a] == owner[b]:
+                continue
+            if word_sub(_fold_ocr(a), _fold_ocr(b)) and not word_sub(a, b):
+                raise AssertionError(
+                    f"fold makes {a!r}({owner[a]}) collide with {b!r}({owner[b]})")
+
+
 def test_alias_buried_in_garbage_is_demoted():
     m = lookup("vc. '- eB-")
     assert m.instrument.name == "Cello"
@@ -416,3 +481,142 @@ def test_the_bare_string_abbreviations_mahler_prints():
                             ("Vcelle. get.", "Cello"), ("Violen.", "Viola"),
                             ("Viola", "Viola"), ("Violoncelle.", "Cello")):
         assert lookup(label).instrument.name == expected, label
+
+
+def test_a_contra_qualifier_is_not_ignored_beside_a_bassoon_noun():
+    """A contrabassoon is printed as a BASSOON name with a contra- qualifier,
+    and the missing spellings did not abstain — the noun matched on its own and
+    the qualifier was dropped, so `Contra-Fagott` and `Cont. Fag.` read as
+    Bassoon and `C. Fagotto` as Bassoon at HIGH confidence, which is enough to
+    pin a staff to the wrong part.
+
+    Surfaced 2026-09-03 by `Contrafagott` on the Mahler 5 scan (scan_eval.py),
+    which was one hole in a family of about twenty."""
+    for label in ("Contrafagott", "Kontrafagott", "Contrafagotto", "Contrafagotti",
+                  "Contrafagotte", "Kontrafagotte", "Kontrafagotti",
+                  "Contra-Fagott", "Kontra-Fagott", "Contra Fagotto",
+                  "C. Fagotto", "C.Fag.", "Contrafag.", "Kontrafag.",
+                  "Contrabassoon", "Contra Bassoon", "Double Bassoon",
+                  "Contrebasson", "Contrabasson", "Contre-basson",
+                  "Cfg.", "Kfg.", "Cont. Fag.", "Contra Fg.", "Contraf."):
+        m = lookup(label)
+        assert m is not None, f"{label!r} did not match"
+        assert m.instrument.name == "Contrabassoon", f"{label!r} -> {m.instrument.name}"
+
+
+def test_the_plain_bassoon_is_untouched_by_the_contra_family():
+    """The generated aliases are all LONGER than the bassoon alias inside them,
+    so the longest-first index keeps an unqualified bassoon a bassoon."""
+    for label in ("Fagotto", "Fagotti", "Fagott", "Fagotte", "Fag.", "Fg.",
+                  "2 Fagotti", "Fag. I", "Bassoon", "Basson", "Bassons",
+                  "Fagotti in B", "Fag. II."):
+        m = lookup(label)
+        assert m is not None, f"{label!r} did not match"
+        assert m.instrument.name == "Bassoon", f"{label!r} -> {m.instrument.name}"
+
+
+def test_the_contra_aliases_are_derived_so_no_spelling_is_left_out():
+    """DERIVED from the bassoon's own aliases, the move `VOICE_QUALIFIERS`
+    makes: a hand-list of a cross product is a bug with a slow fuse, and this
+    one had six of its twenty-odd members.
+
+    Pinned in both directions — every generated string is a real prefix plus a
+    real bassoon stem, and every hand-listed alias the derivation replaced is
+    still in the set — so a prefix cannot be added or a stem dropped without
+    landing here."""
+    from tools.omr.instruments import (_BASSOON_ALIASES, _CONTRA_ALIASES,
+                                       _CONTRA_PREFIXES, INSTRUMENTS)
+
+    # every previously hand-listed spelling survives the derivation
+    for alias in ("contrabassoon", "double bassoon", "contrafagotto",
+                  "contrafagotte", "kontrafagott", "contrebasson",
+                  "cfag", "kfag", "c fag"):
+        assert alias in _CONTRA_ALIASES, alias
+
+    # and nothing else got in: each is prefix + optional space + bassoon stem
+    for alias in _CONTRA_ALIASES:
+        assert any(alias in (p + s + stem for s in ("", " "))
+                   for p in _CONTRA_PREFIXES for stem in _BASSOON_ALIASES), alias
+
+    cbsn = next(i for i in INSTRUMENTS if i.name == "Contrabassoon")
+    # `contraf` is a TRUNCATION, not qualifier-plus-noun, so it is listed apart
+    assert set(cbsn.aliases) == set(_CONTRA_ALIASES) | {"contraf"}
+
+
+def test_the_contra_aliases_collide_with_no_other_instrument():
+    """160 generated strings is a lot of new vocabulary, and the thing that
+    makes it safe is that not one of them is word-contained in — or contains —
+    another instrument's alias. `contrabassoon` sits inside no `contrabass`
+    match because the word-boundary index refuses a letter on either side, and
+    the longest-first order settles the rest."""
+    import re as _re
+    from tools.omr.instruments import _CONTRA_ALIASES, INSTRUMENTS
+
+    others = {a: inst.name for inst in INSTRUMENTS
+              if inst.name != "Contrabassoon" for a in inst.aliases}
+
+    def word_sub(needle: str, hay: str) -> bool:
+        return _re.search(rf"(?<![a-z]){_re.escape(needle)}(?![a-z])", hay) is not None
+
+    for alias in _CONTRA_ALIASES:
+        for other, owner in others.items():
+            # a bassoon stem inside a contra alias is the POINT — the longer
+            # alias wins — so only an exact collision or a foreign owner counts
+            if owner == "Bassoon" and alias.endswith(other):
+                continue
+            assert not word_sub(other, alias), f"{other!r} ({owner}) fires inside {alias!r}"
+            assert not word_sub(alias, other), f"{alias!r} fires inside {other!r} ({owner})"
+
+
+def test_hr_and_trpt_resolve_to_the_instrument_they_abbreviate():
+    """Breitkopf's Brahms 1 prints horn and trumpet staves as `Hr.` and
+    `Trpt.` — surfaced 2026-09-03 by scan_eval.py, 24 labels across 13 real
+    strings, every one abstaining before this. `hr` is the German/English
+    horn abbreviation (Hörner); `trpt` is a distinct 4-letter trumpet
+    shorthand, not a typo of the `tpt` already in the table."""
+    for label in ("Hr.", "(C) Hr.", "(C) Hr", "(E) Hr.", "(Es) Hr.", "(F) Hr.",
+                  ". (C) Hr.", "Hr. (E)", "Hr. (Es)", "Hr. 1. (C) 2.",
+                  "Hr. 1. (Es) 2.", "Hr.1. (Es)2."):
+        m = lookup(label)
+        assert m is not None, f"{label!r} did not match"
+        assert m.instrument.name == "Horn", f"{label!r} -> {m.instrument.name}"
+    for label in ("Trpt.", "Trpt. (C)"):
+        m = lookup(label)
+        assert m is not None, f"{label!r} did not match"
+        assert m.instrument.name == "Trumpet", f"{label!r} -> {m.instrument.name}"
+
+
+def test_hr_and_trpt_collide_with_no_other_alias():
+    """`hr` cannot fire inside `hrf` (Harp) or `chor` (Chorus) — the
+    word-boundary index refuses a letter on either side. Checked against the
+    whole table, both directions, the same shape as the contra-alias test."""
+    import re as _re
+    from tools.omr.instruments import INSTRUMENTS
+
+    owner = {a: inst.name for inst in INSTRUMENTS for a in inst.aliases}
+
+    def word_sub(needle: str, hay: str) -> bool:
+        return _re.search(rf"(?<![a-z]){_re.escape(needle)}(?![a-z])", hay) is not None
+
+    for new, new_owner in (("hr", "Horn"), ("trpt", "Trumpet")):
+        for other, other_owner in owner.items():
+            if other == new:
+                continue
+            assert not word_sub(new, other), f"{new!r} fires inside {other!r} ({other_owner})"
+            assert not word_sub(other, new), f"{other!r} ({other_owner}) fires inside {new!r}"
+
+
+def test_a_trailing_key_after_hr_or_trpt_is_read_a_leading_one_is_not():
+    """The bare-key parser only ever looked at what comes AFTER the alias
+    (`_parse_bare_key`), a pre-existing limit shared by every key-taking
+    instrument in this table — `A-Klar.` resolves to Clarinet with its
+    default transposition, not with a parsed one, for the identical reason.
+    Adding `hr`/`trpt` inherits that limit rather than introducing it:
+    trailing keys resolve exactly, leading ones fall back to the instrument's
+    positional default. Both are pinned so a future change to the parser is
+    measured against both cases, not just the one that already worked."""
+    trailing = lookup("Hr. (E)")
+    assert trailing.instrument.name == "Horn" and trailing.fifths_offset == -4
+    leading = lookup("(E) Hr.")
+    assert leading.instrument.name == "Horn"
+    assert leading.fifths_offset == leading.instrument.default_fifths_offset

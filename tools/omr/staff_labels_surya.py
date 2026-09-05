@@ -50,6 +50,7 @@ import base64
 import json
 import logging
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -187,6 +188,38 @@ def stop_server() -> bool:
     return True
 
 
+#: Surya writes a STACKED pair of numerals as a LaTeX fraction, because a stack
+#: is what the page prints: Breitkopf's Brahms 1 puts the horn part numbers
+#: "1." over "2." beside "in C", and the reader returns `in C \frac{1}{2}`.
+#:
+#: They are PART NUMBERS, which `instruments.normalize_label` already exists to
+#: drop — but the CONTROL WORD is not a number, so it survives into the matched
+#: string and dilutes `coverage`: `Clar. \frac{1}{2}` resolves to Clarinet at
+#: **medium** where `Clar. 1.2.` resolves at high (coverage 0.5 against 1.0).
+#:
+#: This is folded HERE and not in the lexicon on purpose. LaTeX is Surya's
+#: output format, not something a printed margin contains, and `_surya_worker`
+#: already turns that worker's HTML into plain text at this same boundary; the
+#: lexicon's job is to match printed strings, and teaching it markup would put a
+#: reader's quirk in the one module every reader shares. It also means the raw
+#: `StaffLabel.text` a human reads back is the label, not the markup.
+_LATEX_CONTROL = re.compile(r"\\[dt]?frac(?![a-z])")
+
+#: Only stripped from strings that actually carry the control word. `|` is a
+#: character `instruments._OCR_FOLD` reads as an `i` — a part number `II.` comes
+#: back as `||.` often enough to matter — so deleting bars everywhere would cost
+#: more than the markup does.
+_MATH_PUNCTUATION = re.compile(r"[{}|｜]+")
+
+
+def _plain_text(text: str) -> str:
+    """Fold Surya's LaTeX markup back to the characters it stands for."""
+    if not _LATEX_CONTROL.search(text):
+        return text
+    folded = _MATH_PUNCTUATION.sub(" ", _LATEX_CONTROL.sub(" ", text))
+    return re.sub(r"\s+", " ", folded).strip()
+
+
 def read_crops_surya(crops: list[MarginCrop], *,
                      timeout_s: float | None = None,
                      keep_alive: bool | None = None) -> list[dict[int, str]]:
@@ -239,7 +272,8 @@ def read_crops_surya(crops: list[MarginCrop], *,
             logger.warning("surya failed on one system: %s", entry["error"])
             out.append({})
             continue
-        out.append({int(k): v for k, v in (entry.get("labels") or {}).items()})
+        out.append({int(k): _plain_text(v)
+                    for k, v in (entry.get("labels") or {}).items()})
     return out
 
 
