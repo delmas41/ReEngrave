@@ -1236,6 +1236,26 @@ def _mxl_direction(item: tuple[str, str], indent: str) -> str:
             f"{indent}</direction>")
 
 
+def measure_has_fermata(detections: list[dict[str, Any]]) -> bool:
+    """Does this measure carry a fermata the whole-measure rest should wear?
+
+    THE SAME BRANCH AS `_mxl_directions_only`, ONE LAYER DOWN. A fermata
+    attaches to an EVENT, and a measure with no detected events emits only a
+    whole-measure rest — which was built without one, so the mark was read and
+    dropped exactly as the directions were.
+
+    ⚠️ `annotate_fermatas` already documents that a fermata on an orchestral
+    page is usually over a whole-bar rest rather than a note. That is precisely
+    the case this branch handles, so it is the likeliest fermata of all, not an
+    edge case. Found by `score_translation`: Beethoven 5 detects 36, its truth
+    has 36, and 35 reached the file — the missing one is P7 m5, whose staff
+    detects a `restWhole` that `group_chords_in_measure` does not turn into an
+    event, so the bar falls to this branch while its neighbours do not.
+    """
+    return any((d.get("class") or "").lower().startswith("fermata")
+               for d in detections)
+
+
 def _mxl_directions_only(
     directions: list[tuple[float, str, str]] | None, indent: str
 ) -> list[str]:
@@ -1943,6 +1963,7 @@ def _staff_measures_xml(
             inner.append(_mxl_note(
                 None, "", r_type, r_dots, r_beats, divisions,
                 is_chord=False, is_rest=True, indent="      ", voice=1,
+                fermata=measure_has_fermata(measure.get("detections", [])),
             ))
         elif len(voices) == 1:
             v1_lines, _ = _mxl_voice_events(
@@ -2189,6 +2210,8 @@ def to_musicxml(result: dict[str, Any]) -> str:
                             None, "", r_type, r_dots, r_beats, divisions,
                             is_chord=False, is_rest=True,
                             indent="      ", voice=1,
+                            fermata=measure_has_fermata(
+                                measure.get("detections", [])),
                         ))
                     elif len(voices) == 1:
                         v1_lines, _ = _mxl_voice_events(

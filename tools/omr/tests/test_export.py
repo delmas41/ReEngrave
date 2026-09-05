@@ -408,6 +408,42 @@ class TestEventlessMeasureKeepsItsMarks:
         """The fix must be additive: a plain empty bar exports as before."""
         assert "<direction" not in to_musicxml(self._with())
 
+    def test_a_fermata_over_the_whole_measure_rest_survives(self):
+        """The same branch, one layer down: a fermata attaches to an EVENT, and
+        this bar has none, so the rest was built without one. `annotate_fermatas`
+        already says a fermata on an orchestral page is usually over a whole-bar
+        REST — so this is the commonest fermata, not an edge case. Found by
+        `score_translation`: Beethoven 5 detected 36, truth 36, exported 35.
+        """
+        r = self._with([{"class": "fermataAbove", "category": "ornament",
+                         "confidence": 0.93, "bbox": [40, 5, 20, 14]}])
+        out = to_musicxml(r)
+        assert "<fermata" in out
+        assert "<rest/>" in out
+
+    def test_a_bar_with_no_fermata_gets_none(self):
+        assert "<fermata" not in to_musicxml(self._with())
+
+    def test_both_musicxml_emitters_carry_the_fermata_too(self):
+        """⚠️ ANTI-DRIFT, same reasoning as the directions below: this file
+        emits a measure in more than one place."""
+        import inspect
+
+        import tools.omr.export as export_mod
+
+        src = inspect.getsource(export_mod).splitlines()
+        checked = 0
+        for i, line in enumerate(src):
+            if line.strip() != "if not events:":
+                continue
+            body = "\n".join(src[i:i + 12])
+            if "_mxl_measure_rest" not in body:
+                continue
+            checked += 1
+            assert "measure_has_fermata" in body, (
+                f"the eventless-measure branch at line {i + 1} drops its fermata")
+        assert checked == 2
+
     def test_both_musicxml_emitters_call_it(self):
         """⚠️ ANTI-DRIFT. This file emits a measure in more than one place and
         they must not diverge — that divergence is how `measure_directions`
