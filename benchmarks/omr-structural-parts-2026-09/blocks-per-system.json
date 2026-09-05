@@ -1,0 +1,264 @@
+{
+  "beethoven-sym5-mvt1-984073-p4": {
+    "systems": [
+      {
+        "system": 0,
+        "n_staves": 11,
+        "groups": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "printed": [
+          "Flauti",
+          "Oboi",
+          "Clarinetti in B",
+          "Fagotti",
+          "Corni in Es",
+          "Trombe in C",
+          "Violino I",
+          "Violino II",
+          "Viola",
+          "Violoncello",
+          "Basso"
+        ],
+        "families": [
+          "woodwind",
+          "woodwind",
+          "woodwind",
+          "woodwind",
+          "brass",
+          "brass",
+          "string",
+          "string",
+          "string",
+          "string",
+          "voice"
+        ]
+      },
+      {
+        "system": 1,
+        "n_staves": 11,
+        "groups": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2
+        ],
+        "printed": [
+          "Flauti",
+          "Oboi",
+          "Clarinetti in B",
+          "Fagotti",
+          "Corni in Es",
+          "Trombe in C",
+          "Timpani in C.G.",
+          "Violino I",
+          "Violino II",
+          "Viola",
+          "Bassi (Violoncello e Basso)"
+        ],
+        "families": [
+          "woodwind",
+          "woodwind",
+          "woodwind",
+          "woodwind",
+          "brass",
+          "brass",
+          "percussion",
+          "string",
+          "string",
+          "string",
+          "string"
+        ]
+      }
+    ],
+    "block_shapes": [
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
+    "block_sizes": [
+      [
+        4,
+        2,
+        5
+      ],
+      [
+        4,
+        3,
+        4
+      ]
+    ],
+    "shapes_differ": true
+  },
+  "beethoven-sym5-mvt1-575951-p4": {
+    "systems": [
+      {
+        "system": 0,
+        "n_staves": 11,
+        "groups": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "printed": [
+          "Flauti",
+          "Oboi",
+          "Clarinetti in B",
+          "Fagotti",
+          "Corni in Es",
+          "Trombe in C",
+          "Violino I",
+          "Violino II",
+          "Viola",
+          "Violoncello",
+          "Basso"
+        ],
+        "families": [
+          "woodwind",
+          "woodwind",
+          "woodwind",
+          "woodwind",
+          "brass",
+          "brass",
+          "string",
+          "string",
+          "string",
+          "string",
+          "voice"
+        ]
+      },
+      {
+        "system": 1,
+        "n_staves": 11,
+        "groups": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2
+        ],
+        "printed": [
+          "Flauti",
+          "Oboi",
+          "Clarinetti in B",
+          "Fagotti",
+          "Corni in Es",
+          "Trombe in C",
+          "Timpani in C.G.",
+          "Violino I",
+          "Violino II",
+          "Viola",
+          "Bassi (Violoncello e Basso)"
+        ],
+        "families": [
+          "woodwind",
+          "woodwind",
+          "woodwind",
+          "woodwind",
+          "brass",
+          "brass",
+          "percussion",
+          "string",
+          "string",
+          "string",
+          "string"
+        ]
+      }
+    ],
+    "block_shapes": [
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
+    "block_sizes": [
+      [
+        4,
+        2,
+        5
+      ],
+      [
+        4,
+        3,
+        4
+      ]
+    ],
+    "shapes_differ": true
+  }
+}
