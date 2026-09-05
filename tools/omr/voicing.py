@@ -45,22 +45,40 @@ def _is_pitched_notehead(det: dict[str, Any]) -> bool:
     )
 
 
-def _chord_slur_states(group: list[dict[str, Any]]) -> list[tuple[int, str]]:
-    """The slur marks a chord carries, from whichever of its noteheads hold them.
+def _chord_span_states(group: list[dict[str, Any]], key: str,
+                       drop_degenerate: bool = True) -> list[tuple[int, str]]:
+    """The numbered span marks a chord carries, from whichever noteheads hold them.
 
-    A slur whose two ends landed in the SAME chord is dropped: a start and a
-    stop on one note spans no time, and MusicXML would carry a slur to nowhere.
-    Marks for different slurs that merely share a note are kept — that is an
-    ordinary elision, `d)(` in LilyPond.
+    `key` is `"slur_states"` or `"wedge_states"` — two different spanners
+    written the same way, because both are paired over the whole STAFF in page
+    pixels (the arc and the hairpin are each cut in two by a barline) and both
+    then have to ride up from the notehead they were marked on to the event the
+    exporters render. Reading them through one function is what stops the two
+    drifting apart the way a copy would.
+
+    A SLUR whose two ends landed in the same chord is dropped — a slur from a
+    note to itself is a curve to nowhere. A HAIRPIN is not: `<wedge
+    crescendo>`, one note, `<wedge stop>` is a hairpin drawn under a single
+    long note, and two of the three hairpins in the Mahler 5 fixture's truth
+    are exactly that. Hence `drop_degenerate`, which the wedge caller turns
+    off. (LilyPond still cannot write one — `\\<` and `\\!` on one note — and
+    `export._lily_wedge_plan` drops it there, where the limit actually is.)
+    Marks for different spans that merely share a note are kept either way:
+    that is an ordinary elision, `d)(` in LilyPond.
+
+    The "start" side is spelled differently by the two: a slur opens with
+    `"start"` and a hairpin with `"crescendo"` / `"diminuendo"`, because those
+    are the words MusicXML uses. So an opening mark is anything that is not a
+    `"stop"`, rather than an enumerated list nobody would remember to extend.
     """
     states: list[tuple[int, str]] = []
     for note in group:
-        for state in note.get("slur_states") or []:
-            if state not in states:
+        for state in note.get(key) or []:
+            if tuple(state) not in states:
                 states.append(tuple(state))
-    if not states:
-        return []
-    degenerate = ({n for n, kind in states if kind == "start"}
+    if not states or not drop_degenerate:
+        return states
+    degenerate = ({n for n, kind in states if kind != "stop"}
                   & {n for n, kind in states if kind == "stop"})
     return [s for s in states if s[0] not in degenerate]
 
@@ -219,9 +237,19 @@ def group_chords_in_measure(
         # writes them onto the noteheads because a slur is paired over the whole
         # STAFF — the arc crossing a barline is cut in two by the cell boundary.
         # Inert on any result that pass has not run over.
-        slur_states = _chord_slur_states(group)
+        slur_states = _chord_span_states(group, "slur_states")
         if slur_states:
             event["slur_states"] = slur_states
+        # Hairpins ride up the identical way, for the identical reason: a
+        # crescendo is printed once under the chord, and MusicXML writes it as
+        # a <direction> beside the chord's first <note>. `export.
+        # annotate_wedges_in_staff` marks the noteheads because a hairpin, like
+        # a slur, is paired over the whole STAFF. Inert on any result that pass
+        # has not run over.
+        wedge_states = _chord_span_states(group, "wedge_states",
+                                          drop_degenerate=False)
+        if wedge_states:
+            event["wedge_states"] = wedge_states
         # Articulations ride up the same way. A chord takes one staccato, not
         # one per notehead: the mark is printed once, against the chord, and
         # MusicXML hangs it off the chord's first <note>. Duplicates are

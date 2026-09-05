@@ -1034,6 +1034,96 @@ class TestBrokenLaddersAreNotEvidence:
         assert kept[0] == [a] and kept[1] == []
 
 
+class TestHairpinDedupePrefersTheStaffWithNotes:
+    """A hairpin is printed in the gap BELOW its own staff, so a contested
+    copy's centre sits roughly midway between the two staves bracketing that
+    gap and distance is close to a coin flip — measured on the Mahler 5
+    fixture (benchmarks/omr-hairpins-2026-09/FINDINGS.md §2): three of its
+    four hairpins landed on the staff below by 5-62px, a staff with ZERO
+    detected noteheads anywhere on the page, orphaning them (a wedge needs a
+    notehead on its OWN staff at both ends, `export.annotate_wedges_in_slot`).
+    A hairpin has no ledger ladder, so distance was the whole rule; this is
+    the veto that replaces it for exactly this category.
+    """
+
+    @staticmethod
+    def _page(staff_a_dets, staff_b_dets):
+        def staff(idx, dets):
+            return {"staff_index": idx,
+                    "measures": [{"measure_index": 0,
+                                  "detections": list(dets)}]}
+        return {"systems": [{"staves": [staff(0, staff_a_dets),
+                                        staff(1, staff_b_dets)]}]}
+
+    @staticmethod
+    def _note(y, x=50):
+        box = [x, y - 15, 30, 30]
+        return {"category": "notehead", "class": "noteheadBlackOnLine",
+                "confidence": 0.9, "bbox": box, "bbox_page": box,
+                "pitch": "C4"}
+
+    @staticmethod
+    def _hairpin(y, kind="dynamicDiminuendoHairpin", x=40, w=150):
+        box = [x, y - 20, w, 40]
+        return {"category": "dynamic", "class": kind,
+                "confidence": 0.9, "bbox": box, "bbox_page": box}
+
+    def test_the_staff_with_a_note_wins_even_when_nearer_to_the_other(self):
+        # Staff 0: 100..200 with a real note in this bar. Staff 1: 400..500,
+        # empty on the whole page. The hairpin sits at y=340 — 140px from
+        # staff 0's bottom, 60px from staff 1's top — nearer staff 1 by
+        # distance alone, exactly the Mahler 5 shape.
+        a, b = self._hairpin(340), self._hairpin(340)
+        note = self._note(150)
+        pg = self._page([a, note], [b])
+        bands = {0: (100, 200), 1: (400, 500)}
+        assert _dedupe_cross_staff_detections(pg, bands) == 1
+        kept = [s["measures"][0]["detections"]
+                for s in pg["systems"][0]["staves"]]
+        assert kept[0] == [a, note] and kept[1] == []
+
+    def test_neither_staff_has_a_note_falls_through_to_distance(self):
+        # No evidence to veto with, so the old distance rule still decides —
+        # unchanged behaviour for a page with no notes on either side at all.
+        a, b = self._hairpin(340), self._hairpin(340)
+        pg = self._page([a], [b])
+        bands = {0: (100, 200), 1: (400, 500)}
+        assert _dedupe_cross_staff_detections(pg, bands) == 1
+        kept = [s["measures"][0]["detections"]
+                for s in pg["systems"][0]["staves"]]
+        # Nearer to staff 1's top (60px) than staff 0's bottom (140px).
+        assert kept[0] == [] and kept[1] == [b]
+
+    def test_both_staves_have_a_note_falls_through_to_distance(self):
+        # Both sides can attach it, so presence alone cannot arbitrate —
+        # distance, unchanged, is still the tie-break.
+        a, b = self._hairpin(340), self._hairpin(340)
+        pg = self._page([a, self._note(150)], [b, self._note(450)])
+        bands = {0: (100, 200), 1: (400, 500)}
+        assert _dedupe_cross_staff_detections(pg, bands) == 1
+        kept = [s["measures"][0]["detections"]
+                for s in pg["systems"][0]["staves"]]
+        assert kept[0] == [self._note(150)] and b in kept[1]
+
+    def test_a_plain_dynamic_letter_is_untouched(self):
+        # dynamicF etc. are points, not spans, and are not anchored to a
+        # notehead the way a wedge is — the veto is named to the two wedge
+        # classes specifically and must not fire on the rest of the
+        # 'dynamic' category.
+        f_a = {"category": "dynamic", "class": "dynamicF", "confidence": 0.9,
+               "bbox": [40, 320, 30, 40], "bbox_page": [40, 320, 30, 40]}
+        f_b = {"category": "dynamic", "class": "dynamicF", "confidence": 0.9,
+               "bbox": [40, 320, 30, 40], "bbox_page": [40, 320, 30, 40]}
+        pg = self._page([f_a, self._note(150)], [f_b])
+        bands = {0: (100, 200), 1: (400, 500)}
+        assert _dedupe_cross_staff_detections(pg, bands) == 1
+        kept = [s["measures"][0]["detections"]
+                for s in pg["systems"][0]["staves"]]
+        # y=340 is nearer staff 1 (60px) than staff 0 (140px) — distance
+        # still decides, exactly as it did before this veto existed.
+        assert f_a not in kept[0] and f_b in kept[1]
+
+
 class TestDropUnladderedNoteheads:
     """A letter bowl between staves is whole, notehead-sized and interior, so
     the edge-fragment rule cannot see it. What separates it from music is the
