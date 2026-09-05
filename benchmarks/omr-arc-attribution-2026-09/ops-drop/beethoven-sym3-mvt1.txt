@@ -1,0 +1,41 @@
+
+beethoven-sym3-mvt1.musicxml  ops 86  cost 215
+
+  cost by category
+    entire measure insert/delete OMR-ED             129
+    wrong other object OMR-ED                        41
+    wrong articulation OMR-ED                        17
+    wrong ornament OMR-ED                            12
+    wrong lyric OMR-ED                                9
+    wrong note OMR-ED                                 4
+    wrong tie OMR-ED                                  3
+
+  cost by op
+    insbar                       80  (16 ops)
+    delbar                       49  (16 ops)
+    extrains                     35  (12 ops)
+    insarticulation              17  (17 ops)
+    insexpression                12  (12 ops)
+    lyricins                      9  (3 ops)
+    extradel                      2  (2 ops)
+    extrasymboledit               2  (1 ops)
+    tieins                        2  (2 ops)
+    notedel                       2  (1 ops)
+    noteins                       2  (1 ops)
+    extracontentedit              1  (1 ops)
+
+  cost by part (top categories)
+    -1 ?                           50   wrong other object=41  wrong lyric=9
+    13 Timpani                     10   entire measure insert/delete=8  wrong articulation=2
+    03 Oboe 2                       7   entire measure insert/delete=5  wrong articulation=2
+    07 Bassoon 2                    7   entire measure insert/delete=5  wrong articulation=2
+    14 Violin 1                     7   entire measure insert/delete=5  wrong tie=2
+    15 Violin 2                     7   wrong ornament=6  wrong articulation=1
+    00 Flute 1                      6   entire measure insert/delete=5  wrong articulation=1
+    01 Flute 2                      6   entire measure insert/delete=5  wrong articulation=1
+    02 Oboe 1                       6   entire measure insert/delete=5  wrong articulation=1
+    04 Bb Clarinet 1                6   entire measure insert/delete=5  wrong articulation=1
+    06 Bassoon 1                    6   entire measure insert/delete=5  wrong articulation=1
+    08 Eb Horn 1                    6   entire measure insert/delete=5  wrong articulation=1
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/ops-drop/beethoven-sym3-mvt1.json

@@ -1,0 +1,1664 @@
+{
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/pred-move-m05/brahms-sym1-mvt1.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/sad-austin-7e16e7/benchmarks/omr-orchestral-e2e/fixtures/brahms-sym1-mvt1.musicxml",
+  "total_cost": 390,
+  "n_ops": 140,
+  "ops_by_name": {
+    "notedel": 34,
+    "noteins": 34,
+    "extrains": 30,
+    "extradel": 16,
+    "tieins": 8,
+    "delbeam": 4,
+    "extradurationedit": 3,
+    "extrainfoedit": 3,
+    "delbar": 3,
+    "insbar": 3,
+    "lyricins": 2
+  },
+  "cost_by_name": {
+    "notedel": 115,
+    "noteins": 115,
+    "insbar": 43,
+    "delbar": 41,
+    "extrains": 30,
+    "extradel": 16,
+    "extrainfoedit": 9,
+    "tieins": 8,
+    "lyricins": 6,
+    "delbeam": 4,
+    "extradurationedit": 3
+  },
+  "cost_by_category": {
+    "wrong note OMR-ED": 230,
+    "entire measure insert/delete OMR-ED": 84,
+    "wrong other object OMR-ED": 58,
+    "wrong tie OMR-ED": 8,
+    "wrong lyric OMR-ED": 6,
+    "wrong flag/beam OMR-ED": 4
+  },
+  "cost_by_part": {
+    "-1 ?": {
+      "wrong other object OMR-ED": 58,
+      "wrong lyric OMR-ED": 6
+    },
+    "04 Bb Clarinet 1": {
+      "wrong note OMR-ED": 9
+    },
+    "04 Clarinet": {
+      "wrong note OMR-ED": 9
+    },
+    "05 Bb Clarinet 2": {
+      "wrong note OMR-ED": 10
+    },
+    "05 Clarinet": {
+      "wrong note OMR-ED": 10
+    },
+    "07 Bassoon": {
+      "wrong note OMR-ED": 6
+    },
+    "07 Bassoon 2": {
+      "wrong note OMR-ED": 6
+    },
+    "08 Bassoon": {
+      "entire measure insert/delete OMR-ED": 19
+    },
+    "08 Contrabassoon": {
+      "entire measure insert/delete OMR-ED": 20
+    },
+    "09 C Horn 1": {
+      "entire measure insert/delete OMR-ED": 4,
+      "wrong tie OMR-ED": 3
+    },
+    "09 Horn": {
+      "entire measure insert/delete OMR-ED": 3
+    },
+    "10 C Horn 2": {
+      "wrong tie OMR-ED": 1
+    },
+    "11 Eb Horn 3": {
+      "wrong note OMR-ED": 6,
+      "wrong flag/beam OMR-ED": 1
+    },
+    "11 Horn": {
+      "wrong note OMR-ED": 3
+    },
+    "12 Eb Horn 4": {
+      "wrong note OMR-ED": 3
+    },
+    "12 Horn": {
+      "wrong note OMR-ED": 3
+    },
+    "14 C Trumpet 2": {
+      "wrong note OMR-ED": 5,
+      "wrong flag/beam OMR-ED": 1
+    },
+    "14 Trumpet": {
+      "wrong note OMR-ED": 5
+    },
+    "15 Timpani": {
+      "entire measure insert/delete OMR-ED": 38
+    },
+    "16 Violin 1": {
+      "wrong tie OMR-ED": 2
+    },
+    "17 Violin": {
+      "wrong note OMR-ED": 4
+    },
+    "17 Violin 2": {
+      "wrong tie OMR-ED": 2
+    },
+    "18 Viola": {
+      "wrong note OMR-ED": 36,
+      "wrong flag/beam OMR-ED": 2
+    },
+    "19 Cello": {
+      "wrong note OMR-ED": 57
+    },
+    "19 Violoncello": {
+      "wrong note OMR-ED": 58
+    }
+  },
+  "rows": [
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "direction,content=[,off=0.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "direction,content=],off=0.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "tempo,symbol=Eighth=96.0,off=0.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "slur,off=0.0,dur=3.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "extradurationedit",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "slur,off=0.0,dur=3.0",
+      "truth_repr": "slur,off=0.0,dur=6.0"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "slur,off=1.0,dur=2.0",
+      "truth_repr": null
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 4,
+      "part_name": "Clarinet",
+      "measure": 6,
+      "pred_repr": "[A4]4Bsr",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 4,
+      "part_name": "Clarinet",
+      "measure": 6,
+      "pred_repr": "[B4]4Bco",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 4,
+      "part_name": "Clarinet",
+      "measure": 6,
+      "pred_repr": "[C5]4Bsp",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 4,
+      "part_name": "Bb Clarinet 1",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[A4]4Bsr"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 4,
+      "part_name": "Bb Clarinet 1",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[B4]4Bco"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 4,
+      "part_name": "Bb Clarinet 1",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[C5]4Bsp"
+    },
+    {
+      "op": "extradurationedit",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "slur,off=0.0,dur=1.5",
+      "truth_repr": "slur,off=0.0,dur=3.0"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=f,off=0.0",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 5,
+      "part_name": "Clarinet",
+      "measure": 4,
+      "pred_repr": "[C4]4Bsr",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 5,
+      "part_name": "Clarinet",
+      "measure": 4,
+      "pred_repr": "[D4]4Bco",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 5,
+      "part_name": "Clarinet",
+      "measure": 4,
+      "pred_repr": "[E4natural]4Bsp",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 5,
+      "part_name": "Bb Clarinet 2",
+      "measure": 4,
+      "pred_repr": null,
+      "truth_repr": "[C4]4Bsr"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 5,
+      "part_name": "Bb Clarinet 2",
+      "measure": 4,
+      "pred_repr": null,
+      "truth_repr": "[D4]4Bco"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 5,
+      "part_name": "Bb Clarinet 2",
+      "measure": 4,
+      "pred_repr": null,
+      "truth_repr": "[E4natural]4Bsp"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "slur,off=0.0,dur=3.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=f,off=0.0",
+      "truth_repr": null
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 7,
+      "part_name": "Bassoon",
+      "measure": 1,
+      "pred_repr": "[G3]4*",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 7,
+      "part_name": "Bassoon 2",
+      "measure": 1,
+      "pred_repr": null,
+      "truth_repr": "[G3]4*"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "slur,off=0.0,dur=6.0"
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 7,
+      "part_name": "Bassoon",
+      "measure": 3,
+      "pred_repr": "[C3]4*",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 7,
+      "part_name": "Bassoon 2",
+      "measure": 3,
+      "pred_repr": null,
+      "truth_repr": "[C3]4*"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "slur,off=0.0,dur=3.0"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "dynamic,symbol=f,off=0.0"
+    },
+    {
+      "op": "extrainfoedit",
+      "category": "wrong other object OMR-ED",
+      "cost": 3,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "timesig,off=0.0,info:,symbol=common",
+      "truth_repr": "timesig,off=0.0,info:,numerator=6,denominator=8"
+    },
+    {
+      "op": "delbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 19,
+      "side": "pred",
+      "part_index": 8,
+      "part_name": "Bassoon",
+      "measure": 4,
+      "pred_repr": "['[C2]4Bsr', '[C2]4Bco', '[C2]4Bco', '[C2]4Bco', '[C2]4Bco', '[C2]4Bsp'] Extras:['slur,off=0.0,dur=3.0']",
+      "truth_repr": null
+    },
+    {
+      "op": "insbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 20,
+      "side": "truth",
+      "part_index": 8,
+      "part_name": "Contrabassoon",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "['[C2]4Bsr', '[C2]4Bco', '[C2]4Bsp', '[C2]4Bsr', '[C2]4Bco', '[C2]4Bsp'] Extras:['barline,symbol=double', 'slur,off=0.0,dur=3.0']"
+    },
+    {
+      "op": "delbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 9,
+      "part_name": "Horn",
+      "measure": 2,
+      "pred_repr": "['[C4]2*']",
+      "truth_repr": null
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 9,
+      "part_name": "C Horn 1",
+      "measure": 1,
+      "pred_repr": "[C4]2*",
+      "truth_repr": "[C4T]2*"
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 9,
+      "part_name": "C Horn 1",
+      "measure": 7,
+      "pred_repr": "[C4]2*",
+      "truth_repr": "[C4T]2*"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 9,
+      "part_name": "C Horn 1",
+      "measure": 6,
+      "pred_repr": "[C4]2*",
+      "truth_repr": "[C4T]2*"
+    },
+    {
+      "op": "insbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 9,
+      "part_name": "C Horn 1",
+      "measure": 5,
+      "pred_repr": null,
+      "truth_repr": "['[C4T]2*']"
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 10,
+      "part_name": "C Horn 2",
+      "measure": 7,
+      "pred_repr": "[C3]2*",
+      "truth_repr": "[C3T]2*"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 11,
+      "part_name": "Horn",
+      "measure": 1,
+      "pred_repr": "[G5]4*",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 11,
+      "part_name": "Eb Horn 3",
+      "measure": 1,
+      "pred_repr": null,
+      "truth_repr": "[R]4Bpa"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 11,
+      "part_name": "Eb Horn 3",
+      "measure": 1,
+      "pred_repr": null,
+      "truth_repr": "[G5]4*"
+    },
+    {
+      "op": "delbeam",
+      "category": "wrong flag/beam OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 11,
+      "part_name": "Eb Horn 3",
+      "measure": 1,
+      "pred_repr": "[R]4Bpa",
+      "truth_repr": "[R]4"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=f,off=0.5",
+      "truth_repr": null
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "dynamic,symbol=f,off=1.5"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=f,off=1.5",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 12,
+      "part_name": "Horn",
+      "measure": 3,
+      "pred_repr": "[C4]4*",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 12,
+      "part_name": "Eb Horn 4",
+      "measure": 3,
+      "pred_repr": null,
+      "truth_repr": "[C4]4*"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "dynamic,symbol=f,off=0.0"
+    },
+    {
+      "op": "extrainfoedit",
+      "category": "wrong other object OMR-ED",
+      "cost": 3,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "keysig,off=0.0,info:,flats/sharps=none",
+      "truth_repr": "keysig,off=0.0,info:,sharp0=F,sharp1=C"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 14,
+      "part_name": "Trumpet",
+      "measure": 1,
+      "pred_repr": "[D4]4Bsp",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 2,
+      "side": "pred",
+      "part_index": 14,
+      "part_name": "Trumpet",
+      "measure": 1,
+      "pred_repr": "[R]4",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 14,
+      "part_name": "C Trumpet 2",
+      "measure": 1,
+      "pred_repr": null,
+      "truth_repr": "[D4]4Bpa"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 2,
+      "side": "truth",
+      "part_index": 14,
+      "part_name": "C Trumpet 2",
+      "measure": 1,
+      "pred_repr": null,
+      "truth_repr": "[R]4"
+    },
+    {
+      "op": "delbeam",
+      "category": "wrong flag/beam OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 14,
+      "part_name": "C Trumpet 2",
+      "measure": 1,
+      "pred_repr": "[D4T]4*Bsr",
+      "truth_repr": "[D4T]4*"
+    },
+    {
+      "op": "extrainfoedit",
+      "category": "wrong other object OMR-ED",
+      "cost": 3,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "keysig,off=0.0,info:,flats/sharps=none",
+      "truth_repr": "keysig,off=0.0,info:,sharp0=F,sharp1=C"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=f,off=0.0",
+      "truth_repr": null
+    },
+    {
+      "op": "delbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 19,
+      "side": "pred",
+      "part_index": 15,
+      "part_name": "Timpani",
+      "measure": 4,
+      "pred_repr": "['[C3]4Bsr', '[C3]4Bco', '[C3]4Bsp', '[C3]4Bsr', '[C3]4Bco', '[C3T]4Bsp']",
+      "truth_repr": null
+    },
+    {
+      "op": "insbar",
+      "category": "entire measure insert/delete OMR-ED",
+      "cost": 19,
+      "side": "truth",
+      "part_index": 15,
+      "part_name": "Timpani",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "['[C3]4Bsr', '[C3]4Bco', '[C3]4Bsp', '[C3]4Bsr', '[C3]4Bco', '[C3]4Bsp'] Extras:['barline,symbol=double']"
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 16,
+      "part_name": "Violin 1",
+      "measure": 2,
+      "pred_repr": "[D6]4Bpa",
+      "truth_repr": "[D6T]4Bpa"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "slur,off=1.0,dur=1.25",
+      "truth_repr": null
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=p,off=1.5",
+      "truth_repr": null
+    },
+    {
+      "op": "lyricins",
+      "category": "wrong lyric OMR-ED",
+      "cost": 3,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "a,num=1,id=,off=0.0,style={}"
+    },
+    {
+      "op": "lyricins",
+      "category": "wrong lyric OMR-ED",
+      "cost": 3,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "a,num=1,id=,off=2.5,style={}"
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 16,
+      "part_name": "Violin 1",
+      "measure": 7,
+      "pred_repr": "[B5]4Bsp",
+      "truth_repr": "[B5T]4Bsp"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=f,off=0.0",
+      "truth_repr": null
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=p,off=1.5",
+      "truth_repr": null
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 17,
+      "part_name": "Violin 2",
+      "measure": 7,
+      "pred_repr": "[B4]4Bsp",
+      "truth_repr": "[B4T]4Bsp"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 17,
+      "part_name": "Violin",
+      "measure": 6,
+      "pred_repr": "[G2T]4Bpa",
+      "truth_repr": null
+    },
+    {
+      "op": "tieins",
+      "category": "wrong tie OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 17,
+      "part_name": "Violin 2",
+      "measure": 6,
+      "pred_repr": "[D5]4Bpa",
+      "truth_repr": "[D5T]4Bpa"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "slur,off=0.0,dur=3.0",
+      "truth_repr": null
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=p,off=3.0",
+      "truth_repr": null
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": "[E4]4Bsr",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": "[G4]4Bsr",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": "[F4]4Bco",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": "[A4]4Bco",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": "[G4]4Bsp",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": "[B4]4Bsp",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[E4]4Bsr"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[G4]4Bsr"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[F4]4Bco"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[A4]4Bco"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[G4]4Bsp"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "truth",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[B4]4Bsp"
+    },
+    {
+      "op": "delbeam",
+      "category": "wrong flag/beam OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": "[E4]4*Bpa",
+      "truth_repr": "[E4]4*"
+    },
+    {
+      "op": "delbeam",
+      "category": "wrong flag/beam OMR-ED",
+      "cost": 1,
+      "side": "truth",
+      "part_index": 18,
+      "part_name": "Viola",
+      "measure": 6,
+      "pred_repr": "[G4]4*Bpa",
+      "truth_repr": "[G4]4*"
+    },
+    {
+      "op": "extradurationedit",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "slur,off=0.0,dur=2.25",
+      "truth_repr": "slur,off=0.0,dur=3.0"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=f,off=0.0",
+      "truth_repr": null
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=p,off=1.5",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 7,
+      "pred_repr": "[A4]4Bsrsr",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 7,
+      "pred_repr": "[G4]4Bcoco",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 7,
+      "pred_repr": "[G3]4Bcoco",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 7,
+      "pred_repr": "[E4]4Bcosp",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 7,
+      "pred_repr": "[G4T]4Bsp",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 7,
+      "pred_repr": "[G4]4Bsrsr",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 7,
+      "pred_repr": "[F4]4Bcoco",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 7,
+      "pred_repr": "[G3]4Bcoco",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 7,
+      "pred_repr": "[D4]4Bcosp",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 3,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 7,
+      "pred_repr": "[F4]4Bsp",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "[D4]4Bsrsr"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "[C4]4Bcoco"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "[C3]4Bcoco"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "[A3]4Bcosp"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "[C4T]4Bsp"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "[C4]4Bsrsr"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "[B3]4Bcoco"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "[C3]4Bcoco"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "[G3]4Bcosp"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 7,
+      "pred_repr": null,
+      "truth_repr": "[B3T]4Bsp"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 6,
+      "pred_repr": "[B4]4Bcosr",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 6,
+      "pred_repr": "[B3]4Bcoco",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 6,
+      "pred_repr": "[G4]4Bspsp",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 2,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 6,
+      "pred_repr": "[B4]4",
+      "truth_repr": null
+    },
+    {
+      "op": "notedel",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "pred",
+      "part_index": 19,
+      "part_name": "Cello",
+      "measure": 6,
+      "pred_repr": "[A4T]4Bpa",
+      "truth_repr": null
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[E4]4Bcosr"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[E3]4Bcoco"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[C4]4Bspsp"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 2,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[E4]4"
+    },
+    {
+      "op": "noteins",
+      "category": "wrong note OMR-ED",
+      "cost": 4,
+      "side": "truth",
+      "part_index": 19,
+      "part_name": "Violoncello",
+      "measure": 6,
+      "pred_repr": null,
+      "truth_repr": "[D4T]4Bpa"
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "clef,symbol=F4,off=0.75"
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=p,off=1.0",
+      "truth_repr": null
+    },
+    {
+      "op": "extradel",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": "dynamic,symbol=p,off=2.0",
+      "truth_repr": null
+    },
+    {
+      "op": "extrains",
+      "category": "wrong other object OMR-ED",
+      "cost": 1,
+      "side": "?",
+      "part_index": -1,
+      "part_name": "?",
+      "measure": null,
+      "pred_repr": null,
+      "truth_repr": "barline,symbol=double"
+    }
+  ]
+}

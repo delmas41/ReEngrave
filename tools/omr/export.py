@@ -36,7 +36,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+from collections import Counter
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
@@ -564,6 +566,7 @@ def to_lilypond(result: dict[str, Any]) -> str:
         `\\voiceTwo`). Otherwise single voice.
     """
     _ensure_inferred_time_signatures(result)
+    arbitrate_arcs_across_staves(result)
     lines: list[str] = []
     lines.append('\\version "2.20.0"')
     lines.append("")
@@ -951,6 +954,98 @@ def annotate_fermatas(events: list[dict[str, Any]],
     return marked
 
 
+def _collapse_beam_stacks(raw: list) -> list:
+    """Merge boxes that describe ONE beamed group into their union.
+
+    Two readings of a group agree on most of their x-span: a sixteenth
+    group's primary and secondary strokes (a beam pitch apart in y), and a
+    divisi staff's two rows over the same double stops (Mozart 40's Viola:
+    the lower voice's stems-down beam at 1088-1304 and the upper's stems-up
+    beam at 1137-1352 are the SAME four notes, offset one head width). The
+    test is x-overlap >= 0.6 of the smaller box, deliberately with NO y
+    term: the group id is the box id, so any per-note choice between two
+    boxes over one group fractures it — a y-banded per-note preference
+    turned Mozart 40's chords into runs broken at every flip of which head
+    came first, and a narrowest-box rule cost Mozart 41 138 edits.
+
+    The caller must EXCLUDE suspect boxes (see `_suspect_beam_boxes`)
+    before collapsing: a spurious bar-wide box overlaps every real group
+    at 1.0 of the smaller and would union the whole bar.
+    """
+    boxes = [list(b) for b in raw]
+    merged = True
+    while merged:
+        merged = False
+        for a in range(len(boxes)):
+            for b in range(a + 1, len(boxes)):
+                ax, ay, aw, ah = boxes[a]
+                bx, by, bw, bh = boxes[b]
+                overlap = min(ax + aw, bx + bw) - max(ax, bx)
+                if overlap < 0.6 * min(aw, bw):
+                    continue
+                lo, hi = min(ax, bx), max(ax + aw, bx + bw)
+                top, bot = min(ay, by), max(ay + ah, by + bh)
+                boxes[a] = [lo, top, hi - lo, bot - top]
+                del boxes[b]
+                merged = True
+                break
+            if merged:
+                break
+    return sorted((tuple(b) for b in boxes), key=lambda b: b[0])
+
+
+def _suspect_beam_boxes(boxes: list) -> set[int]:
+    """Indices of boxes that x-contain >= 2 mutually disjoint other boxes.
+
+    Two real beams at one y level cannot overlap in x, so a box spanning two
+    disjoint groups' boxes is almost surely not a beam (Brahms 1's hairpin).
+    It is deprioritized, not dropped — a note nothing honest claims may still
+    take it.
+    """
+    out: set[int] = set()
+    for i, (ix, _iy, iw, _ih) in enumerate(boxes):
+        inside = [
+            (jx, jw) for j, (jx, _jy, jw, _jh) in enumerate(boxes)
+            if j != i and jx >= ix and jx + jw <= ix + iw]
+        inside.sort()
+        disjoint = 0
+        reach = None
+        for jx, jw in inside:
+            if reach is None or jx >= reach:
+                disjoint += 1
+                reach = jx + jw
+            else:
+                reach = max(reach, jx + jw)
+        if disjoint >= 2:
+            out.add(i)
+    return out
+
+
+def _pick_beam_box(c: tuple[float, float], boxes: list, suspect: set[int],
+                   nh_width: float) -> int | None:
+    """The box a notehead at centre `c` beams under, or None.
+
+    Candidates cover x exactly or within one notehead width. Honest boxes
+    beat suspects, an exact x-cover beats a padded one, then nearer in x and
+    x-order. Deliberately no y term — see `_collapse_beam_stacks` for why a
+    per-note y preference fractures groups.
+    """
+    x, _y = c
+    cands = []  # (bi, exact, xdist)
+    for bi, (bx, _by, bw, _bh) in enumerate(boxes):
+        exact = bx <= x <= bx + bw
+        padded = nh_width > 0 and bx - nh_width <= x <= bx + bw + nh_width
+        if not (exact or padded):
+            continue
+        xdist = 0.0 if exact else max(bx - x, x - (bx + bw))
+        cands.append((bi, exact, xdist))
+    if not cands:
+        return None
+    cands.sort(key=lambda cand: (
+        cand[0] in suspect, not cand[1], cand[2], boxes[cand[0]][0]))
+    return cands[0][0]
+
+
 def annotate_beams(events: list[dict[str, Any]],
                    detections: list[dict[str, Any]]) -> None:
     """Attach MusicXML beam states to each event, in place.
@@ -973,24 +1068,77 @@ def annotate_beams(events: list[dict[str, Any]],
 
     Must be called PER VOICE. Two voices interleave in x, so a run computed
     across both would be broken by the other voice's notes.
-    """
-    boxes = sorted(
-        (d["bbox_page"] for d in detections
-         if d.get("category") == "structural" and d.get("class") == "beam"
-         and len(d.get("bbox_page") or ()) == 4),
-        key=lambda b: b[0],
-    )
 
-    def centre(event: dict[str, Any]) -> float | None:
+    THE BOX IS PADDED BY A NOTEHEAD WIDTH, the correction `rhythm._beamed_groups`
+    already makes and for the same reason: the box bounds beam INK, and a beam
+    runs from stem to stem — with stems up the first notehead's centre sits a
+    head's width left of the ink, with stems down the last sits right of it.
+    Unpadded, that edge note fell out of its group: it exported as a flag and
+    the group's begin/end landed one note early, which was the single largest
+    `wrong flag/beam` mechanism on the 11-work benchmark (430 of 449 edits are
+    `editbeam`, and the top signature on every beam-heavy work is an edge note
+    at `partial` where the truth beams it). A 2-note group lost BOTH notes: the
+    orphan formed a synthetic run of one, and the survivor was alone under its
+    box — both "a lone note is flagged".
+
+    THREE MORE RULES ABOUT WHICH BOX A NOTE BELONGS TO, each paid for by a
+    measured failure (benchmarks/omr-beam-gap-2026-09/FINDINGS.md):
+
+    - SAME-STACK BOXES ARE COLLAPSED FIRST. A sixteenth group's primary and
+      secondary strokes arrive as two boxes over the same x-span at a beam
+      pitch apart in y. A per-note choice between them FRACTURES the group —
+      the group id is the box id, so two notes picking different strokes of
+      the same beam land in different groups even though the spans agree.
+      (A "narrowest covering box wins" rule did exactly that: Mozart 41 went
+      7 -> 145 beam edits.) Boxes with x-overlap >= 0.6 of the smaller within
+      3 notehead widths in y merge into their union.
+    - A BOX THAT CONTAINS TWO DISJOINT BOXES IS SUSPECT. Brahms 1, Contrabass
+      m4: a spurious 685px "beam" (a hairpin's ink) at the real beams' own y
+      spans the whole bar and, first-by-x, swallowed all six notes into one
+      run where the page prints two groups of three. Real beams at one y level
+      cannot overlap in x, so a box x-containing >= 2 mutually disjoint boxes
+      is tried only when no honest box claims the note.
+    - A DIVISI STAFF'S TWO BEAM ROWS ARE ONE GROUP, NOT A TIE TO BREAK.
+      Mozart 40's Viola prints double stops under two beams (lower voice's
+      stems-down box 1088-1304, upper's stems-up 1137-1352, 354px apart in
+      y) — the same four notes offset one head width, so the rows collapse
+      by x-overlap like a stack's strokes. A per-note y preference was
+      measured instead and REFUSED: chord events flip which head is first,
+      so notes of one run picked different rows and the run fractured
+      (Mozart 40 47 -> 54 while it was supposed to fall).
+    """
+    raw_boxes = [
+        d["bbox_page"] for d in detections
+        if d.get("category") == "structural" and d.get("class") == "beam"
+        and len(d.get("bbox_page") or ()) == 4]
+
+    def centre(event: dict[str, Any]) -> tuple[float, float] | None:
         heads = event.get("noteheads") or []
         if not heads:
             return None
         box = heads[0].get("bbox_page")
-        return (box[0] + box[2] / 2.0) if box and len(box) == 4 else None
+        if not box or len(box) != 4:
+            return None
+        return (box[0] + box[2] / 2.0, box[1] + box[3] / 2.0)
 
     def levels(event: dict[str, Any]) -> int:
         heads = event.get("noteheads") or []
         return int(heads[0].get("beam_levels") or 0) if heads else 0
+
+    # One notehead width, from the events' own heads — the same unit
+    # `rhythm._beamed_groups` pads with (a length in the cell's frame, never
+    # the detection's own noisy bbox height).
+    head_widths = sorted(
+        h["bbox_page"][2]
+        for e in events for h in (e.get("noteheads") or [])
+        if len(h.get("bbox_page") or ()) == 4)
+    nh_width = head_widths[len(head_widths) // 2] if head_widths else 0.0
+
+    suspect_raw = _suspect_beam_boxes(raw_boxes)
+    honest = [b for i, b in enumerate(raw_boxes) if i not in suspect_raw]
+    boxes = _collapse_beam_stacks(honest)
+    suspect = set(range(len(boxes), len(boxes) + len(suspect_raw)))
+    boxes = list(boxes) + [tuple(raw_boxes[i]) for i in sorted(suspect_raw)]
 
     # Group id per event: the beam box covering it, or a synthetic run for
     # events that carry a level but sit under no detected box.
@@ -1001,13 +1149,12 @@ def annotate_beams(events: list[dict[str, Any]],
         if event.get("kind") == "rest" or levels(event) < 1:
             prev_beamed = False
             continue
-        x = centre(event)
+        c = centre(event)
         hit = None
-        if x is not None:
-            for bi, (bx, _by, bw, _bh) in enumerate(boxes):
-                if bx <= x <= bx + bw:
-                    hit = ("box", bi)
-                    break
+        if c is not None:
+            bi = _pick_beam_box(c, boxes, suspect, nh_width)
+            if bi is not None:
+                hit = ("box", bi)
         if hit is None:
             if not prev_beamed:
                 synthetic += 1
@@ -1190,19 +1337,549 @@ _MAX_SLUR_NUMBER = 6
 _SLUR_ARC_PAD_NOTEHEADS = 0.25
 
 
+# ---------------------------------------------------------------------------
+# Cross-staff ARC attribution — the arbitration noteheads already have
+# ---------------------------------------------------------------------------
+# A measure cell is cut with padding above and below so ledger notes are not
+# sliced off (`measure_extractor.PAD_*_STAFF_LINES`), and on a conductor's page
+# that padding reaches the neighbouring staff's ink. For NOTEHEADS the
+# duplicate is arbitrated by `transcribe._dedupe_cross_staff_detections`
+# (ledger ladder, then the instrument's written range, then distance). For ARCS
+# nothing arbitrated at all, so a slur printed over one staff's music could be
+# paired and exported on ANOTHER staff — and, worse, the arc need not be
+# detected twice for this to happen: where the gap between two staves is wide
+# the upper staff's cell reaches ink the lower staff's cell does not, so the
+# arc exists ONLY in the wrong staff and no duplicate-resolution rule can see
+# it.
+#
+# WORKED EXAMPLE, and it corrects the hypothesis this work started from. On
+# `brahms-sym1-mvt1` the Timpani exports 4 slurs and 1 tie against a truth of
+# ZERO. The beam-gap findings guessed these were "the staff BELOW's arcs";
+# rendering the page shows what they actually are — Violin 1 plays four ledger
+# lines above its staff there, so ITS slurs are drawn high in the 7.7-space gap
+# between Timpani and Violin 1, inside the Timpani's grown padding and above
+# the top of Violin 1's own cell.
+#
+# THE EVIDENCE IS THE ARC'S OWN JOB: an arc binds a run of noteheads and is
+# drawn just clear of them, on the side away from the stems. So the staff an
+# arc belongs to is the one whose NOTEHEADS IT HUGS — and that question can be
+# asked of a staff that never detected the arc, because the noteheads have
+# already been arbitrated across staves and each staff's head set is the one a
+# reader would see. Distance to the staff LINES is the trap it was for notes:
+# an engraver opens the gap above a staff precisely so the ledger notes and
+# their slurs can live there, which puts them nearer the staff above.
+#
+# Measured over the 11-work engraved benchmark, clearance in staff spaces from
+# an arc's box to the nearest notehead it covers in its own staff, counting
+# only arcs covering >= 2 heads (fewer never becomes a slur):
+#
+#     own clearance     part whose truth       part whose truth
+#     (staff spaces)    has NO arc at all      does have arcs
+#     [0.00, 0.25)              5                    165
+#     [0.25, 0.50)              0                     31
+#     [0.50, 0.75)              1                      8
+#     [0.75, 1.00)              1                      0
+#     [1.00, 1.50)              2                      1
+#     [1.50, 2.00)              0                      2
+#     [2.00, 3.00)              6                      0
+#     [3.00,  inf)              2                     30
+#
+# A real slur hugs its notes: 204 of 237 arcs on arc-bearing parts sit under
+# half a space. That tail is NOT clean enough to threshold on its own, so the
+# rule is COMPARATIVE — an arc leaves a staff only when another staff of the
+# same system explains it better — which is the same shape as the notehead
+# arbitration and cannot fire at all on a page with one staff.
+#: A rival staff must itself hug the arc this closely for the arc to move.
+#: On the Brahms Timpani every rival reading is 0.00-0.52 spaces; the value
+#: is a plateau, see FINDINGS.md.
+_ARC_RIVAL_NEAR_SPACES = 0.75
+#: ...and must beat the incumbent by this much. A PLATEAU, not a tuned value:
+#: swept over the eleven works, every margin from 0.25 to 0.75 reattributes the
+#: SAME arcs (8 on parts whose truth has none, 15 elsewhere), and the answer
+#: first moves at 0.90. 0.5 is the middle of that plateau.
+_ARC_RIVAL_MARGIN_SPACES = 0.5
+#: A rival staff must cover at least this many of its own noteheads with the
+#: arc, so a single stray head cannot claim one.
+_ARC_RIVAL_MIN_COVERED = 2
+
+
+def _arc_attribution_mode() -> str:
+    """`OMR_ARC_ATTRIBUTION` = `move` (default) / `drop` / `off`."""
+    mode = os.environ.get("OMR_ARC_ATTRIBUTION", "move").strip().lower()
+    return mode if mode in ("move", "drop", "off") else "move"
+
+
+def _arcs_in_measure(measure: dict[str, Any]) -> list[dict[str, Any]]:
+    return [d for d in measure.get("detections", [])
+            if d.get("category") == "structural"
+            and d.get("class") in ("slur", "tie")
+            and len(d.get("bbox_page") or ()) == 4]
+
+
+def _vertical_gap(a: list[int], b: list[int]) -> float:
+    """Vertical clearance between two page boxes in px; 0 where they overlap."""
+    a0, a1 = a[1], a[1] + a[3]
+    b0, b1 = b[1], b[1] + b[3]
+    if a1 < b0:
+        return b0 - a1
+    if b1 < a0:
+        return a0 - b1
+    return 0.0
+
+
+def _arc_clearance(
+    arc_box: list[int],
+    heads: list[dict[str, Any]],
+) -> tuple[float | None, int]:
+    """`(px clearance to the nearest covered notehead, n covered)`.
+
+    Coverage is the same padded x test `_noteheads_under` makes, for the same
+    reason: the arc is drawn BETWEEN its outer heads, so its ink stops inside
+    both centres and an unpadded test loses the note at each end.
+    """
+    if not heads:
+        return None, 0
+    pad = _SLUR_ARC_PAD_NOTEHEADS * (
+        sum(h["bbox_page"][2] for h in heads) / len(heads))
+    ax, _ay, aw, _ah = arc_box
+    covered = [h for h in heads
+               if ax - pad <= h["bbox_page"][0] + h["bbox_page"][2] / 2.0
+               <= ax + aw + pad]
+    if not covered:
+        return None, 0
+    return min(_vertical_gap(arc_box, h["bbox_page"]) for h in covered), len(covered)
+
+
+def _staff_noteheads(staff: dict[str, Any]) -> list[dict[str, Any]]:
+    heads: list[dict[str, Any]] = []
+    for measure in staff.get("measures", []):
+        heads.extend(_measure_noteheads(measure))
+    return heads
+
+
+def _measure_holding_x(
+    staff: dict[str, Any], x: float,
+) -> dict[str, Any] | None:
+    """The staff's measure whose cell contains this page x, else the nearest."""
+    best = None
+    for measure in staff.get("measures", []):
+        box = measure.get("bbox_page_px")
+        if not box or len(box) != 4:
+            continue
+        if box[0] <= x <= box[2]:
+            return measure
+        d = min(abs(box[0] - x), abs(box[2] - x))
+        if best is None or d < best[0]:
+            best = (d, measure)
+    return best[1] if best else None
+
+
+def arbitrate_arcs_across_staves(result: dict[str, Any]) -> int:
+    """Give every arc to the staff of its system whose noteheads it hugs.
+
+    Returns the number of arcs reattributed. Idempotent — the result is
+    stamped, so a second export of the same dict is a no-op, and re-running is
+    a fixed point anyway (a moved arc's new staff is the one that hugs it).
+    """
+    if _arc_attribution_mode() == "off" or result.get("_arc_attribution"):
+        return 0
+    moved = 0
+    for page in result.get("pages", []):
+        for system in page.get("systems", []):
+            moved += _arbitrate_arcs_in_system(system.get("staves") or [])
+    result["_arc_attribution"] = {"mode": _arc_attribution_mode(),
+                                  "n_reattributed": moved}
+    return moved
+
+
+def _arbitrate_arcs_in_system(staves: list[dict[str, Any]]) -> int:
+    if len(staves) < 2:
+        return 0
+    spacings: list[float | None] = []
+    heads: list[list[dict[str, Any]]] = []
+    for staff in staves:
+        geom = staff.get("staff_geometry") or {}
+        spacings.append(geom.get("line_spacing_px") or None)
+        heads.append(_staff_noteheads(staff))
+    mode = _arc_attribution_mode()
+    moved = 0
+    for s_idx, staff in enumerate(staves):
+        sp = spacings[s_idx]
+        if not sp:
+            continue
+        for measure in staff.get("measures", []):
+            for arc in list(_arcs_in_measure(measure)):
+                own_px, _own_n = _arc_clearance(arc["bbox_page"], heads[s_idx])
+                own = None if own_px is None else own_px / sp
+                best: tuple[float, int] | None = None
+                for o_idx in range(len(staves)):
+                    o_sp = spacings[o_idx]
+                    if o_idx == s_idx or not o_sp:
+                        continue
+                    gap_px, n = _arc_clearance(arc["bbox_page"], heads[o_idx])
+                    if gap_px is None or n < _ARC_RIVAL_MIN_COVERED:
+                        continue
+                    rival = gap_px / o_sp
+                    if best is None or rival < best[0]:
+                        best = (rival, o_idx)
+                if best is None or best[0] > _ARC_RIVAL_NEAR_SPACES:
+                    continue
+                # An arc covering nothing in this staff is claimed outright:
+                # it binds no note here, so there is nothing for it to be.
+                if own is not None and (own - best[0]) < _ARC_RIVAL_MARGIN_SPACES:
+                    continue
+                measure["detections"].remove(arc)
+                moved += 1
+                if mode != "move":
+                    continue
+                ax, _ay, aw, _ah = arc["bbox_page"]
+                target = _measure_holding_x(staves[best[1]], ax + aw / 2.0)
+                if target is None:
+                    continue
+                arc = dict(arc)
+                arc["arc_reattributed_from_staff"] = s_idx
+                target.setdefault("detections", []).append(arc)
+    return moved
+
+
 def _staff_arcs_by_measure(
     measures: list[dict[str, Any]],
+    cls: str = "slur",
 ) -> list[list[list[int]]]:
-    """Each measure's slur arcs, in page pixels, left to right."""
+    """Each measure's arcs of one class, in page pixels, left to right."""
     out = []
     for measure in measures:
         out.append(sorted(
             (d["bbox_page"] for d in measure.get("detections", [])
-             if d.get("category") == "structural" and d.get("class") == "slur"
+             if d.get("category") == "structural" and d.get("class") == cls
              and len(d.get("bbox_page") or ()) == 4),
             key=lambda b: b[0],
         ))
     return out
+
+
+# ---------------------------------------------------------------------------
+# Arc reclassification (OMR_ARC_RECLASS, default OFF) — tie vs slur is
+# POSITION, not shape
+# ---------------------------------------------------------------------------
+# A tie and a slur are the SAME GLYPH; what separates them is the notes they
+# connect (docs/position-grammar-confusables-2026-09-04.md §2 ARC). The
+# detector's class is therefore a prior, and two configurations refute it
+# outright:
+#
+#   * an arc classed `slur` whose ends land on exactly two ADJACENT
+#     SAME-PITCH noteheads is a tie — the duration-semantic reading, and the
+#     safer error where the print alone cannot decide (a two-note phrasing
+#     slur on a repeated pitch is undecidable; default to tie);
+#   * an arc classed `tie` that spans MORE than two note events, or whose two
+#     heads carry DIFFERENT pitches, cannot be a tie — a tie joins two
+#     adjacent notes of one pitch by definition.
+#
+# R3 shape (veto the impossible, reclass only when decisive, abstain
+# otherwise): everything not in those two configurations keeps the
+# detector's class. Off by default until priced on BOTH benchmark families.
+
+#: Every veto fired since the last `reset_arc_reclass_stats()`, by rule.
+#: A debug surface for benchmarks and tests, not part of the export result.
+ARC_RECLASS_STATS: Counter = Counter()
+
+
+def reset_arc_reclass_stats() -> None:
+    ARC_RECLASS_STATS.clear()
+
+
+def _arc_reclass_enabled() -> bool:
+    """`OMR_ARC_RECLASS=1` turns the veto on; anything else leaves it off."""
+    return os.environ.get("OMR_ARC_RECLASS", "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _event_order_of_noteheads(
+    measures: list[dict[str, Any]],
+) -> dict[int, tuple[int, int]]:
+    """`id(notehead) -> (voice index, event ordinal)` over a whole staff run.
+
+    The ordinal counts EVERY event in the voice — rests included — in playing
+    order across the flattened measure sequence, so two heads are ADJACENT
+    exactly when nothing (note or rest) sounds between them in their voice:
+    ordinals one apart. A tie cannot cross a rest, which is why the rest has
+    to spend an ordinal. The one thing this cannot see is a measure the
+    detector left EMPTY between the two heads — no event, no ordinal — and a
+    same-pitch pair straddling one would read as adjacent; such a measure
+    exports as a whole rest, so the conversion there is wrong but rare, and
+    it is priced by the A/B rather than guarded against.
+
+    Same per-measure voice-index assumption as `_voice_of_notehead`, of which
+    this is the ordered variant.
+    """
+    order: dict[int, tuple[int, int]] = {}
+    counters: dict[int, int] = {}
+    for measure in measures:
+        events = group_chords_in_measure(measure.get("detections", []))
+        for v_idx, voice_events in enumerate(split_events_into_voices(events)):
+            for event in voice_events:
+                ordinal = counters.get(v_idx, 0)
+                counters[v_idx] = ordinal + 1
+                for head in event.get("noteheads") or []:
+                    order[id(head)] = (v_idx, ordinal)
+    return order
+
+
+def _pitch_step(pitch: str | None) -> str | None:
+    """`"F4"` for `"F#4"` — the staff POSITION, spelling stripped.
+
+    The tie→slur veto compares steps and never spelled pitches, measured
+    rather than assumed: on the engraved A/B every losing veto was a
+    same-step pair differing only in accidental — `F#4 -> F4`, `C#5 -> C5` —
+    which is the accidental-EXPIRY artifact, not a different note. The
+    canonical tie crosses a barline, the far head does not restate its
+    accidental (the tie carries it), and `pitch_resolver` spells that head
+    from the key signature alone. Vetoing on the spelling inherits that
+    limitation; the step is what the flanked position actually says. Same
+    key the pre-fill alignment moved to for the same reason (CLAUDE.md:
+    "the alignment key is STAFF POSITION, not pitch"). The winning vetoes
+    were all genuinely step-apart (`F#5 -> G5`, `B5 -> C6`) and survive.
+    """
+    if not pitch:
+        return None
+    octave = pitch.rstrip()
+    letter = octave[0]
+    digits = "".join(ch for ch in octave if ch.isdigit() or ch == "-")
+    return f"{letter}{digits}"
+
+
+def _tie_flank_pair(
+    arc_bp: list[int],
+    staff_heads: list[dict[str, Any]],
+) -> tuple[dict[str, Any], dict[str, Any]] | None:
+    """The (start, stop) noteheads this tie arc flanks, or None.
+
+    A MIRROR of `transcribe._pair_ties_in_staff`'s pairing relation, on the
+    same `bbox_page` data: start = the head whose x-centre sits at or left of
+    the arc's left edge, nearest, within 3 of its own widths; stop likewise on
+    the right; both within a y-tolerance of 3 average head heights. Mirrored
+    rather than imported because `transcribe` drags the whole detection stack
+    in with it, and pinned against the original by
+    `test_export.TestArcReclass.test_flank_pair_mirrors_transcribes_pairing`.
+
+    A tie arc FLANKS its heads — it spans the gap between them — which is why
+    slur coverage (`_noteheads_under`, centres inside the box) is the wrong
+    question for finding them.
+    """
+    if not staff_heads:
+        return None
+    tx0, ty0, tw, th = arc_bp
+    tie_left, tie_right = tx0, tx0 + tw
+    tie_yc = ty0 + th / 2.0
+    avg_h = sum(h["bbox_page"][3] for h in staff_heads) / len(staff_heads)
+    y_tol = max(avg_h * 3, 30)
+    best_left = best_right = None
+    best_left_dx = best_right_dx = float("inf")
+    for det in staff_heads:
+        bp = det["bbox_page"]
+        xc = bp[0] + bp[2] / 2.0
+        yc = bp[1] + bp[3] / 2.0
+        if abs(yc - tie_yc) > y_tol:
+            continue
+        dx_left = tie_left - xc
+        if 0 <= dx_left < bp[2] * 3 and dx_left < best_left_dx:
+            best_left, best_left_dx = det, dx_left
+        dx_right = xc - tie_right
+        if 0 <= dx_right < bp[2] * 3 and dx_right < best_right_dx:
+            best_right, best_right_dx = det, dx_right
+    if best_left is None or best_right is None or best_left is best_right:
+        return None
+    return best_left, best_right
+
+
+def _tie_arc_impossibility(
+    arc: list[int],
+    staff_heads: list[dict[str, Any]],
+    order: dict[int, tuple[int, int]],
+) -> tuple[str, tuple[dict[str, Any], dict[str, Any]] | None] | None:
+    """Why this tie arc cannot be a tie, or None to let it stand.
+
+    Returns `(reason, flanked_pair_or_None)`. Vetoing a PAIRED arc also
+    clears the tie flags its pairing set — recorded in `arc_reclass_removed`
+    so the next annotate pass can restore them — or the reclassed slur would
+    export beside a residual tie. Only the mirror pair's flags are touched: a
+    chained tie shares heads with its neighbours, and clearing any wider
+    would damage arcs this veto never looked at.
+    """
+    ax, _ay, aw, _ah = arc
+    under = [h for h in staff_heads
+             if ax <= h["bbox_page"][0] + h["bbox_page"][2] / 2.0 <= ax + aw]
+    pair = _tie_flank_pair(arc, staff_heads)
+    if pair is not None:
+        left, right = pair
+        reason = None
+        sl, sr = _pitch_step(left.get("pitch")), _pitch_step(right.get("pitch"))
+        if sl and sr and sl != sr:
+            reason = "tie_to_slur_flagged_diff_pitch"
+        else:
+            ol, orr = order.get(id(left)), order.get(id(right))
+            if ol and orr and ol[0] == orr[0]:
+                between = {order[id(h)][1] for h in under
+                           if id(h) in order and order[id(h)][0] == ol[0]}
+                between -= {ol[1], orr[1]}
+                if between:
+                    reason = "tie_to_slur_flagged_span"
+        if reason:
+            for det, key in ((left, "tied_to_next"), (right, "tied_from_prev")):
+                if det.get(key):
+                    det.pop(key, None)
+                    det.setdefault("arc_reclass_removed", []).append(key)
+            return reason, pair
+        return None
+    # The arc never paired, so no tie exports for it today; reclass only where
+    # its own span is decisively slur-shaped. A real tie spans a GAP and
+    # covers nothing.
+    by_voice: dict[int, set[int]] = {}
+    for h in under:
+        vo = order.get(id(h))
+        if vo is not None:
+            by_voice.setdefault(vo[0], set()).add(vo[1])
+    if any(len(events) > 2 for events in by_voice.values()):
+        return "tie_to_slur_unpaired_span", None
+    if len(under) == 2:
+        a, b = under
+        sa, sb = _pitch_step(a.get("pitch")), _pitch_step(b.get("pitch"))
+        va, vb = order.get(id(a)), order.get(id(b))
+        if (sa and sb and sa != sb and va is not None and vb is not None
+                and va[0] == vb[0] and va[1] != vb[1]):
+            return "tie_to_slur_unpaired_diff_pitch", None
+    return None
+
+
+def _slur_pieces_for_vetoed_tie(
+    arc: list[int],
+    pair: tuple[dict[str, Any], dict[str, Any]] | None,
+    m_idx: int,
+    measures: list[dict[str, Any]],
+    staff_of: list[int],
+) -> list[tuple[int, list[int]]]:
+    """The slur arc(s) a vetoed tie arc becomes, as (measure, bbox) pieces.
+
+    A tie arc FLANKS its two heads — it spans the gap between them — while
+    slur coverage (`_noteheads_under`) asks which head centres sit UNDER the
+    ink. Moved unchanged, a vetoed flanking arc covers nothing and the
+    promised slur silently degrades to a bare deletion. So a PAIRED arc is
+    widened to reach both flanked centres; and because coverage is read per
+    measure, a widened arc crossing a cell boundary is split AT that boundary
+    into the two fragments the engraver would have printed had it been a slur
+    — which the ordinary barline merge then rejoins. An UNPAIRED arc keeps
+    its own span: its covered run is already what the slur should bind.
+
+    Pieces are fresh lists, never the detection's own `bbox_page` — that is
+    the pipeline's output and must not be widened in place.
+    """
+    ax, ay, aw, ah = arc
+    if pair is None:
+        return [(m_idx, [ax, ay, aw, ah])]
+    centres = [h["bbox_page"][0] + h["bbox_page"][2] / 2.0 for h in pair]
+    wx0 = min(ax, min(centres))
+    wx1 = max(ax + aw, max(centres))
+    home = staff_of[m_idx]
+    pieces: list[tuple[int, list[int]]] = []
+    for j, measure in enumerate(measures):
+        if staff_of[j] != home:
+            continue
+        box = measure.get("bbox_page_px")
+        if not box or len(box) != 4:
+            continue
+        x0 = max(wx0, float(box[0]))
+        x1 = min(wx1, float(box[2]))
+        if x1 > x0:
+            pieces.append((j, [x0, ay, x1 - x0, ah]))
+    # A staff whose cells the span never intersects (no usable bbox_page_px)
+    # still gets the widened arc in its own measure, uncut.
+    return pieces or [(m_idx, [wx0, ay, wx1 - wx0, ah])]
+
+
+def _reclass_tie_arcs_in_run(
+    measures: list[dict[str, Any]],
+    staff_of: list[int],
+    per_measure_arcs: list[list[list[int]]],
+    order: dict[int, tuple[int, int]],
+) -> int:
+    """Move impossibly-configured tie arcs into the slur pool, in place.
+
+    A moved arc then rides the ordinary slur machinery — barline merging,
+    voice constraint, numbering — exactly as if the detector had classed it
+    `slur`. Flank pairing is bounded to each arc's OWN staff, the way
+    `_pair_ties_in_staff` is: page x overlaps between systems, and a head
+    from another system inside the dx window would alias.
+    """
+    tie_arcs = _staff_arcs_by_measure(measures, cls="tie")
+    if not any(tie_arcs):
+        return 0
+    heads_by_staff: dict[int, list[dict[str, Any]]] = {}
+    for m_idx, measure in enumerate(measures):
+        s = staff_of[m_idx]
+        for det in measure.get("detections", []):
+            bp = det.get("bbox_page")
+            if det.get("category") == "notehead" and bp and len(bp) == 4:
+                heads_by_staff.setdefault(s, []).append(det)
+    n = 0
+    dirty: set[int] = set()
+    for m_idx, arcs in enumerate(tie_arcs):
+        staff_heads = heads_by_staff.get(staff_of[m_idx], [])
+        for arc in arcs:
+            verdict = _tie_arc_impossibility(arc, staff_heads, order)
+            if verdict is None:
+                continue
+            reason, pair = verdict
+            ARC_RECLASS_STATS[reason] += 1
+            for j, piece in _slur_pieces_for_vetoed_tie(
+                    arc, pair, m_idx, measures, staff_of):
+                per_measure_arcs[j].append(piece)
+                dirty.add(j)
+            n += 1
+    for j in dirty:
+        per_measure_arcs[j].sort(key=lambda b: b[0])
+    return n
+
+
+def _slur_covers_a_tie(
+    covered: list[tuple[int, float, dict[str, Any]]],
+    order: dict[int, tuple[int, int]],
+) -> bool:
+    """Is this slur-classed arc the tie configuration — exactly two covered
+    heads, adjacent events of one voice, one pitch? Chords defend themselves:
+    a covered chord member brings its mates into `covered` (they share x), so
+    the count passes two and the answer is False."""
+    if len(covered) != 2:
+        return False
+    a, b = covered[0][2], covered[1][2]
+    if a is b:
+        return False
+    pa, pb = a.get("pitch"), b.get("pitch")
+    if not pa or pa != pb:
+        return False
+    oa, ob = order.get(id(a)), order.get(id(b))
+    return (oa is not None and ob is not None
+            and oa[0] == ob[0] and abs(oa[1] - ob[1]) == 1)
+
+
+def _convert_slur_to_tie(
+    covered: list[tuple[int, float, dict[str, Any]]],
+    order: dict[int, tuple[int, int]],
+) -> None:
+    """Mark the two covered heads as a tied pair, earlier event first.
+
+    Only flags actually ADDED are recorded in `arc_reclass_added`, so the
+    restore in `annotate_slurs_in_slot` can take the export back to what the
+    transcription said — a pair the transcription had already tied loses
+    nothing either way.
+    """
+    a, b = covered[0][2], covered[1][2]
+    if order[id(a)][1] > order[id(b)][1]:
+        a, b = b, a
+    for det, key in ((a, "tied_to_next"), (b, "tied_from_prev")):
+        if not det.get(key):
+            det[key] = True
+            det.setdefault("arc_reclass_added", []).append(key)
+    ARC_RECLASS_STATS["slur_to_tie"] += 1
 
 
 def _resumes_after_system_break(
@@ -1418,10 +2095,18 @@ def annotate_slurs_in_slot(staves: list[dict[str, Any]]) -> int:
     carries into events, the way it carries the tie flags.
     """
     # Idempotent: exporting a result twice must not stack two marks per note.
+    # The same sweep takes back whatever an earlier ARC-RECLASS pass changed —
+    # tie flags it added come off, tie flags it removed go back on — so a
+    # flag-off export after a flag-on one (or a re-export under either) starts
+    # from what the transcription itself said.
     for staff in staves:
         for measure in staff.get("measures", []):
             for det in measure.get("detections", []):
                 det.pop("slur_states", None)
+                for key in det.pop("arc_reclass_added", None) or ():
+                    det.pop(key, None)
+                for key in det.pop("arc_reclass_removed", None) or ():
+                    det[key] = True
     # Without a staff's own line spacing there is no unit to measure a boundary
     # in, and a rule in raw pixels would mean a different thing on every page.
     # Such a staff is skipped, and it also ENDS the chain — nothing is joined
@@ -1448,8 +2133,9 @@ def _pair_slurs_in_run(staves: list[dict[str, Any]]) -> int:
     measures: list[dict[str, Any]] = []
     spacings: list[float] = []
     tops: list[float | None] = []
+    staff_of: list[int] = []
     breaks: set[int] = set()
-    for staff in staves:
+    for s_idx, staff in enumerate(staves):
         geom = staff["staff_geometry"]
         lines = geom.get("line_ys_page")
         if measures:
@@ -1461,10 +2147,19 @@ def _pair_slurs_in_run(staves: list[dict[str, Any]]) -> int:
             measures.append(measure)
             spacings.append(float(geom["line_spacing_px"]))
             tops.append(float(min(lines)) if lines else None)
+            staff_of.append(s_idx)
     if not measures:
         return 0
 
     per_measure_arcs = _staff_arcs_by_measure(measures)
+    reclass = _arc_reclass_enabled()
+    order: dict[int, tuple[int, int]] = {}
+    if reclass:
+        order = _event_order_of_noteheads(measures)
+        # Tie arcs the grammar refutes join the slur pool BEFORE merging, so
+        # a reclassed arc gets the same barline treatment a slur-classed one
+        # would have had.
+        _reclass_tie_arcs_in_run(measures, staff_of, per_measure_arcs, order)
     if not any(per_measure_arcs):
         return 0
 
@@ -1473,6 +2168,13 @@ def _pair_slurs_in_run(staves: list[dict[str, Any]]) -> int:
     for segments in _merge_arcs_across_barlines(
             measures, per_measure_arcs, spacings, tops, frozenset(breaks)):
         covered = _noteheads_under(measures, segments)
+        # Two adjacent same-pitch heads and nothing else under the (merged)
+        # arc: the tie configuration, whatever the detector called it — and
+        # the merge matters, because the CANONICAL tie crosses a barline and
+        # arrives here as two slur fragments.
+        if reclass and _slur_covers_a_tie(covered, order):
+            _convert_slur_to_tie(covered, order)
+            continue
         # A slur needs two notes to join. One or none leaves an unpaired
         # <slur type="start">, which makes the file invalid rather than
         # merely wrong.
@@ -1938,6 +2640,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
     does with `\\voiceOne` / `\\voiceTwo`.
     """
     _ensure_inferred_time_signatures(result)
+    arbitrate_arcs_across_staves(result)
     divisions = _compute_divisions(result)
 
     parts_xml: list[str] = []

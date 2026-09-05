@@ -1,0 +1,32 @@
+
+dvorak-sym9-mvt4.musicxml  ops 62  cost 239
+
+  cost by category
+    wrong note OMR-ED                               105
+    wrong other object OMR-ED                        49
+    entire staff insert/delete OMR-ED                42
+    entire measure insert/delete OMR-ED              33
+    wrong staff group OMR-ED                         10
+
+  cost by op
+    notedel                      60  (22 ops)
+    noteins                      45  (16 ops)
+    inspart                      42  (1 ops)
+    extrains                     30  (7 ops)
+    delbar                       29  (2 ops)
+    extrasymboledit              10  (5 ops)
+    staffgrpins                  10  (1 ops)
+    extrainfoedit                 6  (3 ops)
+    insbar                        4  (2 ops)
+    extradel                      3  (3 ops)
+
+  cost by part (top categories)
+    -1 ?                          101   wrong other object=49  entire staff insert/delete=42  wrong staff group=10
+    13 Violin                      37   entire measure insert/delete=29  wrong note=8
+    15 Viola                       28   wrong note=28
+    16 Cello                       24   wrong note=24
+    16 Violas                      24   wrong note=24
+    15 Violins II                  19   wrong note=19
+    13 Crash Cymbal                 6   entire measure insert/delete=4  wrong note=2
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/ops-drop/dvorak-sym9-mvt4.json

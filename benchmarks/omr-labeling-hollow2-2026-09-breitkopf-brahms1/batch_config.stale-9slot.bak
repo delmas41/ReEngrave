@@ -1,0 +1,18 @@
+{
+  "pass_name": "completion",
+  "note": "Box EVERY symbol in the cell, not just one kind. This pass is what makes a wider --score possible: mxl_verdicts --score-classes all --score-inspected-for completion only counts cells stamped with this pass name. Swap this over batch_config.json for the pass, then restore the hollow config.",
+  "classes": [
+    { "label": "black notehead",
+      "on_line": "noteheadBlackOnLine",
+      "in_space": "noteheadBlackInSpace",
+      "click_box": true },
+    { "name": "augmentationDot", "label": "aug. dot", "click_box": true },
+    { "name": "rest8th", "label": "8th rest" },
+    { "name": "restQuarter", "label": "quarter rest" },
+    { "name": "rest16th", "label": "16th rest" },
+    { "name": "restHalf", "label": "half rest" },
+    { "name": "restWhole", "label": "whole rest" },
+    { "name": "accidentalFlat", "label": "flat" },
+    { "name": "accidentalSharp", "label": "sharp" }
+  ]
+}

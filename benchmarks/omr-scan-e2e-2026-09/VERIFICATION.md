@@ -188,3 +188,96 @@ still worth doing — with the second system counted first.
   band is a staff not offered for counting rather than a wrong count, and every
   band actually used was confirmed on an overlay. It would matter if someone
   reused it as a staff detector. It is not one.
+
+---
+
+## 2026-09-04 — Six rows promoted: the gate widens 5 → 11
+
+Drafted on branch `claude/scan-gate-rows` (evidence assembly:
+`ROW_VERIFICATION_CHECKLIST_2026-09-04.md`; drafts preserved there in
+`works-drafts.json`), then verified by Sean against the print with the advisor
+session pre-reading each page and cutting zoomed crops. Full evidence per row
+is in each row's `window.verified_by`; the one-line stories:
+
+- **beethoven-984073-p2 (mm 17–48).** The engraver's own numbers: 17 over
+  system 1, 34 over system 2, 49 opening p.3. Sean confirmed the condensed
+  bottom staff and refined the reading — "Basso" is the double bass sounding
+  the lower octave, celli and basses sharing one staff from p.2 on. Known
+  pipeline miss: the m19|m20 barline on this low-res raster (expect 31/32).
+- **beethoven-575951-p2 (mm 17–48).** Same plates; the window transfers by
+  plate identity (boundary fingerprint ≤ 0.0024). Confirmed: this reprint
+  prints NO marginal measure numbers.
+- **mahler-local-p3 (mm 9–16).** Peters prints 9 and 17, each twice. Thirteen
+  five-line + two one-line staves, margins matching the draft word for word;
+  the m13 ff tutti with "nicht teilen!" sighted.
+- **brahms-317803-p2 (mm 8–22).** Printed 8 / 15 / 23; the m8 9/8 bar with
+  6/8 at m9. The draft's one tool error — the (Es) Hr. margin misread as
+  "Trumpet", silently dropping a horn staff from system 2's map — was
+  hand-corrected, and the CORRECTION was what Sean verified: 13 staves, no
+  Trpt., with the Es-horn and Pauken pp re-entries before rehearsal A exactly
+  where the reference puts them (mm 21–22).
+- **dvorak-405834-p6 (mm 9–15).** The one counting row (no printed numbers on
+  this plate): 7 bars counted on the Flauti staff against a numbered-strip
+  crop and consistent on the page-long-resting Trombe/Tromboni staves;
+  strings ff at bar 1, Timpani at bar 2, the flute/oboe p flourish closing
+  m15. The italic "32" over the Viola is a tremolo-subdivision marking —
+  recorded so nobody ever reads it as a measure number.
+- **bach-468678-p1 (mm 1–10, +1 numbering).** The parked row, completed by
+  the engraver: boxed 5 printed twice (one system, two blocks) and boxed 10
+  opening p.60 (also twice; p.60's second system prints boxed 14 — a free
+  anchor for a future row). System 2's five bars counted; 12 staves per
+  system, so the parked `n_staves: 13` is corrected to 24. The header's large
+  "3" is the concerto number, not a measure number. ⚠️ Stress row: the
+  current pipeline shatters this page (six "systems"); it will score terribly
+  and honestly — that is its purpose.
+
+⚠️ **The pooled figure changes meaning at this commit.** Every scan-e2e
+pooled number measured before this widening — production 0.7517 / 7894 and
+the shipped graft 0.7493 / 7872 — is a **5-row figure**, and comparing it to
+any figure pooled over the widened set is invalid in either direction: the
+same boundary discipline as the engraved benchmark's 3→11 widening. The first
+widened baselines for production and the shipped graft are measured once,
+directly after this commit, and recorded beside this file; because
+`scan_eval.py` has no per-row pool-exclusion mechanism, the Bach stress row
+enters the default pool, and the baseline record therefore states the pooled
+figure BOTH with and without it — whether Bach keeps pool membership is an
+open decision for Sean (the Boulanger precedent: a structure-failure row can
+dominate a pool and turn it into a segmentation metric).
+
+---
+
+## 2026-09-04 — Bach excluded from the default pool (Sean's decision)
+
+The Bach stress row stays in works.json, verified and runnable, and is now
+marked `"pooled": false`: `scan_eval.py` runs and reports it per-row on every
+default invocation but keeps it out of the pooled figure. Why: the pipeline
+shatters the page (~6 "systems", 122 detected measures against a true 10), so
+its OMR-NED measures page-structure parsing rather than recognition; pooled,
+it contributed ~19% of the 11-row edit budget and CHARGED recognition
+improvements as regressions (the graft found 326 more real symbols there and
+paid +358 edits — whole-measure amplification on a shattered page). Same
+call, same signature as boulanger-printemps-mvt1 in the engraved benchmark.
+
+**The canonical scan-gate baselines are therefore the 10-row readings** from
+WIDENED_BASELINE_2026-09-04.md: prior-prod (hollow-ft) **0.8457 / 29081**,
+production (hollow-graft-shift09) **0.8387 / 29082**. The 11-row readings
+stay recorded there for the row's eventual re-admission — which happens when
+its segmentation reads ~10 measures, with a boundary note, since pool
+membership changes what the pooled figure means. The fragments align with
+the instrument choirs (3 Vni / 3 Vle / 3 Vc / Cb / Cembalo), so the row
+doubles as the tracked stress metric for choir-grouped system layouts.
+
+---
+
+## 2026-09-05 — Bach re-admitted to the pool (Sean's decision, coupled ship)
+
+`OMR_CHOIR_GROUPING` shipped default-ON and the Bach row's `pooled` flag
+flipped back to true in the same event. The exclusion rationale no longer
+holds: under the cues the page reads 2 systems [12,12] and 11 cells against
+the true 10 (the +1 a pre-existing barline defect present in both arms), so
+its errors are recognition-shaped. ⚠️ **Benchmark boundary:** from the
+re-stamped baseline onward the pool is ELEVEN rows under the composed
+default config (tilt localization ON × choir cues ON); every earlier pooled
+figure (10-row 0.8387/0.8345 included) is on the other side of the boundary
+and is never compared across it. The re-stamp run's figures are recorded in
+the second baseline addendum beside WIDENED_BASELINE_2026-09-04.md.

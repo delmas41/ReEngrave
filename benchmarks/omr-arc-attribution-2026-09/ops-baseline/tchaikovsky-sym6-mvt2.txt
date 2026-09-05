@@ -1,0 +1,38 @@
+
+tchaikovsky-sym6-mvt2.musicxml  ops 109  cost 270
+
+  cost by category
+    wrong note OMR-ED                               176
+    wrong other object OMR-ED                        73
+    wrong staff group OMR-ED                         10
+    entire measure insert/delete OMR-ED               5
+    wrong note head OMR-ED                            4
+    wrong flag/beam OMR-ED                            2
+
+  cost by op
+    notedel                     101  (41 ops)
+    noteins                      75  (29 ops)
+    extrains                     56  (20 ops)
+    extrasymboledit              10  (5 ops)
+    staffgrpins                  10  (1 ops)
+    extradel                      7  (7 ops)
+    headedit                      4  (2 ops)
+    delbar                        3  (1 ops)
+    delbeam                       2  (2 ops)
+    insbar                        2  (1 ops)
+
+  cost by part (top categories)
+    -1 ?                           83   wrong other object=73  wrong staff group=10
+    04 Bassoon                     58   wrong note=58
+    04 Fagotti                     44   wrong note=44
+    03 Clarinet                    30   wrong note=30
+    03 Clarinetti in A             20   wrong note=18  wrong flag/beam=2
+    15 Cello                        7   wrong note=7
+    15 Violoncello                  7   wrong note=7
+    05 Corni in F I II              4   wrong note=2  wrong note head=2
+    06 Corni in F III IV            4   wrong note=2  wrong note head=2
+    07 Trumpet                      3   entire measure insert/delete=3
+    00 Piccolo                      2   wrong note=2
+    05 Horn                         2   wrong note=2
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/ops-baseline/tchaikovsky-sym6-mvt2.json

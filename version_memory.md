@@ -5,6 +5,134 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-05 — Choir-grouping cues SHIPPED default-ON; Bach re-admitted to the pool
+
+Sean's coupled call. `OMR_CHOIR_GROUPING` defaults ON
+(`system_grouping._choir_grouping_enabled`, opt-out 0/false/no/off): cue B
+(pair-local left-edge merge) + cue C (grouped-system open-score guard),
+diagnosed and priced on `claude/bach-choir-grouping` — Bach 6→2 systems
+[12,12], 122→11 cells vs true 10, row 0.9241→0.8152; byte-identical on the
+10 pooled scan rows, the 11-work engraved benchmark, and the boulanger
+canary; 969-page probe hand-adjudicated 10/10 changed pages toward truth, 0
+false merges. The Bach row's `pooled` flag flips back to true in the same
+event — a BENCHMARK BOUNDARY: the pool is 11 rows under the composed
+default config (tilt ON × choir ON) from the re-stamp onward, and no pooled
+figure crosses the boundary. The re-stamp run (one fresh default-config
+pass, all 11 rows, graft weights) stamps the new canonical figure; recorded
+in the addendum beside WIDENED_BASELINE_2026-09-04.md when it lands.
+
+## 2026-09-04 — Cell-grid localization SHIPPED default-ON (the tilt fix)
+
+Sean's call, same day the widened gate priced it: `OMR_CELL_LINE_TRACE` now
+defaults ON (`measure_extractor._cell_line_trace_enabled`, opt-out via
+`0/false/no/off`). Deployed default-config scan baseline moves to the
+flag-on arm's figures: **pooled 0.8345 / 28849 over the 10-row pool** (was
+0.8387 / 29082 flag-off; same graft weights — the flag is the only
+variable, and the harness is byte-deterministic). Engraved figures
+unchanged (no-op by construction, byte-identical A/B). Flag tests updated
+to pin the new default; the flag-OFF contract every labeled batch depends
+on (grid = `staff.line_ys - y0`) is still pinned via explicit `0`. Blast
+radius recorded in the knobs table (key-sig slot-fit interaction, net −15;
++2..+7 noise on three low-exposure rows). Evidence:
+`benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md`.
+
+## 2026-09-04 — The widened scan gate prices the tilt fix: −233 edits, on the exposure
+
+The measured-but-unshipped `OMR_CELL_LINE_TRACE` (cell-grid localization, the
+rigid comb) was A/B'd on the widened 11-row scan gate — the first tree holding
+both the gate and the flag (`claude/tilt-pricing-widened` = `0487be1f` merged
+with `claude/tilt-crosscheck`). The old benchmark's null was the corpus: the
+widened pool carries **8.6%** of cells past the parity-flip line (was 0.4%),
+and the flag is worth **pooled 0.8387 → 0.8345, −233 edits**, −217 of them on
+exactly the three tilted rows, zero-exposure row unchanged to the edit,
+engraved control byte-identical, exact-pitch recall +4.8pts on the most
+exposed edition. Verdict + tables:
+`benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md` —
+recommendation is default-ON with no domain gating; the flag stays OFF until
+Sean decides. The named ship prerequisite also landed (`be884ff8`):
+`recut_cells.frame_mismatch` compares the frame's own (unlocalized) grid,
+accepts either dialect a manifest can speak, and `_nostaff.png` — which IS
+grid-derived — is re-erased on the manifest's authority, all pinned by three
+tests on a page that provably localizes.
+
+---
+
+## 2026-09-04 — Scan gate: widened 5 → 11 rows; Bach excluded from the pool
+
+Six Sean-verified rows promoted (commit `84a5ccac`; drafting on branch
+`claude/scan-gate-rows`, stories in scan-e2e VERIFICATION.md), the first
+widened baselines measured for both checkpoints (merge `04eb8050`,
+WIDENED_BASELINE_2026-09-04.md — the ship decision HOLDS on the deeper
+gate), and then, at Sean's decision, the Bach stress row was excluded from
+the default pooled figure via a new `"pooled": false` row flag in works.json
++ scan_eval.py support (stress rows run and report per-row, never pool).
+Rationale: its OMR-NED measures page-structure parsing (122 detected
+measures vs 10) and whole-measure amplification there charges recognition
+improvements as regressions — the Boulanger call, repeated. **Canonical
+scan-gate baselines: prior-prod (hollow-ft) 0.8457 / 29081; production
+(hollow-graft-shift09) 0.8387 / 29082, over 10 pooled rows.** All pre-widening
+figures (0.7517 / 0.7493) are 5-row history; no comparison crosses either
+boundary. Validation: the pool-exclusion logic re-scored the committed
+widened-graft fixtures and reproduced the recorded 10-row figures.
+
+## 2026-09-04 — Design note: position grammar over the mark alphabet
+
+Sean's observation (ties/slurs, then accents/hairpins and tenuto/ledger
+lines) generalized into a written principle:
+[docs/position-grammar-confusables-2026-09-04.md](docs/position-grammar-confusables-2026-09-04.md).
+Engraved music reuses a tiny mark alphabet — dot, stroke, wedge, arc, bowl,
+digit — and identity is position grammar over the staff lattice, not shape;
+the detector proposes ink events with a class PRIOR, a downstream layer
+assigns or vetoes identity. Nine shipped precedents cited with their numbers;
+six design rules (class space stays 208 / families closed under
+confusability / veto-impossible-first / anchors before grammar /
+matches-nothing-is-an-output / never tune positionally on one edition); an
+inventory of the confusable families with measured discriminators; and the
+next six opportunities each tied to an existing measured hook. First
+consumer: the round-6 specialist/labeling campaign via family closures and
+adjudication-batch shape.
+
+## 2026-09-04 — Scan weights: the round-5 head-graft candidate SHIPPED
+
+**Why:** rounds 3–5 of the scan-weights campaign established that fine-tuning
+on the ~750-cell scan-label corpus deletes whole classes — tie/slur/beam/
+augmentationDot/accidentalFlat/restWhole/ledgerLine go to exactly zero — under
+every method tried (eleven arms: the ship's own recipe, no-warmup, low LR,
+freeze, plain controls, teacher rehearsal/distillation at two confidences).
+The fix that survived is surgery, not training: keep only the hollow
+fine-tune's seven notehead-class head rows (`model.22.cv3.{0,1,2}.2` is the
+only per-class place in a YOLOv8 head), graft them onto production, and bake a
+per-class confidence floor into those rows' biases (`--bias-shift 0.9` ≈
+raising only those classes' threshold 0.25 → 0.45, since the pipeline has one
+global threshold).
+
+**What:** `transcribe.DEFAULT_WEIGHTS` — the scan side of weight routing —
+now points at `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`
+(byte-identical to `omr-weights/round5-merged/d25e0_graftprod_shift0.9.pt`,
+sha256 `2cb6eb3e…3126`; copies in both `omr-weights/` and
+`tools/omr/training/data/weights/`). The engraved side (`ENGRAVED_WEIGHTS`)
+is untouched. First checkpoint in three rounds to beat the 09-03 production
+on every measure of all three gate axes: half-noteheads 27 → 31,
+pitch+duration recall 0.4354 → 0.5102, exact 0.5646 → 0.5782, dense notehead
+recall 0.941 → 1.000, scan-e2e pooled OMR-NED 0.7517 → 0.7493 with 4 of 5
+rows improving, 28 classes held with 0 collapsed; element counts move toward
+truth on ties (60 → 97 of 271) and rests (577 → 589 of 972). The ship was
+gated on a fresh determinism probe: the scan-e2e harness is byte-deterministic
+(identical outputs across runs, worktrees and days — noise floor exactly
+0.0000), so the delta is a real property of the weights. Sean approved the
+ship 2026-09-04.
+
+**Records:** `benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`
+(lands with branch `claude/scan-weights-round4-continue-074940`) and
+`benchmarks/omr-scan-e2e-2026-09/DETERMINISM_2026-09-04.md` (branch
+`claude/scan-e2e-determinism`). The prior scan production
+(`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`) stays on disk under its own
+name — in-flight benchmark branches that pin "production" by explicit path
+are unaffected, and their recorded 0.7517 baseline still names that file. The
+web-app container picks the repoint up on its next
+`docker compose build backend`.
+
+---
 ## 2026-09-03 — a third audit check: edge fragments live in the training corpus, no image needed
 
 Two `notehead*` labels found live in **v3-2026-06-09-mahler5** and **v4-2026-06-10-la-mer** —

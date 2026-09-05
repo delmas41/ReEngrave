@@ -1,0 +1,229 @@
+{
+ "totals": {
+  "truth": {
+   "ties": 0,
+   "slurs": 0
+  },
+  "off": {
+   "ties": 210,
+   "slurs": 138
+  },
+  "on": {
+   "ties": 90,
+   "slurs": 395
+  }
+ },
+ "rows": [
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "off_identical": true,
+   "firings": {
+    "tie_to_slur_flagged_diff_pitch": 1,
+    "slur_to_tie": 1
+   },
+   "truth": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "ties": 1,
+    "slurs": 1
+   },
+   "on": {
+    "ties": 1,
+    "slurs": 0
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "off_identical": true,
+   "firings": {
+    "tie_to_slur_flagged_diff_pitch": 10,
+    "tie_to_slur_unpaired_diff_pitch": 3,
+    "tie_to_slur_unpaired_span": 1,
+    "slur_to_tie": 1
+   },
+   "truth": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "ties": 17,
+    "slurs": 6
+   },
+   "on": {
+    "ties": 8,
+    "slurs": 19
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "off_identical": true,
+   "firings": {
+    "tie_to_slur_flagged_diff_pitch": 10,
+    "tie_to_slur_unpaired_span": 3,
+    "slur_to_tie": 1
+   },
+   "truth": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "ties": 8,
+    "slurs": 3
+   },
+   "on": {
+    "ties": 2,
+    "slurs": 14
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "off_identical": true,
+   "firings": {
+    "tie_to_slur_flagged_diff_pitch": 35,
+    "tie_to_slur_unpaired_span": 12,
+    "tie_to_slur_unpaired_diff_pitch": 1,
+    "slur_to_tie": 1
+   },
+   "truth": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "ties": 28,
+    "slurs": 10
+   },
+   "on": {
+    "ties": 7,
+    "slurs": 57
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "off_identical": true,
+   "firings": {
+    "tie_to_slur_flagged_diff_pitch": 10,
+    "tie_to_slur_unpaired_span": 8,
+    "tie_to_slur_unpaired_diff_pitch": 1
+   },
+   "truth": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "ties": 10,
+    "slurs": 13
+   },
+   "on": {
+    "ties": 2,
+    "slurs": 29
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "off_identical": true,
+   "firings": {
+    "tie_to_slur_unpaired_span": 26,
+    "tie_to_slur_flagged_diff_pitch": 17,
+    "tie_to_slur_unpaired_diff_pitch": 5
+   },
+   "truth": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "ties": 11,
+    "slurs": 4
+   },
+   "on": {
+    "ties": 0,
+    "slurs": 47
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "off_identical": true,
+   "firings": {
+    "tie_to_slur_unpaired_span": 24,
+    "tie_to_slur_flagged_diff_pitch": 25,
+    "tie_to_slur_flagged_span": 7,
+    "slur_to_tie": 17
+   },
+   "truth": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "ties": 27,
+    "slurs": 68
+   },
+   "on": {
+    "ties": 23,
+    "slurs": 101
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "off_identical": true,
+   "firings": {
+    "tie_to_slur_flagged_diff_pitch": 56,
+    "tie_to_slur_unpaired_span": 25,
+    "tie_to_slur_flagged_span": 9,
+    "slur_to_tie": 2,
+    "tie_to_slur_unpaired_diff_pitch": 5
+   },
+   "truth": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "ties": 98,
+    "slurs": 32
+   },
+   "on": {
+    "ties": 42,
+    "slurs": 117
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "off_identical": true,
+   "firings": {},
+   "truth": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "ties": 1,
+    "slurs": 0
+   },
+   "on": {
+    "ties": 1,
+    "slurs": 0
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "off_identical": true,
+   "firings": {
+    "tie_to_slur_unpaired_diff_pitch": 1,
+    "tie_to_slur_unpaired_span": 3,
+    "tie_to_slur_flagged_diff_pitch": 6,
+    "tie_to_slur_flagged_span": 1
+   },
+   "truth": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "ties": 9,
+    "slurs": 1
+   },
+   "on": {
+    "ties": 4,
+    "slurs": 11
+   }
+  }
+ ]
+}
