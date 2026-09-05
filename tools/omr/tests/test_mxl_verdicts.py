@@ -382,9 +382,19 @@ def test_windows_accept_the_scan_benchmark_file() -> None:
     row = rows[1]
     assert row.first_ref_measure == 1 and row.last_ref_measure == 16
     assert len(row.staves) == 12 and row.staves[0].parts == [0, 1]
-    # `same-as:` references resolve to the row they name.
-    both = mv.load_windows(path, work_id="beethoven--symphony-5")
-    assert all(r.staves for r in both.values())
+    # Since the gate widened (84a5ccac) `work_id` alone is not narrow enough
+    # for Beethoven 5 — the file holds TWO Litolff scans of it, and 984073's
+    # page 1 collides with 575951's. The guard must name both rows rather
+    # than let one edition's page silently replace the other's.
+    with pytest.raises(ValueError, match="984073-p1.*575951-p2"):
+        mv.load_windows(path, work_id="beethoven--symphony-5")
+    # `same-as:` references resolve to the row they name — 575951's rows
+    # borrow 984073's staves, across the row_ids narrowing.
+    borrowed = mv.load_windows(
+        path, row_ids=["beethoven-sym5-mvt1-575951-p1"])
+    assert list(borrowed) == [0]
+    assert len(borrowed[0].staves) == 12
+    assert borrowed[0].staves[0].parts == [0, 1]
 
 
 # ---------------------------------------------------------------- the UI

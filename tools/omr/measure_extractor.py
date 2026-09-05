@@ -1016,6 +1016,18 @@ def _build_measure_cell(
     cell.__dict__["binary"] = up_bin
     if line_prov is not None:
         cell.__dict__["line_grid_localized"] = line_prov
+        # The frame's own grid — what this exact cell stores with the flag
+        # off, by the same arithmetic (`local_ys` then `_upscale_to_canonical`'s
+        # ys transform). Localization moves only the stored rows, never the
+        # crop, the scale or a pixel of the image (measured 360/360 in
+        # benchmarks/omr-cell-grid-tilt-2026-09/RESULTS_TILT_COST.md), so this
+        # is what identifies the FRAME across flag states —
+        # `recut_cells.frame_mismatch` compares it.
+        unlocal = [y - y0 for y in staff.line_ys]
+        cell.__dict__["staff_line_ys_canonical_unlocalized"] = (
+            unlocal if page_span <= 0
+            else [int(round(y * scale)) for y in unlocal]
+        )
     return cell
 
 
