@@ -680,6 +680,23 @@ def apply_contextual_analysis(
                 if s.instrument and s.index not in ambiguous_slots},
         clefs=clef_by_slot,
     )
+    # The RAW text of each slot's margin label, kept beside the instrument the
+    # lexicon resolved it to. `lookup` answers "which instrument", which is a
+    # singular noun — so `Flauti`, `2 Flöten` and `Flauto` all resolve to
+    # `Flute` and the PLURALITY is thrown away at that call. That is the
+    # project's recurring shape (a signal read correctly and dropped
+    # downstream), and it is the one signal a condensed-staff reader needs.
+    # Retained as data only: nothing here interprets it.
+    raw_label_by_slot: dict[int, str] = {}
+    for page_index, pws, page_labels in zip(page_indices, staved,
+                                            staff_labels_per_page):
+        by_staff = {lab.staff_index: lab.text for lab in page_labels
+                    if (lab.text or "").strip()}
+        for staff in pws.staves:
+            text = by_staff.get(staff.staff_index)
+            if text and staff.slot_index >= 0:
+                raw_label_by_slot.setdefault(staff.slot_index, text.strip())
+
     instrument_source: dict[int, str] = {i: "label" for i in instrument_by_slot}
     if fit is not None:
         for slot in reference:
@@ -706,6 +723,9 @@ def apply_contextual_analysis(
                 if slot is None or slot < 0:
                     continue
                 staff["slot_index"] = slot
+                raw = raw_label_by_slot.get(slot)
+                if raw:
+                    staff["instrument_label"] = raw
                 instrument = instrument_by_slot.get(slot)
                 if instrument is not None:
                     staff["instrument"] = instrument.name
