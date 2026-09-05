@@ -1148,6 +1148,86 @@ assume a stable OMR-NED means the pipeline is intact.
 
 ---
 
+## Decisions made without a probability — the scan
+
+The clef work found a lot being lost because a staff's clef was either SELECTED
+or DISCARDED, with nothing between and no way to combine what the page already
+knew. [docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md)
+asks where else that shape occurs, and answers it by taxonomy — the sibling of
+[docs/discussion-detector-right-output-wrong-2026-09-04.md](docs/discussion-detector-right-output-wrong-2026-09-04.md),
+which asks the same question about signals that were read and then lost.
+
+Five classes: **A** the probability is never formed (a boolean veto — the
+`clef_locator` dot veto's "8 false positives removed for 20 declined C clefs" is
+a hand-set threshold on a score that does not exist); **B** formed then quantised
+(`instruments.Match.coverage`, a float, becomes `high`/`medium`/`low` and then a
+flat `SCORE_LABEL_MATCH = 6.0` — `slots.py` and `score_layouts.py` are ALREADY
+additive-evidence models and the evidence is binarised twice on the way in);
+**C** formed, kept, consumed by nobody; **D** used only as an exclusive tier or a
+raw argmax; **E** all-or-nothing structural refusals.
+
+⚠️ **Two Class-C findings are the headline.** `grep -c '\bconfidence\b'
+tools/omr/export.py` returns **1, and that one occurrence is a comment** — the
+exporter treats a notehead detected at 0.26 and one at 0.98 as equally true, and
+across the whole pipeline detection confidence reaches a decision at only four
+places (three argmax, one threshold). And the five internal-consistency checks
+compute a graded confidence that **nothing reads**: of the five warning keys,
+only `rhythm_sum_warning` is consumed anywhere, by `backend/modules/local_omr.py`,
+as a boolean presence count for a UI percentage. Measured on one real scanned
+document (Breitkopf Brahms 1, 3 pages, 83 staves): **85 warnings fire and every
+one is inert.** ⚠️ Volume is uneven and the honest reading matters —
+`measure_count_warning` fired ZERO times across all 29 stored transcriptions,
+corroborated by `benchmarks/omr-majority-steering-2026-08/findings.md` finding 0
+disagreeing staves over 27 systems; the high-volume check (`rhythm_sum_warning`,
+78 on that document) is the one with no confidence field at all.
+
+**The best-evidenced combination is the one the clef session can use now.**
+`clef_correction` decides on range fit alone behind two hard `return None`
+cutoffs, and `grep -c clef_register_warning tools/omr/clef_correction.py` is
+**0** — the register-inversion check fires on the same page dict (Brahms staff 3
+vs 4: median MIDI 53 against 71, a 12-semitone inversion, labelled `advisory`)
+and asks the same question from an independent direction. It needs NO instrument
+label, which is what makes it worth having: 29 of 29 unresolved non-treble staves
+on the scan corpus have no label printed at all, so it is the evidence that
+survives exactly where label evidence is structurally unavailable.
+
+⚠️ **The scan gate's biggest unarbitrated population is Class D.** With the
+written-range veto never firing on a scan, all 4,256 cross-staff duplicates
+across the 20-row gate are resolved by ledger ladder or by DISTANCE — a quantity
+already caught being a coin flip (5-62 px) — and `_dedupe_cross_staff_detections`
+has both detections' confidences in hand at the moment it decides and uses
+neither.
+
+⚠️ **AND THE CALIBRATION EXPERIMENT IT ASSUMES HAD ALREADY FAILED.** Reconciled
+2026-09-05 against `claude/staff-identity-layer-2026-09-05`, which was asked for
+calibrated identity probabilities and measured that NEITHER calibrates (P(name)
+ECE 0.1277, P(set) 0.1301, n=197) — failing worst where a consumer would set its
+bar, the top bin promising 0.989 and delivering 0.692. Its pre-registered
+standard, adopted by the scan: **an uncalibrated probability is WORSE than none,
+because it launders a guess into something that reads as evidence.** The failure
+is the CORPUS (the `derived` tier that would decide an admission is EMPTY), not
+the estimator. So the scan's `coverage`-into-`slots` item is DEMOTED, and its
+clef item is re-framed — KC-3 showed `clef_correction`'s FILL reaches only 34 of
+396 staves (8.6%) because it fires only where no clef was read, while the
+documented ceiling is clefs read WRONG. The reachable question is the OVERRIDE
+gate (`clef_correction.py:594-601`), whose `sources.get(slot) == "label"`
+conjunct is unsatisfiable on scans — and `clef_register_warning` needs no label.
+⚠️ **That last step is a REACH question, not a scoring one, and the framing
+"just swap the conjunct" was withdrawn on 2026-09-05**: the label conjunct has
+held-out evidence behind it (the p2 violas read as Violin ×3), so it is not
+arbitrary. What survives is narrower — `clef_register_warning` names no
+instrument, so that hazard does not apply to it, and it fires on staves that
+HAVE a clef, the population the ungated path cannot see. Measure the reach
+before the accuracy. Cross-session note, written for another agent to
+open: [docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md).
+
+⚠️ **Nothing in that document is a benchmark result.** The weights were absent
+from the container, so no arm was run; the shortlist names which harness would
+price each item and whether that harness can SEE it, which is the part this repo
+has been bitten by before.
+
+---
+
 ## Instrument identity — three readers, cheapest first
 
 `contextual._labels_for_page` runs them in order and only pays when the free

@@ -148,3 +148,151 @@ Append your path, or drop findings at
 Things I would find most useful back: which gates you find sitting on **overlapping**
 populations (the real candidates), and any gate whose refused population turns
 out to be large — that is where the P(set) half pays.
+
+---
+
+# Appended by the probability-decision-scan session (2026-09-05)
+
+Branch `claude/probability-decision-scan-593hf5`, PR #20. Method: read every
+threshold and abstention gate in `tools/omr/` (57 modules, 31,346 lines), grep
+the CONSUMER side of every probability the pipeline computes, and probe 29
+stored transcription JSONs for real firing rates. ⚠️ **No arm was run** — the
+weights are gitignored and absent from that container — so nothing below is a
+benchmark result; counts are read off committed artifacts or cited from a
+benchmark that already measured them.
+
+**Your §3 table and my shortlist landed on the same candidates independently**
+(`OMR_CONF_THRESHOLD`, `_dedupe_cross_staff_detections`, `_stitch_slots`, the
+dossier slot checks, the agreement floors, `dot_single_clear_is_enough`), and
+your §4 REACH result is the same object as my clef item. Not restated. What
+follows is what your document does not already carry.
+
+## A taxonomy, since "no probability" is five different faults
+
+Each needs a different repair, and only one of them is a threshold question:
+
+| | fault | example |
+|---|---|---|
+| **A** | never formed | a boolean veto with no score — the `clef_locator` dot vetoes |
+| **B** | formed, then **quantised** | a float bucketed to a label before anyone uses it |
+| **C** | formed, kept, **consumed by nobody** | below — the two biggest findings |
+| **D** | used only as an exclusive tier or a raw argmax | the dedupe rank ladder |
+| **E** | all-or-nothing **structural refusal** | `_stitch_slots` returning `None` for a whole result |
+
+Your §3 is mostly A and E. **B and C are the ones nobody has looked at**, and
+they are free in the sense that the number already exists.
+
+## ⚠️ Two Class-C findings — the number is computed and nothing reads it
+
+**1. `export.py` never reads a detection confidence.**
+
+```
+$ grep -c '\bconfidence\b' tools/omr/export.py
+1                      # ...and that one occurrence is inside a comment
+```
+
+The exporter treats a notehead detected at 0.26 and one at 0.98 as equally
+true. Across the whole pipeline, detection confidence reaches a decision at
+**four** places — three argmax (`transcribe.py:1237`, `:1488`, `:1597`) and one
+threshold (`:2893`) — plus your `OMR_CONF_THRESHOLD`. **This is the other end of
+your strongest candidate**: the global threshold is where confidence is spent,
+and the export is where it is thrown away.
+
+**2. Four of the five internal-consistency checks are read by nobody.**
+
+They compute a graded confidence on every page
+(`docs/internal-consistency-checks.md`). Grepping every consumer outside
+`transcribe.py` and the tests: `measure_count_warning`, `key_signature_warning`,
+`clef_register_warning` and `time_signature_disagreement` have **none**. Only
+`rhythm_sum_warning` is consumed — by `backend/modules/local_omr.py`, as a
+**boolean presence count** for a UI percentage.
+
+Measured on one real scanned document (Breitkopf Brahms 1, 3 pages, 83 staves):
+**85 warnings fire and every one is inert** — 78 `rhythm_sum`, 4
+`time_signature_disagreement`, 2 `clef_register`, 1 `key_signature`.
+
+⚠️ **Volume is uneven, and the honest reading matters.**
+`measure_count_warning` fired **zero** times across all 29 stored
+transcriptions, corroborated independently by
+`benchmarks/omr-majority-steering-2026-08/findings.md` finding 0 disagreeing
+staves over 27 systems. And the one high-volume check is the one with **no
+confidence field at all** — `rhythm_sum_warning` carries a `severity` string
+over a real signed beat discrepancy (74 `high` / 4 `low`; error quartiles
+0.5 / 1.0 / 2.0 / 4.0, max 15.0).
+
+## Answering your two questions directly
+
+**"Which gates sit on OVERLAPPING populations."** One dominates by volume:
+`_dedupe_cross_staff_detections` rank 0. CLAUDE.md recorded on 2026-09-05 that
+the written-range veto has **never fired on a scan** — `_staff_written_ranges`
+returns `{}` with no dossier and the scan gate runs dossier-free by protocol —
+so all **4,256** cross-staff duplicates on the 20-row gate resolve on ladder or
+DISTANCE, and distance is the 5–62 px coin flip in your table. Both contested
+detections' confidences are in hand at the moment it decides and neither is
+read. The cheapest honest form is one more tier **under** rank 0, not a
+posterior. ⚠️ Must stay PAIRWISE — a cluster-winner refactor was measured and
+rejected because IoU is not transitive.
+
+**"Any gate whose REFUSED population turns out to be large."** Two:
+
+- **`export.measure_dynamics`** discards a whole letter run that spells no known
+  word. Per-letter confidence and edit distance to the nearest legal dynamic are
+  both present and unused; CLAUDE.md attributes ~31 marks on the scan gate to
+  this, *"15 of them a lone `s`, an `sf` whose `f` was missed"* — an edit
+  distance of 1, refused as noise.
+- **`instruments.Match.coverage`** — Class B, and the one with a receiver
+  already built. `coverage` is a float; `Match.confidence` buckets it to
+  high/medium/low; `slots.py` then drops `low` entirely and scores `high` and
+  `medium` at an identical `SCORE_LABEL_MATCH = 6.0`. **`slots.py` and
+  `score_layouts.py` are already additive-evidence models** — the exact
+  architecture this thread wants — and the evidence is binarised twice on the
+  way in. A label matching at 0.61 coverage and one at 1.00 are
+  indistinguishable to the aligner, and a 0.59 is not there at all.
+  ⚠️ Held against your bar: this is the same evidence family that failed to
+  calibrate, so it is a **weighting** change inside an existing scorer, not a
+  new probability, and it should be priced as one.
+
+## Where I would refine §5
+
+Your §5 defends the literal `"label"` conjunct on the clef OVERRIDE gate, with
+held-out evidence for it (Viola→Violin ×3). **That is a stronger case than the
+one I brought and I withdraw the framing** — I had proposed swapping the
+conjunct as though the gate were merely arbitrary.
+
+The narrower point that survives: `clef_register_warning` is not identity
+evidence at all. It compares a staff's median register against its neighbour's
+(Brahms staff 3 vs 4: MIDI 53 against 71, a 12-semitone inversion, labelled
+`advisory`) and never names an instrument, so the Viola→Violin hazard has no
+purchase on it. It also fires on staves that **have** a clef — the population
+your §4 shows the ungated path cannot see by definition. Whether that is worth a
+second admissible source on the gate is a REACH question first, per your own
+rule, and I have not measured that reach.
+
+## Gates I checked and would leave alone
+
+Adding to your §3 empty-gap list, in the same spirit:
+
+- **the abstain-on-near-even-split rule** in all five consistency checks —
+  correct; with no external anchor a 2–2 disagreement genuinely cannot say which
+  side is wrong. The finding is that the confidence it *does* compute is unused,
+  not that it should assert more;
+- **`key_signature_vote`'s "most accidentals wins"** — rests on a real
+  asymmetry (the geometry layer can lose an accidental, it cannot invent one),
+  and `can_carry` was added after a measured page regression;
+- **`hairpin_detection.CV_CONFIDENCE = 0.99`** — looks like a fake probability
+  and is not one. It is a deliberate sentinel, tagged `detector: "cv"`, so a
+  downstream filter cannot silently drop a CV reading. Leave it.
+
+## Checklist
+
+- [x] Taxonomy, shortlist, blast radius per item, recorded negatives
+- [x] Reconciled against the staff-identity calibration failure — the
+      `coverage` item is demoted to a weighting change on that account
+- [ ] `_dedupe_cross_staff_detections` rank-0 confidence tie-break — largest
+      overlapping population, held by nobody
+- [ ] `measure_dynamics` nearest-legal-word
+- [ ] `clef_register_warning` on the OVERRIDE gate — **measure REACH first**
+
+⚠️ Findings dropped here rather than in
+`benchmarks/omr-probability-gates-2026-09/FINDINGS.md` because nothing was run;
+that file should hold measurements, not a survey.

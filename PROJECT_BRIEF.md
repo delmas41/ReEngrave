@@ -103,6 +103,31 @@ changes week to week.
   manifest, refusing anything whose frame does not match. Where the work stands and
   Sean's checklist: [docs/handoff-2026-09-03-prefill-session.md](docs/handoff-2026-09-03-prefill-session.md).
 
+## Decisions made without a probability (2026-09-05)
+
+Work on clef assignment found that a lot was being lost because a staff's clef
+was either *selected* or *discarded* — no middle ground, and no way to combine
+the several things the page already knew. A scan of the rest of the recognition
+pipeline found the same shape in five distinct forms, written up in
+[docs/handoff-probability-gates-2026-09-05.md](docs/handoff-probability-gates-2026-09-05.md).
+
+The two largest findings are both "the number exists and nothing reads it". The
+exporter never consults a detection's confidence at all — a symbol recognised
+with 26% certainty and one recognised with 98% certainty are written out as
+equally true. And the five self-consistency checks, which already grade how
+strongly a page contradicts itself, are read by nothing: on one real scanned
+score, 85 such signals fire and every one is inert.
+
+The practical payoff is a ranked shortlist of seven places where a graded answer
+would replace a yes/no one, each with an estimate of how much it touches and
+which existing measurement could prove it helped. The first item goes straight
+back to the clef work: a register-inversion check already fires on the same page
+and is never consulted, and unlike the range test it needs no instrument name —
+which matters, because on real scans the names usually are not printed.
+
+⚠️ Nothing in that document is a measured result; it is a survey that says what
+to measure next.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost
