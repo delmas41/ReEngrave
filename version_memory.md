@@ -5,6 +5,32 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-04 — arc round 8: slur/tie arcs read by classical CV (`OMR_ARC_CV`, default OFF)
+
+- **The lever round 7 handed over, built and measured.** `tools/omr/arc_detection.py`
+  reads arcs off stroke geometry (thin-run mask, fragment chaining, dissolved-gap join,
+  curvature/one-sidedness gates, top/bottom-slice and below-staff refusals — every
+  constant read off a population gap over the 126-cell adjudicated gauntlet). Standalone
+  vs production on the gauntlet: CV 0.551/0.542 (recall/precision) vs 0.824/0.232, firing
+  on 33 of 260 certified fakes (0 of the 72 staff-jag family) vs production's 241.
+- **Arbitration measured, not assumed:** the beam-style keep-where-no-overlap rule LOSES
+  here; the winning arrangement is the **veto** (keep a YOLO arc only where CV confirms):
+  0.602/0.573, kind 0.726, 37 fakes. Wired into `_detections_for_cell` behind
+  `OMR_ARC_CV` (off / veto / veto+cv / replace), flag-off byte-identical by construction.
+- **Scan e2e (11-row gate): the veto improves EVERY row** — 10-row pool 0.8387 → 0.8382,
+  −125 edits, wrong tie 28→20, wrong slur 111→104, Bach's 36 phantom ties on a 0-tie page
+  → 0 — **while exported tie inventory halves, 420 → 209 of 805**. `veto+cv` is the
+  inventory arm (slurs 384 of 386 truth, ties 313) at neutral OMR-NED and wrong slur
+  111→126. Engraved: **+9 edits (0.1306→0.1313) — flag-on-for-engraved is dead**, scan-only
+  scope like weight routing.
+- ⚠️ **One-edition constants do not transfer:** Litolff prints ties short and flat
+  (rise 0.062-0.116 sp) under the 0.12 rise gate read off the Breitkopf gauntlet — the
+  clef-threshold lesson again. Default stays OFF; the next measurement is anchor-aware
+  pairing (arc kept only with own-staff noteheads under both ends).
+- Full record: `benchmarks/omr-arc-cv-2026-09/FINDINGS.md`. Branch `claude/arc-cv-round8`.
+
+---
+
 ## 2026-09-04 — round 5: the fine-tune deletes CLASSES, and the fix is head surgery
 
 - **"Every fine-tune degrades the base" turned out to mean whole class families going to

@@ -155,10 +155,81 @@ the baselines are the recorded ones: engraved **0.1306 / 2745** (CLAUDE.md
 OMR-NED block, `44a1745`), scan widened **0.8535 / 35817** 11-row,
 **0.8387 / 29082** 10-row-excl-Bach (`WIDENED_BASELINE_2026-09-04.md`,
 production graft column; this branch's `works.json` predates the Bach
-`pooled: false` addendum, so both readings are stated).
+`pooled: false` addendum, so both readings are stated). All arms ran with
+production weights pinned, both venv symlinks in place, direction reader ON.
 
-RESULTS PENDING — this section is filled by the runs in
-`results-scan-arccv-veto.json` / the orchestral_eval arm.
+### Scan (11-row gate, `scan_eval.py`, tags `arccv-veto` / `arccv-vetocv`)
+
+**The veto improves OMR-NED on EVERY row** — 11 of 11 better or equal:
+
+| pool | baseline | veto | veto+cv |
+|---|--:|--:|--:|
+| 11-row | 0.8535 / 35817 | **0.8532 / 35673** (−144) | 0.8534 / 35791 (−26) |
+| 10-row (excl. Bach) | 0.8387 / 29082 | **0.8382 / 28957** (−125) | 0.8385 / 29075 (−7) |
+
+Biggest per-row veto gains: Brahms p2 −38, Brahms p1 −32, Bach −19,
+575951-p2 −19; no row worsens. Under veto+cv three rows regress (984073-p2
++16, Brahms p2 +20, Mahler p3 +2). Notes and rests are COUNT-IDENTICAL to
+baseline in both arms — the arbitration touches only arcs.
+
+**Element counts beside the ratio** (10-row; the metric's symmetry flatters
+under-emission, so these are load-bearing):
+
+| element | truth | baseline | veto | veto+cv |
+|---|--:|--:|--:|--:|
+| tie | 805 | 420 | **209** | 313 |
+| slur | 386 | 276 | 228 | **384** |
+| wrong tie (musicdiff) | — | 28 | **20** | **20** |
+| wrong slur (musicdiff) | — | 111 | **104** | 126 |
+
+The two facts to hold together for the veto: the edit count falls on every
+row AND both wrong-arc categories fall — the clearest single row is Bach,
+whose truth holds ZERO ties and whose baseline emits **36 phantom ties, all
+gone under the veto** — while the exported tie INVENTORY halves against a
+truth the baseline already only reached half of. Some of those 211 dropped
+elements are real ties the CV cannot see (below); musicdiff prices the drop
+as a net win everywhere, but the inventory hole the graft was shipped to
+close (`WIDENED_BASELINE`) deepens.
+
+veto+cv is the inventory arm: slurs reach 384 of 386 truth elements and
+ties recover to 313, at an OMR-NED that is only neutral (−7) and a `wrong
+slur` that RISES 111 → 126 — the CV's own arcs carry its weaker kind split
+and its bleed leakage. Neither arm dominates; both are wired and the flag
+names them.
+
+### The publisher-transfer gap, diagnosed mid-run
+
+On Litolff Beethoven 5 p1 the veto killed EVERY tie (16 YOLO proposals → 1
+confirmed) while the CV reader found 43 arcs in the page's 192 cells.
+`probe_gate_values.py` on the refused cells: **Litolff prints ties SHORT and
+FLAT — w 1.4-1.6 spaces at rise 0.062-0.116 — under the 0.12 rise gate read
+off the Breitkopf gauntlet.** One edition's populations do not bound
+another's (the clef-threshold lesson, again). The gauntlet is one publisher;
+any future constant revision needs a second edition's adjudicated arcs
+before it can claim a gap. NOTE the e2e effect is small because those rows'
+baseline tie emission was already near-zero (2-56 of 74-152 truth) — the
+Litolff tie hole is a DETECTION hole first, a veto hole second.
+
+### Engraved (11-work `orchestral_eval --omr-ned`, veto arm)
+
+**0.1306 / 2745 → 0.1313 / 2754 (+9 edits): a small REGRESSION — the
+flag-on-for-engraved case is dead**, same shape as weight routing. Four
+works pay 3-6 edits (Beethoven 3 +6, Brahms 4 +4, Mozart 40 +3), one
+improves (Mozart 41 −4), six hold to the edit; Brahms 1 and Dvorak 9 keep
+identical edits over ~60 fewer emitted symbols. On engraved pages the
+detector's arcs are already mostly right, so a veto can only subtract. If
+`OMR_ARC_CV` is ever enabled by default it must be scan-side only (the
+weight-routing precedent: gate on the input-domain classifier).
+
+### Verdict
+
+`OMR_ARC_CV` **stays default OFF.** The measured case for enabling it on
+scans is real but split: `veto` for precision (every row improves, both
+wrong-arc categories fall, phantom arcs vanish) at the cost of halving tie
+inventory; `veto+cv` for inventory (slurs essentially at truth count) at
+neutral OMR-NED and more wrong slurs. The decision is Sean's, and the next
+measurement that would settle it is anchor-aware pairing (below), which
+attacks the same fakes without discarding real short ties.
 
 ## Where the next round starts
 
