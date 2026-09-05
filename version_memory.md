@@ -5,6 +5,52 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-05 — Scan: where the pipeline decides without a probability
+
+- The clef session found a lot being lost because a staff's clef was either
+  SELECTED or DISCARDED, with nothing between. This scans the rest of
+  `tools/omr/` (57 modules, 31,346 lines) for the same shape and answers by
+  taxonomy: [docs/scan-probability-decisions-2026-09-05.md](docs/scan-probability-decisions-2026-09-05.md).
+  Sibling of the 2026-09-04 "detector was right, output was wrong" taxonomy —
+  that one asks where a signal was read and lost, this one where a degree of
+  belief was formed and thrown away.
+- **Five classes**: (A) never formed — a boolean veto with no score behind it;
+  (B) formed then quantised; (C) formed, kept, consumed by nobody; (D) used only
+  as an exclusive evidence tier or a raw argmax; (E) all-or-nothing structural
+  refusals.
+- **Two headline Class-C findings.** `export.py` mentions `confidence` exactly
+  once and that occurrence is a COMMENT — every detection confidence is
+  discarded at the export boundary, and across the pipeline confidence reaches a
+  decision at only four places. And the five internal-consistency checks compute
+  a graded confidence nothing reads: only `rhythm_sum_warning` is consumed at
+  all, as a boolean presence count for a UI percentage in
+  `backend/modules/local_omr.py`.
+- **Measured, not assumed** — probed 29 stored transcription JSONs for real
+  firing rates. On one real scanned document (Breitkopf Brahms 1, 3 pages, 83
+  staves) **85 warnings fire and all are inert**: 78 `rhythm_sum`, 4
+  `time_signature_disagreement`, 2 `clef_register`, 1 `key_signature`.
+  ⚠️ Volume is uneven and the doc says so: `measure_count_warning` fired ZERO
+  times across all 29 files (corroborating majority-steering's 0-of-27-systems),
+  while the high-volume check is the one carrying no confidence field at all.
+- **Handed to the clef session**: `clef_correction` decides on range fit alone
+  behind two hard `return None` cutoffs and never reads `clef_register_warning`
+  (grep count 0), which fires on the same page dict from an independent
+  direction and — crucially — needs no instrument label, the evidence that
+  survives where 29 of 29 unresolved non-treble scan staves have no label
+  printed at all.
+- Ranked 7-item shortlist with blast radius per item, naming which harness can
+  price each one and whether that harness can SEE it. Negatives recorded too, so
+  the next pass does not re-walk them (the abstain-on-near-even-split rule, the
+  pairwise dedupe structure, and `CV_CONFIDENCE = 0.99`, which looks like a fake
+  probability and is a deliberate sentinel).
+- ⚠️ **No arm was run** — the OMR weights are gitignored and absent from the
+  container. Nothing in the document is a benchmark result, and it says so.
+
+**Files touched:** `docs/scan-probability-decisions-2026-09-05.md` (new),
+`CLAUDE.md`, `PROJECT_BRIEF.md`, `version_memory.md`.
+
+---
+
 ## 2026-09-05 — The last margin-label gap closed: a whole system's margin as one label
 
 - The lexicon sweep's last open item — Beethoven 5's 17-staff margin resolving to
