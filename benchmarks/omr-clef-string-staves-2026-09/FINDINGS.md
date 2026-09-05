@@ -270,8 +270,15 @@ lever's, so those `wrong keysig` edits are deliberately left on the table.
 
 ## 8. Remaining gates (in flight)
 
-1. Engraved 11-work benchmark with the flag ON — firings counted (expected
-   none; then exports are identical to a default run by construction).
+1. ✅ Engraved 11-work benchmark, run WITH the flag ON (`--omr-ned`, never
+   `--record`, own `--work-dir`): **pooled 0.1306 / 2745 edits — digit-for-
+   digit the recorded current figure, every per-work row matching CLAUDE.md's
+   table exactly — with ZERO firings across all 11 works** (0 overrides, 0
+   vetoes; per-work counts read from each `.omr.json`'s contextual block).
+   The renders' margins are Surya-read (17 labels on Beethoven 5) and their
+   clefs detect correctly, so every proposal path abstains; with no firing
+   the flag's export paths never execute and a default run is byte-identical
+   by construction.
 2. ✅ `eval_pipeline_clefs`, measured flag off vs on at this commit:
    `--contextual` **42/49 both arms, byte-identical summaries, zero
    corrections applied either way**; `--dossier` **45/49 both arms,
@@ -285,3 +292,35 @@ lever's, so those `wrong keysig` edits are deliberately left on the table.
 3. The `clef_source` provenance bug (§3) is recorded and left unfixed here —
    default-path behavior. Candidate fix: refresh `clef_source` alongside the
    clef in the furniture dropper's lead-drop branch.
+
+## 9. Where this lands
+
+**Every firing in the whole verification is at a verified-pattern site — 4
+treble overrides (575951-p1 Viola; brahms-p2 Bassoon ×2 + Timpani) and 3
+change vetoes (984073-p1 Viola; brahms-p1 1.Violine; brahms-p2 s11 Viola —
+this last one unpredicted, found by the tier itself: alto header 0.90,
+spurious `clefF` 0.41 at m5, the exact designed pattern) — and zero anywhere
+else: seven scan rows, the Bach stress row and all eleven engraved works are
+byte-identical under the flag.**
+
+Value, honestly stated against the brief's ~1,900–2,700 estimate:
+
+- **raw 10-row pool: −45** (29,082 → 29,037; 0.8387 → 0.8375), all on
+  brahms-p2, whose parts pair;
+- **plus −254 condensed edits** on the three rows where the raw metric is
+  provably blind to the fix (part-mispairing under the condensation floor —
+  §7). If Sean adopts the forensics' lever #2 (report the condensed column),
+  this candidate's value roughly quadruples on the same bytes;
+- the remaining ~1,100+ of the estimate is family C: staves the PLATE never
+  names (page images verified), reachable only by a dossier in production,
+  plus dvorak-p5's in-cell clef change, unrepresentable in the
+  one-clef-per-cell model. Neither is a clef-logic problem.
+
+Priced refusals, for the record: instrument-default override of any detected
+NON-treble clef (breaks brahms-p1's correct cello tenor); a confidence
+ceiling on the treble read (0.61-correct vs 0.72-wrong — no separating
+threshold); score-order identity driving anything (measured-rejected prior);
+Viola alto→treble in the veto table (musically real); overriding the
+key-signature vote's rejection with the system majority for the EXPORTED
+signature (the vote's call — the majority is used only to spell restated
+pitches).
