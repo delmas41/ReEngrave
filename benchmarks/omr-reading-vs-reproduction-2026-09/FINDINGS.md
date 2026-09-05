@@ -62,29 +62,37 @@ Eleven engraved works, page 1 of each; 3220 scoreable printed symbols (3446 draw
 
 ### And the per-family breakdown is the answer to "where is the error"
 
-| family | truth | pred | match | prec | rec | F1 | where the misses went |
+| family | truth | pred | prec | rec | F1@0.5 | F1@2.0 | reading |
 |---|--:|--:|--:|--:|--:|--:|---|
-| notehead | 856 | 858 | 856 | 0.998 | 1.000 | **0.999** | |
-| rest | 929 | 941 | 928 | 0.986 | 0.999 | 0.993 | |
-| time_signature_digit | 358 | 358 | 357 | 0.997 | 0.997 | 0.997 | |
-| flag | 118 | 120 | 118 | 0.983 | 1.000 | 0.992 | |
-| clef | 226 | 230 | 221 | 0.961 | 0.978 | 0.969 | |
-| augmentation_dot | 102 | 108 | 101 | 0.935 | 0.990 | 0.962 | |
-| key_accidental | 328 | 454 | 328 | 0.722 | 1.000 | 0.839 | |
-| beam *(CV)* | 110 | 182 | 110 | 0.604 | 1.000 | 0.753 | |
-| **dynamic_letter** | 114 | 216 | 91 | **0.421** | 0.798 | 0.552 | `-` 23 |
-| **slur** | 137 | 145 | 73 | 0.503 | 0.533 | 0.518 | `-` 40, beam 24 |
-| **accidental** | 226 | 60 | 58 | 0.967 | **0.257** | 0.406 | `-` 168 |
-| **tie** | 52 | 71 | 16 | 0.225 | 0.308 | 0.260 | `-` 34, slur 2 |
-| barline *(CV)* | 45 | 0 | 0 | — | — | — | `-` 45 |
+| notehead | 856 | 858 | 0.998 | 1.000 | **0.999** | 0.999 | |
+| rest | 929 | 941 | 0.986 | 0.999 | 0.993 | 0.993 | |
+| time_signature_digit | 358 | 358 | 0.997 | 0.997 | 0.997 | 0.997 | |
+| flag | 118 | 120 | 0.983 | 1.000 | 0.992 | 0.992 | |
+| clef | 226 | 230 | 0.961 | 0.978 | 0.969 | 0.974 | |
+| augmentation_dot | 102 | 108 | 0.935 | 0.990 | 0.962 | 0.971 | |
+| key_accidental | 328 | 454 | 0.722 | 1.000 | 0.839 | 0.839 | over-detected |
+| beam *(CV)* | 110 | 182 | 0.604 | 1.000 | 0.753 | 0.753 | |
+| **dynamic_letter** | 114 | 216 | 0.421 | 0.798 | 0.552 | 0.691 | over-emitted |
+| **slur** | 137 | 145 | 0.503 | 0.533 | 0.518 | 0.631 | **partly absent** |
+| **tie** | 52 | 71 | 0.225 | 0.308 | 0.260 | **0.504** | **loosely localised** |
+| barline *(CV)* | 45 | 0 | — | — | — | — | cell-relative by construction |
+
+⚠️ **F1@2.0 IS NOT A SECOND OPINION, IT IS THE DIAGNOSIS.** A family whose score
+climbs steeply as the centre tolerance widens has objects that are *found and
+loosely placed*, not missed — and those need different work. A notehead is a
+staff space across and does not move (0.999 at both). A **tie** is 0.6 spaces
+tall and its extent is a matter of where the engraver stopped drawing: **0.260 →
+0.504**, so most ties are *there*. A **slur** barely moves (0.518 → 0.631), so
+its misses are real absences — on the Brahms page, 16 of 40 have no arc
+detection within **two** staff spaces, while the 24 we do find sit at a median
+0.09 spaces. Slurs are found precisely or not at all.
 
 **Noteheads are read essentially perfectly — 856 of 856, precision 0.998.** So
 whatever OMR-NED's 0.1306 is made of on engraved pages, it is not a failure to
-see notes. The reading error lives in three places: **ties** (0.260), **slurs**
-(0.518), and **dynamic letters**, whose problem is the opposite of a miss —
-precision 0.421, 216 detections for 114 printed, which is the over-emission
-`omr-dynamics-band-2026-09` measured from the other end. `key_accidental` is
-third at 0.839, and also from over-detection (454 for 328).
+see notes. What is left splits three ways, and the split is the actionable part:
+**slur detection** (real absences), **tie localisation** (found, placed loosely),
+and **over-emission** — dynamic letters at precision 0.421 and key accidentals
+at 0.722, both emitting more than the page prints rather than less.
 
 ⚠️⚠️ **`accidental` IS EXCLUDED, AND THE REASON IS A NEAR-MISS WORTH KEEPING.**
 It scores recall 0.257 — 226 printed, 60 detected — and was about to be reported

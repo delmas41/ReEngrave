@@ -227,15 +227,24 @@ def report(page_truth: dict, result: dict, page_index: int, tolerances) -> dict:
     main = out["tolerances"][str(tolerances[0])]
     print(f"page {page_index + 1}: {len(page['symbols'])} printed symbols, "
           f"{len(dets)} detections, staff space {space:.1f} px")
+    widest = str(max(tolerances))
+    wide = out["tolerances"][widest]["per_family"]
     print(f"\n{'family':24s} {'truth':>6s} {'pred':>6s} {'match':>6s} "
-          f"{'prec':>6s} {'rec':>6s} {'F1':>6s}")
+          f"{'prec':>6s} {'rec':>6s} {'F1':>6s} {'F1@' + widest:>7s}")
     tt = pp = mm = 0
     for family, m in sorted(main["per_family"].items()):
         p, r, f = _prf(m)
         note = ("  (CV)" if family in CV_SOURCED
                 else "  (RENDER)" if family in unreliable else "")
+        _, _, fw = _prf(wide.get(family, m))
+        # ⚠️ A family whose F1 climbs steeply with the tolerance is telling you
+        # its objects are LOCALISED loosely, not MISSED. A notehead is a staff
+        # space across and barely moves; a tie is 0.6 spaces tall and an arc's
+        # extent is a matter of where the engraver stopped drawing, so a centre
+        # tolerance tight enough for noteheads charges those as absent.
+        flag = "  <-- tolerance-sensitive" if fw - f > 0.15 else ""
         print(f"{family:24s} {m['truth']:6d} {m['pred']:6d} {m['matched']:6d} "
-              f"{p:6.3f} {r:6.3f} {f:6.3f}{note}")
+              f"{p:6.3f} {r:6.3f} {f:6.3f} {fw:7.3f}{note}{flag}")
         if family not in excluded:
             tt += m["truth"]; pp += m["pred"]; mm += m["matched"]
     P = mm / pp if pp else 0.0

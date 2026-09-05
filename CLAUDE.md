@@ -1106,9 +1106,18 @@ at each end and the engraver draws one arc. The reader sees 28 and 82.
 OMR-NED 0.1306 on the same works. The decomposition is the point:
 **noteheads 0.999** (856 of 856), rests 0.993, time-sig digits 0.997, flags
 0.992, clefs 0.969 — so the engraved residual is **not** a failure to see notes.
-It is **ties 0.260**, **slurs 0.518** (24 arcs lost to `beam`, the only real
-class confusion), and **dynamic letters 0.552** — precision 0.421, the
-over-emission measured from the other end in `omr-dynamics-band-2026-09`.
+What is left splits three ways, and the split is the actionable part.
+⚠️ **A family whose F1 climbs as the centre tolerance widens is FOUND AND
+LOOSELY PLACED, not missed** — different work entirely. **Ties 0.260 → 0.504**
+at 2 staff spaces: most ties are there. **Slurs 0.518 → 0.631**, barely moving —
+real absences; on the Brahms page 16 of 40 have no arc within TWO spaces while
+the 24 found sit at a median 0.09. And **over-emission** — dynamic letters
+precision 0.421, key accidentals 0.722, both emitting more than the page prints.
+⚠️ The tie/slur *classification* lever is NOT the answer and is already spent:
+`00b68e24` (`claude/export-accents-arcs`) built the position-grammar veto,
+measured it on both families and shipped it **default-off** — engraved neutral,
+scan refused. This measurement says why it could not have helped much: ties are
+mislocalised and slurs are absent, and neither is a labelling error.
 
 ⚠️⚠️ **`accidental` IS EXCLUDED AND THE NEAR-MISS IS WORTH KEEPING.** It scores
 recall 0.257 and was about to be reported as the largest reading gap. It is not
