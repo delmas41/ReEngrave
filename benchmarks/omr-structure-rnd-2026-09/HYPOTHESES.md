@@ -516,6 +516,34 @@ H3's features earn their place by being **independent of BOTH labels AND
 > H3 will have measured the same thing twice.** Testing that correlation is part
 > of H3, not a postscript to it.
 
+### ⚠️ MEASURED 2026-09-05, THEN PARKED BY A REDIRECT — [MATCH_FEATURES.md](MATCH_FEATURES.md)
+
+`probe_match_features.py`, the **discriminator stage only** (the A/B through
+`slots.align` was never started — clause (3) is unevaluated and no roster-size
+claim exists). 10 scored rows, 1 abstained, the same fixtures, truth and partner
+metric as H1′.
+
+**Neither feature separates `beethoven-…-p4` from `brahms-…-p3`.** The gap
+fingerprint holds every identical-lineup row at the diagonal (22/22, 28/28,
+30/30 over wide skip-cost plateaus) but on p.4 its argmax **never** beats the
+diagonal at any skip cost — best 14/22 against a computed ceiling of 21 — and
+its margin toward the truth path is **+0.37 per unit weight**, so closing H1′'s
+1.5 deficit would need a weight of **4.06**, larger than the whole bracket-group
+swing. Register continuity is *worse* than the diagonal on every row that has
+one (4/30 on Dvořák) and flips sign between two editions of the same page.
+
+⚠️ **The `group_index` constraint was SATISFIED and the feature still failed.**
+Gap-fingerprint AUC against `group_index` agreement: median **0.510**, and
+**0.502** on `brahms-…-p3` itself — genuinely independent of both labels and
+blocks. **Independence was never the binding problem; information was.** A future
+label-free feature must clear an information bar, not an independence bar.
+
+One positive worth keeping: on `brahms-…-p2` (a real lineup change, 14 staves
+against 13) the gap fingerprint **alone** lifts continuity 14/27 → 24/27 with no
+labels and no blocks. The corpus holds only two printed-lineup-change patterns
+and the feature scores 0/2 on one and 1/1 on the other — **the next measurement
+is a census of printed lineup changes, not another feature.**
+
 **H5 is now motivated by measurement rather than tidiness** — arm C is a direct
 argument for raising block recall *before* anything is built on blocks. It is
 **deliberately NOT started**: it would raise the quality of a discriminator H3
