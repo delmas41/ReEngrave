@@ -105,3 +105,30 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# ── CORRECTION, 2026-09-05 ───────────────────────────────────────────────────
+# The docstring above and commit dfb5e59a both said that on
+# `beethoven-sym5-mvt1-984073-p4` position 6 "no label reached contextual". That
+# is FALSE, and the code says so: `_resolve_ambiguous_labels` iterates
+# `for label in staff_labels` and sets `instrument_source[slot] =
+# "score_order_ambiguity"` at contextual.py:287 ONLY inside that loop — so the
+# value cannot be set for a staff that had no label. Its presence is proof a
+# label WAS read.
+#
+# What actually happened, corroborated per-rung by the labels workstream
+# (surya 'Tp.' AND tesseract 'Tp.' on 984073-p4 system 2 position 6):
+# `Tp.` was read, `candidates_for_alias("tp")` returned (Timpani, Trumpet), and
+# `score_layouts.resolve_ambiguous_label` asked the LAYOUT FIT which one — and
+# the fit names that slot a trumpet, because the ordinal join forced two
+# different staff sequences into one slot sequence. `575951-p4` is the control:
+# same label, same alias, uncorrupted fit, keeps Timpani.
+#
+# ⚠️ So the wrong instrument is NOT independent evidence for the wrong join. It
+# is a CONSEQUENCE of the join presenting as evidence for it — a working
+# mechanism fed a corrupted premise, whose output corroborates the corruption.
+# Recorded as class 6 in docs/discussion-detector-right-output-wrong-2026-09-04.md.
+#
+# The 99/99 measurement below is UNAFFECTED and its reading is strengthened:
+# the field agrees across systems wherever the join succeeds because the join
+# assigns it, and now we know the one page where a raw label could have
+# contradicted it had that label overturned by the same join.
