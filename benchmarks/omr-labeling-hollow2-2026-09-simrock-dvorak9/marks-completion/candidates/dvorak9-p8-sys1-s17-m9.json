@@ -1,0 +1,31 @@
+{
+ "cell_id": "dvorak9-p8-sys1-s17-m9",
+ "candidates": [
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8226,
+   "ink": 0.4564,
+   "bbox": {
+    "x": 154,
+    "y": 1,
+    "w": 205,
+    "h": 195
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.6127,
+   "ink": 0.4595,
+   "bbox": {
+    "x": 146,
+    "y": 695,
+    "w": 203,
+    "h": 243
+   }
+  }
+ ]
+}

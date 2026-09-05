@@ -1,0 +1,107 @@
+{
+  "cell_id": "dvorak9-p17-sys0-s5-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T15:45:05+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 302,
+        "y": 498,
+        "w": 122,
+        "h": 102
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 288,
+        "y": 600,
+        "w": 122,
+        "h": 102
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 123,
+        "y": 422,
+        "w": 94,
+        "h": 254
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "articAccentAbove",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 280,
+        "y": 357,
+        "w": 181,
+        "h": 110
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 84,
+        "y": 902,
+        "w": 239,
+        "h": 299
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 224,
+        "y": 902,
+        "w": 239,
+        "h": 299
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 373,
+        "y": 310,
+        "w": 653,
+        "h": 186
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "tie",
+      "human_category": "structural",
+      "bbox": {
+        "x": 306,
+        "y": 715,
+        "w": 717,
+        "h": 188
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

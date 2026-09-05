@@ -2560,6 +2560,17 @@ def _ledger_ladder(
 # three on Brahms by starting to merge genuinely distinct neighbours.
 _CROSS_STAFF_DUPLICATE_IOU = 0.3
 
+# A hairpin is printed in the GAP below its own staff, so — unlike a ledger
+# notehead, which sits nearer whichever staff it belongs to — a contested
+# hairpin's centre falls roughly midway between the two staves bracketing that
+# gap, and DISTANCE is close to a coin flip. Measured on the Mahler 5 fixture
+# (benchmarks/omr-hairpins-2026-09/FINDINGS.md §2): three of its four hairpins
+# landed on staff 18 by 5-62 px, which has ZERO detected noteheads anywhere on
+# the page, while staff 17 above it — the Trumpet staff the hairpins actually
+# belong to — carries notes in every one of those bars. A hairpin has no
+# ledger ladder, so this is a separate veto rather than a variant of it.
+_WEDGE_HAIRPIN_CLASSES = {"dynamicCrescendoHairpin", "dynamicDiminuendoHairpin"}
+
 
 def _bbox_center_y(det: dict[str, Any]) -> float:
     x, y, w, h = det["bbox_page"]
@@ -2652,19 +2663,23 @@ def _dedupe_cross_staff_detections(
                 if pair in seen:
                     continue
                 seen.add(pair)
-                si, di, _ = entries[i]
-                sj, dj, _ = entries[j]
+                si, di, lst_i = entries[i]
+                sj, dj, lst_j = entries[j]
                 if si == sj or di.get("category") != dj.get("category"):
                     continue
                 if _bbox_iou_xywh(di["bbox_page"], dj["bbox_page"]) <= iou_threshold:
                     continue
-                # Same glyph, two staves. Three kinds of evidence, in the order
+                # Same glyph, two staves. Four kinds of evidence, in the order
                 # a reader uses them: the LADDER is about this glyph — an
                 # unbroken run of ledger lines physically joins it to a staff;
                 # the RANGE is about the part — a player cannot sound a note
-                # outside it; DISTANCE is the tie-break and, on a page with
-                # neither ledger lines nor a dossier, still the whole rule.
+                # outside it; NOTES-IN-BAR is about a hairpin specifically — it
+                # has nothing to attach to on a staff with no note in this bar;
+                # DISTANCE is the tie-break and, on a page with none of the
+                # above, still the whole rule.
                 is_note = di.get("category") == "notehead"
+                is_hairpin = (di.get("class") in _WEDGE_HAIRPIN_CLASSES
+                              and dj.get("class") in _WEDGE_HAIRPIN_CLASSES)
                 rank, loser = 0, None
                 if is_note and ledgers is not None:
                     ladder_i = _ledger_ladder(di["bbox_page"], bands[si], ledgers)
@@ -2683,6 +2698,18 @@ def _dedupe_cross_staff_detections(
                     fit_j = _in_written_range(dj.get("pitch"), ranges.get(sj))
                     if fit_i is not None and fit_j is not None and fit_i != fit_j:
                         rank, loser = 1, (i if not fit_i else j)
+                if loser is None and is_hairpin:
+                    # `annotate_wedges_in_slot` anchors a hairpin to noteheads
+                    # on its OWN staff at both ends (see export.py) — a staff
+                    # with no notehead in this bar can never export it, so it
+                    # is never the right side of a contest a note-bearing
+                    # staff is also in. Same "veto on the impossible" shape as
+                    # the range check above, just keyed on presence rather
+                    # than pitch.
+                    has_i = any(d.get("category") == "notehead" for d in lst_i)
+                    has_j = any(d.get("category") == "notehead" for d in lst_j)
+                    if has_i != has_j:
+                        rank, loser = 1, (i if not has_i else j)
                 if loser is None:
                     ti, bi = bands[si][0], bands[si][1]
                     tj, bj = bands[sj][0], bands[sj][1]
@@ -3772,6 +3799,14 @@ def _contextual_call_kwargs(
         "dpi": dpi,
         "dossier": dossier,
         "assist": Assist("vision" if vision_fallback else "none"),
+        # OMR_INSTRUMENT_CLEF_DEFAULT (default OFF): let a READ margin label's
+        # instrument correct the two verified clef failure shapes on scans —
+        # a detected-treble header on a Viola/Bassoon/Timpani staff, and an
+        # implausible mid-staff clef change (violin→bass, viola→bass). See
+        # clef_correction.py and benchmarks/omr-clef-string-staves-2026-09.
+        "instrument_clef_default": os.environ.get(
+            "OMR_INSTRUMENT_CLEF_DEFAULT", "0").strip().lower()
+        not in ("0", "", "false", "no", "off"),
     }
 
 

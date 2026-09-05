@@ -1,0 +1,110 @@
+{
+ "cell_id": "beet5hr-p51-sys0-s6-m0",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "N0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1726,
+    "y": 554,
+    "w": 88,
+    "h": 91
+   },
+   "confidence": 0.8737,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1535,
+    "y": 612,
+    "w": 88,
+    "h": 89
+   },
+   "confidence": 0.7947,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1863,
+    "y": 459,
+    "w": 92,
+    "h": 81
+   },
+   "confidence": 0.7567,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N3",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1731,
+    "y": 422,
+    "w": 90,
+    "h": 93
+   },
+   "confidence": 0.7203,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N4",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1536,
+    "y": 456,
+    "w": 87,
+    "h": 79
+   },
+   "confidence": 0.6834,
+   "notes": "notehead completion (black heads/dots), audited"
+  },
+  {
+   "id": "N5",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1868,
+    "y": 393,
+    "w": 87,
+    "h": 75
+   },
+   "confidence": 0.5684,
+   "notes": "notehead completion (black heads/dots), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1275,
+    "y": 386,
+    "w": 96,
+    "h": 223
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "restHalf",
+   "human_category": "rest",
+   "bbox": {
+    "x": 550,
+    "y": 496,
+    "w": 103,
+    "h": 44
+   },
+   "notes": ""
+  }
+ ]
+}

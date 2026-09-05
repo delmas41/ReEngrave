@@ -1,0 +1,18 @@
+{
+ "cell_id": "elgar1-p101-sys0-s10-m9",
+ "candidates": [
+  {
+   "smufl_name": "tie",
+   "category": "structural",
+   "family": "tie",
+   "confidence": 0.8417,
+   "ink": 0.3349,
+   "bbox": {
+    "x": 509,
+    "y": 156,
+    "w": 641,
+    "h": 80
+   }
+  }
+ ]
+}

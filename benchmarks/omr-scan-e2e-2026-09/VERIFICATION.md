@@ -281,3 +281,29 @@ default config (tilt localization ON × choir cues ON); every earlier pooled
 figure (10-row 0.8387/0.8345 included) is on the other side of the boundary
 and is never compared across it. The re-stamp run's figures are recorded in
 the second baseline addendum beside WIDENED_BASELINE_2026-09-04.md.
+
+---
+
+## 2026-09-05 — Nine more rows promoted: the gate reaches 20, in continuous spans
+
+Tranche 2 (drafted on `claude/scan-gate-rows-2`, checklist + 33 crops in
+`crops-2026-09-05/`), verified by Sean against the rendered crops after the
+advisor session pre-read every decisive crop. The engraver carried almost all
+of it: Beethoven p3/p4 close on printed 49/65/83/98/113 (both twins, windows
+transferring by the established plate identity); Brahms p3/p4 on printed
+23/29/38-with-Allegro/48/59, including the corpus's first REPEAT BARLINE
+(the m39–40 start-repeat, future repeat-export test material); Mahler p4/p5
+on printed 17/24/32 (twice per page, as always on this Peters plate); Dvořák
+p7 counted on numbered strips (mm 16–30) and anchored mid-page by the m23‖24
+double bar + "Allegro molto. M.M. ♩=136" + 2/4-with-repeat-dots. The one
+drafter correction — 984073-p4's two systems printing DIFFERENT lineups
+(system 1: no Tp., Vcl./Basso split; system 2: Tp. restored, "Bassi.") — is
+proven by the printed margins and reference-corroborated (Timpani's first
+note exactly m98). Known pipeline miscounts recorded in the rows (the Mahler
+p4 header sliver; 575951-p4's gained mm94–95 barline) are read facts, not
+window facts.
+
+⚠️ **Boundary: the pool becomes TWENTY rows at the post-reconciliation
+re-stamp**, and no pooled figure crosses that line in either direction. The
+11-row era's figures (0.8303 composed canonical included) are history the
+moment the 20-row baseline is stamped.

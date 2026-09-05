@@ -1,0 +1,3598 @@
+{
+  "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
+  "conf_threshold": 0.45,
+  "device": "auto",
+  "per_cell": {
+    "brahms1-p15-sys0-s0-m0": {
+      "n_detections": 51,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45027562975883484,
+      "confidence_max": 0.817760705947876,
+      "confidence_mean": 0.5507401555192237,
+      "confidence_median": 0.5092126131057739,
+      "category_breakdown": {
+        "notehead": 49,
+        "accidental": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 51,
+        "all_times_s": [
+          3.277710625
+        ],
+        "median_s_excluding_warmup": 3.277710625,
+        "mean_s_excluding_warmup": 3.277710625
+      }
+    },
+    "brahms1-p10-sys0-s1-m6": {
+      "n_detections": 31,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4511089026927948,
+      "confidence_max": 0.7406153678894043,
+      "confidence_mean": 0.5299772216427711,
+      "confidence_median": 0.5212627649307251,
+      "category_breakdown": {
+        "notehead": 31
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 31,
+        "all_times_s": [
+          2.7205478750000003
+        ],
+        "median_s_excluding_warmup": 2.7205478750000003,
+        "mean_s_excluding_warmup": 2.7205478750000003
+      }
+    },
+    "brahms1-p5-sys0-s3-m4": {
+      "n_detections": 68,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45106416940689087,
+      "confidence_max": 0.7071785926818848,
+      "confidence_mean": 0.5263573268757147,
+      "confidence_median": 0.5093295574188232,
+      "category_breakdown": {
+        "notehead": 67,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 68,
+        "all_times_s": [
+          3.3958977919999995
+        ],
+        "median_s_excluding_warmup": 3.3958977919999995,
+        "mean_s_excluding_warmup": 3.3958977919999995
+      }
+    },
+    "brahms1-p12-sys0-s2-m8": {
+      "n_detections": 32,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4626834988594055,
+      "confidence_max": 0.6643604636192322,
+      "confidence_mean": 0.5281930826604366,
+      "confidence_median": 0.5168481171131134,
+      "category_breakdown": {
+        "notehead": 32
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 32,
+        "all_times_s": [
+          2.3717169159999987
+        ],
+        "median_s_excluding_warmup": 2.3717169159999987,
+        "mean_s_excluding_warmup": 2.3717169159999987
+      }
+    },
+    "brahms1-p8-sys0-s1-m6": {
+      "n_detections": 3,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.5471028089523315,
+      "confidence_max": 0.6435981392860413,
+      "confidence_mean": 0.5878586371739706,
+      "confidence_median": 0.5728749632835388,
+      "category_breakdown": {
+        "notehead": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 3,
+        "all_times_s": [
+          2.0364703749999986
+        ],
+        "median_s_excluding_warmup": 2.0364703749999986,
+        "mean_s_excluding_warmup": 2.0364703749999986
+      }
+    },
+    "brahms1-p5-sys0-s0-m9": {
+      "n_detections": 8,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.506438136100769,
+      "confidence_max": 0.7100671529769897,
+      "confidence_mean": 0.5995450541377068,
+      "confidence_median": 0.6000052094459534,
+      "category_breakdown": {
+        "notehead": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 8,
+        "all_times_s": [
+          2.969515834000001
+        ],
+        "median_s_excluding_warmup": 2.969515834000001,
+        "mean_s_excluding_warmup": 2.969515834000001
+      }
+    },
+    "brahms1-p11-sys0-s11-m0": {
+      "n_detections": 30,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46037131547927856,
+      "confidence_max": 0.7200073003768921,
+      "confidence_mean": 0.5361111481984456,
+      "confidence_median": 0.529021292924881,
+      "category_breakdown": {
+        "notehead": 30
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 30,
+        "all_times_s": [
+          1.447744083
+        ],
+        "median_s_excluding_warmup": 1.447744083,
+        "mean_s_excluding_warmup": 1.447744083
+      }
+    },
+    "brahms1-p11-sys0-s3-m3": {
+      "n_detections": 22,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45168817043304443,
+      "confidence_max": 0.8640044331550598,
+      "confidence_mean": 0.5232234204357321,
+      "confidence_median": 0.47713401913642883,
+      "category_breakdown": {
+        "notehead": 21,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 22,
+        "all_times_s": [
+          2.746557124999999
+        ],
+        "median_s_excluding_warmup": 2.746557124999999,
+        "mean_s_excluding_warmup": 2.746557124999999
+      }
+    },
+    "brahms1-p14-sys0-s0-m0": {
+      "n_detections": 31,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4500039517879486,
+      "confidence_max": 0.8407682776451111,
+      "confidence_mean": 0.5663300550753071,
+      "confidence_median": 0.5180172920227051,
+      "category_breakdown": {
+        "notehead": 30,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 31,
+        "all_times_s": [
+          1.8502798749999982
+        ],
+        "median_s_excluding_warmup": 1.8502798749999982,
+        "mean_s_excluding_warmup": 1.8502798749999982
+      }
+    },
+    "brahms1-p5-sys0-s2-m6": {
+      "n_detections": 19,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4552011489868164,
+      "confidence_max": 0.6786156296730042,
+      "confidence_mean": 0.5158590501860568,
+      "confidence_median": 0.5034719705581665,
+      "category_breakdown": {
+        "notehead": 19
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 19,
+        "all_times_s": [
+          3.0319919590000026
+        ],
+        "median_s_excluding_warmup": 3.0319919590000026,
+        "mean_s_excluding_warmup": 3.0319919590000026
+      }
+    },
+    "brahms1-p6-sys0-s1-m0": {
+      "n_detections": 48,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45098191499710083,
+      "confidence_max": 0.7824505567550659,
+      "confidence_mean": 0.5561102448652188,
+      "confidence_median": 0.5328331589698792,
+      "category_breakdown": {
+        "notehead": 46,
+        "structural": 1,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 48,
+        "all_times_s": [
+          1.4226082499999997
+        ],
+        "median_s_excluding_warmup": 1.4226082499999997,
+        "mean_s_excluding_warmup": 1.4226082499999997
+      }
+    },
+    "brahms1-p16-sys1-s22-m9": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4586954116821289,
+      "confidence_max": 0.7342764735221863,
+      "confidence_mean": 0.5351617102112088,
+      "confidence_median": 0.5224664211273193,
+      "category_breakdown": {
+        "notehead": 26,
+        "flag": 1,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          3.0583843749999993
+        ],
+        "median_s_excluding_warmup": 3.0583843749999993,
+        "mean_s_excluding_warmup": 3.0583843749999993
+      }
+    },
+    "brahms1-p10-sys1-s12-m4": {
+      "n_detections": 18,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4515322744846344,
+      "confidence_max": 1.0,
+      "confidence_mean": 0.6393742826249864,
+      "confidence_median": 0.5025953054428101,
+      "category_breakdown": {
+        "notehead": 12,
+        "rest": 1,
+        "structural": 5
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "restHalf",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "staff",
+        "staff",
+        "staff",
+        "staff",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 18,
+        "all_times_s": [
+          2.0320672500000043
+        ],
+        "median_s_excluding_warmup": 2.0320672500000043,
+        "mean_s_excluding_warmup": 2.0320672500000043
+      }
+    },
+    "brahms1-p6-sys0-s2-m0": {
+      "n_detections": 44,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45787516236305237,
+      "confidence_max": 0.831866979598999,
+      "confidence_mean": 0.5740934515541251,
+      "confidence_median": 0.5313158333301544,
+      "category_breakdown": {
+        "notehead": 41,
+        "rest": 1,
+        "accidental": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 44,
+        "all_times_s": [
+          1.5667436250000009
+        ],
+        "median_s_excluding_warmup": 1.5667436250000009,
+        "mean_s_excluding_warmup": 1.5667436250000009
+      }
+    },
+    "brahms1-p6-sys0-s0-m0": {
+      "n_detections": 45,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45305076241493225,
+      "confidence_max": 0.8640525341033936,
+      "confidence_mean": 0.577353568871816,
+      "confidence_median": 0.5416340827941895,
+      "category_breakdown": {
+        "notehead": 44,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 45,
+        "all_times_s": [
+          1.4913262500000002
+        ],
+        "median_s_excluding_warmup": 1.4913262500000002,
+        "mean_s_excluding_warmup": 1.4913262500000002
+      }
+    },
+    "brahms1-p5-sys0-s1-m7": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4513120651245117,
+      "confidence_max": 0.7798589468002319,
+      "confidence_mean": 0.5485077181032726,
+      "confidence_median": 0.5398964285850525,
+      "category_breakdown": {
+        "notehead": 28
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          2.3573580420000013
+        ],
+        "median_s_excluding_warmup": 2.3573580420000013,
+        "mean_s_excluding_warmup": 2.3573580420000013
+      }
+    },
+    "brahms1-p13-sys1-s16-m8": {
+      "n_detections": 35,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4670787751674652,
+      "confidence_max": 0.999932050704956,
+      "confidence_mean": 0.5841288200446537,
+      "confidence_median": 0.5507733225822449,
+      "category_breakdown": {
+        "structural": 2,
+        "notehead": 32,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "staff",
+        "staff",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "restHBar",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 35,
+        "all_times_s": [
+          2.8097641669999973
+        ],
+        "median_s_excluding_warmup": 2.8097641669999973,
+        "mean_s_excluding_warmup": 2.8097641669999973
+      }
+    },
+    "brahms1-p10-sys0-s0-m0": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4542677402496338,
+      "confidence_max": 0.8331581950187683,
+      "confidence_mean": 0.546059804743734,
+      "confidence_median": 0.5275311470031738,
+      "category_breakdown": {
+        "notehead": 28,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          1.513854957999996
+        ],
+        "median_s_excluding_warmup": 1.513854957999996,
+        "mean_s_excluding_warmup": 1.513854957999996
+      }
+    },
+    "brahms1-p12-sys0-s0-m0": {
+      "n_detections": 37,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4526771008968353,
+      "confidence_max": 0.7857720255851746,
+      "confidence_mean": 0.5118241745072443,
+      "confidence_median": 0.49602922797203064,
+      "category_breakdown": {
+        "notehead": 36,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "ledgerLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 37,
+        "all_times_s": [
+          1.8613555840000018
+        ],
+        "median_s_excluding_warmup": 1.8613555840000018,
+        "mean_s_excluding_warmup": 1.8613555840000018
+      }
+    },
+    "brahms1-p6-sys1-s24-m6": {
+      "n_detections": 33,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4528985023498535,
+      "confidence_max": 0.724131166934967,
+      "confidence_mean": 0.5603234207991398,
+      "confidence_median": 0.5438950657844543,
+      "category_breakdown": {
+        "notehead": 32,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 33,
+        "all_times_s": [
+          2.2991254999999953
+        ],
+        "median_s_excluding_warmup": 2.2991254999999953,
+        "mean_s_excluding_warmup": 2.2991254999999953
+      }
+    },
+    "brahms1-p5-sys1-s14-m4": {
+      "n_detections": 23,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45033663511276245,
+      "confidence_max": 0.694857120513916,
+      "confidence_mean": 0.5233735131180804,
+      "confidence_median": 0.5120457410812378,
+      "category_breakdown": {
+        "notehead": 22,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 23,
+        "all_times_s": [
+          2.7528234580000017
+        ],
+        "median_s_excluding_warmup": 2.7528234580000017,
+        "mean_s_excluding_warmup": 2.7528234580000017
+      }
+    },
+    "brahms1-p8-sys0-s2-m5": {
+      "n_detections": 19,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45699262619018555,
+      "confidence_max": 0.717928946018219,
+      "confidence_mean": 0.5549375744242417,
+      "confidence_median": 0.5569707751274109,
+      "category_breakdown": {
+        "notehead": 18,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 19,
+        "all_times_s": [
+          2.8261352080000037
+        ],
+        "median_s_excluding_warmup": 2.8261352080000037,
+        "mean_s_excluding_warmup": 2.8261352080000037
+      }
+    },
+    "brahms1-p13-sys1-s24-m6": {
+      "n_detections": 22,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45385482907295227,
+      "confidence_max": 0.5984683632850647,
+      "confidence_mean": 0.5084966190836646,
+      "confidence_median": 0.4992675185203552,
+      "category_breakdown": {
+        "notehead": 22
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 22,
+        "all_times_s": [
+          3.320288208000001
+        ],
+        "median_s_excluding_warmup": 3.320288208000001,
+        "mean_s_excluding_warmup": 3.320288208000001
+      }
+    },
+    "brahms1-p10-sys1-s15-m0": {
+      "n_detections": 33,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4522385001182556,
+      "confidence_max": 0.8898552656173706,
+      "confidence_mean": 0.5789314409097036,
+      "confidence_median": 0.5285066962242126,
+      "category_breakdown": {
+        "notehead": 27,
+        "rest": 1,
+        "ornament": 1,
+        "accidental": 4
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 33,
+        "all_times_s": [
+          1.4805167499999996
+        ],
+        "median_s_excluding_warmup": 1.4805167499999996,
+        "mean_s_excluding_warmup": 1.4805167499999996
+      }
+    },
+    "brahms1-p11-sys1-s13-m5": {
+      "n_detections": 17,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45274442434310913,
+      "confidence_max": 0.733554482460022,
+      "confidence_mean": 0.5597408010679132,
+      "confidence_median": 0.5405652523040771,
+      "category_breakdown": {
+        "notehead": 16,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 17,
+        "all_times_s": [
+          2.2853517080000003
+        ],
+        "median_s_excluding_warmup": 2.2853517080000003,
+        "mean_s_excluding_warmup": 2.2853517080000003
+      }
+    },
+    "brahms1-p8-sys1-s13-m0": {
+      "n_detections": 52,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45082902908325195,
+      "confidence_max": 0.8200917840003967,
+      "confidence_mean": 0.5306469608957951,
+      "confidence_median": 0.5185562074184418,
+      "category_breakdown": {
+        "notehead": 51,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 52,
+        "all_times_s": [
+          1.818565458000002
+        ],
+        "median_s_excluding_warmup": 1.818565458000002,
+        "mean_s_excluding_warmup": 1.818565458000002
+      }
+    },
+    "brahms1-p5-sys0-s11-m0": {
+      "n_detections": 47,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45044299960136414,
+      "confidence_max": 0.8193190693855286,
+      "confidence_mean": 0.5404868519052546,
+      "confidence_median": 0.5277071595191956,
+      "category_breakdown": {
+        "notehead": 47
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 47,
+        "all_times_s": [
+          2.417289750000002
+        ],
+        "median_s_excluding_warmup": 2.417289750000002,
+        "mean_s_excluding_warmup": 2.417289750000002
+      }
+    },
+    "brahms1-p15-sys0-s13-m2": {
+      "n_detections": 27,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45580896735191345,
+      "confidence_max": 0.6628282070159912,
+      "confidence_mean": 0.5079047790280095,
+      "confidence_median": 0.49803733825683594,
+      "category_breakdown": {
+        "notehead": 26,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 27,
+        "all_times_s": [
+          2.812223582999991
+        ],
+        "median_s_excluding_warmup": 2.812223582999991,
+        "mean_s_excluding_warmup": 2.812223582999991
+      }
+    },
+    "brahms1-p15-sys0-s2-m4": {
+      "n_detections": 59,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4624248147010803,
+      "confidence_max": 0.7700874209403992,
+      "confidence_mean": 0.5580993875608606,
+      "confidence_median": 0.5320286750793457,
+      "category_breakdown": {
+        "notehead": 58,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 59,
+        "all_times_s": [
+          2.140821625000001
+        ],
+        "median_s_excluding_warmup": 2.140821625000001,
+        "mean_s_excluding_warmup": 2.140821625000001
+      }
+    },
+    "brahms1-p11-sys0-s1-m6": {
+      "n_detections": 34,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4517804682254791,
+      "confidence_max": 0.78836590051651,
+      "confidence_mean": 0.5533335506916046,
+      "confidence_median": 0.516038179397583,
+      "category_breakdown": {
+        "notehead": 32,
+        "rest": 1,
+        "dynamic": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 34,
+        "all_times_s": [
+          2.059144333000006
+        ],
+        "median_s_excluding_warmup": 2.059144333000006,
+        "mean_s_excluding_warmup": 2.059144333000006
+      }
+    },
+    "brahms1-p13-sys1-s26-m8": {
+      "n_detections": 43,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46264883875846863,
+      "confidence_max": 0.7980382442474365,
+      "confidence_mean": 0.5678307497224142,
+      "confidence_median": 0.5466428995132446,
+      "category_breakdown": {
+        "notehead": 42,
+        "dynamic": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 43,
+        "all_times_s": [
+          2.7398702499999956
+        ],
+        "median_s_excluding_warmup": 2.7398702499999956,
+        "mean_s_excluding_warmup": 2.7398702499999956
+      }
+    },
+    "brahms1-p5-sys1-s25-m8": {
+      "n_detections": 33,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4503626525402069,
+      "confidence_max": 0.8740342259407043,
+      "confidence_mean": 0.5529440478845076,
+      "confidence_median": 0.5313372015953064,
+      "category_breakdown": {
+        "notehead": 31,
+        "flag": 1,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "flag8thDown",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 33,
+        "all_times_s": [
+          2.1450066250000077
+        ],
+        "median_s_excluding_warmup": 2.1450066250000077,
+        "mean_s_excluding_warmup": 2.1450066250000077
+      }
+    },
+    "brahms1-p6-sys0-s12-m4": {
+      "n_detections": 23,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45237988233566284,
+      "confidence_max": 0.8011909127235413,
+      "confidence_mean": 0.5329240793767183,
+      "confidence_median": 0.5017502307891846,
+      "category_breakdown": {
+        "notehead": 22,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 23,
+        "all_times_s": [
+          2.0668845000000005
+        ],
+        "median_s_excluding_warmup": 2.0668845000000005,
+        "mean_s_excluding_warmup": 2.0668845000000005
+      }
+    },
+    "brahms1-p10-sys0-s2-m4": {
+      "n_detections": 34,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4540068209171295,
+      "confidence_max": 0.7164667844772339,
+      "confidence_mean": 0.5242487884619657,
+      "confidence_median": 0.5081278681755066,
+      "category_breakdown": {
+        "notehead": 34
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 34,
+        "all_times_s": [
+          3.5409034169999956
+        ],
+        "median_s_excluding_warmup": 3.5409034169999956,
+        "mean_s_excluding_warmup": 3.5409034169999956
+      }
+    },
+    "brahms1-p11-sys0-s0-m0": {
+      "n_detections": 32,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45271462202072144,
+      "confidence_max": 0.7388920187950134,
+      "confidence_mean": 0.5451427800580859,
+      "confidence_median": 0.5472382307052612,
+      "category_breakdown": {
+        "notehead": 30,
+        "structural": 1,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 32,
+        "all_times_s": [
+          1.5595678329999885
+        ],
+        "median_s_excluding_warmup": 1.5595678329999885,
+        "mean_s_excluding_warmup": 1.5595678329999885
+      }
+    },
+    "brahms1-p11-sys0-s7-m5": {
+      "n_detections": 11,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4504900574684143,
+      "confidence_max": 0.595388650894165,
+      "confidence_mean": 0.5277436917478388,
+      "confidence_median": 0.5243019461631775,
+      "category_breakdown": {
+        "notehead": 11
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 11,
+        "all_times_s": [
+          2.8737528330000117
+        ],
+        "median_s_excluding_warmup": 2.8737528330000117,
+        "mean_s_excluding_warmup": 2.8737528330000117
+      }
+    },
+    "brahms1-p10-sys1-s13-m3": {
+      "n_detections": 27,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45296934247016907,
+      "confidence_max": 0.784762442111969,
+      "confidence_mean": 0.5380178469198721,
+      "confidence_median": 0.5018542408943176,
+      "category_breakdown": {
+        "notehead": 27
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 27,
+        "all_times_s": [
+          3.0372561669999953
+        ],
+        "median_s_excluding_warmup": 3.0372561669999953,
+        "mean_s_excluding_warmup": 3.0372561669999953
+      }
+    },
+    "brahms1-p13-sys1-s25-m7": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4682479798793793,
+      "confidence_max": 0.6701442003250122,
+      "confidence_mean": 0.5358356567365783,
+      "confidence_median": 0.5272340178489685,
+      "category_breakdown": {
+        "notehead": 28
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          2.4802591250000035
+        ],
+        "median_s_excluding_warmup": 2.4802591250000035,
+        "mean_s_excluding_warmup": 2.4802591250000035
+      }
+    },
+    "brahms1-p12-sys0-s9-m3": {
+      "n_detections": 20,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4555870592594147,
+      "confidence_max": 0.7966355085372925,
+      "confidence_mean": 0.5902697250247002,
+      "confidence_median": 0.6043327152729034,
+      "category_breakdown": {
+        "notehead": 19,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "rest8th",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 20,
+        "all_times_s": [
+          2.2034192090000033
+        ],
+        "median_s_excluding_warmup": 2.2034192090000033,
+        "mean_s_excluding_warmup": 2.2034192090000033
+      }
+    },
+    "brahms1-p11-sys1-s22-m1": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4594274163246155,
+      "confidence_max": 0.6609519720077515,
+      "confidence_mean": 0.565602320432663,
+      "confidence_median": 0.5896608531475067,
+      "category_breakdown": {
+        "notehead": 9,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "rest8th",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          2.0359299170000043
+        ],
+        "median_s_excluding_warmup": 2.0359299170000043,
+        "mean_s_excluding_warmup": 2.0359299170000043
+      }
+    },
+    "brahms1-p7-sys1-s13-m0": {
+      "n_detections": 21,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4519694447517395,
+      "confidence_max": 0.8499630093574524,
+      "confidence_mean": 0.5871145100820632,
+      "confidence_median": 0.5734796524047852,
+      "category_breakdown": {
+        "notehead": 20,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "accidentalDoubleSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 21,
+        "all_times_s": [
+          1.4150287080000084
+        ],
+        "median_s_excluding_warmup": 1.4150287080000084,
+        "mean_s_excluding_warmup": 1.4150287080000084
+      }
+    },
+    "brahms1-p11-sys1-s14-m4": {
+      "n_detections": 26,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46160706877708435,
+      "confidence_max": 0.6665986180305481,
+      "confidence_mean": 0.5370583236217499,
+      "confidence_median": 0.5349774360656738,
+      "category_breakdown": {
+        "notehead": 26
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 26,
+        "all_times_s": [
+          2.788032000000001
+        ],
+        "median_s_excluding_warmup": 2.788032000000001,
+        "mean_s_excluding_warmup": 2.788032000000001
+      }
+    },
+    "brahms1-p8-sys1-s14-m3": {
+      "n_detections": 20,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45556697249412537,
+      "confidence_max": 0.7622251510620117,
+      "confidence_mean": 0.5550438165664673,
+      "confidence_median": 0.5036661028862,
+      "category_breakdown": {
+        "notehead": 17,
+        "structural": 3
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 20,
+        "all_times_s": [
+          3.0589070420000013
+        ],
+        "median_s_excluding_warmup": 3.0589070420000013,
+        "mean_s_excluding_warmup": 3.0589070420000013
+      }
+    },
+    "brahms1-p10-sys0-s10-m0": {
+      "n_detections": 50,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4505908787250519,
+      "confidence_max": 0.7521719336509705,
+      "confidence_mean": 0.546623346209526,
+      "confidence_median": 0.5477756559848785,
+      "category_breakdown": {
+        "notehead": 47,
+        "structural": 1,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 50,
+        "all_times_s": [
+          1.3543095410000063
+        ],
+        "median_s_excluding_warmup": 1.3543095410000063,
+        "mean_s_excluding_warmup": 1.3543095410000063
+      }
+    },
+    "brahms1-p12-sys1-s27-m0": {
+      "n_detections": 33,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45132601261138916,
+      "confidence_max": 0.8453373312950134,
+      "confidence_mean": 0.5587523995023785,
+      "confidence_median": 0.5297951698303223,
+      "category_breakdown": {
+        "notehead": 30,
+        "rest": 2,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 33,
+        "all_times_s": [
+          1.6329259170000086
+        ],
+        "median_s_excluding_warmup": 1.6329259170000086,
+        "mean_s_excluding_warmup": 1.6329259170000086
+      }
+    },
+    "brahms1-p6-sys1-s25-m4": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45863568782806396,
+      "confidence_max": 0.7692006230354309,
+      "confidence_mean": 0.5887674853719514,
+      "confidence_median": 0.5863901376724243,
+      "category_breakdown": {
+        "notehead": 28,
+        "stem": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          2.3773496660000006
+        ],
+        "median_s_excluding_warmup": 2.3773496660000006,
+        "mean_s_excluding_warmup": 2.3773496660000006
+      }
+    },
+    "brahms1-p11-sys1-s15-m4": {
+      "n_detections": 17,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45435768365859985,
+      "confidence_max": 0.6717175245285034,
+      "confidence_mean": 0.5210220410543329,
+      "confidence_median": 0.48949670791625977,
+      "category_breakdown": {
+        "notehead": 15,
+        "structural": 1,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 17,
+        "all_times_s": [
+          2.8080168329999964
+        ],
+        "median_s_excluding_warmup": 2.8080168329999964,
+        "mean_s_excluding_warmup": 2.8080168329999964
+      }
+    },
+    "brahms1-p5-sys1-s22-m7": {
+      "n_detections": 14,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46405524015426636,
+      "confidence_max": 0.6478962302207947,
+      "confidence_mean": 0.5592441133090428,
+      "confidence_median": 0.5627766847610474,
+      "category_breakdown": {
+        "flag": 1,
+        "notehead": 12,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "ornamentMordent",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 14,
+        "all_times_s": [
+          2.1929961250000076
+        ],
+        "median_s_excluding_warmup": 2.1929961250000076,
+        "mean_s_excluding_warmup": 2.1929961250000076
+      }
+    },
+    "brahms1-p8-sys1-s16-m2": {
+      "n_detections": 7,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.49153563380241394,
+      "confidence_max": 0.6818124651908875,
+      "confidence_mean": 0.5539484066622598,
+      "confidence_median": 0.5319381356239319,
+      "category_breakdown": {
+        "notehead": 7
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 7,
+        "all_times_s": [
+          2.9788770000000113
+        ],
+        "median_s_excluding_warmup": 2.9788770000000113,
+        "mean_s_excluding_warmup": 2.9788770000000113
+      }
+    },
+    "brahms1-p13-sys0-s0-m0": {
+      "n_detections": 31,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4516889452934265,
+      "confidence_max": 0.8467800617218018,
+      "confidence_mean": 0.5469832977940959,
+      "confidence_median": 0.5148146152496338,
+      "category_breakdown": {
+        "notehead": 29,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 31,
+        "all_times_s": [
+          2.3256476669999984
+        ],
+        "median_s_excluding_warmup": 2.3256476669999984,
+        "mean_s_excluding_warmup": 2.3256476669999984
+      }
+    },
+    "brahms1-p11-sys0-s12-m6": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45489606261253357,
+      "confidence_max": 0.7355769872665405,
+      "confidence_mean": 0.5514760560223034,
+      "confidence_median": 0.5483874082565308,
+      "category_breakdown": {
+        "accidental": 1,
+        "rest": 1,
+        "notehead": 26
+      },
+      "sample_class_labels": [
+        "keySharp",
+        "restQuarter",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          2.345674666000008
+        ],
+        "median_s_excluding_warmup": 2.345674666000008,
+        "mean_s_excluding_warmup": 2.345674666000008
+      }
+    },
+    "brahms1-p11-sys1-s26-m0": {
+      "n_detections": 21,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4633650481700897,
+      "confidence_max": 0.898345947265625,
+      "confidence_mean": 0.5744285838944572,
+      "confidence_median": 0.5306389331817627,
+      "category_breakdown": {
+        "notehead": 20,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 21,
+        "all_times_s": [
+          1.485451458
+        ],
+        "median_s_excluding_warmup": 1.485451458,
+        "mean_s_excluding_warmup": 1.485451458
+      }
+    },
+    "brahms1-p15-sys1-s14-m0": {
+      "n_detections": 66,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4521794617176056,
+      "confidence_max": 0.8284748196601868,
+      "confidence_mean": 0.5615091522534689,
+      "confidence_median": 0.5378538966178894,
+      "category_breakdown": {
+        "notehead": 65,
+        "ornament": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 66,
+        "all_times_s": [
+          1.8748271670000065
+        ],
+        "median_s_excluding_warmup": 1.8748271670000065,
+        "mean_s_excluding_warmup": 1.8748271670000065
+      }
+    },
+    "brahms1-p6-sys0-s13-m5": {
+      "n_detections": 13,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4501723051071167,
+      "confidence_max": 0.8069728016853333,
+      "confidence_mean": 0.5731140604385963,
+      "confidence_median": 0.5296329855918884,
+      "category_breakdown": {
+        "notehead": 12,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "accidentalDoubleSharp",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 13,
+        "all_times_s": [
+          2.2116892089999993
+        ],
+        "median_s_excluding_warmup": 2.2116892089999993,
+        "mean_s_excluding_warmup": 2.2116892089999993
+      }
+    },
+    "brahms1-p8-sys0-s0-m0": {
+      "n_detections": 16,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4542016088962555,
+      "confidence_max": 0.6630395650863647,
+      "confidence_mean": 0.531562115997076,
+      "confidence_median": 0.5249528884887695,
+      "category_breakdown": {
+        "notehead": 16
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 16,
+        "all_times_s": [
+          2.0427881660000082
+        ],
+        "median_s_excluding_warmup": 2.0427881660000082,
+        "mean_s_excluding_warmup": 2.0427881660000082
+      }
+    },
+    "brahms1-p11-sys1-s18-m3": {
+      "n_detections": 32,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.454154372215271,
+      "confidence_max": 0.8579208850860596,
+      "confidence_mean": 0.5892949244007468,
+      "confidence_median": 0.5873534083366394,
+      "category_breakdown": {
+        "notehead": 32
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 32,
+        "all_times_s": [
+          1.4683573750000107
+        ],
+        "median_s_excluding_warmup": 1.4683573750000107,
+        "mean_s_excluding_warmup": 1.4683573750000107
+      }
+    },
+    "brahms1-p9-sys0-s7-m9": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45945146679878235,
+      "confidence_max": 0.719774067401886,
+      "confidence_mean": 0.5446868514021238,
+      "confidence_median": 0.5142143368721008,
+      "category_breakdown": {
+        "notehead": 12
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          3.2714654170000017
+        ],
+        "median_s_excluding_warmup": 3.2714654170000017,
+        "mean_s_excluding_warmup": 3.2714654170000017
+      }
+    },
+    "brahms1-p13-sys1-s15-m6": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45083940029144287,
+      "confidence_max": 0.7040225863456726,
+      "confidence_mean": 0.532878289265292,
+      "confidence_median": 0.5078361928462982,
+      "category_breakdown": {
+        "notehead": 28
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          3.578819624999994
+        ],
+        "median_s_excluding_warmup": 3.578819624999994,
+        "mean_s_excluding_warmup": 3.578819624999994
+      }
+    },
+    "brahms1-p11-sys0-s6-m7": {
+      "n_detections": 13,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45345866680145264,
+      "confidence_max": 0.7495019435882568,
+      "confidence_mean": 0.5274800062179565,
+      "confidence_median": 0.5002393126487732,
+      "category_breakdown": {
+        "notehead": 10,
+        "ornament": 1,
+        "rest": 1,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "articAccentBelow"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 13,
+        "all_times_s": [
+          2.438563457999976
+        ],
+        "median_s_excluding_warmup": 2.438563457999976,
+        "mean_s_excluding_warmup": 2.438563457999976
+      }
+    },
+    "brahms1-p6-sys0-s11-m4": {
+      "n_detections": 31,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4508981704711914,
+      "confidence_max": 0.7227321863174438,
+      "confidence_mean": 0.536961616046967,
+      "confidence_median": 0.5285430550575256,
+      "category_breakdown": {
+        "notehead": 30,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 31,
+        "all_times_s": [
+          1.8977056250000146
+        ],
+        "median_s_excluding_warmup": 1.8977056250000146,
+        "mean_s_excluding_warmup": 1.8977056250000146
+      }
+    },
+    "brahms1-p10-sys0-s5-m0": {
+      "n_detections": 33,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4533993601799011,
+      "confidence_max": 0.8362904787063599,
+      "confidence_mean": 0.5538520361437942,
+      "confidence_median": 0.5122994780540466,
+      "category_breakdown": {
+        "notehead": 32,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 33,
+        "all_times_s": [
+          1.4187484580000103
+        ],
+        "median_s_excluding_warmup": 1.4187484580000103,
+        "mean_s_excluding_warmup": 1.4187484580000103
+      }
+    },
+    "brahms1-p10-sys1-s20-m7": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4515473246574402,
+      "confidence_max": 0.7607349753379822,
+      "confidence_mean": 0.5792151309292892,
+      "confidence_median": 0.5770724415779114,
+      "category_breakdown": {
+        "notehead": 27,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          2.1528059579999876
+        ],
+        "median_s_excluding_warmup": 2.1528059579999876,
+        "mean_s_excluding_warmup": 2.1528059579999876
+      }
+    },
+    "brahms1-p13-sys1-s23-m5": {
+      "n_detections": 37,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45114344358444214,
+      "confidence_max": 0.7886404991149902,
+      "confidence_mean": 0.5209666063656678,
+      "confidence_median": 0.5143967866897583,
+      "category_breakdown": {
+        "notehead": 36,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 37,
+        "all_times_s": [
+          3.1253412079999805
+        ],
+        "median_s_excluding_warmup": 3.1253412079999805,
+        "mean_s_excluding_warmup": 3.1253412079999805
+      }
+    },
+    "brahms1-p15-sys1-s19-m5": {
+      "n_detections": 26,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45470529794692993,
+      "confidence_max": 0.740307092666626,
+      "confidence_mean": 0.5406617682713729,
+      "confidence_median": 0.5269752740859985,
+      "category_breakdown": {
+        "notehead": 26
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 26,
+        "all_times_s": [
+          3.0786796250000066
+        ],
+        "median_s_excluding_warmup": 3.0786796250000066,
+        "mean_s_excluding_warmup": 3.0786796250000066
+      }
+    },
+    "brahms1-p7-sys0-s9-m8": {
+      "n_detections": 38,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4562740623950958,
+      "confidence_max": 0.8395596742630005,
+      "confidence_mean": 0.5344703942537308,
+      "confidence_median": 0.5106725990772247,
+      "category_breakdown": {
+        "notehead": 38
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 38,
+        "all_times_s": [
+          2.483563916999998
+        ],
+        "median_s_excluding_warmup": 2.483563916999998,
+        "mean_s_excluding_warmup": 2.483563916999998
+      }
+    },
+    "brahms1-p7-sys1-s19-m1": {
+      "n_detections": 33,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4512219727039337,
+      "confidence_max": 0.6559775471687317,
+      "confidence_mean": 0.5289893800562079,
+      "confidence_median": 0.5136774182319641,
+      "category_breakdown": {
+        "notehead": 33
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 33,
+        "all_times_s": [
+          2.768341208999999
+        ],
+        "median_s_excluding_warmup": 2.768341208999999,
+        "mean_s_excluding_warmup": 2.768341208999999
+      }
+    },
+    "brahms1-p14-sys0-s2-m9": {
+      "n_detections": 32,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4544030427932739,
+      "confidence_max": 0.786385178565979,
+      "confidence_mean": 0.541625470854342,
+      "confidence_median": 0.5272423028945923,
+      "category_breakdown": {
+        "notehead": 32
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 32,
+        "all_times_s": [
+          4.027939499999974
+        ],
+        "median_s_excluding_warmup": 4.027939499999974,
+        "mean_s_excluding_warmup": 4.027939499999974
+      }
+    },
+    "brahms1-p14-sys0-s3-m8": {
+      "n_detections": 52,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4542776644229889,
+      "confidence_max": 0.7715325355529785,
+      "confidence_mean": 0.5459479930309149,
+      "confidence_median": 0.5139912068843842,
+      "category_breakdown": {
+        "notehead": 51,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 52,
+        "all_times_s": [
+          4.694432540999998
+        ],
+        "median_s_excluding_warmup": 4.694432540999998,
+        "mean_s_excluding_warmup": 4.694432540999998
+      }
+    },
+    "brahms1-p15-sys0-s4-m1": {
+      "n_detections": 46,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45268383622169495,
+      "confidence_max": 0.7667698860168457,
+      "confidence_mean": 0.5395639921012132,
+      "confidence_median": 0.52485191822052,
+      "category_breakdown": {
+        "notehead": 46
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 46,
+        "all_times_s": [
+          3.200834541000006
+        ],
+        "median_s_excluding_warmup": 3.200834541000006,
+        "mean_s_excluding_warmup": 3.200834541000006
+      }
+    },
+    "brahms1-p15-sys1-s16-m7": {
+      "n_detections": 14,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4567568898200989,
+      "confidence_max": 0.7352278232574463,
+      "confidence_mean": 0.5622339078358242,
+      "confidence_median": 0.5470102429389954,
+      "category_breakdown": {
+        "notehead": 14
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 14,
+        "all_times_s": [
+          2.8292132500000093
+        ],
+        "median_s_excluding_warmup": 2.8292132500000093,
+        "mean_s_excluding_warmup": 2.8292132500000093
+      }
+    },
+    "brahms1-p15-sys1-s24-m1": {
+      "n_detections": 43,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4555351734161377,
+      "confidence_max": 0.8017489910125732,
+      "confidence_mean": 0.5634207358193952,
+      "confidence_median": 0.5517761707305908,
+      "category_breakdown": {
+        "notehead": 43
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 43,
+        "all_times_s": [
+          2.4768102499999998
+        ],
+        "median_s_excluding_warmup": 2.4768102499999998,
+        "mean_s_excluding_warmup": 2.4768102499999998
+      }
+    },
+    "brahms1-p6-sys0-s3-m1": {
+      "n_detections": 36,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45130547881126404,
+      "confidence_max": 0.7227456569671631,
+      "confidence_mean": 0.5276529954539405,
+      "confidence_median": 0.4990021586418152,
+      "category_breakdown": {
+        "notehead": 34,
+        "rest": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 36,
+        "all_times_s": [
+          2.272760625000018
+        ],
+        "median_s_excluding_warmup": 2.272760625000018,
+        "mean_s_excluding_warmup": 2.272760625000018
+      }
+    },
+    "brahms1-p10-sys0-s7-m4": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4535173177719116,
+      "confidence_max": 0.6346789002418518,
+      "confidence_mean": 0.5314767867326736,
+      "confidence_median": 0.5297410786151886,
+      "category_breakdown": {
+        "notehead": 10
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          3.0926422089999903
+        ],
+        "median_s_excluding_warmup": 3.0926422089999903,
+        "mean_s_excluding_warmup": 3.0926422089999903
+      }
+    },
+    "brahms1-p14-sys0-s10-m3": {
+      "n_detections": 15,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4588058590888977,
+      "confidence_max": 0.79996657371521,
+      "confidence_mean": 0.5274898687998454,
+      "confidence_median": 0.5130531191825867,
+      "category_breakdown": {
+        "notehead": 15
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 15,
+        "all_times_s": [
+          3.147209958000019
+        ],
+        "median_s_excluding_warmup": 3.147209958000019,
+        "mean_s_excluding_warmup": 3.147209958000019
+      }
+    },
+    "brahms1-p5-sys0-s6-m8": {
+      "n_detections": 15,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45534035563468933,
+      "confidence_max": 0.8715030550956726,
+      "confidence_mean": 0.5328397214412689,
+      "confidence_median": 0.4661656618118286,
+      "category_breakdown": {
+        "notehead": 15
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 15,
+        "all_times_s": [
+          2.7456733749999955
+        ],
+        "median_s_excluding_warmup": 2.7456733749999955,
+        "mean_s_excluding_warmup": 2.7456733749999955
+      }
+    },
+    "brahms1-p10-sys0-s11-m6": {
+      "n_detections": 11,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46398216485977173,
+      "confidence_max": 0.6840053796768188,
+      "confidence_mean": 0.5473254729400981,
+      "confidence_median": 0.5478925704956055,
+      "category_breakdown": {
+        "notehead": 10,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 11,
+        "all_times_s": [
+          3.8955874170000016
+        ],
+        "median_s_excluding_warmup": 3.8955874170000016,
+        "mean_s_excluding_warmup": 3.8955874170000016
+      }
+    },
+    "brahms1-p10-sys1-s23-m3": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4691219627857208,
+      "confidence_max": 0.6910826563835144,
+      "confidence_mean": 0.5442944541573524,
+      "confidence_median": 0.5117363333702087,
+      "category_breakdown": {
+        "notehead": 12
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          3.531794333999983
+        ],
+        "median_s_excluding_warmup": 3.531794333999983,
+        "mean_s_excluding_warmup": 3.531794333999983
+      }
+    },
+    "brahms1-p11-sys0-s5-m8": {
+      "n_detections": 45,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4529585838317871,
+      "confidence_max": 0.6418176293373108,
+      "confidence_mean": 0.5351104040940603,
+      "confidence_median": 0.5290586352348328,
+      "category_breakdown": {
+        "notehead": 43,
+        "flag": 1,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 45,
+        "all_times_s": [
+          2.3119084169999837
+        ],
+        "median_s_excluding_warmup": 2.3119084169999837,
+        "mean_s_excluding_warmup": 2.3119084169999837
+      }
+    },
+    "brahms1-p11-sys1-s23-m1": {
+      "n_detections": 12,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45524734258651733,
+      "confidence_max": 0.686960756778717,
+      "confidence_mean": 0.5456950043638548,
+      "confidence_median": 0.5333294868469238,
+      "category_breakdown": {
+        "notehead": 11,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "rest8th",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 12,
+        "all_times_s": [
+          2.1273208750000094
+        ],
+        "median_s_excluding_warmup": 2.1273208750000094,
+        "mean_s_excluding_warmup": 2.1273208750000094
+      }
+    },
+    "brahms1-p12-sys0-s3-m8": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45187342166900635,
+      "confidence_max": 0.8445969820022583,
+      "confidence_mean": 0.5230984357850892,
+      "confidence_median": 0.5019092112779617,
+      "category_breakdown": {
+        "notehead": 28
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          2.6885025830000018
+        ],
+        "median_s_excluding_warmup": 2.6885025830000018,
+        "mean_s_excluding_warmup": 2.6885025830000018
+      }
+    },
+    "brahms1-p12-sys0-s12-m1": {
+      "n_detections": 29,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4573827385902405,
+      "confidence_max": 0.8116002082824707,
+      "confidence_mean": 0.5325168967247009,
+      "confidence_median": 0.49593502283096313,
+      "category_breakdown": {
+        "notehead": 27,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 29,
+        "all_times_s": [
+          3.343503124999984
+        ],
+        "median_s_excluding_warmup": 3.343503124999984,
+        "mean_s_excluding_warmup": 3.343503124999984
+      }
+    },
+    "brahms1-p13-sys0-s4-m0": {
+      "n_detections": 39,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45445752143859863,
+      "confidence_max": 0.7972467541694641,
+      "confidence_mean": 0.566463732566589,
+      "confidence_median": 0.5450559854507446,
+      "category_breakdown": {
+        "notehead": 39
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 39,
+        "all_times_s": [
+          2.2702050000000042
+        ],
+        "median_s_excluding_warmup": 2.2702050000000042,
+        "mean_s_excluding_warmup": 2.2702050000000042
+      }
+    },
+    "brahms1-p13-sys0-s8-m0": {
+      "n_detections": 28,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4601842164993286,
+      "confidence_max": 0.6261508464813232,
+      "confidence_mean": 0.541060249720301,
+      "confidence_median": 0.5333195328712463,
+      "category_breakdown": {
+        "notehead": 27,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 28,
+        "all_times_s": [
+          2.3326138330000106
+        ],
+        "median_s_excluding_warmup": 2.3326138330000106,
+        "mean_s_excluding_warmup": 2.3326138330000106
+      }
+    },
+    "brahms1-p16-sys1-s16-m2": {
+      "n_detections": 13,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4575907289981842,
+      "confidence_max": 0.8340972661972046,
+      "confidence_mean": 0.562646013039809,
+      "confidence_median": 0.49112915992736816,
+      "category_breakdown": {
+        "notehead": 12,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "beam",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 13,
+        "all_times_s": [
+          3.328103083000002
+        ],
+        "median_s_excluding_warmup": 3.328103083000002,
+        "mean_s_excluding_warmup": 3.328103083000002
+      }
+    },
+    "brahms1-p11-sys1-s17-m3": {
+      "n_detections": 39,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4572705924510956,
+      "confidence_max": 0.8770819306373596,
+      "confidence_mean": 0.5643357428220602,
+      "confidence_median": 0.5543789267539978,
+      "category_breakdown": {
+        "notehead": 38,
+        "accidental": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 39,
+        "all_times_s": [
+          1.5394798330000015
+        ],
+        "median_s_excluding_warmup": 1.5394798330000015,
+        "mean_s_excluding_warmup": 1.5394798330000015
+      }
+    },
+    "brahms1-p15-sys0-s6-m6": {
+      "n_detections": 32,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4524290859699249,
+      "confidence_max": 0.7502747774124146,
+      "confidence_mean": 0.5432598125189543,
+      "confidence_median": 0.5125121474266052,
+      "category_breakdown": {
+        "notehead": 29,
+        "rest": 2,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 32,
+        "all_times_s": [
+          2.715068374999987
+        ],
+        "median_s_excluding_warmup": 2.715068374999987,
+        "mean_s_excluding_warmup": 2.715068374999987
+      }
+    },
+    "brahms1-p16-sys0-s3-m8": {
+      "n_detections": 24,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4528234004974365,
+      "confidence_max": 0.6906218528747559,
+      "confidence_mean": 0.531841533879439,
+      "confidence_median": 0.5109634697437286,
+      "category_breakdown": {
+        "notehead": 24
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 24,
+        "all_times_s": [
+          3.295447375000009
+        ],
+        "median_s_excluding_warmup": 3.295447375000009,
+        "mean_s_excluding_warmup": 3.295447375000009
+      }
+    },
+    "brahms1-p16-sys1-s16-m11": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45090049505233765,
+      "confidence_max": 0.5542417764663696,
+      "confidence_mean": 0.49428097903728485,
+      "confidence_median": 0.5021261423826218,
+      "category_breakdown": {
+        "notehead": 10
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          4.224872457999993
+        ],
+        "median_s_excluding_warmup": 4.224872457999993,
+        "mean_s_excluding_warmup": 4.224872457999993
+      }
+    },
+    "brahms1-p5-sys0-s11-m9": {
+      "n_detections": 15,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45301640033721924,
+      "confidence_max": 0.6511020064353943,
+      "confidence_mean": 0.551352999607722,
+      "confidence_median": 0.555872917175293,
+      "category_breakdown": {
+        "notehead": 15
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 15,
+        "all_times_s": [
+          2.5474565840000025
+        ],
+        "median_s_excluding_warmup": 2.5474565840000025,
+        "mean_s_excluding_warmup": 2.5474565840000025
+      }
+    },
+    "brahms1-p6-sys1-s17-m0": {
+      "n_detections": 59,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45147812366485596,
+      "confidence_max": 0.8313103318214417,
+      "confidence_mean": 0.5628171699532007,
+      "confidence_median": 0.5308734178543091,
+      "category_breakdown": {
+        "notehead": 57,
+        "accidental": 1,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 59,
+        "all_times_s": [
+          1.9980415840000205
+        ],
+        "median_s_excluding_warmup": 1.9980415840000205,
+        "mean_s_excluding_warmup": 1.9980415840000205
+      }
+    },
+    "brahms1-p7-sys0-s8-m3": {
+      "n_detections": 46,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45104727149009705,
+      "confidence_max": 0.7406170964241028,
+      "confidence_mean": 0.5393856245538463,
+      "confidence_median": 0.5172592401504517,
+      "category_breakdown": {
+        "notehead": 46
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 46,
+        "all_times_s": [
+          2.143913166999994
+        ],
+        "median_s_excluding_warmup": 2.143913166999994,
+        "mean_s_excluding_warmup": 2.143913166999994
+      }
+    },
+    "brahms1-p14-sys1-s24-m3": {
+      "n_detections": 14,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4614747166633606,
+      "confidence_max": 0.7765600085258484,
+      "confidence_mean": 0.5404892116785049,
+      "confidence_median": 0.5094380974769592,
+      "category_breakdown": {
+        "notehead": 13,
+        "structural": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "beam"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 14,
+        "all_times_s": [
+          2.808201083
+        ],
+        "median_s_excluding_warmup": 2.808201083,
+        "mean_s_excluding_warmup": 2.808201083
+      }
+    },
+    "brahms1-p8-sys1-s14-m11": {
+      "n_detections": 9,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4546462595462799,
+      "confidence_max": 0.7069032788276672,
+      "confidence_mean": 0.5255580676926507,
+      "confidence_median": 0.5235869884490967,
+      "category_breakdown": {
+        "notehead": 9
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 9,
+        "all_times_s": [
+          3.003859540999997
+        ],
+        "median_s_excluding_warmup": 3.003859540999997,
+        "mean_s_excluding_warmup": 3.003859540999997
+      }
+    },
+    "brahms1-p8-sys1-s18-m1": {
+      "n_detections": 20,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4552805423736572,
+      "confidence_max": 0.7343689203262329,
+      "confidence_mean": 0.5369707509875298,
+      "confidence_median": 0.514490932226181,
+      "category_breakdown": {
+        "notehead": 18,
+        "dynamic": 1,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 20,
+        "all_times_s": [
+          2.6069417079999937
+        ],
+        "median_s_excluding_warmup": 2.6069417079999937,
+        "mean_s_excluding_warmup": 2.6069417079999937
+      }
+    },
+    "brahms1-p14-sys1-s19-m7": {
+      "n_detections": 22,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46512481570243835,
+      "confidence_max": 0.6274587512016296,
+      "confidence_mean": 0.5275744064287706,
+      "confidence_median": 0.5240864753723145,
+      "category_breakdown": {
+        "notehead": 21,
+        "rest": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 22,
+        "all_times_s": [
+          2.659332374999991
+        ],
+        "median_s_excluding_warmup": 2.659332374999991,
+        "mean_s_excluding_warmup": 2.659332374999991
+      }
+    },
+    "brahms1-p15-sys0-s8-m2": {
+      "n_detections": 14,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45517659187316895,
+      "confidence_max": 0.6178801655769348,
+      "confidence_mean": 0.5221354216337204,
+      "confidence_median": 0.5062884986400604,
+      "category_breakdown": {
+        "notehead": 14
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 14,
+        "all_times_s": [
+          2.7822353340000063
+        ],
+        "median_s_excluding_warmup": 2.7822353340000063,
+        "mean_s_excluding_warmup": 2.7822353340000063
+      }
+    },
+    "brahms1-p5-sys1-s24-m8": {
+      "n_detections": 46,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4508444368839264,
+      "confidence_max": 0.8011819124221802,
+      "confidence_mean": 0.5507676951263262,
+      "confidence_median": 0.5281343162059784,
+      "category_breakdown": {
+        "notehead": 44,
+        "structural": 2
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "beam",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 46,
+        "all_times_s": [
+          2.1851887499999805
+        ],
+        "median_s_excluding_warmup": 2.1851887499999805,
+        "mean_s_excluding_warmup": 2.1851887499999805
+      }
+    },
+    "brahms1-p6-sys1-s14-m5": {
+      "n_detections": 23,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4510936439037323,
+      "confidence_max": 0.7727629542350769,
+      "confidence_mean": 0.5345911396586377,
+      "confidence_median": 0.5148357152938843,
+      "category_breakdown": {
+        "notehead": 23
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 23,
+        "all_times_s": [
+          3.263842208
+        ],
+        "median_s_excluding_warmup": 3.263842208,
+        "mean_s_excluding_warmup": 3.263842208
+      }
+    },
+    "brahms1-p7-sys0-s7-m6": {
+      "n_detections": 41,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4525400400161743,
+      "confidence_max": 1.0,
+      "confidence_mean": 0.6252896175151919,
+      "confidence_median": 0.5720158219337463,
+      "category_breakdown": {
+        "notehead": 33,
+        "structural": 8
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "staff",
+        "staff",
+        "staff",
+        "staff",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 41,
+        "all_times_s": [
+          2.3675848750000057
+        ],
+        "median_s_excluding_warmup": 2.3675848750000057,
+        "mean_s_excluding_warmup": 2.3675848750000057
+      }
+    },
+    "brahms1-p7-sys0-s10-m6": {
+      "n_detections": 18,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45072704553604126,
+      "confidence_max": 0.791802704334259,
+      "confidence_mean": 0.5263974832163917,
+      "confidence_median": 0.5162710547447205,
+      "category_breakdown": {
+        "notehead": 18
+      },
+      "sample_class_labels": [
+        "noteheadWholeInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 18,
+        "all_times_s": [
+          2.252028249999995
+        ],
+        "median_s_excluding_warmup": 2.252028249999995,
+        "mean_s_excluding_warmup": 2.252028249999995
+      }
+    },
+    "brahms1-p7-sys1-s14-m5": {
+      "n_detections": 70,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45030009746551514,
+      "confidence_max": 0.8230546116828918,
+      "confidence_mean": 0.5372341926608767,
+      "confidence_median": 0.5198838710784912,
+      "category_breakdown": {
+        "notehead": 70
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 70,
+        "all_times_s": [
+          2.252572416999982
+        ],
+        "median_s_excluding_warmup": 2.252572416999982,
+        "mean_s_excluding_warmup": 2.252572416999982
+      }
+    },
+    "brahms1-p9-sys0-s1-m5": {
+      "n_detections": 11,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45332470536231995,
+      "confidence_max": 0.7301739454269409,
+      "confidence_mean": 0.5363842844963074,
+      "confidence_median": 0.5145459771156311,
+      "category_breakdown": {
+        "notehead": 11
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 11,
+        "all_times_s": [
+          2.764386207999962
+        ],
+        "median_s_excluding_warmup": 2.764386207999962,
+        "mean_s_excluding_warmup": 2.764386207999962
+      }
+    },
+    "brahms1-p9-sys0-s3-m6": {
+      "n_detections": 45,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4531552195549011,
+      "confidence_max": 0.8560105562210083,
+      "confidence_mean": 0.5801542189386156,
+      "confidence_median": 0.5552343130111694,
+      "category_breakdown": {
+        "notehead": 45
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 45,
+        "all_times_s": [
+          2.8260862079999924
+        ],
+        "median_s_excluding_warmup": 2.8260862079999924,
+        "mean_s_excluding_warmup": 2.8260862079999924
+      }
+    },
+    "brahms1-p11-sys0-s11-m7": {
+      "n_detections": 26,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46317198872566223,
+      "confidence_max": 0.7649205327033997,
+      "confidence_mean": 0.5415478268494973,
+      "confidence_median": 0.5130976438522339,
+      "category_breakdown": {
+        "notehead": 26
+      },
+      "sample_class_labels": [
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 26,
+        "all_times_s": [
+          2.3862783750000176
+        ],
+        "median_s_excluding_warmup": 2.3862783750000176,
+        "mean_s_excluding_warmup": 2.3862783750000176
+      }
+    },
+    "brahms1-p14-sys1-s16-m9": {
+      "n_detections": 22,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4653668701648712,
+      "confidence_max": 0.7260103225708008,
+      "confidence_mean": 0.5417371432889592,
+      "confidence_median": 0.5426218807697296,
+      "category_breakdown": {
+        "notehead": 22
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 22,
+        "all_times_s": [
+          3.0963014580000277
+        ],
+        "median_s_excluding_warmup": 3.0963014580000277,
+        "mean_s_excluding_warmup": 3.0963014580000277
+      }
+    },
+    "brahms1-p15-sys1-s17-m6": {
+      "n_detections": 10,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.5202019214630127,
+      "confidence_max": 0.7964680194854736,
+      "confidence_mean": 0.6117213428020477,
+      "confidence_median": 0.5753755271434784,
+      "category_breakdown": {
+        "notehead": 10
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 10,
+        "all_times_s": [
+          2.8060583749999637
+        ],
+        "median_s_excluding_warmup": 2.8060583749999637,
+        "mean_s_excluding_warmup": 2.8060583749999637
+      }
+    },
+    "brahms1-p16-sys0-s10-m6": {
+      "n_detections": 30,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.4505213797092438,
+      "confidence_max": 0.8502459526062012,
+      "confidence_mean": 0.5741644392410914,
+      "confidence_median": 0.5206700563430786,
+      "category_breakdown": {
+        "notehead": 29,
+        "flag": 1
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 30,
+        "all_times_s": [
+          2.812351834000026
+        ],
+        "median_s_excluding_warmup": 2.812351834000026,
+        "mean_s_excluding_warmup": 2.812351834000026
+      }
+    },
+    "brahms1-p16-sys0-s11-m6": {
+      "n_detections": 24,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.46589240431785583,
+      "confidence_max": 0.9999996423721313,
+      "confidence_mean": 0.6772399172186852,
+      "confidence_median": 0.6342121362686157,
+      "category_breakdown": {
+        "notehead": 17,
+        "flag": 1,
+        "structural": 6
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "flag8thDown",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "staff",
+        "staff",
+        "noteheadBlackInSpace",
+        "staff"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 24,
+        "all_times_s": [
+          2.976148834000014
+        ],
+        "median_s_excluding_warmup": 2.976148834000014,
+        "mean_s_excluding_warmup": 2.976148834000014
+      }
+    },
+    "brahms1-p16-sys1-s14-m8": {
+      "n_detections": 11,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.451712965965271,
+      "confidence_max": 0.652660608291626,
+      "confidence_mean": 0.5319666591557589,
+      "confidence_median": 0.5364439487457275,
+      "category_breakdown": {
+        "notehead": 11
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 11,
+        "all_times_s": [
+          4.05216999999999
+        ],
+        "median_s_excluding_warmup": 4.05216999999999,
+        "mean_s_excluding_warmup": 4.05216999999999
+      }
+    },
+    "brahms1-p16-sys1-s15-m5": {
+      "n_detections": 18,
+      "n_ported_from_baseline": 0,
+      "confidence_min": 0.45726320147514343,
+      "confidence_max": 0.7328402996063232,
+      "confidence_mean": 0.546398252248764,
+      "confidence_median": 0.5175782740116119,
+      "category_breakdown": {
+        "notehead": 18
+      },
+      "sample_class_labels": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadBlackInSpace",
+        "noteheadBlackInSpace"
+      ],
+      "timing": {
+        "n_runs": 1,
+        "n_detections": 18,
+        "all_times_s": [
+          3.214899291999984
+        ],
+        "median_s_excluding_warmup": 3.214899291999984,
+        "mean_s_excluding_warmup": 3.214899291999984
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+ce04ce663229b6315ed8eca6fb8fcd6e  runs/detect/runs/rehbase/weights/epoch0.pt
+93115463fdf8390cd18c12c968785248  runs/detect/runs/rehbase/weights/epoch1.pt
+e047288893fbd779cb024dbd35dcfad7  runs/detect/runs/rehbase/weights/epoch2.pt
+72db66893d86bbb57c1a4846a55631ba  runs/detect/runs/rehbase/weights/epoch3.pt
+b788863a3568379a7de0bd67bf7030ce  runs/detect/runs/rehbase/weights/epoch4.pt
+748eda595f4ce9d60abdf1939320220a  runs/detect/runs/rehprod/weights/epoch0.pt
+7f1f7aceaadcfb53abe22bb281ab6fce  runs/detect/runs/rehprod/weights/epoch1.pt
+755073cd65b86111f005b6ee06c33c16  runs/detect/runs/rehprod/weights/epoch2.pt
+c75043966e129f44e8473116368b203a  runs/detect/runs/rehprod/weights/epoch3.pt
+8fee3b6332e89b55b20451aacd17e9cb  runs/detect/runs/rehprod/weights/epoch4.pt
+3584cf71effd331938d14c2afec98d2d  runs/detect/runs/rehbase/results.csv
+965c647d710b11bea7c68a43bd916a6d  runs/detect/runs/rehprod/results.csv

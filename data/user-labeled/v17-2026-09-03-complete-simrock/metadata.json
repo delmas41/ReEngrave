@@ -1,0 +1,218 @@
+{
+  "version_name": "v17-2026-09-03-complete-simrock",
+  "created_utc": "2026-09-03T22:07:04+00:00",
+  "labeler": "sean",
+  "description": "N. Simrock Dvorak 9 \u2014 round-3 complete cells: human hollow+rests+accidentals+clefs, audited model black-noteheads/dots + dynamics/slurs/ties",
+  "source": {
+    "verdicts_dir": "benchmarks/omr-labeling-survey-2026-09/phase3-merged/simrock/verdicts",
+    "detections_dir": "benchmarks/omr-labeling-survey-2026-09/phase3-merged/simrock/detections",
+    "manifest": "benchmarks/omr-labeling-survey-2026-09/phase3-merged/simrock/simrock-cells.json",
+    "weights_for_class_names": "tools/omr/training/data/weights/deepscoresv2-yolov8l-8shards-100ep.pt"
+  },
+  "totals": {
+    "n_cells_with_labels": 13,
+    "n_v1_cells": 0,
+    "n_v2_cells": 13,
+    "n_tp": 24,
+    "n_wrong_cat": 0,
+    "n_wrong_bbox": 0,
+    "n_fn_added": 23,
+    "n_fp_dropped": 0,
+    "n_unsure_dropped": 0,
+    "n_pending_dropped": 0,
+    "n_dropped_unknown_class": 0
+  },
+  "n_classes_in_vocab": 214,
+  "classes_used_in_this_version": [
+    "augmentationDot",
+    "clefF",
+    "clefG",
+    "dynamicF",
+    "dynamicP",
+    "keySharp",
+    "noteheadBlackInSpace",
+    "noteheadBlackOnLine",
+    "noteheadHalfInSpace",
+    "noteheadHalfOnLine"
+  ],
+  "per_cell": [
+    {
+      "cell_id": "dvorak9-p7-sys1-s25-m8",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p7-sys1-s26-m3",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicP",
+        "noteheadBlackInSpace",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys0-s1-m8",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "dynamicF",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys0-s2-m8",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys0-s4-m12",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys0-s9-m8",
+      "schema_version": 2,
+      "n_tp": 4,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s15-m9",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s17-m8",
+      "schema_version": 2,
+      "n_tp": 2,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "dynamicF",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s17-m9",
+      "schema_version": 2,
+      "n_tp": 3,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "augmentationDot",
+        "dynamicF",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s19-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s20-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s21-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefG",
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "dvorak9-p8-sys1-s23-m0",
+      "schema_version": 2,
+      "n_tp": 1,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "clefF",
+        "keySharp",
+        "noteheadBlackOnLine",
+        "noteheadHalfInSpace"
+      ]
+    }
+  ]
+}

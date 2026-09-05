@@ -1,0 +1,18 @@
+{
+ "cell_id": "beet5hr-p51-sys0-s2-m1",
+ "candidates": [
+  {
+   "smufl_name": "noteheadBlackInSpace",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.779,
+   "ink": 0.9452,
+   "bbox": {
+    "x": 1403,
+    "y": 685,
+    "w": 142,
+    "h": 116
+   }
+  }
+ ]
+}

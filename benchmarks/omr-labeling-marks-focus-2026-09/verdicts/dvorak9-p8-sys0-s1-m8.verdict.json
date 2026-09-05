@@ -1,0 +1,24 @@
+{
+  "cell_id": "dvorak9-p8-sys0-s1-m8",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T21:30:01+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 269,
+        "y": 548,
+        "w": 120,
+        "h": 101
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads",
+    "rests+accidentals"
+  ]
+}

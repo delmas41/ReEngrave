@@ -1,0 +1,96 @@
+{
+  "cell_id": "dvorak9-p20-sys0-s2-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "dynamicP",
+      "category": "dynamic",
+      "x": 177,
+      "y": 902,
+      "w": 102,
+      "h": 175,
+      "x_center": 228,
+      "y_center": 989,
+      "confidence": 0.6806237101554871,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "augmentationDot",
+      "category": "structural",
+      "x": 224,
+      "y": 425,
+      "w": 29,
+      "h": 38,
+      "x_center": 238,
+      "y_center": 444,
+      "confidence": 0.5148231387138367,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "dynamicP",
+      "category": "dynamic",
+      "x": 234,
+      "y": 895,
+      "w": 101,
+      "h": 151,
+      "x_center": 284,
+      "y_center": 970,
+      "confidence": 0.6408929228782654,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 469,
+      "y": 34,
+      "w": 1404,
+      "h": 460,
+      "x_center": 1171,
+      "y_center": 264,
+      "confidence": 0.890182614326477,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "accidentalSharp",
+      "category": "accidental",
+      "x": 1403,
+      "y": 443,
+      "w": 100,
+      "h": 285,
+      "x_center": 1453,
+      "y_center": 585,
+      "confidence": 0.8678178191184998,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 1563,
+      "y": 526,
+      "w": 131,
+      "h": 117,
+      "x_center": 1628,
+      "y_center": 584,
+      "confidence": 0.8281263113021851,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "flag8thUp",
+      "category": "flag",
+      "x": 1690,
+      "y": 274,
+      "w": 106,
+      "h": 322,
+      "x_center": 1743,
+      "y_center": 435,
+      "confidence": 0.7336684465408325,
+      "pitch": null
+    }
+  ]
+}

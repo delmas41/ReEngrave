@@ -314,7 +314,6 @@ ReEngrave/
 | `OMR_CELL_LINE_TRACE` | `1` (on) | **On by default since 2026-09-04.** `Staff.line_ys` models a staff as five ideal horizontal rows and every measure cell copies those constants — but a SCANNED staff tilts/bows 8-17 page px across its width, so an end-of-staff cell's grid can be half a space off the print and `pitch_resolver` reads exactly those rows. This slides the cell's five rows as ONE RIGID COMB onto the ink beneath it (recovers all seven hand-traced displacements within 0.04 spaces; per-line tracing ALIASES and was refused). **Priced on the widened scan gate the day widening made it possible**: pooled 0.8387 → 0.8345 (−233 edits), −217 of them on exactly the three tilted rows (the widened pool holds 8.6% of cells past the 0.25-space parity-flip line vs the old corpus's 0.4% — the old '4 edits of 7894' null was the corpus, not the fix), exact-pitch recall/precision +4.8/+5.9pts on the most-exposed edition, zero-exposure row unchanged to the edit; the engraved side is a no-op by construction (byte-identical A/B). Known blast radius, priced: the grid feeds the key-sig slot fit (net keysig −15, but two-directional per staff) and +2..+7 edit noise on three low-exposure rows. Labeling batches survive re-cuts: `recut_cells.frame_mismatch` compares the frame's own UNLOCALIZED grid and `_nostaff.png` is re-erased on the manifest's authority, pinned by e2e tests. Set `0` to disable. See [benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md](benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md) |
 | `OMR_ARC_ATTRIBUTION` | `move` (on) | **On by default since 2026-09-04.** Gives SLURS AND TIES the cross-staff arbitration noteheads have had since `_dedupe_cross_staff_detections`. A measure cell is padded above and below, so on a conductor's page a neighbouring staff's arc lands in this staff's cell — and unlike a notehead it need not be detected twice for that to matter: where the staves are far apart the upper cell reaches ink the lower cell does not, so the arc exists ONLY in the wrong staff and no duplicate-resolution rule can see it. On `brahms-sym1-mvt1` the Timpani exported 4 slurs and 1 tie against a truth of ZERO — they are Violin 1's, drawn over ITS four-ledger-line notes in the 7.7-space gap between the two staves. **The evidence is the arc's own job: an arc binds a run of noteheads and is drawn just clear of them, so it belongs to the staff whose NOTEHEADS IT HUGS** — asked of every staff in the system, including ones that never detected it. ⚠️ Distance to the staff LINES is the same trap it was for notes: an engraver opens the gap above a staff precisely so its ledger notes and their slurs can live there. The rule is COMPARATIVE (an arc leaves only where another staff explains it better) and both constants sit on measured plateaus. Worth **pooled 2,473 → 2,371 edits**, Brahms 1 490 → 390, no work worse, `wrong note` untouched; the scan gate's two Brahms rows are identical to the edit. ⚠️ `drop` (delete instead of regift) scores 2,388 — better arm-for-arm — and is REFUSED: it gets there by emitting 20 fewer slurs, 12 of them real, the metric's under-prediction reward. `off` disables. See [benchmarks/omr-arc-attribution-2026-09/FINDINGS.md](benchmarks/omr-arc-attribution-2026-09/FINDINGS.md). |
 | `OMR_ARC_RECLASS` | `0` (off) | **Measured, deliberately NOT shipped.** Export-time tie/slur grammar veto (`docs/position-grammar-confusables-2026-09-04.md` §2 ARC, R3 shape): a slur-classed arc covering exactly two adjacent same-pitch heads of one voice becomes a tie; a tie-classed arc whose flanked pair sits on different STAFF STEPS, or with a third event of its voice under its span, becomes a slur — the vetoed arc widened to the flanked centres and split at cell boundaries so the ordinary barline merge rejoins it. Compares steps, never spelled pitches: the far head of a cross-barline tie does not restate its accidental and the resolver spells it plain, so the naive spelled-pitch key broke truth-matched ties (+21 engraved edits, every loss a same-step `F#4→F4` pair). Priced on both families: engraved **0.1306 → 0.1306, +2 edits, 24 firings**; scan **0.8387 → 0.8391, +130 edits — REFUSED**, because a scan's resolved pitch at an arc's ends is downstream of exactly what scans get wrong (`wrong note` = 26% of that pool), and per-direction attribution puts ALL +130 in the tie→slur half while slur→tie alone is edit-free and moves the tie inventory toward truth (420 → 462 of 805 elements). If any half ever defaults on it is slur→tie; tie→slur is blocked on ANCHORS, not grammar (R4). Flag-off is byte-identical, asserted per work and per row. See [benchmarks/omr-export-gaps-2026-09/FINDINGS.md](benchmarks/omr-export-gaps-2026-09/FINDINGS.md). |
-| `OMR_SLOT_STITCH`     | `0` (off) | **Measured, deliberately NOT shipped.** `export._stitch_slots` joins staves into continuous parts BY ORDINAL and refuses the moment two systems disagree about staff count — correct, since position-grafting a tacet-suppressed page puts one instrument's music on another. Its fallback is one part per (system, staff), each pairing with nothing in the truth. On this the refusal's fallback becomes a join on the SLOT the contextual pass already assigned (`slots.assign_slots` aligns each system against a reference layout with deletions allowed, so a suppressed staff is a MISSING slot rather than a shift). Abstains whole unless every staff of every system carries a slot and no system repeats one; only ever reached where the ordinal join refused, so an agreeing page is untouched. On Brahms 1 p.2 — the ONLY page in either benchmark whose systems disagree (hand-read 14 then 13, the 2 Trompeten staff suppressed; we detect exactly that) — it recovers **14 continuous parts from 27 per-system fragments**, correctly leaving slot 6 short, and is worth **pooled scan 0.8283 → 0.8235, −216 edits**. ⚠️ It nonetheless makes `entire staff insert/delete` **more than twice as bad** (715 → 1,632): 27 fragments pair with more of the 21 truth parts than 14 continuous ones do, so fragmenting BUYS that bucket and PAYS in `entire measure` (3,628 → 2,810). **Attributing structural work by the `entire staff` bucket alone under-counts the refusal**, which books most of its cost elsewhere. Off because the trade is priced on n=1 page. Flag-off is byte-identical (10 of 11 scan rows and 11 of 11 engraved works unchanged between arms — every engraved excerpt is single-system, so that benchmark cannot see this at all; `test_export_slot_stitching.py` stands in its place). See [benchmarks/omr-staff-structure-2026-09/FINDINGS.md](benchmarks/omr-staff-structure-2026-09/FINDINGS.md). |
 | `OMR_CHOIR_GROUPING`  | `1` (on) | **On by default since 2026-09-05** (Sean's call, coupled with the Bach row's pool re-admission; the re-stamped 11-row baseline is recorded beside WIDENED_BASELINE_2026-09-04.md). Two cues for choir-grouped / differently-indented pages, both riding this one flag. The Bach Brandenburg 3 stress row shatters (6 "systems", 122 measure-cells vs 10) because the wide connectivity window and cue A's band are both anchored on the page-MEDIAN `x_start`, and on a page whose systems are indented differently (792–836 vs 178–200) the median lands between the modes and cuts the full-width system's bracket + systemic barline out of the scan — while the page is also choir-barred (interior barlines stop at choir edges), so nothing else crosses its choir gaps. **Cue B** (merge-only mirror of cue A, `system_grouping.py`): a break the wide rule made for lack of evidence is re-examined in the cue-A band anchored at the PAIR's own left edge; a crossing column there cancels the break. A cue-B merge is exempt from cue A's re-split (the cues act on disjoint gap sets — bridging > 0 vs == 0). **Cue C** (`measure_extractor.py`): a system whose staves form ≥2 bracket-groups (≥ half in multi-staff groups) AND that holds a **window-blind internal gap** — a gap nothing in-window crosses, the choir-barred signature, impossible for a true open score — is never flipped into open-score mode, so a merged rhythm-unison tutti's aligned stems stop out-voting its barlines. ⚠️ Bracket-groups ALONE was falsified on the engraved benchmark (LilyPond open scores manufacture "groups" from bridging jitter; pooled 0.1306 → 0.8560, nine works' barlines deleted) and repaired before shipping — do not loosen the second condition. Flag ON: Bach row 0.9241 → **0.8152** OMR-NED, 6735 → 6236 edits, 122 → 11 cells vs true 10; all ten pooled scan rows byte-identical (pooled 0.8387 untouched); the 11-work engraved benchmark **edit-for-edit identical** (0.1306 / 2745) and the `boulanger` structure canary byte-identical; 969-page library probe: 757 examined break-gaps read 0 ×735 / ≥4 ×22 with nothing at 1–3, and the 10 pages that change were each hand-adjudicated toward the truth (7 exact heals incl. both operas' vocal systems; zero false merges). Flag OFF: byte-identical by construction (Bach flag-off hash-matches the widened-graft baseline fixture). Re-admitting the Bach row to the scan pool is coupled to a default-ON decision and a re-stamped pool. See `benchmarks/omr-choir-grouping-2026-09/FINDINGS.md`. |
 
 ---
@@ -727,6 +726,103 @@ measured at all.
 
 ---
 
+## Hairpins — a slur is drawn OVER its notes, a hairpin BETWEEN them
+
+The **ninth** recognised-then-dropped element (2026-09-03), and the first that
+is not purely an export fix. `dynamicCrescendoHairpin` and
+`dynamicDiminuendoHairpin` fired freely and nothing downstream mentioned either
+class, so `<wedge>` was absent from every file the exporter had ever written.
+
+**The pairing is the slur pairing with one part replaced.** A hairpin is cut in
+two by the same per-measure cell crop, so it reuses
+`_merge_arcs_across_barlines`, `_voice_of_notehead` and the `number=` allocator
+unchanged. ⚠️ **What it cannot reuse is `_noteheads_under`, and that is the
+finding.** A slur is drawn over its notes; a hairpin is drawn in the space
+BETWEEN them. On the Mahler 5 fixture the Trumpet's diminuendo spans page x
+5922-6068 in a bar whose only notehead spans 5817-5897 — not one pixel of
+overlap — and an overlap test scores **0 of 4**. So `_wedge_anchors` reads the
+edges as pointers instead, and the start rule was **measured against the truth's
+own spans**, because the obvious one is wrong: the ink begins slightly BEFORE
+the note it starts on (26 px left of it, 105 px right of the previous note, on
+Tchaikovsky 6), so "the last note at or before the edge" reaches back past the
+answer. Nearest-either-side pairs **4 of 8** truth hairpins and gets all 4
+exactly right; before-the-edge pairs 1.
+
+**Emitting it is not reading it, and the gap between those is where the rest
+went.** Nine boxes detected over the eleven works, five exported, four correct:
+
+- **3 of Mahler's 4 land on the staff BELOW the one that prints them**, which
+  has zero detected noteheads. A hairpin is drawn in the gap under its staff and
+  `_dedupe_cross_staff_detections` awards a contested glyph to the nearer
+  five-line band — the same failure this file already records for ledger
+  noteheads, in the same function, and a hairpin has no ledger ladder to
+  arbitrate with; **fixed the same day**, below;
+- Brahms 4's one confident detection (0.91) abstains because the note the truth
+  starts it on was never detected; the one hairpin we get WRONG there is a
+  679×24 px box at confidence **0.28**, which is a line.
+
+Measured, export-only A/B over the same stored transcriptions: engraved pooled
+**0.1306 → 0.1304**, 2745 → 2742 edits (Mahler −1, Tchaikovsky 6 −3, Brahms 4
++1, the other eight byte-identical), `wrong crescendo` 3 → 1 and `wrong
+diminuendo` 5 → 4.
+
+⚠️ **THE STAFF-ATTRIBUTION FAULT WAS FIXED THE SAME DAY, and it was distance's
+fault specifically, not the ladder rule's.** A hairpin prints in the gap under
+its own staff, so a contested copy's centre sits roughly midway between the two
+staves bracketing that gap — measured, the three misattributed detections were
+only 5-62 px nearer staff 18's top than staff 17's bottom, against 25 px the
+other way for the one correctly kept, close enough that distance is nearly a
+coin flip. What actually separates them is that staff 17 carries a notehead in
+every one of those bars and staff 18 carries none anywhere on the page — the
+same shape as the pitch-range veto, keyed on presence rather than pitch, and it
+has to be a SEPARATE tier because a hairpin has no ledger ladder for the
+existing note-vs-note evidence to run on. `_WEDGE_HAIRPIN_CLASSES` names the
+two wedge classes so the veto cannot leak into `dynamicF`-style point dynamics,
+which are not anchored to a notehead the way a wedge is. Where both contested
+staves carry a note — the case a "prefer the staff above" convention would be
+for — nothing in this corpus exercises it, so distance is still the whole rule
+there, exactly as before. Effect: Mahler's four hairpins all land on the
+Trumpet staff that prints them, taking the **eleven-work total from 5 of 8
+truth hairpins exported to 7**, controlled A/B pooled **0.1304 → 0.1299**,
+2742 → 2733 edits, all nine of them Mahler's. ⚠️ **A from-scratch full rebuild
+reproduces the categorical result** — same staff, same measures, `wrong
+crescendo`/`wrong diminuendo` land at the identical 1/3 — **but not the same
+pooled edit count** (Mahler 42 → 50 there): the same four boxes' confidences
+moved between runs on byte-identical code (0.83 → 0.69 on the widest one),
+detector-level jitter unrelated to this fix that touches other symbols on the
+page too. The controlled A/B isolates the fix from that noise on purpose;
+FINDINGS.md §6 has both figures and why they disagree.
+`TestHairpinDedupePrefersTheStaffWithNotes`
+(`tools/omr/tests/test_transcribe_helpers.py`) pins the veto and its two
+fall-through cases. Full reading, including why "prefer above" did not ship:
+[benchmarks/omr-hairpins-2026-09/FINDINGS.md](benchmarks/omr-hairpins-2026-09/FINDINGS.md)
+§6.
+
+⚠️ **THE SCAN BENCHMARK CANNOT PRICE THIS.** Its truth carries **20 hairpins**
+across the five verified rows and the detector fires on **none** — zero
+detections of either class on any of the five pages — so the scan arm is
+byte-identical by construction, verified rather than assumed. On scans this is a
+DETECTION problem and the export change is not addressed to it; the lever is the
+labeling pipeline, and both classes are already in the DSv2 class space.
+
+**LilyPond gets less than MusicXML, deliberately.** `\<` … `\!` are post-events
+on notes, so the anchors serve — but a hairpin under ONE long note (`c4\<\!`),
+a second hairpin opened before the first closes (there is no `number=` level),
+and one whose ends fall in different LilyPond lanes are each dropped by
+`_lily_wedge_plan` rather than approximated, because an unterminated `\<` is a
+compile warning and a wrongly drawn hairpin. The lane case is not the
+transcription's voices: `_lone_voice_is_the_second` routes a lone voice to
+`\voiceTwo` PER MEASURE, so `_lily_staff_block` now fixes the lanes ONCE, before
+rendering, and the planner sees the lanes the renderer will use. Touching is not
+overlapping — `e'4\!\>` is ordinary and is kept.
+
+Full reading:
+[benchmarks/omr-hairpins-2026-09/FINDINGS.md](benchmarks/omr-hairpins-2026-09/FINDINGS.md),
+including why the stop-rule constant is weaker than the ones around it (its
+plateau is real and nothing in the corpus exercises it).
+
+---
+
 ## Articulations, and the time signature's own glyph
 
 Both shipped 2026-09-01 out of the corpus widening
@@ -895,7 +991,7 @@ the question in both directions:
 | pred (`--direction-text`) | our export having one — the same shape | ~1 | **20** |
 | either | a bar carrying a mark and **nothing at all** — the TRIGGER | 0 | **0** |
 
-The bug it is about (`46e42a4`): a measure with no detected events takes the
+The bug it is about: a measure with no detected events takes the
 whole-measure-rest path, which never calls `_mxl_voice_events` — the only
 `<direction>` emitter — so placed directions AND dynamics are computed and then
 discarded. **The trigger is the DETECTOR finding nothing**, which is why the
@@ -904,8 +1000,24 @@ path and its marks survive. Widening multiplied the near-misses sixfold (the
 `P1 m1` tempo mark over a resting first part, in Beethoven 5, Brahms 4, Bruckner
 5, Dvorak 9, Mozart 40 and Tchaikovsky 6) and added **not one** triggering bar.
 
+⚠️ **AND THE FIX WAS NOT IN THE TREE UNTIL 2026-09-03, though this paragraph
+said it was.** Commit `a907e41` (and its duplicate `46e42a4`) describes it in
+full — "Both export sites had it", "Both are covered by tests now" — and its
+diff is ONE FILE, a Surya determinism probe; `git log --all -S 'directions=_dyn'
+-- tools/omr/export.py` finds the hunk on no branch, and
+`test_direction_text.py` had no test for the case. It was found by reading the
+branch rather than the log, while wiring hairpins into the same two export
+sites, and closed in `export._mxl_empty_measure` with the unit tests the message
+had promised. **THE TREE OUTRANKS THE LEDGER**, including a ledger written as a
+commit message inside it. Measured on the scan benchmark, where the trigger
+actually occurs: **2 bars** carry marks and no events, both dynamics, and
+recovering them costs **+10 edits** (0.7517 → 0.7525) — every one of them
+`entire measure insert/delete`, because both bars were already charged whole.
+Same call as the articulation ship.
+
 So: **the eleven-work benchmark does not guard that fix.** Its unit tests in
-`test_direction_text.py` are the only thing that does. The pred row is measured
+`test_export.py` (`TestEmptyMeasureDirections`) are the only thing that does.
+The pred row is measured
 under `--direction-text`, which emits strictly more marks than a default run and
 therefore has strictly more chances to trigger — a zero there is a zero for the
 default configuration too. The likeliest future source of a real triggering bar
@@ -1125,11 +1237,11 @@ re-measured, so the paragraph can never state an 11-work default beside a 3-work
 variant.
 
 <!-- accuracy:begin name=headline -->
-Current on the engraved orchestral benchmark, measured on `ee66168b`: **pooled 0.1127 / 2371 edits** over 11 works (Mahler 5 0.0220 at best, Dvorak 9 0.3380 at worst), across 10665 truth + 10373 predicted symbols. The direction reader is ON by default and needs `.venv-surya` or Tesseract; with neither — `--no-direction-text`, and what a machine with no OCR rung gets — **0.1219 / 2541**, measured on `3a96dacc`.
+Current on the engraved orchestral benchmark, measured on `c378412f`: **pooled 0.1125 / 2367 edits** over 11 works (Mahler 5 0.0209 at best, Dvorak 9 0.3380 at worst), across 10665 truth + 10380 predicted symbols. The direction reader is ON by default and needs `.venv-surya` or Tesseract; with neither — `--no-direction-text`, and what a machine with no OCR rung gets — **0.1268 / 2643**, measured on `bc58defb`.
 
 | work | OMR-NED | edits | note recall | precision | duration rate |
 |---|--:|--:|--:|--:|--:|
-| Mahler 5 | 0.0220 | 42 | 0.917 | 0.917 | 1.000 |
+| Mahler 5 | 0.0209 | 40 | 0.917 | 0.917 | 1.000 |
 | Beethoven 5 | 0.0332 | 43 | 1.000 | 1.000 | 1.000 |
 | Tchaikovsky 4 | 0.0444 | 69 | 0.925 | 0.925 | 1.000 |
 | Bruckner 5 | 0.0931 | 185 | 0.962 | 0.962 | 1.000 |
@@ -1137,8 +1249,8 @@ Current on the engraved orchestral benchmark, measured on `ee66168b`: **pooled 0
 | Mozart 41 | 0.1025 | 301 | 0.991 | 0.991 | 0.947 |
 | Beethoven 3 | 0.1294 | 215 | 0.975 | 0.975 | 1.000 |
 | Mozart 40 | 0.1415 | 218 | 0.762 | 0.762 | 0.952 |
-| Tchaikovsky 6 | 0.1880 | 269 | 0.756 | 0.747 | 0.985 |
-| Brahms 4 | 0.2132 | 400 | 0.959 | 0.943 | 0.933 |
+| Tchaikovsky 6 | 0.1855 | 266 | 0.756 | 0.747 | 0.985 |
+| Brahms 4 | 0.2136 | 401 | 0.959 | 0.943 | 0.933 |
 | Dvorak 9 | 0.3380 | 239 | 0.975 | 0.975 | 1.000 |
 <!-- accuracy:end -->
 
@@ -1217,21 +1329,24 @@ reader would SEE come out".
 
 `KNOWN_GAPS` is an inventory rather than a suppression list — every element we
 knowingly drop, with its reason and its size — and anything not on it fails.
-The one open item recorded there now is **hairpins** (`wedge`: 6 in Mahler's
-truth, 4 detected; 17 across the 11 works — partial detection, so not purely
-an export fix; a close is in flight on the 09-03/04 hairpin branches).
+**And an entry that has been CLOSED must leave it**, or the list stops
+describing the exporter and starts describing its history —
+`test_the_inventory_has_no_stale_entries` enforces exactly that. Both former
+open items are now closed: **hairpins** (`wedge`) left the list when the
+hairpin export landed (staff attribution + `<wedge>`/LilyPond emission, merged
+in the 09-05 reconciliation; export closed — DETECTION is still partial, 4 of
+Mahler's 6, so hairpin counts remain a recognition matter), and **accents**
+were closed by the articulations work (`0eb1271`, merged `bdda54d`
+2026-09-02): `articAccent*` is attached by `_attach_articulations_in_cell`,
+both exporters emit it, Mahler 6-for-6 against its truth (verified live
+2026-09-04).
 
-⚠️ **This sentence used to list accents as a second open item, and that claim
-outlived the fix by two days.** Accents ARE the eighth gap — closed by the
-articulations work (`0eb1271`, merged `bdda54d` 2026-09-02): `articAccent*` is
-attached by `_attach_articulations_in_cell` and both exporters emit it, Mahler
-6-for-6 against its truth (verified live 2026-09-04, `<accent>` in MusicXML and
-`->` in LilyPond; the entry left `KNOWN_GAPS` the same day it was written). The
-stale copy here seeded a work order to "close the accents gap" two days later —
-the same detected-then-dropped prose failure the OMR-NED figure block exists to
-prevent, this time in the other direction: a gap that stayed CLOSED in the code
-and open in the doc. `benchmarks/omr-export-gaps-2026-09/FINDINGS.md` §1 holds
-the reconciliation.
+⚠️ **The accents claim outlived its fix by two days in this file** — a gap
+that stayed CLOSED in the code and open in the doc, which seeded a work order
+to "close" it again. `benchmarks/omr-export-gaps-2026-09/FINDINGS.md` §1
+holds the reconciliation and names the failure shape:
+*fixed-then-kept-open-in-prose*, the documentation dual of
+detected-then-dropped.
 
 **Three traps when reading it.** (1) The metric is SYMMETRIC — swapping
 prediction and truth does not change the score, it only changes which file is
@@ -1396,7 +1511,6 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_DPI` | PDF rasterization DPI (default 300; CLI uses 600 — see the knobs table) |
 | `OMR_LEFT_EDGE_SPLIT` | `1` on (default) → recover stacked systems the connectivity rule merged when staff-body ink faked a connection; `0` disables. See the knobs table. |
 | `OMR_DIRECTION_TEXT` | `1` on (default) → read the printed words inside each system and export them as `<words>`; `0` disables. Self-disables with no OCR rung. See the knobs table. |
-| `OMR_SLOT_STITCH` | `0` off (default) → where the ordinal part-join REFUSES on a staff-count mismatch, join by the contextual slot instead of falling back to per-system fragments. Measured (scan −216 edits) and not shipped — it doubles the `entire staff` bucket. See the knobs table. |
 | `OMR_CELL_LINE_TRACE` | `1` on (default since 2026-09-04) → localize each measure cell's stored staff-line grid onto the ink under it (warped scans). Priced on the widened gate: pooled 0.8387 → 0.8345. `0` disables. See the knobs table. |
 | `OMR_ARC_ATTRIBUTION` | `move` (default) → give each slur/tie to the staff of its system whose noteheads it hugs; `drop` removes instead of regifting (measured worse — see the knobs table); `off` disables. |
 | `OMR_ARC_RECLASS` | `0` off (default) → export-time tie/slur grammar veto; measured on both families and NOT shipped (scan side refused, +130 edits). See the knobs table. |
@@ -1467,7 +1581,7 @@ python3 -m tools.omr.annotate.server --bench-dir benchmarks/omr-labeling-NEW   #
 
 **What to box vs skip:**
 - **BOX** the symbols YOLO detects: noteheads, rests, accidentals, clefs, flags, dynamics (`p`/`f`/hairpins), ornaments, articulations, augmentation dots, ties, slurs, time-sig digits.
-- **SKIP** classical-CV structural elements — **staff lines (`staff`), stems (`stem`), beams (`beam`)**: detected by classical CV upstream (`staff_detector`, `line_detection`), 0 in all prior labels, and YOLO can't bbox thin lines. They become background.
+- **SKIP** classical-CV structural elements — **staff lines (`staff`), stems (`stem`), beams (`beam`)**: detected by classical CV upstream (`staff_detector`, `line_detection`), 0 in all prior labels, and YOLO can't bbox thin lines. They become background. ⚠️ **"They become background" is not free, and on 2026-09-04 it was measured costing whole classes.** Anything left unboxed on an image you train on is taught to be nothing — there is no "unknown" in the loss — and a fine-tune on this corpus takes `beam` and `ledgerLine` to ZERO within one epoch. Both are **consumed by the pipeline**: `rhythm.resolve_rhythms_for_cell` keeps a YOLO beam wherever no CV beam overlaps its x-range (worth pooled 0.1917 → 0.1861) and `transcribe`'s ledger-ladder arbitration reads `ledgerLine` detections directly (0.1506 → 0.1431), so on every round-3/4/5 candidate both rules were dead, silently. **Do not fix this by hand-labeling them** — a human still cannot bbox a thin line. The escape is the TEACHER drawing them (`build_rehearsal_versions.py`) or restoring their head rows after training (`merge_class_head.py`). `stem` and `staff` are genuinely CV-only and cost nothing; `beam` and `ledgerLine` are not. See `benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`.
 - **SKIP** free text — "sempre", "dolce", tempo marks, instrument names, rehearsal letters: no class exists (`textDynamic` is only for *dynamic* words like cresc./dim.).
 - **Barlines** (`barlineSingle`) OK to box (collected toward a future barline class); ledger lines low-value.
 - **Ink-bleed / mostly-FP cells are GOOD** — dropped FPs become hard-negative background that suppresses bleed hallucinations. Don't `f` every blob: confirm real notes, leave bleed **pending** (pending and FP convert identically → no label). Too bled to read → skip the cell.
@@ -1913,6 +2027,38 @@ distinguishable where staves are crowded, which is what
 `test_recut_cells_e2e.py` builds its fixture to be. That suite cuts a
 synthesized page, deletes the images and re-cuts them **byte-identically**
 under both modes.
+
+#### ⚠️ A fine-tune on this corpus DELETES CLASSES — gate for it
+
+Measured 2026-09-04 over eleven method arms
+(`benchmarks/omr-labeling-survey-2026-09/ROUND5_METHOD_2026-09-04.md`).
+Fine-tuning the 208-class detector on ~600 narrow cells does not merely
+"degrade" it: **whole class families go to exactly zero at full notehead
+strength** — tie 249→0, slur 184→0, beam 188→0, augmentationDot 150→0,
+accidentalFlat 80→0, restWhole 396→0 on the 5-page scan benchmark.
+
+**It is not a confidence shift** — every fine-tune's median confidence is HIGHER
+than production's. **It is not the labels** — completing them moved the number
+3%, and handing the model 3417 teacher-drawn boxes did not help either. **It is
+not a hyper-parameter** — warmup off, `warmup_bias_lr=0`, lr 1e-5, a frozen
+backbone and the shipped 896 recipe all collapse identically. The corpus
+contains ~30 of 208 classes, so the other ~178 see only negative gradient.
+
+    # seconds, on 30 held-out dense cells — run this BEFORE the slow gates
+    python3 benchmarks/omr-labeling-survey-2026-09/probe_class_inventory.py \
+        --baseline prod=<production.pt> --ckpts-dir <sweep-dir>
+    # gate axis 3 on the scan benchmark, from raw JSONs scan_eval already wrote
+    python3 benchmarks/omr-labeling-survey-2026-09/probe_confidence_shift.py \
+        --arms prodbase <tag> --gate prodbase
+
+**The repair is head surgery, not retraining.** A YOLOv8 head is per-class in
+exactly one place — `model.22.cv3.{0,1,2}.2`, a 1×1 conv with one weight row and
+one bias per class — so `merge_class_head.py` puts the base's rows back for
+every class the corpus does not teach, and `--bias-shift` bakes a per-class
+confidence floor into the rows that stay (the pipeline has only one global
+`conf_threshold`). ⚠️ The 208-class space has **40 duplicated names**
+(`augmentationDot` at 40 and 159, `clefG` at 5 and 141) because DSv2 carries two
+naming families; `--keep` keeps every index of a name.
 
 **Convert finished verdicts → YOLO labels:**
 ```bash

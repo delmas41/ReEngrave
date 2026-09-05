@@ -1,0 +1,25 @@
+{
+ "cell_id": "brahms1-p2-sys1-s26-m0",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 1104,
+   "y": 583,
+   "w": 819,
+   "h": 120,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "slur",
+   "category": "queue",
+   "x": 1121,
+   "y": 74,
+   "w": 743,
+   "h": 80,
+   "confidence": 0.707
+  }
+ ]
+}

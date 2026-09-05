@@ -1,0 +1,43 @@
+{
+ "cell_id": "brahms1-p3-sys0-s13-m4",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 253,
+    "y": 638,
+    "w": 102,
+    "h": 86
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 384,
+    "y": 595,
+    "w": 86,
+    "h": 86
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "dynamicCrescendoHairpin",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 1022,
+    "y": 704,
+    "w": 1016,
+    "h": 158
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+ "cell_id": "mahler1-p2-sys0-s9-m7",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8616,
+   "ink": 0.5233,
+   "bbox": {
+    "x": 287,
+    "y": 1139,
+    "w": 169,
+    "h": 168
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8319,
+   "ink": 0.5394,
+   "bbox": {
+    "x": 132,
+    "y": 1129,
+    "w": 171,
+    "h": 175
+   }
+  }
+ ]
+}

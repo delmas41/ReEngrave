@@ -1,0 +1,109 @@
+{
+  "cell_id": "brahms1-p15-sys0-s6-m6",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 193,
+      "y": 507,
+      "w": 119,
+      "h": 299,
+      "x_center": 252,
+      "y_center": 656,
+      "confidence": 0.8338167667388916,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 825,
+      "y": 1359,
+      "w": 142,
+      "h": 36,
+      "x_center": 896,
+      "y_center": 1377,
+      "confidence": 0.5617774128913879,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "accidentalFlat",
+      "category": "accidental",
+      "x": 930,
+      "y": 526,
+      "w": 102,
+      "h": 221,
+      "x_center": 981,
+      "y_center": 636,
+      "confidence": 0.630509614944458,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 982,
+      "y": 988,
+      "w": 162,
+      "h": 182,
+      "x_center": 1063,
+      "y_center": 1079,
+      "confidence": 0.597419798374176,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "dynamicP",
+      "category": "dynamic",
+      "x": 988,
+      "y": 990,
+      "w": 202,
+      "h": 175,
+      "x_center": 1089,
+      "y_center": 1077,
+      "confidence": 0.6789465546607971,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "dynamicP",
+      "category": "dynamic",
+      "x": 1034,
+      "y": 991,
+      "w": 156,
+      "h": 158,
+      "x_center": 1112,
+      "y_center": 1070,
+      "confidence": 0.7804329991340637,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 1060,
+      "y": 612,
+      "w": 145,
+      "h": 121,
+      "x_center": 1132,
+      "y_center": 672,
+      "confidence": 0.7863149642944336,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "articAccentAbove",
+      "category": "ornament",
+      "x": 1049,
+      "y": 243,
+      "w": 200,
+      "h": 98,
+      "x_center": 1149,
+      "y_center": 292,
+      "confidence": 0.6882634162902832,
+      "pitch": null
+    }
+  ]
+}

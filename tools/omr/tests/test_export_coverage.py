@@ -318,15 +318,25 @@ class TestTheRepositoryItself:
 
         ⚠️ WHAT IT CANNOT SEE, because I claimed more for it than it earns.
         This compares COUNTS over the benchmark, so it fires only where the
-        benchmark contains the failing case. `46e42a4` fixed a real instance of
-        exactly this shape — a measure the detector found NO events in takes the
-        whole-measure-rest path, which never calls the function that emits
-        `<direction>`, dropping directions and dynamics both — and a probe over
-        the three works counts **zero** bars that trigger it, in either
+        benchmark contains the failing case. A real instance of exactly this
+        shape lives one branch away — a measure the detector found NO events in
+        takes the whole-measure-rest path, which never calls the function that
+        emits `<direction>`, dropping directions and dynamics both — and a probe
+        over the eleven works counts **zero** bars that trigger it, in either
         configuration. Beethoven's `Allegro con brio` sits on a rests-only bar,
         which looks like the case and is not: a rest IS an event and the
         detector finds it. Rests-only is the shape; nothing-at-all is the
-        trigger, and it takes a scan.
+        trigger, and it takes a scan — 2 such bars across the five verified rows
+        of `benchmarks/omr-scan-e2e-2026-09`.
+
+        ⚠️ AND THE FIX WAS NOT WHERE THE LEDGER SAID. An earlier draft of this
+        docstring credited `46e42a4` with having fixed it. That commit's message
+        says so — "Both export sites had it", "Both are covered by tests now" —
+        and its diff is ONE FILE, a Surya determinism probe; so is its duplicate
+        `a907e41`. The branch was still live on main on 2026-09-03, found by
+        looking at the code rather than at the log, and fixed then in
+        `export._mxl_empty_measure` with the unit tests in `test_export.py` that
+        the message had promised. THE TREE OUTRANKS THE LEDGER.
 
         So this guards the count and the unit tests guard the path. A green here
         is evidence about this corpus's coverage, not about the exporter.

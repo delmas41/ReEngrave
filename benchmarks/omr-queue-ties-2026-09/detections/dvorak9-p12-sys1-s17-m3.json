@@ -1,0 +1,107 @@
+{
+ "cell_id": "dvorak9-p12-sys1-s17-m3",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 48,
+    "y": 242,
+    "w": 221,
+    "h": 109
+   },
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 38,
+    "y": 604,
+    "w": 170,
+    "h": 89
+   },
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 1,
+    "y": 410,
+    "w": 2046,
+    "h": 69
+   },
+   "confidence": 0.573,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D3",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 5,
+    "y": 577,
+    "w": 2043,
+    "h": 90
+   },
+   "confidence": 0.52,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D4",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 3,
+    "y": 0,
+    "w": 2045,
+    "h": 115
+   },
+   "confidence": 0.513,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D5",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 2,
+    "y": 473,
+    "w": 2044,
+    "h": 97
+   },
+   "confidence": 0.446,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D6",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 2,
+    "y": 524,
+    "w": 2046,
+    "h": 143
+   },
+   "confidence": 0.443,
+   "notes": "teacher: unmatched by any human box"
+  },
+  {
+   "id": "D7",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 3,
+    "y": 752,
+    "w": 2045,
+    "h": 104
+   },
+   "confidence": 0.282,
+   "notes": "teacher: unmatched by any human box"
+  }
+ ]
+}

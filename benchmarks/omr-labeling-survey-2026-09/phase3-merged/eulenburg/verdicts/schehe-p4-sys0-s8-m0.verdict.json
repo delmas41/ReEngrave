@@ -1,0 +1,91 @@
+{
+ "cell_id": "schehe-p4-sys0-s8-m0",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 718,
+    "y": 428,
+    "w": 71,
+    "h": 49
+   }
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1016,
+    "y": 388,
+    "w": 121,
+    "h": 71
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 417,
+    "y": 263,
+    "w": 72,
+    "h": 178
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 506,
+    "y": 383,
+    "w": 85,
+    "h": 171
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 602,
+    "y": 250,
+    "w": 85,
+    "h": 174
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 718,
+    "y": 349,
+    "w": 72,
+    "h": 178
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "clefF",
+   "human_category": "clef",
+   "bbox": {
+    "x": 123,
+    "y": 246,
+    "w": 250,
+    "h": 260
+   },
+   "notes": ""
+  }
+ ]
+}

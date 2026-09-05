@@ -1,7 +1,7 @@
 {
   "cell_id": "beet5hr-p51-sys0-s2-m3",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:29:07+00:00",
+  "labeled_at_utc": "2026-09-03T20:41:39+00:00",
   "detections": [],
   "added_detections": [
     {
@@ -27,9 +27,22 @@
         "h": 100
       },
       "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 32,
+        "y": 565,
+        "w": 124,
+        "h": 276
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

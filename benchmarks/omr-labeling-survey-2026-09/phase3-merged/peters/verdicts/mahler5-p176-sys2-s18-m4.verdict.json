@@ -1,0 +1,97 @@
+{
+ "cell_id": "mahler5-p176-sys2-s18-m4",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 206,
+    "y": 80,
+    "w": 137,
+    "h": 178
+   },
+   "confidence": 0.8541,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 393,
+    "y": 83,
+    "w": 188,
+    "h": 184
+   },
+   "confidence": 0.7129,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 285,
+    "y": 84,
+    "w": 131,
+    "h": 145
+   },
+   "confidence": 0.6354,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M3",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 240,
+    "y": 893,
+    "w": 161,
+    "h": 136
+   },
+   "confidence": 0.5722,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M4",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 347,
+    "y": 895,
+    "w": 178,
+    "h": 186
+   },
+   "confidence": 0.5665,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 244,
+    "y": 500,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 878,
+    "y": 450,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  }
+ ]
+}

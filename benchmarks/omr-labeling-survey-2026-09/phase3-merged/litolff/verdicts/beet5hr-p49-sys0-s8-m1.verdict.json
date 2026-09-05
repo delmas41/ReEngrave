@@ -1,0 +1,46 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s8-m1",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 127,
+    "y": 0,
+    "w": 269,
+    "h": 281
+   },
+   "confidence": 0.8385,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 19,
+    "y": 0,
+    "w": 262,
+    "h": 272
+   },
+   "confidence": 0.744,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 933,
+    "y": 684,
+    "w": 144,
+    "h": 78
+   },
+   "notes": ""
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "cell_id": "beet5hr-p51-sys0-s0-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "restWhole",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1200,
+    "y": 458,
+    "w": 127,
+    "h": 51
+   },
+   "notes": ""
+  }
+ ]
+}

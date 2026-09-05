@@ -1,0 +1,29 @@
+{
+  "pass_name": "completion-full",
+  "note": "COMPLETE THE CELL — box every symbol the detector reads, in ONE pass. The model has pre-labelled: confirm with `t`, reject with `f`, fix a class with `c`, redraw a box with `b`. Then add what it MISSED with the number keys below. This is a triage pass, not a draw-from-scratch one, so most cells should be fast. BOX: noteheads (hollow and black), rests, accidentals, clefs, dynamics, slurs, ties, hairpins, augmentation dots, articulations, time signatures. SKIP: staff lines, stems and beams (classical CV finds those, and YOLO cannot bbox a thin line), and free text like `sempre`, `dolce`, tempo marks and instrument names — a letter lifted out of a printed word must train as BACKGROUND, so reject those with `f`. KEY-SIG accidentals stay separate from inline ones. Tab out of a swept cell even if you changed nothing: that stamps the pass and IS the coverage record.",
+  "classes": [
+    { "label": "black notehead", "on_line": "noteheadBlackOnLine", "in_space": "noteheadBlackInSpace", "click_box": true },
+    { "label": "half notehead",  "on_line": "noteheadHalfOnLine",  "in_space": "noteheadHalfInSpace",  "click_box": true },
+    { "label": "whole notehead", "on_line": "noteheadWholeOnLine", "in_space": "noteheadWholeInSpace", "click_box": true },
+    { "name": "restQuarter", "label": "quarter rest" },
+    { "name": "rest8th", "label": "8th rest" },
+    { "name": "accidentalFlat", "label": "flat" },
+    { "name": "accidentalSharp", "label": "sharp" },
+    { "name": "accidentalNatural", "label": "natural" },
+    { "name": "augmentationDot", "label": "aug. dot", "click_box": true },
+    { "name": "restWhole", "label": "whole rest" },
+    { "name": "restHalf", "label": "half rest" },
+    { "name": "rest16th", "label": "16th rest" },
+    { "name": "restHBar", "label": "multi-measure rest" },
+    { "name": "keyFlat", "label": "KEY-SIG flat" },
+    { "name": "keySharp", "label": "KEY-SIG sharp" },
+    { "name": "keyNatural", "label": "KEY-SIG natural" },
+    { "name": "slur", "label": "slur" },
+    { "name": "tie", "label": "tie" },
+    { "name": "dynamicCrescendoHairpin", "label": "cresc. hairpin" },
+    { "name": "dynamicDiminuendoHairpin", "label": "dim. hairpin" },
+    { "name": "clefG", "label": "treble clef", "click_box": true },
+    { "name": "clefF", "label": "bass clef", "click_box": true },
+    { "name": "clefC", "label": "C clef", "click_box": true }
+  ]
+}

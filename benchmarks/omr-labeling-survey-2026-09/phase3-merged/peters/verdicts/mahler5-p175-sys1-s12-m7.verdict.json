@@ -1,0 +1,104 @@
+{
+ "cell_id": "mahler5-p175-sys1-s12-m7",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1613,
+    "y": 240,
+    "w": 87,
+    "h": 72
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1074,
+    "y": 505,
+    "w": 133,
+    "h": 69
+   }
+  },
+  {
+   "id": "C2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1569,
+    "y": 293,
+    "w": 113,
+    "h": 63
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 471,
+    "y": 842,
+    "w": 146,
+    "h": 162
+   },
+   "confidence": 0.6587,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicP",
+   "model_bbox": {
+    "x": 161,
+    "y": 0,
+    "w": 111,
+    "h": 107
+   },
+   "confidence": 0.6434,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 1671,
+    "y": 1003,
+    "w": 362,
+    "h": 100
+   },
+   "confidence": 0.6162,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 222,
+    "y": 291,
+    "w": 116,
+    "h": 97
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1415,
+    "y": 130,
+    "w": 110,
+    "h": 321
+   },
+   "notes": ""
+  }
+ ]
+}

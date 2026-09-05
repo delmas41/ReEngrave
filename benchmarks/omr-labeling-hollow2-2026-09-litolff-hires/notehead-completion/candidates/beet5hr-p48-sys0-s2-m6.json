@@ -1,0 +1,31 @@
+{
+ "cell_id": "beet5hr-p48-sys0-s2-m6",
+ "candidates": [
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7608,
+   "ink": 0.922,
+   "bbox": {
+    "x": 207,
+    "y": 563,
+    "w": 137,
+    "h": 99
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7217,
+   "ink": 0.8046,
+   "bbox": {
+    "x": 191,
+    "y": 420,
+    "w": 150,
+    "h": 115
+   }
+  }
+ ]
+}

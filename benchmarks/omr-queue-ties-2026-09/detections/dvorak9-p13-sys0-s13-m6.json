@@ -1,0 +1,30 @@
+{
+ "cell_id": "dvorak9-p13-sys0-s13-m6",
+ "detections": [
+  {
+   "id": "D0",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 352,
+    "y": 243,
+    "w": 1678,
+    "h": 108
+   },
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "model_class": "tie",
+   "model_category": "queue",
+   "model_bbox": {
+    "x": 309,
+    "y": 1244,
+    "w": 915,
+    "h": 89
+   },
+   "confidence": 0.28,
+   "notes": "teacher: unmatched by any human box"
+  }
+ ]
+}

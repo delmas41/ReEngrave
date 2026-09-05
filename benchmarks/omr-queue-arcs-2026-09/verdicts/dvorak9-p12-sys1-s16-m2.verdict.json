@@ -1,0 +1,79 @@
+{
+  "cell_id": "dvorak9-p12-sys1-s16-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T23:29:25+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "TP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 296,
+        "y": 132,
+        "w": 1734,
+        "h": 136
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "TP",
+      "model_predicted_class": "tie",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 291,
+        "y": 475,
+        "w": 1739,
+        "h": 180
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "slur",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 303,
+        "y": 961,
+        "w": 1745,
+        "h": 127
+      },
+      "human_bbox": null,
+      "confidence": 0.645,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "FP",
+      "model_predicted_class": "slur",
+      "human_corrected_class": null,
+      "model_predicted_category": "queue",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 2048,
+        "h": 56
+      },
+      "human_bbox": null,
+      "confidence": 0.307,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "ties+slurs-reconcile"
+  ]
+}

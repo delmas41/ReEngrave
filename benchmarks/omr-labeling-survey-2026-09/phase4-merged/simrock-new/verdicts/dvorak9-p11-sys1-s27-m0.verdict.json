@@ -1,0 +1,151 @@
+{
+ "cell_id": "dvorak9-p11-sys1-s27-m0",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 664,
+    "y": 610,
+    "w": 80,
+    "h": 68
+   },
+   "notes": " | ledger-zone adjudication 2026-09-04: head rows centre at step +8.93 -> InSpace"
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 876,
+    "y": 476,
+    "w": 80,
+    "h": 68
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1054,
+    "y": 576,
+    "w": 80,
+    "h": 68
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1228,
+    "y": 476,
+    "w": 80,
+    "h": 68
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1393,
+    "y": 576,
+    "w": 80,
+    "h": 68
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1587,
+    "y": 443,
+    "w": 80,
+    "h": 68
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1758,
+    "y": 610,
+    "w": 80,
+    "h": 68
+   },
+   "notes": ""
+  },
+  {
+   "id": "H7",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1888,
+    "y": 443,
+    "w": 80,
+    "h": 68
+   },
+   "notes": ""
+  },
+  {
+   "id": "H8",
+   "human_class": "accidentalFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1504,
+    "y": 393,
+    "w": 62,
+    "h": 168
+   },
+   "notes": ""
+  },
+  {
+   "id": "H9",
+   "human_class": "keySharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 395,
+    "y": 250,
+    "w": 79,
+    "h": 179
+   },
+   "notes": ""
+  },
+  {
+   "id": "H10",
+   "human_class": "clefC",
+   "human_category": "clef",
+   "bbox": {
+    "x": 144,
+    "y": 258,
+    "w": 198,
+    "h": 296
+   },
+   "notes": ""
+  },
+  {
+   "id": "H11",
+   "human_class": "slur",
+   "human_category": "structural",
+   "bbox": {
+    "x": 540,
+    "y": 660,
+    "w": 1405,
+    "h": 143
+   },
+   "notes": ""
+  }
+ ]
+}

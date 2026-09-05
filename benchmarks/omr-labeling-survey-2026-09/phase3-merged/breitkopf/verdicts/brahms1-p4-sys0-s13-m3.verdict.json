@@ -1,0 +1,103 @@
+{
+ "cell_id": "brahms1-p4-sys0-s13-m3",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 747,
+    "y": 750,
+    "w": 118,
+    "h": 99
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 521,
+    "y": 502,
+    "w": 143,
+    "h": 184
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1007,
+    "y": 505,
+    "w": 140,
+    "h": 181
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "rest8th",
+   "human_category": "rest",
+   "bbox": {
+    "x": 1267,
+    "y": 513,
+    "w": 126,
+    "h": 184
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "restQuarter",
+   "human_category": "rest",
+   "bbox": {
+    "x": 233,
+    "y": 417,
+    "w": 137,
+    "h": 332
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "dynamicLetterF",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 491,
+    "y": 891,
+    "w": 247,
+    "h": 349
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "dynamicLetterF",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 642,
+    "y": 911,
+    "w": 271,
+    "h": 323
+   },
+   "notes": ""
+  },
+  {
+   "id": "H7",
+   "human_class": "articStaccatoBelow",
+   "human_category": "ornament",
+   "bbox": {
+    "x": 763,
+    "y": 889,
+    "w": 52,
+    "h": 57
+   },
+   "notes": ""
+  }
+ ]
+}

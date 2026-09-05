@@ -1,0 +1,95 @@
+{
+  "cell_id": "dvorak9-p12-sys1-s27-m8",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T06:00:59+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 87,
+        "y": 672,
+        "w": 114,
+        "h": 96
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 87,
+        "y": 766,
+        "w": 114,
+        "h": 96
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 315,
+        "y": 698,
+        "w": 46,
+        "h": 45
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "augmentationDot",
+      "human_category": "structural",
+      "bbox": {
+        "x": 309,
+        "y": 792,
+        "w": 46,
+        "h": 45
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "dynamicDiminuendoHairpin",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 964,
+        "y": 858,
+        "w": 985,
+        "h": 198
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 0,
+        "y": 863,
+        "w": 224,
+        "h": 280
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "dynamicLetterZ",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 174,
+        "y": 950,
+        "w": 127,
+        "h": 141
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}
