@@ -279,6 +279,7 @@ from .rhythm import (
     _dot_multiplier,
     _name_for_dots,
 )
+from .arc_detection import apply_arc_cv, arc_cv_mode
 from .line_detection import detect_lines
 from .voicing import group_chords_in_measure, split_events_into_voices
 from .dossier import (
@@ -1568,6 +1569,16 @@ def _detections_for_cell(
     # `_drop_clipped_notehead_fragments`. First, so nothing downstream (pitch,
     # rhythm, the cross-staff deduper) ever sees a fragment.
     dets, n_clipped_dropped = _drop_clipped_notehead_fragments(dets, cell)
+
+    # ── Classical-CV arc arbitration (OMR_ARC_CV, DEFAULT OFF). The detector's
+    #    tie/slur precision on scan cells is 0.232 (round 7's adjudicated
+    #    gauntlet) and neither head-only nor full training can move it; the CV
+    #    arc reader arbitrates those two classes the way `rhythm` arbitrates
+    #    beams. Applied here, before tie pairing and the output dicts, so a
+    #    vetoed arc never reaches an exporter. See tools/omr/arc_detection.py.
+    _arc_mode = arc_cv_mode()
+    if _arc_mode != "off":
+        dets = apply_arc_cv(dets, cell, _arc_mode)
 
     # ── Clef pass: update active_clef from the highest-confidence clef
     #    detection in this cell, if any. If a clef8 / clef15 octave marker

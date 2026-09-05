@@ -1,0 +1,9 @@
+{
+  "join-off": {"ARC_JOIN_MAX_GAP_SPACES": 0.0},
+  "join-gap8-tol0.35": {},
+  "join-gap8-tol0.2": {"ARC_JOIN_PRED_TOL_SPACES": 0.2},
+  "join-gap4-tol0.35": {"ARC_JOIN_MAX_GAP_SPACES": 4.0},
+  "join-gap4-tol0.2": {"ARC_JOIN_MAX_GAP_SPACES": 4.0, "ARC_JOIN_PRED_TOL_SPACES": 0.2},
+  "join-gap8-tol0.2-frag3": {"ARC_JOIN_PRED_TOL_SPACES": 0.2, "ARC_JOIN_MIN_FRAG_SPACES": 3.0},
+  "join-gap8-tol0.35-frag3": {"ARC_JOIN_MIN_FRAG_SPACES": 3.0}
+}

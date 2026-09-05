@@ -1,0 +1,2114 @@
+[
+ {
+  "cell": "brahms1-p2-sys0-s0-m1",
+  "cls": "tie",
+  "box": [
+   896,
+   13,
+   383,
+   51
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.67
+ },
+ {
+  "cell": "brahms1-p2-sys0-s0-m1",
+  "cls": "tie",
+  "box": [
+   1644,
+   174,
+   395,
+   147
+  ],
+  "outcome": "gate:edge+thickness",
+  "best_iou": 0.729
+ },
+ {
+  "cell": "brahms1-p2-sys0-s1-m1",
+  "cls": "tie",
+  "box": [
+   916,
+   106,
+   341,
+   98
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.805
+ },
+ {
+  "cell": "brahms1-p2-sys0-s1-m1",
+  "cls": "tie",
+  "box": [
+   1644,
+   325,
+   372,
+   116
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.186
+ },
+ {
+  "cell": "brahms1-p2-sys0-s1-m5",
+  "cls": "tie",
+  "box": [
+   642,
+   290,
+   508,
+   75
+  ],
+  "outcome": "matched",
+  "best_iou": 0.627
+ },
+ {
+  "cell": "brahms1-p2-sys0-s1-m5",
+  "cls": "tie",
+  "box": [
+   1563,
+   759,
+   485,
+   137
+  ],
+  "outcome": "matched",
+  "best_iou": 0.824
+ },
+ {
+  "cell": "brahms1-p2-sys0-s10-m3",
+  "cls": "tie",
+  "box": [
+   632,
+   813,
+   470,
+   115
+  ],
+  "outcome": "matched",
+  "best_iou": 0.773
+ },
+ {
+  "cell": "brahms1-p2-sys0-s10-m3",
+  "cls": "tie",
+  "box": [
+   1741,
+   809,
+   270,
+   111
+  ],
+  "outcome": "matched",
+  "best_iou": 0.896
+ },
+ {
+  "cell": "brahms1-p2-sys0-s10-m3",
+  "cls": "slur",
+  "box": [
+   531,
+   819,
+   1035,
+   196
+  ],
+  "outcome": "matched",
+  "best_iou": 0.719
+ },
+ {
+  "cell": "brahms1-p2-sys0-s10-m3",
+  "cls": "slur",
+  "box": [
+   1703,
+   864,
+   308,
+   132
+  ],
+  "outcome": "matched",
+  "best_iou": 0.731
+ },
+ {
+  "cell": "brahms1-p2-sys0-s2-m2",
+  "cls": "tie",
+  "box": [
+   357,
+   397,
+   1554,
+   101
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.462
+ },
+ {
+  "cell": "brahms1-p2-sys0-s2-m2",
+  "cls": "tie",
+  "box": [
+   579,
+   757,
+   396,
+   116
+  ],
+  "outcome": "matched",
+  "best_iou": 0.355
+ },
+ {
+  "cell": "brahms1-p2-sys0-s2-m2",
+  "cls": "tie",
+  "box": [
+   1064,
+   761,
+   838,
+   133
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.487
+ },
+ {
+  "cell": "brahms1-p2-sys0-s2-m2",
+  "cls": "tie",
+  "box": [
+   15,
+   397,
+   251,
+   101
+  ],
+  "outcome": "gate:thickness+rise+side",
+  "best_iou": 0.375
+ },
+ {
+  "cell": "brahms1-p2-sys0-s2-m5",
+  "cls": "tie",
+  "box": [
+   704,
+   263,
+   406,
+   95
+  ],
+  "outcome": "matched",
+  "best_iou": 0.861
+ },
+ {
+  "cell": "brahms1-p2-sys0-s2-m5",
+  "cls": "tie",
+  "box": [
+   1196,
+   225,
+   792,
+   112
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.788
+ },
+ {
+  "cell": "brahms1-p2-sys0-s2-m5",
+  "cls": "tie",
+  "box": [
+   653,
+   799,
+   399,
+   103
+  ],
+  "outcome": "matched",
+  "best_iou": 0.88
+ },
+ {
+  "cell": "brahms1-p2-sys0-s2-m5",
+  "cls": "tie",
+  "box": [
+   1162,
+   806,
+   838,
+   98
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.706
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m4",
+  "cls": "tie",
+  "box": [
+   14,
+   243,
+   205,
+   136
+  ],
+  "outcome": "matched",
+  "best_iou": 0.508
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m4",
+  "cls": "tie",
+  "box": [
+   21,
+   578,
+   177,
+   125
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.144
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m4",
+  "cls": "tie",
+  "box": [
+   789,
+   588,
+   379,
+   112
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.175
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m4",
+  "cls": "tie",
+  "box": [
+   845,
+   314,
+   376,
+   85
+  ],
+  "outcome": "matched",
+  "best_iou": 0.452
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m4",
+  "cls": "slur",
+  "box": [
+   824,
+   673,
+   960,
+   307
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.418
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m4",
+  "cls": "slur",
+  "box": [
+   796,
+   48,
+   1073,
+   146
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.69
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m4",
+  "cls": "slur",
+  "box": [
+   10,
+   33,
+   476,
+   154
+  ],
+  "outcome": "matched",
+  "best_iou": 0.715
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m4",
+  "cls": "slur",
+  "box": [
+   21,
+   776,
+   560,
+   130
+  ],
+  "outcome": "matched",
+  "best_iou": 0.493
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m6",
+  "cls": "tie",
+  "box": [
+   570,
+   605,
+   416,
+   103
+  ],
+  "outcome": "matched",
+  "best_iou": 0.383
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m6",
+  "cls": "tie",
+  "box": [
+   1491,
+   759,
+   494,
+   127
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.154
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m6",
+  "cls": "tie",
+  "box": [
+   300,
+   181,
+   1661,
+   137
+  ],
+  "outcome": "matched",
+  "best_iou": 0.814
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m6",
+  "cls": "tie",
+  "box": [
+   7,
+   190,
+   248,
+   119
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.789
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m6",
+  "cls": "tie",
+  "box": [
+   6,
+   773,
+   181,
+   129
+  ],
+  "outcome": "no_candidate",
+  "best_iou": 0.0
+ },
+ {
+  "cell": "brahms1-p2-sys0-s3-m6",
+  "cls": "tie",
+  "box": [
+   430,
+   0,
+   1491,
+   71
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.947
+ },
+ {
+  "cell": "brahms1-p2-sys0-s9-m0",
+  "cls": "tie",
+  "box": [
+   536,
+   64,
+   116,
+   26
+  ],
+  "outcome": "matched",
+  "best_iou": 0.79
+ },
+ {
+  "cell": "brahms1-p2-sys0-s9-m0",
+  "cls": "slur",
+  "box": [
+   615,
+   2,
+   529,
+   72
+  ],
+  "outcome": "matched",
+  "best_iou": 0.644
+ },
+ {
+  "cell": "brahms1-p2-sys0-s9-m0",
+  "cls": "slur",
+  "box": [
+   1665,
+   67,
+   359,
+   64
+  ],
+  "outcome": "matched",
+  "best_iou": 0.477
+ },
+ {
+  "cell": "brahms1-p2-sys1-s20-m6",
+  "cls": "tie",
+  "box": [
+   288,
+   816,
+   1293,
+   153
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.5
+ },
+ {
+  "cell": "brahms1-p2-sys1-s22-m0",
+  "cls": "tie",
+  "box": [
+   1104,
+   526,
+   311,
+   85
+  ],
+  "outcome": "matched",
+  "best_iou": 0.688
+ },
+ {
+  "cell": "brahms1-p2-sys1-s22-m0",
+  "cls": "tie",
+  "box": [
+   1865,
+   532,
+   167,
+   79
+  ],
+  "outcome": "matched",
+  "best_iou": 0.704
+ },
+ {
+  "cell": "brahms1-p2-sys1-s22-m0",
+  "cls": "slur",
+  "box": [
+   1059,
+   560,
+   625,
+   119
+  ],
+  "outcome": "matched",
+  "best_iou": 0.843
+ },
+ {
+  "cell": "brahms1-p2-sys1-s22-m0",
+  "cls": "slur",
+  "box": [
+   1841,
+   564,
+   184,
+   99
+  ],
+  "outcome": "matched",
+  "best_iou": 0.315
+ },
+ {
+  "cell": "brahms1-p2-sys1-s23-m2",
+  "cls": "tie",
+  "box": [
+   31,
+   797,
+   219,
+   129
+  ],
+  "outcome": "gate:side",
+  "best_iou": 0.584
+ },
+ {
+  "cell": "brahms1-p2-sys1-s23-m2",
+  "cls": "tie",
+  "box": [
+   889,
+   748,
+   366,
+   96
+  ],
+  "outcome": "matched",
+  "best_iou": 0.728
+ },
+ {
+  "cell": "brahms1-p2-sys1-s23-m2",
+  "cls": "tie",
+  "box": [
+   1785,
+   775,
+   252,
+   103
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.83
+ },
+ {
+  "cell": "brahms1-p2-sys1-s23-m2",
+  "cls": "slur",
+  "box": [
+   14,
+   796,
+   597,
+   198
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.818
+ },
+ {
+  "cell": "brahms1-p2-sys1-s23-m2",
+  "cls": "slur",
+  "box": [
+   879,
+   785,
+   679,
+   144
+  ],
+  "outcome": "matched",
+  "best_iou": 0.716
+ },
+ {
+  "cell": "brahms1-p2-sys1-s23-m2",
+  "cls": "slur",
+  "box": [
+   1743,
+   824,
+   290,
+   108
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.665
+ },
+ {
+  "cell": "brahms1-p2-sys1-s24-m2",
+  "cls": "tie",
+  "box": [
+   33,
+   761,
+   205,
+   127
+  ],
+  "outcome": "matched",
+  "best_iou": 0.594
+ },
+ {
+  "cell": "brahms1-p2-sys1-s24-m2",
+  "cls": "tie",
+  "box": [
+   898,
+   376,
+   380,
+   88
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.231
+ },
+ {
+  "cell": "brahms1-p2-sys1-s24-m2",
+  "cls": "tie",
+  "box": [
+   1836,
+   708,
+   202,
+   85
+  ],
+  "outcome": "gate:rise+side",
+  "best_iou": 0.59
+ },
+ {
+  "cell": "brahms1-p2-sys1-s24-m2",
+  "cls": "slur",
+  "box": [
+   905,
+   156,
+   721,
+   216
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.571
+ },
+ {
+  "cell": "brahms1-p2-sys1-s24-m2",
+  "cls": "slur",
+  "box": [
+   30,
+   629,
+   594,
+   352
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.375
+ },
+ {
+  "cell": "brahms1-p2-sys1-s24-m2",
+  "cls": "slur",
+  "box": [
+   1794,
+   727,
+   238,
+   106
+  ],
+  "outcome": "gate:rise+side",
+  "best_iou": 0.511
+ },
+ {
+  "cell": "brahms1-p2-sys1-s24-m2",
+  "cls": "tie",
+  "box": [
+   1051,
+   0,
+   378,
+   27
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.82
+ },
+ {
+  "cell": "brahms1-p2-sys1-s26-m0",
+  "cls": "slur",
+  "box": [
+   1104,
+   583,
+   819,
+   120
+  ],
+  "outcome": "matched",
+  "best_iou": 0.692
+ },
+ {
+  "cell": "brahms1-p3-sys0-s12-m2",
+  "cls": "tie",
+  "box": [
+   311,
+   246,
+   796,
+   167
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.79
+ },
+ {
+  "cell": "brahms1-p3-sys0-s12-m2",
+  "cls": "slur",
+  "box": [
+   266,
+   105,
+   1756,
+   260
+  ],
+  "outcome": "gate:thickness+resid",
+  "best_iou": 0.798
+ },
+ {
+  "cell": "brahms1-p3-sys0-s5-m4",
+  "cls": "tie",
+  "box": [
+   380,
+   414,
+   1629,
+   75
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.261
+ },
+ {
+  "cell": "brahms1-p3-sys0-s5-m4",
+  "cls": "tie",
+  "box": [
+   14,
+   440,
+   224,
+   91
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.001
+ },
+ {
+  "cell": "brahms1-p3-sys0-s5-m4",
+  "cls": "tie",
+  "box": [
+   348,
+   909,
+   1678,
+   100
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.847
+ },
+ {
+  "cell": "brahms1-p3-sys0-s5-m4",
+  "cls": "tie",
+  "box": [
+   0,
+   946,
+   297,
+   55
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.467
+ },
+ {
+  "cell": "brahms1-p3-sys0-s5-m5",
+  "cls": "tie",
+  "box": [
+   23,
+   368,
+   202,
+   105
+  ],
+  "outcome": "no_candidate",
+  "best_iou": 0.0
+ },
+ {
+  "cell": "brahms1-p3-sys0-s5-m5",
+  "cls": "tie",
+  "box": [
+   30,
+   813,
+   245,
+   68
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.534
+ },
+ {
+  "cell": "brahms1-p3-sys0-s8-m3",
+  "cls": "tie",
+  "box": [
+   728,
+   681,
+   226,
+   47
+  ],
+  "outcome": "matched",
+  "best_iou": 0.804
+ },
+ {
+  "cell": "brahms1-p3-sys0-s8-m3",
+  "cls": "slur",
+  "box": [
+   13,
+   548,
+   1866,
+   321
+  ],
+  "outcome": "gate:edge+resid",
+  "best_iou": 0.728
+ },
+ {
+  "cell": "brahms1-p3-sys0-s8-m3",
+  "cls": "tie",
+  "box": [
+   1884,
+   787,
+   164,
+   81
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.904
+ },
+ {
+  "cell": "brahms1-p3-sys0-s9-m1",
+  "cls": "slur",
+  "box": [
+   89,
+   190,
+   800,
+   233
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.416
+ },
+ {
+  "cell": "brahms1-p3-sys0-s9-m1",
+  "cls": "slur",
+  "box": [
+   992,
+   37,
+   800,
+   225
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.416
+ },
+ {
+  "cell": "brahms1-p3-sys0-s9-m4",
+  "cls": "tie",
+  "box": [
+   0,
+   120,
+   280,
+   111
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.782
+ },
+ {
+  "cell": "brahms1-p3-sys0-s9-m4",
+  "cls": "tie",
+  "box": [
+   738,
+   85,
+   372,
+   99
+  ],
+  "outcome": "matched",
+  "best_iou": 0.583
+ },
+ {
+  "cell": "brahms1-p3-sys0-s9-m4",
+  "cls": "tie",
+  "box": [
+   1681,
+   62,
+   355,
+   122
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.775
+ },
+ {
+  "cell": "brahms1-p3-sys1-s23-m5",
+  "cls": "tie",
+  "box": [
+   194,
+   430,
+   1653,
+   231
+  ],
+  "outcome": "gate:edge+thickness",
+  "best_iou": 0.351
+ },
+ {
+  "cell": "brahms1-p4-sys0-s1-m0",
+  "cls": "tie",
+  "box": [
+   1691,
+   13,
+   322,
+   57
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.606
+ },
+ {
+  "cell": "brahms1-p4-sys0-s1-m0",
+  "cls": "slur",
+  "box": [
+   1665,
+   0,
+   144,
+   34
+  ],
+  "outcome": "gate:width+edge+rise+side",
+  "best_iou": 0.367
+ },
+ {
+  "cell": "brahms1-p4-sys0-s2-m0",
+  "cls": "tie",
+  "box": [
+   1696,
+   222,
+   327,
+   81
+  ],
+  "outcome": "matched",
+  "best_iou": 0.813
+ },
+ {
+  "cell": "brahms1-p4-sys0-s2-m0",
+  "cls": "slur",
+  "box": [
+   1679,
+   102,
+   337,
+   201
+  ],
+  "outcome": "matched",
+  "best_iou": 0.533
+ },
+ {
+  "cell": "brahms1-p4-sys0-s3-m8",
+  "cls": "tie",
+  "box": [
+   1230,
+   65,
+   606,
+   144
+  ],
+  "outcome": "matched",
+  "best_iou": 0.674
+ },
+ {
+  "cell": "brahms1-p4-sys0-s3-m8",
+  "cls": "tie",
+  "box": [
+   1204,
+   687,
+   628,
+   162
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.079
+ },
+ {
+  "cell": "brahms1-p4-sys0-s9-m3",
+  "cls": "tie",
+  "box": [
+   380,
+   175,
+   406,
+   114
+  ],
+  "outcome": "matched",
+  "best_iou": 0.687
+ },
+ {
+  "cell": "brahms1-p4-sys0-s9-m3",
+  "cls": "tie",
+  "box": [
+   378,
+   650,
+   328,
+   129
+  ],
+  "outcome": "matched",
+  "best_iou": 0.35
+ },
+ {
+  "cell": "brahms1-p4-sys0-s9-m3",
+  "cls": "slur",
+  "box": [
+   1200,
+   216,
+   434,
+   126
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.593
+ },
+ {
+  "cell": "brahms1-p4-sys1-s15-m0",
+  "cls": "tie",
+  "box": [
+   1459,
+   399,
+   580,
+   96
+  ],
+  "outcome": "matched",
+  "best_iou": 0.336
+ },
+ {
+  "cell": "brahms1-p4-sys1-s15-m0",
+  "cls": "tie",
+  "box": [
+   1409,
+   62,
+   608,
+   99
+  ],
+  "outcome": "matched",
+  "best_iou": 0.664
+ },
+ {
+  "cell": "brahms1-p4-sys1-s15-m7",
+  "cls": "tie",
+  "box": [
+   1267,
+   426,
+   166,
+   72
+  ],
+  "outcome": "gate:width+rise",
+  "best_iou": 0.438
+ },
+ {
+  "cell": "brahms1-p4-sys1-s15-m7",
+  "cls": "tie",
+  "box": [
+   1075,
+   734,
+   355,
+   156
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.107
+ },
+ {
+  "cell": "brahms1-p4-sys1-s15-m7",
+  "cls": "tie",
+  "box": [
+   28,
+   328,
+   222,
+   141
+  ],
+  "outcome": "iou_low_shape",
+  "best_iou": 0.13
+ },
+ {
+  "cell": "brahms1-p4-sys1-s15-m7",
+  "cls": "tie",
+  "box": [
+   20,
+   719,
+   136,
+   174
+  ],
+  "outcome": "no_candidate",
+  "best_iou": 0.0
+ },
+ {
+  "cell": "brahms1-p4-sys1-s15-m7",
+  "cls": "slur",
+  "box": [
+   16,
+   224,
+   656,
+   164
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.799
+ },
+ {
+  "cell": "brahms1-p4-sys1-s18-m1",
+  "cls": "tie",
+  "box": [
+   286,
+   300,
+   673,
+   135
+  ],
+  "outcome": "matched",
+  "best_iou": 0.348
+ },
+ {
+  "cell": "brahms1-p4-sys1-s18-m1",
+  "cls": "slur",
+  "box": [
+   1298,
+   406,
+   425,
+   171
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.172
+ },
+ {
+  "cell": "brahms1-p4-sys1-s18-m2",
+  "cls": "tie",
+  "box": [
+   208,
+   338,
+   735,
+   164
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.077
+ },
+ {
+  "cell": "brahms1-p4-sys1-s18-m2",
+  "cls": "slur",
+  "box": [
+   1267,
+   673,
+   493,
+   171
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.155
+ },
+ {
+  "cell": "brahms1-p4-sys1-s19-m0",
+  "cls": "tie",
+  "box": [
+   1411,
+   109,
+   618,
+   119
+  ],
+  "outcome": "matched",
+  "best_iou": 0.634
+ },
+ {
+  "cell": "brahms1-p4-sys1-s19-m0",
+  "cls": "tie",
+  "box": [
+   1443,
+   392,
+   590,
+   110
+  ],
+  "outcome": "matched",
+  "best_iou": 0.31
+ },
+ {
+  "cell": "brahms1-p4-sys1-s23-m1",
+  "cls": "tie",
+  "box": [
+   13,
+   19,
+   162,
+   85
+  ],
+  "outcome": "gate:edge+rise",
+  "best_iou": 0.76
+ },
+ {
+  "cell": "brahms1-p4-sys1-s23-m1",
+  "cls": "tie",
+  "box": [
+   1079,
+   0,
+   864,
+   98
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.644
+ },
+ {
+  "cell": "brahms1-p4-sys1-s23-m1",
+  "cls": "slur",
+  "box": [
+   918,
+   0,
+   1049,
+   68
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.799
+ },
+ {
+  "cell": "brahms1-p4-sys1-s24-m3",
+  "cls": "slur",
+  "box": [
+   913,
+   147,
+   363,
+   137
+  ],
+  "outcome": "iou_low_shape",
+  "best_iou": 0.258
+ },
+ {
+  "cell": "brahms1-p4-sys1-s24-m9",
+  "cls": "slur",
+  "box": [
+   981,
+   16,
+   410,
+   152
+  ],
+  "outcome": "matched",
+  "best_iou": 0.648
+ },
+ {
+  "cell": "dvorak9-p10-sys0-s12-m4",
+  "cls": "slur",
+  "box": [
+   186,
+   1022,
+   1747,
+   162
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.657
+ },
+ {
+  "cell": "dvorak9-p10-sys0-s13-m4",
+  "cls": "tie",
+  "box": [
+   316,
+   846,
+   1558,
+   202
+  ],
+  "outcome": "matched",
+  "best_iou": 0.355
+ },
+ {
+  "cell": "dvorak9-p10-sys0-s2-m9",
+  "cls": "tie",
+  "box": [
+   25,
+   250,
+   235,
+   93
+  ],
+  "outcome": "gate:rise",
+  "best_iou": 0.745
+ },
+ {
+  "cell": "dvorak9-p10-sys0-s2-m9",
+  "cls": "slur",
+  "box": [
+   19,
+   136,
+   1231,
+   210
+  ],
+  "outcome": "matched",
+  "best_iou": 0.642
+ },
+ {
+  "cell": "dvorak9-p10-sys1-s17-m4",
+  "cls": "slur",
+  "box": [
+   349,
+   75,
+   1681,
+   202
+  ],
+  "outcome": "matched",
+  "best_iou": 0.397
+ },
+ {
+  "cell": "dvorak9-p10-sys1-s18-m4",
+  "cls": "slur",
+  "box": [
+   362,
+   2,
+   1675,
+   188
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.902
+ },
+ {
+  "cell": "dvorak9-p10-sys1-s25-m8",
+  "cls": "tie",
+  "box": [
+   315,
+   376,
+   1450,
+   128
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.776
+ },
+ {
+  "cell": "dvorak9-p11-sys0-s0-m0",
+  "cls": "slur",
+  "box": [
+   858,
+   300,
+   310,
+   126
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.227
+ },
+ {
+  "cell": "dvorak9-p11-sys0-s0-m0",
+  "cls": "slur",
+  "box": [
+   1368,
+   287,
+   484,
+   133
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.29
+ },
+ {
+  "cell": "dvorak9-p11-sys0-s1-m0",
+  "cls": "slur",
+  "box": [
+   855,
+   209,
+   306,
+   139
+  ],
+  "outcome": "matched",
+  "best_iou": 0.552
+ },
+ {
+  "cell": "dvorak9-p11-sys0-s1-m0",
+  "cls": "slur",
+  "box": [
+   1425,
+   188,
+   390,
+   167
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.8
+ },
+ {
+  "cell": "dvorak9-p11-sys1-s16-m0",
+  "cls": "slur",
+  "box": [
+   557,
+   236,
+   946,
+   180
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.195
+ },
+ {
+  "cell": "dvorak9-p11-sys1-s16-m0",
+  "cls": "slur",
+  "box": [
+   462,
+   656,
+   923,
+   129
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.448
+ },
+ {
+  "cell": "dvorak9-p11-sys1-s26-m0",
+  "cls": "slur",
+  "box": [
+   666,
+   537,
+   752,
+   156
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.262
+ },
+ {
+  "cell": "dvorak9-p11-sys1-s27-m0",
+  "cls": "slur",
+  "box": [
+   539,
+   659,
+   1404,
+   143
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.257
+ },
+ {
+  "cell": "dvorak9-p12-sys0-s12-m3",
+  "cls": "slur",
+  "box": [
+   214,
+   810,
+   1010,
+   263
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.208
+ },
+ {
+  "cell": "dvorak9-p12-sys1-s15-m2",
+  "cls": "tie",
+  "box": [
+   352,
+   308,
+   1678,
+   224
+  ],
+  "outcome": "gate:edge+thickness",
+  "best_iou": 0.698
+ },
+ {
+  "cell": "dvorak9-p12-sys1-s15-m2",
+  "cls": "tie",
+  "box": [
+   318,
+   6,
+   1723,
+   136
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.542
+ },
+ {
+  "cell": "dvorak9-p12-sys1-s16-m2",
+  "cls": "tie",
+  "box": [
+   296,
+   132,
+   1734,
+   136
+  ],
+  "outcome": "gate:edge+thickness",
+  "best_iou": 0.602
+ },
+ {
+  "cell": "dvorak9-p12-sys1-s16-m2",
+  "cls": "tie",
+  "box": [
+   291,
+   475,
+   1739,
+   180
+  ],
+  "outcome": "iou_low_shape",
+  "best_iou": 0.29
+ },
+ {
+  "cell": "dvorak9-p12-sys1-s17-m3",
+  "cls": "tie",
+  "box": [
+   48,
+   242,
+   221,
+   109
+  ],
+  "outcome": "gate:rise+side",
+  "best_iou": 0.718
+ },
+ {
+  "cell": "dvorak9-p12-sys1-s17-m3",
+  "cls": "tie",
+  "box": [
+   38,
+   604,
+   170,
+   89
+  ],
+  "outcome": "no_candidate",
+  "best_iou": 0.0
+ },
+ {
+  "cell": "dvorak9-p12-sys1-s26-m7",
+  "cls": "slur",
+  "box": [
+   564,
+   826,
+   291,
+   273
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.173
+ },
+ {
+  "cell": "dvorak9-p12-sys1-s26-m7",
+  "cls": "slur",
+  "box": [
+   1503,
+   858,
+   301,
+   256
+  ],
+  "outcome": "iou_low_shape",
+  "best_iou": 0.249
+ },
+ {
+  "cell": "dvorak9-p13-sys0-s11-m5",
+  "cls": "slur",
+  "box": [
+   207,
+   875,
+   257,
+   133
+  ],
+  "outcome": "matched",
+  "best_iou": 0.472
+ },
+ {
+  "cell": "dvorak9-p13-sys0-s13-m6",
+  "cls": "tie",
+  "box": [
+   352,
+   243,
+   1678,
+   108
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.745
+ },
+ {
+  "cell": "dvorak9-p13-sys1-s15-m7",
+  "cls": "tie",
+  "box": [
+   249,
+   95,
+   1372,
+   174
+  ],
+  "outcome": "gate:edge+thickness",
+  "best_iou": 0.622
+ },
+ {
+  "cell": "dvorak9-p13-sys1-s15-m7",
+  "cls": "tie",
+  "box": [
+   4,
+   171,
+   173,
+   107
+  ],
+  "outcome": "gate:edge+rise+side",
+  "best_iou": 0.731
+ },
+ {
+  "cell": "dvorak9-p13-sys1-s17-m6",
+  "cls": "tie",
+  "box": [
+   345,
+   214,
+   1328,
+   206
+  ],
+  "outcome": "iou_low_shape",
+  "best_iou": 0.253
+ },
+ {
+  "cell": "dvorak9-p13-sys1-s18-m6",
+  "cls": "tie",
+  "box": [
+   262,
+   169,
+   1334,
+   132
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.832
+ },
+ {
+  "cell": "dvorak9-p13-sys1-s18-m6",
+  "cls": "tie",
+  "box": [
+   231,
+   729,
+   1372,
+   121
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.055
+ },
+ {
+  "cell": "dvorak9-p13-sys1-s18-m6",
+  "cls": "tie",
+  "box": [
+   4,
+   258,
+   160,
+   70
+  ],
+  "outcome": "gate:rise+side",
+  "best_iou": 0.919
+ },
+ {
+  "cell": "dvorak9-p13-sys1-s18-m6",
+  "cls": "tie",
+  "box": [
+   4,
+   727,
+   102,
+   49
+  ],
+  "outcome": "gate:width+rise",
+  "best_iou": 0.448
+ },
+ {
+  "cell": "dvorak9-p14-sys0-s12-m0",
+  "cls": "tie",
+  "box": [
+   814,
+   968,
+   326,
+   124
+  ],
+  "outcome": "matched",
+  "best_iou": 0.562
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s2-m0",
+  "cls": "tie",
+  "box": [
+   773,
+   158,
+   257,
+   94
+  ],
+  "outcome": "matched",
+  "best_iou": 0.626
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s2-m0",
+  "cls": "tie",
+  "box": [
+   740,
+   646,
+   271,
+   126
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.148
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s2-m0",
+  "cls": "tie",
+  "box": [
+   1054,
+   120,
+   673,
+   124
+  ],
+  "outcome": "matched",
+  "best_iou": 0.731
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s2-m0",
+  "cls": "tie",
+  "box": [
+   1024,
+   655,
+   706,
+   111
+  ],
+  "outcome": "iou_low_shape",
+  "best_iou": 0.178
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s25-m0",
+  "cls": "tie",
+  "box": [
+   1147,
+   126,
+   592,
+   160
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.651
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s27-m0",
+  "cls": "tie",
+  "box": [
+   1166,
+   2,
+   575,
+   87
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.628
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s3-m0",
+  "cls": "tie",
+  "box": [
+   789,
+   218,
+   212,
+   102
+  ],
+  "outcome": "matched",
+  "best_iou": 0.619
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s3-m0",
+  "cls": "tie",
+  "box": [
+   1105,
+   235,
+   639,
+   70
+  ],
+  "outcome": "matched",
+  "best_iou": 0.943
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s3-m0",
+  "cls": "tie",
+  "box": [
+   756,
+   634,
+   271,
+   102
+  ],
+  "outcome": "iou_low_shape",
+  "best_iou": 0.192
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s3-m0",
+  "cls": "tie",
+  "box": [
+   1033,
+   597,
+   711,
+   153
+  ],
+  "outcome": "iou_low_shape",
+  "best_iou": 0.106
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s4-m0",
+  "cls": "tie",
+  "box": [
+   809,
+   264,
+   262,
+   73
+  ],
+  "outcome": "matched",
+  "best_iou": 0.778
+ },
+ {
+  "cell": "dvorak9-p15-sys0-s4-m0",
+  "cls": "tie",
+  "box": [
+   731,
+   637,
+   267,
+   133
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.058
+ },
+ {
+  "cell": "dvorak9-p16-sys0-s12-m10",
+  "cls": "slur",
+  "box": [
+   239,
+   266,
+   324,
+   147
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.292
+ },
+ {
+  "cell": "dvorak9-p16-sys0-s12-m10",
+  "cls": "slur",
+  "box": [
+   725,
+   184,
+   224,
+   152
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.037
+ },
+ {
+  "cell": "dvorak9-p16-sys0-s12-m10",
+  "cls": "slur",
+  "box": [
+   1199,
+   197,
+   233,
+   168
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.229
+ },
+ {
+  "cell": "dvorak9-p16-sys0-s12-m10",
+  "cls": "slur",
+  "box": [
+   1600,
+   314,
+   320,
+   176
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.155
+ },
+ {
+  "cell": "dvorak9-p16-sys1-s15-m6",
+  "cls": "slur",
+  "box": [
+   182,
+   474,
+   566,
+   215
+  ],
+  "outcome": "iou_low_shape",
+  "best_iou": 0.181
+ },
+ {
+  "cell": "dvorak9-p16-sys1-s27-m5",
+  "cls": "slur",
+  "box": [
+   197,
+   283,
+   1812,
+   197
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.634
+ },
+ {
+  "cell": "dvorak9-p17-sys0-s5-m6",
+  "cls": "tie",
+  "box": [
+   373,
+   309,
+   653,
+   186
+  ],
+  "outcome": "matched",
+  "best_iou": 0.797
+ },
+ {
+  "cell": "dvorak9-p17-sys0-s5-m6",
+  "cls": "tie",
+  "box": [
+   305,
+   715,
+   717,
+   187
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.045
+ },
+ {
+  "cell": "dvorak9-p18-sys0-s14-m4",
+  "cls": "tie",
+  "box": [
+   420,
+   119,
+   587,
+   186
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.641
+ },
+ {
+  "cell": "dvorak9-p18-sys0-s14-m4",
+  "cls": "tie",
+  "box": [
+   420,
+   490,
+   593,
+   181
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.086
+ },
+ {
+  "cell": "dvorak9-p18-sys0-s2-m7",
+  "cls": "tie",
+  "box": [
+   873,
+   1053,
+   79,
+   57
+  ],
+  "outcome": "gate:width+edge+rise+side",
+  "best_iou": 0.647
+ },
+ {
+  "cell": "dvorak9-p18-sys0-s24-m3",
+  "cls": "slur",
+  "box": [
+   251,
+   817,
+   500,
+   318
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.126
+ },
+ {
+  "cell": "dvorak9-p18-sys0-s24-m3",
+  "cls": "slur",
+  "box": [
+   1162,
+   726,
+   502,
+   298
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.159
+ },
+ {
+  "cell": "dvorak9-p18-sys0-s25-m2",
+  "cls": "slur",
+  "box": [
+   242,
+   785,
+   512,
+   390
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.071
+ },
+ {
+  "cell": "dvorak9-p18-sys0-s25-m2",
+  "cls": "slur",
+  "box": [
+   1192,
+   683,
+   489,
+   320
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.102
+ },
+ {
+  "cell": "dvorak9-p18-sys0-s8-m1",
+  "cls": "slur",
+  "box": [
+   342,
+   84,
+   734,
+   150
+  ],
+  "outcome": "matched",
+  "best_iou": 0.397
+ },
+ {
+  "cell": "dvorak9-p18-sys0-s8-m1",
+  "cls": "slur",
+  "box": [
+   1420,
+   130,
+   566,
+   190
+  ],
+  "outcome": "gate:edge",
+  "best_iou": 0.746
+ },
+ {
+  "cell": "dvorak9-p18-sys0-s9-m0",
+  "cls": "tie",
+  "box": [
+   554,
+   271,
+   41,
+   18
+  ],
+  "outcome": "gate:width+rise+side",
+  "best_iou": 0.82
+ },
+ {
+  "cell": "dvorak9-p19-sys0-s10-m4",
+  "cls": "slur",
+  "box": [
+   1143,
+   98,
+   380,
+   220
+  ],
+  "outcome": "matched",
+  "best_iou": 0.559
+ },
+ {
+  "cell": "dvorak9-p19-sys0-s10-m4",
+  "cls": "slur",
+  "box": [
+   256,
+   58,
+   535,
+   285
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.133
+ },
+ {
+  "cell": "dvorak9-p19-sys0-s11-m6",
+  "cls": "tie",
+  "box": [
+   842,
+   235,
+   422,
+   140
+  ],
+  "outcome": "matched",
+  "best_iou": 0.632
+ },
+ {
+  "cell": "dvorak9-p19-sys0-s11-m6",
+  "cls": "tie",
+  "box": [
+   1732,
+   202,
+   245,
+   187
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.568
+ },
+ {
+  "cell": "dvorak9-p19-sys0-s13-m1",
+  "cls": "slur",
+  "box": [
+   245,
+   731,
+   399,
+   231
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.082
+ },
+ {
+  "cell": "dvorak9-p19-sys0-s13-m1",
+  "cls": "slur",
+  "box": [
+   1230,
+   587,
+   419,
+   280
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.092
+ },
+ {
+  "cell": "dvorak9-p19-sys1-s23-m7",
+  "cls": "tie",
+  "box": [
+   365,
+   388,
+   552,
+   172
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.347
+ },
+ {
+  "cell": "dvorak9-p19-sys1-s25-m2",
+  "cls": "slur",
+  "box": [
+   255,
+   78,
+   301,
+   150
+  ],
+  "outcome": "gate:thickness",
+  "best_iou": 0.771
+ },
+ {
+  "cell": "dvorak9-p19-sys1-s25-m2",
+  "cls": "slur",
+  "box": [
+   772,
+   123,
+   290,
+   178
+  ],
+  "outcome": "matched",
+  "best_iou": 0.745
+ },
+ {
+  "cell": "dvorak9-p19-sys1-s25-m2",
+  "cls": "slur",
+  "box": [
+   1675,
+   47,
+   331,
+   212
+  ],
+  "outcome": "matched",
+  "best_iou": 0.495
+ },
+ {
+  "cell": "dvorak9-p19-sys1-s25-m2",
+  "cls": "slur",
+  "box": [
+   1189,
+   14,
+   238,
+   163
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.284
+ },
+ {
+  "cell": "dvorak9-p20-sys0-s2-m2",
+  "cls": "slur",
+  "box": [
+   404,
+   15,
+   1454,
+   488
+  ],
+  "outcome": "iou_low_frag",
+  "best_iou": 0.139
+ },
+ {
+  "cell": "dvorak9-p9-sys0-s10-m10",
+  "cls": "slur",
+  "box": [
+   264,
+   116,
+   678,
+   255
+  ],
+  "outcome": "matched",
+  "best_iou": 0.657
+ },
+ {
+  "cell": "dvorak9-p9-sys0-s10-m10",
+  "cls": "slur",
+  "box": [
+   1079,
+   257,
+   517,
+   250
+  ],
+  "outcome": "matched",
+  "best_iou": 0.643
+ }
+]
