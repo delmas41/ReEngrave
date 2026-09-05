@@ -59,7 +59,7 @@ then sys2 on the p2 rows).
 | Viola s20 (sys2), 984073-p2 | +6 (m24–25 etc.) | **The one genuine positional default** among all sites: zero clef detections, carried treble | absent (`None`) | Violin via **score_order** |
 | Viola s9, 984073-p1 | **−6/−5 m7–m15** (header bars fine; forensics 38 edits) | Header **alto CORRECT** (`clefCAlto` 0.40 over `clefG` 0.34), then **spurious mid-staff `clefF` 0.59 at m4** flips m4+ to bass | `detector` (correct) | **Viola via label** (Surya; 12 labels) |
 | 1. Violine s9, brahms-p1 | **−12 m3–m5** (16 truth notes; the clef-shaped core of brahms shift 359) | Header `clefG` 0.94 correct; **spurious mid-staff `clefF` 0.32 at m3** — 0.32, just above the 0.25 floor | `detector` (correct) | **Violin via label** |
-| Violoncello s13, dvorak-p5 | **−4/−5 m0–m3** (12 truth notes; forensics 116 edits) | **Header ARBITRATION loss**: the plate prints TENOR (the −4 constant = tenor-read-as-bass, and `clefCTenor` 0.88 was detected); `clefF` 0.92 outscored it by 0.04 and bass won | absent — but a provenance ARTIFACT, see §3; the clef WAS detector-read | **Cello via label** |
+| Violoncello s13, dvorak-p5 | **−4/−5 m0–m3** (12 truth notes; forensics 116 edits) | **In-cell clef change, unrepresentable**: the plate opens the cello in BASS and prints a TENOR change *inside measure 1*, before the first notes (verified on the page image). Both glyphs are real and both were detected (`clefF` 0.92, `clefCTenor` 0.88) — but a measure cell carries ONE clef state and the higher-confidence glyph keeps it, so the change is lost and everything after it reads −4. The Gradus reference happens to *notate* the same pitches in bass; the pitch comparison is notation-independent, so the truth file's opening bass clef is not evidence about the plate | absent — a provenance ARTIFACT, see §3; the clef WAS detector-read | **Cello via label** |
 | dvorak-p6 | one −1 bar | not clef-shaped (±1 = step errors, no clef pair is 1 apart) | — | page unlabeled (Tesseract read `\|`) |
 
 Unmapped rows, from provenance + the blocked proposals (no per-measure
@@ -136,17 +136,20 @@ Three mechanism families, three different levers, only some ownable here:
 |---|---|---|---|
 | **A. Header treble misread, label-named** | 575951-p1 s9 Viola; brahms-p2 s4/s18/s8 (unmapped); mahler-p2 s16 (unmapped, genuine default) | ~108 mapped + unmapped shares | a TREBLE-ONLY override tier: instrument label read from the margin + instrument default ≠ treble + register fit not worse. Treble-only is what keeps brahms-p1's correct cello TENOR safe, and matches the measured `score_layouts` asymmetry (`SCORE_TREBLE_CONFLICT` −0.3 vs −1.5: an all-treble read is the documented failure mode and weak evidence) |
 | **B. Mid-staff spurious clef change, label-named** | 984073-p1 s9 Viola (`clefF` 0.59 at m4, ~38); brahms-p1 s9 1.Violine (`clefF` 0.32 at m3, the −12 core of its 359) | ~38 + a share of 359 | an instrument-conditioned mid-staff clef-change veto (a violin staff never changes clef; a viola staff never changes to bass) — a different lever from the brief's, same identity evidence |
-| **C. Score-order-named staves + arbitration losses** | ALL FOUR damaged staves of the two beethoven p2 rows (s8/s9/s19/s20 — margin unread, named "Violin" by score order, wrongly for the violas); dvorak-p5 s13 (tenor lost to bass 0.88 vs 0.92, both detected) | the **bulk**: ~1,000 of the mapped 1,869 (477 + 523) + dvorak's 116 | **nothing safe in this lever family.** Score-order naming driving clef correction is measured-rejected (closes the loop on its own mistake); the dvorak arbitration needs better clef evidence, not identity — the instrument default (bass) AGREES with the wrong reading there. The p2 unlock is the MARGIN READER: Surya labeled 14 of 22 staves on each p2 row — the 7 wind/brass/timp slots in both systems — and zero string staves, with `unresolved_labels` empty (nothing read-and-dropped; the reader returned nothing usable there) |
+| **C. Score-order-named staves + arbitration losses** | ALL FOUR damaged staves of the two beethoven p2 rows (s8/s9/s19/s20 — margin unread, named "Violin" by score order, wrongly for the violas); dvorak-p5 s13 (tenor lost to bass 0.88 vs 0.92, both detected) | the **bulk**: ~1,000 of the mapped 1,869 (477 + 523) + dvorak's 116 | **nothing safe in this lever family.** Score-order naming driving clef correction is measured-rejected (closes the loop on its own mistake); the dvorak arbitration needs better clef evidence, not identity — the instrument default (bass) AGREES with the wrong reading there. ⚠️ The p2 wall is the PLATE, not the reader: the page images (both 984073 p.2 and 575951 p.2, rendered and inspected) print margin names ONLY for the seven wind/brass/timp staves — `Fl. Ob. Cl. Fag. Cor. Tr. Tp.` — and NOTHING at any string staff, in either system. `unresolved_labels` is empty because there was nothing to read. No margin-reader improvement can name these staves; the only identity sources left are score order (measured-rejected for clef work) and the dossier (excluded from this benchmark as truth leakage, valid in production) |
 
 **The honest headline so far**: the briefed gap-only lever reaches ~0 of the
 mapped damage (the one genuinely-defaulted damaged staff is score-order-named;
 every label-named damaged staff has a *detected* clef). A treble-only
 override tier (A) + a mid-staff veto (B) — both gated on label-read identity —
-reach roughly **150–350 mapped edits + the unmapped brahms-p2/mahler-p2
-shares** (to be measured by A/B, expected order a few hundred), out of the
-~1,900–2,700 stake. The remaining ~1,100+ is walled behind the margin reader
-on continuation pages (family C), and that is a finding about *reader reach*,
-not about clef logic.
+reach roughly **150–350 mapped edits + the unmapped brahms-p2 share** (to be
+measured by A/B), out of the ~1,900–2,700 stake. Two corrections to the draft
+count made while verifying: mahler-p2 s16 carries only **5 noteheads**, under
+`MIN_NOTEHEADS` = 12, so the register evidence is too thin and the pass
+rightly abstains there in both arms; and dvorak-p5's cello is an in-cell
+clef change (see §2), out of reach of ANY staff-level lever. The remaining
+~1,100+ of family C is walled behind print that names no string staff, and
+that is a finding about the PLATE, not about clef logic or the reader.
 
 ## 6. Next (in order)
 
