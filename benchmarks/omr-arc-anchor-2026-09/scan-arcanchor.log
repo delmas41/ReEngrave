@@ -7,3 +7,42 @@ beethoven-sym5-mvt1-984073-p2: transcribing page 2 of beethoven--symphony-5-op67
 beethoven-sym5-mvt1-575951-p1: transcribing page 0 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf …
 1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'Yiolino II.' — these are the strings to add to tools/omr/instruments.py
 beethoven-sym5-mvt1-575951-p2: transcribing page 1 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf …
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/xmlToM21.py:4081: MusicXMLWarning: Line <bracket> stop without start
+  warnings.warn('Line <' + mxObj.tag + '> stop without start', MusicXMLWarning)
+dvorak-sym9-mvt1-405834-p5: transcribing page 4 of dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf …
+dvorak-sym9-mvt1-405834-p6: transcribing page 5 of dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf …
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '|' — these are the strings to add to tools/omr/instruments.py
+brahms-sym1-mvt1-317803-p1: transcribing page 0 of brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf …
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'in C  \\frac{1}{2}', 'in Es  \\frac{3}{4}' — these are the strings to add to tools/omr/instruments.py
+brahms-sym1-mvt1-317803-p2: transcribing page 1 of brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf …
+4 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(C)', '(Es)', 'Hr. (Es)', 'Trpt.' — these are the strings to add to tools/omr/instruments.py
+mahler-sym5-mvt1-local-p2: transcribing page 1 of mahler--symphony-5--unidentified-scan-2016--local.pdf …
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'Contrafagott' — these are the strings to add to tools/omr/instruments.py
+mahler-sym5-mvt1-local-p3: transcribing page 2 of mahler--symphony-5--unidentified-scan-2016--local.pdf …
+3 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '2', '3', '7' — these are the strings to add to tools/omr/instruments.py
+bach-brandenburg3-mvt1-468678-p1: transcribing page 0 of bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf …
+3 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'I', 'III', '|' — these are the strings to add to tools/omr/instruments.py
+
+row                                        win    staves    meas  OMR-NED   edits  truth   pred  conf
+beethoven-sym5-mvt1-984073-p1.arcanchor 1-16      12/12    16/16    0.7152    1286   1064    734  verified
+beethoven-sym5-mvt1-984073-p2.arcanchor 17-48      22/22    16/32    0.8831    4444   3004   2028  verified
+beethoven-sym5-mvt1-575951-p1.arcanchor 1-16      12/12    16/16    0.7622    1359   1064    719  verified
+beethoven-sym5-mvt1-575951-p2.arcanchor 17-48      22/22    17/32    0.8768    4464   3004   2087  verified
+dvorak-sym9-mvt1-405834-p5.arcanchor   1-8       15/15     8/8     0.4298     670    792    767  verified
+dvorak-sym9-mvt1-405834-p6.arcanchor   9-15      15/15     7/7     0.7275    2606   2022   1560  verified
+brahms-sym1-mvt1-317803-p1.arcanchor   1-7       14/14     8/7     0.9190    3417   2083   1635  verified
+brahms-sym1-mvt1-317803-p2.arcanchor   8-22      27/27     8/15    0.9457    6589   3399   3568  verified
+mahler-sym5-mvt1-local-p2.arcanchor    0-8       17/17     9/9     0.6882    1117   1148    475  verified
+mahler-sym5-mvt1-local-p3.arcanchor    9-16      13/13     8/8     0.8872    3067   2248   1209  verified
+bach-brandenburg3-mvt1-468678-p1.arcanchor 1-10      24/24    29/10    0.9240    6724   3549   3728  verified
+
+POOLED OMR-NED over 11 scanned pages: 0.8533
+  35743 edits over 23377 truth + 18510 predicted symbols
+    entire measure insert/delete            13965   39.1%
+    entire staff insert/delete              10033   28.1%
+    wrong note                               9169   25.7%
+    wrong note head                           852    2.4%
+    wrong flag/beam                           311    0.9%
+    wrong direction                           282    0.8%
+
+wrote benchmarks/omr-arc-anchor-2026-09/results-scan-arcanchor.json
