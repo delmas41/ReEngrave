@@ -902,6 +902,19 @@ def main() -> int:
     p.add_argument("--limit", type=int, default=None)
     p.add_argument("--refetch", action="store_true", help="re-read recorded works")
 
+    # ⚠️ Deliberately NOT hooked into the ingest path the way `instrumentation`
+    # is.  A work-level lookup is one HTTP call; an edition-level one renders a
+    # page, detects staves and runs Surya (~11 s) and needs `.venv-surya`, so it
+    # is a sweep somebody asks for, never a side effect of adding a file.
+    p = sub.add_parser("edition-instrumentation",
+                       help="read each held edition's roster off its own pages")
+    p.add_argument("--limit", type=int, default=None)
+    p.add_argument("--dpi", type=int, default=300)
+    p.add_argument("--availability", type=Path, default=None,
+                   help="roster-availability.json, to hint the page to read first")
+    p.add_argument("--only-hinted", action="store_true")
+    p.add_argument("--refetch", action="store_true", help="re-read recorded editions")
+
     sub.add_parser("reorganize", help="re-derive names and repair the layout in place")
 
     sub.add_parser("catalog", help="rebuild data/score-library/catalog.json from sidecars")
@@ -925,6 +938,14 @@ def main() -> int:
 
         report = instr.backfill(delay=args.delay, dry_run=args.dry_run,
                                 limit=args.limit, refetch=args.refetch)
+        print(json.dumps(report, indent=2, ensure_ascii=False))
+        return 1 if report["errors"] else 0
+    if args.cmd == "edition-instrumentation":
+        from tools.library import edition_instrumentation as ed
+
+        report = ed.acquire_all(dry_run=args.dry_run, limit=args.limit,
+                                dpi=args.dpi, availability=args.availability,
+                                refetch=args.refetch, only_hinted=args.only_hinted)
         print(json.dumps(report, indent=2, ensure_ascii=False))
         return 1 if report["errors"] else 0
     if args.cmd == "reorganize":

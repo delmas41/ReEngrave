@@ -50539,7 +50539,7 @@
       "local_copies": 6
     }
   ],
-  "schema_version": 2,
+  "schema_version": 3,
   "count": 1980,
   "works": {
     "bach--concerto-1": {
@@ -77572,6 +77572,6616 @@
         ],
         "unparsed": [],
         "parse_rate": 1.0
+      }
+    }
+  },
+  "editions": {
+    "editions/bach/brandenburg-concerto-1-in-f-major-bwv1046/bach--brandenburg-concerto-1-in-f-major-bwv1046--eulenburg--imslp47820.pdf": {
+      "path": "editions/bach/brandenburg-concerto-1-in-f-major-bwv1046/bach--brandenburg-concerto-1-in-f-major-bwv1046--eulenburg--imslp47820.pdf",
+      "work_id": "bach--concerto-1",
+      "sha256": "54d36d84be713f201637385137da446e0d5daea479e719be4947d3de6aae3db1",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Corno I II in F"
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Oboe II"
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Piccolo",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Violino I Violino piccolo e"
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violino II"
+            ],
+            "staff_indices": [
+              5
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola"
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violone grosso e Continuo Fagotto, Violoncello,"
+            ],
+            "staff_indices": [
+              7
+            ],
+            "lexicon_confidence": "medium"
+          }
+        ],
+        "unparsed": [
+          {
+            "staff_index": 1,
+            "text": "I"
+          },
+          {
+            "staff_index": 3,
+            "text": "III"
+          }
+        ],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Corno I II in F",
+              "instrument": "Horn",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 1,
+              "text": "I",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 2,
+              "text": "Oboe II",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "III",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 4,
+              "text": "Violino I Violino piccolo e",
+              "instrument": "Piccolo",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 5,
+              "text": "Violino II",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Viola",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "Violone grosso e Continuo Fagotto, Violoncello,",
+              "instrument": "Cello",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 9,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Vl.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Vla.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 14,
+              "text": "Fg. Vo. Vl. gr. e C.",
+              "instrument": "Bassoon",
+              "confidence": "medium"
+            }
+          ],
+          "page_index": 5,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 5,
+          "yield": 0.75,
+          "system_staves": 8,
+          "named_staves": 6,
+          "unlabeled_staves": 0,
+          "page_staves": 15,
+          "pages": 24,
+          "pages_tried": [
+            {
+              "page": 5,
+              "staves": 15,
+              "named": 6,
+              "yield": 0.75
+            }
+          ],
+          "dpi": 300,
+          "seconds": 7.9
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/bach/brandenburg-concerto-2-in-f-major-bwv1047/bach--brandenburg-concerto-2-in-f-major-bwv1047--bachcomplete-1871--imslp2040.pdf": {
+      "path": "editions/bach/brandenburg-concerto-2-in-f-major-bwv1047/bach--brandenburg-concerto-2-in-f-major-bwv1047--bachcomplete-1871--imslp2040.pdf",
+      "work_id": "bach--concerto-2",
+      "sha256": "ae3d2ca305f8cbc78f60ae98c3a586324f348f4cc55d8711278035352b0f1156",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Tromba."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Flauto.  (Flâte à bec)"
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Oboe."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 3,
+            "texts": [
+              "Violino.",
+              "Violino I.  di ripieno.",
+              "Violino II.  di ripieno."
+            ],
+            "staff_indices": [
+              3,
+              4,
+              5
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola  di ripieno."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Contrabass",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violone  di ripieno."
+            ],
+            "staff_indices": [
+              7
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violoncello  e Cembalo all'unisono."
+            ],
+            "staff_indices": [
+              8
+            ],
+            "lexicon_confidence": "medium"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Tromba.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Flauto.  (Flâte à bec)",
+              "instrument": "Flute",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 2,
+              "text": "Oboe.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Violino.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Violino I.  di ripieno.",
+              "instrument": "Violin",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 5,
+              "text": "Violino II.  di ripieno.",
+              "instrument": "Violin",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 6,
+              "text": "Viola  di ripieno.",
+              "instrument": "Viola",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 7,
+              "text": "Violone  di ripieno.",
+              "instrument": "Contrabass",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 8,
+              "text": "Violoncello  e Cembalo all'unisono.",
+              "instrument": "Cello",
+              "confidence": "medium"
+            }
+          ],
+          "page_index": 2,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 2,
+          "yield": 1.0,
+          "system_staves": 9,
+          "named_staves": 9,
+          "unlabeled_staves": 0,
+          "page_staves": 18,
+          "pages": 26,
+          "pages_tried": [
+            {
+              "page": 2,
+              "staves": 18,
+              "named": 9,
+              "yield": 1.0
+            }
+          ],
+          "dpi": 300,
+          "seconds": 6.6
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf": {
+      "path": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+      "work_id": "bach--concerto-3",
+      "sha256": "fd3ea1f120bbec7b10eaf557cdb1cfa3fcfc3e1e3b57d4b43bae8631ae215e0d",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": false,
+        "roster": [],
+        "unparsed": [],
+        "raw": {
+          "labels": [],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": false,
+          "roster_page": null,
+          "yield": 0.0,
+          "system_staves": 12,
+          "named_staves": 0,
+          "unlabeled_staves": 12,
+          "page_staves": 24,
+          "pages": 24,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 24,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 2,
+              "staves": 24,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 0,
+              "staves": 24,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 3,
+              "staves": 24,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 5,
+              "staves": 24,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 8,
+              "staves": 23,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 12,
+              "staves": 24,
+              "named": 0,
+              "yield": 0.0
+            }
+          ],
+          "dpi": 300,
+          "seconds": 23.8
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/bach/brandenburg-concerto-4-in-g-major-bwv1049/bach--brandenburg-concerto-4-in-g-major-bwv1049--peters-1851--imslp457279.pdf": {
+      "path": "editions/bach/brandenburg-concerto-4-in-g-major-bwv1049/bach--brandenburg-concerto-4-in-g-major-bwv1049--peters-1851--imslp457279.pdf",
+      "work_id": "bach--concerto-4",
+      "sha256": "a8f0cd1e49e3e3149ef1e9a7e2aa1f7c742ee5819cad1bf9d3b89b1663e0aafd",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 3,
+            "texts": [
+              "Violino principale.",
+              "Violino I o  di ripieno.",
+              "Violino II o  di ripieno."
+            ],
+            "staff_indices": [
+              0,
+              3,
+              4
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 2,
+            "texts": [
+              "Flauto I o",
+              "Flauto II o"
+            ],
+            "staff_indices": [
+              1,
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola di ripieno."
+            ],
+            "staff_indices": [
+              5
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violoncello."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Contrabass",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violone."
+            ],
+            "staff_indices": [
+              7
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [
+          {
+            "staff_index": 8,
+            "text": "Continuo."
+          }
+        ],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Violino principale.",
+              "instrument": "Violin",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 1,
+              "text": "Flauto I o",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Flauto II o",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Violino I o  di ripieno.",
+              "instrument": "Violin",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 4,
+              "text": "Violino II o  di ripieno.",
+              "instrument": "Violin",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 5,
+              "text": "Viola di ripieno.",
+              "instrument": "Viola",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 6,
+              "text": "Violoncello.",
+              "instrument": "Cello",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "Violone.",
+              "instrument": "Contrabass",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 8,
+              "text": "Continuo.",
+              "instrument": null,
+              "confidence": "none"
+            }
+          ],
+          "page_index": 3,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 3,
+          "yield": 0.8889,
+          "system_staves": 9,
+          "named_staves": 8,
+          "unlabeled_staves": 0,
+          "page_staves": 18,
+          "pages": 42,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 2,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 0,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 3,
+              "staves": 18,
+              "named": 8,
+              "yield": 0.8889
+            }
+          ],
+          "dpi": 300,
+          "seconds": 7.6
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/bach/brandenburg-concerto-5-in-d-major-bwv1050/bach--brandenburg-concerto-5-in-d-major-bwv1050--breitkopf-hartels-partit--imslp457419.pdf": {
+      "path": "editions/bach/brandenburg-concerto-5-in-d-major-bwv1050/bach--brandenburg-concerto-5-in-d-major-bwv1050--breitkopf-hartels-partit--imslp457419.pdf",
+      "work_id": "bach--concerto-5",
+      "sha256": "eaf9abc21afbf2ac16a4221f32f0aa65ccf7f5ce8cd14b919f7bbc82a2f7a214",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": false,
+        "roster": [],
+        "unparsed": [],
+        "raw": {
+          "labels": [],
+          "page_index": 1,
+          "system_index": null
+        },
+        "quality": {
+          "acquired": false,
+          "roster_page": null,
+          "yield": 0.0,
+          "system_staves": null,
+          "named_staves": null,
+          "unlabeled_staves": null,
+          "page_staves": 0,
+          "pages": 38,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 2,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 0,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 3,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 5,
+              "staves": 24,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 8,
+              "staves": 24,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 12,
+              "staves": 24,
+              "named": 0,
+              "yield": 0.0
+            }
+          ],
+          "dpi": 300,
+          "seconds": 12.4
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/bach/brandenburg-concerto-6-in-b-flat-major-bwv1051/bach--brandenburg-concerto-6-in-b-flat-major-bwv1051--edition-peters-nr-4415--imslp468681.pdf": {
+      "path": "editions/bach/brandenburg-concerto-6-in-b-flat-major-bwv1051/bach--brandenburg-concerto-6-in-b-flat-major-bwv1051--edition-peters-nr-4415--imslp468681.pdf",
+      "work_id": "bach--concerto-6",
+      "sha256": "c9864e364f982e9fe632b016368626925d5256ac0a1ced8a930c6fef658b6b6a",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "II Viole",
+              "II Viole da gamba"
+            ],
+            "staff_indices": [
+              1,
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violoncello I I"
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Contrabass",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Contrabasso"
+            ],
+            "staff_indices": [
+              5
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Piano",
+            "family": "keyboard",
+            "staves": 1,
+            "texts": [
+              "} Cembalo"
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [
+          {
+            "staff_index": 0,
+            "text": "I"
+          },
+          {
+            "staff_index": 2,
+            "text": "I"
+          }
+        ],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "I",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 1,
+              "text": "II Viole",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "I",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 3,
+              "text": "II Viole da gamba",
+              "instrument": "Viola",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 4,
+              "text": "Violoncello I I",
+              "instrument": "Cello",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Contrabasso",
+              "instrument": "Contrabass",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "} Cembalo",
+              "instrument": "Piano",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 0,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 0,
+          "yield": 0.625,
+          "system_staves": 8,
+          "named_staves": 5,
+          "unlabeled_staves": 1,
+          "page_staves": 16,
+          "pages": 24,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 24,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 2,
+              "staves": 24,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 0,
+              "staves": 16,
+              "named": 5,
+              "yield": 0.625
+            }
+          ],
+          "dpi": 300,
+          "seconds": 12.2
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/bach/das-wohltemperierte-klavier-i-bwv846-869/bach--das-wohltemperierte-klavier-i-bwv846-869--snortum-2024--imslp932182.pdf": {
+      "path": "editions/bach/das-wohltemperierte-klavier-i-bwv846-869/bach--das-wohltemperierte-klavier-i-bwv846-869--snortum-2024--imslp932182.pdf",
+      "work_id": "bach--das-wohltemperierte-klavier-i",
+      "sha256": "a9e592970a8da21fcdcaa6a4e44b5369e1d4f8a500a09f3d47cf31005cb5dff7",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": false,
+        "roster": [],
+        "unparsed": [],
+        "raw": {
+          "labels": [],
+          "page_index": 1,
+          "system_index": null
+        },
+        "quality": {
+          "acquired": false,
+          "roster_page": null,
+          "yield": 0.0,
+          "system_staves": null,
+          "named_staves": null,
+          "unlabeled_staves": null,
+          "page_staves": 0,
+          "pages": 115,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 2,
+              "staves": 12,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 0,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 3,
+              "staves": 12,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 5,
+              "staves": 10,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 8,
+              "staves": 10,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 12,
+              "staves": 10,
+              "named": 0,
+              "yield": 0.0
+            }
+          ],
+          "dpi": 300,
+          "seconds": 20.5
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/bach/mass-in-b-minor-bwv232/bach--mass-in-b-minor-bwv232--breitkopf-und-hartel-1899--imslp740018.pdf": {
+      "path": "editions/bach/mass-in-b-minor-bwv232/bach--mass-in-b-minor-bwv232--breitkopf-und-hartel-1899--imslp740018.pdf",
+      "work_id": "bach--mass-in-b-minor",
+      "sha256": "23c5812ceab203077514aa13736ae09409b068402b87cd72398b2e1e2610803c",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 2,
+            "texts": [
+              "Flöte I.",
+              "Flöte II."
+            ],
+            "staff_indices": [
+              0,
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 2,
+            "texts": [
+              "Oboe d'amore I.  (Oboe I.)",
+              "Oboe d'amore II.  (Oboe II.)"
+            ],
+            "staff_indices": [
+              2,
+              3
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fagotte."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Violine I.",
+              "Violine II."
+            ],
+            "staff_indices": [
+              5,
+              6
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola."
+            ],
+            "staff_indices": [
+              7
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Soprano",
+            "family": "voice",
+            "staves": 2,
+            "texts": [
+              "Sopran I.",
+              "Sopran II."
+            ],
+            "staff_indices": [
+              8,
+              9
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Alto",
+            "family": "voice",
+            "staves": 1,
+            "texts": [
+              "Alt."
+            ],
+            "staff_indices": [
+              10
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Tenor",
+            "family": "voice",
+            "staves": 1,
+            "texts": [
+              "Tenor."
+            ],
+            "staff_indices": [
+              11
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bass voice",
+            "family": "voice",
+            "staves": 1,
+            "texts": [
+              "Bass."
+            ],
+            "staff_indices": [
+              12
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Organ",
+            "family": "keyboard",
+            "staves": 1,
+            "texts": [
+              "Orgel."
+            ],
+            "staff_indices": [
+              13
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violoncell und Bass."
+            ],
+            "staff_indices": [
+              15
+            ],
+            "lexicon_confidence": "medium"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Flöte I.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Flöte II.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Oboe d'amore I.  (Oboe I.)",
+              "instrument": "Oboe",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 3,
+              "text": "Oboe d'amore II.  (Oboe II.)",
+              "instrument": "Oboe",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 4,
+              "text": "Fagotte.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Violine I.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Violine II.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "Viola.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 8,
+              "text": "Sopran I.",
+              "instrument": "Soprano",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 9,
+              "text": "Sopran II.",
+              "instrument": "Soprano",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Alt.",
+              "instrument": "Alto",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Tenor.",
+              "instrument": "Tenor",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Bass.",
+              "instrument": "Bass voice",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Orgel.",
+              "instrument": "Organ",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 15,
+              "text": "Violoncell und Bass.",
+              "instrument": "Cello",
+              "confidence": "medium"
+            }
+          ],
+          "page_index": 2,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 2,
+          "yield": 0.9375,
+          "system_staves": 16,
+          "named_staves": 15,
+          "unlabeled_staves": 1,
+          "page_staves": 16,
+          "pages": 274,
+          "pages_tried": [
+            {
+              "page": 2,
+              "staves": 16,
+              "named": 15,
+              "yield": 0.9375
+            }
+          ],
+          "dpi": 300,
+          "seconds": 6.9
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/bach/matthauspassion-bwv244/bach--matthauspassion-bwv244--eulenburg--imslp44964.pdf": {
+      "path": "editions/bach/matthauspassion-bwv244/bach--matthauspassion-bwv244--eulenburg--imslp44964.pdf",
+      "work_id": "bach--matthauspassion",
+      "sha256": "13d494fadfa61bc1e09bf4b3105ba39bafa01c8fe6082be6421799ea81349d9b",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Soprano",
+            "family": "voice",
+            "staves": 1,
+            "texts": [
+              "Soprano in ripieno"
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 4,
+            "texts": [
+              "Flauto traverso I.",
+              "Flauto traverso II.",
+              "Flauto traverso I.",
+              "Flauto traverso II."
+            ],
+            "staff_indices": [
+              1,
+              2,
+              10,
+              11
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 4,
+            "texts": [
+              "Oboe I.",
+              "Oboe II.",
+              "Oboe I.",
+              "Oboe II."
+            ],
+            "staff_indices": [
+              3,
+              4,
+              12,
+              13
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 4,
+            "texts": [
+              "Violino I.",
+              "Violino II.",
+              "Violino I.",
+              "Violino II."
+            ],
+            "staff_indices": [
+              5,
+              6,
+              14,
+              15
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Viola.",
+              "Viola."
+            ],
+            "staff_indices": [
+              7,
+              16
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Organ",
+            "family": "keyboard",
+            "staves": 2,
+            "texts": [
+              "Organo e Continuo.",
+              "Organo e Continuo."
+            ],
+            "staff_indices": [
+              8,
+              17
+            ],
+            "lexicon_confidence": "medium"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Soprano in ripieno",
+              "instrument": "Soprano",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 1,
+              "text": "Flauto traverso I.",
+              "instrument": "Flute",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 2,
+              "text": "Flauto traverso II.",
+              "instrument": "Flute",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 3,
+              "text": "Oboe I.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Oboe II.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Violino I.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Violino II.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "Viola.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 8,
+              "text": "Organo e Continuo.",
+              "instrument": "Organ",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 10,
+              "text": "Flauto traverso I.",
+              "instrument": "Flute",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 11,
+              "text": "Flauto traverso II.",
+              "instrument": "Flute",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 12,
+              "text": "Oboe I.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Oboe II.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 14,
+              "text": "Violino I.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 15,
+              "text": "Violino II.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 16,
+              "text": "Viola.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 17,
+              "text": "Organo e Continuo.",
+              "instrument": "Organ",
+              "confidence": "medium"
+            }
+          ],
+          "page_index": 0,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 0,
+          "yield": 0.8947,
+          "system_staves": 19,
+          "named_staves": 17,
+          "unlabeled_staves": 2,
+          "page_staves": 19,
+          "pages": 336,
+          "pages_tried": [
+            {
+              "page": 0,
+              "staves": 19,
+              "named": 17,
+              "yield": 0.8947
+            }
+          ],
+          "dpi": 300,
+          "seconds": 7.0
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/bach/orchestral-suite-3-in-d-major-bwv1068/bach--orchestral-suite-3-in-d-major-bwv1068--peters--imslp744084.pdf": {
+      "path": "editions/bach/orchestral-suite-3-in-d-major-bwv1068/bach--orchestral-suite-3-in-d-major-bwv1068--peters--imslp744084.pdf",
+      "work_id": "bach--suite-3",
+      "sha256": "e698ee68c5ef7d3a3fb7a65685a52eb224cb5331be3f4561b31eb240c92680a1",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Trombone",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Trb.in D II"
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Timp."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "I Ob."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "I Viol."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola"
+            ],
+            "staff_indices": [
+              8
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "e Cb. Vc."
+            ],
+            "staff_indices": [
+              9
+            ],
+            "lexicon_confidence": "medium"
+          }
+        ],
+        "unparsed": [
+          {
+            "staff_index": 0,
+            "text": "I"
+          },
+          {
+            "staff_index": 2,
+            "text": "III"
+          },
+          {
+            "staff_index": 5,
+            "text": "II"
+          },
+          {
+            "staff_index": 7,
+            "text": "II"
+          },
+          {
+            "staff_index": 10,
+            "text": "Cemb."
+          }
+        ],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "I",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 1,
+              "text": "Trb.in D II",
+              "instrument": "Trombone",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 2,
+              "text": "III",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 3,
+              "text": "Timp.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "I Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "II",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 6,
+              "text": "I Viol.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "II",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 8,
+              "text": "Viola",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 9,
+              "text": "e Cb. Vc.",
+              "instrument": "Cello",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 10,
+              "text": "Cemb.",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 12,
+              "text": "I",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 13,
+              "text": "Trb.in D II",
+              "instrument": "Trombone",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 14,
+              "text": "III",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 15,
+              "text": "Timp.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 16,
+              "text": "I",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 17,
+              "text": "II Ob.",
+              "instrument": "Oboe",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 18,
+              "text": "I Viol.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 19,
+              "text": "II",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 20,
+              "text": "Viola",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 21,
+              "text": "e Cb. Vc.",
+              "instrument": "Cello",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 22,
+              "text": "Cemb.",
+              "instrument": null,
+              "confidence": "none"
+            }
+          ],
+          "page_index": 2,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 2,
+          "yield": 0.5,
+          "system_staves": 12,
+          "named_staves": 6,
+          "unlabeled_staves": 1,
+          "page_staves": 24,
+          "pages": 27,
+          "pages_tried": [
+            {
+              "page": 2,
+              "staves": 24,
+              "named": 6,
+              "yield": 0.5
+            }
+          ],
+          "dpi": 300,
+          "seconds": 8.6
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beach/symphony-in-e-minor-op32-gaelic/beach--symphony-in-e-minor-op32-gaelic--arthur-p-schmidt-1897--imslp27125.pdf": {
+      "path": "editions/beach/symphony-in-e-minor-op32-gaelic/beach--symphony-in-e-minor-op32-gaelic--arthur-p-schmidt-1897--imslp27125.pdf",
+      "work_id": "beach--symphony-in-e-minor-op32-gaelic",
+      "sha256": "3c5f3feb7b2bf14947e5e9b847030e0625504969d28c134e47a4e239a60fb415",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Flauti."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Oboi."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Clarinetti in A."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fagotti."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Corni in F."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Trombe in F."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trombone",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Tromboni e"
+            ],
+            "staff_indices": [
+              7
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Tuba",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Tuba."
+            ],
+            "staff_indices": [
+              8
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Timpani in B, D und E."
+            ],
+            "staff_indices": [
+              9
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Violini I.",
+              "Violini II."
+            ],
+            "staff_indices": [
+              10,
+              11
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viole."
+            ],
+            "staff_indices": [
+              12
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violoncelli."
+            ],
+            "staff_indices": [
+              13
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Contrabass",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Contrabassi."
+            ],
+            "staff_indices": [
+              14
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Flauti.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Oboi.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Clarinetti in A.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fagotti.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Corni in F.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Trombe in F.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "Tromboni e",
+              "instrument": "Trombone",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 8,
+              "text": "Tuba.",
+              "instrument": "Tuba",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 9,
+              "text": "Timpani in B, D und E.",
+              "instrument": "Timpani",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 10,
+              "text": "Violini I.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Violini II.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Viole.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Violoncelli.",
+              "instrument": "Cello",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 14,
+              "text": "Contrabassi.",
+              "instrument": "Contrabass",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.9333,
+          "system_staves": 15,
+          "named_staves": 14,
+          "unlabeled_staves": 1,
+          "page_staves": 15,
+          "pages": 219,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 15,
+              "named": 14,
+              "yield": 0.9333
+            }
+          ],
+          "dpi": 300,
+          "seconds": 6.1
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/coriolan-op62/beethoven--coriolan-op62--simrock-1847--imslp683540.pdf": {
+      "path": "editions/beethoven/coriolan-op62/beethoven--coriolan-op62--simrock-1847--imslp683540.pdf",
+      "work_id": "beethoven--coriolan",
+      "sha256": "1b917fd125ac4c7bb720d34636fe3a7f79aa88d70acedfd6de1b12cd5bbaaa39",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Timpani in C.G."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Clarini in C."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Corni in Es."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 2,
+            "texts": [
+              "Flauto 1 mo ..",
+              "Flauto 2 do .."
+            ],
+            "staff_indices": [
+              3,
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 2,
+            "texts": [
+              "Oboe 1 mo ..",
+              "Oboe 2 do .."
+            ],
+            "staff_indices": [
+              5,
+              6
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Clarinetti in B."
+            ],
+            "staff_indices": [
+              7
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 2,
+            "texts": [
+              "Fagotto 1 mo ..",
+              "Fagotto 2 do .."
+            ],
+            "staff_indices": [
+              8,
+              9
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Violino 1 mo ..",
+              "Violino 2 do .."
+            ],
+            "staff_indices": [
+              10,
+              11
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola."
+            ],
+            "staff_indices": [
+              12
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violoncello."
+            ],
+            "staff_indices": [
+              13
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bass voice",
+            "family": "voice",
+            "staves": 1,
+            "texts": [
+              "Basso."
+            ],
+            "staff_indices": [
+              14
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Timpani in C.G.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Clarini in C.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Corni in Es.",
+              "instrument": "Horn",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 3,
+              "text": "Flauto 1 mo ..",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Flauto 2 do ..",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Oboe 1 mo ..",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Oboe 2 do ..",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "Clarinetti in B.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 8,
+              "text": "Fagotto 1 mo ..",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 9,
+              "text": "Fagotto 2 do ..",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Violino 1 mo ..",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Violino 2 do ..",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Viola.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Violoncello.",
+              "instrument": "Cello",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 14,
+              "text": "Basso.",
+              "instrument": "Bass voice",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 1.0,
+          "system_staves": 15,
+          "named_staves": 15,
+          "unlabeled_staves": 0,
+          "page_staves": 15,
+          "pages": 58,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 15,
+              "named": 15,
+              "yield": 1.0
+            }
+          ],
+          "dpi": 300,
+          "seconds": 7.2
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/egmont-op84/beethoven--egmont-op84--breitkopf-und-hartel--imslp807970.pdf": {
+      "path": "editions/beethoven/egmont-op84/beethoven--egmont-op84--breitkopf-und-hartel--imslp807970.pdf",
+      "work_id": "beethoven--egmont",
+      "sha256": "d1174239a8422d7cf15e06001d11307002c98acdb1bd3bdf11261b1749a13192",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 2,
+            "texts": [
+              "Flauto I.",
+              "Flauto II. (später Flauto piecolo.)"
+            ],
+            "staff_indices": [
+              0,
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Oboi."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Clarinetti in B."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fagotti."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 2,
+            "texts": [
+              "Corni in F.",
+              "Corni in Es."
+            ],
+            "staff_indices": [
+              5,
+              6
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Trombe in F."
+            ],
+            "staff_indices": [
+              7
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Timpani in F.C."
+            ],
+            "staff_indices": [
+              8
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Violino I.",
+              "Violino II."
+            ],
+            "staff_indices": [
+              9,
+              10
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola."
+            ],
+            "staff_indices": [
+              11
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violoncello."
+            ],
+            "staff_indices": [
+              12
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bass voice",
+            "family": "voice",
+            "staves": 1,
+            "texts": [
+              "Basso."
+            ],
+            "staff_indices": [
+              13
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Flauto I.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Flauto II. (später Flauto piecolo.)",
+              "instrument": "Flute",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 2,
+              "text": "Oboi.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Clarinetti in B.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Fagotti.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Corni in F.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Corni in Es.",
+              "instrument": "Horn",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 7,
+              "text": "Trombe in F.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 8,
+              "text": "Timpani in F.C.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 9,
+              "text": "Violino I.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Violino II.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Viola.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Violoncello.",
+              "instrument": "Cello",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Basso.",
+              "instrument": "Bass voice",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 2,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 2,
+          "yield": 1.0,
+          "system_staves": 14,
+          "named_staves": 14,
+          "unlabeled_staves": 0,
+          "page_staves": 14,
+          "pages": 82,
+          "pages_tried": [
+            {
+              "page": 2,
+              "staves": 14,
+              "named": 14,
+              "yield": 1.0
+            }
+          ],
+          "dpi": 300,
+          "seconds": 6.6
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/missa-solemnis-op123/beethoven--missa-solemnis-op123--schott-1827--imslp51348.pdf": {
+      "path": "editions/beethoven/missa-solemnis-op123/beethoven--missa-solemnis-op123--schott-1827--imslp51348.pdf",
+      "work_id": "beethoven--missa-solemnis",
+      "sha256": "3b8167cc628a6ea08d9174dac0bfe9e9aefbc5d89a95942233bddbeba93927dd",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": false,
+        "roster": [],
+        "unparsed": [],
+        "raw": {
+          "labels": [],
+          "page_index": 1,
+          "system_index": null
+        },
+        "quality": {
+          "acquired": false,
+          "roster_page": null,
+          "yield": 0.0,
+          "system_staves": null,
+          "named_staves": null,
+          "unlabeled_staves": null,
+          "page_staves": 0,
+          "pages": 303,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 2,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 0,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 3,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 5,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 8,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            },
+            {
+              "page": 12,
+              "staves": 0,
+              "named": 0,
+              "yield": 0.0
+            }
+          ],
+          "dpi": 300,
+          "seconds": 0.2
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf": {
+      "path": "editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+      "work_id": "beethoven--piano-concerto-3",
+      "sha256": "cfaf781394a5c0bca99b480afeb6bd004fc362483ec9bb48c3c228b59d401d6c",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "I I Fl. II"
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "I Ob. II"
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Klar. I (B) II"
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "I Fag. II"
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Hr. I (Es) II"
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Trpt. I (C) II"
+            ],
+            "staff_indices": [
+              5
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Pk. (C.G)"
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Viol. I",
+              "Viol. II"
+            ],
+            "staff_indices": [
+              9,
+              10
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola"
+            ],
+            "staff_indices": [
+              11
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [
+          {
+            "staff_index": 8,
+            "text": "Klav."
+          },
+          {
+            "staff_index": 12,
+            "text": "Vcll. u. K.-B."
+          }
+        ],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "I I Fl. II",
+              "instrument": "Flute",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 1,
+              "text": "I Ob. II",
+              "instrument": "Oboe",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 2,
+              "text": "Klar. I (B) II",
+              "instrument": "Clarinet",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 3,
+              "text": "I Fag. II",
+              "instrument": "Bassoon",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 4,
+              "text": "Hr. I (Es) II",
+              "instrument": "Horn",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 5,
+              "text": "Trpt. I (C) II",
+              "instrument": "Trumpet",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 6,
+              "text": "Pk. (C.G)",
+              "instrument": "Timpani",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 8,
+              "text": "Klav.",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 9,
+              "text": "Viol. I",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Viol. II",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Viola",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Vcll. u. K.-B.",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 13,
+              "text": "Fl. I II",
+              "instrument": "Flute",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 14,
+              "text": "Ob. I II",
+              "instrument": "Oboe",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 15,
+              "text": "Klar. I (B) II",
+              "instrument": "Clarinet",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 16,
+              "text": "Fag. I II",
+              "instrument": "Bassoon",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 17,
+              "text": "Klav. Hr. I (Es) II",
+              "instrument": "Horn",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 18,
+              "text": "Viol. I",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 19,
+              "text": "Viola",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 20,
+              "text": "Vell. u. K.-B.",
+              "instrument": null,
+              "confidence": "none"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.7692,
+          "system_staves": 13,
+          "named_staves": 10,
+          "unlabeled_staves": 1,
+          "page_staves": 23,
+          "pages": 76,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 23,
+              "named": 10,
+              "yield": 0.7692
+            }
+          ],
+          "dpi": 300,
+          "seconds": 8.6
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/piano-concerto-4-op58/beethoven--piano-concerto-4-op58--breitkopf-hartel-beethov-1862--imslp977418.pdf": {
+      "path": "editions/beethoven/piano-concerto-4-op58/beethoven--piano-concerto-4-op58--breitkopf-hartel-beethov-1862--imslp977418.pdf",
+      "work_id": "beethoven--piano-concerto-4",
+      "sha256": "a623efca539274906fb1049ac5e8ef184f74f0cc1841c72e1bced14d511b66e6",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fl."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Ob."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Clar."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fag."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Cor."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Viol. I.",
+              "Viol. II."
+            ],
+            "staff_indices": [
+              7,
+              8
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola."
+            ],
+            "staff_indices": [
+              9
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [
+          {
+            "staff_index": 5,
+            "text": "Pfle."
+          },
+          {
+            "staff_index": 10,
+            "text": "Vcll. c B."
+          }
+        ],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Clar.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Pfle.",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 7,
+              "text": "Viol. I.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 8,
+              "text": "Viol. II.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 9,
+              "text": "Viola.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Vcll. c B.",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 11,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Clar.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 14,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 15,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 16,
+              "text": "Pftc.",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 18,
+              "text": "Viol.I.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 19,
+              "text": "Viol.II.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 20,
+              "text": "Viola.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 21,
+              "text": "Vcll. e B.",
+              "instrument": null,
+              "confidence": "none"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.7273,
+          "system_staves": 11,
+          "named_staves": 8,
+          "unlabeled_staves": 1,
+          "page_staves": 22,
+          "pages": 68,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 22,
+              "named": 8,
+              "yield": 0.7273
+            }
+          ],
+          "dpi": 300,
+          "seconds": 7.9
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/piano-concerto-5-op73/beethoven--piano-concerto-5-op73--breitkopf-hartel-beethov-1862--imslp977419.pdf": {
+      "path": "editions/beethoven/piano-concerto-5-op73/beethoven--piano-concerto-5-op73--breitkopf-hartel-beethov-1862--imslp977419.pdf",
+      "work_id": "beethoven--piano-concerto-5",
+      "sha256": "9a94715723cc9a029e9f44e36572bf3b6fd26e327931c92652866d62c91da000",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fi. I"
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "low"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Ob. I"
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Clar. I"
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fag. II (B) II"
+            ],
+            "staff_indices": [
+              5
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Cor. I (Es) II"
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Tr. I (Es) II"
+            ],
+            "staff_indices": [
+              7
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Timp."
+            ],
+            "staff_indices": [
+              8
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Viol. I",
+              "Viol. II"
+            ],
+            "staff_indices": [
+              11,
+              12
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola"
+            ],
+            "staff_indices": [
+              13
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [
+          {
+            "staff_index": 10,
+            "text": "Pfte."
+          },
+          {
+            "staff_index": 14,
+            "text": "Vello. C-B."
+          }
+        ],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 2,
+              "text": "Fi. I",
+              "instrument": "Flute",
+              "confidence": "low"
+            },
+            {
+              "staff_index": 3,
+              "text": "Ob. I",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Clar. I",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Fag. II (B) II",
+              "instrument": "Bassoon",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 6,
+              "text": "Cor. I (Es) II",
+              "instrument": "Horn",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 7,
+              "text": "Tr. I (Es) II",
+              "instrument": "Trumpet",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 8,
+              "text": "Timp.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Pfte.",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 11,
+              "text": "Viol. I",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Viol. II",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Viola",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 14,
+              "text": "Vello. C-B.",
+              "instrument": null,
+              "confidence": "none"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 1
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.7692,
+          "system_staves": 13,
+          "named_staves": 10,
+          "unlabeled_staves": 1,
+          "page_staves": 17,
+          "pages": 88,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 17,
+              "named": 10,
+              "yield": 0.7692
+            }
+          ],
+          "dpi": 300,
+          "seconds": 6.8
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf": {
+      "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+      "work_id": "beethoven--symphony-1",
+      "sha256": "db872d4b1f0a2ba44603827aaebcdeaf04f10c2550686d31e852d49204e350bc",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fl."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Ob."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Cl."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fag."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Cor."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Tr."
+            ],
+            "staff_indices": [
+              5
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Tp."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Tr.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Tp.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 14,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 15,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.6364,
+          "system_staves": 11,
+          "named_staves": 7,
+          "unlabeled_staves": 4,
+          "page_staves": 20,
+          "pages": 43,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 20,
+              "named": 7,
+              "yield": 0.6364
+            }
+          ],
+          "dpi": 300,
+          "seconds": 5.6
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf": {
+      "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+      "work_id": "beethoven--symphony-2",
+      "sha256": "46b0c31eb9cef102290ef0cd43e764af106d49fcb5b37fd44ee417215d035d86",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fl."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Ob."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Cl."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fg."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Cor."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Tr."
+            ],
+            "staff_indices": [
+              5
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Tp."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fg.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Tr.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Tp.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Fg.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.6364,
+          "system_staves": 11,
+          "named_staves": 7,
+          "unlabeled_staves": 4,
+          "page_staves": 18,
+          "pages": 61,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 18,
+              "named": 7,
+              "yield": 0.6364
+            }
+          ],
+          "dpi": 300,
+          "seconds": 5.4
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf": {
+      "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+      "work_id": "beethoven--symphony-3",
+      "sha256": "55823127c251bb67c1d826920bee2ae6cd705ac4e6ceb642d6e693556c2b5f80",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fl."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Ob."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Cl."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fag."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 2,
+            "texts": [
+              "Cor.",
+              "Cor. 8."
+            ],
+            "staff_indices": [
+              4,
+              5
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Cor. 8.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Fug.",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 14,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 15,
+              "text": "Cor.  3.",
+              "instrument": "Horn",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.6,
+          "system_staves": 10,
+          "named_staves": 6,
+          "unlabeled_staves": 4,
+          "page_staves": 20,
+          "pages": 89,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 20,
+              "named": 6,
+              "yield": 0.6
+            }
+          ],
+          "dpi": 300,
+          "seconds": 5.8
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf": {
+      "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+      "work_id": "beethoven--symphony-4",
+      "sha256": "e2930b5763fbe75d21949aca058e8a031c1d507226f64a9c7c0d661fbd83e990",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fl."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Ob."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Cl."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fag."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Cor."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 9,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 16,
+              "text": "9",
+              "instrument": null,
+              "confidence": "none"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.5556,
+          "system_staves": 9,
+          "named_staves": 5,
+          "unlabeled_staves": 4,
+          "page_staves": 17,
+          "pages": 73,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 17,
+              "named": 5,
+              "yield": 0.5556
+            }
+          ],
+          "dpi": 300,
+          "seconds": 5.4
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf": {
+      "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+      "work_id": "beethoven--symphony-5",
+      "sha256": "073562b9c64b7d42bb00bfd640059cc29373aa44e54b265e0f6c6c38773f2e48",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fl. El."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Ob."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Cl."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fag."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Cor."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Tr."
+            ],
+            "staff_indices": [
+              5
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Tp."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Fl. El.",
+              "instrument": "Flute",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 1,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Tr.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Tp.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 14,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 15,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 16,
+              "text": "Tr.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 17,
+              "text": "Tp.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.6364,
+          "system_staves": 11,
+          "named_staves": 7,
+          "unlabeled_staves": 4,
+          "page_staves": 22,
+          "pages": 87,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 22,
+              "named": 7,
+              "yield": 0.6364
+            }
+          ],
+          "dpi": 300,
+          "seconds": 6.0
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf": {
+      "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+      "work_id": "beethoven--symphony-5",
+      "sha256": "55d95838e0709b928ed7bc3631a9c82b57291a3c9e0e003f8d00963a6c788f95",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Flauti."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Oboi."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Clarinetti in B."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fagotti."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Corni in Es."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Trombe in C."
+            ],
+            "staff_indices": [
+              5
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Timpani in C.G."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Violino I.",
+              "Violino II."
+            ],
+            "staff_indices": [
+              7,
+              8
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola."
+            ],
+            "staff_indices": [
+              9
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violoncello."
+            ],
+            "staff_indices": [
+              10
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bass voice",
+            "family": "voice",
+            "staves": 1,
+            "texts": [
+              "Basso."
+            ],
+            "staff_indices": [
+              11
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Flauti.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Oboi.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Clarinetti in B.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fagotti.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Corni in Es.",
+              "instrument": "Horn",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 5,
+              "text": "Trombe in C.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Timpani in C.G.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "Violino I.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 8,
+              "text": "Violino II.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 9,
+              "text": "Viola.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Violoncello.",
+              "instrument": "Cello",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Basso.",
+              "instrument": "Bass voice",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 1.0,
+          "system_staves": 12,
+          "named_staves": 12,
+          "unlabeled_staves": 0,
+          "page_staves": 12,
+          "pages": 88,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 12,
+              "named": 12,
+              "yield": 1.0
+            }
+          ],
+          "dpi": 300,
+          "seconds": 5.2
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf": {
+      "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+      "work_id": "beethoven--symphony-6",
+      "sha256": "2234d07e6da46ac8867b0b1ab1598c56fac3aa352885b71e8e853d0244e27400",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fl."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Ob."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Cl."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fag."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Cor."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 14,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.5,
+          "system_staves": 10,
+          "named_staves": 5,
+          "unlabeled_staves": 5,
+          "page_staves": 20,
+          "pages": 79,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 20,
+              "named": 5,
+              "yield": 0.5
+            }
+          ],
+          "dpi": 300,
+          "seconds": 6.5
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf": {
+      "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+      "work_id": "beethoven--symphony-7",
+      "sha256": "60c586b0efccddf9dea18f09db2aff9c2bad5eca41493bb8ccc9f230e043f6b0",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fl."
+            ],
+            "staff_indices": [
+              9
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Ob."
+            ],
+            "staff_indices": [
+              10
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Cl."
+            ],
+            "staff_indices": [
+              11
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fag."
+            ],
+            "staff_indices": [
+              12
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Cor."
+            ],
+            "staff_indices": [
+              13
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Tr."
+            ],
+            "staff_indices": [
+              14
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Tp."
+            ],
+            "staff_indices": [
+              15
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 9,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 14,
+              "text": "Tr.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 15,
+              "text": "Tp.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 1
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.6364,
+          "system_staves": 11,
+          "named_staves": 7,
+          "unlabeled_staves": 4,
+          "page_staves": 20,
+          "pages": 89,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 20,
+              "named": 7,
+              "yield": 0.6364
+            }
+          ],
+          "dpi": 300,
+          "seconds": 5.8
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf": {
+      "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+      "work_id": "beethoven--symphony-8",
+      "sha256": "adbf6a7c09222b06d3c00e2d9bef2736cb9f034ef8cd52541a49af197587290f",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fl."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Ob."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Cl."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fag."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Cor."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Tr."
+            ],
+            "staff_indices": [
+              5
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Tp."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Tr.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Tp.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 12,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 14,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 15,
+              "text": "Cor.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 16,
+              "text": "Tr.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 17,
+              "text": "Tp.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.6364,
+          "system_staves": 11,
+          "named_staves": 7,
+          "unlabeled_staves": 4,
+          "page_staves": 22,
+          "pages": 63,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 22,
+              "named": 7,
+              "yield": 0.6364
+            }
+          ],
+          "dpi": 300,
+          "seconds": 5.9
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf": {
+      "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+      "work_id": "beethoven--symphony-9",
+      "sha256": "e3dab5e9bdce208f26848875218afec53ee364a90c0dc78ba0d2d69a0f04c0d5",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fl."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Ob."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Cl."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fag."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 2,
+            "texts": [
+              "Cor. D.",
+              "Cor. B."
+            ],
+            "staff_indices": [
+              4,
+              5
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Tr."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Tp."
+            ],
+            "staff_indices": [
+              7
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Fl.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Ob.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Cl.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fag.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Cor. D.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Cor. B.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Tr.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "Tp.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.6154,
+          "system_staves": 13,
+          "named_staves": 8,
+          "unlabeled_staves": 5,
+          "page_staves": 13,
+          "pages": 189,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 13,
+              "named": 8,
+              "yield": 0.6154
+            }
+          ],
+          "dpi": 300,
+          "seconds": 4.5
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf": {
+      "path": "editions/beethoven/violin-concerto-in-d-major-op61/beethoven--violin-concerto-in-d-major-op61--breitkopf-hartel-beethov--imslp514872.pdf",
+      "work_id": "beethoven--violin-concerto-in-d-major",
+      "sha256": "3c99c0e153538639c825695d09776654fdb68d6bba949a18c75a3b42d246bbc3",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Flauto."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Oboi."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Clarinetti in A."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Fagotti."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Corni in D."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "Trombe in D."
+            ],
+            "staff_indices": [
+              5
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Timpani in D.A."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 3,
+            "texts": [
+              "Violino principale.",
+              "Violino I.",
+              "Violino II."
+            ],
+            "staff_indices": [
+              7,
+              8,
+              9
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola."
+            ],
+            "staff_indices": [
+              10
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violoncello e Basso."
+            ],
+            "staff_indices": [
+              11
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Flauto.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "Oboi.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "Clarinetti in A.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "Fagotti.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "Corni in D.",
+              "instrument": "Horn",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 5,
+              "text": "Trombe in D.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 6,
+              "text": "Timpani in D.A.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "Violino principale.",
+              "instrument": "Violin",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 8,
+              "text": "Violino I.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 9,
+              "text": "Violino II.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Viola.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Violoncello e Basso.",
+              "instrument": "Cello",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 0,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 0,
+          "yield": 1.0,
+          "system_staves": 12,
+          "named_staves": 12,
+          "unlabeled_staves": 0,
+          "page_staves": 18,
+          "pages": 64,
+          "pages_tried": [
+            {
+              "page": 0,
+              "staves": 18,
+              "named": 12,
+              "yield": 1.0
+            }
+          ],
+          "dpi": 300,
+          "seconds": 6.4
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/berlioz/harold-en-italie-h-68/berlioz--harold-en-italie-h-68--eulenburg-1899--imslp515587.pdf": {
+      "path": "editions/berlioz/harold-en-italie-h-68/berlioz--harold-en-italie-h-68--eulenburg-1899--imslp515587.pdf",
+      "work_id": "berlioz--harold-en-italie",
+      "sha256": "0f3cc03c55dace2cb4f5a7ea717866b6aa41e7a8d85e602c4b3b8eff39bd72ae",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "2 Flauti."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high",
+            "count_printed": [
+              2
+            ]
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "2 Oboi."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "high",
+            "count_printed": [
+              2
+            ]
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "2 Clarinetti."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "high",
+            "count_printed": [
+              2
+            ]
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "4 Fagotti."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high",
+            "count_printed": [
+              4
+            ]
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "4 Corni 1u.2 in G. 3u 4 in D."
+            ],
+            "staff_indices": [
+              4
+            ],
+            "lexicon_confidence": "medium",
+            "count_printed": [
+              4
+            ]
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "2 Trombe in C."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high",
+            "count_printed": [
+              2
+            ]
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trombone",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "3 Tromboni."
+            ],
+            "staff_indices": [
+              7
+            ],
+            "lexicon_confidence": "high",
+            "count_printed": [
+              3
+            ]
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Percussion",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Triangolo."
+            ],
+            "staff_indices": [
+              9
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Timpani",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Timpani in C.G."
+            ],
+            "staff_indices": [
+              10
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Harp",
+            "family": "keyboard",
+            "staves": 1,
+            "texts": [
+              "Arpa."
+            ],
+            "staff_indices": [
+              11
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Viola Solo.",
+              "Viole al meno 10."
+            ],
+            "staff_indices": [
+              13,
+              16
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Violini I al meno 15.",
+              "Violini II al meno 15."
+            ],
+            "staff_indices": [
+              14,
+              15
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violoncelli. al meno 12."
+            ],
+            "staff_indices": [
+              17
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Contrabass",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Contrabassi al meno 9."
+            ],
+            "staff_indices": [
+              18
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [
+          {
+            "staff_index": 5,
+            "text": "2 Cornets in A."
+          }
+        ],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "2 Flauti.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "2 Oboi.",
+              "instrument": "Oboe",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 2,
+              "text": "2 Clarinetti.",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 3,
+              "text": "4 Fagotti.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "4 Corni 1u.2 in G. 3u 4 in D.",
+              "instrument": "Horn",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 5,
+              "text": "2 Cornets in A.",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 6,
+              "text": "2 Trombe in C.",
+              "instrument": "Trumpet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "3 Tromboni.",
+              "instrument": "Trombone",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 9,
+              "text": "Triangolo.",
+              "instrument": "Percussion",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Timpani in C.G.",
+              "instrument": "Timpani",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "Arpa.",
+              "instrument": "Harp",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 13,
+              "text": "Viola Solo.",
+              "instrument": "Viola",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 14,
+              "text": "Violini I al meno 15.",
+              "instrument": "Violin",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 15,
+              "text": "Violini II al meno 15.",
+              "instrument": "Violin",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 16,
+              "text": "Viole al meno 10.",
+              "instrument": "Viola",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 17,
+              "text": "Violoncelli. al meno 12.",
+              "instrument": "Cello",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 18,
+              "text": "Contrabassi al meno 9.",
+              "instrument": "Contrabass",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 5,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 5,
+          "yield": 0.8421,
+          "system_staves": 19,
+          "named_staves": 16,
+          "unlabeled_staves": 2,
+          "page_staves": 19,
+          "pages": 212,
+          "pages_tried": [
+            {
+              "page": 5,
+              "staves": 19,
+              "named": 16,
+              "yield": 0.8421
+            }
+          ],
+          "dpi": 300,
+          "seconds": 7.7
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
+      }
+    },
+    "editions/berlioz/le-carnaval-romain-h-95/berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf": {
+      "path": "editions/berlioz/le-carnaval-romain-h-95/berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf",
+      "work_id": "berlioz--le-carnaval-romain",
+      "sha256": "f04776d4d850ee46f1e57662b65fb23441aae8215098c78854f143c49dcd3099",
+      "instrumentation": {
+        "source": "page",
+        "source_kind": "page",
+        "evidence": "instrument labels printed in this edition's own margins, read with surya",
+        "reader": "surya",
+        "fetched": "2026-09-05",
+        "describes": "edition",
+        "note": "the roster of THIS PRINTING.  staves is an observation of this page; count_printed quotes the label.  Neither is a part count and neither implies how many staves another page prints.",
+        "acquired": true,
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Flute",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Flauto I."
+            ],
+            "staff_indices": [
+              0
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Piccolo",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "(= Flauto piccolo.) Flauto II."
+            ],
+            "staff_indices": [
+              1
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Oboe",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "orno inglese = Oboe II.) 2 Oboi."
+            ],
+            "staff_indices": [
+              2
+            ],
+            "lexicon_confidence": "medium"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Clarinet",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "Clarinetti in A ( La )."
+            ],
+            "staff_indices": [
+              3
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Horn",
+            "family": "brass",
+            "staves": 2,
+            "texts": [
+              "2 Corni in C ( Ut ).",
+              "2 Corni in E ( Mi )."
+            ],
+            "staff_indices": [
+              4,
+              5
+            ],
+            "lexicon_confidence": "medium",
+            "count_printed": [
+              2,
+              2
+            ]
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Bassoon",
+            "family": "woodwind",
+            "staves": 1,
+            "texts": [
+              "2 Fagotti."
+            ],
+            "staff_indices": [
+              6
+            ],
+            "lexicon_confidence": "high",
+            "count_printed": [
+              2
+            ]
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trumpet",
+            "family": "brass",
+            "staves": 1,
+            "texts": [
+              "2 Trombe in D ( Ré )."
+            ],
+            "staff_indices": [
+              7
+            ],
+            "lexicon_confidence": "medium",
+            "count_printed": [
+              2
+            ]
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Trombone",
+            "family": "brass",
+            "staves": 2,
+            "texts": [
+              "Tromboni I e II.",
+              "Trombone III."
+            ],
+            "staff_indices": [
+              9,
+              10
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Percussion",
+            "family": "percussion",
+            "staves": 1,
+            "texts": [
+              "Triangolo."
+            ],
+            "staff_indices": [
+              14
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Violin",
+            "family": "string",
+            "staves": 2,
+            "texts": [
+              "Violino I.",
+              "Violino II."
+            ],
+            "staff_indices": [
+              15,
+              16
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Viola",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Viola."
+            ],
+            "staff_indices": [
+              17
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Cello",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Violoncello."
+            ],
+            "staff_indices": [
+              18
+            ],
+            "lexicon_confidence": "high"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Contrabass",
+            "family": "string",
+            "staves": 1,
+            "texts": [
+              "Contrabasso."
+            ],
+            "staff_indices": [
+              19
+            ],
+            "lexicon_confidence": "high"
+          }
+        ],
+        "unparsed": [
+          {
+            "staff_index": 8,
+            "text": "(Cornets à pistons.) Cornetti in A ( La )."
+          },
+          {
+            "staff_index": 11,
+            "text": "ani in A ( La ) E ( Mi ).  2 En"
+          },
+          {
+            "staff_index": 12,
+            "text": "Cinelli."
+          },
+          {
+            "staff_index": 13,
+            "text": "2 Tamburini."
+          }
+        ],
+        "raw": {
+          "labels": [
+            {
+              "staff_index": 0,
+              "text": "Flauto I.",
+              "instrument": "Flute",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 1,
+              "text": "(= Flauto piccolo.) Flauto II.",
+              "instrument": "Piccolo",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 2,
+              "text": "orno inglese = Oboe II.) 2 Oboi.",
+              "instrument": "Oboe",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 3,
+              "text": "Clarinetti in A ( La ).",
+              "instrument": "Clarinet",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 4,
+              "text": "2 Corni in C ( Ut ).",
+              "instrument": "Horn",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 5,
+              "text": "2 Corni in E ( Mi ).",
+              "instrument": "Horn",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 6,
+              "text": "2 Fagotti.",
+              "instrument": "Bassoon",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 7,
+              "text": "2 Trombe in D ( Ré ).",
+              "instrument": "Trumpet",
+              "confidence": "medium"
+            },
+            {
+              "staff_index": 8,
+              "text": "(Cornets à pistons.) Cornetti in A ( La ).",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 9,
+              "text": "Tromboni I e II.",
+              "instrument": "Trombone",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 10,
+              "text": "Trombone III.",
+              "instrument": "Trombone",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 11,
+              "text": "ani in A ( La ) E ( Mi ).  2 En",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 12,
+              "text": "Cinelli.",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 13,
+              "text": "2 Tamburini.",
+              "instrument": null,
+              "confidence": "none"
+            },
+            {
+              "staff_index": 14,
+              "text": "Triangolo.",
+              "instrument": "Percussion",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 15,
+              "text": "Violino I.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 16,
+              "text": "Violino II.",
+              "instrument": "Violin",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 17,
+              "text": "Viola.",
+              "instrument": "Viola",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 18,
+              "text": "Violoncello.",
+              "instrument": "Cello",
+              "confidence": "high"
+            },
+            {
+              "staff_index": 19,
+              "text": "Contrabasso.",
+              "instrument": "Contrabass",
+              "confidence": "high"
+            }
+          ],
+          "page_index": 1,
+          "system_index": 0
+        },
+        "quality": {
+          "acquired": true,
+          "roster_page": 1,
+          "yield": 0.8,
+          "system_staves": 20,
+          "named_staves": 16,
+          "unlabeled_staves": 0,
+          "page_staves": 20,
+          "pages": 45,
+          "pages_tried": [
+            {
+              "page": 1,
+              "staves": 20,
+              "named": 16,
+              "yield": 0.8
+            }
+          ],
+          "dpi": 300,
+          "seconds": 9.6
+        },
+        "score_type": "full_score",
+        "score_type_field": "file_description",
+        "score_type_match": "Complete Score"
       }
     }
   }

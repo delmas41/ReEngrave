@@ -68,6 +68,14 @@ SOURCE_KINDS = {
     "imslp": "catalog",      # bibliographic, independent of any encoding
     "hand": "catalog",       # a person read a printed score
     "musicxml": "encoding",  # derived from a reference file = benchmark truth
+    # ⚠️ A THIRD KIND, added 2026-09-05 with the edition tier
+    # (:mod:`tools.library.edition_instrumentation`).  A roster read off an
+    # edition's own raster is neither bibliographic nor encoding-derived: it is
+    # an OMR OUTPUT, so a measurement path that scores OMR must not read it back
+    # as truth any more than it may read an encoding.  It gets its own value
+    # rather than being filed under "catalog", because the two refusals have
+    # different reasons and only a distinct kind can express that.
+    "page": "page",          # read from this edition's printed pages
 }
 
 #: Terms that name a SECTION, not an instrument.  "strings" is one line on an
