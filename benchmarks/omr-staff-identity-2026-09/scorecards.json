@@ -1,0 +1,1345 @@
+{
+ "identity": {
+  "n_rows_with_identity_truth": 155,
+  "n_clef_read": 138,
+  "n_clef_defaulted": 17,
+  "signals": [
+   {
+    "signal": "S1 margin label (pipeline reader)",
+    "n": 155,
+    "spoke": 110,
+    "coverage": 0.7097,
+    "correct": 108,
+    "precision": 0.9818,
+    "note": ""
+   },
+   {
+    "signal": "S2 clef (reading accuracy)",
+    "n": 155,
+    "spoke": 138,
+    "coverage": 0.8903,
+    "correct": 117,
+    "precision": 0.8478,
+    "note": ""
+   },
+   {
+    "signal": "S2 clef (family narrowing)",
+    "n": 155,
+    "spoke": 138,
+    "coverage": 0.8903,
+    "correct": 137,
+    "precision": 0.9928,
+    "note": ""
+   },
+   {
+    "signal": "S3 key-signature offset (candidate set contains truth)",
+    "n": 155,
+    "spoke": 76,
+    "coverage": 0.4903,
+    "correct": 50,
+    "precision": 0.6579,
+    "note": ""
+   },
+   {
+    "signal": "S4 pitch envelope (range admits truth)",
+    "n": 155,
+    "spoke": 116,
+    "coverage": 0.7484,
+    "correct": 95,
+    "precision": 0.819,
+    "note": ""
+   },
+   {
+    "signal": "S5 score-order prior (set contains truth)",
+    "n": 155,
+    "spoke": 97,
+    "coverage": 0.6258,
+    "correct": 73,
+    "precision": 0.7526,
+    "note": ""
+   },
+   {
+    "signal": "S5 score-order prior (modal prediction exact)",
+    "n": 155,
+    "spoke": 97,
+    "coverage": 0.6258,
+    "correct": 73,
+    "precision": 0.7526,
+    "note": ""
+   },
+   {
+    "signal": "S6 slot/layout instrument (fused)",
+    "n": 155,
+    "spoke": 113,
+    "coverage": 0.729,
+    "correct": 108,
+    "precision": 0.9558,
+    "note": ""
+   }
+  ],
+  "conditioned": {
+   "S1 margin label (pipeline reader)": {
+    "clef_read": {
+     "signal": "S1 margin label (pipeline reader)",
+     "n": 138,
+     "spoke": 94,
+     "coverage": 0.6812,
+     "correct": 92,
+     "precision": 0.9787,
+     "note": ""
+    },
+    "clef_defaulted": {
+     "signal": "S1 margin label (pipeline reader)",
+     "n": 17,
+     "spoke": 16,
+     "coverage": 0.9412,
+     "correct": 16,
+     "precision": 1.0,
+     "note": ""
+    }
+   },
+   "S2 clef (reading accuracy)": {
+    "clef_read": {
+     "signal": "S2 clef (reading accuracy)",
+     "n": 138,
+     "spoke": 138,
+     "coverage": 1.0,
+     "correct": 117,
+     "precision": 0.8478,
+     "note": ""
+    },
+    "clef_defaulted": {
+     "signal": "S2 clef (reading accuracy)",
+     "n": 17,
+     "spoke": 0,
+     "coverage": 0.0,
+     "correct": 0,
+     "precision": null,
+     "note": ""
+    }
+   },
+   "S2 clef (family narrowing)": {
+    "clef_read": {
+     "signal": "S2 clef (family narrowing)",
+     "n": 138,
+     "spoke": 138,
+     "coverage": 1.0,
+     "correct": 137,
+     "precision": 0.9928,
+     "note": ""
+    },
+    "clef_defaulted": {
+     "signal": "S2 clef (family narrowing)",
+     "n": 17,
+     "spoke": 0,
+     "coverage": 0.0,
+     "correct": 0,
+     "precision": null,
+     "note": ""
+    }
+   },
+   "S3 key-signature offset (candidate set contains truth)": {
+    "clef_read": {
+     "signal": "S3 key-signature offset (candidate set contains truth)",
+     "n": 138,
+     "spoke": 74,
+     "coverage": 0.5362,
+     "correct": 50,
+     "precision": 0.6757,
+     "note": ""
+    },
+    "clef_defaulted": {
+     "signal": "S3 key-signature offset (candidate set contains truth)",
+     "n": 17,
+     "spoke": 2,
+     "coverage": 0.1176,
+     "correct": 0,
+     "precision": 0.0,
+     "note": ""
+    }
+   },
+   "S4 pitch envelope (range admits truth)": {
+    "clef_read": {
+     "signal": "S4 pitch envelope (range admits truth)",
+     "n": 138,
+     "spoke": 108,
+     "coverage": 0.7826,
+     "correct": 87,
+     "precision": 0.8056,
+     "note": ""
+    },
+    "clef_defaulted": {
+     "signal": "S4 pitch envelope (range admits truth)",
+     "n": 17,
+     "spoke": 8,
+     "coverage": 0.4706,
+     "correct": 8,
+     "precision": 1.0,
+     "note": ""
+    }
+   },
+   "S5 score-order prior (set contains truth)": {
+    "clef_read": {
+     "signal": "S5 score-order prior (set contains truth)",
+     "n": 138,
+     "spoke": 95,
+     "coverage": 0.6884,
+     "correct": 71,
+     "precision": 0.7474,
+     "note": ""
+    },
+    "clef_defaulted": {
+     "signal": "S5 score-order prior (set contains truth)",
+     "n": 17,
+     "spoke": 2,
+     "coverage": 0.1176,
+     "correct": 2,
+     "precision": 1.0,
+     "note": ""
+    }
+   },
+   "S5 score-order prior (modal prediction exact)": {
+    "clef_read": {
+     "signal": "S5 score-order prior (modal prediction exact)",
+     "n": 138,
+     "spoke": 95,
+     "coverage": 0.6884,
+     "correct": 71,
+     "precision": 0.7474,
+     "note": ""
+    },
+    "clef_defaulted": {
+     "signal": "S5 score-order prior (modal prediction exact)",
+     "n": 17,
+     "spoke": 2,
+     "coverage": 0.1176,
+     "correct": 2,
+     "precision": 1.0,
+     "note": ""
+    }
+   },
+   "S6 slot/layout instrument (fused)": {
+    "clef_read": {
+     "signal": "S6 slot/layout instrument (fused)",
+     "n": 138,
+     "spoke": 97,
+     "coverage": 0.7029,
+     "correct": 92,
+     "precision": 0.9485,
+     "note": ""
+    },
+    "clef_defaulted": {
+     "signal": "S6 slot/layout instrument (fused)",
+     "n": 17,
+     "spoke": 16,
+     "coverage": 0.9412,
+     "correct": 16,
+     "precision": 1.0,
+     "note": ""
+    }
+   }
+  },
+  "added_value": [
+   {
+    "signal": "S3",
+    "vs": "S5 set",
+    "rescued": 26,
+    "contradicted_a_correct_base": 15,
+    "net": 11
+   },
+   {
+    "signal": "S3",
+    "vs": "S5 modal",
+    "rescued": 26,
+    "contradicted_a_correct_base": 15,
+    "net": 11
+   },
+   {
+    "signal": "S4",
+    "vs": "S5 set",
+    "rescued": 50,
+    "contradicted_a_correct_base": 12,
+    "net": 38
+   },
+   {
+    "signal": "S1",
+    "vs": "S5 set",
+    "rescued": 54,
+    "contradicted_a_correct_base": 0,
+    "net": 54
+   },
+   {
+    "signal": "S1",
+    "vs": "S5 modal",
+    "rescued": 54,
+    "contradicted_a_correct_base": 0,
+    "net": 54
+   }
+  ],
+  "s8_block_purity": {
+   "n_blocks": 34,
+   "fully_pure_blocks": 20,
+   "share_fully_pure": 0.5882,
+   "mean_purity": 0.8766,
+   "detail": [
+    {
+     "block": [
+      "beethoven-sym5-mvt1-575951-p1",
+      0,
+      0,
+      0
+     ],
+     "size": 4,
+     "families": {
+      "woodwind": 4
+     },
+     "modal": "woodwind",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-575951-p1",
+      0,
+      0,
+      1
+     ],
+     "size": 3,
+     "families": {
+      "brass": 2,
+      "percussion": 1
+     },
+     "modal": "brass",
+     "purity": 0.667
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-575951-p1",
+      0,
+      0,
+      2
+     ],
+     "size": 5,
+     "families": {
+      "string": 4,
+      "voice": 1
+     },
+     "modal": "string",
+     "purity": 0.8
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-575951-p2",
+      1,
+      0,
+      0
+     ],
+     "size": 4,
+     "families": {
+      "woodwind": 4
+     },
+     "modal": "woodwind",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-575951-p2",
+      1,
+      0,
+      1
+     ],
+     "size": 3,
+     "families": {
+      "brass": 2,
+      "percussion": 1
+     },
+     "modal": "brass",
+     "purity": 0.667
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-575951-p2",
+      1,
+      0,
+      2
+     ],
+     "size": 4,
+     "families": {
+      "string": 4
+     },
+     "modal": "string",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-575951-p2",
+      1,
+      1,
+      0
+     ],
+     "size": 4,
+     "families": {
+      "woodwind": 4
+     },
+     "modal": "woodwind",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-575951-p2",
+      1,
+      1,
+      1
+     ],
+     "size": 3,
+     "families": {
+      "brass": 2,
+      "percussion": 1
+     },
+     "modal": "brass",
+     "purity": 0.667
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-575951-p2",
+      1,
+      1,
+      2
+     ],
+     "size": 4,
+     "families": {
+      "string": 4
+     },
+     "modal": "string",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-984073-p1",
+      1,
+      0,
+      0
+     ],
+     "size": 4,
+     "families": {
+      "woodwind": 4
+     },
+     "modal": "woodwind",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-984073-p1",
+      1,
+      0,
+      1
+     ],
+     "size": 3,
+     "families": {
+      "brass": 2,
+      "percussion": 1
+     },
+     "modal": "brass",
+     "purity": 0.667
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-984073-p1",
+      1,
+      0,
+      2
+     ],
+     "size": 5,
+     "families": {
+      "string": 4,
+      "voice": 1
+     },
+     "modal": "string",
+     "purity": 0.8
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-984073-p2",
+      2,
+      0,
+      0
+     ],
+     "size": 4,
+     "families": {
+      "woodwind": 4
+     },
+     "modal": "woodwind",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-984073-p2",
+      2,
+      0,
+      1
+     ],
+     "size": 3,
+     "families": {
+      "brass": 2,
+      "percussion": 1
+     },
+     "modal": "brass",
+     "purity": 0.667
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-984073-p2",
+      2,
+      0,
+      2
+     ],
+     "size": 4,
+     "families": {
+      "string": 4
+     },
+     "modal": "string",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-984073-p2",
+      2,
+      1,
+      0
+     ],
+     "size": 4,
+     "families": {
+      "woodwind": 4
+     },
+     "modal": "woodwind",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-984073-p2",
+      2,
+      1,
+      1
+     ],
+     "size": 3,
+     "families": {
+      "brass": 2,
+      "percussion": 1
+     },
+     "modal": "brass",
+     "purity": 0.667
+    },
+    {
+     "block": [
+      "beethoven-sym5-mvt1-984073-p2",
+      2,
+      1,
+      2
+     ],
+     "size": 4,
+     "families": {
+      "string": 4
+     },
+     "modal": "string",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "brahms-sym1-mvt1-317803-p1",
+      0,
+      0,
+      0
+     ],
+     "size": 9,
+     "families": {
+      "woodwind": 5,
+      "brass": 3,
+      "percussion": 1
+     },
+     "modal": "woodwind",
+     "purity": 0.556
+    },
+    {
+     "block": [
+      "brahms-sym1-mvt1-317803-p1",
+      0,
+      0,
+      1
+     ],
+     "size": 5,
+     "families": {
+      "string": 5
+     },
+     "modal": "string",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "brahms-sym1-mvt1-317803-p2",
+      1,
+      0,
+      0
+     ],
+     "size": 9,
+     "families": {
+      "woodwind": 5,
+      "brass": 3,
+      "percussion": 1
+     },
+     "modal": "woodwind",
+     "purity": 0.556
+    },
+    {
+     "block": [
+      "brahms-sym1-mvt1-317803-p2",
+      1,
+      0,
+      1
+     ],
+     "size": 5,
+     "families": {
+      "string": 5
+     },
+     "modal": "string",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "brahms-sym1-mvt1-317803-p2",
+      1,
+      1,
+      0
+     ],
+     "size": 8,
+     "families": {
+      "woodwind": 5,
+      "brass": 2,
+      "percussion": 1
+     },
+     "modal": "woodwind",
+     "purity": 0.625
+    },
+    {
+     "block": [
+      "brahms-sym1-mvt1-317803-p2",
+      1,
+      1,
+      1
+     ],
+     "size": 5,
+     "families": {
+      "string": 5
+     },
+     "modal": "string",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "dvorak-sym9-mvt1-405834-p5",
+      4,
+      0,
+      0
+     ],
+     "size": 4,
+     "families": {
+      "woodwind": 4
+     },
+     "modal": "woodwind",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "dvorak-sym9-mvt1-405834-p5",
+      4,
+      0,
+      1
+     ],
+     "size": 6,
+     "families": {
+      "brass": 5,
+      "percussion": 1
+     },
+     "modal": "brass",
+     "purity": 0.833
+    },
+    {
+     "block": [
+      "dvorak-sym9-mvt1-405834-p5",
+      4,
+      0,
+      2
+     ],
+     "size": 5,
+     "families": {
+      "string": 5
+     },
+     "modal": "string",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "dvorak-sym9-mvt1-405834-p6",
+      5,
+      0,
+      0
+     ],
+     "size": 4,
+     "families": {
+      "woodwind": 4
+     },
+     "modal": "woodwind",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "dvorak-sym9-mvt1-405834-p6",
+      5,
+      0,
+      1
+     ],
+     "size": 6,
+     "families": {
+      "brass": 5,
+      "percussion": 1
+     },
+     "modal": "brass",
+     "purity": 0.833
+    },
+    {
+     "block": [
+      "dvorak-sym9-mvt1-405834-p6",
+      5,
+      0,
+      2
+     ],
+     "size": 5,
+     "families": {
+      "string": 5
+     },
+     "modal": "string",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "mahler-sym5-mvt1-local-p2",
+      1,
+      0,
+      0
+     ],
+     "size": 4,
+     "families": {
+      "woodwind": 4
+     },
+     "modal": "woodwind",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "mahler-sym5-mvt1-local-p2",
+      1,
+      0,
+      1
+     ],
+     "size": 6,
+     "families": {
+      "brass": 6
+     },
+     "modal": "brass",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "mahler-sym5-mvt1-local-p2",
+      1,
+      0,
+      2
+     ],
+     "size": 1,
+     "families": {
+      "percussion": 1
+     },
+     "modal": "percussion",
+     "purity": 1.0
+    },
+    {
+     "block": [
+      "mahler-sym5-mvt1-local-p2",
+      1,
+      0,
+      3
+     ],
+     "size": 5,
+     "families": {
+      "string": 4,
+      "voice": 1
+     },
+     "modal": "string",
+     "purity": 0.8
+    }
+   ]
+  },
+  "within_block_vs_pagewide": {
+   "family_from_modal_pagewide": {
+    "correct": 55,
+    "n": 155,
+    "accuracy": 0.3548
+   },
+   "family_from_modal_within_block": {
+    "correct": 133,
+    "n": 155,
+    "accuracy": 0.8581
+   },
+   "delta": 0.5032
+  },
+  "kill_criterion_s3_vs_s5": {
+   "s3": {
+    "spoke": 76,
+    "exact": 49,
+    "precision_exact": 0.6447,
+    "transposes_yes_no": 50,
+    "precision_transposes": 0.6579
+   },
+   "s5": {
+    "spoke": 97,
+    "exact": 76,
+    "precision_exact": 0.7835,
+    "transposes_yes_no": 82,
+    "precision_transposes": 0.8454
+   },
+   "head_to_head_where_both_speak": {
+    "n": 48,
+    "s3_exact": 28,
+    "s5_exact": 46
+   },
+   "s3_confusion_truth_to_predicted": {
+    "-3->-3": 1,
+    "0->-1": 9,
+    "0->0": 47,
+    "0->1": 16,
+    "0->2": 1,
+    "2->1": 1,
+    "2->2": 1
+   }
+  }
+ },
+ "multiplicity": {
+  "n": 156,
+  "truth_distribution": {
+   "2": 68,
+   "1": 84,
+   "3": 3,
+   "4": 1
+  },
+  "rules": [
+   {
+    "rule": "always 1 (the shipped default \u2014 one part per printed staff)",
+    "spoke": 156,
+    "exact": 84,
+    "over": 0,
+    "under": 72,
+    "accuracy": 0.5385,
+    "per_row_exact_over_under": {
+     "beethoven-sym5-mvt1-575951-p1": [
+      6,
+      0,
+      6
+     ],
+     "beethoven-sym5-mvt1-575951-p2": [
+      8,
+      0,
+      14
+     ],
+     "beethoven-sym5-mvt1-984073-p1": [
+      6,
+      0,
+      6
+     ],
+     "beethoven-sym5-mvt1-984073-p2": [
+      8,
+      0,
+      14
+     ],
+     "brahms-sym1-mvt1-317803-p1": [
+      7,
+      0,
+      7
+     ],
+     "brahms-sym1-mvt1-317803-p2": [
+      14,
+      0,
+      13
+     ],
+     "dvorak-sym9-mvt1-405834-p5": [
+      15,
+      0,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p6": [
+      15,
+      0,
+      0
+     ],
+     "mahler-sym5-mvt1-local-p2": [
+      5,
+      0,
+      12
+     ]
+    },
+    "note": "This is what the pipeline does today and what Audiveris does on every single-system row. It is the baseline every rule must beat."
+   },
+   {
+    "rule": "S7 texture: >=1 dyad or divisi bar => 2 parts",
+    "spoke": 156,
+    "exact": 76,
+    "over": 60,
+    "under": 20,
+    "accuracy": 0.4872,
+    "per_row_exact_over_under": {
+     "beethoven-sym5-mvt1-575951-p1": [
+      5,
+      4,
+      3
+     ],
+     "beethoven-sym5-mvt1-575951-p2": [
+      13,
+      8,
+      1
+     ],
+     "beethoven-sym5-mvt1-984073-p1": [
+      3,
+      4,
+      5
+     ],
+     "beethoven-sym5-mvt1-984073-p2": [
+      13,
+      8,
+      1
+     ],
+     "brahms-sym1-mvt1-317803-p1": [
+      7,
+      7,
+      0
+     ],
+     "brahms-sym1-mvt1-317803-p2": [
+      16,
+      11,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p5": [
+      8,
+      7,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p6": [
+      7,
+      8,
+      0
+     ],
+     "mahler-sym5-mvt1-local-p2": [
+      4,
+      3,
+      10
+     ]
+    },
+    "note": ""
+   },
+   {
+    "rule": "S7 texture, stricter: >=25% of note bars carry a dyad => 2",
+    "spoke": 156,
+    "exact": 90,
+    "over": 37,
+    "under": 29,
+    "accuracy": 0.5769,
+    "per_row_exact_over_under": {
+     "beethoven-sym5-mvt1-575951-p1": [
+      6,
+      1,
+      5
+     ],
+     "beethoven-sym5-mvt1-575951-p2": [
+      14,
+      4,
+      4
+     ],
+     "beethoven-sym5-mvt1-984073-p1": [
+      6,
+      0,
+      6
+     ],
+     "beethoven-sym5-mvt1-984073-p2": [
+      13,
+      6,
+      3
+     ],
+     "brahms-sym1-mvt1-317803-p1": [
+      10,
+      4,
+      0
+     ],
+     "brahms-sym1-mvt1-317803-p2": [
+      18,
+      8,
+      1
+     ],
+     "dvorak-sym9-mvt1-405834-p5": [
+      11,
+      4,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p6": [
+      8,
+      7,
+      0
+     ],
+     "mahler-sym5-mvt1-local-p2": [
+      4,
+      3,
+      10
+     ]
+    },
+    "note": ""
+   },
+   {
+    "rule": "S8 block: a staff in a block of size 1 => 1, else 2",
+    "spoke": 156,
+    "exact": 69,
+    "over": 83,
+    "under": 4,
+    "accuracy": 0.4423,
+    "per_row_exact_over_under": {
+     "beethoven-sym5-mvt1-575951-p1": [
+      6,
+      6,
+      0
+     ],
+     "beethoven-sym5-mvt1-575951-p2": [
+      14,
+      8,
+      0
+     ],
+     "beethoven-sym5-mvt1-984073-p1": [
+      6,
+      6,
+      0
+     ],
+     "beethoven-sym5-mvt1-984073-p2": [
+      14,
+      8,
+      0
+     ],
+     "brahms-sym1-mvt1-317803-p1": [
+      7,
+      7,
+      0
+     ],
+     "brahms-sym1-mvt1-317803-p2": [
+      13,
+      14,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p5": [
+      0,
+      15,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p6": [
+      0,
+      15,
+      0
+     ],
+     "mahler-sym5-mvt1-local-p2": [
+      9,
+      4,
+      4
+     ]
+    },
+    "note": ""
+   },
+   {
+    "rule": "S8 brace: a brace detected on this staff => 1 (divisi across staves)",
+    "spoke": 18,
+    "exact": 5,
+    "over": 0,
+    "under": 13,
+    "accuracy": 0.2778,
+    "per_row_exact_over_under": {
+     "beethoven-sym5-mvt1-575951-p2": [
+      0,
+      0,
+      2
+     ],
+     "beethoven-sym5-mvt1-984073-p1": [
+      1,
+      0,
+      1
+     ],
+     "beethoven-sym5-mvt1-984073-p2": [
+      0,
+      0,
+      6
+     ],
+     "dvorak-sym9-mvt1-405834-p5": [
+      1,
+      0,
+      0
+     ],
+     "mahler-sym5-mvt1-local-p2": [
+      3,
+      0,
+      4
+     ]
+    },
+    "note": "abstains where no brace fires; 18 brace detections corpus-wide"
+   },
+   {
+    "rule": "S9 placement: a dynamic printed in the gap nearer the NEIGHBOUR => 2",
+    "spoke": 156,
+    "exact": 85,
+    "over": 10,
+    "under": 61,
+    "accuracy": 0.5449,
+    "per_row_exact_over_under": {
+     "beethoven-sym5-mvt1-575951-p1": [
+      6,
+      0,
+      6
+     ],
+     "beethoven-sym5-mvt1-575951-p2": [
+      11,
+      1,
+      10
+     ],
+     "beethoven-sym5-mvt1-984073-p1": [
+      5,
+      1,
+      6
+     ],
+     "beethoven-sym5-mvt1-984073-p2": [
+      12,
+      0,
+      10
+     ],
+     "brahms-sym1-mvt1-317803-p1": [
+      5,
+      4,
+      5
+     ],
+     "brahms-sym1-mvt1-317803-p2": [
+      10,
+      4,
+      13
+     ],
+     "dvorak-sym9-mvt1-405834-p5": [
+      15,
+      0,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p6": [
+      15,
+      0,
+      0
+     ],
+     "mahler-sym5-mvt1-local-p2": [
+      6,
+      0,
+      11
+     ]
+    },
+    "note": ""
+   },
+   {
+    "rule": "S1 label plurality (CEILING: hand-read printed string)",
+    "spoke": 156,
+    "exact": 131,
+    "over": 23,
+    "under": 2,
+    "accuracy": 0.8397,
+    "per_row_exact_over_under": {
+     "beethoven-sym5-mvt1-575951-p1": [
+      12,
+      0,
+      0
+     ],
+     "beethoven-sym5-mvt1-575951-p2": [
+      22,
+      0,
+      0
+     ],
+     "beethoven-sym5-mvt1-984073-p1": [
+      12,
+      0,
+      0
+     ],
+     "beethoven-sym5-mvt1-984073-p2": [
+      22,
+      0,
+      0
+     ],
+     "brahms-sym1-mvt1-317803-p1": [
+      14,
+      0,
+      0
+     ],
+     "brahms-sym1-mvt1-317803-p2": [
+      27,
+      0,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p5": [
+      7,
+      8,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p6": [
+      7,
+      8,
+      0
+     ],
+     "mahler-sym5-mvt1-local-p2": [
+      8,
+      7,
+      2
+     ]
+    },
+    "note": "This is the `label_ideal` arm of the condensed-parts session \u2014 the rule with a perfect reader, so its error is the RULE's."
+   },
+   {
+    "rule": "S7+S8+S9+S1-plurality combined (any says >1 => 2)",
+    "spoke": 156,
+    "exact": 82,
+    "over": 70,
+    "under": 4,
+    "accuracy": 0.5256,
+    "per_row_exact_over_under": {
+     "beethoven-sym5-mvt1-575951-p1": [
+      8,
+      4,
+      0
+     ],
+     "beethoven-sym5-mvt1-575951-p2": [
+      14,
+      8,
+      0
+     ],
+     "beethoven-sym5-mvt1-984073-p1": [
+      7,
+      5,
+      0
+     ],
+     "beethoven-sym5-mvt1-984073-p2": [
+      14,
+      8,
+      0
+     ],
+     "brahms-sym1-mvt1-317803-p1": [
+      7,
+      7,
+      0
+     ],
+     "brahms-sym1-mvt1-317803-p2": [
+      15,
+      12,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p5": [
+      4,
+      11,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p6": [
+      4,
+      11,
+      0
+     ],
+     "mahler-sym5-mvt1-local-p2": [
+      9,
+      4,
+      4
+     ]
+    },
+    "note": "The page-side ensemble Sean asked about. Block size is deliberately excluded: every orchestral block has >1 staff, so it fires everywhere."
+   },
+   {
+    "rule": "S7 AND S1-plurality (both must agree on >1)",
+    "spoke": 156,
+    "exact": 126,
+    "over": 10,
+    "under": 20,
+    "accuracy": 0.8077,
+    "per_row_exact_over_under": {
+     "beethoven-sym5-mvt1-575951-p1": [
+      9,
+      0,
+      3
+     ],
+     "beethoven-sym5-mvt1-575951-p2": [
+      21,
+      0,
+      1
+     ],
+     "beethoven-sym5-mvt1-984073-p1": [
+      7,
+      0,
+      5
+     ],
+     "beethoven-sym5-mvt1-984073-p2": [
+      21,
+      0,
+      1
+     ],
+     "brahms-sym1-mvt1-317803-p1": [
+      14,
+      0,
+      0
+     ],
+     "brahms-sym1-mvt1-317803-p2": [
+      27,
+      0,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p5": [
+      11,
+      4,
+      0
+     ],
+     "dvorak-sym9-mvt1-405834-p6": [
+      10,
+      5,
+      0
+     ],
+     "mahler-sym5-mvt1-local-p2": [
+      6,
+      1,
+      10
+     ]
+    },
+    "note": ""
+   }
+  ],
+  "per_row": {}
+ },
+ "continuity": {
+  "n_rows_on_a_later_system": 47,
+  "rows": {
+   "bach-brandenburg3-mvt1-468678-p1": {
+    "staves_on_later_systems": 12,
+    "slot_continuous_with_previous_system": 11,
+    "share": 0.9167
+   },
+   "beethoven-sym5-mvt1-575951-p2": {
+    "staves_on_later_systems": 11,
+    "slot_continuous_with_previous_system": 11,
+    "share": 1.0
+   },
+   "beethoven-sym5-mvt1-984073-p2": {
+    "staves_on_later_systems": 11,
+    "slot_continuous_with_previous_system": 11,
+    "share": 1.0
+   },
+   "brahms-sym1-mvt1-317803-p2": {
+    "staves_on_later_systems": 13,
+    "slot_continuous_with_previous_system": 13,
+    "share": 1.0
+   }
+  }
+ }
+}

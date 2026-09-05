@@ -1,0 +1,236 @@
+{
+  "_comment": "Curated half of the status board. tools/dashboard/generate.py merges this with live numbers from benchmarks/omr-ned-2026-08/current-accuracy.json and git log, then writes docs/progress-dashboard.html. Edit this file (by hand or in a session), re-run the generator, done. Numbers that live in the accuracy record are NOT restated here on purpose.",
+  "subtitle": "Scanned score → OMR → MusicXML / LilyPond. One number that can sit beside published work (OMR-NED, lower is better), one labeling-and-training loop that finally ships weights, and a ranked queue of what's next.",
+  "era_note": "⚠️ The 11-work figure opened 2026-09-02 and is <b>not comparable</b> to the closed 3-work era (last: 0.0849) — different work set, different fixture. The boundary is enforced by <code>accuracy_record --check</code>.",
+  "extra_metrics": [
+    {
+      "label": "Clef, end to end",
+      "value": "149<span class=\"unit\">/166</span>",
+      "note": "90% with paid margin reader · 146 free · labels are the constraint"
+    },
+    {
+      "label": "Score library",
+      "value": "235<span class=\"unit\"> ed</span>",
+      "note": "1,745 reference encodings · 27 works paired PDF ↔ truth"
+    },
+    {
+      "label": "Scan half-notes",
+      "value": "8 → 27",
+      "note": "hollow fine-tune, dense recall held 0.941 · the #1 scan weakness, moving"
+    },
+    {
+      "label": "Vs Audiveris",
+      "value": "1<span class=\"unit\"> of 2 corpora</span>",
+      "note": "engraved: ahead, 0.1125 recorded vs its 0.1252 · scans: 0.8345 vs 0.7919 on the 11-row pool the arm covers (the benchmark has since moved to a 20-row era — not comparable)"
+    }
+  ],
+  "work_flags": {
+    "mozart-sym40-mvt1": "~41% of its notes land in 'order' bars with every pitch present on both sides — a divisi voice-split convention, not recognition",
+    "dvorak-sym9-mvt4": "Excerpt auto-shrank to 3 bars vs everyone else's 6–8, so the denominator is a third of the rest — noisiest row in the set"
+  },
+  "table_caption": "† flagged rows read differently — hover for why. Boulanger (46 parts) is deliberately unpooled: it measures page segmentation, not recognition. The scan side is a separate 5-page benchmark (opened 0.7960); its gap is mostly <em>reading</em>, and hollow noteheads on closed-counter scans are the named lever.",
+  "active": [
+    {
+      "title": "Labeling → gate → ship loop",
+      "pill": "shipping",
+      "pill_class": "shipped",
+      "body": "The loop is closed and has now shipped twice: the hollow fine-tune (09-03) and <b>head-graft surgery</b> <code>hollow-graft-shift09</code> (09-04) after rounds 3–5 proved every straight fine-tune deletes classes it was trained on. DSv2 rehearsal measured a clean negative — surgery is the confirmed path."
+    },
+    {
+      "title": "Weight routing by input domain",
+      "pill": "shipped 09-03",
+      "pill_class": "shipped",
+      "body": "Scans → hollow-graft weights, digitally engraved → prior checkpoint (0.1399 vs 0.1421), ambiguity abstains. Publisher/era forks <b>deferred</b> behind measured triggers."
+    },
+    {
+      "title": "Pre-fill from reference encodings",
+      "pill": "answered: queue",
+      "pill_class": "blocked",
+      "body": "Phase C (blind, pre-registered) landed <b>under the 0.97 bar</b> — 0.838 exact on the registered 25, 0.915 pooled. Pre-filled boxes are a review <b>queue</b>, not labels. Rests are the weak class (0.722 vs noteheads 0.943)."
+    },
+    {
+      "title": "Label audits before training",
+      "pill": "active",
+      "pill_class": "active",
+      "body": "Three tooled checks now run on finished passes: ledger-zone parity (raw flag rate is an upper bound — Simrock true rate ~0.9%), shape-vs-class geometry, and edge fragments (2 live bad labels found in the training corpus, 0 false positives over 1,666 labels)."
+    },
+    {
+      "title": "Brahms 1 completion pass",
+      "pill": "done 09-03",
+      "pill_class": "shipped",
+      "body": "49 cells labeled blind + 7 audited corrections; the five CONFLICTs adjudicated (tie-splits and accidental fakes, not tremolo). Feeds the family-queue adjudication batch next."
+    }
+  ],
+  "queue": [
+    {
+      "title": "1 · Phase 2 label batches",
+      "pill": "needs Sean",
+      "pill_class": "waiting",
+      "body": "Four cut batches waiting for hands. The process is proven cheap to repeat; every training-side lever short of new labels is now measured dead."
+    },
+    {
+      "title": "2 · Family-queue adjudication batch",
+      "pill": "queued",
+      "pill_class": "queue",
+      "body": "Round 6's finding: every specialist kills its own class because its corpus is 41–61% unboxed in its own symbol. <code>build_family_queue.py</code> builds the fix batch."
+    },
+    {
+      "title": "3 · Replace the positional clef default",
+      "pill": "queued",
+      "pill_class": "queue",
+      "body": "17 of 21 remaining clef errors are the default calling bass/C-clef staves treble. The machinery works and is <b>starved of instrument names</b> — a labels problem, not clef reading."
+    },
+    {
+      "title": "4 · Catalog membership: v5–v8",
+      "pill": "decision open",
+      "pill_class": "waiting",
+      "body": "Eight label versions on main; catalog unions v1–v4 only. Deciding wants a measured run behind the forgetting eval; executing is now a one-line manifest edit."
+    },
+    {
+      "title": "5 · LEGATO 2 weights",
+      "pill": "waiting on author",
+      "pill_class": "waiting",
+      "body": "HF access request submitted 09-01. Its segmenter already corroborated our grouping 6/6. ⚠️ AGPL — fine host-side, a problem if ever served through the Stripe gate."
+    },
+    {
+      "title": "6 · Parked, wanted",
+      "pill": "parked",
+      "pill_class": "queue",
+      "body": "Template-read elements under the new labeling system (time signatures first, Sean 09-03) · multi-type barlines + MusicXML repeats · measure-level MusicXML patching port · RTMDet/yolov8x cloud run (approved, needs protocol)."
+    },
+    {
+      "title": "7 · Beat Audiveris on scans again",
+      "pill": "behind on scans",
+      "pill_class": "waiting",
+      "body": "Engraved: ahead in both configs (0.1127/0.1219 vs 0.1252). Scans: behind 0.8345 vs 0.7919; the structural bucket is now fully attributed and the machinery is merged dormant (<code>OMR_SLOT_STITCH</code> + <code>OMR_CONDENSED_PARTS</code>, oracle ceiling −4,557). Open decision: a dossier-style count source to turn the flags on honestly (the benchmark can't credit its own answer key), or accept the reading-side path. Divisi stem-splitting is the next increment. Arcs-as-CV session (Sean's) in flight."
+    }
+  ],
+  "log": [
+    {
+      "date": "09-04",
+      "title": "Merge hazard caught: two dormant flags silently dropped, restored forward",
+      "negative": true,
+      "body": "PR #15's sync merge reported conflicts only in CLAUDE.md and the accuracy record while <code>export.py</code> auto-merged to its own older version — dropping <code>OMR_SLOT_STITCH</code> and <code>OMR_CONDENSED_PARTS</code> and leaving their tests orphaned, so the suite failed <b>collection</b>. Repaired by re-applying <b>on top of</b> the newer body (wedge work and the pair_spanners rename preserved), verified by 40/40 tests and <b>flag-off byte-identity on 33/33 fixtures</b>. The lesson is now in memory with a detection recipe: <code>git show &lt;sha&gt;:file | grep -c FLAG</code> across the merge chain localizes the loss in seconds."
+    },
+    {
+      "date": "09-04",
+      "title": "Condensed-staff splitting: ceiling −4,557, premise corrected",
+      "negative": false,
+      "body": "The dispatched session measured the convention (69.8% of condensed staff-measures are exact duplication), shipped <code>OMR_CONDENSED_PARTS</code> (default off, merged dormant), and priced the ceiling: <b>scan pool −4,557 edits with <code>OMR_SLOT_STITCH</code>, entire-staff 8,453 → 2,060</b> — the two flags compose, and splitting cancels stitching's penalty. It also <b>corrected Addendum 4</b>: opening Audiveris's exports shows it never splits condensed staves (its 22-part Brahms was fragmentation coincidentally matching truth) — so this is accuracy work, not catch-up. Label-derived counts refused (+2,181 on Dvořák — an encoding property no page signal can recover); the honest count source is a dossier, which the benchmark's no-answer-key rule can't credit. <code>benchmarks/omr-condensed-parts-2026-09/FINDINGS.md</code>"
+    },
+    {
+      "date": "09-04",
+      "title": "Staff-structure attribution: the stitching story falsified, the real lever found",
+      "negative": false,
+      "body": "The dispatched session attributed the scan +2,591 <code>entire staff</code> bucket: <b>87% is condensation with our detection exactly right</b>; the stitch refusal (13%) fires correctly; zero slot or segmentation faults. The axis is system count, not page position. Slot stitching was built, priced (−216 pooled) and <b>withheld</b> — it doubles the very bucket it targets while paying off in measures (bucket-level attribution under-counts fragmentation). Then the open question settled from the Audiveris exports: <b>it emits exactly the reference's 22 parts from Brahms p2's 14 printed staves</b> — it splits condensed staves into parts, which is why its structural cost collapses. Condensed-staff part-splitting is the next scan lever, and it is competitive ground. <code>benchmarks/omr-staff-structure-2026-09/FINDINGS.md</code> + Addendum 4."
+    },
+    {
+      "date": "09-04",
+      "title": "Arc attribution merged and recorded — engraved 0.1127",
+      "negative": false,
+      "body": "The Opus arc session's rule (an arc belongs to the staff whose noteheads it hugs) merged and re-recorded: <b>0.1127 default / 0.1219 no-direction — both configurations now beat Audiveris's 0.1252</b>. Its mechanism correction split the wrong-owner class in two (the arc existed ONLY in the wrong staff — no duplicate to arbitrate), and it refused a better-scoring variant that got there by deleting 12 real slurs. Tie bucket attributed: mostly excerpt-boundary artifacts + one system-wide invented tie (Mozart 41, open with coordinates). Next: the scan staff-structure session (the +2,591 entire-staff bucket) is running."
+    },
+    {
+      "date": "09-04",
+      "title": "Widening the scan pool reverses the scan verdict",
+      "negative": true,
+      "body": "The Audiveris scan arm widened to the re-stamped 11-row pool: over the same 10 rows both systems scored, <b>Audiveris 0.7919 vs our 0.8345</b> — the 5-row lead did not survive widening (it wins 6 rows, we win 4, and it cannot process Bach at all — internal NPE). Our wins concentrate in first pages; the added second pages go its way. The project's own lesson, again: <em>a small pool cannot falsify a story about its own pages.</em> Next scan levers: the second-page gap (systems past the movement opening), and the shared 'entire staff' condensation floor."
+    },
+    {
+      "date": "09-04",
+      "title": "Beam-gap session flips the engraved comparison — merged and recorded",
+      "negative": false,
+      "body": "The dispatched session took <code>wrong flag/beam</code> <b>449 → 31</b> and pooled OMR-NED <b>0.1306 → 0.1176</b> (2,745 → 2,473 edits) — from 176 edits behind Audiveris to <b>96 ahead</b>. 430 of the 449 were export-side: the beam-box pad the rhythm layer already had never reached <code>annotate_beams</code>, plus a spurious bar-wide box and stacked-stroke group fracturing. Export-only, byte-identical A/B method, 11/11 clean, 1,931 tests green, two approaches refused with numbers. Merged (<code>bc58defb</code>), suite 1,984 green, and both configurations re-recorded on the merged tree: <b>0.1176 official</b>, 0.1268 without the OCR rung. <code>benchmarks/omr-beam-gap-2026-09/FINDINGS.md</code>"
+    },
+    {
+      "date": "09-04",
+      "title": "Audiveris becomes the measured target",
+      "negative": false,
+      "body": "The industrial standard ran on both benchmarks, same fixtures, same scorer. <b>Engraved: Audiveris 0.1252 vs our 0.1306</b> — the entire gap is one bucket (flag/beam: ours 449 edits vs its 48), now out with a dedicated fix session. <b>Scans: our current weights 0.7482 vs its 0.7845</b> — we lead, and it needed hand-holding (raised step timeout, export normalization) to finish 2 of 5 pages at all. Its OCR was measured and left OFF: with it, its engraved score worsens 0.1252 → 0.1579 (hallucinated lyrics). oemer and homr measured once and ruled out. <code>benchmarks/omr-vs-industry-2026-09/FINDINGS.md</code>"
+    },
+    {
+      "date": "09-04",
+      "title": "Head-graft surgery ships as production scan weights",
+      "negative": false,
+      "body": "<code>hollow-graft-shift09</code> (0e9f005b): per-class head merge + bias floor cleared all three axes after 11 method arms failed. Scan e2e measured byte-deterministic first."
+    },
+    {
+      "date": "09-04",
+      "title": "DSv2 rehearsal: clean negative",
+      "negative": true,
+      "body": "Fails all three axes from both donors in one epoch — the model deletes classes it is <b>trained on</b> (beam mAP50 0.752 → 0.022 on labeled pages). Deletion is optimization dynamics, not unboxed ink. Training-side levers closed; $0.49 well spent."
+    },
+    {
+      "date": "09-03",
+      "title": "Weights route by input domain",
+      "negative": false,
+      "body": "Raster-vs-vector classification picks the checkpoint per document; abstains to default, falls back soft, ≤77 ms. No benchmark figure moves — every harness pins weights."
+    },
+    {
+      "date": "09-03",
+      "title": "First hand-labeling batch to reach production",
+      "negative": false,
+      "body": "194 hollow noteheads across 5 publishers → gated fine-tune → shipped. Scan half-notes 8 → 27, dense recall held at exactly 0.941. First time labeling measurably improved the <b>deployed</b> detector."
+    },
+    {
+      "date": "09-03",
+      "title": "Pre-fill admission answered: no",
+      "negative": true,
+      "body": "Blind pre-registered Phase C put pre-filled boxes under the bar. The queue reading stands — now on evidence rather than caution."
+    },
+    {
+      "date": "09-02",
+      "title": "Benchmark widened 3 → 11 works",
+      "negative": false,
+      "body": "Opened at ~2× the incumbents' error rate — the 3-work figure was hiding a distribution. Three invisible fault families surfaced immediately (cut-common glyph, <code>fingering3</code> triplets, articulations never exported)."
+    },
+    {
+      "date": "09-02",
+      "title": "Scan direction reader: recall 18% → ~66%",
+      "negative": false,
+      "body": "Two candidate bugs (universal cap; span blanking) + two gate bugs. Page 22: 0 → 7 of 7 printed directions. The page now decides how many OCR rungs run."
+    },
+    {
+      "date": "09-01",
+      "title": "First end-to-end run on a real scan",
+      "negative": false,
+      "body": "Beethoven 5, 600 dpi IMSLP: layout exact at 113 staves, OMR-NED 0.8706 — a different problem from engraved. Diagnosis: 68 printed half notes, 8 detected. That number is why the labeling loop exists."
+    },
+    {
+      "date": "08-31 → 09-01",
+      "title": "The OMR-NED fix arc: 0.3164 → 0.1306",
+      "negative": false,
+      "body": "Seventeen measured fixes in the 3-work era, five of them \"detected upstream, dropped on export\" — the project's recurring bug shape, now guarded by <code>export_coverage.py</code> on every suite run."
+    }
+  ],
+  "deadends": [
+    {
+      "title": "Synthetic augmentation (ScoreAug / Augraphy)",
+      "body": "Fair 3-way test: worse than the clean control on real cells. Not the answer to hollow noteheads either."
+    },
+    {
+      "title": "Straight detector fine-tuning on hand labels",
+      "body": "Seven documented collapses; rounds 3–5 confirmed it is class deletion. Surgery is the path."
+    },
+    {
+      "title": "VLM transcription",
+      "body": "Disproven twice here; LEGATO 2's own paper corroborates (Gemini at 90–94 OMR-NED)."
+    },
+    {
+      "title": "MXL → bounding-box auto-labels",
+      "body": "F1 0.064 on 76 hand-mapped cells. The reverse direction (pre-fill) survives — as a queue."
+    },
+    {
+      "title": "Key signature from the music",
+      "body": "Measured NO-GO: 36.7% ceiling at page scope on ground truth. Fix the vote instead — done."
+    },
+    {
+      "title": "Threshold-style system-break rules",
+      "body": "Five attempts rejected; the left-edge split (shipped, default on) is the answer that worked."
+    },
+    {
+      "title": "oemer / homr as competitors",
+      "body": "Measured once (09-04): oemer 0.975–0.985 everywhere (2-staff grand-staff assertion); homr crashes above ~16 parts (MIDI-channel-per-part writer), though it hit 0.0718 on Tchaikovsky 6 where it fits. Out of the running; Audiveris is the benchmark."
+    }
+  ]
+}

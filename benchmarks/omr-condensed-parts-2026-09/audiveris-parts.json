@@ -1,0 +1,103 @@
+[
+  {
+    "row": "bach-brandenburg3-mvt1-468678-p1",
+    "audiveris_parts": null,
+    "note": "no export (Audiveris did not complete)"
+  },
+  {
+    "row": "beethoven-sym5-mvt1-575951-p1",
+    "printed_staves": 12,
+    "systems": 1,
+    "truth_parts": 18,
+    "audiveris_parts": 12,
+    "measures_per_part": [
+      15
+    ]
+  },
+  {
+    "row": "beethoven-sym5-mvt1-575951-p2",
+    "printed_staves": 11,
+    "systems": 2,
+    "truth_parts": 18,
+    "audiveris_parts": 16,
+    "measures_per_part": [
+      31
+    ]
+  },
+  {
+    "row": "beethoven-sym5-mvt1-984073-p1",
+    "printed_staves": 12,
+    "systems": 1,
+    "truth_parts": 18,
+    "audiveris_parts": 12,
+    "measures_per_part": [
+      15
+    ]
+  },
+  {
+    "row": "beethoven-sym5-mvt1-984073-p2",
+    "printed_staves": 11,
+    "systems": 2,
+    "truth_parts": 18,
+    "audiveris_parts": 15,
+    "measures_per_part": [
+      29
+    ]
+  },
+  {
+    "row": "brahms-sym1-mvt1-317803-p1",
+    "audiveris_parts": null,
+    "note": "no export (Audiveris did not complete)"
+  },
+  {
+    "row": "brahms-sym1-mvt1-317803-p2",
+    "printed_staves": 27,
+    "systems": 2,
+    "truth_parts": 21,
+    "audiveris_parts": 22,
+    "measures_per_part": [
+      13,
+      14
+    ]
+  },
+  {
+    "row": "dvorak-sym9-mvt1-405834-p5",
+    "printed_staves": 15,
+    "systems": 1,
+    "truth_parts": 15,
+    "audiveris_parts": 15,
+    "measures_per_part": [
+      8
+    ]
+  },
+  {
+    "row": "dvorak-sym9-mvt1-405834-p6",
+    "printed_staves": 15,
+    "systems": 1,
+    "truth_parts": 15,
+    "audiveris_parts": 15,
+    "measures_per_part": [
+      7
+    ]
+  },
+  {
+    "row": "mahler-sym5-mvt1-local-p2",
+    "printed_staves": 17,
+    "systems": 1,
+    "truth_parts": 38,
+    "audiveris_parts": 17,
+    "measures_per_part": [
+      9
+    ]
+  },
+  {
+    "row": "mahler-sym5-mvt1-local-p3",
+    "printed_staves": 13,
+    "systems": 1,
+    "truth_parts": 38,
+    "audiveris_parts": 12,
+    "measures_per_part": [
+      8
+    ]
+  }
+]

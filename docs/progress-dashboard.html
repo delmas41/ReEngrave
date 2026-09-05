@@ -1,0 +1,255 @@
+<title>ReEngrave Status Board</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper: #F7F6F2; --surface: #FFFFFF; --ink: #1D1F27; --muted: #676B76;
+    --faint: #9A9DA6; --hairline: #E4E2DA; --hairline-strong: #CFCDC3;
+    --accent: #3352C4; --accent-soft: #E7ECFA;
+    --good: #2E7D4F; --good-soft: #E4F0E8;
+    --warn: #A97A14; --warn-soft: #F5EDD9;
+    --crit: #B3382E; --crit-soft: #F6E4E2;
+    --shadow: 0 1px 2px rgba(29,31,39,.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #14161C; --surface: #1C1F28; --ink: #E9E8E3; --muted: #A0A3AD;
+      --faint: #6E7280; --hairline: #2C303B; --hairline-strong: #3A3F4D;
+      --accent: #8CA3F2; --accent-soft: #232B44;
+      --good: #6DBE8F; --good-soft: #1E3328;
+      --warn: #D9AE4E; --warn-soft: #362E17;
+      --crit: #E08076; --crit-soft: #3B211E;
+      --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14161C; --surface: #1C1F28; --ink: #E9E8E3; --muted: #A0A3AD;
+    --faint: #6E7280; --hairline: #2C303B; --hairline-strong: #3A3F4D;
+    --accent: #8CA3F2; --accent-soft: #232B44;
+    --good: #6DBE8F; --good-soft: #1E3328;
+    --warn: #D9AE4E; --warn-soft: #362E17;
+    --crit: #E08076; --crit-soft: #3B211E;
+    --shadow: none;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 40px 28px 72px; }
+  header h1 { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-weight: 600;
+    font-size: 34px; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+  .masthead-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .stamp { font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px; color: var(--muted); }
+  .stamp b { color: var(--ink); font-weight: 600; }
+  .stafflines { margin: 18px 0 0; display: grid; gap: 5px; }
+  .stafflines i { display: block; height: 1px; background: var(--hairline-strong); }
+  .stafflines i:nth-child(3) { background: var(--accent); opacity: .7; }
+  .subtitle { color: var(--muted); margin: 14px 0 0; max-width: 68ch; }
+  section { margin-top: 44px; }
+  .kicker { font-size: 11.5px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+    margin: 0 0 14px; display: flex; align-items: center; gap: 12px; }
+  .kicker::after { content: ""; flex: 1; height: 1px; background: var(--hairline); }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .metric { background: var(--surface); border: 1px solid var(--hairline); border-radius: 6px;
+    padding: 16px 18px 14px; box-shadow: var(--shadow); }
+  .metric .label { font-size: 12px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; font-weight: 600; }
+  .metric .value { font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 30px; font-weight: 600;
+    line-height: 1.15; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .metric .note { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+  .metric .value .unit { font-size: 14px; color: var(--faint); font-weight: 400; }
+  .tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--hairline);
+    border-radius: 6px; box-shadow: var(--shadow); }
+  table { border-collapse: collapse; width: 100%; min-width: 720px; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--hairline); font-size: 13.5px; }
+  th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num, th.num { text-align: right; font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; }
+  .bar { display: inline-block; vertical-align: middle; height: 8px; border-radius: 2px;
+    background: var(--accent); opacity: .85; margin-right: 10px; }
+  .work { font-weight: 500; white-space: nowrap; }
+  .flagnote { color: var(--warn); cursor: help; border-bottom: 1px dotted var(--warn); }
+  .table-caption { font-size: 12.5px; color: var(--muted); margin: 10px 2px 0; max-width: 90ch; }
+  .board { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 860px) { .board { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--hairline); border-radius: 6px;
+    padding: 4px 0; box-shadow: var(--shadow); }
+  .item { padding: 13px 18px; border-bottom: 1px solid var(--hairline); }
+  .item:last-child { border-bottom: none; }
+  .item h3 { font-size: 14.5px; font-weight: 600; margin: 0 0 3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .item p { margin: 0; font-size: 13.5px; color: var(--muted); }
+  .item p b { color: var(--ink); font-weight: 600; }
+  .pill { display: inline-block; font-size: 10.5px;
+    font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px;
+    border-radius: 999px; white-space: nowrap; }
+  .pill.active  { background: var(--accent-soft); color: var(--accent); }
+  .pill.shipped { background: var(--good-soft); color: var(--good); }
+  .pill.waiting { background: var(--warn-soft); color: var(--warn); }
+  .pill.blocked { background: var(--crit-soft); color: var(--crit); }
+  .pill.queue   { background: var(--hairline); color: var(--muted); }
+  .log { border-left: 2px solid var(--hairline-strong); margin-left: 6px; padding-left: 22px; display: grid; gap: 16px; }
+  .log-entry { position: relative; }
+  .log-entry::before { content: ""; position: absolute; left: -27.5px; top: 6px;
+    width: 9px; height: 9px; border-radius: 50%; background: var(--good);
+    border: 2px solid var(--paper); }
+  .log-entry.neg::before { background: var(--crit); }
+  .log-date { font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 12px; color: var(--muted); }
+  .log-entry h3 { font-size: 14.5px; margin: 1px 0 2px; font-weight: 600; }
+  .log-entry p { margin: 0; font-size: 13.5px; color: var(--muted); max-width: 82ch; }
+  .log-entry p b { color: var(--ink); }
+  .deadends { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px; }
+  .dead { border: 1px solid var(--hairline); border-left: 3px solid var(--crit);
+    border-radius: 4px; background: var(--surface); padding: 10px 14px;
+    font-size: 13px; color: var(--muted); }
+  .dead b { color: var(--ink); font-weight: 600; display: block; margin-bottom: 2px; }
+  .commits { font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px;
+    display: grid; gap: 6px; color: var(--muted); }
+  .commits .sha { color: var(--accent); }
+  footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--hairline);
+    font-size: 12.5px; color: var(--faint); display: flex; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap; }
+  code { font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; font-size: .92em;
+    background: var(--accent-soft); color: var(--accent); padding: 1px 5px; border-radius: 3px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="masthead-row">
+      <h1>ReEngrave Status Board</h1>
+      <div class="stamp">generated <b>2026-09-04</b> · benchmark commit <b>c378412f</b></div>
+    </div>
+    <div class="stafflines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <p class="subtitle">Scanned score → OMR → MusicXML / LilyPond. One number that can sit beside published work (OMR-NED, lower is better), one labeling-and-training loop that finally ships weights, and a ranked queue of what's next.</p>
+  </header>
+
+  <section>
+    <p class="kicker">Headline numbers</p>
+    <div class="metrics">
+      <div class="metric"><div class="label">Engraved benchmark</div><div class="value">0.1125</div><div class="note">pooled OMR-NED, 11 works · 2,367 edits · direction reader on</div></div>
+      <div class="metric"><div class="label">Without OCR rung</div><div class="value">0.1268</div><div class="note">same commit, <code>--no-direction-text</code> · 2,643 edits</div></div>
+      <div class="metric"><div class="label">Clef, end to end</div><div class="value">149<span class="unit">/166</span></div><div class="note">90% with paid margin reader · 146 free · labels are the constraint</div></div>
+      <div class="metric"><div class="label">Score library</div><div class="value">235<span class="unit"> ed</span></div><div class="note">1,745 reference encodings · 27 works paired PDF ↔ truth</div></div>
+      <div class="metric"><div class="label">Scan half-notes</div><div class="value">8 → 27</div><div class="note">hollow fine-tune, dense recall held 0.941 · the #1 scan weakness, moving</div></div>
+      <div class="metric"><div class="label">Vs Audiveris</div><div class="value">1<span class="unit"> of 2 corpora</span></div><div class="note">engraved: ahead, 0.1125 recorded vs its 0.1252 · scans: 0.8345 vs 0.7919 on the 11-row pool the arm covers (the benchmark has since moved to a 20-row era — not comparable)</div></div>
+    </div>
+    <p class="table-caption">⚠️ The 11-work figure opened 2026-09-02 and is <b>not comparable</b> to the closed 3-work era (last: 0.0849) — different work set, different fixture. The boundary is enforced by <code>accuracy_record --check</code>.</p>
+  </section>
+
+  <section>
+    <p class="kicker">Per-work OMR-NED · engraved orchestral e2e</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th>Work</th><th>OMR-NED (lower = better)</th><th class="num">edits</th><th class="num">note recall</th><th class="num">precision</th><th class="num">duration</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="work">Mahler 5 i</td><td><span class="bar" style="width:12px"></span><span class="num">0.0209</span></td><td class="num">40</td><td class="num">0.917</td><td class="num">0.917</td><td class="num">1.000</td></tr>
+          <tr><td class="work">Beethoven 5 i</td><td><span class="bar" style="width:20px"></span><span class="num">0.0332</span></td><td class="num">43</td><td class="num">1.000</td><td class="num">1.000</td><td class="num">1.000</td></tr>
+          <tr><td class="work">Tchaikovsky 4 ii</td><td><span class="bar" style="width:26px"></span><span class="num">0.0444</span></td><td class="num">69</td><td class="num">0.925</td><td class="num">0.925</td><td class="num">1.000</td></tr>
+          <tr><td class="work">Bruckner 5 i</td><td><span class="bar" style="width:55px"></span><span class="num">0.0931</span></td><td class="num">185</td><td class="num">0.962</td><td class="num">0.962</td><td class="num">1.000</td></tr>
+          <tr><td class="work">Brahms 1 i</td><td><span class="bar" style="width:56px"></span><span class="num">0.0943</span></td><td class="num">390</td><td class="num">0.956</td><td class="num">0.955</td><td class="num">0.992</td></tr>
+          <tr><td class="work">Mozart 41 i</td><td><span class="bar" style="width:61px"></span><span class="num">0.1025</span></td><td class="num">301</td><td class="num">0.991</td><td class="num">0.991</td><td class="num">0.947</td></tr>
+          <tr><td class="work">Beethoven 3 i</td><td><span class="bar" style="width:77px"></span><span class="num">0.1294</span></td><td class="num">215</td><td class="num">0.975</td><td class="num">0.975</td><td class="num">1.000</td></tr>
+          <tr><td class="work">Mozart 40 i <span class="flagnote" title="~41% of its notes land in 'order' bars with every pitch present on both sides — a divisi voice-split convention, not recognition">†</span></td><td><span class="bar" style="width:84px"></span><span class="num">0.1415</span></td><td class="num">218</td><td class="num">0.762</td><td class="num">0.762</td><td class="num">0.952</td></tr>
+          <tr><td class="work">Tchaikovsky 6 ii</td><td><span class="bar" style="width:110px"></span><span class="num">0.1855</span></td><td class="num">266</td><td class="num">0.756</td><td class="num">0.747</td><td class="num">0.985</td></tr>
+          <tr><td class="work">Brahms 4 i</td><td><span class="bar" style="width:126px"></span><span class="num">0.2136</span></td><td class="num">401</td><td class="num">0.959</td><td class="num">0.943</td><td class="num">0.933</td></tr>
+          <tr><td class="work">Dvořák 9 iv <span class="flagnote" title="Excerpt auto-shrank to 3 bars vs everyone else's 6–8, so the denominator is a third of the rest — noisiest row in the set">†</span></td><td><span class="bar" style="width:200px"></span><span class="num">0.3380</span></td><td class="num">239</td><td class="num">0.975</td><td class="num">0.975</td><td class="num">1.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption">† flagged rows read differently — hover for why. Boulanger (46 parts) is deliberately unpooled: it measures page segmentation, not recognition. The scan side is a separate 5-page benchmark (opened 0.7960); its gap is mostly <em>reading</em>, and hollow noteheads on closed-counter scans are the named lever.</p>
+  </section>
+
+  <section>
+    <div class="board">
+      <div>
+        <p class="kicker">Active projects</p>
+        <div class="card">
+          <div class="item"><h3>Labeling → gate → ship loop <span class="pill shipped">shipping</span></h3><p>The loop is closed and has now shipped twice: the hollow fine-tune (09-03) and <b>head-graft surgery</b> <code>hollow-graft-shift09</code> (09-04) after rounds 3–5 proved every straight fine-tune deletes classes it was trained on. DSv2 rehearsal measured a clean negative — surgery is the confirmed path.</p></div>
+          <div class="item"><h3>Weight routing by input domain <span class="pill shipped">shipped 09-03</span></h3><p>Scans → hollow-graft weights, digitally engraved → prior checkpoint (0.1399 vs 0.1421), ambiguity abstains. Publisher/era forks <b>deferred</b> behind measured triggers.</p></div>
+          <div class="item"><h3>Pre-fill from reference encodings <span class="pill blocked">answered: queue</span></h3><p>Phase C (blind, pre-registered) landed <b>under the 0.97 bar</b> — 0.838 exact on the registered 25, 0.915 pooled. Pre-filled boxes are a review <b>queue</b>, not labels. Rests are the weak class (0.722 vs noteheads 0.943).</p></div>
+          <div class="item"><h3>Label audits before training <span class="pill active">active</span></h3><p>Three tooled checks now run on finished passes: ledger-zone parity (raw flag rate is an upper bound — Simrock true rate ~0.9%), shape-vs-class geometry, and edge fragments (2 live bad labels found in the training corpus, 0 false positives over 1,666 labels).</p></div>
+          <div class="item"><h3>Brahms 1 completion pass <span class="pill shipped">done 09-03</span></h3><p>49 cells labeled blind + 7 audited corrections; the five CONFLICTs adjudicated (tie-splits and accidental fakes, not tremolo). Feeds the family-queue adjudication batch next.</p></div>
+        </div>
+      </div>
+      <div>
+        <p class="kicker">Next up · ranked</p>
+        <div class="card">
+          <div class="item"><h3>1 · Phase 2 label batches <span class="pill waiting">needs Sean</span></h3><p>Four cut batches waiting for hands. The process is proven cheap to repeat; every training-side lever short of new labels is now measured dead.</p></div>
+          <div class="item"><h3>2 · Family-queue adjudication batch <span class="pill queue">queued</span></h3><p>Round 6's finding: every specialist kills its own class because its corpus is 41–61% unboxed in its own symbol. <code>build_family_queue.py</code> builds the fix batch.</p></div>
+          <div class="item"><h3>3 · Replace the positional clef default <span class="pill queue">queued</span></h3><p>17 of 21 remaining clef errors are the default calling bass/C-clef staves treble. The machinery works and is <b>starved of instrument names</b> — a labels problem, not clef reading.</p></div>
+          <div class="item"><h3>4 · Catalog membership: v5–v8 <span class="pill waiting">decision open</span></h3><p>Eight label versions on main; catalog unions v1–v4 only. Deciding wants a measured run behind the forgetting eval; executing is now a one-line manifest edit.</p></div>
+          <div class="item"><h3>5 · LEGATO 2 weights <span class="pill waiting">waiting on author</span></h3><p>HF access request submitted 09-01. Its segmenter already corroborated our grouping 6/6. ⚠️ AGPL — fine host-side, a problem if ever served through the Stripe gate.</p></div>
+          <div class="item"><h3>6 · Parked, wanted <span class="pill queue">parked</span></h3><p>Template-read elements under the new labeling system (time signatures first, Sean 09-03) · multi-type barlines + MusicXML repeats · measure-level MusicXML patching port · RTMDet/yolov8x cloud run (approved, needs protocol).</p></div>
+          <div class="item"><h3>7 · Beat Audiveris on scans again <span class="pill waiting">behind on scans</span></h3><p>Engraved: ahead in both configs (0.1127/0.1219 vs 0.1252). Scans: behind 0.8345 vs 0.7919; the structural bucket is now fully attributed and the machinery is merged dormant (<code>OMR_SLOT_STITCH</code> + <code>OMR_CONDENSED_PARTS</code>, oracle ceiling −4,557). Open decision: a dossier-style count source to turn the flags on honestly (the benchmark can't credit its own answer key), or accept the reading-side path. Divisi stem-splitting is the next increment. Arcs-as-CV session (Sean's) in flight.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section>
+    <p class="kicker">Vs Audiveris &middot; the standard to beat</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>System</th><th>Engraved benchmark (11 works)</th><th>Scan benchmark (5 pages)</th></tr></thead>
+        <tbody>
+          <tr><td class="work">ReEngrave</td><td><div class="value" style="font-size:24px">0.1125</div><div class="note">2,367 edits · 11 works · recorded on c378412f</div></td><td><div class="value" style="font-size:24px">0.8345</div><div class="note">28,849 edits · composed baseline, same 10 rows Audiveris scored</div></td></tr>
+          <tr><td class="work">Audiveris 5.11</td><td><div class="value" style="font-size:24px">0.1252</div><div class="note">2,569 edits · 11/11 works · same fixtures + scorer</div></td><td><div class="value" style="font-size:24px">0.7919</div><div class="note">27,934 edits · 10/11 rows — cannot process Bach (internal NPE); several rows needed hand-holding</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption">Audiveris ran on the same fixtures and was scored by the same musicdiff bridge — the only valid comparison; published paper numbers are from other corpora. The scan column is the re-stamped 11-row scan benchmark (2026-09-04), pooled over the 10 rows both systems scored; real IMSLP pages, no dossier. Lower is better. Full reading: <code>benchmarks/omr-vs-industry-2026-09/FINDINGS.md</code>.</p>
+  </section>
+
+  <section>
+    <p class="kicker">Shipping log · September</p>
+    <div class="log">
+      <div class="log-entry neg"><div class="log-date">09-04</div><h3>Merge hazard caught: two dormant flags silently dropped, restored forward</h3><p>PR #15's sync merge reported conflicts only in CLAUDE.md and the accuracy record while <code>export.py</code> auto-merged to its own older version — dropping <code>OMR_SLOT_STITCH</code> and <code>OMR_CONDENSED_PARTS</code> and leaving their tests orphaned, so the suite failed <b>collection</b>. Repaired by re-applying <b>on top of</b> the newer body (wedge work and the pair_spanners rename preserved), verified by 40/40 tests and <b>flag-off byte-identity on 33/33 fixtures</b>. The lesson is now in memory with a detection recipe: <code>git show &lt;sha&gt;:file | grep -c FLAG</code> across the merge chain localizes the loss in seconds.</p></div>
+      <div class="log-entry"><div class="log-date">09-04</div><h3>Condensed-staff splitting: ceiling −4,557, premise corrected</h3><p>The dispatched session measured the convention (69.8% of condensed staff-measures are exact duplication), shipped <code>OMR_CONDENSED_PARTS</code> (default off, merged dormant), and priced the ceiling: <b>scan pool −4,557 edits with <code>OMR_SLOT_STITCH</code>, entire-staff 8,453 → 2,060</b> — the two flags compose, and splitting cancels stitching's penalty. It also <b>corrected Addendum 4</b>: opening Audiveris's exports shows it never splits condensed staves (its 22-part Brahms was fragmentation coincidentally matching truth) — so this is accuracy work, not catch-up. Label-derived counts refused (+2,181 on Dvořák — an encoding property no page signal can recover); the honest count source is a dossier, which the benchmark's no-answer-key rule can't credit. <code>benchmarks/omr-condensed-parts-2026-09/FINDINGS.md</code></p></div>
+      <div class="log-entry"><div class="log-date">09-04</div><h3>Staff-structure attribution: the stitching story falsified, the real lever found</h3><p>The dispatched session attributed the scan +2,591 <code>entire staff</code> bucket: <b>87% is condensation with our detection exactly right</b>; the stitch refusal (13%) fires correctly; zero slot or segmentation faults. The axis is system count, not page position. Slot stitching was built, priced (−216 pooled) and <b>withheld</b> — it doubles the very bucket it targets while paying off in measures (bucket-level attribution under-counts fragmentation). Then the open question settled from the Audiveris exports: <b>it emits exactly the reference's 22 parts from Brahms p2's 14 printed staves</b> — it splits condensed staves into parts, which is why its structural cost collapses. Condensed-staff part-splitting is the next scan lever, and it is competitive ground. <code>benchmarks/omr-staff-structure-2026-09/FINDINGS.md</code> + Addendum 4.</p></div>
+      <div class="log-entry"><div class="log-date">09-04</div><h3>Arc attribution merged and recorded — engraved 0.1127</h3><p>The Opus arc session's rule (an arc belongs to the staff whose noteheads it hugs) merged and re-recorded: <b>0.1127 default / 0.1219 no-direction — both configurations now beat Audiveris's 0.1252</b>. Its mechanism correction split the wrong-owner class in two (the arc existed ONLY in the wrong staff — no duplicate to arbitrate), and it refused a better-scoring variant that got there by deleting 12 real slurs. Tie bucket attributed: mostly excerpt-boundary artifacts + one system-wide invented tie (Mozart 41, open with coordinates). Next: the scan staff-structure session (the +2,591 entire-staff bucket) is running.</p></div>
+      <div class="log-entry neg"><div class="log-date">09-04</div><h3>Widening the scan pool reverses the scan verdict</h3><p>The Audiveris scan arm widened to the re-stamped 11-row pool: over the same 10 rows both systems scored, <b>Audiveris 0.7919 vs our 0.8345</b> — the 5-row lead did not survive widening (it wins 6 rows, we win 4, and it cannot process Bach at all — internal NPE). Our wins concentrate in first pages; the added second pages go its way. The project's own lesson, again: <em>a small pool cannot falsify a story about its own pages.</em> Next scan levers: the second-page gap (systems past the movement opening), and the shared 'entire staff' condensation floor.</p></div>
+      <div class="log-entry"><div class="log-date">09-04</div><h3>Beam-gap session flips the engraved comparison — merged and recorded</h3><p>The dispatched session took <code>wrong flag/beam</code> <b>449 → 31</b> and pooled OMR-NED <b>0.1306 → 0.1176</b> (2,745 → 2,473 edits) — from 176 edits behind Audiveris to <b>96 ahead</b>. 430 of the 449 were export-side: the beam-box pad the rhythm layer already had never reached <code>annotate_beams</code>, plus a spurious bar-wide box and stacked-stroke group fracturing. Export-only, byte-identical A/B method, 11/11 clean, 1,931 tests green, two approaches refused with numbers. Merged (<code>bc58defb</code>), suite 1,984 green, and both configurations re-recorded on the merged tree: <b>0.1176 official</b>, 0.1268 without the OCR rung. <code>benchmarks/omr-beam-gap-2026-09/FINDINGS.md</code></p></div>
+      <div class="log-entry"><div class="log-date">09-04</div><h3>Audiveris becomes the measured target</h3><p>The industrial standard ran on both benchmarks, same fixtures, same scorer. <b>Engraved: Audiveris 0.1252 vs our 0.1306</b> — the entire gap is one bucket (flag/beam: ours 449 edits vs its 48), now out with a dedicated fix session. <b>Scans: our current weights 0.7482 vs its 0.7845</b> — we lead, and it needed hand-holding (raised step timeout, export normalization) to finish 2 of 5 pages at all. Its OCR was measured and left OFF: with it, its engraved score worsens 0.1252 → 0.1579 (hallucinated lyrics). oemer and homr measured once and ruled out. <code>benchmarks/omr-vs-industry-2026-09/FINDINGS.md</code></p></div>
+      <div class="log-entry"><div class="log-date">09-04</div><h3>Head-graft surgery ships as production scan weights</h3><p><code>hollow-graft-shift09</code> (0e9f005b): per-class head merge + bias floor cleared all three axes after 11 method arms failed. Scan e2e measured byte-deterministic first.</p></div>
+      <div class="log-entry neg"><div class="log-date">09-04</div><h3>DSv2 rehearsal: clean negative</h3><p>Fails all three axes from both donors in one epoch — the model deletes classes it is <b>trained on</b> (beam mAP50 0.752 → 0.022 on labeled pages). Deletion is optimization dynamics, not unboxed ink. Training-side levers closed; $0.49 well spent.</p></div>
+      <div class="log-entry"><div class="log-date">09-03</div><h3>Weights route by input domain</h3><p>Raster-vs-vector classification picks the checkpoint per document; abstains to default, falls back soft, ≤77 ms. No benchmark figure moves — every harness pins weights.</p></div>
+      <div class="log-entry"><div class="log-date">09-03</div><h3>First hand-labeling batch to reach production</h3><p>194 hollow noteheads across 5 publishers → gated fine-tune → shipped. Scan half-notes 8 → 27, dense recall held at exactly 0.941. First time labeling measurably improved the <b>deployed</b> detector.</p></div>
+      <div class="log-entry neg"><div class="log-date">09-03</div><h3>Pre-fill admission answered: no</h3><p>Blind pre-registered Phase C put pre-filled boxes under the bar. The queue reading stands — now on evidence rather than caution.</p></div>
+      <div class="log-entry"><div class="log-date">09-02</div><h3>Benchmark widened 3 → 11 works</h3><p>Opened at ~2× the incumbents' error rate — the 3-work figure was hiding a distribution. Three invisible fault families surfaced immediately (cut-common glyph, <code>fingering3</code> triplets, articulations never exported).</p></div>
+      <div class="log-entry"><div class="log-date">09-02</div><h3>Scan direction reader: recall 18% → ~66%</h3><p>Two candidate bugs (universal cap; span blanking) + two gate bugs. Page 22: 0 → 7 of 7 printed directions. The page now decides how many OCR rungs run.</p></div>
+      <div class="log-entry"><div class="log-date">09-01</div><h3>First end-to-end run on a real scan</h3><p>Beethoven 5, 600 dpi IMSLP: layout exact at 113 staves, OMR-NED 0.8706 — a different problem from engraved. Diagnosis: 68 printed half notes, 8 detected. That number is why the labeling loop exists.</p></div>
+      <div class="log-entry"><div class="log-date">08-31 → 09-01</div><h3>The OMR-NED fix arc: 0.3164 → 0.1306</h3><p>Seventeen measured fixes in the 3-work era, five of them "detected upstream, dropped on export" — the project's recurring bug shape, now guarded by <code>export_coverage.py</code> on every suite run.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Closed · do not retry</p>
+    <div class="deadends">
+      <div class="dead"><b>Synthetic augmentation (ScoreAug / Augraphy)</b>Fair 3-way test: worse than the clean control on real cells. Not the answer to hollow noteheads either.</div>
+      <div class="dead"><b>Straight detector fine-tuning on hand labels</b>Seven documented collapses; rounds 3–5 confirmed it is class deletion. Surgery is the path.</div>
+      <div class="dead"><b>VLM transcription</b>Disproven twice here; LEGATO 2's own paper corroborates (Gemini at 90–94 OMR-NED).</div>
+      <div class="dead"><b>MXL → bounding-box auto-labels</b>F1 0.064 on 76 hand-mapped cells. The reverse direction (pre-fill) survives — as a queue.</div>
+      <div class="dead"><b>Key signature from the music</b>Measured NO-GO: 36.7% ceiling at page scope on ground truth. Fix the vote instead — done.</div>
+      <div class="dead"><b>Threshold-style system-break rules</b>Five attempts rejected; the left-edge split (shipped, default on) is the answer that worked.</div>
+      <div class="dead"><b>oemer / homr as competitors</b>Measured once (09-04): oemer 0.975–0.985 everywhere (2-staff grand-staff assertion); homr crashes above ~16 parts (MIDI-channel-per-part writer), though it hit 0.0718 on Tchaikovsky 6 where it fits. Out of the running; Audiveris is the benchmark.</div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Recent commits</p>
+    <div class="commits">
+      <div><span class="sha">a1162346</span> 2026-09-04 · docs: staff-identity audit gains S9 (dynamic/slur/tie placement = ownership) and a phase-0 placement-convention survey over the 1,745 reference encodings</div>
+      <div><span class="sha">1e724fa1</span> 2026-09-04 · docs: plan a multi-signal staff-identity audit (identity / multiplicity / continuity), measurement before inference</div>
+      <div><span class="sha">b96e46f9</span> 2026-09-04 · vs-industry addendum 5 + dashboard: condensed-parts ceiling measured; Addendum 4's Audiveris-splits claim corrected in place</div>
+      <div><span class="sha">dbcdc822</span> 2026-09-04 · vs-industry addendum 4: condensation owns 87% of the scan structure bucket; Audiveris wins it by part-splitting condensed staves</div>
+      <div><span class="sha">7b169c71</span> 2026-09-04 · dashboard: arc merge recorded — 0.1127/0.1219, both configs ahead of Audiveris engraved</div>
+      <div><span class="sha">15a1fd1d</span> 2026-09-04 · docs: class 3 splits in two (arc session's correction); addendum 3 — the scan deficit is one structural bucket</div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Generated by <code>python3 -m tools.dashboard.generate</code> — numbers from current-accuracy.json + git, narrative from docs/progress-dashboard.content.json</span>
+    <span>Do not hand-edit the HTML</span>
+  </footer>
+</div>
