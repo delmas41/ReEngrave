@@ -5,8 +5,38 @@ scores against, so a dossier-fed figure measures what the pipeline does for
 someone who can NAME their score, not what it does on an unknown page. Reported
 separately and labelled, exactly as `orchestral_eval` handles dossier seeding.
 
-Arms: base / dossier / dossier+stitch, to be read beside Phase 1's oracle,
-which is the ceiling a perfect count reaches.
+Arms: base / dossier+stitch / cap2 / the two gates, to be read beside Phase 1's
+oracle (−9,369), which is the ceiling a perfect count reaches.
+
+MEASURED 2026-09-05, 20 rows:
+
+    base                  0.8441  74,962         ES 17,520
+    dossier + stitch      0.7007  71,507  −3,455  ES  5,894   5 rows REGRESS
+    dossier cap2 + stitch 0.7205  71,803  −3,159  ES  9,765   5 rows regress
+    gate_instr + stitch   0.7007  71,507  −3,455  ES  5,894   identical, no-op
+    gate_system + stitch  0.7900  72,365  −2,597  ES 16,980   ZERO regressions
+
+⚠️ THE INSTRUMENT GATE IS A PURE NO-OP — byte-for-byte the ungated arm on all
+20 rows. What it refuses (Violin on beethoven p2, Contrabass/Bassoon on Mahler)
+was never carrying a split. A gate that changes nothing is a result: the
+per-instrument identity has no purchase on this corpus.
+
+⚠️ THE SYSTEM GATE IS THE ONLY ARM THAT MAKES NO PAGE WORSE. It removes every
+harm — dvorak p7 +1,501 → 0, mahler p3/p4/p5 +233/+660/+238 → 0, brahms p2
++198 → −216 — and pays with most of the Beethoven gain (p2 −1,423 → 0, p3
+−1,054 → −9). 858 pooled edits to make the source incapable of regressing a
+page.
+
+⚠️ THAT TRADE READS DIFFERENTLY FOR A BENCHMARK AND FOR A USER. Pooled, −3,455
+beats −2,597. But this is the REAL-USE path — someone transcribes a score they
+can name, page by page — and a tool that silently makes one page 26% worse is
+not paid for by two other pages improving.
+
+⚠️ Zero regressions is an EMPIRICAL property of these 20 rows, not a guarantee
+the identity provides. Brahms p1 sums exactly (21 = 21), passes the gate, and
+keeps its horn over-count; the gate fires on dvorak p7 only because the
+mis-read instrument's parts were already fully allocated, so the total
+inflated. See `probe_sum_identity.py` — a sum cannot see a permutation.
 
 FIXTURE PROVENANCE. 20-row transcriptions from
 `.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/`,
