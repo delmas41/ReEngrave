@@ -302,6 +302,38 @@ is unconfirmed").
 ⚠️ **n = 8 rows, of which the positives are 2 (one page, two editions).** This
 can be *refuted* on 8 rows; it cannot ship on them.
 
+### ⚠️ MEASURED 2026-09-05: H1′ IS REFUTED — [UNION_ROSTER.md](UNION_ROSTER.md)
+
+`probe_union_roster.py`, A/B/C over the 11 multi-system rows (10 scored, 1
+abstained for stating no lineup). Arm A is the shipped `build_reference` +
+`align` called unmodified; arm B swaps only a benchmark-local
+`build_reference_union`, insertion priced at `GAP_PENALTY` by symmetry.
+
+**Arm B is a strict NO-OP: 0 insertions on 10 of 10 rows, roster identical to
+arm A everywhere.** The p.4 union comes out 11, not 12 — criterion (1) failed;
+criterion (2) passed trivially.
+
+The deficit is **1.5 in the DP's own units** on both p.4 rows (a bracket-group
+swing is 3.0, a label conflict 14.0): the union must give up a match to make
+room for a twelfth slot, and the four string staves that would settle it print
+no label in either system. **The label half of the INFERRED mechanism above is
+now OBSERVED** — 13 labels over 22 positions, `Tp.` read by Surya at system 2
+position 6 and nothing at system 1 position 6.
+
+⚠️ **And the reweighting route is closed, not merely untried.** A refutation arm
+with gap and insertion set to zero fixes both p.4 roster sizes and **breaks
+`brahms-…-p3`** (28/28 → 24/28, a phantom 15th slot on a page whose two systems
+print the same fourteen) — because that row's insert margin is **also 1.5**, its
+`group_index` vectors disagreeing between systems from *detection noise* rather
+than from a lineup change. On unlabelled staves `group_index` is the union's only
+discriminator and it cannot tell the two apart. That is a measured argument for
+**H5** before any new consumer of blocks, and it hands **H3** a threshold to
+beat (>1.5) and a row that must not move.
+
+⚠️ The same arm shows criterion (1) was **necessary and not sufficient**: it
+reaches a 12-slot roster on p.4 by inserting at the wrong index and still scores
+15/22. Roster size alone would have declared success.
+
 ---
 
 ### H2 — A document-scoped roster pre-pass: read the lineup where it IS printed, carry it where it is not ★ highest value
