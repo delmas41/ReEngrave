@@ -40,6 +40,52 @@ rule — whether that harness can *see* it at all.
 
 ---
 
+## ⚠️ Read this before the shortlist: the calibration experiment already failed
+
+**Added 2026-09-05, after cross-session review.** This survey was written
+without knowing that `claude/staff-identity-layer-2026-09-05` had already run
+the experiment its recommendations assume is worth running. It came back
+negative, and the result binds everything below. Full reconciliation and the
+handoff to that session:
+[handoff-2026-09-05-probability-decision-scan.md](handoff-2026-09-05-probability-decision-scan.md).
+
+Commit `2dff2503`, "staff identity: NEITHER probability calibrates, so neither
+is emitted" — 197 records, held out by engraving:
+
+```
+P(name)  Brier 0.0887  ECE 0.1277        P(set)  Brier 0.1036  ECE 0.1301
+  [0.98,1.01)  n=13  pred 0.989  obs 0.692   -0.297
+```
+
+It fails worst exactly where a consumer would set its bar. Their pre-registered
+standard — `benchmarks/omr-staff-identity-layer-2026-09/PRE_REGISTERED.md` —
+is that **an uncalibrated probability is WORSE than none, because it launders a
+guess into something that reads as evidence**, and on that standard they emitted
+nothing. **This document adopts that standard.** Nothing on the shortlist below
+should ship as a confidence number that has not cleared it.
+
+Their diagnosis is that the failure is the CORPUS, not the estimator: tier
+counts were label 175 / roster 22 / **derived 0**, so the tier whose calibration
+would actually decide an admission is empty.
+
+Two consequences, both applied to the table below:
+
+- **Item #3 is demoted.** Passing `coverage` into the slot aligner is the same
+  family of evidence that just failed to calibrate, on the same corpus. It
+  belongs to that session.
+- **Item #1 is re-framed, and is not a probability.** Their KC-3 result
+  (`0daff340`, `probe_fill_reach.py`) shows `clef_correction`'s FILL path reaches
+  only **34 of 396 staves (8.6%)** because it fires only where no clef was read,
+  while the documented clef ceiling is about clefs read WRONG — invisible to
+  FILL by definition. The reachable question is the OVERRIDE gate at
+  `clef_correction.py:594-601`, a five-way boolean conjunction whose
+  `sources.get(slot) == "label"` conjunct is unsatisfiable on scans (29 of 29
+  unresolved non-treble staves have no label printed). `clef_register_warning`
+  needs no label and fires on that population. The honest form is a **conjunct
+  swap on an existing gate**, not a score.
+
+---
+
 ## The taxonomy: five ways a degree of belief is lost
 
 ### Class A — the probability is never formed
@@ -197,15 +243,18 @@ by repeatedly — **whether that harness can see it at all.**
 |---|---|---|---|--:|---|
 | 1 | Feed `clef_register_warning` into `clef_correction` | C+D | 2 staves / scan page | scan gate, clef eval | **Partly** — `eval_pipeline_clefs` (52 staves) sees it directly; OMR-NED may not move |
 | 2 | Detection confidence as rank-0 tie-break in `_dedupe_cross_staff_detections` | C+D | ~4,256 pairs over the 20-row gate | 20-row scan gate | **Yes** — this is the scan gate's own population |
-| 3 | Pass `coverage` into `slots` / `score_layouts` instead of the 3-way label | B | every labelled staff | slot-stability probes, `eval_score_order` | **Yes** — existing probes |
+| ~~3~~ | ~~Pass `coverage` into `slots` / `score_layouts`~~ — **DEMOTED**, see above | B | — | — | Same family that failed to calibrate; hand to the staff-identity session |
 | 4 | Nearest-legal-word for dynamic runs in `measure_dynamics` | A | ≤31 marks on the scan gate | 20-row scan gate | **Yes** — already attributed there |
 | 5 | Give `rhythm_sum_warning` a confidence from its own beat magnitude | B+C | 78 per scan document | unit tests only, at first | **No** — inert until something consumes it |
 | 6 | Score the `clef_locator` vetoes instead of vetoing | A | 5 remaining FPs / 20 declined clefs | clef corpora (both — never one) | **Yes**, and only these |
 | 7 | Per-part confidence from `_stitch_slots` instead of a whole-result `None` | E | 3 of 20 scan rows | 20-row scan gate | **Yes**, but tangled with `OMR_SLOT_STITCH`'s known bucket trap |
 
-**Recommended first: #1 and #2.** #1 is the direct continuation of the session
-that prompted this, and is nearly free — the evidence is already computed and
-sitting on the same page dict. #2 is where the volume is.
+**Recommended first: #2, then #1 as a conjunct swap.** ⚠️ This originally read
+"#1 and #2", with #1 described as "nearly free". After the reconciliation above,
+#1 is not free and not a probability — it is a proposal to admit a second
+evidence source on the OVERRIDE gate, and it belongs to the staff-identity
+session's territory, so it goes to them as a note rather than being built here.
+#2 is where the volume is and is held by nobody.
 
 ⚠️ **#5 and #7 come with warnings from the existing record.** #5 changes nothing
 observable until a consumer exists — shipping it alone is inventory, not a fix,

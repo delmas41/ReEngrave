@@ -46,7 +46,27 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 - ⚠️ **No arm was run** — the OMR weights are gitignored and absent from the
   container. Nothing in the document is a benchmark result, and it says so.
 
+- ⚠️ **RECONCILED THE SAME DAY, and the scan was partly wrong.** Sean asked that
+  nothing be built without consulting the other sessions first. Cross-session
+  messaging turned out to be unavailable (no reachable peers across the
+  cloud/bridge boundary; a test send failed), so the consultation was done by
+  reading committed work — and `claude/staff-identity-layer-2026-09-05` had
+  already run the experiment the scan's recommendations assume is worth running.
+  It came back NEGATIVE: neither P(name) nor P(set) calibrates (ECE 0.1277 /
+  0.1301, n=197), failing worst where a consumer would set its bar. Its
+  pre-registered standard — an uncalibrated probability is worse than none —
+  is adopted by the scan.
+- The scan's `coverage`-into-`slots` item is **demoted** (same evidence family,
+  same corpus) and its clef item **re-framed**: KC-3 showed `clef_correction`'s
+  FILL path reaches 34 of 396 staves because it fires only where no clef was
+  read, so the reachable question is the OVERRIDE gate, whose
+  `sources.get(slot) == "label"` conjunct is unsatisfiable on scans. A conjunct
+  swap, not a score.
+- Written at a path another agent can be pointed at:
+  [docs/handoff-2026-09-05-probability-decision-scan.md](docs/handoff-2026-09-05-probability-decision-scan.md).
+
 **Files touched:** `docs/scan-probability-decisions-2026-09-05.md` (new),
+`docs/handoff-2026-09-05-probability-decision-scan.md` (new),
 `CLAUDE.md`, `PROJECT_BRIEF.md`, `version_memory.md`.
 
 ---

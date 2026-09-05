@@ -1198,6 +1198,23 @@ already caught being a coin flip (5-62 px) — and `_dedupe_cross_staff_detectio
 has both detections' confidences in hand at the moment it decides and uses
 neither.
 
+⚠️ **AND THE CALIBRATION EXPERIMENT IT ASSUMES HAD ALREADY FAILED.** Reconciled
+2026-09-05 against `claude/staff-identity-layer-2026-09-05`, which was asked for
+calibrated identity probabilities and measured that NEITHER calibrates (P(name)
+ECE 0.1277, P(set) 0.1301, n=197) — failing worst where a consumer would set its
+bar, the top bin promising 0.989 and delivering 0.692. Its pre-registered
+standard, adopted by the scan: **an uncalibrated probability is WORSE than none,
+because it launders a guess into something that reads as evidence.** The failure
+is the CORPUS (the `derived` tier that would decide an admission is EMPTY), not
+the estimator. So the scan's `coverage`-into-`slots` item is DEMOTED, and its
+clef item is re-framed — KC-3 showed `clef_correction`'s FILL reaches only 34 of
+396 staves (8.6%) because it fires only where no clef was read, while the
+documented ceiling is clefs read WRONG. The reachable question is the OVERRIDE
+gate (`clef_correction.py:594-601`), whose `sources.get(slot) == "label"`
+conjunct is unsatisfiable on scans — and `clef_register_warning` needs no label.
+A conjunct swap, not a score. Cross-session note, written for another agent to
+open: [docs/handoff-2026-09-05-probability-decision-scan.md](docs/handoff-2026-09-05-probability-decision-scan.md).
+
 ⚠️ **Nothing in that document is a benchmark result.** The weights were absent
 from the container, so no arm was run; the shortlist names which harness would
 price each item and whether that harness can SEE it, which is the part this repo
