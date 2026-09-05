@@ -4,9 +4,10 @@
 "how would we build it" but **can we**. Answered by probe, before any detector.*
 
 **Yes, on the evidence here.** The ink is present and well formed on a real
-scan, and two shape tests already cut 471 band components to **69 candidates
-that are visibly dominated by hairpins**, on a page where the YOLO detector
-found **one**.
+scan, and three tests cut 471 band components to **44 candidates that are almost
+all `<` and `>` wedges**, on a page where the YOLO detector found **one**. Two
+of the three are shape; the third, and the sharpest, is that **a hairpin touches
+nothing** (§3b).
 
 ---
 
@@ -67,6 +68,40 @@ encoding's hairpins against our candidates — and they could agree while pairin
 badly. It says the order of magnitude is right and the filter is not producing
 noise; it does not say 69 correct.
 
+## 3b. ⚠️ The third test, and it is the best one: a hairpin touches NOTHING
+
+*Sean's, and it beats what the scope proposed.* **A beam is always connected to
+something — its stems. A hairpin is connected to nothing.**
+
+The scope came at the contaminants from the beam's side: reuse
+`detect_beams`' "at least two stem ends" rule. That works but needs stems found
+first. This is a property of the *hairpin*, so it needs nothing found first.
+
+⚠️ **It has to be measured on the WHOLE PAGE, not the band crop.** A beam dipping
+into the band is cut off by the crop, its stems are above the cut, and inside the
+crop it looks exactly as isolated as a hairpin does.
+
+Applied to the 69 shape candidates, `full-page component area / candidate area`:
+
+```
+   p25   1.0x        44 isolated — the component IS the candidate
+   p50   1.0x
+   p75   3248.0x     25 attached — part of the page's single giant ink mass
+   p90   9167.3x
+```
+
+**Nothing lies between 1× and 3248×.** That is what a constant read off a gap
+looks like, and it is a binary rather than a threshold.
+
+Rendered and inspected, the split is what the rule predicts: **the 44 isolated
+are almost all `<` and `>` wedges; the 25 attached are almost all beams with
+their stems, plus a few text fragments.**
+
+⚠️ It costs some recall, honestly: a couple of real hairpins appear in the
+attached set, having touched a slur or a staff line, and one trill squiggle
+survives in the isolated set — a wavy line is isolated too. Isolation removes
+beams; it does not by itself remove everything else.
+
 ## 4. What did NOT work, so nobody retries it
 
 ⚠️ **Fill ratio does not remove the beam-like contaminants.** A hairpin is two
@@ -76,12 +111,12 @@ a solid beam. Measured over the 69 candidates, fill runs **p10 0.375, median
 denser than the intuition suggests: its bbox height is the *opening*, and along
 most of its length the two arms are only a few pixels apart.
 
-**The discriminator that should work is already implemented, in
-`line_detection.detect_beams` step 4: a beam has at least two STEM ENDS on it,
-and a hairpin has none.** That rule was introduced for exactly this problem —
-"without step 4 the count is dominated by things that are horizontal but are not
-beams — slurs, ties, ledger lines, staff-line residue" — and it removes four
-classes at once without a rule per class.
+The discriminator that does work is **isolation** (§3b) — and note that
+`line_detection.detect_beams` step 4 is the same fact seen from the other side:
+"a beam has at least two stem ends on it". That rule was introduced for exactly
+this problem — "without step 4 the count is dominated by things that are
+horizontal but are not beams" — but it needs stems found first, and isolation
+does not.
 
 ## 5. ⚠️ Bugs this probe had, both of which would have sunk it silently
 
@@ -96,9 +131,10 @@ classes at once without a rule per class.
 
 ## 6. What this does and does not establish
 
-**Does:** the ink is available on a real scan; a two-test shape filter isolates a
-candidate set of the right size that is visibly mostly hairpins; the remaining
-contamination has a known, already-implemented discriminator.
+**Does:** the ink is available on a real scan, and a three-test filter — extent,
+straightness, isolation — cuts 471 components to 44 that are almost all
+hairpins. The contamination it removes is beams, by the cleanest rule in the
+set.
 
 **Does not:** any accuracy figure. One page, one publisher, no positional truth.
 ⚠️ **Do not tune these constants on this page** — this project has twice refused

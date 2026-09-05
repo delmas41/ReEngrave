@@ -22,7 +22,9 @@
    "y": 679,
    "w": 749,
    "h": 98,
-   "area": 15673
+   "area": 15673,
+   "component_growth": 0.00016348328383422795,
+   "isolated": true
   },
   {
    "width_sp": 1.0642201834862386,
@@ -42,7 +44,9 @@
    "y": 679,
    "w": 29,
    "h": 133,
-   "area": 2767
+   "area": 2767,
+   "component_growth": 4589.50868550687,
+   "isolated": false
   },
   {
    "width_sp": 6.605504587155964,
@@ -62,7 +66,9 @@
    "y": 679,
    "w": 180,
    "h": 22,
-   "area": 1331
+   "area": 1331,
+   "component_growth": 4470.135101010101,
+   "isolated": false
   },
   {
    "width_sp": 1.1009174311926606,
@@ -82,7 +88,9 @@
    "y": 679,
    "w": 30,
    "h": 6,
-   "area": 97
+   "area": 97,
+   "component_growth": 98342.97222222222,
+   "isolated": false
   },
   {
    "width_sp": 3.743119266055046,
@@ -102,7 +110,9 @@
    "y": 687,
    "w": 102,
    "h": 29,
-   "area": 1252
+   "area": 1252,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.256880733944954,
@@ -122,7 +132,9 @@
    "y": 687,
    "w": 116,
    "h": 27,
-   "area": 1356
+   "area": 1356,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.4862385321100917,
@@ -142,7 +154,9 @@
    "y": 688,
    "w": 95,
    "h": 26,
-   "area": 1132
+   "area": 1132,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.376146788990826,
@@ -162,7 +176,9 @@
    "y": 690,
    "w": 92,
    "h": 28,
-   "area": 1110
+   "area": 1110,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.0,
@@ -182,7 +198,9 @@
    "y": 701,
    "w": 109,
    "h": 29,
-   "area": 1308
+   "area": 1308,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 7.5963302752293576,
@@ -202,7 +220,9 @@
    "y": 702,
    "w": 207,
    "h": 28,
-   "area": 2563
+   "area": 2563,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.4036697247706424,
@@ -222,7 +242,9 @@
    "y": 710,
    "w": 120,
    "h": 89,
-   "area": 1558
+   "area": 1558,
+   "component_growth": 2.053370786516854,
+   "isolated": false
   },
   {
    "width_sp": 3.302752293577982,
@@ -242,7 +264,9 @@
    "y": 720,
    "w": 90,
    "h": 43,
-   "area": 596
+   "area": 596,
+   "component_growth": 4574.0917312661495,
+   "isolated": false
   },
   {
    "width_sp": 3.376146788990826,
@@ -262,7 +286,9 @@
    "y": 723,
    "w": 92,
    "h": 22,
-   "area": 579
+   "area": 579,
+   "component_growth": 8745.916501976284,
+   "isolated": false
   },
   {
    "width_sp": 3.2660550458715596,
@@ -282,7 +308,9 @@
    "y": 723,
    "w": 89,
    "h": 21,
-   "area": 528
+   "area": 528,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.073394495412844,
@@ -302,7 +330,9 @@
    "y": 730,
    "w": 111,
    "h": 73,
-   "area": 1309
+   "area": 1309,
+   "component_growth": 2184.5902752067136,
+   "isolated": false
   },
   {
    "width_sp": 1.908256880733945,
@@ -322,7 +352,9 @@
    "y": 780,
    "w": 52,
    "h": 32,
-   "area": 640
+   "area": 640,
+   "component_growth": 10638.061899038461,
+   "isolated": false
   },
   {
    "width_sp": 2.128440366972477,
@@ -342,7 +374,9 @@
    "y": 779,
    "w": 58,
    "h": 33,
-   "area": 708
+   "area": 708,
+   "component_growth": 9248.555381400209,
+   "isolated": false
   },
   {
    "width_sp": 2.091743119266055,
@@ -362,7 +396,9 @@
    "y": 780,
    "w": 57,
    "h": 32,
-   "area": 659
+   "area": 659,
+   "component_growth": 9704.898574561403,
+   "isolated": false
   },
   {
    "width_sp": 2.128440366972477,
@@ -382,7 +418,9 @@
    "y": 781,
    "w": 58,
    "h": 31,
-   "area": 661
+   "area": 661,
+   "component_growth": 9845.23637374861,
+   "isolated": false
   },
   {
    "width_sp": 1.944954128440367,
@@ -402,7 +440,9 @@
    "y": 785,
    "w": 53,
    "h": 27,
-   "area": 397
+   "area": 397,
+   "component_growth": 12370.185185185184,
+   "isolated": false
   },
   {
    "width_sp": 1.981651376146789,
@@ -422,7 +462,9 @@
    "y": 785,
    "w": 54,
    "h": 27,
-   "area": 560
+   "area": 560,
+   "component_growth": 12141.10768175583,
+   "isolated": false
   },
   {
    "width_sp": 4.18348623853211,
@@ -442,7 +484,9 @@
    "y": 798,
    "w": 114,
    "h": 14,
-   "area": 781
+   "area": 781,
+   "component_growth": 0.07581453634085213,
+   "isolated": true
   },
   {
    "width_sp": 2.2752293577981653,
@@ -462,7 +506,9 @@
    "y": 938,
    "w": 62,
    "h": 3,
-   "area": 109
+   "area": 109,
+   "component_growth": 95170.6182795699,
+   "isolated": false
   },
   {
    "width_sp": 1.0275229357798166,
@@ -482,7 +528,9 @@
    "y": 938,
    "w": 28,
    "h": 99,
-   "area": 1537
+   "area": 1537,
+   "component_growth": 6385.907287157287,
+   "isolated": false
   },
   {
    "width_sp": 12.18348623853211,
@@ -502,7 +550,9 @@
    "y": 938,
    "w": 332,
    "h": 99,
-   "area": 5207
+   "area": 5207,
+   "component_growth": 538.5704940976025,
+   "isolated": false
   },
   {
    "width_sp": 27.96330275229358,
@@ -522,7 +572,9 @@
    "y": 948,
    "w": 762,
    "h": 35,
-   "area": 10686
+   "area": 10686,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 5.394495412844036,
@@ -542,7 +594,9 @@
    "y": 962,
    "w": 147,
    "h": 33,
-   "area": 1107
+   "area": 1107,
+   "component_growth": 3649.0898783755924,
+   "isolated": false
   },
   {
    "width_sp": 4.623853211009174,
@@ -562,7 +616,9 @@
    "y": 981,
    "w": 126,
    "h": 56,
-   "area": 1106
+   "area": 1106,
+   "component_growth": 2508.7492913832198,
+   "isolated": false
   },
   {
    "width_sp": 6.238532110091743,
@@ -582,7 +638,9 @@
    "y": 986,
    "w": 170,
    "h": 51,
-   "area": 3282
+   "area": 3282,
+   "component_growth": 2041.7226066897347,
+   "isolated": false
   },
   {
    "width_sp": 8.587155963302752,
@@ -602,7 +660,9 @@
    "y": 989,
    "w": 234,
    "h": 48,
-   "area": 4102
+   "area": 4102,
+   "component_growth": 1576.0091702279203,
+   "isolated": false
   },
   {
    "width_sp": 6.128440366972477,
@@ -622,7 +682,9 @@
    "y": 988,
    "w": 167,
    "h": 49,
-   "area": 3160
+   "area": 3160,
+   "component_growth": 2163.2329219112794,
+   "isolated": false
   },
   {
    "width_sp": 0.8807339449541285,
@@ -642,7 +704,9 @@
    "y": 990,
    "w": 24,
    "h": 2,
-   "area": 27
+   "area": 27,
+   "component_growth": 368786.1458333333,
+   "isolated": false
   },
   {
    "width_sp": 2.165137614678899,
@@ -662,7 +726,9 @@
    "y": 1027,
    "w": 59,
    "h": 10,
-   "area": 363
+   "area": 363,
+   "component_growth": 30002.9406779661,
+   "isolated": false
   },
   {
    "width_sp": 1.981651376146789,
@@ -682,7 +748,9 @@
    "y": 1026,
    "w": 54,
    "h": 11,
-   "area": 372
+   "area": 372,
+   "component_growth": 29800.900673400673,
+   "isolated": false
   },
   {
    "width_sp": 4.4036697247706424,
@@ -702,7 +770,9 @@
    "y": 1030,
    "w": 120,
    "h": 7,
-   "area": 580
+   "area": 580,
+   "component_growth": 21073.494047619046,
+   "isolated": false
   },
   {
    "width_sp": 1.6363636363636365,
@@ -722,7 +792,9 @@
    "y": 1164,
    "w": 45,
    "h": 30,
-   "area": 770
+   "area": 770,
+   "component_growth": 1.9148148148148147,
+   "isolated": true
   },
   {
    "width_sp": 1.2727272727272727,
@@ -742,7 +814,9 @@
    "y": 1164,
    "w": 35,
    "h": 157,
-   "area": 4675
+   "area": 4675,
+   "component_growth": 3221.425841674249,
+   "isolated": false
   },
   {
    "width_sp": 26.69090909090909,
@@ -762,7 +836,9 @@
    "y": 1164,
    "w": 734,
    "h": 55,
-   "area": 6021
+   "area": 6021,
+   "component_growth": 1.018181818181818,
+   "isolated": true
   },
   {
    "width_sp": 2.8,
@@ -782,7 +858,9 @@
    "y": 1164,
    "w": 77,
    "h": 14,
-   "area": 497
+   "area": 497,
+   "component_growth": 1.5584415584415585,
+   "isolated": true
   },
   {
    "width_sp": 3.1272727272727274,
@@ -802,7 +880,9 @@
    "y": 1164,
    "w": 86,
    "h": 15,
-   "area": 538
+   "area": 538,
+   "component_growth": 13722.27519379845,
+   "isolated": false
   },
   {
    "width_sp": 0.9818181818181818,
@@ -822,7 +902,9 @@
    "y": 1164,
    "w": 27,
    "h": 157,
-   "area": 3383
+   "area": 3383,
+   "component_growth": 4175.922387355508,
+   "isolated": false
   },
   {
    "width_sp": 8.072727272727272,
@@ -842,7 +924,9 @@
    "y": 1164,
    "w": 222,
    "h": 157,
-   "area": 3773
+   "area": 3773,
+   "component_growth": 507.8824525162105,
+   "isolated": false
   },
   {
    "width_sp": 3.1636363636363636,
@@ -862,7 +946,9 @@
    "y": 1164,
    "w": 87,
    "h": 13,
-   "area": 646
+   "area": 646,
+   "component_growth": 15651.401414677277,
+   "isolated": false
   },
   {
    "width_sp": 17.527272727272727,
@@ -882,7 +968,9 @@
    "y": 1164,
    "w": 482,
    "h": 157,
-   "area": 8352
+   "area": 8352,
+   "component_growth": 233.9209636070513,
+   "isolated": false
   },
   {
    "width_sp": 9.2,
@@ -902,7 +990,9 @@
    "y": 1164,
    "w": 253,
    "h": 157,
-   "area": 4470
+   "area": 4470,
+   "component_growth": 445.6517962790463,
+   "isolated": false
   },
   {
    "width_sp": 12.145454545454545,
@@ -922,7 +1012,9 @@
    "y": 1164,
    "w": 334,
    "h": 157,
-   "area": 6140
+   "area": 6140,
+   "component_growth": 337.57456424730157,
+   "isolated": false
   },
   {
    "width_sp": 4.763636363636364,
@@ -942,7 +1034,9 @@
    "y": 1174,
    "w": 131,
    "h": 60,
-   "area": 1260
+   "area": 1260,
+   "component_growth": 2252.1291348600507,
+   "isolated": false
   },
   {
    "width_sp": 17.89090909090909,
@@ -962,7 +1056,9 @@
    "y": 1175,
    "w": 492,
    "h": 40,
-   "area": 3864
+   "area": 3864,
+   "component_growth": 0.011382113821138212,
+   "isolated": true
   },
   {
    "width_sp": 4.072727272727272,
@@ -982,7 +1078,9 @@
    "y": 1216,
    "w": 112,
    "h": 24,
-   "area": 824
+   "area": 824,
+   "component_growth": 1.0833333333333333,
+   "isolated": true
   },
   {
    "width_sp": 8.218181818181819,
@@ -1002,7 +1100,9 @@
    "y": 1217,
    "w": 226,
    "h": 104,
-   "area": 2871
+   "area": 2871,
+   "component_growth": 753.1371255956433,
+   "isolated": false
   },
   {
    "width_sp": 0.8727272727272727,
@@ -1022,7 +1122,9 @@
    "y": 1216,
    "w": 24,
    "h": 94,
-   "area": 780
+   "area": 780,
+   "component_growth": 4.8111702127659575,
+   "isolated": false
   },
   {
    "width_sp": 12.727272727272727,
@@ -1042,7 +1144,9 @@
    "y": 1221,
    "w": 350,
    "h": 100,
-   "area": 7898
+   "area": 7898,
+   "component_growth": 505.76385714285715,
+   "isolated": false
   },
   {
    "width_sp": 17.70909090909091,
@@ -1062,7 +1166,9 @@
    "y": 1221,
    "w": 487,
    "h": 65,
-   "area": 4463
+   "area": 4463,
+   "component_growth": 1.6942347180540198,
+   "isolated": true
   },
   {
    "width_sp": 27.745454545454546,
@@ -1082,7 +1188,9 @@
    "y": 1222,
    "w": 763,
    "h": 37,
-   "area": 11476
+   "area": 11476,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.709090909090909,
@@ -1102,7 +1210,9 @@
    "y": 1244,
    "w": 102,
    "h": 77,
-   "area": 2453
+   "area": 2453,
+   "component_growth": 2253.8496307613955,
+   "isolated": false
   },
   {
    "width_sp": 3.1636363636363636,
@@ -1122,7 +1232,9 @@
    "y": 1245,
    "w": 87,
    "h": 76,
-   "area": 2153
+   "area": 2153,
+   "component_growth": 2677.2133998790077,
+   "isolated": false
   },
   {
    "width_sp": 21.381818181818183,
@@ -1142,7 +1254,9 @@
    "y": 1267,
    "w": 588,
    "h": 54,
-   "area": 5819
+   "area": 5819,
+   "component_growth": 557.4998425296044,
+   "isolated": false
   },
   {
    "width_sp": 1.3818181818181818,
@@ -1162,7 +1276,9 @@
    "y": 1268,
    "w": 38,
    "h": 11,
-   "area": 205
+   "area": 205,
+   "component_growth": 42348.64832535885,
+   "isolated": false
   },
   {
    "width_sp": 2.909090909090909,
@@ -1182,7 +1298,9 @@
    "y": 1289,
    "w": 80,
    "h": 32,
-   "area": 480
+   "area": 480,
+   "component_growth": 6914.740234375,
+   "isolated": false
   },
   {
    "width_sp": 3.2363636363636363,
@@ -1202,7 +1320,9 @@
    "y": 1290,
    "w": 89,
    "h": 22,
-   "area": 525
+   "area": 525,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.2363636363636363,
@@ -1222,7 +1342,9 @@
    "y": 1291,
    "w": 89,
    "h": 20,
-   "area": 587
+   "area": 587,
+   "component_growth": 1.05,
+   "isolated": true
   },
   {
    "width_sp": 2.581818181818182,
@@ -1242,7 +1364,9 @@
    "y": 1301,
    "w": 71,
    "h": 20,
-   "area": 546
+   "area": 546,
+   "component_growth": 12466.010563380281,
+   "isolated": false
   },
   {
    "width_sp": 2.238532110091743,
@@ -1262,7 +1386,9 @@
    "y": 1475,
    "w": 61,
    "h": 78,
-   "area": 3048
+   "area": 3048,
+   "component_growth": 3720.415090374107,
+   "isolated": false
   },
   {
    "width_sp": 8.623853211009175,
@@ -1282,7 +1408,9 @@
    "y": 1475,
    "w": 235,
    "h": 6,
-   "area": 1130
+   "area": 1130,
+   "component_growth": 12554.421985815603,
+   "isolated": false
   },
   {
    "width_sp": 6.128440366972477,
@@ -1302,7 +1430,9 @@
    "y": 1475,
    "w": 167,
    "h": 24,
-   "area": 2959
+   "area": 2959,
+   "component_growth": 4416.600548902195,
+   "isolated": false
   },
   {
    "width_sp": 6.165137614678899,
@@ -1322,7 +1452,9 @@
    "y": 1475,
    "w": 168,
    "h": 33,
-   "area": 3063
+   "area": 3063,
+   "component_growth": 3192.9536435786436,
+   "isolated": false
   },
   {
    "width_sp": 0.9541284403669725,
@@ -1342,7 +1474,9 @@
    "y": 1475,
    "w": 26,
    "h": 78,
-   "area": 1494
+   "area": 1494,
+   "component_growth": 8728.66617357002,
+   "isolated": false
   },
   {
    "width_sp": 0.9541284403669725,
@@ -1362,7 +1496,9 @@
    "y": 1475,
    "w": 26,
    "h": 22,
-   "area": 259
+   "area": 259,
+   "component_growth": 30947.08916083916,
+   "isolated": false
   },
   {
    "width_sp": 6.275229357798165,
@@ -1382,7 +1518,9 @@
    "y": 1475,
    "w": 171,
    "h": 78,
-   "area": 2114
+   "area": 2114,
+   "component_growth": 1327.1656170340382,
+   "isolated": false
   },
   {
    "width_sp": 6.6422018348623855,
@@ -1402,7 +1540,9 @@
    "y": 1475,
    "w": 181,
    "h": 78,
-   "area": 2201
+   "area": 2201,
+   "component_growth": 1253.8415497945884,
+   "isolated": false
   },
   {
    "width_sp": 7.486238532110092,
@@ -1422,7 +1562,9 @@
    "y": 1475,
    "w": 204,
    "h": 30,
-   "area": 1604
+   "area": 1604,
+   "component_growth": 2892.4403594771243,
+   "isolated": false
   },
   {
    "width_sp": 2.7155963302752295,
@@ -1442,7 +1584,9 @@
    "y": 1475,
    "w": 74,
    "h": 5,
-   "area": 216
+   "area": 216,
+   "component_growth": 47842.52702702703,
+   "isolated": false
   },
   {
    "width_sp": 8.440366972477063,
@@ -1462,7 +1606,9 @@
    "y": 1475,
    "w": 230,
    "h": 78,
-   "area": 2459
+   "area": 2459,
+   "component_growth": 986.7187848383501,
+   "isolated": false
   },
   {
    "width_sp": 10.091743119266056,
@@ -1482,7 +1628,9 @@
    "y": 1475,
    "w": 275,
    "h": 54,
-   "area": 2369
+   "area": 2369,
+   "component_growth": 1192.036026936027,
+   "isolated": false
   },
   {
    "width_sp": 8.293577981651376,
@@ -1502,7 +1650,9 @@
    "y": 1475,
    "w": 226,
    "h": 45,
-   "area": 4053
+   "area": 4053,
+   "component_growth": 1740.5835791543757,
+   "isolated": false
   },
   {
    "width_sp": 4.440366972477064,
@@ -1522,7 +1672,9 @@
    "y": 1508,
    "w": 121,
    "h": 28,
-   "area": 1508
+   "area": 1508,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.669724770642202,
@@ -1542,7 +1694,9 @@
    "y": 1508,
    "w": 100,
    "h": 28,
-   "area": 1193
+   "area": 1193,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.73394495412844,
@@ -1562,7 +1716,9 @@
    "y": 1508,
    "w": 129,
    "h": 25,
-   "area": 1584
+   "area": 1584,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.477064220183486,
@@ -1582,7 +1738,9 @@
    "y": 1509,
    "w": 122,
    "h": 25,
-   "area": 1397
+   "area": 1397,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 27.81651376146789,
@@ -1602,7 +1760,9 @@
    "y": 1511,
    "w": 758,
    "h": 32,
-   "area": 10559
+   "area": 10559,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 8.513761467889909,
@@ -1622,7 +1782,9 @@
    "y": 1520,
    "w": 232,
    "h": 28,
-   "area": 2839
+   "area": 2839,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.853211009174312,
@@ -1642,7 +1804,9 @@
    "y": 1521,
    "w": 105,
    "h": 28,
-   "area": 1352
+   "area": 1352,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 0.8073394495412844,
@@ -1662,7 +1826,9 @@
    "y": 1526,
    "w": 22,
    "h": 1,
-   "area": 22
+   "area": 22,
+   "component_growth": 139.0909090909091,
+   "isolated": false
   },
   {
    "width_sp": 8.623853211009175,
@@ -1682,7 +1848,9 @@
    "y": 1546,
    "w": 235,
    "h": 7,
-   "area": 1461
+   "area": 1461,
+   "component_growth": 10760.933130699088,
+   "isolated": false
   },
   {
    "width_sp": 5.724770642201835,
@@ -1702,7 +1870,9 @@
    "y": 1546,
    "w": 156,
    "h": 7,
-   "area": 855
+   "area": 855,
+   "component_growth": 16210.380036630037,
+   "isolated": false
   },
   {
    "width_sp": 6.238532110091743,
@@ -1722,7 +1892,9 @@
    "y": 1547,
    "w": 170,
    "h": 6,
-   "area": 755
+   "area": 755,
+   "component_growth": 17354.642156862745,
+   "isolated": false
   },
   {
    "width_sp": 1.2727272727272727,
@@ -1742,7 +1914,9 @@
    "y": 1680,
    "w": 35,
    "h": 68,
-   "area": 1958
+   "area": 1958,
+   "component_growth": 7437.703781512605,
+   "isolated": false
   },
   {
    "width_sp": 1.018181818181818,
@@ -1762,7 +1936,9 @@
    "y": 1680,
    "w": 28,
    "h": 68,
-   "area": 1407
+   "area": 1407,
+   "component_growth": 9297.129726890757,
+   "isolated": false
   },
   {
    "width_sp": 28.181818181818183,
@@ -1782,7 +1958,9 @@
    "y": 1686,
    "w": 775,
    "h": 36,
-   "area": 11066
+   "area": 11066,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 2.4,
@@ -1802,7 +1980,9 @@
    "y": 1875,
    "w": 66,
    "h": 157,
-   "area": 6695
+   "area": 6695,
+   "component_growth": 1708.3318857363442,
+   "isolated": false
   },
   {
    "width_sp": 2.2545454545454544,
@@ -1822,7 +2002,9 @@
    "y": 1875,
    "w": 62,
    "h": 114,
-   "area": 3020
+   "area": 3020,
+   "component_growth": 2504.4899547255236,
+   "isolated": false
   },
   {
    "width_sp": 1.0545454545454545,
@@ -1842,7 +2024,9 @@
    "y": 1875,
    "w": 29,
    "h": 157,
-   "area": 3358
+   "area": 3358,
+   "component_growth": 3887.92773995168,
+   "isolated": false
   },
   {
    "width_sp": 2.2181818181818183,
@@ -1862,7 +2046,9 @@
    "y": 1875,
    "w": 61,
    "h": 67,
-   "area": 1256
+   "area": 1256,
+   "component_growth": 4331.229508196721,
+   "isolated": false
   },
   {
    "width_sp": 2.290909090909091,
@@ -1882,7 +2068,9 @@
    "y": 1911,
    "w": 63,
    "h": 94,
-   "area": 2614
+   "area": 2614,
+   "component_growth": 2989.1480918608577,
+   "isolated": false
   },
   {
    "width_sp": 2.1454545454545455,
@@ -1902,7 +2090,9 @@
    "y": 1928,
    "w": 59,
    "h": 59,
-   "area": 2043
+   "area": 2043,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.0545454545454545,
@@ -1922,7 +2112,9 @@
    "y": 1947,
    "w": 29,
    "h": 37,
-   "area": 546
+   "area": 546,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 19.236363636363638,
@@ -1942,7 +2134,9 @@
    "y": 1997,
    "w": 529,
    "h": 35,
-   "area": 4300
+   "area": 4300,
+   "component_growth": 956.0753443154199,
+   "isolated": false
   },
   {
    "width_sp": 2.581818181818182,
@@ -1962,7 +2156,9 @@
    "y": 2007,
    "w": 71,
    "h": 18,
-   "area": 426
+   "area": 426,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 7.890909090909091,
@@ -1982,7 +2178,9 @@
    "y": 2007,
    "w": 217,
    "h": 25,
-   "area": 1887
+   "area": 1887,
+   "component_growth": 3262.9926267281107,
+   "isolated": false
   },
   {
    "width_sp": 2.5454545454545454,
@@ -2002,7 +2200,9 @@
    "y": 2022,
    "w": 70,
    "h": 10,
-   "area": 373
+   "area": 373,
+   "component_growth": 25288.192857142858,
+   "isolated": false
   },
   {
    "width_sp": 1.2477064220183487,
@@ -2022,7 +2222,9 @@
    "y": 2183,
    "w": 34,
    "h": 127,
-   "area": 3522
+   "area": 3522,
+   "component_growth": 4099.521769337656,
+   "isolated": false
   },
   {
    "width_sp": 8.256880733944953,
@@ -2042,7 +2244,9 @@
    "y": 2183,
    "w": 225,
    "h": 92,
-   "area": 4772
+   "area": 4772,
+   "component_growth": 855.1562801932367,
+   "isolated": false
   },
   {
    "width_sp": 1.1009174311926606,
@@ -2062,7 +2266,9 @@
    "y": 2183,
    "w": 30,
    "h": 127,
-   "area": 2838
+   "area": 2838,
+   "component_growth": 4646.124671916011,
+   "isolated": false
   },
   {
    "width_sp": 7.963302752293578,
@@ -2082,7 +2288,9 @@
    "y": 2249,
    "w": 217,
    "h": 40,
-   "area": 1826
+   "area": 1826,
+   "component_growth": 2039.370391705069,
+   "isolated": false
   },
   {
    "width_sp": 10.1651376146789,
@@ -2102,7 +2310,9 @@
    "y": 2288,
    "w": 277,
    "h": 22,
-   "area": 3215
+   "area": 3215,
+   "component_growth": 2904.7809320643255,
+   "isolated": false
   },
   {
    "width_sp": 1.837837837837838,
@@ -2122,7 +2332,9 @@
    "y": 2438,
    "w": 51,
    "h": 45,
-   "area": 786
+   "area": 786,
+   "component_growth": 0.7015250544662309,
+   "isolated": true
   },
   {
    "width_sp": 1.1531531531531531,
@@ -2142,7 +2354,9 @@
    "y": 2438,
    "w": 32,
    "h": 45,
-   "area": 1160
+   "area": 1160,
+   "component_growth": 12292.871527777777,
+   "isolated": false
   },
   {
    "width_sp": 0.972972972972973,
@@ -2162,7 +2376,9 @@
    "y": 2438,
    "w": 27,
    "h": 45,
-   "area": 968
+   "area": 968,
+   "component_growth": 14569.329218106996,
+   "isolated": false
   },
   {
    "width_sp": 8.108108108108109,
@@ -2182,7 +2398,9 @@
    "y": 2478,
    "w": 225,
    "h": 5,
-   "area": 941
+   "area": 941,
+   "component_growth": 15734.875555555556,
+   "isolated": false
   },
   {
    "width_sp": 5.621621621621622,
@@ -2202,7 +2420,9 @@
    "y": 2479,
    "w": 156,
    "h": 4,
-   "area": 421
+   "area": 421,
+   "component_growth": 28368.165064102563,
+   "isolated": false
   },
   {
    "width_sp": 6.126126126126126,
@@ -2222,7 +2442,9 @@
    "y": 2480,
    "w": 170,
    "h": 3,
-   "area": 383
+   "area": 383,
+   "component_growth": 34709.28431372549,
+   "isolated": false
   },
   {
    "width_sp": 2.618181818181818,
@@ -2242,7 +2464,9 @@
    "y": 2610,
    "w": 72,
    "h": 119,
-   "area": 2601
+   "area": 2601,
+   "component_growth": 2066.028828197946,
+   "isolated": false
   },
   {
    "width_sp": 27.818181818181817,
@@ -2262,7 +2486,9 @@
    "y": 2612,
    "w": 765,
    "h": 32,
-   "area": 10691
+   "area": 10691,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.0909090909090908,
@@ -2282,7 +2508,9 @@
    "y": 2637,
    "w": 30,
    "h": 34,
-   "area": 674
+   "area": 674,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 9.272727272727273,
@@ -2302,7 +2530,9 @@
    "y": 2638,
    "w": 255,
    "h": 34,
-   "area": 1876
+   "area": 1876,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 7.345454545454546,
@@ -2322,7 +2552,9 @@
    "y": 2654,
    "w": 202,
    "h": 75,
-   "area": 4180
+   "area": 4180,
+   "component_growth": 1168.4313531353134,
+   "isolated": false
   },
   {
    "width_sp": 12.036363636363637,
@@ -2342,7 +2574,9 @@
    "y": 2657,
    "w": 331,
    "h": 72,
-   "area": 2942
+   "area": 2942,
+   "component_growth": 742.7716935213159,
+   "isolated": false
   },
   {
    "width_sp": 2.618181818181818,
@@ -2362,7 +2596,9 @@
    "y": 2665,
    "w": 72,
    "h": 19,
-   "area": 400
+   "area": 400,
+   "component_growth": 12939.864766081871,
+   "isolated": false
   },
   {
    "width_sp": 2.1454545454545455,
@@ -2382,7 +2618,9 @@
    "y": 2666,
    "w": 59,
    "h": 37,
-   "area": 1151
+   "area": 1151,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.3454545454545455,
@@ -2402,7 +2640,9 @@
    "y": 2668,
    "w": 37,
    "h": 34,
-   "area": 909
+   "area": 909,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.3454545454545455,
@@ -2422,7 +2662,9 @@
    "y": 2669,
    "w": 37,
    "h": 34,
-   "area": 727
+   "area": 727,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.4181818181818182,
@@ -2442,7 +2684,9 @@
    "y": 2683,
    "w": 39,
    "h": 46,
-   "area": 938
+   "area": 938,
+   "component_growth": 9867.1878483835,
+   "isolated": false
   },
   {
    "width_sp": 0.9454545454545454,
@@ -2462,7 +2706,9 @@
    "y": 2683,
    "w": 26,
    "h": 36,
-   "area": 603
+   "area": 603,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.018181818181818,
@@ -2482,7 +2728,9 @@
    "y": 2684,
    "w": 28,
    "h": 35,
-   "area": 686
+   "area": 686,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 8.436363636363636,
@@ -2502,7 +2750,9 @@
    "y": 2691,
    "w": 232,
    "h": 38,
-   "area": 4359
+   "area": 4359,
+   "component_growth": 2007.9100499092558,
+   "isolated": false
   },
   {
    "width_sp": 7.3090909090909095,
@@ -2522,7 +2772,9 @@
    "y": 2705,
    "w": 201,
    "h": 24,
-   "area": 1745
+   "area": 1745,
+   "component_growth": 3669.5138888888887,
+   "isolated": false
   },
   {
    "width_sp": 1.1636363636363636,
@@ -2542,7 +2794,9 @@
    "y": 2707,
    "w": 32,
    "h": 9,
-   "area": 246
+   "area": 246,
+   "component_growth": 61464.35763888889,
+   "isolated": false
   },
   {
    "width_sp": 1.8909090909090909,
@@ -2562,7 +2816,9 @@
    "y": 2708,
    "w": 52,
    "h": 21,
-   "area": 332
+   "area": 332,
+   "component_growth": 16210.380036630037,
+   "isolated": false
   },
   {
    "width_sp": 6.872727272727273,
@@ -2582,7 +2838,9 @@
    "y": 2710,
    "w": 189,
    "h": 19,
-   "area": 1566
+   "area": 1566,
+   "component_growth": 4929.472291840713,
+   "isolated": false
   },
   {
    "width_sp": 3.6363636363636362,
@@ -2602,7 +2860,9 @@
    "y": 2718,
    "w": 100,
    "h": 11,
-   "area": 631
+   "area": 631,
+   "component_growth": 16092.486363636364,
+   "isolated": false
   },
   {
    "width_sp": 2.8,
@@ -2622,7 +2882,9 @@
    "y": 2721,
    "w": 77,
    "h": 8,
-   "area": 357
+   "area": 357,
+   "component_growth": 28736.58279220779,
+   "isolated": false
   },
   {
    "width_sp": 1.0642201834862386,
@@ -2642,7 +2904,9 @@
    "y": 2855,
    "w": 29,
    "h": 97,
-   "area": 980
+   "area": 980,
+   "component_growth": 6292.831496622823,
+   "isolated": false
   },
   {
    "width_sp": 1.2477064220183487,
@@ -2662,7 +2926,9 @@
    "y": 2855,
    "w": 34,
    "h": 97,
-   "area": 2603
+   "area": 2603,
+   "component_growth": 5367.4151000606425,
+   "isolated": false
   },
   {
    "width_sp": 0.9908256880733946,
@@ -2682,7 +2948,9 @@
    "y": 2855,
    "w": 27,
    "h": 97,
-   "area": 2021
+   "area": 2021,
+   "component_growth": 6758.967163039328,
+   "isolated": false
   },
   {
    "width_sp": 3.522935779816514,
@@ -2702,7 +2970,9 @@
    "y": 2855,
    "w": 96,
    "h": 21,
-   "area": 1563
+   "area": 1563,
+   "component_growth": 8780.62251984127,
+   "isolated": false
   },
   {
    "width_sp": 3.229357798165138,
@@ -2722,7 +2992,9 @@
    "y": 2855,
    "w": 88,
    "h": 24,
-   "area": 1461
+   "area": 1461,
+   "component_growth": 8381.50331439394,
+   "isolated": false
   },
   {
    "width_sp": 2.4220183486238533,
@@ -2742,7 +3014,9 @@
    "y": 2855,
    "w": 66,
    "h": 2,
-   "area": 85
+   "area": 85,
+   "component_growth": 134104.05303030304,
+   "isolated": false
   },
   {
    "width_sp": 2.7889908256880735,
@@ -2762,7 +3036,9 @@
    "y": 2855,
    "w": 76,
    "h": 25,
-   "area": 1410
+   "area": 1410,
+   "component_growth": 9316.702631578948,
+   "isolated": false
   },
   {
    "width_sp": 3.779816513761468,
@@ -2782,7 +3058,9 @@
    "y": 2859,
    "w": 103,
    "h": 24,
-   "area": 1179
+   "area": 1179,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 29.834862385321102,
@@ -2802,7 +3080,9 @@
    "y": 2861,
    "w": 813,
    "h": 33,
-   "area": 10616
+   "area": 10616,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 2.018348623853211,
@@ -2822,7 +3102,9 @@
    "y": 2861,
    "w": 55,
    "h": 52,
-   "area": 489
+   "area": 489,
+   "component_growth": 6189.417832167832,
+   "isolated": false
   },
   {
    "width_sp": 8.697247706422019,
@@ -2842,7 +3124,9 @@
    "y": 2870,
    "w": 237,
    "h": 31,
-   "area": 2822
+   "area": 2822,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.110091743119266,
@@ -2862,7 +3146,9 @@
    "y": 2872,
    "w": 112,
    "h": 30,
-   "area": 1259
+   "area": 1259,
+   "component_growth": 5268.3735119047615,
+   "isolated": false
   },
   {
    "width_sp": 3.669724770642202,
@@ -2882,7 +3168,9 @@
    "y": 2877,
    "w": 100,
    "h": 21,
-   "area": 1005
+   "area": 1005,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.44954128440367,
@@ -2902,7 +3190,9 @@
    "y": 2878,
    "w": 94,
    "h": 26,
-   "area": 1012
+   "area": 1012,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.5596330275229358,
@@ -2922,7 +3212,9 @@
    "y": 2877,
    "w": 97,
    "h": 22,
-   "area": 1056
+   "area": 1056,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.1376146788990826,
@@ -2942,7 +3234,9 @@
    "y": 2891,
    "w": 31,
    "h": 34,
-   "area": 610
+   "area": 610,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.3577981651376148,
@@ -2962,7 +3256,9 @@
    "y": 2908,
    "w": 37,
    "h": 44,
-   "area": 884
+   "area": 884,
+   "component_growth": 10873.301597051597,
+   "isolated": false
   },
   {
    "width_sp": 1.0275229357798166,
@@ -2982,7 +3278,9 @@
    "y": 2910,
    "w": 28,
    "h": 33,
-   "area": 586
+   "area": 586,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.0275229357798166,
@@ -3002,7 +3300,9 @@
    "y": 2910,
    "w": 28,
    "h": 33,
-   "area": 594
+   "area": 594,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.3577981651376148,
@@ -3022,7 +3322,9 @@
    "y": 2914,
    "w": 37,
    "h": 38,
-   "area": 800
+   "area": 800,
+   "component_growth": 12590.138691322902,
+   "isolated": false
   },
   {
    "width_sp": 1.0275229357798166,
@@ -3042,7 +3344,9 @@
    "y": 2914,
    "w": 28,
    "h": 34,
-   "area": 592
+   "area": 592,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.522935779816514,
@@ -3062,7 +3366,9 @@
    "y": 2916,
    "w": 96,
    "h": 36,
-   "area": 2902
+   "area": 2902,
+   "component_growth": 5122.029803240741,
+   "isolated": false
   },
   {
    "width_sp": 0.9908256880733946,
@@ -3082,7 +3388,9 @@
    "y": 2915,
    "w": 27,
    "h": 34,
-   "area": 562
+   "area": 562,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.220183486238532,
@@ -3102,7 +3410,9 @@
    "y": 2919,
    "w": 115,
    "h": 19,
-   "area": 1351
+   "area": 1351,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 6.532110091743119,
@@ -3122,7 +3432,9 @@
    "y": 2921,
    "w": 178,
    "h": 31,
-   "area": 4115
+   "area": 4115,
+   "component_growth": 3207.998368974266,
+   "isolated": false
   },
   {
    "width_sp": 2.128440366972477,
@@ -3142,7 +3454,9 @@
    "y": 2937,
    "w": 58,
    "h": 15,
-   "area": 537
+   "area": 537,
+   "component_growth": 20346.82183908046,
+   "isolated": false
   },
   {
    "width_sp": 0.9908256880733946,
@@ -3162,7 +3476,9 @@
    "y": 2939,
    "w": 27,
    "h": 13,
-   "area": 256
+   "area": 256,
+   "component_growth": 50432.29344729345,
+   "isolated": false
   },
   {
    "width_sp": 1.2110091743119267,
@@ -3182,7 +3498,9 @@
    "y": 2941,
    "w": 33,
    "h": 11,
-   "area": 231
+   "area": 231,
+   "component_growth": 48765.11019283746,
+   "isolated": false
   },
   {
    "width_sp": 1.3944954128440368,
@@ -3202,7 +3520,9 @@
    "y": 2946,
    "w": 38,
    "h": 6,
-   "area": 136
+   "area": 136,
+   "component_growth": 77639.18859649122,
+   "isolated": false
   },
   {
    "width_sp": 2.8990825688073394,
@@ -3222,7 +3542,9 @@
    "y": 2947,
    "w": 79,
    "h": 5,
-   "area": 373
+   "area": 373,
+   "component_growth": 44814.51898734177,
+   "isolated": false
   },
   {
    "width_sp": 1.1376146788990826,
@@ -3242,7 +3564,9 @@
    "y": 2951,
    "w": 31,
    "h": 1,
-   "area": 31
+   "area": 31,
+   "component_growth": 571023.7096774194,
+   "isolated": false
   },
   {
    "width_sp": 1.2363636363636363,
@@ -3262,7 +3586,9 @@
    "y": 3079,
    "w": 34,
    "h": 157,
-   "area": 4110
+   "area": 4110,
+   "component_growth": 3316.1736605470214,
+   "isolated": false
   },
   {
    "width_sp": 1.8545454545454545,
@@ -3282,7 +3608,9 @@
    "y": 3079,
    "w": 51,
    "h": 28,
-   "area": 335
+   "area": 335,
+   "component_growth": 12396.172969187675,
+   "isolated": false
   },
   {
    "width_sp": 5.6,
@@ -3302,7 +3630,9 @@
    "y": 3079,
    "w": 154,
    "h": 36,
-   "area": 1156
+   "area": 1156,
+   "component_growth": 3192.9536435786436,
+   "isolated": false
   },
   {
    "width_sp": 7.890909090909091,
@@ -3322,7 +3652,9 @@
    "y": 3079,
    "w": 217,
    "h": 37,
-   "area": 1633
+   "area": 1633,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.018181818181818,
@@ -3342,7 +3674,9 @@
    "y": 3079,
    "w": 28,
    "h": 157,
-   "area": 3214
+   "area": 3214,
+   "component_growth": 4026.7823020928117,
+   "isolated": false
   },
   {
    "width_sp": 1.8545454545454545,
@@ -3362,7 +3696,9 @@
    "y": 3079,
    "w": 51,
    "h": 26,
-   "area": 364
+   "area": 364,
+   "component_growth": 13349.724736048265,
+   "isolated": false
   },
   {
    "width_sp": 2.9454545454545453,
@@ -3382,7 +3718,9 @@
    "y": 3079,
    "w": 81,
    "h": 29,
-   "area": 1446
+   "area": 1446,
+   "component_growth": 7535.859940400171,
+   "isolated": false
   },
   {
    "width_sp": 4.581818181818182,
@@ -3402,7 +3740,9 @@
    "y": 3080,
    "w": 126,
    "h": 25,
-   "area": 764
+   "area": 764,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 8.690909090909091,
@@ -3422,7 +3762,9 @@
    "y": 3079,
    "w": 239,
    "h": 46,
-   "area": 1871
+   "area": 1871,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 8.727272727272727,
@@ -3442,7 +3784,9 @@
    "y": 3079,
    "w": 240,
    "h": 157,
-   "area": 4470
+   "area": 4470,
+   "component_growth": 469.7912685774947,
+   "isolated": false
   },
   {
    "width_sp": 4.072727272727272,
@@ -3462,7 +3806,9 @@
    "y": 3079,
    "w": 112,
    "h": 22,
-   "area": 774
+   "area": 774,
+   "component_growth": 7184.145698051948,
+   "isolated": false
   },
   {
    "width_sp": 1.6,
@@ -3482,7 +3828,9 @@
    "y": 3079,
    "w": 44,
    "h": 24,
-   "area": 296
+   "area": 296,
+   "component_growth": 16763.00662878788,
+   "isolated": false
   },
   {
    "width_sp": 12.036363636363637,
@@ -3502,7 +3850,9 @@
    "y": 3088,
    "w": 331,
    "h": 63,
-   "area": 2669
+   "area": 2669,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 29.054545454545455,
@@ -3522,7 +3872,9 @@
    "y": 3118,
    "w": 799,
    "h": 81,
-   "area": 15118
+   "area": 15118,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.8181818181818183,
@@ -3542,7 +3894,9 @@
    "y": 3126,
    "w": 105,
    "h": 26,
-   "area": 1174
+   "area": 1174,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.109090909090909,
@@ -3562,7 +3916,9 @@
    "y": 3130,
    "w": 113,
    "h": 28,
-   "area": 1294
+   "area": 1294,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.218181818181818,
@@ -3582,7 +3938,9 @@
    "y": 3130,
    "w": 116,
    "h": 25,
-   "area": 1241
+   "area": 1241,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.5636363636363635,
@@ -3602,7 +3960,9 @@
    "y": 3129,
    "w": 98,
    "h": 28,
-   "area": 1086
+   "area": 1086,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.309090909090909,
@@ -3622,7 +3982,9 @@
    "y": 3151,
    "w": 36,
    "h": 33,
-   "area": 695
+   "area": 695,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.3454545454545455,
@@ -3642,7 +4004,9 @@
    "y": 3151,
    "w": 37,
    "h": 34,
-   "area": 629
+   "area": 629,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.0545454545454545,
@@ -3662,7 +4026,9 @@
    "y": 3151,
    "w": 29,
    "h": 34,
-   "area": 589
+   "area": 589,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 8.690909090909091,
@@ -3682,7 +4048,9 @@
    "y": 3152,
    "w": 239,
    "h": 32,
-   "area": 3087
+   "area": 3087,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.890909090909091,
@@ -3702,7 +4070,9 @@
    "y": 3154,
    "w": 107,
    "h": 30,
-   "area": 1244
+   "area": 1244,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.709090909090909,
@@ -3722,7 +4092,9 @@
    "y": 3168,
    "w": 47,
    "h": 35,
-   "area": 825
+   "area": 825,
+   "component_growth": 1.2693009118541034,
+   "isolated": true
   },
   {
    "width_sp": 11.309090909090909,
@@ -3742,7 +4114,9 @@
    "y": 3171,
    "w": 311,
    "h": 65,
-   "area": 4857
+   "area": 4857,
+   "component_growth": 3.2015335147167945,
+   "isolated": false
   },
   {
    "width_sp": 8.727272727272727,
@@ -3762,7 +4136,9 @@
    "y": 3174,
    "w": 240,
    "h": 62,
-   "area": 3890
+   "area": 3890,
+   "component_growth": 1189.6327284946237,
+   "isolated": false
   },
   {
    "width_sp": 6.254545454545455,
@@ -3782,7 +4158,9 @@
    "y": 3174,
    "w": 172,
    "h": 62,
-   "area": 3477
+   "area": 3477,
+   "component_growth": 1659.9526444111027,
+   "isolated": false
   },
   {
    "width_sp": 1.3454545454545455,
@@ -3802,7 +4180,9 @@
    "y": 3204,
    "w": 37,
    "h": 32,
-   "area": 689
+   "area": 689,
+   "component_growth": 1.53125,
+   "isolated": true
   },
   {
    "width_sp": 1.2363636363636363,
@@ -3822,7 +4202,9 @@
    "y": 3205,
    "w": 34,
    "h": 31,
-   "area": 512
+   "area": 512,
+   "component_growth": 1.064516129032258,
+   "isolated": true
   },
   {
    "width_sp": 1.0545454545454545,
@@ -3842,7 +4224,9 @@
    "y": 3205,
    "w": 29,
    "h": 31,
-   "area": 566
+   "area": 566,
+   "component_growth": 1.064516129032258,
+   "isolated": true
   },
   {
    "width_sp": 5.890909090909091,
@@ -3862,7 +4246,9 @@
    "y": 3404,
    "w": 162,
    "h": 6,
-   "area": 602
+   "area": 602,
+   "component_growth": 18211.661522633745,
+   "isolated": false
   },
   {
    "width_sp": 6.254545454545455,
@@ -3882,7 +4268,9 @@
    "y": 3404,
    "w": 172,
    "h": 26,
-   "area": 2474
+   "area": 2474,
+   "component_growth": 3958.3486135957064,
+   "isolated": false
   },
   {
    "width_sp": 1.018181818181818,
@@ -3902,7 +4290,9 @@
    "y": 3404,
    "w": 28,
    "h": 131,
-   "area": 2979
+   "area": 2979,
+   "component_growth": 4825.991003271538,
+   "isolated": false
   },
   {
    "width_sp": 7.927272727272728,
@@ -3922,7 +4312,9 @@
    "y": 3404,
    "w": 218,
    "h": 28,
-   "area": 1771
+   "area": 1771,
+   "component_growth": 2900.022116644823,
+   "isolated": false
   },
   {
    "width_sp": 3.272727272727273,
@@ -3942,7 +4334,9 @@
    "y": 3404,
    "w": 90,
    "h": 11,
-   "area": 528
+   "area": 528,
+   "component_growth": 17880.540404040403,
+   "isolated": false
   },
   {
    "width_sp": 3.018181818181818,
@@ -3962,7 +4356,9 @@
    "y": 3404,
    "w": 83,
    "h": 31,
-   "area": 1320
+   "area": 1320,
+   "component_growth": 6879.803731053245,
+   "isolated": false
   },
   {
    "width_sp": 9.927272727272728,
@@ -3982,7 +4378,9 @@
    "y": 3404,
    "w": 273,
    "h": 39,
-   "area": 2116
+   "area": 2116,
+   "component_growth": 1662.6030806800038,
+   "isolated": false
   },
   {
    "width_sp": 2.690909090909091,
@@ -4002,7 +4400,9 @@
    "y": 3404,
    "w": 74,
    "h": 10,
-   "area": 432
+   "area": 432,
+   "component_growth": 23921.263513513513,
+   "isolated": false
   },
   {
    "width_sp": 2.9454545454545453,
@@ -4022,7 +4422,9 @@
    "y": 3404,
    "w": 81,
    "h": 7,
-   "area": 497
+   "area": 497,
+   "component_growth": 31219.99118165785,
+   "isolated": false
   },
   {
    "width_sp": 25.78181818181818,
@@ -4042,7 +4444,9 @@
    "y": 3406,
    "w": 709,
    "h": 37,
-   "area": 4750
+   "area": 4750,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 0.8,
@@ -4062,7 +4466,9 @@
    "y": 3433,
    "w": 22,
    "h": 7,
-   "area": 132
+   "area": 132,
+   "component_growth": 61.37662337662338,
+   "isolated": false
   },
   {
    "width_sp": 3.9272727272727272,
@@ -4082,7 +4488,9 @@
    "y": 3432,
    "w": 108,
    "h": 20,
-   "area": 1160
+   "area": 1160,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.018181818181818,
@@ -4102,7 +4510,9 @@
    "y": 3434,
    "w": 28,
    "h": 10,
-   "area": 214
+   "area": 214,
+   "component_growth": 33.75714285714286,
+   "isolated": false
   },
   {
    "width_sp": 26.945454545454545,
@@ -4122,7 +4532,9 @@
    "y": 3442,
    "w": 741,
    "h": 25,
-   "area": 7177
+   "area": 7177,
+   "component_growth": 1.4160863697705803,
+   "isolated": true
   },
   {
    "width_sp": 8.472727272727273,
@@ -4142,7 +4554,9 @@
    "y": 3445,
    "w": 233,
    "h": 31,
-   "area": 2824
+   "area": 2824,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.7818181818181817,
@@ -4162,7 +4576,9 @@
    "y": 3448,
    "w": 49,
    "h": 38,
-   "area": 1211
+   "area": 1211,
+   "component_growth": 5.076262083780881,
+   "isolated": false
   },
   {
    "width_sp": 3.8545454545454545,
@@ -4182,7 +4598,9 @@
    "y": 3448,
    "w": 106,
    "h": 30,
-   "area": 1180
+   "area": 1180,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.090909090909091,
@@ -4202,7 +4620,9 @@
    "y": 3452,
    "w": 85,
    "h": 27,
-   "area": 925
+   "area": 925,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.5636363636363635,
@@ -4222,7 +4642,9 @@
    "y": 3453,
    "w": 98,
    "h": 23,
-   "area": 1076
+   "area": 1076,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 5.2,
@@ -4242,7 +4664,9 @@
    "y": 3462,
    "w": 143,
    "h": 12,
-   "area": 1017
+   "area": 1017,
+   "component_growth": 31.09090909090909,
+   "isolated": false
   },
   {
    "width_sp": 1.3454545454545455,
@@ -4262,7 +4686,9 @@
    "y": 3462,
    "w": 37,
    "h": 51,
-   "area": 969
+   "area": 969,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 2.581818181818182,
@@ -4282,7 +4708,9 @@
    "y": 3463,
    "w": 71,
    "h": 34,
-   "area": 1336
+   "area": 1336,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 9.2,
@@ -4302,7 +4730,9 @@
    "y": 3466,
    "w": 253,
    "h": 31,
-   "area": 1843
+   "area": 1843,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 2.109090909090909,
@@ -4322,7 +4752,9 @@
    "y": 3482,
    "w": 58,
    "h": 19,
-   "area": 619
+   "area": 619,
+   "component_growth": 2.1724137931034484,
+   "isolated": false
   },
   {
    "width_sp": 1.0545454545454545,
@@ -4342,7 +4774,9 @@
    "y": 3484,
    "w": 29,
    "h": 18,
-   "area": 320
+   "area": 320,
+   "component_growth": 4.586206896551724,
+   "isolated": false
   },
   {
    "width_sp": 2.5090909090909093,
@@ -4362,7 +4796,9 @@
    "y": 3490,
    "w": 69,
    "h": 15,
-   "area": 368
+   "area": 368,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.018181818181818,
@@ -4382,7 +4818,9 @@
    "y": 3497,
    "w": 28,
    "h": 34,
-   "area": 669
+   "area": 669,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.018181818181818,
@@ -4402,7 +4840,9 @@
    "y": 3497,
    "w": 28,
    "h": 35,
-   "area": 693
+   "area": 693,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.3454545454545455,
@@ -4422,7 +4862,9 @@
    "y": 3500,
    "w": 37,
    "h": 34,
-   "area": 837
+   "area": 837,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.1636363636363636,
@@ -4442,7 +4884,9 @@
    "y": 3502,
    "w": 32,
    "h": 33,
-   "area": 646
+   "area": 646,
+   "component_growth": 1.0606060606060606,
+   "isolated": true
   },
   {
    "width_sp": 2.1454545454545455,
@@ -4462,7 +4906,9 @@
    "y": 3505,
    "w": 59,
    "h": 30,
-   "area": 856
+   "area": 856,
+   "component_growth": 1.1333333333333333,
+   "isolated": true
   },
   {
    "width_sp": 7.0181818181818185,
@@ -4482,7 +4928,9 @@
    "y": 3506,
    "w": 193,
    "h": 29,
-   "area": 2169
+   "area": 2169,
+   "component_growth": 3162.718420582455,
+   "isolated": false
   },
   {
    "width_sp": 1.1636363636363636,
@@ -4502,7 +4950,9 @@
    "y": 3506,
    "w": 32,
    "h": 29,
-   "area": 596
+   "area": 596,
+   "component_growth": 19075.14547413793,
+   "isolated": false
   },
   {
    "width_sp": 15.636363636363637,
@@ -4522,7 +4972,9 @@
    "y": 3513,
    "w": 430,
    "h": 22,
-   "area": 3838
+   "area": 3838,
+   "component_growth": 1871.2193446088795,
+   "isolated": false
   },
   {
    "width_sp": 1.1743119266055047,
@@ -4542,7 +4994,9 @@
    "y": 3661,
    "w": 32,
    "h": 85,
-   "area": 2204
+   "area": 2204,
+   "component_growth": 6507.99080882353,
+   "isolated": false
   },
   {
    "width_sp": 1.2110091743119267,
@@ -4562,7 +5016,9 @@
    "y": 3661,
    "w": 33,
    "h": 4,
-   "area": 104
+   "area": 104,
+   "component_growth": 134104.05303030304,
+   "isolated": false
   },
   {
    "width_sp": 2.238532110091743,
@@ -4582,7 +5038,9 @@
    "y": 3661,
    "w": 61,
    "h": 3,
-   "area": 112
+   "area": 112,
+   "component_growth": 96730.79234972678,
+   "isolated": false
   },
   {
    "width_sp": 3.669724770642202,
@@ -4602,7 +5060,9 @@
    "y": 3661,
    "w": 100,
    "h": 23,
-   "area": 1651
+   "area": 1651,
+   "component_growth": 7696.406521739131,
+   "isolated": false
   },
   {
    "width_sp": 1.0642201834862386,
@@ -4622,7 +5082,9 @@
    "y": 3661,
    "w": 29,
    "h": 85,
-   "area": 1943
+   "area": 1943,
+   "component_growth": 7181.231237322515,
+   "isolated": false
   },
   {
    "width_sp": 2.8256880733944953,
@@ -4642,7 +5104,9 @@
    "y": 3661,
    "w": 77,
    "h": 26,
-   "area": 1361
+   "area": 1361,
+   "component_growth": 8842.025474525475,
+   "isolated": false
   },
   {
    "width_sp": 6.165137614678899,
@@ -4662,7 +5126,9 @@
    "y": 3661,
    "w": 168,
    "h": 30,
-   "area": 3052
+   "area": 3052,
+   "component_growth": 3512.249007936508,
+   "isolated": false
   },
   {
    "width_sp": 8.0,
@@ -4682,7 +5148,9 @@
    "y": 3661,
    "w": 218,
    "h": 31,
-   "area": 3954
+   "area": 3954,
+   "component_growth": 2619.374815034034,
+   "isolated": false
   },
   {
    "width_sp": 8.330275229357799,
@@ -4702,7 +5170,9 @@
    "y": 3661,
    "w": 227,
    "h": 35,
-   "area": 4210
+   "area": 4210,
+   "component_growth": 2228.0346129641284,
+   "isolated": false
   },
   {
    "width_sp": 3.1559633027522938,
@@ -4722,7 +5192,9 @@
    "y": 3661,
    "w": 86,
    "h": 8,
-   "area": 594
+   "area": 594,
+   "component_growth": 25729.26598837209,
+   "isolated": false
   },
   {
    "width_sp": 2.7889908256880735,
@@ -4742,7 +5214,9 @@
    "y": 3661,
    "w": 76,
    "h": 23,
-   "area": 1288
+   "area": 1288,
+   "component_growth": 10126.850686498856,
+   "isolated": false
   },
   {
    "width_sp": 4.770642201834862,
@@ -4762,7 +5236,9 @@
    "y": 3667,
    "w": 130,
    "h": 20,
-   "area": 1946
+   "area": 1946,
+   "component_growth": 6808.359615384616,
+   "isolated": false
   },
   {
    "width_sp": 29.211009174311926,
@@ -4782,7 +5258,9 @@
    "y": 3687,
    "w": 796,
    "h": 37,
-   "area": 10517
+   "area": 10517,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 8.403669724770642,
@@ -4802,7 +5280,9 @@
    "y": 3687,
    "w": 229,
    "h": 31,
-   "area": 2793
+   "area": 2793,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 7.963302752293578,
@@ -4822,7 +5302,9 @@
    "y": 3697,
    "w": 217,
    "h": 31,
-   "area": 2504
+   "area": 2504,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 14.311926605504587,
@@ -4842,7 +5324,9 @@
    "y": 3726,
    "w": 390,
    "h": 20,
-   "area": 3325
+   "area": 3325,
+   "component_growth": 0.8624358974358974,
+   "isolated": true
   },
   {
    "width_sp": 8.513761467889909,
@@ -4862,7 +5346,9 @@
    "y": 3744,
    "w": 232,
    "h": 2,
-   "area": 343
+   "area": 343,
+   "component_growth": 38150.29094827586,
+   "isolated": false
   },
   {
    "width_sp": 2.7522935779816513,
@@ -4882,7 +5368,9 @@
    "y": 3744,
    "w": 75,
    "h": 2,
-   "area": 97
+   "area": 97,
+   "component_growth": 118011.56666666667,
+   "isolated": false
   },
   {
    "width_sp": 5.908256880733945,
@@ -4902,7 +5390,9 @@
    "y": 3743,
    "w": 161,
    "h": 3,
-   "area": 255
+   "area": 255,
+   "component_growth": 36649.554865424434,
+   "isolated": false
   },
   {
    "width_sp": 1.3944954128440368,
@@ -4922,7 +5412,9 @@
    "y": 3745,
    "w": 38,
    "h": 1,
-   "area": 38
+   "area": 38,
+   "component_growth": 465835.13157894736,
+   "isolated": false
   },
   {
    "width_sp": 2.4363636363636365,
@@ -4942,7 +5434,9 @@
    "y": 3873,
    "w": 67,
    "h": 69,
-   "area": 889
+   "area": 889,
+   "component_growth": 3829.057971014493,
+   "isolated": false
   },
   {
    "width_sp": 2.7636363636363637,
@@ -4962,7 +5456,9 @@
    "y": 3873,
    "w": 76,
    "h": 23,
-   "area": 1308
+   "area": 1308,
+   "component_growth": 10126.850686498856,
+   "isolated": false
   },
   {
    "width_sp": 6.254545454545455,
@@ -4982,7 +5478,9 @@
    "y": 3873,
    "w": 172,
    "h": 27,
-   "area": 3013
+   "area": 3013,
+   "component_growth": 3811.7431093884584,
+   "isolated": false
   },
   {
    "width_sp": 7.927272727272728,
@@ -5002,7 +5500,9 @@
    "y": 3873,
    "w": 218,
    "h": 25,
-   "area": 3753
+   "area": 3753,
+   "component_growth": 3248.024770642202,
+   "isolated": false
   },
   {
    "width_sp": 8.290909090909091,
@@ -5022,7 +5522,9 @@
    "y": 3873,
    "w": 228,
    "h": 33,
-   "area": 4188
+   "area": 4188,
+   "component_growth": 2352.7026847421585,
+   "isolated": false
   },
   {
    "width_sp": 28.072727272727274,
@@ -5042,7 +5544,9 @@
    "y": 3889,
    "w": 772,
    "h": 40,
-   "area": 11038
+   "area": 11038,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 8.290909090909091,
@@ -5062,7 +5566,9 @@
    "y": 3905,
    "w": 228,
    "h": 33,
-   "area": 3061
+   "area": 3061,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 7.963636363636364,
@@ -5082,7 +5588,9 @@
    "y": 3910,
    "w": 219,
    "h": 31,
-   "area": 2695
+   "area": 2695,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 2.909090909090909,
@@ -5102,7 +5610,9 @@
    "y": 3996,
    "w": 80,
    "h": 34,
-   "area": 1285
+   "area": 1285,
+   "component_growth": 2.7536764705882355,
+   "isolated": false
   },
   {
    "width_sp": 6.072727272727272,
@@ -5122,7 +5632,9 @@
    "y": 4013,
    "w": 167,
    "h": 17,
-   "area": 1525
+   "area": 1525,
+   "component_growth": 10.359281437125748,
+   "isolated": false
   },
   {
    "width_sp": 1.4181818181818182,
@@ -5142,7 +5654,9 @@
    "y": 4353,
    "w": 39,
    "h": 34,
-   "area": 983
+   "area": 983,
+   "component_growth": 11559.339366515836,
+   "isolated": false
   },
   {
    "width_sp": 10.654545454545454,
@@ -5162,7 +5676,9 @@
    "y": 4353,
    "w": 293,
    "h": 62,
-   "area": 4308
+   "area": 4308,
+   "component_growth": 843.7566883188374,
+   "isolated": false
   },
   {
    "width_sp": 6.7272727272727275,
@@ -5182,7 +5698,9 @@
    "y": 4353,
    "w": 185,
    "h": 29,
-   "area": 2441
+   "area": 2441,
+   "component_growth": 2856.977446411929,
+   "isolated": false
   },
   {
    "width_sp": 17.418181818181818,
@@ -5202,7 +5720,9 @@
    "y": 4356,
    "w": 479,
    "h": 48,
-   "area": 6693
+   "area": 6693,
+   "component_growth": 666.6529227557411,
+   "isolated": false
   },
   {
    "width_sp": 0.8727272727272727,
@@ -5222,7 +5742,9 @@
    "y": 4367,
    "w": 24,
    "h": 33,
-   "area": 472
+   "area": 472,
+   "component_growth": 1.125,
+   "isolated": true
   },
   {
    "width_sp": 1.0545454545454545,
@@ -5242,7 +5764,9 @@
    "y": 4373,
    "w": 29,
    "h": 42,
-   "area": 715
+   "area": 715,
+   "component_growth": 1.0238095238095237,
+   "isolated": true
   },
   {
    "width_sp": 1.1636363636363636,
@@ -5262,7 +5786,9 @@
    "y": 4393,
    "w": 32,
    "h": 7,
-   "area": 189
+   "area": 189,
+   "component_growth": 25.3125,
+   "isolated": false
   },
   {
    "width_sp": 0.8,
@@ -5282,7 +5808,9 @@
    "y": 4399,
    "w": 22,
    "h": 2,
-   "area": 24
+   "area": 24,
+   "component_growth": 128.86363636363637,
+   "isolated": false
   },
   {
    "width_sp": 2.0727272727272728,
@@ -5302,7 +5830,9 @@
    "y": 4542,
    "w": 57,
    "h": 86,
-   "area": 895
+   "area": 895,
+   "component_growth": 3126.8225214198287,
+   "isolated": false
   },
   {
    "width_sp": 2.581818181818182,
@@ -5322,7 +5852,9 @@
    "y": 4570,
    "w": 71,
    "h": 17,
-   "area": 370
+   "area": 370,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 9.672727272727272,
@@ -5342,7 +5874,9 @@
    "y": 4625,
    "w": 266,
    "h": 3,
-   "area": 447
+   "area": 447,
+   "component_growth": 19207.624060150374,
+   "isolated": false
   },
   {
    "width_sp": 0.9818181818181818,
@@ -5362,7 +5896,9 @@
    "y": 4626,
    "w": 27,
    "h": 2,
-   "area": 47
+   "area": 47,
+   "component_growth": 283846.0,
+   "isolated": false
   },
   {
    "width_sp": 2.6545454545454548,
@@ -5382,7 +5918,9 @@
    "y": 4627,
    "w": 73,
    "h": 1,
-   "area": 73
+   "area": 73,
+   "component_growth": 209968.27397260274,
+   "isolated": false
   },
   {
    "width_sp": 1.709090909090909,
@@ -5402,7 +5940,9 @@
    "y": 4755,
    "w": 47,
    "h": 36,
-   "area": 950
+   "area": 950,
+   "component_growth": 1.4444444444444444,
+   "isolated": true
   },
   {
    "width_sp": 1.2727272727272727,
@@ -5422,7 +5962,9 @@
    "y": 4755,
    "w": 35,
    "h": 157,
-   "area": 4171
+   "area": 4171,
+   "component_growth": 2789.3874431301183,
+   "isolated": false
   },
   {
    "width_sp": 7.127272727272727,
@@ -5442,7 +5984,9 @@
    "y": 4755,
    "w": 196,
    "h": 157,
-   "area": 3133
+   "area": 3133,
+   "component_growth": 498.1049005589497,
+   "isolated": false
   },
   {
    "width_sp": 9.381818181818181,
@@ -5462,7 +6006,9 @@
    "y": 4755,
    "w": 258,
    "h": 157,
-   "area": 4197
+   "area": 4197,
+   "component_growth": 378.4052732928455,
+   "isolated": false
   },
   {
    "width_sp": 8.981818181818182,
@@ -5482,7 +6028,9 @@
    "y": 4755,
    "w": 247,
    "h": 157,
-   "area": 4819
+   "area": 4819,
+   "component_growth": 395.2573299981949,
+   "isolated": false
   },
   {
    "width_sp": 2.2545454545454544,
@@ -5502,7 +6050,9 @@
    "y": 4770,
    "w": 62,
    "h": 16,
-   "area": 319
+   "area": 319,
+   "component_growth": 15451.29435483871,
+   "isolated": false
   },
   {
    "width_sp": 1.0545454545454545,
@@ -5522,7 +6072,9 @@
    "y": 4837,
    "w": 29,
    "h": 16,
-   "area": 157
+   "area": 157,
+   "component_growth": 30.51939655172414,
+   "isolated": false
   },
   {
    "width_sp": 1.0545454545454545,
@@ -5542,7 +6094,9 @@
    "y": 4850,
    "w": 29,
    "h": 42,
-   "area": 755
+   "area": 755,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 7.054545454545455,
@@ -5562,7 +6116,9 @@
    "y": 4866,
    "w": 194,
    "h": 45,
-   "area": 1388
+   "area": 1388,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 6.763636363636364,
@@ -5582,7 +6138,9 @@
    "y": 4878,
    "w": 186,
    "h": 34,
-   "area": 3125
+   "area": 3125,
+   "component_growth": 2423.7324478178366,
+   "isolated": false
   },
   {
    "width_sp": 3.890909090909091,
@@ -5602,7 +6160,9 @@
    "y": 4880,
    "w": 107,
    "h": 25,
-   "area": 694
+   "area": 694,
+   "component_growth": 3.263551401869159,
+   "isolated": false
   },
   {
    "width_sp": 5.418181818181818,
@@ -5622,7 +6182,9 @@
    "y": 4881,
    "w": 149,
    "h": 31,
-   "area": 1158
+   "area": 1158,
+   "component_growth": 3318.3987876163674,
+   "isolated": false
   },
   {
    "width_sp": 7.090909090909091,
@@ -5642,7 +6204,9 @@
    "y": 4889,
    "w": 195,
    "h": 23,
-   "area": 1726
+   "area": 1726,
+   "component_growth": 0.020066889632107024,
+   "isolated": true
   },
   {
    "width_sp": 6.581818181818182,
@@ -5662,7 +6226,9 @@
    "y": 4889,
    "w": 181,
    "h": 23,
-   "area": 1496
+   "area": 1496,
+   "component_growth": 1.9197693970694212,
+   "isolated": true
   },
   {
    "width_sp": 1.8545454545454545,
@@ -5682,7 +6248,9 @@
    "y": 4890,
    "w": 51,
    "h": 22,
-   "area": 275
+   "area": 275,
+   "component_growth": 13661.037433155081,
+   "isolated": false
   },
   {
    "width_sp": 1.0909090909090908,
@@ -5702,7 +6270,9 @@
    "y": 4895,
    "w": 30,
    "h": 17,
-   "area": 163
+   "area": 163,
+   "component_growth": 30054.282352941176,
+   "isolated": false
   },
   {
    "width_sp": 2.0727272727272728,
@@ -5722,7 +6292,9 @@
    "y": 4906,
    "w": 57,
    "h": 6,
-   "area": 249
+   "area": 249,
+   "component_growth": 44817.78947368421,
+   "isolated": false
   },
   {
    "width_sp": 1.4545454545454546,
@@ -5742,7 +6314,9 @@
    "y": 4907,
    "w": 40,
    "h": 1,
-   "area": 40
+   "area": 40,
+   "component_growth": 11.475,
+   "isolated": false
   },
   {
    "width_sp": 0.9454545454545454,
@@ -5762,7 +6336,9 @@
    "y": 4908,
    "w": 26,
    "h": 4,
-   "area": 89
+   "area": 89,
+   "component_growth": 147381.57692307694,
+   "isolated": false
   },
   {
    "width_sp": 0.9454545454545454,
@@ -5782,7 +6358,9 @@
    "y": 4907,
    "w": 26,
    "h": 5,
-   "area": 89
+   "area": 89,
+   "component_growth": 117905.26153846153,
+   "isolated": false
   },
   {
    "width_sp": 1.4545454545454546,
@@ -5802,7 +6380,9 @@
    "y": 4909,
    "w": 40,
    "h": 3,
-   "area": 84
+   "area": 84,
+   "component_growth": 127730.7,
+   "isolated": false
   },
   {
    "width_sp": 1.6822429906542056,
@@ -5822,7 +6402,9 @@
    "y": 5044,
    "w": 45,
    "h": 82,
-   "area": 1953
+   "area": 1953,
+   "component_growth": 4153.8439024390245,
+   "isolated": false
   },
   {
    "width_sp": 1.0841121495327102,
@@ -5842,7 +6424,9 @@
    "y": 5044,
    "w": 29,
    "h": 2,
-   "area": 32
+   "area": 32,
+   "component_growth": 264270.4137931034,
+   "isolated": false
   },
   {
    "width_sp": 4.149532710280374,
@@ -5862,7 +6446,9 @@
    "y": 5044,
    "w": 111,
    "h": 11,
-   "area": 829
+   "area": 829,
+   "component_growth": 12553.385749385749,
+   "isolated": false
   },
   {
    "width_sp": 0.8598130841121495,
@@ -5882,7 +6468,9 @@
    "y": 5044,
    "w": 23,
    "h": 82,
-   "area": 748
+   "area": 748,
+   "component_growth": 8127.085896076352,
+   "isolated": false
   },
   {
    "width_sp": 4.0,
@@ -5902,7 +6490,9 @@
    "y": 5044,
    "w": 107,
    "h": 11,
-   "area": 751
+   "area": 751,
+   "component_growth": 13022.671197960917,
+   "isolated": false
   },
   {
    "width_sp": 4.037383177570093,
@@ -5922,7 +6512,9 @@
    "y": 5044,
    "w": 108,
    "h": 10,
-   "area": 645
+   "area": 645,
+   "component_growth": 14192.3,
+   "isolated": false
   },
   {
    "width_sp": 1.794392523364486,
@@ -5942,7 +6534,9 @@
    "y": 5044,
    "w": 48,
    "h": 2,
-   "area": 70
+   "area": 70,
+   "component_growth": 159663.375,
+   "isolated": false
   },
   {
    "width_sp": 1.0841121495327102,
@@ -5962,7 +6556,9 @@
    "y": 5044,
    "w": 29,
    "h": 2,
-   "area": 41
+   "area": 41,
+   "component_growth": 264270.4137931034,
+   "isolated": false
   },
   {
    "width_sp": 16.85981308411215,
@@ -5982,7 +6578,9 @@
    "y": 5044,
    "w": 451,
    "h": 82,
-   "area": 6706
+   "area": 6706,
+   "component_growth": 414.46336055378293,
+   "isolated": false
   },
   {
    "width_sp": 1.794392523364486,
@@ -6002,7 +6600,9 @@
    "y": 5044,
    "w": 48,
    "h": 6,
-   "area": 174
+   "area": 174,
+   "component_growth": 53221.125,
+   "isolated": false
   },
   {
    "width_sp": 0.9719626168224299,
@@ -6022,7 +6622,9 @@
    "y": 5046,
    "w": 26,
    "h": 1,
-   "area": 26
+   "area": 26,
+   "component_growth": 589526.3076923077,
+   "isolated": false
   },
   {
    "width_sp": 2.317757009345794,
@@ -6042,7 +6644,9 @@
    "y": 5051,
    "w": 62,
    "h": 11,
-   "area": 411
+   "area": 411,
+   "component_growth": 22474.609970674486,
+   "isolated": false
   },
   {
    "width_sp": 10.91588785046729,
@@ -6062,7 +6666,9 @@
    "y": 5050,
    "w": 292,
    "h": 32,
-   "area": 3126
+   "area": 3126,
+   "component_growth": 1640.3771404109589,
+   "isolated": false
   },
   {
    "width_sp": 1.3457943925233644,
@@ -6082,7 +6688,9 @@
    "y": 5055,
    "w": 36,
    "h": 36,
-   "area": 951
+   "area": 951,
+   "component_growth": 11826.916666666666,
+   "isolated": false
   },
   {
    "width_sp": 0.8598130841121495,
@@ -6102,7 +6710,9 @@
    "y": 5057,
    "w": 23,
    "h": 34,
-   "area": 437
+   "area": 437,
+   "component_growth": 1.0434782608695652,
+   "isolated": true
   },
   {
    "width_sp": 4.598130841121495,
@@ -6122,7 +6732,9 @@
    "y": 5059,
    "w": 123,
    "h": 36,
-   "area": 2518
+   "area": 2518,
+   "component_growth": 3461.5365853658536,
+   "isolated": false
   },
   {
    "width_sp": 1.1962616822429906,
@@ -6142,7 +6754,9 @@
    "y": 5059,
    "w": 32,
    "h": 36,
-   "area": 639
+   "area": 639,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.2149532710280373,
@@ -6162,7 +6776,9 @@
    "y": 5063,
    "w": 86,
    "h": 29,
-   "area": 995
+   "area": 995,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.261682242990654,
@@ -6182,7 +6798,9 @@
    "y": 5062,
    "w": 114,
    "h": 26,
-   "area": 1242
+   "area": 1242,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.897196261682243,
@@ -6202,7 +6820,9 @@
    "y": 5066,
    "w": 131,
    "h": 28,
-   "area": 1468
+   "area": 1468,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.074766355140187,
@@ -6222,7 +6842,9 @@
    "y": 5066,
    "w": 109,
    "h": 26,
-   "area": 1214
+   "area": 1214,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 0.8440366972477065,
@@ -6242,7 +6864,9 @@
    "y": 5252,
    "w": 23,
    "h": 1,
-   "area": 23
+   "area": 23,
+   "component_growth": 666421.0434782609,
+   "isolated": false
   },
   {
    "width_sp": 4.990825688073395,
@@ -6262,7 +6886,9 @@
    "y": 5252,
    "w": 136,
    "h": 63,
-   "area": 777
+   "area": 777,
+   "component_growth": 1788.9453781512605,
+   "isolated": false
   },
   {
    "width_sp": 18.788990825688074,
@@ -6282,7 +6908,9 @@
    "y": 5252,
    "w": 512,
    "h": 63,
-   "area": 3322
+   "area": 3322,
+   "component_growth": 475.18861607142856,
+   "isolated": false
   },
   {
    "width_sp": 1.5412844036697249,
@@ -6302,7 +6930,9 @@
    "y": 5314,
    "w": 42,
    "h": 1,
-   "area": 42
+   "area": 42,
+   "component_growth": 364944.85714285716,
+   "isolated": false
   },
   {
    "width_sp": 1.2844036697247707,
@@ -6322,7 +6952,9 @@
    "y": 5314,
    "w": 35,
    "h": 1,
-   "area": 35
+   "area": 35,
+   "component_growth": 437933.82857142854,
+   "isolated": false
   },
   {
    "width_sp": 0.9541284403669725,
@@ -6342,7 +6974,9 @@
    "y": 5314,
    "w": 26,
    "h": 1,
-   "area": 26
+   "area": 26,
+   "component_growth": 589526.3076923077,
+   "isolated": false
   },
   {
    "width_sp": 1.944954128440367,
@@ -6362,7 +6996,9 @@
    "y": 5441,
    "w": 53,
    "h": 46,
-   "area": 1117
+   "area": 1117,
+   "component_growth": 1.218211648892535,
+   "isolated": true
   },
   {
    "width_sp": 0.8073394495412844,
@@ -6382,7 +7018,9 @@
    "y": 5441,
    "w": 22,
    "h": 56,
-   "area": 413
+   "area": 413,
+   "component_growth": 12441.301948051949,
+   "isolated": false
   },
   {
    "width_sp": 1.5045871559633028,
@@ -6402,7 +7040,9 @@
    "y": 5441,
    "w": 41,
    "h": 56,
-   "area": 613
+   "area": 613,
+   "component_growth": 6675.820557491289,
+   "isolated": false
   },
   {
    "width_sp": 29.94495412844037,
@@ -6422,7 +7062,9 @@
    "y": 5441,
    "w": 816,
    "h": 56,
-   "area": 3816
+   "area": 3816,
+   "component_growth": 335.42725840336135,
+   "isolated": false
   },
   {
    "width_sp": 19.779816513761467,
@@ -6442,7 +7084,9 @@
    "y": 5441,
    "w": 539,
    "h": 56,
-   "area": 6784
+   "area": 6784,
+   "component_growth": 0.18261330506228465,
+   "isolated": true
   },
   {
    "width_sp": 0.9908256880733946,
@@ -6462,7 +7106,9 @@
    "y": 5452,
    "w": 27,
    "h": 35,
-   "area": 432
+   "area": 432,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 0.9174311926605505,
@@ -6482,7 +7128,9 @@
    "y": 5480,
    "w": 25,
    "h": 2,
-   "area": 47
+   "area": 47,
+   "component_growth": 110.24,
+   "isolated": false
   },
   {
    "width_sp": 0.9174311926605505,
@@ -6502,7 +7150,9 @@
    "y": 5496,
    "w": 25,
    "h": 1,
-   "area": 25
+   "area": 25,
+   "component_growth": 613107.36,
+   "isolated": false
   },
   {
    "width_sp": 16.327272727272728,
@@ -6522,7 +7172,9 @@
    "y": 5626,
    "w": 449,
    "h": 34,
-   "area": 3693
+   "area": 3693,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.309090909090909,
@@ -6542,7 +7194,9 @@
    "y": 5725,
    "w": 36,
    "h": 1,
-   "area": 36
+   "area": 36,
+   "component_growth": 425769.0,
+   "isolated": false
   },
   {
    "width_sp": 1.309090909090909,
@@ -6562,7 +7216,9 @@
    "y": 5724,
    "w": 36,
    "h": 2,
-   "area": 37
+   "area": 37,
+   "component_growth": 212884.5,
+   "isolated": false
   },
   {
    "width_sp": 3.381818181818182,
@@ -6582,7 +7238,9 @@
    "y": 5724,
    "w": 93,
    "h": 2,
-   "area": 94
+   "area": 94,
+   "component_growth": 82406.90322580645,
+   "isolated": false
   },
   {
    "width_sp": 2.4954128440366974,
@@ -6602,7 +7260,9 @@
    "y": 5852,
    "w": 68,
    "h": 129,
-   "area": 2229
+   "area": 2229,
+   "component_growth": 1747.341997264022,
+   "isolated": false
   },
   {
    "width_sp": 5.431192660550459,
@@ -6622,7 +7282,9 @@
    "y": 5912,
    "w": 148,
    "h": 27,
-   "area": 1098
+   "area": 1098,
+   "component_growth": 3835.7567567567567,
+   "isolated": false
   },
   {
    "width_sp": 1.2477064220183487,
@@ -6642,7 +7304,9 @@
    "y": 5950,
    "w": 34,
    "h": 31,
-   "area": 660
+   "area": 660,
+   "component_growth": 1.1290322580645162,
+   "isolated": true
   },
   {
    "width_sp": 1.0275229357798166,
@@ -6662,7 +7326,9 @@
    "y": 5950,
    "w": 28,
    "h": 31,
-   "area": 466
+   "area": 466,
+   "component_growth": 1.1290322580645162,
+   "isolated": true
   },
   {
    "width_sp": 1.2477064220183487,
@@ -6682,7 +7348,9 @@
    "y": 5951,
    "w": 34,
    "h": 30,
-   "area": 527
+   "area": 527,
+   "component_growth": 1.1333333333333333,
+   "isolated": true
   },
   {
    "width_sp": 0.9541284403669725,
@@ -6702,7 +7370,9 @@
    "y": 5952,
    "w": 26,
    "h": 29,
-   "area": 432
+   "area": 432,
+   "component_growth": 1.2254641909814323,
+   "isolated": true
   },
   {
    "width_sp": 19.522935779816514,
@@ -6722,7 +7392,9 @@
    "y": 5970,
    "w": 532,
    "h": 11,
-   "area": 3011
+   "area": 3011,
+   "component_growth": 2619.2214627477783,
+   "isolated": false
   },
   {
    "width_sp": 3.1192660550458715,
@@ -6742,7 +7414,9 @@
    "y": 5974,
    "w": 85,
    "h": 7,
-   "area": 426
+   "area": 426,
+   "component_growth": 25760.81344537815,
+   "isolated": false
   },
   {
    "width_sp": 2.385321100917431,
@@ -6762,7 +7436,9 @@
    "y": 5976,
    "w": 65,
    "h": 5,
-   "area": 210
+   "area": 210,
+   "component_growth": 47162.10461538462,
+   "isolated": false
   },
   {
    "width_sp": 1.0841121495327102,
@@ -6782,7 +7458,9 @@
    "y": 6105,
    "w": 29,
    "h": 113,
-   "area": 1209
+   "area": 1209,
+   "component_growth": 4677.352456515106,
+   "isolated": false
   },
   {
    "width_sp": 1.0467289719626167,
@@ -6802,7 +7480,9 @@
    "y": 6105,
    "w": 28,
    "h": 113,
-   "area": 1204
+   "area": 1204,
+   "component_growth": 4844.400758533502,
+   "isolated": false
   },
   {
    "width_sp": 1.1962616822429906,
@@ -6822,7 +7502,9 @@
    "y": 6105,
    "w": 32,
    "h": 2,
-   "area": 61
+   "area": 61,
+   "component_growth": 239495.0625,
+   "isolated": false
   },
   {
    "width_sp": 3.2149532710280373,
@@ -6842,7 +7524,9 @@
    "y": 6105,
    "w": 86,
    "h": 3,
-   "area": 170
+   "area": 170,
+   "component_growth": 59409.62790697674,
+   "isolated": false
   },
   {
    "width_sp": 1.7570093457943925,
@@ -6862,7 +7546,9 @@
    "y": 6105,
    "w": 47,
    "h": 3,
-   "area": 94
+   "area": 94,
+   "component_growth": 108706.97872340426,
+   "isolated": false
   },
   {
    "width_sp": 1.0467289719626167,
@@ -6882,7 +7568,9 @@
    "y": 6105,
    "w": 28,
    "h": 2,
-   "area": 52
+   "area": 52,
+   "component_growth": 273708.64285714284,
+   "isolated": false
   },
   {
    "width_sp": 0.897196261682243,
@@ -6902,7 +7590,9 @@
    "y": 6105,
    "w": 24,
    "h": 7,
-   "area": 85
+   "area": 85,
+   "component_growth": 91236.21428571429,
+   "isolated": false
   },
   {
    "width_sp": 4.785046728971962,
@@ -6922,7 +7612,9 @@
    "y": 6105,
    "w": 128,
    "h": 26,
-   "area": 739
+   "area": 739,
+   "component_growth": 4605.674278846154,
+   "isolated": false
   },
   {
    "width_sp": 10.205607476635514,
@@ -6942,7 +7634,9 @@
    "y": 6105,
    "w": 273,
    "h": 113,
-   "area": 5575
+   "area": 5575,
+   "component_growth": 496.86161625984636,
+   "isolated": false
   },
   {
    "width_sp": 10.429906542056075,
@@ -6962,7 +7656,9 @@
    "y": 6105,
    "w": 279,
    "h": 113,
-   "area": 4158
+   "area": 4158,
+   "component_growth": 486.1764202112475,
+   "isolated": false
   },
   {
    "width_sp": 4.0,
@@ -6982,7 +7678,9 @@
    "y": 6105,
    "w": 107,
    "h": 24,
-   "area": 625
+   "area": 625,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 29.60747663551402,
@@ -7002,7 +7700,9 @@
    "y": 6105,
    "w": 792,
    "h": 113,
-   "area": 13215
+   "area": 13215,
+   "component_growth": 0.02869401984446232,
+   "isolated": true
   },
   {
    "width_sp": 5.158878504672897,
@@ -7022,7 +7722,9 @@
    "y": 6105,
    "w": 138,
    "h": 17,
-   "area": 951
+   "area": 951,
+   "component_growth": 6533.539641943734,
+   "isolated": false
   },
   {
    "width_sp": 2.05607476635514,
@@ -7042,7 +7744,9 @@
    "y": 6105,
    "w": 55,
    "h": 55,
-   "area": 713
+   "area": 713,
+   "component_growth": 5067.002975206611,
+   "isolated": false
   },
   {
    "width_sp": 5.757009345794392,
@@ -7062,7 +7766,9 @@
    "y": 6105,
    "w": 154,
    "h": 22,
-   "area": 1799
+   "area": 1799,
+   "component_growth": 4524.1097992916175,
+   "isolated": false
   },
   {
    "width_sp": 2.2803738317757007,
@@ -7082,7 +7788,9 @@
    "y": 6105,
    "w": 61,
    "h": 19,
-   "area": 539
+   "area": 539,
+   "component_growth": 13224.921484037965,
+   "isolated": false
   },
   {
    "width_sp": 1.9813084112149533,
@@ -7102,7 +7810,9 @@
    "y": 6105,
    "w": 53,
    "h": 14,
-   "area": 425
+   "area": 425,
+   "component_growth": 20657.256064690027,
+   "isolated": false
   },
   {
    "width_sp": 7.88785046728972,
@@ -7122,7 +7832,9 @@
    "y": 6105,
    "w": 211,
    "h": 80,
-   "area": 2012
+   "area": 2012,
+   "component_growth": 908.0381516587678,
+   "isolated": false
   },
   {
    "width_sp": 21.53271028037383,
@@ -7142,7 +7854,9 @@
    "y": 6105,
    "w": 576,
    "h": 113,
-   "area": 2751
+   "area": 2751,
+   "component_growth": 235.49170353982302,
+   "isolated": false
   },
   {
    "width_sp": 2.0934579439252334,
@@ -7162,7 +7876,9 @@
    "y": 6105,
    "w": 56,
    "h": 44,
-   "area": 895
+   "area": 895,
+   "component_growth": 6220.650974025974,
+   "isolated": false
   },
   {
    "width_sp": 19.850467289719628,
@@ -7182,7 +7898,9 @@
    "y": 6105,
    "w": 531,
    "h": 113,
-   "area": 3465
+   "area": 3465,
+   "component_growth": 255.44862756862156,
+   "isolated": false
   },
   {
    "width_sp": 7.813084112149533,
@@ -7202,7 +7920,9 @@
    "y": 6108,
    "w": 209,
    "h": 42,
-   "area": 1601
+   "area": 1601,
+   "component_growth": 0.29254955570745045,
+   "isolated": true
   },
   {
    "width_sp": 9.121495327102803,
@@ -7222,7 +7942,9 @@
    "y": 6115,
    "w": 244,
    "h": 43,
-   "area": 1822
+   "area": 1822,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.336448598130841,
@@ -7242,7 +7964,9 @@
    "y": 6118,
    "w": 116,
    "h": 25,
-   "area": 772
+   "area": 772,
+   "component_growth": 5285.408275862069,
+   "isolated": false
   },
   {
    "width_sp": 14.467289719626168,
@@ -7262,7 +7986,9 @@
    "y": 6118,
    "w": 387,
    "h": 73,
-   "area": 2991
+   "area": 2991,
+   "component_growth": 542.5536795157693,
+   "isolated": false
   },
   {
    "width_sp": 8.822429906542055,
@@ -7282,7 +8008,9 @@
    "y": 6121,
    "w": 236,
    "h": 63,
-   "area": 3762
+   "area": 3762,
+   "component_growth": 1030.9176755447943,
+   "isolated": false
   },
   {
    "width_sp": 8.0,
@@ -7302,7 +8030,9 @@
    "y": 6130,
    "w": 214,
    "h": 25,
-   "area": 2475
+   "area": 2475,
+   "component_growth": 2864.987663551402,
+   "isolated": false
   },
   {
    "width_sp": 1.1962616822429906,
@@ -7322,7 +8052,9 @@
    "y": 6138,
    "w": 32,
    "h": 8,
-   "area": 121
+   "area": 121,
+   "component_growth": 59873.765625,
+   "isolated": false
   },
   {
    "width_sp": 2.05607476635514,
@@ -7342,7 +8074,9 @@
    "y": 6139,
    "w": 55,
    "h": 34,
-   "area": 1115
+   "area": 1115,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.3271028037383177,
@@ -7362,7 +8096,9 @@
    "y": 6158,
    "w": 89,
    "h": 24,
-   "area": 890
+   "area": 890,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.5607476635514015,
@@ -7382,7 +8118,9 @@
    "y": 6161,
    "w": 122,
    "h": 29,
-   "area": 1291
+   "area": 1291,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.4485981308411215,
@@ -7402,7 +8140,9 @@
    "y": 6167,
    "w": 119,
    "h": 23,
-   "area": 1167
+   "area": 1167,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.233644859813084,
@@ -7422,7 +8162,9 @@
    "y": 6185,
    "w": 33,
    "h": 33,
-   "area": 582
+   "area": 582,
+   "component_growth": 1.0606060606060606,
+   "isolated": true
   },
   {
    "width_sp": 1.2710280373831775,
@@ -7442,7 +8184,9 @@
    "y": 6185,
    "w": 34,
    "h": 33,
-   "area": 481
+   "area": 481,
+   "component_growth": 1.0606060606060606,
+   "isolated": true
   },
   {
    "width_sp": 1.4579439252336448,
@@ -7462,7 +8206,9 @@
    "y": 6185,
    "w": 39,
    "h": 33,
-   "area": 698
+   "area": 698,
+   "component_growth": 1.0606060606060606,
+   "isolated": true
   },
   {
    "width_sp": 0.897196261682243,
@@ -7482,7 +8228,9 @@
    "y": 6185,
    "w": 24,
    "h": 33,
-   "area": 335
+   "area": 335,
+   "component_growth": 1.0303030303030303,
+   "isolated": true
   },
   {
    "width_sp": 1.158878504672897,
@@ -7502,7 +8250,9 @@
    "y": 6185,
    "w": 31,
    "h": 33,
-   "area": 575
+   "area": 575,
+   "component_growth": 1.0606060606060606,
+   "isolated": true
   },
   {
    "width_sp": 1.5700934579439252,
@@ -7522,7 +8272,9 @@
    "y": 6217,
    "w": 42,
    "h": 1,
-   "area": 42
+   "area": 42,
+   "component_growth": 364944.85714285716,
+   "isolated": false
   },
   {
    "width_sp": 1.0642201834862386,
@@ -7542,7 +8294,9 @@
    "y": 6344,
    "w": 29,
    "h": 155,
-   "area": 2517
+   "area": 2517,
+   "component_growth": 3409.940823136819,
+   "isolated": false
   },
   {
    "width_sp": 1.1009174311926606,
@@ -7562,7 +8316,9 @@
    "y": 6344,
    "w": 30,
    "h": 155,
-   "area": 1710
+   "area": 1710,
+   "component_growth": 3296.2761290322583,
+   "isolated": false
   },
   {
    "width_sp": 5.174311926605505,
@@ -7582,7 +8338,9 @@
    "y": 6344,
    "w": 141,
    "h": 3,
-   "area": 283
+   "area": 283,
+   "component_growth": 36235.65957446808,
+   "isolated": false
   },
   {
    "width_sp": 5.284403669724771,
@@ -7602,7 +8360,9 @@
    "y": 6344,
    "w": 144,
    "h": 42,
-   "area": 648
+   "area": 648,
+   "component_growth": 2534.339285714286,
+   "isolated": false
   },
   {
    "width_sp": 4.844036697247707,
@@ -7622,7 +8382,9 @@
    "y": 6344,
    "w": 132,
    "h": 42,
-   "area": 597
+   "area": 597,
+   "component_growth": 2764.7337662337663,
+   "isolated": false
   },
   {
    "width_sp": 2.238532110091743,
@@ -7642,7 +8404,9 @@
    "y": 6344,
    "w": 61,
    "h": 7,
-   "area": 109
+   "area": 109,
+   "component_growth": 35896.21545667447,
+   "isolated": false
   },
   {
    "width_sp": 1.5045871559633028,
@@ -7662,7 +8426,9 @@
    "y": 6344,
    "w": 41,
    "h": 1,
-   "area": 41
+   "area": 41,
+   "component_growth": 373845.9512195122,
+   "isolated": false
   },
   {
    "width_sp": 9.944954128440367,
@@ -7682,7 +8448,9 @@
    "y": 6344,
    "w": 271,
    "h": 155,
-   "area": 4333
+   "area": 4333,
+   "component_growth": 364.9014164980359,
+   "isolated": false
   },
   {
    "width_sp": 1.944954128440367,
@@ -7702,7 +8470,9 @@
    "y": 6344,
    "w": 53,
    "h": 43,
-   "area": 353
+   "area": 353,
+   "component_growth": 6725.6182536200085,
+   "isolated": false
   },
   {
    "width_sp": 10.20183486238532,
@@ -7722,7 +8492,9 @@
    "y": 6344,
    "w": 278,
    "h": 155,
-   "area": 4893
+   "area": 4893,
+   "component_growth": 355.7132513344163,
+   "isolated": false
   },
   {
    "width_sp": 1.0275229357798166,
@@ -7742,7 +8514,9 @@
    "y": 6344,
    "w": 28,
    "h": 17,
-   "area": 279
+   "area": 279,
+   "component_growth": 32201.016806722688,
+   "isolated": false
   },
   {
    "width_sp": 7.743119266055046,
@@ -7762,7 +8536,9 @@
    "y": 6344,
    "w": 211,
    "h": 67,
-   "area": 2390
+   "area": 2390,
+   "component_growth": 1084.2246586970361,
+   "isolated": false
   },
   {
    "width_sp": 29.174311926605505,
@@ -7782,7 +8558,9 @@
    "y": 6344,
    "w": 795,
    "h": 155,
-   "area": 14391
+   "area": 14391,
+   "component_growth": 124.38777845404748,
+   "isolated": false
   },
   {
    "width_sp": 3.3394495412844036,
@@ -7802,7 +8580,9 @@
    "y": 6344,
    "w": 91,
    "h": 27,
-   "area": 639
+   "area": 639,
+   "component_growth": 6238.373626373626,
+   "isolated": false
   },
   {
    "width_sp": 5.431192660550459,
@@ -7822,7 +8602,9 @@
    "y": 6344,
    "w": 148,
    "h": 155,
-   "area": 2517
+   "area": 2517,
+   "component_growth": 668.1640802092415,
+   "isolated": false
   },
   {
    "width_sp": 26.75229357798165,
@@ -7842,7 +8624,9 @@
    "y": 6344,
    "w": 729,
    "h": 155,
-   "area": 5540
+   "area": 5540,
+   "component_growth": 135.64922341696536,
+   "isolated": false
   },
   {
    "width_sp": 2.128440366972477,
@@ -7862,7 +8646,9 @@
    "y": 6344,
    "w": 58,
    "h": 56,
-   "area": 955
+   "area": 955,
+   "component_growth": 4719.114532019705,
+   "isolated": false
   },
   {
    "width_sp": 7.706422018348624,
@@ -7882,7 +8668,9 @@
    "y": 6344,
    "w": 210,
    "h": 79,
-   "area": 1917
+   "area": 1917,
+   "component_growth": 923.9110307414105,
+   "isolated": false
   },
   {
    "width_sp": 15.81651376146789,
@@ -7902,7 +8690,9 @@
    "y": 6344,
    "w": 431,
    "h": 155,
-   "area": 6902
+   "area": 6902,
+   "component_growth": 229.43917371454233,
+   "isolated": false
   },
   {
    "width_sp": 2.055045871559633,
@@ -7922,7 +8712,9 @@
    "y": 6344,
    "w": 56,
    "h": 41,
-   "area": 657
+   "area": 657,
+   "component_growth": 6675.820557491289,
+   "isolated": false
   },
   {
    "width_sp": 16.73394495412844,
@@ -7942,7 +8734,9 @@
    "y": 6344,
    "w": 456,
    "h": 155,
-   "area": 5127
+   "area": 5127,
+   "component_growth": 216.86027164685908,
+   "isolated": false
   },
   {
    "width_sp": 6.605504587155964,
@@ -7962,7 +8756,9 @@
    "y": 6349,
    "w": 180,
    "h": 39,
-   "area": 1243
+   "area": 1243,
+   "component_growth": 2183.4307692307693,
+   "isolated": false
   },
   {
    "width_sp": 14.091743119266056,
@@ -7982,7 +8778,9 @@
    "y": 6351,
    "w": 384,
    "h": 74,
-   "area": 2976
+   "area": 2976,
+   "component_growth": 539.403293918919,
+   "isolated": false
   },
   {
    "width_sp": 4.0,
@@ -8002,7 +8800,9 @@
    "y": 6360,
    "w": 109,
    "h": 24,
-   "area": 729
+   "area": 729,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.036697247706422,
@@ -8022,7 +8822,9 @@
    "y": 6372,
    "w": 110,
    "h": 25,
-   "area": 668
+   "area": 668,
+   "component_growth": 5573.703272727273,
+   "isolated": false
   },
   {
    "width_sp": 0.8073394495412844,
@@ -8042,7 +8844,9 @@
    "y": 6374,
    "w": 22,
    "h": 8,
-   "area": 64
+   "area": 64,
+   "component_growth": 87089.11363636363,
+   "isolated": false
   },
   {
    "width_sp": 7.779816513761468,
@@ -8062,7 +8866,9 @@
    "y": 6385,
    "w": 212,
    "h": 36,
-   "area": 1540
+   "area": 1540,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 9.027522935779816,
@@ -8082,7 +8888,9 @@
    "y": 6390,
    "w": 246,
    "h": 51,
-   "area": 1970
+   "area": 1970,
+   "component_growth": 1221.7187948350072,
+   "isolated": false
   },
   {
    "width_sp": 4.660550458715596,
@@ -8102,7 +8910,9 @@
    "y": 6399,
    "w": 127,
    "h": 26,
-   "area": 758
+   "area": 758,
+   "component_growth": 4641.939430648092,
+   "isolated": false
   },
   {
    "width_sp": 3.743119266055046,
@@ -8122,7 +8932,9 @@
    "y": 6423,
    "w": 102,
    "h": 29,
-   "area": 1140
+   "area": 1140,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.587155963302752,
@@ -8142,7 +8954,9 @@
    "y": 6422,
    "w": 125,
    "h": 30,
-   "area": 1389
+   "area": 1389,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 0.8807339449541285,
@@ -8162,7 +8976,9 @@
    "y": 6445,
    "w": 24,
    "h": 7,
-   "area": 115
+   "area": 115,
+   "component_growth": 30.00595238095238,
+   "isolated": false
   },
   {
    "width_sp": 4.807339449541284,
@@ -8182,7 +8998,9 @@
    "y": 6447,
    "w": 131,
    "h": 29,
-   "area": 1422
+   "area": 1422,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.513761467889908,
@@ -8202,7 +9020,9 @@
    "y": 6448,
    "w": 123,
    "h": 28,
-   "area": 1418
+   "area": 1418,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.2660550458715596,
@@ -8222,7 +9042,9 @@
    "y": 6449,
    "w": 89,
    "h": 30,
-   "area": 916
+   "area": 916,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.513761467889908,
@@ -8242,7 +9064,9 @@
    "y": 6450,
    "w": 123,
    "h": 25,
-   "area": 1250
+   "area": 1250,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.0642201834862386,
@@ -8262,7 +9086,9 @@
    "y": 6460,
    "w": 29,
    "h": 34,
-   "area": 527
+   "area": 527,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.0275229357798166,
@@ -8282,7 +9108,9 @@
    "y": 6460,
    "w": 28,
    "h": 34,
-   "area": 485
+   "area": 485,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 0.8807339449541285,
@@ -8302,7 +9130,9 @@
    "y": 6460,
    "w": 24,
    "h": 34,
-   "area": 372
+   "area": 372,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 7.302752293577981,
@@ -8322,7 +9152,9 @@
    "y": 6461,
    "w": 199,
    "h": 38,
-   "area": 1652
+   "area": 1652,
+   "component_growth": 2026.9352023274266,
+   "isolated": false
   },
   {
    "width_sp": 3.0825688073394497,
@@ -8342,7 +9174,9 @@
    "y": 6470,
    "w": 84,
    "h": 29,
-   "area": 1287
+   "area": 1287,
+   "component_growth": 6292.152709359606,
+   "isolated": false
   },
   {
    "width_sp": 6.532110091743119,
@@ -8362,7 +9196,9 @@
    "y": 6472,
    "w": 178,
    "h": 27,
-   "area": 1150
+   "area": 1150,
+   "component_growth": 3189.2808988764045,
+   "isolated": false
   },
   {
    "width_sp": 2.7889908256880735,
@@ -8382,7 +9218,9 @@
    "y": 6477,
    "w": 76,
    "h": 22,
-   "area": 867
+   "area": 867,
+   "component_growth": 9167.275119617225,
+   "isolated": false
   },
   {
    "width_sp": 4.18348623853211,
@@ -8402,7 +9240,9 @@
    "y": 6480,
    "w": 114,
    "h": 19,
-   "area": 1441
+   "area": 1441,
+   "component_growth": 7076.4930747922435,
+   "isolated": false
   },
   {
    "width_sp": 1.0275229357798166,
@@ -8422,7 +9262,9 @@
    "y": 6482,
    "w": 28,
    "h": 2,
-   "area": 52
+   "area": 52,
+   "component_growth": 273708.64285714284,
+   "isolated": false
   },
   {
    "width_sp": 3.0825688073394497,
@@ -8442,7 +9284,9 @@
    "y": 6494,
    "w": 84,
    "h": 5,
-   "area": 343
+   "area": 343,
+   "component_growth": 36494.485714285714,
+   "isolated": false
   },
   {
    "width_sp": 0.8807339449541285,
@@ -8462,7 +9306,9 @@
    "y": 6496,
    "w": 24,
    "h": 3,
-   "area": 55
+   "area": 55,
+   "component_growth": 212884.5,
+   "isolated": false
   },
   {
    "width_sp": 2.5688073394495414,
@@ -8482,7 +9328,9 @@
    "y": 6497,
    "w": 70,
    "h": 2,
-   "area": 93
+   "area": 93,
+   "component_growth": 109483.45714285714,
+   "isolated": false
   },
   {
    "width_sp": 0.8807339449541285,
@@ -8502,7 +9350,9 @@
    "y": 6498,
    "w": 24,
    "h": 1,
-   "area": 24
+   "area": 24,
+   "component_growth": 638653.5,
+   "isolated": false
   },
   {
    "width_sp": 1.1891891891891893,
@@ -8522,7 +9372,9 @@
    "y": 6631,
    "w": 33,
    "h": 114,
-   "area": 3120
+   "area": 3120,
+   "component_growth": 4074.3444976076553,
+   "isolated": false
   },
   {
    "width_sp": 9.117117117117116,
@@ -8542,7 +9394,9 @@
    "y": 6631,
    "w": 253,
    "h": 114,
-   "area": 4022
+   "area": 4022,
+   "component_growth": 531.4362388183898,
+   "isolated": false
   },
   {
    "width_sp": 7.603603603603603,
@@ -8562,7 +9416,9 @@
    "y": 6631,
    "w": 211,
    "h": 32,
-   "area": 1571
+   "area": 1571,
+   "component_growth": 2270.0953791469196,
+   "isolated": false
   },
   {
    "width_sp": 1.6936936936936937,
@@ -8582,7 +9438,9 @@
    "y": 6631,
    "w": 47,
    "h": 5,
-   "area": 163
+   "area": 163,
+   "component_growth": 65224.187234042554,
+   "isolated": false
   },
   {
    "width_sp": 8.972972972972974,
@@ -8602,7 +9460,9 @@
    "y": 6631,
    "w": 249,
    "h": 114,
-   "area": 4192
+   "area": 4192,
+   "component_growth": 539.9733671528218,
+   "isolated": false
   },
   {
    "width_sp": 28.936936936936938,
@@ -8622,7 +9482,9 @@
    "y": 6631,
    "w": 803,
    "h": 114,
-   "area": 14302
+   "area": 14302,
+   "component_growth": 167.43881497017762,
+   "isolated": false
   },
   {
    "width_sp": 16.61261261261261,
@@ -8642,7 +9504,9 @@
    "y": 6631,
    "w": 461,
    "h": 114,
-   "area": 4757
+   "area": 4757,
+   "component_growth": 291.6558967918712,
+   "isolated": false
   },
   {
    "width_sp": 4.684684684684685,
@@ -8662,7 +9526,9 @@
    "y": 6667,
    "w": 130,
    "h": 26,
-   "area": 757
+   "area": 757,
+   "component_growth": 1.0384615384615385,
+   "isolated": true
   },
   {
    "width_sp": 9.297297297297296,
@@ -8682,7 +9548,9 @@
    "y": 6667,
    "w": 258,
    "h": 70,
-   "area": 3627
+   "area": 3627,
+   "component_growth": 0.19435215946843853,
+   "isolated": true
   },
   {
    "width_sp": 3.6396396396396398,
@@ -8702,7 +9570,9 @@
    "y": 6667,
    "w": 101,
    "h": 26,
-   "area": 1082
+   "area": 1082,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.009009009009009,
@@ -8722,7 +9592,9 @@
    "y": 6668,
    "w": 28,
    "h": 2,
-   "area": 55
+   "area": 55,
+   "component_growth": 273708.64285714284,
+   "isolated": false
   },
   {
    "width_sp": 4.576576576576577,
@@ -8742,7 +9614,9 @@
    "y": 6669,
    "w": 127,
    "h": 25,
-   "area": 1375
+   "area": 1375,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 0.972972972972973,
@@ -8762,7 +9636,9 @@
    "y": 6669,
    "w": 27,
    "h": 2,
-   "area": 37
+   "area": 37,
+   "component_growth": 283846.0,
+   "isolated": false
   },
   {
    "width_sp": 2.234234234234234,
@@ -8782,7 +9658,9 @@
    "y": 6698,
    "w": 62,
    "h": 36,
-   "area": 1197
+   "area": 1197,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.045045045045045,
@@ -8802,7 +9680,9 @@
    "y": 6699,
    "w": 29,
    "h": 36,
-   "area": 450
+   "area": 450,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.7297297297297298,
@@ -8822,7 +9702,9 @@
    "y": 6699,
    "w": 48,
    "h": 35,
-   "area": 621
+   "area": 621,
+   "component_growth": 0.6214285714285714,
+   "isolated": true
   },
   {
    "width_sp": 1.117117117117117,
@@ -8842,7 +9724,9 @@
    "y": 6699,
    "w": 31,
    "h": 35,
-   "area": 584
+   "area": 584,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.7207207207207205,
@@ -8862,7 +9746,9 @@
    "y": 6707,
    "w": 131,
    "h": 28,
-   "area": 1391
+   "area": 1391,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.108108108108108,
@@ -8882,7 +9768,9 @@
    "y": 6713,
    "w": 114,
    "h": 25,
-   "area": 1251
+   "area": 1251,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 3.2432432432432434,
@@ -8902,7 +9790,9 @@
    "y": 6713,
    "w": 90,
    "h": 26,
-   "area": 972
+   "area": 972,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.009009009009009,
@@ -8922,7 +9812,9 @@
    "y": 6738,
    "w": 28,
    "h": 7,
-   "area": 150
+   "area": 150,
+   "component_growth": 78202.4693877551,
+   "isolated": false
   },
   {
    "width_sp": 1.045045045045045,
@@ -8942,7 +9834,9 @@
    "y": 6737,
    "w": 29,
    "h": 8,
-   "area": 193
+   "area": 193,
+   "component_growth": 66067.60344827586,
+   "isolated": false
   },
   {
    "width_sp": 5.297297297297297,
@@ -8962,7 +9856,9 @@
    "y": 6739,
    "w": 147,
    "h": 6,
-   "area": 507
+   "area": 507,
+   "component_growth": 17378.326530612245,
+   "isolated": false
   },
   {
    "width_sp": 1.1531531531531531,
@@ -8982,7 +9878,9 @@
    "y": 6744,
    "w": 32,
    "h": 1,
-   "area": 32
+   "area": 32,
+   "component_growth": 478990.125,
+   "isolated": false
   },
   {
    "width_sp": 1.0810810810810811,
@@ -9002,7 +9900,9 @@
    "y": 6744,
    "w": 30,
    "h": 1,
-   "area": 30
+   "area": 30,
+   "component_growth": 510922.8,
+   "isolated": false
   },
   {
    "width_sp": 1.2110091743119267,
@@ -9022,7 +9922,9 @@
    "y": 6871,
    "w": 33,
    "h": 87,
-   "area": 2375
+   "area": 2375,
+   "component_growth": 5338.796238244514,
+   "isolated": false
   },
   {
    "width_sp": 25.68807339449541,
@@ -9042,7 +9944,9 @@
    "y": 6871,
    "w": 700,
    "h": 87,
-   "area": 9976
+   "area": 9976,
+   "component_growth": 251.68610837438425,
+   "isolated": false
   },
   {
    "width_sp": 6.89908256880734,
@@ -9062,7 +9966,9 @@
    "y": 6871,
    "w": 188,
    "h": 23,
-   "area": 3134
+   "area": 3134,
+   "component_growth": 3544.7927844588344,
+   "isolated": false
   },
   {
    "width_sp": 11.302752293577981,
@@ -9082,7 +9988,9 @@
    "y": 6887,
    "w": 308,
    "h": 35,
-   "area": 2319
+   "area": 2319,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.5412844036697249,
@@ -9102,7 +10010,9 @@
    "y": 6892,
    "w": 42,
    "h": 35,
-   "area": 739
+   "area": 739,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 0.9174311926605505,
@@ -9122,7 +10032,9 @@
    "y": 6892,
    "w": 25,
    "h": 35,
-   "area": 431
+   "area": 431,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.1743119266055047,
@@ -9142,7 +10054,9 @@
    "y": 6892,
    "w": 32,
    "h": 35,
-   "area": 552
+   "area": 552,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 0.9174311926605505,
@@ -9162,7 +10076,9 @@
    "y": 6893,
    "w": 25,
    "h": 34,
-   "area": 377
+   "area": 377,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.2110091743119267,
@@ -9182,7 +10098,9 @@
    "y": 6893,
    "w": 33,
    "h": 33,
-   "area": 447
+   "area": 447,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 4.770642201834862,
@@ -9202,7 +10120,9 @@
    "y": 6950,
    "w": 130,
    "h": 8,
-   "area": 546
+   "area": 546,
+   "component_growth": 14738.157692307692,
+   "isolated": false
   },
   {
    "width_sp": 2.4363636363636365,
@@ -9222,7 +10142,9 @@
    "y": 7085,
    "w": 67,
    "h": 71,
-   "area": 964
+   "area": 964,
+   "component_growth": 3222.1324364095017,
+   "isolated": false
   },
   {
    "width_sp": 6.836363636363636,
@@ -9242,7 +10164,9 @@
    "y": 7085,
    "w": 188,
    "h": 23,
-   "area": 3210
+   "area": 3210,
+   "component_growth": 3544.7927844588344,
+   "isolated": false
   },
   {
    "width_sp": 6.254545454545455,
@@ -9262,7 +10186,9 @@
    "y": 7087,
    "w": 172,
    "h": 155,
-   "area": 4202
+   "area": 4202,
+   "component_growth": 1.0903225806451613,
+   "isolated": true
   },
   {
    "width_sp": 11.454545454545455,
@@ -9282,7 +10208,9 @@
    "y": 7102,
    "w": 315,
    "h": 36,
-   "area": 2425
+   "area": 2425,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 2.1454545454545455,
@@ -9302,7 +10230,9 @@
    "y": 7104,
    "w": 59,
    "h": 35,
-   "area": 1056
+   "area": 1056,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.1636363636363636,
@@ -9322,7 +10252,9 @@
    "y": 7105,
    "w": 32,
    "h": 34,
-   "area": 491
+   "area": 491,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.709090909090909,
@@ -9342,7 +10274,9 @@
    "y": 7105,
    "w": 47,
    "h": 34,
-   "area": 748
+   "area": 748,
+   "component_growth": 0.6808510638297872,
+   "isolated": true
   },
   {
    "width_sp": 1.5272727272727273,
@@ -9362,7 +10296,9 @@
    "y": 7105,
    "w": 42,
    "h": 35,
-   "area": 796
+   "area": 796,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 25.09090909090909,
@@ -9382,7 +10318,9 @@
    "y": 7126,
    "w": 690,
    "h": 34,
-   "area": 9400
+   "area": 9400,
+   "component_growth": 1.0,
+   "isolated": true
   },
   {
    "width_sp": 1.4181818181818182,
@@ -9402,7 +10340,9 @@
    "y": 7139,
    "w": 39,
    "h": 80,
-   "area": 1292
+   "area": 1292,
+   "component_growth": 3.108974358974359,
+   "isolated": false
   },
   {
    "width_sp": 0.8363636363636363,
@@ -9422,7 +10362,9 @@
    "y": 7171,
    "w": 23,
    "h": 2,
-   "area": 27
+   "area": 27,
+   "component_growth": 66.69565217391305,
+   "isolated": false
   }
  ]
 }

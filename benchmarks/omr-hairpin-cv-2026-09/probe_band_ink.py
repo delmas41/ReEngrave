@@ -165,6 +165,42 @@ def describe(mask: np.ndarray, spacing: float) -> dict[str, float]:
     }
 
 
+def isolation(ink: np.ndarray, rows: list[dict]) -> None:
+    """Mark each candidate with whether its FULL-PAGE component is only itself.
+
+    ⚠️ SEAN'S RULE, and it is better than the one the scope proposed: **a beam is
+    always connected to something — its stems — and a hairpin is connected to
+    nothing.** The scope's version came at it from the beam's side (reuse
+    `detect_beams`' "two stem ends" test), which needs stems to have been found
+    first. This is a property of the HAIRPIN, so it needs nothing found first.
+
+    ⚠️ It has to be measured on the WHOLE PAGE, not the band crop. A beam dipping
+    into the band is cut off by the crop, its stems are above the cut, and inside
+    the crop it looks as isolated as a hairpin does.
+
+    Measured on Brahms 1 p2, `full component area / band-crop area`:
+    p10 1.0x, p25 1.0x, p50 1.0x, then p75 **3248x** and p90 **9167x** — the
+    attached ones are part of the page's single giant ink mass. There is nothing
+    between 1 and 3248, which is what a constant read off a gap looks like.
+    """
+    _n, lab, stats, _c = cv2.connectedComponentsWithStats(ink, 8)
+    for r in rows:
+        label = 0
+        for yy in range(r["y"], min(r["y"] + r["h"], lab.shape[0])):
+            for xx in range(r["x"], min(r["x"] + r["w"], lab.shape[1]), 3):
+                if lab[yy, xx]:
+                    label = int(lab[yy, xx])
+                    break
+            if label:
+                break
+        if not label:
+            r["isolated"] = None
+            continue
+        _x, _y, w, h, _a = stats[label]
+        r["component_growth"] = (w * h) / max(1.0, r["w"] * r["h"])
+        r["isolated"] = bool(r["component_growth"] < 2.0)
+
+
 def probe(pdf: Path, page_index: int, result: dict, out_dir: Path,
           dpi: int, result_page: int = 0) -> dict:
     import fitz  # type: ignore
@@ -217,6 +253,10 @@ def probe(pdf: Path, page_index: int, result: dict, out_dir: Path,
             d.update({"staff": s["index"], "x": int(x), "y": int(top + y),
                       "w": int(w), "h": int(h), "area": int(area)})
             rows.append(d)
+    # The isolation test needs the RAW page, before any erasure — a hairpin
+    # that touches nothing must be measured against everything.
+    raw = (gray < 180).astype(np.uint8) * 255
+    isolation(raw, rows)
     return {"pdf": str(pdf), "page": page_index, "dpi": dpi,
             "n_staves": len(staves), "components": rows}
 
@@ -257,11 +297,26 @@ def main() -> int:
         sr = sorted(r["straight_rms_sp"] for r in have)
         for q in (10, 25, 50, 75, 90):
             print(f"   p{q:<3d} {sr[min(len(sr) - 1, q * len(sr) // 100)]:.3f}")
-        print("\nBOTH TESTS — open extent >= 0.5 sp AND outlines straight:")
+        print("\nBOTH SHAPE TESTS — open extent >= 0.5 sp AND outlines straight:")
         for rms in (0.05, 0.08, 0.10, 0.15, 0.20):
             n = sum(1 for r in have
                     if r["open_sp"] >= 0.5 and r["straight_rms_sp"] <= rms)
             print(f"   straight within {rms:.2f} sp: {n:4d} candidates")
+
+        shape = [r for r in have
+                 if r["open_sp"] >= 0.5 and r["straight_rms_sp"] <= 0.10]
+        iso = [r for r in shape if r.get("isolated")]
+        att = [r for r in shape if r.get("isolated") is False]
+        print(f"\nPLUS ISOLATION — a beam is attached to its stems, "
+              f"a hairpin to nothing:")
+        print(f"   isolated (touch nothing on the whole page): {len(iso):4d}")
+        print(f"   attached (part of the page's ink mass):     {len(att):4d}")
+        grow = sorted(r["component_growth"] for r in shape
+                      if "component_growth" in r)
+        if grow:
+            print("   full-component area / candidate area:")
+            for q in (25, 50, 75, 90):
+                print(f"     p{q:<3d} {grow[min(len(grow) - 1, q * len(grow) // 100)]:.1f}x")
     if args.json_out:
         args.json_out.write_text(json.dumps(out, indent=1))
         print(f"\nwrote {args.json_out}")

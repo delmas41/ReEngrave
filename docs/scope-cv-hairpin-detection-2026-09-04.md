@@ -234,8 +234,11 @@ the *rest* of the page worse.
 
 *Result: [benchmarks/omr-hairpin-cv-2026-09/FINDINGS.md](../benchmarks/omr-hairpin-cv-2026-09/FINDINGS.md).*
 On Brahms 1 p2 the two tests together cut 471 band components to **69
-candidates, visibly dominated by `<` and `>` wedges**, against ~68 hairpins the
-truth encodes and **1** the detector found. ⚠️ Extent ALONE is refuted (302 of
+candidates**, and Sean's third test — **a beam is attached to its stems, a
+hairpin to nothing** — cuts those to **44 that are almost all `<` and `>`
+wedges**, against ~68 hairpins the truth encodes and **1** the detector found.
+That isolation test is a binary, not a threshold: full-component-area growth is
+1.0x at p50 and **3248x** at p75, with nothing between. ⚠️ Extent ALONE is refuted (302 of
 312 clear it) and fill ratio does NOT reject the beam-like contaminants
 (median 0.437) — the discriminator for those is
 `line_detection.detect_beams`' existing stem-end rule. Count against count, one
