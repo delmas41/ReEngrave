@@ -1383,12 +1383,10 @@ def measure_directions(measure: dict[str, Any]) -> list[tuple[float, str, str]]:
     rather than assembling the answer itself — there is more than one place in
     this file that emits a measure, and they must not drift.
 
-    ⚠️ HAIRPINS BELONG HERE TOO AND ARE DELIBERATELY ABSENT — see
-    `export_coverage.KNOWN_GAPS["wedge"]`. `53e6f233` on
-    `claude/mystifying-curran-613606` already wires them into both exporters AND
-    fixes their staff attribution, and improves pooled OMR-NED where a
-    duplicate of the export half alone cost +11 edits. Take that, do not rebuild
-    this.
+    ⚠️ HAIRPINS ARE NOT HERE, and that is a design choice rather than a gap:
+    a wedge is a SPAN, so `annotate_wedges_in_staff` attaches it to the notes it
+    covers, the way slurs are done. See `KNOWN_GAPS["wedge"]` for what that
+    costs on a bar with no detected events.
     """
     return (measure_dynamics(measure.get("detections", []))
             + measure_direction_words(measure))
@@ -1421,10 +1419,10 @@ def _mxl_direction(item: tuple[str, str], indent: str) -> str:
 def measure_has_fermata(detections: list[dict[str, Any]]) -> bool:
     """Does this measure carry a fermata the whole-measure rest should wear?
 
-    THE SAME BRANCH AS `_mxl_directions_only`, ONE LAYER DOWN. A fermata
-    attaches to an EVENT, and a measure with no detected events emits only a
+    THE SAME BRANCH AS `_mxl_empty_measure`, ONE LAYER DOWN. A fermata attaches
+    to an EVENT, and a measure with no detected events emits only a
     whole-measure rest — which was built without one, so the mark was read and
-    dropped exactly as the directions were.
+    dropped exactly as the directions were before that function existed.
 
     ⚠️ `annotate_fermatas` already documents that a fermata on an orchestral
     page is usually over a whole-bar rest rather than a note. That is precisely
