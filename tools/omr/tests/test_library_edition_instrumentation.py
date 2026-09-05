@@ -164,6 +164,17 @@ class TestScoreType:
         assert ed.classify_score_type({"variant": "lead-sheet"})["score_type"] \
             == "lead_sheet"
 
+    def test_a_plate_catalogue_in_the_variant_slug_is_not_orchestral_parts(self):
+        # ⚠️ `variant` is DERIVED FROM THE PUBLISHER STRING, so it carries
+        # bibliographic words that are not statements about the document:
+        # chausson--poeme-op25--catalog-part-b-2051-2051 is a full score whose
+        # plate catalogue is called "Part B".  The word is only evidence in a
+        # field that describes the FILE.
+        out = ed.classify_score_type({"variant": "catalog-part-b-2051-2051"})
+        assert out["score_type"] != "part"
+        assert ed.classify_score_type(
+            {"raw": {"file_description": "Parts"}})["score_type"] == "part"
+
     def test_no_evidence_is_unknown_not_full_score(self):
         assert ed.classify_score_type({})["score_type"] == "unknown"
 
@@ -258,6 +269,40 @@ class TestTierDisagreement:
             self._edition(["Piano"], score_type="reduction"))
         assert out["verdict"] == "arrangement_suspected"
         assert out["score_type"] == "reduction"
+
+    def test_a_declared_double_absent_from_the_page_is_not_a_variant(self):
+        # The work says the 2nd flute also plays piccolo; the system we read
+        # shows only `Flauti`, because the player has not picked it up yet.
+        work = {"roster": [{"kind": "instrument", "instrument": "Flute",
+                            "doubles": ["Piccolo"]},
+                           {"kind": "instrument", "instrument": "Piccolo"}],
+                "unparsed": []}
+        out = ed.compare_tiers(work, self._edition(["Flute"], yld=1.0))
+        assert out["verdict"] == "doubling_suspected"
+        assert out["edition_missing"] == []          # must NOT inflate this
+        assert out["doubling"][0]["work"] == "Piccolo"
+
+    def test_the_auxiliary_appearing_on_the_page_is_doubling_too(self):
+        # The other direction: we read a later page and it prints Cornet.
+        out = ed.compare_tiers(self._work(["Trumpet", "Horn"]),
+                               self._edition(["Trumpet", "Horn", "Cornet"]))
+        assert out["verdict"] == "doubling_suspected"
+        assert out["edition_extra"] == []
+
+    def test_doubling_is_within_family_only(self):
+        # A cross-family disagreement can never be explained by a player
+        # switching instruments, so the filter must not reach it.
+        out = ed.compare_tiers(self._work(["Flute", "Timpani"]),
+                               self._edition(["Flute", "Timpani", "Harp"]))
+        assert out["verdict"] == "edition_extra"
+        assert out["doubling"] == []
+
+    def test_a_string_disagreement_is_never_doubling(self):
+        # Strings essentially never double; this must stay a real finding.
+        out = ed.compare_tiers(self._work(["Violin", "Viola", "Cello"]),
+                               self._edition(["Violin", "Viola"], yld=1.0))
+        assert out["verdict"] == "edition_missing"
+        assert out["doubling"] == []
 
     def test_an_unacquired_roster_is_not_a_disagreement(self):
         out = ed.compare_tiers(self._work(["Flute"]),

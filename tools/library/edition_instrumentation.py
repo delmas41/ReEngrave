@@ -95,14 +95,22 @@ DEFAULT_DPI = 300
 #: as prose, and ``_`` is a word character — so ``\breduction\b`` does not match
 #: ``Haendel_Messiah_reduction.pdf``, which is one of exactly two non-full-scores
 #: this store holds.  The boundary has to be "not a letter".
+#: ⚠️ AND A PATTERN MAY NOT READ EVERY FIELD.  ``variant`` is DERIVED FROM THE
+#: PUBLISHER STRING, so it carries bibliographic words that are not statements
+#: about the document: Chausson's Poème is held as
+#: ``chausson--poeme-op25--catalog-part-b-2051-2051``, where "part" is the name
+#: of a PLATE CATALOGUE and the file is a full score.  The word "part" is only
+#: evidence in a field that describes the FILE, so that pattern is restricted to
+#: the two IMSLP description fields; a third field ``None`` means "any".
 SCORE_TYPE_PATTERNS = (
-    ("vocal_score", r"vocal[-_ ]?score|klavierauszug|vocal[-_ ]?reduction"),
-    ("reduction", r"(?<![a-z])reduction(?![a-z])|piano[-_ ]?reduc|reduktion"),
-    ("lead_sheet", r"lead[-_ ]?sheet|fake[-_ ]?book"),
+    ("vocal_score", r"vocal[-_ ]?score|klavierauszug|vocal[-_ ]?reduction", None),
+    ("reduction", r"(?<![a-z])reduction(?![a-z])|piano[-_ ]?reduc|reduktion", None),
+    ("lead_sheet", r"lead[-_ ]?sheet|fake[-_ ]?book", None),
     ("arrangement", r"(?<![a-z])arrang|(?<![a-z])transcri|for piano|"
-                    r"piano *(4|four)[-_ ]?hands?|(?<![a-z])duets?(?![a-z])"),
-    ("part", r"(?<![a-z])parts?(?![a-z])(?! *of)|stimmen"),
-    ("full_score", r"complete score|conductor'?s score|full score|partitur"),
+                    r"piano *(4|four)[-_ ]?hands?|(?<![a-z])duets?(?![a-z])", None),
+    ("part", r"(?<![a-z])parts?(?![a-z])(?! *of)|stimmen",
+     ("file_description", "misc_notes", "notes")),
+    ("full_score", r"complete score|conductor'?s score|full score|partitur", None),
 )
 
 #: A work roster says ``strings`` in one word and a page prints four or five
@@ -111,6 +119,42 @@ SCORE_TYPE_PATTERNS = (
 #: everything about the vocabulary.  Deliberately a COVERAGE relation, not an
 #: expansion: a section is satisfied by any of its members, and never asserts
 #: that all of them are present.
+#: ⚠️ **DOUBLING IS A LEGITIMATE REASON THE TIERS DISAGREE, IN BOTH DIRECTIONS**,
+#: and it must not be allowed to dilute ``variant_suspected`` — which is the
+#: bucket that means a publisher genuinely changed the orchestration, and the
+#: only one worth a human.
+#:
+#: A flautist switches to piccolo, an oboist to English horn, a trumpeter to
+#: cornet.  The work roster names the chair; the printed page names **what is in
+#: the player's hands on the system we read** — and this tier reads ONE SYSTEM,
+#: usually the first, where the auxiliary has typically not been picked up yet.
+#: So doubling makes the edition tier under-report *systematically*, not noisily.
+#:
+#: The primary evidence is the work tier's own ``doubles``, parsed from the
+#: IMSLP string ("2 flutes (2nd also piccolo)").  This table is the fallback for
+#: rosters that list the auxiliary as its own chair, which is the commoner
+#: convention.  ⚠️ **Doubling is always WITHIN FAMILY**, which is the clean
+#: discriminator: a cross-family disagreement is never explained by it.
+#: ⚠️ **Strings essentially never double**, so an unexpected string-family
+#: disagreement is a read error or a lexicon gap, never this.
+DOUBLE_PAIRS = {
+    "Flute": {"Piccolo", "Alto flute", "Bass flute"},
+    "Oboe": {"English horn", "Oboe d'amore", "Bass oboe", "Heckelphone"},
+    "Clarinet": {"Bass clarinet", "E-flat clarinet", "Basset horn",
+                 "Contrabass clarinet"},
+    "Bassoon": {"Contrabassoon"},
+    "Trumpet": {"Cornet", "Flugelhorn", "Piccolo trumpet"},
+    "Horn": {"Wagner tuba"},
+    "Trombone": {"Bass trombone", "Alto trombone"},
+}
+
+#: Both directions, built once from the table above.
+_DOUBLE_OF: dict[str, set[str]] = {}
+for _chair, _auxes in DOUBLE_PAIRS.items():
+    for _aux in _auxes:
+        _DOUBLE_OF.setdefault(_chair, set()).add(_aux)
+        _DOUBLE_OF.setdefault(_aux, set()).add(_chair)
+
 SECTION_MEMBERS = {
     "Strings": {"Violin", "Viola", "Cello", "Contrabass", "Bass"},
     "Continuo": {"Cello", "Contrabass", "Harpsichord", "Organ", "Bassoon"},
@@ -143,8 +187,10 @@ def classify_score_type(entry: dict) -> dict:
         "original_filename": entry.get("original_filename") or "",
         "notes": entry.get("notes") or "",
     }
-    for kind, pattern in SCORE_TYPE_PATTERNS:
+    for kind, pattern, allowed in SCORE_TYPE_PATTERNS:
         for name, value in fields.items():
+            if allowed is not None and name not in allowed:
+                continue
             m = re.search(pattern, value, re.I)
             if m:
                 return {"score_type": kind, "score_type_field": name,
@@ -390,6 +436,16 @@ def compare_tiers(work_fact: dict | None, edition_fact: dict | None) -> dict:
                             as often a work-tier LEXICON GAP, since that roster
                             abstains on anything ``tools.omr.instruments`` cannot
                             spell.  ``unparsed`` on the work fact is the tell.
+    ``doubling_suspected``  everything that differed is a player switching
+                            instruments — a flautist to piccolo, an oboist to
+                            English horn, a trumpeter to cornet.  ⚠️ Its own
+                            outcome on purpose: this tier reads ONE SYSTEM,
+                            usually the first, where the auxiliary is typically
+                            not yet in hand, so doubling makes the edition tier
+                            under-report *systematically*.  Left inside
+                            ``edition_missing`` it would swell the one bucket
+                            that is supposed to mean a publisher changed the
+                            orchestration.
     ``edition_missing``     the work names instruments the page did not.
                             **Split by the read's own yield**: a partial read
                             (``yield < 1``) explains a shortfall by itself and is
@@ -420,9 +476,38 @@ def compare_tiers(work_fact: dict | None, edition_fact: dict | None) -> dict:
     work_names, work_sections = _names(work_fact["roster"])
     ed_names, _ = _names(edition_fact["roster"])
 
-    extra = sorted(n for n in ed_names - work_names
-                   if not _covered_by_section(n, work_sections))
-    missing = sorted(work_names - ed_names)
+    # A chair's DECLARED doubles, from the work tier's own parse, plus the
+    # family fallback.  A name explained by doubling leaves the disagreement
+    # buckets entirely and is counted on its own.
+    declared: dict[str, set[str]] = {}
+    for item in work_fact["roster"]:
+        for aux in item.get("doubles", []):
+            declared.setdefault(item.get("instrument", ""), set()).add(aux)
+            declared.setdefault(aux, set()).add(item.get("instrument", ""))
+
+    def _doubles_something(name: str, present: set[str]) -> str:
+        for partner in declared.get(name, set()) | _DOUBLE_OF.get(name, set()):
+            if partner in present:
+                return partner
+        return ""
+
+    raw_extra = sorted(n for n in ed_names - work_names
+                       if not _covered_by_section(n, work_sections))
+    raw_missing = sorted(work_names - ed_names)
+
+    doubling: list[dict] = []
+    extra, missing = [], []
+    for name in raw_extra:
+        partner = _doubles_something(name, work_names)
+        (doubling if partner else extra).append(
+            {"page": name, "work": partner, "side": "page_only"} if partner else name)
+    for name in raw_missing:
+        # The work names a chair the page does not.  If the page shows an
+        # instrument that chair doubles, the player simply has the other one in
+        # hand on the system we read — not a variant and not a failed read.
+        partner = _doubles_something(name, ed_names)
+        (doubling if partner else missing).append(
+            {"work": name, "page": partner, "side": "work_only"} if partner else name)
     shared = ed_names & work_names
     union = ed_names | work_names
     jaccard = round(len(shared) / len(union), 4) if union else 0.0
@@ -437,6 +522,11 @@ def compare_tiers(work_fact: dict | None, edition_fact: dict | None) -> dict:
         verdict = "edition_extra"
     elif missing:
         verdict = "edition_missing"
+    elif doubling:
+        # Everything that differed is explained by a player switching
+        # instruments.  Its own outcome, so it cannot inflate the bucket that
+        # means a publisher changed the orchestration.
+        verdict = "doubling_suspected"
     else:
         verdict = "agrees"
 
@@ -445,6 +535,7 @@ def compare_tiers(work_fact: dict | None, edition_fact: dict | None) -> dict:
         "jaccard": jaccard,
         "edition_extra": extra,
         "edition_missing": missing,
+        "doubling": doubling,
         "shared": sorted(shared),
         "edition_yield": yld,
         "score_type": score_type,
@@ -558,10 +649,40 @@ def acquire_all(*, dry_run: bool, limit: int | None = None, dpi: int = DEFAULT_D
     return report
 
 
+def reclassify(*, dry_run: bool, catalog_path: Path | None = None) -> dict:
+    """Re-derive every edition's ``score_type`` from the catalog entry it
+    describes.  No PDFs, no Surya, no network.
+
+    The work tier's ``--reparse`` exists because storing the RAW string means a
+    parser can improve without re-fetching; this is the same bargain one level
+    down.  It paid for itself immediately: the first sweep classified Chausson's
+    Poème as ``part`` off a variant slug that names a plate catalogue.
+    """
+    catalog = load_catalog(catalog_path)
+    by_path = {e["path"]: e for e in catalog.get("entries", []) if e.get("path")}
+    changed = []
+    for path, held in catalog.get("editions", {}).items():
+        fact = held.get("instrumentation")
+        entry = by_path.get(path)
+        if not fact or entry is None:
+            continue
+        before = fact.get("score_type")
+        fact.update(classify_score_type(entry))
+        work_tier.validate_fact(fact)
+        if fact["score_type"] != before:
+            changed.append({"path": path, "was": before, "now": fact["score_type"]})
+    if not dry_run:
+        save_catalog(catalog, catalog_path)
+    return {"editions": len(catalog.get("editions", {})),
+            "score_type_changed": len(changed), "changes": changed}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--acquire", action="store_true",
                     help="read every held edition's roster off its own pages")
+    ap.add_argument("--reclassify", action="store_true",
+                    help="re-derive score_type from the catalog entries (offline)")
     ap.add_argument("--compare", action="store_true",
                     help="classify work-tier vs edition-tier disagreement (offline)")
     ap.add_argument("--path", help="read one edition by its catalog path")
@@ -584,6 +705,10 @@ def main() -> int:
             print(f"no catalog entry at {args.path}", file=sys.stderr)
             return 2
         print(json.dumps(acquire(entry, dpi=args.dpi), indent=2, ensure_ascii=False))
+        return 0
+    if args.reclassify:
+        print(json.dumps(reclassify(dry_run=args.dry_run, catalog_path=args.catalog),
+                         indent=2, ensure_ascii=False))
         return 0
     if args.compare:
         print(json.dumps(compare_catalog(load_catalog(args.catalog)),

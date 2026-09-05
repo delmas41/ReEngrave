@@ -130,6 +130,67 @@ class TestOperaFields:
             "triangle, tambourine, harp, strings (16, 16, 12, 12, 8)") is False
 
 
+class TestDoubling:
+    """⚠️ The head is the CHAIR; a parenthetical is not a chair.
+
+    The fourth confident-wrong-answer shape this field has produced, and the
+    only one that reported ``parse_rate 1.0`` while doing it.  A flautist
+    switches to piccolo and an oboist to English horn, and IMSLP says so in
+    parentheses — ``2 flutes (2nd also piccolo)``.  Resolved whole, the lexicon
+    matched ``piccolo`` INSIDE the fragment and returned Piccolo with the
+    flutes' own count, deleting the flutes.  58 of 223 held works write "also".
+    """
+
+    def test_the_chair_survives_and_the_double_is_recorded_on_it(self):
+        parsed = instr.parse_roster("2 flutes (2nd also piccolo), 2 clarinets")
+        flute = parsed["roster"][0]
+        assert flute["instrument"] == "Flute" and flute["count"] == 2
+        assert flute["doubles"] == ["Piccolo"]
+        assert _named(parsed) == ["Flute", "Clarinet"]
+
+    def test_a_double_is_never_a_roster_entry_of_its_own(self):
+        # A doubling player is ONE chair holding two instruments.  Emitting the
+        # auxiliary as a chair would also make the edition tier report it
+        # missing from every page the player has not picked it up on.
+        parsed = instr.parse_roster("2 oboes (2nd also English horn)")
+        assert _named(parsed) == ["Oboe"]
+
+    def test_a_comma_inside_a_parenthetical_is_not_a_separator(self):
+        # "4 oboes (3rd, 4th also English horn)" was cut in half; the head
+        # `4 oboes (3rd` resolved to nothing, so Mahler lost its oboes entirely.
+        parsed = instr.parse_roster("4 oboes (3rd, 4th also English horn), 2 clarinets")
+        assert _named(parsed) == ["Oboe", "Clarinet"]
+        assert parsed["unparsed"] == []
+        assert parsed["roster"][0]["doubles"] == ["English horn"]
+
+    def test_a_parenthetical_with_no_doubling_marker_is_a_qualifier(self):
+        # "4 horns (2 natural, 2 chromatic)" is four horns, not more instruments.
+        parsed = instr.parse_roster("4 horns (2 natural, 2 chromatic)")
+        assert _named(parsed) == ["Horn"]
+        horn = parsed["roster"][0]
+        assert horn["count"] == 4 and horn["qualifier"] == "2 natural, 2 chromatic"
+        assert "doubles" not in horn
+
+    def test_an_alternative_is_not_a_doubling(self):
+        # "harp (or piano)" is a substitution the conductor chooses between, not
+        # an instrument the player also holds.
+        parsed = instr.parse_roster("harp (or piano)")
+        assert _named(parsed) == ["Harp"]
+        assert "doubles" not in parsed["roster"][0]
+
+    def test_a_head_the_lexicon_cannot_name_still_falls_back_to_the_whole(self):
+        # "percussion (3 players: cymbals, triangle)" parsed before this change
+        # and must keep parsing.
+        parsed = instr.parse_roster("percussion (3 players: cymbals, triangle)")
+        assert _named(parsed) == ["Percussion"]
+
+    def test_continuo_with_its_realisation_stays_a_section(self):
+        # "continuo (harpsichord)" used to resolve to Piano, on six works —
+        # a keyboard chair invented out of a figured-bass line.
+        parsed = instr.parse_roster("strings, continuo (harpsichord and organ)")
+        assert _named(parsed) == ["Strings", "Continuo"]
+
+
 class TestAbstention:
     def test_an_unknown_fragment_is_recorded_not_guessed(self):
         parsed = instr.parse_roster("2 flutes, hurdy-gurdy, 3 sackbuts")

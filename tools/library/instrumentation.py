@@ -198,9 +198,51 @@ def _strip_markup(value: str) -> str:
     return re.sub(r"\s+", " ", value).strip(" ,;")
 
 
+#: A parenthetical that says the player PICKS SOMETHING ELSE UP, as opposed to
+#: one that merely qualifies the chair.  ``or`` is deliberately absent: "harp (or
+#: piano)" is an alternative the conductor chooses between, not a second
+#: instrument the player also holds, and admitting it would put a piano in the
+#: roster of every work offering the substitution.
+_DOUBLING_MARKER = re.compile(r"\balso\b|\bdoubl(?:ing|es|ed)?\b", re.I)
+
+
 def _fragments(text: str) -> list[str]:
-    parts = re.split(r"[,;]|\band\b|\+(?=\s)", text)
+    """Split a prose roster into chair fragments — **at bracket depth 0 only**.
+
+    ⚠️ A COMMA INSIDE A PARENTHETICAL IS NOT A SEPARATOR, and splitting on it
+    loses the CHAIR, not merely the aside.  "4 oboes (3rd, 4th also English
+    horn)" was cut into ``4 oboes (3rd`` and ``4th also English horn)``; the
+    first resolves to nothing, so the oboes vanished from Mahler 2 and Mahler 6
+    entirely.  Measured over the held corpus, 10 works carried a fragment with
+    unbalanced brackets — every one of them this fault.
+    """
+    parts, buf, depth = [], [], 0
+    i = 0
+    while i < len(text):
+        ch = text[i]
+        if ch in "([":
+            depth += 1
+        elif ch in ")]":
+            depth = max(0, depth - 1)
+        if depth == 0:
+            if ch in ",;":
+                parts.append("".join(buf)); buf = []; i += 1; continue
+            if ch == "+" and text[i + 1: i + 2] == " ":
+                parts.append("".join(buf)); buf = []; i += 1; continue
+            if text[i:i + 5].lower() == " and " :
+                parts.append("".join(buf)); buf = []; i += 5; continue
+        buf.append(ch)
+        i += 1
+    parts.append("".join(buf))
     return [p.strip(" .;:") for p in parts if p.strip(" .;:")]
+
+
+def _split_parenthetical(fragment: str) -> tuple[str, str]:
+    """("2 flutes (2nd also piccolo)") -> ("2 flutes", "2nd also piccolo")."""
+    m = re.match(r"^(.*?)\s*[\(\[](.*)[\)\]]\s*$", fragment, re.S)
+    if m and m.group(1).strip():
+        return m.group(1).strip(), m.group(2).strip()
+    return fragment, ""
 
 
 def _split_count(fragment: str) -> tuple[int | None, str, str]:
@@ -358,18 +400,66 @@ def _set_count(item: dict, count: int | None, text: str) -> None:
         item["count"] = 1
 
 
+def _parse_one_fragment(fragment: str) -> dict | None:
+    """One chair.  ⚠️ **THE HEAD IS THE CHAIR; A PARENTHETICAL IS NOT A CHAIR.**
+
+    This was a silent confident-wrong-answer, the fourth of its shape and the
+    only one that produced a roster with ``parse_rate 1.0``.  ``2 flutes (2nd
+    also piccolo)`` was resolved WHOLE, the lexicon matched ``piccolo`` inside
+    it, and the fragment came back as **Piccolo, count 2** — the flutes deleted
+    and the auxiliary standing in their place with the flutes' own count.  58 of
+    the 223 held works write ``also`` in ``InstrDetail``, so a quarter of the
+    corpus was exposed.
+
+    A player who doubles is ONE CHAIR holding two instruments, and the
+    distinction is what the edition tier needs: a printed page shows the
+    instrument in the player's hands ON THAT SYSTEM, so a declared double is
+    expected to be absent from most pages and its absence is not evidence of an
+    editorial variant.  So the double is recorded on the chair, in ``doubles``,
+    and is never a roster entry of its own.
+
+    A parenthetical with no doubling marker is a QUALIFIER — "4 horns (2
+    natural, 2 chromatic)" — and is kept verbatim without being resolved, rather
+    than being read as more instruments.
+    """
+    head, paren = _split_parenthetical(fragment)
+    count, name, mod = _split_count(head)
+    item = _resolve(name)
+    if item is None:
+        # The head is not an instrument we know.  Fall back to the whole
+        # fragment, which is what "percussion (3 players: cymbals…)" needs, so
+        # nothing that parsed before this change stops parsing.
+        count, name, mod = _split_count(fragment)
+        item = _resolve(name)
+        if item is None:
+            return None
+        paren = ""
+    _set_count(item, count, fragment)
+    if mod:
+        item["modifier"] = mod
+    if paren:
+        item["qualifier"] = paren
+        if _DOUBLING_MARKER.search(paren):
+            doubles = []
+            for piece in _fragments(_DOUBLING_MARKER.sub(" ", paren)):
+                _c, sub_name, _m = _split_count(piece)
+                sub = _resolve(re.sub(r"^\d+(st|nd|rd|th)?\s*", "", sub_name))
+                if sub and sub.get("kind") == "instrument" \
+                        and sub["instrument"] != item.get("instrument"):
+                    doubles.append(sub["instrument"])
+            if doubles:
+                item["doubles"] = sorted(set(doubles))
+    return item
+
+
 def _parse_prose(text: str) -> tuple[list[dict], list[str]]:
     roster: list[dict] = []
     unparsed: list[str] = []
     for fragment in _fragments(text):
-        count, name, mod = _split_count(fragment)
-        item = _resolve(name)
+        item = _parse_one_fragment(fragment)
         if item is None:
             unparsed.append(fragment)
             continue
-        _set_count(item, count, fragment)
-        if mod:
-            item["modifier"] = mod
         roster.append(item)
     return roster, unparsed
 
