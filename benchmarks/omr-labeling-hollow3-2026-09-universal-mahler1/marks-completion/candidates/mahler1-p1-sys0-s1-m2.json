@@ -1,0 +1,31 @@
+{
+ "cell_id": "mahler1-p1-sys0-s1-m2",
+ "candidates": [
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.7839,
+   "ink": 0.1954,
+   "bbox": {
+    "x": 203,
+    "y": 135,
+    "w": 513,
+    "h": 204
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.7015,
+   "ink": 0.2185,
+   "bbox": {
+    "x": 203,
+    "y": 1077,
+    "w": 486,
+    "h": 123
+   }
+  }
+ ]
+}

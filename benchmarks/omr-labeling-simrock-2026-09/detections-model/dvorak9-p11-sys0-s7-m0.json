@@ -1,0 +1,109 @@
+{
+  "cell_id": "dvorak9-p11-sys0-s7-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "brace",
+      "category": "structural",
+      "x": 0,
+      "y": 368,
+      "w": 53,
+      "h": 705,
+      "x_center": 26,
+      "y_center": 720,
+      "confidence": 0.7212123870849609,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "clefCAlto",
+      "category": "clef",
+      "x": 157,
+      "y": 384,
+      "w": 245,
+      "h": 325,
+      "x_center": 279,
+      "y_center": 546,
+      "confidence": 0.5101983547210693,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "clefF",
+      "category": "clef",
+      "x": 196,
+      "y": 910,
+      "w": 209,
+      "h": 163,
+      "x_center": 300,
+      "y_center": 991,
+      "confidence": 0.6411709785461426,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "clefG",
+      "category": "clef",
+      "x": 197,
+      "y": 0,
+      "w": 213,
+      "h": 244,
+      "x_center": 303,
+      "y_center": 122,
+      "confidence": 0.9080454111099243,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "keySharp",
+      "category": "accidental",
+      "x": 475,
+      "y": 311,
+      "w": 89,
+      "h": 246,
+      "x_center": 519,
+      "y_center": 434,
+      "confidence": 0.911492645740509,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "tie",
+      "category": "structural",
+      "x": 140,
+      "y": 0,
+      "w": 1908,
+      "h": 71,
+      "x_center": 1094,
+      "y_center": 35,
+      "confidence": 0.5091189742088318,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1246,
+      "y": 471,
+      "w": 102,
+      "h": 39,
+      "x_center": 1297,
+      "y_center": 490,
+      "confidence": 0.7400069236755371,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "restWhole",
+      "category": "rest",
+      "x": 1254,
+      "y": 996,
+      "w": 95,
+      "h": 41,
+      "x_center": 1301,
+      "y_center": 1016,
+      "confidence": 0.743450403213501,
+      "pitch": null
+    }
+  ]
+}

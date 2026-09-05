@@ -1,0 +1,119 @@
+{
+  "cell_id": "dvorak9-p18-sys0-s7-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T02:12:03+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 555,
+        "y": 430,
+        "w": 113,
+        "h": 95
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 870,
+        "y": 478,
+        "w": 113,
+        "h": 95
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1594,
+        "y": 526,
+        "w": 113,
+        "h": 95
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1919,
+        "y": 572,
+        "w": 113,
+        "h": 95
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1129,
+        "y": 586,
+        "w": 95,
+        "h": 162
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 430,
+        "y": 348,
+        "w": 63,
+        "h": 257
+      },
+      "notes": ""
+    },
+    {
+      "id": "H6",
+      "human_class": "accidentalNatural",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1486,
+        "y": 444,
+        "w": 63,
+        "h": 257
+      },
+      "notes": ""
+    },
+    {
+      "id": "H7",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 698,
+        "y": 407,
+        "w": 87,
+        "h": 236
+      },
+      "notes": ""
+    },
+    {
+      "id": "H8",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 1768,
+        "y": 502,
+        "w": 87,
+        "h": 236
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}

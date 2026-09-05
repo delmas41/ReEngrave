@@ -1,0 +1,135 @@
+{
+ "cell_id": "brahms1-p3-sys0-s8-m3",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 1617,
+    "y": 916,
+    "w": 113,
+    "h": 88
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1806,
+    "y": 876,
+    "w": 102,
+    "h": 88
+   }
+  },
+  {
+   "id": "C2",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 917,
+    "y": 739,
+    "w": 100,
+    "h": 80
+   }
+  },
+  {
+   "id": "C3",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 1420,
+    "y": 957,
+    "w": 100,
+    "h": 53
+   }
+  },
+  {
+   "id": "C4",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 385,
+    "y": 517,
+    "w": 37,
+    "h": 38
+   }
+  },
+  {
+   "id": "C5",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackOnLine",
+   "model_bbox": {
+    "x": 257,
+    "y": 776,
+    "w": 100,
+    "h": 79
+   }
+  },
+  {
+   "id": "C6",
+   "verdict": "TP",
+   "model_predicted_class": "noteheadBlackInSpace",
+   "model_bbox": {
+    "x": 671,
+    "y": 736,
+    "w": 97,
+    "h": 78
+   }
+  },
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "tie",
+   "model_bbox": {
+    "x": 728,
+    "y": 682,
+    "w": 226,
+    "h": 47
+   },
+   "confidence": 0.7675,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 14,
+    "y": 549,
+    "w": 1866,
+    "h": 321
+   },
+   "confidence": 0.7649,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 261,
+    "y": 542,
+    "w": 86,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 361,
+    "y": 505,
+    "w": 72,
+    "h": 72
+   },
+   "notes": ""
+  }
+ ]
+}

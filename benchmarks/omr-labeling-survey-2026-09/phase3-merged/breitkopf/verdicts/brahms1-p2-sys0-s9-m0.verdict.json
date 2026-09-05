@@ -1,0 +1,321 @@
+{
+ "cell_id": "brahms1-p2-sys0-s9-m0",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "tie",
+   "model_bbox": {
+    "x": 537,
+    "y": 64,
+    "w": 116,
+    "h": 26
+   },
+   "confidence": 0.789,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "clefG",
+   "human_category": "clef",
+   "bbox": {
+    "x": 92,
+    "y": 113,
+    "w": 140,
+    "h": 338
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 263,
+    "y": 174,
+    "w": 62,
+    "h": 147
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 308,
+    "y": 116,
+    "w": 65,
+    "h": 134
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "keyFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 352,
+    "y": 202,
+    "w": 72,
+    "h": 147
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "timeSig9",
+   "human_category": "time_sig",
+   "bbox": {
+    "x": 438,
+    "y": 150,
+    "w": 82,
+    "h": 120
+   },
+   "notes": ""
+  },
+  {
+   "id": "H5",
+   "human_class": "timeSig8",
+   "human_category": "time_sig",
+   "bbox": {
+    "x": 431,
+    "y": 274,
+    "w": 78,
+    "h": 116
+   },
+   "notes": ""
+  },
+  {
+   "id": "H6",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 615,
+    "y": 82,
+    "w": 69,
+    "h": 55
+   },
+   "notes": ""
+  },
+  {
+   "id": "H7",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 697,
+    "y": 106,
+    "w": 83,
+    "h": 65
+   },
+   "notes": ""
+  },
+  {
+   "id": "H8",
+   "human_class": "noteheadBlackInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 838,
+    "y": 171,
+    "w": 61,
+    "h": 68
+   },
+   "notes": ""
+  },
+  {
+   "id": "H9",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 930,
+    "y": 147,
+    "w": 51,
+    "h": 68
+   },
+   "notes": ""
+  },
+  {
+   "id": "H10",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1009,
+    "y": 113,
+    "w": 54,
+    "h": 48
+   },
+   "notes": ""
+  },
+  {
+   "id": "H11",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1091,
+    "y": 62,
+    "w": 58,
+    "h": 47
+   },
+   "notes": ""
+  },
+  {
+   "id": "H12",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1173,
+    "y": 157,
+    "w": 72,
+    "h": 48
+   },
+   "notes": ""
+  },
+  {
+   "id": "H13",
+   "human_class": "noteheadBlackOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1607,
+    "y": 157,
+    "w": 51,
+    "h": 58
+   },
+   "notes": ""
+  },
+  {
+   "id": "H14",
+   "human_class": "accidentalSharp",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1539,
+    "y": 116,
+    "w": 68,
+    "h": 151
+   },
+   "notes": ""
+  },
+  {
+   "id": "H15",
+   "human_class": "accidentalNaturalSmall",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 1857,
+    "y": 140,
+    "w": 51,
+    "h": 127
+   },
+   "notes": ""
+  },
+  {
+   "id": "H16",
+   "human_class": "noteheadBlackInSpaceSmall",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1915,
+    "y": 191,
+    "w": 41,
+    "h": 38
+   },
+   "notes": ""
+  },
+  {
+   "id": "H17",
+   "human_class": "noteheadBlackOnLineSmall",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 1973,
+    "y": 164,
+    "w": 44,
+    "h": 45
+   },
+   "notes": ""
+  },
+  {
+   "id": "H18",
+   "human_class": "slur",
+   "human_category": "structural",
+   "bbox": {
+    "x": 615,
+    "y": 3,
+    "w": 530,
+    "h": 72
+   },
+   "notes": ""
+  },
+  {
+   "id": "H19",
+   "human_class": "dynamicCrescendoHairpin",
+   "human_category": "dynamic",
+   "bbox": {
+    "x": 612,
+    "y": 376,
+    "w": 1405,
+    "h": 92
+   },
+   "notes": ""
+  },
+  {
+   "id": "H20",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1262,
+    "y": 144,
+    "w": 44,
+    "h": 34
+   },
+   "notes": ""
+  },
+  {
+   "id": "H21",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1692,
+    "y": 140,
+    "w": 48,
+    "h": 41
+   },
+   "notes": ""
+  },
+  {
+   "id": "H22",
+   "human_class": "ornamentTrill",
+   "human_category": "ornament",
+   "bbox": {
+    "x": 1600,
+    "y": 17,
+    "w": 110,
+    "h": 99
+   },
+   "notes": ""
+  },
+  {
+   "id": "H23",
+   "human_class": "slur",
+   "human_category": "structural",
+   "bbox": {
+    "x": 1665,
+    "y": 68,
+    "w": 359,
+    "h": 65
+   },
+   "notes": ""
+  },
+  {
+   "id": "H24",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 773,
+    "y": 120,
+    "w": 61,
+    "h": 177
+   },
+   "notes": ""
+  }
+ ]
+}

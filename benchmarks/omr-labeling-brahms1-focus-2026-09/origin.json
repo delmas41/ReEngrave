@@ -1,0 +1,46 @@
+{
+ "brahms1-p2-sys0-s2-m2": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "verdict_taken_from": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts"
+ },
+ "brahms1-p2-sys0-s3-m6": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "verdict_taken_from": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts"
+ },
+ "brahms1-p2-sys1-s20-m6": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "verdict_taken_from": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts"
+ },
+ "brahms1-p2-sys1-s21-m6": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "verdict_taken_from": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts"
+ },
+ "brahms1-p3-sys0-s13-m4": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "verdict_taken_from": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts"
+ },
+ "brahms1-p3-sys0-s4-m5": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "verdict_taken_from": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts"
+ },
+ "brahms1-p3-sys0-s5-m4": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "verdict_taken_from": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts"
+ },
+ "brahms1-p3-sys0-s8-m3": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "verdict_taken_from": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts"
+ },
+ "brahms1-p3-sys1-s23-m5": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "verdict_taken_from": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts"
+ },
+ "brahms1-p4-sys0-s0-m3": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "verdict_taken_from": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts"
+ },
+ "brahms1-p4-sys0-s1-m3": {
+  "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+  "verdict_taken_from": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts"
+ }
+}

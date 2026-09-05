@@ -1,0 +1,24 @@
+{
+ "cell_id": "brahms1-p3-sys0-s5-m4",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "D0",
+   "verdict": "TP"
+  },
+  {
+   "id": "D1",
+   "verdict": "TP"
+  },
+  {
+   "id": "D2",
+   "verdict": "TP"
+  },
+  {
+   "id": "D3",
+   "verdict": "TP"
+  }
+ ],
+ "added_detections": [],
+ "notes": "human family boxes pre-confirmed by build_family_queue"
+}

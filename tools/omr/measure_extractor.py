@@ -26,6 +26,7 @@ from collections import Counter
 import cv2
 import numpy as np
 
+from .system_grouping import _choir_grouping_enabled, gap_bridging_counts
 from .types import Barline, MeasureCell, PageWithStaves, Staff
 
 
@@ -389,6 +390,53 @@ def _intersystem_connectivity(
     return n_connected / max(n_gaps, 1)
 
 
+def _window_blind_systems(bin_img: np.ndarray, staves: list[Staff]) -> set[int]:
+    """System indices containing an internal gap that NO in-window column
+    crosses (`gap_bridging_counts` == 0) — cue C's second required condition.
+
+    Such a gap can only be inside a system when something OUTSIDE the wide
+    scan window holds the system together (the pair-local left-edge complex
+    cue B reads): the choir-barred signature. A true open score never shows
+    one — its systemic start barline touches every gap a little, which is
+    exactly the ink that grouped its staves as one system in the first place.
+
+    ⚠️ Computed over the WHOLE PAGE's staves, exactly as `assign_systems`
+    computed it, and not per system: `gap_bridging_counts` derives its scan
+    window from the staves it is given, so a per-system call anchors on the
+    system's OWN median x_start — the local window that can see the left-edge
+    complex — and the blind gap stops being blind. The question cue C asks is
+    about what the GROUPING's window saw, so it must be asked in the
+    grouping's frame.
+    """
+    ordered = sorted(staves, key=lambda s: s.top_y)
+    if len(ordered) < 2:
+        return set()
+    counts = gap_bridging_counts(bin_img, ordered)
+    return {
+        ordered[i].system_index
+        for i, n in enumerate(counts)
+        if n == 0 and ordered[i].system_index == ordered[i + 1].system_index
+    }
+
+
+def _is_grouped_system(staves: list[Staff]) -> bool:
+    """Does this system carry bracket-group structure — two or more groups,
+    with at least half its staves in multi-staff groups?
+
+    `group_index` is set by `system_grouping._assign_groups` from relative
+    bridging, so it is non-trivial only where cross-staff ink (bracket,
+    barlines) crosses some gaps much more than others; a page grouped by the
+    gap-size fallback leaves every staff at the default 0 and reads False
+    here. Used by cue C (`OMR_CHOIR_GROUPING`) to keep a grouped ensemble
+    system out of open-score mode — see the comment at the call site.
+    """
+    sizes = Counter(s.group_index for s in staves)
+    if len(sizes) < 2:
+        return False
+    in_multi = sum(n for n in sizes.values() if n >= 2)
+    return in_multi * 2 >= len(staves)
+
+
 def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
     """Detect barlines via per-staff scanning + system-level voting.
 
@@ -399,6 +447,12 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
     fraction over the full system height.
     """
     bin_img = pws.page.binary
+
+    # Cue C's second condition, asked once in the page frame (see
+    # `_window_blind_systems`): which systems hold a gap the grouping's own
+    # window saw nothing cross?
+    blind_systems = (_window_blind_systems(bin_img, pws.staves)
+                     if _choir_grouping_enabled() else set())
 
     # Group staves by system. One-line percussion staves are left out of the
     # vote on purpose: the vote is a fraction of the staves in the system, and
@@ -525,6 +579,42 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
         barlines_cross_gaps = (
             len(vote_passed) < 2 or n_connected * 2 >= len(vote_passed)
         )
+        # Cue C (opt-in, OMR_CHOIR_GROUPING): the open-score question is asked
+        # of the COLUMNS — "are the vote-accepted x's mostly connected?" — and
+        # a rhythmic-unison tutti answers it wrong: stems align across enough
+        # staves to pass the vote, none of them connected, so the unconnected
+        # columns outnumber the real barlines and the gate reads a conductor's
+        # page as an open score (measured on the Brandenburg 3 merged system:
+        # 9 stem columns against 6 true barlines → 14 "bars" where the page
+        # prints 5). Two pieces of staff-level evidence override the flip,
+        # BOTH required:
+        #
+        #   1. bracket-group structure — ≥2 groups, at least half the staves
+        #      in multi-staff groups (`Staff.group_index`, from
+        #      `_assign_groups`). The half-in-multi guard keeps a vocal page
+        #      whose only multi-staff group is the keyboard pair in open-score
+        #      mode, where its per-staff barlines survive on votes alone.
+        #   2. a WINDOW-BLIND internal gap — a gap inside the system that no
+        #      in-window column crosses at all. That is the choir-barred
+        #      signature (interior barlines stop at the choir edge, and the
+        #      left-edge complex that does cross sat outside the scan window —
+        #      it is what cue B merges), and it is what a true open score can
+        #      never show: an open score's gaps are all crossed a little by
+        #      the systemic start barline, or the staves would not be one
+        #      system at all.
+        #
+        # Condition 2 exists because condition 1 alone was FALSIFIED on the
+        # engraved benchmark: LilyPond's orchestral fixtures are genuine open
+        # scores (per-staff barlines, one SystemStartBar crossing every gap),
+        # their uniformly-low bridging counts let `_assign_groups`' relative
+        # threshold manufacture "groups" out of jitter, and cue C then
+        # deleted the real barlines of NINE works — pooled OMR-NED 0.1306 →
+        # 0.8560, entire-staff charges 48% of the pool. With condition 2 the
+        # cue cannot reach any system whose gaps are all touched by ink.
+        # benchmarks/omr-choir-grouping-2026-09/FINDINGS.md.
+        if (not barlines_cross_gaps and sys_idx in blind_systems
+                and _is_grouped_system(staves)):
+            barlines_cross_gaps = True
 
         accepted: list[int] = []
         for cluster_index, cluster in enumerate(clusters):
@@ -859,9 +949,14 @@ CELL_LINE_MIN_WIDTH_SPACES = 4.0
 
 
 def _cell_line_trace_enabled() -> bool:
-    """`OMR_CELL_LINE_TRACE` env; default OFF while it is being measured."""
+    """`OMR_CELL_LINE_TRACE` env; ON by default since 2026-09-04. Priced on
+    the widened scan gate the day it became possible: pooled 0.8387 -> 0.8345
+    (-233 edits, -217 on exactly the three tilted rows, 8.6% of pooled cells
+    past the parity-flip line vs the old corpus's 0.4%); engraved is a no-op
+    by construction, byte-identical A/B. Set 0/false/no/off to disable.
+    benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md."""
     raw = os.environ.get(ENV_CELL_LINE_TRACE, "").strip().lower()
-    return raw in {"1", "true", "yes", "on"}
+    return raw not in {"0", "false", "no", "off"}
 
 
 def _cell_line_offset(
@@ -1016,6 +1111,18 @@ def _build_measure_cell(
     cell.__dict__["binary"] = up_bin
     if line_prov is not None:
         cell.__dict__["line_grid_localized"] = line_prov
+        # The frame's own grid — what this exact cell stores with the flag
+        # off, by the same arithmetic (`local_ys` then `_upscale_to_canonical`'s
+        # ys transform). Localization moves only the stored rows, never the
+        # crop, the scale or a pixel of the image (measured 360/360 in
+        # benchmarks/omr-cell-grid-tilt-2026-09/RESULTS_TILT_COST.md), so this
+        # is what identifies the FRAME across flag states —
+        # `recut_cells.frame_mismatch` compares it.
+        unlocal = [y - y0 for y in staff.line_ys]
+        cell.__dict__["staff_line_ys_canonical_unlocalized"] = (
+            unlocal if page_span <= 0
+            else [int(round(y * scale)) for y in unlocal]
+        )
     return cell
 
 

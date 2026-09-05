@@ -1,0 +1,23 @@
+{
+  "cell_id": "beet5-p6-sys1-s9-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T21:28:35+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 124,
+        "y": 411,
+        "w": 190,
+        "h": 180
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "rests+accidentals"
+  ]
+}

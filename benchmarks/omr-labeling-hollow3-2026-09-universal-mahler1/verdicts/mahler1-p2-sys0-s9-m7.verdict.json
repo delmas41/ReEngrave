@@ -1,35 +1,36 @@
 {
-  "cell_id": "mahler1-p2-sys0-s9-m7",
-  "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T16:00:37+00:00",
-  "detections": [],
-  "added_detections": [
-    {
-      "id": "H0",
-      "human_class": "noteheadWholeInSpace",
-      "human_category": "notehead",
-      "bbox": {
-        "x": 105,
-        "y": 50,
-        "w": 171,
-        "h": 100
-      },
-      "notes": ""
-    },
-    {
-      "id": "H1",
-      "human_class": "noteheadWholeOnLine",
-      "human_category": "notehead",
-      "bbox": {
-        "x": 99,
-        "y": 450,
-        "w": 171,
-        "h": 100
-      },
-      "notes": ""
-    }
-  ],
-  "inspected_passes": [
-    "hollow noteheads"
-  ]
+ "cell_id": "mahler1-p2-sys0-s9-m7",
+ "schema_version": 2,
+ "labeled_at_utc": "2026-09-03T16:00:37+00:00",
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 105,
+    "y": 50,
+    "w": 171,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadWholeOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 99,
+    "y": 450,
+    "w": 171,
+    "h": 100
+   },
+   "notes": ""
+  }
+ ],
+ "inspected_passes": [
+  "hollow noteheads",
+  "rests+accidentals"
+ ]
 }

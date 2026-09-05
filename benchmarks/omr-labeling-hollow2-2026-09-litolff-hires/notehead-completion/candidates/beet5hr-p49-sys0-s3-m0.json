@@ -1,0 +1,57 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s3-m0",
+ "candidates": [
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8198,
+   "ink": 0.8362,
+   "bbox": {
+    "x": 1296,
+    "y": 664,
+    "w": 109,
+    "h": 101
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.8129,
+   "ink": 0.8387,
+   "bbox": {
+    "x": 634,
+    "y": 663,
+    "w": 108,
+    "h": 100
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.7164,
+   "ink": 0.8756,
+   "bbox": {
+    "x": 632,
+    "y": 575,
+    "w": 110,
+    "h": 97
+   }
+  },
+  {
+   "smufl_name": "noteheadBlackOnLine",
+   "category": "notehead",
+   "family": "notehead",
+   "confidence": 0.6458,
+   "ink": 0.8634,
+   "bbox": {
+    "x": 1282,
+    "y": 579,
+    "w": 113,
+    "h": 93
+   }
+  }
+ ]
+}

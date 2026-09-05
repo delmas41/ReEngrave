@@ -359,11 +359,37 @@ const COLORS = {
   unsure: "#555",
   null: "#888",
   added: "#1976d2",
+  // Pending boxes color by CLASS in a multi-slot pass (tie vs slur is
+  // invisible in grey-on-a-scan), falling back to amber. Order matches the
+  // palette so slot 1 / slot 2 keep their hues when drawn too.
+  class_0: "#e65100",
+  class_1: "#6a1b9a",
+  class_2: "#00838f",
+  class_3: "#ad1457",
   // Staff-position variants get their own colors in a pass, so a mis-snapped
   // box is visible on the image rather than only in the sidebar.
   added_on_line: "#1976d2",
   added_in_space: "#00897b",
 };
+
+// Which palette slot (by index) a class belongs to, for per-class colors in
+// a multi-slot pass. -1 when the pass has one slot or the class is foreign.
+function slotIndexOf(cls) {
+  if (!state.pass || !Array.isArray(state.pass.slots)
+      || state.pass.slots.length < 2) return -1;
+  for (let i = 0; i < state.pass.slots.length; i++) {
+    const slot = state.pass.slots[i];
+    if ((slot.classes || []).some((c) => c.name === cls)) return i;
+    const pos = slot.by_position || {};
+    if (Object.values(pos).some((n) => n === cls)) return i;
+  }
+  return -1;
+}
+
+function classColor(cls, fallback) {
+  const i = slotIndexOf(cls);
+  return i >= 0 ? (COLORS[`class_${i}`] || fallback) : fallback;
+}
 
 // Label an added box in a pass with the variant the geometry chose.
 function addedBoxStyle(h) {
@@ -371,7 +397,8 @@ function addedBoxStyle(h) {
   const v = variantOf(h.human_class);
   if (v === "on_line") return { color: COLORS.added_on_line, label: `${h.id} ·line` };
   if (v === "in_space") return { color: COLORS.added_in_space, label: `${h.id} ·space` };
-  return { color: COLORS.added, label: h.id };
+  return { color: classColor(h.human_class, COLORS.added),
+           label: `${h.id} ${h.human_class || ""}`.trim() };
 }
 
 function renderDetectionList() {
@@ -443,7 +470,14 @@ function renderOverlay() {
   for (const d of state.verdict.detections) {
     const b = d.human_bbox || d.model_bbox;
     if (!b) continue;
-    drawBox(b, COLORS[d.verdict || "null"], d.id, state.selectedId === d.id);
+    const cls = d.human_corrected_class || d.model_predicted_class || "";
+    // Undecided boxes are the queue: class-colored and dashed so "needs a
+    // decision" and "which symbol" both read off the image. Decided boxes
+    // keep their verdict color and gain the class text.
+    const pending = !d.verdict;
+    const color = pending ? classColor(cls, "#f9a825") : COLORS[d.verdict];
+    drawBox(b, color, `${d.id} ${cls}`.trim(), state.selectedId === d.id,
+            pending);
   }
   for (const h of state.verdict.added_detections) {
     const style = addedBoxStyle(h);

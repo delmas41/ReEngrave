@@ -1,0 +1,18 @@
+{
+ "cell_id": "schehe-p3-sys0-s5-m1",
+ "candidates": [
+  {
+   "smufl_name": "augmentationDot",
+   "category": "structural",
+   "family": "dot",
+   "confidence": 0.603,
+   "ink": 0.8932,
+   "bbox": {
+    "x": 407,
+    "y": 715,
+    "w": 47,
+    "h": 49
+   }
+  }
+ ]
+}

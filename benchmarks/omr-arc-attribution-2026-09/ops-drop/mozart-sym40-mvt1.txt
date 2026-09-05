@@ -1,0 +1,29 @@
+
+mozart-sym40-mvt1.musicxml  ops 106  cost 218
+
+  cost by category
+    wrong note OMR-ED                               143
+    wrong articulation OMR-ED                        37
+    wrong other object OMR-ED                        28
+    wrong flag/beam OMR-ED                           10
+
+  cost by op
+    notedel                      73  (23 ops)
+    noteins                      70  (22 ops)
+    insarticulation              29  (29 ops)
+    extrains                     20  (7 ops)
+    editarticulation              8  (8 ops)
+    extradel                      6  (6 ops)
+    delbeam                       5  (5 ops)
+    editbeam                      5  (5 ops)
+    extrasymboledit               2  (1 ops)
+
+  cost by part (top categories)
+    08 Viola.                      58   wrong note=32  wrong articulation=23  wrong flag/beam=3
+    07 Violino II.                 52   wrong note=38  wrong articulation=7  wrong flag/beam=7
+    07 Violin                      41   wrong note=41
+    08 Viola                       32   wrong note=32
+    -1 ?                           28   wrong other object=28
+    06 Violino I.                   7   wrong articulation=7
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/ops-drop/mozart-sym40-mvt1.json

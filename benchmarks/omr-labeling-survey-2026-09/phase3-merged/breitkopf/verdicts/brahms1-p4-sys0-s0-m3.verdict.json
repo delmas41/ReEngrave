@@ -1,0 +1,101 @@
+{
+ "cell_id": "brahms1-p4-sys0-s0-m3",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "C0",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 435,
+    "y": 189,
+    "w": 50,
+    "h": 45
+   }
+  },
+  {
+   "id": "C1",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 431,
+    "y": 420,
+    "w": 51,
+    "h": 52
+   }
+  },
+  {
+   "id": "C2",
+   "verdict": "TP",
+   "model_predicted_class": "augmentationDot",
+   "model_bbox": {
+    "x": 434,
+    "y": 1384,
+    "w": 36,
+    "h": 14
+   }
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 255,
+    "y": 194,
+    "w": 120,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 258,
+    "y": 396,
+    "w": 120,
+    "h": 101
+   },
+   "notes": ""
+  },
+  {
+   "id": "H2",
+   "human_class": "accidentalNatural",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 101,
+    "y": 274,
+    "w": 116,
+    "h": 360
+   },
+   "notes": ""
+  },
+  {
+   "id": "H3",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 422,
+    "y": 173,
+    "w": 83,
+    "h": 82
+   },
+   "notes": ""
+  },
+  {
+   "id": "H4",
+   "human_class": "augmentationDot",
+   "human_category": "structural",
+   "bbox": {
+    "x": 433,
+    "y": 411,
+    "w": 55,
+    "h": 74
+   },
+   "notes": ""
+  }
+ ]
+}

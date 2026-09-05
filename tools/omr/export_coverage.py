@@ -1,9 +1,9 @@
 """Does everything the truth would SHOW survive into our output?
 
-WHY THIS EXISTS. Eight times now the defect has been the same shape: the
+WHY THIS EXISTS. Nine times now the defect has been the same shape: the
 pipeline recognises something correctly and then loses it on the way to the
 file. Beams, augmentation dots, dynamics, tuplet markers, slur arcs, fermatas,
-accidentals, articulations. Most of the benchmark's fall from its 0.3164
+accidentals, articulations, hairpins. Most of the benchmark's fall from its 0.3164
 opening is those, and almost none of it is a better detector. (The CURRENT
 figure is not restated here; it lives in CLAUDE.md's OMR-NED section and
 nowhere else, for the reason `tools/omr/accuracy_record.py` gives. An earlier
@@ -23,7 +23,30 @@ each other. Counted once, in the order they were fixed:
     6  fermatas             (in §3)   detected at 0.90-0.95, never exported
     7  printed accidentals  d112052   folded into <alter>, <accidental> dropped
     8  articulations        0eb1271   ten artic* classes, one docstring mention
-    9  hairpins                       OPEN — and not purely an export fix
+    9  hairpins             (in §9)   two classes, no mention downstream
+
+⚠️ THE NINTH IS NOT THE EIGHT REPEATED, and the difference is worth keeping.
+The first eight were export fixes outright: the detector had the symbol and the
+file did not. Hairpins are DETECTED PARTIALLY — 9 boxes against 8 truth
+hairpins over the 11 works. Wiring the exporter alone took `<wedge>` from zero
+to 10 elements and from 3 truth hairpins matched to 4 — and it could not have
+taken it further that day, because 3 of Mahler's 4 detections were landing on
+the staff BELOW the one that prints them: a hairpin is drawn in the gap under
+its staff, so a contested copy sits roughly midway between the two staves
+bracketing that gap, and `transcribe._dedupe_cross_staff_detections` awarded it
+to the nearer five-line band — staff 18, which carries ZERO detected noteheads
+anywhere on the page, orphaning the hairpin at the exporter (which anchors a
+wedge to noteheads on its OWN staff). A same-day fix adds a veto keyed on
+notehead presence in the contested bar, ahead of distance, for exactly the two
+wedge classes (`benchmarks/omr-hairpins-2026-09/FINDINGS.md` §6): all four of
+Mahler's hairpins now land on the Trumpet staff that prints them, taking the
+11-work total from 5 of 8 truth hairpins exported to 7, 3 of 3 for Mahler
+specifically. **Closing a categorical gap is not the same as reading the
+symbol**, and this entry leaving the inventory says only the first — the one
+truth hairpin still unexported is Brahms 4's, where the anchor lands on the
+wrong notehead order rather than the wrong staff (FINDINGS.md §2), and one
+Mahler pair is now correctly paired but not exact (a duration edit, not a
+miss) — neither is what this fix addresses.
 
 (8 landed on main in `bdda54d` on 2026-09-02. An earlier draft of this list
 said it was unmerged and told the reader to run `git show 0eb1271` before
@@ -46,7 +69,7 @@ class". It is:
 Answered by counting elements in the truth file and in ours. The signature of
 an export gap is categorical — truth has N, we emit ZERO — which is exactly
 what distinguishes it from a recognition shortfall, where we emit some and miss
-some. All seven read `truth N, ours 0`.
+some. All nine read `truth N, ours 0`.
 
 WHAT IT DOES NOT LOOK AT. A MusicXML file is mostly not notation: metadata,
 page layout, MIDI playback hints, part bookkeeping. We emit none of that and
@@ -183,28 +206,6 @@ VISIBLE: dict[str, str] = {
 #: decision already taken or an open item someone can pick up. Anything NOT here
 #: is a new gap and fails the test.
 KNOWN_GAPS: dict[str, str] = {
-    "wedge": (
-        "OPEN HERE, and CLOSED ON AN UNMERGED BRANCH — do not rebuild it. "
-        "`53e6f233` on `claude/mystifying-curran-613606` wires "
-        "dynamicCrescendoHairpin/dynamicDiminuendoHairpin into both exporters "
-        "AND fixes their staff attribution (a dedup veto keyed to notehead "
-        "presence), taking 5 of 8 truth hairpins to 7 of 8 and pooled OMR-NED "
-        "0.1304 -> 0.1299. A duplicate of the export half ALONE was built on "
-        "`claude/dynamics-letters-clef-approach` and removed again: without the "
-        "attribution fix it cost +11 edits, because 3 of Mahler's 4 hairpins "
-        "land on the staff below their own. Its findings: "
-        "`benchmarks/omr-hairpins-2026-09/FINDINGS.md`. "
-        "⚠️ THE DETECTION HALF IS SEPARATE AND IS A SCAN PROBLEM the engraved "
-        "corpus cannot show: hairpin reading F1 is 1.000 there (n=3, exact page "
-        "truth), and over 11 SCANNED pages the detector finds **1 hairpin "
-        "against 198 `<wedge>` of truth** — Brahms 1 p2 alone encodes 136 and we "
-        "read one. A hairpin is a THIN DIAGONAL LINE, the shape Phase 4f moved "
-        "stems and beams to classical CV for; `line_detection` has no hairpin "
-        "path. A probe says CV can read them — three tests (per-column open "
-        "extent, outline straightness, and isolation, since a beam is attached "
-        "to its stems and a hairpin to nothing) cut 471 band components to 44 "
-        "that are almost all wedges: `benchmarks/omr-hairpin-cv-2026-09/`."
-    ),
     "barline": (
         "Documented limitation — repeat signs are dropped on export, tied to "
         "multi-type barline classification. NOTES.md items 5 and 6."

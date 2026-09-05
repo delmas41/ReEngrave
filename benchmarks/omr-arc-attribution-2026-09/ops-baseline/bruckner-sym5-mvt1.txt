@@ -1,0 +1,39 @@
+
+bruckner-sym5-mvt1.musicxml  ops 75  cost 185
+
+  cost by category
+    wrong note OMR-ED                                91
+    wrong other object OMR-ED                        60
+    entire measure insert/delete OMR-ED              15
+    wrong lyric OMR-ED                                9
+    wrong articulation OMR-ED                         4
+    wrong note head OMR-ED                            4
+    wrong tie OMR-ED                                  2
+
+  cost by op
+    notedel                      57  (20 ops)
+    extrains                     47  (15 ops)
+    noteins                      34  (12 ops)
+    delbar                        9  (3 ops)
+    lyricins                      9  (3 ops)
+    extradel                      9  (9 ops)
+    insbar                        6  (3 ops)
+    insarticulation               4  (4 ops)
+    headedit                      4  (2 ops)
+    extrasymboledit               4  (2 ops)
+    tieins                        2  (2 ops)
+
+  cost by part (top categories)
+    -1 ?                           69   wrong other object=60  wrong lyric=9
+    20 Violin 1                    25   wrong note=22  wrong note head=2  wrong tie=1
+    24 Contrabass                  24   wrong note=24
+    20 Violin                      21   wrong note=21
+    23 Cello                       18   wrong note=18
+    04 Bb Clarinet 1                6   wrong articulation=4  wrong note head=2
+    05 Clarinet                     6   entire measure insert/delete=6
+    23 Violoncello                  6   wrong note=6
+    19 Timpani                      5   entire measure insert/delete=5
+    05 Bb Clarinet 2                4   entire measure insert/delete=4
+    22 Viola                        1   wrong tie=1
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/ops-baseline/bruckner-sym5-mvt1.json

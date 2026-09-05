@@ -1,0 +1,421 @@
+{
+ "pooled": {
+  "off": {
+   "omr_ed": 2745,
+   "pred_symbols": 10361,
+   "truth_symbols": 10665,
+   "omr_ned": 0.13055264910111292
+  },
+  "on": {
+   "omr_ed": 2747,
+   "pred_symbols": 10371,
+   "truth_symbols": 10665,
+   "omr_ned": 0.13058566267351207
+  }
+ },
+ "rows": [
+  {
+   "work": "beethoven-sym5-mvt1",
+   "off_identical_to_eval": true,
+   "firings": {
+    "tie_to_slur_unpaired_span": 1
+   },
+   "off_counts": {
+    "ties": 11,
+    "slurs": 0
+   },
+   "on_counts": {
+    "ties": 11,
+    "slurs": 1
+   },
+   "truth_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "omr_ned": 0.05945945945945946,
+    "omr_ed": 77,
+    "pred_symbols": 640,
+    "truth_symbols": 655,
+    "categories": {
+     "wrong tie": 5
+    }
+   },
+   "on": {
+    "omr_ned": 0.06018518518518518,
+    "omr_ed": 78,
+    "pred_symbols": 641,
+    "truth_symbols": 655,
+    "categories": {
+     "wrong tie": 5,
+     "wrong slur": 1
+    }
+   }
+  },
+  {
+   "work": "brahms-sym1-mvt1",
+   "off_identical_to_eval": true,
+   "firings": {
+    "tie_to_slur_unpaired_diff_pitch": 4,
+    "tie_to_slur_unpaired_span": 5,
+    "tie_to_slur_flagged_span": 1,
+    "slur_to_tie": 1
+   },
+   "off_counts": {
+    "ties": 44,
+    "slurs": 74
+   },
+   "on_counts": {
+    "ties": 44,
+    "slurs": 83
+   },
+   "truth_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "omr_ned": 0.11961259079903147,
+    "omr_ed": 494,
+    "pred_symbols": 2047,
+    "truth_symbols": 2083,
+    "categories": {
+     "wrong tie": 9,
+     "wrong slur": 38
+    }
+   },
+   "on": {
+    "omr_ned": 0.12007731336071514,
+    "omr_ed": 497,
+    "pred_symbols": 2056,
+    "truth_symbols": 2083,
+    "categories": {
+     "wrong tie": 7,
+     "wrong slur": 43
+    }
+   }
+  },
+  {
+   "work": "mahler-sym5-mvt1",
+   "off_identical_to_eval": true,
+   "firings": {},
+   "off_counts": {
+    "ties": 2,
+    "slurs": 0
+   },
+   "on_counts": {
+    "ties": 2,
+    "slurs": 0
+   },
+   "truth_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "omr_ned": 0.027196652719665274,
+    "omr_ed": 52,
+    "pred_symbols": 954,
+    "truth_symbols": 958,
+    "categories": {}
+   },
+   "on": {
+    "omr_ned": 0.027196652719665274,
+    "omr_ed": 52,
+    "pred_symbols": 954,
+    "truth_symbols": 958,
+    "categories": {}
+   }
+  },
+  {
+   "work": "mozart-sym40-mvt1",
+   "off_identical_to_eval": true,
+   "firings": {},
+   "off_counts": {
+    "ties": 0,
+    "slurs": 19
+   },
+   "on_counts": {
+    "ties": 0,
+    "slurs": 19
+   },
+   "truth_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "omr_ned": 0.17715768981181051,
+    "omr_ed": 273,
+    "pred_symbols": 753,
+    "truth_symbols": 788,
+    "categories": {
+     "wrong slur": 11
+    }
+   },
+   "on": {
+    "omr_ned": 0.17715768981181051,
+    "omr_ed": 273,
+    "pred_symbols": 753,
+    "truth_symbols": 788,
+    "categories": {
+     "wrong slur": 11
+    }
+   }
+  },
+  {
+   "work": "mozart-sym41-mvt1",
+   "off_identical_to_eval": true,
+   "firings": {
+    "tie_to_slur_flagged_diff_pitch": 8
+   },
+   "off_counts": {
+    "ties": 9,
+    "slurs": 48
+   },
+   "on_counts": {
+    "ties": 1,
+    "slurs": 56
+   },
+   "truth_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "omr_ned": 0.14470548178413348,
+    "omr_ed": 425,
+    "pred_symbols": 1483,
+    "truth_symbols": 1454,
+    "categories": {
+     "wrong tie": 8,
+     "wrong slur": 26
+    }
+   },
+   "on": {
+    "omr_ned": 0.14470548178413348,
+    "omr_ed": 425,
+    "pred_symbols": 1483,
+    "truth_symbols": 1454,
+    "categories": {
+     "wrong slur": 34
+    }
+   }
+  },
+  {
+   "work": "beethoven-sym3-mvt1",
+   "off_identical_to_eval": true,
+   "firings": {
+    "tie_to_slur_flagged_diff_pitch": 1
+   },
+   "off_counts": {
+    "ties": 2,
+    "slurs": 2
+   },
+   "on_counts": {
+    "ties": 1,
+    "slurs": 3
+   },
+   "truth_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "omr_ned": 0.12936221419975932,
+    "omr_ed": 215,
+    "pred_symbols": 780,
+    "truth_symbols": 882,
+    "categories": {
+     "wrong tie": 3,
+     "wrong slur": 2
+    }
+   },
+   "on": {
+    "omr_ned": 0.12815884476534295,
+    "omr_ed": 213,
+    "pred_symbols": 780,
+    "truth_symbols": 882,
+    "categories": {
+     "wrong tie": 2,
+     "wrong slur": 1
+    }
+   }
+  },
+  {
+   "work": "brahms-sym4-mvt1",
+   "off_identical_to_eval": true,
+   "firings": {
+    "tie_to_slur_flagged_diff_pitch": 1
+   },
+   "off_counts": {
+    "ties": 7,
+    "slurs": 30
+   },
+   "on_counts": {
+    "ties": 6,
+    "slurs": 30
+   },
+   "truth_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "omr_ned": 0.22382478632478633,
+    "omr_ed": 419,
+    "pred_symbols": 923,
+    "truth_symbols": 949,
+    "categories": {
+     "wrong tie": 2,
+     "wrong slur": 33
+    }
+   },
+   "on": {
+    "omr_ned": 0.22234099412079103,
+    "omr_ed": 416,
+    "pred_symbols": 922,
+    "truth_symbols": 949,
+    "categories": {
+     "wrong tie": 1,
+     "wrong slur": 31
+    }
+   }
+  },
+  {
+   "work": "dvorak-sym9-mvt4",
+   "off_identical_to_eval": true,
+   "firings": {},
+   "off_counts": {
+    "ties": 0,
+    "slurs": 16
+   },
+   "on_counts": {
+    "ties": 0,
+    "slurs": 16
+   },
+   "truth_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "omr_ned": 0.33804809052333806,
+    "omr_ed": 239,
+    "pred_symbols": 334,
+    "truth_symbols": 373,
+    "categories": {
+     "wrong slur": 5
+    }
+   },
+   "on": {
+    "omr_ned": 0.33804809052333806,
+    "omr_ed": 239,
+    "pred_symbols": 334,
+    "truth_symbols": 373,
+    "categories": {
+     "wrong slur": 5
+    }
+   }
+  },
+  {
+   "work": "tchaikovsky-sym4-mvt2",
+   "off_identical_to_eval": true,
+   "firings": {},
+   "off_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "on_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "truth_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "omr_ned": 0.05795235028976175,
+    "omr_ed": 90,
+    "pred_symbols": 767,
+    "truth_symbols": 786,
+    "categories": {}
+   },
+   "on": {
+    "omr_ned": 0.05795235028976175,
+    "omr_ed": 90,
+    "pred_symbols": 767,
+    "truth_symbols": 786,
+    "categories": {}
+   }
+  },
+  {
+   "work": "tchaikovsky-sym6-mvt2",
+   "off_identical_to_eval": true,
+   "firings": {},
+   "off_counts": {
+    "ties": 0,
+    "slurs": 9
+   },
+   "on_counts": {
+    "ties": 0,
+    "slurs": 9
+   },
+   "truth_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "omr_ned": 0.1916083916083916,
+    "omr_ed": 274,
+    "pred_symbols": 700,
+    "truth_symbols": 730,
+    "categories": {
+     "wrong slur": 7
+    }
+   },
+   "on": {
+    "omr_ned": 0.1916083916083916,
+    "omr_ed": 274,
+    "pred_symbols": 700,
+    "truth_symbols": 730,
+    "categories": {
+     "wrong slur": 7
+    }
+   }
+  },
+  {
+   "work": "bruckner-sym5-mvt1",
+   "off_identical_to_eval": true,
+   "firings": {
+    "tie_to_slur_flagged_diff_pitch": 1,
+    "tie_to_slur_unpaired_diff_pitch": 1
+   },
+   "off_counts": {
+    "ties": 4,
+    "slurs": 1
+   },
+   "on_counts": {
+    "ties": 3,
+    "slurs": 3
+   },
+   "truth_counts": {
+    "ties": 0,
+    "slurs": 0
+   },
+   "off": {
+    "omr_ned": 0.09411172622043282,
+    "omr_ed": 187,
+    "pred_symbols": 980,
+    "truth_symbols": 1007,
+    "categories": {
+     "wrong tie": 2,
+     "wrong slur": 1
+    }
+   },
+   "on": {
+    "omr_ned": 0.09557344064386318,
+    "omr_ed": 190,
+    "pred_symbols": 981,
+    "truth_symbols": 1007,
+    "categories": {
+     "wrong tie": 3,
+     "wrong slur": 3
+    }
+   }
+  }
+ ]
+}

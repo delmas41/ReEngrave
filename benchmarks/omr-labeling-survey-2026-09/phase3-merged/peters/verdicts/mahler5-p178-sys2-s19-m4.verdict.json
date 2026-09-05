@@ -1,0 +1,31 @@
+{
+ "cell_id": "mahler5-p178-sys2-s19-m4",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 284,
+    "y": 899,
+    "w": 118,
+    "h": 99
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 646,
+    "y": 948,
+    "w": 118,
+    "h": 99
+   },
+   "notes": ""
+  }
+ ]
+}

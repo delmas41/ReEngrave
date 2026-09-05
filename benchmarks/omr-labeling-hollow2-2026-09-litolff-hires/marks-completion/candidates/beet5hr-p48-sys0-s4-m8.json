@@ -1,0 +1,18 @@
+{
+ "cell_id": "beet5hr-p48-sys0-s4-m8",
+ "candidates": [
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.9052,
+   "ink": 0.2084,
+   "bbox": {
+    "x": 1061,
+    "y": 161,
+    "w": 529,
+    "h": 184
+   }
+  }
+ ]
+}

@@ -135,10 +135,23 @@
         "h": 218
       },
       "notes": ""
+    },
+    {
+      "id": "H11",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 198,
+        "y": 696,
+        "w": 140,
+        "h": 199
+      },
+      "notes": ""
     }
   ],
   "inspected_passes": [
     "hollow noteheads",
-    "completion"
+    "completion",
+    "rests+accidentals"
   ]
 }

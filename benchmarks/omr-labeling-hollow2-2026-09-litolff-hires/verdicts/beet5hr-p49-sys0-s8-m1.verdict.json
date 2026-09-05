@@ -1,10 +1,24 @@
 {
   "cell_id": "beet5hr-p49-sys0-s8-m1",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:28:40+00:00",
+  "labeled_at_utc": "2026-09-03T20:38:03+00:00",
   "detections": [],
-  "added_detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 933,
+        "y": 684,
+        "w": 144,
+        "h": 78
+      },
+      "notes": ""
+    }
+  ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

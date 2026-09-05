@@ -1,0 +1,83 @@
+{
+ "cell_id": "lamer-p3-sys1-s12-m1",
+ "candidates": [
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8638,
+   "ink": 0.4508,
+   "bbox": {
+    "x": 460,
+    "y": 520,
+    "w": 71,
+    "h": 102
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.854,
+   "ink": 0.4195,
+   "bbox": {
+    "x": 376,
+    "y": 518,
+    "w": 91,
+    "h": 101
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8281,
+   "ink": 0.4742,
+   "bbox": {
+    "x": 462,
+    "y": 0,
+    "w": 106,
+    "h": 69
+   }
+  },
+  {
+   "smufl_name": "dynamicP",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8027,
+   "ink": 0.4715,
+   "bbox": {
+    "x": 379,
+    "y": 0,
+    "w": 102,
+    "h": 73
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.7721,
+   "ink": 0.2459,
+   "bbox": {
+    "x": 871,
+    "y": 457,
+    "w": 214,
+    "h": 70
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.6814,
+   "ink": 0.3148,
+   "bbox": {
+    "x": 601,
+    "y": 507,
+    "w": 188,
+    "h": 46
+   }
+  }
+ ]
+}

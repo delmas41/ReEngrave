@@ -1,0 +1,70 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s7-m1",
+ "candidates": [
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.8533,
+   "ink": 0.4322,
+   "bbox": {
+    "x": 127,
+    "y": 1161,
+    "w": 269,
+    "h": 278
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.82,
+   "ink": 0.4453,
+   "bbox": {
+    "x": 44,
+    "y": 0,
+    "w": 269,
+    "h": 273
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.819,
+   "ink": 0.4178,
+   "bbox": {
+    "x": 17,
+    "y": 1147,
+    "w": 266,
+    "h": 287
+   }
+  },
+  {
+   "smufl_name": "dynamicF",
+   "category": "dynamic",
+   "family": "dynamic",
+   "confidence": 0.7947,
+   "ink": 0.4395,
+   "bbox": {
+    "x": 149,
+    "y": 0,
+    "w": 267,
+    "h": 268
+   }
+  },
+  {
+   "smufl_name": "slur",
+   "category": "structural",
+   "family": "slur",
+   "confidence": 0.7368,
+   "ink": 0.2047,
+   "bbox": {
+    "x": 329,
+    "y": 400,
+    "w": 842,
+    "h": 182
+   }
+  }
+ ]
+}

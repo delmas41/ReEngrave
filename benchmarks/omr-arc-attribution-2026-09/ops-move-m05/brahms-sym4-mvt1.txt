@@ -1,0 +1,42 @@
+
+brahms-sym4-mvt1.musicxml  ops 176  cost 400
+
+  cost by category
+    wrong note OMR-ED                               231
+    wrong other object OMR-ED                        91
+    entire measure insert/delete OMR-ED              53
+    wrong flag/beam OMR-ED                           10
+    wrong lyric OMR-ED                                6
+    wrong articulation OMR-ED                         5
+    wrong tie OMR-ED                                  2
+    wrong note head OMR-ED                            2
+
+  cost by op
+    notedel                     142  (59 ops)
+    noteins                      89  (33 ops)
+    extrains                     80  (39 ops)
+    delbar                       30  (7 ops)
+    insbar                       23  (7 ops)
+    extradel                      8  (8 ops)
+    editbeam                      7  (7 ops)
+    lyricins                      6  (2 ops)
+    insarticulation               5  (5 ops)
+    extradurationedit             3  (3 ops)
+    headedit                      2  (1 ops)
+    delbeam                       2  (2 ops)
+
+  cost by part (top categories)
+    -1 ?                           97   wrong other object=91  wrong lyric=6
+    17 Viola                       74   wrong note=66  wrong flag/beam=8
+    04 Clarinet                    28   wrong note=28
+    05 Clarinet                    26   wrong note=26
+    07 Bassoon                     24   wrong note=24
+    18 Cello                       20   wrong note=20
+    18 Violoncello                 20   wrong note=18  wrong flag/beam=2
+    19 Contrabass                  18   entire measure insert/delete=16  wrong note=2
+    14 Timpani                     16   entire measure insert/delete=14  wrong note head=2
+    07 Bassoon 2                   15   wrong note=14  wrong articulation=1
+    04 A Clarinet 1                12   wrong note=12
+    05 A Clarinet 2                12   wrong note=11  wrong articulation=1
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a5db9c4b9aa5bfecb/benchmarks/omr-arc-attribution-2026-09/ops-move-m05/brahms-sym4-mvt1.json

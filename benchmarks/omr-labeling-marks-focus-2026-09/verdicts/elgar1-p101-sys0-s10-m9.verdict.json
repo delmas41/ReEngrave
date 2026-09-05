@@ -1,0 +1,36 @@
+{
+  "cell_id": "elgar1-p101-sys0-s10-m9",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T21:33:21+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 379,
+        "y": 598,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restWhole",
+      "human_category": "rest",
+      "bbox": {
+        "x": 563,
+        "y": 412,
+        "w": 149,
+        "h": 69
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads",
+    "rests+accidentals"
+  ]
+}

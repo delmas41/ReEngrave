@@ -1,0 +1,122 @@
+{
+  "cell_id": "dvorak9-p16-sys1-s25-m2",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 193,
+      "y": 430,
+      "w": 82,
+      "h": 239,
+      "x_center": 234,
+      "y_center": 549,
+      "confidence": 0.7053029537200928,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "rest8th",
+      "category": "rest",
+      "x": 1206,
+      "y": 505,
+      "w": 108,
+      "h": 164,
+      "x_center": 1260,
+      "y_center": 587,
+      "confidence": 0.7576106786727905,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "restQuarter",
+      "category": "rest",
+      "x": 1207,
+      "y": 498,
+      "w": 107,
+      "h": 171,
+      "x_center": 1260,
+      "y_center": 583,
+      "confidence": 0.5213740468025208,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "dynamicP",
+      "category": "dynamic",
+      "x": 1329,
+      "y": 800,
+      "w": 130,
+      "h": 161,
+      "x_center": 1394,
+      "y_center": 880,
+      "confidence": 0.7381389141082764,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "dynamicP",
+      "category": "dynamic",
+      "x": 1458,
+      "y": 804,
+      "w": 150,
+      "h": 157,
+      "x_center": 1533,
+      "y_center": 882,
+      "confidence": 0.8552095890045166,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 1626,
+      "y": 701,
+      "w": 121,
+      "h": 102,
+      "x_center": 1686,
+      "y_center": 752,
+      "confidence": 0.8751094341278076,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "articStaccatoBelow",
+      "category": "ornament",
+      "x": 1856,
+      "y": 840,
+      "w": 34,
+      "h": 30,
+      "x_center": 1873,
+      "y_center": 855,
+      "confidence": 0.6228787899017334,
+      "pitch": null
+    },
+    {
+      "id": "D7",
+      "smufl_name": "noteheadBlackOnLine",
+      "category": "notehead",
+      "x": 1818,
+      "y": 701,
+      "w": 125,
+      "h": 105,
+      "x_center": 1880,
+      "y_center": 753,
+      "confidence": 0.8792065382003784,
+      "pitch": null
+    },
+    {
+      "id": "D8",
+      "smufl_name": "articStaccatoBelow",
+      "category": "ornament",
+      "x": 1862,
+      "y": 840,
+      "w": 37,
+      "h": 31,
+      "x_center": 1880,
+      "y_center": 855,
+      "confidence": 0.516848623752594,
+      "pitch": null
+    }
+  ]
+}

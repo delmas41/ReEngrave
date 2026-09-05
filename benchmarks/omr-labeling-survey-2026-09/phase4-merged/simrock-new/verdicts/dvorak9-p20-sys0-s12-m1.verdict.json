@@ -1,0 +1,31 @@
+{
+ "cell_id": "dvorak9-p20-sys0-s12-m1",
+ "schema_version": 2,
+ "detections": [],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadHalfOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 222,
+    "y": 746,
+    "w": 119,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "accidentalFlat",
+   "human_category": "accidental",
+   "bbox": {
+    "x": 58,
+    "y": 623,
+    "w": 92,
+    "h": 249
+   },
+   "notes": ""
+  }
+ ]
+}

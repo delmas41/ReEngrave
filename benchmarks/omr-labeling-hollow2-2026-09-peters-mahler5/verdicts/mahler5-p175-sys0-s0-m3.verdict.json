@@ -1,0 +1,23 @@
+{
+  "cell_id": "mahler5-p175-sys0-s0-m3",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T20:47:54+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 1477,
+        "y": 847,
+        "w": 134,
+        "h": 323
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "rests+accidentals"
+  ]
+}

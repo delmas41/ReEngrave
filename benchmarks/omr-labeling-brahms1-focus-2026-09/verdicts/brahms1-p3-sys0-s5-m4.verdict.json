@@ -1,0 +1,36 @@
+{
+  "cell_id": "brahms1-p3-sys0-s5-m4",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-03T21:42:53+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 237,
+        "y": 546,
+        "w": 100,
+        "h": 84
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadHalfInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 247,
+        "y": 842,
+        "w": 100,
+        "h": 84
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads",
+    "rests+accidentals"
+  ]
+}

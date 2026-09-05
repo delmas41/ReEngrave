@@ -1,34 +1,34 @@
 {
   "tag": "prod",
-  "weights": "omr-weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+  "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt",
   "hollow_histogram": {
-    "black_total": 120,
-    "hollow_total": 14,
-    "noteheadHalfInSpace": 7,
-    "noteheadWholeInSpace": 6,
-    "noteheadHalfOnLine": 1
+    "hollow_total": 30,
+    "noteheadWholeInSpace": 3,
+    "black_total": 79,
+    "noteheadHalfOnLine": 6,
+    "noteheadHalfInSpace": 21
   },
   "pooled": {
     "exact": {
       "truth": 147,
-      "omr": 134,
-      "matched": 88,
-      "recall": 0.5986,
-      "precision": 0.6567
+      "omr": 109,
+      "matched": 83,
+      "recall": 0.5646,
+      "precision": 0.7615
     },
     "step": {
       "truth": 147,
-      "omr": 134,
-      "matched": 103,
-      "recall": 0.7007,
-      "precision": 0.7687
+      "omr": 109,
+      "matched": 95,
+      "recall": 0.6463,
+      "precision": 0.8716
     },
     "with_duration": {
       "truth": 147,
-      "omr": 134,
-      "matched": 57,
-      "recall": 0.3878,
-      "precision": 0.4254
+      "omr": 109,
+      "matched": 64,
+      "recall": 0.4354,
+      "precision": 0.5872
     }
   },
   "clef_accuracy": "11/12",

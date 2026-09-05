@@ -1,0 +1,84 @@
+{
+ "cell_id": "beet5hr-p51-sys0-s7-m4",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "M0",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 126,
+    "y": 1269,
+    "w": 272,
+    "h": 287
+   },
+   "confidence": 0.8416,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M1",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 69,
+    "y": 81,
+    "w": 260,
+    "h": 283
+   },
+   "confidence": 0.7957,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M2",
+   "verdict": "TP",
+   "model_predicted_class": "dynamicF",
+   "model_bbox": {
+    "x": 12,
+    "y": 1281,
+    "w": 273,
+    "h": 291
+   },
+   "confidence": 0.7891,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  },
+  {
+   "id": "M3",
+   "verdict": "TP",
+   "model_predicted_class": "slur",
+   "model_bbox": {
+    "x": 285,
+    "y": 432,
+    "w": 1714,
+    "h": 112
+   },
+   "confidence": 0.6008,
+   "notes": "marks completion (dynamics/slurs/ties), audited"
+  }
+ ],
+ "added_detections": [
+  {
+   "id": "H0",
+   "human_class": "noteheadWholeInSpace",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 132,
+    "y": 598,
+    "w": 172,
+    "h": 100
+   },
+   "notes": ""
+  },
+  {
+   "id": "H1",
+   "human_class": "noteheadWholeOnLine",
+   "human_category": "notehead",
+   "bbox": {
+    "x": 142,
+    "y": 1048,
+    "w": 172,
+    "h": 100
+   },
+   "notes": ""
+  }
+ ]
+}

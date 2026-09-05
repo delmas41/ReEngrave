@@ -1,10 +1,72 @@
 {
   "cell_id": "beet5hr-p49-sys0-s14-m4",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-03T01:28:45+00:00",
+  "labeled_at_utc": "2026-09-03T20:40:14+00:00",
   "detections": [],
-  "added_detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 528,
+        "y": 614,
+        "w": 86,
+        "h": 271
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "restQuarter",
+      "human_category": "rest",
+      "bbox": {
+        "x": 802,
+        "y": 571,
+        "w": 109,
+        "h": 317
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "rest8th",
+      "human_category": "rest",
+      "bbox": {
+        "x": 348,
+        "y": 702,
+        "w": 134,
+        "h": 189
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 3,
+        "y": 865,
+        "w": 105,
+        "h": 274
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "accidentalSharp",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 993,
+        "y": 871,
+        "w": 98,
+        "h": 274
+      },
+      "notes": ""
+    }
+  ],
   "inspected_passes": [
-    "hollow noteheads"
+    "hollow noteheads",
+    "rests+accidentals"
   ]
 }

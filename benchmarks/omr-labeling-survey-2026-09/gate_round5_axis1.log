@@ -1,0 +1,19 @@
+=== shift1.5 done ===
+shift 0.9: OMR-NED 0.7493 edits 7872 pred 4355
+shift 1.5: OMR-NED 0.7420 edits 7768 pred 4318
+[shift15] wrote hollow_eval_shift15.json
+
+
+====================================================================================================
+RE-GATE SUMMARY (all evals --device cpu)
+====================================================================================================
+PRODUCTION forgetting: notehead recall 207/220=0.941  overallR=0.931 P=0.470 F1=0.625
+PRODUCTION hollow: half=27 hollow_total=30 black=79 with_dur_R=0.4354 exact_R=0.5646
+----------------------------------------------------------------------------------------------------
+ckpt           nh_recall  overallF1  half  hollowT  black  withDurR   exactR   stepR
+shift09    220/220=1.000      0.591    31       31     86    0.5102   0.5782  0.6939
+shift15    220/220=1.000      0.591    17       17     86    0.4558   0.5306  0.6259
+====================================================================================================
+wrote benchmarks/omr-labeling-survey-2026-09/gate_all_summary.json
+
+[exited with code 0]

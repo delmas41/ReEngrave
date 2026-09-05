@@ -1,0 +1,96 @@
+{
+  "cell_id": "dvorak9-p15-sys0-s27-m0",
+  "detections": [
+    {
+      "id": "D0",
+      "smufl_name": "clefCAlto",
+      "category": "clef",
+      "x": 277,
+      "y": 496,
+      "w": 253,
+      "h": 421,
+      "x_center": 403,
+      "y_center": 706,
+      "confidence": 0.7061971426010132,
+      "pitch": null
+    },
+    {
+      "id": "D1",
+      "smufl_name": "keySharp",
+      "category": "accidental",
+      "x": 644,
+      "y": 409,
+      "w": 116,
+      "h": 311,
+      "x_center": 702,
+      "y_center": 564,
+      "confidence": 0.883941113948822,
+      "pitch": null
+    },
+    {
+      "id": "D2",
+      "smufl_name": "staff",
+      "category": "structural",
+      "x": 1,
+      "y": 484,
+      "w": 1751,
+      "h": 426,
+      "x_center": 876,
+      "y_center": 697,
+      "confidence": 0.5519258379936218,
+      "pitch": null
+    },
+    {
+      "id": "D3",
+      "smufl_name": "dynamicF",
+      "category": "dynamic",
+      "x": 915,
+      "y": 860,
+      "w": 224,
+      "h": 238,
+      "x_center": 1027,
+      "y_center": 979,
+      "confidence": 0.7444060444831848,
+      "pitch": null
+    },
+    {
+      "id": "D4",
+      "smufl_name": "noteheadHalfInSpace",
+      "category": "notehead",
+      "x": 1041,
+      "y": 87,
+      "w": 135,
+      "h": 122,
+      "x_center": 1108,
+      "y_center": 148,
+      "confidence": 0.8236244916915894,
+      "pitch": null
+    },
+    {
+      "id": "D5",
+      "smufl_name": "dynamicZ",
+      "category": "dynamic",
+      "x": 1092,
+      "y": 933,
+      "w": 127,
+      "h": 149,
+      "x_center": 1155,
+      "y_center": 1007,
+      "confidence": 0.8786608576774597,
+      "pitch": null
+    },
+    {
+      "id": "D6",
+      "smufl_name": "beam",
+      "category": "structural",
+      "x": 1153,
+      "y": 1148,
+      "w": 319,
+      "h": 183,
+      "x_center": 1312,
+      "y_center": 1239,
+      "confidence": 0.851540207862854,
+      "pitch": null
+    }
+  ]
+}

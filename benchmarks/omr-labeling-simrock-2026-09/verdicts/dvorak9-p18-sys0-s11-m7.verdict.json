@@ -1,0 +1,83 @@
+{
+  "cell_id": "dvorak9-p18-sys0-s11-m7",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-04T15:45:49+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadBlackOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 0,
+        "y": 750,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadBlackInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 813,
+        "y": 598,
+        "w": 119,
+        "h": 100
+      },
+      "notes": ""
+    },
+    {
+      "id": "H2",
+      "human_class": "accidentalFlat",
+      "human_category": "accidental",
+      "bbox": {
+        "x": 651,
+        "y": 524,
+        "w": 92,
+        "h": 249
+      },
+      "notes": ""
+    },
+    {
+      "id": "H3",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 593,
+        "y": 904,
+        "w": 234,
+        "h": 293
+      },
+      "notes": ""
+    },
+    {
+      "id": "H4",
+      "human_class": "dynamicF",
+      "human_category": "dynamic",
+      "bbox": {
+        "x": 743,
+        "y": 954,
+        "w": 213,
+        "h": 293
+      },
+      "notes": ""
+    },
+    {
+      "id": "H5",
+      "human_class": "articStaccatoBelow",
+      "human_category": "ornament",
+      "bbox": {
+        "x": 15,
+        "y": 920,
+        "w": 45,
+        "h": 59
+      },
+      "notes": ""
+    }
+  ],
+  "inspected_passes": [
+    "draw-rich"
+  ]
+}
