@@ -311,6 +311,7 @@ ReEngrave/
 | `OMR_DPI`             | `300`   | PDF rasterization DPI (CLI default is **600** — they differ on purpose). **Coupled to `OMR_IMGSZ`, and the best pair depends on the music:** 300 wins on sparse authored fixtures (ensemble precision 0.684 → 0.915), 600 wins on dense orchestral pages (Mahler recall 0.042 → 0.208, duration 0.000 → 0.200). Unifying them in either direction regresses the other family. **Do not 'fix' the inconsistency without measuring both.** See `benchmarks/omr-dpi-imgsz-2026-08/RESULTS.md` |
 | `OMR_LEFT_EDGE_SPLIT`  | `1` (on) | **On by default.** A second, narrow barline scan at each system's shared left edge that *adds* a system break where that left column is empty even though the wide connectivity window found staff-body ink — recovering two stacked systems that the wide window MERGED because a measure number, stem, or `a 2.` marking faked a connection. Union-only (never merges) and gated so it never creates a size-1 system. Measured across 964 library pages: fixed 27 over-merged symphony pages vs 1 mild residual (Mozart K22), 0 size-1 created; ground-truth eval 20/23 → 22/23. Guarded **end-to-end** by `tools/omr/tests/test_left_edge_split_e2e.py` — 4 scanned pages, 3 publishers, hand-read staff/measure truth, asserting both that the split reads the true structure and that flag-off still merges (merged, Eroica p36 reads 10 measures where the page prints 16). Set `0` to disable. See `benchmarks/omr-system-grouping-2026-09/FIX_PLAN.md`. |
 | `OMR_DIRECTION_TEXT`  | `1` (on) | **On by default since 2026-09-02.** Reads the words printed inside a system — `legato`, `Allegro con brio` — by subtracting every detection from the page's ink, refusing the curves by fill ratio, OCRing what is left with Surya and Tesseract, and gating on a lexicon of musical terms. Emitted as MusicXML `<words>`. **Worth 144 edits** on the engraved orchestral benchmark, 18.8% of the pooled figure, and `wrong direction` is the third-largest bucket. **Additive** — every word placed reaches the file and the export is identical outside its `<direction>` blocks, checked per page on engravings and on a scan. Costs 0.5-0.8 s per candidate crop; the ~70 s model load it used to be blamed for belongs to the margin-label reader, which is on by default and loads Surya first on any page without a text layer. Self-disables where neither `.venv-surya` nor Tesseract exists. CLI: `--no-direction-text`. See `benchmarks/omr-direction-text-2026-09/DEFAULT_2026-09-02.md`. |
+| `OMR_ARC_RECLASS` | `0` (off) | **Measured, deliberately NOT shipped.** Export-time tie/slur grammar veto (`docs/position-grammar-confusables-2026-09-04.md` §2 ARC, R3 shape): a slur-classed arc covering exactly two adjacent same-pitch heads of one voice becomes a tie; a tie-classed arc whose flanked pair sits on different STAFF STEPS, or with a third event of its voice under its span, becomes a slur — the vetoed arc widened to the flanked centres and split at cell boundaries so the ordinary barline merge rejoins it. Compares steps, never spelled pitches: the far head of a cross-barline tie does not restate its accidental and the resolver spells it plain, so the naive spelled-pitch key broke truth-matched ties (+21 engraved edits, every loss a same-step `F#4→F4` pair). Priced on both families: engraved **0.1306 → 0.1306, +2 edits, 24 firings**; scan **0.8387 → 0.8391, +130 edits — REFUSED**, because a scan's resolved pitch at an arc's ends is downstream of exactly what scans get wrong (`wrong note` = 26% of that pool), and per-direction attribution puts ALL +130 in the tie→slur half while slur→tie alone is edit-free and moves the tie inventory toward truth (420 → 462 of 805 elements). If any half ever defaults on it is slur→tie; tie→slur is blocked on ANCHORS, not grammar (R4). Flag-off is byte-identical, asserted per work and per row. See [benchmarks/omr-export-gaps-2026-09/FINDINGS.md](benchmarks/omr-export-gaps-2026-09/FINDINGS.md). |
 
 ---
 
@@ -1212,9 +1213,21 @@ reader would SEE come out".
 
 `KNOWN_GAPS` is an inventory rather than a suppression list — every element we
 knowingly drop, with its reason and its size — and anything not on it fails.
-Two open items are recorded there now: **accents** (Mahler's truth has 6, the
-detector finds exactly 6, nothing consumes them) and **hairpins** (6 in the
-truth, 4 detected).
+The one open item recorded there now is **hairpins** (`wedge`: 6 in Mahler's
+truth, 4 detected; 17 across the 11 works — partial detection, so not purely
+an export fix; a close is in flight on the 09-03/04 hairpin branches).
+
+⚠️ **This sentence used to list accents as a second open item, and that claim
+outlived the fix by two days.** Accents ARE the eighth gap — closed by the
+articulations work (`0eb1271`, merged `bdda54d` 2026-09-02): `articAccent*` is
+attached by `_attach_articulations_in_cell` and both exporters emit it, Mahler
+6-for-6 against its truth (verified live 2026-09-04, `<accent>` in MusicXML and
+`->` in LilyPond; the entry left `KNOWN_GAPS` the same day it was written). The
+stale copy here seeded a work order to "close the accents gap" two days later —
+the same detected-then-dropped prose failure the OMR-NED figure block exists to
+prevent, this time in the other direction: a gap that stayed CLOSED in the code
+and open in the doc. `benchmarks/omr-export-gaps-2026-09/FINDINGS.md` §1 holds
+the reconciliation.
 
 **Three traps when reading it.** (1) The metric is SYMMETRIC — swapping
 prediction and truth does not change the score, it only changes which file is
@@ -1379,6 +1392,7 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_DPI` | PDF rasterization DPI (default 300; CLI uses 600 — see the knobs table) |
 | `OMR_LEFT_EDGE_SPLIT` | `1` on (default) → recover stacked systems the connectivity rule merged when staff-body ink faked a connection; `0` disables. See the knobs table. |
 | `OMR_DIRECTION_TEXT` | `1` on (default) → read the printed words inside each system and export them as `<words>`; `0` disables. Self-disables with no OCR rung. See the knobs table. |
+| `OMR_ARC_RECLASS` | `0` off (default) → export-time tie/slur grammar veto; measured on both families and NOT shipped (scan side refused, +130 edits). See the knobs table. |
 | `MAESTRO_BRIDGE_ENABLED` | `true` → theory-layer enrichment (host-side only; default off) |
 | `MAESTRO_PITCH_RERANK_ENABLED` | `true` → M4 pitch re-rank + auto-correct (local engine; default off) |
 | `MAESTRO_PITCH_RERANK_THRESHOLD` | Min re-rank confidence to auto-correct (default 0.9) |

@@ -381,6 +381,14 @@ class TestArticulations:
         assert "-^" in to_lilypond(self._result(["marcato"]))
         assert "--" in to_lilypond(self._result(["tenuto"]))
 
+    def test_lilypond_accent(self):
+        """The one articulation this class had not pinned on the LilyPond
+        side — and the one whose closure a stale CLAUDE.md sentence denied
+        for two days ("nothing consumes them"). The MusicXML half is pinned
+        above; the wiring's pin is a test, not a sentence.
+        benchmarks/omr-export-gaps-2026-09/FINDINGS.md §1."""
+        assert "->" in to_lilypond(self._result(["accent"]))
+
 
 # ─── to_lilypond (smoke test on a tiny synthetic JSON) ─────────────────────
 
@@ -1806,3 +1814,312 @@ class TestTwoVoiceStaffDoesNotEcho:
         assert not _lone_voice_is_the_second(mixed)
         assert not _lone_voice_is_the_second(rests_only)
         assert not _lone_voice_is_the_second([])
+
+
+# ─── Arc reclassification (OMR_ARC_RECLASS) ─────────────────────────────────
+# A tie and a slur are the same glyph; the notes they connect tell them apart
+# (docs/position-grammar-confusables-2026-09-04.md §2 ARC, rule R3: veto the
+# impossible, abstain otherwise). Off by default; every test that wants it on
+# says so through the environment.
+
+
+def _tie_arc(x0, x1, y=41):
+    """A detector tie arc. Sits at notehead height, unlike `_slur_arc`'s
+    default, because a tie is drawn between its heads and the flank pairing
+    has a y-gate."""
+    return {"category": "structural", "class": "tie",
+            "bbox": [x0, y, x1 - x0, 8], "bbox_page": [x0, y, x1 - x0, 8]}
+
+
+def _rest_at(x, y=40):
+    return {"category": "rest", "class": "restQuarter",
+            "duration_beats": 1.0, "duration_type": "quarter", "dots": 0,
+            "bbox": [x, y, 10, 10], "bbox_page": [x, y, 10, 10],
+            "confidence": 0.9}
+
+
+def _tie_flags(staff):
+    """Every tie flag on the staff, as (measure, x, flag)."""
+    out = []
+    for m_idx, measure in enumerate(staff["measures"]):
+        for det in measure["detections"]:
+            for key in ("tied_to_next", "tied_from_prev"):
+                if det.get(key):
+                    out.append((m_idx, det["bbox_page"][0], key))
+    return sorted(out)
+
+
+@pytest.fixture
+def arc_reclass_on(monkeypatch):
+    monkeypatch.setenv("OMR_ARC_RECLASS", "1")
+    from tools.omr import export as _export
+    _export.reset_arc_reclass_stats()
+    yield
+    _export.reset_arc_reclass_stats()
+
+
+class TestArcReclassOff:
+    """The default. Nothing moves, whatever the configuration says."""
+
+    def test_a_two_note_same_pitch_slur_stays_a_slur(self, monkeypatch):
+        monkeypatch.delenv("OMR_ARC_RECLASS", raising=False)
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _slur_head(30, pitch="C4"),
+            _slur_arc(12, 38),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+
+    def test_an_impossible_tie_keeps_its_flags(self, monkeypatch):
+        monkeypatch.delenv("OMR_ARC_RECLASS", raising=False)
+        a = _slur_head(10, pitch="C4")
+        b = _slur_head(40, pitch="E4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _tie_arc(20, 40)]])
+        annotate_slurs_in_staff(staff)
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 40, "tied_from_prev")]
+        assert _states(staff) == []
+
+
+class TestSlurToTie:
+    """An arc classed `slur` whose ends land on exactly two adjacent
+    same-pitch noteheads is a tie — the duration-semantic reading, the safer
+    error where print alone cannot decide."""
+
+    def test_two_adjacent_same_pitch_heads_become_a_tie(self, arc_reclass_on):
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _slur_head(30, pitch="C4"),
+            _slur_arc(12, 38),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 0
+        assert _states(staff) == []
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 30, "tied_from_prev")]
+
+    def test_the_canonical_tie_crosses_a_barline_as_two_fragments(
+            self, arc_reclass_on):
+        """Cells are cut per measure, so the commonest tie in real music —
+        last note of one bar to first of the next — arrives as two slur
+        fragments. The veto must see the MERGED arc or it can never fire on
+        the configuration it exists for."""
+        staff = _slur_staff([
+            [_slur_head(80, pitch="G4"), _slur_arc(86, 100)],
+            [_slur_head(110, pitch="G4"), _slur_arc(100, 116)],
+        ])
+        assert annotate_slurs_in_staff(staff) == 0
+        assert _tie_flags(staff) == [
+            (0, 80, "tied_to_next"), (1, 110, "tied_from_prev")]
+
+    def test_different_pitches_stay_a_slur(self, arc_reclass_on):
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _slur_head(30, pitch="D4"),
+            _slur_arc(12, 38),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+
+    def test_three_heads_stay_a_slur_even_on_one_pitch(self, arc_reclass_on):
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _slur_head(30, pitch="C4"),
+            _slur_head(50, pitch="C4"), _slur_arc(12, 58),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+
+    def test_a_rest_between_the_heads_stays_a_slur(self, arc_reclass_on):
+        """A tie cannot cross a rest, so same-pitch heads with one between
+        them are not the tie configuration — the rest spends an event ordinal
+        and the two heads stop being adjacent."""
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _rest_at(30),
+            _slur_head(50, pitch="C4"), _slur_arc(12, 58),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+
+    def test_a_pair_the_transcription_already_tied_loses_nothing(
+            self, arc_reclass_on):
+        """Both a tie and a slur detected over one pair: the veto agrees with
+        the tie and adds no duplicate bookkeeping."""
+        a = _slur_head(10, pitch="C4")
+        b = _slur_head(30, pitch="C4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _slur_arc(12, 38)]])
+        annotate_slurs_in_staff(staff)
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 30, "tied_from_prev")]
+        assert not a.get("arc_reclass_added")
+
+
+class TestTieToSlur:
+    """An arc classed `tie` spanning more than two note events, or whose two
+    heads carry different pitches, cannot be a tie."""
+
+    @staticmethod
+    def _flagged_pair_staff(pitch_b="E4"):
+        a = _slur_head(10, pitch="C4")
+        b = _slur_head(40, pitch=pitch_b)
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        return a, b, _slur_staff([[a, b, _tie_arc(20, 40)]])
+
+    def test_a_different_pitch_pair_becomes_a_slur(self, arc_reclass_on):
+        a, b, staff = self._flagged_pair_staff()
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+        # The slur joins the SAME two notes the impossible tie claimed —
+        # the arc is widened to the flanked centres, or a flanking arc
+        # covers nothing and the promised slur degrades to a deletion.
+        assert _states(staff) == [(0, 10, 1, "start"), (0, 40, 1, "stop")]
+
+    def test_a_same_pitch_pair_is_a_legal_tie_and_stands(self, arc_reclass_on):
+        a, b, staff = self._flagged_pair_staff(pitch_b="C4")
+        assert annotate_slurs_in_staff(staff) == 0
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 40, "tied_from_prev")]
+
+    def test_a_tie_arc_over_three_events_becomes_a_slur(self, arc_reclass_on):
+        """Same pitch throughout, so only the span refutes it — a tie joins
+        two adjacent notes and nothing else."""
+        a = _slur_head(10, pitch="C4")
+        mid = _slur_head(40, pitch="C4")
+        c = _slur_head(70, pitch="C4")
+        a["tied_to_next"] = True
+        c["tied_from_prev"] = True
+        staff = _slur_staff([[a, mid, c, _tie_arc(20, 70)]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+        assert _states(staff) == [(0, 10, 1, "start"), (0, 70, 1, "stop")]
+
+    def test_an_unpaired_tie_arc_over_a_run_becomes_a_slur(
+            self, arc_reclass_on):
+        """An arc classed tie that never paired — a real tie spans a gap and
+        covers nothing, so three covered events are decisively slur-shaped."""
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _slur_head(30, pitch="D4"),
+            _slur_head(50, pitch="E4"), _slur_head(70, pitch="F4"),
+            _tie_arc(12, 78, y=20),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _states(staff) == [(0, 10, 1, "start"), (0, 70, 1, "stop")]
+
+    def test_an_unpaired_arc_over_nothing_abstains(self, arc_reclass_on):
+        """No heads under it, none flanking it: nothing is decidable, and the
+        arc exports what it always exported — nothing."""
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4"), _tie_arc(60, 90),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 0
+        assert _tie_flags(staff) == []
+        assert _states(staff) == []
+
+
+class TestArcReclassBookkeeping:
+    def test_flag_off_after_flag_on_restores_the_transcription(
+            self, monkeypatch):
+        """The annotate pass must take back what an earlier flag-on pass did
+        — added tie flags come off, removed ones go back on — so one result
+        dict can be exported under either configuration in either order."""
+        a = _slur_head(10, pitch="C4")
+        b = _slur_head(40, pitch="E4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _tie_arc(20, 40),
+                              _slur_head(60, pitch="G4"),
+                              _slur_head(80, pitch="G4"),
+                              _slur_arc(62, 88)]])
+        monkeypatch.setenv("OMR_ARC_RECLASS", "1")
+        annotate_slurs_in_staff(staff)
+        assert _tie_flags(staff) == [
+            (0, 60, "tied_to_next"), (0, 80, "tied_from_prev")]
+        monkeypatch.setenv("OMR_ARC_RECLASS", "0")
+        annotate_slurs_in_staff(staff)
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 40, "tied_from_prev")]
+        assert _states(staff) == [(0, 60, 1, "start"), (0, 80, 1, "stop")]
+
+    def test_flag_on_annotation_is_idempotent(self, arc_reclass_on):
+        a = _slur_head(10, pitch="C4")
+        b = _slur_head(40, pitch="E4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _tie_arc(20, 40)]])
+        annotate_slurs_in_staff(staff)
+        first = (_states(staff), _tie_flags(staff))
+        annotate_slurs_in_staff(staff)
+        assert (_states(staff), _tie_flags(staff)) == first
+
+    def test_the_conversion_reaches_musicxml(self, arc_reclass_on):
+        result = _tiny_result_empty_measure({"numerator": 4, "denominator": 4})
+        staff = _slur_staff([[
+            _slur_head(10, pitch="C4", width=20),
+            _slur_head(50, pitch="C4", width=20),
+            _slur_arc(15, 55),
+        ]])
+        result["pages"][0]["systems"][0]["staves"] = [staff]
+        xml = to_musicxml(result)
+        assert '<tie type="start"/>' in xml and '<tie type="stop"/>' in xml
+        assert "<slur" not in xml
+
+    def test_flank_pair_mirrors_transcribes_pairing(self):
+        """`_tie_flank_pair` re-derives the pair `_pair_ties_in_staff` flags,
+        on the same bbox_page data — mirrored rather than imported, because
+        transcribe drags the whole detection stack in with it. If the two
+        ever disagree, the veto would clear one pair's flags and the export
+        would keep another's."""
+        from tools.omr import transcribe as tr
+        from tools.omr.export import _tie_flank_pair
+        heads = [_slur_head(x, pitch=p) for x, p in
+                 ((10, "C4"), (40, "E4"), (70, "F4"))]
+        staff = _slur_staff([[*heads, _tie_arc(20, 40)]])
+        tr._pair_ties_in_staff(staff)
+        flagged = {(det["bbox_page"][0], key)
+                   for m in staff["measures"] for det in m["detections"]
+                   for key in ("tied_to_next", "tied_from_prev")
+                   if det.get(key)}
+        pair = _tie_flank_pair([20, 41, 20, 8], heads)
+        assert pair is not None
+        left, right = pair
+        assert flagged == {(left["bbox_page"][0], "tied_to_next"),
+                           (right["bbox_page"][0], "tied_from_prev")}
+
+
+class TestArcReclassStepKey:
+    """The veto compares STAFF STEPS, never spelled pitches — measured on the
+    engraved A/B, where every losing veto was a same-step pair differing only
+    in accidental (`F#4 -> F4`): the far head of a cross-barline tie does not
+    restate its accidental and the resolver spells it plain. The conversion
+    direction keeps the STRICT key: acting needs strong evidence both ways."""
+
+    def test_a_same_step_different_accidental_tie_stands(self, arc_reclass_on):
+        a = _slur_head(10, pitch="F#4")
+        b = _slur_head(40, pitch="F4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _tie_arc(20, 40)]])
+        assert annotate_slurs_in_staff(staff) == 0
+        assert _tie_flags(staff) == [
+            (0, 10, "tied_to_next"), (0, 40, "tied_from_prev")]
+
+    def test_a_step_apart_tie_is_still_vetoed(self, arc_reclass_on):
+        a = _slur_head(10, pitch="F#4")
+        b = _slur_head(40, pitch="G4")
+        a["tied_to_next"] = True
+        b["tied_from_prev"] = True
+        staff = _slur_staff([[a, b, _tie_arc(20, 40)]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
+
+    def test_slur_to_tie_still_needs_the_full_pitch_to_agree(
+            self, arc_reclass_on):
+        """A slur over F#4 -> F4 is a chromatic-neighbour slur, real music;
+        step equality is not enough to assert tie-ness."""
+        staff = _slur_staff([[
+            _slur_head(10, pitch="F#4"), _slur_head(30, pitch="F4"),
+            _slur_arc(12, 38),
+        ]])
+        assert annotate_slurs_in_staff(staff) == 1
+        assert _tie_flags(staff) == []
