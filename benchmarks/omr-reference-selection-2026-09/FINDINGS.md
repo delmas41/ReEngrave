@@ -147,11 +147,14 @@ roster-clef negatives, where a consumer's *population* rather than its quality
 settled the question. The exposure probe costs ~15 s a row against ~2 min to
 transcribe one.
 
-**Confirmed under the pipeline's OWN reader, not a proxy**: the full-ladder run
-reported **18 of 20 rows, every one SAME**. The two it did not reach cannot
-differ by construction — `mahler-sym5-mvt1-local-p5` prints one system, and
-`bach-brandenburg3-mvt1-468678-p1` prints two systems of equal staff count where
-the two keys rank identically. Both also read SAME under the Surya-only pass.
+**Confirmed under the pipeline's OWN reader, not a proxy: 0 of 20 under the
+ladder AND 0 of 20 under Surya alone.** No hedge is needed — the two rows that
+were briefly settled by construction were then measured and agreed:
+
+```
+mahler-sym5-mvt1-local-p5     systems=[21]      labels=[14]    ref 21/21   SAME
+bach-brandenburg3-mvt1-p1     systems=[12, 12]  labels=[5, 0]  ref 12/12   SAME
+```
 
 Both `scan_eval` arms were then killed as a provable null. (They were suspended
 with SIGSTOP first rather than pre-empted, so the decision stayed reversible
