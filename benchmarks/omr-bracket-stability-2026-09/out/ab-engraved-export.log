@@ -7,3 +7,6 @@
   brahms-sym1-mvt1 flag=0: 165152 bytes in 154s
   brahms-sym1-mvt1 flag=1: 165152 bytes in 87s
   -> brahms-sym1-mvt1: BYTE-IDENTICAL
+surya label fallback failed on page 0: surya worker failed (exit -15):
+
+  brahms-sym4-mvt1 flag=0: 87040 bytes in 229s

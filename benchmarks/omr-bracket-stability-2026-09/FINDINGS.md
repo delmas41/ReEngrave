@@ -373,13 +373,31 @@ non-deterministic):
 |---|---|---|
 | Bach Brandenburg 3 p.1 | the ONLY gate page with a window-blind system — the one page where cue C can fire at all | **BYTE-IDENTICAL** |
 | Brahms 1 p.4 | the ONLY gate page where `_is_grouped_system` differs between the arms | **BYTE-IDENTICAL** |
-| 11 engraved orchestral fixtures | the family that falsified cue C | see `out/ab-engraved-export.log` |
+| Beethoven 3, Beethoven 5, Brahms 1, Brahms 4, Bruckner 5, Dvořák 9 (engraved) | the family that falsified cue C | **BYTE-IDENTICAL, 6 of 6 run** |
 
 The two scan pages are the complete exposed set: every other gate row has
 neither a blind system nor a changed `_is_grouped_system`, so it cannot differ
 by construction. A byte-identical export is strictly stronger than an equal
 OMR-NED and has no noise floor to argue about — where a pooled 20-row figure
 would have had to be read against ±6 edits.
+
+⚠️ **Five engraved fixtures (Mahler 5, both Mozarts, both Tchaikovskys) were
+still running when this was written** and are not claimed. They are
+confirmatory rather than decisive: the exact control above already says the
+change cannot reach cue C on any of the eleven. `out/ab-engraved-export.log`
+(the first three) and `out/ab-engraved-export-nosurya.log` (the rest) carry
+whatever they finished as.
+
+⚠️ **The engraved run had to be restarted, and the reason is a real hazard for
+anyone repeating this.** The first attempt wedged mid-work on its own Surya
+worker (the documented 0%-CPU stall). Killing the worker let the run continue —
+**and that is the trap**: the arm in flight then fell back to a no-Surya label
+read while the *other* arm would have got Surya's, so a byte comparison across
+them would have been measuring the OCR rung, not the flag. The restart removes
+the `.venv-surya` symlink so Surya self-disables identically in both arms.
+Direction text is off in both arms for the same reason. Neither is production
+configuration, and neither needs to be: the claim is "arm A equals arm B", not
+"this matches a shipping run".
 
 **So: the fix is correct and currently costs and earns nothing.** It should land
 default-OFF as a repaired signal waiting for a consumer, not as an accuracy
