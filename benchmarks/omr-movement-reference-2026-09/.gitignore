@@ -1,0 +1,5 @@
+# Run outputs are large and reproducible from probe/run_*.sh; the derived
+# reports beside them are what carries the evidence.
+out/*-flag[01].json
+out/*-whole-*.json
+out/tops/

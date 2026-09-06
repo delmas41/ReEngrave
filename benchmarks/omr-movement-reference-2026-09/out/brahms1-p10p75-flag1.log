@@ -1,0 +1,5 @@
+transcribe: brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf (86 pages, processing 2)
+  weights:  auto (scan/engraved routing)
+  conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: per-cell
+  weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+  page 10: 2 systems, 27 staves, 229 measures, 3619 detections (755/755 pitched, 755/755 durations)
