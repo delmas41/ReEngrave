@@ -250,8 +250,9 @@ measurement.
 0.783 → 0.343). Nothing here needs it: the search is bounded, not erased.
 
 **Not a wider `BRACKET_COLUMN_SUPPORT`, and not a tuned `GROUP_BOUNDARY_RATIO`.**
-Given the empty interval in §3, no ratio in 0.2-0.8 changes an answer on the
-measured corpus, so there is nothing to tune and the incumbent constant stays.
+Given the empty interval in §3, no ratio anywhere in 0.334-0.777 changes an
+answer on the measured corpus, so there is nothing to tune and the incumbent
+constant stays where it is.
 
 **Not `tools/omr/slots.py`.** Off limits this session, and nothing here needs
 it: `map_groups` already relates the two bracket vocabularies by monotone block

@@ -65,7 +65,7 @@
       <attributes>
         <divisions>4</divisions>
         <key>
-          <fifths>-3</fifths>
+          <fifths>0</fifths>
           <mode>major</mode>
         </key>
         <time>
@@ -77,11 +77,6 @@
           <line>2</line>
         </clef>
       </attributes>
-      <direction placement="below">
-        <direction-type>
-          <words>Allegro con brio</words>
-        </direction-type>
-      </direction>
       <note>
         <rest/>
         <duration>16</duration>
@@ -98,12 +93,6 @@
         <notations>
           <fermata type="upright"/>
         </notations>
-      </note>
-      <note>
-        <rest/>
-        <duration>16</duration>
-        <voice>1</voice>
-        <type>whole</type>
       </note>
     </measure>
     <measure number="3">
@@ -177,9 +166,9 @@
       </attributes>
       <note>
         <rest/>
-        <duration>8</duration>
+        <duration>16</duration>
         <voice>1</voice>
-        <type>half</type>
+        <type>whole</type>
       </note>
     </measure>
     <measure number="2">
@@ -250,7 +239,7 @@
       <attributes>
         <divisions>4</divisions>
         <key>
-          <fifths>-3</fifths>
+          <fifths>0</fifths>
           <mode>major</mode>
         </key>
         <time>
@@ -351,9 +340,9 @@
       </attributes>
       <note>
         <rest/>
-        <duration>8</duration>
+        <duration>16</duration>
         <voice>1</voice>
-        <type>half</type>
+        <type>whole</type>
       </note>
     </measure>
     <measure number="2">
@@ -424,7 +413,7 @@
       <attributes>
         <divisions>4</divisions>
         <key>
-          <fifths>-1</fifths>
+          <fifths>0</fifths>
           <mode>major</mode>
         </key>
         <time>
@@ -586,7 +575,7 @@
       <attributes>
         <divisions>4</divisions>
         <key>
-          <fifths>-1</fifths>
+          <fifths>0</fifths>
           <mode>major</mode>
         </key>
         <time>
@@ -733,6 +722,19 @@
     </measure>
     <measure number="7">
       <note>
+        <pitch>
+          <step>G</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>8</duration>
+        <tie type="start"/>
+        <voice>1</voice>
+        <type>half</type>
+        <notations>
+          <tied type="start"/>
+        </notations>
+      </note>
+      <note>
         <rest/>
         <duration>16</duration>
         <voice>1</voice>
@@ -780,9 +782,9 @@
     <measure number="2">
       <note>
         <rest/>
-        <duration>16</duration>
+        <duration>8</duration>
         <voice>1</voice>
-        <type>whole</type>
+        <type>half</type>
         <notations>
           <fermata type="upright"/>
         </notations>
@@ -799,17 +801,17 @@
     <measure number="4">
       <note>
         <rest/>
-        <duration>8</duration>
+        <duration>16</duration>
         <voice>1</voice>
-        <type>half</type>
+        <type>whole</type>
       </note>
     </measure>
     <measure number="5">
       <note>
         <rest/>
-        <duration>8</duration>
+        <duration>16</duration>
         <voice>1</voice>
-        <type>half</type>
+        <type>whole</type>
         <notations>
           <fermata type="upright"/>
         </notations>
@@ -830,32 +832,18 @@
         </direction-type>
       </direction>
       <note>
-        <pitch>
-          <step>C</step>
-          <octave>4</octave>
-        </pitch>
+        <rest/>
         <duration>8</duration>
-        <tie type="start"/>
         <voice>1</voice>
         <type>half</type>
-        <notations>
-          <tied type="start"/>
-        </notations>
       </note>
     </measure>
     <measure number="8">
       <note>
-        <pitch>
-          <step>C</step>
-          <octave>4</octave>
-        </pitch>
+        <rest/>
         <duration>8</duration>
-        <tie type="stop"/>
         <voice>1</voice>
         <type>half</type>
-        <notations>
-          <tied type="stop"/>
-        </notations>
       </note>
     </measure>
   </part>
@@ -864,7 +852,7 @@
       <attributes>
         <divisions>4</divisions>
         <key>
-          <fifths>-3</fifths>
+          <fifths>0</fifths>
           <mode>major</mode>
         </key>
         <time>
@@ -878,9 +866,9 @@
       </attributes>
       <note>
         <rest/>
-        <duration>8</duration>
+        <duration>16</duration>
         <voice>1</voice>
-        <type>half</type>
+        <type>whole</type>
       </note>
     </measure>
     <measure number="2">
@@ -936,32 +924,18 @@
         </direction-type>
       </direction>
       <note>
-        <pitch>
-          <step>C</step>
-          <octave>4</octave>
-        </pitch>
+        <rest/>
         <duration>8</duration>
-        <tie type="start"/>
         <voice>1</voice>
         <type>half</type>
-        <notations>
-          <tied type="start"/>
-        </notations>
       </note>
     </measure>
     <measure number="8">
       <note>
-        <pitch>
-          <step>C</step>
-          <octave>4</octave>
-        </pitch>
+        <rest/>
         <duration>8</duration>
-        <tie type="stop"/>
         <voice>1</voice>
         <type>half</type>
-        <notations>
-          <tied type="stop"/>
-        </notations>
       </note>
     </measure>
   </part>
@@ -970,7 +944,7 @@
       <attributes>
         <divisions>4</divisions>
         <key>
-          <fifths>0</fifths>
+          <fifths>-2</fifths>
           <mode>major</mode>
         </key>
         <time>
@@ -1057,7 +1031,7 @@
       <attributes>
         <divisions>4</divisions>
         <key>
-          <fifths>0</fifths>
+          <fifths>-2</fifths>
           <mode>major</mode>
         </key>
         <time>
@@ -1085,12 +1059,6 @@
         <notations>
           <fermata type="upright"/>
         </notations>
-      </note>
-      <note>
-        <rest/>
-        <duration>16</duration>
-        <voice>1</voice>
-        <type>whole</type>
       </note>
     </measure>
     <measure number="3">
@@ -1150,7 +1118,7 @@
       <attributes>
         <divisions>4</divisions>
         <key>
-          <fifths>-3</fifths>
+          <fifths>0</fifths>
           <mode>major</mode>
         </key>
         <time>
@@ -1251,9 +1219,9 @@
       </attributes>
       <note>
         <rest/>
-        <duration>8</duration>
+        <duration>16</duration>
         <voice>1</voice>
-        <type>half</type>
+        <type>whole</type>
       </note>
     </measure>
     <measure number="2">
@@ -1324,7 +1292,7 @@
       <attributes>
         <divisions>4</divisions>
         <key>
-          <fifths>-3</fifths>
+          <fifths>-5</fifths>
           <mode>major</mode>
         </key>
         <time>
@@ -1332,8 +1300,8 @@
           <beat-type>4</beat-type>
         </time>
         <clef>
-          <sign>F</sign>
-          <line>4</line>
+          <sign>G</sign>
+          <line>2</line>
         </clef>
       </attributes>
       <note>
@@ -1411,7 +1379,7 @@
       <attributes>
         <divisions>4</divisions>
         <key>
-          <fifths>-3</fifths>
+          <fifths>0</fifths>
           <mode>major</mode>
         </key>
         <time>
@@ -1469,7 +1437,6 @@
       <note>
         <pitch>
           <step>E</step>
-          <alter>-1</alter>
           <octave>4</octave>
         </pitch>
         <duration>8</duration>
@@ -1580,7 +1547,6 @@
       <note>
         <pitch>
           <step>E</step>
-          <alter>-1</alter>
           <octave>5</octave>
         </pitch>
         <duration>2</duration>
@@ -1591,7 +1557,6 @@
       <note>
         <pitch>
           <step>E</step>
-          <alter>-1</alter>
           <octave>5</octave>
         </pitch>
         <duration>2</duration>
@@ -1602,7 +1567,6 @@
       <note>
         <pitch>
           <step>E</step>
-          <alter>-1</alter>
           <octave>5</octave>
         </pitch>
         <duration>2</duration>
@@ -1964,26 +1928,16 @@
     </measure>
     <measure number="5">
       <note>
-        <pitch>
-          <step>D</step>
-          <octave>3</octave>
-        </pitch>
+        <rest/>
         <duration>8</duration>
-        <tie type="stop"/>
         <voice>1</voice>
         <type>half</type>
         <notations>
-          <tied type="stop"/>
           <fermata type="upright"/>
         </notations>
       </note>
     </measure>
     <measure number="6">
-      <direction placement="below">
-        <direction-type>
-          <dynamics><p/></dynamics>
-        </direction-type>
-      </direction>
       <note>
         <rest/>
         <duration>16</duration>
@@ -2072,6 +2026,11 @@
         <voice>1</voice>
         <type>eighth</type>
       </note>
+      <direction placement="below">
+        <direction-type>
+          <dynamics><f/></dynamics>
+        </direction-type>
+      </direction>
       <note>
         <pitch>
           <step>G</step>
@@ -2105,11 +2064,7 @@
     </measure>
     <measure number="2">
       <note>
-        <pitch>
-          <step>E</step>
-          <alter>-1</alter>
-          <octave>2</octave>
-        </pitch>
+        <rest/>
         <duration>8</duration>
         <voice>1</voice>
         <type>half</type>
@@ -2189,9 +2144,9 @@
     <measure number="6">
       <note>
         <rest/>
-        <duration>16</duration>
+        <duration>8</duration>
         <voice>1</voice>
-        <type>whole</type>
+        <type>half</type>
       </note>
     </measure>
     <measure number="7">

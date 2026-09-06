@@ -1,0 +1,6 @@
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(Es)'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+  arm flag=0: 294127 bytes in 386s
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(Es)'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+  arm flag=1: 294127 bytes in 177s
+
+brahms-p4: BYTE-IDENTICAL
