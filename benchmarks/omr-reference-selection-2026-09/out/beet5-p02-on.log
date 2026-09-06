@@ -6,3 +6,17 @@ transcribe: beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073
   weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
   page 0: 0 systems, 0 staves, 0 measures, 0 detections (0/0 pitched, 0/0 durations)
   page 1: 1 systems, 12 staves, 192 measures, 701 detections (117/117 pitched, 117/117 durations)
+  page 2: 2 systems, 22 staves, 341 measures, 2468 detections (509/509 pitched, 509/509 durations)
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afa78f2c3162c2166/benchmarks/omr-reference-selection-2026-09/out/beet5-p02-on.json
+  pages=3  systems=3  staves=34  measures=533  detections=2797
+  noteheads=626  pitched=626  (100% pitch coverage)
+  with_duration=626  (100% rhythm coverage)  rests=326/347
+  runtime: phase1=22.12s  yolo=140.21s  total=215.78s
+  meter->rhythm: 3 measure(s) re-read a beam level to match the meter
+  page 0: 0 measures, 0 phase1_warnings, 0 rhythm_sum_warnings
+  page 1: 192 measures, 12 phase1_warnings, 5 rhythm_sum_warnings
+    key signatures: read on 5/12 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 2: 341 measures, 11 phase1_warnings, 48 rhythm_sum_warnings
+    key signatures: read on 12/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+=== beet5-p02-on rc=0 wall=218s

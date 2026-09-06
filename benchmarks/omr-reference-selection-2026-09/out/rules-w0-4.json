@@ -1,0 +1,1072 @@
+[
+ {
+  "key": "bach--concerto-2--2040",
+  "house": "other/unknown",
+  "composer": "bach",
+  "systems": 6,
+  "sizes": [
+   9,
+   9,
+   9,
+   9,
+   9,
+   9
+  ],
+  "labels": [
+   9,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 9,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   9,
+   9
+  ],
+  "new": [
+   2,
+   0,
+   9,
+   9
+  ],
+  "pure": [
+   2,
+   0,
+   9,
+   9
+  ]
+ },
+ {
+  "key": "bach--concerto-3--468678",
+  "house": "Peters",
+  "composer": "bach",
+  "systems": 10,
+  "sizes": [
+   12,
+   12,
+   12,
+   12,
+   12,
+   12,
+   12,
+   12,
+   12,
+   12
+  ],
+  "labels": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 12,
+  "any_label": false,
+  "old": [
+   0,
+   0,
+   12,
+   0
+  ],
+  "new": [
+   0,
+   0,
+   12,
+   0
+  ],
+  "pure": [
+   0,
+   0,
+   12,
+   0
+  ]
+ },
+ {
+  "key": "bach--concerto-4--457279",
+  "house": "Peters",
+  "composer": "bach",
+  "systems": 4,
+  "sizes": [
+   9,
+   9,
+   9,
+   9
+  ],
+  "labels": [
+   8,
+   0,
+   0,
+   0
+  ],
+  "max_size": 9,
+  "any_label": true,
+  "old": [
+   3,
+   1,
+   9,
+   0
+  ],
+  "new": [
+   3,
+   1,
+   9,
+   0
+  ],
+  "pure": [
+   3,
+   1,
+   9,
+   0
+  ]
+ },
+ {
+  "key": "bach--concerto-5--457419",
+  "house": "Breitkopf",
+  "composer": "bach",
+  "systems": 2,
+  "sizes": [
+   8,
+   8
+  ],
+  "labels": [
+   5,
+   0
+  ],
+  "max_size": 8,
+  "any_label": true,
+  "old": [
+   4,
+   0,
+   8,
+   5
+  ],
+  "new": [
+   4,
+   0,
+   8,
+   5
+  ],
+  "pure": [
+   4,
+   0,
+   8,
+   5
+  ]
+ },
+ {
+  "key": "bach--das-wohltemperierte-klavier-i--932182",
+  "house": "other/unknown",
+  "composer": "bach",
+  "systems": 17,
+  "sizes": [
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2
+  ],
+  "labels": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 2,
+  "any_label": false,
+  "old": [
+   2,
+   0,
+   2,
+   0
+  ],
+  "new": [
+   2,
+   0,
+   2,
+   0
+  ],
+  "pure": [
+   2,
+   0,
+   2,
+   0
+  ]
+ },
+ {
+  "key": "bach--mass-in-b-minor--740018",
+  "house": "Breitkopf",
+  "composer": "bach",
+  "systems": 5,
+  "sizes": [
+   16,
+   11,
+   11,
+   11,
+   11
+  ],
+  "labels": [
+   15,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 16,
+  "any_label": true,
+  "old": [
+   3,
+   0,
+   11,
+   0
+  ],
+  "new": [
+   2,
+   0,
+   16,
+   15
+  ],
+  "pure": [
+   2,
+   0,
+   16,
+   15
+  ]
+ },
+ {
+  "key": "bach--matthauspassion--44964",
+  "house": "Eulenburg",
+  "composer": "bach",
+  "systems": 5,
+  "sizes": [
+   19,
+   18,
+   18,
+   18,
+   18
+  ],
+  "labels": [
+   17,
+   9,
+   9,
+   9,
+   9
+  ],
+  "max_size": 19,
+  "any_label": true,
+  "old": [
+   1,
+   0,
+   18,
+   9
+  ],
+  "new": [
+   0,
+   0,
+   19,
+   17
+  ],
+  "pure": [
+   0,
+   0,
+   19,
+   17
+  ]
+ },
+ {
+  "key": "beethoven--coriolan--683540",
+  "house": "Simrock",
+  "composer": "beethoven",
+  "systems": 4,
+  "sizes": [
+   15,
+   15,
+   15,
+   15
+  ],
+  "labels": [
+   15,
+   0,
+   0,
+   0
+  ],
+  "max_size": 15,
+  "any_label": true,
+  "old": [
+   1,
+   0,
+   15,
+   15
+  ],
+  "new": [
+   1,
+   0,
+   15,
+   15
+  ],
+  "pure": [
+   1,
+   0,
+   15,
+   15
+  ]
+ },
+ {
+  "key": "beethoven--egmont--807970",
+  "house": "Breitkopf",
+  "composer": "beethoven",
+  "systems": 3,
+  "sizes": [
+   14,
+   14,
+   14
+  ],
+  "labels": [
+   14,
+   0,
+   0
+  ],
+  "max_size": 14,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   14,
+   14
+  ],
+  "new": [
+   2,
+   0,
+   14,
+   14
+  ],
+  "pure": [
+   2,
+   0,
+   14,
+   14
+  ]
+ },
+ {
+  "key": "beethoven--symphony-1--74",
+  "house": "Litolff",
+  "composer": "beethoven",
+  "systems": 9,
+  "sizes": [
+   11,
+   11,
+   9,
+   11,
+   11,
+   11,
+   8,
+   10,
+   10
+  ],
+  "labels": [
+   11,
+   7,
+   5,
+   7,
+   7,
+   6,
+   4,
+   6,
+   6
+  ],
+  "max_size": 11,
+  "any_label": true,
+  "old": [
+   0,
+   0,
+   11,
+   11
+  ],
+  "new": [
+   0,
+   0,
+   11,
+   11
+  ],
+  "pure": [
+   0,
+   0,
+   11,
+   11
+  ]
+ },
+ {
+  "key": "beethoven--symphony-2--503997",
+  "house": "Litolff",
+  "composer": "beethoven",
+  "systems": 9,
+  "sizes": [
+   11,
+   11,
+   7,
+   8,
+   11,
+   11,
+   11,
+   7,
+   11
+  ],
+  "labels": [
+   11,
+   7,
+   3,
+   4,
+   6,
+   7,
+   7,
+   3,
+   7
+  ],
+  "max_size": 11,
+  "any_label": true,
+  "old": [
+   0,
+   0,
+   11,
+   11
+  ],
+  "new": [
+   0,
+   0,
+   11,
+   11
+  ],
+  "pure": [
+   0,
+   0,
+   11,
+   11
+  ]
+ },
+ {
+  "key": "beethoven--symphony-3--504077",
+  "house": "Litolff",
+  "composer": "beethoven",
+  "systems": 9,
+  "sizes": [
+   12,
+   10,
+   10,
+   12,
+   11,
+   12,
+   12,
+   12,
+   10
+  ],
+  "labels": [
+   12,
+   6,
+   5,
+   8,
+   7,
+   8,
+   8,
+   8,
+   6
+  ],
+  "max_size": 12,
+  "any_label": true,
+  "old": [
+   0,
+   0,
+   12,
+   12
+  ],
+  "new": [
+   0,
+   0,
+   12,
+   12
+  ],
+  "pure": [
+   0,
+   0,
+   12,
+   12
+  ]
+ },
+ {
+  "key": "bizet--symphony-in-c-major--512840",
+  "house": "Universal",
+  "composer": "bizet",
+  "systems": 10,
+  "sizes": [
+   11,
+   13,
+   13,
+   13,
+   13,
+   11,
+   9,
+   13,
+   13,
+   9
+  ],
+  "labels": [
+   8,
+   9,
+   8,
+   8,
+   8,
+   7,
+   6,
+   9,
+   9,
+   6
+  ],
+  "max_size": 13,
+  "any_label": true,
+  "old": [
+   0,
+   1,
+   13,
+   9
+  ],
+  "new": [
+   0,
+   1,
+   13,
+   9
+  ],
+  "pure": [
+   0,
+   1,
+   13,
+   9
+  ]
+ },
+ {
+  "key": "boulanger--faust-et-helene--862104",
+  "house": "Ricordi",
+  "composer": "boulanger",
+  "systems": 6,
+  "sizes": [
+   29,
+   5,
+   15,
+   21,
+   20,
+   21
+  ],
+  "labels": [
+   10,
+   0,
+   4,
+   4,
+   3,
+   1
+  ],
+  "max_size": 29,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   21,
+   4
+  ],
+  "new": [
+   0,
+   0,
+   29,
+   10
+  ],
+  "pure": [
+   0,
+   0,
+   29,
+   10
+  ]
+ },
+ {
+  "key": "brahms--academic-festival-overture--28983",
+  "house": "Simrock",
+  "composer": "brahms",
+  "systems": 4,
+  "sizes": [
+   19,
+   19,
+   19,
+   19
+  ],
+  "labels": [
+   16,
+   0,
+   0,
+   0
+  ],
+  "max_size": 19,
+  "any_label": true,
+  "old": [
+   1,
+   0,
+   19,
+   16
+  ],
+  "new": [
+   1,
+   0,
+   19,
+   16
+  ],
+  "pure": [
+   1,
+   0,
+   19,
+   16
+  ]
+ },
+ {
+  "key": "bruckner--symphony-1--30680",
+  "house": "Universal",
+  "composer": "bruckner",
+  "systems": 10,
+  "sizes": [
+   15,
+   5,
+   9,
+   9,
+   12,
+   12,
+   9,
+   6,
+   9,
+   5
+  ],
+  "labels": [
+   12,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 15,
+  "any_label": true,
+  "old": [
+   2,
+   1,
+   12,
+   0
+  ],
+  "new": [
+   0,
+   0,
+   15,
+   12
+  ],
+  "pure": [
+   0,
+   0,
+   15,
+   12
+  ]
+ },
+ {
+  "key": "coleridge-taylor--ballade-op33--860015",
+  "house": "Novello",
+  "composer": "coleridge-taylor",
+  "systems": 5,
+  "sizes": [
+   18,
+   18,
+   18,
+   18,
+   19
+  ],
+  "labels": [
+   17,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 19,
+  "any_label": true,
+  "old": [
+   0,
+   0,
+   18,
+   17
+  ],
+  "new": [
+   0,
+   0,
+   18,
+   17
+  ],
+  "pure": [
+   0,
+   0,
+   18,
+   17
+  ]
+ },
+ {
+  "key": "debussy--la-boite-a-joujoux--199718",
+  "house": "Durand",
+  "composer": "debussy",
+  "systems": 16,
+  "sizes": [
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   3,
+   3,
+   3,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2
+  ],
+  "labels": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 3,
+  "any_label": false,
+  "old": [
+   2,
+   0,
+   3,
+   0
+  ],
+  "new": [
+   2,
+   0,
+   3,
+   0
+  ],
+  "pure": [
+   2,
+   0,
+   3,
+   0
+  ]
+ },
+ {
+  "key": "debussy--la-mer--15420",
+  "house": "Durand",
+  "composer": "debussy",
+  "systems": 7,
+  "sizes": [
+   22,
+   11,
+   8,
+   11,
+   9,
+   16,
+   16
+  ],
+  "labels": [
+   18,
+   3,
+   1,
+   2,
+   0,
+   3,
+   2
+  ],
+  "max_size": 22,
+  "any_label": true,
+  "old": [
+   3,
+   0,
+   16,
+   3
+  ],
+  "new": [
+   0,
+   0,
+   22,
+   18
+  ],
+  "pure": [
+   0,
+   0,
+   22,
+   18
+  ]
+ },
+ {
+  "key": "dukas--l-apprenti-sorcier--6574",
+  "house": "Durand",
+  "composer": "dukas",
+  "systems": 9,
+  "sizes": [
+   25,
+   11,
+   14,
+   14,
+   13,
+   14,
+   13,
+   10,
+   10
+  ],
+  "labels": [
+   22,
+   4,
+   4,
+   6,
+   6,
+   5,
+   5,
+   4,
+   3
+  ],
+  "max_size": 25,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   14,
+   6
+  ],
+  "new": [
+   2,
+   0,
+   14,
+   6
+  ],
+  "pure": [
+   2,
+   0,
+   14,
+   6
+  ]
+ },
+ {
+  "key": "dvorak--serenade-for-strings--862636",
+  "house": "Bote",
+  "composer": "dvorak",
+  "systems": 15,
+  "sizes": [
+   5,
+   5,
+   5,
+   5,
+   5,
+   5,
+   5,
+   5,
+   5,
+   5,
+   6,
+   6,
+   5,
+   6,
+   6
+  ],
+  "labels": [
+   5,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 6,
+  "any_label": true,
+  "old": [
+   3,
+   1,
+   6,
+   0
+  ],
+  "new": [
+   3,
+   1,
+   6,
+   0
+  ],
+  "pure": [
+   0,
+   0,
+   5,
+   5
+  ]
+ },
+ {
+  "key": "mahler--symphony-7--415756",
+  "house": "Bote",
+  "composer": "mahler",
+  "systems": 3,
+  "sizes": [
+   17,
+   19,
+   18
+  ],
+  "labels": [
+   8,
+   9,
+   0
+  ],
+  "max_size": 19,
+  "any_label": true,
+  "old": [
+   3,
+   0,
+   19,
+   9
+  ],
+  "new": [
+   3,
+   0,
+   19,
+   9
+  ],
+  "pure": [
+   3,
+   0,
+   19,
+   9
+  ]
+ },
+ {
+  "key": "mussorgsky--pictures-at-an-exhibition--272845",
+  "house": "Augener",
+  "composer": "mussorgsky",
+  "systems": 4,
+  "sizes": [
+   2,
+   2,
+   2,
+   2
+  ],
+  "labels": [
+   1,
+   0,
+   0,
+   0
+  ],
+  "max_size": 2,
+  "any_label": true,
+  "old": [
+   4,
+   0,
+   2,
+   1
+  ],
+  "new": [
+   4,
+   0,
+   2,
+   1
+  ],
+  "pure": [
+   4,
+   0,
+   2,
+   1
+  ]
+ },
+ {
+  "key": "tchaikovsky--romeo-and-juliet-overture-fantasia--333131",
+  "house": "Bote",
+  "composer": "tchaikovsky",
+  "systems": 3,
+  "sizes": [
+   20,
+   20,
+   20
+  ],
+  "labels": [
+   19,
+   0,
+   0
+  ],
+  "max_size": 20,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   20,
+   19
+  ],
+  "new": [
+   2,
+   0,
+   20,
+   19
+  ],
+  "pure": [
+   2,
+   0,
+   20,
+   19
+  ]
+ }
+]
