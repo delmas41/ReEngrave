@@ -24,7 +24,7 @@ a live registration, not a stale record.
 ## ⚠️ The finding that matters: "merged into main" is NOT a safety test
 
 The handoff said *"pruning ones whose branches are already in main is safe."*
-**That rule would have destroyed 8,556 hand-cut cell PNGs.**
+**That rule would have destroyed 7,000 hand-cut cell PNGs.**
 
 Six worktrees whose branches are **fully merged into main** hold cell images
 that exist nowhere else:
@@ -37,6 +37,12 @@ that exist nowhere else:
 | `phase2-hollow-labeling` | yes | 448 |
 | `epic-chatterjee-9e8c7d` | yes | 122 |
 | `pdf-mxl-pipeline-test-46269e` | yes | 100 |
+| | | **7,000** |
+
+Three further worktrees hold cells and are *also* unmerged, so the merge rule
+would not have reached them: `reengraved-scanned-weights-175fce` (1,704),
+`agent-a451bd979ce2a9210` and `agent-aa1bd00566c677d4c` (252 each). **9,208
+across all nine.**
 
 Worked example, and the reason this is not theoretical:
 `weight-generalization-publishers-548504` holds

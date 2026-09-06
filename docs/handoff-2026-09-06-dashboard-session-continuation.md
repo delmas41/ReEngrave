@@ -243,7 +243,7 @@ cross-test env leak. Passes alone."*
 **G. The worktree-pruning RULE stated here is unsafe — see §5.** *"Pruning ones
 whose branches are already in main is safe"* is **false as written**, and the
 survey that falsified it is now §5 of this file. Short version: six worktrees
-whose branches are **fully merged into main** hold **8,556 hand-cut cell PNGs
+whose branches are **fully merged into main** hold **7,000 hand-cut cell PNGs
 between them** that exist nowhere else — `weight-generalization-publishers-548504`
 alone holds 4,862, and the main checkout's `benchmarks/omr-labeling-grace1-2026-09/`
 has no `cells/` directory at all. Merge state answers a question about COMMITS.
@@ -301,7 +301,7 @@ Full table, per-row evidence and method:
 80 SAFE.**
 
 ⚠️⚠️ **The rule §2 originally stated — "pruning ones whose branches are already
-in main is safe" — is FALSE, and following it would have destroyed 8,556
+in main is safe" — is FALSE, and following it would have destroyed 7,000
 hand-cut cell PNGs.** Six worktrees are fully merged into main *and* hold
 `benchmarks/**/cells/` images that exist in no other tree on this machine;
 `weight-generalization-publishers-548504` alone holds **4,862**, and
