@@ -1,0 +1,13548 @@
+{
+ "summary": {
+  "within_page": {
+   "pairs": 73,
+   "disagreeing": 6,
+   "rate": 0.0822
+  },
+  "within_edition": [
+   {
+    "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+    "n_staves": 12,
+    "n_systems": 46,
+    "n_distinct_vectors": 2,
+    "modal_share": 0.978,
+    "modal": [
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     3,
+     4,
+     4
+    ],
+    "vectors": {
+     "000111222344": 45,
+     "000111222333": 1
+    }
+   },
+   {
+    "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+    "n_staves": 8,
+    "n_systems": 5,
+    "n_distinct_vectors": 4,
+    "modal_share": 0.4,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1
+    ],
+    "vectors": {
+     "00001111": 2,
+     "00012222": 1,
+     "01112222": 1,
+     "00011111": 1
+    }
+   },
+   {
+    "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+    "n_staves": 9,
+    "n_systems": 7,
+    "n_distinct_vectors": 4,
+    "modal_share": 0.429,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "vectors": {
+     "000011111": 3,
+     "000012222": 2,
+     "000112222": 1,
+     "001112222": 1
+    }
+   },
+   {
+    "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+    "n_staves": 11,
+    "n_systems": 24,
+    "n_distinct_vectors": 3,
+    "modal_share": 0.833,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2
+    ],
+    "vectors": {
+     "00001112222": 20,
+     "00001122222": 3,
+     "00011122222": 1
+    }
+   },
+   {
+    "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+    "n_staves": 12,
+    "n_systems": 7,
+    "n_distinct_vectors": 1,
+    "modal_share": 1.0,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "vectors": {
+     "000011122222": 7
+    }
+   },
+   {
+    "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+    "n_staves": 8,
+    "n_systems": 5,
+    "n_distinct_vectors": 4,
+    "modal_share": 0.4,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1
+    ],
+    "vectors": {
+     "00001111": 2,
+     "00012222": 1,
+     "01112222": 1,
+     "00011111": 1
+    }
+   },
+   {
+    "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+    "n_staves": 9,
+    "n_systems": 7,
+    "n_distinct_vectors": 4,
+    "modal_share": 0.429,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "vectors": {
+     "000011111": 3,
+     "000012222": 2,
+     "000112222": 1,
+     "001112222": 1
+    }
+   },
+   {
+    "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+    "n_staves": 11,
+    "n_systems": 22,
+    "n_distinct_vectors": 3,
+    "modal_share": 0.818,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2
+    ],
+    "vectors": {
+     "00001112222": 18,
+     "00001122222": 3,
+     "00011122222": 1
+    }
+   },
+   {
+    "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+    "n_staves": 12,
+    "n_systems": 7,
+    "n_distinct_vectors": 1,
+    "modal_share": 1.0,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "vectors": {
+     "000011122222": 7
+    }
+   },
+   {
+    "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+    "n_staves": 11,
+    "n_systems": 10,
+    "n_distinct_vectors": 1,
+    "modal_share": 1.0,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "vectors": {
+     "00000011111": 10
+    }
+   },
+   {
+    "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+    "n_staves": 12,
+    "n_systems": 5,
+    "n_distinct_vectors": 1,
+    "modal_share": 1.0,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "vectors": {
+     "000000011111": 5
+    }
+   },
+   {
+    "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+    "n_staves": 13,
+    "n_systems": 7,
+    "n_distinct_vectors": 1,
+    "modal_share": 1.0,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "vectors": {
+     "0000000011111": 7
+    }
+   },
+   {
+    "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+    "n_staves": 14,
+    "n_systems": 25,
+    "n_distinct_vectors": 1,
+    "modal_share": 1.0,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "vectors": {
+     "00000000011111": 25
+    }
+   },
+   {
+    "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+    "n_staves": 15,
+    "n_systems": 34,
+    "n_distinct_vectors": 1,
+    "modal_share": 1.0,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "vectors": {
+     "000011111122222": 34
+    }
+   },
+   {
+    "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+    "n_staves": 16,
+    "n_systems": 5,
+    "n_distinct_vectors": 3,
+    "modal_share": 0.4,
+    "modal": [
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "vectors": {
+     "0001111122233333": 2,
+     "0000011111233333": 2,
+     "0000011112233333": 1
+    }
+   },
+   {
+    "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+    "n_staves": 17,
+    "n_systems": 6,
+    "n_distinct_vectors": 3,
+    "modal_share": 0.5,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     2,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "vectors": {
+     "00000111111233333": 3,
+     "00001111112233333": 2,
+     "00000111122233333": 1
+    }
+   },
+   {
+    "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+    "n_staves": 19,
+    "n_systems": 4,
+    "n_distinct_vectors": 4,
+    "modal_share": 0.25,
+    "modal": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "vectors": {
+     "0000011111122233333": 1,
+     "0000111111223333333": 1,
+     "0000001111122233333": 1,
+     "0000000111122233333": 1
+    }
+   }
+  ]
+ },
+ "within_page_detail": [
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 12,
+   "n_staves": 12,
+   "a": {
+    "system_index": 0,
+    "n_staves": 12,
+    "groups": [
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     3,
+     4,
+     4
+    ],
+    "n_groups": 5,
+    "inner_bridging": [
+     54,
+     57,
+     20,
+     58,
+     56,
+     22,
+     56,
+     53,
+     18,
+     33,
+     59
+    ],
+    "median": 54,
+    "ratios": [
+     1.0,
+     1.0556,
+     0.3704,
+     1.0741,
+     1.037,
+     0.4074,
+     1.037,
+     0.9815,
+     0.3333,
+     0.6111,
+     1.0926
+    ]
+   },
+   "b": {
+    "system_index": 1,
+    "n_staves": 12,
+    "groups": [
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     3,
+     3,
+     3
+    ],
+    "n_groups": 4,
+    "inner_bridging": [
+     53,
+     49,
+     34,
+     51,
+     47,
+     16,
+     54,
+     54,
+     18,
+     34,
+     37
+    ],
+    "median": 47,
+    "ratios": [
+     1.1277,
+     1.0426,
+     0.7234,
+     1.0851,
+     1.0,
+     0.3404,
+     1.1489,
+     1.1489,
+     0.383,
+     0.7234,
+     0.7872
+    ]
+   }
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 3,
+   "n_staves": 11,
+   "a": {
+    "system_index": 0,
+    "n_staves": 11,
+    "groups": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "n_groups": 3,
+    "inner_bridging": [
+     212,
+     182,
+     212,
+     42,
+     218,
+     46,
+     232,
+     182,
+     223,
+     182
+    ],
+    "median": 197.0,
+    "ratios": [
+     1.0761,
+     0.9239,
+     1.0761,
+     0.2132,
+     1.1066,
+     0.2335,
+     1.1777,
+     0.9239,
+     1.132,
+     0.9239
+    ]
+   },
+   "b": {
+    "system_index": 1,
+    "n_staves": 11,
+    "groups": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2
+    ],
+    "n_groups": 3,
+    "inner_bridging": [
+     230,
+     458,
+     406,
+     45,
+     399,
+     250,
+     41,
+     205,
+     194,
+     183
+    ],
+    "median": 217.5,
+    "ratios": [
+     1.0575,
+     2.1057,
+     1.8667,
+     0.2069,
+     1.8345,
+     1.1494,
+     0.1885,
+     0.9425,
+     0.892,
+     0.8414
+    ]
+   }
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 16,
+   "n_staves": 4,
+   "a": {
+    "system_index": 1,
+    "n_staves": 4,
+    "groups": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "n_groups": 2,
+    "inner_bridging": [
+     131,
+     126,
+     156
+    ],
+    "median": 131,
+    "ratios": [
+     1.0,
+     0.9618,
+     1.1908
+    ]
+   },
+   "b": {
+    "system_index": 2,
+    "n_staves": 4,
+    "groups": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "n_groups": 2,
+    "inner_bridging": [
+     131,
+     261,
+     118
+    ],
+    "median": 131,
+    "ratios": [
+     1.0,
+     1.9924,
+     0.9008
+    ]
+   }
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 4,
+   "n_staves": 11,
+   "a": {
+    "system_index": 0,
+    "n_staves": 11,
+    "groups": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "n_groups": 3,
+    "inner_bridging": [
+     120,
+     104,
+     133,
+     23,
+     121,
+     29,
+     127,
+     111,
+     158,
+     105
+    ],
+    "median": 115.5,
+    "ratios": [
+     1.039,
+     0.9004,
+     1.1515,
+     0.1991,
+     1.0476,
+     0.2511,
+     1.0996,
+     0.961,
+     1.368,
+     0.9091
+    ]
+   },
+   "b": {
+    "system_index": 1,
+    "n_staves": 11,
+    "groups": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2
+    ],
+    "n_groups": 3,
+    "inner_bridging": [
+     128,
+     186,
+     237,
+     27,
+     227,
+     136,
+     25,
+     118,
+     117,
+     116
+    ],
+    "median": 123.0,
+    "ratios": [
+     1.0407,
+     1.5122,
+     1.9268,
+     0.2195,
+     1.8455,
+     1.1057,
+     0.2033,
+     0.9593,
+     0.9512,
+     0.9431
+    ]
+   }
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 17,
+   "n_staves": 4,
+   "a": {
+    "system_index": 1,
+    "n_staves": 4,
+    "groups": [
+     0,
+     0,
+     1,
+     1
+    ],
+    "n_groups": 2,
+    "inner_bridging": [
+     71,
+     64,
+     78
+    ],
+    "median": 71,
+    "ratios": [
+     1.0,
+     0.9014,
+     1.0986
+    ]
+   },
+   "b": {
+    "system_index": 2,
+    "n_staves": 4,
+    "groups": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "n_groups": 2,
+    "inner_bridging": [
+     68,
+     96,
+     60
+    ],
+    "median": 68,
+    "ratios": [
+     1.0,
+     1.4118,
+     0.8824
+    ]
+   }
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 11,
+   "n_staves": 13,
+   "a": {
+    "system_index": 0,
+    "n_staves": 13,
+    "groups": [
+     0,
+     0,
+     0,
+     1,
+     1,
+     2,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "n_groups": 4,
+    "inner_bridging": [
+     299,
+     197,
+     16,
+     134,
+     67,
+     64,
+     344,
+     117,
+     94,
+     276,
+     154,
+     168
+    ],
+    "median": 144.0,
+    "ratios": [
+     2.0764,
+     1.3681,
+     0.1111,
+     0.9306,
+     0.4653,
+     0.4444,
+     2.3889,
+     0.8125,
+     0.6528,
+     1.9167,
+     1.0694,
+     1.1667
+    ]
+   },
+   "b": {
+    "system_index": 1,
+    "n_staves": 13,
+    "groups": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "n_groups": 3,
+    "inner_bridging": [
+     225,
+     167,
+     140,
+     10,
+     216,
+     111,
+     172,
+     6,
+     353,
+     108,
+     117,
+     169
+    ],
+    "median": 153.5,
+    "ratios": [
+     1.4658,
+     1.0879,
+     0.9121,
+     0.0651,
+     1.4072,
+     0.7231,
+     1.1205,
+     0.0391,
+     2.2997,
+     0.7036,
+     0.7622,
+     1.101
+    ]
+   }
+  }
+ ],
+ "records": [
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 0,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      62,
+      53,
+      22,
+      64,
+      68,
+      24,
+      60,
+      59,
+      20,
+      8,
+      54
+     ],
+     "median": 54,
+     "ratios": [
+      1.1481,
+      0.9815,
+      0.4074,
+      1.1852,
+      1.2593,
+      0.4444,
+      1.1111,
+      1.0926,
+      0.3704,
+      0.1481,
+      1.0
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      69,
+      31,
+      0,
+      38,
+      35,
+      0,
+      36,
+      30,
+      0,
+      0,
+      34
+     ],
+     "median": 31,
+     "ratios": [
+      2.2258,
+      1.0,
+      0.0,
+      1.2258,
+      1.129,
+      0.0,
+      1.1613,
+      0.9677,
+      0.0,
+      0.0,
+      1.0968
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 1,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      60,
+      58,
+      22,
+      61,
+      57,
+      31,
+      56,
+      53,
+      20,
+      6,
+      40
+     ],
+     "median": 53,
+     "ratios": [
+      1.1321,
+      1.0943,
+      0.4151,
+      1.1509,
+      1.0755,
+      0.5849,
+      1.0566,
+      1.0,
+      0.3774,
+      0.1132,
+      0.7547
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      70,
+      56,
+      22,
+      56,
+      166,
+      18,
+      116,
+      52,
+      18,
+      28,
+      40
+     ],
+     "median": 52,
+     "ratios": [
+      1.3462,
+      1.0769,
+      0.4231,
+      1.0769,
+      3.1923,
+      0.3462,
+      2.2308,
+      1.0,
+      0.3462,
+      0.5385,
+      0.7692
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 2,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      62,
+      68,
+      22,
+      64,
+      64,
+      19,
+      76,
+      94,
+      29,
+      94,
+      46
+     ],
+     "median": 64,
+     "ratios": [
+      0.9688,
+      1.0625,
+      0.3438,
+      1.0,
+      1.0,
+      0.2969,
+      1.1875,
+      1.4688,
+      0.4531,
+      1.4688,
+      0.7188
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      94,
+      56,
+      36,
+      54,
+      64,
+      18,
+      69,
+      63,
+      30,
+      67,
+      69
+     ],
+     "median": 63,
+     "ratios": [
+      1.4921,
+      0.8889,
+      0.5714,
+      0.8571,
+      1.0159,
+      0.2857,
+      1.0952,
+      1.0,
+      0.4762,
+      1.0635,
+      1.0952
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 3,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      62,
+      66,
+      20,
+      64,
+      102,
+      22,
+      56,
+      60,
+      32,
+      34,
+      50
+     ],
+     "median": 56,
+     "ratios": [
+      1.1071,
+      1.1786,
+      0.3571,
+      1.1429,
+      1.8214,
+      0.3929,
+      1.0,
+      1.0714,
+      0.5714,
+      0.6071,
+      0.8929
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      69,
+      65,
+      23,
+      67,
+      66,
+      23,
+      55,
+      56,
+      21,
+      36,
+      52
+     ],
+     "median": 55,
+     "ratios": [
+      1.2545,
+      1.1818,
+      0.4182,
+      1.2182,
+      1.2,
+      0.4182,
+      1.0,
+      1.0182,
+      0.3818,
+      0.6545,
+      0.9455
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 4,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      70,
+      68,
+      20,
+      70,
+      62,
+      24,
+      73,
+      78,
+      22,
+      28,
+      49
+     ],
+     "median": 62,
+     "ratios": [
+      1.129,
+      1.0968,
+      0.3226,
+      1.129,
+      1.0,
+      0.3871,
+      1.1774,
+      1.2581,
+      0.3548,
+      0.4516,
+      0.7903
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      55,
+      53,
+      20,
+      57,
+      52,
+      18,
+      52,
+      55,
+      20,
+      32,
+      70
+     ],
+     "median": 52,
+     "ratios": [
+      1.0577,
+      1.0192,
+      0.3846,
+      1.0962,
+      1.0,
+      0.3462,
+      1.0,
+      1.0577,
+      0.3846,
+      0.6154,
+      1.3462
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 5,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      55,
+      55,
+      18,
+      60,
+      60,
+      18,
+      50,
+      53,
+      16,
+      28,
+      49
+     ],
+     "median": 50,
+     "ratios": [
+      1.1,
+      1.1,
+      0.36,
+      1.2,
+      1.2,
+      0.36,
+      1.0,
+      1.06,
+      0.32,
+      0.56,
+      0.98
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      73,
+      44,
+      18,
+      74,
+      86,
+      16,
+      70,
+      68,
+      44,
+      89,
+      87
+     ],
+     "median": 70,
+     "ratios": [
+      1.0429,
+      0.6286,
+      0.2571,
+      1.0571,
+      1.2286,
+      0.2286,
+      1.0,
+      0.9714,
+      0.6286,
+      1.2714,
+      1.2429
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 6,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      51,
+      48,
+      17,
+      49,
+      48,
+      18,
+      48,
+      46,
+      18,
+      6,
+      40
+     ],
+     "median": 46,
+     "ratios": [
+      1.1087,
+      1.0435,
+      0.3696,
+      1.0652,
+      1.0435,
+      0.3913,
+      1.0435,
+      1.0,
+      0.3913,
+      0.1304,
+      0.8696
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      50,
+      50,
+      18,
+      48,
+      45,
+      17,
+      47,
+      42,
+      16,
+      45,
+      60
+     ],
+     "median": 45,
+     "ratios": [
+      1.1111,
+      1.1111,
+      0.4,
+      1.0667,
+      1.0,
+      0.3778,
+      1.0444,
+      0.9333,
+      0.3556,
+      1.0,
+      1.3333
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 7,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      60,
+      70,
+      21,
+      61,
+      57,
+      21,
+      61,
+      61,
+      22,
+      8,
+      54
+     ],
+     "median": 57,
+     "ratios": [
+      1.0526,
+      1.2281,
+      0.3684,
+      1.0702,
+      1.0,
+      0.3684,
+      1.0702,
+      1.0702,
+      0.386,
+      0.1404,
+      0.9474
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      61,
+      80,
+      22,
+      58,
+      61,
+      22,
+      60,
+      66,
+      21,
+      8,
+      42
+     ],
+     "median": 58,
+     "ratios": [
+      1.0517,
+      1.3793,
+      0.3793,
+      1.0,
+      1.0517,
+      0.3793,
+      1.0345,
+      1.1379,
+      0.3621,
+      0.1379,
+      0.7241
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 8,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      50,
+      50,
+      18,
+      51,
+      51,
+      20,
+      52,
+      47,
+      28,
+      30,
+      37
+     ],
+     "median": 47,
+     "ratios": [
+      1.0638,
+      1.0638,
+      0.383,
+      1.0851,
+      1.0851,
+      0.4255,
+      1.1064,
+      1.0,
+      0.5957,
+      0.6383,
+      0.7872
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      60,
+      56,
+      20,
+      58,
+      55,
+      20,
+      57,
+      54,
+      16,
+      14,
+      44
+     ],
+     "median": 54,
+     "ratios": [
+      1.1111,
+      1.037,
+      0.3704,
+      1.0741,
+      1.0185,
+      0.3704,
+      1.0556,
+      1.0,
+      0.2963,
+      0.2593,
+      0.8148
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 9,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      53,
+      59,
+      24,
+      59,
+      57,
+      22,
+      60,
+      60,
+      22,
+      10,
+      46
+     ],
+     "median": 53,
+     "ratios": [
+      1.0,
+      1.1132,
+      0.4528,
+      1.1132,
+      1.0755,
+      0.4151,
+      1.1321,
+      1.1321,
+      0.4151,
+      0.1887,
+      0.8679
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      57,
+      55,
+      23,
+      57,
+      57,
+      23,
+      61,
+      62,
+      24,
+      12,
+      58
+     ],
+     "median": 57,
+     "ratios": [
+      1.0,
+      0.9649,
+      0.4035,
+      1.0,
+      1.0,
+      0.4035,
+      1.0702,
+      1.0877,
+      0.4211,
+      0.2105,
+      1.0175
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 10,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      59,
+      57,
+      20,
+      57,
+      52,
+      21,
+      59,
+      57,
+      21,
+      24,
+      39
+     ],
+     "median": 52,
+     "ratios": [
+      1.1346,
+      1.0962,
+      0.3846,
+      1.0962,
+      1.0,
+      0.4038,
+      1.1346,
+      1.0962,
+      0.4038,
+      0.4615,
+      0.75
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      61,
+      56,
+      20,
+      57,
+      57,
+      19,
+      55,
+      59,
+      24,
+      51,
+      34
+     ],
+     "median": 55,
+     "ratios": [
+      1.1091,
+      1.0182,
+      0.3636,
+      1.0364,
+      1.0364,
+      0.3455,
+      1.0,
+      1.0727,
+      0.4364,
+      0.9273,
+      0.6182
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 11,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      56,
+      53,
+      20,
+      58,
+      52,
+      22,
+      52,
+      54,
+      22,
+      38,
+      46
+     ],
+     "median": 52,
+     "ratios": [
+      1.0769,
+      1.0192,
+      0.3846,
+      1.1154,
+      1.0,
+      0.4231,
+      1.0,
+      1.0385,
+      0.4231,
+      0.7308,
+      0.8846
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      54,
+      54,
+      141,
+      53,
+      50,
+      25,
+      56,
+      60,
+      22,
+      30,
+      39
+     ],
+     "median": 53,
+     "ratios": [
+      1.0189,
+      1.0189,
+      2.6604,
+      1.0,
+      0.9434,
+      0.4717,
+      1.0566,
+      1.1321,
+      0.4151,
+      0.566,
+      0.7358
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 12,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      54,
+      57,
+      20,
+      58,
+      56,
+      22,
+      56,
+      53,
+      18,
+      33,
+      59
+     ],
+     "median": 54,
+     "ratios": [
+      1.0,
+      1.0556,
+      0.3704,
+      1.0741,
+      1.037,
+      0.4074,
+      1.037,
+      0.9815,
+      0.3333,
+      0.6111,
+      1.0926
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      53,
+      49,
+      34,
+      51,
+      47,
+      16,
+      54,
+      54,
+      18,
+      34,
+      37
+     ],
+     "median": 47,
+     "ratios": [
+      1.1277,
+      1.0426,
+      0.7234,
+      1.0851,
+      1.0,
+      0.3404,
+      1.1489,
+      1.1489,
+      0.383,
+      0.7234,
+      0.7872
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 13,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 1,
+     "groups": [
+      0
+     ],
+     "n_groups": 1,
+     "inner_bridging": [],
+     "median": null,
+     "ratios": null
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 14,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      56,
+      58,
+      24,
+      52,
+      54,
+      29,
+      59,
+      62,
+      20,
+      35,
+      229
+     ],
+     "median": 54,
+     "ratios": [
+      1.037,
+      1.0741,
+      0.4444,
+      0.963,
+      1.0,
+      0.537,
+      1.0926,
+      1.1481,
+      0.3704,
+      0.6481,
+      4.2407
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      50,
+      46,
+      20,
+      48,
+      48,
+      18,
+      50,
+      54,
+      18,
+      22,
+      51
+     ],
+     "median": 48,
+     "ratios": [
+      1.0417,
+      0.9583,
+      0.4167,
+      1.0,
+      1.0,
+      0.375,
+      1.0417,
+      1.125,
+      0.375,
+      0.4583,
+      1.0625
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 15,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      61,
+      58,
+      18,
+      60,
+      60,
+      20,
+      60,
+      62,
+      18,
+      14,
+      90
+     ],
+     "median": 60,
+     "ratios": [
+      1.0167,
+      0.9667,
+      0.3,
+      1.0,
+      1.0,
+      0.3333,
+      1.0,
+      1.0333,
+      0.3,
+      0.2333,
+      1.5
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      88,
+      111,
+      20,
+      83,
+      85,
+      18,
+      90,
+      91,
+      22,
+      8,
+      70
+     ],
+     "median": 83,
+     "ratios": [
+      1.0602,
+      1.3373,
+      0.241,
+      1.0,
+      1.0241,
+      0.2169,
+      1.0843,
+      1.0964,
+      0.2651,
+      0.0964,
+      0.8434
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 16,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      44,
+      46,
+      22,
+      47,
+      48,
+      18,
+      47,
+      44,
+      20,
+      16,
+      29
+     ],
+     "median": 44,
+     "ratios": [
+      1.0,
+      1.0455,
+      0.5,
+      1.0682,
+      1.0909,
+      0.4091,
+      1.0682,
+      1.0,
+      0.4545,
+      0.3636,
+      0.6591
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      20,
+      24,
+      0,
+      20,
+      22,
+      0,
+      22,
+      20,
+      0,
+      0,
+      22
+     ],
+     "median": 20,
+     "ratios": [
+      1.0,
+      1.2,
+      0.0,
+      1.0,
+      1.1,
+      0.0,
+      1.1,
+      1.0,
+      0.0,
+      0.0,
+      1.1
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 17,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      47,
+      46,
+      20,
+      48,
+      44,
+      18,
+      46,
+      44,
+      16,
+      6,
+      30
+     ],
+     "median": 44,
+     "ratios": [
+      1.0682,
+      1.0455,
+      0.4545,
+      1.0909,
+      1.0,
+      0.4091,
+      1.0455,
+      1.0,
+      0.3636,
+      0.1364,
+      0.6818
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      69,
+      62,
+      20,
+      62,
+      59,
+      27,
+      62,
+      64,
+      18,
+      10,
+      45
+     ],
+     "median": 59,
+     "ratios": [
+      1.1695,
+      1.0508,
+      0.339,
+      1.0508,
+      1.0,
+      0.4576,
+      1.0508,
+      1.0847,
+      0.3051,
+      0.1695,
+      0.7627
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 18,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      68,
+      68,
+      40,
+      68,
+      69,
+      20,
+      68,
+      69,
+      20,
+      81,
+      58
+     ],
+     "median": 68,
+     "ratios": [
+      1.0,
+      1.0,
+      0.5882,
+      1.0,
+      1.0147,
+      0.2941,
+      1.0,
+      1.0147,
+      0.2941,
+      1.1912,
+      0.8529
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      49,
+      50,
+      18,
+      42,
+      44,
+      20,
+      46,
+      52,
+      18,
+      14,
+      44
+     ],
+     "median": 44,
+     "ratios": [
+      1.1136,
+      1.1364,
+      0.4091,
+      0.9545,
+      1.0,
+      0.4545,
+      1.0455,
+      1.1818,
+      0.4091,
+      0.3182,
+      1.0
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 19,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      44,
+      44,
+      16,
+      46,
+      45,
+      19,
+      42,
+      41,
+      19,
+      55,
+      38
+     ],
+     "median": 42,
+     "ratios": [
+      1.0476,
+      1.0476,
+      0.381,
+      1.0952,
+      1.0714,
+      0.4524,
+      1.0,
+      0.9762,
+      0.4524,
+      1.3095,
+      0.9048
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      44,
+      44,
+      19,
+      44,
+      46,
+      20,
+      44,
+      45,
+      23,
+      15,
+      33
+     ],
+     "median": 44,
+     "ratios": [
+      1.0,
+      1.0,
+      0.4318,
+      1.0,
+      1.0455,
+      0.4545,
+      1.0,
+      1.0227,
+      0.5227,
+      0.3409,
+      0.75
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 20,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      48,
+      49,
+      36,
+      48,
+      55,
+      23,
+      48,
+      51,
+      21,
+      50,
+      32
+     ],
+     "median": 48,
+     "ratios": [
+      1.0,
+      1.0208,
+      0.75,
+      1.0,
+      1.1458,
+      0.4792,
+      1.0,
+      1.0625,
+      0.4375,
+      1.0417,
+      0.6667
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      52,
+      52,
+      22,
+      58,
+      79,
+      21,
+      53,
+      58,
+      29,
+      14,
+      40
+     ],
+     "median": 52,
+     "ratios": [
+      1.0,
+      1.0,
+      0.4231,
+      1.1154,
+      1.5192,
+      0.4038,
+      1.0192,
+      1.1154,
+      0.5577,
+      0.2692,
+      0.7692
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 21,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      50,
+      52,
+      20,
+      52,
+      54,
+      261,
+      54,
+      53,
+      26,
+      16,
+      51
+     ],
+     "median": 52,
+     "ratios": [
+      0.9615,
+      1.0,
+      0.3846,
+      1.0,
+      1.0385,
+      5.0192,
+      1.0385,
+      1.0192,
+      0.5,
+      0.3077,
+      0.9808
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      65,
+      62,
+      20,
+      48,
+      45,
+      25,
+      57,
+      70,
+      22,
+      29,
+      38
+     ],
+     "median": 45,
+     "ratios": [
+      1.4444,
+      1.3778,
+      0.4444,
+      1.0667,
+      1.0,
+      0.5556,
+      1.2667,
+      1.5556,
+      0.4889,
+      0.6444,
+      0.8444
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 22,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      54,
+      48,
+      20,
+      50,
+      52,
+      20,
+      46,
+      50,
+      20,
+      4,
+      29
+     ],
+     "median": 46,
+     "ratios": [
+      1.1739,
+      1.0435,
+      0.4348,
+      1.087,
+      1.1304,
+      0.4348,
+      1.0,
+      1.087,
+      0.4348,
+      0.087,
+      0.6304
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      45,
+      41,
+      18,
+      43,
+      42,
+      18,
+      40,
+      46,
+      16,
+      8,
+      26
+     ],
+     "median": 40,
+     "ratios": [
+      1.125,
+      1.025,
+      0.45,
+      1.075,
+      1.05,
+      0.45,
+      1.0,
+      1.15,
+      0.4,
+      0.2,
+      0.65
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf",
+   "page": 23,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      52,
+      50,
+      21,
+      48,
+      49,
+      20,
+      50,
+      46,
+      22,
+      8,
+      36
+     ],
+     "median": 46,
+     "ratios": [
+      1.1304,
+      1.087,
+      0.4565,
+      1.0435,
+      1.0652,
+      0.4348,
+      1.087,
+      1.0,
+      0.4783,
+      0.1739,
+      0.7826
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      61,
+      58,
+      17,
+      63,
+      64,
+      18,
+      68,
+      66,
+      20,
+      26,
+      49
+     ],
+     "median": 58,
+     "ratios": [
+      1.0517,
+      1.0,
+      0.2931,
+      1.0862,
+      1.1034,
+      0.3103,
+      1.1724,
+      1.1379,
+      0.3448,
+      0.4483,
+      0.8448
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 0,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      204,
+      207,
+      222,
+      42,
+      214,
+      206,
+      43,
+      199,
+      193,
+      190,
+      181
+     ],
+     "median": 199,
+     "ratios": [
+      1.0251,
+      1.0402,
+      1.1156,
+      0.2111,
+      1.0754,
+      1.0352,
+      0.2161,
+      1.0,
+      0.9698,
+      0.9548,
+      0.9095
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 1,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      255,
+      281,
+      217,
+      44,
+      318,
+      297,
+      42,
+      285,
+      237,
+      291
+     ],
+     "median": 268.0,
+     "ratios": [
+      0.9515,
+      1.0485,
+      0.8097,
+      0.1642,
+      1.1866,
+      1.1082,
+      0.1567,
+      1.0634,
+      0.8843,
+      1.0858
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      255,
+      241,
+      246,
+      45,
+      249,
+      354,
+      62,
+      219,
+      245,
+      287
+     ],
+     "median": 245.5,
+     "ratios": [
+      1.0387,
+      0.9817,
+      1.002,
+      0.1833,
+      1.0143,
+      1.442,
+      0.2525,
+      0.8921,
+      0.998,
+      1.169
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 2,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      168,
+      159,
+      160,
+      34,
+      212,
+      196,
+      35,
+      172,
+      172,
+      192
+     ],
+     "median": 170.0,
+     "ratios": [
+      0.9882,
+      0.9353,
+      0.9412,
+      0.2,
+      1.2471,
+      1.1529,
+      0.2059,
+      1.0118,
+      1.0118,
+      1.1294
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 8,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      205,
+      189,
+      38,
+      39,
+      199,
+      197,
+      187
+     ],
+     "median": 189,
+     "ratios": [
+      1.0847,
+      1.0,
+      0.2011,
+      0.2063,
+      1.0529,
+      1.0423,
+      0.9894
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 3,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      212,
+      182,
+      212,
+      42,
+      218,
+      46,
+      232,
+      182,
+      223,
+      182
+     ],
+     "median": 197.0,
+     "ratios": [
+      1.0761,
+      0.9239,
+      1.0761,
+      0.2132,
+      1.1066,
+      0.2335,
+      1.1777,
+      0.9239,
+      1.132,
+      0.9239
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      230,
+      458,
+      406,
+      45,
+      399,
+      250,
+      41,
+      205,
+      194,
+      183
+     ],
+     "median": 217.5,
+     "ratios": [
+      1.0575,
+      2.1057,
+      1.8667,
+      0.2069,
+      1.8345,
+      1.1494,
+      0.1885,
+      0.9425,
+      0.892,
+      0.8414
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 4,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      205,
+      195,
+      211,
+      38,
+      36,
+      234,
+      227,
+      226
+     ],
+     "median": 208.0,
+     "ratios": [
+      0.9856,
+      0.9375,
+      1.0144,
+      0.1827,
+      0.1731,
+      1.125,
+      1.0913,
+      1.0865
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 7,
+     "groups": [
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      184,
+      40,
+      41,
+      176,
+      167,
+      176
+     ],
+     "median": 171.5,
+     "ratios": [
+      1.0729,
+      0.2332,
+      0.2391,
+      1.0262,
+      0.9738,
+      1.0262
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 5,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 10,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      175,
+      171,
+      176,
+      45,
+      44,
+      170,
+      181,
+      203,
+      184
+     ],
+     "median": 175,
+     "ratios": [
+      1.0,
+      0.9771,
+      1.0057,
+      0.2571,
+      0.2514,
+      0.9714,
+      1.0343,
+      1.16,
+      1.0514
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      210,
+      169,
+      209,
+      41,
+      188,
+      239,
+      65,
+      259,
+      175,
+      398,
+      179
+     ],
+     "median": 188,
+     "ratios": [
+      1.117,
+      0.8989,
+      1.1117,
+      0.2181,
+      1.0,
+      1.2713,
+      0.3457,
+      1.3777,
+      0.9309,
+      2.117,
+      0.9521
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 6,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      234,
+      202,
+      250,
+      71,
+      268,
+      240,
+      69,
+      273,
+      485,
+      342
+     ],
+     "median": 245.0,
+     "ratios": [
+      0.9551,
+      0.8245,
+      1.0204,
+      0.2898,
+      1.0939,
+      0.9796,
+      0.2816,
+      1.1143,
+      1.9796,
+      1.3959
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      217,
+      231,
+      214,
+      37,
+      243,
+      320,
+      40,
+      384,
+      197,
+      212
+     ],
+     "median": 215.5,
+     "ratios": [
+      1.007,
+      1.0719,
+      0.993,
+      0.1717,
+      1.1276,
+      1.4849,
+      0.1856,
+      1.7819,
+      0.9142,
+      0.9838
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 7,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      262,
+      248,
+      312,
+      39,
+      40,
+      256,
+      347,
+      279
+     ],
+     "median": 259.0,
+     "ratios": [
+      1.0116,
+      0.9575,
+      1.2046,
+      0.1506,
+      0.1544,
+      0.9884,
+      1.3398,
+      1.0772
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      295,
+      248,
+      315,
+      44,
+      217,
+      42,
+      250,
+      290,
+      227,
+      227
+     ],
+     "median": 237.5,
+     "ratios": [
+      1.2421,
+      1.0442,
+      1.3263,
+      0.1853,
+      0.9137,
+      0.1768,
+      1.0526,
+      1.2211,
+      0.9558,
+      0.9558
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 8,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      206,
+      182,
+      229,
+      46,
+      252,
+      217,
+      75,
+      179,
+      173,
+      190,
+      203
+     ],
+     "median": 190,
+     "ratios": [
+      1.0842,
+      0.9579,
+      1.2053,
+      0.2421,
+      1.3263,
+      1.1421,
+      0.3947,
+      0.9421,
+      0.9105,
+      1.0,
+      1.0684
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 10,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      161,
+      162,
+      160,
+      39,
+      177,
+      48,
+      191,
+      186,
+      179
+     ],
+     "median": 162,
+     "ratios": [
+      0.9938,
+      1.0,
+      0.9877,
+      0.2407,
+      1.0926,
+      0.2963,
+      1.179,
+      1.1481,
+      1.1049
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 9,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      190,
+      182,
+      244,
+      42,
+      194,
+      236,
+      80,
+      189,
+      182,
+      202
+     ],
+     "median": 189.5,
+     "ratios": [
+      1.0026,
+      0.9604,
+      1.2876,
+      0.2216,
+      1.0237,
+      1.2454,
+      0.4222,
+      0.9974,
+      0.9604,
+      1.066
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      193,
+      186,
+      245,
+      41,
+      231,
+      285,
+      40,
+      197,
+      187,
+      195
+     ],
+     "median": 194.0,
+     "ratios": [
+      0.9948,
+      0.9588,
+      1.2629,
+      0.2113,
+      1.1907,
+      1.4691,
+      0.2062,
+      1.0155,
+      0.9639,
+      1.0052
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 10,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      219,
+      221,
+      38,
+      215,
+      40,
+      223,
+      233,
+      226
+     ],
+     "median": 220.0,
+     "ratios": [
+      0.9955,
+      1.0045,
+      0.1727,
+      0.9773,
+      0.1818,
+      1.0136,
+      1.0591,
+      1.0273
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      209,
+      193,
+      212,
+      41,
+      210,
+      36,
+      206,
+      214,
+      210,
+      199
+     ],
+     "median": 207.5,
+     "ratios": [
+      1.0072,
+      0.9301,
+      1.0217,
+      0.1976,
+      1.012,
+      0.1735,
+      0.9928,
+      1.0313,
+      1.012,
+      0.959
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 11,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      217,
+      184,
+      416,
+      46,
+      219,
+      269,
+      41,
+      209,
+      268,
+      624,
+      288
+     ],
+     "median": 219,
+     "ratios": [
+      0.9909,
+      0.8402,
+      1.8995,
+      0.21,
+      1.0,
+      1.2283,
+      0.1872,
+      0.9543,
+      1.2237,
+      2.8493,
+      1.3151
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      226,
+      306,
+      411,
+      79,
+      250,
+      188,
+      55,
+      200,
+      170,
+      149
+     ],
+     "median": 194.0,
+     "ratios": [
+      1.1649,
+      1.5773,
+      2.1186,
+      0.4072,
+      1.2887,
+      0.9691,
+      0.2835,
+      1.0309,
+      0.8763,
+      0.768
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 12,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      198,
+      196,
+      206,
+      38,
+      225,
+      235,
+      32,
+      231,
+      316,
+      358
+     ],
+     "median": 215.5,
+     "ratios": [
+      0.9188,
+      0.9095,
+      0.9559,
+      0.1763,
+      1.0441,
+      1.0905,
+      0.1485,
+      1.0719,
+      1.4664,
+      1.6613
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      190,
+      208,
+      216,
+      55,
+      249,
+      211,
+      81,
+      198,
+      267,
+      236
+     ],
+     "median": 209.5,
+     "ratios": [
+      0.9069,
+      0.9928,
+      1.031,
+      0.2625,
+      1.1885,
+      1.0072,
+      0.3866,
+      0.9451,
+      1.2745,
+      1.1265
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 13,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      212,
+      217,
+      183,
+      43,
+      207,
+      280,
+      39,
+      185,
+      198,
+      188,
+      206
+     ],
+     "median": 198,
+     "ratios": [
+      1.0707,
+      1.096,
+      0.9242,
+      0.2172,
+      1.0455,
+      1.4141,
+      0.197,
+      0.9343,
+      1.0,
+      0.9495,
+      1.0404
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      248,
+      197,
+      218,
+      54,
+      238,
+      519,
+      42,
+      200,
+      199,
+      202
+     ],
+     "median": 201.0,
+     "ratios": [
+      1.2338,
+      0.9801,
+      1.0846,
+      0.2687,
+      1.1841,
+      2.5821,
+      0.209,
+      0.995,
+      0.99,
+      1.005
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 14,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      274,
+      279,
+      284,
+      49,
+      262,
+      261,
+      43,
+      269,
+      258,
+      287
+     ],
+     "median": 265.5,
+     "ratios": [
+      1.032,
+      1.0508,
+      1.0697,
+      0.1846,
+      0.9868,
+      0.9831,
+      0.162,
+      1.0132,
+      0.9718,
+      1.081
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      236,
+      248,
+      308,
+      50,
+      306,
+      408,
+      43,
+      428,
+      400,
+      264
+     ],
+     "median": 285.0,
+     "ratios": [
+      0.8281,
+      0.8702,
+      1.0807,
+      0.1754,
+      1.0737,
+      1.4316,
+      0.1509,
+      1.5018,
+      1.4035,
+      0.9263
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 15,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      342,
+      203,
+      190,
+      31,
+      213,
+      303,
+      33,
+      253,
+      227,
+      198
+     ],
+     "median": 208.0,
+     "ratios": [
+      1.6442,
+      0.976,
+      0.9135,
+      0.149,
+      1.024,
+      1.4567,
+      0.1587,
+      1.2163,
+      1.0913,
+      0.9519
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      179,
+      179,
+      174,
+      60,
+      197,
+      184,
+      55,
+      195,
+      199,
+      195
+     ],
+     "median": 181.5,
+     "ratios": [
+      0.9862,
+      0.9862,
+      0.9587,
+      0.3306,
+      1.0854,
+      1.0138,
+      0.303,
+      1.0744,
+      1.0964,
+      1.0744
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 16,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      150,
+      145,
+      144,
+      37,
+      165,
+      155,
+      46,
+      165,
+      212,
+      320,
+      190
+     ],
+     "median": 155,
+     "ratios": [
+      0.9677,
+      0.9355,
+      0.929,
+      0.2387,
+      1.0645,
+      1.0,
+      0.2968,
+      1.0645,
+      1.3677,
+      2.0645,
+      1.2258
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 4,
+     "groups": [
+      0,
+      0,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      131,
+      126,
+      156
+     ],
+     "median": 131,
+     "ratios": [
+      1.0,
+      0.9618,
+      1.1908
+     ]
+    },
+    {
+     "system_index": 2,
+     "n_staves": 4,
+     "groups": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      131,
+      261,
+      118
+     ],
+     "median": 131,
+     "ratios": [
+      1.0,
+      1.9924,
+      0.9008
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 17,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      114,
+      120,
+      138,
+      44,
+      163,
+      154,
+      45,
+      146,
+      154,
+      167
+     ],
+     "median": 142.0,
+     "ratios": [
+      0.8028,
+      0.8451,
+      0.9718,
+      0.3099,
+      1.1479,
+      1.0845,
+      0.3169,
+      1.0282,
+      1.0845,
+      1.1761
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 8,
+     "groups": [
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      47,
+      121,
+      140,
+      42,
+      86,
+      76,
+      82
+     ],
+     "median": 82,
+     "ratios": [
+      0.5732,
+      1.4756,
+      1.7073,
+      0.5122,
+      1.0488,
+      0.9268,
+      1.0
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 18,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      198,
+      256,
+      60,
+      209,
+      199,
+      42,
+      359,
+      314,
+      286,
+      295
+     ],
+     "median": 232.5,
+     "ratios": [
+      0.8516,
+      1.1011,
+      0.2581,
+      0.8989,
+      0.8559,
+      0.1806,
+      1.5441,
+      1.3505,
+      1.2301,
+      1.2688
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      165,
+      316,
+      306,
+      45,
+      208,
+      221,
+      196,
+      168
+     ],
+     "median": 202.0,
+     "ratios": [
+      0.8168,
+      1.5644,
+      1.5149,
+      0.2228,
+      1.0297,
+      1.0941,
+      0.9703,
+      0.8317
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 19,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 8,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      134,
+      145,
+      149,
+      44,
+      153,
+      181,
+      153
+     ],
+     "median": 149,
+     "ratios": [
+      0.8993,
+      0.9732,
+      1.0,
+      0.2953,
+      1.0268,
+      1.2148,
+      1.0268
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 8,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      99,
+      98,
+      146,
+      43,
+      95,
+      97,
+      99
+     ],
+     "median": 98,
+     "ratios": [
+      1.0102,
+      1.0,
+      1.4898,
+      0.4388,
+      0.9694,
+      0.9898,
+      1.0102
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 20,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      94,
+      98,
+      126,
+      41,
+      110,
+      146,
+      43,
+      144,
+      106,
+      101
+     ],
+     "median": 103.5,
+     "ratios": [
+      0.9082,
+      0.9469,
+      1.2174,
+      0.3961,
+      1.0628,
+      1.4106,
+      0.4155,
+      1.3913,
+      1.0242,
+      0.9758
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      111,
+      47,
+      112,
+      112,
+      40,
+      119,
+      153,
+      114
+     ],
+     "median": 112.0,
+     "ratios": [
+      0.9911,
+      0.4196,
+      1.0,
+      1.0,
+      0.3571,
+      1.0625,
+      1.3661,
+      1.0179
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 21,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      128,
+      131,
+      133,
+      43,
+      131,
+      133,
+      152,
+      146
+     ],
+     "median": 132.0,
+     "ratios": [
+      0.9697,
+      0.9924,
+      1.0076,
+      0.3258,
+      0.9924,
+      1.0076,
+      1.1515,
+      1.1061
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 8,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      88,
+      89,
+      43,
+      95,
+      94,
+      173,
+      92
+     ],
+     "median": 92,
+     "ratios": [
+      0.9565,
+      0.9674,
+      0.4674,
+      1.0326,
+      1.0217,
+      1.8804,
+      1.0
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 22,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      81,
+      105,
+      128,
+      40,
+      125,
+      103,
+      283,
+      93
+     ],
+     "median": 104.0,
+     "ratios": [
+      0.7788,
+      1.0096,
+      1.2308,
+      0.3846,
+      1.2019,
+      0.9904,
+      2.7212,
+      0.8942
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      85,
+      170,
+      222,
+      59,
+      95,
+      105,
+      45,
+      102,
+      92,
+      104,
+      104
+     ],
+     "median": 102,
+     "ratios": [
+      0.8333,
+      1.6667,
+      2.1765,
+      0.5784,
+      0.9314,
+      1.0294,
+      0.4412,
+      1.0,
+      0.902,
+      1.0196,
+      1.0196
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+   "page": 23,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      140,
+      94,
+      435,
+      50,
+      94,
+      91,
+      64,
+      94,
+      94,
+      97
+     ],
+     "median": 94.0,
+     "ratios": [
+      1.4894,
+      1.0,
+      4.6277,
+      0.5319,
+      1.0,
+      0.9681,
+      0.6809,
+      1.0,
+      1.0,
+      1.0319
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      353,
+      308,
+      247,
+      64,
+      201,
+      223,
+      82,
+      246,
+      308,
+      197
+     ],
+     "median": 234.5,
+     "ratios": [
+      1.5053,
+      1.3134,
+      1.0533,
+      0.2729,
+      0.8571,
+      0.951,
+      0.3497,
+      1.049,
+      1.3134,
+      0.8401
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 0,
+   "systems": []
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 1,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      110,
+      104,
+      108,
+      20,
+      107,
+      101,
+      21,
+      97,
+      95,
+      90,
+      85
+     ],
+     "median": 97,
+     "ratios": [
+      1.134,
+      1.0722,
+      1.1134,
+      0.2062,
+      1.1031,
+      1.0412,
+      0.2165,
+      1.0,
+      0.9794,
+      0.9278,
+      0.8763
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 2,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      139,
+      153,
+      131,
+      24,
+      165,
+      148,
+      23,
+      154,
+      130,
+      162
+     ],
+     "median": 143.5,
+     "ratios": [
+      0.9686,
+      1.0662,
+      0.9129,
+      0.1672,
+      1.1498,
+      1.0314,
+      0.1603,
+      1.0732,
+      0.9059,
+      1.1289
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      125,
+      135,
+      141,
+      25,
+      129,
+      184,
+      32,
+      120,
+      121,
+      153
+     ],
+     "median": 127.0,
+     "ratios": [
+      0.9843,
+      1.063,
+      1.1102,
+      0.1969,
+      1.0157,
+      1.4488,
+      0.252,
+      0.9449,
+      0.9528,
+      1.2047
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 3,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      88,
+      87,
+      91,
+      20,
+      118,
+      106,
+      21,
+      102,
+      99,
+      108
+     ],
+     "median": 95.0,
+     "ratios": [
+      0.9263,
+      0.9158,
+      0.9579,
+      0.2105,
+      1.2421,
+      1.1158,
+      0.2211,
+      1.0737,
+      1.0421,
+      1.1368
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 8,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      111,
+      109,
+      21,
+      20,
+      105,
+      112,
+      108
+     ],
+     "median": 108,
+     "ratios": [
+      1.0278,
+      1.0093,
+      0.1944,
+      0.1852,
+      0.9722,
+      1.037,
+      1.0
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 4,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      120,
+      104,
+      133,
+      23,
+      121,
+      29,
+      127,
+      111,
+      158,
+      105
+     ],
+     "median": 115.5,
+     "ratios": [
+      1.039,
+      0.9004,
+      1.1515,
+      0.1991,
+      1.0476,
+      0.2511,
+      1.0996,
+      0.961,
+      1.368,
+      0.9091
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      128,
+      186,
+      237,
+      27,
+      227,
+      136,
+      25,
+      118,
+      117,
+      116
+     ],
+     "median": 123.0,
+     "ratios": [
+      1.0407,
+      1.5122,
+      1.9268,
+      0.2195,
+      1.8455,
+      1.1057,
+      0.2033,
+      0.9593,
+      0.9512,
+      0.9431
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 5,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      123,
+      114,
+      116,
+      22,
+      20,
+      125,
+      122,
+      126
+     ],
+     "median": 119.0,
+     "ratios": [
+      1.0336,
+      0.958,
+      0.9748,
+      0.1849,
+      0.1681,
+      1.0504,
+      1.0252,
+      1.0588
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 7,
+     "groups": [
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      102,
+      21,
+      22,
+      98,
+      96,
+      97
+     ],
+     "median": 96.5,
+     "ratios": [
+      1.057,
+      0.2176,
+      0.228,
+      1.0155,
+      0.9948,
+      1.0052
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 6,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 10,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      108,
+      91,
+      103,
+      25,
+      27,
+      96,
+      114,
+      112,
+      92
+     ],
+     "median": 96,
+     "ratios": [
+      1.125,
+      0.9479,
+      1.0729,
+      0.2604,
+      0.2812,
+      1.0,
+      1.1875,
+      1.1667,
+      0.9583
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      124,
+      87,
+      116,
+      22,
+      100,
+      138,
+      35,
+      135,
+      98,
+      147,
+      151
+     ],
+     "median": 116,
+     "ratios": [
+      1.069,
+      0.75,
+      1.0,
+      0.1897,
+      0.8621,
+      1.1897,
+      0.3017,
+      1.1638,
+      0.8448,
+      1.2672,
+      1.3017
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 7,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      131,
+      110,
+      167,
+      41,
+      146,
+      131,
+      34,
+      146,
+      178,
+      185
+     ],
+     "median": 138.5,
+     "ratios": [
+      0.9458,
+      0.7942,
+      1.2058,
+      0.296,
+      1.0542,
+      0.9458,
+      0.2455,
+      1.0542,
+      1.2852,
+      1.3357
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      131,
+      127,
+      111,
+      21,
+      129,
+      155,
+      23,
+      210,
+      103,
+      112
+     ],
+     "median": 119.5,
+     "ratios": [
+      1.0962,
+      1.0628,
+      0.9289,
+      0.1757,
+      1.0795,
+      1.2971,
+      0.1925,
+      1.7573,
+      0.8619,
+      0.9372
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 8,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      147,
+      137,
+      168,
+      23,
+      21,
+      134,
+      183,
+      150
+     ],
+     "median": 142.0,
+     "ratios": [
+      1.0352,
+      0.9648,
+      1.1831,
+      0.162,
+      0.1479,
+      0.9437,
+      1.2887,
+      1.0563
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      151,
+      138,
+      174,
+      21,
+      113,
+      22,
+      133,
+      142,
+      118,
+      126
+     ],
+     "median": 129.5,
+     "ratios": [
+      1.166,
+      1.0656,
+      1.3436,
+      0.1622,
+      0.8726,
+      0.1699,
+      1.027,
+      1.0965,
+      0.9112,
+      0.973
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 9,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      110,
+      92,
+      129,
+      26,
+      126,
+      102,
+      37,
+      100,
+      103,
+      104,
+      107
+     ],
+     "median": 103,
+     "ratios": [
+      1.068,
+      0.8932,
+      1.2524,
+      0.2524,
+      1.2233,
+      0.9903,
+      0.3592,
+      0.9709,
+      1.0,
+      1.0097,
+      1.0388
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 10,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      88,
+      80,
+      91,
+      22,
+      97,
+      28,
+      99,
+      101,
+      103
+     ],
+     "median": 91,
+     "ratios": [
+      0.967,
+      0.8791,
+      1.0,
+      0.2418,
+      1.0659,
+      0.3077,
+      1.0879,
+      1.1099,
+      1.1319
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 10,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      104,
+      100,
+      150,
+      24,
+      118,
+      132,
+      42,
+      108,
+      99,
+      111
+     ],
+     "median": 106.0,
+     "ratios": [
+      0.9811,
+      0.9434,
+      1.4151,
+      0.2264,
+      1.1132,
+      1.2453,
+      0.3962,
+      1.0189,
+      0.934,
+      1.0472
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      108,
+      102,
+      135,
+      21,
+      124,
+      156,
+      21,
+      111,
+      104,
+      108
+     ],
+     "median": 108.0,
+     "ratios": [
+      1.0,
+      0.9444,
+      1.25,
+      0.1944,
+      1.1481,
+      1.4444,
+      0.1944,
+      1.0278,
+      0.963,
+      1.0
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 11,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      124,
+      118,
+      22,
+      125,
+      20,
+      120,
+      124,
+      122
+     ],
+     "median": 121.0,
+     "ratios": [
+      1.0248,
+      0.9752,
+      0.1818,
+      1.0331,
+      0.1653,
+      0.9917,
+      1.0248,
+      1.0083
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      116,
+      114,
+      116,
+      24,
+      110,
+      20,
+      113,
+      115,
+      114,
+      100
+     ],
+     "median": 113.5,
+     "ratios": [
+      1.022,
+      1.0044,
+      1.022,
+      0.2115,
+      0.9692,
+      0.1762,
+      0.9956,
+      1.0132,
+      1.0044,
+      0.8811
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 12,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      134,
+      98,
+      217,
+      26,
+      126,
+      132,
+      20,
+      117,
+      156,
+      351,
+      158
+     ],
+     "median": 132,
+     "ratios": [
+      1.0152,
+      0.7424,
+      1.6439,
+      0.197,
+      0.9545,
+      1.0,
+      0.1515,
+      0.8864,
+      1.1818,
+      2.6591,
+      1.197
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      124,
+      118,
+      238,
+      51,
+      144,
+      81,
+      33,
+      104,
+      91,
+      88
+     ],
+     "median": 97.5,
+     "ratios": [
+      1.2718,
+      1.2103,
+      2.441,
+      0.5231,
+      1.4769,
+      0.8308,
+      0.3385,
+      1.0667,
+      0.9333,
+      0.9026
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 13,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      110,
+      110,
+      116,
+      20,
+      122,
+      148,
+      18,
+      134,
+      191,
+      139
+     ],
+     "median": 119.0,
+     "ratios": [
+      0.9244,
+      0.9244,
+      0.9748,
+      0.1681,
+      1.0252,
+      1.2437,
+      0.1513,
+      1.1261,
+      1.605,
+      1.1681
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      99,
+      107,
+      113,
+      21,
+      113,
+      104,
+      40,
+      106,
+      134,
+      126
+     ],
+     "median": 106.5,
+     "ratios": [
+      0.9296,
+      1.0047,
+      1.061,
+      0.1972,
+      1.061,
+      0.9765,
+      0.3756,
+      0.9953,
+      1.2582,
+      1.1831
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 14,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      117,
+      137,
+      105,
+      23,
+      111,
+      151,
+      20,
+      108,
+      108,
+      102,
+      109
+     ],
+     "median": 108,
+     "ratios": [
+      1.0833,
+      1.2685,
+      0.9722,
+      0.213,
+      1.0278,
+      1.3981,
+      0.1852,
+      1.0,
+      1.0,
+      0.9444,
+      1.0093
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      124,
+      112,
+      141,
+      28,
+      127,
+      261,
+      21,
+      110,
+      117,
+      111
+     ],
+     "median": 114.5,
+     "ratios": [
+      1.083,
+      0.9782,
+      1.2314,
+      0.2445,
+      1.1092,
+      2.2795,
+      0.1834,
+      0.9607,
+      1.0218,
+      0.9694
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 15,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      148,
+      132,
+      161,
+      26,
+      148,
+      144,
+      22,
+      142,
+      138,
+      154
+     ],
+     "median": 143.0,
+     "ratios": [
+      1.035,
+      0.9231,
+      1.1259,
+      0.1818,
+      1.035,
+      1.007,
+      0.1538,
+      0.993,
+      0.965,
+      1.0769
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      135,
+      121,
+      161,
+      24,
+      159,
+      221,
+      21,
+      238,
+      193,
+      137
+     ],
+     "median": 148.0,
+     "ratios": [
+      0.9122,
+      0.8176,
+      1.0878,
+      0.1622,
+      1.0743,
+      1.4932,
+      0.1419,
+      1.6081,
+      1.3041,
+      0.9257
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 16,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      210,
+      130,
+      144,
+      21,
+      138,
+      184,
+      20,
+      141,
+      132,
+      119
+     ],
+     "median": 135.0,
+     "ratios": [
+      1.5556,
+      0.963,
+      1.0667,
+      0.1556,
+      1.0222,
+      1.363,
+      0.1481,
+      1.0444,
+      0.9778,
+      0.8815
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      101,
+      113,
+      110,
+      34,
+      121,
+      106,
+      34,
+      109,
+      110,
+      122
+     ],
+     "median": 109.5,
+     "ratios": [
+      0.9224,
+      1.032,
+      1.0046,
+      0.3105,
+      1.105,
+      0.968,
+      0.3105,
+      0.9954,
+      1.0046,
+      1.1142
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 17,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      76,
+      72,
+      73,
+      21,
+      81,
+      83,
+      22,
+      83,
+      103,
+      151,
+      76
+     ],
+     "median": 76,
+     "ratios": [
+      1.0,
+      0.9474,
+      0.9605,
+      0.2763,
+      1.0658,
+      1.0921,
+      0.2895,
+      1.0921,
+      1.3553,
+      1.9868,
+      1.0
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 4,
+     "groups": [
+      0,
+      0,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      71,
+      64,
+      78
+     ],
+     "median": 71,
+     "ratios": [
+      1.0,
+      0.9014,
+      1.0986
+     ]
+    },
+    {
+     "system_index": 2,
+     "n_staves": 4,
+     "groups": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      68,
+      96,
+      60
+     ],
+     "median": 68,
+     "ratios": [
+      1.0,
+      1.4118,
+      0.8824
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 18,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      69,
+      72,
+      89,
+      24,
+      86,
+      86,
+      24,
+      83,
+      96,
+      87
+     ],
+     "median": 84.5,
+     "ratios": [
+      0.8166,
+      0.8521,
+      1.0533,
+      0.284,
+      1.0178,
+      1.0178,
+      0.284,
+      0.9822,
+      1.1361,
+      1.0296
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 8,
+     "groups": [
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      28,
+      65,
+      74,
+      19,
+      47,
+      47,
+      45
+     ],
+     "median": 47,
+     "ratios": [
+      0.5957,
+      1.383,
+      1.5745,
+      0.4043,
+      1.0,
+      1.0,
+      0.9574
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 19,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      114,
+      134,
+      26,
+      116,
+      111,
+      24,
+      169,
+      146,
+      141,
+      148
+     ],
+     "median": 125.0,
+     "ratios": [
+      0.912,
+      1.072,
+      0.208,
+      0.928,
+      0.888,
+      0.192,
+      1.352,
+      1.168,
+      1.128,
+      1.184
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      84,
+      135,
+      159,
+      26,
+      100,
+      110,
+      102,
+      89
+     ],
+     "median": 101.0,
+     "ratios": [
+      0.8317,
+      1.3366,
+      1.5743,
+      0.2574,
+      0.9901,
+      1.0891,
+      1.0099,
+      0.8812
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 20,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 8,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      76,
+      83,
+      86,
+      26,
+      88,
+      105,
+      82
+     ],
+     "median": 83,
+     "ratios": [
+      0.9157,
+      1.0,
+      1.0361,
+      0.3133,
+      1.0602,
+      1.2651,
+      0.988
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 8,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      55,
+      58,
+      79,
+      26,
+      53,
+      56,
+      58
+     ],
+     "median": 56,
+     "ratios": [
+      0.9821,
+      1.0357,
+      1.4107,
+      0.4643,
+      0.9464,
+      1.0,
+      1.0357
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 21,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      45,
+      46,
+      67,
+      23,
+      66,
+      68,
+      24,
+      73,
+      60,
+      56
+     ],
+     "median": 58.0,
+     "ratios": [
+      0.7759,
+      0.7931,
+      1.1552,
+      0.3966,
+      1.1379,
+      1.1724,
+      0.4138,
+      1.2586,
+      1.0345,
+      0.9655
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      62,
+      25,
+      61,
+      62,
+      25,
+      67,
+      79,
+      66
+     ],
+     "median": 62.0,
+     "ratios": [
+      1.0,
+      0.4032,
+      0.9839,
+      1.0,
+      0.4032,
+      1.0806,
+      1.2742,
+      1.0645
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 22,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      72,
+      73,
+      72,
+      27,
+      71,
+      70,
+      86,
+      77
+     ],
+     "median": 72.0,
+     "ratios": [
+      1.0,
+      1.0139,
+      1.0,
+      0.375,
+      0.9861,
+      0.9722,
+      1.1944,
+      1.0694
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 8,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      46,
+      48,
+      26,
+      50,
+      48,
+      154,
+      52
+     ],
+     "median": 48,
+     "ratios": [
+      0.9583,
+      1.0,
+      0.5417,
+      1.0417,
+      1.0,
+      3.2083,
+      1.0833
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+   "page": 23,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 9,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      47,
+      61,
+      70,
+      26,
+      79,
+      60,
+      164,
+      54
+     ],
+     "median": 60.5,
+     "ratios": [
+      0.7769,
+      1.0083,
+      1.157,
+      0.4298,
+      1.3058,
+      0.9917,
+      2.7107,
+      0.8926
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      50,
+      95,
+      120,
+      33,
+      65,
+      60,
+      27,
+      57,
+      51,
+      58,
+      57
+     ],
+     "median": 57,
+     "ratios": [
+      0.8772,
+      1.6667,
+      2.1053,
+      0.5789,
+      1.1404,
+      1.0526,
+      0.4737,
+      1.0,
+      0.8947,
+      1.0175,
+      1.0
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 0,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      100,
+      99,
+      93,
+      106,
+      105,
+      111,
+      104,
+      108,
+      11,
+      94,
+      94,
+      115,
+      101
+     ],
+     "median": 101,
+     "ratios": [
+      0.9901,
+      0.9802,
+      0.9208,
+      1.0495,
+      1.0396,
+      1.099,
+      1.0297,
+      1.0693,
+      0.1089,
+      0.9307,
+      0.9307,
+      1.1386,
+      1.0
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 1,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      331,
+      387,
+      237,
+      969,
+      140,
+      142,
+      193,
+      141,
+      97,
+      277,
+      220,
+      342,
+      573
+     ],
+     "median": 237,
+     "ratios": [
+      1.3966,
+      1.6329,
+      1.0,
+      4.0886,
+      0.5907,
+      0.5992,
+      0.8143,
+      0.5949,
+      0.4093,
+      1.1688,
+      0.9283,
+      1.443,
+      2.4177
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 13,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      373,
+      131,
+      134,
+      139,
+      117,
+      228,
+      148,
+      9,
+      292,
+      379,
+      360,
+      284
+     ],
+     "median": 188.0,
+     "ratios": [
+      1.984,
+      0.6968,
+      0.7128,
+      0.7394,
+      0.6223,
+      1.2128,
+      0.7872,
+      0.0479,
+      1.5532,
+      2.016,
+      1.9149,
+      1.5106
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 2,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      291,
+      430,
+      273,
+      1091,
+      132,
+      140,
+      427,
+      122,
+      156,
+      167,
+      247,
+      462,
+      560
+     ],
+     "median": 273,
+     "ratios": [
+      1.0659,
+      1.5751,
+      1.0,
+      3.9963,
+      0.4835,
+      0.5128,
+      1.5641,
+      0.4469,
+      0.5714,
+      0.6117,
+      0.9048,
+      1.6923,
+      2.0513
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      258,
+      204,
+      155,
+      205,
+      151,
+      207,
+      173,
+      142,
+      24,
+      168,
+      148,
+      256,
+      517
+     ],
+     "median": 173,
+     "ratios": [
+      1.4913,
+      1.1792,
+      0.896,
+      1.185,
+      0.8728,
+      1.1965,
+      1.0,
+      0.8208,
+      0.1387,
+      0.9711,
+      0.8555,
+      1.4798,
+      2.9884
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 3,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      283,
+      202,
+      159,
+      195,
+      159,
+      193,
+      241,
+      184,
+      11,
+      180,
+      226,
+      151,
+      237
+     ],
+     "median": 193,
+     "ratios": [
+      1.4663,
+      1.0466,
+      0.8238,
+      1.0104,
+      0.8238,
+      1.0,
+      1.2487,
+      0.9534,
+      0.057,
+      0.9326,
+      1.171,
+      0.7824,
+      1.228
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      249,
+      166,
+      165,
+      560,
+      214,
+      178,
+      183,
+      174,
+      122,
+      176,
+      232,
+      180,
+      174
+     ],
+     "median": 178,
+     "ratios": [
+      1.3989,
+      0.9326,
+      0.927,
+      3.1461,
+      1.2022,
+      1.0,
+      1.0281,
+      0.9775,
+      0.6854,
+      0.9888,
+      1.3034,
+      1.0112,
+      0.9775
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 4,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      186,
+      157,
+      166,
+      236,
+      548,
+      142,
+      205,
+      154,
+      10,
+      160,
+      191,
+      264,
+      436
+     ],
+     "median": 186,
+     "ratios": [
+      1.0,
+      0.8441,
+      0.8925,
+      1.2688,
+      2.9462,
+      0.7634,
+      1.1022,
+      0.828,
+      0.0538,
+      0.8602,
+      1.0269,
+      1.4194,
+      2.3441
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      199,
+      182,
+      176,
+      464,
+      173,
+      148,
+      140,
+      214,
+      10,
+      216,
+      144,
+      233,
+      173
+     ],
+     "median": 176,
+     "ratios": [
+      1.1307,
+      1.0341,
+      1.0,
+      2.6364,
+      0.983,
+      0.8409,
+      0.7955,
+      1.2159,
+      0.0568,
+      1.2273,
+      0.8182,
+      1.3239,
+      0.983
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 5,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      450,
+      263,
+      218,
+      308,
+      200,
+      469,
+      279,
+      245,
+      90,
+      286,
+      176,
+      199,
+      261
+     ],
+     "median": 261,
+     "ratios": [
+      1.7241,
+      1.0077,
+      0.8352,
+      1.1801,
+      0.7663,
+      1.7969,
+      1.069,
+      0.9387,
+      0.3448,
+      1.0958,
+      0.6743,
+      0.7625,
+      1.0
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      264,
+      291,
+      189,
+      201,
+      180,
+      258,
+      160,
+      193,
+      107,
+      206,
+      332,
+      231,
+      209
+     ],
+     "median": 206,
+     "ratios": [
+      1.2816,
+      1.4126,
+      0.9175,
+      0.9757,
+      0.8738,
+      1.2524,
+      0.7767,
+      0.9369,
+      0.5194,
+      1.0,
+      1.6117,
+      1.1214,
+      1.0146
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 6,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      147,
+      137,
+      156,
+      144,
+      156,
+      186,
+      29,
+      198,
+      187,
+      223,
+      273
+     ],
+     "median": 156,
+     "ratios": [
+      0.9423,
+      0.8782,
+      1.0,
+      0.9231,
+      1.0,
+      1.1923,
+      0.1859,
+      1.2692,
+      1.1987,
+      1.4295,
+      1.75
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      185,
+      178,
+      176,
+      209,
+      147,
+      12,
+      175,
+      209,
+      137,
+      144
+     ],
+     "median": 175.5,
+     "ratios": [
+      1.0541,
+      1.0142,
+      1.0028,
+      1.1909,
+      0.8376,
+      0.0684,
+      0.9972,
+      1.1909,
+      0.7806,
+      0.8205
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 7,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      122,
+      115,
+      137,
+      116,
+      209,
+      17,
+      275,
+      178,
+      119,
+      119
+     ],
+     "median": 120.5,
+     "ratios": [
+      1.0124,
+      0.9544,
+      1.1369,
+      0.9627,
+      1.7344,
+      0.1411,
+      2.2822,
+      1.4772,
+      0.9876,
+      0.9876
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      142,
+      145,
+      151,
+      150,
+      218,
+      19,
+      149,
+      146,
+      137,
+      141
+     ],
+     "median": 145.5,
+     "ratios": [
+      0.9759,
+      0.9966,
+      1.0378,
+      1.0309,
+      1.4983,
+      0.1306,
+      1.0241,
+      1.0034,
+      0.9416,
+      0.9691
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 8,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      167,
+      170,
+      170,
+      165,
+      169,
+      11,
+      172,
+      165,
+      168,
+      168
+     ],
+     "median": 168.0,
+     "ratios": [
+      0.994,
+      1.0119,
+      1.0119,
+      0.9821,
+      1.006,
+      0.0655,
+      1.0238,
+      0.9821,
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      168,
+      155,
+      226,
+      153,
+      170,
+      12,
+      209,
+      169,
+      165,
+      162
+     ],
+     "median": 166.5,
+     "ratios": [
+      1.009,
+      0.9309,
+      1.3574,
+      0.9189,
+      1.021,
+      0.0721,
+      1.2553,
+      1.015,
+      0.991,
+      0.973
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 9,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      184,
+      147,
+      150,
+      164,
+      112,
+      139,
+      16,
+      171,
+      127,
+      139,
+      110
+     ],
+     "median": 139,
+     "ratios": [
+      1.3237,
+      1.0576,
+      1.0791,
+      1.1799,
+      0.8058,
+      1.0,
+      0.1151,
+      1.2302,
+      0.9137,
+      1.0,
+      0.7914
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 13,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      139,
+      121,
+      108,
+      146,
+      110,
+      135,
+      118,
+      13,
+      111,
+      106,
+      109,
+      100
+     ],
+     "median": 110.5,
+     "ratios": [
+      1.2579,
+      1.095,
+      0.9774,
+      1.3213,
+      0.9955,
+      1.2217,
+      1.0679,
+      0.1176,
+      1.0045,
+      0.9593,
+      0.9864,
+      0.905
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 10,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 13,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      236,
+      139,
+      127,
+      193,
+      151,
+      173,
+      116,
+      44,
+      117,
+      120,
+      107,
+      124
+     ],
+     "median": 125.5,
+     "ratios": [
+      1.8805,
+      1.1076,
+      1.012,
+      1.5378,
+      1.2032,
+      1.3785,
+      0.9243,
+      0.3506,
+      0.9323,
+      0.9562,
+      0.8526,
+      0.988
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      185,
+      126,
+      155,
+      136,
+      120,
+      147,
+      179,
+      114,
+      33,
+      139,
+      112,
+      110,
+      147
+     ],
+     "median": 136,
+     "ratios": [
+      1.3603,
+      0.9265,
+      1.1397,
+      1.0,
+      0.8824,
+      1.0809,
+      1.3162,
+      0.8382,
+      0.2426,
+      1.0221,
+      0.8235,
+      0.8088,
+      1.0809
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 11,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      231,
+      176,
+      184,
+      189,
+      155,
+      197,
+      283,
+      170,
+      50,
+      160,
+      227,
+      151,
+      230
+     ],
+     "median": 184,
+     "ratios": [
+      1.2554,
+      0.9565,
+      1.0,
+      1.0272,
+      0.8424,
+      1.0707,
+      1.538,
+      0.9239,
+      0.2717,
+      0.8696,
+      1.2337,
+      0.8207,
+      1.25
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      216,
+      180,
+      193,
+      243,
+      152,
+      174,
+      185,
+      145,
+      11,
+      170,
+      169,
+      451,
+      202
+     ],
+     "median": 180,
+     "ratios": [
+      1.2,
+      1.0,
+      1.0722,
+      1.35,
+      0.8444,
+      0.9667,
+      1.0278,
+      0.8056,
+      0.0611,
+      0.9444,
+      0.9389,
+      2.5056,
+      1.1222
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 12,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      359,
+      321,
+      207,
+      465,
+      296,
+      415,
+      209,
+      185,
+      16,
+      251,
+      275,
+      237,
+      261
+     ],
+     "median": 261,
+     "ratios": [
+      1.3755,
+      1.2299,
+      0.7931,
+      1.7816,
+      1.1341,
+      1.59,
+      0.8008,
+      0.7088,
+      0.0613,
+      0.9617,
+      1.0536,
+      0.908,
+      1.0
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      210,
+      198,
+      192,
+      294,
+      165,
+      187,
+      263,
+      177,
+      11,
+      145,
+      215,
+      157,
+      146
+     ],
+     "median": 187,
+     "ratios": [
+      1.123,
+      1.0588,
+      1.0267,
+      1.5722,
+      0.8824,
+      1.0,
+      1.4064,
+      0.9465,
+      0.0588,
+      0.7754,
+      1.1497,
+      0.8396,
+      0.7807
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 13,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      220,
+      251,
+      214,
+      207,
+      230,
+      211,
+      167,
+      214,
+      57,
+      187,
+      216,
+      147,
+      169
+     ],
+     "median": 211,
+     "ratios": [
+      1.0427,
+      1.1896,
+      1.0142,
+      0.981,
+      1.09,
+      1.0,
+      0.7915,
+      1.0142,
+      0.2701,
+      0.8863,
+      1.0237,
+      0.6967,
+      0.8009
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      484,
+      615,
+      207,
+      262,
+      214,
+      341,
+      189,
+      185,
+      46,
+      313,
+      318,
+      245,
+      154
+     ],
+     "median": 245,
+     "ratios": [
+      1.9755,
+      2.5102,
+      0.8449,
+      1.0694,
+      0.8735,
+      1.3918,
+      0.7714,
+      0.7551,
+      0.1878,
+      1.2776,
+      1.298,
+      1.0,
+      0.6286
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 14,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      172,
+      155,
+      168,
+      176,
+      137,
+      200,
+      164,
+      139,
+      11,
+      165,
+      157,
+      172,
+      167
+     ],
+     "median": 165,
+     "ratios": [
+      1.0424,
+      0.9394,
+      1.0182,
+      1.0667,
+      0.8303,
+      1.2121,
+      0.9939,
+      0.8424,
+      0.0667,
+      1.0,
+      0.9515,
+      1.0424,
+      1.0121
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      179,
+      136,
+      121,
+      124,
+      184,
+      120,
+      10,
+      198,
+      135,
+      127,
+      162
+     ],
+     "median": 135,
+     "ratios": [
+      1.3259,
+      1.0074,
+      0.8963,
+      0.9185,
+      1.363,
+      0.8889,
+      0.0741,
+      1.4667,
+      1.0,
+      0.9407,
+      1.2
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 15,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      131,
+      129,
+      178,
+      135,
+      183,
+      133,
+      11,
+      149,
+      133,
+      132,
+      127
+     ],
+     "median": 133,
+     "ratios": [
+      0.985,
+      0.9699,
+      1.3383,
+      1.015,
+      1.3759,
+      1.0,
+      0.0827,
+      1.1203,
+      1.0,
+      0.9925,
+      0.9549
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 13,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      167,
+      190,
+      181,
+      303,
+      169,
+      222,
+      218,
+      10,
+      297,
+      229,
+      204,
+      207
+     ],
+     "median": 205.5,
+     "ratios": [
+      0.8127,
+      0.9246,
+      0.8808,
+      1.4745,
+      0.8224,
+      1.0803,
+      1.0608,
+      0.0487,
+      1.4453,
+      1.1144,
+      0.9927,
+      1.0073
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 16,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      272,
+      175,
+      161,
+      170,
+      172,
+      211,
+      173,
+      160,
+      9,
+      219,
+      155,
+      161,
+      147
+     ],
+     "median": 170,
+     "ratios": [
+      1.6,
+      1.0294,
+      0.9471,
+      1.0,
+      1.0118,
+      1.2412,
+      1.0176,
+      0.9412,
+      0.0529,
+      1.2882,
+      0.9118,
+      0.9471,
+      0.8647
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      169,
+      238,
+      257,
+      238,
+      176,
+      413,
+      258,
+      492,
+      11,
+      238,
+      172,
+      248,
+      223
+     ],
+     "median": 238,
+     "ratios": [
+      0.7101,
+      1.0,
+      1.0798,
+      1.0,
+      0.7395,
+      1.7353,
+      1.084,
+      2.0672,
+      0.0462,
+      1.0,
+      0.7227,
+      1.042,
+      0.937
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 17,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      236,
+      166,
+      111,
+      85,
+      122,
+      417,
+      147,
+      565,
+      25,
+      144,
+      226,
+      108,
+      86
+     ],
+     "median": 144,
+     "ratios": [
+      1.6389,
+      1.1528,
+      0.7708,
+      0.5903,
+      0.8472,
+      2.8958,
+      1.0208,
+      3.9236,
+      0.1736,
+      1.0,
+      1.5694,
+      0.75,
+      0.5972
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      175,
+      136,
+      171,
+      220,
+      204,
+      99,
+      136,
+      137,
+      25,
+      114,
+      330,
+      280,
+      191
+     ],
+     "median": 171,
+     "ratios": [
+      1.0234,
+      0.7953,
+      1.0,
+      1.2865,
+      1.193,
+      0.5789,
+      0.7953,
+      0.8012,
+      0.1462,
+      0.6667,
+      1.9298,
+      1.6374,
+      1.117
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 18,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      375,
+      167,
+      324,
+      245,
+      154,
+      121,
+      233,
+      150,
+      9,
+      582,
+      255,
+      122,
+      183
+     ],
+     "median": 183,
+     "ratios": [
+      2.0492,
+      0.9126,
+      1.7705,
+      1.3388,
+      0.8415,
+      0.6612,
+      1.2732,
+      0.8197,
+      0.0492,
+      3.1803,
+      1.3934,
+      0.6667,
+      1.0
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      404,
+      138,
+      244,
+      386,
+      284,
+      340,
+      140,
+      115,
+      94,
+      421,
+      216,
+      125,
+      320
+     ],
+     "median": 244,
+     "ratios": [
+      1.6557,
+      0.5656,
+      1.0,
+      1.582,
+      1.1639,
+      1.3934,
+      0.5738,
+      0.4713,
+      0.3852,
+      1.7254,
+      0.8852,
+      0.5123,
+      1.3115
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 19,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      234,
+      246,
+      197,
+      240,
+      137,
+      207,
+      213,
+      153,
+      85,
+      236,
+      431,
+      227,
+      260
+     ],
+     "median": 227,
+     "ratios": [
+      1.0308,
+      1.0837,
+      0.8678,
+      1.0573,
+      0.6035,
+      0.9119,
+      0.9383,
+      0.674,
+      0.3744,
+      1.0396,
+      1.8987,
+      1.0,
+      1.1454
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 13,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      165,
+      140,
+      168,
+      248,
+      189,
+      155,
+      134,
+      9,
+      170,
+      170,
+      184,
+      244
+     ],
+     "median": 169.0,
+     "ratios": [
+      0.9763,
+      0.8284,
+      0.9941,
+      1.4675,
+      1.1183,
+      0.9172,
+      0.7929,
+      0.0533,
+      1.0059,
+      1.0059,
+      1.0888,
+      1.4438
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 20,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 13,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      124,
+      109,
+      98,
+      132,
+      101,
+      150,
+      108,
+      8,
+      132,
+      124,
+      112,
+      130
+     ],
+     "median": 118.0,
+     "ratios": [
+      1.0508,
+      0.9237,
+      0.8305,
+      1.1186,
+      0.8559,
+      1.2712,
+      0.9153,
+      0.0678,
+      1.1186,
+      1.0508,
+      0.9492,
+      1.1017
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      405,
+      294,
+      176,
+      452,
+      112,
+      8,
+      134,
+      115,
+      120,
+      165
+     ],
+     "median": 149.5,
+     "ratios": [
+      2.709,
+      1.9666,
+      1.1773,
+      3.0234,
+      0.7492,
+      0.0535,
+      0.8963,
+      0.7692,
+      0.8027,
+      1.1037
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 21,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      119,
+      123,
+      134,
+      243,
+      142,
+      10,
+      133,
+      148,
+      120,
+      121
+     ],
+     "median": 128.0,
+     "ratios": [
+      0.9297,
+      0.9609,
+      1.0469,
+      1.8984,
+      1.1094,
+      0.0781,
+      1.0391,
+      1.1562,
+      0.9375,
+      0.9453
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      169,
+      139,
+      210,
+      250,
+      155,
+      9,
+      153,
+      147,
+      243,
+      146
+     ],
+     "median": 154.0,
+     "ratios": [
+      1.0974,
+      0.9026,
+      1.3636,
+      1.6234,
+      1.0065,
+      0.0584,
+      0.9935,
+      0.9545,
+      1.5779,
+      0.9481
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 22,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      163,
+      218,
+      178,
+      159,
+      159,
+      11,
+      176,
+      161,
+      156,
+      161
+     ],
+     "median": 161.0,
+     "ratios": [
+      1.0124,
+      1.354,
+      1.1056,
+      0.9876,
+      0.9876,
+      0.0683,
+      1.0932,
+      1.0,
+      0.9689,
+      1.0
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 11,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      178,
+      176,
+      176,
+      185,
+      280,
+      11,
+      211,
+      176,
+      190,
+      177
+     ],
+     "median": 177.5,
+     "ratios": [
+      1.0028,
+      0.9915,
+      0.9915,
+      1.0423,
+      1.5775,
+      0.062,
+      1.1887,
+      0.9915,
+      1.0704,
+      0.9972
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+   "page": 23,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 12,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      147,
+      126,
+      163,
+      128,
+      133,
+      164,
+      10,
+      249,
+      140,
+      130,
+      138
+     ],
+     "median": 138,
+     "ratios": [
+      1.0652,
+      0.913,
+      1.1812,
+      0.9275,
+      0.9638,
+      1.1884,
+      0.0725,
+      1.8043,
+      1.0145,
+      0.942,
+      1.0
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 13,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      144,
+      147,
+      132,
+      156,
+      126,
+      131,
+      172,
+      39,
+      187,
+      181,
+      194,
+      212
+     ],
+     "median": 151.5,
+     "ratios": [
+      0.9505,
+      0.9703,
+      0.8713,
+      1.0297,
+      0.8317,
+      0.8647,
+      1.1353,
+      0.2574,
+      1.2343,
+      1.1947,
+      1.2805,
+      1.3993
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 0,
+   "systems": []
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 1,
+   "systems": []
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 2,
+   "systems": []
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 3,
+   "systems": []
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 4,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      87,
+      85,
+      86,
+      24,
+      95,
+      84,
+      86,
+      88,
+      83,
+      24,
+      91,
+      88,
+      81,
+      88
+     ],
+     "median": 86.0,
+     "ratios": [
+      1.0116,
+      0.9884,
+      1.0,
+      0.2791,
+      1.1047,
+      0.9767,
+      1.0,
+      1.0233,
+      0.9651,
+      0.2791,
+      1.0581,
+      1.0233,
+      0.9419,
+      1.0233
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 5,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      70,
+      69,
+      66,
+      22,
+      82,
+      72,
+      68,
+      75,
+      71,
+      22,
+      80,
+      73,
+      68,
+      69
+     ],
+     "median": 69.5,
+     "ratios": [
+      1.0072,
+      0.9928,
+      0.9496,
+      0.3165,
+      1.1799,
+      1.036,
+      0.9784,
+      1.0791,
+      1.0216,
+      0.3165,
+      1.1511,
+      1.0504,
+      0.9784,
+      0.9928
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 6,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      127,
+      76,
+      102,
+      47,
+      219,
+      105,
+      89,
+      72,
+      72,
+      41,
+      107,
+      78,
+      221,
+      127
+     ],
+     "median": 95.5,
+     "ratios": [
+      1.3298,
+      0.7958,
+      1.0681,
+      0.4921,
+      2.2932,
+      1.0995,
+      0.9319,
+      0.7539,
+      0.7539,
+      0.4293,
+      1.1204,
+      0.8168,
+      2.3141,
+      1.3298
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      137,
+      162,
+      132,
+      57,
+      209,
+      179,
+      207,
+      186,
+      169,
+      39,
+      143,
+      669,
+      358,
+      373
+     ],
+     "median": 174.0,
+     "ratios": [
+      0.7874,
+      0.931,
+      0.7586,
+      0.3276,
+      1.2011,
+      1.0287,
+      1.1897,
+      1.069,
+      0.9713,
+      0.2241,
+      0.8218,
+      3.8448,
+      2.0575,
+      2.1437
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 7,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      593,
+      668,
+      256,
+      82,
+      208,
+      189,
+      153,
+      161,
+      151,
+      23,
+      197,
+      259,
+      251,
+      331
+     ],
+     "median": 202.5,
+     "ratios": [
+      2.9284,
+      3.2988,
+      1.2642,
+      0.4049,
+      1.0272,
+      0.9333,
+      0.7556,
+      0.7951,
+      0.7457,
+      0.1136,
+      0.9728,
+      1.279,
+      1.2395,
+      1.6346
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      126,
+      597,
+      149,
+      39,
+      167,
+      136,
+      121,
+      120,
+      108,
+      24,
+      267,
+      171,
+      150,
+      111
+     ],
+     "median": 131.0,
+     "ratios": [
+      0.9618,
+      4.5573,
+      1.1374,
+      0.2977,
+      1.2748,
+      1.0382,
+      0.9237,
+      0.916,
+      0.8244,
+      0.1832,
+      2.0382,
+      1.3053,
+      1.145,
+      0.8473
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 8,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      330,
+      194,
+      308,
+      40,
+      333,
+      272,
+      295,
+      198,
+      202,
+      33,
+      129,
+      200,
+      265,
+      174
+     ],
+     "median": 201.0,
+     "ratios": [
+      1.6418,
+      0.9652,
+      1.5323,
+      0.199,
+      1.6567,
+      1.3532,
+      1.4677,
+      0.9851,
+      1.005,
+      0.1642,
+      0.6418,
+      0.995,
+      1.3184,
+      0.8657
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      100,
+      91,
+      123,
+      36,
+      153,
+      264,
+      105,
+      93,
+      82,
+      27,
+      199,
+      140,
+      226,
+      100
+     ],
+     "median": 102.5,
+     "ratios": [
+      0.9756,
+      0.8878,
+      1.2,
+      0.3512,
+      1.4927,
+      2.5756,
+      1.0244,
+      0.9073,
+      0.8,
+      0.2634,
+      1.9415,
+      1.3659,
+      2.2049,
+      0.9756
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 9,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      94,
+      194,
+      225,
+      23,
+      121,
+      124,
+      98,
+      106,
+      97,
+      23,
+      135,
+      133,
+      201,
+      139
+     ],
+     "median": 122.5,
+     "ratios": [
+      0.7673,
+      1.5837,
+      1.8367,
+      0.1878,
+      0.9878,
+      1.0122,
+      0.8,
+      0.8653,
+      0.7918,
+      0.1878,
+      1.102,
+      1.0857,
+      1.6408,
+      1.1347
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      211,
+      136,
+      140,
+      22,
+      113,
+      102,
+      96,
+      103,
+      91,
+      24,
+      98,
+      149,
+      139,
+      142
+     ],
+     "median": 108.0,
+     "ratios": [
+      1.9537,
+      1.2593,
+      1.2963,
+      0.2037,
+      1.0463,
+      0.9444,
+      0.8889,
+      0.9537,
+      0.8426,
+      0.2222,
+      0.9074,
+      1.3796,
+      1.287,
+      1.3148
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 10,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      200,
+      108,
+      93,
+      26,
+      176,
+      103,
+      90,
+      104,
+      95,
+      22,
+      112,
+      118,
+      115,
+      115
+     ],
+     "median": 106.0,
+     "ratios": [
+      1.8868,
+      1.0189,
+      0.8774,
+      0.2453,
+      1.6604,
+      0.9717,
+      0.8491,
+      0.9811,
+      0.8962,
+      0.2075,
+      1.0566,
+      1.1132,
+      1.0849,
+      1.0849
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      135,
+      100,
+      94,
+      32,
+      114,
+      101,
+      100,
+      109,
+      100,
+      25,
+      350,
+      107,
+      467,
+      323
+     ],
+     "median": 104.0,
+     "ratios": [
+      1.2981,
+      0.9615,
+      0.9038,
+      0.3077,
+      1.0962,
+      0.9712,
+      0.9615,
+      1.0481,
+      0.9615,
+      0.2404,
+      3.3654,
+      1.0288,
+      4.4904,
+      3.1058
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 11,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      277,
+      320,
+      203,
+      21,
+      126,
+      97,
+      93,
+      102,
+      92,
+      20,
+      369,
+      134,
+      167,
+      130
+     ],
+     "median": 128.0,
+     "ratios": [
+      2.1641,
+      2.5,
+      1.5859,
+      0.1641,
+      0.9844,
+      0.7578,
+      0.7266,
+      0.7969,
+      0.7188,
+      0.1562,
+      2.8828,
+      1.0469,
+      1.3047,
+      1.0156
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      90,
+      108,
+      88,
+      24,
+      248,
+      97,
+      84,
+      101,
+      109,
+      20,
+      419,
+      475,
+      129,
+      97
+     ],
+     "median": 99.0,
+     "ratios": [
+      0.9091,
+      1.0909,
+      0.8889,
+      0.2424,
+      2.5051,
+      0.9798,
+      0.8485,
+      1.0202,
+      1.101,
+      0.202,
+      4.2323,
+      4.798,
+      1.303,
+      0.9798
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 12,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      92,
+      114,
+      174,
+      20,
+      118,
+      95,
+      91,
+      97,
+      89,
+      22,
+      320,
+      335,
+      152,
+      153
+     ],
+     "median": 105.5,
+     "ratios": [
+      0.872,
+      1.0806,
+      1.6493,
+      0.1896,
+      1.1185,
+      0.9005,
+      0.8626,
+      0.9194,
+      0.8436,
+      0.2085,
+      3.0332,
+      3.1754,
+      1.4408,
+      1.4502
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      140,
+      162,
+      216,
+      24,
+      140,
+      114,
+      110,
+      122,
+      103,
+      20,
+      230,
+      402,
+      101,
+      103
+     ],
+     "median": 118.0,
+     "ratios": [
+      1.1864,
+      1.3729,
+      1.8305,
+      0.2034,
+      1.1864,
+      0.9661,
+      0.9322,
+      1.0339,
+      0.8729,
+      0.1695,
+      1.9492,
+      3.4068,
+      0.8559,
+      0.8729
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 13,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      151,
+      138,
+      188,
+      21,
+      151,
+      130,
+      130,
+      140,
+      127,
+      22,
+      139,
+      175,
+      176,
+      144
+     ],
+     "median": 139.5,
+     "ratios": [
+      1.0824,
+      0.9892,
+      1.3477,
+      0.1505,
+      1.0824,
+      0.9319,
+      0.9319,
+      1.0036,
+      0.9104,
+      0.1577,
+      0.9964,
+      1.2545,
+      1.2616,
+      1.0323
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      119,
+      224,
+      261,
+      23,
+      120,
+      106,
+      96,
+      136,
+      119,
+      22,
+      232,
+      94,
+      167,
+      161
+     ],
+     "median": 119.5,
+     "ratios": [
+      0.9958,
+      1.8745,
+      2.1841,
+      0.1925,
+      1.0042,
+      0.887,
+      0.8033,
+      1.1381,
+      0.9958,
+      0.1841,
+      1.9414,
+      0.7866,
+      1.3975,
+      1.3473
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 14,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 30,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      4
+     ],
+     "n_groups": 5,
+     "inner_bridging": [
+      199,
+      176,
+      142,
+      49,
+      229,
+      164,
+      180,
+      190,
+      152,
+      20,
+      185,
+      174,
+      157,
+      221,
+      2,
+      121,
+      106,
+      130,
+      22,
+      133,
+      301,
+      112,
+      103,
+      94,
+      21,
+      194,
+      95,
+      150,
+      135
+     ],
+     "median": 142,
+     "ratios": [
+      1.4014,
+      1.2394,
+      1.0,
+      0.3451,
+      1.6127,
+      1.1549,
+      1.2676,
+      1.338,
+      1.0704,
+      0.1408,
+      1.3028,
+      1.2254,
+      1.1056,
+      1.5563,
+      0.0141,
+      0.8521,
+      0.7465,
+      0.9155,
+      0.1549,
+      0.9366,
+      2.1197,
+      0.7887,
+      0.7254,
+      0.662,
+      0.1479,
+      1.3662,
+      0.669,
+      1.0563,
+      0.9507
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 15,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      122,
+      113,
+      107,
+      24,
+      130,
+      221,
+      110,
+      123,
+      112,
+      23,
+      119,
+      139,
+      233,
+      137
+     ],
+     "median": 120.5,
+     "ratios": [
+      1.0124,
+      0.9378,
+      0.888,
+      0.1992,
+      1.0788,
+      1.834,
+      0.9129,
+      1.0207,
+      0.9295,
+      0.1909,
+      0.9876,
+      1.1535,
+      1.9336,
+      1.1369
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      136,
+      140,
+      227,
+      28,
+      260,
+      88,
+      82,
+      100,
+      83,
+      22,
+      89,
+      133,
+      115,
+      106
+     ],
+     "median": 103.0,
+     "ratios": [
+      1.3204,
+      1.3592,
+      2.2039,
+      0.2718,
+      2.5243,
+      0.8544,
+      0.7961,
+      0.9709,
+      0.8058,
+      0.2136,
+      0.8641,
+      1.2913,
+      1.1165,
+      1.0291
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 16,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      198,
+      187,
+      146,
+      118,
+      180,
+      137,
+      105,
+      120,
+      110,
+      25,
+      207,
+      250,
+      156,
+      197
+     ],
+     "median": 151.0,
+     "ratios": [
+      1.3113,
+      1.2384,
+      0.9669,
+      0.7815,
+      1.1921,
+      0.9073,
+      0.6954,
+      0.7947,
+      0.7285,
+      0.1656,
+      1.3709,
+      1.6556,
+      1.0331,
+      1.3046
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      93,
+      117,
+      130,
+      77,
+      418,
+      153,
+      191,
+      113,
+      125,
+      27,
+      143,
+      194,
+      112,
+      98
+     ],
+     "median": 121.0,
+     "ratios": [
+      0.7686,
+      0.9669,
+      1.0744,
+      0.6364,
+      3.4545,
+      1.2645,
+      1.5785,
+      0.9339,
+      1.0331,
+      0.2231,
+      1.1818,
+      1.6033,
+      0.9256,
+      0.8099
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 17,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 27,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      145,
+      66,
+      133,
+      111,
+      108,
+      86,
+      23,
+      170,
+      138,
+      91,
+      176,
+      7,
+      157,
+      133,
+      145,
+      48,
+      176,
+      132,
+      133,
+      125,
+      205,
+      202,
+      449,
+      482,
+      137,
+      127
+     ],
+     "median": 133.0,
+     "ratios": [
+      1.0902,
+      0.4962,
+      1.0,
+      0.8346,
+      0.812,
+      0.6466,
+      0.1729,
+      1.2782,
+      1.0376,
+      0.6842,
+      1.3233,
+      0.0526,
+      1.1805,
+      1.0,
+      1.0902,
+      0.3609,
+      1.3233,
+      0.9925,
+      1.0,
+      0.9398,
+      1.5414,
+      1.5188,
+      3.3759,
+      3.6241,
+      1.0301,
+      0.9549
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 18,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      78,
+      80,
+      80,
+      44,
+      168,
+      95,
+      133,
+      94,
+      79,
+      24,
+      127,
+      475,
+      101,
+      87
+     ],
+     "median": 90.5,
+     "ratios": [
+      0.8619,
+      0.884,
+      0.884,
+      0.4862,
+      1.8564,
+      1.0497,
+      1.4696,
+      1.0387,
+      0.8729,
+      0.2652,
+      1.4033,
+      5.2486,
+      1.116,
+      0.9613
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      119,
+      121,
+      115,
+      56,
+      255,
+      167,
+      116,
+      353,
+      516,
+      31,
+      142,
+      189,
+      116,
+      138
+     ],
+     "median": 129.5,
+     "ratios": [
+      0.9189,
+      0.9344,
+      0.888,
+      0.4324,
+      1.9691,
+      1.2896,
+      0.8958,
+      2.7259,
+      3.9846,
+      0.2394,
+      1.0965,
+      1.4595,
+      0.8958,
+      1.0656
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 19,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      116,
+      181,
+      90,
+      48,
+      111,
+      94,
+      95,
+      106,
+      94,
+      26,
+      700,
+      118,
+      144,
+      111
+     ],
+     "median": 108.5,
+     "ratios": [
+      1.0691,
+      1.6682,
+      0.8295,
+      0.4424,
+      1.023,
+      0.8664,
+      0.8756,
+      0.977,
+      0.8664,
+      0.2396,
+      6.4516,
+      1.0876,
+      1.3272,
+      1.023
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      142,
+      106,
+      103,
+      81,
+      140,
+      132,
+      104,
+      110,
+      105,
+      25,
+      337,
+      121,
+      97,
+      134
+     ],
+     "median": 108.0,
+     "ratios": [
+      1.3148,
+      0.9815,
+      0.9537,
+      0.75,
+      1.2963,
+      1.2222,
+      0.963,
+      1.0185,
+      0.9722,
+      0.2315,
+      3.1204,
+      1.1204,
+      0.8981,
+      1.2407
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 20,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      130,
+      282,
+      228,
+      144,
+      408,
+      240,
+      196,
+      108,
+      418,
+      28,
+      170,
+      146,
+      181,
+      147
+     ],
+     "median": 175.5,
+     "ratios": [
+      0.7407,
+      1.6068,
+      1.2991,
+      0.8205,
+      2.3248,
+      1.3675,
+      1.1168,
+      0.6154,
+      2.3818,
+      0.1595,
+      0.9687,
+      0.8319,
+      1.0313,
+      0.8376
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      128,
+      125,
+      119,
+      31,
+      135,
+      128,
+      121,
+      130,
+      122,
+      26,
+      184,
+      232,
+      122,
+      127
+     ],
+     "median": 126.0,
+     "ratios": [
+      1.0159,
+      0.9921,
+      0.9444,
+      0.246,
+      1.0714,
+      1.0159,
+      0.9603,
+      1.0317,
+      0.9683,
+      0.2063,
+      1.4603,
+      1.8413,
+      0.9683,
+      1.0079
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 21,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      1215,
+      93,
+      90,
+      25,
+      101,
+      111,
+      96,
+      99,
+      94,
+      23,
+      111,
+      99,
+      109,
+      119
+     ],
+     "median": 99.0,
+     "ratios": [
+      12.2727,
+      0.9394,
+      0.9091,
+      0.2525,
+      1.0202,
+      1.1212,
+      0.9697,
+      1.0,
+      0.9495,
+      0.2323,
+      1.1212,
+      1.0,
+      1.101,
+      1.202
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      131,
+      479,
+      133,
+      37,
+      145,
+      102,
+      93,
+      96,
+      88,
+      21,
+      103,
+      95,
+      94,
+      114
+     ],
+     "median": 99.0,
+     "ratios": [
+      1.3232,
+      4.8384,
+      1.3434,
+      0.3737,
+      1.4646,
+      1.0303,
+      0.9394,
+      0.9697,
+      0.8889,
+      0.2121,
+      1.0404,
+      0.9596,
+      0.9495,
+      1.1515
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 22,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      72,
+      337,
+      317,
+      20,
+      119,
+      82,
+      80,
+      79,
+      80,
+      22,
+      82,
+      655,
+      195,
+      289
+     ],
+     "median": 82.0,
+     "ratios": [
+      0.878,
+      4.1098,
+      3.8659,
+      0.2439,
+      1.4512,
+      1.0,
+      0.9756,
+      0.9634,
+      0.9756,
+      0.2683,
+      1.0,
+      7.9878,
+      2.378,
+      3.5244
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      495,
+      755,
+      558,
+      324,
+      103,
+      109,
+      82,
+      205,
+      95,
+      18,
+      400,
+      412,
+      185,
+      433
+     ],
+     "median": 264.5,
+     "ratios": [
+      1.8715,
+      2.8544,
+      2.1096,
+      1.225,
+      0.3894,
+      0.4121,
+      0.31,
+      0.775,
+      0.3592,
+      0.0681,
+      1.5123,
+      1.5577,
+      0.6994,
+      1.6371
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+   "page": 23,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      158,
+      103,
+      172,
+      19,
+      81,
+      90,
+      77,
+      103,
+      100,
+      20,
+      683,
+      232,
+      120,
+      219
+     ],
+     "median": 103.0,
+     "ratios": [
+      1.534,
+      1.0,
+      1.6699,
+      0.1845,
+      0.7864,
+      0.8738,
+      0.7476,
+      1.0,
+      0.9709,
+      0.1942,
+      6.6311,
+      2.2524,
+      1.165,
+      2.1262
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      259,
+      309,
+      108,
+      97,
+      89,
+      84,
+      79,
+      86,
+      76,
+      22,
+      448,
+      167,
+      82,
+      296
+     ],
+     "median": 93.0,
+     "ratios": [
+      2.7849,
+      3.3226,
+      1.1613,
+      1.043,
+      0.957,
+      0.9032,
+      0.8495,
+      0.9247,
+      0.8172,
+      0.2366,
+      4.8172,
+      1.7957,
+      0.8817,
+      3.1828
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 0,
+   "systems": []
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 1,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 19,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      90,
+      94,
+      90,
+      102,
+      7,
+      104,
+      88,
+      106,
+      94,
+      104,
+      9,
+      120,
+      115,
+      8,
+      102,
+      93,
+      83,
+      84
+     ],
+     "median": 93.5,
+     "ratios": [
+      0.9626,
+      1.0053,
+      0.9626,
+      1.0909,
+      0.0749,
+      1.1123,
+      0.9412,
+      1.1337,
+      1.0053,
+      1.1123,
+      0.0963,
+      1.2834,
+      1.2299,
+      0.0856,
+      1.0909,
+      0.9947,
+      0.8877,
+      0.8984
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 2,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      90,
+      7,
+      92,
+      73,
+      82,
+      73,
+      84,
+      6,
+      62,
+      6,
+      77,
+      78,
+      85,
+      82
+     ],
+     "median": 77.5,
+     "ratios": [
+      1.1613,
+      0.0903,
+      1.1871,
+      0.9419,
+      1.0581,
+      0.9419,
+      1.0839,
+      0.0774,
+      0.8,
+      0.0774,
+      0.9935,
+      1.0065,
+      1.0968,
+      1.0581
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 3,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 21,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      110,
+      100,
+      91,
+      7,
+      107,
+      83,
+      109,
+      74,
+      111,
+      8,
+      55,
+      66,
+      141,
+      6,
+      114,
+      77,
+      75,
+      84,
+      73,
+      79
+     ],
+     "median": 81.0,
+     "ratios": [
+      1.358,
+      1.2346,
+      1.1235,
+      0.0864,
+      1.321,
+      1.0247,
+      1.3457,
+      0.9136,
+      1.3704,
+      0.0988,
+      0.679,
+      0.8148,
+      1.7407,
+      0.0741,
+      1.4074,
+      0.9506,
+      0.9259,
+      1.037,
+      0.9012,
+      0.9753
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 4,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 21,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      192,
+      124,
+      13,
+      172,
+      112,
+      126,
+      91,
+      123,
+      7,
+      78,
+      77,
+      70,
+      75,
+      9,
+      139,
+      89,
+      144,
+      174,
+      77,
+      106
+     ],
+     "median": 98.5,
+     "ratios": [
+      1.9492,
+      1.2589,
+      0.132,
+      1.7462,
+      1.1371,
+      1.2792,
+      0.9239,
+      1.2487,
+      0.0711,
+      0.7919,
+      0.7817,
+      0.7107,
+      0.7614,
+      0.0914,
+      1.4112,
+      0.9036,
+      1.4619,
+      1.7665,
+      0.7817,
+      1.0761
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 5,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      138,
+      99,
+      8,
+      142,
+      217,
+      109,
+      18,
+      80,
+      8,
+      162,
+      88,
+      119,
+      103
+     ],
+     "median": 103,
+     "ratios": [
+      1.3398,
+      0.9612,
+      0.0777,
+      1.3786,
+      2.1068,
+      1.0583,
+      0.1748,
+      0.7767,
+      0.0777,
+      1.5728,
+      0.8544,
+      1.1553,
+      1.0
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 7,
+     "groups": [
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "n_groups": 2,
+     "inner_bridging": [
+      95,
+      7,
+      114,
+      164,
+      118,
+      110
+     ],
+     "median": 112.0,
+     "ratios": [
+      0.8482,
+      0.0625,
+      1.0179,
+      1.4643,
+      1.0536,
+      0.9821
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 6,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 16,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      153,
+      90,
+      8,
+      139,
+      109,
+      85,
+      86,
+      7,
+      66,
+      68,
+      6,
+      85,
+      78,
+      85,
+      79
+     ],
+     "median": 85,
+     "ratios": [
+      1.8,
+      1.0588,
+      0.0941,
+      1.6353,
+      1.2824,
+      1.0,
+      1.0118,
+      0.0824,
+      0.7765,
+      0.8,
+      0.0706,
+      1.0,
+      0.9176,
+      1.0,
+      0.9294
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 7,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 16,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      98,
+      83,
+      7,
+      102,
+      77,
+      77,
+      75,
+      19,
+      58,
+      58,
+      7,
+      75,
+      84,
+      74,
+      84
+     ],
+     "median": 75,
+     "ratios": [
+      1.3067,
+      1.1067,
+      0.0933,
+      1.36,
+      1.0267,
+      1.0267,
+      1.0,
+      0.2533,
+      0.7733,
+      0.7733,
+      0.0933,
+      1.0,
+      1.12,
+      0.9867,
+      1.12
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 8,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 17,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      107,
+      88,
+      106,
+      9,
+      93,
+      67,
+      76,
+      62,
+      77,
+      7,
+      48,
+      7,
+      73,
+      64,
+      66,
+      80
+     ],
+     "median": 70.0,
+     "ratios": [
+      1.5286,
+      1.2571,
+      1.5143,
+      0.1286,
+      1.3286,
+      0.9571,
+      1.0857,
+      0.8857,
+      1.1,
+      0.1,
+      0.6857,
+      0.1,
+      1.0429,
+      0.9143,
+      0.9429,
+      1.1429
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 9,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 17,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      63,
+      87,
+      86,
+      6,
+      71,
+      68,
+      72,
+      63,
+      82,
+      15,
+      50,
+      6,
+      73,
+      68,
+      62,
+      68
+     ],
+     "median": 68.0,
+     "ratios": [
+      0.9265,
+      1.2794,
+      1.2647,
+      0.0882,
+      1.0441,
+      1.0,
+      1.0588,
+      0.9265,
+      1.2059,
+      0.2206,
+      0.7353,
+      0.0882,
+      1.0735,
+      1.0,
+      0.9118,
+      1.0
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 10,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 19,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      67,
+      101,
+      80,
+      8,
+      90,
+      72,
+      119,
+      73,
+      74,
+      33,
+      69,
+      8,
+      131,
+      72,
+      73,
+      102,
+      71,
+      91
+     ],
+     "median": 73.0,
+     "ratios": [
+      0.9178,
+      1.3836,
+      1.0959,
+      0.1096,
+      1.2329,
+      0.9863,
+      1.6301,
+      1.0,
+      1.0137,
+      0.4521,
+      0.9452,
+      0.1096,
+      1.7945,
+      0.9863,
+      1.0,
+      1.3973,
+      0.9726,
+      1.2466
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 11,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 13,
+     "groups": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      299,
+      197,
+      16,
+      134,
+      67,
+      64,
+      344,
+      117,
+      94,
+      276,
+      154,
+      168
+     ],
+     "median": 144.0,
+     "ratios": [
+      2.0764,
+      1.3681,
+      0.1111,
+      0.9306,
+      0.4653,
+      0.4444,
+      2.3889,
+      0.8125,
+      0.6528,
+      1.9167,
+      1.0694,
+      1.1667
+     ]
+    },
+    {
+     "system_index": 1,
+     "n_staves": 13,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "n_groups": 3,
+     "inner_bridging": [
+      225,
+      167,
+      140,
+      10,
+      216,
+      111,
+      172,
+      6,
+      353,
+      108,
+      117,
+      169
+     ],
+     "median": 153.5,
+     "ratios": [
+      1.4658,
+      1.0879,
+      0.9121,
+      0.0651,
+      1.4072,
+      0.7231,
+      1.1205,
+      0.0391,
+      2.2997,
+      0.7036,
+      0.7622,
+      1.101
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 12,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 17,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      86,
+      83,
+      79,
+      84,
+      6,
+      83,
+      79,
+      86,
+      17,
+      75,
+      65,
+      7,
+      84,
+      87,
+      82,
+      80
+     ],
+     "median": 81.0,
+     "ratios": [
+      1.0617,
+      1.0247,
+      0.9753,
+      1.037,
+      0.0741,
+      1.0247,
+      0.9753,
+      1.0617,
+      0.2099,
+      0.9259,
+      0.8025,
+      0.0864,
+      1.037,
+      1.0741,
+      1.0123,
+      0.9877
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 13,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 16,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      88,
+      83,
+      84,
+      90,
+      6,
+      92,
+      81,
+      85,
+      6,
+      68,
+      6,
+      91,
+      86,
+      81,
+      80
+     ],
+     "median": 83,
+     "ratios": [
+      1.0602,
+      1.0,
+      1.012,
+      1.0843,
+      0.0723,
+      1.1084,
+      0.9759,
+      1.0241,
+      0.0723,
+      0.8193,
+      0.0723,
+      1.0964,
+      1.0361,
+      0.9759,
+      0.9639
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 14,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 16,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      92,
+      96,
+      97,
+      109,
+      5,
+      97,
+      100,
+      95,
+      98,
+      7,
+      5,
+      88,
+      88,
+      85,
+      89
+     ],
+     "median": 92,
+     "ratios": [
+      1.0,
+      1.0435,
+      1.0543,
+      1.1848,
+      0.0543,
+      1.0543,
+      1.087,
+      1.0326,
+      1.0652,
+      0.0761,
+      0.0543,
+      0.9565,
+      0.9565,
+      0.9239,
+      0.9674
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 15,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 19,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      114,
+      84,
+      87,
+      89,
+      90,
+      7,
+      96,
+      92,
+      84,
+      89,
+      8,
+      68,
+      68,
+      6,
+      77,
+      88,
+      85,
+      76
+     ],
+     "median": 84.5,
+     "ratios": [
+      1.3491,
+      0.9941,
+      1.0296,
+      1.0533,
+      1.0651,
+      0.0828,
+      1.1361,
+      1.0888,
+      0.9941,
+      1.0533,
+      0.0947,
+      0.8047,
+      0.8047,
+      0.071,
+      0.9112,
+      1.0414,
+      1.0059,
+      0.8994
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 16,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 19,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      83,
+      74,
+      79,
+      80,
+      71,
+      80,
+      5,
+      81,
+      68,
+      73,
+      6,
+      69,
+      96,
+      18,
+      79,
+      74,
+      66,
+      67
+     ],
+     "median": 73.5,
+     "ratios": [
+      1.1293,
+      1.0068,
+      1.0748,
+      1.0884,
+      0.966,
+      1.0884,
+      0.068,
+      1.102,
+      0.9252,
+      0.9932,
+      0.0816,
+      0.9388,
+      1.3061,
+      0.2449,
+      1.0748,
+      1.0068,
+      0.898,
+      0.9116
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 17,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 14,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      80,
+      78,
+      88,
+      5,
+      71,
+      88,
+      83,
+      6,
+      64,
+      63,
+      4,
+      82,
+      77
+     ],
+     "median": 77,
+     "ratios": [
+      1.039,
+      1.013,
+      1.1429,
+      0.0649,
+      0.9221,
+      1.1429,
+      1.0779,
+      0.0779,
+      0.8312,
+      0.8182,
+      0.0519,
+      1.0649,
+      1.0
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 18,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 17,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      84,
+      77,
+      97,
+      90,
+      6,
+      111,
+      81,
+      92,
+      87,
+      93,
+      8,
+      8,
+      91,
+      77,
+      81,
+      75
+     ],
+     "median": 82.5,
+     "ratios": [
+      1.0182,
+      0.9333,
+      1.1758,
+      1.0909,
+      0.0727,
+      1.3455,
+      0.9818,
+      1.1152,
+      1.0545,
+      1.1273,
+      0.097,
+      0.097,
+      1.103,
+      0.9333,
+      0.9818,
+      0.9091
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 19,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 15,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      75,
+      82,
+      86,
+      6,
+      86,
+      76,
+      73,
+      75,
+      5,
+      5,
+      79,
+      74,
+      76,
+      71
+     ],
+     "median": 75.0,
+     "ratios": [
+      1.0,
+      1.0933,
+      1.1467,
+      0.08,
+      1.1467,
+      1.0133,
+      0.9733,
+      1.0,
+      0.0667,
+      0.0667,
+      1.0533,
+      0.9867,
+      1.0133,
+      0.9467
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 20,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 16,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      73,
+      71,
+      70,
+      84,
+      7,
+      81,
+      70,
+      77,
+      88,
+      6,
+      4,
+      106,
+      76,
+      78,
+      75
+     ],
+     "median": 75,
+     "ratios": [
+      0.9733,
+      0.9467,
+      0.9333,
+      1.12,
+      0.0933,
+      1.08,
+      0.9333,
+      1.0267,
+      1.1733,
+      0.08,
+      0.0533,
+      1.4133,
+      1.0133,
+      1.04,
+      1.0
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 21,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 17,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      72,
+      83,
+      70,
+      68,
+      4,
+      71,
+      64,
+      65,
+      68,
+      67,
+      6,
+      5,
+      102,
+      66,
+      65,
+      69
+     ],
+     "median": 67.5,
+     "ratios": [
+      1.0667,
+      1.2296,
+      1.037,
+      1.0074,
+      0.0593,
+      1.0519,
+      0.9481,
+      0.963,
+      1.0074,
+      0.9926,
+      0.0889,
+      0.0741,
+      1.5111,
+      0.9778,
+      0.963,
+      1.0222
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 22,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 17,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      76,
+      75,
+      71,
+      85,
+      7,
+      82,
+      73,
+      81,
+      74,
+      77,
+      8,
+      6,
+      81,
+      94,
+      79,
+      72
+     ],
+     "median": 75.5,
+     "ratios": [
+      1.0066,
+      0.9934,
+      0.9404,
+      1.1258,
+      0.0927,
+      1.0861,
+      0.9669,
+      1.0728,
+      0.9801,
+      1.0199,
+      0.106,
+      0.0795,
+      1.0728,
+      1.245,
+      1.0464,
+      0.9536
+     ]
+    }
+   ]
+  },
+  {
+   "edition": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 23,
+   "systems": [
+    {
+     "system_index": 0,
+     "n_staves": 18,
+     "groups": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "n_groups": 4,
+     "inner_bridging": [
+      77,
+      78,
+      74,
+      77,
+      8,
+      81,
+      71,
+      67,
+      66,
+      71,
+      6,
+      55,
+      5,
+      86,
+      81,
+      73,
+      68
+     ],
+     "median": 71,
+     "ratios": [
+      1.0845,
+      1.0986,
+      1.0423,
+      1.0845,
+      0.1127,
+      1.1408,
+      1.0,
+      0.9437,
+      0.9296,
+      1.0,
+      0.0845,
+      0.7746,
+      0.0704,
+      1.2113,
+      1.1408,
+      1.0282,
+      0.9577
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -265,6 +265,55 @@ def _x_overlap_frac(a: Staff, b: Staff) -> float:
     return overlap / max(1, min_extent)
 
 
+def gap_crossing_runs(
+    binary: np.ndarray,
+    staves: list[Staff],
+    *,
+    ink_fraction: float = BRIDGE_INK_FRACTION,
+) -> list[list[tuple[float, int]] | None]:
+    """The crossing columns of `gap_bridging_counts`, kept as RUNS.
+
+    Per adjacent staff pair, a list of `(centre_x, width_px)` for each maximal
+    contiguous stretch of crossing columns — i.e. one entry per crossing
+    OBJECT rather than one per pixel. `None` for a degenerate pair (the `-1`
+    of `gap_bridging_counts`, which is derived from this).
+
+    Same window, same closing, same coverage test, so the two functions can
+    never drift apart.
+    """
+    if len(staves) < 2:
+        return []
+    height, width = binary.shape
+    x0, x1 = _robust_x_window(staves)
+    x0 = max(0, x0)
+    x1 = min(width, x1)
+
+    out: list[list[tuple[float, int]] | None] = []
+    for upper, lower in zip(staves, staves[1:]):
+        top = max(0, upper.bottom_y + 2)
+        bot = min(height, lower.top_y - 2)
+        if bot <= top or x1 <= x0:
+            out.append(None)
+            continue
+        band = (binary[top:bot, x0:x1] < 128).astype(np.uint8)
+        spacing = max(upper.line_spacing_px, lower.line_spacing_px)
+        k = max(3, int(round(spacing * BRIDGE_GAP_TOLERANCE_SPACINGS)) * 2 + 1)
+        closed = cv2.morphologyEx(band, cv2.MORPH_CLOSE, np.ones((k, 1), np.uint8))
+        cols = closed.mean(axis=0) > ink_fraction
+        runs: list[tuple[float, int]] = []
+        start: int | None = None
+        for i, v in enumerate(cols):
+            if v and start is None:
+                start = i
+            elif not v and start is not None:
+                runs.append(((start + i) / 2.0 + x0, i - start))
+                start = None
+        if start is not None:
+            runs.append(((start + len(cols)) / 2.0 + x0, len(cols) - start))
+        out.append(runs)
+    return out
+
+
 def gap_bridging_counts(
     binary: np.ndarray,
     staves: list[Staff],
@@ -280,26 +329,10 @@ def gap_bridging_counts(
     pair whose gap or scan window is degenerate yields `-1` ("no evidence").
     Binarized convention: 0 = ink, 255 = paper.
     """
-    if len(staves) < 2:
-        return []
-    height, width = binary.shape
-    x0, x1 = _robust_x_window(staves)
-    x0 = max(0, x0)
-    x1 = min(width, x1)
-
-    counts: list[int] = []
-    for upper, lower in zip(staves, staves[1:]):
-        top = max(0, upper.bottom_y + 2)
-        bot = min(height, lower.top_y - 2)
-        if bot <= top or x1 <= x0:
-            counts.append(-1)
-            continue
-        band = (binary[top:bot, x0:x1] < 128).astype(np.uint8)
-        spacing = max(upper.line_spacing_px, lower.line_spacing_px)
-        k = max(3, int(round(spacing * BRIDGE_GAP_TOLERANCE_SPACINGS)) * 2 + 1)
-        closed = cv2.morphologyEx(band, cv2.MORPH_CLOSE, np.ones((k, 1), np.uint8))
-        counts.append(int((closed.mean(axis=0) > ink_fraction).sum()))
-    return counts
+    return [
+        -1 if runs is None else sum(w for _c, w in runs)
+        for runs in gap_crossing_runs(binary, staves, ink_fraction=ink_fraction)
+    ]
 
 
 def left_edge_barline_counts(
@@ -375,10 +408,145 @@ def _suppress_orphaning_breaks(
             return lb
 
 
-def _assign_groups(staves: list[Staff], bridging: list[int]) -> None:
+# ── Bracket columns (`OMR_BRACKET_COLUMNS`) ──────────────────────────────────
+# `_assign_groups` compares a gap's crossing-column count to the system median.
+# That count is not a count of things on the page: it is
+#
+#     (number of crossing objects) x (each object's width in px)
+#
+# and the objects are of two populations, only one of which is evidence about
+# where a bracket group ends.
+#
+#   * SYSTEMIC columns — the bracket, the systemic barline, the interior
+#     barlines, the final barline. These stand at the SAME x in every gap of
+#     the system (to within the page's warp), and their number at a gap is the
+#     structural fact the rule wants: where an edition bars per instrument
+#     choir, the interior barlines STOP at a group edge, so a boundary gap
+#     keeps only the marks drawn through the whole system.
+#
+#   * INCIDENTAL ink — a stem, a slur, a long accent, a dynamic, a measure
+#     number — which stands wherever the music put it, i.e. at no shared x.
+#
+# Measured on Beethoven 5 / Litolff p.38, whose two 12-staff systems print the
+# SAME lineup and disagreed with each other. System 1's winds|brass gap keeps
+# 3 runs (x 342, 358, 2631 — bracket, systemic barline, final barline) against
+# 10-13 at an interior gap: crisp. System 0's SAME gap keeps 9 runs, six of
+# them incidental (x 743, 1001, 1220, 1253, 1779, 2385 — none at a barline
+# column), which takes its pixel count from ~19 to 52 against a system median
+# of 66. Ratio 0.788, over the 0.5 line, no split: two groups where the page
+# prints three, and where the other system on the same page read three.
+#
+# So the pixel count is a proxy for "how many barlines cross" and the proxy is
+# polluted. This rule counts the objects instead, keeping only runs that stand
+# at a column the system uses repeatedly.
+#
+# ⚠️ A column crossing EVERY gap of the system carries no information about
+# any of them — the left-edge complex and the final barline are drawn through
+# the whole system by definition. They are excluded before the ratio is taken,
+# because a constant added to both sides of a ratio is not neutral: on p.23 the
+# winds|brass gap keeps 3 of 6 systemic columns (ratio 0.500, the rule's own
+# knife edge, no split) and 1 of 4 once the two spanning columns are removed
+# (ratio 0.250, split — agreeing with the other systems of that lineup).
+BRACKET_COLUMN_TOL_SPACINGS = 0.75
+
+# A column is the system's own only if it recurs across its gaps. Incidental
+# ink stands at one gap; a barline stands at every gap it is not stopped by.
+BRACKET_COLUMN_SUPPORT = 0.5
+
+# ⚠️ A RATIO NEEDS SOMETHING TO BE A RATIO OF, AND THE ENGRAVED FAMILY HAS
+# NOTHING. The rule's premise — interior barlines STOP at a group edge — is
+# only testable on a page whose interior barlines cross gaps in the first
+# place. A LilyPond render of a conductor's score does not: its barlines are
+# drawn per staff, so the only ink crossing any gap is the system-start bar,
+# and a whole 25-staff Bruckner system carries TWO crossing columns in total
+# against a scan's sixty to a hundred and thirty. Taking a ratio of 1 against
+# a median of 2 then reads "half the usual" and manufactures a boundary at
+# every gap the start bar happened to miss — measured, 11 groups on that
+# Bruckner system.
+#
+# This is the same trap `OMR_CHOIR_GROUPING`'s cue C was FALSIFIED by (bracket
+# groups alone, engraved pooled OMR-NED 0.1306 → 0.8560, nine works' barlines
+# deleted) and it arrives here by the same road: uniformly low counts feeding a
+# relative threshold. The populations are disjoint with room to spare. Median
+# informative columns per system, measured:
+#
+#     engraved (11 LilyPond fixtures, 11 systems) : 0 ×6, 1 ×3, 1.5, 2   max 2
+#     scanned  (3 publishers, 58 systems)         : 5, 6, 7 ×2, 8 ×5, …  min 5
+#
+# so a floor anywhere in 3..4 reads both corpora identically; 3 is taken. Below
+# it the system ABSTAINS — one group, the answer a page with no bracket
+# evidence should give, and the answer `_is_grouped_system` reads as "not
+# grouped" so cue C cannot reach it either.
+BRACKET_COLUMN_MIN_EVIDENCE = 3
+
+
+def _bracket_columns_enabled() -> bool:
+    return os.environ.get("OMR_BRACKET_COLUMNS", "").strip().lower() not in (
+        "0", "", "false", "no", "off",
+    )
+
+
+def systemic_column_counts(
+    runs_per_gap: list[list[tuple[float, int]] | None],
+    spacing: float,
+    *,
+    tol_spacings: float = BRACKET_COLUMN_TOL_SPACINGS,
+    support: float = BRACKET_COLUMN_SUPPORT,
+) -> list[int]:
+    """Per gap, how many NON-SPANNING systemic columns cross it.
+
+    `runs_per_gap` is one system's slice of `gap_crossing_runs`. Run centres
+    are clustered across the system's gaps at `tol_spacings` staff spacings
+    (the page's warp drifts a barline by a few px across a system; the pitch
+    between barlines is an order of magnitude wider). A cluster seen at
+    `support` of the gaps is the system's own column; a cluster seen at EVERY
+    gap is system-spanning and is dropped, since it distinguishes no gap from
+    any other. A degenerate gap (`None`) scores -1, mirroring
+    `gap_bridging_counts`.
+    """
+    n_gaps = len(runs_per_gap)
+    if n_gaps == 0:
+        return []
+    tol = max(1.0, tol_spacings * spacing)
+    centres = sorted((c, g) for g, runs in enumerate(runs_per_gap)
+                     if runs for c, _w in runs)
+    clusters: list[list[tuple[float, int]]] = []
+    for c, g in centres:
+        if clusters and c - clusters[-1][-1][0] <= tol:
+            clusters[-1].append((c, g))
+        else:
+            clusters.append([(c, g)])
+
+    live = [g for g, runs in enumerate(runs_per_gap) if runs is not None]
+    floor = max(2, int(round(support * len(live))))
+    out = [0] * n_gaps
+    for cl in clusters:
+        gaps = {g for _c, g in cl}
+        if len(gaps) < floor or len(gaps) >= len(live):
+            continue          # incidental, or spanning and therefore uninformative
+        for g in gaps:
+            out[g] += 1
+    for g, runs in enumerate(runs_per_gap):
+        if runs is None:
+            out[g] = -1
+    return out
+
+
+def _assign_groups(
+    staves: list[Staff],
+    bridging: list[int],
+    runs: list[list[tuple[float, int]] | None] | None = None,
+) -> None:
     """Within each system, split at gaps bridged far less than the system's
     typical gap — the bracket-group boundaries. Sets `Staff.group_index`
-    (0-based within the system)."""
+    (0-based within the system).
+
+    With `runs` (and `OMR_BRACKET_COLUMNS` on) the comparison is made over
+    systemic COLUMNS rather than crossing pixels — see the comment block
+    above `BRACKET_COLUMN_TOL_SPACINGS`. The split rule itself is unchanged:
+    below `GROUP_BOUNDARY_RATIO` of the system's median.
+    """
+    use_columns = runs is not None and _bracket_columns_enabled()
     by_system: dict[int, list[int]] = {}
     for i, s in enumerate(staves):
         by_system.setdefault(s.system_index, []).append(i)
@@ -388,8 +556,18 @@ def _assign_groups(staves: list[Staff], bridging: list[int]) -> None:
             for s_i in members:
                 staves[s_i].group_index = 0
             continue
-        inner = [bridging[i] for i in members[:-1] if bridging[i] >= 0]
-        if not inner:
+        gaps = members[:-1]
+        if use_columns:
+            spacing = statistics.median(
+                [staves[i].line_spacing_px for i in members]) or 1.0
+            local = systemic_column_counts([runs[i] for i in gaps], spacing)
+            evidence = {gap_i: local[pos] for pos, gap_i in enumerate(gaps)}
+        else:
+            evidence = {gap_i: bridging[gap_i] for gap_i in gaps}
+        inner = [evidence[i] for i in gaps if evidence[i] >= 0]
+        if not inner or (use_columns
+                         and statistics.median(inner) < BRACKET_COLUMN_MIN_EVIDENCE):
+            # Nothing to take a ratio of — see BRACKET_COLUMN_MIN_EVIDENCE.
             for s_i in members:
                 staves[s_i].group_index = 0
             continue
@@ -397,8 +575,7 @@ def _assign_groups(staves: list[Staff], bridging: list[int]) -> None:
         group = 0
         staves[members[0]].group_index = 0
         for prev_pos, s_i in enumerate(members[1:]):
-            gap_i = members[prev_pos]
-            n = bridging[gap_i]
+            n = evidence[members[prev_pos]]
             if 0 <= n < threshold:
                 group += 1
             staves[s_i].group_index = group
@@ -437,6 +614,13 @@ def assign_systems(
     (positive pair-local ink outranks absence at the page-median anchor —
     see the comment at the exemption site). See the cue-B comment block and
     `pair_left_edge_count`.
+
+    `OMR_BRACKET_COLUMNS` (default OFF) changes only the last step, the
+    bracket-GROUP split inside each system: the comparison is made over
+    systemic COLUMNS rather than crossing pixels, and a system with too little
+    column evidence abstains to one group. System boundaries — everything
+    above — are untouched by it. See the `BRACKET_COLUMN_*` comment blocks and
+    `benchmarks/omr-bracket-stability-2026-09/FINDINGS.md`.
     """
     if left_edge_split is None:
         left_edge_split = _left_edge_split_enabled()
@@ -449,7 +633,8 @@ def assign_systems(
             s.group_index = 0
         return staves, True
 
-    bridging = gap_bridging_counts(binary, staves)
+    crossing_runs = gap_crossing_runs(binary, staves)
+    bridging = [-1 if r is None else sum(w for _c, w in r) for r in crossing_runs]
     if fallback and not any(n > 0 for n in bridging):
         return staves, False
 
@@ -517,5 +702,5 @@ def assign_systems(
             system += 1
         lower.system_index = system
 
-    _assign_groups(staves, bridging)
+    _assign_groups(staves, bridging, crossing_runs)
     return staves, True
