@@ -1616,6 +1616,22 @@ ln -sfn /Users/seanjohnson/Desktop/ReEngrave/.venv-omrned .venv-omrned
 **Four symlinks, and three of the four fail on the SCAN side only** — a worktree
 that runs `orchestral_eval` cleanly proves nothing about `scan_eval`.
 
+⚠️⚠️ **A CACHED A/B FAILS SAFE-LOOKING, AND `scan_eval` CACHES BY DEFAULT.**
+`scan_eval.run_pipeline` opens with `if pred.is_file() and raw.is_file() and not
+force: return`, so **two arms sharing a fixtures dir with an empty `--tag` reuse
+the first arm's transcriptions and the second arm never runs.** Caught
+2026-09-06 one step short of being reported.
+
+**The failure mode is what makes it dangerous**: a cached A/B always reports
+*"identical on every bucket and every row"*, which is exactly the clean
+"my change doesn't reach the metric, no regression" result a flag-guarded change
+hopes for. **Nothing about the output invites suspicion.** The tell was WALL
+TIME — minutes against hours — not the numbers.
+
+**So: give every arm its own `--tag` (it needs `=`, as `--tag=-myarm`) or its own
+work-dir, and check the clock before believing an identical A/B.** Contrapositive
+worth knowing: arms that return *different* numbers did genuinely both run.
+
 ⚠️ **This paragraph is where the current figure lives, and nowhere else.** It
 used to be restated in PROJECT_STATUS.md, NOTES.md and the next-steps doc, and
 the `a271b1e` merge left three of the four copies stale without a warning: two
