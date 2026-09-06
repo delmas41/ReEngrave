@@ -1605,6 +1605,17 @@ computed from the file's own location — hence the symlink.)
 runs — the same shape as the Surya trap, where one benchmark looks healthy and
 the other does not.
 
+⚠️ **And a FOURTH: `scan_eval` ignores `OMRNED_PYTHON`** and resolves
+`.venv-omrned` worktree-relative (found 2026-09-06), so the env override that
+serves `orchestral_eval` does not serve it. Symlink that one too:
+
+```bash
+ln -sfn /Users/seanjohnson/Desktop/ReEngrave/.venv-omrned .venv-omrned
+```
+
+**Four symlinks, and three of the four fail on the SCAN side only** — a worktree
+that runs `orchestral_eval` cleanly proves nothing about `scan_eval`.
+
 ⚠️ **This paragraph is where the current figure lives, and nowhere else.** It
 used to be restated in PROJECT_STATUS.md, NOTES.md and the next-steps doc, and
 the `a271b1e` merge left three of the four copies stale without a warning: two
