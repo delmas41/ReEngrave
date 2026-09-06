@@ -55,6 +55,8 @@ from .clef_correction import (
     correct_clefs_from_instruments,
     veto_implausible_clef_changes,
 )
+from .absent_instrument import (DEFAULT_WINDOW, find_vetoes,
+                                label_evidence, veto_config)
 from .dossier import join_parts_to_slots
 from .instruments import Instrument, candidates_for_alias, lookup
 from .preprocessing import render_page
@@ -844,6 +846,52 @@ def apply_contextual_analysis(
             reference, staff_labels_per_page, slot_by_staff, page_indices,
             staved, fit, instrument_by_slot, instrument_source)
 
+    # ── The absent-instrument veto (OMR_ABSENT_INSTRUMENT_VETO, off) ─────────
+    # A whole-document reference is the FINALE's lineup, and a reduced earlier
+    # system aligned into it can take a slot whose instrument the movement does
+    # not contain. See `absent_instrument.py` for the measurement and the rule.
+    # `report` records the evidence and changes nothing, so one expensive run
+    # supports an offline sweep over the window.
+    _veto_mode, _veto_window, _veto_rule = veto_config()
+    absent_vetoes: list[dict] = []
+    vetoed_keys: set[tuple[int, int, int]] = set()
+    if _veto_mode != "off":
+        _evidence = label_evidence(page_indices, staff_labels_per_page)
+        _keys = [k for k in slot_by_staff]
+        _name_by_slot = {s: i.name for s, i in instrument_by_slot.items()}
+        # Computed in BOTH modes, so `report` can price the veto on a benchmark
+        # whose scored artefact must not move: the names are only withheld in
+        # `apply`. In `report` the window is the default one, since the sweep
+        # recomputes every other window from the recorded evidence anyway.
+        absent_vetoes = find_vetoes(
+            staff_keys=_keys, slot_by_staff=slot_by_staff,
+            instrument_name_by_slot=_name_by_slot,
+            instrument_source=instrument_source, evidence=_evidence,
+            window=_veto_window if _veto_mode == "apply" else DEFAULT_WINDOW,
+            rule=_veto_rule, reference_size=len(reference))
+        if _veto_mode == "apply":
+            vetoed_keys = {(r["page_index"], r["system_index"],
+                            r["staff_index"]) for r in absent_vetoes}
+        summary["absent_instrument_veto"] = {
+            "mode": _veto_mode,
+            "window": _veto_window,
+            "rule": _veto_rule,
+            "reference_size": len(reference),
+            # The raw material, so the sweep needs no second transcription.
+            "label_evidence": [
+                {"page_index": p, "staff_index": si, "instrument": nm}
+                for p, by_staff in sorted(_evidence.items())
+                for si, nm in sorted(by_staff.items())],
+            "staff_slots": [
+                {"page_index": k[0], "system_index": k[1], "staff_index": k[2],
+                 "slot": v} for k, v in sorted(slot_by_staff.items())],
+            "slot_instruments": [
+                {"slot": s, "instrument": n,
+                 "source": instrument_source.get(s, "label")}
+                for s, n in sorted(_name_by_slot.items())],
+            "vetoes": absent_vetoes,
+        }
+
     # Write identity onto the staff dicts so downstream consumers (export, the
     # consistency checks, the review UI) can see what part a staff is.
     for page in pages:
@@ -856,9 +904,26 @@ def apply_contextual_analysis(
                     continue
                 staff["slot_index"] = slot
                 raw = raw_label_by_slot.get(slot)
+                instrument = instrument_by_slot.get(slot)
+                if key in vetoed_keys:
+                    # Vetoed: the staff is left UNNAMED rather than given a
+                    # second guess. `slot_index` stays — it is an observation.
+                    #
+                    # ⚠️ `instrument_label` does NOT stay, and that is the whole
+                    # point of the veto stated in one field. `raw_label_by_slot`
+                    # is the raw text of the FIRST page in the run that labelled
+                    # this slot, stamped onto every staff of the slot on every
+                    # page — so on a vetoed staff it is the text of a label
+                    # printed twenty pages away, and leaving it beside
+                    # `instrument_veto` would put the discarded evidence back on
+                    # the record as though the page carried it. (This carry is
+                    # also what makes a "does the staff's own label agree with
+                    # its name" audit unable to disagree.)
+                    instrument = None
+                    raw = None
+                    staff["instrument_veto"] = "absent_instrument"
                 if raw:
                     staff["instrument_label"] = raw
-                instrument = instrument_by_slot.get(slot)
                 if instrument is not None:
                     staff["instrument"] = instrument.name
                     staff["instrument_family"] = instrument.family
@@ -923,14 +988,22 @@ def apply_contextual_analysis(
     # for the sites that earned each entry). The change veto runs FIRST so a
     # staff whose mid-staff state it repairs is uniform again before the
     # header tier asks its uniformity question.
+    # A vetoed staff has no instrument, so it must not reach a consumer that
+    # reasons FROM the instrument. Hiding it here rather than mutating
+    # `slot_by_staff` keeps slot identity (which is an observation) intact for
+    # everyone else, including `_fill_defaulted_clefs`, which reads clefs across
+    # a slot and never asks what the slot is called.
+    clef_slot_by_staff = ({k: v for k, v in slot_by_staff.items()
+                           if k not in vetoed_keys}
+                          if vetoed_keys else slot_by_staff)
     change_vetoes = (
         veto_implausible_clef_changes(
-            pages, read_instruments, slot_by_staff, instrument_source)
+            pages, read_instruments, clef_slot_by_staff, instrument_source)
         if (instrument_clef_default and apply_clefs) else []
     )
 
     records = correct_clefs_from_instruments(
-        pages, read_instruments, slot_by_staff, apply=apply_clefs,
+        pages, read_instruments, clef_slot_by_staff, apply=apply_clefs,
         treble_override=(instrument_clef_default and apply_clefs),
         instrument_source_by_slot=instrument_source)
 

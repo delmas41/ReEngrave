@@ -1,0 +1,19 @@
+=== report-p1p44 mode=report pages=1,44 start 2026-09-06T14:27:25Z
+transcribe: beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf (88 pages, processing 2)
+  weights:  auto (scan/engraved routing)
+  conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: per-cell
+  weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+  page 1: 1 systems, 12 staves, 192 measures, 701 detections (117/117 pitched, 117/117 durations)
+  page 44: 1 systems, 17 staves, 136 measures, 1675 detections (629/629 pitched, 629/629 durations)
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a27ea6f49a3716925/benchmarks/omr-absent-instrument-veto-2026-09/out/report-p1p44.json
+  pages=2  systems=2  staves=29  measures=328  detections=2219
+  noteheads=746  pitched=746  (100% pitch coverage)
+  with_duration=746  (100% rhythm coverage)  rests=200/222
+  runtime: phase1=12.99s  yolo=93.16s  total=177.49s
+  meter->rhythm: 3 measure(s) re-read a beam level to match the meter
+  page 1: 192 measures, 12 phase1_warnings, 5 rhythm_sum_warnings
+    key signatures: read on 5/12 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 44: 136 measures, 0 phase1_warnings, 86 rhythm_sum_warnings
+    key signatures: read on 5/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+=== report-p1p44 rc=0 wall=180s

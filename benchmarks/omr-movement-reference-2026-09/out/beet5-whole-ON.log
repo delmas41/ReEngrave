@@ -1,0 +1,11 @@
+transcribe: beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf (88 pages, processing 88)
+  weights:  auto (scan/engraved routing)
+  conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: per-cell
+  weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+  page 0: 0 systems, 0 staves, 0 measures, 0 detections (0/0 pitched, 0/0 durations)
+  page 1: 1 systems, 12 staves, 192 measures, 701 detections (117/117 pitched, 117/117 durations)
+  page 2: 2 systems, 22 staves, 341 measures, 2468 detections (509/509 pitched, 509/509 durations)
+  page 3: 2 systems, 19 staves, 320 measures, 1731 detections (378/378 pitched, 378/378 durations)
+  page 4: 2 systems, 22 staves, 330 measures, 2780 detections (696/696 pitched, 696/696 durations)
+  page 5: 2 systems, 16 staves, 242 measures, 1376 detections (416/416 pitched, 416/416 durations)
+exit=143 tag=ON flag=1

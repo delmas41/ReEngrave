@@ -1,0 +1,5 @@
+rule=span window=0
+  beethoven --pages 1,44     vetoes=  0  -                                        (must fire 0)
+  brahms --pages 10          vetoes=  0  -                                        (must fire 0)
+  brahms --pages 10,75       vetoes=  0  -                                        (must fire 0)
+  beethoven --pages 23,44    vetoes=  7  Trombone x6, Cello x1                    (must remove 6 trombones)
