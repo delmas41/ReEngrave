@@ -177,6 +177,13 @@ under it.
 * `BRACKET_COLUMN_MIN_EVIDENCE` — the abstention, forced by the engraved
   family. See §5.
 
+**It costs nothing to run.** The crossing runs are a by-product of the
+morphology `gap_bridging_counts` already performed, and the clustering is one
+sort of a few hundred numbers per system. Per-arm wall times across the A/B
+scatter in both directions (Beethoven 3 113s→199s, Beethoven 5 221s→109s,
+Brahms 1 154s→87s, Brahms 4 44s→42s) — that is machine contention, not the
+flag, and there is no systematic direction to it.
+
 ⚠️ **The clustering is greedy chain-linking, so it can in principle swallow two
 real barlines into one column and undercount.** Checked rather than assumed:
 over 165 clusters on six pages of two publishers the widest cluster spans
