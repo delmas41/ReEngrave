@@ -27,3 +27,12 @@
   tchaikovsky-sym4-mvt2 flag=0: 54544 bytes in 36s
   tchaikovsky-sym4-mvt2 flag=1: 54544 bytes in 38s
   -> tchaikovsky-sym4-mvt2: BYTE-IDENTICAL
+1 of 12 labelled staff record(s) CONTRADICT their own margin label: the reader read one instrument on that staff and the file names another. Measured over two whole works, 0.873 of these are a wrong EXPORTED name and 0.127 a misread label, and nothing on the record says which — so each is worth a look, none is self-resolving. By source: {'score_order_ambiguity': 1}. By pair: {'Bass voice -> Contrabass': 1} (benchmarks/omr-label-contradiction-2026-09/)
+5 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'ani in A.D.E.', 'larinetti in A', 'ni in F III IV', 'orni in F I II', '|'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+  tchaikovsky-sym6-mvt2 flag=0: 55587 bytes in 31s
+1 of 12 labelled staff record(s) CONTRADICT their own margin label: the reader read one instrument on that staff and the file names another. Measured over two whole works, 0.873 of these are a wrong EXPORTED name and 0.127 a misread label, and nothing on the record says which — so each is worth a look, none is self-resolving. By source: {'score_order_ambiguity': 1}. By pair: {'Bass voice -> Contrabass': 1} (benchmarks/omr-label-contradiction-2026-09/)
+5 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'ani in A.D.E.', 'larinetti in A', 'ni in F III IV', 'orni in F I II', '|'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+  tchaikovsky-sym6-mvt2 flag=1: 55587 bytes in 40s
+  -> tchaikovsky-sym6-mvt2: BYTE-IDENTICAL
+
+8 of 8 byte-identical
