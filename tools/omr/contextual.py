@@ -59,6 +59,8 @@ from .absent_instrument import (DEFAULT_WINDOW, find_vetoes,
                                 label_evidence, veto_config)
 from .dossier import join_parts_to_slots
 from .instruments import Instrument, candidates_for_alias, lookup
+from .label_contradiction import (contradictable, find_contradictions,
+                                  summarise as summarise_contradictions)
 from .preprocessing import render_page
 from .score_layouts import fit_layouts, resolve_ambiguous_label
 from .roster import Roster, acquire_roster
@@ -1093,13 +1095,18 @@ def apply_contextual_analysis(
     # not contain. See `absent_instrument.py` for the measurement and the rule.
     # `report` records the evidence and changes nothing, so one expensive run
     # supports an offline sweep over the window.
+    #
+    # `_evidence` / `_keys` / `_name_by_slot` are hoisted out of the veto branch
+    # because the label-contradiction report below needs the same three and is
+    # computed unconditionally. `label_evidence` is pure, so the veto sees
+    # exactly what it saw before.
+    _evidence = label_evidence(page_indices, staff_labels_per_page)
+    _keys = [k for k in slot_by_staff]
+    _name_by_slot = {s: i.name for s, i in instrument_by_slot.items()}
     _veto_mode, _veto_window, _veto_rule = veto_config()
     absent_vetoes: list[dict] = []
     vetoed_keys: set[tuple[int, int, int]] = set()
     if _veto_mode != "off":
-        _evidence = label_evidence(page_indices, staff_labels_per_page)
-        _keys = [k for k in slot_by_staff]
-        _name_by_slot = {s: i.name for s, i in instrument_by_slot.items()}
         # Computed in BOTH modes, so `report` can price the veto on a benchmark
         # whose scored artefact must not move: the names are only withheld in
         # `apply`. In `report` the window is the default one, since the sweep
@@ -1133,6 +1140,46 @@ def apply_contextual_analysis(
             "vetoes": absent_vetoes,
         }
 
+    # ── A staff that contradicts its own label ───────────────────────────────
+    # UNCONDITIONAL and evidence-only: it renames nothing, refuses nothing, and
+    # has no flag, because there is no behaviour to gate. See
+    # `label_contradiction.py` for the adjudication (158 rows over two whole
+    # works: 0.873 the export is wrong, 0.127 the label is, 0 both right) and
+    # for the three side-signals that were measured and do NOT separate the two.
+    #
+    # ⚠️ It is computed here rather than by a benchmark because this project's
+    # most-repeated failure is a signal computed and consumed by nobody. The
+    # figure goes in the summary of every run, the rows go on the staff dicts,
+    # and a firing raises a WARNING — the same channel `unresolved_labels` uses
+    # below, and for the same reason: a wrong name is otherwise indistinguishable
+    # from a right one anywhere downstream.
+    _contradictions = find_contradictions(
+        staff_keys=_keys, slot_by_staff=slot_by_staff,
+        instrument_name_by_slot=_name_by_slot,
+        instrument_source=instrument_source, evidence=_evidence,
+        vetoed_keys=vetoed_keys)
+    summary["label_contradiction"] = summarise_contradictions(
+        _contradictions,
+        contradictable(staff_keys=_keys, slot_by_staff=slot_by_staff,
+                       instrument_name_by_slot=_name_by_slot,
+                       evidence=_evidence, vetoed_keys=vetoed_keys))
+    _contradiction_by_key = {
+        (r["page_index"], r["system_index"], r["staff_index"]): r
+        for r in _contradictions}
+    if _contradictions:
+        logger.warning(
+            "%d of %d labelled staff record(s) CONTRADICT their own margin "
+            "label: the reader read one instrument on that staff and the file "
+            "names another. Measured over two whole works, 0.873 of these are "
+            "a wrong EXPORTED name and 0.127 a misread label, and nothing on "
+            "the record says which — so each is worth a look, none is "
+            "self-resolving. By source: %s. By pair: %s "
+            "(benchmarks/omr-label-contradiction-2026-09/)",
+            summary["label_contradiction"]["contradictions"],
+            summary["label_contradiction"]["labelled_staff_records"],
+            summary["label_contradiction"]["by_source"],
+            summary["label_contradiction"]["by_pair"])
+
     # Write identity onto the staff dicts so downstream consumers (export, the
     # consistency checks, the review UI) can see what part a staff is.
     for page in pages:
@@ -1144,6 +1191,17 @@ def apply_contextual_analysis(
                 if slot is None or slot < 0:
                     continue
                 staff["slot_index"] = slot
+                # ⚠️ Written from `label_evidence`, which is PER STAFF, and
+                # never from `instrument_label` below, which is slot-carried and
+                # therefore cannot disagree. `read` is what THIS staff's margin
+                # said; `instrument` is what the file will call it.
+                _contra = _contradiction_by_key.get(key)
+                if _contra is not None:
+                    staff["label_contradiction"] = {
+                        "read": _contra["read"],
+                        "exported": _contra["exported"],
+                        "source": _contra["source"],
+                    }
                 raw = raw_label_by_slot.get(slot)
                 instrument = instrument_by_slot.get(slot)
                 if key in vetoed_keys:
