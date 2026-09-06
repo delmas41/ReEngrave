@@ -1,0 +1,10 @@
+
+lalo--symphony-espagnole-op21--durand--imslp174510.pdf: 147 pages in 925s -> 3 span(s) [[0, 36], [37, 100], [101, 146]]
+   pages 0-36 (37p) peak sizes [0, 8, 9, 10, 11, 12, 13, 14, 15, 17]
+   pages 37-100 (64p) peak sizes [8, 9, 10, 11, 12, 14, 15, 16, 18]
+   pages 101-146 (46p) peak sizes [7, 9, 10, 11, 12, 13, 14, 20, 21, 23]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/lalo--symphony-espagnole-op21--durand--imslp174510.json
+
+dvorak--symphony-7-op70--simrock-1885--imslp649931.pdf: 136 pages in 678s -> 1 span(s) [[0, 135]]
+   pages 0-135 (136p) peak sizes [13, 14, 15]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/dvorak--symphony-7-op70--simrock-1885--imslp649931.json

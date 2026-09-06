@@ -1,0 +1,12 @@
+
+berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.pdf: 148 pages in 1317s -> 3 span(s) [[0, 72], [73, 138], [139, 147]]
+   pages 0-72 (73p) peak sizes [4, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+   pages 73-138 (66p) peak sizes [10, 11, 12, 13, 15, 16, 17, 19, 20, 21, 25, 26, 27]
+   pages 139-147 (9p) peak sizes [5, 6, 7, 8, 21, 22]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.json
+
+sibelius--symphony-5-op82--hansen-1921--imslp15922.pdf: 134 pages in 319s -> 3 span(s) [[0, 31], [32, 41], [42, 133]]
+   pages 0-31 (32p) peak sizes [5, 7, 8, 9, 10, 11, 16]
+   pages 32-41 (10p) peak sizes [16, 18, 19]
+   pages 42-133 (92p) peak sizes [7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/sibelius--symphony-5-op82--hansen-1921--imslp15922.json

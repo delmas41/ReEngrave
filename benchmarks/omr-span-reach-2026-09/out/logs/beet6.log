@@ -1,0 +1,9 @@
+pdf=beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf pages=79 dpi=600 veto=report cache=benchmarks/omr-span-reach-2026-09/out/beet6/cache600
+read 79 pages in 2067s (79 read, 0 cached)
+[spans-off] available=True reason=None in 4s reference=14 slots vetoes=106
+  wrote benchmarks/omr-span-reach-2026-09/out/beet6/spans-off.json
+[spans-on] available=True reason=None in 4s reference=14 slots vetoes=16
+  wrote benchmarks/omr-span-reach-2026-09/out/beet6/spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (79 pages read, 0 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-span-reach-2026-09/out/beet6/spans-off.json
+  benchmarks/omr-span-reach-2026-09/out/beet6/spans-on.json

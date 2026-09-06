@@ -1,0 +1,403 @@
+[
+ {
+  "boundaries": [
+   48,
+   114,
+   167
+  ],
+  "edition": "beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488",
+  "n_spans": 4,
+  "pages": 189,
+  "ranges": [
+   [
+    0,
+    47
+   ],
+   [
+    48,
+    113
+   ],
+   [
+    114,
+    166
+   ],
+   [
+    167,
+    188
+   ]
+  ],
+  "raw_peak": 24,
+  "seconds": 695.4,
+  "span_levels": [
+   13,
+   15,
+   21,
+   23
+  ],
+  "span_peaks": [
+   24,
+   15,
+   21,
+   23
+  ]
+ },
+ {
+  "boundaries": [
+   27,
+   46
+  ],
+  "edition": "beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082",
+  "n_spans": 3,
+  "pages": 79,
+  "ranges": [
+   [
+    0,
+    26
+   ],
+   [
+    27,
+    45
+   ],
+   [
+    46,
+    78
+   ]
+  ],
+  "raw_peak": 14,
+  "seconds": 289.1,
+  "span_levels": [
+   10,
+   11,
+   14
+  ],
+  "span_peaks": [
+   10,
+   11,
+   14
+  ]
+ },
+ {
+  "boundaries": [
+   73,
+   139
+  ],
+  "edition": "berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830",
+  "n_spans": 3,
+  "pages": 148,
+  "ranges": [
+   [
+    0,
+    72
+   ],
+   [
+    73,
+    138
+   ],
+   [
+    139,
+    147
+   ]
+  ],
+  "raw_peak": 27,
+  "seconds": 1317.1,
+  "span_levels": [
+   18,
+   21,
+   22
+  ],
+  "span_peaks": [
+   18,
+   21,
+   22
+  ]
+ },
+ {
+  "boundaries": [
+   37,
+   101
+  ],
+  "edition": "lalo--symphony-espagnole-op21--durand--imslp174510",
+  "n_spans": 3,
+  "pages": 147,
+  "ranges": [
+   [
+    0,
+    36
+   ],
+   [
+    37,
+    100
+   ],
+   [
+    101,
+    146
+   ]
+  ],
+  "raw_peak": 23,
+  "seconds": 925.5,
+  "span_levels": [
+   17,
+   18,
+   23
+  ],
+  "span_peaks": [
+   17,
+   18,
+   23
+  ]
+ },
+ {
+  "boundaries": [
+   32,
+   42
+  ],
+  "edition": "sibelius--symphony-5-op82--hansen-1921--imslp15922",
+  "n_spans": 3,
+  "pages": 134,
+  "ranges": [
+   [
+    0,
+    31
+   ],
+   [
+    32,
+    41
+   ],
+   [
+    42,
+    133
+   ]
+  ],
+  "raw_peak": 20,
+  "seconds": 318.7,
+  "span_levels": [
+   16,
+   19,
+   20
+  ],
+  "span_peaks": [
+   16,
+   19,
+   20
+  ]
+ },
+ {
+  "boundaries": [
+   42,
+   159
+  ],
+  "edition": "tchaikovsky--symphony-4-op36--jurgenson--imslp377460",
+  "n_spans": 3,
+  "pages": 226,
+  "ranges": [
+   [
+    0,
+    41
+   ],
+   [
+    42,
+    158
+   ],
+   [
+    159,
+    225
+   ]
+  ],
+  "raw_peak": 20,
+  "seconds": 494.7,
+  "span_levels": [
+   16,
+   17,
+   20
+  ],
+  "span_peaks": [
+   16,
+   17,
+   20
+  ]
+ },
+ {
+  "boundaries": [
+   44
+  ],
+  "edition": "beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073",
+  "n_spans": 2,
+  "pages": 88,
+  "ranges": [
+   [
+    0,
+    43
+   ],
+   [
+    44,
+    87
+   ]
+  ],
+  "raw_peak": 17,
+  "seconds": 82.0,
+  "span_levels": [
+   12,
+   17
+  ],
+  "span_peaks": [
+   12,
+   17
+  ]
+ },
+ {
+  "boundaries": [
+   45
+  ],
+  "edition": "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803",
+  "n_spans": 2,
+  "pages": 86,
+  "ranges": [
+   [
+    0,
+    44
+   ],
+   [
+    45,
+    85
+   ]
+  ],
+  "raw_peak": 28,
+  "seconds": 343.6,
+  "span_levels": [
+   14,
+   16
+  ],
+  "span_peaks": [
+   14,
+   17
+  ]
+ },
+ {
+  "boundaries": [
+   41
+  ],
+  "edition": "brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596",
+  "n_spans": 2,
+  "pages": 99,
+  "ranges": [
+   [
+    0,
+    40
+   ],
+   [
+    41,
+    98
+   ]
+  ],
+  "raw_peak": 16,
+  "seconds": 284.4,
+  "span_levels": [
+   13,
+   16
+  ],
+  "span_peaks": [
+   13,
+   16
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077",
+  "n_spans": 1,
+  "pages": 89,
+  "ranges": [
+   [
+    0,
+    88
+   ]
+  ],
+  "raw_peak": 13,
+  "seconds": 339.3,
+  "span_levels": [
+   12
+  ],
+  "span_peaks": [
+   13
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084",
+  "n_spans": 1,
+  "pages": 89,
+  "ranges": [
+   [
+    0,
+    88
+   ]
+  ],
+  "raw_peak": 12,
+  "seconds": 315.8,
+  "span_levels": [
+   12
+  ],
+  "span_peaks": [
+   12
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "dvorak--symphony-7-op70--simrock-1885--imslp649931",
+  "n_spans": 1,
+  "pages": 136,
+  "ranges": [
+   [
+    0,
+    135
+   ]
+  ],
+  "raw_peak": 15,
+  "seconds": 678.4,
+  "span_levels": [
+   15
+  ],
+  "span_peaks": [
+   15
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "dvorak--symphony-9-op95--simrock-1894--imslp405834",
+  "n_spans": 1,
+  "pages": 80,
+  "ranges": [
+   [
+    0,
+    79
+   ]
+  ],
+  "raw_peak": 30,
+  "seconds": 282.4,
+  "span_levels": [
+   15
+  ],
+  "span_peaks": [
+   30
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "mozart--symphony-40-in-g-minor-k550--breitkopf-hartel-mozart-1880--imslp984555",
+  "n_spans": 1,
+  "pages": 49,
+  "ranges": [
+   [
+    0,
+    48
+   ]
+  ],
+  "raw_peak": 11,
+  "seconds": 69.0,
+  "span_levels": [
+   11
+  ],
+  "span_peaks": [
+   11
+  ]
+ }
+]
