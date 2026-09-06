@@ -1,0 +1,24 @@
+
+============================================================================
+SCAN  funnel
+============================================================================
+   staves                                      193
+   clef NOT read (the fill tier's population)    30  15.5%
+   instrument known                            177
+   both (fill tier is eligible)                 26  13.5%
+   proposal survived the three cutoffs           5   2.6%
+     beethoven-sym5-mvt1-575951-p1..graft09   st9   unread=False treble->alto fit=1.0 cur=1.0 margin=0.0 n=30 medium applied=False inst='Viola'(label)
+     brahms-sym1-mvt1-317803-p1..graft09.om   st12  unread=False tenor->bass fit=1.0 cur=1.0 margin=0.0 n=41 medium applied=False inst='Cello'(label)
+     brahms-sym1-mvt1-317803-p2..graft09.om   st4   unread=False treble->bass fit=1.0 cur=0.926 margin=0.074 n=27 medium applied=False inst='Bassoon'(label)
+     brahms-sym1-mvt1-317803-p2..graft09.om   st8   unread=False treble->bass fit=1.0 cur=0.0 margin=1.0 n=14 high applied=False inst='Timpani'(label)
+     brahms-sym1-mvt1-317803-p2..graft09.om   st18  unread=False treble->bass fit=1.0 cur=0.571 margin=0.429 n=14 high applied=False inst='Bassoon'(label)
+
+============================================================================
+ENGRAVED  funnel
+============================================================================
+   staves                                      224
+   clef NOT read (the fill tier's population)     2   0.9%
+   instrument known                            223
+   both (fill tier is eligible)                  2   0.9%
+   proposal survived the three cutoffs           1   0.4%
+     brahms-sym1-mvt1.omr.json                st19  unread=False tenor->bass fit=1.0 cur=1.0 margin=0.0 n=39 medium applied=False inst='Cello'(label)

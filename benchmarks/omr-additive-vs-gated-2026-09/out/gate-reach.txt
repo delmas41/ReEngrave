@@ -1,0 +1,195 @@
+
+========================================================================
+SCAN  11 docs / 11 pages / 19 systems / 193 staves / 2235 measures / 16706 detections
+========================================================================
+
+-- clef_source (reach of clef_correction: it fires only on '(none)') --
+   detector                    144   74.6%
+   (none)                       30   15.5%
+   detector_header              14    7.3%
+   cv_locator                    5    2.6%
+-- clef VALUE --
+   treble                      123
+   bass                         54
+   alto                         15
+   tenor                         1
+
+-- key_signature_source --
+   header_vote                            99
+   (none)                                 94
+-- key_signature_unread_reason (the abstain branch) --
+   neither the detector's markers nor the CV locator found key-    50
+   no clef was read on this staff, and the slot table a signatu    35
+   rejected: 1 flat differs from the system's 3 flats on too li    14
+   rejected: 1 sharp differs from the system's 4 sharps on too      4
+   rejected: systems disagree about sharps vs flats for this pa     2
+   rejected: 1 flat from a reader that can over-count, with no      1
+   rejected: 2 sharps differs from the system's 3 flats on too      1
+   rejected: 2 flats differs from the system's 4 sharps on too      1
+   rejected: 2 sharps differs from the system's 4 sharps on too     1
+
+-- instrument_source (identity provenance) --
+   label                       119   61.7%
+   score_order                  54   28.0%
+   (none)                       16    8.3%
+   score_order_ambiguity         4    2.1%
+   staves with NO instrument at all: 16  (8.3%)
+
+-- meter vote source --
+   detected_propagated           4
+
+-- VETO / DISCARD volumes --
+   n_detections_total                             16706
+   n_noteheads_total                               4339
+   n_cross_staff_duplicates_removed                1446
+   n_unladdered_noteheads_dropped                   351
+   n_staves_total                                   193
+   n_clipped_notehead_fragments_dropped             101
+   uncorroborated_meter_changes_reverted             21
+   n_rhythm_reconciliations                           3
+
+-- CONSISTENCY WARNINGS (Class C: computed, consumed by nobody) --
+   rhythm_sum_warning                    111
+   time_signature_disagreement            17
+   clef_register_warning                   7
+   clef_proposal                           5
+   clef_proposal.confidence_label: {'medium': 3, 'high': 2}
+   rhythm_sum_warning.severity: {'high': 88, 'low': 23}
+   time_signature_disagreement.confidence: n=17 min=0.500 med=0.500 max=0.933
+
+-- DETECTION CONFIDENCE (export.py reads none of this) --
+   [0.20,0.25)      25  cum   0.1%
+   [0.25,0.30)    1926  cum  11.7%
+   [0.30,0.35)    1662  cum  21.6%
+   [0.35,0.40)    1354  cum  29.7%
+   [0.40,0.45)    1255  cum  37.2%
+   [0.45,0.50)    1100  cum  43.8%
+   [0.50,0.55)     961  cum  49.6%
+   [0.55,0.60)     990  cum  55.5%
+   [0.60,0.65)     908  cum  60.9%
+   [0.65,0.70)    1050  cum  67.2%
+   [0.70,0.75)    1231  cum  74.6%
+   [0.75,0.80)    1426  cum  83.1%
+   [0.80,0.85)    1775  cum  93.8%
+   [0.85,0.90)     856  cum  98.9%
+   [0.90,0.95)     174  cum  99.9%
+   [0.95,1.00)      13  cum 100.0%
+   by category (n, median, share under 0.40):
+     structural       n=  7934 med=0.425  <0.40: 44.7%
+     notehead         n=  4339 med=0.733  <0.40: 12.4%
+     rest             n=  1600 med=0.626  <0.40: 17.1%
+     accidental       n=   729 med=0.701  <0.40: 16.6%
+     ornament         n=   691 med=0.465  <0.40: 37.9%
+     dynamic          n=   622 med=0.808  <0.40:  8.4%
+     flag             n=   292 med=0.610  <0.40: 14.7%
+     clef             n=   240 med=0.889  <0.40:  7.1%
+     time_sig_digit   n=   183 med=0.564  <0.40: 27.3%
+     stem             n=    76 med=0.308  <0.40: 88.2%
+
+-- per document --
+   bach-brandenburg3-mvt1-468678-p1..graft09.omr.json      cross_staff_duplicates=104  unladdered_noteheads=52  clipped_notehead_fragments=14  noteheads_total=1182  detections_total=3050  staves_total=24
+   beethoven-sym5-mvt1-575951-p1..graft09.omr.json         cross_staff_duplicates=49  unladdered_noteheads=20  clipped_notehead_fragments=6  noteheads_total=144  detections_total=627  staves_total=12
+   beethoven-sym5-mvt1-575951-p2..graft09.omr.json         cross_staff_duplicates=353  unladdered_noteheads=47  clipped_notehead_fragments=17  noteheads_total=529  detections_total=2290  staves_total=22
+   beethoven-sym5-mvt1-984073-p1..graft09.omr.json         cross_staff_duplicates=38  unladdered_noteheads=17  clipped_notehead_fragments=8  noteheads_total=117  detections_total=646  staves_total=12
+   beethoven-sym5-mvt1-984073-p2..graft09.omr.json         cross_staff_duplicates=261  unladdered_noteheads=56  clipped_notehead_fragments=16  rhythm_reconciliations=1  noteheads_total=509  detections_total=2151  staves_total=22
+   brahms-sym1-mvt1-317803-p1..graft09.omr.json            cross_staff_duplicates=73  unladdered_noteheads=20  clipped_notehead_fragments=9  rhythm_reconciliations=1  noteheads_total=446  detections_total=1517  staves_total=14
+   brahms-sym1-mvt1-317803-p2..graft09.omr.json            cross_staff_duplicates=487  unladdered_noteheads=116  clipped_notehead_fragments=25  noteheads_total=814  detections_total=2875  staves_total=27
+   dvorak-sym9-mvt1-405834-p5..graft09.omr.json            cross_staff_duplicates=17  unladdered_noteheads=2  clipped_notehead_fragments=1  rhythm_reconciliations=1  noteheads_total=109  detections_total=793  staves_total=15
+   dvorak-sym9-mvt1-405834-p6..graft09.omr.json            cross_staff_duplicates=4  unladdered_noteheads=3  clipped_notehead_fragments=1  noteheads_total=224  detections_total=1174  staves_total=15
+   mahler-sym5-mvt1-local-p2..graft09.omr.json             cross_staff_duplicates=25  unladdered_noteheads=3  clipped_notehead_fragments=3  noteheads_total=46  detections_total=588  staves_total=17
+   mahler-sym5-mvt1-local-p3..graft09.omr.json             cross_staff_duplicates=35  unladdered_noteheads=15  clipped_notehead_fragments=1  noteheads_total=219  detections_total=995  staves_total=13
+
+========================================================================
+ENGRAVED  11 docs / 11 pages / 11 systems / 224 staves / 1517 measures / 8523 detections
+========================================================================
+
+-- clef_source (reach of clef_correction: it fires only on '(none)') --
+   detector                    212   94.6%
+   dossier                      10    4.5%
+   (none)                        2    0.9%
+-- clef VALUE --
+   treble                      144
+   bass                         63
+   alto                         11
+   tenor                         4
+   bass_8vb                      2
+
+-- key_signature_source --
+   header_vote                           116
+   (none)                                108
+-- key_signature_unread_reason (the abstain branch) --
+   neither the detector's markers nor the CV locator found key-    48
+   rejected: 2 sharps differs from the system's 3 flats on too      2
+   rejected: 1 flat differs from the system's 1 sharp on too li     2
+   no clef was read on this staff, and the slot table a signatu     2
+
+-- instrument_source (identity provenance) --
+   label                       198   88.4%
+   score_order                  22    9.8%
+   score_order_ambiguity         3    1.3%
+   (none)                        1    0.4%
+   staves with NO instrument at all: 1  (0.4%)
+
+-- meter vote source --
+   inferred                      6
+   detected_propagated           1
+
+-- VETO / DISCARD volumes --
+   n_detections_total                              8523
+   n_cross_staff_duplicates_removed                2592
+   n_noteheads_total                               1557
+   n_staves_total                                   224
+   n_clipped_notehead_fragments_dropped              46
+   n_unladdered_noteheads_dropped                    28
+
+-- CONSISTENCY WARNINGS (Class C: computed, consumed by nobody) --
+   rhythm_sum_warning                     12
+   clef_register_warning                   4
+   key_signature_warning                   3
+   time_signature_disagreement             1
+   clef_proposal                           1
+   clef_proposal.confidence_label: {'medium': 1}
+   key_signature_warning.confidence: n=3 min=0.867 med=0.867 max=0.966
+   rhythm_sum_warning.severity: {'high': 11, 'low': 1}
+   time_signature_disagreement.confidence: n=1 min=0.944 med=0.944 max=0.944
+
+-- DETECTION CONFIDENCE (export.py reads none of this) --
+   [0.20,0.25)       2  cum   0.0%
+   [0.25,0.30)     144  cum   1.7%
+   [0.30,0.35)     141  cum   3.4%
+   [0.35,0.40)     132  cum   4.9%
+   [0.40,0.45)     157  cum   6.8%
+   [0.45,0.50)     117  cum   8.1%
+   [0.50,0.55)     125  cum   9.6%
+   [0.55,0.60)     134  cum  11.2%
+   [0.60,0.65)     140  cum  12.8%
+   [0.65,0.70)     164  cum  14.7%
+   [0.70,0.75)     257  cum  17.8%
+   [0.75,0.80)     353  cum  21.9%
+   [0.80,0.85)    1123  cum  35.1%
+   [0.85,0.90)    2576  cum  65.3%
+   [0.90,0.95)    2546  cum  95.2%
+   [0.95,1.00)     412  cum 100.0%
+   by category (n, median, share under 0.40):
+     structural       n=  3167 med=0.846  <0.40: 10.3%
+     rest             n=  1696 med=0.869  <0.40:  1.1%
+     notehead         n=  1557 med=0.884  <0.40:  0.1%
+     accidental       n=   604 med=0.920  <0.40:  1.3%
+     time_sig_digit   n=   410 med=0.915  <0.40:  2.4%
+     clef             n=   337 med=0.961  <0.40:  6.5%
+     ornament         n=   290 med=0.743  <0.40:  5.9%
+     flag             n=   232 med=0.848  <0.40:  1.7%
+     dynamic          n=   230 med=0.898  <0.40:  4.8%
+
+-- per document --
+   beethoven-sym3-mvt1.omr.json                            cross_staff_duplicates=297  unladdered_noteheads=1  clipped_notehead_fragments=4  noteheads_total=80  detections_total=747  staves_total=19
+   beethoven-sym5-mvt1.omr.json                            cross_staff_duplicates=114  unladdered_noteheads=2  clipped_notehead_fragments=6  noteheads_total=81  detections_total=535  staves_total=18
+   brahms-sym1-mvt1.omr.json                               cross_staff_duplicates=398  unladdered_noteheads=3  clipped_notehead_fragments=9  noteheads_total=506  detections_total=1725  staves_total=21
+   brahms-sym4-mvt1.omr.json                               cross_staff_duplicates=317  unladdered_noteheads=8  clipped_notehead_fragments=4  noteheads_total=175  detections_total=774  staves_total=20
+   bruckner-sym5-mvt1.omr.json                             cross_staff_duplicates=34  unladdered_noteheads=3  clipped_notehead_fragments=0  noteheads_total=105  detections_total=845  staves_total=25
+   dvorak-sym9-mvt4.omr.json                               cross_staff_duplicates=61  clipped_notehead_fragments=1  noteheads_total=40  detections_total=319  staves_total=18
+   mahler-sym5-mvt1.omr.json                               cross_staff_duplicates=1018  clipped_notehead_fragments=11  noteheads_total=24  detections_total=971  staves_total=38
+   mozart-sym40-mvt1.omr.json                              cross_staff_duplicates=89  clipped_notehead_fragments=0  noteheads_total=164  detections_total=532  staves_total=11
+   mozart-sym41-mvt1.omr.json                              cross_staff_duplicates=131  unladdered_noteheads=4  clipped_notehead_fragments=4  noteheads_total=228  detections_total=835  staves_total=17
+   tchaikovsky-sym4-mvt2.omr.json                          cross_staff_duplicates=88  unladdered_noteheads=1  clipped_notehead_fragments=4  noteheads_total=67  detections_total=710  staves_total=20
+   tchaikovsky-sym6-mvt2.omr.json                          cross_staff_duplicates=45  unladdered_noteheads=6  clipped_notehead_fragments=3  noteheads_total=87  detections_total=530  staves_total=17
