@@ -1,0 +1,267 @@
+page 33 system 0   (13 staves, 3 contradicting)
+    staff  0 slot   0 read=Flute            exported=Flute            src=label                 
+    staff  1 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff  2 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff  3 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff  4 slot   5 read=Horn             exported=Horn             src=label                 
+    staff  5 slot   6 read=Trumpet          exported=Horn             src=roster                  <<<
+    staff  6 slot   7 read=Timpani          exported=Trumpet          src=label                   <<<
+    staff  7 slot  10 read=Violin           exported=Timpani          src=label                   <<<
+    staff  8 slot  11 read=Violin           exported=Violin           src=label                 
+    staff  9 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 10 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 11 slot  14 read=Cello            exported=Cello            src=label                 
+    staff 12 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 33 system 1   (14 staves, 3 contradicting)
+    staff 13 slot   0 read=None             exported=Flute            src=label                 
+    staff 14 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff 15 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff 16 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff 17 slot   4 read=Contrabassoon    exported=Contrabassoon    src=label                 
+    staff 18 slot   5 read=Horn             exported=Horn             src=label                 
+    staff 19 slot   6 read=Trumpet          exported=Horn             src=roster                  <<<
+    staff 20 slot   7 read=Timpani          exported=Trumpet          src=label                   <<<
+    staff 21 slot  10 read=Violin           exported=Timpani          src=label                   <<<
+    staff 22 slot  11 read=Violin           exported=Violin           src=label                 
+    staff 23 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 24 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 25 slot  14 read=Cello            exported=Cello            src=label                 
+    staff 26 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 34 system 0   (13 staves, 3 contradicting)
+    staff  0 slot   0 read=Flute            exported=Flute            src=label                 
+    staff  1 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff  2 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff  3 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff  4 slot   5 read=Horn             exported=Horn             src=label                 
+    staff  5 slot   6 read=Trumpet          exported=Horn             src=roster                  <<<
+    staff  6 slot   7 read=Timpani          exported=Trumpet          src=label                   <<<
+    staff  7 slot  10 read=Violin           exported=Timpani          src=label                   <<<
+    staff  8 slot  11 read=Violin           exported=Violin           src=label                 
+    staff  9 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 10 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 11 slot  14 read=Cello            exported=Cello            src=label                 
+    staff 12 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 34 system 1   (13 staves, 3 contradicting)
+    staff 13 slot   0 read=None             exported=Flute            src=label                 
+    staff 14 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff 15 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff 16 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff 17 slot   5 read=Horn             exported=Horn             src=label                 
+    staff 18 slot   6 read=Trumpet          exported=Horn             src=roster                  <<<
+    staff 19 slot   7 read=Timpani          exported=Trumpet          src=label                   <<<
+    staff 20 slot  10 read=Violin           exported=Timpani          src=label                   <<<
+    staff 21 slot  11 read=Violin           exported=Violin           src=label                 
+    staff 22 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 23 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 24 slot  14 read=Cello            exported=Cello            src=label                 
+    staff 25 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 35 system 0   (13 staves, 3 contradicting)
+    staff  0 slot   0 read=Flute            exported=Flute            src=label                 
+    staff  1 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff  2 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff  3 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff  4 slot   5 read=Horn             exported=Horn             src=label                 
+    staff  5 slot   6 read=Trumpet          exported=Horn             src=roster                  <<<
+    staff  6 slot   7 read=Timpani          exported=Trumpet          src=label                   <<<
+    staff  7 slot  10 read=Violin           exported=Timpani          src=label                   <<<
+    staff  8 slot  11 read=Violin           exported=Violin           src=label                 
+    staff  9 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 10 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 11 slot  14 read=None             exported=Cello            src=label                 
+    staff 12 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 35 system 1   (14 staves, 3 contradicting)
+    staff 13 slot   0 read=Flute            exported=Flute            src=label                 
+    staff 14 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff 15 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff 16 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff 17 slot   4 read=Contrabassoon    exported=Contrabassoon    src=label                 
+    staff 18 slot   5 read=Horn             exported=Horn             src=label                 
+    staff 19 slot   6 read=Trumpet          exported=Horn             src=roster                  <<<
+    staff 20 slot   7 read=Timpani          exported=Trumpet          src=label                   <<<
+    staff 21 slot  10 read=Violin           exported=Timpani          src=label                   <<<
+    staff 22 slot  11 read=Violin           exported=Violin           src=label                 
+    staff 23 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 24 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 25 slot  14 read=Cello            exported=Cello            src=label                 
+    staff 26 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 36 system 0   (12 staves, 1 contradicting)
+    staff  0 slot   0 read=Flute            exported=Flute            src=label                 
+    staff  1 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff  2 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff  3 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff  4 slot   5 read=Horn             exported=Horn             src=label                 
+    staff  5 slot   6 read=Bass voice       exported=Horn             src=roster                  <<<
+    staff  6 slot   7 read=Trumpet          exported=Trumpet          src=label                 
+    staff  7 slot  11 read=Violin           exported=Violin           src=label                 
+    staff  8 slot  12 read=Violin           exported=Violin           src=label                 
+    staff  9 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 10 slot  14 read=Cello            exported=Cello            src=label                 
+    staff 11 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 60 system 0   (27 staves, 10 contradicting)
+    staff  0 slot  -1 read=None             exported=None             src=-                     
+    staff  1 slot  -1 read=Flute            exported=None             src=-                     
+    staff  2 slot  -1 read=Clarinet         exported=None             src=-                     
+    staff  3 slot  -1 read=None             exported=None             src=-                     
+    staff  4 slot  -1 read=Contrabassoon    exported=None             src=-                     
+    staff  5 slot  -1 read=None             exported=None             src=-                     
+    staff  6 slot  -1 read=Horn             exported=None             src=-                     
+    staff  7 slot  -1 read=Trumpet          exported=None             src=-                     
+    staff  8 slot  -1 read=Timpani          exported=None             src=-                     
+    staff  9 slot  -1 read=Violin           exported=None             src=-                     
+    staff 10 slot  -1 read=Violin           exported=None             src=-                     
+    staff 11 slot   0 read=Viola            exported=Flute            src=label                   <<<
+    staff 12 slot   1 read=Cello            exported=Oboe             src=label                   <<<
+    staff 13 slot   2 read=Contrabass       exported=Clarinet         src=label                   <<<
+    staff 14 slot   3 read=Flute            exported=Bassoon          src=label                   <<<
+    staff 15 slot   4 read=Oboe             exported=Contrabassoon    src=label                   <<<
+    staff 16 slot   5 read=Clarinet         exported=Horn             src=label                   <<<
+    staff 17 slot   6 read=Bassoon          exported=Horn             src=roster                  <<<
+    staff 18 slot   7 read=Horn             exported=Trumpet          src=label                   <<<
+    staff 19 slot   8 read=None             exported=Trombone         src=label                 
+    staff 20 slot   9 read=Trumpet          exported=Tuba             src=score_order             <<<
+    staff 21 slot  10 read=Timpani          exported=Timpani          src=label                 
+    staff 22 slot  11 read=Violin           exported=Violin           src=label                 
+    staff 23 slot  12 read=None             exported=Violin           src=label                 
+    staff 24 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 25 slot  14 read=Contrabass       exported=Cello            src=label                   <<<
+    staff 26 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 63 system 1   (10 staves, 1 contradicting)
+    staff 10 slot   0 read=Flute            exported=Flute            src=label                 
+    staff 11 slot   1 read=Contrabass       exported=Oboe             src=label                   <<<
+    staff 12 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff 13 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff 14 slot   5 read=Horn             exported=Horn             src=label                 
+    staff 15 slot  11 read=Violin           exported=Violin           src=label                 
+    staff 16 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 17 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 18 slot  14 read=Cello            exported=Cello            src=label                 
+    staff 19 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 67 system 0   (28 staves, 6 contradicting)
+    staff  0 slot  -1 read=None             exported=None             src=-                     
+    staff  1 slot  -1 read=Oboe             exported=None             src=-                     
+    staff  2 slot  -1 read=Clarinet         exported=None             src=-                     
+    staff  3 slot  -1 read=Bassoon          exported=None             src=-                     
+    staff  4 slot  -1 read=None             exported=None             src=-                     
+    staff  5 slot  -1 read=Horn             exported=None             src=-                     
+    staff  6 slot  -1 read=None             exported=None             src=-                     
+    staff  7 slot  -1 read=None             exported=None             src=-                     
+    staff  8 slot  -1 read=Timpani          exported=None             src=-                     
+    staff  9 slot  -1 read=None             exported=None             src=-                     
+    staff 10 slot  -1 read=Violin           exported=None             src=-                     
+    staff 11 slot  -1 read=Viola            exported=None             src=-                     
+    staff 12 slot   0 read=None             exported=Flute            src=label                 
+    staff 13 slot   1 read=None             exported=Oboe             src=label                 
+    staff 14 slot   2 read=None             exported=Clarinet         src=label                 
+    staff 15 slot   3 read=Oboe             exported=Bassoon          src=label                   <<<
+    staff 16 slot   4 read=Clarinet         exported=Contrabassoon    src=label                   <<<
+    staff 17 slot   5 read=Bassoon          exported=Horn             src=label                   <<<
+    staff 18 slot   6 read=Contrabassoon    exported=Horn             src=roster                  <<<
+    staff 19 slot   7 read=Horn             exported=Trumpet          src=label                   <<<
+    staff 20 slot   8 read=None             exported=Trombone         src=label                 
+    staff 21 slot   9 read=Trumpet          exported=Tuba             src=score_order             <<<
+    staff 22 slot  10 read=Timpani          exported=Timpani          src=label                 
+    staff 23 slot  11 read=None             exported=Violin           src=label                 
+    staff 24 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 25 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 26 slot  14 read=None             exported=Cello            src=label                 
+    staff 27 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 68 system 0   (16 staves, 1 contradicting)
+    staff  0 slot   0 read=None             exported=Flute            src=label                 
+    staff  1 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff  2 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff  3 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff  4 slot   4 read=Contrabassoon    exported=Contrabassoon    src=label                 
+    staff  5 slot   5 read=None             exported=Horn             src=label                 
+    staff  6 slot   6 read=Horn             exported=Horn             src=roster                
+    staff  7 slot   7 read=Trumpet          exported=Trumpet          src=label                 
+    staff  8 slot   8 read=Trombone         exported=Trombone         src=label                 
+    staff  9 slot   9 read=Trombone         exported=Tuba             src=score_order             <<<
+    staff 10 slot  10 read=Timpani          exported=Timpani          src=label                 
+    staff 11 slot  11 read=Violin           exported=Violin           src=label                 
+    staff 12 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 13 slot  13 read=None             exported=Viola            src=label                 
+    staff 14 slot  14 read=None             exported=Cello            src=label                 
+    staff 15 slot  15 read=None             exported=Contrabass       src=label                 
+page 72 system 1   (13 staves, 2 contradicting)
+    staff  9 slot   0 read=Flute            exported=Flute            src=label                 
+    staff 10 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff 11 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff 12 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff 13 slot   4 read=Contrabassoon    exported=Contrabassoon    src=label                 
+    staff 14 slot   6 read=Clarinet         exported=Horn             src=roster                  <<<
+    staff 15 slot   8 read=None             exported=Trombone         src=label                 
+    staff 16 slot   9 read=Trumpet          exported=Tuba             src=score_order             <<<
+    staff 17 slot  11 read=Violin           exported=Violin           src=label                 
+    staff 18 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 19 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 20 slot  14 read=Cello            exported=Cello            src=label                 
+    staff 21 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 75 system 0   (16 staves, 1 contradicting)
+    staff  0 slot   0 read=None             exported=Flute            src=label                 
+    staff  1 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff  2 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff  3 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff  4 slot   4 read=Contrabassoon    exported=Contrabassoon    src=label                 
+    staff  5 slot   5 read=None             exported=Horn             src=label                 
+    staff  6 slot   6 read=Horn             exported=Horn             src=roster                
+    staff  7 slot   7 read=Trumpet          exported=Trumpet          src=label                 
+    staff  8 slot   8 read=Trombone         exported=Trombone         src=label                 
+    staff  9 slot   9 read=Trombone         exported=Tuba             src=score_order             <<<
+    staff 10 slot  10 read=Timpani          exported=Timpani          src=label                 
+    staff 11 slot  11 read=Violin           exported=Violin           src=label                 
+    staff 12 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 13 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 14 slot  14 read=None             exported=Cello            src=label                 
+    staff 15 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 81 system 0   (16 staves, 1 contradicting)
+    staff  0 slot   0 read=None             exported=Flute            src=label                 
+    staff  1 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff  2 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff  3 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff  4 slot   4 read=Contrabassoon    exported=Contrabassoon    src=label                 
+    staff  5 slot   5 read=None             exported=Horn             src=label                 
+    staff  6 slot   6 read=Horn             exported=Horn             src=roster                
+    staff  7 slot   7 read=Trumpet          exported=Trumpet          src=label                 
+    staff  8 slot   8 read=None             exported=Trombone         src=label                 
+    staff  9 slot   9 read=Trombone         exported=Tuba             src=score_order             <<<
+    staff 10 slot  10 read=Timpani          exported=Timpani          src=label                 
+    staff 11 slot  11 read=Violin           exported=Violin           src=label                 
+    staff 12 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 13 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 14 slot  14 read=None             exported=Cello            src=label                 
+    staff 15 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 82 system 0   (16 staves, 1 contradicting)
+    staff  0 slot   0 read=None             exported=Flute            src=label                 
+    staff  1 slot   1 read=Oboe             exported=Oboe             src=label                 
+    staff  2 slot   2 read=Clarinet         exported=Clarinet         src=label                 
+    staff  3 slot   3 read=Bassoon          exported=Bassoon          src=label                 
+    staff  4 slot   4 read=Contrabassoon    exported=Contrabassoon    src=label                 
+    staff  5 slot   5 read=None             exported=Horn             src=label                 
+    staff  6 slot   6 read=Horn             exported=Horn             src=roster                
+    staff  7 slot   7 read=Trumpet          exported=Trumpet          src=label                 
+    staff  8 slot   8 read=None             exported=Trombone         src=label                 
+    staff  9 slot   9 read=Trombone         exported=Tuba             src=score_order             <<<
+    staff 10 slot  10 read=Timpani          exported=Timpani          src=label                 
+    staff 11 slot  11 read=Violin           exported=Violin           src=label                 
+    staff 12 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 13 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 14 slot  14 read=None             exported=Cello            src=label                 
+    staff 15 slot  15 read=Contrabass       exported=Contrabass       src=label                 
+page 85 system 0   (17 staves, 6 contradicting)
+    staff  0 slot  -1 read=Flute            exported=None             src=-                     
+    staff  1 slot   0 read=Oboe             exported=Flute            src=label                   <<<
+    staff  2 slot   1 read=Clarinet         exported=Oboe             src=label                   <<<
+    staff  3 slot   2 read=Bassoon          exported=Clarinet         src=label                   <<<
+    staff  4 slot   3 read=Contrabassoon    exported=Bassoon          src=label                   <<<
+    staff  5 slot   4 read=None             exported=Contrabassoon    src=label                 
+    staff  6 slot   5 read=Horn             exported=Horn             src=label                 
+    staff  7 slot   6 read=Trumpet          exported=Horn             src=roster                  <<<
+    staff  8 slot   7 read=None             exported=Trumpet          src=label                 
+    staff  9 slot   8 read=Trombone         exported=Trombone         src=label                 
+    staff 10 slot   9 read=Timpani          exported=Tuba             src=score_order             <<<
+    staff 11 slot  10 read=None             exported=Timpani          src=label                 
+    staff 12 slot  11 read=Violin           exported=Violin           src=label                 
+    staff 13 slot  12 read=Violin           exported=Violin           src=label                 
+    staff 14 slot  13 read=Viola            exported=Viola            src=label                 
+    staff 15 slot  14 read=None             exported=Cello            src=label                 
+    staff 16 slot  15 read=Contrabass       exported=Contrabass       src=label                 

@@ -1,0 +1,82 @@
+artefact                                                                      pg   lab contra  by source
+--------------------------------------------------------------------------------------------------------
+benchmarks/omr-absent-instrument-veto-2026-09/out/apply-default-p23p44.extract.json   2    28      3  {'score_order_ambiguity': 3}
+benchmarks/omr-absent-instrument-veto-2026-09/out/apply-p23p44.extract.json    2    28      3  {'score_order_ambiguity': 3}
+benchmarks/omr-absent-instrument-veto-2026-09/out/brahms-p10.extract.json      1    24      0  {}
+benchmarks/omr-absent-instrument-veto-2026-09/out/brahms-p10p75.extract.json   2    37      0  {}
+benchmarks/omr-absent-instrument-veto-2026-09/out/report-p1p44.extract.json    2    28      2  {'score_order_ambiguity': 2}
+benchmarks/omr-absent-instrument-veto-2026-09/out/report-p23p44.extract.json   2    28      3  {'score_order_ambiguity': 3}
+benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-control-p0004.extract.json   5    48      7  {'label': 6, 'score_order_ambiguity': 1}
+benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-control-p23p44.extract.json   2    28      3  {'score_order_ambiguity': 3}
+benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-fix-p0004.extract.json   5    48      7  {'label': 6, 'score_order_ambiguity': 1}
+benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-fix-p23p44.extract.json   2    28      1  {'score_order_ambiguity': 1}
+benchmarks/omr-absent-instrument-veto-2026-09/out/whole-identity.json         88   962    108  {'score_order_ambiguity': 94, 'label': 14}
+benchmarks/omr-absent-instrument-veto-2026-09/out/whole-report2.extract.json  88   962     17  {'score_order_ambiguity': 3, 'label': 14}
+benchmarks/omr-slot-alignment-2026-09/out/-map-spans-off.json                 88   973    110  {'score_order_ambiguity': 96, 'label': 14}
+benchmarks/omr-slot-alignment-2026-09/out/-map-spans-on.json                  88   973    110  {'score_order_ambiguity': 96, 'label': 14}
+benchmarks/omr-slot-alignment-2026-09/out/-ordinal-spans-off.json             88   973    110  {'score_order_ambiguity': 96, 'label': 14}
+benchmarks/omr-slot-alignment-2026-09/out/-ordinal-spans-on.json              88   973    110  {'score_order_ambiguity': 96, 'label': 14}
+benchmarks/omr-slot-alignment-2026-09/out/brahms1/-map-spans-off.json         86  1713     44  {'score_order': 16, 'label': 23, 'roster': 5}
+benchmarks/omr-slot-alignment-2026-09/out/brahms1/-map-spans-on.json          86  1713    167  {'label': 76, 'score_order': 87, 'roster': 4}
+benchmarks/omr-slot-alignment-2026-09/out/brahms1/-ordinal-spans-off.json     86  1713     44  {'score_order': 16, 'label': 23, 'roster': 5}
+benchmarks/omr-slot-alignment-2026-09/out/brahms1/-ordinal-spans-on.json      86  1713    167  {'label': 76, 'score_order': 87, 'roster': 4}
+benchmarks/omr-span-composition-2026-09/out/beet5/-fitoff-spans-off.json      88   973    110  {'score_order_ambiguity': 96, 'label': 14}
+benchmarks/omr-span-composition-2026-09/out/beet5/-fitoff-spans-on.json       88   973    110  {'score_order_ambiguity': 96, 'label': 14}
+benchmarks/omr-span-composition-2026-09/out/beet5/-fitrefuse-spans-off.json   88   973    110  {'score_order_ambiguity': 96, 'label': 14}
+benchmarks/omr-span-composition-2026-09/out/beet5/-fitrefuse-spans-on.json    88   973    110  {'score_order_ambiguity': 96, 'label': 14}
+benchmarks/omr-span-composition-2026-09/out/beet5/-fitsearch-spans-off.json   88   973    110  {'score_order_ambiguity': 96, 'label': 14}
+benchmarks/omr-span-composition-2026-09/out/beet5/-fitsearch-spans-on.json    88   973    110  {'score_order_ambiguity': 96, 'label': 14}
+benchmarks/omr-span-composition-2026-09/out/brahms1/-fitoff-spans-off.json    86  1713     44  {'score_order': 16, 'label': 23, 'roster': 5}
+benchmarks/omr-span-composition-2026-09/out/brahms1/-fitoff-spans-on.json     86  1713    167  {'label': 76, 'score_order': 87, 'roster': 4}
+benchmarks/omr-span-composition-2026-09/out/brahms1/-fitrefuse-spans-off.json  86  1713     44  {'score_order': 16, 'label': 23, 'roster': 5}
+benchmarks/omr-span-composition-2026-09/out/brahms1/-fitrefuse-spans-on.json  86  1713     44  {'score_order': 16, 'label': 23, 'roster': 5}
+benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-off.json  86  1713     44  {'score_order': 16, 'label': 23, 'roster': 5}
+benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-on.json  86  1713     48  {'roster': 11, 'label': 29, 'score_order': 8}
+benchmarks/omr-span-composition-2026-09/out/brahms1/-noshape-spans-off.json   86  1713     44  {'score_order': 16, 'label': 23, 'roster': 5}
+benchmarks/omr-span-composition-2026-09/out/brahms1/-noshape-spans-on.json    86  1713     52  {'label': 37, 'roster': 7, 'score_order': 8}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-off-spans-off.json   2    28      1  {'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-off-spans-on.json   2    28      1  {'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-refuse-spans-off.json   2    28      1  {'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-refuse-spans-on.json   2    28      1  {'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-search-spans-off.json   2    28      1  {'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-search-spans-on.json   2    28      1  {'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-off-spans-off.json  10    41     28  {'label': 28}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-off-spans-on.json  10    41     28  {'label': 28}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-refuse-spans-off.json  10    41     28  {'label': 28}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-refuse-spans-on.json  10    41     28  {'label': 28}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-search-spans-off.json  10    41     28  {'label': 28}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-search-spans-on.json  10    41     28  {'label': 28}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-off-spans-off.json   5    48      7  {'label': 6, 'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-off-spans-on.json   5    48      7  {'label': 6, 'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-refuse-spans-off.json   5    48      7  {'label': 6, 'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-refuse-spans-on.json   5    48      7  {'label': 6, 'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-search-spans-off.json   5    48      7  {'label': 6, 'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-search-spans-on.json   5    48      7  {'label': 6, 'score_order_ambiguity': 1}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-off-spans-off.json   2    27      3  {'label': 3}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-off-spans-on.json   2    27      3  {'label': 3}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-refuse-spans-off.json   2    27      3  {'label': 3}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-refuse-spans-on.json   2    27      3  {'label': 3}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-search-spans-off.json   2    27      3  {'label': 3}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-search-spans-on.json   2    27      3  {'label': 3}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-off-spans-off.json  10   192      0  {}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-off-spans-on.json  10   192      0  {}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-refuse-spans-off.json  10   192      0  {}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-refuse-spans-on.json  10   192      0  {}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-search-spans-off.json  10   192      0  {}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-search-spans-on.json  10   192      0  {}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-off-spans-off.json   5   113      6  {'score_order': 6}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-off-spans-on.json   5   113      6  {'score_order': 6}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-refuse-spans-off.json   5   113      6  {'score_order': 6}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-refuse-spans-on.json   5   113      6  {'score_order': 6}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-search-spans-off.json   5   113      6  {'score_order': 6}
+benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-search-spans-on.json   5   113      6  {'score_order': 6}
+benchmarks/omr-spans-veto-composition-2026-09/out/smoke-spans-off.json         2    28      3  {'score_order_ambiguity': 3}
+benchmarks/omr-spans-veto-composition-2026-09/out/smoke-spans-on.json          2    28      3  {'score_order_ambiguity': 3}
+benchmarks/omr-spans-veto-composition-2026-09/out/smokeapply-spans-off.json    2    28      3  {'score_order_ambiguity': 3}
+benchmarks/omr-spans-veto-composition-2026-09/out/smokeapply-spans-on.json     2    28      3  {'score_order_ambiguity': 3}
+benchmarks/omr-spans-veto-composition-2026-09/out/whole-spans-off.json        88   962    108  {'score_order_ambiguity': 94, 'label': 14}
+benchmarks/omr-spans-veto-composition-2026-09/out/whole-spans-on.json         88   962    108  {'score_order_ambiguity': 94, 'label': 14}
+benchmarks/omr-spans-veto-composition-2026-09/out/win24-spans-off.json        24   260     24  {'score_order_ambiguity': 20, 'label': 4}
+benchmarks/omr-spans-veto-composition-2026-09/out/win24-spans-on.json         24   260     24  {'score_order_ambiguity': 20, 'label': 4}
+benchmarks/omr-veto-refusal-pricing-2026-09/out/brahms1/spans-off.json        86  1713     44  {'score_order': 16, 'label': 23, 'roster': 5}
+benchmarks/omr-veto-refusal-pricing-2026-09/out/brahms1/spans-on.json         86  1713    167  {'label': 76, 'score_order': 87, 'roster': 4}
