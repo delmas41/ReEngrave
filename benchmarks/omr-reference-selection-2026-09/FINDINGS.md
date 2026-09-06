@@ -124,12 +124,36 @@ condensed reference *misnames* rather than under-names.
 (load 30–45) and the two `scan_eval` arms had reached row 2 when the session ended.
 Nothing in the branch reports a gate number and nothing should until they land.
 
-**And a flat gate result would be coverage of nothing, not a clean bill** —
-argued from `works.json` with no compute: **9 of 20 rows print one system** and
-cannot change; most of the 11 two-system rows print two systems of **equal** staff
-count (Brahms p2/p3/p4, Dvořák p7, Bach), where the old key `(size, labels)` and
-the new `(labels, size)` rank identically. A difference needs a page whose
-*smaller* system carries strictly more labels. This was pre-registered.
+**And a flat gate result would be coverage of nothing, not a clean bill.** This
+was pre-registered as an argument and has since been settled **by measurement**:
+
+> ⚠️ **The 20-row scan gate cannot exercise this flag — 0 of 20 references
+> change.**
+
+```
+9 rows print ONE system                    both rules return it
+beethoven p2/p4, brahms p3/p4,             two systems of EQUAL staff count, where
+dvorak p7, bach p1                         (size, labels) and (labels, size) rank
+                                           identically
+beethoven p3 (11, 8)                       unequal — but the larger system is also
+                                           the better labelled one (7 vs 4)
+brahms p2 (14, 13)                         unequal — labels tie 12/12, size decides
+```
+
+A difference needs a page whose *smaller* system carries strictly more labels,
+and this corpus contains none. **So a "no regression" report from the gate would
+have overstated the evidence badly** — the same shape as the FILL and
+roster-clef negatives, where a consumer's *population* rather than its quality
+settled the question. The exposure probe costs ~15 s a row against ~2 min to
+transcribe one.
+
+⚠️ **A fault found in the probe itself, and worth being findable: THE PROBE AND
+THE PIPELINE CAN READ THE MARGIN BY DIFFERENT MEANS.** The first exposure run
+used **Surya alone**, while the pipeline runs a ladder (PDF text layer → Surya →
+Tesseract). Gate row **IMSLP 575951 has a text layer**, so the pipeline can
+resolve labels the probe does not — and the probe would then report SAME where
+the pipeline differs. `--ladder` runs the real `contextual._labels_for_page`
+chain and is now the default.
 
 ⚠️ Relatedly: **all ten rows the roster's evidence came from are single-PAGE
 runs**, the one regime this bug cannot occur in. That is why it went unseen.
