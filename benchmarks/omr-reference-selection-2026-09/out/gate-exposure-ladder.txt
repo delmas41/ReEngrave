@@ -2,3 +2,18 @@
   beethoven-sym5-mvt1-984073-p1        systems=[12] labels=[11]  ref old=12 new=12  SAME
   beethoven-sym5-mvt1-984073-p2        systems=[11, 11] labels=[7, 7]  ref old=11 new=11  SAME
   beethoven-sym5-mvt1-984073-p3        systems=[11, 8] labels=[7, 4]  ref old=11 new=11  SAME
+  beethoven-sym5-mvt1-984073-p4        systems=[11, 11] labels=[6, 7]  ref old=11 new=11  SAME
+  beethoven-sym5-mvt1-575951-p1        systems=[12] labels=[11]  ref old=12 new=12  SAME
+  beethoven-sym5-mvt1-575951-p2        systems=[11, 11] labels=[7, 7]  ref old=11 new=11  SAME
+  beethoven-sym5-mvt1-575951-p3        systems=[11, 8] labels=[7, 4]  ref old=11 new=11  SAME
+  beethoven-sym5-mvt1-575951-p4        systems=[11, 11] labels=[6, 7]  ref old=11 new=11  SAME
+  dvorak-sym9-mvt1-405834-p5           systems=[15] labels=[15]  ref old=15 new=15  SAME
+  dvorak-sym9-mvt1-405834-p6           systems=[15] labels=[0]  ref old=15 new=15  SAME
+  dvorak-sym9-mvt1-405834-p7           systems=[15, 15] labels=[0, 0]  ref old=15 new=15  SAME
+  brahms-sym1-mvt1-317803-p1           systems=[14] labels=[12]  ref old=14 new=14  SAME
+  brahms-sym1-mvt1-317803-p2           systems=[14, 13] labels=[12, 12]  ref old=14 new=14  SAME
+  brahms-sym1-mvt1-317803-p3           systems=[14, 14] labels=[13, 12]  ref old=14 new=14  SAME
+  brahms-sym1-mvt1-317803-p4           systems=[14, 14] labels=[11, 13]  ref old=14 new=14  SAME
+  mahler-sym5-mvt1-local-p2            systems=[19] labels=[17]  ref old=19 new=19  SAME
+  mahler-sym5-mvt1-local-p3            systems=[15] labels=[12]  ref old=15 new=15  SAME
+  mahler-sym5-mvt1-local-p4            systems=[21] labels=[16]  ref old=21 new=21  SAME
