@@ -139,12 +139,74 @@ post-pass, which is what today was. It works — Beethoven's 7 went to 0 — but
 each fix is one work deep and invisible to every standing benchmark, which is
 precisely how a default that makes a second work four times worse got shipped.
 
-## 7. Open, and deliberately not decided here
+## 7. "Interactive" means the PROCESSES talk — settled 2026-09-06
+
+Sean's clarification, and his reason: **human interaction is the most expensive
+part of the process.** So inter-process exchange is not a cheaper substitute for
+a human-in-the-loop design — displacing human arbitration is the *point*, and it
+is what this project exists to do.
+
+That raises the bar above the write-only store of phase 1. Talking means a
+consumer can **push back**: the pitch resolver can say *"under this clef this
+staff's register is absurd"*, identity can answer *"then try viola"*, and
+`apply_proposal` restates the pitches. That is constraint propagation, not a
+blackboard.
+
+**The template already exists.** `contextual._labels_for_page` runs three
+readers cheapest-first — PDF text layer (free), Surya OCR (free), Claude Vision
+(~1c/system, off by default) — and **only pays when the free ones come back
+empty**. That is already one process asking another a question, with a cost
+model. Generalising it is the design, not inventing it.
+
+⚠️⚠️ **AND THE FAILURE MODE IS ALREADY MEASURED — this is the thing that will
+break it.** Processes that talk can **confirm each other's mistakes**. Identity
+tells the clef reader "you are a viola"; the clef reader reports alto; identity
+counts that as corroboration. One guess becomes two agreeing signals, and the
+loop is invisible because every participant is behaving correctly.
+
+**Three separate places in this codebase already refuse a feedback edge on
+exactly these grounds**, which is unusually strong evidence for a hazard that
+has not been designed for yet:
+
+- `clef_correction.py:396` — the instrument-clef mechanisms act only on identity
+  a reader **actually READ off the page**, *"never score-order deductions —
+  measured to close the loop on its own mistake, Beethoven 5 p.15"*.
+- `dossier.py:436` — the part→staff join pins on margin LABELS, never on clefs,
+  because *"would be circular exactly where it matters"*.
+- `score_layouts.py:683` — the same refusal again.
+
+**So the safety rule is PROVENANCE, not topology.** It is not enough that the
+control flow has no cycle; the *evidence* must have no cycle. A message may be
+consumed only by a process whose own output did not contribute to it. The field
+that makes this checkable already exists and is already load-bearing —
+`instrument_source` (`label` / `roster` / `score_order` / `score_order_ambiguity`)
+— and it was the discriminator that made today's label-contradiction finding
+safe: without it, that check reports our own landed fixes as defects.
+
+**Design consequences, concretely:**
+
+1. Every message carries its provenance chain, not just its value.
+2. A process refuses a message whose chain contains itself. Read-off-the-page
+   evidence may circulate freely; deduced evidence may not return to its own
+   deducer.
+3. Corroboration counts only across **independent** chains. Two signals sharing
+   an ancestor are one signal.
+4. Bounded rounds with a stated stopping rule, and every revision recorded with
+   what changed it — the project already does this (`rhythm_reconciliation`,
+   `weight_routing`, `ambiguous_labels_resolved` are all self-describing).
+
+**And the phase gates need a human-cost axis**, since that is the stated payoff:
+alongside identity accuracy, measure **flagged differences a human would have to
+adjudicate**. A change that improves accuracy but not review load has not
+delivered what it was built for.
+
+## 8. Open, and deliberately not decided here
 
 - Whether the early pass runs per page or per document. A whole-work run has
   more evidence; the web app's default window is `OMR_MAX_PAGES=5`, pages 0-4.
-- Whether "interactive" means a human in the loop (the review UI already has
-  one) or merely inter-process. Sean's phrasing allows both, and the human
-  version is cheaper to build and probably more valuable per hour.
 - Whether identity revision may change SEGMENTATION. Everything above holds it
   fixed. Letting it move is a much larger claim.
+- What the stopping rule is when two processes disagree and neither yields.
+  Today's answer everywhere in this codebase is ABSTAIN, and it is probably
+  right here too — but abstention has a human cost, which is the thing being
+  minimised, so it cannot be the automatic answer.
