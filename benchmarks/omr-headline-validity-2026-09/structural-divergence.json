@@ -1,0 +1,654 @@
+{
+ "generated_by": "benchmarks/omr-headline-validity-2026-09/probe_structural_divergence.py",
+ "tag": "..graft09",
+ "rows": [
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 12,
+    "n_systems": 1
+   },
+   "works_json_n_parts_field": 18,
+   "truth_file": {
+    "n_parts": 18,
+    "n_declared_staves": 18,
+    "multi_staff_parts": []
+   },
+   "field_matches_file": true,
+   "ours": {
+    "n_parts": 12
+   },
+   "hand_map": {
+    "n_printed_staves_one_system": 12,
+    "n_condensed_staves": 6,
+    "condensed": [
+     {
+      "staff": "Flauti",
+      "parts": [
+       0,
+       1
+      ]
+     },
+     {
+      "staff": "Oboi",
+      "parts": [
+       2,
+       3
+      ]
+     },
+     {
+      "staff": "Clarinetti in B",
+      "parts": [
+       4,
+       5
+      ]
+     },
+     {
+      "staff": "Fagotti",
+      "parts": [
+       6,
+       7
+      ]
+     },
+     {
+      "staff": "Corni in Es",
+      "parts": [
+       8,
+       9
+      ]
+     },
+     {
+      "staff": "Trombe in C",
+      "parts": [
+       10,
+       11
+      ]
+     }
+    ],
+    "parts_covered": 18,
+    "orphan_parts": [],
+    "n_orphan_parts": 0,
+    "surplus_parts": 6
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 22,
+    "n_systems": 2
+   },
+   "works_json_n_parts_field": 18,
+   "truth_file": {
+    "n_parts": 18,
+    "n_declared_staves": 18,
+    "multi_staff_parts": []
+   },
+   "field_matches_file": true,
+   "ours": {
+    "n_parts": 11
+   },
+   "hand_map": {
+    "n_printed_staves_one_system": 11,
+    "n_condensed_staves": 7,
+    "condensed": [
+     {
+      "staff": "Flauti",
+      "parts": [
+       0,
+       1
+      ]
+     },
+     {
+      "staff": "Oboi",
+      "parts": [
+       2,
+       3
+      ]
+     },
+     {
+      "staff": "Clarinetti in B",
+      "parts": [
+       4,
+       5
+      ]
+     },
+     {
+      "staff": "Fagotti",
+      "parts": [
+       6,
+       7
+      ]
+     },
+     {
+      "staff": "Corni in Es",
+      "parts": [
+       8,
+       9
+      ]
+     },
+     {
+      "staff": "Trombe in C",
+      "parts": [
+       10,
+       11
+      ]
+     },
+     {
+      "staff": "Violoncello e Basso",
+      "parts": [
+       16,
+       17
+      ]
+     }
+    ],
+    "parts_covered": 18,
+    "orphan_parts": [],
+    "n_orphan_parts": 0,
+    "surplus_parts": 7
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 19,
+    "n_systems": 2
+   },
+   "works_json_n_parts_field": 18,
+   "truth_file": null,
+   "ours": null,
+   "hand_map": null,
+   "abstain_reason": "no hand-read staves map in works.json"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 22,
+    "n_systems": 2
+   },
+   "works_json_n_parts_field": 18,
+   "truth_file": null,
+   "ours": null,
+   "hand_map": null,
+   "abstain_reason": "no hand-read staves map in works.json"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 12,
+    "n_systems": 1
+   },
+   "works_json_n_parts_field": 18,
+   "truth_file": {
+    "n_parts": 18,
+    "n_declared_staves": 18,
+    "multi_staff_parts": []
+   },
+   "field_matches_file": true,
+   "ours": {
+    "n_parts": 12
+   },
+   "hand_map": {
+    "n_printed_staves_one_system": 12,
+    "n_condensed_staves": 6,
+    "condensed": [
+     {
+      "staff": "Flauti",
+      "parts": [
+       0,
+       1
+      ]
+     },
+     {
+      "staff": "Oboi",
+      "parts": [
+       2,
+       3
+      ]
+     },
+     {
+      "staff": "Clarinetti in B",
+      "parts": [
+       4,
+       5
+      ]
+     },
+     {
+      "staff": "Fagotti",
+      "parts": [
+       6,
+       7
+      ]
+     },
+     {
+      "staff": "Corni in Es",
+      "parts": [
+       8,
+       9
+      ]
+     },
+     {
+      "staff": "Trombe in C",
+      "parts": [
+       10,
+       11
+      ]
+     }
+    ],
+    "parts_covered": 18,
+    "orphan_parts": [],
+    "n_orphan_parts": 0,
+    "surplus_parts": 6
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 22,
+    "n_systems": 2
+   },
+   "works_json_n_parts_field": 18,
+   "truth_file": {
+    "n_parts": 18,
+    "n_declared_staves": 18,
+    "multi_staff_parts": []
+   },
+   "field_matches_file": true,
+   "ours": {
+    "n_parts": 11
+   },
+   "hand_map": {
+    "n_printed_staves_one_system": 11,
+    "n_condensed_staves": 7,
+    "condensed": [
+     {
+      "staff": "Flauti",
+      "parts": [
+       0,
+       1
+      ]
+     },
+     {
+      "staff": "Oboi",
+      "parts": [
+       2,
+       3
+      ]
+     },
+     {
+      "staff": "Clarinetti in B",
+      "parts": [
+       4,
+       5
+      ]
+     },
+     {
+      "staff": "Fagotti",
+      "parts": [
+       6,
+       7
+      ]
+     },
+     {
+      "staff": "Corni in Es",
+      "parts": [
+       8,
+       9
+      ]
+     },
+     {
+      "staff": "Trombe in C",
+      "parts": [
+       10,
+       11
+      ]
+     },
+     {
+      "staff": "Violoncello e Basso",
+      "parts": [
+       16,
+       17
+      ]
+     }
+    ],
+    "parts_covered": 18,
+    "orphan_parts": [],
+    "n_orphan_parts": 0,
+    "surplus_parts": 7
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 19,
+    "n_systems": 2
+   },
+   "works_json_n_parts_field": 18,
+   "truth_file": null,
+   "ours": null,
+   "hand_map": null,
+   "abstain_reason": "no hand-read staves map in works.json"
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "work_id": "beethoven--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 22,
+    "n_systems": 2
+   },
+   "works_json_n_parts_field": 18,
+   "truth_file": null,
+   "ours": null,
+   "hand_map": null,
+   "abstain_reason": "no hand-read staves map in works.json"
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "work_id": "dvorak--symphony-9",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 15,
+    "n_systems": 1
+   },
+   "works_json_n_parts_field": 15,
+   "truth_file": {
+    "n_parts": 15,
+    "n_declared_staves": 15,
+    "multi_staff_parts": []
+   },
+   "field_matches_file": true,
+   "ours": {
+    "n_parts": 15
+   },
+   "hand_map": {
+    "n_printed_staves_one_system": 15,
+    "n_condensed_staves": 0,
+    "condensed": [],
+    "parts_covered": 15,
+    "orphan_parts": [],
+    "n_orphan_parts": 0,
+    "surplus_parts": 0
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "work_id": "dvorak--symphony-9",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 15,
+    "n_systems": 1
+   },
+   "works_json_n_parts_field": 15,
+   "truth_file": {
+    "n_parts": 15,
+    "n_declared_staves": 15,
+    "multi_staff_parts": []
+   },
+   "field_matches_file": true,
+   "ours": {
+    "n_parts": 15
+   },
+   "hand_map": {
+    "n_printed_staves_one_system": 15,
+    "n_condensed_staves": 0,
+    "condensed": [],
+    "parts_covered": 15,
+    "orphan_parts": [],
+    "n_orphan_parts": 0,
+    "surplus_parts": 0
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "work_id": "dvorak--symphony-9",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 30,
+    "n_systems": 2
+   },
+   "works_json_n_parts_field": 15,
+   "truth_file": null,
+   "ours": null,
+   "hand_map": null,
+   "abstain_reason": "no trimmed truth on disk"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "work_id": "brahms--symphony-1",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 14,
+    "n_systems": 1
+   },
+   "works_json_n_parts_field": 21,
+   "truth_file": {
+    "n_parts": 21,
+    "n_declared_staves": 21,
+    "multi_staff_parts": []
+   },
+   "field_matches_file": true,
+   "ours": {
+    "n_parts": 14
+   },
+   "hand_map": {
+    "n_printed_staves_one_system": 14,
+    "n_condensed_staves": 7,
+    "condensed": [
+     {
+      "staff": "2 Floten",
+      "parts": [
+       0,
+       1
+      ]
+     },
+     {
+      "staff": "2 Oboen",
+      "parts": [
+       2,
+       3
+      ]
+     },
+     {
+      "staff": "2 Klarinetten in B",
+      "parts": [
+       4,
+       5
+      ]
+     },
+     {
+      "staff": "2 Fagotte",
+      "parts": [
+       6,
+       7
+      ]
+     },
+     {
+      "staff": "4 Horner in C 1./2.",
+      "parts": [
+       9,
+       10
+      ]
+     },
+     {
+      "staff": "4 Horner in Es 3./4.",
+      "parts": [
+       11,
+       12
+      ]
+     },
+     {
+      "staff": "2 Trompeten in C",
+      "parts": [
+       13,
+       14
+      ]
+     }
+    ],
+    "parts_covered": 21,
+    "orphan_parts": [],
+    "n_orphan_parts": 0,
+    "surplus_parts": 7
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "work_id": "brahms--symphony-1",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 27,
+    "n_systems": 2
+   },
+   "works_json_n_parts_field": 21,
+   "truth_file": {
+    "n_parts": 21,
+    "n_declared_staves": 21,
+    "multi_staff_parts": []
+   },
+   "field_matches_file": true,
+   "ours": {
+    "n_parts": 27
+   },
+   "hand_map": null,
+   "abstain_reason": "no hand-read staves map in works.json"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "work_id": "brahms--symphony-1",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 28,
+    "n_systems": 2
+   },
+   "works_json_n_parts_field": 21,
+   "truth_file": null,
+   "ours": null,
+   "hand_map": null,
+   "abstain_reason": "no trimmed truth on disk"
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "work_id": "brahms--symphony-1",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 28,
+    "n_systems": 2
+   },
+   "works_json_n_parts_field": 21,
+   "truth_file": null,
+   "ours": null,
+   "hand_map": null,
+   "abstain_reason": "no trimmed truth on disk"
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "work_id": "mahler--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 17,
+    "n_systems": 1
+   },
+   "works_json_n_parts_field": 38,
+   "truth_file": {
+    "n_parts": 38,
+    "n_declared_staves": 38,
+    "multi_staff_parts": []
+   },
+   "field_matches_file": true,
+   "ours": {
+    "n_parts": 17
+   },
+   "hand_map": null,
+   "abstain_reason": "no hand-read staves map in works.json"
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "work_id": "mahler--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 13,
+    "n_systems": 1
+   },
+   "works_json_n_parts_field": 38,
+   "truth_file": {
+    "n_parts": 38,
+    "n_declared_staves": 38,
+    "multi_staff_parts": []
+   },
+   "field_matches_file": true,
+   "ours": {
+    "n_parts": 13
+   },
+   "hand_map": null,
+   "abstain_reason": "no hand-read staves map in works.json"
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "work_id": "mahler--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 18,
+    "n_systems": 1
+   },
+   "works_json_n_parts_field": 38,
+   "truth_file": null,
+   "ours": null,
+   "hand_map": null,
+   "abstain_reason": "no hand-read staves map in works.json"
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "work_id": "mahler--symphony-5",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 17,
+    "n_systems": 1
+   },
+   "works_json_n_parts_field": 38,
+   "truth_file": null,
+   "ours": null,
+   "hand_map": null,
+   "abstain_reason": "no hand-read staves map in works.json"
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "work_id": "bach--concerto-3",
+   "pooled": true,
+   "page": {
+    "printed_staves_on_page": 24,
+    "n_systems": 2
+   },
+   "works_json_n_parts_field": 11,
+   "truth_file": {
+    "n_parts": 11,
+    "n_declared_staves": 11,
+    "multi_staff_parts": []
+   },
+   "field_matches_file": true,
+   "ours": {
+    "n_parts": 24
+   },
+   "hand_map": null,
+   "abstain_reason": "no hand-read staves map in works.json"
+  }
+ ],
+ "summary": {
+  "n_rows": 20,
+  "n_with_hand_map": 7,
+  "n_abstained": 13,
+  "field_disagrees_with_file": []
+ }
+}

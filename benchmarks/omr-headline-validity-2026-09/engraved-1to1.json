@@ -1,0 +1,205 @@
+{
+ "generated_by": "benchmarks/omr-headline-validity-2026-09/probe_engraved_is_1to1.py",
+ "works": [
+  {
+   "work": "beethoven-sym5-mvt1",
+   "truth_parts": 18,
+   "truth_declared_staves": 18,
+   "multi_staff_parts": [],
+   "ly_printed_staves": 18,
+   "ly_contexts": {
+    "plain_staff_contexts": 18,
+    "piano_staff_wrappers": 0,
+    "numbered_inner_staves": 0,
+    "total": 18
+   },
+   "page_staves_equal_truth_declared_staves": true,
+   "every_truth_part_has_a_printed_staff": true,
+   "condensation_present": false,
+   "our_parts": 18
+  },
+  {
+   "work": "brahms-sym1-mvt1",
+   "truth_parts": 21,
+   "truth_declared_staves": 21,
+   "multi_staff_parts": [],
+   "ly_printed_staves": 21,
+   "ly_contexts": {
+    "plain_staff_contexts": 21,
+    "piano_staff_wrappers": 0,
+    "numbered_inner_staves": 0,
+    "total": 21
+   },
+   "page_staves_equal_truth_declared_staves": true,
+   "every_truth_part_has_a_printed_staff": true,
+   "condensation_present": false,
+   "our_parts": 21
+  },
+  {
+   "work": "mahler-sym5-mvt1",
+   "truth_parts": 38,
+   "truth_declared_staves": 38,
+   "multi_staff_parts": [],
+   "ly_printed_staves": 38,
+   "ly_contexts": {
+    "plain_staff_contexts": 38,
+    "piano_staff_wrappers": 0,
+    "numbered_inner_staves": 0,
+    "total": 38
+   },
+   "page_staves_equal_truth_declared_staves": true,
+   "every_truth_part_has_a_printed_staff": true,
+   "condensation_present": false,
+   "our_parts": 38
+  },
+  {
+   "work": "mozart-sym40-mvt1",
+   "truth_parts": 11,
+   "truth_declared_staves": 11,
+   "multi_staff_parts": [],
+   "ly_printed_staves": 11,
+   "ly_contexts": {
+    "plain_staff_contexts": 11,
+    "piano_staff_wrappers": 0,
+    "numbered_inner_staves": 0,
+    "total": 11
+   },
+   "page_staves_equal_truth_declared_staves": true,
+   "every_truth_part_has_a_printed_staff": true,
+   "condensation_present": false,
+   "our_parts": 11
+  },
+  {
+   "work": "mozart-sym41-mvt1",
+   "truth_parts": 17,
+   "truth_declared_staves": 17,
+   "multi_staff_parts": [],
+   "ly_printed_staves": 17,
+   "ly_contexts": {
+    "plain_staff_contexts": 17,
+    "piano_staff_wrappers": 0,
+    "numbered_inner_staves": 0,
+    "total": 17
+   },
+   "page_staves_equal_truth_declared_staves": true,
+   "every_truth_part_has_a_printed_staff": true,
+   "condensation_present": false,
+   "our_parts": 17
+  },
+  {
+   "work": "beethoven-sym3-mvt1",
+   "truth_parts": 19,
+   "truth_declared_staves": 19,
+   "multi_staff_parts": [],
+   "ly_printed_staves": 19,
+   "ly_contexts": {
+    "plain_staff_contexts": 19,
+    "piano_staff_wrappers": 0,
+    "numbered_inner_staves": 0,
+    "total": 19
+   },
+   "page_staves_equal_truth_declared_staves": true,
+   "every_truth_part_has_a_printed_staff": true,
+   "condensation_present": false,
+   "our_parts": 19
+  },
+  {
+   "work": "brahms-sym4-mvt1",
+   "truth_parts": 20,
+   "truth_declared_staves": 20,
+   "multi_staff_parts": [],
+   "ly_printed_staves": 20,
+   "ly_contexts": {
+    "plain_staff_contexts": 20,
+    "piano_staff_wrappers": 0,
+    "numbered_inner_staves": 0,
+    "total": 20
+   },
+   "page_staves_equal_truth_declared_staves": true,
+   "every_truth_part_has_a_printed_staff": true,
+   "condensation_present": false,
+   "our_parts": 20
+  },
+  {
+   "work": "dvorak-sym9-mvt4",
+   "truth_parts": 18,
+   "truth_declared_staves": 19,
+   "multi_staff_parts": [
+    "P5"
+   ],
+   "ly_printed_staves": 19,
+   "ly_contexts": {
+    "plain_staff_contexts": 17,
+    "piano_staff_wrappers": 1,
+    "numbered_inner_staves": 2,
+    "total": 19
+   },
+   "page_staves_equal_truth_declared_staves": true,
+   "every_truth_part_has_a_printed_staff": true,
+   "condensation_present": false,
+   "our_parts": 18
+  },
+  {
+   "work": "tchaikovsky-sym4-mvt2",
+   "truth_parts": 20,
+   "truth_declared_staves": 20,
+   "multi_staff_parts": [],
+   "ly_printed_staves": 20,
+   "ly_contexts": {
+    "plain_staff_contexts": 20,
+    "piano_staff_wrappers": 0,
+    "numbered_inner_staves": 0,
+    "total": 20
+   },
+   "page_staves_equal_truth_declared_staves": true,
+   "every_truth_part_has_a_printed_staff": true,
+   "condensation_present": false,
+   "our_parts": 20
+  },
+  {
+   "work": "tchaikovsky-sym6-mvt2",
+   "truth_parts": 16,
+   "truth_declared_staves": 17,
+   "multi_staff_parts": [
+    "P1"
+   ],
+   "ly_printed_staves": 17,
+   "ly_contexts": {
+    "plain_staff_contexts": 15,
+    "piano_staff_wrappers": 1,
+    "numbered_inner_staves": 2,
+    "total": 17
+   },
+   "page_staves_equal_truth_declared_staves": true,
+   "every_truth_part_has_a_printed_staff": true,
+   "condensation_present": false,
+   "our_parts": 17
+  },
+  {
+   "work": "bruckner-sym5-mvt1",
+   "truth_parts": 25,
+   "truth_declared_staves": 25,
+   "multi_staff_parts": [],
+   "ly_printed_staves": 25,
+   "ly_contexts": {
+    "plain_staff_contexts": 25,
+    "piano_staff_wrappers": 0,
+    "numbered_inner_staves": 0,
+    "total": 25
+   },
+   "page_staves_equal_truth_declared_staves": true,
+   "every_truth_part_has_a_printed_staff": true,
+   "condensation_present": false,
+   "our_parts": 25
+  }
+ ],
+ "verdict": {
+  "n_works": 11,
+  "n_with_condensation": 0,
+  "n_page_staves_match_declared": 11,
+  "works_where_staves_exceed_parts": [
+   "dvorak-sym9-mvt4",
+   "tchaikovsky-sym6-mvt2"
+  ]
+ }
+}

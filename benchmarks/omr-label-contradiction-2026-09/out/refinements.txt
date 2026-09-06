@@ -1,0 +1,8 @@
+== beet5: 110 contradictions
+   duplicate: False/export_wrong=7  False/label_wrong=12  True/export_wrong=86  True/label_wrong=5
+   read_dup: False/export_wrong=93  False/label_wrong=4  True/label_wrong=13
+   run: False/export_wrong=92  False/label_wrong=16  True/export_wrong=1  True/label_wrong=1
+== brahms1: 48 contradictions
+   duplicate: False/export_wrong=38  False/label_wrong=2  True/export_wrong=7  True/label_wrong=1
+   read_dup: False/export_wrong=34  False/label_wrong=1  True/export_wrong=11  True/label_wrong=2
+   run: False/export_wrong=7  False/label_wrong=2  True/export_wrong=38  True/label_wrong=1

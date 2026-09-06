@@ -1,0 +1,36 @@
+source: beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf
+veto block keys: ['label_evidence', 'mode', 'reference_size', 'rule', 'slot_instruments', 'staff_slots', 'vetoes', 'window']
+
+staff records: {'staves': 1616, 'named': 1616}
+instrument_source: {'label': 1501, 'score_order_ambiguity': 115}
+labelled_staves (contextual): 962
+
+veto records: 109
+record keys: ['attested_first', 'attested_last', 'distance_pages', 'instrument', 'nearest_attested_page', 'page_index', 'pages_outside', 'rule', 'slot', 'staff_index', 'system_index']
+distance spread: []
+outside: {None: 109}
+instruments refused: {'Trombone': 75, 'Contrabassoon': 10, 'Piccolo': 6, 'Violin': 10, 'Viola': 6, 'Cello': 2}
+
+label_evidence rows: 962
+mode report rule span window 0 reference_size 17
+{
+ "attested_first": 44,
+ "attested_last": 87,
+ "distance_pages": 32,
+ "instrument": "Trombone",
+ "nearest_attested_page": 44,
+ "page_index": 12,
+ "pages_outside": 32,
+ "rule": "span",
+ "slot": 9,
+ "staff_index": 19,
+ "system_index": 1
+}
+distance_pages: {1: 3, 2: 6, 3: 2, 4: 3, 5: 8, 6: 3, 7: 8, 12: 8, 13: 7, 14: 3, 15: 3, 16: 4, 17: 4, 18: 3, 19: 10, 20: 1, 21: 6, 22: 6, 24: 6, 25: 3, 26: 3, 27: 2, 28: 1, 32: 3, 42: 3}
+pages_outside : {1: 3, 2: 6, 3: 2, 4: 3, 5: 8, 6: 3, 7: 8, 12: 8, 13: 7, 14: 3, 15: 3, 16: 4, 17: 4, 18: 3, 19: 10, 20: 1, 21: 6, 22: 6, 24: 6, 25: 3, 26: 3, 27: 2, 28: 1, 32: 3, 42: 3}
+  Trombone         {1: 3, 2: 5, 3: 2, 4: 3, 5: 6, 6: 3, 7: 5, 13: 4, 14: 3, 15: 3, 16: 3, 17: 2, 18: 3, 19: 3, 20: 1, 21: 6, 22: 5, 24: 6, 25: 3, 26: 3, 32: 3}
+  Contrabassoon    {5: 1, 7: 1, 12: 1, 16: 1, 17: 2, 19: 1, 22: 1, 27: 1, 28: 1}
+  Piccolo          {2: 1, 5: 1, 7: 2, 12: 1, 27: 1}
+  Violin           {12: 4, 13: 1, 19: 4, 42: 1}
+  Viola            {12: 2, 13: 1, 19: 2, 42: 1}
+  Cello            {13: 1, 42: 1}

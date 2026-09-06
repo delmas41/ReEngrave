@@ -1,0 +1,6 @@
+no find_contradictions call      -> 1 failed, 23 passed, 5 warnings in 1.32s
+no summary assignment            -> 1 failed, 23 passed, 5 warnings in 1.20s
+no per-staff write               -> 1 failed, 23 passed, 5 warnings in 1.17s
+no warning                       -> 1 failed, 23 passed, 5 warnings in 1.33s
+gated behind a flag              -> 1 failed, 23 passed, 5 warnings in 1.30s
+restored                         -> 24 passed, 5 warnings in 1.41s

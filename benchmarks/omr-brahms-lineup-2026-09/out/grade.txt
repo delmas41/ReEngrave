@@ -1,0 +1,44 @@
+INPUT ASSERTION: systems-in-run=151 staff-records-in-run=1927  ->  FULL systems scored=53 staff-records-scored=764 (39.6% of the document)
+INPUT ASSERTION: every arm shares one staff-record key set (1927 keys), so a difference below is the flag
+
+arm              veto   judgeable   correct   wrong  unnamed   rate
+fit-off          off          764       642     122        0   0.8403
+fit-refuse       off          764       742      22        0   0.9712
+fit-search       off          764       741      23        0   0.9699
+
+--- fit-off  veto=off
+      lineup p0-25/14     (28 systems):  308/ 392 = 0.7857
+      lineup p33-35/14    ( 2 systems):   24/  28 = 0.8571
+      lineup p36-44/12    ( 6 systems):   55/  72 = 0.7639
+      lineup p45-85/16    (17 systems):  255/ 272 = 0.9375
+    confusions (truth -> emitted), most common first:
+         33  Horn             -> Trumpet
+         33  Trumpet          -> Trombone
+         28  Timpani          -> Tuba
+         17  Trombone         -> Tuba
+          8  Violin           -> Tuba
+          2  Timpani          -> Trombone
+          1  Horn             -> Contrabassoon
+
+--- fit-refuse  veto=off
+      lineup p0-25/14     (28 systems):  391/ 392 = 0.9974
+      lineup p33-35/14    ( 2 systems):   24/  28 = 0.8571
+      lineup p36-44/12    ( 6 systems):   72/  72 = 1.0000
+      lineup p45-85/16    (17 systems):  255/ 272 = 0.9375
+    confusions (truth -> emitted), most common first:
+         17  Trombone         -> Tuba
+          2  Timpani          -> Trombone
+          2  Violin           -> Tuba
+          1  Trumpet          -> Trombone
+
+--- fit-search  veto=off
+      lineup p0-25/14     (28 systems):  392/ 392 = 1.0000
+      lineup p33-35/14    ( 2 systems):   22/  28 = 0.7857
+      lineup p36-44/12    ( 6 systems):   72/  72 = 1.0000
+      lineup p45-85/16    (17 systems):  255/ 272 = 0.9375
+    confusions (truth -> emitted), most common first:
+         17  Trombone         -> Tuba
+          2  Trumpet          -> Horn
+          2  Timpani          -> Trumpet
+          2  Violin           -> Timpani
+

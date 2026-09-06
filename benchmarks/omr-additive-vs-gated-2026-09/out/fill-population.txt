@@ -1,0 +1,9 @@
+MIN_NOTEHEADS = 12
+
+SCAN
+   clef read    n= 163  median pitched noteheads=  19  zero=  15  >= MIN_NOTEHEADS:  106 (65.0%)
+   clef unread  n=  30  median pitched noteheads=  21  zero=   5  >= MIN_NOTEHEADS:   21 (70.0%)
+
+ENGRAVED
+   clef read    n= 222  median pitched noteheads=   1  zero= 109  >= MIN_NOTEHEADS:   45 (20.3%)
+   clef unread  n=   2  median pitched noteheads=   0  zero=   2  >= MIN_NOTEHEADS:    0 (0.0%)

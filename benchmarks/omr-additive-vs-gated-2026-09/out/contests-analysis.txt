@@ -1,0 +1,51 @@
+rows: 20   contested pairs: 4521
+
+-- which tier decided --
+   distance               4255   94.1%
+   ladder                  266    5.9%
+
+-- category of the contested glyph --
+   structural             2197
+   dynamic                 869
+   notehead                816
+   ornament                215
+   accidental              198
+   flag                    102
+   rest                     91
+   clef                     24
+   time_sig_digit            7
+   stem                      2
+
+-- DOES CONFIDENCE AGREE WITH THE TIER THAT DECIDED? --
+   (ladder is the internal gold standard; 0.500 means confidence carries no ownership information)
+   ladder               n=   264 (+2 exact ties)  P(winner conf > loser conf) = 0.617  95% CI [0.558, 0.674]  median |Δconf| = 0.028
+   distance             n=  4233 (+22 exact ties)  P(winner conf > loser conf) = 0.545  95% CI [0.530, 0.560]  median |Δconf| = 0.069
+
+-- REACH of a confidence tie-break under rank 0 --
+   |Δconf| > 0.00: confidence would OVERTURN distance on  1925 of 4233 distance-decided pairs  (45.5%)
+   |Δconf| > 0.05: confidence would OVERTURN distance on  1109 of 4233 distance-decided pairs  (26.2%)
+   |Δconf| > 0.10: confidence would OVERTURN distance on   712 of 4233 distance-decided pairs  (16.8%)
+   |Δconf| > 0.20: confidence would OVERTURN distance on   302 of 4233 distance-decided pairs  ( 7.1%)
+   |Δconf| > 0.30: confidence would OVERTURN distance on   143 of 4233 distance-decided pairs  ( 3.4%)
+
+-- per row --
+   bach-brandenburg3-mvt1-468678-p1     distance=96  ladder=14
+   beethoven-sym5-mvt1-575951-p1        distance=53
+   beethoven-sym5-mvt1-575951-p2        distance=342  ladder=20
+   beethoven-sym5-mvt1-575951-p3        distance=96  ladder=6
+   beethoven-sym5-mvt1-575951-p4        distance=362  ladder=42
+   beethoven-sym5-mvt1-984073-p1        distance=41
+   beethoven-sym5-mvt1-984073-p2        distance=261  ladder=12
+   beethoven-sym5-mvt1-984073-p3        distance=101  ladder=1
+   beethoven-sym5-mvt1-984073-p4        distance=348  ladder=23
+   brahms-sym1-mvt1-317803-p1           distance=72  ladder=1
+   brahms-sym1-mvt1-317803-p2           distance=524  ladder=13
+   brahms-sym1-mvt1-317803-p3           distance=389  ladder=31
+   brahms-sym1-mvt1-317803-p4           distance=583  ladder=65
+   dvorak-sym9-mvt1-405834-p5           distance=19
+   dvorak-sym9-mvt1-405834-p6           distance=6
+   dvorak-sym9-mvt1-405834-p7           distance=645  ladder=32
+   mahler-sym5-mvt1-local-p2            distance=26
+   mahler-sym5-mvt1-local-p3            distance=44
+   mahler-sym5-mvt1-local-p4            distance=140  ladder=1
+   mahler-sym5-mvt1-local-p5            distance=107  ladder=5

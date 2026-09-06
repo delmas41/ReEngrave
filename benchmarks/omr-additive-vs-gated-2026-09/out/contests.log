@@ -1,0 +1,28 @@
+skip beethoven-sym5-mvt1-984073-p1 (have it)
+beethoven-sym5-mvt1-984073-p2: 273 contests  57s
+beethoven-sym5-mvt1-984073-p3: 102 contests  50s
+beethoven-sym5-mvt1-984073-p4: 371 contests  56s
+beethoven-sym5-mvt1-575951-p1: 53 contests  41s
+beethoven-sym5-mvt1-575951-p2: 362 contests  63s
+beethoven-sym5-mvt1-575951-p3: 102 contests  59s
+beethoven-sym5-mvt1-575951-p4: 404 contests  62s
+dvorak-sym9-mvt1-405834-p5: 19 contests  47s
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '|'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+dvorak-sym9-mvt1-405834-p6: 6 contests  67s
+dvorak-sym9-mvt1-405834-p7: 677 contests  100s
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'in C 1 2'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+brahms-sym1-mvt1-317803-p1: 73 contests  51s
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(C)', '(Es)'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+brahms-sym1-mvt1-317803-p2: 537 contests  84s
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(Es)'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+brahms-sym1-mvt1-317803-p3: 420 contests  72s
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(Es)'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+brahms-sym1-mvt1-317803-p4: 648 contests  81s
+mahler-sym5-mvt1-local-p2: 26 contests  48s
+mahler-sym5-mvt1-local-p3: 44 contests  48s
+4 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '4 8 5', '4 a', 'Veelle.', 'get.'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+mahler-sym5-mvt1-local-p4: 141 contests  56s
+5 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '4 5 6', '8 4', 'Veelle.', 'get.', 'i Posa osaunen'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+mahler-sym5-mvt1-local-p5: 112 contests  89s
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'I', 'III'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+bach-brandenburg3-mvt1-468678-p1: 110 contests  61s
