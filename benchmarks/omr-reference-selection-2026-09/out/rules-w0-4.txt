@@ -1,27 +1,27 @@
-documents with >=2 usable systems in the window: 30  (cache holds 35)
+documents with >=2 usable systems in the window: 45  (cache holds 55)
 
 == overall
-  all                    n=  30  old   21/30 = 0.700 (names   209)  new   26/30 = 0.867 (names   265)  pure   25/30 = 0.833 (names   270)  new≠old    5
-  names something        n=  26  old   17/26 = 0.654 (names   209)  new   22/26 = 0.846 (names   265)  pure   21/26 = 0.808 (names   270)  new≠old    5
+  all                    n=  45  old   28/45 = 0.622 (names   319)  new   40/45 = 0.889 (names   451)  pure   39/45 = 0.867 (names   456)  new≠old   12
+  names something        n=  41  old   24/41 = 0.585 (names   319)  new   36/41 = 0.878 (names   451)  pure   35/41 = 0.854 (names   456)  new≠old   12
   names NOTHING          n=   4  old    4/4 = 1.000 (names     0)  new    4/4 = 1.000 (names     0)  pure    4/4 = 1.000 (names     0)  new≠old    0
   ⭑ silent documents: every pick identical (abstention verified)
 
 == by house — the convention axis (labelled documents only)
-  Breitkopf              n=   3  old    2/3 = 0.667 (names    19)  new    3/3 = 1.000 (names    34)  pure    3/3 = 1.000 (names    34)  new≠old    1
+  Breitkopf              n=   6  old    4/6 = 0.667 (names    51)  new    6/6 = 1.000 (names    68)  pure    6/6 = 1.000 (names    68)  new≠old    2
+  Litolff                n=   5  old    4/5 = 0.800 (names    52)  new    5/5 = 1.000 (names    57)  pure    5/5 = 1.000 (names    57)  new≠old    1
+  Universal              n=   5  old    3/5 = 0.600 (names    44)  new    4/5 = 0.800 (names    56)  pure    4/5 = 0.800 (names    56)  new≠old    1
+  other/unknown          n=   4  old    2/4 = 0.500 (names    23)  new    4/4 = 1.000 (names    51)  pure    4/4 = 1.000 (names    51)  new≠old    2
+  Peters                 n=   4  old    4/4 = 1.000 (names    26)  new    4/4 = 1.000 (names    26)  pure    4/4 = 1.000 (names    26)  new≠old    0
+  Durand                 n=   4  old    1/4 = 0.250 (names    25)  new    3/4 = 0.750 (names    57)  pure    3/4 = 0.750 (names    57)  new≠old    2
+  Eulenburg              n=   3  old    0/3 = 0.000 (names     9)  new    3/3 = 1.000 (names    41)  pure    3/3 = 1.000 (names    41)  new≠old    3
   Simrock                n=   3  old    2/3 = 0.667 (names    31)  new    2/3 = 0.667 (names    31)  pure    2/3 = 0.667 (names    31)  new≠old    0
-  Litolff                n=   3  old    3/3 = 1.000 (names    34)  new    3/3 = 1.000 (names    34)  pure    3/3 = 1.000 (names    34)  new≠old    0
-  Universal              n=   3  old    2/3 = 0.667 (names    21)  new    3/3 = 1.000 (names    33)  pure    3/3 = 1.000 (names    33)  new≠old    1
   Bote                   n=   3  old    3/3 = 1.000 (names    28)  new    3/3 = 1.000 (names    28)  pure    2/3 = 0.667 (names    33)  new≠old    0
-  other/unknown          n=   2  old    2/2 = 1.000 (names    23)  new    2/2 = 1.000 (names    23)  pure    2/2 = 1.000 (names    23)  new≠old    0
-  Peters                 n=   2  old    2/2 = 1.000 (names     5)  new    2/2 = 1.000 (names     5)  pure    2/2 = 1.000 (names     5)  new≠old    0
   Ricordi                n=   2  old    0/2 = 0.000 (names    12)  new    1/2 = 0.500 (names    18)  pure    1/2 = 0.500 (names    18)  new≠old    1
-  Durand                 n=   2  old    0/2 = 0.000 (names     9)  new    1/2 = 0.500 (names    24)  pure    1/2 = 0.500 (names    24)  new≠old    1
-  Eulenburg              n=   1  old    0/1 = 0.000 (names     9)  new    1/1 = 1.000 (names    17)  pure    1/1 = 1.000 (names    17)  new≠old    1
   Novello                n=   1  old    0/1 = 0.000 (names    17)  new    0/1 = 0.000 (names    17)  pure    0/1 = 0.000 (names    17)  new≠old    0
   Augener                n=   1  old    1/1 = 1.000 (names     1)  new    1/1 = 1.000 (names     1)  pure    1/1 = 1.000 (names     1)  new≠old    0
 
 == where the two rules disagree, and which way
-  new reference LARGER  5
+  new reference LARGER  12
   new reference SMALLER 0   <- the risk: staves past the reference get slot -1
   same size, different system 0
 
@@ -33,8 +33,15 @@ documents with >=2 usable systems in the window: 30  (cache holds 35)
 == documents where the new rule picks a LARGER reference
   Breitkopf    bach--mass-in-b-minor--740018                sizes=[16, 11, 11, 11, 11] labels=[15, 0, 0, 0, 0] old=(3, 0, 11, 0) new=(2, 0, 16, 15)
   Eulenburg    bach--matthauspassion--44964                 sizes=[19, 18, 18, 18, 18] labels=[17, 9, 9, 9, 9] old=(1, 0, 18, 9) new=(0, 0, 19, 17)
+  Breitkopf    beethoven--piano-concerto-5--977419          sizes=[14, 2, 13, 2, 13, 2, 7, 11, 10, 11, 11] labels=[13, 0, 9, 0, 11, 0, 4, 0, 9, 10, 8] old=(2, 0, 13, 11) new=(0, 0, 14, 13)
+  Litolff      beethoven--symphony-5--575951                sizes=[12, 11, 11, 11, 8, 11, 11, 9, 7] labels=[12, 7, 7, 7, 4, 6, 7, 5, 3] old=(1, 0, 11, 7) new=(0, 0, 12, 12)
+  other/unknown berlioz--le-carnaval-romain--11357           sizes=[20, 14, 8, 9, 12, 11, 12] labels=[17, 0, 0, 0, 0, 0, 0] old=(3, 1, 12, 0) new=(1, 0, 20, 17)
+  other/unknown berlioz--symphony-fantastique--24830         sizes=[14, 2, 3, 9, 8, 11, 11, 11, 11, 11, 11] labels=[11, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0] old=(2, 0, 11, 0) new=(0, 0, 14, 11)
   Ricordi      boulanger--faust-et-helene--862104           sizes=[29, 5, 15, 21, 20, 21] labels=[10, 0, 4, 4, 3, 1] old=(2, 0, 21, 4) new=(0, 0, 29, 10)
   Universal    bruckner--symphony-1--30680                  sizes=[15, 5, 9, 9, 12, 12, 9, 6, 9, 5] labels=[12, 0, 0, 0, 0, 0, 0, 0, 0, 0] old=(2, 1, 12, 0) new=(0, 0, 15, 12)
+  Eulenburg    bruckner--symphony-4--30700                  sizes=[17, 9, 7, 7, 10, 15] labels=[12, 0, 0, 0, 0, 0] old=(2, 1, 7, 0) new=(1, 0, 17, 12)
+  Eulenburg    bruckner--symphony-7--30703                  sizes=[17, 5, 9, 16, 16] labels=[12, 3, 0, 0, 0] old=(3, 0, 16, 0) new=(1, 0, 17, 12)
   Durand       debussy--la-mer--15420                       sizes=[22, 11, 8, 11, 9, 16, 16] labels=[18, 3, 1, 2, 0, 3, 2] old=(3, 0, 16, 3) new=(0, 0, 22, 18)
+  Durand       ravel--la-valse--923399                      sizes=[25, 18, 18] labels=[19, 2, 2] old=(3, 0, 18, 2) new=(2, 0, 25, 19)
 
 wrote benchmarks/omr-reference-selection-2026-09/out/rules-w0-4.json
