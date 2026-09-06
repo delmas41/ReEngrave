@@ -359,6 +359,9 @@ decision that should be taken knowing the signal underneath is now stable.
   dropped, columns crossing every gap are excluded, and the `-1` no-evidence
   marker is mirrored.
 
+Full suite on the merged tree (main at `9d40b084`):
+**2422 passed, 8 skipped** in 12m25s.
+
 ## 8. Recommendation
 
 **Land default-OFF.** Everything measured says the flag is correct and that
