@@ -32,3 +32,14 @@ probing 234 documents, pages [0, 1, 2, 3, 4], dpi 300
   [30/234] Novello      elgar--cello-concerto--22192                 sizes=[17, 12, 5, 17, 17, 17] labels=[0, 0, 0, 0, 0, 0] 457.2s
   [31/234] Peters       bach--concerto-6--468681                     sizes=[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8] labels=[5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 26.1s
   [32/234] Ricordi      respighi--pini-di-roma--5603                 sizes=[16, 20, 20, 22, 17] labels=[10, 8, 0, 0, 2] 97.0s
+  [33/234] Simrock      brahms--piano-concerto-2--145434             sizes=[15, 15, 2, 2, 2, 2, 15] labels=[12, 0, 0, 0, 0, 0, 0] 27.2s
+  [34/234] Universal    bruckner--symphony-6--30699                  sizes=[17, 5, 5, 7, 8, 11, 17, 16] labels=[12, 0, 0, 0, 0, 0, 0, 0] 38.9s
+  [35/234] other/unknown beach--symphony-in-e-minor-op32-gaelic--27125 sizes=[15, 15, 15, 15] labels=[14, 0, 0, 0] 29.7s
+  [36/234] Breitkopf    beethoven--piano-concerto-3--977417          sizes=[13, 13, 10, 11, 11, 11, 9, 13, 13] labels=[12, 10, 7, 8, 8, 8, 6, 10, 10] 772.7s
+  [37/234] Durand       lalo--symphony-espagnole--174510             sizes=[17, 17, 17] labels=[14, 0, 0] 28.5s
+  [38/234] Eulenburg    bruckner--symphony-4--30700                  sizes=[17, 9, 7, 7, 10, 15] labels=[12, 0, 0, 0, 0, 0] 38.1s
+  [39/234] Litolff      beethoven--symphony-4--504078                sizes=[11, 9, 8, 9, 11, 11, 11, 11, 9] labels=[11, 5, 4, 5, 7, 7, 7, 7, 5] 58.4s
+  [40/234] Novello      elgar--introduction-and-allegro--22614       sizes=[13] labels=[6] 16.9s
+  [41/234] Peters       bach--suite-3--744084                        sizes=[11, 12, 12, 12, 12, 12, 12, 12, 12, 12] labels=[5, 5, 6, 5, 6, 6, 6, 6, 6, 6] 97.0s
+  [42/234] Simrock      brahms--symphony-2--23103                    sizes=[] labels=[] 0.3s
+  [43/234] Universal    bruckner--symphony-8--30702                  sizes=[17, 9, 9, 18, 17] labels=[14, 0, 0, 0, 0] 28.8s

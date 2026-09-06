@@ -1,9 +1,9 @@
-20 rows, dpi 600 (the protocol's own)
+20 rows, dpi 600 (the protocol's own), labels from the full ladder
   beethoven-sym5-mvt1-984073-p1        systems=[12] labels=[11]  ref old=12 new=12  SAME
   beethoven-sym5-mvt1-984073-p2        systems=[11, 11] labels=[7, 7]  ref old=11 new=11  SAME
   beethoven-sym5-mvt1-984073-p3        systems=[11, 8] labels=[7, 4]  ref old=11 new=11  SAME
   beethoven-sym5-mvt1-984073-p4        systems=[11, 11] labels=[6, 7]  ref old=11 new=11  SAME
-  beethoven-sym5-mvt1-575951-p1        systems=[12] labels=[12]  ref old=12 new=12  SAME
+  beethoven-sym5-mvt1-575951-p1        systems=[12] labels=[11]  ref old=12 new=12  SAME
   beethoven-sym5-mvt1-575951-p2        systems=[11, 11] labels=[7, 7]  ref old=11 new=11  SAME
   beethoven-sym5-mvt1-575951-p3        systems=[11, 8] labels=[7, 4]  ref old=11 new=11  SAME
   beethoven-sym5-mvt1-575951-p4        systems=[11, 11] labels=[6, 7]  ref old=11 new=11  SAME
@@ -15,9 +15,5 @@
   brahms-sym1-mvt1-317803-p3           systems=[14, 14] labels=[13, 12]  ref old=14 new=14  SAME
   brahms-sym1-mvt1-317803-p4           systems=[14, 14] labels=[11, 13]  ref old=14 new=14  SAME
   mahler-sym5-mvt1-local-p2            systems=[19] labels=[17]  ref old=19 new=19  SAME
-  mahler-sym5-mvt1-local-p3            systems=[15] labels=[7]  ref old=15 new=15  SAME
-  mahler-sym5-mvt1-local-p4            systems=[21] labels=[0]  ref old=21 new=21  SAME
-  mahler-sym5-mvt1-local-p5            systems=[21] labels=[1]  ref old=21 new=21  SAME
-  bach-brandenburg3-mvt1-468678-p1     systems=[12, 12] labels=[5, 0]  ref old=12 new=12  SAME
-
-rows whose reference CHANGES: 0/20  — the gate is blind to this flag by construction, and a flat result there is coverage of nothing
+  mahler-sym5-mvt1-local-p3            systems=[15] labels=[12]  ref old=15 new=15  SAME
+  mahler-sym5-mvt1-local-p4            systems=[21] labels=[16]  ref old=21 new=21  SAME
