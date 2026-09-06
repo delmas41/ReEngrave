@@ -1,0 +1,215 @@
+{
+ "arm": "label",
+ "per_row": [
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "control_edits": 6148,
+   "arm_edits": 6148,
+   "delta": 0,
+   "control_omr_ned": 0.804606726868211,
+   "arm_omr_ned": 0.804606726868211
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "control_edits": 1354,
+   "arm_edits": 1354,
+   "delta": 0,
+   "control_omr_ned": 0.7547380156075808,
+   "arm_omr_ned": 0.7547380156075808
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "control_edits": 4408,
+   "arm_edits": 4408,
+   "delta": 0,
+   "control_omr_ned": 0.8704581358609794,
+   "arm_omr_ned": 0.8704581358609794
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "control_edits": 3172,
+   "arm_edits": 3172,
+   "delta": 0,
+   "control_omr_ned": 0.8811111111111111,
+   "arm_omr_ned": 0.8811111111111111
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "control_edits": 4714,
+   "arm_edits": 4720,
+   "delta": 6,
+   "control_omr_ned": 0.881615859360389,
+   "arm_omr_ned": 0.8820781162399551
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "control_edits": 1273,
+   "arm_edits": 1273,
+   "delta": 0,
+   "control_omr_ned": 0.7052631578947368,
+   "arm_omr_ned": 0.7052631578947368
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "control_edits": 4347,
+   "arm_edits": 4347,
+   "delta": 0,
+   "control_omr_ned": 0.8697478991596639,
+   "arm_omr_ned": 0.8697478991596639
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "control_edits": 3034,
+   "arm_edits": 3034,
+   "delta": 0,
+   "control_omr_ned": 0.8705882352941177,
+   "arm_omr_ned": 0.8705882352941177
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "control_edits": 4679,
+   "arm_edits": 4683,
+   "delta": 4,
+   "control_omr_ned": 0.9010206046601194,
+   "arm_omr_ned": 0.9007501442585113
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "control_edits": 3431,
+   "arm_edits": 3431,
+   "delta": 0,
+   "control_omr_ned": 0.9183618843683083,
+   "arm_omr_ned": 0.9183618843683083
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "control_edits": 6562,
+   "arm_edits": 6562,
+   "delta": 0,
+   "control_omr_ned": 0.9424098807985064,
+   "arm_omr_ned": 0.9424098807985064
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "control_edits": 4573,
+   "arm_edits": 4567,
+   "delta": -6,
+   "control_omr_ned": 0.8929896504588948,
+   "arm_omr_ned": 0.8935629035413813
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "control_edits": 7012,
+   "arm_edits": 7008,
+   "delta": -4,
+   "control_omr_ned": 0.8652517275419546,
+   "arm_omr_ned": 0.8646514497223936
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "control_edits": 661,
+   "arm_edits": 661,
+   "delta": 0,
+   "control_omr_ned": 0.4220945083014049,
+   "arm_omr_ned": 0.4220945083014049
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "control_edits": 2586,
+   "arm_edits": 2586,
+   "delta": 0,
+   "control_omr_ned": 0.722144652331751,
+   "arm_omr_ned": 0.722144652331751
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "control_edits": 5698,
+   "arm_edits": 5706,
+   "delta": 8,
+   "control_omr_ned": 0.7133199799699549,
+   "arm_omr_ned": 0.7152168463274003
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "control_edits": 1118,
+   "arm_edits": 1118,
+   "delta": 0,
+   "control_omr_ned": 0.6884236453201971,
+   "arm_omr_ned": 0.6884236453201971
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "control_edits": 3075,
+   "arm_edits": 3075,
+   "delta": 0,
+   "control_omr_ned": 0.8866782006920415,
+   "arm_omr_ned": 0.8866782006920415
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "control_edits": 4149,
+   "arm_edits": 4149,
+   "delta": 0,
+   "control_omr_ned": 0.9152878888153541,
+   "arm_omr_ned": 0.9152878888153541
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "control_edits": 2968,
+   "arm_edits": 2968,
+   "delta": 0,
+   "control_omr_ned": 0.9298245614035088,
+   "arm_omr_ned": 0.9298245614035088
+  }
+ ],
+ "noise_floor_edits": 6,
+ "pooled": {
+  "control_edits": 74962,
+  "arm_edits": 74970,
+  "delta": 8,
+  "control_omr_ned": 0.8441381484859746,
+  "arm_omr_ned": 0.8443138049868234
+ },
+ "categories": {
+  "entire measure insert/delete": {
+   "control": 29661,
+   "arm": 29712
+  },
+  "wrong accidental": {
+   "control": 82,
+   "arm": 83
+  },
+  "wrong articulation": {
+   "control": 56,
+   "arm": 55
+  },
+  "wrong barline": {
+   "control": 42,
+   "arm": 43
+  },
+  "wrong clef": {
+   "control": 205,
+   "arm": 204
+  },
+  "wrong dynamic": {
+   "control": 512,
+   "arm": 509
+  },
+  "wrong flag/beam": {
+   "control": 688,
+   "arm": 680
+  },
+  "wrong note": {
+   "control": 22174,
+   "arm": 22142
+  },
+  "wrong note head": {
+   "control": 1788,
+   "arm": 1786
+  },
+  "wrong slur": {
+   "control": 220,
+   "arm": 222
+  }
+ }
+}
