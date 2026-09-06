@@ -6,6 +6,8 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+import os
+
 from tools.omr.slots import (
     REFERENCE_MAX_SIZE_RATIO,
     Slot,
@@ -14,6 +16,7 @@ from tools.omr.slots import (
     assign_slots,
     build_reference,
     labels_by_staff,
+    map_groups,
     _looks_merged,
 )
 from tools.omr.types import PageImage, PageWithStaves, Staff
@@ -287,3 +290,88 @@ def test_align_drops_the_top_staff_when_the_reference_is_condensed():
     ref = build_reference(_b5_run())                    # eleven slots
     got = align(_view([(g, None) for g, _n in _B5_FULL]), ref)
     assert got[0] == -1 or [ref[i].instrument for i in got[:5] if i >= 0][0] != "Flute"
+
+
+# ── group ordinals are per-system, and must be mapped before comparing ───────
+
+def _reduced_beethoven5_case():
+    """Beethoven 5 / Litolff p23: a twelve-staff system against the finale's
+    seventeen-slot reference, with the system's brackets read as TWO groups
+    (winds and brass merged) against the reference's three.
+
+    Measured shapes, from `benchmarks/omr-slot-alignment-2026-09/`.
+    """
+    names = ["Piccolo", "Flute", "Oboe", "Clarinet", "Bassoon", "Contrabassoon",
+             "Horn", "Trumpet", "Timpani", "Trombone", "Trombone", "Trombone",
+             "Violin", "Violin", "Viola", "Cello", "Contrabass"]
+    groups = [0] * 6 + [1] * 6 + [2] * 5
+    ref = [Slot(index=i, group_index=g, instrument=n, position=i / 16)
+           for i, (g, n) in enumerate(zip(groups, names))]
+    # The system: winds+brass all read as bracket 0, strings as bracket 1.
+    staves = [_staff(i, group=g, top=i * 100)
+              for i, g in enumerate([0] * 7 + [1] * 5)]
+    labels = {0: "Flute", 1: "Oboe", 2: "Clarinet", 3: "Bassoon",
+              4: "Horn", 5: "Trumpet", 6: "Timpani"}
+    return SystemView(staves=staves, labels=labels), ref
+
+
+TRUE_SLOTS_P23 = [1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 15, 16]
+
+
+def test_group_ordinals_are_mapped_not_compared_raw():
+    """The strings must not be pulled onto the Trombone slots.
+
+    RED before the fix: comparing `Staff.group_index` to `Slot.group_index`
+    raw makes the system's strings (bracket 1) MATCH the reference's brass
+    bracket, which is where the Trombones live, and CONFLICT with the real
+    string slots. The DP then scores the wrong alignment +8.9489 -- +9.0 of it
+    this term -- and three string staves are named Trombone.
+    """
+    view, ref = _reduced_beethoven5_case()
+    assert align(view, ref) == TRUE_SLOTS_P23
+
+
+def test_the_old_ordinal_comparison_is_what_broke_it():
+    """The refused arm, kept runnable so the finding stays reproducible."""
+    os.environ["OMR_SLOT_GROUP_MAP"] = "ordinal"
+    try:
+        view, ref = _reduced_beethoven5_case()
+        got = align(view, ref)
+    finally:
+        del os.environ["OMR_SLOT_GROUP_MAP"]
+    assert got != TRUE_SLOTS_P23
+    names = {s.index: s.instrument for s in ref}
+    assert [names[s] for s in got[7:10]] == ["Trombone", "Trombone", "Trombone"]
+
+
+def test_a_block_maps_only_where_there_is_room_for_it():
+    """Seven staves are not six slots. On the p23 shapes only ONE monotone
+    assignment gives the wind-and-brass block room, which is what makes the
+    correspondence decidable rather than a tie."""
+    view, ref = _reduced_beethoven5_case()
+    assert map_groups(view, ref) == {0: {0, 1}, 1: {2}}
+
+
+def test_a_whole_bracket_may_be_tacet():
+    """Untaken reference blocks are free: a system can drop an entire bracket.
+    Winds absent, so the reference's first block is taken by nobody."""
+    view = _view(FULL[4:])
+    ref = build_reference([_view(FULL)])
+    assert map_groups(view, ref) == {1: {1}, 2: {2}}
+
+
+def test_a_tie_of_different_meanings_abstains():
+    """Two assignments of equal cost and different meaning are no evidence, so
+    the term is withheld rather than guessed."""
+    # One system block of 2; reference two blocks of 2. Taking either costs 0.
+    view = SystemView(staves=[_staff(i, group=0, top=i * 100) for i in range(2)])
+    ref = [Slot(index=i, group_index=g, position=i / 3)
+           for i, g in enumerate([1, 1, 2, 2])]
+    assert map_groups(view, ref) is None
+
+
+def test_more_system_blocks_than_reference_blocks_abstains():
+    view = SystemView(staves=[_staff(i, group=g, top=i * 100)
+                              for i, g in enumerate([0, 1, 2])])
+    ref = [Slot(index=i, group_index=0, position=i / 2) for i in range(3)]
+    assert map_groups(view, ref) is None

@@ -264,15 +264,183 @@ def _looks_merged(view: SystemView) -> bool:
     return False
 
 
+def group_term_mode() -> str:
+    """`OMR_SLOT_GROUP_MAP` — `map` (default) / `ordinal` / `off`.
+
+    `map` relates the two bracket vocabularies with `map_groups` before
+    comparing them. `ordinal` is the pre-2026-09-06 behaviour, comparing
+    `Staff.group_index` to `Slot.group_index` raw; it exists to reproduce the
+    measurement that refused it and should not be used. `off` withholds the
+    group term entirely.
+    """
+    v = os.environ.get("OMR_SLOT_GROUP_MAP", "").strip().lower()
+    return v if v in ("map", "ordinal", "off") else "map"
+
+
+def _blocks(groups: list) -> list[tuple]:
+    """Contiguous runs of one group, as `(group, size)`, top to bottom."""
+    out: list[tuple] = []
+    for g in groups:
+        if out and out[-1][0] == g:
+            out[-1] = (g, out[-1][1] + 1)
+        else:
+            out.append((g, 1))
+    return out
+
+
+def _partitions(m: int, n: int):
+    """Every monotone assignment of `m` system blocks to `n` reference blocks.
+
+    Each system block takes a consecutive, non-empty run of reference blocks;
+    runs appear in order and do not overlap; reference blocks between or around
+    them may be left UNTAKEN — a whole bracket group can be tacet through a
+    system, which is the ordinary case (`test_assign_slots_across_systems_and_
+    pages`: winds absent, so the reference's first block is taken by nobody).
+    Yields lists of `(start, stop)` half-open runs.
+    """
+    def walk(i: int, lo: int, acc: list):
+        if i == m:
+            yield list(acc)
+            return
+        # leave room for the remaining m-i-1 blocks, one reference block each
+        for a in range(lo, n - (m - i - 1)):
+            for b in range(a + 1, n - (m - i - 1) + 1):
+                acc.append((a, b))
+                yield from walk(i + 1, b, acc)
+                acc.pop()
+    yield from walk(0, 0, [])
+
+
+#: Above this many bracket blocks on either side the enumeration is not worth
+#: doing; real scores have a handful. Abstaining is the documented failure.
+MAX_GROUP_BLOCKS = 12
+
+
+def map_groups(view: SystemView, reference: list[Slot]) -> dict | None:
+    """`{system group -> set of reference groups}`, or None if undecidable.
+
+    A system's bracket blocks and the reference's appear in the same order —
+    score order is monotone for brackets exactly as it is for parts — so the
+    correspondence is a monotone assignment: each system block takes a
+    consecutive run of reference blocks, runs keep their order, and reference
+    blocks nobody takes are groups tacet through this system. The best
+    assignment is the one whose block SIZES agree best.
+
+    On Beethoven 5 / Litolff p23 the reduced system is `[(0, 7), (1, 5)]` and
+    the reference `[(0, 6), (1, 6), (2, 5)]`. The winning assignment pairs the
+    system's five string staves with the reference's five string slots, so the
+    strings MATCH slots 12-14 and CONFLICT with the Trombones — the sign the
+    term was always supposed to have.
+
+    ⚠️ **A TIE ABSTAINS.** Where two assignments of different meaning share the
+    best cost there is no evidence between them, and picking one would be the
+    same class of silent wrong answer as comparing raw ordinals — rarer, and
+    harder to find later. `test_assign_slots_across_systems_and_pages` is a real
+    tie under the size cost alone (`[(1,2),(2,3)]` against
+    `[(0,4),(1,2),(2,3)]`), which is why untaken reference blocks are free:
+    with them free the truth costs 0 and nothing else does.
+
+    Returns None where the system has MORE blocks than the reference (the
+    reference is incomplete, so there is nothing to map onto), where either side
+    exceeds `MAX_GROUP_BLOCKS`, or on a tie.
+    """
+    sb = _blocks([st.group_index for st in view.staves])
+    rb = _blocks([sl.group_index for sl in reference])
+    if not sb or not rb or len(sb) > len(rb):
+        return None
+    if len(sb) > MAX_GROUP_BLOCKS or len(rb) > MAX_GROUP_BLOCKS:
+        return None
+
+    best_cost, best_maps = None, []
+    for runs in _partitions(len(sb), len(rb)):
+        sizes = [sum(rb[t][1] for t in range(a, b)) for a, b in runs]
+        # A block of s staves cannot be the reference's s-1 slots: every staff
+        # printed is a part present, so the slots it maps onto must number at
+        # least as many. This is what makes the assignment decidable on
+        # Beethoven 5 p23 -- of the six monotone assignments only ONE gives the
+        # seven-staff wind-and-brass block enough room, and abstaining for want
+        # of it was costing the fix its own case.
+        if any(sz < sb[i][1] for i, sz in enumerate(sizes)):
+            continue
+        cost = sum(abs(sb[i][1] - sz) for i, sz in enumerate(sizes))
+        if best_cost is None or cost < best_cost:
+            best_cost, best_maps = cost, [runs]
+        elif cost == best_cost:
+            best_maps.append(runs)
+
+    def as_mapping(runs):
+        out: dict = {}
+        for i, (a, b) in enumerate(runs):
+            out.setdefault(sb[i][0], set()).update(rb[t][0] for t in range(a, b))
+        return out
+
+    if not best_maps:
+        return None          # no assignment gives every block room
+    winner = as_mapping(best_maps[0])
+    for runs in best_maps[1:]:
+        if as_mapping(runs) != winner:
+            return None          # a tie of different meanings: no evidence
+    return winner
+
+
+def groups_are_comparable(view: SystemView, reference: list[Slot]) -> bool:
+    """Whether this system's bracket ordinals mean the same thing as the
+    reference's, so `group_index` may be compared across the two at all.
+
+    ⚠️ **`Staff.group_index` is a PER-SYSTEM ORDINAL, not a family identity.**
+    `system_grouping` numbers the bracket groups it finds on one system, from
+    the top. Nothing carries a group's meaning from one system to the next, so
+    "group 1" is whatever the second bracket happens to be THERE — and the
+    module docstring's promise that "winds do not align to strings" holds only
+    while both sides happen to have found the same brackets.
+
+    On a reduced system they do not, and the term then argues for exactly the
+    alignment it exists to prevent. Measured on Beethoven 5 / Litolff p23
+    (`benchmarks/omr-slot-alignment-2026-09/`): the twelve-staff system detects
+    **two** groups (winds and brass merged, then strings) against the
+    seventeen-slot reference's **three** (winds, brass+timpani, strings), so its
+    three unlabelled string staves carry group 1 — which MATCHES the reference's
+    three Trombone slots and CONFLICTS with the real Violin/Viola slots. The DP
+    scored the wrong alignment **+8.9489**, and **+9.0 of that was this term**
+    while position favoured the truth by 0.0511 and the labels were identical.
+    Violin, Violin and Viola came out as Trombone, Trombone and Trombone.
+
+    Both alignments delete five slots, so the gap cost cannot separate them.
+    This term was the whole decision, and it had the sign backwards.
+
+    ⚠️ The bracket detection is also UNSTABLE across pages of one movement —
+    p31 finds three groups where p23 and p38 find two, on the same printed
+    lineup. That is a `system_grouping` fault and is recorded, not fixed here;
+    the alignment has to be right whether or not it is repaired, because a
+    reference and a reduced system can legitimately differ in bracket structure
+    (the reference is the FULL lineup and brackets enclose the parts present).
+
+    So the ordinals are compared only when the two vocabularies match. Where
+    they do not, the term is WITHHELD (contributes nothing) rather than guessed:
+    a wrong group verdict is worth 3.0 against a position signal worth ~0.05, so
+    asserting it on incomparable ordinals cannot be a tiebreak — it is a
+    veto with no evidence behind it.
+    """
+    return ({st.group_index for st in view.staves}
+            == {sl.group_index for sl in reference})
+
+
 def _pair_score(staff: Staff, label: str | None, slot: Slot,
-                staff_position: float) -> float:
+                staff_position: float, group_map: dict | None = None) -> float:
+    """`group_map` is `map_groups`' verdict: `{system group -> {reference
+    groups}}`, or None where the two bracket vocabularies cannot be related, in
+    which case the group term is WITHHELD rather than guessed. A wrong group
+    verdict is worth 3.0 against a position signal worth ~0.05, so asserting one
+    on ordinals that do not correspond is a veto with no evidence behind it.
+    """
     score = 0.0
     if label is not None and slot.instrument is not None:
         score += SCORE_LABEL_MATCH if label == slot.instrument else SCORE_LABEL_CONFLICT
-    if staff.group_index == slot.group_index:
-        score += SCORE_GROUP_MATCH
-    else:
-        score += SCORE_GROUP_CONFLICT
+    if group_map is not None:
+        allowed = group_map.get(staff.group_index)
+        if allowed is not None:
+            score += (SCORE_GROUP_MATCH if slot.group_index in allowed
+                      else SCORE_GROUP_CONFLICT)
     score += SCORE_POSITION_WEIGHT * (1.0 - abs(staff_position - slot.position))
     return score
 
@@ -290,6 +458,13 @@ def align(view: SystemView, reference: list[Slot]) -> list[int]:
     denom = max(1, m - 1)
     positions = [i / denom for i in range(m)]
     labels = [view.labels.get(st.staff_index) for st in view.staves]
+    mode = group_term_mode()
+    if mode == "off":
+        mapping = None
+    elif mode == "ordinal":
+        mapping = {g: {g} for g in {st.group_index for st in view.staves}}
+    else:
+        mapping = map_groups(view, reference)
 
     NEG = float("-inf")
     # dp[i][j] = best score having placed the first i staves within the first j slots
@@ -304,7 +479,8 @@ def align(view: SystemView, reference: list[Slot]) -> list[int]:
             take = NEG
             if dp[i - 1][j - 1] > NEG:
                 take = dp[i - 1][j - 1] + _pair_score(
-                    view.staves[i - 1], labels[i - 1], reference[j - 1], positions[i - 1])
+                    view.staves[i - 1], labels[i - 1], reference[j - 1],
+                    positions[i - 1], mapping)
             if take >= skip:
                 dp[i][j], back[i][j] = take, "take"
             else:
