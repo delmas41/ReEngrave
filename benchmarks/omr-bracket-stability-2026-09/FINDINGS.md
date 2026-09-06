@@ -349,6 +349,12 @@ identically under both arms.
 the abstention of §5) and reaches nothing: `blind == []` on all eleven, so cue
 C's second condition fails under both arms.
 
+**Widened beyond the gate**, because a whole-work run touches pages the gate
+never scores: the same probe over 144 pages of all five publishers
+(`--corpus scan`, `out/cue-c-wide.log`). Every page where `_is_grouped_system`
+differs also reports `blind == []`, so on none of them can cue C act on the
+difference. That is the generalisation the gate alone does not license.
+
 **End-to-end, full pipeline, real weights, direction text forced off in both
 arms** (it is orthogonal and it is the one stage this repo records as
 non-deterministic):
