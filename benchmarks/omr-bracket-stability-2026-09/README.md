@@ -177,6 +177,13 @@ under it.
 * `BRACKET_COLUMN_MIN_EVIDENCE` — the abstention, forced by the engraved
   family. See §5.
 
+⚠️ **The clustering is greedy chain-linking, so it can in principle swallow two
+real barlines into one column and undercount.** Checked rather than assumed:
+over 165 clusters on six pages of two publishers the widest cluster spans
+**2.47 staff spacings** end to end, against a barline pitch of roughly 16
+spacings on the same pages. Chaining happens (up to about three links) and
+never comes within a factor of six of merging two barlines.
+
 ### The cut is now on an empty interval, and that is the strongest result here
 
 Same measurement as §1c, over **1130 gaps of 95 systems, all five publishers**:
