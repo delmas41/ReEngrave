@@ -1,0 +1,89 @@
+[
+ {
+  "row": "scan--beethoven-sym5-mvt1-984073-p1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-shared-bass",
+  "layout_named_slots": 11,
+  "n_slots": 12,
+  "hits": [
+   {
+    "ordinal": 11,
+    "text": "Basso.",
+    "alias": "basso",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
+   }
+  ]
+ },
+ {
+  "row": "scan--beethoven-sym5-mvt1-984073-p2.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-shared-bass",
+  "layout_named_slots": 11,
+  "n_slots": 11,
+  "hits": [
+   {
+    "ordinal": 4,
+    "text": "Cor.",
+    "alias": "cor",
+    "candidates": [
+     "Horn",
+     "Trumpet"
+    ],
+    "final_instrument": "Horn",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": false
+   },
+   {
+    "ordinal": 6,
+    "text": "Tp.",
+    "alias": "tp",
+    "candidates": [
+     "Timpani",
+     "Trumpet"
+    ],
+    "final_instrument": "Timpani",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": false
+   }
+  ]
+ },
+ {
+  "row": "scan--beethoven-sym5-mvt1-984073-p3.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-shared-bass",
+  "layout_named_slots": 11,
+  "n_slots": 11,
+  "hits": [
+   {
+    "ordinal": 4,
+    "text": "Cor.",
+    "alias": "cor",
+    "candidates": [
+     "Horn",
+     "Trumpet"
+    ],
+    "final_instrument": "Horn",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": false
+   },
+   {
+    "ordinal": 6,
+    "text": "Tp.",
+    "alias": "tp",
+    "candidates": [
+     "Timpani",
+     "Trumpet"
+    ],
+    "final_instrument": "Timpani",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": false
+   }
+  ]
+ }
+]
