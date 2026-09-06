@@ -124,11 +124,30 @@ def _run(budget=3, vision=True, surya=True):
         budget=[budget], surya_fallback=surya)
 
 
-def test_text_layer_wins_and_nothing_else_runs(chain):
+def test_text_layer_wins_and_nothing_else_runs(chain, monkeypatch):
+    """With the flag OFF, a well-covered text layer short-circuits the ladder.
+
+    ⚠️ That short-circuit is the bug `OMR_LABEL_MERGE_QUALITY` fixes — this
+    module's own docstring documents the free rungs as UNCONDITIONAL, and they
+    were not. Pinned with the flag explicitly off so the old behaviour stays
+    reproducible; `test_the_free_rungs_run_by_default` is the shipped path.
+    """
+    monkeypatch.setenv("OMR_LABEL_MERGE_QUALITY", "0")
     calls, state = chain
     state["text"] = [_label(0)]
     assert _run() == state["text"]
     assert calls == ["text"]
+
+
+def test_the_free_rungs_run_by_default(chain, monkeypatch):
+    """Default ON since 2026-09-06: the free rungs run as documented, and the
+    paid one stays gated. A well-covered text layer no longer silences Surya."""
+    monkeypatch.delenv("OMR_LABEL_MERGE_QUALITY", raising=False)
+    calls, state = chain
+    state["text"] = [_label(0)]
+    _run()
+    assert "surya" in calls, "the free rung the docstring promises did not run"
+    assert "vision" not in calls, "the paid reader ran when a free one answered"
 
 
 def test_surya_runs_before_the_paid_reader(chain):
@@ -224,12 +243,18 @@ def _ladder(chain_state, monkeypatch, flag):
         assist=Assist("none"), budget=[0])
 
 
-def test_a_low_confidence_text_layer_blocks_surya_by_default(chain, monkeypatch):
-    """The fault, pinned as it stands — so a default flip is a visible diff."""
+def test_a_low_confidence_text_layer_blocks_surya_with_the_flag_off(
+        chain, monkeypatch):
+    """The fault, pinned as it stands with the flag OFF.
+
+    ⚠️ Sets the flag explicitly. It used to pass `None` (unset), which said the
+    same thing only while the default was off; the default went ON 2026-09-06.
+    This test is about the UNFIXED ladder, not about which way a default points.
+    """
     calls, state = chain
     state["text"] = [_low_label(0)]
     state["surya"] = [_label(0, "Violino II.")]
-    out = _ladder(state, monkeypatch, None)
+    out = _ladder(state, monkeypatch, "0")
     assert [l.text for l in out] == ["Yiolino II."]
     assert "surya" not in calls, "the default ladder asked a rung it should skip"
     assert contextual._consumable(out) == 0
@@ -266,7 +291,7 @@ def test_an_unresolved_label_no_longer_blocks_tesseract(chain, monkeypatch):
                                 confidence="none")]
     state["tesseract"] = [_label(0, "Corni in Es.")]
 
-    off = _ladder(state, monkeypatch, None)
+    off = _ladder(state, monkeypatch, "0")
     assert [l.text for l in off] == ["(C)"], "the fault is no longer reproducible"
 
     on = _ladder(state, monkeypatch, "1")

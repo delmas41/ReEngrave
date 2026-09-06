@@ -404,11 +404,49 @@ def _merge_key(labels: list[StaffLabel]) -> tuple[int, int]:
 def quality_merge_enabled() -> bool:
     """`OMR_LABEL_MERGE_QUALITY` — rank the reader rungs on consumability.
 
-    Default OFF. Flipping it is a decision with a number attached, not a
-    tidy-up: it changes which reader's text is kept on any page where a weaker
-    rung ties a stronger one on `matched` alone.
+    **DEFAULT ON since 2026-09-06.** It changes which reader's text is kept on
+    any page where a weaker rung ties a stronger one on `matched` alone.
+
+    **The diagnosis, read off the printed page.** Staff 8 of Beethoven 5 p.1
+    prints `Violino II.` with a blotted serif on the `V`. The PDF's own text
+    layer — which is itself OCR, run once by someone else years ago — encodes it
+    `Yiolino II.`, and `instruments.lookup` resolves that only by folding
+    `Y`→`V`, which is tagged `low`. Consumers keep `high`/`medium` and drop
+    `low`, so the label is **read correctly, carried correctly, and discarded at
+    the join.** Surya reads the same staff cleanly and was never asked.
+
+    **Three notches of one too-coarse test**, all fixed here: `_well_covered`
+    returned before Surya ran at all — ⚠️ **contradicting this module's own
+    docstring twice**, which documents the free rungs as unconditional; the
+    `12 > 12` tie on `matched`, which is literally the fault the adjacent
+    comment records fixing on 2026-09-01, one notch down; and Tesseract's
+    raw-presence block, the documented live fault. ⚠️ The notch is **not the
+    threshold** — 11 of 12 clears `0.75×12` however it is counted.
+
+    ⚠️ **Tesseract's half is ONE-WAY on purpose**: an unresolved label yields
+    only to a reading that *resolves*, never sideways. The first cut allowed
+    sideways swaps and the row with the MOST changed staves gained nothing —
+    unmatched `'I'`/`'III'` traded for unmatched `'|'`/`'HI'`/`'(1'`. A count of
+    staves-changed scored that as the largest effect in the corpus.
+
+    **Measured, one-directional everywhere:** 289 editions, 71 carry a text
+    layer (24.6%); over the 29 with staves, **+24 consumable labels, 12 editions
+    gain, 0 lose**. Engraved part names **67 → 71 correct, placeholders 2 → 0,
+    4 of 4 better and 0 worse.**
+
+    ⚠️ **BOTH BENCHMARKS ARE NULL, AND THE REASON IS THE POINT.** Scan gate
+    0.8441 both ways on all 20 rows; engraved 0.1122 both ways. Established at
+    three levels rather than assumed: the transcriptions DO differ (so the flag
+    ran), the exports differ on 5 files, and **the entire export difference is
+    `<part-name>`** — which musicdiff does not score. So the metric is blind to
+    the only channel this acts through, not to the flag. Same footing as
+    `OMR_ROSTER`, which shipped on for exactly this reason.
+
+    **What would reverse it:** any edition where a rung's text gets *worse*.
+    Every measurement so far is one-directional, and that is the claim to
+    falsify. Record: `benchmarks/omr-label-ladder-2026-09/`.
     """
-    return os.environ.get("OMR_LABEL_MERGE_QUALITY", "0").strip().lower() in (
+    return os.environ.get("OMR_LABEL_MERGE_QUALITY", "1").strip().lower() in (
         "1", "true", "yes", "on")
 
 
