@@ -3,3 +3,16 @@ transcribe: brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf (8
   conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: per-cell
   weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
   page 10: 2 systems, 27 staves, 229 measures, 3619 detections (755/755 pitched, 755/755 durations)
+  page 75: 1 systems, 16 staves, 128 measures, 1389 detections (453/453 pitched, 453/453 durations)
+4 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(C)', '(Es)', 'F}.', 'Vel.' — these are the strings to add to tools/omr/instruments.py
+
+wrote benchmarks/omr-movement-reference-2026-09/out/brahms1-p10p75-flag1.json
+  pages=2  systems=3  staves=43  measures=357  detections=4315
+  noteheads=1208  pitched=1208  (100% pitch coverage)
+  with_duration=1208  (100% rhythm coverage)  rests=331/392
+  runtime: phase1=32.72s  yolo=108.76s  total=204.56s
+  page 10: 229 measures, 0 phase1_warnings, 27 rhythm_sum_warnings
+    key signatures: read on 19/27 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 75: 128 measures, 0 phase1_warnings, 5 rhythm_sum_warnings
+    key signatures: read on 2/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+exit=0 tag=brahms1-p10p75 flag=1
