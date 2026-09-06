@@ -48,31 +48,41 @@ arm for anyone who wants to see it.
 ## Publisher convention — the kill criterion, answered first
 
 The risk was a rule that works on one house's labelling convention. Measured over
-**45 documents in 12 houses**, scoring whether the rule lands on the run's
+**53 documents in 12 houses**, scoring whether the rule lands on the run's
 *largest* system (what `build_reference`'s own docstring aims at):
 
 | | picks the largest system |
 |---|--:|
-| all (n=45) | old 0.622 → **new 0.889** (pure 0.867) |
-| documents that name something (n=41) | old 0.585 → **new 0.878** |
-| documents that name nothing (n=4) | **identical picks**, asserted |
+| all (n=53) | old 0.604 → **new 0.868** |
+| documents that name nothing | **identical picks**, asserted |
 
-By house, old → new: Breitkopf 0.667→1.000 (n=6) · **Litolff 0.800→1.000 (n=5)**
-· Universal 0.600→0.800 · other/unknown 0.500→1.000 · Durand 0.250→0.750 ·
-Eulenburg 0.000→1.000 · Ricordi 0.000→0.500 · Peters/Bote/Augener unchanged at
-1.000 · **Simrock 0.667 under BOTH** · Novello 0.000 under both.
+**No house is worse at any point of the sweep, 14 documents disagree and all
+resolve toward a LARGER reference, 0 shrink** under the never-shrink guard. Every
+changed document is one shape: **the document's first system is both the largest
+and the labelled one, and the recurring filter threw it away for occurring
+once.** Simrock reads **0.750 under both rules** — a house the rule does not
+REACH, not one it harms.
 
-**No house is worse at any point of the sweep, 12 documents change and all toward
-a LARGER reference, 0 shrink** under the never-shrink guard. Every changed
-document is one shape: **the document's first system is both the largest and the
-labelled one, and the recurring filter threw it away for occurring once.**
+⚠️⚠️ **THE INCUMBENT'S RATE FALLS AS THE CORPUS GROWS, AND THE FIX'S DOES NOT.**
 
-⚠️ **These n=45 figures supersede n=30 and n=27 cuts, and the sweep's history is
-worth keeping because it moved twice.** At n=27 Simrock read 1.000 on two
-documents; with three it reads **0.667 under both rules** — **a house the rule
-does not REACH, not one it harms** — and that correction stands at n=45. At n=30
-Litolff was flat at 1.000, which was the headline evidence that this is *not* a
-Litolff rule; at n=45 it reads **0.800 → 1.000**.
+| n | old | new |
+|--:|--:|--:|
+| 24 | 0.708 | ~0.87 |
+| 30 | 0.700 | 0.867 |
+| 45 | 0.622 | 0.889 |
+| **53** | **0.604** | **0.868** |
+
+**That is the small samples having flattered the INCUMBENT, not the fix
+improving.** The shape the old rule misses — a document whose first system is the
+only labelled one — is common, and every house added keeps turning up more of it.
+⚠️ **Any figure quoted from an early cut understates the bug**, and the same
+caution applies to the next person's small sweep of anything else here.
+
+⚠️ **The sweep's history is worth keeping because it moved in both directions.**
+At n=27 Simrock read 1.000 on two documents; at n=30, with three, it read 0.667
+under both rules; at n=53 it is 0.750 under both. At n=30 Litolff was flat at
+1.000, which was the headline evidence that this is *not* a Litolff rule; from
+n=45 it reads 0.800 → 1.000.
 
 ⚠️ **Read that Litolff movement carefully — it is not new independent support.**
 The document that moved it is `beethoven--symphony-5--575951`, the **other scan
