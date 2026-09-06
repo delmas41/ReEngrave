@@ -42,6 +42,7 @@ import collections
 import os
 from dataclasses import dataclass, field
 
+from . import movement_reference
 from .types import PageWithStaves, Staff
 
 # Alignment scores. Label agreement dominates; a label CONFLICT is the only
@@ -174,6 +175,36 @@ def build_reference(views: list[SystemView],
     chosen; otherwise the recurring pick stands. `most_labelled="pure"` drops
     that guard and is kept only to reproduce the measurement that refused it.
     """
+    best = reference_view(views, most_labelled)
+    if best is None:
+        return []
+    return _slots_of(best)
+
+
+def _slots_of(view: SystemView) -> list[Slot]:
+    n = max(1, view.size - 1)
+    return [
+        Slot(index=i,
+             group_index=st.group_index,
+             instrument=view.labels.get(st.staff_index),
+             position=i / n)
+        for i, st in enumerate(view.staves)
+    ]
+
+
+def reference_view(views: list[SystemView],
+                   most_labelled: str | bool | None = None
+                   ) -> SystemView | None:
+    """The SYSTEM the reference is read off, kept rather than discarded.
+
+    `build_reference` always chose a particular system and then threw it away,
+    returning only the slots. The system itself is what a second alignment
+    needs — see `movement_reference`: a movement's own reference has to be
+    placed into the document's, and it is placed the way every other system is,
+    by aligning the system it came from. The whole choice lives here, including
+    `most_labelled`, so a per-SPAN reference is chosen by exactly the rule a
+    per-document one is.
+    """
     if most_labelled is None:
         most_labelled = most_labelled_reference_mode()
     if most_labelled is True:
@@ -182,7 +213,7 @@ def build_reference(views: list[SystemView],
         most_labelled = "off"
     views = [v for v in views if v.size]
     if not views:
-        return []
+        return None
     sizes = sorted(v.size for v in views)
     median = sizes[len(sizes) // 2]
     cap = median * REFERENCE_MAX_SIZE_RATIO
@@ -210,14 +241,7 @@ def build_reference(views: list[SystemView],
         by_labels = max(labelled, key=lambda v: (len(v.labels), v.size))
         if most_labelled == "pure" or by_labels.size >= best.size:
             best = by_labels
-    n = max(1, best.size - 1)
-    return [
-        Slot(index=i,
-             group_index=st.group_index,
-             instrument=best.labels.get(st.staff_index),
-             position=i / n)
-        for i, st in enumerate(best.staves)
-    ]
+    return best
 
 
 def _looks_merged(view: SystemView) -> bool:
@@ -317,8 +341,63 @@ def assign_slots(pages: list[PageWithStaves],
         most_labelled=most_labelled)
     if not reference:
         return []
+
+    if movement_reference.enabled():
+        spans = _span_views(pages, all_views)
+        if len(spans) > 1 and _align_by_span(spans, reference):
+            return reference
+
     for page_views in all_views:
         for view in page_views:
             for staff, slot in zip(view.staves, align(view, reference)):
                 staff.slot_index = slot
     return reference
+
+
+def _span_views(pages: list[PageWithStaves],
+                all_views: list[list[SystemView]]) -> list[list[SystemView]]:
+    """The run's systems grouped into lineup spans — see `movement_reference`."""
+    page_systems = [
+        (pws.page.page_index, [v.size for v in views])
+        for pws, views in zip(pages, all_views)
+    ]
+    by_page = {pws.page.page_index: views
+               for pws, views in zip(pages, all_views)}
+    return [[v for p in span for v in by_page.get(p, [])]
+            for span in movement_reference.lineup_spans(page_systems)]
+
+
+def _align_by_span(spans: list[list[SystemView]],
+                   reference: list[Slot]) -> bool:
+    """Align each span's systems against that span's OWN reference, composed
+    into the document's slot space. Returns whether it could be done.
+
+    Two alignments, both the ordinary one:
+
+    1. the span's reference SYSTEM into the document reference — the strongest
+       case the DP ever gets, because a movement's opening system is the one
+       page in the movement that labels every staff it has;
+    2. each system of the span into the span reference — where an unreduced
+       system now has as many staves as the reference has slots, and the only
+       order-preserving mapping of m onto m is one-to-one.
+
+    Refuses (leaving the caller on the document-wide path) if any span's
+    reference cannot be placed whole. A span whose lineup the document
+    reference cannot express is evidence that the segmentation is wrong, and
+    guessing past it would be worse than not splitting at all.
+    """
+    plans: list[tuple[list[SystemView], list[Slot], list[int]]] = []
+    for span in spans:
+        span_view = reference_view(span)
+        if span_view is None:
+            return False
+        to_global = align(span_view, reference)
+        if any(g < 0 for g in to_global):
+            return False
+        plans.append((span, _slots_of(span_view), to_global))
+
+    for span, span_reference, to_global in plans:
+        for view in span:
+            for staff, local in zip(view.staves, align(view, span_reference)):
+                staff.slot_index = to_global[local] if local >= 0 else -1
+    return True

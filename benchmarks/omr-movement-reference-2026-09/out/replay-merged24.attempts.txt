@@ -1,0 +1,3 @@
+attempt 1: stalled at        2 cached pages, restarting
+attempt 2: stalled at        2 cached pages, restarting
+attempt 3: stalled at        2 cached pages, restarting

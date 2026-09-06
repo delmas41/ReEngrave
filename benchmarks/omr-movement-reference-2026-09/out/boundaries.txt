@@ -1,0 +1,20 @@
+
+=== beet5-984073 ===
+  boundaries found : [44]
+  movement openings: [1, 17, 32, 44]
+  FALSE boundaries : []  <- must be empty
+  missed opening p17: peak 12 -> 12   FREE -- same lineup level either side
+  missed opening p32: peak 12 -> 12   FREE -- same lineup level either side
+
+=== brahms1-317803 ===
+  boundaries found : [45]
+  movement openings: [0, 45]
+  FALSE boundaries : []  <- must be empty
+
+=== dvorak9-405834 ===
+  boundaries found : []
+  (no hand-read openings for this work; a rule that finds no boundary can claim no opening falsely)
+
+=== mozart41-73 ===
+  boundaries found : []
+  (no hand-read openings for this work; a rule that finds no boundary can claim no opening falsely)

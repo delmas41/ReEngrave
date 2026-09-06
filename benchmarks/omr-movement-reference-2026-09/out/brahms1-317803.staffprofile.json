@@ -1,0 +1,771 @@
+{
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "rows": [
+  {
+   "page": 0,
+   "systems": [
+    14
+   ],
+   "staves": 14,
+   "secs": 4.18
+  },
+  {
+   "page": 1,
+   "systems": [
+    14,
+    13
+   ],
+   "staves": 27,
+   "secs": 4.09
+  },
+  {
+   "page": 2,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.78
+  },
+  {
+   "page": 3,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.2
+  },
+  {
+   "page": 4,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.92
+  },
+  {
+   "page": 5,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.55
+  },
+  {
+   "page": 6,
+   "systems": [
+    12,
+    11
+   ],
+   "staves": 23,
+   "secs": 4.48
+  },
+  {
+   "page": 7,
+   "systems": [
+    11,
+    11
+   ],
+   "staves": 22,
+   "secs": 6.64
+  },
+  {
+   "page": 8,
+   "systems": [
+    11,
+    11
+   ],
+   "staves": 22,
+   "secs": 4.76
+  },
+  {
+   "page": 9,
+   "systems": [
+    12,
+    13
+   ],
+   "staves": 25,
+   "secs": 5.13
+  },
+  {
+   "page": 10,
+   "systems": [
+    13,
+    14
+   ],
+   "staves": 27,
+   "secs": 4.73
+  },
+  {
+   "page": 11,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.2
+  },
+  {
+   "page": 12,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.67
+  },
+  {
+   "page": 13,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.62
+  },
+  {
+   "page": 14,
+   "systems": [
+    14,
+    12
+   ],
+   "staves": 26,
+   "secs": 4.5
+  },
+  {
+   "page": 15,
+   "systems": [
+    12,
+    13
+   ],
+   "staves": 25,
+   "secs": 4.27
+  },
+  {
+   "page": 16,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 5.01
+  },
+  {
+   "page": 17,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.83
+  },
+  {
+   "page": 18,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.93
+  },
+  {
+   "page": 19,
+   "systems": [
+    14,
+    13
+   ],
+   "staves": 27,
+   "secs": 4.15
+  },
+  {
+   "page": 20,
+   "systems": [
+    13,
+    11
+   ],
+   "staves": 24,
+   "secs": 4.7
+  },
+  {
+   "page": 21,
+   "systems": [
+    11,
+    11
+   ],
+   "staves": 22,
+   "secs": 4.49
+  },
+  {
+   "page": 22,
+   "systems": [
+    11,
+    11
+   ],
+   "staves": 22,
+   "secs": 4.24
+  },
+  {
+   "page": 23,
+   "systems": [
+    12,
+    13
+   ],
+   "staves": 25,
+   "secs": 4.8
+  },
+  {
+   "page": 24,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.4
+  },
+  {
+   "page": 25,
+   "systems": [
+    14,
+    12
+   ],
+   "staves": 26,
+   "secs": 4.55
+  },
+  {
+   "page": 26,
+   "systems": [
+    13,
+    13
+   ],
+   "staves": 26,
+   "secs": 4.66
+  },
+  {
+   "page": 27,
+   "systems": [
+    13,
+    10
+   ],
+   "staves": 23,
+   "secs": 4.91
+  },
+  {
+   "page": 28,
+   "systems": [
+    11,
+    11
+   ],
+   "staves": 22,
+   "secs": 4.68
+  },
+  {
+   "page": 29,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 4.64
+  },
+  {
+   "page": 30,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 4.55
+  },
+  {
+   "page": 31,
+   "systems": [
+    10,
+    12
+   ],
+   "staves": 22,
+   "secs": 4.25
+  },
+  {
+   "page": 32,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 5.22
+  },
+  {
+   "page": 33,
+   "systems": [
+    13,
+    14
+   ],
+   "staves": 27,
+   "secs": 4.77
+  },
+  {
+   "page": 34,
+   "systems": [
+    13,
+    13
+   ],
+   "staves": 26,
+   "secs": 4.75
+  },
+  {
+   "page": 35,
+   "systems": [
+    13,
+    14
+   ],
+   "staves": 27,
+   "secs": 4.62
+  },
+  {
+   "page": 36,
+   "systems": [
+    12,
+    11
+   ],
+   "staves": 23,
+   "secs": 4.42
+  },
+  {
+   "page": 37,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 4.27
+  },
+  {
+   "page": 38,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 3.99
+  },
+  {
+   "page": 39,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 4.42
+  },
+  {
+   "page": 40,
+   "systems": [
+    10,
+    12
+   ],
+   "staves": 22,
+   "secs": 4.49
+  },
+  {
+   "page": 41,
+   "systems": [
+    12,
+    12
+   ],
+   "staves": 24,
+   "secs": 5.18
+  },
+  {
+   "page": 42,
+   "systems": [
+    12,
+    11
+   ],
+   "staves": 23,
+   "secs": 4.2
+  },
+  {
+   "page": 43,
+   "systems": [
+    11,
+    11
+   ],
+   "staves": 22,
+   "secs": 4.61
+  },
+  {
+   "page": 44,
+   "systems": [
+    11,
+    12
+   ],
+   "staves": 23,
+   "secs": 4.14
+  },
+  {
+   "page": 45,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.25
+  },
+  {
+   "page": 46,
+   "systems": [
+    13,
+    11
+   ],
+   "staves": 24,
+   "secs": 5.02
+  },
+  {
+   "page": 47,
+   "systems": [
+    13,
+    12
+   ],
+   "staves": 25,
+   "secs": 5.1
+  },
+  {
+   "page": 48,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.76
+  },
+  {
+   "page": 49,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.41
+  },
+  {
+   "page": 50,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.53
+  },
+  {
+   "page": 51,
+   "systems": [
+    14,
+    13
+   ],
+   "staves": 27,
+   "secs": 4.55
+  },
+  {
+   "page": 52,
+   "systems": [
+    7,
+    11
+   ],
+   "staves": 18,
+   "secs": 4.27
+  },
+  {
+   "page": 53,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.44
+  },
+  {
+   "page": 54,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 4.58
+  },
+  {
+   "page": 55,
+   "systems": [
+    10,
+    9
+   ],
+   "staves": 19,
+   "secs": 4.71
+  },
+  {
+   "page": 56,
+   "systems": [
+    9,
+    14
+   ],
+   "staves": 23,
+   "secs": 4.28
+  },
+  {
+   "page": 57,
+   "systems": [
+    14,
+    12
+   ],
+   "staves": 26,
+   "secs": 4.8
+  },
+  {
+   "page": 58,
+   "systems": [
+    13,
+    14
+   ],
+   "staves": 27,
+   "secs": 4.41
+  },
+  {
+   "page": 59,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.34
+  },
+  {
+   "page": 60,
+   "systems": [
+    27
+   ],
+   "staves": 27,
+   "secs": 4.74
+  },
+  {
+   "page": 61,
+   "systems": [
+    11,
+    12
+   ],
+   "staves": 23,
+   "secs": 4.29
+  },
+  {
+   "page": 62,
+   "systems": [
+    14,
+    13
+   ],
+   "staves": 27,
+   "secs": 4.46
+  },
+  {
+   "page": 63,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 5.12
+  },
+  {
+   "page": 64,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 4.78
+  },
+  {
+   "page": 65,
+   "systems": [
+    10,
+    9
+   ],
+   "staves": 19,
+   "secs": 3.79
+  },
+  {
+   "page": 66,
+   "systems": [
+    10,
+    11
+   ],
+   "staves": 21,
+   "secs": 4.91
+  },
+  {
+   "page": 67,
+   "systems": [
+    28
+   ],
+   "staves": 28,
+   "secs": 4.8
+  },
+  {
+   "page": 68,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.16
+  },
+  {
+   "page": 69,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.19
+  },
+  {
+   "page": 70,
+   "systems": [
+    12,
+    10
+   ],
+   "staves": 22,
+   "secs": 4.05
+  },
+  {
+   "page": 71,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 4.09
+  },
+  {
+   "page": 72,
+   "systems": [
+    9,
+    13
+   ],
+   "staves": 22,
+   "secs": 4.72
+  },
+  {
+   "page": 73,
+   "systems": [
+    14,
+    9
+   ],
+   "staves": 23,
+   "secs": 4.71
+  },
+  {
+   "page": 74,
+   "systems": [
+    13,
+    13
+   ],
+   "staves": 26,
+   "secs": 4.89
+  },
+  {
+   "page": 75,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.66
+  },
+  {
+   "page": 76,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.31
+  },
+  {
+   "page": 77,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.53
+  },
+  {
+   "page": 78,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.6
+  },
+  {
+   "page": 79,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.45
+  },
+  {
+   "page": 80,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.38
+  },
+  {
+   "page": 81,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 3.82
+  },
+  {
+   "page": 82,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.54
+  },
+  {
+   "page": 83,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 3.83
+  },
+  {
+   "page": 84,
+   "systems": [
+    16
+   ],
+   "staves": 16,
+   "secs": 4.68
+  },
+  {
+   "page": 85,
+   "systems": [
+    17
+   ],
+   "staves": 17,
+   "secs": 4.57
+  }
+ ],
+ "sizes": {
+  "14": 40,
+  "13": 22,
+  "12": 17,
+  "11": 21,
+  "10": 25,
+  "16": 17,
+  "7": 1,
+  "9": 5,
+  "27": 1,
+  "28": 1,
+  "17": 1
+ }
+}

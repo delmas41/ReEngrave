@@ -1,0 +1,20 @@
+
+=== beet5-984073.staffprofile.json  (88 pages) ===
+  sizes: {6: 1, 7: 2, 8: 3, 9: 3, 10: 4, 11: 21, 12: 11, 15: 1, 16: 2, 17: 39}
+  recurrence  2 spans: p1-43 peak=12 (43pp), p44-87 peak=17 (44pp)
+  raw         2 spans: p1-43 peak=12 (43pp), p44-87 peak=17 (44pp)
+
+=== brahms1-317803.staffprofile.json  (86 pages) ===
+  sizes: {10: 11, 11: 8, 12: 9, 13: 11, 14: 27, 16: 17, 17: 1}
+  recurrence  2 spans: p0-44 peak=14 (45pp), p45-85 peak=17 (39pp)
+  raw         3 spans: p0-44 peak=14 (45pp), p45-84 peak=16 (38pp), p85-85 peak=17 (1pp)
+
+=== dvorak9-405834.staffprofile.json  (80 pages) ===
+  sizes: {14: 17, 15: 57, 27: 1, 30: 1}
+  recurrence  1 spans: p4-79 peak=30 (76pp)
+  raw         2 spans: p4-13 peak=15 (10pp), p14-79 peak=30 (66pp)
+
+=== mozart41-73.staffprofile.json  (56 pages) ===
+  sizes: {8: 11, 10: 43, 11: 1}
+  recurrence  1 spans: p0-55 peak=11 (55pp)
+  raw         2 spans: p0-53 peak=10 (53pp), p54-55 peak=11 (2pp)

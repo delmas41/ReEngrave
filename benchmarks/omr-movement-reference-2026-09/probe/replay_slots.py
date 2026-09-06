@@ -1,0 +1,211 @@
+"""Replay the SLOT ASSIGNMENT of a whole document, without transcribing it.
+
+`slots.assign_slots` is a pure function of (staves, margin labels). Both are
+cheap: staff detection is ~0.8 s a page and the margin ladder ~1-2 s with the
+Surya server resident, against ~50 s a page for a full transcription. So the
+mechanism under test can be run over 88 pages in minutes, and both arms share
+one detection pass, which also removes detector jitter from the comparison.
+
+⚠️ **WHAT THIS DOES AND DOES NOT MODEL.** It reproduces exactly the identity
+that comes from the REFERENCE's own labels — `instrument_source: "label"` in a
+real run — which is where the bug lives: on the whole-work run every one of
+page 23's three spurious trombones is `src=label`, i.e. the name of the slot the
+staff was aligned to. It does NOT model the score-order prior or the roster
+fill, which need clefs from a transcription. So its counts are over
+slot-label-sourced identity only, and it is VALIDATED against the full run
+before being believed (`--validate`), not trusted on its face.
+"""
+from __future__ import annotations
+
+import argparse
+import collections
+import json
+import os
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+
+from tools.omr import assist as assist_mod                      # noqa: E402
+from tools.omr.contextual import _instrument_by_slot, _labels_for_page  # noqa: E402
+from tools.omr.preprocessing import render_page                 # noqa: E402
+from tools.omr.slots import assign_slots, labels_by_staff       # noqa: E402
+from tools.omr.staff_detector import detect_staves              # noqa: E402
+
+import numpy as np                                              # noqa: E402
+
+_EMPTY = np.zeros((1, 1), np.uint8)
+_EMPTY3 = np.zeros((1, 1, 3), np.uint8)
+
+FINALE_ONLY = {"Piccolo", "Contrabassoon", "Trombone"}
+FINALE_FIRST_PAGE = 44
+
+
+def read(pdf: Path, pages, dpi: int, cache: Path | None = None):
+    """Staves + margin labels per page, RESUMABLE.
+
+    ⚠️ THE READ PHASE HANGS, AND NEITHER OF THE FIRST TWO DIAGNOSES WAS RIGHT.
+    Over 88 pages this stops at 0.0% CPU on the 22nd page read — three times, at
+    the same COUNT — while a 24-page run over pages 20-55 reads that same page
+    22 and finishes. So it is not the page's content. First guess was CPU
+    starvation behind three sibling agents; the machine then went quiet and it
+    stalled anyway. Second was the ~34 MB of rasters each PageImage holds, ~3 GB
+    over 88 pages beside llama.cpp's 1.7 GB; those are dropped now (kept, it is
+    right regardless) and it stalled at the same count. It is the Nth margin
+    read and the cause is still UNKNOWN — recorded rather than guessed at again.
+
+    Caching each page turns that from a wall into a slowdown: every invocation
+    gets further and the arms run off the cache. Pages are read independently,
+    so nothing about the measurement changes.
+    """
+    import pickle
+    staved, labels = [], []
+    budget = [0]
+    tiers = [0, 0, 0, 0, 0]
+    a = assist_mod.Assist("none")     # free readers only — no paid rung
+    if cache:
+        cache.mkdir(parents=True, exist_ok=True)
+    for i in pages:
+        blob = cache / f"p{i:04d}.pkl" if cache else None
+        if blob is not None and blob.exists():
+            pws, read_labels = pickle.loads(blob.read_bytes())
+            staved.append(pws)
+            labels.append(read_labels)
+            print(f"  page {i}: cached ({len(pws.staves)} staves)",
+                  file=sys.stderr)
+            continue
+        pws = detect_staves(render_page(pdf, i, dpi=dpi))
+        staved.append(pws)
+        read_labels = _labels_for_page(pws, pdf, i, assist=a, budget=budget,
+                                       tiers=tiers)
+        labels.append(read_labels)
+        # ⚠️ DROP THE PAGE RASTERS ONCE THE MARGIN HAS BEEN READ. A 300 dpi
+        # page carries ~34 MB of rgb + binary, so 88 of them is ~3 GB held
+        # alongside llama.cpp's 1.7 GB, and this probe stalled at 0.0% CPU on
+        # page 22 of 88 — TWICE, at the same page, which is what says memory
+        # rather than the contention it was first blamed on. `assign_slots`
+        # needs the staves and nothing else; the images are already spent.
+        pws.page.rgb = _EMPTY3
+        pws.page.binary = _EMPTY
+        if blob is not None:
+            blob.write_bytes(pickle.dumps((pws, read_labels)))
+        print(f"  page {i}: {len(pws.staves)} staves, "
+              f"{sum(1 for l in read_labels if l.matched)} labels",
+              file=sys.stderr)
+    return staved, labels
+
+
+#: The four arms. `OMR_REFERENCE_MOST_LABELLED` is the sibling rule merged to
+#: main on 2026-09-06 (which SYSTEM becomes the reference); this one is
+#: `OMR_MOVEMENT_REFERENCE` (how MANY references a run has). They are reported
+#: separately so a future reader can attribute either.
+ARMS = [
+    ("baseline      (both off)", "0", "off"),
+    ("mine alone    (mvt on)  ", "1", "off"),
+    ("theirs alone  (lab on)  ", "0", "on"),
+    ("COMPOSED      (both on) ", "1", "on"),
+]
+
+
+def arm(staved, labels, page_indices, flag: str, most_labelled: str = "off"):
+    os.environ["OMR_MOVEMENT_REFERENCE"] = flag
+    os.environ["OMR_REFERENCE_MOST_LABELLED"] = most_labelled
+    for pws in staved:
+        for st in pws.staves:
+            st.slot_index = -1
+    reference = assign_slots(staved, [labels_by_staff(l) for l in labels])
+    by_slot = _instrument_by_slot(reference)
+    rows = []
+    for page_index, pws in zip(page_indices, staved):
+        for st in pws.staves:
+            inst = by_slot.get(st.slot_index)
+            rows.append((page_index, st.system_index, st.staff_index,
+                         inst.name if inst else None))
+    return reference, rows
+
+
+def impossible(rows):
+    before = [r for r in rows if r[0] < FINALE_FIRST_PAGE]
+    bad = [r for r in before if r[3] in FINALE_ONLY]
+    return before, bad
+
+
+def report(tag, reference, rows):
+    before, bad = impossible(rows)
+    print(f"\n=== {tag} ===")
+    print(f"  reference slots  : {len(reference)}  "
+          f"[{', '.join(str(s.instrument) for s in reference)}]")
+    print(f"  staff records    : {len(rows)}  (before the finale: {len(before)})")
+    print(f"  IMPOSSIBLE       : {len(bad)}  "
+          f"({len(bad)/max(1,len(before)):.4f})")
+    for k, v in collections.Counter(r[3] for r in bad).most_common():
+        print(f"      {v:4d}  {k}")
+    print(f"  on pages         : {sorted({r[0] for r in bad})}")
+    return bad
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("pdf")
+    ap.add_argument("--pages", default="0-87")
+    ap.add_argument("--dpi", type=int, default=300)
+    ap.add_argument("--out", default=None)
+    ap.add_argument("--cache", default=None)
+    args = ap.parse_args()
+
+    pages = []
+    for part in args.pages.split(","):
+        lo, hi = (part.split("-") + [None])[:2]
+        pages += list(range(int(lo), int(hi) + 1)) if hi else [int(lo)]
+    pages = sorted(set(pages))
+    pdf = Path(args.pdf)
+
+    print(f"reading {len(pages)} pages of {pdf.name} …", file=sys.stderr)
+    staved, labels = read(pdf, pages, args.dpi,
+                          Path(args.cache) if args.cache else None)
+
+    results = {}
+    for tag, mvt, lab in ARMS:
+        results[tag] = arm(staved, labels, pages, mvt, lab)
+    print("INPUT ASSERTION: all four arms share ONE detection pass, so any "
+          "difference is the flags and nothing else")
+
+    bad = {}
+    for tag, _m, _l in ARMS:
+        reference, rows = results[tag]
+        bad[tag] = report(tag, reference, rows)
+
+    base_rows = results[ARMS[0][0]][1]
+    print("\n=== changes against the baseline ===")
+    for tag, _m, _l in ARMS[1:]:
+        rows = results[tag][1]
+        changed = [(a, b) for a, b in zip(base_rows, rows) if a[3] != b[3]]
+        print(f"  {tag}  changed {len(changed):4d} staff records   "
+              f"IMPOSSIBLE {len(bad[ARMS[0][0]])} -> {len(bad[tag])}")
+        kinds = collections.Counter((a[3], b[3]) for a, b in changed)
+        for (x, y), n in kinds.most_common(8):
+            print(f"      {n:5d}  {str(x):16s} -> {y}")
+
+    print("\nIMPOSSIBLE by arm:")
+    for tag, _m, _l in ARMS:
+        print(f"  {tag}  {len(bad[tag])}")
+
+    if args.out:
+        json.dump({"pages": pages,
+                   "arms": {tag: {"reference": [s.instrument for s in ref],
+                                  "rows": rows}
+                            for tag, (ref, rows) in results.items()},
+                   # kept under the old keys so show_page.py and any earlier
+                   # analysis still read: baseline vs the composed arm.
+                   "reference_off": [s.instrument
+                                     for s in results[ARMS[0][0]][0]],
+                   "reference_on": [s.instrument
+                                    for s in results[ARMS[-1][0]][0]],
+                   "rows_off": results[ARMS[0][0]][1],
+                   "rows_on": results[ARMS[-1][0]][1]},
+                  open(args.out, "w"))
+        print(f"wrote {args.out}")
+
+
+if __name__ == "__main__":
+    main()

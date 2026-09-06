@@ -1,0 +1,2 @@
+attempt 1: stalled at       22 cached pages, restarting
+attempt 2: stalled at       22 cached pages, restarting
