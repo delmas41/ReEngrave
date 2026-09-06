@@ -21,7 +21,12 @@
     {
       "label": "Vs Audiveris",
       "value": "1<span class=\"unit\"> of 2 corpora</span>",
-      "note": "engraved: ahead, 0.1125 recorded vs its 0.1252 · scans: 0.8345 vs 0.7919 on the 11-row pool the arm covers (the benchmark has since moved to a 20-row era — not comparable)"
+      "note": "engraved: ahead, 0.1122 recorded vs its 0.1252 · scans: 0.8345 vs 0.7919 on the 11-row pool the arm covers (the benchmark has since moved to a 20-row era — not comparable)"
+    },
+    {
+      "label": "Staff identity",
+      "value": "0.955",
+      "note": "precision, coverage 1.000 · roster read from the page, default ON 09-05 · 27 names fixed, 0 broken, 0 edits"
     }
   ],
   "work_flags": {
@@ -30,6 +35,18 @@
   },
   "table_caption": "† flagged rows read differently — hover for why. Boulanger (46 parts) is deliberately unpooled: it measures page segmentation, not recognition. The scan side is a separate 5-page benchmark (opened 0.7960); its gap is mostly <em>reading</em>, and hollow noteheads on closed-counter scans are the named lever.",
   "active": [
+    {
+      "title": "Staff identity from the page's own roster",
+      "pill": "shipped 09-05",
+      "pill_class": "shipped",
+      "body": "A work's instrument roster is read once from its first labelled system, and every later system is a strict <b>subsequence</b> of it (11 of 11, zero violations) — so staves join by ordinal against a roster the page supplied, not by matching a generic score-order template. Identity coverage <b>0.884 → 1.000</b>, precision <b>0.926 → 0.955</b>, 27 staves fixed and none broken; acquisition names 64/64 correctly or says nothing. <code>OMR_ROSTER</code> default ON. It prices at <b>exactly 0 edits</b> — and that is why it ships on: musicdiff cannot score <code>&lt;part-name&gt;</code> (measured, not assumed), so the \"zero edits ships disabled\" rule does not reach it."
+    },
+    {
+      "title": "Instrument identity → notes",
+      "pill": "pricing",
+      "pill_class": "active",
+      "body": "The cross-staff written-range veto has <b>never fired on a scan</b> — it reads ranges from a dossier and the scan gate runs dossier-free by protocol, so all <b>4,256</b> contested noteheads resolve by ledger ladder or raw distance. A page-read roster supplies per-staff identity without a dossier. ⚠️ The family-level substitute was already measured vacuous (a family's range is the union of its members'; 5 pitches of 9,219 outside) — per-instrument ranges are far tighter, so that negative does not carry. Reach measured before quality."
+    },
     {
       "title": "Labeling → gate → ship loop",
       "pill": "shipping",
@@ -102,10 +119,40 @@
       "title": "7 · Beat Audiveris on scans again",
       "pill": "behind on scans",
       "pill_class": "waiting",
-      "body": "Engraved: ahead in both configs (0.1127/0.1219 vs 0.1252). Scans: behind 0.8345 vs 0.7919; the structural bucket is now fully attributed and the machinery is merged dormant (<code>OMR_SLOT_STITCH</code> + <code>OMR_CONDENSED_PARTS</code>, oracle ceiling −4,557). Open decision: a dossier-style count source to turn the flags on honestly (the benchmark can't credit its own answer key), or accept the reading-side path. Divisi stem-splitting is the next increment. Arcs-as-CV session (Sean's) in flight."
+      "body": "Engraved: ahead in both configs (0.1122/0.1214 vs 0.1252). Scans: behind 0.8345 vs 0.7919 on the pool its arm covers; the structural bucket is fully attributed and the machinery is merged dormant (<code>OMR_SLOT_STITCH</code> + <code>OMR_CONDENSED_PARTS</code>, oracle ceiling −4,557). ⚠️ <b>Identity is now supplied</b> (roster, default ON) but did <b>not</b> unblock stitching — that was refused on <b>reach</b>, not on identity quality, so what blocks it remains the musicdiff charging asymmetry. ⚠️ And Sean's page-truth redirect reframes the target: <code>OMR_CONDENSED_PARTS</code> splits a staff to match the <em>encoder</em>, so as output becomes faithful to the page, OMR-NED on condensed rows gets <em>worse</em> while the output gets better."
     }
   ],
   "log": [
+    {
+      "date": "09-05",
+      "title": "The roster wins: identity from the page, not from a template",
+      "negative": false,
+      "body": "Sean's own reading procedure, measured and shipped: <em>look at the names on the first page; later systems only take away.</em> Against a page-1 roster, coverage went <b>0.807 → 1.000 while precision ROSE 0.889 → 0.903</b> — they normally trade, and here they don't, because there is no layout to choose so the failing step never occurs. Wired in and default ON. Two negatives were worth as much: <code>_stitch_slots</code> is refused on <b>reach</b> (of 20 rows, 12 refuse the ordinal join but 9 are single-system pages, and on the 3 that matter the slot join is already available), and clef FILL reaches only 34 of 396 staves — <b>disjoint</b> from where identity applies."
+    },
+    {
+      "date": "09-05",
+      "title": "Adjudicated: the vocabulary gap is ZERO, it was alignment all along",
+      "negative": false,
+      "body": "All 14 residual errors opened by hand: <b>14 unhandled, 0 irreducible, 0 upstream</b>. In 14 of 14 the roster entry at that ordinal <em>was</em> the truth — the aligner declined evidence it already had. Two mechanisms split them 7/7, one a logical certainty (when a system has as many staves as the roster has entries, the only order-preserving match is one-to-one). ⚠️ Three self-corrections came with it: the \"brass changes order\" finding was a probe artifact (duplicate names, 9 of 9); the proposed ordering constraint is <b>vacuous</b> because the DP already exploits order exhaustively; and an earlier \"80% of errors sit where no layout holds the truth\" was measuring index sensitivity, not vocabulary."
+    },
+    {
+      "date": "09-05",
+      "title": "Lexicon: the dangerous failure is CAPTURE, not absence",
+      "negative": false,
+      "body": "An absent instrument abstains harmlessly; a <b>shorter alias capturing a longer name</b> resolves confidently and wrongly, usually across families — corrupting the level measured as the stronger one (family 0.955 vs instrument 0.873). Seven repertoire names were captured cross-family, including <b><code>English horns</code> and <code>cors anglais</code> → brass Horn</b>. The mechanism: a word-bounded alias cannot fire inside its own plural, and the table hand-listed plurals for the short generic nouns but not the long compounds containing them. Margin labels 1,086 → 1,112 resolved, IMSLP fragments 0.9607 → <b>0.9809</b>, zero instruments lost across 40 hand-adjudicated changes."
+    },
+    {
+      "date": "09-05",
+      "title": "The library gains an instrumentation tier — and Sean's doubling remark found a live bug",
+      "negative": false,
+      "body": "Work-level rosters captured from IMSLP for <b>223 of 223</b> held works, plus an edition-level tier read from each printing's own pages (189 of 234), at catalog schema 3 with per-fact provenance enforced at write time. Chasing a remark about players doubling (flute → piccolo) into the <em>parser</em> found <code>2 flutes (2nd also piccolo)</code> resolving whole to <b>Piccolo ×2 with the flutes deleted</b>, at parse-rate 1.0: 61 of 223 works wrong, <b>Berlioz's <em>Symphonie fantastique</em> had no flute and no oboe</b>. Fixed offline from stored raw strings, zero new requests. ⚠️ Tier comparison found <b>0 genuine editorial variants in 181 rows</b> — all 9 candidates adjudicated away — so it works as a lexicon/read-quality detector, not the variant-catcher it was scoped as."
+    },
+    {
+      "date": "09-05",
+      "title": "Five branches landed and verified as a whole — and the scan gate's own claims corrected",
+      "negative": true,
+      "body": "The day's work moves <b>zero edits</b>, proved by A/B against the merge base rather than by matching a recorded figure (engraved 0.1122 / 2362, all 11 rows exact; the part-name assumption <em>measured</em> — rewriting every <code>&lt;part-name&gt;</code> scores 0 edits). ⚠️ Zero is the <b>gap, not the success</b>: almost nothing built was wired in. Three corrections that are not today's work: the gate has a <b>±6 edit noise floor</b> (its findings doc's \"exactly 0\" held on the 5-row era), <b>0.8444 is not a baseline for the current tree</b> (28 files of <code>tools/omr</code> behind), and a fresh worktree needs a third symlink for weights that fails asymmetrically. One test failed <b>only on the merged tree</b> — a workaround a later branch had made unnecessary."
+    },
     {
       "date": "09-04",
       "title": "Merge hazard caught: two dormant flags silently dropped, restored forward",
