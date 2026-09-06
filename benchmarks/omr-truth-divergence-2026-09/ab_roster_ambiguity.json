@@ -1,0 +1,98 @@
+[
+ {
+  "row": "engraved--mahler-sym5-mvt1",
+  "ordinal": 36,
+  "text": "B\u00e4sse.",
+  "roster_on": "Bass voice",
+  "roster_off": "Bass voice",
+  "flips": false
+ },
+ {
+  "row": "engraved--mahler-sym5-mvt1",
+  "ordinal": 37,
+  "text": "B\u00e4sse.",
+  "roster_on": "Bass voice",
+  "roster_off": "Contrabass",
+  "flips": true
+ },
+ {
+  "row": "engraved--mozart-sym41-mvt1",
+  "ordinal": 16,
+  "text": "Basso",
+  "roster_on": "Bass voice",
+  "roster_off": "Contrabass",
+  "flips": true
+ },
+ {
+  "row": "engraved--tchaikovsky-sym6-mvt2",
+  "ordinal": 9,
+  "text": "mbone Basso",
+  "roster_on": "Bass voice",
+  "roster_off": "Bass voice",
+  "flips": false
+ },
+ {
+  "row": "engraved--tchaikovsky-sym6-mvt2",
+  "ordinal": 16,
+  "text": "Basso",
+  "roster_on": "Bass voice",
+  "roster_off": "Contrabass",
+  "flips": true
+ },
+ {
+  "row": "scan--beethoven-sym5-mvt1-575951-p1",
+  "ordinal": 11,
+  "text": "Basso.",
+  "roster_on": "Bass voice",
+  "roster_off": "Contrabass",
+  "flips": true
+ },
+ {
+  "row": "scan--beethoven-sym5-mvt1-984073-p1",
+  "ordinal": 11,
+  "text": "Basso.",
+  "roster_on": "Bass voice",
+  "roster_off": "Contrabass",
+  "flips": true
+ },
+ {
+  "row": "scan--mahler-sym5-mvt1-local-p2",
+  "ordinal": 18,
+  "text": "B\u00e4sse",
+  "roster_on": "Bass voice",
+  "roster_off": "Contrabass",
+  "flips": true
+ },
+ {
+  "row": "scan--mahler-sym5-mvt1-local-p3",
+  "ordinal": 13,
+  "text": "B\u00e4sse",
+  "roster_on": "Bass voice",
+  "roster_off": "Bass voice",
+  "flips": false
+ },
+ {
+  "row": "scan--mahler-sym5-mvt1-local-p3",
+  "ordinal": 14,
+  "text": "Basse",
+  "roster_on": "Bass voice",
+  "roster_off": "Contrabass",
+  "flips": true
+ },
+ {
+  "row": "scan--mahler-sym5-mvt1-local-p4",
+  "ordinal": 19,
+  "text": "Basse )",
+  "roster_on": "Bass voice",
+  "roster_off": "Bass voice",
+  "flips": false
+ },
+ {
+  "row": "scan--mahler-sym5-mvt1-local-p5",
+  "ordinal": 19,
+  "text": "Bass }",
+  "roster_on": "Bass voice",
+  "roster_off": "Bass voice",
+  "flips": false
+ }
+]

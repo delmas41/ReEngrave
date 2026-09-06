@@ -39,8 +39,15 @@
    "page_n_systems": 2,
    "hand_lineup": 11,
    "hand_has_parts": true,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     11
+    ],
+    "total": 22
+   },
+   "raw_span": 22,
    "attribution": {
     "attributable": true,
     "n_staves_lineup": 11,
@@ -61,8 +68,15 @@
    "page_n_systems": 2,
    "hand_lineup": null,
    "hand_has_parts": false,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     8
+    ],
+    "total": 19
+   },
+   "raw_span": 19,
    "attribution": {
     "attributable": false,
     "delta": -1
@@ -79,8 +93,15 @@
    "page_n_systems": 2,
    "hand_lineup": null,
    "hand_has_parts": false,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     11
+    ],
+    "total": 22
+   },
+   "raw_span": 22,
    "attribution": {
     "attributable": false,
     "delta": -4
@@ -97,8 +118,14 @@
    "page_n_systems": 1,
    "hand_lineup": 12,
    "hand_has_parts": true,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     12
+    ],
+    "total": 12
+   },
+   "raw_span": 12,
    "attribution": {
     "attributable": true,
     "n_staves_lineup": 12,
@@ -119,8 +146,15 @@
    "page_n_systems": 2,
    "hand_lineup": 11,
    "hand_has_parts": true,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     11
+    ],
+    "total": 22
+   },
+   "raw_span": 22,
    "attribution": {
     "attributable": true,
     "n_staves_lineup": 11,
@@ -141,8 +175,15 @@
    "page_n_systems": 2,
    "hand_lineup": null,
    "hand_has_parts": false,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     8
+    ],
+    "total": 19
+   },
+   "raw_span": 19,
    "attribution": {
     "attributable": false,
     "delta": -1
@@ -159,8 +200,15 @@
    "page_n_systems": 2,
    "hand_lineup": null,
    "hand_has_parts": false,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     11,
+     11
+    ],
+    "total": 22
+   },
+   "raw_span": 22,
    "attribution": {
     "attributable": false,
     "delta": -4
@@ -177,8 +225,14 @@
    "page_n_systems": 1,
    "hand_lineup": 15,
    "hand_has_parts": true,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     15
+    ],
+    "total": 15
+   },
+   "raw_span": 15,
    "attribution": {
     "attributable": true,
     "n_staves_lineup": 15,
@@ -199,8 +253,14 @@
    "page_n_systems": 1,
    "hand_lineup": 15,
    "hand_has_parts": true,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     15
+    ],
+    "total": 15
+   },
+   "raw_span": 15,
    "attribution": {
     "attributable": true,
     "n_staves_lineup": 15,
@@ -221,8 +281,15 @@
    "page_n_systems": 2,
    "hand_lineup": 15,
    "hand_has_parts": true,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     15,
+     15
+    ],
+    "total": 30
+   },
+   "raw_span": 30,
    "attribution": {
     "attributable": true,
     "n_staves_lineup": 15,
@@ -243,8 +310,14 @@
    "page_n_systems": 1,
    "hand_lineup": 14,
    "hand_has_parts": true,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     14
+    ],
+    "total": 14
+   },
+   "raw_span": 14,
    "attribution": {
     "attributable": true,
     "n_staves_lineup": 14,
@@ -265,8 +338,15 @@
    "page_n_systems": 2,
    "hand_lineup": null,
    "hand_has_parts": false,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     14,
+     13
+    ],
+    "total": 27
+   },
+   "raw_span": 27,
    "attribution": {
     "attributable": false,
     "delta": -6
@@ -283,8 +363,15 @@
    "page_n_systems": 2,
    "hand_lineup": 14,
    "hand_has_parts": true,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     14,
+     14
+    ],
+    "total": 28
+   },
+   "raw_span": 28,
    "attribution": {
     "attributable": true,
     "n_staves_lineup": 14,
@@ -305,8 +392,15 @@
    "page_n_systems": 2,
    "hand_lineup": 14,
    "hand_has_parts": true,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     14,
+     14
+    ],
+    "total": 28
+   },
+   "raw_span": 28,
    "attribution": {
     "attributable": true,
     "n_staves_lineup": 14,
@@ -327,8 +421,14 @@
    "page_n_systems": 1,
    "hand_lineup": null,
    "hand_has_parts": false,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     17
+    ],
+    "total": 17
+   },
+   "raw_span": 19,
    "attribution": {
     "attributable": false,
     "delta": 8
@@ -345,8 +445,14 @@
    "page_n_systems": 1,
    "hand_lineup": null,
    "hand_has_parts": false,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     13
+    ],
+    "total": 13
+   },
+   "raw_span": 15,
    "attribution": {
     "attributable": false,
     "delta": 12
@@ -363,8 +469,14 @@
    "page_n_systems": 1,
    "hand_lineup": null,
    "hand_has_parts": false,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     18
+    ],
+    "total": 18
+   },
+   "raw_span": 21,
    "attribution": {
     "attributable": false,
     "delta": 7
@@ -381,8 +493,14 @@
    "page_n_systems": 1,
    "hand_lineup": null,
    "hand_has_parts": false,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     17
+    ],
+    "total": 17
+   },
+   "raw_span": 21,
    "attribution": {
     "attributable": false,
     "delta": 8
@@ -399,8 +517,15 @@
    "page_n_systems": 2,
    "hand_lineup": null,
    "hand_has_parts": false,
-   "detected": null,
-   "raw_span": null,
+   "detected": {
+    "n_systems": 2,
+    "per_system": [
+     12,
+     12
+    ],
+    "total": 24
+   },
+   "raw_span": 24,
    "attribution": {
     "attributable": false,
     "delta": -13
@@ -412,78 +537,144 @@
    "row_id": "beethoven-sym5-mvt1",
    "encoded_parts": 18,
    "encoded_staves": 18,
-   "detected": null,
-   "raw_span": null
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     18
+    ],
+    "total": 18
+   },
+   "raw_span": 18
   },
   {
    "row_id": "brahms-sym1-mvt1",
    "encoded_parts": 21,
    "encoded_staves": 21,
-   "detected": null,
-   "raw_span": null
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     21
+    ],
+    "total": 21
+   },
+   "raw_span": 21
   },
   {
    "row_id": "mahler-sym5-mvt1",
    "encoded_parts": 38,
    "encoded_staves": 38,
-   "detected": null,
-   "raw_span": null
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     38
+    ],
+    "total": 38
+   },
+   "raw_span": 38
   },
   {
    "row_id": "mozart-sym40-mvt1",
    "encoded_parts": 11,
    "encoded_staves": 11,
-   "detected": null,
-   "raw_span": null
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     11
+    ],
+    "total": 11
+   },
+   "raw_span": 11
   },
   {
    "row_id": "mozart-sym41-mvt1",
    "encoded_parts": 17,
    "encoded_staves": 17,
-   "detected": null,
-   "raw_span": null
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     17
+    ],
+    "total": 17
+   },
+   "raw_span": 17
   },
   {
    "row_id": "beethoven-sym3-mvt1",
    "encoded_parts": 19,
    "encoded_staves": 19,
-   "detected": null,
-   "raw_span": null
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     19
+    ],
+    "total": 19
+   },
+   "raw_span": 19
   },
   {
    "row_id": "brahms-sym4-mvt1",
    "encoded_parts": 20,
    "encoded_staves": 20,
-   "detected": null,
-   "raw_span": null
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     20
+    ],
+    "total": 20
+   },
+   "raw_span": 20
   },
   {
    "row_id": "dvorak-sym9-mvt4",
    "encoded_parts": 18,
    "encoded_staves": 19,
-   "detected": null,
-   "raw_span": null
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     18
+    ],
+    "total": 18
+   },
+   "raw_span": 19
   },
   {
    "row_id": "tchaikovsky-sym4-mvt2",
    "encoded_parts": 20,
    "encoded_staves": 20,
-   "detected": null,
-   "raw_span": null
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     20
+    ],
+    "total": 20
+   },
+   "raw_span": 20
   },
   {
    "row_id": "tchaikovsky-sym6-mvt2",
    "encoded_parts": 16,
    "encoded_staves": 17,
-   "detected": null,
-   "raw_span": null
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     17
+    ],
+    "total": 17
+   },
+   "raw_span": 17
   },
   {
    "row_id": "bruckner-sym5-mvt1",
    "encoded_parts": 25,
    "encoded_staves": 25,
-   "detected": null,
-   "raw_span": null
+   "detected": {
+    "n_systems": 1,
+    "per_system": [
+     25
+    ],
+    "total": 25
+   },
+   "raw_span": 25
   }
  ]
 }

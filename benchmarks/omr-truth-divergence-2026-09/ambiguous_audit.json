@@ -1,5 +1,272 @@
 [
  {
+  "row": "engraved--beethoven-sym3-mvt1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-shared-bass",
+  "layout_named_slots": 18,
+  "n_slots": 19,
+  "hits": []
+ },
+ {
+  "row": "engraved--beethoven-sym5-mvt1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-condensed",
+  "layout_named_slots": 18,
+  "n_slots": 18,
+  "hits": []
+ },
+ {
+  "row": "engraved--brahms-sym1-mvt1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-condensed",
+  "layout_named_slots": 21,
+  "n_slots": 21,
+  "hits": []
+ },
+ {
+  "row": "engraved--brahms-sym4-mvt1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-condensed",
+  "layout_named_slots": 19,
+  "n_slots": 20,
+  "hits": []
+ },
+ {
+  "row": "engraved--bruckner-sym5-mvt1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "romantic",
+  "layout_named_slots": 25,
+  "n_slots": 25,
+  "hits": []
+ },
+ {
+  "row": "engraved--dvorak-sym9-mvt4.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "romantic",
+  "layout_named_slots": 19,
+  "n_slots": 19,
+  "hits": []
+ },
+ {
+  "row": "engraved--mahler-sym5-mvt1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "late-romantic-large",
+  "layout_named_slots": 35,
+  "n_slots": 38,
+  "hits": [
+   {
+    "ordinal": 36,
+    "text": "B\u00e4sse.",
+    "alias": "basse",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
+   },
+   {
+    "ordinal": 37,
+    "text": "B\u00e4sse.",
+    "alias": "basse",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
+   }
+  ]
+ },
+ {
+  "row": "engraved--mozart-sym40-mvt1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-condensed",
+  "layout_named_slots": 11,
+  "n_slots": 11,
+  "hits": []
+ },
+ {
+  "row": "engraved--mozart-sym41-mvt1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-shared-bass",
+  "layout_named_slots": 16,
+  "n_slots": 17,
+  "hits": [
+   {
+    "ordinal": 16,
+    "text": "Basso",
+    "alias": "basso",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
+   }
+  ]
+ },
+ {
+  "row": "engraved--tchaikovsky-sym4-mvt2.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-condensed",
+  "layout_named_slots": 20,
+  "n_slots": 20,
+  "hits": []
+ },
+ {
+  "row": "engraved--tchaikovsky-sym6-mvt2.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "romantic",
+  "layout_named_slots": 14,
+  "n_slots": 17,
+  "hits": [
+   {
+    "ordinal": 9,
+    "text": "mbone Basso",
+    "alias": "basso",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
+   },
+   {
+    "ordinal": 16,
+    "text": "Basso",
+    "alias": "basso",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
+   }
+  ]
+ },
+ {
+  "row": "scan--bach-brandenburg3-mvt1-468678-p1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-condensed",
+  "layout_named_slots": 10,
+  "n_slots": 12,
+  "hits": []
+ },
+ {
+  "row": "scan--beethoven-sym5-mvt1-575951-p1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-shared-bass",
+  "layout_named_slots": 11,
+  "n_slots": 12,
+  "hits": [
+   {
+    "ordinal": 11,
+    "text": "Basso.",
+    "alias": "basso",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
+   }
+  ]
+ },
+ {
+  "row": "scan--beethoven-sym5-mvt1-575951-p2.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-shared-bass",
+  "layout_named_slots": 11,
+  "n_slots": 11,
+  "hits": [
+   {
+    "ordinal": 4,
+    "text": "Cor.",
+    "alias": "cor",
+    "candidates": [
+     "Horn",
+     "Trumpet"
+    ],
+    "final_instrument": "Horn",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": false
+   },
+   {
+    "ordinal": 6,
+    "text": "Tp.",
+    "alias": "tp",
+    "candidates": [
+     "Timpani",
+     "Trumpet"
+    ],
+    "final_instrument": "Timpani",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": false
+   }
+  ]
+ },
+ {
+  "row": "scan--beethoven-sym5-mvt1-575951-p3.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-shared-bass",
+  "layout_named_slots": 11,
+  "n_slots": 11,
+  "hits": [
+   {
+    "ordinal": 4,
+    "text": "Cor.",
+    "alias": "cor",
+    "candidates": [
+     "Horn",
+     "Trumpet"
+    ],
+    "final_instrument": "Horn",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": false
+   },
+   {
+    "ordinal": 6,
+    "text": "Tp.",
+    "alias": "tp",
+    "candidates": [
+     "Timpani",
+     "Trumpet"
+    ],
+    "final_instrument": "Timpani",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": false
+   }
+  ]
+ },
+ {
+  "row": "scan--beethoven-sym5-mvt1-575951-p4.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "classical-condensed",
+  "layout_named_slots": 9,
+  "n_slots": 11,
+  "hits": [
+   {
+    "ordinal": 4,
+    "text": "Cor.",
+    "alias": "cor",
+    "candidates": [
+     "Horn",
+     "Trumpet"
+    ],
+    "final_instrument": "Horn",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": false
+   }
+  ]
+ },
+ {
   "row": "scan--beethoven-sym5-mvt1-984073-p1.omr.json",
   "ambiguous_labels_resolved": 0,
   "layout": "classical-shared-bass",
@@ -83,6 +350,179 @@
     "final_instrument": "Timpani",
     "took_first_listed": true,
     "is_voice_on_orchestral": false
+   }
+  ]
+ },
+ {
+  "row": "scan--beethoven-sym5-mvt1-984073-p4.omr.json",
+  "ambiguous_labels_resolved": 1,
+  "layout": "classical-condensed",
+  "layout_named_slots": 9,
+  "n_slots": 11,
+  "hits": [
+   {
+    "ordinal": 4,
+    "text": "Cor.",
+    "alias": "cor",
+    "candidates": [
+     "Horn",
+     "Trumpet"
+    ],
+    "final_instrument": "Horn",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": false
+   }
+  ]
+ },
+ {
+  "row": "scan--brahms-sym1-mvt1-317803-p1.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "late-romantic-large",
+  "layout_named_slots": 14,
+  "n_slots": 14,
+  "hits": []
+ },
+ {
+  "row": "scan--brahms-sym1-mvt1-317803-p2.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "late-romantic-large",
+  "layout_named_slots": 14,
+  "n_slots": 14,
+  "hits": []
+ },
+ {
+  "row": "scan--brahms-sym1-mvt1-317803-p3.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "late-romantic-large",
+  "layout_named_slots": 14,
+  "n_slots": 14,
+  "hits": []
+ },
+ {
+  "row": "scan--brahms-sym1-mvt1-317803-p4.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "late-romantic-large",
+  "layout_named_slots": 14,
+  "n_slots": 14,
+  "hits": []
+ },
+ {
+  "row": "scan--dvorak-sym9-mvt1-405834-p5.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "romantic",
+  "layout_named_slots": 15,
+  "n_slots": 15,
+  "hits": []
+ },
+ {
+  "row": "scan--dvorak-sym9-mvt1-405834-p6.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "romantic",
+  "layout_named_slots": 15,
+  "n_slots": 15,
+  "hits": []
+ },
+ {
+  "row": "scan--dvorak-sym9-mvt1-405834-p7.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "romantic",
+  "layout_named_slots": 15,
+  "n_slots": 15,
+  "hits": []
+ },
+ {
+  "row": "scan--mahler-sym5-mvt1-local-p2.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "late-romantic-large",
+  "layout_named_slots": 18,
+  "n_slots": 19,
+  "hits": [
+   {
+    "ordinal": 18,
+    "text": "B\u00e4sse",
+    "alias": "basse",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
+   }
+  ]
+ },
+ {
+  "row": "scan--mahler-sym5-mvt1-local-p3.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "romantic",
+  "layout_named_slots": 13,
+  "n_slots": 15,
+  "hits": [
+   {
+    "ordinal": 13,
+    "text": "B\u00e4sse",
+    "alias": "basse",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
+   },
+   {
+    "ordinal": 14,
+    "text": "Basse",
+    "alias": "basse",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
+   }
+  ]
+ },
+ {
+  "row": "scan--mahler-sym5-mvt1-local-p4.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "late-romantic-large",
+  "layout_named_slots": 19,
+  "n_slots": 21,
+  "hits": [
+   {
+    "ordinal": 19,
+    "text": "Basse )",
+    "alias": "basse",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
+   }
+  ]
+ },
+ {
+  "row": "scan--mahler-sym5-mvt1-local-p5.omr.json",
+  "ambiguous_labels_resolved": 0,
+  "layout": "late-romantic-large",
+  "layout_named_slots": 20,
+  "n_slots": 21,
+  "hits": [
+   {
+    "ordinal": 19,
+    "text": "Bass }",
+    "alias": "bass",
+    "candidates": [
+     "Bass voice",
+     "Contrabass"
+    ],
+    "final_instrument": "Bass voice",
+    "took_first_listed": true,
+    "is_voice_on_orchestral": true
    }
   ]
  }
