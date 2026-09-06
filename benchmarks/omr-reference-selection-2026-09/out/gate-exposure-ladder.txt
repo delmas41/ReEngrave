@@ -17,3 +17,7 @@
   mahler-sym5-mvt1-local-p2            systems=[19] labels=[17]  ref old=19 new=19  SAME
   mahler-sym5-mvt1-local-p3            systems=[15] labels=[12]  ref old=15 new=15  SAME
   mahler-sym5-mvt1-local-p4            systems=[21] labels=[16]  ref old=21 new=21  SAME
+  mahler-sym5-mvt1-local-p5            systems=[21] labels=[14]  ref old=21 new=21  SAME
+  bach-brandenburg3-mvt1-468678-p1     systems=[12, 12] labels=[5, 0]  ref old=12 new=12  SAME
+
+rows whose reference CHANGES: 0/20  — the gate is blind to this flag by construction, and a flat result there is coverage of nothing
