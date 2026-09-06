@@ -350,9 +350,19 @@ the abstention of §5) and reaches nothing: `blind == []` on all eleven, so cue
 C's second condition fails under both arms.
 
 **Widened beyond the gate**, because a whole-work run touches pages the gate
-never scores: the same probe over 144 pages of all five publishers
-(`--corpus scan`, `out/cue-c-wide.log`). Every page where `_is_grouped_system`
-differs also reports `blind == []`, so on none of them can cue C act on the
+never scores: the same probe over **144 pages of all five publishers**
+(`--corpus scan`, `out/cue-c-wide.log`). The two conditions cue C needs are
+almost disjoint on this corpus, and completely disjoint in fact:
+
+```
+144 pages
+    139  _is_grouped_system identical under both arms
+      5  it differs        — all five report blind == []
+      2  carry a window-blind system (Bach p.0, p.16) — both identical
+      0  BOTH differ AND carry a blind system
+```
+
+So across 144 pages there is no page on which cue C could act on the
 difference. That is the generalisation the gate alone does not license.
 
 **End-to-end, full pipeline, real weights, direction text forced off in both
