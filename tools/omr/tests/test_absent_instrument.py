@@ -172,3 +172,58 @@ class TestAnchoring:
         # are not forced and stay vetoable.
         assert self._vetoes(0, [(0, 0), (40, 4), (50, 5), (60, 6)]) == {
             (40, "Trombone"), (50, "Trombone")}
+
+
+class TestTheSystemsOwnEndsAreAnchorsToo:
+    """A run of unlabelled staves at the top or bottom of a system.
+
+    Before the first staff lies slot -1 and after the last lies slot `n`, both
+    known exactly, so the same monotone-DP arithmetic that anchors a staff
+    between two labels anchors a run against a boundary. Passing no
+    `reference_size` withholds the boundaries, which is what every test above
+    relies on.
+
+    This is what keeps Beethoven 5's finale strings. They are attested on four
+    pages of eighty-eight — Litolff labels strings at movement starts only — so
+    on every finale page after 44 they sit outside their own span, and every one
+    of those pages prints the full lineup with the string block running to the
+    foot of the system. Worth 174 wrongly-vetoed staves over the whole work.
+    """
+
+    NAMES = {0: "Flute", 1: "Oboe", 2: "Clarinet", 3: "Trombone", 4: "Violin"}
+    SOURCE = {k: "label" for k in NAMES}
+    EV = {0: {10: "Oboe"},                       # only the oboe read here
+          9: {i * 10: n for i, n in NAMES.items()}}
+    FULL = [(0, 0), (10, 1), (20, 2), (30, 3), (40, 4)]
+
+    def _vetoes(self, pairs, **kw):
+        sbs = {(0, 0, si): slot for si, slot in pairs}
+        sbs.update({(9, 0, i * 10): i for i in range(5)})
+        return {(v["staff_index"], v["instrument"]) for v in find_vetoes(
+            staff_keys=list(sbs), slot_by_staff=sbs,
+            instrument_name_by_slot=self.NAMES, instrument_source=self.SOURCE,
+            evidence=self.EV, window=0, rule="span", **kw)}
+
+    def test_a_full_system_is_entirely_forced(self):
+        # 5 staves, 5 slots: no gap is reachable, so every staff is forced even
+        # though only the oboe carries a label — including the trombone, which
+        # this page has no business naming but did not GUESS.
+        assert self._vetoes(self.FULL, reference_size=5) == set()
+
+    def test_and_without_the_boundary_the_same_system_is_stripped(self):
+        assert self._vetoes(self.FULL) == {(0, "Flute"), (20, "Clarinet"),
+                                           (30, "Trombone"), (40, "Violin")}
+
+    def test_a_tail_that_does_not_close_is_still_vetoable(self):
+        # 4 staves against 5 slots. Below the oboe (pos 1, slot 1) the boundary
+        # is (pos 4, slot 5): 5 - 1 = 4 but 4 - 1 = 3, so a slot is skipped
+        # somewhere below and NOTHING down there is forced — both staves of the
+        # tail stay vetoable, not just the one whose name looks wrong.
+        assert self._vetoes([(0, 0), (10, 1), (30, 3), (40, 4)],
+                            reference_size=5) == {(30, "Trombone"),
+                                                  (40, "Violin")}
+
+    def test_the_head_anchors_against_slot_minus_one(self):
+        # Staff 0 sits above the labelled oboe at slot 1: one staff, one slot.
+        assert (0, "Flute") not in self._vetoes(
+            [(0, 0), (10, 1), (30, 3), (40, 4)], reference_size=5)

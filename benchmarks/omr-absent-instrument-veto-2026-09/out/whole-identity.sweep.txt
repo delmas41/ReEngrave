@@ -1,0 +1,54 @@
+=== whole-identity.json
+INPUT ASSERTION: pages=87 staff-records=1616 labelled-staves=962 slots=17 reference_size=17
+staves before the finale (page < 44): 855
+BASELINE named a finale-only instrument   : 91 (0.1064)
+      75  Trombone
+      10  Contrabassoon
+       6  Piccolo
+  on pages: [12, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 37, 38, 39, 40, 41, 42, 43]
+
+attestation span per instrument:
+  Bass voice       n=  3  span=[  1, 44]  biggest internal gap= 27
+  Bassoon          n= 76  span=[  1, 87]  biggest internal gap=  3
+  Cello            n=  4  span=[  1, 44]  biggest internal gap= 16
+  Clarinet         n= 81  span=[  1, 87]  biggest internal gap=  4
+  Contrabass       n=  1  span=[ 37, 37]  biggest internal gap=  0
+  Contrabassoon    n= 37  span=[ 44, 87]  biggest internal gap=  2
+  Flute            n= 82  span=[  1, 87]  biggest internal gap=  4
+  Horn             n= 77  span=[  1, 87]  biggest internal gap=  3
+  Oboe             n= 79  span=[  2, 87]  biggest internal gap=  2
+  Piccolo          n= 33  span=[ 44, 86]  biggest internal gap=  3
+  Timpani          n= 72  span=[  1, 87]  biggest internal gap=  4
+  Trombone         n= 41  span=[ 44, 87]  biggest internal gap=  2
+  Trumpet          n= 73  span=[  1, 87]  biggest internal gap=  5
+  Viola            n=  4  span=[  1, 44]  biggest internal gap= 16
+  Violin           n=  4  span=[  1, 44]  biggest internal gap= 16
+
+--- rule = window
+   W  vetoes  impossible-left  impossible-cut  other-cut
+   0     312                0              91        221  <-
+   1     266                3              88        178  <-
+   2     231                9              82        149  <-
+   3     200               11              80        120  <-
+   4     163               14              77         86  <-
+   5     137               22              69         68  <-
+   6     112               25              66         46  <-
+   7      83               33              58         25  <-
+   8      76               33              58         18  <-
+
+--- rule = span
+   W  vetoes  impossible-left  impossible-cut  other-cut
+   0     109                0              91         18  <-
+   1     106                3              88         18  <-
+   2     100                9              82         18  <-
+   3      98               11              80         18  <-
+   4      95               14              77         18  <-
+   5      87               22              69         18  <-
+   6      84               25              66         18  <-
+   7      76               33              58         18  <-
+   8      76               33              58         18
+
+--- at the shipped default (span, W=0): what the OTHER vetoes are
+     10  Violin           finale
+      6  Viola            finale
+      2  Cello            finale

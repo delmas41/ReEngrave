@@ -65,9 +65,21 @@ from typing import Any, Iterable
 # Sources whose names are in scope. See the module docstring.
 VETOABLE_SOURCES = ("label",)
 
-# Only a placeholder until the sweep in
-# benchmarks/omr-absent-instrument-veto-2026-09 says otherwise.
-DEFAULT_WINDOW = 2
+# ZERO, and the sweep says the constant is not load-bearing — which is the
+# result, not a shrug. Over the whole of Beethoven 5 (88 pages, 1616 staves) the
+# COST is flat at 18 vetoes for every window from 0 to 7, so widening buys
+# nothing, while the BENEFIT falls monotonically from the first step: staves
+# named an instrument their movement does not contain, 91 removed at W=0, 88 at
+# W=1, 82 at W=2, 58 at W=7. A plateau on one axis and a strict loss on the
+# other has one answer.
+#
+# The case for W > 0 would be an instrument whose label is missed on its own
+# entry page, putting its span's edge one page late. Measured, that case is
+# already covered from the other side: if the entry page attests the instrument
+# then the entering staff carries its own label and is exempt anyway, and if it
+# does not, the anchoring clause usually forces it. Nine impossible names is too
+# much to pay for it.
+DEFAULT_WINDOW = 0
 DEFAULT_RULE = "span"
 
 ENV_VAR = "OMR_ABSENT_INSTRUMENT_VETO"
@@ -131,25 +143,46 @@ def attested_pages(evidence: dict[int, dict[int, str]]) -> dict[str, set[int]]:
     return out
 
 
-def _anchored_keys(staff_keys, slot_by_staff, evidence) -> set:
-    """Staves whose slot their own system's labels already force.
+def _anchored_keys(staff_keys, slot_by_staff, evidence,
+                   reference_size: int = 0) -> set:
+    """Staves whose slot their own system already forces. Not a heuristic.
 
-    `slots.align` is MONOTONE, so between two labelled staves the slots run in
-    order and cannot be reordered. When the nearest labelled staff above sits at
-    slot A, the nearest labelled staff below at slot B, and the number of staves
-    strictly between them equals `B - A - 1`, every slot in that stretch is
-    consumed with nothing skipped — the unlabelled staff in the middle has NO
-    freedom, and its name is a consequence of its neighbours rather than a guess.
+    `slots.align` is a MONOTONE DP that places `m` staves into `n` reference
+    slots, deletions allowed on the reference side only. Between two staves
+    whose slots are known, the slots in between run in order and cannot be
+    reordered: if the stretch from slot A to slot B contains exactly `B - A - 1`
+    staves, every slot in it is consumed with nothing skipped and the staves in
+    the middle have NO FREEDOM. Their names are a consequence of their
+    neighbours, not a guess, so there is nothing here for a veto to refuse.
 
-    This is the same anchoring `_apply_dossier_clefs` requires ("a labelled slot
-    above and below"), and it is what separates the two costs the veto would
-    otherwise pay alike. Beethoven 5 page 1: the margin reader misses `Oboi.`
-    alone, and the oboe staff sits between a labelled Flute (slot 1) and a
-    labelled Clarinet (slot 3) — one staff, one slot, forced. Page 23: the three
-    string staves that took the trombone slots have a labelled Timpani above and
-    NOTHING labelled below, so they are unanchored and the veto stands. Where
-    both ends are labelled but the arithmetic does not close (a slot IS skipped
-    somewhere in the stretch) the staff is not anchored either.
+    The same anchoring `_apply_dossier_clefs` requires ("a labelled slot above
+    and below"), with one addition: **the system's own ends are anchors too.**
+    Before the first staff lies slot -1 and after the last lies slot `n`, both
+    known exactly, so a run of unlabelled staves at the TOP or the BOTTOM of a
+    system is forced whenever its arithmetic closes against that boundary. That
+    is not a special case bolted on — it falls out of the same equality, and the
+    familiar "a system with as many staves as the reference has slots is
+    entirely forced" is simply what it says when a system carries no labels at
+    all (`n + 1 == m + 1`).
+
+    Two measurements it is carrying, both from Beethoven 5 / Litolff:
+
+    * **Page 1's oboe.** The margin reader misses `Oboi.` and nothing else. The
+      staff sits between a labelled Flute (slot 1) and a labelled Clarinet
+      (slot 3) — one staff, one slot, forced, exempt. Without this clause the
+      veto strips a correct name and the `--pages 1,44` control regresses.
+    * **The finale's strings.** Litolff labels the winds on every system and the
+      strings only at MOVEMENT STARTS: over the whole work `Violin`, `Viola` and
+      `Cello` are attested on FOUR pages each of eighty-eight, spanning [1, 44],
+      and `Contrabass` on exactly ONE (page 37). Every finale page after 44 has
+      its strings outside their own attestation span, and locality alone strips
+      all of them — 174 staves. The end anchor keeps them, because those pages
+      print the full lineup and the string block runs to the foot of the system.
+
+    Page 23 is untouched by all of it: the three string staves that took the
+    trombone slots have a labelled Timpani above them, nothing labelled below,
+    and a system of 12 staves against 17 slots — five slots are skipped
+    somewhere below them and the arithmetic cannot close. Unanchored, vetoed.
     """
     by_system: dict[tuple[int, int], list[int]] = {}
     for page_index, system_index, staff_index in staff_keys:
@@ -158,19 +191,26 @@ def _anchored_keys(staff_keys, slot_by_staff, evidence) -> set:
     for (page_index, system_index), staff_indices in by_system.items():
         order = sorted(staff_indices)
         page_labels = evidence.get(page_index, {})
-        labelled = [i for i, si in enumerate(order) if si in page_labels]
+        # (position, slot) for everything whose slot is known: the labelled
+        # staves, plus the two boundaries when a reference size is available.
+        anchors: list[tuple[int, int]] = []
+        if reference_size > 0:
+            anchors.append((-1, -1))
+        for pos, si in enumerate(order):
+            if si in page_labels:
+                slot = slot_by_staff.get((page_index, system_index, si))
+                if slot is not None and slot >= 0:
+                    anchors.append((pos, slot))
+        if reference_size > 0:
+            anchors.append((len(order), reference_size))
         for pos, si in enumerate(order):
             if si in page_labels:
                 continue
-            above = [j for j in labelled if j < pos]
-            below = [j for j in labelled if j > pos]
+            above = [a for a in anchors if a[0] < pos]
+            below = [a for a in anchors if a[0] > pos]
             if not above or not below:
                 continue
-            j, k = above[-1], below[0]
-            slot_a = slot_by_staff.get((page_index, system_index, order[j]))
-            slot_b = slot_by_staff.get((page_index, system_index, order[k]))
-            if slot_a is None or slot_b is None or slot_a < 0 or slot_b < 0:
-                continue
+            (j, slot_a), (k, slot_b) = above[-1], below[0]
             if slot_b - slot_a == k - j:
                 out.add((page_index, system_index, si))
     return out
@@ -184,7 +224,8 @@ def find_vetoes(*,
                 evidence: dict[int, dict[int, str]],
                 window: int,
                 rule: str = "span",
-                anchored_exempt: bool = True) -> list[dict[str, Any]]:
+                anchored_exempt: bool = True,
+                reference_size: int = 0) -> list[dict[str, Any]]:
     """One record per staff whose slot name is not attested near it.
 
     Pure and side-effect free, so the same function serves the applied path and
@@ -211,7 +252,8 @@ def find_vetoes(*,
     """
     attested = attested_pages(evidence)
     staff_keys = list(staff_keys)
-    anchored = (_anchored_keys(staff_keys, slot_by_staff, evidence)
+    anchored = (_anchored_keys(staff_keys, slot_by_staff, evidence,
+                               reference_size)
                 if anchored_exempt else set())
     out: list[dict[str, Any]] = []
     for key in staff_keys:

@@ -868,7 +868,7 @@ def apply_contextual_analysis(
             instrument_name_by_slot=_name_by_slot,
             instrument_source=instrument_source, evidence=_evidence,
             window=_veto_window if _veto_mode == "apply" else DEFAULT_WINDOW,
-            rule=_veto_rule)
+            rule=_veto_rule, reference_size=len(reference))
         if _veto_mode == "apply":
             vetoed_keys = {(r["page_index"], r["system_index"],
                             r["staff_index"]) for r in absent_vetoes}
@@ -876,6 +876,7 @@ def apply_contextual_analysis(
             "mode": _veto_mode,
             "window": _veto_window,
             "rule": _veto_rule,
+            "reference_size": len(reference),
             # The raw material, so the sweep needs no second transcription.
             "label_evidence": [
                 {"page_index": p, "staff_index": si, "instrument": nm}

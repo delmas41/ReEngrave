@@ -81,6 +81,7 @@ def main(path, work="beet5", max_window=60):
                      s["slot"] for s in blob["staff_slots"]}
     name_by_slot = {s["slot"]: s["instrument"] for s in blob["slot_instruments"]}
     source = {s["slot"]: s["source"] for s in blob["slot_instruments"]}
+    refn = len((r.get("contextual") or {}).get("reference") or [])
 
     rows = list(staff_rows(r))
     fulls = list(full_systems(r, work))
@@ -140,7 +141,7 @@ def main(path, work="beet5", max_window=60):
                              slot_by_staff=slot_by_staff,
                              instrument_name_by_slot=name_by_slot,
                              instrument_source=source, evidence=evidence,
-                             window=w, rule=rule)
+                             window=w, rule=rule, reference_size=refn)
             killed = {(v["page_index"], v["system_index"], v["staff_index"])
                       for v in vs}
             imposs = sum(1 for p, s, i, nm in rows

@@ -1,2 +1,6 @@
 === whole-identity start 2026-09-06T15:46:49Z
 pdf=/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf pages=88 of 88 dpi=600
+30 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '21.', 'C. Fig.', 'C. Fug.', 'C. Pag.', 'Cc. Fa', 'Ccr.', 'Cer', 'Cer.', 'DR.', 'Dh.', 'F o  5', 'Fig.', 'Fug.', 'F}', 'Gp.', 'Gr.', 'Jor.', 'Lor.', 'Oh', 'Oh.', 'Ol.', 'Or.', 'Pag.', 'Rig.', 'T:. Teu', 'Tinp.', 'Tiny', 'Tump.', 'ag.', '|' — these are the strings to add to tools/omr/instruments.py
+contextual: available=True reason=None in 970s
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a27ea6f49a3716925/benchmarks/omr-absent-instrument-veto-2026-09/out/whole-identity.json
+=== whole-identity rc=0 wall=970s
