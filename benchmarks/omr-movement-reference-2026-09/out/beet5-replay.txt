@@ -1,0 +1,23 @@
+reading 88 pages of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf …
+  page 0: 0 staves, 0 labels
+  page 1: 12 staves, 12 labels
+  page 2: 22 staves, 12 labels
+  page 3: 19 staves, 12 labels
+  page 4: 22 staves, 13 labels
+  page 5: 16 staves, 8 labels
+  page 6: 22 staves, 12 labels
+  page 7: 19 staves, 11 labels
+  page 8: 19 staves, 9 labels
+  page 9: 21 staves, 10 labels
+  page 10: 22 staves, 14 labels
+  page 11: 20 staves, 11 labels
+  page 12: 20 staves, 12 labels
+  page 13: 22 staves, 14 labels
+  page 14: 23 staves, 13 labels
+  page 15: 19 staves, 14 labels
+  page 16: 22 staves, 14 labels
+  page 17: 20 staves, 12 labels
+  page 18: 19 staves, 12 labels
+  page 19: 15 staves, 9 labels
+  page 20: 14 staves, 7 labels
+  page 21: 20 staves, 12 labels
