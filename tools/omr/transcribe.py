@@ -2605,12 +2605,50 @@ def _distance_to_band(y: float, top: float, bottom: float) -> float:
     return 0.0
 
 
+def _roster_range_veto_mode() -> str:
+    """`OMR_ROSTER_RANGE_VETO` — feed tier 2 from roster identity, not a dossier.
+
+    `off` (default) · `label` (identity sourced `label` or `roster` only) ·
+    `all` (also accept the `score_order` prior).
+
+    ⚠️ **The two are measured separately and the difference is not cosmetic.**
+    A `score_order` identity is a hypothesis about where a staff SITS, wrong
+    about one staff in ten — and a wrong identity here does not merely fail to
+    help, it DELETES A REAL NOTE. `label` is the conservative arm.
+    """
+    raw = os.environ.get("OMR_ROSTER_RANGE_VETO", "0").strip().lower()
+    if raw in ("0", "", "off", "false", "no"):
+        return "off"
+    if raw == "all":
+        return "all"
+    return "label"
+
+
+#: Identity provenances trustworthy enough to delete a note on. `roster` is a
+#: name PRINTED on the document's own roster system; `label` is printed on this
+#: staff. `score_order` is deduced from position and is admitted only by `all`.
+_RANGE_VETO_READ_SOURCES = frozenset({"label", "roster", "score_order_ambiguity"})
+
+
+def _contest_dump_enabled() -> bool:
+    """`OMR_CONTEST_DUMP` — record contested notehead pairs onto the page dict.
+
+    Instrumentation for the range-veto reach probe
+    (`benchmarks/omr-range-veto-2026-09/`). Off by default and verdict-neutral:
+    it only ever APPENDS to a list, so a run with it on removes exactly the same
+    detections as a run with it off.
+    """
+    return os.environ.get(
+        "OMR_CONTEST_DUMP", "0").strip().lower() in ("1", "true", "yes", "on")
+
+
 def _dedupe_cross_staff_detections(
     page: dict[str, Any],
     bands: dict[int, tuple[int, ...]],
     *,
     iou_threshold: float = _CROSS_STAFF_DUPLICATE_IOU,
     dossier: dict[str, Any] | None = None,
+    deferred: list[dict[str, Any]] | None = None,
 ) -> int:
     """Drop glyphs claimed by more than one staff. Returns how many went.
 
@@ -2643,6 +2681,8 @@ def _dedupe_cross_staff_detections(
     ledgers = (_ledger_rows(page)
                if all(len(b) >= 3 for b in bands.values()) else None)
     ranges = _staff_written_ranges(page, dossier)
+    contests: list[dict[str, Any]] = []
+    pair_meta: list[dict[str, Any]] = []
 
     # PAIRWISE, and a cluster-winner refactor was measured and REJECTED.
     # Grouping every overlapping copy and letting the group pick one winner is
@@ -2725,13 +2765,74 @@ def _dedupe_cross_staff_detections(
                         > _distance_to_band(_bbox_center_y(dj), tj, bj)
                         else j
                     )
-                verdicts.append((rank, loser, j if loser == i else i))
+                winner = j if loser == i else i
+                verdicts.append((rank, loser, winner))
+                if deferred is not None and is_note and rank == 0:
+                    # DEFERRED RE-ARBITRATION. Tier 2 wants the staff's
+                    # instrument, and on a dossier-free run that identity does
+                    # not exist yet — `apply_contextual_analysis` runs after
+                    # every page is built. So a pair distance alone decided is
+                    # parked here with references to the two detections, and
+                    # re-judged once identity exists.
+                    #
+                    # ⚠️ ONLY rank 0. A ladder-decided pair is NOT parked: the
+                    # ladder is tier 2 above the range in the existing order,
+                    # and an unbroken run of ledger lines physically joining a
+                    # glyph to a staff is stronger evidence than what the part
+                    # can play. Re-opening those would invert the tiers.
+                    pair_meta.append({
+                        "loser": loser, "winner": winner,
+                        "staff_loser": si if loser == i else sj,
+                        "staff_winner": sj if loser == i else si,
+                    })
+                if _contest_dump_enabled():
+                    # REACH INSTRUMENTATION ONLY (OMR_CONTEST_DUMP=1), and it
+                    # changes no verdict — it records the contest so a probe can
+                    # ask, after the contextual pass has named the staves, how
+                    # many of these a roster-sourced range veto could speak on.
+                    # Written per pair, both sides, with the tier that actually
+                    # decided it, because "would tier 2 have reached this" is
+                    # only interesting where the ladder did NOT already settle it.
+                    contests.append({
+                        "staff_i": si, "staff_j": sj,
+                        "category": di.get("category"),
+                        "class_i": di.get("class"), "class_j": dj.get("class"),
+                        "pitch_i": di.get("pitch"), "pitch_j": dj.get("pitch"),
+                        "conf_i": di.get("confidence"),
+                        "conf_j": dj.get("confidence"),
+                        "decided_by": {2: "ladder", 1: "range_or_hairpin"}.get(
+                            rank, "distance"),
+                        "loser_staff": si if loser == i else sj,
+                    })
+
+    if _contest_dump_enabled():
+        page["contested_notehead_pairs"] = contests
 
     doomed: set[int] = set()
     for _rank, loser, winner in sorted(verdicts, key=lambda v: -v[0]):
         if loser in doomed or winner in doomed:
             continue
         doomed.add(loser)
+
+    if deferred is not None:
+        # A parked pair is only real where the distance call ACTUALLY killed
+        # this loser and left this winner standing. A pair whose loser was
+        # already doomed by a stronger verdict, or whose winner died elsewhere,
+        # has nothing for the range tier to reverse.
+        page_index = page.get("page_index")
+        for meta in pair_meta:
+            lo, wi = meta["loser"], meta["winner"]
+            if lo not in doomed or wi in doomed:
+                continue
+            deferred.append({
+                "page_index": page_index,
+                "staff_loser": meta["staff_loser"],
+                "staff_winner": meta["staff_winner"],
+                "det_loser": entries[lo][1],
+                "det_winner": entries[wi][1],
+                "list_loser": entries[lo][2],
+                "list_winner": entries[wi][2],
+            })
 
     for i in sorted(doomed, reverse=True):
         _idx, det, lst = entries[i]
@@ -2740,6 +2841,103 @@ def _dedupe_cross_staff_detections(
         except ValueError:  # already gone
             pass
     return len(doomed)
+
+
+def _apply_roster_range_veto(
+    result: dict[str, Any],
+    deferred: list[dict[str, Any]],
+    *,
+    mode: str,
+) -> dict[str, Any]:
+    """Re-judge distance-decided notehead contests against roster identity.
+
+    Tier 2 of `_dedupe_cross_staff_detections` — the instrument's written range
+    — has never fired on a scan: `_staff_written_ranges` returns `{}` when there
+    is no dossier, and the scan gate runs dossier-free by protocol. `OMR_ROSTER`
+    now supplies per-staff identity read from the PAGE, so the tier can be fed
+    without one; it just arrives too late, because the contextual pass runs
+    after every page is built. This is that tier, deferred.
+
+    ⚠️ **A VETO ON THE IMPOSSIBLE, NEVER ON THE UNLIKELY**, which is the
+    existing rule for this tier and is load-bearing. A swap happens only where
+    the kept reading falls OUTSIDE its own part's written range and the dropped
+    one falls INSIDE its own — a part playing at the edge of its range is never
+    touched, and neither is a pair where both readings are possible. Widening
+    this into a preference would make the tier a soft prior.
+
+    ⚠️ **Written pitch, not concert.** `written_range` follows the project's
+    written-pitch convention, and the detections carry what is printed; a
+    concert-pitch comparison would false-veto every transposing staff.
+    """
+    from .instruments import lookup as lookup_instrument  # noqa: PLC0415
+
+    identity: dict[tuple[Any, Any], dict[str, Any]] = {}
+    for page in result.get("pages", []):
+        for system in page.get("systems", []):
+            for staff in system.get("staves", []):
+                name = staff.get("instrument")
+                if not name:
+                    continue
+                identity[(page.get("page_index"), staff.get("staff_index"))] = {
+                    "instrument": name,
+                    "source": staff.get("instrument_source"),
+                }
+
+    ranges: dict[str, tuple[int, int] | None] = {}
+
+    def _range(name: str) -> tuple[int, int] | None:
+        if name not in ranges:
+            match = lookup_instrument(name)
+            rng = getattr(getattr(match, "instrument", None),
+                          "written_range", None)
+            ranges[name] = tuple(rng) if rng else None
+        return ranges[name]
+
+    def _usable(key: tuple[Any, Any]) -> dict[str, Any] | None:
+        ident = identity.get(key)
+        if ident is None:
+            return None
+        if mode != "all" and ident["source"] not in _RANGE_VETO_READ_SOURCES:
+            return None
+        return ident
+
+    swaps: list[dict[str, Any]] = []
+    # One detection may sit in several parked pairs. A detection already moved
+    # is off the table for the rest, so a swap can never be undone by the next
+    # pair or applied twice.
+    touched: list[int] = []
+    for rec in deferred:
+        det_w, det_l = rec["det_winner"], rec["det_loser"]
+        if id(det_w) in touched or id(det_l) in touched:
+            continue
+        id_w = _usable((rec["page_index"], rec["staff_winner"]))
+        id_l = _usable((rec["page_index"], rec["staff_loser"]))
+        if not (id_w and id_l):
+            continue
+        fit_w = _in_written_range(det_w.get("pitch"), _range(id_w["instrument"]))
+        fit_l = _in_written_range(det_l.get("pitch"), _range(id_l["instrument"]))
+        if fit_w is None or fit_l is None or fit_w or not fit_l:
+            continue                      # both possible, both impossible, or
+                                          # the kept reading is already the fine
+                                          # one — nothing to veto.
+        if det_w not in rec["list_winner"]:
+            continue                      # something downstream already took it
+        rec["list_winner"].remove(det_w)
+        rec["list_loser"].append(det_l)
+        touched.extend((id(det_w), id(det_l)))
+        swaps.append({
+            "page_index": rec["page_index"],
+            "kept_staff": rec["staff_loser"],
+            "kept_instrument": id_l["instrument"],
+            "kept_pitch": det_l.get("pitch"),
+            "kept_source": id_l["source"],
+            "dropped_staff": rec["staff_winner"],
+            "dropped_instrument": id_w["instrument"],
+            "dropped_pitch": det_w.get("pitch"),
+            "dropped_source": id_w["source"],
+        })
+    return {"mode": mode, "n_parked": len(deferred),
+            "n_swapped": len(swaps), "swaps": swaps}
 
 
 # ─── A notehead outside the staff must hang on SOMETHING ────────────────────
@@ -3960,6 +4158,13 @@ def transcribe(
     # into the result — re-detecting them there would risk attaching slot
     # indices to a different set. Bounded by OMR_MAX_PAGES (5 by default).
     staved_pages: list[Any] = []
+    # Contested notehead pairs that DISTANCE alone decided, parked for the
+    # roster-fed range veto that runs after the contextual pass names the
+    # staves. `None` unless the flag is on, which keeps the dedupe path — and
+    # its output — byte-identical by construction when it is off.
+    _range_veto_mode = _roster_range_veto_mode()
+    _range_veto_deferred: list[dict[str, Any]] | None = (
+        [] if _range_veto_mode != "off" else None)
     for p in pages:
         t_phase1 = time.perf_counter()
         page = render_page(pdf_path, p, dpi=dpi)
@@ -4482,7 +4687,8 @@ def transcribe(
             )
             out["n_detections_total"] -= n_unladdered
         n_deduped = _dedupe_cross_staff_detections(
-            page_dict, _bands, dossier=dossier)
+            page_dict, _bands, dossier=dossier,
+            deferred=_range_veto_deferred)
         if n_deduped:
             page_dict["n_cross_staff_duplicates_removed"] = n_deduped
             out["n_cross_staff_duplicates_removed"] = (
@@ -4775,6 +4981,22 @@ def transcribe(
             out["contextual"] = _optional_pass_failure(
                 "contextual analysis", exc, progress=progress)
         out["runtime"]["contextual_s"] = round(time.perf_counter() - t_ctx, 2)
+
+    # ── Range veto, fed from roster identity (OMR_ROSTER_RANGE_VETO) ────────
+    #
+    # Strictly after the contextual pass, because that is what names the
+    # staves — and named staves are the whole input. See
+    # `_apply_roster_range_veto`. Wrapped like the other optional passes: a
+    # transcription that succeeded is never lost to an enrichment, and a
+    # failure that looks like a DEFECT is still reported loudly by
+    # `_optional_pass_failure`.
+    if _range_veto_deferred is not None:
+        try:
+            out["roster_range_veto"] = _apply_roster_range_veto(
+                out, _range_veto_deferred, mode=_range_veto_mode)
+        except Exception as exc:                              # noqa: BLE001
+            out["roster_range_veto"] = _optional_pass_failure(
+                "roster range veto", exc, progress=progress)
 
     out["runtime"]["total_s"] = round(time.perf_counter() - t_total, 2)
     out["runtime"]["phase1_s"] = round(out["runtime"]["phase1_s"], 2)

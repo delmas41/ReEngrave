@@ -1312,15 +1312,21 @@ class TestOptionalPassFailureIsLoudAboutBugs:
             assert type(exc).__name__ in record["reason"]
 
     def test_both_optional_passes_route_through_it(self):
-        """Two copies of this swallow exist — contextual and direction text —
-        and one of them has already gone dark this way. Neither may hand-roll
-        the record again."""
+        """THREE copies of this swallow exist — contextual, direction text and
+        the roster range veto — and one of them has already gone dark this way.
+        None may hand-roll the record again.
+
+        ⚠️ The count is the assertion, not a formality: a new optional pass is
+        expected to FAIL this test until it is added here deliberately, which is
+        how the third one was caught. Raise the number when you add a pass that
+        routes through `_optional_pass_failure`; never exempt one.
+        """
         import inspect
 
         from tools.omr import transcribe as T
 
         src = inspect.getsource(T.transcribe)
-        assert src.count("_optional_pass_failure(") == 2
+        assert src.count("_optional_pass_failure(") == 3
         # the old hand-rolled shape, which is what hid the failure
         assert '"reason": f"{type(exc).__name__}: {exc}"' not in src
 
@@ -1533,3 +1539,133 @@ class TestTheDirectionTextDefault:
         from tools.omr.transcribe import transcribe
         assert inspect.signature(
             transcribe).parameters["read_direction_text"].default is None
+
+
+# ─── the range veto, fed from ROSTER identity instead of a dossier ──────────
+#
+# Tier 2 of `_dedupe_cross_staff_detections` has never fired on a scan:
+# `_staff_written_ranges` returns {} with no dossier, and the scan gate runs
+# dossier-free by protocol. `OMR_ROSTER` supplies per-staff identity read from
+# the page, so the tier can be fed without one — it just arrives after the
+# contextual pass, which is why the arbitration is DEFERRED rather than moved.
+#
+# ⚠️ These pin the two properties the tier is not allowed to lose: it vetoes the
+# IMPOSSIBLE only, and it never re-opens a pair the LADDER decided.
+
+
+def _veto_page(pitch_winner, pitch_loser, *,
+               inst_winner="Timpani", inst_loser="Violin",
+               src_winner="label", src_loser="label"):
+    """A minimal result carrying one parked pair: staff 0 kept, staff 1 dropped."""
+    det_w = {"category": "notehead", "class": "noteheadBlackInSpace",
+             "pitch": pitch_winner, "bbox_page": [0, 0, 10, 10]}
+    det_l = {"category": "notehead", "class": "noteheadBlackInSpace",
+             "pitch": pitch_loser, "bbox_page": [0, 0, 10, 10]}
+    list_w, list_l = [det_w], []
+    result = {"pages": [{"page_index": 0, "systems": [{"staves": [
+        {"staff_index": 0, "instrument": inst_winner,
+         "instrument_source": src_winner},
+        {"staff_index": 1, "instrument": inst_loser,
+         "instrument_source": src_loser},
+    ]}]}]}
+    deferred = [{"page_index": 0, "staff_winner": 0, "staff_loser": 1,
+                 "det_winner": det_w, "det_loser": det_l,
+                 "list_winner": list_w, "list_loser": list_l}]
+    return result, deferred, list_w, list_l
+
+
+class TestRosterRangeVeto:
+    def test_it_swaps_an_impossible_reading_for_a_possible_one(self):
+        """Timpani (36,60) cannot sound G6; the Violin (55,100) can. This is the
+        documented failure — distance awards a violin's high notes to the
+        timpani, because an engraver opens the gap ABOVE a staff for exactly the
+        ledger notes that then sit nearer the staff above."""
+        from tools.omr.transcribe import _apply_roster_range_veto
+
+        result, deferred, list_w, list_l = _veto_page("G6", "G6")
+        report = _apply_roster_range_veto(result, deferred, mode="label")
+        assert report["n_swapped"] == 1
+        assert list_w == [] and len(list_l) == 1
+        assert report["swaps"][0]["kept_instrument"] == "Violin"
+
+    def test_it_does_not_fire_when_both_readings_are_possible(self):
+        """A VETO ON THE IMPOSSIBLE, NEVER ON THE UNLIKELY. A3 is inside both
+        the timpani's range and the violin's, so distance's answer stands even
+        though the violin is the likelier player."""
+        from tools.omr.transcribe import _apply_roster_range_veto
+
+        result, deferred, list_w, list_l = _veto_page("A3", "A3")
+        report = _apply_roster_range_veto(result, deferred, mode="label")
+        assert report["n_swapped"] == 0
+        assert list_w and list_l == []
+
+    def test_it_does_not_fire_when_both_readings_are_impossible(self):
+        """Neither part can sound it, so nothing separates them and the pair is
+        left exactly as distance left it."""
+        from tools.omr.transcribe import _apply_roster_range_veto
+
+        result, deferred, _lw, _ll = _veto_page(
+            "C0", "C0", inst_winner="Timpani", inst_loser="Piccolo")
+        report = _apply_roster_range_veto(result, deferred, mode="label")
+        assert report["n_swapped"] == 0
+
+    def test_score_order_identity_is_refused_by_the_label_arm(self):
+        """A `score_order` name is a hypothesis about where a staff SITS, wrong
+        about one staff in ten — and a wrong identity here DELETES A REAL NOTE.
+        The conservative arm will not spend it; `all` will, and is measured
+        separately rather than assumed."""
+        from tools.omr.transcribe import _apply_roster_range_veto
+
+        result, deferred, _lw, _ll = _veto_page(
+            "G6", "G6", src_loser="score_order")
+        assert _apply_roster_range_veto(
+            result, deferred, mode="label")["n_swapped"] == 0
+
+        result, deferred, _lw2, _ll2 = _veto_page(
+            "G6", "G6", src_loser="score_order")
+        assert _apply_roster_range_veto(
+            result, deferred, mode="all")["n_swapped"] == 1
+
+    def test_an_unnamed_staff_abstains(self):
+        """One-sided identity cannot separate two readings: 'inside its own
+        range' is undefined for the unnamed side."""
+        from tools.omr.transcribe import _apply_roster_range_veto
+
+        result, deferred, _lw, _ll = _veto_page("G6", "G6")
+        for staff in result["pages"][0]["systems"][0]["staves"]:
+            if staff["staff_index"] == 1:
+                staff.pop("instrument")
+        assert _apply_roster_range_veto(
+            result, deferred, mode="label")["n_swapped"] == 0
+
+    def test_only_distance_decided_pairs_are_parked(self):
+        """The LADDER outranks the range in the existing tier order — an
+        unbroken run of ledger lines physically joining a glyph to a staff beats
+        what the part can play. Re-opening a ladder verdict would invert the
+        tiers, so only `rank == 0` is ever parked."""
+        import inspect
+
+        from tools.omr import transcribe as T
+
+        src = inspect.getsource(T._dedupe_cross_staff_detections)
+        assert "deferred is not None and is_note and rank == 0" in src
+
+    def test_flag_off_parks_nothing_at_all(self):
+        """Default-off has to be free, not merely inert: with the flag off the
+        deferral list is None, so the dedupe path never even records."""
+        import os
+
+        from tools.omr.transcribe import _roster_range_veto_mode
+
+        old = os.environ.get("OMR_ROSTER_RANGE_VETO")
+        try:
+            os.environ.pop("OMR_ROSTER_RANGE_VETO", None)
+            assert _roster_range_veto_mode() == "off"
+            os.environ["OMR_ROSTER_RANGE_VETO"] = "1"
+            assert _roster_range_veto_mode() == "label"
+            os.environ["OMR_ROSTER_RANGE_VETO"] = "all"
+            assert _roster_range_veto_mode() == "all"
+        finally:
+            os.environ.pop("OMR_ROSTER_RANGE_VETO", None)
+            if old is not None:
+                os.environ["OMR_ROSTER_RANGE_VETO"] = old
