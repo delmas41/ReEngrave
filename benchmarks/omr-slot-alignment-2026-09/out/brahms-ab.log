@@ -1,0 +1,11 @@
+=== ARM ordinal  2026-09-06T20:56:29Z
+  wrote benchmarks/omr-slot-alignment-2026-09/out/brahms1/-ordinal-spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (0 pages read, 86 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-slot-alignment-2026-09/out/brahms1/-ordinal-spans-off.json
+  benchmarks/omr-slot-alignment-2026-09/out/brahms1/-ordinal-spans-on.json
+=== ARM map  2026-09-06T20:56:38Z
+  wrote benchmarks/omr-slot-alignment-2026-09/out/brahms1/-map-spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (0 pages read, 86 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-slot-alignment-2026-09/out/brahms1/-map-spans-off.json
+  benchmarks/omr-slot-alignment-2026-09/out/brahms1/-map-spans-on.json
+=== DONE 2026-09-06T20:56:47Z
