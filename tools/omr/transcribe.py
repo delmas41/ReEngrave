@@ -2605,6 +2605,18 @@ def _distance_to_band(y: float, top: float, bottom: float) -> float:
     return 0.0
 
 
+def _contest_dump_enabled() -> bool:
+    """`OMR_CONTEST_DUMP` — record contested notehead pairs onto the page dict.
+
+    Instrumentation for the range-veto reach probe
+    (`benchmarks/omr-range-veto-2026-09/`). Off by default and verdict-neutral:
+    it only ever APPENDS to a list, so a run with it on removes exactly the same
+    detections as a run with it off.
+    """
+    return os.environ.get(
+        "OMR_CONTEST_DUMP", "0").strip().lower() in ("1", "true", "yes", "on")
+
+
 def _dedupe_cross_staff_detections(
     page: dict[str, Any],
     bands: dict[int, tuple[int, ...]],
@@ -2643,6 +2655,7 @@ def _dedupe_cross_staff_detections(
     ledgers = (_ledger_rows(page)
                if all(len(b) >= 3 for b in bands.values()) else None)
     ranges = _staff_written_ranges(page, dossier)
+    contests: list[dict[str, Any]] = []
 
     # PAIRWISE, and a cluster-winner refactor was measured and REJECTED.
     # Grouping every overlapping copy and letting the group pick one winner is
@@ -2726,6 +2739,28 @@ def _dedupe_cross_staff_detections(
                         else j
                     )
                 verdicts.append((rank, loser, j if loser == i else i))
+                if _contest_dump_enabled():
+                    # REACH INSTRUMENTATION ONLY (OMR_CONTEST_DUMP=1), and it
+                    # changes no verdict — it records the contest so a probe can
+                    # ask, after the contextual pass has named the staves, how
+                    # many of these a roster-sourced range veto could speak on.
+                    # Written per pair, both sides, with the tier that actually
+                    # decided it, because "would tier 2 have reached this" is
+                    # only interesting where the ladder did NOT already settle it.
+                    contests.append({
+                        "staff_i": si, "staff_j": sj,
+                        "category": di.get("category"),
+                        "class_i": di.get("class"), "class_j": dj.get("class"),
+                        "pitch_i": di.get("pitch"), "pitch_j": dj.get("pitch"),
+                        "conf_i": di.get("confidence"),
+                        "conf_j": dj.get("confidence"),
+                        "decided_by": {2: "ladder", 1: "range_or_hairpin"}.get(
+                            rank, "distance"),
+                        "loser_staff": si if loser == i else sj,
+                    })
+
+    if _contest_dump_enabled():
+        page["contested_notehead_pairs"] = contests
 
     doomed: set[int] = set()
     for _rank, loser, winner in sorted(verdicts, key=lambda v: -v[0]):
