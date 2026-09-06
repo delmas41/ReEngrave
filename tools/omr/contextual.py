@@ -47,6 +47,7 @@ slots, no proposals.
 from __future__ import annotations
 
 import logging
+import os
 from pathlib import Path
 from typing import Any
 
@@ -58,7 +59,9 @@ from .dossier import join_parts_to_slots
 from .instruments import Instrument, candidates_for_alias, lookup
 from .preprocessing import render_page
 from .score_layouts import fit_layouts, resolve_ambiguous_label
-from .slots import Slot, assign_slots, labels_by_staff
+from .roster import Roster, acquire_roster
+from .roster import enabled as roster_enabled
+from .slots import Slot, SystemView, align, assign_slots, labels_by_staff
 from .staff_detector import detect_staves
 from .staff_labels import StaffLabel, has_text_layer, read_staff_labels
 
@@ -68,6 +71,44 @@ from .staff_labels import StaffLabel, has_text_layer, read_staff_labels
 # fallback that was written to be optional was fatal instead. Never exercised
 # because nothing had made the reader fail.
 logger = logging.getLogger(__name__)
+
+
+def _roster_instrument_by_slot(
+    roster: Roster, reference: list[Slot]) -> dict[int, Instrument]:
+    """Which slot each roster name belongs to.
+
+    The roster system is aligned into slot space by the SAME DP every other
+    system goes through (`slots.align`) — monotone, deletions allowed on the
+    reference side, a label conflict the only hard negative. Nothing new is
+    invented for the roster: it is simply a system this run may not have
+    transcribed, whose labels are then available to every system that did.
+
+    ⚠️ Holes are DROPPED rather than filled. An unread roster position aligns as
+    an unlabelled staff, which the DP already handles; healing the gap from the
+    layout prior measured better (0.848 -> 0.876) and is CLOSED — see the module
+    docstring in `roster.py`.
+    """
+    if not roster.staves or not reference:
+        return {}
+    names = roster.names
+    view = SystemView(
+        staves=list(roster.staves),
+        labels={st.staff_index: names[i]
+                for i, st in enumerate(roster.staves) if i in names},
+    )
+    # ⚠️ NO CONFLICT ARBITRATION HERE, and that is a property of `align` rather
+    # than an omission: the DP is monotone and consumes each reference slot at
+    # most once, so two roster positions can never land on one slot. A guard for
+    # it was written, tested, found UNREACHABLE and removed — dead code carrying
+    # a claim about a hazard that does not exist is worse than no code.
+    out: dict[int, Instrument] = {}
+    for ordinal, slot_index in enumerate(align(view, reference)):
+        if slot_index < 0 or ordinal not in names:
+            continue
+        match = lookup(names[ordinal])
+        if match is not None:
+            out[slot_index] = match.instrument
+    return out
 
 
 def _instrument_by_slot(reference: list[Slot]) -> dict[int, Instrument]:
@@ -579,7 +620,11 @@ def apply_contextual_analysis(
         # None means "the caller has no opinion": honor the env flag, so a
         # benchmark that calls this directly (eval_pipeline_clefs) exercises
         # the same configuration a transcription would. Default OFF.
-        import os
+        #
+        # ⚠️ `os` is imported at MODULE level, not here. A function-local
+        # `import os` inside this `if` makes `os` local to the WHOLE function,
+        # so any other `os.environ` read further down raises UnboundLocalError
+        # on the branch where a caller passed an explicit bool.
         instrument_clef_default = os.environ.get(
             "OMR_INSTRUMENT_CLEF_DEFAULT", "0").strip().lower() not in (
             "0", "", "false", "no", "off")
@@ -666,7 +711,46 @@ def apply_contextual_analysis(
         summary["reason"] = "no reference layout could be built"
         return summary
 
+    # ── The document's roster ────────────────────────────────────────────────
+    # Read ONCE, from the first system of the document that carries names, and
+    # available to every page of the run — including pages this run never asked
+    # for, which is the whole point: a score names its orchestra on the first
+    # system of the movement and abbreviates or omits it everywhere after.
+    #
+    # ACQUISITION IS UNCONDITIONAL AND ITS RESULT IS RECORDED; only its USE is
+    # behind `OMR_ROSTER`. Recording what the margin said changes no music, and
+    # a signal read correctly and then discarded is the shape this project has
+    # paid for nine times. What the flag gates is whether a roster name is
+    # allowed to NAME A SLOT.
+    roster: Roster | None = None
+    if not unlabelled:
+        try:
+            roster = acquire_roster(
+                pdf_path=pdf_path, dpi=dpi, run_pages=page_indices,
+                run_staves=staved, run_labels=staff_labels_per_page,
+                read_labels=lambda pws, i: _labels_for_page(
+                    pws, pdf_path, i, assist=assist, budget=budget,
+                    surya_fallback=surya_fallback, ocr_fallback=ocr_fallback,
+                    tiers=tiers, review_dir=review_dir),
+            )
+        except Exception as exc:                              # noqa: BLE001
+            # An enrichment that could not run must not lose a transcription
+            # that succeeded — the same contract every optional pass here has.
+            logger.info("roster acquisition unavailable: %s", exc)
+    summary["roster"] = roster.evidence() if roster else None
+
     instrument_by_slot = _instrument_by_slot(reference)
+    page_read_slots = set(instrument_by_slot)
+    # Where the roster names a slot the reference system did not, it supplies
+    # the name — and its provenance says so. ⚠️ It never OVERRIDES a name read
+    # on a page of this run: a label printed on the page the reader is looking
+    # at outranks one carried from another page, and `setdefault` is what keeps
+    # that true.
+    roster_by_slot: dict[int, Instrument] = {}
+    if roster is not None and roster_enabled():
+        roster_by_slot = _roster_instrument_by_slot(roster, reference)
+        for slot_index, instrument in roster_by_slot.items():
+            instrument_by_slot.setdefault(slot_index, instrument)
     slot_by_staff: dict[tuple[int, int, int], int] = {}
     for page_index, pws in zip(page_indices, staved):
         for staff in pws.staves:
@@ -686,12 +770,17 @@ def apply_contextual_analysis(
     clef_by_slot = _read_clefs_by_slot(pages, slot_by_staff)
     ambiguous_slots = _ambiguous_label_slots(
         staff_labels_per_page, slot_by_staff, page_indices, staved)
+    fit_labels = {s.index: s.instrument for s in reference
+                  if s.instrument and s.index not in ambiguous_slots}
+    # A roster name is a label — printed on the page the roster came off and
+    # read by the same ladder — so it CONSTRAINS the prior exactly as the
+    # reference system's own labels do. Withholding it would leave the prior
+    # guessing at slots the document has already named, which is the shape this
+    # whole workstream is about.
+    for slot_index, instrument in roster_by_slot.items():
+        fit_labels.setdefault(slot_index, instrument.name)
     fit = fit_layouts(
-        len(reference),
-        labels={s.index: s.instrument for s in reference
-                if s.instrument and s.index not in ambiguous_slots},
-        clefs=clef_by_slot,
-    )
+        len(reference), labels=fit_labels, clefs=clef_by_slot)
     # The RAW text of each slot's margin label, kept beside the instrument the
     # lexicon resolved it to. `lookup` answers "which instrument", which is a
     # singular noun — so `Flauti`, `2 Flöten` and `Flauto` all resolve to
@@ -709,7 +798,17 @@ def apply_contextual_analysis(
             if text and staff.slot_index >= 0:
                 raw_label_by_slot.setdefault(staff.slot_index, text.strip())
 
-    instrument_source: dict[int, str] = {i: "label" for i in instrument_by_slot}
+    # Per-FACT provenance, which is what makes the carry implementable at all:
+    # `probe_roster_carry.py` measured observed identity carrying at 22/22 and
+    # DERIVED identity carrying at 0.550, so a layer that cannot say, of each
+    # individual name, whether it was read or deduced cannot carry safely.
+    #
+    #   label   printed on a page of THIS run and read there
+    #   roster  printed on the document's roster system and carried here
+    #   score_order / score_order_ambiguity   deduced from where the staff sits
+    instrument_source: dict[int, str] = {
+        i: ("label" if i in page_read_slots else "roster")
+        for i in instrument_by_slot}
     if fit is not None:
         for slot in reference:
             proposed = fit.instrument_for(slot.index)
@@ -756,9 +855,29 @@ def apply_contextual_analysis(
     # out of the prior as violins, and letting that rewrite their clefs would
     # close the loop on its own mistake. So the deduction is written into the
     # JSON, where a reader can see it and judge it, and stops there.
+    #
+    # ⚠️ ROSTER-SOURCED IDENTITY IS HELD OUT OF THE CLEF CONSUMER BY DEFAULT,
+    # and the reason is REACH rather than doubt about the roster. `clef_correction`
+    # has two paths: FILL applies only where NO reader read a clef, and OVERRIDE
+    # (gated separately on `OMR_INSTRUMENT_CLEF_DEFAULT`) requires source
+    # `label`. Measured on the 20-row gate, 91.4% of staves already carry a read
+    # clef, so FILL's population is 34 staves — and the staves a roster newly
+    # names and the staves needing a fill are very nearly DISJOINT, which is why
+    # a perfect-precision roster tier priced at exactly **0 edits**
+    # (`benchmarks/omr-staff-identity-layer-2026-09/price_clef_consumer.py`,
+    # tier B). A consumer that moves zero edits ships disabled. `OMR_ROSTER_CLEF`
+    # exists so the finding is reproducible, not because the default is in doubt.
+    _roster_to_clef = os.environ.get(
+        "OMR_ROSTER_CLEF", "0").strip().lower() in ("1", "true", "yes", "on")
+    # ⚠️ `score_order_ambiguity` stays ADMITTED, exactly as before this block
+    # existed — it is a label the prior disambiguated, not a name the prior
+    # invented, and changing that is not this workstream's to change.
+    _not_clef_evidence = {"score_order"}
+    if not _roster_to_clef:
+        _not_clef_evidence.add("roster")
     read_instruments = {
         slot: inst for slot, inst in instrument_by_slot.items()
-        if instrument_source.get(slot) != "score_order"
+        if instrument_source.get(slot) not in _not_clef_evidence
     }
     # Fill defaulted clefs from the same part in another system BEFORE the
     # instrument pass, so that pass sees the borrowed reading and leaves those
@@ -834,6 +953,9 @@ def apply_contextual_analysis(
         layout_named_slots=(fit.n_named if fit else 0),
         instruments_from_score_order=sum(
             1 for v in instrument_source.values() if v == "score_order"),
+        instruments_from_roster=sum(
+            1 for v in instrument_source.values() if v == "roster"),
+        roster_slots_offered=len(roster_by_slot),
         ambiguous_labels_resolved=sum(
             1 for v in instrument_source.values() if v == "score_order_ambiguity"),
         proposals=records,
