@@ -1,0 +1,20 @@
+=== brahms1-p10only.json
+INPUT ASSERTION: pages=1 systems=2 staff-records=27
+roster: page 10 system 0 12/13 pages_searched=[10] pages_opened=[]
+
+## A. self-contradiction (staff carries a label that disagrees)
+  checked 25 labelled staves, 0 disagree
+
+## B. coverage and provenance by page
+  pg  staves  label  roster  order  ambig  none    cov
+  10      27     23       2      2      0     0  1.000
+
+## C. per-system staff counts (an instrumentation change shows here)
+  10.0:13 10.1:14
+
+## D. assigned instrument sequence per page (top to bottom)
+  p10.s0 (13): Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Trumpet | Violin | Violin | Viola | Cello | Contrabass
+        labels: Fl. | Ob. | Klar. (B) | Fag. | K-Fag. | (C) Hr. | (Es) | Trpt. (C) | 1.Viol. | 2.Viol. | Br. | Vcl. | K-B.
+  p10.s1 (14): Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Trumpet | Timpani | Violin | Violin | Viola | Cello | Contrabass
+        labels: Fl. | Ob. | Klar. (B) | Fag. | K-Fag. | (C) Hr. | (Es) | Trpt. (C) | Pk. | 1.Viol. | 2.Viol. | Br. | Vcl. | K-B.
+

@@ -1,0 +1,1780 @@
+reference:
+   {"slot": 0, "group": 0, "instrument": "Piccolo"}
+   {"slot": 1, "group": 0, "instrument": "Flute"}
+   {"slot": 2, "group": 0, "instrument": "Oboe"}
+   {"slot": 3, "group": 0, "instrument": "Clarinet"}
+   {"slot": 4, "group": 0, "instrument": "Bassoon"}
+   {"slot": 5, "group": 0, "instrument": "Contrabassoon"}
+   {"slot": 6, "group": 1, "instrument": "Horn"}
+   {"slot": 7, "group": 1, "instrument": "Trumpet"}
+   {"slot": 8, "group": 1, "instrument": "Timpani"}
+   {"slot": 9, "group": 1, "instrument": "Trombone"}
+   {"slot": 10, "group": 1, "instrument": "Trombone"}
+   {"slot": 11, "group": 1, "instrument": "Trombone"}
+   {"slot": 12, "group": 2, "instrument": "Violin"}
+   {"slot": 13, "group": 2, "instrument": "Violin"}
+   {"slot": 14, "group": 2, "instrument": "Viola"}
+   {"slot": 15, "group": 2, "instrument": "Cello"}
+   {"slot": 16, "group": 2, "instrument": "Bass voice"}
+
+proposals = [{"page_index": 2, "system_index": 0, "staff_index": 9, "slot": 14, "instrument": "Viola", "from_clef": "treble", "to_clef": "alto", "fit": 1.0, "current_fit": 0.964, "margin": 0.036, "n_noteheads": 28, "confidence_label": "medium", "clef_was_read": true, "clef_source": "detector_header", "applied": false}, {"page_index": 4, "system_index": 0, "staff_index": 8, "slot": 14, "instrument": "Viola", "from_clef": "treble", "to_clef": "alto", "fit": 1.0, "current_fit": 1.0, "margin": 0.0, "n_noteheads": 32, "confidence_label": "medium", "clef_was_read": true, "clef_source": "detector_header", "applied": false}, {"page_index": 5, "system_index": 1, "staff_index": 10, "slot": 4, "instrument": "Bassoon", "from_clef": "treble", "to_clef": "bass", "fit": 1.0, "current_fit": 0.231, "margin": 0.769, "n_noteheads": 13, "confidence_label": "high", "clef_was_read": false, "clef_source": null, "applied": true, "noteheads_restated": 13}, {"page_index": 5, "system_index": 1, "staff_index": 14, "slot": 14, "instrument": "Viola", "from_clef": "treble", "to_clef": "alto", "fit": 1.0, "current_fit": 1.0, "margin": 0.0, "n_noteheads": 23, "confidence_label": "medium", "clef_was_read": false, "clef_source": null, "applied": true, "noteheads_restated": 23}, {"page_index": 5, "system_index": 1, "staff_index": 15, "slot": 16, "instrument": "Bass voice", "from_clef": "tenor", "to_clef": "bass", "fit": 1.0, "current_fit": 0.882, "margin": 0.118, "n_noteheads": 17, "confidence_label": "medium", "clef_was_read": true, "clef_source": "cv_locator", "applied": false}, {"page_index": 6, "system_index": 0, "staff_index": 3, "slot": 4, "instrument": "Bassoon", "from_clef": "treble", "to_clef": "bass", "fit": 0.976, "current_fit": 0.439, "margin": 0.537, "n_noteheads": 41, "confidence_label": "high", "clef_was_read": true, "clef_source": "detector", "applied": false}, {"page_index": 6, "system_index": 0, "staff_index": 7, "slot": 14, "instrument": "Viola", "from_clef": "treble", "to_clef": "alto", "fit":
+unresolved_labels = ["21.", "C. Fig.", "C. Fug.", "C. Pag.", "Cc. Fa", "Ccr.", "Cer", "Cer.", "DR.", "Dh.", "F o  5", "Fig.", "Fug.", "F}", "Gp.", "Gr.", "Jor.", "Lor.", "Oh", "Oh.", "Ol.", "Or.", "Pag.", "Rig.", "T:. Teu", "Tinp.", "Tiny", "Tump.", "ag.", "|"]
+clef_fills = [{"page_index": 22, "system_index": 0, "staff_index": 1, "slot": 2, "from_clef": "bass", "to_clef": "treble"}]
+
+staff -> slot map:
+  p1.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=15 inst=Cello src=label
+     staff_idx=11 slot=16 inst=Bass voice src=label
+  p2.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p2.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=6 inst=Horn src=label
+     staff_idx=16 slot=7 inst=Trumpet src=label
+     staff_idx=17 slot=8 inst=Timpani src=label
+     staff_idx=18 slot=12 inst=Violin src=label
+     staff_idx=19 slot=13 inst=Violin src=label
+     staff_idx=20 slot=14 inst=Viola src=label
+     staff_idx=21 slot=16 inst=Bass voice src=label
+  p3.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p3.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=3 inst=Clarinet src=label
+     staff_idx=13 slot=4 inst=Bassoon src=label
+     staff_idx=14 slot=6 inst=Horn src=label
+     staff_idx=15 slot=12 inst=Violin src=label
+     staff_idx=16 slot=13 inst=Violin src=label
+     staff_idx=17 slot=14 inst=Viola src=label
+     staff_idx=18 slot=16 inst=Bass voice src=label
+  p4.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=12 inst=Violin src=label
+     staff_idx=7 slot=13 inst=Violin src=label
+     staff_idx=8 slot=14 inst=Viola src=label
+     staff_idx=9 slot=15 inst=Cello src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p4.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=6 inst=Horn src=label
+     staff_idx=16 slot=7 inst=Trumpet src=label
+     staff_idx=17 slot=8 inst=Timpani src=label
+     staff_idx=18 slot=12 inst=Violin src=label
+     staff_idx=19 slot=13 inst=Violin src=label
+     staff_idx=20 slot=14 inst=Viola src=label
+     staff_idx=21 slot=16 inst=Bass voice src=label
+  p5.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=12 inst=Violin src=label
+     staff_idx=6 slot=13 inst=Violin src=label
+     staff_idx=7 slot=14 inst=Viola src=label
+     staff_idx=8 slot=16 inst=Bass voice src=label
+  p5.s1
+     staff_idx=9 slot=3 inst=Clarinet src=label
+     staff_idx=10 slot=4 inst=Bassoon src=label
+     staff_idx=11 slot=6 inst=Horn src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=16 inst=Bass voice src=label
+  p6.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=12 inst=Violin src=label
+     staff_idx=6 slot=13 inst=Violin src=label
+     staff_idx=7 slot=14 inst=Viola src=label
+     staff_idx=8 slot=15 inst=Cello src=label
+     staff_idx=9 slot=16 inst=Bass voice src=label
+  p6.s1
+     staff_idx=10 slot=1 inst=Flute src=label
+     staff_idx=11 slot=2 inst=Oboe src=label
+     staff_idx=12 slot=3 inst=Clarinet src=label
+     staff_idx=13 slot=4 inst=Bassoon src=label
+     staff_idx=14 slot=6 inst=Horn src=label
+     staff_idx=15 slot=7 inst=Trumpet src=label
+     staff_idx=16 slot=8 inst=Timpani src=label
+     staff_idx=17 slot=12 inst=Violin src=label
+     staff_idx=18 slot=13 inst=Violin src=label
+     staff_idx=19 slot=14 inst=Viola src=label
+     staff_idx=20 slot=15 inst=Cello src=label
+     staff_idx=21 slot=16 inst=Bass voice src=label
+  p7.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p7.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=6 inst=Horn src=label
+     staff_idx=16 slot=7 inst=Trumpet src=label
+     staff_idx=17 slot=8 inst=Timpani src=label
+     staff_idx=18 slot=12 inst=Violin src=label
+     staff_idx=19 slot=13 inst=Violin src=label
+     staff_idx=20 slot=14 inst=Viola src=label
+     staff_idx=21 slot=16 inst=Bass voice src=label
+  p8.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=12 inst=Violin src=label
+     staff_idx=6 slot=13 inst=Violin src=label
+     staff_idx=7 slot=14 inst=Viola src=label
+     staff_idx=8 slot=16 inst=Bass voice src=label
+  p8.s1
+     staff_idx=9 slot=1 inst=Flute src=label
+     staff_idx=10 slot=2 inst=Oboe src=label
+     staff_idx=11 slot=3 inst=Clarinet src=label
+     staff_idx=12 slot=4 inst=Bassoon src=label
+     staff_idx=13 slot=6 inst=Horn src=label
+     staff_idx=14 slot=7 inst=Trumpet src=label
+     staff_idx=15 slot=12 inst=Violin src=label
+     staff_idx=16 slot=13 inst=Violin src=label
+     staff_idx=17 slot=14 inst=Viola src=label
+     staff_idx=18 slot=15 inst=Cello src=label
+     staff_idx=19 slot=16 inst=Bass voice src=label
+  p9.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=15 inst=Cello src=label
+     staff_idx=11 slot=16 inst=Bass voice src=label
+  p9.s1
+     staff_idx=12 slot=1 inst=Flute src=label
+     staff_idx=13 slot=2 inst=Oboe src=label
+     staff_idx=14 slot=3 inst=Clarinet src=label
+     staff_idx=15 slot=4 inst=Bassoon src=label
+     staff_idx=16 slot=7 inst=Trumpet src=label
+     staff_idx=17 slot=8 inst=Timpani src=label
+     staff_idx=18 slot=12 inst=Violin src=label
+     staff_idx=19 slot=13 inst=Violin src=label
+     staff_idx=20 slot=14 inst=Viola src=label
+     staff_idx=21 slot=16 inst=Bass voice src=label
+  p10.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p10.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=6 inst=Horn src=label
+     staff_idx=16 slot=7 inst=Trumpet src=label
+     staff_idx=17 slot=8 inst=Timpani src=label
+     staff_idx=18 slot=12 inst=Violin src=label
+     staff_idx=19 slot=13 inst=Violin src=label
+     staff_idx=20 slot=14 inst=Viola src=label
+     staff_idx=21 slot=16 inst=Bass voice src=label
+  p11.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=4 inst=Bassoon src=label
+     staff_idx=3 slot=6 inst=Horn src=label
+     staff_idx=4 slot=8 inst=Timpani src=label
+     staff_idx=5 slot=12 inst=Violin src=label
+     staff_idx=6 slot=13 inst=Violin src=label
+     staff_idx=7 slot=14 inst=Viola src=label
+     staff_idx=8 slot=16 inst=Bass voice src=label
+  p11.s1
+     staff_idx=9 slot=1 inst=Flute src=label
+     staff_idx=10 slot=2 inst=Oboe src=label
+     staff_idx=11 slot=3 inst=Clarinet src=label
+     staff_idx=12 slot=4 inst=Bassoon src=label
+     staff_idx=13 slot=6 inst=Horn src=label
+     staff_idx=14 slot=8 inst=Timpani src=label
+     staff_idx=15 slot=12 inst=Violin src=label
+     staff_idx=16 slot=13 inst=Violin src=label
+     staff_idx=17 slot=14 inst=Viola src=label
+     staff_idx=18 slot=15 inst=Cello src=label
+     staff_idx=19 slot=16 inst=Bass voice src=label
+  p12.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=15 inst=Cello src=label
+     staff_idx=11 slot=16 inst=Bass voice src=label
+  p12.s1
+     staff_idx=12 slot=1 inst=Flute src=label
+     staff_idx=13 slot=2 inst=Oboe src=label
+     staff_idx=14 slot=3 inst=Clarinet src=label
+     staff_idx=15 slot=4 inst=Bassoon src=label
+     staff_idx=16 slot=6 inst=Horn src=label
+     staff_idx=17 slot=7 inst=Trumpet src=label
+     staff_idx=18 slot=8 inst=Timpani src=label
+     staff_idx=19 slot=9 inst=Trombone src=label
+     staff_idx=20 slot=10 inst=Trombone src=label
+     staff_idx=21 slot=11 inst=Trombone src=label
+     staff_idx=22 slot=16 inst=Bass voice src=label
+  p13.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p13.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=6 inst=Horn src=label
+     staff_idx=16 slot=7 inst=Trumpet src=label
+     staff_idx=17 slot=8 inst=Timpani src=label
+     staff_idx=18 slot=12 inst=Violin src=label
+     staff_idx=19 slot=13 inst=Violin src=label
+     staff_idx=20 slot=14 inst=Viola src=label
+     staff_idx=21 slot=16 inst=Bass voice src=label
+  p14.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=15 inst=Cello src=label
+     staff_idx=11 slot=16 inst=Bass voice src=label
+  p14.s1
+     staff_idx=12 slot=1 inst=Flute src=label
+     staff_idx=13 slot=2 inst=Oboe src=label
+     staff_idx=14 slot=3 inst=Clarinet src=label
+     staff_idx=15 slot=4 inst=Bassoon src=label
+     staff_idx=16 slot=6 inst=Horn src=label
+     staff_idx=17 slot=7 inst=Trumpet src=label
+     staff_idx=18 slot=8 inst=Timpani src=label
+     staff_idx=19 slot=12 inst=Violin src=label
+     staff_idx=20 slot=13 inst=Violin src=label
+     staff_idx=21 slot=14 inst=Viola src=label
+     staff_idx=22 slot=16 inst=Bass voice src=label
+  p15.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p15.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=6 inst=Horn src=label
+     staff_idx=16 slot=7 inst=Trumpet src=label
+     staff_idx=17 slot=8 inst=Timpani src=label
+     staff_idx=18 slot=12 inst=Violin src=label
+     staff_idx=19 slot=13 inst=Violin src=label
+     staff_idx=20 slot=14 inst=Viola src=label
+     staff_idx=21 slot=16 inst=Bass voice src=label
+  p16.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=5 inst=Contrabassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p16.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=6 inst=Horn src=label
+     staff_idx=16 slot=7 inst=Trumpet src=label
+     staff_idx=17 slot=8 inst=Timpani src=label
+     staff_idx=18 slot=12 inst=Violin src=label
+     staff_idx=19 slot=13 inst=Violin src=label
+     staff_idx=20 slot=14 inst=Viola src=label
+     staff_idx=21 slot=16 inst=Bass voice src=label
+  p17.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=15 inst=Cello src=label
+     staff_idx=11 slot=16 inst=Bass voice src=label
+  p17.s1
+     staff_idx=12 slot=1 inst=Flute src=label
+     staff_idx=13 slot=2 inst=Oboe src=label
+     staff_idx=14 slot=3 inst=Clarinet src=label
+     staff_idx=15 slot=4 inst=Bassoon src=label
+  p17.s2
+     staff_idx=16 slot=0 inst=Piccolo src=label
+     staff_idx=17 slot=3 inst=Clarinet src=label
+     staff_idx=18 slot=4 inst=Bassoon src=label
+     staff_idx=19 slot=5 inst=Contrabassoon src=label
+  p18.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p18.s1
+     staff_idx=11 slot=2 inst=Oboe src=label
+     staff_idx=12 slot=6 inst=Horn src=label
+     staff_idx=13 slot=7 inst=Trumpet src=label
+     staff_idx=14 slot=8 inst=Timpani src=label
+     staff_idx=15 slot=9 inst=Trombone src=label
+     staff_idx=16 slot=10 inst=Trombone src=label
+     staff_idx=17 slot=11 inst=Trombone src=label
+     staff_idx=18 slot=16 inst=Bass voice src=label
+  p19.s0
+     staff_idx=0 slot=2 inst=Oboe src=label
+     staff_idx=1 slot=3 inst=Clarinet src=label
+     staff_idx=2 slot=4 inst=Bassoon src=label
+     staff_idx=3 slot=6 inst=Horn src=label
+     staff_idx=4 slot=7 inst=Trumpet src=label
+     staff_idx=5 slot=8 inst=Timpani src=label
+     staff_idx=6 slot=12 inst=Violin src=label
+     staff_idx=7 slot=13 inst=Violin src=label
+     staff_idx=8 slot=14 inst=Viola src=label
+     staff_idx=9 slot=15 inst=Cello src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p19.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=7 inst=Trumpet src=label
+     staff_idx=16 slot=8 inst=Timpani src=label
+     staff_idx=17 slot=9 inst=Trombone src=label
+     staff_idx=18 slot=10 inst=Trombone src=label
+     staff_idx=19 slot=11 inst=Trombone src=label
+  p20.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=8 inst=Timpani src=label
+     staff_idx=5 slot=9 inst=Trombone src=label
+     staff_idx=6 slot=10 inst=Trombone src=label
+     staff_idx=7 slot=11 inst=Trombone src=label
+  p20.s1
+     staff_idx=8 slot=1 inst=Flute src=label
+     staff_idx=9 slot=2 inst=Oboe src=label
+     staff_idx=10 slot=3 inst=Clarinet src=label
+     staff_idx=11 slot=4 inst=Bassoon src=label
+     staff_idx=12 slot=8 inst=Timpani src=label
+     staff_idx=13 slot=9 inst=Trombone src=label
+     staff_idx=14 slot=10 inst=Trombone src=label
+     staff_idx=15 slot=11 inst=Trombone src=label
+  p21.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p21.s1
+     staff_idx=11 slot=2 inst=Oboe src=label
+     staff_idx=12 slot=4 inst=Bassoon src=label
+     staff_idx=13 slot=6 inst=Horn src=label
+     staff_idx=14 slot=7 inst=Trumpet src=label
+     staff_idx=15 slot=8 inst=Timpani src=label
+     staff_idx=16 slot=12 inst=Violin src=label
+     staff_idx=17 slot=13 inst=Violin src=label
+     staff_idx=18 slot=14 inst=Viola src=label
+     staff_idx=19 slot=16 inst=Bass voice src=label
+  p22.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=7 inst=Trumpet src=label
+     staff_idx=5 slot=8 inst=Timpani src=label
+     staff_idx=6 slot=9 inst=Trombone src=label
+     staff_idx=7 slot=10 inst=Trombone src=label
+     staff_idx=8 slot=11 inst=Trombone src=label
+  p22.s1
+     staff_idx=9 slot=1 inst=Flute src=label
+     staff_idx=10 slot=2 inst=Oboe src=label
+     staff_idx=11 slot=4 inst=Bassoon src=label
+     staff_idx=12 slot=5 inst=Contrabassoon src=label
+     staff_idx=13 slot=9 inst=Trombone src=label
+     staff_idx=14 slot=11 inst=Trombone src=label
+     staff_idx=15 slot=14 inst=Viola src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p23.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=7 inst=Trumpet src=label
+     staff_idx=5 slot=8 inst=Timpani src=label
+     staff_idx=6 slot=9 inst=Trombone src=label
+     staff_idx=7 slot=10 inst=Trombone src=label
+     staff_idx=8 slot=11 inst=Trombone src=label
+  p23.s1
+     staff_idx=9 slot=1 inst=Flute src=label
+     staff_idx=10 slot=2 inst=Oboe src=label
+     staff_idx=11 slot=3 inst=Clarinet src=label
+     staff_idx=12 slot=4 inst=Bassoon src=label
+     staff_idx=13 slot=6 inst=Horn src=label
+     staff_idx=14 slot=7 inst=Trumpet src=label
+     staff_idx=15 slot=8 inst=Timpani src=label
+     staff_idx=16 slot=9 inst=Trombone src=label
+     staff_idx=17 slot=10 inst=Trombone src=label
+     staff_idx=18 slot=11 inst=Trombone src=label
+     staff_idx=19 slot=15 inst=Cello src=label
+     staff_idx=20 slot=16 inst=Bass voice src=label
+  p24.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=11 inst=Trombone src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p24.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=6 inst=Horn src=label
+     staff_idx=16 slot=7 inst=Trumpet src=label
+     staff_idx=17 slot=8 inst=Timpani src=label
+     staff_idx=18 slot=12 inst=Violin src=label
+     staff_idx=19 slot=13 inst=Violin src=label
+     staff_idx=20 slot=14 inst=Viola src=label
+     staff_idx=21 slot=16 inst=Bass voice src=label
+  p25.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=8 inst=Timpani src=label
+     staff_idx=5 slot=9 inst=Trombone src=label
+     staff_idx=6 slot=10 inst=Trombone src=label
+     staff_idx=7 slot=11 inst=Trombone src=label
+  p25.s1
+     staff_idx=8 slot=1 inst=Flute src=label
+     staff_idx=9 slot=2 inst=Oboe src=label
+     staff_idx=10 slot=3 inst=Clarinet src=label
+     staff_idx=11 slot=5 inst=Contrabassoon src=label
+     staff_idx=12 slot=6 inst=Horn src=label
+     staff_idx=13 slot=7 inst=Trumpet src=label
+     staff_idx=14 slot=8 inst=Timpani src=label
+     staff_idx=15 slot=12 inst=Violin src=label
+     staff_idx=16 slot=13 inst=Violin src=label
+     staff_idx=17 slot=14 inst=Viola src=label
+     staff_idx=18 slot=16 inst=Bass voice src=label
+  p26.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p26.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=3 inst=Clarinet src=label
+     staff_idx=13 slot=4 inst=Bassoon src=label
+     staff_idx=14 slot=8 inst=Timpani src=label
+     staff_idx=15 slot=9 inst=Trombone src=label
+     staff_idx=16 slot=10 inst=Trombone src=label
+     staff_idx=17 slot=11 inst=Trombone src=label
+  p27.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=5 inst=Contrabassoon src=label
+     staff_idx=5 slot=11 inst=Trombone src=label
+     staff_idx=6 slot=14 inst=Viola src=label
+     staff_idx=7 slot=16 inst=Bass voice src=label
+  p27.s1
+     staff_idx=8 slot=1 inst=Flute src=label
+     staff_idx=9 slot=2 inst=Oboe src=label
+     staff_idx=10 slot=3 inst=Clarinet src=label
+     staff_idx=11 slot=4 inst=Bassoon src=label
+     staff_idx=12 slot=5 inst=Contrabassoon src=label
+     staff_idx=13 slot=11 inst=Trombone src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=16 inst=Bass voice src=label
+  p28.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=5 inst=Contrabassoon src=label
+     staff_idx=4 slot=8 inst=Timpani src=label
+     staff_idx=5 slot=9 inst=Trombone src=label
+     staff_idx=6 slot=10 inst=Trombone src=label
+     staff_idx=7 slot=11 inst=Trombone src=label
+  p28.s1
+     staff_idx=8 slot=1 inst=Flute src=label
+     staff_idx=9 slot=2 inst=Oboe src=label
+     staff_idx=10 slot=3 inst=Clarinet src=label
+     staff_idx=11 slot=4 inst=Bassoon src=label
+     staff_idx=12 slot=6 inst=Horn src=label
+     staff_idx=13 slot=7 inst=Trumpet src=label
+     staff_idx=14 slot=8 inst=Timpani src=label
+     staff_idx=15 slot=12 inst=Violin src=label
+     staff_idx=16 slot=13 inst=Violin src=label
+     staff_idx=17 slot=14 inst=Viola src=label
+     staff_idx=18 slot=15 inst=Cello src=label
+     staff_idx=19 slot=16 inst=Bass voice src=label
+  p29.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p29.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=8 inst=Timpani src=label
+     staff_idx=16 slot=9 inst=Trombone src=label
+     staff_idx=17 slot=10 inst=Trombone src=label
+     staff_idx=18 slot=11 inst=Trombone src=label
+  p30.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=15 inst=Cello src=label
+     staff_idx=11 slot=16 inst=Bass voice src=label
+  p30.s1
+     staff_idx=12 slot=1 inst=Flute src=label
+     staff_idx=13 slot=2 inst=Oboe src=label
+     staff_idx=14 slot=3 inst=Clarinet src=label
+     staff_idx=15 slot=4 inst=Bassoon src=label
+     staff_idx=16 slot=8 inst=Timpani src=label
+     staff_idx=17 slot=9 inst=Trombone src=label
+     staff_idx=18 slot=10 inst=Trombone src=label
+     staff_idx=19 slot=11 inst=Trombone src=label
+  p31.s0
+     staff_idx=0 slot=3 inst=Clarinet src=label
+     staff_idx=1 slot=4 inst=Bassoon src=label
+     staff_idx=2 slot=6 inst=Horn src=label
+     staff_idx=3 slot=8 inst=Timpani src=label
+     staff_idx=4 slot=9 inst=Trombone src=label
+     staff_idx=5 slot=10 inst=Trombone src=label
+     staff_idx=6 slot=11 inst=Trombone src=label
+  p31.s1
+     staff_idx=7 slot=1 inst=Flute src=label
+     staff_idx=8 slot=2 inst=Oboe src=label
+     staff_idx=9 slot=3 inst=Clarinet src=label
+     staff_idx=10 slot=4 inst=Bassoon src=label
+     staff_idx=11 slot=6 inst=Horn src=label
+     staff_idx=12 slot=7 inst=Trumpet src=label
+     staff_idx=13 slot=9 inst=Trombone src=label
+     staff_idx=14 slot=12 inst=Violin src=label
+     staff_idx=15 slot=13 inst=Violin src=label
+     staff_idx=16 slot=14 inst=Viola src=label
+     staff_idx=17 slot=15 inst=Cello src=label
+     staff_idx=18 slot=16 inst=Bass voice src=label
+  p32.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=15 inst=Cello src=label
+  p32.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=6 inst=Horn src=label
+  p32.s2
+     staff_idx=16 slot=0 inst=Piccolo src=label
+     staff_idx=17 slot=3 inst=Clarinet src=label
+     staff_idx=18 slot=4 inst=Bassoon src=label
+     staff_idx=19 slot=5 inst=Contrabassoon src=label
+  p33.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=12 inst=Violin src=label
+     staff_idx=6 slot=13 inst=Violin src=label
+     staff_idx=7 slot=14 inst=Viola src=label
+     staff_idx=8 slot=16 inst=Bass voice src=label
+  p33.s1
+     staff_idx=9 slot=1 inst=Flute src=label
+     staff_idx=10 slot=2 inst=Oboe src=label
+     staff_idx=11 slot=3 inst=Clarinet src=label
+     staff_idx=12 slot=4 inst=Bassoon src=label
+     staff_idx=13 slot=6 inst=Horn src=label
+     staff_idx=14 slot=12 inst=Violin src=label
+     staff_idx=15 slot=13 inst=Violin src=label
+     staff_idx=16 slot=14 inst=Viola src=label
+     staff_idx=17 slot=16 inst=Bass voice src=label
+  p34.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p34.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=6 inst=Horn src=label
+     staff_idx=16 slot=7 inst=Trumpet src=label
+     staff_idx=17 slot=8 inst=Timpani src=label
+     staff_idx=18 slot=12 inst=Violin src=label
+     staff_idx=19 slot=13 inst=Violin src=label
+     staff_idx=20 slot=14 inst=Viola src=label
+     staff_idx=21 slot=16 inst=Bass voice src=label
+  p35.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p35.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=6 inst=Horn src=label
+     staff_idx=16 slot=8 inst=Timpani src=label
+     staff_idx=17 slot=12 inst=Violin src=label
+     staff_idx=18 slot=13 inst=Violin src=label
+     staff_idx=19 slot=14 inst=Viola src=label
+     staff_idx=20 slot=16 inst=Bass voice src=label
+  p36.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p36.s1
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=4 inst=Bassoon src=label
+     staff_idx=14 slot=7 inst=Trumpet src=label
+     staff_idx=15 slot=8 inst=Timpani src=label
+     staff_idx=16 slot=12 inst=Violin src=label
+     staff_idx=17 slot=13 inst=Violin src=label
+     staff_idx=18 slot=14 inst=Viola src=label
+     staff_idx=19 slot=16 inst=Bass voice src=label
+  p37.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=4 inst=Bassoon src=label
+     staff_idx=3 slot=6 inst=Horn src=label
+     staff_idx=4 slot=7 inst=Trumpet src=label
+     staff_idx=5 slot=8 inst=Timpani src=label
+     staff_idx=6 slot=9 inst=Trombone src=label
+     staff_idx=7 slot=10 inst=Trombone src=label
+     staff_idx=8 slot=11 inst=Trombone src=label
+     staff_idx=9 slot=16 inst=Bass voice src=label
+  p37.s1
+     staff_idx=10 slot=0 inst=Piccolo src=label
+     staff_idx=11 slot=6 inst=Horn src=label
+     staff_idx=12 slot=8 inst=Timpani src=label
+     staff_idx=13 slot=10 inst=Trombone src=label
+     staff_idx=14 slot=11 inst=Trombone src=label
+  p37.s2
+     staff_idx=15 slot=0 inst=Piccolo src=label
+     staff_idx=16 slot=2 inst=Oboe src=label
+     staff_idx=17 slot=5 inst=Contrabassoon src=label
+     staff_idx=18 slot=7 inst=Trumpet src=label
+     staff_idx=19 slot=12 inst=Violin src=label
+     staff_idx=20 slot=13 inst=Violin src=label
+     staff_idx=21 slot=14 inst=Viola src=label
+     staff_idx=22 slot=16 inst=Bass voice src=label
+  p38.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=9 inst=Trombone src=label
+     staff_idx=8 slot=10 inst=Trombone src=label
+     staff_idx=9 slot=11 inst=Trombone src=label
+     staff_idx=10 slot=15 inst=Cello src=label
+     staff_idx=11 slot=16 inst=Bass voice src=label
+  p38.s1
+     staff_idx=12 slot=1 inst=Flute src=label
+     staff_idx=13 slot=2 inst=Oboe src=label
+     staff_idx=14 slot=3 inst=Clarinet src=label
+     staff_idx=15 slot=4 inst=Bassoon src=label
+     staff_idx=16 slot=6 inst=Horn src=label
+     staff_idx=17 slot=7 inst=Trumpet src=label
+     staff_idx=18 slot=8 inst=Timpani src=label
+     staff_idx=19 slot=12 inst=Violin src=label
+     staff_idx=20 slot=13 inst=Violin src=label
+     staff_idx=21 slot=14 inst=Viola src=label
+     staff_idx=22 slot=15 inst=Cello src=label
+     staff_idx=23 slot=16 inst=Bass voice src=label
+  p39.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=3 inst=Clarinet src=label
+     staff_idx=2 slot=4 inst=Bassoon src=label
+     staff_idx=3 slot=5 inst=Contrabassoon src=label
+  p39.s1
+     staff_idx=4 slot=2 inst=Oboe src=label
+     staff_idx=5 slot=3 inst=Clarinet src=label
+     staff_idx=6 slot=4 inst=Bassoon src=label
+     staff_idx=7 slot=8 inst=Timpani src=label
+     staff_idx=8 slot=9 inst=Trombone src=label
+     staff_idx=9 slot=10 inst=Trombone src=label
+     staff_idx=10 slot=11 inst=Trombone src=label
+  p39.s2
+     staff_idx=11 slot=1 inst=Flute src=label
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=3 inst=Clarinet src=label
+     staff_idx=14 slot=4 inst=Bassoon src=label
+     staff_idx=15 slot=8 inst=Timpani src=label
+     staff_idx=16 slot=9 inst=Trombone src=label
+     staff_idx=17 slot=10 inst=Trombone src=label
+     staff_idx=18 slot=11 inst=Trombone src=label
+  p40.s0
+     staff_idx=0 slot=3 inst=Clarinet src=label
+     staff_idx=1 slot=4 inst=Bassoon src=label
+     staff_idx=2 slot=6 inst=Horn src=label
+     staff_idx=3 slot=12 inst=Violin src=label
+     staff_idx=4 slot=13 inst=Violin src=label
+     staff_idx=5 slot=14 inst=Viola src=label
+     staff_idx=6 slot=16 inst=Bass voice src=label
+  p40.s1
+     staff_idx=7 slot=3 inst=Clarinet src=label
+     staff_idx=8 slot=4 inst=Bassoon src=label
+     staff_idx=9 slot=6 inst=Horn src=label
+     staff_idx=10 slot=12 inst=Violin src=label
+     staff_idx=11 slot=13 inst=Violin src=label
+     staff_idx=12 slot=14 inst=Viola src=label
+     staff_idx=13 slot=16 inst=Bass voice src=label
+  p40.s2
+     staff_idx=14 slot=2 inst=Oboe src=label
+     staff_idx=15 slot=3 inst=Clarinet src=label
+     staff_idx=16 slot=4 inst=Bassoon src=label
+     staff_idx=17 slot=8 inst=Timpani src=label
+     staff_idx=18 slot=9 inst=Trombone src=label
+     staff_idx=19 slot=10 inst=Trombone src=label
+     staff_idx=20 slot=11 inst=Trombone src=label
+  p41.s0
+     staff_idx=0 slot=4 inst=Bassoon src=label
+     staff_idx=1 slot=6 inst=Horn src=label
+     staff_idx=2 slot=8 inst=Timpani src=label
+     staff_idx=3 slot=10 inst=Trombone src=label
+     staff_idx=4 slot=11 inst=Trombone src=label
+  p41.s1
+     staff_idx=5 slot=2 inst=Oboe src=label
+     staff_idx=6 slot=4 inst=Bassoon src=label
+     staff_idx=7 slot=6 inst=Horn src=label
+     staff_idx=8 slot=12 inst=Violin src=label
+     staff_idx=9 slot=13 inst=Violin src=label
+     staff_idx=10 slot=14 inst=Viola src=label
+     staff_idx=11 slot=16 inst=Bass voice src=label
+  p41.s2
+     staff_idx=12 slot=2 inst=Oboe src=label
+     staff_idx=13 slot=4 inst=Bassoon src=label
+     staff_idx=14 slot=6 inst=Horn src=label
+     staff_idx=15 slot=12 inst=Violin src=label
+     staff_idx=16 slot=13 inst=Violin src=label
+     staff_idx=17 slot=14 inst=Viola src=label
+     staff_idx=18 slot=16 inst=Bass voice src=label
+  p42.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=6 inst=Horn src=label
+     staff_idx=2 slot=8 inst=Timpani src=label
+     staff_idx=3 slot=10 inst=Trombone src=label
+     staff_idx=4 slot=11 inst=Trombone src=label
+  p42.s1
+     staff_idx=5 slot=4 inst=Bassoon src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=16 inst=Bass voice src=label
+  p42.s2
+     staff_idx=11 slot=8 inst=Timpani src=label
+     staff_idx=12 slot=9 inst=Trombone src=label
+     staff_idx=13 slot=10 inst=Trombone src=label
+     staff_idx=14 slot=11 inst=Trombone src=label
+     staff_idx=15 slot=16 inst=Bass voice src=label
+  p43.s0
+     staff_idx=0 slot=8 inst=Timpani src=label
+     staff_idx=1 slot=9 inst=Trombone src=label
+     staff_idx=2 slot=10 inst=Trombone src=label
+     staff_idx=3 slot=11 inst=Trombone src=label
+     staff_idx=4 slot=16 inst=Bass voice src=label
+  p43.s1
+     staff_idx=5 slot=1 inst=Flute src=label
+     staff_idx=6 slot=2 inst=Oboe src=label
+     staff_idx=7 slot=4 inst=Bassoon src=label
+     staff_idx=8 slot=6 inst=Horn src=label
+     staff_idx=9 slot=7 inst=Trumpet src=label
+     staff_idx=10 slot=8 inst=Timpani src=label
+     staff_idx=11 slot=12 inst=Violin src=label
+     staff_idx=12 slot=13 inst=Violin src=label
+     staff_idx=13 slot=14 inst=Viola src=label
+     staff_idx=14 slot=16 inst=Bass voice src=label
+  p44.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p45.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p46.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p47.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p48.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p49.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p50.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p51.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p52.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p53.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p54.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p55.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p56.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=5 inst=Contrabassoon src=label
+     staff_idx=5 slot=6 inst=Horn src=label
+     staff_idx=6 slot=12 inst=Violin src=label
+     staff_idx=7 slot=13 inst=Violin src=label
+     staff_idx=8 slot=14 inst=Viola src=label
+     staff_idx=9 slot=16 inst=Bass voice src=label
+  p56.s1
+     staff_idx=10 slot=1 inst=Flute src=label
+     staff_idx=11 slot=2 inst=Oboe src=label
+     staff_idx=12 slot=3 inst=Clarinet src=label
+     staff_idx=13 slot=4 inst=Bassoon src=label
+     staff_idx=14 slot=6 inst=Horn src=label
+     staff_idx=15 slot=12 inst=Violin src=label
+     staff_idx=16 slot=13 inst=Violin src=label
+     staff_idx=17 slot=14 inst=Viola src=label
+     staff_idx=18 slot=16 inst=Bass voice src=label
+  p57.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=5 inst=Contrabassoon src=label
+     staff_idx=5 slot=8 inst=Timpani src=label
+     staff_idx=6 slot=9 inst=Trombone src=label
+     staff_idx=7 slot=10 inst=Trombone src=label
+     staff_idx=8 slot=11 inst=Trombone src=label
+  p57.s1
+     staff_idx=9 slot=1 inst=Flute src=label
+     staff_idx=10 slot=2 inst=Oboe src=label
+     staff_idx=11 slot=3 inst=Clarinet src=label
+     staff_idx=12 slot=4 inst=Bassoon src=label
+     staff_idx=13 slot=5 inst=Contrabassoon src=label
+     staff_idx=14 slot=6 inst=Horn src=label
+     staff_idx=15 slot=7 inst=Trumpet src=label
+     staff_idx=16 slot=8 inst=Timpani src=label
+     staff_idx=17 slot=9 inst=Trombone src=label
+     staff_idx=18 slot=10 inst=Trombone src=label
+     staff_idx=19 slot=11 inst=Trombone src=label
+     staff_idx=20 slot=13 inst=Violin src=label
+     staff_idx=21 slot=14 inst=Viola src=label
+     staff_idx=22 slot=15 inst=Cello src=label
+     staff_idx=23 slot=16 inst=Bass voice src=label
+  p58.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p59.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p60.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p61.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p62.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p63.s0
+     staff_idx=0 slot=2 inst=Oboe src=label
+     staff_idx=1 slot=3 inst=Clarinet src=label
+     staff_idx=2 slot=6 inst=Horn src=label
+     staff_idx=3 slot=9 inst=Trombone src=label
+     staff_idx=4 slot=10 inst=Trombone src=label
+     staff_idx=5 slot=11 inst=Trombone src=label
+  p63.s1
+     staff_idx=6 slot=2 inst=Oboe src=label
+     staff_idx=7 slot=3 inst=Clarinet src=label
+     staff_idx=8 slot=6 inst=Horn src=label
+     staff_idx=9 slot=12 inst=Violin src=label
+     staff_idx=10 slot=13 inst=Violin src=label
+     staff_idx=11 slot=14 inst=Viola src=label
+     staff_idx=12 slot=16 inst=Bass voice src=label
+  p63.s2
+     staff_idx=13 slot=1 inst=Flute src=label
+     staff_idx=14 slot=2 inst=Oboe src=label
+     staff_idx=15 slot=3 inst=Clarinet src=label
+     staff_idx=16 slot=4 inst=Bassoon src=label
+     staff_idx=17 slot=6 inst=Horn src=label
+     staff_idx=18 slot=8 inst=Timpani src=label
+     staff_idx=19 slot=12 inst=Violin src=label
+     staff_idx=20 slot=13 inst=Violin src=label
+     staff_idx=21 slot=14 inst=Viola src=label
+     staff_idx=22 slot=16 inst=Bass voice src=label
+  p64.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p65.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=5 inst=Contrabassoon src=label
+     staff_idx=5 slot=6 inst=Horn src=label
+     staff_idx=6 slot=7 inst=Trumpet src=label
+     staff_idx=7 slot=8 inst=Timpani src=label
+     staff_idx=8 slot=9 inst=Trombone src=label
+     staff_idx=9 slot=10 inst=Trombone src=label
+     staff_idx=10 slot=11 inst=Trombone src=label
+     staff_idx=11 slot=12 inst=Violin src=label
+     staff_idx=12 slot=13 inst=Violin src=label
+     staff_idx=13 slot=14 inst=Viola src=label
+     staff_idx=14 slot=15 inst=Cello src=label
+     staff_idx=15 slot=16 inst=Bass voice src=label
+  p66.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p67.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p68.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p69.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p70.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p71.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p72.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p73.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p74.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p75.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p76.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p77.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p78.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p79.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p80.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p81.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p82.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p83.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p84.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p85.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label
+  p86.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=13 inst=Violin src=label
+     staff_idx=13 slot=14 inst=Viola src=label
+     staff_idx=14 slot=15 inst=Cello src=label
+     staff_idx=15 slot=16 inst=Bass voice src=label
+  p87.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label

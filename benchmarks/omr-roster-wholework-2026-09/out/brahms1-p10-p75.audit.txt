@@ -1,0 +1,23 @@
+=== brahms1-p10-p75.json
+INPUT ASSERTION: pages=2 systems=3 staff-records=43
+roster: page 10 system 0 12/13 pages_searched=[10] pages_opened=[]
+
+## A. self-contradiction (staff carries a label that disagrees)
+  checked 40 labelled staves, 0 disagree
+
+## B. coverage and provenance by page
+  pg  staves  label  roster  order  ambig  none    cov
+  10      27     21       6      0      0     0  1.000
+  75      16     13       3      0      0     0  1.000
+
+## C. per-system staff counts (an instrumentation change shows here)
+  10.0:13 10.1:14 75.0:16
+
+## D. assigned instrument sequence per page (top to bottom)
+  p10.s0 (13): Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Horn | Trumpet | Violin | Violin | Viola | Cello | Contrabass
+        labels: Fl. | Ob. | Klar. (B) | Fag. | K-Fag. | (C) Hr. | (Es) | Trpt. (C) | 1.Viol. | 2.Viol. | Br. | Vcl. | K-B.
+  p10.s1 (14): Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Contrabass
+        labels: Fl. | Ob. | Klar. (B) | Fag. | K-Fag. | (C) Hr. | (Es) | Trpt. (C) | Pk. | 1.Viol. | 2.Viol. | Br. | Vcl. | K-B.
+  p75.s0 (16): Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Horn | Trumpet | Trombone | Trombone | Timpani | Violin | Violin | Viola | Cello | Contrabass
+        labels: Fl. | Ob. | Klar. (B) | Fag. | K-Fag. | (C) Hr. | (Es) | Trpt. (C) | Pos. | Pos. ( | Pk. | 1.Viol. | 2.Viol. | Br. | Vcl. | K-B.
+

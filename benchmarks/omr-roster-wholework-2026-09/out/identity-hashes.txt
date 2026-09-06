@@ -1,0 +1,4 @@
+5a7c4157a220de6e  n=   38  benchmarks/omr-roster-wholework-2026-09/out/beet5-p23p44-ON.json
+5a7c4157a220de6e  n=   38  benchmarks/omr-roster-wholework-2026-09/out/beet5-p23p44-OFF.json
+d369133c4c4d6228  n=   34  benchmarks/omr-roster-wholework-2026-09/out/timing-beet5-3p.json
+daf8def9949741d4  n=   34  benchmarks/omr-roster-wholework-2026-09/out/timing-beet5-3p-ROSTEROFF.json

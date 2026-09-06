@@ -1,0 +1,18 @@
+=== beet5-pages0-4-webapp.json   work=beet5
+INPUT ASSERTION: pages=5 systems-in-run=7 full-systems-scored=1 staff-records-scored=12
+roster from page 1 sys 0, 11/12 named, opened=[]
+reference slots: 11
+
+CORRECT 4/12 = 0.3333   unnamed 1   wrong 7
+   size  12:    4/  12 = 0.3333
+
+confusions (truth -> emitted), most common first:
+      1  Flute            -> (unnamed)
+      1  Oboe             -> Flute
+      1  Clarinet         -> Oboe
+      1  Bassoon          -> Clarinet
+      1  Horn             -> Bassoon
+      1  Timpani          -> Trumpet
+      1  Violin           -> Timpani
+      1  Contrabass       -> Bass voice
+

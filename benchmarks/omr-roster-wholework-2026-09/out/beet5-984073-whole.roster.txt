@@ -1,0 +1,183 @@
+### beet5-984073-whole.json
+pages transcribed: 88
+contextual reason: None
+
+## 1. ACQUISITION
+  page_index      : 1
+  system_index    : 0
+  n_staves        : 12
+  named           : 11  coverage=0.9167
+  pages_searched  : [0, 1]
+  pages_opened    : []
+  label tiers     : {'text_layer': 0, 'surya': 0, 'tesseract': 0, 'vision': 0, 'human': 0}
+      0  Flute                  <- 'Flauti.' (high)
+      2  Clarinet               <- 'Clarinetti in B.' (high)
+      3  Bassoon                <- 'Fagotti.' (high)
+      4  Horn                   <- 'Corni in Es.' (medium)
+      5  Trumpet                <- 'Trombe in C.' (high)
+      6  Timpani                <- 'Timpani in C.G.' (high)
+      7  Violin                 <- 'Violino I.' (high)
+      8  Violin                 <- 'Violino II.' (high)
+      9  Viola                  <- 'Viola.' (high)
+     10  Cello                  <- 'Violoncello.' (high)
+     11  Bass voice             <- 'Basso.' (high)
+
+## 2. SLOT IDENTITY (document-level)
+  reference slots: 17
+  ambiguous_labels_resolved: 0
+  available: True
+  clefs_applied: 96
+  clefs_filled_from_slot: 1
+  clefs_from_dossier: 0
+  instruments_from_roster: 0
+  instruments_from_score_order: 0
+  labelled_staves: 962
+  layout: late-romantic-large
+  layout_named_slots: 15
+  noteheads_restated: 2878
+  reason: None
+  roster_slots_offered: 11
+
+## 3. PER-PAGE STAFF PROFILE + IDENTITY PROVENANCE
+  pg  sys  staves  named  label  roster  order  none  instruments
+   1    0      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Cello,Bass voice
+   2    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+   2    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+   3    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+   3    1       8      8      8       0      0     0  Flute,Clarinet,Bassoon,Horn,Violin,Violin,Viola,Bass voice
+   4    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Violin,Violin,Viola,Cello,Bass voice
+   4    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+   5    0       9      9      9       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Violin,Violin,Viola,Bass voice
+   5    1       7      7      7       0      0     0  Clarinet,Bassoon,Horn,Violin,Violin,Viola,Bass voice
+   6    0      10     10     10       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Violin,Violin,Viola,Cello,Bass voice
+   6    1      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Cello,Bass voice
+   7    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+   7    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+   8    0       9      9      9       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Violin,Violin,Viola,Bass voice
+   8    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Violin,Violin,Viola,Cello,Bass voice
+   9    0      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Cello,Bass voice
+   9    1      10     10     10       0      0     0  Flute,Oboe,Clarinet,Bassoon,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  10    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  10    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  11    0       9      9      9       0      0     0  Flute,Oboe,Bassoon,Horn,Timpani,Violin,Violin,Viola,Bass voice
+  11    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Timpani,Violin,Violin,Viola,Cello,Bass voice
+  12    0      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Cello,Bass voice
+  12    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Bass voice
+  13    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  13    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  14    0      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Cello,Bass voice
+  14    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  15    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  15    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  16    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Contrabassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  16    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  17    0      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Cello,Bass voice
+  17    1       4      4      4       0      0     0  Flute,Oboe,Clarinet,Bassoon
+  17    2       4      4      4       0      0     0  Piccolo,Clarinet,Bassoon,Contrabassoon
+  18    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  18    1       8      8      8       0      0     0  Oboe,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Bass voice
+  19    0      11     11     11       0      0     0  Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Cello,Bass voice
+  19    1       9      9      9       0      0     0  Flute,Oboe,Clarinet,Bassoon,Trumpet,Timpani,Trombone,Trombone,Trombone
+  20    0       8      8      8       0      0     0  Flute,Oboe,Clarinet,Bassoon,Timpani,Trombone,Trombone,Trombone
+  20    1       8      8      8       0      0     0  Flute,Oboe,Clarinet,Bassoon,Timpani,Trombone,Trombone,Trombone
+  21    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  21    1       9      9      9       0      0     0  Oboe,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  22    0       9      9      9       0      0     0  Flute,Oboe,Clarinet,Bassoon,Trumpet,Timpani,Trombone,Trombone,Trombone
+  22    1       8      8      8       0      0     0  Flute,Oboe,Bassoon,Contrabassoon,Trombone,Trombone,Viola,Bass voice
+  23    0       9      9      9       0      0     0  Flute,Oboe,Clarinet,Bassoon,Trumpet,Timpani,Trombone,Trombone,Trombone
+  23    1      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Cello,Bass voice
+  24    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Trombone,Violin,Viola,Bass voice
+  24    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  25    0       8      8      8       0      0     0  Flute,Oboe,Clarinet,Bassoon,Timpani,Trombone,Trombone,Trombone
+  25    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Contrabassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  26    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  26    1       7      7      7       0      0     0  Flute,Clarinet,Bassoon,Timpani,Trombone,Trombone,Trombone
+  27    0       8      8      8       0      0     0  Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Trombone,Viola,Bass voice
+  27    1       8      8      8       0      0     0  Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Trombone,Viola,Bass voice
+  28    0       8      8      8       0      0     0  Flute,Oboe,Clarinet,Contrabassoon,Timpani,Trombone,Trombone,Trombone
+  28    1      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Cello,Bass voice
+  29    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  29    1       8      8      8       0      0     0  Flute,Oboe,Clarinet,Bassoon,Timpani,Trombone,Trombone,Trombone
+  30    0      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Cello,Bass voice
+  30    1       8      8      8       0      0     0  Flute,Oboe,Clarinet,Bassoon,Timpani,Trombone,Trombone,Trombone
+  31    0       7      7      7       0      0     0  Clarinet,Bassoon,Horn,Timpani,Trombone,Trombone,Trombone
+  31    1      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  32    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Cello
+  32    1       5      5      5       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn
+  32    2       4      4      4       0      0     0  Piccolo,Clarinet,Bassoon,Contrabassoon
+  33    0       9      9      9       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Violin,Violin,Viola,Bass voice
+  33    1       9      9      9       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Violin,Violin,Viola,Bass voice
+  34    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  34    1      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  35    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  35    1      10     10     10       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Timpani,Violin,Violin,Viola,Bass voice
+  36    0      11     11     11       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  36    1       9      9      9       0      0     0  Flute,Oboe,Bassoon,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  37    0      10     10     10       0      0     0  Flute,Oboe,Bassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Bass voice
+  37    1       5      5      5       0      0     0  Piccolo,Horn,Timpani,Trombone,Trombone
+  37    2       8      8      8       0      0     0  Piccolo,Oboe,Contrabassoon,Trumpet,Violin,Violin,Viola,Bass voice
+  38    0      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Cello,Bass voice
+  38    1      12     12     12       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Cello,Bass voice
+  39    0       4      4      4       0      0     0  Piccolo,Clarinet,Bassoon,Contrabassoon
+  39    1       7      7      7       0      0     0  Oboe,Clarinet,Bassoon,Timpani,Trombone,Trombone,Trombone
+  39    2       8      8      8       0      0     0  Flute,Oboe,Clarinet,Bassoon,Timpani,Trombone,Trombone,Trombone
+  40    0       7      7      7       0      0     0  Clarinet,Bassoon,Horn,Violin,Violin,Viola,Bass voice
+  40    1       7      7      7       0      0     0  Clarinet,Bassoon,Horn,Violin,Violin,Viola,Bass voice
+  40    2       7      7      7       0      0     0  Oboe,Clarinet,Bassoon,Timpani,Trombone,Trombone,Trombone
+  41    0       5      5      5       0      0     0  Bassoon,Horn,Timpani,Trombone,Trombone
+  41    1       7      7      7       0      0     0  Oboe,Bassoon,Horn,Violin,Violin,Viola,Bass voice
+  41    2       7      7      7       0      0     0  Oboe,Bassoon,Horn,Violin,Violin,Viola,Bass voice
+  42    0       5      5      5       0      0     0  Piccolo,Horn,Timpani,Trombone,Trombone
+  42    1       6      6      6       0      0     0  Bassoon,Timpani,Violin,Violin,Viola,Bass voice
+  42    2       5      5      5       0      0     0  Timpani,Trombone,Trombone,Trombone,Bass voice
+  43    0       5      5      5       0      0     0  Timpani,Trombone,Trombone,Trombone,Bass voice
+  43    1      10     10     10       0      0     0  Flute,Oboe,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Viola,Bass voice
+  44    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  45    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  46    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  47    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  48    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  49    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  50    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  51    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  52    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  53    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  54    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  55    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  56    0      10     10     10       0      0     0  Piccolo,Flute,Oboe,Bassoon,Contrabassoon,Horn,Violin,Violin,Viola,Bass voice
+  56    1       9      9      9       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Violin,Violin,Viola,Bass voice
+  57    0       9      9      9       0      0     0  Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Timpani,Trombone,Trombone,Trombone
+  57    1      15     15     15       0      0     0  Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Viola,Cello,Bass voice
+  58    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  59    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  60    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  61    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  62    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  63    0       6      6      6       0      0     0  Oboe,Clarinet,Horn,Trombone,Trombone,Trombone
+  63    1       7      7      7       0      0     0  Oboe,Clarinet,Horn,Violin,Violin,Viola,Bass voice
+  63    2      10     10     10       0      0     0  Flute,Oboe,Clarinet,Bassoon,Horn,Timpani,Violin,Violin,Viola,Bass voice
+  64    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  65    0      16     16     16       0      0     0  Piccolo,Flute,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  66    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  67    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  68    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  69    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  70    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  71    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  72    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  73    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  74    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  75    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  76    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  77    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  78    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  79    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  80    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  81    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  82    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  83    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  84    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  85    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+  86    0      16     16     16       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Viola,Cello,Bass voice
+  87    0      17     17     17       0      0     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Timpani,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Bass voice
+

@@ -1,0 +1,46 @@
+### brahms1-p10only.json
+pages transcribed: 1
+contextual reason: None
+
+## 1. ACQUISITION
+  page_index      : 10
+  system_index    : 0
+  n_staves        : 13
+  named           : 12  coverage=0.9231
+  pages_searched  : [10]
+  pages_opened    : []
+  label tiers     : {'text_layer': 0, 'surya': 0, 'tesseract': 0, 'vision': 0, 'human': 0}
+      0  Flute                  <- 'Fl.' (high)
+      1  Oboe                   <- 'Ob.' (high)
+      2  Clarinet               <- 'Klar. (B)' (high)
+      3  Bassoon                <- 'Fag.' (high)
+      4  Contrabassoon          <- 'K-Fag.' (high)
+      5  Horn                   <- '(C) Hr.' (high)
+      7  Trumpet                <- 'Trpt. (C)' (high)
+      8  Violin                 <- '1.Viol.' (high)
+      9  Violin                 <- '2.Viol.' (high)
+     10  Viola                  <- 'Br.' (high)
+     11  Cello                  <- 'Vcl.' (high)
+     12  Contrabass             <- 'K-B.' (high)
+
+## 2. SLOT IDENTITY (document-level)
+  reference slots: 14
+  ambiguous_labels_resolved: 0
+  available: True
+  clefs_applied: 0
+  clefs_filled_from_slot: 0
+  clefs_from_dossier: 0
+  instruments_from_roster: 1
+  instruments_from_score_order: 1
+  labelled_staves: 24
+  layout: late-romantic-large
+  layout_named_slots: 14
+  noteheads_restated: 0
+  reason: None
+  roster_slots_offered: 12
+
+## 3. PER-PAGE STAFF PROFILE + IDENTITY PROVENANCE
+  pg  sys  staves  named  label  roster  order  none  instruments
+  10    0      13     13     11       1      1     0  Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Trumpet,Violin,Violin,Viola,Cello,Contrabass
+  10    1      14     14     12       1      1     0  Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Trumpet,Timpani,Violin,Violin,Viola,Cello,Contrabass
+

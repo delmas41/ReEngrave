@@ -5,3 +5,31 @@ transcribe: beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073
   weights:  auto (scan/engraved routing)
   conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: per-cell
   weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+  page 23: 2 systems, 21 staves, 105 measures, 1529 detections (471/471 pitched, 471/471 durations)
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a2daedd6d0b11d266/benchmarks/omr-roster-wholework-2026-09/out/beet5-p23only.json
+  pages=1  systems=2  staves=21  measures=105  detections=1339
+  noteheads=471  pitched=471  (100% pitch coverage)
+  with_duration=471  (100% rhythm coverage)  rests=122/176
+  runtime: phase1=4.08s  yolo=19.0s  total=67.73s
+  page 23: 105 measures, 0 phase1_warnings, 0 rhythm_sum_warnings
+    key signatures: read on 8/21 staves; the rest report 0 sharps / 0 flats because nothing read them
+       69.26 real        51.87 user        12.91 sys
+          2178056192  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              405852  page reclaims
+                6126  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 109  messages sent
+                 244  messages received
+                   0  signals received
+                5235  voluntary context switches
+              601331  involuntary context switches
+        391131801194  instructions retired
+        161545104591  cycles elapsed
+          2028331008  peak memory footprint
+=== beet5-p23only rc=0 wall=69s 2026-09-06T12:22:10Z

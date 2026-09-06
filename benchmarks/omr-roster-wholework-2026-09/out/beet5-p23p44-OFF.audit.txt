@@ -1,0 +1,28 @@
+=== beet5-p23p44-OFF.json
+INPUT ASSERTION: pages=2 systems=3 staff-records=38
+roster: page 23 system 0 4/9 pages_searched=[23] pages_opened=[]
+
+## A. self-contradiction (staff carries a label that disagrees)
+  p23 s0 ord  5  label='Tp.'                        lexicon=Timpani          assigned=Trumpet          src=score_order_ambiguity
+  p23 s1 ord  6  label='Tp.'                        lexicon=Timpani          assigned=Trumpet          src=score_order_ambiguity
+  p23 s1 ord 11  label='Basso.'                     lexicon=Bass voice       assigned=Contrabass       src=score_order_ambiguity
+  p44 s0 ord  8  label='Tp.'                        lexicon=Timpani          assigned=Trumpet          src=score_order_ambiguity
+  p44 s0 ord 16  label='Basso.'                     lexicon=Bass voice       assigned=Contrabass       src=score_order_ambiguity
+  checked 38 labelled staves, 5 disagree
+
+## B. coverage and provenance by page
+  pg  staves  label  roster  order  ambig  none    cov
+  23      21     18       0      0      3     0  1.000
+  44      17     15       0      0      2     0  1.000
+
+## C. per-system staff counts (an instrumentation change shows here)
+  23.0:9 23.1:12 44.0:17
+
+## D. assigned instrument sequence per page (top to bottom)
+  p23.s0 (9): Flute | Oboe | Clarinet | Bassoon | Trumpet | Trumpet | Trombone | Trombone | Trombone
+        labels: Fl. | Ob. | Cl. | Fag. | Tr. | Tp. | Trombone Alto. | Trombone Tenore. | Trombone Basso.
+  p23.s1 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Trumpet | Trombone | Trombone | Trombone | Cello | Contrabass
+        labels: Fl. | Ob. | Cl. | Fag. | Cor. | Tr. | Tp. | Trombone Alto. | Trombone Tenore. | Trombone Basso. | Violoncello. | Basso.
+  p44.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Trumpet | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Contrabass
+        labels: Flauto piccolo. | Fl. | Ob. | Cl. | Fag. | Contrafagotto. | Cor. | Tr. | Tp. | Trombone Alto. | Trombone Tenore. | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+

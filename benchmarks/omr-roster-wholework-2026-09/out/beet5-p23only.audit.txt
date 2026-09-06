@@ -1,0 +1,21 @@
+=== beet5-p23only.json
+INPUT ASSERTION: pages=1 systems=2 staff-records=21
+roster: page 23 system 0 4/9 pages_searched=[23] pages_opened=[]
+
+## A. self-contradiction (staff carries a label that disagrees)
+  p23 s1 ord  6  label='Tp.'                        lexicon=Timpani          assigned=Trumpet          src=score_order_ambiguity
+  checked 11 labelled staves, 1 disagree
+
+## B. coverage and provenance by page
+  pg  staves  label  roster  order  ambig  none    cov
+  23      21     10       0      8      1     2  0.905
+
+## C. per-system staff counts (an instrumentation change shows here)
+  23.0:9 23.1:12
+
+## D. assigned instrument sequence per page (top to bottom)
+  p23.s0 (9): Flute | Oboe | Clarinet | Bassoon | Violin | Violin | Violin | Cello | -
+        labels: Fl. | Ob. | Cl. | Fag. | · | · | · | · | ·
+  p23.s1 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Trumpet | Violin | Violin | Violin | Cello | -
+        labels: Fl. | Ob. | Cl. | Fag. | Cor. | Tr. | Tp. | · | · | · | · | ·
+

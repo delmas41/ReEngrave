@@ -1,0 +1,39 @@
+reference:
+   {"slot": 0, "group": 0, "instrument": "Flute"}
+   {"slot": 1, "group": 0, "instrument": "Oboe"}
+   {"slot": 2, "group": 0, "instrument": "Clarinet"}
+   {"slot": 3, "group": 0, "instrument": "Bassoon"}
+   {"slot": 4, "group": 0, "instrument": "Horn"}
+   {"slot": 5, "group": 0, "instrument": "Trumpet"}
+   {"slot": 6, "group": 0, "instrument": "Trumpet"}
+   {"slot": 7, "group": 1, "instrument": null}
+   {"slot": 8, "group": 1, "instrument": null}
+   {"slot": 9, "group": 1, "instrument": null}
+   {"slot": 10, "group": 1, "instrument": null}
+   {"slot": 11, "group": 1, "instrument": null}
+
+
+staff -> slot map:
+  p23.s0
+     staff_idx=0 slot=0 inst=Flute src=label
+     staff_idx=1 slot=1 inst=Oboe src=label
+     staff_idx=2 slot=2 inst=Clarinet src=label
+     staff_idx=3 slot=3 inst=Bassoon src=label
+     staff_idx=4 slot=7 inst=Violin src=score_order
+     staff_idx=5 slot=8 inst=Violin src=score_order
+     staff_idx=6 slot=9 inst=Violin src=score_order
+     staff_idx=7 slot=10 inst=Cello src=score_order
+     staff_idx=8 slot=11 inst=None src=None
+  p23.s1
+     staff_idx=9 slot=0 inst=Flute src=label
+     staff_idx=10 slot=1 inst=Oboe src=label
+     staff_idx=11 slot=2 inst=Clarinet src=label
+     staff_idx=12 slot=3 inst=Bassoon src=label
+     staff_idx=13 slot=4 inst=Horn src=label
+     staff_idx=14 slot=5 inst=Trumpet src=label
+     staff_idx=15 slot=6 inst=Trumpet src=score_order_ambiguity
+     staff_idx=16 slot=7 inst=Violin src=score_order
+     staff_idx=17 slot=8 inst=Violin src=score_order
+     staff_idx=18 slot=9 inst=Violin src=score_order
+     staff_idx=19 slot=10 inst=Cello src=score_order
+     staff_idx=20 slot=11 inst=None src=None

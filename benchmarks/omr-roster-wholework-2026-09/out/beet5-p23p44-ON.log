@@ -5,3 +5,34 @@ transcribe: beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073
   weights:  auto (scan/engraved routing)
   conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: per-cell
   weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+  page 23: 2 systems, 21 staves, 105 measures, 1529 detections (471/471 pitched, 471/471 durations)
+  page 44: 1 systems, 17 staves, 136 measures, 1675 detections (629/629 pitched, 629/629 durations)
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a2daedd6d0b11d266/benchmarks/omr-roster-wholework-2026-09/out/beet5-p23p44-ON.json
+  pages=2  systems=3  staves=38  measures=241  detections=2912
+  noteheads=1100  pitched=1100  (100% pitch coverage)
+  with_duration=1100  (100% rhythm coverage)  rests=188/260
+  runtime: phase1=8.58s  yolo=38.57s  total=260.6s
+  page 23: 105 measures, 0 phase1_warnings, 0 rhythm_sum_warnings
+    key signatures: read on 8/21 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 44: 136 measures, 0 phase1_warnings, 9 rhythm_sum_warnings
+    key signatures: read on 5/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+      262.04 real        92.87 user        20.29 sys
+          3300114432  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              781735  page reclaims
+                1076  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 199  messages sent
+                 714  messages received
+                   0  signals received
+               12569  voluntary context switches
+             1197032  involuntary context switches
+        710087284745  instructions retired
+        284981390315  cycles elapsed
+          3848908096  peak memory footprint
+=== beet5-p23p44-ON rc=0 wall=262s 2026-09-06T12:25:17Z

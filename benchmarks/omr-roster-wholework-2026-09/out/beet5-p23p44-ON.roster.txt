@@ -1,0 +1,39 @@
+### beet5-p23p44-ON.json
+pages transcribed: 2
+contextual reason: None
+
+## 1. ACQUISITION
+  page_index      : 23
+  system_index    : 0
+  n_staves        : 9
+  named           : 4  coverage=0.4444
+  pages_searched  : [23]
+  pages_opened    : []
+  label tiers     : {'text_layer': 0, 'surya': 0, 'tesseract': 0, 'vision': 0, 'human': 0}
+      0  Flute                  <- 'Fl.' (high)
+      1  Oboe                   <- 'Ob.' (high)
+      2  Clarinet               <- 'Cl.' (high)
+      3  Bassoon                <- 'Fag.' (high)
+
+## 2. SLOT IDENTITY (document-level)
+  reference slots: 17
+  ambiguous_labels_resolved: 2
+  available: True
+  clefs_applied: 2
+  clefs_filled_from_slot: 1
+  clefs_from_dossier: 0
+  instruments_from_roster: 0
+  instruments_from_score_order: 0
+  labelled_staves: 28
+  layout: late-romantic-large
+  layout_named_slots: 17
+  noteheads_restated: 73
+  reason: None
+  roster_slots_offered: 4
+
+## 3. PER-PAGE STAFF PROFILE + IDENTITY PROVENANCE
+  pg  sys  staves  named  label  roster  order  none  instruments
+  23    0       9      9      8       0      1     0  Flute,Oboe,Clarinet,Bassoon,Trumpet,Trumpet,Trombone,Trombone,Trombone
+  23    1      12     12     10       0      2     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Trumpet,Trombone,Trombone,Trombone,Cello,Contrabass
+  44    0      17     17     15       0      2     0  Piccolo,Flute,Oboe,Clarinet,Bassoon,Contrabassoon,Horn,Trumpet,Trumpet,Trombone,Trombone,Trombone,Violin,Violin,Viola,Cello,Contrabass
+

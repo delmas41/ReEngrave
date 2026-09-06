@@ -1,0 +1,382 @@
+=== beet5-984073-whole.json
+INPUT ASSERTION: pages=88 systems=140 staff-records=1616
+roster: page 1 system 0 11/12 pages_searched=[0, 1] pages_opened=[]
+
+## A. self-contradiction (staff carries a label that disagrees)
+  checked 1379 labelled staves, 0 disagree
+
+## B. coverage and provenance by page
+  pg  staves  label  roster  order  ambig  none    cov
+   1      12     12       0      0      0     0  1.000
+   2      22     22       0      0      0     0  1.000
+   3      19     19       0      0      0     0  1.000
+   4      22     22       0      0      0     0  1.000
+   5      16     16       0      0      0     0  1.000
+   6      22     22       0      0      0     0  1.000
+   7      22     22       0      0      0     0  1.000
+   8      20     20       0      0      0     0  1.000
+   9      22     22       0      0      0     0  1.000
+  10      22     22       0      0      0     0  1.000
+  11      20     20       0      0      0     0  1.000
+  12      23     23       0      0      0     0  1.000
+  13      22     22       0      0      0     0  1.000
+  14      23     23       0      0      0     0  1.000
+  15      22     22       0      0      0     0  1.000
+  16      22     22       0      0      0     0  1.000
+  17      20     20       0      0      0     0  1.000
+  18      19     19       0      0      0     0  1.000
+  19      20     20       0      0      0     0  1.000
+  20      16     16       0      0      0     0  1.000
+  21      20     20       0      0      0     0  1.000
+  22      17     17       0      0      0     0  1.000
+  23      21     21       0      0      0     0  1.000
+  24      22     22       0      0      0     0  1.000
+  25      19     19       0      0      0     0  1.000
+  26      18     18       0      0      0     0  1.000
+  27      16     16       0      0      0     0  1.000
+  28      20     20       0      0      0     0  1.000
+  29      19     19       0      0      0     0  1.000
+  30      20     20       0      0      0     0  1.000
+  31      19     19       0      0      0     0  1.000
+  32      20     20       0      0      0     0  1.000
+  33      18     18       0      0      0     0  1.000
+  34      22     22       0      0      0     0  1.000
+  35      21     21       0      0      0     0  1.000
+  36      20     20       0      0      0     0  1.000
+  37      23     23       0      0      0     0  1.000
+  38      24     24       0      0      0     0  1.000
+  39      19     19       0      0      0     0  1.000
+  40      21     21       0      0      0     0  1.000
+  41      19     19       0      0      0     0  1.000
+  42      16     16       0      0      0     0  1.000
+  43      15     15       0      0      0     0  1.000
+  44      17     17       0      0      0     0  1.000
+  45      17     17       0      0      0     0  1.000
+  46      17     17       0      0      0     0  1.000
+  47      17     17       0      0      0     0  1.000
+  48      17     17       0      0      0     0  1.000
+  49      17     17       0      0      0     0  1.000
+  50      17     17       0      0      0     0  1.000
+  51      17     17       0      0      0     0  1.000
+  52      17     17       0      0      0     0  1.000
+  53      17     17       0      0      0     0  1.000
+  54      17     17       0      0      0     0  1.000
+  55      17     17       0      0      0     0  1.000
+  56      19     19       0      0      0     0  1.000
+  57      24     24       0      0      0     0  1.000
+  58      17     17       0      0      0     0  1.000
+  59      17     17       0      0      0     0  1.000
+  60      17     17       0      0      0     0  1.000
+  61      17     17       0      0      0     0  1.000
+  62      17     17       0      0      0     0  1.000
+  63      23     23       0      0      0     0  1.000
+  64      17     17       0      0      0     0  1.000
+  65      16     16       0      0      0     0  1.000
+  66      17     17       0      0      0     0  1.000
+  67      17     17       0      0      0     0  1.000
+  68      17     17       0      0      0     0  1.000
+  69      17     17       0      0      0     0  1.000
+  70      17     17       0      0      0     0  1.000
+  71      17     17       0      0      0     0  1.000
+  72      17     17       0      0      0     0  1.000
+  73      17     17       0      0      0     0  1.000
+  74      17     17       0      0      0     0  1.000
+  75      17     17       0      0      0     0  1.000
+  76      17     17       0      0      0     0  1.000
+  77      17     17       0      0      0     0  1.000
+  78      17     17       0      0      0     0  1.000
+  79      17     17       0      0      0     0  1.000
+  80      17     17       0      0      0     0  1.000
+  81      17     17       0      0      0     0  1.000
+  82      17     17       0      0      0     0  1.000
+  83      17     17       0      0      0     0  1.000
+  84      17     17       0      0      0     0  1.000
+  85      17     17       0      0      0     0  1.000
+  86      16     16       0      0      0     0  1.000
+  87      17     17       0      0      0     0  1.000
+
+## C. per-system staff counts (an instrumentation change shows here)
+  1.0:12 2.0:11 2.1:11 3.0:11 3.1:8 4.0:11 4.1:11 5.0:9 5.1:7 6.0:10 6.1:12 7.0:11 7.1:11 8.0:9 8.1:11 9.0:12 9.1:10 10.0:11 10.1:11 11.0:9 11.1:11 12.0:12 12.1:11 13.0:11 13.1:11 14.0:12 14.1:11 15.0:11 15.1:11 16.0:11 16.1:11 17.0:12 17.1:4 17.2:4 18.0:11 18.1:8 19.0:11 19.1:9 20.0:8 20.1:8 21.0:11 21.1:9 22.0:9 22.1:8 23.0:9 23.1:12 24.0:11 24.1:11 25.0:8 25.1:11 26.0:11 26.1:7 27.0:8 27.1:8 28.0:8 28.1:12 29.0:11 29.1:8 30.0:12 30.1:8 31.0:7 31.1:12 32.0:11 32.1:5 32.2:4 33.0:9 33.1:9 34.0:11 34.1:11 35.0:11 35.1:10 36.0:11 36.1:9 37.0:10 37.1:5 37.2:8 38.0:12 38.1:12 39.0:4 39.1:7 39.2:8 40.0:7 40.1:7 40.2:7 41.0:5 41.1:7 41.2:7 42.0:5 42.1:6 42.2:5 43.0:5 43.1:10 44.0:17 45.0:17 46.0:17 47.0:17 48.0:17 49.0:17 50.0:17 51.0:17 52.0:17 53.0:17 54.0:17 55.0:17 56.0:10 56.1:9 57.0:9 57.1:15 58.0:17 59.0:17 60.0:17 61.0:17 62.0:17 63.0:6 63.1:7 63.2:10 64.0:17 65.0:16 66.0:17 67.0:17 68.0:17 69.0:17 70.0:17 71.0:17 72.0:17 73.0:17 74.0:17 75.0:17 76.0:17 77.0:17 78.0:17 79.0:17 80.0:17 81.0:17 82.0:17 83.0:17 84.0:17 85.0:17 86.0:16 87.0:17
+
+## D. assigned instrument sequence per page (top to bottom)
+  p1.s0 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p2.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p2.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p3.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p3.s1 (8): Flute | Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Clarinetti in B. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p4.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p4.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p5.s0 (9): Flute | Oboe | Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p5.s1 (7): Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Clarinetti in B. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p6.s0 (10): Flute | Oboe | Clarinet | Bassoon | Horn | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p6.s1 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p7.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p7.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p8.s0 (9): Flute | Oboe | Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p8.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p9.s0 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p9.s1 (10): Flute | Oboe | Clarinet | Bassoon | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p10.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p10.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p11.s0 (9): Flute | Oboe | Bassoon | Horn | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Fagotti. | Corni in Es. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p11.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p12.s0 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p12.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Basso.
+  p13.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p13.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p14.s0 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p14.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p15.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p15.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p16.s0 (11): Flute | Oboe | Clarinet | Contrabassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p16.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p17.s0 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p17.s1 (4): Flute | Oboe | Clarinet | Bassoon
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti.
+  p17.s2 (4): Piccolo | Clarinet | Bassoon | Contrabassoon
+        labels: Pag. | Clarinetti in B. | Fagotti. | Fug.
+  p18.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p18.s1 (8): Oboe | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Bass voice
+        labels: Obol. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Basso.
+  p19.s0 (11): Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p19.s1 (9): Flute | Oboe | Clarinet | Bassoon | Trumpet | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p20.s0 (8): Flute | Oboe | Clarinet | Bassoon | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p20.s1 (8): Flute | Oboe | Clarinet | Bassoon | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p21.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p21.s1 (9): Oboe | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Obol. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p22.s0 (9): Flute | Oboe | Clarinet | Bassoon | Trumpet | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p22.s1 (8): Flute | Oboe | Bassoon | Contrabassoon | Trombone | Trombone | Viola | Bass voice
+        labels: Flauti. | Obol. | Fagotti. | Fug. | Gp. | Trombone Basso. | Viola. | Basso.
+  p23.s0 (9): Flute | Oboe | Clarinet | Bassoon | Trumpet | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p23.s1 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violoncello. | Basso.
+  p24.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Trombone | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Trombone Basso. | Violino II. | Viola. | Basso.
+  p24.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p25.s0 (8): Flute | Oboe | Clarinet | Bassoon | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p25.s1 (11): Flute | Oboe | Clarinet | Contrabassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p26.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p26.s1 (7): Flute | Clarinet | Bassoon | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Clarinetti in B. | Fagotti. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p27.s0 (8): Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Trombone | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Trombone Basso. | Viola. | Basso.
+  p27.s1 (8): Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Trombone | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Trombone Basso. | Viola. | Basso.
+  p28.s0 (8): Flute | Oboe | Clarinet | Contrabassoon | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Obol. | Clarinetti in B. | Fug. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p28.s1 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p29.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p29.s1 (8): Flute | Oboe | Clarinet | Bassoon | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p30.s0 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p30.s1 (8): Flute | Oboe | Clarinet | Bassoon | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p31.s0 (7): Clarinet | Bassoon | Horn | Timpani | Trombone | Trombone | Trombone
+        labels: Clarinetti in B. | Fagotti. | Corni in Es. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p31.s1 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Gp. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p32.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello.
+  p32.s1 (5): Flute | Oboe | Clarinet | Bassoon | Horn
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es.
+  p32.s2 (4): Piccolo | Clarinet | Bassoon | Contrabassoon
+        labels: Pag. | Clarinetti in B. | Fagotti. | Fug.
+  p33.s0 (9): Flute | Oboe | Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p33.s1 (9): Flute | Oboe | Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p34.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p34.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p35.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p35.s1 (10): Flute | Oboe | Clarinet | Bassoon | Horn | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p36.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p36.s1 (9): Flute | Oboe | Bassoon | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Fagotti. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p37.s0 (10): Flute | Oboe | Bassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Bass voice
+        labels: Flauti. | Obol. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Basso.
+  p37.s1 (5): Piccolo | Horn | Timpani | Trombone | Trombone
+        labels: Pag. | Corni in Es. | Timpani in C.G. | | | Trombone Basso.
+  p37.s2 (8): Piccolo | Oboe | Contrabassoon | Trumpet | Violin | Violin | Viola | Bass voice
+        labels: Pag. | Obol. | Fug. | Trombe in C. | Violino I. | Violino II. | Viola. | Basso.
+  p38.s0 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violoncello. | Basso.
+  p38.s1 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p39.s0 (4): Piccolo | Clarinet | Bassoon | Contrabassoon
+        labels: Pag. | Clarinetti in B. | Fagotti. | Fug.
+  p39.s1 (7): Oboe | Clarinet | Bassoon | Timpani | Trombone | Trombone | Trombone
+        labels: Obol. | Clarinetti in B. | Fagotti. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p39.s2 (8): Flute | Oboe | Clarinet | Bassoon | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p40.s0 (7): Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Clarinetti in B. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p40.s1 (7): Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Clarinetti in B. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p40.s2 (7): Oboe | Clarinet | Bassoon | Timpani | Trombone | Trombone | Trombone
+        labels: Obol. | Clarinetti in B. | Fagotti. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p41.s0 (5): Bassoon | Horn | Timpani | Trombone | Trombone
+        labels: Fagotti. | Corni in Es. | Timpani in C.G. | | | Trombone Basso.
+  p41.s1 (7): Oboe | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Obol. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p41.s2 (7): Oboe | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Obol. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p42.s0 (5): Piccolo | Horn | Timpani | Trombone | Trombone
+        labels: Pag. | Corni in Es. | Timpani in C.G. | | | Trombone Basso.
+  p42.s1 (6): Bassoon | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Fagotti. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p42.s2 (5): Timpani | Trombone | Trombone | Trombone | Bass voice
+        labels: Timpani in C.G. | Gp. | | | Trombone Basso. | Basso.
+  p43.s0 (5): Timpani | Trombone | Trombone | Trombone | Bass voice
+        labels: Timpani in C.G. | Gp. | | | Trombone Basso. | Basso.
+  p43.s1 (10): Flute | Oboe | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p44.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p45.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p46.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p47.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p48.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p49.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p50.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p51.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p52.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p53.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p54.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p55.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p56.s0 (10): Piccolo | Flute | Oboe | Bassoon | Contrabassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Pag. | Flauti. | Obol. | Fagotti. | Fug. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p56.s1 (9): Flute | Oboe | Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p57.s0 (9): Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Timpani | Trombone | Trombone | Trombone
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Timpani in C.G. | Gp. | | | Trombone Basso.
+  p57.s1 (15): Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino II. | Viola. | Violoncello. | Basso.
+  p58.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p59.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p60.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p61.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p62.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p63.s0 (6): Oboe | Clarinet | Horn | Trombone | Trombone | Trombone
+        labels: Obol. | Clarinetti in B. | Corni in Es. | Gp. | | | Trombone Basso.
+  p63.s1 (7): Oboe | Clarinet | Horn | Violin | Violin | Viola | Bass voice
+        labels: Obol. | Clarinetti in B. | Corni in Es. | Violino I. | Violino II. | Viola. | Basso.
+  p63.s2 (10): Flute | Oboe | Clarinet | Bassoon | Horn | Timpani | Violin | Violin | Viola | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Basso.
+  p64.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p65.s0 (16): Piccolo | Flute | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p66.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p67.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p68.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p69.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p70.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p71.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p72.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p73.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p74.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p75.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p76.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p77.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p78.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p79.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p80.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p81.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p82.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p83.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p84.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p85.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p86.s0 (16): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino II. | Viola. | Violoncello. | Basso.
+  p87.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Pag. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Fug. | Corni in Es. | Trombe in C. | Timpani in C.G. | Gp. | | | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+

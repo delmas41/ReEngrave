@@ -1,0 +1,36 @@
+=== brahms1-p10only start 2026-09-06T12:26:10Z
+pdf: /Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf
+pages: 10
+transcribe: brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf (86 pages, processing 1)
+  weights:  auto (scan/engraved routing)
+  conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: per-cell
+  weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+  page 10: 2 systems, 27 staves, 229 measures, 3619 detections (755/755 pitched, 755/755 durations)
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(Es)' — these are the strings to add to tools/omr/instruments.py
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a2daedd6d0b11d266/benchmarks/omr-roster-wholework-2026-09/out/brahms1-p10only.json
+  pages=1  systems=2  staves=27  measures=229  detections=2959
+  noteheads=755  pitched=755  (100% pitch coverage)
+  with_duration=755  (100% rhythm coverage)  rests=202/248
+  runtime: phase1=10.24s  yolo=30.61s  total=72.57s
+  page 10: 229 measures, 0 phase1_warnings, 27 rhythm_sum_warnings
+    key signatures: read on 19/27 staves; the rest report 0 sharps / 0 flats because nothing read them
+       73.98 real        74.73 user        19.00 sys
+          4098293760  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              721633  page reclaims
+                6831  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 123  messages sent
+                 263  messages received
+                   0  signals received
+                7105  voluntary context switches
+             1110993  involuntary context switches
+        626131132860  instructions retired
+        250222375949  cycles elapsed
+          3871194624  peak memory footprint
+=== brahms1-p10only rc=0 wall=74s 2026-09-06T12:27:24Z

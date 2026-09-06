@@ -1,0 +1,13 @@
+=== beet5-p23only.json   work=beet5
+INPUT ASSERTION: pages=1 systems-in-run=2 full-systems-scored=1 staff-records-scored=12
+roster from page 23 sys 0, 4/9 named, opened=[]
+reference slots: 12
+
+CORRECT 9/12 = 0.7500   unnamed 1   wrong 2
+   size  12:    9/  12 = 0.7500
+
+confusions (truth -> emitted), most common first:
+      1  Timpani          -> Trumpet
+      1  Viola            -> Violin
+      1  Contrabass       -> (unnamed)
+
