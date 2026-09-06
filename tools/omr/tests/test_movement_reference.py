@@ -137,6 +137,21 @@ def test_a_run_that_starts_MID_movement_still_finds_only_the_real_boundary():
     assert [s[0] for s in spans] == [20, 44]
 
 
+def test_the_boundary_lands_on_the_movement_OPENING_not_the_page_after_it():
+    """Recurrence confirms a boundary; it must not locate one.
+
+    Measured: in one replay phase 1 read Beethoven 5 p.44 — the finale's own
+    first page — as 14 staves of 17. A size seen once never recurs, so the
+    boundary went to p.45 and p.44 was aligned against movement 1's twelve
+    slots. Ten staff records, every one wrong, on the single page where being
+    wrong matters most.
+    """
+    window = ([(p, [12]) for p in range(20, 32)]
+              + [(44, [14]), (45, [17]), (46, [16])]
+              + [(p, [17]) for p in range(47, 56)])
+    assert [s[0] for s in mr.lineup_spans(window)] == [20, 44]
+
+
 def test_a_one_page_run_can_never_split():
     """Why neither benchmark can move: they score ONE PAGE at a time.
 

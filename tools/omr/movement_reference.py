@@ -140,7 +140,7 @@ def lineup_spans(page_systems: Sequence[tuple[int, Sequence[int]]]
             # must itself have recurred among the pages already passed.
             running, seen_at_running = v, 1
             continue
-        starts.append(p)
+        starts.append(_first_page_above(pages, peak, p, running))
         running, seen_at_running = v, 1
 
     spans = _split_at(pages, starts)
@@ -149,6 +149,29 @@ def lineup_spans(page_systems: Sequence[tuple[int, Sequence[int]]]
     # Pages with no staves at all (front matter) belong to whichever span
     # follows them; they carry nothing either way.
     return _readmit_empty(spans, [p for p, _ in page_systems])
+
+
+def _first_page_above(pages: list[int], peak: dict[int, int], p: int,
+                      level: int) -> int:
+    """Walk the boundary BACK to where the lineup actually grew.
+
+    ⚠️ RECURRENCE CONFIRMS A BOUNDARY; IT MUST NOT LOCATE ONE — measured, and
+    the page it costs is the worst possible one. A movement's opening page is
+    where the new instruments first print, but it is also a page phase 1 can
+    under-read (Beethoven 5 p.44 detected 14 staves of 17 in one run), and a
+    size seen once never recurs. So the boundary landed on p.45 and p.44 — the
+    finale's own first page — was aligned against movement 1's twelve slots: 10
+    staff records, every one of them wrong.
+
+    The growth began at the first page of the unbroken run above the old level.
+    """
+    out = p
+    for q in reversed([x for x in pages if x < p]):
+        if peak[q] > level:
+            out = q
+            continue
+        break
+    return out
 
 
 def _peaks(page_systems) -> dict[int, int]:
