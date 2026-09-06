@@ -182,7 +182,10 @@ morphology `gap_bridging_counts` already performed, and the clustering is one
 sort of a few hundred numbers per system. Per-arm wall times across the A/B
 scatter in both directions (Beethoven 3 113s→199s, Beethoven 5 221s→109s,
 Brahms 1 154s→87s, Brahms 4 44s→42s) — that is machine contention, not the
-flag, and there is no systematic direction to it.
+flag, and there is no systematic direction to it. ⚠️ Do not read the per-arm
+timings in the logs as anything: these runs shared the machine with several
+other agents' benchmarks at load average 16-23, and one arm taking three times
+another is that, not a cost.
 
 ⚠️ **The clustering is greedy chain-linking, so it can in principle swallow two
 real barlines into one column and undercount.** Checked rather than assumed:
@@ -380,7 +383,7 @@ non-deterministic):
 |---|---|---|
 | Bach Brandenburg 3 p.1 | the ONLY gate page with a window-blind system — the one page where cue C can fire at all | **BYTE-IDENTICAL** |
 | Brahms 1 p.4 | the ONLY gate page where `_is_grouped_system` differs between the arms | **BYTE-IDENTICAL** |
-| Beethoven 3, Beethoven 5, Brahms 1, Brahms 4, Bruckner 5, Dvořák 9 (engraved) | the family that falsified cue C | **BYTE-IDENTICAL, 6 of 6 run** |
+| Beethoven 3, Beethoven 5, Brahms 1, Brahms 4, Bruckner 5, Dvořák 9, Mahler 5, Mozart 40 (engraved) | the family that falsified cue C | **BYTE-IDENTICAL, 8 of 8 run** |
 
 The two scan pages are the complete exposed set: every other gate row has
 neither a blind system nor a changed `_is_grouped_system`, so it cannot differ
@@ -388,8 +391,8 @@ by construction. A byte-identical export is strictly stronger than an equal
 OMR-NED and has no noise floor to argue about — where a pooled 20-row figure
 would have had to be read against ±6 edits.
 
-⚠️ **Five engraved fixtures (Mahler 5, both Mozarts, both Tchaikovskys) were
-still running when this was written** and are not claimed. They are
+⚠️ **Three engraved fixtures (Mozart 41, both Tchaikovskys) were still running
+when this was written** and are not claimed. They are
 confirmatory rather than decisive: the exact control above already says the
 change cannot reach cue C on any of the eleven. `out/ab-engraved-export.log`
 (the first three) and `out/ab-engraved-export-nosurya.log` (the rest) carry
