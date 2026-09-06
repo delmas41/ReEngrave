@@ -1,0 +1,54 @@
+reference:
+   {"slot": 0, "group": 0, "instrument": "Piccolo"}
+   {"slot": 1, "group": 0, "instrument": "Flute"}
+   {"slot": 2, "group": 0, "instrument": "Oboe"}
+   {"slot": 3, "group": 0, "instrument": "Clarinet"}
+   {"slot": 4, "group": 0, "instrument": "Bassoon"}
+   {"slot": 5, "group": 0, "instrument": "Contrabassoon"}
+   {"slot": 6, "group": 1, "instrument": "Horn"}
+   {"slot": 7, "group": 1, "instrument": "Trumpet"}
+   {"slot": 8, "group": 1, "instrument": "Timpani"}
+   {"slot": 9, "group": 1, "instrument": "Trombone"}
+   {"slot": 10, "group": 1, "instrument": "Trombone"}
+   {"slot": 11, "group": 1, "instrument": "Trombone"}
+   {"slot": 12, "group": 2, "instrument": "Violin"}
+   {"slot": 13, "group": 2, "instrument": "Violin"}
+   {"slot": 14, "group": 2, "instrument": "Viola"}
+   {"slot": 15, "group": 2, "instrument": "Cello"}
+   {"slot": 16, "group": 2, "instrument": "Bass voice"}
+
+proposals = [{"page_index": 44, "system_index": 0, "staff_index": 9, "slot": 9, "instrument": "Trombone", "from_clef": "treble", "to_clef": "bass", "fit": 1.0, "current_fit": 0.364, "margin": 0.636, "n_noteheads": 22, "confidence_label": "high", "clef_was_read": false, "clef_source": null, "applied": true, "noteheads_restated": 22}, {"page_index": 44, "system_index": 0, "staff_index": 10, "slot": 10, "instrument": "Trombone", "from_clef": "tenor", "to_clef": "bass", "fit": 1.0, "current_fit": 1.0, "margin": 0.0, "n_noteheads": 18, "confidence_label": "medium", "clef_was_read": true, "clef_source": "cv_locator", "applied": false}]
+clef_fills = [{"page_index": 44, "system_index": 0, "staff_index": 14, "slot": 14, "from_clef": "treble", "to_clef": "alto"}, {"page_index": 44, "system_index": 0, "staff_index": 16, "slot": 16, "from_clef": "treble", "to_clef": "bass"}]
+
+staff -> slot map:
+  p1.s0
+     staff_idx=0 slot=1 inst=Flute src=label
+     staff_idx=1 slot=2 inst=Oboe src=label
+     staff_idx=2 slot=3 inst=Clarinet src=label
+     staff_idx=3 slot=4 inst=Bassoon src=label
+     staff_idx=4 slot=6 inst=Horn src=label
+     staff_idx=5 slot=7 inst=Trumpet src=label
+     staff_idx=6 slot=8 inst=Timpani src=label
+     staff_idx=7 slot=12 inst=Violin src=label
+     staff_idx=8 slot=13 inst=Violin src=label
+     staff_idx=9 slot=14 inst=Viola src=label
+     staff_idx=10 slot=15 inst=Cello src=label
+     staff_idx=11 slot=16 inst=Bass voice src=label
+  p44.s0
+     staff_idx=0 slot=0 inst=Piccolo src=label
+     staff_idx=1 slot=1 inst=Flute src=label
+     staff_idx=2 slot=2 inst=Oboe src=label
+     staff_idx=3 slot=3 inst=Clarinet src=label
+     staff_idx=4 slot=4 inst=Bassoon src=label
+     staff_idx=5 slot=5 inst=Contrabassoon src=label
+     staff_idx=6 slot=6 inst=Horn src=label
+     staff_idx=7 slot=7 inst=Trumpet src=label
+     staff_idx=8 slot=8 inst=Timpani src=label
+     staff_idx=9 slot=9 inst=Trombone src=label
+     staff_idx=10 slot=10 inst=Trombone src=label
+     staff_idx=11 slot=11 inst=Trombone src=label
+     staff_idx=12 slot=12 inst=Violin src=label
+     staff_idx=13 slot=13 inst=Violin src=label
+     staff_idx=14 slot=14 inst=Viola src=label
+     staff_idx=15 slot=15 inst=Cello src=label
+     staff_idx=16 slot=16 inst=Bass voice src=label

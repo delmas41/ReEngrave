@@ -1,0 +1,11 @@
+=== beet5-p44only.json   work=beet5
+INPUT ASSERTION: pages=1 systems-in-run=1 full-systems-scored=1 staff-records-scored=17
+roster from page 44 sys 0, 17/17 named, opened=[]
+reference slots: 17
+
+CORRECT 16/17 = 0.9412   unnamed 0   wrong 1
+   size  17:   16/  17 = 0.9412
+
+confusions (truth -> emitted), most common first:
+      1  Contrabass       -> Bass voice
+

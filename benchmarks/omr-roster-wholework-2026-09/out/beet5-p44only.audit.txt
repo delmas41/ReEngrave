@@ -1,0 +1,18 @@
+=== beet5-p44only.json
+INPUT ASSERTION: pages=1 systems=1 staff-records=17
+roster: page 44 system 0 17/17 pages_searched=[44] pages_opened=[]
+
+## A. self-contradiction (staff carries a label that disagrees)
+  checked 17 labelled staves, 0 disagree
+
+## B. coverage and provenance by page
+  pg  staves  label  roster  order  ambig  none    cov
+  44      17     17       0      0      0     0  1.000
+
+## C. per-system staff counts (an instrumentation change shows here)
+  44.0:17
+
+## D. assigned instrument sequence per page (top to bottom)
+  p44.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauto piccolo. | Flauti. | Oboi. | Clarinetti in C. | Fagotti. | Contrafagotto. | Corni in C. | Trombe in C. | Timpani in C.G. | Trombone Alto. | Trombone Tenore. | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+

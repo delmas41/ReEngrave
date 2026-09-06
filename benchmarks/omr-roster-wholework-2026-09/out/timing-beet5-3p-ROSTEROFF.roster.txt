@@ -1,0 +1,46 @@
+### timing-beet5-3p-ROSTEROFF.json
+pages transcribed: 3
+contextual reason: None
+
+## 1. ACQUISITION
+  page_index      : 1
+  system_index    : 0
+  n_staves        : 12
+  named           : 11  coverage=0.9167
+  pages_searched  : [0, 1]
+  pages_opened    : []
+  label tiers     : {'text_layer': 0, 'surya': 0, 'tesseract': 0, 'vision': 0, 'human': 0}
+      0  Flute                  <- 'Flauti.' (high)
+      2  Clarinet               <- 'Clarinetti in B.' (high)
+      3  Bassoon                <- 'Fagotti.' (high)
+      4  Horn                   <- 'Corni in Es.' (medium)
+      5  Trumpet                <- 'Trombe in C.' (high)
+      6  Timpani                <- 'Timpani in C.G.' (high)
+      7  Violin                 <- 'Violino I.' (high)
+      8  Violin                 <- 'Violino II.' (high)
+      9  Viola                  <- 'Viola.' (high)
+     10  Cello                  <- 'Violoncello.' (high)
+     11  Bass voice             <- 'Basso.' (high)
+
+## 2. SLOT IDENTITY (document-level)
+  reference slots: 11
+  ambiguous_labels_resolved: 1
+  available: True
+  clefs_applied: 0
+  clefs_filled_from_slot: 0
+  clefs_from_dossier: 0
+  instruments_from_roster: 0
+  instruments_from_score_order: 3
+  labelled_staves: 25
+  layout: classical-condensed
+  layout_named_slots: 10
+  noteheads_restated: 0
+  reason: None
+  roster_slots_offered: 0
+
+## 3. PER-PAGE STAFF PROFILE + IDENTITY PROVENANCE
+  pg  sys  staves  named  label  roster  order  none  instruments
+   1    0      12     11      7       0      4     1  ?,Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Cello,Contrabass
+   2    0      11     11      7       0      4     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Cello,Contrabass
+   2    1      11     11      7       0      4     0  Flute,Oboe,Clarinet,Bassoon,Horn,Trumpet,Timpani,Violin,Violin,Cello,Contrabass
+

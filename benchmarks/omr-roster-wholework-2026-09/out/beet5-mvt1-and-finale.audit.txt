@@ -1,0 +1,21 @@
+=== beet5-mvt1-and-finale.json
+INPUT ASSERTION: pages=2 systems=2 staff-records=29
+roster: page 1 system 0 11/12 pages_searched=[1] pages_opened=[]
+
+## A. self-contradiction (staff carries a label that disagrees)
+  checked 29 labelled staves, 0 disagree
+
+## B. coverage and provenance by page
+  pg  staves  label  roster  order  ambig  none    cov
+   1      12     12       0      0      0     0  1.000
+  44      17     17       0      0      0     0  1.000
+
+## C. per-system staff counts (an instrumentation change shows here)
+  1.0:12 44.0:17
+
+## D. assigned instrument sequence per page (top to bottom)
+  p1.s0 (12): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauti. | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p44.s0 (17): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+        labels: Flauto piccolo. | Flauti. | Obol. | Clarinetti in B. | Fagotti. | Contrafagotto. | Corni in Es. | Trombe in C. | Timpani in C.G. | Trombone Alto. | Trombone Tenore. | Trombone Basso. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+

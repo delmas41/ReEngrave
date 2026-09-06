@@ -85,3 +85,5 @@ transcribe: dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf (80 pages, pr
   page 77: 2 systems, 30 staves, 195 measures, 3204 detections (591/591 pitched, 591/591 durations)
   page 78: 2 systems, 30 staves, 285 measures, 2640 detections (378/378 pitched, 378/378 durations)
   page 79: 2 systems, 30 staves, 285 measures, 4468 detections (997/997 pitched, 997/997 durations)
+direction reader surya failed: surya timed out after 900.0s
+direction reader surya failed: surya timed out after 900.0s

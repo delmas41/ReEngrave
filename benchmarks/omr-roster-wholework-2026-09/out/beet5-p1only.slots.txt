@@ -1,0 +1,30 @@
+reference:
+   {"slot": 0, "group": 0, "instrument": "Flute"}
+   {"slot": 1, "group": 0, "instrument": null}
+   {"slot": 2, "group": 0, "instrument": "Clarinet"}
+   {"slot": 3, "group": 0, "instrument": "Bassoon"}
+   {"slot": 4, "group": 1, "instrument": "Horn"}
+   {"slot": 5, "group": 1, "instrument": "Trumpet"}
+   {"slot": 6, "group": 1, "instrument": "Timpani"}
+   {"slot": 7, "group": 2, "instrument": "Violin"}
+   {"slot": 8, "group": 2, "instrument": "Violin"}
+   {"slot": 9, "group": 2, "instrument": "Viola"}
+   {"slot": 10, "group": 2, "instrument": "Cello"}
+   {"slot": 11, "group": 2, "instrument": "Bass voice"}
+
+low_confidence_labels = ["Obol."]
+
+staff -> slot map:
+  p1.s0
+     staff_idx=0 slot=0 inst=Flute src=label
+     staff_idx=1 slot=1 inst=Oboe src=score_order
+     staff_idx=2 slot=2 inst=Clarinet src=label
+     staff_idx=3 slot=3 inst=Bassoon src=label
+     staff_idx=4 slot=4 inst=Horn src=label
+     staff_idx=5 slot=5 inst=Trumpet src=label
+     staff_idx=6 slot=6 inst=Timpani src=label
+     staff_idx=7 slot=7 inst=Violin src=label
+     staff_idx=8 slot=8 inst=Violin src=label
+     staff_idx=9 slot=9 inst=Viola src=label
+     staff_idx=10 slot=10 inst=Cello src=label
+     staff_idx=11 slot=11 inst=Bass voice src=label
