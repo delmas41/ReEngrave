@@ -15,6 +15,7 @@ from tools.omr.system_grouping import (
     GROUP_BOUNDARY_RATIO,
     assign_systems,
     gap_bridging_counts,
+    systemic_column_counts,
     _robust_x_window,
 )
 from tools.omr.types import PageImage, Staff
@@ -187,6 +188,96 @@ def test_group_index_defaults_to_zero_for_small_systems():
     img, staves = _build([100, 200], rules=[(0, 1)])
     out, _used = assign_systems(img, staves)
     assert [s.group_index for s in out] == [0, 0]
+
+
+# ── bracket columns (OMR_BRACKET_COLUMNS) ───────────────────────────────────
+
+def _bracket_page(noise_at_gap: int | None, n_noise: int = 6):
+    """Three blocks of three staves, one bracket, six barlines per block —
+    the `test_bracket_groups_are_recovered_within_a_system` page — with an
+    optional run of INCIDENTAL vertical ink crossing one gap at x positions
+    that are at no barline column, standing for stems / slurs / a dynamic.
+    """
+    tops = [100, 160, 220, 400, 460, 520, 700, 760, 820]
+    img = _blank()
+    groups = [_draw_staff(img, t) for t in tops]
+    _draw_vrule(img, X0 + 20, groups[0][0], groups[-1][-1], width=4)
+    for first, last in ((0, 2), (3, 5), (6, 8)):
+        for k in range(6):
+            _draw_vrule(img, X0 + 120 + k * 150, groups[first][0], groups[last][-1])
+    if noise_at_gap is not None:
+        y_top, y_bot = groups[noise_at_gap][0], groups[noise_at_gap + 1][-1]
+        for k in range(n_noise):
+            # deliberately BETWEEN the barline columns, and wider than one, so
+            # the pixel count at this gap climbs over GROUP_BOUNDARY_RATIO.
+            _draw_vrule(img, X0 + 195 + k * 150, y_top, y_bot, width=9)
+    return img, _staves_from(groups)
+
+
+def test_incidental_ink_hides_a_bracket_boundary_from_the_pixel_rule(monkeypatch):
+    """RED-side control: the incumbent rule counts PIXELS, so ink that merely
+    happens to cross a group boundary merges the two groups.
+
+    This is Beethoven 5 / Litolff p.38 system 0 in miniature — six crossing
+    columns at no barline x, taking the boundary gap over the median ratio.
+    """
+    monkeypatch.delenv("OMR_BRACKET_COLUMNS", raising=False)
+    img, staves = _bracket_page(noise_at_gap=2)
+    out, used = assign_systems(img, staves)
+    assert used
+    assert [s.group_index for s in out] == [0, 0, 0, 0, 0, 0, 1, 1, 1], (
+        "the pixel rule is expected to MISS this boundary — if it stops "
+        "missing it, the fix below is no longer testing anything")
+
+
+def test_bracket_columns_recover_the_boundary_the_pixel_rule_misses(monkeypatch):
+    """With OMR_BRACKET_COLUMNS the comparison is over systemic COLUMNS, and
+    ink standing at no shared x contributes nothing — so the boundary the
+    pixel rule lost is read correctly."""
+    monkeypatch.setenv("OMR_BRACKET_COLUMNS", "1")
+    img, staves = _bracket_page(noise_at_gap=2)
+    out, used = assign_systems(img, staves)
+    assert used
+    assert [s.group_index for s in out] == [0, 0, 0, 1, 1, 1, 2, 2, 2]
+
+
+def test_bracket_columns_read_the_clean_page_identically(monkeypatch):
+    """No incidental ink: both rules must agree, or the flag is a rewrite
+    rather than a repair."""
+    img, staves = _bracket_page(noise_at_gap=None)
+    monkeypatch.delenv("OMR_BRACKET_COLUMNS", raising=False)
+    off, _ = assign_systems(img, [s for s in staves])
+    off_groups = [s.group_index for s in off]
+    img2, staves2 = _bracket_page(noise_at_gap=None)
+    monkeypatch.setenv("OMR_BRACKET_COLUMNS", "1")
+    on, _ = assign_systems(img2, staves2)
+    assert off_groups == [s.group_index for s in on] == [0, 0, 0, 1, 1, 1, 2, 2, 2]
+
+
+def test_systemic_column_counts_drop_ink_seen_at_one_gap_only():
+    # Three gaps. Columns at 100/400/700 recur; 250 is seen once.
+    runs = [
+        [(100.0, 3), (250.0, 3), (400.0, 3), (700.0, 3)],
+        [(100.0, 3), (400.0, 3), (700.0, 3)],
+        [(100.0, 3), (400.0, 3), (700.0, 3)],
+    ]
+    # every column here spans all three gaps, so all are uninformative
+    assert systemic_column_counts(runs, spacing=12.0) == [0, 0, 0]
+
+
+def test_systemic_column_counts_exclude_columns_crossing_every_gap():
+    """The left-edge complex and the final barline cross every gap by
+    construction; leaving them in is a constant added to both sides of the
+    ratio, which is what put Beethoven 5 p.23 on the 0.500 knife edge."""
+    span = [(50.0, 4), (900.0, 4)]          # crosses every gap
+    interior = [(300.0, 3), (450.0, 3), (600.0, 3)]
+    runs = [span + interior, span + interior, span, span + interior]
+    assert systemic_column_counts(runs, spacing=12.0) == [3, 3, 0, 3]
+
+
+def test_systemic_column_counts_mirror_the_no_evidence_marker():
+    runs = [[(100.0, 3)], None, [(100.0, 3)]]
+    assert systemic_column_counts(runs, spacing=12.0)[1] == -1
 
 
 # ── end-to-end through detect_staves ────────────────────────────────────────
