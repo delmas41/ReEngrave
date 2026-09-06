@@ -212,6 +212,61 @@ delivered what it was built for.
   the system can produce, and the phase gates count it as such (see the
   human-cost axis in §7). A process may abstain; it may not abstain *cheaply*.
 
+## 8b. ⚠️ DISAGREEMENT IS EVIDENCE, NOT A STAIN — the governing principle
+
+**Sean, 2026-09-06: "I don't want a stain from disagreement — I want additive
+information to build probability."** This supersedes the veto/abstain language
+elsewhere in this document wherever the two conflict.
+
+**The pattern he is objecting to is already a recorded defect.** The
+probability-gates taxonomy's Class A is *"the probability is never formed"* — a
+boolean veto standing in for a score that was never computed. Live examples:
+`clef_locator`'s dot veto is a hand-set threshold trading "8 false positives
+removed for 20 declined C clefs" with no score attached, and
+`instruments.Match.coverage` is a FLOAT quantised to high/medium/low and then
+flattened to a flat `SCORE_LABEL_MATCH = 6.0` — binarised twice on the way INTO
+a model (`slots.py`) that is already additive.
+
+**So the design is: every process contributes a signed evidence term; nothing
+blocks.** Consequences, replacing the earlier framing:
+
+1. **A dissenting process lowers the total. It does not veto.** Only the
+   AGGREGATE decides, and only the aggregate may escalate to a human.
+2. **The provenance rule survives but is no longer a gate.** Two signals sharing
+   an ancestor are COUNTED ONCE. Correlation becomes a weight, not a refusal —
+   which is the additive expression of the same fact, and strictly more
+   informative than dropping the message.
+3. **The consistency checks become evidence terms with signs**, not warnings
+   nobody reads. All five currently compute a graded confidence that nothing
+   consumes; on one real scanned document **85 warnings fire and every one is
+   inert**.
+4. **Detection confidence enters the model.** `grep -c '\bconfidence\b'
+   tools/omr/export.py` returns 1 and it is a comment.
+
+⚠️ **The one hard constraint, and it is a DATA problem, not an objection.**
+`claude/staff-identity-layer-2026-09-05` measured that identity probabilities
+**do not calibrate** — P(name) ECE 0.1277, P(set) 0.1301, n=197, failing worst
+exactly where a consumer would set its bar (top bin promises 0.989, delivers
+0.692). The standard adopted then stands: **an uncalibrated probability is worse
+than none, because it launders a guess into something that reads as evidence.**
+
+But its diagnosis was that the failure is the **CORPUS** — the `derived` tier
+that would decide an admission is EMPTY — not the estimator. So it does not
+argue against additive evidence. It says: **accumulate additively, but do not
+CALL the sum a probability until held-out data has calibrated it.** Sum in
+evidence units and decide with a threshold, which is exactly what `slots.py`
+already does without ever claiming a percentage. Rendering an uncalibrated sum
+as "0.98 confident" is the laundering.
+
+**This makes phase 0's corpus the prerequisite for everything**, more sharply
+than §5 states it: calibration is what converts additive evidence into a
+probability, and the previous attempt failed for want of precisely that corpus.
+
+⚠️ **And the honest cost of the trade:** additive evidence can be CONFIDENTLY
+WRONG where a veto merely declined. A stain is expensive and visible; a
+miscalibrated sum is cheap and invisible. That asymmetry is the argument for
+building the corpus first rather than shipping the fusion and measuring later.
+
 ## 9. Which arrow carries the information — measured, 2026-09-06
 
 Sean, thinking through the circle: *"if we know a clef or a range of notes we can
