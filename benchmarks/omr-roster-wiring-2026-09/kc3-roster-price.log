@@ -1,0 +1,57 @@
+rows priced: 16   EXCLUDED (probe abstained): 4 ['mahler-sym5-mvt1-local-p2', 'mahler-sym5-mvt1-local-p3', 'mahler-sym5-mvt1-local-p4', 'mahler-sym5-mvt1-local-p5']
+  BASELINE  exported and scored, 63652 edits
+  OFF       exported and scored, 63652 edits
+  ON        exported and scored, 63652 edits
+
+====================================================================================================
+CONTROL — this tree's re-export of the UNMODIFIED fixture vs the committed gate
+====================================================================================================
+row                                     committed   BASELINE   drift
+bach-brandenburg3-mvt1-468678-p1             6148       6148       0
+beethoven-sym5-mvt1-575951-p1                1358       1354      -4
+beethoven-sym5-mvt1-575951-p2                4407       4408       1
+beethoven-sym5-mvt1-575951-p3                3172       3172       0
+beethoven-sym5-mvt1-575951-p4                4714       4714       0
+beethoven-sym5-mvt1-984073-p1                1283       1273     -10
+beethoven-sym5-mvt1-984073-p2                4341       4347       6
+beethoven-sym5-mvt1-984073-p3                3034       3034       0
+beethoven-sym5-mvt1-984073-p4                4679       4679       0
+brahms-sym1-mvt1-317803-p1                   3431       3431       0
+brahms-sym1-mvt1-317803-p2                   6562       6562       0
+brahms-sym1-mvt1-317803-p3                   4573       4573       0
+brahms-sym1-mvt1-317803-p4                   7012       7012       0
+dvorak-sym9-mvt1-405834-p5                    661        661       0
+dvorak-sym9-mvt1-405834-p6                   2586       2586       0
+dvorak-sym9-mvt1-405834-p7                   5698       5698       0
+
+  4 of 16 rows drift from the committed gate. This is CONTEXT, not the result — see the docstring.
+
+====================================================================================================
+KC-3 — the roster flag, priced OFF vs ON
+====================================================================================================
+row                                     BASELINE            OFF             ON
+bach-brandenburg3-mvt1-468678-p1            6148       6148(+0)       6148(+0)
+beethoven-sym5-mvt1-575951-p1               1354       1354(+0)       1354(+0)
+beethoven-sym5-mvt1-575951-p2               4408       4408(+0)       4408(+0)
+beethoven-sym5-mvt1-575951-p3               3172       3172(+0)       3172(+0)
+beethoven-sym5-mvt1-575951-p4               4714       4714(+0)       4714(+0)
+beethoven-sym5-mvt1-984073-p1               1273       1273(+0)       1273(+0)
+beethoven-sym5-mvt1-984073-p2               4347       4347(+0)       4347(+0)
+beethoven-sym5-mvt1-984073-p3               3034       3034(+0)       3034(+0)
+beethoven-sym5-mvt1-984073-p4               4679       4679(+0)       4679(+0)
+brahms-sym1-mvt1-317803-p1                  3431       3431(+0)       3431(+0)
+brahms-sym1-mvt1-317803-p2                  6562       6562(+0)       6562(+0)
+brahms-sym1-mvt1-317803-p3                  4573       4573(+0)       4573(+0)
+brahms-sym1-mvt1-317803-p4                  7012       7012(+0)       7012(+0)
+dvorak-sym9-mvt1-405834-p5                   661        661(+0)        661(+0)
+dvorak-sym9-mvt1-405834-p6                  2586       2586(+0)       2586(+0)
+dvorak-sym9-mvt1-405834-p7                  5698       5698(+0)       5698(+0)
+
+  BASELINE  63652
+  OFF       63652   (+0 vs BASELINE — contextual re-run on this tree, NOT the roster)
+  ON        63652   (+0 vs OFF — ⭑ THIS IS THE ROSTER'S PRICE)
+
+  rows that moved: none
+  ⚠️ noise floor is ±6 edits. |delta| = 0 -> INSIDE the noise floor: not a result
+
+  wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a956bedd94022f439/benchmarks/omr-roster-wiring-2026-09/kc3-roster-price.json

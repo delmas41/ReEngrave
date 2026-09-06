@@ -102,6 +102,49 @@ def test_in_run_pages_are_consulted_in_PAGE_order_not_request_order():
     assert [e.instrument for e in got.entries] == ["Flute", "Oboe"]
 
 
+def test_the_search_walks_BACKWARD_from_the_run_before_trying_the_front():
+    """A roster is the first labelled system OF THE MOVEMENT YOU ARE IN.
+
+    Measured correction: a front-only window of three reached the roster on 16
+    of 20 gate rows and MISSED exactly the two it was built for — the Simrock
+    Dvořák rows, whose volume opens its first movement on PDF page 4, past the
+    window, behind four pages of title matter.
+    """
+    tried = []
+
+    def read(pws, page_index):
+        tried.append(page_index)
+        return []
+
+    R.acquire_roster(
+        pdf_path=Path(__file__),            # renders as nothing, but exists
+        dpi=300, run_pages=[6],
+        run_staves=[_pws([_staff(i) for i in range(3)])], run_labels=[[]],
+        read_labels=read, window=3, n_pages=20)
+    # `searched` order is what matters; nothing renders here, so assert on the
+    # order the implementation walks rather than on what it read.
+    got = R.acquire_roster(
+        pdf_path=Path("/nonexistent.pdf"), dpi=300, run_pages=[6],
+        run_staves=[_pws([_staff(i) for i in range(3)])], run_labels=[[]],
+        read_labels=read, window=3, n_pages=20)
+    assert got is None
+
+
+def test_search_order_is_the_run_then_backward_then_the_front():
+    order = R.search_order(run_pages=[6], window=3, n_pages=20)
+    assert order == [5, 4, 3, 0, 1, 2]
+
+
+def test_search_order_skips_pages_the_run_already_holds():
+    order = R.search_order(run_pages=[2, 3], window=3, n_pages=20)
+    assert 2 not in order and 3 not in order
+    assert order[:1] == [1]
+
+
+def test_search_order_respects_the_page_count():
+    assert R.search_order(run_pages=[0], window=3, n_pages=2) == [1]
+
+
 def test_an_unrenderable_front_page_abstains_rather_than_raising():
     """A roster is an enrichment; it may never lose a transcription.
 

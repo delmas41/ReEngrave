@@ -24,8 +24,82 @@ fixture's staff dicts are what identity is written onto; if fresh detection
 disagrees with the fixture about how many staves a system has, the join would
 be writing onto the wrong staves and the row ABSTAINS rather than reporting.
 
-    export OMRNED_PYTHON=/Users/seanjohnson/Desktop/ReEngrave/.venv-omrned/bin/python
     python3 benchmarks/omr-roster-wiring-2026-09/probe_roster_identity.py
+    python3 benchmarks/omr-roster-wiring-2026-09/merge_identity_runs.py \
+        --base /tmp/roster-identity-frontwindow.json \
+        --patch benchmarks/omr-roster-wiring-2026-09/roster-identity.json
+
+── KC-1 RESULT 2026-09-05: ACQUISITION PRECISION 64/64 = 1.000 ───────────────
+
+Through the production plumbing, against the hand-read `works.json` lineups:
+
+    beethoven-575951   roster page 0:  11 named / 12 staves,  11 correct
+    beethoven-984073   roster page 1:  11 named / 12 staves,  11 correct
+    brahms-317803      roster page 0:  12 named / 14 staves,  12 correct
+    dvorak-405834      roster page 4:  15 named / 15 staves,  15 correct
+    bach-468678        roster page 0:   5 named — no truth row, not scored
+
+⭑ 49 of 49 in the first sweep plus 15 of 15 on the Dvořák re-run = **64/64,
+zero misnamed**, reproducing `probe_real_acquisition.py`'s 51/51 outside the
+pipeline. The bar was ≥ 0.95. **KC-1 PASSES.**
+
+── ⚠️⚠️ THE FIRST SWEEP MISSED THE ONLY ROWS THE ROSTER WAS BUILT FOR ────────
+
+The first cut searched pages 0..2 of the PDF for a roster after the run's own
+pages came up empty. It acquired on 16 of 20 rows and **opened not one page** —
+every roster came off a page the run already held, because Litolff and
+Breitkopf abbreviate their margins but do not omit them.
+
+And it returned **NO ROSTER** for `dvorak-405834-p6` and `-p7` — the two Simrock
+rows, the publisher that labels a movement's first page and nothing after, i.e.
+precisely the case the whole design exists for. The Dvořák volume opens its
+first movement on **PDF page 4**, past a front window of three, behind title
+matter.
+
+The fix is a search ORDER, not a bigger window: a roster is the first labelled
+system OF THE MOVEMENT YOU ARE IN, and the run is inside that movement, so the
+search walks BACKWARD from the run's own first page before trying the front.
+`p6` then opens ONE page (4) and `p7` opens two (5, then 4). Cheaper as well as
+correct.
+
+── KC-2 RESULT 2026-09-05: coverage 0.884 -> 1.000, precision 0.926 -> 0.955 ─
+
+Pooled over the 198 truth-bearing staff records (`merge_identity_runs.py`,
+which asserts the OFF arm reproduced across the two runs — 45/45 overlapping
+records agree):
+
+    arm     n   named    cov   right   prec   right/all
+    OFF   198     175  0.884     162  0.926       0.818
+    ON    198     198  1.000     189  0.955       0.955
+
+**27 staves changed name. 27 FIXED. ZERO BROKEN.** The bar was "coverage rises
+AND precision does not fall". **KC-2 PASSES on both.**
+
+By publisher, which is where the shape is:
+
+    Breitkopf  OFF/ON  identical  (cov 1.000 already — labels every staff)
+    Litolff    prec 0.912 -> 0.941   (+2: `Bass voice` recovered from a
+                                      `score_order_ambiguity` guess of
+                                      `Contrabass`)
+    Simrock    cov 0.617 -> 1.000, prec 0.946 -> 1.000, right/all 0.583 ->
+               1.000  (+25)
+
+⭑ The gain lands ENTIRELY on the publisher with the worst coverage, which is
+what a roster is for. Provenance over all 198: `None` 23 -> 0, `score_order`
+46 -> 24, `score_order_ambiguity` 2 -> 0, and 45 records now sourced `roster`.
+Two of the fixes are the prior being OVERRULED, not merely gap-filled —
+`p7` ord 7 read `Trumpet` from score order and is a `Trombone`.
+
+⚠️ FOUR ROWS CANNOT BE MEASURED THIS WAY and are named, not hidden: the four
+Mahler rows abstain because staff detection on THIS tree disagrees with the
+committed fixture (19 vs 17 staves on p2, 21 vs 18 on p4). Writing identity
+onto the fixture's staff dicts would be writing onto the wrong staves. That is
+a fact about fixture drift, not about the roster.
+
+⚠️ n = 4 editions, 3 engravings, 198 staves, and ONE of the four publishers
+supplies 25 of the 27 fixes. The claim this supports is "a roster recovers the
+identity of pages whose publisher stops labelling", measured on one such
+publisher.
 """
 from __future__ import annotations
 

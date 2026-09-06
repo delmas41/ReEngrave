@@ -24,6 +24,48 @@ a delta inside ±6 is not a result.
     export OMRNED_PYTHON=/Users/seanjohnson/Desktop/ReEngrave/.venv-omrned/bin/python
     python3 benchmarks/omr-roster-wiring-2026-09/probe_roster_identity.py   # first
     python3 benchmarks/omr-roster-wiring-2026-09/price_roster_consumers.py
+
+── KC-3 RESULT 2026-09-05: THE ROSTER COSTS **EXACTLY ZERO EDITS** ───────────
+
+16 rows priced (the four Mahler rows are EXCLUDED and named — the identity
+probe abstained on them because this tree's staff detection disagrees with the
+committed fixture).
+
+    BASELINE  63652
+    OFF       63652   (+0 vs BASELINE)
+    ON        63652   (+0 vs OFF  ⭑ the roster's price)
+
+**Every single row is +0, not a compensating mixture**, and OFF == BASELINE on
+every row as well. That second equality is a strong control in its own right:
+re-running the whole contextual pass on this tree, clefs and all, with the flag
+off, reproduces the stored export byte for byte. The harness is not measuring
+itself.
+
+⭑ SO THE ROSTER CORRECTS 27 STAFF NAMES AND TOUCHES NOTHING ELSE — no note, no
+clef, no measure. That is the pre-registered PASS condition for part naming
+(|delta| <= 6), and the pre-registration is explicit about why: musicdiff does
+not score `<part-name>`, so the metric CANNOT see this consumer's value, and
+the edit measurement's only job here is to prove it costs nothing. A non-zero
+delta would have meant the roster changed something other than a name.
+
+⚠️ THE STANDING "ZERO EDITS SHIPS DISABLED" RULE IS ABOUT CONSUMERS THE METRIC
+CAN SEE, and this one it provably cannot. That distinction was written down
+BEFORE the number was known (`PRE_REGISTERED.md`), which is the only thing that
+makes it an argument rather than an excuse. The default is still Sean's.
+
+── CONTROL: the drift is the known one, reproduced exactly ───────────────────
+
+Four of 16 rows differ from the committed gate, and they are the SAME four
+rows and the SAME magnitudes `price_clef_consumer.py` attributed to `a4918874`
+("export: the whole-measure rest wears its fermata", 2026-09-04, an ancestor of
+this branch that POSTDATES the committed `.omr.musicxml`):
+
+    beethoven-575951-p1  -4    beethoven-984073-p1  -10
+    beethoven-575951-p2  +1    beethoven-984073-p2   +6
+
+Independent reproduction of an attributed drift from a different harness. It
+affects only the comparison to the gate's absolute numbers, and no absolute
+number from this harness is quoted as the gate's.
 """
 from __future__ import annotations
 
@@ -56,16 +98,24 @@ def main():
     if len(fixtures) != 20:
         raise SystemExit(f"expected 20 gate rows, found {len(fixtures)}")
 
-    rids = [p.name[: -len(f"{TAG}.omr.json")].rstrip(".") for p in fixtures]
-    missing = [r for r in rids if not (ARMS / f"{r}.ON.omr.json").exists()]
-    if missing:
-        raise SystemExit(
-            f"{len(missing)} arm documents missing from {ARMS} "
-            f"(run probe_roster_identity.py): {missing[:4]}")
+    all_rids = [p.name[: -len(f"{TAG}.omr.json")].rstrip(".") for p in fixtures]
+    # ⚠️ A row with no arm document is one `probe_roster_identity.py` ABSTAINED
+    # on — this tree's staff detection disagrees with the committed fixture, so
+    # writing identity onto the fixture's staff dicts would be writing onto the
+    # wrong staves. Those rows are EXCLUDED from both arms and named, rather
+    # than silently carried at delta 0, which would dilute the pooled figure
+    # with rows the flag never touched.
+    rids = [r for r in all_rids if (ARMS / f"{r}.ON.omr.json").exists()]
+    excluded = [r for r in all_rids if r not in rids]
+    if not rids:
+        raise SystemExit(f"no arm documents in {ARMS} — run "
+                         f"probe_roster_identity.py first")
+    print(f"rows priced: {len(rids)}   EXCLUDED (probe abstained): "
+          f"{len(excluded)} {excluded}")
 
     docs = {
-        "BASELINE": {r: json.loads(p.read_text())
-                     for r, p in zip(rids, fixtures)},
+        "BASELINE": {r: json.loads(
+            (FIXTURES / f"{r}{TAG}.omr.json").read_text()) for r in rids},
         "OFF": {r: json.loads((ARMS / f"{r}.OFF.omr.json").read_text())
                 for r in rids},
         "ON": {r: json.loads((ARMS / f"{r}.ON.omr.json").read_text())
@@ -80,7 +130,10 @@ def main():
             xml.write_text(to_musicxml(doc))
             pairs.append((rid, str(xml),
                           str(FIXTURES / f"{rid}.truth.musicxml")))
-        scored = omr_ned_mod.score_batch(pairs, detail=False)
+        # ⚠️ `detail` is a musicdiff DETAIL LEVEL STRING, not a boolean. The
+        # default is what the gate itself scores with; passing anything else
+        # would change the categories AND the edit count.
+        scored = omr_ned_mod.score_batch(pairs)
         by = {s["name"]: s for s in scored.get("scores",
                                                scored.get("pairs", []))}
         if not by:

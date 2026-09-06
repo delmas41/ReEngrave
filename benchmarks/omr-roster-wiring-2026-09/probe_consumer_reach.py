@@ -21,6 +21,37 @@ Four consumers are in scope:
                   per-system fragment parts.
 
     python3 benchmarks/omr-roster-wiring-2026-09/probe_consumer_reach.py
+
+── RESULT 2026-09-05: 396 staves, and one consumer is killed before pricing ──
+
+    IDENTITY (unnamed 31 + prior-derived 120)   151   0.381
+    PART NAMING (coordinate stubs)               31   0.078
+    CLEF FILL (no clef read at all)              34   0.086
+    STITCH (ordinal join refuses)          12 of 20 rows, 198 staves
+
+⚠️⚠️ **STITCH IS ALREADY SATURATED AND IS NOT A ROSTER CONSUMER.** Twelve rows
+refuse the ordinal join, but NINE of them are SINGLE-SYSTEM pages, where
+`_stitch_slots` returns None by design and stitching is a no-op. Of the three
+multi-system rows where the question genuinely arises — `beethoven-984073-p3`,
+`beethoven-575951-p3`, `brahms-317803-p2` — `_stitch_slots_by_slot` is
+**already available on 3 of 3**: every staff already carries a slot index, so
+the slot join is complete today with no roster at all.
+
+A roster cannot widen that consumer by one row. What blocks `OMR_SLOT_STITCH`
+is what `benchmarks/omr-staff-structure-2026-09/FINDINGS.md` measured —
+musicdiff charges an unpaired truth PART more than that part's unpaired
+MEASURES — which is a metric fact, not an identity gap.
+
+⚠️ CLEF FILL's 34 reproduces `probe_fill_reach.py` exactly, from a different
+direction (that probe counted per arm; this one counts the population). 91.4%
+of staves already carry a read clef, which is why a perfect-precision roster
+tier priced at exactly 0 edits there: the two populations are near-disjoint.
+
+⚠️ 365 of 396 staves ALREADY carry a name, so the roster's opportunity is not
+mainly missing names — it is the **120 that the layout prior DEDUCED**. For the
+identity number to move, the roster has to be allowed to outrank the prior, not
+merely to fill its gaps. It is (`setdefault` protects only names read on a page
+of THIS run).
 """
 from __future__ import annotations
 

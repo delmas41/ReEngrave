@@ -215,6 +215,26 @@ def _roster_from_system(staves: list[Staff], labels, page_index: int,
                   staves=tuple(staves))
 
 
+def search_order(*, run_pages: Sequence[int], window: int,
+                 n_pages: int | None = None) -> list[int]:
+    """Which pages to OPEN, in order, after the run's own pages come up empty.
+
+    Backward from the run's first page, then the front of the document. See
+    `acquire_roster` for why the backward half exists and what it fixed.
+    """
+    already = set(run_pages)
+    first = min(run_pages) if run_pages else 0
+    backward = [i for i in range(first - 1, first - 1 - window, -1) if i >= 0]
+    out: list[int] = []
+    for i in backward + list(range(window)):
+        if i in already or i in out:
+            continue
+        if n_pages is not None and i >= n_pages:
+            continue
+        out.append(i)
+    return out
+
+
 def acquire_roster(
     *,
     pdf_path: Path,
@@ -252,16 +272,29 @@ def acquire_roster(
         if roster is not None:
             return _stamp(roster, searched, opened)
 
-    # ── Paid tier: open pages from the front of the document ────────────────
+    # ── Paid tier: open pages this run did not ask for ──────────────────────
+    #
+    # ⚠️ SEARCH BACKWARD FROM THE RUN, THEN THE FRONT — and the order is a
+    # MEASURED correction, not a preference. The first cut searched pages 0..2
+    # of the PDF, on the reasoning that a score names its orchestra at the
+    # front. On the 20-row gate that reached the roster for 16 rows and MISSED
+    # exactly the two it was built for: `dvorak-405834-p6` and `-p7`, the
+    # Simrock rows whose own pages print no label at all — because that
+    # volume's first movement starts on **PDF page 4**, past a front window of
+    # three, and the front of the file is title matter.
+    #
+    # A roster is the first labelled system OF THE MOVEMENT YOU ARE IN, and the
+    # run is inside that movement. Walking back from the run's own first page
+    # finds the movement's opening in ONE page where a front search cannot find
+    # it at all — and it is cheaper, because it stops sooner.
+    #
+    # The front pages are still tried afterwards, for the case a run starts at
+    # the very beginning of a movement that itself opens the volume.
     from .preprocessing import render_page
     from .staff_detector import detect_staves
 
-    already = set(run_pages)
-    for page_index in range(window):
-        if page_index in already:
-            continue
-        if n_pages is not None and page_index >= n_pages:
-            break
+    for page_index in search_order(run_pages=run_pages, window=window,
+                                   n_pages=n_pages):
         searched.append(page_index)
         try:
             pws = detect_staves(render_page(pdf_path, page_index, dpi=dpi))
