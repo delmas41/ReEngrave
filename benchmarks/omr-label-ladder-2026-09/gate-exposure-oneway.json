@@ -1,0 +1,3193 @@
+[
+  {
+    "row_id": "beethoven-sym5-mvt1-984073-p1",
+    "n_staves": 12,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "Flauti.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Obol.",
+        "Oboe",
+        "low"
+      ],
+      "2": [
+        "Clarinetti in B.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fagotti.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Corni in Es.",
+        "Horn",
+        "medium"
+      ],
+      "5": [
+        "Trombe in C.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Timpani in C.G.",
+        "Timpani",
+        "high"
+      ],
+      "7": [
+        "Violino I.",
+        "Violin",
+        "high"
+      ],
+      "8": [
+        "Violino II.",
+        "Violin",
+        "high"
+      ],
+      "9": [
+        "Viola.",
+        "Viola",
+        "high"
+      ],
+      "10": [
+        "Violoncello.",
+        "Cello",
+        "high"
+      ],
+      "11": [
+        "Basso.",
+        "Bass voice",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Flauti.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Obol.",
+        "Oboe",
+        "low"
+      ],
+      "2": [
+        "Clarinetti in B.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fagotti.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Corni in Es.",
+        "Horn",
+        "medium"
+      ],
+      "5": [
+        "Trombe in C.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Timpani in C.G.",
+        "Timpani",
+        "high"
+      ],
+      "7": [
+        "Violino I.",
+        "Violin",
+        "high"
+      ],
+      "8": [
+        "Violino II.",
+        "Violin",
+        "high"
+      ],
+      "9": [
+        "Viola.",
+        "Viola",
+        "high"
+      ],
+      "10": [
+        "Violoncello.",
+        "Cello",
+        "high"
+      ],
+      "11": [
+        "Basso.",
+        "Bass voice",
+        "high"
+      ]
+    },
+    "staves_changed": []
+  },
+  {
+    "row_id": "beethoven-sym5-mvt1-984073-p2",
+    "n_staves": 22,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "13": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "14": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "15": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "16": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "17": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "13": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "14": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "15": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "16": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "17": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ]
+    },
+    "staves_changed": []
+  },
+  {
+    "row_id": "beethoven-sym5-mvt1-984073-p3",
+    "n_staves": 19,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "13": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "14": [
+        "Cor.",
+        "Horn",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "13": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "14": [
+        "Cor.",
+        "Horn",
+        "high"
+      ]
+    },
+    "staves_changed": []
+  },
+  {
+    "row_id": "beethoven-sym5-mvt1-984073-p4",
+    "n_staves": 22,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "13": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "14": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "15": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "16": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "17": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "13": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "14": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "15": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "16": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "17": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ]
+    },
+    "staves_changed": []
+  },
+  {
+    "row_id": "beethoven-sym5-mvt1-575951-p1",
+    "n_staves": 12,
+    "text_layer_labels": 12,
+    "off": {
+      "0": [
+        "Flauti.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Oboi.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Clarinetti in B.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fagotti.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Corni in Es.",
+        "Horn",
+        "medium"
+      ],
+      "5": [
+        "Trombe inC.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Timpani in C.G.",
+        "Timpani",
+        "high"
+      ],
+      "7": [
+        "Violino ].",
+        "Violin",
+        "high"
+      ],
+      "8": [
+        "Yiolino II.",
+        "Violin",
+        "low"
+      ],
+      "9": [
+        "Viola.",
+        "Viola",
+        "high"
+      ],
+      "10": [
+        "Violoncello.",
+        "Cello",
+        "high"
+      ],
+      "11": [
+        "Basso.",
+        "Bass voice",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Flauti.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Oboi.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Clarinetti in B.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fagotti.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Corni in Es.",
+        "Horn",
+        "medium"
+      ],
+      "5": [
+        "Trombe in C.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Timpani in C.G.",
+        "Timpani",
+        "high"
+      ],
+      "7": [
+        "Violino I.",
+        "Violin",
+        "high"
+      ],
+      "8": [
+        "Violino II.",
+        "Violin",
+        "high"
+      ],
+      "9": [
+        "Viola.",
+        "Viola",
+        "high"
+      ],
+      "10": [
+        "Violoncello.",
+        "Cello",
+        "high"
+      ],
+      "11": [
+        "Basso.",
+        "Bass voice",
+        "high"
+      ]
+    },
+    "staves_changed": [
+      "5",
+      "7",
+      "8"
+    ]
+  },
+  {
+    "row_id": "beethoven-sym5-mvt1-575951-p2",
+    "n_staves": 22,
+    "text_layer_labels": 5,
+    "off": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "13": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "14": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "15": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "16": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "17": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "13": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "14": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "15": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "16": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "17": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ]
+    },
+    "staves_changed": []
+  },
+  {
+    "row_id": "beethoven-sym5-mvt1-575951-p3",
+    "n_staves": 19,
+    "text_layer_labels": 10,
+    "off": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "13": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "14": [
+        "Cor.",
+        "Horn",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "13": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "14": [
+        "Cor.",
+        "Horn",
+        "high"
+      ]
+    },
+    "staves_changed": []
+  },
+  {
+    "row_id": "beethoven-sym5-mvt1-575951-p4",
+    "n_staves": 22,
+    "text_layer_labels": 11,
+    "off": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "13": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "14": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "15": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "16": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "17": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "11": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "12": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "13": [
+        "Cl.",
+        "Clarinet",
+        "high"
+      ],
+      "14": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "15": [
+        "Cor.",
+        "Horn",
+        "high"
+      ],
+      "16": [
+        "Tr.",
+        "Trumpet",
+        "high"
+      ],
+      "17": [
+        "Tp.",
+        "Timpani",
+        "high"
+      ]
+    },
+    "staves_changed": []
+  },
+  {
+    "row_id": "dvorak-sym9-mvt1-405834-p5",
+    "n_staves": 15,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "Flauti.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Oboi.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Clarinetti in A.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fagotti.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Corni I. II. in E.",
+        "Horn",
+        "medium"
+      ],
+      "5": [
+        "Corni III. IV. in C.",
+        "Horn",
+        "medium"
+      ],
+      "6": [
+        "Trombe in E.",
+        "Trumpet",
+        "high"
+      ],
+      "7": [
+        "Tromboni I. II.",
+        "Trombone",
+        "high"
+      ],
+      "8": [
+        "Trombone basso.",
+        "Trombone",
+        "high"
+      ],
+      "9": [
+        "Tympani A. E. H.",
+        "Timpani",
+        "high"
+      ],
+      "10": [
+        "Violino I.",
+        "Violin",
+        "high"
+      ],
+      "11": [
+        "Violino II.",
+        "Violin",
+        "high"
+      ],
+      "12": [
+        "Viola.",
+        "Viola",
+        "high"
+      ],
+      "13": [
+        "Violoncello.",
+        "Cello",
+        "high"
+      ],
+      "14": [
+        "Contrabasso.",
+        "Contrabass",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Flauti.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Oboi.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Clarinetti in A.",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fagotti.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Corni I. II. in E.",
+        "Horn",
+        "medium"
+      ],
+      "5": [
+        "Corni III. IV. in C.",
+        "Horn",
+        "medium"
+      ],
+      "6": [
+        "Trombe in E.",
+        "Trumpet",
+        "high"
+      ],
+      "7": [
+        "Tromboni I. II.",
+        "Trombone",
+        "high"
+      ],
+      "8": [
+        "Trombone basso.",
+        "Trombone",
+        "high"
+      ],
+      "9": [
+        "Tympani A. E. H.",
+        "Timpani",
+        "high"
+      ],
+      "10": [
+        "Violino I.",
+        "Violin",
+        "high"
+      ],
+      "11": [
+        "Violino II.",
+        "Violin",
+        "high"
+      ],
+      "12": [
+        "Viola.",
+        "Viola",
+        "high"
+      ],
+      "13": [
+        "Violoncello.",
+        "Cello",
+        "high"
+      ],
+      "14": [
+        "Contrabasso.",
+        "Contrabass",
+        "high"
+      ]
+    },
+    "staves_changed": []
+  },
+  {
+    "row_id": "dvorak-sym9-mvt1-405834-p6",
+    "n_staves": 15,
+    "text_layer_labels": 0,
+    "off": {
+      "13": [
+        "|",
+        null,
+        "none"
+      ]
+    },
+    "on": {
+      "13": [
+        "|",
+        null,
+        "none"
+      ]
+    },
+    "staves_changed": []
+  },
+  {
+    "row_id": "dvorak-sym9-mvt1-405834-p7",
+    "n_staves": 30,
+    "text_layer_labels": 0,
+    "off": {},
+    "on": {},
+    "staves_changed": []
+  },
+  {
+    "row_id": "brahms-sym1-mvt1-317803-p1",
+    "n_staves": 14,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "2 Fl\u00f6ten",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "2 Oboen",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "2 Klarinetten in B",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "2 Fagotte",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Kontrafagott",
+        "Contrabassoon",
+        "high"
+      ],
+      "5": [
+        "in C 1 2",
+        null,
+        "none"
+      ],
+      "6": [
+        "in Es 3 4",
+        null,
+        "none"
+      ],
+      "7": [
+        "2 Trompeten in C",
+        "Trumpet",
+        "high"
+      ],
+      "8": [
+        "Pauken in C u. G",
+        "Timpani",
+        "medium"
+      ],
+      "9": [
+        "1. Violine",
+        "Violin",
+        "high"
+      ],
+      "10": [
+        "2. Violine",
+        "Violin",
+        "high"
+      ],
+      "11": [
+        "Bratsche",
+        "Viola",
+        "high"
+      ],
+      "12": [
+        "Violoncell",
+        "Cello",
+        "high"
+      ],
+      "13": [
+        "Kontraba\u00df",
+        "Contrabass",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "2 Fl\u00f6ten",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "2 Oboen",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "2 Klarinetten in B",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "2 Fagotte",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Kontrafagott",
+        "Contrabassoon",
+        "high"
+      ],
+      "5": [
+        "in C 1 2",
+        null,
+        "none"
+      ],
+      "7": [
+        "2 Trompeten in C",
+        "Trumpet",
+        "high"
+      ],
+      "8": [
+        "Pauken in C u. G",
+        "Timpani",
+        "medium"
+      ],
+      "9": [
+        "1. Violine",
+        "Violin",
+        "high"
+      ],
+      "10": [
+        "2. Violine",
+        "Violin",
+        "high"
+      ],
+      "11": [
+        "Bratsche",
+        "Viola",
+        "high"
+      ],
+      "12": [
+        "Violoncell",
+        "Cello",
+        "high"
+      ],
+      "13": [
+        "Kontraba\u00df",
+        "Contrabass",
+        "high"
+      ],
+      "6": [
+        "Horner 4 | : |",
+        "Horn",
+        "high"
+      ]
+    },
+    "staves_changed": [
+      "6"
+    ]
+  },
+  {
+    "row_id": "brahms-sym1-mvt1-317803-p2",
+    "n_staves": 27,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "5": [
+        "(C)",
+        null,
+        "none"
+      ],
+      "6": [
+        "(Es)",
+        null,
+        "none"
+      ],
+      "7": [
+        "Trpt.",
+        "Trumpet",
+        "high"
+      ],
+      "8": [
+        "Pk. (C)",
+        "Timpani",
+        "high"
+      ],
+      "9": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "10": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "11": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "12": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "13": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ],
+      "14": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "15": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "16": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "17": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "18": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "19": [
+        "(C)",
+        null,
+        "none"
+      ],
+      "20": [
+        "Hr. (Es)",
+        "Horn",
+        "medium"
+      ],
+      "21": [
+        "Pk.",
+        "Timpani",
+        "high"
+      ],
+      "22": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "23": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "24": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "25": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "26": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "5": [
+        "(C)",
+        null,
+        "none"
+      ],
+      "6": [
+        "(Es)",
+        null,
+        "none"
+      ],
+      "7": [
+        "Trpt.",
+        "Trumpet",
+        "high"
+      ],
+      "8": [
+        "Pk. (C)",
+        "Timpani",
+        "high"
+      ],
+      "9": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "10": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "11": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "12": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "13": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ],
+      "14": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "15": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "16": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "17": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "18": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "20": [
+        "Hr. (Es)",
+        "Horn",
+        "medium"
+      ],
+      "21": [
+        "Pk.",
+        "Timpani",
+        "high"
+      ],
+      "22": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "23": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "24": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "25": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "26": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ],
+      "19": [
+        "Hr.",
+        "Horn",
+        "high"
+      ]
+    },
+    "staves_changed": [
+      "19"
+    ]
+  },
+  {
+    "row_id": "brahms-sym1-mvt1-317803-p3",
+    "n_staves": 28,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "5": [
+        "(C) Hr.",
+        "Horn",
+        "high"
+      ],
+      "6": [
+        "(Es)",
+        null,
+        "none"
+      ],
+      "7": [
+        "Trpt. (C)",
+        "Trumpet",
+        "high"
+      ],
+      "8": [
+        "Pk.",
+        "Timpani",
+        "high"
+      ],
+      "9": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "10": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "11": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "12": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "13": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ],
+      "14": [
+        "F1.",
+        "Flute",
+        "low"
+      ],
+      "15": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "16": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "17": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "18": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "19": [
+        "(C)",
+        null,
+        "none"
+      ],
+      "20": [
+        "Hr. (Es)",
+        "Horn",
+        "medium"
+      ],
+      "21": [
+        "Trpt. (C)",
+        "Trumpet",
+        "high"
+      ],
+      "22": [
+        "Pk.",
+        "Timpani",
+        "high"
+      ],
+      "23": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "24": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "25": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "26": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "27": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "5": [
+        "(C) Hr.",
+        "Horn",
+        "high"
+      ],
+      "6": [
+        "(Es)",
+        null,
+        "none"
+      ],
+      "7": [
+        "Trpt. (C)",
+        "Trumpet",
+        "high"
+      ],
+      "8": [
+        "Pk.",
+        "Timpani",
+        "high"
+      ],
+      "9": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "10": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "11": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "12": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "13": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ],
+      "14": [
+        "F1.",
+        "Flute",
+        "low"
+      ],
+      "15": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "16": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "17": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "18": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "20": [
+        "Hr. (Es)",
+        "Horn",
+        "medium"
+      ],
+      "21": [
+        "Trpt. (C)",
+        "Trumpet",
+        "high"
+      ],
+      "22": [
+        "Pk.",
+        "Timpani",
+        "high"
+      ],
+      "23": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "24": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "25": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "26": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "27": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ],
+      "19": [
+        "(C) Hr.",
+        "Horn",
+        "high"
+      ]
+    },
+    "staves_changed": [
+      "19"
+    ]
+  },
+  {
+    "row_id": "brahms-sym1-mvt1-317803-p4",
+    "n_staves": 28,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "F1.",
+        "Flute",
+        "low"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "5": [
+        "(C)",
+        null,
+        "none"
+      ],
+      "6": [
+        "(Es)",
+        null,
+        "none"
+      ],
+      "7": [
+        "Trpt. (C)",
+        "Trumpet",
+        "high"
+      ],
+      "8": [
+        "Pk.",
+        "Timpani",
+        "high"
+      ],
+      "9": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "10": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "11": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "12": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "13": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ],
+      "14": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "15": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "16": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "17": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "18": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "19": [
+        "(C) Hr.",
+        "Horn",
+        "high"
+      ],
+      "20": [
+        "(Es)",
+        null,
+        "none"
+      ],
+      "21": [
+        "Trpt. (C)",
+        "Trumpet",
+        "high"
+      ],
+      "22": [
+        "Pk.",
+        "Timpani",
+        "high"
+      ],
+      "23": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "24": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "25": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "26": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "27": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "F1.",
+        "Flute",
+        "low"
+      ],
+      "1": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "6": [
+        "(Es)",
+        null,
+        "none"
+      ],
+      "7": [
+        "Trpt. (C)",
+        "Trumpet",
+        "high"
+      ],
+      "8": [
+        "Pk.",
+        "Timpani",
+        "high"
+      ],
+      "9": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "10": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "11": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "12": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "13": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ],
+      "14": [
+        "Fl.",
+        "Flute",
+        "high"
+      ],
+      "15": [
+        "Ob.",
+        "Oboe",
+        "high"
+      ],
+      "16": [
+        "Klar. (B)",
+        "Clarinet",
+        "high"
+      ],
+      "17": [
+        "Fag.",
+        "Bassoon",
+        "high"
+      ],
+      "18": [
+        "K-Fag.",
+        "Contrabassoon",
+        "high"
+      ],
+      "19": [
+        "(C) Hr.",
+        "Horn",
+        "high"
+      ],
+      "20": [
+        "(Es)",
+        null,
+        "none"
+      ],
+      "21": [
+        "Trpt. (C)",
+        "Trumpet",
+        "high"
+      ],
+      "22": [
+        "Pk.",
+        "Timpani",
+        "high"
+      ],
+      "23": [
+        "1.Viol.",
+        "Violin",
+        "high"
+      ],
+      "24": [
+        "2.Viol.",
+        "Violin",
+        "high"
+      ],
+      "25": [
+        "Br.",
+        "Viola",
+        "high"
+      ],
+      "26": [
+        "Vcl.",
+        "Cello",
+        "high"
+      ],
+      "27": [
+        "K-B.",
+        "Contrabass",
+        "high"
+      ],
+      "5": [
+        "| | Hr.",
+        "Horn",
+        "high"
+      ]
+    },
+    "staves_changed": [
+      "5"
+    ]
+  },
+  {
+    "row_id": "mahler-sym5-mvt1-local-p2",
+    "n_staves": 19,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "Vier Fl\u00f6ten",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Drei Hoboen",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Drei Klarinetten in A",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Zwei Fagotte",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Contrafagott",
+        "Contrabassoon",
+        "high"
+      ],
+      "5": [
+        "Sechs H\u00f6rner in F",
+        "Horn",
+        "medium"
+      ],
+      "7": [
+        "Vier Trompeten in B",
+        "Trumpet",
+        "medium"
+      ],
+      "9": [
+        "Drei Posaunen",
+        "Trombone",
+        "high"
+      ],
+      "10": [
+        "Tuba",
+        "Tuba",
+        "high"
+      ],
+      "11": [
+        "Pauken Becken",
+        "Timpani",
+        "medium"
+      ],
+      "12": [
+        "Grosse Trommel Becken Gr. Trommel) von einem geschlagen",
+        "Percussion",
+        "medium"
+      ],
+      "13": [
+        "Kleine Trommel Tamtam",
+        "Percussion",
+        "high"
+      ],
+      "14": [
+        "Erste Violinen",
+        "Violin",
+        "high"
+      ],
+      "15": [
+        "Zweite Violinen",
+        "Violin",
+        "medium"
+      ],
+      "16": [
+        "Violen",
+        "Viola",
+        "high"
+      ],
+      "17": [
+        "Violoncelle",
+        "Cello",
+        "high"
+      ],
+      "18": [
+        "B\u00e4sse",
+        "Bass voice",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Vier Fl\u00f6ten",
+        "Flute",
+        "high"
+      ],
+      "1": [
+        "Drei Hoboen",
+        "Oboe",
+        "high"
+      ],
+      "2": [
+        "Drei Klarinetten in A",
+        "Clarinet",
+        "high"
+      ],
+      "3": [
+        "Zwei Fagotte",
+        "Bassoon",
+        "high"
+      ],
+      "4": [
+        "Contrafagott",
+        "Contrabassoon",
+        "high"
+      ],
+      "5": [
+        "Sechs H\u00f6rner in F",
+        "Horn",
+        "medium"
+      ],
+      "7": [
+        "Vier Trompeten in B",
+        "Trumpet",
+        "medium"
+      ],
+      "9": [
+        "Drei Posaunen",
+        "Trombone",
+        "high"
+      ],
+      "10": [
+        "Tuba",
+        "Tuba",
+        "high"
+      ],
+      "11": [
+        "Pauken Becken",
+        "Timpani",
+        "medium"
+      ],
+      "12": [
+        "Grosse Trommel Becken Gr. Trommel) von einem geschlagen",
+        "Percussion",
+        "medium"
+      ],
+      "13": [
+        "Kleine Trommel Tamtam",
+        "Percussion",
+        "high"
+      ],
+      "14": [
+        "Erste Violinen",
+        "Violin",
+        "high"
+      ],
+      "15": [
+        "Zweite Violinen",
+        "Violin",
+        "medium"
+      ],
+      "16": [
+        "Violen",
+        "Viola",
+        "high"
+      ],
+      "17": [
+        "Violoncelle",
+        "Cello",
+        "high"
+      ],
+      "18": [
+        "B\u00e4sse",
+        "Bass voice",
+        "high"
+      ],
+      "8": [
+        "Vier Trompeten",
+        "Trumpet",
+        "high"
+      ]
+    },
+    "staves_changed": [
+      "8"
+    ]
+  },
+  {
+    "row_id": "mahler-sym5-mvt1-local-p3",
+    "n_staves": 15,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "Fag. 1",
+        "Bassoon",
+        "high"
+      ],
+      "1": [
+        "2",
+        null,
+        "none"
+      ],
+      "2": [
+        "3",
+        null,
+        "none"
+      ],
+      "3": [
+        "F-H\u00f6rner 5 4",
+        "Horn",
+        "high"
+      ],
+      "4": [
+        "7",
+        null,
+        "none"
+      ],
+      "5": [
+        "B-Tromp. 9 8",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Posaunen 1",
+        "Trombone",
+        "high"
+      ],
+      "7": [
+        "Tuba 2",
+        "Tuba",
+        "high"
+      ],
+      "11": [
+        "Zweite Viol.",
+        "Violin",
+        "medium"
+      ],
+      "13": [
+        "B\u00e4sse",
+        "Bass voice",
+        "high"
+      ],
+      "8": [
+        "Becken",
+        "Percussion",
+        "high"
+      ],
+      "9": [
+        "Gr. Tr.",
+        "Percussion",
+        "high"
+      ],
+      "10": [
+        "Viol. Erste",
+        "Violin",
+        "medium"
+      ],
+      "12": [
+        "Violen",
+        "Viola",
+        "high"
+      ],
+      "14": [
+        "Basse",
+        "Bass voice",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "Fag. 1",
+        "Bassoon",
+        "high"
+      ],
+      "3": [
+        "F-H\u00f6rner 5 4",
+        "Horn",
+        "high"
+      ],
+      "5": [
+        "B-Tromp. 9 8",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "Posaunen 1",
+        "Trombone",
+        "high"
+      ],
+      "7": [
+        "Tuba 2",
+        "Tuba",
+        "high"
+      ],
+      "11": [
+        "Zweite Viol.",
+        "Violin",
+        "medium"
+      ],
+      "13": [
+        "B\u00e4sse",
+        "Bass voice",
+        "high"
+      ],
+      "1": [
+        "Contraf.",
+        "Contrabassoon",
+        "high"
+      ],
+      "2": [
+        "4 8 5 F-Horner",
+        "Horn",
+        "high"
+      ],
+      "4": [
+        "4 2 B-Tromp.",
+        "Trumpet",
+        "high"
+      ],
+      "8": [
+        "Becken",
+        "Percussion",
+        "high"
+      ],
+      "9": [
+        "Gr. Tr.",
+        "Percussion",
+        "high"
+      ],
+      "10": [
+        "Viol. Erste",
+        "Violin",
+        "medium"
+      ],
+      "12": [
+        "Violen",
+        "Viola",
+        "high"
+      ],
+      "14": [
+        "Basse",
+        "Bass voice",
+        "high"
+      ]
+    },
+    "staves_changed": [
+      "1",
+      "2",
+      "4"
+    ]
+  },
+  {
+    "row_id": "mahler-sym5-mvt1-local-p4",
+    "n_staves": 21,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "1 Hoboen",
+        "Oboe",
+        "high"
+      ],
+      "1": [
+        "4 A-Klar, 2 8",
+        "Clarinet",
+        "high"
+      ],
+      "2": [
+        "4 Fag. 2",
+        "Bassoon",
+        "high"
+      ],
+      "3": [
+        "Contraf.",
+        "Contrabassoon",
+        "high"
+      ],
+      "4": [
+        "4 8 5",
+        null,
+        "none"
+      ],
+      "5": [
+        "F-Horner 2. 4 6",
+        "Horn",
+        "high"
+      ],
+      "6": [
+        "4 a",
+        null,
+        "none"
+      ],
+      "7": [
+        "B-Tromp. 8 4",
+        "Trumpet",
+        "high"
+      ],
+      "8": [
+        "4 Posaunen $",
+        "Trombone",
+        "high"
+      ],
+      "9": [
+        "Tuba",
+        "Tuba",
+        "high"
+      ],
+      "10": [
+        "Pauken",
+        "Timpani",
+        "high"
+      ],
+      "11": [
+        "Becken",
+        "Percussion",
+        "high"
+      ],
+      "12": [
+        "Gr. Tr.",
+        "Percussion",
+        "high"
+      ],
+      "13": [
+        "Ki. Tr.",
+        "Trumpet",
+        "medium"
+      ],
+      "14": [
+        "Viol. Erste",
+        "Violin",
+        "medium"
+      ],
+      "15": [
+        "Zweite Viol.",
+        "Violin",
+        "medium"
+      ],
+      "16": [
+        "Violen",
+        "Viola",
+        "high"
+      ],
+      "17": [
+        "Veelle.",
+        null,
+        "none"
+      ],
+      "18": [
+        "get.",
+        null,
+        "none"
+      ],
+      "19": [
+        "Basse )",
+        "Bass voice",
+        "high"
+      ],
+      "20": [
+        "get.",
+        null,
+        "none"
+      ]
+    },
+    "on": {
+      "0": [
+        "1 Hoboen",
+        "Oboe",
+        "high"
+      ],
+      "1": [
+        "4 A-Klar, 2 8",
+        "Clarinet",
+        "high"
+      ],
+      "2": [
+        "4 Fag. 2",
+        "Bassoon",
+        "high"
+      ],
+      "3": [
+        "Contraf.",
+        "Contrabassoon",
+        "high"
+      ],
+      "4": [
+        "4 8 5",
+        null,
+        "none"
+      ],
+      "5": [
+        "F-Horner 2. 4 6",
+        "Horn",
+        "high"
+      ],
+      "6": [
+        "4 a",
+        null,
+        "none"
+      ],
+      "7": [
+        "B-Tromp. 8 4",
+        "Trumpet",
+        "high"
+      ],
+      "8": [
+        "4 Posaunen $",
+        "Trombone",
+        "high"
+      ],
+      "9": [
+        "Tuba",
+        "Tuba",
+        "high"
+      ],
+      "10": [
+        "Pauken",
+        "Timpani",
+        "high"
+      ],
+      "11": [
+        "Becken",
+        "Percussion",
+        "high"
+      ],
+      "12": [
+        "Gr. Tr.",
+        "Percussion",
+        "high"
+      ],
+      "13": [
+        "Ki. Tr.",
+        "Trumpet",
+        "medium"
+      ],
+      "14": [
+        "Viol. Erste",
+        "Violin",
+        "medium"
+      ],
+      "15": [
+        "Zweite Viol.",
+        "Violin",
+        "medium"
+      ],
+      "16": [
+        "Violen",
+        "Viola",
+        "high"
+      ],
+      "17": [
+        "Veelle.",
+        null,
+        "none"
+      ],
+      "18": [
+        "get.",
+        null,
+        "none"
+      ],
+      "19": [
+        "Basse )",
+        "Bass voice",
+        "high"
+      ],
+      "20": [
+        "get.",
+        null,
+        "none"
+      ]
+    },
+    "staves_changed": []
+  },
+  {
+    "row_id": "mahler-sym5-mvt1-local-p5",
+    "n_staves": 21,
+    "text_layer_labels": 0,
+    "off": {
+      "1": [
+        "A-Klar.  2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47   48   49   50   51   52   53   54   55   56   57   58   59   60   61   62   63   64   65   66   67   68   69   70   71   72   73   74   75   76   77   78   79   80   81   82   83   84   85   86   87   88   89   90   91   92   93   94   95   96   97   98   99   100   101   102   103   104   105   106   107   108   109   110   111   112   113   114   115   116   117   118   119   120   121   122   123   124   125   126   127   128   129   130   131   132   133   134   134   135   136   137   138   139   140   141   142   143   144   145   146   147   148   149   150   151   152   153   154   155   156   157   158   159   160   161   162   163   164   165   166   167   168   169   169   170   171   172   173   174   175   176   177   178   179   180   181   182   183   184   185   186   187   188   189   190   191   192   193   194   195   196   197   198   199   200   201   202   203   204   205   206   207   208   209   210   211   212   213   214   215   216   217   218   219   220   221   222   223   224   225   226   227   228   229   230   231   232   233   234   234   235   236   237   238   239   240   241   242   243   244   245   246   247   248   249   250   251   252   253   254   255   256   257   258   259   260   261   262   263   264   265   266   267   268   269   269   270   271   272   273   274   275   276   277   278   279   280   281   282   283   284   285   286   287   288   289   290   291   292   293   294   295   296   297   298   299   300   301   302   303   304   305   306   307   308   309   310   311   312   313   314   315   316   317   318   319   320   321   322   323   324   325   326   327   328   329   330   331   332   333   334   334   335   336   337   338   339   340   341   342   343   344   345   346   347   348   349   350   351   352   353   354   355   356   357   358   359   360   361   362   363   364   365   366   367   368   369   370   371   372   373   374   375   376   377   378   379   380   381   382   383   384   385   386   387   388   389   390   391   392   393   394   395   396   397   398   399   400   401   402   403   404   405   406   407   408   409   410   411   412   413   414   415   416   417   418   419   420   421   422   423   424   425   426   427   428   429   430   431   432   433   434   434   435   436   437   438   439   440   441   443   444   445   446   447   448   449   450   451   452   453   454   455   456   457   458   459   460   461   462   463   464   465   466   467   468   469   470   471   472   473   474   475   476   477   478   479   480   481   482   483   484   485   486   487   488   489   490   491   492   493   494   495   496   497   498   499   500   501   502   503   504   505   506   507   508   509   510   511   512   513   514   515   516   517   518   519   521   522   523   524   525   526   527   528   529   530   531   532   533   534   534   535   536   537   538   539   540   541   543   544   545   546   547   548   549   550   551   552   553   554   554   555   556   557   558   559   560   561   562   563   564   565   566   567   568   569   569   570   571   572   573   574   574   575   576   577   578   579   580   581   582   583   584   585   586   587   588   589   590   591   592   593   594   595   596   597   598   599   600   601   602   603   604   605   606   607   608   609   610   611   612   613   614   615   616   617   618   619   621   622   623   624   625   626   627   628   629   630   631   632   633   634   634   635   636   637   638   639   640   641   643   644   645   646   647   648   649   650   651   652   653   654   655   656   657   658   659   660   661   662   663   664   665   666   667   668   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803",
+        "Clarinet",
+        "high"
+      ],
+      "0": [
+        "; A-Klar. g",
+        "Clarinet",
+        "high"
+      ],
+      "2": [
+        "Contraf.",
+        "Contrabassoon",
+        "high"
+      ],
+      "3": [
+        "3 \u00a5- Horner",
+        "Horn",
+        "high"
+      ],
+      "4": [
+        "4 5 6",
+        null,
+        "none"
+      ],
+      "5": [
+        "i 2 B-Tromp.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "8 4",
+        null,
+        "none"
+      ],
+      "7": [
+        "i Posa osaunen",
+        null,
+        "none"
+      ],
+      "8": [
+        "8 Tuba",
+        "Tuba",
+        "high"
+      ],
+      "9": [
+        "Pauken",
+        "Timpani",
+        "high"
+      ],
+      "10": [
+        "Becken",
+        "Percussion",
+        "high"
+      ],
+      "11": [
+        "Gr, Tr.",
+        "Percussion",
+        "high"
+      ],
+      "13": [
+        "Tamtam",
+        "Percussion",
+        "high"
+      ],
+      "14": [
+        "Erste Viol.",
+        "Violin",
+        "medium"
+      ],
+      "15": [
+        "Viol.",
+        "Violin",
+        "high"
+      ],
+      "16": [
+        "Violen",
+        "Viola",
+        "high"
+      ],
+      "17": [
+        "Veelle.",
+        null,
+        "none"
+      ],
+      "18": [
+        "get.",
+        null,
+        "none"
+      ],
+      "19": [
+        "Bass }",
+        "Bass voice",
+        "high"
+      ],
+      "20": [
+        "get.",
+        null,
+        "none"
+      ]
+    },
+    "on": {
+      "1": [
+        "A-Klar.  2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47   48   49   50   51   52   53   54   55   56   57   58   59   60   61   62   63   64   65   66   67   68   69   70   71   72   73   74   75   76   77   78   79   80   81   82   83   84   85   86   87   88   89   90   91   92   93   94   95   96   97   98   99   100   101   102   103   104   105   106   107   108   109   110   111   112   113   114   115   116   117   118   119   120   121   122   123   124   125   126   127   128   129   130   131   132   133   134   134   135   136   137   138   139   140   141   142   143   144   145   146   147   148   149   150   151   152   153   154   155   156   157   158   159   160   161   162   163   164   165   166   167   168   169   169   170   171   172   173   174   175   176   177   178   179   180   181   182   183   184   185   186   187   188   189   190   191   192   193   194   195   196   197   198   199   200   201   202   203   204   205   206   207   208   209   210   211   212   213   214   215   216   217   218   219   220   221   222   223   224   225   226   227   228   229   230   231   232   233   234   234   235   236   237   238   239   240   241   242   243   244   245   246   247   248   249   250   251   252   253   254   255   256   257   258   259   260   261   262   263   264   265   266   267   268   269   269   270   271   272   273   274   275   276   277   278   279   280   281   282   283   284   285   286   287   288   289   290   291   292   293   294   295   296   297   298   299   300   301   302   303   304   305   306   307   308   309   310   311   312   313   314   315   316   317   318   319   320   321   322   323   324   325   326   327   328   329   330   331   332   333   334   334   335   336   337   338   339   340   341   342   343   344   345   346   347   348   349   350   351   352   353   354   355   356   357   358   359   360   361   362   363   364   365   366   367   368   369   370   371   372   373   374   375   376   377   378   379   380   381   382   383   384   385   386   387   388   389   390   391   392   393   394   395   396   397   398   399   400   401   402   403   404   405   406   407   408   409   410   411   412   413   414   415   416   417   418   419   420   421   422   423   424   425   426   427   428   429   430   431   432   433   434   434   435   436   437   438   439   440   441   443   444   445   446   447   448   449   450   451   452   453   454   455   456   457   458   459   460   461   462   463   464   465   466   467   468   469   470   471   472   473   474   475   476   477   478   479   480   481   482   483   484   485   486   487   488   489   490   491   492   493   494   495   496   497   498   499   500   501   502   503   504   505   506   507   508   509   510   511   512   513   514   515   516   517   518   519   521   522   523   524   525   526   527   528   529   530   531   532   533   534   534   535   536   537   538   539   540   541   543   544   545   546   547   548   549   550   551   552   553   554   554   555   556   557   558   559   560   561   562   563   564   565   566   567   568   569   569   570   571   572   573   574   574   575   576   577   578   579   580   581   582   583   584   585   586   587   588   589   590   591   592   593   594   595   596   597   598   599   600   601   602   603   604   605   606   607   608   609   610   611   612   613   614   615   616   617   618   619   621   622   623   624   625   626   627   628   629   630   631   632   633   634   634   635   636   637   638   639   640   641   643   644   645   646   647   648   649   650   651   652   653   654   655   656   657   658   659   660   661   662   663   664   665   666   667   668   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803   804   805   806   807   808   809   810   811   812   813   814   815   816   817   818   819   821   822   823   825   826   828   829   830   831   832   833   834   835   836   837   838   839   840   841   843   844   845   846   847   848   849   850   851   852   853   854   855   856   857   858   859   860   861   862   863   865   866   867   868   669   669   670   671   672   673   674   675   676   677   678   679   680   681   682   683   684   685   686   687   688   689   690   691   692   693   694   695   696   697   698   699   700   701   702   703   703   704   705   706   707   708   709   710   711   712   713   714   715   716   717   718   719   720   721   722   723   724   725   726   727   728   729   730   731   732   733   734   734   735   736   737   738   739   740   741   742   743   744   745   746   747   748   749   750   751   752   753   754   755   756   757   758   759   760   761   762   763   764   765   766   767   768   769   770   771   772   773   774   775   776   777   778   779   780   781   782   783   784   785   786   787   788   789   790   791   792   793   794   795   796   797   798   799   800   801   802   803",
+        "Clarinet",
+        "high"
+      ],
+      "0": [
+        "; A-Klar. g",
+        "Clarinet",
+        "high"
+      ],
+      "2": [
+        "Contraf.",
+        "Contrabassoon",
+        "high"
+      ],
+      "3": [
+        "3 \u00a5- Horner",
+        "Horn",
+        "high"
+      ],
+      "4": [
+        "4 5 6",
+        null,
+        "none"
+      ],
+      "5": [
+        "i 2 B-Tromp.",
+        "Trumpet",
+        "high"
+      ],
+      "6": [
+        "8 4",
+        null,
+        "none"
+      ],
+      "7": [
+        "i Posa osaunen",
+        null,
+        "none"
+      ],
+      "8": [
+        "8 Tuba",
+        "Tuba",
+        "high"
+      ],
+      "9": [
+        "Pauken",
+        "Timpani",
+        "high"
+      ],
+      "10": [
+        "Becken",
+        "Percussion",
+        "high"
+      ],
+      "11": [
+        "Gr, Tr.",
+        "Percussion",
+        "high"
+      ],
+      "13": [
+        "Tamtam",
+        "Percussion",
+        "high"
+      ],
+      "14": [
+        "Erste Viol.",
+        "Violin",
+        "medium"
+      ],
+      "15": [
+        "Viol.",
+        "Violin",
+        "high"
+      ],
+      "16": [
+        "Violen",
+        "Viola",
+        "high"
+      ],
+      "17": [
+        "Veelle.",
+        null,
+        "none"
+      ],
+      "18": [
+        "get.",
+        null,
+        "none"
+      ],
+      "19": [
+        "Bass }",
+        "Bass voice",
+        "high"
+      ],
+      "20": [
+        "get.",
+        null,
+        "none"
+      ]
+    },
+    "staves_changed": []
+  },
+  {
+    "row_id": "bach-brandenburg3-mvt1-468678-p1",
+    "n_staves": 24,
+    "text_layer_labels": 0,
+    "off": {
+      "0": [
+        "I",
+        null,
+        "none"
+      ],
+      "1": [
+        "Violini II",
+        "Violin",
+        "high"
+      ],
+      "2": [
+        "III",
+        null,
+        "none"
+      ],
+      "3": [
+        "I",
+        null,
+        "none"
+      ],
+      "4": [
+        "Viole II",
+        "Viola",
+        "high"
+      ],
+      "5": [
+        "III",
+        null,
+        "none"
+      ],
+      "6": [
+        "I",
+        null,
+        "none"
+      ],
+      "7": [
+        "Violoncelli II",
+        "Cello",
+        "high"
+      ],
+      "8": [
+        "III",
+        null,
+        "none"
+      ],
+      "9": [
+        "Contrabasso",
+        "Contrabass",
+        "high"
+      ],
+      "10": [
+        "Cembalo",
+        "Piano",
+        "high"
+      ]
+    },
+    "on": {
+      "0": [
+        "I",
+        null,
+        "none"
+      ],
+      "1": [
+        "Violini II",
+        "Violin",
+        "high"
+      ],
+      "2": [
+        "III",
+        null,
+        "none"
+      ],
+      "3": [
+        "I",
+        null,
+        "none"
+      ],
+      "4": [
+        "Viole II",
+        "Viola",
+        "high"
+      ],
+      "5": [
+        "III",
+        null,
+        "none"
+      ],
+      "6": [
+        "I",
+        null,
+        "none"
+      ],
+      "7": [
+        "Violoncelli II",
+        "Cello",
+        "high"
+      ],
+      "8": [
+        "III",
+        null,
+        "none"
+      ],
+      "9": [
+        "Contrabasso",
+        "Contrabass",
+        "high"
+      ],
+      "10": [
+        "Cembalo",
+        "Piano",
+        "high"
+      ]
+    },
+    "staves_changed": []
+  }
+]

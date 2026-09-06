@@ -1,0 +1,1346 @@
+[
+  {
+    "work_id": "beethoven-sym5-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/beethoven-sym5-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/beethoven-sym5-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 18,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 81
+    },
+    "omr": {
+      "parts": 18,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 81
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 18
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 81,
+      "omr_notes": 81,
+      "pitch_matched": 81,
+      "pitch_recall": 1.0,
+      "pitch_precision": 1.0,
+      "duration_ok_on_matched": 81,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 1,
+      "pages": [
+        {
+          "n_candidates": 4,
+          "n_read": 2,
+          "n_accepted": 1,
+          "rejected": [
+            "(d = 108)"
+          ],
+          "by_reader": {
+            "surya": 1
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "beethoven-sym5-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/beethoven-sym5-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/beethoven-sym5-mvt1.musicxml",
+      "omr_ned": 0.029320987654320986,
+      "omr_ed": 38,
+      "pred_symbols": 641,
+      "truth_symbols": 655,
+      "categories": {
+        "wrong note": 4,
+        "wrong note head": 4,
+        "wrong tie": 5,
+        "wrong lyric": 15,
+        "wrong tempo": 1,
+        "wrong dynamic": 9
+      }
+    }
+  },
+  {
+    "work_id": "brahms-sym1-mvt1",
+    "measures": [
+      1,
+      7
+    ],
+    "truth_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/brahms-sym1-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/brahms-sym1-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 21,
+      "measures": 7,
+      "measures_per_part": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "notes": 505
+    },
+    "omr": {
+      "parts": 21,
+      "measures": 7,
+      "measures_per_part": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "notes": 506
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 21
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 505,
+      "omr_notes": 506,
+      "pitch_matched": 483,
+      "pitch_recall": 0.956,
+      "pitch_precision": 0.955,
+      "duration_ok_on_matched": 479,
+      "duration_rate": 0.992
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 14,
+      "pages": [
+        {
+          "n_candidates": 20,
+          "n_read": 14,
+          "n_accepted": 14,
+          "rejected": [],
+          "by_reader": {
+            "surya": 14
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "brahms-sym1-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/brahms-sym1-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/brahms-sym1-mvt1.musicxml",
+      "omr_ned": 0.09427121102248005,
+      "omr_ed": 390,
+      "pred_symbols": 2054,
+      "truth_symbols": 2083,
+      "categories": {
+        "wrong note": 230,
+        "wrong flag/beam": 4,
+        "wrong tie": 8,
+        "wrong lyric": 6,
+        "wrong clef": 1,
+        "wrong timesig": 3,
+        "wrong keysig": 6,
+        "wrong tempo": 1,
+        "wrong barline": 19,
+        "wrong direction": 2,
+        "wrong dynamic": 16,
+        "wrong slur": 10,
+        "entire measure insert/delete": 84
+      }
+    }
+  },
+  {
+    "work_id": "mahler-sym5-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/mahler-sym5-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/mahler-sym5-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 38,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 24
+    },
+    "omr": {
+      "parts": 38,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 24
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 38
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 24,
+      "omr_notes": 24,
+      "pitch_matched": 22,
+      "pitch_recall": 0.917,
+      "pitch_precision": 0.917,
+      "duration_ok_on_matched": 22,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {
+      "dossier_slot_clef": 2
+    },
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 0,
+      "pages": [
+        {
+          "n_candidates": 0,
+          "n_read": 0,
+          "n_accepted": 0,
+          "rejected": [],
+          "by_reader": {},
+          "conflicts": []
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "mahler-sym5-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/mahler-sym5-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/mahler-sym5-mvt1.musicxml",
+      "omr_ned": 0.020887728459530026,
+      "omr_ed": 40,
+      "pred_symbols": 957,
+      "truth_symbols": 958,
+      "categories": {
+        "wrong clef": 8,
+        "wrong keysig": 7,
+        "wrong direction": 5,
+        "wrong dynamic": 1,
+        "wrong crescendo": 1,
+        "entire measure insert/delete": 18
+      }
+    }
+  },
+  {
+    "work_id": "mozart-sym40-mvt1",
+    "measures": [
+      1,
+      6
+    ],
+    "truth_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/mozart-sym40-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/mozart-sym40-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 11,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 164
+    },
+    "omr": {
+      "parts": 11,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 164
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 11
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 164,
+      "omr_notes": 164,
+      "pitch_matched": 125,
+      "pitch_recall": 0.762,
+      "pitch_precision": 0.762,
+      "duration_ok_on_matched": 119,
+      "duration_rate": 0.952
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 0,
+      "pages": [
+        {
+          "n_candidates": 2,
+          "n_read": 2,
+          "n_accepted": 0,
+          "rejected": [
+            "Allegro i",
+            "nolto."
+          ],
+          "by_reader": {},
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "mozart-sym40-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/mozart-sym40-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/mozart-sym40-mvt1.musicxml",
+      "omr_ned": 0.14146658014276445,
+      "omr_ed": 218,
+      "pred_symbols": 753,
+      "truth_symbols": 788,
+      "categories": {
+        "wrong note": 143,
+        "wrong flag/beam": 10,
+        "wrong articulation": 37,
+        "wrong direction": 14,
+        "wrong dynamic": 3,
+        "wrong slur": 11
+      }
+    }
+  },
+  {
+    "work_id": "mozart-sym41-mvt1",
+    "measures": [
+      1,
+      6
+    ],
+    "truth_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/mozart-sym41-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/mozart-sym41-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 17,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 228
+    },
+    "omr": {
+      "parts": 17,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 228
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 17
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 228,
+      "omr_notes": 228,
+      "pitch_matched": 226,
+      "pitch_recall": 0.991,
+      "pitch_precision": 0.991,
+      "duration_ok_on_matched": 214,
+      "duration_rate": 0.947
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 1,
+      "pages": [
+        {
+          "n_candidates": 5,
+          "n_read": 1,
+          "n_accepted": 1,
+          "rejected": [],
+          "by_reader": {
+            "surya": 1
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "mozart-sym41-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/mozart-sym41-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/mozart-sym41-mvt1.musicxml",
+      "omr_ned": 0.10248552945182159,
+      "omr_ed": 301,
+      "pred_symbols": 1483,
+      "truth_symbols": 1454,
+      "categories": {
+        "wrong note": 250,
+        "wrong flag/beam": 3,
+        "wrong tuplet": 2,
+        "wrong tie": 8,
+        "wrong dynamic": 12,
+        "wrong slur": 26
+      }
+    }
+  },
+  {
+    "work_id": "beethoven-sym3-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/beethoven-sym3-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/beethoven-sym3-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 19,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 80
+    },
+    "omr": {
+      "parts": 19,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 80
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 19
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 80,
+      "omr_notes": 80,
+      "pitch_matched": 78,
+      "pitch_recall": 0.975,
+      "pitch_precision": 0.975,
+      "duration_ok_on_matched": 78,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 1,
+      "pages": [
+        {
+          "n_candidates": 8,
+          "n_read": 4,
+          "n_accepted": 1,
+          "rejected": [
+            "cresc. cresc. cresc.",
+            "cresc. cresc. cresc. cresc.",
+            "Score: CC0 1.0 Universal: Annotations: CC-By-SA"
+          ],
+          "by_reader": {
+            "surya": 1
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "beethoven-sym3-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/beethoven-sym3-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/beethoven-sym3-mvt1.musicxml",
+      "omr_ned": 0.12936221419975932,
+      "omr_ed": 215,
+      "pred_symbols": 780,
+      "truth_symbols": 882,
+      "categories": {
+        "wrong note": 4,
+        "wrong tie": 3,
+        "wrong articulation": 17,
+        "wrong ornament": 12,
+        "wrong lyric": 9,
+        "wrong tempo": 1,
+        "wrong barline": 6,
+        "wrong direction": 25,
+        "wrong dynamic": 7,
+        "wrong slur": 2,
+        "entire measure insert/delete": 129
+      }
+    }
+  },
+  {
+    "work_id": "brahms-sym4-mvt1",
+    "measures": [
+      1,
+      6
+    ],
+    "truth_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/brahms-sym4-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/brahms-sym4-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 20,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 172
+    },
+    "omr": {
+      "parts": 20,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 175
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 20
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 172,
+      "omr_notes": 175,
+      "pitch_matched": 165,
+      "pitch_recall": 0.959,
+      "pitch_precision": 0.943,
+      "duration_ok_on_matched": 154,
+      "duration_rate": 0.933
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 0,
+      "pages": [
+        {
+          "n_candidates": 5,
+          "n_read": 2,
+          "n_accepted": 0,
+          "rejected": [
+            "Allegro non troppo",
+            "Core:  CC0 1.0 Universal; Annotations: CC-By-SA"
+          ],
+          "by_reader": {},
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "brahms-sym4-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/brahms-sym4-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/brahms-sym4-mvt1.musicxml",
+      "omr_ned": 0.2136387852956846,
+      "omr_ed": 401,
+      "pred_symbols": 928,
+      "truth_symbols": 949,
+      "categories": {
+        "wrong note": 231,
+        "wrong note head": 2,
+        "wrong flag/beam": 10,
+        "wrong tie": 2,
+        "wrong articulation": 5,
+        "wrong lyric": 6,
+        "wrong direction": 48,
+        "wrong dynamic": 9,
+        "wrong diminuendo": 3,
+        "wrong slur": 32,
+        "entire measure insert/delete": 53
+      }
+    }
+  },
+  {
+    "work_id": "dvorak-sym9-mvt4",
+    "measures": [
+      1,
+      3
+    ],
+    "truth_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/dvorak-sym9-mvt4.musicxml",
+    "omr_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/dvorak-sym9-mvt4.omr.musicxml",
+    "truth": {
+      "parts": 19,
+      "measures": 3,
+      "measures_per_part": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "notes": 40
+    },
+    "omr": {
+      "parts": 18,
+      "measures": 3,
+      "measures_per_part": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "notes": 40
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 18
+    },
+    "notes": {
+      "part_aligned": false,
+      "truth_notes": 40,
+      "omr_notes": 40,
+      "pitch_matched": 39,
+      "pitch_recall": 0.975,
+      "pitch_precision": 0.975,
+      "duration_ok_on_matched": 39,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 0,
+      "pages": [
+        {
+          "n_candidates": 4,
+          "n_read": 0,
+          "n_accepted": 0,
+          "rejected": [],
+          "by_reader": {},
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "dvorak-sym9-mvt4",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/dvorak-sym9-mvt4.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/dvorak-sym9-mvt4.musicxml",
+      "omr_ned": 0.33804809052333806,
+      "omr_ed": 239,
+      "pred_symbols": 334,
+      "truth_symbols": 373,
+      "categories": {
+        "wrong note": 105,
+        "wrong clef": 8,
+        "wrong keysig": 6,
+        "wrong tempo": 1,
+        "wrong direction": 24,
+        "wrong dynamic": 4,
+        "wrong slur": 5,
+        "wrong staff info": 1,
+        "entire measure insert/delete": 33,
+        "entire staff insert/delete": 42,
+        "wrong staff group": 10
+      }
+    }
+  },
+  {
+    "work_id": "tchaikovsky-sym4-mvt2",
+    "measures": [
+      1,
+      8
+    ],
+    "truth_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/tchaikovsky-sym4-mvt2.musicxml",
+    "omr_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/tchaikovsky-sym4-mvt2.omr.musicxml",
+    "truth": {
+      "parts": 20,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 67
+    },
+    "omr": {
+      "parts": 20,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 67
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 20
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 67,
+      "omr_notes": 67,
+      "pitch_matched": 62,
+      "pitch_recall": 0.925,
+      "pitch_precision": 0.925,
+      "duration_ok_on_matched": 62,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 1,
+      "pages": [
+        {
+          "n_candidates": 5,
+          "n_read": 1,
+          "n_accepted": 1,
+          "rejected": [],
+          "by_reader": {
+            "surya": 1
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "tchaikovsky-sym4-mvt2",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/tchaikovsky-sym4-mvt2.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/tchaikovsky-sym4-mvt2.musicxml",
+      "omr_ned": 0.044430135222150675,
+      "omr_ed": 69,
+      "pred_symbols": 767,
+      "truth_symbols": 786,
+      "categories": {
+        "wrong note": 24,
+        "wrong accidental": 3,
+        "wrong tempo": 1,
+        "wrong direction": 20,
+        "wrong dynamic": 7,
+        "entire measure insert/delete": 14
+      }
+    }
+  },
+  {
+    "work_id": "tchaikovsky-sym6-mvt2",
+    "measures": [
+      1,
+      4
+    ],
+    "truth_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/tchaikovsky-sym6-mvt2.musicxml",
+    "omr_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/tchaikovsky-sym6-mvt2.omr.musicxml",
+    "truth": {
+      "parts": 17,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "notes": 86
+    },
+    "omr": {
+      "parts": 17,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "notes": 87
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 17
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 86,
+      "omr_notes": 87,
+      "pitch_matched": 65,
+      "pitch_recall": 0.756,
+      "pitch_precision": 0.747,
+      "duration_ok_on_matched": 64,
+      "duration_rate": 0.985
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 0,
+      "pages": [
+        {
+          "n_candidates": 7,
+          "n_read": 2,
+          "n_accepted": 0,
+          "rejected": [
+            "Allegretto con grazia",
+            "tchaikovsky-syn"
+          ],
+          "by_reader": {},
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "tchaikovsky-sym6-mvt2",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/tchaikovsky-sym6-mvt2.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/tchaikovsky-sym6-mvt2.musicxml",
+      "omr_ned": 0.18549511854951187,
+      "omr_ed": 266,
+      "pred_symbols": 704,
+      "truth_symbols": 730,
+      "categories": {
+        "wrong note": 176,
+        "wrong note head": 4,
+        "wrong flag/beam": 2,
+        "wrong clef": 2,
+        "wrong direction": 41,
+        "wrong dynamic": 20,
+        "wrong slur": 6,
+        "entire measure insert/delete": 5,
+        "wrong staff group": 10
+      }
+    }
+  },
+  {
+    "work_id": "bruckner-sym5-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/bruckner-sym5-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-label-ladder-2026-09/fx-off/bruckner-sym5-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 25,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 105
+    },
+    "omr": {
+      "parts": 25,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 105
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 25
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 105,
+      "omr_notes": 105,
+      "pitch_matched": 101,
+      "pitch_recall": 0.962,
+      "pitch_precision": 0.962,
+      "duration_ok_on_matched": 101,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 1,
+      "pages": [
+        {
+          "n_candidates": 12,
+          "n_read": 6,
+          "n_accepted": 1,
+          "rejected": [
+            "II.",
+            "1. a",
+            "1. a",
+            "cresc. cresc. cresc. cresc.",
+            "1. X"
+          ],
+          "by_reader": {
+            "surya": 1
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "bruckner-sym5-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/bruckner-sym5-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a52eb66537f0568d5/benchmarks/omr-label-ladder-2026-09/fx-off/bruckner-sym5-mvt1.musicxml",
+      "omr_ned": 0.09310518369401108,
+      "omr_ed": 185,
+      "pred_symbols": 980,
+      "truth_symbols": 1007,
+      "categories": {
+        "wrong note": 91,
+        "wrong note head": 4,
+        "wrong tie": 2,
+        "wrong articulation": 4,
+        "wrong lyric": 9,
+        "wrong direction": 41,
+        "wrong dynamic": 18,
+        "wrong slur": 1,
+        "entire measure insert/delete": 15
+      }
+    }
+  }
+]

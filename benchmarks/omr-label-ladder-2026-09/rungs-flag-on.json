@@ -1,0 +1,370 @@
+{
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+  "page": 0,
+  "n_staves": 12,
+  "rungs": {
+    "text": {
+      "0": [
+        "Flauti.",
+        "flauti",
+        true,
+        "high",
+        "Flute"
+      ],
+      "1": [
+        "Oboi.",
+        "oboi",
+        true,
+        "high",
+        "Oboe"
+      ],
+      "2": [
+        "Clarinetti in B.",
+        "clarinetti",
+        true,
+        "high",
+        "Clarinet"
+      ],
+      "3": [
+        "Fagotti.",
+        "fagotti",
+        true,
+        "high",
+        "Bassoon"
+      ],
+      "4": [
+        "Corni in Es.",
+        "corni",
+        true,
+        "medium",
+        "Horn"
+      ],
+      "5": [
+        "Trombe inC.",
+        "trombe",
+        true,
+        "high",
+        "Trumpet"
+      ],
+      "6": [
+        "Timpani in C.G.",
+        "timpani",
+        true,
+        "high",
+        "Timpani"
+      ],
+      "7": [
+        "Violino ].",
+        "violino",
+        true,
+        "high",
+        "Violin"
+      ],
+      "8": [
+        "Yiolino II.",
+        "violino",
+        true,
+        "low",
+        "Violin"
+      ],
+      "9": [
+        "Viola.",
+        "viola",
+        true,
+        "high",
+        "Viola"
+      ],
+      "10": [
+        "Violoncello.",
+        "violoncello",
+        true,
+        "high",
+        "Cello"
+      ],
+      "11": [
+        "Basso.",
+        "basso",
+        true,
+        "high",
+        "Bass voice"
+      ]
+    },
+    "surya": {
+      "0": [
+        "Flauti.",
+        "flauti",
+        true,
+        "high",
+        "Flute"
+      ],
+      "1": [
+        "Oboi.",
+        "oboi",
+        true,
+        "high",
+        "Oboe"
+      ],
+      "2": [
+        "Clarinetti in B.",
+        "clarinetti",
+        true,
+        "high",
+        "Clarinet"
+      ],
+      "3": [
+        "Fagotti.",
+        "fagotti",
+        true,
+        "high",
+        "Bassoon"
+      ],
+      "4": [
+        "Corni in Es.",
+        "corni",
+        true,
+        "medium",
+        "Horn"
+      ],
+      "5": [
+        "Trombe in C.",
+        "trombe",
+        true,
+        "high",
+        "Trumpet"
+      ],
+      "6": [
+        "Timpani in C.G.",
+        "timpani",
+        true,
+        "high",
+        "Timpani"
+      ],
+      "7": [
+        "Violino I.",
+        "violino",
+        true,
+        "high",
+        "Violin"
+      ],
+      "8": [
+        "Violino II.",
+        "violino",
+        true,
+        "high",
+        "Violin"
+      ],
+      "9": [
+        "Viola.",
+        "viola",
+        true,
+        "high",
+        "Viola"
+      ],
+      "10": [
+        "Violoncello.",
+        "violoncello",
+        true,
+        "high",
+        "Cello"
+      ],
+      "11": [
+        "Basso.",
+        "basso",
+        true,
+        "high",
+        "Bass voice"
+      ]
+    },
+    "tesseract": {
+      "0": [
+        "Flauti.",
+        "flauti",
+        true,
+        "high",
+        "Flute"
+      ],
+      "1": [
+        "Oboi.",
+        "oboi",
+        true,
+        "high",
+        "Oboe"
+      ],
+      "2": [
+        "Clarinetti in B.",
+        "clarinetti",
+        true,
+        "high",
+        "Clarinet"
+      ],
+      "3": [
+        "Fagotti.",
+        "fagotti",
+        true,
+        "high",
+        "Bassoon"
+      ],
+      "4": [
+        "Corni Es. in",
+        "corni",
+        true,
+        "medium",
+        "Horn"
+      ],
+      "5": [
+        "Trombe inC.",
+        "trombe",
+        true,
+        "high",
+        "Trumpet"
+      ],
+      "6": [
+        "inC.G. Timpani",
+        "timpani",
+        true,
+        "high",
+        "Timpani"
+      ],
+      "7": [
+        "Violino I.",
+        "violino",
+        true,
+        "high",
+        "Violin"
+      ],
+      "8": [
+        "Violino II.",
+        "violino",
+        true,
+        "high",
+        "Violin"
+      ],
+      "9": [
+        "Viola.",
+        "viola",
+        true,
+        "high",
+        "Viola"
+      ],
+      "10": [
+        "Violoncello.",
+        "violoncello",
+        true,
+        "high",
+        "Cello"
+      ],
+      "11": [
+        "Basso.",
+        "basso",
+        true,
+        "high",
+        "Bass voice"
+      ]
+    },
+    "ladder": {
+      "0": [
+        "Flauti.",
+        "flauti",
+        true,
+        "high",
+        "Flute"
+      ],
+      "1": [
+        "Oboi.",
+        "oboi",
+        true,
+        "high",
+        "Oboe"
+      ],
+      "2": [
+        "Clarinetti in B.",
+        "clarinetti",
+        true,
+        "high",
+        "Clarinet"
+      ],
+      "3": [
+        "Fagotti.",
+        "fagotti",
+        true,
+        "high",
+        "Bassoon"
+      ],
+      "4": [
+        "Corni in Es.",
+        "corni",
+        true,
+        "medium",
+        "Horn"
+      ],
+      "5": [
+        "Trombe in C.",
+        "trombe",
+        true,
+        "high",
+        "Trumpet"
+      ],
+      "6": [
+        "Timpani in C.G.",
+        "timpani",
+        true,
+        "high",
+        "Timpani"
+      ],
+      "7": [
+        "Violino I.",
+        "violino",
+        true,
+        "high",
+        "Violin"
+      ],
+      "8": [
+        "Violino II.",
+        "violino",
+        true,
+        "high",
+        "Violin"
+      ],
+      "9": [
+        "Viola.",
+        "viola",
+        true,
+        "high",
+        "Viola"
+      ],
+      "10": [
+        "Violoncello.",
+        "violoncello",
+        true,
+        "high",
+        "Cello"
+      ],
+      "11": [
+        "Basso.",
+        "basso",
+        true,
+        "high",
+        "Bass voice"
+      ]
+    }
+  },
+  "usable": {
+    "text": 12,
+    "surya": 12,
+    "tesseract": 12,
+    "ladder": 12
+  },
+  "consumable": {
+    "text": 11,
+    "surya": 12,
+    "tesseract": 12,
+    "ladder": 12
+  },
+  "raw": {
+    "text": 12,
+    "surya": 12,
+    "tesseract": 12,
+    "ladder": 12
+  },
+  "well_covered_text": true
+}

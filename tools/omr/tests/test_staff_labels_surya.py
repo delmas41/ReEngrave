@@ -188,6 +188,141 @@ def test_surya_does_not_consume_the_paid_budget(chain):
     assert budget == [3], "a free read spent the paid budget"
 
 
+# ── ranking the rungs on what a CONSUMER can use ────────────────────────────
+#
+# `OMR_LABEL_MERGE_QUALITY`, default OFF. The fault it repairs, measured on
+# `beethoven-sym5-mvt1-575951-p1`: the text layer resolves twelve staves of
+# which ELEVEN are consumable (staff 8 prints `Violino II.` and the text layer
+# encodes it `Yiolino II.`, which resolves only through the OCR fold and is
+# therefore `low`); Surya reads all twelve cleanly. Both score `_usable` 12,
+# `_well_covered` returns before Surya is ever asked, and the page reaches the
+# join with fewer labels than one of its own rungs would have given alone.
+
+def _low_label(idx):
+    """A label that resolves only through the OCR fold, so `confidence` is low.
+
+    Built through `lookup` rather than hand-stamped, so the test fails if the
+    lexicon stops folding this the way the measured page does.
+    """
+    hit = lookup("Yiolino II.")
+    assert hit is not None and hit.confidence == "low", (
+        "this fixture is only meaningful while the lexicon resolves the "
+        "measured text layer's spelling at low confidence")
+    return StaffLabel(staff_index=idx, text="Yiolino II.",
+                      instrument=hit.instrument, fifths_offset=0,
+                      y_center_px=float(idx * 100), confidence=hit.confidence)
+
+
+def _ladder(chain_state, monkeypatch, flag):
+    if flag is None:
+        monkeypatch.delenv("OMR_LABEL_MERGE_QUALITY", raising=False)
+    else:
+        monkeypatch.setenv("OMR_LABEL_MERGE_QUALITY", flag)
+    pws = types.SimpleNamespace(staves=[_FakeStaff(0, 0, 40)])
+    return contextual._labels_for_page(
+        pws, __import__("pathlib").Path("x.pdf"), 0,
+        assist=Assist("none"), budget=[0])
+
+
+def test_a_low_confidence_text_layer_blocks_surya_by_default(chain, monkeypatch):
+    """The fault, pinned as it stands — so a default flip is a visible diff."""
+    calls, state = chain
+    state["text"] = [_low_label(0)]
+    state["surya"] = [_label(0, "Violino II.")]
+    out = _ladder(state, monkeypatch, None)
+    assert [l.text for l in out] == ["Yiolino II."]
+    assert "surya" not in calls, "the default ladder asked a rung it should skip"
+    assert contextual._consumable(out) == 0
+    assert contextual._usable(out) == 1
+
+
+def test_the_flag_lets_the_stronger_free_rung_win_the_tie(chain, monkeypatch):
+    calls, state = chain
+    state["text"] = [_low_label(0)]
+    state["surya"] = [_label(0, "Violino II.")]
+    out = _ladder(state, monkeypatch, "1")
+    assert "surya" in calls, "a free rung was still gated on the text layer"
+    assert [l.text for l in out] == ["Violino II."]
+    assert contextual._consumable(out) == 1
+
+
+def test_the_flag_does_not_let_a_WORSE_free_rung_win(chain, monkeypatch):
+    """Quality first, reach second — and neither is 'whoever ran last'."""
+    calls, state = chain
+    state["text"] = [_label(0, "Violino II."), _label(1, "Viola.")]
+    state["surya"] = [_label(0, "Violino II.")]
+    out = _ladder(state, monkeypatch, "1")
+    assert "surya" in calls
+    assert len(out) == 2, "a shorter read replaced a longer one of equal quality"
+
+
+def test_an_unresolved_label_no_longer_blocks_tesseract(chain, monkeypatch):
+    """The documented live fault: `'(C)'` present-but-unusable blocked a rung
+    that could supply `'(C) Hr.'` for the same staff."""
+    calls, state = chain
+    state["tesseract_available"] = True
+    state["text"] = [StaffLabel(staff_index=0, text="(C)", instrument=None,
+                                fifths_offset=0, y_center_px=0.0,
+                                confidence="none")]
+    state["tesseract"] = [_label(0, "Corni in Es.")]
+
+    off = _ladder(state, monkeypatch, None)
+    assert [l.text for l in off] == ["(C)"], "the fault is no longer reproducible"
+
+    on = _ladder(state, monkeypatch, "1")
+    assert [l.text for l in on] == ["Corni in Es."], \
+        "an unresolved label still blocked the rung that could resolve it"
+    assert len(on) == 1, "the dead reading was shipped alongside the live one"
+
+
+def test_tesseract_may_not_swap_one_unresolved_label_for_another(chain, monkeypatch):
+    """One-way only: an unresolved label yields to a reading that RESOLVES, not
+    to another that does not.
+
+    Measured — without this, `bach-brandenburg3-mvt1-468678-p1` changes five
+    staves and gains nothing (`'I'`/`'III'` -> `'|'`/`'HI'`/`'(1'`, all
+    unmatched), and that noise was the whole of what this change did to that
+    gate row.
+    """
+    calls, state = chain
+    state["tesseract_available"] = True
+    state["text"] = [StaffLabel(staff_index=0, text="III", instrument=None,
+                                fifths_offset=0, y_center_px=0.0,
+                                confidence="none")]
+    state["tesseract"] = [StaffLabel(staff_index=0, text="HI", instrument=None,
+                                     fifths_offset=0, y_center_px=0.0,
+                                     confidence="none")]
+    on = _ladder(state, monkeypatch, "1")
+    assert [l.text for l in on] == ["III"], "a sideways swap of two dead reads"
+
+
+def test_tesseract_still_fills_a_staff_with_NO_label_at_all(chain, monkeypatch):
+    """The pre-existing additive behaviour, unchanged in both arms — Tesseract
+    fills an empty staff whether or not its reading resolves."""
+    calls, state = chain
+    state["tesseract_available"] = True
+    state["text"] = []
+    state["surya"] = []
+    state["tesseract"] = [StaffLabel(staff_index=0, text="???", instrument=None,
+                                     fifths_offset=0, y_center_px=0.0,
+                                     confidence="none")]
+    for flag in (None, "1"):
+        out = _ladder(state, monkeypatch, flag)
+        assert [l.text for l in out] == ["???"], f"flag={flag}"
+
+
+def test_tesseract_still_never_overwrites_a_RESOLVED_label(chain, monkeypatch):
+    """Deliberately narrower than the Surya rung. Tesseract is the least
+    accurate reader here (`Ki.Tr.` -> Trumpet), so a weak-but-real reading from
+    a better rung stands."""
+    calls, state = chain
+    state["tesseract_available"] = True
+    state["text"] = [_low_label(0)]
+    state["tesseract"] = [_label(0, "Corni in Es.")]
+    on = _ladder(state, monkeypatch, "1")
+    assert [l.text for l in on] == ["Yiolino II."]
+
+
 # ── the subprocess, when the venv exists ────────────────────────────────────
 
 needs_venv = pytest.mark.skipif(
