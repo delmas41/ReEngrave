@@ -55,3 +55,14 @@ probing 234 documents, pages [0, 1, 2, 3, 4], dpi 300
   [53/234] other/unknown berlioz--symphony-fantastique--24830         sizes=[14, 2, 3, 9, 8, 11, 11, 11, 11, 11, 11] labels=[11, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0] 40.4s
   [54/234] Breitkopf    beethoven--piano-concerto-5--977419          sizes=[14, 2, 13, 2, 13, 2, 7, 11, 10, 11, 11] labels=[13, 0, 10, 0, 11, 0, 4, 0, 9, 10, 8] 71.3s
   [55/234] Durand       ravel--la-valse--923399                      sizes=[25, 18, 18] labels=[19, 2, 2] 33.1s
+  [56/234] Eulenburg    bruckner--te-deum--62720                     sizes=[1, 12, 1, 8, 8, 8, 3, 6, 1, 2, 2, 4] labels=[0, 8, 1, 3, 3, 3, 0, 4, 1, 0, 0, 1] 301.7s
+  [57/234] Litolff      beethoven--symphony-5--984073                sizes=[12, 11, 11, 11, 8, 11, 11] labels=[12, 7, 5, 7, 5, 6, 0] 22.6s
+  [58/234] Novello      elgar--symphony-2--979455                    sizes=[28] labels=[0] 10.6s
+  [59/234] Peters       bruckner--symphony-9--969460                 sizes=[17, 11, 12, 13] labels=[15, 5, 6, 6] 40.0s
+  [60/234] Simrock      brahms--variations-on-a-theme-by-haydn--23074 sizes=[14, 14, 14] labels=[12, 0, 0] 18.8s
+  [61/234] Universal    mahler--symphony-1--17070                    sizes=[17, 16, 14, 17, 11, 13] labels=[12, 11, 1, 8, 5, 7] 63.4s
+  [62/234] other/unknown borodin--in-the-steppes-of-central-asia--1043848 sizes=[18, 11, 12] labels=[13, 0, 0] 84.3s
+  [63/234] Breitkopf    beethoven--violin-concerto-in-d-major--514872 sizes=[12, 6, 8, 11, 11, 9, 11, 8, 9, 11] labels=[12, 0, 0, 0, 0, 0, 0, 0, 0, 0] 25.2s
+  [64/234] Durand       ravel--le-tombeau-de-couperin--918879        sizes=[2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 1, 2] labels=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 12.3s
+  [65/234] Eulenburg    debussy--prelude-a-l-apres-midi-d-un-faune--912676 sizes=[14] labels=[10] 10.8s
+  [66/234] Litolff      beethoven--symphony-6--504082                sizes=[9, 6, 10, 10, 10, 6, 7, 9, 9, 10, 10] labels=[9, 2, 5, 5, 5, 2, 3, 5, 5, 5, 5] 39.6s

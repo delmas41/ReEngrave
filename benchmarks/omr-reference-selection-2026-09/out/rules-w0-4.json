@@ -912,6 +912,100 @@
   ]
  },
  {
+  "key": "beethoven--symphony-5--984073",
+  "house": "Litolff",
+  "composer": "beethoven",
+  "systems": 7,
+  "sizes": [
+   12,
+   11,
+   11,
+   11,
+   8,
+   11,
+   11
+  ],
+  "labels": [
+   12,
+   7,
+   5,
+   7,
+   5,
+   6,
+   0
+  ],
+  "max_size": 12,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   11,
+   7
+  ],
+  "new": [
+   1,
+   0,
+   12,
+   12
+  ],
+  "pure": [
+   1,
+   0,
+   12,
+   12
+  ]
+ },
+ {
+  "key": "beethoven--violin-concerto-in-d-major--514872",
+  "house": "Breitkopf",
+  "composer": "beethoven",
+  "systems": 10,
+  "sizes": [
+   12,
+   6,
+   8,
+   11,
+   11,
+   9,
+   11,
+   8,
+   9,
+   11
+  ],
+  "labels": [
+   12,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 12,
+  "any_label": true,
+  "old": [
+   1,
+   1,
+   11,
+   0
+  ],
+  "new": [
+   0,
+   0,
+   12,
+   12
+  ],
+  "pure": [
+   0,
+   0,
+   12,
+   12
+  ]
+ },
+ {
   "key": "berlioz--le-carnaval-romain--11357",
   "house": "other/unknown",
   "composer": "berlioz",
@@ -1055,6 +1149,42 @@
    1,
    13,
    9
+  ]
+ },
+ {
+  "key": "borodin--in-the-steppes-of-central-asia--1043848",
+  "house": "other/unknown",
+  "composer": "borodin",
+  "systems": 3,
+  "sizes": [
+   18,
+   11,
+   12
+  ],
+  "labels": [
+   13,
+   0,
+   0
+  ],
+  "max_size": 18,
+  "any_label": true,
+  "old": [
+   3,
+   0,
+   18,
+   13
+  ],
+  "new": [
+   3,
+   0,
+   18,
+   13
+  ],
+  "pure": [
+   3,
+   0,
+   18,
+   13
   ]
  },
  {
@@ -1221,6 +1351,42 @@
    1,
    2,
    0
+  ]
+ },
+ {
+  "key": "brahms--variations-on-a-theme-by-haydn--23074",
+  "house": "Simrock",
+  "composer": "brahms",
+  "systems": 3,
+  "sizes": [
+   14,
+   14,
+   14
+  ],
+  "labels": [
+   12,
+   0,
+   0
+  ],
+  "max_size": 14,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   14,
+   12
+  ],
+  "new": [
+   2,
+   0,
+   14,
+   12
+  ],
+  "pure": [
+   2,
+   0,
+   14,
+   12
   ]
  },
  {
@@ -1439,6 +1605,98 @@
    0,
    9,
    0
+  ]
+ },
+ {
+  "key": "bruckner--symphony-9--969460",
+  "house": "Peters",
+  "composer": "bruckner",
+  "systems": 4,
+  "sizes": [
+   17,
+   11,
+   12,
+   13
+  ],
+  "labels": [
+   14,
+   5,
+   6,
+   6
+  ],
+  "max_size": 17,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   17,
+   14
+  ],
+  "new": [
+   2,
+   0,
+   17,
+   14
+  ],
+  "pure": [
+   2,
+   0,
+   17,
+   14
+  ]
+ },
+ {
+  "key": "bruckner--te-deum--62720",
+  "house": "Eulenburg",
+  "composer": "bruckner",
+  "systems": 12,
+  "sizes": [
+   1,
+   12,
+   1,
+   8,
+   8,
+   8,
+   3,
+   6,
+   1,
+   2,
+   2,
+   4
+  ],
+  "labels": [
+   0,
+   8,
+   0,
+   3,
+   3,
+   3,
+   0,
+   4,
+   1,
+   0,
+   0,
+   1
+  ],
+  "max_size": 12,
+  "any_label": true,
+  "old": [
+   2,
+   3,
+   8,
+   3
+  ],
+  "new": [
+   2,
+   3,
+   8,
+   3
+  ],
+  "pure": [
+   4,
+   0,
+   6,
+   4
   ]
  },
  {
@@ -1812,6 +2070,48 @@
   ]
  },
  {
+  "key": "mahler--symphony-1--17070",
+  "house": "Universal",
+  "composer": "mahler",
+  "systems": 6,
+  "sizes": [
+   17,
+   16,
+   14,
+   17,
+   11,
+   13
+  ],
+  "labels": [
+   12,
+   11,
+   1,
+   8,
+   5,
+   7
+  ],
+  "max_size": 17,
+  "any_label": true,
+  "old": [
+   0,
+   0,
+   17,
+   12
+  ],
+  "new": [
+   0,
+   0,
+   17,
+   12
+  ],
+  "pure": [
+   0,
+   0,
+   17,
+   12
+  ]
+ },
+ {
   "key": "mahler--symphony-7--415756",
   "house": "Bote",
   "composer": "mahler",
@@ -1919,6 +2219,60 @@
    0,
    25,
    19
+  ]
+ },
+ {
+  "key": "ravel--le-tombeau-de-couperin--918879",
+  "house": "Durand",
+  "composer": "ravel",
+  "systems": 12,
+  "sizes": [
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   3,
+   1,
+   2
+  ],
+  "labels": [
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 3,
+  "any_label": true,
+  "old": [
+   3,
+   0,
+   2,
+   1
+  ],
+  "new": [
+   3,
+   0,
+   2,
+   1
+  ],
+  "pure": [
+   3,
+   0,
+   2,
+   1
   ]
  },
  {
