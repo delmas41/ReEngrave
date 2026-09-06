@@ -32,3 +32,6 @@ probing 234 documents, pages [0, 1, 2, 3, 4], dpi 300
   [30/234] Novello      elgar--cello-concerto--22192                 sizes=[17, 12, 5, 17, 17, 17] labels=[0, 0, 0, 0, 0, 0] 457.2s
   [31/234] Peters       bach--concerto-6--468681                     sizes=[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8] labels=[5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 26.1s
   [32/234] Ricordi      respighi--pini-di-roma--5603                 sizes=[16, 20, 20, 22, 17] labels=[10, 8, 0, 0, 2] 97.0s
+  [33/234] Simrock      brahms--piano-concerto-2--145434             sizes=[15, 15, 2, 2, 2, 2, 15] labels=[12, 0, 0, 0, 0, 0, 0] 27.2s
+  [34/234] Universal    bruckner--symphony-6--30699                  sizes=[17, 5, 5, 7, 8, 11, 17, 16] labels=[12, 0, 0, 0, 0, 0, 0, 0] 38.9s
+  [35/234] other/unknown beach--symphony-in-e-minor-op32-gaelic--27125 sizes=[15, 15, 15, 15] labels=[14, 0, 0, 0] 29.7s

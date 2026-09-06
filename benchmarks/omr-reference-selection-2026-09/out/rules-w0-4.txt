@@ -1,21 +1,21 @@
-documents with >=2 usable systems in the window: 27  (cache holds 32)
+documents with >=2 usable systems in the window: 30  (cache holds 35)
 
 == overall
-  all                    n=  27  old   19/27 = 0.704 (names   183)  new   24/27 = 0.889 (names   239)  pure   23/27 = 0.852 (names   244)  new≠old    5
-  names something        n=  23  old   15/23 = 0.652 (names   183)  new   20/23 = 0.870 (names   239)  pure   19/23 = 0.826 (names   244)  new≠old    5
+  all                    n=  30  old   21/30 = 0.700 (names   209)  new   26/30 = 0.867 (names   265)  pure   25/30 = 0.833 (names   270)  new≠old    5
+  names something        n=  26  old   17/26 = 0.654 (names   209)  new   22/26 = 0.846 (names   265)  pure   21/26 = 0.808 (names   270)  new≠old    5
   names NOTHING          n=   4  old    4/4 = 1.000 (names     0)  new    4/4 = 1.000 (names     0)  pure    4/4 = 1.000 (names     0)  new≠old    0
   ⭑ silent documents: every pick identical (abstention verified)
 
 == by house — the convention axis (labelled documents only)
   Breitkopf              n=   3  old    2/3 = 0.667 (names    19)  new    3/3 = 1.000 (names    34)  pure    3/3 = 1.000 (names    34)  new≠old    1
+  Simrock                n=   3  old    2/3 = 0.667 (names    31)  new    2/3 = 0.667 (names    31)  pure    2/3 = 0.667 (names    31)  new≠old    0
   Litolff                n=   3  old    3/3 = 1.000 (names    34)  new    3/3 = 1.000 (names    34)  pure    3/3 = 1.000 (names    34)  new≠old    0
+  Universal              n=   3  old    2/3 = 0.667 (names    21)  new    3/3 = 1.000 (names    33)  pure    3/3 = 1.000 (names    33)  new≠old    1
   Bote                   n=   3  old    3/3 = 1.000 (names    28)  new    3/3 = 1.000 (names    28)  pure    2/3 = 0.667 (names    33)  new≠old    0
+  other/unknown          n=   2  old    2/2 = 1.000 (names    23)  new    2/2 = 1.000 (names    23)  pure    2/2 = 1.000 (names    23)  new≠old    0
   Peters                 n=   2  old    2/2 = 1.000 (names     5)  new    2/2 = 1.000 (names     5)  pure    2/2 = 1.000 (names     5)  new≠old    0
-  Simrock                n=   2  old    2/2 = 1.000 (names    31)  new    2/2 = 1.000 (names    31)  pure    2/2 = 1.000 (names    31)  new≠old    0
-  Universal              n=   2  old    1/2 = 0.500 (names     9)  new    2/2 = 1.000 (names    21)  pure    2/2 = 1.000 (names    21)  new≠old    1
   Ricordi                n=   2  old    0/2 = 0.000 (names    12)  new    1/2 = 0.500 (names    18)  pure    1/2 = 0.500 (names    18)  new≠old    1
   Durand                 n=   2  old    0/2 = 0.000 (names     9)  new    1/2 = 0.500 (names    24)  pure    1/2 = 0.500 (names    24)  new≠old    1
-  other/unknown          n=   1  old    1/1 = 1.000 (names     9)  new    1/1 = 1.000 (names     9)  pure    1/1 = 1.000 (names     9)  new≠old    0
   Eulenburg              n=   1  old    0/1 = 0.000 (names     9)  new    1/1 = 1.000 (names    17)  pure    1/1 = 1.000 (names    17)  new≠old    1
   Novello                n=   1  old    0/1 = 0.000 (names    17)  new    0/1 = 0.000 (names    17)  pure    0/1 = 0.000 (names    17)  new≠old    0
   Augener                n=   1  old    1/1 = 1.000 (names     1)  new    1/1 = 1.000 (names     1)  pure    1/1 = 1.000 (names     1)  new≠old    0

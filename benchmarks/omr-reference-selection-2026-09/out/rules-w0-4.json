@@ -360,6 +360,44 @@
   ]
  },
  {
+  "key": "beach--symphony-in-e-minor-op32-gaelic--27125",
+  "house": "other/unknown",
+  "composer": "beach",
+  "systems": 4,
+  "sizes": [
+   15,
+   15,
+   15,
+   15
+  ],
+  "labels": [
+   14,
+   0,
+   0,
+   0
+  ],
+  "max_size": 15,
+  "any_label": true,
+  "old": [
+   1,
+   0,
+   15,
+   14
+  ],
+  "new": [
+   1,
+   0,
+   15,
+   14
+  ],
+  "pure": [
+   1,
+   0,
+   15,
+   14
+  ]
+ },
+ {
   "key": "beethoven--coriolan--683540",
   "house": "Simrock",
   "composer": "beethoven",
@@ -708,6 +746,50 @@
   ]
  },
  {
+  "key": "brahms--piano-concerto-2--145434",
+  "house": "Simrock",
+  "composer": "brahms",
+  "systems": 7,
+  "sizes": [
+   15,
+   15,
+   2,
+   2,
+   2,
+   2,
+   15
+  ],
+  "labels": [
+   12,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 15,
+  "any_label": true,
+  "old": [
+   3,
+   1,
+   2,
+   0
+  ],
+  "new": [
+   3,
+   1,
+   2,
+   0
+  ],
+  "pure": [
+   3,
+   1,
+   2,
+   0
+  ]
+ },
+ {
   "key": "bruckner--symphony-1--30680",
   "house": "Universal",
   "composer": "bruckner",
@@ -754,6 +836,52 @@
    0,
    0,
    15,
+   12
+  ]
+ },
+ {
+  "key": "bruckner--symphony-6--30699",
+  "house": "Universal",
+  "composer": "bruckner",
+  "systems": 8,
+  "sizes": [
+   17,
+   5,
+   5,
+   7,
+   8,
+   11,
+   17,
+   16
+  ],
+  "labels": [
+   12,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 17,
+  "any_label": true,
+  "old": [
+   0,
+   0,
+   17,
+   12
+  ],
+  "new": [
+   0,
+   0,
+   17,
+   12
+  ],
+  "pure": [
+   0,
+   0,
+   17,
    12
   ]
  },
