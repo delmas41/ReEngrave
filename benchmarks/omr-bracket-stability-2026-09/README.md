@@ -352,7 +352,30 @@ decision that should be taken knowing the signal underneath is now stable.
   dropped, columns crossing every gap are excluded, and the `-1` no-evidence
   marker is mirrored.
 
-## 8. Files
+## 8. Recommendation
+
+**Land default-OFF.** Everything measured says the flag is correct and that
+nothing downstream can tell. A default change in this repo is justified by a
+measured improvement, and there is none to quote: the exports are
+byte-identical, so an ON default would be a change nobody can price and nobody
+can regression-test by score. `test_bracket_columns_recover_the_boundary_the_
+pixel_rule_misses` is what guards it in the meantime, which is the same
+arrangement `OMR_SLOT_STITCH` and `OMR_CONDENSED_PARTS` sit in.
+
+**The trigger for flipping it on** is a consumer that trusts `group_index` —
+`slots.py`'s group term without `map_groups` softening it, a condensation
+prior, a roster join. On the day one of those is priced, this flag goes on in
+the same measurement, because the alternative is pricing that consumer against
+a signal that disagrees with itself 38% of the time.
+
+⚠️ **One asymmetry worth stating before that day.** Turning this on makes
+`_is_grouped_system` FALSE on every engraved fixture (§5), where today it is
+True on 9 of 11 for no reason but jitter. Cue C's second condition means that
+costs nothing now — but it does mean the flag removes an accidental
+True that some future cue could come to depend on. It should not, and this is
+the note that says so.
+
+## 9. Files
 
 ```
 probe/probe_bracket_groups.py    per-system bridging, median, threshold, groups
