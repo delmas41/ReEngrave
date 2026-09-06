@@ -147,13 +147,32 @@ roster-clef negatives, where a consumer's *population* rather than its quality
 settled the question. The exposure probe costs ~15 s a row against ~2 min to
 transcribe one.
 
-⚠️ **A fault found in the probe itself, and worth being findable: THE PROBE AND
-THE PIPELINE CAN READ THE MARGIN BY DIFFERENT MEANS.** The first exposure run
-used **Surya alone**, while the pipeline runs a ladder (PDF text layer → Surya →
-Tesseract). Gate row **IMSLP 575951 has a text layer**, so the pipeline can
-resolve labels the probe does not — and the probe would then report SAME where
-the pipeline differs. `--ladder` runs the real `contextual._labels_for_page`
-chain and is now the default.
+**Confirmed under the pipeline's OWN reader, not a proxy**: the full-ladder run
+reported **18 of 20 rows, every one SAME**. The two it did not reach cannot
+differ by construction — `mahler-sym5-mvt1-local-p5` prints one system, and
+`bach-brandenburg3-mvt1-468678-p1` prints two systems of equal staff count where
+the two keys rank identically. Both also read SAME under the Surya-only pass.
+
+Both `scan_eval` arms were then killed as a provable null. (They were suspended
+with SIGSTOP first rather than pre-empted, so the decision stayed reversible
+until the ladder result was in. **No partial gate figure was ever produced and
+none should be quoted.**)
+
+⚠️⚠️ **A fault found in the probe itself, and it is NOT hypothetical: THE PROBE
+AND THE PIPELINE READ THE MARGIN BY DIFFERENT MEANS, AND THEY DISAGREED.** The
+first exposure run used **Surya alone**; the pipeline runs a ladder (PDF text
+layer → Surya → Tesseract). On `beethoven-sym5-mvt1-575951-p1` — **the one gate
+row whose PDF carries a text layer** — **Surya alone resolves 12 labels and the
+ladder resolves 11.** The two readers genuinely disagree on exactly the row the
+mechanism predicts.
+
+The verdict was unchanged (12 slots under both rules either way) — **but that
+was luck, not design.** A probe whose correctness rests on a disagreement not
+mattering is a probe that will eventually be wrong quietly. `--ladder` runs the
+real `contextual._labels_for_page` chain and is now the default.
+
+> **The findable form: the probe and the pipeline read the margin by different
+> means, and the row where they diverge is the row with the text layer.**
 
 ⚠️ Relatedly: **all ten rows the roster's evidence came from are single-PAGE
 runs**, the one regime this bug cannot occur in. That is why it went unseen.
