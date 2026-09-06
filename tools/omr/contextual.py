@@ -348,6 +348,62 @@ def _usable(labels: list[StaffLabel]) -> int:
     return sum(1 for lab in labels if lab.matched)
 
 
+# Confidences a downstream consumer will actually act on. `slots.build_reference`
+# and the probes shaped like it keep `high` and `medium` and drop `low`, so a
+# `low` label reaches the join as nothing exactly as an unmatched one does.
+CONSUMABLE_CONFIDENCES = ("high", "medium")
+
+
+def _label_is_consumable(lab: StaffLabel) -> bool:
+    return bool(lab.matched and lab.instrument
+                and lab.confidence in CONSUMABLE_CONFIDENCES)
+
+
+def _consumable(labels: list[StaffLabel]) -> int:
+    """How many labels survive as far as a CONSUMER, not just as far as here.
+
+    `_usable` counts `matched`, which is one notch too generous: a match made
+    only by folding an OCR confusion is tagged `low` (`instruments.Match.
+    confidence`), and every consumer drops `low`. So two readers can tie on
+    `_usable` while one of them is contributing strictly less.
+
+    MEASURED on `beethoven-sym5-mvt1-575951-p1`, the one scan-gate row whose
+    PDF carries a text layer. Staff 8 prints `Violino II.`; the text layer
+    encodes it `Yiolino II.`, which resolves to Violin only through the `Y`->`V`
+    fold and is therefore `low`. Surya reads the same staff cleanly at `high`.
+    Both readers score `_usable` 12, `12 > 12` is false, the text layer's copy
+    is kept, and the page reaches the join with ELEVEN labels where Surya alone
+    would have given twelve. Adding a stronger source and getting fewer labels
+    is the shape this ladder has already been repaired for once, one notch
+    coarser (raw presence vs `matched`, 2026-09-01); this is the same fault at
+    the next notch down.
+    """
+    return sum(1 for lab in labels if _label_is_consumable(lab))
+
+
+def _merge_key(labels: list[StaffLabel]) -> tuple[int, int]:
+    """How two whole-page reads are ranked against each other.
+
+    Quality first, reach second — a reader that resolves the same number of
+    staves but more of them CONSUMABLY is the better read, and a reader that
+    resolves more staves still wins when the consumable counts tie.
+    """
+    if not quality_merge_enabled():
+        return (0, _usable(labels))
+    return (_consumable(labels), _usable(labels))
+
+
+def quality_merge_enabled() -> bool:
+    """`OMR_LABEL_MERGE_QUALITY` — rank the reader rungs on consumability.
+
+    Default OFF. Flipping it is a decision with a number attached, not a
+    tidy-up: it changes which reader's text is kept on any page where a weaker
+    rung ties a stronger one on `matched` alone.
+    """
+    return os.environ.get("OMR_LABEL_MERGE_QUALITY", "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
 def _well_covered(labels: list[StaffLabel], pws) -> bool:
     """Has the text layer named enough of the largest system to stand alone?"""
     if not labels:
@@ -419,7 +475,26 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
     # and the four it names are all winds. Measured, reading the margin there
     # takes the page from 18 of 20 clefs to 20 of 20.
     tiers[0] += len(labels)
-    if _well_covered(labels, pws):
+    # ⚠️ THIS EARLY RETURN CONTRADICTS THIS FUNCTION'S OWN DOCSTRING, twice
+    # over: "the three free rungs run unconditionally" and "the two free rungs
+    # are tried unconditionally; the paid one is still gated". They are not —
+    # a text layer that clears `LABEL_COVERAGE_OK` returns here and the free
+    # readers are never asked. `_well_covered` is a COST control, and the cost
+    # it is protecting is the PAID rung's; Surya and Tesseract spend no budget.
+    #
+    # What it costs, measured on `beethoven-sym5-mvt1-575951-p1` (see
+    # `_consumable`): the text layer names 12 of 12 staves, 11 of them
+    # consumably, and returns here — so Surya, which reads all twelve cleanly,
+    # never runs. The ladder ends with fewer labels than one of its own rungs
+    # would have given alone. `11 >= 0.75 * 12` clears the bar whichever way
+    # the bar is counted, so the notch is not in the THRESHOLD; it is that a
+    # free rung is gated at all.
+    #
+    # Under `OMR_LABEL_MERGE_QUALITY` the free rungs run as the docstring says
+    # they do, and `_merge_key` decides who wins. The residual cost is Surya's
+    # wall time on pages that used to skip it — real, which is why this is a
+    # flag and not a fix.
+    if not quality_merge_enabled() and _well_covered(labels, pws):
         return labels
 
     if surya_fallback:
@@ -448,11 +523,18 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
                 # partly-covered page, replacing could throw away labels the
                 # text layer had — which is why this is a comparison and not an
                 # override.
-                if _usable(read) > _usable(labels):
+                # ⚠️ AND `matched` IS STILL ONE NOTCH TOO GENEROUS, which is
+                # what `OMR_LABEL_MERGE_QUALITY` fixes: an OCR-folded match is
+                # tagged `low` and every consumer drops it, so a text layer
+                # that resolves twelve staves of which eleven are consumable
+                # TIES a Surya read whose twelve all are, and `12 > 12` keeps
+                # the worse one. Exactly the fault this comment describes,
+                # measured one notch further down. See `_consumable`.
+                if _merge_key(read) > _merge_key(labels):
                     tiers[0] = 0
                     tiers[1] += len(read)
                     labels = read
-                if _well_covered(labels, pws):
+                if not quality_merge_enabled() and _well_covered(labels, pws):
                     return labels
 
     # And the second free rung, below Surya because it reads less well but is
@@ -468,12 +550,31 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
     if ocr_fallback:
         from . import staff_labels_tesseract
         if staff_labels_tesseract.available():
-            already = {lab.staff_index for lab in labels}
+            # ⚠️ AND THIS SET IS THE DOCUMENTED LIVE FAULT, on RAW presence:
+            # a staff where an earlier rung returned `'(C)'` — present, and
+            # resolving to nothing — blocks Tesseract from supplying `'(C) Hr.'`
+            # It is the same shape the Surya rung above was repaired for on
+            # 2026-09-01, and the comment there names the fix.
+            #
+            # Under the flag the block is on RESOLUTION, not presence: a label
+            # the lexicon could not turn into an instrument stops nothing.
+            # ⚠️ Deliberately NOT extended to `low`-confidence labels, unlike
+            # `_merge_key` above. This is the least accurate reader here and
+            # the one most likely to return a plausible wrong word (`Ki.Tr.` ->
+            # Trumpet), so letting it overwrite a weak-but-real reading from a
+            # better rung is a trade nothing here has priced. Unmatched only.
+            already = {lab.staff_index for lab in labels
+                       if lab.matched or not quality_merge_enabled()}
             added = [lab for lab in
                      staff_labels_tesseract.read_staff_labels_tesseract(pws)
                      if lab.staff_index not in already]
             if added:
-                labels = labels + added
+                # A staff whose only label was unresolved now has a resolved
+                # one; drop the dead reading rather than shipping two labels
+                # for one staff, which nothing downstream is written for.
+                superseded = {lab.staff_index for lab in added}
+                labels = [lab for lab in labels
+                          if lab.staff_index not in superseded] + added
                 tiers[2] += len(added)
 
     if assist.mode == "none" or _well_covered(labels, pws):
