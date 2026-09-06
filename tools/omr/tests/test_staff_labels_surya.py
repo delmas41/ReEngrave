@@ -275,6 +275,42 @@ def test_an_unresolved_label_no_longer_blocks_tesseract(chain, monkeypatch):
     assert len(on) == 1, "the dead reading was shipped alongside the live one"
 
 
+def test_tesseract_may_not_swap_one_unresolved_label_for_another(chain, monkeypatch):
+    """One-way only: an unresolved label yields to a reading that RESOLVES, not
+    to another that does not.
+
+    Measured — without this, `bach-brandenburg3-mvt1-468678-p1` changes five
+    staves and gains nothing (`'I'`/`'III'` -> `'|'`/`'HI'`/`'(1'`, all
+    unmatched), and that noise was the whole of what this change did to that
+    gate row.
+    """
+    calls, state = chain
+    state["tesseract_available"] = True
+    state["text"] = [StaffLabel(staff_index=0, text="III", instrument=None,
+                                fifths_offset=0, y_center_px=0.0,
+                                confidence="none")]
+    state["tesseract"] = [StaffLabel(staff_index=0, text="HI", instrument=None,
+                                     fifths_offset=0, y_center_px=0.0,
+                                     confidence="none")]
+    on = _ladder(state, monkeypatch, "1")
+    assert [l.text for l in on] == ["III"], "a sideways swap of two dead reads"
+
+
+def test_tesseract_still_fills_a_staff_with_NO_label_at_all(chain, monkeypatch):
+    """The pre-existing additive behaviour, unchanged in both arms — Tesseract
+    fills an empty staff whether or not its reading resolves."""
+    calls, state = chain
+    state["tesseract_available"] = True
+    state["text"] = []
+    state["surya"] = []
+    state["tesseract"] = [StaffLabel(staff_index=0, text="???", instrument=None,
+                                     fifths_offset=0, y_center_px=0.0,
+                                     confidence="none")]
+    for flag in (None, "1"):
+        out = _ladder(state, monkeypatch, flag)
+        assert [l.text for l in out] == ["???"], f"flag={flag}"
+
+
 def test_tesseract_still_never_overwrites_a_RESOLVED_label(chain, monkeypatch):
     """Deliberately narrower than the Surya rung. Tesseract is the least
     accurate reader here (`Ki.Tr.` -> Trumpet), so a weak-but-real reading from

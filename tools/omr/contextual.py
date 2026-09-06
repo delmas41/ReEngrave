@@ -569,11 +569,37 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
             # the one most likely to return a plausible wrong word (`Ki.Tr.` ->
             # Trumpet), so letting it overwrite a weak-but-real reading from a
             # better rung is a trade nothing here has priced. Unmatched only.
-            already = {lab.staff_index for lab in labels
-                       if lab.matched or not quality_merge_enabled()}
+            #
+            # ⚠️ AND THE UNBLOCKING IS ONE-WAY: Tesseract may take over a staff
+            # whose label is unresolved ONLY IF ITS OWN READING RESOLVES. The
+            # spec is "an unresolved label must not out-rank a later rung's
+            # output THAT DOES resolve" — where the later rung also resolves to
+            # nothing it has no claim, and swapping is a pure text downgrade for
+            # no gain.
+            #
+            # MEASURED, and it is the whole of the noise this change makes on
+            # the scan gate. Without this clause `bach-brandenburg3-mvt1-468678
+            # -p1` changes FIVE staves and gains nothing — Surya's `'I'` /
+            # `'III'` (unmatched) replaced by Tesseract's `'|'`, `'[il'`, `'HI'`,
+            # `'(1'` (also unmatched) — and `brahms-...-p1` staff 5 and
+            # `-p3` staff 6 do the same. With it, that row goes blind and all
+            # eight real gains are untouched, including the documented case
+            # verbatim: `-p3` staff 19, `'(C)'` -> `'(C) Hr.'` -> Horn [high].
+            held = {lab.staff_index: lab for lab in labels}
+
+            def _tesseract_may_take(lab) -> bool:
+                standing = held.get(lab.staff_index)
+                if standing is None:
+                    return True                  # empty staff — as it always was
+                if not quality_merge_enabled():
+                    return False                 # the fault, kept as it stands
+                if standing.matched:
+                    return False                 # never overwrite a real reading
+                return lab.matched               # only trade up, never sideways
+
             added = [lab for lab in
                      staff_labels_tesseract.read_staff_labels_tesseract(pws)
-                     if lab.staff_index not in already]
+                     if _tesseract_may_take(lab)]
             if added:
                 # A staff whose only label was unresolved now has a resolved
                 # one; drop the dead reading rather than shipping two labels
