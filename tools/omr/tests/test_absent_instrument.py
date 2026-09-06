@@ -14,8 +14,15 @@ class TestVetoConfig:
     def test_off_is_the_default_and_the_fallback(self, raw):
         assert veto_config({"OMR_ABSENT_INSTRUMENT_VETO": raw})[0] == "off"
 
-    def test_unset_is_off(self):
-        assert veto_config({})[0] == "off"
+    def test_unset_is_on_and_zero_turns_it_off(self):
+        """Default flipped ON 2026-09-06: 91 impossible instruments to 0, and
+        on the 807 adjudicable staves 7 vetoes of which all 7 removed a WRONG
+        name. It refuses rather than renames, so its failure is an unnamed
+        staff. See `DEFAULT_MODE` for the cost and the pairing.
+        """
+        assert veto_config({})[0] == "apply"
+        assert veto_config({"OMR_ABSENT_INSTRUMENT_VETO": "0"})[0] == "off"
+        assert veto_config({"OMR_ABSENT_INSTRUMENT_VETO": "off"})[0] == "off"
 
     def test_report_changes_nothing_but_records(self):
         assert veto_config({"OMR_ABSENT_INSTRUMENT_VETO": "report"})[0] == "report"

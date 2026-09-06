@@ -177,8 +177,13 @@ def test_the_document_reference_puts_a_string_on_a_trombone(monkeypatch):
 
     Kept as a live failure rather than a remembered one — if the aligner ever
     stops making this mistake unaided, this test fails and says so.
+
+    ⚠️ Sets the flag OFF explicitly. It used to delete the variable, which said
+    the same thing only while the default was off; the default went ON
+    2026-09-06 and this test is about the UNFIXED aligner, not about which way
+    the default points.
     """
-    monkeypatch.delenv("OMR_MOVEMENT_REFERENCE", raising=False)
+    monkeypatch.setenv("OMR_MOVEMENT_REFERENCE", "0")
     pages, labels = _document(flat_groups=True)
     reference = assign_slots(pages, labels)
     assert len(reference) == len(FINALE_OPENING)
@@ -228,8 +233,15 @@ def test_one_span_is_identical_to_today(monkeypatch):
     assert seen[0] == seen[1]
 
 
-def test_the_flag_is_off_by_default(monkeypatch):
+def test_the_flag_is_on_by_default_and_can_be_turned_off(monkeypatch):
+    """Default flipped ON 2026-09-06 — 91 impossible instruments to 0 on the
+    whole work, and correct names 750 -> 756. ⚠️ It must stay paired with
+    `OMR_ABSENT_INSTRUMENT_VETO`: alone, on a run starting mid-movement, it
+    goes 44 -> 57 impossible. See the module docstring.
+    """
     monkeypatch.delenv("OMR_MOVEMENT_REFERENCE", raising=False)
+    assert mr.enabled()
+    monkeypatch.setenv("OMR_MOVEMENT_REFERENCE", "0")
     assert not mr.enabled()
     monkeypatch.setenv("OMR_MOVEMENT_REFERENCE", "1")
     assert mr.enabled()

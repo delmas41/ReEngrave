@@ -93,10 +93,34 @@ def enabled() -> bool:
     """`OMR_MOVEMENT_REFERENCE` — align each page against its own movement's
     lineup instead of the whole document's.
 
-    **Default OFF.** A default flip is a decision with a number attached, and
-    the number is in `benchmarks/omr-movement-reference-2026-09/`.
+    **DEFAULT ON since 2026-09-06** (Sean's call, delegated on the numbers).
+    Whole work, Beethoven 5 / Litolff, 88 pages, 1616 staff records: instruments
+    the movement cannot contain **91 → 0**, and correct names **750 → 756** —
+    it removes the falsehood by *naming*, not by refusing, which is the better
+    kind of fix. Boundary detection: **0 false boundaries over 4 works and 310
+    pages**, from an axiom rather than a threshold — *a system may omit the
+    staves of tacet parts, but it can never invent one, so a page whose largest
+    system exceeds every page before it has proved the lineup GREW there.*
+
+    ⚠️ **IT MUST BE PAIRED WITH `OMR_ABSENT_INSTRUMENT_VETO`, and the reason is
+    measured.** On a run that starts MID-MOVEMENT this flag alone makes things
+    *worse* — a 24-page window went **44 → 57** impossible, turning 9 correct
+    string names into `Trombone`. The mechanism is not the segmentation (both
+    page sets cut identically) but the span's own reference: **a span lacking
+    its movement's opening page has no fully-labelled system**, so its
+    unlabelled string slots land on the document's Trombone slots by position.
+    The veto cleans that up (57 → 0). Turning this on alone re-introduces the
+    bug it fixes, on exactly the runs a reader is most likely to make by hand.
+
+    ⚠️ **Neither standing benchmark can price this** — all 20 scan-gate rows and
+    every `orchestral_eval` excerpt are single-page, so spans take no boundary
+    at all and both flags are no-ops there. The evidence is the whole-work
+    measurement, **n=1 work for the identity numbers**, and that is the honest
+    bound on it.
+
+    Full record: `benchmarks/omr-spans-veto-composition-2026-09/FINDINGS.md`.
     """
-    return os.environ.get("OMR_MOVEMENT_REFERENCE", "0").strip().lower() in (
+    return os.environ.get("OMR_MOVEMENT_REFERENCE", "1").strip().lower() in (
         "1", "true", "yes", "on")
 
 

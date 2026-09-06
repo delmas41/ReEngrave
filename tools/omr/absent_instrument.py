@@ -84,6 +84,32 @@ DEFAULT_RULE = "span"
 
 ENV_VAR = "OMR_ABSENT_INSTRUMENT_VETO"
 
+# **DEFAULT ON since 2026-09-06** (Sean's call, delegated on the numbers).
+#
+# Whole work, Beethoven 5 / Litolff, 88 pages: instruments the movement cannot
+# contain **91 -> 0**. On the **807 staves the printed lineup can adjudicate,
+# 7 vetoes and all 7 removed a name that was WRONG — zero correct names lost.**
+# It refuses rather than renames, so its failure mode is an unnamed staff, which
+# is honest, against a confidently wrong one, which is not.
+#
+# ⚠️ Its cost is **18 refusals on reduced finale systems that this corpus cannot
+# adjudicate either way** — unpriced rather than disproven. That is the reason
+# it is on: an unpriced refusal is a smaller risk than a measured falsehood.
+#
+# ⚠️ **It is what makes `OMR_MOVEMENT_REFERENCE` safe.** Spans alone, on a run
+# starting MID-MOVEMENT, go 44 -> 57 impossible (9 correct string names become
+# `Trombone`), because a span lacking its movement's opening page has no
+# fully-labelled system. This veto takes that to 0. On the whole work it adds
+# nothing on top of spans — it is insurance, and the case it insures is the one
+# a reader creates by hand.
+#
+# ⚠️ **Structurally inert on a SINGLE-page run** (attestation distance is always
+# 0), which is every row of both standing benchmarks — so neither can price it,
+# and a flat figure from either would be coverage of nothing.
+#
+# Record: `benchmarks/omr-spans-veto-composition-2026-09/FINDINGS.md`.
+DEFAULT_MODE = "on"
+
 
 def veto_config(env: dict[str, str] | None = None) -> tuple[str, int, str]:
     """`(mode, window, rule)`; mode in `off` / `report` / `apply`.
@@ -91,7 +117,7 @@ def veto_config(env: dict[str, str] | None = None) -> tuple[str, int, str]:
     Accepted: `0`/`off`, `report`, `1`/`on`, an integer window, or
     `<rule>:<window>` with rule in `span` / `window`.
     """
-    raw = (env if env is not None else os.environ).get(ENV_VAR, "")
+    raw = (env if env is not None else os.environ).get(ENV_VAR, DEFAULT_MODE)
     raw = raw.strip().lower()
     rule = DEFAULT_RULE
     prefixed = False
