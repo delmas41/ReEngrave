@@ -1,0 +1,22 @@
+===== fit-off   (benchmarks/omr-span-composition-2026-09/out/brahms1/-fitoff-spans-on.json)
+  `Tuba` staff-records document-wide: 102 (79 before page 45, 23 in the finale) — Brahms 1 has no tuba, so all of them are wrong
+  wrong-record PATTERNS over the judgeable systems:
+     28 systems:  #6 Horn->Trumpet | #7 Trumpet->Trombone | #8 Timpani->Tuba
+     17 systems:  #9 Trombone->Tuba
+      5 systems:  #5 Horn->Trumpet | #6 Trumpet->Trombone | #7 Violin->Tuba
+      2 systems:  #7 Timpani->Trombone | #8 Violin->Tuba
+      1 systems:  #4 Horn->Contrabassoon | #7 Violin->Tuba
+
+===== fit-refuse   (benchmarks/omr-span-composition-2026-09/out/brahms1/-fitrefuse-spans-on.json)
+  `Tuba` staff-records document-wide: 31 (8 before page 45, 23 in the finale) — Brahms 1 has no tuba, so all of them are wrong
+  wrong-record PATTERNS over the judgeable systems:
+     17 systems:  #9 Trombone->Tuba
+      2 systems:  #7 Timpani->Trombone | #8 Violin->Tuba
+      1 systems:  #7 Trumpet->Trombone
+
+===== fit-search   (benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-on.json)
+  `Tuba` staff-records document-wide: 23 (0 before page 45, 23 in the finale) — Brahms 1 has no tuba, so all of them are wrong
+  wrong-record PATTERNS over the judgeable systems:
+     17 systems:  #9 Trombone->Tuba
+      2 systems:  #6 Trumpet->Horn | #7 Timpani->Trumpet | #8 Violin->Timpani
+
