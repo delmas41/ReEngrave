@@ -1,0 +1,5500 @@
+[
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/das-wohltemperierte-klavier-i-bwv846-869/bach--das-wohltemperierte-klavier-i-bwv846-869--snortum-2024--imslp932182.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.44,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/egmont-op84/beethoven--egmont-op84--breitkopf-und-hartel--imslp807970.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/piano-concerto-3-op37/beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417.pdf",
+    "page": 0,
+    "n_staves": 13,
+    "off": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 12,
+      "seconds": 0.92,
+      "by_staff": {
+        "0": [
+          "Flaten I",
+          null,
+          "none",
+          false
+        ],
+        "1": [
+          "Oboen I",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Klarinetten in B",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotte I",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Horner in Es (dann inC) I",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "Trompeten in",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Pauken in C. G",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Klavier",
+          "Piano",
+          "high",
+          true
+        ],
+        "9": [
+          "Violine I",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Violine II",
+          "Violin",
+          "high",
+          true
+        ],
+        "11": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "12": [
+          "Violoncello u. Kontraba6",
+          "Cello",
+          "medium",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 13,
+      "usable": 13,
+      "raw": 13,
+      "seconds": 14.22,
+      "by_staff": {
+        "0": [
+          "Fl\u00f6ten II",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboen II",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Klarinetten in B II",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotte II",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "H\u00f6rner in Es I (dann in C) II",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "Trompeten in C I II",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Pauken in C.G",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Klavier",
+          "Piano",
+          "high",
+          true
+        ],
+        "9": [
+          "Violine I",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Violine II",
+          "Violin",
+          "high",
+          true
+        ],
+        "11": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "12": [
+          "Violoncello u. Kontraba\u00df",
+          "Cello",
+          "medium",
+          true
+        ],
+        "8": [
+          "Klavier",
+          "Piano",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "8",
+      "12"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/piano-concerto-4-op58/beethoven--piano-concerto-4-op58--breitkopf-hartel-beethov-1862--imslp977418.pdf",
+    "page": 0,
+    "n_staves": 19,
+    "off": {
+      "consumable": 9,
+      "usable": 9,
+      "raw": 9,
+      "seconds": 132.71,
+      "by_staff": {
+        "0": [
+          "Flauto",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in C",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in G",
+          "Horn",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 14,
+      "usable": 14,
+      "raw": 19,
+      "seconds": 20.85,
+      "by_staff": {
+        "0": [
+          "Flauto",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in C",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in G",
+          "Horn",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso",
+          "Cello",
+          "high",
+          true
+        ],
+        "11": [
+          "Ob.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "12": [
+          "Cor.",
+          "Horn",
+          "high",
+          true
+        ],
+        "15": [
+          "Viol. I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "16": [
+          "Viol. II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "17": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "5": [
+          "Pianofortc",
+          null,
+          "none",
+          false
+        ],
+        "6": [
+          "|",
+          null,
+          "none",
+          false
+        ],
+        "13": [
+          "Pfte.",
+          null,
+          "none",
+          false
+        ],
+        "14": [
+          "|",
+          null,
+          "none",
+          false
+        ],
+        "18": [
+          "Vell. B. e",
+          null,
+          "none",
+          false
+        ]
+      }
+    },
+    "staves_changed": [
+      "5",
+      "6",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/piano-concerto-5-op73/beethoven--piano-concerto-5-op73--breitkopf-hartel-beethov-1862--imslp977419.pdf",
+    "page": 0,
+    "n_staves": 14,
+    "off": {
+      "consumable": 13,
+      "usable": 13,
+      "raw": 13,
+      "seconds": 0.41,
+      "by_staff": {
+        "0": [
+          "Flauti",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in Es",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "Trombe in Es",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Pianoforte",
+          "Piano",
+          "high",
+          true
+        ],
+        "9": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Violino Il",
+          "Violin",
+          "high",
+          true
+        ],
+        "11": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "12": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "13": [
+          "Contrabasso",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 13,
+      "usable": 13,
+      "raw": 13,
+      "seconds": 16.66,
+      "by_staff": {
+        "0": [
+          "Flauti",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in Es",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "Trombe in Es",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Pianoforte",
+          "Piano",
+          "high",
+          true
+        ],
+        "9": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Violino Il",
+          "Violin",
+          "high",
+          true
+        ],
+        "11": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "12": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "13": [
+          "Contrabasso",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+    "page": 0,
+    "n_staves": 11,
+    "off": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 12.31,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in C.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in C.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Trombe in C.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in C.G.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 13.93,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in C.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in C.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Trombe in C.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in C.G.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--eulenburg-1938--imslp515347.pdf",
+    "page": 0,
+    "n_staves": 11,
+    "off": {
+      "consumable": 8,
+      "usable": 9,
+      "raw": 11,
+      "seconds": 0.84,
+      "by_staff": {
+        "0": [
+          "2 Flauti",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "20boi",
+          "Oboe",
+          "low",
+          true
+        ],
+        "2": [
+          "2 Cla.rinetti in A",
+          null,
+          "none",
+          false
+        ],
+        "3": [
+          "2 Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "2 Corni in D",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "2TrombeinD",
+          null,
+          "none",
+          false
+        ],
+        "6": [
+          "Timpani in D-A",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "' Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viol&",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Contrabasso",
+          "Cello",
+          "medium",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 16.72,
+      "by_staff": {
+        "0": [
+          "2 Flauti",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "2 Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "2 Clarinetti in A",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "2 Corni in D",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "2 Trombe in D",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in D-A",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Contrabasso",
+          "Cello",
+          "medium",
+          true
+        ]
+      }
+    },
+    "staves_changed": [
+      "1",
+      "2",
+      "5",
+      "8",
+      "9"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+    "page": 0,
+    "n_staves": 11,
+    "off": {
+      "consumable": 10,
+      "usable": 10,
+      "raw": 11,
+      "seconds": 0.84,
+      "by_staff": {
+        "0": [
+          "Flnuti.",
+          null,
+          "none",
+          false
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in A.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in D.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Trombe in D.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in D. A.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino n.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 14.08,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in A.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in D.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Trombe in D.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in D.A.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": [
+      "0",
+      "6",
+      "8"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+    "page": 0,
+    "n_staves": 12,
+    "off": {
+      "consumable": 12,
+      "usable": 12,
+      "raw": 12,
+      "seconds": 0.69,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in Es",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "Corno az.o in",
+          "Horn",
+          "medium",
+          true
+        ],
+        "6": [
+          "Trombe in Es",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "7": [
+          "Timpani in Es.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "11": [
+          "Violoncello e Hasso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 12,
+      "usable": 12,
+      "raw": 12,
+      "seconds": 17.08,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in Es",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "Corno az.o in",
+          "Horn",
+          "medium",
+          true
+        ],
+        "6": [
+          "Trombe in Es",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "7": [
+          "Timpani in Es.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "11": [
+          "Violoncello e Hasso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--eulenburg-1938--imslp9340.pdf",
+    "page": 0,
+    "n_staves": 12,
+    "off": {
+      "consumable": 9,
+      "usable": 9,
+      "raw": 10,
+      "seconds": 0.58,
+      "by_staff": {
+        "0": [
+          "Flauto",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "2 Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagottt",
+          null,
+          "none",
+          false
+        ],
+        "4": [
+          "2Corni in B",
+          "Horn",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in B-F",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "11": [
+          "Contrabasso",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 12,
+      "usable": 12,
+      "raw": 12,
+      "seconds": 17.11,
+      "by_staff": {
+        "0": [
+          "Flauto",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "2 Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "2 Clarinetti in B",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "2 Corni in B",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "2 Trombe in B",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in B-F",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "11": [
+          "Contrabasso",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+    "page": 0,
+    "n_staves": 11,
+    "off": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 14.61,
+      "by_staff": {
+        "0": [
+          "Flauto.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in B.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Trombe in B.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in B. F.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 16.91,
+      "by_staff": {
+        "0": [
+          "Flauto.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in B.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Trombe in B.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in B. F.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--eulenburg-1938--imslp575952.pdf",
+    "page": 0,
+    "n_staves": 12,
+    "off": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 16.19,
+      "by_staff": {
+        "0": [
+          "2 Flauti",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "2 Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "2 Clarinetti in B",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "2 Corni in Es",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "2 Trombe in C",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in C-G",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "11": [
+          "Contrabasso",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 16.88,
+      "by_staff": {
+        "0": [
+          "2 Flauti",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "2 Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "2 Clarinetti in B",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "2 Corni in Es",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "2 Trombe in C",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in C-G",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "11": [
+          "Contrabasso",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+    "page": 0,
+    "n_staves": 12,
+    "off": {
+      "consumable": 11,
+      "usable": 12,
+      "raw": 12,
+      "seconds": 0.53,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in Es.",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "Trombe inC.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in C.G.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino ].",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Yiolino II.",
+          "Violin",
+          "low",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello.",
+          "Cello",
+          "high",
+          true
+        ],
+        "11": [
+          "Basso.",
+          "Bass voice",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 12,
+      "usable": 12,
+      "raw": 12,
+      "seconds": 16.7,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in Es.",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "Trombe in C.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in C.G.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello.",
+          "Cello",
+          "high",
+          true
+        ],
+        "11": [
+          "Basso.",
+          "Bass voice",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": [
+      "5",
+      "7",
+      "8"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--eulenburg-1938--imslp516705.pdf",
+    "page": 0,
+    "n_staves": 16,
+    "off": {
+      "consumable": 13,
+      "usable": 15,
+      "raw": 15,
+      "seconds": 16.28,
+      "by_staff": {
+        "0": [
+          "2 Flauti",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "2 Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "2 Clarinetti in B",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "2 Corni in F",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "6": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "7": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "8": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "9": [
+          "Contrabasso",
+          "Contrabass",
+          "high",
+          true
+        ],
+        "10": [
+          "Cor (F)",
+          "Horn",
+          "high",
+          true
+        ],
+        "12": [
+          "VI.",
+          "Violin",
+          "low",
+          true
+        ],
+        "13": [
+          "VIa.",
+          "Viola",
+          "low",
+          true
+        ],
+        "14": [
+          "Vc.",
+          "Cello",
+          "high",
+          true
+        ],
+        "15": [
+          "Cb.",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 13,
+      "usable": 15,
+      "raw": 15,
+      "seconds": 18.2,
+      "by_staff": {
+        "0": [
+          "2 Flauti",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "2 Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "2 Clarinetti in B",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "2 Corni in F",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "6": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "7": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "8": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "9": [
+          "Contrabasso",
+          "Contrabass",
+          "high",
+          true
+        ],
+        "10": [
+          "Cor (F)",
+          "Horn",
+          "high",
+          true
+        ],
+        "12": [
+          "VI.",
+          "Violin",
+          "low",
+          true
+        ],
+        "13": [
+          "VIa.",
+          "Viola",
+          "low",
+          true
+        ],
+        "14": [
+          "Vc.",
+          "Cello",
+          "high",
+          true
+        ],
+        "15": [
+          "Cb.",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+    "page": 0,
+    "n_staves": 15,
+    "off": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 34.9,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in F.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "6": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "7": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "8": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ],
+        "9": [
+          "Fag.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "10": [
+          "Cor.",
+          "Horn",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 12.98,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in F.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "6": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "7": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "8": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ],
+        "9": [
+          "Fag.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "10": [
+          "Cor.",
+          "Horn",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--eulenburg-1938--imslp6800.pdf",
+    "page": 0,
+    "n_staves": 11,
+    "off": {
+      "consumable": 9,
+      "usable": 10,
+      "raw": 11,
+      "seconds": 0.6,
+      "by_staff": {
+        "0": [
+          "2 Flauti",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "I Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "2 Ola.rinettl in A",
+          null,
+          "none",
+          false
+        ],
+        "3": [
+          "2 Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "2Cornl in A",
+          "Horn",
+          "low",
+          true
+        ],
+        "5": [
+          "2 Trombe in D",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in A\u00b7E",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino U",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Contrai>asso",
+          "Cello",
+          "medium",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 14.34,
+      "by_staff": {
+        "0": [
+          "2 Flauti",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "2 Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "2 Clarinetti in A",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "2 Corni in A",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "2 Trombe in D",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in A-E",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Contradasso",
+          "Cello",
+          "medium",
+          true
+        ]
+      }
+    },
+    "staves_changed": [
+      "1",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+    "page": 0,
+    "n_staves": 11,
+    "off": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 11.85,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in A.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in A.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Trombe in D.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in A.E.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 14.51,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in A.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in A.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Trombe in D.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in A.E.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--haslinger-1837--imslp244620.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+    "page": 0,
+    "n_staves": 12,
+    "off": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 12,
+      "seconds": 1.08,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in B .",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Co1\u00b7ni in F.",
+          null,
+          "none",
+          false
+        ],
+        "5": [
+          "Trombe in F.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in F. C.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello.",
+          "Cello",
+          "high",
+          true
+        ],
+        "11": [
+          "Basso.",
+          "Bass voice",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 12,
+      "usable": 12,
+      "raw": 12,
+      "seconds": 13.58,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in F.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Trombe in F.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in F. C.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello.",
+          "Cello",
+          "high",
+          true
+        ],
+        "11": [
+          "Basso.",
+          "Bass voice",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": [
+      "2",
+      "4"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--eul-peters--imslp1022766.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--eulenburg-1938--imslp516487.pdf",
+    "page": 0,
+    "n_staves": 13,
+    "off": {
+      "consumable": 12,
+      "usable": 12,
+      "raw": 12,
+      "seconds": 0.56,
+      "by_staff": {
+        "0": [
+          "2 Fla.uti",
+          "Flute",
+          "medium",
+          true
+        ],
+        "1": [
+          "2 Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "I. II in D Corni",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "III. IV in B basso",
+          "Bass voice",
+          "medium",
+          true
+        ],
+        "6": [
+          "2 Trombe inD",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "7": [
+          "Timpani in D-A",
+          "Timpani",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Viol&",
+          "Violin",
+          "high",
+          true
+        ],
+        "11": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "12": [
+          "Contrabasso",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 13,
+      "usable": 13,
+      "raw": 13,
+      "seconds": 17.14,
+      "by_staff": {
+        "0": [
+          "2 Flauti",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "2 Oboi",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "2 Clarinetti in B",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagotti",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "I. II in D 4 Corni",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "III. IV in B basso",
+          "Bass voice",
+          "medium",
+          true
+        ],
+        "6": [
+          "2 Trombe in D",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "7": [
+          "Timpani in D-A",
+          "Timpani",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "11": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "12": [
+          "Contrabasso",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": [
+      "0",
+      "2",
+      "4",
+      "6",
+      "10"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+    "page": 0,
+    "n_staves": 13,
+    "off": {
+      "consumable": 11,
+      "usable": 12,
+      "raw": 13,
+      "seconds": 1.29,
+      "by_staff": {
+        "0": [
+          "Flautt.",
+          null,
+          "none",
+          false
+        ],
+        "1": [
+          "Obol.",
+          "Oboe",
+          "low",
+          true
+        ],
+        "2": [
+          "Clarinetti in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in D.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Corni in B basso",
+          "Horn",
+          "medium",
+          true
+        ],
+        "6": [
+          "Trombe in D.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "7": [
+          "Timpani in D.A.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "11": [
+          "Violoncello.",
+          "Cello",
+          "high",
+          true
+        ],
+        "12": [
+          "Basso.",
+          "Bass voice",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 13,
+      "usable": 13,
+      "raw": 13,
+      "seconds": 17.11,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in D.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Corni in B basso",
+          "Horn",
+          "medium",
+          true
+        ],
+        "6": [
+          "Trombe in D.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "7": [
+          "Timpani in D.A.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "11": [
+          "Violoncello.",
+          "Cello",
+          "high",
+          true
+        ],
+        "12": [
+          "Basso.",
+          "Bass voice",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": [
+      "0",
+      "1"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/concerto-for-violin-and-cello-op102/brahms--concerto-for-violin-and-cello-op102--breitkopf-hartel-brahms--imslp1048967.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+    "page": 0,
+    "n_staves": 14,
+    "off": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 14,
+      "seconds": 1.11,
+      "by_staff": {
+        "0": [
+          "2 Floten",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "2 Oboen",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "t Klarinetten in",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagotte",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Kontrafagott",
+          "Contrabassoon",
+          "high",
+          true
+        ],
+        "5": [
+          "m . Ct 2",
+          null,
+          "none",
+          false
+        ],
+        "6": [
+          "in Es",
+          null,
+          "none",
+          false
+        ],
+        "7": [
+          "2 Trompeten in C",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "8": [
+          "Pauken in C u.G",
+          "Timpani",
+          "medium",
+          true
+        ],
+        "9": [
+          "1. Violine",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "2.Violine",
+          "Violin",
+          "high",
+          true
+        ],
+        "11": [
+          "Bratsche",
+          "Viola",
+          "high",
+          true
+        ],
+        "12": [
+          "Viol on cell",
+          "Violin",
+          "medium",
+          true
+        ],
+        "13": [
+          "Kontrabal3",
+          null,
+          "none",
+          false
+        ]
+      }
+    },
+    "on": {
+      "consumable": 13,
+      "usable": 13,
+      "raw": 14,
+      "seconds": 19.44,
+      "by_staff": {
+        "0": [
+          "2 Fl\u00f6ten",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "2 Oboen",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "2 Klarinetten in B",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "2 Fagotte",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Kontrafagott",
+          "Contrabassoon",
+          "high",
+          true
+        ],
+        "7": [
+          "2 Trompeten in C",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "8": [
+          "Pauken in C u. G",
+          "Timpani",
+          "medium",
+          true
+        ],
+        "9": [
+          "1. Violine",
+          "Violin",
+          "high",
+          true
+        ],
+        "10": [
+          "2. Violine",
+          "Violin",
+          "high",
+          true
+        ],
+        "11": [
+          "Bratsche",
+          "Viola",
+          "high",
+          true
+        ],
+        "12": [
+          "Violoncell",
+          "Cello",
+          "high",
+          true
+        ],
+        "13": [
+          "Kontraba\u00df",
+          "Contrabass",
+          "high",
+          true
+        ],
+        "5": [
+          "C in | Horner 4",
+          "Horn",
+          "high",
+          true
+        ],
+        "6": [
+          "Ks rf in",
+          null,
+          "none",
+          false
+        ]
+      }
+    },
+    "staves_changed": [
+      "0",
+      "2",
+      "5",
+      "6",
+      "8",
+      "10",
+      "12",
+      "13"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bruckner/symphony-3-in-d-minor-wab-103/bruckner--symphony-3-in-d-minor-wab-103--wiener-philharmonischer--imslp931872.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/elgar/symphony-1-op55/elgar--symphony-1-op55--novello-co-1908--imslp56155.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/elgar/symphony-2-op63/elgar--symphony-2-op63--novello-co-1911--imslp979455.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/farrenc/symphony-2-op35/farrenc--symphony-2-op35--renioult-2025--imslp986966.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.05,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/farrenc/symphony-3-op36/farrenc--symphony-3-op36--john-s-shaw-2024--imslp934246.pdf",
+    "page": 0,
+    "n_staves": 12,
+    "off": {
+      "consumable": 12,
+      "usable": 12,
+      "raw": 12,
+      "seconds": 0.57,
+      "by_staff": {
+        "0": [
+          "Flutes",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboes",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinets in B b",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Bassoons \uf0a2",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "1st Horn in G",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "2nd Horn in B b Basso \uf0a2",
+          "Horn",
+          "medium",
+          true
+        ],
+        "6": [
+          "Timpani \uf0a2",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violin I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violin II",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "11": [
+          "Contrabass \uf0a2",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 12,
+      "usable": 12,
+      "raw": 12,
+      "seconds": 14.04,
+      "by_staff": {
+        "0": [
+          "Flutes",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboes",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinets in B b",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Bassoons \uf0a2",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "1st Horn in G",
+          "Horn",
+          "medium",
+          true
+        ],
+        "5": [
+          "2nd Horn in B b Basso \uf0a2",
+          "Horn",
+          "medium",
+          true
+        ],
+        "6": [
+          "Timpani \uf0a2",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violin I",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violin II",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello",
+          "Cello",
+          "high",
+          true
+        ],
+        "11": [
+          "Contrabass \uf0a2",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/franck/le-chasseur-maudit/franck--le-chasseur-maudit--eulenburg--imslp94535.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/franck/symphony-in-d-minor/franck--symphony-in-d-minor--hamelle-1890--imslp95003.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/handel/messiah-hwv-56/handel--messiah-hwv-56--lead-sheet--local.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.05,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/handel/messiah-hwv-56/handel--messiah-hwv-56--vocal-reduction--local.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.05,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/handel/music-for-the-royal-fireworks-hwv-351/handel--music-for-the-royal-fireworks-hwv-351--breitkopf-und-hartel--imslp779991.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/handel/water-music-hwv-348-350/handel--water-music-hwv-348-350--breitkopf-und-hartel--imslp780551.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/haydn/symphony-100-in-g-major-hob-i-100/haydn--symphony-100-in-g-major-hob-i-100--breitkopf-und-hartel-1857--imslp546542.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/haydn/symphony-101-in-d-major-hob-i-101/haydn--symphony-101-in-d-major-hob-i-101--breitkopf-und-hartel-1855--imslp546548.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/haydn/symphony-102-in-b-flat-major-hob-i-102/haydn--symphony-102-in-b-flat-major-hob-i-102--breitkopf-und-hartel-1857--imslp546543.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/haydn/symphony-103-in-e-flat-major-hob-i-103/haydn--symphony-103-in-e-flat-major-hob-i-103--breitkopf-und-hartel-1854--imslp546607.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/haydn/symphony-104-in-d-major-hob-i-104/haydn--symphony-104-in-d-major-hob-i-104--breitkopf-und-hartel-1854--imslp546608.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/haydn/symphony-94-in-g-major-hob-i-94/haydn--symphony-94-in-g-major-hob-i-94--breitkopf-und-hartel-1855--imslp546546.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/haydn/symphony-99-in-e-flat-major-hob-i-99/haydn--symphony-99-in-e-flat-major-hob-i-99--breitkopf-und-hartel-1855--imslp546549.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/kirchhoff/l-abc-musical/kirchhoff--l-abc-musical--unknown-edition--local.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-3-gmw-31/mahler--symphony-3-gmw-31--edition-1906--imslp71001.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mozart/die-zauberflote-k620/mozart--die-zauberflote-k620--simrock--imslp923456.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mozart/symphony-1-in-e-flat-major-k16/mozart--symphony-1-in-e-flat-major-k16--breitkopf-hartel-mozart-1879--imslp33.pdf",
+    "page": 0,
+    "n_staves": 18,
+    "off": {
+      "consumable": 6,
+      "usable": 6,
+      "raw": 6,
+      "seconds": 10.77,
+      "by_staff": {
+        "0": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "1": [
+          "Corni in Es.",
+          "Horn",
+          "medium",
+          true
+        ],
+        "2": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "5": [
+          "Basso.",
+          "Bass voice",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 6,
+      "usable": 6,
+      "raw": 6,
+      "seconds": 11.0,
+      "by_staff": {
+        "0": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "1": [
+          "Corni in Es.",
+          "Horn",
+          "medium",
+          true
+        ],
+        "2": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "5": [
+          "Basso.",
+          "Bass voice",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mozart/symphony-25-in-g-minor-k183/mozart--symphony-25-in-g-minor-k183--breitkopf-hartel-mozart-1880--imslp57.pdf",
+    "page": 0,
+    "n_staves": 21,
+    "off": {
+      "consumable": 7,
+      "usable": 7,
+      "raw": 7,
+      "seconds": 10.6,
+      "by_staff": {
+        "0": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "1": [
+          "Corni in B.",
+          "Horn",
+          "high",
+          true
+        ],
+        "2": [
+          "Corni in G.",
+          "Horn",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "5": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "6": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 7,
+      "usable": 7,
+      "raw": 7,
+      "seconds": 10.59,
+      "by_staff": {
+        "0": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "1": [
+          "Corni in B.",
+          "Horn",
+          "high",
+          true
+        ],
+        "2": [
+          "Corni in G.",
+          "Horn",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "5": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "6": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mozart/symphony-29-in-a-major-k201/mozart--symphony-29-in-a-major-k201--breitkopf-hartel-mozart-1880--imslp1015165.pdf",
+    "page": 0,
+    "n_staves": 18,
+    "off": {
+      "consumable": 6,
+      "usable": 6,
+      "raw": 6,
+      "seconds": 10.79,
+      "by_staff": {
+        "0": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "1": [
+          "Corni in A.",
+          "Horn",
+          "high",
+          true
+        ],
+        "2": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "5": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 6,
+      "usable": 6,
+      "raw": 6,
+      "seconds": 8.98,
+      "by_staff": {
+        "0": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "1": [
+          "Corni in A.",
+          "Horn",
+          "high",
+          true
+        ],
+        "2": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "5": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mozart/symphony-31-in-d-major-k297/mozart--symphony-31-in-d-major-k297--breitkopf-hartel-mozart-1880--imslp1015171.pdf",
+    "page": 0,
+    "n_staves": 22,
+    "off": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 10.46,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in A.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in D.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Trombe in D.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in D.A.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 11,
+      "usable": 11,
+      "raw": 11,
+      "seconds": 19.49,
+      "by_staff": {
+        "0": [
+          "Flauti.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Clarinetti in A.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "3": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "4": [
+          "Corni in D.",
+          "Horn",
+          "high",
+          true
+        ],
+        "5": [
+          "Trombe in D.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "6": [
+          "Timpani in D.A.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "9": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "10": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mozart/symphony-33-in-b-flat-major-k319/mozart--symphony-33-in-b-flat-major-k319--breitkopf-hartel-s-parti--imslp1016351.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mozart/symphony-4-in-d-major-k19/mozart--symphony-4-in-d-major-k19--breitkopf-hartel-mozart-1879--imslp36.pdf",
+    "page": 0,
+    "n_staves": 18,
+    "off": {
+      "consumable": 6,
+      "usable": 6,
+      "raw": 6,
+      "seconds": 13.13,
+      "by_staff": {
+        "0": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "1": [
+          "Corni in D.",
+          "Horn",
+          "high",
+          true
+        ],
+        "2": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "5": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 6,
+      "usable": 6,
+      "raw": 6,
+      "seconds": 8.55,
+      "by_staff": {
+        "0": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "1": [
+          "Corni in D.",
+          "Horn",
+          "high",
+          true
+        ],
+        "2": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "5": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp73.pdf",
+    "page": 0,
+    "n_staves": 20,
+    "off": {
+      "consumable": 10,
+      "usable": 10,
+      "raw": 10,
+      "seconds": 16.83,
+      "by_staff": {
+        "0": [
+          "Flauto.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "3": [
+          "Corni in C.",
+          "Horn",
+          "high",
+          true
+        ],
+        "4": [
+          "Trombe in C.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "5": [
+          "Timpani in C.G.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "6": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "9": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 10,
+      "usable": 10,
+      "raw": 11,
+      "seconds": 10.61,
+      "by_staff": {
+        "0": [
+          "Flauto.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "2": [
+          "Fagotti.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "3": [
+          "Corni in C.",
+          "Horn",
+          "high",
+          true
+        ],
+        "4": [
+          "Trombe in C.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "5": [
+          "Timpani in C.G.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "6": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "7": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "8": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "9": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ],
+        "16": [
+          "|",
+          null,
+          "none",
+          false
+        ]
+      }
+    },
+    "staves_changed": [
+      "16"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mozart/symphony-5-in-b-flat-major-k22/mozart--symphony-5-in-b-flat-major-k22--breitkopf-hartel-mozart-1879--imslp37.pdf",
+    "page": 0,
+    "n_staves": 17,
+    "off": {
+      "consumable": 6,
+      "usable": 6,
+      "raw": 6,
+      "seconds": 9.17,
+      "by_staff": {
+        "0": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "1": [
+          "Corni in B.",
+          "Horn",
+          "high",
+          true
+        ],
+        "2": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "5": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 6,
+      "usable": 6,
+      "raw": 6,
+      "seconds": 8.64,
+      "by_staff": {
+        "0": [
+          "Oboi.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "1": [
+          "Corni in B.",
+          "Horn",
+          "high",
+          true
+        ],
+        "2": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "5": [
+          "Violoncello e Basso.",
+          "Cello",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/nielsen/symphony-5-op50/nielsen--symphony-5-op50--nielsencomplete-1998--imslp92727.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/ravel/bolero-m-81/ravel--bolero-m-81--2016--imslp421137.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/respighi/fontane-di-roma/respighi--fontane-di-roma--ricordi--imslp914006.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/rossini/il-barbiere-di-siviglia/rossini--il-barbiere-di-siviglia--wiener-philharmonischer--imslp280515.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.06,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/saint-georges/2-symphonies-concertantes-op13/saint-georges--2-symphonies-concertantes-op13--wolfson--imslp716390.pdf",
+    "page": 0,
+    "n_staves": 12,
+    "off": {
+      "consumable": 6,
+      "usable": 6,
+      "raw": 6,
+      "seconds": 12.33,
+      "by_staff": {
+        "0": [
+          "Violino Principale I",
+          "Violin",
+          "medium",
+          true
+        ],
+        "1": [
+          "Violino Principale II",
+          "Violin",
+          "medium",
+          true
+        ],
+        "2": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Alto",
+          "Alto",
+          "high",
+          true
+        ],
+        "5": [
+          "Basso",
+          "Bass voice",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 6,
+      "usable": 6,
+      "raw": 6,
+      "seconds": 11.35,
+      "by_staff": {
+        "0": [
+          "Violino Principale I",
+          "Violin",
+          "medium",
+          true
+        ],
+        "1": [
+          "Violino Principale II",
+          "Violin",
+          "medium",
+          true
+        ],
+        "2": [
+          "Violino I",
+          "Violin",
+          "high",
+          true
+        ],
+        "3": [
+          "Violino II",
+          "Violin",
+          "high",
+          true
+        ],
+        "4": [
+          "Alto",
+          "Alto",
+          "high",
+          true
+        ],
+        "5": [
+          "Basso",
+          "Bass voice",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/schubert/rosamunde-d-797/schubert--rosamunde-d-797--schubertcomplete-1893--imslp711227.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.05,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.05,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/schubert/symphony-8-d-759/schubert--symphony-8-d-759--breitkopf-hartel-s-parti--imslp1017902.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/schumann/piano-concerto-op7/schumann--piano-concerto-op7--chang-2019--imslp573002.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/strauss/don-juan-op20/strauss--don-juan-op20--jos-aibl-verlag--imslp18774.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/strauss/tod-und-verklarung-op24/strauss--tod-und-verklarung-op24--aibl-1891--imslp18779.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/tchaikovsky/1812-overture-op49/tchaikovsky--1812-overture-op49--eulenburg--imslp283001.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--breitkopf-und-hartel--imslp504311.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/tchaikovsky/symphony-5-op64/tchaikovsky--symphony-5-op64--breitkopf-hartel-1930--imslp504184.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--breitkopf-und-hartel--imslp504312.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--eulenburg--imslp922722.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/vidal/178-basses/vidal--178-basses--univerzitet-umetnosti-u--imslp756089.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.02,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/wagner/die-meistersinger-von-nurnberg-wwv-96/wagner--die-meistersinger-von-nurnberg-wwv-96--breitkopf-und-hartel--imslp1018335.pdf",
+    "page": 0,
+    "n_staves": 30,
+    "off": {
+      "consumable": 29,
+      "usable": 29,
+      "raw": 29,
+      "seconds": 0.88,
+      "by_staff": {
+        "0": [
+          "Flauto I.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Flauto II.\u00b7",
+          "Flute",
+          "high",
+          true
+        ],
+        "2": [
+          "Flauto III.",
+          "Flute",
+          "high",
+          true
+        ],
+        "3": [
+          "Oboe I.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "4": [
+          "Oboe II.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "5": [
+          "Clarinetto I in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "6": [
+          "Clarinetto II in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "7": [
+          "Fagotto I.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "8": [
+          "Fagotto n.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "9": [
+          "Corno I in F.",
+          "Horn",
+          "medium",
+          true
+        ],
+        "10": [
+          "Corno II in F.",
+          "Horn",
+          "medium",
+          true
+        ],
+        "11": [
+          "Corno min F. '",
+          "Horn",
+          "medium",
+          true
+        ],
+        "12": [
+          "I Corno IV in F.",
+          "Horn",
+          "medium",
+          true
+        ],
+        "13": [
+          "Tromba I in B.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "14": [
+          "Tromba II in. B.",
+          "Trumpet",
+          "medium",
+          true
+        ],
+        "15": [
+          "Tromba. ill in B.",
+          "Trumpet",
+          "medium",
+          true
+        ],
+        "16": [
+          "Trombone I.",
+          "Trombone",
+          "high",
+          true
+        ],
+        "17": [
+          "Trombone II.",
+          "Trombone",
+          "high",
+          true
+        ],
+        "18": [
+          "Trombone III.",
+          "Trombone",
+          "high",
+          true
+        ],
+        "19": [
+          "Tuba.",
+          "Tuba",
+          "high",
+          true
+        ],
+        "20": [
+          "Tamburo milita.re.",
+          "Percussion",
+          "medium",
+          true
+        ],
+        "21": [
+          "Triangolo.",
+          "Percussion",
+          "high",
+          true
+        ],
+        "22": [
+          "Timpani in C & G.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "23": [
+          "Arpa.",
+          "Harp",
+          "high",
+          true
+        ],
+        "25": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "26": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "27": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "28": [
+          "Violoncello,",
+          "Cello",
+          "high",
+          true
+        ],
+        "29": [
+          "Contraba.sso.",
+          "Contrabass",
+          "high",
+          true
+        ]
+      }
+    },
+    "on": {
+      "consumable": 30,
+      "usable": 30,
+      "raw": 30,
+      "seconds": 24.26,
+      "by_staff": {
+        "0": [
+          "Flauto I.",
+          "Flute",
+          "high",
+          true
+        ],
+        "1": [
+          "Flauto II.\u00b7",
+          "Flute",
+          "high",
+          true
+        ],
+        "2": [
+          "Flauto III.",
+          "Flute",
+          "high",
+          true
+        ],
+        "3": [
+          "Oboe I.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "4": [
+          "Oboe II.",
+          "Oboe",
+          "high",
+          true
+        ],
+        "5": [
+          "Clarinetto I in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "6": [
+          "Clarinetto II in B.",
+          "Clarinet",
+          "high",
+          true
+        ],
+        "7": [
+          "Fagotto I.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "8": [
+          "Fagotto n.",
+          "Bassoon",
+          "high",
+          true
+        ],
+        "9": [
+          "Corno I in F.",
+          "Horn",
+          "medium",
+          true
+        ],
+        "10": [
+          "Corno II in F.",
+          "Horn",
+          "medium",
+          true
+        ],
+        "11": [
+          "Corno min F. '",
+          "Horn",
+          "medium",
+          true
+        ],
+        "12": [
+          "I Corno IV in F.",
+          "Horn",
+          "medium",
+          true
+        ],
+        "13": [
+          "Tromba I in B.",
+          "Trumpet",
+          "high",
+          true
+        ],
+        "14": [
+          "Tromba II in. B.",
+          "Trumpet",
+          "medium",
+          true
+        ],
+        "15": [
+          "Tromba. ill in B.",
+          "Trumpet",
+          "medium",
+          true
+        ],
+        "16": [
+          "Trombone I.",
+          "Trombone",
+          "high",
+          true
+        ],
+        "17": [
+          "Trombone II.",
+          "Trombone",
+          "high",
+          true
+        ],
+        "18": [
+          "Trombone III.",
+          "Trombone",
+          "high",
+          true
+        ],
+        "19": [
+          "Tuba.",
+          "Tuba",
+          "high",
+          true
+        ],
+        "20": [
+          "Tamburo milita.re.",
+          "Percussion",
+          "medium",
+          true
+        ],
+        "21": [
+          "Triangolo.",
+          "Percussion",
+          "high",
+          true
+        ],
+        "22": [
+          "Timpani in C & G.",
+          "Timpani",
+          "high",
+          true
+        ],
+        "23": [
+          "Arpa.",
+          "Harp",
+          "high",
+          true
+        ],
+        "25": [
+          "Violino I.",
+          "Violin",
+          "high",
+          true
+        ],
+        "26": [
+          "Violino II.",
+          "Violin",
+          "high",
+          true
+        ],
+        "27": [
+          "Viola.",
+          "Viola",
+          "high",
+          true
+        ],
+        "28": [
+          "Violoncello,",
+          "Cello",
+          "high",
+          true
+        ],
+        "29": [
+          "Contraba.sso.",
+          "Contrabass",
+          "high",
+          true
+        ],
+        "24": [
+          "Arpa.",
+          "Harp",
+          "high",
+          true
+        ]
+      }
+    },
+    "staves_changed": [
+      "24"
+    ]
+  },
+  {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/weber/oberon-j-306/weber--oberon-j-306--breitkopf-und-hartel--imslp800613.pdf",
+    "page": 0,
+    "n_staves": 0,
+    "off": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.04,
+      "by_staff": {}
+    },
+    "on": {
+      "consumable": 0,
+      "usable": 0,
+      "raw": 0,
+      "seconds": 0.03,
+      "by_staff": {}
+    },
+    "staves_changed": []
+  }
+]
