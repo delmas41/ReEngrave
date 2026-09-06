@@ -1,0 +1,277 @@
+=== whole-report2 mode=report pages=ALL start 2026-09-06T15:25:45Z
+transcribe: beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf (88 pages, processing 88)
+  weights:  auto (scan/engraved routing)
+  conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: per-cell
+  weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+  page 0: 0 systems, 0 staves, 0 measures, 0 detections (0/0 pitched, 0/0 durations)
+  page 1: 1 systems, 12 staves, 192 measures, 701 detections (117/117 pitched, 117/117 durations)
+  page 2: 2 systems, 22 staves, 341 measures, 2468 detections (509/509 pitched, 509/509 durations)
+  page 3: 2 systems, 19 staves, 320 measures, 1731 detections (378/378 pitched, 378/378 durations)
+  page 4: 2 systems, 22 staves, 330 measures, 2780 detections (696/696 pitched, 696/696 durations)
+  page 5: 2 systems, 16 staves, 242 measures, 1376 detections (416/416 pitched, 416/416 durations)
+  page 6: 2 systems, 22 staves, 274 measures, 2311 detections (635/635 pitched, 635/635 durations)
+  page 7: 2 systems, 22 staves, 385 measures, 2062 detections (506/506 pitched, 506/506 durations)
+  page 8: 2 systems, 20 staves, 407 measures, 2178 detections (453/453 pitched, 453/453 durations)
+  page 9: 2 systems, 22 staves, 288 measures, 1793 detections (433/433 pitched, 433/433 durations)
+  page 10: 2 systems, 22 staves, 319 measures, 2157 detections (517/517 pitched, 517/517 durations)
+  page 11: 2 systems, 20 staves, 349 measures, 1271 detections (256/256 pitched, 256/256 durations)
+  page 12: 2 systems, 23 staves, 312 measures, 2839 detections (694/694 pitched, 694/694 durations)
+  page 13: 2 systems, 22 staves, 341 measures, 2771 detections (730/730 pitched, 730/730 durations)
+  page 14: 2 systems, 23 staves, 367 measures, 2141 detections (629/629 pitched, 629/629 durations)
+  page 15: 2 systems, 22 staves, 462 measures, 2917 detections (813/813 pitched, 813/813 durations)
+  page 16: 2 systems, 22 staves, 341 measures, 2229 detections (694/694 pitched, 694/694 durations)
+  page 17: 3 systems, 20 staves, 228 measures, 1736 detections (382/382 pitched, 382/382 durations)
+  page 18: 2 systems, 19 staves, 131 measures, 1889 detections (560/560 pitched, 560/560 durations)
+  page 19: 2 systems, 20 staves, 246 measures, 1753 detections (428/428 pitched, 428/428 durations)
+  page 20: 2 systems, 16 staves, 136 measures, 1478 detections (429/429 pitched, 429/429 durations)
+  page 21: 2 systems, 20 staves, 140 measures, 1882 detections (677/677 pitched, 677/677 durations)
+  page 22: 2 systems, 17 staves, 121 measures, 1309 detections (390/390 pitched, 390/390 durations)
+  page 23: 2 systems, 21 staves, 105 measures, 1529 detections (471/471 pitched, 471/471 durations)
+  page 24: 2 systems, 22 staves, 165 measures, 1937 detections (697/697 pitched, 697/697 durations)
+  page 25: 2 systems, 19 staves, 201 measures, 1699 detections (615/615 pitched, 615/615 durations)
+  page 26: 2 systems, 18 staves, 163 measures, 1811 detections (606/606 pitched, 606/606 durations)
+  page 27: 2 systems, 16 staves, 88 measures, 1492 detections (483/483 pitched, 483/483 durations)
+  page 28: 2 systems, 20 staves, 128 measures, 1629 detections (537/537 pitched, 537/537 durations)
+  page 29: 2 systems, 19 staves, 165 measures, 1504 detections (482/482 pitched, 482/482 durations)
+  page 30: 2 systems, 20 staves, 188 measures, 2138 detections (554/554 pitched, 554/554 durations)
+  page 31: 2 systems, 19 staves, 185 measures, 2363 detections (729/729 pitched, 729/729 durations)
+  page 32: 3 systems, 20 staves, 314 measures, 1361 detections (303/303 pitched, 303/303 durations)
+  page 33: 2 systems, 18 staves, 297 measures, 1626 detections (328/328 pitched, 328/328 durations)
+  page 34: 2 systems, 22 staves, 330 measures, 2650 detections (628/628 pitched, 628/628 durations)
+  page 35: 2 systems, 21 staves, 294 measures, 1811 detections (377/377 pitched, 377/377 durations)
+  page 36: 2 systems, 20 staves, 280 measures, 1785 detections (499/499 pitched, 499/499 durations)
+  page 37: 3 systems, 23 staves, 240 measures, 1965 detections (528/528 pitched, 528/528 durations)
+  page 38: 2 systems, 24 staves, 192 measures, 2531 detections (755/755 pitched, 755/755 durations)
+  page 39: 3 systems, 19 staves, 206 measures, 1357 detections (279/279 pitched, 279/279 durations)
+  page 40: 3 systems, 21 staves, 217 measures, 1561 detections (246/246 pitched, 246/246 durations)
+  page 41: 3 systems, 19 staves, 190 measures, 1483 detections (345/345 pitched, 345/345 durations)
+  page 42: 3 systems, 16 staves, 171 measures, 1412 detections (297/297 pitched, 297/297 durations)
+  page 43: 2 systems, 15 staves, 250 measures, 1299 detections (284/284 pitched, 284/284 durations)
+  page 44: 1 systems, 17 staves, 136 measures, 1675 detections (629/629 pitched, 629/629 durations)
+  page 45: 1 systems, 17 staves, 255 measures, 1694 detections (597/597 pitched, 597/597 durations)
+  page 46: 1 systems, 17 staves, 255 measures, 1806 detections (726/726 pitched, 726/726 durations)
+  page 47: 1 systems, 17 staves, 153 measures, 1529 detections (473/473 pitched, 473/473 durations)
+  page 48: 1 systems, 17 staves, 153 measures, 1264 detections (448/448 pitched, 448/448 durations)
+  page 49: 1 systems, 17 staves, 119 measures, 1531 detections (448/448 pitched, 448/448 durations)
+  page 50: 1 systems, 17 staves, 119 measures, 1153 detections (405/405 pitched, 405/405 durations)
+  page 51: 1 systems, 17 staves, 119 measures, 1185 detections (420/420 pitched, 420/420 durations)
+  page 52: 1 systems, 17 staves, 136 measures, 1200 detections (294/294 pitched, 294/294 durations)
+  page 53: 1 systems, 17 staves, 221 measures, 1032 detections (365/365 pitched, 365/365 durations)
+  page 54: 1 systems, 17 staves, 153 measures, 1957 detections (725/725 pitched, 725/725 durations)
+  page 55: 1 systems, 17 staves, 136 measures, 1691 detections (636/636 pitched, 636/636 durations)
+  page 56: 2 systems, 19 staves, 133 measures, 1396 detections (358/358 pitched, 358/358 durations)
+  page 57: 2 systems, 24 staves, 168 measures, 1980 detections (402/402 pitched, 402/402 durations)
+  page 58: 1 systems, 17 staves, 136 measures, 1308 detections (409/409 pitched, 409/409 durations)
+  page 59: 1 systems, 17 staves, 119 measures, 1355 detections (494/494 pitched, 494/494 durations)
+  page 60: 1 systems, 17 staves, 102 measures, 1062 detections (481/481 pitched, 481/481 durations)
+  page 61: 1 systems, 17 staves, 119 measures, 1341 detections (458/458 pitched, 458/458 durations)
+  page 62: 1 systems, 17 staves, 221 measures, 1354 detections (518/518 pitched, 518/518 durations)
+  page 63: 3 systems, 23 staves, 366 measures, 2083 detections (578/578 pitched, 578/578 durations)
+  page 64: 1 systems, 17 staves, 153 measures, 1766 detections (699/699 pitched, 699/699 durations)
+  page 65: 1 systems, 16 staves, 128 measures, 1866 detections (725/725 pitched, 725/725 durations)
+  page 66: 1 systems, 17 staves, 102 measures, 1561 detections (606/606 pitched, 606/606 durations)
+  page 67: 1 systems, 17 staves, 170 measures, 1495 detections (464/464 pitched, 464/464 durations)
+  page 68: 1 systems, 17 staves, 153 measures, 1191 detections (386/386 pitched, 386/386 durations)
+  page 69: 1 systems, 17 staves, 119 measures, 1495 detections (460/460 pitched, 460/460 durations)
+  page 70: 1 systems, 17 staves, 119 measures, 1305 detections (486/486 pitched, 486/486 durations)
+  page 71: 1 systems, 17 staves, 85 measures, 981 detections (396/396 pitched, 396/396 durations)
+  page 72: 1 systems, 17 staves, 153 measures, 1073 detections (370/370 pitched, 370/370 durations)
+  page 73: 1 systems, 17 staves, 170 measures, 1666 detections (653/653 pitched, 653/653 durations)
+  page 74: 1 systems, 17 staves, 187 measures, 1176 detections (304/304 pitched, 304/304 durations)
+  page 75: 1 systems, 17 staves, 119 measures, 1237 detections (397/397 pitched, 397/397 durations)
+  page 76: 1 systems, 17 staves, 187 measures, 1383 detections (530/530 pitched, 530/530 durations)
+  page 77: 1 systems, 17 staves, 170 measures, 1223 detections (332/332 pitched, 332/332 durations)
+  page 78: 1 systems, 17 staves, 153 measures, 1265 detections (425/425 pitched, 425/425 durations)
+  page 79: 1 systems, 17 staves, 170 measures, 1358 detections (458/458 pitched, 458/458 durations)
+  page 80: 1 systems, 17 staves, 136 measures, 1319 detections (450/450 pitched, 450/450 durations)
+  page 81: 1 systems, 17 staves, 221 measures, 1386 detections (408/408 pitched, 408/408 durations)
+  page 82: 1 systems, 17 staves, 238 measures, 1609 detections (406/406 pitched, 406/406 durations)
+  page 83: 1 systems, 17 staves, 204 measures, 1639 detections (677/677 pitched, 677/677 durations)
+  page 84: 1 systems, 17 staves, 153 measures, 1487 detections (557/557 pitched, 557/557 durations)
+  page 85: 1 systems, 17 staves, 238 measures, 1500 detections (440/440 pitched, 440/440 durations)
+  page 86: 1 systems, 16 staves, 208 measures, 1537 detections (601/601 pitched, 601/601 durations)
+  page 87: 1 systems, 17 staves, 289 measures, 1403 detections (369/369 pitched, 369/369 durations)
+30 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '21.', 'C. Fig.', 'C. Fug.', 'C. Pag.', 'Cc. Fa', 'Ccr.', 'Cer', 'Cer.', 'DR.', 'Dh.', 'F o  5', 'Fig.', 'Fug.', 'F}', 'Gp.', 'Gr.', 'Jor.', 'Lor.', 'Oh', 'Oh.', 'Ol.', 'Or.', 'Pag.', 'Rig.', 'T:. Teu', 'Tinp.', 'Tiny', 'Tump.', 'ag.', '|' — these are the strings to add to tools/omr/instruments.py
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a27ea6f49a3716925/benchmarks/omr-absent-instrument-veto-2026-09/out/whole-report2.json
+  pages=88  systems=140  staves=1616  measures=17975  detections=130918
+  noteheads=42848  pitched=42848  (100% pitch coverage)
+  with_duration=42848  (100% rhythm coverage)  rests=11372/13430
+  runtime: phase1=505.59s  yolo=1918.92s  total=3622.91s
+  meter->rhythm: 155 measure(s) re-read a beam level to match the meter
+  page 0: 0 measures, 0 phase1_warnings, 0 rhythm_sum_warnings
+  page 1: 192 measures, 12 phase1_warnings, 5 rhythm_sum_warnings
+    key signatures: read on 5/12 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 2: 341 measures, 11 phase1_warnings, 48 rhythm_sum_warnings
+    key signatures: read on 12/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 3: 320 measures, 8 phase1_warnings, 22 rhythm_sum_warnings
+    key signatures: read on 14/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 4: 330 measures, 0 phase1_warnings, 17 rhythm_sum_warnings
+    key signatures: read on 14/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 5: 242 measures, 16 phase1_warnings, 38 rhythm_sum_warnings
+    key signatures: read on 11/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 6: 274 measures, 10 phase1_warnings, 56 rhythm_sum_warnings
+    key signatures: read on 17/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 7: 385 measures, 22 phase1_warnings, 52 rhythm_sum_warnings
+    key signatures: read on 12/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 8: 407 measures, 42 phase1_warnings, 31 rhythm_sum_warnings
+    key signatures: read on 13/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 9: 288 measures, 22 phase1_warnings, 44 rhythm_sum_warnings
+    key signatures: read on 13/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 10: 319 measures, 11 phase1_warnings, 42 rhythm_sum_warnings
+    key signatures: read on 12/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 11: 349 measures, 20 phase1_warnings, 22 rhythm_sum_warnings
+    key signatures: read on 13/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 12: 312 measures, 23 phase1_warnings, 44 rhythm_sum_warnings
+    key signatures: read on 9/23 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 13: 341 measures, 44 phase1_warnings, 70 rhythm_sum_warnings
+    key signatures: read on 13/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 14: 367 measures, 23 phase1_warnings, 47 rhythm_sum_warnings
+    key signatures: read on 12/23 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 15: 462 measures, 33 phase1_warnings, 41 rhythm_sum_warnings
+    key signatures: read on 15/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 16: 341 measures, 11 phase1_warnings, 44 rhythm_sum_warnings
+    key signatures: read on 14/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 17: 228 measures, 0 phase1_warnings, 57 rhythm_sum_warnings
+    key signatures: read on 11/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 18: 131 measures, 0 phase1_warnings, 54 rhythm_sum_warnings
+    key signatures: read on 13/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 19: 246 measures, 0 phase1_warnings, 73 rhythm_sum_warnings
+    key signatures: read on 12/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 20: 136 measures, 0 phase1_warnings, 57 rhythm_sum_warnings
+    key signatures: read on 10/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 21: 140 measures, 0 phase1_warnings, 67 rhythm_sum_warnings
+    key signatures: read on 7/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 22: 121 measures, 0 phase1_warnings, 64 rhythm_sum_warnings
+    key signatures: read on 10/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 23: 105 measures, 0 phase1_warnings, 65 rhythm_sum_warnings
+    key signatures: read on 8/21 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 24: 165 measures, 0 phase1_warnings, 75 rhythm_sum_warnings
+    key signatures: read on 7/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 25: 201 measures, 0 phase1_warnings, 91 rhythm_sum_warnings
+    key signatures: read on 3/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 26: 163 measures, 0 phase1_warnings, 70 rhythm_sum_warnings
+    key signatures: read on 11/18 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 27: 88 measures, 0 phase1_warnings, 73 rhythm_sum_warnings
+    key signatures: read on 8/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 28: 128 measures, 0 phase1_warnings, 71 rhythm_sum_warnings
+    key signatures: read on 11/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 29: 165 measures, 8 phase1_warnings, 60 rhythm_sum_warnings
+    key signatures: read on 12/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 30: 188 measures, 0 phase1_warnings, 76 rhythm_sum_warnings
+    key signatures: read on 9/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 31: 185 measures, 12 phase1_warnings, 68 rhythm_sum_warnings
+    key signatures: read on 12/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 32: 314 measures, 24 phase1_warnings, 68 rhythm_sum_warnings
+    key signatures: read on 7/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 33: 297 measures, 9 phase1_warnings, 76 rhythm_sum_warnings
+    key signatures: read on 9/18 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 34: 330 measures, 22 phase1_warnings, 182 rhythm_sum_warnings
+    key signatures: read on 9/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 35: 294 measures, 0 phase1_warnings, 119 rhythm_sum_warnings
+    key signatures: read on 7/21 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 36: 280 measures, 9 phase1_warnings, 111 rhythm_sum_warnings
+    key signatures: read on 8/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 37: 240 measures, 0 phase1_warnings, 113 rhythm_sum_warnings
+    key signatures: read on 2/23 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 38: 192 measures, 0 phase1_warnings, 148 rhythm_sum_warnings
+    key signatures: read on 4/24 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 39: 206 measures, 0 phase1_warnings, 74 rhythm_sum_warnings
+    key signatures: read on 2/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 40: 217 measures, 7 phase1_warnings, 75 rhythm_sum_warnings
+    key signatures: read on 9/21 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 41: 190 measures, 14 phase1_warnings, 113 rhythm_sum_warnings
+    key signatures: read on 10/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 42: 171 measures, 6 phase1_warnings, 72 rhythm_sum_warnings
+    key signatures: read on 9/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 43: 240 measures, 15 phase1_warnings, 80 rhythm_sum_warnings
+    key signatures: read on 10/15 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 44: 136 measures, 0 phase1_warnings, 86 rhythm_sum_warnings
+    key signatures: read on 5/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 45: 255 measures, 34 phase1_warnings, 58 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 46: 255 measures, 51 phase1_warnings, 86 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 47: 153 measures, 0 phase1_warnings, 80 rhythm_sum_warnings
+    key signatures: read on 4/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 48: 153 measures, 0 phase1_warnings, 91 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 49: 119 measures, 0 phase1_warnings, 85 rhythm_sum_warnings
+    key signatures: read on 3/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 50: 119 measures, 0 phase1_warnings, 63 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 51: 119 measures, 0 phase1_warnings, 58 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 52: 136 measures, 17 phase1_warnings, 47 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 53: 221 measures, 51 phase1_warnings, 62 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 54: 153 measures, 0 phase1_warnings, 102 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 55: 136 measures, 0 phase1_warnings, 89 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 56: 133 measures, 0 phase1_warnings, 83 rhythm_sum_warnings
+    key signatures: read on 3/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 57: 168 measures, 0 phase1_warnings, 100 rhythm_sum_warnings
+    key signatures: read on 0/24 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 58: 136 measures, 0 phase1_warnings, 85 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 59: 119 measures, 0 phase1_warnings, 79 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 60: 102 measures, 0 phase1_warnings, 74 rhythm_sum_warnings
+    key signatures: read on 6/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 61: 119 measures, 0 phase1_warnings, 81 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 62: 221 measures, 51 phase1_warnings, 90 rhythm_sum_warnings
+    key signatures: read on 3/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 63: 366 measures, 0 phase1_warnings, 164 rhythm_sum_warnings
+    key signatures: read on 3/23 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 64: 153 measures, 0 phase1_warnings, 84 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 65: 128 measures, 0 phase1_warnings, 103 rhythm_sum_warnings
+    key signatures: read on 0/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 66: 102 measures, 0 phase1_warnings, 81 rhythm_sum_warnings
+    key signatures: read on 3/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 67: 170 measures, 0 phase1_warnings, 75 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 68: 153 measures, 0 phase1_warnings, 90 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 69: 119 measures, 0 phase1_warnings, 68 rhythm_sum_warnings
+    key signatures: read on 3/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 70: 119 measures, 0 phase1_warnings, 76 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 71: 85 measures, 0 phase1_warnings, 53 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 72: 153 measures, 51 phase1_warnings, 58 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 73: 170 measures, 17 phase1_warnings, 120 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 74: 187 measures, 0 phase1_warnings, 61 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 75: 119 measures, 0 phase1_warnings, 82 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 76: 187 measures, 34 phase1_warnings, 21 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 77: 170 measures, 0 phase1_warnings, 32 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 78: 153 measures, 0 phase1_warnings, 42 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 79: 170 measures, 0 phase1_warnings, 34 rhythm_sum_warnings
+    key signatures: read on 4/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 80: 136 measures, 0 phase1_warnings, 46 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 81: 221 measures, 0 phase1_warnings, 30 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 82: 238 measures, 0 phase1_warnings, 23 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 83: 204 measures, 0 phase1_warnings, 16 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 84: 153 measures, 0 phase1_warnings, 33 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 85: 238 measures, 0 phase1_warnings, 29 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 86: 208 measures, 0 phase1_warnings, 24 rhythm_sum_warnings
+    key signatures: read on 3/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 87: 289 measures, 17 phase1_warnings, 18 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+=== whole-report2 rc=0 wall=3628s

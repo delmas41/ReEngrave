@@ -1,0 +1,15 @@
+=== whole-report2.extract.json  rule=span window=0
+INPUT ASSERTION: staves=1616 with-truth=807 vetoes=109
+
+on staves the printed lineup can judge:
+      4  REMOVED A WRONG NAME     emitted Trombone / printed Violin
+      2  REMOVED A WRONG NAME     emitted Trombone / printed Viola
+      1  REMOVED A WRONG NAME     emitted Trombone / printed Timpani
+
+on staves with no truth here (reduced systems):
+     68  Trombone         before finale
+     10  Contrabassoon    before finale
+     10  Violin           finale
+      6  Piccolo          before finale
+      6  Viola            finale
+      2  Cello            finale

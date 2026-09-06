@@ -1,0 +1,9 @@
+# Full transcriptions are large (a whole-work run is ~100 MB) and regenerable
+# with probe/run.sh. What is committed is probe/extract.py's output, which keeps
+# the same shape and is what every probe here was actually run on.
+out/*.json
+!out/*.extract.json
+# `identity_only.py` output is already only the identity layer — 228 KB for the
+# whole of Beethoven 5 — and it is what every whole-work number here was
+# computed from, so it is committed whole.
+!out/whole-identity.json
