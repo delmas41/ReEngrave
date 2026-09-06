@@ -164,6 +164,58 @@
   ]
  },
  {
+  "key": "bach--concerto-6--468681",
+  "house": "Peters",
+  "composer": "bach",
+  "systems": 11,
+  "sizes": [
+   8,
+   8,
+   8,
+   8,
+   8,
+   8,
+   8,
+   8,
+   8,
+   8,
+   8
+  ],
+  "labels": [
+   5,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 8,
+  "any_label": true,
+  "old": [
+   0,
+   0,
+   8,
+   5
+  ],
+  "new": [
+   0,
+   0,
+   8,
+   5
+  ],
+  "pure": [
+   0,
+   0,
+   8,
+   5
+  ]
+ },
+ {
   "key": "bach--das-wohltemperierte-klavier-i--932182",
   "house": "other/unknown",
   "composer": "bach",
@@ -960,6 +1012,48 @@
   ]
  },
  {
+  "key": "elgar--cello-concerto--22192",
+  "house": "Novello",
+  "composer": "elgar",
+  "systems": 6,
+  "sizes": [
+   17,
+   12,
+   5,
+   17,
+   17,
+   17
+  ],
+  "labels": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 17,
+  "any_label": false,
+  "old": [
+   0,
+   0,
+   17,
+   0
+  ],
+  "new": [
+   0,
+   0,
+   17,
+   0
+  ],
+  "pure": [
+   0,
+   0,
+   17,
+   0
+  ]
+ },
+ {
   "key": "mahler--symphony-7--415756",
   "house": "Bote",
   "composer": "mahler",
@@ -1031,6 +1125,46 @@
    0,
    2,
    1
+  ]
+ },
+ {
+  "key": "respighi--pini-di-roma--5603",
+  "house": "Ricordi",
+  "composer": "respighi",
+  "systems": 5,
+  "sizes": [
+   16,
+   20,
+   20,
+   22,
+   17
+  ],
+  "labels": [
+   10,
+   8,
+   0,
+   0,
+   2
+  ],
+  "max_size": 22,
+  "any_label": true,
+  "old": [
+   1,
+   0,
+   20,
+   8
+  ],
+  "new": [
+   1,
+   0,
+   20,
+   8
+  ],
+  "pure": [
+   1,
+   0,
+   20,
+   8
   ]
  },
  {
