@@ -1,0 +1,511 @@
+{
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp73.pdf",
+ "rows": [
+  {
+   "page": 0,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 3.3
+  },
+  {
+   "page": 1,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.63
+  },
+  {
+   "page": 2,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.51
+  },
+  {
+   "page": 3,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.49
+  },
+  {
+   "page": 4,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.66
+  },
+  {
+   "page": 5,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.7
+  },
+  {
+   "page": 6,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.56
+  },
+  {
+   "page": 7,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.53
+  },
+  {
+   "page": 8,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.77
+  },
+  {
+   "page": 9,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.68
+  },
+  {
+   "page": 10,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.5
+  },
+  {
+   "page": 11,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.76
+  },
+  {
+   "page": 12,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.76
+  },
+  {
+   "page": 13,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.74
+  },
+  {
+   "page": 14,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 3.12
+  },
+  {
+   "page": 15,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.46
+  },
+  {
+   "page": 16,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.52
+  },
+  {
+   "page": 17,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.61
+  },
+  {
+   "page": 18,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.6
+  },
+  {
+   "page": 19,
+   "systems": [
+    8,
+    8
+   ],
+   "staves": 16,
+   "secs": 2.59
+  },
+  {
+   "page": 20,
+   "systems": [
+    8,
+    8
+   ],
+   "staves": 16,
+   "secs": 2.43
+  },
+  {
+   "page": 21,
+   "systems": [
+    8,
+    8
+   ],
+   "staves": 16,
+   "secs": 2.72
+  },
+  {
+   "page": 22,
+   "systems": [
+    8,
+    8
+   ],
+   "staves": 16,
+   "secs": 2.72
+  },
+  {
+   "page": 23,
+   "systems": [
+    8,
+    8
+   ],
+   "staves": 16,
+   "secs": 2.59
+  },
+  {
+   "page": 24,
+   "systems": [
+    8,
+    8
+   ],
+   "staves": 16,
+   "secs": 2.63
+  },
+  {
+   "page": 25,
+   "systems": [
+    8,
+    8
+   ],
+   "staves": 16,
+   "secs": 2.51
+  },
+  {
+   "page": 26,
+   "systems": [
+    8,
+    8
+   ],
+   "staves": 16,
+   "secs": 2.5
+  },
+  {
+   "page": 27,
+   "systems": [
+    8,
+    8
+   ],
+   "staves": 16,
+   "secs": 2.84
+  },
+  {
+   "page": 28,
+   "systems": [
+    8,
+    8
+   ],
+   "staves": 16,
+   "secs": 2.29
+  },
+  {
+   "page": 29,
+   "systems": [
+    8,
+    8
+   ],
+   "staves": 16,
+   "secs": 2.59
+  },
+  {
+   "page": 30,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.69
+  },
+  {
+   "page": 31,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.59
+  },
+  {
+   "page": 32,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.5
+  },
+  {
+   "page": 33,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 3.06
+  },
+  {
+   "page": 34,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.61
+  },
+  {
+   "page": 35,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.58
+  },
+  {
+   "page": 36,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.75
+  },
+  {
+   "page": 37,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.63
+  },
+  {
+   "page": 38,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.65
+  },
+  {
+   "page": 39,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.84
+  },
+  {
+   "page": 40,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.6
+  },
+  {
+   "page": 41,
+   "systems": [],
+   "staves": 0,
+   "secs": 2.18
+  },
+  {
+   "page": 42,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.61
+  },
+  {
+   "page": 43,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.77
+  },
+  {
+   "page": 44,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.37
+  },
+  {
+   "page": 45,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.77
+  },
+  {
+   "page": 46,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.55
+  },
+  {
+   "page": 47,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.6
+  },
+  {
+   "page": 48,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.5
+  },
+  {
+   "page": 49,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.63
+  },
+  {
+   "page": 50,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.63
+  },
+  {
+   "page": 51,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.89
+  },
+  {
+   "page": 52,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.5
+  },
+  {
+   "page": 53,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.55
+  },
+  {
+   "page": 54,
+   "systems": [
+    11,
+    11
+   ],
+   "staves": 22,
+   "secs": 2.83
+  },
+  {
+   "page": 55,
+   "systems": [
+    10,
+    10
+   ],
+   "staves": 20,
+   "secs": 2.73
+  }
+ ],
+ "sizes": {
+  "10": 86,
+  "8": 22,
+  "11": 2
+ }
+}

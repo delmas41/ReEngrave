@@ -1,0 +1,95 @@
+### beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf
+  p  0  systems=[]  staves=0  0.78s
+  p  1  systems=[12]  staves=12  0.75s
+  p  2  systems=[11, 11]  staves=22  0.88s
+  p  3  systems=[11, 8]  staves=19  0.83s
+  p  4  systems=[11, 11]  staves=22  0.88s
+  p  5  systems=[9, 7]  staves=16  0.96s
+  p  6  systems=[10, 12]  staves=22  0.97s
+  p  7  systems=[11, 11]  staves=22  0.9s
+  p  8  systems=[9, 11]  staves=20  0.79s
+  p  9  systems=[12, 10]  staves=22  0.84s
+  p 10  systems=[11, 11]  staves=22  0.85s
+  p 11  systems=[9, 11]  staves=20  0.85s
+  p 12  systems=[12, 11]  staves=23  0.83s
+  p 13  systems=[11, 11]  staves=22  0.91s
+  p 14  systems=[12, 11]  staves=23  0.86s
+  p 15  systems=[11, 11]  staves=22  0.89s
+  p 16  systems=[11, 11]  staves=22  0.93s
+  p 17  systems=[12, 4, 4]  staves=20  0.81s
+  p 18  systems=[11, 8]  staves=19  0.89s
+  p 19  systems=[11, 9]  staves=20  0.86s
+  p 20  systems=[8, 8]  staves=16  0.84s
+  p 21  systems=[11, 9]  staves=20  0.93s
+  p 22  systems=[9, 8]  staves=17  0.82s
+  p 23  systems=[9, 12]  staves=21  0.86s
+  p 24  systems=[11, 11]  staves=22  0.83s
+  p 25  systems=[8, 11]  staves=19  0.75s
+  p 26  systems=[11, 7]  staves=18  0.76s
+  p 27  systems=[8, 8]  staves=16  0.82s
+  p 28  systems=[8, 12]  staves=20  0.88s
+  p 29  systems=[11, 8]  staves=19  0.83s
+  p 30  systems=[12, 8]  staves=20  0.85s
+  p 31  systems=[7, 12]  staves=19  0.93s
+  p 32  systems=[11, 5, 4]  staves=20  0.81s
+  p 33  systems=[9, 9]  staves=18  0.77s
+  p 34  systems=[11, 11]  staves=22  0.82s
+  p 35  systems=[11, 10]  staves=21  0.73s
+  p 36  systems=[11, 9]  staves=20  0.82s
+  p 37  systems=[10, 5, 8]  staves=23  0.83s
+  p 38  systems=[12, 12]  staves=24  0.85s
+  p 39  systems=[4, 7, 8]  staves=19  0.84s
+  p 40  systems=[7, 7, 7]  staves=21  0.92s
+  p 41  systems=[5, 7, 7]  staves=19  0.87s
+  p 42  systems=[5, 6, 5]  staves=16  0.78s
+  p 43  systems=[5, 10]  staves=15  0.74s
+  p 44  systems=[17]  staves=17  0.76s
+  p 45  systems=[17]  staves=17  0.81s
+  p 46  systems=[17]  staves=17  0.81s
+  p 47  systems=[17]  staves=17  0.8s
+  p 48  systems=[17]  staves=17  0.8s
+  p 49  systems=[17]  staves=17  0.82s
+  p 50  systems=[17]  staves=17  0.82s
+  p 51  systems=[17]  staves=17  0.82s
+  p 52  systems=[17]  staves=17  0.82s
+  p 53  systems=[17]  staves=17  0.79s
+  p 54  systems=[17]  staves=17  0.82s
+  p 55  systems=[17]  staves=17  0.81s
+  p 56  systems=[10, 9]  staves=19  0.82s
+  p 57  systems=[9, 15]  staves=24  0.86s
+  p 58  systems=[17]  staves=17  0.81s
+  p 59  systems=[17]  staves=17  0.77s
+  p 60  systems=[17]  staves=17  0.78s
+  p 61  systems=[17]  staves=17  0.81s
+  p 62  systems=[17]  staves=17  0.84s
+  p 63  systems=[6, 7, 10]  staves=23  0.85s
+  p 64  systems=[17]  staves=17  0.81s
+  p 65  systems=[16]  staves=16  0.8s
+  p 66  systems=[17]  staves=17  0.81s
+  p 67  systems=[17]  staves=17  0.84s
+  p 68  systems=[17]  staves=17  0.81s
+  p 69  systems=[17]  staves=17  0.83s
+  p 70  systems=[17]  staves=17  0.81s
+  p 71  systems=[17]  staves=17  0.79s
+  p 72  systems=[17]  staves=17  0.81s
+  p 73  systems=[17]  staves=17  0.81s
+  p 74  systems=[17]  staves=17  0.83s
+  p 75  systems=[17]  staves=17  0.85s
+  p 76  systems=[17]  staves=17  0.81s
+  p 77  systems=[17]  staves=17  0.83s
+  p 78  systems=[17]  staves=17  0.79s
+  p 79  systems=[17]  staves=17  0.77s
+  p 80  systems=[17]  staves=17  0.79s
+  p 81  systems=[17]  staves=17  0.79s
+  p 82  systems=[17]  staves=17  0.89s
+  p 83  systems=[17]  staves=17  0.87s
+  p 84  systems=[17]  staves=17  0.81s
+  p 85  systems=[17]  staves=17  0.97s
+  p 86  systems=[16]  staves=16  0.82s
+  p 87  systems=[17]  staves=17  0.89s
+
+system sizes  : {4: 4, 5: 6, 6: 2, 7: 10, 8: 13, 9: 12, 10: 7, 11: 32, 12: 12, 15: 1, 16: 2, 17: 39}
+recurring     : {4: 4, 5: 6, 6: 2, 7: 10, 8: 13, 9: 12, 10: 7, 11: 32, 12: 12, 16: 2, 17: 39}
+build_reference would pick size: 17
+largest system: 17
+wrote benchmarks/omr-roster-wholework-2026-09/out/beet5-984073.staffprofile.json

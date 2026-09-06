@@ -1,0 +1,87 @@
+### dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf
+  p  0  systems=[]  staves=0  3.54s
+  p  1  systems=[]  staves=0  2.53s
+  p  2  systems=[]  staves=0  2.81s
+  p  3  systems=[]  staves=0  2.93s
+  p  4  systems=[15]  staves=15  2.99s
+  p  5  systems=[15]  staves=15  3.33s
+  p  6  systems=[15, 15]  staves=30  3.43s
+  p  7  systems=[15, 15]  staves=30  4.17s
+  p  8  systems=[15, 15]  staves=30  3.48s
+  p  9  systems=[15, 15]  staves=30  3.4s
+  p 10  systems=[15, 15]  staves=30  4.52s
+  p 11  systems=[15, 15]  staves=30  3.61s
+  p 12  systems=[15, 15]  staves=30  3.87s
+  p 13  systems=[15, 15]  staves=30  3.76s
+  p 14  systems=[30]  staves=30  3.79s
+  p 15  systems=[15, 15]  staves=30  3.51s
+  p 16  systems=[15, 15]  staves=30  3.68s
+  p 17  systems=[27]  staves=27  3.54s
+  p 18  systems=[15, 15]  staves=30  3.61s
+  p 19  systems=[15, 15]  staves=30  3.76s
+  p 20  systems=[15, 15]  staves=30  4.03s
+  p 21  systems=[15, 15]  staves=30  3.37s
+  p 22  systems=[15, 15]  staves=30  3.75s
+  p 23  systems=[15, 15]  staves=30  3.73s
+  p 24  systems=[15, 15]  staves=30  3.87s
+  p 25  systems=[15, 15]  staves=30  3.85s
+  p 26  systems=[15, 15]  staves=30  3.7s
+  p 27  systems=[15, 15]  staves=30  3.65s
+  p 28  systems=[15]  staves=15  3.31s
+  p 29  systems=[15]  staves=15  3.76s
+  p 30  systems=[15, 15]  staves=30  3.68s
+  p 31  systems=[15, 15]  staves=30  3.73s
+  p 32  systems=[15, 15]  staves=30  3.93s
+  p 33  systems=[15, 15]  staves=30  3.76s
+  p 34  systems=[15, 15]  staves=30  3.75s
+  p 35  systems=[15, 15]  staves=30  3.38s
+  p 36  systems=[15, 15]  staves=30  3.73s
+  p 37  systems=[15, 15]  staves=30  3.65s
+  p 38  systems=[14]  staves=14  3.31s
+  p 39  systems=[14]  staves=14  3.41s
+  p 40  systems=[14, 14]  staves=28  3.76s
+  p 41  systems=[14, 14]  staves=28  3.61s
+  p 42  systems=[14, 14]  staves=28  3.71s
+  p 43  systems=[14, 14]  staves=28  3.39s
+  p 44  systems=[14, 14]  staves=28  3.64s
+  p 45  systems=[14, 14]  staves=28  3.71s
+  p 46  systems=[14, 14]  staves=28  3.75s
+  p 47  systems=[14, 14]  staves=28  3.8s
+  p 48  systems=[14, 14]  staves=28  3.78s
+  p 49  systems=[14, 14]  staves=28  3.97s
+  p 50  systems=[14, 14]  staves=28  3.9s
+  p 51  systems=[14, 14]  staves=28  3.42s
+  p 52  systems=[14, 14]  staves=28  3.6s
+  p 53  systems=[14, 14]  staves=28  3.4s
+  p 54  systems=[14, 1]  staves=15  3.03s
+  p 55  systems=[15]  staves=15  3.63s
+  p 56  systems=[15, 15]  staves=30  3.54s
+  p 57  systems=[15, 15]  staves=30  3.54s
+  p 58  systems=[15, 15]  staves=30  3.84s
+  p 59  systems=[15, 15]  staves=30  3.57s
+  p 60  systems=[15, 15]  staves=30  4.3s
+  p 61  systems=[15, 15]  staves=30  3.75s
+  p 62  systems=[15, 15]  staves=30  3.53s
+  p 63  systems=[15, 15]  staves=30  4.17s
+  p 64  systems=[15, 15]  staves=30  3.37s
+  p 65  systems=[15, 15]  staves=30  3.76s
+  p 66  systems=[15, 15]  staves=30  3.71s
+  p 67  systems=[15, 15]  staves=30  4.01s
+  p 68  systems=[15, 15]  staves=30  3.36s
+  p 69  systems=[15, 14]  staves=29  3.39s
+  p 70  systems=[15, 15]  staves=30  3.78s
+  p 71  systems=[15, 15]  staves=30  3.48s
+  p 72  systems=[15, 15]  staves=30  4.15s
+  p 73  systems=[15, 15]  staves=30  3.61s
+  p 74  systems=[15, 15]  staves=30  3.84s
+  p 75  systems=[15, 15]  staves=30  3.75s
+  p 76  systems=[15, 15]  staves=30  3.71s
+  p 77  systems=[15, 15]  staves=30  3.48s
+  p 78  systems=[15, 15]  staves=30  3.53s
+  p 79  systems=[15, 15]  staves=30  3.91s
+
+system sizes  : {1: 1, 14: 32, 15: 108, 27: 1, 30: 1}
+recurring     : {14: 32, 15: 108}
+build_reference would pick size: 15
+largest system: 30
+wrote benchmarks/omr-roster-wholework-2026-09/out/dvorak9-405834.staffprofile.json

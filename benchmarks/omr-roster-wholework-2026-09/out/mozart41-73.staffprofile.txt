@@ -1,0 +1,63 @@
+### mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp73.pdf
+  p  0  systems=[10, 10]  staves=20  3.3s
+  p  1  systems=[10, 10]  staves=20  2.63s
+  p  2  systems=[10, 10]  staves=20  2.51s
+  p  3  systems=[10, 10]  staves=20  2.49s
+  p  4  systems=[10, 10]  staves=20  2.66s
+  p  5  systems=[10, 10]  staves=20  2.7s
+  p  6  systems=[10, 10]  staves=20  2.56s
+  p  7  systems=[10, 10]  staves=20  2.53s
+  p  8  systems=[10, 10]  staves=20  2.77s
+  p  9  systems=[10, 10]  staves=20  2.68s
+  p 10  systems=[10, 10]  staves=20  2.5s
+  p 11  systems=[10, 10]  staves=20  2.76s
+  p 12  systems=[10, 10]  staves=20  2.76s
+  p 13  systems=[10, 10]  staves=20  2.74s
+  p 14  systems=[10, 10]  staves=20  3.12s
+  p 15  systems=[10, 10]  staves=20  2.46s
+  p 16  systems=[10, 10]  staves=20  2.52s
+  p 17  systems=[10, 10]  staves=20  2.61s
+  p 18  systems=[10, 10]  staves=20  2.6s
+  p 19  systems=[8, 8]  staves=16  2.59s
+  p 20  systems=[8, 8]  staves=16  2.43s
+  p 21  systems=[8, 8]  staves=16  2.72s
+  p 22  systems=[8, 8]  staves=16  2.72s
+  p 23  systems=[8, 8]  staves=16  2.59s
+  p 24  systems=[8, 8]  staves=16  2.63s
+  p 25  systems=[8, 8]  staves=16  2.51s
+  p 26  systems=[8, 8]  staves=16  2.5s
+  p 27  systems=[8, 8]  staves=16  2.84s
+  p 28  systems=[8, 8]  staves=16  2.29s
+  p 29  systems=[8, 8]  staves=16  2.59s
+  p 30  systems=[10, 10]  staves=20  2.69s
+  p 31  systems=[10, 10]  staves=20  2.59s
+  p 32  systems=[10, 10]  staves=20  2.5s
+  p 33  systems=[10, 10]  staves=20  3.06s
+  p 34  systems=[10, 10]  staves=20  2.61s
+  p 35  systems=[10, 10]  staves=20  2.58s
+  p 36  systems=[10, 10]  staves=20  2.75s
+  p 37  systems=[10, 10]  staves=20  2.63s
+  p 38  systems=[10, 10]  staves=20  2.65s
+  p 39  systems=[10, 10]  staves=20  2.84s
+  p 40  systems=[10, 10]  staves=20  2.6s
+  p 41  systems=[]  staves=0  2.18s
+  p 42  systems=[10, 10]  staves=20  2.61s
+  p 43  systems=[10, 10]  staves=20  2.77s
+  p 44  systems=[10, 10]  staves=20  2.37s
+  p 45  systems=[10, 10]  staves=20  2.77s
+  p 46  systems=[10, 10]  staves=20  2.55s
+  p 47  systems=[10, 10]  staves=20  2.6s
+  p 48  systems=[10, 10]  staves=20  2.5s
+  p 49  systems=[10, 10]  staves=20  2.63s
+  p 50  systems=[10, 10]  staves=20  2.63s
+  p 51  systems=[10, 10]  staves=20  2.89s
+  p 52  systems=[10, 10]  staves=20  2.5s
+  p 53  systems=[10, 10]  staves=20  2.55s
+  p 54  systems=[11, 11]  staves=22  2.83s
+  p 55  systems=[10, 10]  staves=20  2.73s
+
+system sizes  : {8: 22, 10: 86, 11: 2}
+recurring     : {8: 22, 10: 86, 11: 2}
+build_reference would pick size: 11
+largest system: 11
+wrote benchmarks/omr-roster-wholework-2026-09/out/mozart41-73.staffprofile.json

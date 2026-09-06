@@ -1,0 +1,93 @@
+### brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf
+  p  0  systems=[14]  staves=14  4.18s
+  p  1  systems=[14, 13]  staves=27  4.09s
+  p  2  systems=[14, 14]  staves=28  4.78s
+  p  3  systems=[14, 14]  staves=28  4.2s
+  p  4  systems=[14, 14]  staves=28  4.92s
+  p  5  systems=[14, 14]  staves=28  4.55s
+  p  6  systems=[12, 11]  staves=23  4.48s
+  p  7  systems=[11, 11]  staves=22  6.64s
+  p  8  systems=[11, 11]  staves=22  4.76s
+  p  9  systems=[12, 13]  staves=25  5.13s
+  p 10  systems=[13, 14]  staves=27  4.73s
+  p 11  systems=[14, 14]  staves=28  4.2s
+  p 12  systems=[14, 14]  staves=28  4.67s
+  p 13  systems=[14, 14]  staves=28  4.62s
+  p 14  systems=[14, 12]  staves=26  4.5s
+  p 15  systems=[12, 13]  staves=25  4.27s
+  p 16  systems=[14, 14]  staves=28  5.01s
+  p 17  systems=[14, 14]  staves=28  4.83s
+  p 18  systems=[14, 14]  staves=28  4.93s
+  p 19  systems=[14, 13]  staves=27  4.15s
+  p 20  systems=[13, 11]  staves=24  4.7s
+  p 21  systems=[11, 11]  staves=22  4.49s
+  p 22  systems=[11, 11]  staves=22  4.24s
+  p 23  systems=[12, 13]  staves=25  4.8s
+  p 24  systems=[14, 14]  staves=28  4.4s
+  p 25  systems=[14, 12]  staves=26  4.55s
+  p 26  systems=[13, 13]  staves=26  4.66s
+  p 27  systems=[13, 10]  staves=23  4.91s
+  p 28  systems=[11, 11]  staves=22  4.68s
+  p 29  systems=[10, 10]  staves=20  4.64s
+  p 30  systems=[10, 10]  staves=20  4.55s
+  p 31  systems=[10, 12]  staves=22  4.25s
+  p 32  systems=[10, 10]  staves=20  5.22s
+  p 33  systems=[13, 14]  staves=27  4.77s
+  p 34  systems=[13, 13]  staves=26  4.75s
+  p 35  systems=[13, 14]  staves=27  4.62s
+  p 36  systems=[12, 11]  staves=23  4.42s
+  p 37  systems=[10, 10]  staves=20  4.27s
+  p 38  systems=[10, 10]  staves=20  3.99s
+  p 39  systems=[10, 10]  staves=20  4.42s
+  p 40  systems=[10, 12]  staves=22  4.49s
+  p 41  systems=[12, 12]  staves=24  5.18s
+  p 42  systems=[12, 11]  staves=23  4.2s
+  p 43  systems=[11, 11]  staves=22  4.61s
+  p 44  systems=[11, 12]  staves=23  4.14s
+  p 45  systems=[16]  staves=16  4.25s
+  p 46  systems=[13, 11]  staves=24  5.02s
+  p 47  systems=[13, 12]  staves=25  5.1s
+  p 48  systems=[16]  staves=16  4.76s
+  p 49  systems=[16]  staves=16  4.41s
+  p 50  systems=[16]  staves=16  4.53s
+  p 51  systems=[14, 13]  staves=27  4.55s
+  p 52  systems=[7, 11]  staves=18  4.27s
+  p 53  systems=[14, 14]  staves=28  4.44s
+  p 54  systems=[14, 14]  staves=28  4.58s
+  p 55  systems=[10, 9]  staves=19  4.71s
+  p 56  systems=[9, 14]  staves=23  4.28s
+  p 57  systems=[14, 12]  staves=26  4.8s
+  p 58  systems=[13, 14]  staves=27  4.41s
+  p 59  systems=[16]  staves=16  4.34s
+  p 60  systems=[27]  staves=27  4.74s
+  p 61  systems=[11, 12]  staves=23  4.29s
+  p 62  systems=[14, 13]  staves=27  4.46s
+  p 63  systems=[10, 10]  staves=20  5.12s
+  p 64  systems=[10, 10]  staves=20  4.78s
+  p 65  systems=[10, 9]  staves=19  3.79s
+  p 66  systems=[10, 11]  staves=21  4.91s
+  p 67  systems=[28]  staves=28  4.8s
+  p 68  systems=[16]  staves=16  4.16s
+  p 69  systems=[16]  staves=16  4.19s
+  p 70  systems=[12, 10]  staves=22  4.05s
+  p 71  systems=[10, 10]  staves=20  4.09s
+  p 72  systems=[9, 13]  staves=22  4.72s
+  p 73  systems=[14, 9]  staves=23  4.71s
+  p 74  systems=[13, 13]  staves=26  4.89s
+  p 75  systems=[16]  staves=16  4.66s
+  p 76  systems=[16]  staves=16  4.31s
+  p 77  systems=[16]  staves=16  4.53s
+  p 78  systems=[16]  staves=16  4.6s
+  p 79  systems=[16]  staves=16  4.45s
+  p 80  systems=[16]  staves=16  4.38s
+  p 81  systems=[16]  staves=16  3.82s
+  p 82  systems=[16]  staves=16  4.54s
+  p 83  systems=[16]  staves=16  3.83s
+  p 84  systems=[16]  staves=16  4.68s
+  p 85  systems=[17]  staves=17  4.57s
+
+system sizes  : {7: 1, 9: 5, 10: 25, 11: 21, 12: 17, 13: 22, 14: 40, 16: 17, 17: 1, 27: 1, 28: 1}
+recurring     : {9: 5, 10: 25, 11: 21, 12: 17, 13: 22, 14: 40, 16: 17}
+build_reference would pick size: 16
+largest system: 28
+wrote benchmarks/omr-roster-wholework-2026-09/out/brahms1-317803.staffprofile.json

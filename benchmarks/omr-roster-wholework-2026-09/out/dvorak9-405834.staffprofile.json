@@ -1,0 +1,711 @@
+{
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+ "rows": [
+  {
+   "page": 0,
+   "systems": [],
+   "staves": 0,
+   "secs": 3.54
+  },
+  {
+   "page": 1,
+   "systems": [],
+   "staves": 0,
+   "secs": 2.53
+  },
+  {
+   "page": 2,
+   "systems": [],
+   "staves": 0,
+   "secs": 2.81
+  },
+  {
+   "page": 3,
+   "systems": [],
+   "staves": 0,
+   "secs": 2.93
+  },
+  {
+   "page": 4,
+   "systems": [
+    15
+   ],
+   "staves": 15,
+   "secs": 2.99
+  },
+  {
+   "page": 5,
+   "systems": [
+    15
+   ],
+   "staves": 15,
+   "secs": 3.33
+  },
+  {
+   "page": 6,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.43
+  },
+  {
+   "page": 7,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 4.17
+  },
+  {
+   "page": 8,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.48
+  },
+  {
+   "page": 9,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.4
+  },
+  {
+   "page": 10,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 4.52
+  },
+  {
+   "page": 11,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.61
+  },
+  {
+   "page": 12,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.87
+  },
+  {
+   "page": 13,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.76
+  },
+  {
+   "page": 14,
+   "systems": [
+    30
+   ],
+   "staves": 30,
+   "secs": 3.79
+  },
+  {
+   "page": 15,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.51
+  },
+  {
+   "page": 16,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.68
+  },
+  {
+   "page": 17,
+   "systems": [
+    27
+   ],
+   "staves": 27,
+   "secs": 3.54
+  },
+  {
+   "page": 18,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.61
+  },
+  {
+   "page": 19,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.76
+  },
+  {
+   "page": 20,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 4.03
+  },
+  {
+   "page": 21,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.37
+  },
+  {
+   "page": 22,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.75
+  },
+  {
+   "page": 23,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.73
+  },
+  {
+   "page": 24,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.87
+  },
+  {
+   "page": 25,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.85
+  },
+  {
+   "page": 26,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.7
+  },
+  {
+   "page": 27,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.65
+  },
+  {
+   "page": 28,
+   "systems": [
+    15
+   ],
+   "staves": 15,
+   "secs": 3.31
+  },
+  {
+   "page": 29,
+   "systems": [
+    15
+   ],
+   "staves": 15,
+   "secs": 3.76
+  },
+  {
+   "page": 30,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.68
+  },
+  {
+   "page": 31,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.73
+  },
+  {
+   "page": 32,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.93
+  },
+  {
+   "page": 33,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.76
+  },
+  {
+   "page": 34,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.75
+  },
+  {
+   "page": 35,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.38
+  },
+  {
+   "page": 36,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.73
+  },
+  {
+   "page": 37,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.65
+  },
+  {
+   "page": 38,
+   "systems": [
+    14
+   ],
+   "staves": 14,
+   "secs": 3.31
+  },
+  {
+   "page": 39,
+   "systems": [
+    14
+   ],
+   "staves": 14,
+   "secs": 3.41
+  },
+  {
+   "page": 40,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.76
+  },
+  {
+   "page": 41,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.61
+  },
+  {
+   "page": 42,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.71
+  },
+  {
+   "page": 43,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.39
+  },
+  {
+   "page": 44,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.64
+  },
+  {
+   "page": 45,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.71
+  },
+  {
+   "page": 46,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.75
+  },
+  {
+   "page": 47,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.8
+  },
+  {
+   "page": 48,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.78
+  },
+  {
+   "page": 49,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.97
+  },
+  {
+   "page": 50,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.9
+  },
+  {
+   "page": 51,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.42
+  },
+  {
+   "page": 52,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.6
+  },
+  {
+   "page": 53,
+   "systems": [
+    14,
+    14
+   ],
+   "staves": 28,
+   "secs": 3.4
+  },
+  {
+   "page": 54,
+   "systems": [
+    14,
+    1
+   ],
+   "staves": 15,
+   "secs": 3.03
+  },
+  {
+   "page": 55,
+   "systems": [
+    15
+   ],
+   "staves": 15,
+   "secs": 3.63
+  },
+  {
+   "page": 56,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.54
+  },
+  {
+   "page": 57,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.54
+  },
+  {
+   "page": 58,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.84
+  },
+  {
+   "page": 59,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.57
+  },
+  {
+   "page": 60,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 4.3
+  },
+  {
+   "page": 61,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.75
+  },
+  {
+   "page": 62,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.53
+  },
+  {
+   "page": 63,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 4.17
+  },
+  {
+   "page": 64,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.37
+  },
+  {
+   "page": 65,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.76
+  },
+  {
+   "page": 66,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.71
+  },
+  {
+   "page": 67,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 4.01
+  },
+  {
+   "page": 68,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.36
+  },
+  {
+   "page": 69,
+   "systems": [
+    15,
+    14
+   ],
+   "staves": 29,
+   "secs": 3.39
+  },
+  {
+   "page": 70,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.78
+  },
+  {
+   "page": 71,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.48
+  },
+  {
+   "page": 72,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 4.15
+  },
+  {
+   "page": 73,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.61
+  },
+  {
+   "page": 74,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.84
+  },
+  {
+   "page": 75,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.75
+  },
+  {
+   "page": 76,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.71
+  },
+  {
+   "page": 77,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.48
+  },
+  {
+   "page": 78,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.53
+  },
+  {
+   "page": 79,
+   "systems": [
+    15,
+    15
+   ],
+   "staves": 30,
+   "secs": 3.91
+  }
+ ],
+ "sizes": {
+  "15": 108,
+  "30": 1,
+  "27": 1,
+  "14": 32,
+  "1": 1
+ }
+}
