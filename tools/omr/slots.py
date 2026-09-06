@@ -204,6 +204,33 @@ def reference_view(views: list[SystemView],
     by aligning the system it came from. The whole choice lives here, including
     `most_labelled`, so a per-SPAN reference is chosen by exactly the rule a
     per-document one is.
+
+    This is the FIRST of `reference_candidates`, so the two can never drift.
+    """
+    ranked = reference_candidates(views, most_labelled)
+    return ranked[0] if ranked else None
+
+
+def reference_candidates(views: list[SystemView],
+                         most_labelled: str | bool | None = None
+                         ) -> list[SystemView]:
+    """Every system this rule would consider as the reference, best first.
+
+    ⚠️ **Element 0 is exactly what `reference_view` used to return, and that is
+    load-bearing** — the document-wide path takes the first and nothing else, so
+    a change to the head of this list is a change to every score. The TAIL is
+    new, and exists for one consumer: `_align_by_span`, which must place a
+    span's reference into the document's slot space and has, unlike the
+    document-wide path, an independent check on whether its pick was right (see
+    `_compose`). Where the pick composes cleanly nothing past element 0 is ever
+    read.
+
+    The tail is ordered by size, then labels, then by how many systems SHARE the
+    shape. That last term is the module's own merge argument one level finer:
+    `reference_view` prefers a size that recurs because "a merged system is a
+    ONE-OFF; a real full system recurs, because the orchestra is the same on
+    every page". A LINEUP recurs for the same reason, and a one-off lineup at a
+    recurring size is exactly what went wrong on Brahms 1 — see `_compose`.
     """
     if most_labelled is None:
         most_labelled = most_labelled_reference_mode()
@@ -213,7 +240,7 @@ def reference_view(views: list[SystemView],
         most_labelled = "off"
     views = [v for v in views if v.size]
     if not views:
-        return None
+        return []
     sizes = sorted(v.size for v in views)
     median = sizes[len(sizes) // 2]
     cap = median * REFERENCE_MAX_SIZE_RATIO
@@ -230,7 +257,18 @@ def reference_view(views: list[SystemView],
     # became a 24-slot reference of entirely unlabelled parts.
     counts = collections.Counter(v.size for v in candidates)
     recurring = [v for v in candidates if counts[v.size] > 1] or candidates
+
+    shapes = collections.Counter(_shape(v) for v in recurring)
+    order = {id(v): i for i, v in enumerate(recurring)}
+    ranked = sorted(recurring,
+                    key=lambda v: (-v.size, -len(v.labels),
+                                   -shapes[_shape(v)], order[id(v)]))
+    # `sorted` is stable and `max` returns the first maximum, so re-sorting on
+    # the same key cannot move the head — asserted by
+    # `test_reference_view_is_the_head_of_reference_candidates`.
     best = max(recurring, key=lambda v: (v.size, len(v.labels)))
+    if ranked[0] is not best:                                # pragma: no cover
+        ranked = [best] + [v for v in ranked if v is not best]
 
     labelled = [v for v in candidates if v.labels] if most_labelled != "off" else []
     if labelled:
@@ -240,8 +278,14 @@ def reference_view(views: list[SystemView],
         # labels and is decided by size — the full lineup either way.
         by_labels = max(labelled, key=lambda v: (len(v.labels), v.size))
         if most_labelled == "pure" or by_labels.size >= best.size:
-            best = by_labels
-    return best
+            ranked = [by_labels] + [v for v in ranked if v is not by_labels]
+    return ranked
+
+
+def _shape(view: SystemView) -> tuple:
+    """A system's LINEUP as the alignment sees it: size plus label sequence."""
+    return (view.size,
+            tuple(view.labels.get(st.staff_index) for st in view.staves))
 
 
 def _looks_merged(view: SystemView) -> bool:
@@ -543,6 +587,76 @@ def _span_views(pages: list[PageWithStaves],
             for span in movement_reference.lineup_spans(page_systems)]
 
 
+def span_reference_mode() -> str:
+    """`OMR_SPAN_REFERENCE_FIT` — `search` (default) / `refuse` / `off`.
+
+    What `_align_by_span` does when the span reference it picked CONTRADICTS the
+    document reference it must be placed into.
+
+    * `search` — try the next candidate (`reference_candidates`), and refuse the
+      span path only if none of them composes cleanly. The shipped default.
+    * `refuse` — take `reference_view`'s pick and nothing else, refusing the
+      span path where it contradicts. The conservative half, kept so the two can
+      be priced apart: it says what the refusal alone is worth.
+    * `off` — the pre-2026-09-06 behaviour: take the pick and accept whatever
+      `align` does with it. Exists to reproduce the measurement that refused it
+      and should not be used.
+    """
+    v = os.environ.get("OMR_SPAN_REFERENCE_FIT", "").strip().lower()
+    return v if v in ("search", "refuse", "off") else "search"
+
+
+def _compose(span_view: SystemView,
+             reference: list[Slot]) -> tuple[list[int], int | None]:
+    """Place a span's reference SYSTEM into the document's slot space.
+
+    Returns `(to_global, contradictions)`, or `(_, None)` where the span
+    reference could not be placed whole at all.
+
+    ⚠️ **PLACED WHOLE IS NOT THE SAME AS PLACED RIGHT, and until 2026-09-06 this
+    step only asked the first question.** `align` returns `-1` only when the
+    reference is too small to hold the system, so a span reference whose LINEUP
+    the document reference cannot express is placed anyway — slid along until
+    something fits, paying whatever label conflicts that costs, and every system
+    in the span then inherits the slide.
+
+    Measured on Brahms 1 / Breitkopf (86 pages, `benchmarks/omr-span-
+    composition-2026-09/`). The 0-44 span's reference came out as **page 35
+    system 1**, a second-movement system carrying a `Viol. Solo` staff: 14
+    staves, all 14 of them labelled, so it beat the seventeen ordinary
+    movement-1 systems of the same size on the label tie-break. Its lineup is
+    not a subsequence of the document reference — SIX string staves against the
+    finale reference's five string slots, and ONE horn staff against two — so
+    the DP slid `Timpani` onto the Trombone slot and `Violin` onto the unnamed
+    slot beside it, at a cost of −8.0, because nothing else fitted. Pre-finale
+    staves named an instrument the work has not got yet: **36 with spans off,
+    149 with spans on.**
+
+    So the check is the module's own hard constraint, asked of the composition
+    rather than only of the systems: two differently-named instruments are
+    certainly not the same part, and a span reference that has to assert one is
+    not a reference. Seventeen sibling systems in that same span compose with
+    zero contradictions and give exactly the right embedding.
+
+    ⚠️ It counts CONTRADICTIONS, not doubts. An unlabelled local slot landing on
+    a named global one is not evidence of anything — it is the ordinary case for
+    a publisher that labels only its winds — and refusing on it would refuse
+    almost every Litolff span.
+    """
+    to_global = align(span_view, reference)
+    if any(g < 0 for g in to_global):
+        return to_global, None
+    by_index = {sl.index: sl for sl in reference}
+    bad = 0
+    for local, g in zip(_slots_of(span_view), to_global):
+        other = by_index.get(g)
+        if (local.instrument is not None and other is not None
+                and other.instrument is not None
+                and local.instrument != other.instrument):
+            bad += 1
+    return to_global, bad
+
+
 def _align_by_span(spans: list[list[SystemView]],
                    reference: list[Slot]) -> bool:
     """Align each span's systems against that span's OWN reference, composed
@@ -550,26 +664,40 @@ def _align_by_span(spans: list[list[SystemView]],
 
     Two alignments, both the ordinary one:
 
-    1. the span's reference SYSTEM into the document reference — the strongest
-       case the DP ever gets, because a movement's opening system is the one
-       page in the movement that labels every staff it has;
+    1. the span's reference SYSTEM into the document reference — see `_compose`,
+       which is where the span path is most exposed, because one placement is
+       inherited by every system of the span;
     2. each system of the span into the span reference — where an unreduced
        system now has as many staves as the reference has slots, and the only
        order-preserving mapping of m onto m is one-to-one.
 
     Refuses (leaving the caller on the document-wide path) if any span's
-    reference cannot be placed whole. A span whose lineup the document
-    reference cannot express is evidence that the segmentation is wrong, and
-    guessing past it would be worse than not splitting at all.
+    reference cannot be placed whole, or — since 2026-09-06, see
+    `span_reference_mode` — if no candidate reference for the span can be placed
+    without contradicting a label. A span whose lineup the document reference
+    cannot express is evidence that the segmentation or the reference is wrong,
+    and guessing past it would be worse than not splitting at all.
     """
+    mode = span_reference_mode()
     plans: list[tuple[list[SystemView], list[Slot], list[int]]] = []
     for span in spans:
-        span_view = reference_view(span)
-        if span_view is None:
+        ranked = reference_candidates(span)
+        if not ranked:
             return False
-        to_global = align(span_view, reference)
-        if any(g < 0 for g in to_global):
+        if mode != "search":
+            ranked = ranked[:1]
+        picked = None
+        for span_view in ranked:
+            to_global, bad = _compose(span_view, reference)
+            if bad is None:
+                continue
+            if bad and mode != "off":
+                continue
+            picked = (span_view, to_global)
+            break
+        if picked is None:
             return False
+        span_view, to_global = picked
         plans.append((span, _slots_of(span_view), to_global))
 
     for span, span_reference, to_global in plans:

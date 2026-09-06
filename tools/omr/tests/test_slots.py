@@ -17,7 +17,12 @@ from tools.omr.slots import (
     build_reference,
     labels_by_staff,
     map_groups,
+    reference_candidates,
+    reference_view,
+    _align_by_span,
+    _compose,
     _looks_merged,
+    _slots_of,
 )
 from tools.omr.types import PageImage, PageWithStaves, Staff
 
@@ -375,3 +380,134 @@ def test_more_system_blocks_than_reference_blocks_abstains():
                               for i, g in enumerate([0, 1, 2])])
     ref = [Slot(index=i, group_index=0, position=i / 2) for i in range(3)]
     assert map_groups(view, ref) is None
+
+
+# ── the span composition step (OMR_SPAN_REFERENCE_FIT) ──────────────────────
+#
+# Reduced from the real Brahms 1 / Breitkopf fault, measured in
+# benchmarks/omr-span-composition-2026-09/. A span's own reference is placed
+# into the document reference ONCE and every system in the span inherits the
+# placement, so a reference whose LINEUP the document cannot express is not a
+# small error — it is 149 wrong staff records against 36.
+#
+# The shape: the span holds two systems of the same SIZE and different lineups.
+# One is a one-off that labels every staff (on the real page, a second-movement
+# system with a `Viol. Solo` staff) and therefore wins the label tie-break; the
+# other recurs and is the movement's real lineup. Only the second is a
+# subsequence of the document reference.
+
+#: The document reference: the finale's lineup, with two slots the earlier
+#: movements do not use (Trombone and its unnamed neighbour).
+_DOC = [(0, "Flute"), (0, "Oboe"), (0, "Horn"), (0, None), (0, "Trumpet"),
+        (0, "Trombone"), (0, None), (0, "Timpani"),
+        (1, "Violin"), (1, "Violin"), (1, "Viola")]
+
+#: The one-off, fully labelled, with an extra string staff and one horn staff.
+_SOLO = [(0, "Flute"), (0, "Oboe"), (0, "Horn"), (0, "Trumpet"),
+         (0, "Timpani"),
+         (1, "Violin"), (1, "Violin"), (1, "Violin"), (1, "Viola")]
+
+#: The movement's real lineup: same SIZE, one label fewer (the second horn
+#: staff carries only a crook), and a subsequence of the document reference.
+_REAL = [(0, "Flute"), (0, "Oboe"), (0, "Horn"), (0, None), (0, "Trumpet"),
+         (0, "Timpani"),
+         (1, "Violin"), (1, "Violin"), (1, "Viola")]
+
+
+def _span_fixture():
+    document = build_reference([_view(_DOC), _view(_DOC)])
+    span = [_view(_SOLO)] + [_view(_REAL) for _ in range(3)]
+    return document, span
+
+
+def test_reference_view_is_the_head_of_reference_candidates():
+    """The document-wide path reads element 0 and nothing else, so the head of
+    the candidate list IS the old rule. Drift here changes every score."""
+    for views in ([_view(_SOLO)] + [_view(_REAL) for _ in range(3)],
+                  [_view(FULL), _view(FULL), _view(FULL[4:])],
+                  [_view(FULL)], []):
+        ranked = reference_candidates(views)
+        assert reference_view(views) is (ranked[0] if ranked else None)
+
+
+def test_the_one_off_fully_labelled_system_still_wins_the_head():
+    """The candidate list must not quietly re-rank the primary pick: the
+    one-off that labels every staff is still element 0, which is exactly why
+    the composition needs a check of its own."""
+    _document, span = _span_fixture()
+    ranked = reference_candidates(span)
+    assert [s.instrument for s in _slots_of(ranked[0])] == [n for _g, n in _SOLO]
+
+
+def test_compose_counts_a_contradicted_placement():
+    """`align` places this reference whole — every local gets a global — and
+    the placement asserts that a Timpani staff is a Trombone."""
+    document, span = _span_fixture()
+    to_global, bad = _compose(_view(_SOLO), document)
+    assert all(g >= 0 for g in to_global)      # "placed whole" says yes
+    assert bad >= 1                            # and it is still wrong
+    good_global, good_bad = _compose(_view(_REAL), document)
+    assert good_bad == 0
+    assert good_global == [0, 1, 2, 3, 4, 7, 8, 9, 10]
+
+
+def test_compose_reports_a_reference_too_small_to_hold_the_system():
+    document = build_reference([_view(_DOC[:4]), _view(_DOC[:4])])
+    _to_global, bad = _compose(_view(_SOLO), document)
+    assert bad is None
+
+
+def test_span_fit_off_reproduces_the_contradicted_placement(monkeypatch):
+    """The pre-2026-09-06 behaviour, kept reachable: the Timpani-labelled staff
+    of every system in the span lands on the Trombone slot."""
+    monkeypatch.setenv("OMR_SPAN_REFERENCE_FIT", "off")
+    document, span = _span_fixture()
+    assert _align_by_span([span], document) is True
+    real = span[1]                              # a _REAL system
+    timpani = [st for st in real.staves
+               if real.labels.get(st.staff_index) == "Timpani"][0]
+    assert document[timpani.slot_index].instrument != "Timpani"
+
+
+def test_span_fit_refuse_falls_back_to_the_document_wide_path(monkeypatch):
+    """`refuse` prices the refusal alone: it takes the same pick and declines
+    rather than asserting the contradiction."""
+    monkeypatch.setenv("OMR_SPAN_REFERENCE_FIT", "refuse")
+    document, span = _span_fixture()
+    assert _align_by_span([span], document) is False
+
+
+def test_span_fit_search_takes_the_sibling_that_composes(monkeypatch):
+    """The shipped default: a candidate further down the list composes without
+    contradicting a label, and every staff of the span then lands right."""
+    monkeypatch.setenv("OMR_SPAN_REFERENCE_FIT", "search")
+    document, span = _span_fixture()
+    assert _align_by_span([span], document) is True
+    for view in span[1:]:
+        got = [document[st.slot_index].instrument for st in view.staves]
+        assert got == ["Flute", "Oboe", "Horn", None, "Trumpet", "Timpani",
+                       "Violin", "Violin", "Viola"]
+
+
+def test_span_fit_is_a_no_op_where_the_first_candidate_composes(monkeypatch):
+    """The Beethoven 5 shape, and the control that matters: where
+    `reference_view`'s own pick contradicts nothing, all three arms agree."""
+    document = build_reference([_view(_DOC), _view(_DOC)])
+    out = {}
+    for mode in ("off", "refuse", "search"):
+        monkeypatch.setenv("OMR_SPAN_REFERENCE_FIT", mode)
+        span = [_view(_REAL) for _ in range(3)]
+        assert _align_by_span([span], document) is True
+        out[mode] = [st.slot_index for v in span for st in v.staves]
+    assert out["off"] == out["refuse"] == out["search"]
+
+
+def test_span_fit_reads_the_env_flag(monkeypatch):
+    from tools.omr.slots import span_reference_mode
+    monkeypatch.delenv("OMR_SPAN_REFERENCE_FIT", raising=False)
+    assert span_reference_mode() == "search"
+    monkeypatch.setenv("OMR_SPAN_REFERENCE_FIT", "nonsense")
+    assert span_reference_mode() == "search"
+    for v in ("off", "refuse", "search"):
+        monkeypatch.setenv("OMR_SPAN_REFERENCE_FIT", v)
+        assert span_reference_mode() == v
