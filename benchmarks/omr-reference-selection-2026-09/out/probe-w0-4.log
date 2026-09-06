@@ -43,3 +43,14 @@ probing 234 documents, pages [0, 1, 2, 3, 4], dpi 300
   [41/234] Peters       bach--suite-3--744084                        sizes=[11, 12, 12, 12, 12, 12, 12, 12, 12, 12] labels=[5, 5, 6, 5, 6, 6, 6, 6, 6, 6] 97.0s
   [42/234] Simrock      brahms--symphony-2--23103                    sizes=[] labels=[] 0.3s
   [43/234] Universal    bruckner--symphony-8--30702                  sizes=[17, 9, 9, 18, 17] labels=[14, 0, 0, 0, 0] 28.8s
+  [44/234] other/unknown berlioz--le-carnaval-romain--11357           sizes=[20, 14, 8, 9, 12, 11, 12] labels=[17, 0, 0, 0, 0, 0, 0] 35.5s
+  [45/234] Breitkopf    beethoven--piano-concerto-4--977418          sizes=[11, 8, 11, 11, 11, 9, 10, 11, 11, 11] labels=[9, 5, 8, 8, 8, 6, 7, 8, 8, 8] 73.1s
+  [46/234] Durand       ravel--daphnis-et-chloe--952691              sizes=[] labels=[] 5.2s
+  [47/234] Eulenburg    bruckner--symphony-7--30703                  sizes=[17, 5, 9, 16, 16] labels=[12, 3, 0, 0, 0] 30.0s
+  [48/234] Litolff      beethoven--symphony-5--575951                sizes=[12, 11, 11, 11, 8, 11, 11, 9, 7] labels=[12, 7, 7, 7, 4, 6, 7, 5, 3] 39.0s
+  [49/234] Novello      elgar--symphony-1--56155                     sizes=[24] labels=[0] 9.0s
+  [50/234] Peters       borodin--symphony-2--197128                  sizes=[16, 3, 13, 4, 12, 16] labels=[15, 0, 0, 0, 0, 0] 19.1s
+  [51/234] Simrock      brahms--tragic-overture--23111               sizes=[] labels=[] 0.3s
+  [52/234] Universal    mahler--das-lied-von-der-erde-gmw-49--20582  sizes=[26, 24, 25, 22] labels=[23, 17, 21, 12] 41.1s
+  [53/234] other/unknown berlioz--symphony-fantastique--24830         sizes=[14, 2, 3, 9, 8, 11, 11, 11, 11, 11, 11] labels=[11, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0] 40.4s
+  [54/234] Breitkopf    beethoven--piano-concerto-5--977419          sizes=[14, 2, 13, 2, 13, 2, 7, 11, 10, 11, 11] labels=[13, 0, 10, 0, 11, 0, 4, 0, 9, 10, 8] 71.3s
