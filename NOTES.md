@@ -14,6 +14,162 @@ day again. The ranked residue plus the closed dead ends are in that file;
 
 ---
 
+## 🔮 CAPTURED (Sean, 2026-09-05): the sonic fingerprint — score → recording, not prompt → music
+
+Sean's framing, verbatim in substance: once transcription is solved, pair
+**recordings** with the **notes on the page**, capture the sonic fingerprint that
+matches what is written, and let a composer who wrote from scratch have their
+score — notes, instruments, and *everything else printed on the page* — rendered
+as a real orchestral recording. Explicitly **not** "ask an AI to write me
+something in a style": the human supplies the music, the model supplies the
+performance.
+
+Far off, unscoped, unscheduled. Written down because the framing is right and
+because two cheap things follow from it today (bottom of this entry).
+
+### Why the framing is worth keeping
+
+It is a **rendering** problem, not a generative one — the same category as a
+sampler or a physical-modelling synth, one rung up. That distinction is not
+just rhetoric; it decides the shape of everything downstream:
+
+- **the input is fixed** (the composer's score), so the model is judged on
+  fidelity to an intent that already exists, not on taste;
+- **it is evaluable** — a rendering can be scored against the same score it
+  came from, which is the property this project has spent a year buying for
+  OMR (see the OMR-NED section of CLAUDE.md for how much that is worth);
+- **the licensing story is cleaner than a generative one** on the output side,
+  because nothing about the composition came from the training data. The input
+  side is a different matter — see the risks below.
+
+### The two halves, and only one is the hard one
+
+The literature splits this cleanly, and it is worth adopting the split rather
+than treating it as one problem:
+
+| half | asks | state of the art (unverified — look these up before relying on any of it) |
+|---|---|---|
+| **performance rendering** | score → timing, dynamics, articulation, vibrato, balance | active research (VirtuosoNet-family work); mostly **piano**, because that is where aligned data exists |
+| **synthesis** | performance → audio | DDSP, RAVE, neural audio codecs; strong on monophonic/solo, weak on 60-source tutti |
+
+⚠️ **The instinct is that synthesis is the hard half. It probably is not.** The
+hard half is **alignment and separation on the corpus side** — see below.
+
+### What ReEngrave is actually positioned to contribute, and it is not the audio
+
+The scarce asset here is not a synthesizer. It is a corpus of
+**notation-level** score↔audio pairs for **orchestral** music. Existing aligned
+datasets are overwhelmingly piano (MAESTRO, ASAP) or small chamber ensembles
+(URMP, Bach10), and they align at the level of *notes*. What almost nothing
+aligns at is the level of *marks* — this slur, this hairpin, this `legato`, this
+staccato dot, on this staff, in this edition, against those 400 milliseconds of
+audio.
+
+**That is exactly and only what this project reads.** The nine
+detected-then-dropped fixes of the last month were, almost without exception,
+the expressive layer: hairpins, articulations, direction text, tuplets, slur
+pairing across barlines and system breaks, dynamics band attribution. Those were
+pursued because they were costing OMR-NED edits. They also happen to be the
+entire input feature vector such a model would consume. That is a coincidence
+worth banking.
+
+### The asymmetry that decides sequencing
+
+**The product half needs no OMR at all.** A composer writing from scratch hands
+over MusicXML — there is no page to read. So the thing Sean wants to *use* sits
+downstream of a problem this project has already solved for that input.
+
+**The corpus half needs OMR at its very hardest** — historical scans, dense
+conductor's pages, the 0.83 end of the scale, not the 0.11 end. Building the
+score↔recording corpus from the recorded repertoire means reading exactly the
+pages that are currently hardest.
+
+So: the dataset is gated on the scan work; the product is not. If a corpus ever
+arrives some other way (publisher MusicXML, engraving-house files, commissioned
+sessions), the product could be attempted without waiting on OMR at all.
+
+### Where it actually breaks, honestly
+
+1. **Alignment in a tutti is the bottleneck.** Score-to-audio alignment by DTW
+   over chroma/CQT is workable at the *measure* level and unreliable at the
+   level of one inner voice inside a 60-piece texture. "Which 300 ms is the
+   second bassoon's slurred descent" is not currently answerable from a stereo
+   commercial recording.
+2. **Orchestral source separation is far behind pop stems.** Four-stem pop
+   separation is a solved commodity; "isolate the second horn from the third"
+   is not, and no amount of model scale obviously fixes overlapping harmonics
+   from identical instruments in one hall.
+3. **You would not capture a fingerprint of an instrument. You would capture a
+   fingerprint of a *recording*.** Hall, mic placement, section size, conductor,
+   edition, and engineer are not separable from timbre without isolated
+   sources. That may be a *feature* — "1963 Berlin" as a renderable target is a
+   more interesting product than "a violin" — but it should be named as what it
+   is, and it makes the copyright question sharper, not softer.
+4. **Copyright is the live risk, and it is on the input side.** Training on
+   commercial recordings in order to emulate them is the exact question
+   currently being litigated. Narrower paths exist: public-domain recordings
+   (acoustically poor, and poor *specifically* as timbre data, which is the one
+   thing you'd want them for), explicit licensing, or recording your own
+   sessions — which is expensive but produces isolated sources, which fixes
+   problems 1–3 at the same time.
+5. **The uncanny valley here is phrasing, not timbre.** Sample libraries already
+   sound convincing on single sustained notes and unconvincing across a phrase.
+   Anything that improves timbre while leaving phrasing flat lands in the same
+   valley the libraries are already in.
+
+### ⭐ The reframe worth arguing about
+
+**Split timbre from interpretation, and go after interpretation first.**
+
+Sample libraries have spent twenty years and a lot of money on timbre. What they
+are conspicuously bad at is *phrasing* — the reason a mocked-up orchestral cue
+sounds like a mock-up is almost never the sound of one note, it is the
+articulation, the rubato, the way a crescendo is shaped, the fact that a slur
+means something to a player and nothing to a sampler.
+
+That suggests a much smaller and much nearer version of the same idea:
+
+> **score marks → expressive performance parameters → drive an existing
+> high-quality sample library.**
+
+No neural audio synthesis. No source separation. No orchestral recording
+corpus. The output is expressive MIDI/CC, and the timbre comes from a library
+the composer already owns. It is testable with a single instrument and a single
+library, and it attacks precisely the half nobody has solved. If it worked, the
+"replacement for sample libraries" claim would be *half* true in a useful way —
+not replacing them, but making them do the thing they can't.
+
+The neural-synthesis version remains the endgame. This is the wedge that could
+be attempted without a decade of data work, and it fails cheaply.
+
+### Smallest experiment that would teach anything
+
+One instrument. Monophonic. Solo repertoire with existing close-mic'd or
+multitrack audio. Align, extract the performance-parameter curves against the
+printed marks, and ask a single question: **does knowing the printed
+articulation and dynamic marks predict the performance curves better than the
+notes alone?** If the printed marks add nothing measurable over the notes, the
+whole premise — that the *page* carries the information, which is this
+project's entire thesis — is falsified cheaply, and that is worth knowing.
+
+### 📌 Two cheap things to do now (the only actionable part)
+
+1. **Do not discard the rich artifact.** `{stem}.omr.json` carries the
+   expressive marks with page coordinates, per-staff attribution, edition
+   provenance and detection confidence; the exported MusicXML carries strictly
+   less (the exporter reads no confidence at all — see the probability-gates
+   handoff). If a corpus is ever wanted, the `.omr.json` files are the corpus
+   substrate and the MusicXML is not. They are already written; the note is to
+   keep them, and to keep the score-library provenance attached.
+2. **The score library is already the right shape for this.** 235 editions,
+   1745 reference encodings, 27 works pairing a PDF with ground truth, joined on
+   `work_id`. A recordings axis would be a third directory beside `editions/`
+   and `reference/`, joined on the same key. Nothing needs building now — but
+   any future change to the library's schema should not make that third axis
+   harder to add.
+
+---
+
 ## 🅿️ PARKED (Sean, 2026-09-03): re-try the template-read elements — time signatures first — under the new labeling system
 
 Not urgent, but **must not get lost** (Sean asked for exactly that). The
