@@ -40,6 +40,20 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   **26/29**, the 17-staff finale system **16/17 → 17/17 exact**, `Timpani ->
   Trumpet` ×2 gone, no other confusion moved. Exactly 3 staff records change,
   all slot 8, all `Trumpet(score_order_ambiguity)` → `Timpani(label)`.
+- ⚠️⚠️ **SCOPE: that figure is about NARROW page sets.** The committed 88-page
+  artefact (`out/whole-report2.extract.json`) already has slot 8 = Timpani and
+  `ambiguous_labels_resolved = 1`, so the guard is a **no-op** there — with a
+  whole work voting, the layout fit proposes Timpani or abstains. Third time
+  page-set size has changed an identity result; score identity work on BOTH a
+  narrow set and the 88-page extract.
+- ⚠️ **The 7 residual errors on that 88-page run are MIS-SLOTTING, not
+  mis-naming** (800/807; `Violin -> Trombone` ×4, `Viola -> Trombone` ×2,
+  `Timpani -> Trombone` ×1; 17-staff systems 663/663). All carry
+  `instrument_source: label`: the strings land on slots 9/10/11 — the finale's
+  trombone slots — and inherit a name stamped per SLOT. Cello 15 / Contrabass 16
+  are right, so it is an off-by-three in the monotone DP over a reduced system.
+  `slots.align` / `assign_slots`, not the movement reference and not the veto.
+  **Owned by the `sad-austin-7e16e7` session as of 2026-09-06.**
 - **Files:** `tools/omr/contextual.py`,
   `tools/omr/tests/test_contextual_ambiguity_uniqueness.py` (every test run RED
   with the guard removed),

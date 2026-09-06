@@ -1449,6 +1449,32 @@ and the lexicon already records Trombone as much the commoner reading. Pinned by
 `test_contextual_ambiguity_uniqueness.py`, every test run RED with the guard
 removed.
 
+⚠️⚠️ **THAT FIGURE IS A CLAIM ABOUT NARROW PAGE SETS, AND THE WHOLE-WORK RUN
+DOES NOT SHOW THE BUG AT ALL.** The committed 88-page artefact
+(`benchmarks/omr-absent-instrument-veto-2026-09/out/whole-report2.extract.json`)
+already has slot 8 = Timpani and `ambiguous_labels_resolved = 1` — with a whole
+work's worth of systems voting, the layout fit proposes Timpani or abstains, and
+the guard is a **no-op** there. So the fix repairs narrow runs and is invisible
+on that artefact; do not quote 24/29 → 26/29 as a whole-work number. **This is
+the third time page-set size has changed an identity result** (the whole-work
+session measured `--pages 0-2` collapsing 11/12 → 4/12, reproducible with
+`OMR_MAX_PAGES=5`), so score any identity change on BOTH a narrow set and the
+88-page extract — they can disagree in either direction, and here they do.
+
+⚠️ **The 7 residual errors on that 88-page run are MIS-SLOTTING, not
+mis-naming**, and the distinction is what tells you where to look. Scored:
+800/807, `Violin -> Trombone` ×4, `Viola -> Trombone` ×2, `Timpani -> Trombone`
+×1, all on 12-staff systems (the 17-staff finale systems are **663/663**). Every
+wrong staff carries `instrument_source: label` — the strings land on slots
+9/10/11, the finale's trombone slots, and inherit the name those slots were
+correctly given by the finale's own labels, since a name is stamped per SLOT and
+written onto every staff of that slot on every page. The tail is anchored right
+(Cello 15, Contrabass 16), so it is an off-by-three in the monotone DP over a
+reduced system: 12 staves against a 17-slot reference needs five deletions and
+it deleted 12/13/14 instead of 9/10/11. That is `slots.align` / `assign_slots`,
+**not** the movement reference and not the absent-instrument veto — neither is
+in play in that artefact.
+
 **The same shape again, 2026-09-03, and the same answer: DERIVE the cross
 product.** A contrabassoon is printed as a BASSOON name with a contra- qualifier
 — four languages of noun against four of qualifier plus the abbreviations a
