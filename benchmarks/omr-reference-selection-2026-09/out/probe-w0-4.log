@@ -29,3 +29,5 @@ probing 234 documents, pages [0, 1, 2, 3, 4], dpi 300
   [27/234] Durand       dukas--l-apprenti-sorcier--6574              sizes=[25, 11, 14, 14, 13, 14, 13, 10, 10] labels=[22, 4, 4, 6, 6, 5, 5, 4, 3] 58.8s
   [28/234] Eulenburg    berlioz--harold-en-italie--515587            sizes=[] labels=[] 5.8s
   [29/234] Litolff      beethoven--symphony-3--504077                sizes=[12, 10, 10, 12, 11, 12, 12, 12, 10] labels=[12, 6, 5, 8, 7, 8, 8, 8, 6] 65.0s
+  [30/234] Novello      elgar--cello-concerto--22192                 sizes=[17, 12, 5, 17, 17, 17] labels=[0, 0, 0, 0, 0, 0] 457.2s
+  [31/234] Peters       bach--concerto-6--468681                     sizes=[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8] labels=[5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 26.1s
