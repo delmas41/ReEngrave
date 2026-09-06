@@ -777,7 +777,28 @@ def apply_contextual_analysis(
     # reference system's own labels do. Withholding it would leave the prior
     # guessing at slots the document has already named, which is the shape this
     # whole workstream is about.
+    #
+    # ⚠️ EXCEPT at an ambiguous slot, and the exception is not a special case —
+    # it is the same rule. `ambiguous_slots` is withheld because the AMBIGUITY
+    # LIVES IN THE LEXICON, NOT IN THE READING: `Basso.` at the foot of a string
+    # section resolves to `Bass voice` no matter which page it was read from, so
+    # a roster inherits the unsettleable answer rather than settling it. Refilling
+    # it here handed the prior exactly the reading the prior exists to overturn,
+    # every voter abstained (no orchestral layout has a voice anywhere), and
+    # `resolve_ambiguous_label` returned None — measured 2026-09-06 as 7 staves
+    # exported as a SINGER on 9 orchestral rows (Beethoven `Basso.`, Mahler
+    # `Bässe`, Mozart 41 and Tchaikovsky 6 `Basso`, and a truncated
+    # `'mbone Basso'` — a bass TROMBONE). Controlled A/B, roster off: support
+    # `Contrabass 0.643 / Cello 0.357`, which reproduces
+    # `resolve_ambiguous_label`'s own docstring figure to the digit.
+    #
+    # ⚠️ Nothing in the metric could have caught this. The roster shipped on a
+    # measured 0 edits, correctly argued — musicdiff does not score
+    # `<part-name>` — and that same blindness hides this. A consumer the metric
+    # cannot see needs a check the metric is not.
     for slot_index, instrument in roster_by_slot.items():
+        if slot_index in ambiguous_slots:
+            continue
         fit_labels.setdefault(slot_index, instrument.name)
     fit = fit_layouts(
         len(reference), labels=fit_labels, clefs=clef_by_slot)
