@@ -206,7 +206,49 @@ delivered what it was built for.
   more evidence; the web app's default window is `OMR_MAX_PAGES=5`, pages 0-4.
 - Whether identity revision may change SEGMENTATION. Everything above holds it
   fixed. Letting it move is a much larger claim.
-- What the stopping rule is when two processes disagree and neither yields.
-  Today's answer everywhere in this codebase is ABSTAIN, and it is probably
-  right here too — but abstention has a human cost, which is the thing being
-  minimised, so it cannot be the automatic answer.
+- ~~What the stopping rule is when two processes disagree and neither yields.~~
+  **Settled 2026-09-06 (Sean): escalate to a human, but only as a LAST RESORT.**
+  So abstention is permitted and is not free — it is the most expensive outcome
+  the system can produce, and the phase gates count it as such (see the
+  human-cost axis in §7). A process may abstain; it may not abstain *cheaply*.
+
+## 9. Which arrow carries the information — measured, 2026-09-06
+
+Sean, thinking through the circle: *"if we know a clef or a range of notes we can
+narrow down what the instrument could be... once we know the instrument it should
+inform verification of the clef and pitches."*
+
+Right in shape, and §7's hazard is narrower than it was stated. **The bad case is
+using a DEDUCTION to confirm the OBSERVATION it was deduced from** — deduce
+"viola" from an alto clef, then count that clef as corroborating "viola". Identity
+informing a *different* observation is legitimate, and the pipeline already does
+it: `contextual` sets `clef_source = "slot_continuity"` — a staff that read no
+clef takes the clef its own part read on ANOTHER system. Two independent looks at
+one fact. Measured 48/52 → 49/52.
+
+⚠️ **But `range -> instrument` is measured to be nearly information-free.** A
+family's range is the UNION of its members', percussion spans 0-127, and across
+the scan corpus only **5 detected pitches of 9,219** fall outside their family's
+union (`benchmarks/omr-structural-parts-2026-09/`). As a way to narrow WHICH
+INSTRUMENT, notes-in-range carries almost nothing. It is strong only with a
+dossier naming the exact part — and the scan benchmark runs dossier-free by
+protocol, which is why the written-range veto has NEVER FIRED ON A SCAN.
+
+✅ **The strong arrow is `range -> CLEF`, and it is computed and discarded.** Not
+"which instrument" but "is this clef possible at all": two staves whose registers
+are INVERTED (the lower sounding higher) is a clef error whatever the instruments
+are. `clef_register_warning` already computes it — Brahms staves 3 vs 4, median
+MIDI 53 against 71, a 12-semitone inversion, labelled `advisory`. Verified
+2026-09-06: **zero references in `clef_correction.py` and no consumer anywhere in
+`tools/omr`, `backend` or the frontend.**
+
+Two properties make it the best lever available:
+
+1. **It needs no instrument name** — so it is available exactly where label
+   evidence is structurally absent (29 of 29 unresolved non-treble staves on the
+   scan corpus print no label at all).
+2. **It is a comparison BETWEEN two staves**, so it cannot confirm itself — it
+   satisfies §7's provenance rule by construction rather than by a gate.
+
+So the corrected reading of Sean's loop: not `notes -> instrument`, but
+`notes -> "that clef cannot be right" -> identity -> verify the pitches`.
