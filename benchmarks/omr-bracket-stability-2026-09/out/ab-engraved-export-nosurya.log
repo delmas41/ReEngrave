@@ -9,3 +9,21 @@
   -> dvorak-sym9-mvt4: BYTE-IDENTICAL
 1 of 38 labelled staff record(s) CONTRADICT their own margin label: the reader read one instrument on that staff and the file names another. Measured over two whole works, 0.873 of these are a wrong EXPORTED name and 0.127 a misread label, and nothing on the record says which — so each is worth a look, none is self-resolving. By source: {'score_order_ambiguity': 1}. By pair: {'Bass voice -> Contrabass': 1} (benchmarks/omr-label-contradiction-2026-09/)
   mahler-sym5-mvt1 flag=0: 78232 bytes in 80s
+1 of 38 labelled staff record(s) CONTRADICT their own margin label: the reader read one instrument on that staff and the file names another. Measured over two whole works, 0.873 of these are a wrong EXPORTED name and 0.127 a misread label, and nothing on the record says which — so each is worth a look, none is self-resolving. By source: {'score_order_ambiguity': 1}. By pair: {'Bass voice -> Contrabass': 1} (benchmarks/omr-label-contradiction-2026-09/)
+  mahler-sym5-mvt1 flag=1: 78232 bytes in 81s
+  -> mahler-sym5-mvt1: BYTE-IDENTICAL
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'larinetti in B.'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+  mozart-sym40-mvt1 flag=0: 69177 bytes in 22s
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'larinetti in B.'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+  mozart-sym40-mvt1 flag=1: 69177 bytes in 21s
+  -> mozart-sym40-mvt1: BYTE-IDENTICAL
+1 of 15 labelled staff record(s) CONTRADICT their own margin label: the reader read one instrument on that staff and the file names another. Measured over two whole works, 0.873 of these are a wrong EXPORTED name and 0.127 a misread label, and nothing on the record says which — so each is worth a look, none is self-resolving. By source: {'score_order_ambiguity': 1}. By pair: {'Bass voice -> Contrabass': 1} (benchmarks/omr-label-contradiction-2026-09/)
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'C—G in mpani', 'II in Ch'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+  mozart-sym41-mvt1 flag=0: 115575 bytes in 31s
+1 of 15 labelled staff record(s) CONTRADICT their own margin label: the reader read one instrument on that staff and the file names another. Measured over two whole works, 0.873 of these are a wrong EXPORTED name and 0.127 a misread label, and nothing on the record says which — so each is worth a look, none is self-resolving. By source: {'score_order_ambiguity': 1}. By pair: {'Bass voice -> Contrabass': 1} (benchmarks/omr-label-contradiction-2026-09/)
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'C—G in mpani', 'II in Ch'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+  mozart-sym41-mvt1 flag=1: 115575 bytes in 35s
+  -> mozart-sym41-mvt1: BYTE-IDENTICAL
+  tchaikovsky-sym4-mvt2 flag=0: 54544 bytes in 36s
+  tchaikovsky-sym4-mvt2 flag=1: 54544 bytes in 38s
+  -> tchaikovsky-sym4-mvt2: BYTE-IDENTICAL
