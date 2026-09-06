@@ -1,0 +1,124 @@
+document reference: 16 slots
+   g 0 group=0 instrument=Flute pos=0.0000
+   g 1 group=0 instrument=Oboe pos=0.0667
+   g 2 group=0 instrument=Clarinet pos=0.1333
+   g 3 group=0 instrument=Bassoon pos=0.2000
+   g 4 group=0 instrument=Contrabassoon pos=0.2667
+   g 5 group=0 instrument=Horn pos=0.3333
+   g 6 group=0 instrument=None pos=0.4000
+   g 7 group=0 instrument=Trumpet pos=0.4667
+   g 8 group=0 instrument=Trombone pos=0.5333
+   g 9 group=0 instrument=None pos=0.6000
+   g10 group=0 instrument=Timpani pos=0.6667
+   g11 group=1 instrument=Violin pos=0.7333
+   g12 group=1 instrument=Violin pos=0.8000
+   g13 group=1 instrument=Viola pos=0.8667
+   g14 group=1 instrument=Cello pos=0.9333
+   g15 group=1 instrument=Contrabass pos=1.0000
+MECHANISM 2 CHECK: document slots WITH an instrument: 14 of 16
+
+=== SPAN 0: pages 0-44, 89 systems
+   reference system: page 35 system#1 size=14
+   MECHANISM 1 CHECK: view.labels has 14 entries, keyed [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+   staff_index of staves: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+      local  0 staff_index=13 group=0 label=Flute          raw='Fl.'                      matched=Flute conf=high
+      local  1 staff_index=14 group=0 label=Oboe           raw='Ob.'                      matched=Oboe conf=high
+      local  2 staff_index=15 group=0 label=Clarinet       raw='Klar. (A)'                matched=Clarinet conf=high
+      local  3 staff_index=16 group=0 label=Bassoon        raw='Fag.'                     matched=Bassoon conf=high
+      local  4 staff_index=17 group=0 label=Contrabassoon  raw='K-Fag.'                   matched=Contrabassoon conf=high
+      local  5 staff_index=18 group=0 label=Horn           raw='Hr. (E)'                  matched=Horn conf=high
+      local  6 staff_index=19 group=0 label=Trumpet        raw='Trpt. (E)'                matched=Trumpet conf=high
+      local  7 staff_index=20 group=0 label=Timpani        raw='Pk.'                      matched=Timpani conf=high
+      local  8 staff_index=21 group=1 label=Violin         raw='Viol. Solo'               matched=Violin conf=medium
+      local  9 staff_index=22 group=1 label=Violin         raw='1Viol.'                   matched=Violin conf=high
+      local 10 staff_index=23 group=1 label=Violin         raw='2Viol.'                   matched=Violin conf=high
+      local 11 staff_index=24 group=1 label=Viola          raw='Br.'                      matched=Viola conf=high
+      local 12 staff_index=25 group=1 label=Cello          raw='Vcl.'                     matched=Cello conf=high
+      local 13 staff_index=26 group=1 label=Contrabass     raw='K-B.'                     matched=Contrabass conf=high
+   MECHANISM 3 CHECK: monotone envelope for m=14 into n=16
+      local  0 can reach globals 0..2
+      local  1 can reach globals 1..3
+      local  2 can reach globals 2..4
+      local  3 can reach globals 3..5
+      local  4 can reach globals 4..6
+      local  5 can reach globals 5..7
+      local  6 can reach globals 6..8
+      local  7 can reach globals 7..9
+      local  8 can reach globals 8..10
+      local  9 can reach globals 9..11
+      local 10 can reach globals 10..12
+      local 11 can reach globals 11..13
+      local 12 can reach globals 12..14
+      local 13 can reach globals 13..15
+   group term mode=map map=None
+   CHOSEN embedding [0, 1, 2, 3, 4, 5, 7, 8, 9, 11, 12, 13, 14, 15]  total=75.7179 gaps=2
+      l 0->g 0  label=Flute          slot=Flute          lab= +6.0 grp=+0.0 pos=+1.000
+      l 1->g 1  label=Oboe           slot=Oboe           lab= +6.0 grp=+0.0 pos=+0.990
+      l 2->g 2  label=Clarinet       slot=Clarinet       lab= +6.0 grp=+0.0 pos=+0.979
+      l 3->g 3  label=Bassoon        slot=Bassoon        lab= +6.0 grp=+0.0 pos=+0.969
+      l 4->g 4  label=Contrabassoon  slot=Contrabassoon  lab= +6.0 grp=+0.0 pos=+0.959
+      l 5->g 5  label=Horn           slot=Horn           lab= +6.0 grp=+0.0 pos=+0.949
+      l 6->g 7  label=Trumpet        slot=Trumpet        lab= +6.0 grp=+0.0 pos=+0.995
+      l 7->g 8  label=Timpani        slot=Trombone       lab= -8.0 grp=+0.0 pos=+0.995  <-- LABEL CONFLICT
+      l 8->g 9  label=Violin         slot=None           lab= +0.0 grp=+0.0 pos=+0.985
+      l 9->g11  label=Violin         slot=Violin         lab= +6.0 grp=+0.0 pos=+0.959
+      l10->g12  label=Violin         slot=Violin         lab= +6.0 grp=+0.0 pos=+0.969
+      l11->g13  label=Viola          slot=Viola          lab= +6.0 grp=+0.0 pos=+0.979
+      l12->g14  label=Cello          slot=Cello          lab= +6.0 grp=+0.0 pos=+0.990
+      l13->g15  label=Contrabass     slot=Contrabass     lab= +6.0 grp=+0.0 pos=+1.000
+
+=== SPAN 1: pages 45-85, 62 systems
+   reference system: page 45 system#0 size=16
+   MECHANISM 1 CHECK: view.labels has 14 entries, keyed [0, 1, 2, 3, 4, 5, 7, 8, 10, 11, 12, 13, 14, 15]
+   staff_index of staves: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+      local  0 staff_index= 0 group=0 label=Flute          raw='2 Flöten'                 matched=Flute conf=high
+      local  1 staff_index= 1 group=0 label=Oboe           raw='2 Oboen'                  matched=Oboe conf=high
+      local  2 staff_index= 2 group=0 label=Clarinet       raw='2 Klarinetten in B'       matched=Clarinet conf=high
+      local  3 staff_index= 3 group=0 label=Bassoon        raw='2 Fagotte'                matched=Bassoon conf=high
+      local  4 staff_index= 4 group=0 label=Contrabassoon  raw='Kontrafagott'             matched=Contrabassoon conf=high
+      local  5 staff_index= 5 group=0 label=Horn           raw='in C 1.  2. 4 Hörner'     matched=Horn conf=high
+      local  6 staff_index= 6 group=0 label=None           raw='in E 3.  4.'              matched=None conf=none
+      local  7 staff_index= 7 group=0 label=Trumpet        raw='2 Trompeten in C'         matched=Trumpet conf=high
+      local  8 staff_index= 8 group=0 label=Trombone       raw='3 Posaunen'               matched=Trombone conf=high
+      local  9 staff_index= 9 group=0 label=None           raw=')'                        matched=None conf=none
+      local 10 staff_index=10 group=0 label=Timpani        raw='Pauken in C u. G'         matched=Timpani conf=medium
+      local 11 staff_index=11 group=1 label=Violin         raw='1. Violine'               matched=Violin conf=high
+      local 12 staff_index=12 group=1 label=Violin         raw='2. Violine'               matched=Violin conf=high
+      local 13 staff_index=13 group=1 label=Viola          raw='Bratsche'                 matched=Viola conf=high
+      local 14 staff_index=14 group=1 label=Cello          raw='Violoncell'               matched=Cello conf=high
+      local 15 staff_index=15 group=1 label=Contrabass     raw='Kontrabaß'                matched=Contrabass conf=high
+   MECHANISM 3 CHECK: monotone envelope for m=16 into n=16
+      local  0 can reach globals 0..0
+      local  1 can reach globals 1..1
+      local  2 can reach globals 2..2
+      local  3 can reach globals 3..3
+      local  4 can reach globals 4..4
+      local  5 can reach globals 5..5
+      local  6 can reach globals 6..6
+      local  7 can reach globals 7..7
+      local  8 can reach globals 8..8
+      local  9 can reach globals 9..9
+      local 10 can reach globals 10..10
+      local 11 can reach globals 11..11
+      local 12 can reach globals 12..12
+      local 13 can reach globals 13..13
+      local 14 can reach globals 14..14
+      local 15 can reach globals 15..15
+   group term mode=map map={0: {0}, 1: {1}}
+   CHOSEN embedding [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]  total=124.0 gaps=0
+      l 0->g 0  label=Flute          slot=Flute          lab= +6.0 grp=+1.5 pos=+1.000
+      l 1->g 1  label=Oboe           slot=Oboe           lab= +6.0 grp=+1.5 pos=+1.000
+      l 2->g 2  label=Clarinet       slot=Clarinet       lab= +6.0 grp=+1.5 pos=+1.000
+      l 3->g 3  label=Bassoon        slot=Bassoon        lab= +6.0 grp=+1.5 pos=+1.000
+      l 4->g 4  label=Contrabassoon  slot=Contrabassoon  lab= +6.0 grp=+1.5 pos=+1.000
+      l 5->g 5  label=Horn           slot=Horn           lab= +6.0 grp=+1.5 pos=+1.000
+      l 6->g 6  label=None           slot=None           lab= +0.0 grp=+1.5 pos=+1.000
+      l 7->g 7  label=Trumpet        slot=Trumpet        lab= +6.0 grp=+1.5 pos=+1.000
+      l 8->g 8  label=Trombone       slot=Trombone       lab= +6.0 grp=+1.5 pos=+1.000
+      l 9->g 9  label=None           slot=None           lab= +0.0 grp=+1.5 pos=+1.000
+      l10->g10  label=Timpani        slot=Timpani        lab= +6.0 grp=+1.5 pos=+1.000
+      l11->g11  label=Violin         slot=Violin         lab= +6.0 grp=+1.5 pos=+1.000
+      l12->g12  label=Violin         slot=Violin         lab= +6.0 grp=+1.5 pos=+1.000
+      l13->g13  label=Viola          slot=Viola          lab= +6.0 grp=+1.5 pos=+1.000
+      l14->g14  label=Cello          slot=Cello          lab= +6.0 grp=+1.5 pos=+1.000
+      l15->g15  label=Contrabass     slot=Contrabass     lab= +6.0 grp=+1.5 pos=+1.000

@@ -1,0 +1,25 @@
+document reference (16): ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', '-', 'Trumpet', 'Trombone', '-', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+spans: [(0, 44), (45, 85)]
+
+--- OMR_SPAN_REFERENCE_FIT=off
+   span 0 (0-44): candidate #0 = page 35 system 1, 14 staves, 14 labels, contradictions=1
+      labels : ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+      -> global [0, 1, 2, 3, 4, 5, 7, 8, 9, 11, 12, 13, 14, 15]
+   span 1 (45-85): candidate #0 = page 45 system 0, 16 staves, 14 labels, contradictions=0
+      labels : ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', '-', 'Trumpet', 'Trombone', '-', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+      -> global [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
+--- OMR_SPAN_REFERENCE_FIT=refuse
+   span 0 (0-44): REFUSED after 1 candidate(s) -> document-wide fallback for the WHOLE RUN
+   span 1 (45-85): candidate #0 = page 45 system 0, 16 staves, 14 labels, contradictions=0
+      labels : ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', '-', 'Trumpet', 'Trombone', '-', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+      -> global [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+   => _align_by_span returns False; spans have no effect
+
+--- OMR_SPAN_REFERENCE_FIT=search
+   span 0 (0-44): candidate #1 = page 2 system 0, 14 staves, 13 labels, contradictions=0
+      labels : ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', '-', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+      -> global [0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15]
+   span 1 (45-85): candidate #0 = page 45 system 0, 16 staves, 14 labels, contradictions=0
+      labels : ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', '-', 'Trumpet', 'Trombone', '-', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+      -> global [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]

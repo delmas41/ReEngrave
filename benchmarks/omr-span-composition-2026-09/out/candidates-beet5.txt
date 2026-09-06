@@ -1,0 +1,62 @@
+document reference (17): ['Piccolo', 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Trumpet', 'Timpani', 'Trombone', 'Trombone', 'Trombone', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+
+=== SPAN 0: pages 0-43, 92 systems
+   size histogram: {4: 4, 5: 6, 6: 1, 7: 9, 8: 13, 9: 10, 10: 5, 11: 32, 12: 12}
+   recurring candidates: 91 systems, 38 distinct (size, label sequence) shapes
+   -- size=12 nlabels=12 x1 systems  first at page 17 sys#0 <== reference_view's pick
+      labels: ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+      -> global [1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 15, 16]  CONFLICTS=0
+   -- size=12 nlabels=11 x1 systems  first at page 1 sys#0
+      labels: ['Flute', '-', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+      -> global [1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 15, 16]  CONFLICTS=0
+   -- size=12 nlabels=7 x6 systems  first at page 6 sys#1
+      labels: ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', '-', '-', '-', '-', '-']
+      -> global [1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 15, 16]  CONFLICTS=0
+   -- size=12 nlabels=6 x3 systems  first at page 9 sys#0
+      labels: ['Flute', 'Oboe', 'Clarinet', '-', 'Horn', 'Trumpet', 'Timpani', '-', '-', '-', '-', '-']
+      -> global [1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 15, 16]  CONFLICTS=0
+   -- size=12 nlabels=3 x1 systems  first at page 31 sys#1
+      labels: ['Flute', 'Oboe', 'Clarinet', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+      -> global [1, 2, 3, 4, 6, 7, 9, 12, 13, 14, 15, 16]  CONFLICTS=0
+   -- size=11 nlabels=11 x1 systems  first at page 32 sys#0
+      labels: ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello']
+      -> global [1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 15]  CONFLICTS=0
+   -- size=11 nlabels=7 x25 systems  first at page 2 sys#0
+      labels: ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', '-', '-', '-', '-']
+      -> global [1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 16]  CONFLICTS=0
+   -- size=11 nlabels=6 x2 systems  first at page 4 sys#0
+      labels: ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', '-', '-', '-', '-', '-']
+      -> global [1, 2, 3, 4, 6, 7, 12, 13, 14, 15, 16]  CONFLICTS=0
+   -- size=11 nlabels=6 x1 systems  first at page 11 sys#1
+      labels: ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Timpani', '-', '-', '-', '-', '-']
+      -> global [1, 2, 3, 4, 6, 8, 12, 13, 14, 15, 16]  CONFLICTS=0
+   -- size=11 nlabels=6 x1 systems  first at page 16 sys#0
+      labels: ['Flute', 'Oboe', 'Clarinet', '-', 'Horn', 'Trumpet', 'Timpani', '-', '-', '-', '-']
+      -> global [1, 2, 3, 5, 6, 7, 8, 12, 13, 14, 16]  CONFLICTS=0
+   -- size=11 nlabels=6 x1 systems  first at page 19 sys#0
+      labels: ['Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', '-', '-', '-', '-', '-']
+      -> global [2, 3, 4, 6, 7, 8, 12, 13, 14, 15, 16]  CONFLICTS=0
+   -- size=11 nlabels=6 x1 systems  first at page 35 sys#0
+      labels: ['Flute', 'Oboe', 'Clarinet', 'Bassoon', '-', 'Trumpet', 'Timpani', '-', '-', '-', '-']
+      -> global [1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 16]  CONFLICTS=0
+   -- size=10 nlabels=6 x1 systems  first at page 9 sys#1
+      labels: ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Trumpet', 'Timpani', '-', '-', '-', '-']
+      -> global [1, 2, 3, 4, 7, 8, 12, 13, 14, 16]  CONFLICTS=0
+   -- size=10 nlabels=6 x1 systems  first at page 35 sys#1
+      labels: ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Timpani', '-', '-', '-', '-']
+      -> global [1, 2, 3, 4, 6, 8, 12, 13, 14, 16]  CONFLICTS=0
+
+=== SPAN 1: pages 44-87, 48 systems
+   size histogram: {6: 1, 7: 1, 9: 2, 10: 2, 15: 1, 16: 2, 17: 39}
+   recurring candidates: 39 systems, 15 distinct (size, label sequence) shapes
+   -- size=17 nlabels=17 x1 systems  first at page 44 sys#0 <== reference_view's pick
+      labels: ['Piccolo', 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Trumpet', 'Timpani', 'Trombone', 'Trombone', 'Trombone', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+      -> global [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]  CONFLICTS=0
+   -- size=17 nlabels=12 x18 systems  first at page 45 sys#0
+      labels: ['Piccolo', 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Trumpet', 'Timpani', 'Trombone', 'Trombone', 'Trombone', '-', '-', '-', '-', '-']
+      -> global [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]  CONFLICTS=0
+   -- size=17 nlabels=12 x7 systems  first at page 50 sys#0
+      labels: ['Flute', 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Trumpet', 'Timpani', 'Trombone', 'Trombone', 'Trombone', '-', '-', '-', '-', '-']
+      -> global [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]  CONFLICTS=1
+         local  0 Flute -> global 0 Piccolo
+   -- size=17 nlabels=11 x1 systems  first at page 61 sys#0

@@ -1,0 +1,26 @@
+document reference (17): ['Piccolo', 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Trumpet', 'Timpani', 'Trombone', 'Trombone', 'Trombone', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+spans: [(0, 43), (44, 87)]
+
+--- OMR_SPAN_REFERENCE_FIT=off
+   span 0 (0-43): candidate #0 = page 17 system 0, 12 staves, 12 labels, contradictions=0
+      labels : ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+      -> global [1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 15, 16]
+   span 1 (44-87): candidate #0 = page 44 system 0, 17 staves, 17 labels, contradictions=0
+      labels : ['Piccolo', 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Trumpet', 'Timpani', 'Trombone', 'Trombone', 'Trombone', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+      -> global [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+
+--- OMR_SPAN_REFERENCE_FIT=refuse
+   span 0 (0-43): candidate #0 = page 17 system 0, 12 staves, 12 labels, contradictions=0
+      labels : ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+      -> global [1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 15, 16]
+   span 1 (44-87): candidate #0 = page 44 system 0, 17 staves, 17 labels, contradictions=0
+      labels : ['Piccolo', 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Trumpet', 'Timpani', 'Trombone', 'Trombone', 'Trombone', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+      -> global [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+
+--- OMR_SPAN_REFERENCE_FIT=search
+   span 0 (0-43): candidate #0 = page 17 system 0, 12 staves, 12 labels, contradictions=0
+      labels : ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+      -> global [1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 15, 16]
+   span 1 (44-87): candidate #0 = page 44 system 0, 17 staves, 17 labels, contradictions=0
+      labels : ['Piccolo', 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Trumpet', 'Timpani', 'Trombone', 'Trombone', 'Trombone', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+      -> global [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
