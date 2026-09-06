@@ -614,6 +614,13 @@ def assign_systems(
     (positive pair-local ink outranks absence at the page-median anchor —
     see the comment at the exemption site). See the cue-B comment block and
     `pair_left_edge_count`.
+
+    `OMR_BRACKET_COLUMNS` (default OFF) changes only the last step, the
+    bracket-GROUP split inside each system: the comparison is made over
+    systemic COLUMNS rather than crossing pixels, and a system with too little
+    column evidence abstains to one group. System boundaries — everything
+    above — are untouched by it. See the `BRACKET_COLUMN_*` comment blocks and
+    `benchmarks/omr-bracket-stability-2026-09/FINDINGS.md`.
     """
     if left_edge_split is None:
         left_edge_split = _left_edge_split_enabled()
