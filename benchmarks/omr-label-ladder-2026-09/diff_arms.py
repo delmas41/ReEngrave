@@ -10,7 +10,13 @@ import argparse
 import json
 from pathlib import Path
 
-NOISE = {"seconds", "elapsed_s", "duration_s", "wall_s", "timestamp"}
+# Timings, and the IDENTITY fields — `--tag` suffixes row names and fixture
+# paths, so an arm run with a tag differs from one run without it in `row_id`,
+# `pred_xml` and the `name`/`pred` inside `omr_ned` for EVERY row, whatever the
+# scores did. Comparing those makes a clean null look like 20 changed rows.
+NOISE = {"seconds", "elapsed_s", "duration_s", "wall_s", "timestamp",
+         "row_id", "pred_xml", "raw_json", "pred", "truth"}
+INNER_NOISE = {"name", "pred", "truth"}
 
 
 def rows(doc):
@@ -27,9 +33,18 @@ def main() -> int:
     ra, rb = rows(da), rows(db)
     print(f"{len(ra)} vs {len(rb)} rows")
     same = diff = 0
+    def strip(row):
+        out = {}
+        for k, v in row.items():
+            if k in NOISE:
+                continue
+            if isinstance(v, dict):
+                v = {i: j for i, j in v.items() if i not in INNER_NOISE}
+            out[k] = v
+        return out
+
     for x, y in zip(ra, rb):
-        kx = {k: v for k, v in x.items() if k not in NOISE}
-        ky = {k: v for k, v in y.items() if k not in NOISE}
+        kx, ky = strip(x), strip(y)
         if kx == ky:
             same += 1
             continue
