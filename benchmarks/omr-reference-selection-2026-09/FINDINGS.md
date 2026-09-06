@@ -1,0 +1,135 @@
+# The reference should be the most-LABELLED system, not the most-frequent one
+
+**`OMR_REFERENCE_MOST_LABELLED`, merged default-off 2026-09-06.** Closes a bug
+that is live for anyone using the running system, not only for whole-work runs.
+
+*(Written up by the coordinating session from the agent's report and its five
+commit messages — its harness refused it a `.md` file. `PRE_REGISTERED.md` beside
+this went through before any arm ran.)*
+
+---
+
+## The bug
+
+Same PDF, same page, changing only which pages are in the run:
+
+```
+--pages 1     ->  12/12 staves correctly named
+--pages 0-2   ->   4/12
+```
+
+**Two extra pages OF THE SAME MOVEMENT collapse it**, so this has nothing to do
+with movements. Page 1 prints 12 staves; pages 2+ print **11**, because
+`Violoncello e Basso` condense onto one staff. Over the run 11 recurs and 12 does
+not, `slots.build_reference` picks the largest **RECURRING** system — the
+condensed shape — and `slots.align`, which deletes on the reference side only,
+then drops the twelve-staff system's **TOP** staff and slides every name up one:
+`Corni` → Bassoon, `Timpani` → Trumpet.
+
+⚠️ **The web app's own default `OMR_MAX_PAGES=5` reproduces this exactly.**
+
+The insight: **condensation is what repeats.** A shape that recurs is
+systematically the *reduced* one, so "largest recurring" selects against the
+lineup you want.
+
+## The fix, and the arm it refused
+
+Build the reference from the system that carries the most **resolved labels** — a
+system printing its full lineup with names is better evidence of what the parts
+are than a shape that merely recurs.
+
+⚠️ **Pure most-labelled was REFUSED on measured evidence**: it can pick a
+reference *shorter* than a later system in the same run — Bote's Dvořák serenade
+names a 5-staff opening and prints 6-staff systems afterwards, and `align` then
+leaves the sixth staff at slot −1. **The shipped rule never shrinks the reference
+below the recurring rule's pick.** `most_labelled="pure"` reproduces the refused
+arm for anyone who wants to see it.
+
+## Publisher convention — the kill criterion, answered first
+
+The risk was a rule that works on one house's labelling convention. Measured over
+**30 documents in 12 houses**, scoring whether the rule lands on the run's
+*largest* system (what `build_reference`'s own docstring aims at):
+
+| | picks the largest system |
+|---|--:|
+| all (n=30) | old 0.700 → **new 0.867** (pure 0.833) |
+| documents that name something (n=26) | old 0.654 → **new 0.846** |
+| documents that name nothing (n=4) | **identical picks**, asserted |
+
+By house, old → new: Breitkopf 0.667→1.000 · Universal 0.667→1.000 · Eulenburg
+0.000→1.000 · Ricordi 0.000→0.500 · Durand 0.000→0.500 · **Litolff, Bote,
+Peters, Augener, other/unknown unchanged at 1.000** · Novello 0.000→0.000 (both
+rules miss it) · **Simrock 0.667 under BOTH**.
+
+**No house is worse, 5 documents change and all toward a LARGER reference, 0
+shrink** under the never-shrink guard. **It is NOT a Litolff rule** — Litolff
+scores 1.000 under *both*, so every gain comes from elsewhere: five documents in
+five different houses (Breitkopf's B-minor Mass, Eulenburg's Matthäuspassion,
+Ricordi's *Faust et Hélène*, Universal's Bruckner 1, Durand's *La Mer*), all one
+shape — **the document's first system is both the largest and the labelled one,
+and the recurring filter threw it away for occurring once.**
+
+⚠️ **These are the n=30 figures and they SUPERSEDE an n=27 cut** that showed
+Simrock at 1.000 on a two-document sample. With three documents Simrock reads
+**0.667 under both rules** — worth naming precisely: **a house the rule does not
+REACH, not one it harms.** Reported this way deliberately, rather than quoting
+the flattering earlier sample, because a publisher split is exactly what the kill
+criterion was written to catch.
+
+Method note: the probe records each system's staff count and resolved label count
+once per document (one staff detection + one Surya read per page, no
+transcription), and all three rules are replayed over the *same recorded views* —
+so no rule can win by re-reading a margin.
+
+## Headline
+
+End-to-end `transcribe`, Litolff Beethoven 5 / imslp984073, `--no-direction-text`
+on every arm:
+
+| | reference | full system named correctly |
+|---|---|---|
+| `--pages 1` off | 12 slots | 12/12 |
+| `--pages 1` on | 12 slots | 12/12 (control) |
+| `--pages 0-2` off | 11 slots | **4/12** |
+| `--pages 0-2` on | 12 slots | **12/12** |
+
+The control is stronger than an equal score: the two `--pages 1` result files are
+**identical field-for-field** apart from wall-clock and a 0.2 ms timing. The
+off-arm's confusions are the slide-by-one signature exactly (Oboe→Flute …
+Violin→Timpani, one staff left at slot −1).
+
+⚠️ **Pre-registration said 4/12 → 11/12 with an 11/12 control; both control arms
+read 12/12 on this tree** — main's ambiguous-alias fixes (`c0a80ae7`, `fa8258c1`)
+land the twelfth staff. Measured on the agent's own merge base, so both arms move
+together and the delta stands.
+
+**It also prices the case that could have LOST**: the condensed 11-staff pages,
+which under the old rule align 1:1 and are named by construction. They *improve* —
+pages 0-2 14/22 → **16/22**, pages 0-4 35/55 → **39/55** — because the old
+reference took its labels from a page-2 system that names no strings at all.
+
+## Safety
+
+Default-off is not merely structurally unchanged: `probe_flag_off_identity.py`
+runs `origin/main`'s `build_reference` against this tree's with
+`most_labelled="off"` over **3000 random system sets — 0 differences**. Seven new
+unit tests pin the bug, the fix, the abstention (no labels anywhere → today's
+behaviour), the tie-break, the never-shrink guard, the env default, and why a
+condensed reference *misnames* rather than under-names.
+
+## ⚠️ What is NOT measured, stated plainly
+
+**No scan-gate figure.** The machine was carrying two sibling whole-work runs
+(load 30–45) and the two `scan_eval` arms had reached row 2 when the session ended.
+Nothing in the branch reports a gate number and nothing should until they land.
+
+**And a flat gate result would be coverage of nothing, not a clean bill** —
+argued from `works.json` with no compute: **9 of 20 rows print one system** and
+cannot change; most of the 11 two-system rows print two systems of **equal** staff
+count (Brahms p2/p3/p4, Dvořák p7, Bach), where the old key `(size, labels)` and
+the new `(labels, size)` rank identically. A difference needs a page whose
+*smaller* system carries strictly more labels. This was pre-registered.
+
+⚠️ Relatedly: **all ten rows the roster's evidence came from are single-PAGE
+runs**, the one regime this bug cannot occur in. That is why it went unseen.
