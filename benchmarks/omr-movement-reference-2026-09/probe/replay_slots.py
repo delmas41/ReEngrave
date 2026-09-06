@@ -53,8 +53,21 @@ def read(pdf: Path, pages, dpi: int):
     return staved, labels
 
 
-def arm(staved, labels, page_indices, flag: str):
+#: The four arms. `OMR_REFERENCE_MOST_LABELLED` is the sibling rule merged to
+#: main on 2026-09-06 (which SYSTEM becomes the reference); this one is
+#: `OMR_MOVEMENT_REFERENCE` (how MANY references a run has). They are reported
+#: separately so a future reader can attribute either.
+ARMS = [
+    ("baseline      (both off)", "0", "off"),
+    ("mine alone    (mvt on)  ", "1", "off"),
+    ("theirs alone  (lab on)  ", "0", "on"),
+    ("COMPOSED      (both on) ", "1", "on"),
+]
+
+
+def arm(staved, labels, page_indices, flag: str, most_labelled: str = "off"):
     os.environ["OMR_MOVEMENT_REFERENCE"] = flag
+    os.environ["OMR_REFERENCE_MOST_LABELLED"] = most_labelled
     for pws in staved:
         for st in pws.staves:
             st.slot_index = -1
@@ -107,25 +120,45 @@ def main():
     print(f"reading {len(pages)} pages of {pdf.name} …", file=sys.stderr)
     staved, labels = read(pdf, pages, args.dpi)
 
-    ref_off, rows_off = arm(staved, labels, pages, "0")
-    ref_on, rows_on = arm(staved, labels, pages, "1")
-    print("INPUT ASSERTION: the two arms share ONE detection pass, so any "
-          "difference is the flag and nothing else")
-    bad_off = report("flag OFF (document-wide reference)", ref_off, rows_off)
-    bad_on = report("flag ON (movement-local reference)", ref_on, rows_on)
+    results = {}
+    for tag, mvt, lab in ARMS:
+        results[tag] = arm(staved, labels, pages, mvt, lab)
+    print("INPUT ASSERTION: all four arms share ONE detection pass, so any "
+          "difference is the flags and nothing else")
 
-    changed = [(k, v) for k, v in zip(rows_off, rows_on) if k[3] != v[3]]
-    print(f"\nchanged staff records: {len(changed)}")
-    kinds = collections.Counter((a[3], b[3]) for a, b in changed)
-    for (x, y), n in kinds.most_common(20):
-        print(f"  {n:5d}  {str(x):16s} -> {y}")
-    print(f"\nIMPOSSIBLE: {len(bad_off)} -> {len(bad_on)}")
+    bad = {}
+    for tag, _m, _l in ARMS:
+        reference, rows = results[tag]
+        bad[tag] = report(tag, reference, rows)
+
+    base_rows = results[ARMS[0][0]][1]
+    print("\n=== changes against the baseline ===")
+    for tag, _m, _l in ARMS[1:]:
+        rows = results[tag][1]
+        changed = [(a, b) for a, b in zip(base_rows, rows) if a[3] != b[3]]
+        print(f"  {tag}  changed {len(changed):4d} staff records   "
+              f"IMPOSSIBLE {len(bad[ARMS[0][0]])} -> {len(bad[tag])}")
+        kinds = collections.Counter((a[3], b[3]) for a, b in changed)
+        for (x, y), n in kinds.most_common(8):
+            print(f"      {n:5d}  {str(x):16s} -> {y}")
+
+    print("\nIMPOSSIBLE by arm:")
+    for tag, _m, _l in ARMS:
+        print(f"  {tag}  {len(bad[tag])}")
 
     if args.out:
         json.dump({"pages": pages,
-                   "reference_off": [s.instrument for s in ref_off],
-                   "reference_on": [s.instrument for s in ref_on],
-                   "rows_off": rows_off, "rows_on": rows_on},
+                   "arms": {tag: {"reference": [s.instrument for s in ref],
+                                  "rows": rows}
+                            for tag, (ref, rows) in results.items()},
+                   # kept under the old keys so show_page.py and any earlier
+                   # analysis still read: baseline vs the composed arm.
+                   "reference_off": [s.instrument
+                                     for s in results[ARMS[0][0]][0]],
+                   "reference_on": [s.instrument
+                                    for s in results[ARMS[-1][0]][0]],
+                   "rows_off": results[ARMS[0][0]][1],
+                   "rows_on": results[ARMS[-1][0]][1]},
                   open(args.out, "w"))
         print(f"wrote {args.out}")
 
