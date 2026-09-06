@@ -249,6 +249,53 @@ alone holds 4,862, and the main checkout's `benchmarks/omr-labeling-grace1-2026-
 has no `cells/` directory at all. Merge state answers a question about COMMITS.
 It says nothing about gitignored, non-regenerable work sitting beside them.
 
+### NEW, unclaimed: a staff that contradicts its own label
+
+Free evidence the pipeline already holds and nothing looks at. On the Brahms 1
+span regression, **132 of the 149** wrong names are staves whose OWN margin label
+the reader READ and which export as something else — 51 labelled `Violin`
+exported `Tuba`, 36 labelled `Trumpet` exported `Trombone`. The veto cannot see
+any of them: it exempts a staff that "speaks for itself", so all 132 are exempt
+BY RULE and its own 16 refusals come from the staves carrying no label at all.
+
+⚠️ **Two ways to build this wrong, both already found — read these before starting.**
+
+**1. The obvious field is VACUOUS.** `staff["instrument_label"]` is
+**slot-carried, not per-staff**: `contextual.py:1063` does
+`raw_label_by_slot.setdefault(staff.slot_index, text)`, one raw text per SLOT
+from the first page that labelled it, stamped onto every staff of that slot on
+every page. `contextual.py:1160` states the consequence in its own comment — this
+carry "makes a 'does the staff's own label agree with its name' audit unable to
+disagree." A check on that field cannot fail, which is the third thing in this
+cluster that would have passed while measuring nothing.
+
+**The right source already exists**: `absent_instrument.label_evidence(...)`
+returns `{page_index: {staff_index: name}}`, genuinely per-staff and
+confidence-filtered exactly as the alignment filters ("a label too weak to align
+on is too weak to attest with"). It is written into every `report`-mode summary,
+so **this is answerable offline from committed artefacts with no
+re-transcription.**
+
+**2. The naive check flags our own landed fixes as faults.** Measured on the
+committed 88-page Beethoven artefact (`whole-report2.extract.json`), independently
+reproduced by two sessions: **962 labelled staff records, 945 agree, 17
+contradict** — and `instrument_source` separates them perfectly:
+
+| source | n | |
+|---|--:|---|
+| `label` | 14 | read Flute → exported Piccolo ×8; Trumpet → Trombone ×5; Contrabass → Oboe ×1 |
+| `score_order_ambiguity` | 3 | read `Bass voice` → exported Contrabass ×3 |
+
+All three `score_order_ambiguity` rows are `c0a80ae7`'s **correct** overturn — the
+`Basso.` resolution that thread 2 above was wrongly told to "fix". A consumer that
+does not exclude that source reports our own fixes as defects, and would do so for
+every future ambiguous resolution. `instrument_source` is a one-field
+discriminator already on every staff: cheap to get right, cheap to get wrong.
+
+⚠️ **Report the SPLIT, never the total.** On a work with a `Basso`-family bottom
+staff the unfiltered count is inflated by exactly the number of correct overturns
+— small on Beethoven, unknown elsewhere.
+
 ---
 
 ## 3. Traps this session paid for — read before running a benchmark
