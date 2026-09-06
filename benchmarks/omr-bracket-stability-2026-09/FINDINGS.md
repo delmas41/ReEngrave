@@ -225,6 +225,32 @@ pair is unhelped and is the one publisher this does not reach; its edition is
 also the only one whose 16/17/19-staff buckets never repeat a vector under
 either arm, so its instability may be lineup change rather than detection.
 
+### ✅ An independent prior measurement says the same thing from the other side
+
+`benchmarks/omr-structural-parts-2026-09/FINDINGS.md` §Phase 4 audits the
+incumbent's bracket blocks against HAND-ADJUDICATED truth, on this same 20-row
+scan corpus, and reports
+
+> block boundary precision **0.920** (23/25), recall **0.523** (23/44)
+
+That is the same fault seen from the accuracy side rather than the consistency
+side: **21 of 44 real bracket boundaries are missed, and almost nothing is
+invented.** It is exactly what §1a predicts — incidental ink can only push a
+gap's count UP, so the pixel rule fails by MERGING groups, never by splitting
+them. My within-page disagreements have that shape too: p.23 and p.38 read two
+groups where three are printed, and Bach's nine vectors are mostly one boundary
+short of each other rather than differently placed.
+
+⚠️ **I did not re-run that audit under the flag, and it is the measurement this
+work most wants next.** It would convert "the readings now agree with each
+other" into "the readings are now right", against truth I did not construct.
+Its `evidence.json` is built from full transcriptions of the 20 rows
+(`build_evidence.py`), so it is a benchmark-scale run rather than a probe, and
+it did not fit in this session. The anchors I do have are narrower: the roster
+agreement below, and the direct barline-coverage measurement in §1b.
+
+### The named pages
+
 The three pages the task named now agree with each other and with the roster:
 
 ```
