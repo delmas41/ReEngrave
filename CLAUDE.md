@@ -1449,8 +1449,36 @@ and the lexicon already records Trombone as much the commoner reading. Pinned by
 `test_contextual_ambiguity_uniqueness.py`, every test run RED with the guard
 removed.
 
-⚠️⚠️ **THAT FIGURE IS A CLAIM ABOUT NARROW PAGE SETS, AND THE WHOLE-WORK RUN
-DOES NOT SHOW THE BUG AT ALL.** The committed 88-page artefact
+⚠️⚠️ **THE BUG LIVES IN EXACTLY ONE OF THREE REGIMES, AND IT IS NOT THE WEB
+APP'S.** Measured on all three, same tree, same edition:
+
+| window | what it is | fix vs control |
+|---|---|--:|
+| `--pages 0-4` | **what the web app actually does** (`local_omr.py:233` is `range(min(n_pages, max_pages))`, default 5) | **byte-identical, 0 records** |
+| `--pages 23,44` | a window SPANNING the movement boundary | **3 records, 24/29 → 26/29** |
+| 88 pages | the whole work | **no-op** (already correct) |
+
+**The bug needs a window that spans the movement boundary** — one holding both a
+reduced 12-staff system and the finale's 17-staff lineup, so the timpani has a
+trombone run to be displaced past — **and thin enough that the layout fit has
+little evidence.** Pages 0-4 are movements 1-3 only: an 11-slot reference, no
+trombones, the timpani at slot 6 where the canonical layout also puts it, so
+nothing overturns and the guard never fires. At 88 pages the fit has enough
+systems to get slot 8 right on its own. ⚠️ **So this is NOT a fix to the default
+web-app path**, and must not be described as one; its reach is the CLI with an
+explicit `--pages` spanning movements, and any run with `OMR_MAX_PAGES` raised —
+which is the whole-work use case this project is actually for. It ships because
+it is correct, cheap, and **proven inert in the other two regimes** rather than
+because it moves a production number.
+
+⚠️ **Corollary for anyone measuring identity work: there are THREE cells, not
+two.** Narrow-at-the-front (what production does) and narrow-anywhere (what a
+repro does) are different regimes, and they differ precisely in whether the
+window crosses a movement boundary — which is what exposes this whole class of
+bug. A fix scored only on pages 0-4 and only on the whole work would have
+measured this one at exactly zero, twice.
+
+The committed 88-page artefact
 (`benchmarks/omr-absent-instrument-veto-2026-09/out/whole-report2.extract.json`)
 already has slot 8 = Timpani and `ambiguous_labels_resolved = 1` — with a whole
 work's worth of systems voting, the layout fit proposes Timpani or abstains, and

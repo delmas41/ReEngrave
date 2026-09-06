@@ -40,6 +40,19 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   **26/29**, the 17-staff finale system **16/17 → 17/17 exact**, `Timpani ->
   Trumpet` ×2 gone, no other confusion moved. Exactly 3 staff records change,
   all slot 8, all `Trumpet(score_order_ambiguity)` → `Timpani(label)`.
+- ⚠️⚠️ **REACH, measured on all three regimes: the bug lives in exactly one, and
+  it is NOT the web app's.** `--pages 0-4` (what `local_omr.py:233` actually
+  transcribes, default 5) is **byte-identical, 0 records** — movements 1-3 give
+  an 11-slot reference with no trombones and the timpani at slot 6, so nothing
+  overturns. `--pages 23,44` (a window SPANNING the movement boundary) is where
+  it fires. 88 pages is a no-op again. **So this is not a fix to the default
+  web-app path** and must not be sold as one; its reach is the CLI and any run
+  with `OMR_MAX_PAGES` raised — the whole-work case the project is for. It ships
+  because it is correct and **proven inert in the other two regimes**.
+- ⚠️ **Three cells, not two:** narrow-at-the-front ≠ narrow-anywhere. They differ
+  in whether the window crosses a movement boundary, which is what exposes this
+  class of bug. Scored only on pages 0-4 and only on the whole work, this fix
+  measures zero — twice.
 - ⚠️⚠️ **SCOPE: that figure is about NARROW page sets.** The committed 88-page
   artefact (`out/whole-report2.extract.json`) already has slot 8 = Timpani and
   `ambiguous_labels_resolved = 1`, so the guard is a **no-op** there — with a
