@@ -1,0 +1,56 @@
+
+============================================================================
+SCAN
+============================================================================
+
+beethoven-sym5-mvt1-575951-p2..graft09.omr.jso p1 sys1  gap=16st  advisory
+   upper idx=14 clef=bass(detector) median_midi=51 instrument='Bassoon'(label)
+   lower idx=15 clef=treble(detector) median_midi=76 instrument='Horn'(label)
+
+beethoven-sym5-mvt1-575951-p2..graft09.omr.jso p1 sys1  gap=24st  advisory
+   upper idx=17 clef=bass(detector) median_midi=48 instrument='Timpani'(label)
+   lower idx=18 clef=treble(detector) median_midi=77 instrument='Violin'(score_order)
+
+beethoven-sym5-mvt1-984073-p2..graft09.omr.jso p2 sys1  gap=17st  advisory
+   upper idx=14 clef=bass(None) median_midi=51 instrument='Bassoon'(label)
+   lower idx=15 clef=treble(detector) median_midi=76 instrument='Horn'(label)
+
+beethoven-sym5-mvt1-984073-p2..graft09.omr.jso p2 sys1  gap=24st  advisory
+   upper idx=17 clef=bass(detector) median_midi=48 instrument='Timpani'(label)
+   lower idx=18 clef=treble(detector) median_midi=77 instrument='Violin'(score_order)
+
+brahms-sym1-mvt1-317803-p1..graft09.omr.json p0 sys0  gap=15st  advisory
+   upper idx=8 clef=bass(detector) median_midi=48 instrument='Timpani'(label)
+   lower idx=9 clef=treble(detector) median_midi=68 instrument='Violin'(label)
+
+dvorak-sym9-mvt1-405834-p6..graft09.omr.json p5 sys0  gap=17st  advisory
+   upper idx=9 clef=bass(detector) median_midi=45 instrument='Timpani'(score_order)
+   lower idx=10 clef=treble(detector) median_midi=63 instrument='Violin'(score_order)
+
+mahler-sym5-mvt1-local-p3..graft09.omr.json p2 sys0  gap=17st  advisory
+   upper idx=1 clef=bass(detector_header) median_midi=51 instrument='Bassoon'(score_order)
+   lower idx=2 clef=treble(detector_header) median_midi=71 instrument='Horn'(score_order)
+
+REACH: 7 firings over 193 staves (3.6%)
+
+============================================================================
+ENGRAVED
+============================================================================
+
+brahms-sym1-mvt1.omr.json p0 sys0  gap=24st  advisory
+   upper idx=8 clef=bass(detector) median_midi=36 instrument='Bassoon'(score_order)
+   lower idx=9 clef=treble(detector) median_midi=60 instrument='Horn'(label)
+
+brahms-sym1-mvt1.omr.json p0 sys0  gap=24st  advisory
+   upper idx=10 clef=treble(detector) median_midi=48 instrument='Horn'(label)
+   lower idx=11 clef=treble(detector) median_midi=75 instrument='Horn'(label)
+
+brahms-sym1-mvt1.omr.json p0 sys0  gap=36st  advisory
+   upper idx=15 clef=bass(detector) median_midi=48 instrument='Timpani'(label)
+   lower idx=16 clef=treble(detector) median_midi=86 instrument='Violin'(label)
+
+mozart-sym41-mvt1.omr.json p0 sys0  gap=13st  advisory
+   upper idx=4 clef=bass(detector) median_midi=50 instrument='Bassoon'(label)
+   lower idx=5 clef=treble(detector) median_midi=72 instrument='Horn'(label)
+
+REACH: 4 firings over 224 staves (1.8%)

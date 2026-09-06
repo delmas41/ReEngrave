@@ -1,0 +1,31 @@
+
+============================================================================
+SCAN
+============================================================================
+   UNREAD-admissible                                17
+   UNREAD-refused                                   13
+   read                 (none)                      12
+   read                 label                      103
+   read                 score_order                 45
+   read                 score_order_ambiguity        3
+   unread               (none)                       4
+   unread               label                       16
+   unread               score_order                  9
+   unread               score_order_ambiguity        1
+
+   proposals the provenance gate REFUSES on unread-clef staves: 3
+     * ('bach-brandenburg3-mvt1-468678-p1..gr', 17, 'Viola', 'score_order', 'PROPOSAL treble->alto', {'treble': 1.0, 'bass': 0.71, 'alto': 1.0, 'tenor': 0.98})
+     * ('bach-brandenburg3-mvt1-468678-p1..gr', 20, 'Viola', 'score_order', 'PROPOSAL treble->alto', {'treble': 1.0, 'bass': 0.66, 'alto': 1.0, 'tenor': 0.95})
+     * ('bach-brandenburg3-mvt1-468678-p1..gr', 23, 'Viola', 'score_order', 'PROPOSAL bass->alto', {'treble': 1.0, 'bass': 0.62, 'alto': 1.0, 'tenor': 0.93})
+
+============================================================================
+ENGRAVED
+============================================================================
+   UNREAD-admissible                                 2
+   read                 (none)                       1
+   read                 label                      196
+   read                 score_order                 22
+   read                 score_order_ambiguity        3
+   unread               label                        2
+
+   proposals the provenance gate REFUSES on unread-clef staves: 0

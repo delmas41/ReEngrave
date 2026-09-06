@@ -1,0 +1,42 @@
+
+============================================================================
+SCAN: which exit `propose_clef` takes
+============================================================================
+
+  clef UNREAD  (n=30)   <- the FILL tier's population; only this one may APPLY
+     already_in_effect               14   46.7%
+     too_few_noteheads                9   30.0%
+     no_instrument                    4   13.3%
+     PROPOSAL                         3   10.0%
+
+  clef READ  (n=163)   <- proposals here are recorded, never applied
+     already_in_effect               87   53.4%
+     too_few_noteheads               53   32.5%
+     no_instrument                   12    7.4%
+     PROPOSAL                         6    3.7%
+     range_alone_not_decisive         4    2.5%
+     would_worsen_register            1    0.6%
+   * ('bach-brandenburg3-mvt1-468678-p1..', 'unread', 17, 'Viola', 'PROPOSAL treble->alto', {'treble': 1.0, 'bass': 0.71, 'alto': 1.0, 'tenor': 0.98})
+   * ('bach-brandenburg3-mvt1-468678-p1..', 'unread', 20, 'Viola', 'PROPOSAL treble->alto', {'treble': 1.0, 'bass': 0.66, 'alto': 1.0, 'tenor': 0.95})
+   * ('bach-brandenburg3-mvt1-468678-p1..', 'unread', 23, 'Viola', 'PROPOSAL bass->alto', {'treble': 1.0, 'bass': 0.62, 'alto': 1.0, 'tenor': 0.93})
+   * ('beethoven-sym5-mvt1-575951-p1..gra', 'read', 9, 'Viola', 'PROPOSAL treble->alto', {'treble': 1.0, 'bass': 0.63, 'alto': 1.0, 'tenor': 1.0})
+   * ('beethoven-sym5-mvt1-575951-p2..gra', 'read', 20, 'Violin', 'PROPOSAL alto->treble', {'treble': 1.0, 'bass': 0.71, 'alto': 1.0, 'tenor': 0.89})
+   * ('brahms-sym1-mvt1-317803-p1..graft0', 'read', 12, 'Cello', 'PROPOSAL tenor->bass', {'treble': 0.8, 'bass': 1.0, 'alto': 1.0, 'tenor': 1.0})
+   * ('brahms-sym1-mvt1-317803-p2..graft0', 'read', 4, 'Bassoon', 'PROPOSAL treble->bass', {'treble': 0.93, 'bass': 1.0, 'alto': 1.0, 'tenor': 1.0})
+   * ('brahms-sym1-mvt1-317803-p2..graft0', 'read', 8, 'Timpani', 'PROPOSAL treble->bass', {'treble': 0.0, 'bass': 1.0, 'alto': 0.86, 'tenor': 1.0})
+   * ('brahms-sym1-mvt1-317803-p2..graft0', 'read', 18, 'Bassoon', 'PROPOSAL treble->bass', {'treble': 0.57, 'bass': 1.0, 'alto': 0.79, 'tenor': 1.0})
+
+============================================================================
+ENGRAVED: which exit `propose_clef` takes
+============================================================================
+
+  clef UNREAD  (n=2)   <- the FILL tier's population; only this one may APPLY
+     instrument_unusable              2  100.0%
+
+  clef READ  (n=222)   <- proposals here are recorded, never applied
+     too_few_noteheads              174   78.4%
+     already_in_effect               44   19.8%
+     instrument_unusable              2    0.9%
+     no_instrument                    1    0.5%
+     PROPOSAL                         1    0.5%
+   * ('brahms-sym1-mvt1.omr.json', 'read', 19, 'Cello', 'PROPOSAL tenor->bass', {'treble': 0.69, 'bass': 1.0, 'alto': 1.0, 'tenor': 1.0})

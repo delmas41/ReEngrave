@@ -1,0 +1,42 @@
+
+============================================================================
+SCAN
+============================================================================
+   labelled staves (consumable)      132
+   reader tiers                      {'text_layer': 12, 'surya': 134, 'tesseract': 7, 'vision': 0, 'human': 0}
+   dropped at `low` confidence       1
+     * ["beethoven-sym5-mvt1-984073-p1..g", "Obol."]
+   read but the lexicon knew nothing 15
+     - ["bach-brandenburg3-mvt1-468678-p1", "I"]
+     - ["bach-brandenburg3-mvt1-468678-p1", "III"]
+     - ["bach-brandenburg3-mvt1-468678-p1", "|"]
+     - ["beethoven-sym5-mvt1-575951-p1..g", "Yiolino II."]
+     - ["brahms-sym1-mvt1-317803-p1..graf", "in C  \\frac{1}{2}"]
+     - ["brahms-sym1-mvt1-317803-p1..graf", "in Es  \\frac{3}{4}"]
+     - ["brahms-sym1-mvt1-317803-p2..graf", "(C)"]
+     - ["brahms-sym1-mvt1-317803-p2..graf", "(Es)"]
+     - ["brahms-sym1-mvt1-317803-p2..graf", "Hr. (Es)"]
+     - ["brahms-sym1-mvt1-317803-p2..graf", "Trpt."]
+     - ["dvorak-sym9-mvt1-405834-p6..graf", "|"]
+     - ["mahler-sym5-mvt1-local-p2..graft", "Contrafagott"]
+     - ["mahler-sym5-mvt1-local-p3..graft", "2"]
+     - ["mahler-sym5-mvt1-local-p3..graft", "3"]
+     - ["mahler-sym5-mvt1-local-p3..graft", "7"]
+
+============================================================================
+ENGRAVED
+============================================================================
+   labelled staves (consumable)      202
+   reader tiers                      {'text_layer': 124, 'surya': 83, 'tesseract': 5, 'vision': 0, 'human': 0}
+   dropped at `low` confidence       0
+   read but the lexicon knew nothing 10
+     - ["brahms-sym4-mvt1.omr.json", "A"]
+     - ["dvorak-sym9-mvt4.omr.json", "Oboes"]
+     - ["mozart-sym40-mvt1.omr.json", "larinetti in B."]
+     - ["mozart-sym41-mvt1.omr.json", "A"]
+     - ["mozart-sym41-mvt1.omr.json", "mpani in C-G"]
+     - ["tchaikovsky-sym6-mvt2.omr.json", "ani in A.D.E."]
+     - ["tchaikovsky-sym6-mvt2.omr.json", "larinetti in A"]
+     - ["tchaikovsky-sym6-mvt2.omr.json", "ni in F III IV"]
+     - ["tchaikovsky-sym6-mvt2.omr.json", "orni in F I II"]
+     - ["tchaikovsky-sym6-mvt2.omr.json", "|"]

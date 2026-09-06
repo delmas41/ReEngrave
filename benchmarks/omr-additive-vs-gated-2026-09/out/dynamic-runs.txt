@@ -1,0 +1,43 @@
+
+============================================================================
+SCAN  dynamic letter runs
+============================================================================
+   runs assembled                  437
+   exported (a legal word)         392  89.7%
+   REFUSED, dropped entirely        45  10.3%
+   edit distance from the refused run to the nearest legal dynamic:
+      distance 1:    45  100.0%
+   what the refused runs spelled (top 15):
+      's'             16   nearest=('f', 1)
+      'fs'             7   nearest=('f', 1)
+      'm'              5   nearest=('f', 1)
+      'z'              4   nearest=('f', 1)
+      'mm'             2   nearest=('mf', 1)
+      'ffp'            2   nearest=('fp', 1)
+      'sff'            1   nearest=('ff', 1)
+      'ffs'            1   nearest=('ff', 1)
+      'ffm'            1   nearest=('ff', 1)
+      'fmf'            1   nearest=('mf', 1)
+      'pz'             1   nearest=('p', 1)
+      'sm'             1   nearest=('sf', 1)
+      'fmp'            1   nearest=('fp', 1)
+      'fpp'            1   nearest=('fp', 1)
+      'ffz'            1   nearest=('fz', 1)
+   letter confidence, kept: n=548 p25=0.699 med=0.816 p75=0.861
+   letter confidence, refused: n=74 p25=0.398 med=0.618 p75=0.762
+
+============================================================================
+ENGRAVED  dynamic letter runs
+============================================================================
+   runs assembled                  177
+   exported (a legal word)         169  95.5%
+   REFUSED, dropped entirely         8   4.5%
+   edit distance from the refused run to the nearest legal dynamic:
+      distance 1:     8  100.0%
+   what the refused runs spelled (top 15):
+      'm'              4   nearest=('f', 1)
+      'pfp'            2   nearest=('fp', 1)
+      's'              1   nearest=('f', 1)
+      'pf'             1   nearest=('f', 1)
+   letter confidence, kept: n=208 p25=0.859 med=0.901 p75=0.929
+   letter confidence, refused: n=13 p25=0.752 med=0.834 p75=0.895
