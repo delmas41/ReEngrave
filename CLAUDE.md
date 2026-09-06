@@ -1192,6 +1192,29 @@ which is a much bigger lift for the remaining few seconds.
 
 Absent entirely where `.venv-surya` is not installed, including the container.
 
+⚠️⚠️ **THE KEEP-ALIVE SERVER IS SHARED, AND `pkill -f llama-server` DESTROYS
+ANOTHER SESSION'S RUN.** Learned the hard way 2026-09-06: an agent tidying up
+after itself ran `pkill -f llama-server` and killed the resident server a
+*sibling* agent was reading through, costing that agent a multi-hour
+transcription (`395e2193`, committed against itself). One machine has one
+server; `--serve` detaches to **ppid 1 by design**, so a stray worker cannot be
+told from the legitimate daemon by parent pid. **Never blanket-kill by name.**
+Use `--stop`, and only when you know nothing else is reading.
+
+⚠️ **And an orphan you cannot identify is safer left alive.** The same session
+declined to clean up several suspected orphans for exactly that reason, which
+was the right call: a second guess-driven `pkill` while another agent is mid-run
+is worse than an unmeasured number.
+
+⚠️ **The wedge itself is UNDIAGNOSED, and three plausible causes were each
+falsified**: CPU starvation (the machine went quiet and it still stalled),
+retained page rasters (~3 GB, dropped, still stalled at the same count), and
+"one specific page" (that page reads in 2 s from another window). Recorded as
+unknown rather than as any of the three. The known symptom stands: a worker at
+0.0% CPU against long elapsed while `--check` reports healthy, recovered with
+`--stop && --serve`, hidden by piping (use `python3 -u`) — and a parent at 0% is
+NOT a wedge if a child is burning CPU.
+
 ---
 
 ## An optional pass may abstain quietly — it may not fail like a defect quietly
