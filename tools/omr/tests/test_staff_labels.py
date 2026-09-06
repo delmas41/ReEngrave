@@ -243,12 +243,38 @@ class TestUnresolvedLabelsAreReported:
 
     def test_the_summary_carries_the_unmatched_text(self):
         """`apply_contextual_analysis` reports `unresolved_labels`, which is what
-        turns 'this page looks unlabelled' into 'add these to instruments.py'."""
+        turns 'this page looks unlabelled' into a string somebody can act on."""
         import inspect
         from tools.omr import contextual
         src = inspect.getsource(contextual.apply_contextual_analysis)
         assert "unresolved_labels=unresolved" in src
         assert "NOT MATCHED by the lexicon" in src
+
+    def test_the_report_does_not_prescribe_a_lexicon_fix(self):
+        """It may name the string; it may not name the cure.
+
+        An unmatched margin string has two causes that look identical from
+        here — an alias the lexicon lacks, and a name the PAGE printed only
+        part of. Until 2026-09-06 the message ended "these are the strings to
+        add to tools/omr/instruments.py", asserting the first; measured on the
+        engraved fixtures, five of the works cut their own instrument names off
+        at the sheet edge, so `'Clarinetti in B.'` arrives as
+        `'larinetti in B.'` and an alias for it would paper over the
+        engraving. That prescription was followed once and the resulting work
+        order had to be retracted, which is why this is pinned rather than left
+        to prose. See
+        `benchmarks/omr-margin-window-truncation-2026-09/FINDINGS.md`.
+        """
+        import inspect
+        from tools.omr import contextual
+        src = inspect.getsource(contextual.apply_contextual_analysis)
+        message = src[src.index("NOT MATCHED by the lexicon"):]
+        message = message[:message.index("len(unresolved)")]
+        assert "these are the strings to add to" not in message, (
+            "the report must not tell the reader the answer is a new alias — "
+            "the page may simply not print the whole name")
+        assert "PAGE printed only part of" in message, (
+            "the other cause has to be named where the reader will see it")
 
 
 # ── the margin crop must reach the margin ───────────────────────────────────

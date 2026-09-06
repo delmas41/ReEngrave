@@ -37,6 +37,7 @@ import json
 import re
 import subprocess
 import sys
+import os
 from pathlib import Path
 from typing import Any
 
@@ -299,6 +300,52 @@ def render_shortfall(truth_xml: Path, ly: Path) -> list[tuple[str, int, int]]:
     return out
 
 
+#: musicxml2ly writes exactly one of these per file, and it is empty.
+_PAPER_ANCHOR = "\\paper {"
+
+
+def _apply_indent_override(src_ly: str) -> str:
+    """`OMR_EVAL_INDENT_MM` — widen the slot the instrument names are set in.
+
+    ⚠️ **THE FIXTURES CUT THEIR OWN INSTRUMENT NAMES OFF, and the default here
+    keeps that** — see
+    `benchmarks/omr-margin-window-truncation-2026-09/FINDINGS.md`. LilyPond
+    right-aligns an instrument name into `left-margin + indent` (10 mm + 15 mm
+    = 70.9 pt at the defaults these fixtures render with) and simply does not
+    draw what will not fit; whatever it does draw past the sheet's own left
+    edge is then neither rasterized nor extractable. Measured over the eleven
+    engraved works: **14 margin labels on 5 works reach the reader with their
+    opening characters gone** — `'larinetti in B.'`, `'ani in A.D.E.'` — and
+    two of those resolve to a SINGER rather than to nothing.
+
+    At `indent = 35\\mm` all sixteen of `tchaikovsky-sym6-mvt2`'s names come
+    through whole and the excerpt still fits one page. It is **off by default
+    because turning it on changes the engraving**: a wider indent narrows the
+    first system, so note spacing moves and the recognition it feeds moves with
+    it. That is a change to what the benchmark IS, of the kind
+    `accuracy_record` stamps and refuses to compare across — it needs its own
+    measured run and its own decision, not a silent default.
+
+    ⚠️ A PREPENDED `\\paper` BLOCK IS SILENTLY IGNORED. musicxml2ly emits its
+    own (empty) `\\paper { }` after ours, and the later block wins: measured,
+    prepending `indent = 35\\mm` produced a byte-identical page with every name
+    still cut. So the setting is injected INTO that block, and a source with no
+    block to inject into raises rather than rendering something that looks fine
+    and is not.
+    """
+    raw = os.environ.get("OMR_EVAL_INDENT_MM", "").strip()
+    if not raw:
+        return src_ly
+    mm = float(raw)
+    if _PAPER_ANCHOR not in src_ly:
+        raise RuntimeError(
+            "OMR_EVAL_INDENT_MM is set but this LilyPond source carries no "
+            f"{_PAPER_ANCHOR!r} block to set it in — refusing to render a page "
+            "whose instrument names would silently stay cut off")
+    return src_ly.replace(_PAPER_ANCHOR,
+                          f"{_PAPER_ANCHOR}\n    indent = {mm:g}\\mm", 1)
+
+
 def excerpt(work_id: str, first: int, last: int,
             out_dir: Path) -> tuple[Path, Path, int]:
     """Write `<work>.musicxml` (the truth) and `<work>.pdf` (the input).
@@ -368,6 +415,7 @@ def excerpt(work_id: str, first: int, last: int,
         # prints sit.
         src_ly = (f'#(set-default-paper-size "{paper}")\n'
                   "#(set-global-staff-size 16)\n") + src_ly
+        src_ly = _apply_indent_override(src_ly)
         ly.write_text(src_ly)
         subprocess.run(["lilypond", "-s", "-o", work_id, f"{work_id}.ly"],
                        cwd=out_dir, check=True, capture_output=True)
