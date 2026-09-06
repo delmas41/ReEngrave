@@ -12,6 +12,7 @@ truth describes.
 import pytest
 
 from tools.omr.training.orchestral_eval import (
+    _apply_indent_override,
     _patch_block,
     _restore_rest_fermatas,
 )
@@ -95,3 +96,41 @@ def test_restore_refuses_a_block_count_mismatch():
     ly = "PartPOneVoiceOne =  \\relative c' {\n    " + HEADER + "R2*4 }\n"
     with pytest.raises(RuntimeError, match="part blocks"):
         _restore_rest_fermatas(ly, {0: [2]}, n_parts=2)
+
+
+# ── the instrument-name slot ────────────────────────────────────────────────
+#
+# The fixtures cut their own instrument names off: LilyPond right-aligns a name
+# into `left-margin + indent` and does not draw what will not fit, so five of
+# the eleven works hand the lexicon a string with its opening characters gone.
+# `OMR_EVAL_INDENT_MM` widens the slot. It is OFF by default because widening
+# it narrows the first system and therefore changes the engraving the benchmark
+# scores — see `benchmarks/omr-margin-window-truncation-2026-09/FINDINGS.md`.
+
+SOURCE = ('#(set-default-paper-size "a4")\n#(set-global-staff-size 16)\n'
+          "\\version \"2.24.4\"\n\\paper {\n    \n    }\n\\layout { }\n")
+
+
+def test_indent_is_off_by_default(monkeypatch):
+    monkeypatch.delenv("OMR_EVAL_INDENT_MM", raising=False)
+    assert _apply_indent_override(SOURCE) == SOURCE
+
+
+def test_indent_is_set_inside_the_existing_paper_block(monkeypatch):
+    """⚠️ NOT prepended. musicxml2ly emits its own `\\paper { }` AFTER anything
+    we put at the top of the file, and the later block wins — measured, a
+    prepended `indent = 35\\mm` rendered a byte-identical page with every name
+    still cut. A test that only checked "the number is in the file somewhere"
+    would have passed on that."""
+    monkeypatch.setenv("OMR_EVAL_INDENT_MM", "35")
+    out = _apply_indent_override(SOURCE)
+    assert "\\paper {\n    indent = 35\\mm" in out
+    assert out.index("indent = 35\\mm") > out.index("\\paper {")
+
+
+def test_indent_refuses_a_source_with_no_paper_block(monkeypatch):
+    """Silence here would be the whole fault again: the render succeeds, the
+    page looks ordinary, and the names are still cut."""
+    monkeypatch.setenv("OMR_EVAL_INDENT_MM", "35")
+    with pytest.raises(RuntimeError, match="paper"):
+        _apply_indent_override("\\version \"2.24.4\"\n\\layout { }\n")

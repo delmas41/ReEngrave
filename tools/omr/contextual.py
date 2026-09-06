@@ -1259,6 +1259,20 @@ def apply_contextual_analysis(
     # seventeen correct, and eight of them fell out here in silence. Nothing in
     # the pipeline said so — the page simply behaved like a sparsely labelled
     # one. See `benchmarks/omr-part-staff-join-2026-08/RESULTS.md`.
+    #
+    # ⚠️ IT REPORTS THE STRING; IT MUST NOT PRESCRIBE THE REMEDY. Until
+    # 2026-09-06 this line ended "these are the strings to add to
+    # tools/omr/instruments.py", which names ONE of the two causes as though it
+    # were established. The other is that the PAGE DID NOT PRINT THE WHOLE NAME
+    # — measured on the engraved benchmark's own fixtures, where LilyPond
+    # right-aligns an instrument name into `left-margin + indent` and does not
+    # draw what will not fit, so `'Clarinetti in B.'` reaches the lexicon as
+    # `'larinetti in B.'` and `'Timpani in A.D.E.'` as `'ani in A.D.E.'`. An
+    # alias for a truncated string papers over the engraving and matches
+    # nothing else ever printed. The prescription was followed once and
+    # produced a work order that had to be retracted. Diagnosis, and the probe
+    # that separates the two causes:
+    # `benchmarks/omr-margin-window-truncation-2026-09/FINDINGS.md`.
     unresolved = sorted({lab.text.strip() for page_labels in staff_labels_per_page
                          for lab in page_labels
                          if not lab.matched and lab.text.strip()})
@@ -1269,8 +1283,13 @@ def apply_contextual_analysis(
     if unresolved:
         logger.warning(
             "%d margin label(s) read but NOT MATCHED by the lexicon, so they were "
-            "dropped and this page will behave as if unlabelled there: %s — "
-            "these are the strings to add to tools/omr/instruments.py",
+            "dropped and this page will behave as if unlabelled there: %s. "
+            "Two causes look identical here: a missing alias, and a name the "
+            "PAGE printed only part of. A string missing its opening "
+            "characters ('larinetti in B.') is the second, and an alias for it "
+            "would paper over the engraving — check the printed name before "
+            "touching tools/omr/instruments.py "
+            "(benchmarks/omr-margin-window-truncation-2026-09/)",
             len(unresolved), ", ".join(repr(t) for t in unresolved))
 
     summary.update(
