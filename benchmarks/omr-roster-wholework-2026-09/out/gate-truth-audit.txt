@@ -1,0 +1,65 @@
+INPUT ASSERTION: file=benchmarks/omr-roster-wiring-2026-09/roster-identity-pooled.json records=198 rows=10
+
+## 1. how many PDF pages does each row span?
+  beethoven-sym5-mvt1-984073-p1              pages=[1] staves= 12 OFF= 11 ON= 12 delta=+1
+  beethoven-sym5-mvt1-984073-p2              pages=[2] staves= 22 OFF= 20 ON= 20 delta=+0
+  beethoven-sym5-mvt1-575951-p1              pages=[0] staves= 12 OFF= 11 ON= 12 delta=+1
+  beethoven-sym5-mvt1-575951-p2              pages=[1] staves= 22 OFF= 20 ON= 20 delta=+0
+  dvorak-sym9-mvt1-405834-p5                 pages=[4] staves= 15 OFF= 15 ON= 15 delta=+0
+  dvorak-sym9-mvt1-405834-p6                 pages=[5] staves= 15 OFF=  8 ON= 15 delta=+7
+  dvorak-sym9-mvt1-405834-p7                 pages=[6] staves= 30 OFF= 12 ON= 30 delta=+18
+  brahms-sym1-mvt1-317803-p1                 pages=[0] staves= 14 OFF= 13 ON= 13 delta=+0
+  brahms-sym1-mvt1-317803-p3                 pages=[2] staves= 28 OFF= 26 ON= 26 delta=+0
+  brahms-sym1-mvt1-317803-p4                 pages=[3] staves= 28 OFF= 26 ON= 26 delta=+0
+  rows by page-span: {1: 10}
+
+## 2. every record the two arms disagree on
+  27 of 198 records differ
+  ON fixes=27
+
+  by truth label:
+       6  ON fixes   truth=Trombone
+       3  ON fixes   truth=Oboe
+       3  ON fixes   truth=Clarinet
+       3  ON fixes   truth=Trumpet
+       3  ON fixes   truth=Contrabass
+       2  ON fixes   truth=Bass voice
+       2  ON fixes   truth=Bassoon
+       2  ON fixes   truth=Horn
+       2  ON fixes   truth=Violin
+       1  ON fixes   truth=Flute
+
+  first 40 differing records:
+    beethoven-sym5-mvt1-984073-p1        ord 11 printed='Basso'              TRUTH=Bass voice   OFF=Contrabass   ON=Bass voice  
+    beethoven-sym5-mvt1-575951-p1        ord 11 printed='Basso'              TRUTH=Bass voice   OFF=Contrabass   ON=Bass voice  
+    dvorak-sym9-mvt1-405834-p6           ord  0 printed='Flauti'             TRUTH=Flute        OFF=None         ON=Flute       
+    dvorak-sym9-mvt1-405834-p6           ord  1 printed='Oboi'               TRUTH=Oboe         OFF=None         ON=Oboe        
+    dvorak-sym9-mvt1-405834-p6           ord  2 printed='Clarinetti in A'    TRUTH=Clarinet     OFF=None         ON=Clarinet    
+    dvorak-sym9-mvt1-405834-p6           ord  6 printed='Trombe in E'        TRUTH=Trumpet      OFF=None         ON=Trumpet     
+    dvorak-sym9-mvt1-405834-p6           ord  7 printed='Tromboni I.II.'     TRUTH=Trombone     OFF=None         ON=Trombone    
+    dvorak-sym9-mvt1-405834-p6           ord  8 printed='Trombone basso'     TRUTH=Trombone     OFF=None         ON=Trombone    
+    dvorak-sym9-mvt1-405834-p6           ord 14 printed='Contrabasso'        TRUTH=Contrabass   OFF=None         ON=Contrabass  
+    dvorak-sym9-mvt1-405834-p7           ord  1 printed='Oboi'               TRUTH=Oboe         OFF=None         ON=Oboe        
+    dvorak-sym9-mvt1-405834-p7           ord  2 printed='Clarinetti in A'    TRUTH=Clarinet     OFF=None         ON=Clarinet    
+    dvorak-sym9-mvt1-405834-p7           ord  3 printed='Fagotti'            TRUTH=Bassoon      OFF=None         ON=Bassoon     
+    dvorak-sym9-mvt1-405834-p7           ord  4 printed='Corni I.II. in E'   TRUTH=Horn         OFF=None         ON=Horn        
+    dvorak-sym9-mvt1-405834-p7           ord  6 printed='Trombe in E'        TRUTH=Trumpet      OFF=None         ON=Trumpet     
+    dvorak-sym9-mvt1-405834-p7           ord  7 printed='Tromboni I.II.'     TRUTH=Trombone     OFF=Trumpet      ON=Trombone    
+    dvorak-sym9-mvt1-405834-p7           ord  8 printed='Trombone basso'     TRUTH=Trombone     OFF=None         ON=Trombone    
+    dvorak-sym9-mvt1-405834-p7           ord 10 printed='Violino I'          TRUTH=Violin       OFF=None         ON=Violin      
+    dvorak-sym9-mvt1-405834-p7           ord 14 printed='Contrabasso'        TRUTH=Contrabass   OFF=None         ON=Contrabass  
+    dvorak-sym9-mvt1-405834-p7           ord  1 printed='Oboi'               TRUTH=Oboe         OFF=None         ON=Oboe        
+    dvorak-sym9-mvt1-405834-p7           ord  2 printed='Clarinetti in A'    TRUTH=Clarinet     OFF=None         ON=Clarinet    
+    dvorak-sym9-mvt1-405834-p7           ord  3 printed='Fagotti'            TRUTH=Bassoon      OFF=None         ON=Bassoon     
+    dvorak-sym9-mvt1-405834-p7           ord  4 printed='Corni I.II. in E'   TRUTH=Horn         OFF=None         ON=Horn        
+    dvorak-sym9-mvt1-405834-p7           ord  6 printed='Trombe in E'        TRUTH=Trumpet      OFF=None         ON=Trumpet     
+    dvorak-sym9-mvt1-405834-p7           ord  7 printed='Tromboni I.II.'     TRUTH=Trombone     OFF=Trumpet      ON=Trombone    
+    dvorak-sym9-mvt1-405834-p7           ord  8 printed='Trombone basso'     TRUTH=Trombone     OFF=None         ON=Trombone    
+    dvorak-sym9-mvt1-405834-p7           ord 10 printed='Violino I'          TRUTH=Violin       OFF=None         ON=Violin      
+    dvorak-sym9-mvt1-405834-p7           ord 14 printed='Contrabasso'        TRUTH=Contrabass   OFF=None         ON=Contrabass  
+
+## 3. records whose TRUTH is `Bass voice`
+  2 records. In an orchestral score `Basso` is the DOUBLE BASS;
+  the reference encodings' own part lists say Contrabass.
+    beethoven-sym5-mvt1-984073-p1        ord 11 printed='Basso'      OFF=Contrabass   ON=Bass voice  
+    beethoven-sym5-mvt1-575951-p1        ord 11 printed='Basso'      OFF=Contrabass   ON=Bass voice  
