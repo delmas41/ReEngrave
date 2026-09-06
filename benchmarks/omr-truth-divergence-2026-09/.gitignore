@@ -1,0 +1,4 @@
+# Transcriptions are BUILD PRODUCTS — ~700 KB each, 31 of them, and
+# `run_corpus.py` regenerates any that are missing. The findings quote them;
+# the repo does not carry them.
+readings/
