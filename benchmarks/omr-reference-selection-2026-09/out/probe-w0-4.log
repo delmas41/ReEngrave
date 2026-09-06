@@ -54,3 +54,4 @@ probing 234 documents, pages [0, 1, 2, 3, 4], dpi 300
   [52/234] Universal    mahler--das-lied-von-der-erde-gmw-49--20582  sizes=[26, 24, 25, 22] labels=[23, 17, 21, 12] 41.1s
   [53/234] other/unknown berlioz--symphony-fantastique--24830         sizes=[14, 2, 3, 9, 8, 11, 11, 11, 11, 11, 11] labels=[11, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0] 40.4s
   [54/234] Breitkopf    beethoven--piano-concerto-5--977419          sizes=[14, 2, 13, 2, 13, 2, 7, 11, 10, 11, 11] labels=[13, 0, 10, 0, 11, 0, 4, 0, 9, 10, 8] 71.3s
+  [55/234] Durand       ravel--la-valse--923399                      sizes=[25, 18, 18] labels=[19, 2, 2] 33.1s

@@ -360,6 +360,56 @@
   ]
  },
  {
+  "key": "bach--suite-3--744084",
+  "house": "Peters",
+  "composer": "bach",
+  "systems": 10,
+  "sizes": [
+   11,
+   12,
+   12,
+   12,
+   12,
+   12,
+   12,
+   12,
+   12,
+   12
+  ],
+  "labels": [
+   5,
+   5,
+   6,
+   5,
+   6,
+   6,
+   6,
+   6,
+   6,
+   6
+  ],
+  "max_size": 12,
+  "any_label": true,
+  "old": [
+   1,
+   0,
+   12,
+   6
+  ],
+  "new": [
+   1,
+   0,
+   12,
+   6
+  ],
+  "pure": [
+   1,
+   0,
+   12,
+   6
+  ]
+ },
+ {
   "key": "beach--symphony-in-e-minor-op32-gaelic--27125",
   "house": "other/unknown",
   "composer": "beach",
@@ -469,6 +519,156 @@
    0,
    14,
    14
+  ]
+ },
+ {
+  "key": "beethoven--piano-concerto-3--977417",
+  "house": "Breitkopf",
+  "composer": "beethoven",
+  "systems": 9,
+  "sizes": [
+   13,
+   13,
+   10,
+   11,
+   11,
+   11,
+   9,
+   13,
+   13
+  ],
+  "labels": [
+   12,
+   10,
+   7,
+   8,
+   8,
+   8,
+   6,
+   10,
+   10
+  ],
+  "max_size": 13,
+  "any_label": true,
+  "old": [
+   0,
+   0,
+   13,
+   12
+  ],
+  "new": [
+   0,
+   0,
+   13,
+   12
+  ],
+  "pure": [
+   0,
+   0,
+   13,
+   12
+  ]
+ },
+ {
+  "key": "beethoven--piano-concerto-4--977418",
+  "house": "Breitkopf",
+  "composer": "beethoven",
+  "systems": 10,
+  "sizes": [
+   11,
+   8,
+   11,
+   11,
+   11,
+   9,
+   10,
+   11,
+   11,
+   11
+  ],
+  "labels": [
+   9,
+   5,
+   8,
+   8,
+   8,
+   6,
+   7,
+   8,
+   8,
+   8
+  ],
+  "max_size": 11,
+  "any_label": true,
+  "old": [
+   0,
+   0,
+   11,
+   9
+  ],
+  "new": [
+   0,
+   0,
+   11,
+   9
+  ],
+  "pure": [
+   0,
+   0,
+   11,
+   9
+  ]
+ },
+ {
+  "key": "beethoven--piano-concerto-5--977419",
+  "house": "Breitkopf",
+  "composer": "beethoven",
+  "systems": 11,
+  "sizes": [
+   14,
+   2,
+   13,
+   2,
+   13,
+   2,
+   7,
+   11,
+   10,
+   11,
+   11
+  ],
+  "labels": [
+   13,
+   0,
+   9,
+   0,
+   11,
+   0,
+   4,
+   0,
+   9,
+   10,
+   8
+  ],
+  "max_size": 14,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   13,
+   11
+  ],
+  "new": [
+   0,
+   0,
+   14,
+   13
+  ],
+  "pure": [
+   0,
+   0,
+   14,
+   13
   ]
  },
  {
@@ -616,6 +816,198 @@
   ]
  },
  {
+  "key": "beethoven--symphony-4--504078",
+  "house": "Litolff",
+  "composer": "beethoven",
+  "systems": 9,
+  "sizes": [
+   11,
+   9,
+   8,
+   9,
+   11,
+   11,
+   11,
+   11,
+   9
+  ],
+  "labels": [
+   11,
+   5,
+   4,
+   5,
+   7,
+   7,
+   7,
+   7,
+   5
+  ],
+  "max_size": 11,
+  "any_label": true,
+  "old": [
+   0,
+   0,
+   11,
+   11
+  ],
+  "new": [
+   0,
+   0,
+   11,
+   11
+  ],
+  "pure": [
+   0,
+   0,
+   11,
+   11
+  ]
+ },
+ {
+  "key": "beethoven--symphony-5--575951",
+  "house": "Litolff",
+  "composer": "beethoven",
+  "systems": 9,
+  "sizes": [
+   12,
+   11,
+   11,
+   11,
+   8,
+   11,
+   11,
+   9,
+   7
+  ],
+  "labels": [
+   12,
+   7,
+   7,
+   7,
+   4,
+   6,
+   7,
+   5,
+   3
+  ],
+  "max_size": 12,
+  "any_label": true,
+  "old": [
+   1,
+   0,
+   11,
+   7
+  ],
+  "new": [
+   0,
+   0,
+   12,
+   12
+  ],
+  "pure": [
+   0,
+   0,
+   12,
+   12
+  ]
+ },
+ {
+  "key": "berlioz--le-carnaval-romain--11357",
+  "house": "other/unknown",
+  "composer": "berlioz",
+  "systems": 7,
+  "sizes": [
+   20,
+   14,
+   8,
+   9,
+   12,
+   11,
+   12
+  ],
+  "labels": [
+   17,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 20,
+  "any_label": true,
+  "old": [
+   3,
+   1,
+   12,
+   0
+  ],
+  "new": [
+   1,
+   0,
+   20,
+   17
+  ],
+  "pure": [
+   1,
+   0,
+   20,
+   17
+  ]
+ },
+ {
+  "key": "berlioz--symphony-fantastique--24830",
+  "house": "other/unknown",
+  "composer": "berlioz",
+  "systems": 11,
+  "sizes": [
+   14,
+   2,
+   3,
+   9,
+   8,
+   11,
+   11,
+   11,
+   11,
+   11,
+   11
+  ],
+  "labels": [
+   11,
+   0,
+   0,
+   0,
+   2,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 14,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   11,
+   0
+  ],
+  "new": [
+   0,
+   0,
+   14,
+   11
+  ],
+  "pure": [
+   0,
+   0,
+   14,
+   11
+  ]
+ },
+ {
   "key": "bizet--symphony-in-c-major--512840",
   "house": "Universal",
   "composer": "bizet",
@@ -663,6 +1055,48 @@
    1,
    13,
    9
+  ]
+ },
+ {
+  "key": "borodin--symphony-2--197128",
+  "house": "Peters",
+  "composer": "borodin",
+  "systems": 6,
+  "sizes": [
+   16,
+   3,
+   13,
+   4,
+   12,
+   16
+  ],
+  "labels": [
+   15,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 16,
+  "any_label": true,
+  "old": [
+   1,
+   0,
+   16,
+   15
+  ],
+  "new": [
+   1,
+   0,
+   16,
+   15
+  ],
+  "pure": [
+   1,
+   0,
+   16,
+   15
   ]
  },
  {
@@ -840,6 +1274,48 @@
   ]
  },
  {
+  "key": "bruckner--symphony-4--30700",
+  "house": "Eulenburg",
+  "composer": "bruckner",
+  "systems": 6,
+  "sizes": [
+   17,
+   9,
+   7,
+   7,
+   10,
+   15
+  ],
+  "labels": [
+   12,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 17,
+  "any_label": true,
+  "old": [
+   2,
+   1,
+   7,
+   0
+  ],
+  "new": [
+   1,
+   0,
+   17,
+   12
+  ],
+  "pure": [
+   1,
+   0,
+   17,
+   12
+  ]
+ },
+ {
   "key": "bruckner--symphony-6--30699",
   "house": "Universal",
   "composer": "bruckner",
@@ -883,6 +1359,86 @@
    0,
    17,
    12
+  ]
+ },
+ {
+  "key": "bruckner--symphony-7--30703",
+  "house": "Eulenburg",
+  "composer": "bruckner",
+  "systems": 5,
+  "sizes": [
+   17,
+   5,
+   9,
+   16,
+   16
+  ],
+  "labels": [
+   12,
+   3,
+   0,
+   0,
+   0
+  ],
+  "max_size": 17,
+  "any_label": true,
+  "old": [
+   3,
+   0,
+   16,
+   0
+  ],
+  "new": [
+   1,
+   0,
+   17,
+   12
+  ],
+  "pure": [
+   1,
+   0,
+   17,
+   12
+  ]
+ },
+ {
+  "key": "bruckner--symphony-8--30702",
+  "house": "Universal",
+  "composer": "bruckner",
+  "systems": 5,
+  "sizes": [
+   17,
+   9,
+   9,
+   18,
+   17
+  ],
+  "labels": [
+   13,
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_size": 18,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   9,
+   0
+  ],
+  "new": [
+   2,
+   0,
+   9,
+   0
+  ],
+  "pure": [
+   2,
+   0,
+   9,
+   0
   ]
  },
  {
@@ -1182,6 +1738,80 @@
   ]
  },
  {
+  "key": "lalo--symphony-espagnole--174510",
+  "house": "Durand",
+  "composer": "lalo",
+  "systems": 3,
+  "sizes": [
+   17,
+   17,
+   17
+  ],
+  "labels": [
+   14,
+   0,
+   0
+  ],
+  "max_size": 17,
+  "any_label": true,
+  "old": [
+   2,
+   0,
+   17,
+   14
+  ],
+  "new": [
+   2,
+   0,
+   17,
+   14
+  ],
+  "pure": [
+   2,
+   0,
+   17,
+   14
+  ]
+ },
+ {
+  "key": "mahler--das-lied-von-der-erde-gmw-49--20582",
+  "house": "Universal",
+  "composer": "mahler",
+  "systems": 4,
+  "sizes": [
+   26,
+   24,
+   25,
+   22
+  ],
+  "labels": [
+   23,
+   17,
+   21,
+   10
+  ],
+  "max_size": 26,
+  "any_label": true,
+  "old": [
+   1,
+   0,
+   26,
+   23
+  ],
+  "new": [
+   1,
+   0,
+   26,
+   23
+  ],
+  "pure": [
+   1,
+   0,
+   26,
+   23
+  ]
+ },
+ {
   "key": "mahler--symphony-7--415756",
   "house": "Bote",
   "composer": "mahler",
@@ -1253,6 +1883,42 @@
    0,
    2,
    1
+  ]
+ },
+ {
+  "key": "ravel--la-valse--923399",
+  "house": "Durand",
+  "composer": "ravel",
+  "systems": 3,
+  "sizes": [
+   25,
+   18,
+   18
+  ],
+  "labels": [
+   19,
+   2,
+   2
+  ],
+  "max_size": 25,
+  "any_label": true,
+  "old": [
+   3,
+   0,
+   18,
+   2
+  ],
+  "new": [
+   2,
+   0,
+   25,
+   19
+  ],
+  "pure": [
+   2,
+   0,
+   25,
+   19
   ]
  },
  {
