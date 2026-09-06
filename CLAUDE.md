@@ -1394,6 +1394,115 @@ the voice instruments' own aliases, which also fixes `Fl. Alt.`, `Cl. Alt.` and
 `Trb. Tenore`. Validated on 1380 margin labels across 10 editions —
 [LEXICON_TR_ALT_2026-08-31.md](benchmarks/omr-margin-labels-2026-08/LEXICON_TR_ALT_2026-08-31.md).
 
+⚠️ **THE SAME PAGE, THE SAME EVIDENCE, AND THE THIRD INSTANCE OF THE FAMILY —
+BUT THIS ONE IS NOT A LEXICON FAULT** (fixed 2026-09-06, `contextual.py`). On
+that same Litolff Beethoven 5, `lookup('Tp.')` returns **Timpani at `high`** and
+the timpani still exported as a **second trumpet**. `Tp.` is Timpani in the
+German and Italian tradition and Trumpet in the English one, so it is declared
+in `AMBIGUOUS_ALIASES`, which hands the slot to
+`score_layouts.resolve_ambiguous_label` — and the canonical layout puts the
+timpani AFTER the trombones while this edition prints it BETWEEN the trumpets
+and the trombones (the deviation `score_layouts` already documents where it
+explains pinning). The aligner is monotone, so staff 8 took the second trumpet
+slot; being ambiguous had also withdrawn the PIN that would otherwise have
+taught the aligner the print's order. **A correct lexicon, overturned by the
+prior.**
+
+**The evidence was already on the page and needed no lexicon change**: `Tr.`
+stands four staves up on the same system, and an engraver does not name one
+section with two different abbreviations on one system. So the prior **may not
+move a staff onto an instrument a different alias on the same system already
+names**.
+
+⚠️ **The constraint is ASYMMETRIC — it refuses only an OVERTURN and never
+removes the lexicon's own answer — and `Tr. Bas.` on p.48 is what forces that.**
+That staff's candidates are Trombone and Trumpet and **both** are separately
+named on its system (`Tr. Alt.`/`Tr. Ten.`, and `Tr.`), so a rule excluding
+every clashing candidate would have nothing left to choose and would break a
+reading that is already right. Measured over the 1422-label corpus
+(`probe_ambiguous_cooccurrence.py`): 86 of 158 ambiguous-alias occurrences clash
+— 52 `cor`, 18 `tp`, 9 `tr bas`, 7 `basso`/`bassi` — and hand-adjudicated the
+rule **keeps or restores the right answer in 86 of 86 and blocks a correct
+overturn in 0**.
+
+⚠️ **The control that matters is `basso`, and it passes because every clash is
+HANDEL's.** `c0a80ae7` fixed `Basso.` at the foot of an orchestral score by
+letting position overturn the lexicon's `Bass voice` to Contrabass; no
+orchestral page in the corpus names Contrabass twice, so that overturn is
+untouched — confirmed in the live A/B, where `ambiguous_labels_resolved` falls
+2 → 1 and the survivor is exactly that Contrabass. Handel's *Messiah* prints
+`BASSO` (the bass **voice**) and `Bassi` (the string basses) on one page and
+needs both first answers as they stand; there the two labels block each other,
+which is the rule doing the right thing rather than a limit on it. The probe
+**fails** if an orchestral source ever joins that list.
+
+Same-tree A/B on `--pages 23,44`, scored against the hand-read lineup: **24/29 →
+26/29 correct**, the 17-staff finale system **16/17 → 17/17 exact**, `Timpani ->
+Trumpet` ×2 eliminated and no other confusion moved. Exactly **3 staff records
+change**, all slot 8, all `Trumpet(score_order_ambiguity)` → `Timpani(label)` —
+the name is now attributed to the page it was read from instead of to the prior.
+⚠️ The remaining 3 errors (`Violin`/`Viola` → Trombone on the reduced 12-staff
+system) are a different fault and this does not touch them. Known limit,
+accepted with its reason: a real *tromba bassa* on a page that also prints `Tr.`
+would be blocked from the correct overturn; nothing in either corpus prints one,
+and the lexicon already records Trombone as much the commoner reading. Pinned by
+`test_contextual_ambiguity_uniqueness.py`, every test run RED with the guard
+removed.
+
+⚠️⚠️ **THE BUG LIVES IN EXACTLY ONE OF THREE REGIMES, AND IT IS NOT THE WEB
+APP'S.** Measured on all three, same tree, same edition:
+
+| window | what it is | fix vs control |
+|---|---|--:|
+| `--pages 0-4` | **what the web app actually does** (`local_omr.py:233` is `range(min(n_pages, max_pages))`, default 5) | **byte-identical, 0 records** |
+| `--pages 23,44` | a window SPANNING the movement boundary | **3 records, 24/29 → 26/29** |
+| 88 pages | the whole work | **no-op** (already correct) |
+
+**The bug needs a window that spans the movement boundary** — one holding both a
+reduced 12-staff system and the finale's 17-staff lineup, so the timpani has a
+trombone run to be displaced past — **and thin enough that the layout fit has
+little evidence.** Pages 0-4 are movements 1-3 only: an 11-slot reference, no
+trombones, the timpani at slot 6 where the canonical layout also puts it, so
+nothing overturns and the guard never fires. At 88 pages the fit has enough
+systems to get slot 8 right on its own. ⚠️ **So this is NOT a fix to the default
+web-app path**, and must not be described as one; its reach is the CLI with an
+explicit `--pages` spanning movements, and any run with `OMR_MAX_PAGES` raised —
+which is the whole-work use case this project is actually for. It ships because
+it is correct, cheap, and **proven inert in the other two regimes** rather than
+because it moves a production number.
+
+⚠️ **Corollary for anyone measuring identity work: there are THREE cells, not
+two.** Narrow-at-the-front (what production does) and narrow-anywhere (what a
+repro does) are different regimes, and they differ precisely in whether the
+window crosses a movement boundary — which is what exposes this whole class of
+bug. A fix scored only on pages 0-4 and only on the whole work would have
+measured this one at exactly zero, twice.
+
+The committed 88-page artefact
+(`benchmarks/omr-absent-instrument-veto-2026-09/out/whole-report2.extract.json`)
+already has slot 8 = Timpani and `ambiguous_labels_resolved = 1` — with a whole
+work's worth of systems voting, the layout fit proposes Timpani or abstains, and
+the guard is a **no-op** there. So the fix repairs narrow runs and is invisible
+on that artefact; do not quote 24/29 → 26/29 as a whole-work number. **This is
+the third time page-set size has changed an identity result** (the whole-work
+session measured `--pages 0-2` collapsing 11/12 → 4/12, reproducible with
+`OMR_MAX_PAGES=5`), so score any identity change on BOTH a narrow set and the
+88-page extract — they can disagree in either direction, and here they do.
+
+⚠️ **The 7 residual errors on that 88-page run are MIS-SLOTTING, not
+mis-naming**, and the distinction is what tells you where to look. Scored:
+800/807, `Violin -> Trombone` ×4, `Viola -> Trombone` ×2, `Timpani -> Trombone`
+×1, all on 12-staff systems (the 17-staff finale systems are **663/663**). Every
+wrong staff carries `instrument_source: label` — the strings land on slots
+9/10/11, the finale's trombone slots, and inherit the name those slots were
+correctly given by the finale's own labels, since a name is stamped per SLOT and
+written onto every staff of that slot on every page. The tail is anchored right
+(Cello 15, Contrabass 16), so it is an off-by-three in the monotone DP over a
+reduced system: 12 staves against a 17-slot reference needs five deletions and
+it deleted 12/13/14 instead of 9/10/11. That is `slots.align` / `assign_slots`,
+**not** the movement reference and not the absent-instrument veto — neither is
+in play in that artefact.
+
 **The same shape again, 2026-09-03, and the same answer: DERIVE the cross
 product.** A contrabassoon is printed as a BASSOON name with a contra- qualifier
 — four languages of noun against four of qualifier plus the abbreviations a
