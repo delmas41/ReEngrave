@@ -1,0 +1,5 @@
+# Full transcriptions are large (a whole-work run is ~100 MB) and regenerable
+# with probe/run.sh. What is committed is probe/extract.py's output, which keeps
+# the same shape and is what every probe here was actually run on.
+out/*.json
+!out/*.extract.json
