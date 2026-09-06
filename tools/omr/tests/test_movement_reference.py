@@ -120,6 +120,23 @@ def test_a_thin_span_refuses_to_split():
     assert mr.lineup_spans(pages) == [list(range(12))]
 
 
+def test_a_run_that_starts_MID_movement_still_finds_only_the_real_boundary():
+    """Climbing to your own movement's lineup is not the lineup growing.
+
+    Measured, not imagined: a replay over Beethoven 5 pages 20-31 + 44-55 reads
+    peaks 8, 11, 9, 12, ... and each step up looked like a new orchestra, so the
+    run split three times and the min-span guard turned that into an abstention
+    — safe, but no fix. Both sides of a boundary must be ESTABLISHED, and the
+    level being LEFT is the half that was missing.
+    """
+    window = ([(20, [8, 8]), (21, [11, 9]), (22, [9, 8]), (23, [9, 12]),
+               (24, [11]), (25, [11]), (26, [11]), (27, [8]), (28, [12]),
+               (29, [11]), (30, [12]), (31, [12])]
+              + [(p, [17]) for p in range(44, 56)])
+    spans = mr.lineup_spans(window)
+    assert [s[0] for s in spans] == [20, 44]
+
+
 def test_a_one_page_run_can_never_split():
     """Why neither benchmark can move: they score ONE PAGE at a time.
 

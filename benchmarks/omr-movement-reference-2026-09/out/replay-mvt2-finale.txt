@@ -1,3 +1,48 @@
 reading 24 pages of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf …
   page 20: 14 staves, 7 labels
   page 21: 20 staves, 12 labels
+  page 22: 15 staves, 11 labels
+  page 23: 21 staves, 10 labels
+  page 24: 22 staves, 14 labels
+  page 25: 19 staves, 11 labels
+  page 26: 17 staves, 10 labels
+  page 27: 15 staves, 7 labels
+  page 28: 18 staves, 8 labels
+  page 29: 18 staves, 8 labels
+  page 30: 19 staves, 11 labels
+  page 31: 19 staves, 5 labels
+  page 44: 14 staves, 14 labels
+  page 45: 17 staves, 12 labels
+  page 46: 16 staves, 12 labels
+  page 47: 17 staves, 10 labels
+  page 48: 17 staves, 12 labels
+  page 49: 17 staves, 12 labels
+  page 50: 17 staves, 12 labels
+  page 51: 17 staves, 12 labels
+  page 52: 17 staves, 12 labels
+  page 53: 17 staves, 12 labels
+  page 54: 17 staves, 12 labels
+  page 55: 17 staves, 12 labels
+INPUT ASSERTION: the two arms share ONE detection pass, so any difference is the flag and nothing else
+
+=== flag OFF (document-wide reference) ===
+  reference slots  : 17  [Piccolo, Flute, Oboe, Clarinet, Bassoon, Contrabassoon, Horn, Trumpet, Timpani, Trombone, Trombone, Trombone, None, None, None, None, None]
+  staff records    : 417  (before the finale: 217)
+  IMPOSSIBLE       : 47  (0.2166)
+        44  Trombone
+         3  Contrabassoon
+  on pages         : [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+
+=== flag ON (movement-local reference) ===
+  reference slots  : 17  [Piccolo, Flute, Oboe, Clarinet, Bassoon, Contrabassoon, Horn, Trumpet, Timpani, Trombone, Trombone, Trombone, None, None, None, None, None]
+  staff records    : 417  (before the finale: 217)
+  IMPOSSIBLE       : 47  (0.2166)
+        44  Trombone
+         3  Contrabassoon
+  on pages         : [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+
+changed staff records: 0
+
+IMPOSSIBLE: 47 -> 47
+wrote benchmarks/omr-movement-reference-2026-09/out/replay-mvt2-finale.json
+exit=0

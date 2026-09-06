@@ -116,16 +116,32 @@ def lineup_spans(page_systems: Sequence[tuple[int, Sequence[int]]]
 
     starts: list[int] = [pages[0]]
     running = peak[pages[0]]
+    seen_at_running = 1
     for p in pages[1:]:
         v = peak[p]
-        if v > running and counts[v] > 1:
-            starts.append(p)
-            running = v
-        elif v > running:
+        if v == running:
+            seen_at_running += 1
+            continue
+        if v < running:
+            continue
+        if counts[v] < 2:
             # A one-off larger system is a wobble, not a lineup. It must not
             # raise the running maximum either, or the real level that follows
             # it can never be seen to exceed it.
             continue
+        if seen_at_running < 2:
+            # ⚠️ BOTH SIDES OF A BOUNDARY MUST BE ESTABLISHED, and this half was
+            # missing until a run that STARTED MID-MOVEMENT measured it. A run
+            # beginning at a condensed page climbs to its own movement's lineup
+            # — 8 staves, then 11, then 12 across Beethoven 5's pages 20-23 —
+            # and each step up looked like the orchestra growing. It is not: it
+            # is the same orchestra, seen more completely. You cannot say the
+            # lineup GREW unless you knew what it was, so the level being left
+            # must itself have recurred among the pages already passed.
+            running, seen_at_running = v, 1
+            continue
+        starts.append(p)
+        running, seen_at_running = v, 1
 
     spans = _split_at(pages, starts)
     if len(spans) > 1 and not _well_supported(spans, page_systems):
