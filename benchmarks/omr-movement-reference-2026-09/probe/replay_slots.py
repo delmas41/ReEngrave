@@ -32,21 +32,63 @@ from tools.omr.preprocessing import render_page                 # noqa: E402
 from tools.omr.slots import assign_slots, labels_by_staff       # noqa: E402
 from tools.omr.staff_detector import detect_staves              # noqa: E402
 
+import numpy as np                                              # noqa: E402
+
+_EMPTY = np.zeros((1, 1), np.uint8)
+_EMPTY3 = np.zeros((1, 1, 3), np.uint8)
+
 FINALE_ONLY = {"Piccolo", "Contrabassoon", "Trombone"}
 FINALE_FIRST_PAGE = 44
 
 
-def read(pdf: Path, pages, dpi: int):
+def read(pdf: Path, pages, dpi: int, cache: Path | None = None):
+    """Staves + margin labels per page, RESUMABLE.
+
+    ⚠️ THE READ PHASE HANGS, AND NEITHER OF THE FIRST TWO DIAGNOSES WAS RIGHT.
+    Over 88 pages this stops at 0.0% CPU on the 22nd page read — three times, at
+    the same COUNT — while a 24-page run over pages 20-55 reads that same page
+    22 and finishes. So it is not the page's content. First guess was CPU
+    starvation behind three sibling agents; the machine then went quiet and it
+    stalled anyway. Second was the ~34 MB of rasters each PageImage holds, ~3 GB
+    over 88 pages beside llama.cpp's 1.7 GB; those are dropped now (kept, it is
+    right regardless) and it stalled at the same count. It is the Nth margin
+    read and the cause is still UNKNOWN — recorded rather than guessed at again.
+
+    Caching each page turns that from a wall into a slowdown: every invocation
+    gets further and the arms run off the cache. Pages are read independently,
+    so nothing about the measurement changes.
+    """
+    import pickle
     staved, labels = [], []
     budget = [0]
     tiers = [0, 0, 0, 0, 0]
     a = assist_mod.Assist("none")     # free readers only — no paid rung
+    if cache:
+        cache.mkdir(parents=True, exist_ok=True)
     for i in pages:
+        blob = cache / f"p{i:04d}.pkl" if cache else None
+        if blob is not None and blob.exists():
+            pws, read_labels = pickle.loads(blob.read_bytes())
+            staved.append(pws)
+            labels.append(read_labels)
+            print(f"  page {i}: cached ({len(pws.staves)} staves)",
+                  file=sys.stderr)
+            continue
         pws = detect_staves(render_page(pdf, i, dpi=dpi))
         staved.append(pws)
         read_labels = _labels_for_page(pws, pdf, i, assist=a, budget=budget,
                                        tiers=tiers)
         labels.append(read_labels)
+        # ⚠️ DROP THE PAGE RASTERS ONCE THE MARGIN HAS BEEN READ. A 300 dpi
+        # page carries ~34 MB of rgb + binary, so 88 of them is ~3 GB held
+        # alongside llama.cpp's 1.7 GB, and this probe stalled at 0.0% CPU on
+        # page 22 of 88 — TWICE, at the same page, which is what says memory
+        # rather than the contention it was first blamed on. `assign_slots`
+        # needs the staves and nothing else; the images are already spent.
+        pws.page.rgb = _EMPTY3
+        pws.page.binary = _EMPTY
+        if blob is not None:
+            blob.write_bytes(pickle.dumps((pws, read_labels)))
         print(f"  page {i}: {len(pws.staves)} staves, "
               f"{sum(1 for l in read_labels if l.matched)} labels",
               file=sys.stderr)
@@ -108,6 +150,7 @@ def main():
     ap.add_argument("--pages", default="0-87")
     ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", default=None)
+    ap.add_argument("--cache", default=None)
     args = ap.parse_args()
 
     pages = []
@@ -118,7 +161,8 @@ def main():
     pdf = Path(args.pdf)
 
     print(f"reading {len(pages)} pages of {pdf.name} …", file=sys.stderr)
-    staved, labels = read(pdf, pages, args.dpi)
+    staved, labels = read(pdf, pages, args.dpi,
+                          Path(args.cache) if args.cache else None)
 
     results = {}
     for tag, mvt, lab in ARMS:
