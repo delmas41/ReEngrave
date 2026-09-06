@@ -326,13 +326,17 @@ C's second condition fails under both arms.
 arms** (it is orthogonal and it is the one stage this repo records as
 non-deterministic):
 
-| | |
-|---|---|
-| Bach Brandenburg 3 p.1 (the only gate page with a blind system) | **BYTE-IDENTICAL** |
-| 11 engraved orchestral fixtures | see `out/ab-engraved-export.log` |
+| page | why this one | result |
+|---|---|---|
+| Bach Brandenburg 3 p.1 | the ONLY gate page with a window-blind system — the one page where cue C can fire at all | **BYTE-IDENTICAL** |
+| Brahms 1 p.4 | the ONLY gate page where `_is_grouped_system` differs between the arms | **BYTE-IDENTICAL** |
+| 11 engraved orchestral fixtures | the family that falsified cue C | see `out/ab-engraved-export.log` |
 
-A byte-identical export is strictly stronger than an equal OMR-NED and has no
-noise floor to argue about.
+The two scan pages are the complete exposed set: every other gate row has
+neither a blind system nor a changed `_is_grouped_system`, so it cannot differ
+by construction. A byte-identical export is strictly stronger than an equal
+OMR-NED and has no noise floor to argue about — where a pooled 20-row figure
+would have had to be read against ±6 edits.
 
 **So: the fix is correct and currently costs and earns nothing.** It should land
 default-OFF as a repaired signal waiting for a consumer, not as an accuracy
