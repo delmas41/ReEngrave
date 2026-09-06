@@ -1,0 +1,7 @@
+INPUT ASSERTION: staff-records=1616 pages=87
+staves before the finale (page < 44): 855
+named a finale-only instrument              : 91  (0.1064)
+      75  Trombone
+      10  Contrabassoon
+       6  Piccolo
+  on pages: [12, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 37, 38, 39, 40, 41, 42, 43]

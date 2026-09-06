@@ -1,0 +1,6 @@
+INPUT ASSERTION: full systems=51 staff-records=807
+  p23.s1 (12 staves): ord7 truth=Violin got=Trombone; ord8 truth=Violin got=Trombone; ord9 truth=Viola got=Trombone
+  p31.s1 (12 staves): ord6 truth=Timpani got=Trombone
+  p38.s0 (12 staves): ord7 truth=Violin got=Trombone; ord8 truth=Violin got=Trombone; ord9 truth=Viola got=Trombone
+
+(the Contrabass -> Bass voice lexicon fault is excluded above; it fires on the bottom staff of every full system)

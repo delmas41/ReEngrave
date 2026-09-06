@@ -1,0 +1,7 @@
+=== beet5-p23p44-OFF start 2026-09-06T12:21:00Z
+pdf: /Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf
+pages: 23,44
+transcribe: beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf (88 pages, processing 2)
+  weights:  auto (scan/engraved routing)
+  conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: per-cell
+  weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt

@@ -96,3 +96,206 @@ transcribe: beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073
 direction reader surya failed: surya timed out after 900.0s
 direction reader surya failed: surya timed out after 900.0s
 direction reader surya failed: surya timed out after 900.0s
+direction reader surya failed: surya timed out after 900.0s
+30 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '21.', 'C. Fig.', 'C. Fug.', 'C. Pag.', 'Cc. Fa', 'Ccr.', 'Cer', 'Cer.', 'DR.', 'Dh.', 'F o  5', 'Fig.', 'Fug.', 'F}', 'Gp.', 'Gr.', 'Jor.', 'Lor.', 'Oh', 'Oh.', 'Ol.', 'Or.', 'Pag.', 'Rig.', 'T:. Teu', 'Tinp.', 'Tiny', 'Tump.', 'ag.', '|' — these are the strings to add to tools/omr/instruments.py
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a2daedd6d0b11d266/benchmarks/omr-roster-wholework-2026-09/out/beet5-984073-whole.json
+  pages=88  systems=140  staves=1616  measures=17975  detections=130918
+  noteheads=42848  pitched=42848  (100% pitch coverage)
+  with_duration=42848  (100% rhythm coverage)  rests=11372/13430
+  runtime: phase1=541.2s  yolo=2268.21s  total=16091.27s
+  meter->rhythm: 155 measure(s) re-read a beam level to match the meter
+  page 0: 0 measures, 0 phase1_warnings, 0 rhythm_sum_warnings
+  page 1: 192 measures, 12 phase1_warnings, 5 rhythm_sum_warnings
+    key signatures: read on 5/12 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 2: 341 measures, 11 phase1_warnings, 48 rhythm_sum_warnings
+    key signatures: read on 12/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 3: 320 measures, 8 phase1_warnings, 22 rhythm_sum_warnings
+    key signatures: read on 14/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 4: 330 measures, 0 phase1_warnings, 17 rhythm_sum_warnings
+    key signatures: read on 14/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 5: 242 measures, 16 phase1_warnings, 38 rhythm_sum_warnings
+    key signatures: read on 11/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 6: 274 measures, 10 phase1_warnings, 56 rhythm_sum_warnings
+    key signatures: read on 17/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 7: 385 measures, 22 phase1_warnings, 52 rhythm_sum_warnings
+    key signatures: read on 12/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 8: 407 measures, 42 phase1_warnings, 31 rhythm_sum_warnings
+    key signatures: read on 13/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 9: 288 measures, 22 phase1_warnings, 44 rhythm_sum_warnings
+    key signatures: read on 13/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 10: 319 measures, 11 phase1_warnings, 42 rhythm_sum_warnings
+    key signatures: read on 12/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 11: 349 measures, 20 phase1_warnings, 22 rhythm_sum_warnings
+    key signatures: read on 13/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 12: 312 measures, 23 phase1_warnings, 44 rhythm_sum_warnings
+    key signatures: read on 9/23 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 13: 341 measures, 44 phase1_warnings, 70 rhythm_sum_warnings
+    key signatures: read on 13/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 14: 367 measures, 23 phase1_warnings, 47 rhythm_sum_warnings
+    key signatures: read on 12/23 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 15: 462 measures, 33 phase1_warnings, 41 rhythm_sum_warnings
+    key signatures: read on 15/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 16: 341 measures, 11 phase1_warnings, 44 rhythm_sum_warnings
+    key signatures: read on 14/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 17: 228 measures, 0 phase1_warnings, 57 rhythm_sum_warnings
+    key signatures: read on 11/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 18: 131 measures, 0 phase1_warnings, 54 rhythm_sum_warnings
+    key signatures: read on 13/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 19: 246 measures, 0 phase1_warnings, 73 rhythm_sum_warnings
+    key signatures: read on 12/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 20: 136 measures, 0 phase1_warnings, 57 rhythm_sum_warnings
+    key signatures: read on 10/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 21: 140 measures, 0 phase1_warnings, 67 rhythm_sum_warnings
+    key signatures: read on 7/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 22: 121 measures, 0 phase1_warnings, 64 rhythm_sum_warnings
+    key signatures: read on 10/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 23: 105 measures, 0 phase1_warnings, 65 rhythm_sum_warnings
+    key signatures: read on 8/21 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 24: 165 measures, 0 phase1_warnings, 75 rhythm_sum_warnings
+    key signatures: read on 7/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 25: 201 measures, 0 phase1_warnings, 91 rhythm_sum_warnings
+    key signatures: read on 3/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 26: 163 measures, 0 phase1_warnings, 70 rhythm_sum_warnings
+    key signatures: read on 11/18 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 27: 88 measures, 0 phase1_warnings, 73 rhythm_sum_warnings
+    key signatures: read on 8/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 28: 128 measures, 0 phase1_warnings, 71 rhythm_sum_warnings
+    key signatures: read on 11/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 29: 165 measures, 8 phase1_warnings, 60 rhythm_sum_warnings
+    key signatures: read on 12/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 30: 188 measures, 0 phase1_warnings, 76 rhythm_sum_warnings
+    key signatures: read on 9/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 31: 185 measures, 12 phase1_warnings, 68 rhythm_sum_warnings
+    key signatures: read on 12/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 32: 314 measures, 24 phase1_warnings, 68 rhythm_sum_warnings
+    key signatures: read on 7/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 33: 297 measures, 9 phase1_warnings, 76 rhythm_sum_warnings
+    key signatures: read on 9/18 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 34: 330 measures, 22 phase1_warnings, 182 rhythm_sum_warnings
+    key signatures: read on 9/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 35: 294 measures, 0 phase1_warnings, 119 rhythm_sum_warnings
+    key signatures: read on 7/21 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 36: 280 measures, 9 phase1_warnings, 111 rhythm_sum_warnings
+    key signatures: read on 8/20 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 37: 240 measures, 0 phase1_warnings, 113 rhythm_sum_warnings
+    key signatures: read on 2/23 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 38: 192 measures, 0 phase1_warnings, 148 rhythm_sum_warnings
+    key signatures: read on 5/24 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 39: 206 measures, 0 phase1_warnings, 74 rhythm_sum_warnings
+    key signatures: read on 2/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 40: 217 measures, 7 phase1_warnings, 75 rhythm_sum_warnings
+    key signatures: read on 9/21 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 41: 190 measures, 14 phase1_warnings, 113 rhythm_sum_warnings
+    key signatures: read on 10/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 42: 171 measures, 6 phase1_warnings, 72 rhythm_sum_warnings
+    key signatures: read on 9/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 43: 240 measures, 15 phase1_warnings, 80 rhythm_sum_warnings
+    key signatures: read on 10/15 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 44: 136 measures, 0 phase1_warnings, 86 rhythm_sum_warnings
+    key signatures: read on 5/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 45: 255 measures, 34 phase1_warnings, 58 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 46: 255 measures, 51 phase1_warnings, 86 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 47: 153 measures, 0 phase1_warnings, 80 rhythm_sum_warnings
+    key signatures: read on 4/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 48: 153 measures, 0 phase1_warnings, 91 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 49: 119 measures, 0 phase1_warnings, 85 rhythm_sum_warnings
+    key signatures: read on 3/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 50: 119 measures, 0 phase1_warnings, 63 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 51: 119 measures, 0 phase1_warnings, 58 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 52: 136 measures, 17 phase1_warnings, 47 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 53: 221 measures, 51 phase1_warnings, 62 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 54: 153 measures, 0 phase1_warnings, 102 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 55: 136 measures, 0 phase1_warnings, 89 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 56: 133 measures, 0 phase1_warnings, 83 rhythm_sum_warnings
+    key signatures: read on 2/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 57: 168 measures, 0 phase1_warnings, 100 rhythm_sum_warnings
+    key signatures: read on 0/24 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 58: 136 measures, 0 phase1_warnings, 85 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 59: 119 measures, 0 phase1_warnings, 79 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 60: 102 measures, 0 phase1_warnings, 74 rhythm_sum_warnings
+    key signatures: read on 6/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 61: 119 measures, 0 phase1_warnings, 81 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 62: 221 measures, 51 phase1_warnings, 90 rhythm_sum_warnings
+    key signatures: read on 3/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 63: 366 measures, 0 phase1_warnings, 164 rhythm_sum_warnings
+    key signatures: read on 3/23 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 64: 153 measures, 0 phase1_warnings, 84 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 65: 128 measures, 0 phase1_warnings, 103 rhythm_sum_warnings
+    key signatures: read on 0/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 66: 102 measures, 0 phase1_warnings, 81 rhythm_sum_warnings
+    key signatures: read on 3/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 67: 170 measures, 0 phase1_warnings, 75 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 68: 153 measures, 0 phase1_warnings, 90 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 69: 119 measures, 0 phase1_warnings, 68 rhythm_sum_warnings
+    key signatures: read on 3/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 70: 119 measures, 0 phase1_warnings, 76 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 71: 85 measures, 0 phase1_warnings, 53 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 72: 153 measures, 51 phase1_warnings, 58 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 73: 170 measures, 17 phase1_warnings, 120 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 74: 187 measures, 0 phase1_warnings, 61 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 75: 119 measures, 0 phase1_warnings, 82 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 76: 187 measures, 34 phase1_warnings, 21 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 77: 170 measures, 0 phase1_warnings, 32 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 78: 153 measures, 0 phase1_warnings, 42 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 79: 170 measures, 0 phase1_warnings, 34 rhythm_sum_warnings
+    key signatures: read on 4/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 80: 136 measures, 0 phase1_warnings, 46 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 81: 221 measures, 0 phase1_warnings, 30 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 82: 238 measures, 0 phase1_warnings, 23 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 83: 204 measures, 0 phase1_warnings, 16 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 84: 153 measures, 0 phase1_warnings, 33 rhythm_sum_warnings
+    key signatures: read on 1/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 85: 238 measures, 0 phase1_warnings, 29 rhythm_sum_warnings
+    key signatures: read on 0/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 86: 208 measures, 0 phase1_warnings, 24 rhythm_sum_warnings
+    key signatures: read on 3/16 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 87: 289 measures, 17 phase1_warnings, 18 rhythm_sum_warnings
+    key signatures: read on 2/17 staves; the rest report 0 sharps / 0 flats because nothing read them
+    16095.71 real      4372.42 user       975.74 sys
+          4156637184  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+            45455894  page reclaims
+               40933  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                9499  messages sent
+               30754  messages received
+                   0  signals received
+              265528  voluntary context switches
+            74293691  involuntary context switches
+      32031505681590  instructions retired
+      13213422395911  cycles elapsed
+          9273778112  peak memory footprint
+=== beet5-984073-whole rc=0 wall=16096s 2026-09-06T12:17:27Z

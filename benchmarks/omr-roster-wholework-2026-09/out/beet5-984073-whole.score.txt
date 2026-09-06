@@ -1,0 +1,15 @@
+=== beet5-984073-whole.json   work=beet5
+INPUT ASSERTION: pages=88 systems-in-run=140 full-systems-scored=51 staff-records-scored=807
+roster from page 1 sys 0, 11/12 named, opened=[]
+reference slots: 17
+
+CORRECT 749/807 = 0.9281   unnamed 0   wrong 58
+   size  12:  125/ 144 = 0.8681
+   size  17:  624/ 663 = 0.9412
+
+confusions (truth -> emitted), most common first:
+     51  Contrabass       -> Bass voice
+      4  Violin           -> Trombone
+      2  Viola            -> Trombone
+      1  Timpani          -> Trombone
+

@@ -1,0 +1,149 @@
+=== beet5-984073-whole.json
+INPUT ASSERTION: pages=88 systems=140 staff-records=1616
+contextual available=True reason=None
+
+## 1. ACQUISITION
+  acquired from PDF page index 1, system 0  (11/12 named, coverage 0.9167)
+  pages_searched (free, already in the run) : [0, 1]
+  pages_opened   (paid, rendered for this)  : []
+  label tiers                               : {'text_layer': 0, 'surya': 0, 'tesseract': 0, 'vision': 0, 'human': 0}
+     ord   0  Flute                    <- 'Flauti.'
+     ord   2  Clarinet                 <- 'Clarinetti in B.'
+     ord   3  Bassoon                  <- 'Fagotti.'
+     ord   4  Horn                     <- 'Corni in Es.'
+     ord   5  Trumpet                  <- 'Trombe in C.'
+     ord   6  Timpani                  <- 'Timpani in C.G.'
+     ord   7  Violin                   <- 'Violino I.'
+     ord   8  Violin                   <- 'Violino II.'
+     ord   9  Viola                    <- 'Viola.'
+     ord  10  Cello                    <- 'Violoncello.'
+     ord  11  Bass voice               <- 'Basso.'
+
+## 2. SHAPE — reference vs the document
+  reference slots : 17
+  reference names : Piccolo, Flute, Oboe, Clarinet, Bassoon, Contrabassoon, Horn, Trumpet, Timpani, Trombone, Trombone, Trombone, Violin, Violin, Viola, Cello, Bass voice
+  system sizes    : 4x4, 5x6, 6x2, 7x10, 8x13, 9x12, 10x7, 11x32, 12x12, 15x1, 16x2, 17x39
+  systems LARGER than the reference: 0 of 140
+  staves that can get no slot at all (top-dropped): 0
+  staves observed with slot None/-1              : 0
+
+## 3. IDENTITY per page
+  pg  staves  label  roster  order  ambig  none    cov
+   1      12     12       0      0      0     0  1.000
+   2      22     22       0      0      0     0  1.000
+   3      19     19       0      0      0     0  1.000
+   4      22     22       0      0      0     0  1.000
+   5      16     16       0      0      0     0  1.000
+   6      22     22       0      0      0     0  1.000
+   7      22     22       0      0      0     0  1.000
+   8      20     20       0      0      0     0  1.000
+   9      22     22       0      0      0     0  1.000
+  10      22     22       0      0      0     0  1.000
+  11      20     20       0      0      0     0  1.000
+  12      23     23       0      0      0     0  1.000
+  13      22     22       0      0      0     0  1.000
+  14      23     23       0      0      0     0  1.000
+  15      22     22       0      0      0     0  1.000
+  16      22     22       0      0      0     0  1.000
+  17      20     20       0      0      0     0  1.000
+  18      19     19       0      0      0     0  1.000
+  19      20     20       0      0      0     0  1.000
+  20      16     16       0      0      0     0  1.000
+  21      20     20       0      0      0     0  1.000
+  22      17     17       0      0      0     0  1.000
+  23      21     21       0      0      0     0  1.000
+  24      22     22       0      0      0     0  1.000
+  25      19     19       0      0      0     0  1.000
+  26      18     18       0      0      0     0  1.000
+  27      16     16       0      0      0     0  1.000
+  28      20     20       0      0      0     0  1.000
+  29      19     19       0      0      0     0  1.000
+  30      20     20       0      0      0     0  1.000
+  31      19     19       0      0      0     0  1.000
+  32      20     20       0      0      0     0  1.000
+  33      18     18       0      0      0     0  1.000
+  34      22     22       0      0      0     0  1.000
+  35      21     21       0      0      0     0  1.000
+  36      20     20       0      0      0     0  1.000
+  37      23     23       0      0      0     0  1.000
+  38      24     24       0      0      0     0  1.000
+  39      19     19       0      0      0     0  1.000
+  40      21     21       0      0      0     0  1.000
+  41      19     19       0      0      0     0  1.000
+  42      16     16       0      0      0     0  1.000
+  43      15     15       0      0      0     0  1.000
+  44      17     17       0      0      0     0  1.000
+  45      17     17       0      0      0     0  1.000
+  46      17     17       0      0      0     0  1.000
+  47      17     17       0      0      0     0  1.000
+  48      17     17       0      0      0     0  1.000
+  49      17     17       0      0      0     0  1.000
+  50      17     17       0      0      0     0  1.000
+  51      17     17       0      0      0     0  1.000
+  52      17     17       0      0      0     0  1.000
+  53      17     17       0      0      0     0  1.000
+  54      17     17       0      0      0     0  1.000
+  55      17     17       0      0      0     0  1.000
+  56      19     19       0      0      0     0  1.000
+  57      24     24       0      0      0     0  1.000
+  58      17     17       0      0      0     0  1.000
+  59      17     17       0      0      0     0  1.000
+  60      17     17       0      0      0     0  1.000
+  61      17     17       0      0      0     0  1.000
+  62      17     17       0      0      0     0  1.000
+  63      23     23       0      0      0     0  1.000
+  64      17     17       0      0      0     0  1.000
+  65      16     16       0      0      0     0  1.000
+  66      17     17       0      0      0     0  1.000
+  67      17     17       0      0      0     0  1.000
+  68      17     17       0      0      0     0  1.000
+  69      17     17       0      0      0     0  1.000
+  70      17     17       0      0      0     0  1.000
+  71      17     17       0      0      0     0  1.000
+  72      17     17       0      0      0     0  1.000
+  73      17     17       0      0      0     0  1.000
+  74      17     17       0      0      0     0  1.000
+  75      17     17       0      0      0     0  1.000
+  76      17     17       0      0      0     0  1.000
+  77      17     17       0      0      0     0  1.000
+  78      17     17       0      0      0     0  1.000
+  79      17     17       0      0      0     0  1.000
+  80      17     17       0      0      0     0  1.000
+  81      17     17       0      0      0     0  1.000
+  82      17     17       0      0      0     0  1.000
+  83      17     17       0      0      0     0  1.000
+  84      17     17       0      0      0     0  1.000
+  85      17     17       0      0      0     0  1.000
+  86      16     16       0      0      0     0  1.000
+  87      17     17       0      0      0     0  1.000
+  TOTAL staves 1616: label=1616   coverage=1.0000
+
+## 4. STAFF-COUNT PROFILE (an instrumentation change is a step)
+  |p1:12 |p2:11 11 11 |p3:8 |p4:11 11 |p5:9 |p5:7 |p6:10 |p6:12 |p7:11 11 |p8:9 |p8:11 |p9:12 |p9:10 |p10:11 11 |p11:9 |p11:11 |p12:12 |p12:11 11 11 |p14:12 |p14:11 11 11 11 11 |p17:12 |p17:4 4 |p18:11 |p18:8 |p19:11 |p19:9 |p20:8 8 |p21:11 |p21:9 9 |p22:8 |p23:9 |p23:12 |p24:11 11 |p25:8 |p25:11 11 |p26:7 |p27:8 8 8 |p28:12 |p29:11 |p29:8 |p30:12 |p30:8 |p31:7 |p31:12 |p32:11 |p32:5 |p32:4 |p33:9 9 |p34:11 11 11 |p35:10 |p36:11 |p36:9 |p37:10 |p37:5 |p37:8 |p38:12 12 |p39:4 |p39:7 |p39:8 |p40:7 7 7 |p41:5 |p41:7 7 |p42:5 |p42:6 |p42:5 5 |p43:10 |p44:17 17 17 17 17 17 17 17 17 17 17 17 |p56:10 |p56:9 9 |p57:15 |p58:17 17 17 17 17 |p63:6 |p63:7 |p63:10 |p64:17 |p65:16 |p66:17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 |p86:16 |p87:17
+
+## 5. WHAT EACH SYSTEM SIZE IS NAMED (first system of each size)
+  size 12 (first at p1.s0): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Cello | Bass voice
+                        src: lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab
+  size 11 (first at p2.s0): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Viola | Bass voice
+                        src: lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab
+  size  8 (first at p3.s1): Flute | Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+                        src: lab | lab | lab | lab | lab | lab | lab | lab
+  size  9 (first at p5.s0): Flute | Oboe | Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+                        src: lab | lab | lab | lab | lab | lab | lab | lab | lab
+  size  7 (first at p5.s1): Clarinet | Bassoon | Horn | Violin | Violin | Viola | Bass voice
+                        src: lab | lab | lab | lab | lab | lab | lab
+  size 10 (first at p6.s0): Flute | Oboe | Clarinet | Bassoon | Horn | Violin | Violin | Viola | Cello | Bass voice
+                        src: lab | lab | lab | lab | lab | lab | lab | lab | lab | lab
+  size  4 (first at p17.s1): Flute | Oboe | Clarinet | Bassoon
+                        src: lab | lab | lab | lab
+  size  5 (first at p32.s1): Flute | Oboe | Clarinet | Bassoon | Horn
+                        src: lab | lab | lab | lab | lab
+  size  6 (first at p42.s1): Bassoon | Timpani | Violin | Violin | Viola | Bass voice
+                        src: lab | lab | lab | lab | lab | lab
+  size 17 (first at p44.s0): Piccolo | Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+                        src: lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab
+  size 15 (first at p57.s1): Flute | Oboe | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Viola | Cello | Bass voice
+                        src: lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab
+  size 16 (first at p65.s0): Piccolo | Flute | Clarinet | Bassoon | Contrabassoon | Horn | Trumpet | Timpani | Trombone | Trombone | Trombone | Violin | Violin | Viola | Cello | Bass voice
+                        src: lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab | lab
+

@@ -11,3 +11,38 @@ transcribe: beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073
   page 3: 2 systems, 19 staves, 320 measures, 1731 detections (378/378 pitched, 378/378 durations)
   page 4: 2 systems, 22 staves, 330 measures, 2780 detections (696/696 pitched, 696/696 durations)
 direction reader surya failed: surya timed out after 900.0s
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a2daedd6d0b11d266/benchmarks/omr-roster-wholework-2026-09/out/beet5-pages0-4-webapp.json
+  pages=5  systems=7  staves=75  measures=1183  detections=6761
+  noteheads=1700  pitched=1700  (100% pitch coverage)
+  with_duration=1700  (100% rhythm coverage)  rests=570/610
+  runtime: phase1=22.61s  yolo=87.76s  total=1706.38s
+  meter->rhythm: 8 measure(s) re-read a beam level to match the meter
+  page 0: 0 measures, 0 phase1_warnings, 0 rhythm_sum_warnings
+  page 1: 192 measures, 12 phase1_warnings, 5 rhythm_sum_warnings
+    key signatures: read on 5/12 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 2: 341 measures, 11 phase1_warnings, 48 rhythm_sum_warnings
+    key signatures: read on 12/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 3: 320 measures, 8 phase1_warnings, 22 rhythm_sum_warnings
+    key signatures: read on 14/19 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 4: 330 measures, 0 phase1_warnings, 17 rhythm_sum_warnings
+    key signatures: read on 14/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+     1708.11 real       191.55 user        39.30 sys
+          3251306496  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             2064236  page reclaims
+                1806  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 409  messages sent
+                2102  messages received
+                   0  signals received
+               20359  voluntary context switches
+             3645099  involuntary context switches
+       1588758716201  instructions retired
+        592204983349  cycles elapsed
+          5294356672  peak memory footprint
+=== beet5-pages0-4-webapp rc=0 wall=1708s 2026-09-06T11:00:44Z
