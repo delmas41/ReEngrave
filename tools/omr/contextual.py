@@ -61,7 +61,8 @@ from .preprocessing import render_page
 from .score_layouts import fit_layouts, resolve_ambiguous_label
 from .roster import Roster, acquire_roster
 from .roster import enabled as roster_enabled
-from .slots import Slot, SystemView, align, assign_slots, labels_by_staff
+from .slots import (MIN_LABEL_CONFIDENCE, Slot, SystemView, align,
+                    assign_slots, labels_by_staff)
 from .staff_detector import detect_staves
 from .staff_labels import StaffLabel, has_text_layer, read_staff_labels
 
@@ -348,10 +349,15 @@ def _usable(labels: list[StaffLabel]) -> int:
     return sum(1 for lab in labels if lab.matched)
 
 
-# Confidences a downstream consumer will actually act on. `slots.build_reference`
-# and the probes shaped like it keep `high` and `medium` and drop `low`, so a
-# `low` label reaches the join as nothing exactly as an unmatched one does.
-CONSUMABLE_CONFIDENCES = ("high", "medium")
+# Confidences a downstream consumer will actually act on: a `low` label reaches
+# the join as nothing exactly as an unmatched one does.
+#
+# TAKEN FROM `slots`, NOT RESTATED. Two consumers already hold this floor —
+# `slots.MIN_LABEL_CONFIDENCE` ("a wrong instrument would propagate into every
+# system") and `roster.py`, whose comment says "same floor `slots.
+# labels_by_staff` uses". A third copy here is a third thing to leave stale, and
+# this repo has paid for exactly that with a figure held in four places.
+CONSUMABLE_CONFIDENCES = MIN_LABEL_CONFIDENCE
 
 
 def _label_is_consumable(lab: StaffLabel) -> bool:
