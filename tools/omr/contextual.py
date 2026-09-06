@@ -903,15 +903,26 @@ def apply_contextual_analysis(
                     continue
                 staff["slot_index"] = slot
                 raw = raw_label_by_slot.get(slot)
-                if raw:
-                    staff["instrument_label"] = raw
                 instrument = instrument_by_slot.get(slot)
                 if key in vetoed_keys:
                     # Vetoed: the staff is left UNNAMED rather than given a
-                    # second guess. `slot_index` and any raw label stay — they
-                    # are observations, not deductions.
+                    # second guess. `slot_index` stays — it is an observation.
+                    #
+                    # ⚠️ `instrument_label` does NOT stay, and that is the whole
+                    # point of the veto stated in one field. `raw_label_by_slot`
+                    # is the raw text of the FIRST page in the run that labelled
+                    # this slot, stamped onto every staff of the slot on every
+                    # page — so on a vetoed staff it is the text of a label
+                    # printed twenty pages away, and leaving it beside
+                    # `instrument_veto` would put the discarded evidence back on
+                    # the record as though the page carried it. (This carry is
+                    # also what makes a "does the staff's own label agree with
+                    # its name" audit unable to disagree.)
                     instrument = None
+                    raw = None
                     staff["instrument_veto"] = "absent_instrument"
+                if raw:
+                    staff["instrument_label"] = raw
                 if instrument is not None:
                     staff["instrument"] = instrument.name
                     staff["instrument_family"] = instrument.family

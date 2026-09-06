@@ -10,7 +10,8 @@ print("reference:", [s.get("instrument") for s in ctx.get("reference", [])])
 print("instruments_from_score_order =", ctx.get("instruments_from_score_order"),
       " from_roster =", ctx.get("instruments_from_roster"),
       " ambiguous_resolved =", ctx.get("ambiguous_labels_resolved"))
-print("vetoed_absent_instruments =", len(ctx.get("absent_instrument_vetoes", []) or []))
+print("veto block =", {k: (len(v) if isinstance(v, list) else v)
+                     for k, v in (ctx.get("absent_instrument_veto") or {}).items()})
 n = 0
 for page in r.get("pages", []):
     pi = page.get("page_index")
