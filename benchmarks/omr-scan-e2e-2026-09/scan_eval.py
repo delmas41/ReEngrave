@@ -58,6 +58,9 @@ BENCH = Path(__file__).resolve().parent
 ROOT = BENCH.parents[1]
 sys.path.insert(0, str(ROOT))
 
+sys.path.insert(0, str(BENCH))
+
+import page_normalise  # noqa: E402   (this directory; the page-normalised arm)
 from tools.library.score_library import library_root  # noqa: E402
 from tools.omr import omr_ned as omr_ned_mod  # noqa: E402
 from tools.omr.export import to_musicxml  # noqa: E402
@@ -119,6 +122,76 @@ def load_rows() -> tuple[dict, list[dict]]:
         if isinstance(staves, str) and staves.startswith("same-as:"):
             row["staves"] = by_id[staves.split(":", 1)[1]]["staves"]
     return doc, rows
+
+
+def structural_divergence(row: dict, n_truth_parts: int | None) -> dict:
+    """How far this row's TRUTH is from the structure of the PRINTED page.
+
+    ⚠️ THIS IS NOT OPTIONAL AND IT IS NOT BEHIND A FLAG. A printed orchestral
+    score CONDENSES — Beethoven 5 prints `Flauti` as ONE staff and the Gradus
+    encoding of it has two flute parts — and musicdiff pairs PARTS, so every
+    encoded part with no printed staff of its own is charged `entire staff
+    insert/delete` no matter how well the page was read. On this corpus that is
+    17,520 of 74,968 pooled edits (23.4%), levied on a convention rather than
+    on a mistake.
+
+    `works.json` has recorded the fact needed to say so since the gate was
+    built — `staves[i].parts`, hand-read off the scan, where `parts: [0, 1]` IS
+    a condensed staff — and until 2026-09-06 this script read it only for
+    `note_recall`, never for the pooled figure it distorts. Now every run
+    states the structural share, whether or not anyone asked.
+
+    A row with NO hand-read map abstains loudly (`has_hand_map: False`) rather
+    than being guessed at: whether a reference splits a printed staff is a
+    property of the ENCODING, not of the engraving, so the page cannot supply
+    the count (`benchmarks/omr-condensed-parts-2026-09/FINDINGS.md`).
+    """
+    staves = row.get("staves")
+    if not isinstance(staves, list) or not staves:
+        return {"has_hand_map": False,
+                "reason": "no hand-read staves map in works.json — this row's "
+                          "structural share is UNMEASURED, not zero",
+                "n_truth_parts": n_truth_parts}
+    covered: set[int] = set()
+    condensed = []
+    for spec in staves:
+        idx = list(spec.get("parts") or [])
+        covered.update(idx)
+        if len(idx) > 1:
+            condensed.append({"staff": spec.get("name"), "parts": idx})
+    n_parts = n_truth_parts if n_truth_parts is not None else len(covered)
+    return {
+        "has_hand_map": True,
+        "n_truth_parts": n_parts,
+        "n_printed_staves_per_system": len(staves),
+        "n_condensed_staves": len(condensed),
+        "condensed": condensed,
+        "surplus_parts": n_parts - len(staves),
+        "orphan_parts": sorted(set(range(n_parts)) - covered),
+    }
+
+
+def pooled_structural(pool: list[dict], categories: Counter) -> dict:
+    """The pool's structural accounting. Reported on EVERY run, no flag."""
+    mapped = [r for r in pool
+              if (r.get("structural") or {}).get("has_hand_map")]
+    unmapped = [r for r in pool
+                if not (r.get("structural") or {}).get("has_hand_map")]
+    return {
+        "n_rows": len(pool),
+        "n_with_hand_map": len(mapped),
+        "n_without_hand_map": len(unmapped),
+        "rows_without_hand_map": [r["row_id"] for r in unmapped],
+        "surplus_parts_mapped": sum(r["structural"]["surplus_parts"]
+                                    for r in mapped),
+        "condensed_staves_mapped": sum(r["structural"]["n_condensed_staves"]
+                                       for r in mapped),
+        "entire_staff_edits": categories.get("entire staff insert/delete", 0),
+        "entire_measure_edits": categories.get("entire measure insert/delete", 0),
+        "reading": ("`entire staff insert/delete` is where a condensed staff's "
+                    "unpaired reference parts land. Rows without a hand map "
+                    "contribute an UNMEASURED share, not a zero one."),
+    }
 
 
 def resolve(row: dict) -> tuple[Path, Path]:
@@ -277,6 +350,16 @@ def main(argv: list[str] | None = None) -> int:
                     help="row_ids to run (default: every runnable row)")
     ap.add_argument("--list", action="store_true",
                     help="show the rows and their window confidence, then exit")
+    ap.add_argument("--page-normalised", action="store_true",
+                    help="ALSO score every row that has a hand-read `staves` "
+                         "map against a truth whose PARTS are the page's "
+                         "printed STAVES (page_normalise.py). ⚠️ A normalised "
+                         "figure is a SEPARATE BENCHMARK ERA and may never be "
+                         "differenced against an un-normalised one; the delta "
+                         "is structural charge removed, not improvement. The "
+                         "raw column stays the headline either way, and the "
+                         "structural SHARE is reported with or without this "
+                         "flag.")
     ap.add_argument("--score-only", action="store_true",
                     help="do not transcribe; score whatever is already in "
                          "fixtures/ (safe while another job owns the CPU)")
@@ -400,6 +483,23 @@ def main(argv: list[str] | None = None) -> int:
             "truth_xml": str(truth_xml),
             "pred_xml": str(pred_xml),
         }
+        entry["structural"] = structural_divergence(
+            row, trim_report["window"]["n_parts"])
+        if args.page_normalised:
+            norm = FIXTURES / f"{rid}.page-normalised.truth.musicxml"
+            try:
+                rep = page_normalise.write(
+                    truth_xml, row.get("staves"), norm,
+                    source_reference=row["reference"]["catalog_path"])
+                entry["page_normalised_truth"] = {
+                    "path": str(norm),
+                    "transform_version": rep["transform_version"],
+                    "measure_census": rep["measure_census"],
+                    "divisi_share": rep["divisi_share"],
+                }
+                pairs.append((rid + tag + "|norm", pred_xml, norm))
+            except page_normalise.NoHandMap as exc:
+                entry["page_normalised_truth"] = {"refused": str(exc)}
         ctx = result.get("contextual") or {}
         if ctx.get("looks_like_a_bug"):
             entry["broken_pass"] = {"pass": "contextual",
@@ -423,21 +523,32 @@ def main(argv: list[str] | None = None) -> int:
     by_name = {p["name"]: p for p in scored.get("pairs", [])}
     for r in results:
         r["omr_ned"] = by_name.get(r["row_id"])
+        if args.page_normalised:
+            got = by_name.get(r["row_id"] + "|norm")
+            if got is not None:
+                r.setdefault("page_normalised_truth", {})["omr_ned"] = got
 
     # ---- report
     print()
     print(f"{'row':38s} {'win':>7s} {'staves':>9s} {'meas':>7s} "
-          f"{'OMR-NED':>8s} {'edits':>7s} {'truth':>6s} {'pred':>6s}  conf")
+          f"{'OMR-NED':>8s} {'edits':>7s} {'truth':>6s} {'pred':>6s} "
+          f"{'struct':>8s}  conf")
     for r in results:
         n = r.get("omr_ned") or {}
         pr, de = r["printed"], r["detected"]
+        st = r.get("structural") or {}
+        # `struct` is surplus/parts — encoded parts with NO printed staff of
+        # their own, over the encoded part count. `NO-MAP` is not zero: it is
+        # UNMEASURED, and saying so on the row is the point.
+        struct = (f"{st.get('surplus_parts', 0):d}/{st.get('n_truth_parts', 0):d}"
+                  if st.get("has_hand_map") else "NO-MAP")
         print(f"{r['row_id']:38s} "
               f"{r['window'][0]}-{r['window'][1]:<5} "
               f"{de['staves']:>4d}/{str(pr['staves'] or '?'):<4} "
               f"{de['measures']:>3d}/{r['truth']['measures']:<3d} "
               f"{n.get('omr_ned', float('nan')):>8.4f} "
               f"{n.get('omr_ed', 0):>7d} {n.get('truth_symbols', 0):>6d} "
-              f"{n.get('pred_symbols', 0):>6d}  {r['confidence']}")
+              f"{n.get('pred_symbols', 0):>6d} {struct:>8s}  {r['confidence']}")
 
     # A row with pooled: false is a STRESS row — it runs and reports per-row
     # (the table above) but never enters the pooled figure, because its
@@ -492,10 +603,68 @@ def main(argv: list[str] | None = None) -> int:
     elif not pool:
         print("no pooled figure: every scored row is a stress row")
 
+    # ---- structural accounting. ALWAYS PRINTED, never behind a flag.
+    #
+    # A figure that needs a flag to be honest gets quoted without the flag.
+    # The scan gate scores real prints against encodings produced independently
+    # of them, so part of every pooled number is the CONDENSATION CONVENTION —
+    # `Flauti` is one printed staff and two encoded parts, and musicdiff pairs
+    # parts. This block says how much, and says loudly where it cannot.
+    structural = pooled_structural(pool, pooled_cats if have_ned else Counter())
+    print()
+    print("STRUCTURAL ACCOUNTING (page vs encoding) — not an accuracy figure")
+    print(f"  rows with a hand-read staves map: "
+          f"{structural['n_with_hand_map']} of {structural['n_rows']}"
+          f"   (without one, a row's structural share is UNMEASURED, not zero)")
+    if structural["n_without_hand_map"]:
+        print(f"  UN-MAPPED rows: "
+              f"{', '.join(structural['rows_without_hand_map'])}")
+    print(f"  encoded parts with no printed staff of their own, over the "
+          f"mapped rows: {structural['surplus_parts_mapped']}")
+    if have_ned:
+        es = structural["entire_staff_edits"]
+        print(f"  `entire staff insert/delete` in the pool: {es} edits "
+              f"= {100.0 * es / max(pooled_ed, 1):.1f}% of {pooled_ed}")
+        print(f"  ⚠️  that bucket is where a condensed staff's unpaired parts "
+              f"land. It is an\n      UPPER BOUND on the convention's cost and "
+              f"a LOWER bound on elementwise\n      cost (`_block_diff_lin` is "
+              f"a cost-MINIMISING DP). Price it by running\n      "
+              f"--page-normalised, and read the two columns as different eras.")
+    if args.page_normalised:
+        norm_rows = [r for r in pool
+                     if (r.get("page_normalised_truth") or {}).get("omr_ned")]
+        if norm_rows:
+            n_ed = sum(r["page_normalised_truth"]["omr_ned"]["omr_ed"]
+                       for r in norm_rows)
+            n_ts = sum(r["page_normalised_truth"]["omr_ned"]["truth_symbols"]
+                       for r in norm_rows)
+            n_ps = sum(r["page_normalised_truth"]["omr_ned"]["pred_symbols"]
+                       for r in norm_rows)
+            r_ed = sum((r.get("omr_ned") or {}).get("omr_ed", 0)
+                       for r in norm_rows)
+            r_ts = sum((r.get("omr_ned") or {}).get("truth_symbols", 0)
+                       for r in norm_rows)
+            r_ps = sum((r.get("omr_ned") or {}).get("pred_symbols", 0)
+                       for r in norm_rows)
+            print()
+            print(f"PAGE-NORMALISED ARM over the {len(norm_rows)} rows that "
+                  f"have a hand map "
+                  f"(transform v{page_normalise.TRANSFORM_VERSION})")
+            print(f"  raw        {r_ed / max(r_ts + r_ps, 1):.4f}  "
+                  f"{r_ed:>6d} edits")
+            print(f"  normalised {n_ed / max(n_ts + n_ps, 1):.4f}  "
+                  f"{n_ed:>6d} edits")
+            print(f"  ⚠️  {r_ed - n_ed:+d} edits is STRUCTURAL CHARGE REMOVED, "
+                  f"NOT pipeline improvement, and the two\n      columns are "
+                  f"SEPARATE BENCHMARK ERAS that may not be differenced.")
+
     payload = {
         "protocol": protocol,
         "generated_by": "benchmarks/omr-scan-e2e-2026-09/scan_eval.py",
         "pooled_withheld_because": unverified or None,
+        # Written on EVERY run: a reader of results.json must not have to know
+        # to ask how much of the pooled figure is the condensation convention.
+        "structural": structural,
         "stress_rows_excluded": [r["row_id"] for r in stress] or None,
         "pooled": None if (unverified or not have_ned) else {
             "n_rows": len(pool),

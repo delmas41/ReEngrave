@@ -1,0 +1,97 @@
+{
+ "row_id": "beethoven-sym5-mvt1-984073-p1",
+ "page_staves": [
+  "Flauti",
+  "Oboi",
+  "Clarinetti in B",
+  "Fagotti",
+  "Corni in Es",
+  "Trombe in C",
+  "Timpani in C.G.",
+  "Violino I",
+  "Violino II",
+  "Viola",
+  "Violoncello",
+  "Basso"
+ ],
+ "mxl_parts": [
+  "Flute 1",
+  "Flute 2",
+  "Oboe 1",
+  "Oboe 2",
+  "Bb Clarinet",
+  "Bb Clarinet 2",
+  "Bassoon 1",
+  "Bassoon 2",
+  "Eb Horn 1",
+  "Eb Horn 2",
+  "C Trumpet 1",
+  "C Trumpet 2",
+  "C, G Timpani",
+  "Violin 1",
+  "Violin 2",
+  "Viola",
+  "Violoncello",
+  "Contrabass"
+ ],
+ "our_parts": [
+  "Flute",
+  "Oboe",
+  "Clarinet",
+  "Bassoon",
+  "Horn",
+  "Trumpet",
+  "Timpani",
+  "Violin",
+  "Violin",
+  "Viola",
+  "Cello",
+  "Contrabass"
+ ],
+ "condensed": [
+  {
+   "staff": "Flauti",
+   "parts": [
+    0,
+    1
+   ]
+  },
+  {
+   "staff": "Oboi",
+   "parts": [
+    2,
+    3
+   ]
+  },
+  {
+   "staff": "Clarinetti in B",
+   "parts": [
+    4,
+    5
+   ]
+  },
+  {
+   "staff": "Fagotti",
+   "parts": [
+    6,
+    7
+   ]
+  },
+  {
+   "staff": "Corni in Es",
+   "parts": [
+    8,
+    9
+   ]
+  },
+  {
+   "staff": "Trombe in C",
+   "parts": [
+    10,
+    11
+   ]
+  }
+ ],
+ "orphan_parts": [],
+ "surplus_parts": 6
+}
