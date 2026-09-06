@@ -14,8 +14,9 @@ px)`, and only the object count is evidence: a barline stands at the same x in
 every gap of the system, a stem or a slur stands wherever the music put it.
 Counting the objects instead takes within-page bracket disagreement from
 **0.384 to 0.055** over 144 pages of five publishers, and moves the rule's
-0.5 cut from a knife edge — 6.8% of gaps within ±0.15 of it — onto an
-**empty interval**: 0 of 671 gaps land anywhere in 0.2 < r < 0.8.
+0.5 cut off a continuum onto an **empty interval**: over 1130 gaps the largest
+ratio below the cut is 0.333 and the smallest above it is 0.778, where under
+the incumbent they are 0.4962 and 0.5000.
 
 ⚠️ **And it is worth nothing today.** `group_index` reaches the pipeline's
 output through two consumers and both are inert here: the exported MusicXML is
@@ -89,9 +90,12 @@ reference gap the boundary did not help choose) inside every gap band. Beethoven
 | 7…10 (inside strings) | 1.00 |
 
 At gaps 3 and 6 every interior barline column reads 0.01–0.17. The barlines
-stop; the boundary is printed. The lineup confirms it independently — the
-works.json roster for this edition is `Fl Ob Cl Fg | Cor Tr Timp | Vl1 Vl2 Vla
-Vc Basso`, exactly 4 | 3 | 5, which is what system 1 reads and system 0 does not.
+stop; the boundary is printed. The lineup agrees independently — the hand-read
+roster `benchmarks/omr-scan-e2e-2026-09/works.json` records for this edition's
+12-staff page is `Fl Ob Cl Fg | Cor Tr Timp | Vl1 Vl2 Vla Vc Basso`, exactly
+4 | 3 | 5, which is what system 1 reads and system 0 does not. (That row is
+p.1, not p.38; what makes it usable here is that p.38's two systems print the
+same twelve staves, which is why they were comparable in the first place.)
 
 ### 1c. Why a ratio of pixels cannot separate these
 
@@ -109,10 +113,11 @@ same physical boundary lands on both sides of the cut:
 | p.38 | 0 | 52 | 66 | 0.788 | no |
 
 **And the population confirms there is no cut to find.** Over 2841 gaps of 248
-systems, the pixel ratio is a continuum through the decision region — 0.3:85,
-0.4:111, 0.5:42, 0.6:40, 0.7:48, 0.8:156 — with **194 gaps (6.8%) inside
-±0.15 of the cut**. A constant read off a gap should have an empty interval
-around it; this one has the densest part of the distribution.
+systems, the pixel ratio is a continuum straight through the decision region:
+the largest ratio below the cut is **0.4962** and the smallest above it is
+**0.5000**. There is no gap around the constant at all — the rule is not
+reading a separation, it is slicing a continuum, and every one of the 194 gaps
+within ±0.15 of the cut is a coin toss.
 
 ## 2. The rate, before any fix
 
@@ -158,25 +163,39 @@ under it.
 * **A cluster seen at EVERY gap is dropped.** The left-edge complex and the
   final barline are drawn through the whole system by definition, so they
   distinguish no gap from any other — and a constant added to both sides of a
-  ratio is not neutral. p.23 system 1's winds|brass gap keeps 3 of 6 systemic
-  columns (0.500, the rule's own knife edge, no split) and 1 of 4 with the two
-  spanning columns removed (0.250, split, agreeing with every other system of
-  that lineup).
+  ratio is not neutral. Measured on p.23 system 1, both variants run through
+  the shipped clustering:
+
+  ```
+  without the exclusion:  [6, 6, 5, 3, 6, 6, 2, 6, 6, 6, 6]  median 6
+                                    ^ gap 3 = 0.500 — the rule's own knife
+                                      edge, and `<` means NO split
+  with    the exclusion:  [4, 4, 3, 1, 4, 4, 0, 4, 4, 4, 4]  median 4
+                                    ^ gap 3 = 0.250 — split, agreeing with
+                                      every other system of that lineup
+  ```
 * `BRACKET_COLUMN_MIN_EVIDENCE` — the abstention, forced by the engraved
   family. See §5.
 
-### The cut is now on an empty interval
+### The cut is now on an empty interval, and that is the strongest result here
 
-Same measurement as §1c, over 671 gaps of 58 systems where the rule is live:
+Same measurement as §1c, over **1130 gaps of 95 systems, all five publishers**:
+
+```
+                       largest below the cut    smallest above it
+  pixels (incumbent)          0.4962                0.5000      <- continuous
+  columns (this fix)          0.3333                0.7778      <- EMPTY
+```
+
+Nothing lands in `0.3333 < r < 0.7778`. `GROUP_BOUNDARY_RATIO = 0.5` is
+inherited unchanged and now sits inside an empty interval, which is what this
+repo asks of a constant — while under the incumbent **292 of 2841 gaps
+(10.3%) fall inside that same interval**, each of them decided by which side
+of a continuum it happened to land on.
 
 | ratio bin | 0.0 | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | 0.8 | 0.9 | 1.0 | 1.1 | 1.2 |
 |---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
-| pixels (incumbent) | 14 | 109 | 152 | 85 | 111 | 42 | 40 | 48 | 156 | 292 | 784 | 422 | 153 |
-| **columns** | 82 | 7 | 4 | **0** | **0** | **0** | **0** | **0** | 8 | 31 | 515 | 22 | 2 |
-
-**0 of 671 gaps** in 0.2 < r < 0.8, against 6.8% of gaps within ±0.15 of the cut
-under the incumbent. The 0.5 constant is inherited unchanged and is now sitting
-in the middle of nothing, which is what this repo asks of a constant.
+| **columns** | 208 | 8 | 8 | 1 | **0** | **0** | **0** | **0** | 13 | 35 | 829 | 23 | 5 |
 
 ### The rate, after
 
@@ -259,14 +278,17 @@ system:
 
 | corpus | distribution | |
 |---|---|--:|
-| engraved (11 LilyPond fixtures) | 0 ×6, 1 ×3, 1.5, 2 | max **2** |
-| scanned (3 publishers, 58 systems) | 5, 6, 7 ×2, 8 ×5, 9 ×12, … 21 | min **5** |
+| engraved (11 LilyPond fixtures, 11 systems) | 0 ×6, 1 ×3, 1.5, 2 | max **2** |
+| scanned (5 publishers, 95 systems) | 4 ×12, 5 ×12, 6 ×4, 7 ×5, 8 ×8, 9 ×16, … 21 | min **4** |
 
-`BRACKET_COLUMN_MIN_EVIDENCE = 3` — any floor in 3..4 reads both corpora
-identically. Below it the system abstains to one group, which is the honest
-answer for a page carrying no bracket evidence, and which
-`_is_grouped_system` reads as "not grouped" so cue C cannot reach it either.
-With the floor, all 11 engraved fixtures read exactly one group.
+`BRACKET_COLUMN_MIN_EVIDENCE = 3`. The test is `median < MIN`, so a floor of
+either 3 or 4 reads both corpora identically; 3 is taken, one unit clear of
+each population. **5 would be wrong** — it would silence Bach and Mahler, whose
+systems sit at 4, and that only became visible when the evidence sample was
+widened from three publishers to five. Below the floor the system abstains to
+one group, the honest answer for a page carrying no bracket evidence, and the
+answer `_is_grouped_system` reads as "not grouped" so cue C cannot reach it
+either. With the floor, **all 11 engraved fixtures read exactly one group**.
 
 ## 6. ⚠️ REACH — the part that decides whether this should land
 
