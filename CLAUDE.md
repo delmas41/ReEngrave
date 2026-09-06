@@ -1206,6 +1206,13 @@ declined to clean up several suspected orphans for exactly that reason, which
 was the right call: a second guess-driven `pkill` while another agent is mid-run
 is worse than an unmeasured number.
 
+✅ **The escape for an UNATTENDED run: `OMR_SURYA_KEEP_ALIVE=0`.** A worker per
+page costs ~15 s/page and owns its own process, so the run can repair itself by
+killing its own PID. The principle, from the session that hit the stall while
+forbidden to touch the shared server: **an unattended run should not depend on
+shared state it is not allowed to repair.** Use the resident server for
+interactive work, where you can see who else is reading.
+
 ⚠️ **The wedge itself is UNDIAGNOSED, and three plausible causes were each
 falsified**: CPU starvation (the machine went quiet and it still stalled),
 retained page rasters (~3 GB, dropped, still stalled at the same count), and
