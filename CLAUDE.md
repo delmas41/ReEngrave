@@ -1562,10 +1562,18 @@ the main checkout instead of re-bootstrapping:
 ```bash
 export OMRNED_PYTHON=/Users/seanjohnson/Desktop/ReEngrave/.venv-omrned/bin/python
 ln -sfn /Users/seanjohnson/Desktop/ReEngrave/.venv-surya .venv-surya
+ln -sfn /Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/weights \
+        tools/omr/training/data/weights          # WEIGHTS, the third one
 ```
 
 (No env override exists for the Surya venv — `staff_labels_surya.VENV_DIR` is
 computed from the file's own location — hence the symlink.)
+
+⚠️ **The WEIGHTS symlink is the third one and it fails ASYMMETRICALLY** (found
+2026-09-05): weights resolve CWD-relative, so without it `scan_eval` dies on
+`FileNotFoundError: …hollow-graft-shift09….pt` while `orchestral_eval` still
+runs — the same shape as the Surya trap, where one benchmark looks healthy and
+the other does not.
 
 ⚠️ **This paragraph is where the current figure lives, and nowhere else.** It
 used to be restated in PROJECT_STATUS.md, NOTES.md and the next-steps doc, and
@@ -1635,6 +1643,26 @@ re-running it: Audiveris rasterizes PDFs at 300 dpi and hard-refuses images over
 20 MP (so the harness renders each page at the highest DPI under that cap and
 records it per row), and its batch mode does not exit on macOS after a
 successful export (the harness polls for the file, then kills it).
+
+⚠️⚠️ **THE 20-ROW SCAN GATE HAS A NOISE FLOOR OF ROUGHLY ±6 EDITS, AND ITS
+RECORDED 0.8444 IS NOT A BASELINE FOR THE CURRENT TREE** (both measured
+2026-09-05, `benchmarks/omr-merge-verification-2026-09/`; branch
+`claude/merge-verification-2026-09-05`). Two separate corrections:
+
+- **Not byte-deterministic.** `DETERMINISM_2026-09-04.md` measured a noise floor
+  of exactly 0 — on the **five-row** era, and the bullet above now says so. On the
+  20-row gate `beethoven-984073-p4` scores **4673 then 4679 on two runs of one
+  tree**. So assume **≥ ±6 edits** on any single-arm 20-row figure; a smaller
+  per-row delta is NOT evidence, and an A/B on the same tree is the only way to
+  attribute one.
+- **`c378412f`, which stamped 0.8444, is not an ancestor of much that has since
+  landed** — the CV hairpin reader (`cf81b524`, 2 → 106 exported `<wedge>` on this
+  benchmark), the Surya block-rejection (`823a88b4`), `condensed_parts.py`,
+  `class_aliases.py`, ~385 lines of `export.py`; `git diff c378412f <head> --
+  tools/omr` is 28 files. **A fresh run compared against 0.8444 measures that
+  whole stack, not the change under test.** Re-run the control arm on the merge
+  base instead — that is what showed the 2026-09-05 landing contributed exactly
+  zero (0.8441 pooled, six rows moving, all of them inherited).
 
 ⚠️ **Two rows of that table are not read the way the others are.**
 `dvorak-sym9-mvt4`'s excerpt auto-shrank to **3 bars** against everyone else's
@@ -1882,7 +1910,7 @@ n=2 works, engraved; a scan would be worse, not better. Full reading in
 - `tools/omr/transcribe.py` loads the YOLO model once per call, then iterates pages.
 - The image pipeline is canonical-cell-based: each measure is sliced and rescaled so staff span is constant, giving YOLO a scale-invariant input.
 - Phase 4f introduced classical-CV stem and beam detection (morphological opening + connected components) because YOLO bounding boxes are structurally bad at thin lines.
-- Production weights (scan side): `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt` — **not a training run.** Rounds 3–5 measured that fine-tuning on the scan-label corpus DELETES whole classes (tie/slur/beam/augmentationDot/accidentalFlat/restWhole/ledgerLine → exactly 0) under every method tried (eleven arms: no-warmup, low LR, freeze, teacher distillation…), so the ship is surgery: the hollow fine-tune's seven notehead-class head rows grafted onto the 09-03 production (`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`, itself a 1-epoch hollow fine-tune of the Phase-3.3 `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`), with a per-class confidence floor baked into those rows' biases (bias-shift 0.9 ≈ threshold 0.25 → 0.45). First checkpoint in three rounds to beat production on every measure of all three gate axes: half-noteheads 27 → 31, pitch+duration recall 0.435 → 0.510, dense notehead recall 0.941 → 1.000, scan-e2e pooled OMR-NED 0.7517 → 0.7493 (4 of 5 rows improve; the harness is byte-deterministic — noise floor exactly 0), 28 classes with 0 collapsed; exported ties 60 → 97 of 271. Records: `ROUND5_METHOD_2026-09-04.md` (benchmarks/omr-labeling-survey-2026-09/, lands with branch `claude/scan-weights-round4-continue-074940`) and `DETERMINISM_2026-09-04.md` (benchmarks/omr-scan-e2e-2026-09/, branch `claude/scan-e2e-determinism`). **Weights ROUTE by input domain when not pinned** (since 2026-09-03): scanned PDFs get this file, digitally engraved PDFs get the imgsz2048 checkpoint, which measures better there (0.1399 vs 0.1421 pooled) — see `OMR_WEIGHT_ROUTING` in the knobs table.
+- Production weights (scan side): `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt` — **not a training run.** Rounds 3–5 measured that fine-tuning on the scan-label corpus DELETES whole classes (tie/slur/beam/augmentationDot/accidentalFlat/restWhole/ledgerLine → exactly 0) under every method tried (eleven arms: no-warmup, low LR, freeze, teacher distillation…), so the ship is surgery: the hollow fine-tune's seven notehead-class head rows grafted onto the 09-03 production (`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt`, itself a 1-epoch hollow fine-tune of the Phase-3.3 `deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt`), with a per-class confidence floor baked into those rows' biases (bias-shift 0.9 ≈ threshold 0.25 → 0.45). First checkpoint in three rounds to beat production on every measure of all three gate axes: half-noteheads 27 → 31, pitch+duration recall 0.435 → 0.510, dense notehead recall 0.941 → 1.000, scan-e2e pooled OMR-NED 0.7517 → 0.7493 (4 of 5 rows improve; the harness measured byte-deterministic on that FIVE-row era — noise floor exactly 0), 28 classes with 0 collapsed; exported ties 60 → 97 of 271. Records: `ROUND5_METHOD_2026-09-04.md` (benchmarks/omr-labeling-survey-2026-09/, lands with branch `claude/scan-weights-round4-continue-074940`) and `DETERMINISM_2026-09-04.md` (benchmarks/omr-scan-e2e-2026-09/, branch `claude/scan-e2e-determinism`). **Weights ROUTE by input domain when not pinned** (since 2026-09-03): scanned PDFs get this file, digitally engraved PDFs get the imgsz2048 checkpoint, which measures better there (0.1399 vs 0.1421 pooled) — see `OMR_WEIGHT_ROUTING` in the knobs table.
 - Phase 3.4 attempted to add 6 custom classes (barlines, textDynamic) and caused catastrophic forgetting — those classes are now learned via classical CV instead, not YOLO. See `benchmarks/omr-phase3.4b/comparison-trained-v4.md`.
 - **The 208-class space spells 32 glyphs TWICE, under two names, and consumers read one** (fixed 2026-09-04, `tools/omr/class_aliases.py`). The vocabulary is two annotation sets concatenated — fine at ids 0-135 (`dynamicF`, `articStaccatoAbove`, `tupletBracket`), coarse at 136-207 (`dynamicLetterF`, `articulationStaccato`, `tupleBracket`). Forty classes carry the SAME name at both ids so a name lookup sees both; thirty-two do not, and every consumer here was written against the fine spelling. A detection at id 192 was a forte `export._DYNAMIC_LETTER` could not spell — dropped with no warning, the same fault as `fingering3`/`tuplet3`. Confirmed mechanically by asking each consumer what it returns for both spellings. **It cost nothing when found** (the coarse block fires ZERO times across 3 engraved fixtures and 29 scanned pages of 9 publishers); what makes it live is the LABELING side — 26 hollow-campaign boxes are classed `dynamicLetter*` and `catalog.yaml` carries the coarse spelling at ids 190-195, so the next fine-tune trains ids the exporter cannot read. Renamed at the one place the model's `names` are read, so no call site knows. ⚠️ **Only 11 EXACT TWINS are renamed.** A coarser name is not a synonym: `numeral4` is NOT `timeSig4` (one numeral class covers meters, tuplet digits, fingerings and measure numbers — and a spurious `timeSig4` once shipped a 2/4 page as common time at 390 bar-check failures), `articulationStaccato` states no SIDE, `tuple` no NUMBER, `clefC` no LINE. Those 21 are recorded in `COARSER_THAN_CANONICAL` with what closing each would take, and `unaccounted()` fails the suite on any name in neither table — so a wider class space is a loud failure, not a silent drop.
 
