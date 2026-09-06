@@ -166,9 +166,42 @@ def canonical(name):
 
 
 def acceptable(name):
-    """Every canonical name a truth string may legitimately come out as."""
-    c = canonical(name)
-    return {c} if c else set()
+    """Every instrument a printed truth label could legitimately mean.
+
+    ⚠️ THIS PROBE SHIPPED THE AMBIGUOUS-ALIAS BUG FOR THE THIRD TIME IN THIS
+    REPO, and it did so while scoring the arm that flipped a default.
+    `lookup` returns the lexicon's FIRST answer for an ambiguous alias, and for
+    `Basso.` — every orchestral score's bottom string staff — that is
+    `Bass voice`. So a correct `Contrabass` scored WRONG and a `Bass voice`
+    scored RIGHT, which is backwards: Beethoven 5 has no chorus and its own
+    reference part list says `Contrabass`.
+
+    Effect on the record this probe produced: **2 of the 27 "ON fixes" were
+    this artifact, not fixes** — both Beethoven rows' entire +1. The other 25
+    (Dvořák, where OFF emitted no name at all and ON emitted the right one) are
+    genuine, so `OMR_ROSTER`'s default stands on 25 rather than 27.
+
+    ⚠️ It also became a live trap: `c0a80ae7` fixed the pipeline so an ambiguous
+    slot is settled by POSITION (→ `Contrabass`), so an unfixed probe would now
+    read that improvement as a regression.
+
+    Prior appearances, both documented: `omr-part-staff-join-2026-08`'s harness
+    ("counting a correct Contrabass as an error since it was written") and
+    `probe_heldout_identity.py`, which caught and fixed it on 2 Litolff records.
+    This is that same function, copied here without its fix.
+
+    Where the alias that fired is ambiguous, EVERY candidate is accepted.
+    """
+    from tools.omr import instruments as INST
+    if not name:
+        return frozenset()
+    m = INST.lookup(str(name))
+    if not m:
+        return frozenset()
+    cands = INST.candidates_for_alias(m.alias)
+    if cands:
+        return frozenset(c.name for c in cands)
+    return frozenset({m.instrument.name})
 
 
 def resolve_truth(row, by_id, _depth=0):
