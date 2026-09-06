@@ -41,13 +41,18 @@ class TestProseDialect:
         counts = {i.get("instrument"): i.get("count") for i in parsed["roster"]}
         assert counts["Trombone"] == 3 and counts["Piccolo"] == 1
 
-    def test_an_english_plural_the_lexicon_lacks_is_depluralized_and_flagged(self):
-        # The lexicon knows "oboi" and "Ob." — a printed margin label — but not
-        # the English plural an encyclopaedia writes.  Normalising is fine; doing
-        # it silently is not.
+    def test_an_english_plural_now_resolves_without_normalising(self):
+        # This asserted the opposite until the lexicon learned English plurals
+        # (2026-09-05): it knew "oboi" and "Ob." — printed margin labels — but
+        # not the plural an encyclopaedia writes, so this parser de-pluralised
+        # and flagged it.  The flag existed because normalising is fine and
+        # doing it silently is not; the lexicon fix removed the need, taking
+        # this workaround from 195 firings across the IMSLP corpus to 0.
+        # `lexicon_depluralized` is kept for any plural the lexicon still
+        # lacks — its ABSENCE here is the point.
         oboe = next(i for i in instr.parse_roster(BEETHOVEN_5)["roster"]
                     if i.get("instrument") == "Oboe")
-        assert oboe["lexicon_depluralized"] is True
+        assert "lexicon_depluralized" not in oboe
 
     def test_a_section_is_not_an_instrument_and_carries_no_count(self):
         strings = next(i for i in instr.parse_roster(BEETHOVEN_5)["roster"]
