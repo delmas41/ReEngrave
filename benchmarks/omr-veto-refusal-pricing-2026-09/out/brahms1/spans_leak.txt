@@ -1,0 +1,16 @@
+pre-finale staves named a FINALE-ONLY instrument, per 2x2 cell
+(⚠️ Brahms 1 has NO tuba at all — `Tuba` is the score-order prior's name for the second trombone staff, and is outside VETOABLE_SOURCES everywhere, so it is broken out.)
+  spans-off  veto off :  36   28x Trombone(label), 8x Tuba(score_order)
+  spans-on   veto off : 149   70x Trombone(label), 79x Tuba(score_order)
+  spans-off  veto on  :  14   6x Trombone(label), 8x Tuba(score_order)
+  spans-on   veto on  : 133   54x Trombone(label), 79x Tuba(score_order)
+
+the six the veto stops refusing once spans are on:
+  p12 sy1 st21  spans-off 'Trombone' -> spans-on 'Trombone'   (staff above is labelled 'Horn')
+  p15 sy1 st18  spans-off 'Trombone' -> spans-on 'Trumpet'   (staff above is labelled 'Horn')
+  p19 sy1 st20  spans-off 'Trombone' -> spans-on 'Trumpet'   (staff above is labelled 'Horn')
+  p20 sy0 st 6  spans-off 'Trombone' -> spans-on 'Trumpet'   (staff above is labelled 'Horn')
+  p26 sy0 st 6  spans-off 'Trombone' -> spans-on 'Trumpet'   (staff above is labelled 'Horn')
+  p26 sy1 st19  spans-off 'Trombone' -> spans-on 'Trumpet'   (staff above is labelled None)
+
+⚠️ Trumpet is not impossible in Brahms 1 — the work has trumpets throughout — so the rename is invisible to an `impossible` count. The staff-above label is what says it is still wrong.

@@ -1,0 +1,31 @@
+===== spans-off: 1095 pre-finale staff records
+  given / its OWN label:
+      22  named Trombone  own label <no label>
+       6  named Trombone  own label Timpani
+       6  named Tuba      own label Violin
+       2  named Tuba      own label Horn
+  given / the label on the staff ABOVE it:
+      21  named Trombone  above Horn
+       6  named Trombone  above Trumpet
+       6  named Tuba      above Timpani
+       2  named Tuba      above Horn
+       1  named Trombone  above <no label>
+
+===== spans-on: 1095 pre-finale staff records
+  given / its OWN label:
+      51  named Tuba      own label Violin
+      36  named Trombone  own label Trumpet
+      28  named Tuba      own label Timpani
+      17  named Trombone  own label <no label>
+      16  named Trombone  own label Timpani
+       1  named Trombone  own label Horn
+  given / the label on the staff ABOVE it:
+      40  named Trombone  above <no label>
+      35  named Tuba      above Trumpet
+      21  named Trombone  above Horn
+      18  named Tuba      above Horn
+      17  named Tuba      above <no label>
+       9  named Tuba      above Timpani
+       8  named Trombone  above Trumpet
+       1  named Trombone  above Bass voice
+
