@@ -383,7 +383,7 @@ non-deterministic):
 |---|---|---|
 | Bach Brandenburg 3 p.1 | the ONLY gate page with a window-blind system — the one page where cue C can fire at all | **BYTE-IDENTICAL** |
 | Brahms 1 p.4 | the ONLY gate page where `_is_grouped_system` differs between the arms | **BYTE-IDENTICAL** |
-| Beethoven 3 & 5, Brahms 1 & 4, Bruckner 5, Dvořák 9, Mahler 5, Mozart 40 & 41 (engraved) | the family that falsified cue C | **BYTE-IDENTICAL, 9 of 9 run** |
+| all **11 engraved orchestral fixtures** | the family that falsified cue C | **BYTE-IDENTICAL, 11 of 11** |
 
 The two scan pages are the complete exposed set: every other gate row has
 neither a blind system nor a changed `_is_grouped_system`, so it cannot differ
@@ -391,12 +391,10 @@ by construction. A byte-identical export is strictly stronger than an equal
 OMR-NED and has no noise floor to argue about — where a pooled 20-row figure
 would have had to be read against ±6 edits.
 
-⚠️ **Two engraved fixtures (both Tchaikovskys) were still running when this
-was written** and are not claimed. They are
-confirmatory rather than decisive: the exact control above already says the
-change cannot reach cue C on any of the eleven. `out/ab-engraved-export.log`
-(the first three) and `out/ab-engraved-export-nosurya.log` (the rest) carry
-whatever they finished as.
+The engraved arm therefore agrees with the exact control exactly: the change
+cannot reach cue C on any of the eleven, and it does not.
+`out/ab-engraved-export.log` holds the first three works and
+`out/ab-engraved-export-nosurya.log` the other eight (`8 of 8 byte-identical`).
 
 ⚠️ **The engraved run had to be restarted, and the reason is a real hazard for
 anyone repeating this.** The first attempt wedged mid-work on its own Surya

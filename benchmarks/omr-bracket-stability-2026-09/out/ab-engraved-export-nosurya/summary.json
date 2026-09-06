@@ -1,0 +1,50 @@
+[
+ {
+  "pdf": "brahms-sym4-mvt1",
+  "identical": true,
+  "changed_lines": 0,
+  "sample": []
+ },
+ {
+  "pdf": "bruckner-sym5-mvt1",
+  "identical": true,
+  "changed_lines": 0,
+  "sample": []
+ },
+ {
+  "pdf": "dvorak-sym9-mvt4",
+  "identical": true,
+  "changed_lines": 0,
+  "sample": []
+ },
+ {
+  "pdf": "mahler-sym5-mvt1",
+  "identical": true,
+  "changed_lines": 0,
+  "sample": []
+ },
+ {
+  "pdf": "mozart-sym40-mvt1",
+  "identical": true,
+  "changed_lines": 0,
+  "sample": []
+ },
+ {
+  "pdf": "mozart-sym41-mvt1",
+  "identical": true,
+  "changed_lines": 0,
+  "sample": []
+ },
+ {
+  "pdf": "tchaikovsky-sym4-mvt2",
+  "identical": true,
+  "changed_lines": 0,
+  "sample": []
+ },
+ {
+  "pdf": "tchaikovsky-sym6-mvt2",
+  "identical": true,
+  "changed_lines": 0,
+  "sample": []
+ }
+]
