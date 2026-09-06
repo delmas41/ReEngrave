@@ -1,0 +1,70 @@
+beethoven-sym5-mvt1-984073-p1: transcribing page 1 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf …
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+beethoven-sym5-mvt1-984073-p2: transcribing page 2 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf …
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/xmlToM21.py:4081: MusicXMLWarning: Line <bracket> stop without start
+  warnings.warn('Line <' + mxObj.tag + '> stop without start', MusicXMLWarning)
+beethoven-sym5-mvt1-984073-p3: transcribing page 3 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf …
+beethoven-sym5-mvt1-984073-p4: transcribing page 4 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf …
+beethoven-sym5-mvt1-575951-p1: transcribing page 0 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf …
+beethoven-sym5-mvt1-575951-p2: transcribing page 1 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf …
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/xmlToM21.py:4081: MusicXMLWarning: Line <bracket> stop without start
+  warnings.warn('Line <' + mxObj.tag + '> stop without start', MusicXMLWarning)
+beethoven-sym5-mvt1-575951-p3: transcribing page 2 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf …
+beethoven-sym5-mvt1-575951-p4: transcribing page 3 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf …
+dvorak-sym9-mvt1-405834-p5: transcribing page 4 of dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf …
+dvorak-sym9-mvt1-405834-p6: transcribing page 5 of dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf …
+1 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '|' — these are the strings to add to tools/omr/instruments.py
+dvorak-sym9-mvt1-405834-p7: transcribing page 6 of dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf …
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/xmlToM21.py:5128: MusicXMLWarning: Could not import wedge: Error in getting DynamicWedges
+  warnings.warn(f'Could not import {tag}: {excep}', MusicXMLWarning)
+brahms-sym1-mvt1-317803-p1: transcribing page 0 of brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf …
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'in C 1 2', 'in Es 3 4' — these are the strings to add to tools/omr/instruments.py
+brahms-sym1-mvt1-317803-p2: transcribing page 1 of brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf …
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(C)', '(Es)' — these are the strings to add to tools/omr/instruments.py
+brahms-sym1-mvt1-317803-p3: transcribing page 2 of brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf …
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(C)', '(Es)' — these are the strings to add to tools/omr/instruments.py
+brahms-sym1-mvt1-317803-p4: transcribing page 3 of brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf …
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(C)', '(Es)' — these are the strings to add to tools/omr/instruments.py
+mahler-sym5-mvt1-local-p2: transcribing page 1 of mahler--symphony-5--unidentified-scan-2016--local.pdf …
+mahler-sym5-mvt1-local-p3: transcribing page 2 of mahler--symphony-5--unidentified-scan-2016--local.pdf …
+3 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '2', '3', '7' — these are the strings to add to tools/omr/instruments.py
+mahler-sym5-mvt1-local-p4: transcribing page 3 of mahler--symphony-5--unidentified-scan-2016--local.pdf …
+4 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '4 8 5', '4 a', 'Veelle.', 'get.' — these are the strings to add to tools/omr/instruments.py
+mahler-sym5-mvt1-local-p5: transcribing page 4 of mahler--symphony-5--unidentified-scan-2016--local.pdf …
+5 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '4 5 6', '8 4', 'Veelle.', 'get.', 'i Posa osaunen' — these are the strings to add to tools/omr/instruments.py
+bach-brandenburg3-mvt1-468678-p1: transcribing page 0 of bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf …
+2 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: 'I', 'III' — these are the strings to add to tools/omr/instruments.py
+
+row                                        win    staves    meas  OMR-NED   edits  truth   pred  conf
+beethoven-sym5-mvt1-984073-p1.mergeverify 1-16      12/12    16/16    0.7053    1273   1064    741  verified
+beethoven-sym5-mvt1-984073-p2.mergeverify 17-48      22/22    16/32    0.8697    4347   3004   1994  verified
+beethoven-sym5-mvt1-984073-p3.mergeverify 49-82      19/19    18/34    0.8706    3034   2134   1351  verified
+beethoven-sym5-mvt1-984073-p4.mergeverify 83-112     22/22    15/30    0.9009    4673   2929   2258  verified
+beethoven-sym5-mvt1-575951-p1.mergeverify 1-16      12/12    16/16    0.7547    1354   1064    730  verified
+beethoven-sym5-mvt1-575951-p2.mergeverify 17-48      22/22    17/32    0.8705    4408   3004   2060  verified
+beethoven-sym5-mvt1-575951-p3.mergeverify 49-82      19/19    18/34    0.8811    3172   2134   1466  verified
+beethoven-sym5-mvt1-575951-p4.mergeverify 83-112     22/22    16/30    0.8816    4714   2929   2418  verified
+dvorak-sym9-mvt1-405834-p5.mergeverify 1-8       15/15     8/8     0.4221     661    792    774  verified
+dvorak-sym9-mvt1-405834-p6.mergeverify 9-15      15/15     7/7     0.7221    2586   2022   1559  verified
+dvorak-sym9-mvt1-405834-p7.mergeverify 16-30      30/30    10/15    0.7133    5698   4295   3693  verified
+brahms-sym1-mvt1-317803-p1.mergeverify 1-7       14/14     8/7     0.9184    3431   2083   1653  verified
+brahms-sym1-mvt1-317803-p2.mergeverify 8-22      27/27     8/15    0.9424    6562   3399   3564  verified
+brahms-sym1-mvt1-317803-p3.mergeverify 23-37      28/28     9/15    0.8930    4573   2731   2390  verified
+brahms-sym1-mvt1-317803-p4.mergeverify 38-58      28/28    11/21    0.8653    7012   4383   3721  verified
+mahler-sym5-mvt1-local-p2.mergeverify  0-8       17/17     9/9     0.6884    1118   1148    476  verified
+mahler-sym5-mvt1-local-p3.mergeverify  9-16      13/13     8/8     0.8867    3075   2248   1220  verified
+mahler-sym5-mvt1-local-p4.mergeverify  17-23      18/18     8/7     0.9153    4149   2870   1663  verified
+mahler-sym5-mvt1-local-p5.mergeverify  24-31      17/17     8/8     0.9298    2968   2064   1128  verified
+bach-brandenburg3-mvt1-468678-p1.mergeverify 1-10      24/24     6/10    0.8046    6148   3549   4092  verified
+
+POOLED OMR-NED over 20 scanned pages: 0.8441
+  74956 edits over 49846 truth + 38951 predicted symbols
+    entire measure insert/delete            29655   39.6%
+    wrong note                              22174   29.6%
+    entire staff insert/delete              17520   23.4%
+    wrong note head                          1788    2.4%
+    wrong flag/beam                           688    0.9%
+    wrong dynamic                             512    0.7%
+
+wrote /tmp/mv0905/results-mergeverify.json

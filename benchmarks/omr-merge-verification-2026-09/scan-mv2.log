@@ -1,0 +1,28 @@
+beethoven-sym5-mvt1-984073-p1: transcribing page 1 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf …
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+beethoven-sym5-mvt1-984073-p2: transcribing page 2 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf …
+beethoven-sym5-mvt1-984073-p4: transcribing page 4 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf …
+beethoven-sym5-mvt1-575951-p1: transcribing page 0 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf …
+beethoven-sym5-mvt1-575951-p2: transcribing page 1 of beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf …
+mahler-sym5-mvt1-local-p5: transcribing page 4 of mahler--symphony-5--unidentified-scan-2016--local.pdf …
+5 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '4 5 6', '8 4', 'Veelle.', 'get.', 'i Posa osaunen' — these are the strings to add to tools/omr/instruments.py
+
+row                                        win    staves    meas  OMR-NED   edits  truth   pred  conf
+beethoven-sym5-mvt1-984073-p1.mv2      1-16      12/12    16/16    0.7053    1273   1064    741  verified
+beethoven-sym5-mvt1-984073-p2.mv2      17-48      22/22    16/32    0.8697    4347   3004   1994  verified
+beethoven-sym5-mvt1-984073-p4.mv2      83-112     22/22    15/30    0.9010    4679   2929   2264  verified
+beethoven-sym5-mvt1-575951-p1.mv2      1-16      12/12    16/16    0.7547    1354   1064    730  verified
+beethoven-sym5-mvt1-575951-p2.mv2      17-48      22/22    17/32    0.8705    4408   3004   2060  verified
+mahler-sym5-mvt1-local-p5.mv2          24-31      17/17     8/8     0.9298    2968   2064   1128  verified
+
+POOLED OMR-NED over 6 scanned pages: 0.8631
+  19029 edits over 13129 truth + 8917 predicted symbols
+    entire measure insert/delete             7942   41.7%
+    entire staff insert/delete               6725   35.3%
+    wrong note                               2945   15.5%
+    wrong note head                           658    3.5%
+    wrong dynamic                             164    0.9%
+    wrong keysig                              145    0.8%
+
+wrote /tmp/mv0905/results-mv2.json

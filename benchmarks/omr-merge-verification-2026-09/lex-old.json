@@ -1,0 +1,1701 @@
+{
+ "beethoven-sym3-mvt1": {
+  "Bassoon 1": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bassoon 2": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bb Clarinet 1": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Bb Clarinet 2": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Bb Trumpet 1": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Bb Trumpet 2": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Contrabass": {
+   "conf": "high",
+   "inst": "Contrabass",
+   "range": [
+    28,
+    67
+   ]
+  },
+  "Eb Horn 1": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Eb Horn 2": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Eb Horn 3": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Flute 1": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Flute 2": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Oboe 1": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Oboe 2": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Timpani": {
+   "conf": "high",
+   "inst": "Timpani",
+   "range": [
+    36,
+    60
+   ]
+  },
+  "Viola": {
+   "conf": "high",
+   "inst": "Viola",
+   "range": [
+    48,
+    88
+   ]
+  },
+  "Violin 1": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violin 2": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violoncello": {
+   "conf": "high",
+   "inst": "Cello",
+   "range": [
+    36,
+    81
+   ]
+  }
+ },
+ "beethoven-sym5-mvt1": {
+  "Bassoon 1": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bassoon 2": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bb Clarinet": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Bb Clarinet 2": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "C Trumpet 1": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "C Trumpet 2": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "C, G Timpani": {
+   "conf": "high",
+   "inst": "Timpani",
+   "range": [
+    36,
+    60
+   ]
+  },
+  "Contrabass": {
+   "conf": "high",
+   "inst": "Contrabass",
+   "range": [
+    28,
+    67
+   ]
+  },
+  "Eb Horn 1": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Eb Horn 2": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Flute 1": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Flute 2": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Oboe 1": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Oboe 2": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Viola": {
+   "conf": "high",
+   "inst": "Viola",
+   "range": [
+    48,
+    88
+   ]
+  },
+  "Violin 1": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violin 2": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violoncello": {
+   "conf": "high",
+   "inst": "Cello",
+   "range": [
+    36,
+    81
+   ]
+  }
+ },
+ "brahms-sym1-mvt1": {
+  "Bassoon 1": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bassoon 2": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bb Clarinet 1": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Bb Clarinet 2": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "C Horn 1": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "C Horn 2": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "C Trumpet 1": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "C Trumpet 2": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Contrabass": {
+   "conf": "high",
+   "inst": "Contrabass",
+   "range": [
+    28,
+    67
+   ]
+  },
+  "Contrabassoon": {
+   "conf": "high",
+   "inst": "Contrabassoon",
+   "range": [
+    22,
+    60
+   ]
+  },
+  "Eb Horn 3": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Eb Horn 4": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Flute 1": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Flute 2": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Oboe 1": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Oboe 2": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Timpani": {
+   "conf": "high",
+   "inst": "Timpani",
+   "range": [
+    36,
+    60
+   ]
+  },
+  "Viola": {
+   "conf": "high",
+   "inst": "Viola",
+   "range": [
+    48,
+    88
+   ]
+  },
+  "Violin 1": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violin 2": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violoncello": {
+   "conf": "high",
+   "inst": "Cello",
+   "range": [
+    36,
+    81
+   ]
+  }
+ },
+ "brahms-sym4-mvt1": {
+  "A Clarinet 1": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "A Clarinet 2": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Bassoon 1": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bassoon 2": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "C Horn 3": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "C Horn 4": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Contrabass": {
+   "conf": "high",
+   "inst": "Contrabass",
+   "range": [
+    28,
+    67
+   ]
+  },
+  "E Horn 1": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "E Horn 2": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "E Trumpet 1": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "E Trumpet 2": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Flute 1": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Flute 2": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Oboe 1": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Oboe 2": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Timpani": {
+   "conf": "high",
+   "inst": "Timpani",
+   "range": [
+    36,
+    60
+   ]
+  },
+  "Viola": {
+   "conf": "high",
+   "inst": "Viola",
+   "range": [
+    48,
+    88
+   ]
+  },
+  "Violin 1": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violin 2": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violoncello": {
+   "conf": "high",
+   "inst": "Cello",
+   "range": [
+    36,
+    81
+   ]
+  }
+ },
+ "bruckner-sym5-mvt1": {
+  "Alto Trombone": {
+   "conf": "high",
+   "inst": "Trombone",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bass Trombone": {
+   "conf": "high",
+   "inst": "Trombone",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bass Tuba": {
+   "conf": "high",
+   "inst": "Tuba",
+   "range": [
+    26,
+    65
+   ]
+  },
+  "Bassoon 1": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bassoon 2": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bb Clarinet 1": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Bb Clarinet 2": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Contrabass": {
+   "conf": "high",
+   "inst": "Contrabass",
+   "range": [
+    28,
+    67
+   ]
+  },
+  "F Horn 1": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "F Horn 2": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "F Horn 3": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "F Horn 4": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "F Trumpet 1": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "F Trumpet 2": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "F Trumpet 3": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Flute 1": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Flute 2": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Oboe 1": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Oboe 2": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Tenor Trombone": {
+   "conf": "high",
+   "inst": "Trombone",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Timpani": {
+   "conf": "high",
+   "inst": "Timpani",
+   "range": [
+    36,
+    60
+   ]
+  },
+  "Viola": {
+   "conf": "high",
+   "inst": "Viola",
+   "range": [
+    48,
+    88
+   ]
+  },
+  "Violin 1": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violin 2": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violoncello": {
+   "conf": "high",
+   "inst": "Cello",
+   "range": [
+    36,
+    81
+   ]
+  }
+ },
+ "dvorak-sym9-mvt4": {
+  "A Clarinet": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Bass Trombone": {
+   "conf": "high",
+   "inst": "Trombone",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bassoons": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "C Trumpet": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Contrabasses": {
+   "conf": "high",
+   "inst": "Contrabass",
+   "range": [
+    28,
+    67
+   ]
+  },
+  "Crash Cymbal": {
+   "conf": "medium",
+   "inst": "Percussion",
+   "range": [
+    0,
+    127
+   ]
+  },
+  "E Horn": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "E Trumpet": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "E\u266d Trumpet": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Flutes": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Horn in E\u266d": {
+   "conf": "medium",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Oboes": {
+   "conf": null,
+   "inst": null,
+   "range": []
+  },
+  "Timpani": {
+   "conf": "high",
+   "inst": "Timpani",
+   "range": [
+    36,
+    60
+   ]
+  },
+  "Trombone": {
+   "conf": "high",
+   "inst": "Trombone",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Violas": {
+   "conf": "high",
+   "inst": "Viola",
+   "range": [
+    48,
+    88
+   ]
+  },
+  "Violins I": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violins II": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violoncellos": {
+   "conf": "high",
+   "inst": "Cello",
+   "range": [
+    36,
+    81
+   ]
+  }
+ },
+ "mahler-sym5-mvt1": {
+  "Bass Clarinet": {
+   "conf": "high",
+   "inst": "Bass clarinet",
+   "range": [
+    38,
+    79
+   ]
+  },
+  "Becken.": {
+   "conf": "high",
+   "inst": "Percussion",
+   "range": [
+    0,
+    127
+   ]
+  },
+  "B\u00e4sse.": {
+   "conf": "high",
+   "inst": "Bass voice",
+   "range": [
+    40,
+    64
+   ]
+  },
+  "C Clarinet": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Contrafagotte.": {
+   "conf": "high",
+   "inst": "Contrabassoon",
+   "range": [
+    22,
+    60
+   ]
+  },
+  "Drei Hoboen.": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Drei Klarinetten in A": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Drei Posaunen.": {
+   "conf": "high",
+   "inst": "Trombone",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "English Horn": {
+   "conf": "high",
+   "inst": "English horn",
+   "range": [
+    52,
+    86
+   ]
+  },
+  "Erste Violinen.": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "F Trumpet": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Grosse Trommel.": {
+   "conf": "high",
+   "inst": "Percussion",
+   "range": [
+    0,
+    127
+   ]
+  },
+  "Kleine Trommel.": {
+   "conf": "high",
+   "inst": "Percussion",
+   "range": [
+    0,
+    127
+   ]
+  },
+  "Pauken.": {
+   "conf": "high",
+   "inst": "Timpani",
+   "range": [
+    36,
+    60
+   ]
+  },
+  "Piccolo": {
+   "conf": "high",
+   "inst": "Piccolo",
+   "range": [
+    74,
+    108
+   ]
+  },
+  "Sechs H\u00f6rner in F.": {
+   "conf": "medium",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Tamtam.": {
+   "conf": "high",
+   "inst": "Percussion",
+   "range": [
+    0,
+    127
+   ]
+  },
+  "Tuba.": {
+   "conf": "high",
+   "inst": "Tuba",
+   "range": [
+    26,
+    65
+   ]
+  },
+  "Vier Fl\u00f6ten.": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Vier Trompeten in B.": {
+   "conf": "medium",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Violen.": {
+   "conf": "high",
+   "inst": "Viola",
+   "range": [
+    48,
+    88
+   ]
+  },
+  "Violin": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violoncelle.": {
+   "conf": "high",
+   "inst": "Cello",
+   "range": [
+    36,
+    81
+   ]
+  },
+  "Zwei Fagotte.": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Zweite Violinen.": {
+   "conf": "medium",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  }
+ },
+ "mozart-sym40-mvt1": {
+  "Clarinetti in B.": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Contrabasso.": {
+   "conf": "high",
+   "inst": "Contrabass",
+   "range": [
+    28,
+    67
+   ]
+  },
+  "Corno in B.": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Corno in G.": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Fagotti.": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Flauto.": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Oboi.": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Viola.": {
+   "conf": "high",
+   "inst": "Viola",
+   "range": [
+    48,
+    88
+   ]
+  },
+  "Violino I.": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violino II.": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violoncello.": {
+   "conf": "high",
+   "inst": "Cello",
+   "range": [
+    36,
+    81
+   ]
+  }
+ },
+ "mozart-sym41-mvt1": {
+  "Basso": {
+   "conf": "high",
+   "inst": "Bass voice",
+   "range": [
+    40,
+    64
+   ]
+  },
+  "Clarino I in C": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Clarino II in C": {
+   "conf": "medium",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Corno I in C": {
+   "conf": "medium",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Corno I in F": {
+   "conf": "medium",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Corno II in C": {
+   "conf": "medium",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Corno II in F": {
+   "conf": "medium",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Fagotto I": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Fagotto II": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Flauto": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Oboe I": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Oboe II": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Timpani in C\u2013G": {
+   "conf": "high",
+   "inst": "Timpani",
+   "range": [
+    36,
+    60
+   ]
+  },
+  "Viola": {
+   "conf": "high",
+   "inst": "Viola",
+   "range": [
+    48,
+    88
+   ]
+  },
+  "Violino I": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violino II": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violoncello": {
+   "conf": "high",
+   "inst": "Cello",
+   "range": [
+    36,
+    81
+   ]
+  }
+ },
+ "tchaikovsky-sym4-mvt2": {
+  "Bassoon 1": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Bassoon 2": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "B\u266d Clarinet 1": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "B\u266d Clarinet 2": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Contrabass": {
+   "conf": "high",
+   "inst": "Contrabass",
+   "range": [
+    28,
+    67
+   ]
+  },
+  "F Horn 1": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "F Horn 2": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "F Horn 3": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "F Horn 4": {
+   "conf": "high",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "F Trumpet 1": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "F Trumpet 2": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Flute 1": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Flute 2": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Oboe 1": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Oboe 2": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Timpani": {
+   "conf": "high",
+   "inst": "Timpani",
+   "range": [
+    36,
+    60
+   ]
+  },
+  "Viola": {
+   "conf": "high",
+   "inst": "Viola",
+   "range": [
+    48,
+    88
+   ]
+  },
+  "Violin 1": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violin 2": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violoncello": {
+   "conf": "high",
+   "inst": "Cello",
+   "range": [
+    36,
+    81
+   ]
+  }
+ },
+ "tchaikovsky-sym6-mvt2": {
+  "Basso": {
+   "conf": "high",
+   "inst": "Bass voice",
+   "range": [
+    40,
+    64
+   ]
+  },
+  "Clarinetti in A": {
+   "conf": "high",
+   "inst": "Clarinet",
+   "range": [
+    50,
+    91
+   ]
+  },
+  "Corni in F I II": {
+   "conf": "medium",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Corni in F III IV": {
+   "conf": "medium",
+   "inst": "Horn",
+   "range": [
+    41,
+    77
+   ]
+  },
+  "Fagotti": {
+   "conf": "high",
+   "inst": "Bassoon",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Flauti": {
+   "conf": "high",
+   "inst": "Flute",
+   "range": [
+    59,
+    96
+   ]
+  },
+  "Oboi": {
+   "conf": "high",
+   "inst": "Oboe",
+   "range": [
+    58,
+    91
+   ]
+  },
+  "Timpani in A.D.E.": {
+   "conf": "medium",
+   "inst": "Timpani",
+   "range": [
+    36,
+    60
+   ]
+  },
+  "Trombe in A": {
+   "conf": "high",
+   "inst": "Trumpet",
+   "range": [
+    52,
+    84
+   ]
+  },
+  "Trombone Basso": {
+   "conf": "high",
+   "inst": "Trombone",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Tromboni Alto e Tenore": {
+   "conf": "medium",
+   "inst": "Trombone",
+   "range": [
+    34,
+    72
+   ]
+  },
+  "Tuba": {
+   "conf": "high",
+   "inst": "Tuba",
+   "range": [
+    26,
+    65
+   ]
+  },
+  "Viola": {
+   "conf": "high",
+   "inst": "Viola",
+   "range": [
+    48,
+    88
+   ]
+  },
+  "Violino I": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violino II": {
+   "conf": "high",
+   "inst": "Violin",
+   "range": [
+    55,
+    100
+   ]
+  },
+  "Violoncello": {
+   "conf": "high",
+   "inst": "Cello",
+   "range": [
+    36,
+    81
+   ]
+  }
+ }
+}
