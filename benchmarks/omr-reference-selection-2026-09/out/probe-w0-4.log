@@ -1,0 +1,34 @@
+editions on disk with >=8 pages: 234  houses={'Eulenburg': 15, 'other/unknown': 73, 'Peters': 18, 'Breitkopf': 69, 'Simrock': 12, 'Schott': 1, 'Litolff': 10, 'Universal': 9, 'Ricordi': 3, 'Novello': 7, 'Durand': 13, 'Bote': 3, 'Augener': 1}
+probing 234 documents, pages [0, 1, 2, 3, 4], dpi 300
+  [1/234] Augener      mussorgsky--pictures-at-an-exhibition--272845 sizes=[2, 2, 2, 2] labels=[1, 0, 0, 0] 8.6s
+  [2/234] Bote         dvorak--serenade-for-strings--862636         sizes=[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 5, 6, 6] labels=[5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 21.4s
+  [3/234] Breitkopf    bach--concerto-5--457419                     sizes=[8, 8] labels=[5, 0] 7.2s
+  [4/234] Durand       debussy--la-boite-a-joujoux--199718          sizes=[2, 2, 2, 2, 2, 2, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2] labels=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 17.8s
+  [5/234] Eulenburg    bach--concerto-1--47820                      sizes=[] labels=[] 3.0s
+  [6/234] Litolff      beethoven--symphony-1--74                    sizes=[11, 11, 9, 11, 11, 11, 8, 10, 10] labels=[11, 7, 5, 7, 7, 6, 4, 6, 6] 29.4s
+  [7/234] Novello      coleridge-taylor--ballade-op33--860015       sizes=[18, 18, 18, 18, 19] labels=[17, 0, 0, 0, 0] 19.6s
+  [8/234] Peters       bach--concerto-3--468678                     sizes=[12, 12, 12, 12, 12, 12, 12, 12, 12, 12] labels=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 17.0s
+  [9/234] Ricordi      boulanger--faust-et-helene--862104           sizes=[29, 5, 15, 21, 20, 21] labels=[10, 0, 4, 4, 3, 1] 36.0s
+  [10/234] Schott       beethoven--missa-solemnis--51348             sizes=[] labels=[] 0.1s
+  [11/234] Simrock      beethoven--coriolan--683540                  sizes=[15, 15, 15, 15] labels=[15, 0, 0, 0] 18.6s
+  [12/234] Universal    bizet--symphony-in-c-major--512840           sizes=[11, 13, 13, 13, 13, 11, 9, 13, 13, 9] labels=[8, 9, 8, 8, 8, 7, 7, 9, 9, 6] 54.7s
+  [13/234] other/unknown bach--concerto-2--2040                       sizes=[9, 9, 9, 9, 9, 9] labels=[9, 0, 0, 0, 0, 0] 18.4s
+  [14/234] Bote         mahler--symphony-7--415756                   sizes=[17, 19, 18] labels=[8, 9, 0] 32.5s
+  [15/234] Breitkopf    bach--mass-in-b-minor--740018                sizes=[16, 11, 11, 11, 11] labels=[15, 0, 0, 0, 0] 20.2s
+  [16/234] Durand       debussy--la-mer--15420                       sizes=[22, 11, 8, 11, 9, 16, 16] labels=[18, 3, 1, 2, 0, 3, 2] 43.7s
+  [17/234] Eulenburg    bach--matthauspassion--44964                 sizes=[19, 18, 18, 18, 18] labels=[17, 9, 9, 9, 9] 33.0s
+  [18/234] Litolff      beethoven--symphony-2--503997                sizes=[11, 11, 7, 8, 11, 11, 11, 7, 11] labels=[11, 7, 3, 4, 6, 7, 7, 3, 7] 32.4s
+  [19/234] Novello      dvorak--symphony-8--405841                   sizes=[17] labels=[17] 11.7s
+  [20/234] Peters       bach--concerto-4--457279                     sizes=[9, 9, 9, 9] labels=[8, 0, 0, 0] 18.2s
+  [21/234] Ricordi      respighi--fontane-di-roma--914006            sizes=[] labels=[] 5.3s
+  [22/234] Simrock      brahms--academic-festival-overture--28983    sizes=[19, 19, 19, 19] labels=[16, 0, 0, 0] 24.5s
+  [23/234] Universal    bruckner--symphony-1--30680                  sizes=[15, 5, 9, 9, 12, 12, 9, 6, 9, 5] labels=[12, 0, 0, 0, 0, 0, 0, 0, 0, 0] 33.2s
+  [24/234] other/unknown bach--das-wohltemperierte-klavier-i--932182  sizes=[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] labels=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 17.5s
+  [25/234] Bote         tchaikovsky--romeo-and-juliet-overture-fantasia--333131 sizes=[20, 20, 20] labels=[19, 0, 0] 21.8s
+  [26/234] Breitkopf    beethoven--egmont--807970                    sizes=[14, 14, 14] labels=[14, 0, 0] 20.3s
+  [27/234] Durand       dukas--l-apprenti-sorcier--6574              sizes=[25, 11, 14, 14, 13, 14, 13, 10, 10] labels=[22, 4, 4, 6, 6, 5, 5, 4, 3] 58.8s
+  [28/234] Eulenburg    berlioz--harold-en-italie--515587            sizes=[] labels=[] 5.8s
+  [29/234] Litolff      beethoven--symphony-3--504077                sizes=[12, 10, 10, 12, 11, 12, 12, 12, 10] labels=[12, 6, 5, 8, 7, 8, 8, 8, 6] 65.0s
+  [30/234] Novello      elgar--cello-concerto--22192                 sizes=[17, 12, 5, 17, 17, 17] labels=[0, 0, 0, 0, 0, 0] 457.2s
+  [31/234] Peters       bach--concerto-6--468681                     sizes=[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8] labels=[5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 26.1s
+  [32/234] Ricordi      respighi--pini-di-roma--5603                 sizes=[16, 20, 20, 22, 17] labels=[10, 8, 0, 0, 2] 97.0s

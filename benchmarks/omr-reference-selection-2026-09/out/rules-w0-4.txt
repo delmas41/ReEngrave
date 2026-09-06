@@ -1,0 +1,40 @@
+documents with >=2 usable systems in the window: 27  (cache holds 32)
+
+== overall
+  all                    n=  27  old   19/27 = 0.704 (names   183)  new   24/27 = 0.889 (names   239)  pure   23/27 = 0.852 (names   244)  new≠old    5
+  names something        n=  23  old   15/23 = 0.652 (names   183)  new   20/23 = 0.870 (names   239)  pure   19/23 = 0.826 (names   244)  new≠old    5
+  names NOTHING          n=   4  old    4/4 = 1.000 (names     0)  new    4/4 = 1.000 (names     0)  pure    4/4 = 1.000 (names     0)  new≠old    0
+  ⭑ silent documents: every pick identical (abstention verified)
+
+== by house — the convention axis (labelled documents only)
+  Breitkopf              n=   3  old    2/3 = 0.667 (names    19)  new    3/3 = 1.000 (names    34)  pure    3/3 = 1.000 (names    34)  new≠old    1
+  Litolff                n=   3  old    3/3 = 1.000 (names    34)  new    3/3 = 1.000 (names    34)  pure    3/3 = 1.000 (names    34)  new≠old    0
+  Bote                   n=   3  old    3/3 = 1.000 (names    28)  new    3/3 = 1.000 (names    28)  pure    2/3 = 0.667 (names    33)  new≠old    0
+  Peters                 n=   2  old    2/2 = 1.000 (names     5)  new    2/2 = 1.000 (names     5)  pure    2/2 = 1.000 (names     5)  new≠old    0
+  Simrock                n=   2  old    2/2 = 1.000 (names    31)  new    2/2 = 1.000 (names    31)  pure    2/2 = 1.000 (names    31)  new≠old    0
+  Universal              n=   2  old    1/2 = 0.500 (names     9)  new    2/2 = 1.000 (names    21)  pure    2/2 = 1.000 (names    21)  new≠old    1
+  Ricordi                n=   2  old    0/2 = 0.000 (names    12)  new    1/2 = 0.500 (names    18)  pure    1/2 = 0.500 (names    18)  new≠old    1
+  Durand                 n=   2  old    0/2 = 0.000 (names     9)  new    1/2 = 0.500 (names    24)  pure    1/2 = 0.500 (names    24)  new≠old    1
+  other/unknown          n=   1  old    1/1 = 1.000 (names     9)  new    1/1 = 1.000 (names     9)  pure    1/1 = 1.000 (names     9)  new≠old    0
+  Eulenburg              n=   1  old    0/1 = 0.000 (names     9)  new    1/1 = 1.000 (names    17)  pure    1/1 = 1.000 (names    17)  new≠old    1
+  Novello                n=   1  old    0/1 = 0.000 (names    17)  new    0/1 = 0.000 (names    17)  pure    0/1 = 0.000 (names    17)  new≠old    0
+  Augener                n=   1  old    1/1 = 1.000 (names     1)  new    1/1 = 1.000 (names     1)  pure    1/1 = 1.000 (names     1)  new≠old    0
+
+== where the two rules disagree, and which way
+  new reference LARGER  5
+  new reference SMALLER 0   <- the risk: staves past the reference get slot -1
+  same size, different system 0
+
+== documents where the reference SHRINKS vs the old rule (staves past it get slot -1)
+  new (never-shrink guard on)  0
+  pure (guard off)             1
+    Bote         dvorak--serenade-for-strings--862636         sizes=[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 5, 6, 6] labels=[5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] old=(3, 1, 6, 0) pure=(0, 0, 5, 5)
+
+== documents where the new rule picks a LARGER reference
+  Breitkopf    bach--mass-in-b-minor--740018                sizes=[16, 11, 11, 11, 11] labels=[15, 0, 0, 0, 0] old=(3, 0, 11, 0) new=(2, 0, 16, 15)
+  Eulenburg    bach--matthauspassion--44964                 sizes=[19, 18, 18, 18, 18] labels=[17, 9, 9, 9, 9] old=(1, 0, 18, 9) new=(0, 0, 19, 17)
+  Ricordi      boulanger--faust-et-helene--862104           sizes=[29, 5, 15, 21, 20, 21] labels=[10, 0, 4, 4, 3, 1] old=(2, 0, 21, 4) new=(0, 0, 29, 10)
+  Universal    bruckner--symphony-1--30680                  sizes=[15, 5, 9, 9, 12, 12, 9, 6, 9, 5] labels=[12, 0, 0, 0, 0, 0, 0, 0, 0, 0] old=(2, 1, 12, 0) new=(0, 0, 15, 12)
+  Durand       debussy--la-mer--15420                       sizes=[22, 11, 8, 11, 9, 16, 16] labels=[18, 3, 1, 2, 0, 3, 2] old=(3, 0, 16, 3) new=(0, 0, 22, 18)
+
+wrote benchmarks/omr-reference-selection-2026-09/out/rules-w0-4.json
