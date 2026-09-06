@@ -1,0 +1,4 @@
+# Transcriptions are build products and large (tens of MB per whole work).
+# The derived .audit.txt / .slots.txt / .log beside them are what the findings
+# cite, and those ARE committed.
+out/*.json

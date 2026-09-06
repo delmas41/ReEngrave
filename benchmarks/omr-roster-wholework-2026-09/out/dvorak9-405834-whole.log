@@ -1,0 +1,27 @@
+=== dvorak9-405834-whole start 2026-09-06T07:49:15Z
+pdf: /Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf
+pages: ALL
+transcribe: dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf (80 pages, processing 80)
+  weights:  auto (scan/engraved routing)
+  conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: per-cell
+  weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+  page 0: 0 systems, 0 staves, 0 measures, 0 detections (0/0 pitched, 0/0 durations)
+  page 1: 0 systems, 0 staves, 0 measures, 0 detections (0/0 pitched, 0/0 durations)
+  page 2: 0 systems, 0 staves, 0 measures, 0 detections (0/0 pitched, 0/0 durations)
+  page 3: 0 systems, 0 staves, 0 measures, 0 detections (0/0 pitched, 0/0 durations)
+  page 4: 1 systems, 15 staves, 135 measures, 812 detections (109/109 pitched, 109/109 durations)
+  page 5: 1 systems, 15 staves, 105 measures, 1181 detections (224/224 pitched, 224/224 durations)
+  page 6: 2 systems, 30 staves, 225 measures, 3739 detections (623/623 pitched, 623/623 durations)
+  page 7: 2 systems, 30 staves, 360 measures, 3748 detections (652/652 pitched, 652/652 durations)
+  page 8: 2 systems, 30 staves, 300 measures, 3292 detections (709/709 pitched, 709/709 durations)
+  page 9: 2 systems, 30 staves, 315 measures, 2711 detections (349/349 pitched, 349/349 durations)
+  page 10: 2 systems, 30 staves, 270 measures, 2379 detections (371/371 pitched, 371/371 durations)
+  page 11: 2 systems, 30 staves, 285 measures, 3003 detections (516/516 pitched, 516/516 durations)
+  page 12: 2 systems, 30 staves, 315 measures, 3226 detections (563/563 pitched, 563/563 durations)
+  page 13: 2 systems, 30 staves, 360 measures, 2806 detections (452/452 pitched, 452/452 durations)
+  page 14: 1 systems, 30 staves, 450 measures, 3562 detections (625/625 pitched, 625/625 durations)
+  page 15: 2 systems, 30 staves, 285 measures, 2639 detections (373/373 pitched, 373/373 durations)
+  page 16: 2 systems, 30 staves, 330 measures, 3259 detections (613/613 pitched, 613/613 durations)
+  page 17: 1 systems, 27 staves, 270 measures, 3393 detections (577/577 pitched, 577/577 durations)
+  page 18: 2 systems, 30 staves, 315 measures, 3714 detections (638/638 pitched, 638/638 durations)
+  page 19: 2 systems, 30 staves, 330 measures, 2790 detections (409/409 pitched, 409/409 durations)

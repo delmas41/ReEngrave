@@ -1,0 +1,50 @@
+=== timing-beet5-3p-ROSTEROFF.json
+INPUT ASSERTION: pages=3 systems=3 staff-records=34
+roster: page 1 system 0 11/12 pages_searched=[0, 1] pages_opened=[]
+
+## A. self-contradiction (staff carries a label that disagrees)
+  p1 s0 ord  1  label='Obol.'                      lexicon=Oboe             assigned=Flute            src=label
+  p1 s0 ord  2  label='Clarinetti in B.'           lexicon=Clarinet         assigned=Oboe             src=label
+  p1 s0 ord  3  label='Fagotti.'                   lexicon=Bassoon          assigned=Clarinet         src=label
+  p1 s0 ord  4  label='Corni in Es.'               lexicon=Horn             assigned=Bassoon          src=label
+  p1 s0 ord  5  label='Trombe in C.'               lexicon=Trumpet          assigned=Horn             src=label
+  p1 s0 ord  6  label='Timpani in C.G.'            lexicon=Timpani          assigned=Trumpet          src=label
+  p1 s0 ord  7  label='Violino I.'                 lexicon=Violin           assigned=Timpani          src=label
+  p1 s0 ord  9  label='Viola.'                     lexicon=Viola            assigned=Violin           src=score_order
+  p1 s0 ord 11  label='Basso.'                     lexicon=Bass voice       assigned=Contrabass       src=score_order_ambiguity
+  p2 s0 ord  0  label='Obol.'                      lexicon=Oboe             assigned=Flute            src=label
+  p2 s0 ord  1  label='Clarinetti in B.'           lexicon=Clarinet         assigned=Oboe             src=label
+  p2 s0 ord  2  label='Fagotti.'                   lexicon=Bassoon          assigned=Clarinet         src=label
+  p2 s0 ord  3  label='Corni in Es.'               lexicon=Horn             assigned=Bassoon          src=label
+  p2 s0 ord  4  label='Trombe in C.'               lexicon=Trumpet          assigned=Horn             src=label
+  p2 s0 ord  5  label='Timpani in C.G.'            lexicon=Timpani          assigned=Trumpet          src=label
+  p2 s0 ord  6  label='Violino I.'                 lexicon=Violin           assigned=Timpani          src=label
+  p2 s0 ord  8  label='Viola.'                     lexicon=Viola            assigned=Violin           src=score_order
+  p2 s0 ord 10  label='Basso.'                     lexicon=Bass voice       assigned=Contrabass       src=score_order_ambiguity
+  p2 s1 ord  0  label='Obol.'                      lexicon=Oboe             assigned=Flute            src=label
+  p2 s1 ord  1  label='Clarinetti in B.'           lexicon=Clarinet         assigned=Oboe             src=label
+  p2 s1 ord  2  label='Fagotti.'                   lexicon=Bassoon          assigned=Clarinet         src=label
+  p2 s1 ord  3  label='Corni in Es.'               lexicon=Horn             assigned=Bassoon          src=label
+  p2 s1 ord  4  label='Trombe in C.'               lexicon=Trumpet          assigned=Horn             src=label
+  p2 s1 ord  5  label='Timpani in C.G.'            lexicon=Timpani          assigned=Trumpet          src=label
+  p2 s1 ord  6  label='Violino I.'                 lexicon=Violin           assigned=Timpani          src=label
+  p2 s1 ord  8  label='Viola.'                     lexicon=Viola            assigned=Violin           src=score_order
+  p2 s1 ord 10  label='Basso.'                     lexicon=Bass voice       assigned=Contrabass       src=score_order_ambiguity
+  checked 33 labelled staves, 27 disagree
+
+## B. coverage and provenance by page
+  pg  staves  label  roster  order  ambig  none    cov
+   1      12      7       0      3      1     1  0.917
+   2      22     14       0      6      2     0  1.000
+
+## C. per-system staff counts (an instrumentation change shows here)
+  1.0:12 2.0:11 2.1:11
+
+## D. assigned instrument sequence per page (top to bottom)
+  p1.s0 (12): - | Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Cello | Contrabass
+        labels: · | Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p2.s0 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Cello | Contrabass
+        labels: Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+  p2.s1 (11): Flute | Oboe | Clarinet | Bassoon | Horn | Trumpet | Timpani | Violin | Violin | Cello | Contrabass
+        labels: Obol. | Clarinetti in B. | Fagotti. | Corni in Es. | Trombe in C. | Timpani in C.G. | Violino I. | Violino II. | Viola. | Violoncello. | Basso.
+

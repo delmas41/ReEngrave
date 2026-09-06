@@ -1,0 +1,41 @@
+=== timing-beet5-3p start 2026-09-06T07:43:01Z
+pdf: /Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf
+pages: 0-2
+transcribe: beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf (88 pages, processing 3)
+  weights:  auto (scan/engraved routing)
+  conf:     0.25, iou: 0.5, agnostic_nms: True, imgsz: per-cell
+  weights routed: scanned -> deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+  page 0: 0 systems, 0 staves, 0 measures, 0 detections (0/0 pitched, 0/0 durations)
+  page 1: 1 systems, 12 staves, 192 measures, 701 detections (117/117 pitched, 117/117 durations)
+  page 2: 2 systems, 22 staves, 341 measures, 2468 detections (509/509 pitched, 509/509 durations)
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a2daedd6d0b11d266/benchmarks/omr-roster-wholework-2026-09/out/timing-beet5-3p.json
+  pages=3  systems=3  staves=34  measures=533  detections=2797
+  noteheads=626  pitched=626  (100% pitch coverage)
+  with_duration=626  (100% rhythm coverage)  rests=326/347
+  runtime: phase1=9.24s  yolo=36.54s  total=311.07s
+  meter->rhythm: 3 measure(s) re-read a beam level to match the meter
+  page 0: 0 measures, 0 phase1_warnings, 0 rhythm_sum_warnings
+  page 1: 192 measures, 12 phase1_warnings, 5 rhythm_sum_warnings
+    key signatures: read on 5/12 staves; the rest report 0 sharps / 0 flats because nothing read them
+  page 2: 341 measures, 11 phase1_warnings, 48 rhythm_sum_warnings
+    key signatures: read on 12/22 staves; the rest report 0 sharps / 0 flats because nothing read them
+      312.33 real        85.86 user        18.89 sys
+          4186980352  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              745604  page reclaims
+               10110  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 227  messages sent
+                1095  messages received
+                   0  signals received
+               11618  voluntary context switches
+             1579147  involuntary context switches
+        758065620163  instructions retired
+        268432331193  cycles elapsed
+          4225232576  peak memory footprint
+=== timing-beet5-3p rc=0 wall=312s 2026-09-06T07:48:13Z
