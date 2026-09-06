@@ -289,7 +289,35 @@ INSTRUMENT, notes-in-range carries almost nothing. It is strong only with a
 dossier naming the exact part — and the scan benchmark runs dossier-free by
 protocol, which is why the written-range veto has NEVER FIRED ON A SCAN.
 
-✅ **The strong arrow is `range -> CLEF`, and it is computed and discarded.** Not
+⚠️⚠️ **REFUTED 2026-09-06, MEASURED — the paragraph below was wrong and is kept
+with its correction rather than deleted.** `clef_register_warning` was nominated
+here as the best lever available. Measured by the additive-vs-gated commission
+(`benchmarks/omr-additive-vs-gated-2026-09/out/register-warning.txt`): **reach
+7 of 193 scan staves and 4 of 224 engraved, and precision as a clef-error
+detector 0 of 11.** Every firing in both families is Bassoon-above-Horn,
+Timpani-above-Violin or Horn-above-Horn.
+
+**The mechanism is the refutation, and it is obvious in hindsight: an orchestral
+score is ordered by FAMILY, not by register.** So an adjacent-staff register
+comparison finds the family boundaries — where a large register gap is exactly
+CORRECT — and nothing else. A bassoon sitting above a horn is not a clef error;
+it is a wind section. The check cannot distinguish "the clef is wrong" from
+"the instrumentation changed", because on a conductor's page the second is the
+normal case and the first is rare.
+
+⚠️ And a second correction from the same measurement: **the clef FILL tier is
+blocked by `contextual.py:1202`'s `score_order` exclusion, NOT by the
+`sources.get(slot) == "label"` conjunct** that this document and CLAUDE.md both
+name — all five scan proposals SATISFY that conjunct. The standing framing of
+that gate is wrong in both places.
+
+**What survives:** the finding that the signal is computed and consumed by
+nobody is still true and still a defect of the same family. What does not
+survive is the claim that consuming it would help. *Reach before accuracy* —
+the rule this project keeps re-learning, and which this section failed to apply
+to its own recommendation.
+
+~~**The strong arrow is `range -> CLEF`, and it is computed and discarded.**~~ Not
 "which instrument" but "is this clef possible at all": two staves whose registers
 are INVERTED (the lower sounding higher) is a clef error whatever the instruments
 are. `clef_register_warning` already computes it — Brahms staves 3 vs 4, median
@@ -305,5 +333,14 @@ Two properties make it the best lever available:
 2. **It is a comparison BETWEEN two staves**, so it cannot confirm itself — it
    satisfies §7's provenance rule by construction rather than by a gate.
 
-So the corrected reading of Sean's loop: not `notes -> instrument`, but
-`notes -> "that clef cannot be right" -> identity -> verify the pitches`.
+~~So the corrected reading of Sean's loop: not `notes -> instrument`, but
+`notes -> "that clef cannot be right" -> identity -> verify the pitches`.~~
+
+⚠️ **Both arrows are now measured weak.** `range -> instrument` is nearly
+information-free (5 of 9,219), and `range -> clef` via adjacent-staff comparison
+is 0 of 11. **Neither half of the loop as originally drawn is supported.** The
+honest position: register is a poor discriminator on a conductor's page in every
+form tried so far, and the identity work should not be built on it. The
+additive-vs-gated commission's own ranked shortlist (record the refusals →
+dynamics → clef override → thresholded dedupe tier) supersedes this section's
+recommendation.
