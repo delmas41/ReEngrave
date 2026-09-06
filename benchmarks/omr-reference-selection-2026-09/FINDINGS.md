@@ -48,34 +48,41 @@ arm for anyone who wants to see it.
 ## Publisher convention — the kill criterion, answered first
 
 The risk was a rule that works on one house's labelling convention. Measured over
-**30 documents in 12 houses**, scoring whether the rule lands on the run's
+**45 documents in 12 houses**, scoring whether the rule lands on the run's
 *largest* system (what `build_reference`'s own docstring aims at):
 
 | | picks the largest system |
 |---|--:|
-| all (n=30) | old 0.700 → **new 0.867** (pure 0.833) |
-| documents that name something (n=26) | old 0.654 → **new 0.846** |
+| all (n=45) | old 0.622 → **new 0.889** (pure 0.867) |
+| documents that name something (n=41) | old 0.585 → **new 0.878** |
 | documents that name nothing (n=4) | **identical picks**, asserted |
 
-By house, old → new: Breitkopf 0.667→1.000 · Universal 0.667→1.000 · Eulenburg
-0.000→1.000 · Ricordi 0.000→0.500 · Durand 0.000→0.500 · **Litolff, Bote,
-Peters, Augener, other/unknown unchanged at 1.000** · Novello 0.000→0.000 (both
-rules miss it) · **Simrock 0.667 under BOTH**.
+By house, old → new: Breitkopf 0.667→1.000 (n=6) · **Litolff 0.800→1.000 (n=5)**
+· Universal 0.600→0.800 · other/unknown 0.500→1.000 · Durand 0.250→0.750 ·
+Eulenburg 0.000→1.000 · Ricordi 0.000→0.500 · Peters/Bote/Augener unchanged at
+1.000 · **Simrock 0.667 under BOTH** · Novello 0.000 under both.
 
-**No house is worse, 5 documents change and all toward a LARGER reference, 0
-shrink** under the never-shrink guard. **It is NOT a Litolff rule** — Litolff
-scores 1.000 under *both*, so every gain comes from elsewhere: five documents in
-five different houses (Breitkopf's B-minor Mass, Eulenburg's Matthäuspassion,
-Ricordi's *Faust et Hélène*, Universal's Bruckner 1, Durand's *La Mer*), all one
-shape — **the document's first system is both the largest and the labelled one,
-and the recurring filter threw it away for occurring once.**
+**No house is worse at any point of the sweep, 12 documents change and all toward
+a LARGER reference, 0 shrink** under the never-shrink guard. Every changed
+document is one shape: **the document's first system is both the largest and the
+labelled one, and the recurring filter threw it away for occurring once.**
 
-⚠️ **These are the n=30 figures and they SUPERSEDE an n=27 cut** that showed
-Simrock at 1.000 on a two-document sample. With three documents Simrock reads
-**0.667 under both rules** — worth naming precisely: **a house the rule does not
-REACH, not one it harms.** Reported this way deliberately, rather than quoting
-the flattering earlier sample, because a publisher split is exactly what the kill
-criterion was written to catch.
+⚠️ **These n=45 figures supersede n=30 and n=27 cuts, and the sweep's history is
+worth keeping because it moved twice.** At n=27 Simrock read 1.000 on two
+documents; with three it reads **0.667 under both rules** — **a house the rule
+does not REACH, not one it harms** — and that correction stands at n=45. At n=30
+Litolff was flat at 1.000, which was the headline evidence that this is *not* a
+Litolff rule; at n=45 it reads **0.800 → 1.000**.
+
+⚠️ **Read that Litolff movement carefully — it is not new independent support.**
+The document that moved it is `beethoven--symphony-5--575951`, the **other scan
+of the same Litolff plates** the fix was diagnosed on (sizes
+`[12, 11, 11, 11, 8, …]`, labels `[12, 7, 7, 7, 4, …]` — the 12-then-11 shape
+exactly; reference 11 → 12, named slots 7 → 12). So it is **an independent
+instance of the same mechanism in the same edition** — not a second measurement
+of the same page, and not an independent edition either. The claim "not a
+Litolff rule" now rests on the other eleven changed documents, in Breitkopf,
+Eulenburg, Ricordi, Universal, Durand and two Berlioz volumes.
 
 Method note: the probe records each system's staff count and resolved label count
 once per document (one staff detection + one Surya read per page, no
