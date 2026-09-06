@@ -120,6 +120,19 @@ def test_a_thin_span_refuses_to_split():
     assert mr.lineup_spans(pages) == [list(range(12))]
 
 
+def test_a_one_page_run_can_never_split():
+    """Why neither benchmark can move: they score ONE PAGE at a time.
+
+    The boundary is a page that exceeds every page BEFORE it, and the first page
+    of a run has none — so a single-page run has exactly one span whatever its
+    systems look like, including a page whose systems differ in size. The scan
+    gate's rows and `orchestral_eval`'s excerpts are all single pages, so the
+    flag is inert on both by construction rather than by measurement.
+    """
+    for systems in ([12], [9, 12], [17], [4, 4, 12], []):
+        assert mr.lineup_spans([(7, systems)]) == [[7]], systems
+
+
 def test_pages_with_no_staves_join_the_span_around_them():
     pages = [(0, [])] + [(i, [12]) for i in range(1, 8)]
     assert mr.lineup_spans(pages) == [list(range(8))]
