@@ -25,3 +25,5 @@
   mozart-sym41-mvt1 flag=1: 115575 bytes in 35s
   -> mozart-sym41-mvt1: BYTE-IDENTICAL
   tchaikovsky-sym4-mvt2 flag=0: 54544 bytes in 36s
+  tchaikovsky-sym4-mvt2 flag=1: 54544 bytes in 38s
+  -> tchaikovsky-sym4-mvt2: BYTE-IDENTICAL
