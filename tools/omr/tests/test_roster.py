@@ -212,7 +212,10 @@ def test_evidence_is_recorded_even_when_the_flag_is_off(monkeypatch):
     correctly and then discarded is the shape this project has paid for nine
     times.
     """
-    monkeypatch.delenv("OMR_ROSTER", raising=False)
+    # Set the flag OFF explicitly rather than deleting it: the default went ON
+    # 2026-09-05, and this test is about the flag being off, not about which
+    # way the default happens to point.
+    monkeypatch.setenv("OMR_ROSTER", "0")
     assert R.enabled() is False
     staves = [_staff(i) for i in range(3)]
     got = _acquire([(0, _pws(staves),

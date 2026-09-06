@@ -94,13 +94,36 @@ MIN_ROSTER_NAMES = 2
 def enabled() -> bool:
     """`OMR_ROSTER` — acquire and use a document-level roster.
 
-    ⚠️ DEFAULT OFF pending Sean's call on the default. The measurements are in
-    `benchmarks/omr-roster-wiring-2026-09/FINDINGS.md`; the acquisition and its
-    evidence block are recorded regardless of this flag, because recording what
-    was read changes no music and a fact that is computed and discarded is the
-    shape this project has paid for nine times.
+    **DEFAULT ON since 2026-09-05** (Sean's call, on the numbers below). A work's
+    instrument roster is read once from its own first labelled system and every
+    later system is a strict SUBSEQUENCE of it — 11 of 11 systems, zero
+    violations — so the join is by ordinal against a roster the page itself
+    supplied, not by matching a generic score-order template.
+
+    Measured on the 20-row scan gate, 198 truth-bearing staff records:
+    identity coverage **0.884 → 1.000**, precision **0.926 → 0.955**,
+    **27 staves changed, 27 fixed, 0 broken** — and acquisition itself named
+    **64 of 64** positions correctly with zero misnamed, because the reader
+    either resolves a label or says nothing. Simrock, the worst-covered
+    publisher, goes 0.617 → 1.000 at precision 1.000; two of the fixes overrule
+    the prior rather than filling a gap (`Trumpet` → `Trombone`).
+
+    ⚠️ **It prices at EXACTLY 0 edits, every row, and that is why it ships on
+    rather than off.** The standing rule — a consumer that moves no edits ships
+    disabled — is about consumers the metric can SEE. This one it provably
+    cannot: musicdiff does not score `<part-name>`, measured directly by
+    rewriting all 15 of a truth file's part names to a bogus value for 0 edits.
+    The bar (|delta| <= 6, the gate's noise floor) was pre-registered with that
+    reasoning before the number was known.
+
+    ⚠️ Off is byte-identical, verified per row, not assumed. The acquisition and
+    its evidence block run regardless of this flag — recording what was read
+    changes no music, and a fact computed and discarded is the shape this
+    project has paid for nine times.
+
+    Full record: `benchmarks/omr-roster-wiring-2026-09/`.
     """
-    return os.environ.get("OMR_ROSTER", "0").strip().lower() in (
+    return os.environ.get("OMR_ROSTER", "1").strip().lower() in (
         "1", "true", "yes", "on")
 
 
