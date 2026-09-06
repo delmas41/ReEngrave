@@ -292,6 +292,33 @@ def _ambiguous_label_slots(
     return out
 
 
+def _system_of(pws, staff_index: int) -> int:
+    return next((s.system_index for s in pws.staves
+                 if s.staff_index == staff_index), 0)
+
+
+def _names_claimed_by_alias(pws, staff_labels) -> dict[int, dict[str, set[str]]]:
+    """Per system: which instrument each label names, and under which alias.
+
+    Keyed by system because a margin is printed per system — two systems of one
+    page can carry different lineups, and what settles a reading is what THIS
+    system names beside it.
+
+    An ambiguous label is included, under its own lexicon answer. That is what
+    makes the Handel case come out right: `Bassi` and `BASSO` are both
+    ambiguous, they resolve to Contrabass and Bass voice respectively, and each
+    is then the thing that stops the other being moved onto it. Requiring the
+    blocker to be unambiguous would leave that page with nothing to say.
+    """
+    out: dict[int, dict[str, set[str]]] = {}
+    for lab in staff_labels:
+        if not _label_is_consumable(lab):
+            continue
+        by_name = out.setdefault(_system_of(pws, lab.staff_index), {})
+        by_name.setdefault(lab.instrument.name, set()).add(lab.alias or "")
+    return out
+
+
 def _resolve_ambiguous_labels(
     reference, staff_labels_per_page, slot_by_staff, page_indices, staved,
     fit, instrument_by_slot, instrument_source,
@@ -307,21 +334,64 @@ def _resolve_ambiguous_labels(
     Only ever chooses among the candidates the alias already allows, and only
     when the fit names that slot — so a page the prior cannot read keeps exactly
     the reading it had.
+
+    ⚠️ **AND THE PRIOR MAY NOT MOVE A STAFF ONTO AN INSTRUMENT ANOTHER LABEL ON
+    THE SAME SYSTEM ALREADY NAMES.** Beethoven 5 / Litolff prints `Tr.` over the
+    trumpets and `Tp.` over the timpani on one system; `Tp.` is ambiguous, the
+    layout fit has the timpani after the trombones (the standard order, which
+    this edition deviates from — `score_layouts` documents the same deviation
+    where it explains pinning), so the fit proposed Trumpet and the timpani
+    staff exported as a SECOND trumpet. An engraver does not name one section
+    with two different abbreviations on one system, so `Tr.` standing four
+    staves up is evidence that `Tp.` is not the trumpets — the same shape as the
+    `Tr. Alt.` lexicon fix, and it needs no lexicon change because it is a fact
+    about the PAGE, not about the word.
+
+    ⚠️ **The constraint is ASYMMETRIC, and that is what makes it safe.** It only
+    ever refuses an OVERTURN; it never removes the lexicon's own answer. Both
+    directions were measured over the 1422-label margin corpus and the
+    asymmetry is forced by `Tr. Bas.`: on Beethoven 5 p.48 that staff's
+    candidates are Trombone and Trumpet and BOTH are separately named on the
+    system (`Tr. Alt.`/`Tr. Ten.` and `Tr.`), so a rule that excluded every
+    clashing candidate would leave nothing and lose a reading that is already
+    right.
+
+    Measured, `probe_ambiguous_cooccurrence.py`: 158 ambiguous-alias
+    occurrences over 6 sources, 86 of them sharing a page with a different alias
+    that names one of their candidates — 52 `cor`, 18 `tp`, 9 `tr bas`, 7
+    `basso`/`bassi`. **In 86 of 86 this keeps or restores the right answer, and
+    in 0 does it block a correct overturn.** The control that matters is that
+    the `basso` clashes are Handel's ALONE: no orchestral page in the corpus
+    names Contrabass twice, so `c0a80ae7`'s measured win — `Basso.` at the foot
+    of Beethoven, Mahler, Mozart 41 and Tchaikovsky 6 overturned from a singer
+    to the contrabasses — passes through untouched.
+
+    ⚠️ Known limit, accepted with its reason: a real tromba bassa printed on a
+    page that also prints `Tr.` for the trumpets would be blocked from the
+    correct overturn. Nothing in either corpus prints one, and the lexicon
+    already records Trombone as "much the commoner" reading.
     """
     for page_index, pws, staff_labels in zip(page_indices, staved, staff_labels_per_page):
+        claimed = _names_claimed_by_alias(pws, staff_labels)
         for label in staff_labels:
             candidates = candidates_for_alias(label.alias)
             if len(candidates) < 2:
                 continue
-            key = (page_index, next(
-                (s.system_index for s in pws.staves
-                 if s.staff_index == label.staff_index), 0), label.staff_index)
+            system_index = _system_of(pws, label.staff_index)
+            key = (page_index, system_index, label.staff_index)
             slot = slot_by_staff.get(key)
             if slot is None or slot < 0:
                 continue
             chosen = resolve_ambiguous_label(slot, candidates, fit)
             if chosen is None:
                 continue
+            # The overturn test. `label.instrument` is the lexicon's own answer,
+            # so a `chosen` equal to it is not an overturn and is never refused.
+            lexicon = label.instrument.name if label.instrument else None
+            if chosen.name != lexicon:
+                aliases = claimed.get(system_index, {}).get(chosen.name, set())
+                if aliases - {label.alias or ""}:
+                    continue
             current = instrument_by_slot.get(slot)
             instrument_by_slot[slot] = chosen
             for s in reference:

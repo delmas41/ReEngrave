@@ -1394,6 +1394,61 @@ the voice instruments' own aliases, which also fixes `Fl. Alt.`, `Cl. Alt.` and
 `Trb. Tenore`. Validated on 1380 margin labels across 10 editions —
 [LEXICON_TR_ALT_2026-08-31.md](benchmarks/omr-margin-labels-2026-08/LEXICON_TR_ALT_2026-08-31.md).
 
+⚠️ **THE SAME PAGE, THE SAME EVIDENCE, AND THE THIRD INSTANCE OF THE FAMILY —
+BUT THIS ONE IS NOT A LEXICON FAULT** (fixed 2026-09-06, `contextual.py`). On
+that same Litolff Beethoven 5, `lookup('Tp.')` returns **Timpani at `high`** and
+the timpani still exported as a **second trumpet**. `Tp.` is Timpani in the
+German and Italian tradition and Trumpet in the English one, so it is declared
+in `AMBIGUOUS_ALIASES`, which hands the slot to
+`score_layouts.resolve_ambiguous_label` — and the canonical layout puts the
+timpani AFTER the trombones while this edition prints it BETWEEN the trumpets
+and the trombones (the deviation `score_layouts` already documents where it
+explains pinning). The aligner is monotone, so staff 8 took the second trumpet
+slot; being ambiguous had also withdrawn the PIN that would otherwise have
+taught the aligner the print's order. **A correct lexicon, overturned by the
+prior.**
+
+**The evidence was already on the page and needed no lexicon change**: `Tr.`
+stands four staves up on the same system, and an engraver does not name one
+section with two different abbreviations on one system. So the prior **may not
+move a staff onto an instrument a different alias on the same system already
+names**.
+
+⚠️ **The constraint is ASYMMETRIC — it refuses only an OVERTURN and never
+removes the lexicon's own answer — and `Tr. Bas.` on p.48 is what forces that.**
+That staff's candidates are Trombone and Trumpet and **both** are separately
+named on its system (`Tr. Alt.`/`Tr. Ten.`, and `Tr.`), so a rule excluding
+every clashing candidate would have nothing left to choose and would break a
+reading that is already right. Measured over the 1422-label corpus
+(`probe_ambiguous_cooccurrence.py`): 86 of 158 ambiguous-alias occurrences clash
+— 52 `cor`, 18 `tp`, 9 `tr bas`, 7 `basso`/`bassi` — and hand-adjudicated the
+rule **keeps or restores the right answer in 86 of 86 and blocks a correct
+overturn in 0**.
+
+⚠️ **The control that matters is `basso`, and it passes because every clash is
+HANDEL's.** `c0a80ae7` fixed `Basso.` at the foot of an orchestral score by
+letting position overturn the lexicon's `Bass voice` to Contrabass; no
+orchestral page in the corpus names Contrabass twice, so that overturn is
+untouched — confirmed in the live A/B, where `ambiguous_labels_resolved` falls
+2 → 1 and the survivor is exactly that Contrabass. Handel's *Messiah* prints
+`BASSO` (the bass **voice**) and `Bassi` (the string basses) on one page and
+needs both first answers as they stand; there the two labels block each other,
+which is the rule doing the right thing rather than a limit on it. The probe
+**fails** if an orchestral source ever joins that list.
+
+Same-tree A/B on `--pages 23,44`, scored against the hand-read lineup: **24/29 →
+26/29 correct**, the 17-staff finale system **16/17 → 17/17 exact**, `Timpani ->
+Trumpet` ×2 eliminated and no other confusion moved. Exactly **3 staff records
+change**, all slot 8, all `Trumpet(score_order_ambiguity)` → `Timpani(label)` —
+the name is now attributed to the page it was read from instead of to the prior.
+⚠️ The remaining 3 errors (`Violin`/`Viola` → Trombone on the reduced 12-staff
+system) are a different fault and this does not touch them. Known limit,
+accepted with its reason: a real *tromba bassa* on a page that also prints `Tr.`
+would be blocked from the correct overturn; nothing in either corpus prints one,
+and the lexicon already records Trombone as much the commoner reading. Pinned by
+`test_contextual_ambiguity_uniqueness.py`, every test run RED with the guard
+removed.
+
 **The same shape again, 2026-09-03, and the same answer: DERIVE the cross
 product.** A contrabassoon is printed as a BASSOON name with a contra- qualifier
 — four languages of noun against four of qualifier plus the abbreviations a
