@@ -1,0 +1,43 @@
+{
+  "what": "Hand-read ground truth for the 18 staves the absent-instrument veto refuses with OMR_MOVEMENT_REFERENCE on, over the whole of Beethoven 5 / Litolff (imslp984073, 88 pages, dpi 600).",
+  "how": "Every system holding a refusal was rendered at the dpi the composition harness ran at (600), the DETECTED staff band of each staff was drawn on the render (probe/box_vetoed.py), and the instrument was read off the print inside that box: the margin label where one is printed, the CLEF and the position in the string block where none is. The alto C-clef staff is the Viola in every system here, which fixes the two treble staves above it as Violin I and Violin II and the bass staff below as the cello/bass staff.",
+  "naming_convention": "score_2x2.py's: Violin I and Violin II are both the name `Violin`, so `printed` below is the instrument NAME the scorer would want, not the desk.",
+  "evidence_tiers": {
+    "hand_read_page": "PRIMARY. A human reading the printed raster. This is not the catalog's `source_kind: page` tier, which is an OMR output of the same raster; it is the standard the choir-grouping and ledger-zone audits in this repo settle candidates by.",
+    "catalog": "CORROBORATION ONLY, and weak: the IMSLP roster for beethoven--symphony-5 (source_kind `catalog`, InstrDetail) ends at the word `strings`, so it attests that the work has a string section and says nothing about staff order.",
+    "encoding": "NOT USED. The mvt-4 reference encoding is on disk and would agree, but nothing here needs it and this keeps the adjudication independent of the artefact the OMR benchmarks score against."
+  },
+  "rows": [
+    {"page": 56, "system": 0, "staff": 6,  "slot": 12, "refused": "Violin",     "printed": "Violin",     "verdict": "cost",    "why": "2nd of 4 string staves; treble clef, above the alto-clef Viola. Violin I."},
+    {"page": 56, "system": 0, "staff": 7,  "slot": 13, "refused": "Violin",     "printed": "Violin",     "verdict": "cost",    "why": "treble clef, directly above the alto-clef Viola. Violin II."},
+    {"page": 56, "system": 0, "staff": 8,  "slot": 14, "refused": "Viola",      "printed": "Viola",      "verdict": "cost",    "why": "alto C-clef."},
+    {"page": 56, "system": 1, "staff": 15, "slot": 12, "refused": "Violin",     "printed": "Violin",     "verdict": "cost",    "why": "treble clef, top of the string block. Violin I."},
+    {"page": 56, "system": 1, "staff": 16, "slot": 13, "refused": "Violin",     "printed": "Violin",     "verdict": "cost",    "why": "treble clef above the alto-clef Viola. Violin II."},
+    {"page": 56, "system": 1, "staff": 17, "slot": 14, "refused": "Viola",      "printed": "Viola",      "verdict": "cost",    "why": "alto C-clef."},
+    {"page": 57, "system": 1, "staff": 20, "slot": 13, "refused": "Violin",     "printed": "Violin",     "verdict": "cost",    "why": "treble clef, top of the string block, below Tr. Bas. Violin I."},
+    {"page": 57, "system": 1, "staff": 21, "slot": 14, "refused": "Viola",      "printed": "Violin",     "verdict": "benefit", "why": "treble clef — Violin II. The alignment deleted slot 12 instead of slot 15 and shifted the whole string block down one."},
+    {"page": 57, "system": 1, "staff": 22, "slot": 15, "refused": "Cello",      "printed": "Viola",      "verdict": "benefit", "why": "alto C-clef — Viola, named Cello by the same one-slot shift."},
+    {"page": 63, "system": 1, "staff": 9,  "slot": 12, "refused": "Violin",     "printed": "Violin",     "verdict": "cost",    "why": "treble clef, top of the string block. Violin I."},
+    {"page": 63, "system": 1, "staff": 10, "slot": 13, "refused": "Violin",     "printed": "Violin",     "verdict": "cost",    "why": "treble clef above the alto-clef Viola (marked `arco.`). Violin II."},
+    {"page": 63, "system": 1, "staff": 11, "slot": 14, "refused": "Viola",      "printed": "Viola",      "verdict": "cost",    "why": "alto C-clef."},
+    {"page": 63, "system": 2, "staff": 19, "slot": 12, "refused": "Violin",     "printed": "Violin",     "verdict": "cost",    "why": "treble clef, top of the string block. Violin I."},
+    {"page": 63, "system": 2, "staff": 20, "slot": 13, "refused": "Violin",     "printed": "Violin",     "verdict": "cost",    "why": "treble clef above the alto-clef Viola. Violin II."},
+    {"page": 63, "system": 2, "staff": 21, "slot": 14, "refused": "Viola",      "printed": "Viola",      "verdict": "cost",    "why": "alto C-clef."},
+    {"page": 86, "system": 0, "staff": 12, "slot": 13, "refused": "Violin",     "printed": "Violin",     "verdict": "cost",    "why": "treble clef, first staff below Tr. Bas. Violin I."},
+    {"page": 86, "system": 0, "staff": 13, "slot": 14, "refused": "Viola",      "printed": "Violin",     "verdict": "benefit", "why": "treble clef — Violin II. Phase 1 missed the Violoncello staff (a 317 px gap between detected staves 14 and 15 against a ~180 px pitch), so 16 staves aligned into 17 slots and the DP deleted slot 12."},
+    {"page": 86, "system": 0, "staff": 14, "slot": 15, "refused": "Cello",      "printed": "Viola",      "verdict": "benefit", "why": "alto C-clef — Viola, named Cello by the same shift."}
+  ],
+  "same_pages_unvetoed": {
+    "what": "Unlabelled staves on the SAME four pages that the veto lets through with a name from a different FAMILY, not merely a desk off. Read the same way, off the same renders. They are here because they set the scale the 18 refusals should be read at: the veto's residual is not acting on a page where everything else is right.",
+    "rows": [
+      {"page": 57, "system": 0, "staff": 5, "slot": 8,  "given": "Trumpet",  "printed": "Violin", "vetoed": false, "why": "slot source is score_order_ambiguity — structurally outside VETOABLE_SOURCES"},
+      {"page": 57, "system": 0, "staff": 6, "slot": 9,  "given": "Trombone", "printed": "Violin", "vetoed": false, "why": "Trombone is attested from page 44 on, so the span rule licenses it on page 57"},
+      {"page": 57, "system": 0, "staff": 7, "slot": 10, "given": "Trombone", "printed": "Viola",  "vetoed": false, "why": "same"},
+      {"page": 57, "system": 0, "staff": 8, "slot": 11, "given": "Trombone", "printed": "Cello",  "vetoed": false, "why": "same; the staff is the condensed Vcl./Basso"},
+      {"page": 63, "system": 0, "staff": 2, "slot": 6,  "given": "Horn",     "printed": "Violin", "vetoed": false, "why": "Horn is attested across the whole document"},
+      {"page": 63, "system": 0, "staff": 3, "slot": 9,  "given": "Trombone", "printed": "Violin", "vetoed": false, "why": "attested in the finale span"},
+      {"page": 63, "system": 0, "staff": 4, "slot": 10, "given": "Trombone", "printed": "Viola",  "vetoed": false, "why": "same"},
+      {"page": 63, "system": 0, "staff": 5, "slot": 11, "given": "Trombone", "printed": "Cello",  "vetoed": false, "why": "same; the staff is marked Vcl."}
+    ]
+  }
+}

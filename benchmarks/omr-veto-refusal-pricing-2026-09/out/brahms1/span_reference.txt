@@ -1,0 +1,37 @@
+=== --pages 0-85
+  document reference (16 slots): ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', '-', 'Trumpet', 'Trombone', '-', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+  span   0- 44  reference system = page ? , 14 slots
+      local  0 label=Flute          -> global   0 named Flute         
+      local  1 label=Oboe           -> global   1 named Oboe          
+      local  2 label=Clarinet       -> global   2 named Clarinet      
+      local  3 label=Bassoon        -> global   3 named Bassoon       
+      local  4 label=Contrabassoon  -> global   4 named Contrabassoon 
+      local  5 label=Horn           -> global   5 named Horn          
+      local  6 label=Trumpet        -> global   7 named Trumpet       
+      local  7 label=Timpani        -> global   8 named Trombone      
+      local  8 label=Violin         -> global   9 named None          
+      local  9 label=Violin         -> global  11 named Violin        
+      local 10 label=Violin         -> global  12 named Violin        
+      local 11 label=Viola          -> global  13 named Viola         
+      local 12 label=Cello          -> global  14 named Cello         
+      local 13 label=Contrabass     -> global  15 named Contrabass    
+      unlabelled local slots landing on a finale-only global slot: 0
+  span  45- 85  reference system = page ? , 16 slots
+      local  0 label=Flute          -> global   0 named Flute         
+      local  1 label=Oboe           -> global   1 named Oboe          
+      local  2 label=Clarinet       -> global   2 named Clarinet      
+      local  3 label=Bassoon        -> global   3 named Bassoon       
+      local  4 label=Contrabassoon  -> global   4 named Contrabassoon 
+      local  5 label=Horn           -> global   5 named Horn          
+      local  6 label=None           -> global   6 named None          
+      local  7 label=Trumpet        -> global   7 named Trumpet       
+      local  8 label=Trombone       -> global   8 named Trombone      
+      local  9 label=None           -> global   9 named None          
+      local 10 label=Timpani        -> global  10 named Timpani       
+      local 11 label=Violin         -> global  11 named Violin        
+      local 12 label=Violin         -> global  12 named Violin        
+      local 13 label=Viola          -> global  13 named Viola         
+      local 14 label=Cello          -> global  14 named Cello         
+      local 15 label=Contrabass     -> global  15 named Contrabass    
+      unlabelled local slots landing on a finale-only global slot: 0
+

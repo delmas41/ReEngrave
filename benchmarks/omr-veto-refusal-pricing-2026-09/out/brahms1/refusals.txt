@@ -1,0 +1,47 @@
+===== spans-off  reference_size=16  vetoes=22
+  Trombone attested on pages: [45, 48, 49, 50, 51, 59, 68, 69, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85]
+  by instrument: {'Trombone': 22}
+  p06 sy1 st17 slot 8 Trombone  sys_size=11 attested[45,85] outside=39
+  p07 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=38
+  p07 sy1 st16 slot 8 Trombone  sys_size=11 attested[45,85] outside=38
+  p08 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=37
+  p08 sy1 st16 slot 8 Trombone  sys_size=11 attested[45,85] outside=37
+  p09 sy0 st 6 slot 8 Trombone  sys_size=12 attested[45,85] outside=36
+  p12 sy1 st21 slot 8 Trombone  sys_size=14 attested[45,85] outside=33
+  p15 sy1 st18 slot 8 Trombone  sys_size=13 attested[45,85] outside=30
+  p19 sy1 st20 slot 8 Trombone  sys_size=13 attested[45,85] outside=26
+  p20 sy0 st 6 slot 8 Trombone  sys_size=13 attested[45,85] outside=25
+  p20 sy1 st18 slot 8 Trombone  sys_size=11 attested[45,85] outside=25
+  p21 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=24
+  p22 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=23
+  p22 sy1 st16 slot 8 Trombone  sys_size=11 attested[45,85] outside=23
+  p23 sy0 st 6 slot 8 Trombone  sys_size=12 attested[45,85] outside=22
+  p25 sy1 st20 slot 8 Trombone  sys_size=12 attested[45,85] outside=20
+  p26 sy0 st 6 slot 8 Trombone  sys_size=13 attested[45,85] outside=19
+  p26 sy1 st19 slot 8 Trombone  sys_size=13 attested[45,85] outside=19
+  p42 sy1 st17 slot 8 Trombone  sys_size=11 attested[45,85] outside=3
+  p43 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=2
+  p43 sy1 st16 slot 8 Trombone  sys_size=11 attested[45,85] outside=2
+  p44 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=1
+
+===== spans-on  reference_size=16  vetoes=16
+  slots: 0:Flute(label), 1:Oboe(label), 2:Clarinet(label), 3:Bassoon(label), 4:Contrabassoon(label), 5:Horn(label), 6:Horn(roster), 7:Trumpet(label), 8:Trombone(label), 9:Tuba(score_order), 10:Timpani(label), 11:Violin(label), 12:Violin(label), 13:Viola(label), 14:Cello(label), 15:Contrabass(label)
+  Trombone attested on pages: [45, 48, 49, 50, 51, 59, 68, 69, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85]
+  by instrument: {'Trombone': 16}
+  p06 sy1 st17 slot 8 Trombone  sys_size=11 attested[45,85] outside=39
+  p07 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=38
+  p07 sy1 st16 slot 8 Trombone  sys_size=11 attested[45,85] outside=38
+  p08 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=37
+  p08 sy1 st16 slot 8 Trombone  sys_size=11 attested[45,85] outside=37
+  p09 sy0 st 6 slot 8 Trombone  sys_size=12 attested[45,85] outside=36
+  p20 sy1 st18 slot 8 Trombone  sys_size=11 attested[45,85] outside=25
+  p21 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=24
+  p22 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=23
+  p22 sy1 st16 slot 8 Trombone  sys_size=11 attested[45,85] outside=23
+  p23 sy0 st 6 slot 8 Trombone  sys_size=12 attested[45,85] outside=22
+  p25 sy1 st20 slot 8 Trombone  sys_size=12 attested[45,85] outside=20
+  p42 sy1 st17 slot 8 Trombone  sys_size=11 attested[45,85] outside=3
+  p43 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=2
+  p43 sy1 st16 slot 8 Trombone  sys_size=11 attested[45,85] outside=2
+  p44 sy0 st 5 slot 8 Trombone  sys_size=11 attested[45,85] outside=1
+

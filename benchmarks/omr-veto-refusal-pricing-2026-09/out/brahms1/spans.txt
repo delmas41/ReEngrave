@@ -1,0 +1,6 @@
+=== --pages 0-85   (86 pages)
+  running-maximum steps (page: prev -> new): 0: 0->14, 45: 14->16, 60: 16->27, 67: 27->28
+  spans taken: 2
+    pages   0- 44  (45 pages)  largest system in span = 14
+    pages  45- 85  (41 pages)  largest system in span = 28
+
