@@ -1,0 +1,4 @@
+=== beet5-p02-on start 2026-09-06T14:24:55Z
+pdf=/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf pages=0-2 OMR_REFERENCE_MOST_LABELLED=on
+/Library/Developer/CommandLineTools/usr/bin/python3: Error while finding module specification for 'tools.omr.transcribe' (ModuleNotFoundError: No module named 'tools')
+=== beet5-p02-on rc=1 wall=0s

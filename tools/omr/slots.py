@@ -39,6 +39,7 @@ when staff counts match and is the honest best guess when they do not.
 from __future__ import annotations
 
 import collections
+import os
 from dataclasses import dataclass, field
 
 from .types import PageWithStaves, Staff
@@ -70,6 +71,20 @@ MIN_LABEL_CONFIDENCE = ("high", "medium")
 # the condensed ones around it, and too tight a cap throws the real reference
 # away.
 REFERENCE_MAX_SIZE_RATIO = 2.0
+
+
+def most_labelled_reference_mode() -> str:
+    """`OMR_REFERENCE_MOST_LABELLED` — `off` (default) / `on` / `pure`.
+
+    Picks the reference by how many staves a system NAMES rather than by which
+    staff count recurs. `on` keeps the never-shrink guard described in
+    `build_reference`; `pure` drops it and exists to reproduce the measurement
+    that refused it.
+    """
+    v = os.environ.get("OMR_REFERENCE_MOST_LABELLED", "").strip().lower()
+    if v == "pure":
+        return "pure"
+    return "on" if v in ("1", "true", "yes", "on") else "off"
 
 
 @dataclass
@@ -116,7 +131,8 @@ def _views(pws: PageWithStaves, labels: dict[int, str] | None = None) -> list[Sy
     ]
 
 
-def build_reference(views: list[SystemView]) -> list[Slot]:
+def build_reference(views: list[SystemView],
+                    most_labelled: str | bool | None = None) -> list[Slot]:
     """The canonical part list: the largest system seen, since a system can omit
     tacet parts but never invent one.
 
@@ -124,7 +140,46 @@ def build_reference(views: list[SystemView]) -> list[Slot]:
     max-size contest, and by a repeated-instrument check that recognises a
     concatenation directly. Ties go to the system carrying the most resolved
     labels, which makes the reference as identifiable as possible.
+
+    ⚠️ **THE RECURRING RULE IS BACKWARDS ON A MULTI-PAGE RUN**, and that is what
+    `most_labelled` (env `OMR_REFERENCE_MOST_LABELLED`, default off) exists for.
+    A movement's FIRST page prints the full lineup and every page after it
+    condenses — Beethoven 5 / Litolff prints 12 staves on p.1 and 11 on p.2+,
+    because `Violoncello e Basso` share a staff — so over a run 11 recurs and 12
+    does not, the recurring filter throws the full system away, and `align`
+    (which deletes on the reference side only) then drops the twelve-staff
+    system's TOP staff and slides every name up one: `Corni` becomes Bassoon.
+    Measured on that PDF: `--pages 1` names 11 of 12 staves and `--pages 0-2`
+    names 4 — the web app's own `OMR_MAX_PAGES=5` default reproduces it.
+
+    A system that NAMES its parts is better evidence of what the parts are than
+    a shape that merely recurs, and the recurring shape is systematically the
+    *condensed* one because condensation is what repeats. So with the flag on,
+    the reference is the system with the most resolved labels, ties broken by
+    size (so a fully-labelled edition still picks its fullest system).
+
+    ⚠️ It ABSTAINS where no system names anything — 27 of 234 documents print no
+    labels at all, and there the label count is 0 everywhere and would pick an
+    arbitrary first system. Those fall through to the recurring rule unchanged,
+    which is also where the recurring filter's real job lies: it is the
+    label-free half of the merge guard (`_looks_merged` reads names, so it is
+    blind exactly there).
+
+    ⚠️ AND IT NEVER SHRINKS THE REFERENCE. The labelled system is not always the
+    fullest one: a Bote Dvořák serenade names its opening 5-staff system and
+    prints 6-staff systems later, and a reference SHORTER than a system cannot
+    name that system's overflow at all — `align` leaves it at slot -1, which is
+    a worse failure than the misnaming this fixes. So the label winner is taken
+    only where it is at least as large as what the recurring rule would have
+    chosen; otherwise the recurring pick stands. `most_labelled="pure"` drops
+    that guard and is kept only to reproduce the measurement that refused it.
     """
+    if most_labelled is None:
+        most_labelled = most_labelled_reference_mode()
+    if most_labelled is True:
+        most_labelled = "on"
+    elif most_labelled is False:
+        most_labelled = "off"
     views = [v for v in views if v.size]
     if not views:
         return []
@@ -137,16 +192,24 @@ def build_reference(views: list[SystemView]) -> list[Slot]:
 
     # A merged "system" is a ONE-OFF; a real full system recurs, because the
     # orchestra is the same on every page. So prefer the largest size that
-    # appears more than once. This is the label-free half of the guard, and it
-    # is the half that matters: `_looks_merged` reads instrument names, so it is
-    # blind on a score with no text layer — exactly where a 24-staff
-    # concatenation of two 12-staff systems slipped through and became a
-    # 24-slot reference of entirely unlabelled parts.
+    # appears more than once. This is the label-free half of the guard, and
+    # it is the half that matters: `_looks_merged` reads instrument names,
+    # so it is blind on a score with no text layer — exactly where a
+    # 24-staff concatenation of two 12-staff systems slipped through and
+    # became a 24-slot reference of entirely unlabelled parts.
     counts = collections.Counter(v.size for v in candidates)
-    recurring = [v for v in candidates if counts[v.size] > 1]
-    if recurring:
-        candidates = recurring
-    best = max(candidates, key=lambda v: (v.size, len(v.labels)))
+    recurring = [v for v in candidates if counts[v.size] > 1] or candidates
+    best = max(recurring, key=lambda v: (v.size, len(v.labels)))
+
+    labelled = [v for v in candidates if v.labels] if most_labelled != "off" else []
+    if labelled:
+        # Most-labelled wins; size breaks the tie, so an edition that labels
+        # every system (Breitkopf) still gets its fullest one, and an edition
+        # that labels only winds and brass on every system (Litolff) ties on
+        # labels and is decided by size — the full lineup either way.
+        by_labels = max(labelled, key=lambda v: (len(v.labels), v.size))
+        if most_labelled == "pure" or by_labels.size >= best.size:
+            best = by_labels
     n = max(1, best.size - 1)
     return [
         Slot(index=i,
@@ -236,8 +299,8 @@ def align(view: SystemView, reference: list[Slot]) -> list[int]:
 
 
 def assign_slots(pages: list[PageWithStaves],
-                 labels_per_page: list[dict[int, str]] | None = None
-                 ) -> list[Slot]:
+                 labels_per_page: list[dict[int, str]] | None = None,
+                 most_labelled: bool | None = None) -> list[Slot]:
     """Set `Staff.slot_index` on every staff of every page, and return the
     reference layout the slots refer to.
 
@@ -249,7 +312,9 @@ def assign_slots(pages: list[PageWithStaves],
     all_views: list[list[SystemView]] = [
         _views(pws, labels) for pws, labels in zip(pages, labels_per_page)
     ]
-    reference = build_reference([v for page_views in all_views for v in page_views])
+    reference = build_reference(
+        [v for page_views in all_views for v in page_views],
+        most_labelled=most_labelled)
     if not reference:
         return []
     for page_views in all_views:
