@@ -63,6 +63,16 @@ def main() -> int:
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--drop", default=None,
                     help="JSON list of [page_index, staff_index] to withhold")
+    ap.add_argument("--clefs", default=None,
+                    help="JSON from extract_clefs.py: fill the `pages` staff "
+                         "dicts with a real run's CLEF READINGS, which is the "
+                         "one thing an identity-only replay cannot supply "
+                         "(`_read_clefs_by_slot` returns {} on empty pages)")
+    ap.add_argument("--structure-only", action="store_true",
+                    help="THE CONTROL for --clefs: build the same page/system/"
+                         "staff dicts and put NO clef in them, so a difference "
+                         "against --clefs is the clef readings and not the "
+                         "presence of a page structure")
     ap.add_argument("--keep-only", default=None,
                     help="JSON list of [page_index, staff_index]; every OTHER "
                          "row of the drop list is withheld (single-row arms)")
@@ -125,8 +135,39 @@ def main() -> int:
     os.environ["OMR_ABSENT_INSTRUMENT_VETO"] = "report"
     os.environ.setdefault("OMR_MOVEMENT_REFERENCE", "1")
 
-    result = {"source_pdf": str(pdf), "dpi": args.dpi,
-              "pages": [{"page_index": i, "systems": []} for i in pages]}
+    # -- the `pages` structure.  An identity-only replay leaves it EMPTY, which
+    # is exactly what `_read_clefs_by_slot` reads; with `--clefs` it is built
+    # from the cache's own staves (verified identical to the transcription's,
+    # 1616 of 1616) and carries a real run's clef readings.
+    clef_rows = {}
+    if args.clefs:
+        blob = json.loads(Path(args.clefs).read_text())
+        for pg, sy, si, clef, src in blob["rows"]:
+            clef_rows[(pg, sy, si)] = (clef, src)
+    page_dicts = []
+    n_injected = 0
+    for i, pws in zip(pages, staved):
+        systems = []
+        if args.clefs or args.structure_only:
+            bysys = {}
+            for st in sorted(pws.staves, key=lambda s: s.staff_index):
+                bysys.setdefault(st.system_index, []).append(st)
+            for sy in sorted(bysys):
+                staves_out = []
+                for st in bysys[sy]:
+                    clef, src = clef_rows.get((i, sy, st.staff_index),
+                                              (None, None))
+                    d = {"staff_index": st.staff_index}
+                    if src:
+                        d["clef"], d["clef_source"] = clef, src
+                        n_injected += 1
+                    staves_out.append(d)
+                systems.append({"system_index": sy, "staves": staves_out})
+        page_dicts.append({"page_index": i, "systems": systems})
+    if args.clefs or args.structure_only:
+        print(f"injected {n_injected} read clefs into the page dicts",
+              flush=True)
+    result = {"source_pdf": str(pdf), "dpi": args.dpi, "pages": page_dicts}
     t0 = time.time()
     summary = apply_contextual_analysis(
         result, pdf_path=pdf, dpi=args.dpi, apply_clefs=False,
