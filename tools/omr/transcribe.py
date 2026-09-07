@@ -1319,6 +1319,7 @@ def _header_key_signatures(
     header_cells: dict[int, MeasureCell],
     clef_for_staff: dict[int, str | None],
     dets_for_staff: dict[int, tuple[list, MeasureCell]],
+    evidence: dict[int, dict[str, Any]] | None = None,
 ) -> tuple[dict[int, int], dict[int, str], dict[int, str]]:
     """Read and reconcile this page's key signatures.
 
@@ -1346,6 +1347,12 @@ def _header_key_signatures(
     clefs read well it speaks for most staves; on the degraded orchestral prints
     where the detector reads every staff as treble, it stays quiet — which is
     the right failure, but it means the two features improve together.
+
+    `evidence`, when given, is filled per staff with what the vote MEASURED —
+    the system's majority share and its tally, this staff's own reading and the
+    weight behind it. It is an out-parameter rather than a fourth element of the
+    return because three existing tests unpack this tuple, and widening a return
+    to carry a record is how a recording change acquires a blast radius.
     """
     candidates: list[StaffCandidate] = []
     unread: dict[int, str] = {}
@@ -1435,6 +1442,31 @@ def _header_key_signatures(
                 can_carry=not source.startswith("template"),
             ))
     result = reconcile(candidates)
+    if evidence is not None:
+        # The MAJORITY SHARE, per staff, beside the verdict it produced. The
+        # reason string already says "no majority to check against"; it has
+        # never said how far off a majority the page was, because `reconcile`
+        # compared the number once and dropped it. The staff's own reading and
+        # weight go beside it, since a verdict is only readable against what
+        # was fed to it.
+        by_index = {c.staff_index: c for c in candidates}
+        for staff_index, verdict in result.verdicts.items():
+            cand = by_index.get(staff_index)
+            system_index = cand.system_index if cand is not None else None
+            evidence[staff_index] = {
+                "action": verdict.action,
+                "fifths": verdict.fifths,
+                "read_fifths": cand.fifths if cand else None,
+                "read_weight": (round(cand.weight, 4) if cand else None),
+                "read_source": cand.source if cand else None,
+                "can_carry": cand.can_carry if cand else None,
+                "system_index": system_index,
+                "system_reference": result.reference_written_by_system.get(
+                    system_index),
+                "system_majority": result.majority_by_system.get(system_index),
+                "system_vote_totals": result.vote_totals_by_system.get(
+                    system_index, {}),
+            }
     fifths: dict[int, int] = {}
     reasons: dict[int, str] = {}
     for staff_index, verdict in result.verdicts.items():
@@ -1540,6 +1572,7 @@ def _detections_for_cell(
     clef_overrides: list[dict[str, Any]] | None = None,
     pdf_path: Path | str | None = None,
     page_dpi: int | None = None,
+    clef_evidence: dict[str, Any] | None = None,
 ) -> tuple[
     list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None, str | None
 ]:
@@ -1568,6 +1601,42 @@ def _detections_for_cell(
     "cv_locator", or None when the clef was carried in rather than read here,
     and `n_clipped_dropped` is how many notehead detections were discarded as
     ink the crop cut off (`_drop_clipped_notehead_fragments`).
+
+    `clef_evidence`, when given, is filled with what the clef readers SAW, as
+    against `clef_source`, which says only who won. It is an out-parameter
+    rather than a seventh return value so a caller that does not want it pays
+    nothing and is unchanged. Purely additive: nothing here reads it back, so a
+    run with it and a run without it decide identically.
+
+    ⚠️ **IT MUST NOT BE PUT BEHIND A FLAG TO BUY BACK THE BYTES.** It costs
+    ~10% of a page's result JSON, which is real — for scale, `pitch_candidates`
+    already occupies 6.6% of `beethoven-984073-p1` across 117 lists with zero
+    production consumers, so the pipeline already pays two thirds of this for a
+    record nobody reads. If size ever bites at whole-work scale, the answer is a
+    PROJECTION AT WRITE TIME — drop `contest["candidates"]`, keep the winner,
+    the runner-up and the margin — and never a flag. `OMR_CONTEST_DUMP` and
+    `locate_clef(trace=)` are both complete recorders that recorded NOTHING
+    because they were off, and that is the defect this whole change exists to
+    repair. An instrument that is off is not a record.
+
+    The keys, each answering the question a bare `clef_source` cannot — WHY the
+    reading that lost, lost:
+
+      contest             the detector's clef argmax: every candidate, the
+                          runner-up, the margin, and the clef the cell came in
+                          with. ⚠️ Recorded on EVERY cell that reads a clef, not
+                          just the staff's first — this argmax is not gated by
+                          `read_clef`.
+      cv_locator          the trace `clef_locator.locate_clef` has always been
+                          able to fill and that no call site passed.
+      specialist          what it read, and who blocked it. Gap-fill-only, so
+                          an overruled reading was computed and dropped.
+      detector_header     what the header gap-fill read, or why it never ran.
+      dossier             what the override displaced, and whose reading it was.
+
+    (Listing them beats counting them: an earlier draft of this docstring said
+    "two entries so far" and was wrong within a day — the same staleness family
+    as a `*_final` name, in prose.)
     """
     if clef_overrides is None:
         clef_overrides = []
@@ -1592,6 +1661,21 @@ def _detections_for_cell(
     best_clef_read = None
     best_clef_det = None
     best_clef_conf = -1.0
+    # The clef this cell INHERITED — carried from an earlier cell of the same
+    # staff, or from an earlier system. Captured before any reader can move it,
+    # because it is the baseline the cell's own reading either confirms or
+    # OVERTURNS, and the overturn is the interesting event: this argmax is not
+    # gated by `read_clef` and sets `clef_source = "detector"` on every cell, so
+    # one detection anywhere in a staff can flip the clef mid-staff.
+    inherited_clef = active_clef
+    # Every candidate this argmax considered. `best_clef_conf` is the one
+    # quantity the loop keeps and it is discarded four lines below, so a clef
+    # won at 0.98 with nothing behind it and a clef won at 0.26 over a 0.25
+    # runner-up were the same fact downstream: `clef_source == "detector"`.
+    # ⚠️ Note there is no `clef_candidates` here the way there is a
+    # `pitch_candidates` on every notehead — the asymmetry is the finding, and
+    # this list is the record of it, NOT a ranked list anything re-reads.
+    clef_candidates: list[dict[str, Any]] = []
     for d in dets:
         if d.category != "clef":
             continue
@@ -1600,7 +1684,24 @@ def _detections_for_cell(
         # know. See tools/omr/clef_geometry.py.
         read = resolve_clef_for_detection(d)
         if read is None:
+            # A clef-category detection the geometry could not name is still a
+            # candidate that was considered and dropped — recorded with its
+            # confidence, because "the detector fired at 0.9 and nothing could
+            # be made of it" is a different page from "nothing fired".
+            if clef_evidence is not None:
+                clef_candidates.append({
+                    "class": getattr(d, "smufl_name", None),
+                    "confidence": round(float(d.confidence), 4),
+                    "clef": None, "resolved": False, "source": "detector",
+                })
             continue
+        if clef_evidence is not None:
+            clef_candidates.append({
+                "class": getattr(d, "smufl_name", None),
+                "confidence": round(float(d.confidence), 4),
+                "clef": read.name, "resolved": True,
+                "read_source": read.source, "source": "detector",
+            })
         if d.confidence > best_clef_conf:
             best_clef_read = read
             best_clef_det = d
@@ -1615,6 +1716,65 @@ def _detections_for_cell(
         suffix = _octave_shift_for_base_clef(dets, best_clef_det)
         active_clef = best_clef_read.name + suffix
         clef_source = "detector"
+    if clef_evidence is not None:
+        # The contest, written down. The RUNNER-UP is the point: a margin says
+        # whether this staff's clef was decided or merely picked, and until now
+        # nothing recorded that a contest had happened at all.
+        ranked = sorted(
+            (c for c in clef_candidates if c["resolved"]),
+            key=lambda c: -c["confidence"],
+        )
+        contest: dict[str, Any] = {
+            "candidates": clef_candidates,
+            "n_candidates": len(clef_candidates),
+            "n_resolved": len(ranked),
+            "winner": best_clef_read.name if best_clef_read else None,
+            "winner_confidence": (
+                round(best_clef_conf, 4) if best_clef_read else None
+            ),
+            # ⚠️ THE CONTEST THAT MATTERS IS NOT THE ONE INSIDE THIS CELL.
+            # `disagrees` below compares the runner-up to the winner, which
+            # needs two resolved candidates — and the mid-staff clef FLIPS this
+            # record exists to make measurable are each the ONLY clef detection
+            # in their cell, so they carry `n_resolved == 1` and no `disagrees`
+            # key at all. The flip is the winner against the clef the cell came
+            # in with, so that comparison is recorded directly here rather than
+            # left to be reconstructed by joining to the preceding measure.
+            "clef_in_effect_before": inherited_clef,
+            "read_clef_rung_ran": read_clef,
+        }
+        if best_clef_read is not None:
+            # `active_clef` carries the octave suffix the raw read does not, so
+            # this is the comparison the pitch resolver will actually act on.
+            contest["clef_in_effect_after"] = active_clef
+            # ⚠️ PRE-REPAIR. This says the ARGMAX FLIPPED THE CLEF, not that the
+            # flip reached the output: the dossier override runs ~200 lines
+            # below and can put the inherited clef back, so on a seeded run this
+            # counts overturns the file never shows. A probe reading
+            # `measure["clef"]` counts SURVIVORS and will report fewer — the two
+            # are different quantities and must not be differenced. For the
+            # survivor count, read this together with `clef_evidence["dossier"]`,
+            # whose `overrode` / `overrode_source` name exactly the repairs.
+            contest["overturns_inherited"] = (
+                inherited_clef is not None and active_clef != inherited_clef
+            )
+        if len(ranked) > 1:
+            runner_up = ranked[1]
+            contest["runner_up"] = runner_up["clef"]
+            contest["runner_up_confidence"] = runner_up["confidence"]
+            contest["margin"] = round(ranked[0]["confidence"]
+                                      - runner_up["confidence"], 4)
+            # A contest only MATTERS where the two candidates disagree about
+            # the clef; two boxes on one glyph both reading "treble" is a
+            # duplicate, not a contest, and conflating them would inflate this
+            # population on exactly the dense pages where it is read.
+            contest["disagrees"] = runner_up["clef"] != ranked[0]["clef"]
+        # Recorded on EVERY cell that read a clef, not only the staff's first.
+        # A cell with no clef detection at all and no reader rung is skipped:
+        # it decided nothing, and a record per measure of a 112-measure page
+        # would be noise rather than evidence.
+        if clef_candidates or read_clef:
+            clef_evidence["contest"] = contest
 
     # ── Key-signature pass: scan for keySharp / keyFlat. None ⇒ no update. ──
     #
@@ -1674,12 +1834,28 @@ def _detections_for_cell(
         # can use it, and only `_header_cell_beats_measure_cell` decides
         # whether a reader should look there INSTEAD of the measure cell.
         use_header = prefer_header and header_cell is not None
+        # `locate_clef` has always accepted a `trace` and filled it with the
+        # branch that ended the call and the geometry of the cluster that ended
+        # it — and until now NEITHER pipeline call site passed one, so on every
+        # staff the locator declined, the reason was computed and thrown away in
+        # the same expression that returned None. Passing it costs one dict.
+        locator_trace: dict[str, Any] = {}
         located = locate_clef(
             header_cell if use_header else cell,
             # The detector's boxes belong to the measure cell's frame; they only
             # describe the header cell when it IS the measure cell.
             occupied_boxes=None if use_header else occupied,
+            trace=locator_trace,
         )
+        if clef_evidence is not None:
+            # Which crop it read matters to anyone reading the trace: the
+            # rejecting branches are about ink, and the header cell and the
+            # measure cell do not contain the same ink.
+            locator_trace["cell"] = "header" if use_header else "measure"
+            locator_trace["n_occupied_boxes"] = (
+                0 if use_header else len(occupied)
+            )
+            clef_evidence["cv_locator"] = locator_trace
         if located is not None:
             active_clef = located.read.name
             clef_source = "cv_locator"
@@ -1718,6 +1894,16 @@ def _detections_for_cell(
         if header_clef is not None:
             active_clef = header_clef
             clef_source = "detector_header"
+        if clef_evidence is not None:
+            clef_evidence["detector_header"] = {"read": header_clef}
+    elif clef_evidence is not None and read_clef:
+        # It did not run, and WHY it did not run is the record: a gap-fill pass
+        # that never fires because someone always speaks first is a different
+        # finding from one that fires and finds nothing.
+        clef_evidence["detector_header"] = {
+            "skipped": ("another reader spoke" if clef_source
+                        else "no header cell"),
+        }
 
     # ── Decoupled staff-header specialist (clef + time-sig override). The
     #    production detector under-detects clefs on real orchestral scans (9%
@@ -1766,6 +1952,17 @@ def _detections_for_cell(
         # Clef and time-sig precedence are independent: the locator has no
         # opinion on meter, so another reader's claim on the clef doesn't block
         # the specialist's time-sig read.
+        if clef_evidence is not None:
+            # The specialist RAN either way — this is gap-fill precedence, not
+            # a gate on the call — so where it is overruled the reading it
+            # would have given is real, computed, and was being dropped. That
+            # is the cheapest available measurement of what gap-fill-only
+            # costs, and it needs no second inference.
+            clef_evidence["specialist"] = {
+                "read": spec_clef,
+                "applied": spec_clef is not None and clef_source is None,
+                "blocked_by": clef_source if spec_clef is not None else None,
+            }
         if spec_clef is not None and clef_source is None:
             active_clef = spec_clef
             clef_source = "specialist"
@@ -1788,11 +1985,18 @@ def _detections_for_cell(
     #    override is visible rather than silent.
     if forced_clef is not None and forced_clef != active_clef:
         overridden_clef = active_clef if clef_source else None
+        if clef_evidence is not None:
+            clef_evidence["dossier"] = {
+                "forced": forced_clef, "overrode": overridden_clef,
+                "overrode_source": clef_source,
+            }
         active_clef = forced_clef
         clef_source = "dossier"
         if overridden_clef is not None:
             clef_overrides.append({"read": overridden_clef, "used": forced_clef})
     elif forced_clef is not None:
+        if clef_evidence is not None:
+            clef_evidence["dossier"] = {"forced": forced_clef, "agrees": True}
         clef_source = clef_source or "dossier"
 
     if forced_fifths is not None:
@@ -2793,6 +2997,22 @@ def _dedupe_cross_staff_detections(
                     # Written per pair, both sides, with the tier that actually
                     # decided it, because "would tier 2 have reached this" is
                     # only interesting where the ladder did NOT already settle it.
+                    # ⚠️ THE DISTANCES, which this dump did not carry. It
+                    # recorded both confidences and the deciding tier, and left
+                    # out the one quantity that decides 94.1% of these contests
+                    # — and that this project has already caught being a coin
+                    # flip: the three misattributed Mahler hairpins were 5-62 px
+                    # nearer the wrong staff, against 25 px the other way for
+                    # the one kept correctly. Without the margin, "decided by
+                    # distance" cannot be read as anything but "decided".
+                    # Computed here, in the dump, so a run with the dump off is
+                    # untouched — and computed for BOTH sides whatever tier
+                    # actually won, because "would distance have agreed" is a
+                    # question about the pairs the ladder settled too.
+                    dist_i = _distance_to_band(
+                        _bbox_center_y(di), bands[si][0], bands[si][1])
+                    dist_j = _distance_to_band(
+                        _bbox_center_y(dj), bands[sj][0], bands[sj][1])
                     contests.append({
                         "staff_i": si, "staff_j": sj,
                         "category": di.get("category"),
@@ -2800,6 +3020,14 @@ def _dedupe_cross_staff_detections(
                         "pitch_i": di.get("pitch"), "pitch_j": dj.get("pitch"),
                         "conf_i": di.get("confidence"),
                         "conf_j": dj.get("confidence"),
+                        "band_distance_i": round(float(dist_i), 2),
+                        "band_distance_j": round(float(dist_j), 2),
+                        # Unsigned: which side it favours is `distance_prefers`.
+                        "band_distance_margin": round(abs(dist_i - dist_j), 2),
+                        # What DISTANCE would have said, recorded even where a
+                        # stronger tier decided — the only way to ask, later,
+                        # how often the tiers agree.
+                        "distance_prefers": sj if dist_i > dist_j else si,
                         "decided_by": {2: "ladder", 1: "range_or_hairpin"}.get(
                             rank, "distance"),
                         "loser_staff": si if loser == i else sj,
@@ -4249,6 +4477,15 @@ def transcribe(
         # initialised its per-system state yet, so reading it here would pick up
         # the previous system's roles.
         clef_estimate: dict[int, str | None] = {}
+        # The locator's own account of this SECOND call — the header pre-pass's,
+        # which is a different question from the measure loop's below (different
+        # gate, different crop) and until now had its answer discarded the same
+        # way. Keyed by staff index, which is numbered across the page, so one
+        # dict serves every system. Recording only.
+        header_prepass_locator_traces: dict[int, dict[str, Any]] = {}
+        # What the cross-page key-signature vote MEASURED, per staff — the
+        # majority share it compares once and drops, and the tally behind it.
+        key_sig_evidence: dict[int, dict[str, Any]] = {}
         header_dets: dict[int, tuple[list, MeasureCell]] = {}
         if read_headers:
             for sys_idx in sorted(systems.keys()):
@@ -4283,7 +4520,10 @@ def transcribe(
                             estimate = detected
                     estimate_from_locator = False
                     if estimate is None and locate_c_clefs and hc is not None:
-                        found = locate_clef(hc)
+                        prepass_trace: dict[str, Any] = {}
+                        found = locate_clef(hc, trace=prepass_trace)
+                        prepass_trace["cell"] = "header"
+                        header_prepass_locator_traces[staff_idx] = prepass_trace
                         if found is not None:
                             estimate = found.read.name
                             estimate_from_locator = True
@@ -4321,7 +4561,8 @@ def transcribe(
                     clef_estimate[staff_idx] = estimate
             voted_fifths, voted_reasons, key_sig_unread_reasons = (
                 _header_key_signatures(
-                    pws, header_cells, clef_estimate, header_dets
+                    pws, header_cells, clef_estimate, header_dets,
+                    evidence=key_sig_evidence,
                 )
             )
             key_sig_default_unread = "no reader spoke for this staff"
@@ -4331,11 +4572,20 @@ def transcribe(
             # and the five it does fire are barline fragments mid-bar, which
             # `_dominant_detected_meter` then propagates as common time over a
             # 2/4 page. See tools/omr/time_signature_locator.py.
+            header_meter_evidence: dict[int, dict[str, Any]] = {}
             header_meters = read_system_time_signatures(
                 header_cells,
                 {sys_idx: sorted(systems[sys_idx].keys())
                  for sys_idx in sorted(systems.keys())},
+                evidence=header_meter_evidence,
             )
+            if header_meter_evidence:
+                # Page level, not per measure: the meter dict is copied onto
+                # every measure of the system, and a per-staff score table
+                # copied that many times would be noise rather than a record.
+                page_dict["header_meter_evidence"] = {
+                    str(k): v for k, v in header_meter_evidence.items()
+                }
         else:
             voted_fifths, voted_reasons = {}, {}
             key_sig_unread_reasons = {}
@@ -4476,9 +4726,32 @@ def transcribe(
 
                 first_cell_effective_clef: str | None = None
                 first_cell_clef_source: str | None = None
+                # What the clef readers SAW on this staff, as against which of
+                # them won. Only the staff's first cell reads a clef
+                # (`read_clef=(cell_idx == 0)`), so one dict per staff is the
+                # whole population.
+                # ⚠️ NOT "only the first cell reads a clef" — that is what an
+                # earlier version of this comment said, and it is false in the
+                # failure direction. `read_clef=(cell_idx == 0)` gates the CV
+                # locator, the header rung and the specialist; it does NOT gate
+                # the detector argmax, which sets `clef_source = "detector"` on
+                # every cell. So a later cell can flip a staff's clef mid-staff
+                # on one detection, and recording only cell 0 would miss exactly
+                # the population this sweep exists to make measurable. Every
+                # cell gets a dict; the staff-level record keeps cell 0's, which
+                # is where the per-staff rungs (locator, specialist, dossier)
+                # spoke.
+                first_cell_clef_evidence: dict[str, Any] = {}
+                if staff_idx in header_prepass_locator_traces:
+                    first_cell_clef_evidence["cv_locator_header_prepass"] = (
+                        header_prepass_locator_traces[staff_idx]
+                    )
                 first_cell_effective_key_sig: dict[str, str] | None = None
                 first_cell_effective_time_sig: dict[str, Any] | None = None
                 for cell_idx, cell in enumerate(staff_cells):
+                    cell_clef_evidence: dict[str, Any] = (
+                        first_cell_clef_evidence if cell_idx == 0 else {}
+                    )
                     (
                         detections,
                         active_clef,
@@ -4513,6 +4786,7 @@ def transcribe(
                             locate_c_clefs=locate_c_clefs,
                             pdf_path=pdf_path,
                             page_dpi=dpi,
+                            clef_evidence=cell_clef_evidence,
                         )
                     )
                     if cell_idx == 0:
@@ -4540,6 +4814,14 @@ def transcribe(
                         "n_detections": len(detections),
                         "detections": detections,
                     })
+                    # Per CELL, because the clef argmax runs per cell. Cell 0's
+                    # record is also carried on the staff (below); the overlap
+                    # is one dict per staff and is worth it, so that a consumer
+                    # sweeping either level sees a uniform population.
+                    if cell_clef_evidence:
+                        staff_dict["measures"][-1]["clef_evidence"] = (
+                            cell_clef_evidence
+                        )
                     out["n_clipped_notehead_fragments_dropped"] += (
                         cell_clipped_dropped
                     )
@@ -4585,6 +4867,21 @@ def transcribe(
                 # transposes every note on the staff.
                 if first_cell_clef_source is not None:
                     staff_dict["clef_source"] = first_cell_clef_source
+                # And what the readers SAW. `clef_source` names the winner and
+                # is silent about everyone else — including, on the staves that
+                # matter most, about a reader that computed a full reason for
+                # declining and discarded it. Recording only; nothing reads this
+                # back, and a staff no reader spoke on carries no key at all.
+                if first_cell_clef_evidence:
+                    staff_dict["clef_evidence"] = first_cell_clef_evidence
+                # And what the key-signature vote measured. `key_signature_reason`
+                # already names the branch ("no majority to check against"); this
+                # is the NUMBER that branch was chosen on, which was destroyed in
+                # the comparison that used it.
+                if staff_idx in key_sig_evidence:
+                    staff_dict["key_signature_evidence"] = (
+                        key_sig_evidence[staff_idx]
+                    )
                 # What the readers said where the dossier overruled them. Kept
                 # so a seeded run can still be audited for detector quality —
                 # seeding must not hide how well the page was actually read.
