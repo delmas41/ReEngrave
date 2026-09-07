@@ -445,6 +445,17 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
     to handle slight skew). Per-staff detection avoids the orchestral
     failure mode where whitespace between sections dilutes the ink
     fraction over the full system height.
+
+    ⚠️ **Every accepted column carries its evidence onto its `Barline`**
+    (2026-09-06) — vote count and threshold, connectivity, span ink, which
+    acceptance prong fired, and the system's open-score verdict. It used to
+    be computed here and thrown away at the constructor, leaving
+    `_drop_close_outliers` and `resegment_fused_measures` to re-decide with a
+    bare integer. **Recording only.** No branch in this function or any
+    consumer reads the new fields; every number stamped is one the acceptance
+    rules had already computed, so this costs no extra image work and can
+    change no verdict. See the `Barline` docstring for the per-field
+    consumers this makes possible.
     """
     bin_img = pws.page.binary
 
@@ -612,11 +623,34 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
         # 0.8560, entire-staff charges 48% of the pool. With condition 2 the
         # cue cannot reach any system whose gaps are all touched by ink.
         # benchmarks/omr-choir-grouping-2026-09/FINDINGS.md.
+        cue_c_override = False
         if (not barlines_cross_gaps and sys_idx in blind_systems
                 and _is_grouped_system(staves)):
             barlines_cross_gaps = True
+            cue_c_override = True
 
         accepted: list[int] = []
+        # Why each accepted column was accepted, keyed by the x it was
+        # accepted AS. Read back after `_drop_close_outliers` has thinned the
+        # list, so only survivors are stamped. ⚠️ Two distinct clusters whose
+        # means round to the same int would collide here and the later one
+        # wins; that is the same collision `accepted` itself already has (it
+        # would hold the x twice), so this records no worse than the list it
+        # annotates.
+        evidence: dict[int, dict[str, object]] = {}
+
+        def _record(x: int, prong: str, n_votes: int,
+                    connectivity: float | None = None,
+                    span_ink: float | None = None) -> None:
+            evidence[x] = {
+                "n_votes": n_votes,
+                "n_staves_in_system": n_staves,
+                "min_votes": min_votes,
+                "connectivity": connectivity,
+                "span_ink": span_ink,
+                "accept_prong": prong,
+            }
+
         for cluster_index, cluster in enumerate(clusters):
             x_mean = int(round(sum(cluster) / len(cluster)))
             n_votes = len(cluster)
@@ -641,16 +675,35 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
                 # barline — measured, four per system down to three.
                 if n_votes >= min_votes:
                     accepted.append(x_mean)
+                    _record(x_mean, "vote_small_system", n_votes,
+                            connectivity=connectivity_of.get(x_mean))
                     continue
-                if n_votes >= 1 and _spans_system(
-                    bin_img, staves, x_mean, x_by_staff=_x_by_staff(cluster_index)
-                ) >= SPAN_MIN_INK:
+                # The span score is computed here and nowhere else, and the
+                # `n_votes >= 1` short-circuit that guards the call is
+                # preserved exactly: naming the result does not evaluate it
+                # any more often than the original `and` did.
+                span = None
+                if n_votes >= 1:
+                    span = _spans_system(
+                        bin_img, staves, x_mean,
+                        x_by_staff=_x_by_staff(cluster_index),
+                    )
+                if span is not None and span >= SPAN_MIN_INK:
                     accepted.append(x_mean)
+                    _record(x_mean, "span_rescue_small_system", n_votes,
+                            connectivity=connectivity_of.get(x_mean),
+                            span_ink=span)
                 continue
             if not barlines_cross_gaps:
                 # Open score: the votes are the whole of the evidence.
                 if n_votes >= min_votes:
                     accepted.append(x_mean)
+                    # `connectivity` is deliberately left as whatever was
+                    # computed for the open-score TEST (it may be a real
+                    # number) — but it filtered nothing here, and
+                    # `barlines_cross_gaps=False` on the row is what says so.
+                    _record(x_mean, "vote_open_score", n_votes,
+                            connectivity=connectivity_of.get(x_mean))
                 continue
             connectivity = connectivity_of.get(x_mean)
             if connectivity is None:
@@ -660,6 +713,8 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
             # Prong A: vote-pass + connectivity sanity check.
             if n_votes >= min_votes and connectivity >= 0.4:
                 accepted.append(x_mean)
+                _record(x_mean, "vote_and_connectivity", n_votes,
+                        connectivity=connectivity)
                 continue
             # Prong B: rescue sparse real barlines via strong connectivity.
             #
@@ -675,6 +730,8 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
             rescue_min_votes = 1 if n_staves <= 2 else max(3, int(0.3 * n_staves))
             if connectivity >= 0.7 and n_votes >= rescue_min_votes:
                 accepted.append(x_mean)
+                _record(x_mean, "connectivity_rescue", n_votes,
+                        connectivity=connectivity)
         accepted.sort()
         # Second pass: outlier-small-gap rejection. Real measure widths
         # cluster tightly; false-positive columns produce abnormally small
@@ -682,12 +739,24 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
         # < 0.5 × median gap.
         accepted = _drop_close_outliers(accepted)
         for x_mean in accepted:
+            ev = evidence.get(x_mean, {})
             pws.barlines.append(Barline(
                 page_index=pws.page.page_index,
                 x=x_mean,
                 y_top=y_top,
                 y_bottom=y_bot,
                 system_index=sys_idx,
+                # Acceptance evidence — see the Barline docstring for who
+                # could consume each of these. Nothing does today, on
+                # purpose: this commit RECORDS, it does not decide.
+                n_votes=ev.get("n_votes"),                     # type: ignore[arg-type]
+                n_staves_in_system=ev.get("n_staves_in_system"),  # type: ignore[arg-type]
+                min_votes=ev.get("min_votes"),                 # type: ignore[arg-type]
+                connectivity=ev.get("connectivity"),           # type: ignore[arg-type]
+                span_ink=ev.get("span_ink"),                   # type: ignore[arg-type]
+                accept_prong=ev.get("accept_prong"),           # type: ignore[arg-type]
+                barlines_cross_gaps=barlines_cross_gaps,
+                choir_cue_c_override=cue_c_override,
             ))
     return pws
 
