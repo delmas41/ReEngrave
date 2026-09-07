@@ -64,7 +64,27 @@ def digest(text: str) -> str:
     return hashlib.sha256(text.encode()).hexdigest()[:16]
 
 
+#: The committed artefact — the four arms' digests per fixture, so the
+#: byte-identity claim is a file a reviewer can read rather than a console
+#: line they have to trust. `before == before2` is in here too: a control that
+#: agreed with itself is what makes the flag-off column mean anything.
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "out",
+                   "ab-arm-digests.json")
+
+
 def main() -> int:
+    artefact: dict = {
+        "what": "OMR_KEYSIG_CORROBORATION: sha256 of the exported MusicXML "
+                "for four arms per stored transcription.",
+        "arms": {
+            "before": "control",
+            "before2": "the same control AGAIN, run first, so a later "
+                       "difference is attributable rather than assumed",
+            "flagoff": "transcribe's wiring reproduced literally, env unset",
+            "flagon": "the same wiring with OMR_KEYSIG_CORROBORATION=1",
+        },
+        "files": [],
+    }
     families = [("scan", fixtures(SCAN, expect_at_least=11)),
                 ("engraved", fixtures(ENGRAVED, expect_at_least=11))]
     rc = 0
@@ -91,6 +111,18 @@ def main() -> int:
             n_diff_on += changed
             all_changes += on_totals["changes"]
 
+            artefact["files"].append({
+                "fixture": name, "family": fam,
+                "before": digest(before), "before2": digest(before2),
+                "flagoff": digest(flagoff), "flagon": digest(flagon),
+                "control_identical": ctl_ok,
+                "flagoff_identical_to_control": off_ok,
+                "flagon_differs": changed,
+                "reverted_flagon": on_totals["reverted"],
+                "respelled_flagon": on_totals["respelled"],
+                "kept_flagon": on_totals["kept"],
+                "changes": on_totals["changes"],
+            })
             if not ctl_ok:
                 print(f"  !! CONTROL DIFFERS on {name} — harness is not "
                       f"deterministic; nothing below is attributable")
@@ -121,6 +153,21 @@ def main() -> int:
         print(f"  FLAG-OFF byte-identical to control: {n_ident_off}/{len(files)}")
         print(f"  flag-ON export differs: {n_diff_on}/{len(files)}, "
               f"{len(all_changes)} changes reverted")
+    artefact["pooled"] = {
+        "fixtures": len(artefact["files"]),
+        "control_identical": sum(f["control_identical"] for f in artefact["files"]),
+        "flagoff_identical_to_control": sum(
+            f["flagoff_identical_to_control"] for f in artefact["files"]),
+        "flagon_differs": sum(f["flagon_differs"] for f in artefact["files"]),
+        "changes_reverted": sum(f["reverted_flagon"] for f in artefact["files"]),
+        "corroborated_changes_kept": sum(
+            f["kept_flagon"] for f in artefact["files"]),
+    }
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    with open(OUT, "w") as fh:
+        json.dump(artefact, fh, indent=2, sort_keys=True)
+        fh.write("\n")
+    print(f"\nartefact -> {os.path.normpath(OUT)}")
     return rc
 
 

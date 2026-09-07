@@ -22,10 +22,21 @@ exist is applied to the wrong cell: `skip_key_sig_detection` silences the
 reader on cell 0 *because the cross-page vote already ruled*, then lets later
 cells run — where the argument is strictly STRONGER, because on cell 0 the
 reader looks at a printed key signature and on cell 11 it looks at ink that
-resembles one. Measured: 104 first-cell markers against 19 later-cell ones
-(confidence 0.26-0.73), and 7 of the 19 change the key. On the engraved
-family there are 176 first-cell markers and ZERO later-cell ones, which is why
-that family shows no flips.
+resembles one. Measured over `keySharp` / `keyFlat` / `keyNatural`: **220
+markers on 104 first cells** against **15 markers on 15 later cells**
+(confidence 0.26-0.70, median 0.42), and **7 of those 15 change the key** —
+the other 8 re-read a key already in effect. On the engraved family it is 486
+markers on 176 first cells and **ZERO later cells**, which is why that family
+shows no flips and cannot price this.
+
+⚠️ The later-cell figure was 19 cells at 0.26-0.73 in the first draft of this
+docstring and in the audit's own record. Both came from a probe matching
+`startswith("key")`, which also catches `keyboardPedalUp` — a PEDAL marking.
+The guard never reads a detection class (it reads `measure["key_signature"]`,
+and `_respell_measure` filters on `category == "notehead"`), so no behaviour
+depended on it. ⚠️ Under the named classes I measure 15 cells carrying 15
+markers, one each; the audit reports 16 markers and that one is not
+reproducible here.
 
 WHICH WITNESS, AND WHY NOT THE OTHER TWO
 ----------------------------------------
@@ -73,6 +84,16 @@ change to fit it against, which makes such a constant unfalsifiable by
 construction. That is the shape this project has refused before (the ink-
 coverage and whitespace-gutter discriminators in `time_signature_locator`).
 
+⚠️ **W2 IS THE WEAKER OF THE TWO CLAIMS, AND THAT IS WHY IT IS USABLE HERE.**
+The meter's witness needs other staves to read the same VALUE; this one needs
+only that they change at the same BAR. Every page on which the transplanted
+witness would hold, this one holds too — the converse is false. So relative to
+the wrong witness the guard **fails safe structurally, not empirically**, which
+is what makes it shippable while its cost cannot be measured. (Credit: the
+reviewer of this branch, who also supplied the sharper framing of the defect —
+a key change is an event with a POSITION and a VALUE, and only the value is
+staff-scope.)
+
 A fourth candidate — same-instrument agreement across systems, the shape
 `contextual._fill_defaulted_clefs` uses — is unavailable here for two
 reasons: the part-to-slot join is produced by the contextual post-pass, which
@@ -88,6 +109,15 @@ real change?). That asymmetry is the whole reason this ships default-OFF. The
 closest available proxy is a synthetic page carrying a real, system-wide key
 change, which `tests/test_key_signature_corroboration.py` builds and asserts
 survives — a proxy, not a measurement of the cost on real music.
+
+⚠️ **AND THERE IS CONCRETE REASON TO EXPECT THAT COST TO BE NON-TRIVIAL
+RATHER THAN NEGLIGIBLE.** A real change has to be DETECTED on two staves of
+one system at the same bar for W2 to keep it. Later-cell key markers appear on
+**15 cells across 11 scanned pages** — about 1.4 per page, over systems of 11
+to 27 staves — and no two of the 15 share a bar. On that detection density,
+two staves agreeing on one bar is not the common case, so a genuine mid-staff
+key change on a scan would more likely be reverted than kept. That argues for
+default-OFF rather than against the rule.
 
 ⚠️ REVERTING THE KEY IS NOT ENOUGH ON ITS OWN
 ---------------------------------------------
@@ -147,7 +177,7 @@ ENV_FLAG = "OMR_KEYSIG_CORROBORATION"
 #: to 17 staves, so 2 is the first value that can reject any of them. The
 #: sibling meter guard uses `max(2, round(0.5 * n_staves))`, which here would
 #: demand 9 witnesses on a 17-staff Mahler system — and mid-staff key markers
-#: are detected in only 19 cells across 193 scanned staves, so a
+#: are detected in only 15 cells across 193 scanned staves, so a
 #: fraction-of-the-system bar would revert a genuine key change that only two
 #: staves happened to be read on. Requiring one witness keeps the guard as far
 #: from a real change as the evidence allows.

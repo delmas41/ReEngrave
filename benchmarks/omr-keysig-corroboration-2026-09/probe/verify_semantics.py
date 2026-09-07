@@ -15,6 +15,7 @@ Reports, per changed file:
 
 ⚠️ Fails loudly (exit 2) on an empty fixture set — see `_fixtures`.
 """
+import hashlib
 import json
 import os
 import sys
@@ -56,10 +57,26 @@ def notes_and_keys(xml: str):
     return notes, keys
 
 
+#: The committed artefact. ⚠️ A branch about recording evidence commits its
+#: own: this file is what a reviewer reads instead of re-deriving the claim,
+#: and it is machine-written so it cannot drift from the probe that made it.
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "out",
+                   "xml-verification.json")
+
+
 def main() -> int:
     rc = 0
     changed_files = 0
     pooled_alter = pooled_key = 0
+    artefact: dict = {
+        "what": "OMR_KEYSIG_CORROBORATION: every difference the flag makes to "
+                "the exported MusicXML, read with an XML parser rather than "
+                "off a line diff.",
+        "method": "export-only over stored transcriptions; no detector, no "
+                  "weights. Each arm reloads the JSON because the exporter "
+                  "mutates the page dict.",
+        "files": [],
+    }
     for fam, files in (("scan", fixtures(SCAN, expect_at_least=11)),
                        ("engraved", fixtures(ENGRAVED, expect_at_least=11))):
         print(f"\n=== {fam}")
@@ -70,7 +87,14 @@ def main() -> int:
             for page in result.get("pages", []):
                 drop_uncorroborated_key_changes(page)
             after_xml = to_musicxml(result)
+            row = {
+                "fixture": name, "family": fam,
+                "sha256_before": hashlib.sha256(before_xml.encode()).hexdigest(),
+                "sha256_after": hashlib.sha256(after_xml.encode()).hexdigest(),
+                "changed": before_xml != after_xml,
+            }
             if before_xml == after_xml:
+                artefact["files"].append(row)
                 continue
             changed_files += 1
             bn, bk = notes_and_keys(before_xml)
@@ -98,6 +122,12 @@ def main() -> int:
                 if bk[pid] != ak[pid]:
                     pooled_key += 1
                     print(f"  {name} {pid}: fifths {bk[pid]} -> {ak[pid]}")
+            row["note_fields_that_moved"] = dict(fields)
+            row["fifths_sequences"] = {
+                pid: {"before": bk[pid], "after": ak[pid]}
+                for pid in bk if bk[pid] != ak[pid]
+            }
+            artefact["files"].append(row)
             other = {k: v for k, v in fields.items() if k != "alter"}
             pooled_alter += fields.get("alter", 0)
             print(f"  {name}: note fields that moved = {dict(fields)}")
@@ -107,9 +137,21 @@ def main() -> int:
     if not changed_files:
         sys.stderr.write("FATAL: no export changed; the probe measured nothing.\n")
         return 2
+    artefact["pooled"] = {
+        "files_examined": len(artefact["files"]),
+        "files_changed": changed_files,
+        "notes_respelled_alter_only": pooled_alter,
+        "parts_whose_key_sequence_changed": pooled_key,
+        "note_count_step_octave_duration_type_moved": 0 if rc == 0 else "SEE ERRORS",
+    }
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    with open(OUT, "w") as fh:
+        json.dump(artefact, fh, indent=2, sort_keys=True)
+        fh.write("\n")
     print(f"\nPOOLED over {changed_files} changed files: "
           f"{pooled_alter} notes re-spelled (alter only), "
           f"{pooled_key} parts whose <key> sequence changed")
+    print(f"artefact -> {os.path.normpath(OUT)}")
     return rc
 
 

@@ -18,6 +18,17 @@ from _fixtures import fixtures, chdir_root, SCAN, ENGRAVED  # noqa: E402  fail-l
 chdir_root()
 
 
+#: ⚠️ NAMED, never `startswith("key")`. That prefix also catches
+#: `keyboardPedalUp` — a PEDAL marking — which put 5 extra cells into this
+#: population and moved the reported later-cell figure from 15 to 19 and the
+#: confidence ceiling from 0.70 to 0.73. Behaviour was never affected: the
+#: guard itself never reads a detection class, it reads
+#: `measure["key_signature"]`, and `_respell_measure` filters on
+#: `category == "notehead"`. The defect was confined to this probe and to the
+#: prose that quoted it.
+KEY_SIGNATURE_CLASSES = {"keySharp", "keyFlat", "keyNatural"}
+
+
 def ks(k):
     if not k:
         return None
@@ -68,7 +79,7 @@ for fam, files in (("scan", fixtures(SCAN, expect_at_least=11)),
                         if w2:
                             w2_corroborated_pairs += 1
                         kd = [x for x in st["measures"][cell_i].get("detections", [])
-                              if (x.get("class") or "").lower().startswith("key")]
+                              if (x.get("class") or "") in KEY_SIGNATURE_CLASSES]
                         rows.append(dict(
                             file=nm, page=pi, system=si,
                             staff=st["staff_index"], instrument=st.get("instrument"),

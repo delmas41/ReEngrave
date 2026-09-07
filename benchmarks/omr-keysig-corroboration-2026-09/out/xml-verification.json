@@ -1,0 +1,253 @@
+{
+  "files": [
+    {
+      "changed": false,
+      "family": "scan",
+      "fixture": "bach-brandenburg3-mvt1-468678-p1",
+      "sha256_after": "bc6969828fee0543be72e820d3518a82d3f80d61be9d12bb626121086051b2e2",
+      "sha256_before": "bc6969828fee0543be72e820d3518a82d3f80d61be9d12bb626121086051b2e2"
+    },
+    {
+      "changed": true,
+      "family": "scan",
+      "fifths_sequences": {
+        "P3": {
+          "after": [
+            "m1:0"
+          ],
+          "before": [
+            "m1:0",
+            "m12:-1"
+          ]
+        }
+      },
+      "fixture": "beethoven-sym5-mvt1-575951-p1",
+      "note_fields_that_moved": {},
+      "sha256_after": "605871e095684afe28c61d470f0293bd78d7032e1f74389050fde14786297ce1",
+      "sha256_before": "9136e1b897dea4412168622abf7fd4a654928326a60f17e220bb296e24b8fbb5"
+    },
+    {
+      "changed": true,
+      "family": "scan",
+      "fifths_sequences": {
+        "P1": {
+          "after": [
+            "m1:-2"
+          ],
+          "before": [
+            "m1:-2",
+            "m16:-1",
+            "m18:-2"
+          ]
+        },
+        "P10": {
+          "after": [
+            "m1:-2",
+            "m18:-3"
+          ],
+          "before": [
+            "m1:-2",
+            "m18:-3",
+            "m21:-1"
+          ]
+        },
+        "P4": {
+          "after": [
+            "m1:-2",
+            "m18:-3"
+          ],
+          "before": [
+            "m1:-2",
+            "m3:-1",
+            "m18:-3"
+          ]
+        }
+      },
+      "fixture": "beethoven-sym5-mvt1-575951-p2",
+      "note_fields_that_moved": {
+        "alter": 15
+      },
+      "sha256_after": "998eb6ff0c55fa27da3bb9f25e106e6195cb410f17ec7d9c9754fb2c5ec86d8f",
+      "sha256_before": "2b7bc96ba336b3099def529f121e089030f120da193dec78f9a93005dc8d55cf"
+    },
+    {
+      "changed": false,
+      "family": "scan",
+      "fixture": "beethoven-sym5-mvt1-984073-p1",
+      "sha256_after": "d6c9ed62b5271ffac9cb816b87a3ea13a3d7c43e837e9fc956a1da95b45ddab2",
+      "sha256_before": "d6c9ed62b5271ffac9cb816b87a3ea13a3d7c43e837e9fc956a1da95b45ddab2"
+    },
+    {
+      "changed": true,
+      "family": "scan",
+      "fifths_sequences": {
+        "P4": {
+          "after": [
+            "m1:-2"
+          ],
+          "before": [
+            "m1:-2",
+            "m3:-1",
+            "m17:-2"
+          ]
+        }
+      },
+      "fixture": "beethoven-sym5-mvt1-984073-p2",
+      "note_fields_that_moved": {},
+      "sha256_after": "286418b4836888011c5abc99efe6ddcf390ab72f9100891285d00c30c2614738",
+      "sha256_before": "9eb09b14aab8164796b202f3b6da86e6e20653346eecc23b926dca4478a15ec4"
+    },
+    {
+      "changed": false,
+      "family": "scan",
+      "fixture": "brahms-sym1-mvt1-317803-p1",
+      "sha256_after": "54a7166b2d84d06f6b20d2175056a747f79c66635f39d4d9ddf761ae7f49fe6e",
+      "sha256_before": "54a7166b2d84d06f6b20d2175056a747f79c66635f39d4d9ddf761ae7f49fe6e"
+    },
+    {
+      "changed": false,
+      "family": "scan",
+      "fixture": "brahms-sym1-mvt1-317803-p2",
+      "sha256_after": "f38e7d29fd04a34296b20d5a6bd3dc154a04d067c438f15058b9d0caed47c263",
+      "sha256_before": "f38e7d29fd04a34296b20d5a6bd3dc154a04d067c438f15058b9d0caed47c263"
+    },
+    {
+      "changed": true,
+      "family": "scan",
+      "fifths_sequences": {
+        "P5": {
+          "after": [
+            "m1:0"
+          ],
+          "before": [
+            "m1:0",
+            "m4:-1"
+          ]
+        }
+      },
+      "fixture": "dvorak-sym9-mvt1-405834-p5",
+      "note_fields_that_moved": {},
+      "sha256_after": "885384054ace11df35962b96e0c92da534578ccb1d70565caf06db23e1fd486f",
+      "sha256_before": "8008cdccdb78116aa021a15ec0fa14d05144edfc49d3de35e6d4f40002692263"
+    },
+    {
+      "changed": false,
+      "family": "scan",
+      "fixture": "dvorak-sym9-mvt1-405834-p6",
+      "sha256_after": "6d60fe27e90c25082bc03d8c2b485a5cb1df25c619a09d017fcd2cbdca41a2f1",
+      "sha256_before": "6d60fe27e90c25082bc03d8c2b485a5cb1df25c619a09d017fcd2cbdca41a2f1"
+    },
+    {
+      "changed": true,
+      "family": "scan",
+      "fifths_sequences": {
+        "P14": {
+          "after": [
+            "m1:4"
+          ],
+          "before": [
+            "m1:4",
+            "m7:1"
+          ]
+        }
+      },
+      "fixture": "mahler-sym5-mvt1-local-p2",
+      "note_fields_that_moved": {},
+      "sha256_after": "d9496986cf2d131ecc43f363f0f0c2c70034e93958dbea534eeee8d80c302f6e",
+      "sha256_before": "bc3e5c4fbe9e4f9cc93519634d2d838b6ed552d582fb1794bb5472eca2f02a9a"
+    },
+    {
+      "changed": false,
+      "family": "scan",
+      "fixture": "mahler-sym5-mvt1-local-p3",
+      "sha256_after": "1cb5d293fd4b56e4d98c0501d4192c7646d263322862d26e36ddb5db75491044",
+      "sha256_before": "1cb5d293fd4b56e4d98c0501d4192c7646d263322862d26e36ddb5db75491044"
+    },
+    {
+      "changed": false,
+      "family": "engraved",
+      "fixture": "beethoven-sym3-mvt1",
+      "sha256_after": "2890a753dda62c5308fbdc94e2ac5b877838fa3eb9ef426fd22c928b66a74154",
+      "sha256_before": "2890a753dda62c5308fbdc94e2ac5b877838fa3eb9ef426fd22c928b66a74154"
+    },
+    {
+      "changed": false,
+      "family": "engraved",
+      "fixture": "beethoven-sym5-mvt1",
+      "sha256_after": "e1651e32f3a0bce18f1b2a716a0b62ff6caf21b22ff79508317580ecb6bc7537",
+      "sha256_before": "e1651e32f3a0bce18f1b2a716a0b62ff6caf21b22ff79508317580ecb6bc7537"
+    },
+    {
+      "changed": false,
+      "family": "engraved",
+      "fixture": "brahms-sym1-mvt1",
+      "sha256_after": "3e91cf199b5ef2d74bf22758969ece7b8aa907326b5fc0db74e0df07385546d0",
+      "sha256_before": "3e91cf199b5ef2d74bf22758969ece7b8aa907326b5fc0db74e0df07385546d0"
+    },
+    {
+      "changed": false,
+      "family": "engraved",
+      "fixture": "brahms-sym4-mvt1",
+      "sha256_after": "175e65303c5c755841379602c47d5a1a14aa9e8586bcad0c6f8658b90ce83c05",
+      "sha256_before": "175e65303c5c755841379602c47d5a1a14aa9e8586bcad0c6f8658b90ce83c05"
+    },
+    {
+      "changed": false,
+      "family": "engraved",
+      "fixture": "bruckner-sym5-mvt1",
+      "sha256_after": "fb0cc021c7946b0eefd53fb1feaed2e317888130708778bdf828d49c0000c987",
+      "sha256_before": "fb0cc021c7946b0eefd53fb1feaed2e317888130708778bdf828d49c0000c987"
+    },
+    {
+      "changed": false,
+      "family": "engraved",
+      "fixture": "dvorak-sym9-mvt4",
+      "sha256_after": "9a362cd0aea762fd1aa8d2f2caaea0953f6987a8b498f2acc5075eedf329e173",
+      "sha256_before": "9a362cd0aea762fd1aa8d2f2caaea0953f6987a8b498f2acc5075eedf329e173"
+    },
+    {
+      "changed": false,
+      "family": "engraved",
+      "fixture": "mahler-sym5-mvt1",
+      "sha256_after": "62c9b042229e4cdec551a29b468a202ba35fa9307c23759593ede31c4a151d51",
+      "sha256_before": "62c9b042229e4cdec551a29b468a202ba35fa9307c23759593ede31c4a151d51"
+    },
+    {
+      "changed": false,
+      "family": "engraved",
+      "fixture": "mozart-sym40-mvt1",
+      "sha256_after": "f90336865eaac36b294e9fa1a937371a277a32ae3031fc9f7a8cf5f0e5a44d7a",
+      "sha256_before": "f90336865eaac36b294e9fa1a937371a277a32ae3031fc9f7a8cf5f0e5a44d7a"
+    },
+    {
+      "changed": false,
+      "family": "engraved",
+      "fixture": "mozart-sym41-mvt1",
+      "sha256_after": "4b38deaca1a76171446804cabcffedd3191794a1f5d59c87ee55adc649db655d",
+      "sha256_before": "4b38deaca1a76171446804cabcffedd3191794a1f5d59c87ee55adc649db655d"
+    },
+    {
+      "changed": false,
+      "family": "engraved",
+      "fixture": "tchaikovsky-sym4-mvt2",
+      "sha256_after": "7352b373c9ee724750f3a0466236657b13a842c25c7a124dc1631f80d8359b1b",
+      "sha256_before": "7352b373c9ee724750f3a0466236657b13a842c25c7a124dc1631f80d8359b1b"
+    },
+    {
+      "changed": false,
+      "family": "engraved",
+      "fixture": "tchaikovsky-sym6-mvt2",
+      "sha256_after": "91429c19f2b2185075adbdf49921c56641fcd5242700b2bbd9d4d1226fdc8d1a",
+      "sha256_before": "91429c19f2b2185075adbdf49921c56641fcd5242700b2bbd9d4d1226fdc8d1a"
+    }
+  ],
+  "method": "export-only over stored transcriptions; no detector, no weights. Each arm reloads the JSON because the exporter mutates the page dict.",
+  "pooled": {
+    "files_changed": 5,
+    "files_examined": 22,
+    "note_count_step_octave_duration_type_moved": 0,
+    "notes_respelled_alter_only": 15,
+    "parts_whose_key_sequence_changed": 7
+  },
+  "what": "OMR_KEYSIG_CORROBORATION: every difference the flag makes to the exported MusicXML, read with an XML parser rather than off a line diff."
+}
