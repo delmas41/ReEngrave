@@ -51,11 +51,11 @@ eleven rows on the current `graft09` fixtures, truth 99 hairpins:
     PageImage.binary (Sauvola, deskewed)    57   2, silent on 5 of 6
 
 Same categorical result on both, and the same weak row (Mahler 5 p3, 2 against
-17). ⚠️ Neither total is the docstring's 59 to the unit, and neither should be:
-the fixtures were re-transcribed with different weights since, so a different
-set of point detections gets blanked out of the search. The claim that
-reproduces is the SHAPE of the gate — order of magnitude on the pages that
-carry hairpins, silence on the pages that do not — not an integer.
+17). ⚠️ **The near-miss needs no excuse: 59 lies BETWEEN the two arms measured
+here.** 57 and 62 are the same code on the same pages differing only in how the
+page was binarized, so the original figure is inside the spread the ink recipe
+alone produces. An earlier draft reached for changed weights to explain a gap
+that is not outside the noise.
 
 **The pipeline reads the second recipe**, because `PageImage.binary` is already
 rendered, already deskewed, and already the frame every `bbox_page_px` on the
@@ -413,12 +413,37 @@ def read_hairpins_for_page(page: dict[str, Any], page_binary: np.ndarray) -> int
 
       * whole page, because ISOLATION is a property of a component's full
         extent and a crop severs a beam from the stems that betray it;
-      * staff lines INTACT, because that is the ink the 1.0x-against-3248x
-        growth gap was measured on — erasing them dissolves the page's single
-        connected mass and the constant no longer separates anything. (This
-        says nothing about the detector's input, which is untouched; see
-        `remove_staff_lines`, which erases per CELL for the CV consumers that
-        want it.)
+      * staff lines INTACT — and this one is an exception to the rule the rest
+        of the CV rungs follow, so it is argued rather than asserted.
+        `remove_staff_lines` erases per CELL because for `line_detection` and
+        `staff_header` the lines are NOISE. Here they are SIGNAL: they are a
+        large part of what makes an attached component big, which is the whole
+        content of the isolation test. Two reasons, both narrower than the
+        first draft of this docstring claimed:
+
+          1. **Calibration.** The 1.0x-against-3248x growth gap, and
+             `MAX_COMPONENT_GROWTH` read off it, were measured on lines-intact
+             ink. A constant keeps its meaning on the substrate it was fitted
+             to and loses it on any other, whether or not the other still
+             works.
+          2. **Erased ink is unpredictable in exactly the way this gate is
+             sensitive to.** Measured elsewhere in this repo, erasing staff
+             lines before YOLO took `beam` detections 46 -> 105 on staff-line
+             RESIDUE. A gate keyed on connectivity is precisely what residue
+             perturbs — it manufactures the bridges the test reads.
+
+        ⚠️ **What is NOT claimed: that erasure breaks the test.** An earlier
+        draft here said the constant "no longer separates anything", and that
+        overclaims. Measured on a synthetic page (a beam with two stems
+        crossing a staff, an isolated hairpin below, this module's own
+        `_is_isolated` arithmetic): erasure cuts the beam's growth from
+        **130.7x to 13.75x** — a 9.5x collapse of the margin that still leaves
+        it far above the 2.0 threshold, because the STEMS alone keep the beam
+        attached. So the direction is real and the categorical claim is not
+        demonstrated. ⚠️ That case is n=1 and hand-built, so it does not show
+        erasure is SAFE either: **nobody has run the erased arm on a real
+        page.** `probe/reproduce_gate.py` compares two ink RECIPES and both are
+        lines-intact.
 
     Returns how many hairpins were added as detections.
 

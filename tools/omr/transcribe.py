@@ -5229,6 +5229,13 @@ def transcribe(
         # a CV/YOLO contest over one printed hairpin is settled by the same
         # notes-in-bar tier as every other one, instead of shipping twice.
         #
+        # ⚠️ On THIS corpus that protection has reach ZERO, and saying so is
+        # the honest form of the claim: the detector fires no hairpin at all on
+        # any of the eleven scan rows, so there is no contest to arbitrate and
+        # the ordering changes nothing measurable here. It is insurance against
+        # the case where the detector does fire — which is the engraved family,
+        # where it fires well — bought at no cost. It is not evidence.
+        #
         # `page.binary` is the WHOLE page, staff lines intact, and in the same
         # deskewed frame every `bbox_page_px` on this page dict already is — see
         # `hairpin_detection.read_hairpins_for_page` for why all three of those
