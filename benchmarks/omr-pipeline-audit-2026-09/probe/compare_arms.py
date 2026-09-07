@@ -116,8 +116,25 @@ def main() -> int:
     args = ap.parse_args()
     before, after = Path(args.before), Path(args.after)
 
+    # ⚠️ AN EMPTY ARM IS NOT A PASSING ARM. With no `*.musicxml` under `before`
+    # the loop below never runs and this exits 0 having compared NOTHING — the
+    # cached-A/B failure shape ("identical on every row", minutes not hours)
+    # arriving inside the instrument written to detect it. A missing or empty
+    # input set is a non-zero exit, never a clean table.
+    for d, what in ((before, "before"), (after, "after")):
+        if not d.is_dir():
+            print(f"REFUSING: {what} arm {d} is not a directory.", file=sys.stderr)
+            return 3
+    arm = sorted(before.glob("*.musicxml"))
+    if not arm:
+        print(f"REFUSING: no *.musicxml under the before arm {before}.\n"
+              "  An empty arm compares nothing and would report a flawless "
+              "'no change' — that is the failure this guard exists for.",
+              file=sys.stderr)
+        return 3
+
     failures = 0
-    for xml in sorted(before.glob("*.musicxml")):
+    for xml in arm:
         name = xml.stem
         other = after / xml.name
         print(f"\n=== {name} ===")

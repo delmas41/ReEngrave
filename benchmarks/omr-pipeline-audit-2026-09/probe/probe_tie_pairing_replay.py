@@ -1,6 +1,10 @@
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS  # fail-loud
+from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS
+# ⚠️ `fixtures()` is the fail-loud one; importing it and then calling
+# `glob.glob` yourself buys nothing. An unguarded glob that matches
+# nothing prints a clean all-zero table and exits 0 — the failure this
+# audit has now produced three ways. Fixed 2026-09-07.
 chdir_root()
 
 """Replay _pair_ties_in_staff over committed transcriptions (read-only)."""
@@ -34,7 +38,7 @@ def replay(staff):
 for fam,pat in (("scan",'benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json'),
                 ("engraved",'benchmarks/omr-orchestral-e2e/fixtures/*.omr.json')):
     st=Counter(); dys=[]; pitchdiff=Counter(); floors=Counter(); avgs=[]
-    for f in sorted(glob.glob(pat)):
+    for f in fixtures(pat):
         d=json.load(open(f))
         for pg in d["pages"]:
             for sy in pg["systems"]:
