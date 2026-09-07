@@ -227,6 +227,18 @@ class LocatedTimeSignature:
     #: What the page prints: "3/4", or "C"/"C|" for the letter forms. Part of
     #: the vote's key, so a page cannot average a C and a 4/4 into one answer.
     raw: str = ""
+    #: The meter that scored SECOND, and by how much it lost. `locate_time
+    #: _signature` slides every candidate template over the same strip and kept
+    #: only the argmax, so a 0.51 winner over a 0.50 runner-up and a 0.79 over a
+    #: 0.31 arrived downstream as the same fact. The module docstring is already
+    #: explicit that "a bare NCC score is usable here" only because the
+    #: templates are proportionally comparable — which is exactly the assumption
+    #: a margin lets someone check. None where only one template fitted the
+    #: strip. RECORD ONLY: the vote does not read them, and `symbol` still comes
+    #: from `raw` alone.
+    runner_up_raw: str | None = None
+    runner_up_score: float | None = None
+    score_margin: float | None = None
 
     @property
     def symbol(self) -> str | None:
@@ -255,6 +267,10 @@ class LocatedTimeSignature:
         }
         if self.symbol is not None:
             out["symbol"] = self.symbol
+        if self.runner_up_raw is not None:
+            out["runner_up_raw"] = self.runner_up_raw
+            out["runner_up_score"] = round(self.runner_up_score, 4)
+            out["score_margin"] = round(self.score_margin, 4)
         return out
 
 
@@ -386,6 +402,7 @@ def locate_time_signature(
     *,
     config: TimeSignatureLocatorConfig = DEFAULT_LOCATOR_CONFIG,
     min_score: float | None = None,
+    trace: dict[str, object] | None = None,
 ) -> LocatedTimeSignature | None:
     """Read the time signature in one staff's header cell, or return None.
 
@@ -396,6 +413,10 @@ def locate_time_signature(
 
     `min_score` overrides the configured threshold. Benchmarks pass 0.0 to see
     the near-misses; production should not.
+
+    `trace`, when given, is filled with the whole score table and the floor —
+    including on the refusals, where the return value can carry nothing. RECORD
+    ONLY: no threshold and no verdict depends on it.
     """
     floor = config.min_score if min_score is None else min_score
     metrics = staff_metrics(cell)
@@ -429,6 +450,11 @@ def locate_time_signature(
 
     best: LocatedTimeSignature | None = None
     best_at: tuple[tuple[int, int], tuple[int, int]] | None = None
+    #: Every candidate's score, in template order. The argmax below keeps one
+    #: number and drops the rest, so the runner-up — the only thing that says
+    #: whether the winner WON or merely came first — was being destroyed inside
+    #: the comparison that used it.
+    scores: list[tuple[str, float]] = []
     for (numerator, denominator, raw), template in _meter_templates(
         config.template_em_px, tuple(config.meters)
     ):
@@ -436,6 +462,7 @@ def locate_time_signature(
             continue
         response = cv2.matchTemplate(strip, template, cv2.TM_CCOEFF_NORMED)
         _, score, _, location = cv2.minMaxLoc(response)
+        scores.append((raw, float(score)))
         if best is None or score > best.score:
             best = LocatedTimeSignature(
                 numerator=numerator,
@@ -445,8 +472,30 @@ def locate_time_signature(
                 raw=raw,
             )
             best_at = (location, template.shape)
+    if trace is not None:
+        trace["floor"] = floor
+        # Every template that fitted the strip, best first. Ties keep template
+        # order, exactly as the argmax above does, so ranked[0] IS `best`.
+        trace["scores"] = [
+            {"raw": r, "score": round(v, 4)}
+            for r, v in sorted(scores, key=lambda rv: -rv[1])
+        ]
+        trace["n_templates"] = len(scores)
+        trace["cleared_floor"] = bool(best is not None and best.score >= floor)
     if best is None or best.score < floor:
+        # ⚠️ A REFUSAL, and the near-miss is the interesting half: `min_score`
+        # sits at 0.50 and the module docstring says outright that the honest
+        # statement of that margin is thin. The trace carries the table that was
+        # refused; the return value cannot, because there is none.
         return None
+    # The runner-up, attached to the reading it lost to. `_meter_templates`
+    # yields one template per (numerator, denominator, raw), so second place is
+    # a different METER and not another crop of the same one.
+    ranked = sorted(scores, key=lambda rv: -rv[1])
+    if len(ranked) > 1:
+        best = replace(best, runner_up_raw=ranked[1][0],
+                       runner_up_score=ranked[1][1],
+                       score_margin=ranked[0][1] - ranked[1][1])
     # A cut common is a common with a stroke through it, and the stroke is read
     # by POSITION after the fact rather than searched for — searching for it
     # loses to plain `C` on real cut-common pages, because a C is a subset of a
@@ -511,6 +560,22 @@ def vote_system_time_signature(
         "voters": total,
         "median_score": round(scores[len(scores) // 2], 4),
     }
+    # Two runners-up, and they are different questions. `runner_up_meter` is the
+    # meter that came second in VOTES — the opposition the agreement gate had to
+    # clear. `median_score_margin` is the median, over the winning staves, of how
+    # far each staff's own reading beat the second-best TEMPLATE on that staff:
+    # a system where every staff read 3/4 at 0.61 against a 0.60 runner-up and
+    # one where they read it at 0.61 against 0.20 agree equally and are not
+    # equally sure. RECORD ONLY — `median_score` is documented as deliberately
+    # NOT a tie-break here, and neither of these is either.
+    if len(ranked) > 1:
+        out["runner_up_meter"] = ranked[1][0][2]
+        out["runner_up_votes"] = ranked[1][1]
+    margins = sorted(r.score_margin for r in winners
+                     if r.score_margin is not None)
+    if margins:
+        out["median_score_margin"] = round(margins[len(margins) // 2], 4)
+        out["min_score_margin"] = round(margins[0], 4)
     # The glyph is part of the meter and the exporter writes it (MusicXML
     # `symbol=`); the winners all read the same `raw`, so they all read the same
     # glyph. See `LocatedTimeSignature.symbol`.
@@ -524,22 +589,41 @@ def read_system_time_signatures(
     staves_by_system: dict[int, Iterable[int]],
     *,
     config: TimeSignatureLocatorConfig = DEFAULT_LOCATOR_CONFIG,
+    evidence: dict[int, dict[str, object]] | None = None,
 ) -> dict[int, dict[str, object]]:
     """Read and vote a meter for each system that has one, keyed by system.
 
     Systems with no agreed meter are simply absent from the result — a system
     printing no time signature (every system after the first, in most scores)
     is the common case, not an error.
+
+    `evidence`, when given, is filled per system with each staff's own score
+    table. It is separate from the return value BECAUSE of the sentence above:
+    a system that abstained produces no row here, and an abstention is where the
+    tables are most worth having.
     """
     out: dict[int, dict[str, object]] = {}
     for system_index, staff_indices in staves_by_system.items():
         indices = list(staff_indices)
-        reads = [
-            locate_time_signature(header_cells[i], config=config)
-            if i in header_cells else None
-            for i in indices
-        ]
+        traces: dict[int, dict[str, object]] = {}
+        reads = []
+        for i in indices:
+            if i not in header_cells:
+                reads.append(None)
+                continue
+            trace: dict[str, object] = {}
+            reads.append(locate_time_signature(header_cells[i], config=config,
+                                               trace=trace))
+            traces[i] = trace
         meter = vote_system_time_signature(reads, n_staves=len(indices), config=config)
+        if evidence is not None:
+            # Kept per SYSTEM whether or not the vote reached a meter — a system
+            # that abstained is the case where the per-staff tables are most
+            # worth having, and it is exactly the case that reaches no `out` row.
+            evidence[system_index] = {
+                "voted": meter is not None,
+                "staves": traces,
+            }
         if meter is not None:
             out[system_index] = meter
     return out

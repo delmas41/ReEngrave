@@ -4510,11 +4510,20 @@ def transcribe(
             # and the five it does fire are barline fragments mid-bar, which
             # `_dominant_detected_meter` then propagates as common time over a
             # 2/4 page. See tools/omr/time_signature_locator.py.
+            header_meter_evidence: dict[int, dict[str, Any]] = {}
             header_meters = read_system_time_signatures(
                 header_cells,
                 {sys_idx: sorted(systems[sys_idx].keys())
                  for sys_idx in sorted(systems.keys())},
+                evidence=header_meter_evidence,
             )
+            if header_meter_evidence:
+                # Page level, not per measure: the meter dict is copied onto
+                # every measure of the system, and a per-staff score table
+                # copied that many times would be noise rather than a record.
+                page_dict["header_meter_evidence"] = {
+                    str(k): v for k, v in header_meter_evidence.items()
+                }
         else:
             voted_fifths, voted_reasons = {}, {}
             key_sig_unread_reasons = {}
