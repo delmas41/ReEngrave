@@ -69,7 +69,13 @@ def root() -> str:
 
 def fixtures(pattern: str, *, expect_at_least: int = 1) -> list[str]:
     """Every file matching `pattern` under the fixture root. Never returns []."""
-    hits = sorted(_glob.glob(os.path.join(root(), pattern)))
+    # ⚠️ `recursive=True` is required for `**` to cross more than one
+    # directory, and its absence is NOT loud: `**` silently degrades to a
+    # single level. Latent today (no pattern here nests deeper than one),
+    # but it cost a real number when found elsewhere in this audit —
+    # `benchmarks/**/*.json` read 48 artefacts instead of 69, entirely
+    # plausibly. No-op for patterns without `**`.
+    hits = sorted(_glob.glob(os.path.join(root(), pattern), recursive=True))
     if len(hits) < expect_at_least:
         sys.stderr.write(
             f"FATAL: {len(hits)} file(s) matched {pattern!r} under {root()!r}; "

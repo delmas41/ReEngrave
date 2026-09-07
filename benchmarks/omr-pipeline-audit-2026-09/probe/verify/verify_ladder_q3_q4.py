@@ -8,7 +8,14 @@ rebuilds them, calling the real `_ledger_ladder` and reusing its own constants.
 from __future__ import annotations
 import json, sys
 from pathlib import Path
-ROOT = Path("/Users/seanjohnson/Desktop/ReEngrave")
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), _os.pardir))
+from _fixtures import fixtures, root as _fixroot, CONTESTS, SCAN, ENGRAVED  # noqa: E402
+# ⚠️ verify/ was invisible to test_probe_hygiene.py, whose file sweep was
+# non-recursive and never descended. All four files here carried the very defect that lint
+# exists to catch. Deferring to _fixtures.py, the designated survivor.
+# committed artefacts + `tools.omr` come from the tree this file lives in
+ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT))
 from tools.omr.transcribe import (                                  # noqa: E402
     _ledger_ladder, _LEDGER_RUNG_EXPECTED_SLACK,

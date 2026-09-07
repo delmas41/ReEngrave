@@ -6,12 +6,17 @@ The clef figure (11) counts CHANGES. This checks both and reports them apart.
 """
 import json, glob, os
 from pathlib import Path
-ROOT = Path("/Users/seanjohnson/Desktop/ReEngrave")  # fixtures live only in the main checkout
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), _os.pardir))
+from _fixtures import fixtures, root as _fixroot, CONTESTS, SCAN, ENGRAVED  # noqa: E402
+# ⚠️ verify/ was invisible to test_probe_hygiene.py, whose file sweep was
+# non-recursive and never descended. All four files here carried the very defect that lint
+# exists to catch. Deferring to _fixtures.py, the designated survivor.
 
 def survey(pat, label):
     rev_measures = 0; meter_changes = 0; clef_changes = 0
     staves = 0; pages = 0; per_page = {}
-    for f in sorted(glob.glob(str(ROOT / pat))):
+    for f in fixtures(pat, expect_at_least=11):
         d = json.load(open(f)); nm = os.path.basename(f).split('.')[0]
         r = 0
         for pg in d.get("pages", []):

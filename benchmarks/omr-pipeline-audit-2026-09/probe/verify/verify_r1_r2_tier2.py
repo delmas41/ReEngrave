@@ -1,11 +1,16 @@
 """VERIFIER round 2 — independent recomputation of Agent II's tier-2 reach claims.
 Fixtures live only in the MAIN checkout (the worktree gitignores them)."""
 import json, glob, os, statistics as S
-R = "/Users/seanjohnson/Desktop/ReEngrave/"
-SCAN = R + "benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"
-ENG  = R + "benchmarks/omr-orchestral-e2e/fixtures/*.omr.json"
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), _os.pardir))
+from _fixtures import fixtures, root as _fixroot, CONTESTS, SCAN, ENGRAVED  # noqa: E402
+# ⚠️ verify/ was invisible to test_probe_hygiene.py, whose file sweep was
+# non-recursive and never descended. All four files here carried the very defect that lint
+# exists to catch. Deferring to _fixtures.py, the designated survivor.
+ENG = ENGRAVED
 
-def load(pat): return [(os.path.basename(f).split('.')[0], json.load(open(f))) for f in sorted(glob.glob(pat))]
+def load(pat): return [(os.path.basename(f).split('.')[0], json.load(open(f)))
+                       for f in fixtures(pat, expect_at_least=11)]
 
 # --- clef_weights null (R4 specialist inertness) ---
 for lab, pat in (("scan", SCAN), ("engraved", ENG)):

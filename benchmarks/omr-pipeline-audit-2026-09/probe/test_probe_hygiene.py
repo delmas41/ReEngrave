@@ -36,14 +36,76 @@ GUARD_TOKENS = (
 SKIP = {"test_probe_hygiene.py", "_fixtureroot.py"}
 
 
+#: ⚠️ A hard-coded checkout is tolerated in exactly one shape — as the FALLBACK
+#: beside an `OMR_FIXTURE_ROOT` lookup on the same line or the line above — plus
+#: one named, deliberate pin. Anything else is the M4 defect.
+PIN_ALLOWED = {"probe_structural_floor.py"}
+MACHINE_PATH = re.compile(r"[\"']/Users/[^\"']+[\"']")
+
+
 def probe_files():
-    return sorted(p for p in HERE.glob("*.py") if p.name not in SKIP)
+    """⚠️ THIS USED TO BE `HERE.glob("*.py")` — NON-RECURSIVE — SO `verify/` WAS
+    NEVER LINTED, and all four files in it carried the exact defects this module
+    exists to catch (three hard-coded a checkout, one globbed CWD-relative).
+
+    The lint had the shape of the bug it lints for: it looked in one place, found
+    a clean set, and reported success. Fixed 2026-09-07 together with those four
+    files; `test_the_lint_descends_into_subdirectories` keeps it fixed.
+    """
+    files = [p for p in HERE.rglob("*.py") if p.name not in SKIP]
+    return sorted(f for f in files if "__pycache__" not in f.parts)
 
 
 def test_there_are_probes_to_lint():
     """The lint's own version of the bug it lints for: an empty file set would
     make every test below pass vacuously."""
     assert len(probe_files()) >= 20
+
+
+def test_the_lint_descends_into_subdirectories():
+    """⚠️ THE BLIND SPOT, PINNED. A non-recursive glob here does not fail — it
+    silently shrinks the lint's reach, which is exactly the failure mode under
+    test everywhere else in this file.
+
+    MUTATION: put `HERE.glob` back in `probe_files()` — this fails."""
+    subdirs = {p.parent for p in probe_files() if p.parent != HERE}
+    assert subdirs, ("probe_files() returned nothing outside the probe directory "
+                     "itself — verify/ exists and holds probes, so the lint is "
+                     "not reaching them")
+    assert any(p.name == "verify" for p in subdirs)
+
+
+@pytest.mark.parametrize("path", probe_files(), ids=lambda p: p.name)
+def test_no_probe_hard_codes_a_checkout(path):
+    """⚠️ THE MIRROR DEFECT, at probe level. `test_no_probe_resolves_its_inputs
+    _from_the_cwd` catches only the CWD half; a probe pinned to
+    `/Users/<someone>/…` does not glob nothing, it globs ANOTHER TREE — the
+    stale-tree incident this audit opens with. All four `verify/` files passed
+    every existing test while carrying it.
+
+    Tolerated: an absolute used as the FALLBACK of an `OMR_FIXTURE_ROOT` lookup,
+    and `probe_structural_floor.py`'s deliberate pin to the `reconciliation`
+    worktree (whose fixtures it sha256-checks against the canonical arm).
+
+    MUTATION: re-add `ROOT = "/Users/…"` to any verify/ file — this fails."""
+    if path.name in PIN_ALLOWED:
+        pytest.skip("named, deliberate pin — see the file's own docstring")
+    lines = path.read_text().split("\n")
+    for i, line in enumerate(lines):
+        if line.lstrip().startswith("#") or not MACHINE_PATH.search(line):
+            continue
+        # ⚠️ The override may live INSIDE a helper rather than on this line:
+        # `probe_sauvola_dpi_scale.py` passes its default to
+        # `_fixtureroot.fixture_root()`, which reads the env itself. A
+        # line-local test called that a defect. What is actually forbidden is a
+        # file with NO route to an override at all, so ask the file.
+        whole = path.read_text()
+        if ("OMR_FIXTURE_ROOT" in whole
+                or "fixture_root(" in whole or "env_path(" in whole):
+            continue
+        assert False, (
+            f"{path.name}:{i + 1} hard-codes a checkout with no env override — "
+            f"it will silently read another tree.\n     {line.strip()[:100]}")
 
 
 @pytest.mark.parametrize("path", probe_files(), ids=lambda p: p.name)
