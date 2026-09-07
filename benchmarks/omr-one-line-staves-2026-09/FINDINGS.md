@@ -394,7 +394,7 @@ already derives the padding mode by matching the manifest; a flag column would
 be the same move. **Not fixed here** — it cannot fire while the flag is off, and
 `cells.json` is written by tools this session was not sent to change.
 
-## 2.3 ⚠️ I COMMITTED THIS PROJECT'S OWN RECURRING BUG, inside the fix for it
+### 2.3 ⚠️ I COMMITTED THIS PROJECT'S OWN RECURRING BUG, inside the fix for it
 
 Worth its own section because of where it happened.
 
@@ -453,7 +453,7 @@ percussion result on one says nothing about the other.
 
 ---
 
-## 4. What it is worth — and ⚠️ the two eras disagree in SIGN
+## 4. What it is worth — ⚠️ three arms, and one of them disagrees in SIGN
 
 Both columns are one controlled A/B: same tree, same page, same flags apart from
 `OMR_ONE_LINE_STAVES`, scored through the same `musicdiff` bridge against the
