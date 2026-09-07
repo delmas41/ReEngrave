@@ -27,6 +27,9 @@ A = {
     "aud_eng": ROOT / "benchmarks/omr-vs-industry-2026-09/results.json",
     "aud_scan": ROOT / "benchmarks/omr-vs-industry-2026-09/results-audiveris-scan.json",
     "hairpin": ROOT / "benchmarks/omr-hairpin-cv-2026-09/results-scored-pages.json",
+    "floor": HERE / "structural-floor-measured.json",
+    "inputceil": HERE / "input-ceiling-from-labels.json",
+    "retro": HERE / "retro-stamp.json",
     "content": ROOT / "docs/progress-dashboard.content.json",
     "pct": HERE / "pct-of-achievable-prototype.json",
 }
@@ -45,6 +48,7 @@ def pct_rate(v, c):
 def row(**kw):
     base = {
         "id": None, "stage": None, "family": None,
+        "comparable_as": {"time_series": None, "head_to_head": None},
         "raw_metric": None, "native_direction": None,
         "native_worst": None, "native_best": None,
         "value": None,
@@ -93,6 +97,8 @@ rows.append(row(
                  "note": "no repeat-run determinism probe exists for "
                          "orchestral_eval; the ±6 figure is the SCAN harness's"},
     summability_class="omr_ned_engraved", pool_key="engraved/orchestral-e2e/11",
+    comparable_as={"time_series": "orchestral-e2e|2026-09-02|11works|direction_text",
+                   "head_to_head": "engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects"},
     scoreable=True, source=REL["record"],
     companions={"edits": dt["edits"], "truth_symbols": dt["truth_symbols"],
                 "pred_symbols": dt["pred_symbols"]},
@@ -281,6 +287,58 @@ rows.append(row(
            "34.5% of the edits on the 15 normalisable rows are structural charge "
            "for a printing convention, not recognition error"]))
 
+# ── ROUND 2: the floor is now MEASURED, not estimated.
+fl = L["floor"]["pooled"]
+rows.append(row(
+    id="scan:omr_ned:page_fidelity_15rows", stage="= finished file", family="scan",
+    raw_metric="OMR-NED", native_direction="lower_is_better",
+    native_worst=1.0, native_best=0.0,
+    value=L["pct"]["scan"]["pool_all_normalisable"]["pooled_omr_ned"],
+    transform="pct = 100 * (1 - M) / (1 - F)",
+    ceiling={"kind": "structural", "value": fl["floor_unpaired_parts_only"],
+             "status": "measured_directly",
+             "constraint": "PAGE FIDELITY. The metric's unconstrained floor is "
+                           "ZERO — emitting the ENCODING rather than the page "
+                           "scores 0, which is exactly what OMR_CONDENSED_PARTS "
+                           "would harvest and what CLAUDE.md calls an "
+                           "anti-feature. This floor is the price of an output "
+                           "faithful to the printed page, which is the output "
+                           "Sean asked for. Every scan % below is therefore "
+                           "'% of achievable UNDER PAGE FIDELITY'.",
+             "evidence": ["benchmarks/omr-pipeline-audit-2026-09/"
+                          "structural-floor-measured.json"],
+             "control": "the derived truth is scored AS THE PREDICTION against "
+                        "the raw truth, so no output of ours appears in the "
+                        "measurement at all. Controls: the three identity-"
+                        "transform rows (Dvorak, 15 parts into 15 staves) score "
+                        "EXACTLY 0 edits; all 15 derived truths reproduce the "
+                        "committed control's canonical hashes; every truth "
+                        "fixture's sha256 equals the canonical arm's."},
+    pct_of_achievable=round(pct_err(
+        L["pct"]["scan"]["pool_all_normalisable"]["pooled_omr_ned"],
+        fl["floor_unpaired_parts_only"]), 2),
+    n=fl["n_rows"], n_unit="pages",
+    era_key="scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba",
+    noise_floor={"value_edits": 6, "status": "measured",
+                 "applies_to": "M only — F contains no prediction of ours, so "
+                               "arm-to-arm noise cannot move it"},
+    summability_class="omr_ned_scan_ceilinged", pool_key="scan/page-fidelity/15",
+    comparable_as={"time_series": "scan-e2e|20rows|reconciliation|"
+                                  "normalised-transform1.2.0",
+                   "head_to_head": None},
+    scoreable=True, source="benchmarks/omr-pipeline-audit-2026-09/"
+                          "structural-floor-measured.json",
+    companions={"floor_unpaired_parts": fl["floor_unpaired_parts_only"],
+                "floor_structural": fl["floor_structural_only"],
+                "floor_total": fl["floor_total"],
+                "residue_share_of_total_floor": fl["residue_share_of_total_floor"]},
+    flags=["the floor is the MOST CONSERVATIVE rung of a three-rung ladder "
+           "(0.2123 unpaired-parts / 0.4982 structural / 0.6348 total). A larger "
+           "floor raises the score, so the ladder is climbed only as far as the "
+           "evidence is unambiguous.",
+           "15 of 20 rows: the four Mahler and one Bach rows have no hand-read "
+           "staves map and are not guessed at"]))
+
 # tier B: every normalisable row of the canonical arm, single-source estimator
 pb = L["pct"]["scan"]["pool_all_normalisable"]
 rows.append(row(
@@ -454,6 +512,8 @@ rows.append(row(
     pct_of_achievable=pct_err(asc["omr_ned"], 0.0),
     n=asc["n_rows"], n_unit="pages",
     era_key="scan-e2e|11rows|restamp-composed|audiveris-5.11",
+    comparable_as={"time_series": None,
+                   "head_to_head": "scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects"},
     summability_class="omr_ned_scan", pool_key=None,
     scoreable=True, source=REL["aud_scan"],
     flags=["Audiveris is AHEAD of us on this pool (0.7919 vs our 0.8345 on the "
@@ -485,6 +545,62 @@ for s in content["pipeline"]["stages"]:
             source=REL["content"]))
 
 # ────────────────────────────────────────── UNSCOREABLE — no ceiling evidence yet
+ic = L["inputceil"]
+rows.append(row(
+    id="ceiling:input:notehead:scan", stage="4 symbol detection", family="scan",
+    raw_metric="reference notes a HUMAN could box on a real scan, per reference note",
+    native_direction="higher_is_better", native_best=1.0, native_worst=0.0,
+    value=ic["ratios"]["human_boxes_per_reference_note"],
+    ceiling={"kind": "input", "value": None, "status": "bounded_above",
+             "evidence": ["benchmarks/omr-pipeline-audit-2026-09/"
+                          "input-ceiling-from-labels.json",
+                          ic["batch"]],
+             "control": "the labeler drew boxes on the same scanned cells the "
+                        "detector saw, with no reference to our output — the MXL "
+                        "says what the MUSIC is, a human's box says what the INK "
+                        "is. Restricted to the ONE batch carrying a COMPLETION "
+                        "pass, because a single-symbol sweep leaves every other "
+                        "class unboxed by instruction."},
+    n=ic["counts"]["reference_notes_in_those_bars"], n_unit="reference notes",
+    era_key="labeling|breitkopf-brahms1|completion-pass|47 cells",
+    summability_class=None, pool_key=None,
+    scoreable=False,
+    why_not="an UPPER BOUND, not a ceiling to score against. 201 human "
+            "noteheads against 207 reference notes is a ratio of COUNTS, not a "
+            "matched recall: grace notes are on the page and absent from the "
+            "encoding (0 in 28,579), so human boxes are inflated and the true "
+            "figure is at or below 0.971. What it DOES establish is that C = 1.0 "
+            "is very nearly right for noteheads on this print — so `scan:pitch` "
+            "at 83.4%% is an achievement number, not a fixture artefact. One "
+            "batch, one publisher, density-selected cells.",
+    source="benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json"))
+
+rows.append(row(
+    id="ceiling:input:hairpin:scan", stage="4 symbol detection", family="scan",
+    raw_metric="can a human see a hairpin on these scans at all?",
+    native_direction="higher_is_better", value=None,
+    ceiling={"kind": "input", "value": None, "status": "refuted_as_a_ceiling",
+             "evidence": ["benchmarks/omr-pipeline-audit-2026-09/"
+                          "input-ceiling-from-labels.json"],
+             "control": "counted directly: over the 55 completion-swept cells of "
+                        "a real 1876 Breitkopf scan a human drew 13 "
+                        "dynamicCrescendoHairpin and 4 dynamicDiminuendoHairpin "
+                        "— SEVENTEEN. The ink is visible to a reader."},
+    n=17, n_unit="human-drawn hairpin boxes",
+    era_key="labeling|breitkopf-brahms1|completion-pass|55 cells",
+    scoreable=False,
+    why_not="This row exists to record a REFUTATION, not a score. The open "
+            "question was whether `scan:hairpin_detect` at 1.01%% is a "
+            "catastrophe or a hard input ceiling. A human found 17 hairpins on "
+            "55 scanned cells, so it is a CATASTROPHE — a detector failure, not "
+            "missing ink. The same sweep also drew 62 ties and 27 slurs, the "
+            "other two families a fine-tune is documented to delete. The ceiling "
+            "VALUE is still unmeasured (no hairpin-vs-reference-wedge pairing "
+            "exists), which is why this is not scoreable; but the assumption "
+            "C = 1.0 that `scan:hairpin_detect` is scored under is no longer "
+            "unsupported.",
+    source="benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json"))
+
 rows.append(row(
     id="scan:input_ceiling:hollow_noteheads", stage="4 symbol detection",
     family="scan", raw_metric="half-noteheads detected on Beethoven 5 p.1",
@@ -517,6 +633,116 @@ rows.append(row(
             "100%: it makes a gap look bigger than the pipeline can act on.",
     source="tools/omr/export.py:3278-3331 (grep: only reader, no writer)"))
 
+# ── M1: three estates the round-1 registry omitted entirely.
+rows.append(row(
+    id="identity:calibration:ECE", stage="10 staff -> slot, part identity",
+    family="scan", raw_metric="Expected Calibration Error of P(name)",
+    native_direction="lower_is_better", native_worst=None, native_best=0.0,
+    value=0.1277,
+    ceiling={"kind": None, "value": None, "status": "unmeasured", "evidence": [],
+             "control": None},
+    n=197, n_unit="graded records",
+    era_key="staff-identity-layer|2026-09-05|n197",
+    scoreable=False,
+    why_not="⚠️ NEITHER TRANSFORM CAN EXPRESS THIS, and forcing it would be "
+            "worse than omitting it. `pct = 100*(W-M)/(W-F)` needs a defensible "
+            "WORST CASE. OMR-NED has one (predict nothing scores exactly 1). A "
+            "calibration error has none: ECE's arithmetic maximum is 1.0 but "
+            "that is unreachable in practice and carries no meaning, so a "
+            "percentage against it would be a number with no referent — the "
+            "exact defect this unit exists to remove. A THIRD transform kind "
+            "would need an empirical worst case (e.g. the ECE of a constant "
+            "predictor on this corpus), which nobody has measured. Note also "
+            "that the estate's own finding is that the ECE improvement from "
+            "n=197 to n=1571 is NOT calibration — Brier skill vs a constant "
+            "predictor is +0.0004 and 95.8%% of mass sits in one bin — so a "
+            "score here would be worse than absent. Blocked on WORKS, not "
+            "records (backlog D5).",
+    source="docs/backlog-2026-09-07-open-items.md D5; "
+           "benchmarks/omr-staff-identity-layer-2026-09/"))
+
+rows.append(row(
+    id="labeling:ledger_zone:screening_rate", stage="(labeling QA)", family="scan",
+    raw_metric="ledger-zone labels FLAGGED by the parity auditor",
+    native_direction="lower_is_better", native_worst=1.0, native_best=0.0,
+    value=0.069, transform="pct = 100 * (1 - M) / (1 - F)",
+    ceiling={"kind": "visibility", "value": None, "status": "not_a_defect_rate",
+             "evidence": ["benchmarks/omr-snap-ledger-2026-09/"
+                          "LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md"],
+             "control": None},
+    n=102, n_unit="ledger-zone labels",
+    era_key="labeling-audit|simrock-dvorak9|2026-09-03",
+    scoreable=False,
+    why_not="⚠️ A SCREENING RATE IS NOT A DEFECT RATE, AND THIS IS THE CLEAREST "
+            "CASE IN THE PROJECT OF THE CONFUSION THIS UNIT EXISTS TO FIX. The "
+            "auditor flags 7 of 102 (6.9%%); hand adjudication found ONE real "
+            "error (~0.9%%) — a 7x gap, and six of the seven share one mechanism "
+            "(a printed ledger line print-merging into the notehead's connected "
+            "component, pulling the centroid up to a half-step). Both numbers are "
+            "percentages; only one is a quality figure. A dashboard that prints "
+            "either alone is wrong: 6.9%% overstates the defect sevenfold, and "
+            "0.9%% understates the reviewer's workload sevenfold. The registry's "
+            "answer is that they are TWO ROWS with different `stage` semantics "
+            "— a SCREEN and a DEFECT — never one, and a screen is never "
+            "scoreable on the achievement axis.",
+    source="benchmarks/omr-snap-ledger-2026-09/"
+           "LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md"))
+
+rows.append(row(
+    id="labeling:ledger_zone:defect_rate", stage="(labeling QA)", family="scan",
+    raw_metric="ledger-zone labels ADJUDICATED wrong by a human",
+    native_direction="lower_is_better", native_worst=1.0, native_best=0.0,
+    value=1/102, transform="pct = 100 * (1 - M) / (1 - F)",
+    ceiling={"kind": "assumed", "value": 0.0, "status": "assumed", "evidence": [],
+             "control": "F=0 assumed: a perfect labeling pass has no defects. "
+                        "Conservative by the assumption-direction rule."},
+    pct_of_achievable=round(pct_err(1/102, 0.0), 2),
+    n=102, n_unit="ledger-zone labels",
+    era_key="labeling-audit|simrock-dvorak9|2026-09-03",
+    comparable_as={"time_series": "labeling-audit|ledger-zone|adjudicated",
+                   "head_to_head": None},
+    summability_class="label_defect_rate", pool_key=None,
+    scoreable=True,
+    source="benchmarks/omr-snap-ledger-2026-09/"
+           "LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md",
+    companions={"screening_rate": 0.069,
+                "screen_to_defect_ratio": round(0.069 / (1/102), 1)},
+    flags=["ALWAYS render beside `labeling:ledger_zone:screening_rate`. The two "
+           "differ by 7x and both are percentages; showing either alone "
+           "misleads in a named direction."]))
+
+rows.append(row(
+    id="prefill:precision:blind_out_of_sample", stage="(labeling pre-fill)",
+    family="scan", raw_metric="exact-class precision of reference-driven "
+                              "pre-filled verdicts, blind sample",
+    native_direction="higher_is_better", native_best=1.0, native_worst=0.0,
+    value=0.915, transform="pct = 100 * V / C",
+    ceiling={"kind": "competitive", "value": 0.97, "status": "pre_registered",
+             "evidence": ["benchmarks/omr-prefill-admission-2026-09/FINDINGS.md",
+                          "benchmarks/omr-prefill-admission-2026-09/"
+                          "PHASE_C_CELLS.json"],
+             "control": "0.97 is the ADMISSION BAR set in advance, and the cells "
+                        "were pre-registered at seed 20260903 with their status "
+                        "recorded BEFORE labeling; the pass was run blind "
+                        "(annotate.server --blind). The measurement came in "
+                        "UNDER the bar and pre-filled verdicts stayed a queue "
+                        "rather than becoming labels — a control that fired."},
+    pct_of_achievable=round(pct_rate(0.915, 0.97), 2),
+    n=141, n_unit="pre-filled boxes",
+    era_key="prefill|brahms1-breitkopf|phase-C|blind|2026-09-03",
+    comparable_as={"time_series": "prefill|brahms1-breitkopf|phase-C|blind",
+                   "head_to_head": None},
+    summability_class="prefill_precision", pool_key=None,
+    scoreable=True,
+    source="benchmarks/omr-prefill-admission-2026-09/FINDINGS.md",
+    companions={"pre_registered_25_cells": 0.838, "other_24_cells": 1.0,
+                "noteheads": 0.943, "rests": 0.722},
+    flags=["a rare case where the CEILING IS A DECISION RULE rather than a "
+           "physical limit — the bar a human set in advance for admitting the "
+           "output without review. That is the most useful ceiling kind for "
+           "anything gated on human trust, and the only pre-registered one in "
+           "the registry."]))
+
 rows.append(row(
     id="human:review_cost", stage="(the purpose)", family="both",
     raw_metric="staff records a human must look at",
@@ -535,8 +761,22 @@ rows.append(row(
 # ───────────────────────────────────────────────────────────────────── assemble
 scoreable = [r for r in rows if r["scoreable"]]
 doc = {
-    "schema_version": "0.1.0",
+    "schema_version": "0.2.0",
     "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/build_metric_registry.py",
+    "round": 2,
+    "changes_since_0_1_0": [
+        "the scan structural floor is MEASURED (probe_structural_floor.py) "
+        "instead of estimated; it is a CONSTRAINED floor — the price of page "
+        "fidelity — and every scan % is now '% of achievable under page "
+        "fidelity'",
+        "`comparability` replaces the single `era_key` equality test, which "
+        "forbade the competitive comparison this registry prints (M2)",
+        "the `input` ceiling is no longer wholly empty: bounded above for "
+        "noteheads (<= 0.971) and REFUTED as an explanation for hairpins",
+        "three omitted estates added — calibration (scoreable:false, no "
+        "defensible worst case), the ledger-zone screen/defect pair, and "
+        "pre-fill precision against a PRE-REGISTERED ceiling",
+    ],
     "_comment": "PROPOSAL, not yet wired into anything. Every value is read from a "
                 "committed artefact named in `source`. Nothing here changes "
                 "pipeline behaviour.",
@@ -576,11 +816,33 @@ doc = {
                    "percentages — a 3-bar excerpt and a 27-staff page must not "
                    "carry equal weight. A pool's trust is the MINIMUM of its "
                    "members' ceiling statuses.",
-        "cross_era_refusal": "two scores may be differenced only if their "
-                             "`era_key` strings are equal AND their ceiling value "
-                             "and evidence pointers are equal. Anything else is "
-                             "refused, in the shape accuracy_record.check() "
-                             "already has.",
+        "comparability": {
+            "_why": "⚠️ CORRECTED IN ROUND 2. The round-1 rule was a single "
+                    "`era_key` equality test, and it FORBADE the competitive "
+                    "comparison this very registry prints: we and Audiveris are "
+                    "different systems and so can never share an era key, yet on "
+                    "the same fixtures through the same scorer we are exactly "
+                    "comparable. Comparability is not one relation.",
+            "time_series": "may difference only if `comparable_as.time_series` "
+                           "is equal AND `ceiling.value` and `ceiling.evidence` "
+                           "are equal AND the arm (which predictions) is the "
+                           "same. This is the accuracy_record.check() shape and "
+                           "it answers 'are we improving'.",
+            "head_to_head": "may compare only if `comparable_as.head_to_head` is "
+                            "equal — same fixtures, same scorer, same row set, "
+                            "different SYSTEM. It answers 'are we better than "
+                            "them' and says nothing about direction over time.",
+            "neither": "a pair sharing neither key may not be put in one "
+                       "sentence with an arrow between them.",
+            "worked_example": "`engraved:omr_ned` and "
+                              "`competitive:engraved:audiveris` share a "
+                              "head_to_head key and no time_series key: 88.78 vs "
+                              "87.48 is a valid head-to-head and NOT a delta. "
+                              "`scan:omr_ned` and "
+                              "`scan:omr_ned:page_fidelity_15rows` share "
+                              "neither: different row sets and different "
+                              "ceilings.",
+        },
         "dilution_guard": "a delta on an error-rate metric is REFUSED as an "
                           "improvement when the ratio falls while `companions."
                           "edits` rises — that is under-prediction being rewarded "

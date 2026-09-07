@@ -1,0 +1,388 @@
+{
+ "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_input_ceiling_from_labels.py",
+ "question": "can the hand-labeling corpus supply an INPUT ceiling?",
+ "batch": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1",
+ "why_this_batch": "the ONLY batch in the corpus carrying a COMPLETION pass. Every other batch is a single-symbol sweep, where everything outside the pass is unboxed BY INSTRUCTION and a count of human boxes would measure the pass, not the ink.",
+ "coverage": {
+  "cells_stamped_completion": 55,
+  "cells_usable": 47,
+  "cells_without_a_prefill_record": 0,
+  "cells_whose_prefill_has_no_alignment": 8
+ },
+ "counts": {
+  "reference_notes_in_those_bars": 207,
+  "human_noteheads_drawn": 201,
+  "reference_notes_the_DETECTOR_matched": 183
+ },
+ "ratios": {
+  "human_boxes_per_reference_note": 0.9710144927536232,
+  "detector_recall_vs_reference": 0.8840579710144928,
+  "detector_recall_vs_human": 0.9104477611940298
+ },
+ "rows": [
+  {
+   "cell_id": "brahms1-p2-sys0-s0-m1",
+   "truth_notes": 4,
+   "human_noteheads": 5,
+   "detector_matched_truth_notes": 3,
+   "alignment_strength": 0.75
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s1-m1",
+   "truth_notes": 4,
+   "human_noteheads": 5,
+   "detector_matched_truth_notes": 4,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s1-m5",
+   "truth_notes": 2,
+   "human_noteheads": 3,
+   "detector_matched_truth_notes": 2,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s10-m3",
+   "truth_notes": 5,
+   "human_noteheads": 5,
+   "detector_matched_truth_notes": 5,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s2-m2",
+   "truth_notes": 3,
+   "human_noteheads": 3,
+   "detector_matched_truth_notes": 3,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s2-m5",
+   "truth_notes": 4,
+   "human_noteheads": 4,
+   "detector_matched_truth_notes": 3,
+   "alignment_strength": 0.75
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s3-m4",
+   "truth_notes": 12,
+   "human_noteheads": 12,
+   "detector_matched_truth_notes": 10,
+   "alignment_strength": 0.833
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s3-m6",
+   "truth_notes": 6,
+   "human_noteheads": 5,
+   "detector_matched_truth_notes": 4,
+   "alignment_strength": 0.667
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s9-m0",
+   "truth_notes": 10,
+   "human_noteheads": 10,
+   "detector_matched_truth_notes": 9,
+   "alignment_strength": 0.9
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s9-m5",
+   "truth_notes": 4,
+   "human_noteheads": 4,
+   "detector_matched_truth_notes": 4,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s21-m6",
+   "truth_notes": 1,
+   "human_noteheads": 1,
+   "detector_matched_truth_notes": 1,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s22-m0",
+   "truth_notes": 3,
+   "human_noteheads": 4,
+   "detector_matched_truth_notes": 3,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s23-m2",
+   "truth_notes": 5,
+   "human_noteheads": 6,
+   "detector_matched_truth_notes": 5,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s24-m2",
+   "truth_notes": 6,
+   "human_noteheads": 6,
+   "detector_matched_truth_notes": 6,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s25-m3",
+   "truth_notes": 6,
+   "human_noteheads": 6,
+   "detector_matched_truth_notes": 6,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s26-m0",
+   "truth_notes": 6,
+   "human_noteheads": 5,
+   "detector_matched_truth_notes": 6,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s26-m3",
+   "truth_notes": 6,
+   "human_noteheads": 6,
+   "detector_matched_truth_notes": 6,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s12-m2",
+   "truth_notes": 3,
+   "human_noteheads": 3,
+   "detector_matched_truth_notes": 2,
+   "alignment_strength": 0.667
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s13-m4",
+   "truth_notes": 6,
+   "human_noteheads": 1,
+   "detector_matched_truth_notes": 3,
+   "alignment_strength": 0.5
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s3-m3",
+   "truth_notes": 6,
+   "human_noteheads": 6,
+   "detector_matched_truth_notes": 6,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s4-m5",
+   "truth_notes": 6,
+   "human_noteheads": 1,
+   "detector_matched_truth_notes": 2,
+   "alignment_strength": 0.333
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s5-m4",
+   "truth_notes": 2,
+   "human_noteheads": 2,
+   "detector_matched_truth_notes": 2,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s5-m5",
+   "truth_notes": 6,
+   "human_noteheads": 6,
+   "detector_matched_truth_notes": 6,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s8-m3",
+   "truth_notes": 1,
+   "human_noteheads": 1,
+   "detector_matched_truth_notes": 1,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s9-m1",
+   "truth_notes": 12,
+   "human_noteheads": 12,
+   "detector_matched_truth_notes": 12,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s9-m4",
+   "truth_notes": 3,
+   "human_noteheads": 4,
+   "detector_matched_truth_notes": 3,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p3-sys1-s23-m0",
+   "truth_notes": 1,
+   "human_noteheads": 1,
+   "detector_matched_truth_notes": 0,
+   "alignment_strength": 0.0
+  },
+  {
+   "cell_id": "brahms1-p3-sys1-s23-m5",
+   "truth_notes": 1,
+   "human_noteheads": 1,
+   "detector_matched_truth_notes": 1,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p3-sys1-s27-m0",
+   "truth_notes": 1,
+   "human_noteheads": 1,
+   "detector_matched_truth_notes": 1,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s0-m3",
+   "truth_notes": 2,
+   "human_noteheads": 2,
+   "detector_matched_truth_notes": 1,
+   "alignment_strength": 0.5
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s1-m0",
+   "truth_notes": 3,
+   "human_noteheads": 3,
+   "detector_matched_truth_notes": 3,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s1-m3",
+   "truth_notes": 2,
+   "human_noteheads": 2,
+   "detector_matched_truth_notes": 1,
+   "alignment_strength": 0.5
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s10-m5",
+   "truth_notes": 12,
+   "human_noteheads": 12,
+   "detector_matched_truth_notes": 12,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s12-m2",
+   "truth_notes": 1,
+   "human_noteheads": 1,
+   "detector_matched_truth_notes": 1,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s13-m3",
+   "truth_notes": 1,
+   "human_noteheads": 1,
+   "detector_matched_truth_notes": 1,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s2-m0",
+   "truth_notes": 3,
+   "human_noteheads": 3,
+   "detector_matched_truth_notes": 3,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s3-m8",
+   "truth_notes": 4,
+   "human_noteheads": 4,
+   "detector_matched_truth_notes": 4,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s9-m3",
+   "truth_notes": 9,
+   "human_noteheads": 9,
+   "detector_matched_truth_notes": 8,
+   "alignment_strength": 0.889
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s15-m0",
+   "truth_notes": 4,
+   "human_noteheads": 4,
+   "detector_matched_truth_notes": 2,
+   "alignment_strength": 0.5
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s15-m7",
+   "truth_notes": 6,
+   "human_noteheads": 6,
+   "detector_matched_truth_notes": 6,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s17-m7",
+   "truth_notes": 4,
+   "human_noteheads": 4,
+   "detector_matched_truth_notes": 3,
+   "alignment_strength": 0.75
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s18-m1",
+   "truth_notes": 5,
+   "human_noteheads": 5,
+   "detector_matched_truth_notes": 5,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s18-m2",
+   "truth_notes": 5,
+   "human_noteheads": 5,
+   "detector_matched_truth_notes": 5,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s19-m0",
+   "truth_notes": 4,
+   "human_noteheads": 4,
+   "detector_matched_truth_notes": 4,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s23-m1",
+   "truth_notes": 2,
+   "human_noteheads": 2,
+   "detector_matched_truth_notes": 1,
+   "alignment_strength": 0.5
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s24-m3",
+   "truth_notes": 3,
+   "human_noteheads": 3,
+   "detector_matched_truth_notes": 3,
+   "alignment_strength": 1.0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s24-m9",
+   "truth_notes": 2,
+   "human_noteheads": 2,
+   "detector_matched_truth_notes": 1,
+   "alignment_strength": 0.5
+  }
+ ],
+ "no_prefill": [],
+ "no_alignment": [
+  {
+   "cell_id": "brahms1-p2-sys1-s19-m0",
+   "reason": "verdict file already carries human work (use --force)"
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s20-m6",
+   "reason": "verdict file already carries human work (use --force)"
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s1-m0",
+   "reason": "verdict file already carries human work (use --force)"
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s13-m1",
+   "reason": "verdict file already carries human work (use --force)"
+  },
+  {
+   "cell_id": "brahms1-p3-sys1-s18-m1",
+   "reason": "verdict file already carries human work (use --force)"
+  },
+  {
+   "cell_id": "brahms1-p3-sys1-s18-m2",
+   "reason": "verdict file already carries human work (use --force)"
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s20-m0",
+   "reason": "verdict file already carries human work (use --force)"
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s22-m1",
+   "reason": "verdict file already carries human work (use --force)"
+  }
+ ]
+}

@@ -590,3 +590,406 @@ dumps plus one instrumented run): how many of the 266 ladder verdicts survive a
 - §4.2 is **n = 2 pages**, two publishers, two weight files. They agree; two is still two.
 - §4.3 is over 28 committed transcriptions spanning months and several weight files. It measures the *recording*, not the pipeline.
 - ⚠️ **I began on a tree 28 commits stale.** Every citation was re-anchored after the rebase (see the header) and three had drifted, but §2's tables were first drafted against the older tree; a reader finding a stale line number should treat it as my error, not the tree's.
+
+---
+---
+
+# ROUND 2 — stage 3, two settled hypotheses, and a census
+
+**Written after the coordinator's round-2 brief and the verifier's report on
+round 1.** Tree: `61eefe21` + the audit commits; every `file:line` anchored
+there. Four new committed probes; **no benchmark was run and no behaviour
+changed.**
+
+## R0. Corrections to round 1, applied here rather than by rewriting it
+
+Per the brief, round 1 stands as written except for errors. Two, both from the
+verifier, plus one I am withdrawing myself.
+
+| | round 1 said | correct |
+|---|---|---|
+| **R0-a** (verifier D2) | §3.5: the spurious-rest filter is *"the pipeline's only silent deletion rule with no counter at all"* | ⚠️ **FALSE as a universal.** There are at least four counterexamples, two in the same neighbourhood (`_spans_the_whole_cell` five lines above, `_deduplicate_beams` fifty below, plus `_drop_close_outliers` and `_reject_spacing_outliers`). **The observation survives and the CLASS is the finding**: §R3 replaces the singleton with a mechanical count — **18 drop sites in the seven slice files, 14 of them writing no count (0.778)**. `n of m` beats `the only`, and this project's verification passes keep finding their errors in universals. |
+| **R0-b** (verifier D9) | §0/§4.2: `ledgerLine` is *"the lowest-confidence class on the page"* | **The lowest-confidence STRUCTURAL class.** `stem` (YOLO's own, unused) is lower. The ownership argument is unaffected — `ledgerLine` is still the substrate of the only tier ranked above distance — but the claim is now stated to its evidence. |
+| **R0-c** (mine) | §6 item 5 proposed a `ledgerLine` confidence floor, ranked last with a reach probe named first | ⚠️ **The reach probe ran (§R2.2) and the answer is NO. Item 5 is REFUSED, measured.** A 0.40 floor destroys 42–58% of complete ladders. I am withdrawing my own recommendation. |
+
+⚠️ **And an inference-discipline correction the coordinator relayed, which
+changes how I phrase §4.1.** A 44.8% split at n = 4,521 is z ≈ −7: the effect is
+**real but uninformative about correctness**, not "indistinguishable from
+chance". Round 1's §4.1 already said the right thing in prose (*"a larger margin
+means the quantity has more to say, not that the higher-confidence side is
+right"*); the sharper phrasing is the one to quote.
+
+**What the verifier confirmed and I am not repeating:** the D23 overturn
+(re-derived independently, called airtight), all of §4.1's counts, and that
+`additive-vs-gated/FINDINGS.md` contains no `436` anywhere — the column is
+genuinely new, as round 1 cautiously framed it.
+
+---
+
+## R1. Stage 3 — `measure_extractor.py`
+
+Taken first for the reason round 1 gave: 15 importers including the labeling
+pipeline, and it feeds every function round 1 audited. It is also the freshest
+code in the tree (+104 lines in the rebase, the one-line-percussion workstream).
+
+### R1.1 ⚠️ THE HEADLINE: `Barline` has five fields and all five are coordinates
+
+```python
+@dataclass
+class Barline:                    # types.py:108-115
+    page_index: int
+    x: int
+    y_top: int
+    y_bottom: int
+    system_index: int
+```
+
+`detect_barlines` computes, for every accepted column: the **vote count**
+(`n_votes`), the **inter-system connectivity** (a float per column), the
+**span-test score** (`_spans_system`, a float), **which of four acceptance
+prongs** fired (vote+connectivity, strong-connectivity rescue, small-system
+vote, small-system span rescue), the per-staff x observations that let the
+probe follow a leaning line, and — page-level — whether this system was judged
+an **open score** (`barlines_cross_gaps`) and whether cue C **overrode** that
+judgement.
+
+**Every one of those dies at the `Barline(...)` constructor**
+(`measure_extractor.py:685-691`). The dataclass has no evidence field.
+
+This generalises the map's `_drop_close_outliers` row, which observes that that
+function *"receives only integers"*. It is not one function's problem: **no
+consumer of a barline anywhere in the pipeline can know anything about why it is
+there.** The consumers are `_measure_x_boundaries` (which decides every cell's x
+extent), `_drop_close_outliers`, `resegment_fused_measures`,
+`majority_bars_by_system`, and — downstream — the measure count that
+`_flag_measure_count_inconsistency` checks and that
+`export._stitch_slots` refuses on.
+
+| field | 13-field schema |
+|---|---|
+| **fidelity / destruction site** | four floats and two booleans → a 5-tuple of ints, `measure_extractor.py:684-690` |
+| **consumers** | prod_omr 5, all reading `x` / `system_index` only |
+| **who should read it** | `_drop_close_outliers` (which of a close pair is spurious — currently decided with no evidence at all), `resegment_fused_measures`, and the measure-count check, which grades its own confidence and cannot see the barlines' |
+| **volume** | 10¹–10² per page |
+| **failure direction** | over-claims — a barline accepted on 5 of 22 votes at connectivity 0.71 is indistinguishable from one accepted on 22 of 22 at 1.00 |
+| **arity** | four prongs, unrecorded |
+| **cost to gather** | zero — all four numbers are live in the accepting loop |
+| **settling measurement** | none needed to RECORD it (byte-identical). To consume it: `_drop_close_outliers`' choice against hand-read barline truth on the scan gate's own pages |
+
+### R1.2 The rest of stage 3, by the schema
+
+| # | signal | destroyed at | consumers | should read it | volume | fail dir. |
+|---|---|---|---|---|---|---|
+| S36 | **component `y`, `area`, and the aspect ratio** in the barline shape test | `:163` unpacks `x_l, y_l, w_l, h_l, area` and reads `w_l`/`h_l` only; the aspect `h_l/max(w_l,1)` is formed and destroyed at `:168` | none | a component's vertical POSITION against the staff — the map's row for this | 10³/page | over-claims |
+| S37 | **the height FRACTION `h_l / staff_span`** | never formed — only `h_l < min_height` | none | the vote. A barline at 0.81 of the span and one at 1.00 are one vote each | 10³/page | over-claims |
+| S38 | **`_spans_system`'s per-band ink** | `weakest = min(weakest, …)` at `:323` | none | ⚠️ **WHERE the column breaks.** A barline broken by a printing defect and a stem that stops at its own staff give the same scalar; the band index says which | 10¹/system | over-claims |
+| S39 | **`_intersystem_connectivity`'s per-gap ink fraction** | `if col_ink_fraction.max() > 0.5: n_connected += 1` at `:388` — the magnitude dies in the comparison | none | the same question. ⚠️ And **WHICH gaps failed is never formed**: at connectivity 0.73 on a 12-staff system, three failing gaps that are CONTIGUOUS are a real structural break and three scattered ones are noise. Contiguity is one pass over a list the function already has | 10²/page | over-claims |
+| S40 | **`barlines_cross_gaps`** — the open-score verdict | a local at `:579`, never written to the page dict | none | ⚠️ a page-level STRUCTURAL fact — the same class of fact as `weight_routing`, which *is* recorded. Round 1's page-truth sibling work found the pipeline "emits zero layout information"; this is a concrete instance | 1/system | over-claims |
+| S41 | **the cue-C override flip** (`:617`) | silent — `barlines_cross_gaps = True` with no record | none | anyone auditing `OMR_CHOIR_GROUPING`, a default-ON flag whose own FINDINGS had to hand-adjudicate 10 pages | 1/system | over-claims |
+| S42 | **`n_votes / n_staves`** — the vote FRACTION | never formed; `min_votes` is a step function of `n_staves` (`:521-535`) | none | a 5-of-22 rescue and a 22-of-22 acceptance | 10²/page | over-claims |
+| S43 | **`_cell_line_offset`'s winning shift and its score** | ⚠️ **partly kept** — the shifted grid reaches `staff_line_ys_canonical`, and `annotate/recut_cells.py` reads the provenance. But the SCORE at the winning shift, and the runner-up shift, die in the search | `probe` (recut only) | the grid-reliability question round 1's N1 is about | 10⁴/doc | over-claims |
+| S44 | **`_neighbour_room`'s two distances** | consumed by `grown()` into a 4-or-6 decision (`:1118`) and dropped | none | ⚠️ the pad actually used is not on `MeasureCell` either, so **no consumer can tell a 4-space cell from a 6-space one** — and the map's own warning is that cell height moves DETECTIONS, not just crops | 10⁴/doc | over-claims |
+
+### R1.3 ⚠️ C3 is no longer what the backlog says, and the four-reason list omits a fifth site
+
+The backlog's **C3** reads *"One-line percussion staves are detected and then
+dropped by `if len(s.line_ys) >= 5`. All 11 present… A pipeline ceiling with a
+location."* **That is now stale in the tree's favour.** `OMR_ONE_LINE_STAVES`
+exists (`ENV_ONE_LINE_STAVES`, `:921`, default OFF), and
+`_admit_one_line_staves`' docstring (`:985-1006`) enumerates the four things the
+filter guards and states that **three stay filtered by design** — the barline
+vote, the system x-edges, and the resegmentation kernel — with only the CELL
+opened. The map's three line numbers have also drifted: `:464`, `:1231`, `:1560`.
+
+⚠️ **There is a fifth `len(line_ys) >= 5` site and the four-reason list does not
+mention it:** `_neighbour_room:849`,
+`if other is staff or len(other.line_ys) < 5: continue`. A five-line staff
+adjacent to a percussion rule therefore sees `inf` room on that side and grows
+its pad to `PAD_MAX_STAFF_LINES = 6` — the maximum — **exactly where the flag
+puts a new cell.**
+
+⚠️ **And the ownership layer cannot tell the two kinds of staff apart.**
+`transcribe.py:4711-4714` builds `_bands` from **all** `pws.staves` with no
+five-line filter, so a one-line staff enters as
+`(top_y, bottom_y, line_spacing_px)` where `top_y == bottom_y` — a **zero-height
+band** — and `line_spacing_px` answers with `nominal_line_spacing_px`
+(`types.py:102`, the property the verifier's **E1** correctly identifies as
+having 15 production readers; confirmed, set at `staff_detector.py:1037` only
+when `len(line_ys) < 2`).
+
+Traced through, this is safe but blind:
+
+| consumer | behaviour on a zero-height band | verdict |
+|---|---|---|
+| `_distance_to_band` | degenerates to `|y − rule|` | **correct** for a single rule |
+| `_ledger_ladder` | anchors on the rule and expects rungs at `spacing` intervals; a percussion part prints none, so `complete` is ~never 1 | **benign** — a five-line staff with a real ladder wins rank 2 |
+| `_drop_unladdered_noteheads` | `if spacing <= 0: continue` guards a staff with no nominal spacing | **safe** |
+
+**The information finding:** nothing in `bands` distinguishes *"a staff with
+five lines"* from *"a single printed rule"*, and no consumer records that a
+contest involved one. For the one-line workstream that is the entry point —
+the flag's blast radius reaches `_dedupe` through a tuple shape that cannot
+express the difference, and `_neighbour_room` maximises the overlap on exactly
+those pages. **UNMEASURED: I did not run the flag on.** The named run is one
+page with a percussion staff, `OMR_ONE_LINE_STAVES=0` vs `1`, comparing
+`n_cross_staff_duplicates_removed`.
+
+---
+
+## R2. The two hypotheses round 1 left open — both now settled, both NEGATIVE
+
+⚠️ **Both are clean negatives and I am reporting them as prominently as I would
+have reported hits.** Round 1 named the measurements; they ran; the answers are
+no. Per §A00 this does not condemn the mechanisms — it prices them.
+
+### R2.1 N4 — the fabricated beam-bar positions: UNREACHABLE, and for an interesting reason
+
+`probe/probe_beam_bar_positions.py`, output `beam-bar-census.json`.
+
+Round 1 (§5.2 N4) found that `_stacked_bar_count` measures the bars' real rows
+(`cols & ~above`, `line_detection.py:374-376`), reduces them to a median count,
+and `detect_beams:546` then **fabricates** the coordinates by splitting the
+box into `n_bars` equal slices — coordinates that `rhythm._beams_attached_to_stem`
+clusters to decide durations. I called it the strongest never-gathered item.
+
+**Measured over 5 pages — 2 scanned editions and 3 engraved fixtures, including
+the two pages the docstrings use as their own worked examples (Mozart 41,
+Brahms 1) — 277 accepted beam components:**
+
+| | components | `n_bars ≥ 2` |
+|---|--:|--:|
+| scan (Beethoven 5 / Litolff p1, Brahms 1 / Breitkopf p1) | 97 | **0** |
+| engraved (Mozart 41, Brahms 1, Tchaikovsky 6, page 0) | 180 | **0** |
+| **total** | **277** | **0** |
+
+**`n_bars` is 1 on every component.** The fabrication branch never executes, so
+N4 costs nothing today. ⚠️ **The mechanism is real and the exposure is zero** —
+exactly the distinction §A00 asks for.
+
+**Why, and this is the part worth keeping.** After the horizontal opening, two
+stacked beam strokes are separated by white and come out as **separate connected
+components**; they only share one when the print merges them. So
+`_stacked_bar_count`'s entire median-over-columns machinery — an elaborate
+function with a measured docstring and a documented bug history — has a
+**non-trivial branch that fired 0 times in 277 components.** The label-mask fix
+that motivated it (sampling the component's own ink instead of the opened image)
+is precisely what drove `n_bars` to 1: the docstring's own Brahms Violin 2
+example reports the *pre-fix* behaviour.
+
+⚠️ Controls: my replication of the accept path mirrors `detect_beams`' filters
+exactly and calls the real `ld._stacked_bar_count`, so `n_bars` is the
+production value. DPI 600 = `transcribe.py:4027`'s default, which
+`orchestral_eval` takes. **Limit:** page 0 of each work, n = 5 pages. A page
+whose print merges its beams would show a non-zero rate and none of these do.
+
+**N5b survives and is now measured.** The box fill ratio
+(`area/(w·h)`), which `connectedComponentsWithStats` computes and `detect_beams`
+uses only as a floor, is available on every one of the 277: **scan median 0.933
+(min 0.285), engraved median 0.640 (min 0.358)**. The module's docstring
+predicts 43–46% for sloped bars against 95% for level ones and the engraved
+median sits between them, which is what a corpus of mixed slopes should look
+like. It remains free, and it remains uncomputed.
+
+### R2.2 The ladder inversion — FORMALLY REAL, EMPIRICALLY ABSENT; and the floor it implied is REFUSED
+
+`probe/probe_ladder_inversion.py`.
+
+⚠️ **First, the honest answer to the coordinator's question about the dumps: they
+genuinely cannot answer it.** `dump_contests.py:80-95` records per-staff
+`clef`/`instrument` and per-pair classes, pitches and confidences, and **no
+geometry** — no bbox on a contest, no band on a staff. So I asked it off committed
+TRANSCRIPTIONS instead, which carry `staff_geometry.line_ys_page` and
+`bbox_page`, importing the real `_ledger_ladder` and `_ledger_rows` rather than
+reimplementing them.
+
+**Question 1 — the inversion.** For every notehead sitting INSIDE its own
+staff's five lines (where `_ledger_ladder` returns `(0,0)` for "needs no
+ladder"), does any other staff hold a COMPLETE ladder out to it (which would win
+rank 2 and take the glyph away)?
+
+| | noteheads | inside their own five lines | **inversions** |
+|---|--:|--:|--:|
+| beet5-p02 | 626 | 398 | **0** |
+| brahms1 | 4260 | 3059 | **0** |
+
+**Zero of 3,457.** The collapse is real in the code and unreachable on these
+pages: a complete ladder from a neighbour would need every rung between that
+neighbour's edge and a glyph lying inside another staff's printed lines.
+⚠️ **LIMIT, which bounds the conclusion:** a committed transcription is
+POST-dedupe, so the losing copy of each historical contest is gone. This
+measures the geometry, not the firings. **Naming the run that would close it
+completely, as instructed:** one `OMR_CONTEST_DUMP=1` pass with
+`dump_contests.py` extended to record each contest's `bbox_page` and each
+staff's band — the same run the coordinator would need for round-1 item 1
+anyway.
+
+**Question 2 — the ingredient.** `_ledger_rows:2510` filters on
+`det["class"] != "ledgerLine"` and admits everything else. How many of those
+detections sit INSIDE some staff's five-line band, a position a real ledger line
+can never occupy?
+
+**479 of 633 (0.757) on beet5-p02; 302 of 768 (0.393) on brahms1.** ⚠️ Reported
+per page and not pooled — the two differ by publisher *and* by weights file, and
+a 0.757/0.393 spread is not one number.
+
+**Question 3 — does it matter?** For every notehead OUTSIDE its own band with a
+COMPLETE ladder — the trusted tier's actual verdicts — how many of the matched
+rungs are those impossible in-band ones?
+
+| | outside their band | complete ladders | ladders using ≥1 impossible rung |
+|---|--:|--:|--:|
+| beet5-p02 | 228 | 26 | **0** |
+| brahms1 | 1201 | 222 | **0** |
+
+**Zero of 248**, and zero of 328 matched rungs. The ladder's own geometry — an
+expected position within 0.35 spaces plus a 0.25-width x-overlap — already
+filters the impossible rungs out. **The trusted tier does not rest on them.**
+
+**Question 4, which is round-1 §6 item 5's reach probe — and it kills the
+recommendation.** How many complete ladders survive a confidence floor on the
+rungs?
+
+| floor | beet5-p02 rungs → ladders | brahms1 rungs → ladders |
+|---|---|---|
+| none | 633 → 26 (1.000) | 768 → 222 (1.000) |
+| 0.30 | 428 → 22 (0.846) | 560 → 184 (0.829) |
+| **0.40** | 180 → **15 (0.577)** | 231 → **94 (0.423)** |
+| 0.50 | 51 → 4 (0.154) | 90 → 34 (0.153) |
+
+⚠️ **A 0.40 floor destroys 42–58% of the tier's verdicts.** The low-confidence
+rungs are **load-bearing**: they complete real ladders. So the two facts round 1
+put side by side are about **different populations** — the *impossible* rungs
+(39–76%) are inert, and the *low-confidence* rungs are useful. **Round 1's §6
+item 5 is refused on its own reach probe, which is the step §A00 said could kill
+it and did.** I am withdrawing it.
+
+⚠️ What survives: `_ledger_rows` still reads no confidence, and that is still a
+Class-C fact. What does not survive is the recommendation attached to it.
+
+---
+
+## R3. The census — replacing round 1's §3.5 floor with a method
+
+`probe/probe_decision_census.py`. Mechanical, over the seven slice files.
+
+⚠️ **Definitions are stated in the probe so the numbers are arguable rather than
+a judgement.** A *decision point* is an `If`/`IfExp`/comprehension-filter whose
+test contains a `Compare`, or a call to `max`/`min`/`sorted`/`most_common`/
+`median`/`argmax`/`argmin`/`Counter`. **Bare truthiness (`if x:`, `if x is
+None:`) is excluded** — that is control flow, and the exclusion is the whole
+difference between this number and `grep -c if`.
+
+| file | decision points | **discarding** | selector calls |
+|---|--:|--:|--:|
+| `yolo_detector.py` | 21 | 4 | 6 |
+| `line_detection.py` | 52 | 12 | 22 |
+| `pitch_resolver.py` | 14 | 4 | 3 |
+| `rhythm.py` | 134 | 34 | 36 |
+| `voicing.py` | 21 | 7 | 9 |
+| `measure_extractor.py` | 165 | 41 | 66 |
+| `transcribe.py` | 386 | 95 | 69 |
+| **TOTAL** | **793** | **197** | **211** |
+
+A **discarding** decision point is one where the compared quantity is COMPUTED
+INSIDE THE TEST (a Call, BinOp or Subscript operand rather than a bare name), so
+it cannot outlive the comparison — the mechanical form of this audit's central
+pattern. **197 of 793 = 0.248.**
+
+⚠️ **What this number is and is not.** It is a *reproducible upper bound on
+sites worth inspecting*, not a defect count: many of the 197 are correct (an
+empty-gap constant is meant to consume its quantity). It is useful because it is
+mechanical, it can be re-run after any change, and **793 against the map's ~176
+§5 rows for the whole pipeline** puts a number on the coordinator's *"what is
+missing outranks what is wrong"* — for these seven files alone.
+
+### R3.1 Silent deletion — the class, per the verifier's D2
+
+A *drop site* reduces a collection the pipeline carries forward: it mutates via
+`.remove`/`del`, returns a filtering comprehension, or builds a `kept` list in a
+loop containing `continue`. Predicates are excluded. It *accounts* for what it
+removed if it returns a count, increments one, or writes an `n_*` key.
+
+**18 drop sites in the seven files; 14 write no count (0.778).**
+
+| accounts for its removals | does not |
+|---|---|
+| `_drop_clipped_notehead_fragments` · `_drop_unladdered_noteheads` · `_drop_furniture_measures` · `_dedupe_cross_staff_detections` | `_drop_paired_strokes` · `_deduplicate_beams` · `_beamed_groups` · `_tuplet_groups` · `_filter_stems_overlapping_tremolo` · `_find_internal_barline_candidates` · `_chord_span_states` · `group_chords_in_measure` · (+ detector-side `detect_stems`/`detect_beams`, and 4 hand-adjudicated out: `parse_pages`, `_ledger_rows`, `_window_blind_systems`, `_measure_x_boundaries` collect rather than drop) |
+
+⚠️ **My own rule has two known misses, stated so the number reads as a floor in
+a known direction:** `rhythm.resolve_rhythms_for_cell` (the spurious-rest
+filter — it returns a *dict*, so the build-`kept` pattern does not match) and
+`measure_extractor._drop_close_outliers`. Both write no count. Counting them,
+**16 of 20**.
+
+**So round 1's R0-a sentence becomes:** the spurious-rest filter is one of
+roughly sixteen drop sites that write no count, against four that do — and
+**the four that do are exactly the three the pipeline surfaces as `n_*`
+counters plus the deduper.** The pattern is not an oversight in one function; it
+is that accounting was added only where somebody went looking.
+
+---
+
+## R4. Tie and articulation pairing
+
+Round 1 predicted these would be the `_pair_dots_to_targets` shape. They are,
+plus one item that is not.
+
+| # | signal | destroyed at | consumers | volume | note |
+|---|---|---|---|---|---|
+| S45 | **`_pair_ties_in_cell`'s `best_left_dx` / `best_right_dx`** | argmin, discarded at `:2272`/`:2277` | none — the output is two `set`s of ids, and the JSON carries bare `tied_to_next` / `tied_from_prev` booleans | 10³/doc | the `_pair_dots_to_targets` shape exactly |
+| S46 | ⚠️ **the two tie ends' MUTUAL y-difference** | **never formed** | — | 10³/doc | ⚠️ **the new one.** The docstring states the exact constraint — *"real tied notes are at the same y-position by definition"* — and then applies `y_tolerance = max(avg_nh_h * 3, 30)` (`:2251`), about three staff spaces, SEPARATELY to each end against the tie's own centre. The two chosen noteheads are never compared **to each other**; the only test is `best_left is not best_right` (`:2279`). A tie whose ends sit two spaces apart is accepted identically to one whose ends coincide, and `30` is another bare pixel constant in canonical coordinates |
+| S47 | **`_attach_articulations_in_cell`'s winning `dx`** | `best = (dx, n)` formed at `:2219`, and only `best[1]` is read at `:2222` | none | 10³/doc | placement margin |
+| S48 | **which marks were left unattached, and why** | `if best is None: continue` (`:2220`) | ⚠️ the function DOES return `placed`, so the count of successes is accounted — but the 21-of-218 abstentions the docstring cites come from an offline benchmark, not from the run | 10²/doc | the abstention is the interesting half and it is the unrecorded one |
+| S49 | **a double-attach of the same mark kind** | `out.setdefault(...).append(kind)` (`:2222`) admits duplicates; `voicing.py:262` silently dedupes them later | none | 10²/doc | a conflict absorbed downstream rather than reported — the `_pair_dots_to_targets` double-dot hazard in a second place |
+
+⚠️ **Coordinated, not merged, per the brief.** Agent II's finding that 263 of the
+436 class-disagreeing contests are arc classes is about `_dedupe`; S46 is about
+the *pairing* rule that consumes surviving ties. They meet at the tie inventory
+and I have not written their half.
+
+---
+
+## R5. Round-2 conclusions, folded into round 1's ranking
+
+**Round 1's items 1–4 stand unchanged.** Item 5 is withdrawn (§R0-c). Three new
+items, cheapest first.
+
+### 6 · Put an evidence field on `Barline` — free, byte-identical
+
+The four numbers already exist in the accepting loop (§R1.1). **Payoff:**
+`_drop_close_outliers` currently chooses between two barlines *with no evidence
+at all*; the measure-count check grades its own confidence and cannot see the
+barlines'; and `barlines_cross_gaps` is a page-level structural verdict the
+pipeline forms and forgets. **Risk:** none. **Settling measurement:** none for
+recording. **Harness: none.**
+
+### 7 · Record the fifth `len(line_ys) >= 5` site's consequence for the one-line workstream
+
+Not a code change — a **measurement**, and the entry point that workstream asked
+for. `_neighbour_room:849` maximises the pad exactly where `OMR_ONE_LINE_STAVES`
+adds cells, and `_bands` cannot express the difference between a five-line staff
+and a rule. **Settling measurement:** one page carrying a percussion staff,
+flag off vs on, comparing `n_cross_staff_duplicates_removed` and the surviving
+detections per staff. **Harness: none.** ⚠️ Do this before the flag is
+considered for default-on.
+
+### 8 · Two dead-branch cleanups the census surfaced — measure before removing
+
+`_stacked_bar_count`'s multi-bar branch fired **0 times in 277 components**
+(§R2.1) and `_deduplicate_beams`' confidence sort cannot compare a CV beam with
+a YOLO one (round 1 §3.1). ⚠️ **Neither should be deleted on these numbers** —
+5 pages and one code path respectively — and the project's own standard is that
+a null on a corpus without the defect is not evidence. What they should get is
+**a recorded assertion**: `n_bars > 1` and a CV/YOLO comparison are both cheap
+to count, and if they stay at zero across the standing benchmarks the branches
+can go with evidence instead of an argument.
+
+---
+
+## R6. What round 2 did NOT cover, and what is still UNMEASURED
+
+- **`resegment_fused_measures` and `majority_bars_by_system`** (`measure_extractor.py:1418-1704`) — read for the census, not written up by the schema. They are the largest remaining stage-3 gap.
+- **`_cell_line_offset`'s search internals** (S43) — the winning score and runner-up shift; I recorded that they die and did not enumerate the branch structure.
+- **The labeling pipeline's read of `measure_extractor`** — the 15-importer blast radius the coordinator named. I verified the count exists; I did not trace what `annotate/recut_cells.py` and `training/` actually consume.
+- **UNMEASURED:** the one-line-staves interaction (§R1.3, run named) · the post-dedupe limit on §R2.2 (run named) · whether `n_bars > 1` occurs on any page (5 pages, 0 hits) · whether the 197 discarding decision points contain defects (the census does not adjudicate) · S46's cost — I did not measure how many ties are paired across a y-gap large enough to be wrong.
+- ⚠️ **Substrate:** §R2.2 uses the same two committed transcriptions as round 1 §4.2. §R2.1's five pages are new. The census reads source only.

@@ -157,6 +157,8 @@ def main() -> int:
             "row_id": rid, "work_id": row["work_id"],
             "n_systems": row["page"].get("n_systems"),
             "n_staves_printed": row["page"].get("n_staves"),
+            "n_staves_note": row["page"].get("n_staves_note"),
+            "n_slots_in_map": len(row.get("staves") or []),
             "transform": {
                 "version": report["transform_version"],
                 "n_source_parts": report["n_source_parts"],
@@ -215,14 +217,24 @@ def main() -> int:
         "identity_row_floors": {e["row_id"]: e["floor"]["omr_ed_total"]
                                 for e in entries if e["identity_transform"]},
         "dvorak_rows": [e["row_id"] for e in dv],
-        # ⚠️ UNIT ERROR IN THE FIRST DRAFT OF THIS CONTROL, kept visible.
-        # `works.json`'s `page.n_staves` counts staves across ALL systems on the
-        # page (22 = 2 systems x 11); `n_output_parts` is per PART. Comparing
-        # them failed on all ten two-system rows and passed on all five
-        # single-system ones — the control was measuring the system count.
-        "output_parts_equal_staves_per_system": {
-            e["row_id"]: (e["transform"]["n_output_parts"]
-                          == e["n_staves_printed"] // max(1, e["n_systems"] or 1))
+        # ⚠️ TWO UNIT ERRORS IN THIS CONTROL BEFORE IT WAS RIGHT, both kept
+        # visible because each failed loudly and neither was a real defect in
+        # the transform.
+        #   1st draft: `n_output_parts == page.n_staves`. `page.n_staves` counts
+        #      staves across ALL systems (22 = 2 x 11) while `n_output_parts` is
+        #      per PART, so it failed on all ten two-system rows and passed on
+        #      all five single-system ones — it was measuring the system count.
+        #   2nd draft: `page.n_staves // n_systems`. A printed score SUPPRESSES
+        #      tacet staves, so a page's systems need not have equal staff
+        #      counts: Beethoven p3 is 11 + 8 and Brahms p2 is 14 + 13, both
+        #      documented in `works.json`'s own `n_staves_note`. Integer division
+        #      failed on exactly those three rows.
+        # What the control can actually assert is that the transform emitted one
+        # part per hand-read staff SLOT and dropped none. That the slot count
+        # equals the widest system's staff count is stated in `n_staves_note` as
+        # prose and is not machine-checkable from this file.
+        "output_parts_equal_hand_read_slots": {
+            e["row_id"]: (e["transform"]["n_output_parts"] == e["n_slots_in_map"])
             for e in entries},
         "derived_truth_reproduces_committed_control": {
             e["row_id"]: e["derived_truth_reproduces_committed_control"]
@@ -241,7 +253,7 @@ def main() -> int:
         "The arm's `sha.truth` and `sha.pred` are reproducible and are used above.")
     controls["PASS"] = (
         controls["identity_rows_floor_is_exactly_zero"]
-        and all(controls["output_parts_equal_staves_per_system"].values())
+        and all(controls["output_parts_equal_hand_read_slots"].values())
         and all(controls["derived_truth_reproduces_committed_control"].values()))
 
     ed_c = sum(e["floor"]["unpaired_part_edits"] for e in entries)
@@ -290,6 +302,13 @@ def main() -> int:
                                  "(reference encoding, hand-read page map).",
         "structural_buckets": {"certain": list(STRUCTURAL_CERTAIN),
                                "likely": list(STRUCTURAL_LIKELY)},
+        "control_history": [
+            "output_parts == page.n_staves        — WRONG, page.n_staves is "
+            "summed over systems; failed 10 rows",
+            "output_parts == n_staves // systems  — WRONG, systems suppress "
+            "tacet staves and are unequal (11+8, 14+13); failed 3 rows",
+            "output_parts == len(works.json staves map) — correct",
+        ],
         "controls": controls,
         "pooled": pooled,
         "rows": entries,

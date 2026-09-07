@@ -1,12 +1,22 @@
 {
  "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_structural_floor.py",
- "git_head": "d515370a",
+ "git_head": "d0de3931",
  "transform_version": "1.2.0",
  "what_this_is": "the OMR-NED a PERFECT page-faithful reader is charged against the raw truth \u2014 the structural FLOOR, measured rather than estimated. Scored with the derived truth as the PREDICTION.",
  "not_a_pipeline_figure": "no prediction of ours appears in this measurement at all. It is a property of (reference encoding, hand-read page map).",
- "structural_buckets": [
-  "entire staff insert/delete",
-  "entire measure insert/delete"
+ "structural_buckets": {
+  "certain": [
+   "entire staff insert/delete"
+  ],
+  "likely": [
+   "entire staff insert/delete",
+   "entire measure insert/delete"
+  ]
+ },
+ "control_history": [
+  "output_parts == page.n_staves        \u2014 WRONG, page.n_staves is summed over systems; failed 10 rows",
+  "output_parts == n_staves // systems  \u2014 WRONG, systems suppress tacet staves and are unequal (11+8, 14+13); failed 3 rows",
+  "output_parts == len(works.json staves map) \u2014 correct"
  ],
  "controls": {
   "identity_rows": [
@@ -25,46 +35,47 @@
    "dvorak-sym9-mvt1-405834-p6",
    "dvorak-sym9-mvt1-405834-p7"
   ],
-  "output_parts_equal_printed_staves": {
+  "output_parts_equal_hand_read_slots": {
    "beethoven-sym5-mvt1-984073-p1": true,
-   "beethoven-sym5-mvt1-984073-p2": false,
-   "beethoven-sym5-mvt1-984073-p3": false,
-   "beethoven-sym5-mvt1-984073-p4": false,
+   "beethoven-sym5-mvt1-984073-p2": true,
+   "beethoven-sym5-mvt1-984073-p3": true,
+   "beethoven-sym5-mvt1-984073-p4": true,
    "beethoven-sym5-mvt1-575951-p1": true,
-   "beethoven-sym5-mvt1-575951-p2": false,
-   "beethoven-sym5-mvt1-575951-p3": false,
-   "beethoven-sym5-mvt1-575951-p4": false,
+   "beethoven-sym5-mvt1-575951-p2": true,
+   "beethoven-sym5-mvt1-575951-p3": true,
+   "beethoven-sym5-mvt1-575951-p4": true,
    "dvorak-sym9-mvt1-405834-p5": true,
    "dvorak-sym9-mvt1-405834-p6": true,
-   "dvorak-sym9-mvt1-405834-p7": false,
+   "dvorak-sym9-mvt1-405834-p7": true,
    "brahms-sym1-mvt1-317803-p1": true,
-   "brahms-sym1-mvt1-317803-p2": false,
-   "brahms-sym1-mvt1-317803-p3": false,
-   "brahms-sym1-mvt1-317803-p4": false
+   "brahms-sym1-mvt1-317803-p2": true,
+   "brahms-sym1-mvt1-317803-p3": true,
+   "brahms-sym1-mvt1-317803-p4": true
+  },
+  "derived_truth_reproduces_committed_control": {
+   "beethoven-sym5-mvt1-984073-p1": true,
+   "beethoven-sym5-mvt1-984073-p2": true,
+   "beethoven-sym5-mvt1-984073-p3": true,
+   "beethoven-sym5-mvt1-984073-p4": true,
+   "beethoven-sym5-mvt1-575951-p1": true,
+   "beethoven-sym5-mvt1-575951-p2": true,
+   "beethoven-sym5-mvt1-575951-p3": true,
+   "beethoven-sym5-mvt1-575951-p4": true,
+   "dvorak-sym9-mvt1-405834-p5": true,
+   "dvorak-sym9-mvt1-405834-p6": true,
+   "dvorak-sym9-mvt1-405834-p7": true,
+   "brahms-sym1-mvt1-317803-p1": true,
+   "brahms-sym1-mvt1-317803-p2": true,
+   "brahms-sym1-mvt1-317803-p3": true,
+   "brahms-sym1-mvt1-317803-p4": true
   },
   "fixture_binding": {
    "n_rows": 20,
    "all_match_canonical_arm": true,
-   "what": "every truth fixture's sha256 equals the one results-normalised-arm-20row.json scored"
+   "what": "every truth fixture's raw sha256 equals the one results-normalised-arm-20row.json scored; the run refuses otherwise"
   },
-  "derived_truth_reproduces_canonical": {
-   "beethoven-sym5-mvt1-984073-p1": false,
-   "beethoven-sym5-mvt1-984073-p2": false,
-   "beethoven-sym5-mvt1-984073-p3": false,
-   "beethoven-sym5-mvt1-984073-p4": false,
-   "beethoven-sym5-mvt1-575951-p1": false,
-   "beethoven-sym5-mvt1-575951-p2": false,
-   "beethoven-sym5-mvt1-575951-p3": false,
-   "beethoven-sym5-mvt1-575951-p4": false,
-   "dvorak-sym9-mvt1-405834-p5": false,
-   "dvorak-sym9-mvt1-405834-p6": false,
-   "dvorak-sym9-mvt1-405834-p7": false,
-   "brahms-sym1-mvt1-317803-p1": false,
-   "brahms-sym1-mvt1-317803-p2": false,
-   "brahms-sym1-mvt1-317803-p3": false,
-   "brahms-sym1-mvt1-317803-p4": false
-  },
-  "PASS": false
+  "derived_truth_note": "`results-normalised-arm-20row.json`'s `sha.normalised_truth` is a RAW sha256 and cannot be reproduced across runs \u2014 music21 stamps a fresh 32-hex instrument id on every write. Reproduction is checked against `derived-truth-bytes.json`'s CANONICAL hash instead, which masks them. The arm's `sha.truth` and `sha.pred` are reproducible and are used above.",
+  "PASS": true
  },
  "pooled": {
   "n_rows": 15,
@@ -85,13 +96,16 @@
    "brahms-sym1-mvt1-317803-p3",
    "brahms-sym1-mvt1-317803-p4"
   ],
+  "floor_unpaired_parts_only": 0.21229475255482833,
   "floor_structural_only": 0.4981915260075784,
   "floor_total": 0.6347743713399931,
+  "unpaired_part_edits": 14791,
   "structural_edits": 34710,
   "residue_edits": 9516,
   "residue_share_of_total_floor": 0.21516754850088182,
   "denominator": 69672,
-  "which_to_use": "floor_structural_only. `floor_total` includes charge the transform may itself have introduced, and using it would overstate % of achievable in our favour \u2014 the one direction the independence guard exists to prevent.",
+  "which_to_use": "floor_unpaired_parts_only \u2014 the MOST CONSERVATIVE rung. A larger floor raises every % of achievable above it, which is the one direction the independence guard exists to prevent, so the ladder is climbed only as far as the evidence is unambiguous. `entire staff insert/delete` is unambiguous (a truth PART with no printed staff). `entire measure` is mostly the bars inside those parts but could also hold a bar the transform mangled. `floor_total` additionally holds the residue.",
+  "ladder": "unpaired-parts <= structural <= total",
   "categories": {
    "entire measure insert/delete": 19919,
    "entire staff insert/delete": 14791,
@@ -121,6 +135,8 @@
    "work_id": "beethoven--symphony-5",
    "n_systems": 1,
    "n_staves_printed": 12,
+   "n_staves_note": null,
+   "n_slots_in_map": 12,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 18,
@@ -130,9 +146,10 @@
    },
    "sha": {
     "raw_truth": "02d7c56bf050af4c",
-    "derived_truth": "c3cd4fa395f40670"
+    "derived_truth": "b76b56d841f6270c",
+    "derived_truth_canonical": "50e21c5b1aa978efcaf2b8df568a1b6a606b4346f7a5e0814a0a37a63effcccc"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.6937130574959699,
@@ -140,8 +157,10 @@
     "raw_truth_symbols": 1064,
     "derived_truth_symbols": 797,
     "denominator": 1861,
+    "unpaired_part_edits": 513,
     "structural_edits": 990,
     "residue_edits": 301,
+    "floor_unpaired_parts_only": 0.27565824825362706,
     "floor_structural_only": 0.5319720580333154,
     "floor_total": 0.6937130574959699,
     "categories": {
@@ -167,6 +186,8 @@
    "work_id": "beethoven--symphony-5",
    "n_systems": 2,
    "n_staves_printed": 22,
+   "n_staves_note": "2 systems of 11. From p.2 the p.1 lineup condenses by one: Violoncello and Basso share the bottom string staff (the staff opens with the printed word 'Basso'); the other ten staves keep p.1's order.",
+   "n_slots_in_map": 11,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 18,
@@ -176,9 +197,10 @@
    },
    "sha": {
     "raw_truth": "391a08215bf159b1",
-    "derived_truth": "29fad7902ee32c03"
+    "derived_truth": "de0f77e265742c65",
+    "derived_truth_canonical": "fa93276f158b603e01b3e71e2832accf9fb66dfb6d552c30ae04d403f3cef4e7"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.760038240917782,
@@ -186,8 +208,10 @@
     "raw_truth_symbols": 3004,
     "derived_truth_symbols": 2226,
     "denominator": 5230,
+    "unpaired_part_edits": 1551,
     "structural_edits": 2813,
     "residue_edits": 1162,
+    "floor_unpaired_parts_only": 0.2965583173996176,
     "floor_structural_only": 0.5378585086042065,
     "floor_total": 0.760038240917782,
     "categories": {
@@ -217,6 +241,8 @@
    "work_id": "beethoven--symphony-5",
    "n_systems": 2,
    "n_staves_printed": 19,
+   "n_staves_note": "system 1 = 11 staves (p.2's lineup: Fl/Ob/Cl/Fag/Cor/Tr/Tp + Vln I/Vln II/Viola/Violoncello-e-Basso condensed); system 2 = 8 (Oboi, Trombe and Timpani suppressed \u2014 margins run Fl./Cl./Fag./Cor. then four unlabeled string staves).",
+   "n_slots_in_map": 11,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 18,
@@ -226,9 +252,10 @@
    },
    "sha": {
     "raw_truth": "2c5f3701fd14025b",
-    "derived_truth": "6dfd8cde60d755a3"
+    "derived_truth": "18c73524f3fd1924",
+    "derived_truth_canonical": "bbbb8a6070cd70140b1bb8b01ae3cbdb7599d6375ad47dafc046b02c61ec113a"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.7532822757111597,
@@ -236,8 +263,10 @@
     "raw_truth_symbols": 2134,
     "derived_truth_symbols": 1522,
     "denominator": 3656,
+    "unpaired_part_edits": 1062,
     "structural_edits": 2380,
     "residue_edits": 374,
+    "floor_unpaired_parts_only": 0.29048140043763676,
     "floor_structural_only": 0.650984682713348,
     "floor_total": 0.7532822757111597,
     "categories": {
@@ -265,6 +294,8 @@
    "work_id": "beethoven--symphony-5",
    "n_systems": 2,
    "n_staves_printed": 22,
+   "n_staves_note": "both systems print 11 staves but the lineups DIFFER: system 1 suppresses Timpani and SPLITS the bottom staff (margins Fl./Ob./Cl./Fag./Cor./Tr., then five string staves \u2014 the words 'Vcl.' and 'Basso' printed at the two lowest); system 2 keeps Timpani (Fl./Ob./Cl./Fag./Cor./Tr./Tp.) and condenses the bottom staff again, printed 'Bassi.'",
+   "n_slots_in_map": 11,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 18,
@@ -274,9 +305,10 @@
    },
    "sha": {
     "raw_truth": "f7593d8a9df92216",
-    "derived_truth": "556d1d8a9422d71a"
+    "derived_truth": "992f47f18a49c723",
+    "derived_truth_canonical": "57cd18a134b5d9a92025f9df01880b633f2227a404439e8fd6d0e5479d5fe4cb"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.8407715582450832,
@@ -284,8 +316,10 @@
     "raw_truth_symbols": 2929,
     "derived_truth_symbols": 2359,
     "denominator": 5288,
+    "unpaired_part_edits": 1377,
     "structural_edits": 3511,
     "residue_edits": 935,
+    "floor_unpaired_parts_only": 0.26040090771558244,
     "floor_structural_only": 0.6639561270801816,
     "floor_total": 0.8407715582450832,
     "categories": {
@@ -316,6 +350,8 @@
    "work_id": "beethoven--symphony-5",
    "n_systems": 1,
    "n_staves_printed": 12,
+   "n_staves_note": null,
+   "n_slots_in_map": 12,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 18,
@@ -325,9 +361,10 @@
    },
    "sha": {
     "raw_truth": "93f2876dab747d6a",
-    "derived_truth": "1a2679ad4d342bcc"
+    "derived_truth": "d16e79c51a1c78fb",
+    "derived_truth_canonical": "50e21c5b1aa978efcaf2b8df568a1b6a606b4346f7a5e0814a0a37a63effcccc"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.6937130574959699,
@@ -335,8 +372,10 @@
     "raw_truth_symbols": 1064,
     "derived_truth_symbols": 797,
     "denominator": 1861,
+    "unpaired_part_edits": 513,
     "structural_edits": 990,
     "residue_edits": 301,
+    "floor_unpaired_parts_only": 0.27565824825362706,
     "floor_structural_only": 0.5319720580333154,
     "floor_total": 0.6937130574959699,
     "categories": {
@@ -362,6 +401,8 @@
    "work_id": "beethoven--symphony-5",
    "n_systems": 2,
    "n_staves_printed": 22,
+   "n_staves_note": "same engraving as 984073 p.2: 2 systems of 11, Violoncello+Basso condensed",
+   "n_slots_in_map": 11,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 18,
@@ -371,9 +412,10 @@
    },
    "sha": {
     "raw_truth": "234ee8b45a8ae1d5",
-    "derived_truth": "3a82ae5b51ed2e06"
+    "derived_truth": "371589ca944256ad",
+    "derived_truth_canonical": "fa93276f158b603e01b3e71e2832accf9fb66dfb6d552c30ae04d403f3cef4e7"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.760038240917782,
@@ -381,8 +423,10 @@
     "raw_truth_symbols": 3004,
     "derived_truth_symbols": 2226,
     "denominator": 5230,
+    "unpaired_part_edits": 1551,
     "structural_edits": 2813,
     "residue_edits": 1162,
+    "floor_unpaired_parts_only": 0.2965583173996176,
     "floor_structural_only": 0.5378585086042065,
     "floor_total": 0.760038240917782,
     "categories": {
@@ -412,6 +456,8 @@
    "work_id": "beethoven--symphony-5",
    "n_systems": 2,
    "n_staves_printed": 19,
+   "n_staves_note": "same engraving as 984073 p.3: 11 + 8, with Oboi/Trombe/Timpani suppressed from system 2",
+   "n_slots_in_map": 11,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 18,
@@ -421,9 +467,10 @@
    },
    "sha": {
     "raw_truth": "6d56f9587fb5100b",
-    "derived_truth": "44a6f60c4275057a"
+    "derived_truth": "1b478ca2753a5548",
+    "derived_truth_canonical": "bbbb8a6070cd70140b1bb8b01ae3cbdb7599d6375ad47dafc046b02c61ec113a"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.7532822757111597,
@@ -431,8 +478,10 @@
     "raw_truth_symbols": 2134,
     "derived_truth_symbols": 1522,
     "denominator": 3656,
+    "unpaired_part_edits": 1062,
     "structural_edits": 2380,
     "residue_edits": 374,
+    "floor_unpaired_parts_only": 0.29048140043763676,
     "floor_structural_only": 0.650984682713348,
     "floor_total": 0.7532822757111597,
     "categories": {
@@ -460,6 +509,8 @@
    "work_id": "beethoven--symphony-5",
    "n_systems": 2,
    "n_staves_printed": 22,
+   "n_staves_note": "same engraving as 984073 p.4: 11 + 11 with different lineups (system 1 no Tp., split Vcl./Basso; system 2 with Tp., condensed 'Bassi.') \u2014 margins re-read at 200 dpi on THIS scan and identical to the twin's",
+   "n_slots_in_map": 11,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 18,
@@ -469,9 +520,10 @@
    },
    "sha": {
     "raw_truth": "8a8a1735f1013a5b",
-    "derived_truth": "9bced7e962d7e9d6"
+    "derived_truth": "bd16ceed40a822aa",
+    "derived_truth_canonical": "57cd18a134b5d9a92025f9df01880b633f2227a404439e8fd6d0e5479d5fe4cb"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.8407715582450832,
@@ -479,8 +531,10 @@
     "raw_truth_symbols": 2929,
     "derived_truth_symbols": 2359,
     "denominator": 5288,
+    "unpaired_part_edits": 1377,
     "structural_edits": 3511,
     "residue_edits": 935,
+    "floor_unpaired_parts_only": 0.26040090771558244,
     "floor_structural_only": 0.6639561270801816,
     "floor_total": 0.8407715582450832,
     "categories": {
@@ -511,6 +565,8 @@
    "work_id": "dvorak--symphony-9",
    "n_systems": 1,
    "n_staves_printed": 15,
+   "n_staves_note": null,
+   "n_slots_in_map": 15,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 15,
@@ -520,9 +576,10 @@
    },
    "sha": {
     "raw_truth": "cd6db1124ee78850",
-    "derived_truth": "fa40eb7d210b0dc4"
+    "derived_truth": "5f2e1d767c3fed6d",
+    "derived_truth_canonical": "a4a16e8853bd677d4c82ebe8caa9a63bce1a62666d53bb935db3a5b5d7ab091e"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": true,
    "floor": {
     "omr_ned_total": 0.0,
@@ -530,8 +587,10 @@
     "raw_truth_symbols": 792,
     "derived_truth_symbols": 792,
     "denominator": 1584,
+    "unpaired_part_edits": 0,
     "structural_edits": 0,
     "residue_edits": 0,
+    "floor_unpaired_parts_only": 0.0,
     "floor_structural_only": 0.0,
     "floor_total": 0.0,
     "categories": {}
@@ -546,6 +605,8 @@
    "work_id": "dvorak--symphony-9",
    "n_systems": 1,
    "n_staves_printed": 15,
+   "n_staves_note": null,
+   "n_slots_in_map": 15,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 15,
@@ -555,9 +616,10 @@
    },
    "sha": {
     "raw_truth": "b51383f6cd98919b",
-    "derived_truth": "84fd63ce96c9df65"
+    "derived_truth": "e6866691b3307973",
+    "derived_truth_canonical": "f6322bf8800f33e777f190de228daf0caf3aee2f3d890074643e2e91b69a2de9"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": true,
    "floor": {
     "omr_ned_total": 0.0,
@@ -565,8 +627,10 @@
     "raw_truth_symbols": 2022,
     "derived_truth_symbols": 2022,
     "denominator": 4044,
+    "unpaired_part_edits": 0,
     "structural_edits": 0,
     "residue_edits": 0,
+    "floor_unpaired_parts_only": 0.0,
     "floor_structural_only": 0.0,
     "floor_total": 0.0,
     "categories": {}
@@ -581,6 +645,8 @@
    "work_id": "dvorak--symphony-9",
    "n_systems": 2,
    "n_staves_printed": 30,
+   "n_staves_note": "first TWO-system page of this edition in the table (p.183/p.184 print one); both systems the same 15 staves in p.183's order, so export stitching joins 15 = 15 identical lineups and the verbatim staves map applies to both.",
+   "n_slots_in_map": 15,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 15,
@@ -590,9 +656,10 @@
    },
    "sha": {
     "raw_truth": "3a7a21357be2e8dc",
-    "derived_truth": "ebd1495591bee473"
+    "derived_truth": "553766b1c041f63f",
+    "derived_truth_canonical": "8a169a5ab28349be32b01f4d74079bb77470050a7aa4745b57cb6bdcae4784b0"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": true,
    "floor": {
     "omr_ned_total": 0.0,
@@ -600,8 +667,10 @@
     "raw_truth_symbols": 4295,
     "derived_truth_symbols": 4295,
     "denominator": 8590,
+    "unpaired_part_edits": 0,
     "structural_edits": 0,
     "residue_edits": 0,
+    "floor_unpaired_parts_only": 0.0,
     "floor_structural_only": 0.0,
     "floor_total": 0.0,
     "categories": {}
@@ -616,6 +685,8 @@
    "work_id": "brahms--symphony-1",
    "n_systems": 1,
    "n_staves_printed": 14,
+   "n_staves_note": null,
+   "n_slots_in_map": 14,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 21,
@@ -625,9 +696,10 @@
    },
    "sha": {
     "raw_truth": "e77970bf02686da2",
-    "derived_truth": "c6fe5813b692353d"
+    "derived_truth": "a187958716e41f39",
+    "derived_truth_canonical": "dcaf167f6fe19cec512b17989d4106b8288f20b74522a72225b7068a80cc41c2"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.880080280983442,
@@ -635,8 +707,10 @@
     "raw_truth_symbols": 2083,
     "derived_truth_symbols": 1903,
     "denominator": 3986,
+    "unpaired_part_edits": 1001,
     "structural_edits": 2409,
     "residue_edits": 1099,
+    "floor_unpaired_parts_only": 0.2511289513296538,
     "floor_structural_only": 0.6043652784746613,
     "floor_total": 0.880080280983442,
     "categories": {
@@ -665,6 +739,8 @@
    "work_id": "brahms--symphony-1",
    "n_systems": 2,
    "n_staves_printed": 27,
+   "n_staves_note": "system 1 = 14 staves (the full p.1 lineup); system 2 = 13 (the 2 Trompeten in C staff is suppressed \u2014 the reference's trumpets are tacet through the whole window).",
+   "n_slots_in_map": 14,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 21,
@@ -674,9 +750,10 @@
    },
    "sha": {
     "raw_truth": "2eb07c5661a5c753",
-    "derived_truth": "28bca9f398f8769f"
+    "derived_truth": "5e00936c9e29d69e",
+    "derived_truth_canonical": "dfa3ac9098fe85b40fe40c09d14eb94dea4dee440a8e2ead5d4afa9feef36c4b"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.7815258511979823,
@@ -684,8 +761,10 @@
     "raw_truth_symbols": 3399,
     "derived_truth_symbols": 2945,
     "denominator": 6344,
+    "unpaired_part_edits": 1632,
     "structural_edits": 3718,
     "residue_edits": 1240,
+    "floor_unpaired_parts_only": 0.2572509457755359,
     "floor_structural_only": 0.5860655737704918,
     "floor_total": 0.7815258511979823,
     "categories": {
@@ -719,6 +798,8 @@
    "work_id": "brahms--symphony-1",
    "n_systems": 2,
    "n_staves_printed": 28,
+   "n_staves_note": "both systems print the FULL 14-staff p.1 lineup \u2014 the trumpets' staff (suppressed through p.2's system 2) returns, because the reference has them sounding mm 28-29.",
+   "n_slots_in_map": 14,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 21,
@@ -728,9 +809,10 @@
    },
    "sha": {
     "raw_truth": "d4b3a83a98fe2be9",
-    "derived_truth": "a3dc9d073fea8a5f"
+    "derived_truth": "c965df2c1255f8cb",
+    "derived_truth_canonical": "dc21b4b5a9084ee1f3c923aaf0c71c2b9f7c192d21a4944bb4c912055b4b3ef0"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.8181460342452274,
@@ -738,8 +820,10 @@
     "raw_truth_symbols": 2731,
     "derived_truth_symbols": 2350,
     "denominator": 5081,
+    "unpaired_part_edits": 1292,
     "structural_edits": 3579,
     "residue_edits": 578,
+    "floor_unpaired_parts_only": 0.25428065341468215,
     "floor_structural_only": 0.7043888998228696,
     "floor_total": 0.8181460342452274,
     "categories": {
@@ -770,6 +854,8 @@
    "work_id": "brahms--symphony-1",
    "n_systems": 2,
    "n_staves_printed": 28,
+   "n_staves_note": "both systems again print the full 14-staff lineup.",
+   "n_slots_in_map": 14,
    "transform": {
     "version": "1.2.0",
     "n_source_parts": 21,
@@ -779,9 +865,10 @@
    },
    "sha": {
     "raw_truth": "bf2c1fc677fae5b6",
-    "derived_truth": "6f2060f07361aac9"
+    "derived_truth": "9a408390eb35e63c",
+    "derived_truth_canonical": "c474147c0fdf42e6d0f812d1819eb9f84d3dbe52a634310a4b8b7b2ae8b113b1"
    },
-   "derived_truth_matches_canonical_arm": false,
+   "derived_truth_reproduces_committed_control": true,
    "identity_transform": false,
    "floor": {
     "omr_ned_total": 0.8366988586479368,
@@ -789,8 +876,10 @@
     "raw_truth_symbols": 4383,
     "derived_truth_symbols": 3590,
     "denominator": 7973,
+    "unpaired_part_edits": 1860,
     "structural_edits": 5616,
     "residue_edits": 1055,
+    "floor_unpaired_parts_only": 0.23328734478866173,
     "floor_structural_only": 0.7043772732973786,
     "floor_total": 0.8366988586479368,
     "categories": {
