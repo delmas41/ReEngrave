@@ -1,0 +1,16 @@
+CROSS-REGIME: comparing the 12 judgeable records both page sets contain (A has 12, B has 807).
+⚠️ These are the SAME PRINTED SYSTEMS.  A difference is the page set and nothing about the page.
+A = beet5/front:fit=search,spans=on   4/12 = 0.3333   impossible 0  human 8
+B = beet5/groupmap=map,spans=on   756/807 = 0.9368   impossible 0  human 110
+shared judgeable key set: 12 records
+
+B fixes 7, B breaks 0, both wrong the same way 1
+
+verdict                  page sys ord   n truth            A emits          B emits          A src                  B src
+B-FIXES                     1   0   0  12 Flute            None             Flute            None                   label
+B-FIXES                     1   0   1  12 Oboe             Flute            Oboe             label                  label
+B-FIXES                     1   0   2  12 Clarinet         Oboe             Clarinet         label                  label
+B-FIXES                     1   0   3  12 Bassoon          Clarinet         Bassoon          label                  label
+B-FIXES                     1   0   4  12 Horn             Bassoon          Horn             label                  label
+B-FIXES                     1   0   5  12 Trumpet          Horn             Trumpet          label                  label
+B-FIXES                     1   0   7  12 Violin           Timpani          Violin           label                  label

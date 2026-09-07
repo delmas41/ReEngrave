@@ -1,0 +1,102 @@
+
+############ REGIME: narrow at the front (pages 0-4) [0-4]
+  IDENTITY is over JUDGEABLE records (full systems only); HUMAN is over ALL staff records.
+arm                              work      judge  corr  wrng  unnm    rate |  impos nowrk contra |  human  /recs    rate
+beet5/front:fit=off,spans=off    beet5        12     4     7     1  0.3333 |      0     0      7 |      8     75  0.1067
+beet5/front:fit=off,spans=on     beet5        12     4     7     1  0.3333 |      0     0      7 |      8     75  0.1067
+beet5/front:fit=refuse,spans=off beet5        12     4     7     1  0.3333 |      0     0      7 |      8     75  0.1067
+beet5/front:fit=refuse,spans=on  beet5        12     4     7     1  0.3333 |      0     0      7 |      8     75  0.1067
+beet5/front:fit=search,spans=off beet5        12     4     7     1  0.3333 |      0     0      7 |      8     75  0.1067
+beet5/front:fit=search,spans=on  beet5        12     4     7     1  0.3333 |      0     0      7 |      8     75  0.1067
+brahms1/front:fit=off,spans=off  brahms1     112   104     8     0  0.9286 |      0     0      6 |      6    125  0.0480
+brahms1/front:fit=off,spans=on   brahms1     112   104     8     0  0.9286 |      0     0      6 |      6    125  0.0480
+brahms1/front:fit=refuse,spans=off brahms1     112   104     8     0  0.9286 |      0     0      6 |      6    125  0.0480
+brahms1/front:fit=refuse,spans=on brahms1     112   104     8     0  0.9286 |      0     0      6 |      6    125  0.0480
+brahms1/front:fit=search,spans=off brahms1     112   104     8     0  0.9286 |      0     0      6 |      6    125  0.0480
+brahms1/front:fit=search,spans=on brahms1     112   104     8     0  0.9286 |      0     0      6 |      6    125  0.0480
+  -- pooled over works, per arm (only where both works ran):
+POOL front:fit=off,spans=off     POOLED      124   108    15     1  0.8710 |      0     0     13 |     14    200  0.0700
+POOL front:fit=off,spans=on      POOLED      124   108    15     1  0.8710 |      0     0     13 |     14    200  0.0700
+POOL front:fit=refuse,spans=off  POOLED      124   108    15     1  0.8710 |      0     0     13 |     14    200  0.0700
+POOL front:fit=refuse,spans=on   POOLED      124   108    15     1  0.8710 |      0     0     13 |     14    200  0.0700
+POOL front:fit=search,spans=off  POOLED      124   108    15     1  0.8710 |      0     0     13 |     14    200  0.0700
+POOL front:fit=search,spans=on   POOLED      124   108    15     1  0.8710 |      0     0     13 |     14    200  0.0700
+
+############ REGIME: narrow, crossing a movement boundary [brahms 40-49 / beet5 39-48]
+  IDENTITY is over JUDGEABLE records (full systems only); HUMAN is over ALL staff records.
+arm                              work      judge  corr  wrng  unnm    rate |  impos nowrk contra |  human  /recs    rate
+beet5/cross:fit=off,spans=off    beet5        85     0    20    65  0.0000 |      0     0     28 |    138    175  0.7886
+beet5/cross:fit=off,spans=on     beet5        85     0    20    65  0.0000 |      0     0     28 |    138    175  0.7886
+beet5/cross:fit=refuse,spans=off beet5        85     0    20    65  0.0000 |      0     0     28 |    138    175  0.7886
+beet5/cross:fit=refuse,spans=on  beet5        85     0    20    65  0.0000 |      0     0     28 |    138    175  0.7886
+beet5/cross:fit=search,spans=off beet5        85     0    20    65  0.0000 |      0     0     28 |    138    175  0.7886
+beet5/cross:fit=search,spans=on  beet5        85     0    20    65  0.0000 |      0     0     28 |    138    175  0.7886
+brahms1/cross:fit=off,spans=off  brahms1     108   105     3     0  0.9722 |      4     3      0 |      7    211  0.0332
+brahms1/cross:fit=off,spans=on   brahms1     108   105     3     0  0.9722 |      0     3      0 |      3    211  0.0142
+brahms1/cross:fit=refuse,spans=off brahms1     108   105     3     0  0.9722 |      4     3      0 |      7    211  0.0332
+brahms1/cross:fit=refuse,spans=on brahms1     108   105     3     0  0.9722 |      0     3      0 |      3    211  0.0142
+brahms1/cross:fit=search,spans=off brahms1     108   105     3     0  0.9722 |      4     3      0 |      7    211  0.0332
+brahms1/cross:fit=search,spans=on brahms1     108   105     3     0  0.9722 |      0     3      0 |      3    211  0.0142
+  -- pooled over works, per arm (only where both works ran):
+POOL cross:fit=off,spans=off     POOLED      193   105    23    65  0.5440 |      4     3     28 |    145    386  0.3756
+POOL cross:fit=off,spans=on      POOLED      193   105    23    65  0.5440 |      0     3     28 |    141    386  0.3653
+POOL cross:fit=refuse,spans=off  POOLED      193   105    23    65  0.5440 |      4     3     28 |    145    386  0.3756
+POOL cross:fit=refuse,spans=on   POOLED      193   105    23    65  0.5440 |      0     3     28 |    141    386  0.3653
+POOL cross:fit=search,spans=off  POOLED      193   105    23    65  0.5440 |      4     3     28 |    145    386  0.3756
+POOL cross:fit=search,spans=on   POOLED      193   105    23    65  0.5440 |      0     3     28 |    141    386  0.3653
+
+############ REGIME: two ad-hoc pages [brahms 30,45 / beet5 23,44]
+  IDENTITY is over JUDGEABLE records (full systems only); HUMAN is over ALL staff records.
+arm                              work      judge  corr  wrng  unnm    rate |  impos nowrk contra |  human  /recs    rate
+beet5/adhoc:fit=off,spans=off    beet5        29    29     0     0  1.0000 |      1     0      1 |      2     38  0.0526
+beet5/adhoc:fit=off,spans=on     beet5        29    29     0     0  1.0000 |      1     0      1 |      2     38  0.0526
+beet5/adhoc:fit=refuse,spans=off beet5        29    29     0     0  1.0000 |      1     0      1 |      2     38  0.0526
+beet5/adhoc:fit=refuse,spans=on  beet5        29    29     0     0  1.0000 |      1     0      1 |      2     38  0.0526
+beet5/adhoc:fit=search,spans=off beet5        29    29     0     0  1.0000 |      1     0      1 |      2     38  0.0526
+beet5/adhoc:fit=search,spans=on  beet5        29    29     0     0  1.0000 |      1     0      1 |      2     38  0.0526
+brahms1/adhoc:fit=off,spans=off  brahms1      16     5     5     6  0.3125 |      0     0      3 |      9     36  0.2500
+brahms1/adhoc:fit=off,spans=on   brahms1      16     5     5     6  0.3125 |      0     0      3 |      9     36  0.2500
+brahms1/adhoc:fit=refuse,spans=off brahms1      16     5     5     6  0.3125 |      0     0      3 |      9     36  0.2500
+brahms1/adhoc:fit=refuse,spans=on brahms1      16     5     5     6  0.3125 |      0     0      3 |      9     36  0.2500
+brahms1/adhoc:fit=search,spans=off brahms1      16     5     5     6  0.3125 |      0     0      3 |      9     36  0.2500
+brahms1/adhoc:fit=search,spans=on brahms1      16     5     5     6  0.3125 |      0     0      3 |      9     36  0.2500
+  -- pooled over works, per arm (only where both works ran):
+POOL adhoc:fit=off,spans=off     POOLED       45    34     5     6  0.7556 |      1     0      4 |     11     74  0.1486
+POOL adhoc:fit=off,spans=on      POOLED       45    34     5     6  0.7556 |      1     0      4 |     11     74  0.1486
+POOL adhoc:fit=refuse,spans=off  POOLED       45    34     5     6  0.7556 |      1     0      4 |     11     74  0.1486
+POOL adhoc:fit=refuse,spans=on   POOLED       45    34     5     6  0.7556 |      1     0      4 |     11     74  0.1486
+POOL adhoc:fit=search,spans=off  POOLED       45    34     5     6  0.7556 |      1     0      4 |     11     74  0.1486
+POOL adhoc:fit=search,spans=on   POOLED       45    34     5     6  0.7556 |      1     0      4 |     11     74  0.1486
+
+############ REGIME: whole work 0-85
+  IDENTITY is over JUDGEABLE records (full systems only); HUMAN is over ALL staff records.
+arm                              work      judge  corr  wrng  unnm    rate |  impos nowrk contra |  human  /recs    rate
+brahms1/fit=off,spans=off        brahms1     764   742    22     0  0.9712 |     36    31     44 |    105   1927  0.0545
+brahms1/fit=off,spans=on         brahms1     764   642   122     0  0.8403 |    149   102    167 |    223   1927  0.1157
+brahms1/fit=refuse,spans=off     brahms1     764   742    22     0  0.9712 |     36    31     44 |    105   1927  0.0545
+brahms1/fit=refuse,spans=on      brahms1     764   742    22     0  0.9712 |     36    31     44 |    105   1927  0.0545
+brahms1/fit=search,spans=off     brahms1     764   742    22     0  0.9712 |     36    31     44 |    105   1927  0.0545
+brahms1/fit=search,spans=on      brahms1     764   741    23     0  0.9699 |      0    23     48 |     87   1927  0.0451
+brahms1/groupmap=map,spans=off   brahms1     764   742    22     0  0.9712 |     36    31     44 |    105   1927  0.0545
+brahms1/groupmap=map,spans=on    brahms1     764   642   122     0  0.8403 |    149   102    167 |    223   1927  0.1157
+brahms1/groupmap=ordinal,spans=off brahms1     764   742    22     0  0.9712 |     36    31     44 |    105   1927  0.0545
+brahms1/groupmap=ordinal,spans=on brahms1     764   642   122     0  0.8403 |    149   102    167 |    223   1927  0.1157
+brahms1/noshape,spans=off        brahms1     764   742    22     0  0.9712 |     36    31     44 |    105   1927  0.0545
+brahms1/noshape,spans=on         brahms1     764   741    23     0  0.9699 |      0    23     52 |     91   1927  0.0472
+  -- pooled over works, per arm (only where both works ran):
+
+############ REGIME: whole work 0-87
+  IDENTITY is over JUDGEABLE records (full systems only); HUMAN is over ALL staff records.
+arm                              work      judge  corr  wrng  unnm    rate |  impos nowrk contra |  human  /recs    rate
+beet5/fit=off,spans=off          beet5       807   756    51     0  0.9368 |     43     0    110 |    153   1616  0.0947
+beet5/fit=off,spans=on           beet5       807   756    51     0  0.9368 |      0     0    110 |    110   1616  0.0681
+beet5/fit=refuse,spans=off       beet5       807   756    51     0  0.9368 |     43     0    110 |    153   1616  0.0947
+beet5/fit=refuse,spans=on        beet5       807   756    51     0  0.9368 |      0     0    110 |    110   1616  0.0681
+beet5/fit=search,spans=off       beet5       807   756    51     0  0.9368 |     43     0    110 |    153   1616  0.0947
+beet5/fit=search,spans=on        beet5       807   756    51     0  0.9368 |      0     0    110 |    110   1616  0.0681
+beet5/groupmap=map,spans=off     beet5       807   756    51     0  0.9368 |     43     0    110 |    153   1616  0.0947
+beet5/groupmap=map,spans=on      beet5       807   756    51     0  0.9368 |      0     0    110 |    110   1616  0.0681
+beet5/groupmap=ordinal,spans=off beet5       807   750    57     0  0.9294 |     89     0    110 |    199   1616  0.1231
+beet5/groupmap=ordinal,spans=on  beet5       807   756    51     0  0.9368 |      0     0    110 |    110   1616  0.0681
+beet5/shipped                    beet5       807   800     7     0  0.9913 |     91     0     17 |    108   1616  0.0668
+  -- pooled over works, per arm (only where both works ran):

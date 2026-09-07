@@ -1,0 +1,57 @@
+CORPUS: 1571 named judgeable staff records, 2 engravings
+        arms: beet5/shipped + brahms1/fit=search,spans=on
+
+TIER CENSUS — the n=197 probe's diagnosis was that the tier which would decide an admission had ZERO records.
+  label                    n= 1450  correct  1439 = 0.9924   works={'beet5': 756, 'brahms1': 694}
+  roster                   n=   53  correct    51 = 0.9623   works={'brahms1': 53}
+  score_order_ambiguity    n=   51  correct    51 = 1.0000   works={'beet5': 51}
+  score_order              n=   17  correct     0 = 0.0000   works={'brahms1': 17}
+
+FEATURE CELLS — a cell with no variance in the target cannot separate anything, whatever its n.
+  ('label', True, 'max')                                     n=  626  correct=1.0000   <- degenerate (0 or 1)
+  ('label', True, 'reduced')                                 n=  524  correct=0.9924
+  ('label', False, 'max')                                    n=  236  correct=1.0000   <- degenerate (0 or 1)
+  ('label', False, 'reduced')                                n=   64  correct=0.8906
+  ('score_order_ambiguity', False, 'max')                    n=   38  correct=1.0000   <- degenerate (0 or 1)
+  ('roster', False, 'reduced')                               n=   29  correct=1.0000   <- degenerate (0 or 1)
+  ('roster', True, 'max')                                    n=   16  correct=1.0000   <- degenerate (0 or 1)
+  ('score_order', False, 'max')                              n=   13  correct=0.0000   <- degenerate (0 or 1)
+  ('score_order_ambiguity', False, 'reduced')                n=   10  correct=1.0000   <- degenerate (0 or 1)
+  ('roster', True, 'reduced')                                n=    7  correct=0.7143
+  ('score_order', True, 'max')                               n=    4  correct=0.0000   <- degenerate (0 or 1)
+  ('score_order_ambiguity', True, 'reduced')                 n=    2  correct=1.0000   <- degenerate (0 or 1)
+  ('score_order_ambiguity', True, 'max')                     n=    1  correct=1.0000   <- degenerate (0 or 1)
+  ('roster', False, 'max')                                   n=    1  correct=1.0000   <- degenerate (0 or 1)
+  records in a degenerate cell: 976/1571 = 62.1%
+
+HELD OUT BY ENGRAVING (leave one out)
+  fold held out: breitkopf-brahms1-imslp317803   n_test=764  train=807  ECE=0.0318  Brier=0.0300
+      [0.70,0.90)    n=   15  predicted 0.862  observed 1.000   +0.138
+      [0.98,1.01)    n=  749  predicted 0.999  observed 0.969   -0.030
+  fold held out: litolff-beethoven5-imslp984073   n_test=807  train=764  ECE=0.0096  Brier=0.0087
+      [0.90,0.98)    n=   51  predicted 0.969  observed 1.000   +0.031
+      [0.98,1.01)    n=  756  predicted 0.999  observed 0.991   -0.008
+
+  POOLED   n=1571   ECE=0.0204   Brier=0.0191
+      [0.70,0.90)    n=   15  predicted 0.862  observed 1.000   +0.138
+      [0.90,0.98)    n=   51  predicted 0.969  observed 1.000   +0.031
+      [0.98,1.01)    n= 1505  predicted 0.999  observed 0.980   -0.019
+
+  n_distinct predicted values: 10
+
+⚠️ DISCRIMINATION — is the estimator doing anything the base rate does not?  A low ECE over a population that is 96% one bin is a property of the POPULATION, not of the model.
+  featureful  ECE=0.0204  Brier=0.0191
+  constant    ECE=0.0215  Brier=0.0191   (predict the training base rate for everything)
+  Brier skill vs constant: +0.0004
+  mass in the top bin: 1505/1571 = 95.8%   promised 0.999, delivered 0.980
+
+⚠️ HELD-OUT REACH PER TIER — a tier a fold never SAW in training cannot be calibrated by it, whatever the pooled number says.
+  fold breitkopf-brahms1-imslp317803
+      tier label                    n_test=  694  n_train=  756  predicted 0.997  observed 0.994
+      tier roster                   n_test=   53  n_train=    0  predicted 0.990  observed 0.962   <- UNSEEN IN TRAINING
+      tier score_order              n_test=   17  n_train=    0  predicted 0.990  observed 0.000   <- UNSEEN IN TRAINING
+  fold litolff-beethoven5-imslp984073
+      tier label                    n_test=  756  n_train=  694  predicted 0.999  observed 0.991
+      tier score_order_ambiguity    n_test=   51  n_train=    0  predicted 0.969  observed 1.000   <- UNSEEN IN TRAINING
+
+wrote out/calibration-records.json

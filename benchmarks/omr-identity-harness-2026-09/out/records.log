@@ -1,0 +1,12 @@
+
+############ REGIME: whole work 0-85
+  IDENTITY is over JUDGEABLE records (full systems only); HUMAN is over ALL staff records.
+arm                              work      judge  corr  wrng  unnm    rate |  impos nowrk contra |  human  /recs    rate
+brahms1/fit=search,spans=on      brahms1     764   741    23     0  0.9699 |      0    23     48 |     87   1927  0.0451
+
+############ REGIME: whole work 0-87
+  IDENTITY is over JUDGEABLE records (full systems only); HUMAN is over ALL staff records.
+arm                              work      judge  corr  wrng  unnm    rate |  impos nowrk contra |  human  /recs    rate
+beet5/shipped                    beet5       807   800     7     0  0.9913 |     91     0     17 |    108   1616  0.0668
+
+wrote 1571 graded staff records -> out/records.json

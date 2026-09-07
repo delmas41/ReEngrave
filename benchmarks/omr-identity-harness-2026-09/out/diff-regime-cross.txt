@@ -1,0 +1,94 @@
+CROSS-REGIME: comparing the 85 judgeable records both page sets contain (A has 85, B has 807).
+⚠️ These are the SAME PRINTED SYSTEMS.  A difference is the page set and nothing about the page.
+A = beet5/cross:fit=search,spans=on   0/85 = 0.0000   impossible 0  human 138
+B = beet5/groupmap=map,spans=on   756/807 = 0.9368   impossible 0  human 110
+shared judgeable key set: 85 records
+
+B fixes 80, B breaks 0, both wrong the same way 0
+
+verdict                  page sys ord   n truth            A emits          B emits          A src                  B src
+B-FIXES                    44   0   0  17 Piccolo          None             Piccolo          None                   label
+B-FIXES                    44   0   1  17 Flute            None             Flute            None                   label
+B-FIXES                    44   0   2  17 Oboe             None             Oboe             None                   label
+B-FIXES                    44   0   3  17 Clarinet         None             Clarinet         None                   label
+B-FIXES                    44   0   4  17 Bassoon          None             Bassoon          None                   label
+B-FIXES                    44   0   5  17 Contrabassoon    None             Contrabassoon    None                   label
+B-FIXES                    44   0   6  17 Horn             None             Horn             None                   label
+B-FIXES                    44   0   7  17 Trumpet          None             Trumpet          None                   label
+BOTH-WRONG-DIFFERENTLY     44   0   8  17 Timpani          None             Trumpet          None                   score_order_ambiguity
+B-FIXES                    44   0   9  17 Trombone         None             Trombone         None                   label
+B-FIXES                    44   0  10  17 Trombone         Oboe             Trombone         label                  label
+B-FIXES                    44   0  11  17 Trombone         Clarinet         Trombone         label                  label
+B-FIXES                    44   0  12  17 Violin           Bassoon          Violin           label                  label
+B-FIXES                    44   0  13  17 Violin           None             Violin           None                   label
+B-FIXES                    44   0  14  17 Viola            None             Viola            None                   label
+B-FIXES                    44   0  15  17 Cello            None             Cello            None                   label
+B-FIXES                    44   0  16  17 Contrabass       Bass voice       Contrabass       score_order_ambiguity  score_order_ambiguity
+B-FIXES                    45   0   0  17 Piccolo          None             Piccolo          None                   label
+B-FIXES                    45   0   1  17 Flute            None             Flute            None                   label
+B-FIXES                    45   0   2  17 Oboe             None             Oboe             None                   label
+B-FIXES                    45   0   3  17 Clarinet         None             Clarinet         None                   label
+B-FIXES                    45   0   4  17 Bassoon          None             Bassoon          None                   label
+B-FIXES                    45   0   5  17 Contrabassoon    None             Contrabassoon    None                   label
+B-FIXES                    45   0   6  17 Horn             None             Horn             None                   label
+B-FIXES                    45   0   7  17 Trumpet          None             Trumpet          None                   label
+BOTH-WRONG-DIFFERENTLY     45   0   8  17 Timpani          None             Trumpet          None                   score_order_ambiguity
+B-FIXES                    45   0   9  17 Trombone         None             Trombone         None                   label
+B-FIXES                    45   0  10  17 Trombone         Oboe             Trombone         label                  label
+B-FIXES                    45   0  11  17 Trombone         Clarinet         Trombone         label                  label
+B-FIXES                    45   0  12  17 Violin           Bassoon          Violin           label                  label
+B-FIXES                    45   0  13  17 Violin           None             Violin           None                   label
+B-FIXES                    45   0  14  17 Viola            None             Viola            None                   label
+B-FIXES                    45   0  15  17 Cello            None             Cello            None                   label
+B-FIXES                    45   0  16  17 Contrabass       Bass voice       Contrabass       score_order_ambiguity  score_order_ambiguity
+B-FIXES                    46   0   0  17 Piccolo          None             Piccolo          None                   label
+B-FIXES                    46   0   1  17 Flute            None             Flute            None                   label
+B-FIXES                    46   0   2  17 Oboe             None             Oboe             None                   label
+B-FIXES                    46   0   3  17 Clarinet         None             Clarinet         None                   label
+B-FIXES                    46   0   4  17 Bassoon          None             Bassoon          None                   label
+B-FIXES                    46   0   5  17 Contrabassoon    None             Contrabassoon    None                   label
+B-FIXES                    46   0   6  17 Horn             None             Horn             None                   label
+B-FIXES                    46   0   7  17 Trumpet          None             Trumpet          None                   label
+BOTH-WRONG-DIFFERENTLY     46   0   8  17 Timpani          None             Trumpet          None                   score_order_ambiguity
+B-FIXES                    46   0   9  17 Trombone         None             Trombone         None                   label
+B-FIXES                    46   0  10  17 Trombone         Oboe             Trombone         label                  label
+B-FIXES                    46   0  11  17 Trombone         Clarinet         Trombone         label                  label
+B-FIXES                    46   0  12  17 Violin           Bassoon          Violin           label                  label
+B-FIXES                    46   0  13  17 Violin           None             Violin           None                   label
+B-FIXES                    46   0  14  17 Viola            None             Viola            None                   label
+B-FIXES                    46   0  15  17 Cello            None             Cello            None                   label
+B-FIXES                    46   0  16  17 Contrabass       Bass voice       Contrabass       score_order_ambiguity  score_order_ambiguity
+B-FIXES                    47   0   0  17 Piccolo          None             Piccolo          None                   label
+B-FIXES                    47   0   1  17 Flute            None             Flute            None                   label
+B-FIXES                    47   0   2  17 Oboe             None             Oboe             None                   label
+B-FIXES                    47   0   3  17 Clarinet         None             Clarinet         None                   label
+B-FIXES                    47   0   4  17 Bassoon          None             Bassoon          None                   label
+B-FIXES                    47   0   5  17 Contrabassoon    None             Contrabassoon    None                   label
+B-FIXES                    47   0   6  17 Horn             None             Horn             None                   label
+B-FIXES                    47   0   7  17 Trumpet          None             Trumpet          None                   label
+BOTH-WRONG-DIFFERENTLY     47   0   8  17 Timpani          None             Trumpet          None                   score_order_ambiguity
+B-FIXES                    47   0   9  17 Trombone         None             Trombone         None                   label
+B-FIXES                    47   0  10  17 Trombone         Oboe             Trombone         label                  label
+B-FIXES                    47   0  11  17 Trombone         Clarinet         Trombone         label                  label
+B-FIXES                    47   0  12  17 Violin           Bassoon          Violin           label                  label
+B-FIXES                    47   0  13  17 Violin           None             Violin           None                   label
+B-FIXES                    47   0  14  17 Viola            None             Viola            None                   label
+B-FIXES                    47   0  15  17 Cello            None             Cello            None                   label
+B-FIXES                    47   0  16  17 Contrabass       Bass voice       Contrabass       score_order_ambiguity  score_order_ambiguity
+B-FIXES                    48   0   0  17 Piccolo          None             Piccolo          None                   label
+B-FIXES                    48   0   1  17 Flute            None             Flute            None                   label
+B-FIXES                    48   0   2  17 Oboe             None             Oboe             None                   label
+B-FIXES                    48   0   3  17 Clarinet         None             Clarinet         None                   label
+B-FIXES                    48   0   4  17 Bassoon          None             Bassoon          None                   label
+B-FIXES                    48   0   5  17 Contrabassoon    None             Contrabassoon    None                   label
+B-FIXES                    48   0   6  17 Horn             None             Horn             None                   label
+B-FIXES                    48   0   7  17 Trumpet          None             Trumpet          None                   label
+BOTH-WRONG-DIFFERENTLY     48   0   8  17 Timpani          None             Trumpet          None                   score_order_ambiguity
+B-FIXES                    48   0   9  17 Trombone         None             Trombone         None                   label
+B-FIXES                    48   0  10  17 Trombone         Oboe             Trombone         label                  label
+B-FIXES                    48   0  11  17 Trombone         Clarinet         Trombone         label                  label
+B-FIXES                    48   0  12  17 Violin           Bassoon          Violin           label                  label
+B-FIXES                    48   0  13  17 Violin           None             Violin           None                   label
+B-FIXES                    48   0  14  17 Viola            None             Viola            None                   label
+B-FIXES                    48   0  15  17 Cello            None             Cello            None                   label
+B-FIXES                    48   0  16  17 Contrabass       Bass voice       Contrabass       score_order_ambiguity  score_order_ambiguity

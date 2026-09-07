@@ -1,0 +1,13 @@
+A = beet5/groupmap=ordinal,spans=off   750/807 = 0.9294   impossible 89  human 199
+B = beet5/groupmap=map,spans=off   756/807 = 0.9368   impossible 43  human 153
+shared judgeable key set: 807 records
+
+B fixes 6, B breaks 0, both wrong the same way 51
+
+verdict                  page sys ord   n truth            A emits          B emits          A src                  B src
+B-FIXES                    23   1   7  12 Violin           Trombone         Violin           label                  label
+B-FIXES                    23   1   8  12 Violin           Trombone         Violin           label                  label
+B-FIXES                    23   1   9  12 Viola            Trombone         Viola            label                  label
+B-FIXES                    38   0   7  12 Violin           Trombone         Violin           label                  label
+B-FIXES                    38   0   8  12 Violin           Trombone         Violin           label                  label
+B-FIXES                    38   0   9  12 Viola            Trombone         Viola            label                  label

@@ -1,0 +1,58 @@
+
+SELF-TEST 1 — OMR_SLOT_GROUP_MAP=ordinal (Beethoven 5 / Litolff)
+  [PASS] RESTORED: impossible 89 with the fault, 43 with the fix   got 89 / 43
+  [PASS] RESTORED: identity 750 -> 756 correct of 807 judgeable   got 750 / 756
+  [PASS] the identity RATE moves in the same direction as the fix   0.9294 -> 0.9368
+  [PASS] RESTORED: the recorded 7-record signature is visible EXACTLY   strings/timpani -> Trombone: {('Violin', 'Trombone'): 4, ('Viola', 'Trombone'): 2, ('Timpani', 'Trombone'): 1}
+  [PASS] FIXED: the six STRING records are absent under the shipped default   Violin->Trombone 0, Viola->Trombone 0
+  [PASS] ⚠️ RESIDUE the fix does NOT touch: 1 `Timpani -> Trombone` survives   p31 sys1 — the 7th of the recorded 7, and only 6 of them are the group-map fault; the harness must not launder it away
+  [PASS] human-cost axis moves too   199 -> 153 staves
+  [PASS] REGIME: with spans ON the flag does not reach the output at all   756/0 vs 756/0 — the harness reports the regime, so this null is legible rather than a silent zero
+
+SELF-TEST 2 — OMR_SPAN_REFERENCE_FIT=off (Brahms 1 / Breitkopf)
+  [PASS] RESTORED: 149 pre-finale impossible names   got 149
+  [PASS] RESTORED: the recorded 36 for spans-off and for `refuse`   got 36 / 36
+  [PASS] FIXED: the shipped `search` reads 0   got 0
+  [PASS] RESTORED: identity rate 0.8403 with the fault   got 0.8403
+  [PASS] FIXED: identity rate 0.9699 shipped   got 0.9699
+  [PASS] RESTORED/FIXED: `Horn -> Trumpet` x33 with the fault, 0 shipped   got 33 / 0
+  [PASS] RESTORED/FIXED: `Trumpet -> Trombone` x33 with the fault, 0 shipped   got 33 / 0
+  [PASS] RESTORED/FIXED: `Timpani -> Tuba` x28 with the fault, 0 shipped   got 28 / 0
+  [PASS] RESTORED/FIXED: `Violin -> Tuba` x8 with the fault, 0 shipped   got 8 / 0
+  [PASS] THE DISAGREEMENT: `refuse` grades ONE staff higher than `search`   742 vs 741 correct, while impossible is 36 vs 0 — neither column is a superset of the other and the harness prints both
+  [PASS] human-cost axis moves too   223 -> 87 staves
+  [PASS] the harness also SEES what the fix does NOT touch: the finale's `Trombone -> Tuba` x17, invisible to the page-scoped impossible rule   conf=17, not-in-this-work=23
+
+SELF-TEST 3 — OMR_BRACKET_COLUMNS (bracket-group stability, 5 publishers)
+      baseline (fault restored)  pairs= 73 disagreeing= 28 rate=0.3836
+      columns                    pairs= 73 disagreeing=  6 rate=0.0822
+      columns+evidence floor     pairs= 73 disagreeing=  4 rate=0.0548
+  [PASS] RESTORED: within-page disagreement 0.3836   got 0.3836
+  [PASS] FIXED: 0.0548 with the object-count rule + evidence floor   got 0.0548
+  [PASS] both repair arms beat the fault, floor beats columns alone   0.3836 -> 0.0822 -> 0.0548
+  [PASS] all three arms share ONE denominator (73 same-count system pairs)   a rate improvement bought by scoring fewer pairs would be invisible otherwise
+
+STRUCTURAL — the two artefact shapes agree
+  [PASS] per-staff `instrument_source` is exactly slot_instruments[slot].source   1616 agree, 0 disagree — this is what licenses pooling the 'compose' arms with the 'staff' one
+
+STRUCTURAL — A/B arms share one staff-record key set
+  [PASS] beet5 groupmap, spans off: identical key sets (1616 records)
+  [PASS] brahms1 fit, spans on: identical key sets (1927 records)
+
+STRUCTURAL — judgeable coverage, stated rather than implied
+      beet5   807/1616 (49.9%)
+      brahms1 764/1927 (39.6%)
+      POOLED  1571/3543 (44.3%), 2 works, 2 publishers, 2 engravings
+  [PASS] the graded corpus is the recorded 807 + 764 = 1571 staff records   got 807 + 764 = 1571
+
+⚠️ SELF-TEST 7 — the READ-PASS floor (found by this harness)
+      pass A (veto session)      800/807 = 0.9913
+      pass B (slot-alignment)    756/807 = 0.9368
+      staff records emitting a different name: 57
+  [PASS] the harness SEES the read-pass difference at all   57 of 807 judgeable records move
+  [PASS] and it is LARGER than any single flag on this work   0.9913 vs 0.9368; the group-map flag moves 6 records
+  [PASS] B's margin evidence STRICTLY CONTAINS A's, with 0 contradictions   962 ⊂ 973 rows, 0 disagreeing
+  [PASS] yet slot 8 is Timpani(label) in A and Trumpet(ambiguity) in B   more evidence, no contradiction, worse answer — the join is NOT monotone in evidence
+  [PASS] the PROVENANCE SPLIT localises the entire loss to one source   score_order_ambiguity 51/51 = 1.000 in A, 51/102 = 0.500 in B, while `label` is 0.9907 / 1.0000 — the split is why this is diagnosable at all
+
+THE GATE PASSES: the harness reproduces every known fault, and reports none of them under the shipped defaults.
