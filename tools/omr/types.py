@@ -225,11 +225,40 @@ class Barline:
 
 @dataclass
 class PageWithStaves:
-    """A PageImage annotated with detected staves and barlines."""
+    """A PageImage annotated with detected staves and barlines.
+
+    ``deletion_counts`` is a census of what Phase 1 THREW AWAY on this page,
+    keyed by site and reason. An audit of this area on 2026-09-06 found that
+    most of its deletion sites wrote no counter at all — a candidate staff, a
+    candidate barline or a measure cell would vanish with nothing recording
+    that it had ever existed, so the only deletions anyone could reason about
+    were the handful someone had already gone looking at. Every entry is a
+    reason, not a total: `n_barline_components_dropped_too_wide` and
+    `n_barline_components_dropped_not_skinny` are separate keys because they
+    are separate mistakes to make.
+
+    ⚠️ **Diagnostic only, and no consumer reads it today.** It is written by
+    `staff_detector.detect_staves`, `measure_extractor.detect_barlines`,
+    `extract_measures` and `resegment_fused_measures`, all of which mutate the
+    page they were handed. **Who could consume it:** a benchmark asking why a
+    page lost a staff (`n_staves_dropped_as_body_text` is a real regression
+    shape — see `_line_ink_runs_per_space`), the measure-count consistency
+    check wanting to know whether a short staff is short because a barline was
+    dropped as a close outlier, and `transcribe`'s per-page summary, which
+    already serialises four counters of exactly this shape
+    (`n_clipped_notehead_fragments_dropped` and friends) and would only need
+    to copy this dict across. ⚠️ It is NOT serialised yet: `transcribe.py`
+    writes no `PageWithStaves` field into the result JSON, and that file's
+    owner is not this file's owner.
+
+    ⚠️ A key is ABSENT when its site never fired on this page, which is not
+    the same as the site not existing. Read with `.get(key, 0)`.
+    """
 
     page: PageImage
     staves: list[Staff]
     barlines: list[Barline] = field(default_factory=list)
+    deletion_counts: dict[str, int] = field(default_factory=dict)
 
     def staves_in_system(self, system_index: int) -> list[Staff]:
         return [s for s in self.staves if s.system_index == system_index]

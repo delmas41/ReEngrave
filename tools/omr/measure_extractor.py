@@ -98,6 +98,38 @@ BARLINE_MIN_DISTANCE_PX = 60      # neighbouring barlines must be ≥60px apart
 SPAN_MIN_INK = 0.9
 
 
+# ─── Deletion census ─────────────────────────────────────────────────────────
+#
+# This file discards candidate barlines and measure cells at a dozen places
+# and, until 2026-09-06, recorded that at none of them. `_bump` writes into
+# `PageWithStaves.deletion_counts`; it is DIAGNOSTIC ONLY — nothing here or
+# downstream branches on a count — and `counts=None` (the default on every
+# helper that takes it, which is what a direct call from a test or another
+# module gets) makes it a no-op, so no behaviour depends on opting in.
+
+
+def _bump(counts: dict[str, int] | None, key: str, n: int = 1) -> None:
+    if counts is not None and n:
+        counts[key] = counts.get(key, 0) + n
+
+
+# Every key `detect_barlines` writes. It resets `pws.barlines` on entry and so
+# must reset these with them — a second call on the same page would otherwise
+# double each figure while the barline list started fresh, and a count that
+# disagrees with the list it describes is worse than no count.
+# `test_barline_evidence.py` asserts this set matches what a real page
+# produces, so a new counter added below without listing it here fails.
+_DETECT_BARLINES_COUNTER_KEYS = frozenset({
+    "n_one_line_staves_excluded_from_barline_vote",
+    "n_barline_components_dropped_too_short",
+    "n_barline_components_dropped_too_wide",
+    "n_barline_components_dropped_not_skinny",
+    "n_barline_candidates_dropped_too_close_on_staff",
+    "n_barline_clusters_rejected_no_prong",
+    "n_barlines_dropped_close_outlier",
+})
+
+
 # ─── Barline detection ───────────────────────────────────────────────────────
 
 
@@ -109,6 +141,7 @@ def _detect_barlines_in_window(
     min_height_frac: float = BARLINE_MIN_HEIGHT_FRAC,
     *,
     prefer: str = "leftmost",
+    counts: dict[str, int] | None = None,
 ) -> list[int]:
     """Find columns in [x0, x1) where this staff has a vertical barline,
     using morphological vertical opening + connected-component shape
@@ -161,22 +194,30 @@ def _detect_barlines_in_window(
     found: list[tuple[int, int]] = []          # (x_centre, height)
     for i in range(1, n_labels):
         x_l, y_l, w_l, h_l, area = stats[i]
+        # Three independent shape rejections, counted apart because they are
+        # three different mistakes: a real barline read as too short means the
+        # height gate is wrong for this print, too wide means the ink bled,
+        # not skinny means it merged with something.
         if h_l < min_height:
+            _bump(counts, "n_barline_components_dropped_too_short")
             continue
         if w_l > max_width:
+            _bump(counts, "n_barline_components_dropped_too_wide")
             continue           # too wide — accidental or chord
         if h_l / max(w_l, 1) < 8.0:
+            _bump(counts, "n_barline_components_dropped_not_skinny")
             continue           # not skinny enough
         x_center = x0 + x_l + w_l // 2
         found.append((int(x_center), int(h_l)))
     found.sort()
-    return _dedup_barline_candidates(found, prefer=prefer)
+    return _dedup_barline_candidates(found, prefer=prefer, counts=counts)
 
 
 def _dedup_barline_candidates(
     found: list[tuple[int, int]],
     *,
     prefer: str = "leftmost",
+    counts: dict[str, int] | None = None,
 ) -> list[int]:
     """Thin a staff's barline candidates to one per `BARLINE_MIN_DISTANCE_PX`.
 
@@ -211,6 +252,11 @@ def _dedup_barline_candidates(
                and found[j + 1][0] - found[i][0] < BARLINE_MIN_DISTANCE_PX):
             j += 1
         group = found[i:j + 1]
+        # ⚠️ The site that loses a real barline to a note stem — the whole
+        # reason `prefer="tallest"` exists. A high count here on a page whose
+        # bar count came out short is the first place to look.
+        _bump(counts, "n_barline_candidates_dropped_too_close_on_staff",
+              len(group) - 1)
         if prefer == "tallest":
             out.append(max(group, key=lambda c: (c[1], -c[0]))[0])
         else:
@@ -219,7 +265,9 @@ def _dedup_barline_candidates(
     return out
 
 
-def _detect_barlines_per_staff(bin_img: np.ndarray, staff: Staff) -> list[int]:
+def _detect_barlines_per_staff(
+    bin_img: np.ndarray, staff: Staff, *, counts: dict[str, int] | None = None,
+) -> list[int]:
     """Find columns where this single staff has a vertical barline (global
     pass — full staff x-span, global BARLINE_MIN_HEIGHT_FRAC threshold).
 
@@ -230,7 +278,8 @@ def _detect_barlines_per_staff(bin_img: np.ndarray, staff: Staff) -> list[int]:
     outlier rejection (see _drop_close_outliers).
     """
     return _detect_barlines_in_window(
-        bin_img, staff, staff.x_start, staff.x_end + 1, BARLINE_MIN_HEIGHT_FRAC
+        bin_img, staff, staff.x_start, staff.x_end + 1, BARLINE_MIN_HEIGHT_FRAC,
+        counts=counts,
     )
 
 
@@ -471,11 +520,28 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
     # that crosses it, so it would both add noise and move the denominator for
     # every real staff. Their own barlines come from the system they sit in.
     systems: dict[int, list[Staff]] = {}
+    n_one_line_excluded = 0
     for s in pws.staves:
         if len(s.line_ys) >= 5:
             systems.setdefault(s.system_index, []).append(s)
+        else:
+            n_one_line_excluded += 1
 
     pws.barlines = []
+    # This function is re-runnable (`extract_measures` calls it when
+    # `pws.barlines` is empty), and it resets `pws.barlines`; its counters are
+    # reset with them, or a second call would double every figure. Keys owned
+    # by `detect_staves` are left alone.
+    counts = pws.deletion_counts
+    for _k in list(counts):
+        if _k in _DETECT_BARLINES_COUNTER_KEYS:
+            del counts[_k]
+    # Deliberate (a two-space staff answers "barline here" for any stem that
+    # crosses it, and would move the vote's denominator for every real staff),
+    # and counted so "this page has percussion" is legible without re-deriving
+    # it from the staff list.
+    _bump(counts, "n_one_line_staves_excluded_from_barline_vote",
+          n_one_line_excluded)
     x_tolerance = 12  # px: barlines on different staves may not align exactly
 
     for sys_idx, staves in systems.items():
@@ -484,7 +550,7 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
         # barline that leans (see `_barline_x_at`).
         observations: list[tuple[int, int]] = []
         for staff in staves:
-            for x in _detect_barlines_per_staff(bin_img, staff):
+            for x in _detect_barlines_per_staff(bin_img, staff, counts=counts):
                 observations.append((x, staff.staff_index))
         if not observations:
             continue
@@ -733,11 +799,23 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
                 _record(x_mean, "connectivity_rescue", n_votes,
                         connectivity=connectivity)
         accepted.sort()
+        # A cluster of votes that cleared no acceptance prong. On a
+        # conductor's page most of these are stem alignments and the count is
+        # large and healthy; on a page whose bars came out fused it is where
+        # the missing barline went.
+        _bump(counts, "n_barline_clusters_rejected_no_prong",
+              len(clusters) - len(accepted))
+        n_before_outliers = len(accepted)
         # Second pass: outlier-small-gap rejection. Real measure widths
         # cluster tightly; false-positive columns produce abnormally small
         # gaps. Remove the smaller member of any adjacent pair whose gap is
         # < 0.5 × median gap.
         accepted = _drop_close_outliers(accepted)
+        # ⚠️ The site whose docstring admits it decides blind — it defaults to
+        # dropping the LEFT member of an implausibly close pair. Now at least
+        # the page records how often it had to.
+        _bump(counts, "n_barlines_dropped_close_outlier",
+              n_before_outliers - len(accepted))
         for x_mean in accepted:
             ev = evidence.get(x_mean, {})
             pws.barlines.append(Barline(
@@ -803,7 +881,10 @@ def _drop_close_outliers(xs: list[int]) -> list[int]:
 # ─── Per-measure cell extraction ─────────────────────────────────────────────
 
 
-def _measure_x_boundaries(barlines: list[Barline], staves: list[Staff]) -> list[tuple[int, int]]:
+def _measure_x_boundaries(
+    barlines: list[Barline], staves: list[Staff],
+    *, counts: dict[str, int] | None = None,
+) -> list[tuple[int, int]]:
     """Given barlines for a system and that system's staves, produce the
     list of (x_start, x_end) per measure.
 
@@ -840,7 +921,13 @@ def _measure_x_boundaries(barlines: list[Barline], staves: list[Staff]) -> list[
     # rule's offset and far narrower than the narrowest real measure.
     spacing = float(np.median([s.line_spacing_px for s in staves]))
     edge_margin = max(10, int(round(2.0 * spacing)))
+    n_before_edge_filter = len(xs)
     xs = [x for x in xs if x > x_lo + edge_margin and x < x_hi - edge_margin]
+    # The system's opening and closing rules, which divide no two measures.
+    # Expected to be 0-2 per system; more than that means the system's edges
+    # were measured wrong and real barlines are being eaten.
+    _bump(counts, "n_barlines_dropped_at_system_edge",
+          n_before_edge_filter - len(xs))
     boundaries: list[tuple[int, int]] = []
     prev = x_lo
     for x in xs:
@@ -871,6 +958,12 @@ def _measure_x_boundaries(barlines: list[Barline], staves: list[Staff]) -> list[
         else:
             last_start, _ = boundaries[-1]
             boundaries[-1] = (last_start, x_hi)
+            # Not a deletion of music — the tail is ABSORBED, deliberately, so
+            # notes standing past a spurious final barline still reach the
+            # detector (WTC p.6 system 2). Counted because it is still a
+            # boundary removed, and a page with many of them has a barline
+            # problem at its right edge.
+            _bump(counts, "n_measure_tails_absorbed")
     else:
         boundaries.append((prev, x_hi))
     return boundaries
@@ -1195,6 +1288,10 @@ def _build_measure_cell(
     x0 = max(0, x0)
     x1 = min(rgb.shape[1], x1)
     if x1 - x0 < 10:
+        # ⚠️ A dropped cell is a measure that never reaches the detector at
+        # all, so this is the highest-consequence deletion in the file and it
+        # recorded nothing. `pws` is in hand, so the count goes on the page.
+        _bump(pws.deletion_counts, "n_measure_cells_dropped_too_narrow")
         return None  # too narrow, skip
     cell_rgb = rgb[y0:y1, x0:x1].copy()
     # Staff line ys in the cell's local coordinate frame.
@@ -1299,7 +1396,13 @@ def extract_measures(
     for s in pws.staves:
         if len(s.line_ys) >= 5:
             sys_staves.setdefault(s.system_index, []).append(s)
-        elif admit_one_line and _cell_span_px(s) > 0:
+        elif not (admit_one_line and _cell_span_px(s) > 0):
+            # A one-line staff refused a cell: either `OMR_ONE_LINE_STAVES` is
+            # off, or the rule has no reconstructable four-space span. It keeps
+            # its slot (that is why it was detected at all) but contributes no
+            # music, and nothing said so.
+            _bump(pws.deletion_counts, "n_one_line_staves_excluded_from_cells")
+        else:
             # Admitted to the CELL loop only. Deliberately kept out of
             # `sys_staves`, which is also what `_measure_x_boundaries` reads:
             # a percussion rule runs to the page margins, so letting it vote on
@@ -1311,7 +1414,7 @@ def extract_measures(
 
     for sys_idx, staves in sys_staves.items():
         bls = sys_barlines.get(sys_idx, [])
-        xb = _measure_x_boundaries(bls, staves)
+        xb = _measure_x_boundaries(bls, staves, counts=pws.deletion_counts)
         for staff in staves + sys_one_line.get(sys_idx, []):
             for m_idx, (x0, x1) in enumerate(xb):
                 cell = _build_measure_cell(
@@ -1539,6 +1642,7 @@ def _select_steered_splits(
     median_w: float,
     *,
     min_piece_frac: float = RESEGMENT_MIN_PIECE_FRAC,
+    counts: dict[str, int] | None = None,
 ) -> dict[int, list[int]]:
     """Pick steered splits to fill a `shortfall` of bars in a system.
 
@@ -1557,13 +1661,19 @@ def _select_steered_splits(
         if remaining <= 0:
             break
         if not candidates:
+            _bump(counts, "n_steered_splits_rejected_no_barline_ink")
             continue
         added = len(candidates)
         if added > remaining:
+            # Never overshoot the known count. A non-zero count here says the
+            # steer was RIGHT that bars are missing and this cell was not the
+            # place — the shortfall is elsewhere.
+            _bump(counts, "n_steered_splits_rejected_would_overshoot")
             continue  # would split past the known count -> skip (never overshoot)
         boundaries = [x0] + list(candidates) + [x1]
         pieces = [boundaries[i + 1] - boundaries[i] for i in range(len(boundaries) - 1)]
         if any(p < median_w * min_piece_frac for p in pieces):
+            _bump(counts, "n_steered_splits_rejected_sliver_piece")
             continue  # a resulting piece would be a sliver -> reject (false barline)
         out[measure_index] = boundaries
         remaining -= added
@@ -1666,11 +1776,18 @@ def resegment_fused_measures(
                     continue  # not a flagged outlier -- leave untouched
                 candidates = _find_internal_barline_candidates(bin_img, staves, x0, x1)
                 if not candidates:
+                    # A cell flagged as >2x median that holds no internal
+                    # barline ink. This is the residue the width warning
+                    # reports and nothing could ever split.
+                    _bump(pws.deletion_counts,
+                          "n_wide_cells_unsplit_no_barline_ink")
                     continue  # no genuine internal barline found -- stays fused
                 boundaries = [x0] + candidates + [x1]
                 piece_widths = [boundaries[i + 1] - boundaries[i] for i in range(len(boundaries) - 1)]
                 lo = median_w * RESEGMENT_MIN_PIECE_FRAC
                 hi = median_w * RESEGMENT_MAX_PIECE_FRAC
+                _bump(pws.deletion_counts, "n_wide_cells_split_rejected_piece_width",
+                      0 if all(lo <= pw <= hi for pw in piece_widths) else 1)
                 if all(lo <= pw <= hi for pw in piece_widths):
                     split_boundaries[c.measure_index] = boundaries
                 # else: at least one resulting piece would be a sliver (or
@@ -1707,7 +1824,8 @@ def resegment_fused_measures(
                         cand = _find_internal_barline_candidates(bin_img, staves, x0, x1)
                         candidate_cells.append((c.measure_index, x0, x1, cand))
                     split_boundaries.update(
-                        _select_steered_splits(candidate_cells, shortfall, median_w)
+                        _select_steered_splits(candidate_cells, shortfall, median_w,
+                                              counts=pws.deletion_counts)
                     )
 
         if not split_boundaries:
