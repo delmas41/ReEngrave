@@ -1,0 +1,47 @@
+[
+ {
+  "first": 0,
+  "last": 43,
+  "size": 12,
+  "lineup": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ],
+  "read_off": "corpus.LINEUPS['beet5'] \u2014 Litolff"
+ },
+ {
+  "first": 44,
+  "last": 200,
+  "size": 17,
+  "lineup": [
+   "Piccolo",
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Contrabassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Trombone",
+   "Trombone",
+   "Trombone",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ],
+  "read_off": "corpus.LINEUPS['beet5'] \u2014 Litolff"
+ }
+]
