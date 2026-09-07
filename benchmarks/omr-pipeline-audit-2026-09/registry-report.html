@@ -1,0 +1,1425 @@
+<title>ReEngrave · % of Achievable</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper:#F7F6F2; --surface:#FFFFFF; --ink:#1D1F27; --muted:#676B76;
+    --faint:#9A9DA6; --hairline:#E4E2DA; --hairline-strong:#CFCDC3;
+    --accent:#3352C4; --accent-soft:#E7ECFA;
+    --good:#2E7D4F; --good-soft:#E4F0E8;
+    --warn:#A97A14; --warn-soft:#F5EDD9;
+    --crit:#B3382E; --crit-soft:#F6E4E2;
+    --shadow:0 1px 2px rgba(29,31,39,.05);
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --paper:#14161C; --surface:#1C1F28; --ink:#E9E8E3; --muted:#A0A3AD;
+    --faint:#6E7280; --hairline:#2C303B; --hairline-strong:#3A3F4D;
+    --accent:#8CA3F2; --accent-soft:#232B44;
+    --good:#6DBE8F; --good-soft:#1E3328;
+    --warn:#D9AE4E; --warn-soft:#362E17;
+    --crit:#E08076; --crit-soft:#3B211E; --shadow:none; } }
+  :root[data-theme="dark"] {
+    --paper:#14161C; --surface:#1C1F28; --ink:#E9E8E3; --muted:#A0A3AD;
+    --faint:#6E7280; --hairline:#2C303B; --hairline-strong:#3A3F4D;
+    --accent:#8CA3F2; --accent-soft:#232B44;
+    --good:#6DBE8F; --good-soft:#1E3328;
+    --warn:#D9AE4E; --warn-soft:#362E17;
+    --crit:#E08076; --crit-soft:#3B211E; --shadow:none; }
+
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1120px; margin:0 auto; padding:40px 28px 72px; }
+  header h1 { font-family:"Source Serif 4",Georgia,"Times New Roman",serif; font-weight:600;
+    font-size:34px; margin:0; letter-spacing:-.01em; text-wrap:balance; }
+  .masthead-row { display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; flex-wrap:wrap; }
+  .stamp { font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+    font-size:12.5px; color:var(--muted); }
+  .stamp b { color:var(--ink); font-weight:600; }
+  .stafflines { margin:18px 0 0; display:grid; gap:5px; }
+  .stafflines i { display:block; height:1px; background:var(--hairline-strong); }
+  .subtitle { color:var(--muted); margin:16px 0 0; max-width:76ch; }
+  section { margin-top:40px; }
+  .kicker { font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-size:11.5px;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin:0 0 10px; }
+  .table-caption { color:var(--muted); font-size:13.5px; margin:0 0 16px; max-width:88ch; }
+  code { font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-size:12px;
+    background:var(--accent-soft); padding:1px 5px; border-radius:4px; }
+  .dim { color:var(--faint); }
+
+  /* the unit banner */
+  .unitbar { display:flex; gap:18px; align-items:center; flex-wrap:wrap;
+    background:var(--surface); border:1px solid var(--hairline);
+    border-left:3px solid var(--accent); border-radius:10px; padding:16px 20px;
+    box-shadow:var(--shadow); margin-top:26px; }
+  .unitbar .big { font-family:"Source Serif 4",Georgia,serif; font-size:21px; font-weight:600; }
+  .unitbar .sub { color:var(--muted); font-size:13.5px; max-width:70ch; }
+
+  /* rows */
+  .mrows { display:grid; gap:12px; }
+  .mrow { background:var(--surface); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; box-shadow:var(--shadow); }
+  .mrow.unscore { background:transparent; border-style:dashed;
+    border-color:var(--hairline-strong); box-shadow:none; }
+  .mhead { display:grid; grid-template-columns:minmax(0,1fr) minmax(200px,340px);
+    gap:18px; align-items:center; }
+  .mid { font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-size:13px;
+    font-weight:600; word-break:break-all; }
+  .mstage { color:var(--faint); font-size:12.5px; margin-top:2px; }
+  .mbar { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; }
+  .track { height:9px; border-radius:5px; background:var(--hairline); overflow:hidden; }
+  .fill { display:block; height:100%; border-radius:5px; background:var(--good); }
+  .fill.warn { background:var(--warn); } .fill.crit { background:var(--crit); }
+  /* ⚠️ HATCHED = the ceiling is ASSUMED. A row graded against a guess and one
+     graded against measured evidence must not look identical. */
+  .fill.assumed { background-image:repeating-linear-gradient(135deg,
+      rgba(255,255,255,.55) 0 3px, transparent 3px 7px); }
+  .pct { font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-size:17px;
+    font-weight:600; min-width:78px; text-align:right; }
+  .pct.good { color:var(--good); } .pct.warn { color:var(--warn); } .pct.crit { color:var(--crit); }
+  .pct .unit { font-size:11px; font-weight:400; color:var(--muted); margin-left:2px; }
+  .nobar { grid-column:1/-1; text-align:right; font-size:12.5px; color:var(--faint);
+    font-style:italic; }
+  .native { margin-top:9px; font-size:13px; color:var(--muted); }
+  .why { margin-top:9px; font-size:13.5px; color:var(--ink); background:var(--warn-soft);
+    border-radius:7px; padding:9px 12px; }
+  .meta { margin-top:10px; display:flex; flex-wrap:wrap; gap:6px 18px; font-size:12.5px;
+    color:var(--muted); }
+  .meta b { color:var(--ink); font-weight:600; }
+  .meta .era code { font-size:11px; }
+  .cs-ok { color:var(--good); font-style:normal; font-weight:600; }
+  .cs-assumed { color:var(--warn); font-style:normal; font-weight:600; }
+  .chips { margin-top:8px; display:flex; gap:6px; flex-wrap:wrap; }
+  .chip { font-size:11.5px; padding:2px 8px; border-radius:999px; border:1px solid var(--hairline-strong);
+    color:var(--muted); }
+  .chip.ts { border-color:var(--good); color:var(--good); background:var(--good-soft); }
+  .chip.h2h { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+  details { margin-top:8px; }
+  summary { cursor:pointer; font-size:12.5px; color:var(--accent); }
+  .detail { font-size:12.5px; color:var(--muted); margin-top:6px; }
+  .detail p { margin:5px 0; }
+  .ev { font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-size:11px;
+    color:var(--faint); word-break:break-all; }
+  .flag { color:var(--warn); }
+
+  /* showcase */
+  .showcase .pairwrap { display:grid; grid-template-columns:1fr auto 1fr; gap:12px;
+    align-items:stretch; }
+  .pair { background:var(--surface); border:1px solid var(--hairline); border-radius:10px;
+    padding:18px 20px; box-shadow:var(--shadow); }
+  .pair.screen { border-style:dashed; border-color:var(--warn); background:transparent; }
+  .pair.defect { border-left:3px solid var(--good); }
+  .ptag { font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-size:11px;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  .pair .pnum { font-family:"Source Serif 4",Georgia,serif; font-size:40px; font-weight:600;
+    line-height:1.1; margin:6px 0 2px; }
+  .pair.screen .pnum { color:var(--warn); } .pair.defect .pnum { color:var(--good); }
+  .pair .pnum .unit { font-size:18px; color:var(--muted); }
+  .plab { font-size:13px; color:var(--muted); }
+  .pverdict { margin-top:10px; font-size:12.5px; color:var(--warn); font-weight:600; }
+  .pverdict.good-verdict { color:var(--good); }
+  .pgap { display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:0 6px; }
+  .pgap span { font-family:"Source Serif 4",Georgia,serif; font-size:26px; font-weight:600;
+    color:var(--crit); }
+  .pgap small { color:var(--faint); font-size:10.5px; text-align:center; max-width:96px; }
+  .showcase-note { margin-top:14px; font-size:13.5px; color:var(--muted); max-width:92ch; }
+  .showcase-note b { color:var(--ink); }
+
+  /* head to head */
+  .h2h { display:grid; gap:10px; }
+  .h2hrow { background:var(--surface); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; box-shadow:var(--shadow); }
+  .h2hlab { font-size:12.5px; color:var(--muted); word-break:break-all; }
+  .h2hnums { margin-top:6px; display:flex; gap:14px; align-items:baseline; flex-wrap:wrap;
+    font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-size:15px; }
+  .h2hnums .us { color:var(--good); font-weight:600; }
+  .h2hnums .them { color:var(--accent); font-weight:600; }
+  .h2hnums .vs { color:var(--faint); font-size:12px; }
+  .h2hnote { margin-top:6px; font-size:12px; color:var(--faint); }
+
+  .legend { display:flex; gap:16px; flex-wrap:wrap; font-size:12.5px; color:var(--muted);
+    margin:0 0 18px; }
+  .sw { display:inline-block; width:22px; height:9px; border-radius:5px; margin-right:6px;
+    vertical-align:middle; }
+  .sw.good { background:var(--good); } .sw.warn { background:var(--warn); }
+  .sw.crit { background:var(--crit); } .sw.grey { background:var(--hairline-strong); }
+  .sw.hatch { background:var(--good); background-image:repeating-linear-gradient(135deg,
+      rgba(255,255,255,.55) 0 3px, transparent 3px 7px); }
+  .warnbox { background:var(--crit-soft); border-left:3px solid var(--crit); border-radius:8px;
+    padding:14px 18px; font-size:13.5px; margin-top:20px; }
+  @media (max-width:820px) {
+    .mhead { grid-template-columns:1fr; }
+    .showcase .pairwrap { grid-template-columns:1fr; }
+    .pgap { flex-direction:row; gap:10px; padding:4px 0; }
+  }
+</style>
+<div class="wrap">
+  <header>
+    <div class="masthead-row">
+      <h1>% of Achievable</h1>
+      <div class="stamp">registry <b>v0.2.0</b> · round <b>2</b> ·
+        rendered <b>2026-09-06</b></div>
+    </div>
+    <div class="stafflines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <p class="subtitle">Every measurement this project makes, in <b>one unit and one
+      direction</b>. Sean, 2026-09-07: today 1.000 means perfect in one table and catastrophic in the next. One unit, one direction, every row.</p>
+    <div class="unitbar">
+      <div>
+        <div class="big">% of achievable &nbsp;·&nbsp; 0–100 &nbsp;·&nbsp; higher is better</div>
+        <div class="sub"><b>55 rows · 38 scoreable · 17 not.</b>
+          A row that is not scoreable renders as a <i>reason</i>, never as a number and
+          never as 100 — a fabricated 100 is the worst outcome available here. There is
+          <b>no single top-line figure on this page</b>: engraved and scan have
+          different ceilings, different noise floors and different eras, and pooling
+          them would be the lie the dashboard already warns about.</div>
+      </div>
+    </div>
+    
+  </header>
+
+  <section class="showcase">
+    <p class="kicker">The pair that must never be printed alone</p>
+    <div class="pairwrap">
+      <div class="pair screen">
+        <div class="ptag">a SCREEN · workload</div>
+        <div class="pnum">6.9<span class="unit">%</span></div>
+        <div class="plab">ledger-zone labels FLAGGED by the parity auditor</div>
+        <div class="pverdict">unscoreable — a screening rate is not an
+          achievement number, and never goes on this axis</div>
+      </div>
+      <div class="pgap"><span>7×</span><small>and both are percentages</small></div>
+      <div class="pair defect">
+        <div class="ptag">a DEFECT · quality</div>
+        <div class="pnum">99.02<span class="unit">%</span></div>
+        <div class="plab">of achievable &nbsp;·&nbsp; native 0.98% wrong,
+          hand-adjudicated</div>
+        <div class="pverdict good-verdict">scoreable — this is the quality figure</div>
+      </div>
+    </div>
+    <p class="showcase-note">⚠️ <b>Printing either alone is wrong in a NAMED
+      direction.</b> The auditor flags 7 of 102 ledger-zone labels; hand
+      adjudication found <b>one</b> real error. So <b>6.9% overstates the defect
+      sevenfold</b>, and <b>0.9% understates the reviewer's workload
+      sevenfold</b>. Six of the seven flags share one mechanism — a printed
+      ledger line print-merging into the notehead's connected component, pulling
+      the centroid up to a half-step. Two rows, different <code>stage</code>
+      semantics, never one. <span class="dim">n = 102 labels,
+      <code>labeling-audit|simrock-dvorak9|2026-09-03</code></span></p>
+  </section>
+  <section>
+    <p class="kicker">How to read a row</p>
+    <div class="legend"><span><i class="sw good"></i>≥ 90% of achievable</span><span><i class="sw warn"></i>60–90%</span><span><i class="sw crit"></i>&lt; 60%</span><span><i class="sw hatch"></i>hatched — ceiling <b>ASSUMED</b>, not measured</span><span><i class="sw grey"></i>no bar at all — not on this axis</span></div>
+    <p class="table-caption">The <b>bar</b> is % of achievable. <b>Hatched</b> means the
+      ceiling was <i>assumed</i> at the value that minimises the score (F = 0 for an
+      error metric, C = 1 for a rate) because no evidence exists — so such a row is
+      understated by construction and can never manufacture a high number. Every row
+      carries <b>n</b>, its <b>era key</b>, its <b>noise floor</b> and the <b>kind</b> of
+      ceiling it is graded against; a delta is only meaningful inside one era key, above
+      that row's own noise floor, and with the edit count moving the same way as the
+      ratio — otherwise it is dilution, not improvement.</p>
+  </section>
+
+  <section>
+    <p class="kicker">Digitally engraved input</p>
+    <p class="table-caption">Fixtures we render ourselves, so the ink is known by construction. Says nothing about scan robustness. <span class="dim">· 33 rows, 26 scoreable, 7 not</span></p>
+    <div class="mrows">
+    <div class="mrow" id="reading-notehead">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:notehead</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good assumed" style="width:99.9%"></i></div><div class="pct good">99.88<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.9988 <span class='dim'>(detection F1 vs exact page truth, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 856 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — re-rendering at 600 dpi moved Brahms 1 0.854-&gt;0.868 and Tchaikovsky 4 0.787-&gt;0.789 (FINDINGS controls)</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score</p><p><b>companions ·</b> truth 856, pred 858, matched 856</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="reading-time_signature_digit">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:time_signature_digit</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good assumed" style="width:99.7%"></i></div><div class="pct good">99.72<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.9972 <span class='dim'>(detection F1 vs exact page truth, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 358 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — re-rendering at 600 dpi moved Brahms 1 0.854-&gt;0.868 and Tchaikovsky 4 0.787-&gt;0.789 (FINDINGS controls)</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score</p><p><b>companions ·</b> truth 358, pred 358, matched 357</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="reading-rest">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:rest</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good assumed" style="width:99.2%"></i></div><div class="pct good">99.25<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.9925 <span class='dim'>(detection F1 vs exact page truth, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 929 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — re-rendering at 600 dpi moved Brahms 1 0.854-&gt;0.868 and Tchaikovsky 4 0.787-&gt;0.789 (FINDINGS controls)</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score</p><p><b>companions ·</b> truth 929, pred 941, matched 928</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="reading-flag">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:flag</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good assumed" style="width:99.2%"></i></div><div class="pct good">99.16<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.9916 <span class='dim'>(detection F1 vs exact page truth, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 118 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — re-rendering at 600 dpi moved Brahms 1 0.854-&gt;0.868 and Tchaikovsky 4 0.787-&gt;0.789 (FINDINGS controls)</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score</p><p><b>companions ·</b> truth 118, pred 120, matched 118</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned-mahler-sym5-mvt1">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned:mahler-sym5-mvt1</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good" style="width:97.9%"></i></div><div class="pct good">97.91<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.0209 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 1 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> per-work no-op, delta_edits 0</p><p><b>companions ·</b> edits 40</p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned-beethoven-sym5-mvt1">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned:beethoven-sym5-mvt1</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good" style="width:97.1%"></i></div><div class="pct good">97.07<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.0293 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 1 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> per-work no-op, delta_edits 0</p><p><b>companions ·</b> edits 38</p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="reading-clef">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:clef</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good assumed" style="width:96.9%"></i></div><div class="pct good">96.93<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.9693 <span class='dim'>(detection F1 vs exact page truth, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 226 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — re-rendering at 600 dpi moved Brahms 1 0.854-&gt;0.868 and Tchaikovsky 4 0.787-&gt;0.789 (FINDINGS controls)</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score</p><p><b>companions ·</b> truth 226, pred 230, matched 221</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="reading-augmentation_dot">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:augmentation_dot</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good assumed" style="width:96.2%"></i></div><div class="pct good">96.19<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.9619 <span class='dim'>(detection F1 vs exact page truth, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 102 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — re-rendering at 600 dpi moved Brahms 1 0.854-&gt;0.868 and Tchaikovsky 4 0.787-&gt;0.789 (FINDINGS controls)</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score</p><p><b>companions ·</b> truth 102, pred 108, matched 101</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned-tchaikovsky-sym4-mvt2">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned:tchaikovsky-sym4-mvt2</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good" style="width:95.6%"></i></div><div class="pct good">95.56<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.0444 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 1 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> per-work no-op, delta_edits 0</p><p><b>companions ·</b> edits 69</p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="reading-POOLED">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:POOLED</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good assumed" style="width:91.9%"></i></div><div class="pct good">91.92<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.9192 <span class='dim'>(detection F1 vs exact page truth, pooled, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 3220 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> the RENDER ceiling is enacted as an EXCLUSION, not as C<1: including the render-unreliable accidental family would read 0.8982 instead of 0.9192</p><p><b>companions ·</b> truth 3220, pred 3501, matched 3089</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-structure">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:structure</div>
+          <div class="mstage">1 render + staff detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good" style="width:90.9%"></i></div><div class="pct good">90.91<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.9091 <span class='dim'>(works whose part count equals the truth&#x27;s, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 11 works</span>
+        <span><b>ceiling</b> structural = 1 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> these fixtures are 1:1 BY CONSTRUCTION — every truth part gets its own printed staff — so 1.0 is genuinely reachable and this stage is never asked the hard question a conductor's page asks</p><p><span class="flag">⚠️ EASY BY CONSTRUCTION — a 100 here does not predict a conductor's page</span></p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-1to1.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-headline-validity-2026-09/engraved-1to1.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned-bruckner-sym5-mvt1">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned:bruckner-sym5-mvt1</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good" style="width:90.7%"></i></div><div class="pct good">90.69<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.0931 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 1 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> per-work no-op, delta_edits 0</p><p><b>companions ·</b> edits 185</p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned-brahms-sym1-mvt1">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned:brahms-sym1-mvt1</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good" style="width:90.6%"></i></div><div class="pct good">90.57<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.0943 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 1 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> per-work no-op, delta_edits 0</p><p><b>companions ·</b> edits 390</p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned-mozart-sym41-mvt1">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned:mozart-sym41-mvt1</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn" style="width:89.8%"></i></div><div class="pct warn">89.75<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.1025 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 1 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> per-work no-op, delta_edits 0</p><p><b>companions ·</b> edits 301</p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn" style="width:88.8%"></i></div><div class="pct warn">88.78<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.1122 <span class='dim'>(OMR-NED (musicdiff 5.2), ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 11 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — no repeat-run determinism probe exists for orchestral_eval; the ±6 figure is the SCAN harness&#x27;s</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip ts" title="orchestral-e2e|2026-09-02|11works|direction_text">may be differenced over time</span><span class="chip h2h" title="engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects">head-to-head only — NOT a delta</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> the page-normalising transform is a NO-OP on all 11 works (is_a_no_op: true) — these fixtures are 1:1, so no part of this figure is a charge for a printing convention. The control COULD have failed: on the scan side the same transform removes 33.8% of the edits.</p><p><b>companions ·</b> edits 2362, truth_symbols 10665, pred_symbols 10381</p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="competitive-engraved-audiveris">
+      <div class="mhead">
+        <div>
+          <div class="mid">competitive:engraved:audiveris</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn" style="width:87.5%"></i></div><div class="pct warn">87.48<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.1252 <span class='dim'>(OMR-NED of Audiveris 5.11, our fixtures, our scorer, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 11 works</span>
+        <span><b>ceiling</b> competitive = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|audiveris-5.11</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> same fixtures, same musicdiff bridge — the only valid comparison. Published paper figures are pooled over other corpora and are context, never comparison.</p><p><b>companions ·</b> ours 88.78, we_are_ahead_by_points 1.3</p><div class="ev"><b>evidence ·</b> benchmarks/omr-vs-industry-2026-09/results.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-vs-industry-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned-beethoven-sym3-mvt1">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned:beethoven-sym3-mvt1</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn" style="width:87.1%"></i></div><div class="pct warn">87.06<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.1294 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 1 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> per-work no-op, delta_edits 0</p><p><b>companions ·</b> edits 215</p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned-mozart-sym40-mvt1">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned:mozart-sym40-mvt1</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn" style="width:85.8%"></i></div><div class="pct warn">85.85<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.1415 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 1 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> per-work no-op, delta_edits 0</p><p><b>companions ·</b> edits 218</p><p><span class="flag">⚠️ ~41% of notes land in `order` bars with every pitch present on both sides — a divisi voice-split convention, not recognition</span></p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="reading-key_accidental">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:key_accidental</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn assumed" style="width:83.9%"></i></div><div class="pct warn">83.89<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.8389 <span class='dim'>(detection F1 vs exact page truth, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 328 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — re-rendering at 600 dpi moved Brahms 1 0.854-&gt;0.868 and Tchaikovsky 4 0.787-&gt;0.789 (FINDINGS controls)</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score</p><p><b>companions ·</b> truth 328, pred 454, matched 328</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned-tchaikovsky-sym6-mvt2">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned:tchaikovsky-sym6-mvt2</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn" style="width:81.5%"></i></div><div class="pct warn">81.45<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.1855 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 1 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> per-work no-op, delta_edits 0</p><p><b>companions ·</b> edits 266</p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned-brahms-sym4-mvt1">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned:brahms-sym4-mvt1</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn" style="width:78.6%"></i></div><div class="pct warn">78.64<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.2136 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 1 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> per-work no-op, delta_edits 0</p><p><b>companions ·</b> edits 401</p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="reading-beam">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:beam</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn assumed" style="width:75.3%"></i></div><div class="pct warn">75.34<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.7534 <span class='dim'>(detection F1 vs exact page truth, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 110 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — re-rendering at 600 dpi moved Brahms 1 0.854-&gt;0.868 and Tchaikovsky 4 0.787-&gt;0.789 (FINDINGS controls)</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score</p><p><b>companions ·</b> truth 110, pred 182, matched 110</p><p><span class="flag">⚠️ held out of the pooled F1: CV-detected, unit is a STROKE not a per-note-per-level <beam></span></p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="engraved-omr_ned-dvorak-sym9-mvt4">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:omr_ned:dvorak-sym9-mvt4</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn" style="width:66.2%"></i></div><div class="pct warn">66.20<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.3380 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 1 works</span>
+        <span><b>ceiling</b> structural = 0 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> per-work no-op, delta_edits 0</p><p><b>companions ·</b> edits 239</p><p><span class="flag">⚠️ denominator is a 3-bar excerpt, a third of every other row — noisiest ratio in the set</span></p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-ned-2026-08/current-accuracy.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="reading-dynamic_letter">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:dynamic_letter</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill crit assumed" style="width:55.1%"></i></div><div class="pct crit">55.15<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.5515 <span class='dim'>(detection F1 vs exact page truth, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 114 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — re-rendering at 600 dpi moved Brahms 1 0.854-&gt;0.868 and Tchaikovsky 4 0.787-&gt;0.789 (FINDINGS controls)</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score</p><p><b>companions ·</b> truth 114, pred 216, matched 91</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="reading-slur">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:slur</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill crit assumed" style="width:51.8%"></i></div><div class="pct crit">51.77<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.5177 <span class='dim'>(detection F1 vs exact page truth, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 137 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — re-rendering at 600 dpi moved Brahms 1 0.854-&gt;0.868 and Tchaikovsky 4 0.787-&gt;0.789 (FINDINGS controls)</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score</p><p><b>companions ·</b> truth 137, pred 145, matched 73</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="reading-tie">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:tie</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill crit assumed" style="width:26.0%"></i></div><div class="pct crit">26.02<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.2602 <span class='dim'>(detection F1 vs exact page truth, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 52 printed symbols</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>unmeasured — re-rendering at 600 dpi moved Brahms 1 0.854-&gt;0.868 and Tchaikovsky 4 0.787-&gt;0.789 (FINDINGS controls)</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score</p><p><b>companions ·</b> truth 52, pred 71, matched 16</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="engraved-stage10">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:stage10</div>
+          <div class="mstage">10 Staff → slot alignment, part identity</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> the harness cannot see this stage at all — not exercised. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</div>
+      <div class="meta">
+        <span><b>n</b> 0 observations</span>
+        <span><b>ceiling</b> visibility = — · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> These fixtures are 1:1 by construction — every truth part gets its own printed staff on all 11 works — so the join is never asked the hard question. A conductor's page condenses (Fl 1+2 share a staff) and splits (divisi); an engraved fixture does neither.</p><div class="ev"><b>evidence ·</b> benchmarks/omr-headline-validity-2026-09/engraved-1to1.json</div>
+        <div class="ev"><b>source ·</b> docs/progress-dashboard.content.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="engraved-stage11">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:stage11</div>
+          <div class="mstage">11 Export → MusicXML / LilyPond</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> the harness cannot see this stage at all — no isolated figure. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</div>
+      <div class="meta">
+        <span><b>n</b> 0 observations</span>
+        <span><b>ceiling</b> visibility = — · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> Export is only ever measured <em>end to end</em>, which is exactly why those nine gaps had to be found by forensics — in OMR-NED a symbol read perfectly and lost in the exporter is indistinguishable from one never read. What guards it now is <code>export_coverage.py</code>, run on every suite, firing on the categorical signature of a gap (the truth has some, we emit <b>zero</b>); <code>KNOWN_GAPS<</p><div class="ev"><b>evidence ·</b> tools/omr/export_coverage.py</div>
+        <div class="ev"><b>source ·</b> docs/progress-dashboard.content.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="engraved-stage2">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:stage2</div>
+          <div class="mstage">2 System grouping</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> the harness cannot see this stage at all — not exercised. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</div>
+      <div class="meta">
+        <span><b>n</b> 0 observations</span>
+        <span><b>ceiling</b> visibility = — · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> The choir-grouping A/B left all 11 engraved works <b>edit-for-edit identical</b> — which is the same fact as this benchmark being unable to see the stage. Its guards are the end-to-end tests, not the pooled figure.</p><div class="ev"><b>evidence ·</b> CLAUDE.md · OMR_CHOIR_GROUPING (benchmarks/omr-choir-grouping-2026-09/FINDINGS.md)</div>
+        <div class="ev"><b>source ·</b> docs/progress-dashboard.content.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="engraved-stage3">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:stage3</div>
+          <div class="mstage">3 Measure + barline extraction</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> the harness cannot see this stage at all — not scoreable. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</div>
+      <div class="meta">
+        <span><b>n</b> 0 observations</span>
+        <span><b>ceiling</b> visibility = — · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> The page-truth harness cannot score barlines: they are CV-detected in <em>cell-relative</em> coordinates and never appear in page coordinates, so its table reads 45 printed against 0 comparable. Not a failure — a frame mismatch, flagged rather than counted.</p><div class="ev"><b>evidence ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div>
+        <div class="ev"><b>source ·</b> docs/progress-dashboard.content.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="engraved-stage9">
+      <div class="mhead">
+        <div>
+          <div class="mid">engraved:stage9</div>
+          <div class="mstage">9 Margin labels → instrument</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> the harness cannot see this stage at all — invisible to the metric. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</div>
+      <div class="meta">
+        <span><b>n</b> 0 observations</span>
+        <span><b>ceiling</b> visibility = — · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> musicdiff cannot score <code>&lt;part-name&gt;</code> at all — <em>measured</em>, not assumed: rewriting every part name in the export scores exactly 0 edits. So no engraved harness can see this stage, which is also why the roster work ships default-ON despite pricing at zero.</p><div class="ev"><b>evidence ·</b> CLAUDE.md · the 2026-09-05 landing (part-name assumption measured)</div>
+        <div class="ev"><b>source ·</b> docs/progress-dashboard.content.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="reading-accidental">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:accidental</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> the FIXTURE is unreadable for this family — a score here measures Verovio, not the pipeline</div>
+      <div class="meta">
+        <span><b>n</b> 226 printed symbols</span>
+        <span><b>ceiling</b> render = — · <i class="cs-assumed">measured_unreliable</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> Verovio draws one accidental per <alter>, not per <accidental> — the rendered page carries ink a real engraver would never print (Brahms 1: 54 <accidental>, 149 <alter>, 149 drawn). page_truth.render_fidelity declares the family unreliable.</p><div class="ev"><b>evidence ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json, tools/omr/page_truth.py render_fidelity</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="reading-barline">
+      <div class="mhead">
+        <div>
+          <div class="mid">reading:barline</div>
+          <div class="mstage">3 measure + barline</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> CV-detected in CELL-relative coordinates and never expressed in page coordinates — 45 printed against 0 comparable. A frame mismatch, not a miss.</div>
+      <div class="meta">
+        <span><b>n</b> 45 printed symbols</span>
+        <span><b>ceiling</b> visibility = — · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>page-truth|verovio-render|300dpi|tol0.5spaces|11works</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> CV-detected in CELL-relative coordinates and never expressed in page coordinates — 45 printed against 0 comparable. A frame mismatch, not a miss.</p><div class="ev"><b>evidence ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div></div>
+      </details>
+    </div></div>
+  </section>
+  <section>
+    <p class="kicker">Scanned input</p>
+    <p class="table-caption">Real printed pages. ⚠️ Every scan row is <b>% of achievable under page fidelity</b> — the metric's unconstrained floor is zero, reachable by emitting the encoding instead of the page, which this project calls an anti-feature. <span class="dim">· 21 rows, 12 scoreable, 9 not</span></p>
+    <div class="mrows">
+    <div class="mrow" id="scan-staves">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:staves</div>
+          <div class="mstage">1 render + staff detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good" style="width:100.0%"></i></div><div class="pct good">100.00<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 1.0000 <span class='dim'>(rows exact, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 20 pages</span>
+        <span><b>ceiling</b> input = 1 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> the printed counts are HAND-READ off the scan, so 1.0 is what the page actually contains</p><p><b>companions ·</b> exact_rows 20</p><div class="ev"><b>evidence ·</b> benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="scan-systems">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:systems</div>
+          <div class="mstage">2 system grouping</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good" style="width:100.0%"></i></div><div class="pct good">100.00<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 1.0000 <span class='dim'>(rows exact, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 20 pages</span>
+        <span><b>ceiling</b> input = 1 · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> the printed counts are HAND-READ off the scan, so 1.0 is what the page actually contains</p><p><b>companions ·</b> exact_rows 20</p><div class="ev"><b>evidence ·</b> benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="labeling-ledger_zone-defect_rate">
+      <div class="mhead">
+        <div>
+          <div class="mid">labeling:ledger_zone:defect_rate</div>
+          <div class="mstage">(labeling QA)</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good assumed" style="width:99.0%"></i></div><div class="pct good">99.02<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.0098 <span class='dim'>(ledger-zone labels ADJUDICATED wrong by a human, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 102 ledger-zone labels</span>
+        <span><b>ceiling</b> assumed = 0 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>labeling-audit|simrock-dvorak9|2026-09-03</code></span>
+      </div>
+      <div class="chips"><span class="chip ts" title="labeling-audit|ledger-zone|adjudicated">may be differenced over time</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> F=0 assumed: a perfect labeling pass has no defects. Conservative by the assumption-direction rule.</p><p><b>companions ·</b> screening_rate 0.069, screen_to_defect_ratio 7.0</p><p><span class="flag">⚠️ ALWAYS render beside `labeling:ledger_zone:screening_rate`. The two differ by 7x and both are percentages; showing either alone misleads in a named direction.</span></p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-snap-ledger-2026-09/LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="prefill-precision-blind_out_of_sample">
+      <div class="mhead">
+        <div>
+          <div class="mid">prefill:precision:blind_out_of_sample</div>
+          <div class="mstage">(labeling pre-fill)</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill good" style="width:94.3%"></i></div><div class="pct good">94.33<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.9150 <span class='dim'>(exact-class precision of reference-driven pre-filled verdicts, blind sample, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 141 pre-filled boxes</span>
+        <span><b>ceiling</b> competitive = 0.97 · <i class="cs-ok">pre_registered</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>prefill|brahms1-breitkopf|phase-C|blind|2026-09-03</code></span>
+      </div>
+      <div class="chips"><span class="chip ts" title="prefill|brahms1-breitkopf|phase-C|blind">may be differenced over time</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> 0.97 is the ADMISSION BAR set in advance, and the cells were pre-registered at seed 20260903 with their status recorded BEFORE labeling; the pass was run blind (annotate.server --blind). The measurement came in UNDER the bar and pre-filled verdicts stayed a queue rather than becoming labels — a control that fired.</p><p><b>companions ·</b> pre_registered_25_cells 0.838, other_24_cells 1.0, noteheads 0.943, rests 0.722</p><p><span class="flag">⚠️ a rare case where the CEILING IS A DECISION RULE rather than a physical limit — the bar a human set in advance for admitting the output without review. That is the most useful ceiling kind for anything gated on human trust, and the only pre-registered one in the registry.</span></p><div class="ev"><b>evidence ·</b> benchmarks/omr-prefill-admission-2026-09/FINDINGS.md, benchmarks/omr-prefill-admission-2026-09/PHASE_C_CELLS.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-prefill-admission-2026-09/FINDINGS.md</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="scan-pitch">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:pitch</div>
+          <div class="mstage">6 pitch resolution</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn assumed" style="width:83.4%"></i></div><div class="pct warn">83.43<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.8343 <span class='dim'>(staff-position recall vs truth notes, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 4127 truth notes</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> no measurement of how much ink is genuinely unrecoverable on these scans exists — the INPUT ceiling is unmeasured, so C=1 under the assumption-direction rule</p><p><b>companions ·</b> rows_with_hand_map 10, spelled_pitch_recall 0.76399321541071</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="scan-duration">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:duration</div>
+          <div class="mstage">7 rhythm / durations</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill warn assumed" style="width:75.0%"></i></div><div class="pct warn">74.98<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.7498 <span class='dim'>(of pitch-matched notes, share whose duration is also right, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 3153 pitch-matched notes</span>
+        <span><b>ceiling</b> assumed = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="scan-omr_ned-ceiling_corroborated_subset">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:omr_ned:ceiling_corroborated_subset</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill crit" style="width:29.8%"></i></div><div class="pct crit">29.80<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.7473 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 5 pages</span>
+        <span><b>ceiling</b> structural = 0.151995 · <i class="cs-ok">measured_and_corroborated</i></span>
+        <span><b>noise floor</b> ±6 edits</span>
+        <span class="era"><b>era</b> <code>scan-e2e|20rows|reconciliation|ceiling-corroborated-5|transform1.2.0|afea84ba</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> the ceiling is bit-identical for an INDEPENDENT engine (Audiveris 5.11) on all 5 rows. The control fired: it is NOT identical on 3 further rows, which are therefore excluded — every one of those is a two-system page.</p><p><span class="flag">⚠️ 5 of 20 rows, 3 of 6 works — NOT the headline. Since 2026-09-07 it is on the SAME arm as the headline (the 20-row normalised artefact), so the arm mismatch that made this incomparable is closed; the ROW-SET mismatch stands and still refuses the difference.</span></p><div class="ev"><b>evidence ·</b> benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json, benchmarks/omr-pipeline-audit-2026-09/ceiling-engine-independence.json, benchmarks/omr-scan-e2e-2026-09/works.json (hand-read map)</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-pipeline-audit-2026-09/pct-of-achievable-prototype.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="competitive-scan-audiveris">
+      <div class="mhead">
+        <div>
+          <div class="mid">competitive:scan:audiveris</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill crit assumed" style="width:20.8%"></i></div><div class="pct crit">20.81<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.7919 <span class='dim'>(OMR-NED of Audiveris 5.11 on the 11-row scan era, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 10 pages</span>
+        <span><b>ceiling</b> competitive = 0 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>scan-e2e|11rows|restamp-composed|audiveris-5.11</code></span>
+      </div>
+      <div class="chips"><span class="chip h2h" title="scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects">head-to-head only — NOT a delta</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> ⚠️ this arm covers the ELEVEN-row scan era; the headline moved to 20 rows on 2026-09-04 and the arm was not widened. Comparable to our 11-row 0.8345 only.</p><p><span class="flag">⚠️ Audiveris is AHEAD of us on this pool (0.7919 vs our 0.8345 on the same 10 rows) — recorded, not hidden</span></p><p><span class="flag">⚠️ on 7 of 10 rows its structural charge is bit-identical to ours, which is how we know that charge is a ceiling and not a defect</span></p><div class="ev"><b>evidence ·</b> benchmarks/omr-vs-industry-2026-09/results-audiveris-scan.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-vs-industry-2026-09/results-audiveris-scan.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="scan-omr_ned-page_fidelity_15rows">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:omr_ned:page_fidelity_15rows</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill crit" style="width:20.1%"></i></div><div class="pct crit">20.09<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.8417 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 15 pages</span>
+        <span><b>ceiling</b> structural = 0.212295 · <i class="cs-ok">measured_directly</i></span>
+        <span><b>noise floor</b> ±6 edits</span>
+        <span class="era"><b>era</b> <code>scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba</code></span>
+      </div>
+      <div class="chips"><span class="chip ts" title="scan-e2e|20rows|reconciliation|normalised-transform1.2.0">may be differenced over time</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> the derived truth is scored AS THE PREDICTION against the raw truth, so no output of ours appears in the measurement at all. Controls: the three identity-transform rows (Dvorak, 15 parts into 15 staves) score EXACTLY 0 edits; all 15 derived truths reproduce the committed control's canonical hashes; every truth fixture's sha256 equals the canonical arm's.</p><p><b>companions ·</b> floor_unpaired_parts 0.21229475255482833, floor_structural 0.4981915260075784, floor_total 0.6347743713399931, residue_share_of_total_floor 0.21516754850088182</p><p><span class="flag">⚠️ the floor is the MOST CONSERVATIVE rung of a three-rung ladder (0.2123 unpaired-parts / 0.4982 structural / 0.6348 total). A larger floor raises the score, so the ladder is climbed only as far as the evidence is unambiguous.</span></p><p><span class="flag">⚠️ 15 of 20 rows: the four Mahler and one Bach rows have no hand-read staves map and are not guessed at</span></p><div class="ev"><b>evidence ·</b> benchmarks/omr-pipeline-audit-2026-09/structural-floor-measured.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-pipeline-audit-2026-09/structural-floor-measured.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="scan-omr_ned-ceiling_measured_15rows">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:omr_ned:ceiling_measured_15rows</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill crit" style="width:18.3%"></i></div><div class="pct crit">18.28<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.8417 <span class='dim'>(OMR-NED, ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 15 pages</span>
+        <span><b>ceiling</b> structural = 0.133999 · <i class="cs-ok">measured_single_source</i></span>
+        <span><b>noise floor</b> ±6 edits</span>
+        <span class="era"><b>era</b> <code>scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> the QUANTITY is defined by (reference truth, hand-read page map) and is independent of our output; the ESTIMATOR is the MINIMUM `entire staff` charge over every engine measured on each row, which is our own on 10 of the 15. On the other 5 an independent engine produces the identical number.</p><p><span class="flag">⚠️ 15 of 20 rows: the five Mahler/Bach rows have no hand-read staves map and are not guessed at</span></p><div class="ev"><b>evidence ·</b> benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json, benchmarks/omr-scan-e2e-2026-09/works.json (hand-read map), benchmarks/omr-pipeline-audit-2026-09/ceiling-engine-independence.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-pipeline-audit-2026-09/pct-of-achievable-prototype.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="scan-omr_ned">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:omr_ned</div>
+          <div class="mstage">= finished file</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill crit assumed" style="width:15.6%"></i></div><div class="pct crit">15.56<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.8444 <span class='dim'>(OMR-NED (musicdiff 5.2), ↓ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 20 hand-verified pages</span>
+        <span><b>ceiling</b> assumed = 0 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> ±6 edits · ±0.007 pts pooled <span class='dim'>±6 edits pooled; on a single row the same 6 edits are worth ~0.5 pct-points. Source: CLAUDE.md, beethoven-984073-p4 4673 then 4679 on one tree.</span></span>
+        <span class="era"><b>era</b> <code>scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><p><b>control ·</b> F=0 is the assumption-direction default and UNDERSTATES. A measured floor now exists for 15 of these 20 rows, on THIS arm (the 20-row normalised artefact's raw pool is exactly the canonical 0.8444). Over those 15 the floor is 0.134 and the score is 18.3% instead of 15.8%. The pooled 20-row row keeps F=0 because 5 rows have no map and a pool's trust is the MINIMUM of its members'.</p><p><b>companions ·</b> edits 74968, truth_symbols 49846, pred_symbols 38937</p><p><span class="flag">⚠️ the artefact carries NO commit and NO machine-checked era stamp</span></p><p><span class="flag">⚠️ 34.5% of the edits on the 15 normalisable rows are structural charge for a printing convention, not recognition error</span></p><div class="ev"><b>evidence ·</b> benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json, benchmarks/omr-pipeline-audit-2026-09/ceiling-engine-independence.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json</div></div>
+      </details>
+    </div>
+    <div class="mrow" id="scan-hairpin_detect">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:hairpin_detect</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="track"><i class="fill crit assumed" style="width:1.0%"></i></div><div class="pct crit">1.01<span class="unit">%</span></div></div>
+      </div>
+      <div class="native">native · 0.0101 <span class='dim'>(hairpins the YOLO detector finds, ↑ better)</span></div>
+      <div class="meta">
+        <span><b>n</b> 99 truth hairpins</span>
+        <span><b>ceiling</b> input = 1 · <i class="cs-assumed">assumed</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>hairpin-cv|11 scanned pages</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * V / C</code></p><p><b>control ·</b> against exact engraved page truth the same detector scores F1 1.000 (n=3), so the ink IS readable in principle — but nothing measures how much of a hairpin survives a bitonal 600 dpi scan, so C=1 is assumed</p><p><span class="flag">⚠️ the classical-CV reader added later carries 118 of 198 <wedge> into the file — this row scores the DETECTOR only</span></p><div class="ev"><b>evidence ·</b> benchmarks/omr-hairpin-cv-2026-09/results-scored-pages.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-hairpin-cv-2026-09/results-scored-pages.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="ceiling-input-hairpin-scan">
+      <div class="mhead">
+        <div>
+          <div class="mid">ceiling:input:hairpin:scan</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> This row exists to record a REFUTATION, not a score. The open question was whether `scan:hairpin_detect` at 1.01%% is a catastrophe or a hard input ceiling. A human found 17 hairpins on 55 scanned cells, so it is a CATASTROPHE — a detector failure, not missing ink. The same sweep also drew 62 ties and 27 slurs, the other two families a fine-tune is documented to delete. The ceiling VALUE is still unmeasured (no hairpin-vs-reference-wedge pairing exists), which is why this is not scoreable; but the assumption C = 1.0 that `scan:hairpin_detect` is scored under is no longer unsupported.</div>
+      <div class="meta">
+        <span><b>n</b> 17 human-drawn hairpin boxes</span>
+        <span><b>ceiling</b> input = — · <i class="cs-assumed">refuted_as_a_ceiling</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>labeling|breitkopf-brahms1|completion-pass|55 cells</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> counted directly: over the 55 completion-swept cells of a real 1876 Breitkopf scan a human drew 13 dynamicCrescendoHairpin and 4 dynamicDiminuendoHairpin — SEVENTEEN. The ink is visible to a reader.</p><div class="ev"><b>evidence ·</b> benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="ceiling-input-notehead-scan">
+      <div class="mhead">
+        <div>
+          <div class="mid">ceiling:input:notehead:scan</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> an UPPER BOUND, not a ceiling to score against. 201 human noteheads against 207 reference notes is a ratio of COUNTS, not a matched recall: grace notes are on the page and absent from the encoding (0 in 28,579), so human boxes are inflated and the true figure is at or below 0.971. What it DOES establish is that C = 1.0 is very nearly right for noteheads on this print — so `scan:pitch` at 83.4%% is an achievement number, not a fixture artefact. One batch, one publisher, density-selected cells.</div>
+      <div class="meta">
+        <span><b>n</b> 207 reference notes</span>
+        <span><b>ceiling</b> input = — · <i class="cs-assumed">bounded_above</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>labeling|breitkopf-brahms1|completion-pass|47 cells</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> the labeler drew boxes on the same scanned cells the detector saw, with no reference to our output — the MXL says what the MUSIC is, a human's box says what the INK is. Restricted to the ONE batch carrying a COMPLETION pass, because a single-symbol sweep leaves every other class unboxed by instruction.</p><div class="ev"><b>evidence ·</b> benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json, benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="flag-OMR_CONDENSED_PARTS-oracle_ceiling">
+      <div class="mhead">
+        <div>
+          <div class="mid">flag:OMR_CONDENSED_PARTS:oracle_ceiling</div>
+          <div class="mstage">11 export</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> ⚠️ THE CEILING GRADES A CONFIGURATION THAT CANNOT OCCUR. Verified in this tree 2026-09-07: `condensed_parts` is READ at export.py:3331 (`s.get("condensed_parts")`) and WRITTEN nowhere in tools/omr, so every staff reports 1 and the flag is inert even when set. The -4,557 figure was measured with ORACLE counts. A quoted ceiling for an unreachable configuration is the mirror image of a fabricated 100%: it makes a gap look bigger than the pipeline can act on.</div>
+      <div class="meta">
+        <span><b>n</b> None edits</span>
+        <span><b>ceiling</b> — = — · <i class="cs-assumed">unmeasured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>—</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p class='dim'>—</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> tools/omr/export.py:3278-3331 (grep: only reader, no writer)</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="identity-calibration-ECE">
+      <div class="mhead">
+        <div>
+          <div class="mid">identity:calibration:ECE</div>
+          <div class="mstage">10 staff -&gt; slot, part identity</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> ⚠️ NEITHER TRANSFORM CAN EXPRESS THIS, and forcing it would be worse than omitting it. `pct = 100*(W-M)/(W-F)` needs a defensible WORST CASE. OMR-NED has one (predict nothing scores exactly 1). A calibration error has none: ECE's arithmetic maximum is 1.0 but that is unreachable in practice and carries no meaning, so a percentage against it would be a number with no referent — the exact defect this unit exists to remove. A THIRD transform kind would need an empirical worst case (e.g. the ECE of a constant predictor on this corpus), which nobody has measured. Note also that the estate's own finding is that the ECE improvement from n=197 to n=1571 is NOT calibration — Brier skill vs a constant predictor is +0.0004 and 95.8%% of mass sits in one bin — so a score here would be worse than absent. Blocked on WORKS, not records (backlog D5).</div>
+      <div class="meta">
+        <span><b>n</b> 197 graded records</span>
+        <span><b>ceiling</b> — = — · <i class="cs-assumed">unmeasured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>staff-identity-layer|2026-09-05|n197</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p class='dim'>—</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> docs/backlog-2026-09-07-open-items.md D5; benchmarks/omr-staff-identity-layer-2026-09/</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="labeling-ledger_zone-screening_rate">
+      <div class="mhead">
+        <div>
+          <div class="mid">labeling:ledger_zone:screening_rate</div>
+          <div class="mstage">(labeling QA)</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> ⚠️ A SCREENING RATE IS NOT A DEFECT RATE, AND THIS IS THE CLEAREST CASE IN THE PROJECT OF THE CONFUSION THIS UNIT EXISTS TO FIX. The auditor flags 7 of 102 (6.9%%); hand adjudication found ONE real error (~0.9%%) — a 7x gap, and six of the seven share one mechanism (a printed ledger line print-merging into the notehead's connected component, pulling the centroid up to a half-step). Both numbers are percentages; only one is a quality figure. A dashboard that prints either alone is wrong: 6.9%% overstates the defect sevenfold, and 0.9%% understates the reviewer's workload sevenfold. The registry's answer is that they are TWO ROWS with different `stage` semantics — a SCREEN and a DEFECT — never one, and a screen is never scoreable on the achievement axis.</div>
+      <div class="meta">
+        <span><b>n</b> 102 ledger-zone labels</span>
+        <span><b>ceiling</b> visibility = — · <i class="cs-assumed">not_a_defect_rate</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>labeling-audit|simrock-dvorak9|2026-09-03</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><code>pct = 100 * (1 - M) / (1 - F)</code></p><div class="ev"><b>evidence ·</b> benchmarks/omr-snap-ledger-2026-09/LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-snap-ledger-2026-09/LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="scan-input_ceiling-hollow_noteheads">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:input_ceiling:hollow_noteheads</div>
+          <div class="mstage">4 symbol detection</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> the page prints 68 half notes and the detector found 8, now 31 — but NOTHING measures how many of those counters are actually closed at 600 dpi bitonal, so there is no denominator of 'recoverable ink'. An INPUT ceiling is the one kind this project has never measured.</div>
+      <div class="meta">
+        <span><b>n</b> 68 printed half notes</span>
+        <span><b>ceiling</b> input = — · <i class="cs-assumed">unmeasured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>ad-hoc|beethoven-sym5-mvt1-984073-p1</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p class='dim'>—</p><div class="ev"><b>evidence ·</b> CLAUDE.md · benchmarks/omr-first-run-2026-08/DURATIONS.md</div>
+        <div class="ev"><b>source ·</b> CLAUDE.md</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="scan-stage11">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:stage11</div>
+          <div class="mstage">11 Export → MusicXML / LilyPond</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> the harness cannot see this stage at all — no isolated figure. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</div>
+      <div class="meta">
+        <span><b>n</b> 0 observations</span>
+        <span><b>ceiling</b> visibility = — · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> Same harness, same blind spot. The scan side does have one export bug the engraved corpus provably could not see — a measure with no detected events computed its dynamics and discarded them (14 marks over 11 scanned pages, <b>0</b> over the engraved eleven) — found by reading the branch, not by the metric.</p><div class="ev"><b>evidence ·</b> tools/omr/export_coverage.py · benchmarks/omr-dynamics-band-2026-09</div>
+        <div class="ev"><b>source ·</b> docs/progress-dashboard.content.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="scan-stage4">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:stage4</div>
+          <div class="mstage">4 Symbol detection</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> the harness cannot see this stage at all — no ground truth. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</div>
+      <div class="meta">
+        <span><b>n</b> 0 observations</span>
+        <span><b>ceiling</b> visibility = — · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> ⚠️ <b>There is no symbol-level ground truth for real printed scans to measure against</b> — DeepScoresV2 is rendered and MUSCIMA++ is handwritten — so this stage has no F1 on the scan side, and saying so is more useful than guessing. The two per-class probes that do exist are not reassuring: hairpins <b>1 of 99</b> found across 11 scanned pages, and Beethoven 5 p.1 prints 68 half notes of which th</p><div class="ev"><b>evidence ·</b> CLAUDE.md · benchmarks/omr-hairpin-cv-2026-09 + benchmarks/omr-first-run-2026-08/DURATIONS.md</div>
+        <div class="ev"><b>source ·</b> docs/progress-dashboard.content.json</div></div>
+      </details>
+    </div>
+    <div class="mrow unscore" id="scan-stage5">
+      <div class="mhead">
+        <div>
+          <div class="mid">scan:stage5</div>
+          <div class="mstage">5 Stems + beams</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> the harness cannot see this stage at all — not isolated. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</div>
+      <div class="meta">
+        <span><b>n</b> 0 observations</span>
+        <span><b>ceiling</b> visibility = — · <i class="cs-ok">measured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p><b>control ·</b> No stem/beam ground truth exists for the scan rows. What the gate does show is the downstream symptom: <code>wrong flag/beam</code> is 687 edits of the 74,968, under 1% — the scan's rhythm loss is dominated by heads that were never detected, not by beams that were miscounted.</p><div class="ev"><b>evidence ·</b> benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json</div>
+        <div class="ev"><b>source ·</b> docs/progress-dashboard.content.json</div></div>
+      </details>
+    </div></div>
+  </section>
+  <section>
+    <p class="kicker">Cross-cutting</p>
+    <p class="table-caption">Rows that belong to neither family alone. <span class="dim">· 1 rows, 0 scoreable, 1 not</span></p>
+    <div class="mrows">
+    <div class="mrow unscore" id="human-review_cost">
+      <div class="mhead">
+        <div>
+          <div class="mid">human:review_cost</div>
+          <div class="mstage">(the purpose)</div>
+        </div>
+        <div class="mbar"><div class="nobar">not on this axis</div></div>
+      </div>
+      <div class="why"><b>unscoreable —</b> ⚠️ THE THING SEAN BUILT THIS PROJECT TO REDUCE, AND IT IS NOT ON THE BOARD. It has been measured exactly once, as a side result: between two identity passes accuracy moved 44 records and review cost moved 2 (197 -> 195). It has no ceiling, no era key, no harness of its own, and no artefact this registry can read. See backlog D4.</div>
+      <div class="meta">
+        <span><b>n</b> None staff records</span>
+        <span><b>ceiling</b> — = — · <i class="cs-assumed">unmeasured</i></span>
+        <span><b>noise floor</b> <span class='dim'>no repeat-run figure — this row may not carry a delta</span></span>
+        <span class="era"><b>era</b> <code>—</code></span>
+      </div>
+      <div class="chips"><span class="chip none">standalone — may not be put in a sentence with an arrow</span></div>
+      <details><summary>evidence &amp; controls</summary>
+        <div class="detail"><p class='dim'>—</p><div class="ev"><b>evidence ·</b> —</div>
+        <div class="ev"><b>source ·</b> benchmarks/omr-identity-harness-2026-09/FINDINGS.md</div></div>
+      </details>
+    </div></div>
+  </section>
+
+  <section>
+    <p class="kicker">Head-to-head · same fixtures, same scorer, different system</p>
+    <div class="h2h"><div class="h2hrow"><div class="h2hlab">competitive:engraved:audiveris</div><div class="h2hnums"><span class="us">ours 88.78%</span><span class="vs">vs</span><span class="them">OMR-NED of Audiveris 5.11, our fixtures, our scorer 87.48%</span></div><div class="h2hnote">same fixtures, same musicdiff bridge — the only valid comparison. Published paper figures are pooled over other corpora and are context, never comparison.</div></div><div class="h2hrow"><div class="h2hlab">competitive:scan:audiveris</div><div class="h2hnums"><span class="us">ours —</span><span class="vs">vs</span><span class="them">OMR-NED of Audiveris 5.11 on the 11-row scan era 20.81%</span></div><div class="h2hnote">⚠️ this arm covers the ELEVEN-row scan era; the headline moved to 20 rows on 2026-09-04 and the arm was not widened. Comparable to our 11-row 0.8345 only.</div></div><div class="h2hrow"><div class="h2hlab">prefill:precision:blind_out_of_sample</div><div class="h2hnums"><span class="us">ours —</span><span class="vs">vs</span><span class="them">exact-class precision of reference-driven pre-filled verdicts, blind sample 94.33%</span></div><div class="h2hnote">0.97 is the ADMISSION BAR set in advance, and the cells were pre-registered at seed 20260903 with their status recorded BEFORE labeling; the pass was run blind (annotate.server --blind). The measurement came in UNDER the bar and pre-filled verdicts stayed a queue rather than becoming labels — a control that fired.</div></div></div>
+    <p class="table-caption">⚠️ <b>THIS IS NOT A DELTA AND MUST NOT BE READ AS
+      ONE.</b> Two systems can never share a <code>time_series</code> key, so
+      nothing here says anything about direction over time — only that on these
+      fixtures, through this scorer, one scores above the other. The round-1
+      comparability rule was a single era-key equality test and it FORBADE this
+      comparison; round 2 split the relation in two, which is why the panel can
+      exist at all. Published figures from papers are pooled over other corpora
+      and are context, never comparison.</p>
+  </section>
+  <section>
+    <p class="kicker">The rules this page enforces</p>
+    <div class="mrow">
+      <div class="detail" style="font-size:13.5px">
+        <p><b>independence ·</b> a ceiling may ONLY be derived from an artefact independent of our own output — a truth file, a render, an external engine. A ceiling inferred from what we currently produce lets the pipeline grade itself against its own limitations and reach 100 by standing still.</p>
+        <p><b>assumption direction ·</b> where a ceiling is unknown it is assumed at the value that MINIMISES the score (F=0 for an error metric, C=1 for a rate). A missing ceiling can therefore never manufacture a high number. Such a row is stamped status &#x27;assumed&#x27;.</p>
+        <p><b>no fabricated 100 ·</b> a row with no ceiling evidence AND no value gets scoreable:false and renders as an explicit &#x27;unscoreable — &lt;reason&gt;&#x27;, never a number.</p>
+        <p><b>pooling ·</b> rows may be pooled only within one `pool_key`, and a pool is recomputed FROM THE UNDERLYING COUNTS, never by averaging percentages — a 3-bar excerpt and a 27-staff page must not carry equal weight. A pool&#x27;s trust is the MINIMUM of its members&#x27; ceiling statuses.</p>
+        <p><b>dilution ·</b> a delta on an error-rate metric is REFUSED as an improvement when the ratio falls while `companions.edits` rises — that is under-prediction being rewarded by a symmetric metric, not recognition. Live example in MEASUREMENT_SYSTEM.md §A6.</p>
+        <p><b>noise floor ·</b> a delta smaller than the row&#x27;s own measured noise floor is reported as &#x27;within noise&#x27;, not as a direction. A row whose noise floor is unmeasured may not carry a delta at all.</p>
+      </div>
+    </div>
+    <p class="table-caption">Generated from
+      <code>benchmarks/omr-pipeline-audit-2026-09/metric-registry.json</code> by
+      <code>tools/dashboard/registry_report.py</code>. <b>Do not hand-edit.</b>
+      This page is standalone and does not touch
+      <code>docs/progress-dashboard.html</code>.</p>
+  </section>
+</div>
