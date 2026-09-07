@@ -123,23 +123,60 @@ def v3() -> dict:
 # --------------------------------------------------------------------------
 # V4  env flags in the tree vs env flags documented in CLAUDE.md
 # --------------------------------------------------------------------------
+def _env_flags_in(path: Path) -> tuple[set[str], set[str]]:
+    """Every OMR_* env var this file actually READS. (direct, via_constant)
+
+    Three forms, because two of them defeated the first version of this check
+    and one of the misses was a default-ON behaviour flag:
+
+      1. inline           os.environ.get("OMR_X", ...)  /  os.getenv("OMR_X")
+      2. held in a const  ENV_VAR = "OMR_X"  ...  environ.get(ENV_VAR, ...)
+      3. injected env     (env if env is not None else os.environ).get(ENV_VAR)
+
+    Form 2 is why `OMR_ABSENT_INSTRUMENT_VETO` -- default ON, and named by the
+    map's own D24 -- vanished from a re-run while the hand-written list still
+    carried it. A checker that silently under-reports the surface it exists to
+    police is worse than none: it is this document's own thesis, pointed at
+    itself. Recorded rather than merely fixed, so the class stays visible.
+    """
+    text = path.read_text()
+    direct: set[str] = set()
+    direct |= set(re.findall(
+        r'(?:environ|os)\.(?:get|getenv)\(\s*"(OMR_[A-Z0-9_]+)"', text))
+    direct |= set(re.findall(r'getenv\(\s*"(OMR_[A-Z0-9_]+)"', text))
+    indirect: set[str] = set()
+    consts = dict(re.findall(
+        r'^\s*([A-Z_][A-Z0-9_]*)\s*=\s*"(OMR_[A-Z0-9_]+)"', text, re.M))
+    for const, flag in consts.items():
+        if re.search(r'\.get\(\s*' + re.escape(const) + r'\b', text) or \
+           re.search(r'getenv\(\s*' + re.escape(const) + r'\b', text):
+            indirect.add(flag)
+    return direct, indirect - direct
+
+
 def v4() -> dict:
-    tree = set()
-    for py in sorted((ROOT / "tools" / "omr").glob("*.py")):
-        for m in re.finditer(r'os\.environ\.get\(\s*"(OMR_[A-Z0-9_]+)"',
-                             py.read_text()):
-            tree.add(m.group(1))
-    for py in sorted((ROOT / "backend" / "modules").glob("*.py")):
-        for m in re.finditer(r'"(OMR_[A-Z0-9_]+)"', py.read_text()):
-            tree.add(m.group(1))
-    doc = set(re.findall(r"OMR_[A-Z0-9_]+",
-                         (ROOT / "CLAUDE.md").read_text()))
+    """The env surface the tree READS, against what CLAUDE.md mentions."""
+    tree: dict[str, list[str]] = {}
+    via_const: set[str] = set()
+    for root in (ROOT / "tools", ROOT / "backend"):
+        for py in sorted(root.rglob("*.py")):
+            rel = str(py.relative_to(ROOT))
+            if "/tests/" in rel or rel.split("/")[-1].startswith("test_"):
+                continue
+            direct, indirect = _env_flags_in(py)
+            via_const |= indirect
+            for flag in direct | indirect:
+                tree.setdefault(flag, []).append(rel)
+    doc = (ROOT / "CLAUDE.md").read_text()
+    documented = {f for f in tree if f in doc}
     return {
         "id": "V4",
-        "claim": "CLAUDE.md's env table is not the tree's env surface",
+        "claim": ("the OMR_* surface the tree READS vs what CLAUDE.md mentions "
+                  "anywhere -- a LOOSE bound; the env TABLE is smaller still"),
         "n_in_tree": len(tree),
-        "n_documented": len(tree & doc),
-        "undocumented": sorted(tree - doc),
+        "n_mentioned_in_claude_md": len(documented),
+        "undocumented": sorted(set(tree) - documented),
+        "reachable_only_via_a_constant": sorted(via_const),
     }
 
 
@@ -234,7 +271,50 @@ def v6() -> dict:
             "keys": out}
 
 
-CHECKS = [v1, v2, v3, v4, v5, v6, v7]
+# --------------------------------------------------------------------------
+# V8  the map polices its own most important column
+#
+# The 2026-09-07 adversarial verification found six of twelve section-5 tables
+# missing the `consumed by` column -- the column section 0 calls the reason the
+# document exists -- in exactly the half of the pipeline section 9 tells agents
+# to build in. Nothing caught it, because prose cannot check its own shape.
+# This does.
+# --------------------------------------------------------------------------
+def v8() -> dict:
+    doc = _doc_path().read_text()
+    sec = doc[doc.index("## 5. The decision catalogue"):
+              doc.index("## 6. The information ledger")]
+    tables = []
+    heading = "(before the first stage)"
+    for line in sec.splitlines():
+        if line.startswith("### "):
+            heading = line[4:].strip()
+        if line.startswith("| decision (file:line)"):
+            low = line.lower()
+            tables.append({
+                "table": heading,
+                # The column is identified by MEANING, not by one wording:
+                # at the end of the pipeline "consumed by" is "who can SEE
+                # this element" (musicdiff / VISIBLE / LilyPond), which is the
+                # same question asked of a terminal stage.
+                "has_consumed_by": any(k in low for k in (
+                    "consumed by", "read by", "who can see it")),
+                "has_blind_to": "blind to" in low,
+                "has_shape": "shape" in low,
+            })
+    missing = [x["table"] for x in tables if not x["has_consumed_by"]]
+    return {
+        "id": "V8",
+        "claim": "every section-5 decision table carries the CONSUMED BY column",
+        "n_tables": len(tables),
+        "n_missing_consumed_by": len(missing),
+        "missing": missing,
+        "n_missing_blind_to": sum(1 for x in tables if not x["has_blind_to"]),
+        "holds": not missing,
+    }
+
+
+CHECKS = [v1, v2, v3, v4, v5, v6, v7, v8]
 
 
 # ==========================================================================
@@ -259,6 +339,7 @@ STAGES = [
     ("sown", "Glyph OWNERSHIP",           "ladder/range/dist","4d"),
     ("s8c", "Time signature",             "template + vote",  "8c"),
     ("s9",  "Margin labels",              "text/Surya/Vision","9"),
+    ("s9d", "Direction text",             "ink minus dets + OCR", "9′"),
     ("s10", "Slot align + identity",      "monotone DP",      "10"),
     ("s11", "Export",                     "serialisation",    "11"),
 ]
@@ -272,6 +353,8 @@ FLOW = [
     ("s8a", "s8b", "the SLOT TABLE"),
     ("s4", "s5", "detections"),
     ("s4", "sown", "detections"),
+    ("s4", "s9d", "every detection, SUBTRACTED"),
+    ("s9d", "s11", "2 of its 8 keys"),
     ("s5", "s7", "beam levels"),
     ("s4", "s6", "notehead y"),
     ("s8a", "s6", "clef"),
@@ -306,8 +389,14 @@ DEAD_ENDS = [
     ("d_prop",  "clef_proposal (applied:False)", "s10", "NOBODY [V2]"),
     ("d_lc",    "label_contradiction", "s10",
      "158 firings, 0.873 right \u2014 undecided"),
-    ("d_dt",    "direction placement/category/terms/reader", "s11",
-     "6 of 8 keys unread; placement hardcoded"),
+    ("d_7th",  "the 7th simultaneous slur/hairpin", "s11",
+     "dropped: no counter, no field"),
+    ("d_conf2", "OCR rung disagreement", "s9d",
+     "computed; reaches the report, never the artefact"),
+    ("d_tie",  "tie-pair count", "s4",
+     "computed at :2112, discarded at the call site"),
+    ("d_place", "direction placement / category / terms / reader", "s9d",
+     "6 of 8 keys unread; placement hardcoded \u2014 and Style is outside AllObjects, so it costs 0 and no harness can see it"),
     ("d_align", "the slot alignment DP score", "s10",
      "never returned \u2014 no margin exists"),
 ]

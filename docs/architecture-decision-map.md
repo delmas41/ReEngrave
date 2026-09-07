@@ -38,9 +38,12 @@ every quoted figure in §5 and §7 — was NOT re-run and is unverified.**
 
 ## 0. How to read a row, and what the labels mean
 
-⚠️ **Corrected 2026-09-07: this is the INTENT, not the state.** Six of §5's
-twelve tables carry no `CONSUMED BY` column — see the warning at the head of
-§5, which names them and says why it matters.
+⚠️ **History worth keeping: this was the INTENT and not the state until
+2026-09-07.** Six of the then-twelve §5 tables carried no `CONSUMED BY` column —
+8a, 8b, 8c, 9, 10 and 11, i.e. the whole identity-and-export half, which is
+where every one of §9.5's shortlist items lives. Nothing caught it, because
+prose cannot check its own shape. **`verify.py`'s `V8` now does**, and it fails
+if any §5 table loses either of the two columns that matter.
 
 Every decision point in §5 carries the same ten fields. Three of them are the
 reason this document exists.
@@ -166,6 +169,11 @@ be read together. Line numbers are `tools/omr/transcribe.py` at `e1107b5b`.
 | 9,10 | **Margin labels → instrument → slot → identity** | `apply_contextual_analysis` | **4970** | **document** |
 | 4e | Roster-fed range veto (off by default) | `_apply_roster_range_veto` | 4995 | document |
 | 11 | Export | `tools/omr/export.py`, separate entry point | — | document |
+
+⚠️ **Every row here has a §5 table.** That was not true of the first
+edition: tie pairing (4b), direction text (9′) and the arc pairing inside
+export were named in this spine and catalogued nowhere. §11.0 records
+what closed and §11.0b what is still counted-but-not-catalogued.
 
 ⚠️ **Rows marked ✚ produce nothing the pipeline consumes.** They are the
 consistency checks. They are in the spine because they *run*, not because
@@ -476,17 +484,39 @@ reads the field** — the difference decides whether a signal can be priced from
 disk, which is what §9.5 item 1 turns on. Three cells got this wrong and were
 corrected 2026-09-07.
 
-⚠️⚠️ **SIX OF THE TWELVE TABLES BELOW HAVE NO `produces → consumed by` COLUMN,
-and §0's "every decision point in §5 carries the same ten fields" is therefore
-false.** The six are **8a (clef), 8b (key signature), 8c (time signature),
-9 (labels → instrument), 10 (slots + identity) and 11 (export)** — i.e. the
-whole identity-and-export half, which is where **every one of §9.5's six
-shortlist items lives**. So the question this document exists to answer —
-*"what consumes my output — does anything?"* — is **unanswerable from §5 for
-exactly the areas §9 tells you to build in**. Reproduce with
-`grep -n "^| decision (file:line)" docs/architecture-decision-map.md`.
-Filling the column is mechanical (the same grep `V6` already runs) and is the
-single largest usability improvement available to this document.
+⚠️ **At the END of the pipeline the consumer column asks a different
+question, and says so.** Stage 11 has no downstream module, so *"what consumes
+this"* becomes *"**who can SEE this element**"* — musicdiff's detail bits,
+`export_coverage.VISIBLE`, and whether LilyPond receives it at all. That is the
+same question asked of a terminal stage, and `V8` accepts either wording.
+
+⚠️⚠️ **A `NOBODY` is the fragile kind of claim in this document, and the two
+ways it goes wrong are both indirection.** (1) **A `@property`**: a direct grep
+for `Staff.nominal_line_spacing_px` finds only the write, while the value
+flows out through `Staff.line_spacing_px`, which has **15 production readers**
+including `system_grouping`'s crossing band. (2) **A function-local import**:
+`grep -n 'instruments\.' tools/omr/transcribe.py` returns one hit and it is a
+comment, while `instruments.lookup` is imported *inside* two functions
+(`:2484`, `:2872`) and decides glyph ownership. **Check for both before writing
+a `NOBODY`** — every error the 2026-09-07 adversarial verification found in
+this document was a negative about consumers, and one of them was load-bearing.
+
+**Coverage of §5 — declared, not implied.** ⚠️ §11's old claim that scope was
+"cut uniformly in depth" was false; an independent enumeration found five areas
+where §5 had two rows against 185 decision points. What is true now:
+
+| area | independent count | rows here | state |
+|---|--:|--:|---|
+| `direction_text.py` | 72 | **14** | **catalogued** (Stage 9′) — the 14 that decide something |
+| slur / arc pairing + numbering | 46 | **13** | **catalogued** (Stage 11) |
+| tie pairing | 25 | **12** | **catalogued** (Stage 4b) |
+| `pitch_resolver.py` | 25 | 5 | depth cut, declared |
+| `condensed_parts.py` | 17 | 1 | ⚠️ **declared gap** — and the reason is in the row: nothing in production calls it, so the knob is inert |
+
+⚠️ **A "depth cut" here means the rows chosen are the ones that CHOOSE
+something a reader could change.** The residue is arithmetic and bookkeeping.
+That is a judgement, not a measurement, and it is stated so a reader can
+disagree with it rather than mistake silence for coverage.
 
 ---
 
@@ -550,13 +580,29 @@ corpus… insurance").
 | cue C `:615` | grouped + window-blind ⇒ never open score | how many gaps are blind, which one, the connectivity that produced the flip | override | A. ⚠️ **Depends on `group_index`, which the gap-heuristic fallback never sets — so cue C is unreachable on any page where connectivity abstained** |
 | `:623` / `:650` acceptance | which barlines are real | ⚠️ `_spans_system` — the stricter test — is **never used on 3+-staff systems**; and `n_votes = len(cluster)` counts raw observations, so one staff firing twice inside 12 px counts as two votes | `Barline` list | D + A/B |
 | `_drop_close_outliers:709` | drop an implausibly close barline | ⚠️ **every piece of per-barline evidence is already gone** — the function receives only integers, so "which of the pair is spurious" is decided with no vote count, connectivity, span or height | final xs | B + E |
-| `_measure_x_boundaries:756` | the system's left/right edge | the SPREAD of `x_start` (medianed silently); ⚠️ and the right edge uses `max`, the extreme its own comment argues against (§8-D16) | `x_lo`, `x_hi` | D |
-| `_build_measure_cell:1046` | pad 4 spaces or 6 | `line_thickness_px`/`line_wander_px` (the clearance is a flat 0.5 space); the actual ink above/below in this cell's x-range | `bbox_page_px` → **everything, incl. `app`** | E ("four, or six, and nothing between") |
+| `_measure_x_boundaries:756` | the system's left/right edge | the SPREAD of `x_start` (medianed silently); ⚠️ and the right edge uses `max`, the extreme its own comment argues against (§8-D16) | `x_lo`, `x_hi` → `_build_measure_cell`, the barline edge filter — **CONSUMED** | D |
+| `_measure_x_boundaries:774` edge filter | is this barline the system's OPENING RULE rather than a measure boundary | ⚠️ **how near it was.** `edge_margin = max(10, round(2.0 * spacing))` and the test is `x > x_lo + edge_margin` — a boolean, off an `x_lo` that was **silently medianed** one line earlier. Measured on a live page by the one-line-staves workstream: a cut at **506 against a threshold of 516** decides it, so a barline is kept or discarded on **nine pixels** with no score formed and no record of the near miss. ⚠️ End-to-end cost is currently **zero** — `_drop_furniture_measures` absorbs the sliver downstream — so this is a decision made without a probability, in the spine, now measured but **not** a live defect | the surviving barline set | **A** |
+| `_build_measure_cell:1046` | pad 4 spaces or 6 | `line_thickness_px`/`line_wander_px` (the clearance is a flat 0.5 space); the actual ink above/below in this cell's x-range | the `MeasureCell` → **19 importers**, and the ones that matter are not the obvious ones: `transcribe`, `yolo_detector`, `export`, `system_grouping`, `staff_line_removal`, `visualize`, **`staff_header.py:369`/`:427` (which call `_build_measure_cell` directly)** and ⚠️ **the whole labeling pipeline** — `annotate/select_cells.py`, `select_cells_orchestral.py`, `select_timesig_cells.py`, `recut_cells.py`, `annotate/server.py` | E ("four, or six, and nothing between") |
 | `_build_measure_cell:1060` | drop a cell narrower than 10 px | ⚠️ `line_spacing_px` — a **bare pixel constant in a file that scales everything else by spacing**; 10 px is 0.4 spaces at 600 dpi and 1.2 at 200 | `None` — the cell vanishes, and the staff's measure count then differs from its siblings, which `_flag_measure_count_inconsistency` later reports | A |
 | `_cell_line_offset:1005` | slide the cell's 5-row grid onto the ink | `line_thickness_px` (the band is a fixed 3 rows); ⚠️ **the neighbouring cells' answers** — each cell decides alone, with no smoothness constraint along the staff | `staff_line_ys_canonical` → pitch; provenance → `annotate/recut_cells.py` only | D + 3 abstentions |
 | `remove_staff_lines_from_cell:127` | is this run the LINE or a crossing symbol | ⚠️ **`cell.staff_line_thickness_canonical` — the page-measured thickness carried onto this exact object — is not read**; the thickness is re-derived from the cell instead | `image_no_staff` → every CV rung | B |
 | `resegment` `:1278`/`:1319` | split a fused measure | ⚠️ **`x_by_staff` is NOT passed to `_intersystem_connectivity` here**, so the leaning-barline Theil–Sen fit the global pass relies on is silently OFF for resegmentation and it drops a vertical column | extra boundaries | vote + B |
 | `:1503` split acceptance | accept or reject the whole split | which piece failed; a partial split (explicitly refused) | boundaries | E |
+
+⚠️⚠️ **A CELL'S PADDING IS A LABELING CONTRACT, NOT A CROP SETTING — and the
+first edition of this table hid that behind the word "everything".** Every
+box a human ever drew is stored in the cell's CANONICAL frame, so a cell
+re-cut at a different padding is not a slightly different picture: it is the
+same music at a different scale, with every box in the batch landing
+somewhere else, and nothing downstream would say so. That is CLAUDE.md's
+loudest warning in this area, it is reachable ONLY through the five
+`annotate/` consumers named above, and §11 puts the labeling pipeline out of
+scope — so a cell reading *"consumed by everything"* actively routed a
+reader away from it. **A technically-correct-but-unactionable consumer cell
+is an error in this document, not a matter of style.** The safe repair path
+is `annotate/recut_cells.py`, which never rewrites `cells.json` and never
+deletes; the cutters (`select_cells*.py`, `rank_and_trim.py`) choose cells
+and will renumber a labeled batch.
 
 ⚠️ **`if len(s.line_ys) >= 5` at `:464`, `:1148`, `:1471`** excludes one-line
 percussion staves from the barline vote, from cell extraction and from
@@ -689,48 +735,43 @@ nobody.
 `clef_locator.locate_clef` runs a chain of vetoes. **Every one of them computes a
 real measurement and destroys it in the same expression.**
 
-| decision (file:line) | decides | ⚠️ blind to | shape |
-|---|---|---|---|
-| `cluster_components` y-gap `header_ink.py:314` | do two components merge into one glyph | ⚠️ `dy` is computed at `:300` and destroyed at `:314`; component `area` is carried through the tuple as ballast and never read | **A** |
-| `require_cluster_on_staff` `clef_locator.py:771` | skip a cluster left of the staff's printed lines | how far left (`staff_left - (x+w)` never formed); the cluster's symmetry — it is skipped *before* being scored | **A** |
-| `staff_left_max_spaces` `:480` | disbelieve the staff-left measurement | how many long horizontals were found (`len(lefts)` discarded — one fragment and five staff lines are the same evidence); their y against the KNOWN line rows | **E** |
-| width/height gates `:795`, `:804`, `:821` | too narrow / too big / too short | aspect ratio (never formed); how far outside the bound — a 4.6-space and a 12-space width stop identically | **A** |
-| **`_has_f_clef_dots` `:584-628`** | is this an F clef's dot pair | ⚠️ **seven continuous quantities — `bw`, `bh`, `aspect`, `cx/w`, `dx`, `dy`, `dw` — each consumed by a comparison operator in the line that computes it.** `dw` is computed unconditionally although its bound is `None` in the shipped config. And `symmetry`, computed 10 lines earlier at `:840`, is **thrown away at the refusal** rather than combined | **A**, the exemplar |
-| `min_symmetry` `:843` | is this a C clef at all | the second-best axis, the sharpness of the peak, the ink fraction (computed at `:783`, never combined) | **B** on refusal, **C** on success |
-| `ambiguous_snap` `:865` | did geometry name a line | ⚠️ `read.residual` — a real number on the returned object — is not inspected here or anywhere | **A** |
+| decision (file:line) | decides | ⚠️ blind to | produces → consumed by | shape |
+|---|---|---|---|---|
+| `cluster_components` y-gap `header_ink.py:314` | do two components merge into one glyph | ⚠️ `dy` is computed at `:300` and destroyed at `:314`; component `area` is carried through the tuple as ballast and never read | clusters → `clef_locator`, `key_signature_locator`, `time_signature_locator` — **CONSUMED**, in-module only | **A** |
+| `require_cluster_on_staff` `clef_locator.py:771` | skip a cluster left of the staff's printed lines | how far left (`staff_left − (x+w)` never formed); the cluster's symmetry — it is skipped *before* being scored | a `continue` → nothing recorded → **NOBODY** | **A** |
+| `staff_left_max_spaces` `:480` | disbelieve the staff-left measurement | how many long horizontals were found (`len(lefts)` discarded — one fragment and five staff lines are the same evidence); their y against the KNOWN line rows | an abstention → **NOBODY** | **E** |
+| width/height gates `:795`, `:804`, `:821` | too narrow / too big / too short | aspect ratio (never formed); how far outside the bound — a 4.6-space and a 12-space width stop identically | a rejection → **NOBODY** | **A** |
+| **`_has_f_clef_dots` `:584-628`** | is this an F clef's dot pair | ⚠️ **seven continuous quantities — `bw`, `bh`, `aspect`, `cx/w`, `dx`, `dy`, `dw` — each consumed by a comparison operator in the line that computes it.** `dw` is computed unconditionally although its bound is `None` in the shipped config. And `symmetry`, computed 10 lines earlier at `:840`, is **thrown away at the refusal** rather than combined | a bool → **NOBODY** | **A**, the exemplar |
+| `min_symmetry` `:843` | is this a C clef at all | the second-best axis, the sharpness of the peak, the ink fraction (computed at `:783`, never combined) | `LocatedClef.symmetry` → ⚠️ **`probe`** — four benchmark scripts read it and no production site does; production reads `located.read.name` only (`transcribe.py:1684`, `:4288`) | **B** on refusal, **C** on success |
+| `ambiguous_snap` `:865` | did geometry name a line | ⚠️ `read.residual` — a real number on the returned object — is not inspected here or anywhere | `LocatedClef.read` → `transcribe.py:1684`, `:4288` — **CONSUMED** (`.name` only) | **A** |
+| the `trace` recorder `:700+` | *nothing* — it records | — | the `trace` dict → ⚠️ **`probe`**: the only `trace=` caller in the tree is `test_clef_locator.py:344`. **Neither pipeline call site passes one** (`transcribe.py:1677`, `:4286`) | **C**, with the home already built |
+| `clef_geometry.resolve_clef:283` | which line the clef names | `detection.confidence`; the `residual` is thresholded and **never returned as a graded quantity** | `ClefRead.name` → `transcribe.py:1616`, `:1684`, `:4288` — **CONSUMED**. `ClefRead.residual` and `.line` → **`probe`**; `.family` → **NOBODY** | **E + D** |
+| **the 5-reader precedence ladder** `transcribe.py:1656 / :1708 / :1769 / :1789` | which reader's clef stands | ⚠️ **every reader's own score.** It arbitrates purely on `clef_source is None`; `best_clef_conf` is computed at `:1607` and discarded at `:1613`, so a locator hit at symmetry 0.701 beats a specialist detection at 0.99 and **nothing records that a contest happened** | `clef`, `clef_source` → **CONSUMED, widely**: `pitch_resolver`, `export.py`, `clef_correction`, `contextual._read_clefs_by_slot` (`contextual.py:1076` — the +51-record channel of §4.2 Cycle 2), `dossier` | **D** |
+| `_octave_shift_for_base_clef:394` | ±1/±2 octaves for the whole staff | the marker's `confidence`; vertical distance is used only for its SIGN, so a `clef8` one pixel above the centre is accepted at full force | the clef suffix → **CONSUMED** by `pitch_resolver` and both exporters | **D** |
+| mid-staff clef change `transcribe.py:4646` | did the clef change within the staff | — | `clef_final` → ⚠️ **its only reader is its own keeper** — `clef_correction.py:551` reads it solely to keep it consistent after a veto. **Nothing downstream reads it**: not `export.py`, not the backend, not the frontend | bookkeeping |
 
-⚠️ **`LocatedClef.symmetry` is Class C**: it is rounded to 4dp, kept on the
-dataclass, and read by **nobody in production** — `transcribe.py:1684` and
-`:4288` read `located.read.name` only.
-
-⚠️ **And the whole trace mechanism is unreachable in production.**
-`locate_clef` takes an optional `trace` dict and records the symmetry, the
-cluster geometry and the rejecting branch into it — and **neither of
-`transcribe.py`'s two call sites passes one** (`:1677`, `:4286`). Every number
-the chain computes has a home already built and no run ever fills it. This is
-the cheapest item on the whole shortlist.
-
-**The clef PRECEDENCE ladder** (`transcribe.py:1656 / :1708 / :1769 / :1789`) is
-five readers deep — detector → CV locator → detector-on-header → specialist →
-dossier — and **arbitrates purely on `clef_source is None`**. Not one reader's
-confidence crosses the boundary: `best_clef_conf` is computed at `:1607` and
-discarded at `:1613`, so a locator hit at symmetry 0.701 beats a specialist
-detection at confidence 0.99 and nothing records that a contest happened.
+⚠️ **`clef_diatonic_shift` (`pitch_resolver.py:117`) is the one header-stage
+quantity that is genuinely well-consumed** — `clef_correction.py:238`, `:374`,
+`:531` — and it is what makes `apply_proposal` able to restate every pitch on a
+staff. It is the working half of the identity→clef→pitch edge §4.2 describes.
 
 ---
 
 ### Stage 8b · Key signature — and the clef dependency
 
-| decision (file:line) | decides | ⚠️ blind to | shape |
-|---|---|---|---|
-| `locate_key_signature:310` | refuse without a clef | the clef's PROVENANCE — it cannot tell a measured clef from a defaulted one; the caller must, and does | **E** |
-| clef anchor `:354` | where the key signature may start | ⚠️ **the clef the caller already supplied** — it re-derives the clef's right edge from ink and never checks the two agree | **A** |
-| glyph filter `:361-370` | which clusters are accidental-shaped | ⚠️ `occupied_boxes` is a documented parameter and is **`None` in every production call** (`transcribe.py:1374`), so the detector's notehead boxes never veto a key-signature glyph | **E**, dead path |
-| sharps vs flats `:402-414` | which accidental the run is | the MARGIN between the two residuals — 0.001 apart and 0.4 apart decide identically, with no abstention on a near-tie | **D** |
-| `_fit_exact` `key_signature_geometry.py:298-311` | which prefix of the slot table | ⚠️ the run's horizontal SPACING — its strongest remaining signal, never used; and the second-best assignment, so "two fit equally" is invisible | **B** |
-| `key_signature_vote._trustworthy:247` | may this reading depart from the system | how FAR it departs (+3 and +1 are equally legal); the reader kind; the residual | **A** |
-| `_consolidate_across_systems:299` | the part's signature across systems | ⚠️ agreement across three systems is worth **exactly what one system is worth** — `max(w for _, w in seen)`, not a sum; the runner-up is dropped with no record | **D** |
-| `can_carry` `:156` | may a reading travel to another system | ⚠️ it records **nothing numeric** — a one-bit label derived from `source.startswith("template")`, and the `source` string it came from is then never read again | **A** |
+| decision (file:line) | decides | ⚠️ blind to | produces → consumed by | shape |
+|---|---|---|---|---|
+| `locate_key_signature:310` | refuse without a clef | the clef's PROVENANCE — it cannot tell a measured clef from a defaulted one; the caller must, and does | an abstention → **NOBODY** | **E** |
+| clef anchor `:354` | where the key signature may start | ⚠️ **the clef the caller already supplied** — it re-derives the clef's right edge from ink and never checks the two agree | an x → in-module | **A** |
+| glyph filter `:361-370` | which clusters are accidental-shaped | ⚠️ `occupied_boxes` is a documented parameter and is **`None` in every production call** (`transcribe.py:1375`), so the detector's notehead boxes never veto a key-signature glyph | filtered clusters | **E**, dead path |
+| sharps vs flats `:402-414` | which accidental the run is | the MARGIN between the two residuals — 0.001 apart and 0.4 apart decide identically, with no abstention on a near-tie | `LocatedKeySignature.accidental`, `.boxes` and `.decided_by` (`"pattern"` / `"shape"` / `"tail"`) → ⚠️ **NOBODY, anywhere** — not production, not tests, not benchmarks; `transcribe.py:1375` reads `.read` only. Checked for a property escape hatch: the class has none | **D**; `decided_by` is **C** |
+| `_fit_exact` `key_signature_geometry.py:298-311` | which prefix of the slot table | ⚠️ the run's horizontal SPACING — its strongest remaining signal, never used; and the second-best assignment, so "two fit equally" is invisible | the fitted count | **B** |
+| **`key_signature_template`** (called `transcribe.py:1394`, `:1409`) | slide the Bravura flat/sharp templates along the header window | ⚠️ **per-match NCC score at the refusal**; and the reading it produces enters the vote at `DEFAULTED_CLEF_WEIGHT` where the clef is a positional default, so its own strength never varies | a reading → the vote — **CONSUMED**. ⚠️ It is the reader behind **D20** and the map's Stage 8b previously had no row for it, though CLAUDE.md records it reading **11 of 12** staves where the locator reads 2 | **D** |
+| `key_signature_vote._trustworthy:247` | may this reading depart from the system | how FAR it departs (+3 and +1 are equally legal); the reader kind; the residual | a bool → **CONSUMED** (`key_signature_vote.py:292`, `:395`). ⚠️ The prose `reason` is **string-matched**: `transcribe.py:4586` tests its `"rejected"` prefix to set `key_signature_read`, so a REFUSAL REASON IS PARSED AS CONTROL FLOW — while the serialised `key_signature_reason` (`:4607`) itself reaches only a probe | **A** |
+| `_consolidate_across_systems:299` | the part's signature across systems | ⚠️ agreement across three systems is worth **exactly what one system is worth** — `max(w for _, w in seen)`, not a sum; the runner-up is dropped with no record | the consolidated reading → `key_signature`, `key_signature_source` — **CONSUMED** (`dossier.py:165`) | **D** |
+| `can_carry` `:156` | may a reading travel to another system | ⚠️ it records **nothing numeric** — a one-bit label derived from `source.startswith("template")`, and the `source` string it came from is then never read again | a bool | **A** |
+| the unread-staff record `transcribe.py:4590` | mark a staff whose key was never read | — | `key_signature_read` → **CONSUMED**, `clef_correction.py:338`, `:347`, `transcribe.py:5272`. `key_signature_unread_reason` → **`probe`** | **C** for the reason |
+| mid-staff key change `transcribe.py:4648` | did the key change within the staff | — | `key_signature_final` → ⚠️ **NOBODY** | **C** |
 
 ⚠️ **The clef→key dependency has a structural hole nobody has named.**
 `key_signature_geometry.slot_positions` has tables for `treble`, `bass`,
@@ -743,21 +784,18 @@ module docstring; not in any status document.
 
 ### Stage 8c · Time signature
 
-| decision (file:line) | decides | ⚠️ blind to | shape |
-|---|---|---|---|
-| `locate_time_signature:439-448` | which meter this staff prints | ⚠️ the runner-up's score — a 0.51 winner over a 0.50 runner-up is indistinguishable from 0.79 over 0.31; and the 21 losing meters entirely | **D** then **A** |
-| `_looks_cut:381` | is a matched `C` really `¢` | the fill fraction once thresholded — a clean 1.00 and a marginal 0.75 are identical, though the docstring publishes the 0.48↔1.00 gap | **B** |
-| **`vote_system_time_signature:499`** | do the staves agree | ⚠️ **every reading's `score`, deliberately** — ranking by median score was measured and REFUSED ("identical verdict table, one documented principle weakened"). Also unused: `x_canonical` agreement (a real meter is at the same x on every staff) | **A** on the floor; **C** for `median_score`/`votes`/`voters`, which have no production consumer |
+| decision (file:line) | decides | ⚠️ blind to | produces → consumed by | shape |
+|---|---|---|---|---|
+| `locate_time_signature:439-448` | which meter this staff prints | ⚠️ the runner-up's score — a 0.51 winner over a 0.50 runner-up is indistinguishable from 0.79 over 0.31; and the 21 losing meters entirely | `LocatedTimeSignature` → the system vote — **CONSUMED**; `.symbol` is a **@property** (`:231`) consumed at `:518`, so a field-name grep finds nothing — the 8c twin of the `nominal_line_spacing_px` trap. `.as_dict` → **`probe`**: the vote rebuilds the same dict by hand at `:507` | **D** then **A** |
+| `_looks_cut:381` | is a matched `C` really `¢` | the fill fraction once thresholded — a clean 1.00 and a marginal 0.75 are identical, though the docstring publishes the 0.48↔1.00 gap | `symbol` (`"common"`/`"cut"`) → **CONSUMED**, `export.py:874` writes `<time symbol=…>`, worth a flat 3 edits/staff | **B** |
+| **`vote_system_time_signature:499`** | do the staves agree | ⚠️ **every reading's `score`, deliberately** — ranking by median score was measured and REFUSED ("identical verdict table, one documented principle weakened"). Also unused *by the vote*: `x_canonical` agreement, since a real meter is at the same x on every staff — though the value itself is **CONSUMED** at `key_signature_template.py:171` as the right bound of the accidental window | the voted meter → **CONSUMED**. `median_score`, `votes`, `voters` → ⚠️ **`probe`** — two benchmark sweeps and the unit tests; **no production reader** | **A** on the floor; **C** for the scores |
+| meter precedence `transcribe.py:1777` | specialist digit vs header vote | ⚠️ **neither `median_score` nor `votes`.** And the precedence is ASYMMETRIC: the clef specialist is gap-fill only (`:1774`, `if spec_clef is not None and clef_source is None`) while the meter specialist **overwrites unconditionally** — a 27-of-27 unanimous header vote is replaced by one detected digit in the music | `time_signature` | **D** |
+| carry onto a meterless page `transcribe.py:4739` | does last page's meter apply here | — | ⚠️ `inferred_time_signature` → **`probe`, NOT consumed by the exporter.** `export._ensure_inferred_time_signatures` (`:50`, called at `:663`/`:3401`) calls `backfill_page_time_signatures`, which **WRITES** this key (`rhythm.py:704`) and never reads it — what actually reaches the export is the back-filled `time_signature` on each staff and measure | E |
+| mid-staff meter change `transcribe.py:4650` | did the meter change within the staff | — | `time_signature_final` → ⚠️ **NOBODY** | **C** |
 
 **`min_staff_fraction = 0.70`, verified at `time_signature_locator.py:192`** —
-matching the documented figure. Note the effective floor is
+matching the documented figure. The effective floor is
 `int(round(0.70 × total))`, so an 11-staff system needs 8 (0.727).
-
-⚠️ **The meter precedence is the ASYMMETRIC one.** The clef specialist is
-gap-fill only (`if spec_clef is not None and clef_source is None`,
-`transcribe.py:1774`); the meter specialist **overwrites unconditionally**
-(`:1777`). A 27-of-27 unanimous header vote is replaced by one detected digit
-in the music, and neither `median_score` nor `votes` is consulted.
 
 ---
 
@@ -766,25 +804,32 @@ in the music, and neither `median_score` nor `votes` is consulted.
 ⚠️ **The cascade is not in `_labels_for_page`.** That function
 (`contextual.py:549`) runs the work-roster pass; the reader ladder is
 `_read_labels_for_page` (`:605-878`). CLAUDE.md, the module docstring and the
-commission brief all name the wrapper.
+original commission brief all name the wrapper.
 
-| decision (file:line) | decides | ⚠️ blind to | shape |
-|---|---|---|---|
-| `staff_labels.read_staff_labels:189` | which staff a text span belongs to | span **x** (captured, used only to sort), font size/weight, `group_index`, and **`system_index`** — a two-system page's margins are pooled by y alone | **D** + **E** |
-| `instruments.lookup:873` | which instrument a string names | ⚠️ **everything except the string.** A pure function with zero context — every contextual repair downstream exists to patch this deliberate blindness | **D** + **E** |
-| **`Match.confidence:77-81`** | high / medium / low | ⚠️ **the coverage float past the 0.6 comparison.** 0.61 and 1.00 become indistinguishable. The `0.6` is a bare literal with no name, no sweep and no benchmark reference | **B** — the pipeline's cleanest Class-B site |
-| `staff_labels_tesseract._words:103` | which OCR words survive | ⚠️ the per-word confidence is **discarded after the threshold** — a 31 and a 95 produce identical evidence | **B** |
-| `staff_labels_human._questions:64` | which staves a human is asked about | ⚠️ `label.confidence` — a `low` label is `matched`, so **the human is never asked about exactly the labels every consumer will silently drop** | **E** |
-| `_read_labels_for_page` ladder `:676-878` | which reader's answer stands | ⚠️ **per-label agreement BETWEEN rungs.** Readers are compared by integer counts only; two rungs agreeing on a staff is worth nothing, and a set-union merge is attempted for Tesseract alone | **D**, with one additive rung |
-| `_merge_key:476` | quality then reach | whether the two reads DISAGREE on any staff — the key can see how many labels there are, never whether one is wrong | **D** |
-| `work_roster.decide:485-524` | what a label resolves TO | which staff it is on, the other labels on that system, the roster's ORDERING (used as a set) | **D** + **E** |
-| `roster.acquire_roster:292` | which system IS the roster | ⚠️ `Roster.coverage` is computed, serialised, and **compared to nothing** — there is no minimum-coverage gate, only an absolute floor of 2 names | **D** + **E** |
+| decision (file:line) | decides | ⚠️ blind to | produces → consumed by | shape |
+|---|---|---|---|---|
+| `staff_labels.read_staff_labels:189` | which staff a text span belongs to | span **x** (captured, used only to sort), font size/weight, `group_index`, and **`system_index`** — a two-system page's margins are pooled by y alone | a `{staff_index: str}` map → `contextual._read_labels_for_page` — **CONSUMED** (free rung 1) | **D** + **E** |
+| **`staff_labels_surya.read_staff_labels_surya`** (`contextual.py:685`) | the same map, by local OCR, on a page with no text layer | the PDF's own text layer where one exists (rung 1 already ran); the crop's ink density; ⚠️ **any per-block OCR score — Surya's confidences are not carried out of `_surya_worker`** | the map → **CONSUMED** (free rung 2, **on by default**). Self-disables where `.venv-surya` is absent | **D** at the ladder; **A** internally |
+| ↳ `_surya_worker._assign:89` block-height gate | drop a block that swallows the crop | ⚠️ the block's **width** and its text; the gate is height-only. It is scale-invariant by construction (a ratio to the system's own tick span) which is why it survives across editions | the surviving blocks. ⚠️ Measured: the two runaway blocks sit at **1.04×** the span, Boléro's 17 correctly-split blocks at **1.5–4.7%** — a ~22× gap. `_RUNAWAY_HEIGHT_FRACTION = 0.5` sits in the middle of it | **E** on a measured empty gap |
+| **`staff_labels_vision.read_staff_labels_vision`** (`contextual.py:809-813`) | the same map, from Claude | ⚠️ what the free rungs already read — it is not shown their answer, so it cannot repair, only replace | the map → **CONSUMED** when it runs. ⚠️ **Off by default** and budgeted per system (~1¢); gated on the free rungs returning too few USABLE labels | **E** (a cost gate) |
+| `staff_labels_tesseract._words:103` | which OCR words survive | ⚠️ the per-word confidence is **discarded after the threshold** — a 31 and a 95 produce identical evidence | words → the union merge — **CONSUMED** | **B** |
+| `staff_labels_human._questions:64` | which staves a human is asked about | ⚠️ `label.confidence` — a `low` label is `matched`, so **the human is never asked about exactly the labels every consumer will silently drop** | questions → ⚠️ **unreachable from `transcribe`**: `_contextual_call_kwargs` (`transcribe.py:4006`) only ever builds `Assist("vision"\|"none")`, and `Assist.switch` is called only from inside this module and only ever switches AWAY from human | **E** |
+| `_read_labels_for_page` ladder `:676-878` | which reader's answer stands | ⚠️ **per-label agreement BETWEEN rungs.** Readers are compared by integer counts of USABLE labels only; two rungs agreeing on a staff is worth nothing, and a set-union merge is attempted for Tesseract alone | the page's label map → `slots`, `score_layouts`, `work_roster`, `dossier` — **CONSUMED** | **D**, with one additive rung |
+| `_merge_key:476` | quality then reach | whether the two reads DISAGREE on any staff — the key can see how many labels there are, never whether one is wrong | the ordering | **D** |
+| ⚑ **`instruments.lookup:873`** | which instrument a string names | ⚠️ **everything except the string.** A pure function with zero context — every contextual repair downstream exists to patch this deliberate blindness | `Match` → ⚠️ **12 production importers across four stages**: all five label readers, `contextual`, `score_layouts`, `work_roster`, `clef_correction`, `dossier.py:457`, **`transcribe.py:2484` and `:2872`**, and `tools/library/instrumentation.py` **outside `tools/omr` entirely** | **D** + **E** |
+| **`Match.confidence:77-81`** | high / medium / low | ⚠️ **the coverage float past the 0.6 comparison.** 0.61 and 1.00 become indistinguishable. The `0.6` is a bare literal with no name, no sweep and no benchmark reference | `Match.confidence` → `slots.MIN_LABEL_CONFIDENCE`, `roster.py:219`, `contextual`, `absent_instrument` — **CONSUMED**. `Match.coverage` (the float) → one direct reader, `work_roster.py:518`, which merely rebuilds a `Match`; ⚠️ **nothing past the bucket ever compares it**. `Match.is_ambiguous` → **`probe`**, though the `alternatives` it wraps is read at `work_roster.py:512` | **B** — the pipeline's cleanest Class-B site |
+| `work_roster.decide:485-524` | what a label resolves TO | which staff it is on, the other labels on that system, the roster's ORDERING (used as a set) | a `Decision` → `contextual` — **CONSUMED** under `OMR_ROSTER_LABELS`, ⚠️ whose production reach is **NIL** (needs `OMR_WORK_ID`, which nothing sets). `Decision.names_a_staff` → **`probe`** | **D** + **E** |
+| `roster.acquire_roster:292` | which system IS the roster | ⚠️ `Roster.coverage` is computed, serialised, and **compared to nothing** — there is no minimum-coverage gate, only an absolute floor of 2 names | the roster → `contextual` — **CONSUMED** (`OMR_ROSTER`, **on**). `Roster.coverage` → **serialised only** — `roster.py:168` puts it in `evidence()` and no behaviour branches on it | **D** + **E** |
 
-⚠️ **`transcribe` can never reach the human rung.** `_contextual_call_kwargs`
-synthesises `Assist("vision" if vision_fallback else "none")`
-(`transcribe.py:4006`), so `staff_labels_human.py` — 205 lines — is unreachable
-from the pipeline and callable only by a tool that invokes
-`apply_contextual_analysis` directly.
+⚠️⚠️ **A LEXICON CHANGE RIPPLES INTO GLYPH OWNERSHIP, TWO STAGES UPSTREAM OF
+WHERE THIS TABLE FILES IT — and no grep of `transcribe.py` will show you.**
+Both ownership call sites import the lexicon **lazily, inside the function**
+(`from .instruments import lookup as lookup_instrument`, `transcribe.py:2484`
+in `_staff_written_ranges` and `:2872` in `_apply_roster_range_veto`), so
+`grep -n 'instruments\.' tools/omr/transcribe.py` returns **one hit and it is a
+comment.** This is the same indirection class as the property that hid
+`nominal_line_spacing_px` (§8-E1) in a second costume: **a function-local
+import.** Check for both before writing a `NOBODY`.
 
 ---
 
@@ -794,7 +839,7 @@ from the pipeline and callable only by a tool that invokes
 what makes it the right target for §8b's principle: `slots._pair_score` and
 `score_layouts.fit_layouts` sum signed terms with no vetoes.
 
-`slots._pair_score` (`slots.py:480-489`) — every term:
+`slots._pair_score` (`slots.py:472`) — every term:
 
 | constant | line | value | evidence it weights |
 |---|--:|--:|---|
@@ -803,31 +848,34 @@ what makes it the right target for §8b's principle: `slots._pair_score` and
 | `SCORE_GROUP_MATCH` | 53 | +1.5 | the slot's bracket group is reachable from the staff's |
 | `SCORE_GROUP_CONFLICT` | 54 | −1.5 | it is not |
 | `SCORE_POSITION_WEIGHT` | 55 | 1.0 × (1 − \|Δpos\|) | relative position down the system |
-| `GAP_PENALTY` | 57 | −1.0 | skipping a reference slot (part tacet) |
+| `GAP_PENALTY` | 56 | −1.0 | skipping a reference slot (part tacet) |
 
 ⚠️ **−8.0 dominates every other term combined** (max non-label positive is
 1.5 + 1.0 = 2.5), so the label conflict is a hard gate wearing an additive
-coat. And ⚠️ **the model is blind to the staff's clef, its register, its
-measure count, its indent, its label's confidence and alias, and to agreement
-ACROSS systems** — every system is aligned independently and a slot's identity
-is never fed back.
+coat. ⚠️ And **`SCORE_LABEL_MATCH` is the far end of the `Match.coverage`
+quantisation in Stage 9**: a label matching at 0.61 coverage and one at 1.00
+arrive here identical, and a 0.59 does not arrive at all. **A builder adding a
+term to this table is looking at the wrong end of that pipe** — §7.2 item 12 is
+the same signal, and the two are one decision, not two.
 
-| decision (file:line) | decides | ⚠️ blind to | shape |
-|---|---|---|---|
-| `reference_candidates:263` | the canonical part list | page ORDER (a system's position is not evidence here); clefs; bracket structure as a candidacy test | **D** + **E** |
-| `map_groups:421` | may bracket groups be compared at all | labels, clefs, positions, bracket nesting depth — the reading is reduced to an ordinal before it arrives | **E** (a tie of different meanings abstains — correct, §0.1) |
-| **`align:528`** | the staff→slot assignment | ⚠️ **no score is ever returned.** `align` returns `list[int]`; `dp[m][n]` is discarded, so **no caller can know how confident an alignment was** — `_compose` re-derives evidence by counting contradictions afterwards because the score is unavailable | **A** |
-| `fit_layouts:582` | what each slot is, from position + clef + labels | ⚠️ **bracket groups** — `fit_layouts` has no group parameter at all, so `slots`' strongest structural signal never reaches the layout vote; also register, indent, key signatures | **B** |
-| `resolve_ambiguous_label:642` | the narrow 2-way question | the MAGNITUDE of support — only `> 0.0` is tested, so 0.64 and 0.01 are identical | **B→D** |
-| `instrument_source` assignment `contextual.py:1136-1148` | the provenance tier | ⚠️ **which page actually carried the label.** The tier is per-SLOT, so a staff twenty pages from the only page that named its slot is stamped `label` | **D** |
-| roster precedence `:1058` | page read beats roster | ⚠️ **a roster that CONTRADICTS the page read is silently discarded with no record.** There is no `roster_disagreements` field | **D** |
-| `absent_instrument.find_vetoes:293` | strip a name no nearby page attests | clefs, register, bracket group, and — by design — misread labels | **E** |
-| `label_contradiction.find_contradictions:122` | **nothing** | it is evidence-only by design, and says so | **C** |
-| `propose_clef` `clef_correction.py:214-279` | which clef the register prefers | ⚠️ the detector's clef confidence — **measured at this site and REFUSED**: misread trebles score 0.34 and 0.72 while a correct one scores 0.61 | **B** + **D** + **E** |
+| decision (file:line) | decides | ⚠️ blind to | produces → consumed by | shape |
+|---|---|---|---|---|
+| `reference_candidates:214` | the canonical part list | page ORDER (a system's position is not evidence here); clefs; bracket structure as a candidacy test | the reference → `align`, `fit_layouts` — **CONSUMED** | **D** + **E** |
+| `map_groups:363` | may bracket groups be compared at all | labels, clefs, positions, bracket nesting depth — the reading is reduced to an ordinal before it arrives | the group map → `_pair_score` — **CONSUMED**. `best_cost` → **NOBODY** | **E** (a tie of different meanings abstains — correct, §0.1) |
+| **`align:492`** | the staff→slot assignment | ⚠️ **no score is ever returned.** `align` returns `list[int]`; `dp` is read only to fill `back[i][j]`, and the traceback at `:534-542` reads `back`, never `dp`, so **no caller can know how confident an alignment was** — `_compose` re-derives evidence by counting contradictions afterwards because the score is unavailable | `slot_index` → **CONSUMED** by `export._stitch_slots_by_slot`, `contextual`, the whole identity block. The **score** → **NOBODY, because it does not exist** | **A** |
+| `fit_layouts:530` | what each slot is, from position + clef + labels | ⚠️ **bracket groups** — `fit_layouts` has no group parameter at all, so `slots`' strongest structural signal never reaches the layout vote; also register, indent, key signatures | ⚠️ there is no `.slots` — the field is `assignment`, reached through `instrument_for()` (`contextual.py:1141`) and `support_for()` — **CONSUMED**. `.agreement`, `.considered`, `.score_per_staff` → ⚠️ **NOBODY**: `agreement` is cut to a name-or-None *inside* `fit_layouts:583` and only the post-cut assignment escapes, and `contextual.py:833` discards it deliberately — it reads 1.000 for 70% of the WRONG answers | **B** |
+| `_read_clefs_by_slot:1076` | which clefs the layout vote may see | ⚠️ nothing — this is the well-built one. It admits a staff only if it carries `clef_source`, so `clef_correction`'s output cannot re-enter | `clef_by_slot` → `fit_layouts` — **CONSUMED**, and worth **+51 identity records on Beethoven 5** where the label channel is worth 0 (§4.2 Cycle 2) | evidence gate on **provenance**, the model form |
+| `score_layouts.resolve_ambiguous_label:597` | the narrow 2-way question | the MAGNITUDE of support — only `> 0.0` is tested, so 0.64 and 0.01 are identical | `instrument_by_slot[slot]` **and a document-wide write into `reference`** — **CONSUMED**. The count → `ambiguous_labels_resolved` → **`probe`** (write at `contextual.py:1491`; only `test_score_layouts.py:295` reads it) | **B→D**. ⚠️ §4.3's per-system-refusal/document-wide-write hazard lives here |
+| `instrument_source` assignment `:1136-1148` | the provenance tier | ⚠️ **which page actually carried the label.** The tier is per-SLOT, so a staff twenty pages from the only page that named its slot is stamped `label` | `instrument_source` → **CONSUMED, and load-bearing**: `contextual.py:1385` (the clef gate), `absent_instrument`, `label_contradiction`, `offroster_name` | **D** |
+| roster precedence `:1058` | page read beats roster | ⚠️ **a roster that CONTRADICTS the page read is silently discarded with no record.** There is no `roster_disagreements` field | `instrument` | **D** |
+| **`movement_reference.lineup_spans`** (`slots.py:565`, `:587`; `OMR_MOVEMENT_REFERENCE`, **default ON**) | where the document's lineup GREW — boundary pages are those setting a new running maximum system size (`_peaks:455`) | ⚠️ **movement boundaries**: it finds one boundary in Beethoven 5's four movements, and says so. A lineup that SHRINKS is invisible by design. No window, no smoothing, no tolerance — and **no probability is formed anywhere**; `_align_by_span` returns `False` rather than guessing | page-index spans → `slots._span_views` → `_align_by_span:660` — **CONSUMED**. ⚠️ This is the flag that shipped default-ON on one work and made a second **four times worse**, and it is **not in CLAUDE.md's env table** (§8-D24) | **E** — the subsequence axiom: a system may OMIT a part, never INVENT one |
+| `absent_instrument.find_vetoes:293` | strip a name no nearby page attests | clefs, register, bracket group, and — by design — misread labels; ⚠️ `distance_pages` is computed and used only through a hard interval test at window 0 | `instrument_veto` → ⚠️ **SERIALISED-ONLY** (written `contextual.py:1341`; `label_contradiction` reads the *summary* blob `absent_instrument_veto`, not this field). The removal itself → **CONSUMED** | **E** |
+| `label_contradiction.find_contradictions:122` | **nothing** | it is evidence-only by design, and says so | `label_contradiction` → ⚠️ **NOBODY, deliberately.** 158 firings, 0.873 of them the export being wrong, 0 both-right; what it should DO is undecided | **C** |
+| `propose_clef` `clef_correction.py:214-279` | which clef the register prefers | ⚠️ the detector's clef confidence — **measured at this site and REFUSED**: misread trebles score 0.34 and 0.72 while a correct one scores 0.61 | `staff["clef_proposal"]` → ⚠️ **NOBODY** (write at `clef_correction.py:640`, no reader). `.confidence_label` → **NOBODY** — `do_apply` at `:612` is decided by `clef_was_read` plus the treble override, never by confidence. `.applied` → **CONSUMED** as a summary count (`contextual.py:1494`). The applied clef itself → **CONSUMED** via `apply_proposal` | **B** + **D** + **E** |
 
 ⚠️ **`propose_clef` has FIVE `return` statements, not six** (`:232`, `:245`,
 `:262`, `:266`, `:274`) — four refusals and one proposal. Every one of them
-discards the whole `fits` dict.
+discards the whole `fits` dict — ⚠️ and `fits` is a **local** at `:235`, collapsed to the scalar `fit` at `:277`, so the per-clef ballot never becomes a field anyone could read.
 
 ⚠️⚠️ **The clef gate everybody has been discussing is the wrong one.**
 `sources.get(slot) == "label"` sits at `clef_correction.py:616`, inside the
@@ -838,35 +886,147 @@ tier is caller-side: `contextual.py:1380` builds `read_instruments` by dropping
 reach `propose_clef` on either tier. Consequence:
 **`score_order_ambiguity` reaches FILL and is blocked from OVERRIDE.**
 
+⚠️ **`bracket_reader.py` (390 lines) would belong in this table and has no call
+site.** A complete, tested, benchmarked classical-CV bracket reader whose own
+docstring says *"Nothing in the pipeline consumes this module"*; its only
+importer anywhere is `test_bracket_reader.py:21`. It forms a full verdict —
+`blocks`, `boundaries`, **`interior`** (the gaps a bracket asserts are *not*
+boundaries) and `verdict` — and `interior` is evidence
+`system_grouping.gap_bridging_counts` **structurally cannot supply**, while
+`fit_layouts` above is blind to bracket groups and `_assign_groups` infers them
+from ink columns. Class **C**, at 390 lines. See §7.4 before starting any
+bracket workstream.
+
+---
+
+### Stage 4b · Tie pairing — `transcribe._pair_ties_in_cell` / `_pair_ties_in_staff`
+
+Named in §2's spine and, until this revision, absent from §5 entirely.
+**~25 decision points; the 12 that matter.**
+
+| decision (file:line) | decides | ⚠️ blind to | produces → consumed by | shape |
+|---|---|---|---|---|
+| `_pair_ties_in_cell:2242` | which detections are ties | the detection's `confidence`; and slur-classed arcs that are geometrically ties. A tie and a slur are the **same glyph** (`docs/position-grammar-confusables-2026-09-04.md` §2); the corrective (`export._arc_reclass_enabled:1867`) is default-OFF and lives in a different file, **after** transcribe has committed | `ties_to_next`/`ties_from_prev` → `tied_to_next`/`tied_from_prev` — **CONSUMED** by `voicing`, both exporters | **D** — raw class argmax |
+| `:2247-2251` | the vertical window | ⚠️ **`line_spacing_px`.** `y_tolerance = max(avg_nh_h * 3, 30)` — a **raw 30-pixel floor** in a pipeline whose stated doctrine (`direction_text.py:74-78`) is that every geometric rule is in staff spaces. It means a different thing at every DPI and on every publisher | candidates | **B** |
+| `:2270`, `:2275` | the horizontal window | the barline — cell-local, so a tie whose partner is in the next cell finds nothing here | candidates | **B** |
+| `:2266-2277` | which two heads a tie joins | ⚠️ **everything but x-distance** — no pitch, no duration, no beat, no stem, and **no adjacency**: nothing requires the two heads be consecutive, so a nearer head with three heads between it and the other end wins | one (left, right) pair | **D** — argmax, no score formed |
+| ⚑ `:2236-2239` + `:2279` | the pitch check that does not exist | ⚠️⚠️ **PITCH — structurally, not by choice.** A tie is *defined* as joining two notes of one pitch. The docstring says *"not checked (and not available)"*; the fact exists 300 lines away in `pitch_by_id` and is simply not passed in (§8-D19). The only refusal is `best_left is not best_right` | — | **A**, then **E** |
+| `_pair_ties_in_staff:2038` (called `:4615`) | the cross-cell mirror, in page pixels | ⚠️ **its own return value.** `n_new_pairs` is computed at `:2112-2121`, with a `was_already_paired` guard so it means something, and **discarded at the call site** — `_pair_ties_in_staff(staff_dict)` with no assignment. No `tie_pairs` field, no log line | an `int` → **NOBODY** | **C** |
+| `:2091` | the same two constants again | ⚠️ **the frame change.** `max(avg_nh_h * 3, 30)` is applied here in PAGE px where `:2247` applied it in CANONICAL px, and the cell is upscaled — two different physical distances, and nothing records which fired | — | **B** |
+| `:2136`, `:2141` | window `w * 3` here vs `w * 2` in the cell pass | ⚠️ **any measurement.** Unlike `_SLUR_BOUNDARY_SPACES` or `_ARTIC_MAX_DX_NOTEHEAD_WIDTHS` there is no sweep, no plateau and no FINDINGS reference for either 2 or 3 | — | **B** |
+| `:2065-2073` | which noteheads are candidates | ⚠️ **pitch and duration.** Contrast `export._measure_noteheads:2271`, which filters `pitch is not None and duration_beats is not None` *precisely because* an unpitched detection never becomes an event — so a tie here can anchor to a head that never becomes a note, and evaporate downstream | — | **E**, a missing refusal |
+| `:2112-2120` | union semantics between the two passes | ⚠️ **disagreement.** Flags are only ever set `True`, never cleared, and the two passes can pick different partners for one glyph: a head can end up `tied_to_next` toward a head that is not `tied_from_prev` from it. The relation is never checked for consistency | — | **E**, no refusal where two answers conflict |
+| `voicing.py:215-216` | the chord's tie flag | which member was tied — `any(...)` over the group | event-level flag | **B** |
+| ⚑ `export.py:3002-3003` | which notehead wears the tie | ⚠️ combined with the row above: a four-note chord whose **top** note is tied exports `<tie>`+`<tied>` on notehead **index 0**. Scored under musicdiff's `Ties`, so the tie lands on the wrong pitch and is charged | `<tie>`/`<tied>` | **B** |
+
+---
+
+### Stage 9′ · Direction text — `direction_text.py`
+
+**~72 decision points; the 14 that matter.** In §2's spine, ~75% of whole-work
+wall clock, and absent from §5 until this revision.
+
+| decision (file:line) | decides | ⚠️ blind to | produces → consumed by | shape |
+|---|---|---|---|---|
+| ⚑ **the `Reader` type `:614`** | the shape of every OCR answer | ⚠️⚠️ **`Reader = Callable[[list[np.ndarray]], list[str]]` — there is NO CONFIDENCE ANYWHERE IN THE INTERFACE.** Not per crop, not per character, not per rung. Surya returns a score internally and Tesseract has `image_to_data` confidences; **neither can cross this boundary.** Every downstream choice is therefore *forced* to be positional or lexical | the reader contract | **A — structural**, and the purest example in the pipeline: a probability that cannot be formed because the type will not carry it |
+| ⚑ `read_directions:801` | which rung wins | ⚠️ **which rung was more likely right on this crop.** `winner_name, hit = accepted[0]` — `accepted` is built in `readers` **list order**, so the winner is Surya-if-present, unconditionally. Not a tie-break, not a vote, not a score: position in a list. `default_readers:689-692` is candid — *"this rule has never yet been load-bearing"* | the winning `DirectionText` | **D** |
+| ⚑ `:802-809` | records the disagreement | — | ⚠️ `info["conflicts"]` → **the report dict only.** It is **not** a field on `DirectionText`, not among `to_json()`'s eight keys, and never reaches the measure, the artifact or the exporter. **A two-rung-agreed reading and a two-rung-disagreed reading are the same object downstream** | **C** |
+| ⚑ **the lexicon gate `:795`** | is this string a musical direction | ⚠️ **any real marking not in `_TEMPO`/`_EXPRESSION`** — an unknown Italian or German term is indistinguishable from noise; and the OCR's own confidence, which is *why* a lexicon is the only gate available. It tests, in order: charset (`direction_lexicon.py:149` — any digit or bracket rejects, which kills bar numbers and rehearsal letters), phrase length, an **adjacent-repeat veto** (`:166` — the Surya `arco. arco. arco.` failure mode), every token known, and at least one real term | an accepted reading. ⚠️ **"Load-bearing, do not loosen"**, and the arithmetic is at `direction_lexicon.py:11-16`: OMR-NED charges an invented direction exactly what it charges a missed one, so precision and recall trade **1:1** and only a gated reader is safe | **E** — a CONSTRAINT under §0.1, not an opinion |
+| ⚑ `_blank_detections:301` | which ink is not a letter | ⚠️ **three ways.** (1) It erases the BOX, not the glyph: a slur box at 24.2 × 4.0 spaces once erased all nine components of `sempre`, so `max_blank_width_spaces = 4.0` was added — a hard cut, and a 7.7-space pedal bracket survives it. (2) **Detector RECALL**: a glyph the detector missed stays in the mask and competes as letter ink, so this method's recall is the detector's precision inverted. (3) It was blind to its own dependence on detector output until a `dynamicP` at 0.87 inside `espr.` was correctly detected, correctly blanked, and took `espr. e legato` off two Brahms staves — **56 edits**. The repair (`_is_inside_a_word:282`) is excused for `category == "dynamic"` only, deliberately | the ink mask → `find_candidates` | **E** with a **B** inside it |
+| `_letter_components:353` | letter or curve | ⚠️ a curve that is THICK (a beam fragment, a heavy tie at low DPI) and a letter that is THIN (an italic `l`, a hairline serif). ⚠️ And unlike its neighbours it has **no sweep and no probe script cited** beside it | components | **B**, `min_fill_ratio = 0.16` |
+| `page_is_engraved:617` | drop the Tesseract rung | a born-digital edition whose font defeats Surya — the docstring says so. The claim rests on **three** LilyPond fixtures; asymmetric by design, any doubt → `False` | the rung list | **E** |
+| `find_candidates:552` | is this above-staff text a heading or a direction | ⚠️ **a second above-staff direction later in the system.** `above_first_measure_only` is the *only* thing separating a movement heading from `Allegro con brio`: `above_spaces = 8.0` cannot, because Mahler's title sits closer to its staff than Beethoven's direction does | candidates | **E** |
+| `_bands_for_page:456` | who owns the inter-staff gap | which staff the engraver meant — chosen geometrically (upper staff takes the whole gap within a system; split at the midpoint across one) so no word is ever offered twice | bands | **E** |
+| `_measure_at:483` | which measure a word belongs to | ⚠️ a word in the margin BETWEEN systems is **clamped** into the first or last measure rather than dropped — out-of-range never abstains | the measure index | **E**, an absent refusal |
+| `_cluster_into_words:397` | what counts as a word | a two-glyph marking (`fp` is excluded on purpose, but so is every real one); and a word whose letters were partly eaten by `_blank_detections` — `CROP_PAD_X_SPACES` exists because *"`legato` read as `egato` is a lexicon miss, not a near miss"* | words | **B** |
+| `crop_for:606` | the upscale factor | whether the upscale helped — nothing measures per-crop legibility | a crop | **B** |
+| `:784-787` | a rung that crashed | — | `info["failed_readers"]` → ⚠️ the report only. Note the asymmetry with the conflicts row: a rung CRASH and a rung DISAGREEMENT are both recorded in the report, and **neither reaches the artifact** | **C** |
+| `attach_to_page:825` | landing a direction on a measure | ⚠️ the difference between "no directions on this page" and "**eight directions that could not be landed**" — an unmatched staff or measure index is dropped silently and only the `placed` count survives | `measure["direction_texts"]` — **CONSUMED** (2 of its 8 keys, below) | **E** |
+
+⚠️ **`direction_texts` carries eight keys and `export.py` reads two.**
+`to_json()` (`:254-266`) writes `staff_index`, `measure_index`, `x_page`,
+`text`, `category`, `placement`, `terms`, `reader`.
+`measure_direction_words:1362-1373` touches **`text`** and **`x_page`**.
+The other six are **SERIALISED-ONLY** — including **`placement`**, which the
+reader computes per candidate (`above`/`below`, from `_bands_for_page`) and
+which `_mxl_direction` overwrites with the literal `placement="below"` at
+`:1403` and `:1412`.
+
+⚠️⚠️ **And that hardcode costs exactly zero, provably, which is the point.**
+`placement` is a MusicXML *print-style* attribute, so it falls under
+musicdiff's `Style` bit — **excluded from `AllObjects`**. No benchmark in this
+repo can see it. The only consumer that could is a human reading the file, or
+LilyPond, which never receives a `<words>` at all.
+
 ---
 
 ### Stage 11 · Export
 
 ⚠️ **The exporter reads no confidence, and its dead-signal list is the longest
-in the pipeline.**
+in the pipeline.** At the end of the pipeline, *"consumed by"* means **which
+element it writes and which harness can SEE that element** — so this table's
+consumer column names musicdiff's detail bits, `export_coverage.VISIBLE`, and
+whether LilyPond gets it at all.
 
-| decision (file:line) | decides | ⚠️ blind to | shape |
-|---|---|---|---|
-| `_parse_pitch:217` | is this pitch renderable | ⚠️ **`pitch_candidates`** — `grep -c pitch_candidates export.py` is **0**. An unparsable primary pitch becomes a `<rest/>` rather than falling to candidate #2 | **A** |
-| `_compute_divisions:814` | the score-global `<divisions>` | `tuplet` — the ratio that CAUSES the thirds is on the dict and the denominator is rediscovered from the float instead | **D** |
-| `<duration>` rounding `:917`, `:2982` | the integer duration | ⚠️ `duration_type`+`dots` (the same fact by another route, never cross-checked) and **`rhythm_sum_warning`** — the pipeline's own statement that this bar does not sum, unread at the exact moment `<duration>` is written | **B** |
-| `measure_dynamics:1337` | is this run one word | `bbox[3]` (height, never read); **`bbox_page`, so a dynamic straddling a barline cut is unjoinable by construction**; both letters' confidence | **A** |
-| **`measure_dynamics:1344`** | a run spelling no dynamic is DROPPED | ⚠️ the run's own letters (no partial recovery) and their confidences. **Measured: 45 of 45 scan and 8 of 8 engraved refused runs are edit distance 1 from a legal dynamic; refused letters p25 0.398 vs kept 0.699** | **E** — the clearest conversion candidate in the pipeline |
-| `measure_direction_words:1372` | where an OCR'd word sits | ⚠️ **six of the eight keys the direction reader writes**: `staff_index`, `measure_index`, `category`, **`placement`** (computed above/below — while `_mxl_direction` hardcodes `placement="below"` at three sites), `terms`, `reader` | **C** |
-| `annotate_fermatas:1043` | which event wears a fermata | ⚠️ `confidence` — **the docstring quotes it as 0.90-0.95 and is the single `confidence` occurrence in the file**; and **y entirely**, so a fermata on the wrong staff of a system cannot be detected | **D**, and the fallback has no distance ceiling |
-| `_pick_beam_box:1139` | which beam box a notehead joins | notehead **y** (`centre()` computes it and it is never read); `stem_direction`; every notehead past `heads[0]` | **D** |
-| `_arbitrate_arcs_in_system:1783` | which staff owns a slur/tie | distance to the staff LINES (**explicitly refused — "the trap it was for notes"**); the arc's confidence; `staff["instrument"]` and its range, used by the notehead arbiter and not here | **D** |
-| `_wedge_anchors:2672` | which note a hairpin opens on | head **y** — though a hairpin is always BELOW its staff, 8 of 8 in the page truth | **D** |
-| `_wedge_anchors:2695` | where it stops | ⚠️ **`duration_beats` of the note still sounding** — which answers "is it still sounding at the ink's end" DIRECTLY, and is answered by geometry instead | **D** + **E** |
-| **`_stitch_slots:3231`** | may the systems be joined into parts | ⚠️ **the largest unread set in the file.** `staff["instrument"]` — the exact fact that would join a tacet-suppressed system, read four functions later for NAMING and never for joining; `staff["slot_index"]` (unread on the default path — the whole `_stitch_slots_by_slot` that uses it is behind `OMR_SLOT_STITCH`); `staff_geometry`; `clef`; `key_signature`; measure counts | **E**, the canonical one — an all-or-nothing refusal on a single scalar equality |
-| `_condensed_count:3313` | how many parts one condensed staff emits | ⚠️⚠️ **CORRECTED 2026-09-07 — THE INTEGER NEVER TRAVELS, so this decision is INERT.** Nothing in `tools/` or `backend/` calls `condensed_parts.players_for_label`, and nothing in `tools/` writes the `condensed_parts` staff field; its sole writer is `benchmarks/omr-condensed-parts-2026-09/run_arms.py:133`. So in production `counts` is always `{1}` and **`OMR_CONDENSED_PARTS` is a no-op even when set** — consistent with CLAUDE.md's "blocked on a count source", but a stronger and more useful statement than the tier one. The blind-to below is what would be lost *if a producer existed*: the four evidence tiers (explicit / compound / numeral / plural), so export could not weigh `Corni I.II.` against a bare `Flauti` — the distinction the Dvořák control falsifies | **E** + **A** |
-| piano grouping `:3428`, `:3505` | emit a brace | ⚠️ **`staff["instrument"]`** (a 2-staff orchestral extract becomes a piano) and **the bracket block**, which `transcribe.py:4436` emits specifically because it had never reached the dict, and which export still does not read | **A** |
+**`export_coverage.VISIBLE` — all 19 entries** (`export_coverage.py:181-200`):
+`accidental · articulations · accent · barline · bar-style · beam · dot ·
+dynamics · fermata · lyric · metronome · notations · slur · stem · tied ·
+time-modification · tuplet · wedge · words`.
+
+⚠️ **Two structural limits on that check, both load-bearing.** It is
+**categorical only** — `compare():270-285` reports an element *only* when ours
+is **zero** and truth is non-zero, so a regression from 118 wedges to 3 is
+invisible. And it is **pooled over 11 works**, so a total gap in one work is
+masked if any other work emits the element.
+
+⚠️⚠️ **What `AllObjects` EXCLUDES is the more useful half**
+(`.venv-omrned/…/musicdiff/detaillevel.py:23-112`): `Style` (stem direction,
+placement, colour), `Metadata`, **`Voicing`** (*"we ignore which voice and
+chord each note is in"*) and `NoteStaffPosition`. **The metric cannot see
+voices** — which matters below, because two of the exporter's most destructive
+refusals are enforced *against a fact the metric cannot score.*
+
+| decision (file:line) | decides | ⚠️ blind to | produces → who can SEE it | shape |
+|---|---|---|---|---|
+| `_parse_pitch:213` | is this pitch renderable | ⚠️ **`pitch_candidates`** — `grep -c pitch_candidates export.py` is **0**. An unparsable primary pitch becomes a `<rest/>` rather than falling to candidate #2, and is then charged twice (delete note + insert rest) | `<pitch>` / `<rest/>` → musicdiff **YES** (`NotesAndRests`). ⚠️ VISIBLE: **NO** — neither `pitch` nor `rest` is in the set, so a total pitch-parser failure is invisible to the coverage check. LilyPond: yes, via a **separate** parser (`_pitch_to_lily:262`) | **A** |
+| `_compute_divisions:785` | the score-global `<divisions>` | `tuplet` — the ratio that CAUSES the thirds is on the dict, and the denominator is rediscovered from the float instead | `<divisions>` → musicdiff **indirectly** (a wrong LCM becomes wrong durations becomes `wrong note`). VISIBLE: **no**. LilyPond: **no concept** | **D** |
+| `<duration>` rounding `:917`, `:2982` | the integer duration | ⚠️ `duration_type`+`dots` (the same fact by another route, never cross-checked) and **`rhythm_sum_warning`** — the pipeline's own statement that this bar does not sum, unread at the exact moment `<duration>` is written | musicdiff **indirectly, and it is the whole rhythm score**. ⚠️ It compounds: `total_dur` is a sum of ROUNDED units and is what `<backup>` rewinds by, so drift shifts voice 2. VISIBLE: **no**, named at `:180` as failing the membership test. LilyPond: **no** | **B** |
+| `measure_dynamics:1313` | is this run one word | `bbox[3]`; **`bbox_page`, so a dynamic straddling a barline cut is unjoinable by construction**; both letters' confidence | `<dynamics>` → musicdiff **YES** (`Directions`); VISIBLE **yes**; ⚠️ LilyPond **NO — it emits no `\f`/`\p` at all**, on any measure | **A** |
+| ⚑ **`measure_dynamics:1341`/`:1345`** | a run spelling no dynamic is DROPPED | ⚠️ the run's own letters (no partial recovery) and their confidences. **Measured: 45 of 45 scan and 8 of 8 engraved refused runs are edit distance 1 from a legal dynamic; refused letters p25 0.398 vs kept 0.699** | nothing — a silent drop | **E** — the clearest conversion candidate in the pipeline |
+| `measure_direction_words:1349` | where an OCR'd word sits | ⚠️ **six of the eight keys** the reader writes (above) | `<words>` → musicdiff **YES**; VISIBLE **yes**, and it is `FLAG_DEPENDENT`'s only member. LilyPond: **NO** | **C** |
+| `annotate_fermatas:997` | which event wears a fermata | ⚠️ `confidence` — **the docstring quotes it as 0.90-0.95 and is the file's single `confidence` occurrence**; and **y entirely**, so a fermata on the wrong staff of a system cannot be detected | `<fermata/>` → musicdiff **YES** (`Ornaments`); VISIBLE **yes**; LilyPond **yes** | **D**, and the fallback has no distance ceiling |
+| `_pick_beam_box:1119` | which beam box a notehead joins | notehead **y** (`centre()` computes it and it is never read); `stem_direction`; every notehead past `heads[0]` | `<beam>` → musicdiff **YES** (`Beams` — and its own enum note, *"if not requested, beams are treated exactly like flags"*, is the 430-of-449 `editbeam` bucket); VISIBLE **yes**; LilyPond **NO** (it auto-beams) | **D** |
+| `_arbitrate_arcs_in_system:1753` | which staff owns a slur/tie | distance to the staff LINES (**explicitly refused** — "the trap it was for notes"); the arc's confidence; `staff["instrument"]` and its range, read by the notehead arbiter and not here | moves a `<slur>`/`<tied>` between parts → musicdiff **YES**; ⚠️ VISIBLE **can never see it** (it moves, never zeroes). ⚠️ In the DEFAULT `move` mode a rival-owned arc is **deleted outright** (`:1789-1791`) and `moved` is returned to `to_musicxml:3402` and **discarded** | **C** + **E** |
+| `_wedge_anchors:2678` | which note a hairpin opens on | head **y** — though a hairpin is always BELOW its staff, 8 of 8 in the page truth | `<wedge>` → musicdiff **YES** (`Directions`, scored by the anchor pair's offset). VISIBLE **yes**. LilyPond **yes, but drops more**: one hairpin at a time, dropped across a lane flip, dropped across a system break by construction | **D** |
+| `_wedge_anchors:2694` | where it stops | ⚠️ **`duration_beats` of the note still sounding** — which answers "is it still sounding at the ink's end" DIRECTLY, and is answered by geometry instead | as above | **D** + **E** |
+| ⚑ **`_stitch_slots:3231`** | may the systems be joined into parts | ⚠️ **the largest unread set in the file.** `staff["instrument"]` — the exact fact that would join a tacet-suppressed system, read four functions later for NAMING and never for joining; `staff["slot_index"]` (the whole `_stitch_slots_by_slot` that uses it is behind `OMR_SLOT_STITCH`); `staff_geometry`; `clef`; `key_signature`; measure counts | `<part>` boundaries → musicdiff **YES, and expensively** — an unpaired truth PART costs more than that part's unpaired MEASURES. ⚠️ VISIBLE: **NO** — `part` is not in the set, so **the single largest structural lever in the exporter is invisible to the coverage check**. LilyPond: **no stitching at all**, one `\new Staff` per (page, system, staff) | **E**, the canonical one |
+| `_condensed_count:3303` | how many parts one condensed staff emits | ⚠️ the TIER that produced the count — `condensed_parts.players_for_label` has four evidence tiers and only the integer would travel. ⚠️ **And nothing writes the field**: no production module calls `players_for_label` and the only writer of `condensed_parts` is a benchmark script, so `_condensed_count` always sees `{1}` and **the knob is inert whatever it is set to** | part count → musicdiff **YES**; VISIBLE **no** | **E** + **A** |
+| piano grouping `:3428`, `:3490` | emit a brace | ⚠️ **`staff["instrument"]`** (a 2-staff orchestral extract becomes a piano) and **the bracket block**, which `transcribe.py:4436` emits specifically because it had never reached the dict, and which export still does not read | `<part-group>` → musicdiff **YES** (`StaffDetails` → `AnnStaffGroup`, ~4 symbols; our brace has a symbol so the all-parts skip does not apply). ⚠️ VISIBLE: **NO**. LilyPond: a `\new PianoStaff`, per system, with no number and no barline property | **A** |
+
+#### Slur and arc pairing inside export — ~46 decisions, the 13 that matter
+
+| decision (file:line) | decides | ⚠️ blind to | produces → who can SEE it | shape |
+|---|---|---|---|---|
+| ⚑ **`_number_spans:2517-2520`** | which simultaneous spans get a MusicXML number | ⚠️⚠️ **THE 7TH SIMULTANEOUS SPAN IS DROPPED SILENTLY.** `number = next((n for n in range(1, max_number + 1) if n not in open_spans), None); if number is None: continue`, with `max_number = 6` for both slurs (`_MAX_SLUR_NUMBER:1592`) and wedges (`_MAX_WEDGE_NUMBER:2565`). **No counter, no warning, no field** — `export.py` imports no `logging` and defines no logger; `_pair_slurs_in_run` returns only `n_marked`, so a run that drops three and marks four is indistinguishable from one that had four; `annotate_slurs_in_slot`'s return is summed and then discarded at every call site. ⚠️ And VISIBLE cannot see it either: `slur` is in the set and is satisfied by the other six | nothing — a silent drop | **E**, unrecorded — §7.1's exact target |
+| `:2505` | which span loses the number | ⚠️ the drop is **start-order-biased**: spans are sorted by start and numbers handed out first-come, so the span dropped is always the last to OPEN — never the shortest, never the least confident, because **there is no confidence to rank by** | — | **D** |
+| `:2513` | when a number is released | it deliberately inflates simultaneity — a stop-then-start on one note holds two numbers at once, bringing the 7-span ceiling one span closer | — | **B** |
+| `_merge_arcs_across_barlines:2226` | was this arc clipped by the cell edge | ⚠️ whether it was clipped **at all** — the detection carries no clipped flag; the boundary is inferred from `bbox_page_px` | segment chains | **B**, `0.5` spaces on a measured 0.10↔1.58 gap |
+| `:2246-2260` | are these two halves one slur | ⚠️ **arc CURVATURE and direction.** Two slurs crossing a barline 1.5 spaces apart are joined to the wrong partners by nearest-y, with nothing to break the tie | one merged slur | **D**, `2.0` spaces (plateau 1.0–6.0) |
+| `:2247-2253` | continuation across a SYSTEM break | a slur that legitimately crosses from above the staff to below it across the break — the sign test forbids it | — | **E** |
+| `_resumes_after_system_break:2161` | is this the resuming half | ⚠️ a system whose first cell has **no noteheads** — it returns `False`, the chain breaks, and both halves become one-sided | a bool | **E** |
+| `:2264` | may a slur skip a junction | a slur spanning a whole empty measure (three segments, middle absent) | — | **E** |
+| `_noteheads_under:2284` | which heads an arc covers | ⚠️ **the arc's HEIGHT — there is no y term whatsoever.** A slur box over staff 1 admits any head of that measure at any pitch; and the box is a rectangle around a curve, so its corners are paper | the covered list | **B**, pad `0.25` head widths |
+| `_measure_noteheads:2271` | which heads are eligible at all | ⚠️ **nothing — this is the CORRECT refusal**, and it is exactly the one tie pairing lacks (Stage 4b, `:2065`). Worth recording as the contrast case | — | **E** |
+| ⚑ `_paired_spans:2472` | a slur over fewer than 2 recovered heads is DROPPED | ⚠️ **detector recall.** And an undocumented asymmetry: `_wedge_anchors:2647-2660` was changed on 2026-09-05 to stop doing exactly this — *"ONE ANCHOR IS ENOUGH — Sean's rule"*, worth 116 → 118 wedges. **Slurs still require two** | a silent drop | **E** |
+| ⚑ `_paired_spans:2478` | the one-voice rule | ⚠️ **which voice is RIGHT** — the FIRST covered head decides, by position, not by how much of the slur each voice holds (this is §8-D28: the comment promises the *longest* run). ⚠️⚠️ And the voice assignment comes from `split_events_into_voices` (stem direction), **a fact musicdiff cannot score** because `Voicing` is excluded from `AllObjects` — **so a slur is silently truncated or destroyed on the strength of an unscoreable fact** | a silent drop | **E** |
+| `annotate_slurs_in_slot:2374` | the idempotency sweep | ⚠️ ORDER. The same staff dict is reachable from both the stitched path and `_staff_measures_xml`; this sweep is the only thing keeping a double export from stacking marks, and **nothing asserts it ran** | — | **E** |
 
 ⚠️ **LilyPond gets strictly less, and it is not in `KNOWN_GAPS`.**
 `annotate_beams`, `measure_directions` and `measure_dynamics` are called
-**only** from the MusicXML path. Beams and dynamics are computed by the
-pipeline and dropped from every `.ly` file on every measure —
-`export_coverage` cannot see it because it compares MusicXML.
+**only** from the MusicXML path — seven of the twelve rows above are
+MusicXML-only. Beams and dynamics are computed by the pipeline and dropped
+from every `.ly` file on every measure; `export_coverage` cannot see it
+because it compares MusicXML.
 
 **`KNOWN_GAPS` today — six entries, all open**
 (`export_coverage.py:208-246`): `barline`, `bar-style`, `lyric`, `metronome`,
@@ -892,9 +1052,9 @@ Reproduce the whole table with
 
 | verdict | keys |
 |---|---|
-| **CONSUMED** | `pages` · `page_index` · `systems` · `system_index` · `staves` · `staff_index` · `measures` · `measure_index` · `detections` · `bbox_page` · `bbox` · `class` · `category` · `pitch` · `duration_beats` · `duration_type` · `dots` · `beam_levels` · `tuplet` · `tuplet_group` · `articulations` · `accidental` · `stem_direction` (LilyPond only) · `tied_to_next`/`_from_prev` · `clef` · `clef_source` · `clef_final` · `key_signature` · `key_signature_read` · `time_signature` · `staff_geometry.line_ys_page`/`line_spacing_px` · `bbox_page_px` · `upscale_factor` · `direction_texts` · `inferred_time_signature` · `slot_index` · `instrument` · **`instrument_source`** · `phase1_warning` · **`rhythm_sum_warning`** · `confidence` · the seven `n_*_total` counters the backend reads |
+| **CONSUMED** | `pages` · `page_index` · `systems` · `system_index` · `staves` · `staff_index` · `measures` · `measure_index` · `detections` · `bbox_page` · `bbox` · `class` · `category` · `pitch` · `duration_beats` · `duration_type` · `dots` · `beam_levels` · `tuplet` · `tuplet_group` · `articulations` · `accidental` · `stem_direction` (LilyPond only) · `tied_to_next`/`_from_prev` · `clef` · `clef_source` · `key_signature` · `key_signature_read` · `time_signature` · `staff_geometry.line_ys_page`/`line_spacing_px` · `bbox_page_px` · `upscale_factor` · `direction_texts` · `slot_index` · `instrument` · **`instrument_source`** · `phase1_warning` · **`rhythm_sum_warning`** · `confidence` · the seven `n_*_total` counters the backend reads |
 | **TEST-ONLY** | `measure_count_warning` · `key_signature_warning` · `clef_register_warning` · `time_signature_disagreement` · `staff_geometry.line_thickness_px` · `staff_geometry.line_wander_px` · `staff_geometry.x_start`/`x_end` · `ambiguous_labels_resolved` and most of the `contextual` summary |
-| **SERIALISED-ONLY** | `weight_routing` · `clef_proposal` · `label_contradiction` · `group_index` · `pitch_candidates` · `contested_notehead_pairs` · `roster_range_veto` · `n_clipped_notehead_fragments_dropped` · `n_cross_staff_duplicates_removed` · `n_unladdered_noteheads_dropped` · `key_signature_reason` · `key_signature_unread_reason` · `instrument_label` · `instrument_family` · `instrument_veto` · `page_size_px` · `skew_corrected_deg` · `weights` · `imgsz` · `iou_threshold` · `agnostic_nms` |
+| **SERIALISED-ONLY** | ⚠️ `clef_final` (its only reader, `clef_correction.py:551`, is its own keeper — nothing downstream) · ⚠️ `inferred_time_signature` (`export._ensure_inferred_time_signatures` **writes** it via `backfill_page_time_signatures` and never reads it) · `weight_routing` · `clef_proposal` · `label_contradiction` · `group_index` · `pitch_candidates` · `contested_notehead_pairs` · `roster_range_veto` · `n_clipped_notehead_fragments_dropped` · `n_cross_staff_duplicates_removed` · `n_unladdered_noteheads_dropped` · `key_signature_reason` · `key_signature_unread_reason` · `instrument_label` · `instrument_family` · `instrument_veto` · `page_size_px` · `skew_corrected_deg` · `weights` · `imgsz` · `iou_threshold` · `agnostic_nms` |
 | **NOBODY** | `n_measures_dropped_as_furniture` · `clef_overridden_by_dossier` · `key_signature_final` · `time_signature_final` · `rhythm_reconciliation` (the per-measure RECORD — only the integer counter is read) · `contextual.clef_fills` · `contextual.dossier_clefs` |
 
 ⚠️ **`confidence_label`: nine write sites, and NO DECISION reads it.** Every
@@ -968,6 +1128,12 @@ number the pipeline already computes.
    `list[int]` and no margin.
 7. **`_reconcile_measure_to_meter`'s second candidate** when two exist —
    known exactly, recorded nowhere.
+7b. ⚠️ **The 7th simultaneous slur or hairpin.** `export._number_spans:2517-2520`
+   runs out of MusicXML numbers at 6 and `continue`s — **no counter, no
+   warning, no field**, and `export.py` defines no logger at all. The
+   drop is start-order-biased (last to open, never least confident,
+   because there is no confidence to rank by), and `export_coverage`
+   cannot see it because the other six satisfy `slur`.
 8. **`voicing`'s chord duration-vote disagreement** — resolved silently.
 9. **`infer_time_signature`'s and `_dominant_detected_meter`'s
    `votes`/`voters`/`confidence`** — `grep 'get("votes")'` → 0.
@@ -1123,7 +1289,7 @@ it does.
 
 | # | finding |
 |---|---|
-| **D24** | ⚠️ **CLAUDE.md's env table is not the tree's env surface.** `[V4]`: **36 `OMR_*` variables are read in the tree; 16 are absent from CLAUDE.md**, and several are DEFAULT-ON behaviour flags: `OMR_ABSENT_INSTRUMENT_VETO` (on), `OMR_ROSTER` (on), `OMR_LABEL_MERGE_QUALITY` (on), `OMR_MOVEMENT_REFERENCE` (on), plus `OMR_ROSTER_CLEF`, `OMR_INSTRUMENT_CLEF_DEFAULT`, `OMR_SLOT_GROUP_MAP`, `OMR_SPAN_REFERENCE_FIT`, `OMR_REFERENCE_MOST_LABELLED`, `OMR_TAIL_RULE`, `OMR_ROSTER_RANGE_VETO`, `OMR_CONTEST_DUMP`, `OMR_DIRECTION_READERS`, `OMR_PHASE26_FIXES`, `OMR_PHASE28_FIX_TEXT_GATE`, `OMR_SURYA_*`. ⚠️⚠️ **AND `[V4]` ITSELF UNDERCOUNTS — the probe that keeps this entry current is defeated by the same indirection this map warns about.** `verify.py:129` matches only the literal `os.environ.get("OMR_…")` in `tools/omr/*.py` (not `rglob`, no other read form), so it misses four flags — including **`OMR_ABSENT_INSTRUMENT_VETO`**, whose name lives in a constant (`absent_instrument.py:85: ENV_VAR = "…"`) and which this row names as a default-ON flag *only because a human wrote the list*. A `--json` re-run drops it in silence. Wider scan (`benchmarks/omr-decision-map-verify-2026-09/probe_env_surface.py`, 2026-09-07): **41 in the tree, 20 undocumented**; V4 sees 37/17. Also: this row lists `OMR_SPAN_REFERENCE_FIT` as undocumented, and CLAUDE.md does mention it at line 1609 — in prose, not in the env TABLE, so the claim is true of the table and overstated as written. |
+| **D24** | ⚠️ **CLAUDE.md's env table is not the tree's env surface.** `[V4]`, re-derived 2026-09-07 after the checker itself was fixed: **41 `OMR_*` variables are read in the tree; 19 are mentioned nowhere in CLAUDE.md**, and several are DEFAULT-ON behaviour flags — `OMR_ABSENT_INSTRUMENT_VETO`, `OMR_LABEL_MERGE_QUALITY`, `OMR_MOVEMENT_REFERENCE` — plus `OMR_ROSTER_CLEF`, `OMR_INSTRUMENT_CLEF_DEFAULT`, `OMR_SLOT_GROUP_MAP`, `OMR_REFERENCE_MOST_LABELLED`, `OMR_TAIL_RULE`, `OMR_ROSTER_RANGE_VETO`, `OMR_ROSTER_SCORE_ORDER_VETO`, `OMR_CONTEST_DUMP`, `OMR_DIRECTION_READERS`, `OMR_EVAL_INDENT_MM`, `OMR_LINEUP_SWAP_SPLIT`, `OMR_PHASE26_FIXES`, `OMR_PHASE28_FIX_TEXT_GATE` and the `OMR_SURYA_*` trio. ⚠️⚠️ **THE PROBE THAT KEEPS THIS ROW CURRENT WAS ITSELF DEFEATED BY THE INDIRECTION THIS MAP WARNS ABOUT, and that is the more useful half of the entry.** Until 2026-09-07 `V4` matched only the literal `os.environ.get("OMR_…")` in `tools/omr/*.py`, so it missed four flags whose NAME lives in a module constant (`ENV_VAR = "OMR_ABSENT_INSTRUMENT_VETO"`, `ENV_CELL_LINE_TRACE`, …) — including a default-ON flag this very row names as important, **which survived only because a human wrote the list**. It now scans `tools/` and `backend/` recursively and catches all three read forms (inline, constant-held, injected-env), and reports which flags are reachable only via a constant. ⚠️ Note the two claims differ: this row is about the env **TABLE**, `V4` about CLAUDE.md **anywhere** — `OMR_SPAN_REFERENCE_FIT` is in the file's prose and not in the table, so it is undocumented by this row's standard and documented by `V4`'s. `V4` is the loose bound on purpose. |
 | **D25** | `OMR_TAIL_RULE` is bound at **import time** (`dossier.py:521`) and read directly at both decision sites (`:550`, `:552`), so it has **no per-call escape**. ⚠️ Narrowed 2026-09-07: the original wording, "unlike every other flag", is false — `staff_labels_surya.py:77` and `:91` bind `OMR_SURYA_TIMEOUT_S` and `OMR_SURYA_KEEP_ALIVE` at import too. What is unique to `OMR_TAIL_RULE` is the missing escape: the Surya pair are consumed as `X if arg is None else arg` defaults (`:242`, `:248`, `:307`, `:314`) and a caller can override them. |
 | **D26** | `_WEDGE_START_RULE` (`export.py:2587`) is presented with a measured comparison table as a selectable rule and is a module literal with no runtime override — no env read, no CLI flag, no reassignment in `tools/`, so the `"before"` branch at `:2669` is dead on every production and test path. ⚠️ Narrowed 2026-09-07: it is **not unreachable**. `benchmarks/omr-hairpins-2026-09/probe_stop_rule.py:101` monkeypatches the module global, and that probe is where the 1-of-8 vs 4-of-8 figures in the constant's own comment came from. It is a retained A/B arm reachable only by that probe. |
 | **D27** | `_DYNAMIC_WORDS` and `_DYNAMIC_ELEMENTS` (`export.py:1303-1310`) are two literals with identical membership, and the comment at `:1302` describes a distinction between them that no longer exists. A live drift hazard: one gates acceptance, the other gates element choice. |
@@ -1177,7 +1343,7 @@ An agent needs to know the difference between "not done" and "cannot be done".
 | dependency | why it cannot be satisfied | what would change it |
 |---|---|---|
 | **`clef_correction`'s OVERRIDE gate needing a `label` source on an unresolved non-treble staff** | measured over the 20-row scan corpus: **29 of 29** such staves have **no label printed at all** — not a lexicon refusal, not an OCR miss. The families labelled on continuation systems are winds and brass, which default to treble and are already right | an edition that labels its strings on every system, or a different admissible source |
-| **the `_dedupe` written-range tier on a scan** | `_staff_written_ranges` returns `{}` with no dossier, and the scan gate runs **dossier-free by protocol** (dossiers are built from the MusicXML it scores against). All **4,256** duplicates resolve on ladder or distance | a roster-fed identity tier — which exists (`OMR_ROSTER_RANGE_VETO`) and is off at 52 swaps for +24 edits |
+| **the `_dedupe` written-range tier on a scan** | `_staff_written_ranges` returns `{}` with no dossier, and the scan gate runs **dossier-free by protocol** (dossiers are built from the MusicXML it scores against). All **4,256** duplicates resolve on ladder or distance | a roster-fed identity tier — which exists (`OMR_ROSTER_RANGE_VETO`) and is off at 52 swaps for +24 edits. ⚠️ **Under standing rule A00, that +24 does not condemn the mechanism**: it is an OMR-NED delta and **it was never attributed** — nobody has opened the op list to say whether the swaps were wrong or merely charged. `OMR_SLOT_STITCH` sits one section away as the precedent for a metric artefact mistaken for a regression. Read matched-note recall before believing it |
 | **`OMR_ROSTER_LABELS` in production** | needs `OMR_WORK_ID`; nothing sets it | wiring the work-id lookup into the pipeline entry point |
 | **a key signature on a soprano / mezzo / baritone / french / varbaritone / subbass clef** | `key_signature_geometry.slot_positions` has tables for treble, bass, alto, tenor **only** | six more slot tables |
 | **`_is_grouped_system` (cue C) on a page where connectivity abstained** | `group_index` is only set on the connectivity path; the gap-heuristic fallback leaves it at the dataclass default 0 | setting `group_index` on the fallback path too |
@@ -1232,10 +1398,11 @@ python3 benchmarks/omr-decision-map-2026-09/verify.py --write-doc
 | **V1** | `export.py` never reads a detection confidence | 1 hit, 0 of them code — **holds** |
 | **V2** | how many of the five consistency checks reach a consumer | **4 of 6 tracked keys have zero consumers.** `rhythm_sum_warning`'s only consumer is `backend/modules/local_omr.py:360` (a boolean presence count; the grep also hits that file's docstring, hence 2). `clef_proposal` has none |
 | **V3** | two warning keys named in prose do not exist | **holds** — 0 hits each |
-| **V4** | CLAUDE.md's env table vs the tree's env surface | 36 in tree, **16 undocumented** when written; 37/17 on 2026-09-07. ⚠️ **V4 UNDERCOUNTS** — it matches only literal `os.environ.get("OMR_…")` in `tools/omr/*.py` and misses a name held in a constant, notably `OMR_ABSENT_INSTRUMENT_VETO`. Wider scan: **41/20**. See D24 and `benchmarks/omr-decision-map-verify-2026-09/probe_env_surface.py` |
+| **V4** | the `OMR_*` surface the tree READS vs what CLAUDE.md mentions | **41 in tree, 19 unmentioned.** ⚠️ **Rewritten 2026-09-07: it undercounted the surface it exists to police.** It matched only the literal `os.environ.get("OMR_…")`, so a flag whose NAME lives in a module constant — `ENV_VAR = "OMR_ABSENT_INSTRUMENT_VETO"`, a **default-ON** flag D24 names as important — dropped out silently on a re-run while the hand-written list still carried it. It now catches all three read forms and reports which flags are reachable only via a constant |
 | **V5** | the three circularity refusals still stand | **holds** — `clef_correction.py:396`, `dossier.py:434`, `score_layouts.py:682` |
 | **V6** | consumer counts for the tracked result-JSON keys | 10 of 11 never leave `tools/omr/` |
 | **V7** | line numbers quoted in prose against the tree | **3 of 6 have drifted** |
+| **V8** | every §5 decision table carries the `CONSUMED BY` column | **15 of 15 — holds.** ⚠️ Added 2026-09-07 because six of twelve tables had lost it and nothing noticed: prose cannot check its own shape. It accepts either wording, since a terminal stage's consumer question is "who can SEE this element" |
 
 ⚠️ **The exit code is always 0.** This reports; it does not gate. A CI gate on
 these numbers would freeze the very facts the map exists to keep current — and
@@ -1273,51 +1440,46 @@ consumers.
 
 ## 11. What this map does NOT cover
 
-The intent was to cut uniformly in depth rather than by dropping stages, per
-the commission. ⚠️⚠️ **THE INTENT WAS NOT MET, and the first list below is the
-correction (2026-09-07).** An enumeration made from the code alone, without
-reading this document, found **185 decision points** in five scopes; §5 has
-rows for two of them.
+The intent was to cut uniformly in depth rather than by dropping stages.
+⚠️⚠️ **THE INTENT WAS NOT MET IN THE FIRST EDITION**, and an enumeration made
+from the code alone, without reading this document, found **185 decision points
+in five scopes where §5 had rows for two.** §11.0 is what closed and §11.0b is
+what did not — **stated as counts, because silence reads as coverage.**
 
-### 11.0 ⚠️ Stages §2 names and §5 never catalogues
+### 11.0 Closed 2026-09-07 — three stages §2 named and §5 did not catalogue
 
-`grep -n "direction_text\|_pair_ties\|_merge_arcs\|annotate_slurs" ` on this
-file returns five hits — three in §2/§3.1, one in §6.1's key list, one in D19.
-**§5 contains not one decision row for any of them.**
-
-| area | independent count | §5 rows | in §2's spine? |
+| area | independent count | §5 rows now | where |
 |---|--:|--:|---|
-| **`direction_text.py`** | **72** | **0** | ✅ stage 9′ |
-| **tie pairing** (`_pair_ties_in_staff` / `_in_cell`) | **25** | **0** | ✅ stage 4b |
-| **slur merge + pairing** (`_merge_arcs_across_barlines`, `annotate_slurs_in_slot` and callees) | **46** | **0** | — (export) |
-| `condensed_parts.py` | 17 | 0 (one consumer row) | — |
+| `direction_text.py` | 72 | **14** | Stage 9′ |
+| slur / arc pairing + numbering | 46 | **13** | Stage 11, second table |
+| tie pairing (`_pair_ties_in_staff` / `_in_cell`) | 25 | **12** | Stage 4b |
 
-Three of the omitted decisions are this document's own thesis pattern:
+Plus five modules that were **named nowhere in the first edition** and now have
+rows: **`staff_labels_surya`** and `_surya_worker._assign`'s block-height gate
+(the free DEFAULT rung — §5 previously catalogued the *unreachable* human rung
+and skipped this one), **`staff_labels_vision`**, **`key_signature_template`**
+(the reader behind D20, credited with 11 of 12 staves where the locator reads
+2), **`movement_reference`** (default ON, and the flag that made a second work
+four times worse), and **`bracket_reader`** as an orphan.
 
-- **`direction_text.read_directions:801` — `accepted[0]`.** The winning OCR
-  rung is chosen by **list position**, no score; the rung disagreement is
-  computed at `:802-809` and reaches only the report. And the `Reader` type at
-  `:614` is `Callable[[list[np.ndarray]], list[str]]` — **no OCR confidence
-  exists in the interface at all**, so this is structural Class A. That
-  signature is itself a decision.
-- **`direction_text.read_directions:795` — the lexicon gate**, which CLAUDE.md
-  calls load-bearing, on the feature §3.3 measures at ~75% of whole-work wall
-  clock.
-- **`export._number_spans:2519-2520` — a 7th simultaneous slur is dropped
-  silently.** `if number is None: continue`; no counter, no warning, no field.
-  A Class-E refusal with no record — §7.1 item 1's exact target, missing from
-  the shortlist it belongs on.
+Three of the recovered decisions are this document's own thesis pattern, and
+each is now a row: `read_directions:801`'s `accepted[0]` (the winning OCR rung
+chosen by **list position**); the `Reader` type at `:614`, which **cannot carry
+a confidence at all**; and `export._number_spans:2517-2520`, where **a 7th
+simultaneous slur is dropped with no counter, no warning and no field.**
 
-**Modules named nowhere in these 1,300 lines**, each with production decisions:
-**`staff_labels_surya`** (the free DEFAULT rung, `contextual.py:685` — §5's
-Stage 9 catalogues the *unreachable* human rung and skips this one) and
-**`_surya_worker._assign:89`**, which carries the block-height gate CLAUDE.md
-records as a landed 2026-09-05 fix; **`staff_labels_vision`**
-(`contextual.py:809-813`); **`key_signature_template`**
-(`transcribe.py:1394`/`:1409` — the reader behind D20, and the one CLAUDE.md
-credits with 11 of 12 staves where the locator reads 2); and
-**`movement_reference`** (`OMR_MOVEMENT_REFERENCE`, default ON per D24;
-`slots.py:565`, `:587`).
+⚠️ **The rows kept are the ones that CHOOSE something a reader could change**;
+the residue is arithmetic and bookkeeping. That is a judgement, not a
+measurement, and it is stated so it can be disagreed with.
+
+### 11.0b ⚠️ Still a declared gap — counted, not catalogued
+
+| area | independent count | §5 rows | why it is left |
+|---|--:|--:|---|
+| `pitch_resolver.py` | 25 | 5 | depth cut; the 5 are the ones that decide a pitch or a candidate list, the rest is arithmetic |
+| `condensed_parts.py` | 17 | 1 | ⚠️ **nothing in production calls `players_for_label`** and no production module writes the `condensed_parts` field, so `_condensed_count` always sees `{1}` — the whole module is unreachable and `OMR_CONDENSED_PARTS` is **inert whatever it is set to**. Cataloguing 17 decisions inside a module with no caller would be misleading, so it gets one row saying that |
+| `page_normalise.py` | not counted | 0 | ⚠️ **out of scope by §11.1 (benchmark internals) — and it is one of the live workstreams.** Its consumers are `benchmarks/omr-scan-e2e-2026-09/scan_eval.py`, `tools/omr/tests/test_scan_eval_structural.py` and two probes in `benchmarks/omr-staves-map-completion-2026-09/`. **An agent working there cannot use this map at all**, and that is a scope statement, not a defect — but it should be known rather than discovered |
+| `tools/omr/annotate/**`, `tools/omr/training/**` | not counted | 0 | §11.1; ⚠️ but see the Stage 3 warning — five `annotate/` consumers of `MeasureCell` are named there because the padding contract reaches them |
 
 Record: `benchmarks/omr-decision-map-verify-2026-09/FINDINGS.md` §4.
 
@@ -1381,6 +1543,7 @@ flowchart TD
   sown["<b>4d · Glyph OWNERSHIP</b><br/><i>ladder/range/dist</i>"]
   s8c["<b>8c · Time signature</b><br/><i>template + vote</i>"]
   s9["<b>9 · Margin labels</b><br/><i>text/Surya/Vision</i>"]
+  s9d["<b>9′ · Direction text</b><br/><i>ink minus dets + OCR</i>"]
   s10["<b>10 · Slot align + identity</b><br/><i>monotone DP</i>"]
   s11["<b>11 · Export</b><br/><i>serialisation</i>"]
   s1 -->|"line_ys, gaps"| s2
@@ -1390,6 +1553,8 @@ flowchart TD
   s8a -->|"the SLOT TABLE"| s8b
   s4 -->|"detections"| s5
   s4 -->|"detections"| sown
+  s4 -->|"every detection, SUBTRACTED"| s9d
+  s9d -->|"2 of its 8 keys"| s11
   s5 -->|"beam levels"| s7
   s4 -->|"notehead y"| s6
   s8a -->|"clef"| s6
@@ -1426,8 +1591,14 @@ flowchart TD
   s10 --> d_prop
   d_lc(["label_contradiction<br/><i>158 firings, 0.873 right — undecided</i>"])
   s10 --> d_lc
-  d_dt(["direction placement/category/terms/reader<br/><i>6 of 8 keys unread; placement hardcoded</i>"])
-  s11 --> d_dt
+  d_7th(["the 7th simultaneous slur/hairpin<br/><i>dropped: no counter, no field</i>"])
+  s11 --> d_7th
+  d_conf2(["OCR rung disagreement<br/><i>computed; reaches the report, never the artefact</i>"])
+  s9d --> d_conf2
+  d_tie(["tie-pair count<br/><i>computed at :2112, discarded at the call site</i>"])
+  s4 --> d_tie
+  d_place(["direction placement / category / terms / reader<br/><i>6 of 8 keys unread; placement hardcoded — and Style is outside AllObjects, so it costs 0 and no harness can see it</i>"])
+  s9d --> d_place
   d_align(["the slot alignment DP score<br/><i>never returned — no margin exists</i>"])
   s10 --> d_align
   o_hair[/"hairpin_detection.py<br/><i>imported only by its own tests</i>"/]
@@ -1442,10 +1613,10 @@ flowchart TD
   classDef orphan fill:#3f3f46,stroke:#a1a1aa,color:#e4e4e7,stroke-dasharray:4 3;
   classDef unsat fill:#78350f,stroke:#f59e0b,color:#fef3c7;
   classDef stage fill:#1e293b,stroke:#64748b,color:#e2e8f0;
-  class d_conf,d_pc,d_rhy,d_mc,d_key,d_reg,d_ts,d_sym,d_prop,d_lc,d_dt,d_align dead;
+  class d_conf,d_pc,d_rhy,d_mc,d_key,d_reg,d_ts,d_sym,d_prop,d_lc,d_7th,d_conf2,d_tie,d_place,d_align dead;
   class o_hair,o_brack,o_cond,o_tmpl orphan;
   class u_clef,u_range unsat;
-  class s1,s2,s3,s8a,s8b,s4,s5,s6,s7,sown,s8c,s9,s10,s11 stage;
+  class s1,s2,s3,s8a,s8b,s4,s5,s6,s7,sown,s8c,s9,s9d,s10,s11 stage;
   %% measured: 4 of 6 checks have no consumer; 10 of 11 tracked result keys never leave tools/omr/
 ```
 
