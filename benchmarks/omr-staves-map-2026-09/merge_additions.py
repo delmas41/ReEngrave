@@ -1,0 +1,220 @@
+"""Review, PROVE, and then merge the confirmed maps into works.json.
+
+    python3 benchmarks/omr-staves-map-2026-09/merge_additions.py           # dry
+    python3 benchmarks/omr-staves-map-2026-09/merge_additions.py --write
+
+`works.json` is hand-verified truth that seven other benchmarks read, so the UI
+never touches it.  This is the only thing that does, and it refuses on anything
+it cannot prove:
+
+  * the row exists and does NOT already carry a `staves` map (never overwrite
+    someone else's hand reading);
+  * the additions row is `done`;
+  * the map's shape is works.json's shape exactly — a list of
+    `{"name": str, "parts": [int, ...]}`, nothing else;
+  * every reference part is named exactly ONCE.  `page_normalise` raises
+    `IncompleteMap` on a map that leaves a part out, because a normalised truth
+    missing a part scores BETTER for the wrong reason; a part named TWICE is the
+    mirror fault and nothing downstream checks it;
+  * ⚠️ and the map actually NORMALISES.  `page_normalise.normalise` is run on
+    the row's own trimmed truth before anything is written.  A map that passes
+    every shape check and then raises in the consumer is exactly the "mismatched
+    shape is worse than no map" failure — so the consumer is asked first.
+
+With `--write` it copies `works.json` to `works.json.bak-<utc>` first, inserts
+`staves` immediately before `notes` (where every mapped row already has it), and
+re-checks that the file re-parses and that no OTHER row changed.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import shutil
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+BENCH = Path(__file__).resolve().parent
+sys.path.insert(0, str(BENCH))
+from build_cache import MAIN, SCAN, find_fixture  # noqa: E402
+
+WORKS = SCAN / "works.json"
+ADDITIONS = SCAN / "works.staves-additions.json"
+
+sys.path.insert(0, str(SCAN))
+
+
+def shape_problems(staves) -> list[str]:
+    out = []
+    if not isinstance(staves, list) or not staves:
+        return ["`staves` is not a non-empty list"]
+    for k, s in enumerate(staves):
+        if not isinstance(s, dict):
+            out.append(f"entry {k} is not an object")
+            continue
+        extra = set(s) - {"name", "parts"}
+        if extra:
+            out.append(f"entry {k} has unexpected key(s) {sorted(extra)} — "
+                       f"works.json entries are exactly name+parts")
+        if not isinstance(s.get("name"), str) or not s["name"].strip():
+            out.append(f"entry {k} has no printed name")
+        p = s.get("parts")
+        if not isinstance(p, list) or not p or not all(
+                isinstance(i, int) and not isinstance(i, bool) for i in p):
+            out.append(f"entry {k} `parts` is not a non-empty list of ints")
+        elif sorted(set(p)) != list(p):
+            out.append(f"entry {k} `parts` is not sorted-unique: {p}")
+    return out
+
+
+def check_row(row_id: str, row: dict, add: dict) -> dict:
+    problems: list[str] = []
+    if add.get("status") != "done":
+        problems.append(f"additions status is {add.get('status')!r}, not 'done'")
+    if isinstance(row.get("staves"), (list, str)):
+        problems.append("works.json already carries a `staves` map for this row "
+                        "— refusing to overwrite a hand reading")
+
+    staves = add.get("staves_for_works_json")
+    if staves is None:
+        staves = [{"name": s.get("name"), "parts": s.get("parts")}
+                  for s in add.get("staves", [])]
+    problems += shape_problems(staves)
+
+    counts: dict[int, int] = {}
+    for s in staves or []:
+        for i in (s.get("parts") or []):
+            counts[i] = counts.get(i, 0) + 1
+
+    truth, _ = find_fixture(row_id, ".truth.musicxml")
+    n_parts = None
+    normalised = None
+    if truth is None:
+        problems.append("no <row>.truth.musicxml on disk — cannot prove the map "
+                        "against the consumer")
+    elif not problems:
+        try:
+            import page_normalise  # from benchmarks/omr-scan-e2e-2026-09
+            score, report = page_normalise.normalise(
+                truth, staves, source_reference=row["reference"]["catalog_path"])
+            n_parts = report["n_source_parts"]
+            normalised = {
+                "n_source_parts": report["n_source_parts"],
+                "n_output_parts": report["n_output_parts"],
+                "exact_duplication_share": report["exact_duplication_share"],
+                "divisi_share": report["divisi_share"],
+            }
+        except Exception as exc:                       # noqa: BLE001
+            problems.append(f"page_normalise REFUSED this map: "
+                            f"{type(exc).__name__}: {exc}")
+
+    doubled = sorted(i for i, c in counts.items() if c > 1)
+    if doubled:
+        problems.append(f"part(s) named by more than one staff: {doubled}")
+    if n_parts is not None:
+        missing = [i for i in range(n_parts) if i not in counts]
+        if missing:
+            problems.append(f"parts unaccounted for: {missing}")
+
+    return {"row_id": row_id, "staves": staves, "problems": problems,
+            "normalised": normalised,
+            "n_staves": len(staves or []),
+            "n_parts_named": len(counts)}
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--additions", default=str(ADDITIONS))
+    ap.add_argument("--works", default=str(WORKS))
+    ap.add_argument("--rows", nargs="+", default=None)
+    ap.add_argument("--write", action="store_true",
+                    help="actually edit works.json (default is a dry run)")
+    args = ap.parse_args(argv)
+
+    apath, wpath = Path(args.additions), Path(args.works)
+    if not apath.is_file():
+        print(f"no additions file at {apath} — nothing to merge", file=sys.stderr)
+        return 1
+
+    add_doc = json.loads(apath.read_text())
+    works = json.loads(wpath.read_text())
+    by_id = {r["row_id"]: r for r in works["rows"]}
+
+    wanted = args.rows or list(add_doc.get("rows", {}))
+    checks, ready = [], []
+    for rid in wanted:
+        add = add_doc["rows"].get(rid)
+        if add is None:
+            print(f"  -- {rid}: not in the additions file"); continue
+        if rid not in by_id:
+            print(f"  !! {rid}: not a row of works.json"); continue
+        c = check_row(rid, by_id[rid], add)
+        checks.append(c)
+        head = "OK  " if not c["problems"] else "REFUSE"
+        print(f"  {head} {rid}: {c['n_staves']} staves, "
+              f"{c['n_parts_named']} parts named"
+              + (f", normalises to {c['normalised']['n_output_parts']} parts "
+                 f"(exact-duplication {c['normalised']['exact_duplication_share']})"
+                 if c["normalised"] else ""))
+        for p in c["problems"]:
+            print(f"          - {p}")
+        if not c["problems"]:
+            ready.append(c)
+            for s in c["staves"]:
+                print(f"            {s['name']!r} -> {s['parts']}")
+
+    if not ready:
+        print("\nnothing mergeable.")
+        return 1 if any(c["problems"] for c in checks) else 0
+
+    if not args.write:
+        print(f"\nDRY RUN — {len(ready)} row(s) would be merged. "
+              f"Re-run with --write.")
+        return 0
+
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    bak = wpath.with_name(wpath.name + f".bak-{stamp}")
+    shutil.copy2(wpath, bak)
+    print(f"\nbacked up {wpath.name} -> {bak.name}")
+
+    before = json.loads(wpath.read_text())
+    for c in ready:
+        row = by_id[c["row_id"]]
+        # Rebuild the dict so `staves` lands where every mapped row has it:
+        # immediately before `notes`.
+        new = {}
+        for k, v in row.items():
+            if k == "notes":
+                new["staves"] = c["staves"]
+            new[k] = v
+        if "staves" not in new:
+            new["staves"] = c["staves"]
+        row.clear(); row.update(new)
+        row.setdefault("notes", "")
+
+    tmp = wpath.with_suffix(".merge-tmp")
+    tmp.write_text(json.dumps(works, indent=1) + "\n")
+    reparsed = json.loads(tmp.read_text())
+
+    merged_ids = {c["row_id"] for c in ready}
+    for a, b in zip(before["rows"], reparsed["rows"]):
+        if a["row_id"] in merged_ids:
+            continue
+        if a != b:
+            tmp.unlink()
+            print(f"REFUSING: row {a['row_id']} changed and should not have.",
+                  file=sys.stderr)
+            return 1
+    tmp.replace(wpath)
+    print(f"merged {len(ready)} row(s) into {wpath}")
+    print("Re-run the consumers to price it:\n"
+          "  python3 benchmarks/omr-headline-validity-2026-09/"
+          "probe_map_coverage_cost.py\n"
+          "  python3 benchmarks/omr-headline-validity-2026-09/normalised_arm.py")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
