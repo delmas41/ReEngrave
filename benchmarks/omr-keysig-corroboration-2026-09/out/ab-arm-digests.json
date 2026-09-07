@@ -1,0 +1,480 @@
+{
+  "arms": {
+    "before": "control",
+    "before2": "the same control AGAIN, run first, so a later difference is attributable rather than assumed",
+    "flagoff": "transcribe's wiring reproduced literally, env unset",
+    "flagon": "the same wiring with OMR_KEYSIG_CORROBORATION=1"
+  },
+  "files": [
+    {
+      "before": "bc6969828fee0543",
+      "before2": "bc6969828fee0543",
+      "changes": [],
+      "control_identical": true,
+      "family": "scan",
+      "fixture": "bach-brandenburg3-mvt1-468678-p1",
+      "flagoff": "bc6969828fee0543",
+      "flagoff_identical_to_control": true,
+      "flagon": "bc6969828fee0543",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "9136e1b897dea441",
+      "before2": "9136e1b897dea441",
+      "changes": [
+        {
+          "contradicted_vote": true,
+          "from": [
+            0,
+            0
+          ],
+          "measure_index": 11,
+          "measures_reverted": 5,
+          "staff_index": 2,
+          "staves_in_system": 12,
+          "system_index": 0,
+          "to": [
+            0,
+            1
+          ],
+          "vote_reason": "rejected: 1 flat differs from the system's 3 flats on too little evidence",
+          "witnesses": 1
+        }
+      ],
+      "control_identical": true,
+      "family": "scan",
+      "fixture": "beethoven-sym5-mvt1-575951-p1",
+      "flagoff": "9136e1b897dea441",
+      "flagoff_identical_to_control": true,
+      "flagon": "605871e095684afe",
+      "flagon_differs": true,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 1
+    },
+    {
+      "before": "2b7bc96ba336b309",
+      "before2": "2b7bc96ba336b309",
+      "changes": [
+        {
+          "contradicted_vote": true,
+          "from": [
+            0,
+            2
+          ],
+          "measure_index": 15,
+          "measures_reverted": 2,
+          "staff_index": 0,
+          "staves_in_system": 11,
+          "system_index": 0,
+          "to": [
+            0,
+            1
+          ],
+          "vote_reason": "kept: no majority to check against",
+          "witnesses": 1
+        },
+        {
+          "contradicted_vote": true,
+          "from": [
+            0,
+            2
+          ],
+          "measure_index": 2,
+          "measures_reverted": 15,
+          "staff_index": 3,
+          "staves_in_system": 11,
+          "system_index": 0,
+          "to": [
+            0,
+            1
+          ],
+          "vote_reason": "kept: no majority to check against",
+          "witnesses": 1
+        },
+        {
+          "contradicted_vote": false,
+          "from": [
+            0,
+            3
+          ],
+          "measure_index": 3,
+          "measures_reverted": 12,
+          "staff_index": 20,
+          "staves_in_system": 11,
+          "system_index": 1,
+          "to": [
+            0,
+            1
+          ],
+          "vote_reason": null,
+          "witnesses": 1
+        }
+      ],
+      "control_identical": true,
+      "family": "scan",
+      "fixture": "beethoven-sym5-mvt1-575951-p2",
+      "flagoff": "2b7bc96ba336b309",
+      "flagoff_identical_to_control": true,
+      "flagon": "998eb6ff0c55fa27",
+      "flagon_differs": true,
+      "kept_flagon": 0,
+      "respelled_flagon": 15,
+      "reverted_flagon": 3
+    },
+    {
+      "before": "d6c9ed62b5271ffa",
+      "before2": "d6c9ed62b5271ffa",
+      "changes": [],
+      "control_identical": true,
+      "family": "scan",
+      "fixture": "beethoven-sym5-mvt1-984073-p1",
+      "flagoff": "d6c9ed62b5271ffa",
+      "flagoff_identical_to_control": true,
+      "flagon": "d6c9ed62b5271ffa",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "9eb09b14aab81647",
+      "before2": "9eb09b14aab81647",
+      "changes": [
+        {
+          "contradicted_vote": true,
+          "from": [
+            0,
+            2
+          ],
+          "measure_index": 2,
+          "measures_reverted": 14,
+          "staff_index": 3,
+          "staves_in_system": 11,
+          "system_index": 0,
+          "to": [
+            0,
+            1
+          ],
+          "vote_reason": "kept: 2 flats is a standard transposition of a part printing 3 flats",
+          "witnesses": 1
+        }
+      ],
+      "control_identical": true,
+      "family": "scan",
+      "fixture": "beethoven-sym5-mvt1-984073-p2",
+      "flagoff": "9eb09b14aab81647",
+      "flagoff_identical_to_control": true,
+      "flagon": "286418b483688801",
+      "flagon_differs": true,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 1
+    },
+    {
+      "before": "54a7166b2d84d06f",
+      "before2": "54a7166b2d84d06f",
+      "changes": [],
+      "control_identical": true,
+      "family": "scan",
+      "fixture": "brahms-sym1-mvt1-317803-p1",
+      "flagoff": "54a7166b2d84d06f",
+      "flagoff_identical_to_control": true,
+      "flagon": "54a7166b2d84d06f",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "f38e7d29fd04a342",
+      "before2": "f38e7d29fd04a342",
+      "changes": [],
+      "control_identical": true,
+      "family": "scan",
+      "fixture": "brahms-sym1-mvt1-317803-p2",
+      "flagoff": "f38e7d29fd04a342",
+      "flagoff_identical_to_control": true,
+      "flagon": "f38e7d29fd04a342",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "8008cdccdb78116a",
+      "before2": "8008cdccdb78116a",
+      "changes": [
+        {
+          "contradicted_vote": false,
+          "from": [
+            0,
+            0
+          ],
+          "measure_index": 3,
+          "measures_reverted": 5,
+          "staff_index": 4,
+          "staves_in_system": 15,
+          "system_index": 0,
+          "to": [
+            0,
+            1
+          ],
+          "vote_reason": null,
+          "witnesses": 1
+        }
+      ],
+      "control_identical": true,
+      "family": "scan",
+      "fixture": "dvorak-sym9-mvt1-405834-p5",
+      "flagoff": "8008cdccdb78116a",
+      "flagoff_identical_to_control": true,
+      "flagon": "885384054ace11df",
+      "flagon_differs": true,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 1
+    },
+    {
+      "before": "6d60fe27e90c2508",
+      "before2": "6d60fe27e90c2508",
+      "changes": [],
+      "control_identical": true,
+      "family": "scan",
+      "fixture": "dvorak-sym9-mvt1-405834-p6",
+      "flagoff": "6d60fe27e90c2508",
+      "flagoff_identical_to_control": true,
+      "flagon": "6d60fe27e90c2508",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "bc3e5c4fbe9e4f9c",
+      "before2": "bc3e5c4fbe9e4f9c",
+      "changes": [
+        {
+          "contradicted_vote": true,
+          "from": [
+            4,
+            0
+          ],
+          "measure_index": 6,
+          "measures_reverted": 3,
+          "staff_index": 15,
+          "staves_in_system": 17,
+          "system_index": 0,
+          "to": [
+            1,
+            0
+          ],
+          "vote_reason": "kept: agrees with the system's 4 sharps",
+          "witnesses": 1
+        }
+      ],
+      "control_identical": true,
+      "family": "scan",
+      "fixture": "mahler-sym5-mvt1-local-p2",
+      "flagoff": "bc3e5c4fbe9e4f9c",
+      "flagoff_identical_to_control": true,
+      "flagon": "d9496986cf2d131e",
+      "flagon_differs": true,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 1
+    },
+    {
+      "before": "1cb5d293fd4b56e4",
+      "before2": "1cb5d293fd4b56e4",
+      "changes": [],
+      "control_identical": true,
+      "family": "scan",
+      "fixture": "mahler-sym5-mvt1-local-p3",
+      "flagoff": "1cb5d293fd4b56e4",
+      "flagoff_identical_to_control": true,
+      "flagon": "1cb5d293fd4b56e4",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "2890a753dda62c53",
+      "before2": "2890a753dda62c53",
+      "changes": [],
+      "control_identical": true,
+      "family": "engraved",
+      "fixture": "beethoven-sym3-mvt1",
+      "flagoff": "2890a753dda62c53",
+      "flagoff_identical_to_control": true,
+      "flagon": "2890a753dda62c53",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "e1651e32f3a0bce1",
+      "before2": "e1651e32f3a0bce1",
+      "changes": [],
+      "control_identical": true,
+      "family": "engraved",
+      "fixture": "beethoven-sym5-mvt1",
+      "flagoff": "e1651e32f3a0bce1",
+      "flagoff_identical_to_control": true,
+      "flagon": "e1651e32f3a0bce1",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "3e91cf199b5ef2d7",
+      "before2": "3e91cf199b5ef2d7",
+      "changes": [],
+      "control_identical": true,
+      "family": "engraved",
+      "fixture": "brahms-sym1-mvt1",
+      "flagoff": "3e91cf199b5ef2d7",
+      "flagoff_identical_to_control": true,
+      "flagon": "3e91cf199b5ef2d7",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "175e65303c5c7558",
+      "before2": "175e65303c5c7558",
+      "changes": [],
+      "control_identical": true,
+      "family": "engraved",
+      "fixture": "brahms-sym4-mvt1",
+      "flagoff": "175e65303c5c7558",
+      "flagoff_identical_to_control": true,
+      "flagon": "175e65303c5c7558",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "fb0cc021c7946b0e",
+      "before2": "fb0cc021c7946b0e",
+      "changes": [],
+      "control_identical": true,
+      "family": "engraved",
+      "fixture": "bruckner-sym5-mvt1",
+      "flagoff": "fb0cc021c7946b0e",
+      "flagoff_identical_to_control": true,
+      "flagon": "fb0cc021c7946b0e",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "9a362cd0aea762fd",
+      "before2": "9a362cd0aea762fd",
+      "changes": [],
+      "control_identical": true,
+      "family": "engraved",
+      "fixture": "dvorak-sym9-mvt4",
+      "flagoff": "9a362cd0aea762fd",
+      "flagoff_identical_to_control": true,
+      "flagon": "9a362cd0aea762fd",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "62c9b042229e4cde",
+      "before2": "62c9b042229e4cde",
+      "changes": [],
+      "control_identical": true,
+      "family": "engraved",
+      "fixture": "mahler-sym5-mvt1",
+      "flagoff": "62c9b042229e4cde",
+      "flagoff_identical_to_control": true,
+      "flagon": "62c9b042229e4cde",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "f90336865eaac36b",
+      "before2": "f90336865eaac36b",
+      "changes": [],
+      "control_identical": true,
+      "family": "engraved",
+      "fixture": "mozart-sym40-mvt1",
+      "flagoff": "f90336865eaac36b",
+      "flagoff_identical_to_control": true,
+      "flagon": "f90336865eaac36b",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "4b38deaca1a76171",
+      "before2": "4b38deaca1a76171",
+      "changes": [],
+      "control_identical": true,
+      "family": "engraved",
+      "fixture": "mozart-sym41-mvt1",
+      "flagoff": "4b38deaca1a76171",
+      "flagoff_identical_to_control": true,
+      "flagon": "4b38deaca1a76171",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "7352b373c9ee7247",
+      "before2": "7352b373c9ee7247",
+      "changes": [],
+      "control_identical": true,
+      "family": "engraved",
+      "fixture": "tchaikovsky-sym4-mvt2",
+      "flagoff": "7352b373c9ee7247",
+      "flagoff_identical_to_control": true,
+      "flagon": "7352b373c9ee7247",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    },
+    {
+      "before": "91429c19f2b21850",
+      "before2": "91429c19f2b21850",
+      "changes": [],
+      "control_identical": true,
+      "family": "engraved",
+      "fixture": "tchaikovsky-sym6-mvt2",
+      "flagoff": "91429c19f2b21850",
+      "flagoff_identical_to_control": true,
+      "flagon": "91429c19f2b21850",
+      "flagon_differs": false,
+      "kept_flagon": 0,
+      "respelled_flagon": 0,
+      "reverted_flagon": 0
+    }
+  ],
+  "pooled": {
+    "changes_reverted": 7,
+    "control_identical": 22,
+    "corroborated_changes_kept": 0,
+    "fixtures": 22,
+    "flagoff_identical_to_control": 22,
+    "flagon_differs": 5
+  },
+  "what": "OMR_KEYSIG_CORROBORATION: sha256 of the exported MusicXML for four arms per stored transcription."
+}

@@ -263,6 +263,10 @@ from .key_signature_geometry import (
     alterations_for_fifths,
     fit_key_signature,
 )
+from .key_signature_corroboration import (
+    drop_uncorroborated_key_changes,
+    enabled as keysig_corroboration_enabled,
+)
 from .key_signature_locator import locate_key_signature
 from .key_signature_template import (
     read_key_signature as read_key_signature_by_template,
@@ -5241,6 +5245,31 @@ def transcribe(
             if meter_warnings:
                 out.setdefault("dossier_warnings", []).extend(meter_warnings)
                 page_dict.setdefault("dossier_warnings", []).extend(meter_warnings)
+
+        # ── Key-signature corroboration (OMR_KEYSIG_CORROBORATION, OFF) ──
+        # The key-signature analogue of the guard that opens
+        # `backfill_page_time_signatures` on the line below. Same shape — a
+        # page-scope pass that reverts a mid-staff change nothing corroborates
+        # — with the witness corrected for scope: a meter change is
+        # corroborated by other staves reading the SAME METER, a key change
+        # only by other staves changing AT THE SAME BAR, because transposing
+        # instruments legitimately carry different keys.
+        #
+        # DEFAULT OFF, and the reason is a measurement limit rather than a
+        # doubt about the mechanism: the corpus holds seven spurious mid-staff
+        # key changes and ZERO real ones, so the benefit is measurable and the
+        # cost is not. See tools/omr/key_signature_corroboration.py.
+        if keysig_corroboration_enabled():
+            keysig_guard = drop_uncorroborated_key_changes(page_dict)
+            if keysig_guard["reverted"]:
+                out["n_uncorroborated_key_changes_reverted"] = (
+                    out.get("n_uncorroborated_key_changes_reverted", 0)
+                    + keysig_guard["reverted"]
+                )
+                out["n_key_change_noteheads_respelled"] = (
+                    out.get("n_key_change_noteheads_respelled", 0)
+                    + keysig_guard["respelled"]
+                )
 
         page_meter = backfill_page_time_signatures(page_dict)
         # A meter, once printed, is in effect until it changes — that is what a
