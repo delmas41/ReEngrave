@@ -69,6 +69,13 @@ def row(**kw):
         # neighbours carries the sentence that disambiguates it, and a renderer
         # may not drop it. See `rules.mandatory_caption`.
         "mandatory_caption": None,
+        #: Prose that explains the evidence but is not a path a consumer can
+        #: open. `evidence` is checked for existence at build time; this is not.
+        "evidence_prose": [],
+        # ⚠️ SCHEMA-ENFORCED, SYMMETRIC. Rows that must be READ TOGETHER, named
+        # by id. See `rules.render_with`. Symmetry is checked at build time
+        # because a one-sided link is the `head_to_head` defect all over again.
+        "render_with": [],
         "raw_metric": None, "native_direction": None,
         "native_worst": None, "native_best": None,
         "value": None,
@@ -209,8 +216,9 @@ for fam in sorted(agg):
             native_direction="higher_is_better", native_best=1.0, native_worst=0.0,
             value=v,
             ceiling={"kind": kind, "value": None, "status": "measured_unreliable",
-                     "evidence": [REL["reading"], "tools/omr/page_truth.py "
-                                                  "render_fidelity"],
+                     "evidence": [REL["reading"], "tools/omr/page_truth.py"],
+                     "evidence_prose": ["page_truth.render_fidelity declares the "
+                                        "family unreliable"],
                      "control": why},
             n=t, n_unit="printed symbols", era_key=ERA_READ,
             summability_class="reading_f1", pool_key=None,
@@ -387,9 +395,9 @@ rows.append(row(
     transform="pct = 100 * (1 - M) / (1 - F)",
     ceiling={"kind": "structural", "value": pb["pooled_floor_low"],
              "status": "measured_single_source",
-             "evidence": [REL["norm"],
-                          "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read map)",
+             "evidence": [REL["norm"], "benchmarks/omr-scan-e2e-2026-09/works.json",
                           REL["indep"]],
+             "evidence_prose": ["works.json's staves map is HAND-READ off the scan"],
              "control": "the QUANTITY is defined by (reference truth, hand-read page "
                         "map) and is independent of our output; the ESTIMATOR is the "
                         "MINIMUM `entire staff` charge over every engine measured on "
@@ -415,7 +423,8 @@ rows.append(row(
              "value": L["pct"]["scan"]["pool"]["pooled_floor_low"],
              "status": "measured_and_corroborated",
              "evidence": [REL["norm"], REL["indep"],
-                          "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read map)"],
+                          "benchmarks/omr-scan-e2e-2026-09/works.json"],
+             "evidence_prose": ["works.json's staves map is HAND-READ off the scan"],
              "control": "the ceiling is bit-identical for an INDEPENDENT engine "
                         "(Audiveris 5.11) on all 5 rows. The control fired: it is "
                         "NOT identical on 3 further rows, which are therefore "
@@ -610,7 +619,10 @@ for s in content["pipeline"]["stages"]:
             family=fam, raw_metric=None,
             native_direction=None, value=None,
             ceiling={"kind": "visibility", "value": None, "status": "measured",
-                     "evidence": [cell.get("source", "")],
+                     # the board's `source` is a PROSE pointer ("CLAUDE.md ·
+                     # OMR_CHOIR_GROUPING (…)"), not a path a consumer can open
+                     "evidence": [],
+                     "evidence_prose": [cell.get("source", "")],
                      "control": cell.get("detail", "")[:400]},
             n=0, n_unit="observations",
             era_key=ERA_ENG if fam == "engraved" else ERA_SCAN20,
@@ -630,8 +642,7 @@ rows.append(row(
     value=ic["ratios"]["human_boxes_per_reference_note"],
     ceiling={"kind": "input", "value": None, "status": "bounded_above",
              "evidence": ["benchmarks/omr-pipeline-audit-2026-09/"
-                          "input-ceiling-from-labels.json",
-                          ic["batch"]],
+                          "input-ceiling-from-labels.json", ic["batch"]],
              "control": "the labeler drew boxes on the same scanned cells the "
                         "detector saw, with no reference to our output — the MXL "
                         "says what the MUSIC is, a human's box says what the INK "
@@ -648,7 +659,7 @@ rows.append(row(
             "encoding (0 in 28,579), so human boxes are inflated and the true "
             "figure is at or below 0.971. What it DOES establish is that C = 1.0 "
             "is very nearly right for noteheads on this print — so `scan:pitch` "
-            "at 83.4%% is an achievement number, not a fixture artefact. One "
+            "at 83.4% is an achievement number, not a fixture artefact. One "
             "batch, one publisher, density-selected cells.",
     source="benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json"))
 
@@ -684,7 +695,7 @@ rows.append(row(
     scoreable=False,
     why_not="A BOUND, not a point, so it is not scored — but it is now a "
             "ceiling rather than a refutation. `scan:hairpin_detect` reads "
-            "1.01%% against a ceiling measured at AT LEAST 0.80 on this "
+            "1.01% against a ceiling measured at AT LEAST 0.80 on this "
             "edition, so the detector is at roughly one part in eighty of what "
             "a reader recovers. ⚠️ AND THE MATCHED COMPARISON IS WORSE THAN THE "
             "CORPUS RATE: on the SAME three pages the human swept, the "
@@ -700,7 +711,8 @@ rows.append(row(
     family="scan", raw_metric="half-noteheads detected on Beethoven 5 p.1",
     native_direction="higher_is_better", value=None,
     ceiling={"kind": "input", "value": None, "status": "unmeasured",
-             "evidence": ["CLAUDE.md · benchmarks/omr-first-run-2026-08/DURATIONS.md"],
+             "evidence": ["benchmarks/omr-first-run-2026-08/DURATIONS.md"],
+             "evidence_prose": ["CLAUDE.md, the hollow-notehead thread"],
              "control": None},
     n=68, n_unit="printed half notes",
     era_key="ad-hoc|beethoven-sym5-mvt1-984073-p1",
@@ -715,8 +727,8 @@ rows.append(row(
     id="flag:OMR_CONDENSED_PARTS:oracle_ceiling", stage="11 export", family="scan",
     raw_metric="oracle ceiling quoted in CLAUDE.md's knobs table (-4,557 scan edits)",
     native_direction="lower_is_better", value=None,
-    ceiling={"kind": None, "value": None, "status": "unmeasured", "evidence": [],
-             "control": None},
+    ceiling={"kind": "unreachable_configuration", "value": None,
+             "status": "unmeasured", "evidence": [], "control": None},
     n=None, n_unit="edits", era_key=None, scoreable=False,
     why_not="⚠️ THE CEILING GRADES A CONFIGURATION THAT CANNOT OCCUR. Verified in "
             "this tree 2026-09-07: `condensed_parts` is READ at export.py:3331 "
@@ -733,8 +745,8 @@ rows.append(row(
     family="scan", raw_metric="Expected Calibration Error of P(name)",
     native_direction="lower_is_better", native_worst=None, native_best=0.0,
     value=0.1277,
-    ceiling={"kind": None, "value": None, "status": "unmeasured", "evidence": [],
-             "control": None},
+    ceiling={"kind": "none", "value": None, "status": "unmeasured",
+             "evidence": [], "control": None},
     n=197, n_unit="graded records",
     era_key="staff-identity-layer|2026-09-05|n197",
     scoreable=False,
@@ -749,7 +761,7 @@ rows.append(row(
             "predictor on this corpus), which nobody has measured. Note also "
             "that the estate's own finding is that the ECE improvement from "
             "n=197 to n=1571 is NOT calibration — Brier skill vs a constant "
-            "predictor is +0.0004 and 95.8%% of mass sits in one bin — so a "
+            "predictor is +0.0004 and 95.8% of mass sits in one bin — so a "
             "score here would be worse than absent. Blocked on WORKS, not "
             "records (backlog D5).",
     source="docs/backlog-2026-09-07-open-items.md D5; "
@@ -766,16 +778,17 @@ rows.append(row(
              "control": None},
     n=102, n_unit="ledger-zone labels",
     era_key="labeling-audit|simrock-dvorak9|2026-09-03",
+    render_with=["labeling:ledger_zone:defect_rate"],
     scoreable=False,
     why_not="⚠️ A SCREENING RATE IS NOT A DEFECT RATE, AND THIS IS THE CLEAREST "
             "CASE IN THE PROJECT OF THE CONFUSION THIS UNIT EXISTS TO FIX. The "
-            "auditor flags 7 of 102 (6.9%%); hand adjudication found ONE real "
-            "error (~0.9%%) — a 7x gap, and six of the seven share one mechanism "
+            "auditor flags 7 of 102 (6.9%); hand adjudication found ONE real "
+            "error (~0.9%) — a 7x gap, and six of the seven share one mechanism "
             "(a printed ledger line print-merging into the notehead's connected "
             "component, pulling the centroid up to a half-step). Both numbers are "
             "percentages; only one is a quality figure. A dashboard that prints "
-            "either alone is wrong: 6.9%% overstates the defect sevenfold, and "
-            "0.9%% understates the reviewer's workload sevenfold. The registry's "
+            "either alone is wrong: 6.9% overstates the defect sevenfold, and "
+            "0.9% understates the reviewer's workload sevenfold. The registry's "
             "answer is that they are TWO ROWS with different `stage` semantics "
             "— a SCREEN and a DEFECT — never one, and a screen is never "
             "scoreable on the achievement axis.",
@@ -796,6 +809,7 @@ rows.append(row(
     comparable_as={"time_series": "labeling-audit|ledger-zone|adjudicated",
                    "head_to_head": None},
     summability_class="label_defect_rate", pool_key=None,
+    render_with=["labeling:ledger_zone:screening_rate"],
     scoreable=True,
     source="benchmarks/omr-snap-ledger-2026-09/"
            "LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md",
@@ -923,6 +937,37 @@ if _lonely:
         "member is not a weaker comparison, it is a false claim that one "
         "exists." % _lonely)
 
+# RENDER_WITH: symmetric and resolvable, or the build fails.
+_ids = {r["id"] for r in rows}
+_rw_err = []
+_rw = {r["id"]: list(r.get("render_with") or []) for r in rows}
+for rid, partners in _rw.items():
+    for q in partners:
+        if q not in _ids:
+            _rw_err.append("%s names %s, which is not a row" % (rid, q))
+        elif rid not in _rw.get(q, []):
+            _rw_err.append("%s names %s but %s does not name it back" % (rid, q, q))
+if _rw_err:
+    raise SystemExit(
+        "render_with is not symmetric/resolvable: %s\n"
+        "  A one-sided linkage is the head_to_head defect again: it looks "
+        "satisfied and delivers nothing." % _rw_err)
+
+# CEILING EVIDENCE MUST BE A CHECKABLE PATH. Prose belongs in `control` or in
+# `evidence_prose`; an entry that LOOKS like a pointer and resolves to nothing
+# is a provenance field that cannot verify what it appears to verify — the same
+# family as the raw-hash and the clock-dependent-hash defects.
+_ev_err = []
+for r in rows:
+    for e in (r.get("ceiling") or {}).get("evidence") or []:
+        if not (ROOT / str(e)).exists():
+            _ev_err.append((r["id"], str(e)[:70]))
+if _ev_err:
+    raise SystemExit(
+        "ceiling.evidence entries that are not checkable paths: %s\n"
+        "  Put prose in `ceiling.evidence_prose`; `evidence` is for files a "
+        "consumer can open." % _ev_err)
+
 # THE EDITION CLAUSE. A ceiling measured on one edition is a claim about that
 # edition; the publisher has to ride the mechanism a renderer cannot drop.
 _missing = []
@@ -944,7 +989,7 @@ if _missing:
 
 scoreable = [r for r in rows if r["scoreable"]]
 doc = {
-    "schema_version": "0.4.0",
+    "schema_version": "0.5.0",
     #: ⚠️ WHAT A CONSUMER MUST GATE ON. A renderer written against 0.2.0 read
     #: 0.3.0 without a word and silently dropped `mandatory_caption` and
     #: `ceiling.edition` — the two fields whose entire purpose is that they
@@ -952,9 +997,12 @@ doc = {
     #: with a non-zero exit naming the version, and never forward-compat
     #: silently: an unknown minor may have added a field that MUST be shown.
     "consumer_contract": {
-        "current": "0.4.0",
-        "understood_by_a_conforming_consumer": ["0.4.0"],
+        "current": "0.5.0",
+        "understood_by_a_conforming_consumer": ["0.5.0"],
         "superseded": {
+            "0.4.0": "added `render_with` (symmetric, build-enforced) and "
+                     "`evidence_prose`; a 0.4.0 consumer cannot know the ledger "
+                     "screen/defect pair must render adjacently",
             "0.3.0": "added `mandatory_caption` + `rules.mandatory_caption` and "
                      "`ceiling.edition`; a 0.2.0 consumer drops both silently",
             "0.2.0": "added `comparable_as`; a 0.1.0 consumer cannot tell a "
@@ -964,10 +1012,24 @@ doc = {
                                "`understood_by_a_conforming_consumer`",
         "fields_a_consumer_may_never_drop": [
             "mandatory_caption", "ceiling.edition (via the edition clause)",
+            "render_with",
         ],
     },
     "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/build_metric_registry.py",
     "round": 5,
+    "changes_since_0_4_0": [
+        "FIXED four defects the renderer review found in this file: doubled "
+        "`%` in four `why_not` strings (a format artefact — fixed at SOURCE, "
+        "not normalised at display); nine `ceiling.evidence` entries that were "
+        "prose rather than openable paths (split into `evidence_prose`, and "
+        "existence is now checked at build time); and two rows carrying "
+        "`ceiling.kind: null` (now `unreachable_configuration` and `none`, both "
+        "documented — null is never a legal kind).",
+        "ADDED `render_with`: symmetric, build-enforced, for rows that must be "
+        "READ TOGETHER. The ledger screen/defect pair was held together by "
+        "prose and by the coincidence that they share an era_key — measured, "
+        "that put their numbers 200 px apart with the defect ABOVE the screen.",
+    ],
     "changes_since_0_3_0": [
         "FIXED: the one-sided head-to-head keys. `engraved:omr_ned` carried a "
         "key and `competitive:engraved:audiveris` carried NONE, so the pair had "
@@ -1082,6 +1144,30 @@ doc = {
                               "the mechanism that cannot be dropped, not in a "
                               "field a consumer may not know about.",
         },
+        "render_with": {
+            "_why": "⚠️ THE LEDGER PAIR WAS HELD TOGETHER BY PROSE AND BY LUCK. "
+                    "A screening rate (6.9%) and a defect rate (0.98%) differ "
+                    "sevenfold and both are percentages; printing either alone "
+                    "misleads in a NAMED direction. Nothing in the schema said "
+                    "so — the linkage lived in this file's prose and in a "
+                    "`companions` number. A renderer that grouped by `era_key` "
+                    "put them in one bordered block, which LOOKED like the rule "
+                    "working; measured, their numbers sit 200 px apart with a "
+                    "full metadata row between, and the defect renders ABOVE the "
+                    "screen. Co-location by era is adjacency by coincidence: "
+                    "re-measure either row on another corpus, its era_key "
+                    "changes, and the pair separates with nothing failing.",
+            "rule": "rows naming each other in `render_with` MUST be rendered "
+                    "adjacently, in one visual block, with no scoreable row "
+                    "between them. A consumer that cannot place them together "
+                    "must render NEITHER.",
+            "symmetry": "enforced at build time — if A names B, B must name A. A "
+                        "one-sided link is the `head_to_head` defect again.",
+            "not_the_same_as": "`era_key` (same measurement conditions) or "
+                               "`pool_key` (may be summed). Those are properties "
+                               "of how a number was made; this is a property of "
+                               "how it may be READ.",
+        },
         "no_fabricated_100": "a row with no ceiling evidence AND no value gets "
                              "scoreable:false and renders as an explicit "
                              "'unscoreable — <reason>', never a number.",
@@ -1144,6 +1230,14 @@ doc = {
                          "system. The right ceiling kind for anything gated on "
                          "human trust, and the only pre-registered one here.",
         "assumed": "no evidence; set by the assumption-direction rule",
+        "unreachable_configuration": "a ceiling measured under a configuration "
+                                     "production cannot reach. Quoting it makes a "
+                                     "gap look larger than the pipeline can act "
+                                     "on — the mirror of a fabricated 100.",
+        "none": "no ceiling kind applies because neither transform does. NOT "
+                "`assumed` (which has a transform and a default value). ⚠️ `null` "
+                "is never a legal kind — two rows carried it until v0.5.0, and a "
+                "consumer grouping on `kind` cannot tell null from unset.",
     },
     "coverage": {
         "n_rows": len(rows),

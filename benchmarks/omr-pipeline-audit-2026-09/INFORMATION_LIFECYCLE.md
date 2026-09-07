@@ -1241,3 +1241,230 @@ audit that a second workstream is actively working around.
 - **Not covered:** `resegment_fused_measures`' own body past `_select_steered_splits` (the renumbering and the width guards), and `_cell_line_offset`'s search internals (S43).
 - **UNMEASURED, unchanged from round 2:** the one-line-staves flag interaction (§R1.3, run named) · the post-dedupe limit on the ladder probe (run named) · whether the 197 discarding decision points contain defects.
 - ⚠️ **A standing lesson I am recording against myself:** round 2 produced a confident negative from a 5-page sample whose bias was visible in the row names, and stated the correct standard two sections away from the heading that broke it. **The rule I will apply from here: a null result gets the same sampling scrutiny as a positive one, and a heading may not be stronger than the section's own hedge.**
+
+---
+---
+
+# ROUND 4 — stage 1, `preprocessing.py`
+
+**171 lines, four decision points, and the map's own verdict on it:** *"none of
+stage 1's four constants is documented against a measurement. This is the
+shallowest-evidence stage in the pipeline."* Everything downstream is built on
+its output. Tree `80ee701d`; one new committed probe
+(`probe/probe_sauvola_dpi_scale.py`, exits 3 on a bad `OMR_FIXTURE_ROOT`,
+verified) and `sauvola-dpi-scale.json`. **No fix proposed, per the brief.**
+
+⚠️ **Measuring stage 1 is unavoidably measuring its output** — there is no
+earlier artefact. What this round does *not* do is read the final page dict:
+parts C and D below read only rasters, and where a number needs `detect_staves`
+(which consumes the binary this stage produced) it is marked **(downstream)**
+and carries its own control.
+
+## R13. ⚠️ THE SAUVOLA WINDOW — the suspicion is CONFIRMED, and the reason nobody has seen it is the corpus
+
+### R13.1 (A) What 25 pixels spans — confirmed, and wider than the map suggests
+
+`binarize` calls `threshold_sauvola(gray, window_size=25, k=0.2)`. 25 is a
+**pixel** constant. Measured on four real pages at both live DPIs *(downstream:
+spacing and thickness come from `detect_staves`)*:
+
+| page | dpi | spacing px | thick px | **W in staff spaces** | W in line-thicknesses |
+|---|--:|--:|--:|--:|--:|
+| Beethoven 5 / Litolff (scan) | 300 | 7.75 | 2.00 | **3.23** | 12.50 |
+| " | 600 | 15.75 | 4.00 | **1.59** | 6.25 |
+| Brahms 1 / Breitkopf (scan) | 300 | 16.00 | 4.00 | **1.56** | 6.25 |
+| " | 600 | 32.00 | 7.00 | **0.78** | 3.57 |
+| Brahms 1 (engraved) | 300 | 20.50 | 3.00 | **1.22** | 8.33 |
+| " | 600 | 41.50 | 5.00 | **0.60** | 5.00 |
+| Mozart 41 (engraved) | 300 | 20.50 | 3.00 | **1.22** | 8.33 |
+| " | 600 | 41.00 | 5.00 | **0.61** | 5.00 |
+
+**The window spans 0.60 to 3.23 staff spaces across live configurations — a
+5.4× spread — and halves between the two DPI regimes, both of which ship.** On
+three of four pages at 600 dpi it is **under one staff space**: the local
+statistics for a pixel inside a notehead see almost nothing but that notehead.
+
+⚠️ **And DPI is not the only source of the spread.** At a *fixed* 600 dpi the
+window runs 0.60 to 1.59 staff spaces across editions — 2.6× — because staff
+spacing at a given DPI is a property of the print. A `window = f(dpi)` rule
+would not make this scale-invariant.
+
+**(B) The control**, because A is downstream: spacing must scale ~2.0× from 300
+to 600, being a physical distance × dpi/72. Measured **2.032 / 2.000 / 2.024 /
+2.000**. The geometry is stable, so A can be read.
+
+### R13.2 (C) The direct experiment — and it says the choice does not matter
+
+Same 600-dpi raster, `window=25` (ships) versus `window=51` (the DPI-scaled
+equivalent of 25-at-300). No staff detection anywhere.
+
+| page | ink@25 | ink@51 | **pixels differing** | median run 25 → 51 |
+|---|--:|--:|--:|---|
+| Beethoven 5 / Litolff | 0.0820 | 0.0820 | **0.0000** | 4.0 → 4.0 |
+| Brahms 1 / Breitkopf | 0.0941 | 0.0960 | 0.0023 | 7.0 → 7.0 |
+| Brahms 1 engraved | 0.0915 | 0.0932 | 0.0020 | 5.0 → 5.0 |
+| Mozart 41 engraved | 0.0991 | 0.1008 | 0.0020 | 5.0 → 5.0 |
+
+**Doubling the window changes at most 0.23% of pixels and does not move the
+stroke thickness at all.** On Beethoven it changes *exactly nothing*.
+
+⚠️ **This is the point at which I would have written "measured, does not
+matter" — and it would have been my round-2 retraction again.** Applying my own
+rule prospectively, as instructed: *what is the bias in this sample?*
+
+- **Beethoven 5 / Litolff is CCITT bitonal at native 600 ppi.** The source
+  raster is 1-bit. An adaptive threshold has nothing to adapt to, which is why
+  it scores exactly 0.0000 — the page is *structurally incapable* of showing
+  the effect.
+- **Two of the four are LilyPond vector renders** — near-bimodal grey by
+  construction, same objection.
+- That leaves **one** page, and it is the one with the largest effect.
+
+### R13.3 ⚠️ The corpus cannot answer this question — every scan-gate row is bitonal
+
+From `works.json`'s own `raster` field, all six distinct editions behind the
+20-row scan gate:
+
+| edition | raster |
+|---|---|
+| Beethoven 5 / 984073 | ccitt **bitonal** |
+| Beethoven 5 / 575951 | jbig2 **bitonal** |
+| Dvořák 9 / 405834 | jbig2 (indexed) |
+| Brahms 1 / 317803 | ccitt **bitonal** |
+| Mahler 5 / local | jbig2 **bitonal** |
+| Bach BWV1048 / 468678 | jbig2 **bitonal** |
+
+**Not one greyscale scan is in any standing benchmark.** So the entire
+justification in `binarize`'s own docstring — *"handles uneven illumination and
+yellowed paper much better than Otsu — important for scanned scores where some
+pages are darker than others"* — describes a capability **no benchmark
+exercises**.
+
+**Full census of the score library, 289 edition PDFs:** 212 bitonal (73.4%),
+**48 non-bitonal 8-bit (16.6%)**, 29 vector. Roughly one edition in six is a
+page where the threshold has real work to do, and none of them is measured.
+
+### R13.4 (D) On greyscale scans the window is decisive
+
+Same experiment, four 8-bit editions from the store:
+
+| page | dpi | grey levels | ink@25 | ink@51 | **differing** | median run 25 → 51 |
+|---|--:|--:|--:|--:|--:|---|
+| Beethoven 9 / Schott 1826 | 300 | 236 | 0.1167 | 0.1326 | 0.0185 | 8 → 8 |
+| " | **600** | 236 | 0.0908 | 0.1175 | **0.0284** | **8 → 16** |
+| Beethoven 7 / Steiner 1816 | 300 | 215 | 0.0804 | 0.1083 | 0.0280 | 11 → 16 |
+| " | **600** | 219 | **0.0377** | **0.0817** | **0.0441** | **11 → 23** |
+| Haydn 100 / Breitkopf 1857 | 300 | 256 | 0.1560 | 0.1611 | 0.0095 | 4 → 5 |
+| " | **600** | 256 | 0.1478 | 0.1558 | 0.0119 | **5 → 8** |
+| Brahms Tragic / Simrock 1881 | 300 | 228 | 0.0199 | 0.0228 | 0.0030 | 2.5 → 3 |
+| " | 600 | 236 | 0.0174 | 0.0198 | 0.0024 | 4 → 4 |
+
+**On Beethoven 7 at 600 dpi the shipped window keeps 0.0377 ink and the
+scale-equivalent window keeps 0.0817 — 2.17×, and the median stroke goes 11 px
+to 23 px.** That is the predicted mechanism: a window narrower than the stroke
+cannot see paper, so the interior of thick ink is thresholded away.
+
+**The sensitivity grows with DPI on three of the four** (0.0185→0.0284,
+0.0280→0.0441, 0.0095→0.0119) and **falls slightly on the fourth**
+(Brahms Tragic, 0.0030→0.0024) — which is also the sparsest page in the set, at
+1.7–2.0% ink. Stroke thickness doubles at 600 on three of four; Brahms Tragic
+is unchanged. **Three of four, not four of four, and the exception is the page
+with least ink to lose.**
+
+⚠️ **WHAT THIS DOES NOT SHOW.** It does **not** show that 51 is right and 25 is
+wrong. More ink can be bleed-through retained rather than strokes recovered; I
+did not adjudicate against print truth and there is none for these pages. What
+is established is that **the choice is consequential on 16.6% of the store and
+inert on the 83% the benchmarks are drawn from.**
+
+### R13.5 A constraint any future fix must respect, found by crashing
+
+`threshold_sauvola` **refuses an even window on any dimension** — the first run
+of this probe died on `window_size=50`. A `window_size = f(dpi)` rule must round
+to odd or it raises at run time on some DPIs and not others.
+
+## R14. The other three decision points, by the 13-field schema
+
+| # | signal | measures / unit | fidelity — destroyed at | consumers (read, not grepped) | should read it | volume | fail dir. | arity |
+|---|---|---|---|---|---|---|---|---|
+| S54 | **Hough per-line `rho`** (`:112-119`) | line position, px | ⚠️ `HoughLines` returns `[rho, theta]` per line; `:127` reads `line[0][1]` **only**. Every position is computed and dropped in the comprehension | none | staff lines are parallel and **evenly spaced** — the rho spread would say whether the accepted lines are staff lines at all, or a table rule and a row of text baselines | 1/page | over-claims | 1-of-N |
+| S55 | **the number of Hough lines** (`:121`) | count | `lines is None or len(lines) == 0 → return 0.0` | none | ⚠️ **`skew_correction_deg = 0.0` means BOTH "no line was found" and "the angle was under the dead band"** — two opposite situations, one value, and the field *is* consumed (see S57) | 1/page | over-claims | count |
+| S56 | ⚑ **the SPREAD of `angles_deg`** (`:127-128`) | degrees | `median(angles_deg)` at `:128` — the distribution dies there | none | ⚠️ a **bimodal** set rotates by the midpoint of two modes, which is wrong for both — a silent wrong answer, not an abstention. One `stdev` call | 1/page | over-claims, invisibly | continuous |
+| S57 | **`skew_correction_deg`** (`types.py:26`) | degrees | kept | ⚠️ **CONSUMED** — `staff_labels.py:175` reads it in production, plus `run_pipeline.py:88` and `transcribe.py:4221` serialise it. **The one stage-1 output that is not Class C** | — | 1/page | — | continuous |
+| S58 | **`pix.colorspace` / bpc** (`render_page:37-47`) | the source raster's depth | ⚠️ **never formed.** The dispatch reads `pix.n` (channel count) only | none | ⚠️ **R13 makes this the load-bearing field of the whole stage**: bpc separates the 16.6% of editions where binarisation decides something from the 73% where any window gives the same answer. It is in hand at render time and `PageImage` has no place to put it | 1/page | absence is total | 1-of-N |
+| S59 | **`page.rotation`, `page.get_text()`** | — | never read | none | rotation would bound the deskew search; the text layer is separately re-derived much later by `staff_labels` | 1/page | — | — |
+| S60 | **`max_correction_deg` as a CHECK** | degrees | ⚠️ **does not exist** — see R14.1 | — | — | 1/page | — | — |
+
+### R14.1 ⚠️ Two corrections to the standing documents
+
+**(a) A docstring describing a check that is not implemented.** `deskew`'s
+docstring (`:103-104`) says *"If no clear skew is detected (or it exceeds
+`max_correction_deg`), the page is returned unrotated."* There is **no such
+test in the function.** `max_correction_deg` appears only as the Hough
+`min_theta`/`max_theta` bound (`:117-118`). The difference is real: a bound
+makes an over-skewed page **invisible to the search** (its staff lines fall
+outside the theta range, so `lines` comes back `None` and the page abstains),
+whereas a check would *detect and reject* it. The abstention is the safer
+behaviour, but a page that yields a few in-range noise lines can still be
+rotated by their median with nothing rejecting it. New; same family as map D11.
+
+**(b) The map's `input_domain.py` claim is imprecise.** Its stage-1 row says
+`input_domain.py` *"sits in the same package unconsulted"*. It **is** consulted
+— `transcribe.py:3896-3898`, by `_route_weights`. The accurate statement is
+narrower and more interesting: **the same input is classified twice, at two
+scopes, for two purposes, and neither knows about the other** — `input_domain`
+at document level for weight routing, and `pix.n` at page level for channel
+dispatch — while the field that would serve *both* (S58) is formed by neither.
+
+## R15. The never-gathered register — stage 1
+
+**(i) computed and discarded:** S54 (rho), S56 (the angle spread) — both die in
+the expression that consumes them. Cited, not re-derived.
+
+**(ii) available and never computed** — inputs in hand, no line forms it:
+
+| | quantity | inputs in hand | the decision blind to it | cost |
+|---|---|---|---|---|
+| **N17** | ⚠️ **the source raster's BIT DEPTH** | `pix` at `render_page:37`; `doc.extract_image()` one call away | everything downstream that assumes binarisation did something. **R13's whole finding is that this field separates the two populations**, and `PageImage` records `dpi` but not depth | one field |
+| **N18** | **the angle spread / modality** | `angles_deg` at `:127` | S56 — one `stdev`, and a bimodal page currently rotates by the midpoint silently | one call |
+| **N19** | **the Hough line count and rho positions** | `lines` at `:120` | S54/S55 — and it would separate "no lines found" from "angle under the dead band", which today share the value 0.0 | two fields |
+| **N20** | **the local contrast the threshold actually saw** | Sauvola's own `m` and `s` maps, computed inside `threshold_sauvola` and discarded with it | ⚠️ a page whose `s` is near zero everywhere is bitonal, and the adaptive threshold is a no-op on it — the same fact as N17, measured rather than declared | skimage returns only the threshold map; needs `_mean_std`, so this is class (iii) |
+
+**(iii) obtainable with a new read:** N20 as noted. Also **print truth for a
+greyscale page** — the thing that would say whether 25 or 51 is *right* rather
+than merely different. None exists; it would have to be hand-adjudicated, and
+that is the blocker on turning R13 into a fix.
+
+## R16. Ranked conclusions
+
+**9 · Record the raster's bit depth on `PageImage` (N17) — free, byte-identical.**
+It is one field at `render_page`, and R13 shows it is the discriminator between
+a stage where binarisation decides something and one where it cannot. It would
+also let any benchmark state its own exposure, which is the gap R13.3 found.
+**Settling measurement:** none needed to record. **Harness: none.**
+
+**10 · Build a greyscale row into the scan gate before touching the window.**
+⚠️ **This is the prerequisite, not the fix.** The window cannot be re-tuned
+against a corpus that is 100% bitonal — every arm would score identically and
+the A/B would report a flawless null, which is this project's most familiar
+failure shape. 48 editions are available; one row would make the question
+answerable. **Settling measurement:** the row must first be shown to *move* when
+the window moves — otherwise it is not a row for this question.
+
+**11 · Record the angle spread and the Hough line count (N18, N19) — free.**
+Both are one expression. N19 additionally splits the overloaded `0.0`.
+
+⚠️ **No change to `window_size` is recommended, and I would refuse one tonight
+even if asked.** Binarisation is upstream of literally everything; the two
+candidate values differ by 2.17× in ink on a real page; and there is no truth
+against which to say which is right. The measurement says *where to look*, not
+what to do.
+
+## R17. Not covered, and what is UNMEASURED
+
+- **`k = 0.2`** — untouched. It interacts with the window (Sauvola's `T = m(1 + k(s/R − 1))`), so the two-parameter surface is unexplored and I measured one axis of it.
+- **The 0.1° dead band** — I did not measure how many real pages land inside it, i.e. how often `0.0` means "small" rather than "none".
+- **Whether 25 or 51 is CORRECT** on any page. Not measured, no truth exists, and R13.4 is explicitly framed as "consequential", never "wrong".
+- **The downstream cost of the window on greyscale pages.** I measured rasters. Whether a 2.17× ink change moves note recall is a full-pipeline question on pages no harness holds.
+- **n = 4 greyscale pages, one page each, 4 editions.** The effect is large and consistent in direction on 3 of 4, and the fourth is the sparsest. ⚠️ By my own round-2 rule this is a *positive* on a small sample and deserves the same scrutiny a null would get: the honest claim is "consequential on the greyscale pages measured", not "consequential on greyscale pages".
+- ⚠️ **A naming discrepancy in the brief, reported rather than guessed at.** There is no `fixture_root.py`. The tree has **`_fixtureroot.py`** (2 functions, 7 users) and **`_fixtures.py`** (5 functions, richer API, 17 users) — 24 between them, which is where the brief's figure comes from. `_fixtureroot.py`'s own docstring nominates **`_fixtures.py`** as the survivor. I used `_fixtureroot` because this probe renders PDFs rather than globbing committed `.omr.json`, which is what `_fixtures.py`'s pattern constants serve.

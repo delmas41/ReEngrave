@@ -34,13 +34,12 @@ bridge, seconds, no pipeline. It reads truth fixtures from the `reconciliation`
 worktree (`fixtures/` is gitignored) and **refuses to run** unless every
 fixture's sha256 matches the canonical arm's.
 
-**v0.4.0 — FROZEN for the renderer rebuild, 2026-09-07. 56 rows, 40 scoreable,
-16 not.** Nothing may move it without telling the coordinator: one schema
+**v0.5.0 — FROZEN, 2026-09-07. 56 rows, 40 scoreable, 16 not.** Nothing may move it without telling the coordinator: one schema
 shifting under one builder is how the first renderer failed.
 
 ### What a conforming consumer must do (`consumer_contract`)
 
-1. **Gate on `schema_version`.** Understood: `["0.4.0"]`. Anything else → refuse
+1. **Gate on `schema_version`.** Understood: `["0.5.0"]`. Anything else → refuse
    with a non-zero exit naming the version. **Never forward-compat silently** —
    a v0.2.0 renderer read v0.3.0 without a word and dropped the two fields whose
    whole purpose is that they cannot be dropped.
@@ -51,6 +50,15 @@ shifting under one builder is how the first renderer failed.
    `ceiling.kind`. Every key now has exactly two sides, enforced at build time.
 4. **`ceiling.edition` rides the caption**, so a publisher-scoped ceiling cannot
    be quoted without its publisher.
+5. **Honour `render_with`** (the ledger screen/defect pair). Rows naming each
+   other must render **adjacently, in one block, with no scoreable row between**.
+   Cannot place them together → render **neither**. It is symmetric and
+   build-enforced, and it is in `fields_a_consumer_may_never_drop`.
+
+⚠️ **A `ceiling.evidence` entry is now checked for EXISTENCE at build time**, so
+the claim that a registry naming a missing file fails the build is true as of
+0.5.0 — it was not true at 0.4.0, where nine entries were prose. Prose lives in
+`ceiling.evidence_prose`, which is not checked.
 
 **Old:** v0.3.0 — 55 rows, 39 scoreable. Ceiling status: 25
 measured, 1 measured-directly, 1 measured-and-corroborated, 1
