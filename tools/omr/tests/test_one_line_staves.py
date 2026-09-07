@@ -345,3 +345,82 @@ class TestSystemGroupingIsUpstreamAndCannotSeeTheFlag:
                     names |= {a.name for a in node.names}
             assert not any("measure_extractor" in n for n in names), \
                 (mod.__name__, sorted(names))
+
+
+def _one_line_result(staff_clef="percussion", measure_clef="percussion",
+                     staff_lines=1):
+    """One admitted percussion rule, shaped exactly as `transcribe` emits it."""
+    ks = {"sharps": 0, "flats": 0, "alterations": {}}
+    staff = {
+        "staff_index": 0, "clef": staff_clef, "clef_source": "one_line_staff",
+        "unpitched": True,
+        "key_signature": ks, "time_signature": None, "n_measures": 1,
+        "measures": [{
+            "measure_index": 0, "bbox_page_px": [0, 0, 100, 50],
+            "clef": measure_clef, "key_signature": ks, "time_signature": None,
+            "n_detections": 0, "detections": [],
+        }],
+    }
+    if staff_lines is not None:
+        staff["staff_lines"] = staff_lines
+    return {"source_pdf": "synthetic.pdf", "pages": [{
+        "page_index": 0, "n_systems": 1,
+        "systems": [{"system_index": 0, "n_staves": 1, "staves": [staff]}]}]}
+
+
+class TestItReachesTheFILE:
+    """⚠️ THE REGRESSION THAT ACTUALLY HAPPENED, and the test that would have
+    caught it.
+
+    The first version of the transcribe-side marking set only the STAFF dict's
+    clef. `export._staff_measures_xml` takes `measure.get("clef") or clef` — the
+    MEASURE wins — so a real 19-part Dvorak export came out with **zero**
+    `<sign>percussion</sign>` in it while the staff dict said `percussion`. The
+    unit tests were green throughout, because they handed
+    `_mxl_attributes_block` the string directly and never asked whether anything
+    upstream would.
+
+    That is this project's own recurring bug — read, then dropped on the way out
+    — committed inside a change whose whole point was to stop the export lying
+    about a staff. So these tests go through `to_musicxml`.
+    """
+
+    def test_percussion_reaches_the_musicxml(self):
+        from tools.omr.export import to_musicxml
+        out = to_musicxml(_one_line_result())
+        assert "<sign>percussion</sign>" in out
+        assert "<staff-lines>1</staff-lines>" in out
+        assert "<sign>G</sign>" not in out
+
+    def test_a_measure_clef_left_on_the_default_is_what_broke_it(self):
+        """Runs the exact pre-fix shape — staff `percussion`, measures still
+        `treble` — and asserts it produces the WRONG file. This is the fault
+        pinned as a fault, so nobody re-introduces it believing the staff dict
+        is enough."""
+        from tools.omr.export import to_musicxml
+        out = to_musicxml(_one_line_result(measure_clef="treble"))
+        assert "<sign>percussion</sign>" not in out
+        assert "<sign>G</sign>" in out
+
+    def test_transcribe_marks_the_MEASURES_not_only_the_staff(self):
+        """Source-level anti-drift. The export cannot see a staff-only
+        marking, so the marking must reach the measures — asserted here
+        because no synthetic page in this suite runs the real phase-1 path
+        that produces a one-line staff."""
+        import inspect
+        from tools.omr import transcribe as tr
+        src = inspect.getsource(tr)
+        i = src.find('staff_dict["clef"] = "percussion"')
+        assert i > 0, "the one-line marking has moved or gone"
+        window = src[i:i + 1400]
+        assert '_m["clef"] = "percussion"' in window, (
+            "the marking sets the staff but not its measures; "
+            "export._staff_measures_xml prefers the measure's clef")
+
+    def test_a_five_line_staff_is_untouched_by_all_of_this(self):
+        from tools.omr.export import to_musicxml
+        out = to_musicxml(_one_line_result(
+            staff_clef="treble", measure_clef="treble", staff_lines=None))
+        assert "<sign>G</sign>" in out
+        assert "percussion" not in out
+        assert "staff-details" not in out

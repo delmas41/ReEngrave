@@ -1,0 +1,694 @@
+{
+ "base_rate_works_scored_for_unpitched": 90,
+ "works_read": 227,
+ "hit_works": 31,
+ "hit_works_scored_for_unpitched": 23,
+ "staves_plausible": 72,
+ "staves_suspect": 9,
+ "rows": [
+  {
+   "work_id": "berlioz--le-carnaval-romain",
+   "path": "editions/berlioz/le-carnaval-romain-h-95/berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf",
+   "page": 6,
+   "n_one": 2,
+   "n_five": 16,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) percussion",
+    "percussion (3 players: cymbals, triangle, 2 tambourines)"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "berlioz--le-carnaval-romain",
+   "path": "editions/berlioz/le-carnaval-romain-h-95/berlioz--le-carnaval-romain-h-95--berliozcomplete-1901--imslp11357.pdf",
+   "page": 42,
+   "n_one": 1,
+   "n_five": 17,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) percussion",
+    "percussion (3 players: cymbals, triangle, 2 tambourines)"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "berlioz--symphony-fantastique",
+   "path": "editions/berlioz/symphony-fantastique-h-48/berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.pdf",
+   "page": 98,
+   "n_one": 1,
+   "n_five": 26,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "bass drum",
+    "snare drum",
+    "cymbals"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "berlioz--symphony-fantastique",
+   "path": "editions/berlioz/symphony-fantastique-h-48/berlioz--symphony-fantastique-h-48--berliozcomplete-1900--imslp24830.pdf",
+   "page": 119,
+   "n_one": 1,
+   "n_five": 20,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "bass drum",
+    "snare drum",
+    "cymbals"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "bizet--symphony-in-c-major",
+   "path": "editions/bizet/symphony-in-c-major/bizet--symphony-in-c-major--edition-1935--imslp512840.pdf",
+   "page": 54,
+   "n_one": 1,
+   "n_five": 26,
+   "roster_has_unpitched": false,
+   "roster_evidence": [],
+   "has_roster": true
+  },
+  {
+   "work_id": "borodin--symphony-2",
+   "path": "editions/borodin/symphony-2/borodin--symphony-2--v-bessel-co-1888--imslp197128.pdf",
+   "page": 47,
+   "n_one": 1,
+   "n_five": 15,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "tambourine",
+    "cymbals"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "brahms--symphony-2",
+   "path": "editions/brahms/symphony-2-op73/brahms--symphony-2-op73--simrock-1878--imslp23103.pdf",
+   "page": 22,
+   "n_one": 1,
+   "n_five": 28,
+   "roster_has_unpitched": false,
+   "roster_evidence": [],
+   "has_roster": true
+  },
+  {
+   "work_id": "chabrier--espana",
+   "path": "editions/chabrier/espana/chabrier--espana--enoch-1884--imslp112203.pdf",
+   "page": 3,
+   "n_one": 3,
+   "n_five": 24,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) percussion",
+    "4 percussion"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "chabrier--espana",
+   "path": "editions/chabrier/espana/chabrier--espana--enoch-1884--imslp112203.pdf",
+   "page": 4,
+   "n_one": 2,
+   "n_five": 24,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) percussion",
+    "4 percussion"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "chabrier--espana",
+   "path": "editions/chabrier/espana/chabrier--espana--enoch-1884--imslp112203.pdf",
+   "page": 52,
+   "n_one": 2,
+   "n_five": 23,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) percussion",
+    "4 percussion"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "debussy--la-mer",
+   "path": "editions/debussy/la-mer-cd-111/debussy--la-mer-cd-111--durand-fils--imslp15420.pdf",
+   "page": 124,
+   "n_one": 1,
+   "n_five": 16,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "3prc"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "debussy--la-mer",
+   "path": "editions/debussy/la-mer-cd-111/debussy--la-mer-cd-111--durand-fils--imslp15420.pdf",
+   "page": 125,
+   "n_one": 1,
+   "n_five": 19,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "3prc"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "dukas--l-apprenti-sorcier",
+   "path": "editions/dukas/l-apprenti-sorcier/dukas--l-apprenti-sorcier--durand-fils--imslp6574.pdf",
+   "page": 57,
+   "n_one": 2,
+   "n_five": 17,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "bass drum",
+    "cymbals"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "dukas--l-apprenti-sorcier",
+   "path": "editions/dukas/l-apprenti-sorcier/dukas--l-apprenti-sorcier--durand-fils--imslp6574.pdf",
+   "page": 59,
+   "n_one": 1,
+   "n_five": 21,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "bass drum",
+    "cymbals"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "glazunov--symphony-5",
+   "path": "editions/glazunov/symphony-5-op55/glazunov--symphony-5-op55--belaieff-1896--imslp61788.pdf",
+   "page": 118,
+   "n_one": 1,
+   "n_five": 18,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "cymbals",
+    "bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "mahler--symphony-5",
+   "path": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 82,
+   "n_one": 1,
+   "n_five": 16,
+   "roster_has_unpitched": false,
+   "roster_evidence": [],
+   "has_roster": false
+  },
+  {
+   "work_id": "mahler--symphony-5",
+   "path": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+   "page": 112,
+   "n_one": 1,
+   "n_five": 14,
+   "roster_has_unpitched": false,
+   "roster_evidence": [],
+   "has_roster": false
+  },
+  {
+   "work_id": "mahler--symphony-6",
+   "path": "editions/mahler/symphony-6-gmw-46/mahler--symphony-6-gmw-46--c-f-kahnt-nachfolger-1906--imslp514284.pdf",
+   "page": 136,
+   "n_one": 1,
+   "n_five": 22,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) percussion",
+    "percussion (2 players)",
+    "bass drum",
+    "triangle"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "mozart--symphony-25",
+   "path": "editions/mozart/symphony-25-in-g-minor-k183-173db/mozart--symphony-25-in-g-minor-k183-173db--barenreiter-neue-mozart-1960--imslp849180.pdf",
+   "page": 5,
+   "n_one": 1,
+   "n_five": 23,
+   "roster_has_unpitched": false,
+   "roster_evidence": [],
+   "has_roster": true
+  },
+  {
+   "work_id": "mussorgsky--night-on-bald-mountain",
+   "path": "editions/mussorgsky/night-on-bald-mountain/mussorgsky--night-on-bald-mountain--v-bessel-co-1886--imslp139196.pdf",
+   "page": 18,
+   "n_one": 2,
+   "n_five": 16,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "tambourine",
+    "snare drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "mussorgsky--night-on-bald-mountain",
+   "path": "editions/mussorgsky/night-on-bald-mountain/mussorgsky--night-on-bald-mountain--v-bessel-co-1886--imslp139196.pdf",
+   "page": 29,
+   "n_one": 1,
+   "n_five": 19,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "tambourine",
+    "snare drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "nielsen--symphony-5",
+   "path": "editions/nielsen/symphony-5-op50/nielsen--symphony-5-op50--nielsencomplete-1998--imslp92727.pdf",
+   "page": 32,
+   "n_one": 7,
+   "n_five": 13,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) snare",
+    "cymbals",
+    "snare drum",
+    "triangle"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "rachmaninoff--isle-of-the-dead",
+   "path": "editions/rachmaninoff/isle-of-the-dead-op29/rachmaninoff--isle-of-the-dead-op29--gutheil-1909--imslp249809.pdf",
+   "page": 34,
+   "n_one": 1,
+   "n_five": 24,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "cymbals",
+    "bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "rachmaninoff--isle-of-the-dead",
+   "path": "editions/rachmaninoff/isle-of-the-dead-op29/rachmaninoff--isle-of-the-dead-op29--gutheil-1909--imslp249809.pdf",
+   "page": 52,
+   "n_one": 1,
+   "n_five": 23,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "cymbals",
+    "bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "rachmaninoff--symphony-2",
+   "path": "editions/rachmaninoff/symphony-2-op27/rachmaninoff--symphony-2-op27--gutheil-1908--imslp105597.pdf",
+   "page": 84,
+   "n_one": 1,
+   "n_five": 17,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "cymbals",
+    "bass drum",
+    "snare drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "rachmaninoff--symphony-2",
+   "path": "editions/rachmaninoff/symphony-2-op27/rachmaninoff--symphony-2-op27--gutheil-1908--imslp105597.pdf",
+   "page": 228,
+   "n_one": 1,
+   "n_five": 19,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "cymbals",
+    "bass drum",
+    "snare drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "ravel--bolero",
+   "path": "editions/ravel/bolero-m-81/ravel--bolero-m-81--2016--imslp421137.pdf",
+   "page": 10,
+   "n_one": 2,
+   "n_five": 32,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) percussion",
+    "percussion* (4 players)",
+    "i.e. only 3 players are needed. # Percussion: 2 snare drums",
+    "bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "ravel--bolero",
+   "path": "editions/ravel/bolero-m-81/ravel--bolero-m-81--2016--imslp421137.pdf",
+   "page": 12,
+   "n_one": 1,
+   "n_five": 19,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) percussion",
+    "percussion* (4 players)",
+    "i.e. only 3 players are needed. # Percussion: 2 snare drums",
+    "bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "ravel--bolero",
+   "path": "editions/ravel/bolero-m-81/ravel--bolero-m-81--2016--imslp421137.pdf",
+   "page": 27,
+   "n_one": 1,
+   "n_five": 25,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) percussion",
+    "percussion* (4 players)",
+    "i.e. only 3 players are needed. # Percussion: 2 snare drums",
+    "bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "ravel--daphnis-et-chloe",
+   "path": "editions/ravel/daphnis-et-chloe-m-57/ravel--daphnis-et-chloe-m-57--durand--imslp952691.pdf",
+   "page": 148,
+   "n_one": 4,
+   "n_five": 21,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "ravel--la-valse",
+   "path": "editions/ravel/la-valse-m-72/ravel--la-valse-m-72--durand-cie-1921--imslp923399.pdf",
+   "page": 130,
+   "n_one": 3,
+   "n_five": 22,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "bass drum",
+    "snare drum",
+    "cymbals"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "ravel--le-tombeau-de-couperin",
+   "path": "editions/ravel/le-tombeau-de-couperin-m-68/ravel--le-tombeau-de-couperin-m-68--durand-cie-1918--imslp918879.pdf",
+   "page": 33,
+   "n_one": 1,
+   "n_five": 10,
+   "roster_has_unpitched": false,
+   "roster_evidence": [],
+   "has_roster": true
+  },
+  {
+   "work_id": "ravel--pavane-pour-une-infante-defunte",
+   "path": "editions/ravel/pavane-pour-une-infante-defunte-m-19/ravel--pavane-pour-une-infante-defunte-m-19--b-schott-s-sohne-1924--imslp617507.pdf",
+   "page": 6,
+   "n_one": 1,
+   "n_five": 10,
+   "roster_has_unpitched": false,
+   "roster_evidence": [],
+   "has_roster": true
+  },
+  {
+   "work_id": "ravel--rapsodie-espagnole",
+   "path": "editions/ravel/rapsodie-espagnole-m-54/ravel--rapsodie-espagnole-m-54--durand-fils-1908--imslp134638.pdf",
+   "page": 13,
+   "n_one": 1,
+   "n_five": 14,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "bass drum",
+    "cymbals",
+    "triangle"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "respighi--pini-di-roma",
+   "path": "editions/respighi/pini-di-roma/respighi--pini-di-roma--g-ricordi-c-1925--imslp5603.pdf",
+   "page": 2,
+   "n_one": 1,
+   "n_five": 19,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "bass drum",
+    "snare drum",
+    "cymbals"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "respighi--pini-di-roma",
+   "path": "editions/respighi/pini-di-roma/respighi--pini-di-roma--g-ricordi-c-1925--imslp5603.pdf",
+   "page": 59,
+   "n_one": 1,
+   "n_five": 19,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "bass drum",
+    "snare drum",
+    "cymbals"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "rimsky-korsakov--capriccio-espagnol",
+   "path": "editions/rimsky-korsakov/capriccio-espagnol-op34/rimsky-korsakov--capriccio-espagnol-op34--belaieff--imslp875678.pdf",
+   "page": 4,
+   "n_one": 4,
+   "n_five": 16,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "bass drum",
+    "drum",
+    "triangle"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "rimsky-korsakov--capriccio-espagnol",
+   "path": "editions/rimsky-korsakov/capriccio-espagnol-op34/rimsky-korsakov--capriccio-espagnol-op34--belaieff--imslp875678.pdf",
+   "page": 85,
+   "n_one": 3,
+   "n_five": 18,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "bass drum",
+    "drum",
+    "triangle"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "rimsky-korsakov--capriccio-espagnol",
+   "path": "editions/rimsky-korsakov/capriccio-espagnol-op34/rimsky-korsakov--capriccio-espagnol-op34--belaieff--imslp875678.pdf",
+   "page": 87,
+   "n_one": 3,
+   "n_five": 18,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "bass drum",
+    "drum",
+    "triangle"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "saint-saens--danse-macabre",
+   "path": "editions/saint-saens/danse-macabre-op40/saint-saens--danse-macabre-op40--durand-1875--imslp21204.pdf",
+   "page": 6,
+   "n_one": 2,
+   "n_five": 17,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "cymbals",
+    "bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "saint-saens--danse-macabre",
+   "path": "editions/saint-saens/danse-macabre-op40/saint-saens--danse-macabre-op40--durand-1875--imslp21204.pdf",
+   "page": 7,
+   "n_one": 3,
+   "n_five": 18,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "cymbals",
+    "bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "saint-saens--danse-macabre",
+   "path": "editions/saint-saens/danse-macabre-op40/saint-saens--danse-macabre-op40--durand-1875--imslp21204.pdf",
+   "page": 35,
+   "n_one": 1,
+   "n_five": 18,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "cymbals",
+    "bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "saint-saens--symphony-3",
+   "path": "editions/saint-saens/symphony-3-op78/saint-saens--symphony-3-op78--durand-schoenewerk-1886--imslp113413.pdf",
+   "page": 79,
+   "n_one": 1,
+   "n_five": 25,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "cymbals",
+    "bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "saint-saens--symphony-3",
+   "path": "editions/saint-saens/symphony-3-op78/saint-saens--symphony-3-op78--durand-schoenewerk-1886--imslp113413.pdf",
+   "page": 111,
+   "n_one": 1,
+   "n_five": 25,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "cymbals",
+    "bass drum"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "smetana--ma-vlast-jb-1-112",
+   "path": "editions/smetana/ma-vlast-jb-1-112/smetana--ma-vlast-jb-1-112--p2--imslp983879.pdf",
+   "page": 77,
+   "n_one": 1,
+   "n_five": 13,
+   "roster_has_unpitched": false,
+   "roster_evidence": [],
+   "has_roster": true
+  },
+  {
+   "work_id": "smetana--prodana-nevesta-jb-1-100",
+   "path": "editions/smetana/prodana-nevesta-jb-1-100/smetana--prodana-nevesta-jb-1-100--snklhu-1953--imslp1032871.pdf",
+   "page": 478,
+   "n_one": 3,
+   "n_five": 17,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) percussion",
+    "percussion"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "strauss--don-quixote",
+   "path": "editions/strauss/don-quixote-op35/strauss--don-quixote-op35--jos-aibl-verlag-1898--imslp18787.pdf",
+   "page": 83,
+   "n_one": 1,
+   "n_five": 24,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "bass drum",
+    "snare drum",
+    "cymbals"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "stravinsky--petrushka",
+   "path": "editions/stravinsky/petrushka-k012/stravinsky--petrushka-k012--unknown-edition--imslp472771.pdf",
+   "page": 17,
+   "n_one": 1,
+   "n_five": 24,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "bass drum",
+    "cymbals"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "stravinsky--petrushka",
+   "path": "editions/stravinsky/petrushka-k012/stravinsky--petrushka-k012--unknown-edition--imslp472771.pdf",
+   "page": 114,
+   "n_one": 1,
+   "n_five": 17,
+   "roster_has_unpitched": true,
+   "roster_evidence": [
+    "(raw) bass drum",
+    "triangle",
+    "bass drum",
+    "cymbals"
+   ],
+   "has_roster": true
+  },
+  {
+   "work_id": "tchaikovsky--serenade-for-string-orchestra",
+   "path": "editions/tchaikovsky/serenade-for-string-orchestra-op48/tchaikovsky--serenade-for-string-orchestra-op48--jurgenson-1881--imslp380582.pdf",
+   "page": 10,
+   "n_one": 1,
+   "n_five": 13,
+   "roster_has_unpitched": false,
+   "roster_evidence": [],
+   "has_roster": true
+  }
+ ]
+}

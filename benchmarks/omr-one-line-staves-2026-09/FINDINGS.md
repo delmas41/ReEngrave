@@ -16,21 +16,42 @@ python3 benchmarks/omr-one-line-staves-2026-09/price_arms.py --arm ROW=NAME=XML
 
 ## The answer in one paragraph
 
-The filter guards **five** things, not the one its comments name, and one of the
-five is the reason the obvious fix is dangerous. Admitting the staves safely
-took a reconstructed canonical span, two stated units, and three sites left
-filtered exactly as they were. It then **works** — the staff reaches a cell, a
-detection and the export, at the right scale, with every geometric reader
-abstaining and **no pitch resolved on it**. But what it is WORTH depends
-entirely on which benchmark era you score it in, and the two eras disagree in
-sign: **+65 edits in the shipped era, −212 edits and `entire staff` 504 → 0 in
-the page-normalised era.** That is not a contradiction and it is not noise —
-§4 works `docs/backlog-2026-09-07-open-items.md` §A00's list and lands on (b),
-the metric charging for something other than correctness.
+The filter guards **five** things, not the three its comments name, and two of
+the five are the reason the obvious fix is dangerous. What it drops is **81
+staves in 13,302 (0.61%)** across 702 library pages — and they are **real
+percussion**, not junk: 72 of 81 land on a work independently recorded as scored
+for unpitched percussion, four are adjudicated false by eye, and every sampled
+"plausible" hit opened as a textbook one-line staff with an unpitched percussion
+clef on it. So the fix is an admission, not a discriminator.
 
-**Recommendation: keep the flag, keep it OFF, and couple it to the staves-map
-work.** It is not independently shippable, and the reason is measured rather
-than cautious.
+Admitting them safely took a reconstructed canonical span, two stated units, and
+three sites left filtered exactly as they were. It then **works** — the staff
+reaches a cell, a detection and the export, at the right scale, with every
+geometric reader abstaining and **no pitch resolved on it**. What it is WORTH
+depends on whether the truth's part count corresponds to the page's:
+**engraved −144 edits, scan-normalised −212, scan-as-scored-today +65.** That is
+not a contradiction and it is not noise — §4.1 works
+`docs/backlog-2026-09-07-open-items.md` §A00's list and lands on (b), the metric
+charging for something other than correctness, and the engraved arm corroborates
+it from an independent direction.
+
+**Recommendation: keep the flag, keep it OFF, and propose it for the ENGRAVED
+side first.** The picture changed once the engraved arm ran, and the honest
+summary is not "it does not work":
+
+* **engraved — unambiguously better.** `dvorak-sym9-mvt4`, the only engraved
+  work that prints one, goes **239 → 95 edits** with `entire staff` 42 → 0; the
+  other ten detect zero one-line staves, so the engraved pool **cannot get
+  worse**.
+* **scan, page-normalised era — better.** −212 edits, `entire staff` 504 → 0.
+* **scan, as the gate scores it today — worse by 65 edits**, and §4.1 shows why:
+  Mahler's truth carries 38 encoded parts against 21 printed staves, so a part
+  added in the middle re-shuffles which parts the alignment sheds rather than
+  pairing with anything.
+
+It stays off because the one row that regresses is on the standing scan gate,
+and because it still reads no percussion NOTES (§6). What it is *not* is a
+mechanism that fails.
 
 ## ⚠️ Which instrument can see this work
 
@@ -174,7 +195,117 @@ against 100.0) if it is reverted.
 
 ### 1.2 Census — how much of what it drops is real
 
-<!--CENSUS-->
+`probe_census.py`, one page-1 render + `detect_staves` per sampled page, three
+pages per edition, over the whole score library. **702 pages read across 234
+editions, 13,302 staves detected, 3 pages errored.**
+
+| | |
+|---|--:|
+| ONE-LINE staves found | **81** |
+| ...as a share of all staves detected | **0.61%** |
+| pages carrying at least one | **50** (7.1%) |
+| works carrying at least one | 31 of 227 |
+
+So the filter drops **six staves in a thousand**. That is small enough that a
+naive reading — "it barely matters" — is available and wrong: the 81 are not
+spread thin, they are concentrated in the percussion repertoire, and where they
+occur they are a whole part each.
+
+### It is dropping REAL percussion, not junk — screened, then adjudicated
+
+⚠️ Geometry cannot answer "is this a percussion part or a page rule". Two
+independent things were asked instead.
+
+**Screen** (`screen_by_roster.py`) — against the score library's `works` map,
+which records what each work is scored for from the IMSLP work page, stored
+`source_kind: "catalog"`, i.e. independent of any MusicXML anything is scored
+against:
+
+| | |
+|---|--:|
+| works the census read that are scored for **unpitched** percussion | 90 of 227 — **40% base rate** |
+| works **with a one-line detection** that are | 23 of 31 — **74%** |
+| one-line staves on a work scored for it | **72 of 81** |
+
+Enrichment 40% → 74%. ⚠️ Timpani, glockenspiel, xylophone, celesta and tubular
+bells are **excluded by name** from the word list: all are pitched and printed
+on five lines, and counting them would say a work "has percussion" while saying
+nothing about a one-line rule.
+
+⚠️ **The screen has its own blindness and it fired twice before I noticed.**
+Both are roster-parser faults worth passing to the library workstream, and
+neither is a detector error:
+
+* **`debussy--la-mer`** — one field holding BOTH dialects. The numeric dialect
+  parses (`tmp`, `3prc`) and the prose list after `{{More}}`, which names bass
+  drum, cymbals, tam-tam and triangle, does not. The same shape CLAUDE.md
+  records for Bach's B minor Mass.
+* **`ravel--daphnis-et-chloe`** — an `{{OnStInst}}` / `{{OffStInst}}` split
+  where only the OFF-stage band survives. The stored roster is
+  `piccolo, E clarinet, horn, trumpet`; the entire on-stage lineup, percussion
+  included, is dropped. Same family as the Tannhäuser cast-list fault.
+
+The screen now reads the raw string as well as the parsed roster, which is the
+right move for a screen anyway — it cannot be blinded by a parse. That took the
+suspects from 15 staves to 9.
+
+**Adjudication** — the 9 residual suspects split again, and only four are the
+detector's fault:
+
+| | staves | why |
+|---|--:|---|
+| screen-blind | 5 | `mahler--symphony-5` ×2 (no roster held — and this is the work the whole commission is about), `smetana--ma-vlast` ×1 (`parse_rate` 0.0, roster empty), `ravel--le-tombeau-de-couperin` ×1 and `ravel--pavane-pour-une-infante-defunte` ×1 — whose IMSLP work page is the **piano original** while the library holds an orchestration, the documented `work_id` hazard |
+| **adjudicated FALSE by eye** | **4** | below |
+
+`cut_adjudication_crops.py` draws the detected row and enough context to see
+what it sits between. All four opened:
+
+* **`mozart--symphony-25` p5** — the marker is on the **top line of a real
+  bass-clef staff**. False positive.
+* **`brahms--symphony-2` p22** — the marker is on a full-width **row of beamed
+  sixteenths**. The page's staff spacing was measured at **6 px** (against
+  23–32 on every other hit), so the 4-space clearance is 24 px and a beam row
+  clears it. A page-level measurement failure, surfacing here.
+* **`tchaikovsky--serenade-for-string-orchestra` p10** — genuine full-width lone
+  ink with clear space either side, on a **strings-only** work. Whatever it is
+  (a divider, or the one surviving line of a ruined staff — the third thing
+  `_single_line_staff_rows`' own docstring says a lone row can be), it is not a
+  percussion part.
+* **`bizet--symphony-in-c-major` p54** — likewise: real lone ink, on a work with
+  timpani and no unpitched percussion.
+
+**Control — are the 72 "plausible" earned?** Sampled by eye:
+`ravel--bolero` p10 and `nielsen--symphony-5` p32. Both are textbook:
+a single rule carrying the **unpitched percussion clef** (`‖`), noteheads
+centred ON the line, its own barlines, dynamics, rests — Boléro's snare drum,
+and three of Nielsen's battery stacked one under another in a single crop,
+which independently confirms that page's claim of seven.
+
+### The answer
+
+**The `>= 5` filter is dropping real percussion staves, at roughly 95%
+precision on this sample** (4 adjudicated false of 81; 4/4 sampled plausible
+hits genuine). It is not a junk filter that happens to catch some music. So the
+fix is an **admission**, not a discriminator — which is what was built.
+
+⚠️ **But 5% of 81 is not zero, and a false positive here is a spurious PART**,
+not a spurious symbol. Two of the four have a named mechanism worth fixing
+before this ever defaults on: the Brahms page-spacing failure (6 px), and the
+`_has_the_rest_of_a_staff` veto probing only ±1 and ±2 spacings — which the
+decision map already flags, and which is exactly what would catch a ruined
+staff's surviving line.
+
+⚠️ **This measures PRECISION only. It cannot measure recall** — Mahler p2
+detects 2 of its 5 printed rules and the three it misses are missed by
+`_single_line_staff_rows` itself, upstream of the filter this session is about.
+
+### The 3 errors are a live crash, unrelated to this change
+
+Three pages of `elgar--cello-concerto-op85--novello-co-1921` raise an OpenCV
+error out of `detect_staves` **on the current tree with no flag set**. Not
+investigated here (it is upstream of everything this session touches) but
+recorded, because a phase-1 crash on a real library edition is worth someone's
+attention.
 
 ---
 
@@ -263,6 +394,44 @@ already derives the padding mode by matching the manifest; a flag column would
 be the same move. **Not fixed here** — it cannot fire while the flag is off, and
 `cells.json` is written by tools this session was not sent to change.
 
+## 2.3 ⚠️ I COMMITTED THIS PROJECT'S OWN RECURRING BUG, inside the fix for it
+
+Worth its own section because of where it happened.
+
+The transcribe-side marking set `staff_dict["clef"] = "percussion"`,
+`staff_lines`, `unpitched` — and the unit tests were green, because they handed
+`export._mxl_attributes_block` the string `"percussion"` directly and asserted
+it spelled it correctly. It does.
+
+Then the real Dvořák export came out with **19 parts and zero
+`<sign>percussion</sign>`.**
+
+`export._staff_measures_xml` takes `measure.get("clef") or clef` — **the
+MEASURE's clef wins over the staff's** — and in `transcribe` the measures are
+appended with `active_clef` (the positional default, `treble`) *before*
+`staff_dict["clef"]` is assigned. So the staff said percussion, every one of its
+measures said treble, and the exporter believed the measures.
+
+That is *detected, then dropped on the way out* — the failure this repo has
+found nine times and built `export_coverage.py` to catch — committed inside a
+change whose entire purpose was to stop the export lying about a staff.
+
+**What caught it was grepping the artefact**, not the suite:
+`grep -c "<sign>percussion</sign>" dv_on.musicxml` → `0` against a truth of 1.
+
+Fixed (the measures are marked too, and `clef_final` is suppressed so a one-line
+staff cannot announce a clef *change* to a pitched clef the page never prints),
+and now pinned by three tests that go through `to_musicxml` rather than the
+helper — including one that runs the **pre-fix shape** (staff `percussion`,
+measures `treble`) and asserts it produces the wrong file, so nobody
+re-introduces it believing the staff dict is enough.
+
+⚠️ **The general lesson, for the export-gap ledger:** a unit test that supplies
+the value under test cannot tell you whether anything upstream supplies it. The
+existing `export_coverage` check would not have caught this either — it compares
+element COUNTS and fires only on *truth has some, we emit zero*; here the truth
+has one clef and we emitted one, spelled `G`.
+
 ---
 
 ## 3. Exposure — where a one-line staff can even occur
@@ -316,7 +485,55 @@ one-line percussion and could not remove — removed, on the same prediction
 files, by admitting the staves. Here the ratio and the edit count move together,
 so it is not dilution.
 
-<!--DVORAK-->
+### Dvořák 9 mvt 4 — the ENGRAVED arm, and the one that cannot be dilution
+
+The only engraved-benchmark work with a printed one-line staff (§3). Same tree,
+same page, same flags apart from the one, scored against the fixture's own
+truth:
+
+| arm | OMR-NED | edits | `entire staff` | pred symbols |
+|---|--:|--:|--:|--:|
+| off | 0.3380 | 239 | 42 | 334 |
+| **on** | **0.1325** | **95** | **0** | 344 |
+
+**−144 edits, −60%, and `entire staff` to zero.** The ratio and the edit count
+move together, so this is not the metric's dilution reward.
+
+⚠️ **CONTROL, and a good one: the off arm reproduces the committed row exactly.**
+CLAUDE.md's current-accuracy table records `dvorak-sym9-mvt4` at
+**0.3380 / 239 edits**, and this harness — different flags, no dossier — returns
+0.3380 / 239. The instrument is measuring what the benchmark measures.
+
+⚠️ **What this does NOT license.** It is one work of eleven and the arms here run
+`--no-direction-text` with no dossier, so it is not an eleven-work benchmark
+result and the pooled figure is not restated. What it does license is the
+direction: the other ten works detect **zero** one-line staves (§3), so the flag
+is byte-identical on them by construction and **the engraved pool cannot get
+worse.**
+
+⚠️ **`dvorak-sym9-mvt4` is also the work CLAUDE.md flags as the noisiest in the
+set** — its excerpt auto-shrank to 3 bars against everyone else's 6–8, so its
+denominator is a third of theirs. A 144-edit move on a 3-bar excerpt is a large
+share of a small number. Read it as "the structural charge was real and is
+gone", not as "the pipeline got 60% better at Dvořák".
+
+### The two families, side by side
+
+| arm | family | era | edits | `entire staff` |
+|---|---|---|--:|--:|
+| Dvořák 9 mvt4 | engraved | — | 239 → **95** | 42 → **0** |
+| Mahler 5 p5 | scan | shipped | 2948 → **3013** | 1220 → 1012 |
+| Mahler 5 p5 | scan | page-normalised | 2286 → **2074** | 504 → **0** |
+
+**Two of three improve, and the odd one out is explained by (b).** The
+mechanism is identical in all three rows; what differs is whether the truth's
+part count corresponds to the page's. Dvořák: truth 19 parts, we emit 19 — the
+added part PAIRS. Mahler normalised: 21 against 21 — it pairs. Mahler shipped:
+**38 encoded parts against 21 printed staves** — nothing pairs, and adding four
+parts in the middle only re-shuffles which parts musicdiff's monotonic
+alignment sheds off the end. That is the same conclusion §4.1 reaches from the
+scan side alone, now corroborated from an independent direction on a different
+family.
 
 ### 4.1 ⚠️ Working §A00's list, because the shipped-era arm is worse
 
@@ -446,9 +663,13 @@ at all. Both write the same value, so there is no conflict to resolve.
   tell a real notehead on the rule from the 454 neighbour detections that
   currently land in its padded cell. None of that is here, and claiming it would
   be the "detected then dropped" failure in a new place.
-* **Refused: turning it on.** The shipped-era arm is +65 edits (§4). The flag is
-  worth what §4's second table says **only** in the page-normalised era, which
-  is another workstream's and is not on main.
+* **Refused: turning it on**, including on the engraved side where it is
+  −144 edits. Two reasons, neither of them "it might be wrong": the eleven-work
+  benchmark has not been run end to end in both arms (my arms are
+  `--no-direction-text`, no dossier, one work), and a default that improves the
+  engraved pool while regressing a standing scan-gate row is a coupled decision,
+  not mine to take. **The engraved-side proposal is the recommendation; the
+  eleven-work A/B is the work that would settle it.**
 * **Refused: fixing `cells.json`'s missing flag column** (§2.2) — out of scope
   and unreachable while the flag is off.
 * **Known limit, not fixed:** `contextual._apply_dossier_clefs` would overwrite
@@ -469,5 +690,10 @@ at all. Both write the same value, so there is no conflict to resolve.
 | `run_ab.sh` / `run_all.sh` | one controlled A/B, arms run in sequence |
 | `make_normalised_truth.py` | the page-normalised truth, from the completion session's own maps |
 | `price_arms.py` | score two arms against a row's truth in one musicdiff batch |
-| `price-p5.json` / `price-p5-normalised.json` | the two eras' numbers |
-| `engraved-exposure.json`, `census.json` | the measurements |
+| `screen_by_roster.py` | independent screen of the census hits against the library's work rosters |
+| `analyse_census.py` | the census, as the two numbers the commission asks for |
+| `cut_adjudication_crops.py` | tall crops with the detected row MARKED, for hand-adjudication |
+| `probe_margin_reach.py` | guard 4, measured on real pages |
+| `price-p5.json` / `price-p5-normalised.json` / `price-dvorak.json` | the three arms' numbers |
+| `engraved-exposure.json`, `census.json`, `census-summary.json`, `roster-screen.json`, `margin-reach.json` | the measurements |
+| `crops/`, `crops-adjudication/` | the ink the adjudications were made on. Only the crops actually CITED are committed; `cut_crops.py` regenerates the full set of 83 from `census.json` deterministically |

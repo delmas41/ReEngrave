@@ -4566,6 +4566,18 @@ def transcribe(
                     staff_dict["clef_source"] = "one_line_staff"
                     staff_dict["staff_lines"] = 1
                     staff_dict["unpitched"] = True
+                    # ⚠️ THE STAFF DICT IS NOT WHERE THE EXPORTER LOOKS FIRST.
+                    # `export._staff_measures_xml` takes `measure.get("clef")
+                    # or clef`, so a measure carrying the positional default
+                    # wins over the staff — and the first version of this fix
+                    # set only the staff, which reached a 19-part Dvorak export
+                    # with ZERO <sign>percussion</sign> in it. Found by grepping
+                    # the artefact, not by the unit test, which exercised
+                    # `_mxl_attributes_block` with "percussion" handed to it.
+                    # The project's own recurring bug, committed by me: read,
+                    # then dropped on the way out.
+                    for _m in staff_dict.get("measures") or ():
+                        _m["clef"] = "percussion"
                 # Say which reader supplied the clef. Absent means nothing read
                 # one here and the staff is carrying an inherited clef or the
                 # position default — which is the single most useful thing to
@@ -4659,7 +4671,11 @@ def transcribe(
                 # fire on inferred meters too. See below.)
                 # If clef or key sig changed by the end of the staff, surface
                 # the final state too so a clef-change / key-change is visible.
-                if active_clef != first_cell_effective_clef:
+                if (active_clef != first_cell_effective_clef
+                        and staff_dict.get("staff_lines") != 1):
+                    # A one-line staff was given `percussion` above; a
+                    # `clef_final` off the positional default would announce a
+                    # clef CHANGE to a pitched clef that the page never prints.
                     staff_dict["clef_final"] = active_clef
                 if active_key_sig != (first_cell_effective_key_sig or {}):
                     staff_dict["key_signature_final"] = _key_sig_summary(active_key_sig)
