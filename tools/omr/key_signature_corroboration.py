@@ -1,7 +1,19 @@
 """Undo mid-staff KEY-SIGNATURE changes that nothing on the page corroborates.
 
-`OMR_KEYSIG_CORROBORATION` — **DEFAULT OFF**. Flag-off is byte-identical by
-construction: `drop_uncorroborated_key_changes` is never called.
+`OMR_KEYSIG_CORROBORATION` — **ON BY DEFAULT SINCE 2026-09-07** (Sean's call).
+Flag-off (`0`/`false`/`no`/`off`) is still byte-identical by construction:
+`drop_uncorroborated_key_changes` is never called. Verified with `diff`
+against `main`'s pre-flip output on one scan and one engraved fixture, with a
+before/before control run first so an unexpected difference could be
+attributed to the change rather than to the harness.
+
+⚠️ **THE DEFAULT CHANGED; THE MEASUREMENT LIMIT DID NOT.** Everything below
+under "WHAT THIS CANNOT MEASURE" is still true today: the corpus holds ZERO
+real mid-staff key changes, so this guard's benefit is measured and its COST
+— whether it ever reverts a real change — is not. Read that section before
+assuming default-on means the guard was cleared on both axes. It was shipped
+on the strength of the WEAKER-CLAIM argument in "W2 IS THE WEAKER OF THE TWO
+CLAIMS" below, not because the missing measurement was filled in.
 
 THE DEFECT
 ----------
@@ -100,15 +112,19 @@ reasons: the part-to-slot join is produced by the contextual post-pass, which
 runs AFTER this point and abstains on most pages, and a mid-staff change is a
 within-system event that a different system's staff cannot witness.
 
-⚠️ WHAT THIS CANNOT MEASURE
----------------------------
+⚠️ WHAT THIS CANNOT MEASURE — STILL TRUE AFTER THE DEFAULT FLIPPED
+-------------------------------------------------------------------
 **The corpus contains ZERO real mid-staff key changes** — 0 corroborated
 changes across 417 staves of both families. So the benefit is measurable (do
 the seven spurious flips stop?) and the COST is not (does the guard block a
-real change?). That asymmetry is the whole reason this ships default-OFF. The
-closest available proxy is a synthetic page carrying a real, system-wide key
-change, which `tests/test_key_signature_corroboration.py` builds and asserts
-survives — a proxy, not a measurement of the cost on real music.
+real change?). That asymmetry is why this shipped default-OFF on 2026-09-06,
+and going default-ON on 2026-09-07 did not fill it in — no new corpus, no new
+measurement of the cost arrived between the two dates. The closest available
+proxy is a synthetic page carrying a real, system-wide key change, which
+`tests/test_key_signature_corroboration.py` builds and asserts survives — a
+proxy, not a measurement of the cost on real music. **A caveat is most needed
+exactly when the thing it warns about is switched on**, so read this section
+as live, not historical.
 
 ⚠️ **AND THERE IS CONCRETE REASON TO EXPECT THAT COST TO BE NON-TRIVIAL
 RATHER THAN NEGLIGIBLE.** A real change has to be DETECTED on two staves of
@@ -116,8 +132,10 @@ one system at the same bar for W2 to keep it. Later-cell key markers appear on
 **15 cells across 11 scanned pages** — about 1.4 per page, over systems of 11
 to 27 staves — and no two of the 15 share a bar. On that detection density,
 two staves agreeing on one bar is not the common case, so a genuine mid-staff
-key change on a scan would more likely be reverted than kept. That argues for
-default-OFF rather than against the rule.
+key change on a scan would more likely be reverted than kept. That argument
+still stands unanswered; going default-ON rests on the separate
+W2-is-the-weaker-claim argument above ("fails safe structurally, not
+empirically"), not on this one having been resolved.
 
 ⚠️ REVERTING THE KEY IS NOT ENOUGH ON ITS OWN
 ---------------------------------------------
@@ -187,9 +205,19 @@ _ALT_CHARS = "#b"
 
 
 def enabled(env: dict[str, str] | None = None) -> bool:
-    """Whether `OMR_KEYSIG_CORROBORATION` turns this pass on. Default OFF."""
+    """Whether `OMR_KEYSIG_CORROBORATION` turns this pass on.
+
+    **ON by default since 2026-09-07** (Sean's call — see the module
+    docstring). Set `0`/`false`/`no`/`off` (any case, trimmed) to disable;
+    anything else, including an unset var, leaves it on — the same shape
+    `system_grouping._choir_grouping_enabled` uses for its own default-ON
+    flag. ⚠️ The measurement gap the module docstring calls out (this corpus
+    has no real mid-staff key change to price the guard's cost against) did
+    not close when the default did; it is unrelated to what this function
+    reads.
+    """
     raw = (env if env is not None else os.environ).get(ENV_FLAG, "")
-    return str(raw).strip().lower() in {"1", "true", "yes", "on"}
+    return str(raw).strip().lower() not in {"0", "false", "no", "off"}
 
 
 def _split_pitch(pitch: str) -> tuple[str, str | None, int] | None:

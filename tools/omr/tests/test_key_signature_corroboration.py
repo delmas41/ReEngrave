@@ -295,21 +295,38 @@ class TestSplitPitch:
 
 
 class TestTheFlag:
-    """RED-first mutation: make `enabled()` return True unconditionally."""
+    """RED-first mutation: make `enabled()` return False unconditionally, or
+    revert the default back to off without updating these two tests.
 
-    def test_off_by_default(self, monkeypatch):
+    ⚠️ The default flipped 2026-09-07 (Sean's call); the measurement gap in
+    the module docstring ("WHAT THIS CANNOT MEASURE") did NOT — these tests
+    pin the flag's behaviour only, not a claim that the cost is now known.
+    """
+
+    def test_on_by_default(self, monkeypatch):
+        # This is the test that must fail if a future edit flips the default
+        # back to off without updating it here and in the docstrings.
         monkeypatch.delenv(ENV_FLAG, raising=False)
-        assert enabled() is False
-
-    @pytest.mark.parametrize("raw", ["1", "true", "TRUE", "yes", "on", " on "])
-    def test_on_values(self, raw, monkeypatch):
-        monkeypatch.setenv(ENV_FLAG, raw)
         assert enabled() is True
 
-    @pytest.mark.parametrize("raw", ["0", "false", "off", "no", "", "maybe"])
-    def test_off_values(self, raw, monkeypatch):
+    @pytest.mark.parametrize("raw", ["0", "false", "FALSE", "no", "off", " off "])
+    def test_off_values_still_disable_it(self, raw, monkeypatch):
+        # The flag itself must still work even though its default changed —
+        # this is what makes flag-off byte-identity a live, checkable claim
+        # rather than a fact about a default nobody can turn off.
         monkeypatch.setenv(ENV_FLAG, raw)
         assert enabled() is False
+
+    @pytest.mark.parametrize("raw", ["1", "true", "TRUE", "yes", "on", " on ", "maybe"])
+    def test_everything_else_leaves_it_on(self, raw, monkeypatch):
+        # "maybe" belongs here now: with the flag default-ON, an unrecognised
+        # value should not silently disable the guard — only a recognised
+        # off-spelling may. That is a real behaviour change from when this
+        # flag defaulted off (an unrecognised value used to mean off); it is
+        # the same shape `system_grouping._choir_grouping_enabled` already
+        # uses for its own default-ON flag.
+        monkeypatch.setenv(ENV_FLAG, raw)
+        assert enabled() is True
 
 
 # ─────────────────────────── wiring ───────────────────────────
