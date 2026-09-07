@@ -1540,6 +1540,7 @@ def _detections_for_cell(
     clef_overrides: list[dict[str, Any]] | None = None,
     pdf_path: Path | str | None = None,
     page_dpi: int | None = None,
+    clef_evidence: dict[str, Any] | None = None,
 ) -> tuple[
     list[dict[str, Any]], str | None, dict[str, str], dict[str, Any] | None, str | None
 ]:
@@ -1568,6 +1569,17 @@ def _detections_for_cell(
     "cv_locator", or None when the clef was carried in rather than read here,
     and `n_clipped_dropped` is how many notehead detections were discarded as
     ink the crop cut off (`_drop_clipped_notehead_fragments`).
+
+    `clef_evidence`, when given, is filled with what the clef readers SAW, as
+    against `clef_source`, which says only who won. It is an out-parameter
+    rather than a seventh return value so a caller that does not want it pays
+    nothing and is unchanged. Purely additive: nothing here reads it back, so a
+    run with it and a run without it decide identically. Two entries so far —
+    `contest`, the detector's clef argmax (every candidate, the margin, and
+    whether there was a contest at all), and `cv_locator`, the trace
+    `clef_locator.locate_clef` has always been able to fill and that no call
+    site passed. Both answer the question a bare `clef_source` cannot: WHY the
+    reading that lost, lost.
     """
     if clef_overrides is None:
         clef_overrides = []
@@ -1674,12 +1686,28 @@ def _detections_for_cell(
         # can use it, and only `_header_cell_beats_measure_cell` decides
         # whether a reader should look there INSTEAD of the measure cell.
         use_header = prefer_header and header_cell is not None
+        # `locate_clef` has always accepted a `trace` and filled it with the
+        # branch that ended the call and the geometry of the cluster that ended
+        # it — and until now NEITHER pipeline call site passed one, so on every
+        # staff the locator declined, the reason was computed and thrown away in
+        # the same expression that returned None. Passing it costs one dict.
+        locator_trace: dict[str, Any] = {}
         located = locate_clef(
             header_cell if use_header else cell,
             # The detector's boxes belong to the measure cell's frame; they only
             # describe the header cell when it IS the measure cell.
             occupied_boxes=None if use_header else occupied,
+            trace=locator_trace,
         )
+        if clef_evidence is not None:
+            # Which crop it read matters to anyone reading the trace: the
+            # rejecting branches are about ink, and the header cell and the
+            # measure cell do not contain the same ink.
+            locator_trace["cell"] = "header" if use_header else "measure"
+            locator_trace["n_occupied_boxes"] = (
+                0 if use_header else len(occupied)
+            )
+            clef_evidence["cv_locator"] = locator_trace
         if located is not None:
             active_clef = located.read.name
             clef_source = "cv_locator"
@@ -4249,6 +4277,12 @@ def transcribe(
         # initialised its per-system state yet, so reading it here would pick up
         # the previous system's roles.
         clef_estimate: dict[int, str | None] = {}
+        # The locator's own account of this SECOND call — the header pre-pass's,
+        # which is a different question from the measure loop's below (different
+        # gate, different crop) and until now had its answer discarded the same
+        # way. Keyed by staff index, which is numbered across the page, so one
+        # dict serves every system. Recording only.
+        header_prepass_locator_traces: dict[int, dict[str, Any]] = {}
         header_dets: dict[int, tuple[list, MeasureCell]] = {}
         if read_headers:
             for sys_idx in sorted(systems.keys()):
@@ -4283,7 +4317,10 @@ def transcribe(
                             estimate = detected
                     estimate_from_locator = False
                     if estimate is None and locate_c_clefs and hc is not None:
-                        found = locate_clef(hc)
+                        prepass_trace: dict[str, Any] = {}
+                        found = locate_clef(hc, trace=prepass_trace)
+                        prepass_trace["cell"] = "header"
+                        header_prepass_locator_traces[staff_idx] = prepass_trace
                         if found is not None:
                             estimate = found.read.name
                             estimate_from_locator = True
@@ -4476,6 +4513,15 @@ def transcribe(
 
                 first_cell_effective_clef: str | None = None
                 first_cell_clef_source: str | None = None
+                # What the clef readers SAW on this staff, as against which of
+                # them won. Only the staff's first cell reads a clef
+                # (`read_clef=(cell_idx == 0)`), so one dict per staff is the
+                # whole population.
+                first_cell_clef_evidence: dict[str, Any] = {}
+                if staff_idx in header_prepass_locator_traces:
+                    first_cell_clef_evidence["cv_locator_header_prepass"] = (
+                        header_prepass_locator_traces[staff_idx]
+                    )
                 first_cell_effective_key_sig: dict[str, str] | None = None
                 first_cell_effective_time_sig: dict[str, Any] | None = None
                 for cell_idx, cell in enumerate(staff_cells):
@@ -4513,6 +4559,10 @@ def transcribe(
                             locate_c_clefs=locate_c_clefs,
                             pdf_path=pdf_path,
                             page_dpi=dpi,
+                            clef_evidence=(
+                                first_cell_clef_evidence if cell_idx == 0
+                                else None
+                            ),
                         )
                     )
                     if cell_idx == 0:
@@ -4585,6 +4635,13 @@ def transcribe(
                 # transposes every note on the staff.
                 if first_cell_clef_source is not None:
                     staff_dict["clef_source"] = first_cell_clef_source
+                # And what the readers SAW. `clef_source` names the winner and
+                # is silent about everyone else — including, on the staves that
+                # matter most, about a reader that computed a full reason for
+                # declining and discarded it. Recording only; nothing reads this
+                # back, and a staff no reader spoke on carries no key at all.
+                if first_cell_clef_evidence:
+                    staff_dict["clef_evidence"] = first_cell_clef_evidence
                 # What the readers said where the dossier overruled them. Kept
                 # so a seeded run can still be audited for detector quality —
                 # seeding must not hide how well the page was actually read.
