@@ -72,6 +72,31 @@ channel is worth 0, and which a replay harness silently drops; (b) **58 of the
 harness's 59 arms are clef-blind replays and exactly one is a transcription**, so
 an identity figure needs a clef-regime stamp beside its page-set regime stamp.
 
+## F2. The architecture / decision map (commissioned 2026-09-07)
+
+Sean: *"a map of every recognition point, every time there is a decision and a
+list of what information that decision needs, as well as a tracking of how each
+piece of information is used once it is gathered and where it should be used…
+**We need the architectural blueprints.**"* Purpose is a **checkpoint for every
+agent building a tool or process** — what is available, what could help, and how
+what it is gathering fits the whole.
+
+Commissioned with three axes: the decision inventory; **dependencies, best order,
+what can run in parallel, and the interreferential cycles**; and — ⚠️ **LOW
+PRIORITY, tracked here so it is not lost if the agent skips it** — a **VISUAL**
+version, generated rather than hand-drawn, in which an unconsumed output, a
+cycle, and an unsatisfiable dependency are each obvious at a glance rather than
+findable only in a table.
+
+Why it is worth a commission of its own: this project's most-repeated defect is
+information gathered correctly and then silently unused — nine export gaps found
+by forensics, 85 inert consistency warnings, `confidence` reaching `export.py`
+only as a comment, ~20 sites that compute a number and discard it while
+refusing, and (2026-09-07) the clef channel worth **51 records** on a work where
+labels were worth **0**, dropped without complaint by 58 of the identity
+harness's 59 arms. **The map's job is to make that visible by construction
+instead of by a day of forensics.**
+
 ## G. Housekeeping
 
 - **~108 worktrees**, survey at `docs/worktree-prune-survey-2026-09-06.md`. Nothing deleted. ⚠️ Merge state does NOT protect gitignored cell PNGs — 6,486 images were rescued into the main checkout today for exactly this reason.
