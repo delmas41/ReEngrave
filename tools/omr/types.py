@@ -141,12 +141,38 @@ class Barline:
         column is inked through, on the fitted (not vertical) line. A real
         systemic barline runs through the gaps; a chord-stem coincidence stops
         at each staff. Thresholded at 0.4 / 0.7 inside `detect_barlines` and
-        then destroyed. ⚠️ **`None` is not zero** — it means the number was
-        never computed for this column (open-score systems skip it, and so
-        does the small-system path), and a consumer that reads `None` as 0.0
-        would rank an open score's every barline as junk. **Consumer:**
-        `_drop_close_outliers` again, and any future confidence on the
-        measure-count check.
+        then destroyed. **Consumer:** `_drop_close_outliers`, and any future
+        confidence on the measure-count check.
+
+        ⚠️⚠️ **THIS NUMBER IS NOT COMPARABLE ACROSS PAGES, AND ITS SIGN CAN
+        INVERT. `barlines_cross_gaps` IS THE DISCRIMINATOR — never
+        `connectivity is None`.** Measured 2026-09-06 on the two verification
+        pages of this change:
+
+        ==========================  ======  ==================  ==============
+        page                        n       connectivity        culled by >=0.4
+        ==========================  ======  ==================  ==============
+        Beethoven 5 scan (Litolff)  17      0.818 - 1.000        0 of 17
+        Brahms 1 engraved (LilyPond) 8      1.0 x1, **0.0 x7**   **7 of 8**
+        ==========================  ======  ==================  ==============
+
+        Every one of those eight Brahms barlines is REAL and carries a
+        unanimous **21 of 21** votes. The page is an open score — LilyPond
+        bars per staff — so the gap ink a conductor's page shows simply is not
+        printed, and `barlines_cross_gaps` came back False, which is exactly
+        why the 0.4 filter was not allowed to run there. A consumer that
+        ranked columns by `connectivity` across both pages would throw away
+        seven of eight unanimous barlines on one of them.
+
+        ⚠️ **On `barlines_cross_gaps=False` rows the value is usually a REAL
+        NUMBER that gated nothing** — it was computed for the open-score TEST
+        and then not used — so a real `0.0` here is indistinguishable by value
+        alone from "measured and terrible". Read the regime first.
+
+        ⚠️ Separately, **`None` is not zero either**: it means the number was
+        never computed at all, which happens on the 1-staff small-system path
+        (`connectivity_of` is empty below two staves). Both hazards point the
+        same way — the value alone never tells you what it is worth.
 
     ``span_ink``
         `_spans_system`: the weakest band of ink along the fitted line from
@@ -156,8 +182,17 @@ class Barline:
         fugue's long stem (0.00). `None` everywhere else, for the same reason
         as above: not measured, not zero.
 
+        ⚠️ **COVERAGE LIMIT, recorded rather than papered over:** neither
+        verification page exercises this field — both are >=3-staff systems,
+        so it is `None` on 0 of 17 and 0 of 8. It is covered synthetically
+        (`test_span_rescue_records_the_span_score_it_was_rescued_by`, which
+        goes red when the population is removed) and by construction it is the
+        only value the small-system rescue can accept on, but **no real page
+        has yet been measured through it.** One braced-piano page would close
+        that.
+
     ``accept_prong``
-        WHICH of the four acceptance rules admitted this column —
+        WHICH of the five acceptance rules admitted this column —
         ``vote_small_system``, ``span_rescue_small_system``,
         ``vote_open_score``, ``vote_and_connectivity``, ``connectivity_rescue``.
         A rescued barline is a weaker claim than a voted one and nothing
@@ -253,6 +288,40 @@ class PageWithStaves:
 
     ⚠️ A key is ABSENT when its site never fired on this page, which is not
     the same as the site not existing. Read with `.get(key, 0)`.
+
+    **The size of the census, defined so it is reproducible from the tree**
+    (a bare count of "sites" is not — it depends on what you call one):
+
+        python3 - <<'EOF'
+        import ast
+        for p in ("tools/omr/measure_extractor.py", "tools/omr/staff_detector.py"):
+            t = ast.parse(open(p).read())
+            calls = [n for n in ast.walk(t) if isinstance(n, ast.Call)
+                     and isinstance(n.func, ast.Name) and n.func.id == "_bump"]
+            print(p, len(calls), "call sites")
+        EOF
+
+    As of 2026-09-06 that reports **16 + 10 = 26 `_bump` call sites** writing
+    **27 distinct keys** (25 named at the site, plus the one key
+    `_build_measure_cell` takes from its caller, which resolves to two).
+
+    ⚠️ **26 call sites is NOT 26 deletions**, and the earlier figure of "19
+    deletion sites" quoted in this branch's first census commit was counting
+    something narrower without saying so. Three groups make up the difference,
+    and they are worth separating because they answer different questions:
+
+    * **Deletions** — a candidate staff, barline or measure cell that existed
+      and was discarded. `n_*_dropped_*`, `n_*_rejected_*`.
+    * **Exclusions** — never a candidate in the first place, by design: the
+      `n_one_line_staves_excluded_from_*` pair. A percussion rule is kept out
+      of the barline vote deliberately; counting it says "this page has
+      percussion", not "this page lost something".
+    * **Not a deletion at all** — `n_measure_tails_absorbed`, where the tail is
+      folded into the previous measure precisely SO THAT nothing is lost. It is
+      here because it removes a boundary, and a page with many of them has a
+      problem at its right edge.
+
+    Prefer the reproducible 26/27 over any hand-counted total.
     """
 
     page: PageImage

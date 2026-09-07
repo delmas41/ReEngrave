@@ -255,6 +255,59 @@ def test_detect_barlines_records_a_census_when_there_is_junk_to_drop():
     assert counts.get("n_barline_candidates_dropped_too_close_on_staff", 0) >= 1
 
 
+def test_every_bump_key_in_measure_extractor_has_exactly_one_owner():
+    """⚠️ THE ANTI-DRIFT TEST, and it is derived from the SOURCE rather than
+    from a run — a run only exercises the sites that happened to fire.
+
+    Each of the three entry points resets the counters describing the list it
+    rebuilds, so every key must be owned by exactly one of them. A key in NO
+    set doubles silently on re-entry; a key in TWO sets is erased by whichever
+    owner runs second, after the other had already filled it. Both are the
+    failure this test exists to make impossible, and the second is why
+    `_build_measure_cell` takes its key from its caller.
+    """
+    import ast
+
+    src = Path(me.__file__).read_text()
+    written: set[str] = set()
+    caller_supplied = 0
+    for node in ast.walk(ast.parse(src)):
+        if not (isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Name) and node.func.id == "_bump"):
+            continue
+        key = node.args[1]
+        if isinstance(key, ast.Constant):
+            written.add(key.value)
+        else:
+            caller_supplied += 1
+    # The one dynamic key is `_build_measure_cell`'s, and both of the values
+    # its two callers pass are named in the owner sets below.
+    assert caller_supplied == 1, (
+        f"{caller_supplied} _bump calls take a non-literal key; each needs its "
+        f"resolved values listed in an owner set by hand")
+    written |= {"n_measure_cells_dropped_too_narrow",
+                "n_resegment_cells_dropped_too_narrow"}
+
+    owners = {
+        "detect_barlines": me._DETECT_BARLINES_COUNTER_KEYS,
+        "extract_measures": me._EXTRACT_MEASURES_COUNTER_KEYS,
+        "resegment_fused_measures": me._RESEGMENT_COUNTER_KEYS,
+    }
+    claimed: set[str] = set()
+    for name, keys in owners.items():
+        clash = claimed & keys
+        assert not clash, f"{name} claims keys another owner already does: {clash}"
+        claimed |= keys
+
+    assert not (written - claimed), (
+        "these counters have NO owner, so they double on re-entry — add each "
+        "to the set of whichever entry point rebuilds the list it describes: "
+        + repr(sorted(written - claimed)))
+    assert not (claimed - written), (
+        "these keys are owned but never written — a stale entry makes the "
+        "reset lie about what it covers: " + repr(sorted(claimed - written)))
+
+
 def test_the_census_does_not_double_when_detect_barlines_re_runs():
     """`detect_barlines` resets `pws.barlines` and is re-entered whenever
     `extract_measures` finds the list empty, so its counters must reset with
@@ -284,3 +337,81 @@ def test_extract_measures_records_into_the_same_census():
     after = pws.deletion_counts
     assert set(before) <= set(after), "extract_measures clobbered the census"
     assert after.get("n_barlines_dropped_at_system_edge", 0) >= 1
+
+
+def test_the_census_does_not_double_when_extract_measures_re_runs():
+    """The re-entrancy the first guard missed. `extract_measures` returns a
+    fresh cell list every call, so the counters describing it must be fresh
+    too — measured before the reset existed,
+    `n_barlines_dropped_at_system_edge` went 2 -> 4 across two calls while the
+    cell list stayed at 147.
+    """
+    pws = _page_with_junk()
+    cells_once = me.extract_measures(pws)
+    once = dict(pws.deletion_counts)
+    cells_twice = me.extract_measures(pws)
+    twice = dict(pws.deletion_counts)
+    assert len(cells_once) == len(cells_twice), "fixture is not re-runnable"
+    assert once.get("n_barlines_dropped_at_system_edge", 0) >= 1, (
+        "vacuous: nothing recorded by extract_measures, so nothing could double")
+    assert once == twice, (
+        "these keys doubled while the cell list stayed the same size: "
+        + repr({k: (once.get(k), twice.get(k))
+                for k in twice if once.get(k) != twice.get(k)}))
+
+
+def _page_with_a_fused_measure() -> PageWithStaves:
+    """Four staves, bars of 100 px, and a final measure of ~500 px carrying no
+    internal barline ink — a >2x-median outlier `resegment_fused_measures`
+    examines and correctly cannot split. The only fixture here that reaches
+    the resegment counters at all."""
+    tops = [100 + 100 * i for i in range(4)]
+    all_ys = [_five(t) for t in tops]
+    img = np.full((tops[-1] + 300, 1000), 255, np.uint8)
+    for ys in all_ys:
+        for y in ys:
+            img[y:y + 2, 40:960] = 0
+    for x in (160, 260, 360, 460):
+        img[all_ys[0][0]:all_ys[-1][-1] + 2, x:x + 3] = 0
+    staves = [Staff(page_index=0, staff_index=i, line_ys=ys,
+                    x_start=40, x_end=960, system_index=0)
+              for i, ys in enumerate(all_ys)]
+    page = PageImage(pdf_path=Path("synthetic.pdf"), page_index=0, dpi=300,
+                     rgb=np.dstack([img] * 3), binary=img)
+    return PageWithStaves(page=page, staves=staves)
+
+
+def test_the_census_does_not_double_when_resegment_re_runs():
+    """⚠️ Written first against `_page_with_junk`, where resegment records
+    NOTHING — the test passed with the reset removed, which is the same
+    vacuity that had to be fixed in the `detect_barlines` doubling test. It
+    now uses a page that actually carries a fused measure, and asserts
+    non-vacuity before asserting stability."""
+    pws = _page_with_a_fused_measure()
+    cells = me.extract_measures(pws)
+    me.resegment_fused_measures(pws, cells)
+    once = dict(pws.deletion_counts)
+    assert once.get("n_wide_cells_unsplit_no_barline_ink", 0) >= 1, (
+        "vacuous: resegment recorded nothing, so nothing could double")
+    me.resegment_fused_measures(pws, cells)
+    twice = dict(pws.deletion_counts)
+    assert once == twice, (
+        "resegment counters doubled: "
+        + repr({k: (once.get(k), twice.get(k))
+                for k in twice if once.get(k) != twice.get(k)}))
+
+
+def test_detect_staves_hands_each_page_its_own_census():
+    """`detect_staves` builds a new dict per call, so it needs no reset — but
+    that is a property to assert, not to assume."""
+    img = np.full((900, 1000), 255, np.uint8)
+    for top in (100, 300, 500):
+        for y in _five(top):
+            img[y:y + 2, 40:960] = 0
+    img[600:604, 100:900] = 0        # a lone rule -> one-line candidate traffic
+    page = PageImage(pdf_path=Path("synthetic.pdf"), page_index=0, dpi=300,
+                     rgb=np.dstack([img] * 3), binary=img)
+    a = sd.detect_staves(page).deletion_counts
+    b = sd.detect_staves(page).deletion_counts
+    assert a == b, f"staff_detector census is not per-page: {a} vs {b}"
+    assert a is not b

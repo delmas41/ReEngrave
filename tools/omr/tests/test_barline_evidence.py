@@ -188,6 +188,48 @@ def test_open_score_is_recorded_as_a_different_regime():
         assert bl.n_votes >= bl.min_votes
 
 
+def test_open_score_connectivity_is_a_real_number_that_gated_nothing():
+    """⚠️ THE CORRECTION. An earlier draft of the `connectivity` docstring
+    said open-score rows carry `None` — "open-score systems skip it". They do
+    not: the number is computed for the open-score TEST and kept, and on this
+    fixture every row carries a real `0.0`.
+
+    So the live hazard is the INVERSE of the one first documented. `None` (not
+    measured) is the secondary trap; the primary one is a genuine `0.0` that
+    filtered nothing and is indistinguishable by value from "measured and
+    terrible". ⚠️ **The discriminator is `barlines_cross_gaps`, never
+    `connectivity is None`.**
+    """
+    pws = detect_barlines(_open_score_page())
+    assert pws.barlines
+    for bl in pws.barlines:
+        assert bl.connectivity is not None, (
+            "the docstring's original claim, back again: open-score rows DO "
+            "carry a measured connectivity")
+        assert bl.barlines_cross_gaps is False
+
+
+def test_connectivity_is_anti_correlated_with_correctness_on_an_open_score():
+    """The standing warning for whoever consumes this evidence, pinned.
+
+    Every barline on this page is REAL and carries a UNANIMOUS vote, and every
+    one scores connectivity 0.0 — because an open score bars per staff, so the
+    inter-staff gap ink a conductor's page shows is simply not printed. A
+    consumer that ranked columns by `connectivity` alone would cull all of
+    them. Measured the same way on the real pages this branch was gated on:
+    engraved Brahms 1 culls 7 of 8 unanimous barlines at a 0.4 threshold, the
+    Beethoven 5 scan culls 0 of 17.
+    """
+    pws = detect_barlines(_open_score_page())
+    assert pws.barlines
+    unanimous_but_unconnected = [
+        b for b in pws.barlines
+        if b.n_votes == b.n_staves_in_system and (b.connectivity or 0.0) < 0.4
+    ]
+    assert len(unanimous_but_unconnected) == len(pws.barlines), (
+        "fixture no longer exhibits the inversion this warns about")
+
+
 def test_small_system_records_the_vote_prong():
     pws = detect_barlines(_braced_pair(stem_on_lower=False))
     assert pws.barlines

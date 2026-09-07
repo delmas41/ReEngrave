@@ -87,6 +87,20 @@ def main() -> None:
               + (f", range {min(conns):.3f}-{max(conns):.3f}" if conns else ""))
         print(f"  span_ink     measured on {len(spans)}/{len(pws.barlines)}"
               + (f", range {min(spans):.3f}-{max(spans):.3f}" if spans else ""))
+        # ⚠️ The standing warning: connectivity is ANTI-CORRELATED with
+        # correctness across families. An open score bars per staff, so its
+        # real barlines carry no inter-staff gap ink and score 0.0 — measured,
+        # a naive `>= 0.4` filter culls 7 of 8 UNANIMOUS barlines on the
+        # engraved Brahms fixture and 0 of 17 on the Beethoven scan. Never
+        # compare this number across pages without reading
+        # `barlines_cross_gaps` first.
+        culled = [b for b in pws.barlines if (b.connectivity or 0.0) < 0.4]
+        unanimous = [b for b in culled
+                     if b.n_votes is not None
+                     and b.n_votes == b.n_staves_in_system]
+        print(f"  a naive connectivity>=0.4 filter would cull "
+              f"{len(culled)}/{len(pws.barlines)} "
+              f"({len(unanimous)} of them UNANIMOUSLY voted)")
 
 
 if __name__ == "__main__":

@@ -113,12 +113,27 @@ def _bump(counts: dict[str, int] | None, key: str, n: int = 1) -> None:
         counts[key] = counts.get(key, 0) + n
 
 
-# Every key `detect_barlines` writes. It resets `pws.barlines` on entry and so
-# must reset these with them — a second call on the same page would otherwise
-# double each figure while the barline list started fresh, and a count that
-# disagrees with the list it describes is worse than no count.
-# `test_barline_evidence.py` asserts this set matches what a real page
-# produces, so a new counter added below without listing it here fails.
+# ─── Counter ownership ───────────────────────────────────────────────────────
+#
+# Each of the three entry points below REBUILDS a list on every call —
+# `detect_barlines` resets `pws.barlines`, `extract_measures` returns a fresh
+# cell list, `resegment_fused_measures` returns a fresh one from the cells it
+# was given — so each must reset its own counters with it. Otherwise a second
+# call doubles every figure while the list it describes starts over, and **a
+# count that disagrees with the list it describes is worse than no count**.
+#
+# ⚠️ Re-entrancy here is DESIGNED, not hypothetical: `extract_measures` calls
+# `detect_barlines` whenever `pws.barlines` is empty, and a caller is free to
+# re-extract a page. Measured before this guard existed: two `extract_measures`
+# calls on one page took `n_barlines_dropped_at_system_edge` 2 -> 4 while the
+# cell list stayed at 147.
+#
+# ⚠️ The three sets must be DISJOINT, or one owner's reset would erase a figure
+# the other had already filled. That is why `_build_measure_cell` takes its key
+# from its caller rather than naming one itself: it is shared by two owners.
+# `test_phase1_deletion_counters.py` derives every `_bump` key in this module
+# from the SOURCE and fails on any key that is in no set, in two sets, or in a
+# set but never written — so a counter added below with no owner cannot ship.
 _DETECT_BARLINES_COUNTER_KEYS = frozenset({
     "n_one_line_staves_excluded_from_barline_vote",
     "n_barline_components_dropped_too_short",
@@ -128,6 +143,26 @@ _DETECT_BARLINES_COUNTER_KEYS = frozenset({
     "n_barline_clusters_rejected_no_prong",
     "n_barlines_dropped_close_outlier",
 })
+_EXTRACT_MEASURES_COUNTER_KEYS = frozenset({
+    "n_one_line_staves_excluded_from_cells",
+    "n_barlines_dropped_at_system_edge",
+    "n_measure_tails_absorbed",
+    "n_measure_cells_dropped_too_narrow",
+})
+_RESEGMENT_COUNTER_KEYS = frozenset({
+    "n_wide_cells_unsplit_no_barline_ink",
+    "n_wide_cells_split_rejected_piece_width",
+    "n_steered_splits_rejected_no_barline_ink",
+    "n_steered_splits_rejected_would_overshoot",
+    "n_steered_splits_rejected_sliver_piece",
+    "n_resegment_cells_dropped_too_narrow",
+})
+
+
+def _reset_counters(counts: dict[str, int], owned: frozenset[str]) -> None:
+    """Clear this owner's keys before it rebuilds the list they describe."""
+    for key in owned & counts.keys():
+        del counts[key]
 
 
 # ─── Barline detection ───────────────────────────────────────────────────────
@@ -533,9 +568,7 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
     # reset with them, or a second call would double every figure. Keys owned
     # by `detect_staves` are left alone.
     counts = pws.deletion_counts
-    for _k in list(counts):
-        if _k in _DETECT_BARLINES_COUNTER_KEYS:
-            del counts[_k]
+    _reset_counters(counts, _DETECT_BARLINES_COUNTER_KEYS)
     # Deliberate (a two-space staff answers "barline here" for any stem that
     # crosses it, and would move the vote's denominator for every real staff),
     # and counted so "this page has percussion" is legible without re-deriving
@@ -1260,6 +1293,8 @@ def _build_measure_cell(
     x1: int,
     measure_index: int,
     max_cell_width: int = MAX_CELL_WIDTH_PX,
+    *,
+    dropped_counter_key: str = "n_measure_cells_dropped_too_narrow",
 ) -> MeasureCell | None:
     """Crop + canonically-upscale one (staff, x0:x1) cell from the page.
 
@@ -1291,7 +1326,14 @@ def _build_measure_cell(
         # ⚠️ A dropped cell is a measure that never reaches the detector at
         # all, so this is the highest-consequence deletion in the file and it
         # recorded nothing. `pws` is in hand, so the count goes on the page.
-        _bump(pws.deletion_counts, "n_measure_cells_dropped_too_narrow")
+        #
+        # The KEY is the caller's, because both entry points reset their own
+        # counters on re-entry and a key written by two owners could be reset
+        # by one of them after the other had filled it. It is also the better
+        # reading: a cell too narrow in the initial page scan is a
+        # segmentation fault, one too narrow during re-segmentation is a split
+        # that should not have been proposed.
+        _bump(pws.deletion_counts, dropped_counter_key)
         return None  # too narrow, skip
     cell_rgb = rgb[y0:y1, x0:x1].copy()
     # Staff line ys in the cell's local coordinate frame.
@@ -1380,6 +1422,9 @@ def extract_measures(
 ) -> list[MeasureCell]:
     """Crop one MeasureCell per (staff × measure) on the page, upscaled to
     canonical size for downstream symbol detection."""
+    # This call rebuilds the whole cell list, so the census describing that
+    # list is rebuilt with it. See "Counter ownership" above.
+    _reset_counters(pws.deletion_counts, _EXTRACT_MEASURES_COUNTER_KEYS)
     if not pws.barlines:
         detect_barlines(pws)
     cells: list[MeasureCell] = []
@@ -1711,6 +1756,11 @@ def resegment_fused_measures(
     fits the same parameter, but note that a dossier generated from MusicXML
     describes the engraver's page breaks, not the scan being read.
     """
+    # Rebuilds the cell list it was handed, so its census is rebuilt too. See
+    # "Counter ownership" above; the early `return` below is deliberately
+    # AFTER this, so a page with no cells reports an empty census rather than
+    # the previous call's.
+    _reset_counters(pws.deletion_counts, _RESEGMENT_COUNTER_KEYS)
     if not cells:
         return cells
 
@@ -1850,6 +1900,7 @@ def resegment_fused_measures(
                         pws, staff, sys_idx, boundaries[i], boundaries[i + 1],
                         measure_index=-1,  # placeholder -- renumbered below
                         max_cell_width=max_cell_width,
+                        dropped_counter_key="n_resegment_cells_dropped_too_narrow",
                     )
                     if sub is not None:
                         new_cells.append(sub)
