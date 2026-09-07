@@ -1,0 +1,848 @@
+{
+ "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_structural_floor.py",
+ "git_head": "d515370a",
+ "transform_version": "1.2.0",
+ "what_this_is": "the OMR-NED a PERFECT page-faithful reader is charged against the raw truth \u2014 the structural FLOOR, measured rather than estimated. Scored with the derived truth as the PREDICTION.",
+ "not_a_pipeline_figure": "no prediction of ours appears in this measurement at all. It is a property of (reference encoding, hand-read page map).",
+ "structural_buckets": [
+  "entire staff insert/delete",
+  "entire measure insert/delete"
+ ],
+ "controls": {
+  "identity_rows": [
+   "dvorak-sym9-mvt1-405834-p5",
+   "dvorak-sym9-mvt1-405834-p6",
+   "dvorak-sym9-mvt1-405834-p7"
+  ],
+  "identity_rows_floor_is_exactly_zero": true,
+  "identity_row_floors": {
+   "dvorak-sym9-mvt1-405834-p5": 0,
+   "dvorak-sym9-mvt1-405834-p6": 0,
+   "dvorak-sym9-mvt1-405834-p7": 0
+  },
+  "dvorak_rows": [
+   "dvorak-sym9-mvt1-405834-p5",
+   "dvorak-sym9-mvt1-405834-p6",
+   "dvorak-sym9-mvt1-405834-p7"
+  ],
+  "output_parts_equal_printed_staves": {
+   "beethoven-sym5-mvt1-984073-p1": true,
+   "beethoven-sym5-mvt1-984073-p2": false,
+   "beethoven-sym5-mvt1-984073-p3": false,
+   "beethoven-sym5-mvt1-984073-p4": false,
+   "beethoven-sym5-mvt1-575951-p1": true,
+   "beethoven-sym5-mvt1-575951-p2": false,
+   "beethoven-sym5-mvt1-575951-p3": false,
+   "beethoven-sym5-mvt1-575951-p4": false,
+   "dvorak-sym9-mvt1-405834-p5": true,
+   "dvorak-sym9-mvt1-405834-p6": true,
+   "dvorak-sym9-mvt1-405834-p7": false,
+   "brahms-sym1-mvt1-317803-p1": true,
+   "brahms-sym1-mvt1-317803-p2": false,
+   "brahms-sym1-mvt1-317803-p3": false,
+   "brahms-sym1-mvt1-317803-p4": false
+  },
+  "fixture_binding": {
+   "n_rows": 20,
+   "all_match_canonical_arm": true,
+   "what": "every truth fixture's sha256 equals the one results-normalised-arm-20row.json scored"
+  },
+  "derived_truth_reproduces_canonical": {
+   "beethoven-sym5-mvt1-984073-p1": false,
+   "beethoven-sym5-mvt1-984073-p2": false,
+   "beethoven-sym5-mvt1-984073-p3": false,
+   "beethoven-sym5-mvt1-984073-p4": false,
+   "beethoven-sym5-mvt1-575951-p1": false,
+   "beethoven-sym5-mvt1-575951-p2": false,
+   "beethoven-sym5-mvt1-575951-p3": false,
+   "beethoven-sym5-mvt1-575951-p4": false,
+   "dvorak-sym9-mvt1-405834-p5": false,
+   "dvorak-sym9-mvt1-405834-p6": false,
+   "dvorak-sym9-mvt1-405834-p7": false,
+   "brahms-sym1-mvt1-317803-p1": false,
+   "brahms-sym1-mvt1-317803-p2": false,
+   "brahms-sym1-mvt1-317803-p3": false,
+   "brahms-sym1-mvt1-317803-p4": false
+  },
+  "PASS": false
+ },
+ "pooled": {
+  "n_rows": 15,
+  "row_ids": [
+   "beethoven-sym5-mvt1-984073-p1",
+   "beethoven-sym5-mvt1-984073-p2",
+   "beethoven-sym5-mvt1-984073-p3",
+   "beethoven-sym5-mvt1-984073-p4",
+   "beethoven-sym5-mvt1-575951-p1",
+   "beethoven-sym5-mvt1-575951-p2",
+   "beethoven-sym5-mvt1-575951-p3",
+   "beethoven-sym5-mvt1-575951-p4",
+   "dvorak-sym9-mvt1-405834-p5",
+   "dvorak-sym9-mvt1-405834-p6",
+   "dvorak-sym9-mvt1-405834-p7",
+   "brahms-sym1-mvt1-317803-p1",
+   "brahms-sym1-mvt1-317803-p2",
+   "brahms-sym1-mvt1-317803-p3",
+   "brahms-sym1-mvt1-317803-p4"
+  ],
+  "floor_structural_only": 0.4981915260075784,
+  "floor_total": 0.6347743713399931,
+  "structural_edits": 34710,
+  "residue_edits": 9516,
+  "residue_share_of_total_floor": 0.21516754850088182,
+  "denominator": 69672,
+  "which_to_use": "floor_structural_only. `floor_total` includes charge the transform may itself have introduced, and using it would overstate % of achievable in our favour \u2014 the one direction the independence guard exists to prevent.",
+  "categories": {
+   "entire measure insert/delete": 19919,
+   "entire staff insert/delete": 14791,
+   "wrong note": 7888,
+   "wrong direction": 253,
+   "wrong keysig": 213,
+   "wrong note head": 212,
+   "wrong flag/beam": 164,
+   "wrong lyric": 162,
+   "wrong dynamic": 152,
+   "wrong clef": 147,
+   "wrong slur": 133,
+   "wrong tie": 50,
+   "wrong timesig": 38,
+   "wrong accidental": 25,
+   "wrong ornament": 22,
+   "wrong articulation": 21,
+   "wrong crescendo": 17,
+   "wrong dot": 11,
+   "wrong diminuendo": 6,
+   "wrong barline": 2
+  }
+ },
+ "rows": [
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "work_id": "beethoven--symphony-5",
+   "n_systems": 1,
+   "n_staves_printed": 12,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 12,
+    "exact_duplication_share": 1.0,
+    "divisi_share": 0.0
+   },
+   "sha": {
+    "raw_truth": "02d7c56bf050af4c",
+    "derived_truth": "c3cd4fa395f40670"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.6937130574959699,
+    "omr_ed_total": 1291,
+    "raw_truth_symbols": 1064,
+    "derived_truth_symbols": 797,
+    "denominator": 1861,
+    "structural_edits": 990,
+    "residue_edits": 301,
+    "floor_structural_only": 0.5319720580333154,
+    "floor_total": 0.6937130574959699,
+    "categories": {
+     "wrong note": 180,
+     "wrong note head": 40,
+     "wrong flag/beam": 20,
+     "wrong ornament": 8,
+     "wrong lyric": 18,
+     "wrong clef": 10,
+     "wrong keysig": 14,
+     "wrong dynamic": 11,
+     "entire measure insert/delete": 477,
+     "entire staff insert/delete": 513
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.27565824825362706,
+    "floor_high": 0.3358409457281032
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "work_id": "beethoven--symphony-5",
+   "n_systems": 2,
+   "n_staves_printed": 22,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "exact_duplication_share": 0.7869,
+    "divisi_share": 0.2131
+   },
+   "sha": {
+    "raw_truth": "391a08215bf159b1",
+    "derived_truth": "29fad7902ee32c03"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.760038240917782,
+    "omr_ed_total": 3975,
+    "raw_truth_symbols": 3004,
+    "derived_truth_symbols": 2226,
+    "denominator": 5230,
+    "structural_edits": 2813,
+    "residue_edits": 1162,
+    "floor_structural_only": 0.5378585086042065,
+    "floor_total": 0.760038240917782,
+    "categories": {
+     "wrong note": 1012,
+     "wrong note head": 16,
+     "wrong flag/beam": 16,
+     "wrong accidental": 2,
+     "wrong tie": 5,
+     "wrong ornament": 2,
+     "wrong lyric": 33,
+     "wrong clef": 11,
+     "wrong keysig": 14,
+     "wrong direction": 18,
+     "wrong dynamic": 26,
+     "wrong slur": 7,
+     "entire measure insert/delete": 1262,
+     "entire staff insert/delete": 1551
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.2965583173996176,
+    "floor_high": 0.3738049713193117
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "work_id": "beethoven--symphony-5",
+   "n_systems": 2,
+   "n_staves_printed": 19,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "exact_duplication_share": 0.8262,
+    "divisi_share": 0.1738
+   },
+   "sha": {
+    "raw_truth": "2c5f3701fd14025b",
+    "derived_truth": "6dfd8cde60d755a3"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.7532822757111597,
+    "omr_ed_total": 2754,
+    "raw_truth_symbols": 2134,
+    "derived_truth_symbols": 1522,
+    "denominator": 3656,
+    "structural_edits": 2380,
+    "residue_edits": 374,
+    "floor_structural_only": 0.650984682713348,
+    "floor_total": 0.7532822757111597,
+    "categories": {
+     "wrong note": 317,
+     "wrong note head": 4,
+     "wrong flag/beam": 2,
+     "wrong tie": 5,
+     "wrong lyric": 12,
+     "wrong clef": 9,
+     "wrong timesig": 2,
+     "wrong keysig": 13,
+     "wrong dynamic": 2,
+     "wrong slur": 8,
+     "entire measure insert/delete": 1318,
+     "entire staff insert/delete": 1062
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.023796498905908098,
+    "floor_high": 0.30935448577680524
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "work_id": "beethoven--symphony-5",
+   "n_systems": 2,
+   "n_staves_printed": 22,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "exact_duplication_share": 0.6,
+    "divisi_share": 0.4
+   },
+   "sha": {
+    "raw_truth": "f7593d8a9df92216",
+    "derived_truth": "556d1d8a9422d71a"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.8407715582450832,
+    "omr_ed_total": 4446,
+    "raw_truth_symbols": 2929,
+    "derived_truth_symbols": 2359,
+    "denominator": 5288,
+    "structural_edits": 3511,
+    "residue_edits": 935,
+    "floor_structural_only": 0.6639561270801816,
+    "floor_total": 0.8407715582450832,
+    "categories": {
+     "wrong note": 785,
+     "wrong note head": 32,
+     "wrong flag/beam": 16,
+     "wrong accidental": 6,
+     "wrong tie": 8,
+     "wrong articulation": 5,
+     "wrong lyric": 6,
+     "wrong clef": 14,
+     "wrong timesig": 8,
+     "wrong keysig": 10,
+     "wrong direction": 24,
+     "wrong dynamic": 10,
+     "wrong slur": 11,
+     "entire measure insert/delete": 2134,
+     "entire staff insert/delete": 1377
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.26040090771558244,
+    "floor_high": 0.3731089258698941
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "work_id": "beethoven--symphony-5",
+   "n_systems": 1,
+   "n_staves_printed": 12,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 12,
+    "exact_duplication_share": 1.0,
+    "divisi_share": 0.0
+   },
+   "sha": {
+    "raw_truth": "93f2876dab747d6a",
+    "derived_truth": "1a2679ad4d342bcc"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.6937130574959699,
+    "omr_ed_total": 1291,
+    "raw_truth_symbols": 1064,
+    "derived_truth_symbols": 797,
+    "denominator": 1861,
+    "structural_edits": 990,
+    "residue_edits": 301,
+    "floor_structural_only": 0.5319720580333154,
+    "floor_total": 0.6937130574959699,
+    "categories": {
+     "wrong note": 180,
+     "wrong note head": 40,
+     "wrong flag/beam": 20,
+     "wrong ornament": 8,
+     "wrong lyric": 18,
+     "wrong clef": 10,
+     "wrong keysig": 14,
+     "wrong dynamic": 11,
+     "entire measure insert/delete": 477,
+     "entire staff insert/delete": 513
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.27565824825362706,
+    "floor_high": 0.353573347662547
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "work_id": "beethoven--symphony-5",
+   "n_systems": 2,
+   "n_staves_printed": 22,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "exact_duplication_share": 0.7869,
+    "divisi_share": 0.2131
+   },
+   "sha": {
+    "raw_truth": "234ee8b45a8ae1d5",
+    "derived_truth": "3a82ae5b51ed2e06"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.760038240917782,
+    "omr_ed_total": 3975,
+    "raw_truth_symbols": 3004,
+    "derived_truth_symbols": 2226,
+    "denominator": 5230,
+    "structural_edits": 2813,
+    "residue_edits": 1162,
+    "floor_structural_only": 0.5378585086042065,
+    "floor_total": 0.760038240917782,
+    "categories": {
+     "wrong note": 1012,
+     "wrong note head": 16,
+     "wrong flag/beam": 16,
+     "wrong accidental": 2,
+     "wrong tie": 5,
+     "wrong ornament": 2,
+     "wrong lyric": 33,
+     "wrong clef": 11,
+     "wrong keysig": 14,
+     "wrong direction": 18,
+     "wrong dynamic": 26,
+     "wrong slur": 7,
+     "entire measure insert/delete": 1262,
+     "entire staff insert/delete": 1551
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.2965583173996176,
+    "floor_high": 0.47151051625239004
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "work_id": "beethoven--symphony-5",
+   "n_systems": 2,
+   "n_staves_printed": 19,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "exact_duplication_share": 0.8262,
+    "divisi_share": 0.1738
+   },
+   "sha": {
+    "raw_truth": "6d56f9587fb5100b",
+    "derived_truth": "44a6f60c4275057a"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.7532822757111597,
+    "omr_ed_total": 2754,
+    "raw_truth_symbols": 2134,
+    "derived_truth_symbols": 1522,
+    "denominator": 3656,
+    "structural_edits": 2380,
+    "residue_edits": 374,
+    "floor_structural_only": 0.650984682713348,
+    "floor_total": 0.7532822757111597,
+    "categories": {
+     "wrong note": 317,
+     "wrong note head": 4,
+     "wrong flag/beam": 2,
+     "wrong tie": 5,
+     "wrong lyric": 12,
+     "wrong clef": 9,
+     "wrong timesig": 2,
+     "wrong keysig": 13,
+     "wrong dynamic": 2,
+     "wrong slur": 8,
+     "entire measure insert/delete": 1318,
+     "entire staff insert/delete": 1062
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.02461706783369803,
+    "floor_high": 0.3853938730853392
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "work_id": "beethoven--symphony-5",
+   "n_systems": 2,
+   "n_staves_printed": 22,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 18,
+    "n_output_parts": 11,
+    "exact_duplication_share": 0.6,
+    "divisi_share": 0.4
+   },
+   "sha": {
+    "raw_truth": "8a8a1735f1013a5b",
+    "derived_truth": "9bced7e962d7e9d6"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.8407715582450832,
+    "omr_ed_total": 4446,
+    "raw_truth_symbols": 2929,
+    "derived_truth_symbols": 2359,
+    "denominator": 5288,
+    "structural_edits": 3511,
+    "residue_edits": 935,
+    "floor_structural_only": 0.6639561270801816,
+    "floor_total": 0.8407715582450832,
+    "categories": {
+     "wrong note": 785,
+     "wrong note head": 32,
+     "wrong flag/beam": 16,
+     "wrong accidental": 6,
+     "wrong tie": 8,
+     "wrong articulation": 5,
+     "wrong lyric": 6,
+     "wrong clef": 14,
+     "wrong timesig": 8,
+     "wrong keysig": 10,
+     "wrong direction": 24,
+     "wrong dynamic": 10,
+     "wrong slur": 11,
+     "entire measure insert/delete": 2134,
+     "entire staff insert/delete": 1377
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.26040090771558244,
+    "floor_high": 0.4037443267776097
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "work_id": "dvorak--symphony-9",
+   "n_systems": 1,
+   "n_staves_printed": 15,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 15,
+    "n_output_parts": 15,
+    "exact_duplication_share": 1.0,
+    "divisi_share": 0.0
+   },
+   "sha": {
+    "raw_truth": "cd6db1124ee78850",
+    "derived_truth": "fa40eb7d210b0dc4"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": true,
+   "floor": {
+    "omr_ned_total": 0.0,
+    "omr_ed_total": 0,
+    "raw_truth_symbols": 792,
+    "derived_truth_symbols": 792,
+    "denominator": 1584,
+    "structural_edits": 0,
+    "residue_edits": 0,
+    "floor_structural_only": 0.0,
+    "floor_total": 0.0,
+    "categories": {}
+   },
+   "round1_estimate": {
+    "floor_low": 0.0,
+    "floor_high": 0.0
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "work_id": "dvorak--symphony-9",
+   "n_systems": 1,
+   "n_staves_printed": 15,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 15,
+    "n_output_parts": 15,
+    "exact_duplication_share": 1.0,
+    "divisi_share": 0.0
+   },
+   "sha": {
+    "raw_truth": "b51383f6cd98919b",
+    "derived_truth": "84fd63ce96c9df65"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": true,
+   "floor": {
+    "omr_ned_total": 0.0,
+    "omr_ed_total": 0,
+    "raw_truth_symbols": 2022,
+    "derived_truth_symbols": 2022,
+    "denominator": 4044,
+    "structural_edits": 0,
+    "residue_edits": 0,
+    "floor_structural_only": 0.0,
+    "floor_total": 0.0,
+    "categories": {}
+   },
+   "round1_estimate": {
+    "floor_low": 0.0,
+    "floor_high": 0.0
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "work_id": "dvorak--symphony-9",
+   "n_systems": 2,
+   "n_staves_printed": 30,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 15,
+    "n_output_parts": 15,
+    "exact_duplication_share": 1.0,
+    "divisi_share": 0.0
+   },
+   "sha": {
+    "raw_truth": "3a7a21357be2e8dc",
+    "derived_truth": "ebd1495591bee473"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": true,
+   "floor": {
+    "omr_ned_total": 0.0,
+    "omr_ed_total": 0,
+    "raw_truth_symbols": 4295,
+    "derived_truth_symbols": 4295,
+    "denominator": 8590,
+    "structural_edits": 0,
+    "residue_edits": 0,
+    "floor_structural_only": 0.0,
+    "floor_total": 0.0,
+    "categories": {}
+   },
+   "round1_estimate": {
+    "floor_low": 0.0,
+    "floor_high": 0.0
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "work_id": "brahms--symphony-1",
+   "n_systems": 1,
+   "n_staves_printed": 14,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 21,
+    "n_output_parts": 14,
+    "exact_duplication_share": 0.5918,
+    "divisi_share": 0.4082
+   },
+   "sha": {
+    "raw_truth": "e77970bf02686da2",
+    "derived_truth": "c6fe5813b692353d"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.880080280983442,
+    "omr_ed_total": 3508,
+    "raw_truth_symbols": 2083,
+    "derived_truth_symbols": 1903,
+    "denominator": 3986,
+    "structural_edits": 2409,
+    "residue_edits": 1099,
+    "floor_structural_only": 0.6043652784746613,
+    "floor_total": 0.880080280983442,
+    "categories": {
+     "wrong note": 915,
+     "wrong note head": 2,
+     "wrong flag/beam": 2,
+     "wrong accidental": 4,
+     "wrong lyric": 3,
+     "wrong clef": 14,
+     "wrong keysig": 28,
+     "wrong barline": 1,
+     "wrong direction": 87,
+     "wrong dynamic": 7,
+     "wrong slur": 36,
+     "entire measure insert/delete": 1408,
+     "entire staff insert/delete": 1001
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.2511289513296538,
+    "floor_high": 0.4249874560963372
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "work_id": "brahms--symphony-1",
+   "n_systems": 2,
+   "n_staves_printed": 27,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 21,
+    "n_output_parts": 14,
+    "exact_duplication_share": 0.8857,
+    "divisi_share": 0.1143
+   },
+   "sha": {
+    "raw_truth": "2eb07c5661a5c753",
+    "derived_truth": "28bca9f398f8769f"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.7815258511979823,
+    "omr_ed_total": 4958,
+    "raw_truth_symbols": 3399,
+    "derived_truth_symbols": 2945,
+    "denominator": 6344,
+    "structural_edits": 3718,
+    "residue_edits": 1240,
+    "floor_structural_only": 0.5860655737704918,
+    "floor_total": 0.7815258511979823,
+    "categories": {
+     "wrong note": 1081,
+     "wrong note head": 10,
+     "wrong flag/beam": 24,
+     "wrong dot": 5,
+     "wrong accidental": 2,
+     "wrong tie": 7,
+     "wrong lyric": 3,
+     "wrong clef": 13,
+     "wrong timesig": 10,
+     "wrong keysig": 27,
+     "wrong barline": 1,
+     "wrong direction": 4,
+     "wrong dynamic": 19,
+     "wrong crescendo": 12,
+     "wrong diminuendo": 6,
+     "wrong slur": 16,
+     "entire measure insert/delete": 2086,
+     "entire staff insert/delete": 1632
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.11270491803278689,
+    "floor_high": 0.16283102143757883
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "work_id": "brahms--symphony-1",
+   "n_systems": 2,
+   "n_staves_printed": 28,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 21,
+    "n_output_parts": 14,
+    "exact_duplication_share": 0.8095,
+    "divisi_share": 0.1905
+   },
+   "sha": {
+    "raw_truth": "d4b3a83a98fe2be9",
+    "derived_truth": "a3dc9d073fea8a5f"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.8181460342452274,
+    "omr_ed_total": 4157,
+    "raw_truth_symbols": 2731,
+    "derived_truth_symbols": 2350,
+    "denominator": 5081,
+    "structural_edits": 3579,
+    "residue_edits": 578,
+    "floor_structural_only": 0.7043888998228696,
+    "floor_total": 0.8181460342452274,
+    "categories": {
+     "wrong note": 402,
+     "wrong note head": 12,
+     "wrong flag/beam": 25,
+     "wrong dot": 4,
+     "wrong ornament": 2,
+     "wrong lyric": 3,
+     "wrong clef": 16,
+     "wrong timesig": 2,
+     "wrong keysig": 31,
+     "wrong direction": 60,
+     "wrong dynamic": 7,
+     "wrong crescendo": 5,
+     "wrong slur": 9,
+     "entire measure insert/delete": 2287,
+     "entire staff insert/delete": 1292
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.25428065341468215,
+    "floor_high": 0.31883487502460145
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "work_id": "brahms--symphony-1",
+   "n_systems": 2,
+   "n_staves_printed": 28,
+   "transform": {
+    "version": "1.2.0",
+    "n_source_parts": 21,
+    "n_output_parts": 14,
+    "exact_duplication_share": 0.7347,
+    "divisi_share": 0.2653
+   },
+   "sha": {
+    "raw_truth": "bf2c1fc677fae5b6",
+    "derived_truth": "6f2060f07361aac9"
+   },
+   "derived_truth_matches_canonical_arm": false,
+   "identity_transform": false,
+   "floor": {
+    "omr_ned_total": 0.8366988586479368,
+    "omr_ed_total": 6671,
+    "raw_truth_symbols": 4383,
+    "derived_truth_symbols": 3590,
+    "denominator": 7973,
+    "structural_edits": 5616,
+    "residue_edits": 1055,
+    "floor_structural_only": 0.7043772732973786,
+    "floor_total": 0.8366988586479368,
+    "categories": {
+     "wrong note": 902,
+     "wrong note head": 4,
+     "wrong flag/beam": 5,
+     "wrong dot": 2,
+     "wrong accidental": 3,
+     "wrong tie": 7,
+     "wrong articulation": 11,
+     "wrong lyric": 15,
+     "wrong clef": 16,
+     "wrong timesig": 6,
+     "wrong keysig": 25,
+     "wrong direction": 18,
+     "wrong dynamic": 21,
+     "wrong slur": 20,
+     "entire measure insert/delete": 3756,
+     "entire staff insert/delete": 1860
+    }
+   },
+   "round1_estimate": {
+    "floor_low": 0.23328734478866173,
+    "floor_high": 0.3975918725699235
+   }
+  }
+ ],
+ "skipped": [
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "reason": "no hand-read staves map \u2014 refusing to guess a condensation from the encoding",
+   "staves_a_human_would_read": 17
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "reason": "no hand-read staves map \u2014 refusing to guess a condensation from the encoding",
+   "staves_a_human_would_read": 13
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "reason": "no hand-read staves map \u2014 refusing to guess a condensation from the encoding",
+   "staves_a_human_would_read": 18
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "reason": "no hand-read staves map \u2014 refusing to guess a condensation from the encoding",
+   "staves_a_human_would_read": 17
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "reason": "no hand-read staves map \u2014 refusing to guess a condensation from the encoding",
+   "staves_a_human_would_read": 24
+  }
+ ]
+}

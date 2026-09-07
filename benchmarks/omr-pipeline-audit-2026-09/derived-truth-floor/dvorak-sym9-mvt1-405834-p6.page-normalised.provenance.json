@@ -1,0 +1,263 @@
+{
+ "transform": "page_normalise",
+ "transform_version": "1.2.0",
+ "merge_convention": "silent/unison -> one voice (exact duplication, the measured 69.8%); divisi with every event aligned on (offset,duration) -> one voice of chords; divisi otherwise -> stacked Voices, one per source part; any bar carrying an UNPITCHED (percussion) note takes the voice path, because a chord holds pitches and would drop it",
+ "source_reference": "reference/dvorak/symphony-9/dvorak--symphony-9--mvt1--gradus.mxl",
+ "source_trimmed_truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.truth.musicxml",
+ "n_source_parts": 15,
+ "n_output_parts": 15,
+ "merge_map": [
+  {
+   "staff": "Flauti",
+   "parts": [
+    0
+   ]
+  },
+  {
+   "staff": "Oboi",
+   "parts": [
+    1
+   ]
+  },
+  {
+   "staff": "Clarinetti in A",
+   "parts": [
+    2
+   ]
+  },
+  {
+   "staff": "Fagotti",
+   "parts": [
+    3
+   ]
+  },
+  {
+   "staff": "Corni I.II. in E",
+   "parts": [
+    4
+   ]
+  },
+  {
+   "staff": "Corni III.IV. in C",
+   "parts": [
+    5
+   ]
+  },
+  {
+   "staff": "Trombe in E",
+   "parts": [
+    6
+   ]
+  },
+  {
+   "staff": "Tromboni I.II.",
+   "parts": [
+    7
+   ]
+  },
+  {
+   "staff": "Trombone basso",
+   "parts": [
+    8
+   ]
+  },
+  {
+   "staff": "Tympani A.E.H.",
+   "parts": [
+    9
+   ]
+  },
+  {
+   "staff": "Violino I",
+   "parts": [
+    10
+   ]
+  },
+  {
+   "staff": "Violino II",
+   "parts": [
+    11
+   ]
+  },
+  {
+   "staff": "Viola",
+   "parts": [
+    12
+   ]
+  },
+  {
+   "staff": "Violoncello",
+   "parts": [
+    13
+   ]
+  },
+  {
+   "staff": "Contrabasso",
+   "parts": [
+    14
+   ]
+  }
+ ],
+ "measure_census": {
+  "single": 105
+ },
+ "measure_census_share": {
+  "single": 1.0
+ },
+ "exact_duplication_share": 1.0,
+ "divisi_share": 0.0,
+ "per_staff": [
+  {
+   "staff": "Flauti",
+   "parts": [
+    0
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Oboi",
+   "parts": [
+    1
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Clarinetti in A",
+   "parts": [
+    2
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Fagotti",
+   "parts": [
+    3
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Corni I.II. in E",
+   "parts": [
+    4
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Corni III.IV. in C",
+   "parts": [
+    5
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Trombe in E",
+   "parts": [
+    6
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Tromboni I.II.",
+   "parts": [
+    7
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Trombone basso",
+   "parts": [
+    8
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Tympani A.E.H.",
+   "parts": [
+    9
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Violino I",
+   "parts": [
+    10
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Violino II",
+   "parts": [
+    11
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Viola",
+   "parts": [
+    12
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Violoncello",
+   "parts": [
+    13
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  },
+  {
+   "staff": "Contrabasso",
+   "parts": [
+    14
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 7
+   }
+  }
+ ],
+ "warning": "A figure measured against this file is a NEW BENCHMARK ERA and may not be differenced against one measured against the un-normalised truth. Edits it removes are STRUCTURAL CHARGE REMOVED, not pipeline improvement.",
+ "output": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/nice-nash-085307/benchmarks/omr-pipeline-audit-2026-09/derived-truth-floor/dvorak-sym9-mvt1-405834-p6.page-normalised.musicxml"
+}

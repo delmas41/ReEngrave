@@ -1,0 +1,245 @@
+{
+ "transform": "page_normalise",
+ "transform_version": "1.2.0",
+ "merge_convention": "silent/unison -> one voice (exact duplication, the measured 69.8%); divisi with every event aligned on (offset,duration) -> one voice of chords; divisi otherwise -> stacked Voices, one per source part; any bar carrying an UNPITCHED (percussion) note takes the voice path, because a chord holds pitches and would drop it",
+ "source_reference": "reference/beethoven/symphony-5/beethoven--symphony-5--mvt1--gradus.mxl",
+ "source_trimmed_truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.truth.musicxml",
+ "n_source_parts": 18,
+ "n_output_parts": 11,
+ "merge_map": [
+  {
+   "staff": "Flauti",
+   "parts": [
+    0,
+    1
+   ]
+  },
+  {
+   "staff": "Oboi",
+   "parts": [
+    2,
+    3
+   ]
+  },
+  {
+   "staff": "Clarinetti in B",
+   "parts": [
+    4,
+    5
+   ]
+  },
+  {
+   "staff": "Fagotti",
+   "parts": [
+    6,
+    7
+   ]
+  },
+  {
+   "staff": "Corni in Es",
+   "parts": [
+    8,
+    9
+   ]
+  },
+  {
+   "staff": "Trombe in C",
+   "parts": [
+    10,
+    11
+   ]
+  },
+  {
+   "staff": "Timpani in C.G.",
+   "parts": [
+    12
+   ]
+  },
+  {
+   "staff": "Violino I",
+   "parts": [
+    13
+   ]
+  },
+  {
+   "staff": "Violino II",
+   "parts": [
+    14
+   ]
+  },
+  {
+   "staff": "Viola",
+   "parts": [
+    15
+   ]
+  },
+  {
+   "staff": "Bassi (Violoncello e Basso)",
+   "parts": [
+    16,
+    17
+   ]
+  }
+ ],
+ "measure_census": {
+  "silent_all": 31,
+  "silent_others": 14,
+  "divisi": 132,
+  "divisi_chorded": 121,
+  "unison": 33,
+  "divisi_voiced": 11,
+  "single": 120
+ },
+ "measure_census_share": {
+  "silent_all": 0.0939,
+  "silent_others": 0.0424,
+  "divisi": 0.4,
+  "divisi_chorded": 0.3667,
+  "unison": 0.1,
+  "divisi_voiced": 0.0333,
+  "single": 0.3636
+ },
+ "exact_duplication_share": 0.6,
+ "divisi_share": 0.4,
+ "per_staff": [
+  {
+   "staff": "Flauti",
+   "parts": [
+    0,
+    1
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 8,
+    "silent_others": 3,
+    "divisi": 17,
+    "divisi_chorded": 17,
+    "unison": 2
+   }
+  },
+  {
+   "staff": "Oboi",
+   "parts": [
+    2,
+    3
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 1,
+    "silent_others": 10,
+    "divisi": 16,
+    "divisi_chorded": 16,
+    "unison": 3
+   }
+  },
+  {
+   "staff": "Clarinetti in B",
+   "parts": [
+    4,
+    5
+   ],
+   "condensed": true,
+   "measures": {
+    "divisi": 30,
+    "divisi_chorded": 29,
+    "divisi_voiced": 1
+   }
+  },
+  {
+   "staff": "Fagotti",
+   "parts": [
+    6,
+    7
+   ],
+   "condensed": true,
+   "measures": {
+    "divisi": 26,
+    "divisi_chorded": 26,
+    "unison": 4
+   }
+  },
+  {
+   "staff": "Corni in Es",
+   "parts": [
+    8,
+    9
+   ],
+   "condensed": true,
+   "measures": {
+    "divisi": 29,
+    "divisi_chorded": 29,
+    "silent_all": 1
+   }
+  },
+  {
+   "staff": "Trombe in C",
+   "parts": [
+    10,
+    11
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 21,
+    "unison": 5,
+    "divisi": 4,
+    "divisi_chorded": 4
+   }
+  },
+  {
+   "staff": "Timpani in C.G.",
+   "parts": [
+    12
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 30
+   }
+  },
+  {
+   "staff": "Violino I",
+   "parts": [
+    13
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 30
+   }
+  },
+  {
+   "staff": "Violino II",
+   "parts": [
+    14
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 30
+   }
+  },
+  {
+   "staff": "Viola",
+   "parts": [
+    15
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 30
+   }
+  },
+  {
+   "staff": "Bassi (Violoncello e Basso)",
+   "parts": [
+    16,
+    17
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_others": 1,
+    "divisi": 10,
+    "divisi_voiced": 10,
+    "unison": 19
+   }
+  }
+ ],
+ "warning": "A figure measured against this file is a NEW BENCHMARK ERA and may not be differenced against one measured against the un-normalised truth. Edits it removes are STRUCTURAL CHARGE REMOVED, not pipeline improvement.",
+ "output": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/nice-nash-085307/benchmarks/omr-pipeline-audit-2026-09/derived-truth-floor/beethoven-sym5-mvt1-984073-p4.page-normalised.musicxml"
+}

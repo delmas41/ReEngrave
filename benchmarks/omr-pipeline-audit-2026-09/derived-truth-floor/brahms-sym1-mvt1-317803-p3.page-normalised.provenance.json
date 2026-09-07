@@ -1,0 +1,290 @@
+{
+ "transform": "page_normalise",
+ "transform_version": "1.2.0",
+ "merge_convention": "silent/unison -> one voice (exact duplication, the measured 69.8%); divisi with every event aligned on (offset,duration) -> one voice of chords; divisi otherwise -> stacked Voices, one per source part; any bar carrying an UNPITCHED (percussion) note takes the voice path, because a chord holds pitches and would drop it",
+ "source_reference": "reference/brahms/symphony-1/brahms--symphony-1--mvt1--gradus.mxl",
+ "source_trimmed_truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p3.truth.musicxml",
+ "n_source_parts": 21,
+ "n_output_parts": 14,
+ "merge_map": [
+  {
+   "staff": "2 Floten",
+   "parts": [
+    0,
+    1
+   ]
+  },
+  {
+   "staff": "2 Oboen",
+   "parts": [
+    2,
+    3
+   ]
+  },
+  {
+   "staff": "2 Klarinetten in B",
+   "parts": [
+    4,
+    5
+   ]
+  },
+  {
+   "staff": "2 Fagotte",
+   "parts": [
+    6,
+    7
+   ]
+  },
+  {
+   "staff": "Kontrafagott",
+   "parts": [
+    8
+   ]
+  },
+  {
+   "staff": "4 Horner in C 1./2.",
+   "parts": [
+    9,
+    10
+   ]
+  },
+  {
+   "staff": "4 Horner in Es 3./4.",
+   "parts": [
+    11,
+    12
+   ]
+  },
+  {
+   "staff": "2 Trompeten in C",
+   "parts": [
+    13,
+    14
+   ]
+  },
+  {
+   "staff": "Pauken in C u.G",
+   "parts": [
+    15
+   ]
+  },
+  {
+   "staff": "1. Violine",
+   "parts": [
+    16
+   ]
+  },
+  {
+   "staff": "2. Violine",
+   "parts": [
+    17
+   ]
+  },
+  {
+   "staff": "Bratsche",
+   "parts": [
+    18
+   ]
+  },
+  {
+   "staff": "Violoncell",
+   "parts": [
+    19
+   ]
+  },
+  {
+   "staff": "Kontrabass",
+   "parts": [
+    20
+   ]
+  }
+ ],
+ "measure_census": {
+  "silent_all": 58,
+  "divisi": 40,
+  "divisi_chorded": 38,
+  "silent_others": 7,
+  "divisi_voiced": 2,
+  "single": 105
+ },
+ "measure_census_share": {
+  "silent_all": 0.2762,
+  "divisi": 0.1905,
+  "divisi_chorded": 0.181,
+  "silent_others": 0.0333,
+  "divisi_voiced": 0.0095,
+  "single": 0.5
+ },
+ "exact_duplication_share": 0.8095,
+ "divisi_share": 0.1905,
+ "per_staff": [
+  {
+   "staff": "2 Floten",
+   "parts": [
+    0,
+    1
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 8,
+    "divisi": 6,
+    "divisi_chorded": 6,
+    "silent_others": 1
+   }
+  },
+  {
+   "staff": "2 Oboen",
+   "parts": [
+    2,
+    3
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 6,
+    "divisi": 5,
+    "divisi_chorded": 4,
+    "divisi_voiced": 1,
+    "silent_others": 4
+   }
+  },
+  {
+   "staff": "2 Klarinetten in B",
+   "parts": [
+    4,
+    5
+   ],
+   "condensed": true,
+   "measures": {
+    "divisi": 10,
+    "divisi_chorded": 10,
+    "silent_all": 5
+   }
+  },
+  {
+   "staff": "2 Fagotte",
+   "parts": [
+    6,
+    7
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 7,
+    "divisi": 8,
+    "divisi_chorded": 8
+   }
+  },
+  {
+   "staff": "Kontrafagott",
+   "parts": [
+    8
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 15
+   }
+  },
+  {
+   "staff": "4 Horner in C 1./2.",
+   "parts": [
+    9,
+    10
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 7,
+    "divisi": 8,
+    "divisi_chorded": 7,
+    "divisi_voiced": 1
+   }
+  },
+  {
+   "staff": "4 Horner in Es 3./4.",
+   "parts": [
+    11,
+    12
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_others": 2,
+    "divisi": 1,
+    "divisi_chorded": 1,
+    "silent_all": 12
+   }
+  },
+  {
+   "staff": "2 Trompeten in C",
+   "parts": [
+    13,
+    14
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 13,
+    "divisi": 2,
+    "divisi_chorded": 2
+   }
+  },
+  {
+   "staff": "Pauken in C u.G",
+   "parts": [
+    15
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 15
+   }
+  },
+  {
+   "staff": "1. Violine",
+   "parts": [
+    16
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 15
+   }
+  },
+  {
+   "staff": "2. Violine",
+   "parts": [
+    17
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 15
+   }
+  },
+  {
+   "staff": "Bratsche",
+   "parts": [
+    18
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 15
+   }
+  },
+  {
+   "staff": "Violoncell",
+   "parts": [
+    19
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 15
+   }
+  },
+  {
+   "staff": "Kontrabass",
+   "parts": [
+    20
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 15
+   }
+  }
+ ],
+ "warning": "A figure measured against this file is a NEW BENCHMARK ERA and may not be differenced against one measured against the un-normalised truth. Edits it removes are STRUCTURAL CHARGE REMOVED, not pipeline improvement.",
+ "output": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/nice-nash-085307/benchmarks/omr-pipeline-audit-2026-09/derived-truth-floor/brahms-sym1-mvt1-317803-p3.page-normalised.musicxml"
+}

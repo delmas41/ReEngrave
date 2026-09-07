@@ -1,0 +1,8 @@
+=== scan: 193 staves
+   staff time_signature.source: {None: 164, 'header_reader': 29}
+   staves carrying time_signature_final: 32
+   staves whose per-measure meter CHANGES: 0
+=== engraved: 224 staves
+   staff time_signature.source: {'dossier': 203, None: 18, 'header_reader': 3}
+   staves carrying time_signature_final: 0
+   staves whose per-measure meter CHANGES: 0

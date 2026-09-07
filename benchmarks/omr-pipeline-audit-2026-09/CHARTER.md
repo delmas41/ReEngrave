@@ -166,3 +166,51 @@ instance from tonight rather than only the `c378412f` precedent.
 - ⚠️ `OMR_CONDENSED_PARTS` is **INERT even when set** — nothing writes the
   `condensed_parts` field in production (E9). Any figure resting on its oracle
   ceiling describes a configuration that cannot currently occur.
+
+---
+
+## Round 1 verified — and the coordinator's own claim was one of the errors
+
+`VERIFICATION.md` (549 lines). **All three reports sound**: of ~48 quantities
+recomputed from artefacts and source, **44 reproduced exactly**, several to the
+last digit of a float; all probe families re-ran with `git diff` empty.
+
+⚠️ **Six of the eight defects are negatives or universals** — the same
+distribution the decision map's own verification pass found. That is now twice in
+one day, from independent auditors, on independent material. **Treat "the only",
+"never", "nobody" and "zero" as the highest-risk sentence shapes in this project,
+and prefer "n of m".**
+
+| # | claim | corrected |
+|---|---|---|
+| D1 | Agent II: *"0 of 4,521 ownership verdicts are ever revisited"* | FALSE. `OMR_ARC_ATTRIBUTION=move` is default-ON and re-decides every arc — reaching exactly the 263 arc-class contests. The sharper claim is COVERAGE: arcs have a live recovery path, note rank-0 has one that is off, **flags (47, where the disagreement IS the duration) and accidentals (31, where it IS the pitch) have none.** |
+| D2 | Agent I: *"the only silent deletion rule with no counter"* | FALSE. Four counterexamples, two in the same neighbourhood. A member of a class, and the class is the better finding. |
+| **D3** | **The COORDINATOR: *"`condensed_parts.py` is a fourth orphan module, stronger than either agent claimed"*** | **FALSE, and it is my error.** `players_for_label` has **three benchmark importers**. It is a *production* orphan — `probe` by the map's own legend, the exact `NOBODY`-vs-`probe` distinction the verify pass was created to police. My grep was `tools/omr/*.py`: one directory, no recursion, no `benchmarks/`. **I relayed "a name grep is not a consumer check" to three agents and then made that mistake in the same message.** The `condensed_parts` FIELD half stands — read at `export.py:3331`, written nowhere — so `OMR_CONDENSED_PARTS` is still inert. |
+| D4 | Agent III: *"none records the commit"* | FALSE — `results-condensation-arm.json` carries `git_head`; and 19 files, not 20. |
+| D5 | Agent III: Dvořák's zero structural charge *"confirmed three ways"* | ONE fact seen three ways. The auditor of shared substrate missed it in its own report. |
+
+**The cross-report hazard resolved, and there was no discrepancy.** Agents I and
+II read the same 20 `OMR_CONTEST_DUMP` files, so **436 is ONE observation** and is
+reported as one. Their "conflicting" breakdowns were a named class *pair* against
+a whole *category*: 15 ⊂ 31 and 22 ⊂ 38, both right, different questions.
+`additive-vs-gated/FINDINGS.md` contains no 436, so the column is genuinely new.
+
+**What held hardest.** The engine-independence ceiling is **stronger than
+claimed**: four rival predictors of the 7/10 bit-identical split were tested —
+page index, work, staff count, our own charge magnitude — **none separates, and
+`n_systems` separates 10/10**. It is not serendipity either: CLAUDE.md's
+`OMR_SLOT_STITCH` entry **predicts that variable**, so a post-hoc predictor turns
+out to have been pre-registered. Also exact: 35/35 registry transforms, Agent II's
+truth adjudication on all three rows, and Agent I's D23 overturn.
+
+⚠️ **Inference correction, issued and then corrected the same night.** I told the
+agents a near-50% split is what no relationship looks like. At n=4,521, 44.8% is
+**z ≈ −7** — the effect is REAL and still not evidence about correctness. The
+usable phrase is **"real but uninformative"**, not "indistinguishable from
+chance".
+
+⚠️ **M4, a process defect worth more than its size.** Six of Agent II's probes
+hard-code `/Users/seanjohnson/Desktop/ReEngrave`. Byte-identical today, but it is
+**the stale-tree incident installed into the audit's own instruments** — a probe
+that reads an absolute path measures a tree other than the one it is run against.
+Ordered fixed before round 2 lands.

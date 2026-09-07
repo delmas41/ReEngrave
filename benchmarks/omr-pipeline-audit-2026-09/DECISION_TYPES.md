@@ -517,7 +517,11 @@ mechanism was built for 18% of that population and is off.
 
 ### 4.3 What the type destroys, quantified three ways
 
-**(a) The higher-confidence copy, 44.8% of the time.** Both confidences are in
+**(a) The higher-confidence copy, 44.8% of the time.**
+⚠️ **CORRECTED IN ROUND 2 — read §R0.1 before using this figure.** It is the
+complement of a number the additive survey already published, and ~50% is what
+NO relationship looks like. Original text follows, with the inference it invited
+withdrawn there. — Both confidences are in
 hand at the moment of decision — fetched at `transcribe.py:2801-2802` *only* for
 the instrumentation blob. Over all 4,521 pairs the **deleted** copy scored higher
 than the survivor **2,026 times (44.8%)**, 24 exact ties, |Δconf| median 0.064,
@@ -878,3 +882,531 @@ for f in sorted(glob.glob("benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.o
                     print(f, st["staff_index"], st.get("clef"), st["clef_final"],
                           sy.get("n_measures_dropped_as_furniture"))
 ```
+
+---
+---
+
+# ROUND 2
+
+**Appended 2026-09-07.** Coordinator brief: take the four round-1 candidates in
+my own order. Round 1 is unchanged except for one erratum pointer at §4.3(a),
+which §R0.1 discharges.
+
+Same disciplines as round 1: read-only probes over committed artefacts, line
+numbers re-derived from the main checkout, `scan_eval`/`orchestral_eval`
+embargo respected, UNMEASURED said out loud. Seven new probes under `probe/`,
+outputs under `out/`.
+
+---
+
+## R0. Errata and one demotion of my own round-1 nomination
+
+### R0.1 ⚠️ ERRATUM — the 44.8% figure is not new, and ~50% is what NO relationship looks like
+
+Round 1 §4.3(a) reported that at `_dedupe_cross_staff_detections` the deleted
+copy scored higher than the survivor **2,026 of 4,521 times (44.8%)**. Two
+corrections, both mine:
+
+1. **It is not an independent measurement.** It is the arithmetic complement of
+   a figure the additive-vs-gated survey already published: that survey reports
+   `P(winner conf > loser conf) = 0.545` on the 4,233 distance-decided pairs.
+   Winner-higher 55.2% ⇔ loser-higher 44.8%. **One measurement, two framings** —
+   and by this audit's own rule, *two signals sharing an ancestor are ONE
+   signal*. I should have recognised my own number in theirs. Credit belongs to
+   that survey.
+2. **The right reading is "confidence is not informative here", not "the site
+   chooses wrongly 44.8% of the time".** If confidence carried no ownership
+   information at all you would expect ~50%, so a 44.8/55.2 split is the *null*
+   with a small excess on top — the same weak positive signal the survey states
+   as 0.545 [0.530, 0.560], and consistent with its 0.617 [0.558, 0.674] against
+   the ladder gold standard. My phrase *"the surviving record is the one the
+   detector believed less"* invites a defect-rate reading and is **withdrawn**.
+
+**What survives, and it is the part the type analysis needs:** both confidences
+are in hand at `transcribe.py:2801-2802` and neither is read; whether or not
+they are informative is a question the site is not in a position to ask, because
+it records nothing. The reversibility finding (§4.2 — 87.8% by construction,
+100% as shipped) is untouched by this and rests on the tier/category
+cross-tabulation, not on confidence.
+
+### R0.2 A second correction I owe: `_stitch_slots` reach is smaller than "canonical" suggests
+
+Round 1's table called `_stitch_slots` the canonical all-or-nothing refusal
+without measuring it. Measured (`out/probe_stitch_refusal_reach.txt`): it
+**refuses on 2 of 11 scan rows and 0 of 11 engraved rows.** On the two refused
+rows it emits **51 per-system fragments**. ⚠️ And one of the two refuses on a
+**one-staff difference** — `brahms-317803-p2` prints `[14, 13]`, the 13 being one
+suppressed tacet staff. Bach prints `[12, 3, 3, 3, 1, 2]`, which is a
+segmentation failure rather than a printing convention.
+
+⚠️ **No proposal.** The additive survey classifies this refusal as a CONSTRAINT
+to keep (joining by ordinal across suppressed staves grafts one instrument's
+music onto another), `OMR_SLOT_STITCH` is the measured alternative, and backlog
+§A0b has it **queued for re-pricing against the page-normalised truth**. I am
+adding the reach and the granularity — *one staff of disagreement costs the whole
+document's part continuity* — and nothing else.
+
+---
+
+## R1. `direction_text` — 72 uncatalogued points, and the argmax that has never fired
+
+### R1.1 ⚠️ THE NOMINATION IS DEMOTED BY ITS OWN REACH: `accepted[0]` has arbitrated ZERO times
+
+`direction_text.py:801` is `winner_name, hit = accepted[0]` and the coordinator
+is right that its shape is the purest instance of this commission's question:
+`Reader = Callable[[list[np.ndarray]], list[str]]` (`:614`) — **the ranking
+quantity does not exist in the type being ranked.** There is no confidence
+anywhere in the reader interface, so `accepted[0]` is not an argmax at all; it is
+**reader-list order**, and `default_readers` appends Surya first and Tesseract
+second, unconditionally.
+
+Measured over the 11 committed scan transcriptions, which carry the full
+per-page report (`out/probe_direction_funnel.txt`):
+
+```
+candidates proposed by the CV : 139
+at least one rung read something : 134
+lexicon ACCEPTED                 :  20
+attached to a measure            :  20
+CONFLICTS between the two rungs  :   0        <-- accepted[0]'s entire reach
+winning rung: surya 19, tesseract 1
+```
+
+**Zero conflicts. The decision has never had to choose.** Both rungs ran on all
+11 pages (`readers: [surya, tesseract]` on every one), both contribute accepted
+readings, and on no crop did they produce two *different* accepted readings.
+
+⚠️ **This is my own round-1 nomination failing this project's reach-before-accuracy
+rule, and I am reporting it that way.** A decision with zero measured firings is
+not a defect worth fixing; it is a hazard worth *recording*, because the reach
+could change the day a third rung is added or a page defeats one reader.
+Priority: **demoted to the record-the-refusal sweep.**
+
+⚠️ **What is genuinely wrong at that site is adjacent to the argmax, not in
+it.** `info["rejected"]` is extended **only when `not accepted`** (`:798`). So on
+a crop where one rung is accepted and the other's reading is refused, **the
+refused string is discarded unrecorded.** The asymmetry is exactly backwards for
+learning anything about the rungs: you see a rung's failures only on the crops
+where *every* rung failed. Up to 20 second-rung readings on this corpus are
+invisible for that reason. Free to fix, byte-identical, and it is the record that
+would let anyone re-price the reader order the argmax stands in for.
+
+⚠️ Also inert: `default_readers` drops Tesseract on a page that `page_is_engraved`
+proves born-digital. All 11 scan pages report `page_is_engraved: False`, and the
+11 engraved fixtures were built with `--no-direction-text` so they carry **no
+report at all**. **The classifier's reach is unmeasurable on the standing
+corpora** — its own docstring already flags that the born-digital claim rests on
+three LilyPond fixtures.
+
+### R1.2 The lexicon gate — established before proposing anything, and it is well earned
+
+`direction_lexicon.lookup:139-181`. The gate is **exact per-token membership**:
+every token must be in `TERMS` (140 entries) or `CONNECTIVE` (25), at least one
+must be a real term, plus a charset `fullmatch` (`:149`), a 6-token cap and an
+adjacent-repeat veto (`:166`).
+
+Classifying all **135 refused strings** by *which clause refused them*
+(`out/probe_direction_refusals.txt`):
+
+| refusing clause | n | share | examples |
+|---|--:|--:|---|
+| **no term at all** | **71** | 52.6% | `ae`, `fa i a`, `epee oom`, `sy .`, `f FT jt` |
+| **charset veto** (digit/bracket/symbol) | **50** | 37.0% | `a & =`, `%`, `—> eT`, `1 o>` |
+| PARTIAL — ≥1 real term matched, then discarded | **10** | 7.4% | below |
+| adjacent-repeat veto | 2 | 1.5% | `CRESC. CRESC. CRESC. CRESC. CRESC. CRESC.` |
+| >6 tokens | 2 | 1.5% | `Cresc.` ×8 |
+
+**121 of 135 (89.6%) carry no legal term at all.** The gate is doing exactly what
+its docstring says it is for, and this is *evidence for the standing refusal to
+loosen it*, not against. I propose no widening of `TERMS`, no OCR fold, and no
+relaxation of the charset rule — all three are refused on the record, and this
+measurement supports all three refusals.
+
+⚠️ Note the two repetition families exit through **different clauses** — the
+6-token cap catches the ×7 and ×8 cases before the adjacent-repeat veto ever
+looks at them. Same fault, two exits, and only one of them is described in the
+docstring that exists to explain it.
+
+### R1.3 ⚠️ The 10 PARTIAL refusals are NOT a lexicon question — they are two of the module's own rules colliding
+
+```
+x3  'F legato'         matched=[legato]  unknown=[f]
+x2  'f legato'         matched=[legato]  unknown=[f]
+x2  'f  legato'        matched=[legato]  unknown=[f]
+x1  'F espr.e legato'  matched=[legato]  unknown=[f, espr.e]
+x1  "' espr. e legato" matched=[espr, legato]  unknown=[']
+x1  'Basson Cresc.'    matched=[cresc]   unknown=[basson]
+```
+
+`lookup` computes `matched` and **discards it at `return None`** (`:174`) — the
+canonical *the-margin-and-the-runner-up-destroyed* shape, here destroying a
+complete legal direction.
+
+**Six of the ten fail on one token: `f`.** And `f` is unmatched *by design*, from
+this module's own docstring: *"It does not touch the letter dynamics … The
+lexicon deliberately omits them so the two readers cannot both claim one mark."*
+Meanwhile `_is_inside_a_word` (`:282`) **deliberately does not blank** a dynamic
+glyph with ink hard against it on both sides — because on the Brahms page the `p`
+of `espr.` is detected as `dynamicP`, and blanking it cost 56 edits. So:
+
+> **Rule A keeps the dynamic letter in the crop. Rule B refuses any phrase
+> containing it. Both are correct in isolation and their intersection costs
+> `legato` six times on the scan corpus.**
+
+That is a decision-TYPE fault, not a lexicon gap: `TERMS` needs no new member,
+because the offending token is drawn from a set the exporter already enumerates
+(`export._DYNAMIC_LETTER`) and which this module already declares out of scope.
+
+⚠️ **Stated as a candidate, with the standing refusal flagged, and NOT as a
+recommendation to loosen.** The additive survey's §7.5 refuses loosening the
+lexicon and says explicitly of this shape: *"The recommendation here is to RECORD
+the near-miss and its coverage (Class C), not to accept it."* I am consistent
+with that: **record first.** `info["rejected"]` already exists; adding the
+`matched` / `unknown` split to it is byte-identical and turns "135 strings" into
+the table above on every run.
+**What would have to be TRUE for the trim itself to pay:** that the trimmed token
+is always claimed by `measure_dynamics` on the same measure, so the two readers
+still cannot double-claim it. That is checkable from a single run and has not
+been checked. ⚠️ And OMR-NED charges an invented direction its own character
+count, so six recovered `legato`s is a ±36-character bet inside a ±6-edit noise
+floor — it must be priced on words-correct-per-staff
+(`benchmarks/omr-dynamics-band-2026-09/probe_dynamic_band.py`), not on the
+pooled figure.
+
+### R1.4 `staff_labels_surya` — the free DEFAULT rung the map omits, now catalogued
+
+Measured reach of the whole label ladder over the 11 scan transcriptions
+(`out/probe_label_reader_tiers.txt`, from each run's own `contextual.label_tiers`):
+
+| rung | labels supplied |
+|---|--:|
+| text layer | 12 |
+| **surya** | **134 (87.6%)** |
+| tesseract | 7 |
+| vision | 0 |
+| human | 0 |
+
+132 of 193 staves labelled; 15 labels read and unresolved; 32 instruments from
+score order. **Surya supplies seven of every eight margin labels on the scan
+family** — and the decision map catalogues the *unreachable* human rung in full
+while giving this module no row at all.
+
+Its decision surface, catalogued:
+
+| decision (file:line) | type | C/O | reach / what it destroys | reversible? | records refusal? |
+|---|---|---|---|---|---|
+| `_lines_with_boxes:48` → `_lines:74` | projection | — | ⚠️ **`x_left` is computed at `:69` and thrown away one line later** — `_lines` returns `(text, y, h)`. The margin path is therefore x-blind, the same fault the map records for the *text-layer* reader (`staff_labels.py:189`) and does not record here | IRREVERSIBLE-BY-DELETION | no |
+| `_assign:89` runaway-height cap | hard gate on a **measured 22× empty gap** (`_RUNAWAY_HEIGHT_FRACTION = 0.5`; the two known runaways at 1.04× the span, Boléro's 17 correct blocks at 0.015–0.047×) | **CONSTRAINT-shaped** — a block cannot be one staff's label and the whole crop | **the dropped block is not counted** | IRREVERSIBLE-BY-DELETION | **no** |
+| `_assign:107-113` nearest-tick | **raw argmax + tolerance gate** | OPINION | the distance to the winning tick is computed, used for the gate and the join order, then discarded; the runner-up tick is never formed | IRREVERSIBLE-BY-DELETION | **no** |
+| `read_staff_labels_surya:384` | projection | — | `confidence=hit.confidence if hit else "none"` — the only "confidence" a Surya label ever carries is the **lexicon's** high/medium/low. The OCR contributes none, exactly as `direction_text`'s `Reader` does not | IRREVERSIBLE-BY-QUANTISATION | no |
+| `available():121` | abstention | CONSTRAINT | correct, and the documented degradation | n/a | yes (via the ladder's counts) |
+
+⚠️ **The consequence for `_assign` is a shared failure signature.** A page where
+Surya read every label and `_assign` dropped them all — by the height cap or the
+tolerance — is **byte-identical in the output to a page Surya could not read**,
+because only survivors are returned. That is the same "an abstention and a
+failure look alike" fault the direction reader's own report was built to fix
+(`read_directions` returns `info` for exactly this reason), applied to the rung
+that supplies 87.6% of the labels. The fix is the same and equally free: return
+the counts.
+
+---
+
+## R2. Tie and slur pairing — anchors, measured, with the grammar left alone
+
+⚠️ **Prior art honoured.** `benchmarks/omr-export-gaps-2026-09/FINDINGS.md` §2/§5/§6
+built the export-time tie/slur grammar veto (`OMR_ARC_RECLASS`), measured it on
+both families and shipped it **default off** — engraved +2 edits, scan **+130,
+refused**, the whole +130 in the tie→slur half. **I re-propose none of it.** That
+document also names what is open: *"grammar needs anchors — anchor recall is the
+foundation the grammar multiplies; it cannot replace it"* (R4). This section is
+the anchor half, measured.
+
+### R2.1 ⚠️ THE FINDING — 79.6% of scan tie detections never find two anchors, and nothing counts them
+
+`transcribe._pair_ties_in_staff:2038` pairs a tie glyph with the nearest notehead
+on each side. **Replayed faithfully over the committed transcriptions** — every
+input it reads (`bbox_page`, `category`, `class`) is in the JSON, so the replay
+is exact (`out/probe_tie_pairing_replay.txt`):
+
+| | scan (11 pages) | engraved (11 works) |
+|---|--:|--:|
+| tie detections | **1,459** | 155 |
+| paired on **both** sides | **298 (20.4%)** | 70 (45.2%) |
+| found **one** side only | **422 (28.9%)** | 30 (19.4%) |
+| found **no** side | **739 (50.7%)** | 55 (35.5%) |
+
+**`_pair_ties_in_staff` returns `n_new_pairs` and nothing else.** The 1,161 scan
+ties that failed to anchor are not counted, not flagged, and not distinguishable
+downstream from a page with no ties. That is precisely the population
+`OMR_ARC_RECLASS`'s `unpaired_*` sub-rules key on — the rules the export-gaps
+document found *"turn junk tie detections into junk slurs"* — and its size has
+never been stated.
+
+⚠️ **What the number is NOT.** It is not a false-positive rate for the detector.
+A tie with no anchor may be a spurious detection, a real tie whose notehead was
+missed, or a real tie whose anchor was deleted by the ownership rules in §4 (263
+of my 436 class-disagreements are arc classes, and 118 of those are `beam`/`tie`).
+**Those three are not separable from an artefact**, and separating them is the
+measurement the anchor half needs.
+
+### R2.2 The two argmaxes, and the quantity the tie's own definition asks for
+
+`:2088-2105` runs two independent nearest-neighbour argmaxes — nearest head at or
+left of the arc's left edge, nearest at or right of its right edge — each inside a
+3-notehead-width window, and **`best_left_dx` / `best_right_dx` are computed and
+discarded**. There is no joint test: the two winners are accepted whenever they
+are not the same detection.
+
+Measured on the pairs that *did* form:
+
+| |y| between the two paired heads, in notehead heights | scan (n=298) | engraved (n=70) |
+|---|--:|--:|
+| median | 0.42 | 0.01 |
+| p90 | 1.79 | 0.47 |
+| max | **4.66** | 1.47 |
+| pairs more than 0.5 nh apart | **122 (40.9%)** | 4 (5.7%) |
+
+**A tie joins two notes at the same staff position** — that is a rule of
+engraving, not a reading — and the scan distribution has a long tail the engraved
+one does not.
+
+⚠️⚠️ **AND THE OBVIOUS INFERENCE IS THE ONE THE PRIOR ART FORBIDS.** Of the 298
+scan pairs, **199 (66.8%) join two heads whose resolved pitches differ** (engraved:
+23 of 70). It is tempting to read that as 199 wrong pairings. **The export-gaps
+document measured exactly this and says otherwise**: on a scan the resolved pitch
+at an arc's ends is downstream of what scans get wrong (`wrong note` is 26% of
+that pool), so a step disagreement between two tie endpoints is *usually a
+resolution error, not a wrong arc* — which is why the `flagged_diff_pitch` rule
+cost +130 edits and broke a nearly perfect tie inventory (Brahms p2: 192 tie
+elements against a truth of 194, slashed to 87). **So the artefacts cannot
+separate "wrongly paired" from "correctly paired, wrongly pitched", and I do not
+claim they can.**
+
+What is unambiguous and type-shaped: **the pairing never forms the quantity at
+all.** `y_tol` is a single scalar, `max(avg_nh_h * 3, 30)`, applied to the arc's
+CENTRE against each head — so two heads up to ~6 notehead heights apart can pair,
+and the vertical relationship *between the two chosen heads* is never computed,
+never compared, never recorded. Recording it is free and is what would let anyone
+re-price the anchor question when scan pitch resolution improves — which is the
+export-gaps document's own stated trigger (*"the same probe re-prices it in
+minutes"*).
+
+⚠️ **A null worth stating:** the bare `30` pixel floor in `max(avg_nh_h * 3, 30)`
+looks like the unit fault the map flags elsewhere (`_build_measure_cell:1060`'s
+10 px) and **never binds** — median `avg_nh_h` is 30.5 px on scans and 43.5 on
+engravings, so `3×` is 91 / 130. It is inert on both corpora, and that is a
+measurement rather than an assumption.
+
+### R2.3 Slur pairing — the constants are plateaus and stay; the reach is elsewhere
+
+`export.annotate_slurs_in_staff:2356` and `annotate_slurs_in_slot:2363`, with
+`_merge_arcs_across_barlines:2209`, `_noteheads_under:2301`,
+`_voice_of_notehead:2338`. Its three constants (`_SLUR_BOUNDARY_SPACES 0.5`,
+`_SLUR_CONTINUATION_DY_SPACES 2.0`, `_SLUR_ARC_PAD_NOTEHEADS 0.25`) each sit on a
+documented gap with a documented plateau — T1 fails by construction and they
+should not be touched.
+
+The type observations that remain:
+
+- `_merge_arcs_across_barlines` decides continuation on **edge proximity AND a dy
+  tolerance**, and the CLAUDE.md record notes the continuation cluster's top
+  moved 0.53 → 1.14 spaces when system grouping changed — inside the gap, but it
+  *moved*. **The margin to the gap edge is exactly what is not recorded**, so the
+  next such shift will again be discovered by re-measuring rather than announced
+  by the run.
+- ⚠️ `export._arbitrate_arcs_in_system:1770` (`OMR_ARC_ATTRIBUTION`, **default
+  `move`, ON**) is the one place in the pipeline that *re-decides* arc ownership
+  after the fact, on evidence the ownership pass never had (which staff's
+  noteheads the arc hugs). **It is therefore the existing consumer for round 1's
+  `contested_with` proposal**, and the two workstreams meet exactly here: 263 of
+  the 436 different-class ownership contests are arc classes, and this function
+  is already shipping, already comparative (`_ARC_RIVAL_MARGIN_SPACES = 0.5`),
+  and already refuses `drop` in favour of `move` on the measured grounds that
+  deleting flatters the metric. It computes `own - best[0]` — a real margin — at
+  `:1804` and **discards it**.
+
+---
+
+## R3. `export.py` — reversibility trivial, quantisation not
+
+Round 1's framing holds and I add one measured reach, chosen because it is the
+sharpest instance and because `measure_dynamics` is already priced by the
+additive survey (45/45 and 8/8 at edit distance 1) and must not be re-measured.
+
+**`<duration>` is written while the pipeline's own statement that the bar does
+not sum is on the same dict, unread.** The map names the blindness; the reach
+(`out/probe_meter_guard_reach.txt`):
+
+| | scan | engraved |
+|---|--:|--:|
+| measures | 2,235 | 1,517 |
+| carrying `rhythm_sum_warning` | **111 (5.0%)** | 12 (0.8%) |
+| severity high / low | 88 / 23 | 11 / 1 |
+
+**111 scan measures are serialised with an integer `<duration>` at the exact
+moment the pipeline has computed, and recorded, that their contents do not sum to
+the bar.** (The 111 / 12 split reproduces the additive survey's figure exactly —
+a control that my probe reads the same field they did, not a second measurement.)
+
+⚠️ **No proposal to act on it in the exporter.** `rhythm_sum_warning` is
+Class C with a real signed magnitude and no confidence field, and the honest
+first step is the one round 1 already ranks: give it a consumer only after a
+corpus prices one. What is worth stating is the *type* fact — the exporter's
+decisions are the only ones in the pipeline whose reversibility is trivially
+"nothing downstream", which means **every quantisation there is terminal**, and
+it is also the one stage where recording costs literally nothing because no
+later stage can be confused by an extra field.
+
+---
+
+## R4. The meter chain — where the ladder's direction contradicts itself, and what it is worth
+
+The coordinator's framing was `:1774` (clef specialist, gap-fill) against `:1777`
+(meter specialist, unconditional). Both are real and the asymmetry is exactly as
+described — the code is:
+
+```python
+if spec_clef is not None and clef_source is None:      # :1769  GAP-FILL
+    active_clef = spec_clef
+if spec_time_sig is not None:                          # :1772  UNCONDITIONAL
+    active_time_sig = spec_time_sig
+```
+
+⚠️ **But it is INERT on everything measurable, and I have to say so.** The
+specialist runs only when `clef_reader is not None`, and every fixture in both
+standing corpora records `clef_weights: null`
+(`out/probe_meter_changes.txt` and a direct read of the run headers). **Reach: 0
+of 193 scan staves and 0 of 224 engraved.** It is a latent hazard, correctly
+identified, with no measured firing — the same verdict R1.1 gives my own
+nomination, and I apply it evenhandedly.
+
+### R4.1 ⚠️ THE LIVE ASYMMETRY IS ONE LAYER UP, AND IT IS THE SHARPEST RESULT OF BOTH ROUNDS
+
+Both the clef and the meter are overwritten **per cell, unconditionally, with no
+floor** — the clef at `:1604`, the meter at `:1634`
+(`new_time_sig = parse_time_signature(dets); if ... : active_time_sig = ...`).
+Both then carry forward onto every later measure of the staff. **The same fault,
+in the same function, ten lines apart.**
+
+They differ in what runs afterwards:
+
+| | the page-scope guard | default | measured on 11 scan pages |
+|---|---|---|--:|
+| **METER** | `rhythm.drop_uncorroborated_meter_changes:597`, called from `backfill_page_time_signatures` at `rhythm.py:689` — a mid-staff change survives only if `max(2, 0.5 × n_staves)` staves see the same change at the same measure index | **ON** | **21 changes reverted; 0 surviving mid-staff meter changes on 193 staves** |
+| **CLEF** | `clef_correction.veto_implausible_clef_changes:460` — a 2-triple `(instrument, from, to)` allowlist, identity-gated to `label` | **OFF** (`OMR_INSTRUMENT_CLEF_DEFAULT`) | **0 reverted; 11 surviving mid-staff clef changes on 193 staves** (round 1 §3.2) |
+
+`drop_uncorroborated_meter_changes`'s docstring describes the *identical*
+failure this audit found for the clef — *"a single false reading rewrites the
+rest of the staff and then votes for itself as many times as there are bars
+left"* — diagnosed on Beethoven 5 page 1, where five `timeSig4` boxes fired on
+barline fragments and shipped a 2/4 page as common time.
+
+**So: the pipeline has already met this bug, already built the repair, and
+applied it to one of the two facts that behave identically.** Engraved: 0
+reverted, 0 surviving — the fault is scan-only in both channels, which is the
+control.
+
+### R4.2 ⚠️ The meter's guard CANNOT be transplanted, and the disanalogy is the useful part
+
+The meter guard's evidence is that **a meter change is a system-wide event,
+printed on every staff at the same bar** — a CONSTRAINT of engraving, which is
+why corroboration across staves is exact and needs no threshold beyond a quorum.
+**A clef change is printed on ONE staff.** Corroboration across staves is
+therefore not available, and proposing it would be the mistake this audit exists
+to catch.
+
+What transplants is the **shape**, not the witness: *a mid-staff overwrite must
+be corroborated by something independent before it is believed.* For the clef the
+independent witnesses that exist are the three round 1 already named, and this
+section changes none of them — it only shows the shape is already house practice:
+
+1. the same staff's own header reading (a contradiction — round 1 §3.2);
+2. more than one cell agreeing (round 1's second variant — 9 of the 11 flips rest
+   on a single detection in a single cell);
+3. the same part's reading on another system, which
+   `contextual._fill_defaulted_clefs` already implements for a different purpose.
+
+### R4.3 A third instance of the stale-`*_final` fault, larger than the first
+
+Round 1 §3.3 found `clef_final` stale on 9 of 20 scan occurrences. The same shape
+on the meter, and worse: **32 of 193 scan staves carry `time_signature_final`
+while 0 staves show a per-measure meter change** (`out/probe_meter_changes.txt`).
+Every one of the 32 announces a change no surviving measure supports.
+
+The mechanism is different from `clef_final`'s and is *more* structural:
+`time_signature_final` is written inside the staff loop (`transcribe.py:4683`),
+and `backfill_page_time_signatures` **and**
+`drop_uncorroborated_meter_changes` (which `backfill` itself calls,
+`rhythm.py:689`) both run afterwards at PAGE scope — `transcribe.py:4757`, with
+`_reconcile_page_to_meter` at `:4785` — and rewrite the measures the field
+describes. So the
+field is stale **by construction**, not by accident — and its staleness is the
+shadow of the guard working correctly.
+
+> **Generalised: `*_final` is written before the page-scope passes that rewrite
+> the thing it describes, so it records the pre-repair state and reads as the
+> post-repair one.** Three instances now: `clef_final` (9 of 20 stale),
+> `time_signature_final` (32 of 32 stale on scans), and `key_signature_final`,
+> which the map already lists under `NOBODY`. **None has a consumer**, which is
+> the only reason none has caused a fault — and it makes them a trap for exactly
+> the next person who gives one a consumer, which is what round 1's conclusion 3
+> and the additive survey's shortlist item 1 both invite.
+
+---
+
+## R5. Ranked conclusions, round 2
+
+| # | conclusion | evidence | what would settle it | harness can see it? |
+|--:|---|---|---|---|
+| **R1** | **The clef and the meter suffer the identical unfloored per-cell overwrite, and only the meter has a corroboration guard: 21 meter changes reverted and 0 surviving, against 0 reverted and 11 surviving clef changes, on the same 11 scan pages** | §R4.1; `rhythm.py:597`; `clef_correction.py:460`; round 1 §3.2 | this *is* round-1 conclusion 1's A/B, now with a precedent and a control. ⚠️ The meter's cross-staff witness does NOT transplant (§R4.2) | **YES** — a clef restates pitches; note recall moves |
+| **R2** | **79.6% of scan tie detections never find two anchors (1,161 of 1,459) and nothing counts them** — the anchor half the arc-reclass work names as the open one | §R2.1, faithful replay | count them and split the three causes (spurious / missed head / head deleted by the ownership rules). ⚠️ Not separable from artefacts | partly — the count is free; the causes need a run |
+| **R3** | **`*_final` fields are stale by construction — 32 of 32 on the meter, 9 of 20 on the clef — and none has a consumer** | §R4.3, §3.3 | write them after the page-scope passes, or delete them. Byte-identical either way to the MusicXML | n/a — they reach no consumer |
+| **R4** | **`accepted[0]` — the purest instance of the type fault — has arbitrated ZERO times.** What is wrong beside it is that `rejected` is recorded only when EVERY rung failed | §R1.1, 11 pages | nothing to price. Record the second rung's refused reading: free | n/a |
+| **R5** | **The direction lexicon refuses well (89.6% of refusals carry no legal term) and the 10 PARTIAL refusals are two of the module's own rules colliding — 6 of them on the letter `f`** | §R1.2-R1.3 | record `matched`/`unknown` on the refusal (free), then check whether `measure_dynamics` claims the same `f` on the same measure | ⚠️ **not** pooled OMR-NED — words-correct-per-staff |
+| **R6** | **Surya supplies 87.6% of scan margin labels and has no row in the map; `_assign` drops blocks silently, so "read and discarded" is byte-identical to "could not read"** | §R1.4 | return the drop counts. Free | n/a |
+| **R7** | **`_stitch_slots` refuses on 2 of 11 scan rows, one of them on a ONE-staff difference, emitting 51 fragments** | §R0.2 | ⚠️ already queued — backlog §A0b, against the page-normalised truth. **No proposal from me** | queued |
+
+**Couplings, restated because they are what makes this usable:**
+- Round-1 conclusion 1 / R1 above stays **coupled to `OMR_INSTRUMENT_CLEF_DEFAULT`** and moves only with Sean.
+- R2 is **downstream of scan pitch resolution**, per the arc-reclass document's R4 ordering — the anchor count is worth having now, acting on it is not.
+- R7 is **owned by the queued `OMR_SLOT_STITCH` re-pricing**, not by this audit.
+
+## R6. What round 2 does NOT cover
+
+- **`direction_text`'s other ~60 decision points.** I catalogued the reader
+  ladder, the lexicon gate and the funnel; the CV candidate-finding half
+  (`find_candidates`, `_blank_detections`, the nine `BandConfig` constants) is
+  measured in its own benchmark and I did not re-derive it.
+- **Slur pairing reach.** §R2.3 gives the type reading; I replayed ties, not
+  slurs — slur pairing runs at export scope over stitched slots and a faithful
+  replay needs the stitcher, which is contended (backlog §A0b).
+- **`export.py` beyond one site.** Its decision surface is the largest in the
+  pipeline and round 2 measured one reach in it.
+- **Any engraved direction-text figure.** The 11 engraved fixtures were built
+  `--no-direction-text` and carry no report; every direction number here is
+  scan-only and says so.
+- **Anything requiring a run.** Embargo respected; all seven probes read
+  committed artefacts.
+
+## R7. Reproducing round 2
+
+```bash
+cd /Users/seanjohnson/Desktop/ReEngrave
+P=.claude/worktrees/nice-nash-085307/benchmarks/omr-pipeline-audit-2026-09/probe
+
+python3 $P/probe_direction_funnel.py         # R1.1  candidates -> read -> accepted -> placed, conflicts
+python3 $P/probe_direction_refusals.py       # R1.2  which lexicon clause refused each string
+python3 $P/probe_label_reader_tiers.py       # R1.4  which rung supplied each margin label
+python3 $P/probe_tie_pairing_replay.py       # R2.1  faithful replay of _pair_ties_in_staff
+python3 $P/probe_meter_changes.py            # R4.3  meter sources, changes, stale *_final
+python3 $P/probe_meter_guard_reach.py        # R4.1  uncorroborated meter changes reverted
+python3 $P/probe_stitch_refusal_reach.py     # R0.2  where _stitch_slots refuses
+```
+
+Read-only, seconds each, committed artefacts only. Outputs captured under `out/`.
+`probe_direction_refusals.py` imports `tools.omr.direction_lexicon` to classify
+by the live clause set — ⚠️ if that module's clause order changes, the probe goes
+silently stale, which is the same hazard the additive survey records for its
+`propose_clef` reimplementation and the same argument for recording the refusal
+at the site.

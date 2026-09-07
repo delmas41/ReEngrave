@@ -1,0 +1,23 @@
+refused strings: 135
+    71  no term at all
+        e.g. ['ae', 'fa i a', 'epee oom', 'a', 'sy .', 'f FT jt']
+    50  charset veto (digit/bracket/symbol)
+        e.g. ['a & =', '%', '= oe', '=', '—> eT', 'a @&']
+     8  PARTIAL: 1 term(s) matched, 1 unknown
+        e.g. ['Basson Cresc.', 'F legato', 'F legato', 'f legato', 'f  legato', 'f legato']
+     2  adjacent repeat veto
+        e.g. ['a a', 'CRESC. CRESC. CRESC. CRESC. CRESC. CRESC.']
+     2  too many tokens
+        e.g. ['CTUSC. CTUSC. CTUSC. CTUSC. CTUSC. CTUSC. CTUSC.', 'Cresc. Cresc. Cresc. Cresc. Cresc. Cresc. Cresc. Cresc.']
+     1  PARTIAL: 2 term(s) matched, 1 unknown
+        e.g. ["' espr. e legato"]
+     1  PARTIAL: 1 term(s) matched, 2 unknown
+        e.g. ['F espr.e legato']
+
+PARTIAL refusals in full:
+   x3  'F legato'  matched=['legato']  unknown=['f']
+   x2  'f legato'  matched=['legato']  unknown=['f']
+   x2  'f  legato'  matched=['legato']  unknown=['f']
+   x1  'Basson Cresc.'  matched=['cresc']  unknown=['basson']
+   x1  "' espr. e legato"  matched=['espr', 'legato']  unknown=["'"]
+   x1  'F espr.e legato'  matched=['legato']  unknown=['f', 'espr.e']
