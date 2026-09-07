@@ -1,0 +1,12 @@
+n = 22 committed transcriptions carrying both clocks
+direction_text share of total_s: min=11.2%  median=19.2%  max=84.5%
+⚠️ pages per run: {1: 22}  -- ALL SINGLE-PAGE
+
+tail (the density effect, at one page):
+    25.8%  pages=1  total=46.0s  dir=11.9s  brahms-sym1-mvt1-317803-p1.restamp-composed.om
+    76.5%  pages=1  total=196.2s  dir=150.2s  beethoven-sym5-mvt1-984073-p2..graft09.omr.jso
+    84.5%  pages=1  total=337.1s  dir=284.7s  beethoven-sym5-mvt1-984073-p2.restamp-composed
+head:
+    11.2%  pages=1  total=43.9s  dir=4.9s  dvorak-sym9-mvt1-405834-p5..graft09.omr.json
+    12.1%  pages=1  total=40.0s  dir=4.8s  dvorak-sym9-mvt1-405834-p6..graft09.omr.json
+    12.3%  pages=1  total=36.3s  dir=4.5s  dvorak-sym9-mvt1-405834-p6.restamp-composed.om

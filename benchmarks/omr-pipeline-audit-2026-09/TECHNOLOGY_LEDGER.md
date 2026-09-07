@@ -27,6 +27,16 @@ benchmark that measured it.
 decision each site makes. This asks what MECHANISM makes it. Where they meet is
 flagged.
 
+⚠️ **CORRECTED 2026-09-07 after verification** (29 claims checked, 25 exact).
+Five corrections and three additions, each marked in place: the arc `drop`
+example was **backwards** and is repaired in §4 with the refusal grounds
+separated; the `staff`-class item was called "the cheapest untried comparison"
+and is **UNREACHABLE-pending-a-new-regime**, re-classified in §2.1/§3/§6; §5's
+method sentence, the bracket enumeration and the ScoreAug citation are fixed;
+and §3.1 (**present ≠ usable**), §2.4.1 (**the reader is a generative decoder**),
+§4.1 (**adoptions have scopes too**) and §6.1 (**the wall-clock regime
+reconciliation**) are new.
+
 ---
 
 ## 0. How to read a row
@@ -104,9 +114,9 @@ dossier may not feed a measurement.
 
 | target | READ BY | WHY | ALSO TRIED → VERDICT | FROM | TIER |
 |---|---|---|---|---|---|
-| **staff lines** | classical CV — `staff_detector._candidate_staff_rows:210`, `_group_into_staves:243` | nothing has coordinates without it; a five-line comb is geometry, not appearance | ⚠️ **the detector HAS a `staff` class and it fires freely — 1,150 scan / 1,579 engraved detections — and staff detection reads NONE of them.** No arm was ever run comparing the two → **UNTRIED**, and it is the cheapest untried comparison in this ledger | PAGE | — |
+| **staff lines** | classical CV — `staff_detector._candidate_staff_rows:210`, `_group_into_staves:243` | nothing has coordinates without it; a five-line comb is geometry, not appearance | ⚠️ **the detector HAS a `staff` class, it fires freely — 1,150 scan / 1,579 engraved — and staff detection reads none of it.** ⚠️ **But this is NOT an available alternative: it is UNREACHABLE-pending-a-new-regime.** `detect_staves(page: PageImage)` takes a raster, imports nothing detector-related, and **runs before the detector exists** — the detector reads measure CELLS cut from `detect_staves`' own output. The class is not unconsulted at that moment; it has not been produced. Comparing them needs a **full-page detector pass and an inference regime that does not exist**, not an A/B | PAGE | — |
 | **systems** | classical CV — `system_grouping.assign_systems:676`, connectivity | gap DISTANCE cannot separate them: within one Brahms system gaps run 17–237 px, within one Beethoven system 130–345 px, both wider than the gaps BETWEEN systems on a piano page | distance thresholds → **REFUTED**, scope: Brahms + Beethoven orchestral, and the mechanism is arithmetic (the ranges overlap), so the refutation generalises further than most here | PAGE | — |
-| **bracket groups** | ⚠️ **INFERRED, not read** — `system_grouping._assign_groups:613`, counting systemic COLUMNS (`OMR_BRACKET_COLUMNS`, on) | **nothing detects a bracket**: `bracket` is *not in the 208-class space* (only `tupletBracket` / `ottavaBracket`, different objects) — verified by enumerating `catalog.yaml`'s 208 names | (a) crossing-PIXEL ratio → **REFUTED**, and sharply: 22/22 and 15/15 against print truth for the column rule vs **16/22 and 0/15** for pixels. (b) **READING the bracket** (`bracket_reader.py`, 390 lines) → **REFUTED AND UNREACHABLE at once**: measured 5/22 and 1/15, worse than inferring, *and* it has **zero call sites** (`ceadb7bb`, "Reading the bracket LOSES to inferring it") | PAGE | — |
+| **bracket groups** | ⚠️ **INFERRED, not read** — `system_grouping._assign_groups:613`, counting systemic COLUMNS (`OMR_BRACKET_COLUMNS`, on) | **nothing detects a bracket**: `bracket` is *not in the 208-class space* — the three bracket-named classes are `tupletBracket`, `tupleBracket` (its coarse twin) and `ottavaBracket`, all different objects — verified by enumerating `catalog.yaml`'s 208 names | (a) crossing-PIXEL ratio → **REFUTED**, and sharply: 22/22 and 15/15 against print truth for the column rule vs **16/22 and 0/15** for pixels. (b) **READING the bracket** (`bracket_reader.py`, 390 lines) → **REFUTED AND UNREACHABLE at once**: measured 5/22 and 1/15, worse than inferring, *and* it has **zero call sites** (`ceadb7bb`, "Reading the bracket LOSES to inferring it") | PAGE | — |
 | **barlines** | classical CV — `measure_extractor._detect_barlines_in_window:104` + a cross-staff vote | **`barline` is not in the 208-class space either** — the Phase 3.4 attempt to add 6 custom classes took F1 **98.8% → 79.3%** by catastrophic forgetting (`benchmarks/omr-phase3.4b/comparison-trained-v4.md:12`), diagnosed there as ultralytics re-initialising the head on an `nc` change with 49 train images | teaching YOLO the class → **REFUTED**, scope: one training run, 49 images, and the mechanism is documented (`nc` expansion re-inits the head), so the recipe is dead rather than the idea. `train_yolo.py` now refuses an `nc` mismatch without `--allow-nc-expansion` | PAGE | — |
 | **measure cells** | geometry from the above | a cell IS the staff plus padding | — | PAGE | — |
 
@@ -145,7 +155,43 @@ does", and all three readers are geometric.**
 | **hairpins** | **YOLO** — `dynamicCrescendoHairpin` / `dynamicDiminuendoHairpin` are in the class space | reading F1 **1.000** against exact page truth on engravings (n=3) | ⚠️ **`hairpin_detection.py` (344 lines) — classical CV, measured at "59 of 99 hairpins against the detector's 1" — has ZERO call sites.** Verified: `grep -rn hairpin_detection tools/ backend/` returns nothing outside its own file and its tests. **UNREACHABLE, not REFUTED** — a merge, not a research programme. And it matters: observed detections are **9 on 11 engraved works and 0 on 11 scan pages**, against a scan truth of 198 `<wedge>` | PAGE | — |
 | **dynamic letters** | **YOLO** + `export.measure_dynamics:1337` assembling runs by x-adjacency | the glyphs are drawn and the detector finds them | ⚠️ a run spelling no legal dynamic is **dropped whole** — 45 of 45 scan and 8 of 8 engraved refused runs are **edit distance 1** from a legal dynamic. **UNTRIED** (the nearest-legal-word conversion is shortlist item 2 and nobody has built it) | PAGE | — |
 | **articulations** | **YOLO** — all ten DSv2 `artic*` classes | fired freely and were simply never exported until 2026-09-01 | attaching by the mark's own bbox → **REFUTED** by analogy with the augmentation dot; the unit is the **notehead width**, and the constant is a plateau (0.50–2.50 identical) | PAGE | — |
-| **direction text** | ⚠️ **NEITHER — OCR over subtracted ink.** `direction_text.py`, Surya + Tesseract, gated by `direction_lexicon.lookup:139` | *"the class that would have supplied one, `textDynamic`, is also the class that caused the Phase 3.4 catastrophic forgetting — so this reads text WITHOUT the detector"* | a YOLO text class → **REFUTED** by the Phase 3.4 result above. ⚠️ **Loosening the lexicon** → **REFUTED and load-bearing**: OMR-NED charges an invented direction its own character count, so a guessing reader pays at the rate it is paid. Measured in `DECISION_TYPES.md` §R1.2: **89.6% of its 135 refusals carry no legal term at all** — the gate is well earned | PAGE | — |
+| **direction text** | ⚠️ **NEITHER — a GENERATIVE DECODER over subtracted ink**, gated by `direction_lexicon.lookup:139`. See §2.4.1: calling it "OCR" understates what is running | *"the class that would have supplied one, `textDynamic`, is also the class that caused the Phase 3.4 catastrophic forgetting — so this reads text WITHOUT the detector"* | a YOLO text class → **REFUTED** by the Phase 3.4 result above. ⚠️ **Loosening the lexicon** → **REFUTED and load-bearing**: OMR-NED charges an invented direction its own character count, so a guessing reader pays at the rate it is paid. Measured in `DECISION_TYPES.md` §R1.2: **89.6% of its 135 refusals carry no legal term at all** — the gate is well earned | PAGE | — |
+
+#### 2.4.1 ⚠️ The direction reader is an LLM, and nothing in this repo constrains its decoding
+
+An earlier draft of this row said *"OCR over subtracted ink"*. That is the CV
+half. The reading half is **Surya, a generative decoder**, and the repo sets
+**none** of the parameters that would bound it — verified across
+`_surya_worker.py`, `staff_labels_surya.py` and `direction_text.py`:
+
+```
+temperature · top_p · max_tokens · max_new_tokens · seed · do_sample · greedy
+   -> ZERO occurrences in any of the three
+```
+
+The call is `predictor([image], full_page=True)` (`_surya_worker.py:60`) at
+library defaults.
+
+⚠️ **This is not theoretical, and the evidence arrived from another workstream
+this week.** A same-tree control on Litolff Beethoven 5 p68 — two runs, one
+page, identical everywhere else — found the same slot of
+`direction_text.pages[0].rejected` holding an **11,708-character hallucinated
+English essay** in one run and the six-character string `SECRET` in the other.
+So the rung is nondeterministic **in content and in length** on an unmodified
+tree, at library defaults, with no cap.
+
+**Why it is contained today, and where the containment is:** `n_accepted` was 0
+in both runs. The exact-membership lexicon gate (§2.4, and `DECISION_TYPES.md`
+§R1.2: **89.6% of 135 refusals carry no legal term at all**) is what stands
+between a generative decoder and the exported score. ⚠️ **That reframes the
+standing instruction not to loosen the lexicon**: it is not merely a precision
+tuning choice, it is the only bound on an unbounded generator. The same reader
+supplies **87.6% of scan margin labels** (§2.5), where the containment is
+`instruments.lookup` instead.
+
+⚠️ **Not mine to fix, and dispatched elsewhere** — it is `direction_text`'s. It
+is recorded here because a ledger keyed on mechanism must not file a
+constrained-decoding question under "OCR".
 
 ### 2.5 Identity — the most heterogeneous row set in the pipeline
 
@@ -169,7 +215,34 @@ Verified by enumerating the 208 names in `data/user-labeled/catalog.yaml`:
 | target | in the class space? | so CV is… |
 |---|---|---|
 | `stem`, `beam`, `staff`, `ledgerLine`, `tie`, `slur`, both hairpins | **YES** | a **deliberate replacement** of an available class — the model *can* emit it and is structurally bad at it (thin lines, extreme aspect ratios) |
-| **barline**, **family bracket** | **NO** (only `tupletBracket` / `ottavaBracket`, different objects) | filling an **absence**, and the attempt to remove the absence is the Phase 3.4 catastrophe |
+| **barline**, **family bracket** | **NO** — `barline` appears under **no spelling at all**, and the bracket-named classes are `tupletBracket` / `tupleBracket` / `ottavaBracket`, all different objects | filling an **absence**, and the attempt to remove the absence is the Phase 3.4 catastrophe |
+
+### 3.1 ⚠️ "Present in the class space" is NOT "usable", and this ledger's own evidence says so
+
+Membership answers whether a class *can* be emitted. It says nothing about
+whether it *is*. Measured over both corpora
+(`out/probe_mechanism_attribution.txt`), against 4,339 scan / 1,557 engraved
+noteheads:
+
+| class | in space | **emitted, scan** | **emitted, engraved** | usable? |
+|---|:--:|--:|--:|---|
+| `beam` | ✔ | 1,896 | 366 | **yes** — and consumed, as a bounded union with CV |
+| `ledgerLine` | ✔ | 2,461 | 488 | **yes** — consumed by the ownership ladder |
+| `tie` / `slur` | ✔ | 1,658 / 413 | 171 / 306 | **yes** — consumed, with the anchor caveat in §2.4 |
+| `staff` | ✔ | 1,150 | 1,579 | ⚠️ emitted freely, **consumed by nothing** (§3's corollary) |
+| **`stem`** | ✔ | **76** | **0** | ⚠️ **present and effectively absent** — 76 firings against 5,896 noteheads, and *zero* on the engraved family |
+| **hairpins** | ✔ | **0** | 9 | ⚠️ **present and absent on the family that needs it** — 0 detections across 11 scan pages against a truth of 198 `<wedge>` |
+
+**So the CV decision for stems is over-determined and the ledger should say so:**
+the *architectural* reason is that YOLO boxes are bad at thin lines, and the
+*empirical* one is that on today's weights the class barely fires at all. Either
+alone would justify the move; together they make it very hard to reverse.
+
+⚠️ **And the hairpin row is the same fact pointing the other way.** The class is
+present, the engraved reading F1 is 1.000, and on scans it emits nothing — which
+is exactly why an unwired CV reader (§5) is a live gap rather than a redundancy.
+**Membership is a necessary condition for "the detector could do this" and not
+close to a sufficient one.**
 
 **This distinction predicts what a future attempt costs.** Re-teaching a class
 that is absent means expanding `nc`, which re-initialises the head — priced at
@@ -177,10 +250,28 @@ that is absent means expanding `nc`, which re-initialises the head — priced at
 fine-tune — priced separately, and separately refuted (§4). *They are not the
 same experiment and the ledger should not let them be confused.*
 
-⚠️ **And the corollary nobody has tested:** the detector's `staff` class fires
-**1,150 / 1,579** times across the two corpora and staff detection reads none of
-it. That is the largest *available-and-unconsulted* class in the pipeline, and
-it is **UNTRIED** — no arm has ever compared the two.
+⚠️ **A corollary that an earlier draft got wrong, and the correction matters
+more than the original claim.** The detector's `staff` class fires **1,150 /
+1,579** times across the two corpora and staff detection reads none of it — and
+I called that "the cheapest untried comparison in this ledger". **It is not
+untried; it is not comparable.** `detect_staves` consumes a full-page raster and
+runs *before* any detection, because the detector's input is measure cells cut
+from what `detect_staves` returns. There is no moment in the current pipeline at
+which both answers exist.
+
+So the honest classification is **UNREACHABLE-pending-a-new-regime**, and the
+cost is not an A/B:
+
+| what it would take | why |
+|---|---|
+| a **full-page** detector pass | today the detector only ever sees canonical cells; `imgsz_for_cell` and the canonical rescale are built for that |
+| a second inference regime, priced | a whole-page pass at cell resolution is a different compute profile, and `OMR_IMGSZ`'s own sweep says larger is not better |
+| a reason to expect it to win | ⚠️ **none is on the record** — the `staff` class's only real consumer in the tree is inside `hairpin_detection.py`, a module with zero call sites |
+
+⚠️ **The non-consumption is confirmed and is stronger than "nothing reads it"**:
+of the sites holding the class string, one is a category map, one is a
+measurement-path exclusion, two are docstring prose, and the only consumer is in
+an unwired module. What is NOT established is that consuming it would help.
 
 ---
 
@@ -195,7 +286,7 @@ in general and **none of them was measured in general.**
 | add 6 custom classes to YOLO (barlines, textDynamic) | F1 **98.8% → 79.3%** | **1 training run, 49 train images**, mechanism diagnosed (`nc` expansion re-inits the head) | the artefact is committed |
 | clef-targeted fine-tune | alto/tenor still confused; dense noteheads **2506 → 114** | 1 fine-tune + 1 corrected retrain | yes |
 | fine-tune on the scan-label corpus | whole classes → **exactly 0** (tie 249→0, beam 188→0, restWhole 396→0) | **11 method arms** — the best-covered refutation here | yes |
-| ScoreAug / Augraphy domain augmentation | dense real-cell recall **0.652 → 0.122** | ⚠️ **1 comparison, and `benchmarks/omr-detection-probe-2026-07/findings.md` says the probe JSONs were SCRATCH and never committed.** The number survives only in prose | ⚠️ **NO** — see §6 |
+| ScoreAug / Augraphy domain augmentation | dense real-cell recall **0.652 → 0.122** | ⚠️ **1 comparison, and the provenance is thinner than an earlier draft of this row said.** The figures are at `benchmarks/omr-first-run-2026-08/DURATIONS.md:105`, **not** in the detection probe, and that line cites a MEMORY FILE (`[[project_domain_augmentation]]`) rather than an artefact. The "probe JSONs were scratch" disclaimer is real but sits at `benchmarks/omr-detection-probe-2026-07/findings.md:67` and covers **that file's own numbers**, not these | ⚠️ **NO** — see §6 |
 | component clustering for key signatures on scans | **2 of 12** vs templates' 11 of 12 | 1 page (Beethoven 5 p.1), given the correct clef | yes |
 | counting key-signature markers | 6 of 10 staves; errors +1, +1, +2, +5 | 1 page (WTC p.17) | yes |
 | gap-distance system grouping | ranges overlap (17–237 vs 130–345) | 2 works — but the refutation is **arithmetic**, so it travels | yes |
@@ -203,30 +294,83 @@ in general and **none of them was measured in general.**
 | **reading** the family bracket | 5/22 and 1/15 — loses to inferring | same | yes, and see §5 |
 | ink coverage / whitespace gutters as meter discriminators | invert / no separation | the timesig corpus | yes |
 | `OMR_ARC_RECLASS` grammar veto | engraved +2, scan **+130** | **both families, per direction** — well scoped | yes |
-| arc `drop` instead of `move` | 2,388 vs 2,371 edits — **better, and refused** | pooled scan | yes |
+| arc `drop` instead of `move` | ⚠️ **2,388 vs the SHIPPED arm's 2,371 — `drop` is WORSE.** It beats only the *comparable* move arm at the same margin (2,388 vs 2,411), which is the **arm-for-arm** qualifier CLAUDE.md keeps. Refused on the **arc-count control**: pooled slurs 199 → **183** against a truth of **241**, i.e. away from the truth, where move goes 199 → 207 | pooled engraved, `benchmarks/omr-arc-attribution-2026-09/FINDINGS.md:155-178` | yes |
 | beam `replace` instead of `kept` | 0.1855 vs 0.1861 — **better, and refused** | 3-work era + authored fixtures | ⚠️ the 3-work era no longer exists |
 | loosening `instruments.lookup` | prototyped, **collision-free**, not adopted | 1422 margin labels | yes |
 | a calibrated identity probability | ECE 0.1277 / 0.1301 | n=197, and the diagnosis is the **corpus** | yes |
 
-⚠️ **Two of these were refused while SCORING BETTER** (arc `drop`, beam
-`replace`). Both were refused because the metric rewards emitting fewer symbols.
-That is the single most useful thing in this table for a future agent: **a better
-number is not automatically a better reader here**, and the ledger records the
-refusal so nobody "discovers" the improvement again.
+⚠️ **Two arms were refused against a favourable number, and the two refusal
+GROUNDS are different — which is more useful than the generalisation an earlier
+draft of this row made.**
+
+| arm | its number | refused on |
+|---|---|---|
+| **beam `replace`** | pooled **0.1855 / 1310 edits against `kept`'s 0.1861 / 1315** — genuinely better, by five edits | **a control**: it is the only arm that regresses an authored fixture, and it takes the `×4` family (notes that lost every beam they had) from 4 to **7** |
+| **arc `drop`** | ⚠️ **NOT better than the shipped arm** — 2,388 against 2,371. Better only **arm-for-arm**, against the move arm at the same margin (2,388 vs 2,411) | **a count control**: slurs 199 → **183** against a truth of **241**, moving away from it, while move goes 199 → 207 |
+
+⚠️ **An earlier draft of this row said `drop` was "refused at a better score" and
+paired it against 2,371. That is backwards, and it is the specific error this
+table exists to prevent** — a future agent checks, finds 2,388 > 2,371, concludes
+the ledger is wrong, and re-opens `drop`. The qualifier CLAUDE.md carries is
+**arm-for-arm**; dropping it inverts the claim. Corrected 2026-09-07 against
+`FINDINGS.md:155-178`.
+
+**What survives, and it is the useful half:** in this project a favourable
+pooled number is not sufficient to ship, because OMR-NED is symmetric and rewards
+emitting fewer symbols. **But the ground of refusal has to be quoted with the
+arm** — one of these was refused despite a better score, the other despite a
+better *comparable* score, and only a control settled either.
+
+---
+
+## 4.1 ⚠️ And every ADOPTION has a scope too — the thesis is symmetric
+
+§4 scopes what was refused. An earlier draft stopped there, which is
+half-applying its own argument: a shipped default is a measurement too, and a
+default whose scope does not cover the population it fires on is the same
+hazard pointing the other way.
+
+| shipped default | the measurement that adopted it | scope | fires on |
+|---|---|---|---|
+| **`_UNLADDERED_NOTEHEAD_MAX_CONF = 0.65`** | an empty gap: fakes 0.45–0.53, lowest real 0.76 | ⚠️ **3 ENGRAVED works** (`LADDER_EVIDENCE_2026-09-01.md:72-85`) | **351 scan / 28 engraved deletions — 12.5× more often on the family it was NOT measured on**, where the surviving population is continuous through it (`DECISION_TYPES.md` §4.4) |
+| `OMR_ARC_ATTRIBUTION=move` | pooled 2,473 → 2,371 edits, no work worse | 11 engraved works; the scan gate's two Brahms rows byte-identical | both families |
+| `OMR_CELL_LINE_TRACE` on | ⚠️ pooled **0.8387 → 0.8345 — worse** — adopted on the attribution: −217 of −233 edits fall on exactly the three tilted rows | the widened 20-row scan gate | scans; engraved is a no-op by construction |
+| `OMR_CHOIR_GROUPING` on | Bach row 0.9241 → 0.8152; 10 pooled scan rows byte-identical; engraved edit-for-edit identical | **1 stress row** + a 969-page structural probe | both |
+| `OMR_BRACKET_COLUMNS` on | 22/22 and 15/15 against hand-read print truth | **2 publishers, 37 systems** | both |
+| `OMR_LEFT_EDGE_SPLIT` on | 27 over-merged pages fixed vs 1 residual, 0 size-1 systems created | 964 library pages | both |
+| `OMR_DIRECTION_TEXT` on | worth 144 edits, 18.8% of the pooled figure | the engraved orchestral benchmark | both — ⚠️ and see §2.4.1 |
+
+⚠️ **The first row is the one to carry forward**: an adoption measured on the
+family where it barely fires, applied to the family where it does 92.6% of its
+work. That is not an argument to change it — the constant may be exactly right —
+it is an argument that **the scope belongs beside the default in the knobs
+table**, where today only the measurement appears.
+
+⚠️ **The third row is the honest counter-example to the whole table**:
+`OMR_CELL_LINE_TRACE` ships while making the pooled figure WORSE, because the
+attribution showed the damage was concentrated where the mechanism predicts. A
+scope column would have flagged it and been wrong to. **Scope is context for a
+decision, never a substitute for one.**
 
 ---
 
 ## 5. UNREACHABLE — built, sometimes measured, not wired
 
-⚠️ **Trap 2. These are merges, not research.** Verified by
-`grep -rn <module> tools/ backend/` excluding the module's own file and its
-tests:
+⚠️ **Trap 2. These are merges, not research.**
+
+⚠️ **The rows do not share one method, and an earlier draft said they did.**
+Three of them (`hairpin_detection`, `bracket_reader`, `template_matcher`) are
+verified by `grep -rn <module> tools/ backend/` minus the module's own file and
+its tests. **`staff_labels_human` is NOT one of them** — it has real call sites
+at `contextual.py:860-861`; what is unreachable is the *path to them* from
+`transcribe`. The other two rows are neither: one is an unset env var and one is
+an unpassed keyword. **The column below states each row's own evidence.**
 
 | module | size | state | evidence |
 |---|--:|---|---|
 | **`hairpin_detection.py`** | 344 lines | classical-CV hairpin reader; its own docstring reports *"59 of 99 hairpins against the detector's 1"* | **zero call sites.** And the gap it addresses is live: **0 hairpin detections on 11 scan pages** against a truth of 198 `<wedge>` |
 | **`bracket_reader.py`** | 390 lines | reads the printed bracket | **zero call sites** — and here the verdict is **REFUTED *and* UNREACHABLE**: `ceadb7bb` measured reading at 5/22 and 1/15 against inferring's 22/22 and 15/15. ⚠️ **Do not merge this one**; it is on the list to stop someone finding it and assuming it was forgotten |
-| **`staff_labels_human.py`** | 205 lines | the human rung of the label cascade | **unreachable from `transcribe`** by construction (`_contextual_call_kwargs` synthesises the assist mode). Observed reach 0/0 |
+| **`staff_labels_human.py`** | 205 lines | the human rung of the label cascade | ⚠️ **it HAS call sites** — `contextual.py:860-861` — and is still unreachable **from `transcribe`**, because `_contextual_call_kwargs` (`transcribe.py:4006`) synthesises `Assist("vision" if vision_fallback else "none")` and never `"human"`. Reachable only by a tool calling `apply_contextual_analysis` directly. Observed reach **0 / 0** |
 | **`template_matcher.detect_symbols`** | — | the Phase-2 detector | survives only as the home of the `SymbolDetection` dataclass, which `yolo_detector.py:41` and `pitch_resolver.py:8` import. Two live env flags (`OMR_PHASE26_FIXES`, `OMR_PHASE28_FIX_TEXT_GATE`) gate dead code |
 | **`OMR_ROSTER_LABELS`** | — | measured, hand-adjudicated 28/28 correct | **production reach NIL** — it needs `OMR_WORK_ID` and *nothing sets it*. ⚠️ Wiring, not measurement, is the prerequisite |
 | **`locate_clef(trace=…)`** | — | the veto chain's own recorder | **no pipeline call site passes a trace** (`grep -rn "trace=" tools/omr/*.py` → nothing) |
@@ -245,12 +389,60 @@ MEASUREMENTS richly and RATIONALES thinly**, and these are the places where the
 
 | row | what is missing |
 |---|---|
-| **staff-line detection by CV** | ⚠️ **UNDOCUMENTED — no rationale recorded anywhere.** The `staff` class exists, fires 2,729 times across both corpora, and nothing says why staff detection does not consult it. Plausibly it predates the detector; that is a guess and I am not recording it as a reason |
+| **staff-line detection by CV** | ⚠️ **UNDOCUMENTED — no rationale recorded anywhere**, and an independent `git log -S` / `--grep` / prose sweep found none either. The `staff` class exists and fires 2,729 times across both corpora. ⚠️ **The ORDERING is now established (§3): `detect_staves` runs before the detector and the class does not yet exist when it decides.** That is a structural account of why the question never arose — it is **not** a recorded rationale for the design, and I am not promoting it to one |
 | **stage-1 constants** (`window_size=25`, `k=0.2`, the 0.1° dead band, `max_correction_deg=5.0`) | **UNDOCUMENTED** — the decision map already calls stage 1 *"the shallowest-evidence stage in the pipeline"*; none of the four is tied to a measurement |
 | **ScoreAug / Augraphy** | the NUMBER is recorded (0.652 → 0.122) and **the evidence is not** — the source says the probe JSONs were scratch and never committed. ⚠️ A refutation nobody can re-run is one bad memory away from being re-tried |
 | **`_page_ink`'s grey 180** (`direction_text.py:278`) | a bare literal; the only stated reason is that Sauvola is tuned for staff lines, with no sweep |
 | **why the meter specialist overwrites unconditionally while the clef specialist is gap-fill** (`transcribe.py:1769` vs `:1772`) | the comment explains only that the two are *independent*, never why the precedence differs. See `DECISION_TYPES.md` §R4 — and note it is **inert**: reach 0 on both corpora |
 | **`_detect_key_sig_from_cell`'s count fallback** | documented, and **documented wrongly** — *"a reading is never lost, only improved on"* is false mid-staff, where it turns 4 sharps into 1 (`DECISION_TYPES.md` §R8.1) |
+
+---
+
+## 6.1 ⚠️ RECONCILED — "direction text is ~75% of wall clock" and "19.2%" are two REGIMES, not a contradiction
+
+The decision map states **~75% of wall clock on a whole-work run** in three
+places, unqualified. The verifier measured a **median of 19.2%** over the
+committed transcriptions. I reproduce that independently
+(`out/probe_direction_share.txt`): **n = 22, min 11.2%, median 19.2%, max
+84.5%**.
+
+⚠️ **And the decisive fact is in the same probe: all 22 are
+`n_pages_processed == 1`.** Every committed transcription is a single-page
+benchmark run. The 75% figure is from an **88-page whole-work run**. They are
+not measurements of the same thing.
+
+**They are consistent, and two mechanisms independently push the same way:**
+
+1. **Fixed costs amortise in the opposite direction.** A single-page run pays
+   the YOLO weights load and Surya's 650M GGUF load once, against one page of
+   direction-text work — so the one-time loads dominate `total_s` and direction
+   text's SHARE is suppressed. Over 88 pages the loads are still paid once while
+   direction text is paid per page, so its share rises with page count.
+2. **Density.** Direction text is per-candidate-crop OCR at 0.5–0.8 s a crop.
+   ⚠️ The tail already proves this alone can reach the headline: the **84.5%**
+   maximum is a *single-page* run (`beethoven-984073-p2`, 284.7 s of 337.1 s), so
+   a dense scan gets there with no page count at all.
+
+**Neither mechanism is isolated by the evidence available**, and I am not
+claiming one dominates.
+
+**The honest sentence, and the correction is to the FRAMING rather than the
+number:**
+
+> On a whole-work run, direction text is the dominant cost — ~75% on the
+> 88-page Beethoven 5 read. On single-page benchmark runs it is a median 19.2%
+> (n=22, 11.2–84.5%), because a one-page run is dominated by model loads that a
+> long run amortises. **Quote the regime with the figure**; the two are
+> consistent and neither is a property of the pipeline alone.
+
+⚠️ **`n_pages_processed` is already on every result JSON**, so any future
+wall-clock claim can carry its regime for free — which is the same discipline
+this project already enforces for page-set regime on identity figures
+(`OMR_MAX_PAGES=5` reading 4/12 where a whole-work run reads 12/12).
+
+⚠️ **The 88-page figure itself is UNVERIFIED here** — no whole-work artefact is
+committed, so I am reconciling a measured distribution against a recorded number,
+not against a second measurement.
 
 ---
 
@@ -276,7 +468,8 @@ MEASUREMENTS richly and RATIONALES thinly**, and these are the places where the
 export OMR_FIXTURE_ROOT=/Users/seanjohnson/Desktop/ReEngrave
 P=.claude/worktrees/nice-nash-085307/benchmarks/omr-pipeline-audit-2026-09/probe
 
-python3 $P/probe_mechanism_attribution.py   # §2, §3 — observed mechanism per target
+python3 $P/probe_mechanism_attribution.py   # §2, §3, §3.1 — observed mechanism and emission per target
+python3 $P/probe_direction_share.py        # §6.1 — wall-clock share WITH its page-set regime
 ```
 
 Read-only, seconds, committed artefacts only; exits **2** rather than printing an

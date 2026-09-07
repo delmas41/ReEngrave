@@ -1317,8 +1317,65 @@ favour rather than against someone else's.
 - Ten probes, all exit 0 on the real tree; the four that glob refuse with a
   non-zero exit on an empty one.
 
+(§T6 below was found after this section was written and is appended rather than
+folded in, because the order it was discovered in is part of the finding.)
+
 **What is still unmeasured, ranked:** the eleven-work noise floor (now cheap to
 schedule and worth it); the same for the default direction-text configuration;
 the `input` ceiling on a second edition; the condensed-staff rate that would give
 human cost a floor; and the 57 remaining harness arms whose export would let the
 project's own purpose be scored on more than two.
+
+## T6. ⚠️ A committed control's hash reproduces on exactly one day — found live, tonight
+
+My structural-floor probe passed its reproduction control **15 of 15 on
+2026-09-06** and **0 of 15 on 2026-09-07**, on unchanged code, unchanged inputs
+and an unchanged transform. The session crossed midnight.
+
+`benchmarks/omr-page-normalise-fixes-2026-09/probe_derived_truth_unmoved.py::_canonical`
+masks music21's random `"I…"` ids and hashes everything else — including
+`<encoding-date>`, which music21 stamps **from the clock**. So
+`derived-truth-bytes.json`'s canonical hashes are reproducible on the day they
+were written and on no other day.
+
+**The proof is exact**: re-inserting `<encoding-date>2026-09-06</encoding-date>`
+into my freshly written derived truths reproduces the committed hash
+`50e21c5b1aa978ef` **byte for byte, on all 15 rows.** Not "close" — identical.
+
+**Why this is worse than a nuisance.** That control's job is to say *"the
+transform did not move."* From today on it says the opposite, loudly and
+falsely, and the next person to run it will read a 0-of-15 failure as evidence
+that `page_normalise` changed. A control that cries wolf on a schedule is worse
+than no control, because it will be believed once and then disabled.
+
+**It is the third instance tonight of one family**, which is why it belongs in
+the stamp requirement rather than in a bug list:
+
+| # | artefact | the hash | what it cannot verify |
+|---|---|---|---|
+| 1 | `results-normalised-arm-20row.json` `sha.normalised_truth` | **raw** sha256 of a re-randomised file | anything — it can never match |
+| 2 | `_canonical`, id mask | masks `"I…"` only | a `<score-part id="P…">`; 840 `I`-ids and 0 `P`-ids across the 15 derived truths today, so **correct today, latently fragile** |
+| 3 | `_canonical`, date | does not mask `<encoding-date>` | **any day but the day it was written — live now** |
+
+**The general rule, and it is the sharpened form of §S1's requirement:**
+
+> A canonical hash must mask **every field the writer derives from its
+> environment** — every random id family *and* the clock — and the stamp must
+> **say which it masked.** A hash that silently depends on the wall clock is a
+> provenance field that becomes a false alarm on a timer.
+
+My own probe now masks both id families and the date, and additionally records
+`reproduces_without_redating` (0 of 15) beside
+`derived_truth_reproduces_committed_control` (15 of 15, re-dated to
+2026-09-06) — so the finding is in the artefact and not only in this prose.
+
+⚠️ **I did not modify the committed control.** It is not mine and `tools/` and
+other agents' benchmarks are read-only tonight; the fix is a two-line change to
+`_canonical` and belongs in its own review, alongside the `[IP]` widening.
+
+**And it retro-justifies the round-2 near-miss.** In round 2 I was one sentence
+from reporting `derived-truth-bytes.json`'s `writer_is_deterministic: true` as a
+false claim, checked `_canonical`, found it masked the ids, and withdrew. That
+was right. It also means I read that function and did not notice it hashes a
+timestamp — the same shape as the round-3 human-cost error: I checked the thing I
+suspected and not the thing beside it.
