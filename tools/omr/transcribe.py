@@ -5351,7 +5351,7 @@ def transcribe(
                 out.setdefault("dossier_warnings", []).extend(meter_warnings)
                 page_dict.setdefault("dossier_warnings", []).extend(meter_warnings)
 
-        # ── Key-signature corroboration (OMR_KEYSIG_CORROBORATION, OFF) ──
+        # ── Key-signature corroboration (OMR_KEYSIG_CORROBORATION, ON) ──
         # The key-signature analogue of the guard that opens
         # `backfill_page_time_signatures` on the line below. Same shape — a
         # page-scope pass that reverts a mid-staff change nothing corroborates
@@ -5360,10 +5360,13 @@ def transcribe(
         # only by other staves changing AT THE SAME BAR, because transposing
         # instruments legitimately carry different keys.
         #
-        # DEFAULT OFF, and the reason is a measurement limit rather than a
-        # doubt about the mechanism: the corpus holds seven spurious mid-staff
-        # key changes and ZERO real ones, so the benefit is measurable and the
-        # cost is not. See tools/omr/key_signature_corroboration.py.
+        # ON BY DEFAULT SINCE 2026-09-07 (Sean's call). ⚠️ The reason it
+        # shipped OFF the day before was, and remains, a measurement limit
+        # rather than a doubt about the mechanism: the corpus holds seven
+        # spurious mid-staff key changes and ZERO real ones, so the benefit is
+        # measurable and the cost — whether the guard ever reverts a genuine
+        # change — is not. Flipping the default did not fill that gap in; it
+        # is still open. See tools/omr/key_signature_corroboration.py.
         if keysig_corroboration_enabled():
             keysig_guard = drop_uncorroborated_key_changes(page_dict)
             if keysig_guard["reverted"]:
