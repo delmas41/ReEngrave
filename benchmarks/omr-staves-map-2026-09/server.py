@@ -79,6 +79,7 @@ from pydantic import BaseModel
 BENCH = Path(__file__).resolve().parent
 sys.path.insert(0, str(BENCH))
 from build_cache import MAIN, SCAN, default_cache  # noqa: E402
+from build_cache import strip_crop_geometry  # noqa: E402
 from merge_additions import prove_normalises  # noqa: E402
 
 OUT_DEFAULT = SCAN / "works.staves-additions.json"
@@ -354,6 +355,15 @@ class StaffPatch(BaseModel):
 def create_app(cache: Path, out: Path) -> FastAPI:
     index = json.loads((cache / "index.json").read_text())
     seeds = {r["row_id"]: r for r in index["rows"]}
+    # ⚠️ THE CROP ORIGIN IS SHIPPED, NOT RE-DERIVED IN THE BROWSER. The overlay
+    # used to recompute it in JavaScript under a comment claiming it was "the
+    # same arithmetic build_cache.py used" — a reimplementation, and the shape
+    # `prove_normalises` exists to prevent. Stamped here rather than baked into
+    # the cache so an existing cache needs no rebuild.
+    for _r in seeds.values():
+        for _sys in _r.get("detected", {}).get("systems", []):
+            if _sys.get("staves"):
+                _sys["crop"] = strip_crop_geometry(_sys["staves"])
     store = Store(out)
     prover = Prover()
 
@@ -736,14 +746,25 @@ function draw(){
     img.src='/img/'+ROW+'/'+seed.images.systems[k];
     img.title='system '+k;box.appendChild(img);
     const cap=document.createElement('div');cap.className='note';
+    // ⚠️ SAY WHY THERE IS NO MARKER. The overlay abstains wherever the join
+    // cannot place this slot's band, which is right — it used to point at the
+    // wrong staff instead — but an unexplained absence reads as a broken tool.
+    const inst0=instancesFor(CUR,seed).find(x=>x.system===Number(k));
+    const why=(inst0&&!inst0.printed)
+      ? '  — slot '+CUR+' is not marked here: '+(inst0.name
+          ? inst0.name : 'no staff of this system carries its parts')
+      : '';
     cap.textContent='system '+(Number(k)+1)+
-      (Number(k)===psys?'  — the proposal is this system\u2019s lineup':'');
+      (Number(k)===psys?'  — the proposal is this system\u2019s lineup':'')+why;
     const hl=document.createElement('div');hl.className='here';box.appendChild(hl);
     strips.appendChild(box);strips.appendChild(cap);
-    if(Number(k)===psys){
-      const place=()=>placeHighlight(img,hl,seed.detected.systems[psys],CUR);
-      img.complete?place():img.onload=place;
-    }
+    // Every system that PRINTS this slot is marked, not only the proposal's —
+    // the join is per system and abstains on its own where it cannot place the
+    // band, so there is nothing left for a psys guard to protect against.
+    const sysi=Number(k);
+    const place=()=>placeHighlight(img,hl,seed.detected.systems[sysi],CUR,
+                                   seed,sysi);
+    img.complete?place():img.onload=place;
   });
   const nn=document.createElement('div');nn.className='note';
   nn.textContent=seed.n_staves_note||'';strips.appendChild(nn);
@@ -871,16 +892,28 @@ function proposalSystemIndex(seed){
   return (i>=0&&i<seed.detected.systems.length)?i:0;
 }
 
-function placeHighlight(img,hl,sys,k){
-  // Same arithmetic build_cache.py used to cut the strip, so the marker lands
-  // on the band the crop is showing rather than near it.
-  const st=sys&&sys.staves[k];
-  if(!st||!img.naturalWidth){hl.style.display='none';return;}
-  const ys=sys.staves;
-  const top=Math.min(...ys.map(s=>s.y0)), bot=Math.max(...ys.map(s=>s.y1));
-  const pad=Math.trunc(Math.max(1,(bot-top)/ys.length)*0.6);
-  const yoff=Math.max(0,Math.trunc(top-pad));
-  const s=0.5*img.clientWidth/img.naturalWidth;   // page px -> displayed px
+function placeHighlight(img,hl,sys,k,seed,sysi){
+  // ⚠️ THE BAND IS FOUND BY PARTS, NOT BY ORDINAL. `sys.staves[k]` indexes the
+  // DETECTED bands by the MAP ENTRY's number, and those are different spaces
+  // the moment a page's map is longer than its detected band list — which is
+  // every Mahler page, because the one-line percussion rules are mapped and
+  // only some are detected. Measured on p2: 21 map entries against 19 bands,
+  // and entry 14 `Kleine Trommel` was marked on the band whose instrument is
+  // `Violin`, 4416 page px away. `instancesFor` already does this join
+  // correctly and ABSTAINS where the lineup and the detection disagree; the
+  // overlay silently did not, which is the whole defect.
+  //
+  // ⚠️ The crop origin is READ, not recomputed — `sys.crop` comes from
+  // build_cache.strip_crop_geometry, the one function that cut the strip.
+  if(!img.naturalWidth||!sys||!sys.crop){hl.style.display='none';return;}
+  const inst=instancesFor(k,seed).find(x=>x.system===sysi);
+  if(!inst||!inst.printed){hl.style.display='none';return;}
+  const st=sys.staves.find(b=>b.staff_index===inst.staff_index);
+  if(!st){hl.style.display='none';return;}
+  const yoff=sys.crop.y_off, div=sys.crop.divisor;
+  // page px -> saved-strip px is /divisor; saved-strip px -> displayed px is
+  // clientWidth/naturalWidth, because the strip is shown at width:100%.
+  const s=(img.clientWidth/img.naturalWidth)/div;
   hl.style.display='block';
   hl.style.top =(img.offsetTop+(st.y0-yoff)*s-3)+'px';
   hl.style.height=Math.max(4,(st.y1-st.y0)*s+6)+'px';

@@ -379,6 +379,27 @@ def _font(size: int):
     return ImageFont.load_default()
 
 
+def strip_crop_geometry(staves) -> dict:
+    """WHERE the system strip was cut, and by how much it was shrunk.
+
+    ⚠️ THE ONE PLACE THIS IS COMPUTED. `write_images` cuts the strip with it and
+    the confirmation UI's overlay positions itself with it, so the marker cannot
+    drift away from the crop it is drawn on. It used to be reimplemented in
+    JavaScript under a comment claiming "same arithmetic build_cache.py used" —
+    which was true of the numbers and false of the structure, and a
+    reimplementation only has to be right until somebody edits one copy.
+
+    `y_off` is the page-pixel row the strip starts at; `divisor` is the resize
+    factor applied afterwards. A band's y in the SAVED strip is therefore
+    `(int(y) - y_off) // divisor`, which is exactly what the boxes are drawn at.
+    """
+    top = int(min(st["y0"] for st in staves))
+    bot = int(max(st["y1"] for st in staves))
+    band_h = max(1.0, (bot - top) / max(1, len(staves)))
+    pad = int(band_h * 0.6)
+    return {"y_off": max(0, top - pad), "y_end": bot + pad, "divisor": 2}
+
+
 def write_images(page_img, geom: dict, out_dir: Path, force: bool) -> dict:
     from PIL import Image, ImageDraw
 
@@ -391,21 +412,19 @@ def write_images(page_img, geom: dict, out_dir: Path, force: bool) -> dict:
 
     for sysi, s in enumerate(geom["systems"]):
         # ---- the system's whole margin strip, every band boxed and indexed
-        top = int(min(st["y0"] for st in s["staves"]))
-        bot = int(max(st["y1"] for st in s["staves"]))
-        band_h = max(1.0, (bot - top) / max(1, len(s["staves"])))
-        pad = int(band_h * 0.6)
-        y_off = max(0, top - pad)
-        strip = full.crop((0, y_off, crop_w, min(H, bot + pad)))
+        crop = strip_crop_geometry(s["staves"])
+        y_off = crop["y_off"]
+        strip = full.crop((0, y_off, crop_w, min(H, crop["y_end"])))
         # ⚠️ Box and label AFTER the downscale, not before: drawing at full
         # resolution and then halving makes the index labels unreadable, which
         # is the one thing the strip exists to say.
-        strip = strip.resize((max(1, strip.width // 2), max(1, strip.height // 2)))
+        strip = strip.resize((max(1, strip.width // crop["divisor"]),
+                              max(1, strip.height // crop["divisor"])))
         d = ImageDraw.Draw(strip)
         font = _font(26)
         for k, st in enumerate(s["staves"]):
-            y0 = (int(st["y0"]) - y_off) // 2
-            y1 = (int(st["y1"]) - y_off) // 2
+            y0 = (int(st["y0"]) - y_off) // crop["divisor"]
+            y1 = (int(st["y1"]) - y_off) // crop["divisor"]
             d.rectangle([44, y0, strip.width - 3, y1],
                         outline=(220, 30, 30), width=3)
             d.text((4, (y0 + y1) // 2 - 14), f"{k}", fill=(220, 30, 30), font=font)
