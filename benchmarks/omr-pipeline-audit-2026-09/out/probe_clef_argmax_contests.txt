@@ -1,0 +1,45 @@
+=== scan
+ cells with a clef det: first cell of staff = 172  LATER cell = 25
+ different-class argmax pairs (winner, conf, runner-up, conf):
+    ('clefF', 0.65, 'clefG', 0.31) x 1
+    ('clefF', 0.91, 'clefG', 0.85) x 1
+    ('clefCAlto', 0.4, 'clefG', 0.34) x 1
+    ('clefF', 0.82, 'clefG', 0.67) x 1
+    ('clefF', 0.9, 'clefCAlto', 0.44) x 1
+    ('clefG', 0.93, 'clefF', 0.32) x 1
+    ('clefG', 0.9, 'clefF', 0.9) x 1
+    ('clefF', 0.9, 'clefG', 0.6) x 1
+    ('clefCAlto', 0.6, 'clefCTenor', 0.27) x 1
+    ('clefF', 0.92, 'clefCTenor', 0.88) x 1
+    ('clefF', 0.91, 'clefG', 0.68) x 1
+    ('clefG', 0.93, 'clefF', 0.36) x 1
+ staves with a mid-staff clef CHANGE:
+    ('beethoven-sym5-mvt1-575951-p2', 8, 'detector', 'Violin', ['treble', 'treble', 'treble', 'treble', 'treble', 'treble', 'treble', 'bass'])
+    ('beethoven-sym5-mvt1-575951-p2', 20, 'detector', 'Violin', ['alto', 'treble', 'treble', 'treble', 'treble', 'treble', 'treble', 'treble'])
+    ('beethoven-sym5-mvt1-984073-p1', 9, 'detector', 'Viola', ['alto', 'alto', 'alto', 'alto', 'bass', 'bass', 'bass', 'bass'])
+    ('beethoven-sym5-mvt1-984073-p1', 11, 'detector', 'Contrabass', ['bass', 'bass', 'bass', 'treble', 'treble', 'treble', 'treble', 'treble'])
+    ('beethoven-sym5-mvt1-984073-p2', 8, 'detector', 'Violin', ['treble', 'treble', 'treble', 'treble', 'treble', 'treble', 'bass', 'bass'])
+    ('brahms-sym1-mvt1-317803-p1', 9, 'detector', 'Violin', ['treble', 'treble', 'treble', 'bass', 'bass', 'bass', 'bass', 'bass'])
+    ('brahms-sym1-mvt1-317803-p1', 12, 'detector', 'Cello', ['tenor', 'tenor', 'tenor', 'tenor', 'tenor', 'bass', 'bass', 'bass'])
+    ('brahms-sym1-mvt1-317803-p2', 2, 'detector', 'Clarinet', ['treble', 'treble', 'treble', 'bass', 'bass', 'bass', 'bass'])
+    ('brahms-sym1-mvt1-317803-p2', 11, 'detector', 'Viola', ['alto', 'alto', 'alto', 'alto', 'alto', 'bass', 'bass'])
+    ('mahler-sym5-mvt1-local-p3', 6, 'detector_header', 'Trombone', ['bass', 'bass', 'bass', 'tenor', 'tenor', 'tenor', 'tenor', 'tenor'])
+    ('mahler-sym5-mvt1-local-p3', 10, 'detector_header', 'Violin', ['treble', 'treble', 'treble', 'tenor', 'tenor', 'tenor', 'tenor', 'tenor'])
+=== engraved
+ cells with a clef det: first cell of staff = 220  LATER cell = 10
+ different-class argmax pairs (winner, conf, runner-up, conf):
+    ('clefF', 0.96, 'clefG', 0.41) x 2
+    ('clefF', 0.96, 'clefG', 0.88) x 2
+    ('clefG', 0.97, 'clefF', 0.88) x 1
+    ('clefF', 0.96, 'clefG', 0.92) x 1
+    ('clefF', 0.96, 'clefG', 0.66) x 1
+    ('clefF', 0.96, 'clefG', 0.83) x 1
+    ('clefF', 0.96, 'clef8', 0.55) x 1
+    ('clefCTenor', 0.95, 'clefG', 0.82) x 1
+    ('clefCAlto', 0.97, 'clefF', 0.83) x 1
+    ('clefCAlto', 0.97, 'clefF', 0.63) x 1
+    ('clefF', 0.96, 'clef8', 0.81) x 1
+    ('clefF', 0.96, 'clefUnpitchedPercussion', 0.58) x 1
+    ('clefF', 0.96, 'clefG', 0.59) x 1
+    ('clefF', 0.96, 'clefG', 0.31) x 1
+ staves with a mid-staff clef CHANGE:

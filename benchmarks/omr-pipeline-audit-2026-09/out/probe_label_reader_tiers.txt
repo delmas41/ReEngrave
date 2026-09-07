@@ -1,0 +1,3 @@
+rows 11
+label_tiers (which reader supplied labels): {'text_layer': 12, 'surya': 134, 'tesseract': 7, 'vision': 0, 'human': 0}
+{'labelled_staves': 132, 'unresolved': 15, 'low_conf': 1, 'instruments_from_score_order': 32}

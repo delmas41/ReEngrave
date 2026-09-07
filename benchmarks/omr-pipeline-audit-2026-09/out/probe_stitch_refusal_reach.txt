@@ -1,0 +1,6 @@
+=== scan: rows where _stitch_slots JOINS = 9, REFUSES = 2
+   parts emitted: 120 continuous (joined rows) + 51 per-system fragments (refused rows)
+    refused: ('bach-brandenburg3-mvt1-468678-p1', [12, 3, 3, 3, 1, 2])
+    refused: ('brahms-sym1-mvt1-317803-p2', [14, 13])
+=== engraved: rows where _stitch_slots JOINS = 11, REFUSES = 0
+   parts emitted: 224 continuous (joined rows) + 0 per-system fragments (refused rows)

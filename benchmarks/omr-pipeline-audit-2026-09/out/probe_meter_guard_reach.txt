@@ -1,0 +1,8 @@
+=== scan: 11 pages, 2235 measures
+   uncorroborated meter changes REVERTED: 21
+   rhythm_reconciliations: 3
+   measures carrying rhythm_sum_warning: 111 (5.0%)  severity {'high': 88, 'low': 23}
+=== engraved: 11 pages, 1517 measures
+   uncorroborated meter changes REVERTED: 0
+   rhythm_reconciliations: 0
+   measures carrying rhythm_sum_warning: 12 (0.8%)  severity {'high': 11, 'low': 1}

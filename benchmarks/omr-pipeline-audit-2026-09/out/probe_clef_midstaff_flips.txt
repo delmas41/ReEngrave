@@ -1,0 +1,25 @@
+-- beethoven-sym5-mvt1-575951-p2 staff 8 inst=Violin staff.clef=treble src=detector
+    m7: treble -> bass  clefdets=[('clefF', 0.68)]
+-- beethoven-sym5-mvt1-575951-p2 staff 20 inst=Violin staff.clef=alto src=detector
+    m1: alto -> treble  clefdets=[('clefG', 0.58)]
+-- beethoven-sym5-mvt1-984073-p1 staff 9 inst=Viola staff.clef=alto src=detector
+    m4: alto -> bass  clefdets=[('clefF', 0.59)]
+-- beethoven-sym5-mvt1-984073-p1 staff 11 inst=Contrabass staff.clef=bass src=detector
+    m3: bass -> treble  clefdets=[('clefG', 0.66)]
+-- beethoven-sym5-mvt1-984073-p2 staff 8 inst=Violin staff.clef=treble src=detector
+    m6: treble -> bass  clefdets=[('clefF', 0.73)]
+-- brahms-sym1-mvt1-317803-p1 staff 9 inst=Violin staff.clef=treble src=detector
+    m3: treble -> bass  clefdets=[('clefF', 0.32)]
+-- brahms-sym1-mvt1-317803-p1 staff 12 inst=Cello staff.clef=tenor src=detector
+    m5: tenor -> bass  clefdets=[('clefF', 0.82)]
+-- brahms-sym1-mvt1-317803-p2 staff 2 inst=Clarinet staff.clef=treble src=detector
+    m3: treble -> bass  clefdets=[('clefF', 0.35)]
+-- brahms-sym1-mvt1-317803-p2 staff 11 inst=Viola staff.clef=alto src=detector
+    m5: alto -> bass  clefdets=[('clefF', 0.41)]
+-- mahler-sym5-mvt1-local-p3 staff 6 inst=Trombone staff.clef=bass src=detector_header
+    m3: bass -> tenor  clefdets=[('clefCTenor', 0.6)]
+-- mahler-sym5-mvt1-local-p3 staff 10 inst=Violin staff.clef=treble src=detector_header
+    m3: treble -> tenor  clefdets=[('clefCTenor', 0.55)]
+
+mid-staff clef flips: 11
+would be blocked by a confidence floor at: {0.3: 0, 0.4: 2, 0.5: 3, 0.6: 6, 0.7: 9, 0.8: 10}

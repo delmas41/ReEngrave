@@ -1,0 +1,25 @@
+different-class contests by category: {'structural': 295, 'notehead': 18, 'accidental': 31, 'flag': 47, 'rest': 2, 'dynamic': 38, 'clef': 1, 'ornament': 3, 'time_sig_digit': 1}
+   ('beam', 'tie') 118
+   ('slur', 'tie') 74
+   ('beam', 'slur') 71
+   ('dynamicF', 'dynamicP') 22
+   ('flag16thUp', 'flag8thUp') 18
+   ('staff', 'tie') 18
+   ('accidentalFlat', 'accidentalNatural') 15
+   ('noteheadBlackInSpace', 'noteheadBlackOnLine') 13
+   ('flag16thDown', 'flag32ndDown') 12
+   ('flag16thUp', 'flag32ndUp') 9
+   ('accidentalFlat', 'keyFlat') 8
+   ('dynamicF', 'dynamicS') 8
+   ('ledgerLine', 'tie') 5
+   ('noteheadBlackOnLine', 'noteheadHalfOnLine') 4
+   ('flag16thDown', 'flag8thDown') 4
+
+scan: detections_kept=16706 noteheads_kept=4339
+   cross-staff duplicates removed = 1446  (8.7% of kept detections)
+   clipped notehead fragments     = 101 (2.33% of kept noteheads)
+   unladdered noteheads dropped   = 351 (8.09% of kept noteheads)
+engraved: detections_kept=8523 noteheads_kept=1557
+   cross-staff duplicates removed = 2592  (30.4% of kept detections)
+   clipped notehead fragments     = 46 (2.95% of kept noteheads)
+   unladdered noteheads dropped   = 28 (1.80% of kept noteheads)

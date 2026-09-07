@@ -1,0 +1,60 @@
+{
+ "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_human_cost.py",
+ "what": "review cost on the IDENTITY axis \u2014 staff records a human must open because the name is missing or contradicted by the page",
+ "definition": {
+  "costly": "not `named`, OR `contradicted` by the staff's own margin label. Counted once.",
+  "floor_candidate": "records where NO margin label was read at all AND nothing was emitted \u2014 unnameable from the page, so irreducible by pipeline work."
+ },
+ "not_this": "note-level review load, which is the larger half and has no harness at all",
+ "source": "benchmarks/omr-identity-harness-2026-09/out/records.json",
+ "era_key": "identity-harness|2026-09-07|1571 graded records|58 replay arms + 1 transcription",
+ "\u26a0\ufe0f_clef_regime": "58 of the harness's 59 arms are clef-blind REPLAYS and exactly one is a transcription (backlog F). A human-cost figure needs a clef-regime stamp beside its page-set regime stamp; these arms are not interchangeable.",
+ "\u26a0\ufe0f_VERDICT": {
+  "reproducible_from_committed_artefacts": false,
+  "why": "FINDINGS.md reports human cost as 197 over 3543 records, decomposed 150 contradicted-only / 24 unnamed / 15 not-in-this-work / 8 both. The COMMITTED records.json holds 1571 records across 2 arms and carries no `not-in-this-work` field and no unnamed record at all (0 of 1571). So only the `contradicted` component is reproducible here: 26 of 1571 = 0.0166. The project's stated PURPOSE is measured in exactly one place and that place cannot be re-derived from the tree.",
+  "floor_is_not_measurable_here": "0 records are unnamed, so this definition's floor computes to 0 \u2014 which would say a perfect pipeline leaves a reviewer nothing to do, contradicting the identity scope's own claim. The floor is OPEN, not zero.",
+  "what_it_would_take": "export the harness's full record set (3543 rows, all four cost categories) as a committed artefact, and define the floor as staves unnameable FROM THE PAGE \u2014 which needs the label-evidence channel recorded per record, the same gap backlog F names for clefs."
+ },
+ "arms": [
+  {
+   "arm": "beet5/shipped",
+   "n_records": 807,
+   "accuracy": 0.9913258983890955,
+   "human_cost_records": 15,
+   "human_cost_rate": 0.01858736059479554,
+   "decomposition": {
+    "unnamed": 0,
+    "contradicted": 15,
+    "both": 0
+   },
+   "floor_candidate": {
+    "staves_with_no_label_read": 283,
+    "of_those_also_unnamed": 0,
+    "floor_rate": 0.0
+   }
+  },
+  {
+   "arm": "brahms1/fit=search,spans=on",
+   "n_records": 764,
+   "accuracy": 0.9698952879581152,
+   "human_cost_records": 11,
+   "human_cost_rate": 0.014397905759162303,
+   "decomposition": {
+    "unnamed": 0,
+    "contradicted": 11,
+    "both": 0
+   },
+   "floor_candidate": {
+    "staves_with_no_label_read": 108,
+    "of_those_also_unnamed": 0,
+    "floor_rate": 0.0
+   }
+  }
+ ],
+ "orthogonality": {
+  "n_comparable_arm_pairs": 0,
+  "pairs_where_accuracy_moved_10_or_more_records": 0,
+  "of_those_human_cost_unchanged": 0,
+  "examples": []
+ }
+}

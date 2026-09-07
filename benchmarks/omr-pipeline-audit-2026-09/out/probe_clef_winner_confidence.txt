@@ -1,0 +1,18 @@
+=== scan: winning clef detections n=197
+   conf p10=0.582 p25=0.792 median=0.904 p75=0.939
+   winners under 0.3: 3
+   winners under 0.4: 10
+   winners under 0.5: 14
+   winners under 0.6: 22
+   winning classes: {'clefG': 116, 'clefF': 68, 'clefCAlto': 9, 'clefCTenor': 4}
+   octave markers detected: {}
+   staves with clef_source None -> positional default: {'treble': 20, 'bass': 8, 'alto': 2}
+=== engraved: winning clef detections n=230
+   conf p10=0.957 p25=0.96 median=0.969 p75=0.973
+   winners under 0.3: 0
+   winners under 0.4: 3
+   winners under 0.5: 5
+   winners under 0.6: 5
+   winning classes: {'clefG': 142, 'clefF': 67, 'clefCAlto': 13, 'clefCTenor': 5, 'clefUnpitchedPercussion': 3}
+   octave markers detected: {'clef8': 2}
+   staves with clef_source None -> positional default: {'treble': 2}
