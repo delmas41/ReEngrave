@@ -22,7 +22,8 @@ never written down.
 ## The field
 
 `MeasureCell.pad_above_staff_lines` / `.pad_below_staff_lines`, floats in staff
-spaces, populated in `measure_extractor._build_measure_cell`.
+spaces, populated in `measure_extractor._build_measure_cell`. The value is
+always one of two constants — the point is **which**, per cell and per side.
 
 **PER-CELL, NOT PER-MODULE, and that is the whole design point.** The pad
 starts at the module constant and GROWS to `PAD_MAX_STAFF_LINES` on whichever
@@ -48,21 +49,26 @@ The derivation stays. Two reasons, and neither is caution for its own sake:
 
 - its abort-on-frame-mismatch is a **safety property** over irreplaceable human
   verdicts, not a workaround to optimise away;
-- **every batch cut before this field existed has a manifest recording no pad
-  at all**, so the derivation is the only thing that can read those. The field
-  can only ever help manifests written from here on, and no cutter writes it to
-  a manifest yet.
+- **no batch carries this field at all, and none will until a cutter changes.**
+  It is not merely that legacy manifests lack it: no manifest writer anywhere
+  in `annotate/`, `run_pipeline.py` or `transcribe.py` emits it, so every batch
+  cut from here on lacks it too. The derivation is the only thing that can read
+  *any* batch, today and after this lands.
 
 Record first, decide later — including deciding not to.
 
 ## Agreement with the derivation — `probe/probe_pad_vs_derivation.py`
 
-Per (page × mode): cut the page under mode M, write a **legacy-shaped manifest
-with no pad field**, hand it to `choose_mode_and_cut`, and check (a) the
-derivation recovers M, (b) every re-cut cell's recorded pad is consistent with
-the derived mode, (c) at least one cell's recorded pad is **inconsistent with
-the mode not chosen** — without (c) a page whose every cell grew to the ceiling
-would "agree" with both modes and prove nothing.
+**Read the anti-vacuity clause first, because it is the difference between this
+probe and a green tick.** A cell grown to the ceiling on both sides records
+`(6.0, 6.0)` under *either* padding mode, so a page whose every cell grew that
+way would "agree" with both modes and prove nothing. The probe therefore
+requires that **at least one cell's recorded pad be inconsistent with the mode
+that was NOT chosen**, and fails loudly (`VACUOUS`) otherwise.
+
+Around that: cut the page under mode M, write a **legacy-shaped manifest with
+no pad field**, hand it to `choose_mode_and_cut`, and check the derivation
+recovers M and that every re-cut cell's recorded pad is consistent with it.
 
 600 dpi, 678 cells, `RESULT: PASS`:
 
@@ -73,14 +79,38 @@ would "agree" with both modes and prove nothing.
 | Brahms 1 engraved fixture | pipeline | pipeline | 147/147 | 133/147 | — |
 | " | orchestral | orchestral | 147/147 | 133/147 | 133 (pipeline arm) |
 
-⚠️ **The last two columns are equal on both pages and in both directions, and
-that is an independent corroboration rather than a restatement.** The
-right-hand column is the derivation's verdict, computed from canonical widths,
-heights and staff-line ys; the left is the field's, computed from the pad. They
-identify **the same 112 and the same 133 cells** as the ones where the two
-padding modes differ. The remaining 80 / 14 are cells that grew to the ceiling
-on both sides — where the modes are genuinely indistinguishable, and where the
-field says so honestly instead of guessing.
+⚠️ **The last two columns are equal on both pages and in both directions — but
+this is NOT an independent second witness, and an earlier draft of this file
+overclaimed it as one.** The pad *causes* the crop height, which causes the
+canonical scale, which causes `cell_canonical_w/h` and the staff-line ys. The
+field is that cause recorded; the derivation is the same cause observed through
+its effect. There is one underlying fact and one causal path, so the two
+**cannot** disagree about *which* cells differ between modes unless one of them
+is broken — the agreement is a consistency check, not corroboration by a second
+source.
+
+What it is still worth having: they are genuinely **different computations over
+different data** — two floats against three geometric arrays, through separate
+code — so either could break without the other, and the agreement rules out a
+class of bug in each (a pad recorded from the wrong side, a `grown()` branch
+that does not match the crop actually taken, a derivation that matches frames
+by accident).
+
+The remaining 80 / 14 are cells grown to the ceiling on **both** sides, where
+the modes are genuinely indistinguishable. ⚠️ Note what the field does there:
+it records `6.0`, which is true under either mode and **does not flag itself as
+undecidable** — a consumer must already know. That warning now lives in
+`types.py`, where a consumer will look. Measured per-page pad pairs, both cut
+by the pipeline at 600 dpi:
+
+| page | (6,4) | (4,4) | (4,6) | **(6,6) — undecidable** | total |
+|---|--:|--:|--:|--:|--:|
+| Beethoven 5 / Litolff p1 | 32 | 48 | 32 | **80** | 192 |
+| brahms-sym1-mvt1 | 42 | 49 | 42 | **14** | 147 |
+
+**Four distinct pad pairs on one page** is a sharper demonstration of
+"per-cell, not per-module" than the top-staff example above, and 192 − 80 = 112
+and 147 − 14 = 133 reconcile the table exactly.
 
 ## Byte-identity — `probe/run_arms.py` + the audit's `compare_arms.py`
 
