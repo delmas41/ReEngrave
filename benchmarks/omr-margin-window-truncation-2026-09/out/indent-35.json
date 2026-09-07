@@ -1,0 +1,1353 @@
+[
+  {
+    "work_id": "beethoven-sym5-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym5-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym5-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 18,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 81
+    },
+    "omr": {
+      "parts": 18,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 81
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 18
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 81,
+      "omr_notes": 81,
+      "pitch_matched": 81,
+      "pitch_recall": 1.0,
+      "pitch_precision": 1.0,
+      "duration_ok_on_matched": 81,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 1,
+      "pages": [
+        {
+          "n_candidates": 4,
+          "n_read": 2,
+          "n_accepted": 1,
+          "rejected": [
+            "(d = 108)"
+          ],
+          "by_reader": {
+            "surya": 1
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "beethoven-sym5-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym5-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym5-mvt1.musicxml",
+      "omr_ned": 0.029275808936825885,
+      "omr_ed": 38,
+      "pred_symbols": 643,
+      "truth_symbols": 655,
+      "categories": {
+        "wrong note": 4,
+        "wrong note head": 4,
+        "wrong tie": 5,
+        "wrong lyric": 15,
+        "wrong tempo": 1,
+        "wrong dynamic": 9
+      }
+    }
+  },
+  {
+    "work_id": "brahms-sym1-mvt1",
+    "measures": [
+      1,
+      7
+    ],
+    "truth_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym1-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym1-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 21,
+      "measures": 7,
+      "measures_per_part": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "notes": 505
+    },
+    "omr": {
+      "parts": 21,
+      "measures": 7,
+      "measures_per_part": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "notes": 505
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 21
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 505,
+      "omr_notes": 505,
+      "pitch_matched": 483,
+      "pitch_recall": 0.956,
+      "pitch_precision": 0.956,
+      "duration_ok_on_matched": 475,
+      "duration_rate": 0.983
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 14,
+      "pages": [
+        {
+          "n_candidates": 25,
+          "n_read": 14,
+          "n_accepted": 14,
+          "rejected": [],
+          "by_reader": {
+            "surya": 14
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "brahms-sym1-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym1-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym1-mvt1.musicxml",
+      "omr_ned": 0.08514755684567005,
+      "omr_ed": 352,
+      "pred_symbols": 2051,
+      "truth_symbols": 2083,
+      "categories": {
+        "wrong note": 243,
+        "wrong flag/beam": 5,
+        "wrong dot": 1,
+        "wrong tie": 9,
+        "wrong lyric": 6,
+        "wrong clef": 1,
+        "wrong keysig": 6,
+        "wrong tempo": 1,
+        "wrong barline": 21,
+        "wrong direction": 30,
+        "wrong dynamic": 14,
+        "wrong slur": 8,
+        "entire measure insert/delete": 7
+      }
+    }
+  },
+  {
+    "work_id": "mahler-sym5-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mahler-sym5-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mahler-sym5-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 38,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 24
+    },
+    "omr": {
+      "parts": 38,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 25
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 38
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 24,
+      "omr_notes": 25,
+      "pitch_matched": 22,
+      "pitch_recall": 0.917,
+      "pitch_precision": 0.88,
+      "duration_ok_on_matched": 19,
+      "duration_rate": 0.864
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {
+      "dossier_slot_clef": 2
+    },
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 0,
+      "pages": [
+        {
+          "n_candidates": 1,
+          "n_read": 0,
+          "n_accepted": 0,
+          "rejected": [],
+          "by_reader": {},
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "mahler-sym5-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mahler-sym5-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mahler-sym5-mvt1.musicxml",
+      "omr_ned": 0.026701570680628273,
+      "omr_ed": 51,
+      "pred_symbols": 952,
+      "truth_symbols": 958,
+      "categories": {
+        "wrong note": 22,
+        "wrong tuplet": 2,
+        "wrong clef": 8,
+        "wrong keysig": 7,
+        "wrong direction": 5,
+        "wrong dynamic": 1,
+        "wrong crescendo": 1,
+        "entire measure insert/delete": 5
+      }
+    }
+  },
+  {
+    "work_id": "mozart-sym40-mvt1",
+    "measures": [
+      1,
+      5
+    ],
+    "truth_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym40-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym40-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 11,
+      "measures": 5,
+      "measures_per_part": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "notes": 134
+    },
+    "omr": {
+      "parts": 11,
+      "measures": 5,
+      "measures_per_part": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "notes": 135
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 11
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 134,
+      "omr_notes": 135,
+      "pitch_matched": 95,
+      "pitch_recall": 0.709,
+      "pitch_precision": 0.704,
+      "duration_ok_on_matched": 90,
+      "duration_rate": 0.947
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 0,
+      "pages": [
+        {
+          "n_candidates": 4,
+          "n_read": 3,
+          "n_accepted": 0,
+          "rejected": [
+            "Allegro r",
+            "mozart-sym40-mvtl.mxl",
+            "nolto."
+          ],
+          "by_reader": {},
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "mozart-sym40-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym40-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym40-mvt1.musicxml",
+      "omr_ned": 0.17198443579766537,
+      "omr_ed": 221,
+      "pred_symbols": 625,
+      "truth_symbols": 660,
+      "categories": {
+        "wrong note": 131,
+        "wrong flag/beam": 9,
+        "wrong articulation": 31,
+        "wrong direction": 14,
+        "wrong dynamic": 2,
+        "wrong slur": 9,
+        "entire measure insert/delete": 25
+      }
+    }
+  },
+  {
+    "work_id": "mozart-sym41-mvt1",
+    "measures": [
+      1,
+      6
+    ],
+    "truth_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym41-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym41-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 17,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 228
+    },
+    "omr": {
+      "parts": 17,
+      "measures": 6,
+      "measures_per_part": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "notes": 229
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 17
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 228,
+      "omr_notes": 229,
+      "pitch_matched": 226,
+      "pitch_recall": 0.991,
+      "pitch_precision": 0.987,
+      "duration_ok_on_matched": 212,
+      "duration_rate": 0.938
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 1,
+      "pages": [
+        {
+          "n_candidates": 6,
+          "n_read": 1,
+          "n_accepted": 1,
+          "rejected": [],
+          "by_reader": {
+            "surya": 1
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "mozart-sym41-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym41-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym41-mvt1.musicxml",
+      "omr_ned": 0.11031907671418872,
+      "omr_ed": 325,
+      "pred_symbols": 1492,
+      "truth_symbols": 1454,
+      "categories": {
+        "wrong note": 272,
+        "wrong flag/beam": 5,
+        "wrong tuplet": 2,
+        "wrong tie": 7,
+        "wrong dynamic": 12,
+        "wrong slur": 27
+      }
+    }
+  },
+  {
+    "work_id": "beethoven-sym3-mvt1",
+    "measures": [
+      1,
+      8
+    ],
+    "truth_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym3-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym3-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 19,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 80
+    },
+    "omr": {
+      "parts": 19,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 103
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 19
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 80,
+      "omr_notes": 103,
+      "pitch_matched": 78,
+      "pitch_recall": 0.975,
+      "pitch_precision": 0.757,
+      "duration_ok_on_matched": 78,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 2,
+      "pages": [
+        {
+          "n_candidates": 7,
+          "n_read": 5,
+          "n_accepted": 2,
+          "rejected": [
+            "d \\cdot = 60",
+            "cresc. The crescence of the core of the system is suggested by the following facts: 1. The core of the system is consistent with the relationship between the core and the surface of the system. 2. The core of the system is consistent with the relationship between the core and the surface of the system. 3. The core of the system is consistent with the relationship between the core and the surface of the system. 4. The core of the system is consistent with the relationship between the core and the surface of the system. 5. The core of the system is consistent with the relationship between the core and the surface of the system. 6. The core of the system is consistent with the relationship between the core and the surface of the system. 10. The core of the system is consistent with the relationship between the core and the surface of the system.",
+            "Score: CC0 1.0 Universal: Annotations: CC-By-SA"
+          ],
+          "by_reader": {
+            "surya": 2
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "beethoven-sym3-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym3-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym3-mvt1.musicxml",
+      "omr_ned": 0.16557474687313878,
+      "omr_ed": 278,
+      "pred_symbols": 797,
+      "truth_symbols": 882,
+      "categories": {
+        "wrong note": 56,
+        "wrong tie": 1,
+        "wrong articulation": 16,
+        "wrong ornament": 12,
+        "wrong lyric": 9,
+        "wrong tempo": 1,
+        "wrong barline": 6,
+        "wrong direction": 30,
+        "wrong dynamic": 7,
+        "wrong slur": 1,
+        "entire measure insert/delete": 139
+      }
+    }
+  },
+  {
+    "work_id": "brahms-sym4-mvt1",
+    "measures": [
+      1,
+      5
+    ],
+    "truth_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym4-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym4-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 20,
+      "measures": 5,
+      "measures_per_part": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "notes": 136
+    },
+    "omr": {
+      "parts": 20,
+      "measures": 5,
+      "measures_per_part": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "notes": 144
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 20
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 136,
+      "omr_notes": 144,
+      "pitch_matched": 128,
+      "pitch_recall": 0.941,
+      "pitch_precision": 0.889,
+      "duration_ok_on_matched": 115,
+      "duration_rate": 0.898
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 0,
+      "pages": [
+        {
+          "n_candidates": 2,
+          "n_read": 2,
+          "n_accepted": 0,
+          "rejected": [
+            "Allegro non troppo",
+            "Score: CC0 1.8 Universal; Annotations: CC-By-SA"
+          ],
+          "by_reader": {},
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "brahms-sym4-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym4-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym4-mvt1.musicxml",
+      "omr_ned": 0.28580645161290325,
+      "omr_ed": 443,
+      "pred_symbols": 761,
+      "truth_symbols": 789,
+      "categories": {
+        "wrong note": 252,
+        "wrong note head": 4,
+        "wrong flag/beam": 7,
+        "wrong tie": 2,
+        "wrong articulation": 4,
+        "wrong lyric": 3,
+        "wrong direction": 48,
+        "wrong dynamic": 4,
+        "wrong diminuendo": 1,
+        "wrong slur": 27,
+        "entire measure insert/delete": 91
+      }
+    }
+  },
+  {
+    "work_id": "dvorak-sym9-mvt4",
+    "measures": [
+      1,
+      3
+    ],
+    "truth_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/dvorak-sym9-mvt4.musicxml",
+    "omr_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/dvorak-sym9-mvt4.omr.musicxml",
+    "truth": {
+      "parts": 19,
+      "measures": 3,
+      "measures_per_part": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "notes": 40
+    },
+    "omr": {
+      "parts": 18,
+      "measures": 3,
+      "measures_per_part": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "notes": 40
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 18
+    },
+    "notes": {
+      "part_aligned": false,
+      "truth_notes": 40,
+      "omr_notes": 40,
+      "pitch_matched": 39,
+      "pitch_recall": 0.975,
+      "pitch_precision": 0.975,
+      "duration_ok_on_matched": 39,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 0,
+      "pages": [
+        {
+          "n_candidates": 7,
+          "n_read": 0,
+          "n_accepted": 0,
+          "rejected": [],
+          "by_reader": {},
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "dvorak-sym9-mvt4",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/dvorak-sym9-mvt4.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/dvorak-sym9-mvt4.musicxml",
+      "omr_ned": 0.3389830508474576,
+      "omr_ed": 240,
+      "pred_symbols": 335,
+      "truth_symbols": 373,
+      "categories": {
+        "wrong note": 106,
+        "wrong clef": 8,
+        "wrong keysig": 6,
+        "wrong tempo": 1,
+        "wrong direction": 24,
+        "wrong dynamic": 4,
+        "wrong slur": 5,
+        "wrong staff info": 1,
+        "entire measure insert/delete": 33,
+        "entire staff insert/delete": 42,
+        "wrong staff group": 10
+      }
+    }
+  },
+  {
+    "work_id": "tchaikovsky-sym4-mvt2",
+    "measures": [
+      1,
+      8
+    ],
+    "truth_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym4-mvt2.musicxml",
+    "omr_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym4-mvt2.omr.musicxml",
+    "truth": {
+      "parts": 20,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 67
+    },
+    "omr": {
+      "parts": 20,
+      "measures": 8,
+      "measures_per_part": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "notes": 67
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 20
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 67,
+      "omr_notes": 67,
+      "pitch_matched": 65,
+      "pitch_recall": 0.97,
+      "pitch_precision": 0.97,
+      "duration_ok_on_matched": 65,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 1,
+      "pages": [
+        {
+          "n_candidates": 6,
+          "n_read": 2,
+          "n_accepted": 1,
+          "rejected": [
+            "CCII alikovsk\u00fd-sylint-ilv c4.illx1"
+          ],
+          "by_reader": {
+            "surya": 1
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "tchaikovsky-sym4-mvt2",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym4-mvt2.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym4-mvt2.musicxml",
+      "omr_ned": 0.02056555269922879,
+      "omr_ed": 32,
+      "pred_symbols": 770,
+      "truth_symbols": 786,
+      "categories": {
+        "wrong tempo": 1,
+        "wrong direction": 20,
+        "wrong dynamic": 2,
+        "entire measure insert/delete": 9
+      }
+    }
+  },
+  {
+    "work_id": "tchaikovsky-sym6-mvt2",
+    "measures": [
+      1,
+      4
+    ],
+    "truth_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym6-mvt2.musicxml",
+    "omr_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym6-mvt2.omr.musicxml",
+    "truth": {
+      "parts": 17,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "notes": 86
+    },
+    "omr": {
+      "parts": 17,
+      "measures": 4,
+      "measures_per_part": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "notes": 86
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 17
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 86,
+      "omr_notes": 86,
+      "pitch_matched": 65,
+      "pitch_recall": 0.756,
+      "pitch_precision": 0.756,
+      "duration_ok_on_matched": 64,
+      "duration_rate": 0.985
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 0,
+      "pages": [
+        {
+          "n_candidates": 8,
+          "n_read": 3,
+          "n_accepted": 0,
+          "rejected": [
+            "\u041a\u041e\u0412\u0421\u041a\u0418\u0419",
+            "Allegretto con grazia",
+            "tchaikovsky-syn"
+          ],
+          "by_reader": {},
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "tchaikovsky-sym6-mvt2",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym6-mvt2.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym6-mvt2.musicxml",
+      "omr_ned": 0.19134078212290503,
+      "omr_ed": 274,
+      "pred_symbols": 702,
+      "truth_symbols": 730,
+      "categories": {
+        "wrong note": 178,
+        "wrong note head": 4,
+        "wrong flag/beam": 2,
+        "wrong clef": 2,
+        "wrong direction": 41,
+        "wrong dynamic": 20,
+        "wrong slur": 6,
+        "entire measure insert/delete": 11,
+        "wrong staff group": 10
+      }
+    }
+  },
+  {
+    "work_id": "bruckner-sym5-mvt1",
+    "measures": [
+      1,
+      7
+    ],
+    "truth_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/bruckner-sym5-mvt1.musicxml",
+    "omr_xml": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/bruckner-sym5-mvt1.omr.musicxml",
+    "truth": {
+      "parts": 25,
+      "measures": 7,
+      "measures_per_part": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "notes": 86
+    },
+    "omr": {
+      "parts": 25,
+      "measures": 7,
+      "measures_per_part": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "notes": 86
+    },
+    "detected": {
+      "systems": 1,
+      "staves": 25
+    },
+    "notes": {
+      "part_aligned": true,
+      "truth_notes": 86,
+      "omr_notes": 86,
+      "pitch_matched": 84,
+      "pitch_recall": 0.977,
+      "pitch_precision": 0.977,
+      "duration_ok_on_matched": 84,
+      "duration_rate": 1.0
+    },
+    "rhythm_reconciliations": 0,
+    "dossier_warnings": {},
+    "dossier_used": true,
+    "render_shortfall": [],
+    "direction_text": {
+      "available": true,
+      "n_placed": 1,
+      "pages": [
+        {
+          "n_candidates": 10,
+          "n_read": 6,
+          "n_accepted": 1,
+          "rejected": [
+            "II.",
+            "1. a",
+            "1. a",
+            "cresc. cresc. cresc. cresc.",
+            "1. X"
+          ],
+          "by_reader": {
+            "surya": 1
+          },
+          "conflicts": [],
+          "readers": [
+            "surya"
+          ],
+          "page_is_engraved": true
+        }
+      ]
+    },
+    "omr_ned": {
+      "name": "bruckner-sym5-mvt1",
+      "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/bruckner-sym5-mvt1.omr.musicxml",
+      "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/bruckner-sym5-mvt1.musicxml",
+      "omr_ned": 0.058343057176196034,
+      "omr_ed": 100,
+      "pred_symbols": 836,
+      "truth_symbols": 878,
+      "categories": {
+        "wrong note": 32,
+        "wrong tie": 3,
+        "wrong articulation": 3,
+        "wrong lyric": 9,
+        "wrong direction": 33,
+        "wrong dynamic": 10,
+        "entire measure insert/delete": 10
+      }
+    }
+  }
+]

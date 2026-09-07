@@ -1,6 +1,6 @@
 {
  "generated_by": "benchmarks/omr-headline-validity-2026-09/normalised_arm.py",
- "git_head": "a61dee95",
+ "git_head": "504a1e34",
  "tag": "..graft09",
  "transform_version": "1.1.0",
  "merge_convention": "silent/unison -> one voice (exact duplication, the measured 69.8%); divisi with every event aligned on (offset,duration) -> one voice of chords; divisi otherwise -> stacked Voices, one per source part",
@@ -8,10 +8,9 @@
  "delta_means": "STRUCTURAL CHARGE REMOVED \u2014 the metric ceasing to bill a printing convention \u2014 NOT pipeline improvement.",
  "coverage": {
   "n_rows_scored": 11,
-  "n_normalised": 7,
-  "n_un_normalised": 4,
+  "n_normalised": 8,
+  "n_un_normalised": 3,
   "un_normalised_rows": [
-   "brahms-sym1-mvt1-317803-p2",
    "mahler-sym5-mvt1-local-p2",
    "mahler-sym5-mvt1-local-p3",
    "bach-brandenburg3-mvt1-468678-p1"
@@ -57,66 +56,68 @@
  ],
  "pooled_over_normalisable_rows_only": {
   "raw": {
-   "omr_ned": 0.8032233716645207,
-   "omr_ed": 18091,
-   "truth_symbols": 13033,
-   "pred_symbols": 9490,
+   "omr_ned": 0.836125618937801,
+   "omr_ed": 24654,
+   "truth_symbols": 16432,
+   "pred_symbols": 13054,
    "categories": {
-    "wrong note": 5144,
-    "wrong note head": 662,
-    "wrong flag/beam": 187,
+    "wrong note": 6976,
+    "wrong note head": 766,
+    "wrong flag/beam": 212,
     "wrong ornament": 15,
-    "wrong clef": 51,
-    "wrong timesig": 104,
-    "wrong keysig": 129,
+    "wrong clef": 72,
+    "wrong timesig": 150,
+    "wrong keysig": 165,
     "wrong tempo": 4,
-    "wrong direction": 158,
-    "wrong dynamic": 196,
-    "entire measure insert/delete": 6135,
-    "entire staff insert/delete": 5129,
-    "wrong accidental": 5,
-    "wrong tie": 20,
-    "wrong articulation": 10,
-    "wrong slur": 68,
-    "wrong dot": 56,
-    "wrong crescendo": 3,
-    "wrong diminuendo": 8,
+    "wrong direction": 171,
+    "wrong dynamic": 218,
+    "entire measure insert/delete": 9763,
+    "entire staff insert/delete": 5844,
+    "wrong accidental": 11,
+    "wrong tie": 23,
+    "wrong articulation": 11,
+    "wrong slur": 94,
+    "wrong dot": 99,
+    "wrong crescendo": 17,
+    "wrong diminuendo": 15,
     "wrong tuplet": 2,
     "wrong fingered tremolo": 2,
-    "wrong barline": 3
+    "wrong barline": 18,
+    "wrong lyric": 6
    },
-   "n_rows": 7
+   "n_rows": 8
   },
   "normalised": {
-   "omr_ned": 0.5326618278773515,
-   "omr_ed": 10788,
-   "truth_symbols": 10763,
-   "pred_symbols": 9490,
+   "omr_ned": 0.6098572602944473,
+   "omr_ed": 16321,
+   "truth_symbols": 13708,
+   "pred_symbols": 13054,
    "categories": {
-    "wrong note": 5318,
-    "wrong note head": 684,
-    "wrong flag/beam": 407,
-    "wrong accidental": 46,
-    "wrong tie": 82,
+    "wrong note": 7692,
+    "wrong note head": 758,
+    "wrong flag/beam": 493,
+    "wrong accidental": 65,
+    "wrong tie": 100,
     "wrong ornament": 16,
-    "wrong lyric": 153,
-    "wrong timesig": 107,
-    "wrong keysig": 119,
+    "wrong lyric": 162,
+    "wrong timesig": 155,
+    "wrong keysig": 147,
     "wrong tempo": 4,
-    "wrong direction": 293,
-    "wrong dynamic": 269,
-    "wrong slur": 114,
-    "entire measure insert/delete": 3048,
-    "wrong articulation": 15,
-    "wrong clef": 16,
-    "wrong dot": 69,
-    "wrong crescendo": 3,
-    "wrong diminuendo": 8,
+    "wrong direction": 325,
+    "wrong dynamic": 307,
+    "wrong slur": 145,
+    "entire measure insert/delete": 4527,
+    "wrong articulation": 16,
+    "wrong clef": 22,
+    "wrong dot": 107,
+    "wrong crescendo": 11,
+    "wrong diminuendo": 16,
     "wrong tuplet": 2,
     "wrong fingered tremolo": 2,
-    "wrong barline": 13
+    "wrong barline": 27,
+    "entire staff insert/delete": 1222
    },
-   "n_rows": 7
+   "n_rows": 8
   }
  },
  "pooled_raw_over_all_scored_rows": {
@@ -160,7 +161,7 @@
    "sha": {
     "truth": "b0021665057e5216",
     "pred": "502a85968720fcaf",
-    "normalised_truth": "9a882e47b1d50446"
+    "normalised_truth": "613cec715e185a6f"
    },
    "normalised": true,
    "transform": {
@@ -201,7 +202,7 @@
    "norm": {
     "name": "beethoven-sym5-mvt1-984073-p1|norm",
     "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1..graft09.omr.musicxml",
-    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a8923aaa4480a868d/benchmarks/omr-headline-validity-2026-09/derived-truth/beethoven-sym5-mvt1-984073-p1.page-normalised.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-headline-validity-2026-09/derived-truth/beethoven-sym5-mvt1-984073-p1.page-normalised.musicxml",
     "omr_ned": 0.4323971260613978,
     "omr_ed": 662,
     "pred_symbols": 734,
@@ -231,7 +232,7 @@
    "sha": {
     "truth": "b0be6bb1979cb706",
     "pred": "38d217a26c81ad8a",
-    "normalised_truth": "e91b696e32647d0f"
+    "normalised_truth": "f0814dc9d2f1834d"
    },
    "normalised": true,
    "transform": {
@@ -279,7 +280,7 @@
    "norm": {
     "name": "beethoven-sym5-mvt1-984073-p2|norm",
     "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2..graft09.omr.musicxml",
-    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a8923aaa4480a868d/benchmarks/omr-headline-validity-2026-09/derived-truth/beethoven-sym5-mvt1-984073-p2.page-normalised.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-headline-validity-2026-09/derived-truth/beethoven-sym5-mvt1-984073-p2.page-normalised.musicxml",
     "omr_ned": 0.5496201329534662,
     "omr_ed": 2315,
     "pred_symbols": 1986,
@@ -310,7 +311,7 @@
    "sha": {
     "truth": "37361e12673c537c",
     "pred": "e8600b442ecc4d15",
-    "normalised_truth": "b7f95741d04b91ea"
+    "normalised_truth": "2cf79215e85fb123"
    },
    "normalised": true,
    "transform": {
@@ -351,7 +352,7 @@
    "norm": {
     "name": "beethoven-sym5-mvt1-575951-p1|norm",
     "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1..graft09.omr.musicxml",
-    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a8923aaa4480a868d/benchmarks/omr-headline-validity-2026-09/derived-truth/beethoven-sym5-mvt1-575951-p1.page-normalised.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-headline-validity-2026-09/derived-truth/beethoven-sym5-mvt1-575951-p1.page-normalised.musicxml",
     "omr_ned": 0.462853385930309,
     "omr_ed": 704,
     "pred_symbols": 724,
@@ -383,7 +384,7 @@
    "sha": {
     "truth": "26c70068b48e2a35",
     "pred": "9ac77cdfe5986a49",
-    "normalised_truth": "b4b17dcab870921b"
+    "normalised_truth": "b6e0571a7e15b0cf"
    },
    "normalised": true,
    "transform": {
@@ -431,7 +432,7 @@
    "norm": {
     "name": "beethoven-sym5-mvt1-575951-p2|norm",
     "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2..graft09.omr.musicxml",
-    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a8923aaa4480a868d/benchmarks/omr-headline-validity-2026-09/derived-truth/beethoven-sym5-mvt1-575951-p2.page-normalised.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-headline-validity-2026-09/derived-truth/beethoven-sym5-mvt1-575951-p2.page-normalised.musicxml",
     "omr_ned": 0.4774690637403689,
     "omr_ed": 2045,
     "pred_symbols": 2057,
@@ -462,7 +463,7 @@
    "sha": {
     "truth": "1318a13fe2432810",
     "pred": "3abf5eac1cd849ef",
-    "normalised_truth": "eac3f9221ecda5ec"
+    "normalised_truth": "d1d4d855c9f520a4"
    },
    "normalised": true,
    "transform": {
@@ -505,7 +506,7 @@
    "norm": {
     "name": "dvorak-sym9-mvt1-405834-p5|norm",
     "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5..graft09.omr.musicxml",
-    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a8923aaa4480a868d/benchmarks/omr-headline-validity-2026-09/derived-truth/dvorak-sym9-mvt1-405834-p5.page-normalised.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-headline-validity-2026-09/derived-truth/dvorak-sym9-mvt1-405834-p5.page-normalised.musicxml",
     "omr_ned": 0.43103448275862066,
     "omr_ed": 675,
     "pred_symbols": 774,
@@ -537,7 +538,7 @@
    "sha": {
     "truth": "245fad26271d5f3e",
     "pred": "dad28f249750a041",
-    "normalised_truth": "d97196f8d7cadaa0"
+    "normalised_truth": "657de8a2ebeca372"
    },
    "normalised": true,
    "transform": {
@@ -580,7 +581,7 @@
    "norm": {
     "name": "dvorak-sym9-mvt1-405834-p6|norm",
     "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6..graft09.omr.musicxml",
-    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a8923aaa4480a868d/benchmarks/omr-headline-validity-2026-09/derived-truth/dvorak-sym9-mvt1-405834-p6.page-normalised.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-headline-validity-2026-09/derived-truth/dvorak-sym9-mvt1-405834-p6.page-normalised.musicxml",
     "omr_ned": 0.7243303571428571,
     "omr_ed": 2596,
     "pred_symbols": 1562,
@@ -612,7 +613,7 @@
    "sha": {
     "truth": "3a75371e9efa4c42",
     "pred": "5c79b3a43d26b8cc",
-    "normalised_truth": "ef2d1d6da19c730a"
+    "normalised_truth": "ae25b855823a878d"
    },
    "normalised": true,
    "transform": {
@@ -657,7 +658,7 @@
    "norm": {
     "name": "brahms-sym1-mvt1-317803-p1|norm",
     "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1..graft09.omr.musicxml",
-    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a8923aaa4480a868d/benchmarks/omr-headline-validity-2026-09/derived-truth/brahms-sym1-mvt1-317803-p1.page-normalised.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-headline-validity-2026-09/derived-truth/brahms-sym1-mvt1-317803-p1.page-normalised.musicxml",
     "omr_ned": 0.5036557930258717,
     "omr_ed": 1791,
     "pred_symbols": 1653,
@@ -688,10 +689,25 @@
    "pooled": true,
    "sha": {
     "truth": "8a8b30108a65cd76",
-    "pred": "d6846baf98637812"
+    "pred": "d6846baf98637812",
+    "normalised_truth": "be6768591a07ef84"
    },
-   "normalised": false,
-   "not_normalised_because": "no hand-read staves map \u2014 refusing to guess a condensation from the encoding",
+   "normalised": true,
+   "transform": {
+    "version": "1.1.0",
+    "n_source_parts": 21,
+    "n_output_parts": 14,
+    "measure_census": {
+     "divisi": 24,
+     "divisi_chorded": 18,
+     "divisi_voiced": 6,
+     "silent_others": 23,
+     "silent_all": 58,
+     "single": 105
+    },
+    "exact_duplication_share": 0.8857,
+    "divisi_share": 0.1143
+   },
    "raw": {
     "name": "brahms-sym1-mvt1-317803-p2|raw",
     "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2..graft09.omr.musicxml",
@@ -720,6 +736,36 @@
      "wrong slur": 26,
      "entire measure insert/delete": 3628,
      "entire staff insert/delete": 715
+    }
+   },
+   "norm": {
+    "name": "brahms-sym1-mvt1-317803-p2|norm",
+    "pred": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2..graft09.omr.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-headline-validity-2026-09/derived-truth/brahms-sym1-mvt1-317803-p2.page-normalised.musicxml",
+    "omr_ned": 0.850053771700722,
+    "omr_ed": 5533,
+    "pred_symbols": 3564,
+    "truth_symbols": 2945,
+    "categories": {
+     "wrong note": 2374,
+     "wrong note head": 74,
+     "wrong flag/beam": 86,
+     "wrong dot": 38,
+     "wrong accidental": 19,
+     "wrong tie": 18,
+     "wrong articulation": 1,
+     "wrong lyric": 9,
+     "wrong clef": 6,
+     "wrong timesig": 48,
+     "wrong keysig": 28,
+     "wrong barline": 14,
+     "wrong direction": 32,
+     "wrong dynamic": 38,
+     "wrong crescendo": 8,
+     "wrong diminuendo": 8,
+     "wrong slur": 31,
+     "entire measure insert/delete": 1479,
+     "entire staff insert/delete": 1222
     }
    }
   },

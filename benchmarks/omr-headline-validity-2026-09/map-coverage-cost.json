@@ -1,18 +1,18 @@
 {
  "generated_by": "benchmarks/omr-headline-validity-2026-09/probe_map_coverage_cost.py",
  "baseline": {
-  "file": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a8923aaa4480a868d/benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json",
+  "file": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json",
   "pooled_omr_ned": 0.8443958865999122,
   "pooled_omr_ed": 74968,
   "pooled_entire_staff": 17520
  },
  "coverage": {
   "n_rows": 20,
-  "n_mapped": 10,
-  "n_unmapped": 10,
-  "entire_staff_on_mapped_rows": 8281,
-  "entire_staff_on_unmapped_rows": 9239,
-  "staves_a_human_would_read_to_close_the_gap": 198
+  "n_mapped": 15,
+  "n_unmapped": 5,
+  "entire_staff_on_mapped_rows": 11927,
+  "entire_staff_on_unmapped_rows": 5593,
+  "staves_a_human_would_read_to_close_the_gap": 89
  },
  "rows": [
   {
@@ -37,20 +37,20 @@
   },
   {
    "row_id": "beethoven-sym5-mvt1-984073-p3",
-   "has_hand_map": false,
+   "has_hand_map": true,
    "n_systems": 2,
    "staves_on_page": 19,
-   "staves_a_human_would_read": 19,
+   "staves_a_human_would_read": 0,
    "entire_staff": 87,
    "entire_measure": 2187,
    "omr_ed": 3034
   },
   {
    "row_id": "beethoven-sym5-mvt1-984073-p4",
-   "has_hand_map": false,
+   "has_hand_map": true,
    "n_systems": 2,
    "staves_on_page": 22,
-   "staves_a_human_would_read": 22,
+   "staves_a_human_would_read": 0,
    "entire_staff": 1377,
    "entire_measure": 2361,
    "omr_ed": 4679
@@ -77,20 +77,20 @@
   },
   {
    "row_id": "beethoven-sym5-mvt1-575951-p3",
-   "has_hand_map": false,
+   "has_hand_map": true,
    "n_systems": 2,
    "staves_on_page": 19,
-   "staves_a_human_would_read": 19,
+   "staves_a_human_would_read": 0,
    "entire_staff": 90,
    "entire_measure": 2309,
    "omr_ed": 3172
   },
   {
    "row_id": "beethoven-sym5-mvt1-575951-p4",
-   "has_hand_map": false,
+   "has_hand_map": true,
    "n_systems": 2,
    "staves_on_page": 22,
-   "staves_a_human_would_read": 22,
+   "staves_a_human_would_read": 0,
    "entire_staff": 1377,
    "entire_measure": 2342,
    "omr_ed": 4714
@@ -137,10 +137,10 @@
   },
   {
    "row_id": "brahms-sym1-mvt1-317803-p2",
-   "has_hand_map": false,
+   "has_hand_map": true,
    "n_systems": 2,
    "staves_on_page": 27,
-   "staves_a_human_would_read": 27,
+   "staves_a_human_would_read": 0,
    "entire_staff": 715,
    "entire_measure": 3628,
    "omr_ed": 6562

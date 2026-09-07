@@ -1,1 +1,43 @@
 === CONTROL (indent unset) 2026-09-06T22:44:41Z
+tchaikovsky-sym4-mvt2            0.0444      69     786     767  wrong note
+bruckner-sym5-mvt1               0.0931     185    1007     980  wrong note
+brahms-sym1-mvt1                 0.0943     390    2083    2054  wrong note
+mozart-sym41-mvt1                0.1025     301    1454    1483  wrong note
+beethoven-sym3-mvt1              0.1294     215     882     780  entire measure insert/delete
+mozart-sym40-mvt1                0.1415     218     788     753  wrong note
+tchaikovsky-sym6-mvt2            0.1855     266     730     704  wrong note
+brahms-sym4-mvt1                 0.2136     401     949     928  wrong note
+dvorak-sym9-mvt4                 0.3380     239     373     334  wrong note
+
+where the edits are (pooled):
+  wrong note                                1258   53.3%
+  entire measure insert/delete               351   14.9%
+  wrong direction                            220    9.3%
+  wrong dynamic                              106    4.5%
+  wrong slur                                  93    3.9%
+  wrong articulation                          63    2.7%
+  (17 more)                                  271   11.5%
+
+wrote benchmarks/omr-margin-window-truncation-2026-09/out/indent-control.json
+=== INDENT 35mm 2026-09-06T23:09:18Z
+beethoven-sym5-mvt1              0.0293      38     655     643  wrong lyric
+bruckner-sym5-mvt1               0.0583     100     878     836  wrong direction
+brahms-sym1-mvt1                 0.0851     352    2083    2051  wrong note
+mozart-sym41-mvt1                0.1103     325    1454    1492  wrong note
+beethoven-sym3-mvt1              0.1656     278     882     797  entire measure insert/delete
+mozart-sym40-mvt1                0.1720     221     660     625  wrong note
+tchaikovsky-sym6-mvt2            0.1913     274     730     702  wrong note
+brahms-sym4-mvt1                 0.2858     443     789     761  wrong note
+dvorak-sym9-mvt4                 0.3390     240     373     335  wrong note
+
+where the edits are (pooled):
+  wrong note                                1296   55.1%
+  entire measure insert/delete               330   14.0%
+  wrong direction                            245   10.4%
+  wrong dynamic                               85    3.6%
+  wrong slur                                  83    3.5%
+  wrong articulation                          54    2.3%
+  (16 more)                                  261   11.1%
+
+wrote benchmarks/omr-margin-window-truncation-2026-09/out/indent-35.json
+=== DONE 2026-09-06T23:36:07Z
