@@ -5405,8 +5405,15 @@ def main(argv: list[str] | None = None) -> int:
                          "never read — reported under `contextual` in the JSON. "
                          "It is a post-pass over resolved pitches: nothing "
                          "about detection, rhythm or segmentation changes.")
+    # `default=None` is load-bearing, not tidiness: `transcribe`'s
+    # `read_direction_text` is TRI-state, and `None` is the only value that
+    # reaches `_direction_text_default()` — so the only one that lets
+    # `OMR_DIRECTION_TEXT` be heard. `BooleanOptionalAction` with `default=True`
+    # put an explicit `True` in the namespace on EVERY run, so the env var was
+    # dead on this path (it always worked from the web app, which passes
+    # nothing). `--direction-text` / `--no-direction-text` still override it.
     ap.add_argument("--direction-text", action=argparse.BooleanOptionalAction,
-                    default=True,
+                    default=None,
                     help="Read the words printed inside a system — `legato`, "
                          "`Allegro con brio` — by subtracting every detection "
                          "from the page's ink and OCRing what is left with "
