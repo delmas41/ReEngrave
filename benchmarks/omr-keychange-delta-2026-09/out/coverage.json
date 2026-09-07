@@ -1,0 +1,32 @@
+{
+ "bars": {
+  "all": 824,
+  "deduped": 477
+ },
+ "full_change": {
+  "all": 624,
+  "deduped": 376
+ },
+ "staff_slots": {
+  "all": 10824,
+  "deduped": 5531
+ },
+ "tallies": {
+  "all": {
+   "CHANGES": 6247,
+   "silent_restated_same_key": 749,
+   "silent_resting_in_bar": 3054,
+   "silent_KEEPS_ITS_OWN_KEY": 318,
+   "silent_UNSIGNATURED_STAFF": 485,
+   "silent_no_note_in_bar": 533
+  },
+  "deduped": {
+   "CHANGES": 3041,
+   "silent_KEEPS_ITS_OWN_KEY": 223,
+   "silent_resting_in_bar": 1605,
+   "silent_UNSIGNATURED_STAFF": 234,
+   "silent_restated_same_key": 378,
+   "silent_no_note_in_bar": 338
+  }
+ }
+}

@@ -1,0 +1,40 @@
+========================================================================
+multi-staff key-change bars classified: 824
+  written deltas identical            : 738 / 824 = 0.8956
+  written deltas identical MOD 12     : 748 / 824 = 0.9078
+  CONCERT deltas identical            : 738 / 824 = 0.8956
+  staves agreeing with their bar's MODAL delta: 5926 / 6247 = 0.9486
+
+--- outlier STAVES by mechanism
+  UNSIGNATURED                   115
+  ENHARMONIC                     83
+  BEFORE_DISAGREES_WITH_SCORE    75
+  AFTER_DISAGREES_WITH_SCORE     33
+  UNEXPLAINED                    15
+
+--- disagreeing BARS by worst mechanism present
+  BEFORE_DISAGREES_WITH_SCORE    29
+  UNSIGNATURED                   26
+  AFTER_DISAGREES_WITH_SCORE     12
+  ENHARMONIC                     10
+  UNEXPLAINED                    9
+
+--- every UNEXPLAINED outlier, in full
+  beethoven--symphony-9-part-i--mvt4--gradus-assets.musicxml bar#X2 clarinet/1 written -2->-1 (Δ+1, modal Δ+4) offset 2/2 concert -4->-3
+  holst--the-planets--full--gradus.mxl bar#327 Harp 2/1 written 4->3 (Δ-1, modal Δ+3) offset 0/0 concert 4->3
+  holst--the-planets--full--gradus.mxl bar#327 Harp 2/2 written 4->3 (Δ-1, modal Δ+3) offset 0/0 concert 4->3
+  holst--the-planets--full--gradus.mxl bar#327 Violins I/1 written 4->-2 (Δ-6, modal Δ+3) offset 0/0 concert 4->-2
+  holst--the-planets--full--gradus.mxl bar#327 Violins II/1 written 4->3 (Δ-1, modal Δ+3) offset 0/0 concert 4->3
+  mahler--symphony-5--mvt2--gradus.mxl bar#266 A Clarinet/1 written 3->-5 (Δ-8, modal Δ+11) offset -3/-3 concert 6->-2
+  mahler--symphony-5--mvt2--gradus.mxl bar#266 A Clarinet/2 written 3->-5 (Δ-8, modal Δ+11) offset -3/-3 concert 6->-2
+  ravel--ravel-bolero--mvt1--gradus.mxl bar#75 Track 3/1 written 2->3 (Δ+1, modal Δ-6) offset 0/0 concert 2->3
+  ravel--ravel-bolero--mvt1--gradus.mxl bar#129 Track 5/1 written -3->2 (Δ+5, modal Δ-1) offset 0/0 concert -3->2
+  ravel--ravel-bolero--mvt1--gradus.mxl bar#165 4 CORS en fa/1 written 4->-3 (Δ-7, modal Δ+7) offset 0/0 concert 4->-3
+  ravel--ravel-bolero--mvt1--gradus.mxl bar#165 Track 7/1 written 4->1 (Δ-3, modal Δ+7) offset 0/0 concert 4->1
+  ravel--ravel-bolero--mvt1--gradus.mxl bar#165 2°* VIOLONS/1 written 4->2 (Δ-2, modal Δ+7) offset 0/0 concert 4->2
+  ravel--ravel-bolero--mvt1--gradus.mxl bar#171 4 CORS en fa/1 written -3->2 (Δ+5, modal Δ-4) offset 0/0 concert -3->2
+  ravel--ravel-bolero--mvt1--gradus.mxl bar#183 Track 5/1 written 2->1 (Δ-1, modal Δ-4) offset 0/0 concert 2->1
+  ravel--ravel-bolero--mvt1--gradus.mxl bar#243 Track 23/1 written 4->2 (Δ-2, modal Δ-1) offset 0/0 concert 4->2
+  (15 unexplained outlier staves)
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/keychange-delta/benchmarks/omr-keychange-delta-2026-09/out/delta-mechanism.json

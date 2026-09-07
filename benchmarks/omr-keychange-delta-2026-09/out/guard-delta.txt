@@ -1,0 +1,23 @@
+========================================================================
+mid-staff key changes in the stored transcriptions: 7
+  scan: 7
+  engraved: 0
+
+--- each change, with both witness counts
+  work                               staff  bar    Δ  W2(bar)   W2+Δ  instrument
+  beethoven-sym5-mvt1-575951-p1          2   11   -1        1      1  Clarinet
+  beethoven-sym5-mvt1-575951-p2          0   15    1        1      1  Flute
+  beethoven-sym5-mvt1-575951-p2          3    2    1        1      1  Bassoon
+  beethoven-sym5-mvt1-575951-p2         20    3    2        1      1  Violin
+  beethoven-sym5-mvt1-984073-p2          3    2    1        1      1  Bassoon
+  dvorak-sym9-mvt1-405834-p5             4    3   -1        1      1  Horn
+  mahler-sym5-mvt1-local-p2             15    6   -3        1      1  Violin
+
+  KEPT by the shipped rule (>=2 same bar)      : 0
+  KEPT by same bar AND same delta             : 0
+  REVERTED by the shipped rule                : 7
+  REVERTED by same bar AND same delta         : 7
+
+  => the delta condition changes 0 decision(s).
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/keychange-delta/benchmarks/omr-keychange-delta-2026-09/out/guard-delta.json

@@ -1,0 +1,24 @@
+========================================================================
+CROSS-CHECK of 'which encodings hold a mid-score key change'
+  ElementTree walk (keys.py)   : 286
+  regex over the raw bytes     : 354  (a CEILING — it also fires on transposed parts at one key)
+  parser-yes not in regex-yes  : 0   <- must be 0; a change implies >1 distinct <fifths>
+  regex-yes not in parser-yes  : 68
+      of 68 sampled, 68 have >1 staff (a transposing score at a constant key)
+
+  encodings                     : 1745
+  distinct <composer>/<work>    : 1031
+  encodings with a key change   : 286
+  DISTINCT WORKS with a change  : 197
+
+--- all encodings: 843 change bars, 6266 changing staves
+  staff has >=1 witness at the same BAR      : 6247/6266 = 0.9970
+  ... and by the same DELTA                  : 6182/6266 = 0.9866
+  => the delta conjunct would additionally revert 65 of 6266 genuine staff changes (1.0373%)
+
+--- deduped by work: 486 change bars, 3050 changing staves
+  staff has >=1 witness at the same BAR      : 3041/3050 = 0.9970
+  ... and by the same DELTA                  : 2999/3050 = 0.9833
+  => the delta conjunct would additionally revert 42 of 3050 genuine staff changes (1.3770%)
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/keychange-delta/benchmarks/omr-keychange-delta-2026-09/out/witness-availability.json

@@ -1,0 +1,275 @@
+========================================================================
+corpus: 1745 encodings, parsed 1745, failed 0
+  works with >=1 mid-score key change : 286
+  key-change BARS total               : 843
+    bars where >=2 staves change      : 824
+    bars where exactly 1 staff changes: 19
+
+--- Q1: among the staves that DO change at a bar, is the delta shared?
+  all-agree : 738 / 824 = 0.8956
+  disagree  : 86
+
+--- Q2: coverage — do ALL staves change at that bar?
+  bars where EVERY staff changes: 624 / 824 = 0.7573
+  fraction of staves changing: min=0.021 median=1.000 max=1.000
+
+--- why a staff stays silent at a multi-staff key change
+  resting_in_bar             3054
+  PRESENT_AND_SILENT         803
+  restated_same_key          749
+  no_note_in_bar             533
+  (PRESENT_AND_SILENT rows: 803)
+
+--- the disagreeing bars, enumerated
+  beach--symphony-in-e-minor--allegro-con-fuoco--gradus-assets.mxl  bar#403 (ord 402) deltas=[-8, 4] n_changing=18/25
+      Δ=-8  n= 16  Flute 1/1 4->-4; Flute 2/1 4->-4; Oboe 1/1 4->-4; Oboe 2/1 4->-4 …
+      Δ=+4  n=  2  A Clarinet 1/1 1->5; A Clarinet 2/1 1->5
+  beach--symphony-in-e-minor--allegro-con-fuoco--gradus-assets.mxl  bar#435 (ord 434) deltas=[-4, 8] n_changing=18/25
+      Δ=-4  n=  2  A Clarinet 1/1 5->1; A Clarinet 2/1 5->1
+      Δ=+8  n= 16  Flute 1/1 -4->4; Flute 2/1 -4->4; Oboe 1/1 -4->4; Oboe 2/1 -4->4 …
+  beethoven--symphony-3--mvt2--gradus.mxl  bar#70 (ord 69) deltas=[-1, 3] n_changing=13/19
+      Δ=-1  n=  2  Bb Clarinet 1/1 -1->-2; Bb Clarinet 2/1 -1->-2
+      Δ=+3  n= 11  Flute 1/1 -3->0; Flute 2/1 -3->0; Oboe 1/1 -3->0; Oboe 2/1 -3->0 …
+  beethoven--symphony-3--mvt2--gradus.mxl  bar#106 (ord 105) deltas=[-3, 1] n_changing=13/19
+      Δ=-3  n= 11  Flute 1/1 0->-3; Flute 2/1 0->-3; Oboe 1/1 0->-3; Oboe 2/1 0->-3 …
+      Δ=+1  n=  2  Bb Clarinet 1/1 -2->-1; Bb Clarinet 2/1 -2->-1
+  beethoven--symphony-9-part-i--mvt4--gradus-assets.musicxml  bar#77 (ord 77) deltas=[1, 4] n_changing=21/28
+      Δ=+1  n=  1  clarinet/1 0->1
+      Δ=+4  n= 20  piccolo/1 -2->2; flute/1 -2->2; oboe/1 -2->2; bassoon/1 -2->2 …
+  beethoven--symphony-9-part-i--mvt4--gradus-assets.musicxml  bar#331 (ord 331) deltas=[-4, 1] n_changing=21/28
+      Δ=-4  n= 20  piccolo/1 2->-2; flute/1 2->-2; oboe/1 2->-2; bassoon/1 2->-2 …
+      Δ=+1  n=  1  clarinet/1 -1->0
+  beethoven--symphony-9-part-i--mvt4--gradus-assets.musicxml  bar#X2 (ord 656) deltas=[1, 4] n_changing=21/28
+      Δ=+1  n=  1  clarinet/1 -2->-1
+      Δ=+4  n= 20  piccolo/1 -2->2; flute/1 -2->2; oboe/1 -2->2; bassoon/1 -2->2 …
+  beethoven--symphony-9--mvt3--gradus-assets.musicxml  bar#83 (ord 82) deltas=[-4, -3] n_changing=10/13
+      Δ=-4  n=  9  flute/1 1->-3; oboe/1 1->-3; bassoon/1 1->-3; timpani/1 1->-3 …
+      Δ=-3  n=  1  clarinet/1 2->-1
+  brahms--symphony-1--mvt1--gradus.mxl  bar#191 (ord 190) deltas=[2, 5, 6, 7] n_changing=21/21
+      Δ=+2  n=  4  C Horn 1/1 0->2; C Horn 2/1 0->2; C Trumpet 1/1 0->2; C Trumpet 2/1 0->2
+      Δ=+5  n= 13  Flute 1/1 -3->2; Flute 2/1 -3->2; Oboe 1/1 -3->2; Oboe 2/1 -3->2 …
+      Δ=+6  n=  2  Eb Horn 3/1 -1->5; Eb Horn 4/1 -1->5
+      Δ=+7  n=  2  Bb Clarinet 1/1 -3->4; Bb Clarinet 2/1 -3->4
+  brahms--symphony-1--mvt3--gradus.mxl  bar#71 (ord 70) deltas=[-2, 5, 9] n_changing=15/19
+      Δ=-2  n=  2  Bb Clarinet 1/1 -2->-4; Bb Clarinet 2/1 -2->-4
+      Δ=+5  n=  2  Eb Horn 1/1 -1->4; Eb Horn 2/1 -1->4
+      Δ=+9  n= 11  Flute 1/1 -4->5; Flute 2/1 -4->5; Oboe 1/1 -4->5; Oboe 2/1 -4->5 …
+  brahms--symphony-1--mvt3--gradus.mxl  bar#110 (ord 109) deltas=[-9, -5, 2] n_changing=15/19
+      Δ=-9  n= 11  Flute 1/1 5->-4; Flute 2/1 5->-4; Oboe 1/1 5->-4; Oboe 2/1 5->-4 …
+      Δ=-5  n=  2  Eb Horn 1/1 4->-1; Eb Horn 2/1 4->-1
+      Δ=+2  n=  2  Bb Clarinet 1/1 -4->-2; Bb Clarinet 2/1 -4->-2
+  brahms--symphony-1--mvt4--gradus.mxl  bar#30 (ord 29) deltas=[-9, 3] n_changing=24/24
+      Δ=-9  n=  2  E Horn 3/1 5->-4; E Horn 4/1 5->-4
+      Δ=+3  n= 22  Flute 1/1 -3->0; Flute 2/1 -3->0; Oboe 1/1 -3->0; Oboe 2/1 -3->0 …
+  brahms--symphony-2--mvt2--gradus.mxl  bar#63 (ord 62) deltas=[1, 2, 3, 5] n_changing=20/22
+      Δ=+1  n=  2  B basso Horn 1
+[sic, B not Bb]/1 -1->0; B basso Horn 2
+[sic, B not Bb]/1 -1->0
+      Δ=+2  n=  2  B Trumpet 1
+[sic, B not Bb]/1 -2->0; B Trumpet 2
+[sic, B not Bb]/1 -2->0
+      Δ=+3  n= 15  Flute 1/1 2->5; Flute 2/1 2->5; Oboe 1/1 2->5; Oboe 2/1 2->5 …
+      Δ=+5  n=  1  Timpani/1 0->5
+  brahms--symphony-3--mvt1--gradus.mxl  bar#31 (ord 30) deltas=[-1, 4] n_changing=17/24
+      Δ=-1  n=  2  Bb Clarinet 1/1 1->0; Bb Clarinet 2/1 1->0
+      Δ=+4  n= 15  Flute 1/1 -1->3; Flute 2/1 -1->3; Oboe 1/1 -1->3; Oboe 2/1 -1->3 …
+  brahms--symphony-3--mvt1--gradus.mxl  bar#103 (ord 102) deltas=[-4, 1] n_changing=17/24
+      Δ=-4  n= 15  Flute 1/1 3->-1; Flute 2/1 3->-1; Oboe 1/1 3->-1; Oboe 2/1 3->-1 …
+      Δ=+1  n=  2  Bb Clarinet 1/1 0->1; Bb Clarinet 2/1 0->1
+  brahms--symphony-3--mvt1--gradus.mxl  bar#144 (ord 143) deltas=[-1, 3] n_changing=14/24
+      Δ=-1  n=  2  Bb Clarinet 1/1 1->0; Bb Clarinet 2/1 1->0
+      Δ=+3  n= 12  Flute 1/1 -1->2; Flute 2/1 -1->2; Oboe 1/1 -1->2; Oboe 2/1 -1->2 …
+  brahms--symphony-3--mvt1--gradus.mxl  bar#158 (ord 157) deltas=[-3, 1] n_changing=14/24
+      Δ=-3  n= 12  Flute 1/1 2->-1; Flute 2/1 2->-1; Oboe 1/1 2->-1; Oboe 2/1 2->-1 …
+      Δ=+1  n=  2  Bb Clarinet 1/1 0->1; Bb Clarinet 2/1 0->1
+  brahms--symphony-3--mvt3--gradus.mxl  bar#101 (ord 100) deltas=[-1, 1] n_changing=13/15
+      Δ=-1  n=  2  Bb Clarinet 1/1 -2->-3; Bb Clarinet 2/1 -2->-3
+      Δ=+1  n= 11  Flute 1/1 -4->-3; Flute 2/1 -4->-3; Oboe 1/1 -4->-3; Oboe 2/1 -4->-3 …
+  brahms--symphony-3--mvt4--gradus.mxl  bar#267 (ord 266) deltas=[-1, 1, 3, 5] n_changing=24/24
+      Δ=-1  n=  3  C Horn 1/1 0->-1; C Horn 2/1 0->-1; Timpani/1 0->-1
+      Δ=+1  n=  4  F Horn 3/1 -1->0; F Horn 4/1 -1->0; F Trumpet 1/1 -1->0; F Trumpet 2/1 -1->0
+      Δ=+3  n= 15  Flute 1/1 -4->-1; Flute 2/1 -4->-1; Oboe 1/1 -4->-1; Oboe 2/1 -4->-1 …
+      Δ=+5  n=  2  Bb Clarinet 1/1 -4->1; Bb Clarinet 2/1 -4->1
+  dvorak--symphony-9-in-e-minor-op95--mvt4--gradus.mxl  bar#227 (ord 226) deltas=[3, 4] n_changing=12/19
+      Δ=+3  n= 11  Flutes/1 1->4; Oboes/1 1->4; A Clarinet/1 -2->1; Bassoons/1 1->4 …
+      Δ=+4  n=  1  Timpani/1 0->4
+  dvorak--symphony-9--mvt1--gradus-assets.musicxml  bar#461 (ord 460) deltas=[4, 5] n_changing=11/23
+      Δ=+4  n= 10  flute1/1 1->5; oboe1/1 1->5; clarinet1/1 -2->2; trombone1/1 1->5 …
+      Δ=+5  n=  1  bassoon1/1 1->6
+  dvorak--symphony-9--mvt1--gradus-assets.musicxml  bar#495 (ord 494) deltas=[-6, -5, -2] n_changing=11/23
+      Δ=-6  n=  1  bassoon1/1 6->0
+      Δ=-5  n=  9  flute1/1 5->0; oboe1/1 5->0; trombone1/1 5->0; trombone2/1 5->0 …
+      Δ=-2  n=  1  clarinet1/1 2->0
+  dvorak--symphony-9--mvt1--gradus-assets.musicxml  bar#507 (ord 506) deltas=[-4, 2] n_changing=11/23
+      Δ=-4  n= 10  flute1/1 0->-4; oboe1/1 0->-4; bassoon1/1 0->-4; trombone1/1 0->-4 …
+      Δ=+2  n=  1  clarinet1/1 0->2
+  dvorak--symphony-9--mvt1--gradus-assets.musicxml  bar#553 (ord 552) deltas=[-4, 5] n_changing=11/23
+      Δ=-4  n=  1  clarinet1/1 2->-2
+      Δ=+5  n= 10  flute1/1 -4->1; oboe1/1 -4->1; bassoon1/1 -4->1; trombone1/1 -4->1 …
+  dvorak--symphony-9--mvt1--gradus.mxl  bar#308 (ord 307) deltas=[4, 5] n_changing=11/15
+      Δ=+4  n= 10  Flauto I./1 1->5; Oboi
+I. II./1 1->5; Clarinetti
+I. II. A/1 -2->2; Tromboni
+I. II./1 1->5 …
+      Δ=+5  n=  1  Fagotti
+I. II./1 1->6
+  dvorak--symphony-9--mvt1--gradus.mxl  bar#342 (ord 341) deltas=[-6, -5, -2] n_changing=11/15
+      Δ=-6  n=  1  Fagotti
+I. II./1 6->0
+      Δ=-5  n=  9  Flauto I./1 5->0; Oboi
+I. II./1 5->0; Tromboni
+I. II./1 5->0; Trombone
+III./1 5->0 …
+      Δ=-2  n=  1  Clarinetti
+I. II. A/1 2->0
+  dvorak--symphony-9--mvt1--gradus.mxl  bar#354 (ord 353) deltas=[-4, 2] n_changing=11/15
+      Δ=-4  n= 10  Flauto I./1 0->-4; Oboi
+I. II./1 0->-4; Fagotti
+I. II./1 0->-4; Tromboni
+I. II./1 0->-4 …
+      Δ=+2  n=  1  Clarinetti
+I. II. A/1 0->2
+  dvorak--symphony-9--mvt1--gradus.mxl  bar#400 (ord 399) deltas=[-4, 5] n_changing=11/15
+      Δ=-4  n=  1  Clarinetti
+I. II. A/1 2->-2
+      Δ=+5  n= 10  Flauto I./1 -4->1; Oboi
+I. II./1 -4->1; Fagotti
+I. II./1 -4->1; Tromboni
+I. II./1 -4->1 …
+  dvorak--symphony-9--sym9-full--gradus.musicxml  bar#46 (ord 45) deltas=[-3, -2, 1, 5, 10] n_changing=25/25
+      Δ=-3  n=  1  horn3/1 0->-3
+      Δ=-2  n=  3  clarinet2/1 -3->-5; horn2/1 3->1; trumpet2/1 3->1
+      Δ=+1  n=  2  horn1/1 0->1; trumpet1/1 0->1
+      Δ=+5  n=  2  clarinet1/1 -3->2; timpani/1 0->5
+      Δ=+10  n= 17  flute1/1 -5->5; flute2/1 -5->5; oboe1/1 -5->5; oboe2/1 -5->5 …
+  holst--the-planets--full--gradus.mxl  bar#186 (ord 185) deltas=[-6, -4, -3, -2, -1] n_changing=56/69
+      Δ=-6  n=  3  Clarinet 1 in A/1 0->-6; Clarinet 2 in A/1 0->-6; Clarinet 3 in A/1 0->-6
+      Δ=-4  n=  1  Alto Flute/1 0->-4
+      Δ=-3  n= 46  Piccolo 1/1 0->-3; Piccolo 2/1 0->-3; Flute 1/1 0->-3; Flute 2/1 0->-3 …
+      Δ=-2  n=  1  English Horn/1 0->-2
+      Δ=-1  n=  5  Clarinet 1 in B♭/1 0->-1; Clarinet 2 in B♭/1 0->-1; Clarinet 3 in B♭/1 0->-1; Bass Clarinet/1 0->-1 …
+  holst--the-planets--full--gradus.mxl  bar#327 (ord 326) deltas=[-6, -1, 1, 2, 3, 4, 6] n_changing=56/69
+      Δ=-6  n=  1  Violins I/1 4->-2
+      Δ=-1  n=  3  Harp 2/1 4->3; Harp 2/2 4->3; Violins II/1 4->3
+      Δ=+1  n=  8  Clarinet 1 in B♭/1 -1->0; Clarinet 2 in B♭/1 -1->0; Clarinet 3 in B♭/1 -1->0; Bass Clarinet/1 -1->0 …
+      Δ=+2  n=  1  English Horn/1 -2->0
+      Δ=+3  n= 38  Piccolo 1/1 -3->0; Piccolo 2/1 -3->0; Flute 1/1 -3->0; Flute 2/1 -3->0 …
+      Δ=+4  n=  1  Alto Flute/1 -4->0
+      Δ=+6  n=  4  Clarinet 1 in A/1 -6->0; Clarinet 2 in A/1 -6->0; Clarinet 3 in A/1 -6->0; Violoncellos/1 -3->3
+  holst--the-planets--full--gradus.mxl  bar#368 (ord 367) deltas=[-3, 2] n_changing=8/69
+      Δ=-3  n=  4  Harp 2/1 3->0; Harp 2/2 3->0; Violins II/1 3->0; Violoncellos/1 3->0
+      Δ=+2  n=  4  Harp 1/1 -2->0; Harp 1/2 -2->0; Violins I/1 -2->0; Violas/1 -2->0
+  holst--the-planets--full--gradus.mxl  bar#483 (ord 482) deltas=[-2, -1, 3, 4] n_changing=8/69
+      Δ=-2  n=  2  Violins I/1 0->-2; Violas/1 0->-2
+      Δ=-1  n=  2  Harp 1/1 -1->-2; Harp 1/2 -1->-2
+      Δ=+3  n=  2  Violins II/1 0->3; Violoncellos/1 0->3
+      Δ=+4  n=  2  Harp 2/1 -1->3; Harp 2/2 -1->3
+  holst--the-planets--full--gradus.mxl  bar#515 (ord 514) deltas=[-1, 4] n_changing=4/69
+      Δ=-1  n=  2  Violins II/1 3->2; Violoncellos/1 3->2
+      Δ=+4  n=  2  Violins I/1 -2->2; Violas/1 -2->2
+  holst--the-planets--full--gradus.mxl  bar#557 (ord 556) deltas=[-6, -4] n_changing=10/69
+      Δ=-6  n=  4  Violins I/1 2->-4; Violins II/1 2->-4; Violas/1 2->-4; Violoncellos/1 2->-4
+      Δ=-4  n=  6  Piccolo 1/1 0->-4; Piccolo 2/1 0->-4; Flute 1/1 0->-4; Flute 2/1 0->-4 …
+  holst--the-planets--full--gradus.mxl  bar#623 (ord 622) deltas=[-3, -1, 1, 2] n_changing=10/69
+      Δ=-3  n=  3  Clarinet 1 in A/1 0->-3; Clarinet 2 in A/1 0->-3; Clarinet 3 in A/1 0->-3
+      Δ=-1  n=  1  Alto Flute/1 0->-1
+      Δ=+1  n=  1  English Horn/1 0->1
+      Δ=+2  n=  5  Clarinet 1 in B♭/1 0->2; Clarinet 2 in B♭/1 0->2; Clarinet 3 in B♭/1 0->2; Bass Clarinet/1 0->2 …
+  holst--the-planets--full--gradus.mxl  bar#816 (ord 815) deltas=[-6, -3, -2, -1] n_changing=61/69
+      Δ=-6  n=  2  Harp 2/1 3->-3; Harp 2/2 3->-3
+      Δ=-3  n= 51  Piccolo 1/1 0->-3; Piccolo 2/1 0->-3; Flute 1/1 0->-3; Flute 2/1 0->-3 …
+      Δ=-2  n=  6  Horn 1 in F/1 0->-2; Horn 2 in F/1 0->-2; Horn 3 in F/1 0->-2; Horn 4 in F/1 0->-2 …
+      Δ=-1  n=  2  Harp 1/1 -2->-3; Harp 1/2 -2->-3
+  holst--the-planets--full--gradus.mxl  bar#868 (ord 867) deltas=[2, 3] n_changing=61/69
+      Δ=+2  n=  6  Horn 1 in F/1 -2->0; Horn 2 in F/1 -2->0; Horn 3 in F/1 -2->0; Horn 4 in F/1 -2->0 …
+      Δ=+3  n= 55  Piccolo 1/1 -3->0; Piccolo 2/1 -3->0; Flute 1/1 -3->0; Flute 2/1 -3->0 …
+  holst--the-planets--full--gradus.mxl  bar#1010 (ord 1009) deltas=[-7, 5, 6] n_changing=23/69
+      Δ=-7  n=  8  Clarinet 1 in B♭/1 2->-5; Clarinet 2 in B♭/1 2->-5; Clarinet 3 in B♭/1 2->-5; Bass Clarinet/1 2->-5 …
+      Δ=+5  n= 10  Piccolo 1/1 0->5; Piccolo 2/1 0->5; Flute 1/1 0->5; Flute 2/1 0->5 …
+      Δ=+6  n=  5  Violins I/1 0->6; Violins II/1 0->6; Violas/1 0->6; Violoncellos/1 0->6 …
+  holst--the-planets--full--gradus.mxl  bar#1015 (ord 1014) deltas=[-6, -5, 7] n_changing=23/69
+      Δ=-6  n=  5  Violins I/1 6->0; Violins II/1 6->0; Violas/1 6->0; Violoncellos/1 6->0 …
+      Δ=-5  n= 10  Piccolo 1/1 5->0; Piccolo 2/1 5->0; Flute 1/1 5->0; Flute 2/1 5->0 …
+      Δ=+7  n=  8  Clarinet 1 in B♭/1 -5->2; Clarinet 2 in B♭/1 -5->2; Clarinet 3 in B♭/1 -5->2; Bass Clarinet/1 -5->2 …
+  holst--the-planets--full--gradus.mxl  bar#1032 (ord 1031) deltas=[-2, -1, 1, 3] n_changing=10/69
+      Δ=-2  n=  5  Clarinet 1 in B♭/1 2->0; Clarinet 2 in B♭/1 2->0; Clarinet 3 in B♭/1 2->0; Bass Clarinet/1 2->0 …
+      Δ=-1  n=  1  English Horn/1 1->0
+      Δ=+1  n=  1  Alto Flute/1 -1->0
+      Δ=+3  n=  3  Clarinet 1 in A/1 -3->0; Clarinet 2 in A/1 -3->0; Clarinet 3 in A/1 -3->0
+  holst--the-planets--mvt3--gradus.mxl  bar#42 (ord 41) deltas=[-3, 2] n_changing=8/69
+      Δ=-3  n=  4  Harp 2/1 3->0; Harp 2/2 3->0; Violins II/1 3->0; Violoncellos/1 3->0
+      Δ=+2  n=  4  Harp 1/1 -2->0; Harp 1/2 -2->0; Violins I/1 -2->0; Violas/1 -2->0
+  holst--the-planets--mvt3--gradus.mxl  bar#157 (ord 156) deltas=[-2, -1, 3, 4] n_changing=8/69
+      Δ=-2  n=  2  Violins I/1 0->-2; Violas/1 0->-2
+      Δ=-1  n=  2  Harp 1/1 -1->-2; Harp 1/2 -1->-2
+      Δ=+3  n=  2  Violins II/1 0->3; Violoncellos/1 0->3
+      Δ=+4  n=  2  Harp 2/1 -1->3; Harp 2/2 -1->3
+  holst--the-planets--mvt3--gradus.mxl  bar#189 (ord 188) deltas=[-1, 4] n_changing=4/69
+      Δ=-1  n=  2  Violins II/1 3->2; Violoncellos/1 3->2
+      Δ=+4  n=  2  Violins I/1 -2->2; Violas/1 -2->2
+  holst--the-planets--mvt3--gradus.mxl  bar#231 (ord 230) deltas=[-6, -4] n_changing=10/69
+      Δ=-6  n=  4  Violins I/1 2->-4; Violins II/1 2->-4; Violas/1 2->-4; Violoncellos/1 2->-4
+      Δ=-4  n=  6  Piccolo 1/1 0->-4; Piccolo 2/1 0->-4; Flute 1/1 0->-4; Flute 2/1 0->-4 …
+  holst--the-planets--mvt4--gradus.mxl  bar#194 (ord 193) deltas=[-6, -3, -2, -1] n_changing=61/69
+      Δ=-6  n=  2  Harp 2/1 3->-3; Harp 2/2 3->-3
+      Δ=-3  n= 51  Piccolo 1/1 0->-3; Piccolo 2/1 0->-3; Flute 1/1 0->-3; Flute 2/1 0->-3 …
+      Δ=-2  n=  6  Horn 1 in F/1 0->-2; Horn 2 in F/1 0->-2; Horn 3 in F/1 0->-2; Horn 4 in F/1 0->-2 …
+      Δ=-1  n=  2  Harp 1/1 -2->-3; Harp 1/2 -2->-3
+  holst--the-planets--mvt4--gradus.mxl  bar#246 (ord 245) deltas=[2, 3] n_changing=61/69
+      Δ=+2  n=  6  Horn 1 in F/1 -2->0; Horn 2 in F/1 -2->0; Horn 3 in F/1 -2->0; Horn 4 in F/1 -2->0 …
+      Δ=+3  n= 55  Piccolo 1/1 -3->0; Piccolo 2/1 -3->0; Flute 1/1 -3->0; Flute 2/1 -3->0 …
+  holst--the-planets--mvt4--gradus.mxl  bar#388 (ord 387) deltas=[-7, 5, 6] n_changing=23/69
+      Δ=-7  n=  8  Clarinet 1 in B♭/1 2->-5; Clarinet 2 in B♭/1 2->-5; Clarinet 3 in B♭/1 2->-5; Bass Clarinet/1 2->-5 …
+      Δ=+5  n= 10  Piccolo 1/1 0->5; Piccolo 2/1 0->5; Flute 1/1 0->5; Flute 2/1 0->5 …
+      Δ=+6  n=  5  Violins I/1 0->6; Violins II/1 0->6; Violas/1 0->6; Violoncellos/1 0->6 …
+  holst--the-planets--mvt4--gradus.mxl  bar#393 (ord 392) deltas=[-6, -5, 7] n_changing=23/69
+      Δ=-6  n=  5  Violins I/1 6->0; Violins II/1 6->0; Violas/1 6->0; Violoncellos/1 6->0 …
+      Δ=-5  n= 10  Piccolo 1/1 5->0; Piccolo 2/1 5->0; Flute 1/1 5->0; Flute 2/1 5->0 …
+      Δ=+7  n=  8  Clarinet 1 in B♭/1 -5->2; Clarinet 2 in B♭/1 -5->2; Clarinet 3 in B♭/1 -5->2; Bass Clarinet/1 -5->2 …
+  mahler--5-rondo-finale--mvt5--gradus.mxl  bar#349 (ord 348) deltas=[-10, 2] n_changing=23/35
+      Δ=-10  n= 21  Flute/1 5->-5; Flute/2 5->-5; Piccolo/1 5->-5; Erste Hoboe./1 5->-5 …
+      Δ=+2  n=  2  A Clarinet/1 2->4; A Clarinet/2 2->4
+  mahler--5-rondo-finale--mvt5--gradus.mxl  bar#357 (ord 356) deltas=[-5, 3, 7] n_changing=23/35
+      Δ=-5  n=  2  A Clarinet/1 4->-1; A Clarinet/2 4->-1
+      Δ=+3  n=  1  B♭ Trumpet/2 -3->0
+      Δ=+7  n= 20  Flute/1 -5->2; Flute/2 -5->2; Piccolo/1 -5->2; Erste Hoboe./1 -5->2 …
+  mahler--symphony-5--mvt1--gradus.mxl  bar#119 (ord 119) deltas=[-9, -8, -5, 4] n_changing=28/38
+      Δ=-9  n=  1  English Horn/1 5->-4
+      Δ=-8  n= 24  Piccolo/1 4->-4; Vier Flöten./1 4->-4; Vier Flöten./2 4->-4; Drei Hoboen./1 4->-4 …
+      Δ=-5  n=  1  Sechs Hörner in F./3 5->0
+      Δ=+4  n=  2  Drei Klarinetten in A/1 1->5; Bass Clarinet/1 1->5
+  mahler--symphony-5--mvt1--gradus.mxl  bar#155 (ord 155) deltas=[-9, -1, 11] n_changing=27/38
+      Δ=-9  n=  2  Erste Violinen./1 4->-5; Zweite Violinen./1 4->-5
+      Δ=-1  n= 24  Piccolo/1 -4->-5; Vier Flöten./1 -4->-5; Vier Flöten./2 -4->-5; Drei Hoboen./1 -4->-5 …
+      Δ=+11  n=  1  Drei Klarinetten in A/2 -7->4
+  mahler--symphony-5--mvt1--gradus.mxl  bar#239 (ord 239) deltas=[-3, 4, 9] n_changing=28/38
+      Δ=-3  n=  3  Drei Klarinetten in A/1 4->1; Drei Klarinetten in A/2 4->1; Bass Clarinet/1 4->1
+      Δ=+4  n=  1  F Trumpet/1 -4->0
+      Δ=+9  n= 24  Piccolo/1 -5->4; Vier Flöten./1 -5->4; Vier Flöten./2 -5->4; Drei Hoboen./1 -5->4 …
+  mahler--symphony-5--mvt1--gradus.mxl  bar#294 (ord 294) deltas=[-9, 3] n_changing=27/38
+      Δ=-9  n= 24  Piccolo/1 4->-5; Vier Flöten./1 4->-5; Vier Flöten./2 4->-5; Drei Hoboen./1 4->-5 …
+      Δ=+3  n=  3  Drei Klarinetten in A/1 1->4; Drei Klarinetten in A/2 1->4; Bass Clarinet/1 1->4
+  mahler--symphony-5--mvt1--gradus.mxl  bar#323 (ord 323) deltas=[-7, 4, 5] n_changing=27/38
+      Δ=-7  n=  3  Drei Klarinetten in A/1 4->-3; Drei Klarinetten in A/2 4->-3; Bass Clarinet/1 4->-3
+      Δ=+4  n=  1  F Trumpet/2 -4->0
+      Δ=+5  n= 23  Piccolo/1 -5->0; Vier Flöten./1 -5->0; Vier Flöten./2 -5->0; Drei Hoboen./1 -5->0 …
+  mahler--symphony-5--mvt2--gradus.mxl  bar#189 (ord 189) deltas=[-6, -2, 6] n_changing=34/46
+      Δ=-6  n= 30  Vier Flöten./1 0->-6; Vier Flöten./2 0->-6; Piccolo/1 0->-6; Drei Hoboen./1 0->-6 …
+      Δ=-2  n=  1  B♭ Trumpet/3 2->0
+      Δ=+6  n=  3  A Clarinet/1 -3->3; A Clarinet/2 -3->3; A Clarinet/3 -3->3
+  mahler--symphony-5--mvt2--gradus.mxl  bar#266 (ord 266) deltas=[-8, -1, 10, 11] n_changing=33/46
+      Δ=-8  n=  2  A Clarinet/1 3->-5; A Clarinet/2 3->-5
+      Δ=-1  n=  5  B♭ Clarinet/1 -4->-5; B♭ Clarinet/2 -4->-5; B♭ Clarinet/3 -4->-5; A Clarinet/3 3->2 …
+      Δ=+10  n=  1  English Horn/1 -5->5
+      Δ=+11  n= 25  Vier Flöten./1 -6->5; Vier Flöten./2 -6->5; Piccolo/1 -6->5; Drei Hoboen./1 -6->5 …
+  mahler--symphony-5--mvt2--gradus.mxl  bar#288 (ord 288) deltas=[-9, -6, -2, 3] n_changing=33/46
+      Δ=-9  n= 26  Vier Flöten./1 5->-4; Vier Flöten./2 5->-4; Piccolo/1 5->-4; Drei Hoboen./1 5->-4 …
+      Δ=-6  n=  1  Vier Trompeten in F./3 6->0
+      Δ=-2  n=  2  A Clarinet/1 -5->-7; A Clarinet/2 -5->-7
+      Δ=+3  n=  4  B♭ Clarinet/1 -5->-2; B♭ Clarinet/2 -5->-2; B♭ Clarinet/3 -5->-2; Bass Clarinet/1 -5->-2
+  mahler--symphony-5--mvt2--gradus.mxl  bar#316 (ord 316) deltas=[4, 5] n_changing=32/46
+      Δ=+4  n= 31  Vier Flöten./1 -4->0; Vier Flöten./2 -4->0; Piccolo/1 -4->0; Drei Hoboen./1 -4->0 …
+      Δ=+5  n=  1  English Horn/1 -4->1
+  … 26 more
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/keychange-delta/benchmarks/omr-keychange-delta-2026-09/out/shared-delta.json

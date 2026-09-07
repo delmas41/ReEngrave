@@ -1,0 +1,24 @@
+========================================================================
+parsed 1745 encodings
+
+--- METER: do the parts stating a meter at a CHANGE bar agree?
+  meter-change bars with >=2 parts stating: 972
+  all parts state the SAME meter          : 970 / 972 = 0.9979
+  disagreeing                             : 2
+     debussy--cinq-poemes-de-baudelaire--recueillement--g ord    55 {'3/4': 1, '9/8': 1}
+     mahler--lieder-eines-fahrenden-gesellen--wenn-mein-s ord    91 {'4/8': 1, '3/8': 1}
+
+--- <transpose>-implied written-key OFFSETS, over every declaration
+  offset  -5 :      8  (0.0083)   <- OUTSIDE TRANSPOSITION_FIFTHS_OFFSETS
+  offset  -4 :     48  (0.0501)   <- OUTSIDE TRANSPOSITION_FIFTHS_OFFSETS
+  offset  -3 :    104  (0.1084)
+  offset  -2 :     83  (0.0865)   <- OUTSIDE TRANSPOSITION_FIFTHS_OFFSETS
+  offset  -1 :     17  (0.0177)   <- OUTSIDE TRANSPOSITION_FIFTHS_OFFSETS
+  offset  +0 :    242  (0.2523)
+  offset  +1 :    231  (0.2409)
+  offset  +2 :    183  (0.1908)
+  offset  +3 :     36  (0.0375)
+  offset  +8 :      7  (0.0073)   <- OUTSIDE TRANSPOSITION_FIFTHS_OFFSETS
+  inside the constant: 796/959 = 0.8300
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/keychange-delta/benchmarks/omr-keychange-delta-2026-09/out/meter-and-offsets.json

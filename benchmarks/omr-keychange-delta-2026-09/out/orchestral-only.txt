@@ -1,0 +1,16 @@
+========================================================================
+orchestral (>=10 staves), all encodings
+  27 works, 239 multi-staff change bars, 4697 changing staves
+  staff Δ == modal Δ                 : 4376/4697 = 0.9317
+  ... with the two identity-free escapes: 4614/4697 = 0.9823
+  BARS all-agree, strict             : 153/239 = 0.6402
+  BARS all-agree, relaxed            : 200/239 = 0.8368
+
+========================================================================
+orchestral (>=10 staves), deduped by work
+  17 works, 111 multi-staff change bars, 2159 changing staves
+  staff Δ == modal Δ                 : 1980/2159 = 0.9171
+  ... with the two identity-free escapes: 2118/2159 = 0.9810
+  BARS all-agree, strict             : 64/111 = 0.5766
+  BARS all-agree, relaxed            : 93/111 = 0.8378
+
