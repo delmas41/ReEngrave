@@ -1,0 +1,30 @@
+
+sibelius--symphony-2-op43--breitkopf-und-hartel-fro-1905--imslp15919.pdf: 143 pages in 318s -> 2 span(s) [[0, 14], [15, 142]]
+   pages 0-14 (15p) peak sizes [8, 9, 10, 11, 12, 13, 14, 15, 16]
+   pages 15-142 (128p) peak sizes [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/sibelius--symphony-2-op43--breitkopf-und-hartel-fro-1905--imslp15919.json
+
+schumann--symphony-2-op61--peters-1887--imslp514290.pdf: 141 pages in 485s -> 2 span(s) [[0, 124], [125, 140]]
+   pages 0-124 (125p) peak sizes [0, 11, 12, 13, 14]
+   pages 125-140 (16p) peak sizes [14, 15]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/schumann--symphony-2-op61--peters-1887--imslp514290.json
+
+faure--requiem-op48--hamelle-1901--imslp30151.pdf: 128 pages in 762s -> 2 span(s) [[0, 90], [91, 127]]
+   pages 0-90 (91p) peak sizes [17, 22, 23]
+   pages 91-127 (37p) peak sizes [22, 23, 24]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/faure--requiem-op48--hamelle-1901--imslp30151.json
+
+tchaikovsky--the-nutcracker-suite-op71a--jurgenson-1892--imslp231707.pdf: 120 pages in 704s -> 2 span(s) [[0, 22], [23, 119]]
+   pages 0-22 (23p) peak sizes [0, 8, 11, 12, 16, 18]
+   pages 23-119 (97p) peak sizes [0, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/tchaikovsky--the-nutcracker-suite-op71a--jurgenson-1892--imslp231707.json
+
+saint-saens--piano-concerto-2-op22--durand-1875--imslp21451.pdf: 111 pages in 465s -> 2 span(s) [[0, 8], [9, 110]]
+   pages 0-8 (9p) peak sizes [3, 6, 9, 10, 14]
+   pages 9-110 (102p) peak sizes [2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/saint-saens--piano-concerto-2-op22--durand-1875--imslp21451.json
+
+mendelssohn--symphony-5-op107--mendelssohncomplete-1877--imslp20287.pdf: 94 pages in 2213s -> 2 span(s) [[0, 58], [59, 93]]
+   pages 0-58 (59p) peak sizes [0, 11, 12, 13, 14]
+   pages 59-93 (35p) peak sizes [0, 15]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/mendelssohn--symphony-5-op107--mendelssohncomplete-1877--imslp20287.json

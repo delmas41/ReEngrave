@@ -1,0 +1,20 @@
+
+beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf: 79 pages in 289s -> 3 span(s) [[0, 26], [27, 45], [46, 78]]
+   pages 0-26 (27p) peak sizes [8, 9, 10]
+   pages 27-45 (19p) peak sizes [8, 9, 10, 11]
+   pages 46-78 (33p) peak sizes [9, 10, 11, 12, 13, 14]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.json
+
+brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf: 99 pages in 284s -> 2 span(s) [[0, 40], [41, 98]]
+   pages 0-40 (41p) peak sizes [9, 11, 12, 13]
+   pages 41-98 (58p) peak sizes [0, 10, 11, 12, 13, 15, 16]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.json
+
+beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf: 89 pages in 316s -> 1 span(s) [[0, 88]]
+   pages 0-88 (89p) peak sizes [7, 9, 10, 11, 12]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.json
+
+mozart--symphony-40-in-g-minor-k550--breitkopf-hartel-mozart-1880--imslp984555.pdf: 49 pages in 69s -> 1 span(s) [[0, 48]]
+   pages 0-48 (49p) peak sizes [10, 11]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/mozart--symphony-40-in-g-minor-k550--breitkopf-hartel-mozart-1880--imslp984555.json
+STREAM A DONE

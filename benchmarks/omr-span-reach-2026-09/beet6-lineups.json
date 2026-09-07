@@ -1,0 +1,15 @@
+[
+ {
+  "first": 0, "last": 26, "size": 10,
+  "read_off": "page 20 system 0, out/crops/p020_margin.png — Fl. Ob. Cl. Fag. Cor. then five unlabelled staves in treble, treble, alto, bass, bass clef",
+  "lineup": ["Flute", "Oboe", "Clarinet", "Bassoon", "Horn",
+             "Violin", "Violin", "Viola", "Cello", "Contrabass"]
+ },
+ {
+  "first": 46, "last": 78, "size": 14,
+  "read_off": "page 54 system 1, out/crops/p054_margin.png — Fl.pic Fl. Ob. Cl. Fag. Cor. Tr. Tp. Tb. then five unlabelled string staves. 'Tb.' is TROMBONI (alto clef), which is why the lineup says Trombone and not Tuba",
+  "lineup": ["Piccolo", "Flute", "Oboe", "Clarinet", "Bassoon", "Horn",
+             "Trumpet", "Timpani", "Trombone",
+             "Violin", "Violin", "Viola", "Cello", "Contrabass"]
+ }
+]
