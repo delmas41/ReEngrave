@@ -1,0 +1,114 @@
+[
+ {
+  "page": "scan-beethoven5-litolff-p1",
+  "dpi": 300,
+  "n_staves": 12,
+  "spacing_px": 7.75,
+  "thickness_px": 2.0,
+  "window_in_spaces": 3.225806451612903,
+  "window_in_thicknesses": 12.5
+ },
+ {
+  "page": "scan-beethoven5-litolff-p1",
+  "dpi": 600,
+  "n_staves": 12,
+  "spacing_px": 15.75,
+  "thickness_px": 4.0,
+  "window_in_spaces": 1.5873015873015872,
+  "window_in_thicknesses": 6.25
+ },
+ {
+  "page": "scan-brahms1-breitkopf-p1",
+  "dpi": 300,
+  "n_staves": 14,
+  "spacing_px": 16.0,
+  "thickness_px": 4.0,
+  "window_in_spaces": 1.5625,
+  "window_in_thicknesses": 6.25
+ },
+ {
+  "page": "scan-brahms1-breitkopf-p1",
+  "dpi": 600,
+  "n_staves": 14,
+  "spacing_px": 32.0,
+  "thickness_px": 7.0,
+  "window_in_spaces": 0.78125,
+  "window_in_thicknesses": 3.5714285714285716
+ },
+ {
+  "page": "engraved-brahms1",
+  "dpi": 300,
+  "n_staves": 21,
+  "spacing_px": 20.5,
+  "thickness_px": 3.0,
+  "window_in_spaces": 1.2195121951219512,
+  "window_in_thicknesses": 8.333333333333334
+ },
+ {
+  "page": "engraved-brahms1",
+  "dpi": 600,
+  "n_staves": 21,
+  "spacing_px": 41.5,
+  "thickness_px": 5.0,
+  "window_in_spaces": 0.6024096385542169,
+  "window_in_thicknesses": 5.0
+ },
+ {
+  "page": "engraved-mozart41",
+  "dpi": 300,
+  "n_staves": 17,
+  "spacing_px": 20.5,
+  "thickness_px": 3.0,
+  "window_in_spaces": 1.2195121951219512,
+  "window_in_thicknesses": 8.333333333333334
+ },
+ {
+  "page": "engraved-mozart41",
+  "dpi": 600,
+  "n_staves": 17,
+  "spacing_px": 41.0,
+  "thickness_px": 5.0,
+  "window_in_spaces": 0.6097560975609756,
+  "window_in_thicknesses": 5.0
+ },
+ {
+  "page": "scan-beethoven5-litolff-p1",
+  "dpi": 600,
+  "experiment": "window_25_vs_50",
+  "ink_25": 0.08197543041939712,
+  "ink_50": 0.08197543041939712,
+  "pixels_disagreeing": 0.0,
+  "median_vertical_run_25": 4,
+  "median_vertical_run_50": 4
+ },
+ {
+  "page": "scan-brahms1-breitkopf-p1",
+  "dpi": 600,
+  "experiment": "window_25_vs_50",
+  "ink_25": 0.09408319842392092,
+  "ink_50": 0.09600238071619879,
+  "pixels_disagreeing": 0.0022503992173200996,
+  "median_vertical_run_25": 7,
+  "median_vertical_run_50": 7
+ },
+ {
+  "page": "engraved-brahms1",
+  "dpi": 600,
+  "experiment": "window_25_vs_50",
+  "ink_25": 0.09146931872482214,
+  "ink_50": 0.09323712701374025,
+  "pixels_disagreeing": 0.0019754139299075547,
+  "median_vertical_run_25": 5.0,
+  "median_vertical_run_50": 5
+ },
+ {
+  "page": "engraved-mozart41",
+  "dpi": 600,
+  "experiment": "window_25_vs_50",
+  "ink_25": 0.09905429396039392,
+  "ink_50": 0.1007599584627828,
+  "pixels_disagreeing": 0.0020375577164367816,
+  "median_vertical_run_25": 5,
+  "median_vertical_run_50": 5.0
+ }
+]

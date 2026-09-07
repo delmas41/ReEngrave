@@ -1521,3 +1521,230 @@ comparison requires a full-page detection pass that no harness currently makes.*
   the refutations beside them, and a future agent re-deriving one of them has no
   scope column to consult. The document's own thesis — *a refutation without its
   scope is a superstition* — applies symmetrically to an adoption.
+
+---
+
+# BUILD REVIEW — `claude/fix-direction-text-flag` (Fix Agent E)
+
+**Reviewed by the agent that reported the defect.** Two commits, `4592bc69`
+(argparse default) and `b14b80ee` (runaway cap). I edited nothing in its tree:
+the three mutations were applied by **runtime patching from `/tmp` plugins**, so
+its files were never modified. PID 2831 untouched; the whole suite not run.
+
+## VERDICT: **APPROVE WITH FIXES** — the fixes are documentation-only
+
+Both code changes are correct, minimal, and land where I said the defect was. The
+measured constant is **better-founded than the commit message claims**. Three of
+the four corrections below are wording; one is a mutation count that overstates
+coverage by one. **No code change is required to merge.**
+
+## WHAT HELD
+
+### 1 — The measured gap, re-derived from scratch (the load-bearing item)
+
+I wrote my own sweep rather than re-running theirs. **The load-bearing list is
+exact:**
+
+```
+files carrying a direction_text block : 45          (claimed 45)
+distinct rejected-string lengths >= 30: 34, 41, 47, 48, 55, 144, 854   (claimed identically)
+widest empty interval                 : (55, 144)   — nothing between them
+caps 56, 100, 120, 143                : all refuse exactly 2 of the corpus
+cap 144                               : refuses 1 — the interval's right edge, as claimed
+```
+
+**Both identifications are correct**, and I quote what I found:
+
+- the 47/48 group is `'Score: CC0 1.0 Universal: Annotations: CC-By-SA'` and
+  `'CTUSC. CTUSC. …'` — a licence footer and a repetition, as described;
+- the 41s and 55 are `'Cresc. Cresc. Cresc. …'` / `'CRESC. …'` / `'CTESC. …'`;
+- 144 is `'- 8 - - 9 - - 10 - …'` — the string **I independently found** in round 2
+  from a different direction (an arm-to-arm diff at an identical funnel);
+- 854 opens `'cresc. The crescence of the core of the system is suggested by the
+  following facts: 1. …'` — confirming the self-reported buried `cresc.`
+
+**The "438" reconciles exactly, and my initial reading of it was wrong, not
+theirs.** I counted 352 and had to explain the gap: `352 rejected + 86 accepted =
+438`, and `n_accepted` summed over the corpus is exactly **86**. The commit says
+*"438 strings **reached the lexicon**"* — which is rejected **plus** accepted, and
+is the correct and larger population. Precise wording, and it is the population
+that matters.
+
+⚠️ **And the decisive collateral check, which the commit does not make, passes
+with room to spare.** I pulled every string the pipeline actually **accepted and
+placed** (`measure["direction_texts"]`, n=86):
+
+```
+distinct lengths : 3, 4, 5, 6, 7, 14, 16, 17
+longest          : 'Allegro con brio.'  (17 chars)
+count > 120      : 0
+```
+
+**No real reading in the corpus exceeds 17 characters against a cap of 120 — 7×
+headroom.** The commit's "2.2× the longest plausible reading" is measured against
+`Cresc. Cresc. …` (55), which is itself a decoder repetition the lexicon refuses
+by name. Against genuine musical directions the margin is far larger. **The
+constant is more conservative than its own justification claims.**
+
+### 2 — Two of the three mutations reproduce exactly; the third is off by one
+
+| mutation | claimed | I measured |
+|---|--:|--:|
+| cap raised to 100000 | 7 of 18 fail | **7** ✅ |
+| **warn-but-still-return-the-string** | 5 of 18 fail | **5** ✅ |
+| guard absent | 8 of 18 fail | **7** (11 pass) — see D26 |
+
+⚠️ **The third mutation is the one that matters and it bites exactly as claimed.**
+I rebuilt "warn but return" faithfully — same `logger.warning` text, same
+per-crop and per-batch lines, string still returned — and **5 tests fail**:
+`test_the_essay_comes_back_empty`, `test_the_measure_number_run_comes_back_empty`,
+`test_one_runaway_does_not_take_the_batch_with_it`,
+`test_the_shortest_measured_runaway_is_refused`,
+`test_the_boundary_is_where_it_says_it_is`. **Recording the refusal is not
+accepted as a substitute for making it** — which is precisely the shape shipped
+elsewhere tonight, and this suite refuses it.
+
+**The coordinator's question about the surviving set — the reasoning is right but
+the set is larger than "real readings unchanged".** Under guard-absent the
+survivors are the 8 parametrised `TestRealReadingsAreUntouched` cases plus
+`test_a_clean_batch_warns_about_nothing`, `test_the_longest_real_reading_is_kept`
+and `test_the_cap_is_inside_the_empty_interval`. The first eleven do pass by
+construction. **The twelfth does not test the guard at all** — it is pure
+arithmetic on the constant against the measured interval. That is not a weakness:
+it is the test that **bites on mutation B** (raising the cap moves it out of
+`(55,144)`) and on nothing else. Constant and guard are tested separately, and
+each mutation hits its own. **Well designed.**
+
+### 3 — Scope, the pin, and the tests
+
+| claim | verdict |
+|---|---|
+| `--direction-text` is the parser's **only** `BooleanOptionalAction` | ✅ re-derived by AST: `[('--direction-text', 'None')]` — one entry, now `None` |
+| `read_direction_text` is `transcribe()`'s **only** tri-state parameter | ✅ re-derived by `inspect.signature`: `[('read_direction_text', None)]` |
+| `OMR_DIRECTION_READERS=tesseract` pins the arm | ✅ `direction_text.py:717` gates both rungs on it; setting it to `tesseract` excludes Surya, and **nothing else was pinned** |
+| the pin means the Surya rung is in neither arm | ✅ correct, correctly self-reported — and correctly scoped: it is **Fix 1's** A/B, and Fix 1 does not touch the Surya path. It says nothing about Fix 2 and does not claim to |
+| 6 CLI tests, red-first against the pre-fix source | ✅ present and named as described; 24 tests pass across both new files |
+
+## WHAT DID NOT
+
+### D26 — the guard-absent mutation is 7 of 18, not 8
+
+A faithful reconstruction — every string returned, no warning, no counter —
+fails **7** and passes **11**, not 8/10. The likeliest explanation is a slightly
+more aggressive mutation (deleting `is_runaway_read` itself would make a test
+error rather than fail); I could not reproduce 8 from any behavioural mutation.
+**Direction of the error: it overstates the suite's coverage by one test.** The
+mutation still bites hard and the conclusion is unaffected.
+
+### D27 — ⚠️ the Tesseract exemption is right for a reason it does not state
+
+`staff_labels_tesseract.py:157` justifies omitting the guard with *"it cannot
+generate text that is not in the crop."* **That is falsified by the same
+docstring twelve lines earlier**, which records `'Crese.'` and `'CTeSC.'` — text
+not in the crop, character for character.
+
+The **true** and sufficient reason is about **length, which is what the guard is
+about**: Tesseract under `--psm 7` (`PSM_LINE = 7`, used at `:182`) is a CTC line
+recogniser whose output length is bounded by the number of timesteps across the
+image width. It can emit *wrong* characters; it **cannot run away**, because
+there is no autoregressive loop to run away in. A generative decoder has one.
+
+**So the exemption is architecturally justified, not merely plausible** — which
+is the coordinator's question answered — but the sentence as written is a claim
+about *content* where the guard is about *length*, and it is a claim its own
+evidence contradicts. ⚠️ Left standing, it is the kind of sentence a later agent
+cites to justify trusting this rung with something length is not the issue for.
+
+**Suggested replacement:** *"Tesseract under `--psm 7` is a discriminative CTC
+line recogniser: its output length is bounded by the crop's own width, so it
+cannot run away. Its documented failure here is an in-word error (`Crese.`,
+`CTeSC.`) — wrong characters, bounded count. A generative decoder has no such
+bound, which is why its twin needs a cap and this does not."*
+
+### D28 — `is_runaway_read`'s stated reason for being public is not realised
+
+Its docstring: *"Public so the boundary it draws can be tested directly, for the
+same reason `staff_labels_tesseract.strip_line_fragments` is."*
+`grep -n is_runaway_read tools/omr/tests/test_surya_runaway_read.py` returns
+**nothing** — every boundary test goes through `read_crops_text`. Either add the
+direct test or drop the sentence; as it stands it describes an intent, not the
+suite.
+
+## ADJUDICATION — the self-reported loss (coordinator's item 4)
+
+> *"The 854-char essay opens with `cresc.` — a real reading the generated text buried."*
+
+**The call to refuse the whole string and not recover the prefix is correct, and
+I would make the same one.** Three reasons, in the order that decides it:
+
+1. **A prefix rule is a new heuristic on the output of an unbounded generator.**
+   The guard's entire warrant is that this decoder's output is not trustworthy as
+   a transcription once it starts generating. Reaching into that output to keep
+   the first *n* characters trusts exactly the thing just declared untrustworthy —
+   and nothing establishes that a runaway always *begins* with the real reading.
+   n=1 here; the 144-char runaway (`'- 8 - - 9 - …'`) has **no** real prefix.
+2. **It crosses this rung's own stated line.** `staff_labels_tesseract.py:132-133`
+   states it for the sibling: *"cleans ink the CROP contributed and never edits
+   the word … Cleaning a reading and repairing one are"* different acts. A prefix
+   rule is repairing.
+3. **The loss is bounded and measured.** On mixed-reader pages Tesseract's reading
+   of the same crop already competes, so the loss is confined to `readers:
+   ['surya']` pages — and the 854 case is on one. Against that: leaving it in
+   makes `n_read` count a hallucination as a reading, which is a *worse* loss
+   because it is invisible.
+
+⚠️ **What I would add to the record, not to the code:** the cost is one `cresc.`
+on one page, and the honest ledger entry is *"a runaway may bury a real reading;
+we refuse both."* If a future corpus shows runaways routinely prefixed with the
+true reading, that is when a prefix rule earns a measurement — **and the trigger
+is a measurement, not the next sighting.**
+
+## UNVERIFIABLE
+
+| claim | why | the run that would settle it |
+|---|---|---|
+| Tesseract reads 25 of 26 crops on 984073-p2 with a longest refusal of 10 chars | requires running Tesseract over that page's crops; I did not, to stay inside the review's cost | `OMR_DIRECTION_READERS=tesseract` on that one page |
+| the guard behaves against the **live** Surya rung | the builder stubbed the worker rather than risk attaching to the shared `llama-server` and killing it with keep-alive off | see below — I endorse the call and name the run |
+
+**On the coordinator's item 6 — the stub was the right call, and the unit-level
+proof is sufficient to merge.** The guard is a pure length test on a string the
+worker already returned; it sits *after* the subprocess boundary and depends on
+nothing the live model does except the string's length. There is no interaction
+with decode, keep-alive or the server for a live run to exercise that a stub
+cannot. **What a live run would add is not proof of the guard but a fresh sample
+of runaway lengths** — and that is the thing worth putting on the record:
+
+> **The named run: on a machine with a PRIVATE `llama-server` (never PID 2831),
+> `OMR_DIRECTION_READERS=surya` over the 11 scan pages, N times, collecting the
+> length distribution of every returned string.** It would confirm the `(55,144)`
+> interval against fresh decodes rather than against 45 stored files, and it is
+> the only thing that could move the constant. Until then the cap rests on a
+> corpus that is committed, complete and re-derivable — which I verified — and
+> that is enough to ship a guard whose failure mode is refusing a string nothing
+> reads.
+
+## Separate from the merge verdict — the exposure
+
+The builder's independent confirmation is correct and I verified it in my own
+investigation: `direction_text.pages[].rejected` stores reader output **verbatim
+and unbounded** (`direction_text.py:759`, `:798`), and `local_omr.py:262`
+`json.dump`s the whole result into a directory served by an **unauthenticated**
+`StaticFiles` mount (`backend/main.py:105`).
+
+**Fix 2 shrinks what lands there and does not close it.** A refused runaway now
+records `""`, so the 11,708-character case would not recur — but every string
+below the cap still reaches the JSON verbatim, and the mount is still open. That
+remains a product decision for Sean and is **not** a condition of this merge.
+
+## The fixes to make before merging
+
+All documentation; none touches behaviour:
+
+1. **D27** — replace the Tesseract exemption's reason with the length/CTC one.
+   *(The most important of the three: it is the sentence a future agent will cite.)*
+2. **D26** — the guard-absent mutation is 7 of 18, not 8.
+3. **D28** — either add a direct `is_runaway_read` test or drop the docstring
+   sentence that promises one.
+
+Optionally worth adding, because it strengthens the constant: **accepted
+directions in the corpus top out at 17 characters against a cap of 120.**
