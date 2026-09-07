@@ -33,10 +33,24 @@ it is a NON-ZERO EXIT, not an empty table at exit 0.
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import sys
 from collections import Counter
 from pathlib import Path
+
+
+def _load(path: Path) -> dict:
+    """A result JSON, plain or gzipped.
+
+    The committed arm artefacts are `.json.gz` — 110 KB against 1.6 MB, and
+    the DECOMPRESSED bytes are the pipeline's own output unmodified, which a
+    projection or a trimmed copy would not be. A probe that had to read a
+    hand-reduced file would not be demonstrating that the record reaches disk.
+    """
+    if path.name.endswith(".gz"):
+        return json.loads(gzip.decompress(path.read_bytes()).decode())
+    return json.loads(path.read_text())
 
 VOTES_ONLY = {"vote_open_score", "vote_small_system"}
 RESCUE = {"connectivity_rescue", "span_rescue_small_system"}
@@ -58,14 +72,14 @@ def main() -> int:
     docs: list[tuple[str, dict]] = []
     for arm in args.arms:
         d = Path(arm)
-        found = sorted(d.glob("*.json"))
+        found = sorted([*d.glob("*.json"), *d.glob("*.json.gz")])
         if not found:
-            print(f"REFUSING: no *.json under {d} — a probe that globs nothing "
-                  f"prints a clean zero and exits 0, which is the failure this "
-                  f"guard exists to prevent.", file=sys.stderr)
+            print(f"REFUSING: no *.json / *.json.gz under {d} — a probe that "
+                  f"globs nothing prints a clean zero and exits 0, which is the "
+                  f"failure this guard exists to prevent.", file=sys.stderr)
             return 3
         for f in found:
-            docs.append((f.stem, json.loads(f.read_text())))
+            docs.append((f.name.split(".json")[0], _load(f)))
 
     total_rows = 0
     print(f"{'page':30} {'regime':10} {'n':>4} {'votes':>6} {'vote+conn':>10} "
@@ -131,6 +145,8 @@ def main() -> int:
     # 2026-09-06. If the numbers below disagree with it, one of the two is
     # wrong and that is the finding.
     print("\nPAD PER CELL, PER SIDE  (above, below) -> n cells")
+    pad_refusals = 0
+    pad_ok = 0
     for name, doc in docs:
         cells = Counter(
             (m.get("pad_above_staff_lines"), m.get("pad_below_staff_lines"))
@@ -138,15 +154,34 @@ def main() -> int:
             for sys_ in page.get("systems", [])
             for staff in sys_.get("staves", [])
             for m in staff.get("measures", []))
+        # ⚠️ THE EMPTY-COUNTER HOLE, found in review. A document with systems
+        # and ZERO cells yields `Counter()`, whose key set is `set()` — which
+        # is not `{(None, None)}`, so it slipped past the pre-fix check below
+        # and printed a confident `(n=0)` at exit 0. That is the exact shape
+        # the barline half refuses and that this file's own docstring warns
+        # about one table up: a probe reporting nothing, cleanly.
+        if not cells:
+            print(f"  {name:30} REFUSING — no measure cells at all", flush=True)
+            print(f"REFUSING: {name} carries no measure cell, so its pad table "
+                  f"would be a confident zero.", file=sys.stderr)
+            pad_refusals += 1
+            continue
         if set(cells) == {(None, None)}:
-            print(f"  {name:30} no pad record — pre-fix JSON")
+            print(f"  {name:30} REFUSING — no pad record (pre-fix JSON)")
+            print(f"REFUSING: {name} carries no pad record.", file=sys.stderr)
+            pad_refusals += 1
             continue
         shown = "  ".join(f"{k}x{v}" for k, v in sorted(cells.items(), key=str))
         print(f"  {name:30} {shown}   (n={sum(cells.values())})")
+        pad_ok += 1
     print("  ⚠️ A cell grown to the ceiling on BOTH sides records (6.0, 6.0) "
           "under either\n     padding mode, so those rows are true and "
           "UNDECIDABLE about which cutter\n     ran. That is why "
           "`annotate/recut_cells` still derives the mode by re-cutting.")
+    if pad_refusals or not pad_ok:
+        print(f"\nREFUSING: {pad_refusals} document(s) could not supply a pad "
+              f"table, {pad_ok} could.", file=sys.stderr)
+        return 3
     return 0
 
 

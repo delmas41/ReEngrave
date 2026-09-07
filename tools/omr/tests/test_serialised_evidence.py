@@ -80,6 +80,20 @@ def test_the_regime_verdict_is_carried_on_every_row():
     assert rows[0]["connectivity"] == rows[1]["connectivity"] == 0.0
 
 
+def test_the_row_carries_its_own_locator():
+    """A reviewer caught the docstring promising `system_index` "so a row is
+    self-locating" while the emitted dict had neither `system_index` nor
+    `page_index` in it. Both are redundant with the parent dicts and are
+    emitted anyway — the phrase is precisely what invites lifting a row out of
+    its parent, and that is when redundancy stops being redundant.
+
+    Red against: deleting `"system_index"` from the emitted dict.
+    """
+    rows = _barline_records([_bl(page_index=4, system_index=2, x=7)])
+    assert rows[0]["page_index"] == 4
+    assert rows[0]["system_index"] == 2
+
+
 def test_the_row_carries_its_own_denominator():
     """`n_votes` is meaningless without `n_staves_in_system`, and the sibling
     system dict's `n_staves` is a DIFFERENT number (it counts staves that
@@ -321,6 +335,22 @@ def test_barlines_reach_disk_with_the_evidence_that_admitted_them(transcribed):
             "vote_and_connectivity", "connectivity_rescue"}
         assert r["barlines_cross_gaps"] in (True, False)
     assert [r["x"] for r in rows] == sorted(r["x"] for r in rows)
+
+
+def test_the_rows_locator_agrees_with_the_dicts_it_hangs_in(transcribed):
+    """A locator that disagrees with its parent is worse than none — it would
+    be believed. Asserts the redundancy is CONSISTENT rather than merely
+    present, on the real page.
+
+    Red against: `"system_index": 0` (a constant) in `_barline_records`, which
+    a single-system fixture alone could not catch — so the page_index half is
+    checked against the page dict too.
+    """
+    for page in transcribed["pages"]:
+        for sys_ in page["systems"]:
+            for r in sys_["barlines"]:
+                assert r["system_index"] == sys_["system_index"]
+                assert r["page_index"] == page["page_index"]
 
 
 def test_the_serialised_barlines_are_the_ones_phase_one_accepted(transcribed):

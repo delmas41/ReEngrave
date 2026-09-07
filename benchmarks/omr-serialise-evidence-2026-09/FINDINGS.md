@@ -24,7 +24,7 @@ remove."* This change adds reach and nothing else.
 
 | key | where | shape |
 |---|---|---|
-| `barlines` | each **system** dict | list of 10-key rows, x-ordered |
+| `barlines` | each **system** dict | list of 13-key rows, x-ordered |
 | `pad_above_staff_lines`, `pad_below_staff_lines` | each **measure** dict | float or null |
 | `barlines_with_no_system_in_output` | page dict, **only if non-empty** | orphan guard |
 
@@ -46,6 +46,9 @@ docstring rather than optimised away:
   verdict. The `Barline` docstring's central warning is that `connectivity` is
   **not comparable across pages and its sign inverts**; a consumer reading one
   row must not have to climb a level to learn the regime it was decided in.
+* `page_index` / `system_index` stay on every row for the same reason
+  (**added in review** — see below). Cost is bounded by the barline count, not
+  the cell count: 25 rows across both pages.
 
 ## The payoff, measured from disk
 
@@ -109,12 +112,12 @@ CLI writes `indent=2`; `backend/modules/local_omr.py` writes compact):
 
 | page | writer | before | after | delta |
 |---|---|--:|--:|--:|
-| Beethoven 5 scan | `indent=2` | 749,291 | 775,023 | **+3.43%** |
-| Beethoven 5 scan | compact | 215,920 | 230,515 | **+6.76%** |
-| Brahms engraved | `indent=2` | 1,623,674 | 1,641,173 | +1.08% |
-| Brahms engraved | compact | 439,989 | 449,969 | +2.27% |
+| Beethoven 5 scan | `indent=2` | 749,291 | 776,110 | **+3.58%** |
+| Beethoven 5 scan | compact | 215,920 | 231,058 | **+7.01%** |
+| Brahms engraved | `indent=2` | 1,623,674 | 1,641,685 | +1.11% |
+| Brahms engraved | compact | 439,989 | 450,225 | +2.33% |
 
-Worst case **+6.76%**, on the production web-app writer, on the denser-per-byte
+Worst case **+7.01%**, on the production web-app writer, on the denser-per-byte
 page. Under the ~10% tonight's clef record cost and which was accepted on the
 argument that the growth IS the evidence. Split: the pad is ~82–84 B per
 measure at `indent=1` and dominates (192 and 147 cells); a barline row is
@@ -224,3 +227,107 @@ Both probes resolve inputs from `__file__` / `OMR_FIXTURE_ROOT`, never the CWD,
 and **exit non-zero** on a missing or empty input set — verified: an empty
 directory exits 3, and so does an arm of pre-fix JSON, which carries zero
 barline rows.
+
+
+---
+
+# Review round (2026-09-07)
+
+Agent II approved with two minors. Both fixed; a third item — committing the
+arm artefacts — was asked for and done.
+
+## Minor 1 — the pad table had no anti-vacuity guard. FIXED
+
+The barline half refused correctly on an empty input. The **pad** half did
+not: a document with systems and **zero cells** yields `Counter()`, whose key
+set is `set()` — which is not `{(None, None)}`, so it slipped past the
+pre-fix-JSON check and printed a confident **`(n=0)` at exit 0**. That is
+exactly the shape this file's own docstring warns about one table up, arriving
+in the instrument itself.
+
+⚠️ **Found by the reviewer, on a synthetic input, not by me.** My own refusal
+test used an empty directory and an arm of pre-fix JSON, and *both of those
+paths already worked* — so the test passed and the hole stayed open. The
+missing case was a document that is well-formed and populated in one half and
+empty in the other, which neither of my inputs was.
+
+Proven with a control, on the reviewer's shape (systems + barlines, zero
+cells):
+
+    pre-fix probe   printed the table, exit 0     <- the bug
+    post-fix probe  REFUSING ... exit 3
+
+## Minor 2 — `system_index` promised and not emitted. EMITTED (not struck)
+
+`_barline_records`' docstring listed `system_index` among the keys, *"so a row
+is self-locating"*; the dict had eleven keys and that was not one of them.
+
+**Emitted rather than struck**, and `page_index` with it. The phrase is what
+invites lifting a row out of its parent, and that is precisely when the
+redundancy stops being redundant — the same argument already made for
+`barlines_cross_gaps`, applied to location instead of regime. Striking the
+phrase would have removed the promise and left the hazard. Cost is bounded by
+the **barline** count, not the cell count (25 rows across both pages, +0.25pt
+of the total growth), which is why this is not the place to economise.
+
+Four further mutations, each run and each RED: drop `system_index`, drop
+`page_index`, emit either as a constant `0`. The constant-`0` pair is caught
+by a new e2e test asserting the locator **agrees with the dicts it hangs in**
+— a locator that disagrees with its parent is worse than none, because it
+would be believed.
+
+## Committed artefacts — `arm-after/`
+
+A record-the-evidence branch whose own evidence needed a re-run to check was
+the fair criticism. `arm-after/` now holds both pages:
+
+| file | bytes |
+|---|--:|
+| `beet5-984073-p1.json.gz` | 37,282 |
+| `brahms-sym1-mvt1-engraved-p0.json.gz` | 72,331 |
+| `beet5-984073-p1.musicxml` | 64,552 |
+| `brahms-sym1-mvt1-engraved-p0.musicxml` | 165,617 |
+
+340 KB total. **Gzipped, and the decompressed bytes are the pipeline's own
+output unmodified** — sha256 verified against the arm directory. A projection
+or a trimmed copy would have been smaller and would have defeated the
+demonstration: the probe has to read a real result JSON, or it is not showing
+that the record reaches disk. `probe_barline_prongs.py` reads `.json.gz`
+transparently and reproduces the table from the committed files.
+
+⚠️ **The committed MusicXML is byte-identical to the BEFORE arm's**, verified
+by `cmp`, so it doubles as the gate's own artefact: the headline claim is
+checkable against these files without producing a before arm.
+
+    35ea276d5fb3fd577ee7f6c0711beb7943863024860ce6694d76e3617ef54b0b  beet5-984073-p1.musicxml
+    7fe2a2aca16c425dc513429744bc50fbcfa953733dca975ae0a1ec4c4f4240a0  brahms-sym1-mvt1-engraved-p0.musicxml
+
+## `deletion_counts` — the coordinator's sharpening, recorded here
+
+My reach limit 2 nominated `deletion_counts` as the next record. The review
+sharpened the reason and, in doing so, **changed the scope**, which is worth
+carrying:
+
+*The accepted set is a convenience; the rejected set is the only route to the
+information.* An accepted barline is partly recoverable from the output
+already — it produced a measure boundary that is on disk — so recording it
+removes a re-run. **A rejected column is recoverable from nothing.**
+
+⚠️ **But serialising `deletion_counts` as it stands would not deliver it.**
+Those 27 keys are *counters*. Writing them out buys *"eight columns were
+rejected on this page"* — the same shape as `n_unladdered_noteheads_dropped`,
+which reaches the JSON today as an integer consumed by nobody. **A tally is
+not a record.** The thing worth serialising is the `evidence` map inside
+`detect_barlines` — per-candidate x, votes, connectivity, span, failing prong
+— which is what reach limit 2 already names. The cheap version ships a number
+that looks like a record and answers nothing.
+
+## Verification note worth keeping
+
+The reviewer confirmed the probe reads the artefact rather than recomputing,
+by a method that could have failed: extracting its import list (`argparse`,
+`gzip`, `json`, `sys`, `Counter`, `Path` — no `tools.*`, `cv2`, `numpy`,
+`fitz`, `PIL`, `transcribe` or `detect_barlines` outside a docstring and a
+comment), then hand-writing synthetic result JSONs with no pipeline anywhere
+and running the probe against them. **That is the check that matters for a
+from-disk claim**, and it is cheaper than trusting the source.

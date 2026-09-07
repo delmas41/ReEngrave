@@ -1108,9 +1108,11 @@ def _barline_records(barlines: list[Barline]) -> list[dict[str, Any]]:
     in-process and the decision is already made by the time this runs. What
     changes is that the question can now be asked FROM DISK:
 
-    ``x`` / ``y_top`` / ``y_bottom`` / ``system_index``
-        Where it is. Already implied by the measure boundaries either side of
-        it; carried so a row is self-locating.
+    ``page_index`` / ``system_index`` / ``x`` / ``y_top`` / ``y_bottom``
+        Where it is. The first two are redundant with the dicts this row hangs
+        inside and are emitted anyway, so a row lifted out of its parent — the
+        thing "self-locating" invites — is still resolvable. Cost is bounded
+        by the barline count, not the cell count.
     ``n_votes`` / ``n_staves_in_system`` / ``min_votes``
         How many staves saw it, out of how many, against the tiered threshold
         applied. **Probe:** how thin is the evidence behind a page's bars.
@@ -1148,6 +1150,18 @@ def _barline_records(barlines: list[Barline]) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     for bl in sorted(barlines, key=lambda b: b.x):
         out.append({
+            # ⚠️ THE LOCATOR. Both of these are already implied by the dicts
+            # this row hangs inside, and both are emitted anyway, for the same
+            # reason `barlines_cross_gaps` is: a row must be legible ALONE.
+            # A reviewer caught this docstring promising `system_index` "so a
+            # row is self-locating" while the dict had eleven keys and neither
+            # of these among them — and the phrase is exactly what invites
+            # someone to lift a row out of its parent, which is when the
+            # locator stops being redundant. 25 rows across the two
+            # verification pages, so the cost is bounded by the BARLINE count,
+            # not the cell count.
+            "page_index": int(bl.page_index),
+            "system_index": int(bl.system_index),
             "x": int(bl.x),
             "y_top": int(bl.y_top),
             "y_bottom": int(bl.y_bottom),
