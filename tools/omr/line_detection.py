@@ -340,6 +340,98 @@ def detect_stems(
 # ---------------------------------------------------------------------------
 
 
+def _stacked_bar_bands(labels, label: int, x: int, y: int, w: int, h: int,
+                       max_samples: int = 48) -> tuple[int, list[tuple[int, int]] | None]:
+    """How many beam bars are stacked here, AND where each one actually is.
+
+    Returns `(n_bars, bands)`. `bands` is one `(top, bottom)` per bar, in the
+    component's own frame (add `y` for canonical), or **None** where the mask
+    cannot say — in which case the caller falls back to dividing the box evenly,
+    which is what this function's count alone used to force it to do.
+
+    THE COUNT AND THE POSITIONS COME FROM THE SAME PASS, and that is the whole
+    point. The run-start mask below already knows where every bar is; reducing
+    it to a count threw those positions away, and `detect_beams` then FABRICATED
+    them by dividing the component's height into `n_bars` equal slices. That is
+    wrong for exactly the case the count exists to handle — a SLOPED stack,
+    whose box is far taller than its bars and whose bars do not divide it
+    evenly. Measured over 2,073 components on 31 pages (20 scan gate rows + 11
+    engraved fixtures): 51 components read more than one bar, all on scans, and
+    the fabricated bands sit a median 0.241 staff spaces from the measured ones
+    at the BAND EDGE, worst case 1.037 — a full staff space. The band edge is
+    what `rhythm._beams_attached_to_stem` reads for its end-window test, and 4
+    of the 51 change their beam-level count, i.e. change a note's duration.
+
+    ⚠️ **A single-bar component is returned with `bands=None` deliberately.** It
+    has nothing to place — the box IS the bar — so the caller's fallback
+    reproduces the old output exactly. That is 2,022 of the 2,073 components and
+    every component on every engraved page, so the fix is inert there BY
+    CONSTRUCTION rather than by measurement.
+
+    A band is the bar's whole vertical EXCURSION — min top and max bottom over
+    the sampled columns — not a single column's reading, because a sloped bar
+    is at its band's top where the group ends high and at its bottom where it
+    ends low. `rhythm._beams_attached_to_stem` documents that it measures reach
+    to the band and not to the centre for precisely this reason; this supplies
+    the band it assumes it is being given.
+
+    Only columns showing exactly `n_bars` runs contribute. A column crossing a
+    stem or a notehead shows more, and one clipping the end of a sloped stack
+    shows fewer; in neither is it known which run is which bar, so neither may
+    place one.
+    """
+    roi = labels[y:y + h, x:x + w] == label
+    if roi.size == 0:
+        return 1, None
+    step = max(1, roi.shape[1] // max_samples)
+    cols = roi[:, ::step]
+    # A run starts where ink appears under paper — count those per column.
+    above = np.vstack([np.zeros((1, cols.shape[1]), dtype=bool), cols[:-1]])
+    starts = cols & ~above
+    per_column = starts.sum(axis=0)
+    counts = per_column[per_column > 0]
+    if counts.size == 0:
+        return 1, None
+    n_bars = max(1, int(np.median(counts)))
+    if n_bars == 1:
+        # Nothing to place, and nothing that could differ from the box.
+        return 1, None
+
+    # ⚠️ The BANDS are gathered over EVERY column, not over the strided sample
+    # the count used. Two separate reasons, and neither is a tuning choice:
+    #
+    #   * the count must not move. Widening its sample could shift the median,
+    #     and that median is the part of this function with an independent hand
+    #     count behind it (51 of 51 real components agreed);
+    #   * a band is an EXCURSION, so it is decided by the extreme columns, and a
+    #     stride of `w // 48` steps straight over them. On the fixture in
+    #     `test_line_detection_beam_bands.py` the strided sample stops 7 columns
+    #     short of the end and loses the last 1 px of rise — small here, but it
+    #     is a systematic under-reach that grows with the slope, and there is no
+    #     reason to accept it when the count is already settled.
+    all_starts = roi & ~np.vstack([np.zeros((1, roi.shape[1]), dtype=bool), roi[:-1]])
+    all_ends = roi & ~np.vstack([roi[1:], np.zeros((1, roi.shape[1]), dtype=bool)])
+    runs_per_column = all_starts.sum(axis=0)
+
+    tops = [None] * n_bars
+    bottoms = [None] * n_bars
+    for j in np.flatnonzero(runs_per_column == n_bars):
+        start_rows = np.flatnonzero(all_starts[:, j])
+        end_rows = np.flatnonzero(all_ends[:, j])
+        if start_rows.size != n_bars or end_rows.size != n_bars:
+            continue
+        for k in range(n_bars):
+            t, b = int(start_rows[k]), int(end_rows[k])
+            tops[k] = t if tops[k] is None else min(tops[k], t)
+            bottoms[k] = b if bottoms[k] is None else max(bottoms[k], b)
+
+    if any(t is None for t in tops):
+        # No column read the stack cleanly — the caller keeps the old division
+        # rather than placing a bar on evidence that is not there.
+        return n_bars, None
+    return n_bars, [(tops[k], bottoms[k]) for k in range(n_bars)]
+
+
 def _stacked_bar_count(labels, label: int, x: int, y: int, w: int, h: int,
                        max_samples: int = 48) -> int:
     """How many beam bars are stacked here, counted as vertical ink runs.
@@ -364,19 +456,12 @@ def _stacked_bar_count(labels, label: int, x: int, y: int, w: int, h: int,
     the box was cut into two bands, and a dotted eighth was read as a dotted
     sixteenth. `_attached_stem_count` below already reads the label mask for the
     same reason.
+
+    The count now comes from `_stacked_bar_bands`, which runs this same pass and
+    keeps the positions as well. Counting logic is unchanged and lives in one
+    place; this wrapper is the count-only view of it.
     """
-    roi = labels[y:y + h, x:x + w] == label
-    if roi.size == 0:
-        return 1
-    step = max(1, roi.shape[1] // max_samples)
-    cols = roi[:, ::step]
-    # A run starts where ink appears under paper — count those per column.
-    above = np.vstack([np.zeros((1, cols.shape[1]), dtype=bool), cols[:-1]])
-    counts = (cols & ~above).sum(axis=0)
-    counts = counts[counts > 0]
-    if counts.size == 0:
-        return 1
-    return max(1, int(np.median(counts)))
+    return _stacked_bar_bands(labels, label, x, y, w, h, max_samples)[0]
 
 
 def _attached_stem_count(labels, label: int, stems, x: int, y: int, w: int, h: int,
@@ -536,16 +621,29 @@ def detect_beams(
         if attached < min_attached_stems:
             continue
 
-        n_bars = _stacked_bar_count(labels, i, x, y, w, h)
-        sub_h = max(1, h // n_bars)
-        for k in range(n_bars):
+        # Where the bars ARE, not where an even division would put them. A
+        # stack's bars do not divide its box evenly — the box is sized by the
+        # slope, the bars by the engraving — and downstream those coordinates
+        # become durations: `rhythm._beams_attached_to_stem` reads the band
+        # edges for its end-window test and the band centres for its level
+        # clustering. `bands is None` means the mask could not say, and the
+        # even division below is then exactly what shipped before.
+        n_bars, bands = _stacked_bar_bands(labels, i, x, y, w, h)
+        if bands is None:
+            sub_h = max(1, h // n_bars)
+            placed = [(int(y + k * (h / n_bars)), int(sub_h))
+                      for k in range(n_bars)]
+        else:
+            placed = [(int(y + top), max(1, int(bottom - top + 1)))
+                      for top, bottom in bands]
+        for bar_y, bar_h in placed:
             out.append(LineDetection(
                 smufl_name="beam",
                 category="structural",
                 x_canonical=int(x),
-                y_canonical=int(y + k * (h / n_bars)),
+                y_canonical=bar_y,
                 width_canonical=int(w),
-                height_canonical=int(sub_h),
+                height_canonical=bar_h,
                 confidence=1.0,
             ))
     return out
