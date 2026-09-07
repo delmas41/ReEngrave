@@ -164,3 +164,6 @@ data/user-labeled-distill/
 # the committed verdicts, pass configs and builder. specialist.json beside each
 # one carries the provenance.
 data/specialist-*/
+
+# merge_additions.py backups — build products, not evidence
+benchmarks/omr-scan-e2e-2026-09/works.json.bak-*

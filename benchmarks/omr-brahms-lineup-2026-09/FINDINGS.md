@@ -3,7 +3,12 @@
 ⚠️ **Written by the coordinating session from the committed artefacts**, after the
 agent that did the reading stalled (watchdog, no progress for 600s) before it
 could write up. Everything below comes from `probe/score_brahms_lineups.py`,
-`out/grade.txt` and `out/crops/`, all committed as `0a3c50f6`. **The page reading
+`out/grade.txt` and `out/crops/`, committed as `0a3c50f6` — ⚠️ **except the
+crops, which are NOT committed.** `benchmarks/**/crops/` is gitignored, so
+`git ls-files` returns none of them and a reader cannot open a single image this
+file cites. The page citations below are a record of what was looked at, not
+retrievable evidence. Corrected 2026-09-07, after the bracket-reading session
+tried to follow them and could not. **The page reading
 is the agent's; I did not re-read the pages.** Where this file states what a
 crop shows, that is its claim, sourced to the crop, not an independent one.
 
