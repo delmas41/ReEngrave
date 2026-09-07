@@ -120,6 +120,28 @@ stain.
 
 # 2. ⚠️ THE READ-PASS FLOOR — found by this harness, and it is larger than the faults
 
+> ✅ **RESOLVED 2026-09-07, and the name of this section is wrong: it is a
+> HARNESS floor, not a read-pass floor.**
+> [benchmarks/omr-readpass-monotonicity-2026-09/FINDINGS.md](../omr-readpass-monotonicity-2026-09/FINDINGS.md)
+> ran the experiment this section asks for below. **The label evidence moves 0
+> of 807 records** — at one commit off one cached read pass, withholding the 11
+> extra labels gives 0.9368 either way, and 1.0000 either way once clefs are
+> supplied. The two passes compared here are a **transcription** and a
+> **clef-blind replay**: a replay passes empty page dicts, `_read_clefs_by_slot`
+> returns `{}`, and `fit_layouts` decides the ambiguous `Tp.` at slot 8 blind
+> (answering Trumpet, a candidate, so the label is overturned document-wide;
+> with the real bass clef it answers Trombone, which is not, so the label
+> stands). The control was already in this repo: the veto session's own
+> `whole-identity.json` — same commit, byte-identical 962-row label evidence —
+> scores **750/807 = 0.9294** against its transcription's 0.9913.
+> **So: no non-monotonicity. Clefs 51 records, labels 0.**
+> ⚠️ The operational lesson survives, sharper: *an identity figure from a
+> different HARNESS is not a baseline.* 58 of the 59 arms in `arms.py` are
+> clef-blind replays and exactly one (`beet5/shipped`) is a transcription;
+> every flag A/B within a block is still sound, but a replay row may not be
+> compared with that one row.
+
+
 Two whole-work passes over the same Beethoven PDF at the same dpi differ by
 **50 of 807 judgeable records** — identity **0.9913** vs **0.9368**. The
 group-map flag, by comparison, moves **6**.

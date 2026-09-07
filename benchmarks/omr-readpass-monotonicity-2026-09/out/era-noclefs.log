@@ -1,0 +1,16 @@
+tag=arm-7ea27a4b-962-noclefs pages=88 drop=11 rows
+read pass: 88 pages from cache, 962 admissible labels, 11 withheld
+  withheld p25 s11: Bassoon (alias='fag' conf=high matched=True)
+  withheld p28 s3: Bassoon (alias='fag' conf=high matched=True)
+  withheld p28 s12: Horn (alias='cor' conf=high matched=True)
+  withheld p43 s8: Horn (alias='cor' conf=high matched=True)
+  withheld p47 s4: Bassoon (alias='fag' conf=high matched=True)
+  withheld p50 s8: Timpani (alias='timp' conf=high matched=True)
+  withheld p52 s8: Timpani (alias='timp' conf=high matched=True)
+  withheld p60 s4: Bassoon (alias='fag' conf=high matched=True)
+  withheld p61 s2: Oboe (alias='ob' conf=high matched=True)
+  withheld p63 s8: Horn (alias='cor' conf=high matched=True)
+  withheld p80 s2: Oboe (alias='ob' conf=high matched=True)
+24 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '21.', 'C. Fig.', 'C. Fug.', 'C. Pag.', 'Cc. Fa', 'Cer', 'DR.', 'Dh.', 'F o  5', 'Fig.', 'Fug.', 'F}', 'Gp.', 'Gr.', 'Jor.', 'Lor.', 'Oh', 'Oh.', 'Pag.', 'Rig.', 'T:. Teu', 'Tinp.', 'ag.', '|' — these are the strings to add to tools/omr/instruments.py
+contextual in 4s available=True reason=None reference=17 slots
+wrote benchmarks/omr-readpass-monotonicity-2026-09/out/arm-7ea27a4b-962-noclefs.json

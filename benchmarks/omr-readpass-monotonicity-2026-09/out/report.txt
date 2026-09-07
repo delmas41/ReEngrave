@@ -1,0 +1,14 @@
+arm                              work      judge  corr  wrng  unnm    rate |  impos nowrk contra |  human  /recs    rate
+whole-report2.extract            beet5       807   800     7     0  0.9913 |     91     0     17 |    108   1616  0.0668
+whole-identity.normalized        beet5       807   750    57     0  0.9294 |     91     0    108 |    199   1616  0.1231
+-map-spans-on                    beet5       807   756    51     0  0.9368 |      0     0    110 |    110   1616  0.0681
+arm-full973                      beet5       807   756    51     0  0.9368 |      0     0    110 |    110   1616  0.0681
+arm-minus11-962                  beet5       807   756    51     0  0.9368 |      0     0    108 |    108   1616  0.0668
+arm-full973-structure-only       beet5       807   756    51     0  0.9368 |      0     0    110 |    110   1616  0.0681
+arm-full973-clefs                beet5       807   807     0     0  1.0000 |      0     0     17 |     17   1616  0.0105
+arm-minus11-962-clefs            beet5       807   807     0     0  1.0000 |      0     0     17 |     17   1616  0.0105
+arm-full973-clefs-readers-only   beet5       807   807     0     0  1.0000 |      0     0     17 |     17   1616  0.0105
+arm-7ea27a4b-962-noclefs         beet5       807   756    51     0  0.9368 |      0     0    108 |    108   1616  0.0668
+arm-7ea27a4b-962-clefs           beet5       807   807     0     0  1.0000 |      0     0     17 |     17   1616  0.0105
+
+-- whole-report2.extract: reference slots

@@ -7,6 +7,17 @@ regimes, and a real fix measured exactly ZERO in two of them.  A harness that
 reports one number for a work is misleading; every row here carries its regime
 and the runner never pools across regimes.
 
+⚠️⚠️ **AND SO DOES THE CLEF REGIME — measured 2026-09-07.**  Every arm below
+except `beet5/shipped` is a `compose.py` REPLAY, which passes
+`apply_contextual_analysis` page dicts with no staves; `_read_clefs_by_slot`
+then returns `{}` and the score-order layout fit runs blind.  On Beethoven 5
+that is worth **51 of 807 judgeable records** (0.9368 clef-blind vs 1.0000 with
+a real run's clefs) — 8.5x the largest flag graded here — and it is what made
+one transcription arm and one replay arm look like "more evidence, worse
+answer".  A flag A/B *within* a block is unaffected (both arms are the same
+kind of replay); comparing a replay row with the one transcription row is not.
+`benchmarks/omr-readpass-monotonicity-2026-09/FINDINGS.md`.
+
 Everything below is a COMMITTED artefact of an earlier session.  Nothing here
 re-transcribes: an arm loads in well under a second where a whole-work read
 pass is ~26 minutes.  The arms of a given (work, regime) block all came off ONE
