@@ -221,6 +221,12 @@ class Barline:
 
     ⚠️⚠️ **TWO REACH LIMITS, both real, both stated here so the next reader
     does not discover them by writing a consumer that cannot see the data.**
+    ⚠️ Limit 2 read **"barlines are not serialised"** when these fields were
+    added, and that was true for exactly one day; it was closed on 2026-09-07
+    and is REWRITTEN below to the boundary that is left, not kept as its own
+    history. An entry that outlives its fix stops describing the limit and
+    starts describing the past — the same `fixed-then-kept-open-in-prose`
+    failure `benchmarks/omr-export-gaps-2026-09/FINDINGS.md` §1 names.
 
     1. **`_drop_close_outliers` runs BEFORE this constructor.** It is handed
        `accepted`, a `list[int]`, and the `Barline`s are built from what it
@@ -232,13 +238,26 @@ class Barline:
        The named consumers that DO receive `list[Barline]` and can read these
        fields today are `_measure_x_boundaries`, `extract_measures` and
        `resegment_fused_measures`.
-    2. **Barlines are not serialised.** `transcribe` writes no barline record
-       into the result JSON at all (`grep -n barline tools/omr/transcribe.py`
-       finds prose and call sites, no emission), so a consumer outside the
-       process — the measure-count consistency check's reporting, any
-       benchmark — cannot see these fields until something writes them out.
-       That is a change in `transcribe.py`, which this file's owner does not
-       own.
+    2. **Only the ACCEPTED set reaches disk.** These fields ARE serialised —
+       `transcribe._barline_records` writes one row per barline onto each
+       SYSTEM dict (the unit the vote is defined on), carrying every field
+       above, so a consumer outside the process can read them without
+       re-running the pipeline. What it cannot read is the other half of the
+       vote: a cluster that cleared no acceptance prong never becomes a
+       `Barline` at all. Its count lives in `PageWithStaves.deletion_counts`
+       (`n_barline_clusters_rejected_no_prong`) and **that is still not
+       serialised**, so *"what did the vote nearly accept"* — plausibly the
+       more useful half, since it is where a fused page's missing barline
+       went — remains unanswerable from an artefact.
+
+       ⚠️ And a row count here is **not** a measure count minus one.
+       `resegment_fused_measures` can add a measure boundary that no barline
+       accounts for, and it appends nothing to `pws.barlines`; a consumer
+       assuming the identity will be wrong on exactly the fused pages.
+
+       ⚠️ Serialising does nothing for limit 1. `_drop_close_outliers` runs
+       before this constructor, so no amount of writing these fields out can
+       reach it.
     """
 
     page_index: int

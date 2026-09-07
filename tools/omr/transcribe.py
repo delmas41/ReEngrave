@@ -253,7 +253,7 @@ from .staff_detector import detect_staves
 from .measure_extractor import (detect_barlines, extract_measures,
                                 majority_bars_by_system, resegment_fused_measures)
 from .staff_line_removal import remove_staff_lines
-from .types import MeasureCell, PageWithStaves, Staff
+from .types import Barline, MeasureCell, PageWithStaves, Staff
 from .pitch_resolver import (pitch_candidates_for_notehead, pitch_for_notehead,
                              pitch_to_midi)
 from .clef_geometry import clef_name_from_class, resolve_clef_for_detection
@@ -1052,6 +1052,138 @@ def _staff_geometry(staff: Staff | None) -> dict[str, Any] | None:
         else None
     )
     return geom
+
+
+def _barline_records(barlines: list[Barline]) -> list[dict[str, Any]]:
+    """One dict per accepted barline, for the output JSON.
+
+    ⚠️ **`measure_extractor.detect_barlines` weighs every candidate column on
+    four independent pieces of evidence and NONE of it left the process.**
+    `types.Barline` gained the fields on 2026-09-06 and its own docstring
+    closed by naming the reason they still could not be consumed — reach
+    limit 2, which then read *"Barlines are not serialised. `transcribe`
+    writes no barline record into the result JSON at all."* Before this
+    function `grep '"barline' tools/omr/*.py` returned nothing — a barline
+    reached disk only as the measure boundary it produced, so every question
+    about WHY a boundary is where it is required re-running the pipeline.
+    This is that record, and that entry has been rewritten to the boundary
+    that is left (only the ACCEPTED set reaches disk) rather than kept as its
+    own history.
+
+    **WHY PER SYSTEM.** A barline is a property of a SYSTEM, not of a staff
+    and not of a page: `detect_barlines` clusters candidate columns across the
+    staves of one system, votes them against one threshold, and stamps one
+    open-score verdict on the lot. Emitting per staff would repeat one column
+    once per staff and invite a consumer to count it that many times;
+    emitting per page would throw away the grouping the vote is defined on and
+    force every reader to re-join on `system_index`. The array therefore hangs
+    off the system dict, which is also where its denominator already lives.
+
+    ⚠️ **`n_staves_in_system` IS KEPT ON THE ROW even though the sibling
+    system dict carries `n_staves`, because THEY ARE DIFFERENT NUMBERS.**
+    `detect_barlines` counts only staves with >= 5 line_ys (a one-line
+    percussion rule answers "barline here" for any stem that crosses it and is
+    excluded from the vote — `n_one_line_staves_excluded_from_barline_vote`),
+    while `sys_dict["n_staves"]` counts staves that produced measure cells,
+    which under `OMR_ONE_LINE_STAVES` includes them. On a page with percussion
+    the two disagree, and `n_votes` is meaningless against the wrong one.
+    Reading the denominator off the sibling would be a silent off-by-N exactly
+    where percussion is.
+
+    ⚠️⚠️ **`barlines_cross_gaps` IS ALSO KEPT ON EVERY ROW, and that
+    redundancy is deliberate.** It is a SYSTEM-level verdict, so hoisting it to
+    the system dict and storing it once would be smaller and is REFUSED: the
+    `Barline` docstring's central measured warning is that `connectivity` is
+    not comparable across pages and **its sign can invert** — the engraved
+    Brahms page carries seven unanimous barlines at connectivity 0.0, which a
+    `>= 0.4` filter would cull — and that `barlines_cross_gaps`, never
+    `connectivity is None`, is the discriminator. A consumer reading one row
+    must be able to see the regime that row was decided in without climbing a
+    level. A cheaper encoding that makes the load-bearing caveat skippable is
+    not cheaper.
+
+    **WHAT EACH KEY IS FOR, and who could consume it.** ⚠️ Stated honestly:
+    **today the answer is a probe, not production.** Nothing in the pipeline
+    reads any of this back, by design — `detect_barlines` decided with it
+    in-process and the decision is already made by the time this runs. What
+    changes is that the question can now be asked FROM DISK:
+
+    ``page_index`` / ``system_index`` / ``x`` / ``y_top`` / ``y_bottom``
+        Where it is. The first two are redundant with the dicts this row hangs
+        inside and are emitted anyway, so a row lifted out of its parent — the
+        thing "self-locating" invites — is still resolvable. Cost is bounded
+        by the barline count, not the cell count.
+    ``n_votes`` / ``n_staves_in_system`` / ``min_votes``
+        How many staves saw it, out of how many, against the tiered threshold
+        applied. **Probe:** how thin is the evidence behind a page's bars.
+        **Future consumer:** `_drop_close_outliers`, which today picks between
+        an implausibly close pair by defaulting to the left one — though see
+        the reach limit below.
+    ``connectivity`` / ``span_ink``
+        The two ink measurements. `None` means NOT MEASURED, never zero.
+    ``accept_prong``
+        Which of the five acceptance rules admitted it. **Probe:** the
+        engraved-vs-scan split this record was built to make askable.
+    ``barlines_cross_gaps`` / ``choir_cue_c_override``
+        The regime. See the warning above.
+
+    ⚠️ **THREE REACH LIMITS, all inherited and none removed by writing this.**
+
+    1. This is the ACCEPTED set only. A column that cleared no prong is
+       counted (`n_barline_clusters_rejected_no_prong`) and discarded; the
+       rejects are not here, so this cannot answer "what did the vote nearly
+       accept". `deletion_counts` carries the totals and is likewise not
+       serialised.
+    2. `_drop_close_outliers` runs BEFORE the `Barline` objects exist, so it
+       still cannot read any of this. Serialising does not change that — the
+       fix there is the `evidence` map inside `detect_barlines`.
+    3. `resegment_fused_measures` can add a MEASURE BOUNDARY that no barline
+       here accounts for, and it appends nothing to `pws.barlines`. So the
+       count of rows on a system is **not** its measure count minus one, and a
+       consumer that assumes it will be wrong on exactly the fused pages.
+
+    An empty list means the system's vote accepted nothing, which is a real
+    and common reading (an unbarred continuation system); it is not the same
+    as the field being absent, which cannot happen on a system dict this
+    function built.
+    """
+    out: list[dict[str, Any]] = []
+    for bl in sorted(barlines, key=lambda b: b.x):
+        out.append({
+            # ⚠️ THE LOCATOR. Both of these are already implied by the dicts
+            # this row hangs inside, and both are emitted anyway, for the same
+            # reason `barlines_cross_gaps` is: a row must be legible ALONE.
+            # A reviewer caught this docstring promising `system_index` "so a
+            # row is self-locating" while the dict had eleven keys and neither
+            # of these among them — and the phrase is exactly what invites
+            # someone to lift a row out of its parent, which is when the
+            # locator stops being redundant. 25 rows across the two
+            # verification pages, so the cost is bounded by the BARLINE count,
+            # not the cell count.
+            "page_index": int(bl.page_index),
+            "system_index": int(bl.system_index),
+            "x": int(bl.x),
+            "y_top": int(bl.y_top),
+            "y_bottom": int(bl.y_bottom),
+            "n_votes": bl.n_votes,
+            "n_staves_in_system": bl.n_staves_in_system,
+            "min_votes": bl.min_votes,
+            # ⚠️ `None` is preserved as null and never coerced to 0.0 — the
+            # difference between "measured and terrible" and "never measured"
+            # is the whole reason these fields exist.
+            "connectivity": (
+                round(float(bl.connectivity), 6)
+                if bl.connectivity is not None else None
+            ),
+            "span_ink": (
+                round(float(bl.span_ink), 6)
+                if bl.span_ink is not None else None
+            ),
+            "accept_prong": bl.accept_prong,
+            "barlines_cross_gaps": bl.barlines_cross_gaps,
+            "choir_cue_c_override": bl.choir_cue_c_override,
+        })
+    return out
 
 
 def parse_pages(spec: str, n_pages: int) -> list[int]:
@@ -4603,12 +4735,25 @@ def transcribe(
         )
         page_slot_cursor = 0
 
+        # The accepted barlines of this page, by the system that voted them.
+        # `pws.barlines` is appended to in exactly one place
+        # (`measure_extractor.detect_barlines`), so this is the whole
+        # population — see `_barline_records` for what each row means and for
+        # the three things it still cannot answer.
+        barlines_by_system: dict[int, list[Barline]] = {}
+        for _bl in pws.barlines:
+            barlines_by_system.setdefault(_bl.system_index, []).append(_bl)
+
         t_yolo = time.perf_counter()
         for sys_idx in sorted(systems.keys()):
             staff_keys = sorted(systems[sys_idx].keys())
             sys_dict: dict[str, Any] = {
                 "system_index": sys_idx,
                 "n_staves": len(systems[sys_idx]),
+                # ⚠️ The evidence `detect_barlines` decided on and then threw
+                # away. Recording only — nothing downstream reads it, and the
+                # honest consumer today is a probe. See `_barline_records`.
+                "barlines": _barline_records(barlines_by_system.get(sys_idx, [])),
                 "staves": [],
             }
             # Clef continuity: this system may inherit per-role clefs from a
@@ -4808,6 +4953,37 @@ def transcribe(
                             int(y) for y in cell.staff_line_ys_canonical
                         ],
                         "upscale_factor": round(float(cell.upscale_factor), 6),
+                        # THE PAD THIS CELL WAS CUT WITH, per side, in staff
+                        # spaces. `MeasureCell` has carried it since
+                        # 2026-09-06 and nothing could read it: this dict is
+                        # built from an explicit key list with no generic
+                        # copy, so a field added to the dataclass reaches
+                        # disk only when someone names it here.
+                        #
+                        # ⚠️ PER CELL AND PER SIDE, which is the whole value.
+                        # `_build_measure_cell` starts at
+                        # `PAD_ABOVE_STAFF_LINES`/`PAD_BELOW_STAFF_LINES` and
+                        # GROWS to `PAD_MAX_STAFF_LINES` on whichever side the
+                        # neighbouring staff is far enough away, so on one
+                        # ordinary page the top staff is cut at 6 above and 4
+                        # below while its neighbour is cut at 4 on both. A
+                        # consumer reading the module constant is wrong
+                        # exactly where the growth happens.
+                        #
+                        # ⚠️ The pad the cut ASKED for. `bbox_page_px` is
+                        # additionally clamped to the paper, so a staff near
+                        # the page edge got less. `None` on a cell not cut
+                        # from a page.
+                        #
+                        # ⚠️ IT DOES NOT REACH THE LABELING MANIFESTS, and
+                        # that is a separate decision, not an oversight: no
+                        # writer in `annotate/` emits it, so `recut_cells`
+                        # still DERIVES the padding mode by re-cutting and
+                        # comparing frames, and its abort-on-mismatch remains
+                        # the safety property over irreplaceable human
+                        # verdicts. Consumer today: a probe over result JSON.
+                        "pad_above_staff_lines": cell.pad_above_staff_lines,
+                        "pad_below_staff_lines": cell.pad_below_staff_lines,
                         "clef": active_clef,
                         "key_signature": _key_sig_summary(active_key_sig),
                         "time_signature": dict(active_time_sig) if active_time_sig else None,
@@ -4990,6 +5166,21 @@ def transcribe(
             clef_continuity.end_system()
             page_dict["systems"].append(sys_dict)
             out["n_systems_total"] += 1
+        # ⚠️ A barline whose system produced no measure cell would otherwise
+        # be dropped here without a trace, which is the exact failure this
+        # whole change is against. `systems` is keyed off the CELLS and
+        # `barlines_by_system` off the STAVES, and the two can in principle
+        # disagree (a system all of whose staves were excluded from cell
+        # cutting still has staves). Measured on the two verification pages
+        # this is empty, so the key is emitted only when it is not — an
+        # always-present empty list would read as "checked and fine" on a page
+        # where nothing checked.
+        _orphans = {k: v for k, v in barlines_by_system.items()
+                    if k not in systems}
+        if _orphans:
+            page_dict["barlines_with_no_system_in_output"] = {
+                str(k): _barline_records(v) for k, v in sorted(_orphans.items())
+            }
         out["runtime"]["yolo_s"] += time.perf_counter() - t_yolo
 
         # ── Time-signature inference + back-fill (audit lever, 2026-07) ──
