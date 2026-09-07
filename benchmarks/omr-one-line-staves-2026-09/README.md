@@ -32,6 +32,53 @@ the metric charging for something other than correctness.
 work.** It is not independently shippable, and the reason is measured rather
 than cautious.
 
+## ⚠️ Which instrument can see this work
+
+Read this before running anything, because one named instrument is blind and
+saying so is more useful than a green run on it.
+
+| instrument | can it see a one-line percussion staff? |
+|---|---|
+| `benchmarks/omr-identity-harness-2026-09/` | **NO.** Its 1571 records are `beet5` and `brahms1` only, and `grep -ic "percussion\|drum\|cymbal\|triangle\|trommel\|becken"` over `probe/corpus.py` and `out/records.json` returns **0 and 0**. Neither work prints one — corroborated by `probe_engraved_exposure.py` detecting 0 on both. It would report no movement whatever the flag did |
+| the engraved eleven (`orchestral_eval`) | **only via `dvorak-sym9-mvt4`** — 1 printed, 1 detected. The other ten are byte-identical by construction (§3) |
+| the 20-row scan gate | **yes**, on the four Mahler rows — and it is the instrument that produced §4's two tables |
+| the structural accounting (`entire staff`, printed-vs-emitted staff count) | **yes**, and this is the honest one: §4.1 shows the edit count answering with the wrong sign in the shipped era |
+
+⚠️ **A green identity-harness run is not evidence here.** Stated plainly because
+the next reader would otherwise assume the named instrument was applied and
+passed.
+
+## ⚠️ HAZARD TO IRREPLACEABLE HUMAN WORK — what a labeling session must do
+
+`annotate/select_cells_orchestral.py` calls `extract_measures`. **So a labeling
+batch cut with `OMR_ONE_LINE_STAVES=1` contains percussion cells that a batch
+cut without it does not — and `cells.json` records no flag**, exactly as it
+records no padding mode. Hand-labeled cell PNGs are not regenerable.
+
+This cannot fire while the flag is off, which is why it is not fixed here. What
+a labeling session should do until it is:
+
+1. **Do not set the flag for a labeling batch** unless the batch is deliberately
+   a percussion sweep. The flag changes which cells exist, not just how they
+   look.
+2. **If you do set it, record it in the batch** — a line in `batch_config.json`
+   or the batch README naming `OMR_ONE_LINE_STAVES=1`. `recut_cells` derives the
+   padding mode by matching the manifest; it has nothing to derive this from,
+   because a missing cell looks like a missing cell.
+3. **Re-cut with the same setting you cut with.** A flag-on batch re-cut with
+   the flag off leaves its percussion verdicts with **no image** — loud rather
+   than silent (`recut_cells` reports missing cells, it does not mis-frame the
+   surviving ones), but still a session lost to confusion.
+
+⚠️ What is NOT at risk: the *framing* of any five-line cell. `_cell_span_px` is
+the identity on a five-line staff and one-line staves never reach
+`_measure_x_boundaries`, so the three fields `recut_cells.frame_mismatch`
+compares cannot move — asserted with the flag **ON** (§2.2).
+
+The real fix is a flag column in `cells.json`, alongside the padding mode.
+Out of scope: `cells.json` is written by tools this session was not sent to
+change.
+
 ---
 
 ## 1. What `>= 5` protects against
@@ -67,15 +114,53 @@ Mahler pages — a percussion rule's printed extent is simply not its neighbours
 | p4 | 458.5 | 515, 515, 514 | **YES** — `(458, 517)` → `(462, 517)` |
 | p5 | 454 | 515, 516, 515, 513 | **YES** — `(454, 515)` → **`(464, 1164)`** |
 
-**3 of 4 pages.** ⚠️ And note p5: the first boundary's right edge moves 515 →
-1164, because the shifted `x_lo` pushes a barline inside
-`_measure_x_boundaries`' own `edge_margin` and the opening sliver stops being
-one — a 649 px change to every staff on the page, from admitting four staves
-that print no notes. (⚠️ My first draft had the DIRECTION backwards: the rules
+**3 of 4 pages.** (⚠️ My first draft had the DIRECTION backwards: the rules
 start ~55 px *later* than the median five-line staff, not earlier. The
-displacement is what matters, not its sign, because the function takes a
-median.) Pinned by
-`test_the_percussion_rule_does_not_vote_on_the_system_edges`.
+displacement is what matters, not its sign, because the function medians.)
+Pinned by `test_the_percussion_rule_does_not_vote_on_the_system_edges`.
+
+#### ⚠️ Guard 4 priced — and it turns out to protect a bug as well as prevent one
+
+A 649 px move on p5 is too large to describe and leave. Opened
+(`/tmp` probe, reproduced by `probe_margin_reach.py`'s numbers):
+
+```
+barline xs        515, 1164, 1529, 2105, 2503, 2869, 3296, 3664, 4219
+five-line only    x_lo=454  spacing=25.8  edge_margin=52  cut=506  -> 515 KEPT
+rules voting      x_lo=464  spacing=25.8  edge_margin=52  cut=516  -> 515 DROPPED
+```
+
+`_measure_x_boundaries` drops any barline within two staff spaces of the
+system's left edge, because — its own comment — *"the one opening it as part of
+the bracket … neither divides two measures, and treating the opening one as a
+boundary manufactures a sliver 'measure' … which then swallows the clef."*
+**The barline at 515 is that opening rule.** Adjudicated by looking
+(`crops/mahler-p5-system-head.png`): at page x 515 stands the bracket's vertical
+rule immediately left of the clefs; the first real barline is the full-height
+one at **1164**, with the measure number *24*, the clefs, the key signatures and
+the notes between them.
+
+So on this page the five-line-only answer **manufactures exactly the sliver the
+function exists to prevent**, and admitting the percussion rules is what fixes
+it — by moving `x_lo` 454 → 464, which lifts the cut from 506 to 516 and clears
+the rule at 515 by **one pixel**. The five-line-only arm misses it by **nine**.
+
+⚠️ **But the end-to-end cost is ZERO, and that is why guard 4 stays.**
+`transcribe._drop_furniture_measures` removes leading empty columns downstream,
+and the arithmetic closes exactly: 8 barlines survive the edge filter → 9
+boundaries, while both arms report **8.0 measures per staff** (136/17 and
+168/21). The sliver is created and then dropped. So:
+
+* the effect is **real** (boundaries move on 3 of 4 pages);
+* on the one page opened it moves toward the **truth**, not away;
+* and it is **absorbed** before it reaches a measure, so relaxing guard 4 buys
+  nothing measurable and risks a page where the median moves the other way.
+
+**Priced, therefore kept.** What this actually indicts is neither the flag nor
+the guard but `_measure_x_boundaries`' opening-rule rejection being a hard
+2-space margin off a silently-medianed `x_lo` — a nine-pixel boolean, the
+Class-A shape the decision map already files at `D16`. Recorded for that
+workstream, not fixed here.
 
 **Guard 5 is the one that makes the naive fix quietly wrong.** Deleting the
 `>= 5` and nothing else does not crash — it hands the detector a percussion cell
@@ -232,25 +317,6 @@ files, by admitting the staves. Here the ratio and the edit count move together,
 so it is not dilution.
 
 <!--DVORAK-->
-
-### 4.0 ⚠️ The recommended identity harness is BLIND to this change
-
-The commission named `benchmarks/omr-identity-harness-2026-09/` as the
-instrument to use. It cannot see this one, and that is a property of its corpus
-rather than of the change: its 1571 records cover **`beet5` and `brahms1`
-only**, and
-
-    grep -ic "percussion|drum|cymbal|triangle|trommel|becken" \
-        probe/corpus.py out/records.json     ->  0   0
-
-Neither work prints a one-line staff — corroborated independently by
-`probe_engraved_exposure.py`, which detects 0 one-line staves on both. So the
-harness would report **no movement whatever the flag did**, and a green run on
-it is not evidence here. Said plainly because a future reader will otherwise
-assume the named instrument was applied and passed.
-
-The honest instruments for this change are the two used above: the structural
-`entire staff` bucket, and the printed-vs-emitted staff count.
 
 ### 4.1 ⚠️ Working §A00's list, because the shipped-era arm is worse
 
