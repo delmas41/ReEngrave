@@ -63,6 +63,12 @@ works** (§1 of `out/report.txt`):
 | Brahms 1 | 0-44 | 14 | **2** at q=25 | a REAL small swap, located exactly |
 | **Brahms 4** | **41-98** | 27 | **8 at q=67** | the swap, located exactly |
 
+⚠️ Beethoven 6's other two spans (27-45, 46-78) are absent from that table
+because they carry 3 and 2 full systems and the detector **abstains** — it
+needs three a side. Two of the eleven spans measured never get to speak, which
+is the reach limit to state rather than bury: a publisher that labels little,
+or a movement that condenses on nearly every page, is out of range.
+
 Two things worth having beyond the headline:
 
 ⚠️ **Brahms 4 is not n=1.** `omr-identity-harness-2026-09/probe/corpus.py`

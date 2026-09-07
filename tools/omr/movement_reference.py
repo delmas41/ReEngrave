@@ -218,10 +218,13 @@ MIN_SIDE_OBS = 3
 #: margin is read imperfectly (a `Kleine Flöte` read as `Flöte`), so unanimity
 #: would silence the ordinals that carry the whole signal.
 MIN_MAJORITY = 0.6
-#: How many ordinals must disagree before a swap is asserted. Measured: the
-#: largest support at a NON-boundary page over 4 works is 1; the one true swap
-#: measured scores 8. Anywhere in 2..8 reproduces every result recorded in
+#: How many ordinals must disagree before a swap is asserted. Measured over 122
+#: candidate split pages of 4 works: the largest support at a page inside a
+#: ONE-LINEUP span is 1, Brahms 1's real but SMALL swap scores 2, and Brahms 4's
+#: scores 8. Anywhere in 3..8 reproduces every result recorded in
 #: `benchmarks/omr-lineup-swap-2026-09/FINDINGS.md`; 4 is the middle of it.
+#: ⚠️ 2 is not in the range and that is deliberate — it would catch Brahms 1's
+#: swap, and catching a swap is only worth having if splitting on it helps.
 MIN_SWAP_SUPPORT = 4
 
 
