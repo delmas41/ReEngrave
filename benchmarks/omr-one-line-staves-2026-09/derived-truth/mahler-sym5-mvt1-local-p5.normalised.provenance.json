@@ -1,0 +1,411 @@
+{
+ "transform": "page_normalise",
+ "transform_version": "1.1.0",
+ "merge_convention": "silent/unison -> one voice (exact duplication, the measured 69.8%); divisi with every event aligned on (offset,duration) -> one voice of chords; divisi otherwise -> stacked Voices, one per source part",
+ "source_reference": null,
+ "source_trimmed_truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.truth.musicxml",
+ "n_source_parts": 38,
+ "n_output_parts": 21,
+ "merge_map": [
+  {
+   "staff": "A-Klar. 1.2",
+   "parts": [
+    6,
+    7,
+    8,
+    9,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  {
+   "staff": "Fag. 1/2",
+   "parts": [
+    10
+   ]
+  },
+  {
+   "staff": "Contraf.",
+   "parts": [
+    11
+   ]
+  },
+  {
+   "staff": "F-H\u00f6rner 1.3.5",
+   "parts": [
+    12,
+    13
+   ]
+  },
+  {
+   "staff": "F-H\u00f6rner 2.4.6",
+   "parts": [
+    14
+   ]
+  },
+  {
+   "staff": "B-Tromp. 1.2",
+   "parts": [
+    15,
+    17
+   ]
+  },
+  {
+   "staff": "B-Tromp. 3.4",
+   "parts": [
+    16,
+    18
+   ]
+  },
+  {
+   "staff": "Posaunen",
+   "parts": [
+    19,
+    20
+   ]
+  },
+  {
+   "staff": "Tuba",
+   "parts": [
+    21
+   ]
+  },
+  {
+   "staff": "Pauken",
+   "parts": [
+    22
+   ]
+  },
+  {
+   "staff": "Becken",
+   "parts": [
+    23
+   ]
+  },
+  {
+   "staff": "Gr.Tr.",
+   "parts": [
+    24
+   ]
+  },
+  {
+   "staff": "Kl.Tr.",
+   "parts": [
+    25
+   ]
+  },
+  {
+   "staff": "Tamtam",
+   "parts": [
+    26
+   ]
+  },
+  {
+   "staff": "Erste Viol.",
+   "parts": [
+    27,
+    28
+   ]
+  },
+  {
+   "staff": "Zweite Viol.",
+   "parts": [
+    29,
+    30,
+    31
+   ]
+  },
+  {
+   "staff": "Violen",
+   "parts": [
+    32,
+    33
+   ]
+  },
+  {
+   "staff": "Vcelle. get. (upper)",
+   "parts": [
+    34
+   ]
+  },
+  {
+   "staff": "Vcelle. get. (lower)",
+   "parts": [
+    35
+   ]
+  },
+  {
+   "staff": "B\u00e4sse get. (upper)",
+   "parts": [
+    36
+   ]
+  },
+  {
+   "staff": "B\u00e4sse get. (lower)",
+   "parts": [
+    37
+   ]
+  }
+ ],
+ "measure_census": {
+  "silent_all": 20,
+  "silent_others": 36,
+  "single": 104,
+  "unison": 7,
+  "divisi": 1,
+  "divisi_voiced": 1
+ },
+ "measure_census_share": {
+  "silent_all": 0.119,
+  "silent_others": 0.2143,
+  "single": 0.619,
+  "unison": 0.0417,
+  "divisi": 0.006,
+  "divisi_voiced": 0.006
+ },
+ "exact_duplication_share": 0.994,
+ "divisi_share": 0.006,
+ "per_staff": [
+  {
+   "staff": "A-Klar. 1.2",
+   "parts": [
+    6,
+    7,
+    8,
+    9,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 3,
+    "silent_others": 5
+   }
+  },
+  {
+   "staff": "Fag. 1/2",
+   "parts": [
+    10
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "Contraf.",
+   "parts": [
+    11
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "F-H\u00f6rner 1.3.5",
+   "parts": [
+    12,
+    13
+   ],
+   "condensed": true,
+   "measures": {
+    "unison": 7,
+    "divisi": 1,
+    "divisi_voiced": 1
+   }
+  },
+  {
+   "staff": "F-H\u00f6rner 2.4.6",
+   "parts": [
+    14
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "B-Tromp. 1.2",
+   "parts": [
+    15,
+    17
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_others": 3,
+    "silent_all": 5
+   }
+  },
+  {
+   "staff": "B-Tromp. 3.4",
+   "parts": [
+    16,
+    18
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 4,
+    "silent_others": 4
+   }
+  },
+  {
+   "staff": "Posaunen",
+   "parts": [
+    19,
+    20
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 3,
+    "silent_others": 5
+   }
+  },
+  {
+   "staff": "Tuba",
+   "parts": [
+    21
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "Pauken",
+   "parts": [
+    22
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "Becken",
+   "parts": [
+    23
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "Gr.Tr.",
+   "parts": [
+    24
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "Kl.Tr.",
+   "parts": [
+    25
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "Tamtam",
+   "parts": [
+    26
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "Erste Viol.",
+   "parts": [
+    27,
+    28
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_others": 6,
+    "silent_all": 2
+   }
+  },
+  {
+   "staff": "Zweite Viol.",
+   "parts": [
+    29,
+    30,
+    31
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_all": 3,
+    "silent_others": 5
+   }
+  },
+  {
+   "staff": "Violen",
+   "parts": [
+    32,
+    33
+   ],
+   "condensed": true,
+   "measures": {
+    "silent_others": 8
+   }
+  },
+  {
+   "staff": "Vcelle. get. (upper)",
+   "parts": [
+    34
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "Vcelle. get. (lower)",
+   "parts": [
+    35
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "B\u00e4sse get. (upper)",
+   "parts": [
+    36
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  },
+  {
+   "staff": "B\u00e4sse get. (lower)",
+   "parts": [
+    37
+   ],
+   "condensed": false,
+   "measures": {
+    "single": 8
+   }
+  }
+ ],
+ "warning": "A figure measured against this file is a NEW BENCHMARK ERA and may not be differenced against one measured against the un-normalised truth. Edits it removes are STRUCTURAL CHARGE REMOVED, not pipeline improvement.",
+ "output": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a64f7fb5bce33d36a/benchmarks/omr-one-line-staves-2026-09/derived-truth/mahler-sym5-mvt1-local-p5.normalised.musicxml"
+}

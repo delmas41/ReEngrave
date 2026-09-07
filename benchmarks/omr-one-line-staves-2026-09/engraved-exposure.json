@@ -1,0 +1,100 @@
+{
+ "rows": [
+  {
+   "work": "beethoven-sym5-mvt1",
+   "printed_one_line": 0,
+   "percussion_clef": 0,
+   "detected_staves": 18,
+   "detected_one_line": 0,
+   "one_line": []
+  },
+  {
+   "work": "brahms-sym1-mvt1",
+   "printed_one_line": 0,
+   "percussion_clef": 0,
+   "detected_staves": 21,
+   "detected_one_line": 0,
+   "one_line": []
+  },
+  {
+   "work": "mahler-sym5-mvt1",
+   "printed_one_line": 0,
+   "percussion_clef": 4,
+   "detected_staves": 38,
+   "detected_one_line": 0,
+   "one_line": []
+  },
+  {
+   "work": "mozart-sym40-mvt1",
+   "printed_one_line": 0,
+   "percussion_clef": 0,
+   "detected_staves": 11,
+   "detected_one_line": 0,
+   "one_line": []
+  },
+  {
+   "work": "mozart-sym41-mvt1",
+   "printed_one_line": 0,
+   "percussion_clef": 0,
+   "detected_staves": 17,
+   "detected_one_line": 0,
+   "one_line": []
+  },
+  {
+   "work": "beethoven-sym3-mvt1",
+   "printed_one_line": 0,
+   "percussion_clef": 0,
+   "detected_staves": 19,
+   "detected_one_line": 0,
+   "one_line": []
+  },
+  {
+   "work": "brahms-sym4-mvt1",
+   "printed_one_line": 0,
+   "percussion_clef": 0,
+   "detected_staves": 20,
+   "detected_one_line": 0,
+   "one_line": []
+  },
+  {
+   "work": "dvorak-sym9-mvt4",
+   "printed_one_line": 1,
+   "percussion_clef": 1,
+   "detected_staves": 19,
+   "detected_one_line": 1,
+   "one_line": [
+    {
+     "staff_index": 13,
+     "y": 4771,
+     "x_start": 588,
+     "x_end": 2851,
+     "spacing": 41.0
+    }
+   ]
+  },
+  {
+   "work": "tchaikovsky-sym4-mvt2",
+   "printed_one_line": 0,
+   "percussion_clef": 0,
+   "detected_staves": 20,
+   "detected_one_line": 0,
+   "one_line": []
+  },
+  {
+   "work": "tchaikovsky-sym6-mvt2",
+   "printed_one_line": 0,
+   "percussion_clef": 0,
+   "detected_staves": 17,
+   "detected_one_line": 0,
+   "one_line": []
+  },
+  {
+   "work": "bruckner-sym5-mvt1",
+   "printed_one_line": 0,
+   "percussion_clef": 0,
+   "detected_staves": 25,
+   "detected_one_line": 0,
+   "one_line": []
+  }
+ ]
+}

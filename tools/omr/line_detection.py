@@ -98,6 +98,15 @@ def _staff_line_spacing(cell) -> float:
         ys = sorted(lines)
         gaps = [ys[i + 1] - ys[i] for i in range(len(ys) - 1)]
         return sum(gaps) / len(gaps)
+    # A one-line percussion staff has no gaps to average, and the 24 px below
+    # is not this frame's number: a canonical cell spans 400 px over four
+    # spaces, so its spacing is 100. `measure_extractor._build_measure_cell`
+    # writes the true canonical spacing down for exactly the cells that cannot
+    # answer for themselves; absent on every five-line cell, so this is inert
+    # unless `OMR_ONE_LINE_STAVES` admitted one.
+    stated = getattr(cell, "staff_line_spacing_canonical", None)
+    if stated:
+        return float(stated)
     return 24.0
 
 

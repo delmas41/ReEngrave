@@ -110,7 +110,15 @@ def remove_staff_lines_from_cell(cell: MeasureCell, in_place: bool = True) -> np
     h, w = binary.shape
     ink_bool = binary == 0
     line_ys = list(getattr(cell, "staff_line_ys_canonical", None) or [])
-    spacing = (line_ys[-1] - line_ys[0]) / 4.0 if len(line_ys) >= 2 else 0.0
+    # A one-line staff has no gap to divide, and spacing 0 lifts the run-height
+    # cap to the whole cell — so a stem crossing the rule is a candidate for
+    # erasure. The canonical spacing is stated on the cell for exactly that
+    # case (`measure_extractor._build_measure_cell`); absent on five-line
+    # cells, so this is inert unless `OMR_ONE_LINE_STAVES` admitted one.
+    spacing = (
+        (line_ys[-1] - line_ys[0]) / 4.0 if len(line_ys) >= 2
+        else float(getattr(cell, "staff_line_spacing_canonical", 0.0) or 0.0)
+    )
     cap = max(1, int(round(MAX_LINE_THICKNESS_SPACES * spacing))) if spacing > 0 else h
 
     to_erase = np.zeros((h, w), dtype=bool)

@@ -897,6 +897,29 @@ def _neighbour_room(pws: PageWithStaves, staff: Staff) -> tuple[float, float]:
 # without the defect is not evidence either way.
 ENV_CELL_LINE_TRACE = "OMR_CELL_LINE_TRACE"
 
+# ─── One-line percussion staves ──────────────────────────────────────────────
+#
+# `staff_detector._single_line_staff_rows` finds the single printed rule a
+# percussion part is written on; `extract_measures` then drops it, so the staff
+# reaches no cell, no detection, no export. That filter is documented and it is
+# not free to remove: three of its four stated reasons are still live (see
+# `_admit_one_line_staves`).
+#
+# OFF by default. With it on, a one-line staff gets a measure cell whose
+# canonical frame is sized from the PAGE's staff spacing rather than from its
+# own (absent) five-line span — `_cell_span_px` — so its cell enters the
+# detector at the same scale as its neighbours' and nothing downstream has to
+# know it is short. Its `staff_line_ys_canonical` still carries exactly ONE
+# row, which is what makes every geometric reader that needs five abstain
+# rather than guess: `pitch_resolver.pitch_for_notehead` returns None,
+# `clef_geometry.line_named_by` returns None, `transcribe._staff_geometry`
+# returns None.
+#
+# What it does NOT do: read the percussion. An unpitched notehead never
+# survives into an event (`voicing._is_pitched_notehead`), so the staff exports
+# as measures of rest. See benchmarks/omr-one-line-staves-2026-09/FINDINGS.md.
+ENV_ONE_LINE_STAVES = "OMR_ONE_LINE_STAVES"
+
 # How far the comb may slide. Bounded BELOW one spacing on purpose — that is
 # what makes aliasing unreachable rather than merely unlikely — and above the
 # 0.65 spaces of the largest displacement measured.
@@ -957,6 +980,51 @@ def _cell_line_trace_enabled() -> bool:
     benchmarks/omr-cell-grid-tilt-2026-09/WIDENED_PRICING_2026-09-04.md."""
     raw = os.environ.get(ENV_CELL_LINE_TRACE, "").strip().lower()
     return raw not in {"0", "false", "no", "off"}
+
+
+def _admit_one_line_staves() -> bool:
+    """`OMR_ONE_LINE_STAVES` env; OFF by default. See ENV_ONE_LINE_STAVES.
+
+    The `len(line_ys) >= 5` filter this flag relaxes guards four things, and
+    only ONE of them is relaxed here:
+
+    1. `detect_barlines`' vote — a staff two spaces tall answers "barline" for
+       any stem that crosses it, and it moves the denominator of a fraction.
+       STILL FILTERED, unconditionally: a percussion rule's barlines come from
+       the system it sits in.
+    2. `_measure_x_boundaries`' system edges — a median over `x_start` and a
+       max over `x_end`. A percussion rule is set to the page margins, not to
+       the staves' own content edge, so admitting it moves every five-line
+       staff's measure boundaries. STILL FILTERED, unconditionally.
+    3. `_find_internal_barline_candidates`' kernel, sized from the staff span:
+       span 0 makes it 1x0 and OpenCV raises. STILL FILTERED, unconditionally.
+    4. The CELL, which is canonicalised by the staff's five-line span. This is
+       the one the flag opens, and `_cell_span_px` is what makes it safe.
+    """
+    raw = os.environ.get(ENV_ONE_LINE_STAVES, "").strip().lower()
+    return raw in {"1", "true", "yes", "on"}
+
+
+def _cell_span_px(staff: Staff) -> int:
+    """The span a cell is canonicalised by — `CANONICAL_STAFF_SPAN_PX / this`
+    is the scale every downstream reader sees.
+
+    A five-line staff answers with its own printed span. A one-line percussion
+    rule has none, and `_upscale_to_canonical` reads a span of 0 as "do not
+    scale" — which would hand the detector a cell at page resolution while
+    every other cell on the page arrives at 400px span. That is precisely the
+    inference-scale fault `benchmarks/omr-detector-scale` measured, so the
+    scale is reconstructed instead: four spaces of the page's own staff
+    spacing is what a five-line staff on this page spans, and
+    `Staff.line_spacing_px` already answers a one-line staff with exactly that
+    number (`nominal_line_spacing_px`, set at detection time).
+
+    Returns 0 where there is no spacing to reconstruct from, which
+    `_upscale_to_canonical` and the callers treat as "abstain".
+    """
+    if len(staff.line_ys) >= 2:
+        return staff.span_px
+    return int(round(4.0 * staff.line_spacing_px))
 
 
 def _cell_line_offset(
@@ -1077,7 +1145,9 @@ def _build_measure_cell(
     else:
         line_prov = None
         local_ys = [y - y0 for y in staff.line_ys]
-    page_span = staff.span_px
+    # `_cell_span_px`, not `staff.span_px`: identical for every five-line
+    # staff, and the reconstructed four-space span for a one-line rule.
+    page_span = _cell_span_px(staff)
     up_rgb, scale, up_ys = _upscale_to_canonical(
         cell_rgb, page_span, local_ys, max_cell_width,
     )
@@ -1109,6 +1179,17 @@ def _build_measure_cell(
     # staff-line-removal step. (Not part of MeasureCell's formal schema —
     # kept dynamic for now.)
     cell.__dict__["binary"] = up_bin
+    # A ONE-LINE staff's cell carries one row, so every consumer that derives
+    # the staff-space unit from the GAPS between rows gets nothing and falls
+    # back to a constant that was written for a different frame
+    # (`line_detection._staff_line_spacing` answers 24.0; a canonical cell's
+    # spacing is CANONICAL_STAFF_SPAN_PX / 4 = 100). The unit is known here —
+    # it is the page spacing times this cell's own scale — so it is written
+    # down rather than guessed at downstream. Absent on every five-line cell,
+    # which keeps those consumers byte-identical.
+    if len(up_ys) < 2:
+        cell.__dict__["staff_line_spacing_canonical"] = float(
+            staff.line_spacing_px * scale)
     if line_prov is not None:
         cell.__dict__["line_grid_localized"] = line_prov
         # The frame's own grid — what this exact cell stores with the flag
@@ -1144,9 +1225,17 @@ def extract_measures(
     # separate piece of work, because a cell is canonicalised by its staff's
     # five-line span and a single rule has none.
     sys_staves: dict[int, list[Staff]] = {}
+    sys_one_line: dict[int, list[Staff]] = {}
+    admit_one_line = _admit_one_line_staves()
     for s in pws.staves:
         if len(s.line_ys) >= 5:
             sys_staves.setdefault(s.system_index, []).append(s)
+        elif admit_one_line and _cell_span_px(s) > 0:
+            # Admitted to the CELL loop only. Deliberately kept out of
+            # `sys_staves`, which is also what `_measure_x_boundaries` reads:
+            # a percussion rule runs to the page margins, so letting it vote on
+            # the system's edges moves every five-line staff's measures.
+            sys_one_line.setdefault(s.system_index, []).append(s)
     sys_barlines: dict[int, list[Barline]] = {}
     for bl in pws.barlines:
         sys_barlines.setdefault(bl.system_index, []).append(bl)
@@ -1154,7 +1243,7 @@ def extract_measures(
     for sys_idx, staves in sys_staves.items():
         bls = sys_barlines.get(sys_idx, [])
         xb = _measure_x_boundaries(bls, staves)
-        for staff in staves:
+        for staff in staves + sys_one_line.get(sys_idx, []):
             for m_idx, (x0, x1) in enumerate(xb):
                 cell = _build_measure_cell(
                     pws, staff, sys_idx, x0, x1, m_idx,
@@ -1471,6 +1560,15 @@ def resegment_fused_measures(
             (s for s in pws.staves_in_system(sys_idx) if len(s.line_ys) >= 5),
             key=lambda s: s.staff_index,
         )
+        # ...but a split ACCEPTED on the five-line staves has to be applied to
+        # every staff that produced cells, including an admitted one-line rule.
+        # Re-cropping is what renumbers `measure_index`, and a staff skipped
+        # here keeps the OLD numbering while its neighbours are renumbered — so
+        # the system silently disagrees with itself about which bar is which.
+        # Empty unless `OMR_ONE_LINE_STAVES` is on, so this is inert by default.
+        splittable = {s.staff_index: s for s in staves}
+        for s in pws.staves_in_system(sys_idx):
+            splittable.setdefault(s.staff_index, s)
         if not staves:
             for staff_cells in staff_groups.values():
                 result.extend(staff_cells)
@@ -1553,7 +1651,7 @@ def resegment_fused_measures(
         # Apply the accepted splits identically to every staff in the
         # system, then renumber measure_index sequentially.
         for staff_idx, staff_cells in staff_groups.items():
-            staff = next((s for s in staves if s.staff_index == staff_idx), None)
+            staff = splittable.get(staff_idx)
             new_cells: list[MeasureCell] = []
             for c in staff_cells:
                 boundaries = split_boundaries.get(c.measure_index)
