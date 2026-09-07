@@ -326,3 +326,138 @@ python3 benchmarks/omr-hairpin-cv-2026-09/probe_band_ink.py \
 
 Design and the surrounding decisions:
 [docs/scope-cv-hairpin-detection-2026-09-04.md](../../docs/scope-cv-hairpin-detection-2026-09-04.md).
+
+---
+
+## 8. Wired, and 11 of 20 scan rows get WORSE — structural refusal vs. anchor placement, split (2026-09-07)
+
+*The reader from §1-7 was wired behind `OMR_CV_HAIRPINS` (default off). Run over
+the 20-row scan gate it recovers **96 hairpins where YOLO alone finds 3**, and
+on the metric it makes 11 rows worse (+1 to +37), 8 unchanged, 1 better —
+pooled +76 edits (74913 → 74989, 0.84395 → 0.84389). Two candidate causes were
+in play: (A) the exporter anchors a hairpin to the wrong notes, or (B) the
+row's parts don't correspond to the truth's parts at all, so no placement could
+ever have scored right. This is the arithmetic that separates them, done
+entirely from the two already-scored, already-committed result files —
+`probe_bucket_split.py`, no pipeline run.*
+
+### Method
+
+Per row, ON−OFF delta on `entire staff insert/delete` + `entire measure
+insert/delete` → **(B)**; delta on `wrong crescendo` + `wrong diminuendo` →
+**(A)**. Every row's per-bucket deltas are checked to sum to that row's own
+`omr_ed` delta, and every row's `omr_ed` delta is checked to sum to the pooled
+`+76`. Both hold exactly — the parse is sound.
+
+**Which rows "refuse" was derived, not assumed**, by parsing each row's own
+predicted MusicXML: count `<score-part>`. A page whose systems disagree on
+staff count makes `export._stitch_slots` refuse the ordinal join and emit one
+fragment part per staff *per system* — so the exported part count equals the
+raw staff total summed across systems, not staves-per-system. Applied
+mechanically to all 20 rows (a single-system page can never trigger this — there
+is nothing for it to disagree with), the result is **exactly the three rows
+named going in**: `beethoven-sym5-mvt1-984073-p3`, `beethoven-sym5-mvt1-575951-p3`,
+`brahms-sym1-mvt1-317803-p2`. No correction needed this time.
+
+### The table
+
+| row | refused | Δed | Δstructural (B) | Δanchor (A) | wedges truth/off/on |
+|---|:--:|--:|--:|--:|--:|
+| bach-brandenburg3 p1 | | 0 | 0 | 0 | 0/0/0 |
+| beethoven5 575951-p1 | | 0 | 0 | 0 | 0/0/0 |
+| beethoven5 575951-p2 | | 0 | 0 | 0 | 0/0/0 |
+| beethoven5 575951-p3 | **refused** | 0 | 0 | 0 | 4/0/0 |
+| beethoven5 575951-p4 | | 0 | 0 | 0 | 0/0/0 |
+| beethoven5 984073-p1 | | 0 | 0 | 0 | 0/0/0 |
+| beethoven5 984073-p2 | | 0 | 0 | 0 | 0/0/0 |
+| beethoven5 984073-p3 | **refused** | 0 | 0 | 0 | 4/0/0 |
+| beethoven5 984073-p4 | | +1 | +1 | 0 | 0/0/2 |
+| brahms1 p1 | | +2 | 0 | +2 | 0/0/4 |
+| **brahms1 p2** | **refused** | **+37** | **+26** | **+11** | **136/0/78** |
+| brahms1 p3 | | +4 | +2 | +2 | 64/0/8 |
+| brahms1 p4 | | +1 | 0 | +1 | 2/0/2 |
+| dvořák9 p5 | | +1 | 0 | +1 | 14/0/8 |
+| dvořák9 p6 | | −1 | 0 | −1 | 8/0/8 |
+| **dvořák9 p7** | | **+14** | +3 | **+11** | 66/0/46 |
+| mahler5 p2 | | +4 | +2 | +2 | 6/0/8 |
+| **mahler5 p3** | | +2 | **+21** | +3 | 34/0/6 |
+| mahler5 p4 | | +7 | +6 | +1 | 31/4/18 |
+| mahler5 p5 | | +4 | 0 | +4 | 16/0/8 |
+| **pooled** | | **+76** | **+61** | **+37** | |
+
+(Structural + anchor over-total the pooled delta because `mahler5 p3` also
+improved −22 elsewhere — `wrong note` −9, `wrong dynamic` −6, `wrong direction`
+−4, `wrong flag/beam` −1, `wrong note head` −2 — a wash internal to that one
+row, not a parse error; checked.)
+
+### Brahms p2 really is about half, and it is a refused row
+
+**+37 of +76 (49%)** sits in `brahms-sym1-mvt1-317803-p2` alone, and it is one
+of the three refusing rows. Its own anchor-bucket delta (+11) cannot be read as
+"the anchor rule chose badly" in any recoverable sense — the page's staves
+never joined into truth-shaped parts at all, so a hairpin anchored *anywhere*
+on it has nothing correct to pair with. On that row, (A)'s own bucket movement
+is a symptom of (B), not evidence for (A).
+
+**With Brahms p2 excluded**, the remaining 19 rows carry +39 of pooled delta:
+structural (B) **+35**, anchor (A) **+26**. The two other refusing rows
+contribute nothing further (both stayed at 0 CV wedges recovered — a
+fragmented page gave the reader no valid anchor to land on, so it correctly
+found nothing rather than found something wrong). Restricting the anchor
+bucket to rows that actually **correspond** (not refused) gives the same
+number, **+26**, confirming the refused rows are not quietly padding it.
+
+### So: anchor signal is NOT weak once Brahms p2 is set aside
+
++26 edits across 10 of the 17 corresponding rows is not diffuse noise — **+11
+of it sits in one row, `dvorak-sym9-mvt1-405834-p7`**, almost entirely in
+`wrong diminuendo` (+8 of the row's +11), on a row that recovered **46 of 66
+truth wedges (70%)** — good recall, and it still got worse. That is the
+opposite of what a purely-structural story predicts: high recovery on a
+corresponding row should help, not hurt, unless where the wedges land is
+wrong. **This is the row to chase** — a per-measure op dump on it (`dump_ops.py`
+against its truth/pred pair) would say which diminuendo hairpins are
+mis-anchored, which this bucket-level pass cannot resolve further.
+
+### The complication: bucket movement is a proxy, not a proof — and `mahler5 p3` shows why
+
+`mahler5-mvt1-local-p3` is **not** a refused row by the stitch-refusal test
+(it is single-system — nothing to disagree with itself), yet it carries the
+single largest structural-bucket delta, **+21**, while recovering only **6 of
+34 truth wedges (18%)** — the opposite pairing from Dvořák p7. Its `structural`
+block shows why it was never a clean "corresponds" row either: 13 predicted
+parts against 38 truth parts, `surplus_parts: 23` — a heavily condensed page
+where most truth parts have no counterpart on it regardless of hairpins. Adding
+a handful of new wedge candidates was evidently enough, on bars already this
+marginal, to tip `musicdiff`'s cost-minimizing DP (CLAUDE.md's trap 2: "a large
+`entire measure insert/delete` bucket is amplified... open the op list before
+believing it") from element-wise pairing into whole-bar substitution on some
+bars, while *improving* pairing on others (the −22 elsewhere). **A bucket
+delta cannot distinguish "the anchor put the wedge on the wrong note" from
+"adding a candidate changed which bars the DP decided to charge wholesale" —
+both land in the same buckets.** So the (A)/(B) split above is a real,
+checked-arithmetic split of *where the edits fall*, not a proof of *why* they
+fall there on any single row.
+
+### Answer
+
+**Of the +76 pooled edits: ~61 (80%) fall in the structural buckets and ~37
+(49%) in the anchor buckets** (they overlap the total because `mahler5 p3`'s
+other buckets net −22). **One refused row, Brahms p2, is half of everything**
+— confirmed structurally broken, not an anchor question there. **With it
+excluded, anchor-bucket movement is still +26 across corresponding rows, not
+negligible, and is concentrated rather than diffuse** — 11 of it in Dvořák
+p7's diminuendo bucket alone, on a row with good wedge recall. **So both
+explanations are real and this data cannot rule either out**: (B) explains
+the single largest chunk of movement outright (the three refusing rows,
+Brahms p2 above all), but a further, smaller, and concentrated anchor-rule
+signal survives its removal and is worth chasing — starting with Dvořák p7's
+diminuendo mismatches specifically, which this bucket-count pass cannot
+resolve past pointing at the row and the bucket. `mahler5 p3` is flagged as a
+third case — neither cleanly refused nor cleanly corresponding — and a
+reason the bucket split should be read as directional, not exact, on any one
+row.
+
+```bash
+python3 benchmarks/omr-hairpin-cv-2026-09/probe_bucket_split.py
+```
