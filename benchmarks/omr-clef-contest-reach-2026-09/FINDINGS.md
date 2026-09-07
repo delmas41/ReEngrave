@@ -38,7 +38,8 @@ much smaller blast radius.
 
 ## ⚠️ Reach is an UPPER BOUND on defects — half the residual is correct music
 
-No page was hand-read. Several residual flips are ordinary engraving a consumer must
+No page was hand-read. All **twelve** uncovered residuals are listed below (the three
+Cello rows are collapsed into one line). Several are ordinary engraving a consumer must
 **not** undo — the function's own docstring says *"cello changes (tenor/treble) are
 real and never touched"* and *"Viola→treble is deliberately NOT vetoed."*
 
@@ -48,6 +49,7 @@ real and never touched"* and *"Viola→treble is deliberately NOT vetoed."*
 | brahms-p4 s17 | Bassoon `tenor→bass` | 0.483 | **ordinary** |
 | mahler-p3 s6 | Trombone `bass→tenor` | 0.604 | **ordinary** |
 | mahler-p4 s16 | Viola `alto→treble` | 0.582 | **ordinary** |
+| brahms-p4 s11 | Viola `alto→tenor` | 0.435 | unusual |
 | beethoven-984073-p1 s11 | Contrabass `bass→treble` | 0.664 | implausible |
 | beethoven-984073-p4 s11 | Flute `treble→bass` | 0.501 | implausible |
 | brahms-p2 s2 | Clarinet `treble→bass` | 0.346 | implausible |
