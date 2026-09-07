@@ -1,0 +1,256 @@
+discovered 188 candidate file(s) mentioning "slot_index" (worktree=/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/partition-falsifier, main=/Users/seanjohnson/Desktop/ReEngrave)
+
+==============================================================================
+PRIMARY CORPUS — every non-span-composition candidate (the default,
+shipped-flags population)
+==============================================================================
+  label: primary
+  n_files: 138
+  by_status: {'refused_size_mismatch': 81, 'empty_no_systems': 2, 'single_system_excluded': 50, 'TESTABLE_AGREE': 5}
+  n_testable: 5
+  n_kills: 0
+  kill_rows: []
+  staves_in_testable_rows: 112
+  cross_check_ordinal_n_matches: 5/5
+  cross_check_slot_n_matches: 5/5
+
+Per-row detail (primary corpus):
+  benchmarks/omr-absent-instrument-veto-2026-09/out/apply-default-p23p44.extract.json                   refused_size_mismatch            sizes=[9, 12, 17]
+  benchmarks/omr-absent-instrument-veto-2026-09/out/apply-p23p44.extract.json                           refused_size_mismatch            sizes=[9, 12, 17]
+  benchmarks/omr-absent-instrument-veto-2026-09/out/brahms-p10.extract.json                             refused_size_mismatch            sizes=[13, 14]
+  benchmarks/omr-absent-instrument-veto-2026-09/out/brahms-p10p75.extract.json                          refused_size_mismatch            sizes=[13, 14, 16]
+  benchmarks/omr-absent-instrument-veto-2026-09/out/report-p1p44.extract.json                           refused_size_mismatch            sizes=[12, 17]
+  benchmarks/omr-absent-instrument-veto-2026-09/out/report-p23p44.extract.json                          refused_size_mismatch            sizes=[9, 12, 17]
+  benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-control-p0004.extract.json                    refused_size_mismatch            sizes=[8, 11, 12]
+  benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-control-p23p44.extract.json                   refused_size_mismatch            sizes=[9, 12, 17]
+  benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-fix-p0004.extract.json                        refused_size_mismatch            sizes=[8, 11, 12]
+  benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-fix-p23p44.extract.json                       refused_size_mismatch            sizes=[9, 12, 17]
+  benchmarks/omr-absent-instrument-veto-2026-09/out/whole-identity.json                                 empty_no_systems                
+  benchmarks/omr-absent-instrument-veto-2026-09/out/whole-report2.extract.json                          refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-brahms-tuba-2026-09/out/run/-shipped-spans-off.json                                    refused_size_mismatch            sizes=[7, 9, 10, 11, 12, 13, 14, 16, 17, 27, 28]
+  benchmarks/omr-brahms-tuba-2026-09/out/run/-shipped-spans-on.json                                     refused_size_mismatch            sizes=[7, 9, 10, 11, 12, 13, 14, 16, 17, 27, 28]
+  benchmarks/omr-brahms-tuba-2026-09/out/run/veto-spansoff.json                                         refused_size_mismatch            sizes=[7, 9, 10, 11, 12, 13, 14, 16, 17, 27, 28]
+  benchmarks/omr-brahms-tuba-2026-09/out/run/veto.json                                                  refused_size_mismatch            sizes=[7, 9, 10, 11, 12, 13, 14, 16, 17, 27, 28]
+  benchmarks/omr-brahms-tuba-2026-09/out/stub/wired-spans-on.json                                       empty_no_systems                
+  benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/transcription.json                          refused_size_mismatch            sizes=[13, 14]
+  benchmarks/omr-lineup-swap-2026-09/out/beet5/shapetie-spans-off.json                                  refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-lineup-swap-2026-09/out/beet5/shapetie-spans-on.json                                   refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-lineup-swap-2026-09/out/beet6/shapetie-spans-off.json                                  refused_size_mismatch            sizes=[1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  benchmarks/omr-lineup-swap-2026-09/out/beet6/shapetie-spans-on.json                                   refused_size_mismatch            sizes=[1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/refuse-swap0-spans-off.json                            refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/refuse-swap0-spans-on.json                             refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/refuse-swap1-spans-off.json                            refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/refuse-swap1-spans-on.json                             refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-spans-off.json                                refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-spans-on.json                                 refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-swap0-spans-off.json                          refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-swap0-spans-on.json                           refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-swap1-spans-off.json                          refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-swap1-spans-on.json                           refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap0-spans-off.json                                   refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap0-spans-on.json                                    refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap1-spans-off.json                                   refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap1-spans-on.json                                    refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/beethoven-sym3-mvt1.omr.json     single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/beethoven-sym5-mvt1.omr.json     single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/brahms-sym1-mvt1.omr.json        single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/brahms-sym4-mvt1.omr.json        single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/bruckner-sym5-mvt1.omr.json      single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/dvorak-sym9-mvt4.omr.json        single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/mahler-sym5-mvt1.omr.json        single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/mozart-sym40-mvt1.omr.json       single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/mozart-sym41-mvt1.omr.json       single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/tchaikovsky-sym4-mvt2.omr.json   single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/tchaikovsky-sym6-mvt2.omr.json   single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym3-mvt1.omr.json    single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym5-mvt1.omr.json    single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym1-mvt1.omr.json       single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym4-mvt1.omr.json       single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/bruckner-sym5-mvt1.omr.json     single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/dvorak-sym9-mvt4.omr.json       single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mahler-sym5-mvt1.omr.json       single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym40-mvt1.omr.json      single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym41-mvt1.omr.json      single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym4-mvt2.omr.json  single_system_excluded          
+  benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym6-mvt2.omr.json  single_system_excluded          
+  benchmarks/omr-orchestral-e2e/fixtures/beethoven-sym3-mvt1.omr.json                                   single_system_excluded          
+  benchmarks/omr-orchestral-e2e/fixtures/beethoven-sym5-mvt1.omr.json                                   single_system_excluded          
+  benchmarks/omr-orchestral-e2e/fixtures/brahms-sym1-mvt1.omr.json                                      single_system_excluded          
+  benchmarks/omr-orchestral-e2e/fixtures/brahms-sym4-mvt1.omr.json                                      single_system_excluded          
+  benchmarks/omr-orchestral-e2e/fixtures/bruckner-sym5-mvt1.omr.json                                    single_system_excluded          
+  benchmarks/omr-orchestral-e2e/fixtures/dvorak-sym9-mvt4.omr.json                                      single_system_excluded          
+  benchmarks/omr-orchestral-e2e/fixtures/mahler-sym5-mvt1.omr.json                                      single_system_excluded          
+  benchmarks/omr-orchestral-e2e/fixtures/mozart-sym40-mvt1.omr.json                                     single_system_excluded          
+  benchmarks/omr-orchestral-e2e/fixtures/mozart-sym41-mvt1.omr.json                                     single_system_excluded          
+  benchmarks/omr-orchestral-e2e/fixtures/tchaikovsky-sym4-mvt2.omr.json                                 single_system_excluded          
+  benchmarks/omr-orchestral-e2e/fixtures/tchaikovsky-sym6-mvt2.omr.json                                 single_system_excluded          
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-7ea27a4b-962-clefs.json                          refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-7ea27a4b-962-noclefs.json                        refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-full973-clefs-readers-only.json                  refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-full973-clefs.json                               refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-full973-structure-only.json                      refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-full973.json                                     refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-groupmap-map-clefs.json                          refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-groupmap-map-noclefs.json                        refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-groupmap-ordinal-clefs.json                      refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-groupmap-ordinal-noclefs.json                    refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-minus11-962-clefs.json                           refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/arm-minus11-962.json                                 refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/5d6e76a8.json                                 refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/776f8e4f.json                                 refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/7ea27a4b.json                                 refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/HEAD.json                                     refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/a827fa36.json                                 refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/b6233a9e.json                                 refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/fd94b270.json                                 refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-readpass-monotonicity-2026-09/out/whole-identity.normalized.json                       refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-reference-selection-2026-09/out/beet5-p02-off.json                                     refused_size_mismatch            sizes=[11, 12]
+  benchmarks/omr-reference-selection-2026-09/out/beet5-p02-on.json                                      refused_size_mismatch            sizes=[11, 12]
+  benchmarks/omr-reference-selection-2026-09/out/beet5-p1-off.json                                      single_system_excluded          
+  benchmarks/omr-reference-selection-2026-09/out/beet5-p1-on.json                                       single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1..graft09.omr.json           refused_size_mismatch            sizes=[1, 2, 3, 12]
+  benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.restamp-composed.omr.json   TESTABLE_AGREE                   ordinal=12 slot=12 staves=24
+  benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1..graft09.omr.json              single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.restamp-composed.omr.json      single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2..graft09.omr.json              TESTABLE_AGREE                   ordinal=11 slot=11 staves=22
+  benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.restamp-composed.omr.json      TESTABLE_AGREE                   ordinal=11 slot=11 staves=22
+  benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1..graft09.omr.json              single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.restamp-composed.omr.json      single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2..graft09.omr.json              TESTABLE_AGREE                   ordinal=11 slot=11 staves=22
+  benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.restamp-composed.omr.json      TESTABLE_AGREE                   ordinal=11 slot=11 staves=22
+  benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1..graft09.omr.json                 single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.restamp-composed.omr.json         single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2..graft09.omr.json                 refused_size_mismatch            sizes=[13, 14]
+  benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.restamp-composed.omr.json         refused_size_mismatch            sizes=[13, 14]
+  benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5..graft09.omr.json                 single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.restamp-composed.omr.json         single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6..graft09.omr.json                 single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.restamp-composed.omr.json         single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2..graft09.omr.json                  single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.restamp-composed.omr.json          single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3..graft09.omr.json                  single_system_excluded          
+  benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.restamp-composed.omr.json          single_system_excluded          
+  benchmarks/omr-slot-alignment-2026-09/out/-map-spans-off.json                                         refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-slot-alignment-2026-09/out/-map-spans-on.json                                          refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-slot-alignment-2026-09/out/-ordinal-spans-off.json                                     refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-slot-alignment-2026-09/out/-ordinal-spans-on.json                                      refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-slot-alignment-2026-09/out/brahms1/-map-spans-off.json                                 refused_size_mismatch            sizes=[7, 9, 10, 11, 12, 13, 14, 16, 17, 27, 28]
+  benchmarks/omr-slot-alignment-2026-09/out/brahms1/-map-spans-on.json                                  refused_size_mismatch            sizes=[7, 9, 10, 11, 12, 13, 14, 16, 17, 27, 28]
+  benchmarks/omr-slot-alignment-2026-09/out/brahms1/-ordinal-spans-off.json                             refused_size_mismatch            sizes=[7, 9, 10, 11, 12, 13, 14, 16, 17, 27, 28]
+  benchmarks/omr-slot-alignment-2026-09/out/brahms1/-ordinal-spans-on.json                              refused_size_mismatch            sizes=[7, 9, 10, 11, 12, 13, 14, 16, 17, 27, 28]
+  benchmarks/omr-span-reach-2026-09/out/beet6/spans-off.json                                            refused_size_mismatch            sizes=[1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  benchmarks/omr-span-reach-2026-09/out/beet6/spans-on.json                                             refused_size_mismatch            sizes=[1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  benchmarks/omr-span-reach-2026-09/out/brahms4/spans-off.json                                          refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-span-reach-2026-09/out/brahms4/spans-on.json                                           refused_size_mismatch            sizes=[5, 6, 7, 9, 10, 11, 12, 13, 15, 16]
+  benchmarks/omr-spans-veto-composition-2026-09/out/smoke-spans-off.json                                refused_size_mismatch            sizes=[9, 12, 17]
+  benchmarks/omr-spans-veto-composition-2026-09/out/smoke-spans-on.json                                 refused_size_mismatch            sizes=[9, 12, 17]
+  benchmarks/omr-spans-veto-composition-2026-09/out/smokeapply-spans-off.json                           refused_size_mismatch            sizes=[9, 12, 17]
+  benchmarks/omr-spans-veto-composition-2026-09/out/smokeapply-spans-on.json                            refused_size_mismatch            sizes=[9, 12, 17]
+  benchmarks/omr-spans-veto-composition-2026-09/out/whole-spans-off.json                                refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-spans-veto-composition-2026-09/out/whole-spans-on.json                                 refused_size_mismatch            sizes=[4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17]
+  benchmarks/omr-spans-veto-composition-2026-09/out/win24-spans-off.json                                refused_size_mismatch            sizes=[7, 8, 9, 11, 12, 17]
+  benchmarks/omr-spans-veto-composition-2026-09/out/win24-spans-on.json                                 refused_size_mismatch            sizes=[7, 8, 9, 11, 12, 17]
+  benchmarks/omr-timesig-2026-09/out/beet3_page.json                                                    single_system_excluded          
+  benchmarks/omr-veto-refusal-pricing-2026-09/out/brahms1/spans-off.json                                refused_size_mismatch            sizes=[7, 9, 10, 11, 12, 13, 14, 16, 17, 27, 28]
+  benchmarks/omr-veto-refusal-pricing-2026-09/out/brahms1/spans-on.json                                 refused_size_mismatch            sizes=[7, 9, 10, 11, 12, 13, 14, 16, 17, 27, 28]
+
+==============================================================================
+POISONED-REFERENCE ARM(S) — OMR_SPAN_REFERENCE_FIT re-tested
+==============================================================================
+
+--- POISONED: OMR_SPAN_REFERENCE_FIT=off, spans(movement-ref)=on  (fitoff-spans-on) ---
+  label: POISONED: OMR_SPAN_REFERENCE_FIT=off, spans(movement-ref)=on
+  n_files: 2
+  by_status: {'refused_size_mismatch': 2}
+  n_testable: 0
+  n_kills: 0
+  kill_rows: []
+  staves_in_testable_rows: 0
+  cross_check_ordinal_n_matches: 0/0
+  cross_check_slot_n_matches: 0/0
+
+--- refuse arm, spans=on  (fitrefuse-spans-on) ---
+  label: refuse arm, spans=on
+  n_files: 2
+  by_status: {'refused_size_mismatch': 2}
+  n_testable: 0
+  n_kills: 0
+  kill_rows: []
+  staves_in_testable_rows: 0
+  cross_check_ordinal_n_matches: 0/0
+  cross_check_slot_n_matches: 0/0
+
+--- shipped default (search), spans=on — in-harness control  (fitsearch-spans-on) ---
+  label: shipped default (search), spans=on — in-harness control
+  n_files: 2
+  by_status: {'refused_size_mismatch': 2}
+  n_testable: 0
+  n_kills: 0
+  kill_rows: []
+  staves_in_testable_rows: 0
+  cross_check_ordinal_n_matches: 0/0
+  cross_check_slot_n_matches: 0/0
+
+--- SPAN_REFERENCE_FIT=off, spans=off (pre-2026-09-06 behaviour)  (fitoff-spans-off) ---
+  label: SPAN_REFERENCE_FIT=off, spans=off (pre-2026-09-06 behaviour)
+  n_files: 2
+  by_status: {'refused_size_mismatch': 2}
+  n_testable: 0
+  n_kills: 0
+  kill_rows: []
+  staves_in_testable_rows: 0
+  cross_check_ordinal_n_matches: 0/0
+  cross_check_slot_n_matches: 0/0
+
+--- refuse arm, spans=off  (fitrefuse-spans-off) ---
+  label: refuse arm, spans=off
+  n_files: 2
+  by_status: {'refused_size_mismatch': 2}
+  n_testable: 0
+  n_kills: 0
+  kill_rows: []
+  staves_in_testable_rows: 0
+  cross_check_ordinal_n_matches: 0/0
+  cross_check_slot_n_matches: 0/0
+
+--- search arm, spans=off  (fitsearch-spans-off) ---
+  label: search arm, spans=off
+  n_files: 2
+  by_status: {'refused_size_mismatch': 2}
+  n_testable: 0
+  n_kills: 0
+  kill_rows: []
+  staves_in_testable_rows: 0
+  cross_check_ordinal_n_matches: 0/0
+  cross_check_slot_n_matches: 0/0
+
+--- noshape variant, spans=on  (noshape-spans-on) ---
+  label: noshape variant, spans=on
+  n_files: 1
+  by_status: {'refused_size_mismatch': 1}
+  n_testable: 0
+  n_kills: 0
+  kill_rows: []
+  staves_in_testable_rows: 0
+  cross_check_ordinal_n_matches: 0/0
+  cross_check_slot_n_matches: 0/0
+
+--- noshape variant, spans=off  (noshape-spans-off) ---
+  label: noshape variant, spans=off
+  n_files: 1
+  by_status: {'refused_size_mismatch': 1}
+  n_testable: 0
+  n_kills: 0
+  kill_rows: []
+  staves_in_testable_rows: 0
+  cross_check_ordinal_n_matches: 0/0
+  cross_check_slot_n_matches: 0/0
+
+==============================================================================
+OVERALL
+==============================================================================
+  files discovered: 188
+  testable rows (ordinal succeeded, slot resolved): 5
+  KILLS (disagreement where ordinal succeeded): 0
+
+wrote benchmarks/omr-partition-falsifier-2026-09/results.json
