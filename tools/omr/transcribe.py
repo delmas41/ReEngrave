@@ -2903,6 +2903,22 @@ def _dedupe_cross_staff_detections(
                     # Written per pair, both sides, with the tier that actually
                     # decided it, because "would tier 2 have reached this" is
                     # only interesting where the ladder did NOT already settle it.
+                    # ⚠️ THE DISTANCES, which this dump did not carry. It
+                    # recorded both confidences and the deciding tier, and left
+                    # out the one quantity that decides 94.1% of these contests
+                    # — and that this project has already caught being a coin
+                    # flip: the three misattributed Mahler hairpins were 5-62 px
+                    # nearer the wrong staff, against 25 px the other way for
+                    # the one kept correctly. Without the margin, "decided by
+                    # distance" cannot be read as anything but "decided".
+                    # Computed here, in the dump, so a run with the dump off is
+                    # untouched — and computed for BOTH sides whatever tier
+                    # actually won, because "would distance have agreed" is a
+                    # question about the pairs the ladder settled too.
+                    dist_i = _distance_to_band(
+                        _bbox_center_y(di), bands[si][0], bands[si][1])
+                    dist_j = _distance_to_band(
+                        _bbox_center_y(dj), bands[sj][0], bands[sj][1])
                     contests.append({
                         "staff_i": si, "staff_j": sj,
                         "category": di.get("category"),
@@ -2910,6 +2926,14 @@ def _dedupe_cross_staff_detections(
                         "pitch_i": di.get("pitch"), "pitch_j": dj.get("pitch"),
                         "conf_i": di.get("confidence"),
                         "conf_j": dj.get("confidence"),
+                        "band_distance_i": round(float(dist_i), 2),
+                        "band_distance_j": round(float(dist_j), 2),
+                        # Unsigned: which side it favours is `distance_prefers`.
+                        "band_distance_margin": round(abs(dist_i - dist_j), 2),
+                        # What DISTANCE would have said, recorded even where a
+                        # stronger tier decided — the only way to ask, later,
+                        # how often the tiers agree.
+                        "distance_prefers": sj if dist_i > dist_j else si,
                         "decided_by": {2: "ladder", 1: "range_or_hairpin"}.get(
                             rank, "distance"),
                         "loser_staff": si if loser == i else sj,
