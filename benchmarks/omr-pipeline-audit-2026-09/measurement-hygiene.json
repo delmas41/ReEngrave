@@ -193,10 +193,10 @@
   }
  },
  "stamps": {
-  "n_result_artefacts": 47,
-  "with_commit": 5,
-  "with_era": 34,
-  "with_both": 5,
+  "n_result_artefacts": 48,
+  "with_commit": 6,
+  "with_era": 35,
+  "with_both": 6,
   "with_neither": 13,
   "machine_checked_era": 1,
   "machine_checked_era_note": "exactly one artefact has an era stamp a test refuses to let drift: current-accuracy.json, guarded by accuracy_record.check() + test_accuracy_record.py. Every other `era` here is prose a reader must notice.",
@@ -321,6 +321,12 @@
     "has_commit": true,
     "has_era": true,
     "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 20
    },
    {
     "path": "benchmarks/omr-phase4-extension/output/results.json",

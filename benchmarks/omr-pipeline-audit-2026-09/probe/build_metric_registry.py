@@ -20,7 +20,7 @@ A = {
     "record": ROOT / "benchmarks/omr-ned-2026-08/current-accuracy.json",
     "reading": ROOT / "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
     "gate20": ROOT / "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json",
-    "norm": ROOT / "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+    "norm": ROOT / "benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json",
     "noop": ROOT / "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json",
     "one2one": ROOT / "benchmarks/omr-headline-validity-2026-09/engraved-1to1.json",
     "indep": HERE / "ceiling-engine-independence.json",
@@ -256,12 +256,16 @@ rows.append(row(
     ceiling={"kind": "assumed", "value": 0.0, "status": "assumed",
              "evidence": [REL["norm"], REL["indep"]],
              "control": "F=0 is the assumption-direction default and UNDERSTATES. "
-                        "The measured floor exists for only 5 of these 20 rows "
-                        "(hand map + engine corroboration); on that subset the "
-                        "measured floor is 0.152 and the score is %.1f%% instead "
-                        "of %.1f%%."
-                        % (L["pct"]["scan"]["pool"]["pct_of_achievable"],
-                           L["pct"]["scan"]["pool"]["pct_naive_no_ceiling"])},
+                        "A measured floor now exists for 15 of these 20 rows, on "
+                        "THIS arm (the 20-row normalised artefact's raw pool is "
+                        "exactly the canonical 0.8444). Over those 15 the floor is "
+                        "0.134 and the score is %.1f%% instead of %.1f%%. The "
+                        "pooled 20-row row keeps F=0 because 5 rows have no map "
+                        "and a pool's trust is the MINIMUM of its members'."
+                        % (L["pct"]["scan"]["pool_all_normalisable"]
+                           ["pct_of_achievable"],
+                           L["pct"]["scan"]["pool_all_normalisable"]
+                           ["pct_naive_no_ceiling"])},
     pct_of_achievable=pct_err(g["omr_ned"], 0.0),
     n=g["n_rows"], n_unit="hand-verified pages", era_key=ERA_SCAN20,
     noise_floor={"value_edits": 6, "value_pct_points": round(600.0 / den20, 3),
@@ -274,8 +278,35 @@ rows.append(row(
     companions={"edits": g["omr_ed"], "truth_symbols": g["truth_symbols"],
                 "pred_symbols": g["pred_symbols"]},
     flags=["the artefact carries NO commit and NO machine-checked era stamp",
-           "33.8% of the edits on the normalisable subset are structural charge "
+           "34.5% of the edits on the 15 normalisable rows are structural charge "
            "for a printing convention, not recognition error"]))
+
+# tier B: every normalisable row of the canonical arm, single-source estimator
+pb = L["pct"]["scan"]["pool_all_normalisable"]
+rows.append(row(
+    id="scan:omr_ned:ceiling_measured_15rows", stage="= finished file",
+    family="scan", raw_metric="OMR-NED", native_direction="lower_is_better",
+    native_worst=1.0, native_best=0.0, value=pb["pooled_omr_ned"],
+    transform="pct = 100 * (1 - M) / (1 - F)",
+    ceiling={"kind": "structural", "value": pb["pooled_floor_low"],
+             "status": "measured_single_source",
+             "evidence": [REL["norm"],
+                          "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read map)",
+                          REL["indep"]],
+             "control": "the QUANTITY is defined by (reference truth, hand-read page "
+                        "map) and is independent of our output; the ESTIMATOR is the "
+                        "MINIMUM `entire staff` charge over every engine measured on "
+                        "each row, which is our own on 10 of the 15. On the other 5 "
+                        "an independent engine produces the identical number."},
+    pct_of_achievable=round(pb["pct_of_achievable"], 2),
+    n=pb["n_rows"], n_unit="pages",
+    era_key="scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba",
+    noise_floor={"value_edits": 6, "status": "measured"},
+    summability_class="omr_ned_scan_ceilinged",
+    pool_key="scan/ceiling-measured/15",
+    scoreable=True, source=REL["pct"],
+    flags=["15 of 20 rows: the five Mahler/Bach rows have no hand-read staves map "
+           "and are not guessed at"]))
 
 rows.append(row(
     id="scan:omr_ned:ceiling_corroborated_subset", stage="= finished file",
@@ -292,15 +323,17 @@ rows.append(row(
                         "(Audiveris 5.11) on all 5 rows. The control fired: it is "
                         "NOT identical on 3 further rows, which are therefore "
                         "excluded — every one of those is a two-system page."},
-    pct_of_achievable=L["pct"]["scan"]["pool"]["pct_of_achievable"],
+    pct_of_achievable=round(L["pct"]["scan"]["pool"]["pct_of_achievable"], 2),
     n=L["pct"]["scan"]["pool"]["n_rows"], n_unit="pages",
-    era_key="scan-e2e|graft09-arm|5rows|ceiling-corroborated|transform1.1.0",
+    era_key="scan-e2e|20rows|reconciliation|ceiling-corroborated-5|transform1.2.0|afea84ba",
     noise_floor={"value_edits": 6, "status": "measured"},
     summability_class="omr_ned_scan_ceilinged",
     pool_key="scan/ceiling-corroborated/5",
     scoreable=True, source=REL["pct"],
-    flags=["5 of 20 rows, 3 of 6 works — NOT the headline, and it may not be "
-           "differenced against the 20-row figure (different arm AND different era)"]))
+    flags=["5 of 20 rows, 3 of 6 works — NOT the headline. Since 2026-09-07 it is "
+           "on the SAME arm as the headline (the 20-row normalised artefact), so "
+           "the arm mismatch that made this incomparable is closed; the ROW-SET "
+           "mismatch stands and still refuses the difference."]))
 
 # ─────────────────────────────────────────────────────────── SCAN, structural stages
 gr = L["gate20"]["rows"]
@@ -467,6 +500,22 @@ rows.append(row(
             "600 dpi bitonal, so there is no denominator of 'recoverable ink'. An "
             "INPUT ceiling is the one kind this project has never measured.",
     source="CLAUDE.md"))
+
+rows.append(row(
+    id="flag:OMR_CONDENSED_PARTS:oracle_ceiling", stage="11 export", family="scan",
+    raw_metric="oracle ceiling quoted in CLAUDE.md's knobs table (-4,557 scan edits)",
+    native_direction="lower_is_better", value=None,
+    ceiling={"kind": None, "value": None, "status": "unmeasured", "evidence": [],
+             "control": None},
+    n=None, n_unit="edits", era_key=None, scoreable=False,
+    why_not="⚠️ THE CEILING GRADES A CONFIGURATION THAT CANNOT OCCUR. Verified in "
+            "this tree 2026-09-07: `condensed_parts` is READ at export.py:3331 "
+            "(`s.get(\"condensed_parts\")`) and WRITTEN nowhere in tools/omr, so "
+            "every staff reports 1 and the flag is inert even when set. The "
+            "-4,557 figure was measured with ORACLE counts. A quoted ceiling for "
+            "an unreachable configuration is the mirror image of a fabricated "
+            "100%: it makes a gap look bigger than the pipeline can act on.",
+    source="tools/omr/export.py:3278-3331 (grep: only reader, no writer)"))
 
 rows.append(row(
     id="human:review_cost", stage="(the purpose)", family="both",

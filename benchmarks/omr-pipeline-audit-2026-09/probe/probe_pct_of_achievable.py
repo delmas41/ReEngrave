@@ -28,7 +28,17 @@ ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parents[1]
 OUT = HERE / "pct-of-achievable-prototype.json"
 
-NORM = ROOT / "benchmarks" / "omr-headline-validity-2026-09" / "results-normalised-arm.json"
+# ⚠️ SUPERSEDED EVIDENCE, 2026-09-07. The first cut of this probe read
+# `benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json`
+# (transform 1.1.0, the `..graft09` arm, 11 rows, 8 normalised). That artefact
+# is NOT on the arm the headline quotes: nine of its eleven rows disagree with
+# `results-reconciliation.json`, one of them (Bach) by 572 edits. The
+# page_normalise fixes landed the same night and produced a 20-row arm on the
+# `.reconciliation` tag whose `pooled_raw_over_all_scored_rows.omr_ned` is
+# EXACTLY the canonical 0.8443958865999122 — so the ceiling and the headline now
+# share an arm, which is the condition this whole design rests on.
+NORM = ROOT / "benchmarks" / "omr-page-normalise-fixes-2026-09" / "results-normalised-arm-20row.json"
+NORM_SUPERSEDED = ROOT / "benchmarks" / "omr-headline-validity-2026-09" / "results-normalised-arm.json"
 INDEP = HERE / "ceiling-engine-independence.json"
 READING = ROOT / "benchmarks" / "omr-reading-vs-reproduction-2026-09" / "results.json"
 RECORD = ROOT / "benchmarks" / "omr-ned-2026-08" / "current-accuracy.json"
@@ -65,14 +75,11 @@ def main() -> int:
             "truth_symbols_raw": raw["truth_symbols"],
             "pred_symbols": raw["pred_symbols"],
         }
-        if not r.get("normalised") or rid not in corroborated:
+        if not r.get("normalised"):
             row.update({
                 "scoreable": False,
-                "why": ("no hand-read staves map, so no page-normalised truth"
-                        if not r.get("normalised") else
-                        "structural charge is NOT engine-independent on this row "
-                        "(two-system page: the two engines emit different part "
-                        "counts), so it is not demonstrably a fixture property"),
+                "tier": None,
+                "why": "no hand-read staves map, so no page-normalised truth",
                 "ceiling_kind": None,
                 "pct_of_achievable": None,
             })
@@ -80,11 +87,34 @@ def main() -> int:
             continue
         t_norm = nz["truth_symbols"]
         denom = raw["truth_symbols"] + t_norm      # a perfect page-faithful reader
-        es = es_by_row[rid]
+        # THE FLOOR ESTIMATOR, stated explicitly. The floor must be a charge no
+        # measured reader has avoided, so it is the MINIMUM `entire staff` count
+        # over every engine scored on this row — ours, and Audiveris where the
+        # industry arm covers it. Taking the minimum is what makes it a lower
+        # bound rather than a claim about our own output.
+        ours_es = raw["categories"].get("entire staff insert/delete", 0)
+        aud_es = es_by_row.get(rid)
+        es = ours_es if aud_es is None else min(ours_es, aud_es)
+        row["floor_estimator"] = {
+            "ours_entire_staff": ours_es,
+            "audiveris_entire_staff": aud_es,
+            "used": es,
+            "rule": "min over measured engines — a charge no reader avoided",
+        }
         f_low = es / denom                          # structural charge alone
         f_high = (raw["omr_ed"] - nz["omr_ed"]) / denom   # everything the transform removed
+        tier = "A_corroborated" if rid in corroborated else "B_single_source"
         row.update({
             "scoreable": True,
+            "tier": tier,
+            "ceiling_status": ("measured_and_corroborated" if tier == "A_corroborated"
+                               else "measured_single_source"),
+            "ceiling_caveat": (None if tier == "A_corroborated" else
+                               "the floor is estimated from OUR OWN `entire staff` "
+                               "count. The QUANTITY (truth vs hand-read page map) is "
+                               "independent of us; the ESTIMATOR is not. Audiveris "
+                               "does not corroborate this row — it is a two-system "
+                               "page, or outside the arm it was run on."),
             "ceiling_kind": "structural",
             "ceiling_evidence": [
                 "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
@@ -102,7 +132,7 @@ def main() -> int:
 
     # Pool by RECOMPUTING from counts, never by averaging percentages: a 3-bar
     # row and a 27-staff page must not carry equal weight.
-    pool = [r for r in scan_rows if r.get("scoreable")]
+    pool = [r for r in scan_rows if r.get("tier") == "A_corroborated"]
     ed = sum(r["raw_omr_ed"] for r in pool)
     den = sum(r["truth_symbols_raw"] + r["pred_symbols"] for r in pool)
     floor_num = sum(r["entire_staff_both_engines"] for r in pool)
@@ -114,7 +144,28 @@ def main() -> int:
             ideal_den += r["raw"]["truth_symbols"] + r["norm"]["truth_symbols"]
     pooled_m = ed / den
     pooled_f = floor_num / ideal_den
+    pool_b = [r for r in scan_rows if r.get("scoreable")]
+    ed_b = sum(r["raw_omr_ed"] for r in pool_b)
+    den_b = sum(r["truth_symbols_raw"] + r["pred_symbols"] for r in pool_b)
+    ideal_b = 0
+    for r in norm["rows"]:
+        if r["row_id"] in {x["row_id"] for x in pool_b}:
+            ideal_b += r["raw"]["truth_symbols"] + r["norm"]["truth_symbols"]
+    es_b = sum(r["entire_staff_both_engines"] for r in pool_b)
+    m_b, f_b = ed_b / den_b, es_b / ideal_b
+    scan_pool_b = {
+        "tier": "B_single_source",
+        "n_rows": len(pool_b),
+        "pooled_omr_ned": m_b,
+        "pooled_floor_low": f_b,
+        "pct_of_achievable": pct_error(m_b, f_b),
+        "pct_naive_no_ceiling": pct_error(m_b, 0.0),
+        "⚠️": "every normalisable row of the CANONICAL 20-row arm. The floor's "
+              "estimator is our own `entire staff` count on 10 of the 15; on the "
+              "other 5 an independent engine produces the identical number.",
+    }
     scan_pool = {
+        "tier": "A_corroborated",
         "n_rows": len(pool),
         "row_ids": [r["row_id"] for r in pool],
         "pooled_omr_ned": pooled_m,
@@ -212,7 +263,12 @@ def main() -> int:
         "assumption_direction_rule": "an unknown ceiling is assumed at the value "
                                      "that MINIMISES the score (F=0 / C=1), so a "
                                      "missing ceiling can never manufacture 100",
-        "scan": {"rows": scan_rows, "pool": scan_pool},
+        "scan": {"rows": scan_rows, "pool": scan_pool, "pool_all_normalisable": scan_pool_b,
+                 "arm": norm.get("tag"), "transform_version": norm.get("transform_version"),
+                 "git_head": norm.get("git_head"),
+                 "arm_matches_headline": abs(
+                     norm["pooled_raw_over_all_scored_rows"]["omr_ned"]
+                     - json.loads(RECON.read_text())["pooled"]["omr_ned"]) < 1e-12},
         "engraved_reading": reading_rows,
         "engraved_omr_ned": engraved,
         "noise_floor": noise,
@@ -227,7 +283,11 @@ def main() -> int:
                      r["pct_of_achievable"], r["pct_naive_no_ceiling"]))
         else:
             print("  %-34s UNSCOREABLE — %s" % (r["row_id"], r["why"][:60]))
-    print("\nSCAN pool (%d rows): NED %.4f floor %.4f -> %.1f%% (naive %.1f%%)"
+    print("\nSCAN pool B, every normalisable row (%d): NED %.4f floor %.4f -> %.1f%% (naive %.1f%%)"
+          % (scan_pool_b["n_rows"], scan_pool_b["pooled_omr_ned"],
+             scan_pool_b["pooled_floor_low"], scan_pool_b["pct_of_achievable"],
+             scan_pool_b["pct_naive_no_ceiling"]))
+    print("SCAN pool A (%d rows): NED %.4f floor %.4f -> %.1f%% (naive %.1f%%)"
           % (scan_pool["n_rows"], scan_pool["pooled_omr_ned"],
              scan_pool["pooled_floor_low"], scan_pool["pct_of_achievable"],
              scan_pool["pct_naive_no_ceiling"]))
