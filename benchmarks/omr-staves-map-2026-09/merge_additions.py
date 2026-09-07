@@ -67,6 +67,54 @@ def shape_problems(staves) -> list[str]:
     return out
 
 
+# ------------------------------------------------- the one normalisation proof
+
+def prove_normalises(row_id: str, staves, *, source_reference=None) -> dict:
+    """Would `page_normalise` accept this map for this row? THE shared answer.
+
+    ⚠️ THIS FUNCTION EXISTS SO TWO CONSUMERS CANNOT DRIFT APART. `check_row`
+    asks it before writing `works.json`; the confirmation UI
+    (`server.py`) asks it before letting a row be marked `done`. Until
+    2026-09-07 the UI re-implemented only the CHEAP structural checks and never
+    called `page_normalise` at all — so a row could go green staff by staff,
+    be marked done, and refuse at merge time, AFTER the human's whole pass was
+    spent. Two `page_normalise` faults did exactly that to Mahler p3 and p4.
+    A second implementation would reopen the same gap one level down.
+
+    Returns `ok` / `problem` / `normalised`, plus `unavailable`, which the two
+    callers are ENTITLED TO TREAT DIFFERENTLY and do:
+
+      * `unavailable` means the proof could not RUN — no `<row>.truth.musicxml`
+        on this machine. `check_row` counts that a refusal, because it is about
+        to WRITE hand-verified truth and must not write what it could not
+        prove. The UI counts it a warning, because it writes only the additions
+        file and blocking Sean's keystroke over a missing fixture would cost
+        more than it protects — the merge step still refuses later.
+      * `ok is False` with `unavailable is False` means `page_normalise`
+        actually REFUSED the map. Both callers block on that, identically.
+    """
+    truth, _ = find_fixture(row_id, ".truth.musicxml")
+    if truth is None:
+        return {"ok": False, "unavailable": True, "normalised": None,
+                "problem": "no <row>.truth.musicxml on disk — cannot prove the "
+                           "map against the consumer"}
+    try:
+        import page_normalise  # from benchmarks/omr-scan-e2e-2026-09
+        _score, report = page_normalise.normalise(
+            truth, staves, source_reference=source_reference)
+    except Exception as exc:                           # noqa: BLE001
+        return {"ok": False, "unavailable": False, "normalised": None,
+                "problem": f"page_normalise REFUSED this map: "
+                           f"{type(exc).__name__}: {exc}"}
+    return {"ok": True, "unavailable": False, "problem": None,
+            "normalised": {
+                "n_source_parts": report["n_source_parts"],
+                "n_output_parts": report["n_output_parts"],
+                "exact_duplication_share": report["exact_duplication_share"],
+                "divisi_share": report["divisi_share"],
+            }}
+
+
 def check_row(row_id: str, row: dict, add: dict) -> dict:
     problems: list[str] = []
     if add.get("status") != "done":
@@ -86,27 +134,26 @@ def check_row(row_id: str, row: dict, add: dict) -> dict:
         for i in (s.get("parts") or []):
             counts[i] = counts.get(i, 0) + 1
 
-    truth, _ = find_fixture(row_id, ".truth.musicxml")
+    # ⚠️ THE SAME PROOF THE UI RUNS — `prove_normalises`, not a second copy.
     n_parts = None
     normalised = None
-    if truth is None:
-        problems.append("no <row>.truth.musicxml on disk — cannot prove the map "
-                        "against the consumer")
-    elif not problems:
-        try:
-            import page_normalise  # from benchmarks/omr-scan-e2e-2026-09
-            score, report = page_normalise.normalise(
-                truth, staves, source_reference=row["reference"]["catalog_path"])
-            n_parts = report["n_source_parts"]
-            normalised = {
-                "n_source_parts": report["n_source_parts"],
-                "n_output_parts": report["n_output_parts"],
-                "exact_duplication_share": report["exact_duplication_share"],
-                "divisi_share": report["divisi_share"],
-            }
-        except Exception as exc:                       # noqa: BLE001
-            problems.append(f"page_normalise REFUSED this map: "
-                            f"{type(exc).__name__}: {exc}")
+    if not problems:
+        proof = prove_normalises(
+            row_id, staves,
+            source_reference=row["reference"]["catalog_path"])
+        if proof["ok"]:
+            normalised = proof["normalised"]
+            n_parts = normalised["n_source_parts"]
+        else:
+            # About to WRITE: `unavailable` is a refusal here. See the
+            # docstring of `prove_normalises` for why the UI differs.
+            problems.append(proof["problem"])
+    elif find_fixture(row_id, ".truth.musicxml")[0] is None:
+        # Shape problems already stand, but a missing fixture is reported too:
+        # it is why the proof did not run, and it was reported before this
+        # function was factored out.
+        problems.append("no <row>.truth.musicxml on disk — cannot prove the "
+                        "map against the consumer")
 
     doubled = sorted(i for i, c in counts.items() if c > 1)
     if doubled:
