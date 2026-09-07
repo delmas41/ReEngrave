@@ -356,6 +356,43 @@ class MeasureCell:
     # i.e. how much ink `image_no_staff` had to remove per line. None when the
     # staff's lines were never traced. See Staff.line_thickness_px.
     staff_line_thickness_canonical: float | None = None
+    # THE PAD THIS CELL WAS CUT WITH, in staff spaces, above and below —
+    # `measure_extractor._build_measure_cell`'s own `grown()` values, not the
+    # module constants it started from.
+    #
+    # ⚠️ PER-CELL, NOT PER-MODULE, and the difference is not cosmetic. The pad
+    # starts at `PAD_ABOVE_STAFF_LINES` / `PAD_BELOW_STAFF_LINES` and GROWS to
+    # `PAD_MAX_STAFF_LINES` on whichever side the neighbouring staff is far
+    # enough away — so on one ordinary page the top staff is cut at 6 above and
+    # 4 below while its neighbour below is cut at 4 on both. Reading the module
+    # constant would be wrong exactly where the growth happens, which is the
+    # case the growth exists for (CLAUDE.md: "the cell pad is 4 spaces or 6,
+    # never in between").
+    #
+    # WHY IT IS RECORDED. Every saved label box lives in the cell's CANONICAL
+    # frame, and a cell re-cut at a different pad is not a slightly different
+    # picture — it is the same music at a different scale, with every box in
+    # the batch landing somewhere else and nothing downstream saying so. The
+    # labeling cutter (`annotate/select_cells_orchestral`) monkey-patches those
+    # module constants to 5.0, so a labeled batch and a pipeline run disagree
+    # about the frame, and the fact was never written down: today
+    # `annotate/recut_cells.choose_mode_and_cut` DERIVES which pad was used, by
+    # cutting the page under each candidate mode and keeping the one whose
+    # output reproduces the manifest's recorded width, height and canonical
+    # staff-line ys. That derivation exists only because this field did not.
+    #
+    # ⚠️ IT IS NOT YET REPLACED, deliberately. `recut_cells`' abort-on-frame-
+    # mismatch is a safety property over irreplaceable human verdicts, and
+    # every batch cut before this field existed has a manifest that records no
+    # pad at all — so the derivation is still the only thing that can read
+    # those. This is a record, not a decision.
+    #
+    # ⚠️ The pad the cut ASKED for. `y0`/`y1` are additionally clamped to the
+    # page, so a staff near the paper edge got less than this; what it actually
+    # got is `bbox_page_px` against the staff's own line_ys. None on a cell
+    # built by hand (most test fixtures) rather than cut from a page.
+    pad_above_staff_lines: float | None = None
+    pad_below_staff_lines: float | None = None
 
     @property
     def width(self) -> int:
