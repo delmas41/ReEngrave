@@ -12,6 +12,29 @@ MEASURED AND REFUTED the same day (`clef_register_warning`: reach 7/193, precisi
 
 ---
 
+## A0. Sequencing decision — Sean, 2026-09-07, after the machine crash
+
+**Resume the three crash-interrupted agents ONE AT A TIME, `page_normalise` first,
+then the other two once it lands.** Recorded here because the machine crashed
+once already today and a sequencing instruction held only in conversation is the
+first thing lost.
+
+| agent | branch | rescued as | state |
+|---|---|---|---|
+| `page_normalise` fixes | `claude/page-normalise-fixes-2026-09-06` | `492f1e07` | **RESUMED, running alone** |
+| one-line staves | `worktree-agent-a64f7fb5bce33d36a` | `92b12cf4` | waiting |
+| score language | `claude/score-language-2026-09-06` | `fc908c72` | waiting |
+
+⚠️ **All three rescues are UNVERIFIED** — no suite, no controls, no A/B completed
+before the crash. Each was committed from NAMED paths only (a build tree was
+deliberately excluded). ⚠️ The one-line-staves branch touches **three** pipeline
+files and is the one to be most careful with.
+
+**Why one at a time:** seven concurrent agents drove load average to 51-61
+earlier today, the test suite timed out at 10 minutes, and the lineup-swap agent
+**abandoned its control runs at 13 of 166 pages** rather than compete for cores.
+Serial is slower per task and faster to a trustworthy answer.
+
 ## A. BLOCKING — someone's finished work cannot land until these are fixed
 
 | # | item | evidence |
