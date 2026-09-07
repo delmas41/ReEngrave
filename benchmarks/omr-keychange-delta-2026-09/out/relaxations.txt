@@ -1,0 +1,18 @@
+========================================================================
+all encodings: 824 multi-staff change bars, 6247 changing staves
+  staff Δ == the bar's modal Δ                        : 5926/6247 = 0.9486
+  ... or differs by a multiple of 12 (enharmonic)     : 6009/6247 = 0.9619
+  ... or one of its two keys is 0 (unsignatured staff): 6099/6247 = 0.9763
+  BOTH escapes together                              : 6164/6247 = 0.9867
+  bars where EVERY changer passes, strict             : 738/824 = 0.8956
+  bars where EVERY changer passes, both escapes       : 785/824 = 0.9527
+
+========================================================================
+deduped by work: 477 multi-staff change bars, 3041 changing staves
+  staff Δ == the bar's modal Δ                        : 2862/3041 = 0.9411
+  ... or differs by a multiple of 12 (enharmonic)     : 2902/3041 = 0.9543
+  ... or one of its two keys is 0 (unsignatured staff): 2970/3041 = 0.9767
+  BOTH escapes together                              : 3000/3041 = 0.9865
+  bars where EVERY changer passes, strict             : 430/477 = 0.9015
+  bars where EVERY changer passes, both escapes       : 459/477 = 0.9623
+

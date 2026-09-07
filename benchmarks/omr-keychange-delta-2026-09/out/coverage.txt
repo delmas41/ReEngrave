@@ -1,0 +1,21 @@
+========================================================================
+all: 824 multi-staff key-change bars, 10824 staff-slots at those bars
+  bars where EVERY staff changes: 624 (0.7573)
+    CHANGES                              6247  (0.5771 of staff-slots)
+    silent_resting_in_bar                3054  (0.2822 of staff-slots)
+    silent_restated_same_key              749  (0.0692 of staff-slots)
+    silent_no_note_in_bar                 533  (0.0492 of staff-slots)
+    silent_UNSIGNATURED_STAFF             485  (0.0448 of staff-slots)
+    silent_KEEPS_ITS_OWN_KEY              318  (0.0294 of staff-slots)
+
+========================================================================
+deduped: 477 multi-staff key-change bars, 5531 staff-slots at those bars
+  bars where EVERY staff changes: 376 (0.7883)
+    CHANGES                              3041  (0.5498 of staff-slots)
+    silent_resting_in_bar                1605  (0.2902 of staff-slots)
+    silent_restated_same_key              378  (0.0683 of staff-slots)
+    silent_no_note_in_bar                 338  (0.0611 of staff-slots)
+    silent_UNSIGNATURED_STAFF             234  (0.0423 of staff-slots)
+    silent_KEEPS_ITS_OWN_KEY              223  (0.0403 of staff-slots)
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/keychange-delta/benchmarks/omr-keychange-delta-2026-09/out/coverage.json

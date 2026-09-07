@@ -1,0 +1,22 @@
+{
+ "n_encodings": 1745,
+ "n_distinct_works": 1031,
+ "n_encodings_with_change": 286,
+ "n_distinct_works_with_change": 197,
+ "regex_yes": 354,
+ "parser_yes_not_regex": [],
+ "witness_all": [
+  6266,
+  6247,
+  6182,
+  843,
+  738
+ ],
+ "witness_deduped": [
+  3050,
+  3041,
+  2999,
+  486,
+  430
+ ]
+}

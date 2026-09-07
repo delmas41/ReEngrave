@@ -1,0 +1,45 @@
+{
+ "parsed": 1745,
+ "meter_change_bars": 972,
+ "meter_agree": 970,
+ "meter_disagree_examples": [
+  {
+   "file": "debussy--cinq-poemes-de-baudelaire--recueillement--gradus-assets.mxl",
+   "ordinal": 55,
+   "values": [
+    "3/4",
+    "9/8"
+   ],
+   "counts": {
+    "3/4": 1,
+    "9/8": 1
+   }
+  },
+  {
+   "file": "mahler--lieder-eines-fahrenden-gesellen--wenn-mein-schatz-hochzeit-macht--gradus-assets.mxl",
+   "ordinal": 91,
+   "values": [
+    "3/8",
+    "4/8"
+   ],
+   "counts": {
+    "4/8": 1,
+    "3/8": 1
+   }
+  }
+ ],
+ "offsets": {
+  "-5": 8,
+  "-4": 48,
+  "-3": 104,
+  "-2": 83,
+  "-1": 17,
+  "0": 242,
+  "1": 231,
+  "2": 183,
+  "3": 36,
+  "8": 7
+ },
+ "offsets_inside_constant": 796,
+ "offsets_total": 959
+}

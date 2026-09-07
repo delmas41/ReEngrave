@@ -1,0 +1,6645 @@
+{
+ "total_multi_bars": 824,
+ "n_disagreeing_bars": 86,
+ "mod12_agree_bars": 748,
+ "concert_agree_bars": 738,
+ "modal_share": [
+  5926,
+  6247
+ ],
+ "outlier_buckets": {
+  "ENHARMONIC": 83,
+  "AFTER_DISAGREES_WITH_SCORE": 33,
+  "BEFORE_DISAGREES_WITH_SCORE": 75,
+  "UNEXPLAINED": 15,
+  "UNSIGNATURED": 115
+ },
+ "bar_buckets": {
+  "ENHARMONIC": 10,
+  "AFTER_DISAGREES_WITH_SCORE": 12,
+  "BEFORE_DISAGREES_WITH_SCORE": 29,
+  "UNEXPLAINED": 9,
+  "UNSIGNATURED": 26
+ },
+ "detail": [
+  {
+   "path": "beach--symphony-in-e-minor--allegro-con-fuoco--gradus-assets.mxl",
+   "measure_number": "403",
+   "ordinal": 402,
+   "n_changing": 18,
+   "n_staves": 25,
+   "deltas": [
+    -8,
+    4
+   ],
+   "modal_delta": -8,
+   "modal_n": 16,
+   "concert_modal_delta": -8,
+   "concert_modal_n": 16,
+   "buckets": {
+    "ENHARMONIC": 2
+   },
+   "outliers": [
+    {
+     "part": "A Clarinet 1",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 5,
+     "delta": 4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": 8,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -8
+    },
+    {
+     "part": "A Clarinet 2",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 5,
+     "delta": 4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": 8,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -8
+    }
+   ]
+  },
+  {
+   "path": "beach--symphony-in-e-minor--allegro-con-fuoco--gradus-assets.mxl",
+   "measure_number": "435",
+   "ordinal": 434,
+   "n_changing": 18,
+   "n_staves": 25,
+   "deltas": [
+    -4,
+    8
+   ],
+   "modal_delta": 8,
+   "modal_n": 16,
+   "concert_modal_delta": 8,
+   "concert_modal_n": 16,
+   "buckets": {
+    "ENHARMONIC": 2
+   },
+   "outliers": [
+    {
+     "part": "A Clarinet 1",
+     "staff": 1,
+     "written_before": 5,
+     "written_after": 1,
+     "delta": -4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 8,
+     "concert_after": 4,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 8
+    },
+    {
+     "part": "A Clarinet 2",
+     "staff": 1,
+     "written_before": 5,
+     "written_after": 1,
+     "delta": -4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 8,
+     "concert_after": 4,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 8
+    }
+   ]
+  },
+  {
+   "path": "beethoven--symphony-3--mvt2--gradus.mxl",
+   "measure_number": "70",
+   "ordinal": 69,
+   "n_changing": 13,
+   "n_staves": 19,
+   "deltas": [
+    -1,
+    3
+   ],
+   "modal_delta": 3,
+   "modal_n": 11,
+   "concert_modal_delta": 3,
+   "concert_modal_n": 11,
+   "buckets": {
+    "AFTER_DISAGREES_WITH_SCORE": 2
+   },
+   "outliers": [
+    {
+     "part": "Bb Clarinet 1",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": -2,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -4,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "Bb Clarinet 2",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": -2,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -4,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    }
+   ]
+  },
+  {
+   "path": "beethoven--symphony-3--mvt2--gradus.mxl",
+   "measure_number": "106",
+   "ordinal": 105,
+   "n_changing": 13,
+   "n_staves": 19,
+   "deltas": [
+    -3,
+    1
+   ],
+   "modal_delta": -3,
+   "modal_n": 11,
+   "concert_modal_delta": -3,
+   "concert_modal_n": 11,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 2
+   },
+   "outliers": [
+    {
+     "part": "Bb Clarinet 1",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -1,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    },
+    {
+     "part": "Bb Clarinet 2",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -1,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    }
+   ]
+  },
+  {
+   "path": "beethoven--symphony-9-part-i--mvt4--gradus-assets.musicxml",
+   "measure_number": "77",
+   "ordinal": 77,
+   "n_changing": 21,
+   "n_staves": 28,
+   "deltas": [
+    1,
+    4
+   ],
+   "modal_delta": 4,
+   "modal_n": 20,
+   "concert_modal_delta": 4,
+   "concert_modal_n": 20,
+   "buckets": {
+    "AFTER_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "clarinet",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 1,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -1,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 4
+    }
+   ]
+  },
+  {
+   "path": "beethoven--symphony-9-part-i--mvt4--gradus-assets.musicxml",
+   "measure_number": "331",
+   "ordinal": 331,
+   "n_changing": 21,
+   "n_staves": 28,
+   "deltas": [
+    -4,
+    1
+   ],
+   "modal_delta": -4,
+   "modal_n": 20,
+   "concert_modal_delta": -4,
+   "concert_modal_n": 20,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "clarinet",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -2,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -4
+    }
+   ]
+  },
+  {
+   "path": "beethoven--symphony-9-part-i--mvt4--gradus-assets.musicxml",
+   "measure_number": "X2",
+   "ordinal": 656,
+   "n_changing": 21,
+   "n_staves": 28,
+   "deltas": [
+    1,
+    4
+   ],
+   "modal_delta": 4,
+   "modal_n": 20,
+   "concert_modal_delta": 4,
+   "concert_modal_n": 20,
+   "buckets": {
+    "UNEXPLAINED": 1
+   },
+   "outliers": [
+    {
+     "part": "clarinet",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -1,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": 4
+    }
+   ]
+  },
+  {
+   "path": "beethoven--symphony-9--mvt3--gradus-assets.musicxml",
+   "measure_number": "83",
+   "ordinal": 82,
+   "n_changing": 10,
+   "n_staves": 13,
+   "deltas": [
+    -4,
+    -3
+   ],
+   "modal_delta": -4,
+   "modal_n": 9,
+   "concert_modal_delta": -4,
+   "concert_modal_n": 9,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "clarinet",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -1,
+     "delta": -3,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -4
+    }
+   ]
+  },
+  {
+   "path": "brahms--symphony-1--mvt1--gradus.mxl",
+   "measure_number": "191",
+   "ordinal": 190,
+   "n_changing": 21,
+   "n_staves": 21,
+   "deltas": [
+    2,
+    5,
+    6,
+    7
+   ],
+   "modal_delta": 5,
+   "modal_n": 13,
+   "concert_modal_delta": 5,
+   "concert_modal_n": 13,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 4,
+    "UNSIGNATURED": 4
+   },
+   "outliers": [
+    {
+     "part": "Bb Clarinet 1",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": 4,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -5,
+     "concert_after": 2,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "Bb Clarinet 2",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": 4,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -5,
+     "concert_after": 2,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "C Horn 1",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 2,
+     "delta": 2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 5
+    },
+    {
+     "part": "C Horn 2",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 2,
+     "delta": 2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 5
+    },
+    {
+     "part": "Eb Horn 3",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 5,
+     "delta": 6,
+     "offset_before": 3,
+     "offset_after": 3,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": 2,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "Eb Horn 4",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 5,
+     "delta": 6,
+     "offset_before": 3,
+     "offset_after": 3,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": 2,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "C Trumpet 1",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 2,
+     "delta": 2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 5
+    },
+    {
+     "part": "C Trumpet 2",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 2,
+     "delta": 2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 5
+    }
+   ]
+  },
+  {
+   "path": "brahms--symphony-1--mvt3--gradus.mxl",
+   "measure_number": "71",
+   "ordinal": 70,
+   "n_changing": 15,
+   "n_staves": 19,
+   "deltas": [
+    -2,
+    5,
+    9
+   ],
+   "modal_delta": 9,
+   "modal_n": 11,
+   "concert_modal_delta": 9,
+   "concert_modal_n": 11,
+   "buckets": {
+    "AFTER_DISAGREES_WITH_SCORE": 4
+   },
+   "outliers": [
+    {
+     "part": "Bb Clarinet 1",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -4,
+     "delta": -2,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 9
+    },
+    {
+     "part": "Bb Clarinet 2",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -4,
+     "delta": -2,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 9
+    },
+    {
+     "part": "Eb Horn 1",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 4,
+     "delta": 5,
+     "offset_before": 3,
+     "offset_after": 3,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": 1,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 9
+    },
+    {
+     "part": "Eb Horn 2",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 4,
+     "delta": 5,
+     "offset_before": 3,
+     "offset_after": 3,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": 1,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 9
+    }
+   ]
+  },
+  {
+   "path": "brahms--symphony-1--mvt3--gradus.mxl",
+   "measure_number": "110",
+   "ordinal": 109,
+   "n_changing": 15,
+   "n_staves": 19,
+   "deltas": [
+    -9,
+    -5,
+    2
+   ],
+   "modal_delta": -9,
+   "modal_n": 11,
+   "concert_modal_delta": -9,
+   "concert_modal_n": 11,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 4
+   },
+   "outliers": [
+    {
+     "part": "Bb Clarinet 1",
+     "staff": 1,
+     "written_before": -4,
+     "written_after": -2,
+     "delta": 2,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -6,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -9
+    },
+    {
+     "part": "Bb Clarinet 2",
+     "staff": 1,
+     "written_before": -4,
+     "written_after": -2,
+     "delta": 2,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -6,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -9
+    },
+    {
+     "part": "Eb Horn 1",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": -1,
+     "delta": -5,
+     "offset_before": 3,
+     "offset_after": 3,
+     "declares_transpose": true,
+     "concert_before": 1,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -9
+    },
+    {
+     "part": "Eb Horn 2",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": -1,
+     "delta": -5,
+     "offset_before": 3,
+     "offset_after": 3,
+     "declares_transpose": true,
+     "concert_before": 1,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -9
+    }
+   ]
+  },
+  {
+   "path": "brahms--symphony-1--mvt4--gradus.mxl",
+   "measure_number": "30",
+   "ordinal": 29,
+   "n_changing": 24,
+   "n_staves": 24,
+   "deltas": [
+    -9,
+    3
+   ],
+   "modal_delta": 3,
+   "modal_n": 22,
+   "concert_modal_delta": 3,
+   "concert_modal_n": 22,
+   "buckets": {
+    "ENHARMONIC": 2
+   },
+   "outliers": [
+    {
+     "part": "E Horn 3",
+     "staff": 1,
+     "written_before": 5,
+     "written_after": -4,
+     "delta": -9,
+     "offset_before": -4,
+     "offset_after": -4,
+     "declares_transpose": true,
+     "concert_before": 9,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 3
+    },
+    {
+     "part": "E Horn 4",
+     "staff": 1,
+     "written_before": 5,
+     "written_after": -4,
+     "delta": -9,
+     "offset_before": -4,
+     "offset_after": -4,
+     "declares_transpose": true,
+     "concert_before": 9,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 3
+    }
+   ]
+  },
+  {
+   "path": "brahms--symphony-2--mvt2--gradus.mxl",
+   "measure_number": "63",
+   "ordinal": 62,
+   "n_changing": 20,
+   "n_staves": 22,
+   "deltas": [
+    1,
+    2,
+    3,
+    5
+   ],
+   "modal_delta": 3,
+   "modal_n": 15,
+   "concert_modal_delta": 3,
+   "concert_modal_n": 15,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 4,
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "B basso Horn 1\n[sic, B not Bb]",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": -5,
+     "offset_after": -5,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": 5,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "B basso Horn 2\n[sic, B not Bb]",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": -5,
+     "offset_after": -5,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": 5,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "B Trumpet 1\n[sic, B not Bb]",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": -5,
+     "offset_after": -5,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": 5,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "B Trumpet 2\n[sic, B not Bb]",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": -5,
+     "offset_after": -5,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": 5,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "Timpani",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 5,
+     "delta": 5,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 5,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    }
+   ]
+  },
+  {
+   "path": "brahms--symphony-3--mvt1--gradus.mxl",
+   "measure_number": "31",
+   "ordinal": 30,
+   "n_changing": 17,
+   "n_staves": 24,
+   "deltas": [
+    -1,
+    4
+   ],
+   "modal_delta": 4,
+   "modal_n": 15,
+   "concert_modal_delta": 4,
+   "concert_modal_n": 15,
+   "buckets": {
+    "UNSIGNATURED": 2
+   },
+   "outliers": [
+    {
+     "part": "Bb Clarinet 1",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 0,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 4
+    },
+    {
+     "part": "Bb Clarinet 2",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 0,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 4
+    }
+   ]
+  },
+  {
+   "path": "brahms--symphony-3--mvt1--gradus.mxl",
+   "measure_number": "103",
+   "ordinal": 102,
+   "n_changing": 17,
+   "n_staves": 24,
+   "deltas": [
+    -4,
+    1
+   ],
+   "modal_delta": -4,
+   "modal_n": 15,
+   "concert_modal_delta": -4,
+   "concert_modal_n": 15,
+   "buckets": {
+    "UNSIGNATURED": 2
+   },
+   "outliers": [
+    {
+     "part": "Bb Clarinet 1",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 1,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -4
+    },
+    {
+     "part": "Bb Clarinet 2",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 1,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -4
+    }
+   ]
+  },
+  {
+   "path": "brahms--symphony-3--mvt1--gradus.mxl",
+   "measure_number": "144",
+   "ordinal": 143,
+   "n_changing": 14,
+   "n_staves": 24,
+   "deltas": [
+    -1,
+    3
+   ],
+   "modal_delta": 3,
+   "modal_n": 12,
+   "concert_modal_delta": 3,
+   "concert_modal_n": 12,
+   "buckets": {
+    "UNSIGNATURED": 2
+   },
+   "outliers": [
+    {
+     "part": "Bb Clarinet 1",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 0,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Bb Clarinet 2",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 0,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    }
+   ]
+  },
+  {
+   "path": "brahms--symphony-3--mvt1--gradus.mxl",
+   "measure_number": "158",
+   "ordinal": 157,
+   "n_changing": 14,
+   "n_staves": 24,
+   "deltas": [
+    -3,
+    1
+   ],
+   "modal_delta": -3,
+   "modal_n": 12,
+   "concert_modal_delta": -3,
+   "concert_modal_n": 12,
+   "buckets": {
+    "UNSIGNATURED": 2
+   },
+   "outliers": [
+    {
+     "part": "Bb Clarinet 1",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 1,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Bb Clarinet 2",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 1,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    }
+   ]
+  },
+  {
+   "path": "brahms--symphony-3--mvt3--gradus.mxl",
+   "measure_number": "101",
+   "ordinal": 100,
+   "n_changing": 13,
+   "n_staves": 15,
+   "deltas": [
+    -1,
+    1
+   ],
+   "modal_delta": 1,
+   "modal_n": 11,
+   "concert_modal_delta": 1,
+   "concert_modal_n": 11,
+   "buckets": {
+    "AFTER_DISAGREES_WITH_SCORE": 2
+   },
+   "outliers": [
+    {
+     "part": "Bb Clarinet 1",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -3,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -5,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 1
+    },
+    {
+     "part": "Bb Clarinet 2",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -3,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -5,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 1
+    }
+   ]
+  },
+  {
+   "path": "brahms--symphony-3--mvt4--gradus.mxl",
+   "measure_number": "267",
+   "ordinal": 266,
+   "n_changing": 24,
+   "n_staves": 24,
+   "deltas": [
+    -1,
+    1,
+    3,
+    5
+   ],
+   "modal_delta": 3,
+   "modal_n": 15,
+   "concert_modal_delta": 3,
+   "concert_modal_n": 15,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 6,
+    "UNSIGNATURED": 3
+   },
+   "outliers": [
+    {
+     "part": "Bb Clarinet 1",
+     "staff": 1,
+     "written_before": -4,
+     "written_after": 1,
+     "delta": 5,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -6,
+     "concert_after": -1,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "Bb Clarinet 2",
+     "staff": 1,
+     "written_before": -4,
+     "written_after": 1,
+     "delta": 5,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -6,
+     "concert_after": -1,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "C Horn 1",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -1,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "C Horn 2",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -1,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "F Horn 3",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -1,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "F Horn 4",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -1,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "F Trumpet 1",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -1,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "F Trumpet 2",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -1,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "Timpani",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -1,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    }
+   ]
+  },
+  {
+   "path": "dvorak--symphony-9-in-e-minor-op95--mvt4--gradus.mxl",
+   "measure_number": "227",
+   "ordinal": 226,
+   "n_changing": 12,
+   "n_staves": 19,
+   "deltas": [
+    3,
+    4
+   ],
+   "modal_delta": 3,
+   "modal_n": 11,
+   "concert_modal_delta": 3,
+   "concert_modal_n": 11,
+   "buckets": {
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "Timpani",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 4,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 4,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    }
+   ]
+  },
+  {
+   "path": "dvorak--symphony-9--mvt1--gradus-assets.musicxml",
+   "measure_number": "461",
+   "ordinal": 460,
+   "n_changing": 11,
+   "n_staves": 23,
+   "deltas": [
+    4,
+    5
+   ],
+   "modal_delta": 4,
+   "modal_n": 10,
+   "concert_modal_delta": 4,
+   "concert_modal_n": 10,
+   "buckets": {
+    "AFTER_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "bassoon1",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 6,
+     "delta": 5,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 1,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 4
+    }
+   ]
+  },
+  {
+   "path": "dvorak--symphony-9--mvt1--gradus-assets.musicxml",
+   "measure_number": "495",
+   "ordinal": 494,
+   "n_changing": 11,
+   "n_staves": 23,
+   "deltas": [
+    -6,
+    -5,
+    -2
+   ],
+   "modal_delta": -5,
+   "modal_n": 9,
+   "concert_modal_delta": -5,
+   "concert_modal_n": 9,
+   "buckets": {
+    "UNSIGNATURED": 1,
+    "BEFORE_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "clarinet1",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": 0,
+     "delta": -2,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -5
+    },
+    {
+     "part": "bassoon1",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    }
+   ]
+  },
+  {
+   "path": "dvorak--symphony-9--mvt1--gradus-assets.musicxml",
+   "measure_number": "507",
+   "ordinal": 506,
+   "n_changing": 11,
+   "n_staves": 23,
+   "deltas": [
+    -4,
+    2
+   ],
+   "modal_delta": -4,
+   "modal_n": 10,
+   "concert_modal_delta": -4,
+   "concert_modal_n": 10,
+   "buckets": {
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "clarinet1",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 2,
+     "delta": 2,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": 5,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -4
+    }
+   ]
+  },
+  {
+   "path": "dvorak--symphony-9--mvt1--gradus-assets.musicxml",
+   "measure_number": "553",
+   "ordinal": 552,
+   "n_changing": 11,
+   "n_staves": 23,
+   "deltas": [
+    -4,
+    5
+   ],
+   "modal_delta": 5,
+   "modal_n": 10,
+   "concert_modal_delta": 5,
+   "concert_modal_n": 10,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "clarinet1",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -2,
+     "delta": -4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": 1,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    }
+   ]
+  },
+  {
+   "path": "dvorak--symphony-9--mvt1--gradus.mxl",
+   "measure_number": "308",
+   "ordinal": 307,
+   "n_changing": 11,
+   "n_staves": 15,
+   "deltas": [
+    4,
+    5
+   ],
+   "modal_delta": 4,
+   "modal_n": 10,
+   "concert_modal_delta": 4,
+   "concert_modal_n": 10,
+   "buckets": {
+    "AFTER_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "Fagotti\nI. II.",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 6,
+     "delta": 5,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 1,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 4
+    }
+   ]
+  },
+  {
+   "path": "dvorak--symphony-9--mvt1--gradus.mxl",
+   "measure_number": "342",
+   "ordinal": 341,
+   "n_changing": 11,
+   "n_staves": 15,
+   "deltas": [
+    -6,
+    -5,
+    -2
+   ],
+   "modal_delta": -5,
+   "modal_n": 9,
+   "concert_modal_delta": -5,
+   "concert_modal_n": 9,
+   "buckets": {
+    "UNSIGNATURED": 1,
+    "BEFORE_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "Clarinetti\nI. II. A",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": 0,
+     "delta": -2,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -5
+    },
+    {
+     "part": "Fagotti\nI. II.",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    }
+   ]
+  },
+  {
+   "path": "dvorak--symphony-9--mvt1--gradus.mxl",
+   "measure_number": "354",
+   "ordinal": 353,
+   "n_changing": 11,
+   "n_staves": 15,
+   "deltas": [
+    -4,
+    2
+   ],
+   "modal_delta": -4,
+   "modal_n": 10,
+   "concert_modal_delta": -4,
+   "concert_modal_n": 10,
+   "buckets": {
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "Clarinetti\nI. II. A",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 2,
+     "delta": 2,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": 5,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -4
+    }
+   ]
+  },
+  {
+   "path": "dvorak--symphony-9--mvt1--gradus.mxl",
+   "measure_number": "400",
+   "ordinal": 399,
+   "n_changing": 11,
+   "n_staves": 15,
+   "deltas": [
+    -4,
+    5
+   ],
+   "modal_delta": 5,
+   "modal_n": 10,
+   "concert_modal_delta": 5,
+   "concert_modal_n": 10,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "Clarinetti\nI. II. A",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -2,
+     "delta": -4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": 1,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    }
+   ]
+  },
+  {
+   "path": "dvorak--symphony-9--sym9-full--gradus.musicxml",
+   "measure_number": "46",
+   "ordinal": 45,
+   "n_changing": 25,
+   "n_staves": 25,
+   "deltas": [
+    -3,
+    -2,
+    1,
+    5,
+    10
+   ],
+   "modal_delta": 10,
+   "modal_n": 17,
+   "concert_modal_delta": 10,
+   "concert_modal_n": 17,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 1,
+    "ENHARMONIC": 3,
+    "UNSIGNATURED": 4
+   },
+   "outliers": [
+    {
+     "part": "clarinet1",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": 2,
+     "delta": 5,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 5,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 10
+    },
+    {
+     "part": "clarinet2",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": -5,
+     "delta": -2,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -5,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 10
+    },
+    {
+     "part": "horn1",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 1,
+     "delta": 1,
+     "offset_before": -4,
+     "offset_after": -4,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": 5,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 10
+    },
+    {
+     "part": "horn2",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 1,
+     "delta": -2,
+     "offset_before": -4,
+     "offset_after": -4,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": 5,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 10
+    },
+    {
+     "part": "horn3",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -3,
+     "delta": -3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 10
+    },
+    {
+     "part": "trumpet1",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 1,
+     "delta": 1,
+     "offset_before": 8,
+     "offset_after": 8,
+     "declares_transpose": true,
+     "concert_before": -8,
+     "concert_after": -7,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 10
+    },
+    {
+     "part": "trumpet2",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 1,
+     "delta": -2,
+     "offset_before": -4,
+     "offset_after": -4,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": 5,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 10
+    },
+    {
+     "part": "timpani",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 5,
+     "delta": 5,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 5,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 10
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "186",
+   "ordinal": 185,
+   "n_changing": 56,
+   "n_staves": 69,
+   "deltas": [
+    -6,
+    -4,
+    -3,
+    -2,
+    -1
+   ],
+   "modal_delta": -3,
+   "modal_n": 46,
+   "concert_modal_delta": -3,
+   "concert_modal_n": 46,
+   "buckets": {
+    "UNSIGNATURED": 10
+   },
+   "outliers": [
+    {
+     "part": "Alto Flute",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -4,
+     "delta": -4,
+     "offset_before": -1,
+     "offset_after": -1,
+     "declares_transpose": true,
+     "concert_before": 1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "English Horn",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Clarinet 1 in B\u266d",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -1,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Clarinet 1 in A",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -6,
+     "delta": -6,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Clarinet 2 in B\u266d",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -1,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Clarinet 2 in A",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -6,
+     "delta": -6,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Clarinet 3 in B\u266d",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -1,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Clarinet 3 in A",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -6,
+     "delta": -6,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -1,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Tenor Tuba in B\u266d",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -1,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "327",
+   "ordinal": 326,
+   "n_changing": 56,
+   "n_staves": 69,
+   "deltas": [
+    -6,
+    -1,
+    1,
+    2,
+    3,
+    4,
+    6
+   ],
+   "modal_delta": 3,
+   "modal_n": 38,
+   "concert_modal_delta": 3,
+   "concert_modal_n": 38,
+   "buckets": {
+    "UNSIGNATURED": 10,
+    "AFTER_DISAGREES_WITH_SCORE": 4,
+    "UNEXPLAINED": 4
+   },
+   "outliers": [
+    {
+     "part": "Alto Flute",
+     "staff": 1,
+     "written_before": -4,
+     "written_after": 0,
+     "delta": 4,
+     "offset_before": -1,
+     "offset_after": -1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": 1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "English Horn",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Clarinet 1 in B\u266d",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Clarinet 1 in A",
+     "staff": 1,
+     "written_before": -6,
+     "written_after": 0,
+     "delta": 6,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Clarinet 2 in B\u266d",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Clarinet 2 in A",
+     "staff": 1,
+     "written_before": -6,
+     "written_after": 0,
+     "delta": 6,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Clarinet 3 in B\u266d",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Clarinet 3 in A",
+     "staff": 1,
+     "written_before": -6,
+     "written_after": 0,
+     "delta": 6,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Tenor Tuba in B\u266d",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Harp 1",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": -2,
+     "delta": 1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -3,
+     "concert_after": -2,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "Harp 1",
+     "staff": 2,
+     "written_before": -3,
+     "written_after": -2,
+     "delta": 1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -3,
+     "concert_after": -2,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "Harp 2",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": 3,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 4,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Harp 2",
+     "staff": 2,
+     "written_before": 4,
+     "written_after": 3,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 4,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Violins I",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": -2,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 4,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": 3,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 4,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Violas",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": -2,
+     "delta": 1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -3,
+     "concert_after": -2,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": 3,
+     "delta": 6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -3,
+     "concert_after": 3,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 3
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "368",
+   "ordinal": 367,
+   "n_changing": 8,
+   "n_staves": 69,
+   "deltas": [
+    -3,
+    2
+   ],
+   "modal_delta": 2,
+   "modal_n": 4,
+   "concert_modal_delta": 2,
+   "concert_modal_n": 4,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 4
+   },
+   "outliers": [
+    {
+     "part": "Harp 2",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 0,
+     "delta": -3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 2
+    },
+    {
+     "part": "Harp 2",
+     "staff": 2,
+     "written_before": 3,
+     "written_after": 0,
+     "delta": -3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 2
+    },
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 0,
+     "delta": -3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 2
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 0,
+     "delta": -3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 2
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "483",
+   "ordinal": 482,
+   "n_changing": 8,
+   "n_staves": 69,
+   "deltas": [
+    -2,
+    -1,
+    3,
+    4
+   ],
+   "modal_delta": -1,
+   "modal_n": 2,
+   "concert_modal_delta": -1,
+   "concert_modal_n": 2,
+   "buckets": {
+    "AFTER_DISAGREES_WITH_SCORE": 2,
+    "UNSIGNATURED": 4
+   },
+   "outliers": [
+    {
+     "part": "Harp 2",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 3,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -1,
+     "concert_after": 3,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": -1
+    },
+    {
+     "part": "Harp 2",
+     "staff": 2,
+     "written_before": -1,
+     "written_after": 3,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -1,
+     "concert_after": 3,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": -1
+    },
+    {
+     "part": "Violins I",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -1
+    },
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 3,
+     "delta": 3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -1
+    },
+    {
+     "part": "Violas",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -1
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 3,
+     "delta": 3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -1
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "515",
+   "ordinal": 514,
+   "n_changing": 4,
+   "n_staves": 69,
+   "deltas": [
+    -1,
+    4
+   ],
+   "modal_delta": 4,
+   "modal_n": 2,
+   "concert_modal_delta": 4,
+   "concert_modal_n": 2,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 2
+   },
+   "outliers": [
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 2,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 2,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 4
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 2,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 2,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 4
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "557",
+   "ordinal": 556,
+   "n_changing": 10,
+   "n_staves": 69,
+   "deltas": [
+    -6,
+    -4
+   ],
+   "modal_delta": -4,
+   "modal_n": 6,
+   "concert_modal_delta": -4,
+   "concert_modal_n": 6,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 4
+   },
+   "outliers": [
+    {
+     "part": "Violins I",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -4,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 2,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -4
+    },
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -4,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 2,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -4
+    },
+    {
+     "part": "Violas",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -4,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 2,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -4
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -4,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 2,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -4
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "623",
+   "ordinal": 622,
+   "n_changing": 10,
+   "n_staves": 69,
+   "deltas": [
+    -3,
+    -1,
+    1,
+    2
+   ],
+   "modal_delta": 2,
+   "modal_n": 5,
+   "concert_modal_delta": 2,
+   "concert_modal_n": 5,
+   "buckets": {
+    "UNSIGNATURED": 5
+   },
+   "outliers": [
+    {
+     "part": "Alto Flute",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -1,
+     "delta": -1,
+     "offset_before": -1,
+     "offset_after": -1,
+     "declares_transpose": true,
+     "concert_before": 1,
+     "concert_after": 0,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 2
+    },
+    {
+     "part": "English Horn",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 1,
+     "delta": 1,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": 0,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 2
+    },
+    {
+     "part": "Clarinet 1 in A",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -3,
+     "delta": -3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": 0,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 2
+    },
+    {
+     "part": "Clarinet 2 in A",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -3,
+     "delta": -3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": 0,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 2
+    },
+    {
+     "part": "Clarinet 3 in A",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -3,
+     "delta": -3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": 0,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 2
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "816",
+   "ordinal": 815,
+   "n_changing": 61,
+   "n_staves": 69,
+   "deltas": [
+    -6,
+    -3,
+    -2,
+    -1
+   ],
+   "modal_delta": -3,
+   "modal_n": 51,
+   "concert_modal_delta": -3,
+   "concert_modal_n": 51,
+   "buckets": {
+    "UNSIGNATURED": 6,
+    "BEFORE_DISAGREES_WITH_SCORE": 4
+   },
+   "outliers": [
+    {
+     "part": "Horn 1 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Horn 2 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Horn 3 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Horn 4 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Horn 5 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Horn 6 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Harp 1",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -3,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -2,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    },
+    {
+     "part": "Harp 1",
+     "staff": 2,
+     "written_before": -2,
+     "written_after": -3,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -2,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    },
+    {
+     "part": "Harp 2",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": -3,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    },
+    {
+     "part": "Harp 2",
+     "staff": 2,
+     "written_before": 3,
+     "written_after": -3,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "868",
+   "ordinal": 867,
+   "n_changing": 61,
+   "n_staves": 69,
+   "deltas": [
+    2,
+    3
+   ],
+   "modal_delta": 3,
+   "modal_n": 55,
+   "concert_modal_delta": 3,
+   "concert_modal_n": 55,
+   "buckets": {
+    "UNSIGNATURED": 6
+   },
+   "outliers": [
+    {
+     "part": "Horn 1 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Horn 2 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Horn 3 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Horn 4 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Horn 5 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Horn 6 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "1010",
+   "ordinal": 1009,
+   "n_changing": 23,
+   "n_staves": 69,
+   "deltas": [
+    -7,
+    5,
+    6
+   ],
+   "modal_delta": 5,
+   "modal_n": 10,
+   "concert_modal_delta": 5,
+   "concert_modal_n": 10,
+   "buckets": {
+    "ENHARMONIC": 8,
+    "AFTER_DISAGREES_WITH_SCORE": 5
+   },
+   "outliers": [
+    {
+     "part": "Clarinet 1 in B\u266d",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -5,
+     "delta": -7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Clarinet 2 in B\u266d",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -5,
+     "delta": -7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Clarinet 3 in B\u266d",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -5,
+     "delta": -7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -5,
+     "delta": -7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Harp 1",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -7,
+     "delta": -7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Harp 1",
+     "staff": 2,
+     "written_before": 0,
+     "written_after": -7,
+     "delta": -7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Harp 2",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -7,
+     "delta": -7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Harp 2",
+     "staff": 2,
+     "written_before": 0,
+     "written_after": -7,
+     "delta": -7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Violins I",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 6,
+     "delta": 6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 6,
+     "delta": 6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "Violas",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 6,
+     "delta": 6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 6,
+     "delta": 6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "Contrabasses",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 6,
+     "delta": 6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "1015",
+   "ordinal": 1014,
+   "n_changing": 23,
+   "n_staves": 69,
+   "deltas": [
+    -6,
+    -5,
+    7
+   ],
+   "modal_delta": -5,
+   "modal_n": 10,
+   "concert_modal_delta": -5,
+   "concert_modal_n": 10,
+   "buckets": {
+    "ENHARMONIC": 8,
+    "BEFORE_DISAGREES_WITH_SCORE": 5
+   },
+   "outliers": [
+    {
+     "part": "Clarinet 1 in B\u266d",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": 2,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Clarinet 2 in B\u266d",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": 2,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Clarinet 3 in B\u266d",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": 2,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": 2,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Harp 1",
+     "staff": 1,
+     "written_before": -7,
+     "written_after": 0,
+     "delta": 7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Harp 1",
+     "staff": 2,
+     "written_before": -7,
+     "written_after": 0,
+     "delta": 7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Harp 2",
+     "staff": 1,
+     "written_before": -7,
+     "written_after": 0,
+     "delta": 7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Harp 2",
+     "staff": 2,
+     "written_before": -7,
+     "written_after": 0,
+     "delta": 7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Violins I",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    },
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    },
+    {
+     "part": "Violas",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    },
+    {
+     "part": "Contrabasses",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": true,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--full--gradus.mxl",
+   "measure_number": "1032",
+   "ordinal": 1031,
+   "n_changing": 10,
+   "n_staves": 69,
+   "deltas": [
+    -2,
+    -1,
+    1,
+    3
+   ],
+   "modal_delta": -2,
+   "modal_n": 5,
+   "concert_modal_delta": -2,
+   "concert_modal_n": 5,
+   "buckets": {
+    "UNSIGNATURED": 5
+   },
+   "outliers": [
+    {
+     "part": "Alto Flute",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": -1,
+     "offset_after": -1,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -2
+    },
+    {
+     "part": "English Horn",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 0,
+     "delta": -1,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -2
+    },
+    {
+     "part": "Clarinet 1 in A",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": 0,
+     "delta": 3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -2
+    },
+    {
+     "part": "Clarinet 2 in A",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": 0,
+     "delta": 3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -2
+    },
+    {
+     "part": "Clarinet 3 in A",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": 0,
+     "delta": 3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -2
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--mvt3--gradus.mxl",
+   "measure_number": "42",
+   "ordinal": 41,
+   "n_changing": 8,
+   "n_staves": 69,
+   "deltas": [
+    -3,
+    2
+   ],
+   "modal_delta": 2,
+   "modal_n": 4,
+   "concert_modal_delta": 2,
+   "concert_modal_n": 4,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 4
+   },
+   "outliers": [
+    {
+     "part": "Harp 2",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 0,
+     "delta": -3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 2
+    },
+    {
+     "part": "Harp 2",
+     "staff": 2,
+     "written_before": 3,
+     "written_after": 0,
+     "delta": -3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 2
+    },
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 0,
+     "delta": -3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 2
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 0,
+     "delta": -3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 2
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--mvt3--gradus.mxl",
+   "measure_number": "157",
+   "ordinal": 156,
+   "n_changing": 8,
+   "n_staves": 69,
+   "deltas": [
+    -2,
+    -1,
+    3,
+    4
+   ],
+   "modal_delta": -1,
+   "modal_n": 2,
+   "concert_modal_delta": -1,
+   "concert_modal_n": 2,
+   "buckets": {
+    "AFTER_DISAGREES_WITH_SCORE": 2,
+    "UNSIGNATURED": 4
+   },
+   "outliers": [
+    {
+     "part": "Harp 2",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 3,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -1,
+     "concert_after": 3,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": -1
+    },
+    {
+     "part": "Harp 2",
+     "staff": 2,
+     "written_before": -1,
+     "written_after": 3,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -1,
+     "concert_after": 3,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": -1
+    },
+    {
+     "part": "Violins I",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -1
+    },
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 3,
+     "delta": 3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -1
+    },
+    {
+     "part": "Violas",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -1
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 3,
+     "delta": 3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -1
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--mvt3--gradus.mxl",
+   "measure_number": "189",
+   "ordinal": 188,
+   "n_changing": 4,
+   "n_staves": 69,
+   "deltas": [
+    -1,
+    4
+   ],
+   "modal_delta": 4,
+   "modal_n": 2,
+   "concert_modal_delta": 4,
+   "concert_modal_n": 2,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 2
+   },
+   "outliers": [
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 2,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 2,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 4
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": 2,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": 2,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 4
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--mvt3--gradus.mxl",
+   "measure_number": "231",
+   "ordinal": 230,
+   "n_changing": 10,
+   "n_staves": 69,
+   "deltas": [
+    -6,
+    -4
+   ],
+   "modal_delta": -4,
+   "modal_n": 6,
+   "concert_modal_delta": -4,
+   "concert_modal_n": 6,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 4
+   },
+   "outliers": [
+    {
+     "part": "Violins I",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -4,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 2,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -4
+    },
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -4,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 2,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -4
+    },
+    {
+     "part": "Violas",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -4,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 2,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -4
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -4,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 2,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -4
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--mvt4--gradus.mxl",
+   "measure_number": "194",
+   "ordinal": 193,
+   "n_changing": 61,
+   "n_staves": 69,
+   "deltas": [
+    -6,
+    -3,
+    -2,
+    -1
+   ],
+   "modal_delta": -3,
+   "modal_n": 51,
+   "concert_modal_delta": -3,
+   "concert_modal_n": 51,
+   "buckets": {
+    "UNSIGNATURED": 6,
+    "BEFORE_DISAGREES_WITH_SCORE": 4
+   },
+   "outliers": [
+    {
+     "part": "Horn 1 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Horn 2 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Horn 3 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Horn 4 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Horn 5 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Horn 6 in F",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -2,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -1,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -3
+    },
+    {
+     "part": "Harp 1",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -3,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -2,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    },
+    {
+     "part": "Harp 1",
+     "staff": 2,
+     "written_before": -2,
+     "written_after": -3,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -2,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    },
+    {
+     "part": "Harp 2",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": -3,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    },
+    {
+     "part": "Harp 2",
+     "staff": 2,
+     "written_before": 3,
+     "written_after": -3,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--mvt4--gradus.mxl",
+   "measure_number": "246",
+   "ordinal": 245,
+   "n_changing": 61,
+   "n_staves": 69,
+   "deltas": [
+    2,
+    3
+   ],
+   "modal_delta": 3,
+   "modal_n": 55,
+   "concert_modal_delta": 3,
+   "concert_modal_n": 55,
+   "buckets": {
+    "UNSIGNATURED": 6
+   },
+   "outliers": [
+    {
+     "part": "Horn 1 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Horn 2 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Horn 3 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Horn 4 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Horn 5 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    },
+    {
+     "part": "Horn 6 in F",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": 0,
+     "delta": 2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -3,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 3
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--mvt4--gradus.mxl",
+   "measure_number": "388",
+   "ordinal": 387,
+   "n_changing": 23,
+   "n_staves": 69,
+   "deltas": [
+    -7,
+    5,
+    6
+   ],
+   "modal_delta": 5,
+   "modal_n": 10,
+   "concert_modal_delta": 5,
+   "concert_modal_n": 10,
+   "buckets": {
+    "ENHARMONIC": 8,
+    "AFTER_DISAGREES_WITH_SCORE": 5
+   },
+   "outliers": [
+    {
+     "part": "Clarinet 1 in B\u266d",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -5,
+     "delta": -7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Clarinet 2 in B\u266d",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -5,
+     "delta": -7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Clarinet 3 in B\u266d",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -5,
+     "delta": -7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -5,
+     "delta": -7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Harp 1",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -7,
+     "delta": -7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Harp 1",
+     "staff": 2,
+     "written_before": 0,
+     "written_after": -7,
+     "delta": -7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Harp 2",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": -7,
+     "delta": -7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Harp 2",
+     "staff": 2,
+     "written_before": 0,
+     "written_after": -7,
+     "delta": -7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Violins I",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 6,
+     "delta": 6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 6,
+     "delta": 6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "Violas",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 6,
+     "delta": 6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 6,
+     "delta": 6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    },
+    {
+     "part": "Contrabasses",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 6,
+     "delta": 6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    }
+   ]
+  },
+  {
+   "path": "holst--the-planets--mvt4--gradus.mxl",
+   "measure_number": "393",
+   "ordinal": 392,
+   "n_changing": 23,
+   "n_staves": 69,
+   "deltas": [
+    -6,
+    -5,
+    7
+   ],
+   "modal_delta": -5,
+   "modal_n": 10,
+   "concert_modal_delta": -5,
+   "concert_modal_n": 10,
+   "buckets": {
+    "ENHARMONIC": 8,
+    "BEFORE_DISAGREES_WITH_SCORE": 5
+   },
+   "outliers": [
+    {
+     "part": "Clarinet 1 in B\u266d",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": 2,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Clarinet 2 in B\u266d",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": 2,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Clarinet 3 in B\u266d",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": 2,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": 2,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Harp 1",
+     "staff": 1,
+     "written_before": -7,
+     "written_after": 0,
+     "delta": 7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Harp 1",
+     "staff": 2,
+     "written_before": -7,
+     "written_after": 0,
+     "delta": 7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Harp 2",
+     "staff": 1,
+     "written_before": -7,
+     "written_after": 0,
+     "delta": 7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Harp 2",
+     "staff": 2,
+     "written_before": -7,
+     "written_after": 0,
+     "delta": 7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "Violins I",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    },
+    {
+     "part": "Violins II",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    },
+    {
+     "part": "Violas",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    },
+    {
+     "part": "Violoncellos",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    },
+    {
+     "part": "Contrabasses",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": true,
+     "concert_before": 6,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    }
+   ]
+  },
+  {
+   "path": "mahler--5-rondo-finale--mvt5--gradus.mxl",
+   "measure_number": "349",
+   "ordinal": 348,
+   "n_changing": 23,
+   "n_staves": 35,
+   "deltas": [
+    -10,
+    2
+   ],
+   "modal_delta": -10,
+   "modal_n": 21,
+   "concert_modal_delta": -10,
+   "concert_modal_n": 21,
+   "buckets": {
+    "ENHARMONIC": 2
+   },
+   "outliers": [
+    {
+     "part": "A Clarinet",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": 4,
+     "delta": 2,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": 7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -10
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 2,
+     "written_before": 2,
+     "written_after": 4,
+     "delta": 2,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": 7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -10
+    }
+   ]
+  },
+  {
+   "path": "mahler--5-rondo-finale--mvt5--gradus.mxl",
+   "measure_number": "357",
+   "ordinal": 356,
+   "n_changing": 23,
+   "n_staves": 35,
+   "deltas": [
+    -5,
+    3,
+    7
+   ],
+   "modal_delta": 7,
+   "modal_n": 20,
+   "concert_modal_delta": 7,
+   "concert_modal_n": 20,
+   "buckets": {
+    "ENHARMONIC": 2,
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "A Clarinet",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": -1,
+     "delta": -5,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": 2,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 7
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 2,
+     "written_before": 4,
+     "written_after": -1,
+     "delta": -5,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": 2,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 7
+    },
+    {
+     "part": "B\u266d Trumpet",
+     "staff": 2,
+     "written_before": -3,
+     "written_after": 0,
+     "delta": 3,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -5,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 7
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt1--gradus.mxl",
+   "measure_number": "119",
+   "ordinal": 119,
+   "n_changing": 28,
+   "n_staves": 38,
+   "deltas": [
+    -9,
+    -8,
+    -5,
+    4
+   ],
+   "modal_delta": -8,
+   "modal_n": 24,
+   "concert_modal_delta": -8,
+   "concert_modal_n": 24,
+   "buckets": {
+    "AFTER_DISAGREES_WITH_SCORE": 1,
+    "ENHARMONIC": 2,
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "English Horn",
+     "staff": 1,
+     "written_before": 5,
+     "written_after": -4,
+     "delta": -9,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": -5,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": -8
+    },
+    {
+     "part": "Drei Klarinetten in A",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 5,
+     "delta": 4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": 8,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -8
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 5,
+     "delta": 4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": 8,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -8
+    },
+    {
+     "part": "Sechs H\u00f6rner in F.",
+     "staff": 3,
+     "written_before": 5,
+     "written_after": 0,
+     "delta": -5,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -8
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt1--gradus.mxl",
+   "measure_number": "155",
+   "ordinal": 155,
+   "n_changing": 27,
+   "n_staves": 38,
+   "deltas": [
+    -9,
+    -1,
+    11
+   ],
+   "modal_delta": -1,
+   "modal_n": 24,
+   "concert_modal_delta": -1,
+   "concert_modal_n": 24,
+   "buckets": {
+    "ENHARMONIC": 1,
+    "BEFORE_DISAGREES_WITH_SCORE": 2
+   },
+   "outliers": [
+    {
+     "part": "Drei Klarinetten in A",
+     "staff": 2,
+     "written_before": -7,
+     "written_after": 4,
+     "delta": 11,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": 7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -1
+    },
+    {
+     "part": "Erste Violinen.",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": -5,
+     "delta": -9,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 4,
+     "concert_after": -5,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -1
+    },
+    {
+     "part": "Zweite Violinen.",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": -5,
+     "delta": -9,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 4,
+     "concert_after": -5,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -1
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt1--gradus.mxl",
+   "measure_number": "239",
+   "ordinal": 239,
+   "n_changing": 28,
+   "n_staves": 38,
+   "deltas": [
+    -3,
+    4,
+    9
+   ],
+   "modal_delta": 9,
+   "modal_n": 24,
+   "concert_modal_delta": 9,
+   "concert_modal_n": 24,
+   "buckets": {
+    "ENHARMONIC": 3,
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "Drei Klarinetten in A",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": 1,
+     "delta": -3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": 4,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 9
+    },
+    {
+     "part": "Drei Klarinetten in A",
+     "staff": 2,
+     "written_before": 4,
+     "written_after": 1,
+     "delta": -3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": 4,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 9
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": 1,
+     "delta": -3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": 4,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 9
+    },
+    {
+     "part": "F Trumpet",
+     "staff": 1,
+     "written_before": -4,
+     "written_after": 0,
+     "delta": 4,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -5,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 9
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt1--gradus.mxl",
+   "measure_number": "294",
+   "ordinal": 294,
+   "n_changing": 27,
+   "n_staves": 38,
+   "deltas": [
+    -9,
+    3
+   ],
+   "modal_delta": -9,
+   "modal_n": 24,
+   "concert_modal_delta": -9,
+   "concert_modal_n": 24,
+   "buckets": {
+    "ENHARMONIC": 3
+   },
+   "outliers": [
+    {
+     "part": "Drei Klarinetten in A",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 4,
+     "delta": 3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": 7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -9
+    },
+    {
+     "part": "Drei Klarinetten in A",
+     "staff": 2,
+     "written_before": 1,
+     "written_after": 4,
+     "delta": 3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": 7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -9
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 4,
+     "delta": 3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 4,
+     "concert_after": 7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -9
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt1--gradus.mxl",
+   "measure_number": "323",
+   "ordinal": 323,
+   "n_changing": 27,
+   "n_staves": 38,
+   "deltas": [
+    -7,
+    4,
+    5
+   ],
+   "modal_delta": 5,
+   "modal_n": 23,
+   "concert_modal_delta": 5,
+   "concert_modal_n": 23,
+   "buckets": {
+    "ENHARMONIC": 3,
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "Drei Klarinetten in A",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": -3,
+     "delta": -7,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Drei Klarinetten in A",
+     "staff": 2,
+     "written_before": 4,
+     "written_after": -3,
+     "delta": -7,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": -3,
+     "delta": -7,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 5
+    },
+    {
+     "part": "F Trumpet",
+     "staff": 2,
+     "written_before": -4,
+     "written_after": 0,
+     "delta": 4,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -5,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 5
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt2--gradus.mxl",
+   "measure_number": "189",
+   "ordinal": 189,
+   "n_changing": 34,
+   "n_staves": 46,
+   "deltas": [
+    -6,
+    -2,
+    6
+   ],
+   "modal_delta": -6,
+   "modal_n": 30,
+   "concert_modal_delta": -6,
+   "concert_modal_n": 30,
+   "buckets": {
+    "ENHARMONIC": 3,
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "A Clarinet",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": 3,
+     "delta": 6,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -6
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 2,
+     "written_before": -3,
+     "written_after": 3,
+     "delta": 6,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -6
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 3,
+     "written_before": -3,
+     "written_after": 3,
+     "delta": 6,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": 6,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -6
+    },
+    {
+     "part": "B\u266d Trumpet",
+     "staff": 3,
+     "written_before": 2,
+     "written_after": 0,
+     "delta": -2,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -6
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt2--gradus.mxl",
+   "measure_number": "266",
+   "ordinal": 266,
+   "n_changing": 33,
+   "n_staves": 46,
+   "deltas": [
+    -8,
+    -1,
+    10,
+    11
+   ],
+   "modal_delta": 11,
+   "modal_n": 25,
+   "concert_modal_delta": 11,
+   "concert_modal_n": 25,
+   "buckets": {
+    "AFTER_DISAGREES_WITH_SCORE": 1,
+    "ENHARMONIC": 5,
+    "UNEXPLAINED": 2
+   },
+   "outliers": [
+    {
+     "part": "English Horn",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": 5,
+     "delta": 10,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -6,
+     "concert_after": 4,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 11
+    },
+    {
+     "part": "B\u266d Clarinet",
+     "staff": 1,
+     "written_before": -4,
+     "written_after": -5,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -6,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 11
+    },
+    {
+     "part": "B\u266d Clarinet",
+     "staff": 2,
+     "written_before": -4,
+     "written_after": -5,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -6,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 11
+    },
+    {
+     "part": "B\u266d Clarinet",
+     "staff": 3,
+     "written_before": -4,
+     "written_after": -5,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -6,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 11
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": -5,
+     "delta": -8,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 6,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": 11
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 2,
+     "written_before": 3,
+     "written_after": -5,
+     "delta": -8,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 6,
+     "concert_after": -2,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": 11
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 3,
+     "written_before": 3,
+     "written_after": 2,
+     "delta": -1,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 6,
+     "concert_after": 5,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 11
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": -4,
+     "written_after": -5,
+     "delta": -1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -6,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 11
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt2--gradus.mxl",
+   "measure_number": "288",
+   "ordinal": 288,
+   "n_changing": 33,
+   "n_staves": 46,
+   "deltas": [
+    -9,
+    -6,
+    -2,
+    3
+   ],
+   "modal_delta": -9,
+   "modal_n": 26,
+   "concert_modal_delta": -9,
+   "concert_modal_n": 26,
+   "buckets": {
+    "ENHARMONIC": 4,
+    "BEFORE_DISAGREES_WITH_SCORE": 2,
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "B\u266d Clarinet",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": -2,
+     "delta": 3,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": -4,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -9
+    },
+    {
+     "part": "B\u266d Clarinet",
+     "staff": 2,
+     "written_before": -5,
+     "written_after": -2,
+     "delta": 3,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": -4,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -9
+    },
+    {
+     "part": "B\u266d Clarinet",
+     "staff": 3,
+     "written_before": -5,
+     "written_after": -2,
+     "delta": 3,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": -4,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -9
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": -7,
+     "delta": -2,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -9
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 2,
+     "written_before": -5,
+     "written_after": -7,
+     "delta": -2,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": -2,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -9
+    },
+    {
+     "part": "Bass Clarinet",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": -2,
+     "delta": 3,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": -4,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -9
+    },
+    {
+     "part": "Vier Trompeten in F.",
+     "staff": 3,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -9
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt2--gradus.mxl",
+   "measure_number": "316",
+   "ordinal": 316,
+   "n_changing": 32,
+   "n_staves": 46,
+   "deltas": [
+    4,
+    5
+   ],
+   "modal_delta": 4,
+   "modal_n": 31,
+   "concert_modal_delta": 4,
+   "concert_modal_n": 31,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "English Horn",
+     "staff": 1,
+     "written_before": -4,
+     "written_after": 1,
+     "delta": 5,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -5,
+     "concert_after": 0,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 4
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt2--gradus.mxl",
+   "measure_number": "352",
+   "ordinal": 352,
+   "n_changing": 32,
+   "n_staves": 46,
+   "deltas": [
+    -1,
+    1
+   ],
+   "modal_delta": 1,
+   "modal_n": 31,
+   "concert_modal_delta": 1,
+   "concert_modal_n": 31,
+   "buckets": {
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "Sechs H\u00f6rner in F.",
+     "staff": 4,
+     "written_before": 1,
+     "written_after": 0,
+     "delta": -1,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 0,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 1
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt2--gradus.mxl",
+   "measure_number": "400",
+   "ordinal": 400,
+   "n_changing": 31,
+   "n_staves": 46,
+   "deltas": [
+    -10,
+    -5
+   ],
+   "modal_delta": -5,
+   "modal_n": 30,
+   "concert_modal_delta": -5,
+   "concert_modal_n": 30,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "A Clarinet",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": -7,
+     "delta": -10,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 6,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -5
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt2--gradus.mxl",
+   "measure_number": "428",
+   "ordinal": 428,
+   "n_changing": 31,
+   "n_staves": 46,
+   "deltas": [
+    -2,
+    10
+   ],
+   "modal_delta": -2,
+   "modal_n": 28,
+   "concert_modal_delta": -2,
+   "concert_modal_n": 28,
+   "buckets": {
+    "ENHARMONIC": 3
+   },
+   "outliers": [
+    {
+     "part": "A Clarinet",
+     "staff": 1,
+     "written_before": -7,
+     "written_after": 3,
+     "delta": 10,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": 6,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -2
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 2,
+     "written_before": -7,
+     "written_after": 3,
+     "delta": 10,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": 6,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -2
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 3,
+     "written_before": -7,
+     "written_after": 3,
+     "delta": 10,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": 6,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -2
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt2--gradus.mxl",
+   "measure_number": "464",
+   "ordinal": 464,
+   "n_changing": 31,
+   "n_staves": 46,
+   "deltas": [
+    -4,
+    8
+   ],
+   "modal_delta": 8,
+   "modal_n": 28,
+   "concert_modal_delta": 8,
+   "concert_modal_n": 28,
+   "buckets": {
+    "ENHARMONIC": 3
+   },
+   "outliers": [
+    {
+     "part": "A Clarinet",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": -1,
+     "delta": -4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 6,
+     "concert_after": 2,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 8
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 2,
+     "written_before": 3,
+     "written_after": -1,
+     "delta": -4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 6,
+     "concert_after": 2,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 8
+    },
+    {
+     "part": "A Clarinet",
+     "staff": 3,
+     "written_before": 3,
+     "written_after": -1,
+     "delta": -4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 6,
+     "concert_after": 2,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 8
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt3--gradus.mxl",
+   "measure_number": "251",
+   "ordinal": 250,
+   "n_changing": 33,
+   "n_staves": 46,
+   "deltas": [
+    2,
+    3
+   ],
+   "modal_delta": 2,
+   "modal_n": 31,
+   "concert_modal_delta": 2,
+   "concert_modal_n": 31,
+   "buckets": {
+    "UNSIGNATURED": 2
+   },
+   "outliers": [
+    {
+     "part": "Vier H\u00f6rner in F.",
+     "staff": 3,
+     "written_before": -3,
+     "written_after": 0,
+     "delta": 3,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 2
+    },
+    {
+     "part": "Vier H\u00f6rner in F.",
+     "staff": 4,
+     "written_before": -3,
+     "written_after": 0,
+     "delta": 3,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 2
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt3--gradus.mxl",
+   "measure_number": "490",
+   "ordinal": 489,
+   "n_changing": 31,
+   "n_staves": 46,
+   "deltas": [
+    1,
+    6
+   ],
+   "modal_delta": 6,
+   "modal_n": 30,
+   "concert_modal_delta": 6,
+   "concert_modal_n": 30,
+   "buckets": {
+    "AFTER_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "B\u266d Clarinet",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -1,
+     "delta": 1,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -3,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": 6
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt3--gradus.mxl",
+   "measure_number": "517",
+   "ordinal": 516,
+   "n_changing": 2,
+   "n_staves": 46,
+   "deltas": [
+    -3,
+    5
+   ],
+   "modal_delta": 5,
+   "modal_n": 1,
+   "concert_modal_delta": 5,
+   "concert_modal_n": 1,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "Drei Klarinetten in A",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -1,
+     "delta": -3,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": 2,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": 5
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt3--gradus.mxl",
+   "measure_number": "596",
+   "ordinal": 595,
+   "n_changing": 31,
+   "n_staves": 46,
+   "deltas": [
+    -6,
+    -3
+   ],
+   "modal_delta": -6,
+   "modal_n": 30,
+   "concert_modal_delta": -6,
+   "concert_modal_n": 30,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "C Clarinet",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": -4,
+     "delta": -3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -1,
+     "concert_after": -4,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -6
+    }
+   ]
+  },
+  {
+   "path": "mahler--symphony-5--mvt3--gradus.mxl",
+   "measure_number": "662",
+   "ordinal": 661,
+   "n_changing": 31,
+   "n_staves": 46,
+   "deltas": [
+    -2,
+    1
+   ],
+   "modal_delta": 1,
+   "modal_n": 30,
+   "concert_modal_delta": 1,
+   "concert_modal_n": 30,
+   "buckets": {
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "Drei Trompeten in F.",
+     "staff": 3,
+     "written_before": 2,
+     "written_after": 0,
+     "delta": -2,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 1,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 1
+    }
+   ]
+  },
+  {
+   "path": "ravel--ravel-bolero--mvt1--gradus.mxl",
+   "measure_number": "75",
+   "ordinal": 74,
+   "n_changing": 2,
+   "n_staves": 62,
+   "deltas": [
+    -6,
+    1
+   ],
+   "modal_delta": -6,
+   "modal_n": 1,
+   "concert_modal_delta": -6,
+   "concert_modal_n": 1,
+   "buckets": {
+    "UNEXPLAINED": 1
+   },
+   "outliers": [
+    {
+     "part": "Track 3",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": 3,
+     "delta": 1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 2,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": -6
+    }
+   ]
+  },
+  {
+   "path": "ravel--ravel-bolero--mvt1--gradus.mxl",
+   "measure_number": "81",
+   "ordinal": 80,
+   "n_changing": 53,
+   "n_staves": 62,
+   "deltas": [
+    -6,
+    -5,
+    -3
+   ],
+   "modal_delta": -3,
+   "modal_n": 51,
+   "concert_modal_delta": -3,
+   "concert_modal_n": 51,
+   "buckets": {
+    "BEFORE_DISAGREES_WITH_SCORE": 2
+   },
+   "outliers": [
+    {
+     "part": "Track 3",
+     "staff": 1,
+     "written_before": 3,
+     "written_after": -3,
+     "delta": -6,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 3,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    },
+    {
+     "part": "Track 5",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": -3,
+     "delta": -5,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 2,
+     "concert_after": -3,
+     "crook": false,
+     "why": "BEFORE_DISAGREES_WITH_SCORE",
+     "modal_delta": -3
+    }
+   ]
+  },
+  {
+   "path": "ravel--ravel-bolero--mvt1--gradus.mxl",
+   "measure_number": "129",
+   "ordinal": 128,
+   "n_changing": 3,
+   "n_staves": 62,
+   "deltas": [
+    -1,
+    5
+   ],
+   "modal_delta": -1,
+   "modal_n": 2,
+   "concert_modal_delta": -1,
+   "concert_modal_n": 2,
+   "buckets": {
+    "UNEXPLAINED": 1
+   },
+   "outliers": [
+    {
+     "part": "Track 5",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": 2,
+     "delta": 5,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -3,
+     "concert_after": 2,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": -1
+    }
+   ]
+  },
+  {
+   "path": "ravel--ravel-bolero--mvt1--gradus.mxl",
+   "measure_number": "147",
+   "ordinal": 146,
+   "n_changing": 45,
+   "n_staves": 62,
+   "deltas": [
+    2,
+    4,
+    7
+   ],
+   "modal_delta": 7,
+   "modal_n": 39,
+   "concert_modal_delta": 7,
+   "concert_modal_n": 39,
+   "buckets": {
+    "UNSIGNATURED": 6
+   },
+   "outliers": [
+    {
+     "part": "3 TROMBONES",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 4,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 4,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 7
+    },
+    {
+     "part": "Track 10",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 2,
+     "delta": 2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 7
+    },
+    {
+     "part": "Track 12",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 4,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 4,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 7
+    },
+    {
+     "part": "Track 13",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 4,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 4,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 7
+    },
+    {
+     "part": "Track 16",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 4,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 4,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 7
+    },
+    {
+     "part": "1\"\u00b0 VIOLONS",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 4,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 4,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 7
+    }
+   ]
+  },
+  {
+   "path": "ravel--ravel-bolero--mvt1--gradus.mxl",
+   "measure_number": "153",
+   "ordinal": 152,
+   "n_changing": 8,
+   "n_staves": 62,
+   "deltas": [
+    4,
+    7
+   ],
+   "modal_delta": 7,
+   "modal_n": 6,
+   "concert_modal_delta": 7,
+   "concert_modal_n": 6,
+   "buckets": {
+    "UNSIGNATURED": 2
+   },
+   "outliers": [
+    {
+     "part": "Track 11",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 4,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 4,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 7
+    },
+    {
+     "part": "2\u00b0* VIOLONS",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 4,
+     "delta": 4,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 4,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 7
+    }
+   ]
+  },
+  {
+   "path": "ravel--ravel-bolero--mvt1--gradus.mxl",
+   "measure_number": "165",
+   "ordinal": 164,
+   "n_changing": 8,
+   "n_staves": 62,
+   "deltas": [
+    -7,
+    -3,
+    -2,
+    7
+   ],
+   "modal_delta": 7,
+   "modal_n": 5,
+   "concert_modal_delta": 7,
+   "concert_modal_n": 5,
+   "buckets": {
+    "UNEXPLAINED": 3
+   },
+   "outliers": [
+    {
+     "part": "4 CORS en fa",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": -3,
+     "delta": -7,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 4,
+     "concert_after": -3,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": 7
+    },
+    {
+     "part": "Track 7",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": 1,
+     "delta": -3,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 4,
+     "concert_after": 1,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": 7
+    },
+    {
+     "part": "2\u00b0* VIOLONS",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": 2,
+     "delta": -2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 4,
+     "concert_after": 2,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": 7
+    }
+   ]
+  },
+  {
+   "path": "ravel--ravel-bolero--mvt1--gradus.mxl",
+   "measure_number": "171",
+   "ordinal": 170,
+   "n_changing": 2,
+   "n_staves": 62,
+   "deltas": [
+    -4,
+    5
+   ],
+   "modal_delta": -4,
+   "modal_n": 1,
+   "concert_modal_delta": -4,
+   "concert_modal_n": 1,
+   "buckets": {
+    "UNEXPLAINED": 1
+   },
+   "outliers": [
+    {
+     "part": "4 CORS en fa",
+     "staff": 1,
+     "written_before": -3,
+     "written_after": 2,
+     "delta": 5,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": -3,
+     "concert_after": 2,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": -4
+    }
+   ]
+  },
+  {
+   "path": "ravel--ravel-bolero--mvt1--gradus.mxl",
+   "measure_number": "183",
+   "ordinal": 182,
+   "n_changing": 3,
+   "n_staves": 62,
+   "deltas": [
+    -4,
+    -1,
+    1
+   ],
+   "modal_delta": -4,
+   "modal_n": 1,
+   "concert_modal_delta": -4,
+   "concert_modal_n": 1,
+   "buckets": {
+    "UNEXPLAINED": 1,
+    "AFTER_DISAGREES_WITH_SCORE": 1
+   },
+   "outliers": [
+    {
+     "part": "Track 5",
+     "staff": 1,
+     "written_before": 2,
+     "written_after": 1,
+     "delta": -1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 2,
+     "concert_after": 1,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": -4
+    },
+    {
+     "part": "Track 7",
+     "staff": 1,
+     "written_before": 1,
+     "written_after": 2,
+     "delta": 1,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 1,
+     "concert_after": 2,
+     "crook": false,
+     "why": "AFTER_DISAGREES_WITH_SCORE",
+     "modal_delta": -4
+    }
+   ]
+  },
+  {
+   "path": "ravel--ravel-bolero--mvt1--gradus.mxl",
+   "measure_number": "243",
+   "ordinal": 242,
+   "n_changing": 2,
+   "n_staves": 62,
+   "deltas": [
+    -2,
+    -1
+   ],
+   "modal_delta": -1,
+   "modal_n": 1,
+   "concert_modal_delta": -1,
+   "concert_modal_n": 1,
+   "buckets": {
+    "UNEXPLAINED": 1
+   },
+   "outliers": [
+    {
+     "part": "Track 23",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": 2,
+     "delta": -2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 4,
+     "concert_after": 2,
+     "crook": false,
+     "why": "UNEXPLAINED",
+     "modal_delta": -1
+    }
+   ]
+  },
+  {
+   "path": "ravel--ravel-bolero--mvt2--gradus.mxl",
+   "measure_number": "37",
+   "ordinal": 36,
+   "n_changing": 2,
+   "n_staves": 95,
+   "deltas": [
+    -1,
+    2
+   ],
+   "modal_delta": -1,
+   "modal_n": 1,
+   "concert_modal_delta": -1,
+   "concert_modal_n": 1,
+   "buckets": {
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "Cors",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 2,
+     "delta": 2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -1
+    }
+   ]
+  },
+  {
+   "path": "ravel--ravel-bolero--mvt2--gradus.mxl",
+   "measure_number": "82",
+   "ordinal": 81,
+   "n_changing": 2,
+   "n_staves": 95,
+   "deltas": [
+    -1,
+    2
+   ],
+   "modal_delta": -1,
+   "modal_n": 1,
+   "concert_modal_delta": -1,
+   "concert_modal_n": 1,
+   "buckets": {
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "Track 11",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 2,
+     "delta": 2,
+     "offset_before": 0,
+     "offset_after": 0,
+     "declares_transpose": false,
+     "concert_before": 0,
+     "concert_after": 2,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -1
+    }
+   ]
+  },
+  {
+   "path": "tchaikovsky--pizzicato-ostinato--mvt3--gradus.mxl",
+   "measure_number": "170",
+   "ordinal": 169,
+   "n_changing": 24,
+   "n_staves": 24,
+   "deltas": [
+    -8,
+    4
+   ],
+   "modal_delta": -8,
+   "modal_n": 22,
+   "concert_modal_delta": -8,
+   "concert_modal_n": 22,
+   "buckets": {
+    "ENHARMONIC": 2
+   },
+   "outliers": [
+    {
+     "part": "A Clarinet 1",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 4,
+     "delta": 4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": 7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -8
+    },
+    {
+     "part": "A Clarinet 2",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 4,
+     "delta": 4,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": 7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -8
+    }
+   ]
+  },
+  {
+   "path": "tchaikovsky--pizzicato-ostinato--mvt3--gradus.mxl",
+   "measure_number": "218",
+   "ordinal": 217,
+   "n_changing": 24,
+   "n_staves": 24,
+   "deltas": [
+    -8,
+    4
+   ],
+   "modal_delta": 4,
+   "modal_n": 22,
+   "concert_modal_delta": 4,
+   "concert_modal_n": 22,
+   "buckets": {
+    "ENHARMONIC": 2
+   },
+   "outliers": [
+    {
+     "part": "A Clarinet 1",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": -4,
+     "delta": -8,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": -1,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 4
+    },
+    {
+     "part": "A Clarinet 2",
+     "staff": 1,
+     "written_before": 4,
+     "written_after": -4,
+     "delta": -8,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 7,
+     "concert_after": -1,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 4
+    }
+   ]
+  },
+  {
+   "path": "tchaikovsky--symphony-4--mvt1--gradus.mxl",
+   "measure_number": "134",
+   "ordinal": 133,
+   "n_changing": 24,
+   "n_staves": 24,
+   "deltas": [
+    -3,
+    9
+   ],
+   "modal_delta": 9,
+   "modal_n": 22,
+   "concert_modal_delta": 9,
+   "concert_modal_n": 22,
+   "buckets": {
+    "ENHARMONIC": 2
+   },
+   "outliers": [
+    {
+     "part": "B\u266d Clarinet 1",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -5,
+     "delta": -3,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 9
+    },
+    {
+     "part": "B\u266d Clarinet 2",
+     "staff": 1,
+     "written_before": -2,
+     "written_after": -5,
+     "delta": -3,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -4,
+     "concert_after": -7,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": 9
+    }
+   ]
+  },
+  {
+   "path": "tchaikovsky--symphony-4--mvt1--gradus.mxl",
+   "measure_number": "205",
+   "ordinal": 204,
+   "n_changing": 24,
+   "n_staves": 24,
+   "deltas": [
+    -6,
+    -5,
+    7
+   ],
+   "modal_delta": -5,
+   "modal_n": 16,
+   "concert_modal_delta": -5,
+   "concert_modal_n": 16,
+   "buckets": {
+    "ENHARMONIC": 2,
+    "UNSIGNATURED": 6
+   },
+   "outliers": [
+    {
+     "part": "B\u266d Clarinet 1",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": 2,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "B\u266d Clarinet 2",
+     "staff": 1,
+     "written_before": -5,
+     "written_after": 2,
+     "delta": 7,
+     "offset_before": 2,
+     "offset_after": 2,
+     "declares_transpose": true,
+     "concert_before": -7,
+     "concert_after": 0,
+     "crook": false,
+     "why": "ENHARMONIC",
+     "modal_delta": -5
+    },
+    {
+     "part": "F Horn 1",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -5
+    },
+    {
+     "part": "F Horn 2",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -5
+    },
+    {
+     "part": "F Horn 3",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -5
+    },
+    {
+     "part": "F Horn 4",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -5
+    },
+    {
+     "part": "F Trumpet 1",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -5
+    },
+    {
+     "part": "F Trumpet 2",
+     "staff": 1,
+     "written_before": 6,
+     "written_after": 0,
+     "delta": -6,
+     "offset_before": 1,
+     "offset_after": 1,
+     "declares_transpose": true,
+     "concert_before": 5,
+     "concert_after": -1,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -5
+    }
+   ]
+  },
+  {
+   "path": "tchaikovsky--symphony-6-pathetique--mvt1--gradus.musicxml",
+   "measure_number": "161",
+   "ordinal": 160,
+   "n_changing": 9,
+   "n_staves": 21,
+   "deltas": [
+    -2,
+    1
+   ],
+   "modal_delta": -2,
+   "modal_n": 8,
+   "concert_modal_delta": -2,
+   "concert_modal_n": 8,
+   "buckets": {
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "clarinet12",
+     "staff": 1,
+     "written_before": -1,
+     "written_after": 0,
+     "delta": 1,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 2,
+     "concert_after": 3,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": -2
+    }
+   ]
+  },
+  {
+   "path": "tchaikovsky--symphony-6-pathetique--mvt1--gradus.musicxml",
+   "measure_number": "305",
+   "ordinal": 304,
+   "n_changing": 9,
+   "n_staves": 21,
+   "deltas": [
+    2,
+    5
+   ],
+   "modal_delta": 5,
+   "modal_n": 8,
+   "concert_modal_delta": 5,
+   "concert_modal_n": 8,
+   "buckets": {
+    "UNSIGNATURED": 1
+   },
+   "outliers": [
+    {
+     "part": "clarinet12",
+     "staff": 1,
+     "written_before": 0,
+     "written_after": 2,
+     "delta": 2,
+     "offset_before": -3,
+     "offset_after": -3,
+     "declares_transpose": true,
+     "concert_before": 3,
+     "concert_after": 5,
+     "crook": false,
+     "why": "UNSIGNATURED",
+     "modal_delta": 5
+    }
+   ]
+  }
+ ]
+}
