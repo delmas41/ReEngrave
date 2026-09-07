@@ -117,13 +117,15 @@ against three hand-read lineups:
 | no spans | 234/26/0 | 140/20/0 | 176/176/0 | 550/222/0 |
 | **shipped** | 240/20/0 | 140/20/0 | 176/176/0 | **556/216/0** |
 | **+ swap split** | 240/20/0 | 140/20/0 | **132/154/66** | **512/194/66** |
+| `SPAN_REFERENCE_FIT=refuse` | 240/20/0 | 140/20/0 | 176/176/0 | 556/216/0 |
+| refuse + swap split | 234/26/0 | 140/20/0 | 176/176/0 | 550/222/0 |
 | + shape tie-break | 260/0/0 | 70/90/0 | 352/0/0 | **682/90/0** |
 | + both | 260/0/0 | 60/60/40 | 352/0/0 | 672/60/40 |
 
 **The split costs 44 correct names on the very region it was built to repair,
 and it costs them in BOTH reference regimes.** `OMR_SPAN_REFERENCE_FIT=refuse`
-does not rescue it: it abandons the span path entirely and returns the
-no-spans row, 550.
+does not rescue it either — it abandons the span path entirely, so the split
+merely gives back the six names spans had won, 556 → 550.
 
 ⚠️ `wrong` FALLS from 216 to 194 while `correct` falls from 556 to 512, because
 66 staves become `unnamed`. Reading the wrong-count alone would call this an

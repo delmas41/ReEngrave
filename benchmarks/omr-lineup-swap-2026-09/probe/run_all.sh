@@ -52,7 +52,9 @@ echo; echo "################ 6. IDENTITY, per region, per arm (Brahms 4)"
 D=$P/out/brahms4
 python3 $P/probe/score_arms.py --lineups $S/brahms4-lineups.json \
     "no-spans=$D/swap0-spans-off.json" "shipped=$D/swap0-spans-on.json" \
-    "swap=$D/swap1-spans-on.json" "shapetie=$D/shapetie-swap0-spans-on.json" \
+    "swap=$D/swap1-spans-on.json" \
+    "refuse=$D/refuse-swap0-spans-on.json" "refuse+swap=$D/refuse-swap1-spans-on.json" \
+    "shapetie=$D/shapetie-swap0-spans-on.json" \
     "shapetie+swap=$D/shapetie-swap1-spans-on.json"
 } 2>&1 | tee $P/out/report.txt
 echo "-> $P/out/report.txt"
