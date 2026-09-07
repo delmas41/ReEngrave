@@ -81,9 +81,39 @@ contradictions (§8). Each agent's value is defined as **strictly beyond** it:
 
 | round | dispatched | agents | state |
 |---|---|---|---|
-| 1 | 2026-09-07 ~22:25 | I (stages 4–7 + ownership), II (clef ladder + ownership), III (critique + registry prototype) | running |
-| 1v | pending | IV verifies round 1 | held until I/II/III report |
-| 2 | pending | remaining stages, scoped from round 1's schemas | — |
+| 1 | 22:25 | I (stages 4–7 + ownership), II (clef ladder + ownership), III (critique + registry prototype) | **done** — `ac88148e`, ~2,100 lines, 9 probes |
+| 1v | 22:47 | IV verifies I + III, extended to II at 23:00 | running |
+| 2 | 23:05 | I (stage 3 → census → arcs) · II (direction_text → arcs → export → meter) · III (structural floor + the `input` ceiling) | running |
+| 3 | pending | scoped from round 2 + the verifier's corrections | — |
+
+**Round 2 scopes are the agents' OWN recommendations**, approved with two changes:
+Agent III's `input` ceiling promoted to joint-first (it is the empty ceiling that
+makes every scan detector percentage a fiction), and musicdiff scoring
+un-embargoed for it. `scan_eval` / `orchestral_eval` remain embargoed.
+
+⚠️ **Round 2 convergence to watch:** all three agents arrived independently at
+`direction_text` (72 uncatalogued decision points, an `accepted[0]` argmax over a
+`Reader` interface with no confidence field, ~75% of whole-work wall clock) and
+at tie/slur pairing (71 points, zero §5 rows, where Agent II's 263 arc-class
+contests land). Convergence from three lenses is a reason to look, **not**
+evidence — they share one substrate, the map.
+
+## ⚠️ Cross-report hazard, round 1 — one observation, reported twice
+
+Agents I and II both report **436** contested pairs whose two readings disagree
+about what the ink IS. Two agents agreeing is not corroboration when they read the
+same `OMR_CONTEST_DUMP` artefacts. And their breakdowns **disagree**: arc-class
+263 both ways, but accidentals **15 vs 31** and dynamics **22 vs 38**. Referred to
+Agent IV as its first cross-report item. Until it reports, the coordinator states
+this as ONE finding, never two.
+
+## Inference discipline issued to all agents, 2026-09-07
+
+**A near-50% split is what NO relationship looks like.** Round 1 reported that the
+deleted copy of a contested pair scored higher than the survivor 44.8% of the
+time. That is what you would see if confidence were unrelated to correctness —
+evidence that confidence is uninformative at that site, not that the site chooses
+wrongly. Issued after it appeared, not before, which is the honest ordering.
 
 ⚠️ Round 1 is deliberately a **scoping + worked-example** round: the coordinator
 approves each schema before it is applied to five more stages.
