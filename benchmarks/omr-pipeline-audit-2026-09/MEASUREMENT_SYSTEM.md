@@ -1722,3 +1722,71 @@ Registry byte-stable across two builds; ten probes green; the v2 renderer
 correctly **refuses v0.6.0 at exit 3** (it understands 0.5.0), which is the
 version gate doing its job on my own change. Nothing outside this directory
 touched.
+
+
+---
+
+# ROUND 9 — ceilings declare their configuration (**v0.7.0**), and I withdraw the claim that prompted it
+
+## X1. ⚠️ The claim I reported was wrong for the row I named
+
+I told the coordinator that **the page-fidelity floor (0.2123) is
+flag-conditional**. It is not. `probe_structural_floor.py` scores
+**(derived truth, raw truth)** — no prediction of ours appears in it, so no
+pipeline flag can move it. I checked before encoding it, which is the only
+reason this is a correction and not a defect frozen into a schema.
+
+**What is actually true is narrower and sharper**: the discriminator is not
+*"was it measured under the default"* but **`reads_our_output`**.
+
+| ceiling | estimator | flag-conditional? |
+|---|---|---|
+| `page_fidelity_15rows` (0.2123) | derived truth vs raw truth | **No** — no prediction in it |
+| `ceiling_measured_15rows` (0.1340) | `min(ours, audiveris)` over raw `entire staff` | **Yes** |
+| `ceiling_corroborated_subset` (0.1520) | same estimator | **Yes** |
+
+So the claim was **right for two of three structural rows and wrong for the one
+I named** — and the two it is right about are ones I had not thought to check.
+
+**And the direction is worse than I said.** Priced against
+`benchmarks/omr-slot-stitch-reprice-2026-09`: flipping `OMR_SLOT_STITCH` moves
+our raw `entire staff` charge **87 → 1,062** and **90 → 1,062** on the two
+Beethoven p3 rows (Audiveris does not cover them, so the estimator is ours
+alone); Brahms p2 is unchanged because Audiveris's 143 is the minimum either
+way. A larger floor **raises** every `% of achievable` above it — **the
+flattering direction**, and precisely what the independence guard exists to
+stop. A ceiling that reads our own output can be improved by making our output
+worse.
+
+## X2. The general field
+
+`ceiling.measured_under`, on all **21** ceilings carrying a measured value:
+
+```
+{"flags": {...}, "reads_our_output": bool, "stop_condition": "..."}
+```
+
+Written as a general field rather than a note about one flag, because the
+question is general — `OMR_CONDENSED_PARTS` is the next one, and its oracle
+ceiling composes with slot stitch while being separately argued an anti-feature.
+19 ceilings declare `reads_our_output: false` with the reason (a truth file, a
+render, a human's labels, another system); 2 declare `true` and name the flags.
+
+**The stop condition is a stop condition.** For the two conditional rows:
+*re-measure before any `% of achievable` derived from them is quoted, if either
+flag changes state.*
+
+## X3. Build-enforced, both halves mutation-tested red
+
+| guard | mutation | result |
+|---|---|---|
+| every measured ceiling declares `measured_under` + `stop_condition` | drop the field | exit 1, names the row |
+| a ceiling that reads our output must name its flags | blank the flags | exit 1, names both conditional rows |
+
+**Eight build-time guards now, every one watched failing.**
+
+## X4. Frozen
+
+**v0.7.0 — 56 rows, 40 scoreable, 21 ceilings declaring their configuration.**
+Byte-stable across two builds; ten probes green; nothing outside this directory
+touched.

@@ -1,6 +1,6 @@
 {
  "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_structural_floor.py",
- "git_head": "b805115f",
+ "git_head": "075924b8",
  "transform_version": "1.2.0",
  "what_this_is": "the OMR-NED a PERFECT page-faithful reader is charged against the raw truth \u2014 the structural FLOOR, measured rather than estimated. Scored with the derived truth as the PREDICTION.",
  "not_a_pipeline_figure": "no prediction of ours appears in this measurement at all. It is a property of (reference encoding, hand-read page map).",
@@ -154,7 +154,7 @@
    },
    "sha": {
     "raw_truth": "02d7c56bf050af4c",
-    "derived_truth": "317dd1c7d496945d",
+    "derived_truth": "1676729885086d6d",
     "derived_truth_canonical": "38f02706dc361600d6813734b4df7f98b4e432f13570c1a06f9672c5c53ef5bb"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -206,7 +206,7 @@
    },
    "sha": {
     "raw_truth": "391a08215bf159b1",
-    "derived_truth": "c1edbebfe44b5617",
+    "derived_truth": "3739115acb7214c9",
     "derived_truth_canonical": "5a5b16e45c34ac3930d5967b123d3e06ad530d7408c549f5f3122c2f87dffb75"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -262,7 +262,7 @@
    },
    "sha": {
     "raw_truth": "2c5f3701fd14025b",
-    "derived_truth": "7788fc5fefd902cc",
+    "derived_truth": "dc5ae0444b9bc905",
     "derived_truth_canonical": "9b02aeb8e526944cd59c1b77ece8ac74104fdb23ce49f65f19f93b8b91fa9c85"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -316,7 +316,7 @@
    },
    "sha": {
     "raw_truth": "f7593d8a9df92216",
-    "derived_truth": "8b533ef2c0b5a783",
+    "derived_truth": "0048e19af12e87d5",
     "derived_truth_canonical": "588eb91d7e001028df0073823884efa8686504601ce5354875d2df0fc9159a67"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -373,7 +373,7 @@
    },
    "sha": {
     "raw_truth": "93f2876dab747d6a",
-    "derived_truth": "36e42f144a07c468",
+    "derived_truth": "6639f8a89ee23ccc",
     "derived_truth_canonical": "38f02706dc361600d6813734b4df7f98b4e432f13570c1a06f9672c5c53ef5bb"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -425,7 +425,7 @@
    },
    "sha": {
     "raw_truth": "234ee8b45a8ae1d5",
-    "derived_truth": "eedbe299add6c506",
+    "derived_truth": "d879af05a03666ab",
     "derived_truth_canonical": "5a5b16e45c34ac3930d5967b123d3e06ad530d7408c549f5f3122c2f87dffb75"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -481,7 +481,7 @@
    },
    "sha": {
     "raw_truth": "6d56f9587fb5100b",
-    "derived_truth": "55b0a90ce2f8eda0",
+    "derived_truth": "3493552f08958d76",
     "derived_truth_canonical": "9b02aeb8e526944cd59c1b77ece8ac74104fdb23ce49f65f19f93b8b91fa9c85"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -535,7 +535,7 @@
    },
    "sha": {
     "raw_truth": "8a8a1735f1013a5b",
-    "derived_truth": "5514c521fecc9703",
+    "derived_truth": "f9519017605786d7",
     "derived_truth_canonical": "588eb91d7e001028df0073823884efa8686504601ce5354875d2df0fc9159a67"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -592,7 +592,7 @@
    },
    "sha": {
     "raw_truth": "cd6db1124ee78850",
-    "derived_truth": "808919e5dc4e025a",
+    "derived_truth": "d2ef0cfef0378d2a",
     "derived_truth_canonical": "3f31ab072f5586614166b3cd2b60f57c2e974d30c8a45754f074dc781a2be380"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -633,7 +633,7 @@
    },
    "sha": {
     "raw_truth": "b51383f6cd98919b",
-    "derived_truth": "0dd4a305f6907088",
+    "derived_truth": "5a47c7fca0315afd",
     "derived_truth_canonical": "6250065923f85131e78b74a8c4dc46ac4d5647f78e4b5bfa876ca05039080ca6"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -674,7 +674,7 @@
    },
    "sha": {
     "raw_truth": "3a7a21357be2e8dc",
-    "derived_truth": "c65ed4c610372652",
+    "derived_truth": "ab3167daec75f2df",
     "derived_truth_canonical": "c9e4a761b937df40937c5f2fcff0dda7050a2109bbc3d00866afec17d367b68c"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -715,7 +715,7 @@
    },
    "sha": {
     "raw_truth": "e77970bf02686da2",
-    "derived_truth": "57f81a7a60371c26",
+    "derived_truth": "32ed416cd35d869e",
     "derived_truth_canonical": "fa3c7f641d4b7b489a088abb3329c771ff45f2f0a1accb2d6433dbecba160606"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -770,7 +770,7 @@
    },
    "sha": {
     "raw_truth": "2eb07c5661a5c753",
-    "derived_truth": "462b0b3851952f29",
+    "derived_truth": "c1cb1ccdb65f267b",
     "derived_truth_canonical": "7f8ac053d38bd181330fc4914e0c4b344f50ce838f9f739099ddb2c81802636e"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -830,7 +830,7 @@
    },
    "sha": {
     "raw_truth": "d4b3a83a98fe2be9",
-    "derived_truth": "cc063e8bfe03484a",
+    "derived_truth": "76d69f3df5edf2f1",
     "derived_truth_canonical": "10e6e2bcd46a96b66d9edae69b8b76567812d04ce448bfa564c0f1d192e686e6"
    },
    "derived_truth_reproduces_committed_control": true,
@@ -887,7 +887,7 @@
    },
    "sha": {
     "raw_truth": "bf2c1fc677fae5b6",
-    "derived_truth": "ce0edfdc7adee06e",
+    "derived_truth": "2975820cbf0e61e4",
     "derived_truth_canonical": "5cb8cc7fddd9eb96d48cd20e9f8d494d6cc5dd678f37869e4164b2c88d4e5288"
    },
    "derived_truth_reproduces_committed_control": true,

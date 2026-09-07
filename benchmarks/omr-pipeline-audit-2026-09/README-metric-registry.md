@@ -34,12 +34,12 @@ bridge, seconds, no pipeline. It reads truth fixtures from the `reconciliation`
 worktree (`fixtures/` is gitignored) and **refuses to run** unless every
 fixture's sha256 matches the canonical arm's.
 
-**v0.6.0 — FROZEN, 2026-09-07. 56 rows, 40 scoreable, 16 not.** Nothing may move it without telling the coordinator: one schema
+**v0.7.0 — FROZEN, 2026-09-07. 56 rows, 40 scoreable, 16 not.** Nothing may move it without telling the coordinator: one schema
 shifting under one builder is how the first renderer failed.
 
 ### What a conforming consumer must do (`consumer_contract`)
 
-1. **Gate on `schema_version`.** Understood: `["0.6.0"]`. Anything else → refuse
+1. **Gate on `schema_version`.** Understood: `["0.7.0"]`. Anything else → refuse
    with a non-zero exit naming the version. **Never forward-compat silently** —
    a v0.2.0 renderer read v0.3.0 without a word and dropped the two fields whose
    whole purpose is that they cannot be dropped.
@@ -53,7 +53,13 @@ shifting under one builder is how the first renderer failed.
 5. **Never drop `scored_at_detail_level`,** and never difference two OMR-NED
    figures whose `era_key` detail token differs. All 19 OMR-NED rows carry a
    caption naming the share of the figure that is metric configuration.
-6. **Honour `render_with`** (the ledger screen/defect pair). Rows naming each
+6. **Never drop `ceiling.measured_under`.** 21 ceilings declare the
+   configuration they were measured under and a **stop condition**. Two are
+   flag-conditional (`reads_our_output: true`) and must be **re-measured before
+   any `% of achievable` derived from them is quoted** if `OMR_SLOT_STITCH` or
+   `OMR_CONDENSED_PARTS` changes state. That is a stop condition, not a
+   footnote.
+7. **Honour `render_with`** (the ledger screen/defect pair). Rows naming each
    other must render **adjacently, in one block, with no scoreable row between**.
    Cannot place them together → render **neither**. It is symmetric and
    build-enforced, and it is in `fields_a_consumer_may_never_drop`.

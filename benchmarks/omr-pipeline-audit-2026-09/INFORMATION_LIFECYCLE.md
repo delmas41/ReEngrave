@@ -1721,3 +1721,124 @@ boundary.
 **I am reporting it, not recommending it.** It belongs to Agent III and to
 Sean. ⚠️ And it must not be read as "the pipeline is better than we thought" —
 the predictions are identical; only the accounting changed.
+
+## R27. ⚠️⚠️ CORRECTION — R26's 11.8:1 IS WRONG. The clean number is 1.77:1, and my conclusion does NOT survive.
+
+**R26's ratio was computed against a pitch mass that was structurally zero.**
+Diagnosed by Agent III, reproduced here on my own artefacts, and re-measured
+clean. **The corrected figure reverses R26's conclusion.**
+
+### The bug, confirmed at source and on my own CSVs
+
+`musicdiff.visualization.Visualization.create_header_names_once()` (`:3212-3214`)
+returns early when the **class-level** `_ORDERED_HEADER_NAMES` is already
+populated, and only `includesVoicing(detail)` (`:3216`) adds the three
+Voicing-only columns. Unmappable ops then hit `:3197-3198`
+— `if edit_name not in _HEADER_NAME_OF_EDIT_NAME: edit_name = 'directionins'` —
+and land in `wrong direction`.
+
+I ran three detail levels **in one process**, `AllObjects` first. Direct proof
+on my own files:
+
+| CSV | columns | `wrong pitch` column |
+|---|--:|---|
+| `arm-allobjects` | 86 | absent (correct — AllObjects has no such column) |
+| `arm-allobjects-notestaffposition` | 86 | absent (correct — NoteStaffPosition adds none) |
+| **`arm-allobjects-voicing` (CONTAMINATED)** | **86** | ⚠️ **absent — it should have 89** |
+| **`arm-allobjects-voicing-CLEAN`** | **92** | **present** |
+
+### My own control, pooled over all 20 rows — same detail level, one arm per process
+
+| bucket | contaminated | clean | |
+|---|--:|--:|---|
+| wrong note | 10,226 | 10,226 | same |
+| entire measure insert/delete | 7,239 | 7,239 | same |
+| entire staff insert/delete | 16,777 | 16,777 | same |
+| wrong note head / flag-beam / dot / tuplet | 3,390 / 2,535 / 511 / 138 | identical | same |
+| wrong accidental | 555 | 555 | same |
+| **wrong direction** | **7,975** | **744** | **MOVED** |
+| **wrong pitch** | **0** | **3,159** | **MOVED** |
+| **pitch insert/delete** | **0** | **1,636** | **MOVED** |
+| **voice insert/delete** | **0** | **2,436** | **MOVED** |
+| **TOTAL** | **53,097** | **53,097** | same |
+
+**Phantom in `wrong direction` = 7,231. The three misfiled columns = 3,159 +
+1,636 + 2,436 = 7,231. Exact.** Agent III's two-row arithmetic, reproduced
+pooled.
+
+### The corrected ratio
+
+| | duration/head | pitch | ratio |
+|---|--:|--:|--:|
+| **R26 as published (contaminated)** | 6,574 | 555 | **11.85 : 1** |
+| **CLEAN, core** (`wrong pitch` + `wrong accidental`) | 6,574 | **3,714** | **1.77 : 1** |
+| **CLEAN, wide** (+ `pitch insert/delete`) | 6,574 | **5,350** | **1.23 : 1** |
+
+`voice insert/delete` (2,436) is voice STRUCTURE and is in neither family.
+`pitch insert/delete` is a chord gaining or losing a pitch — chord *content*
+rather than spelling — so it is reported apart rather than folded in silently.
+
+### ⚠️ The conclusion does NOT survive, in either direction
+
+- **R26's "duration and head-shape dominate pitch spelling in both configurations" is FALSE.** At 1.77 : 1 — or 1.23 : 1 on the wider definition — **they are comparable, not dominant.**
+- **The coordinator's "durations drive `wrong note`" is NOT supported by this arm.**
+- **Sean's pitch hypothesis is substantially strengthened.** Pitch spelling is 3,714–5,350 edits where I reported 555.
+
+### ⚠️ And a deeper error of mine that the contamination hid
+
+**R20's 33.8 : 1 under `AllObjects` was never valid evidence either**, and that
+one is not the header cache's fault. My own §3 establishes that `AllObjects`
+**cannot express a pitch error at all** — there is no `wrong pitch` column by
+design. Quoting a duration-versus-pitch ratio from a configuration whose pitch
+bucket is structurally absent is a category error, and I made it before the
+contaminated arm ever ran. **The only valid ratio in this whole section is the
+clean Voicing one.**
+
+### What this does and does not overturn
+
+| | status |
+|---|---|
+| §R18 headline decomposition (clef ~0, key ~0, ownership ≤5%, absences 12.6%) | **stands** — arm 1 and file counting |
+| §R19 clef finding (≤978 pool edits; `wrong note` rises when clef spelling is neutralised) | **stands** — arm 2 needs no Voicing columns, so 86 is its correct width |
+| §R21 missing rests (2,212) · §R22 hollow-by-edition · §R23 recall | **stand** — counted from files, no metric involved |
+| §R26 pooled −29%, and the `wrong note` / `entire measure` / `entire staff` deltas | **stand** — verified identical in my control above |
+| **§R26 ratio, and "`wrong accidental` is the only pitch-spelling bucket (1.0%)"** | ⚠️ **WITHDRAWN** — false; `wrong pitch` exists under Voicing and is 3,159 |
+| **§R26 "Sean's pitch hypothesis stays refuted, and this arm adds to it"** | ⚠️ **REVERSED** |
+| §R26's diagnosis of `wrong direction` as "per-voice replication of a page-level direction" | ⚠️ **WRONG MECHANISM.** Excluding it was right; the reason I gave was invented, not measured. The cause is the header cache |
+
+### ⚠️ Where the pitch mass actually comes from — and it is still not the clef
+
+The two results now have to be read together, and they are consistent:
+
+- clef mis-spelling is **≤978 pool edits** (§R19, unaffected);
+- pitch spelling is **3,714–5,350 edits** (this section);
+- key signatures **cannot enter** (structural, §R19);
+- ownership is **≤~1,100** (§R18).
+
+**So most of the pitch mass is not clef, not key, and not ownership.** Under
+Voicing a note pairs by voice and chord position, so a note whose **staff
+position was read wrong** now pairs and reports `pitchnameedit`. That points at
+the pitch-resolution grid — §S12's discarded residual, §N1's discarded gap
+spread, and the tilt `OMR_CELL_LINE_TRACE` exists for — rather than at either
+programme under discussion.
+
+⚠️ **Stated as a pointer, not a measurement.** `wrong pitch = 3,159` says the
+spelling is wrong on paired notes; it does not name the cause. I have excluded
+clef, key and ownership by measurement and bound; I have **not** measured the
+grid hypothesis, and it should not be built on until someone does.
+
+### The protocol, recorded because nothing enforces it
+
+⚠️ **ONE DETAIL LEVEL PER PROCESS.** The existing `omr_ned.py` bridge satisfies
+this only by the accident of running each batch in a fresh subprocess — nothing
+checks it, and a new arm written in-process silently produces a table whose
+Voicing columns are all zero and whose `wrong direction` is inflated by exactly
+their sum. `run_one_arm.py` now **aborts** if a header is already cached in the
+interpreter; `run_detail_arms.py` is kept for provenance and must not be reused.
+
+⚠️ **This is the fourth figure of mine to need correcting tonight and the third
+caught by someone checking the substrate rather than the arithmetic.** The
+common shape in all four: I validated the *computation* and not the *thing
+being computed on*. A number that reproduces exactly — 11.85 : 1 reproduced
+perfectly from the contaminated CSV — is not thereby a measurement of what its
+label says.
