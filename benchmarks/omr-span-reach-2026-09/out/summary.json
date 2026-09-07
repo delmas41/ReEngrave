@@ -301,6 +301,62 @@
   ]
  },
  {
+  "boundaries": [
+   15
+  ],
+  "edition": "sibelius--symphony-2-op43--breitkopf-und-hartel-fro-1905--imslp15919",
+  "n_spans": 2,
+  "pages": 143,
+  "ranges": [
+   [
+    0,
+    14
+   ],
+   [
+    15,
+    142
+   ]
+  ],
+  "raw_peak": 20,
+  "seconds": 318.1,
+  "span_levels": [
+   16,
+   20
+  ],
+  "span_peaks": [
+   16,
+   20
+  ]
+ },
+ {
+  "boundaries": [
+   73
+  ],
+  "edition": "tchaikovsky--violin-concerto-op35--jurgenson-1888--imslp105393",
+  "n_spans": 2,
+  "pages": 120,
+  "ranges": [
+   [
+    0,
+    72
+   ],
+   [
+    73,
+    119
+   ]
+  ],
+  "raw_peak": 17,
+  "seconds": 292.5,
+  "span_levels": [
+   15,
+   16
+  ],
+  "span_peaks": [
+   15,
+   16
+  ]
+ },
+ {
   "boundaries": [],
   "edition": "beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077",
   "n_spans": 1,
@@ -378,6 +434,66 @@
   ],
   "span_peaks": [
    30
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "elgar--variations-on-an-original-theme-enigma-op36--novello-co-1899--imslp23792",
+  "n_spans": 1,
+  "pages": 128,
+  "ranges": [
+   [
+    0,
+    127
+   ]
+  ],
+  "raw_peak": 23,
+  "seconds": 461.2,
+  "span_levels": [
+   22
+  ],
+  "span_peaks": [
+   23
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "glazunov--symphony-5-op55--belaieff-1896--imslp61788",
+  "n_spans": 1,
+  "pages": 145,
+  "ranges": [
+   [
+    0,
+    144
+   ]
+  ],
+  "raw_peak": 30,
+  "seconds": 614.1,
+  "span_levels": [
+   29
+  ],
+  "span_peaks": [
+   30
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "mozart--requiem-in-d-minor-k626--breitkopf-und-hartel-1812--imslp26746",
+  "n_spans": 1,
+  "pages": 131,
+  "ranges": [
+   [
+    0,
+    130
+   ]
+  ],
+  "raw_peak": 12,
+  "seconds": 634.1,
+  "span_levels": [
+   12
+  ],
+  "span_peaks": [
+   12
   ]
  },
  {
