@@ -205,3 +205,43 @@ class TestCellSpanPx:
         pws.staves[1].nominal_line_spacing_px = None
         cells = extract_measures(pws, max_cell_width=4096)
         assert {c.staff_index for c in cells} == {0, 2}
+
+
+class TestTheExportSaysWhatTheStaffIS:
+    """A staff we emit with the wrong clef is worse than a staff we drop.
+
+    The positional clef default is `treble`, so an admitted percussion rule
+    would export as a treble staff of rests — a bass drum notated as a pitched
+    instrument. Both facts the export needs are GEOMETRY (one printed rule IS a
+    one-line percussion staff), so they are stated, not read.
+    """
+
+    def test_a_percussion_clef_exports_as_percussion_not_treble(self):
+        from tools.omr.export import _mxl_attributes_block
+        got = _mxl_attributes_block("percussion", None, None, 8, "", True,
+                                    staff_lines=1)
+        assert "<sign>percussion</sign>" in got
+        assert "<staff-lines>1</staff-lines>" in got
+        # A percussion clef names no line, so it must not claim one.
+        assert "<line>" not in got
+
+    def test_without_the_branch_it_would_have_said_treble(self):
+        """`_MXL_CLEF_SIGN` is built from the PITCHED clef families only, so an
+        unknown name falls through to ("G", 2). This pins the fall-through that
+        the percussion branch exists to avoid."""
+        from tools.omr.export import _MXL_CLEF_SIGN
+        assert "percussion" not in _MXL_CLEF_SIGN
+        assert _MXL_CLEF_SIGN.get("percussion", ("G", 2)) == ("G", 2)
+
+    def test_a_pitched_clef_is_untouched_and_emits_no_staff_details(self):
+        from tools.omr.export import _mxl_attributes_block
+        got = _mxl_attributes_block("bass", None, None, 8, "", True)
+        assert "<sign>F</sign>" in got and "<line>4</line>" in got
+        assert "staff-details" not in got
+
+    def test_lilypond_already_spells_percussion_correctly(self):
+        """No LilyPond change was needed and this says why: `\\clef percussion`
+        is the literal LilyPond clef name, so `_clef_to_lily` passes it
+        through. Pinned so a future suffix rule cannot quietly mangle it."""
+        from tools.omr.export import _clef_to_lily
+        assert _clef_to_lily("percussion") == "percussion"

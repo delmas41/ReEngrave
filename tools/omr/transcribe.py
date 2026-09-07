@@ -4549,6 +4549,23 @@ def transcribe(
                 # Staff-level effective state = whatever was in effect during
                 # the first measure of the staff (post any leading detections).
                 staff_dict["clef"] = first_cell_effective_clef
+                # A ONE-LINE percussion rule names no pitch, so a pitched clef
+                # on it is a statement the page does not make — and the clef is
+                # what a reader uses to judge every note under it. The default
+                # here is positional and comes out `treble`, which would export
+                # a bass drum as a treble staff: silently wrong, which is worse
+                # than the staff being absent. Both facts the export needs are
+                # geometry, not recognition — one printed rule IS a percussion
+                # staff of one line — so they are stated rather than read.
+                #
+                # Unreachable unless `OMR_ONE_LINE_STAVES` admitted the staff:
+                # without it a one-line staff produces no cell, so this loop
+                # never runs for one. `test_one_line_staves.py` pins that.
+                if staff_obj is not None and len(staff_obj.line_ys) == 1:
+                    staff_dict["clef"] = "percussion"
+                    staff_dict["clef_source"] = "one_line_staff"
+                    staff_dict["staff_lines"] = 1
+                    staff_dict["unpitched"] = True
                 # Say which reader supplied the clef. Absent means nothing read
                 # one here and the staff is carrying an inherited clef or the
                 # position default — which is the single most useful thing to
