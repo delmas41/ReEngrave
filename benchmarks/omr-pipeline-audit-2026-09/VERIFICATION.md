@@ -928,3 +928,339 @@ specialist's reach of zero; the tie replay, verified faithful line-for-line; the
 `*_final` staleness and its causal story; Surya's 87.6%; the stitch refusals; the
 lexicon refusal table; the survey's 0.545 and 0.617 reproduced exactly; and 19 of
 19 line numbers.
+
+---
+
+# ROUND 2 — Agent I (`INFORMATION_LIFECYCLE.md` §R0–R6)
+
+**28 of 31 quantities reproduce exactly**, including both retraction tables and
+every line number. ⚠️ **One retraction is wrong and I overturned it by widening
+its own probe** (D17). Scripts in `probe/verify/`.
+
+## WHAT HELD
+
+### Retraction 1 — the ledger-ladder floor: CONFIRMED, and I strengthened it
+
+The committed `probe_ladder_inversion.py` reproduces Q1/Q2 exactly: beet5-p02
+626 noteheads / 398 inside / **0 inversions**, 633 rungs / 479 inside a band
+(0.757); brahms1 4,260 / 3,059 / **0**, 768 / 302 (0.393). **Zero of 3,457.**
+
+⚠️ **Q3 and Q4 — the two tables that carry the retraction — are produced by no
+committed probe.** I rebuilt them from scratch (`verify_ladder_q3_q4.py`),
+calling the real `_ledger_ladder` and re-using its own constants
+(`_LEDGER_RUNG_EXPECTED_SLACK`, `_LEDGER_RUNG_Y_TOL_SPACES`,
+`_LEDGER_RUNG_MIN_X_OVERLAP`). **Every cell matches:**
+
+```
+beet5-p02  outside 228  complete 26   using an impossible rung 0   matched rungs  31
+           none→26(1.000)  0.30→22(.846)  0.40→15(.577)  0.50→4(.154)
+brahms1    outside 1201 complete 222  using an impossible rung 0   matched rungs 297
+           none→222(1.000) 0.30→184(.829) 0.40→94(.423)  0.50→34(.153)
+```
+
+**"Zero of 328 matched rungs"** — 31 + 297 = 328 ✅. **"A 0.40 floor destroys
+42–58%"** — 1 − 0.577 = 0.423 and 1 − 0.423 = 0.577 ✅. And the coordinator's
+specific worry is answered: **"complete ladder" is the same population in both
+tables** (the 26 and the 222 are the denominators of each), which my single
+reconstruction confirms by producing both from one definition.
+
+⚠️ **I then measured the thing that makes the argument direct, and which neither
+party computed** — the confidence of the *matched* rungs, i.e. the ones actually
+load-bearing:
+
+| | all `ledgerLine` | rungs INSIDE a band (impossible) | rungs MATCHED by a complete ladder |
+|---|---|---|---|
+| beet5-p02 | n=633 med **0.337**, 71.6% <0.40 | n=479 med 0.327, **74.9%** <0.40 | n=31 med **0.447**, **38.7%** <0.40 |
+| brahms1 | n=768 med **0.344**, 69.9% <0.40 | n=309 med 0.313, **90.9%** <0.40 | n=297 med **0.400**, **49.8%** <0.40 |
+
+**This is direct confirmation.** The ladder's geometry already selects rungs
+better than the pool (0.447/0.400 against 0.337/0.344) and rejects the impossible
+ones (which are 75–91% sub-0.40 and contribute 0 matches) — *and* **39–50% of the
+rungs it does use still sit under 0.40**, which is precisely why a 0.40 floor
+kills 42–58% of its verdicts. The two facts really are about different
+populations, exactly as claimed. **Round-1 item 5 is correctly withdrawn.**
+
+*(Immaterial: my independent count of impossible rungs on brahms1 is 309 against
+the probe's 302 — a 7-detection band-edge boundary difference, 0.402 vs 0.393.
+The headline range "39–76%" is unaffected.)*
+
+### The rest
+
+| claim | verdict |
+|---|---|
+| `Barline` has five fields, all coordinates (`types.py:107-115`), and the constructor at `measure_extractor.py:685-691` passes only those five | ✅ exact — `page_index, x, y_top, y_bottom, system_index`; `_drop_close_outliers` is typed `xs: list[int]` |
+| a **fifth** `len(line_ys) >= 5` site at `_neighbour_room:849`, with `above = below = float("inf")` | ✅ exact — `if other is staff or len(other.line_ys) < 5: continue` |
+| `_bands` (`transcribe.py:4711-4714`) is built from **all** `pws.staves` with no five-line filter → a one-line staff enters as a **zero-height band** | ✅ exact |
+| `types.py:102` returns `nominal_line_spacing_px` when `len(line_ys) < 2` — the E1 property | ✅ exact |
+| census **793 / 197 / 211**, per-file table, discarding share 0.248 | ✅ reproduces exactly |
+| **18 drop sites, 14 writing no count (0.778)** | ✅ reproduces exactly |
+| **S46** — `y_tolerance = max(avg_nh_h*3, 30)` at `:2251` applied *separately* to each end against the tie's own centre; `best_left_dx`/`best_right_dx` discarded; the only mutual test is `best_left is not best_right` at `:2279` | ✅ exact on every particular |
+| R0-a and R0-b accept my D2 and D9 correctly, and R0-a converts the falsified universal into a mechanical `n of m` | ✅ the right repair |
+
+## WHAT DID NOT
+
+### D17 — ⚠️⚠️ N4 is **NOT unreachable**. I widened its own probe and the branch fires.
+
+`probe_beam_bar_positions.py` renders pages and runs phase 1 — **no detector, no
+weights** — so the sample is cheap to extend. I reproduced the committed census
+exactly (277 components, 0 multi-bar) and then ran the identical probe over **ten
+pages it did not include**:
+
+| page | components | `n_bars ≥ 2` |
+|---|--:|--:|
+| brahms-317803-**p2** (scan) | 180 | **13** (7.2%) |
+| bach-brandenburg3-p1 (scan) | 483 | **9** (1.9%) |
+| mahler-local-**p3** (scan) | 68 | **4** (5.9%) |
+| dvorak-405834-**p6** (scan) | 71 | **3** (4.2%) |
+| brahms-317803-**p4** (scan) | 73 | **2** (2.7%) |
+| beethoven-984073-p4 (scan) | 156 | 0 |
+| bruckner 5 · mozart 40 · dvorak 9 · tchaikovsky 4 (engraved) | 51 | **0** |
+| **new total** | **805** | **31** |
+
+**The fabrication branch executes on 31 components, all of them on scans, none
+engraved** — and `n_bars == 1` *is* the right test (`sub_h = h//1`, `y + 0*(h/1)`
+is the box itself, so a 1-bar component fabricates nothing). The mechanism is
+sound; the reach was measured on a sample that could not show it.
+
+⚠️ **And the sample bias is identifiable, not bad luck: both of the original two
+scan pages are `p1` rows — the two best-scoring, cleanest-print pages in the scan
+gate.** Every multi-bar component appears on p2/p3/p4/p6 or Bach. Print-merged
+beams live on the worse prints, and the sample excluded them.
+
+⚠️ Note also: `columns disagreed with the median count: 0 of 13`, `0 of 9`, `0 of
+4`, `0 of 3`, `0 of 2` — where `n_bars ≥ 2` fires, the columns **agree**, so these
+are not median noise. Their median box fill is **0.472**, which is the docstring's
+own signature for a *sloped single* bar (43–46%), so a second reading is open and
+worse: some of the 31 may be one sloped bar being split into two fabricated
+coordinates. **I did not adjudicate which**, and it should not be asserted either
+way without looking at the ink.
+
+**Corrected statement:** *`n_bars ≥ 2` fired 0 times in 277 components over five
+pages, and **31 times in 805 components over ten further pages** — 1.9–7.2% of
+accepted beam components on five of six additional scanned pages, and 0 on all
+seven engraved fixtures measured. The fabrication branch is live on scans. N4 is
+not unreachable; it was unsampled.*
+
+⚠️ **Agent I's §R5 item 8 says the right thing** — *"Neither should be deleted on
+these numbers — 5 pages … a null on a corpus without the defect is not
+evidence"* — and the §R2.1 heading (**"UNREACHABLE"**) contradicts it. The
+hedge was correct and the headline overrode it. ⚠️ **And the coordinator's stated
+interest was in the item being real; it is real, and the retraction is what was
+wrong.** My widened census is at
+`probe/verify/beam-bar-census-WIDENED-16pages.json`; the committed
+`beam-bar-census.json` was restored to its 277-record state (`git checkout`,
+verified) after my run overwrote it.
+
+### D18 — the census-vs-map comparison is not a valid comparison
+
+§R3: *"**793 against the map's ~176 §5 rows for the whole pipeline** puts a number
+on the coordinator's *what is missing outranks what is wrong*."*
+
+They count different things and the numbers cannot be set against each other:
+
+| | 793 | ~176 |
+|---|---|---|
+| unit | an AST node — `If`/`IfExp`/comprehension-filter containing a `Compare`, or a selector call | a hand-curated *conceptual* decision point, with type, blindness and consumers |
+| scope | **seven files** | the whole pipeline (40+ modules) |
+| granularity | one clef argmax is several nodes; a bounds guard is one node | one row |
+
+A single map row maps to many census nodes and many census nodes map to no map
+row *correctly*. Agent I hedges well two sentences earlier (*"a reproducible upper
+bound on sites worth inspecting, not a defect count"*) and then makes the
+comparison anyway — and the comparison is the quotable line. **The census is
+valuable on its own terms** (mechanical, re-runnable, a real floor); it should be
+quoted without the ratio.
+
+### D19 — the D2-replacement table misnames one of its four false positives
+
+§R3.1 lists the four functions hand-adjudicated out of the mechanical 14 as
+*"`parse_pages`, `_ledger_rows`, `_window_blind_systems`, `_measure_x_boundaries`"*.
+The probe's actual 14 contains `parse_pages`, `_ledger_rows`,
+`_window_blind_systems` and **`_dedupe_cross_staff_detections`** —
+`_measure_x_boundaries` is not in it. `_dedupe_cross_staff_detections` *does*
+write a count (`n_cross_staff_duplicates_removed`), so it is a genuine false
+positive of the rule and the report correctly puts it in the *accounts-for-its-
+removals* column; only the parenthetical names the wrong function. **The
+number (14, and 16 of 20 with the two stated misses) is unaffected.**
+
+## WHAT IS MISSING (Agent I round 2)
+
+- **M11 — the retraction's own evidence is not reproducible.** §R2.2's Q3 and Q4
+  tables reach a conclusion the coordinator has already relayed to Sean, and no
+  committed probe emits them; `probe_ladder_inversion.py` stops at Q2. By this
+  audit's own standard (*a committed artefact, or it is not a claim*) the
+  retraction was, until this pass, unverifiable. It now reproduces —
+  `probe/verify/verify_ladder_q3_q4.py` — but that file is mine, not the
+  reporting agent's.
+- **M12 — the direct form of the argument was never computed.** The matched-rung
+  confidence distribution (table above) settles the "different populations" claim
+  in one line and is free from the same artefacts. §R2.2 argues it from the
+  survival table instead, which is inference where measurement was available.
+- **M13 — §R2.1's null needed exactly one more page and the report says so.**
+  §R5 item 8 names the standard (*"a null on a corpus without the defect is not
+  evidence"*) and §R6 lists the 5-page limit under UNMEASURED. The widening cost
+  minutes and needed no weights. **A stated limit that is cheap to close should be
+  closed, not declared.**
+
+---
+
+# ROUND 2 — Agent III (`MEASUREMENT_SYSTEM.md`, registry v0.2.0)
+
+**All Tier-1 claims hold, including the three controls and the most consequential
+negative in the audit.** One incidental is stale (D20).
+
+## WHAT HELD
+
+### The measured structural floor — all three controls pass, the third exactly
+
+| control | verdict |
+|---|---|
+| all 20 truth fixtures sha-match the canonical arm | ✅ `controls.fixture_binding.all_match_canonical_arm: true`, and **the run refuses otherwise** — a control that can fail |
+| all 15 derived truths reproduce the committed control's **canonical** hashes | ✅ `derived_truth_reproduces_committed_control` true on all 15 |
+| the three identity-transform rows score **exactly 0 edits** | ✅ **`omr_ed_total = 0`, `omr_ned_total = 0.0`, unpaired 0, structural 0, residue 0** on all three Dvořák rows, each with `n_source_parts == n_output_parts == 15` |
+
+The third is the strongest and it is exact: a transform that is the identity on a
+1:1 page charges nothing, which is what a floor measured by scoring the derived
+truth *as the prediction* must do or be discarded.
+
+**The ladder arithmetic reproduces and the conservative rung is the one used:**
+
+```
+unpaired-parts 14791/69672 = 0.21229   →  100(1−0.8417)/(1−F) = 20.10
+structural     34710/69672 = 0.49819   →  31.55
+total          44226/69672 = 0.63477   →  43.34
+residue share  9516/44226  = 0.21517
+```
+
+**A larger floor gives a larger score**, so taking 0.2123 rather than 0.6348 is
+conservative by arithmetic, and the report's stated reason is exactly right. The
+`0.8417 → 20.09%` headline checks out (20.10 on the rounded M; 20.09 on the
+unrounded).
+
+⚠️ **The self-consistency pattern is genuine and pre-registered rather than
+post-hoc**, so far as the artefact can show: `control_history` records **two
+earlier definitions of `n_output_parts` that were tried and failed** (`== page.n_staves`
+failed 10 rows; `== n_staves // systems` failed 3), which is a falsification trail,
+not a fitted result. The direction claim — corrections all *upward*, at rows where
+our own `entire staff` charge was anomalously small — is consistent with round 1's
+`floor_low` table (984073-p3 at 0.024 and 575951-p3 at 0.025 were the two
+anomalously small estimates) and is the direction the estimator's self-reference
+predicts. **I could not re-derive the 12-of-15 / 3-corrected split**, because
+round 1's per-row `floor_low` and this run's per-row floors are on different
+denominators; recorded as consistent-but-not-independently-recomputed.
+
+### The `input` ceiling refutation — the counts are exact
+
+Recounted directly from `benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/verdicts/`,
+over every verdict whose `inspected_passes` contains `completion`:
+
+```
+cells stamped completion : 55        human-drawn boxes : 554
+dynamicCrescendoHairpin  : 13   }
+dynamicDiminuendoHairpin :  4   }  = 17 hairpins
+tie                      : 62        slur : 27        noteheads : 203
+```
+
+**Exact on all five figures.** The artefact's `counts` (207 reference notes, 201
+human noteheads over the 47 *usable* cells, ratio 0.9710) is consistent with my
+203 over all 55.
+
+⚠️ **On the population question, which the coordinator asked me to press hardest:
+the exclusion of the other ten batches is methodologically correct, not a
+convenience.** `why_this_batch` states it: every other batch is a single-symbol
+sweep, where everything outside the pass is unboxed *by instruction*, so a count
+of human boxes there would measure the pass and not the ink. That is the same
+reasoning `verdicts_to_yolo_labels`' `inspected_passes` mechanism exists for.
+**So the limitation is irreducible with today's corpus rather than a shortcut —
+and it is still one batch, one work, one publisher (Breitkopf, Brahms 1).** The
+conclusion (a reader can see 17 hairpins where the detector finds ~1 per page
+across eleven scan pages, so 1.01% is a catastrophe and not a ceiling) is very
+likely right and rests on one edition. It should be quoted with the edition
+named.
+
+**The notehead-ratio refusal is correct, not over-cautious.** 201/207 = 0.971 is
+a ratio of two *counts*, and grace notes are absent from both sides (the
+transcription holds 0 `Small` detections and the reference holds 0 `<grace/>` —
+CLAUDE.md records both). A count ratio near 1 therefore bounds nothing about what
+a reader could recover; `bounded_above, scoreable: false` is the right verdict.
+
+### The human-cost negative — verified precisely, and it is the audit's most consequential
+
+| claim | verified |
+|---|---|
+| FINDINGS reports **197 over 3,543** records | ✅ `omr-identity-harness-2026-09/FINDINGS.md:226` |
+| decomposed 150 contradicted-only / 24 unnamed / 15 not-in-this-work / 8 both | ✅ `:256-257` |
+| the committed `out/records.json` holds **1,571 records in 2 arms** | ✅ `beet5/shipped` 807 + `brahms1/fit=search,spans=on` 764 |
+| it carries **no `not-in-this-work` field** | ✅ fields are `arm, contradicted, correct, emitted, engraving, label_read, lineup, n_staves, named, ordinal, page, publisher, slot, source, system, truth, work` |
+| only `contradicted` re-derives: **26 of 1,571 = 1.66%** | ✅ 15 + 11 = 26; 26/1571 = 0.01655 |
+
+**So the project's stated purpose is measured in exactly one place, over 3,543
+records, and the committed artefact holds 1,571 — 44.3% of them, per FINDINGS'
+own pooled row — with two of the four decomposition categories unrepresentable.
+The figure cannot be re-derived from the tree.** Confirmed.
+
+**And the floor judgement is right.** 0 of 1,571 records are unnamed, so the
+definition's floor computes to **0**, which would assert that a perfect pipeline
+leaves a reviewer nothing to open — contradicting the identity scope's own claim.
+Declaring the floor **open rather than zero** is the conservative call and the
+correct one: under §B3's assumption-direction rule a floor of 0 for an error
+metric is the *minimising* default, so recording it as measured would have been
+the one case where the conservative default is substantively wrong.
+
+### The two incidentals
+
+- **`sha.normalised_truth` cannot verify reproduction — CONFIRMED, and it is a
+  defect in an existing artefact, not in the audit.** `controls.derived_truth_note`
+  diagnoses it correctly: music21 stamps a fresh 32-hex instrument id on every
+  write, so the raw sha256 differs run to run; reproduction is checked against
+  `derived-truth-bytes.json`'s canonical (id-masked) hash instead, and the arm's
+  `sha.truth` / `sha.pred` — which *are* reproducible — are what the fixture
+  binding uses. Correctly handled and correctly attributed elsewhere.
+
+## WHAT DID NOT
+
+### D20 — the coarse-spelling incidental is real in its count and **stale in its claim**
+
+The count is exact: over the 55 completion cells, **26 human boxes carry the
+coarse spelling** — `dynamicLetterF` 13 + `dynamicLetterP` 11 + `dynamicLetterS`
+2 = 26. ✅
+
+But *"the exporter cannot read"* is no longer true, and this is not an unclaimed
+finding belonging to someone else. `tools/omr/class_aliases.py` maps all three:
+
+```
+"dynamicLetterP": "dynamicP",   "dynamicLetterF": "dynamicF",   "dynamicLetterS": "dynamicS",
+```
+
+and `class_aliases.py:21` names **this very campaign** as the reason the module
+exists (*"campaign's hand-drawn boxes are classed `dynamicLetterF`/`P`/`S`"*).
+CLAUDE.md records the fix and the residue.
+
+**Corrected statement:** *26 of the campaign's human-drawn boxes use the coarse
+`dynamicLetter*` spelling — exactly the population `class_aliases.py` was written
+for and already renames. The live residue is on the LABELING side, where
+`catalog.yaml` still carries the coarse ids 190–195, and CLAUDE.md already
+records it.* Relay it as corroboration of a shipped fix, not as a new finding.
+
+## WHAT IS MISSING (Agent III round 2)
+
+- **M14 — the matched comparison for the hairpin refutation is not made.** The
+  claim contrasts 17 human-drawn hairpins on 55 Brahms cells against a
+  detector that finds ~1 hairpin across eleven *whole scan pages*. Those are
+  different denominators. What the detector found **on those same 55 cells** is
+  in the batch's own `detections/`, costs one pass, and would turn a strong
+  argument into a controlled one.
+- **M15 — the floor's ladder is measured on 15 rows and the headline is 20.** The
+  five Mahler/Bach rows are correctly skipped (`no hand-read staves map — refusing
+  to guess a condensation from the encoding`) and they carry
+  `staves_a_human_would_read` 17/13/18/17/24 — i.e. the work needed to close the
+  gap is enumerated in the artefact and is 89 staves. That number should sit
+  beside the 20.09%, because the headline pool and the floor pool still differ.
+- **M16 — nothing prices the arm-noise argument the comparability rule now rests
+  on.** M3's defence (arm noise moves `M` and cannot move `F`, because `F`
+  contains no prediction of ours) is **correct as stated** — I checked it against
+  the artefact: `not_a_pipeline_figure` is literally true, the floor is scored
+  derived-truth-against-raw-truth with no prediction in it. But it makes the
+  *pair* (M, F) noisy only in M, which means the per-row noise floor must be
+  applied to M alone — and the registry's `noise_floor` field is attached to the
+  row, not to M. A one-line schema distinction, unstated.
