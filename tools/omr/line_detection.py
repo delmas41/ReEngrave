@@ -355,12 +355,35 @@ def _stacked_bar_bands(labels, label: int, x: int, y: int, w: int, h: int,
     them by dividing the component's height into `n_bars` equal slices. That is
     wrong for exactly the case the count exists to handle — a SLOPED stack,
     whose box is far taller than its bars and whose bars do not divide it
-    evenly. Measured over 2,073 components on 31 pages (20 scan gate rows + 11
-    engraved fixtures): 51 components read more than one bar, all on scans, and
-    the fabricated bands sit a median 0.241 staff spaces from the measured ones
-    at the BAND EDGE, worst case 1.037 — a full staff space. The band edge is
-    what `rhythm._beams_attached_to_stem` reads for its end-window test, and 4
-    of the 51 change their beam-level count, i.e. change a note's duration.
+    evenly.
+
+    Measured over 2,124 components on 31 pages — the 20-row scan gate and the
+    11 engraved fixtures, `benchmarks/omr-beam-bar-bands-2026-09/`: **51
+    components read more than one bar, every one on a scan and every one a
+    two-bar stack.** The fabricated band sits a median 0.106 staff spaces from
+    the measured one at its worse edge, worst case 0.743, and 18 of the 102 bar
+    placements are displaced past the 0.35-space clustering tolerance. The band
+    EDGE is what `rhythm._beams_attached_to_stem` reads for its end-window test;
+    the band CENTRE is what it clusters into levels.
+
+    ⚠️ **Through the real pipeline this changes 55 durations on 9 scan pages** —
+    not the handful a bounding-box-sized repair sounds like. All 55 are a single
+    beam level (42 longer, 13 shorter), no pitch moves and nothing is added or
+    dropped. Which way the pooled metric goes is UNMEASURED: this landed without
+    permission to run `scan_eval`, and 55 changes over 9 pages is plausibly
+    above that gate's ±6 edit noise floor rather than lost in it.
+
+    ⚠️ **And the trade is two-sided in one place, which is worth knowing before
+    widening this.** An excursion band is the right answer for the EDGE test and
+    a poor one for the CENTRE: a steeply sloped bar's centre is a y its ink
+    passes through only in the middle, so two overlapping excursions draw their
+    centres together and the level clustering merges them. Measured, that flips
+    4 of the 51 from two levels to one and 1 from one to two — bounded, and a
+    minority of the direction skew, but real. A `LineDetection` carries only `y`
+    and `height`, so its centre is derived and both consumers cannot be
+    satisfied at once; the principled next step is a band measured at the STEM's
+    own column rather than globally, which is a design change and not this
+    repair.
 
     ⚠️ **A single-bar component is returned with `bands=None` deliberately.** It
     has nothing to place — the box IS the bar — so the caller's fallback
@@ -369,9 +392,9 @@ def _stacked_bar_bands(labels, label: int, x: int, y: int, w: int, h: int,
     CONSTRUCTION rather than by measurement.
 
     A band is the bar's whole vertical EXCURSION — min top and max bottom over
-    the sampled columns — not a single column's reading, because a sloped bar
-    is at its band's top where the group ends high and at its bottom where it
-    ends low. `rhythm._beams_attached_to_stem` documents that it measures reach
+    every column that reads the stack cleanly — not a single column's reading,
+    because a sloped bar is at its band's top where the group ends high and at
+    its bottom where it ends low. `rhythm._beams_attached_to_stem` documents that it measures reach
     to the band and not to the centre for precisely this reason; this supplies
     the band it assumes it is being given.
 
