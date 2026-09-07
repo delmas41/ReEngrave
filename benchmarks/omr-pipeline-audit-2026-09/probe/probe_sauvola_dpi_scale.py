@@ -65,6 +65,24 @@ ROOT = fixture_root(Path("/Users/seanjohnson/Desktop/ReEngrave"))
 #: engraved fixtures. The engraved half matters: a LilyPond page is vector
 #: source, so its staff spacing at a given DPI is whatever the renderer chose,
 #: and it is the family where 300 was measured to win.
+#: ⚠️ PART D — THE POPULATION THE BENCHMARKS DO NOT CONTAIN. Every one of the
+#: 20 scan-gate rows is a BITONAL raster (ccitt/jbig2, `works.json`'s own
+#: `raster` field), so an adaptive threshold has nothing to adapt to on any of
+#: them and any window gives the same answer. A full census of the score
+#: library finds 48 of 289 editions (16.6%) are 8-bit. These are four of them,
+#: and they are where the window's scale actually decides something.
+GREYSCALE_PAGES = [
+    ("grey-beethoven9-schott-1826", "library/editions/beethoven/symphony-9-op125/"
+     "beethoven--symphony-9-op125--schott-1826--imslp46254.pdf", 4),
+    ("grey-beethoven7-steiner-1816", "library/editions/beethoven/symphony-7-op92/"
+     "beethoven--symphony-7-op92--s-a-steiner-co-1816--imslp46251.pdf", 4),
+    ("grey-haydn100-breitkopf-1857", "library/editions/haydn/"
+     "symphony-100-in-g-major-hob-i-100/"
+     "haydn--symphony-100-in-g-major-hob-i-100--breitkopf-und-hartel-1857--imslp546542.pdf", 4),
+    ("grey-brahms-tragic-simrock-1881", "library/editions/brahms/tragic-overture-op81/"
+     "brahms--tragic-overture-op81--simrock-1881--imslp23111.pdf", 4),
+]
+
 PAGES = [
     ("scan-beethoven5-litolff-p1", "library/editions/beethoven/symphony-5-op67/"
      "beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf", 1),
@@ -201,6 +219,36 @@ def main() -> int:
                      "pixels_disagreeing": differ,
                      "median_vertical_run_25": m25,
                      "median_vertical_run_50": m50})
+
+    print("\n=== D — the same experiment on GREYSCALE scans, which no benchmark"
+          " holds\n")
+    grey = require_nonempty(
+        [(n, ROOT / r, p) for n, r, p in GREYSCALE_PAGES if (ROOT / r).is_file()],
+        "greyscale edition PDFs", ROOT, "GREYSCALE_PAGES")
+    print(f"{'page':34s}{'dpi':>5s}{'greys':>7s}{'ink@25':>9s}{'ink@51':>9s}"
+          f"{'differ':>9s}{'run25':>7s}{'run51':>7s}")
+    for name, pdf, pi in grey:
+        for dpi in args.dpis:
+            rgb = raw_rgb(pdf, pi, dpi)
+            g = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
+            levels = int((np.bincount(g.ravel(), minlength=256)
+                          > g.size * 1e-5).sum())
+            b25 = binarize(rgb, window_size=W)
+            b51 = binarize(rgb, window_size=W * 2 + 1)
+            r25, r51 = run_stats(b25, 0), run_stats(b51, 0)
+            m25 = st.median(r25) if r25 else float("nan")
+            m51 = st.median(r51) if r51 else float("nan")
+            print(f"{name:34s}{dpi:5d}{levels:7d}{(b25 == 0).mean():9.4f}"
+                  f"{(b51 == 0).mean():9.4f}{(b25 != b51).mean():9.4f}"
+                  f"{m25:7.1f}{m51:7.1f}")
+            rows.append({"page": name, "dpi": dpi, "experiment": "greyscale_25_vs_51",
+                         "grey_levels": levels,
+                         "ink_25": float((b25 == 0).mean()),
+                         "ink_51": float((b51 == 0).mean()),
+                         "pixels_disagreeing": float((b25 != b51).mean()),
+                         "median_vertical_run_25": m25,
+                         "median_vertical_run_51": m51})
+            del rgb, g, b25, b51
 
     out = REPO / "benchmarks/omr-pipeline-audit-2026-09/sauvola-dpi-scale.json"
     out.write_text(json.dumps(rows, indent=1))

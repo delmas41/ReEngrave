@@ -1425,3 +1425,105 @@ superseded version drops, and the fields that may never be dropped.
 **Stability:** the registry is **byte-identical across two builds**, all ten
 probes exit 0, and nothing outside `benchmarks/omr-pipeline-audit-2026-09/` was
 modified in any round.
+
+
+---
+
+# ROUND 6 — reviewing the rebuilt renderer, and the four defects it found in me
+
+## U1. Priority one: no merged byte-identity claim rested on an empty comparison
+
+`compare_arms.py` did have the defect — `for xml in sorted(before.glob(...))` over
+an empty arm leaves `failures = 0` and prints `RESULT: PASS` at exit 0, *the
+cached-A/B shape inside the instrument written to detect it.* **All three merged
+claims are nonetheless sound**, and the check is not "the numbers look plausible":
+
+- **Per-page lines can only print inside the loop body.** The serialise and
+  cell-pad records carry them with byte counts (`64,552 B`, `165,617 B`) and the
+  cell-pad record additionally carries per-staff structure counts
+  (`21 / 147 unchanged`, `12 / 192 unchanged`) — all emitted from inside the
+  loop. An empty run emits none of it.
+- **The barline branch verified with `md5`, not with the comparator**, recording
+  `89d8a316330a9fb29df7c4a89dd1e08a (64552 bytes)` and
+  `d46bcb45cb1b8a56322e7f36e335aa76 (165617 bytes)`.
+- **Those hashes match the artefacts a DIFFERENT branch committed.** I ran `md5`
+  over `benchmarks/omr-serialise-evidence-2026-09/arm-after/` and got both
+  values exactly.
+
+**Two independent branches, two independent runs, converging on the same two
+hashes.** An empty comparison cannot produce an MD5, and two empty comparisons
+cannot agree on one. No re-run needed. ⚠️ What this establishes is that the
+comparisons were *non-empty*; the byte-identity itself is corroborated by the
+independent `md5` route rather than re-derived.
+
+## U2. The renderer: APPROVED, and rule 1 verified at layout level
+
+The rejection is encoded as a check: **no row identifier appears anywhere in the
+828-line module** (verified against all 56 ids), and the only instance-shaped
+string, `Breitkopf`, occurs three times — all in comments explaining the failure.
+It solved the class.
+
+**Rule 1, the one that sank the first build, verified in a real browser** — and
+not by DOM assertion, which is what I criticised last time. For all five caption
+rows: caption **and** its number each `elementFromPoint`-hit-test to themselves
+(a hit test is a query against rendered, unoccluded layout), both on screen
+simultaneously, same left edge, 20–38 px apart, 1010 px wide, `insideDetails:
+false`, opacity 1. ⚠️ The browser pane's screenshot came back blank — a capture
+artefact, since `elementFromPoint(400,200)` returns the text *"MUST BE READ WITH
+THIS NUMBER"*. The hit test is the stronger evidence anyway.
+
+Rules 2-6 all hold; the version gate's third clause (a `may-never-drop` field the
+build does not handle) fires at exit 3, and the head-to-head **fallback** block
+appears only when I re-created the pre-v0.4.0 one-sided-key defect by mutation.
+
+## U3. `era_key` grouping is adjacency by coincidence — measured, not argued
+
+The builder grouped by `era_key`, which puts the ledger screen/defect pair in one
+bordered `eragroup` block, and asked whether that is the right generalisation of
+my rule. **It is not**, and the page itself says so:
+
+| measured on the rendered page | |
+|---|---|
+| same bordered block | **yes** |
+| gap between the two numbers | **200 px**, with a full metadata row between |
+| order | **defect (99.02 %) ABOVE screen (6.9 %)** |
+
+So even the coincidence does not deliver "printed together": a reader meets
+99.02 % first and the screen 200 px later. And the deeper objection is that
+`era_key` means *"measured under the same conditions"* — a property of how a
+number was **made**. Whether two numbers must be read together is a property of
+how they may be **read**. They coincide here because both rows came out of one
+audit run. **Re-measure either on another corpus, its `era_key` changes, the pair
+separates, and nothing fails.** A rule whose enforcement evaporates when an
+unrelated field moves is not a rule.
+
+⚠️ The builder's counter-example is real and I am keeping it: era grouping also
+pulls the five blind engraved stages inside the era that produces 88.78 %, which
+prose about one pair would never have reached. That is a genuine benefit — but it
+is *contextualising a family*, not *binding a pair*. Both can be true; only one
+of them needs a field.
+
+**So it gets a field, the way `mandatory_caption` did:** `render_with`, symmetric
+and build-enforced.
+
+## U4. Four defects in my own frozen file, all real, all fixed → **v0.5.0**
+
+| # | defect | fix |
+|---|---|---|
+| 1 | **Doubled `%%`** in four `why_not` strings — a `%`-format artefact. The renderer normalised it at display time; the frozen file still carried it. | Fixed at **source** on the 7 non-interpolated lines. Normalising a defect at display is how it survives. |
+| 2 | **Nine `ceiling.evidence` entries were prose**, not openable paths — including two that *looked* like paths and resolved to nothing. | Split into `evidence_prose`; `evidence` is now **checked for existence at build time**. ⚠️ This makes my README's claim true — it was not true at 0.4.0. |
+| 3 | **Two rows carried `ceiling.kind: null`.** A consumer grouping on `kind` cannot tell null from unset. | `unreachable_configuration` and `none`, both documented; null is never legal. |
+| 4 | **The ledger pair was held together by prose and by luck** (§U3). | `render_with`. |
+
+**Both new guards mutation-tested red before being trusted:** a one-sided
+`render_with` → exit 1 naming both sides; a nonexistent evidence path → exit 1
+naming the row. That is now **five** build-time guards, every one of which I have
+watched fail.
+
+`render_with` is in `fields_a_consumer_may_never_drop`, so the v2 renderer —
+which does not handle it — now **correctly refuses v0.5.0 at exit 3** with an
+actionable message. The gate catching my own change is the mechanism working, not
+a regression.
+
+**Frozen at v0.5.0. Registry byte-stable across two builds; ten probes green;
+nothing outside this directory touched.**
