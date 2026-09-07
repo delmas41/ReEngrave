@@ -1,0 +1,195 @@
+{
+  "excluded_single_system": [
+    "beethoven-sym5-mvt1-984073-p1",
+    "beethoven-sym5-mvt1-575951-p1",
+    "dvorak-sym9-mvt1-405834-p5",
+    "dvorak-sym9-mvt1-405834-p6",
+    "brahms-sym1-mvt1-317803-p1",
+    "mahler-sym5-mvt1-local-p2",
+    "mahler-sym5-mvt1-local-p3",
+    "mahler-sym5-mvt1-local-p4",
+    "mahler-sym5-mvt1-local-p5"
+  ],
+  "excluded_no_transcription": [
+    "beethoven-sym5-mvt1-984073-p3",
+    "beethoven-sym5-mvt1-984073-p4",
+    "beethoven-sym5-mvt1-575951-p3",
+    "beethoven-sym5-mvt1-575951-p4",
+    "dvorak-sym9-mvt1-405834-p7",
+    "brahms-sym1-mvt1-317803-p3",
+    "brahms-sym1-mvt1-317803-p4"
+  ],
+  "excluded_no_truth": [],
+  "tested": [
+    {
+      "row": "beethoven-sym5-mvt1-984073-p2",
+      "n_systems": 2,
+      "system_sizes": [
+        11,
+        11
+      ],
+      "truth_method": "uniform-lineup positional (hand truth asserts one unchanging lineup; not independently name-aligned per system)",
+      "ordinal_status": "succeeded",
+      "slot_status": "succeeded",
+      "fingerprint": "dbe0e8332255cfbcc92b97ef2f734623",
+      "ordinal_vs_truth": {
+        "exact_partition_equal": true,
+        "n_staves": 22,
+        "n_staves_correctly_grouped": 22,
+        "per_staff_agreement": 1.0,
+        "mismatches": []
+      },
+      "slot_vs_truth": {
+        "exact_partition_equal": true,
+        "n_staves": 22,
+        "n_staves_correctly_grouped": 22,
+        "per_staff_agreement": 1.0,
+        "mismatches": []
+      }
+    },
+    {
+      "row": "beethoven-sym5-mvt1-575951-p2",
+      "n_systems": 2,
+      "system_sizes": [
+        11,
+        11
+      ],
+      "truth_method": "uniform-lineup positional (hand truth asserts one unchanging lineup; not independently name-aligned per system)",
+      "ordinal_status": "succeeded",
+      "slot_status": "succeeded",
+      "fingerprint": "dbe0e8332255cfbcc92b97ef2f734623",
+      "ordinal_vs_truth": {
+        "exact_partition_equal": true,
+        "n_staves": 22,
+        "n_staves_correctly_grouped": 22,
+        "per_staff_agreement": 1.0,
+        "mismatches": []
+      },
+      "slot_vs_truth": {
+        "exact_partition_equal": true,
+        "n_staves": 22,
+        "n_staves_correctly_grouped": 22,
+        "per_staff_agreement": 1.0,
+        "mismatches": []
+      }
+    },
+    {
+      "row": "brahms-sym1-mvt1-317803-p2",
+      "n_systems": 2,
+      "system_sizes": [
+        14,
+        13
+      ],
+      "truth_method": "systems_as_printed (name-aligned)",
+      "ordinal_status": "REFUSED",
+      "slot_status": "succeeded",
+      "fingerprint": "cdc7a30f3280cec5e7c6abc880980629",
+      "ordinal_vs_truth": null,
+      "slot_vs_truth": {
+        "exact_partition_equal": false,
+        "n_staves": 27,
+        "n_staves_correctly_grouped": 24,
+        "per_staff_agreement": 0.8888888888888888,
+        "mismatches": [
+          {
+            "staff": [
+              0,
+              6
+            ],
+            "true_group": [
+              [
+                0,
+                6
+              ],
+              [
+                1,
+                6
+              ]
+            ],
+            "cand_group": [
+              [
+                0,
+                6
+              ]
+            ]
+          },
+          {
+            "staff": [
+              0,
+              7
+            ],
+            "true_group": [
+              [
+                0,
+                7
+              ]
+            ],
+            "cand_group": [
+              [
+                0,
+                7
+              ],
+              [
+                1,
+                6
+              ]
+            ]
+          },
+          {
+            "staff": [
+              1,
+              6
+            ],
+            "true_group": [
+              [
+                0,
+                6
+              ],
+              [
+                1,
+                6
+              ]
+            ],
+            "cand_group": [
+              [
+                0,
+                7
+              ],
+              [
+                1,
+                6
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "row": "bach-brandenburg3-mvt1-468678-p1",
+      "n_systems": 2,
+      "system_sizes": [
+        12,
+        12
+      ],
+      "truth_method": "uniform-lineup positional (hand truth asserts one unchanging lineup; not independently name-aligned per system)",
+      "ordinal_status": "succeeded",
+      "slot_status": "succeeded",
+      "fingerprint": "83e0290738d488337efd07da90f89f76",
+      "ordinal_vs_truth": {
+        "exact_partition_equal": true,
+        "n_staves": 24,
+        "n_staves_correctly_grouped": 24,
+        "per_staff_agreement": 1.0,
+        "mismatches": []
+      },
+      "slot_vs_truth": {
+        "exact_partition_equal": true,
+        "n_staves": 24,
+        "n_staves_correctly_grouped": 24,
+        "per_staff_agreement": 1.0,
+        "mismatches": []
+      }
+    }
+  ],
+  "distinct_documents": 3
+}
