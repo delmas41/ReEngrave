@@ -183,3 +183,98 @@ class TestBothCallSitesPassATrace:
             assert "trace" in kwargs, (
                 f"locate_clef at line {call.lineno} discards its own reasoning"
             )
+
+
+# ─── the detector's argmax, and that it WAS a contest ──────────────────────
+
+
+class TestClefContestIsRecorded:
+    """`best_clef_conf` is initialised to -1.0, used once, and discarded — so
+    a clef won at 0.98 unopposed and a clef won at 0.26 over a 0.25 runner-up
+    left the same trace: `clef_source == "detector"`. These pin the record of
+    the margin. Run RED with the `clef_evidence["contest"]` block removed.
+    """
+
+    def test_an_uncontested_reading_records_no_runner_up(self):
+        cell = cell_with_c_clef(4)
+        evidence = _run(cell, detector=_NoDetections([_clef_detection(cell)]))
+        contest = evidence["contest"]
+        assert contest["winner"] == "treble"
+        assert contest["winner_confidence"] == pytest.approx(0.9)
+        assert contest["n_resolved"] == 1
+        assert "runner_up" not in contest and "margin" not in contest
+
+    def test_a_close_contest_records_the_margin_and_the_loser(self):
+        """The quantity the audit is about: two clefs, four hundredths apart,
+        and downstream this used to be indistinguishable from a walkover."""
+        cell = cell_with_c_clef(4)
+        winner = _clef_detection(cell, name="clefG", conf=0.29, y=118, h=88)
+        loser = _clef_detection(cell, name="clefF", conf=0.25, y=98, h=48)
+        evidence = _run(cell, detector=_NoDetections([winner, loser]))
+        contest = evidence["contest"]
+        assert contest["winner"] == "treble"
+        assert contest["runner_up"] == "bass"
+        assert contest["runner_up_confidence"] == pytest.approx(0.25)
+        assert contest["margin"] == pytest.approx(0.04, abs=1e-6)
+        assert contest["disagrees"] is True
+
+    def test_two_boxes_agreeing_is_a_duplicate_not_a_contest(self):
+        """A contest is only interesting where the candidates DISAGREE. Two
+        boxes on one glyph both reading treble would otherwise inflate this
+        population on exactly the dense pages anyone would read it on."""
+        cell = cell_with_c_clef(4)
+        a = _clef_detection(cell, conf=0.90)
+        b = _clef_detection(cell, conf=0.40)
+        contest = _run(cell, detector=_NoDetections([a, b]))["contest"]
+        assert contest["runner_up"] == "treble"
+        assert contest["disagrees"] is False
+
+    def test_a_candidate_the_geometry_could_not_NAME_is_still_recorded(self):
+        """"The detector fired at 0.9 and nothing could be made of it" is a
+        different page from "nothing fired", and the argmax `continue`d past
+        both identically."""
+        cell = cell_with_c_clef(4)
+        # Zero height: the snap has nothing to measure, so `resolve_clef`
+        # abstains — and the detection is still evidence that it fired.
+        unnameable = _clef_detection(cell, name="clefUnpitchedPercussion",
+                                     conf=0.77)
+        contest = _run(cell, detector=_NoDetections([unnameable]))["contest"]
+        assert contest["n_candidates"] == 1
+        assert contest["n_resolved"] == 0
+        assert contest["candidates"][0]["resolved"] is False
+        assert contest["candidates"][0]["confidence"] == pytest.approx(0.77)
+
+    def test_the_winner_matches_the_clef_that_was_actually_used(self):
+        """The record must describe the decision, not a parallel one. A
+        recording that could disagree with the verdict would be worse than
+        none — the standard this repo set for uncalibrated probabilities."""
+        cell = cell_with_c_clef(4)
+        dets = [_clef_detection(cell, name="clefF", conf=0.6, y=98, h=48),
+                _clef_detection(cell, name="clefG", conf=0.8)]
+        evidence: dict = {}
+        _, active_clef, _, _, source = T._detections_for_cell(
+            _NoDetections(dets), cell,
+            conf_threshold=0.25, imgsz=512, iou_threshold=0.5,
+            agnostic_nms=True, active_clef=None, active_key_sig={},
+            active_time_sig=None, read_clef=True, clef_evidence=evidence,
+        )[:5]
+        assert source == "detector"
+        assert active_clef.startswith(evidence["contest"]["winner"])
+
+
+class TestBlockedReadersAreRecorded:
+    def test_the_header_gap_fill_says_why_it_did_not_run(self):
+        """A gap-fill pass that never fires because someone always speaks
+        first is a different finding from one that fires and finds nothing —
+        and both used to look like silence."""
+        cell = cell_with_c_clef(4)
+        evidence = _run(cell, detector=_NoDetections([_clef_detection(cell)]),
+                        header_cell=cell)
+        assert evidence["detector_header"]["skipped"] == "another reader spoke"
+
+    def test_the_header_gap_fill_records_what_it_read_when_it_does_run(self):
+        cell = cell_with_c_clef(4)
+        # Nothing detected anywhere, so the locator claims the staff and the
+        # header pass is not reached; disable the locator to reach it.
+        evidence = _run(cell, header_cell=cell, locate_c_clefs=False)
+        assert "read" in evidence["detector_header"]

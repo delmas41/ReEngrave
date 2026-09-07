@@ -1604,6 +1604,14 @@ def _detections_for_cell(
     best_clef_read = None
     best_clef_det = None
     best_clef_conf = -1.0
+    # Every candidate this argmax considered. `best_clef_conf` is the one
+    # quantity the loop keeps and it is discarded four lines below, so a clef
+    # won at 0.98 with nothing behind it and a clef won at 0.26 over a 0.25
+    # runner-up were the same fact downstream: `clef_source == "detector"`.
+    # ⚠️ Note there is no `clef_candidates` here the way there is a
+    # `pitch_candidates` on every notehead — the asymmetry is the finding, and
+    # this list is the record of it, NOT a ranked list anything re-reads.
+    clef_candidates: list[dict[str, Any]] = []
     for d in dets:
         if d.category != "clef":
             continue
@@ -1612,7 +1620,24 @@ def _detections_for_cell(
         # know. See tools/omr/clef_geometry.py.
         read = resolve_clef_for_detection(d)
         if read is None:
+            # A clef-category detection the geometry could not name is still a
+            # candidate that was considered and dropped — recorded with its
+            # confidence, because "the detector fired at 0.9 and nothing could
+            # be made of it" is a different page from "nothing fired".
+            if clef_evidence is not None:
+                clef_candidates.append({
+                    "class": getattr(d, "smufl_name", None),
+                    "confidence": round(float(d.confidence), 4),
+                    "clef": None, "resolved": False, "source": "detector",
+                })
             continue
+        if clef_evidence is not None:
+            clef_candidates.append({
+                "class": getattr(d, "smufl_name", None),
+                "confidence": round(float(d.confidence), 4),
+                "clef": read.name, "resolved": True,
+                "read_source": read.source, "source": "detector",
+            })
         if d.confidence > best_clef_conf:
             best_clef_read = read
             best_clef_det = d
@@ -1627,6 +1652,35 @@ def _detections_for_cell(
         suffix = _octave_shift_for_base_clef(dets, best_clef_det)
         active_clef = best_clef_read.name + suffix
         clef_source = "detector"
+    if clef_evidence is not None:
+        # The contest, written down. The RUNNER-UP is the point: a margin says
+        # whether this staff's clef was decided or merely picked, and until now
+        # nothing recorded that a contest had happened at all.
+        ranked = sorted(
+            (c for c in clef_candidates if c["resolved"]),
+            key=lambda c: -c["confidence"],
+        )
+        contest: dict[str, Any] = {
+            "candidates": clef_candidates,
+            "n_candidates": len(clef_candidates),
+            "n_resolved": len(ranked),
+            "winner": best_clef_read.name if best_clef_read else None,
+            "winner_confidence": (
+                round(best_clef_conf, 4) if best_clef_read else None
+            ),
+        }
+        if len(ranked) > 1:
+            runner_up = ranked[1]
+            contest["runner_up"] = runner_up["clef"]
+            contest["runner_up_confidence"] = runner_up["confidence"]
+            contest["margin"] = round(ranked[0]["confidence"]
+                                      - runner_up["confidence"], 4)
+            # A contest only MATTERS where the two candidates disagree about
+            # the clef; two boxes on one glyph both reading "treble" is a
+            # duplicate, not a contest, and conflating them would inflate this
+            # population on exactly the dense pages where it is read.
+            contest["disagrees"] = runner_up["clef"] != ranked[0]["clef"]
+        clef_evidence["contest"] = contest
 
     # ── Key-signature pass: scan for keySharp / keyFlat. None ⇒ no update. ──
     #
@@ -1746,6 +1800,16 @@ def _detections_for_cell(
         if header_clef is not None:
             active_clef = header_clef
             clef_source = "detector_header"
+        if clef_evidence is not None:
+            clef_evidence["detector_header"] = {"read": header_clef}
+    elif clef_evidence is not None and read_clef:
+        # It did not run, and WHY it did not run is the record: a gap-fill pass
+        # that never fires because someone always speaks first is a different
+        # finding from one that fires and finds nothing.
+        clef_evidence["detector_header"] = {
+            "skipped": ("another reader spoke" if clef_source
+                        else "no header cell"),
+        }
 
     # ── Decoupled staff-header specialist (clef + time-sig override). The
     #    production detector under-detects clefs on real orchestral scans (9%
@@ -1794,6 +1858,17 @@ def _detections_for_cell(
         # Clef and time-sig precedence are independent: the locator has no
         # opinion on meter, so another reader's claim on the clef doesn't block
         # the specialist's time-sig read.
+        if clef_evidence is not None:
+            # The specialist RAN either way — this is gap-fill precedence, not
+            # a gate on the call — so where it is overruled the reading it
+            # would have given is real, computed, and was being dropped. That
+            # is the cheapest available measurement of what gap-fill-only
+            # costs, and it needs no second inference.
+            clef_evidence["specialist"] = {
+                "read": spec_clef,
+                "applied": spec_clef is not None and clef_source is None,
+                "blocked_by": clef_source if spec_clef is not None else None,
+            }
         if spec_clef is not None and clef_source is None:
             active_clef = spec_clef
             clef_source = "specialist"
@@ -1816,11 +1891,18 @@ def _detections_for_cell(
     #    override is visible rather than silent.
     if forced_clef is not None and forced_clef != active_clef:
         overridden_clef = active_clef if clef_source else None
+        if clef_evidence is not None:
+            clef_evidence["dossier"] = {
+                "forced": forced_clef, "overrode": overridden_clef,
+                "overrode_source": clef_source,
+            }
         active_clef = forced_clef
         clef_source = "dossier"
         if overridden_clef is not None:
             clef_overrides.append({"read": overridden_clef, "used": forced_clef})
     elif forced_clef is not None:
+        if clef_evidence is not None:
+            clef_evidence["dossier"] = {"forced": forced_clef, "agrees": True}
         clef_source = clef_source or "dossier"
 
     if forced_fifths is not None:
