@@ -316,6 +316,12 @@ DEAD_ENDS = [
 ORPHANS = [
     ("o_hair", "hairpin_detection.py",
      "imported only by its own tests"),
+    # Added 2026-09-07 by benchmarks/omr-decision-map-verify-2026-09 (E10):
+    # the LARGER of the two CV orphans, and the map had missed it entirely.
+    ("o_brack", "bracket_reader.py (390 lines)",
+     "tests + one benchmark's probes only"),
+    ("o_cond", "condensed_parts.py",
+     "no producer — so OMR_CONDENSED_PARTS is inert"),
     ("o_tmpl", "template_matcher.py",
      "dead detector; 2 live env flags on it"),
 ]
