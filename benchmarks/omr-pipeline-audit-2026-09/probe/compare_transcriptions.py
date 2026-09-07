@@ -26,6 +26,24 @@ anywhere else is a real difference. Run the control yourself before trusting a
 green result here: transcribe one page twice on an unmodified tree and pass the
 two outputs to this script — it must report 0 changed, 0 added.
 
+⚠️ **AND A SEVENTH, WHICH IS NOT A CLOCK: `direction_text.pages[].rejected`.**
+Found 2026-09-07 while gating a recording change on Litolff Beethoven 5 p68, and
+excluded only after the control was run rather than on the guess it looked like.
+That list holds the OCR strings the musical-term lexicon threw away, and the
+OCR rung is an LLM: on two runs of ONE tree, the same slot held an **11,708-
+character hallucinated English essay** ("1. A statistical analysis of the data
+is conducted...") in one run and the six-character string `SECRET` in the other,
+with every other leaf on the page identical. So this leaf is nondeterministic in
+CONTENT and in LENGTH, on an unmodified tree, and a comparison that trusts it
+will report a false failure roughly whenever the rung hallucinates.
+
+⚠️ It is excluded as NOISE, not as harmless. `n_accepted` was 0 in both runs —
+the lexicon gate is doing its job and no verdict is touched — but the strings
+reach the result JSON, they were produced on a run with `OMR_DIRECTION_TEXT=0`,
+and an 11 KB generation in a field meant for OCR fragments is worth somebody
+looking at. Reported to the coordinator rather than fixed here: it is in
+`direction_text`, which this branch does not own.
+
 ⚠️ This is the SECONDARY gate. The primary one is the exported MusicXML being
 byte-identical (`python3 -m tools.omr.export <json> --format musicxml`, then
 `diff`), because that is what a reader of this project actually receives; a
@@ -41,12 +59,15 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-#: Leaves whose value legitimately differs between two runs of ONE tree.
-#: Wall clocks only — see the control described in the module docstring.
+#: Leaves whose value legitimately differs between two runs of ONE tree. Wall
+#: clocks, plus the OCR rung's rejected-string list — see the two controls
+#: described in the module docstring. Every entry here was MEASURED to move on
+#: an unmodified tree; do not add one because a comparison went red.
 IGNORED_LEAVES = (
     re.compile(r"^/runtime/"),
     re.compile(r"^/weight_routing/classification/ms$"),
     re.compile(r"/_s$"),
+    re.compile(r"^/direction_text/pages\[\d+\]/rejected"),
 )
 
 
