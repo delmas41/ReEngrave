@@ -252,6 +252,7 @@ from .preprocessing import render_page
 from .staff_detector import detect_staves
 from .measure_extractor import (detect_barlines, extract_measures,
                                 majority_bars_by_system, resegment_fused_measures)
+from .hairpin_detection import read_hairpins_for_page
 from .staff_line_removal import remove_staff_lines
 from .types import Barline, MeasureCell, PageWithStaves, Staff
 from .pitch_resolver import (pitch_candidates_for_notehead, pitch_for_notehead,
@@ -2966,6 +2967,25 @@ def _roster_range_veto_mode() -> str:
 _RANGE_VETO_READ_SOURCES = frozenset({"label", "roster", "score_order_ambiguity"})
 
 
+def _cv_hairpins_enabled() -> bool:
+    """`OMR_CV_HAIRPINS` — read hairpins with classical CV. **Off by default.**
+
+    The YOLO detector does not see a hairpin on a scan: over the eleven-row scan
+    era it reads 0-1 against a truth of 99, while the ink is plainly there. A
+    hairpin is a thin diagonal line, which is the shape Phase 4f moved stems and
+    beams out of the detector for; `hairpin_detection` is the member of that
+    family that was left behind, built and measured 2026-09-04 and — until this
+    call site — imported by nothing.
+
+    ⚠️ Off by default because the trade is 1:1 and unpriced against OMR-NED: an
+    invented `<direction>` is charged exactly what a missed one is, so a reader
+    that adds 57 marks and 2 false ones has not obviously helped until somebody
+    runs the arm. Turning it on is a measurement, not a tidy-up.
+    """
+    return os.environ.get(
+        "OMR_CV_HAIRPINS", "0").strip().lower() in ("1", "true", "yes", "on")
+
+
 def _contest_dump_enabled() -> bool:
     """`OMR_CONTEST_DUMP` — record contested notehead pairs onto the page dict.
 
@@ -5200,6 +5220,27 @@ def transcribe(
             st.staff_index: (st.top_y, st.bottom_y, st.line_spacing_px)
             for st in pws.staves
         }
+        # ── Hairpins, by classical CV (OMR_CV_HAIRPINS, default off) ──
+        # BEFORE the two dedupers, deliberately. A CV hairpin is attributed to
+        # the staff whose BAND it stands in, which is right by construction —
+        # but the detector's own hairpins are not, and on the engraved corpus
+        # `_dedupe_cross_staff_detections` has to rescue 3 of Mahler 5's 4 from
+        # the staff below their own. Adding CV readings upstream of that means
+        # a CV/YOLO contest over one printed hairpin is settled by the same
+        # notes-in-bar tier as every other one, instead of shipping twice.
+        #
+        # `page.binary` is the WHOLE page, staff lines intact, and in the same
+        # deskewed frame every `bbox_page_px` on this page dict already is — see
+        # `hairpin_detection.read_hairpins_for_page` for why all three of those
+        # words are load-bearing. Nothing here touches what YOLO reads.
+        if _cv_hairpins_enabled():
+            n_cv_hairpins = read_hairpins_for_page(page_dict, page.binary)
+            if n_cv_hairpins:
+                page_dict["n_cv_hairpins_added"] = n_cv_hairpins
+                out["n_cv_hairpins_added"] = (
+                    out.get("n_cv_hairpins_added", 0) + n_cv_hairpins)
+                out["n_detections_total"] += n_cv_hairpins
+
         n_unladdered = _drop_unladdered_noteheads(page_dict, _bands)
         if n_unladdered:
             page_dict["n_unladdered_noteheads_dropped"] = n_unladdered

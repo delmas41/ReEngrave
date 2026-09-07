@@ -39,6 +39,29 @@ and its arms run a few pixels apart along most of the length.
 Gate, constants set on one page then run unchanged across eleven: **59 of 99
 hairpins against the detector's 1, and zero false positives on five of the six
 pages that carry none.**
+
+⚠️ **THAT GATE WAS RE-RUN BEFORE THE CALL SITE WAS ADDED (2026-09-07) AND IT
+REPRODUCES** — a measurement for code nothing imports is exactly the kind this
+repo has been bitten by, so it was not taken on trust.
+`benchmarks/omr-hairpin-cv-2026-09/probe/reproduce_gate.py`, over the same
+eleven rows on the current `graft09` fixtures, truth 99 hairpins:
+
+    ink recipe                           found   FPs on the 6 blank pages
+    gray < 180, fresh 600 dpi render        62   3, silent on 5 of 6
+    PageImage.binary (Sauvola, deskewed)    57   2, silent on 5 of 6
+
+Same categorical result on both, and the same weak row (Mahler 5 p3, 2 against
+17). ⚠️ Neither total is the docstring's 59 to the unit, and neither should be:
+the fixtures were re-transcribed with different weights since, so a different
+set of point detections gets blanked out of the search. The claim that
+reproduces is the SHAPE of the gate — order of magnitude on the pages that
+carry hairpins, silence on the pages that do not — not an integer.
+
+**The pipeline reads the second recipe**, because `PageImage.binary` is already
+rendered, already deskewed, and already the frame every `bbox_page_px` on the
+page dict is in. It yields five fewer and invents one fewer; on a metric that
+charges an invented direction exactly what it charges a missed one, that trade
+is close to neutral and the shared frame is not.
 """
 
 from __future__ import annotations
@@ -64,6 +87,11 @@ MAX_OUTLINE_RMS_SPACES = 0.10
 #: attached to something. The population is 1.0x against 3248x; any value in
 #: that gap gives the same answer.
 MAX_COMPONENT_GROWTH = 2.0
+
+#: A page whose "ink" exceeds this after inversion was handed the wrong
+#: polarity. Not a tuned number — a printed orchestral page is a few percent
+#: ink, and the ceiling only has to sit below "most of the page".
+_INK_FRACTION_CEILING = 0.5
 
 MIN_WIDTH_SPACES = 0.8
 MAX_WIDTH_SPACES = 30.0
@@ -342,3 +370,83 @@ def attach_to_page(page: dict[str, Any], page_ink: np.ndarray,
         meas["n_detections"] = len(meas["detections"])
         added += 1
     return added
+
+
+def _detection_boxes(page: dict[str, Any]) -> list[tuple[float, float, float, float, str]]:
+    """Every detection on a built page dict, as a PAGE-pixel box.
+
+    ⚠️ A DETECTION's `bbox` is canonical-cell `[x, y, w, h]` and its cell's
+    `bbox_page_px` is `(x0, y0, x1, y1)` — CORNERS. Only the corner ORIGIN is
+    used here, which is the half both conventions agree on; `_measure_for`
+    documents what reading the far corner as a width cost.
+    """
+    out: list[tuple[float, float, float, float, str]] = []
+    for system in page.get("systems", []):
+        for staff in system.get("staves", []):
+            for meas in staff.get("measures", []):
+                box = meas.get("bbox_page_px") or [0, 0, 0, 0]
+                up = float(meas.get("upscale_factor") or 1.0) or 1.0
+                for det in meas.get("detections", []):
+                    b = det.get("bbox")
+                    if not b or len(b) != 4:
+                        continue
+                    out.append((float(box[0]) + b[0] / up,
+                                float(box[1]) + b[1] / up,
+                                b[2] / up, b[3] / up, det.get("class") or ""))
+    return out
+
+
+def read_hairpins_for_page(page: dict[str, Any], page_binary: np.ndarray) -> int:
+    """The whole rung, on one built page dict: blank, search, attach.
+
+    ⚠️ `page_binary` is the pipeline's own `types.PageImage.binary` — **0 = ink,
+    255 = paper** — and the inversion to this module's ink-non-zero convention
+    happens HERE rather than at the call site. Both polarities live in this
+    repo, and getting one wrong does not crash: it searches the PAPER, finds
+    nothing, and reports a clean zero. A silent null is the one result this
+    project treats as worse than a loud failure, so the polarity is asserted
+    (`_INK_FRACTION_CEILING`) instead of trusted.
+
+    The image is the WHOLE page — not a band, not a cell, and not the
+    staff-line-erased variant the other CV rungs take. All three are deliberate
+    and each is measured:
+
+      * whole page, because ISOLATION is a property of a component's full
+        extent and a crop severs a beam from the stems that betray it;
+      * staff lines INTACT, because that is the ink the 1.0x-against-3248x
+        growth gap was measured on — erasing them dissolves the page's single
+        connected mass and the constant no longer separates anything. (This
+        says nothing about the detector's input, which is untouched; see
+        `remove_staff_lines`, which erases per CELL for the CV consumers that
+        want it.)
+
+    Returns how many hairpins were added as detections.
+    """
+    spacings = sorted(s["spacing"] for s in _staff_meta(page))
+    if not spacings:
+        return 0
+    page_ink = (page_binary == 0).astype(np.uint8) * 255
+    ink_fraction = float(np.count_nonzero(page_ink)) / max(1, page_ink.size)
+    if ink_fraction > _INK_FRACTION_CEILING:
+        raise ValueError(
+            f"page_binary looks inverted: {ink_fraction:.2f} of the page is ink "
+            f"after 0=ink inversion. Pass `PageImage.binary` (0=ink), not an "
+            f"ink-non-zero mask. The densest page measured here is far under "
+            f"{_INK_FRACTION_CEILING}.")
+    sp_med = spacings[len(spacings) // 2]
+    blanked = blank_point_detections(page_ink, _detection_boxes(page), sp_med)
+    return attach_to_page(page, page_ink, blanked)
+
+
+def _staff_meta(page: dict[str, Any]) -> list[dict[str, Any]]:
+    """`{"index", "top", "bottom", "spacing"}` per staff of a built page dict."""
+    out = []
+    for system in page.get("systems", []):
+        for staff in system.get("staves", []):
+            g = staff.get("staff_geometry") or {}
+            ys = g.get("line_ys_page") or []
+            if len(ys) >= 5 and g.get("line_spacing_px"):
+                out.append({"index": staff.get("staff_index"),
+                            "top": float(min(ys)), "bottom": float(max(ys)),
+                            "spacing": float(g["line_spacing_px"])})
+    return sorted(out, key=lambda s: s["bottom"])

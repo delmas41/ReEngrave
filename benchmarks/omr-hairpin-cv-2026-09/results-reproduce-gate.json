@@ -1,0 +1,167 @@
+{
+ "bach-brandenburg3-mvt1-468678-p1": {
+  "truth_hairpins": 0,
+  "yolo": 0,
+  "n_staves": 24,
+  "probe": 0,
+  "probe_kinds": {
+   "crescendo": 0,
+   "diminuendo": 0
+  },
+  "pipeline": 0,
+  "pipeline_kinds": {
+   "crescendo": 0,
+   "diminuendo": 0
+  }
+ },
+ "beethoven-sym5-mvt1-575951-p1": {
+  "truth_hairpins": 0,
+  "yolo": 0,
+  "n_staves": 12,
+  "probe": 0,
+  "probe_kinds": {
+   "crescendo": 0,
+   "diminuendo": 0
+  },
+  "pipeline": 0,
+  "pipeline_kinds": {
+   "crescendo": 0,
+   "diminuendo": 0
+  }
+ },
+ "beethoven-sym5-mvt1-575951-p2": {
+  "truth_hairpins": 0,
+  "yolo": 0,
+  "n_staves": 22,
+  "probe": 0,
+  "probe_kinds": {
+   "crescendo": 0,
+   "diminuendo": 0
+  },
+  "pipeline": 0,
+  "pipeline_kinds": {
+   "crescendo": 0,
+   "diminuendo": 0
+  }
+ },
+ "beethoven-sym5-mvt1-984073-p1": {
+  "truth_hairpins": 0,
+  "yolo": 0,
+  "n_staves": 12,
+  "probe": 0,
+  "probe_kinds": {
+   "crescendo": 0,
+   "diminuendo": 0
+  },
+  "pipeline": 0,
+  "pipeline_kinds": {
+   "crescendo": 0,
+   "diminuendo": 0
+  }
+ },
+ "beethoven-sym5-mvt1-984073-p2": {
+  "truth_hairpins": 0,
+  "yolo": 0,
+  "n_staves": 22,
+  "probe": 0,
+  "probe_kinds": {
+   "crescendo": 0,
+   "diminuendo": 0
+  },
+  "pipeline": 0,
+  "pipeline_kinds": {
+   "crescendo": 0,
+   "diminuendo": 0
+  }
+ },
+ "brahms-sym1-mvt1-317803-p1": {
+  "truth_hairpins": 0,
+  "yolo": 0,
+  "n_staves": 14,
+  "probe": 3,
+  "probe_kinds": {
+   "crescendo": 3,
+   "diminuendo": 0
+  },
+  "pipeline": 2,
+  "pipeline_kinds": {
+   "crescendo": 2,
+   "diminuendo": 0
+  }
+ },
+ "brahms-sym1-mvt1-317803-p2": {
+  "truth_hairpins": 68,
+  "yolo": 0,
+  "n_staves": 27,
+  "probe": 44,
+  "probe_kinds": {
+   "crescendo": 25,
+   "diminuendo": 19
+  },
+  "pipeline": 40,
+  "pipeline_kinds": {
+   "crescendo": 26,
+   "diminuendo": 14
+  }
+ },
+ "dvorak-sym9-mvt1-405834-p5": {
+  "truth_hairpins": 7,
+  "yolo": 0,
+  "n_staves": 15,
+  "probe": 4,
+  "probe_kinds": {
+   "crescendo": 2,
+   "diminuendo": 2
+  },
+  "pipeline": 4,
+  "pipeline_kinds": {
+   "crescendo": 2,
+   "diminuendo": 2
+  }
+ },
+ "dvorak-sym9-mvt1-405834-p6": {
+  "truth_hairpins": 4,
+  "yolo": 0,
+  "n_staves": 15,
+  "probe": 4,
+  "probe_kinds": {
+   "crescendo": 2,
+   "diminuendo": 2
+  },
+  "pipeline": 4,
+  "pipeline_kinds": {
+   "crescendo": 2,
+   "diminuendo": 2
+  }
+ },
+ "mahler-sym5-mvt1-local-p2": {
+  "truth_hairpins": 3,
+  "yolo": 0,
+  "n_staves": 17,
+  "probe": 5,
+  "probe_kinds": {
+   "crescendo": 4,
+   "diminuendo": 1
+  },
+  "pipeline": 5,
+  "pipeline_kinds": {
+   "crescendo": 4,
+   "diminuendo": 1
+  }
+ },
+ "mahler-sym5-mvt1-local-p3": {
+  "truth_hairpins": 17,
+  "yolo": 0,
+  "n_staves": 13,
+  "probe": 2,
+  "probe_kinds": {
+   "crescendo": 0,
+   "diminuendo": 2
+  },
+  "pipeline": 2,
+  "pipeline_kinds": {
+   "crescendo": 0,
+   "diminuendo": 2
+  }
+ }
+}
