@@ -19,6 +19,31 @@ repetition (`'Cresc. Cresc. Cresc. …'`), which `direction_lexicon` already
 refuses by name. This only asks whether a string is a plausible OCR answer at
 all.
 
+## What each mutation catches, and why there are two
+
+The constant and the guard are tested SEPARATELY, and each mutation bites on
+its own test — which is the property to preserve if these are ever edited:
+
+    mutation                             fails    caught ONLY by that mutation
+    guard block removed, constant left   7 / 29   the_boundary_is_where_
+                                                  it_says_it_is
+    cap raised to 100000, guard left    10 / 29   the_cap_is_inside_the_empty_
+                                                  interval, and the three
+                                                  predicate tests that name a
+                                                  length outright
+
+`test_the_cap_is_inside_the_empty_interval` drives no reader at all — it is
+about where 120 sits in the measured distribution — so it survives losing the
+guard entirely. `test_the_boundary_is_where_it_says_it_is` drives the reader
+against whatever cap is declared, so it survives the cap moving. Neither
+mutation is caught by both, which is the point: a correct constant nothing
+calls, and a correct guard on a wrong constant, are different bugs.
+
+⚠️ These counts were restated once already, after the predicate tests were
+added — re-measure them rather than editing the prose if tests are added again.
+A third mutation, the shape this repo has been bitten by (log the refusal, then
+return the string anyway), fails 5.
+
 The two long strings below are VERBATIM from committed transcriptions:
 `benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym3-mvt1.omr.json`
 (854 chars, a page read by Surya alone) and
@@ -145,6 +170,38 @@ class TestTheRefusalIsRecorded:
             S.read_crops_text([_crop()] * 3)
         blob = "\n".join(r.getMessage() for r in caplog.records)
         assert "2 of 3" in blob, f"no batch count in: {blob}"
+
+
+class TestThePredicateItself:
+    """`is_runaway_read` is public so its boundary can be tested WITHOUT the
+    reader around it, the way `strip_line_fragments` is — its docstring
+    promises this, and until 2026-09-07 no test made good on the promise.
+
+    These are deliberately not a substitute for the `read_crops_text` tests
+    above: a correct predicate that nothing calls is the exact shape of bug
+    this repo keeps finding, so the wiring is tested separately and neither
+    set covers for the other.
+    """
+
+    @pytest.mark.parametrize("text", [
+        "", "f", "cresc.", REAL_LONGEST_ACCEPTED, REAL_PAGE_FOOTER,
+        REAL_REPEATED, "x" * S.RUNAWAY_TEXT_MAX_CHARS,
+    ])
+    def test_a_plausible_reading_is_not_a_runaway(self, text):
+        assert S.is_runaway_read(text) is False
+
+    @pytest.mark.parametrize("text", [
+        RUNAWAY_ESSAY, RUNAWAY_NUMBERS,
+        "x" * (S.RUNAWAY_TEXT_MAX_CHARS + 1),
+    ])
+    def test_a_runaway_is_one(self, text):
+        assert S.is_runaway_read(text) is True
+
+    def test_it_measures_characters_and_not_words(self):
+        """One 200-character 'word' is as impossible as forty short ones —
+        the guard is about how much text a crop can hold, not about spaces."""
+        assert S.is_runaway_read("x" * 200) is True
+        assert S.is_runaway_read("x " * 100) is True
 
 
 class TestTheCapSitsOnTheMeasuredGap:

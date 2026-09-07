@@ -119,8 +119,18 @@ SENTINEL = Path(os.environ.get(
 #: the 47/48s are a LilyPond fixture's own `CC0 1.0 Universal` footer, the 41s
 #: and 55 a repeated `Cresc.` — while 144 and 854 are the two runaways. The
 #: widest empty interval is (55, 144); ANY cap in 56..143 gives the identical
-#: verdict on all 438 measured strings. 120 is chosen inside it, at 2.2x the
-#: longest plausible reading and 17% below the shortest observed runaway.
+#: verdict on all 438 measured strings. 120 is chosen inside it.
+#:
+#: ⚠️ **The 55 is the wrong number to size the headroom against, and sizing
+#: against it UNDERSTATES the margin.** 55 is itself a decoder repetition the
+#: lexicon refuses; it is a plausible reading of ink, not a reading anything
+#: kept. The collateral question — can this cap cost a real direction? — is
+#: answered by the strings the pipeline ACCEPTED AND PLACED: n=86, lengths
+#: 3..17 with distinct values {3,4,5,6,7,14,16,17}, the longest being
+#: `'Un poco sostenuto'` and `'Allegro con brio.'` at 17 characters, and **none
+#: over 120**. So against genuine directions the headroom is **7x**, not the
+#: 2.2x a comparison with 55 suggests. That is the check that shows the cap
+#: cannot cost a reading, and it is the one to re-run if the cap is ever moved.
 #:
 #: Unlike `_surya_worker._RUNAWAY_HEIGHT_FRACTION`, which had to be expressed
 #: as a ratio to the system's own tick span, this needs no scale term: a
@@ -131,6 +141,15 @@ SENTINEL = Path(os.environ.get(
 #: MUSICAL is `direction_lexicon`'s question — including decoder repetition
 #: (`'Cresc. Cresc. Cresc. …'`, 55 chars), which the lexicon already refuses by
 #: name. Do not grow this into a semantic filter.
+#:
+#: ⚠️ **A live Surya run would not test this and is not the missing evidence.**
+#: The guard is a pure length test AFTER the subprocess boundary and depends on
+#: nothing the model does except how long its string is, which is why the tests
+#: stub the worker. What a live run WOULD buy is a bigger sample of runaway
+#: lengths, i.e. the only thing that could move this constant. To collect it:
+#: on a PRIVATE `llama-server` — never the shared resident one, see the
+#: keep-alive warning in CLAUDE.md — run `OMR_DIRECTION_READERS=surya` over the
+#: 11 scan-benchmark pages N times and record the length of every string.
 RUNAWAY_TEXT_MAX_CHARS = 120
 
 
@@ -138,7 +157,9 @@ def is_runaway_read(text: str) -> bool:
     """True when a crop's reading is too long to be a reading of that crop.
 
     Public so the boundary it draws can be tested directly, for the same reason
-    `staff_labels_tesseract.strip_line_fragments` is.
+    `staff_labels_tesseract.strip_line_fragments` is —
+    `TestThePredicateItself` in `tests/test_surya_runaway_read.py` does exactly
+    that, separately from the tests that drive it through `read_crops_text`.
     """
     return len(text) > RUNAWAY_TEXT_MAX_CHARS
 
@@ -389,6 +410,18 @@ def read_crops_text(crops: list, *,
         # nothing. `n_read` in the direction report counts a crop as read the
         # moment any rung returns a non-empty string, so leaving it in makes
         # "the OCR wrote an essay" look like "the OCR read this".
+        #
+        # ⚠️ THE WHOLE STRING GOES, INCLUDING A REAL-LOOKING PREFIX. The
+        # 854-character essay opens `'cresc. '`, and that word was on the page,
+        # so refusing it costs a direction. Keeping the prefix is still wrong
+        # three ways: it would trust exactly the string this line has just
+        # declared untrustworthy; nothing establishes that a runaway always
+        # BEGINS with the real reading; and the other measured runaway (144
+        # chars, `'- 8 - - 9 - …'`) has no real prefix at all — so the
+        # counter-example is already in the corpus and the case that has one is
+        # n=1. It is also `strip_line_fragments`' line: cleaning a reading and
+        # REPAIRING one are different, and only the first is free. Revisit on a
+        # measurement of how runaways begin, not on the next sighting.
         if is_runaway_read(text):
             n_runaway += 1
             logger.warning(

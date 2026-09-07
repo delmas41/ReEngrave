@@ -153,10 +153,24 @@ def read_crops_text(crops: list, *, upscale: int = UPSCALE) -> list[str]:
 
     ⚠️ **This rung deliberately has NO runaway guard, unlike its Surya twin**
     (`staff_labels_surya.RUNAWAY_TEXT_MAX_CHARS`), and the difference is the
-    kind of model rather than a gap. Tesseract is a discriminative line
-    recogniser reading pixels under `--psm 7`; it cannot generate text that is
-    not in the crop, and its documented failure here is an IN-WORD error, not
-    an unbounded one. Measured rather than assumed: on Beethoven 5 / Litolff
+    kind of model rather than a gap.
+
+    **The exemption is about LENGTH, because length is all the guard is about.**
+    It would be wrong to say this rung "cannot emit text that is not in the
+    crop" — the paragraph directly above says it does, `Crese.` and `CTeSC.`
+    for ink that reads `cresc.` What it cannot do is emit an UNBOUNDED amount
+    of it: under `--psm 7` (`PSM_LINE`) Tesseract is a CTC line recogniser that
+    steps once across the crop's width and emits per frame, so its output
+    length is bounded by the image. It has no autoregressive loop to run away
+    in, which is precisely the mechanism the Surya guard exists for. A wrong
+    character is this rung's failure mode and the lexicon's problem; a
+    thousand-character answer is not available to it.
+
+    So the test for a FUTURE third rung is that architectural one — does it
+    decode autoregressively, with its own output as input — and not whether it
+    happens to read accurately.
+
+    Measured rather than assumed: on Beethoven 5 / Litolff
     imslp984073 p.2 — the page whose stored transcription carries Surya's
     144-character `'- 8 - - 9 - - 10 - …'` runaway — this rung run alone reads
     25 of 26 crops and its longest string over all 24 refusals is **10
