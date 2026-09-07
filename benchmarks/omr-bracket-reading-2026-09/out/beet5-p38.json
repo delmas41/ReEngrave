@@ -1,0 +1,92 @@
+[
+ {
+  "page": 38,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 204,
+     "x1": 393,
+     "y0": 412,
+     "y1": 1949,
+     "spacing": 15.8,
+     "anchor": 346.5
+    },
+    "strokes": [
+     {
+      "x_left": 343,
+      "x_right": 359,
+      "x_centre": 351.0,
+      "thickness_px": 17,
+      "thickness_spacings": 1.079,
+      "y_top": 438,
+      "y_bot": 1935,
+      "height_spacings": 95.11,
+      "straightness": 1.0,
+      "offset_spacings": 0.29,
+      "n_columns": 17,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 198,
+     "x1": 387,
+     "y0": 2041,
+     "y1": 3639,
+     "spacing": 15.8,
+     "anchor": 340.5
+    },
+    "strokes": [
+     {
+      "x_left": 338,
+      "x_right": 355,
+      "x_centre": 346.5,
+      "thickness_px": 18,
+      "thickness_spacings": 1.143,
+      "y_top": 2166,
+      "y_bot": 3554,
+      "height_spacings": 88.19,
+      "straightness": 1.0,
+      "offset_spacings": 0.38,
+      "n_columns": 18,
+      "covers": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven--symphony-",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ }
+]

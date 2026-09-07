@@ -1,0 +1,24 @@
+Bach / Peters, 12-staff systems.  True bracket boundaries: [2, 5, 8] (blocks 3|3|3)
+79 rule strokes
+
+-- top end: distance to its block's first staff TOP line (staff spacings) --
+   TERMINUS (ends at a true boundary)  n= 44  min -5.45  p10 -0.30  med +0.04  p90 +0.58  max +1.41
+   BREAK    (ends anywhere else)       n=  4  min -8.96  p10 -8.96  med -8.48  p90 -4.35  max -4.35
+   termini span [-5.45,+1.41]; 1/4 breaks fall inside that span (0.250)
+
+-- bot end: distance to its block's last staff BOTTOM line (staff spacings) --
+   TERMINUS (ends at a true boundary)  n= 63  min -1.52  p10 -0.30  med +0.18  p90 +0.72  max +7.21
+   BREAK    (ends anywhere else)       n= 16  min -0.13  p10 +0.22  med +4.98  p90 +9.13  max +9.13
+   termini span [-1.52,+7.21]; 10/16 breaks fall inside that span (0.625)
+
+-- top end: TERMINAL FLARE (widest tip row / body row) --
+   TERMINUS (ends at a true boundary)  n= 44  min +0.88  p10 +1.21  med +1.56  p90 +1.83  max +1.96
+   BREAK    (ends anywhere else)       n=  4  min +1.00  p10 +1.00  med +1.70  p90 +2.32  max +2.32
+   termini span [+0.88,+1.96]; 2/4 breaks fall inside that span (0.500)
+
+-- bot end: TERMINAL FLARE (widest tip row / body row) --
+   TERMINUS (ends at a true boundary)  n= 63  min +0.73  p10 +1.17  med +1.53  p90 +1.83  max +2.43
+   BREAK    (ends anywhere else)       n= 16  min +0.79  p10 +0.94  med +1.20  p90 +2.35  max +2.35
+   termini span [+0.73,+2.43]; 16/16 breaks fall inside that span (1.000)
+
+wrote out/endpoints.json

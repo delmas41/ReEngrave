@@ -1,0 +1,68 @@
+bach p2 n=24 inc=[12, 12] read=[3, 3, 12] unassigned=6 
+bach p3 n=24 inc=[12, 12] read=[10, 10] unassigned=4 
+bach p4 n=24 inc=[12, 12] read=[10, 12] unassigned=2 
+bach p5 n=24 inc=[12, 12] read=[12, 10] unassigned=2 
+bach p6 n=24 inc=[12, 12] read=[10, 10] unassigned=4 
+bach p7 n=24 inc=[12, 12] read=[10, 12] unassigned=2 
+bach p8 n=24 inc=[12, 12] read=[11, 10] unassigned=3 
+bach p9 n=24 inc=[12, 12] read=[10, 10, 2] unassigned=2 
+bach p10 n=24 inc=[12, 12] read=[3, 2, 2, 10] unassigned=7 
+bach p11 n=24 inc=[12, 12] read=[3, 3, 3, 2, 10] unassigned=3 
+bach p12 n=24 inc=[12, 12] read=[9, 12] unassigned=3 
+beethoven p2 n=22 inc=[11, 11] read=[10, 11] unassigned=1 
+beethoven p3 n=19 inc=[11, 8] read=[11, 8] unassigned=0 EXACT
+beethoven p4 n=22 inc=[11, 11] read=[11, 11] unassigned=0 EXACT
+beethoven p5 n=16 inc=[9, 7] read=[9, 7] unassigned=0 EXACT
+beethoven p6 n=22 inc=[10, 12] read=[10, 12] unassigned=0 EXACT
+beethoven p7 n=22 inc=[11, 11] read=[9, 11] unassigned=2 
+beethoven p8 n=20 inc=[9, 11] read=[9, 11] unassigned=0 EXACT
+beethoven p9 n=22 inc=[12, 10] read=[12, 10] unassigned=0 EXACT
+beethoven p10 n=22 inc=[11, 11] read=[11, 11] unassigned=0 EXACT
+beethoven p11 n=20 inc=[9, 11] read=[7, 11] unassigned=2 
+beethoven p12 n=23 inc=[12, 11] read=[4, 3, 5, 11] unassigned=0 
+beethoven p13 n=22 inc=[11, 11] read=[4, 3, 4, 11] unassigned=0 
+brahms p2 n=28 inc=[14, 14] read=[9, 5, 9, 5] unassigned=0 
+brahms p3 n=28 inc=[14, 14] read=[14, 14] unassigned=0 EXACT
+brahms p4 n=28 inc=[14, 14] read=[14, 9, 5] unassigned=0 
+brahms p5 n=28 inc=[14, 14] read=[14, 14] unassigned=0 EXACT
+brahms p6 n=23 inc=[12, 11] read=[7, 5, 2, 2] unassigned=7 
+brahms p7 n=22 inc=[11, 11] read=[11, 11] unassigned=0 EXACT
+brahms p8 n=22 inc=[11, 11] read=[11, 6, 5] unassigned=0 
+brahms p9 n=25 inc=[12, 13] read=[7, 5, 13] unassigned=0 
+brahms p10 n=27 inc=[13, 14] read=[13, 9, 5] unassigned=0 
+brahms p11 n=28 inc=[14, 14] read=[14, 14] unassigned=0 EXACT
+brahms p12 n=28 inc=[14, 14] read=[14, 9, 5] unassigned=0 
+brahms p13 n=28 inc=[14, 14] read=[14, 14] unassigned=0 EXACT
+dvorak p4 n=15 inc=[15] read=[15] unassigned=0 EXACT
+dvorak p5 n=15 inc=[15] read=[14] unassigned=1 
+dvorak p6 n=30 inc=[15, 15] read=[15, 2, 2, 4] unassigned=7 
+dvorak p7 n=30 inc=[15, 15] read=[15, 15] unassigned=0 EXACT
+dvorak p8 n=30 inc=[15, 15] read=[15, 10, 5] unassigned=0 
+dvorak p9 n=30 inc=[15, 15] read=[14, 4, 3, 3, 5] unassigned=1 
+dvorak p10 n=30 inc=[15, 15] read=[5, 2, 5, 9] unassigned=9 
+dvorak p11 n=30 inc=[15, 15] read=[15, 12] unassigned=3 
+dvorak p12 n=30 inc=[15, 15] read=[12, 8] unassigned=10 
+dvorak p13 n=30 inc=[15, 15] read=[14] unassigned=16 
+mahler p2 n=15 inc=[15] read=[2, 6, 5] unassigned=2 
+mahler p3 n=21 inc=[21] read=[4, 6, 7] unassigned=4 
+mahler p4 n=21 inc=[21] read=[3, 6, 6] unassigned=6 
+mahler p5 n=21 inc=[14, 7] read=[14, 7] unassigned=0 EXACT
+mahler p6 n=16 inc=[16] read=[3, 5, 5] unassigned=3 
+mahler p7 n=16 inc=[16] read=[3, 5, 5] unassigned=3 
+mahler p8 n=17 inc=[17] read=[4, 6, 5] unassigned=2 
+mahler p9 n=17 inc=[17] read=[4, 6, 5] unassigned=2 
+mahler p10 n=19 inc=[19] read=[10, 7] unassigned=2 
+mahler p11 n=26 inc=[13, 13] read=[13, 13] unassigned=0 EXACT
+mahler p12 n=17 inc=[17] read=[5, 4, 8] unassigned=0 
+mahler p13 n=16 inc=[16] read=[9, 5] unassigned=2 
+
+== does the left edge define the SYSTEM? ==
+publisher     pages  exact  ≥1 unassigned  over-split  under-split
+bach             11      0             11           4            0
+beethoven        12      7              3           2            0
+brahms           12      5              1           7            0
+dvorak           10      2              7           4            1
+mahler           12      2              9          10            0
+TOTAL            57     16             31          27            1
+
+wrote out/system-extent.json

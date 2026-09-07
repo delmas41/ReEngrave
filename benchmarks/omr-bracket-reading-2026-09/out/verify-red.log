@@ -1,0 +1,9 @@
+baseline                                                       -> 9 passed in 0.18s
+partial reading disabled (always abstain)                      -> 2 failed, 7 passed in 0.20s
+_overlap switched to IoU (the refused variant)                 -> 9 passed in 0.28s
+run-level gap filter removed (artefact absorbed into the barline) -> 1 failed, 8 passed in 0.66s
+gap-crossing filter removed (trap 1 re-opened)                 -> 9 passed in 0.27s
+shape gate widened to admit blobs                              -> 1 failed, 8 passed in 0.31s
+a level holding a spanning rule disqualified (refused variant) -> 2 failed, 7 passed in 0.18s
+level tolerance widened back to 1.5 spacings                   -> 9 passed in 0.19s
+restored                                                       -> 9 passed in 0.22s

@@ -1,0 +1,8685 @@
+[
+ {
+  "page": 2,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 23.0,
+    "geom": {
+     "x0": 0,
+     "x1": 217,
+     "y0": 234,
+     "y1": 3175,
+     "spacing": 23.0,
+     "anchor": 148.5
+    },
+    "strokes": [
+     {
+      "x_left": 144,
+      "x_right": 151,
+      "x_centre": 147.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.348,
+      "y_top": 1790,
+      "y_bot": 2368,
+      "height_spacings": 25.17,
+      "straightness": 0.999,
+      "offset_spacings": -0.04,
+      "n_columns": 8,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 148,
+      "x_right": 157,
+      "x_centre": 152.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.435,
+      "y_top": 1000,
+      "y_bot": 1583,
+      "height_spacings": 25.39,
+      "straightness": 0.98,
+      "offset_spacings": 0.17,
+      "n_columns": 10,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 154,
+      "x_right": 165,
+      "x_centre": 159.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.522,
+      "y_top": 318,
+      "y_bot": 791,
+      "height_spacings": 20.61,
+      "straightness": 0.821,
+      "offset_spacings": 0.48,
+      "n_columns": 12,
+      "covers": [
+       1
+      ]
+     },
+     {
+      "x_left": 158,
+      "x_right": 187,
+      "x_centre": 172.5,
+      "thickness_px": 30,
+      "thickness_spacings": 1.304,
+      "y_top": 544,
+      "y_bot": 2313,
+      "height_spacings": 76.96,
+      "straightness": 0.712,
+      "offset_spacings": 1.04,
+      "n_columns": 30,
+      "covers": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 22.88,
+    "geom": {
+     "x0": 0,
+     "x1": 205,
+     "y0": 3340,
+     "y1": 6217,
+     "spacing": 22.9,
+     "anchor": 137.0
+    },
+    "strokes": [
+     {
+      "x_left": 135,
+      "x_right": 143,
+      "x_centre": 139.0,
+      "thickness_px": 9,
+      "thickness_spacings": 0.393,
+      "y_top": 4825,
+      "y_bot": 5425,
+      "height_spacings": 26.27,
+      "straightness": 1.0,
+      "offset_spacings": 0.09,
+      "n_columns": 9,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 136,
+      "x_right": 143,
+      "x_centre": 139.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.35,
+      "y_top": 3368,
+      "y_bot": 3928,
+      "height_spacings": 24.52,
+      "straightness": 1.0,
+      "offset_spacings": 0.11,
+      "n_columns": 8,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 136,
+      "x_right": 143,
+      "x_centre": 139.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.35,
+      "y_top": 4111,
+      "y_bot": 4665,
+      "height_spacings": 24.26,
+      "straightness": 1.0,
+      "offset_spacings": 0.11,
+      "n_columns": 8,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 152,
+      "x_right": 165,
+      "x_centre": 158.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.612,
+      "y_top": 3366,
+      "y_bot": 5273,
+      "height_spacings": 83.41,
+      "straightness": 1.0,
+      "offset_spacings": 0.94,
+      "n_columns": 14,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 3,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 23.12,
+    "geom": {
+     "x0": 0,
+     "x1": 173,
+     "y0": 214,
+     "y1": 3043,
+     "spacing": 23.1,
+     "anchor": 104.5
+    },
+    "strokes": [
+     {
+      "x_left": 97,
+      "x_right": 107,
+      "x_centre": 102.0,
+      "thickness_px": 11,
+      "thickness_spacings": 0.476,
+      "y_top": 1726,
+      "y_bot": 2280,
+      "height_spacings": 24.0,
+      "straightness": 1.0,
+      "offset_spacings": -0.11,
+      "n_columns": 11,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 103,
+      "x_right": 114,
+      "x_centre": 108.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.519,
+      "y_top": 1022,
+      "y_bot": 1562,
+      "height_spacings": 23.39,
+      "straightness": 0.996,
+      "offset_spacings": 0.17,
+      "n_columns": 12,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 109,
+      "x_right": 120,
+      "x_centre": 114.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.519,
+      "y_top": 241,
+      "y_bot": 823,
+      "height_spacings": 25.21,
+      "straightness": 0.998,
+      "offset_spacings": 0.43,
+      "n_columns": 12,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 112,
+      "x_right": 146,
+      "x_centre": 129.0,
+      "thickness_px": 35,
+      "thickness_spacings": 1.514,
+      "y_top": 828,
+      "y_bot": 1840,
+      "height_spacings": 43.81,
+      "straightness": 0.58,
+      "offset_spacings": 1.06,
+      "n_columns": 35,
+      "covers": [
+       3,
+       4,
+       5,
+       6
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 23.25,
+    "geom": {
+     "x0": 0,
+     "x1": 168,
+     "y0": 3207,
+     "y1": 6182,
+     "spacing": 23.2,
+     "anchor": 98.5
+    },
+    "strokes": [
+     {
+      "x_left": 93,
+      "x_right": 103,
+      "x_centre": 98.0,
+      "thickness_px": 11,
+      "thickness_spacings": 0.473,
+      "y_top": 3229,
+      "y_bot": 3800,
+      "height_spacings": 24.6,
+      "straightness": 1.0,
+      "offset_spacings": -0.02,
+      "n_columns": 11,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 96,
+      "x_right": 105,
+      "x_centre": 100.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.43,
+      "y_top": 3977,
+      "y_bot": 4586,
+      "height_spacings": 26.24,
+      "straightness": 1.0,
+      "offset_spacings": 0.09,
+      "n_columns": 10,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 99,
+      "x_right": 108,
+      "x_centre": 103.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.43,
+      "y_top": 4794,
+      "y_bot": 5376,
+      "height_spacings": 25.08,
+      "straightness": 1.0,
+      "offset_spacings": 0.22,
+      "n_columns": 10,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 4,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 22.75,
+    "geom": {
+     "x0": 0,
+     "x1": 249,
+     "y0": 289,
+     "y1": 3351,
+     "spacing": 22.8,
+     "anchor": 181.0
+    },
+    "strokes": [
+     {
+      "x_left": 172,
+      "x_right": 183,
+      "x_centre": 177.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.527,
+      "y_top": 1910,
+      "y_bot": 2509,
+      "height_spacings": 26.37,
+      "straightness": 0.996,
+      "offset_spacings": -0.15,
+      "n_columns": 12,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 178,
+      "x_right": 187,
+      "x_centre": 182.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.44,
+      "y_top": 1145,
+      "y_bot": 1743,
+      "height_spacings": 26.33,
+      "straightness": 1.0,
+      "offset_spacings": 0.07,
+      "n_columns": 10,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 184,
+      "x_right": 195,
+      "x_centre": 189.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.527,
+      "y_top": 317,
+      "y_bot": 843,
+      "height_spacings": 23.16,
+      "straightness": 0.994,
+      "offset_spacings": 0.37,
+      "n_columns": 12,
+      "covers": [
+       0,
+       1
+      ]
+     },
+     {
+      "x_left": 194,
+      "x_right": 221,
+      "x_centre": 207.5,
+      "thickness_px": 28,
+      "thickness_spacings": 1.231,
+      "y_top": 463,
+      "y_bot": 2677,
+      "height_spacings": 97.36,
+      "straightness": 0.888,
+      "offset_spacings": 1.16,
+      "n_columns": 28,
+      "covers": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 23.0,
+    "geom": {
+     "x0": 0,
+     "x1": 239,
+     "y0": 3513,
+     "y1": 6237,
+     "spacing": 23.0,
+     "anchor": 170.0
+    },
+    "strokes": [
+     {
+      "x_left": 168,
+      "x_right": 175,
+      "x_centre": 171.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.348,
+      "y_top": 3531,
+      "y_bot": 4099,
+      "height_spacings": 24.74,
+      "straightness": 1.0,
+      "offset_spacings": 0.07,
+      "n_columns": 8,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 168,
+      "x_right": 175,
+      "x_centre": 171.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.348,
+      "y_top": 4952,
+      "y_bot": 5503,
+      "height_spacings": 24.0,
+      "straightness": 1.0,
+      "offset_spacings": 0.07,
+      "n_columns": 8,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 169,
+      "x_right": 175,
+      "x_centre": 172.0,
+      "thickness_px": 7,
+      "thickness_spacings": 0.304,
+      "y_top": 4255,
+      "y_bot": 4818,
+      "height_spacings": 24.52,
+      "straightness": 1.0,
+      "offset_spacings": 0.09,
+      "n_columns": 7,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 188,
+      "x_right": 203,
+      "x_centre": 195.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.696,
+      "y_top": 3530,
+      "y_bot": 5747,
+      "height_spacings": 96.43,
+      "straightness": 1.0,
+      "offset_spacings": 1.11,
+      "n_columns": 16,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 5,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 22.75,
+    "geom": {
+     "x0": 0,
+     "x1": 187,
+     "y0": 239,
+     "y1": 3181,
+     "spacing": 22.8,
+     "anchor": 119.0
+    },
+    "strokes": [
+     {
+      "x_left": 116,
+      "x_right": 123,
+      "x_centre": 119.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.352,
+      "y_top": 1792,
+      "y_bot": 2396,
+      "height_spacings": 26.59,
+      "straightness": 1.0,
+      "offset_spacings": 0.02,
+      "n_columns": 8,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 118,
+      "x_right": 126,
+      "x_centre": 122.0,
+      "thickness_px": 9,
+      "thickness_spacings": 0.396,
+      "y_top": 1047,
+      "y_bot": 1632,
+      "height_spacings": 25.76,
+      "straightness": 1.0,
+      "offset_spacings": 0.13,
+      "n_columns": 9,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 122,
+      "x_right": 130,
+      "x_centre": 126.0,
+      "thickness_px": 9,
+      "thickness_spacings": 0.396,
+      "y_top": 263,
+      "y_bot": 863,
+      "height_spacings": 26.42,
+      "straightness": 1.0,
+      "offset_spacings": 0.31,
+      "n_columns": 9,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 136,
+      "x_right": 158,
+      "x_centre": 147.0,
+      "thickness_px": 23,
+      "thickness_spacings": 1.011,
+      "y_top": 637,
+      "y_bot": 2046,
+      "height_spacings": 61.98,
+      "straightness": 0.657,
+      "offset_spacings": 1.23,
+      "n_columns": 23,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6
+      ]
+     },
+     {
+      "x_left": 162,
+      "x_right": 186,
+      "x_centre": 174.0,
+      "thickness_px": 25,
+      "thickness_spacings": 1.099,
+      "y_top": 1299,
+      "y_bot": 1628,
+      "height_spacings": 14.51,
+      "straightness": 0.0,
+      "offset_spacings": 2.42,
+      "n_columns": 25,
+      "covers": [
+       4,
+       5
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 22.88,
+    "geom": {
+     "x0": 0,
+     "x1": 180,
+     "y0": 3370,
+     "y1": 6198,
+     "spacing": 22.9,
+     "anchor": 112.0
+    },
+    "strokes": [
+     {
+      "x_left": 110,
+      "x_right": 121,
+      "x_centre": 115.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.525,
+      "y_top": 3398,
+      "y_bot": 3804,
+      "height_spacings": 17.79,
+      "straightness": 1.0,
+      "offset_spacings": 0.15,
+      "n_columns": 12,
+      "covers": [
+       0,
+       1
+      ]
+     },
+     {
+      "x_left": 110,
+      "x_right": 117,
+      "x_centre": 113.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.35,
+      "y_top": 4158,
+      "y_bot": 4713,
+      "height_spacings": 24.31,
+      "straightness": 1.0,
+      "offset_spacings": 0.07,
+      "n_columns": 8,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 111,
+      "x_right": 120,
+      "x_centre": 115.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.437,
+      "y_top": 4884,
+      "y_bot": 5408,
+      "height_spacings": 22.95,
+      "straightness": 1.0,
+      "offset_spacings": 0.15,
+      "n_columns": 10,
+      "covers": [
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 131,
+      "x_right": 147,
+      "x_centre": 139.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.743,
+      "y_top": 3682,
+      "y_bot": 5334,
+      "height_spacings": 72.26,
+      "straightness": 1.0,
+      "offset_spacings": 1.18,
+      "n_columns": 17,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 6,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 22.75,
+    "geom": {
+     "x0": 0,
+     "x1": 118,
+     "y0": 253,
+     "y1": 3085,
+     "spacing": 22.8,
+     "anchor": 50.0
+    },
+    "strokes": [
+     {
+      "x_left": 45,
+      "x_right": 51,
+      "x_centre": 48.0,
+      "thickness_px": 7,
+      "thickness_spacings": 0.308,
+      "y_top": 1693,
+      "y_bot": 2300,
+      "height_spacings": 26.73,
+      "straightness": 1.0,
+      "offset_spacings": -0.09,
+      "n_columns": 7,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 47,
+      "x_right": 55,
+      "x_centre": 51.0,
+      "thickness_px": 9,
+      "thickness_spacings": 0.396,
+      "y_top": 1021,
+      "y_bot": 1508,
+      "height_spacings": 21.45,
+      "straightness": 0.994,
+      "offset_spacings": 0.04,
+      "n_columns": 9,
+      "covers": [
+       3,
+       4
+      ]
+     },
+     {
+      "x_left": 50,
+      "x_right": 57,
+      "x_centre": 53.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.352,
+      "y_top": 290,
+      "y_bot": 852,
+      "height_spacings": 24.75,
+      "straightness": 1.0,
+      "offset_spacings": 0.15,
+      "n_columns": 8,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 65,
+      "x_right": 85,
+      "x_centre": 75.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.923,
+      "y_top": 850,
+      "y_bot": 1766,
+      "height_spacings": 40.31,
+      "straightness": 0.34,
+      "offset_spacings": 1.1,
+      "n_columns": 21,
+      "covers": [
+       3,
+       4,
+       5,
+       6
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 22.75,
+    "geom": {
+     "x0": 0,
+     "x1": 110,
+     "y0": 3320,
+     "y1": 6242,
+     "spacing": 22.8,
+     "anchor": 42.0
+    },
+    "strokes": [
+     {
+      "x_left": 40,
+      "x_right": 47,
+      "x_centre": 43.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.352,
+      "y_top": 4117,
+      "y_bot": 4716,
+      "height_spacings": 26.37,
+      "straightness": 1.0,
+      "offset_spacings": 0.07,
+      "n_columns": 8,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 41,
+      "x_right": 47,
+      "x_centre": 44.0,
+      "thickness_px": 7,
+      "thickness_spacings": 0.308,
+      "y_top": 3347,
+      "y_bot": 3946,
+      "height_spacings": 26.37,
+      "straightness": 1.0,
+      "offset_spacings": 0.09,
+      "n_columns": 7,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 42,
+      "x_right": 50,
+      "x_centre": 46.0,
+      "thickness_px": 9,
+      "thickness_spacings": 0.396,
+      "y_top": 4875,
+      "y_bot": 5480,
+      "height_spacings": 26.64,
+      "straightness": 1.0,
+      "offset_spacings": 0.18,
+      "n_columns": 9,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 61,
+      "x_right": 78,
+      "x_centre": 69.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.791,
+      "y_top": 3989,
+      "y_bot": 5146,
+      "height_spacings": 50.9,
+      "straightness": 0.904,
+      "offset_spacings": 1.21,
+      "n_columns": 18,
+      "covers": [
+       3,
+       4,
+       5,
+       6
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 7,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 22.88,
+    "geom": {
+     "x0": 0,
+     "x1": 175,
+     "y0": 206,
+     "y1": 3089,
+     "spacing": 22.9,
+     "anchor": 107.0
+    },
+    "strokes": [
+     {
+      "x_left": 102,
+      "x_right": 111,
+      "x_centre": 106.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.437,
+      "y_top": 1790,
+      "y_bot": 2350,
+      "height_spacings": 24.52,
+      "straightness": 1.0,
+      "offset_spacings": -0.02,
+      "n_columns": 10,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 106,
+      "x_right": 113,
+      "x_centre": 109.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.35,
+      "y_top": 998,
+      "y_bot": 1605,
+      "height_spacings": 26.58,
+      "straightness": 1.0,
+      "offset_spacings": 0.11,
+      "n_columns": 8,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 108,
+      "x_right": 117,
+      "x_centre": 112.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.437,
+      "y_top": 232,
+      "y_bot": 837,
+      "height_spacings": 26.49,
+      "straightness": 1.0,
+      "offset_spacings": 0.24,
+      "n_columns": 10,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 120,
+      "x_right": 145,
+      "x_centre": 132.5,
+      "thickness_px": 26,
+      "thickness_spacings": 1.137,
+      "y_top": 232,
+      "y_bot": 2265,
+      "height_spacings": 88.92,
+      "straightness": 0.998,
+      "offset_spacings": 1.11,
+      "n_columns": 26,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 138,
+      "x_right": 174,
+      "x_centre": 156.0,
+      "thickness_px": 37,
+      "thickness_spacings": 1.617,
+      "y_top": 1787,
+      "y_bot": 2115,
+      "height_spacings": 14.38,
+      "straightness": 0.0,
+      "offset_spacings": 2.14,
+      "n_columns": 37,
+      "covers": [
+       6,
+       7
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 22.75,
+    "geom": {
+     "x0": 0,
+     "x1": 172,
+     "y0": 3302,
+     "y1": 6206,
+     "spacing": 22.8,
+     "anchor": 104.0
+    },
+    "strokes": [
+     {
+      "x_left": 100,
+      "x_right": 111,
+      "x_centre": 105.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.527,
+      "y_top": 3331,
+      "y_bot": 3938,
+      "height_spacings": 26.73,
+      "straightness": 0.998,
+      "offset_spacings": 0.07,
+      "n_columns": 12,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 102,
+      "x_right": 109,
+      "x_centre": 105.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.352,
+      "y_top": 4072,
+      "y_bot": 4661,
+      "height_spacings": 25.93,
+      "straightness": 1.0,
+      "offset_spacings": 0.07,
+      "n_columns": 8,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 104,
+      "x_right": 111,
+      "x_centre": 107.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.352,
+      "y_top": 4840,
+      "y_bot": 5423,
+      "height_spacings": 25.67,
+      "straightness": 1.0,
+      "offset_spacings": 0.15,
+      "n_columns": 8,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 120,
+      "x_right": 138,
+      "x_centre": 129.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.835,
+      "y_top": 3323,
+      "y_bot": 5243,
+      "height_spacings": 84.44,
+      "straightness": 1.0,
+      "offset_spacings": 1.1,
+      "n_columns": 19,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 8,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 22.25,
+    "geom": {
+     "x0": 0,
+     "x1": 164,
+     "y0": 248,
+     "y1": 3148,
+     "spacing": 22.2,
+     "anchor": 97.5
+    },
+    "strokes": [
+     {
+      "x_left": 96,
+      "x_right": 103,
+      "x_centre": 99.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.36,
+      "y_top": 274,
+      "y_bot": 829,
+      "height_spacings": 24.99,
+      "straightness": 1.0,
+      "offset_spacings": 0.09,
+      "n_columns": 8,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 96,
+      "x_right": 102,
+      "x_centre": 99.0,
+      "thickness_px": 7,
+      "thickness_spacings": 0.315,
+      "y_top": 1784,
+      "y_bot": 2392,
+      "height_spacings": 27.37,
+      "straightness": 1.0,
+      "offset_spacings": 0.07,
+      "n_columns": 7,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 98,
+      "x_right": 105,
+      "x_centre": 101.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.36,
+      "y_top": 995,
+      "y_bot": 1559,
+      "height_spacings": 25.39,
+      "straightness": 1.0,
+      "offset_spacings": 0.18,
+      "n_columns": 8,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 118,
+      "x_right": 133,
+      "x_centre": 125.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.719,
+      "y_top": 272,
+      "y_bot": 2300,
+      "height_spacings": 91.19,
+      "straightness": 1.0,
+      "offset_spacings": 1.26,
+      "n_columns": 16,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 22.62,
+    "geom": {
+     "x0": 0,
+     "x1": 165,
+     "y0": 3343,
+     "y1": 6231,
+     "spacing": 22.6,
+     "anchor": 98.0
+    },
+    "strokes": [
+     {
+      "x_left": 95,
+      "x_right": 103,
+      "x_centre": 99.0,
+      "thickness_px": 9,
+      "thickness_spacings": 0.398,
+      "y_top": 4073,
+      "y_bot": 4676,
+      "height_spacings": 26.7,
+      "straightness": 1.0,
+      "offset_spacings": 0.04,
+      "n_columns": 9,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 96,
+      "x_right": 102,
+      "x_centre": 99.0,
+      "thickness_px": 7,
+      "thickness_spacings": 0.309,
+      "y_top": 3376,
+      "y_bot": 3942,
+      "height_spacings": 25.06,
+      "straightness": 1.0,
+      "offset_spacings": 0.04,
+      "n_columns": 7,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 98,
+      "x_right": 105,
+      "x_centre": 101.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.354,
+      "y_top": 4824,
+      "y_bot": 5396,
+      "height_spacings": 25.33,
+      "straightness": 1.0,
+      "offset_spacings": 0.15,
+      "n_columns": 8,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 118,
+      "x_right": 135,
+      "x_centre": 126.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.796,
+      "y_top": 3372,
+      "y_bot": 5653,
+      "height_spacings": 100.86,
+      "straightness": 1.0,
+      "offset_spacings": 1.26,
+      "n_columns": 18,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 9,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 22.25,
+    "geom": {
+     "x0": 9,
+     "x1": 276,
+     "y0": 199,
+     "y1": 3038,
+     "spacing": 22.2,
+     "anchor": 210.0
+    },
+    "strokes": [
+     {
+      "x_left": 206,
+      "x_right": 213,
+      "x_centre": 209.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.36,
+      "y_top": 1665,
+      "y_bot": 2243,
+      "height_spacings": 26.02,
+      "straightness": 1.0,
+      "offset_spacings": -0.02,
+      "n_columns": 8,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 208,
+      "x_right": 215,
+      "x_centre": 211.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.36,
+      "y_top": 949,
+      "y_bot": 1547,
+      "height_spacings": 26.92,
+      "straightness": 1.0,
+      "offset_spacings": 0.07,
+      "n_columns": 8,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 210,
+      "x_right": 221,
+      "x_centre": 215.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.539,
+      "y_top": 248,
+      "y_bot": 820,
+      "height_spacings": 25.75,
+      "straightness": 0.998,
+      "offset_spacings": 0.25,
+      "n_columns": 12,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 224,
+      "x_right": 250,
+      "x_centre": 237.0,
+      "thickness_px": 27,
+      "thickness_spacings": 1.213,
+      "y_top": 242,
+      "y_bot": 2489,
+      "height_spacings": 101.03,
+      "straightness": 0.998,
+      "offset_spacings": 1.21,
+      "n_columns": 27,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 22.25,
+    "geom": {
+     "x0": 0,
+     "x1": 266,
+     "y0": 3232,
+     "y1": 6193,
+     "spacing": 22.2,
+     "anchor": 200.0
+    },
+    "strokes": [
+     {
+      "x_left": 198,
+      "x_right": 205,
+      "x_centre": 201.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.36,
+      "y_top": 3261,
+      "y_bot": 3839,
+      "height_spacings": 26.02,
+      "straightness": 1.0,
+      "offset_spacings": 0.07,
+      "n_columns": 8,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 198,
+      "x_right": 207,
+      "x_centre": 202.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.449,
+      "y_top": 4790,
+      "y_bot": 5395,
+      "height_spacings": 27.24,
+      "straightness": 1.0,
+      "offset_spacings": 0.11,
+      "n_columns": 10,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 200,
+      "x_right": 207,
+      "x_centre": 203.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.36,
+      "y_top": 4026,
+      "y_bot": 4628,
+      "height_spacings": 27.1,
+      "straightness": 1.0,
+      "offset_spacings": 0.16,
+      "n_columns": 8,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 220,
+      "x_right": 237,
+      "x_centre": 228.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.809,
+      "y_top": 3258,
+      "y_bot": 5625,
+      "height_spacings": 106.43,
+      "straightness": 1.0,
+      "offset_spacings": 1.28,
+      "n_columns": 18,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 10,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 22.88,
+    "geom": {
+     "x0": 0,
+     "x1": 179,
+     "y0": 193,
+     "y1": 3061,
+     "spacing": 22.9,
+     "anchor": 111.0
+    },
+    "strokes": [
+     {
+      "x_left": 102,
+      "x_right": 113,
+      "x_centre": 107.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.525,
+      "y_top": 1786,
+      "y_bot": 2308,
+      "height_spacings": 22.86,
+      "straightness": 0.997,
+      "offset_spacings": -0.15,
+      "n_columns": 12,
+      "covers": [
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 110,
+      "x_right": 119,
+      "x_centre": 114.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.437,
+      "y_top": 1000,
+      "y_bot": 1607,
+      "height_spacings": 26.58,
+      "straightness": 1.0,
+      "offset_spacings": 0.15,
+      "n_columns": 10,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 114,
+      "x_right": 123,
+      "x_centre": 118.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.437,
+      "y_top": 227,
+      "y_bot": 841,
+      "height_spacings": 26.89,
+      "straightness": 0.997,
+      "offset_spacings": 0.33,
+      "n_columns": 10,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 120,
+      "x_right": 150,
+      "x_centre": 135.0,
+      "thickness_px": 31,
+      "thickness_spacings": 1.355,
+      "y_top": 644,
+      "y_bot": 2060,
+      "height_spacings": 61.95,
+      "straightness": 0.62,
+      "offset_spacings": 1.05,
+      "n_columns": 31,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 23.0,
+    "geom": {
+     "x0": 0,
+     "x1": 161,
+     "y0": 3296,
+     "y1": 6223,
+     "spacing": 23.0,
+     "anchor": 92.0
+    },
+    "strokes": [
+     {
+      "x_left": 88,
+      "x_right": 95,
+      "x_centre": 91.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.348,
+      "y_top": 4854,
+      "y_bot": 5460,
+      "height_spacings": 26.39,
+      "straightness": 1.0,
+      "offset_spacings": -0.02,
+      "n_columns": 8,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 90,
+      "x_right": 99,
+      "x_centre": 94.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.435,
+      "y_top": 4109,
+      "y_bot": 4693,
+      "height_spacings": 25.43,
+      "straightness": 0.998,
+      "offset_spacings": 0.11,
+      "n_columns": 10,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 92,
+      "x_right": 101,
+      "x_centre": 96.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.435,
+      "y_top": 3353,
+      "y_bot": 3901,
+      "height_spacings": 23.87,
+      "straightness": 1.0,
+      "offset_spacings": 0.2,
+      "n_columns": 10,
+      "covers": [
+       0,
+       1
+      ]
+     },
+     {
+      "x_left": 104,
+      "x_right": 126,
+      "x_centre": 115.0,
+      "thickness_px": 23,
+      "thickness_spacings": 1.0,
+      "y_top": 3812,
+      "y_bot": 5458,
+      "height_spacings": 71.61,
+      "straightness": 0.812,
+      "offset_spacings": 1.0,
+      "n_columns": 23,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 11,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 23.25,
+    "geom": {
+     "x0": 0,
+     "x1": 166,
+     "y0": 140,
+     "y1": 2960,
+     "spacing": 23.2,
+     "anchor": 97.0
+    },
+    "strokes": [
+     {
+      "x_left": 88,
+      "x_right": 101,
+      "x_centre": 94.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.602,
+      "y_top": 1619,
+      "y_bot": 2187,
+      "height_spacings": 24.47,
+      "straightness": 1.0,
+      "offset_spacings": -0.11,
+      "n_columns": 14,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 96,
+      "x_right": 109,
+      "x_centre": 102.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.602,
+      "y_top": 922,
+      "y_bot": 1485,
+      "height_spacings": 24.26,
+      "straightness": 1.0,
+      "offset_spacings": 0.24,
+      "n_columns": 14,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 102,
+      "x_right": 118,
+      "x_centre": 110.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.731,
+      "y_top": 160,
+      "y_bot": 758,
+      "height_spacings": 25.76,
+      "straightness": 0.993,
+      "offset_spacings": 0.56,
+      "n_columns": 17,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 108,
+      "x_right": 143,
+      "x_centre": 125.5,
+      "thickness_px": 36,
+      "thickness_spacings": 1.548,
+      "y_top": 566,
+      "y_bot": 2166,
+      "height_spacings": 68.86,
+      "straightness": 0.65,
+      "offset_spacings": 1.23,
+      "n_columns": 36,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 23.38,
+    "geom": {
+     "x0": 0,
+     "x1": 145,
+     "y0": 3167,
+     "y1": 6136,
+     "spacing": 23.4,
+     "anchor": 75.0
+    },
+    "strokes": [
+     {
+      "x_left": 66,
+      "x_right": 75,
+      "x_centre": 70.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.428,
+      "y_top": 4704,
+      "y_bot": 5295,
+      "height_spacings": 25.33,
+      "straightness": 1.0,
+      "offset_spacings": -0.19,
+      "n_columns": 10,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 68,
+      "x_right": 79,
+      "x_centre": 73.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.513,
+      "y_top": 3936,
+      "y_bot": 4547,
+      "height_spacings": 26.18,
+      "straightness": 1.0,
+      "offset_spacings": -0.06,
+      "n_columns": 12,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 75,
+      "x_right": 87,
+      "x_centre": 81.0,
+      "thickness_px": 13,
+      "thickness_spacings": 0.556,
+      "y_top": 3183,
+      "y_bot": 3798,
+      "height_spacings": 26.35,
+      "straightness": 0.998,
+      "offset_spacings": 0.26,
+      "n_columns": 13,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 88,
+      "x_right": 117,
+      "x_centre": 102.5,
+      "thickness_px": 30,
+      "thickness_spacings": 1.283,
+      "y_top": 3188,
+      "y_bot": 5154,
+      "height_spacings": 84.15,
+      "straightness": 0.898,
+      "offset_spacings": 1.18,
+      "n_columns": 30,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 110,
+      "x_right": 144,
+      "x_centre": 127.0,
+      "thickness_px": 35,
+      "thickness_spacings": 1.497,
+      "y_top": 4702,
+      "y_bot": 5061,
+      "height_spacings": 15.4,
+      "straightness": 0.0,
+      "offset_spacings": 2.22,
+      "n_columns": 35,
+      "covers": [
+       6,
+       7
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 12,
+  "n_staves": 24,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 22.75,
+    "geom": {
+     "x0": 0,
+     "x1": 194,
+     "y0": 243,
+     "y1": 3132,
+     "spacing": 22.8,
+     "anchor": 126.0
+    },
+    "strokes": [
+     {
+      "x_left": 121,
+      "x_right": 129,
+      "x_centre": 125.0,
+      "thickness_px": 9,
+      "thickness_spacings": 0.396,
+      "y_top": 1767,
+      "y_bot": 2329,
+      "height_spacings": 24.75,
+      "straightness": 1.0,
+      "offset_spacings": -0.04,
+      "n_columns": 9,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 126,
+      "x_right": 135,
+      "x_centre": 130.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.44,
+      "y_top": 1009,
+      "y_bot": 1613,
+      "height_spacings": 26.59,
+      "straightness": 0.998,
+      "offset_spacings": 0.2,
+      "n_columns": 10,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 132,
+      "x_right": 139,
+      "x_centre": 135.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.352,
+      "y_top": 272,
+      "y_bot": 847,
+      "height_spacings": 25.32,
+      "straightness": 0.999,
+      "offset_spacings": 0.42,
+      "n_columns": 8,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 138,
+      "x_right": 165,
+      "x_centre": 151.5,
+      "thickness_px": 28,
+      "thickness_spacings": 1.231,
+      "y_top": 270,
+      "y_bot": 2310,
+      "height_spacings": 89.71,
+      "straightness": 0.967,
+      "offset_spacings": 1.12,
+      "n_columns": 28,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 22.88,
+    "geom": {
+     "x0": 0,
+     "x1": 179,
+     "y0": 3342,
+     "y1": 6166,
+     "spacing": 22.9,
+     "anchor": 110.5
+    },
+    "strokes": [
+     {
+      "x_left": 106,
+      "x_right": 113,
+      "x_centre": 109.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.35,
+      "y_top": 4825,
+      "y_bot": 5387,
+      "height_spacings": 24.61,
+      "straightness": 1.0,
+      "offset_spacings": -0.04,
+      "n_columns": 8,
+      "covers": [
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 108,
+      "x_right": 115,
+      "x_centre": 111.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.35,
+      "y_top": 4110,
+      "y_bot": 4672,
+      "height_spacings": 24.61,
+      "straightness": 1.0,
+      "offset_spacings": 0.04,
+      "n_columns": 8,
+      "covers": [
+       3,
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 112,
+      "x_right": 121,
+      "x_centre": 116.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.437,
+      "y_top": 3371,
+      "y_bot": 3947,
+      "height_spacings": 25.22,
+      "straightness": 0.997,
+      "offset_spacings": 0.26,
+      "n_columns": 10,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 122,
+      "x_right": 147,
+      "x_centre": 134.5,
+      "thickness_px": 26,
+      "thickness_spacings": 1.137,
+      "y_top": 3414,
+      "y_bot": 5529,
+      "height_spacings": 92.5,
+      "straightness": 0.931,
+      "offset_spacings": 1.05,
+      "n_columns": 26,
+      "covers": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 13,
+  "n_staves": 1,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 1,
+    "spacing": 235.25,
+    "geom": {
+     "x0": 0,
+     "x1": 811,
+     "y0": 1615,
+     "y1": 3026,
+     "spacing": 235.2,
+     "anchor": 106
+    },
+    "strokes": []
+   }
+  ],
+  "tag": "bach",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/bach/brandenburg-concerto-3-in-g-major-bwv1048/bach--brandenburg-concerto-3-in-g-major-bwv1048--edition-peters-nr-4412--imslp468678.pdf"
+ },
+ {
+  "page": 2,
+  "n_staves": 22,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 194,
+     "x1": 383,
+     "y0": 396,
+     "y1": 1959,
+     "spacing": 15.8,
+     "anchor": 336
+    },
+    "strokes": []
+   },
+   {
+    "system_index": 1,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 193,
+     "x1": 382,
+     "y0": 2128,
+     "y1": 3616,
+     "spacing": 15.8,
+     "anchor": 335
+    },
+    "strokes": [
+     {
+      "x_left": 332,
+      "x_right": 381,
+      "x_centre": 356.5,
+      "thickness_px": 50,
+      "thickness_spacings": 3.175,
+      "y_top": 2712,
+      "y_bot": 2913,
+      "height_spacings": 12.83,
+      "straightness": 0.0,
+      "offset_spacings": 1.37,
+      "n_columns": 50,
+      "covers": [
+       4,
+       5
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 3,
+  "n_staves": 19,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 201,
+     "x1": 390,
+     "y0": 434,
+     "y1": 2036,
+     "spacing": 15.8,
+     "anchor": 343
+    },
+    "strokes": [
+     {
+      "x_left": 340,
+      "x_right": 357,
+      "x_centre": 348.5,
+      "thickness_px": 18,
+      "thickness_spacings": 1.143,
+      "y_top": 645,
+      "y_bot": 1935,
+      "height_spacings": 81.97,
+      "straightness": 1.0,
+      "offset_spacings": 0.35,
+      "n_columns": 18,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 8,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 199,
+     "x1": 388,
+     "y0": 2301,
+     "y1": 3592,
+     "spacing": 15.8,
+     "anchor": 341.0
+    },
+    "strokes": [
+     {
+      "x_left": 340,
+      "x_right": 354,
+      "x_centre": 347.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.952,
+      "y_top": 2326,
+      "y_bot": 3591,
+      "height_spacings": 80.38,
+      "straightness": 1.0,
+      "offset_spacings": 0.38,
+      "n_columns": 15,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 356,
+      "x_right": 387,
+      "x_centre": 371.5,
+      "thickness_px": 32,
+      "thickness_spacings": 2.032,
+      "y_top": 2828,
+      "y_bot": 3008,
+      "height_spacings": 11.49,
+      "straightness": 0.0,
+      "offset_spacings": 1.94,
+      "n_columns": 32,
+      "covers": [
+       3
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 4,
+  "n_staves": 22,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 206,
+     "x1": 395,
+     "y0": 398,
+     "y1": 1973,
+     "spacing": 15.8,
+     "anchor": 348
+    },
+    "strokes": [
+     {
+      "x_left": 340,
+      "x_right": 394,
+      "x_centre": 367.0,
+      "thickness_px": 55,
+      "thickness_spacings": 3.492,
+      "y_top": 1335,
+      "y_bot": 1544,
+      "height_spacings": 13.33,
+      "straightness": 0.0,
+      "offset_spacings": 1.21,
+      "n_columns": 55,
+      "covers": [
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 356,
+      "x_right": 394,
+      "x_centre": 375.0,
+      "thickness_px": 39,
+      "thickness_spacings": 2.476,
+      "y_top": 430,
+      "y_bot": 784,
+      "height_spacings": 22.54,
+      "straightness": 1.0,
+      "offset_spacings": 1.71,
+      "n_columns": 39,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 207,
+     "x1": 396,
+     "y0": 2162,
+     "y1": 3609,
+     "spacing": 15.8,
+     "anchor": 349
+    },
+    "strokes": []
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 5,
+  "n_staves": 16,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 9,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 210,
+     "x1": 399,
+     "y0": 451,
+     "y1": 1960,
+     "spacing": 15.8,
+     "anchor": 352
+    },
+    "strokes": [
+     {
+      "x_left": 347,
+      "x_right": 367,
+      "x_centre": 357.0,
+      "thickness_px": 21,
+      "thickness_spacings": 1.333,
+      "y_top": 468,
+      "y_bot": 1943,
+      "height_spacings": 93.71,
+      "straightness": 0.996,
+      "offset_spacings": 0.32,
+      "n_columns": 21,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 363,
+      "x_right": 398,
+      "x_centre": 380.5,
+      "thickness_px": 36,
+      "thickness_spacings": 2.286,
+      "y_top": 996,
+      "y_bot": 1286,
+      "height_spacings": 18.48,
+      "straightness": 0.0,
+      "offset_spacings": 1.81,
+      "n_columns": 36,
+      "covers": [
+       3,
+       4
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 7,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 208,
+     "x1": 397,
+     "y0": 2312,
+     "y1": 3590,
+     "spacing": 15.8,
+     "anchor": 350
+    },
+    "strokes": [
+     {
+      "x_left": 348,
+      "x_right": 366,
+      "x_centre": 357.0,
+      "thickness_px": 19,
+      "thickness_spacings": 1.206,
+      "y_top": 2328,
+      "y_bot": 3579,
+      "height_spacings": 79.49,
+      "straightness": 1.0,
+      "offset_spacings": 0.44,
+      "n_columns": 19,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 6,
+  "n_staves": 22,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 10,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 192,
+     "x1": 381,
+     "y0": 377,
+     "y1": 1801,
+     "spacing": 15.8,
+     "anchor": 334.5
+    },
+    "strokes": [
+     {
+      "x_left": 326,
+      "x_right": 380,
+      "x_centre": 353.0,
+      "thickness_px": 55,
+      "thickness_spacings": 3.492,
+      "y_top": 1008,
+      "y_bot": 1220,
+      "height_spacings": 13.52,
+      "straightness": 0.0,
+      "offset_spacings": 1.17,
+      "n_columns": 55,
+      "covers": [
+       4,
+       5
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 12,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 195,
+     "x1": 384,
+     "y0": 1975,
+     "y1": 3640,
+     "spacing": 15.8,
+     "anchor": 337.0
+    },
+    "strokes": [
+     {
+      "x_left": 334,
+      "x_right": 350,
+      "x_centre": 342.0,
+      "thickness_px": 17,
+      "thickness_spacings": 1.079,
+      "y_top": 1992,
+      "y_bot": 3620,
+      "height_spacings": 103.43,
+      "straightness": 1.0,
+      "offset_spacings": 0.32,
+      "n_columns": 17,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 7,
+  "n_staves": 22,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 197,
+     "x1": 386,
+     "y0": 417,
+     "y1": 1900,
+     "spacing": 15.8,
+     "anchor": 339
+    },
+    "strokes": [
+     {
+      "x_left": 332,
+      "x_right": 356,
+      "x_centre": 344.0,
+      "thickness_px": 25,
+      "thickness_spacings": 1.587,
+      "y_top": 535,
+      "y_bot": 1809,
+      "height_spacings": 80.95,
+      "straightness": 0.865,
+      "offset_spacings": 0.32,
+      "n_columns": 25,
+      "covers": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 206,
+     "x1": 395,
+     "y0": 2072,
+     "y1": 3627,
+     "spacing": 15.8,
+     "anchor": 348
+    },
+    "strokes": [
+     {
+      "x_left": 343,
+      "x_right": 363,
+      "x_centre": 353.0,
+      "thickness_px": 21,
+      "thickness_spacings": 1.333,
+      "y_top": 2088,
+      "y_bot": 3561,
+      "height_spacings": 93.59,
+      "straightness": 0.998,
+      "offset_spacings": 0.32,
+      "n_columns": 21,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 8,
+  "n_staves": 20,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 9,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 207,
+     "x1": 396,
+     "y0": 407,
+     "y1": 1694,
+     "spacing": 15.8,
+     "anchor": 349
+    },
+    "strokes": []
+   },
+   {
+    "system_index": 1,
+    "n_staves": 11,
+    "spacing": 16.0,
+    "geom": {
+     "x0": 194,
+     "x1": 386,
+     "y0": 1919,
+     "y1": 3600,
+     "spacing": 16.0,
+     "anchor": 338
+    },
+    "strokes": [
+     {
+      "x_left": 335,
+      "x_right": 352,
+      "x_centre": 343.5,
+      "thickness_px": 18,
+      "thickness_spacings": 1.125,
+      "y_top": 2253,
+      "y_bot": 3441,
+      "height_spacings": 74.31,
+      "straightness": 1.0,
+      "offset_spacings": 0.34,
+      "n_columns": 18,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 9,
+  "n_staves": 22,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 207,
+     "x1": 396,
+     "y0": 396,
+     "y1": 2025,
+     "spacing": 15.8,
+     "anchor": 349.0
+    },
+    "strokes": [
+     {
+      "x_left": 345,
+      "x_right": 362,
+      "x_centre": 353.5,
+      "thickness_px": 18,
+      "thickness_spacings": 1.143,
+      "y_top": 599,
+      "y_bot": 1770,
+      "height_spacings": 74.41,
+      "straightness": 1.0,
+      "offset_spacings": 0.29,
+      "n_columns": 18,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 10,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 204,
+     "x1": 393,
+     "y0": 2207,
+     "y1": 3611,
+     "spacing": 15.8,
+     "anchor": 346.5
+    },
+    "strokes": [
+     {
+      "x_left": 343,
+      "x_right": 361,
+      "x_centre": 352.0,
+      "thickness_px": 19,
+      "thickness_spacings": 1.206,
+      "y_top": 2225,
+      "y_bot": 3610,
+      "height_spacings": 88.0,
+      "straightness": 1.0,
+      "offset_spacings": 0.35,
+      "n_columns": 19,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 10,
+  "n_staves": 22,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 198,
+     "x1": 387,
+     "y0": 399,
+     "y1": 1925,
+     "spacing": 15.8,
+     "anchor": 340
+    },
+    "strokes": [
+     {
+      "x_left": 337,
+      "x_right": 351,
+      "x_centre": 344.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.952,
+      "y_top": 417,
+      "y_bot": 1912,
+      "height_spacings": 94.98,
+      "straightness": 1.0,
+      "offset_spacings": 0.25,
+      "n_columns": 15,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 192,
+     "x1": 381,
+     "y0": 2091,
+     "y1": 3635,
+     "spacing": 15.8,
+     "anchor": 334
+    },
+    "strokes": [
+     {
+      "x_left": 334,
+      "x_right": 346,
+      "x_centre": 340.0,
+      "thickness_px": 13,
+      "thickness_spacings": 0.825,
+      "y_top": 2104,
+      "y_bot": 3620,
+      "height_spacings": 96.32,
+      "straightness": 1.0,
+      "offset_spacings": 0.38,
+      "n_columns": 13,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 11,
+  "n_staves": 20,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 9,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 205,
+     "x1": 394,
+     "y0": 428,
+     "y1": 1657,
+     "spacing": 15.8,
+     "anchor": 347
+    },
+    "strokes": []
+   },
+   {
+    "system_index": 1,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 199,
+     "x1": 388,
+     "y0": 1886,
+     "y1": 3614,
+     "spacing": 15.8,
+     "anchor": 341
+    },
+    "strokes": [
+     {
+      "x_left": 340,
+      "x_right": 353,
+      "x_centre": 346.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.889,
+      "y_top": 1904,
+      "y_bot": 3601,
+      "height_spacings": 107.81,
+      "straightness": 1.0,
+      "offset_spacings": 0.35,
+      "n_columns": 14,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     },
+     {
+      "x_left": 356,
+      "x_right": 387,
+      "x_centre": 371.5,
+      "thickness_px": 32,
+      "thickness_spacings": 2.032,
+      "y_top": 2684,
+      "y_bot": 2907,
+      "height_spacings": 14.22,
+      "straightness": 0.0,
+      "offset_spacings": 1.94,
+      "n_columns": 32,
+      "covers": [
+       5
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 12,
+  "n_staves": 23,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 200,
+     "x1": 389,
+     "y0": 424,
+     "y1": 1991,
+     "spacing": 15.8,
+     "anchor": 342.0
+    },
+    "strokes": [
+     {
+      "x_left": 334,
+      "x_right": 360,
+      "x_centre": 347.0,
+      "thickness_px": 27,
+      "thickness_spacings": 1.714,
+      "y_top": 655,
+      "y_bot": 1857,
+      "height_spacings": 76.38,
+      "straightness": 0.714,
+      "offset_spacings": 0.32,
+      "n_columns": 27,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 204,
+     "x1": 393,
+     "y0": 2188,
+     "y1": 3622,
+     "spacing": 15.8,
+     "anchor": 346
+    },
+    "strokes": [
+     {
+      "x_left": 344,
+      "x_right": 392,
+      "x_centre": 368.0,
+      "thickness_px": 49,
+      "thickness_spacings": 3.111,
+      "y_top": 2714,
+      "y_bot": 2903,
+      "height_spacings": 12.06,
+      "straightness": 0.0,
+      "offset_spacings": 1.4,
+      "n_columns": 49,
+      "covers": [
+       4,
+       5
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 13,
+  "n_staves": 22,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 201,
+     "x1": 390,
+     "y0": 396,
+     "y1": 1908,
+     "spacing": 15.8,
+     "anchor": 343
+    },
+    "strokes": [
+     {
+      "x_left": 349,
+      "x_right": 353,
+      "x_centre": 351.0,
+      "thickness_px": 5,
+      "thickness_spacings": 0.317,
+      "y_top": 629,
+      "y_bot": 818,
+      "height_spacings": 12.06,
+      "straightness": 0.85,
+      "offset_spacings": 0.51,
+      "n_columns": 5,
+      "covers": [
+       2
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 11,
+    "spacing": 15.75,
+    "geom": {
+     "x0": 214,
+     "x1": 403,
+     "y0": 2138,
+     "y1": 3605,
+     "spacing": 15.8,
+     "anchor": 356
+    },
+    "strokes": [
+     {
+      "x_left": 351,
+      "x_right": 371,
+      "x_centre": 361.0,
+      "thickness_px": 21,
+      "thickness_spacings": 1.333,
+      "y_top": 2158,
+      "y_bot": 3604,
+      "height_spacings": 91.87,
+      "straightness": 1.0,
+      "offset_spacings": 0.32,
+      "n_columns": 21,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "beethoven",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "page": 2,
+  "n_staves": 28,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 14,
+    "spacing": 27.25,
+    "geom": {
+     "x0": 393,
+     "x1": 720,
+     "y0": 503,
+     "y1": 3788,
+     "spacing": 27.2,
+     "anchor": 638.5
+    },
+    "strokes": [
+     {
+      "x_left": 616,
+      "x_right": 635,
+      "x_centre": 625.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.734,
+      "y_top": 1686,
+      "y_bot": 1911,
+      "height_spacings": 8.29,
+      "straightness": 1.0,
+      "offset_spacings": -0.48,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 618,
+      "x_right": 639,
+      "x_centre": 628.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.807,
+      "y_top": 2700,
+      "y_bot": 2884,
+      "height_spacings": 6.79,
+      "straightness": 0.912,
+      "offset_spacings": -0.37,
+      "n_columns": 22,
+      "covers": []
+     },
+     {
+      "x_left": 621,
+      "x_right": 633,
+      "x_centre": 627.0,
+      "thickness_px": 13,
+      "thickness_spacings": 0.477,
+      "y_top": 1264,
+      "y_bot": 1496,
+      "height_spacings": 8.55,
+      "straightness": 1.0,
+      "offset_spacings": -0.42,
+      "n_columns": 13,
+      "covers": [
+       3,
+       4
+      ]
+     },
+     {
+      "x_left": 639,
+      "x_right": 719,
+      "x_centre": 679.0,
+      "thickness_px": 81,
+      "thickness_spacings": 2.972,
+      "y_top": 1856,
+      "y_bot": 2208,
+      "height_spacings": 12.95,
+      "straightness": 0.0,
+      "offset_spacings": 1.49,
+      "n_columns": 81,
+      "covers": [
+       6,
+       7
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 14,
+    "spacing": 27.38,
+    "geom": {
+     "x0": 393,
+     "x1": 721,
+     "y0": 4102,
+     "y1": 7152,
+     "spacing": 27.4,
+     "anchor": 639.5
+    },
+    "strokes": [
+     {
+      "x_left": 623,
+      "x_right": 638,
+      "x_centre": 630.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.584,
+      "y_top": 4847,
+      "y_bot": 5084,
+      "height_spacings": 8.69,
+      "straightness": 1.0,
+      "offset_spacings": -0.33,
+      "n_columns": 16,
+      "covers": [
+       3,
+       4
+      ]
+     },
+     {
+      "x_left": 625,
+      "x_right": 637,
+      "x_centre": 631.0,
+      "thickness_px": 13,
+      "thickness_spacings": 0.475,
+      "y_top": 5249,
+      "y_bot": 5494,
+      "height_spacings": 8.99,
+      "straightness": 1.0,
+      "offset_spacings": -0.31,
+      "n_columns": 13,
+      "covers": [
+       5,
+       6
+      ]
+     },
+     {
+      "x_left": 626,
+      "x_right": 645,
+      "x_centre": 635.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.731,
+      "y_top": 6166,
+      "y_bot": 6356,
+      "height_spacings": 6.98,
+      "straightness": 1.0,
+      "offset_spacings": -0.15,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 639,
+      "x_right": 720,
+      "x_centre": 679.5,
+      "thickness_px": 82,
+      "thickness_spacings": 2.995,
+      "y_top": 5216,
+      "y_bot": 5604,
+      "height_spacings": 14.21,
+      "straightness": 0.0,
+      "offset_spacings": 1.46,
+      "n_columns": 82,
+      "covers": [
+       5,
+       6
+      ]
+     },
+     {
+      "x_left": 647,
+      "x_right": 671,
+      "x_centre": 659.0,
+      "thickness_px": 25,
+      "thickness_spacings": 0.913,
+      "y_top": 6086,
+      "y_bot": 7151,
+      "height_spacings": 38.94,
+      "straightness": 1.0,
+      "offset_spacings": 0.71,
+      "n_columns": 25,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 3,
+  "n_staves": 28,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 14,
+    "spacing": 27.62,
+    "geom": {
+     "x0": 394,
+     "x1": 726,
+     "y0": 495,
+     "y1": 3770,
+     "spacing": 27.6,
+     "anchor": 643.5
+    },
+    "strokes": [
+     {
+      "x_left": 622,
+      "x_right": 638,
+      "x_centre": 630.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.615,
+      "y_top": 1761,
+      "y_bot": 1970,
+      "height_spacings": 7.6,
+      "straightness": 0.935,
+      "offset_spacings": -0.49,
+      "n_columns": 17,
+      "covers": []
+     },
+     {
+      "x_left": 624,
+      "x_right": 642,
+      "x_centre": 633.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.688,
+      "y_top": 2697,
+      "y_bot": 2885,
+      "height_spacings": 6.84,
+      "straightness": 1.0,
+      "offset_spacings": -0.38,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 626,
+      "x_right": 638,
+      "x_centre": 632.0,
+      "thickness_px": 13,
+      "thickness_spacings": 0.471,
+      "y_top": 1329,
+      "y_bot": 1532,
+      "height_spacings": 7.38,
+      "straightness": 1.0,
+      "offset_spacings": -0.42,
+      "n_columns": 13,
+      "covers": []
+     },
+     {
+      "x_left": 644,
+      "x_right": 662,
+      "x_centre": 653.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.688,
+      "y_top": 495,
+      "y_bot": 2490,
+      "height_spacings": 72.25,
+      "straightness": 1.0,
+      "offset_spacings": 0.34,
+      "n_columns": 19,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 648,
+      "x_right": 666,
+      "x_centre": 657.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.688,
+      "y_top": 2590,
+      "y_bot": 3769,
+      "height_spacings": 42.71,
+      "straightness": 1.0,
+      "offset_spacings": 0.49,
+      "n_columns": 19,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     },
+     {
+      "x_left": 664,
+      "x_right": 725,
+      "x_centre": 694.5,
+      "thickness_px": 62,
+      "thickness_spacings": 2.244,
+      "y_top": 1955,
+      "y_bot": 2249,
+      "height_spacings": 10.68,
+      "straightness": 0.0,
+      "offset_spacings": 1.85,
+      "n_columns": 62,
+      "covers": [
+       6,
+       7
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 14,
+    "spacing": 27.75,
+    "geom": {
+     "x0": 392,
+     "x1": 725,
+     "y0": 4080,
+     "y1": 7150,
+     "spacing": 27.8,
+     "anchor": 642.0
+    },
+    "strokes": [
+     {
+      "x_left": 626,
+      "x_right": 637,
+      "x_centre": 631.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.432,
+      "y_top": 4828,
+      "y_bot": 5052,
+      "height_spacings": 8.11,
+      "straightness": 1.0,
+      "offset_spacings": -0.38,
+      "n_columns": 12,
+      "covers": [
+       4
+      ]
+     },
+     {
+      "x_left": 626,
+      "x_right": 637,
+      "x_centre": 631.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.432,
+      "y_top": 6136,
+      "y_bot": 6341,
+      "height_spacings": 7.42,
+      "straightness": 1.0,
+      "offset_spacings": -0.38,
+      "n_columns": 12,
+      "covers": []
+     },
+     {
+      "x_left": 628,
+      "x_right": 640,
+      "x_centre": 634.0,
+      "thickness_px": 13,
+      "thickness_spacings": 0.468,
+      "y_top": 5214,
+      "y_bot": 5439,
+      "height_spacings": 8.14,
+      "straightness": 1.0,
+      "offset_spacings": -0.29,
+      "n_columns": 13,
+      "covers": [
+       5
+      ]
+     },
+     {
+      "x_left": 642,
+      "x_right": 724,
+      "x_centre": 683.0,
+      "thickness_px": 83,
+      "thickness_spacings": 2.991,
+      "y_top": 5403,
+      "y_bot": 5701,
+      "height_spacings": 10.77,
+      "straightness": 0.0,
+      "offset_spacings": 1.48,
+      "n_columns": 83,
+      "covers": [
+       6,
+       7
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 4,
+  "n_staves": 28,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 14,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 415,
+     "x1": 745,
+     "y0": 504,
+     "y1": 3806,
+     "spacing": 27.5,
+     "anchor": 662.5
+    },
+    "strokes": [
+     {
+      "x_left": 640,
+      "x_right": 654,
+      "x_centre": 647.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.545,
+      "y_top": 1776,
+      "y_bot": 1983,
+      "height_spacings": 7.56,
+      "straightness": 1.0,
+      "offset_spacings": -0.56,
+      "n_columns": 15,
+      "covers": []
+     },
+     {
+      "x_left": 643,
+      "x_right": 656,
+      "x_centre": 649.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.509,
+      "y_top": 2731,
+      "y_bot": 2924,
+      "height_spacings": 7.05,
+      "straightness": 0.711,
+      "offset_spacings": -0.47,
+      "n_columns": 14,
+      "covers": []
+     },
+     {
+      "x_left": 644,
+      "x_right": 657,
+      "x_centre": 650.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.509,
+      "y_top": 1351,
+      "y_bot": 1528,
+      "height_spacings": 6.47,
+      "straightness": 0.937,
+      "offset_spacings": -0.44,
+      "n_columns": 14,
+      "covers": []
+     },
+     {
+      "x_left": 662,
+      "x_right": 679,
+      "x_centre": 670.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.655,
+      "y_top": 2627,
+      "y_bot": 3805,
+      "height_spacings": 42.87,
+      "straightness": 1.0,
+      "offset_spacings": 0.29,
+      "n_columns": 18,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     },
+     {
+      "x_left": 664,
+      "x_right": 681,
+      "x_centre": 672.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.655,
+      "y_top": 504,
+      "y_bot": 2499,
+      "height_spacings": 72.58,
+      "straightness": 1.0,
+      "offset_spacings": 0.36,
+      "n_columns": 18,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 14,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 398,
+     "x1": 728,
+     "y0": 4090,
+     "y1": 7154,
+     "spacing": 27.5,
+     "anchor": 645.5
+    },
+    "strokes": [
+     {
+      "x_left": 627,
+      "x_right": 642,
+      "x_centre": 634.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.582,
+      "y_top": 5298,
+      "y_bot": 5494,
+      "height_spacings": 7.16,
+      "straightness": 0.963,
+      "offset_spacings": -0.4,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 627,
+      "x_right": 642,
+      "x_centre": 634.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.582,
+      "y_top": 6149,
+      "y_bot": 6327,
+      "height_spacings": 6.51,
+      "straightness": 0.586,
+      "offset_spacings": -0.4,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 637,
+      "x_right": 646,
+      "x_centre": 641.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.364,
+      "y_top": 4871,
+      "y_bot": 5102,
+      "height_spacings": 8.44,
+      "straightness": 1.0,
+      "offset_spacings": -0.15,
+      "n_columns": 10,
+      "covers": [
+       3,
+       4
+      ]
+     },
+     {
+      "x_left": 645,
+      "x_right": 663,
+      "x_centre": 654.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.691,
+      "y_top": 6060,
+      "y_bot": 7132,
+      "height_spacings": 39.02,
+      "straightness": 1.0,
+      "offset_spacings": 0.31,
+      "n_columns": 19,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     },
+     {
+      "x_left": 650,
+      "x_right": 670,
+      "x_centre": 660.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.764,
+      "y_top": 4090,
+      "y_bot": 5859,
+      "height_spacings": 64.36,
+      "straightness": 1.0,
+      "offset_spacings": 0.53,
+      "n_columns": 21,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 666,
+      "x_right": 727,
+      "x_centre": 696.5,
+      "thickness_px": 62,
+      "thickness_spacings": 2.255,
+      "y_top": 5490,
+      "y_bot": 5770,
+      "height_spacings": 10.22,
+      "straightness": 0.0,
+      "offset_spacings": 1.85,
+      "n_columns": 62,
+      "covers": [
+       6,
+       7
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 5,
+  "n_staves": 28,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 14,
+    "spacing": 27.25,
+    "geom": {
+     "x0": 395,
+     "x1": 722,
+     "y0": 504,
+     "y1": 3719,
+     "spacing": 27.2,
+     "anchor": 641.0
+    },
+    "strokes": [
+     {
+      "x_left": 621,
+      "x_right": 638,
+      "x_centre": 629.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.661,
+      "y_top": 1332,
+      "y_bot": 1551,
+      "height_spacings": 8.07,
+      "straightness": 1.0,
+      "offset_spacings": -0.42,
+      "n_columns": 18,
+      "covers": []
+     },
+     {
+      "x_left": 621,
+      "x_right": 638,
+      "x_centre": 629.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.661,
+      "y_top": 2681,
+      "y_bot": 2902,
+      "height_spacings": 8.15,
+      "straightness": 1.0,
+      "offset_spacings": -0.42,
+      "n_columns": 18,
+      "covers": [
+       10
+      ]
+     },
+     {
+      "x_left": 622,
+      "x_right": 635,
+      "x_centre": 628.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.514,
+      "y_top": 1716,
+      "y_bot": 1948,
+      "height_spacings": 8.55,
+      "straightness": 1.0,
+      "offset_spacings": -0.46,
+      "n_columns": 14,
+      "covers": [
+       5,
+       6
+      ]
+     },
+     {
+      "x_left": 640,
+      "x_right": 663,
+      "x_centre": 651.5,
+      "thickness_px": 24,
+      "thickness_spacings": 0.881,
+      "y_top": 504,
+      "y_bot": 2433,
+      "height_spacings": 70.83,
+      "straightness": 1.0,
+      "offset_spacings": 0.39,
+      "n_columns": 24,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 643,
+      "x_right": 661,
+      "x_centre": 652.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.697,
+      "y_top": 2598,
+      "y_bot": 3718,
+      "height_spacings": 41.14,
+      "straightness": 1.0,
+      "offset_spacings": 0.4,
+      "n_columns": 19,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     },
+     {
+      "x_left": 661,
+      "x_right": 721,
+      "x_centre": 691.0,
+      "thickness_px": 61,
+      "thickness_spacings": 2.239,
+      "y_top": 1873,
+      "y_bot": 2174,
+      "height_spacings": 11.08,
+      "straightness": 0.0,
+      "offset_spacings": 1.83,
+      "n_columns": 61,
+      "covers": [
+       6,
+       7
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 14,
+    "spacing": 27.38,
+    "geom": {
+     "x0": 392,
+     "x1": 721,
+     "y0": 4024,
+     "y1": 7179,
+     "spacing": 27.4,
+     "anchor": 639.0
+    },
+    "strokes": [
+     {
+      "x_left": 615,
+      "x_right": 635,
+      "x_centre": 625.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.767,
+      "y_top": 6157,
+      "y_bot": 6351,
+      "height_spacings": 7.12,
+      "straightness": 0.987,
+      "offset_spacings": -0.51,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 619,
+      "x_right": 635,
+      "x_centre": 627.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.621,
+      "y_top": 5194,
+      "y_bot": 5374,
+      "height_spacings": 6.61,
+      "straightness": 0.905,
+      "offset_spacings": -0.44,
+      "n_columns": 17,
+      "covers": []
+     },
+     {
+      "x_left": 621,
+      "x_right": 634,
+      "x_centre": 627.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.511,
+      "y_top": 4771,
+      "y_bot": 4982,
+      "height_spacings": 7.74,
+      "straightness": 1.0,
+      "offset_spacings": -0.42,
+      "n_columns": 14,
+      "covers": [
+       3,
+       4
+      ]
+     },
+     {
+      "x_left": 639,
+      "x_right": 720,
+      "x_centre": 679.5,
+      "thickness_px": 82,
+      "thickness_spacings": 2.995,
+      "y_top": 5337,
+      "y_bot": 5695,
+      "height_spacings": 13.11,
+      "straightness": 0.0,
+      "offset_spacings": 1.48,
+      "n_columns": 82,
+      "covers": [
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 639,
+      "x_right": 657,
+      "x_centre": 648.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.694,
+      "y_top": 6054,
+      "y_bot": 7178,
+      "height_spacings": 41.1,
+      "straightness": 1.0,
+      "offset_spacings": 0.33,
+      "n_columns": 19,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 6,
+  "n_staves": 23,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 27.38,
+    "geom": {
+     "x0": 394,
+     "x1": 722,
+     "y0": 591,
+     "y1": 3653,
+     "spacing": 27.4,
+     "anchor": 640.5
+    },
+    "strokes": [
+     {
+      "x_left": 619,
+      "x_right": 637,
+      "x_centre": 628.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.694,
+      "y_top": 2533,
+      "y_bot": 2792,
+      "height_spacings": 9.5,
+      "straightness": 1.0,
+      "offset_spacings": -0.46,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 625,
+      "x_right": 642,
+      "x_centre": 633.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.658,
+      "y_top": 1665,
+      "y_bot": 1894,
+      "height_spacings": 8.4,
+      "straightness": 1.0,
+      "offset_spacings": -0.26,
+      "n_columns": 18,
+      "covers": []
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 11,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 368,
+     "x1": 698,
+     "y0": 4075,
+     "y1": 7010,
+     "spacing": 27.5,
+     "anchor": 616
+    },
+    "strokes": [
+     {
+      "x_left": 592,
+      "x_right": 610,
+      "x_centre": 601.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.691,
+      "y_top": 5898,
+      "y_bot": 6129,
+      "height_spacings": 8.44,
+      "straightness": 1.0,
+      "offset_spacings": -0.55,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 596,
+      "x_right": 617,
+      "x_centre": 606.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.8,
+      "y_top": 5268,
+      "y_bot": 5500,
+      "height_spacings": 8.47,
+      "straightness": 1.0,
+      "offset_spacings": -0.35,
+      "n_columns": 22,
+      "covers": []
+     },
+     {
+      "x_left": 615,
+      "x_right": 697,
+      "x_centre": 656.0,
+      "thickness_px": 83,
+      "thickness_spacings": 3.018,
+      "y_top": 5447,
+      "y_bot": 5950,
+      "height_spacings": 18.33,
+      "straightness": 0.0,
+      "offset_spacings": 1.45,
+      "n_columns": 83,
+      "covers": [
+       5,
+       6
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 7,
+  "n_staves": 22,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 11,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 391,
+     "x1": 721,
+     "y0": 572,
+     "y1": 3462,
+     "spacing": 27.5,
+     "anchor": 639
+    },
+    "strokes": [
+     {
+      "x_left": 615,
+      "x_right": 632,
+      "x_centre": 623.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.655,
+      "y_top": 2333,
+      "y_bot": 2527,
+      "height_spacings": 7.09,
+      "straightness": 0.776,
+      "offset_spacings": -0.56,
+      "n_columns": 18,
+      "covers": []
+     },
+     {
+      "x_left": 616,
+      "x_right": 630,
+      "x_centre": 623.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.545,
+      "y_top": 1763,
+      "y_bot": 1980,
+      "height_spacings": 7.93,
+      "straightness": 1.0,
+      "offset_spacings": -0.58,
+      "n_columns": 15,
+      "covers": [
+       5
+      ]
+     },
+     {
+      "x_left": 637,
+      "x_right": 659,
+      "x_centre": 648.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.836,
+      "y_top": 2209,
+      "y_bot": 3461,
+      "height_spacings": 45.56,
+      "straightness": 1.0,
+      "offset_spacings": 0.33,
+      "n_columns": 23,
+      "covers": [
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 11,
+    "spacing": 27.75,
+    "geom": {
+     "x0": 393,
+     "x1": 726,
+     "y0": 3972,
+     "y1": 7057,
+     "spacing": 27.8,
+     "anchor": 643
+    },
+    "strokes": [
+     {
+      "x_left": 619,
+      "x_right": 640,
+      "x_centre": 629.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.793,
+      "y_top": 5864,
+      "y_bot": 6101,
+      "height_spacings": 8.58,
+      "straightness": 0.907,
+      "offset_spacings": -0.49,
+      "n_columns": 22,
+      "covers": [
+       7
+      ]
+     },
+     {
+      "x_left": 624,
+      "x_right": 639,
+      "x_centre": 631.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.577,
+      "y_top": 5191,
+      "y_bot": 5424,
+      "height_spacings": 8.43,
+      "straightness": 1.0,
+      "offset_spacings": -0.41,
+      "n_columns": 16,
+      "covers": [
+       5
+      ]
+     },
+     {
+      "x_left": 642,
+      "x_right": 663,
+      "x_centre": 652.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.793,
+      "y_top": 3972,
+      "y_bot": 5486,
+      "height_spacings": 54.59,
+      "straightness": 1.0,
+      "offset_spacings": 0.34,
+      "n_columns": 22,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 8,
+  "n_staves": 22,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 11,
+    "spacing": 27.75,
+    "geom": {
+     "x0": 407,
+     "x1": 740,
+     "y0": 558,
+     "y1": 3558,
+     "spacing": 27.8,
+     "anchor": 657
+    },
+    "strokes": [
+     {
+      "x_left": 634,
+      "x_right": 649,
+      "x_centre": 641.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.577,
+      "y_top": 2462,
+      "y_bot": 2665,
+      "height_spacings": 7.35,
+      "straightness": 1.0,
+      "offset_spacings": -0.56,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 635,
+      "x_right": 650,
+      "x_centre": 642.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.577,
+      "y_top": 1880,
+      "y_bot": 2114,
+      "height_spacings": 8.47,
+      "straightness": 1.0,
+      "offset_spacings": -0.52,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 656,
+      "x_right": 674,
+      "x_centre": 665.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.685,
+      "y_top": 2361,
+      "y_bot": 3557,
+      "height_spacings": 43.14,
+      "straightness": 1.0,
+      "offset_spacings": 0.29,
+      "n_columns": 19,
+      "covers": [
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     },
+     {
+      "x_left": 658,
+      "x_right": 677,
+      "x_centre": 667.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.721,
+      "y_top": 558,
+      "y_bot": 2202,
+      "height_spacings": 59.28,
+      "straightness": 1.0,
+      "offset_spacings": 0.38,
+      "n_columns": 20,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 11,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 385,
+     "x1": 715,
+     "y0": 4064,
+     "y1": 7062,
+     "spacing": 27.5,
+     "anchor": 633
+    },
+    "strokes": [
+     {
+      "x_left": 613,
+      "x_right": 632,
+      "x_centre": 622.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.727,
+      "y_top": 5845,
+      "y_bot": 6047,
+      "height_spacings": 7.38,
+      "straightness": 0.788,
+      "offset_spacings": -0.38,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 617,
+      "x_right": 635,
+      "x_centre": 626.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.691,
+      "y_top": 5192,
+      "y_bot": 5423,
+      "height_spacings": 8.44,
+      "straightness": 1.0,
+      "offset_spacings": -0.25,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 632,
+      "x_right": 714,
+      "x_centre": 673.0,
+      "thickness_px": 83,
+      "thickness_spacings": 3.018,
+      "y_top": 5391,
+      "y_bot": 5858,
+      "height_spacings": 17.02,
+      "straightness": 0.0,
+      "offset_spacings": 1.45,
+      "n_columns": 83,
+      "covers": [
+       5,
+       6
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 9,
+  "n_staves": 25,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 12,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 388,
+     "x1": 718,
+     "y0": 537,
+     "y1": 3454,
+     "spacing": 27.5,
+     "anchor": 635.5
+    },
+    "strokes": [
+     {
+      "x_left": 623,
+      "x_right": 639,
+      "x_centre": 631.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.618,
+      "y_top": 2408,
+      "y_bot": 2591,
+      "height_spacings": 6.69,
+      "straightness": 0.962,
+      "offset_spacings": -0.16,
+      "n_columns": 17,
+      "covers": []
+     },
+     {
+      "x_left": 626,
+      "x_right": 641,
+      "x_centre": 633.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.582,
+      "y_top": 1362,
+      "y_bot": 1549,
+      "height_spacings": 6.84,
+      "straightness": 0.93,
+      "offset_spacings": -0.07,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 626,
+      "x_right": 643,
+      "x_centre": 634.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.655,
+      "y_top": 1825,
+      "y_bot": 2002,
+      "height_spacings": 6.47,
+      "straightness": 0.889,
+      "offset_spacings": -0.04,
+      "n_columns": 18,
+      "covers": []
+     },
+     {
+      "x_left": 643,
+      "x_right": 663,
+      "x_centre": 653.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.764,
+      "y_top": 2317,
+      "y_bot": 3453,
+      "height_spacings": 41.35,
+      "straightness": 1.0,
+      "offset_spacings": 0.64,
+      "n_columns": 21,
+      "covers": [
+       7,
+       8,
+       9,
+       10,
+       11
+      ]
+     },
+     {
+      "x_left": 649,
+      "x_right": 673,
+      "x_centre": 661.0,
+      "thickness_px": 25,
+      "thickness_spacings": 0.909,
+      "y_top": 537,
+      "y_bot": 2101,
+      "height_spacings": 56.91,
+      "straightness": 1.0,
+      "offset_spacings": 0.93,
+      "n_columns": 25,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 13,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 391,
+     "x1": 721,
+     "y0": 3829,
+     "y1": 7133,
+     "spacing": 27.5,
+     "anchor": 639
+    },
+    "strokes": [
+     {
+      "x_left": 617,
+      "x_right": 631,
+      "x_centre": 624.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.545,
+      "y_top": 6037,
+      "y_bot": 6247,
+      "height_spacings": 7.67,
+      "straightness": 0.93,
+      "offset_spacings": -0.55,
+      "n_columns": 15,
+      "covers": []
+     },
+     {
+      "x_left": 618,
+      "x_right": 633,
+      "x_centre": 625.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.582,
+      "y_top": 5203,
+      "y_bot": 5389,
+      "height_spacings": 6.8,
+      "straightness": 1.0,
+      "offset_spacings": -0.49,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 619,
+      "x_right": 635,
+      "x_centre": 627.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.618,
+      "y_top": 4720,
+      "y_bot": 4907,
+      "height_spacings": 6.84,
+      "straightness": 0.959,
+      "offset_spacings": -0.44,
+      "n_columns": 17,
+      "covers": []
+     },
+     {
+      "x_left": 639,
+      "x_right": 656,
+      "x_centre": 647.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.655,
+      "y_top": 5958,
+      "y_bot": 7132,
+      "height_spacings": 42.73,
+      "straightness": 1.0,
+      "offset_spacings": 0.31,
+      "n_columns": 18,
+      "covers": [
+       8,
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     {
+      "x_left": 642,
+      "x_right": 662,
+      "x_centre": 652.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.764,
+      "y_top": 3829,
+      "y_bot": 5676,
+      "height_spacings": 67.2,
+      "straightness": 1.0,
+      "offset_spacings": 0.47,
+      "n_columns": 21,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 10,
+  "n_staves": 27,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 13,
+    "spacing": 27.25,
+    "geom": {
+     "x0": 399,
+     "x1": 726,
+     "y0": 481,
+     "y1": 3516,
+     "spacing": 27.2,
+     "anchor": 645
+    },
+    "strokes": [
+     {
+      "x_left": 622,
+      "x_right": 639,
+      "x_centre": 630.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.661,
+      "y_top": 2534,
+      "y_bot": 2722,
+      "height_spacings": 6.94,
+      "straightness": 0.669,
+      "offset_spacings": -0.53,
+      "n_columns": 18,
+      "covers": []
+     },
+     {
+      "x_left": 626,
+      "x_right": 639,
+      "x_centre": 632.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.514,
+      "y_top": 1300,
+      "y_bot": 1472,
+      "height_spacings": 6.35,
+      "straightness": 0.566,
+      "offset_spacings": -0.46,
+      "n_columns": 14,
+      "covers": []
+     },
+     {
+      "x_left": 626,
+      "x_right": 639,
+      "x_centre": 632.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.514,
+      "y_top": 1745,
+      "y_bot": 1970,
+      "height_spacings": 8.29,
+      "straightness": 1.0,
+      "offset_spacings": -0.46,
+      "n_columns": 14,
+      "covers": [
+       6
+      ]
+     },
+     {
+      "x_left": 644,
+      "x_right": 662,
+      "x_centre": 653.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.697,
+      "y_top": 2446,
+      "y_bot": 3515,
+      "height_spacings": 39.27,
+      "straightness": 1.0,
+      "offset_spacings": 0.29,
+      "n_columns": 19,
+      "covers": [
+       8,
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     {
+      "x_left": 646,
+      "x_right": 665,
+      "x_centre": 655.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.734,
+      "y_top": 507,
+      "y_bot": 2266,
+      "height_spacings": 64.59,
+      "straightness": 1.0,
+      "offset_spacings": 0.39,
+      "n_columns": 20,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 14,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 382,
+     "x1": 712,
+     "y0": 3824,
+     "y1": 7162,
+     "spacing": 27.5,
+     "anchor": 630.0
+    },
+    "strokes": [
+     {
+      "x_left": 611,
+      "x_right": 625,
+      "x_centre": 618.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.545,
+      "y_top": 6099,
+      "y_bot": 6302,
+      "height_spacings": 7.42,
+      "straightness": 0.896,
+      "offset_spacings": -0.44,
+      "n_columns": 15,
+      "covers": []
+     },
+     {
+      "x_left": 613,
+      "x_right": 632,
+      "x_centre": 622.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.727,
+      "y_top": 4681,
+      "y_bot": 4863,
+      "height_spacings": 6.65,
+      "straightness": 0.742,
+      "offset_spacings": -0.27,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 613,
+      "x_right": 628,
+      "x_centre": 620.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.582,
+      "y_top": 5152,
+      "y_bot": 5356,
+      "height_spacings": 7.45,
+      "straightness": 1.0,
+      "offset_spacings": -0.35,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 628,
+      "x_right": 650,
+      "x_centre": 639.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.836,
+      "y_top": 6020,
+      "y_bot": 7161,
+      "height_spacings": 41.53,
+      "straightness": 1.0,
+      "offset_spacings": 0.33,
+      "n_columns": 23,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     },
+     {
+      "x_left": 635,
+      "x_right": 656,
+      "x_centre": 645.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.8,
+      "y_top": 4154,
+      "y_bot": 5756,
+      "height_spacings": 58.29,
+      "straightness": 1.0,
+      "offset_spacings": 0.56,
+      "n_columns": 22,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 11,
+  "n_staves": 28,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 14,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 401,
+     "x1": 731,
+     "y0": 565,
+     "y1": 3745,
+     "spacing": 27.5,
+     "anchor": 649.0
+    },
+    "strokes": [
+     {
+      "x_left": 626,
+      "x_right": 642,
+      "x_centre": 634.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.618,
+      "y_top": 1824,
+      "y_bot": 2038,
+      "height_spacings": 7.82,
+      "straightness": 0.986,
+      "offset_spacings": -0.55,
+      "n_columns": 17,
+      "covers": []
+     },
+     {
+      "x_left": 629,
+      "x_right": 643,
+      "x_centre": 636.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.545,
+      "y_top": 1328,
+      "y_bot": 1546,
+      "height_spacings": 7.96,
+      "straightness": 1.0,
+      "offset_spacings": -0.47,
+      "n_columns": 15,
+      "covers": [
+       3
+      ]
+     },
+     {
+      "x_left": 630,
+      "x_right": 644,
+      "x_centre": 637.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.545,
+      "y_top": 2721,
+      "y_bot": 2936,
+      "height_spacings": 7.85,
+      "straightness": 1.0,
+      "offset_spacings": -0.44,
+      "n_columns": 15,
+      "covers": [
+       10
+      ]
+     },
+     {
+      "x_left": 648,
+      "x_right": 668,
+      "x_centre": 658.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.764,
+      "y_top": 565,
+      "y_bot": 2495,
+      "height_spacings": 70.22,
+      "straightness": 1.0,
+      "offset_spacings": 0.33,
+      "n_columns": 21,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 651,
+      "x_right": 669,
+      "x_centre": 660.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.691,
+      "y_top": 2632,
+      "y_bot": 3744,
+      "height_spacings": 40.47,
+      "straightness": 1.0,
+      "offset_spacings": 0.4,
+      "n_columns": 19,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 14,
+    "spacing": 27.62,
+    "geom": {
+     "x0": 401,
+     "x1": 732,
+     "y0": 4152,
+     "y1": 7133,
+     "spacing": 27.6,
+     "anchor": 650.0
+    },
+    "strokes": [
+     {
+      "x_left": 632,
+      "x_right": 650,
+      "x_centre": 641.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.688,
+      "y_top": 6144,
+      "y_bot": 6363,
+      "height_spacings": 7.96,
+      "straightness": 1.0,
+      "offset_spacings": -0.33,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 633,
+      "x_right": 645,
+      "x_centre": 639.0,
+      "thickness_px": 13,
+      "thickness_spacings": 0.471,
+      "y_top": 4874,
+      "y_bot": 5109,
+      "height_spacings": 8.54,
+      "straightness": 1.0,
+      "offset_spacings": -0.4,
+      "n_columns": 13,
+      "covers": [
+       3,
+       4
+      ]
+     },
+     {
+      "x_left": 635,
+      "x_right": 649,
+      "x_centre": 642.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.543,
+      "y_top": 5258,
+      "y_bot": 5498,
+      "height_spacings": 8.72,
+      "straightness": 1.0,
+      "offset_spacings": -0.29,
+      "n_columns": 15,
+      "covers": [
+       5
+      ]
+     },
+     {
+      "x_left": 650,
+      "x_right": 672,
+      "x_centre": 661.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.833,
+      "y_top": 4152,
+      "y_bot": 5970,
+      "height_spacings": 65.85,
+      "straightness": 1.0,
+      "offset_spacings": 0.4,
+      "n_columns": 23,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 655,
+      "x_right": 673,
+      "x_centre": 664.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.688,
+      "y_top": 6085,
+      "y_bot": 7132,
+      "height_spacings": 37.94,
+      "straightness": 1.0,
+      "offset_spacings": 0.51,
+      "n_columns": 19,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 12,
+  "n_staves": 28,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 14,
+    "spacing": 27.75,
+    "geom": {
+     "x0": 394,
+     "x1": 727,
+     "y0": 516,
+     "y1": 3623,
+     "spacing": 27.8,
+     "anchor": 644.0
+    },
+    "strokes": [
+     {
+      "x_left": 621,
+      "x_right": 640,
+      "x_centre": 630.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.721,
+      "y_top": 1684,
+      "y_bot": 1919,
+      "height_spacings": 8.5,
+      "straightness": 1.0,
+      "offset_spacings": -0.49,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 629,
+      "x_right": 644,
+      "x_centre": 636.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.577,
+      "y_top": 1260,
+      "y_bot": 1491,
+      "height_spacings": 8.36,
+      "straightness": 1.0,
+      "offset_spacings": -0.27,
+      "n_columns": 16,
+      "covers": [
+       3,
+       4
+      ]
+     },
+     {
+      "x_left": 630,
+      "x_right": 646,
+      "x_centre": 638.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.613,
+      "y_top": 2607,
+      "y_bot": 2829,
+      "height_spacings": 8.04,
+      "straightness": 1.0,
+      "offset_spacings": -0.22,
+      "n_columns": 17,
+      "covers": [
+       10
+      ]
+     },
+     {
+      "x_left": 653,
+      "x_right": 675,
+      "x_centre": 664.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.829,
+      "y_top": 2530,
+      "y_bot": 3622,
+      "height_spacings": 39.39,
+      "straightness": 1.0,
+      "offset_spacings": 0.72,
+      "n_columns": 23,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 14,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 404,
+     "x1": 734,
+     "y0": 3984,
+     "y1": 7130,
+     "spacing": 27.5,
+     "anchor": 651.5
+    },
+    "strokes": [
+     {
+      "x_left": 635,
+      "x_right": 652,
+      "x_centre": 643.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.655,
+      "y_top": 4780,
+      "y_bot": 4963,
+      "height_spacings": 6.69,
+      "straightness": 0.912,
+      "offset_spacings": -0.29,
+      "n_columns": 18,
+      "covers": []
+     },
+     {
+      "x_left": 640,
+      "x_right": 655,
+      "x_centre": 647.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.582,
+      "y_top": 5183,
+      "y_bot": 5407,
+      "height_spacings": 8.18,
+      "straightness": 1.0,
+      "offset_spacings": -0.15,
+      "n_columns": 16,
+      "covers": [
+       6
+      ]
+     },
+     {
+      "x_left": 645,
+      "x_right": 657,
+      "x_centre": 651.0,
+      "thickness_px": 13,
+      "thickness_spacings": 0.473,
+      "y_top": 6098,
+      "y_bot": 6348,
+      "height_spacings": 9.13,
+      "straightness": 1.0,
+      "offset_spacings": -0.02,
+      "n_columns": 13,
+      "covers": [
+       9,
+       10
+      ]
+     },
+     {
+      "x_left": 651,
+      "x_right": 733,
+      "x_centre": 692.0,
+      "thickness_px": 83,
+      "thickness_spacings": 3.018,
+      "y_top": 5111,
+      "y_bot": 5463,
+      "height_spacings": 12.84,
+      "straightness": 0.0,
+      "offset_spacings": 1.47,
+      "n_columns": 83,
+      "covers": [
+       5,
+       6
+      ]
+     },
+     {
+      "x_left": 667,
+      "x_right": 689,
+      "x_centre": 678.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.836,
+      "y_top": 6043,
+      "y_bot": 7129,
+      "height_spacings": 39.53,
+      "straightness": 1.0,
+      "offset_spacings": 0.96,
+      "n_columns": 23,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 13,
+  "n_staves": 28,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 14,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 399,
+     "x1": 729,
+     "y0": 531,
+     "y1": 3635,
+     "spacing": 27.5,
+     "anchor": 647.0
+    },
+    "strokes": [
+     {
+      "x_left": 629,
+      "x_right": 642,
+      "x_centre": 635.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.509,
+      "y_top": 2590,
+      "y_bot": 2797,
+      "height_spacings": 7.56,
+      "straightness": 1.0,
+      "offset_spacings": -0.42,
+      "n_columns": 14,
+      "covers": [
+       9
+      ]
+     },
+     {
+      "x_left": 630,
+      "x_right": 645,
+      "x_centre": 637.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.582,
+      "y_top": 1300,
+      "y_bot": 1487,
+      "height_spacings": 6.84,
+      "straightness": 1.0,
+      "offset_spacings": -0.35,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 633,
+      "x_right": 644,
+      "x_centre": 638.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.436,
+      "y_top": 1688,
+      "y_bot": 1919,
+      "height_spacings": 8.44,
+      "straightness": 1.0,
+      "offset_spacings": -0.31,
+      "n_columns": 12,
+      "covers": [
+       5
+      ]
+     },
+     {
+      "x_left": 650,
+      "x_right": 672,
+      "x_centre": 661.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.836,
+      "y_top": 531,
+      "y_bot": 2336,
+      "height_spacings": 65.67,
+      "straightness": 1.0,
+      "offset_spacings": 0.51,
+      "n_columns": 23,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 14,
+    "spacing": 27.5,
+    "geom": {
+     "x0": 388,
+     "x1": 718,
+     "y0": 3988,
+     "y1": 7140,
+     "spacing": 27.5,
+     "anchor": 636.0
+    },
+    "strokes": [
+     {
+      "x_left": 616,
+      "x_right": 631,
+      "x_centre": 623.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.582,
+      "y_top": 5253,
+      "y_bot": 5439,
+      "height_spacings": 6.8,
+      "straightness": 0.967,
+      "offset_spacings": -0.45,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 617,
+      "x_right": 631,
+      "x_centre": 624.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.545,
+      "y_top": 4779,
+      "y_bot": 4964,
+      "height_spacings": 6.76,
+      "straightness": 0.948,
+      "offset_spacings": -0.44,
+      "n_columns": 15,
+      "covers": []
+     },
+     {
+      "x_left": 618,
+      "x_right": 631,
+      "x_centre": 624.5,
+      "thickness_px": 14,
+      "thickness_spacings": 0.509,
+      "y_top": 6177,
+      "y_bot": 6360,
+      "height_spacings": 6.69,
+      "straightness": 1.0,
+      "offset_spacings": -0.42,
+      "n_columns": 14,
+      "covers": []
+     },
+     {
+      "x_left": 636,
+      "x_right": 653,
+      "x_centre": 644.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.655,
+      "y_top": 6092,
+      "y_bot": 7139,
+      "height_spacings": 38.11,
+      "straightness": 1.0,
+      "offset_spacings": 0.31,
+      "n_columns": 18,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     },
+     {
+      "x_left": 637,
+      "x_right": 661,
+      "x_centre": 649.0,
+      "thickness_px": 25,
+      "thickness_spacings": 0.909,
+      "y_top": 4059,
+      "y_bot": 5878,
+      "height_spacings": 66.18,
+      "straightness": 0.952,
+      "offset_spacings": 0.47,
+      "n_columns": 25,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "page": 2,
+  "n_staves": 0,
+  "systems": [],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 3,
+  "n_staves": 0,
+  "systems": [],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 4,
+  "n_staves": 15,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 15,
+    "spacing": 25.25,
+    "geom": {
+     "x0": 648,
+     "x1": 951,
+     "y0": 1343,
+     "y1": 6104,
+     "spacing": 25.2,
+     "anchor": 876
+    },
+    "strokes": [
+     {
+      "x_left": 899,
+      "x_right": 932,
+      "x_centre": 915.5,
+      "thickness_px": 34,
+      "thickness_spacings": 1.347,
+      "y_top": 2919,
+      "y_bot": 4489,
+      "height_spacings": 62.22,
+      "straightness": 0.142,
+      "offset_spacings": 1.56,
+      "n_columns": 34,
+      "covers": [
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 5,
+  "n_staves": 15,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 15,
+    "spacing": 25.25,
+    "geom": {
+     "x0": 57,
+     "x1": 360,
+     "y0": 786,
+     "y1": 6077,
+     "spacing": 25.2,
+     "anchor": 285
+    },
+    "strokes": [
+     {
+      "x_left": 284,
+      "x_right": 315,
+      "x_centre": 299.5,
+      "thickness_px": 32,
+      "thickness_spacings": 1.267,
+      "y_top": 2243,
+      "y_bot": 4164,
+      "height_spacings": 76.12,
+      "straightness": 0.084,
+      "offset_spacings": 0.57,
+      "n_columns": 32,
+      "covers": [
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 6,
+  "n_staves": 30,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 15,
+    "spacing": 25.25,
+    "geom": {
+     "x0": 145,
+     "x1": 448,
+     "y0": 400,
+     "y1": 3363,
+     "spacing": 25.2,
+     "anchor": 373
+    },
+    "strokes": [
+     {
+      "x_left": 364,
+      "x_right": 381,
+      "x_centre": 372.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.713,
+      "y_top": 1904,
+      "y_bot": 2071,
+      "height_spacings": 6.65,
+      "straightness": 0.978,
+      "offset_spacings": -0.02,
+      "n_columns": 18,
+      "covers": []
+     },
+     {
+      "x_left": 368,
+      "x_right": 384,
+      "x_centre": 376.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.673,
+      "y_top": 2459,
+      "y_bot": 2660,
+      "height_spacings": 8.0,
+      "straightness": 1.0,
+      "offset_spacings": 0.12,
+      "n_columns": 17,
+      "covers": []
+     },
+     {
+      "x_left": 369,
+      "x_right": 387,
+      "x_centre": 378.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.752,
+      "y_top": 3106,
+      "y_bot": 3287,
+      "height_spacings": 7.21,
+      "straightness": 0.995,
+      "offset_spacings": 0.2,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 370,
+      "x_right": 386,
+      "x_centre": 378.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.673,
+      "y_top": 1326,
+      "y_bot": 1495,
+      "height_spacings": 6.73,
+      "straightness": 0.994,
+      "offset_spacings": 0.2,
+      "n_columns": 17,
+      "covers": []
+     },
+     {
+      "x_left": 394,
+      "x_right": 417,
+      "x_centre": 405.5,
+      "thickness_px": 24,
+      "thickness_spacings": 0.95,
+      "y_top": 1315,
+      "y_bot": 2741,
+      "height_spacings": 56.51,
+      "straightness": 0.71,
+      "offset_spacings": 1.29,
+      "n_columns": 24,
+      "covers": [
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 15,
+    "spacing": 25.0,
+    "geom": {
+     "x0": 144,
+     "x1": 444,
+     "y0": 3567,
+     "y1": 6561,
+     "spacing": 25.0,
+     "anchor": 369
+    },
+    "strokes": [
+     {
+      "x_left": 355,
+      "x_right": 372,
+      "x_centre": 363.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.72,
+      "y_top": 4422,
+      "y_bot": 4630,
+      "height_spacings": 8.36,
+      "straightness": 0.991,
+      "offset_spacings": -0.22,
+      "n_columns": 18,
+      "covers": [
+       4
+      ]
+     },
+     {
+      "x_left": 359,
+      "x_right": 384,
+      "x_centre": 371.5,
+      "thickness_px": 26,
+      "thickness_spacings": 1.04,
+      "y_top": 5649,
+      "y_bot": 5838,
+      "height_spacings": 7.6,
+      "straightness": 0.594,
+      "offset_spacings": 0.1,
+      "n_columns": 26,
+      "covers": []
+     },
+     {
+      "x_left": 361,
+      "x_right": 378,
+      "x_centre": 369.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.72,
+      "y_top": 5041,
+      "y_bot": 5239,
+      "height_spacings": 7.96,
+      "straightness": 1.0,
+      "offset_spacings": 0.02,
+      "n_columns": 18,
+      "covers": [
+       8
+      ]
+     },
+     {
+      "x_left": 363,
+      "x_right": 380,
+      "x_centre": 371.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.72,
+      "y_top": 6289,
+      "y_bot": 6505,
+      "height_spacings": 8.68,
+      "straightness": 0.894,
+      "offset_spacings": 0.1,
+      "n_columns": 18,
+      "covers": [
+       14
+      ]
+     },
+     {
+      "x_left": 388,
+      "x_right": 411,
+      "x_centre": 399.5,
+      "thickness_px": 24,
+      "thickness_spacings": 0.96,
+      "y_top": 4779,
+      "y_bot": 5732,
+      "height_spacings": 38.16,
+      "straightness": 0.582,
+      "offset_spacings": 1.22,
+      "n_columns": 24,
+      "covers": [
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 7,
+  "n_staves": 30,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 15,
+    "spacing": 25.25,
+    "geom": {
+     "x0": 610,
+     "x1": 913,
+     "y0": 369,
+     "y1": 3265,
+     "spacing": 25.2,
+     "anchor": 838
+    },
+    "strokes": []
+   },
+   {
+    "system_index": 1,
+    "n_staves": 15,
+    "spacing": 25.25,
+    "geom": {
+     "x0": 62,
+     "x1": 365,
+     "y0": 3495,
+     "y1": 6595,
+     "spacing": 25.2,
+     "anchor": 290
+    },
+    "strokes": [
+     {
+      "x_left": 257,
+      "x_right": 275,
+      "x_centre": 266.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.752,
+      "y_top": 6313,
+      "y_bot": 6499,
+      "height_spacings": 7.41,
+      "straightness": 0.631,
+      "offset_spacings": -0.95,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 261,
+      "x_right": 278,
+      "x_centre": 269.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.713,
+      "y_top": 5605,
+      "y_bot": 5800,
+      "height_spacings": 7.76,
+      "straightness": 1.0,
+      "offset_spacings": -0.81,
+      "n_columns": 18,
+      "covers": []
+     },
+     {
+      "x_left": 262,
+      "x_right": 279,
+      "x_centre": 270.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.713,
+      "y_top": 4337,
+      "y_bot": 4554,
+      "height_spacings": 8.63,
+      "straightness": 1.0,
+      "offset_spacings": -0.77,
+      "n_columns": 18,
+      "covers": [
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 263,
+      "x_right": 278,
+      "x_centre": 270.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.634,
+      "y_top": 4960,
+      "y_bot": 5157,
+      "height_spacings": 7.84,
+      "straightness": 1.0,
+      "offset_spacings": -0.77,
+      "n_columns": 16,
+      "covers": [
+       8
+      ]
+     },
+     {
+      "x_left": 288,
+      "x_right": 314,
+      "x_centre": 301.0,
+      "thickness_px": 27,
+      "thickness_spacings": 1.069,
+      "y_top": 4169,
+      "y_bot": 5993,
+      "height_spacings": 72.28,
+      "straightness": 1.0,
+      "offset_spacings": 0.44,
+      "n_columns": 27,
+      "covers": [
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 8,
+  "n_staves": 30,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 15,
+    "spacing": 25.25,
+    "geom": {
+     "x0": 120,
+     "x1": 423,
+     "y0": 380,
+     "y1": 3542,
+     "spacing": 25.2,
+     "anchor": 348
+    },
+    "strokes": [
+     {
+      "x_left": 343,
+      "x_right": 359,
+      "x_centre": 351.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.673,
+      "y_top": 1943,
+      "y_bot": 2156,
+      "height_spacings": 8.48,
+      "straightness": 1.0,
+      "offset_spacings": 0.12,
+      "n_columns": 17,
+      "covers": [
+       8
+      ]
+     },
+     {
+      "x_left": 343,
+      "x_right": 361,
+      "x_centre": 352.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.752,
+      "y_top": 2596,
+      "y_bot": 2787,
+      "height_spacings": 7.6,
+      "straightness": 0.579,
+      "offset_spacings": 0.16,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 346,
+      "x_right": 362,
+      "x_centre": 354.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.673,
+      "y_top": 1294,
+      "y_bot": 1491,
+      "height_spacings": 7.84,
+      "straightness": 1.0,
+      "offset_spacings": 0.24,
+      "n_columns": 17,
+      "covers": []
+     },
+     {
+      "x_left": 347,
+      "x_right": 365,
+      "x_centre": 356.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.752,
+      "y_top": 3255,
+      "y_bot": 3446,
+      "height_spacings": 7.6,
+      "straightness": 0.61,
+      "offset_spacings": 0.32,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 373,
+      "x_right": 395,
+      "x_centre": 384.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.911,
+      "y_top": 1144,
+      "y_bot": 2670,
+      "height_spacings": 60.48,
+      "straightness": 0.475,
+      "offset_spacings": 1.43,
+      "n_columns": 23,
+      "covers": [
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 15,
+    "spacing": 25.25,
+    "geom": {
+     "x0": 811,
+     "x1": 1114,
+     "y0": 3733,
+     "y1": 6535,
+     "spacing": 25.2,
+     "anchor": 1039
+    },
+    "strokes": []
+   }
+  ],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 9,
+  "n_staves": 30,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 15,
+    "spacing": 25.25,
+    "geom": {
+     "x0": 67,
+     "x1": 370,
+     "y0": 334,
+     "y1": 3359,
+     "spacing": 25.2,
+     "anchor": 295
+    },
+    "strokes": [
+     {
+      "x_left": 289,
+      "x_right": 308,
+      "x_centre": 298.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.792,
+      "y_top": 3090,
+      "y_bot": 3290,
+      "height_spacings": 7.96,
+      "straightness": 0.685,
+      "offset_spacings": 0.14,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 291,
+      "x_right": 311,
+      "x_centre": 301.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.832,
+      "y_top": 2491,
+      "y_bot": 2636,
+      "height_spacings": 5.78,
+      "straightness": 0.382,
+      "offset_spacings": 0.24,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 294,
+      "x_right": 311,
+      "x_centre": 302.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.713,
+      "y_top": 1853,
+      "y_bot": 2025,
+      "height_spacings": 6.85,
+      "straightness": 1.0,
+      "offset_spacings": 0.3,
+      "n_columns": 18,
+      "covers": []
+     },
+     {
+      "x_left": 295,
+      "x_right": 309,
+      "x_centre": 302.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.594,
+      "y_top": 1314,
+      "y_bot": 1483,
+      "height_spacings": 6.73,
+      "straightness": 1.0,
+      "offset_spacings": 0.28,
+      "n_columns": 15,
+      "covers": []
+     },
+     {
+      "x_left": 318,
+      "x_right": 343,
+      "x_centre": 330.5,
+      "thickness_px": 26,
+      "thickness_spacings": 1.03,
+      "y_top": 1043,
+      "y_bot": 2998,
+      "height_spacings": 77.47,
+      "straightness": 0.955,
+      "offset_spacings": 1.41,
+      "n_columns": 26,
+      "covers": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 15,
+    "spacing": 25.0,
+    "geom": {
+     "x0": 49,
+     "x1": 349,
+     "y0": 3557,
+     "y1": 6538,
+     "spacing": 25.0,
+     "anchor": 274
+    },
+    "strokes": [
+     {
+      "x_left": 260,
+      "x_right": 275,
+      "x_centre": 267.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.64,
+      "y_top": 6285,
+      "y_bot": 6448,
+      "height_spacings": 6.56,
+      "straightness": 0.733,
+      "offset_spacings": -0.26,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 268,
+      "x_right": 284,
+      "x_centre": 276.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.68,
+      "y_top": 5080,
+      "y_bot": 5278,
+      "height_spacings": 7.96,
+      "straightness": 1.0,
+      "offset_spacings": 0.08,
+      "n_columns": 17,
+      "covers": [
+       8
+      ]
+     },
+     {
+      "x_left": 269,
+      "x_right": 284,
+      "x_centre": 276.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.64,
+      "y_top": 5689,
+      "y_bot": 5845,
+      "height_spacings": 6.28,
+      "straightness": 0.412,
+      "offset_spacings": 0.1,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 274,
+      "x_right": 290,
+      "x_centre": 282.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.68,
+      "y_top": 4550,
+      "y_bot": 4724,
+      "height_spacings": 7.0,
+      "straightness": 1.0,
+      "offset_spacings": 0.32,
+      "n_columns": 17,
+      "covers": []
+     },
+     {
+      "x_left": 289,
+      "x_right": 330,
+      "x_centre": 309.5,
+      "thickness_px": 42,
+      "thickness_spacings": 1.68,
+      "y_top": 4440,
+      "y_bot": 5895,
+      "height_spacings": 58.24,
+      "straightness": 0.454,
+      "offset_spacings": 1.42,
+      "n_columns": 42,
+      "covers": [
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11
+      ]
+     },
+     {
+      "x_left": 334,
+      "x_right": 348,
+      "x_centre": 341.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.6,
+      "y_top": 3777,
+      "y_bot": 4110,
+      "height_spacings": 13.36,
+      "straightness": 0.327,
+      "offset_spacings": 2.68,
+      "n_columns": 15,
+      "covers": [
+       1,
+       2
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 10,
+  "n_staves": 30,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 15,
+    "spacing": 25.0,
+    "geom": {
+     "x0": 163,
+     "x1": 463,
+     "y0": 344,
+     "y1": 3379,
+     "spacing": 25.0,
+     "anchor": 388
+    },
+    "strokes": [
+     {
+      "x_left": 377,
+      "x_right": 395,
+      "x_centre": 386.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.76,
+      "y_top": 2495,
+      "y_bot": 2705,
+      "height_spacings": 8.44,
+      "straightness": 1.0,
+      "offset_spacings": -0.08,
+      "n_columns": 19,
+      "covers": [
+       11
+      ]
+     },
+     {
+      "x_left": 377,
+      "x_right": 394,
+      "x_centre": 385.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.72,
+      "y_top": 3099,
+      "y_bot": 3316,
+      "height_spacings": 8.72,
+      "straightness": 1.0,
+      "offset_spacings": -0.1,
+      "n_columns": 18,
+      "covers": [
+       13,
+       14
+      ]
+     },
+     {
+      "x_left": 382,
+      "x_right": 399,
+      "x_centre": 390.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.72,
+      "y_top": 1848,
+      "y_bot": 2054,
+      "height_spacings": 8.28,
+      "straightness": 1.0,
+      "offset_spacings": 0.1,
+      "n_columns": 18,
+      "covers": [
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 386,
+      "x_right": 404,
+      "x_centre": 395.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.76,
+      "y_top": 1320,
+      "y_bot": 1516,
+      "height_spacings": 7.88,
+      "straightness": 1.0,
+      "offset_spacings": 0.28,
+      "n_columns": 19,
+      "covers": [
+       5
+      ]
+     },
+     {
+      "x_left": 406,
+      "x_right": 432,
+      "x_centre": 419.0,
+      "thickness_px": 27,
+      "thickness_spacings": 1.08,
+      "y_top": 1307,
+      "y_bot": 2311,
+      "height_spacings": 40.2,
+      "straightness": 0.0,
+      "offset_spacings": 1.24,
+      "n_columns": 27,
+      "covers": [
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     },
+     {
+      "x_left": 426,
+      "x_right": 462,
+      "x_centre": 444.0,
+      "thickness_px": 37,
+      "thickness_spacings": 1.48,
+      "y_top": 2832,
+      "y_bot": 3162,
+      "height_spacings": 13.24,
+      "straightness": 0.427,
+      "offset_spacings": 2.24,
+      "n_columns": 37,
+      "covers": [
+       12,
+       13
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 15,
+    "spacing": 24.75,
+    "geom": {
+     "x0": 159,
+     "x1": 456,
+     "y0": 3582,
+     "y1": 6505,
+     "spacing": 24.8,
+     "anchor": 382
+    },
+    "strokes": [
+     {
+      "x_left": 377,
+      "x_right": 394,
+      "x_centre": 385.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.727,
+      "y_top": 4936,
+      "y_bot": 5142,
+      "height_spacings": 8.36,
+      "straightness": 1.0,
+      "offset_spacings": 0.14,
+      "n_columns": 18,
+      "covers": [
+       7
+      ]
+     },
+     {
+      "x_left": 381,
+      "x_right": 397,
+      "x_centre": 389.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.687,
+      "y_top": 4397,
+      "y_bot": 4613,
+      "height_spacings": 8.77,
+      "straightness": 1.0,
+      "offset_spacings": 0.28,
+      "n_columns": 17,
+      "covers": [
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 402,
+      "x_right": 455,
+      "x_centre": 428.5,
+      "thickness_px": 54,
+      "thickness_spacings": 2.182,
+      "y_top": 4912,
+      "y_bot": 5186,
+      "height_spacings": 11.11,
+      "straightness": 0.0,
+      "offset_spacings": 1.88,
+      "n_columns": 54,
+      "covers": [
+       7,
+       8
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 11,
+  "n_staves": 30,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 15,
+    "spacing": 24.75,
+    "geom": {
+     "x0": 18,
+     "x1": 315,
+     "y0": 344,
+     "y1": 3301,
+     "spacing": 24.8,
+     "anchor": 241
+    },
+    "strokes": [
+     {
+      "x_left": 240,
+      "x_right": 257,
+      "x_centre": 248.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.727,
+      "y_top": 1776,
+      "y_bot": 1994,
+      "height_spacings": 8.85,
+      "straightness": 1.0,
+      "offset_spacings": 0.3,
+      "n_columns": 18,
+      "covers": [
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 242,
+      "x_right": 258,
+      "x_centre": 250.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.687,
+      "y_top": 1260,
+      "y_bot": 1456,
+      "height_spacings": 7.96,
+      "straightness": 1.0,
+      "offset_spacings": 0.36,
+      "n_columns": 17,
+      "covers": [
+       5
+      ]
+     },
+     {
+      "x_left": 247,
+      "x_right": 255,
+      "x_centre": 251.0,
+      "thickness_px": 9,
+      "thickness_spacings": 0.364,
+      "y_top": 3042,
+      "y_bot": 3201,
+      "height_spacings": 6.46,
+      "straightness": 1.0,
+      "offset_spacings": 0.4,
+      "n_columns": 9,
+      "covers": []
+     },
+     {
+      "x_left": 266,
+      "x_right": 288,
+      "x_centre": 277.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.929,
+      "y_top": 901,
+      "y_bot": 2181,
+      "height_spacings": 51.76,
+      "straightness": 0.404,
+      "offset_spacings": 1.45,
+      "n_columns": 23,
+      "covers": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 15,
+    "spacing": 24.75,
+    "geom": {
+     "x0": 15,
+     "x1": 312,
+     "y0": 3506,
+     "y1": 6562,
+     "spacing": 24.8,
+     "anchor": 238
+    },
+    "strokes": [
+     {
+      "x_left": 235,
+      "x_right": 251,
+      "x_centre": 243.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.687,
+      "y_top": 4390,
+      "y_bot": 4615,
+      "height_spacings": 9.13,
+      "straightness": 1.0,
+      "offset_spacings": 0.2,
+      "n_columns": 17,
+      "covers": [
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 236,
+      "x_right": 252,
+      "x_centre": 244.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.687,
+      "y_top": 4963,
+      "y_bot": 5137,
+      "height_spacings": 7.07,
+      "straightness": 1.0,
+      "offset_spacings": 0.24,
+      "n_columns": 17,
+      "covers": [
+       8
+      ]
+     },
+     {
+      "x_left": 238,
+      "x_right": 249,
+      "x_centre": 243.5,
+      "thickness_px": 12,
+      "thickness_spacings": 0.485,
+      "y_top": 6315,
+      "y_bot": 6468,
+      "height_spacings": 6.22,
+      "straightness": 0.922,
+      "offset_spacings": 0.22,
+      "n_columns": 12,
+      "covers": []
+     },
+     {
+      "x_left": 243,
+      "x_right": 249,
+      "x_centre": 246.0,
+      "thickness_px": 7,
+      "thickness_spacings": 0.283,
+      "y_top": 5622,
+      "y_bot": 5779,
+      "height_spacings": 6.38,
+      "straightness": 1.0,
+      "offset_spacings": 0.32,
+      "n_columns": 7,
+      "covers": []
+     },
+     {
+      "x_left": 260,
+      "x_right": 287,
+      "x_centre": 273.5,
+      "thickness_px": 28,
+      "thickness_spacings": 1.131,
+      "y_top": 4144,
+      "y_bot": 5800,
+      "height_spacings": 66.95,
+      "straightness": 0.648,
+      "offset_spacings": 1.43,
+      "n_columns": 28,
+      "covers": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 12,
+  "n_staves": 30,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 15,
+    "spacing": 24.75,
+    "geom": {
+     "x0": 134,
+     "x1": 431,
+     "y0": 348,
+     "y1": 3340,
+     "spacing": 24.8,
+     "anchor": 357
+    },
+    "strokes": [
+     {
+      "x_left": 356,
+      "x_right": 371,
+      "x_centre": 363.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.646,
+      "y_top": 1796,
+      "y_bot": 1967,
+      "height_spacings": 6.95,
+      "straightness": 1.0,
+      "offset_spacings": 0.26,
+      "n_columns": 16,
+      "covers": [
+       7
+      ]
+     },
+     {
+      "x_left": 358,
+      "x_right": 372,
+      "x_centre": 365.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.606,
+      "y_top": 1238,
+      "y_bot": 1461,
+      "height_spacings": 9.05,
+      "straightness": 1.0,
+      "offset_spacings": 0.32,
+      "n_columns": 15,
+      "covers": [
+       4,
+       5
+      ]
+     },
+     {
+      "x_left": 384,
+      "x_right": 403,
+      "x_centre": 393.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.808,
+      "y_top": 1234,
+      "y_bot": 2814,
+      "height_spacings": 63.88,
+      "straightness": 1.0,
+      "offset_spacings": 1.47,
+      "n_columns": 20,
+      "covers": [
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 15,
+    "spacing": 24.75,
+    "geom": {
+     "x0": 155,
+     "x1": 452,
+     "y0": 3539,
+     "y1": 6519,
+     "spacing": 24.8,
+     "anchor": 378
+    },
+    "strokes": [
+     {
+      "x_left": 363,
+      "x_right": 379,
+      "x_centre": 371.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.687,
+      "y_top": 4400,
+      "y_bot": 4613,
+      "height_spacings": 8.65,
+      "straightness": 1.0,
+      "offset_spacings": -0.28,
+      "n_columns": 17,
+      "covers": [
+       5
+      ]
+     },
+     {
+      "x_left": 364,
+      "x_right": 380,
+      "x_centre": 372.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.687,
+      "y_top": 4924,
+      "y_bot": 5146,
+      "height_spacings": 9.01,
+      "straightness": 1.0,
+      "offset_spacings": -0.24,
+      "n_columns": 17,
+      "covers": [
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 384,
+      "x_right": 393,
+      "x_centre": 388.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.404,
+      "y_top": 5582,
+      "y_bot": 5739,
+      "height_spacings": 6.38,
+      "straightness": 1.0,
+      "offset_spacings": 0.42,
+      "n_columns": 10,
+      "covers": []
+     },
+     {
+      "x_left": 387,
+      "x_right": 422,
+      "x_centre": 404.5,
+      "thickness_px": 36,
+      "thickness_spacings": 1.455,
+      "y_top": 4479,
+      "y_bot": 5648,
+      "height_spacings": 47.27,
+      "straightness": 0.122,
+      "offset_spacings": 1.07,
+      "n_columns": 36,
+      "covers": [
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 13,
+  "n_staves": 30,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 15,
+    "spacing": 25.0,
+    "geom": {
+     "x0": 38,
+     "x1": 338,
+     "y0": 312,
+     "y1": 3281,
+     "spacing": 25.0,
+     "anchor": 263
+    },
+    "strokes": [
+     {
+      "x_left": 249,
+      "x_right": 263,
+      "x_centre": 256.0,
+      "thickness_px": 15,
+      "thickness_spacings": 0.6,
+      "y_top": 1183,
+      "y_bot": 1351,
+      "height_spacings": 6.76,
+      "straightness": 0.494,
+      "offset_spacings": -0.28,
+      "n_columns": 15,
+      "covers": []
+     },
+     {
+      "x_left": 256,
+      "x_right": 275,
+      "x_centre": 265.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.8,
+      "y_top": 1733,
+      "y_bot": 1884,
+      "height_spacings": 6.08,
+      "straightness": 0.732,
+      "offset_spacings": 0.1,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 264,
+      "x_right": 273,
+      "x_centre": 268.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.4,
+      "y_top": 2383,
+      "y_bot": 2547,
+      "height_spacings": 6.6,
+      "straightness": 1.0,
+      "offset_spacings": 0.22,
+      "n_columns": 10,
+      "covers": []
+     },
+     {
+      "x_left": 267,
+      "x_right": 276,
+      "x_centre": 271.5,
+      "thickness_px": 10,
+      "thickness_spacings": 0.4,
+      "y_top": 3036,
+      "y_bot": 3189,
+      "height_spacings": 6.16,
+      "straightness": 0.95,
+      "offset_spacings": 0.34,
+      "n_columns": 10,
+      "covers": []
+     },
+     {
+      "x_left": 268,
+      "x_right": 302,
+      "x_centre": 285.0,
+      "thickness_px": 35,
+      "thickness_spacings": 1.4,
+      "y_top": 730,
+      "y_bot": 2138,
+      "height_spacings": 56.36,
+      "straightness": 0.607,
+      "offset_spacings": 0.88,
+      "n_columns": 35,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 15,
+    "spacing": 24.75,
+    "geom": {
+     "x0": 38,
+     "x1": 335,
+     "y0": 3455,
+     "y1": 6521,
+     "spacing": 24.8,
+     "anchor": 261
+    },
+    "strokes": [
+     {
+      "x_left": 258,
+      "x_right": 273,
+      "x_centre": 265.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.646,
+      "y_top": 4878,
+      "y_bot": 5045,
+      "height_spacings": 6.79,
+      "straightness": 0.729,
+      "offset_spacings": 0.18,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 259,
+      "x_right": 276,
+      "x_centre": 267.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.727,
+      "y_top": 4338,
+      "y_bot": 4501,
+      "height_spacings": 6.63,
+      "straightness": 0.57,
+      "offset_spacings": 0.26,
+      "n_columns": 18,
+      "covers": []
+     },
+     {
+      "x_left": 265,
+      "x_right": 273,
+      "x_centre": 269.0,
+      "thickness_px": 9,
+      "thickness_spacings": 0.364,
+      "y_top": 5572,
+      "y_bot": 5729,
+      "height_spacings": 6.38,
+      "straightness": 1.0,
+      "offset_spacings": 0.32,
+      "n_columns": 9,
+      "covers": []
+     },
+     {
+      "x_left": 265,
+      "x_right": 272,
+      "x_centre": 268.5,
+      "thickness_px": 8,
+      "thickness_spacings": 0.323,
+      "y_top": 6254,
+      "y_bot": 6415,
+      "height_spacings": 6.55,
+      "straightness": 1.0,
+      "offset_spacings": 0.3,
+      "n_columns": 8,
+      "covers": []
+     },
+     {
+      "x_left": 278,
+      "x_right": 307,
+      "x_centre": 292.5,
+      "thickness_px": 30,
+      "thickness_spacings": 1.212,
+      "y_top": 3955,
+      "y_bot": 6093,
+      "height_spacings": 86.42,
+      "straightness": 1.0,
+      "offset_spacings": 1.27,
+      "n_columns": 30,
+      "covers": [
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "dvorak",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf"
+ },
+ {
+  "page": 2,
+  "n_staves": 15,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 15,
+    "spacing": 25.75,
+    "geom": {
+     "x0": 217,
+     "x1": 526,
+     "y0": 335,
+     "y1": 5304,
+     "spacing": 25.8,
+     "anchor": 449
+    },
+    "strokes": [
+     {
+      "x_left": 451,
+      "x_right": 478,
+      "x_centre": 464.5,
+      "thickness_px": 28,
+      "thickness_spacings": 1.087,
+      "y_top": 2556,
+      "y_bot": 2757,
+      "height_spacings": 7.84,
+      "straightness": 0.651,
+      "offset_spacings": 0.6,
+      "n_columns": 28,
+      "covers": []
+     },
+     {
+      "x_left": 476,
+      "x_right": 525,
+      "x_centre": 500.5,
+      "thickness_px": 50,
+      "thickness_spacings": 1.942,
+      "y_top": 4485,
+      "y_bot": 4976,
+      "height_spacings": 19.11,
+      "straightness": 0.982,
+      "offset_spacings": 2.0,
+      "n_columns": 50,
+      "covers": [
+       12,
+       13
+      ]
+     },
+     {
+      "x_left": 485,
+      "x_right": 507,
+      "x_centre": 496.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.893,
+      "y_top": 1160,
+      "y_bot": 2821,
+      "height_spacings": 64.54,
+      "straightness": 1.0,
+      "offset_spacings": 1.83,
+      "n_columns": 23,
+      "covers": [
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 490,
+      "x_right": 508,
+      "x_centre": 499.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.738,
+      "y_top": 335,
+      "y_bot": 827,
+      "height_spacings": 19.15,
+      "straightness": 1.0,
+      "offset_spacings": 1.94,
+      "n_columns": 19,
+      "covers": [
+       0,
+       1
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ },
+ {
+  "page": 3,
+  "n_staves": 21,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 21,
+    "spacing": 25.75,
+    "geom": {
+     "x0": 230,
+     "x1": 539,
+     "y0": 246,
+     "y1": 5452,
+     "spacing": 25.8,
+     "anchor": 462
+    },
+    "strokes": [
+     {
+      "x_left": 456,
+      "x_right": 476,
+      "x_centre": 466.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 4552,
+      "y_bot": 4742,
+      "height_spacings": 7.42,
+      "straightness": 0.703,
+      "offset_spacings": 0.16,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 464,
+      "x_right": 483,
+      "x_centre": 473.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.777,
+      "y_top": 3659,
+      "y_bot": 3852,
+      "height_spacings": 7.53,
+      "straightness": 0.976,
+      "offset_spacings": 0.45,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 468,
+      "x_right": 487,
+      "x_centre": 477.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.777,
+      "y_top": 2363,
+      "y_bot": 2545,
+      "height_spacings": 7.11,
+      "straightness": 0.884,
+      "offset_spacings": 0.6,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 470,
+      "x_right": 489,
+      "x_centre": 479.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.777,
+      "y_top": 1861,
+      "y_bot": 2054,
+      "height_spacings": 7.53,
+      "straightness": 0.878,
+      "offset_spacings": 0.68,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 472,
+      "x_right": 493,
+      "x_centre": 482.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.854,
+      "y_top": 853,
+      "y_bot": 1050,
+      "height_spacings": 7.69,
+      "straightness": 0.797,
+      "offset_spacings": 0.8,
+      "n_columns": 22,
+      "covers": []
+     },
+     {
+      "x_left": 473,
+      "x_right": 491,
+      "x_centre": 482.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.738,
+      "y_top": 1371,
+      "y_bot": 1557,
+      "height_spacings": 7.26,
+      "straightness": 0.876,
+      "offset_spacings": 0.78,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 483,
+      "x_right": 507,
+      "x_centre": 495.0,
+      "thickness_px": 25,
+      "thickness_spacings": 0.971,
+      "y_top": 3564,
+      "y_bot": 5451,
+      "height_spacings": 73.32,
+      "straightness": 1.0,
+      "offset_spacings": 1.28,
+      "n_columns": 25,
+      "covers": [
+       14,
+       15,
+       16,
+       17,
+       18,
+       19,
+       20
+      ]
+     },
+     {
+      "x_left": 495,
+      "x_right": 518,
+      "x_centre": 506.5,
+      "thickness_px": 24,
+      "thickness_spacings": 0.932,
+      "y_top": 1285,
+      "y_bot": 2637,
+      "height_spacings": 52.54,
+      "straightness": 1.0,
+      "offset_spacings": 1.73,
+      "n_columns": 24,
+      "covers": [
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     },
+     {
+      "x_left": 503,
+      "x_right": 520,
+      "x_centre": 511.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.699,
+      "y_top": 246,
+      "y_bot": 1143,
+      "height_spacings": 34.87,
+      "straightness": 1.0,
+      "offset_spacings": 1.92,
+      "n_columns": 18,
+      "covers": [
+       0,
+       1,
+       2,
+       3
+      ]
+     },
+     {
+      "x_left": 504,
+      "x_right": 538,
+      "x_centre": 521.0,
+      "thickness_px": 35,
+      "thickness_spacings": 1.359,
+      "y_top": 3551,
+      "y_bot": 3947,
+      "height_spacings": 15.42,
+      "straightness": 0.0,
+      "offset_spacings": 2.29,
+      "n_columns": 35,
+      "covers": [
+       14,
+       15
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ },
+ {
+  "page": 4,
+  "n_staves": 21,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 21,
+    "spacing": 25.75,
+    "geom": {
+     "x0": 232,
+     "x1": 541,
+     "y0": 269,
+     "y1": 5394,
+     "spacing": 25.8,
+     "anchor": 464
+    },
+    "strokes": [
+     {
+      "x_left": 456,
+      "x_right": 477,
+      "x_centre": 466.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.854,
+      "y_top": 4459,
+      "y_bot": 4663,
+      "height_spacings": 7.96,
+      "straightness": 1.0,
+      "offset_spacings": 0.1,
+      "n_columns": 22,
+      "covers": []
+     },
+     {
+      "x_left": 463,
+      "x_right": 484,
+      "x_centre": 473.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.854,
+      "y_top": 3602,
+      "y_bot": 3808,
+      "height_spacings": 8.04,
+      "straightness": 1.0,
+      "offset_spacings": 0.37,
+      "n_columns": 22,
+      "covers": []
+     },
+     {
+      "x_left": 469,
+      "x_right": 490,
+      "x_centre": 479.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.854,
+      "y_top": 1696,
+      "y_bot": 1896,
+      "height_spacings": 7.81,
+      "straightness": 0.965,
+      "offset_spacings": 0.6,
+      "n_columns": 22,
+      "covers": []
+     },
+     {
+      "x_left": 469,
+      "x_right": 489,
+      "x_centre": 479.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 2238,
+      "y_bot": 2435,
+      "height_spacings": 7.69,
+      "straightness": 0.994,
+      "offset_spacings": 0.58,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 471,
+      "x_right": 491,
+      "x_centre": 481.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 650,
+      "y_bot": 854,
+      "height_spacings": 7.96,
+      "straightness": 0.966,
+      "offset_spacings": 0.66,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 471,
+      "x_right": 492,
+      "x_centre": 481.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.854,
+      "y_top": 1180,
+      "y_bot": 1384,
+      "height_spacings": 7.96,
+      "straightness": 1.0,
+      "offset_spacings": 0.68,
+      "n_columns": 22,
+      "covers": []
+     },
+     {
+      "x_left": 475,
+      "x_right": 540,
+      "x_centre": 507.5,
+      "thickness_px": 66,
+      "thickness_spacings": 2.563,
+      "y_top": 3513,
+      "y_bot": 3882,
+      "height_spacings": 14.37,
+      "straightness": 0.0,
+      "offset_spacings": 1.69,
+      "n_columns": 66,
+      "covers": [
+       14,
+       15
+      ]
+     },
+     {
+      "x_left": 499,
+      "x_right": 517,
+      "x_centre": 508.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.738,
+      "y_top": 269,
+      "y_bot": 955,
+      "height_spacings": 26.68,
+      "straightness": 1.0,
+      "offset_spacings": 1.71,
+      "n_columns": 19,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ },
+ {
+  "page": 5,
+  "n_staves": 21,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 14,
+    "spacing": 26.0,
+    "geom": {
+     "x0": 209,
+     "x1": 521,
+     "y0": 238,
+     "y1": 3590,
+     "spacing": 26.0,
+     "anchor": 443.5
+    },
+    "strokes": [
+     {
+      "x_left": 443,
+      "x_right": 462,
+      "x_centre": 452.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.769,
+      "y_top": 588,
+      "y_bot": 785,
+      "height_spacings": 7.62,
+      "straightness": 0.922,
+      "offset_spacings": 0.35,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 443,
+      "x_right": 459,
+      "x_centre": 451.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.654,
+      "y_top": 2565,
+      "y_bot": 2802,
+      "height_spacings": 9.15,
+      "straightness": 1.0,
+      "offset_spacings": 0.29,
+      "n_columns": 17,
+      "covers": [
+       9,
+       10
+      ]
+     },
+     {
+      "x_left": 444,
+      "x_right": 463,
+      "x_centre": 453.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.769,
+      "y_top": 1073,
+      "y_bot": 1261,
+      "height_spacings": 7.27,
+      "straightness": 0.893,
+      "offset_spacings": 0.38,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 444,
+      "x_right": 460,
+      "x_centre": 452.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.654,
+      "y_top": 1497,
+      "y_bot": 1733,
+      "height_spacings": 9.12,
+      "straightness": 1.0,
+      "offset_spacings": 0.33,
+      "n_columns": 17,
+      "covers": [
+       5,
+       6
+      ]
+     },
+     {
+      "x_left": 467,
+      "x_right": 486,
+      "x_centre": 476.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.769,
+      "y_top": 2513,
+      "y_bot": 3589,
+      "height_spacings": 41.42,
+      "straightness": 1.0,
+      "offset_spacings": 1.27,
+      "n_columns": 20,
+      "covers": [
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     },
+     {
+      "x_left": 470,
+      "x_right": 488,
+      "x_centre": 479.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.731,
+      "y_top": 982,
+      "y_bot": 1787,
+      "height_spacings": 31.0,
+      "straightness": 1.0,
+      "offset_spacings": 1.37,
+      "n_columns": 19,
+      "covers": [
+       3,
+       4,
+       5,
+       6
+      ]
+     },
+     {
+      "x_left": 471,
+      "x_right": 489,
+      "x_centre": 480.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.731,
+      "y_top": 238,
+      "y_bot": 863,
+      "height_spacings": 24.08,
+      "straightness": 1.0,
+      "offset_spacings": 1.4,
+      "n_columns": 19,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 489,
+      "x_right": 520,
+      "x_centre": 504.5,
+      "thickness_px": 32,
+      "thickness_spacings": 1.231,
+      "y_top": 1659,
+      "y_bot": 2044,
+      "height_spacings": 14.85,
+      "straightness": 0.0,
+      "offset_spacings": 2.35,
+      "n_columns": 32,
+      "covers": [
+       6,
+       7
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 7,
+    "spacing": 26.0,
+    "geom": {
+     "x0": 205,
+     "x1": 517,
+     "y0": 3870,
+     "y1": 5545,
+     "spacing": 26.0,
+     "anchor": 439
+    },
+    "strokes": [
+     {
+      "x_left": 437,
+      "x_right": 453,
+      "x_centre": 445.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.654,
+      "y_top": 4463,
+      "y_bot": 4688,
+      "height_spacings": 8.69,
+      "straightness": 1.0,
+      "offset_spacings": 0.23,
+      "n_columns": 17,
+      "covers": []
+     },
+     {
+      "x_left": 461,
+      "x_right": 481,
+      "x_centre": 471.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.808,
+      "y_top": 4396,
+      "y_bot": 5524,
+      "height_spacings": 43.42,
+      "straightness": 1.0,
+      "offset_spacings": 1.23,
+      "n_columns": 21,
+      "covers": [
+       2,
+       3,
+       4,
+       5,
+       6
+      ]
+     },
+     {
+      "x_left": 465,
+      "x_right": 482,
+      "x_centre": 473.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.692,
+      "y_top": 3870,
+      "y_bot": 4281,
+      "height_spacings": 15.85,
+      "straightness": 1.0,
+      "offset_spacings": 1.33,
+      "n_columns": 18,
+      "covers": [
+       0,
+       1
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ },
+ {
+  "page": 6,
+  "n_staves": 16,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 16,
+    "spacing": 26.0,
+    "geom": {
+     "x0": 209,
+     "x1": 521,
+     "y0": 348,
+     "y1": 5397,
+     "spacing": 26.0,
+     "anchor": 443.5
+    },
+    "strokes": [
+     {
+      "x_left": 445,
+      "x_right": 465,
+      "x_centre": 455.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.808,
+      "y_top": 2539,
+      "y_bot": 2735,
+      "height_spacings": 7.58,
+      "straightness": 0.762,
+      "offset_spacings": 0.44,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 468,
+      "x_right": 489,
+      "x_centre": 478.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.846,
+      "y_top": 348,
+      "y_bot": 1191,
+      "height_spacings": 32.46,
+      "straightness": 1.0,
+      "offset_spacings": 1.35,
+      "n_columns": 22,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 472,
+      "x_right": 520,
+      "x_centre": 496.0,
+      "thickness_px": 49,
+      "thickness_spacings": 1.885,
+      "y_top": 2086,
+      "y_bot": 2751,
+      "height_spacings": 25.62,
+      "straightness": 0.0,
+      "offset_spacings": 2.02,
+      "n_columns": 49,
+      "covers": [
+       5,
+       6
+      ]
+     },
+     {
+      "x_left": 472,
+      "x_right": 491,
+      "x_centre": 481.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.769,
+      "y_top": 3917,
+      "y_bot": 5396,
+      "height_spacings": 56.92,
+      "straightness": 1.0,
+      "offset_spacings": 1.46,
+      "n_columns": 20,
+      "covers": [
+       11,
+       12,
+       13,
+       14,
+       15
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ },
+ {
+  "page": 7,
+  "n_staves": 16,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 16,
+    "spacing": 25.75,
+    "geom": {
+     "x0": 209,
+     "x1": 518,
+     "y0": 368,
+     "y1": 5358,
+     "spacing": 25.8,
+     "anchor": 441.5
+    },
+    "strokes": [
+     {
+      "x_left": 445,
+      "x_right": 468,
+      "x_centre": 456.5,
+      "thickness_px": 24,
+      "thickness_spacings": 0.932,
+      "y_top": 859,
+      "y_bot": 1056,
+      "height_spacings": 7.69,
+      "straightness": 0.538,
+      "offset_spacings": 0.58,
+      "n_columns": 24,
+      "covers": []
+     },
+     {
+      "x_left": 447,
+      "x_right": 466,
+      "x_centre": 456.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.777,
+      "y_top": 2511,
+      "y_bot": 2705,
+      "height_spacings": 7.57,
+      "straightness": 0.747,
+      "offset_spacings": 0.58,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 448,
+      "x_right": 468,
+      "x_centre": 458.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 1513,
+      "y_bot": 1714,
+      "height_spacings": 7.84,
+      "straightness": 0.731,
+      "offset_spacings": 0.64,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 465,
+      "x_right": 488,
+      "x_centre": 476.5,
+      "thickness_px": 24,
+      "thickness_spacings": 0.932,
+      "y_top": 3860,
+      "y_bot": 5357,
+      "height_spacings": 58.17,
+      "straightness": 1.0,
+      "offset_spacings": 1.36,
+      "n_columns": 24,
+      "covers": [
+       11,
+       12,
+       13,
+       14,
+       15
+      ]
+     },
+     {
+      "x_left": 476,
+      "x_right": 497,
+      "x_centre": 486.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.854,
+      "y_top": 1401,
+      "y_bot": 2827,
+      "height_spacings": 55.42,
+      "straightness": 1.0,
+      "offset_spacings": 1.75,
+      "n_columns": 22,
+      "covers": [
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 479,
+      "x_right": 497,
+      "x_centre": 488.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.738,
+      "y_top": 368,
+      "y_bot": 1180,
+      "height_spacings": 31.57,
+      "straightness": 1.0,
+      "offset_spacings": 1.81,
+      "n_columns": 19,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ },
+ {
+  "page": 8,
+  "n_staves": 17,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 17,
+    "spacing": 25.75,
+    "geom": {
+     "x0": 216,
+     "x1": 525,
+     "y0": 330,
+     "y1": 5413,
+     "spacing": 25.8,
+     "anchor": 448
+    },
+    "strokes": [
+     {
+      "x_left": 447,
+      "x_right": 471,
+      "x_centre": 459.0,
+      "thickness_px": 25,
+      "thickness_spacings": 0.971,
+      "y_top": 4068,
+      "y_bot": 4265,
+      "height_spacings": 7.69,
+      "straightness": 0.616,
+      "offset_spacings": 0.43,
+      "n_columns": 25,
+      "covers": []
+     },
+     {
+      "x_left": 453,
+      "x_right": 473,
+      "x_centre": 463.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 2851,
+      "y_bot": 3036,
+      "height_spacings": 7.22,
+      "straightness": 0.807,
+      "offset_spacings": 0.58,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 454,
+      "x_right": 474,
+      "x_centre": 464.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 1725,
+      "y_bot": 1912,
+      "height_spacings": 7.3,
+      "straightness": 0.892,
+      "offset_spacings": 0.62,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 454,
+      "x_right": 474,
+      "x_centre": 464.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 2295,
+      "y_bot": 2485,
+      "height_spacings": 7.42,
+      "straightness": 0.861,
+      "offset_spacings": 0.62,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 473,
+      "x_right": 495,
+      "x_centre": 484.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.893,
+      "y_top": 3958,
+      "y_bot": 5412,
+      "height_spacings": 56.5,
+      "straightness": 1.0,
+      "offset_spacings": 1.4,
+      "n_columns": 23,
+      "covers": [
+       12,
+       13,
+       14,
+       15,
+       16
+      ]
+     },
+     {
+      "x_left": 481,
+      "x_right": 524,
+      "x_centre": 502.5,
+      "thickness_px": 44,
+      "thickness_spacings": 1.709,
+      "y_top": 2205,
+      "y_bot": 2724,
+      "height_spacings": 20.19,
+      "straightness": 0.0,
+      "offset_spacings": 2.12,
+      "n_columns": 44,
+      "covers": [
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 486,
+      "x_right": 504,
+      "x_centre": 495.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.738,
+      "y_top": 330,
+      "y_bot": 1411,
+      "height_spacings": 42.02,
+      "straightness": 1.0,
+      "offset_spacings": 1.83,
+      "n_columns": 19,
+      "covers": [
+       0,
+       1,
+       2,
+       3
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ },
+ {
+  "page": 9,
+  "n_staves": 17,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 17,
+    "spacing": 25.75,
+    "geom": {
+     "x0": 221,
+     "x1": 530,
+     "y0": 331,
+     "y1": 5489,
+     "spacing": 25.8,
+     "anchor": 453
+    },
+    "strokes": [
+     {
+      "x_left": 460,
+      "x_right": 478,
+      "x_centre": 469.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.738,
+      "y_top": 2284,
+      "y_bot": 2473,
+      "height_spacings": 7.38,
+      "straightness": 0.865,
+      "offset_spacings": 0.62,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 460,
+      "x_right": 479,
+      "x_centre": 469.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.777,
+      "y_top": 2904,
+      "y_bot": 3082,
+      "height_spacings": 6.95,
+      "straightness": 0.789,
+      "offset_spacings": 0.64,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 462,
+      "x_right": 481,
+      "x_centre": 471.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.777,
+      "y_top": 1676,
+      "y_bot": 1866,
+      "height_spacings": 7.42,
+      "straightness": 0.735,
+      "offset_spacings": 0.72,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 480,
+      "x_right": 529,
+      "x_centre": 504.5,
+      "thickness_px": 50,
+      "thickness_spacings": 1.942,
+      "y_top": 3065,
+      "y_bot": 3534,
+      "height_spacings": 18.25,
+      "straightness": 0.0,
+      "offset_spacings": 2.0,
+      "n_columns": 50,
+      "covers": [
+       9,
+       10
+      ]
+     },
+     {
+      "x_left": 487,
+      "x_right": 504,
+      "x_centre": 495.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.699,
+      "y_top": 1713,
+      "y_bot": 3186,
+      "height_spacings": 57.24,
+      "straightness": 1.0,
+      "offset_spacings": 1.65,
+      "n_columns": 18,
+      "covers": [
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     },
+     {
+      "x_left": 490,
+      "x_right": 508,
+      "x_centre": 499.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.738,
+      "y_top": 331,
+      "y_bot": 1387,
+      "height_spacings": 41.05,
+      "straightness": 1.0,
+      "offset_spacings": 1.79,
+      "n_columns": 19,
+      "covers": [
+       0,
+       1,
+       2,
+       3
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ },
+ {
+  "page": 10,
+  "n_staves": 19,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 19,
+    "spacing": 25.75,
+    "geom": {
+     "x0": 240,
+     "x1": 549,
+     "y0": 314,
+     "y1": 5483,
+     "spacing": 25.8,
+     "anchor": 472
+    },
+    "strokes": [
+     {
+      "x_left": 462,
+      "x_right": 484,
+      "x_centre": 473.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.893,
+      "y_top": 2123,
+      "y_bot": 2307,
+      "height_spacings": 7.18,
+      "straightness": 0.638,
+      "offset_spacings": 0.04,
+      "n_columns": 23,
+      "covers": []
+     },
+     {
+      "x_left": 465,
+      "x_right": 484,
+      "x_centre": 474.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.777,
+      "y_top": 1000,
+      "y_bot": 1198,
+      "height_spacings": 7.73,
+      "straightness": 0.758,
+      "offset_spacings": 0.1,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 467,
+      "x_right": 487,
+      "x_centre": 477.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 1559,
+      "y_bot": 1756,
+      "height_spacings": 7.69,
+      "straightness": 0.966,
+      "offset_spacings": 0.19,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 471,
+      "x_right": 492,
+      "x_centre": 481.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.854,
+      "y_top": 2683,
+      "y_bot": 2858,
+      "height_spacings": 6.83,
+      "straightness": 0.812,
+      "offset_spacings": 0.37,
+      "n_columns": 22,
+      "covers": []
+     },
+     {
+      "x_left": 471,
+      "x_right": 491,
+      "x_centre": 481.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 4674,
+      "y_bot": 4857,
+      "height_spacings": 7.15,
+      "straightness": 0.846,
+      "offset_spacings": 0.35,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 472,
+      "x_right": 492,
+      "x_centre": 482.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 5188,
+      "y_bot": 5383,
+      "height_spacings": 7.61,
+      "straightness": 0.89,
+      "offset_spacings": 0.39,
+      "n_columns": 21,
+      "covers": []
+     },
+     {
+      "x_left": 473,
+      "x_right": 491,
+      "x_centre": 482.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.738,
+      "y_top": 3768,
+      "y_bot": 3958,
+      "height_spacings": 7.42,
+      "straightness": 0.833,
+      "offset_spacings": 0.39,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 492,
+      "x_right": 511,
+      "x_centre": 501.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.777,
+      "y_top": 314,
+      "y_bot": 1297,
+      "height_spacings": 38.21,
+      "straightness": 1.0,
+      "offset_spacings": 1.15,
+      "n_columns": 20,
+      "covers": [
+       0,
+       1,
+       2,
+       3
+      ]
+     },
+     {
+      "x_left": 493,
+      "x_right": 514,
+      "x_centre": 503.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.854,
+      "y_top": 1465,
+      "y_bot": 2951,
+      "height_spacings": 57.75,
+      "straightness": 1.0,
+      "offset_spacings": 1.22,
+      "n_columns": 22,
+      "covers": [
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     },
+     {
+      "x_left": 497,
+      "x_right": 517,
+      "x_centre": 507.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 3864,
+      "y_bot": 5454,
+      "height_spacings": 61.79,
+      "straightness": 1.0,
+      "offset_spacings": 1.36,
+      "n_columns": 21,
+      "covers": [
+       13,
+       14,
+       15,
+       16,
+       17,
+       18
+      ]
+     },
+     {
+      "x_left": 512,
+      "x_right": 548,
+      "x_centre": 530.0,
+      "thickness_px": 37,
+      "thickness_spacings": 1.437,
+      "y_top": 911,
+      "y_bot": 1283,
+      "height_spacings": 14.49,
+      "straightness": 0.0,
+      "offset_spacings": 2.25,
+      "n_columns": 37,
+      "covers": [
+       2,
+       3
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ },
+ {
+  "page": 11,
+  "n_staves": 26,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 13,
+    "spacing": 24.75,
+    "geom": {
+     "x0": 236,
+     "x1": 533,
+     "y0": 201,
+     "y1": 2981,
+     "spacing": 24.8,
+     "anchor": 459
+    },
+    "strokes": [
+     {
+      "x_left": 458,
+      "x_right": 475,
+      "x_centre": 466.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.727,
+      "y_top": 1687,
+      "y_bot": 1894,
+      "height_spacings": 8.4,
+      "straightness": 1.0,
+      "offset_spacings": 0.3,
+      "n_columns": 18,
+      "covers": [
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 458,
+      "x_right": 473,
+      "x_centre": 465.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.646,
+      "y_top": 2302,
+      "y_bot": 2508,
+      "height_spacings": 8.36,
+      "straightness": 1.0,
+      "offset_spacings": 0.26,
+      "n_columns": 16,
+      "covers": []
+     },
+     {
+      "x_left": 458,
+      "x_right": 474,
+      "x_centre": 466.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.687,
+      "y_top": 2724,
+      "y_bot": 2899,
+      "height_spacings": 7.11,
+      "straightness": 0.986,
+      "offset_spacings": 0.28,
+      "n_columns": 17,
+      "covers": []
+     },
+     {
+      "x_left": 460,
+      "x_right": 475,
+      "x_centre": 467.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.646,
+      "y_top": 918,
+      "y_bot": 1114,
+      "height_spacings": 7.96,
+      "straightness": 1.0,
+      "offset_spacings": 0.34,
+      "n_columns": 16,
+      "covers": [
+       3
+      ]
+     },
+     {
+      "x_left": 484,
+      "x_right": 503,
+      "x_centre": 493.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.808,
+      "y_top": 1633,
+      "y_bot": 2980,
+      "height_spacings": 54.46,
+      "straightness": 1.0,
+      "offset_spacings": 1.39,
+      "n_columns": 20,
+      "covers": [
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     {
+      "x_left": 485,
+      "x_right": 500,
+      "x_centre": 492.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.646,
+      "y_top": 201,
+      "y_bot": 773,
+      "height_spacings": 23.15,
+      "straightness": 1.0,
+      "offset_spacings": 1.35,
+      "n_columns": 16,
+      "covers": [
+       0,
+       1,
+       2
+      ]
+     },
+     {
+      "x_left": 486,
+      "x_right": 502,
+      "x_centre": 494.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.687,
+      "y_top": 872,
+      "y_bot": 1177,
+      "height_spacings": 12.36,
+      "straightness": 1.0,
+      "offset_spacings": 1.41,
+      "n_columns": 17,
+      "covers": [
+       3,
+       4
+      ]
+     }
+    ]
+   },
+   {
+    "system_index": 1,
+    "n_staves": 13,
+    "spacing": 24.75,
+    "geom": {
+     "x0": 236,
+     "x1": 533,
+     "y0": 3149,
+     "y1": 5611,
+     "spacing": 24.8,
+     "anchor": 459
+    },
+    "strokes": [
+     {
+      "x_left": 459,
+      "x_right": 475,
+      "x_centre": 467.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.687,
+      "y_top": 4345,
+      "y_bot": 4583,
+      "height_spacings": 9.66,
+      "straightness": 1.0,
+      "offset_spacings": 0.32,
+      "n_columns": 17,
+      "covers": [
+       6,
+       7
+      ]
+     },
+     {
+      "x_left": 460,
+      "x_right": 478,
+      "x_centre": 469.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.768,
+      "y_top": 3610,
+      "y_bot": 3790,
+      "height_spacings": 7.31,
+      "straightness": 0.994,
+      "offset_spacings": 0.4,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 460,
+      "x_right": 475,
+      "x_centre": 467.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.646,
+      "y_top": 4765,
+      "y_bot": 4973,
+      "height_spacings": 8.44,
+      "straightness": 1.0,
+      "offset_spacings": 0.34,
+      "n_columns": 16,
+      "covers": [
+       8
+      ]
+     },
+     {
+      "x_left": 461,
+      "x_right": 476,
+      "x_centre": 468.5,
+      "thickness_px": 16,
+      "thickness_spacings": 0.646,
+      "y_top": 3979,
+      "y_bot": 4182,
+      "height_spacings": 8.24,
+      "straightness": 1.0,
+      "offset_spacings": 0.38,
+      "n_columns": 16,
+      "covers": [
+       4
+      ]
+     },
+     {
+      "x_left": 483,
+      "x_right": 501,
+      "x_centre": 492.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.768,
+      "y_top": 4733,
+      "y_bot": 5591,
+      "height_spacings": 34.71,
+      "straightness": 1.0,
+      "offset_spacings": 1.33,
+      "n_columns": 19,
+      "covers": [
+       8,
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     {
+      "x_left": 485,
+      "x_right": 502,
+      "x_centre": 493.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.727,
+      "y_top": 3149,
+      "y_bot": 3856,
+      "height_spacings": 28.61,
+      "straightness": 1.0,
+      "offset_spacings": 1.39,
+      "n_columns": 18,
+      "covers": [
+       0,
+       1,
+       2,
+       3
+      ]
+     },
+     {
+      "x_left": 486,
+      "x_right": 503,
+      "x_centre": 494.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.727,
+      "y_top": 3929,
+      "y_bot": 4616,
+      "height_spacings": 27.8,
+      "straightness": 1.0,
+      "offset_spacings": 1.43,
+      "n_columns": 18,
+      "covers": [
+       4,
+       5,
+       6,
+       7
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ },
+ {
+  "page": 12,
+  "n_staves": 17,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 17,
+    "spacing": 25.75,
+    "geom": {
+     "x0": 245,
+     "x1": 554,
+     "y0": 359,
+     "y1": 5324,
+     "spacing": 25.8,
+     "anchor": 477
+    },
+    "strokes": [
+     {
+      "x_left": 452,
+      "x_right": 470,
+      "x_centre": 461.0,
+      "thickness_px": 19,
+      "thickness_spacings": 0.738,
+      "y_top": 3966,
+      "y_bot": 4164,
+      "height_spacings": 7.73,
+      "straightness": 0.663,
+      "offset_spacings": -0.62,
+      "n_columns": 19,
+      "covers": []
+     },
+     {
+      "x_left": 453,
+      "x_right": 474,
+      "x_centre": 463.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.854,
+      "y_top": 1477,
+      "y_bot": 1677,
+      "height_spacings": 7.81,
+      "straightness": 0.763,
+      "offset_spacings": -0.52,
+      "n_columns": 22,
+      "covers": []
+     },
+     {
+      "x_left": 484,
+      "x_right": 501,
+      "x_centre": 492.5,
+      "thickness_px": 18,
+      "thickness_spacings": 0.699,
+      "y_top": 2032,
+      "y_bot": 3144,
+      "height_spacings": 43.22,
+      "straightness": 1.0,
+      "offset_spacings": 0.6,
+      "n_columns": 18,
+      "covers": [
+       5,
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 487,
+      "x_right": 507,
+      "x_centre": 497.0,
+      "thickness_px": 21,
+      "thickness_spacings": 0.816,
+      "y_top": 359,
+      "y_bot": 1782,
+      "height_spacings": 55.3,
+      "straightness": 1.0,
+      "offset_spacings": 0.78,
+      "n_columns": 21,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ },
+ {
+  "page": 13,
+  "n_staves": 16,
+  "systems": [
+   {
+    "system_index": 0,
+    "n_staves": 16,
+    "spacing": 25.75,
+    "geom": {
+     "x0": 228,
+     "x1": 537,
+     "y0": 367,
+     "y1": 5335,
+     "spacing": 25.8,
+     "anchor": 460.0
+    },
+    "strokes": [
+     {
+      "x_left": 455,
+      "x_right": 476,
+      "x_centre": 465.5,
+      "thickness_px": 22,
+      "thickness_spacings": 0.854,
+      "y_top": 1539,
+      "y_bot": 1749,
+      "height_spacings": 8.19,
+      "straightness": 0.868,
+      "offset_spacings": 0.21,
+      "n_columns": 22,
+      "covers": []
+     },
+     {
+      "x_left": 458,
+      "x_right": 477,
+      "x_centre": 467.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.777,
+      "y_top": 2191,
+      "y_bot": 2384,
+      "height_spacings": 7.53,
+      "straightness": 0.728,
+      "offset_spacings": 0.29,
+      "n_columns": 20,
+      "covers": []
+     },
+     {
+      "x_left": 478,
+      "x_right": 500,
+      "x_centre": 489.0,
+      "thickness_px": 23,
+      "thickness_spacings": 0.893,
+      "y_top": 3888,
+      "y_bot": 5326,
+      "height_spacings": 55.88,
+      "straightness": 1.0,
+      "offset_spacings": 1.13,
+      "n_columns": 23,
+      "covers": [
+       11,
+       12,
+       13,
+       14,
+       15
+      ]
+     },
+     {
+      "x_left": 487,
+      "x_right": 506,
+      "x_centre": 496.5,
+      "thickness_px": 20,
+      "thickness_spacings": 0.777,
+      "y_top": 367,
+      "y_bot": 1859,
+      "height_spacings": 57.98,
+      "straightness": 1.0,
+      "offset_spacings": 1.42,
+      "n_columns": 20,
+      "covers": [
+       0,
+       1,
+       2,
+       3,
+       4
+      ]
+     },
+     {
+      "x_left": 487,
+      "x_right": 503,
+      "x_centre": 495.0,
+      "thickness_px": 17,
+      "thickness_spacings": 0.66,
+      "y_top": 2076,
+      "y_bot": 3130,
+      "height_spacings": 40.97,
+      "straightness": 1.0,
+      "offset_spacings": 1.36,
+      "n_columns": 17,
+      "covers": [
+       5,
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "x_left": 500,
+      "x_right": 536,
+      "x_centre": 518.0,
+      "thickness_px": 37,
+      "thickness_spacings": 1.437,
+      "y_top": 4549,
+      "y_bot": 5007,
+      "height_spacings": 17.83,
+      "straightness": 0.496,
+      "offset_spacings": 2.25,
+      "n_columns": 37,
+      "covers": [
+       13,
+       14
+      ]
+     }
+    ]
+   }
+  ],
+  "tag": "mahler",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf"
+ }
+]
