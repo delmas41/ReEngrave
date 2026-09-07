@@ -1,0 +1,225 @@
+pdf=brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf pages=99 dpi=600 veto=report cache=benchmarks/omr-span-reach-2026-09/out/brahms4/cache600
+  page 0: 22 staves, 21 labels
+  page 1: 22 staves, 21 labels
+  page 2: 23 staves, 22 labels
+  page 3: 23 staves, 22 labels
+  page 4: 22 staves, 20 labels
+  page 5: 23 staves, 21 labels
+  page 6: 21 staves, 19 labels
+  page 7: 26 staves, 24 labels
+  page 8: 25 staves, 22 labels
+  page 9: 24 staves, 21 labels
+  page 10: 22 staves, 20 labels
+  page 11: 22 staves, 20 labels
+  page 12: 25 staves, 24 labels
+  page 13: 24 staves, 23 labels
+  page 14: 24 staves, 22 labels
+  page 15: 22 staves, 20 labels
+  page 16: 24 staves, 23 labels
+  page 17: 24 staves, 22 labels
+  page 18: 22 staves, 20 labels
+  page 19: 23 staves, 21 labels
+  page 20: 23 staves, 21 labels
+  page 21: 22 staves, 20 labels
+  page 22: 23 staves, 21 labels
+  page 23: 26 staves, 24 labels
+  page 24: 25 staves, 23 labels
+  page 25: 24 staves, 22 labels
+  page 26: 24 staves, 22 labels
+  page 27: 25 staves, 23 labels
+  page 28: 25 staves, 23 labels
+  page 29: 24 staves, 22 labels
+  page 30: 22 staves, 20 labels
+  page 31: 23 staves, 21 labels
+  page 32: 24 staves, 23 labels
+  page 33: 22 staves, 22 labels
+  page 34: 22 staves, 20 labels
+  page 35: 24 staves, 22 labels
+  page 36: 22 staves, 20 labels
+  page 37: 25 staves, 23 labels
+  page 38: 25 staves, 23 labels
+  page 39: 24 staves, 23 labels
+  page 40: 25 staves, 24 labels
+  page 41: 16 staves, 15 labels
+  page 42: 15 staves, 14 labels
+  page 43: 23 staves, 21 labels
+  page 44: 26 staves, 24 labels
+  page 45: 23 staves, 21 labels
+  page 46: 16 staves, 14 labels
+  page 47: 16 staves, 14 labels
+  page 48: 22 staves, 21 labels
+  page 49: 20 staves, 20 labels
+  page 50: 23 staves, 21 labels
+  page 51: 24 staves, 22 labels
+  page 52: 15 staves, 14 labels
+  page 53: 23 staves, 21 labels
+  page 54: 16 staves, 13 labels
+  page 55: 16 staves, 14 labels
+  page 56: 15 staves, 12 labels
+  page 57: 15 staves, 13 labels
+  page 58: 15 staves, 13 labels
+  page 59: 15 staves, 13 labels
+  page 60: 15 staves, 14 labels
+  page 61: 15 staves, 13 labels
+  page 62: 15 staves, 13 labels
+  page 63: 16 staves, 15 labels
+  page 64: 16 staves, 14 labels
+  page 65: 16 staves, 14 labels
+  page 66: 16 staves, 14 labels
+  page 67: 16 staves, 14 labels
+  page 68: 16 staves, 14 labels
+  page 69: 16 staves, 14 labels
+  page 70: 22 staves, 18 labels
+  page 71: 24 staves, 23 labels
+  page 72: 26 staves, 25 labels
+  page 73: 24 staves, 24 labels
+  page 74: 22 staves, 22 labels
+  page 75: 24 staves, 22 labels
+  page 76: 16 staves, 15 labels
+  page 77: 16 staves, 14 labels
+  page 78: 16 staves, 14 labels
+  page 79: 16 staves, 10 labels
+  page 80: 16 staves, 14 labels
+  page 81: 16 staves, 13 labels
+  page 82: 16 staves, 15 labels
+  page 83: 16 staves, 13 labels
+  page 84: 24 staves, 23 labels
+  page 85: 16 staves, 14 labels
+  page 86: 16 staves, 13 labels
+  page 87: 16 staves, 15 labels
+  page 88: 24 staves, 18 labels
+  page 89: 24 staves, 23 labels
+  page 90: 16 staves, 15 labels
+  page 91: 16 staves, 14 labels
+  page 92: 16 staves, 14 labels
+  page 93: 16 staves, 15 labels
+  page 94: 16 staves, 13 labels
+  page 95: 16 staves, 13 labels
+  page 96: 16 staves, 13 labels
+  page 97: 16 staves, 13 labels
+  page 98: 0 staves, 0 labels
+read 99 pages in 0s (0 read, 99 cached)
+261 of 1779 labelled staff record(s) CONTRADICT their own margin label: the reader read one instrument on that staff and the file names another. Measured over two whole works, 0.873 of these are a wrong EXPORTED name and 0.127 a misread label, and nothing on the record says which — so each is worth a look, none is self-resolving. By source: {'label': 229, 'score_order': 32}. By pair: {'Bassoon -> Clarinet': 22, 'Cello -> Contrabass': 1, 'Cello -> Percussion': 1, 'Cello -> Timpani': 1, 'Cello -> Viola': 4, 'Cello -> Violin': 6, 'Clarinet -> Oboe': 25, 'Contrabass -> Cello': 4, 'Contrabass -> Percussion': 1, 'Contrabass -> Viola': 3, 'Contrabass -> Violin': 2, 'Contrabassoon -> Bassoon': 22, 'Contrabassoon -> Clarinet': 3, 'Flute -> Oboe': 1, 'Flute -> Piccolo': 28, 'Horn -> Bassoon': 2, 'Horn -> Contrabassoon': 11, 'Horn -> Trumpet': 30, 'Oboe -> Piccolo': 21, 'Timpani -> Percussion': 24, 'Timpani -> Trumpet': 1, 'Trombone -> Timpani': 19, 'Trombone -> Trumpet': 6, 'Trumpet -> Horn': 3, 'Trumpet -> Percussion': 1, 'Viola -> Timpani': 1, 'Viola -> Violin': 6, 'Violin -> Percussion': 4, 'Violin -> Timpani': 2, 'Violin -> Trumpet': 5, 'Violin -> Viola': 1} (benchmarks/omr-label-contradiction-2026-09/)
+22 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(C', '(C)', '(E)', '(F)', '-|', '1. 2.', '=e)', 'C)\\', 'K. B. Vol.', 'K=B.', 'Trgl.', 'Vel.', 'Vel. |', 'Vol.', 'in  C_{4^3}^3', 'in C  3.  4.', 'in C 3 4 .', 'ol]', '|', '| Vel.', '| |', '}'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+[spans-off] available=True reason=None in 12s reference=16 slots vetoes=0
+  wrote benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap0-spans-off.json
+301 of 1779 labelled staff record(s) CONTRADICT their own margin label: the reader read one instrument on that staff and the file names another. Measured over two whole works, 0.873 of these are a wrong EXPORTED name and 0.127 a misread label, and nothing on the record says which — so each is worth a look, none is self-resolving. By source: {'label': 234, 'score_order': 67}. By pair: {'Bassoon -> Clarinet': 22, 'Cello -> Contrabass': 2, 'Cello -> Percussion': 1, 'Cello -> Timpani': 1, 'Cello -> Viola': 4, 'Cello -> Violin': 6, 'Clarinet -> Oboe': 25, 'Contrabass -> Cello': 4, 'Contrabass -> Percussion': 1, 'Contrabass -> Viola': 3, 'Contrabass -> Violin': 2, 'Contrabassoon -> Bassoon': 22, 'Contrabassoon -> Clarinet': 3, 'Flute -> Oboe': 1, 'Flute -> Piccolo': 28, 'Horn -> Bassoon': 2, 'Horn -> Contrabassoon': 11, 'Horn -> Trumpet': 65, 'Oboe -> Piccolo': 21, 'Timpani -> Percussion': 23, 'Timpani -> Trumpet': 2, 'Timpani -> Violin': 1, 'Trombone -> Timpani': 19, 'Trombone -> Trumpet': 6, 'Trumpet -> Horn': 3, 'Trumpet -> Percussion': 1, 'Trumpet -> Timpani': 1, 'Viola -> Cello': 1, 'Viola -> Timpani': 1, 'Viola -> Violin': 6, 'Violin -> Percussion': 3, 'Violin -> Timpani': 3, 'Violin -> Trumpet': 5, 'Violin -> Viola': 2} (benchmarks/omr-label-contradiction-2026-09/)
+22 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(C', '(C)', '(E)', '(F)', '-|', '1. 2.', '=e)', 'C)\\', 'K. B. Vol.', 'K=B.', 'Trgl.', 'Vel.', 'Vel. |', 'Vol.', 'in  C_{4^3}^3', 'in C  3.  4.', 'in C 3 4 .', 'ol]', '|', '| Vel.', '| |', '}'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+[spans-on] available=True reason=None in 11s reference=16 slots vetoes=0
+  wrote benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap0-spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (0 pages read, 99 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap0-spans-off.json
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap0-spans-on.json
+pdf=brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf pages=99 dpi=600 veto=report cache=benchmarks/omr-span-reach-2026-09/out/brahms4/cache600
+  page 0: 22 staves, 21 labels
+  page 1: 22 staves, 21 labels
+  page 2: 23 staves, 22 labels
+  page 3: 23 staves, 22 labels
+  page 4: 22 staves, 20 labels
+  page 5: 23 staves, 21 labels
+  page 6: 21 staves, 19 labels
+  page 7: 26 staves, 24 labels
+  page 8: 25 staves, 22 labels
+  page 9: 24 staves, 21 labels
+  page 10: 22 staves, 20 labels
+  page 11: 22 staves, 20 labels
+  page 12: 25 staves, 24 labels
+  page 13: 24 staves, 23 labels
+  page 14: 24 staves, 22 labels
+  page 15: 22 staves, 20 labels
+  page 16: 24 staves, 23 labels
+  page 17: 24 staves, 22 labels
+  page 18: 22 staves, 20 labels
+  page 19: 23 staves, 21 labels
+  page 20: 23 staves, 21 labels
+  page 21: 22 staves, 20 labels
+  page 22: 23 staves, 21 labels
+  page 23: 26 staves, 24 labels
+  page 24: 25 staves, 23 labels
+  page 25: 24 staves, 22 labels
+  page 26: 24 staves, 22 labels
+  page 27: 25 staves, 23 labels
+  page 28: 25 staves, 23 labels
+  page 29: 24 staves, 22 labels
+  page 30: 22 staves, 20 labels
+  page 31: 23 staves, 21 labels
+  page 32: 24 staves, 23 labels
+  page 33: 22 staves, 22 labels
+  page 34: 22 staves, 20 labels
+  page 35: 24 staves, 22 labels
+  page 36: 22 staves, 20 labels
+  page 37: 25 staves, 23 labels
+  page 38: 25 staves, 23 labels
+  page 39: 24 staves, 23 labels
+  page 40: 25 staves, 24 labels
+  page 41: 16 staves, 15 labels
+  page 42: 15 staves, 14 labels
+  page 43: 23 staves, 21 labels
+  page 44: 26 staves, 24 labels
+  page 45: 23 staves, 21 labels
+  page 46: 16 staves, 14 labels
+  page 47: 16 staves, 14 labels
+  page 48: 22 staves, 21 labels
+  page 49: 20 staves, 20 labels
+  page 50: 23 staves, 21 labels
+  page 51: 24 staves, 22 labels
+  page 52: 15 staves, 14 labels
+  page 53: 23 staves, 21 labels
+  page 54: 16 staves, 13 labels
+  page 55: 16 staves, 14 labels
+  page 56: 15 staves, 12 labels
+  page 57: 15 staves, 13 labels
+  page 58: 15 staves, 13 labels
+  page 59: 15 staves, 13 labels
+  page 60: 15 staves, 14 labels
+  page 61: 15 staves, 13 labels
+  page 62: 15 staves, 13 labels
+  page 63: 16 staves, 15 labels
+  page 64: 16 staves, 14 labels
+  page 65: 16 staves, 14 labels
+  page 66: 16 staves, 14 labels
+  page 67: 16 staves, 14 labels
+  page 68: 16 staves, 14 labels
+  page 69: 16 staves, 14 labels
+  page 70: 22 staves, 18 labels
+  page 71: 24 staves, 23 labels
+  page 72: 26 staves, 25 labels
+  page 73: 24 staves, 24 labels
+  page 74: 22 staves, 22 labels
+  page 75: 24 staves, 22 labels
+  page 76: 16 staves, 15 labels
+  page 77: 16 staves, 14 labels
+  page 78: 16 staves, 14 labels
+  page 79: 16 staves, 10 labels
+  page 80: 16 staves, 14 labels
+  page 81: 16 staves, 13 labels
+  page 82: 16 staves, 15 labels
+  page 83: 16 staves, 13 labels
+  page 84: 24 staves, 23 labels
+  page 85: 16 staves, 14 labels
+  page 86: 16 staves, 13 labels
+  page 87: 16 staves, 15 labels
+  page 88: 24 staves, 18 labels
+  page 89: 24 staves, 23 labels
+  page 90: 16 staves, 15 labels
+  page 91: 16 staves, 14 labels
+  page 92: 16 staves, 14 labels
+  page 93: 16 staves, 15 labels
+  page 94: 16 staves, 13 labels
+  page 95: 16 staves, 13 labels
+  page 96: 16 staves, 13 labels
+  page 97: 16 staves, 13 labels
+  page 98: 0 staves, 0 labels
+read 99 pages in 0s (0 read, 99 cached)
+261 of 1779 labelled staff record(s) CONTRADICT their own margin label: the reader read one instrument on that staff and the file names another. Measured over two whole works, 0.873 of these are a wrong EXPORTED name and 0.127 a misread label, and nothing on the record says which — so each is worth a look, none is self-resolving. By source: {'label': 229, 'score_order': 32}. By pair: {'Bassoon -> Clarinet': 22, 'Cello -> Contrabass': 1, 'Cello -> Percussion': 1, 'Cello -> Timpani': 1, 'Cello -> Viola': 4, 'Cello -> Violin': 6, 'Clarinet -> Oboe': 25, 'Contrabass -> Cello': 4, 'Contrabass -> Percussion': 1, 'Contrabass -> Viola': 3, 'Contrabass -> Violin': 2, 'Contrabassoon -> Bassoon': 22, 'Contrabassoon -> Clarinet': 3, 'Flute -> Oboe': 1, 'Flute -> Piccolo': 28, 'Horn -> Bassoon': 2, 'Horn -> Contrabassoon': 11, 'Horn -> Trumpet': 30, 'Oboe -> Piccolo': 21, 'Timpani -> Percussion': 24, 'Timpani -> Trumpet': 1, 'Trombone -> Timpani': 19, 'Trombone -> Trumpet': 6, 'Trumpet -> Horn': 3, 'Trumpet -> Percussion': 1, 'Viola -> Timpani': 1, 'Viola -> Violin': 6, 'Violin -> Percussion': 4, 'Violin -> Timpani': 2, 'Violin -> Trumpet': 5, 'Violin -> Viola': 1} (benchmarks/omr-label-contradiction-2026-09/)
+22 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(C', '(C)', '(E)', '(F)', '-|', '1. 2.', '=e)', 'C)\\', 'K. B. Vol.', 'K=B.', 'Trgl.', 'Vel.', 'Vel. |', 'Vol.', 'in  C_{4^3}^3', 'in C  3.  4.', 'in C 3 4 .', 'ol]', '|', '| Vel.', '| |', '}'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+[spans-off] available=True reason=None in 9s reference=16 slots vetoes=0
+  wrote benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap1-spans-off.json
+291 of 1719 labelled staff record(s) CONTRADICT their own margin label: the reader read one instrument on that staff and the file names another. Measured over two whole works, 0.873 of these are a wrong EXPORTED name and 0.127 a misread label, and nothing on the record says which — so each is worth a look, none is self-resolving. By source: {'label': 215, 'score_order': 76}. By pair: {'Bassoon -> Flute': 22, 'Bassoon -> Horn': 1, 'Bassoon -> Oboe': 1, 'Bassoon -> Trumpet': 1, 'Cello -> Contrabass': 2, 'Cello -> Percussion': 1, 'Cello -> Timpani': 1, 'Cello -> Viola': 4, 'Cello -> Violin': 6, 'Clarinet -> Bassoon': 1, 'Clarinet -> Horn': 1, 'Clarinet -> Oboe': 4, 'Contrabass -> Cello': 4, 'Contrabass -> Percussion': 1, 'Contrabass -> Viola': 3, 'Contrabass -> Violin': 2, 'Contrabassoon -> Bassoon': 1, 'Contrabassoon -> Clarinet': 3, 'Contrabassoon -> Horn': 3, 'Contrabassoon -> Oboe': 21, 'Flute -> Oboe': 1, 'Flute -> Piccolo': 27, 'Horn -> Bassoon': 18, 'Horn -> Clarinet': 10, 'Horn -> Contrabassoon': 1, 'Horn -> Timpani': 2, 'Horn -> Trumpet': 69, 'Oboe -> Bassoon': 1, 'Oboe -> Clarinet': 1, 'Timpani -> Percussion': 1, 'Timpani -> Trumpet': 2, 'Timpani -> Violin': 1, 'Trombone -> Trumpet': 25, 'Trumpet -> Horn': 25, 'Trumpet -> Percussion': 1, 'Trumpet -> Timpani': 2, 'Viola -> Cello': 1, 'Viola -> Timpani': 1, 'Viola -> Violin': 6, 'Violin -> Percussion': 3, 'Violin -> Timpani': 5, 'Violin -> Trumpet': 3, 'Violin -> Viola': 2} (benchmarks/omr-label-contradiction-2026-09/)
+22 margin label(s) read but NOT MATCHED by the lexicon, so they were dropped and this page will behave as if unlabelled there: '(C', '(C)', '(E)', '(F)', '-|', '1. 2.', '=e)', 'C)\\', 'K. B. Vol.', 'K=B.', 'Trgl.', 'Vel.', 'Vel. |', 'Vol.', 'in  C_{4^3}^3', 'in C  3.  4.', 'in C 3 4 .', 'ol]', '|', '| Vel.', '| |', '}'. Two causes look identical here: a missing alias, and a name the PAGE printed only part of. A string missing its opening characters ('larinetti in B.') is the second, and an alias for it would paper over the engraving — check the printed name before touching tools/omr/instruments.py (benchmarks/omr-margin-window-truncation-2026-09/)
+[spans-on] available=True reason=None in 10s reference=16 slots vetoes=0
+  wrote benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap1-spans-on.json
+INPUT ASSERTION: both arms ran off ONE read pass (0 pages read, 99 cache hits), so every difference below is OMR_MOVEMENT_REFERENCE and nothing else
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap1-spans-off.json
+  benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap1-spans-on.json
+BRAHMS4 AB DONE
