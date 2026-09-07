@@ -1,0 +1,64 @@
+A = beet5/groupmap=map,spans=on   756/807 = 0.9368   impossible 0  human 110
+B = beet5/shipped   800/807 = 0.9913   impossible 91  human 108
+shared judgeable key set: 807 records
+
+B fixes 50, B breaks 6, both wrong the same way 0
+
+verdict                  page sys ord   n truth            A emits          B emits          A src                  B src
+B-FIXES                     1   0   6  12 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                     6   1   6  12 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                     9   0   6  12 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    12   0   6  12 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    14   0   6  12 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    17   0   6  12 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    23   1   6  12 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-BREAKS                   23   1   7  12 Violin           Violin           Trombone         label                  label
+B-BREAKS                   23   1   8  12 Violin           Violin           Trombone         label                  label
+B-BREAKS                   23   1   9  12 Viola            Viola            Trombone         label                  label
+B-FIXES                    28   1   6  12 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    30   0   6  12 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+BOTH-WRONG-DIFFERENTLY     31   1   6  12 Timpani          Trumpet          Trombone         score_order_ambiguity  label
+B-FIXES                    38   0   6  12 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-BREAKS                   38   0   7  12 Violin           Violin           Trombone         label                  label
+B-BREAKS                   38   0   8  12 Violin           Violin           Trombone         label                  label
+B-BREAKS                   38   0   9  12 Viola            Viola            Trombone         label                  label
+B-FIXES                    38   1   6  12 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    44   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    45   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    46   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    47   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    48   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    49   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    50   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    51   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    52   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    53   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    54   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    55   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    58   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    59   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    60   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    61   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    62   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    64   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    66   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    67   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    68   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    69   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    70   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    71   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    72   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    73   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    74   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    75   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    76   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    77   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    78   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    79   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    80   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    81   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    82   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    83   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    84   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    85   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label
+B-FIXES                    87   0   8  17 Timpani          Trumpet          Timpani          score_order_ambiguity  label

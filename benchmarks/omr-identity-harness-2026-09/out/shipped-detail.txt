@@ -1,0 +1,49 @@
+
+############ REGIME: whole work 0-85
+  IDENTITY is over JUDGEABLE records (full systems only); HUMAN is over ALL staff records.
+arm                              work      judge  corr  wrng  unnm    rate |  impos nowrk contra |  human  /recs    rate
+brahms1/fit=search,spans=on      brahms1     764   741    23     0  0.9699 |      0    23     48 |     87   1927  0.0451
+
+############ REGIME: whole work 0-87
+  IDENTITY is over JUDGEABLE records (full systems only); HUMAN is over ALL staff records.
+arm                              work      judge  corr  wrng  unnm    rate |  impos nowrk contra |  human  /recs    rate
+beet5/shipped                    beet5       807   800     7     0  0.9913 |     91     0     17 |    108   1616  0.0668
+
+--- beet5/shipped   work=beet5   regime=whole work 0-87
+    judgeable 807 of 1616 staff records (49.9%); 51 of 140 systems are FULL
+    per lineup:
+      p0-43/12               ( 12 systems):  137/ 144 = 0.9514
+      p44-200/17             ( 39 systems):  663/ 663 = 1.0000
+    per instrument_source (REPORTED, never filtered):
+      label                     749 correct,   0 unnamed,  756 judgeable  = 0.9907
+      score_order_ambiguity      51 correct,   0 unnamed,   51 judgeable  = 1.0000
+    human-cost breakdown (over ALL staff records):
+      impossible                            91
+      contradicted                          17
+    confusions (truth -> emitted):
+          4  Violin           -> Trombone
+          2  Viola            -> Trombone
+          1  Timpani          -> Trombone
+
+--- brahms1/fit=search,spans=on   work=brahms1   regime=whole work 0-85
+    judgeable 764 of 1927 staff records (39.6%); 53 of 151 systems are FULL
+    per lineup:
+      p0-25/14               ( 28 systems):  392/ 392 = 1.0000
+      p33-35/14              (  2 systems):   22/  28 = 0.7857
+      p36-44/12              (  6 systems):   72/  72 = 1.0000
+      p45-85/16              ( 17 systems):  255/ 272 = 0.9375
+    per instrument_source (REPORTED, never filtered):
+      label                     690 correct,   0 unnamed,  694 judgeable  = 0.9942
+      roster                     51 correct,   0 unnamed,   53 judgeable  = 0.9623
+      score_order                 0 correct,   0 unnamed,   17 judgeable  = 0.0000
+    human-cost breakdown (over ALL staff records):
+      contradicted                          40
+      unnamed                               24
+      not-in-this-work                      15
+      contradicted+not-in-this-work          8
+    confusions (truth -> emitted):
+         17  Trombone         -> Tuba
+          2  Trumpet          -> Horn
+          2  Timpani          -> Trumpet
+          2  Violin           -> Timpani
+
