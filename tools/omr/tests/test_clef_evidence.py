@@ -476,6 +476,12 @@ class TestTheOverturnIsRecorded:
     ⚠️ `disagrees` cannot answer this. Each such flip is the ONLY clef detection
     in its cell, so it carries `n_resolved == 1` and no `disagrees` key at all;
     the comparison that matters is the winner against the INHERITED clef.
+
+    ⚠️ And `overturns_inherited` is PRE-REPAIR — it says the argmax flipped the
+    clef, not that the flip reached the file. The dossier override runs later
+    and can put the inherited clef back, so a probe reading `measure["clef"]`
+    counts survivors and will report fewer. Different quantities; do not
+    difference them.
     """
 
     def test_read_clef_does_not_gate_the_argmax(self):
@@ -582,11 +588,17 @@ class TestTheClefRecordIsWiredIn:
 
     def test_both_the_staff_and_the_measure_are_given_the_record(self):
         source = Path(inspect.getfile(T)).read_text()
+        # ⚠️ `ast.Store` is load-bearing. Without it a future READ of
+        # `clef_evidence` would satisfy the count while one of the two WRITES
+        # had been deleted — a guard that stops guarding on someone else's
+        # unrelated edit. This branch's third blocking finding was a guard that
+        # did not guard; not leaving a second one open.
         writes = [
             node for node in ast.walk(ast.parse(source))
             if isinstance(node, ast.Subscript)
             and isinstance(node.slice, ast.Constant)
             and node.slice.value == "clef_evidence"
+            and isinstance(node.ctx, ast.Store)
         ]
         assert len(writes) >= 2, (
             "expected the staff-level and measure-level writes; found "

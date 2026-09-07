@@ -1606,12 +1606,37 @@ def _detections_for_cell(
     against `clef_source`, which says only who won. It is an out-parameter
     rather than a seventh return value so a caller that does not want it pays
     nothing and is unchanged. Purely additive: nothing here reads it back, so a
-    run with it and a run without it decide identically. Two entries so far —
-    `contest`, the detector's clef argmax (every candidate, the margin, and
-    whether there was a contest at all), and `cv_locator`, the trace
-    `clef_locator.locate_clef` has always been able to fill and that no call
-    site passed. Both answer the question a bare `clef_source` cannot: WHY the
-    reading that lost, lost.
+    run with it and a run without it decide identically.
+
+    ⚠️ **IT MUST NOT BE PUT BEHIND A FLAG TO BUY BACK THE BYTES.** It costs
+    ~10% of a page's result JSON, which is real — for scale, `pitch_candidates`
+    already occupies 6.6% of `beethoven-984073-p1` across 117 lists with zero
+    production consumers, so the pipeline already pays two thirds of this for a
+    record nobody reads. If size ever bites at whole-work scale, the answer is a
+    PROJECTION AT WRITE TIME — drop `contest["candidates"]`, keep the winner,
+    the runner-up and the margin — and never a flag. `OMR_CONTEST_DUMP` and
+    `locate_clef(trace=)` are both complete recorders that recorded NOTHING
+    because they were off, and that is the defect this whole change exists to
+    repair. An instrument that is off is not a record.
+
+    The keys, each answering the question a bare `clef_source` cannot — WHY the
+    reading that lost, lost:
+
+      contest             the detector's clef argmax: every candidate, the
+                          runner-up, the margin, and the clef the cell came in
+                          with. ⚠️ Recorded on EVERY cell that reads a clef, not
+                          just the staff's first — this argmax is not gated by
+                          `read_clef`.
+      cv_locator          the trace `clef_locator.locate_clef` has always been
+                          able to fill and that no call site passed.
+      specialist          what it read, and who blocked it. Gap-fill-only, so
+                          an overruled reading was computed and dropped.
+      detector_header     what the header gap-fill read, or why it never ran.
+      dossier             what the override displaced, and whose reading it was.
+
+    (Listing them beats counting them: an earlier draft of this docstring said
+    "two entries so far" and was wrong within a day — the same staleness family
+    as a `*_final` name, in prose.)
     """
     if clef_overrides is None:
         clef_overrides = []
@@ -1722,6 +1747,14 @@ def _detections_for_cell(
             # `active_clef` carries the octave suffix the raw read does not, so
             # this is the comparison the pitch resolver will actually act on.
             contest["clef_in_effect_after"] = active_clef
+            # ⚠️ PRE-REPAIR. This says the ARGMAX FLIPPED THE CLEF, not that the
+            # flip reached the output: the dossier override runs ~200 lines
+            # below and can put the inherited clef back, so on a seeded run this
+            # counts overturns the file never shows. A probe reading
+            # `measure["clef"]` counts SURVIVORS and will report fewer — the two
+            # are different quantities and must not be differenced. For the
+            # survivor count, read this together with `clef_evidence["dossier"]`,
+            # whose `overrode` / `overrode_source` name exactly the repairs.
             contest["overturns_inherited"] = (
                 inherited_clef is not None and active_clef != inherited_clef
             )
