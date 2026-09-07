@@ -230,3 +230,76 @@ class TestAProofFailureNeverCostsAVerdict:
         assert srv.Prover.fingerprint("r", a) == srv.Prover.fingerprint("r", b)
         c = [{"name": "A", "parts": [0]}]
         assert srv.Prover.fingerprint("r", a) != srv.Prover.fingerprint("r", c)
+
+
+# ------------------------------- `parts` is ORDERED, and the order is meaning
+
+class TestPartsOrderIsMeaningfulAndPreserved:
+    """⚠️ MEASURED, not argued (2026-09-07, on a finished human pass).
+
+    `merge_additions` refused three `done` rows for `parts` "not sorted-unique"
+    and the proposed repair was to sort them. `page_normalise.normalise` does
+    `keep = parts[idx[0]]` and merges the rest into it, so the FIRST index
+    decides which reference part the merged staff IS.
+
+    Priced both ways on those rows' own maps
+    (`benchmarks/omr-page-normalise-fixes-2026-09/probe_parts_order*.py`):
+
+      * the NOTES do not move — 15/15, 21/21, 21/21 output parts compare
+        bar-for-bar identical;
+      * the IDENTITY does. Sorting puts the silent tacet-folded Piccolo first,
+        so `Zwei Fagotte.`, `Drei Hoboen.` and `Drei Klarinetten in A` all come
+        back named `Piccolo`;
+      * and musicdiff re-pairs on the wrong name: -3, +19, -8 edits, +8 net.
+
+    So sortedness is not a spelling of the same truth. Uniqueness is still
+    required — a staff cannot carry one part twice.
+    """
+
+    def test_an_unsorted_entry_is_accepted(self):
+        ma = _load("merge_additions", MAPS)
+        # the real shape of the 2026-09-07 pass: printed part first, folds after
+        got = ma.shape_problems(
+            [{"name": "Fag. 1/2", "parts": [10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}])
+        assert got == [], f"an unsorted map is legal; got {got}"
+
+    def test_a_repeated_part_within_one_entry_still_refuses(self):
+        ma = _load("merge_additions", MAPS)
+        got = ma.shape_problems([{"name": "A", "parts": [3, 4, 3]}])
+        assert got and "twice" in got[0]
+
+    def test_the_other_shape_refusals_are_untouched(self):
+        ma = _load("merge_additions", MAPS)
+        assert ma.shape_problems([]), "an empty map must still refuse"
+        assert ma.shape_problems([{"name": "", "parts": [0]}])
+        assert ma.shape_problems([{"name": "A", "parts": []}])
+        assert ma.shape_problems([{"name": "A", "parts": [0], "extra": 1}])
+
+    def test_a_part_named_by_two_staves_still_refuses(self, tmp_path, monkeypatch):
+        """The cross-entry duplicate — caught by check_row, not shape_problems."""
+        ma = _load("merge_additions", MAPS)
+        truth = _score(tmp_path, n_parts=3)
+        monkeypatch.setattr(ma, "find_fixture", lambda *a, **k: (truth, None))
+        row = {"reference": {"catalog_path": "x"}}
+        add = {"status": "done", "staves_for_works_json": [
+            {"name": "A", "parts": [0, 1]}, {"name": "B", "parts": [1, 2]}]}
+        got = ma.check_row("row", row, add)
+        assert any("more than one staff" in p for p in got["problems"])
+
+    def test_an_unaccounted_part_still_refuses(self, tmp_path, monkeypatch):
+        ma = _load("merge_additions", MAPS)
+        truth = _score(tmp_path, n_parts=3)
+        monkeypatch.setattr(ma, "find_fixture", lambda *a, **k: (truth, None))
+        row = {"reference": {"catalog_path": "x"}}
+        add = {"status": "done",
+               "staves_for_works_json": [{"name": "A", "parts": [0, 1]}]}
+        got = ma.check_row("row", row, add)
+        assert got["problems"], "dropping part 2 must still be refused"
+
+    def test_the_ui_does_not_sort_a_human_edit(self):
+        """SOURCE-level: the editor de-duplicates, it does not canonicalise."""
+        src = (MAPS / "server.py").read_text()
+        assert "sorted(set(patch.parts))" not in src, \
+            ("sorting an edited entry renames the printed staff after a "
+             "silent folded part — measured")
+        assert "list(dict.fromkeys(patch.parts))" in src

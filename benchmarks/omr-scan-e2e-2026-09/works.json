@@ -2648,6 +2648,121 @@
     ],
     "confidence": "verified"
    },
+   "staves": [
+    {
+     "name": "Fag. 1/2",
+     "parts": [
+      10,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ]
+    },
+    {
+     "name": "Contraf.",
+     "parts": [
+      11
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 1/3/5",
+     "parts": [
+      12,
+      13
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 2/4/6",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "B-Tromp. 1/2",
+     "parts": [
+      15,
+      17
+     ]
+    },
+    {
+     "name": "B-Tromp. 3/4",
+     "parts": [
+      16,
+      18
+     ]
+    },
+    {
+     "name": "Posaunen 1/2/3",
+     "parts": [
+      19,
+      20
+     ]
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21,
+      22,
+      25,
+      26
+     ]
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ]
+    },
+    {
+     "name": "Gr.Tr.",
+     "parts": [
+      24
+     ]
+    },
+    {
+     "name": "Erste Viol.",
+     "parts": [
+      27,
+      28
+     ]
+    },
+    {
+     "name": "Zweite Viol.",
+     "parts": [
+      29,
+      30,
+      31
+     ]
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ]
+    },
+    {
+     "name": "Vcelle.",
+     "parts": [
+      34,
+      35
+     ]
+    },
+    {
+     "name": "B\u00e4sse",
+     "parts": [
+      36,
+      37
+     ]
+    }
+   ],
    "notes": "Drafted BY HAND, not by draft_windows.py: the verified base row has no `staves` list (its map lives in condensation.staves_as_printed because of the one-line percussion staves), and the drafter refuses such a base. The chain itself needs no tool \u2014 Peters prints the numbers. A future staves_as_printed for this page, from p.2's allocations: Fag.1/2->[10], Contraf.->[11], H\u00f6rner 1/3/5 + 2/4/6 -> {12,13,14} (split ambiguous, as priced on p.2), B-Tromp.1/2->[15,17] with 17 pinned by the continuing fanfare, B-Tromp.3/4->[16,18], Posaunen->[19,20], Tuba->[21], Becken->[23], Gr.Tr.->[24], Erste Viol.->[27,28], Zweite Viol.->[29,30,31], Violen->[32,33], Vcelle.->[34,35], B\u00e4sse->[36,37]."
   },
   {
@@ -2690,6 +2805,151 @@
     ],
     "confidence": "verified"
    },
+   "staves": [
+    {
+     "name": "Hoboen 1.2.3",
+     "parts": [
+      3,
+      4,
+      5,
+      0,
+      1,
+      2
+     ]
+    },
+    {
+     "name": "A-Klar. 1.2.3",
+     "parts": [
+      6,
+      7,
+      8,
+      9
+     ]
+    },
+    {
+     "name": "Fag. 1/2",
+     "parts": [
+      10
+     ]
+    },
+    {
+     "name": "Contraf.",
+     "parts": [
+      11
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 1.3.5",
+     "parts": [
+      12,
+      13
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 2.4.6",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "B-Tromp. 1.2",
+     "parts": [
+      15,
+      17
+     ]
+    },
+    {
+     "name": "B-Tromp. 3.4",
+     "parts": [
+      16,
+      18
+     ]
+    },
+    {
+     "name": "Posaunen",
+     "parts": [
+      19,
+      20
+     ]
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21
+     ]
+    },
+    {
+     "name": "Pauken",
+     "parts": [
+      22,
+      26
+     ]
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ]
+    },
+    {
+     "name": "Gr.Tr.",
+     "parts": [
+      24
+     ]
+    },
+    {
+     "name": "Kl.Tr.",
+     "parts": [
+      25
+     ]
+    },
+    {
+     "name": "Erste Viol.",
+     "parts": [
+      27,
+      28
+     ]
+    },
+    {
+     "name": "Zweite Viol.",
+     "parts": [
+      29,
+      30,
+      31
+     ]
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ]
+    },
+    {
+     "name": "Vcelle. get. (upper)",
+     "parts": [
+      34
+     ]
+    },
+    {
+     "name": "Vcelle. get. (lower)",
+     "parts": [
+      35
+     ]
+    },
+    {
+     "name": "B\u00e4sse get. (upper)",
+     "parts": [
+      36
+     ]
+    },
+    {
+     "name": "B\u00e4sse get. (lower)",
+     "parts": [
+      37
+     ]
+    }
+   ],
    "notes": "Drafted BY HAND like the promoted p.3 row (the base rows carry no `staves` list, so draft_windows refuses them; the chain needs no tool \u2014 Peters prints the numbers). A future staves_as_printed, from p.2's allocations: Hoboen->[3,4,5], A-Klar.->[6,7,8,9], Fag.->[10], Contraf.->[11], F-H\u00f6rner 1.3.5 + 2.4.6 -> {12,13,14} (split ambiguous, as priced on p.2), B-Tromp. 1.2->[15,17] (17 pinned by the continuing fanfare), B-Tromp. 3.4->[16,18], Posaunen->[19,20], Tuba->[21], Pauken->[22], Becken->[23], Gr.Tr.->[24], Kl.Tr.->[25], Erste Viol.->[27,28], Zweite Viol.->[29,30,31], Violen->[32,33], Vcelle. get. (two staves)->[34],[35], B\u00e4sse get. (two staves)->[36],[37]."
   },
   {
@@ -2733,6 +2993,151 @@
     ],
     "confidence": "verified"
    },
+   "staves": [
+    {
+     "name": "A-Klar. 1.2",
+     "parts": [
+      6,
+      7,
+      8,
+      9,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    {
+     "name": "Fag. 1/2",
+     "parts": [
+      10
+     ]
+    },
+    {
+     "name": "Contraf.",
+     "parts": [
+      11
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 1.3.5",
+     "parts": [
+      12,
+      13
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 2.4.6",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "B-Tromp. 1.2",
+     "parts": [
+      15,
+      17
+     ]
+    },
+    {
+     "name": "B-Tromp. 3.4",
+     "parts": [
+      16,
+      18
+     ]
+    },
+    {
+     "name": "Posaunen",
+     "parts": [
+      19,
+      20
+     ]
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21
+     ]
+    },
+    {
+     "name": "Pauken",
+     "parts": [
+      22
+     ]
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ]
+    },
+    {
+     "name": "Gr.Tr.",
+     "parts": [
+      24
+     ]
+    },
+    {
+     "name": "Kl.Tr.",
+     "parts": [
+      25
+     ]
+    },
+    {
+     "name": "Tamtam",
+     "parts": [
+      26
+     ]
+    },
+    {
+     "name": "Erste Viol.",
+     "parts": [
+      27,
+      28
+     ]
+    },
+    {
+     "name": "Zweite Viol.",
+     "parts": [
+      29,
+      30,
+      31
+     ]
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ]
+    },
+    {
+     "name": "Vcelle. get. (upper)",
+     "parts": [
+      34
+     ]
+    },
+    {
+     "name": "Vcelle. get. (lower)",
+     "parts": [
+      35
+     ]
+    },
+    {
+     "name": "B\u00e4sse get. (upper)",
+     "parts": [
+      36
+     ]
+    },
+    {
+     "name": "B\u00e4sse get. (lower)",
+     "parts": [
+      37
+     ]
+    }
+   ],
    "notes": "Drafted by hand like p.4. A future staves_as_printed is p.4's allocation minus Hoboen plus Tamtam->[26]. The lineup difference against p.4 (18 vs 17 five-line, 3 vs 4 one-line) is itself reference-predicted on both sides: Hoboen silent from m21, Tamtam sounding from m27."
   },
   {
@@ -2777,6 +3182,74 @@
     ],
     "confidence": "verified"
    },
+   "staves": [
+    {
+     "name": "Violini I",
+     "parts": [
+      0
+     ]
+    },
+    {
+     "name": "Violini II",
+     "parts": [
+      1
+     ]
+    },
+    {
+     "name": "Violini III",
+     "parts": [
+      2
+     ]
+    },
+    {
+     "name": "Viole I",
+     "parts": [
+      3
+     ]
+    },
+    {
+     "name": "Viole II",
+     "parts": [
+      4
+     ]
+    },
+    {
+     "name": "Viole III",
+     "parts": [
+      5
+     ]
+    },
+    {
+     "name": "Violoncelli I",
+     "parts": [
+      6
+     ]
+    },
+    {
+     "name": "Violoncelli II",
+     "parts": [
+      7
+     ]
+    },
+    {
+     "name": "Violoncelli III",
+     "parts": [
+      8
+     ]
+    },
+    {
+     "name": "Contrabasso",
+     "parts": [
+      9
+     ]
+    },
+    {
+     "name": "Cembalo (grand staff, 2 printed staves)",
+     "parts": [
+      10
+     ]
+    }
+   ],
    "notes": "This drafts the completion of the works.json row with the same row_id (window null, 'NOT RUNNABLE until last_ref_measure is established'). Promotion REPLACES that row's page/window fields \u2014 do not add a second row with this id. The only work in the table whose reference numbering runs +1 against the print. No staves map: the Cembalo grand staff (2 staves, 1 part) breaks the one-staff-one-entry pairing, and the segmentation failure makes positional pairing meaningless until it is fixed; OMR-NED only."
   }
  ],

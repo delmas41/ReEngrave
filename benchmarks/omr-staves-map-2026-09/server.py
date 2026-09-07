@@ -430,13 +430,20 @@ def create_app(cache: Path, out: Path) -> FastAPI:
         if patch.name is not None:
             s["name"] = patch.name
         if patch.parts is not None:
-            s["parts"] = sorted(set(patch.parts))
+            # ⚠️ DE-DUPLICATE, DO NOT SORT. `page_normalise` keeps `parts[0]`,
+            # so the order chooses which reference part the merged staff IS.
+            # Sorting a map whose first entry carries tacet folds renames the
+            # printed staff after the silent folded part — measured on the
+            # 2026-09-07 pass, `Zwei Fagotte.` came back as `Piccolo`. Keep
+            # the order the human gave; only drop repeats.
+            s["parts"] = list(dict.fromkeys(patch.parts))
         if patch.verdict is not None:
             s["verdict"] = patch.verdict
         elif patch.name is not None or patch.parts is not None:
             prop = s.get("proposed") or {}
             same = (s["name"] == prop.get("name")
-                    and s["parts"] == sorted(set(prop.get("parts") or [])))
+                    and s["parts"] == list(dict.fromkeys(
+                        prop.get("parts") or [])))
             s["verdict"] = "confirmed" if same else "edited"
         # Any change reopens the row: `done` is a claim about the current map.
         if st["status"] == "done":

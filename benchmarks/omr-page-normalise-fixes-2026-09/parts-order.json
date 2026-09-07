@@ -1,0 +1,48 @@
+{
+ "generated_by": "benchmarks/omr-page-normalise-fixes-2026-09/probe_parts_order.py",
+ "question": "is `parts` a SET, or does parts[0] carry meaning?",
+ "answer": "parts[0] IS load-bearing: page_normalise keeps parts[idx[0]] and merges the rest into it, so the first index decides whose bar survives a silent_all measure",
+ "total_as_confirmed": 13816,
+ "total_sorted": 13824,
+ "delta": 8,
+ "rows": [
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "n_entries": 15,
+   "unsorted_entries": [
+    0
+   ],
+   "as_confirmed_edits": 2159,
+   "sorted_edits": 2156,
+   "delta": -3
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "n_entries": 21,
+   "unsorted_entries": [
+    0
+   ],
+   "as_confirmed_edits": 3209,
+   "sorted_edits": 3228,
+   "delta": 19
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "n_entries": 21,
+   "unsorted_entries": [
+    0
+   ],
+   "as_confirmed_edits": 2300,
+   "sorted_edits": 2292,
+   "delta": -8
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "n_entries": 11,
+   "unsorted_entries": [],
+   "as_confirmed_edits": 6148,
+   "sorted_edits": 6148,
+   "delta": 0
+  }
+ ]
+}
