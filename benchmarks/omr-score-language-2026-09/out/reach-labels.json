@@ -1,0 +1,204 @@
+{
+ "corpus": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a7704722707358535/benchmarks/omr-lexicon-2026-09/labels.json",
+ "documents": [
+  {
+   "document": "bach-brandenburg3-peters",
+   "labels": 23,
+   "diagnostic_votes": 8,
+   "votes": {
+    "it": 8,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "language": "it",
+   "share": 1.0,
+   "mixed": false,
+   "ambiguous_labels": 0,
+   "changed": 0
+  },
+  {
+   "document": "bach-wtc1",
+   "labels": 4,
+   "diagnostic_votes": 2,
+   "votes": {
+    "it": 2,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "language": null,
+   "share": 1.0,
+   "mixed": false,
+   "ambiguous_labels": 0,
+   "changed": 0
+  },
+  {
+   "document": "beethoven5-575951-textlayer",
+   "labels": 184,
+   "diagnostic_votes": 18,
+   "votes": {
+    "it": 18,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "language": "it",
+   "share": 1.0,
+   "mixed": false,
+   "ambiguous_labels": 43,
+   "changed": 0
+  },
+  {
+   "document": "beethoven5-984073-scan",
+   "labels": 109,
+   "diagnostic_votes": 9,
+   "votes": {
+    "it": 9,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "language": "it",
+   "share": 1.0,
+   "mixed": false,
+   "ambiguous_labels": 21,
+   "changed": 0
+  },
+  {
+   "document": "beethoven6-504082-textlayer",
+   "labels": 177,
+   "diagnostic_votes": 0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "language": null,
+   "share": 0.0,
+   "mixed": false,
+   "ambiguous_labels": 40,
+   "changed": 0
+  },
+  {
+   "document": "brahms1-breitkopf-scan",
+   "labels": 209,
+   "diagnostic_votes": 66,
+   "votes": {
+    "it": 0,
+    "de": 66,
+    "fr": 0,
+    "en": 0
+   },
+   "language": "de",
+   "share": 1.0,
+   "mixed": false,
+   "ambiguous_labels": 0,
+   "changed": 0
+  },
+  {
+   "document": "debussy-lamer-scan",
+   "labels": 107,
+   "diagnostic_votes": 13,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 13,
+    "en": 0
+   },
+   "language": "fr",
+   "share": 1.0,
+   "mixed": false,
+   "ambiguous_labels": 9,
+   "changed": 0
+  },
+  {
+   "document": "dvorak9-simrock-scan",
+   "labels": 15,
+   "diagnostic_votes": 12,
+   "votes": {
+    "it": 12,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "language": "it",
+   "share": 1.0,
+   "mixed": false,
+   "ambiguous_labels": 0,
+   "changed": 0
+  },
+  {
+   "document": "handel-messiah-leadsheet",
+   "labels": 28,
+   "diagnostic_votes": 8,
+   "votes": {
+    "it": 8,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "language": "it",
+   "share": 1.0,
+   "mixed": false,
+   "ambiguous_labels": 7,
+   "changed": 0
+  },
+  {
+   "document": "handel-messiah-reduction",
+   "labels": 4,
+   "diagnostic_votes": 1,
+   "votes": {
+    "it": 1,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   },
+   "language": null,
+   "share": 1.0,
+   "mixed": false,
+   "ambiguous_labels": 1,
+   "changed": 0
+  },
+  {
+   "document": "mahler5-local-scan",
+   "labels": 135,
+   "diagnostic_votes": 51,
+   "votes": {
+    "it": 1,
+    "de": 49,
+    "fr": 1,
+    "en": 0
+   },
+   "language": "de",
+   "share": 0.9608,
+   "mixed": true,
+   "ambiguous_labels": 12,
+   "changed": 0
+  },
+  {
+   "document": "ravel-bolero-textlayer",
+   "labels": 427,
+   "diagnostic_votes": 47,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 47,
+    "en": 0
+   },
+   "language": "fr",
+   "share": 1.0,
+   "mixed": false,
+   "ambiguous_labels": 34,
+   "changed": 0
+  }
+ ],
+ "totals": {
+  "labels": 1422,
+  "ambiguous": 167,
+  "ambiguous_on_read_document": 126,
+  "changed": 0
+ },
+ "changes": []
+}

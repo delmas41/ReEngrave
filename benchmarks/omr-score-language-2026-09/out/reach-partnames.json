@@ -1,0 +1,29 @@
+{
+ "corpus": "benchmarks/omr-lexicon-2026-09/part-names.json",
+ "documents": [
+  {
+   "document": "part-names",
+   "labels": 1271,
+   "diagnostic_votes": 283,
+   "votes": {
+    "it": 88,
+    "de": 58,
+    "fr": 11,
+    "en": 126
+   },
+   "language": null,
+   "share": 0.4452,
+   "mixed": true,
+   "ambiguous_labels": 26,
+   "changed": 0,
+   "from_head_pages": false
+  }
+ ],
+ "totals": {
+  "labels": 1271,
+  "ambiguous": 26,
+  "ambiguous_on_read_document": 0,
+  "changed": 0
+ },
+ "changes": []
+}
