@@ -106,7 +106,140 @@ class Staff:
 
 @dataclass
 class Barline:
-    """A vertical line dividing measures on a staff system."""
+    """A vertical line dividing measures on a staff system.
+
+    ⚠️ **The first five fields are all COORDINATES, and until 2026-09-06 they
+    were the whole record.** `measure_extractor.detect_barlines` weighs a
+    column on four independent pieces of evidence — how many staves voted for
+    it, whether ink runs through the gaps between those staves, whether the
+    column spans the system top to bottom, and which acceptance prong it
+    finally cleared — and every one of them was discarded at this constructor.
+    Downstream (`_measure_x_boundaries`, `_drop_close_outliers`,
+    `resegment_fused_measures`, `transcribe`'s measure-count consistency
+    check) then received a bare integer x and had to re-decide with nothing.
+    `_drop_close_outliers`' own docstring is the confession: it picks which of
+    an implausibly close pair is spurious by DEFAULTING TO THE LEFT ONE,
+    because the evidence that could have told it was gone.
+
+    The fields below are that evidence, recorded. They change no decision
+    today, deliberately — recording is a separate act from consuming, and
+    consuming is a change that has to be measured. What each is FOR:
+
+    ``n_votes`` / ``n_staves_in_system`` / ``min_votes``
+        How many of the system's five-line staves independently detected this
+        column, out of how many, against the tiered threshold that was
+        applied. **Consumer that wants it:** `_drop_close_outliers` — of two
+        columns a bar-width apart, the one nine staves saw is the barline and
+        the one two staves saw is a stem alignment; it currently cannot ask.
+        Also `resegment_fused_measures`, which is looking for the barline the
+        vote MISSED and would benefit from knowing how nearly it passed, and
+        `transcribe._flag_measure_count_inconsistency`, which can only report
+        that staves disagree and not which reading is thin.
+
+    ``connectivity``
+        `_intersystem_connectivity`: the fraction of inter-staff gaps this
+        column is inked through, on the fitted (not vertical) line. A real
+        systemic barline runs through the gaps; a chord-stem coincidence stops
+        at each staff. Thresholded at 0.4 / 0.7 inside `detect_barlines` and
+        then destroyed. **Consumer:** `_drop_close_outliers`, and any future
+        confidence on the measure-count check.
+
+        ⚠️⚠️ **THIS NUMBER IS NOT COMPARABLE ACROSS PAGES, AND ITS SIGN CAN
+        INVERT. `barlines_cross_gaps` IS THE DISCRIMINATOR — never
+        `connectivity is None`.** Measured 2026-09-06 on the two verification
+        pages of this change:
+
+        ==========================  ======  ==================  ==============
+        page                        n       connectivity        culled by >=0.4
+        ==========================  ======  ==================  ==============
+        Beethoven 5 scan (Litolff)  17      0.818 - 1.000        0 of 17
+        Brahms 1 engraved (LilyPond) 8      1.0 x1, **0.0 x7**   **7 of 8**
+        ==========================  ======  ==================  ==============
+
+        Every one of those eight Brahms barlines is REAL and carries a
+        unanimous **21 of 21** votes. The page is an open score — LilyPond
+        bars per staff — so the gap ink a conductor's page shows simply is not
+        printed, and `barlines_cross_gaps` came back False, which is exactly
+        why the 0.4 filter was not allowed to run there. A consumer that
+        ranked columns by `connectivity` across both pages would throw away
+        seven of eight unanimous barlines on one of them.
+
+        ⚠️ **On `barlines_cross_gaps=False` rows the value is usually a REAL
+        NUMBER that gated nothing** — it was computed for the open-score TEST
+        and then not used — so a real `0.0` here is indistinguishable by value
+        alone from "measured and terrible". Read the regime first.
+
+        ⚠️ Separately, **`None` is not zero either**: it means the number was
+        never computed at all, which happens on the 1-staff small-system path
+        (`connectivity_of` is empty below two staves). Both hazards point the
+        same way — the value alone never tells you what it is worth.
+
+    ``span_ink``
+        `_spans_system`: the weakest band of ink along the fitted line from
+        the top of the system's first staff to the bottom of its last. Only
+        computed on 1-2 staff (braced piano) systems, where it is the rescue
+        that separates a real barline (1.00 across the brace gap) from a
+        fugue's long stem (0.00). `None` everywhere else, for the same reason
+        as above: not measured, not zero.
+
+        ⚠️ **COVERAGE LIMIT, recorded rather than papered over:** neither
+        verification page exercises this field — both are >=3-staff systems,
+        so it is `None` on 0 of 17 and 0 of 8. It is covered synthetically
+        (`test_span_rescue_records_the_span_score_it_was_rescued_by`, which
+        goes red when the population is removed) and by construction it is the
+        only value the small-system rescue can accept on, but **no real page
+        has yet been measured through it.** One braced-piano page would close
+        that.
+
+    ``accept_prong``
+        WHICH of the five acceptance rules admitted this column —
+        ``vote_small_system``, ``span_rescue_small_system``,
+        ``vote_open_score``, ``vote_and_connectivity``, ``connectivity_rescue``.
+        A rescued barline is a weaker claim than a voted one and nothing
+        downstream could tell them apart. **Consumer:** a resegmentation or
+        outlier pass that wants to prefer dropping a rescue over dropping a
+        consensus.
+
+    ``barlines_cross_gaps`` / ``choir_cue_c_override``
+        The SYSTEM-level verdict, stamped onto each of its barlines because
+        nothing else carries a system. `barlines_cross_gaps` False means the
+        page was read as an OPEN SCORE (one staff per voice, barlines stopping
+        at each staff), so connectivity was not allowed to filter and the
+        votes stood alone — which is why `connectivity` is `None` on those
+        rows. `choir_cue_c_override` True means `OMR_CHOIR_GROUPING`'s cue C
+        flipped that verdict back (a rhythm-unison tutti whose aligned stems
+        out-voted its own barlines). **Consumer:** anything that wants to know
+        how much a column's evidence is worth before comparing two of them —
+        the two verdicts are not commensurable, and today no consumer can even
+        see which regime it is in.
+
+    Every field defaults to `None`, so the four test/fixture construction
+    sites and any future one keep working unannotated. ⚠️ An unannotated
+    barline is indistinguishable from one whose evidence was genuinely not
+    computed; that is why the fields are documented as *not measured* rather
+    than as a floor.
+
+    ⚠️⚠️ **TWO REACH LIMITS, both real, both stated here so the next reader
+    does not discover them by writing a consumer that cannot see the data.**
+
+    1. **`_drop_close_outliers` runs BEFORE this constructor.** It is handed
+       `accepted`, a `list[int]`, and the `Barline`s are built from what it
+       returns — so putting evidence on `Barline` does not reach it, and no
+       amount of adding fields here will. What DOES reach it is the
+       `evidence` map `detect_barlines` now builds alongside `accepted`,
+       keyed by the same x; making that pass evidence-aware is a signature
+       change plus a measured decision, and is deliberately not done here.
+       The named consumers that DO receive `list[Barline]` and can read these
+       fields today are `_measure_x_boundaries`, `extract_measures` and
+       `resegment_fused_measures`.
+    2. **Barlines are not serialised.** `transcribe` writes no barline record
+       into the result JSON at all (`grep -n barline tools/omr/transcribe.py`
+       finds prose and call sites, no emission), so a consumer outside the
+       process — the measure-count consistency check's reporting, any
+       benchmark — cannot see these fields until something writes them out.
+       That is a change in `transcribe.py`, which this file's owner does not
+       own.
+    """
 
     page_index: int
     x: int                       # page-pixel x-coordinate
@@ -114,14 +247,87 @@ class Barline:
     y_bottom: int                # bottom of barline
     system_index: int
 
+    # ── Acceptance evidence (populated only by detect_barlines) ─────────
+    n_votes: int | None = None
+    n_staves_in_system: int | None = None
+    min_votes: int | None = None
+    connectivity: float | None = None
+    span_ink: float | None = None
+    accept_prong: str | None = None
+    barlines_cross_gaps: bool | None = None
+    choir_cue_c_override: bool | None = None
+
 
 @dataclass
 class PageWithStaves:
-    """A PageImage annotated with detected staves and barlines."""
+    """A PageImage annotated with detected staves and barlines.
+
+    ``deletion_counts`` is a census of what Phase 1 THREW AWAY on this page,
+    keyed by site and reason. An audit of this area on 2026-09-06 found that
+    most of its deletion sites wrote no counter at all — a candidate staff, a
+    candidate barline or a measure cell would vanish with nothing recording
+    that it had ever existed, so the only deletions anyone could reason about
+    were the handful someone had already gone looking at. Every entry is a
+    reason, not a total: `n_barline_components_dropped_too_wide` and
+    `n_barline_components_dropped_not_skinny` are separate keys because they
+    are separate mistakes to make.
+
+    ⚠️ **Diagnostic only, and no consumer reads it today.** It is written by
+    `staff_detector.detect_staves`, `measure_extractor.detect_barlines`,
+    `extract_measures` and `resegment_fused_measures`, all of which mutate the
+    page they were handed. **Who could consume it:** a benchmark asking why a
+    page lost a staff (`n_staves_dropped_as_body_text` is a real regression
+    shape — see `_line_ink_runs_per_space`), the measure-count consistency
+    check wanting to know whether a short staff is short because a barline was
+    dropped as a close outlier, and `transcribe`'s per-page summary, which
+    already serialises four counters of exactly this shape
+    (`n_clipped_notehead_fragments_dropped` and friends) and would only need
+    to copy this dict across. ⚠️ It is NOT serialised yet: `transcribe.py`
+    writes no `PageWithStaves` field into the result JSON, and that file's
+    owner is not this file's owner.
+
+    ⚠️ A key is ABSENT when its site never fired on this page, which is not
+    the same as the site not existing. Read with `.get(key, 0)`.
+
+    **The size of the census, defined so it is reproducible from the tree**
+    (a bare count of "sites" is not — it depends on what you call one):
+
+        python3 - <<'EOF'
+        import ast
+        for p in ("tools/omr/measure_extractor.py", "tools/omr/staff_detector.py"):
+            t = ast.parse(open(p).read())
+            calls = [n for n in ast.walk(t) if isinstance(n, ast.Call)
+                     and isinstance(n.func, ast.Name) and n.func.id == "_bump"]
+            print(p, len(calls), "call sites")
+        EOF
+
+    As of 2026-09-06 that reports **16 + 10 = 26 `_bump` call sites** writing
+    **27 distinct keys** (25 named at the site, plus the one key
+    `_build_measure_cell` takes from its caller, which resolves to two).
+
+    ⚠️ **26 call sites is NOT 26 deletions**, and the earlier figure of "19
+    deletion sites" quoted in this branch's first census commit was counting
+    something narrower without saying so. Three groups make up the difference,
+    and they are worth separating because they answer different questions:
+
+    * **Deletions** — a candidate staff, barline or measure cell that existed
+      and was discarded. `n_*_dropped_*`, `n_*_rejected_*`.
+    * **Exclusions** — never a candidate in the first place, by design: the
+      `n_one_line_staves_excluded_from_*` pair. A percussion rule is kept out
+      of the barline vote deliberately; counting it says "this page has
+      percussion", not "this page lost something".
+    * **Not a deletion at all** — `n_measure_tails_absorbed`, where the tail is
+      folded into the previous measure precisely SO THAT nothing is lost. It is
+      here because it removes a boundary, and a page with many of them has a
+      problem at its right edge.
+
+    Prefer the reproducible 26/27 over any hand-counted total.
+    """
 
     page: PageImage
     staves: list[Staff]
     barlines: list[Barline] = field(default_factory=list)
+    deletion_counts: dict[str, int] = field(default_factory=dict)
 
     def staves_in_system(self, system_index: int) -> list[Staff]:
         return [s for s in self.staves if s.system_index == system_index]

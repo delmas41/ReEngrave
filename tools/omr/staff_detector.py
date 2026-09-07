@@ -193,6 +193,27 @@ MISFIT_COVERAGE_FRAC = 0.35
 MISFIT_MAX_SHIFT = 2
 
 
+# ─── Deletion census ─────────────────────────────────────────────────────────
+#
+# Phase 1 discards candidate staves at six places in this file and, until
+# 2026-09-06, recorded that at NONE of them: a five-peak window that failed
+# the spacing test, a phantom group, a comb recovery that overlapped, a
+# percussion rule refused for any of four reasons, and a paragraph of body
+# text — each vanished leaving nothing behind. A page that came back one staff
+# short gave no way to ask which gate ate it.
+#
+# `_bump` writes into a plain dict that `detect_staves` hands to
+# `PageWithStaves.deletion_counts`. It is diagnostic ONLY — nothing in this
+# file or downstream branches on it — and `counts=None` (every direct call
+# from a test or another module) makes it a no-op, so no behaviour depends on
+# whether a caller opted in.
+
+
+def _bump(counts: dict[str, int] | None, key: str, n: int = 1) -> None:
+    if counts is not None and n:
+        counts[key] = counts.get(key, 0) + n
+
+
 # ─── Step 1: projection profile + peak detection ─────────────────────────────
 
 
@@ -220,7 +241,9 @@ def _candidate_staff_rows(profile: np.ndarray, page_width: int) -> np.ndarray:
 # ─── Step 2: group peaks into 5-line staves ──────────────────────────────────
 
 
-def _group_into_staves(peaks: np.ndarray) -> list[list[int]]:
+def _group_into_staves(
+    peaks: np.ndarray, *, counts: dict[str, int] | None = None,
+) -> list[list[int]]:
     """Cluster peak rows into groups of 5 with roughly equal spacing.
 
     Strategy: slide through the peaks looking for any 5-peak window whose
@@ -237,6 +260,7 @@ def _group_into_staves(peaks: np.ndarray) -> list[list[int]]:
         gaps = [window[j + 1] - window[j] for j in range(4)]
         mean_gap = sum(gaps) / 4
         if mean_gap <= 0:
+            _bump(counts, "n_peak_windows_rejected_degenerate_spacing")
             i += 1
             continue
         max_dev = max(abs(g - mean_gap) for g in gaps) / mean_gap
@@ -244,6 +268,12 @@ def _group_into_staves(peaks: np.ndarray) -> list[list[int]]:
             groups.append(window)
             i += 5
         else:
+            # A window whose gaps are uneven. Counted per SLIDE, not per
+            # staff: the loop advances one peak at a time on rejection, so a
+            # single stretch of non-staff ink contributes several. It is a
+            # measure of how hard the grouper had to look, not of how many
+            # staves were lost.
+            _bump(counts, "n_peak_windows_rejected_uneven_spacing")
             i += 1
     return groups
 
@@ -261,7 +291,9 @@ def _page_line_spacing(groups: list[list[int]]) -> float:
     return float(np.median(spacings))
 
 
-def _reject_spacing_outliers(groups: list[list[int]], spacing: float) -> list[list[int]]:
+def _reject_spacing_outliers(
+    groups: list[list[int]], spacing: float, *, counts: dict[str, int] | None = None,
+) -> list[list[int]]:
     """Drop groups whose line spacing is far above the page's.
 
     Five evenly spaced rows are not necessarily a staff. When the ink gates
@@ -283,10 +315,16 @@ def _reject_spacing_outliers(groups: list[list[int]], spacing: float) -> list[li
     """
     if spacing <= 0:
         return groups
-    return [
+    kept = [
         g for g in groups
         if (g[-1] - g[0]) / 4.0 <= spacing * STAFF_SPACING_OUTLIER_FACTOR
     ]
+    # Each phantom dropped here stood in for SEVERAL real staves (the
+    # Beethoven 5 p.10 case was five), so a non-zero count is a page where
+    # the comb pass has recovery work to do — and a page reporting fewer
+    # staves than it prints with a zero here was lost somewhere else.
+    _bump(counts, "n_staff_groups_dropped_spacing_outlier", len(groups) - len(kept))
+    return kept
 
 
 def _comb_match_staves(
@@ -350,6 +388,7 @@ def _comb_match_staves(
 
 def _merge_staff_groups(
     strict: list[list[int]], comb: list[list[int]],
+    *, counts: dict[str, int] | None = None,
 ) -> list[list[int]]:
     """Add comb staves only where the strict pass found nothing.
 
@@ -366,6 +405,11 @@ def _merge_staff_groups(
     out = list(strict)
     for g in comb:
         if any(not (g[-1] < a[0] or g[0] > a[-1]) for a in out):
+            # Deliberate: the strict pass already spoke here. Counted anyway,
+            # because a page where the comb is refused everywhere and staves
+            # are still missing is a different diagnosis from one where the
+            # comb never fired at all.
+            _bump(counts, "n_comb_staves_dropped_overlapping_strict")
             continue
         out.append(g)
     out.sort(key=lambda g: g[0])
@@ -458,6 +502,8 @@ def _single_line_staff_rows(
     peaks: np.ndarray,
     groups: list[list[int]],
     spacing: float,
+    *,
+    counts: dict[str, int] | None = None,
 ) -> list[int]:
     """Rows that are a one-line percussion staff rather than part of any five.
 
@@ -515,6 +561,8 @@ def _single_line_staff_rows(
         keep = SINGLE_LINE_CLUSTER_WIDTH_FRAC * longest
         interlopers = [y for y in candidates if runs[y] < keep]
         candidates = [y for y in candidates if runs[y] >= keep]
+        _bump(counts, "n_one_line_candidates_dropped_interloper_width",
+              len(interlopers))
 
     out: list[int] = []
     for y in candidates:
@@ -522,14 +570,23 @@ def _single_line_staff_rows(
         # two lines of one five-line staff than two percussion parts, so
         # neither is admitted.
         if any(other != y and abs(other - y) < clearance for other in candidates):
+            # Two lone rows too close: more likely one broken five-line staff.
+            # ⚠️ The interesting count on this page, because it is the rule
+            # whose over-firing HIDES a real percussion part (Mahler 5 p10).
+            _bump(counts, "n_one_line_candidates_dropped_neighbour_too_close")
             continue
         x0, x1, width = _longest_row_run(binary, y, spacing)
         if width < SINGLE_LINE_MIN_WIDTH_FRAC * med_width:
+            _bump(counts, "n_one_line_candidates_dropped_too_narrow")
             continue
         overlap = min(x1, med_end) - max(x0, med_start)
         if overlap < SINGLE_LINE_MIN_OVERLAP_FRAC * width:
+            _bump(counts, "n_one_line_candidates_dropped_off_staff_x_window")
             continue
         if _has_the_rest_of_a_staff(binary, y, spacing, x0, x1, interlopers):
+            # The other four lines are printed — this is a five-line staff the
+            # peak gates read one line of, not a percussion rule.
+            _bump(counts, "n_one_line_candidates_dropped_rest_of_staff_present")
             continue
         out.append(y)
     return sorted(out)
@@ -992,9 +1049,10 @@ def _refit_misaligned_group(
 
 def detect_staves(page: PageImage) -> PageWithStaves:
     """Detect every five-line staff on the page, group into systems."""
+    counts: dict[str, int] = {}
     profile = _ink_profile(page.binary)
     peaks = _candidate_staff_rows(profile, page.width)
-    groups = _group_into_staves(peaks)
+    groups = _group_into_staves(peaks, counts=counts)
 
     # The strict pass above is the page's own calibration: whatever it found
     # confidently tells us the staff spacing and how much ink a printed line
@@ -1005,13 +1063,14 @@ def detect_staves(page: PageImage) -> PageWithStaves:
         reference_ink = float(np.median([profile[y] for g in groups for y in g]))
         # Reject phantoms first: a phantom spans the staves it was assembled
         # from, so leaving it in would block their recovery on overlap.
-        groups = _reject_spacing_outliers(groups, spacing)
+        groups = _reject_spacing_outliers(groups, spacing, counts=counts)
         comb = _comb_match_staves(profile, page.width, spacing, reference_ink)
-        groups = _merge_staff_groups(groups, comb)
+        groups = _merge_staff_groups(groups, comb, counts=counts)
         # A percussion part is one rule, and the five-peak grouper cannot see
         # it at all. Added last, so the page's own staves decide the spacing,
         # the x-window and the vertical extent it is judged against.
-        for row in _single_line_staff_rows(page.binary, peaks, groups, spacing):
+        for row in _single_line_staff_rows(page.binary, peaks, groups, spacing,
+                                           counts=counts):
             groups.append([row])
         groups.sort(key=lambda g: g[0])
 
@@ -1040,10 +1099,16 @@ def detect_staves(page: PageImage) -> PageWithStaves:
     # Drop the "staves" that are paragraphs of body text (see
     # _line_ink_runs_per_space). Done before system assignment so the surviving
     # staves are numbered contiguously, and before x-extent matters downstream.
+    n_before_text_filter = len(staves)
     staves = [
         st for st in staves
         if _line_ink_runs_per_space(page.binary, st) <= MAX_LINE_INK_RUNS_PER_SPACE
     ]
+    # ⚠️ The one deletion here that removes a staff AFTER it was fully built,
+    # so it is also the one whose over-firing is hardest to notice: the page
+    # simply reports fewer staves. A music-only page must read 0.
+    _bump(counts, "n_staves_dropped_as_body_text",
+          n_before_text_filter - len(staves))
     for idx, st in enumerate(staves):
         st.staff_index = idx
 
@@ -1056,7 +1121,7 @@ def detect_staves(page: PageImage) -> PageWithStaves:
     staves, used_bridging = assign_systems_by_bridging(page.binary, staves)
     if not used_bridging:
         staves = _assign_systems(staves)
-    return PageWithStaves(page=page, staves=staves)
+    return PageWithStaves(page=page, staves=staves, deletion_counts=counts)
 
 
 # ─── CLI / smoke test ────────────────────────────────────────────────────────
