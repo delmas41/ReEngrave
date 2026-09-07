@@ -201,10 +201,19 @@ evidence file or a withheld row fails the suite rather than rendering.
 - **A single top-line number.** There isn't one and there must not be
   (`pool_key`). The flow graph already renders per stage; the registry makes the
   refusal structural rather than conventional.
-- **The showcase pairing.** A flow graph places one cell per stage, so two rows
-  measured on one sample land in different cells or not at all. Adjacency is a
-  property of `registry-report.html`, which groups by `era_key`; the dashboard
-  should link to it rather than reproduce it.
+- **`render_with` pairs.** ⚠️ This is the second field a cell cannot hold, and
+  it fails the same way `mandatory_caption` does. A flow graph places one cell
+  per stage, so two rows bound by `render_with` land in different cells or in
+  none — and the schema says a consumer that cannot place them together must
+  render **neither**. So a bound pair either gets one merged cell showing both
+  figures side by side, or stays off the graph and links here. `registry_metrics()`
+  above does **not** yet implement this; wiring it in must call
+  `rr.bind_groups()` and drop or merge every bound row, or the dashboard will
+  print the flattering half alone.
+- **Adjacency in general.** `registry-report.html` gets it from `render_with`
+  (a schema binding) and contextualises families with `era_key` (same
+  measurement conditions). Only the first is a rule; the second is a reading
+  aid. The dashboard should link to the report rather than reproduce either.
 - **Anything about scans that the harness cannot see.** Ten of the sixteen
   unscoreable rows are `visibility`. Wiring them in makes the blind spots
   *visible*; it does not make them measured.
