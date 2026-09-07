@@ -245,3 +245,103 @@ class TestTheExportSaysWhatTheStaffIS:
         through. Pinned so a future suffix rule cannot quietly mangle it."""
         from tools.omr.export import _clef_to_lily
         assert _clef_to_lily("percussion") == "percussion"
+
+
+class TestCommittedHUMANLABELSCannotBeInvalidated:
+    """⚠️ `measure_extractor` is imported by the LABELING pipeline
+    (`annotate/recut_cells.py`, `select_cells*.py`, `annotate/server.py`), and
+    hand-labeled cell PNGs are NOT regenerable — phase 1 has drifted, so a
+    batch whose cells are re-cut at a different framing silently invalidates
+    every box in it. `recut_cells.frame_mismatch` aborts on exactly that, and
+    it compares three things: `cell_canonical_w`, `cell_canonical_h` and
+    `staff_line_ys_canonical`.
+
+    This asserts all three are untouched for a five-line staff with the flag
+    ON, which is stronger than a flag-off argument: it says the mechanism
+    cannot move a frame even while it is running.
+    """
+
+    def _five_line_cells(self, monkeypatch, flag):
+        return [c for c in _cells(monkeypatch, flag) if c.staff_index in (0, 2)]
+
+    def test_the_three_fields_frame_mismatch_compares_do_not_move(
+            self, monkeypatch):
+        off = {(c.staff_index, c.measure_index): c
+               for c in self._five_line_cells(monkeypatch, None)}
+        on = {(c.staff_index, c.measure_index): c
+              for c in self._five_line_cells(monkeypatch, "1")}
+        assert set(off) == set(on) and off
+        for key, a in off.items():
+            b = on[key]
+            assert a.image.shape[1] == b.image.shape[1], f"cell_canonical_w {key}"
+            assert a.image.shape[0] == b.image.shape[0], f"cell_canonical_h {key}"
+            assert (a.staff_line_ys_canonical
+                    == b.staff_line_ys_canonical), f"staff_line_ys {key}"
+
+    def test_cell_span_px_is_the_identity_on_every_five_line_staff(self):
+        """The one line of `_build_measure_cell` this change touches. If
+        `_cell_span_px` ever stopped agreeing with `span_px` for a five-line
+        staff, every canonical frame in every labeled batch would move at
+        once — and the PNGs are not regenerable."""
+        for ys in ([100, 120, 140, 160, 180], [0, 7, 14, 21, 28],
+                   [10, 43, 76, 109, 142]):
+            s = Staff(page_index=0, staff_index=0, line_ys=ys,
+                      x_start=0, x_end=1, nominal_line_spacing_px=999.0)
+            assert _cell_span_px(s) == s.span_px
+        # The bogus nominal spacing above is provably ignored, so a future
+        # change to how that field is filled cannot leak into a frame.
+
+
+class TestSystemGroupingIsUpstreamAndCannotSeeTheFlag:
+    """⚠️ `docs/architecture-decision-map.md` (stage 3) says
+    `Staff.nominal_line_spacing_px` exists "and no production site reads it".
+    That is WRONG. `Staff.line_spacing_px` returns it for a one-line staff,
+    `system_grouping` reads that property in nine places with no `>= 5` filter,
+    and `detect_staves` hands grouping the FULL staff list — so a one-line
+    staff has fed grouping geometry since the day it was first detected, on
+    main, with this flag off.
+
+    Two refinements the correction needs, both pinned here:
+      * the value is the PAGE's own spacing, not a nonsense number, which is
+        exactly the job the field's docstring claims for it;
+      * it is not a hazard this flag introduces. Grouping is decided in
+        `staff_detector.detect_staves`, which runs BEFORE `extract_measures`
+        and cannot import it.
+    """
+
+    def test_a_one_line_staff_answers_with_the_pages_own_spacing_not_zero(self):
+        s = Staff(page_index=0, staff_index=0, line_ys=[240], x_start=0,
+                  x_end=1, nominal_line_spacing_px=41.0)
+        assert s.span_px == 0             # it has no span...
+        assert s.line_spacing_px == 41.0  # ...but it does have a scale
+
+    def test_the_flag_is_read_at_exactly_one_place(self):
+        """A structural assertion, because the reachability argument behind
+        every `OMR_ONE_LINE_STAVES` comment in the tree depends on it."""
+        import subprocess
+        root = Path(__file__).resolve().parents[3]
+        out = [ln for ln in subprocess.run(
+            ["grep", "-rn", "os.environ.*ONE_LINE_STAVES",
+             str(root / "tools" / "omr")],
+            capture_output=True, text=True).stdout.strip().splitlines()
+            if "/tests/" not in ln]
+        assert len(out) == 1, out
+        assert "measure_extractor.py" in out[0]
+
+    def test_grouping_modules_do_not_import_the_filter(self):
+        """Prose may mention `measure_extractor` (`system_grouping.py:30`
+        does); an IMPORT is what would let the flag reach grouping."""
+        import ast
+        import inspect
+        from tools.omr import staff_detector, system_grouping
+        for mod in (staff_detector, system_grouping):
+            tree = ast.parse(inspect.getsource(mod))
+            names = set()
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Import):
+                    names |= {a.name for a in node.names}
+                elif isinstance(node, ast.ImportFrom):
+                    names.add(node.module or "")
+                    names |= {a.name for a in node.names}
+            assert not any("measure_extractor" in n for n in names), \
+                (mod.__name__, sorted(names))
