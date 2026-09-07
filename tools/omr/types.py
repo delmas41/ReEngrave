@@ -356,6 +356,59 @@ class MeasureCell:
     # i.e. how much ink `image_no_staff` had to remove per line. None when the
     # staff's lines were never traced. See Staff.line_thickness_px.
     staff_line_thickness_canonical: float | None = None
+    # THE PAD THIS CELL WAS CUT WITH, in staff spaces, above and below —
+    # `measure_extractor._build_measure_cell`'s own `grown()` values for THIS
+    # staff's room. (Always one of two constants; the point is WHICH, per cell
+    # and per side, not that it is never a constant.)
+    #
+    # ⚠️ PER-CELL, NOT PER-MODULE, and the difference is not cosmetic. The pad
+    # starts at `PAD_ABOVE_STAFF_LINES` / `PAD_BELOW_STAFF_LINES` and GROWS to
+    # `PAD_MAX_STAFF_LINES` on whichever side the neighbouring staff is far
+    # enough away — so on one ordinary page the top staff is cut at 6 above and
+    # 4 below while its neighbour below is cut at 4 on both. Reading the module
+    # constant would be wrong exactly where the growth happens, which is the
+    # case the growth exists for (CLAUDE.md: "the cell pad is 4 spaces or 6,
+    # never in between").
+    #
+    # WHY IT IS RECORDED. Every saved label box lives in the cell's CANONICAL
+    # frame, and a cell re-cut at a different pad is not a slightly different
+    # picture — it is the same music at a different scale, with every box in
+    # the batch landing somewhere else and nothing downstream saying so. The
+    # labeling cutter (`annotate/select_cells_orchestral`) monkey-patches those
+    # module constants to 5.0, so a labeled batch and a pipeline run disagree
+    # about the frame, and the fact was never written down: today
+    # `annotate/recut_cells.choose_mode_and_cut` DERIVES which pad was used, by
+    # cutting the page under each candidate mode and keeping the one whose
+    # output reproduces the manifest's recorded width, height and canonical
+    # staff-line ys. That derivation exists only because this field did not.
+    #
+    # ⚠️⚠️ AND IT CANNOT REPLACE THAT DERIVATION FOR EVERY CELL, because a
+    # cell GROWN TO THE CEILING ON BOTH SIDES records (6.0, 6.0) under EITHER
+    # padding mode. The value is true and it is undecidable: nothing about it
+    # says the modes were indistinguishable here, so a consumer reading it as
+    # "this batch was cut by the pipeline" would be guessing. Measured at
+    # 600 dpi over two pages, both cut by the pipeline: Beethoven 5 / Litolff
+    # p.1 is (6,4)x32 (4,4)x48 (4,6)x32 (6,6)x80 of 192, and the engraved
+    # brahms-sym1-mvt1 fixture (4,4)x49 (4,6)x42 (6,4)x42 (6,6)x14 of 147 — so
+    # 80 of 192 and 14 of 147 are undecidable from this field alone. A consumer
+    # that needs the MODE must fall back to `recut_cells`' frame comparison for
+    # exactly those cells, or read the pad of a sibling cell on a staff that is
+    # crowded on one side.
+    #
+    # ⚠️ IT IS NOT YET REPLACED, deliberately. `recut_cells`' abort-on-frame-
+    # mismatch is a safety property over irreplaceable human verdicts, and NO
+    # BATCH CARRIES THIS FIELD AT ALL — no manifest writer in `annotate/` emits
+    # it, so it is absent from legacy batches AND from every batch cut from
+    # here on, until a separate change to a cutter puts it there. Until then
+    # the derivation is the only thing that can read any batch. This is a
+    # record, not a decision.
+    #
+    # ⚠️ The pad the cut ASKED for. `y0`/`y1` are additionally clamped to the
+    # page, so a staff near the paper edge got less than this; what it actually
+    # got is `bbox_page_px` against the staff's own line_ys. None on a cell
+    # built by hand (most test fixtures) rather than cut from a page.
+    pad_above_staff_lines: float | None = None
+    pad_below_staff_lines: float | None = None
 
     @property
     def width(self) -> int:

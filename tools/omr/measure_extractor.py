@@ -1312,12 +1312,21 @@ def _build_measure_cell(
     room_above, room_below = _neighbour_room(pws, staff)
     ceiling = PAD_MAX_STAFF_LINES * spacing
 
-    def grown(default_spaces: float, room: float) -> int:
-        default = default_spaces * spacing
-        return int(ceiling if room - clearance >= ceiling else default)
+    def grown(default_spaces: float, room: float) -> tuple[float, int]:
+        """One side's pad, as (staff spaces, page px).
 
-    pad_above = grown(PAD_ABOVE_STAFF_LINES, room_above)
-    pad_below = grown(PAD_BELOW_STAFF_LINES, room_below)
+        The SPACES half is returned rather than divided back out of the pixel
+        half downstream: the pixel pad is truncated to an int, so `px/spacing`
+        answers 3.998 for a four-space pad and could not be compared to the
+        constant it came from. See `MeasureCell.pad_above_staff_lines` for why
+        the per-cell value is the one worth keeping.
+        """
+        if room - clearance >= ceiling:
+            return float(PAD_MAX_STAFF_LINES), int(ceiling)
+        return float(default_spaces), int(default_spaces * spacing)
+
+    pad_above_spaces, pad_above = grown(PAD_ABOVE_STAFF_LINES, room_above)
+    pad_below_spaces, pad_below = grown(PAD_BELOW_STAFF_LINES, room_below)
     y0 = max(0, staff.top_y - pad_above)
     y1 = min(rgb.shape[0], staff.bottom_y + pad_below)
     x0 = max(0, x0)
@@ -1382,6 +1391,10 @@ def _build_measure_cell(
             if staff.median_line_thickness_px is not None
             else None
         ),
+        # What this cell was actually cut with — `grown()`'s answer for THIS
+        # staff's room, never the module constant. See MeasureCell.
+        pad_above_staff_lines=pad_above_spaces,
+        pad_below_staff_lines=pad_below_spaces,
     )
     # Stash binary on the cell as a side-channel attribute for the
     # staff-line-removal step. (Not part of MeasureCell's formal schema —
