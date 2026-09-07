@@ -1060,12 +1060,15 @@ def _barline_records(barlines: list[Barline]) -> list[dict[str, Any]]:
     ⚠️ **`measure_extractor.detect_barlines` weighs every candidate column on
     four independent pieces of evidence and NONE of it left the process.**
     `types.Barline` gained the fields on 2026-09-06 and its own docstring
-    closes by naming the reason they still could not be consumed: *"Barlines
-    are not serialised. `transcribe` writes no barline record into the result
-    JSON at all."* Before this function `grep '"barline' tools/omr/*.py`
-    returned nothing — a barline reached disk only as the measure boundary it
-    produced, so every question about WHY a boundary is where it is required
-    re-running the pipeline. This is that record.
+    closed by naming the reason they still could not be consumed — reach
+    limit 2, which then read *"Barlines are not serialised. `transcribe`
+    writes no barline record into the result JSON at all."* Before this
+    function `grep '"barline' tools/omr/*.py` returned nothing — a barline
+    reached disk only as the measure boundary it produced, so every question
+    about WHY a boundary is where it is required re-running the pipeline.
+    This is that record, and that entry has been rewritten to the boundary
+    that is left (only the ACCEPTED set reaches disk) rather than kept as its
+    own history.
 
     **WHY PER SYSTEM.** A barline is a property of a SYSTEM, not of a staff
     and not of a page: `detect_barlines` clusters candidate columns across the
