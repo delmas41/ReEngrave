@@ -1,8 +1,14 @@
 import json, glob, os
 from collections import Counter
-ROOT="/Users/seanjohnson/Desktop/ReEngrave"
-FAM={"scan":sorted(glob.glob(f"{ROOT}/benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json")),
-     "engraved":sorted(glob.glob(f"{ROOT}/benchmarks/omr-orchestral-e2e/fixtures/*.omr.json"))}
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+# ⚠️ TWO roots, not one: `repo_glob` reads COMMITTED artefacts from the tree
+# this probe lives in (reading them from elsewhere is the M4 defect);
+# `fixture_glob` reads GITIGNORED build products, which exist only in the
+# main checkout. Both exit 2 on an empty glob. See fixture_root.py.
+from fixture_root import fixture_glob, repo_glob  # noqa: E402
+FAM={"scan": fixture_glob("benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json", "scan transcriptions"),
+     "engraved": fixture_glob("benchmarks/omr-orchestral-e2e/fixtures/*.omr.json", "engraved transcriptions")}
 for fam,files in FAM.items():
     print("===",fam)
     pairs=Counter(); midstaff=0; firstcell=0; changes=[]

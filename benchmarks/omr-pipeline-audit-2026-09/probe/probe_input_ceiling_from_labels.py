@@ -37,6 +37,9 @@ THREE HAZARDS, all of which restrict the answer rather than invalidate it:
 Read-only. Writes one JSON.
 """
 from __future__ import annotations
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from fixture_root import env_path, must_glob, must_exist  # noqa: E402
 
 import json
 from pathlib import Path
@@ -54,7 +57,9 @@ NOTEHEAD_PREFIX = "notehead"
 
 def main() -> int:
     verdicts = {}
-    for f in sorted((BATCH / "verdicts").glob("*.json")):
+    for f in [Path(x) for x in must_glob(
+            str((BATCH / "verdicts" / "*.json").relative_to(ROOT)),
+            "labeling verdicts")]:
         d = json.loads(f.read_text())
         if COMPLETION_PASS in (d.get("inspected_passes") or []):
             verdicts[d["cell_id"]] = d

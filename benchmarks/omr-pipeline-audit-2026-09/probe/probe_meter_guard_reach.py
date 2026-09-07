@@ -1,9 +1,12 @@
 import json, glob, os
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from fixture_root import fixture_glob  # noqa: E402  (see fixture_root.py)
 from collections import Counter
-for fam,pat in (("scan",'benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json'),
-                ("engraved",'benchmarks/omr-orchestral-e2e/fixtures/*.omr.json')):
+for fam,files in (("scan", fixture_glob('benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json', 'scan transcriptions')),
+                  ("engraved", fixture_glob('benchmarks/omr-orchestral-e2e/fixtures/*.omr.json', 'engraved transcriptions'))):
     rev=0; meas=0; warned=0; sev=Counter(); recon=0; pages=0
-    for f in sorted(glob.glob(pat)):
+    for f in files:
         d=json.load(open(f))
         recon+=d.get('n_rhythm_reconciliations',0)
         for pg in d["pages"]:

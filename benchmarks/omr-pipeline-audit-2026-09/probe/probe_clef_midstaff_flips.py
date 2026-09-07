@@ -1,6 +1,12 @@
 import json, glob, os
-ROOT="/Users/seanjohnson/Desktop/ReEngrave"
-files=sorted(glob.glob(f"{ROOT}/benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"))
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+# ⚠️ TWO roots, not one: `repo_glob` reads COMMITTED artefacts from the tree
+# this probe lives in (reading them from elsewhere is the M4 defect);
+# `fixture_glob` reads GITIGNORED build products, which exist only in the
+# main checkout. Both exit 2 on an empty glob. See fixture_root.py.
+from fixture_root import fixture_glob, repo_glob  # noqa: E402
+files=fixture_glob("benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json", "scan transcriptions")
 tot_flip=0; blocked_at={0.3:0,0.4:0,0.5:0,0.6:0,0.7:0,0.8:0}
 for f in files:
     d=json.load(open(f)); nm=os.path.basename(f).split('.')[0]

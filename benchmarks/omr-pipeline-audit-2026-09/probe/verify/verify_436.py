@@ -1,7 +1,10 @@
 """VERIFIER: independently recompute the 436 class-disagreement figure and both
 agents' class breakdowns from the OMR_CONTEST_DUMP artefacts."""
 import json, glob, collections
-files = sorted(glob.glob('benchmarks/omr-additive-vs-gated-2026-09/out/contests/*.contests.json'))
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), _os.pardir))
+from fixture_root import fixture_glob, repo_glob, repo_root, add_repo_to_syspath  # noqa: E402
+files = repo_glob("benchmarks/omr-additive-vs-gated-2026-09/out/contests/*.contests.json", "contest dumps")
 rows = []
 for f in files:
     d = json.load(open(f))

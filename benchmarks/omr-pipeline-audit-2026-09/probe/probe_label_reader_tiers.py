@@ -1,7 +1,10 @@
 import json, glob, os
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from fixture_root import fixture_glob  # noqa: E402  (see fixture_root.py)
 from collections import Counter
 tiers=Counter(); tot=Counter(); rows=0
-for f in sorted(glob.glob('benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json')):
+for f in fixture_glob('benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json', 'scan transcriptions'):
     d=json.load(open(f)); c=d.get('contextual') or {}
     if not c.get('available'): continue
     rows+=1

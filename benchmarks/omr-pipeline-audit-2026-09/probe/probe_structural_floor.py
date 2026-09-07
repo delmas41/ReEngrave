@@ -35,6 +35,9 @@ CONTROLS, both of which can fail:
       python3 benchmarks/omr-pipeline-audit-2026-09/probe/probe_structural_floor.py
 """
 from __future__ import annotations
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from fixture_root import env_path, must_glob, must_exist  # noqa: E402
 
 import hashlib
 import json
@@ -60,8 +63,13 @@ SCAN = ROOT / "benchmarks" / "omr-scan-e2e-2026-09"
 #: was scored on, and the binding is CHECKED (every truth's sha256 is compared
 #: against the canonical arm's `sha.truth`, and the run refuses on a mismatch)
 #: rather than assumed from a path.
-FIXTURES = Path("/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/"
-                "reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures")
+FIXTURES = env_path("OMR_RECONCILIATION_FIXTURES",
+                    "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/"
+                    "reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures")
+#: ⚠️ The PIN is deliberate and is NOT the M4 defect — the sha256 check below
+#: binds the floor to the same files the headline was scored on. Making it
+#: nameable does not loosen it: the default is unchanged, and a wrong tree
+#: still fails the hash comparison rather than the path.
 WORKS = SCAN / "works.json"
 DERIVED = HERE / "derived-truth-floor"
 NORM20 = (ROOT / "benchmarks" / "omr-page-normalise-fixes-2026-09"

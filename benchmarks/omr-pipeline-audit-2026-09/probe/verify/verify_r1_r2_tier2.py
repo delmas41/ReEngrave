@@ -1,11 +1,13 @@
 """VERIFIER round 2 — independent recomputation of Agent II's tier-2 reach claims.
 Fixtures live only in the MAIN checkout (the worktree gitignores them)."""
 import json, glob, os, statistics as S
-R = "/Users/seanjohnson/Desktop/ReEngrave/"
-SCAN = R + "benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"
-ENG  = R + "benchmarks/omr-orchestral-e2e/fixtures/*.omr.json"
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), _os.pardir))
+from fixture_root import fixture_glob, repo_glob, repo_root, add_repo_to_syspath  # noqa: E402
+SCAN = ("benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json", "scan transcriptions")
+ENG  = ("benchmarks/omr-orchestral-e2e/fixtures/*.omr.json", "engraved transcriptions")
 
-def load(pat): return [(os.path.basename(f).split('.')[0], json.load(open(f))) for f in sorted(glob.glob(pat))]
+def load(pat): return [(os.path.basename(f).split('.')[0], json.load(open(f))) for f in fixture_glob(*pat)]
 
 # --- clef_weights null (R4 specialist inertness) ---
 for lab, pat in (("scan", SCAN), ("engraved", ENG)):

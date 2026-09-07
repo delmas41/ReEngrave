@@ -1,7 +1,13 @@
 import json, glob, os
 from collections import Counter
-ROOT="/Users/seanjohnson/Desktop/ReEngrave"
-files=sorted(glob.glob(f"{ROOT}/benchmarks/omr-additive-vs-gated-2026-09/out/contests/*.contests.json"))
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+# ⚠️ TWO roots, not one: `repo_glob` reads COMMITTED artefacts from the tree
+# this probe lives in (reading them from elsewhere is the M4 defect);
+# `fixture_glob` reads GITIGNORED build products, which exist only in the
+# main checkout. Both exit 2 on an empty glob. See fixture_root.py.
+from fixture_root import fixture_glob, repo_glob  # noqa: E402
+files=repo_glob("benchmarks/omr-additive-vs-gated-2026-09/out/contests/*.contests.json", "contest dumps")
 diff=Counter(); diff_cat=Counter()
 for f in files:
     d=json.load(open(f))
@@ -15,10 +21,10 @@ print("different-class contests by category:", dict(diff_cat))
 for k,v in diff.most_common(15): print("  ",k,v)
 print()
 # reach of the three ownership decisions across both families
-for fam,pat in (("scan",f"{ROOT}/benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"),
-                ("engraved",f"{ROOT}/benchmarks/omr-orchestral-e2e/fixtures/*.omr.json")):
+for fam,fam_files in (("scan", fixture_glob("benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json", "scan transcriptions")),
+                      ("engraved", fixture_glob("benchmarks/omr-orchestral-e2e/fixtures/*.omr.json", "engraved transcriptions"))):
     dup=clip=unl=det=nh=0
-    for f in sorted(glob.glob(pat)):
+    for f in fam_files:
         d=json.load(open(f))
         dup+=d.get("n_cross_staff_duplicates_removed",0)
         clip+=d.get("n_clipped_notehead_fragments_dropped",0)

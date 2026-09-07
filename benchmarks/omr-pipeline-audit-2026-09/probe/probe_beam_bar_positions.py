@@ -37,6 +37,9 @@ and is not one of the embargoed benchmarks. ~1 minute a page.
 from __future__ import annotations
 import argparse, json, statistics as st, sys
 from pathlib import Path
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from fixture_root import env_path, must_glob, must_exist  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
@@ -47,7 +50,8 @@ from tools.omr.measure_extractor import detect_barlines, extract_measures  # noq
 from tools.omr.staff_line_removal import remove_staff_lines  # noqa: E402
 from tools.omr import line_detection as ld  # noqa: E402
 
-LIB = Path("/Users/seanjohnson/Desktop/ReEngrave/library")
+#: gitignored (6.4 GB score store). Overridable; default unchanged.
+LIB = env_path("OMR_LIBRARY_ROOT", "/Users/seanjohnson/Desktop/ReEngrave/library")
 ROWS = ROOT / "benchmarks/omr-scan-e2e-2026-09/works.json"
 #: distinct publishers, so a finding is not one edition's engraving
 DEFAULT_ROWS = ["beethoven-sym5-mvt1-984073-p1", "brahms-sym1-mvt1-317803-p1"]
@@ -56,7 +60,8 @@ DEFAULT_ROWS = ["beethoven-sym5-mvt1-984073-p1", "brahms-sym1-mvt1-317803-p1"]
 #: docstrings use as their worked examples, so they are where the fabrication
 #: is most likely to matter. Build products of `orchestral_eval.excerpt()`;
 #: this probe only READS them and runs no benchmark.
-FIXTURES = Path("/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-orchestral-e2e/fixtures")
+FIXTURES = env_path("OMR_ENGRAVED_FIXTURES",
+                    "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-orchestral-e2e/fixtures")
 DEFAULT_ENGRAVED = ["mozart-sym41-mvt1", "brahms-sym1-mvt1", "tchaikovsky-sym6-mvt2"]
 
 

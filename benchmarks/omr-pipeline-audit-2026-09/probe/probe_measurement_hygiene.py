@@ -12,6 +12,9 @@ B. STAMPS. Of every committed benchmark result JSON, how many carry the two
    the engraved headline; nothing enforces either anywhere else.
 """
 from __future__ import annotations
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from fixture_root import must_glob  # noqa: E402
 
 import json
 import re
@@ -59,7 +62,11 @@ def visibility() -> dict:
 
 def stamps() -> dict:
     rows = []
-    for p in sorted((ROOT / "benchmarks").rglob("*.json")):
+    # ⚠️ A CENSUS OF THE TREE IT RUNS IN. An empty sweep here would report
+    # "0 artefacts, 0 unstamped" — a clean bill of health for a tree that was
+    # never read. `must_glob` exits 2 instead. See fixture_root.py.
+    for p in [Path(x) for x in must_glob("benchmarks/**/*.json",
+                                         "benchmark JSON artefacts")]:
         rel = str(p.relative_to(ROOT))
         if "/fixtures/" in rel or "/out/" in rel or "/cells/" in rel:
             continue

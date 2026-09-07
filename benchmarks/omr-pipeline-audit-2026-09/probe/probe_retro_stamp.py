@@ -17,6 +17,9 @@ the harness needs its own review.
     python3 benchmarks/omr-pipeline-audit-2026-09/probe/probe_retro_stamp.py
 """
 from __future__ import annotations
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from fixture_root import env_path, must_glob, must_exist  # noqa: E402
 
 import json
 import subprocess
@@ -55,7 +58,8 @@ def git_commit_for(path: Path) -> dict:
 
 def main() -> int:
     COPIES.mkdir(exist_ok=True)
-    files = sorted(SCAN.glob("results*.json"))
+    files = [Path(x) for x in must_glob(
+        "benchmarks/omr-scan-e2e-2026-09/results*.json", "scan result artefacts")]
     rows, stamped = [], 0
     for f in files:
         doc = json.loads(f.read_text())

@@ -8,8 +8,12 @@ rebuilds them, calling the real `_ledger_ladder` and reusing its own constants.
 from __future__ import annotations
 import json, sys
 from pathlib import Path
-ROOT = Path("/Users/seanjohnson/Desktop/ReEngrave")
-sys.path.insert(0, str(ROOT))
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), _os.pardir))
+from fixture_root import fixture_glob, repo_glob, repo_root, add_repo_to_syspath  # noqa: E402
+# committed artefacts + `tools.omr` come from THIS tree, not another checkout
+ROOT = repo_root()
+add_repo_to_syspath(ROOT)
 from tools.omr.transcribe import (                                  # noqa: E402
     _ledger_ladder, _LEDGER_RUNG_EXPECTED_SLACK,
     _LEDGER_RUNG_Y_TOL_SPACES, _LEDGER_RUNG_MIN_X_OVERLAP)

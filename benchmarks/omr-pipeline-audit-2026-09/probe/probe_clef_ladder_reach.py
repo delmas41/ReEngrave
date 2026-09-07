@@ -12,11 +12,18 @@ Read-only. Answers:
 import json, os, sys, glob
 from collections import Counter
 
-ROOT = os.environ.get("OMR_FIXTURE_ROOT", "/Users/seanjohnson/Desktop/ReEngrave")
+# ⚠️ This probe ALREADY had the OMR_FIXTURE_ROOT escape and was cited in
+# VERIFICATION.md §D16 as the pattern the others should adopt. What it did NOT
+# have is the half that actually closes the bug: an empty glob still printed a
+# clean all-zero table and exited 0. `fixture_glob` supplies both.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from fixture_root import fixture_glob  # noqa: E402
 
 FAMILIES = {
-    "scan": sorted(glob.glob(f"{ROOT}/benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json")),
-    "engraved": sorted(glob.glob(f"{ROOT}/benchmarks/omr-orchestral-e2e/fixtures/*.omr.json")),
+    "scan": fixture_glob("benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json",
+                         "scan transcriptions"),
+    "engraved": fixture_glob("benchmarks/omr-orchestral-e2e/fixtures/*.omr.json",
+                             "engraved transcriptions"),
 }
 
 for fam, files in FAMILIES.items():

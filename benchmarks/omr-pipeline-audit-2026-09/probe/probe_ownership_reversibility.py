@@ -1,7 +1,13 @@
 import json, glob, os
 from collections import Counter, defaultdict
-ROOT="/Users/seanjohnson/Desktop/ReEngrave"
-files=sorted(glob.glob(f"{ROOT}/benchmarks/omr-additive-vs-gated-2026-09/out/contests/*.contests.json"))
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+# ⚠️ TWO roots, not one: `repo_glob` reads COMMITTED artefacts from the tree
+# this probe lives in (reading them from elsewhere is the M4 defect);
+# `fixture_glob` reads GITIGNORED build products, which exist only in the
+# main checkout. Both exit 2 on an empty glob. See fixture_root.py.
+from fixture_root import fixture_glob, repo_glob  # noqa: E402
+files=repo_glob("benchmarks/omr-additive-vs-gated-2026-09/out/contests/*.contests.json", "contest dumps")
 tot=0; by_tier=Counter(); by_cat_tier=defaultdict(Counter)
 parked=0; loser_higher=0; comparable=0; ties=0
 absdelta=[]; per_row={}
