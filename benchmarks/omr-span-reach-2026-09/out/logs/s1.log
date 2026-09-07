@@ -31,3 +31,29 @@ brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.pdf: 91 page
    pages 0-49 (50p) peak sizes [7, 8, 10, 11, 12, 13, 14, 15, 27, 28]
    pages 50-90 (41p) peak sizes [7, 9, 10, 11, 12, 13, 14, 15, 17, 24]
 wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582.json
+
+dvorak--slavonic-dances-op46--schirmer-s-library-of-mu--imslp147746.pdf: 89 pages in 342s -> 1 span(s) [[0, 88]]
+   pages 0-88 (89p) peak sizes [0, 2, 3, 5, 6, 7]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/dvorak--slavonic-dances-op46--schirmer-s-library-of-mu--imslp147746.json
+
+brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf: 86 pages in 545s -> 1 span(s) [[0, 85]]
+   pages 0-85 (86p) peak sizes [9, 10, 11, 12, 13, 14, 15, 16, 20, 22, 24, 25, 26]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.json
+
+dvorak--cello-concerto-op104--simrock-1896--imslp8476.pdf: 76 pages in 484s -> 1 span(s) [[0, 75]]
+   pages 0-75 (76p) peak sizes [10, 11, 12, 13, 14, 15, 16, 17]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/dvorak--cello-concerto-op104--simrock-1896--imslp8476.json
+
+sibelius--symphony-7-op105--hansen-1925--imslp15924.pdf: 74 pages in 116s -> 2 span(s) [[0, 42], [43, 73]]
+   pages 0-42 (43p) peak sizes [9, 10, 12, 14, 15, 16, 17, 18, 19, 20, 21]
+   pages 43-73 (31p) peak sizes [16, 17, 18, 19, 20, 21, 22]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/sibelius--symphony-7-op105--hansen-1925--imslp15924.json
+
+beethoven--piano-concerto-4-op58--breitkopf-hartel-beethov-1862--imslp977418.pdf: 68 pages in 613s -> 2 span(s) [[0, 5], [6, 67]]
+   pages 0-5 (6p) peak sizes [11]
+   pages 6-67 (62p) peak sizes [6, 7, 8, 9, 10, 11, 13, 14, 23]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/beethoven--piano-concerto-4-op58--breitkopf-hartel-beethov-1862--imslp977418.json
+
+sibelius--violin-concerto-op47--lienau-1905--imslp15936.pdf: 65 pages in 502s -> 1 span(s) [[0, 64]]
+   pages 0-64 (65p) peak sizes [4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 24, 25]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/sibelius--violin-concerto-op47--lienau-1905--imslp15936.json

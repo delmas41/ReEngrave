@@ -218,6 +218,41 @@
  },
  {
   "boundaries": [
+   19,
+   46
+  ],
+  "edition": "schumann--symphony-3-op97--peters-1887--imslp13086",
+  "n_spans": 3,
+  "pages": 93,
+  "ranges": [
+   [
+    0,
+    18
+   ],
+   [
+    19,
+    45
+   ],
+   [
+    46,
+    92
+   ]
+  ],
+  "raw_peak": 15,
+  "seconds": 612.2,
+  "span_levels": [
+   13,
+   14,
+   15
+  ],
+  "span_peaks": [
+   13,
+   14,
+   15
+  ]
+ },
+ {
+  "boundaries": [
    32,
    42
   ],
@@ -288,6 +323,34 @@
  },
  {
   "boundaries": [
+   6
+  ],
+  "edition": "beethoven--piano-concerto-4-op58--breitkopf-hartel-beethov-1862--imslp977418",
+  "n_spans": 2,
+  "pages": 68,
+  "ranges": [
+   [
+    0,
+    5
+   ],
+   [
+    6,
+    67
+   ]
+  ],
+  "raw_peak": 23,
+  "seconds": 612.8,
+  "span_levels": [
+   11,
+   14
+  ],
+  "span_peaks": [
+   11,
+   14
+  ]
+ },
+ {
+  "boundaries": [
    44
   ],
   "edition": "beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073",
@@ -312,6 +375,34 @@
   "span_peaks": [
    12,
    17
+  ]
+ },
+ {
+  "boundaries": [
+   11
+  ],
+  "edition": "bizet--symphony-in-c-major--edition-1935--imslp512840",
+  "n_spans": 2,
+  "pages": 89,
+  "ranges": [
+   [
+    0,
+    10
+   ],
+   [
+    11,
+    88
+   ]
+  ],
+  "raw_peak": 18,
+  "seconds": 508.8,
+  "span_levels": [
+   13,
+   18
+  ],
+  "span_peaks": [
+   13,
+   18
   ]
  },
  {
@@ -372,6 +463,34 @@
  },
  {
   "boundaries": [
+   45
+  ],
+  "edition": "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790",
+  "n_spans": 2,
+  "pages": 86,
+  "ranges": [
+   [
+    0,
+    44
+   ],
+   [
+    45,
+    85
+   ]
+  ],
+  "raw_peak": 16,
+  "seconds": 694.8,
+  "span_levels": [
+   14,
+   16
+  ],
+  "span_peaks": [
+   14,
+   16
+  ]
+ },
+ {
+  "boundaries": [
    41
   ],
   "edition": "brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596",
@@ -424,6 +543,34 @@
   "span_peaks": [
    23,
    24
+  ]
+ },
+ {
+  "boundaries": [
+   59
+  ],
+  "edition": "mendelssohn--symphony-5-op107--mendelssohncomplete-1877--imslp20287",
+  "n_spans": 2,
+  "pages": 94,
+  "ranges": [
+   [
+    0,
+    58
+   ],
+   [
+    59,
+    93
+   ]
+  ],
+  "raw_peak": 15,
+  "seconds": 2213.2,
+  "span_levels": [
+   14,
+   15
+  ],
+  "span_peaks": [
+   14,
+   15
   ]
  },
  {
@@ -484,6 +631,34 @@
  },
  {
   "boundaries": [
+   9
+  ],
+  "edition": "saint-saens--piano-concerto-2-op22--durand-1875--imslp21451",
+  "n_spans": 2,
+  "pages": 111,
+  "ranges": [
+   [
+    0,
+    8
+   ],
+   [
+    9,
+    110
+   ]
+  ],
+  "raw_peak": 15,
+  "seconds": 465.2,
+  "span_levels": [
+   14,
+   15
+  ],
+  "span_peaks": [
+   14,
+   15
+  ]
+ },
+ {
+  "boundaries": [
    125
   ],
   "edition": "schumann--symphony-2-op61--peters-1887--imslp514290",
@@ -536,6 +711,34 @@
   "span_peaks": [
    16,
    20
+  ]
+ },
+ {
+  "boundaries": [
+   43
+  ],
+  "edition": "sibelius--symphony-7-op105--hansen-1925--imslp15924",
+  "n_spans": 2,
+  "pages": 74,
+  "ranges": [
+   [
+    0,
+    42
+   ],
+   [
+    43,
+    73
+   ]
+  ],
+  "raw_peak": 22,
+  "seconds": 115.5,
+  "span_levels": [
+   21,
+   22
+  ],
+  "span_peaks": [
+   21,
+   22
   ]
  },
  {
@@ -596,6 +799,26 @@
  },
  {
   "boundaries": [],
+  "edition": "beethoven--piano-concerto-3-op37--breitkopf-hartel-beethov-1862--imslp977417",
+  "n_spans": 1,
+  "pages": 76,
+  "ranges": [
+   [
+    0,
+    75
+   ]
+  ],
+  "raw_peak": 21,
+  "seconds": 652.9,
+  "span_levels": [
+   13
+  ],
+  "span_peaks": [
+   17
+  ]
+ },
+ {
+  "boundaries": [],
   "edition": "beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077",
   "n_spans": 1,
   "pages": 89,
@@ -632,6 +855,66 @@
   ],
   "span_peaks": [
    12
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593",
+  "n_spans": 1,
+  "pages": 86,
+  "ranges": [
+   [
+    0,
+    85
+   ]
+  ],
+  "raw_peak": 26,
+  "seconds": 545.5,
+  "span_levels": [
+   16
+  ],
+  "span_peaks": [
+   24
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "dvorak--cello-concerto-op104--simrock-1896--imslp8476",
+  "n_spans": 1,
+  "pages": 76,
+  "ranges": [
+   [
+    0,
+    75
+   ]
+  ],
+  "raw_peak": 17,
+  "seconds": 483.9,
+  "span_levels": [
+   17
+  ],
+  "span_peaks": [
+   17
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "dvorak--slavonic-dances-op46--schirmer-s-library-of-mu--imslp147746",
+  "n_spans": 1,
+  "pages": 89,
+  "ranges": [
+   [
+    0,
+    88
+   ]
+  ],
+  "raw_peak": 7,
+  "seconds": 341.6,
+  "span_levels": [
+   4
+  ],
+  "span_peaks": [
+   4
   ]
  },
  {
@@ -776,6 +1059,26 @@
  },
  {
   "boundaries": [],
+  "edition": "saint-saens--cello-concerto-1-op33--durand-1874--imslp81392",
+  "n_spans": 1,
+  "pages": 74,
+  "ranges": [
+   [
+    0,
+    73
+   ]
+  ],
+  "raw_peak": 14,
+  "seconds": 253.0,
+  "span_levels": [
+   13
+  ],
+  "span_peaks": [
+   14
+  ]
+ },
+ {
+  "boundaries": [],
   "edition": "schumann--piano-concerto-op54--schumanncomplete-1883--imslp291223",
   "n_spans": 1,
   "pages": 93,
@@ -812,6 +1115,26 @@
   ],
   "span_peaks": [
    21
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "sibelius--violin-concerto-op47--lienau-1905--imslp15936",
+  "n_spans": 1,
+  "pages": 65,
+  "ranges": [
+   [
+    0,
+    64
+   ]
+  ],
+  "raw_peak": 25,
+  "seconds": 502.4,
+  "span_levels": [
+   18
+  ],
+  "span_peaks": [
+   18
   ]
  }
 ]

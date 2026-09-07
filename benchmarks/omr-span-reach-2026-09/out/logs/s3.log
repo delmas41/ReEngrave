@@ -18,3 +18,13 @@ tchaikovsky--the-nutcracker-suite-op71a--jurgenson-1892--imslp231707.pdf: 120 pa
    pages 0-22 (23p) peak sizes [0, 8, 11, 12, 16, 18]
    pages 23-119 (97p) peak sizes [0, 6, 7, 8, 9, 10, 11, 13, 15, 17, 18, 19, 20]
 wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/tchaikovsky--the-nutcracker-suite-op71a--jurgenson-1892--imslp231707.json
+
+saint-saens--piano-concerto-2-op22--durand-1875--imslp21451.pdf: 111 pages in 465s -> 2 span(s) [[0, 8], [9, 110]]
+   pages 0-8 (9p) peak sizes [3, 6, 9, 10, 14]
+   pages 9-110 (102p) peak sizes [2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/saint-saens--piano-concerto-2-op22--durand-1875--imslp21451.json
+
+mendelssohn--symphony-5-op107--mendelssohncomplete-1877--imslp20287.pdf: 94 pages in 2213s -> 2 span(s) [[0, 58], [59, 93]]
+   pages 0-58 (59p) peak sizes [0, 11, 12, 13, 14]
+   pages 59-93 (35p) peak sizes [0, 15]
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a53574829e7fc3e4e/benchmarks/omr-span-reach-2026-09/out/profiles/mendelssohn--symphony-5-op107--mendelssohncomplete-1877--imslp20287.json
