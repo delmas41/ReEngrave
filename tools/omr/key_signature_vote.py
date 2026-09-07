@@ -180,10 +180,25 @@ class VoteResult:
     reference_written_by_system holds each system's modal WRITTEN signature —
     the thing departures are judged against. It is usually the concert key, but
     it is not asserted to be: see the module docstring.
+
+    majority_by_system holds the SHARE of weight that reference commands, and
+    exists because the number was being destroyed. `reconcile` computes it,
+    compares it once (`majority <= config.min_majority`) and drops it — so a
+    reference agreed by every staff of a system and one scraping past 0.5 left
+    the same record, and "no majority to check against" named a branch without
+    ever saying how far off a majority the page was.
+
+    vote_totals_by_system is what that share is a share OF: the weight each
+    written signature attracted. A share of 0.5 over two candidates and one over
+    six are different pages.
+
+    Both are RECORDS. Nothing reads them back, and no verdict depends on them.
     """
 
     verdicts: dict[int, StaffVerdict] = field(default_factory=dict)
     reference_written_by_system: dict[int, int | None] = field(default_factory=dict)
+    majority_by_system: dict[int, float] = field(default_factory=dict)
+    vote_totals_by_system: dict[int, dict[int, float]] = field(default_factory=dict)
 
     def fifths_for(self, staff_index: int) -> int | None:
         verdict = self.verdicts.get(staff_index)
@@ -197,7 +212,9 @@ def consistent_written_set(reference: int) -> set[int]:
 
 
 def _modal_reference(
-    values_with_weight: list[tuple[int, float]]
+    values_with_weight: list[tuple[int, float]],
+    *,
+    trace: dict[int, float] | None = None,
 ) -> tuple[int | None, float]:
     """The system's modal written signature and the share of weight it holds.
 
@@ -219,6 +236,11 @@ def _modal_reference(
         if weight < 1.0:
             continue
         totals[fifths] += max(weight, 1.0)
+    if trace is not None:
+        # The tally the share is a share OF. Recorded even when it is empty:
+        # "every reading weighed under 1.0 and none of them voted" is a
+        # different page from "nothing was read", and both return (None, 0.0).
+        trace.update({k: round(v, 4) for k, v in totals.items()})
     if not totals:
         return None, 0.0
     total = sum(totals.values())
@@ -333,14 +355,25 @@ def reconcile(
     references: dict[int, int | None] = {}
     majorities: dict[int, float] = {}
     aligned = len({len(staves) for staves in by_system.values()}) == 1 and len(by_system) > 1
+    tallies: dict[int, dict[int, float]] = {}
     if aligned:
-        pooled = _modal_reference([(c.fifths, c.weight) for c in candidates if c.fifths])
+        pooled_tally: dict[int, float] = {}
+        pooled = _modal_reference(
+            [(c.fifths, c.weight) for c in candidates if c.fifths],
+            trace=pooled_tally,
+        )
         references = {i: pooled[0] for i in by_system}
         majorities = {i: pooled[1] for i in by_system}
+        # One pooled tally, reported against every system it was pooled from —
+        # which is what "aligned" means here, and worth being able to see.
+        tallies = {i: dict(pooled_tally) for i in by_system}
     else:
         for system_index, staves in by_system.items():
             readings = [(c.fifths, c.weight) for c in staves if c.fifths]
-            references[system_index], majorities[system_index] = _modal_reference(readings)
+            tally: dict[int, float] = {}
+            references[system_index], majorities[system_index] = _modal_reference(
+                readings, trace=tally)
+            tallies[system_index] = tally
 
     resolved, conflicted = _consolidate_across_systems(candidates, references, config)
 
@@ -348,6 +381,10 @@ def reconcile(
         reference = references[system_index]
         majority = majorities[system_index]
         result.reference_written_by_system[system_index] = reference
+        # The share, kept instead of destroyed. `majority` is used once below,
+        # in `majority <= config.min_majority`, and was then gone.
+        result.majority_by_system[system_index] = round(majority, 4)
+        result.vote_totals_by_system[system_index] = tallies.get(system_index, {})
 
         for cand in staves:
             fifths, weight, carried = cand.fifths, cand.weight, False

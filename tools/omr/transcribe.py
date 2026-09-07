@@ -1319,6 +1319,7 @@ def _header_key_signatures(
     header_cells: dict[int, MeasureCell],
     clef_for_staff: dict[int, str | None],
     dets_for_staff: dict[int, tuple[list, MeasureCell]],
+    evidence: dict[int, dict[str, Any]] | None = None,
 ) -> tuple[dict[int, int], dict[int, str], dict[int, str]]:
     """Read and reconcile this page's key signatures.
 
@@ -1346,6 +1347,12 @@ def _header_key_signatures(
     clefs read well it speaks for most staves; on the degraded orchestral prints
     where the detector reads every staff as treble, it stays quiet — which is
     the right failure, but it means the two features improve together.
+
+    `evidence`, when given, is filled per staff with what the vote MEASURED —
+    the system's majority share and its tally, this staff's own reading and the
+    weight behind it. It is an out-parameter rather than a fourth element of the
+    return because three existing tests unpack this tuple, and widening a return
+    to carry a record is how a recording change acquires a blast radius.
     """
     candidates: list[StaffCandidate] = []
     unread: dict[int, str] = {}
@@ -1435,6 +1442,31 @@ def _header_key_signatures(
                 can_carry=not source.startswith("template"),
             ))
     result = reconcile(candidates)
+    if evidence is not None:
+        # The MAJORITY SHARE, per staff, beside the verdict it produced. The
+        # reason string already says "no majority to check against"; it has
+        # never said how far off a majority the page was, because `reconcile`
+        # compared the number once and dropped it. The staff's own reading and
+        # weight go beside it, since a verdict is only readable against what
+        # was fed to it.
+        by_index = {c.staff_index: c for c in candidates}
+        for staff_index, verdict in result.verdicts.items():
+            cand = by_index.get(staff_index)
+            system_index = cand.system_index if cand is not None else None
+            evidence[staff_index] = {
+                "action": verdict.action,
+                "fifths": verdict.fifths,
+                "read_fifths": cand.fifths if cand else None,
+                "read_weight": (round(cand.weight, 4) if cand else None),
+                "read_source": cand.source if cand else None,
+                "can_carry": cand.can_carry if cand else None,
+                "system_index": system_index,
+                "system_reference": result.reference_written_by_system.get(
+                    system_index),
+                "system_majority": result.majority_by_system.get(system_index),
+                "system_vote_totals": result.vote_totals_by_system.get(
+                    system_index, {}),
+            }
     fifths: dict[int, int] = {}
     reasons: dict[int, str] = {}
     for staff_index, verdict in result.verdicts.items():
@@ -4389,6 +4421,9 @@ def transcribe(
         # way. Keyed by staff index, which is numbered across the page, so one
         # dict serves every system. Recording only.
         header_prepass_locator_traces: dict[int, dict[str, Any]] = {}
+        # What the cross-page key-signature vote MEASURED, per staff — the
+        # majority share it compares once and drops, and the tally behind it.
+        key_sig_evidence: dict[int, dict[str, Any]] = {}
         header_dets: dict[int, tuple[list, MeasureCell]] = {}
         if read_headers:
             for sys_idx in sorted(systems.keys()):
@@ -4464,7 +4499,8 @@ def transcribe(
                     clef_estimate[staff_idx] = estimate
             voted_fifths, voted_reasons, key_sig_unread_reasons = (
                 _header_key_signatures(
-                    pws, header_cells, clef_estimate, header_dets
+                    pws, header_cells, clef_estimate, header_dets,
+                    evidence=key_sig_evidence,
                 )
             )
             key_sig_default_unread = "no reader spoke for this staff"
@@ -4748,6 +4784,14 @@ def transcribe(
                 # back, and a staff no reader spoke on carries no key at all.
                 if first_cell_clef_evidence:
                     staff_dict["clef_evidence"] = first_cell_clef_evidence
+                # And what the key-signature vote measured. `key_signature_reason`
+                # already names the branch ("no majority to check against"); this
+                # is the NUMBER that branch was chosen on, which was destroyed in
+                # the comparison that used it.
+                if staff_idx in key_sig_evidence:
+                    staff_dict["key_signature_evidence"] = (
+                        key_sig_evidence[staff_idx]
+                    )
                 # What the readers said where the dossier overruled them. Kept
                 # so a seeded run can still be audited for detector quality —
                 # seeding must not hide how well the page was actually read.
