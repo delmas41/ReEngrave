@@ -29,7 +29,31 @@ SCAN_COMPARISON = ROOT / "benchmarks" / "omr-vs-industry-2026-09" / "scan-compar
 CONTENT = ROOT / "docs" / "progress-dashboard.content.json"
 OUT = ROOT / "docs" / "progress-dashboard.html"
 
+# ── artefacts the pipeline flow graph reads (all committed; each is optional,
+#    and a missing one degrades that cell to "unmeasured" rather than crashing)
+READING = ROOT / "benchmarks" / "omr-reading-vs-reproduction-2026-09" / "results.json"
+SCAN_GATE = ROOT / "benchmarks" / "omr-scan-e2e-2026-09" / "results-reconciliation.json"
+ENGRAVED_1TO1 = ROOT / "benchmarks" / "omr-headline-validity-2026-09" / "engraved-1to1.json"
+NORMALISED = ROOT / "benchmarks" / "omr-headline-validity-2026-09" / "results-normalised-arm.json"
+HAIRPIN_CV = ROOT / "benchmarks" / "omr-hairpin-cv-2026-09" / "results-scored-pages.json"
+
 BAR_MAX_PX = 200  # the worst work's bar length; others scale linearly
+
+# ── the colour rule, stated once and printed in the legend from these constants
+#    so the page can never claim a threshold the code does not use.
+RATE_GREEN = 0.90   # higher-is-better rates (F1, recall, "n of m correct")
+RATE_AMBER = 0.60
+NED_GREEN = 0.15    # OMR-NED — lower is better
+NED_AMBER = 0.50
+
+# The reading benchmark pools at this centre tolerance, in staff spaces.
+READING_TOL = "0.5"
+# Families the reading harness flags rather than pools: `accidental` is a
+# Verovio render artefact (one glyph per <alter>, not per <accidental>), and
+# `barline`/`beam` are classical-CV and cell-relative, so they never appear in
+# page coordinates on the prediction side. Excluding exactly these three
+# reproduces the harness's published pooled F1 of 0.919.
+READING_UNPOOLED = ("accidental", "barline", "beam")
 
 ROMAN = {1: "i", 2: "ii", 3: "iii", 4: "iv", 5: "v"}
 
@@ -68,6 +92,336 @@ def recent_commits(n: int = 6) -> list:
 
 def esc(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+# ── pipeline flow graph ──────────────────────────────────────────────────────
+#
+# Sean's ask: see the pieces, labelled with what technology reads each one, and
+# colour-coded by how well it currently works.
+#
+# ⚠️ The design constraint that decides whether this is useful or misleading:
+# ONE colour per stage would be a lie. Engraved and scanned pages differ
+# enormously at the SAME stage, sometimes in opposite directions — hairpins read
+# at F1 1.000 against engraved page truth and 1 of 99 on scans; noteheads 856 of
+# 856 engraved while half-notes are the documented scan weakness. So every stage
+# carries TWO cells and they are never averaged.
+#
+# Every figure here is either read from a committed artefact (preferred — it
+# cannot rot) or carried in the content JSON with an explicit `source` string.
+# A stage with no isolated measurement is GREY and says so: this project's house
+# standard is that an unmeasured claim is worse than an absent one.
+
+
+def _load(path: Path):
+    try:
+        return json.loads(path.read_text())
+    except Exception:
+        return None
+
+
+def _f1(truth: int, pred: int, matched: int):
+    if not truth or not pred:
+        return None
+    prec = matched / pred
+    rec = matched / truth
+    if prec + rec == 0:
+        return None
+    return 2 * prec * rec / (prec + rec), prec, rec
+
+
+def _mean(xs):
+    xs = [x for x in xs if x is not None]
+    return sum(xs) / len(xs) if xs else None
+
+
+def pipeline_metrics() -> dict:
+    """Every number the flow graph can compute, keyed by the name the content
+    JSON refers to. Each value is {display, detail, source} plus at most one of
+    `rate` (higher is better) or `ned` (lower is better) — the colour comes from
+    that, never from a hand-assigned status."""
+    m = {}
+
+    # ── stage 4/5/8: per-family reading F1 against exact Verovio page truth
+    reading = _load(READING)
+    if reading:
+        agg = {}
+        works = reading.get("stage1_reading") or {}
+        for w in works.values():
+            per = ((w.get("tolerances") or {}).get(READING_TOL) or {}).get("per_family") or {}
+            for fam, v in per.items():
+                a = agg.setdefault(fam, [0, 0, 0])
+                a[0] += v["truth"]; a[1] += v["pred"]; a[2] += v["matched"]
+        src = "benchmarks/omr-reading-vs-reproduction-2026-09/results.json"
+        note = " · %d engraved works, page truth at %s staff spaces" % (len(works), READING_TOL)
+        pool = [0, 0, 0]
+        for fam, (t, p, mt) in agg.items():
+            r = _f1(t, p, mt)
+            if r:
+                f1, prec, rec = r
+                m["reading:" + fam] = {
+                    "display": "F1 %.3f" % f1, "rate": f1,
+                    "detail": "%d printed / %d read / %d matched · precision %.3f recall %.3f"
+                              % (t, p, mt, prec, rec),
+                    "source": src,
+                }
+            if fam not in READING_UNPOOLED:
+                pool[0] += t; pool[1] += p; pool[2] += mt
+        r = _f1(*pool)
+        if r:
+            f1, prec, rec = r
+            m["reading:POOLED"] = {
+                "display": "F1 %.3f" % f1, "rate": f1,
+                "detail": "%d scoreable symbols / %d read · precision %.3f recall %.3f%s"
+                          % (pool[0], pool[1], prec, rec, note),
+                "source": src,
+            }
+
+    # ── the two headline scores, one per input family
+    record = _load(RECORD)
+    if record:
+        dt = record["runs"]["direction_text"]
+        m["engraved:omr_ned"] = {
+            "display": "%.4f" % dt["pooled"], "ned": dt["pooled"],
+            "detail": "pooled OMR-NED, %d works, %s edits · recorded on %s"
+                      % (len(dt["works"]), "{:,}".format(dt["edits"]), dt["commit"]),
+            "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+        }
+        pr = _mean([w["pitch_recall"] for w in dt["works"]])
+        dr = _mean([w["duration_rate"] for w in dt["works"]])
+        m["engraved:pitch"] = {
+            "display": "%.3f" % pr, "rate": pr,
+            "detail": "mean note recall over %d works (worst %.3f, best %.3f)"
+                      % (len(dt["works"]),
+                         min(w["pitch_recall"] for w in dt["works"]),
+                         max(w["pitch_recall"] for w in dt["works"])),
+            "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+        }
+        m["engraved:duration"] = {
+            "display": "%.3f" % dr, "rate": dr,
+            "detail": "mean duration rate over %d works — of matched notes, the share "
+                      "whose value is also right" % len(dt["works"]),
+            "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+        }
+
+    # ── stage 1/2/3/6/7: the scan gate's own structural + note columns
+    gate = _load(SCAN_GATE)
+    if gate:
+        rows = gate["rows"]
+        src = "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json"
+        m["scan:omr_ned"] = {
+            "display": "%.4f" % gate["pooled"]["omr_ned"], "ned": gate["pooled"]["omr_ned"],
+            "detail": "pooled OMR-NED, %d hand-verified rows, %s edits · ⚠️ a large share is "
+                      "structural charge, see the note below"
+                      % (len(rows), "{:,}".format(gate["pooled"]["omr_ed"])),
+            "source": src,
+        }
+        st_ok = sum(1 for r in rows if r["printed"]["staves"] == r["detected"]["staves"])
+        m["scan:staves"] = {
+            "display": "%d/%d rows" % (st_ok, len(rows)), "rate": st_ok / len(rows),
+            "detail": "%d printed staves, %d detected — every row exact"
+                      % (sum(r["printed"]["staves"] for r in rows),
+                         sum(r["detected"]["staves"] for r in rows))
+                      if st_ok == len(rows) else
+                      "%d printed staves, %d detected"
+                      % (sum(r["printed"]["staves"] for r in rows),
+                         sum(r["detected"]["staves"] for r in rows)),
+            "source": src,
+        }
+        sy_ok = sum(1 for r in rows if r["printed"]["systems"] == r["detected"]["systems"])
+        m["scan:systems"] = {
+            "display": "%d/%d rows" % (sy_ok, len(rows)), "rate": sy_ok / len(rows),
+            "detail": "systems per page, hand-read against the print",
+            "source": src,
+        }
+        # ⚠️ the summary `detected.measures` field undercounts MULTI-system pages
+        # (recorded in BASELINE_20ROW_2026-09-05.md), so this reads only the
+        # single-system rows, where it is trustworthy.
+        single = [r for r in rows if r["printed"]["systems"] == 1]
+        if single:
+            ok = sum(1 for r in single if r["truth"]["measures"] == r["detected"]["measures"])
+            bad = [r["row_id"].split(".")[0] for r in single
+                   if r["truth"]["measures"] != r["detected"]["measures"]]
+            m["scan:measures"] = {
+                "display": "%d/%d pages" % (ok, len(single)), "rate": ok / len(single),
+                "detail": "single-system rows only — the summary field undercounts "
+                          "multi-system pages%s"
+                          % ((" · off by one on " + ", ".join(bad)) if bad else ""),
+                "source": src,
+            }
+        acc = {}
+        for key in ("exact", "step", "with_duration"):
+            t = p = mt = 0
+            for r in rows:
+                n = (r.get("notes") or {}).get("pooled")
+                if n:
+                    t += n[key]["truth"]; p += n[key]["omr"]; mt += n[key]["matched"]
+            acc[key] = (t, p, mt)
+        n_scored = sum(1 for r in rows if (r.get("notes") or {}).get("pooled"))
+        if acc["step"][0]:
+            step_rec = acc["step"][2] / acc["step"][0]
+            exact_rec = acc["exact"][2] / acc["exact"][0]
+            m["scan:pitch"] = {
+                "display": "%.3f" % step_rec, "rate": step_rec,
+                "detail": "staff-position recall over %s truth notes on the %d rows carrying a "
+                          "hand-confirmed staff map · spelled-pitch recall %.3f — the gap is the "
+                          "accidental and key-signature layer"
+                          % ("{:,}".format(acc["step"][0]), n_scored, exact_rec),
+                "source": src,
+            }
+        if acc["exact"][2]:
+            drate = acc["with_duration"][2] / acc["exact"][2]
+            m["scan:duration"] = {
+                "display": "%.3f" % drate, "rate": drate,
+                "detail": "of the %s notes matched on pitch, the share whose duration is also "
+                          "right (%d rows)" % ("{:,}".format(acc["exact"][2]), n_scored),
+                "source": src,
+            }
+
+    # ── stage 1-3 on engraved pages: does the output have the page's structure
+    one = _load(ENGRAVED_1TO1)
+    if one:
+        works = one["works"]
+        ok = sum(1 for w in works if w["our_parts"] == w["truth_parts"])
+        m["engraved:structure"] = {
+            "display": "%d/%d works" % (ok, len(works)), "rate": ok / len(works),
+            "detail": "parts emitted vs parts in the truth · these fixtures are 1:1 by "
+                      "construction (every truth part gets its own printed staff), so this is "
+                      "an easier question than a conductor's page asks",
+            "source": "benchmarks/omr-headline-validity-2026-09/engraved-1to1.json",
+        }
+
+    # ── the caveat the scan colour cannot be read without
+    norm = _load(NORMALISED)
+    if norm:
+        raw = norm["pooled_over_normalisable_rows_only"]["raw"]
+        nz = norm["pooled_over_normalisable_rows_only"]["normalised"]
+        removed = raw["omr_ed"] - nz["omr_ed"]
+        m["scan:structural_charge"] = {
+            "display": "%.1f%%" % (100.0 * removed / raw["omr_ed"]),
+            "detail": "on the %d rows where the condensation convention can be normalised away, "
+                      "%.4f → %.4f and %s of %s edits disappear — the page prints "
+                      "<code>Flauti</code> on one staff, the encoding holds two flute parts, and "
+                      "we are charged for reading the page right"
+                      % (raw["n_rows"], raw["omr_ned"], nz["omr_ned"],
+                         "{:,}".format(removed), "{:,}".format(raw["omr_ed"])),
+            "source": "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+        }
+
+    # ── stage 4 on scans: the one per-class detector figure that exists
+    hp = _load(HAIRPIN_CV)
+    if hp:
+        truth = sum(v["truth_hairpins"] for v in hp.values())
+        yolo = sum(v["yolo"] for v in hp.values())
+        if truth:
+            m["scan:hairpin_detect"] = {
+                "display": "%d/%d" % (yolo, truth), "rate": yolo / truth,
+                "detail": "hairpins the DETECTOR finds on %d scanned pages — against F1 1.000 "
+                          "on engraved page truth. The classical-CV reader added later carries "
+                          "118 of the 198 <code>&lt;wedge&gt;</code> into the file"
+                          % len(hp),
+                "source": "benchmarks/omr-hairpin-cv-2026-09/results-scored-pages.json",
+            }
+    return m
+
+
+def _status(cell: dict) -> tuple:
+    """(css class, label). Derived from the number, never asserted."""
+    if cell.get("rate") is not None:
+        v = cell["rate"]
+        if v >= RATE_GREEN:
+            return "good", "good"
+        if v >= RATE_AMBER:
+            return "warn", "partial"
+        return "crit", "weak"
+    if cell.get("ned") is not None:
+        v = cell["ned"]
+        if v <= NED_GREEN:
+            return "good", "good"
+        if v <= NED_AMBER:
+            return "warn", "partial"
+        return "crit", "weak"
+    return "grey", "unmeasured"
+
+
+def _resolve_cell(spec, metrics: dict) -> dict:
+    """A content-JSON cell is either {"metric": key} (computed, cannot rot) or a
+    literal carrying its own `source`. An unresolvable metric degrades to grey
+    rather than raising — a missing artefact must not break the build."""
+    if not spec:
+        return {"display": "—", "detail": "no measurement", "source": ""}
+    if spec.get("metric"):
+        base = dict(metrics.get(spec["metric"]) or {})
+        if not base:
+            base = {"display": "—",
+                    "detail": "artefact missing: <code>%s</code>" % esc(spec["metric"]),
+                    "source": ""}
+        for k in ("detail", "display", "source"):
+            if spec.get(k):
+                base[k] = spec[k]
+        if spec.get("detail_suffix"):
+            base["detail"] = base.get("detail", "") + " " + spec["detail_suffix"]
+        return base
+    return dict(spec)
+
+
+def build_pipeline(content: dict, metrics: dict) -> str:
+    pipe = content.get("pipeline")
+    if not pipe:
+        return ""
+    rows = []
+    stages = pipe["stages"]
+    for i, st in enumerate(stages):
+        cells = []
+        for family, label in (("engraved", "engraved"), ("scan", "scan")):
+            c = _resolve_cell(st.get(family), metrics)
+            cls, word = _status(c)
+            src = ('<span class="psrc">%s</span>' % esc(c["source"])) if c.get("source") else ""
+            cells.append(
+                '<div class="pcell %s"><span class="plab">%s <em>%s</em></span>'
+                '<span class="pval">%s</span><span class="pdet">%s</span>%s</div>'
+                % (cls, label, word, c.get("display", "—"), c.get("detail", ""), src))
+        note = ('<p class="pnote">%s</p>' % st["note"]) if st.get("note") else ""
+        cls = ""
+        if i == 0:
+            cls += " first"
+        if i == len(stages) - 1:
+            cls += " last"
+        rows.append(
+            '<div class="pstage%s">'
+            '<div class="pnum"><span>%s</span></div>'
+            '<div class="pmain"><h4>%s</h4><span class="tech">%s</span>%s</div>'
+            '%s%s</div>'
+            % (cls, st["n"], st["name"], st["tech"], note, cells[0], cells[1]))
+    legend = (
+        '<div class="plegend">'
+        '<span><i class="sw good"></i>good — rate ≥ %.2f, or OMR-NED ≤ %.2f</span>'
+        '<span><i class="sw warn"></i>partial — rate %.2f–%.2f, or OMR-NED %.2f–%.2f</span>'
+        '<span><i class="sw crit"></i>weak — rate &lt; %.2f, or OMR-NED &gt; %.2f</span>'
+        '<span><i class="sw grey"></i>unmeasured — no isolated figure exists</span>'
+        '</div>' % (RATE_GREEN, NED_GREEN, RATE_AMBER, RATE_GREEN, NED_GREEN, NED_AMBER,
+                    RATE_AMBER, NED_AMBER))
+    charge = metrics.get("scan:structural_charge")
+    charge_html = ""
+    if charge:
+        charge_html = (
+            '<p class="table-caption">⚠️ <b>Read the scan column with this in hand:</b> %s '
+            '(<span class="psrc">%s</span>) So the scan colours are a floor on how well the '
+            'stage reads the page — part of that gap is the metric billing a printing '
+            'convention, not a misreading.</p>' % (charge["detail"], esc(charge["source"])))
+    return """
+  <section>
+    <p class="kicker">The pipeline, stage by stage</p>
+    <p class="table-caption" style="margin:0 0 14px">%s</p>
+    %s
+    <div class="pflowwrap">
+      <div class="pflow">
+        <div class="phead"><div></div><div>stage &middot; what reads it</div><div>digitally engraved input</div><div>scanned input</div></div>
+        %s
+      </div>
+    </div>
+    %s
+  </section>
+""" % (pipe["intro"], legend, "\n        ".join(rows), charge_html)
 
 
 # ── HTML pieces ──────────────────────────────────────────────────────────────
@@ -181,6 +535,57 @@ CSS = """\
     gap: 12px; flex-wrap: wrap; }
   code { font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; font-size: .92em;
     background: var(--accent-soft); color: var(--accent); padding: 1px 5px; border-radius: 3px; }
+
+  /* ── pipeline flow graph ─────────────────────────────────────────────── */
+  .plegend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 12.5px;
+    color: var(--muted); margin: 0 0 16px; }
+  .plegend span { display: inline-flex; align-items: center; gap: 7px; }
+  .sw { width: 11px; height: 11px; border-radius: 3px; display: inline-block; flex: none; }
+  .sw.good { background: var(--good); } .sw.warn { background: var(--warn); }
+  .sw.crit { background: var(--crit); } .sw.grey { background: var(--faint); }
+  .pflowwrap { overflow-x: auto; }
+  .pflow { min-width: 700px; background: var(--surface); border: 1px solid var(--hairline);
+    border-radius: 6px; box-shadow: var(--shadow); }
+  .phead, .pstage { display: grid; grid-template-columns: 46px minmax(190px, 1.15fr)
+    minmax(190px, 1fr) minmax(190px, 1fr); }
+  .phead > div { font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--muted); font-weight: 600; padding: 11px 14px 9px;
+    border-bottom: 1px solid var(--hairline-strong); }
+  .pstage { border-bottom: 1px solid var(--hairline); }
+  .pstage.last { border-bottom: none; }
+  /* the rail: a numbered node per stage, joined by a line down the gutter */
+  .pnum { position: relative; font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11.5px; font-weight: 600; color: var(--muted); padding: 16px 0 0;
+    text-align: center; }
+  .pnum::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
+    margin-left: -.5px; background: var(--hairline-strong); }
+  .pstage.first .pnum::before { top: 18px; }
+  .pstage.last .pnum::before { bottom: auto; height: 18px; }
+  .pnum span { position: relative; display: inline-block; background: var(--surface);
+    padding: 2px 0; width: 20px; }
+  .pmain { padding: 13px 14px; }
+  .pmain h4 { margin: 0 0 4px; font-size: 14px; font-weight: 600; line-height: 1.3; }
+  .tech { display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: .05em;
+    text-transform: uppercase; padding: 2px 8px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent); }
+  .pnote { margin: 7px 0 0; font-size: 12.5px; color: var(--muted); }
+  .pcell { padding: 13px 14px; border-left: 1px solid var(--hairline);
+    display: flex; flex-direction: column; gap: 2px; }
+  .pcell .plab { font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em;
+    font-weight: 600; color: var(--faint); }
+  .pcell .plab em { font-style: normal; font-weight: 700; }
+  .pcell .pval { font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 19px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.25; }
+  .pcell .pdet { font-size: 12px; color: var(--muted); line-height: 1.45; }
+  .pcell .psrc { font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 10.5px; color: var(--faint); margin-top: 4px; overflow-wrap: anywhere; }
+  .pcell.good { background: var(--good-soft); }
+  .pcell.good .pval, .pcell.good .plab em { color: var(--good); }
+  .pcell.warn { background: var(--warn-soft); }
+  .pcell.warn .pval, .pcell.warn .plab em { color: var(--warn); }
+  .pcell.crit { background: var(--crit-soft); }
+  .pcell.crit .pval, .pcell.crit .plab em { color: var(--crit); }
+  .pcell.grey .pval { color: var(--faint); font-size: 15px; }
 """
 
 
@@ -364,7 +769,7 @@ def render() -> str:
     <div class="stafflines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     <p class="subtitle">%(subtitle)s</p>
   </header>
-
+%(pipeline)s
   <section>
     <p class="kicker">Headline numbers</p>
     <div class="metrics">
@@ -430,6 +835,7 @@ def render() -> str:
         "today": today,
         "commit": esc(commit),
         "subtitle": content["subtitle"],
+        "pipeline": build_pipeline(content, pipeline_metrics()),
         "metrics": build_metrics(record, content),
         "era_note": content["era_note"],
         "table_rows": build_table(record, content),
@@ -474,8 +880,19 @@ def main() -> int:
 
     if args.serve:
         import http.server, functools
-        handler = functools.partial(
-            http.server.SimpleHTTPRequestHandler, directory=str(ROOT / "docs"))
+
+        class _Utf8Handler(http.server.SimpleHTTPRequestHandler):
+            """The written page is a FRAGMENT — no <head>, so no <meta charset>;
+            the artifact host supplies one. A bare SimpleHTTPRequestHandler does
+            not, and the preview then renders every ⚠️, → and — as mojibake, which
+            reads like a generator bug. Declare it on the wire instead."""
+            def guess_type(self, path):
+                ctype = http.server.SimpleHTTPRequestHandler.guess_type(self, path)
+                if ctype in ("text/html", "text/plain") or str(path).endswith(".html"):
+                    return "text/html; charset=utf-8"
+                return ctype
+
+        handler = functools.partial(_Utf8Handler, directory=str(ROOT / "docs"))
         print("serving http://localhost:8600/progress-dashboard.html  (Ctrl-C to stop)")
         http.server.HTTPServer(("127.0.0.1", 8600), handler).serve_forever()
     return 0
