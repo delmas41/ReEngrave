@@ -179,8 +179,53 @@ def main(argv=None) -> int:
                     f"{e['norm']['omr_ed']} where the probe patch scored "
                     f"{p['norm']['omr_ed']} — they are not the same transform")
 
+    # ------------------------------------------------------------ the pools
+    # ⚠️ POOLED IN `normalised_arm.py`'S OWN FORM — edits over (truth + pred)
+    # symbols, summed across rows, never a mean of ratios.
+    def pool(key: str, rows_: list[dict]) -> dict:
+        ed = ts = ps = 0
+        cats: dict[str, int] = {}
+        for e in rows_:
+            n = e[key]
+            ed += n["omr_ed"]
+            ts += n["truth_symbols"]
+            ps += n["pred_symbols"]
+            for k, v in (n.get("categories") or {}).items():
+                cats[k] = cats.get(k, 0) + v
+        return {"omr_ned": ed / (ts + ps) if (ts + ps) else None, "omr_ed": ed,
+                "truth_symbols": ts, "pred_symbols": ps, "categories": cats,
+                "n_rows": len(rows_)}
+
+    merged = [e for e in entries if e["arm"] != "candidate map"]
+    mahler = [e for e in entries if e["row_id"].startswith("mahler")]
+    bach = [e for e in entries if e["row_id"].startswith("bach")]
+    pools = {
+        "mapped_in_works_json_today": {
+            "rows": [e["row_id"] for e in merged],
+            "raw": pool("raw", merged), "normalised": pool("norm", merged)},
+        "plus_the_four_mahler_candidate_maps": {
+            "rows": [e["row_id"] for e in merged + mahler],
+            "raw": pool("raw", merged + mahler),
+            "normalised": pool("norm", merged + mahler)},
+        "all_twenty_rows": {
+            "rows": [e["row_id"] for e in entries],
+            "raw": pool("raw", entries), "normalised": pool("norm", entries)},
+    } if len(entries) == 20 else None
+    if pools is not None:
+        pools["_bach_rows_included_in_all_twenty"] = [e["row_id"] for e in bach]
+
     doc = {
         "generated_by": "benchmarks/omr-page-normalise-fixes-2026-09/controls.py",
+        "pooled": pools,
+        "pooled_warning": (
+            "⚠️ THE NORMALISED POOL IS A SEPARATE BENCHMARK ERA. It may not be "
+            "differenced against the recorded 20-row raw 0.8444 or any other "
+            "historical figure, in either direction. The gap between the raw "
+            "and normalised columns is STRUCTURAL CHARGE REMOVED — the metric "
+            "ceasing to bill a printing convention — and is NOT the pipeline "
+            "improving. ⚠️ Two of the three pools use CANDIDATE maps that are "
+            "NOT in works.json: they are what the figure WOULD be, not what it "
+            "is."),
         "git_head": subprocess.run(["git", "-C", str(ROOT), "rev-parse",
                                     "--short", "HEAD"], capture_output=True,
                                    text=True).stdout.strip(),
@@ -203,6 +248,18 @@ def main(argv=None) -> int:
         print(f"{e['row_id']:34s} {e['raw']['omr_ed']:>7d} "
               f"{e['norm']['omr_ed']:>8d} {e['delta_edits']:>+7d} "
               f"{e['delta_entire_staff']:>+7d}  {e['arm']}")
+    if pools:
+        print()
+        for name, p in pools.items():
+            if name.startswith("_"):
+                continue
+            r, n = p["raw"], p["normalised"]
+            print(f"{name:38s} n={r['n_rows']:>2d}  raw {r['omr_ned']:.4f} / "
+                  f"{r['omr_ed']:>6d} ed   normalised {n['omr_ned']:.4f} / "
+                  f"{n['omr_ed']:>6d} ed")
+        print("⚠️  the normalised column is a SEPARATE BENCHMARK ERA — "
+              "structural charge removed, never improvement, and it may not be "
+              "differenced against the recorded raw 0.8444.")
     print()
     for f in failures:
         print("FAIL:", f)

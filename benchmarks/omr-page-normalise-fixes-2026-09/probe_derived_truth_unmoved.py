@@ -46,7 +46,10 @@ import candidate_maps                                   # noqa: E402
 MAIN = Path("/Users/seanjohnson/Desktop/ReEngrave")
 REC = (MAIN / ".claude/worktrees/reconciliation/benchmarks"
        "/omr-scan-e2e-2026-09/fixtures")
-BASE_REV = "HEAD"          # the branch point: the shipped module, unfixed
+#: ⚠️ THE BRANCH POINT, NAMED EXPLICITLY, NOT "HEAD". Once the fix is
+#: committed HEAD carries it, and comparing HEAD against the working tree would
+#: compare the fix with itself and report a clean PASS having tested nothing.
+BASE_REV = "687d1c4e"      # the last commit before the fix
 
 
 def load_old(tmp: Path):

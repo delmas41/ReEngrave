@@ -1,0 +1,46 @@
+{
+ "generated_by": "benchmarks/omr-page-normalise-fixes-2026-09/summarise_pools.py",
+ "warning": "\u26a0\ufe0f THE NORMALISED POOL IS A SEPARATE BENCHMARK ERA. It may not be differenced against the recorded 20-row raw 0.8444 or any other historical figure, in either direction. The gap between the raw and normalised columns is STRUCTURAL CHARGE REMOVED \u2014 the metric ceasing to bill a printing convention \u2014 and is NOT the pipeline improving. \u26a0\ufe0f Two of the three pools use CANDIDATE maps that are NOT in works.json: they are what the figure WOULD be, not what it is.",
+ "transform_version": "1.2.0",
+ "pools": {
+  "mapped_in_works_json_today": {
+   "n_rows": 15,
+   "raw_omr_ned": 0.8417147206041624,
+   "raw_omr_ed": 57511,
+   "normalised_omr_ned": 0.606502964681619,
+   "normalised_omr_ed": 37642,
+   "staff_measures_merged": 3758,
+   "divisi_share": 0.1932,
+   "divisi_chorded": 690,
+   "divisi_voiced": 36,
+   "entire_staff_raw": 11927,
+   "entire_staff_normalised": 2236
+  },
+  "plus_the_four_mahler_candidate_maps": {
+   "n_rows": 19,
+   "raw_omr_ned": 0.8481427620714304,
+   "raw_omr_ed": 68820,
+   "normalised_omr_ned": 0.630025194435316,
+   "normalised_omr_ed": 46012,
+   "staff_measures_merged": 4382,
+   "divisi_share": 0.168,
+   "divisi_chorded": 697,
+   "divisi_voiced": 39,
+   "entire_staff_raw": 17234,
+   "entire_staff_normalised": 3408
+  },
+  "all_twenty_rows": {
+   "n_rows": 20,
+   "raw_omr_ned": 0.8443958865999122,
+   "raw_omr_ed": 74968,
+   "normalised_omr_ned": 0.6465608072093514,
+   "normalised_omr_ed": 52160,
+   "staff_measures_merged": 4492,
+   "divisi_share": 0.1638,
+   "divisi_chorded": 697,
+   "divisi_voiced": 39,
+   "entire_staff_raw": 17520,
+   "entire_staff_normalised": 3694
+  }
+ }
+}

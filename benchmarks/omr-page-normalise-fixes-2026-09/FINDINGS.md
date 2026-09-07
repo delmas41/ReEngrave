@@ -1,17 +1,30 @@
 # Four faults in `page_normalise`, and the controls that had to hold
 
-2026-09-06. Branch `claude/page-normalise-fixes-2026-09-06`, off `687d1c4e`.
-**Nothing here changes a default, and `works.json` was NOT written** — see §6,
-which is the one requirement of the commission I declined and why.
+2026-09-06. Branch `claude/page-normalise-fixes-2026-09-06`, off `687d1c4e`,
+with `origin/main` (`28619901`) merged in — **every figure below was
+re-measured on the merged tree**, after the machine crashed mid-run and the
+partial work was rescued as `492f1e07`. Nothing here changes a default, and
+`works.json` was NOT written — see §6, which is the one requirement of the
+commission I did not carry out, and the evidence that it cannot be carried out
+today for reasons that are not this fix.
 
 ```bash
 python3 -m pytest tools/omr/tests/test_scan_eval_structural.py       # 17 tests
 python3 benchmarks/omr-page-normalise-fixes-2026-09/probe_derived_truth_unmoved.py
 python3 benchmarks/omr-page-normalise-fixes-2026-09/probe_merge_unblocked.py
 python3 benchmarks/omr-page-normalise-fixes-2026-09/probe_coverage_after.py
-python3 benchmarks/omr-page-normalise-fixes-2026-09/controls.py      # ~40 min
+python3 benchmarks/omr-page-normalise-fixes-2026-09/controls.py      # ~50 min
+python3 benchmarks/omr-page-normalise-fixes-2026-09/summarise_pools.py
 python3 benchmarks/omr-headline-validity-2026-09/probe_engraved_normalise_noop.py
 ```
+
+⚠️ **A WORKTREE NEEDS FOUR SYMLINKS AND THE SCAN SIDE FAILS ASYMMETRICALLY**
+(`.venv-omrned`, `.venv-surya`, `tools/omr/training/data/weights`, and — for
+`normalised_arm.py` — `benchmarks/omr-scan-e2e-2026-09/fixtures`). ⚠️ **And
+symlinking a `fixtures/` directory changes the SUITE's collection**: with the
+orchestral and scan fixture symlinks in place the run is `2603 passed, 1
+skipped`, without them `2596 passed, 8 skipped`. Both numbers are of the same
+tree. Every suite figure quoted below is the un-symlinked one.
 
 The faults were diagnosed, with the exact reproducing bar, by
 `benchmarks/omr-staves-map-completion-2026-09/FINDINGS.md` §4, which patched
@@ -151,6 +164,18 @@ Run with `benchmarks/omr-scan-e2e-2026-09/page_normalise.py` stashed:
 
 4 failed. With the fix, the file is 17 passed.
 
+⚠️ **THE RED RUN WAS DONE AS A WHOLE-SUITE ARM, AND IT DOUBLES AS THE CONTROL
+FOR EIGHT FAILURES THAT ARE NOT MINE.** With the pre-fix module checked out
+under the new tests: **12 failed, 2592 passed, 8 skipped** — my four, plus eight
+in `backend/tests/` (`test_analytics_db.py` ×6, `test_export_module.py` ×2).
+With the fix: **8 failed, 2596 passed, 8 skipped** — the same eight, and nothing
+else. They are inherited: `git diff origin/main -- backend/` is EMPTY, this
+branch touches no backend file, and they fail identically either side of the
+change. The `test_export_module` pair is the documented
+`apply_corrections_to_musicxml` stub (`assert 'C' == 'G'`); the six analytics
+ones only appear in a whole-suite run and pass when that file is run alone, so
+they are order-dependent.
+
 ---
 
 ## 3. The controls — the ones that CANNOT improve
@@ -172,6 +197,13 @@ Beethoven rows, all four Brahms rows, Mahler p2, Mahler p5 and Bach.
 A score can only move if the file it is scored against moved, so this is a
 stronger statement than an edit count — and it has no noise floor, where the
 20-row gate has one of roughly ±6 edits.
+
+⚠️ **THE BASE REVISION IS PINNED BY HASH (`687d1c4e`), NOT `HEAD`.** It was
+`HEAD` while the fix was uncommitted, which was correct then and became a
+silent no-test the moment the fix was committed: HEAD would then carry the fix,
+the probe would compare it against itself, and it would print PASS on all
+twenty rows having measured nothing. The same shape as the cached-A/B trap the
+scan harness already records — a control that reports success by not running.
 
 ⚠️ **THE SELF-CONTROL FIRED, AND WITHOUT IT THIS PROBE WOULD HAVE REPORTED A
 CATASTROPHE.** music21's MusicXML writer mints a **fresh random
@@ -310,27 +342,100 @@ metric ceasing to bill a printing convention — never the pipeline improving**;
 a normalised figure is a different benchmark era and may not be differenced
 against 0.8444 in either direction (`page_normalise` rule 5).
 
+### 5b. The page-normalised pooled figure, which is what Sean asked to see
+
+Sean, 2026-09-06: *"down the road I want the truer number to be the one we are
+trying to beat, not the higher number."* `controls.py` pools in
+`normalised_arm.py`'s own form — edits over (truth + pred) symbols, summed
+across rows, never a mean of ratios — and `summarise_pools.py` prints it with
+the caveat it should never be quoted without:
+
+| pool | n | raw | **normalised** | divisi share |
+|---|--:|--:|--:|--:|
+| mapped in works.json today | 15 | 0.8417 / 57,511 ed | **0.6065 / 37,642 ed** | 0.1932 |
+| \+ the four Mahler candidate maps | 19 | 0.8481 / 68,820 ed | **0.6300 / 46,012 ed** | 0.1680 |
+| all twenty rows (Bach identity map) | 20 | **0.8444 / 74,968 ed** | **0.6466 / 52,160 ed** | 0.1638 |
+
+✅ **THE RAW 20-ROW POOL COMES OUT AT EXACTLY 0.8444**, the recorded canonical
+figure, from this harness's own re-scoring of the canonical predictions. That is
+the check that the normalised column is measured against the same thing the
+headline is, and not against a differently-assembled pool.
+
+⚠️ **THE TWO WIDER POOLS USE MAPS THAT ARE NOT IN `works.json`.** They are what
+the figure WOULD be, not what it is; the 15-row row is the only one measured
+against merged truth. ⚠️ **A normalised pool is its own benchmark era** — it may
+not be differenced against 0.8444 or any historical figure in either direction,
+and the raw→normalised gap is structural charge removed, never improvement.
+
+⚠️ **AND THE `divisi` COLUMN IS THE PART OF IT THAT RESTS ON A JUDGEMENT.**
+`silent_all`, `unison`, `silent_others` and `single` are exact duplication —
+the page prints one line and one line is what the derived truth carries, nothing
+decided. `divisi` is where two encoded parts genuinely play different notes on
+one printed staff and the transform CHOSE between a chord and stacked voices:
+**16.4% of merged staff-measures over the twenty rows**, 697 of them chorded.
+A figure that becomes the number to beat should carry that share beside it,
+because a change to the merge convention moves it.
+
 ---
 
-## 6. ⚠️ `works.json` WAS NOT WRITTEN, and that was deliberate
+## 6. ⚠️ `works.json` WAS NOT WRITTEN — and today it CANNOT be, for two reasons that are not this fix
 
-The commission asked for `merge_additions.py --write` on the four Mahler rows. I
-did not run it, and this is the reasoning rather than an omission:
+The commission asked for `merge_additions.py --write` on the four Mahler rows.
+This is not an omission and it is not caution: the reviewed tool refuses them
+today, and its refusal has nothing to do with `page_normalise`. Run against the
+real completion additions file on the merged tree:
 
-1. **The maps are not confirmed.** `works.staves-additions-completion.json` has
-   all five rows at `status: "in_progress"`. `merge_additions.check_row` refuses
-   anything that is not `done`, so the only way to write them today is to edit
-   that status myself — which is recording a human confirmation that nobody
-   made, into a file whose entire value is that it is hand-verified.
-2. **A premature write would LOCK SEAN OUT of his own reading.**
+```
+  REFUSE mahler-sym5-mvt1-local-p2: 21 staves, 38 parts named
+          - additions status is 'in_progress', not 'done'
+  REFUSE mahler-sym5-mvt1-local-p3: 15 staves, 38 parts named
+          - additions status is 'in_progress', not 'done'
+          - entry 0 `parts` is not sorted-unique: [10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  REFUSE mahler-sym5-mvt1-local-p4: 21 staves, 38 parts named
+          - additions status is 'in_progress', not 'done'
+          - entry 0 `parts` is not sorted-unique: [3, 4, 5, 0, 1, 2]
+  REFUSE mahler-sym5-mvt1-local-p5: 21 staves, 38 parts named
+          - additions status is 'in_progress', not 'done'
+          - entry 0 `parts` is not sorted-unique: [6, 7, 8, 9, 0, 1, 2, 3, 4, 5]
+  REFUSE bach-brandenburg3-mvt1-468678-p1: 11 staves, 11 parts named
+          - additions status is 'in_progress', not 'done'
+
+nothing mergeable.
+```
+
+1. **The confirmation pass has not been run.** All five rows are
+   `status: "in_progress"` and **every one of the 89 slots is
+   `"verdict": "pending"`** — checked in the file, not inferred from the
+   status. `check_row` refuses anything not `done`, so the only way to write
+   them today is for me to set that field, which is recording a human
+   confirmation that nobody made into a file whose entire value is that it is
+   hand-verified.
+2. **The proposals are not in works.json's shape yet.** Three rows carry an
+   unsorted `parts` — the printed part first and the tacet folds appended,
+   which is `page_normalise`'s convention (`parts[0]` decides whose bar
+   survives a silent bar) and NOT `merge_additions`' (`sorted-unique`). The UI
+   emits the sorted form when a human confirms a slot; the raw proposal does
+   not. So the file becomes mergeable BY BEING CONFIRMED, and cannot be made
+   mergeable any other honest way.
+
+And two hazards a future run should know about:
+
+3. ⚠️ **A premature write would LOCK SEAN OUT of his own reading.**
    `merge_additions` refuses to overwrite a row that already carries a `staves`
-   map — deliberately, "never overwrite someone else's hand reading". So if I
-   write the transcribed map now and the 57-slot pass then corrects any slot,
-   the corrected map cannot be merged by the reviewed tool at all. The cost of
-   waiting is nothing; the cost of writing early is a blocked confirmation pass.
+   map — deliberately, "never overwrite someone else's hand reading". Writing
+   the transcribed map now means the confirmation pass's own map, if it
+   corrects any slot, cannot be merged by the reviewed tool at all.
+4. ⚠️ **`merge_additions --write` EDITS THE MAIN CHECKOUT, not the worktree it
+   is run from.** It resolves `works.json` through `build_cache.MAIN`, which is
+   the hard-coded absolute path `/Users/seanjohnson/Desktop/ReEngrave`. So the
+   write is not a branch-local act and cannot be reviewed as a diff on this
+   branch; it belongs in the main checkout, deliberately, or behind an explicit
+   `--works`.
 
-**The block this task was about is gone** (§4), which is what the confirmation
-pass needed. After it marks the rows `done`:
+**The block this task was about is gone** (§4) — the two faults that made
+`page_normalise` REFUSE p3 and p4 are fixed, and all five rows now pass the
+tool's own validation when the maps are handed to it in confirmed form. After
+the pass marks the rows `done`:
 
 ```bash
 python3 benchmarks/omr-staves-map-2026-09/merge_additions.py \
@@ -352,7 +457,9 @@ of them and touch nothing — a no-op that reads like a refusal.
 
 **Verified.** Both crashes reproduced on the exact bars named by the completion
 findings, and reproduced again on written-and-reparsed synthetic fixtures; all
-four regression tests run RED with the module stashed and green with it;
+four regression tests run RED with the pre-fix module in place and green with
+it, as whole-suite arms on the merged tree; the raw 20-row pool reproducing the
+recorded 0.8444 exactly;
 the derived truth of every already-mappable row byte-identical across the fix,
 with a self-control proving the comparison is meaningful; the engraved pool an
 exact no-op on 11 of 11 works; the `Unpitched` census over all 20 scan-gate
