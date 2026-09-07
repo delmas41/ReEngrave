@@ -1,0 +1,3098 @@
+[
+ {
+  "n_staves": 12,
+  "n_rules": 2,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 2,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   8,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 2,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 3,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 3,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   2,
+   8,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 4,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   10,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 4,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 5,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1
+   ],
+   [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7
+   ]
+  ],
+  "sizes": [
+   2,
+   6,
+   3,
+   2
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 5,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    3,
+    4
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   2,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 6,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    3,
+    4,
+    5,
+    6
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   4,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 6,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   8,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 7,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   8,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 7,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   8,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 8,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   10,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 8,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   10,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 9,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   10,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 9,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   3,
+   2
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 10,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   2,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 10,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 11,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   8,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 11,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   9,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 12,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   [
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   3,
+   8,
+   3,
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "bach",
+  "page": 12,
+  "system": 1
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "beethoven",
+  "page": 2,
+  "system": 0
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "beethoven",
+  "page": 2,
+  "system": 1
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 1,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  ],
+  "sizes": [
+   8
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 3,
+  "system": 0
+ },
+ {
+  "n_staves": 8,
+  "n_rules": 1,
+  "n_spanning": 1,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 3,
+  "system": 1
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "beethoven",
+  "page": 4,
+  "system": 0
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "beethoven",
+  "page": 4,
+  "system": 1
+ },
+ {
+  "n_staves": 9,
+  "n_rules": 1,
+  "n_spanning": 1,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 5,
+  "system": 0
+ },
+ {
+  "n_staves": 7,
+  "n_rules": 1,
+  "n_spanning": 1,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 5,
+  "system": 1
+ },
+ {
+  "n_staves": 10,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "beethoven",
+  "page": 6,
+  "system": 0
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 1,
+  "n_spanning": 1,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 6,
+  "system": 1
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 1,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  ],
+  "sizes": [
+   9
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 7,
+  "system": 0
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 1,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  ],
+  "sizes": [
+   10
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 7,
+  "system": 1
+ },
+ {
+  "n_staves": 9,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "beethoven",
+  "page": 8,
+  "system": 0
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 1,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  ],
+  "sizes": [
+   8
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 8,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 1,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  ],
+  "sizes": [
+   8
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 9,
+  "system": 0
+ },
+ {
+  "n_staves": 10,
+  "n_rules": 1,
+  "n_spanning": 1,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 9,
+  "system": 1
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 1,
+  "n_spanning": 1,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 10,
+  "system": 0
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 1,
+  "n_spanning": 1,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 10,
+  "system": 1
+ },
+ {
+  "n_staves": 9,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "beethoven",
+  "page": 11,
+  "system": 0
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 1,
+  "n_spanning": 1,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 11,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "beethoven",
+  "page": 12,
+  "system": 0
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "beethoven",
+  "page": 12,
+  "system": 1
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 1,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    2
+   ]
+  ],
+  "sizes": [
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 13,
+  "system": 0
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 1,
+  "n_spanning": 1,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "beethoven",
+  "page": 13,
+  "system": 1
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    3,
+    4
+   ]
+  ],
+  "sizes": [
+   2
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 2,
+  "system": 0
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    3,
+    4
+   ],
+   [
+    5,
+    6
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  ],
+  "sizes": [
+   2,
+   2,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 2,
+  "system": 1
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 5,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  ],
+  "sizes": [
+   9,
+   5
+  ],
+  "contiguous": true,
+  "complete": true,
+  "states_partition": true,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 3,
+  "system": 0
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    4
+   ],
+   [
+    5
+   ]
+  ],
+  "sizes": [
+   1,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 3,
+  "system": 1
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  ],
+  "sizes": [
+   9,
+   5
+  ],
+  "contiguous": true,
+  "complete": true,
+  "states_partition": true,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 4,
+  "system": 0
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    3,
+    4
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  ],
+  "sizes": [
+   8,
+   2,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 4,
+  "system": 1
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 5,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   [
+    5,
+    6
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ],
+   [
+    10
+   ]
+  ],
+  "sizes": [
+   9,
+   2,
+   5,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 5,
+  "system": 0
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    3,
+    4
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  ],
+  "sizes": [
+   2,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 5,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 2,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 6,
+  "system": 0
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 2,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 6,
+  "system": 1
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 2,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    5
+   ],
+   [
+    6,
+    7,
+    8,
+    9,
+    10
+   ]
+  ],
+  "sizes": [
+   1,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 7,
+  "system": 0
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   [
+    5
+   ],
+   [
+    7
+   ]
+  ],
+  "sizes": [
+   6,
+   1,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 7,
+  "system": 1
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   [
+    6,
+    7,
+    8,
+    9,
+    10
+   ]
+  ],
+  "sizes": [
+   6,
+   5
+  ],
+  "contiguous": true,
+  "complete": true,
+  "states_partition": true,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 8,
+  "system": 0
+ },
+ {
+  "n_staves": 11,
+  "n_rules": 1,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 8,
+  "system": 1
+ },
+ {
+  "n_staves": 12,
+  "n_rules": 5,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   [
+    7,
+    8,
+    9,
+    10,
+    11
+   ]
+  ],
+  "sizes": [
+   7,
+   5
+  ],
+  "contiguous": true,
+  "complete": true,
+  "states_partition": true,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 9,
+  "system": 0
+ },
+ {
+  "n_staves": 13,
+  "n_rules": 5,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    8,
+    9,
+    10,
+    11,
+    12
+   ]
+  ],
+  "sizes": [
+   8,
+   5
+  ],
+  "contiguous": true,
+  "complete": true,
+  "states_partition": true,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 9,
+  "system": 1
+ },
+ {
+  "n_staves": 13,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    6
+   ],
+   [
+    8,
+    9,
+    10,
+    11,
+    12
+   ]
+  ],
+  "sizes": [
+   8,
+   1,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 10,
+  "system": 0
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  ],
+  "sizes": [
+   6,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 10,
+  "system": 1
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 5,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   [
+    3
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ],
+   [
+    10
+   ]
+  ],
+  "sizes": [
+   9,
+   1,
+   5,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 11,
+  "system": 0
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 5,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   [
+    3,
+    4
+   ],
+   [
+    5
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  ],
+  "sizes": [
+   9,
+   2,
+   1,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 11,
+  "system": 1
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    3,
+    4
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ],
+   [
+    10
+   ]
+  ],
+  "sizes": [
+   2,
+   5,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 12,
+  "system": 0
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    6
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ],
+   [
+    9,
+    10
+   ]
+  ],
+  "sizes": [
+   1,
+   5,
+   2
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 12,
+  "system": 1
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   [
+    5
+   ],
+   [
+    9
+   ]
+  ],
+  "sizes": [
+   9,
+   1,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 13,
+  "system": 0
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 5,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  ],
+  "sizes": [
+   8,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "brahms",
+  "page": 13,
+  "system": 1
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "dvorak",
+  "page": 4,
+  "system": 0
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "dvorak",
+  "page": 5,
+  "system": 0
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 6,
+  "system": 0
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    4
+   ],
+   [
+    8
+   ],
+   [
+    14
+   ]
+  ],
+  "sizes": [
+   1,
+   1,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 6,
+  "system": 1
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "dvorak",
+  "page": 7,
+  "system": 0
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    4,
+    5
+   ],
+   [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   [
+    8
+   ]
+  ],
+  "sizes": [
+   2,
+   8,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 7,
+  "system": 1
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 2,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    8
+   ]
+  ],
+  "sizes": [
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 8,
+  "system": 0
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 0,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": false,
+  "tag": "dvorak",
+  "page": 8,
+  "system": 1
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ]
+  ],
+  "sizes": [
+   10
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 9,
+  "system": 0
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 2,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    8
+   ]
+  ],
+  "sizes": [
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 9,
+  "system": 1
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 4,
+  "blocks": [
+   [
+    5
+   ],
+   [
+    7,
+    8
+   ],
+   [
+    11
+   ],
+   [
+    13,
+    14
+   ]
+  ],
+  "sizes": [
+   1,
+   2,
+   1,
+   2
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 10,
+  "system": 0
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 2,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    4,
+    5
+   ],
+   [
+    7
+   ]
+  ],
+  "sizes": [
+   2,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 10,
+  "system": 1
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    5
+   ],
+   [
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   1,
+   2
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 11,
+  "system": 0
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    4,
+    5
+   ],
+   [
+    8
+   ]
+  ],
+  "sizes": [
+   2,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 11,
+  "system": 1
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    4,
+    5
+   ],
+   [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   [
+    7
+   ]
+  ],
+  "sizes": [
+   2,
+   8,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 12,
+  "system": 0
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    5
+   ],
+   [
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   1,
+   2
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 12,
+  "system": 1
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 2,
+  "n_spanning": 0,
+  "n_partial": 0,
+  "blocks": [],
+  "sizes": [],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 13,
+  "system": 0
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ]
+  ],
+  "sizes": [
+   10
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "dvorak",
+  "page": 13,
+  "system": 1
+ },
+ {
+  "n_staves": 15,
+  "n_rules": 2,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1
+   ],
+   [
+    3,
+    4,
+    5,
+    6,
+    7
+   ]
+  ],
+  "sizes": [
+   2,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 2,
+  "system": 0
+ },
+ {
+  "n_staves": 21,
+  "n_rules": 7,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3
+   ],
+   [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   [
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+   ]
+  ],
+  "sizes": [
+   4,
+   6,
+   7
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 3,
+  "system": 0
+ },
+ {
+  "n_staves": 21,
+  "n_rules": 7,
+  "n_spanning": 0,
+  "n_partial": 1,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ]
+  ],
+  "sizes": [
+   3
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 4,
+  "system": 0
+ },
+ {
+  "n_staves": 14,
+  "n_rules": 7,
+  "n_spanning": 0,
+  "n_partial": 5,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    3,
+    4,
+    5,
+    6
+   ],
+   [
+    5,
+    6
+   ],
+   [
+    9,
+    10
+   ],
+   [
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  ],
+  "sizes": [
+   3,
+   4,
+   2,
+   2,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 5,
+  "system": 0
+ },
+ {
+  "n_staves": 7,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1
+   ],
+   [
+    2,
+    3,
+    4,
+    5,
+    6
+   ]
+  ],
+  "sizes": [
+   2,
+   5
+  ],
+  "contiguous": true,
+  "complete": true,
+  "states_partition": true,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 5,
+  "system": 1
+ },
+ {
+  "n_staves": 16,
+  "n_rules": 2,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    11,
+    12,
+    13,
+    14,
+    15
+   ]
+  ],
+  "sizes": [
+   3,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 6,
+  "system": 0
+ },
+ {
+  "n_staves": 16,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    11,
+    12,
+    13,
+    14,
+    15
+   ]
+  ],
+  "sizes": [
+   3,
+   5,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 7,
+  "system": 0
+ },
+ {
+  "n_staves": 17,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3
+   ],
+   [
+    12,
+    13,
+    14,
+    15,
+    16
+   ]
+  ],
+  "sizes": [
+   4,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 8,
+  "system": 0
+ },
+ {
+  "n_staves": 17,
+  "n_rules": 3,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3
+   ],
+   [
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  ],
+  "sizes": [
+   4,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 9,
+  "system": 0
+ },
+ {
+  "n_staves": 19,
+  "n_rules": 5,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3
+   ],
+   [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+   ]
+  ],
+  "sizes": [
+   4,
+   6,
+   6
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 10,
+  "system": 0
+ },
+ {
+  "n_staves": 13,
+  "n_rules": 7,
+  "n_spanning": 0,
+  "n_partial": 5,
+  "blocks": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    3,
+    4
+   ],
+   [
+    3
+   ],
+   [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   [
+    6,
+    7
+   ]
+  ],
+  "sizes": [
+   3,
+   2,
+   1,
+   7,
+   2
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 11,
+  "system": 0
+ },
+ {
+  "n_staves": 13,
+  "n_rules": 7,
+  "n_spanning": 0,
+  "n_partial": 6,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3
+   ],
+   [
+    4
+   ],
+   [
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    6,
+    7
+   ],
+   [
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   [
+    8
+   ]
+  ],
+  "sizes": [
+   4,
+   1,
+   4,
+   2,
+   5,
+   1
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 11,
+  "system": 1
+ },
+ {
+  "n_staves": 17,
+  "n_rules": 2,
+  "n_spanning": 0,
+  "n_partial": 2,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   [
+    5,
+    6,
+    7,
+    8
+   ]
+  ],
+  "sizes": [
+   5,
+   4
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 12,
+  "system": 0
+ },
+ {
+  "n_staves": 16,
+  "n_rules": 4,
+  "n_spanning": 0,
+  "n_partial": 3,
+  "blocks": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   [
+    5,
+    6,
+    7,
+    8
+   ],
+   [
+    11,
+    12,
+    13,
+    14,
+    15
+   ]
+  ],
+  "sizes": [
+   5,
+   4,
+   5
+  ],
+  "contiguous": true,
+  "complete": false,
+  "states_partition": false,
+  "any_rule": true,
+  "tag": "mahler",
+  "page": 13,
+  "system": 0
+ }
+]

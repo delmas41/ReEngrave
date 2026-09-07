@@ -1,0 +1,485 @@
+bach p2 sys0 12 staves  spacing=23.0
+    x=144-151 thick=8px/0.348sp  off=-0.04sp  y=1790-2368 h=25.17sp straight=0.999  covers=[6, 7, 8]
+    x=148-157 thick=10px/0.435sp  off=0.17sp  y=1000-1583 h=25.39sp straight=0.98  covers=[3, 4, 5]
+    x=154-165 thick=12px/0.522sp  off=0.48sp  y=318-791 h=20.61sp straight=0.821  covers=[1]
+    x=158-187 thick=30px/1.304sp  off=1.04sp  y=544-2313 h=76.96sp straight=0.712  covers=[1, 2, 3, 4, 5, 6, 7]
+bach p2 sys1 12 staves  spacing=22.88
+    x=135-143 thick=9px/0.393sp  off=0.09sp  y=4825-5425 h=26.27sp straight=1.0  covers=[6, 7, 8]
+    x=136-143 thick=8px/0.35sp  off=0.11sp  y=3368-3928 h=24.52sp straight=1.0  covers=[0, 1, 2]
+    x=136-143 thick=8px/0.35sp  off=0.11sp  y=4111-4665 h=24.26sp straight=1.0  covers=[3, 4, 5]
+    x=152-165 thick=14px/0.612sp  off=0.94sp  y=3366-5273 h=83.41sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7]
+bach p3 sys0 12 staves  spacing=23.12
+    x=97-107 thick=11px/0.476sp  off=-0.11sp  y=1726-2280 h=24.0sp straight=1.0  covers=[6, 7, 8]
+    x=103-114 thick=12px/0.519sp  off=0.17sp  y=1022-1562 h=23.39sp straight=0.996  covers=[3, 4, 5]
+    x=109-120 thick=12px/0.519sp  off=0.43sp  y=241-823 h=25.21sp straight=0.998  covers=[0, 1, 2]
+    x=112-146 thick=35px/1.514sp  off=1.06sp  y=828-1840 h=43.81sp straight=0.58  covers=[3, 4, 5, 6]
+bach p3 sys1 12 staves  spacing=23.25
+    x=93-103 thick=11px/0.473sp  off=-0.02sp  y=3229-3800 h=24.6sp straight=1.0  covers=[0, 1, 2]
+    x=96-105 thick=10px/0.43sp  off=0.09sp  y=3977-4586 h=26.24sp straight=1.0  covers=[3, 4, 5]
+    x=99-108 thick=10px/0.43sp  off=0.22sp  y=4794-5376 h=25.08sp straight=1.0  covers=[6, 7, 8]
+bach p4 sys0 12 staves  spacing=22.75
+    x=172-183 thick=12px/0.527sp  off=-0.15sp  y=1910-2509 h=26.37sp straight=0.996  covers=[6, 7, 8]
+    x=178-187 thick=10px/0.44sp  off=0.07sp  y=1145-1743 h=26.33sp straight=1.0  covers=[3, 4, 5]
+    x=184-195 thick=12px/0.527sp  off=0.37sp  y=317-843 h=23.16sp straight=0.994  covers=[0, 1]
+    x=194-221 thick=28px/1.231sp  off=1.16sp  y=463-2677 h=97.36sp straight=0.888  covers=[1, 2, 3, 4, 5, 6, 7, 8]
+bach p4 sys1 12 staves  spacing=23.0
+    x=168-175 thick=8px/0.348sp  off=0.07sp  y=3531-4099 h=24.74sp straight=1.0  covers=[0, 1, 2]
+    x=168-175 thick=8px/0.348sp  off=0.07sp  y=4952-5503 h=24.0sp straight=1.0  covers=[6, 7, 8]
+    x=169-175 thick=7px/0.304sp  off=0.09sp  y=4255-4818 h=24.52sp straight=1.0  covers=[3, 4, 5]
+    x=188-203 thick=16px/0.696sp  off=1.11sp  y=3530-5747 h=96.43sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+bach p5 sys0 12 staves  spacing=22.75
+    x=116-123 thick=8px/0.352sp  off=0.02sp  y=1792-2396 h=26.59sp straight=1.0  covers=[6, 7, 8]
+    x=118-126 thick=9px/0.396sp  off=0.13sp  y=1047-1632 h=25.76sp straight=1.0  covers=[3, 4, 5]
+    x=122-130 thick=9px/0.396sp  off=0.31sp  y=263-863 h=26.42sp straight=1.0  covers=[0, 1, 2]
+    x=136-158 thick=23px/1.011sp  off=1.23sp  y=637-2046 h=61.98sp straight=0.657  covers=[2, 3, 4, 5, 6]
+    x=162-186 thick=25px/1.099sp  off=2.42sp  y=1299-1628 h=14.51sp straight=0.0  covers=[4, 5]
+bach p5 sys1 12 staves  spacing=22.88
+    x=110-121 thick=12px/0.525sp  off=0.15sp  y=3398-3804 h=17.79sp straight=1.0  covers=[0, 1]
+    x=110-117 thick=8px/0.35sp  off=0.07sp  y=4158-4713 h=24.31sp straight=1.0  covers=[3, 4, 5]
+    x=111-120 thick=10px/0.437sp  off=0.15sp  y=4884-5408 h=22.95sp straight=1.0  covers=[6, 7]
+    x=131-147 thick=17px/0.743sp  off=1.18sp  y=3682-5334 h=72.26sp straight=1.0  covers=[2, 3, 4, 5, 6, 7]
+bach p6 sys0 12 staves  spacing=22.75
+    x=45-51 thick=7px/0.308sp  off=-0.09sp  y=1693-2300 h=26.73sp straight=1.0  covers=[6, 7, 8]
+    x=47-55 thick=9px/0.396sp  off=0.04sp  y=1021-1508 h=21.45sp straight=0.994  covers=[3, 4]
+    x=50-57 thick=8px/0.352sp  off=0.15sp  y=290-852 h=24.75sp straight=1.0  covers=[0, 1, 2]
+    x=65-85 thick=21px/0.923sp  off=1.1sp  y=850-1766 h=40.31sp straight=0.34  covers=[3, 4, 5, 6]
+bach p6 sys1 12 staves  spacing=22.75
+    x=40-47 thick=8px/0.352sp  off=0.07sp  y=4117-4716 h=26.37sp straight=1.0  covers=[3, 4, 5]
+    x=41-47 thick=7px/0.308sp  off=0.09sp  y=3347-3946 h=26.37sp straight=1.0  covers=[0, 1, 2]
+    x=42-50 thick=9px/0.396sp  off=0.18sp  y=4875-5480 h=26.64sp straight=1.0  covers=[6, 7, 8]
+    x=61-78 thick=18px/0.791sp  off=1.21sp  y=3989-5146 h=50.9sp straight=0.904  covers=[3, 4, 5, 6]
+bach p7 sys0 12 staves  spacing=22.88
+    x=102-111 thick=10px/0.437sp  off=-0.02sp  y=1790-2350 h=24.52sp straight=1.0  covers=[6, 7, 8]
+    x=106-113 thick=8px/0.35sp  off=0.11sp  y=998-1605 h=26.58sp straight=1.0  covers=[3, 4, 5]
+    x=108-117 thick=10px/0.437sp  off=0.24sp  y=232-837 h=26.49sp straight=1.0  covers=[0, 1, 2]
+    x=120-145 thick=26px/1.137sp  off=1.11sp  y=232-2265 h=88.92sp straight=0.998  covers=[0, 1, 2, 3, 4, 5, 6, 7]
+    x=138-174 thick=37px/1.617sp  off=2.14sp  y=1787-2115 h=14.38sp straight=0.0  covers=[6, 7]
+bach p7 sys1 12 staves  spacing=22.75
+    x=100-111 thick=12px/0.527sp  off=0.07sp  y=3331-3938 h=26.73sp straight=0.998  covers=[0, 1, 2]
+    x=102-109 thick=8px/0.352sp  off=0.07sp  y=4072-4661 h=25.93sp straight=1.0  covers=[3, 4, 5]
+    x=104-111 thick=8px/0.352sp  off=0.15sp  y=4840-5423 h=25.67sp straight=1.0  covers=[6, 7, 8]
+    x=120-138 thick=19px/0.835sp  off=1.1sp  y=3323-5243 h=84.44sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7]
+bach p8 sys0 12 staves  spacing=22.25
+    x=96-103 thick=8px/0.36sp  off=0.09sp  y=274-829 h=24.99sp straight=1.0  covers=[0, 1, 2]
+    x=96-102 thick=7px/0.315sp  off=0.07sp  y=1784-2392 h=27.37sp straight=1.0  covers=[6, 7, 8]
+    x=98-105 thick=8px/0.36sp  off=0.18sp  y=995-1559 h=25.39sp straight=1.0  covers=[3, 4, 5]
+    x=118-133 thick=16px/0.719sp  off=1.26sp  y=272-2300 h=91.19sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7]
+bach p8 sys1 12 staves  spacing=22.62
+    x=95-103 thick=9px/0.398sp  off=0.04sp  y=4073-4676 h=26.7sp straight=1.0  covers=[3, 4, 5]
+    x=96-102 thick=7px/0.309sp  off=0.04sp  y=3376-3942 h=25.06sp straight=1.0  covers=[0, 1, 2]
+    x=98-105 thick=8px/0.354sp  off=0.15sp  y=4824-5396 h=25.33sp straight=1.0  covers=[6, 7, 8]
+    x=118-135 thick=18px/0.796sp  off=1.26sp  y=3372-5653 h=100.86sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+bach p9 sys0 12 staves  spacing=22.25
+    x=206-213 thick=8px/0.36sp  off=-0.02sp  y=1665-2243 h=26.02sp straight=1.0  covers=[6, 7, 8]
+    x=208-215 thick=8px/0.36sp  off=0.07sp  y=949-1547 h=26.92sp straight=1.0  covers=[3, 4, 5]
+    x=210-221 thick=12px/0.539sp  off=0.25sp  y=248-820 h=25.75sp straight=0.998  covers=[0, 1, 2]
+    x=224-250 thick=27px/1.213sp  off=1.21sp  y=242-2489 h=101.03sp straight=0.998  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+bach p9 sys1 12 staves  spacing=22.25
+    x=198-205 thick=8px/0.36sp  off=0.07sp  y=3261-3839 h=26.02sp straight=1.0  covers=[0, 1, 2]
+    x=198-207 thick=10px/0.449sp  off=0.11sp  y=4790-5395 h=27.24sp straight=1.0  covers=[6, 7, 8]
+    x=200-207 thick=8px/0.36sp  off=0.16sp  y=4026-4628 h=27.1sp straight=1.0  covers=[3, 4, 5]
+    x=220-237 thick=18px/0.809sp  off=1.28sp  y=3258-5625 h=106.43sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+bach p10 sys0 12 staves  spacing=22.88
+    x=102-113 thick=12px/0.525sp  off=-0.15sp  y=1786-2308 h=22.86sp straight=0.997  covers=[7, 8]
+    x=110-119 thick=10px/0.437sp  off=0.15sp  y=1000-1607 h=26.58sp straight=1.0  covers=[3, 4, 5]
+    x=114-123 thick=10px/0.437sp  off=0.33sp  y=227-841 h=26.89sp straight=0.997  covers=[0, 1, 2]
+    x=120-150 thick=31px/1.355sp  off=1.05sp  y=644-2060 h=61.95sp straight=0.62  covers=[2, 3, 4, 5, 6, 7]
+bach p10 sys1 12 staves  spacing=23.0
+    x=88-95 thick=8px/0.348sp  off=-0.02sp  y=4854-5460 h=26.39sp straight=1.0  covers=[6, 7, 8]
+    x=90-99 thick=10px/0.435sp  off=0.11sp  y=4109-4693 h=25.43sp straight=0.998  covers=[3, 4, 5]
+    x=92-101 thick=10px/0.435sp  off=0.2sp  y=3353-3901 h=23.87sp straight=1.0  covers=[0, 1]
+    x=104-126 thick=23px/1.0sp  off=1.0sp  y=3812-5458 h=71.61sp straight=0.812  covers=[2, 3, 4, 5, 6, 7, 8]
+bach p11 sys0 12 staves  spacing=23.25
+    x=88-101 thick=14px/0.602sp  off=-0.11sp  y=1619-2187 h=24.47sp straight=1.0  covers=[6, 7, 8]
+    x=96-109 thick=14px/0.602sp  off=0.24sp  y=922-1485 h=24.26sp straight=1.0  covers=[3, 4, 5]
+    x=102-118 thick=17px/0.731sp  off=0.56sp  y=160-758 h=25.76sp straight=0.993  covers=[0, 1, 2]
+    x=108-143 thick=36px/1.548sp  off=1.23sp  y=566-2166 h=68.86sp straight=0.65  covers=[2, 3, 4, 5, 6, 7, 8]
+bach p11 sys1 12 staves  spacing=23.38
+    x=66-75 thick=10px/0.428sp  off=-0.19sp  y=4704-5295 h=25.33sp straight=1.0  covers=[6, 7, 8]
+    x=68-79 thick=12px/0.513sp  off=-0.06sp  y=3936-4547 h=26.18sp straight=1.0  covers=[3, 4, 5]
+    x=75-87 thick=13px/0.556sp  off=0.26sp  y=3183-3798 h=26.35sp straight=0.998  covers=[0, 1, 2]
+    x=88-117 thick=30px/1.283sp  off=1.18sp  y=3188-5154 h=84.15sp straight=0.898  covers=[0, 1, 2, 3, 4, 5, 6, 7]
+    x=110-144 thick=35px/1.497sp  off=2.22sp  y=4702-5061 h=15.4sp straight=0.0  covers=[6, 7]
+bach p12 sys0 12 staves  spacing=22.75
+    x=121-129 thick=9px/0.396sp  off=-0.04sp  y=1767-2329 h=24.75sp straight=1.0  covers=[6, 7, 8]
+    x=126-135 thick=10px/0.44sp  off=0.2sp  y=1009-1613 h=26.59sp straight=0.998  covers=[3, 4, 5]
+    x=132-139 thick=8px/0.352sp  off=0.42sp  y=272-847 h=25.32sp straight=0.999  covers=[0, 1, 2]
+    x=138-165 thick=28px/1.231sp  off=1.12sp  y=270-2310 h=89.71sp straight=0.967  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8]
+bach p12 sys1 12 staves  spacing=22.88
+    x=106-113 thick=8px/0.35sp  off=-0.04sp  y=4825-5387 h=24.61sp straight=1.0  covers=[6, 7, 8]
+    x=108-115 thick=8px/0.35sp  off=0.04sp  y=4110-4672 h=24.61sp straight=1.0  covers=[3, 4, 5]
+    x=112-121 thick=10px/0.437sp  off=0.26sp  y=3371-3947 h=25.22sp straight=0.997  covers=[0, 1, 2]
+    x=122-147 thick=26px/1.137sp  off=1.05sp  y=3414-5529 h=92.5sp straight=0.931  covers=[1, 2, 3, 4, 5, 6, 7, 8]
+bach p13 sys0 1 staves  spacing=235.25
+beethoven p2 sys0 11 staves  spacing=15.75
+beethoven p2 sys1 11 staves  spacing=15.75
+    x=332-381 thick=50px/3.175sp  off=1.37sp  y=2712-2913 h=12.83sp straight=0.0  covers=[4, 5]
+beethoven p3 sys0 11 staves  spacing=15.75
+    x=340-357 thick=18px/1.143sp  off=0.35sp  y=645-1935 h=81.97sp straight=1.0  covers=[2, 3, 4, 5, 6, 7, 8, 9]
+beethoven p3 sys1 8 staves  spacing=15.75
+    x=340-354 thick=15px/0.952sp  off=0.38sp  y=2326-3591 h=80.38sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7]
+    x=356-387 thick=32px/2.032sp  off=1.94sp  y=2828-3008 h=11.49sp straight=0.0  covers=[3]
+beethoven p4 sys0 11 staves  spacing=15.75
+    x=340-394 thick=55px/3.492sp  off=1.21sp  y=1335-1544 h=13.33sp straight=0.0  covers=[6, 7]
+    x=356-394 thick=39px/2.476sp  off=1.71sp  y=430-784 h=22.54sp straight=1.0  covers=[0, 1, 2]
+beethoven p4 sys1 11 staves  spacing=15.75
+beethoven p5 sys0 9 staves  spacing=15.75
+    x=347-367 thick=21px/1.333sp  off=0.32sp  y=468-1943 h=93.71sp straight=0.996  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8]
+    x=363-398 thick=36px/2.286sp  off=1.81sp  y=996-1286 h=18.48sp straight=0.0  covers=[3, 4]
+beethoven p5 sys1 7 staves  spacing=15.75
+    x=348-366 thick=19px/1.206sp  off=0.44sp  y=2328-3579 h=79.49sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6]
+beethoven p6 sys0 10 staves  spacing=15.75
+    x=326-380 thick=55px/3.492sp  off=1.17sp  y=1008-1220 h=13.52sp straight=0.0  covers=[4, 5]
+beethoven p6 sys1 12 staves  spacing=15.75
+    x=334-350 thick=17px/1.079sp  off=0.32sp  y=1992-3620 h=103.43sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+beethoven p7 sys0 11 staves  spacing=15.75
+    x=332-356 thick=25px/1.587sp  off=0.32sp  y=535-1809 h=80.95sp straight=0.865  covers=[1, 2, 3, 4, 5, 6, 7, 8, 9]
+beethoven p7 sys1 11 staves  spacing=15.75
+    x=343-363 thick=21px/1.333sp  off=0.32sp  y=2088-3561 h=93.59sp straight=0.998  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+beethoven p8 sys0 9 staves  spacing=15.75
+beethoven p8 sys1 11 staves  spacing=16.0
+    x=335-352 thick=18px/1.125sp  off=0.34sp  y=2253-3441 h=74.31sp straight=1.0  covers=[2, 3, 4, 5, 6, 7, 8, 9]
+beethoven p9 sys0 12 staves  spacing=15.75
+    x=345-362 thick=18px/1.143sp  off=0.29sp  y=599-1770 h=74.41sp straight=1.0  covers=[2, 3, 4, 5, 6, 7, 8, 9]
+beethoven p9 sys1 10 staves  spacing=15.75
+    x=343-361 thick=19px/1.206sp  off=0.35sp  y=2225-3610 h=88.0sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+beethoven p10 sys0 11 staves  spacing=15.75
+    x=337-351 thick=15px/0.952sp  off=0.25sp  y=417-1912 h=94.98sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+beethoven p10 sys1 11 staves  spacing=15.75
+    x=334-346 thick=13px/0.825sp  off=0.38sp  y=2104-3620 h=96.32sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+beethoven p11 sys0 9 staves  spacing=15.75
+beethoven p11 sys1 11 staves  spacing=15.75
+    x=340-353 thick=14px/0.889sp  off=0.35sp  y=1904-3601 h=107.81sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    x=356-387 thick=32px/2.032sp  off=1.94sp  y=2684-2907 h=14.22sp straight=0.0  covers=[5]
+beethoven p12 sys0 12 staves  spacing=15.75
+    x=334-360 thick=27px/1.714sp  off=0.32sp  y=655-1857 h=76.38sp straight=0.714  covers=[2, 3, 4, 5, 6, 7, 8, 9, 10]
+beethoven p12 sys1 11 staves  spacing=15.75
+    x=344-392 thick=49px/3.111sp  off=1.4sp  y=2714-2903 h=12.06sp straight=0.0  covers=[4, 5]
+beethoven p13 sys0 11 staves  spacing=15.75
+    x=349-353 thick=5px/0.317sp  off=0.51sp  y=629-818 h=12.06sp straight=0.85  covers=[2]
+beethoven p13 sys1 11 staves  spacing=15.75
+    x=351-371 thick=21px/1.333sp  off=0.32sp  y=2158-3604 h=91.87sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+brahms p2 sys0 14 staves  spacing=27.25
+    x=616-635 thick=20px/0.734sp  off=-0.48sp  y=1686-1911 h=8.29sp straight=1.0  covers=[]
+    x=618-639 thick=22px/0.807sp  off=-0.37sp  y=2700-2884 h=6.79sp straight=0.912  covers=[]
+    x=621-633 thick=13px/0.477sp  off=-0.42sp  y=1264-1496 h=8.55sp straight=1.0  covers=[3, 4]
+    x=639-719 thick=81px/2.972sp  off=1.49sp  y=1856-2208 h=12.95sp straight=0.0  covers=[6, 7]
+brahms p2 sys1 14 staves  spacing=27.38
+    x=623-638 thick=16px/0.584sp  off=-0.33sp  y=4847-5084 h=8.69sp straight=1.0  covers=[3, 4]
+    x=625-637 thick=13px/0.475sp  off=-0.31sp  y=5249-5494 h=8.99sp straight=1.0  covers=[5, 6]
+    x=626-645 thick=20px/0.731sp  off=-0.15sp  y=6166-6356 h=6.98sp straight=1.0  covers=[]
+    x=639-720 thick=82px/2.995sp  off=1.46sp  y=5216-5604 h=14.21sp straight=0.0  covers=[5, 6]
+    x=647-671 thick=25px/0.913sp  off=0.71sp  y=6086-7151 h=38.94sp straight=1.0  covers=[9, 10, 11, 12, 13]
+brahms p3 sys0 14 staves  spacing=27.62
+    x=622-638 thick=17px/0.615sp  off=-0.49sp  y=1761-1970 h=7.6sp straight=0.935  covers=[]
+    x=624-642 thick=19px/0.688sp  off=-0.38sp  y=2697-2885 h=6.84sp straight=1.0  covers=[]
+    x=626-638 thick=13px/0.471sp  off=-0.42sp  y=1329-1532 h=7.38sp straight=1.0  covers=[]
+    x=644-662 thick=19px/0.688sp  off=0.34sp  y=495-2490 h=72.25sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8]
+    x=648-666 thick=19px/0.688sp  off=0.49sp  y=2590-3769 h=42.71sp straight=1.0  covers=[9, 10, 11, 12, 13]
+    x=664-725 thick=62px/2.244sp  off=1.85sp  y=1955-2249 h=10.68sp straight=0.0  covers=[6, 7]
+brahms p3 sys1 14 staves  spacing=27.75
+    x=626-637 thick=12px/0.432sp  off=-0.38sp  y=4828-5052 h=8.11sp straight=1.0  covers=[4]
+    x=626-637 thick=12px/0.432sp  off=-0.38sp  y=6136-6341 h=7.42sp straight=1.0  covers=[]
+    x=628-640 thick=13px/0.468sp  off=-0.29sp  y=5214-5439 h=8.14sp straight=1.0  covers=[5]
+    x=642-724 thick=83px/2.991sp  off=1.48sp  y=5403-5701 h=10.77sp straight=0.0  covers=[6, 7]
+brahms p4 sys0 14 staves  spacing=27.5
+    x=640-654 thick=15px/0.545sp  off=-0.56sp  y=1776-1983 h=7.56sp straight=1.0  covers=[]
+    x=643-656 thick=14px/0.509sp  off=-0.47sp  y=2731-2924 h=7.05sp straight=0.711  covers=[]
+    x=644-657 thick=14px/0.509sp  off=-0.44sp  y=1351-1528 h=6.47sp straight=0.937  covers=[]
+    x=662-679 thick=18px/0.655sp  off=0.29sp  y=2627-3805 h=42.87sp straight=1.0  covers=[9, 10, 11, 12, 13]
+    x=664-681 thick=18px/0.655sp  off=0.36sp  y=504-2499 h=72.58sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8]
+brahms p4 sys1 14 staves  spacing=27.5
+    x=627-642 thick=16px/0.582sp  off=-0.4sp  y=5298-5494 h=7.16sp straight=0.963  covers=[]
+    x=627-642 thick=16px/0.582sp  off=-0.4sp  y=6149-6327 h=6.51sp straight=0.586  covers=[]
+    x=637-646 thick=10px/0.364sp  off=-0.15sp  y=4871-5102 h=8.44sp straight=1.0  covers=[3, 4]
+    x=645-663 thick=19px/0.691sp  off=0.31sp  y=6060-7132 h=39.02sp straight=1.0  covers=[9, 10, 11, 12, 13]
+    x=650-670 thick=21px/0.764sp  off=0.53sp  y=4090-5859 h=64.36sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7]
+    x=666-727 thick=62px/2.255sp  off=1.85sp  y=5490-5770 h=10.22sp straight=0.0  covers=[6, 7]
+brahms p5 sys0 14 staves  spacing=27.25
+    x=621-638 thick=18px/0.661sp  off=-0.42sp  y=1332-1551 h=8.07sp straight=1.0  covers=[]
+    x=621-638 thick=18px/0.661sp  off=-0.42sp  y=2681-2902 h=8.15sp straight=1.0  covers=[10]
+    x=622-635 thick=14px/0.514sp  off=-0.46sp  y=1716-1948 h=8.55sp straight=1.0  covers=[5, 6]
+    x=640-663 thick=24px/0.881sp  off=0.39sp  y=504-2433 h=70.83sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8]
+    x=643-661 thick=19px/0.697sp  off=0.4sp  y=2598-3718 h=41.14sp straight=1.0  covers=[9, 10, 11, 12, 13]
+    x=661-721 thick=61px/2.239sp  off=1.83sp  y=1873-2174 h=11.08sp straight=0.0  covers=[6, 7]
+brahms p5 sys1 14 staves  spacing=27.38
+    x=615-635 thick=21px/0.767sp  off=-0.51sp  y=6157-6351 h=7.12sp straight=0.987  covers=[]
+    x=619-635 thick=17px/0.621sp  off=-0.44sp  y=5194-5374 h=6.61sp straight=0.905  covers=[]
+    x=621-634 thick=14px/0.511sp  off=-0.42sp  y=4771-4982 h=7.74sp straight=1.0  covers=[3, 4]
+    x=639-720 thick=82px/2.995sp  off=1.48sp  y=5337-5695 h=13.11sp straight=0.0  covers=[6, 7]
+    x=639-657 thick=19px/0.694sp  off=0.33sp  y=6054-7178 h=41.1sp straight=1.0  covers=[9, 10, 11, 12, 13]
+brahms p6 sys0 12 staves  spacing=27.38
+    x=619-637 thick=19px/0.694sp  off=-0.46sp  y=2533-2792 h=9.5sp straight=1.0  covers=[]
+    x=625-642 thick=18px/0.658sp  off=-0.26sp  y=1665-1894 h=8.4sp straight=1.0  covers=[]
+brahms p6 sys1 11 staves  spacing=27.5
+    x=592-610 thick=19px/0.691sp  off=-0.55sp  y=5898-6129 h=8.44sp straight=1.0  covers=[]
+    x=596-617 thick=22px/0.8sp  off=-0.35sp  y=5268-5500 h=8.47sp straight=1.0  covers=[]
+    x=615-697 thick=83px/3.018sp  off=1.45sp  y=5447-5950 h=18.33sp straight=0.0  covers=[5, 6]
+brahms p7 sys0 11 staves  spacing=27.5
+    x=615-632 thick=18px/0.655sp  off=-0.56sp  y=2333-2527 h=7.09sp straight=0.776  covers=[]
+    x=616-630 thick=15px/0.545sp  off=-0.58sp  y=1763-1980 h=7.93sp straight=1.0  covers=[5]
+    x=637-659 thick=23px/0.836sp  off=0.33sp  y=2209-3461 h=45.56sp straight=1.0  covers=[6, 7, 8, 9, 10]
+brahms p7 sys1 11 staves  spacing=27.75
+    x=619-640 thick=22px/0.793sp  off=-0.49sp  y=5864-6101 h=8.58sp straight=0.907  covers=[7]
+    x=624-639 thick=16px/0.577sp  off=-0.41sp  y=5191-5424 h=8.43sp straight=1.0  covers=[5]
+    x=642-663 thick=22px/0.793sp  off=0.34sp  y=3972-5486 h=54.59sp straight=1.0  covers=[0, 1, 2, 3, 4, 5]
+brahms p8 sys0 11 staves  spacing=27.75
+    x=634-649 thick=16px/0.577sp  off=-0.56sp  y=2462-2665 h=7.35sp straight=1.0  covers=[]
+    x=635-650 thick=16px/0.577sp  off=-0.52sp  y=1880-2114 h=8.47sp straight=1.0  covers=[]
+    x=656-674 thick=19px/0.685sp  off=0.29sp  y=2361-3557 h=43.14sp straight=1.0  covers=[6, 7, 8, 9, 10]
+    x=658-677 thick=20px/0.721sp  off=0.38sp  y=558-2202 h=59.28sp straight=1.0  covers=[0, 1, 2, 3, 4, 5]
+brahms p8 sys1 11 staves  spacing=27.5
+    x=613-632 thick=20px/0.727sp  off=-0.38sp  y=5845-6047 h=7.38sp straight=0.788  covers=[]
+    x=617-635 thick=19px/0.691sp  off=-0.25sp  y=5192-5423 h=8.44sp straight=1.0  covers=[]
+    x=632-714 thick=83px/3.018sp  off=1.45sp  y=5391-5858 h=17.02sp straight=0.0  covers=[5, 6]
+brahms p9 sys0 12 staves  spacing=27.5
+    x=623-639 thick=17px/0.618sp  off=-0.16sp  y=2408-2591 h=6.69sp straight=0.962  covers=[]
+    x=626-641 thick=16px/0.582sp  off=-0.07sp  y=1362-1549 h=6.84sp straight=0.93  covers=[]
+    x=626-643 thick=18px/0.655sp  off=-0.04sp  y=1825-2002 h=6.47sp straight=0.889  covers=[]
+    x=643-663 thick=21px/0.764sp  off=0.64sp  y=2317-3453 h=41.35sp straight=1.0  covers=[7, 8, 9, 10, 11]
+    x=649-673 thick=25px/0.909sp  off=0.93sp  y=537-2101 h=56.91sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6]
+brahms p9 sys1 13 staves  spacing=27.5
+    x=617-631 thick=15px/0.545sp  off=-0.55sp  y=6037-6247 h=7.67sp straight=0.93  covers=[]
+    x=618-633 thick=16px/0.582sp  off=-0.49sp  y=5203-5389 h=6.8sp straight=1.0  covers=[]
+    x=619-635 thick=17px/0.618sp  off=-0.44sp  y=4720-4907 h=6.84sp straight=0.959  covers=[]
+    x=639-656 thick=18px/0.655sp  off=0.31sp  y=5958-7132 h=42.73sp straight=1.0  covers=[8, 9, 10, 11, 12]
+    x=642-662 thick=21px/0.764sp  off=0.47sp  y=3829-5676 h=67.2sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7]
+brahms p10 sys0 13 staves  spacing=27.25
+    x=622-639 thick=18px/0.661sp  off=-0.53sp  y=2534-2722 h=6.94sp straight=0.669  covers=[]
+    x=626-639 thick=14px/0.514sp  off=-0.46sp  y=1300-1472 h=6.35sp straight=0.566  covers=[]
+    x=626-639 thick=14px/0.514sp  off=-0.46sp  y=1745-1970 h=8.29sp straight=1.0  covers=[6]
+    x=644-662 thick=19px/0.697sp  off=0.29sp  y=2446-3515 h=39.27sp straight=1.0  covers=[8, 9, 10, 11, 12]
+    x=646-665 thick=20px/0.734sp  off=0.39sp  y=507-2266 h=64.59sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7]
+brahms p10 sys1 14 staves  spacing=27.5
+    x=611-625 thick=15px/0.545sp  off=-0.44sp  y=6099-6302 h=7.42sp straight=0.896  covers=[]
+    x=613-632 thick=20px/0.727sp  off=-0.27sp  y=4681-4863 h=6.65sp straight=0.742  covers=[]
+    x=613-628 thick=16px/0.582sp  off=-0.35sp  y=5152-5356 h=7.45sp straight=1.0  covers=[]
+    x=628-650 thick=23px/0.836sp  off=0.33sp  y=6020-7161 h=41.53sp straight=1.0  covers=[9, 10, 11, 12, 13]
+    x=635-656 thick=22px/0.8sp  off=0.56sp  y=4154-5756 h=58.29sp straight=1.0  covers=[2, 3, 4, 5, 6, 7]
+brahms p11 sys0 14 staves  spacing=27.5
+    x=626-642 thick=17px/0.618sp  off=-0.55sp  y=1824-2038 h=7.82sp straight=0.986  covers=[]
+    x=629-643 thick=15px/0.545sp  off=-0.47sp  y=1328-1546 h=7.96sp straight=1.0  covers=[3]
+    x=630-644 thick=15px/0.545sp  off=-0.44sp  y=2721-2936 h=7.85sp straight=1.0  covers=[10]
+    x=648-668 thick=21px/0.764sp  off=0.33sp  y=565-2495 h=70.22sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8]
+    x=651-669 thick=19px/0.691sp  off=0.4sp  y=2632-3744 h=40.47sp straight=1.0  covers=[9, 10, 11, 12, 13]
+brahms p11 sys1 14 staves  spacing=27.62
+    x=632-650 thick=19px/0.688sp  off=-0.33sp  y=6144-6363 h=7.96sp straight=1.0  covers=[]
+    x=633-645 thick=13px/0.471sp  off=-0.4sp  y=4874-5109 h=8.54sp straight=1.0  covers=[3, 4]
+    x=635-649 thick=15px/0.543sp  off=-0.29sp  y=5258-5498 h=8.72sp straight=1.0  covers=[5]
+    x=650-672 thick=23px/0.833sp  off=0.4sp  y=4152-5970 h=65.85sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8]
+    x=655-673 thick=19px/0.688sp  off=0.51sp  y=6085-7132 h=37.94sp straight=1.0  covers=[9, 10, 11, 12, 13]
+brahms p12 sys0 14 staves  spacing=27.75
+    x=621-640 thick=20px/0.721sp  off=-0.49sp  y=1684-1919 h=8.5sp straight=1.0  covers=[]
+    x=629-644 thick=16px/0.577sp  off=-0.27sp  y=1260-1491 h=8.36sp straight=1.0  covers=[3, 4]
+    x=630-646 thick=17px/0.613sp  off=-0.22sp  y=2607-2829 h=8.04sp straight=1.0  covers=[10]
+    x=653-675 thick=23px/0.829sp  off=0.72sp  y=2530-3622 h=39.39sp straight=1.0  covers=[9, 10, 11, 12, 13]
+brahms p12 sys1 14 staves  spacing=27.5
+    x=635-652 thick=18px/0.655sp  off=-0.29sp  y=4780-4963 h=6.69sp straight=0.912  covers=[]
+    x=640-655 thick=16px/0.582sp  off=-0.15sp  y=5183-5407 h=8.18sp straight=1.0  covers=[6]
+    x=645-657 thick=13px/0.473sp  off=-0.02sp  y=6098-6348 h=9.13sp straight=1.0  covers=[9, 10]
+    x=651-733 thick=83px/3.018sp  off=1.47sp  y=5111-5463 h=12.84sp straight=0.0  covers=[5, 6]
+    x=667-689 thick=23px/0.836sp  off=0.96sp  y=6043-7129 h=39.53sp straight=1.0  covers=[9, 10, 11, 12, 13]
+brahms p13 sys0 14 staves  spacing=27.5
+    x=629-642 thick=14px/0.509sp  off=-0.42sp  y=2590-2797 h=7.56sp straight=1.0  covers=[9]
+    x=630-645 thick=16px/0.582sp  off=-0.35sp  y=1300-1487 h=6.84sp straight=1.0  covers=[]
+    x=633-644 thick=12px/0.436sp  off=-0.31sp  y=1688-1919 h=8.44sp straight=1.0  covers=[5]
+    x=650-672 thick=23px/0.836sp  off=0.51sp  y=531-2336 h=65.67sp straight=1.0  covers=[0, 1, 2, 3, 4, 5, 6, 7, 8]
+brahms p13 sys1 14 staves  spacing=27.5
+    x=616-631 thick=16px/0.582sp  off=-0.45sp  y=5253-5439 h=6.8sp straight=0.967  covers=[]
+    x=617-631 thick=15px/0.545sp  off=-0.44sp  y=4779-4964 h=6.76sp straight=0.948  covers=[]
+    x=618-631 thick=14px/0.509sp  off=-0.42sp  y=6177-6360 h=6.69sp straight=1.0  covers=[]
+    x=636-653 thick=18px/0.655sp  off=0.31sp  y=6092-7139 h=38.11sp straight=1.0  covers=[9, 10, 11, 12, 13]
+    x=637-661 thick=25px/0.909sp  off=0.47sp  y=4059-5878 h=66.18sp straight=0.952  covers=[0, 1, 2, 3, 4, 5, 6, 7]
+dvorak p4 sys0 15 staves  spacing=25.25
+    x=899-932 thick=34px/1.347sp  off=1.56sp  y=2919-4489 h=62.22sp straight=0.142  covers=[5, 6, 7, 8, 9]
+dvorak p5 sys0 15 staves  spacing=25.25
+    x=284-315 thick=32px/1.267sp  off=0.57sp  y=2243-4164 h=76.12sp straight=0.084  covers=[4, 5, 6, 7, 8, 9]
+dvorak p6 sys0 15 staves  spacing=25.25
+    x=364-381 thick=18px/0.713sp  off=-0.02sp  y=1904-2071 h=6.65sp straight=0.978  covers=[]
+    x=368-384 thick=17px/0.673sp  off=0.12sp  y=2459-2660 h=8.0sp straight=1.0  covers=[]
+    x=369-387 thick=19px/0.752sp  off=0.2sp  y=3106-3287 h=7.21sp straight=0.995  covers=[]
+    x=370-386 thick=17px/0.673sp  off=0.2sp  y=1326-1495 h=6.73sp straight=0.994  covers=[]
+    x=394-417 thick=24px/0.95sp  off=1.29sp  y=1315-2741 h=56.51sp straight=0.71  covers=[4, 5, 6, 7, 8, 9, 10, 11]
+dvorak p6 sys1 15 staves  spacing=25.0
+    x=355-372 thick=18px/0.72sp  off=-0.22sp  y=4422-4630 h=8.36sp straight=0.991  covers=[4]
+    x=359-384 thick=26px/1.04sp  off=0.1sp  y=5649-5838 h=7.6sp straight=0.594  covers=[]
+    x=361-378 thick=18px/0.72sp  off=0.02sp  y=5041-5239 h=7.96sp straight=1.0  covers=[8]
+    x=363-380 thick=18px/0.72sp  off=0.1sp  y=6289-6505 h=8.68sp straight=0.894  covers=[14]
+    x=388-411 thick=24px/0.96sp  off=1.22sp  y=4779-5732 h=38.16sp straight=0.582  covers=[6, 7, 8, 9, 10]
+dvorak p7 sys0 15 staves  spacing=25.25
+dvorak p7 sys1 15 staves  spacing=25.25
+    x=257-275 thick=19px/0.752sp  off=-0.95sp  y=6313-6499 h=7.41sp straight=0.631  covers=[]
+    x=261-278 thick=18px/0.713sp  off=-0.81sp  y=5605-5800 h=7.76sp straight=1.0  covers=[]
+    x=262-279 thick=18px/0.713sp  off=-0.77sp  y=4337-4554 h=8.63sp straight=1.0  covers=[4, 5]
+    x=263-278 thick=16px/0.634sp  off=-0.77sp  y=4960-5157 h=7.84sp straight=1.0  covers=[8]
+    x=288-314 thick=27px/1.069sp  off=0.44sp  y=4169-5993 h=72.28sp straight=1.0  covers=[4, 5, 6, 7, 8, 9, 10, 11]
+dvorak p8 sys0 15 staves  spacing=25.25
+    x=343-359 thick=17px/0.673sp  off=0.12sp  y=1943-2156 h=8.48sp straight=1.0  covers=[8]
+    x=343-361 thick=19px/0.752sp  off=0.16sp  y=2596-2787 h=7.6sp straight=0.579  covers=[]
+    x=346-362 thick=17px/0.673sp  off=0.24sp  y=1294-1491 h=7.84sp straight=1.0  covers=[]
+    x=347-365 thick=19px/0.752sp  off=0.32sp  y=3255-3446 h=7.6sp straight=0.61  covers=[]
+    x=373-395 thick=23px/0.911sp  off=1.43sp  y=1144-2670 h=60.48sp straight=0.475  covers=[4, 5, 6, 7, 8, 9, 10]
+dvorak p8 sys1 15 staves  spacing=25.25
+dvorak p9 sys0 15 staves  spacing=25.25
+    x=289-308 thick=20px/0.792sp  off=0.14sp  y=3090-3290 h=7.96sp straight=0.685  covers=[]
+    x=291-311 thick=21px/0.832sp  off=0.24sp  y=2491-2636 h=5.78sp straight=0.382  covers=[]
+    x=294-311 thick=18px/0.713sp  off=0.3sp  y=1853-2025 h=6.85sp straight=1.0  covers=[]
+    x=295-309 thick=15px/0.594sp  off=0.28sp  y=1314-1483 h=6.73sp straight=1.0  covers=[]
+    x=318-343 thick=26px/1.03sp  off=1.41sp  y=1043-2998 h=77.47sp straight=0.955  covers=[3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+dvorak p9 sys1 15 staves  spacing=25.0
+    x=260-275 thick=16px/0.64sp  off=-0.26sp  y=6285-6448 h=6.56sp straight=0.733  covers=[]
+    x=268-284 thick=17px/0.68sp  off=0.08sp  y=5080-5278 h=7.96sp straight=1.0  covers=[8]
+    x=269-284 thick=16px/0.64sp  off=0.1sp  y=5689-5845 h=6.28sp straight=0.412  covers=[]
+    x=274-290 thick=17px/0.68sp  off=0.32sp  y=4550-4724 h=7.0sp straight=1.0  covers=[]
+    x=289-330 thick=42px/1.68sp  off=1.42sp  y=4440-5895 h=58.24sp straight=0.454  covers=[4, 5, 6, 7, 8, 9, 10, 11]
+    x=334-348 thick=15px/0.6sp  off=2.68sp  y=3777-4110 h=13.36sp straight=0.327  covers=[1, 2]
+dvorak p10 sys0 15 staves  spacing=25.0
+    x=377-395 thick=19px/0.76sp  off=-0.08sp  y=2495-2705 h=8.44sp straight=1.0  covers=[11]
+    x=377-394 thick=18px/0.72sp  off=-0.1sp  y=3099-3316 h=8.72sp straight=1.0  covers=[13, 14]
+    x=382-399 thick=18px/0.72sp  off=0.1sp  y=1848-2054 h=8.28sp straight=1.0  covers=[7, 8]
+    x=386-404 thick=19px/0.76sp  off=0.28sp  y=1320-1516 h=7.88sp straight=1.0  covers=[5]
+    x=406-432 thick=27px/1.08sp  off=1.24sp  y=1307-2311 h=40.2sp straight=0.0  covers=[4, 5, 6, 7, 8, 9]
+    x=426-462 thick=37px/1.48sp  off=2.24sp  y=2832-3162 h=13.24sp straight=0.427  covers=[12, 13]
+dvorak p10 sys1 15 staves  spacing=24.75
+    x=377-394 thick=18px/0.727sp  off=0.14sp  y=4936-5142 h=8.36sp straight=1.0  covers=[7]
+    x=381-397 thick=17px/0.687sp  off=0.28sp  y=4397-4613 h=8.77sp straight=1.0  covers=[4, 5]
+    x=402-455 thick=54px/2.182sp  off=1.88sp  y=4912-5186 h=11.11sp straight=0.0  covers=[7, 8]
+dvorak p11 sys0 15 staves  spacing=24.75
+    x=240-257 thick=18px/0.727sp  off=0.3sp  y=1776-1994 h=8.85sp straight=1.0  covers=[7, 8]
+    x=242-258 thick=17px/0.687sp  off=0.36sp  y=1260-1456 h=7.96sp straight=1.0  covers=[5]
+    x=247-255 thick=9px/0.364sp  off=0.4sp  y=3042-3201 h=6.46sp straight=1.0  covers=[]
+    x=266-288 thick=23px/0.929sp  off=1.45sp  y=901-2181 h=51.76sp straight=0.404  covers=[3, 4, 5, 6, 7, 8, 9]
+dvorak p11 sys1 15 staves  spacing=24.75
+    x=235-251 thick=17px/0.687sp  off=0.2sp  y=4390-4615 h=9.13sp straight=1.0  covers=[4, 5]
+    x=236-252 thick=17px/0.687sp  off=0.24sp  y=4963-5137 h=7.07sp straight=1.0  covers=[8]
+    x=238-249 thick=12px/0.485sp  off=0.22sp  y=6315-6468 h=6.22sp straight=0.922  covers=[]
+    x=243-249 thick=7px/0.283sp  off=0.32sp  y=5622-5779 h=6.38sp straight=1.0  covers=[]
+    x=260-287 thick=28px/1.131sp  off=1.43sp  y=4144-5800 h=66.95sp straight=0.648  covers=[3, 4, 5, 6, 7, 8, 9, 10]
+dvorak p12 sys0 15 staves  spacing=24.75
+    x=356-371 thick=16px/0.646sp  off=0.26sp  y=1796-1967 h=6.95sp straight=1.0  covers=[7]
+    x=358-372 thick=15px/0.606sp  off=0.32sp  y=1238-1461 h=9.05sp straight=1.0  covers=[4, 5]
+    x=384-403 thick=20px/0.808sp  off=1.47sp  y=1234-2814 h=63.88sp straight=1.0  covers=[4, 5, 6, 7, 8, 9, 10, 11]
+dvorak p12 sys1 15 staves  spacing=24.75
+    x=363-379 thick=17px/0.687sp  off=-0.28sp  y=4400-4613 h=8.65sp straight=1.0  covers=[5]
+    x=364-380 thick=17px/0.687sp  off=-0.24sp  y=4924-5146 h=9.01sp straight=1.0  covers=[7, 8]
+    x=384-393 thick=10px/0.404sp  off=0.42sp  y=5582-5739 h=6.38sp straight=1.0  covers=[]
+    x=387-422 thick=36px/1.455sp  off=1.07sp  y=4479-5648 h=47.27sp straight=0.122  covers=[5, 6, 7, 8, 9, 10]
+dvorak p13 sys0 15 staves  spacing=25.0
+    x=249-263 thick=15px/0.6sp  off=-0.28sp  y=1183-1351 h=6.76sp straight=0.494  covers=[]
+    x=256-275 thick=20px/0.8sp  off=0.1sp  y=1733-1884 h=6.08sp straight=0.732  covers=[]
+    x=264-273 thick=10px/0.4sp  off=0.22sp  y=2383-2547 h=6.6sp straight=1.0  covers=[]
+    x=267-276 thick=10px/0.4sp  off=0.34sp  y=3036-3189 h=6.16sp straight=0.95  covers=[]
+    x=268-302 thick=35px/1.4sp  off=0.88sp  y=730-2138 h=56.36sp straight=0.607  covers=[2, 3, 4, 5, 6, 7, 8, 9]
+dvorak p13 sys1 15 staves  spacing=24.75
+    x=258-273 thick=16px/0.646sp  off=0.18sp  y=4878-5045 h=6.79sp straight=0.729  covers=[]
+    x=259-276 thick=18px/0.727sp  off=0.26sp  y=4338-4501 h=6.63sp straight=0.57  covers=[]
+    x=265-273 thick=9px/0.364sp  off=0.32sp  y=5572-5729 h=6.38sp straight=1.0  covers=[]
+    x=265-272 thick=8px/0.323sp  off=0.3sp  y=6254-6415 h=6.55sp straight=1.0  covers=[]
+    x=278-307 thick=30px/1.212sp  off=1.27sp  y=3955-6093 h=86.42sp straight=1.0  covers=[3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+mahler p2 sys0 15 staves  spacing=25.75
+    x=451-478 thick=28px/1.087sp  off=0.6sp  y=2556-2757 h=7.84sp straight=0.651  covers=[]
+    x=476-525 thick=50px/1.942sp  off=2.0sp  y=4485-4976 h=19.11sp straight=0.982  covers=[12, 13]
+    x=485-507 thick=23px/0.893sp  off=1.83sp  y=1160-2821 h=64.54sp straight=1.0  covers=[3, 4, 5, 6, 7]
+    x=490-508 thick=19px/0.738sp  off=1.94sp  y=335-827 h=19.15sp straight=1.0  covers=[0, 1]
+mahler p3 sys0 21 staves  spacing=25.75
+    x=456-476 thick=21px/0.816sp  off=0.16sp  y=4552-4742 h=7.42sp straight=0.703  covers=[]
+    x=464-483 thick=20px/0.777sp  off=0.45sp  y=3659-3852 h=7.53sp straight=0.976  covers=[]
+    x=468-487 thick=20px/0.777sp  off=0.6sp  y=2363-2545 h=7.11sp straight=0.884  covers=[]
+    x=470-489 thick=20px/0.777sp  off=0.68sp  y=1861-2054 h=7.53sp straight=0.878  covers=[]
+    x=472-493 thick=22px/0.854sp  off=0.8sp  y=853-1050 h=7.69sp straight=0.797  covers=[]
+    x=473-491 thick=19px/0.738sp  off=0.78sp  y=1371-1557 h=7.26sp straight=0.876  covers=[]
+    x=483-507 thick=25px/0.971sp  off=1.28sp  y=3564-5451 h=73.32sp straight=1.0  covers=[14, 15, 16, 17, 18, 19, 20]
+    x=495-518 thick=24px/0.932sp  off=1.73sp  y=1285-2637 h=52.54sp straight=1.0  covers=[4, 5, 6, 7, 8, 9]
+    x=503-520 thick=18px/0.699sp  off=1.92sp  y=246-1143 h=34.87sp straight=1.0  covers=[0, 1, 2, 3]
+    x=504-538 thick=35px/1.359sp  off=2.29sp  y=3551-3947 h=15.42sp straight=0.0  covers=[14, 15]
+mahler p4 sys0 21 staves  spacing=25.75
+    x=456-477 thick=22px/0.854sp  off=0.1sp  y=4459-4663 h=7.96sp straight=1.0  covers=[]
+    x=463-484 thick=22px/0.854sp  off=0.37sp  y=3602-3808 h=8.04sp straight=1.0  covers=[]
+    x=469-490 thick=22px/0.854sp  off=0.6sp  y=1696-1896 h=7.81sp straight=0.965  covers=[]
+    x=469-489 thick=21px/0.816sp  off=0.58sp  y=2238-2435 h=7.69sp straight=0.994  covers=[]
+    x=471-491 thick=21px/0.816sp  off=0.66sp  y=650-854 h=7.96sp straight=0.966  covers=[]
+    x=471-492 thick=22px/0.854sp  off=0.68sp  y=1180-1384 h=7.96sp straight=1.0  covers=[]
+    x=475-540 thick=66px/2.563sp  off=1.69sp  y=3513-3882 h=14.37sp straight=0.0  covers=[14, 15]
+    x=499-517 thick=19px/0.738sp  off=1.71sp  y=269-955 h=26.68sp straight=1.0  covers=[0, 1, 2]
+mahler p5 sys0 14 staves  spacing=26.0
+    x=443-462 thick=20px/0.769sp  off=0.35sp  y=588-785 h=7.62sp straight=0.922  covers=[]
+    x=443-459 thick=17px/0.654sp  off=0.29sp  y=2565-2802 h=9.15sp straight=1.0  covers=[9, 10]
+    x=444-463 thick=20px/0.769sp  off=0.38sp  y=1073-1261 h=7.27sp straight=0.893  covers=[]
+    x=444-460 thick=17px/0.654sp  off=0.33sp  y=1497-1733 h=9.12sp straight=1.0  covers=[5, 6]
+    x=467-486 thick=20px/0.769sp  off=1.27sp  y=2513-3589 h=41.42sp straight=1.0  covers=[9, 10, 11, 12, 13]
+    x=470-488 thick=19px/0.731sp  off=1.37sp  y=982-1787 h=31.0sp straight=1.0  covers=[3, 4, 5, 6]
+    x=471-489 thick=19px/0.731sp  off=1.4sp  y=238-863 h=24.08sp straight=1.0  covers=[0, 1, 2]
+    x=489-520 thick=32px/1.231sp  off=2.35sp  y=1659-2044 h=14.85sp straight=0.0  covers=[6, 7]
+mahler p5 sys1 7 staves  spacing=26.0
+    x=437-453 thick=17px/0.654sp  off=0.23sp  y=4463-4688 h=8.69sp straight=1.0  covers=[]
+    x=461-481 thick=21px/0.808sp  off=1.23sp  y=4396-5524 h=43.42sp straight=1.0  covers=[2, 3, 4, 5, 6]
+    x=465-482 thick=18px/0.692sp  off=1.33sp  y=3870-4281 h=15.85sp straight=1.0  covers=[0, 1]
+mahler p6 sys0 16 staves  spacing=26.0
+    x=445-465 thick=21px/0.808sp  off=0.44sp  y=2539-2735 h=7.58sp straight=0.762  covers=[]
+    x=468-489 thick=22px/0.846sp  off=1.35sp  y=348-1191 h=32.46sp straight=1.0  covers=[0, 1, 2]
+    x=472-520 thick=49px/1.885sp  off=2.02sp  y=2086-2751 h=25.62sp straight=0.0  covers=[5, 6]
+    x=472-491 thick=20px/0.769sp  off=1.46sp  y=3917-5396 h=56.92sp straight=1.0  covers=[11, 12, 13, 14, 15]
+mahler p7 sys0 16 staves  spacing=25.75
+    x=445-468 thick=24px/0.932sp  off=0.58sp  y=859-1056 h=7.69sp straight=0.538  covers=[]
+    x=447-466 thick=20px/0.777sp  off=0.58sp  y=2511-2705 h=7.57sp straight=0.747  covers=[]
+    x=448-468 thick=21px/0.816sp  off=0.64sp  y=1513-1714 h=7.84sp straight=0.731  covers=[]
+    x=465-488 thick=24px/0.932sp  off=1.36sp  y=3860-5357 h=58.17sp straight=1.0  covers=[11, 12, 13, 14, 15]
+    x=476-497 thick=22px/0.854sp  off=1.75sp  y=1401-2827 h=55.42sp straight=1.0  covers=[3, 4, 5, 6, 7]
+    x=479-497 thick=19px/0.738sp  off=1.81sp  y=368-1180 h=31.57sp straight=1.0  covers=[0, 1, 2]
+mahler p8 sys0 17 staves  spacing=25.75
+    x=447-471 thick=25px/0.971sp  off=0.43sp  y=4068-4265 h=7.69sp straight=0.616  covers=[]
+    x=453-473 thick=21px/0.816sp  off=0.58sp  y=2851-3036 h=7.22sp straight=0.807  covers=[]
+    x=454-474 thick=21px/0.816sp  off=0.62sp  y=1725-1912 h=7.3sp straight=0.892  covers=[]
+    x=454-474 thick=21px/0.816sp  off=0.62sp  y=2295-2485 h=7.42sp straight=0.861  covers=[]
+    x=473-495 thick=23px/0.893sp  off=1.4sp  y=3958-5412 h=56.5sp straight=1.0  covers=[12, 13, 14, 15, 16]
+    x=481-524 thick=44px/1.709sp  off=2.12sp  y=2205-2724 h=20.19sp straight=0.0  covers=[6, 7]
+    x=486-504 thick=19px/0.738sp  off=1.83sp  y=330-1411 h=42.02sp straight=1.0  covers=[0, 1, 2, 3]
+mahler p9 sys0 17 staves  spacing=25.75
+    x=460-478 thick=19px/0.738sp  off=0.62sp  y=2284-2473 h=7.38sp straight=0.865  covers=[]
+    x=460-479 thick=20px/0.777sp  off=0.64sp  y=2904-3082 h=6.95sp straight=0.789  covers=[]
+    x=462-481 thick=20px/0.777sp  off=0.72sp  y=1676-1866 h=7.42sp straight=0.735  covers=[]
+    x=480-529 thick=50px/1.942sp  off=2.0sp  y=3065-3534 h=18.25sp straight=0.0  covers=[9, 10]
+    x=487-504 thick=18px/0.699sp  off=1.65sp  y=1713-3186 h=57.24sp straight=1.0  covers=[5, 6, 7, 8, 9]
+    x=490-508 thick=19px/0.738sp  off=1.79sp  y=331-1387 h=41.05sp straight=1.0  covers=[0, 1, 2, 3]
+mahler p10 sys0 19 staves  spacing=25.75
+    x=462-484 thick=23px/0.893sp  off=0.04sp  y=2123-2307 h=7.18sp straight=0.638  covers=[]
+    x=465-484 thick=20px/0.777sp  off=0.1sp  y=1000-1198 h=7.73sp straight=0.758  covers=[]
+    x=467-487 thick=21px/0.816sp  off=0.19sp  y=1559-1756 h=7.69sp straight=0.966  covers=[]
+    x=471-492 thick=22px/0.854sp  off=0.37sp  y=2683-2858 h=6.83sp straight=0.812  covers=[]
+    x=471-491 thick=21px/0.816sp  off=0.35sp  y=4674-4857 h=7.15sp straight=0.846  covers=[]
+    x=472-492 thick=21px/0.816sp  off=0.39sp  y=5188-5383 h=7.61sp straight=0.89  covers=[]
+    x=473-491 thick=19px/0.738sp  off=0.39sp  y=3768-3958 h=7.42sp straight=0.833  covers=[]
+    x=492-511 thick=20px/0.777sp  off=1.15sp  y=314-1297 h=38.21sp straight=1.0  covers=[0, 1, 2, 3]
+    x=493-514 thick=22px/0.854sp  off=1.22sp  y=1465-2951 h=57.75sp straight=1.0  covers=[4, 5, 6, 7, 8, 9]
+    x=497-517 thick=21px/0.816sp  off=1.36sp  y=3864-5454 h=61.79sp straight=1.0  covers=[13, 14, 15, 16, 17, 18]
+    x=512-548 thick=37px/1.437sp  off=2.25sp  y=911-1283 h=14.49sp straight=0.0  covers=[2, 3]
+mahler p11 sys0 13 staves  spacing=24.75
+    x=458-475 thick=18px/0.727sp  off=0.3sp  y=1687-1894 h=8.4sp straight=1.0  covers=[6, 7]
+    x=458-473 thick=16px/0.646sp  off=0.26sp  y=2302-2508 h=8.36sp straight=1.0  covers=[]
+    x=458-474 thick=17px/0.687sp  off=0.28sp  y=2724-2899 h=7.11sp straight=0.986  covers=[]
+    x=460-475 thick=16px/0.646sp  off=0.34sp  y=918-1114 h=7.96sp straight=1.0  covers=[3]
+    x=484-503 thick=20px/0.808sp  off=1.39sp  y=1633-2980 h=54.46sp straight=1.0  covers=[6, 7, 8, 9, 10, 11, 12]
+    x=485-500 thick=16px/0.646sp  off=1.35sp  y=201-773 h=23.15sp straight=1.0  covers=[0, 1, 2]
+    x=486-502 thick=17px/0.687sp  off=1.41sp  y=872-1177 h=12.36sp straight=1.0  covers=[3, 4]
+mahler p11 sys1 13 staves  spacing=24.75
+    x=459-475 thick=17px/0.687sp  off=0.32sp  y=4345-4583 h=9.66sp straight=1.0  covers=[6, 7]
+    x=460-478 thick=19px/0.768sp  off=0.4sp  y=3610-3790 h=7.31sp straight=0.994  covers=[]
+    x=460-475 thick=16px/0.646sp  off=0.34sp  y=4765-4973 h=8.44sp straight=1.0  covers=[8]
+    x=461-476 thick=16px/0.646sp  off=0.38sp  y=3979-4182 h=8.24sp straight=1.0  covers=[4]
+    x=483-501 thick=19px/0.768sp  off=1.33sp  y=4733-5591 h=34.71sp straight=1.0  covers=[8, 9, 10, 11, 12]
+    x=485-502 thick=18px/0.727sp  off=1.39sp  y=3149-3856 h=28.61sp straight=1.0  covers=[0, 1, 2, 3]
+    x=486-503 thick=18px/0.727sp  off=1.43sp  y=3929-4616 h=27.8sp straight=1.0  covers=[4, 5, 6, 7]
+mahler p12 sys0 17 staves  spacing=25.75
+    x=452-470 thick=19px/0.738sp  off=-0.62sp  y=3966-4164 h=7.73sp straight=0.663  covers=[]
+    x=453-474 thick=22px/0.854sp  off=-0.52sp  y=1477-1677 h=7.81sp straight=0.763  covers=[]
+    x=484-501 thick=18px/0.699sp  off=0.6sp  y=2032-3144 h=43.22sp straight=1.0  covers=[5, 6, 7, 8]
+    x=487-507 thick=21px/0.816sp  off=0.78sp  y=359-1782 h=55.3sp straight=1.0  covers=[0, 1, 2, 3, 4]
+mahler p13 sys0 16 staves  spacing=25.75
+    x=455-476 thick=22px/0.854sp  off=0.21sp  y=1539-1749 h=8.19sp straight=0.868  covers=[]
+    x=458-477 thick=20px/0.777sp  off=0.29sp  y=2191-2384 h=7.53sp straight=0.728  covers=[]
+    x=478-500 thick=23px/0.893sp  off=1.13sp  y=3888-5326 h=55.88sp straight=1.0  covers=[11, 12, 13, 14, 15]
+    x=487-506 thick=20px/0.777sp  off=1.42sp  y=367-1859 h=57.98sp straight=1.0  covers=[0, 1, 2, 3, 4]
+    x=487-503 thick=17px/0.66sp  off=1.36sp  y=2076-3130 h=40.97sp straight=1.0  covers=[5, 6, 7, 8]
+    x=500-536 thick=37px/1.437sp  off=2.25sp  y=4549-5007 h=17.83sp straight=0.496  covers=[13, 14]
+
+wrote out/scan-strokes.json
