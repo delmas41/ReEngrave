@@ -1,0 +1,49 @@
+{
+ "rows": [
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "map_entries": 21,
+   "map_entries_five_line": 17,
+   "map_entries_one_line": 4,
+   "predicted_parts": 17,
+   "ordinal_join_over_all_entries_valid": false,
+   "ordinal_join_over_five_line_entries_valid": true
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "map_entries": 15,
+   "map_entries_five_line": 13,
+   "map_entries_one_line": 2,
+   "predicted_parts": 13,
+   "ordinal_join_over_all_entries_valid": false,
+   "ordinal_join_over_five_line_entries_valid": true
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "map_entries": 21,
+   "map_entries_five_line": 18,
+   "map_entries_one_line": 3,
+   "predicted_parts": 18,
+   "ordinal_join_over_all_entries_valid": false,
+   "ordinal_join_over_five_line_entries_valid": true
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "map_entries": 21,
+   "map_entries_five_line": 17,
+   "map_entries_one_line": 4,
+   "predicted_parts": 17,
+   "ordinal_join_over_all_entries_valid": false,
+   "ordinal_join_over_five_line_entries_valid": true
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "map_entries": 11,
+   "map_entries_five_line": 11,
+   "map_entries_one_line": 0,
+   "predicted_parts": 12,
+   "ordinal_join_over_all_entries_valid": false,
+   "ordinal_join_over_five_line_entries_valid": false
+  }
+ ]
+}

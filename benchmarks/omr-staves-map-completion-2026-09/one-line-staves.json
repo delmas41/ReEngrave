@@ -1,0 +1,231 @@
+{
+ "rows": [
+  {
+   "row": "mahler-sym5-mvt1-local-p2",
+   "pdf_page_index": 1,
+   "detect_staves_total": 19,
+   "detect_staves_five_line": 17,
+   "detect_staves_one_line": 2,
+   "one_line": [
+    {
+     "staff_index": 12,
+     "line_ys": [
+      3878
+     ],
+     "span_px": 0,
+     "x_start": 881,
+     "x_end": 4227,
+     "system_index": 0
+    },
+    {
+     "staff_index": 13,
+     "line_ys": [
+      4087
+     ],
+     "span_px": 0,
+     "x_start": 879,
+     "x_end": 4227,
+     "system_index": 0
+    }
+   ],
+   "staves_with_cells": 17,
+   "one_line_with_cells": [],
+   "staff_indices_with_cells": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    14,
+    15,
+    16,
+    17,
+    18
+   ]
+  },
+  {
+   "row": "mahler-sym5-mvt1-local-p3",
+   "pdf_page_index": 2,
+   "detect_staves_total": 15,
+   "detect_staves_five_line": 13,
+   "detect_staves_one_line": 2,
+   "one_line": [
+    {
+     "staff_index": 8,
+     "line_ys": [
+      3204
+     ],
+     "span_px": 0,
+     "x_start": 506,
+     "x_end": 4227,
+     "system_index": 0
+    },
+    {
+     "staff_index": 9,
+     "line_ys": [
+      3486
+     ],
+     "span_px": 0,
+     "x_start": 505,
+     "x_end": 4228,
+     "system_index": 0
+    }
+   ],
+   "staves_with_cells": 13,
+   "one_line_with_cells": [],
+   "staff_indices_with_cells": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    10,
+    11,
+    12,
+    13,
+    14
+   ]
+  },
+  {
+   "row": "mahler-sym5-mvt1-local-p4",
+   "pdf_page_index": 3,
+   "detect_staves_total": 21,
+   "detect_staves_five_line": 18,
+   "detect_staves_one_line": 3,
+   "one_line": [
+    {
+     "staff_index": 11,
+     "line_ys": [
+      3164
+     ],
+     "span_px": 0,
+     "x_start": 515,
+     "x_end": 4212,
+     "system_index": 0
+    },
+    {
+     "staff_index": 12,
+     "line_ys": [
+      3292
+     ],
+     "span_px": 0,
+     "x_start": 515,
+     "x_end": 4212,
+     "system_index": 0
+    },
+    {
+     "staff_index": 13,
+     "line_ys": [
+      3417
+     ],
+     "span_px": 0,
+     "x_start": 514,
+     "x_end": 4211,
+     "system_index": 0
+    }
+   ],
+   "staves_with_cells": 18,
+   "one_line_with_cells": [],
+   "staff_indices_with_cells": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+   ]
+  },
+  {
+   "row": "mahler-sym5-mvt1-local-p5",
+   "pdf_page_index": 4,
+   "detect_staves_total": 21,
+   "detect_staves_five_line": 17,
+   "detect_staves_one_line": 4,
+   "one_line": [
+    {
+     "staff_index": 10,
+     "line_ys": [
+      3004
+     ],
+     "span_px": 0,
+     "x_start": 515,
+     "x_end": 4222,
+     "system_index": 0
+    },
+    {
+     "staff_index": 11,
+     "line_ys": [
+      3127
+     ],
+     "span_px": 0,
+     "x_start": 516,
+     "x_end": 4222,
+     "system_index": 0
+    },
+    {
+     "staff_index": 12,
+     "line_ys": [
+      3248
+     ],
+     "span_px": 0,
+     "x_start": 515,
+     "x_end": 4222,
+     "system_index": 0
+    },
+    {
+     "staff_index": 13,
+     "line_ys": [
+      3373
+     ],
+     "span_px": 0,
+     "x_start": 513,
+     "x_end": 4219,
+     "system_index": 0
+    }
+   ],
+   "staves_with_cells": 17,
+   "one_line_with_cells": [],
+   "staff_indices_with_cells": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+   ]
+  }
+ ]
+}
