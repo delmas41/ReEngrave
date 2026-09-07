@@ -200,3 +200,146 @@ fires (15 `detector` / 2 `cv_locator`), plus 0 changed / 0 removed through a
 script whose ignore list is a measured control. **The structure of the argument
 is right**, and blocking 1 does not threaten it — recording less than intended
 cannot make output differ.
+
+---
+
+# RE-REVIEW — `41dae58a`
+
+Narrow, per the coordinator: the three blocking fixes, two spot-checks, one
+judgement. Read-only; the four test files run (**54 passed**, was 44).
+
+## VERDICT: **APPROVE**
+
+---
+
+## Blocking 1 — FIXED, verified in the tree
+
+`clef_evidence` is now `ast.Name('cell_clef_evidence')` at the single call site,
+not an `IfExp`; the record lands on `measure["clef_evidence"]` (`:4843`) as well
+as the staff (`:4789`) — **2 subscripts, both `ast.Store`**. The false comment is
+replaced with one that states the mechanism correctly, including that `read_clef`
+gates the locator, header rung and specialist and **not** the argmax.
+
+The gate `if clef_candidates or read_clef:` is the right bound: a mid-staff flip
+requires the argmax to fire, which requires a resolved clef candidate, so **the
+flip population is covered by construction** and empty cells are not recorded.
+
+## Blocking 2 — FIXED, and the prediction held. 3 of 3, and the record is a SUPERSET of my measurement
+
+**The two scan flips are mine, to four decimal places.** My round-1 table for
+`beethoven-984073-p1` has exactly two, and they are these:
+
+| | my round-1 measurement | this branch |
+|---|---|---|
+| staff 9, m4 | `alto → bass`, `clefF` **0.59** | `alto→bass` **@0.5904** |
+| staff 11, m3 | `bass → treble`, `clefG` **0.66** | `bass→treble` **@0.6639** |
+
+**2 of 2 on that page, exact.** My 11 were spread over 11 scan pages; this A/B
+covers one of them. **Consistent.**
+
+⚠️ **The third is one I could NOT have found, and that is the important
+result.** Brahms staff 19 (Cello) is on the *engraved* fixture, where my probe
+reported **0 mid-staff clef changes on 224 staves**. Checked directly in
+`benchmarks/omr-orchestral-e2e/fixtures/brahms-sym1-mvt1.omr.json`:
+
+```
+staff 19  Cello  clef=tenor  src=detector
+  m0  clef tenor   clefdets [('clefCTenor', 0.961)]
+  m5  clef tenor   clefdets [('clefF', 0.935)]     <-- argmax overturns; output says tenor
+```
+
+The argmax **does** flip it at m5, and `measure["clef"]` still reads `tenor`
+because the engraved run is dossier-seeded and the dossier override runs last and
+wins. My probe compared `measure["clef"]`, so it saw nothing. The new record
+captures `clef_in_effect_after` **immediately after the argmax**, before the
+locator, header rung, specialist or dossier can repair it.
+
+**So the answer to the question the builder did not ask: the record is not
+missing flips — it captures strictly more than my 11 did.** It measures the
+mechanism rather than the survivors, which is the better instrument.
+
+⚠️ **One consequence that must be written down before anyone differences the two
+numbers.** `overturns_inherited` is pre-repair, so on a dossier-seeded run it
+counts overturns that never reach the output. A future agent comparing an
+engraved `overturns_inherited` total against my *"11 of 193 scan staves"* will
+over-count, because those are different events: mine is *"the flip survived to
+the output"*, this is *"the argmax flipped it"*. **Recommend one sentence in the
+field's own comment saying so.** Not blocking — the record is right and it is the
+interpretation that needs the guard rail.
+
+**The separation works.** `read_clef_rung_ran` is what distinguishes the 3
+genuine mid-staff flips from the 12 staff-*opening* overturns (where the pass is
+establishing a clef, not overturning a reading), and all 3 carry
+`n_resolved == 1` with no `disagrees` key — the prediction, confirmed.
+
+## Blocking 3 — FIXED, and the mutation bites
+
+`TestTheClefRecordIsWiredIn` counts `len(calls) == 1` **before** iterating, and
+`test_the_record_is_NOT_gated_back_to_the_first_cell` asserts the passed value is
+**not an `ast.IfExp`** and **is** an `ast.Name` — which pins blocking 1 itself,
+i.e. the exact mutation that used to pass green now fails. Verified against the
+live AST: the value is `Name('cell_clef_evidence')`.
+
+⚠️ **One latent weakness, not blocking.** `test_both_the_staff_and_the_measure…`
+collects subscripts with slice `"clef_evidence"` and asserts `>= 2` without
+filtering on `ast.Store`. Today both are stores, so removing either takes the
+count to 1 and it goes red — it bites. But if a *read* is ever added, the test
+can be satisfied by one write plus one read. A one-word fix (`isinstance(n.ctx,
+ast.Store)`) if anyone is passing.
+
+## Spot-check — minor 3: the unreachability argument is CORRECT
+
+Verified independently rather than read: `CANDIDATE_CLEFS = ('treble', 'bass',
+'alto', 'tenor')`, all four are in `_CLEF_ANCHORS`, and for **every one of the 50
+anchored clefs** at least one candidate yields a non-`None` `clef_diatonic_shift`.
+So once `current` clears the anchor gate `fits` cannot be empty, and
+`no_candidate_clefs` is unreachable with the shipped constants.
+
+**Asserting the invariant is better than the fix I asked for.** A monkeypatched
+hit would have tested a branch that cannot occur; this goes red the day an
+unanchored candidate is added — at which point the branch becomes live and wants
+a real test. Correctly reasoned.
+
+## Spot-check — minor 2: confirmed
+
+The dead `/_s$` pattern is gone; `IGNORED_LEAVES` is three patterns, and the
+docstring now says *"six leaves, matched by two patterns"*. The control is
+stronger than originally stated and now describes itself accurately.
+
+⚠️ Also confirmed beyond what was asked: **all four** meter keys moved onto
+`trace` (`runner_up_meter` `:591`, `runner_up_votes` `:592`,
+`median_score_margin` `:596`, `min_score_margin` `:597`) — not just the two the
+coordinator named. Nothing page-level is left riding the per-measure meter dict
+from this branch.
+
+## Judgement — is +10% the right price? **YES.**
+
+Plainly: yes, and I would not cut it further.
+
+Three reasons, in order of weight:
+
+1. **After the minor-1 move the growth IS the evidence.** Cutting it means
+   recording less, and the records are the thing that converts *"I measured 11
+   flips by hand across 11 pages"* into *"any run answers this"*. That is the
+   whole point of the sweep and it is the argument I made; I am not going to
+   discount it when it arrives with a price tag.
+2. **The comparison that settles it is already in the tree.** On
+   `beethoven-984073-p1`, `pitch_candidates` occupies **14,447 bytes — 6.6% of
+   the file — across 117 lists, with ZERO production consumers**
+   (`TECHNOLOGY_LEDGER.md` §R9.1 / `grep -c pitch_candidates export.py` → 0).
+   The pipeline already pays two-thirds of this cost for a record nobody reads,
+   on the fact that needed it least. **If 10% is ever too much, the first thing
+   to cut is the payload with no consumer, not the one answering named open
+   questions.**
+3. ⚠️ **And it must NOT be flag-gated to buy the bytes back.** That is this
+   audit's own finding turned on itself: `OMR_CONTEST_DUMP` and
+   `locate_clef(trace=)` are both complete recorders that record nothing because
+   they are off — *"an instrument that is off is not a record"*
+   (`DECISION_TYPES.md` §5.2). A default-off evidence record would reproduce the
+   exact defect this branch was built to fix.
+
+**The one thing I would ask for at the next size step, not now:** a whole-work
+88-page run scales this to roughly 67 MB against 61 MB. If that becomes painful,
+the answer is a *projection* at write time (drop `candidates[]` and keep the
+winner, runner-up and margin), not a flag — the aggregate fields are what a
+corpus sweep reads, and they are a small fraction of the payload.

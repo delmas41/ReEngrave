@@ -30,6 +30,7 @@ A = {
     "floor": HERE / "structural-floor-measured.json",
     "inputceil": HERE / "input-ceiling-from-labels.json",
     "retro": HERE / "retro-stamp.json",
+    "scancmp": ROOT / "benchmarks/omr-vs-industry-2026-09/scan-comparison.json",
     "hairpinceil": HERE / "hairpin-ceiling-value.json",
     "humancost": HERE / "human-cost-identity.json",
     "noisefloor": HERE / "engraved-noise-floor.json",
@@ -38,6 +39,18 @@ A = {
 }
 L = {k: json.loads(v.read_text()) for k, v in A.items()}
 REL = {k: str(v.relative_to(ROOT)) for k, v in A.items()}
+
+
+#: A head-to-head key names (fixtures, row set, scorer) — never a system. Both
+#: sides of a comparison must carry the SAME string, so each is declared ONCE
+#: here rather than typed at two call sites. ⚠️ The round-2 defect this fixes:
+#: `engraved:omr_ned` carried the key and `competitive:engraved:audiveris`
+#: carried none, so the pair had ONE member, the renderer's grouping found no
+#: pair, and it fell back to grouping on `ceiling.kind == "competitive"` — which
+#: swept in a pre-registered admission bar under a heading reading "different
+#: system". A one-sided key is worse than no key: it looks satisfied.
+H2H_ENGRAVED = "engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects"
+H2H_SCAN = "scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects"
 
 
 def pct_err(m, f):
@@ -120,7 +133,7 @@ rows.append(row(
     },
     summability_class="omr_ned_engraved", pool_key="engraved/orchestral-e2e/11",
     comparable_as={"time_series": "orchestral-e2e|2026-09-02|11works|direction_text",
-                   "head_to_head": "engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects"},
+                   "head_to_head": H2H_ENGRAVED},
     scoreable=True, source=REL["record"],
     companions={"edits": dt["edits"], "truth_symbols": dt["truth_symbols"],
                 "pred_symbols": dt["pred_symbols"]},
@@ -494,9 +507,11 @@ rows.append(row(
                         "nothing measures how much of a hairpin survives a bitonal "
                         "600 dpi scan, so C=1 is assumed"},
     pct_of_achievable=pct_rate(yolo / truth, 1.0),
-    mandatory_caption="Scores the DETECTOR only. A classical-CV reader added "
+    mandatory_caption="Scores the DETECTOR only — a classical-CV reader added "
                       "later carries 118 of 198 <wedge> into the file, so this "
-                      "is not what reaches a user.",
+                      "is not what reaches a user. The ceiling it is measured "
+                      "against (≥0.80) comes from ONE edition, Breitkopf & "
+                      "Härtel, Brahms 1.",
     n=truth, n_unit="truth hairpins", era_key="hairpin-cv|11 scanned pages",
     summability_class="detector_recall", pool_key=None,
     scoreable=True, source=REL["hairpin"],
@@ -521,11 +536,45 @@ rows.append(row(
                         "corpora and are context, never comparison."},
     pct_of_achievable=pct_err(aud_ned, 0.0),
     n=len(okw), n_unit="works", era_key=ERA_ENG.replace("|" + dt["commit"], "|audiveris-5.11"),
+    comparable_as={"time_series": None, "head_to_head": H2H_ENGRAVED},
     summability_class="omr_ned_engraved", pool_key=None,
     scoreable=True, source=REL["aud_eng"],
     companions={"ours": pct_err(dt["pooled"], 0.0),
                 "we_are_ahead_by_points": round(pct_err(dt["pooled"], 0.0)
                                                 - pct_err(aud_ned, 0.0), 2)}))
+
+# ── OUR side of the scan head-to-head. It has to exist as a ROW, or the pair is
+# one-sided and a renderer can only print "ours —". ⚠️ It may NOT be
+# `scan:omr_ned`: that is the 20-row era and Audiveris covers 10 rows of the
+# 11-row era, so pairing them would be a false head-to-head between different
+# row sets — the failure the comparability rule exists to refuse. The figure is
+# the one the industry arm itself computed over exactly the rows Audiveris
+# scored.
+_sc = L["scancmp"]["ours_current"]
+rows.append(row(
+    id="scan:omr_ned:same_10_rows_as_audiveris", stage="= finished file",
+    family="scan", raw_metric="OMR-NED over exactly the 10 scan rows Audiveris "
+                              "completed", native_direction="lower_is_better",
+    native_worst=1.0, native_best=0.0, value=_sc["omr_ned"],
+    transform="pct = 100 * (1 - M) / (1 - F)",
+    ceiling={"kind": "assumed", "value": 0.0, "status": "assumed", "evidence": [],
+             "control": "F=0 by the assumption-direction rule. This row exists to "
+                        "make the head-to-head two-sided on a shared row set; it "
+                        "is not a ceilinged figure and must not be read as one."},
+    pct_of_achievable=round(pct_err(_sc["omr_ned"], 0.0), 2),
+    n=L["scancmp"]["audiveris"]["n_rows"], n_unit="pages",
+    era_key="scan-e2e|11rows|restamp-composed|10 rows Audiveris completed",
+    noise_floor={"value_edits": 6, "status": "measured"},
+    comparable_as={"time_series": None, "head_to_head": H2H_SCAN},
+    summability_class="omr_ned_scan", pool_key=None,
+    mandatory_caption="A 10-row subset of the retired 11-row scan era, kept only "
+                      "so the Audiveris comparison has two sides. It is NOT the "
+                      "headline and may not be differenced against the 20-row "
+                      "figure.",
+    scoreable=True, source=REL["scancmp"],
+    companions={"edits": _sc["omr_ed"]},
+    flags=["Audiveris is AHEAD of us here — 20.81%% against our %.2f%%. Recorded, "
+           "not hidden." % pct_err(_sc["omr_ned"], 0.0)]))
 
 asc = L["aud_scan"]["pooled"]
 rows.append(row(
@@ -541,8 +590,7 @@ rows.append(row(
     pct_of_achievable=pct_err(asc["omr_ned"], 0.0),
     n=asc["n_rows"], n_unit="pages",
     era_key="scan-e2e|11rows|restamp-composed|audiveris-5.11",
-    comparable_as={"time_series": None,
-                   "head_to_head": "scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects"},
+    comparable_as={"time_series": None, "head_to_head": H2H_SCAN},
     summability_class="omr_ned_scan", pool_key=None,
     scoreable=True, source=REL["aud_scan"],
     flags=["Audiveris is AHEAD of us on this pool (0.7919 vs our 0.8345 on the "
@@ -628,6 +676,10 @@ rows.append(row(
                         "across three cells, so the two units are biased in "
                         "opposite directions."},
     n=5, n_unit="swept bars carrying a reference hairpin start",
+    mandatory_caption="Measured on ONE edition — Breitkopf & Härtel, Brahms 1 "
+                      "mvt 1 — and irreducibly so today: only one labeling batch "
+                      "in the corpus carries a completion pass. Not a claim "
+                      "about scans in general.",
     era_key="labeling|breitkopf-brahms1|completion-pass|55 cells",
     scoreable=False,
     why_not="A BOUND, not a point, so it is not scored — but it is now a "
@@ -759,7 +811,7 @@ rows.append(row(
                               "pre-filled verdicts, blind sample",
     native_direction="higher_is_better", native_best=1.0, native_worst=0.0,
     value=0.915, transform="pct = 100 * V / C",
-    ceiling={"kind": "competitive", "value": 0.97, "status": "pre_registered",
+    ceiling={"kind": "decision_rule", "value": 0.97, "status": "pre_registered",
              "evidence": ["benchmarks/omr-prefill-admission-2026-09/FINDINGS.md",
                           "benchmarks/omr-prefill-admission-2026-09/"
                           "PHASE_C_CELLS.json"],
@@ -841,18 +893,102 @@ rows.append(row(
            "cost figure that mixes regimes is not one figure (backlog F)"]))
 
 # ───────────────────────────────────────────────────────────────────── assemble
-# ── schema self-check: a mandatory caption must be real text on a scored row.
+# ── schema self-checks. Both FAIL the build rather than warn: a registry that
+# can be built with a droppable caption is a registry whose rule is advisory.
+#
+# ⚠️ An unscoreable row MAY carry a caption. The first version of this check
+# refused that, which was wrong — an unscoreable row still RENDERS (as an
+# explicit "unscoreable — <reason>"), so its scope can still mislead.
 _bad = [r["id"] for r in rows
         if r.get("mandatory_caption") is not None
-        and (not r["scoreable"] or not str(r["mandatory_caption"]).strip())]
+        and not str(r["mandatory_caption"]).strip()]
 if _bad:
-    raise SystemExit("mandatory_caption is set but unusable on: %s" % _bad)
+    raise SystemExit("mandatory_caption is set but empty on: %s" % _bad)
+
+# A ONE-SIDED HEAD-TO-HEAD IS WORSE THAN NONE: it looks satisfied, the pair has
+# one member, and a renderer that groups on the key finds nothing and falls back
+# to something weaker. This defect survived two review rounds because nothing
+# checked it — it was found only by reading a rendered page. Now the build
+# refuses it.
+_h2h = {}
+for r in rows:
+    k = (r.get("comparable_as") or {}).get("head_to_head")
+    if k:
+        _h2h.setdefault(k, []).append(r["id"])
+_lonely = {k: v for k, v in _h2h.items() if len(v) < 2}
+if _lonely:
+    raise SystemExit(
+        "one-sided head_to_head key(s) — a comparison needs two sides: %s\n"
+        "  Either add the counterpart row or drop the key. A key with one "
+        "member is not a weaker comparison, it is a false claim that one "
+        "exists." % _lonely)
+
+# THE EDITION CLAUSE. A ceiling measured on one edition is a claim about that
+# edition; the publisher has to ride the mechanism a renderer cannot drop.
+_missing = []
+for r in rows:
+    ed = (r.get("ceiling") or {}).get("edition")
+    if not ed:
+        continue
+    house = str(ed).split(",")[0].split("&")[0].strip()
+    cap = str(r.get("mandatory_caption") or "")
+    if house and house not in cap:
+        _missing.append((r["id"], house))
+if _missing:
+    raise SystemExit(
+        "ceiling.edition is set but the edition is not named in "
+        "mandatory_caption on: %s\n"
+        "  A single-edition ceiling must carry its publisher on the caption "
+        "mechanism, not only in `ceiling.edition` — see rules."
+        "mandatory_caption.edition_clause." % _missing)
 
 scoreable = [r for r in rows if r["scoreable"]]
 doc = {
-    "schema_version": "0.3.0",
+    "schema_version": "0.4.0",
+    #: ⚠️ WHAT A CONSUMER MUST GATE ON. A renderer written against 0.2.0 read
+    #: 0.3.0 without a word and silently dropped `mandatory_caption` and
+    #: `ceiling.edition` — the two fields whose entire purpose is that they
+    #: cannot be dropped. Declare the versions understood, refuse anything else
+    #: with a non-zero exit naming the version, and never forward-compat
+    #: silently: an unknown minor may have added a field that MUST be shown.
+    "consumer_contract": {
+        "current": "0.4.0",
+        "understood_by_a_conforming_consumer": ["0.4.0"],
+        "superseded": {
+            "0.3.0": "added `mandatory_caption` + `rules.mandatory_caption` and "
+                     "`ceiling.edition`; a 0.2.0 consumer drops both silently",
+            "0.2.0": "added `comparable_as`; a 0.1.0 consumer cannot tell a "
+                     "head-to-head from a delta",
+        },
+        "must_fail_loudly_on": "any schema_version not in "
+                               "`understood_by_a_conforming_consumer`",
+        "fields_a_consumer_may_never_drop": [
+            "mandatory_caption", "ceiling.edition (via the edition clause)",
+        ],
+    },
     "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/build_metric_registry.py",
-    "round": 3,
+    "round": 5,
+    "changes_since_0_3_0": [
+        "FIXED: the one-sided head-to-head keys. `engraved:omr_ned` carried a "
+        "key and `competitive:engraved:audiveris` carried NONE, so the pair had "
+        "one member and a renderer fell back to grouping on `ceiling.kind == "
+        "competitive` — which filed a pre-registered admission bar under a "
+        "heading reading 'different system'. Both keys are now declared once, "
+        "as H2H_ENGRAVED / H2H_SCAN, so the two sides cannot drift apart.",
+        "ADDED `scan:omr_ned:same_10_rows_as_audiveris` — our own side of the "
+        "scan head-to-head. Pairing Audiveris's 10 rows against our 20-row "
+        "headline would have been a false comparison across row sets.",
+        "FIXED: `prefill:precision:blind_out_of_sample` was `ceiling.kind = "
+        "competitive`. It is a bar a human set in advance, not another system; "
+        "the new kind is `decision_rule`.",
+        "ADDED the EDITION CLAUSE: a row whose `ceiling.edition` is set must "
+        "name that edition in its `mandatory_caption`, enforced at build time. "
+        "A renderer built against 0.2.0 printed `Breitkopf` zero times because "
+        "`ceiling.edition` was a field it did not read.",
+        "RELAXED the caption self-check: an UNSCOREABLE row may carry a "
+        "mandatory_caption. It still renders, so its scope can still mislead.",
+        "ADDED `consumer_contract` so a version gate has something to gate on.",
+    ],
     "changes_since_0_2_0": [
         "human review cost — the project's PURPOSE — is on the board: 46 of "
         "1,571 records, 97.07% of achievable. Round 2's 'irreproducible' "
@@ -932,6 +1068,19 @@ doc = {
             "when_to_set_it": "when the row's SCOPE is narrower than its "
                               "neighbours' and the unit hides the difference. "
                               "Not for ordinary caveats — those are `flags`.",
+            "edition_clause": "⚠️ ANY row whose `ceiling.edition` is set MUST "
+                              "name that edition inside its "
+                              "`mandatory_caption`, and the build FAILS "
+                              "otherwise. This exists because "
+                              "`ceiling.edition` was added in 0.3.0 and the "
+                              "renderer built against 0.2.0 simply did not read "
+                              "it, so `Breitkopf` — which a standing reporting "
+                              "rule says must accompany the hairpin ceiling "
+                              "every time it is quoted — appeared ZERO times on "
+                              "the rendered page and nothing said so. A fact "
+                              "that must always travel with a number belongs on "
+                              "the mechanism that cannot be dropped, not in a "
+                              "field a consumer may not know about.",
         },
         "no_fabricated_100": "a row with no ceiling evidence AND no value gets "
                              "scoreable:false and renders as an explicit "
@@ -984,7 +1133,16 @@ doc = {
         "visibility": "the harness cannot see the stage — a ceiling of ZERO "
                       "INFORMATION, not of 100%",
         "input": "the ink is genuinely gone",
-        "competitive": "best external system, our fixtures, our scorer",
+        "competitive": "best external system, our fixtures, our scorer. ⚠️ This "
+                       "kind means ANOTHER SYSTEM and nothing else. Grouping a "
+                       "head-to-head on `ceiling.kind` instead of on "
+                       "`comparable_as.head_to_head` is what filed a "
+                       "pre-registered admission bar under a heading reading "
+                       "\"different system\" — group on the key, never on the kind.",
+        "decision_rule": "a bar somebody set IN ADVANCE for accepting the output "
+                         "without review — not a physical limit and not another "
+                         "system. The right ceiling kind for anything gated on "
+                         "human trust, and the only pre-registered one here.",
         "assumed": "no evidence; set by the assumption-direction rule",
     },
     "coverage": {

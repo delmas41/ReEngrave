@@ -1379,3 +1379,49 @@ false claim, checked `_canonical`, found it masked the ids, and withdrew. That
 was right. It also means I read that function and did not notice it hashes a
 timestamp — the same shape as the round-3 human-cost error: I checked the thing I
 suspected and not the thing beside it.
+
+
+---
+
+# ROUND 5 — the registry defects I found in my own file, fixed
+
+Reviewing the renderer surfaced four faults in `metric-registry.json`, three of
+them mine. **Fixed and frozen at v0.4.0; the renderer was not touched.**
+
+| # | fault | fix |
+|---|---|---|
+| 1 | **One-sided `head_to_head`.** `engraved:omr_ned` carried a key; `competitive:engraved:audiveris` carried **no `comparable_as` at all** — a round-2 patch of mine silently did not apply. The pair had one member, so a renderer grouping on the key found nothing and fell back to grouping on `ceiling.kind == "competitive"`. | Both keys declared **once**, as `H2H_ENGRAVED` / `H2H_SCAN`, so the two sides cannot drift apart. |
+| 2 | **The scan comparison had no second side.** Audiveris covers 10 rows of the retired 11-row era and the registry held no counterpart, so a renderer could only print `ours —`. ⚠️ Pairing it with the 20-row headline would have been a **false head-to-head across row sets**. | Added `scan:omr_ned:same_10_rows_as_audiveris` (0.8345, the figure the industry arm itself computed over exactly those rows), captioned as not-the-headline. |
+| 3 | **`prefill:precision:blind_out_of_sample` was `ceiling.kind = "competitive"`.** It is a bar a human set in advance, not another system — which is how it got filed under a heading reading *"different system"*. **A category error in the data, not the renderer.** | New kind `decision_rule`, and `competitive` now documents that it means another system and nothing else. |
+| 4 | **`ceiling.edition` was a field a consumer could simply not read** — and one did, so `Breitkopf` appeared **zero times** on a rendered page, against a standing rule that the hairpin ceiling is always quoted with its publisher. | **The edition clause**: any row whose `ceiling.edition` is set must name that edition in its `mandatory_caption`, enforced at build time. |
+
+**The generalisation, which is the part worth keeping:** *a fact that must always
+travel with a number belongs on the mechanism that cannot be dropped, not in a
+field a consumer may not know about.* Fault 4 is fault 1 of the renderer review
+seen from the data side.
+
+**Three build-time guards, each mutation-tested red before being trusted:**
+
+| guard | mutation | result |
+|---|---|---|
+| edition clause | replace `Breitkopf` in the caption | exit 1, names the row |
+| caption non-empty | set a caption to `"   "` | exit 1, names the row |
+| **one-sided head-to-head** | delete one side's key | exit 1, names the key and its lone member |
+
+⚠️ The third is the one that matters most: **that defect survived two review
+rounds because nothing checked it** — it was found only by reading a rendered
+page. A registry that can be built with a one-sided key is a registry whose
+comparability rule is advisory. It is now refused, with the reason: *a key with
+one member is not a weaker comparison, it is a false claim that one exists.*
+
+**Also relaxed, because the first version was wrong:** an **unscoreable** row may
+carry a `mandatory_caption`. It still renders — as an explicit
+`unscoreable — <reason>` — so its scope can still mislead.
+
+**`consumer_contract` added** so a version gate has something to gate on: the
+current version, the versions a conforming consumer understands, what each
+superseded version drops, and the fields that may never be dropped.
+
+**Stability:** the registry is **byte-identical across two builds**, all ten
+probes exit 0, and nothing outside `benchmarks/omr-pipeline-audit-2026-09/` was
+modified in any round.

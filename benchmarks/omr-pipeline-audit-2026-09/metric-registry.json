@@ -1,7 +1,30 @@
 {
- "schema_version": "0.3.0",
+ "schema_version": "0.4.0",
+ "consumer_contract": {
+  "current": "0.4.0",
+  "understood_by_a_conforming_consumer": [
+   "0.4.0"
+  ],
+  "superseded": {
+   "0.3.0": "added `mandatory_caption` + `rules.mandatory_caption` and `ceiling.edition`; a 0.2.0 consumer drops both silently",
+   "0.2.0": "added `comparable_as`; a 0.1.0 consumer cannot tell a head-to-head from a delta"
+  },
+  "must_fail_loudly_on": "any schema_version not in `understood_by_a_conforming_consumer`",
+  "fields_a_consumer_may_never_drop": [
+   "mandatory_caption",
+   "ceiling.edition (via the edition clause)"
+  ]
+ },
  "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/build_metric_registry.py",
- "round": 3,
+ "round": 5,
+ "changes_since_0_3_0": [
+  "FIXED: the one-sided head-to-head keys. `engraved:omr_ned` carried a key and `competitive:engraved:audiveris` carried NONE, so the pair had one member and a renderer fell back to grouping on `ceiling.kind == competitive` \u2014 which filed a pre-registered admission bar under a heading reading 'different system'. Both keys are now declared once, as H2H_ENGRAVED / H2H_SCAN, so the two sides cannot drift apart.",
+  "ADDED `scan:omr_ned:same_10_rows_as_audiveris` \u2014 our own side of the scan head-to-head. Pairing Audiveris's 10 rows against our 20-row headline would have been a false comparison across row sets.",
+  "FIXED: `prefill:precision:blind_out_of_sample` was `ceiling.kind = competitive`. It is a bar a human set in advance, not another system; the new kind is `decision_rule`.",
+  "ADDED the EDITION CLAUSE: a row whose `ceiling.edition` is set must name that edition in its `mandatory_caption`, enforced at build time. A renderer built against 0.2.0 printed `Breitkopf` zero times because `ceiling.edition` was a field it did not read.",
+  "RELAXED the caption self-check: an UNSCOREABLE row may carry a mandatory_caption. It still renders, so its scope can still mislead.",
+  "ADDED `consumer_contract` so a version gate has something to gate on."
+ ],
  "changes_since_0_2_0": [
   "human review cost \u2014 the project's PURPOSE \u2014 is on the board: 46 of 1,571 records, 97.07% of achievable. Round 2's 'irreproducible' verdict is WITHDRAWN: score.py derives `impossible`/`not-in-this-work` from corpus.py, which is committed, and work/page/emitted are all on the record. The fields were absent; the information was not.",
   "the hairpin `input` ceiling has a VALUE (bar recall 0.80, n=5) and the matched comparison round 2 never made: ZERO hairpin detections in 10,523 on the same three pages a human swept",
@@ -42,7 +65,8 @@
    "_why": "\u26a0\ufe0f A ROW CAN BE INDIVIDUALLY CORRECT AND COLLECTIVELY MISLEADING. `human:review_cost:identity` reads 97.07 and `scan:omr_ned` reads 15.56, on one axis, in one unit, in one table \u2014 and the first scores staff NAMING while the second scores everything. A reader takes the pair to mean 'naming is nearly solved, reading is not'; what it actually means is that one of them has a harness and the reviewer's real load (note-level diffs) has none. No amount of care in the renderer fixes that, because the mistake is not made in the renderer.",
    "rule": "a row carrying a non-null `mandatory_caption` MUST be rendered with that text visible beside the number \u2014 not in a tooltip, not on hover, not behind a disclosure. A renderer that cannot show it MUST NOT show the row.",
    "enforcement": "this is a SCHEMA constraint, not a rendering convention. If the renderer can drop the caption the schema is wrong, not the renderer \u2014 so a consumer that omits captions should fail its own build rather than degrade silently.",
-   "when_to_set_it": "when the row's SCOPE is narrower than its neighbours' and the unit hides the difference. Not for ordinary caveats \u2014 those are `flags`."
+   "when_to_set_it": "when the row's SCOPE is narrower than its neighbours' and the unit hides the difference. Not for ordinary caveats \u2014 those are `flags`.",
+   "edition_clause": "\u26a0\ufe0f ANY row whose `ceiling.edition` is set MUST name that edition inside its `mandatory_caption`, and the build FAILS otherwise. This exists because `ceiling.edition` was added in 0.3.0 and the renderer built against 0.2.0 simply did not read it, so `Breitkopf` \u2014 which a standing reporting rule says must accompany the hairpin ceiling every time it is quoted \u2014 appeared ZERO times on the rendered page and nothing said so. A fact that must always travel with a number belongs on the mechanism that cannot be dropped, not in a field a consumer may not know about."
   },
   "no_fabricated_100": "a row with no ceiling evidence AND no value gets scoreable:false and renders as an explicit 'unscoreable \u2014 <reason>', never a number.",
   "pooling": "rows may be pooled only within one `pool_key`, and a pool is recomputed FROM THE UNDERLYING COUNTS, never by averaging percentages \u2014 a 3-bar excerpt and a 27-staff page must not carry equal weight. A pool's trust is the MINIMUM of its members' ceiling statuses.",
@@ -61,17 +85,18 @@
   "render": "the fixture carries ink no reader could have read, or lost ink it should have",
   "visibility": "the harness cannot see the stage \u2014 a ceiling of ZERO INFORMATION, not of 100%",
   "input": "the ink is genuinely gone",
-  "competitive": "best external system, our fixtures, our scorer",
+  "competitive": "best external system, our fixtures, our scorer. \u26a0\ufe0f This kind means ANOTHER SYSTEM and nothing else. Grouping a head-to-head on `ceiling.kind` instead of on `comparable_as.head_to_head` is what filed a pre-registered admission bar under a heading reading \"different system\" \u2014 group on the key, never on the kind.",
+  "decision_rule": "a bar somebody set IN ADVANCE for accepting the output without review \u2014 not a physical limit and not another system. The right ceiling kind for anything gated on human trust, and the only pre-registered one here.",
   "assumed": "no evidence; set by the assumption-direction rule"
  },
  "coverage": {
-  "n_rows": 55,
-  "n_scoreable": 39,
+  "n_rows": 56,
+  "n_scoreable": 40,
   "n_unscoreable": 16,
   "by_ceiling_status": {
    "measured": 25,
    "measured_unreliable": 1,
-   "assumed": 19,
+   "assumed": 20,
    "measured_directly": 1,
    "measured_single_source": 1,
    "measured_and_corroborated": 1,
@@ -1557,7 +1582,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": "Scores the DETECTOR only. A classical-CV reader added later carries 118 of 198 <wedge> into the file, so this is not what reaches a user.",
+   "mandatory_caption": "Scores the DETECTOR only \u2014 a classical-CV reader added later carries 118 of 198 <wedge> into the file, so this is not what reaches a user. The ceiling it is measured against (\u22650.80) comes from ONE edition, Breitkopf & H\u00e4rtel, Brahms 1.",
    "raw_metric": "hairpins the YOLO detector finds",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1593,7 +1618,7 @@
    "family": "engraved",
    "comparable_as": {
     "time_series": null,
-    "head_to_head": null
+    "head_to_head": "engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects"
    },
    "mandatory_caption": null,
    "raw_metric": "OMR-NED of Audiveris 5.11, our fixtures, our scorer",
@@ -1625,6 +1650,48 @@
     "ours": 88.78,
     "we_are_ahead_by_points": 1.3
    }
+  },
+  {
+   "id": "scan:omr_ned:same_10_rows_as_audiveris",
+   "stage": "= finished file",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": "scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects"
+   },
+   "mandatory_caption": "A 10-row subset of the retired 11-row scan era, kept only so the Audiveris comparison has two sides. It is NOT the headline and may not be differenced against the 20-row figure.",
+   "raw_metric": "OMR-NED over exactly the 10 scan rows Audiveris completed",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.8345096904830778,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 0.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "F=0 by the assumption-direction rule. This row exists to make the head-to-head two-sided on a shared row set; it is not a ceilinged figure and must not be read as one."
+   },
+   "pct_of_achievable": 16.55,
+   "n": 10,
+   "n_unit": "pages",
+   "era_key": "scan-e2e|11rows|restamp-composed|10 rows Audiveris completed",
+   "noise_floor": {
+    "value_edits": 6,
+    "status": "measured"
+   },
+   "summability_class": "omr_ned_scan",
+   "pool_key": null,
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-vs-industry-2026-09/scan-comparison.json",
+   "companions": {
+    "edits": 28849
+   },
+   "flags": [
+    "Audiveris is AHEAD of us here \u2014 20.81% against our 16.55%. Recorded, not hidden."
+   ]
   },
   {
    "id": "competitive:scan:audiveris",
@@ -1989,7 +2056,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Measured on ONE edition \u2014 Breitkopf & H\u00e4rtel, Brahms 1 mvt 1 \u2014 and irreducibly so today: only one labeling batch in the corpus carries a completion pass. Not a claim about scans in general.",
    "raw_metric": "can a human see a hairpin on these scans at all?",
    "native_direction": "higher_is_better",
    "native_worst": null,
@@ -2210,7 +2277,7 @@
    "value": 0.915,
    "transform": "pct = 100 * V / C",
    "ceiling": {
-    "kind": "competitive",
+    "kind": "decision_rule",
     "value": 0.97,
     "status": "pre_registered",
     "evidence": [

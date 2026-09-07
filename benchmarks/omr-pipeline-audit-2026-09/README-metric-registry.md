@@ -34,7 +34,25 @@ bridge, seconds, no pipeline. It reads truth fixtures from the `reconciliation`
 worktree (`fixtures/` is gitignored) and **refuses to run** unless every
 fixture's sha256 matches the canonical arm's.
 
-**v0.3.0 (round 3): 55 rows — 39 scoreable, 16 not.** Ceiling status: 25
+**v0.4.0 — FROZEN for the renderer rebuild, 2026-09-07. 56 rows, 40 scoreable,
+16 not.** Nothing may move it without telling the coordinator: one schema
+shifting under one builder is how the first renderer failed.
+
+### What a conforming consumer must do (`consumer_contract`)
+
+1. **Gate on `schema_version`.** Understood: `["0.4.0"]`. Anything else → refuse
+   with a non-zero exit naming the version. **Never forward-compat silently** —
+   a v0.2.0 renderer read v0.3.0 without a word and dropped the two fields whose
+   whole purpose is that they cannot be dropped.
+2. **Never drop `mandatory_caption`** (5 rows carry one). Beside the number, in
+   the same visual block. Not a tooltip, not hover, **not `<details>`**. Cannot
+   place it → do not render the row.
+3. **Group head-to-head on `comparable_as.head_to_head` only** — never on
+   `ceiling.kind`. Every key now has exactly two sides, enforced at build time.
+4. **`ceiling.edition` rides the caption**, so a publisher-scoped ceiling cannot
+   be quoted without its publisher.
+
+**Old:** v0.3.0 — 55 rows, 39 scoreable. Ceiling status: 25
 measured, 1 measured-directly, 1 measured-and-corroborated, 1
 measured-single-source, 1 bounded-above, 1 refuted-as-a-ceiling, 1
 pre-registered, 1 measured-unreliable, 1 not-a-defect-rate, 18 assumed, 4
