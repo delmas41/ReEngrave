@@ -1,11 +1,12 @@
 {
- "schema_version": "0.5.0",
+ "schema_version": "0.6.0",
  "consumer_contract": {
-  "current": "0.5.0",
+  "current": "0.6.0",
   "understood_by_a_conforming_consumer": [
-   "0.5.0"
+   "0.6.0"
   ],
   "superseded": {
+   "0.5.0": "added `scored_at_detail_level`, put the musicdiff detail level inside every OMR-NED row's era_key and both `comparable_as` keys, and gave every OMR-NED row a mandatory_caption naming the configuration share; a 0.5.0 consumer can difference two figures across an alignment model that moves them ~29%",
    "0.4.0": "added `render_with` (symmetric, build-enforced) and `evidence_prose`; a 0.4.0 consumer cannot know the ledger screen/defect pair must render adjacently",
    "0.3.0": "added `mandatory_caption` + `rules.mandatory_caption` and `ceiling.edition`; a 0.2.0 consumer drops both silently",
    "0.2.0": "added `comparable_as`; a 0.1.0 consumer cannot tell a head-to-head from a delta"
@@ -14,11 +15,25 @@
   "fields_a_consumer_may_never_drop": [
    "mandatory_caption",
    "ceiling.edition (via the edition clause)",
-   "render_with"
-  ]
+   "render_with",
+   "scored_at_detail_level"
+  ],
+  "\u26a0\ufe0f_arm_writer_protocol": {
+   "rule": "ONE musicdiff DETAIL LEVEL PER PROCESS. Never score two detail levels in one interpreter.",
+   "why": "musicdiff's `Visualization.create_header_names_once()` caches `_ORDERED_HEADER_NAMES` at CLASS level and returns early once populated. Score `AllObjects` first and the header is built without the three Voicing-only columns (`wrong pitch`, `pitch insert/delete`, `voice insert/delete`); a later `|Voicing` run in the same process then has nowhere to file those ops, and `get_omr_ed_dict` files unmappable ops under `wrong direction`.",
+   "measured": "on two gate rows, wrong pitch 204 + pitch ins/del 123 + voice ins/del 94 = 421, and the phantom `wrong direction` delta is exactly 421. Order-dependent: AllObjects-first gives 39 columns and `wrong direction` 525; Voicing-first gives 42 columns and 104. The overall OMR-NED is IDENTICAL either way \u2014 totals are safe, bucket attribution is not.",
+   "why_it_is_not_build_enforceable_here": "this builder never calls musicdiff, so it cannot observe the violation. What IS enforced above is the registry-side half: every OMR-NED row carries its detail level, and one registry holds exactly one. The process rule has to be honoured by whoever writes an arm.",
+   "the_existing_harness": "`tools/omr/omr_ned.py` satisfies the rule ONLY BY THE ACCIDENT of running each batch in a fresh subprocess. Nothing enforces it, and the next person to write an in-process arm gets a plausible wrong answer with no warning."
+  }
  },
  "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/build_metric_registry.py",
  "round": 5,
+ "changes_since_0_5_0": [
+  "THE DETAIL-LEVEL AXIS. musicdiff's `AllObjects` IGNORES CHORDS and pairs notes by pitch; re-scoring identical prediction files under `AllObjects|Voicing` removes ~29% of the 20-row scan gate's pooled edits. That is the arm/row-set stamp applied to a third axis nobody had noticed was an axis, so the detail level now sits inside every OMR-NED row's `era_key` and both `comparable_as` keys \u2014 a cross-detail difference is refused mechanically, not by review.",
+  "\u26a0\ufe0f NOT FILED AS A CEILING, and the refusal is the important half. A ceiling bounds what is ACHIEVABLE; this bounds what is ATTRIBUTABLE. Filing 29% of the scan figure as a ceiling would license SUBTRACTING it \u2014 precisely the flattering read the caption mechanism exists to prevent. Nothing improved.",
+  "\u26a0\ufe0f A detail-level change is a WORSE-BEHAVED era boundary than a corpus change: a corpus change is visible (`len(rows)` betrays it) while this re-reads the same files and returns a plausible smaller number with every other field identical. The ceiling would need re-measuring too \u2014 the structural floor is `entire staff / (truth + pred)` and all three terms move.",
+  "ADDED the arm-writer protocol to `consumer_contract`: ONE DETAIL LEVEL PER PROCESS, with the mechanism, the arithmetic and the reason it cannot be build-enforced from here."
+ ],
  "changes_since_0_4_0": [
   "FIXED four defects the renderer review found in this file: doubled `%` in four `why_not` strings (a format artefact \u2014 fixed at SOURCE, not normalised at display); nine `ceiling.evidence` entries that were prose rather than openable paths (split into `evidence_prose`, and existence is now checked at build time); and two rows carrying `ceiling.kind: null` (now `unreachable_configuration` and `none`, both documented \u2014 null is never a legal kind).",
   "ADDED `render_with`: symmetric, build-enforced, for rows that must be READ TOGETHER. The ledger screen/defect pair was held together by prose and by the coincidence that they share an era_key \u2014 measured, that put their numbers 200 px apart with the defect ABOVE the screen."
@@ -127,10 +142,10 @@
    "stage": "= finished file",
    "family": "engraved",
    "comparable_as": {
-    "time_series": "orchestral-e2e|2026-09-02|11works|direction_text",
-    "head_to_head": "engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects"
+    "time_series": "orchestral-e2e|2026-09-02|11works|direction_text|detail=AllObjects",
+    "head_to_head": "engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects|detail=AllObjects"
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED (musicdiff 5.2)",
@@ -151,7 +166,7 @@
    "pct_of_achievable": 88.78,
    "n": 11,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value_edits": 0,
     "status": "measured_on_a_2_work_subset",
@@ -168,7 +183,8 @@
     "edits": 2362,
     "truth_symbols": 10665,
     "pred_symbols": 10381
-   }
+   },
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:omr_ned:beethoven-sym5-mvt1",
@@ -178,7 +194,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -199,7 +215,7 @@
    "pct_of_achievable": 97.07,
    "n": 1,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value": null,
     "status": "unmeasured"
@@ -212,7 +228,8 @@
    "companions": {
     "edits": 38
    },
-   "flags": []
+   "flags": [],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:omr_ned:brahms-sym1-mvt1",
@@ -222,7 +239,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -243,7 +260,7 @@
    "pct_of_achievable": 90.57,
    "n": 1,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value": null,
     "status": "unmeasured"
@@ -256,7 +273,8 @@
    "companions": {
     "edits": 390
    },
-   "flags": []
+   "flags": [],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:omr_ned:mahler-sym5-mvt1",
@@ -266,7 +284,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -287,7 +305,7 @@
    "pct_of_achievable": 97.91,
    "n": 1,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value": null,
     "status": "unmeasured"
@@ -300,7 +318,8 @@
    "companions": {
     "edits": 40
    },
-   "flags": []
+   "flags": [],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:omr_ned:mozart-sym40-mvt1",
@@ -310,7 +329,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -331,7 +350,7 @@
    "pct_of_achievable": 85.85,
    "n": 1,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value": null,
     "status": "unmeasured"
@@ -346,7 +365,8 @@
    },
    "flags": [
     "~41% of notes land in `order` bars with every pitch present on both sides \u2014 a divisi voice-split convention, not recognition"
-   ]
+   ],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:omr_ned:mozart-sym41-mvt1",
@@ -356,7 +376,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -377,7 +397,7 @@
    "pct_of_achievable": 89.75,
    "n": 1,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value": null,
     "status": "unmeasured"
@@ -390,7 +410,8 @@
    "companions": {
     "edits": 301
    },
-   "flags": []
+   "flags": [],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:omr_ned:beethoven-sym3-mvt1",
@@ -400,7 +421,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -421,7 +442,7 @@
    "pct_of_achievable": 87.06,
    "n": 1,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value": null,
     "status": "unmeasured"
@@ -434,7 +455,8 @@
    "companions": {
     "edits": 215
    },
-   "flags": []
+   "flags": [],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:omr_ned:brahms-sym4-mvt1",
@@ -444,7 +466,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -465,7 +487,7 @@
    "pct_of_achievable": 78.64,
    "n": 1,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value": null,
     "status": "unmeasured"
@@ -478,7 +500,8 @@
    "companions": {
     "edits": 401
    },
-   "flags": []
+   "flags": [],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:omr_ned:dvorak-sym9-mvt4",
@@ -488,7 +511,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -509,7 +532,7 @@
    "pct_of_achievable": 66.2,
    "n": 1,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value": null,
     "status": "unmeasured"
@@ -524,7 +547,8 @@
    },
    "flags": [
     "denominator is a 3-bar excerpt, a third of every other row \u2014 noisiest ratio in the set"
-   ]
+   ],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:omr_ned:tchaikovsky-sym4-mvt2",
@@ -534,7 +558,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -555,7 +579,7 @@
    "pct_of_achievable": 95.56,
    "n": 1,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value": null,
     "status": "unmeasured"
@@ -568,7 +592,8 @@
    "companions": {
     "edits": 69
    },
-   "flags": []
+   "flags": [],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:omr_ned:tchaikovsky-sym6-mvt2",
@@ -578,7 +603,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -599,7 +624,7 @@
    "pct_of_achievable": 81.45,
    "n": 1,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value": null,
     "status": "unmeasured"
@@ -612,7 +637,8 @@
    "companions": {
     "edits": 266
    },
-   "flags": []
+   "flags": [],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:omr_ned:bruckner-sym5-mvt1",
@@ -622,7 +648,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -643,7 +669,7 @@
    "pct_of_achievable": 90.69,
    "n": 1,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects",
    "noise_floor": {
     "value": null,
     "status": "unmeasured"
@@ -656,7 +682,8 @@
    "companions": {
     "edits": 185
    },
-   "flags": []
+   "flags": [],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "reading:accidental",
@@ -1321,7 +1348,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits \u2014 a different accounting of identical output, not an improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED (musicdiff 5.2)",
@@ -1343,7 +1370,7 @@
    "pct_of_achievable": 15.56,
    "n": 20,
    "n_unit": "hand-verified pages",
-   "era_key": "scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT",
+   "era_key": "scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT|detail=AllObjects",
    "noise_floor": {
     "value_edits": 6,
     "value_pct_points": 0.007,
@@ -1363,17 +1390,18 @@
    "flags": [
     "the artefact carries NO commit and NO machine-checked era stamp",
     "34.5% of the edits on the 15 normalisable rows are structural charge for a printing convention, not recognition error"
-   ]
+   ],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "scan:omr_ned:page_fidelity_15rows",
    "stage": "= finished file",
    "family": "scan",
    "comparable_as": {
-    "time_series": "scan-e2e|20rows|reconciliation|normalised-transform1.2.0",
+    "time_series": "scan-e2e|20rows|reconciliation|normalised-transform1.2.0|detail=AllObjects",
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits \u2014 a different accounting of identical output, not an improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -1395,7 +1423,7 @@
    "pct_of_achievable": 20.09,
    "n": 15,
    "n_unit": "pages",
-   "era_key": "scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba",
+   "era_key": "scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba|detail=AllObjects",
    "noise_floor": {
     "value_edits": 6,
     "status": "measured",
@@ -1415,7 +1443,8 @@
    "flags": [
     "the floor is the MOST CONSERVATIVE rung of a three-rung ladder (0.2123 unpaired-parts / 0.4982 structural / 0.6348 total). A larger floor raises the score, so the ladder is climbed only as far as the evidence is unambiguous.",
     "15 of 20 rows: the four Mahler and one Bach rows have no hand-read staves map and are not guessed at"
-   ]
+   ],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "scan:omr_ned:ceiling_measured_15rows",
@@ -1425,7 +1454,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits \u2014 a different accounting of identical output, not an improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -1451,7 +1480,7 @@
    "pct_of_achievable": 18.28,
    "n": 15,
    "n_unit": "pages",
-   "era_key": "scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba",
+   "era_key": "scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba|detail=AllObjects",
    "noise_floor": {
     "value_edits": 6,
     "status": "measured"
@@ -1463,7 +1492,8 @@
    "source": "benchmarks/omr-pipeline-audit-2026-09/pct-of-achievable-prototype.json",
    "flags": [
     "15 of 20 rows: the five Mahler/Bach rows have no hand-read staves map and are not guessed at"
-   ]
+   ],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "scan:omr_ned:ceiling_corroborated_subset",
@@ -1473,7 +1503,7 @@
     "time_series": null,
     "head_to_head": null
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits \u2014 a different accounting of identical output, not an improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED",
@@ -1499,7 +1529,7 @@
    "pct_of_achievable": 29.8,
    "n": 5,
    "n_unit": "pages",
-   "era_key": "scan-e2e|20rows|reconciliation|ceiling-corroborated-5|transform1.2.0|afea84ba",
+   "era_key": "scan-e2e|20rows|reconciliation|ceiling-corroborated-5|transform1.2.0|afea84ba|detail=AllObjects",
    "noise_floor": {
     "value_edits": 6,
     "status": "measured"
@@ -1511,7 +1541,8 @@
    "source": "benchmarks/omr-pipeline-audit-2026-09/pct-of-achievable-prototype.json",
    "flags": [
     "5 of 20 rows, 3 of 6 works \u2014 NOT the headline. Since 2026-09-07 it is on the SAME arm as the headline (the 20-row normalised artefact), so the arm mismatch that made this incomparable is closed; the ROW-SET mismatch stands and still refuses the difference."
-   ]
+   ],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "scan:staves",
@@ -1713,9 +1744,9 @@
    "family": "engraved",
    "comparable_as": {
     "time_series": null,
-    "head_to_head": "engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects"
+    "head_to_head": "engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects|detail=AllObjects"
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED of Audiveris 5.11, our fixtures, our scorer",
@@ -1736,7 +1767,7 @@
    "pct_of_achievable": 87.48,
    "n": 11,
    "n_unit": "works",
-   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|audiveris-5.11",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|audiveris-5.11|detail=AllObjects",
    "noise_floor": null,
    "summability_class": "omr_ned_engraved",
    "pool_key": null,
@@ -1746,7 +1777,8 @@
    "companions": {
     "ours": 88.78,
     "we_are_ahead_by_points": 1.3
-   }
+   },
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "scan:omr_ned:same_10_rows_as_audiveris",
@@ -1754,9 +1786,9 @@
    "family": "scan",
    "comparable_as": {
     "time_series": null,
-    "head_to_head": "scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects"
+    "head_to_head": "scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects|detail=AllObjects"
    },
-   "mandatory_caption": "A 10-row subset of the retired 11-row scan era, kept only so the Audiveris comparison has two sides. It is NOT the headline and may not be differenced against the 20-row figure.",
+   "mandatory_caption": "A 10-row subset of the retired 11-row scan era, kept only so the Audiveris comparison has two sides. It is NOT the headline and may not be differenced against the 20-row figure. Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits \u2014 a different accounting of identical output, not an improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED over exactly the 10 scan rows Audiveris completed",
@@ -1775,7 +1807,7 @@
    "pct_of_achievable": 16.55,
    "n": 10,
    "n_unit": "pages",
-   "era_key": "scan-e2e|11rows|restamp-composed|10 rows Audiveris completed",
+   "era_key": "scan-e2e|11rows|restamp-composed|10 rows Audiveris completed|detail=AllObjects",
    "noise_floor": {
     "value_edits": 6,
     "status": "measured"
@@ -1790,7 +1822,8 @@
    },
    "flags": [
     "Audiveris is AHEAD of us here \u2014 20.81% against our 16.55%. Recorded, not hidden."
-   ]
+   ],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "competitive:scan:audiveris",
@@ -1798,9 +1831,9 @@
    "family": "scan",
    "comparable_as": {
     "time_series": null,
-    "head_to_head": "scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects"
+    "head_to_head": "scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects|detail=AllObjects"
    },
-   "mandatory_caption": null,
+   "mandatory_caption": "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits \u2014 a different accounting of identical output, not an improvement.",
    "evidence_prose": [],
    "render_with": [],
    "raw_metric": "OMR-NED of Audiveris 5.11 on the 11-row scan era",
@@ -1821,7 +1854,7 @@
    "pct_of_achievable": 20.81,
    "n": 10,
    "n_unit": "pages",
-   "era_key": "scan-e2e|11rows|restamp-composed|audiveris-5.11",
+   "era_key": "scan-e2e|11rows|restamp-composed|audiveris-5.11|detail=AllObjects",
    "noise_floor": null,
    "summability_class": "omr_ned_scan",
    "pool_key": null,
@@ -1831,7 +1864,8 @@
    "flags": [
     "Audiveris is AHEAD of us on this pool (0.7919 vs our 0.8345 on the same 10 rows) \u2014 recorded, not hidden",
     "on 7 of 10 rows its structural charge is bit-identical to ours, which is how we know that charge is a ceiling and not a defect"
-   ]
+   ],
+   "scored_at_detail_level": "AllObjects"
   },
   {
    "id": "engraved:stage2",

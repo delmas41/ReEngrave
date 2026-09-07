@@ -1468,3 +1468,256 @@ what to do.
 - **The downstream cost of the window on greyscale pages.** I measured rasters. Whether a 2.17× ink change moves note recall is a full-pipeline question on pages no harness holds.
 - **n = 4 greyscale pages, one page each, 4 editions.** The effect is large and consistent in direction on 3 of 4, and the fourth is the sparsest. ⚠️ By my own round-2 rule this is a *positive* on a small sample and deserves the same scrutiny a null would get: the honest claim is "consequential on the greyscale pages measured", not "consequential on greyscale pages".
 - ⚠️ **A naming discrepancy in the brief, reported rather than guessed at.** There is no `fixture_root.py`. The tree has **`_fixtureroot.py`** (2 functions, 7 users) and **`_fixtures.py`** (5 functions, richer API, 17 users) — 24 between them, which is where the brief's figure comes from. `_fixtureroot.py`'s own docstring nominates **`_fixtures.py`** as the survivor. I used `_fixtureroot` because this probe renders PDFs rather than globbing committed `.omr.json`, which is what `_fixtures.py`'s pattern constants serve.
+
+---
+---
+
+# ROUND 5 — what is actually inside `wrong note`? (Sean's question)
+
+**The claim under test.** The coordinator told Sean that the scan gate's largest
+addressable bucket — `wrong note`, **22,174 edits, 29.6% of 74,956** — is driven
+by DURATIONS, on the hollow-notehead story. Sean asked whether that is measured
+or inferred, and whether PITCH — via the clef, key and ownership faults this
+audit has just located — could be the real driver.
+
+**Both of us were reasoning past the metric.** My own §3 established that under
+`AllObjects` musicdiff annotates a note by `pitch.step + octave` and **`wrong
+pitch` is structurally unreachable**; verified again here at the source —
+`AllObjects = 32767`, `Voicing = 1 << 17`, `32767 & 131072 = 0`. So `wrong note`
+is the bucket of notes that **did not pair**, and it does not record *why*.
+
+Artefacts: the 20 scan-gate pairs from the `fix-beam-bars` `basectl` arm on the
+merge base **`974971e3`** — a base-tree run, not tonight's main. Committed with
+both arm CSVs at `benchmarks/omr-wrongnote-decomposition-2026-09/`. **No
+`scan_eval`/`orchestral_eval` was run.**
+
+## R18. THE ANSWER
+
+> **Of the 22,174 `wrong note` edits: ~0% are clef-caused, ~0% key-caused, at
+> most ~5% ownership-caused, about 12.6% are notes and rests that are simply
+> absent — and roughly 80% cannot be attributed to pitch or duration by any
+> instrument available, because they are notes that failed to pair and the
+> metric does not record the reason. Where the metric CAN attribute — the notes
+> that did pair — duration and head-shape errors outnumber pitch-spelling
+> errors 2,770 to 82, a ratio of 34 to 1.**
+
+**So the coordinator's claim was overstated and Sean's alternative is not
+supported either.** The honest position is that the bucket is dominated by
+*non-pairing*, and the two named causes are each measured small.
+
+## R19. The clef hypothesis — measured directly, and it is not the driver
+
+musicdiff has a flag built for exactly this question. `detaillevel.py:104-109`:
+
+> *"If specified, note staff positions will be compared instead of note pitches.
+> This is good for ML training, **where an erroneous clef or ottava should not
+> propagate errors into every affected note.**"*
+
+`m21utils.py:291` confirms the mechanism: with the flag, a note is annotated
+`N{diatonicNoteNum − mid_line}` instead of `step+octave`. **A clef flip changes
+the pitch and leaves the staff position untouched**, so the difference between
+the two arms is the clef/ottava contribution — asked of the same 20 pairs, by
+the same tool.
+
+| bucket | `AllObjects` | `+NoteStaffPosition` | delta |
+|---|--:|--:|--:|
+| entire measure insert/delete | 29,655 | 27,346 | **−2,309** |
+| **wrong note** | **22,174** | **23,168** | **+994** |
+| entire staff insert/delete | 17,520 | 17,520 | 0 |
+| wrong note head | 1,788 | 1,904 | +116 |
+| wrong flag/beam | 688 | 771 | +83 |
+| wrong keysig | 507 | 499 | −8 |
+| wrong accidental | 82 | 123 | +41 |
+| **TOTAL** | **74,956** | **73,978** | **−978** |
+
+⚠️ **The two arms are NOT comparable bucket-by-bucket, and that is itself the
+finding.** Changing the annotation changes the ALIGNMENT: whole measures that
+could not pair now pair (−2,309), and the notes inside them are then charged
+individually (+994). The delta is a redistribution, not a subtraction.
+
+**What survives that caveat, and it is decisive:**
+
+- **Neutralising clef/ottava spelling moves the entire pool by 978 edits — 1.3%.** A mechanism worth 1.3% of the pool cannot be the driver of a 29.6% bucket.
+- **`wrong note` does not fall. It rises.**
+- **On the five rows carrying all eleven mid-staff clef flips** (`probe_clef_midstaff_flips.py`, re-run: 11 flips confirmed), `wrong note` falls on **none** — deltas 0, +1, +3, +6, +27.
+- **The two largest `wrong note` rows carry no clef flip at all**: `dvorak-p7` 4,270 and `bach-p1` 3,825, together **36.5% of the bucket**. The rows *with* flips hold 19.0%.
+
+**Key signatures cannot enter this bucket at all, structurally.** A key flip
+changes a note's `alter`, not its step or octave, and `AllObjects` annotates by
+step+octave. It surfaces as `wrong keysig` (507) and `wrong accidental` (82).
+⚠️ This is a stronger statement than "measured small" and it did not need an
+arm — it follows from the annotation rule.
+
+**Ownership is bounded, not measured.** The committed contest dumps hold **816
+notehead contests, 550 decided by distance**. At ~2 edits per wrongly-awarded
+note that is **≤1,100 edits, ≤5% of the bucket** — an upper bound assuming
+*every* distance call went the wrong way, which it certainly did not.
+
+## R20. What the metric CAN attribute: paired notes, and it is not close
+
+For notes that *did* pair, musicdiff names the fault:
+
+| paired-note fault | edits |
+|---|--:|
+| wrong note head (hollow vs filled) | 1,788 |
+| wrong flag/beam | 688 |
+| wrong dot | 282 |
+| wrong tuplet | 12 |
+| **duration / head-shape subtotal** | **2,770** |
+| wrong accidental (the only pitch-spelling bucket) | **82** |
+
+**34 to 1 in favour of duration.** ⚠️ This is a real result about a real
+population, and it is **not** a decomposition of the 22,174 — it is the
+*complement* of it. It says: where we can see the cause, it is duration. It
+cannot be extrapolated to the notes that did not pair, and I am not
+extrapolating it.
+
+## R21. A third cause neither hypothesis named: **absent rests**
+
+Counting `<note>` elements directly, no alignment and therefore no alignment
+assumptions:
+
+| | pitched notes | **rests** | grace |
+|---|--:|--:|--:|
+| truth | 9,083 | **5,732** | 25 |
+| pred | 9,219 | **3,520** | 0 |
+| delta | **+136** | **−2,212** | −25 |
+
+⚠️ **musicdiff annotates a rest as a note**, so `noteins`/`notedel` on rests land
+in `wrong note`. **2,212 missing rests ≈ 10% of the bucket — larger than the
+ownership bound and eight times the clef effect.** Neither the duration story
+nor the pitch story mentions rests.
+
+And the bucket's scale makes sense only this way: combined `<note>` elements on
+both sides are **27,579**, and `wrong note` is **22,174 — 80% of every note and
+rest on both sides fails to pair.** That is the real shape of the problem.
+
+## R22. ⚠️ The hollow-notehead contradiction — resolved, and it is an EDITION effect
+
+CLAUDE.md says both that the heads are *"not detected"* and that *"twenty of
+twenty-six duration errors are a half read as something shorter"*. Counting
+written `<type>` in truth and prediction:
+
+**Pooled hollow (whole/half/breve/long): truth 1,285, pred 1,198 — a ratio of
+0.932.** Not the 8-of-68 catastrophe. The "detected but mis-typed" reading is
+closer to right *pooled* — but the pooled figure conceals two opposite faults:
+
+| edition | truth hollow | pred hollow | ratio | |
+|---|--:|--:|--:|---|
+| Mahler 5 / Peters | 178 | 95 | **0.53** | UNDER |
+| **Beethoven 5 / 984073** | 509 | 314 | **0.62** | UNDER |
+| Beethoven 5 / **575951** | 509 | 484 | **0.95** | ~ok |
+| Brahms 1 / Breitkopf | 62 | 193 | **3.11** | **OVER** |
+| Dvořák 9 / Simrock | 27 | 104 | **3.85** | **OVER** |
+| Bach / Peters | 0 | 8 | ∞ | **OVER** |
+
+⚠️⚠️ **The two Beethoven rows are the same music and the same plate — 509 hollow
+notes in both truths — and they score 0.62 and 0.95.** The variable is the
+raster, not the music. **The hollow-notehead story is an EDITION effect**, and
+CLAUDE.md's forensics came from `beethoven-984073-p1`, the worst edition of the
+six. Even there this arm reads 31 of 68, not 8 — the graft weights already
+recovered most of it.
+
+**Programme consequence, and it is the reason this was worth measuring:** a
+labeling campaign aimed at *detecting more hollow noteheads* would help two
+editions and actively harm three, where the detector already emits **3–4× too
+many**.
+
+## R23. Recall — pooled parity hiding 14% dispersion
+
+Pooled pitched notes: truth 9,108, pred 9,219, **+1.2%**. Net recall is not the
+problem. ⚠️ **But the sum of absolute per-row deviation is 1,277 notes = 14.0% of
+truth**, cancelling to +1.2%: **583 notes missing** on the 13 under-detecting
+rows, **694 spurious** on the 7 over-detecting ones. A pooled note-count parity
+is not evidence of per-page parity, and reporting only the pooled figure would
+have been the same error as reporting a pooled OMR-NED for a bimodal corpus.
+
+## R24. ⚠️ An instrument I built, tested, and withdrew
+
+I first decomposed pitch-vs-duration with a per-row **bag of notes** keyed on
+pitch alone and on duration alone. It gave a clean-looking answer — 15.0%
+duration-only, 21.1% pitch-only — **and it is an artefact.** The duration
+alphabet is 3–15 distinct values per page against 24–89 for pitch, so the
+duration bag's intersection **saturates**: it reaches >90% of `min(|T|,|P|)` on
+7 of 20 rows, which makes "duration matched" ≈ "the note exists at all". The
+number measures alphabet size, not agreement. **Withdrawn before reporting.**
+
+⚠️ **And my own comparison script printed a flawless all-zero table on its first
+run** — the exact failure I have flagged in three other agents' probes tonight.
+Cause: a guard keying on column 0 of a CSV whose first column is empty, so every
+data row was skipped. The committed version asserts a non-zero parsed row count
+and exits non-zero otherwise.
+
+## R25. Limits, stated
+
+- ⚠️ **Roughly 80% of the bucket is unattributable** with any instrument I have. That is the answer, not a gap in it — musicdiff records that a note did not pair, never why. Attributing it would need an onset-and-staff aligner independent of pitch, and the part correspondence needed to build one is itself broken (`entire staff insert/delete` = 17,520 edits).
+- The two detail arms differ in **alignment**, so only the total (−978) and the direction of `wrong note` (+994) are safe to read. Per-bucket deltas are not.
+- The ownership figure is a **bound**, not an estimate.
+- **n = 20 pages, 6 editions.** The hollow finding splits 3 editions one way and 3 the other, so it is a real split on this corpus; whether the ratio generalises to the other 42 non-bitonal or 200-odd bitonal editions in the store is unmeasured.
+- One base-tree arm. No repeat run, so per-row figures carry the gate's documented **±6 edit** noise; every number I lean on here is ≥978.
+
+## R26. ADDENDUM — the third arm finished, and it changes R18
+
+The `AllObjects | Voicing` arm (detail `163839`) completed after §R18–R25 were
+written. I read it rather than leaving a completed arm unread, because §R18
+leaned on the Voicing exclusion. **It materially updates the answer, and it
+partly vindicates the claim I called overstated.** CSV committed as
+`arm-allobjects-voicing.csv`.
+
+`detaillevel.py:100-104`: with Voicing, musicdiff *"compare[s] which voice and
+which chord each note is in… we compare the best matching pairs of voices"* —
+i.e. it aligns voice-to-voice instead of flattening them.
+
+| bucket | `AllObjects` | `+Voicing` | delta |
+|---|--:|--:|--:|
+| entire measure insert/delete | 29,655 | **7,239** | **−22,416 (−76%)** |
+| **wrong note** | **22,174** | **10,226** | **−11,948 (−54%)** |
+| entire staff insert/delete | 17,520 | 16,777 | −743 |
+| wrong flag/beam | 688 | 2,535 | +1,847 |
+| wrong note head | 1,788 | 3,390 | +1,602 |
+| wrong accidental | 82 | 555 | +473 |
+| wrong tie | 68 | 453 | +385 |
+| **TOTAL** | **74,956** | **53,097** | **−21,859 (−29%)** |
+
+**Same files, same tool, same predictions.** The only change is that voices are
+matched instead of flattened — and **more than half of `wrong note` and three
+quarters of `entire measure insert/delete` dissolve.**
+
+⚠️ **So R18's "roughly 80% unattributable" is a property of the CONFIGURATION,
+not of the data.** Under a voice-aware alignment most of that mass resolves into
+named buckets. I am correcting my own headline: the bucket is not intrinsically
+opaque; the standing detail level makes it so.
+
+⚠️ **`wrong direction` +7,475 is an ARTEFACT and is excluded from every reading
+above.** It multiplies ~50× uniformly on every row (18→891, 7→791, 13→744,
+14→605, 33→608), which is what per-voice replication of a page-level direction
+looks like — not a finding about directions.
+
+### What it does to Sean's question — it strengthens the duration answer
+
+| | duration/head family | pitch spelling | ratio |
+|---|--:|--:|--:|
+| `AllObjects` | 2,770 | 82 | **33.8 : 1** |
+| `+Voicing` | **6,574** | **555** | **11.8 : 1** |
+
+The `+Voicing` figure rests on **2.5× the attributed population** (7,129 vs
+2,852), so it is the better-supported of the two — and it points the same way.
+**Duration and head-shape dominate pitch spelling in both configurations.**
+
+**Net verdict on the two hypotheses, revised:**
+
+- **The coordinator's "durations" claim is better supported than I allowed in R18** — on the largest attributable population available it wins 11.8 : 1. What remains wrong with it is the *hollow-notehead* framing, which R22 shows is an edition effect running in **both** directions.
+- **Sean's pitch hypothesis stays refuted**, and this arm adds to it: `wrong accidental` — the only pitch-spelling bucket — is 555 of 53,097 (**1.0%**) even after voice-aware alignment pairs everything it can.
+
+### ⚠️ A measurement-layer finding that is not mine to act on
+
+**29% of the standing scan gate's pooled edit count — 21,859 edits — is
+attributable to voice-flattening in the metric's own configuration, not to
+anything the pipeline did.** That is a benchmark-era question with large
+consequences: switching detail level would make every historical figure
+incomparable, exactly the discontinuity CLAUDE.md documents for the 3-work → 11-work
+boundary.
+
+**I am reporting it, not recommending it.** It belongs to Agent III and to
+Sean. ⚠️ And it must not be read as "the pipeline is better than we thought" —
+the predictions are identical; only the accounting changed.

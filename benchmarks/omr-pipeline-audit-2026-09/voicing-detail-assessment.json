@@ -1,0 +1,52 @@
+{
+ "generated_by": "Agent III assessment, 2026-09-07. Read-only: no harness change, no recorded figure changed, no registry change.",
+ "question": "is AllObjects|Voicing a BETTER measurement or merely a different one?",
+ "what_the_flag_changes": {
+  "source": ".venv-omrned/lib/python3.14/site-packages/musicdiff/detaillevel.py:98-104 and visualization.py:3482-3494",
+  "musicdiff_own_words": "By default we ignore which voice and chord each note is in... when Voicing is not selected, (1) chords are IGNORED, so we will never see chords with inserted or deleted pitches, (2) notes are paired BY PITCH, so instead of pitch edits we get note insertions and deletions, and (3) we ignore voices completely",
+  "so_it_is_not_a_detail_dial": "it changes the ALIGNMENT MODEL from flat set-matching to voice-stream matching, and it un-ignores chords. AllObjects is not a narrower view of the same comparison; it is a different and lossier one."
+ },
+ "reproduction_2_rows": {
+  "rows": ["beethoven-sym5-mvt1-984073-p1", "brahms-sym1-mvt1-317803-p1"],
+  "predictions": "byte-identical .reconciliation.omr.musicxml; only the detail level differs",
+  "AllObjects":         {"omr_ned": 0.8516711833785005, "bucketed_edits": 4714, "denominator": 5535},
+  "AllObjects_Voicing": {"omr_ned": 0.7055513878469617, "bucketed_edits": 3762, "denominator": 5332},
+  "note": "the DENOMINATOR moves too (5535 -> 5332), so the NED delta is not purely a numerator effect"
+ },
+ "buckets_that_only_exist_under_Voicing": {
+  "wrong pitch": 204,
+  "pitch insert/delete": 123,
+  "voice insert/delete": 94,
+  "why": "musicdiff's _VOICING_HEADER_NAME_OF_EDIT_NAME_EXTRAS. Under AllObjects these three cannot fire at all."
+ },
+ "CORRECTION_to_the_reported_wrong_direction_artefact": {
+  "reported": "wrong direction +7,475, multiplying ~50x uniformly on every row — excluded as an artefact of the arm",
+  "finding": "it is NOT a property of AllObjects|Voicing. It is a process-global header cache in musicdiff.",
+  "mechanism": "Visualization.create_header_names_once() returns early if _ORDERED_HEADER_NAMES is already populated. Run AllObjects first in a process and the header is built WITHOUT the three Voicing-only columns; the later Voicing run then has nowhere to file those ops, and get_omr_ed_dict files unmappable ops under `wrong direction` (already recorded in CLAUDE.md as a musicdiff behaviour).",
+  "proof_arithmetic": "204 + 123 + 94 = 421, and the phantom `wrong direction` delta on the same two rows is 525 - 104 = 421. Exactly.",
+  "proof_order_dependence": {
+   "AllObjects_first": {"Voicing arm reports": {"wrong direction": 525, "wrong pitch": "ABSENT", "columns": 39}},
+   "Voicing_first":    {"Voicing arm reports": {"wrong direction": 104, "wrong pitch": 204, "columns": 42}},
+   "overall_omr_ned":  "IDENTICAL in both orders (0.851671 / 0.705551) — totals are safe, only BUCKET ATTRIBUTION is corrupted"
+  },
+  "consequence": "the arm is MORE usable than reported, not less: its one excluded bucket was never a defect of the arm. But any per-bucket figure taken from a shared-process run is unreliable, and one detail level per process is now a protocol requirement."
+ },
+ "what_this_does_and_does_not_invalidate": {
+  "safe": "pooled totals and OMR-NED at either detail level, in any run order",
+  "safe_too": "the `entire measure insert/delete` and `wrong note` deltas — verified identical in contaminated and clean runs on my two rows",
+  "SUSPECT": "any ratio computed from the pitch buckets. The duration-versus-pitch ratio reported as moving 33.8:1 -> 11.8:1 involves pitch mass, which under a contaminated run reads ZERO and is misfiled into `wrong direction`. It must be re-derived from one-detail-per-process runs before it is relied on."
+ },
+ "verdict": {
+  "better_or_different": "BETTER, on musicdiff's own account, but not free",
+  "why_better": "AllObjects ignores chords entirely and forces every pitch error to cost two edits (ins+del) instead of one. On orchestral music — divisi, double stops, condensed staves — ignoring chords is a large omission, and the doubled charge inflates `wrong note` and pushes bars past the point where elementwise pairing is cheaper than whole-bar replacement, which is what feeds `entire measure insert/delete`.",
+  "why_not_free": "the denominator moves as well as the numerator; and the structural FLOOR would have to be re-measured, because it is entire-staff charge over (truth+pred) symbols and all three terms change.",
+  "is_it_a_new_era": "YES, and a worse-behaved one than a corpus change. A corpus change is visible — the row set differs. A detail-level change re-reads the SAME files and returns a plausible smaller number with every other field identical. It is the discontinuity most likely to be mistaken for progress.",
+  "recommendation": "Do not switch the standing gate. Report both columns for one era, with the second stamped as a separate era key, and let Sean decide on evidence rather than on a single better-looking number."
+ },
+ "registry_placement": {
+  "not_a_row": "it measures the accounting, not the pipeline",
+  "not_a_ceiling_kind": "a ceiling bounds what is ACHIEVABLE; this bounds what is ATTRIBUTABLE. Filing it as a ceiling would license subtracting it, which is exactly the flattering read to avoid.",
+  "belongs_as": "(a) a mandatory_caption on every OMR-NED row saying what share of the figure is configuration, and (b) the detail level inside era_key, so the comparability rule refuses a cross-detail difference mechanically instead of by review.",
+  "why_caption": "a pooled figure that is 29% configuration is precisely what the unit was commissioned to make legible, and mandatory_caption is the one field a renderer may not drop."
+ }
+}
