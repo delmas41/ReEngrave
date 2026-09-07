@@ -12,6 +12,38 @@ MEASURED AND REFUTED the same day (`clef_register_warning`: reach 7/193, precisi
 
 ---
 
+## A00. ⚠️ STANDING RULE — a worse score does not condemn the mechanism
+
+**Sean, 2026-09-07:** *"We should not assume a decision process is wrong because
+it apparently makes things worse — there are too many variables of why something
+may score worse. If we believe the information will be helpful in a good
+environment, then when a bad result comes back our first response should be
+'what else is wrong', not 'this isn't the best way forward'."*
+
+**Order of enquiry before shelving a believed-good signal:**
+
+1. **Is the COMPARISON valid?** Same code, same page-set regime, same inputs, not
+   a cached arm. ⚠️ Today's scare — "more evidence made identity worse", 50 of
+   807 records — was a transcription compared against a *replay*, and a replay
+   hands `fit_layouts` no clefs. Labels moved **0** records; clefs moved **51**.
+2. **Is the METRIC charging for something other than correctness?** Structural
+   charge for a printing convention (28-40% of the scan figure), the symmetric
+   reward for under-prediction, unpaired truth parts.
+3. **Can a DOWNSTREAM consumer use it at all?** The lineup-swap boundary detector
+   was excellent (support 8 vs max 1) and scored worse because the document
+   reference cannot express a union of lineups — the placement IS the identity,
+   so the score was capped whatever the boundary said.
+4. **Only then: is the mechanism wrong?**
+
+Two dormant flags are live candidates for re-examination under this rule:
+`OMR_SLOT_STITCH` (charged for unpaired truth parts — never re-priced against a
+page-normalised truth) and `OMR_CONDENSED_PARTS` (improves the metric by making
+the OUTPUT less faithful to the page — fix the truth, not the reading).
+
+⚠️ This does **not** license shipping what measures worse. It licenses
+investigating before concluding. The shipping bar is unchanged: measured, both
+families, controls that can fail.
+
 ## A0. Sequencing decision — Sean, 2026-09-07, after the machine crash
 
 **Resume the three crash-interrupted agents ONE AT A TIME, `page_normalise` first,
