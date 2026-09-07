@@ -12,6 +12,39 @@ MEASURED AND REFUTED the same day (`clef_register_warning`: reach 7/193, precisi
 
 ---
 
+## A0c. Sean's completion pass — DONE and merged; 7 slots left if he wants them
+
+**82 slots confirmed 2026-09-07.** p3 (15), p4 (21), p5 (21) and Bach (11) all
+`done` and **merged into `works.json`**: scan map coverage **15/20 → 19/20**,
+`entire staff` unattributable **5,593 → 649**, staves left to read **89 → 17**.
+Bach is a map but worth zero edits (its reference condenses where the print does
+not). The remaining 649 edits are **p2's, and it sits at 14 of 21** — seven slots
+from closing the attribution entirely. Sean left it deliberately: it is the
+low-value row already carried verbatim in `works.json`.
+
+**The number, its own benchmark era**, pooled over the 19 normalisable rows:
+raw **0.8473 / 73,850** → page-normalised **0.6476 / 51,458**, `entire staff`
+16,871 → 3,594. ⚠️ Not differenceable against the 20-row raw 0.8444 or any
+historical figure; 16.4% of merged staff-measures are `divisi`, the share resting
+on the merge convention.
+
+⚠️ **The labeling server is DETACHED and must not be blanket-killed.**
+`http://127.0.0.1:5076`, **pid 27568, ppid 1**, launcher
+`/tmp/reengrave-staves-server.sh`, log `/tmp/reengrave-staves-server.log`. It was
+reaped twice as a harness-tracked task, so it now runs outside the task table —
+which means **it looks exactly like the Surya keep-alive daemon to `ps`**. Kill it
+**by pid**, never by pattern; CLAUDE.md's `pkill -f llama-server` rule applies for
+the identical reason.
+
+⚠️ **Left open deliberately:** `page_normalise.py:369` chooses which reference
+part survives a merge by LIST POSITION (`keep = parts[idx[0]]`), which is the only
+reason `parts` ordering carries meaning. Measured: sorting moves **zero bars** but
+renames three printed staves after the silent tacet-folded **Piccolo** (+8 edits).
+The check now separates uniqueness (refuses) from sortedness (does not). An
+explicit rule — *prefer the first part that SOUNDS on this page* — would agree
+with Sean's ordering on all three rows and make position irrelevant, but it
+changes the transform and needs the Dvořák +0 and engraved no-op controls first.
+
 ## A00. ⚠️ STANDING RULE — a worse score does not condemn the mechanism
 
 **Sean, 2026-09-07:** *"We should not assume a decision process is wrong because
