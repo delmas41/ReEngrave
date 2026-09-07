@@ -1,0 +1,74 @@
+# Open items after the 2026-09-06/07 identity session
+
+**Written 2026-09-07 by the coordinating session.** One day produced fourteen new
+benchmark directories and eleven merges; the follow-ups were being tracked in
+conversation rather than anywhere durable, which is how they get lost. This is
+that list. Every item names its evidence.
+
+⚠️ **Read `docs/scope-identity-upstream-2026-09-06.md` alongside this** — several
+items below are its phases, and its §9 records a recommendation of mine that was
+MEASURED AND REFUTED the same day (`clef_register_warning`: reach 7/193, precision
+0 of 11). Do not resurrect it.
+
+---
+
+## A. BLOCKING — someone's finished work cannot land until these are fixed
+
+| # | item | evidence |
+|---|---|---|
+| A1 | **Two faults in `page_normalise.py` block merging the Mahler maps.** `_tokens` sorts `str` against `tuple`; `_voice_merge` inserts a deepcopy still pointing at its old site. Both reproduced with the exact bar. `merge_additions.py` refuses p3 and p4 until fixed. Two more (Unpitched) are latent for any edition condensing percussion. | `benchmarks/omr-staves-map-completion-2026-09/FINDINGS.md` §"latent faults" |
+| A2 | **A 57-slot confirmation pass is waiting for Sean** at `http://127.0.0.1:5076` (89 slots offered; only 57 carry value — p2 is already verbatim in `works.json`, Bach is worth exactly zero). Do A1 first so the work can actually merge. | same FINDINGS |
+
+## B. Flags that landed OFF and need a second work before defaulting
+
+⚠️ **Every one of these is n=1.** The project shipped `OMR_MOVEMENT_REFERENCE`
+default-ON on one work and a second work then measured it making things four
+times worse. That is the precedent these items exist to respect.
+
+| # | flag | state | what would settle it |
+|---|---|---|---|
+| B1 | `OMR_ROSTER_SCORE_ORDER_VETO` | off. Removes all 17 Brahms `Trombone → Tuba`; wrong 23 → 6, correct unchanged at 741, zero correct names lost. Blast radius provably the exported `<part-name>` only. | a second work with a plain `score_order` slot. Beethoven 5 has none, so it must be a third document. Exposure over 213 rosters: 42 works have the shape. |
+| B2 | `OMR_ROSTER_LABELS` | off. 20 of 1422 real labels change (1.4%), all 28 firings hand-adjudicated correct. | ⚠️ **production reach is currently NIL**: it needs `OMR_WORK_ID` and *nothing sets it*. Wiring that is the prerequisite, not more measurement. |
+| B3 | `OMR_SLOT_STITCH`, `OMR_CONDENSED_PARTS` | off, pre-existing. Oracle ceiling −4,557 scan edits, and they compose. | the condensed COUNT cannot come from the page (proved). ⚠️ And the headline-validity work argues `OMR_CONDENSED_PARTS` is an **anti-feature**: it makes the OUTPUT less faithful to the page to please the metric. Fix the truth, not the reading. |
+
+## C. Known faults with a named location, unfixed
+
+| # | fault | where |
+|---|---|---|
+| C1 | **`Tb.` → Tuba at HIGH confidence.** Litolff abbreviates *Tromboni* `Tb.`; largest single residual on Beethoven 6 (2 wrong + 34 of 38 impossible). Same family as the `Tr.` = Trombe/Tromboni fix. ⚠️ `Tb.` really IS Tuba elsewhere — needs the 1422-label harness, not a one-liner. | `instruments.py`; harness in `benchmarks/omr-lexicon-2026-09/` |
+| C2 | **A lineup SWAP at constant size defeats the span logic.** Brahms 4 movements III and IV both print 16 staves with different lineups; `lineup_spans` keys on staff COUNT, so ~150 names slide one slot. Outside the axiom "a bigger system proves the lineup GREW". | `benchmarks/omr-span-reach-2026-09/FINDINGS.md` §4. The signal a fix needs: **the margin labels on p41 and p67 disagree** |
+| C3 | **One-line percussion staves are detected and then dropped** by `if len(s.line_ys) >= 5`. All 11 present, at exactly the gaps in the run's own numbering. A pipeline ceiling with a location. | `tools/omr/measure_extractor.py:464` (and 1148, 1471) |
+| C4 | **Bach's reference condenses where the print does not** — its Cembalo is one single-staff part, the page prints two and we read two. The map idiom only merges, so it cannot express this. Not a labelling gap. | `benchmarks/omr-staves-map-completion-2026-09/FINDINGS.md` |
+| C5 | **`Timpani → Trombone` ×1 on Beethoven p31 sys1 survives every arm** — the seventh record of the recorded seven is not the group-map fault. Found because a self-test assertion FAILED rather than being laundered. | `benchmarks/omr-identity-harness-2026-09/` |
+
+## D. ⚠️ Measurement hazards discovered today — carry these into any identity work
+
+| # | hazard |
+|---|---|
+| D1 | **The read-pass floor is LARGER than the faults being measured.** Two whole-work passes of the same PDF differ by **50 of 807** records where a flag moves 6 — and pass B's margin evidence *strictly contains* pass A's (962/962 shared rows agree, 11 extra labels, zero contradictions) yet scores WORSE. **More correct evidence, worse answer.** Settling it is one ~26-min read pass at one commit; until then, no single-pass identity delta under ~50 records is evidence. |
+| D2 | **The identity join is therefore NOT MONOTONE in label evidence** — which phases 1 and 4 of the identity scope both assume. This may be the most consequential finding of the day. |
+| D3 | **Page-set regime dominates every flag.** The same printed Beethoven system reads **4/12** in a 5-page run and 12/12 whole-work; a boundary-crossing window reads **0 of 85**. `OMR_MAX_PAGES=5` is the web app's default. `run_harness` refuses to pool across regimes — keep that. |
+| D4 | **Human cost is nearly orthogonal to identity accuracy.** Between two passes identity moved 44 records and human cost moved **2** (197 → 195). Driving `impossible` to zero converted categorical errors into contradictions and left the reviewer the same number of staves. This is the scope §7 failure, now measurable — and it is the thing Sean's "human interaction is the most expensive part" was meant to prevent. |
+| D5 | **Calibration is blocked on WORKS, not records.** ECE 0.1277 (n=197) → 0.0204 (n=1571) is not calibration: Brier skill vs a constant predictor **+0.0004**, 95.8% of mass in one bin, and every non-`label` tier is unseen in its own fold (`score_order` predicted 0.990, observed **0.000**). `label` was 89% of the old corpus and is 89% of this one. **Two more hand-read works, or the held-out-label design.** Dvořák 9's lineup is already in `corpus.py` awaiting an arm. |
+
+## E. Wired but undecided
+
+| # | item |
+|---|---|
+| E1 | **The label-contradiction signal is live and unconditional** (fires 158 times, 0.873 of them the export being wrong, 0 both-right). What it should DO is undecided. Per scope §8b the default assumption is an additive evidence term, not a veto — but three cheap direction discriminators were measured and the sharpest **inverts between works**, so the signal says the chain `staff → slot → name` is broken, not which link. |
+| E2 | **Structural accounting prints on every scan run**; the page-normalised truth exists, is versioned and control-validated, and is NOT the score. Adopting it is a benchmark-era decision and needs 20/20 map coverage first (15/20 today, and A1+A2 would take it to 19/20 with Bach unreachable). |
+
+## F. The identity-upstream programme (scope §5)
+
+Phase 0 **done** — the harness exists, runs in ~10 s off committed JSON, 78 arms,
+1571 graded records, three self-tests passing in both directions.
+
+Phases 1-4 not started. ⚠️ **Re-read them against D1/D2 before starting**: phase 1
+(a write-only evidence store) is unaffected, but phase 2 and phase 4 both assume
+adding evidence improves the answer, and that is now measured false at least once.
+
+## G. Housekeeping
+
+- **~108 worktrees**, survey at `docs/worktree-prune-survey-2026-09-06.md`. Nothing deleted. ⚠️ Merge state does NOT protect gitignored cell PNGs — 6,486 images were rescued into the main checkout today for exactly this reason.
+- **Three agents were blocked from writing files named for reports.** Two findings files had to be transcribed by the coordinator from chat messages. Worth fixing at the harness level.
+- `OMR_EVAL_INDENT_MM` — **measured and closed**: 8 edits of 2362, noise, not worth a fixture discontinuity. Flag stays off.
