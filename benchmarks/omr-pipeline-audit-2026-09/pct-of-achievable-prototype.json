@@ -1,0 +1,233 @@
+{
+ "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_pct_of_achievable.py",
+ "unit": "% of achievable, 0-100, higher is better, on every row",
+ "transforms": {
+  "error": "pct = 100 * (W - M) / (W - F); W = 1.0 for OMR-NED (predict nothing); reversible: M = W - (pct/100)*(W - F)",
+  "rate": "pct = 100 * V / C; reversible: V = C * pct/100"
+ },
+ "assumption_direction_rule": "an unknown ceiling is assumed at the value that MINIMISES the score (F=0 / C=1), so a missing ceiling can never manufacture 100",
+ "scan": {
+  "rows": [
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p1",
+    "family": "scan",
+    "raw_omr_ned": 0.710789766407119,
+    "raw_omr_ed": 1278,
+    "truth_symbols_raw": 1064,
+    "pred_symbols": 734,
+    "scoreable": true,
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 513,
+    "floor_low": 0.27565824825362706,
+    "floor_high": 0.3310048361096185,
+    "pct_of_achievable": 39.92731785729611,
+    "pct_of_achievable_upper": 43.23054174428527,
+    "pct_naive_no_ceiling": 28.9210233592881
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p2",
+    "family": "scan",
+    "raw_omr_ned": 0.8703406813627255,
+    "raw_omr_ed": 4343,
+    "truth_symbols_raw": 3004,
+    "pred_symbols": 1986,
+    "scoreable": false,
+    "why": "structural charge is NOT engine-independent on this row (two-system page: the two engines emit different part counts), so it is not demonstrably a fixture property",
+    "ceiling_kind": null,
+    "pct_of_achievable": null
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p1",
+    "family": "scan",
+    "raw_omr_ned": 0.7595078299776287,
+    "raw_omr_ed": 1358,
+    "truth_symbols_raw": 1064,
+    "pred_symbols": 724,
+    "scoreable": true,
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 513,
+    "floor_low": 0.27565824825362706,
+    "floor_high": 0.35142396560988715,
+    "pct_of_achievable": 33.20147836881551,
+    "pct_of_achievable_upper": 37.0800272089174,
+    "pct_naive_no_ceiling": 24.049217002237132
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p2",
+    "family": "scan",
+    "raw_omr_ned": 0.8707765263781861,
+    "raw_omr_ed": 4407,
+    "truth_symbols_raw": 3004,
+    "pred_symbols": 2057,
+    "scoreable": false,
+    "why": "structural charge is NOT engine-independent on this row (two-system page: the two engines emit different part counts), so it is not demonstrably a fixture property",
+    "ceiling_kind": null,
+    "pct_of_achievable": null
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p5",
+    "family": "scan",
+    "raw_omr_ned": 0.43103448275862066,
+    "raw_omr_ed": 675,
+    "truth_symbols_raw": 792,
+    "pred_symbols": 774,
+    "scoreable": true,
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 0,
+    "floor_low": 0.0,
+    "floor_high": 0.0,
+    "pct_of_achievable": 56.896551724137936,
+    "pct_of_achievable_upper": 56.896551724137936,
+    "pct_naive_no_ceiling": 56.896551724137936
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p6",
+    "family": "scan",
+    "raw_omr_ned": 0.7243303571428571,
+    "raw_omr_ed": 2596,
+    "truth_symbols_raw": 2022,
+    "pred_symbols": 1562,
+    "scoreable": true,
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 0,
+    "floor_low": 0.0,
+    "floor_high": 0.0,
+    "pct_of_achievable": 27.566964285714292,
+    "pct_of_achievable_upper": 27.566964285714292,
+    "pct_naive_no_ceiling": 27.566964285714292
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p1",
+    "family": "scan",
+    "raw_omr_ned": 0.9191648822269807,
+    "raw_omr_ed": 3434,
+    "truth_symbols_raw": 2083,
+    "pred_symbols": 1653,
+    "scoreable": true,
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 1001,
+    "floor_low": 0.2511289513296538,
+    "floor_high": 0.4121926743602609,
+    "pct_of_achievable": 10.794263967948242,
+    "pct_of_achievable_upper": 13.751975221649808,
+    "pct_naive_no_ceiling": 8.083511777301933
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p2",
+    "family": "scan",
+    "raw_omr_ned": 0.9425534970558668,
+    "raw_omr_ed": 6563,
+    "truth_symbols_raw": 3399,
+    "pred_symbols": 3564,
+    "scoreable": false,
+    "why": "structural charge is NOT engine-independent on this row (two-system page: the two engines emit different part counts), so it is not demonstrably a fixture property",
+    "ceiling_kind": null,
+    "pct_of_achievable": null
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p2",
+    "family": "scan",
+    "raw_omr_ned": 0.6894639556377079,
+    "raw_omr_ed": 1119,
+    "truth_symbols_raw": 1148,
+    "pred_symbols": 475,
+    "scoreable": false,
+    "why": "no hand-read staves map, so no page-normalised truth",
+    "ceiling_kind": null,
+    "pct_of_achievable": null
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p3",
+    "family": "scan",
+    "raw_omr_ned": 0.888760473851488,
+    "raw_omr_ed": 3076,
+    "truth_symbols_raw": 2248,
+    "pred_symbols": 1213,
+    "scoreable": false,
+    "why": "no hand-read staves map, so no page-normalised truth",
+    "ceiling_kind": null,
+    "pct_of_achievable": null
+   },
+   {
+    "row_id": "bach-brandenburg3-mvt1-468678-p1",
+    "family": "scan",
+    "raw_omr_ned": 0.9230769230769231,
+    "raw_omr_ed": 6720,
+    "truth_symbols_raw": 3549,
+    "pred_symbols": 3731,
+    "scoreable": false,
+    "why": "no hand-read staves map, so no page-normalised truth",
+    "ceiling_kind": null,
+    "pct_of_achievable": null
+   }
+  ],
+  "pool": {
+   "n_rows": 5,
+   "row_ids": [
+    "beethoven-sym5-mvt1-984073-p1",
+    "beethoven-sym5-mvt1-575951-p1",
+    "dvorak-sym9-mvt1-405834-p5",
+    "dvorak-sym9-mvt1-405834-p6",
+    "brahms-sym1-mvt1-317803-p1"
+   ],
+   "pooled_omr_ned": 0.7489576651699807,
+   "pooled_floor_low": 0.15199460107978405,
+   "pct_of_achievable": 29.603860441180803,
+   "pct_naive_no_ceiling": 25.104233483001927,
+   "\u26a0\ufe0f": "This pool is 5 of the scan gate's 20 rows and 3 of its 6 works. It is NOT the headline and may not be differenced against the 20-row figure \u2014 different era, different arm."
+  }
+ },
+ "engraved_reading": {
+  "metric": "stage-1 reading F1 vs exact Verovio page truth, 11 engraved works",
+  "as_shipped_excludes_render_unreliable": 0.9192084511233447,
+  "if_render_unreliable_family_included": 0.8982446125303268,
+  "render_ceiling_worth_points": 0.02096383859301787,
+  "ceiling_kind": "render",
+  "ceiling_evidence": "tools/omr/page_truth.py render_fidelity \u2014 Verovio draws one accidental per <alter>, not per <accidental>; Brahms 1 has 54 <accidental> and 149 <alter> and it drew 149",
+  "pct_of_achievable": 91.92084511233448,
+  "note": "C = 1.0 is ASSUMED here (no measurement says a perfect reader could not reach F1 1.000 on the families we score), so this is conservative by the assumption-direction rule. The render ceiling is enacted as an EXCLUSION, not as a C < 1."
+ },
+ "engraved_omr_ned": {
+  "metric": "pooled OMR-NED, 11 engraved orchestral works",
+  "omr_ned": 0.11223035256105673,
+  "ceiling_kind": "structural",
+  "floor": 0.0,
+  "floor_evidence": "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json \u2014 the page-normalising transform is a NO-OP on all 11 (is_a_no_op: true), i.e. these fixtures are 1:1 and carry no structural charge",
+  "\u26a0\ufe0f": "the no-op control was run at transform_version 1.0.0 and against the no_direction_text arm; the scan arm it certifies is 1.1.0 and direction-text-on. Re-running it is cheap and should be done.",
+  "pct_of_achievable": 88.77696474389433,
+  "era_key": "orchestral-e2e/2026-09-02/11works/direction_text/6b230bd7"
+ },
+ "noise_floor": {
+  "documented_noise_floor_edits": 6,
+  "source": "CLAUDE.md \u2014 beethoven-984073-p4 scored 4673 then 4679 on two runs of one tree",
+  "pooled_denominator_20row": 88783,
+  "worth_in_omr_ned": 6.758050527691112e-05,
+  "worth_in_pct_of_achievable_at_floor_0": 0.006758050527691112,
+  "note": "on a single ROW the same 6 edits are worth far more \u2014 on beethoven-984073-p1 (denominator 1798) they are 0.33 OMR-NED points, i.e. ~0.46 points of % of achievable at floor 0 and ~0.6 at its measured floor. A per-row delta must be compared against a PER-ROW noise floor."
+ }
+}

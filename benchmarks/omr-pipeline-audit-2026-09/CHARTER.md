@@ -87,3 +87,52 @@ contradictions (§8). Each agent's value is defined as **strictly beyond** it:
 
 ⚠️ Round 1 is deliberately a **scoping + worked-example** round: the coordinator
 approves each schema before it is applied to five more stages.
+
+---
+
+## ⚠️ Incident, round 1, 2026-09-07 — the audit started on a stale tree
+
+**Sean asked whether the evening's map changes had landed. They had — on `main`,
+and not here.** This worktree was **28 commits behind** at dispatch, so the
+coordinator read, and all three round-1 agents were briefed against, the
+**superseded 1,303-line map**. The current one is 1,629 lines.
+
+| landed on main this evening | what it did | in the audit tree at dispatch |
+|---|---|---|
+| `fbbd09c1` | adversarial VERIFICATION of the map — 11 errors, **all negatives about consumers** | **no** |
+| `94c46e80` | second pass — §5 **120 → 176 rows**, CONSUMED BY on all 15 tables, check `V8` | **no** |
+
+Also absent: `tools/omr/transcribe.py` +35, `contextual.py` +103,
+`measure_extractor.py` +104, `line_detection.py` +9, `export.py` +19, and a new
+463-line `score_language.py` — three of those inside round 1's own slices.
+
+**Fixed** by rebasing this branch onto `main` (`5ba44c44`) ~10 minutes after
+dispatch, while the agents were still in their reading phase, and messaging all
+three to re-anchor: re-derive every `file:line`, and do not re-report a
+correction that already landed.
+
+⚠️ **The lesson is the project's own standing rule and it caught the audit
+itself**: *measure the merged tree; check the base before building.* An audit
+of a stale tree produces citations that are individually checkable and
+collectively wrong. Recorded here rather than quietly fixed because Agent III's
+Part A is a critique of exactly this failure mode — and it now has a live
+instance from tonight rather than only the `c378412f` precedent.
+
+**Carried into round 1 as substance, not just correction:**
+- The verify pass's headline — ***what is MISSING outranks what is wrong***.
+  Independent enumeration from code found **185 decision points** where §5
+  catalogued a fraction: `direction_text` **72** (incl. an `accepted[0]` argmax
+  over a `Reader` interface that carries **no confidence at all**), slur pairing
+  **46**, tie pairing **25** — all in the spine, all with zero §5 rows.
+  `staff_labels_surya`, the free DEFAULT reader, is absent while the unreachable
+  human rung is catalogued in full.
+- ***A name grep is not a consumer check*** — E1: `nominal_line_spacing_px`
+  "no production site reads it" is FALSE; `types.py:102` returns it from the
+  `line_spacing_px` PROPERTY, which has 15 production readers.
+- `bracket_reader.py` (390 lines) is a **third** orphan module.
+- `V4` undercounts **by construction** — it matches only literal
+  `os.environ.get()`, so a name held in a constant vanishes silently. 36/16
+  becomes **41 in tree / 20 undocumented**.
+- ⚠️ `OMR_CONDENSED_PARTS` is **INERT even when set** — nothing writes the
+  `condensed_parts` field in production (E9). Any figure resting on its oracle
+  ceiling describes a configuration that cannot currently occur.
