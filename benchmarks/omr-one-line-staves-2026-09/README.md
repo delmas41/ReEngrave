@@ -57,11 +57,24 @@ the question "how much of what it drops is real" is the question "how precise is
 | 5 | ⚠️ **the canonical scale itself** — `_upscale_to_canonical` reads `staff_span_px <= 0` as *"do not scale"* and returns the cell at **1.0** | `:818`, **no comment** | fixed, not filtered |
 
 **Guard 4 is the one that would have made this change non-additive**, and
-nothing in the tree says so. A percussion rule is set to the page margins, not
-to the staves' content edge: on Mahler 5 p5 the four rules run x 505–4228
-against a 4385 px page while their five-line neighbours start further in. Let
-one into `_measure_x_boundaries` and **every five-line staff's measure
-boundaries move**. Pinned by
+nothing in the tree says so. `probe_margin_reach.py` measures it on the four
+Mahler pages — a percussion rule's printed extent is simply not its neighbours':
+
+| page | five-line `x_start` median | the rules' `x_start` | boundaries move? |
+|---|--:|---|---|
+| p2 | 843 | 881, 879 | **YES** — first measure `(843, 1436)` → `(845, 1436)` |
+| p3 | 449 | 506, 505 | no |
+| p4 | 458.5 | 515, 515, 514 | **YES** — `(458, 517)` → `(462, 517)` |
+| p5 | 454 | 515, 516, 515, 513 | **YES** — `(454, 515)` → **`(464, 1164)`** |
+
+**3 of 4 pages.** ⚠️ And note p5: the first boundary's right edge moves 515 →
+1164, because the shifted `x_lo` pushes a barline inside
+`_measure_x_boundaries`' own `edge_margin` and the opening sliver stops being
+one — a 649 px change to every staff on the page, from admitting four staves
+that print no notes. (⚠️ My first draft had the DIRECTION backwards: the rules
+start ~55 px *later* than the median five-line staff, not earlier. The
+displacement is what matters, not its sign, because the function takes a
+median.) Pinned by
 `test_the_percussion_rule_does_not_vote_on_the_system_edges`.
 
 **Guard 5 is the one that makes the naive fix quietly wrong.** Deleting the
@@ -133,8 +146,16 @@ percussion.
 
 ### 2.2 ⚠️ Committed human labels cannot be invalidated by this — stated with the reason
 
-`measure_extractor` has **27 importers**, including the labeling pipeline
-(`annotate/recut_cells.py`, `annotate/select_cells*.py`, `annotate/server.py`).
+`measure_extractor` has **14 non-test importers** — counted on the AST, not on
+`grep`, because five further files mention it only in prose (`export.py`,
+`line_detection.py`, `score_reading.py`, `system_grouping.py`,
+`yolo_detector.py`) and none in `backend/` imports it at all. Six of the
+fourteen are the labeling pipeline: `annotate/recut_cells.py`,
+`annotate/select_cells.py`, `annotate/select_cells_orchestral.py`,
+`annotate/select_timesig_cells.py`, `annotate/server.py`, plus
+`training/phase1_layout_eval.py`. (Relayed to me as 15; my AST count is 14 and
+the method is above, so the difference is probably one test file or a
+prose-only hit.)
 Hand-labeled cell PNGs are **not regenerable**, and
 `recut_cells.frame_mismatch` aborts a batch by comparing exactly three fields:
 `cell_canonical_w`, `cell_canonical_h`, `staff_line_ys_canonical`.
