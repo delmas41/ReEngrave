@@ -150,6 +150,19 @@ def read_crops_text(crops: list, *, upscale: int = UPSCALE) -> list[str]:
     Surya's 11, because its errors fall inside the word (`Crese.`, `CTeSC.`)
     where Surya's are total silence. It is here as a SECOND opinion, not a
     replacement: the union of the two accepts 17 where either alone accepts 11.
+
+    ⚠️ **This rung deliberately has NO runaway guard, unlike its Surya twin**
+    (`staff_labels_surya.RUNAWAY_TEXT_MAX_CHARS`), and the difference is the
+    kind of model rather than a gap. Tesseract is a discriminative line
+    recogniser reading pixels under `--psm 7`; it cannot generate text that is
+    not in the crop, and its documented failure here is an IN-WORD error, not
+    an unbounded one. Measured rather than assumed: on Beethoven 5 / Litolff
+    imslp984073 p.2 — the page whose stored transcription carries Surya's
+    144-character `'- 8 - - 9 - - 10 - …'` runaway — this rung run alone reads
+    25 of 26 crops and its longest string over all 24 refusals is **10
+    characters**. The other known runaway (854 chars) is on a page whose report
+    names `readers: ['surya']`, so both are attributable. Add a guard here when
+    a measurement asks for one, not before.
     """
     import cv2                                              # noqa: PLC0415
     import pytesseract                                      # noqa: PLC0415

@@ -99,6 +99,50 @@ SENTINEL = Path(os.environ.get(
 ))
 
 
+#: Longest string `read_crops_text` will accept as a reading of one crop.
+#:
+#: The rung is a generative 650M model driven by llama.cpp, and it degenerates:
+#: asked what a crop a few staff spaces tall says, it has returned an English
+#: essay ("1. A statistical analysis of the data is conducted…", repeated to
+#: item 64) and, on another page, `'- 8 - - 9 - - 10 - …'`. Neither is in the
+#: crop. Nothing here controls decode — `temperature`, `top_p`, `seed`,
+#: `n_predict` and `repeat_penalty` appear nowhere in `tools/omr` — so this is
+#: a guard, not a fix for the cause.
+#:
+#: MEASURED over all committed transcriptions carrying a `direction_text` block
+#: (113 files scanned, 45 have one; 438 strings reached the lexicon). The
+#: distinct string lengths at 30 characters and above are
+#:
+#:     34, 41, 47, 48, 55, 144, 854
+#:
+#: Everything at or below 55 is a plausible reading of ink really on the page —
+#: the 47/48s are a LilyPond fixture's own `CC0 1.0 Universal` footer, the 41s
+#: and 55 a repeated `Cresc.` — while 144 and 854 are the two runaways. The
+#: widest empty interval is (55, 144); ANY cap in 56..143 gives the identical
+#: verdict on all 438 measured strings. 120 is chosen inside it, at 2.2x the
+#: longest plausible reading and 17% below the shortest observed runaway.
+#:
+#: Unlike `_surya_worker._RUNAWAY_HEIGHT_FRACTION`, which had to be expressed
+#: as a ratio to the system's own tick span, this needs no scale term: a
+#: character count is already dimensionless, and a printed direction is a short
+#: phrase whatever the DPI or the staff space.
+#:
+#: ⚠️ This is a READER-side sanity check and stops there. Whether a string is
+#: MUSICAL is `direction_lexicon`'s question — including decoder repetition
+#: (`'Cresc. Cresc. Cresc. …'`, 55 chars), which the lexicon already refuses by
+#: name. Do not grow this into a semantic filter.
+RUNAWAY_TEXT_MAX_CHARS = 120
+
+
+def is_runaway_read(text: str) -> bool:
+    """True when a crop's reading is too long to be a reading of that crop.
+
+    Public so the boundary it draws can be tested directly, for the same reason
+    `staff_labels_tesseract.strip_line_fragments` is.
+    """
+    return len(text) > RUNAWAY_TEXT_MAX_CHARS
+
+
 class SuryaLabelError(RuntimeError):
     """The reader could not run — bad input, or the venv is missing."""
 
@@ -332,12 +376,32 @@ def read_crops_text(crops: list, *,
         raise SuryaLabelError(payload["error"])
 
     out = []
+    n_runaway = 0
     for entry in payload.get("crops", []):
         if entry.get("error"):
             logger.warning("surya failed on one crop: %s", entry["error"])
             out.append("")
             continue
-        out.append(entry.get("text") or "")
+        text = entry.get("text") or ""
+        # Refused LOUDLY and per crop, never quietly and never for the batch:
+        # a runaway is the model generating instead of transcribing, and it is
+        # indistinguishable downstream from a crop that legitimately says
+        # nothing. `n_read` in the direction report counts a crop as read the
+        # moment any rung returns a non-empty string, so leaving it in makes
+        # "the OCR wrote an essay" look like "the OCR read this".
+        if is_runaway_read(text):
+            n_runaway += 1
+            logger.warning(
+                "surya: REFUSED a runaway read — %d chars, cap %d. A crop a "
+                "few staff spaces tall cannot print this, so the decoder "
+                "generated rather than transcribed. First 60: %r",
+                len(text), RUNAWAY_TEXT_MAX_CHARS, text[:60])
+            out.append("")
+            continue
+        out.append(text)
+    if n_runaway:
+        logger.warning("surya: %d of %d crops refused as runaway reads",
+                       n_runaway, len(out))
     return out
 
 
