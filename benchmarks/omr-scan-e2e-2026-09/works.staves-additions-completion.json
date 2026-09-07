@@ -50,7 +50,7 @@
        2
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Drei Hoboen",
@@ -67,7 +67,7 @@
        5
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Drei Klarinetten in A",
@@ -86,7 +86,7 @@
        9
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Zwei Fagotte",
@@ -99,7 +99,7 @@
        10
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Contrafagott",
@@ -112,7 +112,7 @@
        11
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Sechs H\u00f6rner in F (upper)",
@@ -127,7 +127,7 @@
        13
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Sechs H\u00f6rner in F (lower)",
@@ -140,7 +140,7 @@
        14
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Vier Trompeten in B (upper)",
@@ -155,7 +155,7 @@
        17
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Vier Trompeten in B (lower)",
@@ -170,7 +170,7 @@
        18
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Drei Posaunen",
@@ -185,7 +185,7 @@
        20
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Tuba",
@@ -198,7 +198,7 @@
        21
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Pauken",
@@ -211,7 +211,7 @@
        22
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Becken",
@@ -224,7 +224,7 @@
        23
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Grosse Trommel",
@@ -237,7 +237,7 @@
        24
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Kleine Trommel",
@@ -346,7 +346,7 @@
   },
   "mahler-sym5-mvt1-local-p3": {
    "row_id": "mahler-sym5-mvt1-local-p3",
-   "status": "in_progress",
+   "status": "done",
    "proposal_source": "candidate_maps (transcribed from works.json's own prose)",
    "n_reference_parts": 38,
    "reference": "reference/mahler/symphony-5/mahler--symphony-5--mvt1--gradus.mxl",
@@ -388,7 +388,7 @@
        9
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Contraf.",
@@ -401,7 +401,7 @@
        11
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "F-H\u00f6rner 1/3/5",
@@ -416,7 +416,7 @@
        13
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "F-H\u00f6rner 2/4/6",
@@ -429,7 +429,7 @@
        14
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "B-Tromp. 1/2",
@@ -444,7 +444,7 @@
        17
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "B-Tromp. 3/4",
@@ -459,7 +459,7 @@
        18
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Posaunen 1/2/3",
@@ -474,7 +474,7 @@
        20
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Tuba",
@@ -493,7 +493,7 @@
        26
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Becken",
@@ -506,7 +506,7 @@
        23
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Gr.Tr.",
@@ -519,7 +519,7 @@
        24
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Erste Viol.",
@@ -534,7 +534,7 @@
        28
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Zweite Viol.",
@@ -551,7 +551,7 @@
        31
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Violen",
@@ -566,7 +566,7 @@
        33
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Vcelle.",
@@ -581,7 +581,7 @@
        35
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "B\u00e4sse",
@@ -596,13 +596,129 @@
        37
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
+    }
+   ],
+   "confirmed_at": "2026-09-07T05:46:57+00:00",
+   "staves_for_works_json": [
+    {
+     "name": "Fag. 1/2",
+     "parts": [
+      10,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ]
+    },
+    {
+     "name": "Contraf.",
+     "parts": [
+      11
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 1/3/5",
+     "parts": [
+      12,
+      13
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 2/4/6",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "B-Tromp. 1/2",
+     "parts": [
+      15,
+      17
+     ]
+    },
+    {
+     "name": "B-Tromp. 3/4",
+     "parts": [
+      16,
+      18
+     ]
+    },
+    {
+     "name": "Posaunen 1/2/3",
+     "parts": [
+      19,
+      20
+     ]
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21,
+      22,
+      25,
+      26
+     ]
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ]
+    },
+    {
+     "name": "Gr.Tr.",
+     "parts": [
+      24
+     ]
+    },
+    {
+     "name": "Erste Viol.",
+     "parts": [
+      27,
+      28
+     ]
+    },
+    {
+     "name": "Zweite Viol.",
+     "parts": [
+      29,
+      30,
+      31
+     ]
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ]
+    },
+    {
+     "name": "Vcelle.",
+     "parts": [
+      34,
+      35
+     ]
+    },
+    {
+     "name": "B\u00e4sse",
+     "parts": [
+      36,
+      37
+     ]
     }
    ]
   },
   "mahler-sym5-mvt1-local-p4": {
    "row_id": "mahler-sym5-mvt1-local-p4",
-   "status": "in_progress",
+   "status": "done",
    "proposal_source": "candidate_maps (transcribed from works.json's own prose)",
    "n_reference_parts": 38,
    "reference": "reference/mahler/symphony-5/mahler--symphony-5--mvt1--gradus.mxl",
@@ -634,7 +750,7 @@
        2
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "A-Klar. 1.2.3",
@@ -653,7 +769,7 @@
        9
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Fag. 1/2",
@@ -666,7 +782,7 @@
        10
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Contraf.",
@@ -679,7 +795,7 @@
        11
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "F-H\u00f6rner 1.3.5",
@@ -694,7 +810,7 @@
        13
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "F-H\u00f6rner 2.4.6",
@@ -707,7 +823,7 @@
        14
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "B-Tromp. 1.2",
@@ -722,7 +838,7 @@
        17
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "B-Tromp. 3.4",
@@ -737,7 +853,7 @@
        18
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Posaunen",
@@ -752,7 +868,7 @@
        20
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Tuba",
@@ -765,7 +881,7 @@
        21
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Pauken",
@@ -780,7 +896,7 @@
        26
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Becken",
@@ -793,7 +909,7 @@
        23
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Gr.Tr.",
@@ -806,7 +922,7 @@
        24
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Kl.Tr.",
@@ -819,7 +935,7 @@
        25
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Erste Viol.",
@@ -834,7 +950,7 @@
        28
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Zweite Viol.",
@@ -851,7 +967,7 @@
        31
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Violen",
@@ -866,7 +982,7 @@
        33
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Vcelle. get. (upper)",
@@ -879,7 +995,7 @@
        34
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Vcelle. get. (lower)",
@@ -892,7 +1008,7 @@
        35
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "B\u00e4sse get. (upper)",
@@ -905,7 +1021,7 @@
        36
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "B\u00e4sse get. (lower)",
@@ -918,13 +1034,159 @@
        37
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
+    }
+   ],
+   "confirmed_at": "2026-09-07T05:47:32+00:00",
+   "staves_for_works_json": [
+    {
+     "name": "Hoboen 1.2.3",
+     "parts": [
+      3,
+      4,
+      5,
+      0,
+      1,
+      2
+     ]
+    },
+    {
+     "name": "A-Klar. 1.2.3",
+     "parts": [
+      6,
+      7,
+      8,
+      9
+     ]
+    },
+    {
+     "name": "Fag. 1/2",
+     "parts": [
+      10
+     ]
+    },
+    {
+     "name": "Contraf.",
+     "parts": [
+      11
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 1.3.5",
+     "parts": [
+      12,
+      13
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 2.4.6",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "B-Tromp. 1.2",
+     "parts": [
+      15,
+      17
+     ]
+    },
+    {
+     "name": "B-Tromp. 3.4",
+     "parts": [
+      16,
+      18
+     ]
+    },
+    {
+     "name": "Posaunen",
+     "parts": [
+      19,
+      20
+     ]
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21
+     ]
+    },
+    {
+     "name": "Pauken",
+     "parts": [
+      22,
+      26
+     ]
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ]
+    },
+    {
+     "name": "Gr.Tr.",
+     "parts": [
+      24
+     ]
+    },
+    {
+     "name": "Kl.Tr.",
+     "parts": [
+      25
+     ]
+    },
+    {
+     "name": "Erste Viol.",
+     "parts": [
+      27,
+      28
+     ]
+    },
+    {
+     "name": "Zweite Viol.",
+     "parts": [
+      29,
+      30,
+      31
+     ]
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ]
+    },
+    {
+     "name": "Vcelle. get. (upper)",
+     "parts": [
+      34
+     ]
+    },
+    {
+     "name": "Vcelle. get. (lower)",
+     "parts": [
+      35
+     ]
+    },
+    {
+     "name": "B\u00e4sse get. (upper)",
+     "parts": [
+      36
+     ]
+    },
+    {
+     "name": "B\u00e4sse get. (lower)",
+     "parts": [
+      37
+     ]
     }
    ]
   },
   "mahler-sym5-mvt1-local-p5": {
    "row_id": "mahler-sym5-mvt1-local-p5",
-   "status": "in_progress",
+   "status": "done",
    "proposal_source": "candidate_maps (transcribed from works.json's own prose)",
    "n_reference_parts": 38,
    "reference": "reference/mahler/symphony-5/mahler--symphony-5--mvt1--gradus.mxl",
@@ -964,7 +1226,7 @@
        5
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Fag. 1/2",
@@ -977,7 +1239,7 @@
        10
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Contraf.",
@@ -990,7 +1252,7 @@
        11
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "F-H\u00f6rner 1.3.5",
@@ -1005,7 +1267,7 @@
        13
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "F-H\u00f6rner 2.4.6",
@@ -1018,7 +1280,7 @@
        14
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "B-Tromp. 1.2",
@@ -1033,7 +1295,7 @@
        17
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "B-Tromp. 3.4",
@@ -1048,7 +1310,7 @@
        18
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Posaunen",
@@ -1063,7 +1325,7 @@
        20
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Tuba",
@@ -1076,7 +1338,7 @@
        21
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Pauken",
@@ -1089,7 +1351,7 @@
        22
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Becken",
@@ -1102,7 +1364,7 @@
        23
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Gr.Tr.",
@@ -1115,7 +1377,7 @@
        24
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Kl.Tr.",
@@ -1128,7 +1390,7 @@
        25
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Tamtam",
@@ -1141,7 +1403,7 @@
        26
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Erste Viol.",
@@ -1156,7 +1418,7 @@
        28
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Zweite Viol.",
@@ -1173,7 +1435,7 @@
        31
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Violen",
@@ -1188,7 +1450,7 @@
        33
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Vcelle. get. (upper)",
@@ -1201,7 +1463,7 @@
        34
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Vcelle. get. (lower)",
@@ -1214,7 +1476,7 @@
        35
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "B\u00e4sse get. (upper)",
@@ -1227,7 +1489,7 @@
        36
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "B\u00e4sse get. (lower)",
@@ -1240,13 +1502,159 @@
        37
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
+    }
+   ],
+   "confirmed_at": "2026-09-07T05:48:07+00:00",
+   "staves_for_works_json": [
+    {
+     "name": "A-Klar. 1.2",
+     "parts": [
+      6,
+      7,
+      8,
+      9,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    {
+     "name": "Fag. 1/2",
+     "parts": [
+      10
+     ]
+    },
+    {
+     "name": "Contraf.",
+     "parts": [
+      11
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 1.3.5",
+     "parts": [
+      12,
+      13
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 2.4.6",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "B-Tromp. 1.2",
+     "parts": [
+      15,
+      17
+     ]
+    },
+    {
+     "name": "B-Tromp. 3.4",
+     "parts": [
+      16,
+      18
+     ]
+    },
+    {
+     "name": "Posaunen",
+     "parts": [
+      19,
+      20
+     ]
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21
+     ]
+    },
+    {
+     "name": "Pauken",
+     "parts": [
+      22
+     ]
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ]
+    },
+    {
+     "name": "Gr.Tr.",
+     "parts": [
+      24
+     ]
+    },
+    {
+     "name": "Kl.Tr.",
+     "parts": [
+      25
+     ]
+    },
+    {
+     "name": "Tamtam",
+     "parts": [
+      26
+     ]
+    },
+    {
+     "name": "Erste Viol.",
+     "parts": [
+      27,
+      28
+     ]
+    },
+    {
+     "name": "Zweite Viol.",
+     "parts": [
+      29,
+      30,
+      31
+     ]
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ]
+    },
+    {
+     "name": "Vcelle. get. (upper)",
+     "parts": [
+      34
+     ]
+    },
+    {
+     "name": "Vcelle. get. (lower)",
+     "parts": [
+      35
+     ]
+    },
+    {
+     "name": "B\u00e4sse get. (upper)",
+     "parts": [
+      36
+     ]
+    },
+    {
+     "name": "B\u00e4sse get. (lower)",
+     "parts": [
+      37
+     ]
     }
    ]
   },
   "bach-brandenburg3-mvt1-468678-p1": {
    "row_id": "bach-brandenburg3-mvt1-468678-p1",
-   "status": "in_progress",
+   "status": "done",
    "proposal_source": "candidate_maps (transcribed from works.json's own prose)",
    "n_reference_parts": 11,
    "reference": "reference/bach/brandenburg-concerto-3/bach--brandenburg-concerto-3--mvt1--gradus.mxl",
@@ -1268,7 +1676,7 @@
        0
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Violini II",
@@ -1281,7 +1689,7 @@
        1
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Violini III",
@@ -1294,7 +1702,7 @@
        2
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Viole I",
@@ -1307,7 +1715,7 @@
        3
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Viole II",
@@ -1320,7 +1728,7 @@
        4
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Viole III",
@@ -1333,7 +1741,7 @@
        5
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Violoncelli I",
@@ -1346,7 +1754,7 @@
        6
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Violoncelli II",
@@ -1359,7 +1767,7 @@
        7
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Violoncelli III",
@@ -1372,7 +1780,7 @@
        8
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Contrabasso",
@@ -1385,7 +1793,7 @@
        9
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
     },
     {
      "name": "Cembalo (grand staff, 2 printed staves)",
@@ -1398,10 +1806,79 @@
        10
       ]
      },
-     "verdict": "pending"
+     "verdict": "confirmed"
+    }
+   ],
+   "confirmed_at": "2026-09-07T05:48:26+00:00",
+   "staves_for_works_json": [
+    {
+     "name": "Violini I",
+     "parts": [
+      0
+     ]
+    },
+    {
+     "name": "Violini II",
+     "parts": [
+      1
+     ]
+    },
+    {
+     "name": "Violini III",
+     "parts": [
+      2
+     ]
+    },
+    {
+     "name": "Viole I",
+     "parts": [
+      3
+     ]
+    },
+    {
+     "name": "Viole II",
+     "parts": [
+      4
+     ]
+    },
+    {
+     "name": "Viole III",
+     "parts": [
+      5
+     ]
+    },
+    {
+     "name": "Violoncelli I",
+     "parts": [
+      6
+     ]
+    },
+    {
+     "name": "Violoncelli II",
+     "parts": [
+      7
+     ]
+    },
+    {
+     "name": "Violoncelli III",
+     "parts": [
+      8
+     ]
+    },
+    {
+     "name": "Contrabasso",
+     "parts": [
+      9
+     ]
+    },
+    {
+     "name": "Cembalo (grand staff, 2 printed staves)",
+     "parts": [
+      10
+     ]
     }
    ]
   }
  },
- "updated_at": "2026-09-07T01:19:16+00:00"
+ "updated_at": "2026-09-07T05:48:26+00:00"
 }
