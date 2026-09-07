@@ -12,7 +12,34 @@ is built around**, not a caution attached to one:
 
 The general rule this arm supplied, which outlives it: **an edition effect is
 attributable to the EDITION only once its rows agree in DIRECTION; otherwise it
-is a row effect wearing the edition's name.**
+is a row effect wearing the edition's name.** And the sharper form, from the
+one pair in this gate that holds every other variable: Beethoven 984073 p4 and
+575951 p4 are the SAME PRINTED PAGE of one Litolff plate in two scans, and one
+invents a hairpin while the other is silent. **The row is not merely the finest
+unit — it is the only unit at which the INPUT is held constant.** Every grouping
+above it pools inputs differing in the scan, and the corpus does not record that
+variable.
+
+⚠️ **WHY THIS PRINTS A `stitch` COLUMN — the confound that refutes the obvious
+diagnosis.** The tempting read of a rising `wrong crescendo` is that our
+hairpins mispair. It does not follow: musicdiff gives a wedge we INVENT and a
+wedge we MISS the same bucket name, so the bucket counts UNPAIRED WEDGE OBJECTS,
+and four causes move it identically — mispaired anchor, wrong staff, false
+positive, and **a wedge on a part that pairs with nothing.**
+
+The row dominating the result is the fourth case, so the stitch verdict is
+COMPUTED here per row rather than asserted: where a row's systems disagree about
+staff count `_stitch_slots` refuses and the exporter emits per-system FRAGMENT
+parts, on which no hairpin can cancel a truth hairpin whatever `_wedge_anchors`
+chooses. ⚠️ `parts == staves` is NOT the test — that is also what a one-system
+page looks like, where joining is a no-op and nothing refused.
+
+**THE ATTRIBUTION IS OPEN.** Next step, no new arm needed: split each moved
+row's delta BY BUCKET over the outputs already on disk
+(`benchmarks/omr-ned-2026-08/dump_ops.py`). `entire staff` / `entire measure`
+movement is the stitch refusal; `wrong crescendo` on a row whose parts JOINED is
+the anchors. Writing "anchors next" before that split is how a plausible story
+becomes a fact.
 
     python3 benchmarks/omr-hairpin-cv-2026-09/probe/scan_arm_table.py \
         --off <off.json> --on <on.json>
@@ -58,6 +85,26 @@ def _must(p: pathlib.Path) -> pathlib.Path:
 
 def _wedges(p: pathlib.Path) -> int:
     return _must(p).read_text().count("<wedge ")
+
+
+def _stitch(fixtures: pathlib.Path, rid: str) -> str:
+    """Did `_stitch_slots` join this row's staves into parts, or refuse?
+
+    ⚠️ Derived, never guessed. A refusal emits one part per (system, staff), so
+    `parts == sum(staves per system)` — but on a SINGLE-system page that is also
+    what joining produces, because there is nothing to join. Telling them apart
+    needs the per-system staff counts, not the totals.
+    """
+    import re
+    raw = json.loads(_must(fixtures / f"{rid}.-hpon.omr.json").read_text())
+    per = [len(sy["staves"]) for pg in raw["pages"] for sy in pg["systems"]]
+    parts = len(re.findall(r"<score-part id=", _must(
+        fixtures / f"{rid}.-hpon.omr.musicxml").read_text()))
+    if len(per) < 2:
+        return "1-system"
+    if len(set(per)) > 1 and parts == sum(per):
+        return "REFUSED"
+    return "joined" if parts == max(per) else f"?{parts}"
 
 
 def _validity(fixtures: pathlib.Path, rids: list[str]) -> int:
@@ -124,7 +171,7 @@ def main() -> int:
 
     _validity(args.fixtures, common)
     print(f"{'row':34s} {'truthHP':>7s} {'cv+':>4s} {'wOFF':>5s} {'wON':>4s} "
-          f"{'edOFF':>6s} {'edON':>6s} {'delta':>6s}  wedge-buckets")
+          f"{'edOFF':>6s} {'edON':>6s} {'delta':>6s} {'stitch':>8s}  buckets")
     n_blank_silent = n_blank = 0
     for rid in common:
         a, b = off[rid], on[rid]
@@ -143,12 +190,16 @@ def main() -> int:
             n_blank += 1
             n_blank_silent += (added == 0)
         print(f"{rid:34s} {thp:7d} {added:4d} {wo:5d} {wn:4d} "
-              f"{ea:6d} {eb:6d} {eb-ea:+6d}  {buck}")
+              f"{ea:6d} {eb:6d} {eb-ea:+6d} "
+              f"{_stitch(args.fixtures, rid):>8s}  {buck}")
 
     print(f"\nPRECISION SIGNAL: {n_blank_silent} of the {n_blank} rows whose "
           f"truth carries NO hairpin stayed silent; "
           f"{n_blank - n_blank_silent} invented one.")
     print("NO POOLED FIGURE IS PRODUCED — see this file's docstring.")
+    print("ATTRIBUTION OF THE EDIT COST IS OPEN. The `stitch` column names the "
+          "confound; the\nbucket split (dump_ops.py) is the next step and has "
+          "NOT been run.")
     return 0
 
 

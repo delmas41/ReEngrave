@@ -1,7 +1,8 @@
 """Hairpins, read by classical CV in the band below each staff.
 
-THE DETECTOR DOES NOT SEE THEM ON SCANS. Over eleven scanned pages with
-hand-verified windows it finds **1 hairpin against 99** the truth carries, while
+THE DETECTOR BARELY SEES THEM ON SCANS. Over eleven scanned pages with
+hand-verified windows it finds **1 hairpin against 99** the truth carries — and
+over the widened twenty-row gate, **3 against 192** — while
 a 600 dpi crop shows them plainly — straight arms, connected apex, sitting in the
 gap under the staff. A hairpin is a thin diagonal line, which is the shape
 Phase 4f moved stems and beams out of the detector for, on the stated grounds

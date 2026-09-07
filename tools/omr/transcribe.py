@@ -2977,10 +2977,59 @@ def _cv_hairpins_enabled() -> bool:
     family that was left behind, built and measured 2026-09-04 and — until this
     call site — imported by nothing.
 
-    ⚠️ Off by default because the trade is 1:1 and unpriced against OMR-NED: an
-    invented `<direction>` is charged exactly what a missed one is, so a reader
-    that adds 57 marks and 2 false ones has not obviously helped until somebody
-    runs the arm. Turning it on is a measurement, not a tidy-up.
+    ⚠️⚠️ **IT IS PRICED NOW, AND IT COSTS OMR-NED. BOTH HALVES BELOW ARE THE
+    RESULT — neither one is the result on its own.** 20-row scan gate,
+    `scan_eval` OFF vs ON, own `--tag=` per arm, fixtures empty at start, wall
+    clocks 1720.5 s and 1664.0 s so neither arm was cached. Comparison validity
+    enforced rather than asserted: **0 of 20 rows differ in any NON-hairpin
+    detection**, so the movement is this flag's.
+
+      what it READS        **96 hairpins recovered across the 20 rows, against
+                           a truth of 192 — and against a detector that finds
+                           THREE, on two rows.** 6 of the 8 rows whose truth
+                           carries no hairpin stay silent; 2 invent one.
+      what it SCORES       **11 rows worse (+1 to +37 edits), 8 unchanged, 1
+                           better.** Not one row's improvement pays for its
+                           neighbour's cost.
+
+    ⚠️ **NO POOLED FIGURE EXISTS FOR THIS FLAG AND NONE SHOULD BE COMPUTED.**
+    The two Mahler rows err in OPPOSITE DIRECTIONS — p3 misses fifteen, p2
+    invents two — and a mean of an over-emission and an under-emission is true
+    of neither page while being quotable about both. 8 of the 20 rows carry no
+    truth hairpin at all and would contribute a full denominator to a pool in
+    which this feature can only ever hurt them. Per row or not at all:
+    `benchmarks/omr-hairpin-cv-2026-09/probe/scan_arm_table.py`, which refuses
+    to pool.
+
+    ⚠️ **WHY THE COST IS NOT YET ATTRIBUTED — OPEN, and deliberately not
+    resolved into a story.** The obvious reading of the rise in `wrong
+    crescendo` / `wrong diminuendo` is that our hairpins are mispairing. That
+    inference does not hold: musicdiff maps a wedge we INVENT and a wedge we
+    MISS to the same bucket name, so the bucket says only that the count of
+    UNPAIRED wedge objects went up — and a mispaired anchor, a wrong staff, a
+    false positive, and *a wedge on a part that pairs with nothing* all move it
+    identically.
+
+    And the row driving the result is exactly the fourth case. **Brahms 1 p2
+    carries 39 of the 96 hairpins this flag finds and +37 of the +76 total edit
+    movement — half of it — and it is one of the three rows in the gate where
+    `_stitch_slots` REFUSES**, its two systems printing 14 and 13 staves, so the
+    exporter emits 27 per-system FRAGMENT parts against a truth of 21. On such a
+    row no hairpin can cancel a truth hairpin whichever note `_wedge_anchors`
+    picks, because the part it lands on pairs with nothing. **The anchor rule is
+    not in the causal path there.** (The other two refusing rows, Beethoven 5
+    p3 in both scans, carry no CV hairpin at all and so cost nothing.)
+
+    So the anchor hypothesis stays live only on the rows whose parts JOIN —
+    Dvořák p5 (4 found of 7), Mahler p3 (2 of 17), Mahler p2 (5 against a truth
+    of 3) — where `_wedge_anchors`' documented blindness to `duration_beats` is
+    a real candidate and nothing here has tested it.
+
+    **NEXT STEP, and it needs no new arm:** split each moved row's delta BY
+    BUCKET over the artefacts already on disk — `entire staff` / `entire
+    measure` movement is the stitch refusal, `wrong crescendo` on a row whose
+    parts joined is the anchors. `benchmarks/omr-ned-2026-08/dump_ops.py` does
+    this today.
     """
     return os.environ.get(
         "OMR_CV_HAIRPINS", "0").strip().lower() in ("1", "true", "yes", "on")
@@ -5229,12 +5278,20 @@ def transcribe(
         # a CV/YOLO contest over one printed hairpin is settled by the same
         # notes-in-bar tier as every other one, instead of shipping twice.
         #
-        # ⚠️ On THIS corpus that protection has reach ZERO, and saying so is
-        # the honest form of the claim: the detector fires no hairpin at all on
-        # any of the eleven scan rows, so there is no contest to arbitrate and
-        # the ordering changes nothing measurable here. It is insurance against
-        # the case where the detector does fire — which is the engraved family,
-        # where it fires well — bought at no cost. It is not evidence.
+        # ⚠️ On THIS corpus that protection has reach ZERO, and the honest
+        # form of the claim is narrower than "the detector finds nothing": over
+        # the 20-row scan gate it finds THREE hairpins, on Dvořák p7 and Mahler
+        # p4. None of the three contested a CV reading — every CV hairpin added
+        # survives to the output, `n_cv_hairpins_added` matching the detections
+        # in the file on all 20 rows — so no arbitration ever ran and the
+        # ordering changes nothing measurable here. Insurance against the case
+        # where the detector does fire, which is the ENGRAVED family, bought at
+        # no cost. It is not evidence.
+        #
+        # ⚠️ An earlier draft said "no hairpin at all on any of the eleven scan
+        # rows". True of the ELEVEN-row era and false of the twenty-row gate
+        # this now ships against — the two extra rows carrying the three
+        # detections are both outside the old set.
         #
         # `page.binary` is the WHOLE page, staff lines intact, and in the same
         # deskewed frame every `bbox_page_px` on this page dict already is — see
