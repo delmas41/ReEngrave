@@ -220,8 +220,14 @@ def test_incidental_ink_hides_a_bracket_boundary_from_the_pixel_rule(monkeypatch
 
     This is Beethoven 5 / Litolff p.38 system 0 in miniature — six crossing
     columns at no barline x, taking the boundary gap over the median ratio.
+
+    ⚠️ Pins the flag to `0` EXPLICITLY. It used to clear the variable and lean
+    on the default, which was correct only while the default was the pixel
+    rule; when `OMR_BRACKET_COLUMNS` went default-ON (2026-09-07) this test
+    started asserting that the FIX misses the boundary, and failed. A control
+    that describes the incumbent must name the incumbent.
     """
-    monkeypatch.delenv("OMR_BRACKET_COLUMNS", raising=False)
+    monkeypatch.setenv("OMR_BRACKET_COLUMNS", "0")
     img, staves = _bracket_page(noise_at_gap=2)
     out, used = assign_systems(img, staves)
     assert used

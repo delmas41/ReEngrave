@@ -481,8 +481,47 @@ BRACKET_COLUMN_MIN_EVIDENCE = 3
 
 
 def _bracket_columns_enabled() -> bool:
+    """`OMR_BRACKET_COLUMNS` — DEFAULT ON since 2026-09-07 (Sean's call).
+
+    It shipped default-OFF on the honest ground that it was worth ZERO edits:
+    every export measured was byte-identical, because `group_index` reaches the
+    output only through cue C (gated shut on every page examined) and part
+    naming (measured at zero edits). The recommendation was to flip it "in the
+    same measurement as the first consumer that trusts `group_index`", and the
+    measurement it asked for by name was the one converting *"the readings now
+    agree with each other"* into *"the readings are now RIGHT"* — against the
+    printed page rather than an encoding.
+
+    **That measurement now exists**, produced independently by the
+    bracket-READING investigation the same day
+    (`benchmarks/omr-bracket-reading-2026-09/FINDINGS.md` §4), against hand-read
+    print truth across five publishers:
+
+        Bach / Peters, 22 systems, printed 3|3|3
+            shipping default (pixels)   contains all three   16 / 22
+            THIS RULE (object counts)   contains all three   22 / 22
+                                        exactly [2,5,8,9]    21 / 22
+        Brahms / Breitkopf, 15 systems, printed 9|5
+            shipping default (pixels)   exactly [8]           0 / 15
+            THIS RULE                   exactly [8]          15 / 15
+
+    So the incumbent is not merely unstable, it is WRONG on 15 of 15 Brahms
+    systems, and this rule is right on both editions. Within-page disagreement
+    0.3836 -> 0.0548 stands alongside it, re-measured on the merged tree.
+
+    ⚠️ Flipping remains SAFE rather than valuable: exports were byte-identical
+    on all 11 engraved fixtures and on both exposed scan-gate pages, and an
+    exact cue-C reach control found zero pages across 144 where the difference
+    could act. It is on because it is RIGHT, not because it moves a number —
+    and because the next consumer to trust bracket structure should inherit a
+    signal that agrees with the print instead of one that disagrees with itself
+    38% of the time.
+
+    Set `0` to restore the pixel rule (kept runnable so the measurement above
+    stays reproducible).
+    """
     return os.environ.get("OMR_BRACKET_COLUMNS", "").strip().lower() not in (
-        "0", "", "false", "no", "off",
+        "0", "false", "no", "off",
     )
 
 
