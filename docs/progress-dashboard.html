@@ -195,7 +195,7 @@
         <div class="pstage last"><div class="pnum"><span>=</span></div><div class="pmain"><h4>The finished file, scored</h4><span class="tech">OMR-NED · musicdiff</span><p class="pnote"><code>(insertions + deletions) / (symbols_pred + symbols_truth)</code> over musical symbols — <b>lower is better</b>, and the one number here that can sit beside published work.</p></div><div class="pcell good"><span class="plab">engraved <em>good</em></span><span class="pval">0.1122</span><span class="pdet">pooled OMR-NED, 11 works, 2,362 edits · recorded on 6b230bd7</span><span class="psrc">benchmarks/omr-ned-2026-08/current-accuracy.json</span></div><div class="pcell crit"><span class="plab">scan <em>weak</em></span><span class="pval">0.8444</span><span class="pdet">pooled OMR-NED, 20 hand-verified rows, 74,968 edits · ⚠️ a large share is structural charge, see the note below</span><span class="psrc">benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json</span></div></div>
       </div>
     </div>
-    <p class="table-caption">⚠️ <b>Read the scan column with this in hand:</b> on the 7 rows where the condensation convention can be normalised away, 0.8032 → 0.5327 and 7,303 of 18,091 edits disappear — the page prints <code>Flauti</code> on one staff, the encoding holds two flute parts, and we are charged for reading the page right (<span class="psrc">benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json</span>) So the scan colours are a floor on how well the stage reads the page — part of that gap is the metric billing a printing convention, not a misreading.</p>
+    <p class="table-caption">⚠️ <b>Read the scan column with this in hand:</b> on the 8 rows where the condensation convention can be normalised away, 0.8361 → 0.6099 and 8,333 of 24,654 edits disappear — the page prints <code>Flauti</code> on one staff, the encoding holds two flute parts, and we are charged for reading the page right (<span class="psrc">benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json</span>) So the scan colours are a floor on how well the stage reads the page — part of that gap is the metric billing a printing convention, not a misreading.</p>
   </section>
 
   <section>
@@ -324,12 +324,12 @@
   <section>
     <p class="kicker">Recent commits</p>
     <div class="commits">
+      <div><span class="sha">c94e3bf4</span> 2026-09-06 · Dashboard: a pipeline flow graph, two colours per stage because one would lie</div>
+      <div><span class="sha">859e901b</span> 2026-09-06 · Identity harness (phase 0): the gate passes, and it found two things</div>
       <div><span class="sha">eafca887</span> 2026-09-06 · works.json: 5 hand-confirmed staves maps — scan pool 10/20 -&gt; 15/20 mapped</div>
       <div><span class="sha">9cbb6806</span> 2026-09-06 · Bracket stability: engraved byte A/B COMPLETE — 11 of 11 byte-identical</div>
       <div><span class="sha">d611fadd</span> 2026-09-06 · Bracket stability: final engraved log state</div>
       <div><span class="sha">44266321</span> 2026-09-06 · Bracket stability: engraved byte A/B 9 of 11, all identical</div>
-      <div><span class="sha">8c5e44ac</span> 2026-09-06 · Bracket stability: engraved byte A/B 8 of 11, all identical</div>
-      <div><span class="sha">f16b938a</span> 2026-09-06 · Bracket stability: cost note</div>
     </div>
   </section>
 
