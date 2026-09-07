@@ -1,0 +1,1160 @@
+{
+  "coincide_threshold_staff_spaces": 1.25,
+  "total_cv_hairpins": 96,
+  "total_accents": 62,
+  "cross_check_mismatches": [],
+  "rows": [
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p1.-hpon",
+      "n_cv_hairpins": 0,
+      "n_cv_hairpins_top_level": null,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": []
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p2.-hpon",
+      "n_cv_hairpins": 0,
+      "n_cv_hairpins_top_level": null,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": []
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p3.-hpon",
+      "n_cv_hairpins": 0,
+      "n_cv_hairpins_top_level": null,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": []
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-984073-p4.-hpon",
+      "n_cv_hairpins": 1,
+      "n_cv_hairpins_top_level": 1,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": [
+        {
+          "staff": 9,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 1.4603174603174602,
+          "height_sp": 1.9047619047619047,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        }
+      ]
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p1.-hpon",
+      "n_cv_hairpins": 0,
+      "n_cv_hairpins_top_level": null,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": []
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p2.-hpon",
+      "n_cv_hairpins": 0,
+      "n_cv_hairpins_top_level": null,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": []
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p3.-hpon",
+      "n_cv_hairpins": 0,
+      "n_cv_hairpins_top_level": null,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": []
+    },
+    {
+      "row_id": "beethoven-sym5-mvt1-575951-p4.-hpon",
+      "n_cv_hairpins": 0,
+      "n_cv_hairpins_top_level": null,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": []
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p5.-hpon",
+      "n_cv_hairpins": 4,
+      "n_cv_hairpins_top_level": 4,
+      "n_accents": 1,
+      "n_accents_above": 0,
+      "n_accents_below": 1,
+      "hairpins": [
+        {
+          "staff": 0,
+          "measure": 6,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 8.784313725490197,
+          "height_sp": 0.8627450980392157,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 0,
+          "measure": 7,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 7.215686274509804,
+          "height_sp": 0.9803921568627451,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 1,
+          "measure": 6,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 8.950495049504951,
+          "height_sp": 1.0693069306930694,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 1,
+          "measure": 7,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 6.97029702970297,
+          "height_sp": 0.9900990099009901,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        }
+      ]
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p6.-hpon",
+      "n_cv_hairpins": 4,
+      "n_cv_hairpins_top_level": 4,
+      "n_accents": 13,
+      "n_accents_above": 3,
+      "n_accents_below": 10,
+      "hairpins": [
+        {
+          "staff": 9,
+          "measure": 1,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.287128712871287,
+          "height_sp": 0.7128712871287128,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 9,
+          "measure": 2,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.6831683168316833,
+          "height_sp": 0.7920792079207921,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 13,
+          "measure": 4,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 8.44,
+          "height_sp": 1.04,
+          "nearest_accent_dist_sp": 15.06265580832278,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 14,
+          "measure": 4,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 8.416666666666666,
+          "height_sp": 0.9166666666666666,
+          "nearest_accent_dist_sp": 15.60184395263016,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        }
+      ]
+    },
+    {
+      "row_id": "dvorak-sym9-mvt1-405834-p7.-hpon",
+      "n_cv_hairpins": 23,
+      "n_cv_hairpins_top_level": 23,
+      "n_accents": 28,
+      "n_accents_above": 23,
+      "n_accents_below": 5,
+      "hairpins": [
+        {
+          "staff": 2,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 9.861386138613861,
+          "height_sp": 1.2673267326732673,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 2,
+          "measure": 2,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 22.653465346534652,
+          "height_sp": 1.2277227722772277,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 5,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 8.990099009900991,
+          "height_sp": 0.9900990099009901,
+          "nearest_accent_dist_sp": 63.192161612698165,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 5,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 9.702970297029703,
+          "height_sp": 1.2277227722772277,
+          "nearest_accent_dist_sp": 75.58947835717595,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 5,
+          "measure": 2,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 9.069306930693068,
+          "height_sp": 0.9504950495049505,
+          "nearest_accent_dist_sp": 8.883765092979024,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 5,
+          "measure": 2,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 10.415841584158416,
+          "height_sp": 0.9504950495049505,
+          "nearest_accent_dist_sp": 8.597640354465796,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 10,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 9.821782178217822,
+          "height_sp": 1.2277227722772277,
+          "nearest_accent_dist_sp": 85.97289396214285,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 10,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 9.584158415841584,
+          "height_sp": 0.9504950495049505,
+          "nearest_accent_dist_sp": 98.6406103131002,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 10,
+          "measure": 2,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 10.574257425742575,
+          "height_sp": 0.9900990099009901,
+          "nearest_accent_dist_sp": 28.12780500449938,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 10,
+          "measure": 2,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 9.623762376237623,
+          "height_sp": 0.9108910891089109,
+          "nearest_accent_dist_sp": 14.400628464975279,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 11,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 9.108910891089108,
+          "height_sp": 1.0693069306930694,
+          "nearest_accent_dist_sp": 120.0382515905541,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 11,
+          "measure": 2,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 10.772277227722773,
+          "height_sp": 1.0297029702970297,
+          "nearest_accent_dist_sp": 61.7311829399214,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 11,
+          "measure": 2,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 10.01980198019802,
+          "height_sp": 1.108910891089109,
+          "nearest_accent_dist_sp": 48.093828823914876,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 12,
+          "measure": 2,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 10.05940594059406,
+          "height_sp": 1.0297029702970297,
+          "nearest_accent_dist_sp": 8.952334867422726,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentBelow"
+        },
+        {
+          "staff": 13,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 9.188118811881187,
+          "height_sp": 1.2673267326732673,
+          "nearest_accent_dist_sp": 66.32659595994772,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentBelow"
+        },
+        {
+          "staff": 14,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 4.041666666666667,
+          "height_sp": 2.1666666666666665,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 14,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 4.083333333333333,
+          "height_sp": 1.75,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 20,
+          "measure": 6,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 6.851485148514851,
+          "height_sp": 0.9900990099009901,
+          "nearest_accent_dist_sp": 21.735332163291247,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        },
+        {
+          "staff": 24,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 9.96,
+          "height_sp": 0.92,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 24,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 1.92,
+          "height_sp": 0.96,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 24,
+          "measure": 1,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 5.44,
+          "height_sp": 1.0,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 25,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 23.176470588235293,
+          "height_sp": 1.3725490196078431,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 29,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 16.68686868686869,
+          "height_sp": 0.9696969696969697,
+          "nearest_accent_dist_sp": 7.719709773550971,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentAbove"
+        }
+      ]
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p1.-hpon",
+      "n_cv_hairpins": 2,
+      "n_cv_hairpins_top_level": 2,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": [
+        {
+          "staff": 2,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 0.8125,
+          "height_sp": 1.1875,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 11,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 0.8062015503875969,
+          "height_sp": 1.1472868217054264,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        }
+      ]
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p2.-hpon",
+      "n_cv_hairpins": 39,
+      "n_cv_hairpins_top_level": 39,
+      "n_accents": 1,
+      "n_accents_above": 0,
+      "n_accents_below": 1,
+      "hairpins": [
+        {
+          "staff": 0,
+          "measure": 3,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.4128440366972477,
+          "height_sp": 1.0275229357798166,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 0,
+          "measure": 4,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 3.4862385321100917,
+          "height_sp": 0.9541284403669725,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 0,
+          "measure": 4,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 7.5963302752293576,
+          "height_sp": 1.0275229357798166,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 1,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 27.96330275229358,
+          "height_sp": 1.2844036697247707,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 2,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 27.78181818181818,
+          "height_sp": 1.3454545454545455,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 3,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 27.81651376146789,
+          "height_sp": 1.1743119266055047,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 3,
+          "measure": 3,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 4.440366972477064,
+          "height_sp": 1.0275229357798166,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 3,
+          "measure": 3,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.669724770642202,
+          "height_sp": 1.0275229357798166,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 3,
+          "measure": 3,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 4.477064220183486,
+          "height_sp": 0.9174311926605505,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 3,
+          "measure": 4,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 4.770642201834862,
+          "height_sp": 0.9174311926605505,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 4,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 28.21818181818182,
+          "height_sp": 1.2727272727272727,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 8,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 27.818181818181817,
+          "height_sp": 1.1272727272727272,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 9,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 29.834862385321102,
+          "height_sp": 1.2110091743119267,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 9,
+          "measure": 3,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.779816513761468,
+          "height_sp": 0.8807339449541285,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 9,
+          "measure": 3,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 3.669724770642202,
+          "height_sp": 0.8073394495412844,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 9,
+          "measure": 3,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.4862385321100917,
+          "height_sp": 0.9541284403669725,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 9,
+          "measure": 4,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 8.697247706422019,
+          "height_sp": 1.1376146788990826,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 10,
+          "measure": 3,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 4.254545454545455,
+          "height_sp": 0.8727272727272727,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 10,
+          "measure": 4,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 3.890909090909091,
+          "height_sp": 0.9454545454545454,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 10,
+          "measure": 4,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.890909090909091,
+          "height_sp": 1.0909090909090908,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 11,
+          "measure": 3,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 3.9272727272727272,
+          "height_sp": 0.7272727272727273,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 11,
+          "measure": 3,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.090909090909091,
+          "height_sp": 0.9818181818181818,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 11,
+          "measure": 4,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 8.472727272727273,
+          "height_sp": 1.1272727272727272,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 12,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 29.211009174311926,
+          "height_sp": 1.3577981651376148,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 12,
+          "measure": 4,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 7.963302752293578,
+          "height_sp": 1.1009174311926606,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 13,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 28.072727272727274,
+          "height_sp": 1.4545454545454546,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 13,
+          "measure": 4,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 7.963636363636364,
+          "height_sp": 1.1272727272727272,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 17,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.2149532710280373,
+          "height_sp": 1.0841121495327102,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 17,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 4.897196261682243,
+          "height_sp": 1.0841121495327102,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 17,
+          "measure": 1,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 4.261682242990654,
+          "height_sp": 1.0093457943925233,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 22,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 4.4485981308411215,
+          "height_sp": 0.8598130841121495,
+          "nearest_accent_dist_sp": 23.837521755519017,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentBelow"
+        },
+        {
+          "staff": 22,
+          "measure": 1,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.514018691588785,
+          "height_sp": 0.7102803738317757,
+          "nearest_accent_dist_sp": 1.1516203215513543,
+          "coincides_with_accent": true,
+          "nearest_accent_class": "articAccentBelow"
+        },
+        {
+          "staff": 23,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 4.807339449541284,
+          "height_sp": 1.0642201834862386,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 23,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 4.513761467889908,
+          "height_sp": 1.0275229357798166,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 23,
+          "measure": 1,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 4.513761467889908,
+          "height_sp": 0.9174311926605505,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 24,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 4.108108108108108,
+          "height_sp": 0.9009009009009009,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 24,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.2432432432432434,
+          "height_sp": 0.9369369369369369,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 24,
+          "measure": 1,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 4.612612612612613,
+          "height_sp": 0.9009009009009009,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 26,
+          "measure": 2,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 25.12727272727273,
+          "height_sp": 1.2363636363636363,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        }
+      ]
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p3.-hpon",
+      "n_cv_hairpins": 4,
+      "n_cv_hairpins_top_level": 4,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": [
+        {
+          "staff": 15,
+          "measure": 2,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 13.321100917431192,
+          "height_sp": 1.2477064220183487,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 15,
+          "measure": 3,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 3.596330275229358,
+          "height_sp": 0.9908256880733946,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 15,
+          "measure": 4,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 7.853211009174312,
+          "height_sp": 1.0642201834862386,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 26,
+          "measure": 4,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 10.311926605504587,
+          "height_sp": 1.3211009174311927,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        }
+      ]
+    },
+    {
+      "row_id": "brahms-sym1-mvt1-317803-p4.-hpon",
+      "n_cv_hairpins": 1,
+      "n_cv_hairpins_top_level": 1,
+      "n_accents": 4,
+      "n_accents_above": 4,
+      "n_accents_below": 0,
+      "hairpins": [
+        {
+          "staff": 13,
+          "measure": 8,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 12.072072072072071,
+          "height_sp": 1.1531531531531531,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        }
+      ]
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p2.-hpon",
+      "n_cv_hairpins": 5,
+      "n_cv_hairpins_top_level": 5,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": [
+        {
+          "staff": 5,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 1.1262135922330097,
+          "height_sp": 1.7864077669902914,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 7,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 4.038834951456311,
+          "height_sp": 1.1262135922330097,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 7,
+          "measure": 1,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 5.242718446601942,
+          "height_sp": 1.2815533980582525,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 7,
+          "measure": 4,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 5.12621359223301,
+          "height_sp": 1.2427184466019416,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 18,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 0.8155339805825242,
+          "height_sp": 1.0485436893203883,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        }
+      ]
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p3.-hpon",
+      "n_cv_hairpins": 2,
+      "n_cv_hairpins_top_level": 2,
+      "n_accents": 1,
+      "n_accents_above": 1,
+      "n_accents_below": 0,
+      "hairpins": [
+        {
+          "staff": 1,
+          "measure": 4,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 4.58252427184466,
+          "height_sp": 1.1262135922330097,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 14,
+          "measure": 4,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 4.58252427184466,
+          "height_sp": 1.1262135922330097,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        }
+      ]
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p4.-hpon",
+      "n_cv_hairpins": 7,
+      "n_cv_hairpins_top_level": 7,
+      "n_accents": 1,
+      "n_accents_above": 0,
+      "n_accents_below": 1,
+      "hairpins": [
+        {
+          "staff": 1,
+          "measure": 7,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 3.8446601941747574,
+          "height_sp": 0.7378640776699029,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 2,
+          "measure": 3,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 10.330097087378642,
+          "height_sp": 1.5533980582524272,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 3,
+          "measure": 3,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 9.592233009708737,
+          "height_sp": 1.2815533980582525,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 16,
+          "measure": 3,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 1.5,
+          "height_sp": 0.8461538461538461,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 19,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 1.3592233009708738,
+          "height_sp": 1.7087378640776698,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 19,
+          "measure": 0,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 0.8932038834951457,
+          "height_sp": 1.203883495145631,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 19,
+          "measure": 7,
+          "kind": "dynamicCrescendoHairpin",
+          "width_sp": 0.970873786407767,
+          "height_sp": 1.0097087378640777,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        }
+      ]
+    },
+    {
+      "row_id": "mahler-sym5-mvt1-local-p5.-hpon",
+      "n_cv_hairpins": 4,
+      "n_cv_hairpins_top_level": 4,
+      "n_accents": 13,
+      "n_accents_above": 4,
+      "n_accents_below": 9,
+      "hairpins": [
+        {
+          "staff": 8,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 21.631067961165048,
+          "height_sp": 0.8155339805825242,
+          "nearest_accent_dist_sp": null,
+          "coincides_with_accent": false,
+          "nearest_accent_class": null
+        },
+        {
+          "staff": 16,
+          "measure": 0,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 2.2524271844660193,
+          "height_sp": 1.087378640776699,
+          "nearest_accent_dist_sp": 8.210929357872567,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentBelow"
+        },
+        {
+          "staff": 16,
+          "measure": 1,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 2.29126213592233,
+          "height_sp": 1.1262135922330097,
+          "nearest_accent_dist_sp": 6.116997976731492,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentBelow"
+        },
+        {
+          "staff": 16,
+          "measure": 1,
+          "kind": "dynamicDiminuendoHairpin",
+          "width_sp": 2.2524271844660193,
+          "height_sp": 1.1650485436893203,
+          "nearest_accent_dist_sp": 11.304723628731079,
+          "coincides_with_accent": false,
+          "nearest_accent_class": "articAccentBelow"
+        }
+      ]
+    },
+    {
+      "row_id": "bach-brandenburg3-mvt1-468678-p1.-hpon",
+      "n_cv_hairpins": 0,
+      "n_cv_hairpins_top_level": null,
+      "n_accents": 0,
+      "n_accents_above": 0,
+      "n_accents_below": 0,
+      "hairpins": []
+    }
+  ]
+}
