@@ -95,7 +95,23 @@ must be re-applied on current main — see §5).
 
 ---
 
-## 3. Decisions that need you
+## 3. Decisions — ANSWERED by Sean, 2026-09-07 morning
+
+| decision | Sean's call | state |
+|---|---|---|
+| **`/uploads` served without auth** | **Leave it alone** — treated as intentional | closed, no change made |
+| **Key-signature corroboration guard** | **Build it, default OFF** | ✅ built, `claude/fix-keysig-corroboration`, in review |
+| **`OMR_INSTRUMENT_CLEF_DEFAULT`** | **Keep held; decouple the clef work from it** | clef guard to be scoped without instrument names |
+
+⚠️ **The decoupling has evidence behind it**: 29 of 29 unresolved non-treble scan
+staves print **no margin label at all**, so a name-based clef repair cannot reach
+that population regardless of the flag. The clef guard must therefore rest on
+something other than identity — the same "corroborate the EVENT, not the VALUE"
+shape the key-signature guard found is the obvious candidate and is untested there.
+
+### Superseded — the original text of this section
+
+
 
 1. ⚠️ **`/uploads` is served over HTTP with no authentication**, and
    `local_omr.py` writes the entire result JSON there. That is how an
