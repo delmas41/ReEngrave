@@ -1,0 +1,1348 @@
+{
+ "_README": [
+  "Hand-confirmed page-level `staves` maps for scan-gate rows that had none.",
+  "",
+  "Each entry is ONE PRINTED STAFF of the page and names the reference part",
+  "indices it carries, in `page_normalise`'s index space (music21 Score.parts",
+  "of the row's trimmed truth). Shape is works.json's `staves` verbatim, so a",
+  "merged row needs no translation.",
+  "",
+  "PROPOSED from the row's own hand-read `systems_as_printed` (per SYSTEM),",
+  "collapsed to the page by taking the system whose lineup names the most",
+  "parts; CONFIRMED staff by staff by Sean against 600 dpi margin crops with",
+  "the canonical run's own detected staff band drawn on the print.",
+  "",
+  "`verdict` per staff: `confirmed` = the proposal was right; `edited` = Sean",
+  "changed it, and `proposed` records what it had been.",
+  "",
+  "A row reaches `done` only when every staff is decided, every reference",
+  "part is named exactly once, and no part is named twice.",
+  "",
+  "NOT MERGED INTO works.json BY THIS FILE. See merge_additions.py."
+ ],
+ "generated_by": "benchmarks/omr-staves-map-2026-09/server.py",
+ "rows": {
+  "beethoven-sym5-mvt1-984073-p3": {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "status": "done",
+   "proposal_source": "system_1",
+   "n_reference_parts": 18,
+   "reference": "reference/beethoven/symphony-5/beethoven--symphony-5--mvt1--gradus.mxl",
+   "evidence": {
+    "run_artefact": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.reconciliation.omr.json",
+    "run_artefact_origin": "reconciliation",
+    "truth_for_part_indices": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.truth.musicxml",
+    "dpi": 600
+   },
+   "staves": [
+    {
+     "name": "Flauti",
+     "parts": [
+      0,
+      1
+     ],
+     "proposed": {
+      "name": "Flauti",
+      "parts": [
+       0,
+       1
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Oboi",
+     "parts": [
+      2,
+      3
+     ],
+     "proposed": {
+      "name": "Oboi",
+      "parts": [
+       2,
+       3
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Clarinetti in B",
+     "parts": [
+      4,
+      5
+     ],
+     "proposed": {
+      "name": "Clarinetti in B",
+      "parts": [
+       4,
+       5
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Fagotti",
+     "parts": [
+      6,
+      7
+     ],
+     "proposed": {
+      "name": "Fagotti",
+      "parts": [
+       6,
+       7
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Corni in Es",
+     "parts": [
+      8,
+      9
+     ],
+     "proposed": {
+      "name": "Corni in Es",
+      "parts": [
+       8,
+       9
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Trombe in C",
+     "parts": [
+      10,
+      11
+     ],
+     "proposed": {
+      "name": "Trombe in C",
+      "parts": [
+       10,
+       11
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Timpani in C.G.",
+     "parts": [
+      12
+     ],
+     "proposed": {
+      "name": "Timpani in C.G.",
+      "parts": [
+       12
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violino I",
+     "parts": [
+      13
+     ],
+     "proposed": {
+      "name": "Violino I",
+      "parts": [
+       13
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violino II",
+     "parts": [
+      14
+     ],
+     "proposed": {
+      "name": "Violino II",
+      "parts": [
+       14
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Viola",
+     "parts": [
+      15
+     ],
+     "proposed": {
+      "name": "Viola",
+      "parts": [
+       15
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violoncello e Basso",
+     "parts": [
+      16,
+      17
+     ],
+     "proposed": {
+      "name": "Violoncello e Basso",
+      "parts": [
+       16,
+       17
+      ]
+     },
+     "verdict": "confirmed"
+    }
+   ],
+   "confirmed_at": "2026-09-07T00:15:14+00:00",
+   "staves_for_works_json": [
+    {
+     "name": "Flauti",
+     "parts": [
+      0,
+      1
+     ]
+    },
+    {
+     "name": "Oboi",
+     "parts": [
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Clarinetti in B",
+     "parts": [
+      4,
+      5
+     ]
+    },
+    {
+     "name": "Fagotti",
+     "parts": [
+      6,
+      7
+     ]
+    },
+    {
+     "name": "Corni in Es",
+     "parts": [
+      8,
+      9
+     ]
+    },
+    {
+     "name": "Trombe in C",
+     "parts": [
+      10,
+      11
+     ]
+    },
+    {
+     "name": "Timpani in C.G.",
+     "parts": [
+      12
+     ]
+    },
+    {
+     "name": "Violino I",
+     "parts": [
+      13
+     ]
+    },
+    {
+     "name": "Violino II",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "Viola",
+     "parts": [
+      15
+     ]
+    },
+    {
+     "name": "Violoncello e Basso",
+     "parts": [
+      16,
+      17
+     ]
+    }
+   ]
+  },
+  "beethoven-sym5-mvt1-984073-p4": {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "status": "done",
+   "proposal_source": "system_2",
+   "n_reference_parts": 18,
+   "reference": "reference/beethoven/symphony-5/beethoven--symphony-5--mvt1--gradus.mxl",
+   "evidence": {
+    "run_artefact": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.reconciliation.omr.json",
+    "run_artefact_origin": "reconciliation",
+    "truth_for_part_indices": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.truth.musicxml",
+    "dpi": 600
+   },
+   "staves": [
+    {
+     "name": "Flauti",
+     "parts": [
+      0,
+      1
+     ],
+     "proposed": {
+      "name": "Flauti",
+      "parts": [
+       0,
+       1
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Oboi",
+     "parts": [
+      2,
+      3
+     ],
+     "proposed": {
+      "name": "Oboi",
+      "parts": [
+       2,
+       3
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Clarinetti in B",
+     "parts": [
+      4,
+      5
+     ],
+     "proposed": {
+      "name": "Clarinetti in B",
+      "parts": [
+       4,
+       5
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Fagotti",
+     "parts": [
+      6,
+      7
+     ],
+     "proposed": {
+      "name": "Fagotti",
+      "parts": [
+       6,
+       7
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Corni in Es",
+     "parts": [
+      8,
+      9
+     ],
+     "proposed": {
+      "name": "Corni in Es",
+      "parts": [
+       8,
+       9
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Trombe in C",
+     "parts": [
+      10,
+      11
+     ],
+     "proposed": {
+      "name": "Trombe in C",
+      "parts": [
+       10,
+       11
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Timpani in C.G.",
+     "parts": [
+      12
+     ],
+     "proposed": {
+      "name": "Timpani in C.G.",
+      "parts": [
+       12
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violino I",
+     "parts": [
+      13
+     ],
+     "proposed": {
+      "name": "Violino I",
+      "parts": [
+       13
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violino II",
+     "parts": [
+      14
+     ],
+     "proposed": {
+      "name": "Violino II",
+      "parts": [
+       14
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Viola",
+     "parts": [
+      15
+     ],
+     "proposed": {
+      "name": "Viola",
+      "parts": [
+       15
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Bassi (Violoncello e Basso)",
+     "parts": [
+      16,
+      17
+     ],
+     "proposed": {
+      "name": "Bassi (Violoncello e Basso)",
+      "parts": [
+       16,
+       17
+      ]
+     },
+     "verdict": "confirmed"
+    }
+   ],
+   "lineup_conflict_acknowledged": true,
+   "lineup_conflict": [
+    {
+     "system": "system_1",
+     "parts_this_system_names_that_the_proposal_does_not": [],
+     "staves_only_in_this_system": [
+      "Violoncello",
+      "Basso"
+     ]
+    }
+   ],
+   "lineup_chosen": "system_2",
+   "confirmed_at": "2026-09-07T00:22:10+00:00",
+   "staves_for_works_json": [
+    {
+     "name": "Flauti",
+     "parts": [
+      0,
+      1
+     ]
+    },
+    {
+     "name": "Oboi",
+     "parts": [
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Clarinetti in B",
+     "parts": [
+      4,
+      5
+     ]
+    },
+    {
+     "name": "Fagotti",
+     "parts": [
+      6,
+      7
+     ]
+    },
+    {
+     "name": "Corni in Es",
+     "parts": [
+      8,
+      9
+     ]
+    },
+    {
+     "name": "Trombe in C",
+     "parts": [
+      10,
+      11
+     ]
+    },
+    {
+     "name": "Timpani in C.G.",
+     "parts": [
+      12
+     ]
+    },
+    {
+     "name": "Violino I",
+     "parts": [
+      13
+     ]
+    },
+    {
+     "name": "Violino II",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "Viola",
+     "parts": [
+      15
+     ]
+    },
+    {
+     "name": "Bassi (Violoncello e Basso)",
+     "parts": [
+      16,
+      17
+     ]
+    }
+   ]
+  },
+  "beethoven-sym5-mvt1-575951-p3": {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "status": "done",
+   "proposal_source": "system_1",
+   "n_reference_parts": 18,
+   "reference": "reference/beethoven/symphony-5/beethoven--symphony-5--mvt1--gradus.mxl",
+   "evidence": {
+    "run_artefact": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.reconciliation.omr.json",
+    "run_artefact_origin": "reconciliation",
+    "truth_for_part_indices": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.truth.musicxml",
+    "dpi": 600
+   },
+   "staves": [
+    {
+     "name": "Flauti",
+     "parts": [
+      0,
+      1
+     ],
+     "proposed": {
+      "name": "Flauti",
+      "parts": [
+       0,
+       1
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Oboi",
+     "parts": [
+      2,
+      3
+     ],
+     "proposed": {
+      "name": "Oboi",
+      "parts": [
+       2,
+       3
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Clarinetti in B",
+     "parts": [
+      4,
+      5
+     ],
+     "proposed": {
+      "name": "Clarinetti in B",
+      "parts": [
+       4,
+       5
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Fagotti",
+     "parts": [
+      6,
+      7
+     ],
+     "proposed": {
+      "name": "Fagotti",
+      "parts": [
+       6,
+       7
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Corni in Es",
+     "parts": [
+      8,
+      9
+     ],
+     "proposed": {
+      "name": "Corni in Es",
+      "parts": [
+       8,
+       9
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Trombe in C",
+     "parts": [
+      10,
+      11
+     ],
+     "proposed": {
+      "name": "Trombe in C",
+      "parts": [
+       10,
+       11
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Timpani in C.G.",
+     "parts": [
+      12
+     ],
+     "proposed": {
+      "name": "Timpani in C.G.",
+      "parts": [
+       12
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violino I",
+     "parts": [
+      13
+     ],
+     "proposed": {
+      "name": "Violino I",
+      "parts": [
+       13
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violino II",
+     "parts": [
+      14
+     ],
+     "proposed": {
+      "name": "Violino II",
+      "parts": [
+       14
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Viola",
+     "parts": [
+      15
+     ],
+     "proposed": {
+      "name": "Viola",
+      "parts": [
+       15
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violoncello e Basso",
+     "parts": [
+      16,
+      17
+     ],
+     "proposed": {
+      "name": "Violoncello e Basso",
+      "parts": [
+       16,
+       17
+      ]
+     },
+     "verdict": "confirmed"
+    }
+   ],
+   "confirmed_at": "2026-09-07T00:15:56+00:00",
+   "staves_for_works_json": [
+    {
+     "name": "Flauti",
+     "parts": [
+      0,
+      1
+     ]
+    },
+    {
+     "name": "Oboi",
+     "parts": [
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Clarinetti in B",
+     "parts": [
+      4,
+      5
+     ]
+    },
+    {
+     "name": "Fagotti",
+     "parts": [
+      6,
+      7
+     ]
+    },
+    {
+     "name": "Corni in Es",
+     "parts": [
+      8,
+      9
+     ]
+    },
+    {
+     "name": "Trombe in C",
+     "parts": [
+      10,
+      11
+     ]
+    },
+    {
+     "name": "Timpani in C.G.",
+     "parts": [
+      12
+     ]
+    },
+    {
+     "name": "Violino I",
+     "parts": [
+      13
+     ]
+    },
+    {
+     "name": "Violino II",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "Viola",
+     "parts": [
+      15
+     ]
+    },
+    {
+     "name": "Violoncello e Basso",
+     "parts": [
+      16,
+      17
+     ]
+    }
+   ]
+  },
+  "beethoven-sym5-mvt1-575951-p4": {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "status": "done",
+   "proposal_source": "system_2",
+   "n_reference_parts": 18,
+   "reference": "reference/beethoven/symphony-5/beethoven--symphony-5--mvt1--gradus.mxl",
+   "evidence": {
+    "run_artefact": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.reconciliation.omr.json",
+    "run_artefact_origin": "reconciliation",
+    "truth_for_part_indices": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.truth.musicxml",
+    "dpi": 600
+   },
+   "staves": [
+    {
+     "name": "Flauti",
+     "parts": [
+      0,
+      1
+     ],
+     "proposed": {
+      "name": "Flauti",
+      "parts": [
+       0,
+       1
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Oboi",
+     "parts": [
+      2,
+      3
+     ],
+     "proposed": {
+      "name": "Oboi",
+      "parts": [
+       2,
+       3
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Clarinetti in B",
+     "parts": [
+      4,
+      5
+     ],
+     "proposed": {
+      "name": "Clarinetti in B",
+      "parts": [
+       4,
+       5
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Fagotti",
+     "parts": [
+      6,
+      7
+     ],
+     "proposed": {
+      "name": "Fagotti",
+      "parts": [
+       6,
+       7
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Corni in Es",
+     "parts": [
+      8,
+      9
+     ],
+     "proposed": {
+      "name": "Corni in Es",
+      "parts": [
+       8,
+       9
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Trombe in C",
+     "parts": [
+      10,
+      11
+     ],
+     "proposed": {
+      "name": "Trombe in C",
+      "parts": [
+       10,
+       11
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Timpani in C.G.",
+     "parts": [
+      12
+     ],
+     "proposed": {
+      "name": "Timpani in C.G.",
+      "parts": [
+       12
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violino I",
+     "parts": [
+      13
+     ],
+     "proposed": {
+      "name": "Violino I",
+      "parts": [
+       13
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violino II",
+     "parts": [
+      14
+     ],
+     "proposed": {
+      "name": "Violino II",
+      "parts": [
+       14
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Viola",
+     "parts": [
+      15
+     ],
+     "proposed": {
+      "name": "Viola",
+      "parts": [
+       15
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Bassi (Violoncello e Basso)",
+     "parts": [
+      16,
+      17
+     ],
+     "proposed": {
+      "name": "Bassi (Violoncello e Basso)",
+      "parts": [
+       16,
+       17
+      ]
+     },
+     "verdict": "confirmed"
+    }
+   ],
+   "lineup_conflict_acknowledged": true,
+   "lineup_conflict": [
+    {
+     "system": "system_1",
+     "parts_this_system_names_that_the_proposal_does_not": [],
+     "staves_only_in_this_system": [
+      "Violoncello",
+      "Basso"
+     ]
+    }
+   ],
+   "lineup_chosen": "system_2",
+   "confirmed_at": "2026-09-07T00:21:54+00:00",
+   "staves_for_works_json": [
+    {
+     "name": "Flauti",
+     "parts": [
+      0,
+      1
+     ]
+    },
+    {
+     "name": "Oboi",
+     "parts": [
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Clarinetti in B",
+     "parts": [
+      4,
+      5
+     ]
+    },
+    {
+     "name": "Fagotti",
+     "parts": [
+      6,
+      7
+     ]
+    },
+    {
+     "name": "Corni in Es",
+     "parts": [
+      8,
+      9
+     ]
+    },
+    {
+     "name": "Trombe in C",
+     "parts": [
+      10,
+      11
+     ]
+    },
+    {
+     "name": "Timpani in C.G.",
+     "parts": [
+      12
+     ]
+    },
+    {
+     "name": "Violino I",
+     "parts": [
+      13
+     ]
+    },
+    {
+     "name": "Violino II",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "Viola",
+     "parts": [
+      15
+     ]
+    },
+    {
+     "name": "Bassi (Violoncello e Basso)",
+     "parts": [
+      16,
+      17
+     ]
+    }
+   ]
+  },
+  "brahms-sym1-mvt1-317803-p2": {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "status": "done",
+   "proposal_source": "system_1",
+   "n_reference_parts": 21,
+   "reference": "reference/brahms/symphony-1/brahms--symphony-1--mvt1--gradus.mxl",
+   "evidence": {
+    "run_artefact": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.reconciliation.omr.json",
+    "run_artefact_origin": "reconciliation",
+    "truth_for_part_indices": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.truth.musicxml",
+    "dpi": 600
+   },
+   "staves": [
+    {
+     "name": "2 Floten",
+     "parts": [
+      0,
+      1
+     ],
+     "proposed": {
+      "name": "2 Floten",
+      "parts": [
+       0,
+       1
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "2 Oboen",
+     "parts": [
+      2,
+      3
+     ],
+     "proposed": {
+      "name": "2 Oboen",
+      "parts": [
+       2,
+       3
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "2 Klarinetten in B",
+     "parts": [
+      4,
+      5
+     ],
+     "proposed": {
+      "name": "2 Klarinetten in B",
+      "parts": [
+       4,
+       5
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "2 Fagotte",
+     "parts": [
+      6,
+      7
+     ],
+     "proposed": {
+      "name": "2 Fagotte",
+      "parts": [
+       6,
+       7
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Kontrafagott",
+     "parts": [
+      8
+     ],
+     "proposed": {
+      "name": "Kontrafagott",
+      "parts": [
+       8
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "4 Horner in C 1./2.",
+     "parts": [
+      9,
+      10
+     ],
+     "proposed": {
+      "name": "4 Horner in C 1./2.",
+      "parts": [
+       9,
+       10
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "4 Horner in Es 3./4.",
+     "parts": [
+      11,
+      12
+     ],
+     "proposed": {
+      "name": "4 Horner in Es 3./4.",
+      "parts": [
+       11,
+       12
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "2 Trompeten in C",
+     "parts": [
+      13,
+      14
+     ],
+     "proposed": {
+      "name": "2 Trompeten in C",
+      "parts": [
+       13,
+       14
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Pauken in C u.G",
+     "parts": [
+      15
+     ],
+     "proposed": {
+      "name": "Pauken in C u.G",
+      "parts": [
+       15
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "1. Violine",
+     "parts": [
+      16
+     ],
+     "proposed": {
+      "name": "1. Violine",
+      "parts": [
+       16
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "2. Violine",
+     "parts": [
+      17
+     ],
+     "proposed": {
+      "name": "2. Violine",
+      "parts": [
+       17
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Bratsche",
+     "parts": [
+      18
+     ],
+     "proposed": {
+      "name": "Bratsche",
+      "parts": [
+       18
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violoncell",
+     "parts": [
+      19
+     ],
+     "proposed": {
+      "name": "Violoncell",
+      "parts": [
+       19
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Kontrabass",
+     "parts": [
+      20
+     ],
+     "proposed": {
+      "name": "Kontrabass",
+      "parts": [
+       20
+      ]
+     },
+     "verdict": "confirmed"
+    }
+   ],
+   "staves_for_works_json": [
+    {
+     "name": "2 Floten",
+     "parts": [
+      0,
+      1
+     ]
+    },
+    {
+     "name": "2 Oboen",
+     "parts": [
+      2,
+      3
+     ]
+    },
+    {
+     "name": "2 Klarinetten in B",
+     "parts": [
+      4,
+      5
+     ]
+    },
+    {
+     "name": "2 Fagotte",
+     "parts": [
+      6,
+      7
+     ]
+    },
+    {
+     "name": "Kontrafagott",
+     "parts": [
+      8
+     ]
+    },
+    {
+     "name": "4 Horner in C 1./2.",
+     "parts": [
+      9,
+      10
+     ]
+    },
+    {
+     "name": "4 Horner in Es 3./4.",
+     "parts": [
+      11,
+      12
+     ]
+    },
+    {
+     "name": "2 Trompeten in C",
+     "parts": [
+      13,
+      14
+     ]
+    },
+    {
+     "name": "Pauken in C u.G",
+     "parts": [
+      15
+     ]
+    },
+    {
+     "name": "1. Violine",
+     "parts": [
+      16
+     ]
+    },
+    {
+     "name": "2. Violine",
+     "parts": [
+      17
+     ]
+    },
+    {
+     "name": "Bratsche",
+     "parts": [
+      18
+     ]
+    },
+    {
+     "name": "Violoncell",
+     "parts": [
+      19
+     ]
+    },
+    {
+     "name": "Kontrabass",
+     "parts": [
+      20
+     ]
+    }
+   ],
+   "confirmed_at": "2026-09-07T00:21:09+00:00"
+  }
+ },
+ "updated_at": "2026-09-07T00:22:10+00:00"
+}
