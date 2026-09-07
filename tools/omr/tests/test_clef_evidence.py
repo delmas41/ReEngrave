@@ -14,6 +14,13 @@ sites feed `staff["clef_evidence"]`:
   `best_clef_conf` and discards it, so a clef won at 0.98 over nothing and one
   won at 0.26 over a 0.25 runner-up were indistinguishable downstream.
 
+A third feeds `staff["clef_proposal_evidence"]`:
+
+* `clef_correction.propose_clef` has FIVE returns, four of them refusals, and
+  every one discarded the whole `fits` table — so the additive-vs-gated survey
+  had to reimplement the function to learn that ~50% of both populations exit
+  at `already_in_effect`.
+
 ⚠️ Every test here was run RED first, with the recording removed, to prove it
 exercises the mechanism rather than passing on the shape of an empty dict —
 this repo has shipped a test that passed vacuously (the margin-label blob test
@@ -31,6 +38,8 @@ from pathlib import Path
 import pytest
 
 from tools.omr import transcribe as T
+from tools.omr.clef_correction import correct_clefs_from_instruments, propose_clef
+from tools.omr.instruments import lookup
 from tools.omr.tests.test_clef_locator import (
     blank_page,
     cell_with_c_clef,
@@ -38,6 +47,41 @@ from tools.omr.tests.test_clef_locator import (
     draw_noteheads,
     make_cell,
 )
+
+
+BASSOON = lookup("Fag.").instrument
+
+
+def _notehead(pitch, x):
+    return {"category": "notehead", "class": "noteheadBlack", "pitch": pitch,
+            "bbox": [x, 0, 10, 10]}
+
+
+def _staff_dict(pitches, clef):
+    dets = [_notehead(p, 20 + 40 * i) for i, p in enumerate(pitches)]
+    return {"staff_index": 0, "clef": clef, "key_signature": None,
+            "measures": [{"measure_index": 0, "clef": clef,
+                          "key_signature": None, "detections": dets}]}
+
+
+#: Twelve notes far above a bassoon — the documented failure, a missed clef
+#: defaulting to treble.
+def _bassoon_staff_reading_treble():
+    return _staff_dict(["C5", "D5", "E5", "F5", "G5", "A5",
+                        "B5", "C6", "D5", "E5", "F5", "G5"], "treble")
+
+
+def _staff_in_bass_register(clef):
+    return _staff_dict(["C3", "D3", "E3", "F3", "G3", "A3",
+                        "B2", "C3", "D3", "E3", "F3", "G2"], clef)
+
+
+def _short_staff():
+    return _staff_dict(["C5", "D5", "E5"], "treble")
+
+
+def _percussion_staff():
+    return _staff_dict(["C5"] * 12, "percussion")
 
 
 class _NoDetections:
@@ -278,3 +322,113 @@ class TestBlockedReadersAreRecorded:
         # header pass is not reached; disable the locator to reach it.
         evidence = _run(cell, header_cell=cell, locate_c_clefs=False)
         assert "read" in evidence["detector_header"]
+
+
+# ─── the clef proposal's fits table, at every exit ─────────────────────────
+
+
+class TestProposeClefRecordsItsFits:
+    """Four refusals and one proposal, and the `fits` table survives all five.
+
+    Every test here was run RED with the `_note` calls and the `trace["fits"]`
+    assignment removed.
+    """
+
+    def test_a_proposal_records_the_table_it_was_chosen_from(self):
+        staff = _bassoon_staff_reading_treble()
+        trace: dict = {}
+        proposal = propose_clef(staff, BASSOON, trace=trace)
+        assert proposal is not None
+        assert trace["exit"] == "proposed"
+        assert trace["fits"]["bass"] > 0.9 and trace["fits"]["treble"] < 0.2
+        assert trace["branch"] == "convention"
+        assert trace["n_noteheads"] == 12
+
+    def test_ALREADY_IN_EFFECT_is_named_and_carries_its_fits(self):
+        """The exit the survey had to reimplement the function to count — and
+        the one where the refusal is least interesting and the TABLE most so:
+        this staff measured a perfect fit and reported nothing."""
+        staff = _staff_in_bass_register(clef="bass")
+        trace: dict = {}
+        assert propose_clef(staff, BASSOON, trace=trace) is None
+        assert trace["exit"] == "already_in_effect"
+        assert trace["chosen"] == "bass"
+        assert trace["fits"]["bass"] == pytest.approx(1.0)
+        assert trace["current_fit"] == pytest.approx(1.0)
+
+    def test_too_few_noteheads_records_how_few(self):
+        trace: dict = {}
+        assert propose_clef(_short_staff(), BASSOON, trace=trace) is None
+        assert trace["exit"] == "too_few_noteheads"
+        assert trace["n_noteheads"] == 3
+        # ⚠️ The table is recorded even here. A register estimate not worth
+        # ACTING on is still the measurement that was made.
+        assert trace["fits"]
+
+    def test_an_unanchored_clef_is_the_one_exit_with_nothing_behind_it(self):
+        """Recording must not invent a table. With no anchor no shift can be
+        computed, so there is no `fits` to report and the record says so."""
+        trace: dict = {}
+        assert propose_clef(_percussion_staff(), BASSOON, trace=trace) is None
+        assert trace["exit"] == "no_clef_anchor"
+        assert "fits" not in trace
+        assert trace["current_clef"] == "percussion"
+
+    def test_NO_MARGIN_records_the_two_fits_that_were_too_close(self):
+        """The range-only branch: the convention is contradicted, so the best
+        fit has to win by MIN_FIT_MARGIN — and the margin it failed by is the
+        whole content of the refusal."""
+        cello = lookup("Vc.").instrument
+        staff = _staff_dict(["D4", "A3", "C3", "E3", "G3", "C3",
+                             "F4", "C3", "C4", "C3", "D3", "G4"], "treble")
+        trace: dict = {}
+        assert propose_clef(staff, cello, trace=trace) is None
+        assert trace["exit"] == "no_margin"
+        assert trace["branch"] == "range_only"
+        # treble and alto both place every note in range: nothing to choose.
+        assert trace["margin"] == pytest.approx(0.0)
+        assert trace["fits"]["treble"] == trace["fits"]["alto"]
+
+    def test_WOULD_WORSEN_FIT_is_recorded_apart_from_already_in_effect(self):
+        """A different finding about a staff, and the pass exits at the same
+        `return None`: the convention's clef was proposable and places FEWER
+        notes in range than the one already in effect."""
+        horn = lookup("Cor.").instrument
+        staff = _staff_dict(["B3", "G4", "A3", "G3", "B3", "B4",
+                             "A3", "D4", "E3", "C4", "F4", "D4"], "tenor")
+        trace: dict = {}
+        assert propose_clef(staff, horn, trace=trace) is None
+        assert trace["exit"] == "would_worsen_fit"
+        assert trace["chosen"] == "treble"
+        assert trace["chosen_fit"] < trace["current_fit"]
+
+    def test_the_recorded_exit_agrees_with_the_verdict(self):
+        """A record that could disagree with the decision would be worse than
+        none. `proposed` if and only if a proposal came back."""
+        for staff, instrument in (
+            (_bassoon_staff_reading_treble(), BASSOON),
+            (_staff_in_bass_register(clef="bass"), BASSOON),
+            (_short_staff(), BASSOON),
+            (_percussion_staff(), BASSOON),
+            (_staff_dict(["D4", "A3", "C3", "E3", "G3", "C3",
+                          "F4", "C3", "C4", "C3", "D3", "G4"], "treble"),
+             lookup("Vc.").instrument),
+            (_staff_dict(["B3", "G4", "A3", "G3", "B3", "B4",
+                          "A3", "D4", "E3", "C4", "F4", "D4"], "tenor"),
+             lookup("Cor.").instrument),
+        ):
+            trace: dict = {}
+            got = propose_clef(staff, instrument, trace=trace)
+            assert (trace["exit"] == "proposed") is (got is not None)
+
+    def test_the_caller_puts_the_record_on_the_staff_even_when_it_refuses(self):
+        """The wiring: a refusal writes nothing to `clef_proposal`, so before
+        this a declined staff carried no trace of the pass at all."""
+        staff = _staff_in_bass_register(clef="bass")
+        page = {"page_index": 0, "systems": [
+            {"system_index": 0, "staves": [staff]}]}
+        records = correct_clefs_from_instruments(
+            [page], {0: BASSOON}, {(0, 0, 0): 0}, apply=False)
+        assert records == []                      # it refused, as before
+        assert staff["clef_proposal_evidence"]["exit"] == "already_in_effect"
+        assert "clef_proposal" not in staff

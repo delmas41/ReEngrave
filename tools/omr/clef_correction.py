@@ -211,7 +211,8 @@ def range_fit(midis: list[int], lo: int, hi: int) -> float:
     return sum(1 for m in midis if lo <= m <= hi) / len(midis)
 
 
-def propose_clef(staff: dict[str, Any], instrument: Instrument) -> ClefProposal | None:
+def propose_clef(staff: dict[str, Any], instrument: Instrument,
+                 *, trace: dict[str, Any] | None = None) -> ClefProposal | None:
     """The clef this staff should carry, or None to leave it alone.
 
     Range fit alone is often not decisive, because a written range generous
@@ -226,9 +227,30 @@ def propose_clef(staff: dict[str, Any], instrument: Instrument) -> ClefProposal 
     case the clef in effect is `_default_clef_for_position` — a positional guess
     carrying no evidence. Replacing a guess with the instrument's own convention,
     checked against the register, is strictly better information.
+
+    `trace`, when given, is filled with the `fits` table and the exit this call
+    took. There are FIVE returns here and four of them are refusals, and every
+    one of them used to discard the whole table — so a staff this pass declined
+    left no record of what it had measured, and the additive-vs-gated survey had
+    to REIMPLEMENT this function to learn that ~50% of both populations exit at
+    `already_in_effect`. Recording only: nothing reads it back, and the caller
+    that passes no trace is unchanged.
     """
+    def _note(exit_: str, **fields) -> None:
+        if trace is not None:
+            trace["exit"] = exit_
+            trace.update(fields)
+
     current = staff.get("clef")
+    if trace is not None:
+        trace["current_clef"] = current
+        trace["instrument"] = instrument.name
+        trace["default_clef"] = instrument.default_clef
+        trace["written_range"] = list(instrument.written_range)
     if current not in _CLEF_ANCHORS:
+        # No anchor, so no shift can be computed and there is no table to
+        # record — the one refusal here that genuinely has nothing behind it.
+        _note("no_clef_anchor")
         return None
     lo, hi = instrument.written_range
 
@@ -241,28 +263,50 @@ def propose_clef(staff: dict[str, Any], instrument: Instrument) -> ClefProposal 
         midis = _midis_under(staff, delta)
         n = max(n, len(midis))
         fits[candidate] = range_fit(midis, lo, hi)
+    if trace is not None:
+        trace["fits"] = {k: round(v, 4) for k, v in fits.items()}
+        trace["n_noteheads"] = n
     if n < MIN_NOTEHEADS or not fits:
+        _note("too_few_noteheads" if fits else "no_candidate_clefs")
         return None
 
     current_fit = fits.get(current, 0.0)
     ranked = sorted(fits.items(), key=lambda kv: -kv[1])
     runner_up_fit = ranked[1][1] if len(ranked) > 1 else 0.0
+    if trace is not None:
+        trace["current_fit"] = round(current_fit, 4)
+        trace["best_fit_clef"] = ranked[0][0]
+        trace["best_fit"] = round(ranked[0][1], 4)
+        trace["runner_up_fit"] = round(runner_up_fit, 4)
 
     default = instrument.default_clef
     if fits.get(default, 0.0) >= MIN_FIT:
         chosen, chosen_fit = default, fits[default]
         margin = chosen_fit - current_fit
+        branch = "convention"
     else:
         # The instrument's convention is contradicted by the register, so fall
         # back to the best-fitting clef — and then demand a real margin, since
         # nothing but the range is speaking.
         chosen, chosen_fit = ranked[0]
         margin = chosen_fit - runner_up_fit
+        branch = "range_only"
         if chosen_fit < MIN_FIT or margin < MIN_FIT_MARGIN:
+            _note("no_margin", branch=branch, chosen=chosen,
+                  chosen_fit=round(chosen_fit, 4), margin=round(margin, 4))
             return None
+    if trace is not None:
+        trace["branch"] = branch
 
     # Never make the register worse, and never propose what is already in effect.
     if chosen == current or chosen_fit < current_fit:
+        # ⚠️ These two are recorded APART. "The instrument already reads this
+        # clef" and "the proposal would place fewer notes in range" are
+        # different findings about a staff, and the survey that had to
+        # reimplement this function was counting exactly the first of them.
+        _note("already_in_effect" if chosen == current else "would_worsen_fit",
+              branch=branch, chosen=chosen, chosen_fit=round(chosen_fit, 4),
+              margin=round(margin, 4))
         return None
 
     if chosen_fit >= HIGH_CONFIDENCE_FIT and (chosen_fit - current_fit) >= MIN_FIT_MARGIN:
@@ -271,6 +315,9 @@ def propose_clef(staff: dict[str, Any], instrument: Instrument) -> ClefProposal 
         label = "medium"
     else:
         label = "low"
+    _note("proposed", branch=branch, chosen=chosen,
+          chosen_fit=round(chosen_fit, 4), margin=round(margin, 4),
+          confidence_label=label)
     return ClefProposal(
         staff_index=staff.get("staff_index", -1), from_clef=current, to_clef=chosen,
         instrument=instrument.name, fit=round(chosen_fit, 3),
@@ -603,7 +650,14 @@ def correct_clefs_from_instruments(
                 instrument = instrument_by_slot.get(slot) if slot is not None else None
                 if instrument is None or instrument.unpitched:
                     continue
-                proposal = propose_clef(staff, instrument)
+                # The `fits` table, whatever this call decides. Four of
+                # `propose_clef`'s five returns are refusals and every one used
+                # to discard it, so a staff this pass declined left NO record of
+                # what it had measured — which is why the additive-vs-gated
+                # survey had to reimplement the function to count the exits.
+                trace: dict[str, Any] = {}
+                proposal = propose_clef(staff, instrument, trace=trace)
+                staff["clef_proposal_evidence"] = trace
                 if proposal is None:
                     continue
                 detected = clef_was_read(staff)
