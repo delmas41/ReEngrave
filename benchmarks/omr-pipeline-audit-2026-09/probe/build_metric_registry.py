@@ -919,6 +919,91 @@ _bad = [r["id"] for r in rows
 if _bad:
     raise SystemExit("mandatory_caption is set but empty on: %s" % _bad)
 
+# ─────────────────────────────────────────────────────────────────────────────
+# THE DETAIL-LEVEL AXIS. Applied here as a schema-wide invariant rather than at
+# nineteen call sites, because it is a property of HOW EVERY OMR-NED ROW WAS
+# SCORED, not a fact about any one of them.
+#
+# ⚠️ THIS IS THE ARM/ROW-SET STAMP APPLIED TO A THIRD AXIS NOBODY HAD NOTICED WAS
+# AN AXIS. Measured 2026-09-07: re-scoring the SAME prediction files under
+# `AllObjects|Voicing` removes ~29% of the 20-row scan gate's pooled edits.
+# musicdiff's own source says why — under `AllObjects` "(1) chords are IGNORED
+# … (2) notes are paired BY PITCH, so instead of pitch edits we get note
+# insertions and deletions, (3) we ignore voices completely".
+#
+# ⚠️⚠️ NOT A CEILING, AND THE REFUSAL IS THE IMPORTANT HALF. A ceiling bounds
+# what is ACHIEVABLE; this bounds what is ATTRIBUTABLE. Filing 29% of the scan
+# figure as a ceiling would license SUBTRACTING it — precisely the flattering
+# read the caption mechanism exists to prevent. NOTHING IMPROVED. A different
+# accounting of byte-identical output is not a gain.
+#
+# ⚠️ AND IT IS A WORSE-BEHAVED ERA BOUNDARY THAN A CORPUS CHANGE. A corpus change
+# is VISIBLE — `len(rows)` betrays it. A detail-level change re-reads the same
+# files and returns a plausible smaller number with every other field identical:
+# no row moved, no fixture moved, no commit needed. It is the discontinuity most
+# likely to be mistaken for progress, on a page whose only job is to say whether
+# we are improving. The CEILING would have to be re-measured too — the
+# structural floor is `entire staff / (truth + pred)` and all three terms move.
+DETAIL_LEVEL = "AllObjects"
+_DETAIL_TOKEN = "detail=" + DETAIL_LEVEL
+
+_CAPTION_SCAN = (
+    "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes "
+    "by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the "
+    "pooled edits — a different accounting of identical output, not an "
+    "improvement.")
+_CAPTION_ENGRAVED = (
+    "Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes "
+    "by pitch. On the scan gate, re-scoring the same files under `|Voicing` "
+    "removes ~29% of the pooled edits; the share on this family is UNMEASURED. "
+    "Accounting, not improvement.")
+
+
+def _is_omr_ned(r) -> bool:
+    return "OMR-NED" in (r.get("raw_metric") or "")
+
+
+for r in rows:
+    if not _is_omr_ned(r):
+        continue
+    # 1. the detail level goes into every key a comparison is made on, so a
+    #    cross-detail difference is refused MECHANICALLY rather than by review.
+    if r.get("era_key"):
+        r["era_key"] = "%s|%s" % (r["era_key"], _DETAIL_TOKEN)
+    ca = r.get("comparable_as") or {}
+    for k in ("time_series", "head_to_head"):
+        if ca.get(k):
+            ca[k] = "%s|%s" % (ca[k], _DETAIL_TOKEN)
+    r["comparable_as"] = ca
+    r["scored_at_detail_level"] = DETAIL_LEVEL
+    # 2. and the share that is configuration rides the one field a consumer may
+    #    not drop. APPENDED, never overwritten — a row may already have a
+    #    caption for an unrelated reason.
+    add = _CAPTION_SCAN if r.get("family") == "scan" else _CAPTION_ENGRAVED
+    r["mandatory_caption"] = (
+        "%s %s" % (r["mandatory_caption"], add) if r.get("mandatory_caption") else add)
+
+
+# EVERY OMR-NED ROW CARRIES ITS DETAIL LEVEL AND ITS CAPTION, or the build fails.
+_d_err = [r["id"] for r in rows if _is_omr_ned(r)
+          and (not r.get("era_key") or _DETAIL_TOKEN not in r["era_key"]
+               or not str(r.get("mandatory_caption") or "").strip())]
+if _d_err:
+    raise SystemExit(
+        "OMR-NED rows missing their detail-level stamp or their configuration "
+        "caption: %s\n"
+        "  A figure whose alignment model is not in its era key can be "
+        "differenced across a boundary that moves it ~29%%." % _d_err)
+
+# ONE DETAIL LEVEL PER REGISTRY. Two would mean the file silently mixes two
+# accountings of the same pipeline, which is the boundary this stamp exists to
+# make un-crossable.
+_levels = {r.get("scored_at_detail_level") for r in rows if _is_omr_ned(r)}
+if len(_levels) != 1:
+    raise SystemExit(
+        "the registry mixes musicdiff detail levels: %s. One registry, one "
+        "accounting." % sorted(_levels))
+
 # A ONE-SIDED HEAD-TO-HEAD IS WORSE THAN NONE: it looks satisfied, the pair has
 # one member, and a renderer that groups on the key finds nothing and falls back
 # to something weaker. This defect survived two review rounds because nothing
@@ -989,7 +1074,7 @@ if _missing:
 
 scoreable = [r for r in rows if r["scoreable"]]
 doc = {
-    "schema_version": "0.5.0",
+    "schema_version": "0.6.0",
     #: ⚠️ WHAT A CONSUMER MUST GATE ON. A renderer written against 0.2.0 read
     #: 0.3.0 without a word and silently dropped `mandatory_caption` and
     #: `ceiling.edition` — the two fields whose entire purpose is that they
@@ -997,9 +1082,15 @@ doc = {
     #: with a non-zero exit naming the version, and never forward-compat
     #: silently: an unknown minor may have added a field that MUST be shown.
     "consumer_contract": {
-        "current": "0.5.0",
-        "understood_by_a_conforming_consumer": ["0.5.0"],
+        "current": "0.6.0",
+        "understood_by_a_conforming_consumer": ["0.6.0"],
         "superseded": {
+            "0.5.0": "added `scored_at_detail_level`, put the musicdiff detail "
+                     "level inside every OMR-NED row's era_key and both "
+                     "`comparable_as` keys, and gave every OMR-NED row a "
+                     "mandatory_caption naming the configuration share; a 0.5.0 "
+                     "consumer can difference two figures across an alignment "
+                     "model that moves them ~29%",
             "0.4.0": "added `render_with` (symmetric, build-enforced) and "
                      "`evidence_prose`; a 0.4.0 consumer cannot know the ledger "
                      "screen/defect pair must render adjacently",
@@ -1012,11 +1103,64 @@ doc = {
                                "`understood_by_a_conforming_consumer`",
         "fields_a_consumer_may_never_drop": [
             "mandatory_caption", "ceiling.edition (via the edition clause)",
-            "render_with",
+            "render_with", "scored_at_detail_level",
         ],
+        "⚠️_arm_writer_protocol": {
+            "rule": "ONE musicdiff DETAIL LEVEL PER PROCESS. Never score two "
+                    "detail levels in one interpreter.",
+            "why": "musicdiff's `Visualization.create_header_names_once()` "
+                   "caches `_ORDERED_HEADER_NAMES` at CLASS level and returns "
+                   "early once populated. Score `AllObjects` first and the "
+                   "header is built without the three Voicing-only columns "
+                   "(`wrong pitch`, `pitch insert/delete`, `voice "
+                   "insert/delete`); a later `|Voicing` run in the same process "
+                   "then has nowhere to file those ops, and `get_omr_ed_dict` "
+                   "files unmappable ops under `wrong direction`.",
+            "measured": "on two gate rows, wrong pitch 204 + pitch ins/del 123 "
+                        "+ voice ins/del 94 = 421, and the phantom `wrong "
+                        "direction` delta is exactly 421. Order-dependent: "
+                        "AllObjects-first gives 39 columns and `wrong "
+                        "direction` 525; Voicing-first gives 42 columns and "
+                        "104. The overall OMR-NED is IDENTICAL either way — "
+                        "totals are safe, bucket attribution is not.",
+            "why_it_is_not_build_enforceable_here": "this builder never calls "
+                    "musicdiff, so it cannot observe the violation. What IS "
+                    "enforced above is the registry-side half: every OMR-NED "
+                    "row carries its detail level, and one registry holds "
+                    "exactly one. The process rule has to be honoured by "
+                    "whoever writes an arm.",
+            "the_existing_harness": "`tools/omr/omr_ned.py` satisfies the rule "
+                    "ONLY BY THE ACCIDENT of running each batch in a fresh "
+                    "subprocess. Nothing enforces it, and the next person to "
+                    "write an in-process arm gets a plausible wrong answer with "
+                    "no warning.",
+        },
     },
     "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/build_metric_registry.py",
     "round": 5,
+    "changes_since_0_5_0": [
+        "THE DETAIL-LEVEL AXIS. musicdiff's `AllObjects` IGNORES CHORDS and "
+        "pairs notes by pitch; re-scoring identical prediction files under "
+        "`AllObjects|Voicing` removes ~29% of the 20-row scan gate's pooled "
+        "edits. That is the arm/row-set stamp applied to a third axis nobody "
+        "had noticed was an axis, so the detail level now sits inside every "
+        "OMR-NED row's `era_key` and both `comparable_as` keys — a "
+        "cross-detail difference is refused mechanically, not by review.",
+        "⚠️ NOT FILED AS A CEILING, and the refusal is the important half. A "
+        "ceiling bounds what is ACHIEVABLE; this bounds what is ATTRIBUTABLE. "
+        "Filing 29% of the scan figure as a ceiling would license SUBTRACTING "
+        "it — precisely the flattering read the caption mechanism exists to "
+        "prevent. Nothing improved.",
+        "⚠️ A detail-level change is a WORSE-BEHAVED era boundary than a corpus "
+        "change: a corpus change is visible (`len(rows)` betrays it) while this "
+        "re-reads the same files and returns a plausible smaller number with "
+        "every other field identical. The ceiling would need re-measuring too — "
+        "the structural floor is `entire staff / (truth + pred)` and all three "
+        "terms move.",
+        "ADDED the arm-writer protocol to `consumer_contract`: ONE DETAIL LEVEL "
+        "PER PROCESS, with the mechanism, the arithmetic and the reason it "
+        "cannot be build-enforced from here.",
+    ],
     "changes_since_0_4_0": [
         "FIXED four defects the renderer review found in this file: doubled "
         "`%` in four `why_not` strings (a format artefact — fixed at SOURCE, "

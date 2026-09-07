@@ -1527,3 +1527,198 @@ a regression.
 
 **Frozen at v0.5.0. Registry byte-stable across two builds; ten probes green;
 nothing outside this directory touched.**
+
+---
+
+# ROUND 7 — the `Voicing` detail level: an assessment, and a correction to the arm
+
+*Assessment only. No harness change, no recorded figure changed, no registry
+change. Artefact: `voicing-detail-assessment.json`.*
+
+## V1. What the flag actually changes — and it is not a detail dial
+
+musicdiff's own source (`detaillevel.py:98`, `visualization.py:3483`):
+
+> By default we ignore which voice and chord each note is in… when Voicing is
+> not selected, **(1) chords are IGNORED**, so we will never see chords with
+> inserted or deleted pitches, **(2) notes are paired BY PITCH**, so instead of
+> pitch edits we get note insertions and deletions, and (3) we ignore voices
+> completely.
+
+So `AllObjects` is **not a narrower view of the same comparison — it is a
+different and lossier one.** It changes the alignment model from flat
+set-matching to voice-stream matching, and it un-ignores chords.
+
+Reproduced on two gate rows with byte-identical predictions:
+**0.8517 → 0.7056**, bucketed edits 4,714 → 3,762 (−20%). ⚠️ Note the
+**denominator moves too** (5,535 → 5,332), so the ratio change is not purely a
+numerator effect.
+
+## V2. ⚠️ CORRECTION — the `wrong direction` artefact is not a property of the arm
+
+It was excluded as an artefact of `AllObjects | Voicing`. **It is an artefact of
+running two detail levels in one process.**
+
+`Visualization.create_header_names_once()` returns early if
+`_ORDERED_HEADER_NAMES` is already populated — a **process-global cache**. Run
+`AllObjects` first and the header is built *without* the three Voicing-only
+columns; the later Voicing run then has nowhere to file those ops, and
+`get_omr_ed_dict` files unmappable ops under `wrong direction` — a musicdiff
+behaviour CLAUDE.md already records.
+
+**Proved two ways:**
+
+| | |
+|---|---|
+| arithmetic | `wrong pitch` 204 + `pitch insert/delete` 123 + `voice insert/delete` 94 = **421**, and the phantom `wrong direction` delta on the same rows is 525 − 104 = **421**. Exactly. |
+| order-dependence | `AllObjects` first → Voicing arm reports `wrong direction` **525**, `wrong pitch` **absent**, 39 columns. `Voicing` first → **104**, `wrong pitch` **204**, 42 columns. |
+
+**The overall OMR-NED is identical in both orders** (0.851671 / 0.705551). Totals
+are safe; only **bucket attribution** is corrupted.
+
+So the arm is **more** usable than reported, not less. But:
+
+⚠️ **One reported result is suspect and should not stand until re-derived.** The
+duration-versus-pitch ratio said to move **33.8:1 → 11.8:1** is computed from
+pitch mass. Under a contaminated run that mass reads **zero** and is misfiled
+into `wrong direction`. The pooled −29% and the `entire measure` / `wrong note`
+deltas are safe — I verified those are identical in contaminated and clean runs —
+but the ratio must come from one-detail-per-process runs before it is relied on.
+**One detail level per process is now a protocol requirement**, and the existing
+harness satisfies it only by the accident of subprocess isolation.
+
+## V3. Better, or merely different? — **Better, and not free**
+
+**Better**, on musicdiff's own account, and the standing caution does cut this
+way: ignoring chords entirely is a large omission on orchestral music (divisi,
+double stops, condensed staves), and forcing every pitch error to cost *two*
+edits instead of one inflates `wrong note` and pushes bars past the point where
+whole-bar replacement is cheaper than elementwise pairing — which is exactly what
+feeds `entire measure insert/delete`, the bucket that falls 76%.
+
+**Not free**, in two ways that must travel with any adoption:
+
+1. The **denominator moves**, so the improvement is partly dilution-shaped and
+   needs the same edits-vs-ratio guard as any other.
+2. ⚠️ **The structural ceiling would have to be re-measured.** My floor is
+   `entire staff insert/delete ÷ (truth + pred symbols)` — and all three terms
+   change under Voicing (1,514 → 1,479 entire-staff on these two rows alone). So
+   adopting the flag invalidates the **ceiling** as well as the metric, and every
+   `% of achievable` derived from it.
+
+## V4. Is it a new era? — Yes, and a worse-behaved one than a corpus change
+
+A corpus change is **visible**: the row set differs and `len(rows)` betrays it.
+A detail-level change **re-reads the same files** and returns a plausible smaller
+number with every other field identical — no row moved, no fixture moved, no
+commit needed. **It is the discontinuity most likely to be mistaken for
+progress**, and it would land on a page whose whole purpose is to say whether we
+are improving.
+
+**Recommendation, for Sean and not for an agent:** do not switch the standing
+gate. Run one era reporting **both columns**, with the detail level inside the
+era key so the two cannot be differenced, and decide on the pair rather than on
+the better-looking number. The cost of that is one extra scoring pass over
+existing predictions — cheap, because nothing needs re-transcribing.
+
+## V5. Where it belongs in the registry
+
+**Not a row** — it measures the accounting, not the pipeline.
+
+**Not a ceiling kind** — and this is the important refusal. A ceiling bounds what
+is *achievable*; this bounds what is *attributable*. Filing 29% of the scan
+figure as a "ceiling" would license subtracting it, which is precisely the
+flattering read the caption mechanism exists to prevent. **Nothing improved.**
+
+**It belongs in two places, both already built:**
+
+1. **The detail level inside `era_key`** — so the comparability rule refuses a
+   cross-detail difference *mechanically* rather than by review. This is the same
+   fix as the arm/row-set stamps, applied to a third axis nobody had noticed was
+   an axis.
+2. **A `mandatory_caption` on every OMR-NED row** stating what share of the
+   figure is configuration. A pooled number that is 29% accounting is exactly
+   what this unit was commissioned to make legible, and `mandatory_caption` is
+   the one field a consumer may not drop.
+
+I have **not** applied either — the registry is frozen at v0.5.0 and I said
+nothing would move it without telling you. Both are small; say the word and I
+will make them and re-freeze at v0.6.0.
+
+
+---
+
+# ROUND 8 — the detail-level axis, stamped and captioned (**v0.6.0**)
+
+Both authorised changes made, plus the protocol the diagnosis produced.
+
+## W1. The detail level is now inside every key a comparison is made on
+
+Applied as a **schema-wide post-pass** over the 19 OMR-NED rows rather than at
+nineteen call sites, because it is a property of *how every one of them was
+scored*, not a fact about any one. `detail=AllObjects` now appears in each row's
+`era_key` **and in both `comparable_as` keys**, and each row carries
+`scored_at_detail_level`.
+
+> **This is the arm/row-set stamp applied to a third axis nobody had noticed was
+> an axis.**
+
+Both head-to-head pairs still resolve two-sided (the token is appended to both
+sides from one constant, so they cannot drift).
+
+## W2. ⚠️ NOT A CEILING KIND — and the refusal is the important half
+
+> A ceiling bounds what is **achievable**; this bounds what is **attributable**.
+> Filing 29% of the scan figure as a ceiling would license **subtracting** it —
+> precisely the flattering read the caption mechanism exists to prevent.
+> **Nothing improved.**
+
+That paragraph is in the registry itself, at the post-pass, where the next person
+meets it — not only here.
+
+## W3. The era note, stated where it will bite
+
+**A corpus change is visible — `len(rows)` betrays it. A detail-level change
+re-reads the same files and returns a plausible smaller number with every other
+field identical.** No row moved, no fixture moved, no commit needed. It is the
+discontinuity most likely to be mistaken for progress, landing on a page whose
+only job is to say whether we are improving. **And the ceiling would have to be
+re-measured too**, since the structural floor is
+`entire staff ÷ (truth + pred)` and all three terms move.
+
+## W4. Captions on all 19 OMR-NED rows, family-aware
+
+Scan rows state the measured share; **engraved rows say it is UNMEASURED on that
+family**, because −29% was measured on the scan gate and I will not put a
+scan-derived number on an engraved row. Existing captions are **appended to,
+never overwritten** — `scan:omr_ned:same_10_rows_as_audiveris` keeps its own.
+
+## W5. The protocol, and what a build guard can and cannot express
+
+**ONE musicdiff DETAIL LEVEL PER PROCESS.** `create_header_names_once()` caches
+`_ORDERED_HEADER_NAMES` at class level and returns early once populated, so a
+second detail level in one interpreter has nowhere to file the Voicing-only ops
+and `get_omr_ed_dict` puts them under `wrong direction`.
+
+**What a build guard here CAN express** (both mutation-tested red):
+
+| guard | mutation | result |
+|---|---|---|
+| every OMR-NED row stamped + captioned | strip one `era_key`'s token | exit 1, names the row |
+| one registry, one accounting | set a second `scored_at_detail_level` | exit 1, names both levels |
+
+**What it cannot:** this builder never calls musicdiff, so it cannot observe an
+in-process violation. That half is prose in
+`consumer_contract.⚠️_arm_writer_protocol`, with the mechanism, the arithmetic
+(204 + 123 + 94 = 421) and the note that **the existing harness satisfies the
+rule only by the accident of subprocess isolation**.
+
+**Seven build-time guards now, every one watched failing.**
+
+## W6. Frozen
+
+**v0.6.0 — 56 rows, 40 scoreable, 23 captions (19 of them the new ones).**
+Registry byte-stable across two builds; ten probes green; the v2 renderer
+correctly **refuses v0.6.0 at exit 3** (it understands 0.5.0), which is the
+version gate doing its job on my own change. Nothing outside this directory
+touched.

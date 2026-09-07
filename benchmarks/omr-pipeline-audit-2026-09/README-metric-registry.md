@@ -34,12 +34,12 @@ bridge, seconds, no pipeline. It reads truth fixtures from the `reconciliation`
 worktree (`fixtures/` is gitignored) and **refuses to run** unless every
 fixture's sha256 matches the canonical arm's.
 
-**v0.5.0 — FROZEN, 2026-09-07. 56 rows, 40 scoreable, 16 not.** Nothing may move it without telling the coordinator: one schema
+**v0.6.0 — FROZEN, 2026-09-07. 56 rows, 40 scoreable, 16 not.** Nothing may move it without telling the coordinator: one schema
 shifting under one builder is how the first renderer failed.
 
 ### What a conforming consumer must do (`consumer_contract`)
 
-1. **Gate on `schema_version`.** Understood: `["0.5.0"]`. Anything else → refuse
+1. **Gate on `schema_version`.** Understood: `["0.6.0"]`. Anything else → refuse
    with a non-zero exit naming the version. **Never forward-compat silently** —
    a v0.2.0 renderer read v0.3.0 without a word and dropped the two fields whose
    whole purpose is that they cannot be dropped.
@@ -50,10 +50,22 @@ shifting under one builder is how the first renderer failed.
    `ceiling.kind`. Every key now has exactly two sides, enforced at build time.
 4. **`ceiling.edition` rides the caption**, so a publisher-scoped ceiling cannot
    be quoted without its publisher.
-5. **Honour `render_with`** (the ledger screen/defect pair). Rows naming each
+5. **Never drop `scored_at_detail_level`,** and never difference two OMR-NED
+   figures whose `era_key` detail token differs. All 19 OMR-NED rows carry a
+   caption naming the share of the figure that is metric configuration.
+6. **Honour `render_with`** (the ledger screen/defect pair). Rows naming each
    other must render **adjacently, in one block, with no scoreable row between**.
    Cannot place them together → render **neither**. It is symmetric and
    build-enforced, and it is in `fields_a_consumer_may_never_drop`.
+
+⚠️ **ARM-WRITER PROTOCOL — ONE musicdiff DETAIL LEVEL PER PROCESS.**
+`Visualization.create_header_names_once()` caches at class level, so a second
+detail level in one interpreter silently files its unmappable ops under `wrong
+direction`. The existing harness satisfies this **only by the accident of
+subprocess isolation** — nothing enforces it, and the next person to write an
+in-process arm gets a plausible wrong answer with no warning. The registry-side
+half *is* enforced (every OMR-NED row stamped; one registry, one accounting);
+the process half is in `consumer_contract.⚠️_arm_writer_protocol`.
 
 ⚠️ **A `ceiling.evidence` entry is now checked for EXISTENCE at build time**, so
 the claim that a registry naming a missing file fails the build is true as of
