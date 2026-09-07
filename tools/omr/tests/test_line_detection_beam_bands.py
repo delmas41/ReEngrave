@@ -317,3 +317,87 @@ class TestTheCountIsUnchanged:
             x, y, w, h = _bbox(labels, 1)
             assert (_stacked_bar_count(labels, 1, x, y, w, h)
                     == _stacked_bar_bands(labels, 1, x, y, w, h)[0] == n)
+
+
+class TestTheCallerActuallyConsumesTheBands:
+    """⚠️ WIRING. The whole value of this change is that `detect_beams` USES
+    the bands; a correct `_stacked_bar_bands` that nothing consumes is worth
+    exactly nothing.
+
+    The first version of this file tested the FUNCTION heavily and the CALLER
+    barely: neutering `_stacked_bar_bands` reddened 6 of 14 tests, but
+    neutering only the caller — one `bands = None` inside `detect_beams` —
+    reddened exactly ONE. That is thinner than this project's own standard for
+    precisely this shape; `test_export.py` carries a source-level anti-drift
+    test because a signal computed and then dropped on the way out is the
+    recurring bug here, and it is the bug this change repairs. These two close
+    that gap from both sides.
+    """
+
+    def test_the_placement_branch_reads_the_measured_bands(self):
+        """ANTI-DRIFT, in the shape `test_export.py` uses.
+
+        Asserts at SOURCE level that the emission site still has a branch fed
+        by `bands`, so a future edit collapsing it back to the even division
+        fails here even if some fixture happens to stop exercising it.
+        """
+        import inspect
+
+        import tools.omr.line_detection as ld
+
+        src = inspect.getsource(ld.detect_beams).splitlines()
+        sites = [i for i, line in enumerate(src)
+                 if "_stacked_bar_bands(" in line]
+        assert len(sites) == 1, (
+            f"expected exactly one call to _stacked_bar_bands, found {len(sites)}")
+        body = "\n".join(src[sites[0]:sites[0] + 12])
+        assert "if bands is None:" in body, (
+            "the emission site no longer branches on whether the mask supplied "
+            "bands — the even division is being used unconditionally again")
+        assert "for top, bottom in bands" in body, (
+            "the emission site no longer PLACES bars on the measured bands; "
+            "computing them and not consuming them is the bug this fixes")
+
+    def test_a_second_stack_geometry_also_lands_on_its_ink(self):
+        """A different slope and gap from the fixture above.
+
+        One end-to-end case can pass because its numbers happen to coincide;
+        two geometries disagreeing with the even division in DIFFERENT amounts
+        cannot both coincide.
+        """
+        img = np.full((1100, 900), 255, dtype=np.uint8)
+        for x in range(195, 706):
+            rise = (x - 195) // 5          # 1-in-5; the other fixture is 1-in-4
+            img[200 + rise:236 + rise, x] = 0          # bars 36 px thick, not 48
+            img[275 + rise:311 + rise, x] = 0          # 75 px apart, not 60
+            if x < 430:
+                img[236 + rise:275 + rise, x] = 0      # the joining bleed
+        img[200:560, 195:205] = 0
+        end = (705 - 195) // 5
+        img[200 + end:560 + end, 695:705] = 0
+        cell = MeasureCell(
+            page_index=0, system_index=0, staff_index=0, measure_index=0,
+            image=img, image_no_staff=img.copy(), bbox_page_px=(0, 0, 900, 1100),
+            staff_line_ys_canonical=list(LINE_YS), upscale_factor=1.0,
+        )
+        beams = detect_beams(cell)
+        assert len(beams) == 2, f"expected a two-bar stack, got {len(beams)}"
+
+        ink = _binary_ink(cell.image_no_staff)
+        opened = cv2.morphologyEx(
+            ink, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (150, 1)))
+        num, labels, stats, _ = cv2.connectedComponentsWithStats(opened, 8)
+        wide = [i for i in range(1, num) if stats[i][2] >= 300]
+        assert len(wide) == 1, "fixture must deliver ONE component"
+        x, y, w, h = (int(v) for v in stats[wide[0]][:4])
+        n_bars, bands = _stacked_bar_bands(labels, wide[0], x, y, w, h)
+        assert n_bars == 2 and bands is not None
+
+        placed = sorted((b.y_canonical, b.height_canonical) for b in beams)
+        measured = sorted((int(y + t), int(b - t + 1)) for t, b in bands)
+        sub_h = max(1, h // 2)
+        fabricated = sorted((int(y + k * (h / 2)), int(sub_h)) for k in range(2))
+        assert placed == measured, "bars were not placed on the measured bands"
+        assert placed != fabricated, (
+            "this geometry no longer distinguishes the two placements, so the "
+            "test above it can pass vacuously")
