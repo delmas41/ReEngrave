@@ -1,0 +1,211 @@
+{
+  "pooled_ed_delta": 76,
+  "total_structural_delta": 61,
+  "total_anchor_delta": 37,
+  "total_structural_delta_no_brahms_p2": 35,
+  "total_anchor_delta_no_brahms_p2": 26,
+  "anchor_delta_on_corresponding_rows": 26,
+  "anchor_delta_on_refused_rows": 11,
+  "rows": [
+    {
+      "row": "bach-brandenburg3-mvt1-468678-p1.",
+      "refused_join": false,
+      "ed_delta": 0,
+      "structural_delta": 0,
+      "anchor_delta": 0,
+      "truth_wedges": 0,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 0
+    },
+    {
+      "row": "beethoven-sym5-mvt1-575951-p1.",
+      "refused_join": false,
+      "ed_delta": 0,
+      "structural_delta": 0,
+      "anchor_delta": 0,
+      "truth_wedges": 0,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 0
+    },
+    {
+      "row": "beethoven-sym5-mvt1-575951-p2.",
+      "refused_join": false,
+      "ed_delta": 0,
+      "structural_delta": 0,
+      "anchor_delta": 0,
+      "truth_wedges": 0,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 0
+    },
+    {
+      "row": "beethoven-sym5-mvt1-575951-p3.",
+      "refused_join": true,
+      "ed_delta": 0,
+      "structural_delta": 0,
+      "anchor_delta": 0,
+      "truth_wedges": 4,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 0
+    },
+    {
+      "row": "beethoven-sym5-mvt1-575951-p4.",
+      "refused_join": false,
+      "ed_delta": 0,
+      "structural_delta": 0,
+      "anchor_delta": 0,
+      "truth_wedges": 0,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 0
+    },
+    {
+      "row": "beethoven-sym5-mvt1-984073-p1.",
+      "refused_join": false,
+      "ed_delta": 0,
+      "structural_delta": 0,
+      "anchor_delta": 0,
+      "truth_wedges": 0,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 0
+    },
+    {
+      "row": "beethoven-sym5-mvt1-984073-p2.",
+      "refused_join": false,
+      "ed_delta": 0,
+      "structural_delta": 0,
+      "anchor_delta": 0,
+      "truth_wedges": 0,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 0
+    },
+    {
+      "row": "beethoven-sym5-mvt1-984073-p3.",
+      "refused_join": true,
+      "ed_delta": 0,
+      "structural_delta": 0,
+      "anchor_delta": 0,
+      "truth_wedges": 4,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 0
+    },
+    {
+      "row": "beethoven-sym5-mvt1-984073-p4.",
+      "refused_join": false,
+      "ed_delta": 1,
+      "structural_delta": 1,
+      "anchor_delta": 0,
+      "truth_wedges": 0,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 2
+    },
+    {
+      "row": "brahms-sym1-mvt1-317803-p1.",
+      "refused_join": false,
+      "ed_delta": 2,
+      "structural_delta": 0,
+      "anchor_delta": 2,
+      "truth_wedges": 0,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 4
+    },
+    {
+      "row": "brahms-sym1-mvt1-317803-p2.",
+      "refused_join": true,
+      "ed_delta": 37,
+      "structural_delta": 26,
+      "anchor_delta": 11,
+      "truth_wedges": 136,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 78
+    },
+    {
+      "row": "brahms-sym1-mvt1-317803-p3.",
+      "refused_join": false,
+      "ed_delta": 4,
+      "structural_delta": 2,
+      "anchor_delta": 2,
+      "truth_wedges": 64,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 8
+    },
+    {
+      "row": "brahms-sym1-mvt1-317803-p4.",
+      "refused_join": false,
+      "ed_delta": 1,
+      "structural_delta": 0,
+      "anchor_delta": 1,
+      "truth_wedges": 2,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 2
+    },
+    {
+      "row": "dvorak-sym9-mvt1-405834-p5.",
+      "refused_join": false,
+      "ed_delta": 1,
+      "structural_delta": 0,
+      "anchor_delta": 1,
+      "truth_wedges": 14,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 8
+    },
+    {
+      "row": "dvorak-sym9-mvt1-405834-p6.",
+      "refused_join": false,
+      "ed_delta": -1,
+      "structural_delta": 0,
+      "anchor_delta": -1,
+      "truth_wedges": 8,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 8
+    },
+    {
+      "row": "dvorak-sym9-mvt1-405834-p7.",
+      "refused_join": false,
+      "ed_delta": 14,
+      "structural_delta": 3,
+      "anchor_delta": 11,
+      "truth_wedges": 66,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 46
+    },
+    {
+      "row": "mahler-sym5-mvt1-local-p2.",
+      "refused_join": false,
+      "ed_delta": 4,
+      "structural_delta": 2,
+      "anchor_delta": 2,
+      "truth_wedges": 6,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 8
+    },
+    {
+      "row": "mahler-sym5-mvt1-local-p3.",
+      "refused_join": false,
+      "ed_delta": 2,
+      "structural_delta": 21,
+      "anchor_delta": 3,
+      "truth_wedges": 34,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 6
+    },
+    {
+      "row": "mahler-sym5-mvt1-local-p4.",
+      "refused_join": false,
+      "ed_delta": 7,
+      "structural_delta": 6,
+      "anchor_delta": 1,
+      "truth_wedges": 31,
+      "off_pred_wedges": 4,
+      "on_pred_wedges": 18
+    },
+    {
+      "row": "mahler-sym5-mvt1-local-p5.",
+      "refused_join": false,
+      "ed_delta": 4,
+      "structural_delta": 0,
+      "anchor_delta": 4,
+      "truth_wedges": 16,
+      "off_pred_wedges": 0,
+      "on_pred_wedges": 8
+    }
+  ]
+}
