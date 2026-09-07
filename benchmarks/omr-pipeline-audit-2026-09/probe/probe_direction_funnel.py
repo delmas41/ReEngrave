@@ -1,8 +1,13 @@
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS  # fail-loud
+chdir_root()
+
 import json, glob, os
 from collections import Counter
 tot=Counter(); rejected=[]; conflicts=[]; readers=Counter(); bywin=Counter(); eng=Counter()
 rows=0
-for f in sorted(glob.glob('benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json')):
+for f in sorted(fixtures(SCAN, expect_at_least=11)):
     d=json.load(open(f)); dt=d.get('direction_text') or {}
     if not dt.get('available'): continue
     rows+=1

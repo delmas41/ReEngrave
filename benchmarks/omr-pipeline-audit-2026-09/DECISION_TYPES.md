@@ -621,7 +621,7 @@ confidence is still free and would let anyone re-check that.
 | **B3** | `_dedupe:2645` **rank 0 — distance to band** | **tie-break promoted to the whole rule** | OPINION, a documented coin flip (5-62 px) | **4,255/4,521 = 94.1%**; 82% in categories no higher tier can reach | n/a / both | **the object**; plus the margin, both confidences, the class disagreement (436), and the band distances themselves | **IRREVERSIBLE-BY-DELETION** | 550 parked (12.2%) behind a default-off flag ⇒ **0 as shipped** | **no** — `OMR_CONTEST_DUMP` is off, and omits the distances even when on |
 | **B4** | `_drop_unladdered_noteheads:3070` | **hard confidence threshold** 0.65 | OPINION (a detector score) | **351 scan / 28 engraved noteheads deleted** | **engraved / overwhelmingly scan** | the object, its confidence, its rung count, its band distance | IRREVERSIBLE-BY-DELETION | none | **no** — an integer counter only, and `n_unladdered_noteheads_dropped` is SERIALISED-ONLY |
 | B5 | `_drop_clipped_notehead_fragments:539` | hard gate on an empty gap | **CONSTRAINT** | 101 scan / 46 engraved | engraved 3-work / both | the object; its confidence | IRREVERSIBLE-BY-DELETION | none | **no** |
-| B6 | the doomed-set application loop `:2807-2811` | greedy, strongest-first | CONSTRAINT (avoids the non-transitive-IoU cluster fault, measured 0.2275 vs 0.2263) | every verdict | n/a | which verdicts were *skipped* because a side was already doomed | REVERSIBLE in principle (nothing new is decided) | n/a | no |
+| B6 | the doomed-set application loop `:2810-2814` | greedy, strongest-first | CONSTRAINT (avoids the non-transitive-IoU cluster fault, measured 0.2275 vs 0.2263) | every verdict | n/a | which verdicts were *skipped* because a side was already doomed | REVERSIBLE in principle (nothing new is decided) | n/a | no |
 
 **Fields 8–11 for B3 and B4.**
 
@@ -973,8 +973,16 @@ winning rung: surya 19, tesseract 1
 ```
 
 **Zero conflicts. The decision has never had to choose.** Both rungs ran on all
-11 pages (`readers: [surya, tesseract]` on every one), both contribute accepted
-readings, and on no crop did they produce two *different* accepted readings.
+11 pages (`readers: [surya, tesseract]` on every one) and both contribute
+accepted readings — verified not to be a short-circuit artefact, since
+`read_directions` reads every crop with every rung by design (`:777-786`).
+⚠️ **But this is NOT evidence that the rungs AGREED.** A conflict is recorded
+only when *both* rungs produce an ACCEPTED reading and the two differ. Where one
+rung is accepted and the other's reading is refused, the refusal is not counted
+and — by the `:798` asymmetry below — not even recorded. So the honest statement
+is that **the two rungs never both spoke**, not that they concurred. The
+demotion stands either way: a decision that has never fired cannot be ranked on
+accuracy.
 
 ⚠️ **This is my own round-1 nomination failing this project's reach-before-accuracy
 rule, and I am reporting it that way.** A decision with zero measured firings is
@@ -1042,7 +1050,7 @@ x1  'Basson Cresc.'    matched=[cresc]   unknown=[basson]
 canonical *the-margin-and-the-runner-up-destroyed* shape, here destroying a
 complete legal direction.
 
-**Six of the ten fail on one token: `f`.** And `f` is unmatched *by design*, from
+**Seven of the ten fail on one token: `f`** (an eighth has `f` among two unknowns). And `f` is unmatched *by design*, from
 this module's own docstring: *"It does not touch the letter dynamics … The
 lexicon deliberately omits them so the two readers cannot both claim one mark."*
 Meanwhile `_is_inside_a_word` (`:282`) **deliberately does not blank** a dynamic
@@ -1098,7 +1106,7 @@ Its decision surface, catalogued:
 | `_lines_with_boxes:48` → `_lines:74` | projection | — | ⚠️ **`x_left` is computed at `:69` and thrown away one line later** — `_lines` returns `(text, y, h)`. The margin path is therefore x-blind, the same fault the map records for the *text-layer* reader (`staff_labels.py:189`) and does not record here | IRREVERSIBLE-BY-DELETION | no |
 | `_assign:89` runaway-height cap | hard gate on a **measured 22× empty gap** (`_RUNAWAY_HEIGHT_FRACTION = 0.5`; the two known runaways at 1.04× the span, Boléro's 17 correct blocks at 0.015–0.047×) | **CONSTRAINT-shaped** — a block cannot be one staff's label and the whole crop | **the dropped block is not counted** | IRREVERSIBLE-BY-DELETION | **no** |
 | `_assign:107-113` nearest-tick | **raw argmax + tolerance gate** | OPINION | the distance to the winning tick is computed, used for the gate and the join order, then discarded; the runner-up tick is never formed | IRREVERSIBLE-BY-DELETION | **no** |
-| `read_staff_labels_surya:384` | projection | — | `confidence=hit.confidence if hit else "none"` — the only "confidence" a Surya label ever carries is the **lexicon's** high/medium/low. The OCR contributes none, exactly as `direction_text`'s `Reader` does not | IRREVERSIBLE-BY-QUANTISATION | no |
+| `read_staff_labels_surya:344`, the `confidence=` assignment at `:384` | projection | — | `confidence=hit.confidence if hit else "none"` — the only "confidence" a Surya label ever carries is the **lexicon's** high/medium/low. The OCR contributes none, exactly as `direction_text`'s `Reader` does not | IRREVERSIBLE-BY-QUANTISATION | no |
 | `available():121` | abstention | CONSTRAINT | correct, and the documented degradation | n/a | yes (via the ladder's counts) |
 
 ⚠️ **The consequence for `_assign` is a shared failure signature.** A page where
@@ -1193,8 +1201,8 @@ export-gaps document's own stated trigger (*"the same probe re-prices it in
 minutes"*).
 
 ⚠️ **A null worth stating:** the bare `30` pixel floor in `max(avg_nh_h * 3, 30)`
-looks like the unit fault the map flags elsewhere (`_build_measure_cell:1060`'s
-10 px) and **never binds** — median `avg_nh_h` is 30.5 px on scans and 43.5 on
+looks like the unit fault the map flags elsewhere (`measure_extractor.py:1107`'s 10 px —
+the decision map cites it as `_build_measure_cell:1060`, which has drifted) and **never binds** — median `avg_nh_h` is 30.5 px on scans and 43.5 on
 engravings, so `3×` is 91 / 130. It is inert on both corpora, and that is a
 measurement rather than an assumption.
 
@@ -1283,18 +1291,18 @@ nomination, and I apply it evenhandedly.
 
 ### R4.1 ⚠️ THE LIVE ASYMMETRY IS ONE LAYER UP, AND IT IS THE SHARPEST RESULT OF BOTH ROUNDS
 
-Both the clef and the meter are overwritten **per cell, unconditionally, with no
-floor** — the clef at `:1604`, the meter at `:1634`
-(`new_time_sig = parse_time_signature(dets); if ... : active_time_sig = ...`).
-Both then carry forward onto every later measure of the staff. **The same fault,
-in the same function, ten lines apart.**
+The clef and the meter are overwritten **per cell, unconditionally, with no
+floor** — the clef at `:1604`, the meter at `:1634-1636`. Both then carry
+forward onto every later measure of the staff. ⚠️ **And there is a THIRD, the
+key signature at `:1628-1631`, sitting physically between them — see §R8.1.**
+All three overwrite sites fall inside one thirty-line span of one function.
 
 They differ in what runs afterwards:
 
 | | the page-scope guard | default | measured on 11 scan pages |
 |---|---|---|--:|
-| **METER** | `rhythm.drop_uncorroborated_meter_changes:597`, called from `backfill_page_time_signatures` at `rhythm.py:689` — a mid-staff change survives only if `max(2, 0.5 × n_staves)` staves see the same change at the same measure index | **ON** | **21 changes reverted; 0 surviving mid-staff meter changes on 193 staves** |
-| **CLEF** | `clef_correction.veto_implausible_clef_changes:460` — a 2-triple `(instrument, from, to)` allowlist, identity-gated to `label` | **OFF** (`OMR_INSTRUMENT_CLEF_DEFAULT`) | **0 reverted; 11 surviving mid-staff clef changes on 193 staves** (round 1 §3.2) |
+| **METER** | `rhythm.drop_uncorroborated_meter_changes:597`, called from `backfill_page_time_signatures` at `rhythm.py:689` — a mid-staff change survives only if `max(2, 0.5 × n_staves)` staves see the same change at the same measure index | **ON** | ⚠️ **CORRECTED IN ROUND 3 (§R8.1): 21 is MEASURES reverted, not changes.** The comparable number is **0 surviving mid-staff meter changes on 193 staves** |
+| **CLEF** | `clef_correction.veto_implausible_clef_changes:460` — a 2-triple `(instrument, from, to)` allowlist, identity-gated to `label` | **OFF** (`OMR_INSTRUMENT_CLEF_DEFAULT`) | **11 surviving mid-staff clef changes on 193 staves** (round 1 §3.2) |
 
 `drop_uncorroborated_meter_changes`'s docstring describes the *identical*
 failure this audit found for the clef — *"a single false reading rewrites the
@@ -1359,11 +1367,11 @@ shadow of the guard working correctly.
 
 | # | conclusion | evidence | what would settle it | harness can see it? |
 |--:|---|---|---|---|
-| **R1** | **The clef and the meter suffer the identical unfloored per-cell overwrite, and only the meter has a corroboration guard: 21 meter changes reverted and 0 surviving, against 0 reverted and 11 surviving clef changes, on the same 11 scan pages** | §R4.1; `rhythm.py:597`; `clef_correction.py:460`; round 1 §3.2 | this *is* round-1 conclusion 1's A/B, now with a precedent and a control. ⚠️ The meter's cross-staff witness does NOT transplant (§R4.2) | **YES** — a clef restates pitches; note recall moves |
+| **R1** | ⚠️ **SUPERSEDED BY §R8.1 — there are THREE instances, not two, and the 21 was a unit error.** The corrected form: clef 11 surviving flips, key signature 7, meter 0, on the same 193 scan staves | §R4.1; `rhythm.py:597`; `clef_correction.py:460`; round 1 §3.2 | this *is* round-1 conclusion 1's A/B, now with a precedent and a control. ⚠️ The meter's cross-staff witness does NOT transplant (§R4.2) | **YES** — a clef restates pitches; note recall moves |
 | **R2** | **79.6% of scan tie detections never find two anchors (1,161 of 1,459) and nothing counts them** — the anchor half the arc-reclass work names as the open one | §R2.1, faithful replay | count them and split the three causes (spurious / missed head / head deleted by the ownership rules). ⚠️ Not separable from artefacts | partly — the count is free; the causes need a run |
 | **R3** | **`*_final` fields are stale by construction — 32 of 32 on the meter, 9 of 20 on the clef — and none has a consumer** | §R4.3, §3.3 | write them after the page-scope passes, or delete them. Byte-identical either way to the MusicXML | n/a — they reach no consumer |
 | **R4** | **`accepted[0]` — the purest instance of the type fault — has arbitrated ZERO times.** What is wrong beside it is that `rejected` is recorded only when EVERY rung failed | §R1.1, 11 pages | nothing to price. Record the second rung's refused reading: free | n/a |
-| **R5** | **The direction lexicon refuses well (89.6% of refusals carry no legal term) and the 10 PARTIAL refusals are two of the module's own rules colliding — 6 of them on the letter `f`** | §R1.2-R1.3 | record `matched`/`unknown` on the refusal (free), then check whether `measure_dynamics` claims the same `f` on the same measure | ⚠️ **not** pooled OMR-NED — words-correct-per-staff |
+| **R5** | **The direction lexicon refuses well (89.6% of refusals carry no legal term) and the 10 PARTIAL refusals are two of the module's own rules colliding — 7 of them on the letter `f` alone** | §R1.2-R1.3 | record `matched`/`unknown` on the refusal (free), then check whether `measure_dynamics` claims the same `f` on the same measure | ⚠️ **not** pooled OMR-NED — words-correct-per-staff |
 | **R6** | **Surya supplies 87.6% of scan margin labels and has no row in the map; `_assign` drops blocks silently, so "read and discarded" is byte-identical to "could not read"** | §R1.4 | return the drop counts. Free | n/a |
 | **R7** | **`_stitch_slots` refuses on 2 of 11 scan rows, one of them on a ONE-staff difference, emitting 51 fragments** | §R0.2 | ⚠️ already queued — backlog §A0b, against the page-normalised truth. **No proposal from me** | queued |
 
@@ -1410,3 +1418,389 @@ by the live clause set — ⚠️ if that module's clause order changes, the pro
 silently stale, which is the same hazard the additive survey records for its
 `propose_clef` reimplementation and the same argument for recording the refusal
 at the site.
+
+---
+---
+
+# ROUND 3
+
+**Appended 2026-09-07.** Coordinator verdict on round 2: sound, 28 of 31
+quantities exact, 19 of 19 line numbers correct, with one unit error inside the
+headline and one missing third instance. Both are addressed below, and a third
+problem — **mine, and worse than the one they caught** — is disclosed in §R8.0.
+
+Round-2 text is corrected in place where a number was wrong, each correction
+marked and pointing here. Two new probes; all sixteen re-run from an unrelated
+CWD under the new fail-loud fixture helper (§R8.4).
+
+---
+
+## R8.0 ⚠️ THREE CORRECTIONS, AND THE SECOND ONE IS A PROBE THAT LIED
+
+### (a) The unit error, as reported
+
+`rhythm.py:666` increments `reverted` **inside the per-measure loop**, and the
+docstring says so: *"Returns how many measures were reverted"*. So round 2's
+*"21 changes reverted"* is **21 MEASURES**. The number of *changes* is not
+recoverable from the artefact, because the guard stores its consequence and not
+its decision — which is this report's own thesis arriving in this report's own
+evidence.
+
+**A bound is derivable and I give it rather than the number.** The 21 reverted
+measures fall on exactly **3 pages** (Beethoven 984073-p1: 12, Brahms 317803-p1:
+6, Mahler p2: 3 — `out/probe_meter_guard_reach.txt` plus a per-page split), and
+each page contributes at least one change, so **3 ≤ changes ≤ 21**. It cannot be
+tightened: one change reverts every measure from its index to the end of *its
+staff*, so 12 reverted measures on a 12-staff page is consistent with 1 change
+and with 12.
+
+**The comparison is retired, not repaired.** §R8.1 replaces it with three counts
+that are all the same quantity — *staves carrying a surviving mid-staff change* —
+so nothing has to be converted. The 11 clef flips were always that quantity.
+
+### (b) ⚠️⚠️ MY OWN PROBE PRODUCED A CLEAN ALL-ZERO TABLE AT EXIT 0 — TWICE
+
+Round 2 §R4.3 reported *"0 staves whose per-measure meter changes"* and, in the
+material behind it, the same for key signatures. **Both came from a probe that
+keyed on fields the dicts do not carry.** `sig()` read `ts.get('beats')` and
+`ts.get('beat_type')`; the real keys are `numerator` / `denominator`. Every meter
+stringified to `"None/None"`, every staff looked constant, and the probe printed
+a tidy table and exited 0.
+
+This is **exactly the failure mode the verifier flagged in Agent I's probes**,
+in my own evidence, and it is worse than a CWD problem because no environment
+change would ever surface it.
+
+Re-derived with an `assert` on the key set, from a clean CWD:
+
+| | round-2 claim | corrected |
+|---|---|---|
+| mid-staff **meter** changes surviving | 0 | **0 — the verdict HOLDS** |
+| mid-staff **key-signature** changes surviving | 0 | **7 — the verdict was WRONG** |
+| stale `time_signature_final` | 32 of 32 | 32 of 32 — holds |
+| stale `key_signature_final` | 26 of 26 | **19 of 26** (the other 7 are the real flips) |
+
+**The meter conclusion survived by luck** — the bug made everything constant and
+the truth was also constant — and the key-signature conclusion did not. Both
+probes now assert on their key set before reading it, and both assertions are
+kept in the committed source with the reason.
+
+⚠️ **The general lesson, which is this audit's own subject:** a probe that reads
+a field by name and gets `None` cannot distinguish *"the field is absent"* from
+*"the value is null"* — the identical fault this report attributes to
+`key_signature_warning` (an unread staff and a staff printing no key signature
+are indistinguishable) and to `staff_labels_surya._assign` (read-and-discarded
+looks like could-not-read). **Assert on the schema, not on the value.**
+
+### (c) The minor corrections
+
+Applied in place in round 2, each marked: *"ten lines apart"* → the three sites
+span thirty lines and are named individually; *"six of the ten PARTIAL
+refusals"* → **seven** fail on `f` alone and an eighth has `f` among two
+unknowns; the doomed-set loop is `:2810-2814`; `read_staff_labels_surya` is
+`def` at `:344` with the cited line at `:384`; and `_build_measure_cell:1060`
+is quoted from the decision map, whose line has drifted — the 10 px test is at
+`measure_extractor.py:1107`.
+
+### (d) The `accepted[0]` restatement (coordinator's D12)
+
+Round 2's *"zero conflicts"* is corrected in place. It is true **as the pipeline
+defines a conflict** — both rungs producing an *accepted* reading that differs —
+and it is **not** a short-circuit artefact: `read_directions:777-786` reads every
+crop with every rung on purpose. But a conflict where one rung is accepted and
+the other refused is neither counted nor, by the `:798` asymmetry, recorded. So
+the finding is **"the two rungs never both spoke"**, not "the rungs agreed". The
+demotion stands: a decision that has never fired cannot be ranked on accuracy.
+
+---
+
+## R8.1 ⚠️⚠️ THREE ADJACENT SITES, ONE FAULT, THREE LEVELS OF PROTECTION — AND THE FLIP COUNTS RANK INVERSELY
+
+The coordinator's third instance is real, and it is the strongest result of the
+audit. Three facts are established per cell, carried forward onto every later
+measure of the staff, and overwritten by any later cell — **inside one thirty-line
+span of one function**:
+
+```
+transcribe.py:1594-1617   CLEF           argmax over clef detections, best_clef_conf = -1.0, no floor
+transcribe.py:1628-1631   KEY SIGNATURE  _detect_key_sig_from_cell -> slot fit, else COUNT the markers
+transcribe.py:1634-1636   METER          parse_time_signature, applied unconditionally
+```
+
+What runs afterwards differs, and so does the outcome
+(`out/probe_clef_midstaff_flips.txt`, `out/probe_key_signature_flips.txt`,
+`out/probe_meter_changes.txt` — all three counting the same thing, *staves
+carrying a surviving mid-staff change*):
+
+| fact | page-scope guard | default | **scan (193 staves)** | engraved (224) |
+|---|---|---|--:|--:|
+| **CLEF** | `clef_correction.veto_implausible_clef_changes:460` — a **2-entry** `(instrument, from, to)` allowlist, gated on `instrument_source == "label"` | **OFF** | **11** | 0 |
+| **KEY SIGNATURE** | *(none)* | — | **7** | 0 |
+| **METER** | `rhythm.drop_uncorroborated_meter_changes:597` — a change survives only if `max(2, 0.5 × n_staves)` staves see the same change at the same measure index | **ON** | **0** | 0 |
+
+**Full corroboration → none surviving. A two-entry allowlist that is off → eleven.
+Nothing at all → seven.** Eighteen surviving flips on the scan family, zero on
+the engraved one, which is the control: the fault is print-quality-driven in all
+three channels.
+
+### The seven key-signature flips, in full
+
+Every one is triggered by a **single** marker at confidence **0.26–0.57**:
+
+```
+row                          staff  instrument  measure  change              marker
+beethoven-575951-p1          s2     Clarinet    m11      0 flats -> 1 flat   keyFlat 0.32
+beethoven-575951-p2          s0     Flute       m15      2 flats -> 1 flat   keyFlat 0.26
+beethoven-575951-p2          s3     Bassoon     m2       2 flats -> 1 flat   keyFlat 0.42
+beethoven-575951-p2          s20    Violin      m3       3 flats -> 1 flat   keyFlat 0.50
+beethoven-984073-p2          s3     Bassoon     m2       2 flats -> 1 flat   keyFlat 0.57
+dvorak-405834-p5             s4     Horn        m3       0 flats -> 1 flat   keyFlat 0.49
+mahler-p2                    s15    Violin      m6       4 sharps -> 1 sharp keySharp 0.33
+```
+
+⚠️ **Every flip lands on exactly one accidental, and that is the mechanism, not a
+coincidence.** `_detect_key_sig_from_cell:839-858` tries the slot fit first and,
+when the fit abstains, **falls back to COUNTING the markers** (`n = len(markers)`).
+One stray marker therefore reads as one accidental, whatever the staff was in.
+
+⚠️ **AND ITS DOCSTRING SAYS THE OPPOSITE.** `:836-837`: *"Falls back to the count
+when geometry can't run or the fit abstains, **so a reading is never lost — only
+improved on**."* That is true of the first cell, where the alternative is nothing.
+It is **false mid-staff**, where the fallback does not preserve a reading — it
+replaces a four-sharp staff with a count of one. A new code-vs-prose
+disagreement, in the §8 idiom of the decision map, not among its D1–D28.
+
+### ⚠️ Five of the seven overturn a reading the cross-page VOTE had already confirmed
+
+`key_signature_source` on the flipped staves, with the vote's own recorded reason:
+
+```
+mahler-p2 s15        header_vote   "kept: agrees with the system's 4 sharps"     -> overturned to 1 sharp by a 0.33 marker
+beethoven-984073-p2 s3  header_vote "kept: 2 flats is a standard transposition"  -> overturned to 1 flat by a 0.57 marker
+beethoven-575951-p2 s0  header_vote "kept: no majority to check against"         -> 1 flat
+beethoven-575951-p2 s3  header_vote "kept: no majority to check against"         -> 1 flat
+beethoven-575951-p1 s2  header_vote "rejected: 1 flat differs from the system"   -> 1 flat
+```
+
+The Mahler row is the sharpest single instance in this audit: **a reading the
+system-wide vote explicitly confirmed against four sharps is destroyed by one
+detection at confidence 0.33**, and every note after measure 6 on that staff is
+spelled against one sharp.
+
+⚠️ **And the protection that exists is applied to the wrong cell.**
+`skip_key_sig_detection` (`:1628`) suppresses the cell reader on the staff's
+**FIRST** cell precisely because the vote has already ruled — the code comment
+says *"re-reading them here in isolation can only discard that context"* — and
+then adds *"Later cells still run"*. **The argument for suppression is strictly
+stronger on the later cells**: on cell 0 the reader is looking at the printed key
+signature, and on cell 11 it is looking at ink that resembles one. The suppression
+is applied where the reader is most likely right and withheld where it is most
+likely wrong. Measured: **104 first-cell key markers and 15 later-cell markers on
+scans, the later ones at confidence 0.26–0.70 (median 0.42), and 7 of the 15
+change the staff's key.** Engraved: 176 first-cell, **0 later-cell** — hence 0
+flips there.
+
+### R8.2 What this changes about the recommendation
+
+Round 2 said *port the meter guard's shape to the clef*. The three-instance form
+says something different and more useful:
+
+> **The neighbourhood needs one rule, not three retrofits.** Three facts with
+> identical lifetimes (established per cell, carried forward, overwritten by any
+> later cell) have three unrelated protections, and the differences are
+> historical rather than principled: the meter was guarded because a specific
+> Beethoven page shipped as common time, the clef because two string families
+> were misread on one edition, and the key signature never because nobody looked.
+
+⚠️ **The witnesses genuinely differ and must not be unified** — this is the
+discipline that survives from round 2 and it now has three cases rather than two:
+
+| fact | scope | available independent witness |
+|---|---|---|
+| METER | **system** — printed on every staff at the same bar | other staves at the same measure index (what the guard uses; exact) |
+| KEY SIGNATURE | **staff**, but ALSO system-scope in practice — a key change is printed on every staff | ⚠️ **both**: the staff's own header vote (already computed, already consulted for cell 0) **and** cross-staff corroboration |
+| CLEF | **staff** — printed on one staff alone | the staff's own header reading; more than one cell; the same part on another system |
+
+**The key signature is the cheapest of the three to guard and the only one that
+is currently unguarded**, because the evidence it needs is not merely available —
+it has already been computed, has already been used on the adjacent cell, and is
+already recorded on the staff dict with its reason string.
+
+⚠️ **Not a proposal to ship.** Every one of the three is a behaviour change and
+this audit changes nothing. What I claim is measured: the reach (11 / 7 / 0), the
+mechanism (count fallback; no floor; unconditional), the confidences (0.26–0.82
+across all eighteen), and that the guard's own evidence for the key signature
+already exists. ⚠️ The clef item stays **coupled to `OMR_INSTRUMENT_CLEF_DEFAULT`**
+and moves only with Sean; a key-signature guard is **not** so coupled — it touches
+no identity and no allowlist — which makes it the cheaper first arm of the two.
+The A/B that can fail: flag default-off ⇒ byte-identical, and the arm must not
+suppress a *real* key change, of which this corpus contains **zero** on either
+family — so a corpus that contains one is a prerequisite before any default flips.
+
+---
+
+## R9. `export.py` beyond one site
+
+### R9.1 ⚠️ The record the whole audit has been asking for already exists — on 5,896 noteheads, read by nobody
+
+`pitch_candidates` is on **every notehead in both corpora**, always three
+entries, always with a distinct runner-up and a numeric weight
+(`out/probe_pitch_candidates_payload.txt`):
+
+| | scan | engraved |
+|---|--:|--:|
+| noteheads | 4,339 | 1,557 |
+| carrying `pitch_candidates` | **4,339 (100%)** | **1,557 (100%)** |
+| list size | 3, always | 3, always |
+| with a distinct runner-up | 4,339 | 1,557 |
+| winner − runner-up weight margin, p10 / median / p90 | **0.213** / 0.523 / 0.640 | 0.541 / 0.623 / 0.667 |
+
+A real example, verbatim: `pitch C6 (0.982) · D6 (0.351) · Bb5 (0.315)`.
+
+**This is exactly the form every decision in both rounds was found to be missing
+— a winner, a runner-up and a margin — and it exists at one site, for the one
+fact that needed it least** (notehead reading F1 is 0.999 on engravings), and it
+reaches no production consumer: `grep -c pitch_candidates export.py` is 0, and
+`clef_correction.py:312` *pops* it unread.
+
+The margin is not decorative: the scan p10 of 0.213 against the engraved 0.541
+says the record already separates confident pitch reads from marginal ones, and
+separates the two families in the right direction, with no work.
+
+⚠️ **No proposal to consume it.** The standing rule holds — record first, give it
+a consumer only when a corpus prices one — and its one existing reader
+(`maestro_bridge/re-rank.ts`) is off by default. What is worth stating is the
+**architectural** fact: the pipeline knows how to build this record and does so
+5,896 times per benchmark run; it is not a capability that has to be invented for
+the clef, the key signature or glyph ownership, only extended.
+
+### R9.2 Two export nulls, stated because they look like hazards and are not
+
+- **`_parse_pitch:217` → `<rest/>`.** The map flags that an unparsable primary
+  pitch becomes a rest rather than falling to candidate #2. **Reach on both
+  corpora: 0 noteheads of 5,896 have no parsable pitch.** The hazard is latent,
+  not live, and the fall-to-candidate-2 repair would currently fire never.
+- **Piano grouping by `len(staves) == 2` (`:3428`, `:3505`).** Every system in
+  both corpora carries 3+ staves (scan `[12,13,14,17,…]`, engraved 11–25), so
+  the *"a 2-staff orchestral extract becomes a piano"* hazard has **reach 0**
+  here. It is real and this corpus cannot see it — which is the honest statement,
+  and the same shape as the eleven-work benchmark's blindness to the eventless
+  measure.
+
+### R9.3 The type reading for the stage, unchanged and now with a reason
+
+Export decisions are the only ones in the pipeline whose reversibility is
+trivially *nothing downstream*, so **every quantisation there is terminal** — and
+it is also the one stage where recording is free of consequence, because no later
+stage exists to be confused by an extra field. That asymmetry is why §R9.1's
+observation is worth more here than anywhere else: the stage that can least
+afford to destroy a margin is the stage that already receives one, on every note,
+and drops it.
+
+---
+
+## R10. `direction_text`'s CV half — catalogued, with the reach that is and is not measurable
+
+The ~60 points round 2 left. ⚠️ **Almost none of them has a measurable reach from
+committed artefacts**, because the CV half runs on page rasters and the result
+JSON records only its output count. I say that rather than producing numbers the
+substrate cannot support. What the funnel *does* pin down is the aggregate:
+**139 candidates proposed across 11 scan pages** (`out/probe_direction_funnel.txt`),
+i.e. everything below produced 139 survivors.
+
+| decision (`direction_text.py`) | type | C/O | constant standing | destroys | records? |
+|---|---|---|---|---|---|
+| `_page_ink:273`, threshold at `:278` — a fixed grey 180 | hard threshold | OPINION | ⚠️ **a bare literal**, and the one place the module bypasses `page.binary` on the stated grounds that Sauvola is tuned for staff lines. No sweep cited | the grey value; every sub-threshold letter | no |
+| band reach above / below (`above_spaces 8.0`, `below_spaces 3.0`, `clearance 0.25`) | geometric window | OPINION | **measured and documented as OVERLAPPING** — the docstring states plainly that Mahler's title sits closer than Beethoven's direction, so no vertical reach separates them | the distance itself | no |
+| `above_first_measure_only` | hard gate on x | **CONSTRAINT-shaped** — a heading is centred on the page, a direction is left-aligned to its music | keeps both real directions, refuses all four heading blocks on the three probe pages | which of the two rules refused | no |
+| letter filters (`min/max_glyph_height 0.18/2.00`, `max_width 2.00`) | hard gates | OPINION | measured against a specific pair (bold `U` 1.79×1.65 vs italic `l` 0.4×1.1) and **tuned upward once**, from 1.60, to admit the `U` | the component | no |
+| `min_fill_ratio 0.16` | hard gate | **CONSTRAINT-shaped** (a letter fills ⅕ of its box, a slur arc a ¹⁄₄₀) and a RATIO, so scale-free | the ratio | no |
+| word clustering (`word_gap 2.20`, `min_components 3`, `min_word_width 0.9`, `min_word_height 0.55`) | hard gates | OPINION | `min_word_height` sits on a **real measured gap** (true directions 1.1–1.8, both false runs 0.2); the others are set past observed values on one page | the cluster | no |
+| `_is_inside_a_word:282` — do not blank a dynamic with ink both sides | **exception to a blanking rule** | OPINION | measured as a GAP (a dynamic stands ~1.7 spaces clear; letters inside a word touch), and deliberately restricted to dynamics | ⚠️ **it is one half of §R1.3's collision** — this rule keeps the `f`, and the lexicon then refuses the phrase containing it | no |
+| `max_blank_width_spaces 4.0` — a span's box is not blanked | hard gate | **CONSTRAINT-shaped**, on a **measured empty gap** in the class space (glyphs ≤ 3.2 spaces, spans ≥ 7.7) | which class made it a span | no |
+| `page_is_engraved` → drop the Tesseract rung | classifier gate | OPINION | ⚠️ **the born-digital claim rests on three LilyPond fixtures**, which its own docstring flags. **Reach unmeasurable here**: all 11 scan pages report `False`, and the engraved fixtures were built `--no-direction-text` and carry no report | the second rung entirely | yes — `page_is_engraved` is in the report |
+| `attach_to_page:825` — drop a direction whose measure is not found | abstention | CONSTRAINT | **reach 0**: 20 accepted, 20 placed | the direction | only via the count difference |
+
+**The type pattern of the whole CV half is uniform and, unusually for this
+report, largely defensible**: it is a cascade of hard gates on quantities
+expressed in staff spaces, four of which sit on measured empty gaps or are
+scale-free ratios, and the module is the only one in the audit that **returns a
+structured report of its own funnel** rather than a bare count. That report is
+why §R1 could be written at all, and it is the shape §R8.2 and §R9.1 are asking
+every other stage to adopt.
+
+⚠️ **The one thing the report does not carry is the CV half's own refusals** —
+`find_candidates:505` returns survivors, so *"how many clusters were proposed and
+rejected, and by which filter"* is exactly as invisible as
+`staff_labels_surya._assign`'s dropped blocks (§R1.4). `n_candidates` is the
+count *after* every filter. That is the single gap in an otherwise
+well-instrumented module, and it is the same gap in the same shape as everywhere
+else.
+
+---
+
+## R11. Probe hygiene — the endorsed fix, applied, and one it would not have caught
+
+All sixteen probes now share `probe/_fixtures.py`:
+
+- **`OMR_FIXTURE_ROOT`** selects the checkout (default: the main checkout), so a
+  probe works from a worktree and from any CWD;
+- **`fixtures(pattern, expect_at_least=N)` RAISES `SystemExit(2)`** on a short
+  glob, and every family call names its expected row count (11 / 11 / 20), so a
+  partially-populated fixtures directory fails as loudly as an empty one;
+- **`chdir_root()`** exits 2 rather than tracebacking when the root is wrong.
+
+Verified: every probe exits 0 from `/tmp`, and `OMR_FIXTURE_ROOT=/nonexistent`
+gives **exit 2** with a one-line diagnosis rather than a clean empty table.
+
+⚠️ **And the fix would NOT have caught §R8.0(b).** The globs were correct, the
+files were read, the counts were real — the probe asked for a field that does not
+exist and got `None`. Fixture hygiene protects against *no data*; it does not
+protect against *the wrong field*. The complementary guard, now in both affected
+probes, is an **assertion on the schema** at the point of read. Both are needed
+and they are different.
+
+---
+
+## R12. Ranked conclusions, round 3
+
+| # | conclusion | evidence | what would settle it | harness can see it? |
+|--:|---|---|---|---|
+| **1** | **Three adjacent per-cell overwrites — clef, key signature, meter — one fault, three levels of protection, and the surviving-flip counts rank inversely: 11 / 7 / 0 on 193 scan staves, 0 / 0 / 0 engraved** | §R8.1, three probes counting one quantity | separate A/Bs, each flag default-off ⇒ byte-identical. ⚠️ Clef stays coupled to `OMR_INSTRUMENT_CLEF_DEFAULT`; the key signature is **not** coupled and is the cheaper first arm | **YES** — clef and key both restate/re-spell pitches, so scan-gate note recall moves |
+| **2** | **The key signature is unguarded, its flips all land on exactly one accidental via the COUNT fallback (`:857-858`), and 5 of 7 overturn a reading the cross-page vote had confirmed — one of them "agrees with the system's 4 sharps", destroyed by a 0.33 marker** | §R8.1 | as above. ⚠️ Prerequisite: this corpus contains **zero** real mid-staff key changes, so a corpus containing one is needed before any default flips | YES |
+| **3** | **The suppression that exists is applied to the wrong cell** — `skip_key_sig_detection` silences the reader on cell 0, where it is most likely right, and lets it run on later cells, where 7 of 15 markers change the key | §R8.1 | a flag extending the existing suppression to later cells is a strictly smaller change than a new guard | YES |
+| **4** | **`pitch_candidates` — winner, runner-up and margin — is present on 100% of noteheads (5,896) and read by no production consumer.** The record this audit keeps asking for exists, for the fact that needed it least | §R9.1 | nothing to settle; it is a capability statement. Consumers stay blocked on a corpus | n/a |
+| **5** | **A new code-vs-prose disagreement:** `_detect_key_sig_from_cell:836-837` claims the count fallback means *"a reading is never lost — only improved on"*; mid-staff it replaces a 4-sharp staff with a count of 1 | §R8.1 | docstring | n/a |
+| **6** | **My own probes lied twice, in the failure mode the verifier flagged elsewhere.** Fixture hygiene does not catch it; a schema assertion does | §R8.0(b), §R11 | done — both guards in the committed source | n/a |
+| **7** | **`direction_text`'s CV half is the best-instrumented decision surface in the pipeline and still does not record its own refusals** — `n_candidates` is the count after every filter | §R10 | add per-filter rejection counts to the existing report. Byte-identical | n/a |
+
+## R13. What round 3 does NOT cover
+
+- **Precision of the 7 key-signature flips against print truth.** The truth
+  MusicXML would answer it (a `<key>` after measure 1) and I did not run it; the
+  mechanism (count-of-one from a single 0.26–0.57 marker) and the vote's own
+  "agrees with the system" reason are the evidence offered instead.
+- **Whether a key-signature guard would cost anything.** Zero real mid-staff key
+  changes exist in either corpus, so this substrate can measure the benefit and
+  **cannot** measure the cost.
+- **The CV half's reach**, per §R10 — unmeasurable from artefacts, said rather
+  than estimated.
+- **`export.py`'s remaining sites.** Four measured across rounds 2–3; the map
+  lists many more.
+- **Anything requiring a run.** Embargo respected throughout all three rounds.
+
+## R14. Reproducing round 3
+
+```bash
+export OMR_FIXTURE_ROOT=/Users/seanjohnson/Desktop/ReEngrave     # or any checkout
+P=.claude/worktrees/nice-nash-085307/benchmarks/omr-pipeline-audit-2026-09/probe
+
+python3 $P/probe_key_signature_flips.py        # R8.1  the third instance, with a schema assert
+python3 $P/probe_meter_changes.py              # R8.0b re-derived under the corrected key
+python3 $P/probe_clef_midstaff_flips.py        # R8.1  the eleven clef flips
+python3 $P/probe_pitch_candidates_payload.py   # R9.1  the record nobody reads
+python3 $P/probe_direction_funnel.py           # R10   the 139 -> 134 -> 20 funnel
+```
+
+Every probe now runs from any CWD, honours `OMR_FIXTURE_ROOT`, and **exits 2**
+rather than printing an empty table when the fixtures are not where it looked.

@@ -34,12 +34,18 @@ bridge, seconds, no pipeline. It reads truth fixtures from the `reconciliation`
 worktree (`fixtures/` is gitignored) and **refuses to run** unless every
 fixture's sha256 matches the canonical arm's.
 
-**v0.2.0 (round 2): 55 rows — 38 scoreable, 17 not.** Ceiling status: 25
+**v0.3.0 (round 3): 55 rows — 39 scoreable, 16 not.** Ceiling status: 25
 measured, 1 measured-directly, 1 measured-and-corroborated, 1
 measured-single-source, 1 bounded-above, 1 refuted-as-a-ceiling, 1
 pre-registered, 1 measured-unreliable, 1 not-a-defect-rate, 18 assumed, 4
 unmeasured. v0.1.0 is preserved in git at `ac88148e`; `metric-registry.v0.2.0.json`
 is a snapshot of the current file.
+
+⚠️ **v0.3.0 adds a row a dashboard must caption or not print at all**:
+`human:review_cost:identity` scores **97.07 %**, and it measures staff NAMING
+only. The reviewer's larger load is note-level diffs and has no harness. Printed
+beside `scan:omr_ned` at 15.56 % without its caption it is the most misleading
+pairing available.
 
 ⚠️ **Two schema changes since v0.1.0 that a consumer must handle.**
 `comparable_as` replaces the single `era_key` equality test — see §R4, and note
@@ -121,12 +127,14 @@ Both understate. A missing ceiling must never be able to manufacture a 100.
   `build_metric_registry.py` and is only as good as the assembly.
 - ✅ **The scan structural floor is now MEASURED** (§R2): 0.2123 pooled over 15
   rows, three controls passing, no output of ours in the measurement.
-- **The `input` ceiling has a bound and a refutation, not a value** (§R3).
-  Noteheads are bounded above at 0.971 on one batch; hairpins are refuted as a
-  ceiling (a human drew 17 on 55 scanned cells). No class has a ceiling VALUE.
-- **Human review cost does not reproduce from committed artefacts** (§R7). The
-  project's only figure (197) is computed over a record set that is not
-  committed; only its `contradicted` component re-derives (26 of 1,571).
+- **The `input` ceiling has bounds on ONE EDITION** (§R3, §S3). Noteheads bounded
+  above at 0.971; hairpins bounded BELOW at 0.80 (bar recall, n=5). Quote both
+  with the publisher named — Breitkopf & Härtel, Brahms 1. `RUNBOOK-completion-passes.md`
+  scopes what a second edition would take.
+- ✅ **Human review cost DOES reproduce** (§S4) — round 2's negative is withdrawn:
+  `score.py` derives the two missing categories from committed `corpus.py`.
+  46 of 1,571 = 2.93 % → 97.07 %. Its floor is located (condensed staves) but
+  not measured, and only 2 of 59 harness arms are exported.
 - **Five scan rows still have no floor** — the four Mahler and one Bach rows have
   no hand-read staves map.
 - **`orchestral_eval` still has no repeat-run noise floor**, so no engraved row

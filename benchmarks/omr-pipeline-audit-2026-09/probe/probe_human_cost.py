@@ -29,10 +29,16 @@ Read-only. Writes one JSON.
 from __future__ import annotations
 
 import json
-from collections import defaultdict
+import sys
+from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
+HARNESS = ROOT / "benchmarks" / "omr-identity-harness-2026-09"
+sys.path.insert(0, str(HARNESS / "probe"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _fixtureroot import require_nonempty  # noqa: E402
+import corpus  # noqa: E402   (the harness's own roster rules, committed)
 HERE = Path(__file__).resolve().parents[1]
 OUT = HERE / "human-cost-identity.json"
 RECORDS = ROOT / "benchmarks" / "omr-identity-harness-2026-09" / "out" / "records.json"
@@ -40,7 +46,28 @@ RECORDS = ROOT / "benchmarks" / "omr-identity-harness-2026-09" / "out" / "record
 
 def main() -> int:
     doc = json.loads(RECORDS.read_text())
-    recs = doc["records"]
+    recs = require_nonempty(doc["records"], "graded identity records", RECORDS)
+
+    # ⚠️ ROUND-2 NEGATIVE WITHDRAWN. Round 2 reported that human cost "does not
+    # reproduce from committed artefacts" because records.json carries no
+    # `impossible` / `not-in-this-work` field. It does not need to: `score.py`
+    # derives both from `corpus.is_impossible(work, page, name)` and
+    # `corpus.is_never(work, name)`, and work / page / emitted are ALL on the
+    # record. `corpus.py` is committed. So the harness's own four-category cost
+    # is recomputable here, exactly, with no harness change — the fields were
+    # absent, the INFORMATION was not.
+    def flags_for(r) -> list:
+        name = r.get("emitted")
+        out = []
+        if name is None:
+            out.append("unnamed")
+        if corpus.is_impossible(r["work"], r["page"], name):
+            out.append("impossible")
+        if corpus.is_never(r["work"], name):
+            out.append("not-in-this-work")
+        if r.get("label_read") and name and r["label_read"] != name:
+            out.append("contradicted")
+        return out
 
     arms = defaultdict(list)
     for r in recs:
@@ -49,9 +76,13 @@ def main() -> int:
     out_arms = []
     for arm, rs in sorted(arms.items()):
         n = len(rs)
-        unnamed = [r for r in rs if not r.get("named")]
-        contra = [r for r in rs if r.get("contradicted")]
-        costly = {id(r) for r in unnamed} | {id(r) for r in contra}
+        flagged = {id(r): flags_for(r) for r in rs}
+        breakdown = Counter("+".join(sorted(f)) for f in flagged.values() if f)
+        unnamed = [r for r in rs if "unnamed" in flagged[id(r)]]
+        contra = [r for r in rs if "contradicted" in flagged[id(r)]]
+        impossible = [r for r in rs if "impossible" in flagged[id(r)]]
+        never = [r for r in rs if "not-in-this-work" in flagged[id(r)]]
+        costly = {k for k, v in flagged.items() if v}
         # the irreducible remainder: no label was read on this staff at all, so
         # no amount of pipeline work can name it FROM THE PAGE.
         unlabelled = [r for r in rs if not r.get("label_read")]
@@ -65,9 +96,11 @@ def main() -> int:
             "human_cost_rate": len(costly) / n if n else None,
             "decomposition": {
                 "unnamed": len(unnamed),
+                "impossible": len(impossible),
+                "not_in_this_work": len(never),
                 "contradicted": len(contra),
-                "both": len(unnamed) + len(contra) - len(costly),
             },
+            "human_breakdown": dict(sorted(breakdown.items())),
             "floor_candidate": {
                 "staves_with_no_label_read": len(unlabelled),
                 "of_those_also_unnamed": len(unlabelled_and_unnamed),
@@ -111,8 +144,22 @@ def main() -> int:
                           "figure needs a clef-regime stamp beside its page-set "
                           "regime stamp; these arms are not interchangeable.",
         "⚠️_VERDICT": {
-            "reproducible_from_committed_artefacts": False,
-            "why": "FINDINGS.md reports human cost as 197 over 3543 records, "
+            "reproducible_from_committed_artefacts": True,
+            "round2_said_otherwise_and_was_WRONG": (
+                "Round 2 reported this estate as irreproducible because "
+                "records.json carries no `impossible` or `not-in-this-work` "
+                "field. It does not need to: score.py DERIVES both from "
+                "corpus.is_impossible(work, page, name) and "
+                "corpus.is_never(work, name), and work / page / emitted are all "
+                "on the record, and corpus.py is committed. The fields were "
+                "absent; the INFORMATION was not. I checked which fields "
+                "existed and did not check how the missing ones were computed."),
+            "still_true": (
+                "the committed export is 1,571 records over 2 arms, so it "
+                "cannot reproduce FINDINGS' 197 over 3,543 — that is a COVERAGE "
+                "gap (which arms were exported), not a schema gap."),
+            "superseded_why": False,
+            "_old_why": "FINDINGS.md reports human cost as 197 over 3543 records, "
                    "decomposed 150 contradicted-only / 24 unnamed / 15 "
                    "not-in-this-work / 8 both. The COMMITTED records.json holds "
                    "1571 records across 2 arms and carries no "
@@ -121,15 +168,25 @@ def main() -> int:
                    "reproducible here: 26 of 1571 = 0.0166. The project's "
                    "stated PURPOSE is measured in exactly one place and that "
                    "place cannot be re-derived from the tree.",
-            "floor_is_not_measurable_here": "0 records are unnamed, so this "
-                   "definition's floor computes to 0 — which would say a perfect "
-                   "pipeline leaves a reviewer nothing to do, contradicting the "
-                   "identity scope's own claim. The floor is OPEN, not zero.",
-            "what_it_would_take": "export the harness's full record set "
-                   "(3543 rows, all four cost categories) as a committed "
-                   "artefact, and define the floor as staves unnameable FROM "
-                   "THE PAGE — which needs the label-evidence channel recorded "
-                   "per record, the same gap backlog F names for clefs.",
+            "floor_is_still_open_but_now_LOCATED": (
+                "0 of 1,571 records are unnamed, so the floor is not in that "
+                "category. It is in `contradicted`: the label-contradiction "
+                "check's documented STRUCTURAL false positive is a CONDENSED "
+                "staff — `Violoncello e Basso` names one instrument in the "
+                "margin and the slot names the other, and BOTH are right. Those "
+                "records cost a reviewer a look that no pipeline work can "
+                "remove. Neither edition here condenses that way (0 of 158 in "
+                "the label-contradiction study), which is a fact about two "
+                "publishers, not about the floor. So the floor is measurable "
+                "and is the condensed-staff rate — not zero, and not measured."),
+            "what_it_would_take": (
+                "(1) export MORE ARMS — the committed set is 2 of the harness's "
+                "59, which is why 46 here cannot be 197 there; no schema change "
+                "is needed. (2) Measure the condensed-staff rate on an edition "
+                "that condenses, to give the floor a value. (3) Stamp the "
+                "CLEF REGIME on each arm: 58 of 59 arms are clef-blind replays "
+                "and one is a transcription (backlog F), and a cost figure that "
+                "mixes them is not one figure."),
         },
         "arms": out_arms,
         "orthogonality": {

@@ -1,6 +1,10 @@
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS  # fail-loud
+chdir_root()
+
 import json, glob, os
-ROOT="/Users/seanjohnson/Desktop/ReEngrave"
-files=sorted(glob.glob(f"{ROOT}/benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"))
+files=sorted(fixtures(SCAN, expect_at_least=11))
 tot_flip=0; blocked_at={0.3:0,0.4:0,0.5:0,0.6:0,0.7:0,0.8:0}
 for f in files:
     d=json.load(open(f)); nm=os.path.basename(f).split('.')[0]

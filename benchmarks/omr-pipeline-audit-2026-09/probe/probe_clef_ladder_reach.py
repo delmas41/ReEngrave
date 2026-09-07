@@ -1,3 +1,8 @@
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS  # fail-loud
+chdir_root()
+
 #!/usr/bin/env python3
 """Reach of the clef precedence ladder, from committed transcriptions.
 
@@ -12,11 +17,10 @@ Read-only. Answers:
 import json, os, sys, glob
 from collections import Counter
 
-ROOT = os.environ.get("OMR_FIXTURE_ROOT", "/Users/seanjohnson/Desktop/ReEngrave")
 
 FAMILIES = {
-    "scan": sorted(glob.glob(f"{ROOT}/benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json")),
-    "engraved": sorted(glob.glob(f"{ROOT}/benchmarks/omr-orchestral-e2e/fixtures/*.omr.json")),
+    "scan": sorted(fixtures(SCAN, expect_at_least=11)),
+    "engraved": sorted(fixtures(ENGRAVED, expect_at_least=11)),
 }
 
 for fam, files in FAMILIES.items():

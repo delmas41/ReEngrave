@@ -22,6 +22,10 @@ import json
 import subprocess
 from pathlib import Path
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _fixtureroot import require_nonempty  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parents[1]
 OUT = HERE / "retro-stamp.json"
@@ -35,6 +39,16 @@ STAMP_SHAPE = {
     "rows": "the row_ids the figure is pooled over, in order",
     "n_rows": "len(rows), so a truncated file is detectable",
     "commit": "git rev-parse --short HEAD at measurement time",
+    "fixture_sha": "⚠️ REQUIREMENT ADDED 2026-09-07. A per-row sha256 of every "
+                   "input file, computed so that it CAN VERIFY REPRODUCTION. "
+                   "`results-normalised-arm-20row.json` stamps "
+                   "`sha.normalised_truth` as a RAW sha256 of a derived truth "
+                   "that music21 re-ids on every write — so it looks like a "
+                   "provenance field and cannot serve as one, which is worse "
+                   "than having none. Any hash of a GENERATED file must be "
+                   "canonicalised the way "
+                   "probe_derived_truth_unmoved.py::_canonical does, and the "
+                   "stamp must say which kind it is.",
     "arm": "the --tag, i.e. WHICH predictions",
     "flags": "every OMR_* env var that was set, and its value",
     "note": "why a figure under a different row set is not a comparison",
@@ -55,7 +69,8 @@ def git_commit_for(path: Path) -> dict:
 
 def main() -> int:
     COPIES.mkdir(exist_ok=True)
-    files = sorted(SCAN.glob("results*.json"))
+    files = require_nonempty(sorted(SCAN.glob("results*.json")),
+                             "scan results files", SCAN, "results*.json")
     rows, stamped = [], 0
     for f in files:
         doc = json.loads(f.read_text())
@@ -105,6 +120,10 @@ def main() -> int:
             "where": "benchmarks/omr-scan-e2e-2026-09/scan_eval.py, written into "
                      "every results file as a top-level `benchmark` block",
             "shape": STAMP_SHAPE,
+            "hash_rule": "a stamped hash must be verifiable. Raw sha256 for an "
+                         "INPUT file that is byte-stable (a truth fixture, a "
+                         "prediction); a CANONICAL hash for anything generated "
+                         "by a writer with its own randomness. Label which.",
             "plus_a_check": "a `SCAN_ROWS` constant in code + a check() that "
                             "refuses a results file whose `benchmark.rows` "
                             "disagrees with it — the exact shape "

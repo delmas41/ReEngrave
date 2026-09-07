@@ -1,9 +1,14 @@
-import sys; sys.path.insert(0,"/Users/seanjohnson/Desktop/ReEngrave")
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS  # fail-loud
+chdir_root()
+sys.path.insert(0, root())   # so `tools.omr.direction_lexicon` is importable
+
 import json, glob, re
 from collections import Counter
 from tools.omr.direction_lexicon import TERMS, CONNECTIVE, _normalise, lookup
 rej=[]
-for f in sorted(glob.glob('benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json')):
+for f in sorted(fixtures(SCAN, expect_at_least=11)):
     dt=json.load(open(f)).get('direction_text') or {}
     for pg in dt.get('pages',[]): rej += pg.get('rejected',[])
 print('refused strings:',len(rej))

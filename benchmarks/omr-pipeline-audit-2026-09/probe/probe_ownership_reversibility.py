@@ -1,7 +1,11 @@
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS  # fail-loud
+chdir_root()
+
 import json, glob, os
 from collections import Counter, defaultdict
-ROOT="/Users/seanjohnson/Desktop/ReEngrave"
-files=sorted(glob.glob(f"{ROOT}/benchmarks/omr-additive-vs-gated-2026-09/out/contests/*.contests.json"))
+files=sorted(fixtures(CONTESTS, expect_at_least=20))
 tot=0; by_tier=Counter(); by_cat_tier=defaultdict(Counter)
 parked=0; loser_higher=0; comparable=0; ties=0
 absdelta=[]; per_row={}

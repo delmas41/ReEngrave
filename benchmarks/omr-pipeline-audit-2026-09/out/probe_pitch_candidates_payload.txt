@@ -1,0 +1,10 @@
+=== scan: 4339 noteheads
+   with NO parsable pitch (would become <rest/> at export._parse_pitch): 0
+   candidate-list sizes: {3: 4339}
+   with a DISTINCT runner-up: 4339
+   winner-minus-runner-up weight margin: p10=0.213 median=0.523 p90=0.64
+=== engraved: 1557 noteheads
+   with NO parsable pitch (would become <rest/> at export._parse_pitch): 0
+   candidate-list sizes: {3: 1557}
+   with a DISTINCT runner-up: 1557
+   winner-minus-runner-up weight margin: p10=0.541 median=0.623 p90=0.667

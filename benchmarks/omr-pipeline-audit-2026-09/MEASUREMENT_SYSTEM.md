@@ -19,7 +19,9 @@ Artefacts written by this session:
 | `probe/build_metric_registry.py` → `metric-registry.json` | the machine-readable registry, 48 rows |
 | `README-metric-registry.md` | what wiring it into the dashboard would take |
 
-Round 2 adds four more probes and takes the registry to v0.2.0 — see **ROUND 2**
+Round 2 adds four more probes and takes the registry to v0.2.0; **round 3** adds
+`probe/probe_hairpin_ceiling_value.py`, the shared `probe/_fixtureroot.py` guard
+and `RUNBOOK-completion-passes.md`, and takes it to **v0.3.0** — see **ROUND 2**
 at the end of this file, which also corrects four things stated in Part A and B.
 
 ---
@@ -944,3 +946,234 @@ Ceiling census over 55 rows: 25 measured, 1 measured-directly, 1 corroborated,
   embargoed. Everything above is a level, not a direction.
 - **`orchestral_eval` still has no repeat-run noise floor**, so no engraved row
   can carry one.
+
+---
+
+# ROUND 3 — a ceiling with a value, the purpose on the board, and two self-corrections
+
+*`orchestral_eval` and `scan_eval` still embargoed and not run. musicdiff used
+only where round 2 already used it.*
+
+New artefacts: `probe/probe_hairpin_ceiling_value.py` →
+`hairpin-ceiling-value.json`; `probe/_fixtureroot.py` (the shared guard);
+`RUNBOOK-completion-passes.md`. `metric-registry.json` is now **v0.3.0, 55 rows,
+39 scoreable**.
+
+## S1. Corrections folded in
+
+**The coarse-spelling incidental is CLOSED, not stale-and-dropped.** Verified
+here: `class_aliases.ALIASES` maps `dynamicLetterF/P/S → dynamicF/P/S`, and the
+module's docstring names this very campaign as the reason. The 26 boxes are
+readable by the exporter. My round-2 note is withdrawn.
+
+**The `sha.normalised_truth` defect is carried into the stamp as a REQUIREMENT.**
+It is a defect in an existing artefact, not in my work, and the general form is
+the useful part: *a stamped hash must be able to verify what it appears to
+verify.* Raw sha256 for a byte-stable **input**; a **canonical** hash for
+anything a writer re-randomises; and the stamp must say which kind it is. A hash
+that cannot verify is worse than none, because it invites a check that silently
+always fails.
+
+**My own probes had the silent-fail hazard — three of them.**
+`probe_input_ceiling_from_labels.py`, `probe_measurement_hygiene.py` and
+`probe_retro_stamp.py` all globbed a directory and would have printed a clean
+all-zero table at exit 0. `probe_structural_floor.py` carried a hard-coded
+absolute path. The endorsed fix is applied in `probe/_fixtureroot.py`:
+`OMR_FIXTURE_ROOT`, and `require_nonempty()` which exits **3** naming the path
+and the pattern. Verified firing: a wrong fixture root exits **2** (the sha gate)
+and an empty fixture directory exits **2**; all nine probes exit 0 on the real
+tree. ⚠️ Checking the exit code through `| tail` reports 0 regardless — the same
+trap CLAUDE.md records for git.
+
+## S2. Item 1b — the matched comparison, and it is worse than the corpus rate
+
+The refutation compared a human against a **corpus-level** 1-of-99 over eleven
+pages. What the detector found on *those* cells was never asked. The batch
+carries the pipeline's own read of the same three pages
+(`transcription.json`), so the question is answerable directly:
+
+| on the same three pages | count |
+|---|--:|
+| detections the pipeline made, all classes | **10,523** |
+| of those, `dynamicCrescendoHairpin` + `dynamicDiminuendoHairpin` | **0** |
+| hairpins a human drew across 55 completion-swept cells | **17** |
+
+**Zero of 10,523.** The 1-of-99 is not a thin-sample artefact: on this edition it
+is zero, on pages where the detector was otherwise productive.
+
+⚠️ A page-level zero entails a per-cell zero, which is why no per-cell join was
+needed. Had it been non-zero the join would have been required, and the probe
+says so rather than leaving the shortcut implicit.
+
+⚠️ Incidental, and it is a different fault from the one being measured: the
+batch's own `detections/` are **56 files, 0 detections** — it was labeled
+draw-from-scratch, so the batch cannot answer this question and the
+transcription had to.
+
+## S3. Item 1 — the ceiling has a value, and the obvious form of it is unusable
+
+`reference.mxl` gives the encoding's hairpins in exactly the swept bars. Three
+units are in play and conflating them is the whole trap:
+
+- **encoding** — MusicXML writes a `<wedge>` at *each end*, so wedge STARTS are
+  counted and one printed hairpin is one unit;
+- **page** — the engraver draws one arc;
+- **cell** — a measure cell *cuts* it, so one hairpin crossing a barline becomes
+  **two** human boxes.
+
+The naive ratio is therefore junk and is reported as such: **17 human boxes
+against 11 reference starts = 1.545**, biased upward by barline cuts *and* by
+multi-bar hairpins (one start drawn across three cells), against a reference
+count biased downward for the same reason. Two biases, opposite directions,
+neither quantified.
+
+**The defensible form is bar-level, where there is no unit mismatch:**
+
+> Of the swept bars where the encoding STARTS a hairpin, in how many did a human
+> find hairpin ink? **4 of 5 — a human bar recall of 0.80.**
+
+⚠️ **n = 5.** That is the entire sample the corpus can offer: one batch has a
+completion pass, and only five of its 55 swept bars carry a reference hairpin
+start. It is a bound worth having and not a point estimate worth quoting to three
+places.
+
+**What it licenses is exactly the conversion the coordinator asked for.**
+`ceiling:input:hairpin:scan` moves from `refuted_as_a_ceiling` to
+`bounded_below`, value **0.80**: the detector sits at ~0.01 of a ceiling that is
+at least 0.80 — **roughly one part in eighty of what a reader recovers.** That is
+a ceiling, not a refutation. The other 12 human boxes fall in bars the encoding
+starts no hairpin in; they are continuations and barline cuts, not false
+positives.
+
+⚠️ **Quoted with the publisher named, every time: Breitkopf & Härtel, Brahms 1
+mvt 1.** The single-edition limit is irreducible today, and the registry row and
+the probe both carry that sentence.
+
+## S4. Item 4 — human review cost is on the board, and my round-2 negative was wrong
+
+**Withdrawn.** Round 2 reported that human cost "cannot be re-derived from the
+tree" because `records.json` carries no `impossible` or `not-in-this-work` field.
+**It does not need to.** `score.py` derives both from
+`corpus.is_impossible(work, page, name)` and `corpus.is_never(work, name)`;
+`work`, `page` and `emitted` are all on the record; and `corpus.py` is committed.
+The fields were absent — **the information was not.** I checked which fields
+existed and did not check how the missing ones were computed, which is a shallower
+version of exactly the failure this audit keeps finding elsewhere.
+
+Recomputed from committed artefacts alone, over 1,571 records in 2 arms:
+
+| | records |
+|---|--:|
+| unnamed | 0 |
+| impossible | 7 |
+| not-in-this-work | 17 |
+| contradicted | 26 |
+| **costing a human (union)** | **46 of 1,571 = 2.93 %** |
+
+**The Brahms 17 `not-in-this-work` reproduces the documented `Trombone → Tuba`
+×17 residue exactly**, which is the corroboration that the recomputation matches
+the harness rather than merely resembling it.
+
+`human:review_cost:identity` is now **scoreable: 97.07 % of achievable**, with
+`W = 1.0` (a pipeline that names nothing leaves every staff to the reviewer —
+real, not a convention) and `F = 0` assumed and conservative.
+
+⚠️⚠️ **AND IT CARRIES THE LOUDEST FLAG IN THE REGISTRY, because a 97 beside a
+scan 20 is the most misleading pairing the board could print.** This scores staff
+**naming**. The reviewer's larger load is note-level diffs and has **no harness
+at all**. A high number here must never be read as "review is nearly free". If
+only one caption survives to the dashboard, it is this one.
+
+**And the floor is no longer merely open — it is LOCATED.** Zero records are
+unnamed, so the floor is not there. It is in `contradicted`: the
+label-contradiction check's documented structural false positive is a **condensed
+staff** — `Violoncello e Basso` names one instrument in the margin and the slot
+names the other and *both are right* — and that costs a reviewer a look no
+pipeline work removes. Neither edition here condenses that way (0 of 158 in the
+label-contradiction study), which is a fact about two publishers, not about the
+floor. So the floor is measurable, has a name, and is not zero.
+
+**What is still true from round 2**: 46 here cannot be FINDINGS' 197, because the
+committed export is **2 of the harness's 59 arms**. That is a **coverage** gap,
+not a schema gap — no harness change is needed, only more arms exported.
+
+## S5. Item 2 — scoped, not attempted
+
+`RUNBOOK-completion-passes.md`. The finding that shapes it: **the blocker is not
+labeling effort.** Ten batches were swept for one symbol each and a completion
+pass on any of them yields human boxes — but **not a ceiling**, because a ceiling
+needs *human boxes vs what the encoding says is in those bars*, and only the
+Brahms batch has a `reference.mxl`, a `prefill/` and a hand-confirmed window map.
+Nine of ten lack all three, and every batch has **0 cell PNGs** (gitignored;
+`recut_cells` is step 0, and its abort-on-frame-mismatch is a safety property not
+to be flagged past).
+
+Recommended first: **`hollow2-2026-09-peters-mahler5`** (different house,
+different engraving weight, work in the reference library — ⚠️ confirm the
+movement, the library holds mvts 1–3 and one existing batch is the Adagietto),
+then `hollow3-2026-09-durand-lamer`. **Two editions disagreeing is the more
+valuable outcome and the likelier one**: it would make the `input` ceiling a
+property of the EDITION, and every scan detector percentage would need a
+per-edition ceiling — the same lesson `OMR_WEIGHT_ROUTING` already learned about
+weights.
+
+## S6. Item 3 — stamp: proposal only, unchanged, plus the hash requirement
+
+Nothing in `tools/omr/` touched. `stamped-copies/` holds twenty demonstrations.
+The wasting asset is re-confirmed intact at **20 of 20** commits recoverable. The
+`fixture_sha` requirement from §S1 is now part of the proposed shape.
+
+## S7. Item 5 — the arm I would like authorised
+
+**Shape:** `orchestral_eval --omr-ned` run **twice on one unchanged tree**, same
+work set, same configuration, no flags differing; compare per-work `omr_ed`.
+**Question:** is the engraved harness byte-deterministic, as the scan harness was
+measured to be on its five-row era and measured *not* to be on its twenty-row
+era (±6)?
+
+**Why it matters more than it sounds.** `current-accuracy.json` carries no noise
+floor, so **no engraved row in the registry can gate a delta** — condition 3 of
+§B5.5 is unsatisfiable for eleven works. And there is positive reason to expect a
+non-zero floor: CLAUDE.md records detector confidences moving between runs on
+byte-identical code (0.83 → 0.69 on one Mahler hairpin), with the note that a
+from-scratch rebuild reproduced a categorical result but *not* the pooled edit
+count.
+
+**Cost:** two full runs. I do not know the wall time and will not guess; the
+committed rows carry `seconds` per row for `scan_eval` but `orchestral_eval`'s
+are not in `current-accuracy.json`. **Cheaper alternative if the full pair is too
+expensive:** two runs over `--works mahler-sym5-mvt1 brahms-sym1-mvt1` only — the
+work with the known confidence jitter and the work with the most detections —
+which would establish whether the floor is non-zero without pricing it for the
+pool. I would take that as the first cut.
+
+## S8. Where the numbers stand after round 3
+
+| row | value | ceiling | **% of achievable** |
+|---|--:|---|--:|
+| `human:review_cost:identity` ⚠️ naming only | 2.93 % cost | assumed F=0, floor located not measured | **97.07** |
+| `labeling:ledger_zone:defect_rate` | 0.98 % | assumed F=0 | 99.02 |
+| `prefill:precision:blind_out_of_sample` | 0.915 | **pre-registered 0.97** | 94.33 |
+| `reading:POOLED` | F1 0.9192 | assumed C=1, render excluded | 91.92 |
+| `engraved:omr_ned` | 0.1122 | structural, measured, F=0 | **88.78** |
+| `competitive:engraved:audiveris` | 0.1252 | head-to-head | 87.48 |
+| `competitive:scan:audiveris` (10 rows) | 0.7919 | head-to-head | 20.81 |
+| `scan:omr_ned:page_fidelity_15rows` | 0.8417 | structural, measured, F=0.2123 | **20.09** |
+| `scan:omr_ned` (20 rows) | 0.8444 | assumed F=0 | 15.56 |
+| `scan:hairpin_detect` | 1.01 % | **bounded below at 0.80** (Breitkopf) | 1.01 |
+
+**Ceiling census, 55 rows** (generated — `metric-registry.json` `coverage`):
+25 measured · 1 measured-directly · 1 corroborated · 1 single-source ·
+1 bounded-above · 1 **bounded-below** · 1 pre-registered · 1
+measured-unreliable · 1 not-a-defect-rate · 19 assumed · 3 unmeasured.
+**39 scoreable, 16 not.**
+
+## S9. What round 3 did not do
+
+- **No delta measured.** Everything is a level. Gating a delta needs §S7.
+- **The `input` ceiling remains one edition** for both classes it touches.
+- **`scan:pitch` and `scan:duration` still carry assumed ceilings.** The notehead
+  bound (≤ 0.971) is close enough to 1.0 that assuming C=1 is nearly harmless
+  *for that class on that print*; nothing licenses it for durations.
+- **The five Mahler/Bach scan rows still have no structural floor.**
+- **Nothing was wired into the dashboard**, per the standing instruction.

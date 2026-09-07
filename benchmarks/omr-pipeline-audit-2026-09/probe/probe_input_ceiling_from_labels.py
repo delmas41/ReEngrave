@@ -41,6 +41,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+sys_path_added = True
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _fixtureroot import fixture_root, require_nonempty  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parents[1]
 OUT = HERE / "input-ceiling-from-labels.json"
@@ -54,7 +59,9 @@ NOTEHEAD_PREFIX = "notehead"
 
 def main() -> int:
     verdicts = {}
-    for f in sorted((BATCH / "verdicts").glob("*.json")):
+    vfiles = require_nonempty(sorted((BATCH / "verdicts").glob("*.json")),
+                              "verdict files", BATCH / "verdicts", "*.json")
+    for f in vfiles:
         d = json.loads(f.read_text())
         if COMPLETION_PASS in (d.get("inspected_passes") or []):
             verdicts[d["cell_id"]] = d
@@ -87,6 +94,7 @@ def main() -> int:
             "alignment_strength": al.get("strength"),
         })
 
+    require_nonempty(rows, "usable completion-swept cells", BATCH)
     t = sum(r["truth_notes"] for r in rows)
     h = sum(r["human_noteheads"] for r in rows)
     dm = sum(r["detector_matched_truth_notes"] or 0 for r in rows)

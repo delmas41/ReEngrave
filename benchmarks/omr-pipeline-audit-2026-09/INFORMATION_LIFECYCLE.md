@@ -993,3 +993,251 @@ can go with evidence instead of an argument.
 - **The labeling pipeline's read of `measure_extractor`** — the 15-importer blast radius the coordinator named. I verified the count exists; I did not trace what `annotate/recut_cells.py` and `training/` actually consume.
 - **UNMEASURED:** the one-line-staves interaction (§R1.3, run named) · the post-dedupe limit on §R2.2 (run named) · whether `n_bars > 1` occurs on any page (5 pages, 0 hits) · whether the 197 discarding decision points contain defects (the census does not adjudicate) · S46's cost — I did not measure how many ties are paired across a y-gap large enough to be wrong.
 - ⚠️ **Substrate:** §R2.2 uses the same two committed transcriptions as round 1 §4.2. §R2.1's five pages are new. The census reads source only.
+
+---
+---
+
+# ROUND 3 — N4 overturned and priced, the instruments fixed, three corrections
+
+**Written after the verifier's round-2 report (D17–D19, M11–M13) and the
+coordinator's round-3 brief.** Tree `61eefe21` + audit commits.
+**No benchmark was run, no weights loaded, no behaviour changed.**
+
+## R7. ⚠️ N4 IS REAL. MY RETRACTION WAS THE ERROR — and here is what it costs
+
+### R7.1 The retraction, and why it was wrong
+
+Round 2 §R2.1 headed N4 **"UNREACHABLE"** on 277 components over 5 pages with
+zero multi-bar. The verifier (D17) widened my own probe over ten pages I omitted
+and found **31 multi-bar components in 805**. It reproduced my census exactly
+first, so the disagreement is sampling, not method.
+
+⚠️ **The bias is identifiable, not bad luck: both scan pages in my census are
+`p1` rows — the two cleanest prints in the gate.** Print-merged beams live on
+the worse prints. Every hit is on p2/p3/p4/p6 or Bach.
+
+⚠️ **And my own report contains the standard that should have stopped me.**
+§R5 item 8: *"a null on a corpus without the defect is not evidence"*, and §R6
+listed the 5-page limit under UNMEASURED. **The hedge was right and the heading
+overrode it.** The verifier's M13 is the general lesson and I accept it: *a
+stated limit that is cheap to close should be closed, not declared.* Closing it
+cost eleven minutes of wall clock and no weights.
+
+### R7.2 Priced — the whole 20-row scan gate plus every engraved fixture
+
+`probe/probe_beam_bar_positions.py` (rewritten, §R8), 31 pages, **2,073 accepted
+beam components**. Output `beam-bar-census.json`.
+
+| | components | `n_bars ≥ 2` |
+|---|--:|--:|
+| **scan** (20-row gate) | 1,815 | **51** |
+| **engraved** (11 fixtures, page 0) | 258 | **0** |
+| **total** | **2,073** | **51 (0.0246)** |
+
+Multi-bar components appear on **9 of the 20 scan rows** — Brahms 1 p2 13, p3 7,
+p4 2 · Dvořák 9 p7 9, p6 3, p5 2 · Bach 9 · Mahler 5 p3 4, p2 2 — and on **none
+of the eleven engraved fixtures**. The branch is live, it is scan-only, and it is
+rare.
+
+### R7.3 The question the coordinator asked: does the difference change a decision?
+
+Not *do the coordinates differ* — they must — but does the difference cross the
+cluster tolerance `BEAM_Y_CLUSTER_FACTOR × spacing = 0.35 spaces`, which is what
+`rhythm._beams_attached_to_stem` counts levels at. Fabricated gaps are all
+`h/n_bars` by construction; measured gaps vary. So:
+
+```
+levels_fabricated = n  if h/n > tol else 1        (all gaps identical)
+levels_measured   = 1 + #(measured gap > tol)
+```
+
+| quantity, over the 51 | median | p75 | p90 | max | over 0.35 sp |
+|---|--:|--:|--:|--:|--:|
+| bar-CENTRE displacement, fabricated vs measured | **0.082 sp** | 0.157 | 0.249 | **0.664** | **6 of 51** |
+| BAND-EDGE displacement (what the end-window test reads) | **0.241 sp** | — | 0.554 | **1.037** | **15 of 51** |
+
+⚠️ **LEVEL-COUNT FLIPS: 4 of 51 (0.078).** On these the fabrication changes how
+many beam levels the component resolves to — i.e. it changes a duration:
+
+| row | n_bars | fabricated → measured | fabricated gap | measured gap |
+|---|--:|---|--:|---|
+| dvorak-405834-p6 | 2 | **2 → 1** | 0.365 sp | 0.325 sp |
+| dvorak-405834-p7 | 2 | **2 → 1** | 0.508 sp | 0.340 sp |
+| mahler-local-p3 | 2 | **2 → 1** | 0.404 sp | 0.301 sp |
+| brahms-317803-p2 | 2 | **1 → 2** | 0.336 sp | 0.468 sp |
+
+**Three of the four INVENT a level** — even division spreads two merged bars
+wider than they are, the gap clears the tolerance, and a note is read one
+value too short. **One LOSES a level**, reading a note one value too long. Every
+one of the four straddles 0.35: the fabricated and measured gaps sit on opposite
+sides of it, which is the signature of a decision made on a coordinate nobody
+measured rather than of a large error.
+
+**So N4's verdict, stated to its evidence:** a real defect, with a real
+consequence, on **4 components across 31 pages** — scan-only, ~0.2 duration
+errors per scanned page, invisible on engravings. The mechanism is exactly as
+round 1 described it; my round-2 reach figure was the thing that was wrong.
+
+### R7.4 The verifier's open alternative, adjudicated by the counting method
+
+D17 left open a worse reading: multi-bar fill median **0.472** is the docstring's
+own signature for a *sloped single* bar (43–46%), so some of the 51 might be one
+sloped bar split in two. Confirmed on my wider sample — multi-bar fill median
+0.472 (p10 0.339, p90 0.702) against **single-bar 0.875**.
+
+⚠️ **I adjudicate this against the counting method, not the ink, and say which
+it is.** `_stacked_bar_count` counts ink RUNS in a column of the component's own
+label mask. **A single sloped bar crossed by a vertical column yields one run,
+whatever its slope** — that is the property the function was rewritten to
+exploit. Two runs in a column therefore require two vertically separated
+strokes. And my independent re-measurement agrees with `_stacked_bar_count` on
+**51 of 51** components. The low fill is what a 2-bar box *should* show: two thin
+strokes plus the white gap between them inside one bounding box.
+
+⚠️ **That is an inference from the method, not an inspection.** The check that
+would settle it is cropping the 51 boxes and looking; I did not do it, and it is
+the one thing about N4 still open.
+
+⚠️ **And a label of mine that the verifier quoted was wrong.** My round-2 probe
+printed *"columns disagreed with the median count: 0 of 13"* while counting
+**components**, not columns. The verifier read it as columns and concluded *"0
+disagreements of 31"*. Corrected in the probe and here: **components whose
+measured count matches `_stacked_bar_count`: 51 of 51. Sampled COLUMNS differing
+from their own component's median: 907.** The conclusion — these are not median
+noise — survives on the first figure, which is the one that carries it.
+
+### R7.5 What to do about it
+
+**Round-2 item 3 stands and is now priced.** `_stacked_bar_count` should return
+the bar positions it already computes and `detect_beams` should use them.
+⚠️ **Do not expect the metric to move**: 4 duration errors across 31 scanned
+pages sits inside the scan gate's ±6-edit noise floor. Ship it because it is
+free and correct, and assert the invariant (`fabricated == measured` where the
+mask agrees) rather than a score. The A/B that *could* see it is the scan gate's
+**duration rate** on the four named rows, not pooled OMR-NED.
+
+---
+
+## R8. The instruments — `OMR_FIXTURE_ROOT` and a non-zero exit
+
+The verifier's failure mode is worse than round 1's: not a wrong path, but a
+probe that **prints a clean all-zero table at exit 0** when it cannot find its
+inputs. Mine did exactly that — `probe_beam_bar_positions` printed
+`!! missing …` to *stderr* and **continued**, ending `wrote … (0 components)`
+at exit 0. That is the stale-tree incident in miniature, and it is the shape
+that produced my own N4 retraction.
+
+⚠️ **The verifier's withdrawal of its earlier advice is right: relative paths
+genuinely cannot work here.** `library/` and the `omr-orchestral-e2e/fixtures/`
+build products are gitignored and exist in the main checkout only.
+
+**Applied to all five probes** (`OMR_AUDIT_GUARD` block, identical in each):
+
+- inputs resolved from `Path(__file__).resolve().parents[3]`, **never the CWD**;
+- `OMR_FIXTURE_ROOT` names the checkout holding anything gitignored, defaulting
+  to the main checkout;
+- `_require(paths, what)` → **exit 2** on a missing input *or an empty set*;
+- `probe_beam_bar_positions` additionally exits 2 on a bad `OMR_FIXTURE_ROOT`
+  and on a zero-component census, because zero components over 31 pages is an
+  instrument failure and not a result.
+
+Verified: all five run identically from `/`; `OMR_FIXTURE_ROOT=/nonexistent`
+exits 2; `_require([])` and `_require(['/nonexistent'])` both exit 2.
+
+---
+
+## R9. Corrections folded in
+
+| | correction | applied |
+|---|---|---|
+| **D17** | N4 is not unreachable | §R7 — the retraction is overturned and the item priced |
+| **D18** | the census-vs-map ratio compares AST nodes in 7 files with curated rows across 40+ modules | ⚠️ **the comparison is withdrawn.** §R3's number stands alone: **793 decision points, 197 discarding (0.248), 211 selector calls, over seven files** — a mechanical, re-runnable floor on sites worth inspecting. It is not set against the map's row count, because a single map row covers many nodes and many nodes correctly have no row |
+| **D19** | §R3.1's four hand-adjudicated false positives name `_measure_x_boundaries`, which is not in the probe's 14 | ⚠️ corrected: the four are `parse_pages`, `_ledger_rows`, `_window_blind_systems` and **`_dedupe_cross_staff_detections`** — the last a genuine false positive of the rule, since it *does* write `n_cross_staff_duplicates_removed` and the report already places it in the accounts-for-its-removals column. **The numbers (14, and 16 of 20) are unaffected** |
+| **mine** | the "columns disagreed" label counted components | §R7.4 |
+
+---
+
+## R10. M11 and M12 — the retraction's evidence is now reproducible, and stronger
+
+**M11 was right and it is the more serious of the two.** §R2.2's Q3 and Q4
+tables carried a retraction the coordinator had already relayed, and **no
+committed probe emitted them** — `probe_ladder_inversion.py` stopped at Q2. By
+this audit's own standard that made the retraction unverifiable until the
+verifier rebuilt it. **Q3 and Q4 are now inside my probe**, importing
+`_LEDGER_RUNG_EXPECTED_SLACK` / `_Y_TOL_SPACES` / `_MIN_X_OVERLAP` from the
+module so the mirror cannot drift from the rule, and they reproduce the
+published tables exactly.
+
+**M12 — the direct measurement, taken by the verifier, folded in with credit.**
+I argued "different populations" from the survival table; the confidence of the
+*matched* rungs settles it in one line. My probe now emits it and reproduces the
+verifier's figures:
+
+| | all `ledgerLine` | rungs INSIDE a band (impossible) | rungs MATCHED by a complete ladder |
+|---|---|---|---|
+| beet5-p02 | n=633, median 0.337, 71.6% <0.40 | n=479, median 0.327, **74.9%** <0.40 | n=31, median **0.447**, **38.7%** <0.40 |
+| brahms1 | n=768, median 0.344, 69.9% <0.40 | n=302, median 0.314, **90.7%** <0.40 | n=297, median **0.400**, **49.8%** <0.40 |
+
+The ladder's geometry selects rungs **better than the pool** (0.447/0.400 vs
+0.337/0.344) and rejects the impossible ones outright (75–91% sub-0.40,
+contributing **0** matches) — *and* **39–50% of the rungs it does use are still
+under 0.40**, which is exactly why a 0.40 floor destroys 42–58% of its verdicts.
+**Round-1 item 5 stays withdrawn, now on a measurement rather than an
+inference.** Credit to the verifier for taking it.
+
+---
+
+## R11. Continuing — `resegment_fused_measures`, and what the labeling pipeline consumes
+
+### R11.1 `majority_bars_by_system` → `resegment_fused_measures`
+
+| # | signal | destroyed at | consumers | should read it | volume |
+|---|---|---|---|---|---|
+| S50 | **the majority SIZE `mode_k`** | `mode_value, mode_k = Counter(counts).most_common(1)[0]` (`:1460`); `mode_k` is compared once (`mode_k * 2 <= total`) and dropped — only `mode_value` is returned | none | the steering decision. **"11 of 12 staves agree" and "7 of 12 agree" steer a split identically** | 10¹/page |
+| S51 | ⚠️ **WHICH staves are short** | `counts` is a bare list of per-staff totals (`:1453-1454`); the staff indices are dropped at that line | none | ⚠️ **`resegment_fused_measures` then re-derives it downstream by CELL WIDTH.** The identity of the deviating staff is known exactly, one function earlier, and thrown away — so the split hunts by geometry for a staff the vote could have named | 10¹/page |
+| S52 | **the abstention** (no strict majority) | `continue` at `:1462` (`mode_k * 2 <= total`, `:1461`) — the system is simply absent from the dict | none | a 2-2 or 3-3 split is a real disagreement and is indistinguishable from a system that was never examined | 10¹/page |
+| S53 | **`_select_steered_splits`' three rejection reasons** | three silent `continue`s (`:1490`, `:1494`, `:1498`) — no candidates, would overshoot the known count, would cut a sliver | none | which of the three fired is the difference between "no evidence here", "the count is already met" and "a false barline was refused" | 10¹/page |
+
+The pattern is the same one the whole audit has traced, and here it costs a
+**re-derivation**: a fact is computed precisely (S51), discarded, and looked for
+again by a weaker proxy in the next function.
+
+### R11.2 What the labeling pipeline actually consumes — and it is not a function
+
+The coordinator's 15-importer question. Six labeling/training modules import
+`measure_extractor`, and every one takes the same two entry points —
+`detect_barlines`, `extract_measures`. ⚠️ **But the real coupling is not the
+import. `select_cells_orchestral.py:59-60` and `recut_cells.py:113-114`
+MONKEY-PATCH the module's global pad constants**:
+
+```python
+_me.PAD_ABOVE_STAFF_LINES = ORCH_PAD_STAFF_LINES   # 5.0, not the pipeline's 4
+_me.PAD_BELOW_STAFF_LINES = ORCH_PAD_STAFF_LINES
+```
+
+⚠️ **`PAD_MAX_STAFF_LINES = 6` is NOT patched**, so the grow-where-there-is-room
+rule still runs on top of the 5.0 base — a labeled cell's pad is 5.0 **or up to
+6**, decided per staff by `_neighbour_room`.
+
+**This is S44 becoming expensive.** A stored label lives in the cell's CANONICAL
+frame, so a cell cut at pad 5 and the same cell cut at pad 6 are not slightly
+different pictures — they are the same music at a different scale, with every
+box landing somewhere else. `MeasureCell` records `bbox_page_px`,
+`staff_line_ys_canonical` and `upscale_factor` **but not the pad it was cut
+with**, so nothing can say which frame a batch is in.
+
+The project has already paid for that absence: `recut_cells` **derives** the mode
+by cutting under each and keeping the one whose `cell_canonical_w`/`_h` the
+manifest already agrees with, aborting on a mismatch. That derivation exists
+precisely because the producing module does not write the field. **One integer on
+`MeasureCell` would replace it** — and it is the cheapest item in this whole
+audit that a second workstream is actively working around.
+
+---
+
+## R12. Still open after round 3
+
+- **Not adjudicated by inspection:** whether any of the 51 multi-bar components is a sloped single bar (§R7.4). The run-count argument says no; cropping the 51 boxes would settle it.
+- **Not covered:** `resegment_fused_measures`' own body past `_select_steered_splits` (the renumbering and the width guards), and `_cell_line_offset`'s search internals (S43).
+- **UNMEASURED, unchanged from round 2:** the one-line-staves flag interaction (§R1.3, run named) · the post-dedupe limit on the ladder probe (run named) · whether the 197 discarding decision points contain defects.
+- ⚠️ **A standing lesson I am recording against myself:** round 2 produced a confident negative from a 5-page sample whose bias was visible in the row names, and stated the correct standard two sections away from the heading that broke it. **The rule I will apply from here: a null result gets the same sampling scrutiny as a positive one, and a heading may not be stronger than the section's own hedge.**

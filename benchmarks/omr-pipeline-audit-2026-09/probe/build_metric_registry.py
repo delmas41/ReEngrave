@@ -30,6 +30,8 @@ A = {
     "floor": HERE / "structural-floor-measured.json",
     "inputceil": HERE / "input-ceiling-from-labels.json",
     "retro": HERE / "retro-stamp.json",
+    "hairpinceil": HERE / "hairpin-ceiling-value.json",
+    "humancost": HERE / "human-cost-identity.json",
     "content": ROOT / "docs/progress-dashboard.content.json",
     "pct": HERE / "pct-of-achievable-prototype.json",
 }
@@ -579,26 +581,39 @@ rows.append(row(
     id="ceiling:input:hairpin:scan", stage="4 symbol detection", family="scan",
     raw_metric="can a human see a hairpin on these scans at all?",
     native_direction="higher_is_better", value=None,
-    ceiling={"kind": "input", "value": None, "status": "refuted_as_a_ceiling",
+    ceiling={"kind": "input", "value": 0.80, "status": "bounded_below",
              "evidence": ["benchmarks/omr-pipeline-audit-2026-09/"
-                          "input-ceiling-from-labels.json"],
-             "control": "counted directly: over the 55 completion-swept cells of "
-                        "a real 1876 Breitkopf scan a human drew 13 "
-                        "dynamicCrescendoHairpin and 4 dynamicDiminuendoHairpin "
-                        "— SEVENTEEN. The ink is visible to a reader."},
-    n=17, n_unit="human-drawn hairpin boxes",
+                          "input-ceiling-from-labels.json",
+                          "benchmarks/omr-pipeline-audit-2026-09/"
+                          "hairpin-ceiling-value.json"],
+             "edition": "Breitkopf & Härtel, Brahms 1 mvt 1 — ONE EDITION, "
+                        "irreducibly so today (only one batch in the corpus has "
+                        "a COMPLETION pass). Quote with the publisher NAMED; it "
+                        "is not a claim about scans in general.",
+             "control": "counted directly: over 55 completion-swept cells a "
+                        "human drew 13 dynamicCrescendoHairpin + 4 "
+                        "dynamicDiminuendoHairpin = SEVENTEEN. At bar level, of "
+                        "the 5 swept bars where the encoding STARTS a hairpin, a "
+                        "human found ink in 4 — a bar recall of 0.80 at n=5. "
+                        "The count ratio (17 human / 11 reference starts = "
+                        "1.545) is NOT usable: a barline cuts one hairpin into "
+                        "two boxes and a three-bar hairpin is one start drawn "
+                        "across three cells, so the two units are biased in "
+                        "opposite directions."},
+    n=5, n_unit="swept bars carrying a reference hairpin start",
     era_key="labeling|breitkopf-brahms1|completion-pass|55 cells",
     scoreable=False,
-    why_not="This row exists to record a REFUTATION, not a score. The open "
-            "question was whether `scan:hairpin_detect` at 1.01%% is a "
-            "catastrophe or a hard input ceiling. A human found 17 hairpins on "
-            "55 scanned cells, so it is a CATASTROPHE — a detector failure, not "
-            "missing ink. The same sweep also drew 62 ties and 27 slurs, the "
-            "other two families a fine-tune is documented to delete. The ceiling "
-            "VALUE is still unmeasured (no hairpin-vs-reference-wedge pairing "
-            "exists), which is why this is not scoreable; but the assumption "
-            "C = 1.0 that `scan:hairpin_detect` is scored under is no longer "
-            "unsupported.",
+    why_not="A BOUND, not a point, so it is not scored — but it is now a "
+            "ceiling rather than a refutation. `scan:hairpin_detect` reads "
+            "1.01%% against a ceiling measured at AT LEAST 0.80 on this "
+            "edition, so the detector is at roughly one part in eighty of what "
+            "a reader recovers. ⚠️ AND THE MATCHED COMPARISON IS WORSE THAN THE "
+            "CORPUS RATE: on the SAME three pages the human swept, the "
+            "transcription contains 10,523 detections and ZERO of either "
+            "hairpin class. The 1-of-99 is not a thin-sample artefact — on this "
+            "edition it is zero. n = 5 bars is the whole sample the corpus can "
+            "offer; the same sweep drew 62 ties and 27 slurs, the other two "
+            "families a fine-tune is documented to delete.",
     source="benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json"))
 
 rows.append(row(
@@ -744,26 +759,75 @@ rows.append(row(
            "the registry."]))
 
 rows.append(row(
-    id="human:review_cost", stage="(the purpose)", family="both",
-    raw_metric="staff records a human must look at",
-    native_direction="lower_is_better", value=None,
-    ceiling={"kind": None, "value": None, "status": "unmeasured", "evidence": [],
-             "control": None},
-    n=None, n_unit="staff records",
-    era_key=None, scoreable=False,
-    why_not="⚠️ THE THING SEAN BUILT THIS PROJECT TO REDUCE, AND IT IS NOT ON THE "
-            "BOARD. It has been measured exactly once, as a side result: between "
-            "two identity passes accuracy moved 44 records and review cost moved 2 "
-            "(197 -> 195). It has no ceiling, no era key, no harness of its own, "
-            "and no artefact this registry can read. See backlog D4.",
-    source="benchmarks/omr-identity-harness-2026-09/FINDINGS.md"))
+    id="human:review_cost:identity", stage="(the purpose)", family="both",
+    raw_metric="share of staff records a human must open — unnamed, "
+               "categorically impossible, not-in-this-work, or contradicted by "
+               "the staff's own margin label",
+    native_direction="lower_is_better", native_worst=1.0, native_best=0.0,
+    value=L["humancost"]["arms"][0]["human_cost_rate"] * 0 + (
+        sum(a["human_cost_records"] for a in L["humancost"]["arms"])
+        / sum(a["n_records"] for a in L["humancost"]["arms"])),
+    transform="pct = 100 * (1 - M) / (1 - F)",
+    ceiling={"kind": "assumed", "value": 0.0, "status": "assumed",
+             "evidence": ["benchmarks/omr-pipeline-audit-2026-09/"
+                          "human-cost-identity.json"],
+             "control": "W = 1.0 is REAL, not a convention: a pipeline that "
+                        "names nothing leaves every staff to the reviewer. "
+                        "F = 0 is assumed and conservative. ⚠️ The floor is NOT "
+                        "zero and is now LOCATED: a CONDENSED staff "
+                        "(`Violoncello e Basso`) has a margin label and a slot "
+                        "name that disagree and are BOTH RIGHT, and costs a look "
+                        "no pipeline work removes. Neither edition here "
+                        "condenses that way, which is a fact about two "
+                        "publishers, not about the floor."},
+    n=sum(a["n_records"] for a in L["humancost"]["arms"]), n_unit="staff records",
+    pct_of_achievable=round(pct_err(
+        sum(a["human_cost_records"] for a in L["humancost"]["arms"])
+        / sum(a["n_records"] for a in L["humancost"]["arms"]), 0.0), 2),
+    era_key="identity-harness|2026-09-07|1571 committed records|2 arms|"
+            "clef-regime MIXED",
+    comparable_as={"time_series": "identity-harness|human-cost|identity-axis|"
+                                  "2 committed arms",
+                   "head_to_head": None},
+    summability_class="human_cost_rate", pool_key=None,
+    scoreable=True,
+    source="benchmarks/omr-pipeline-audit-2026-09/human-cost-identity.json",
+    companions={"human_cost_records": sum(a["human_cost_records"]
+                                          for a in L["humancost"]["arms"]),
+                "n_records": sum(a["n_records"] for a in L["humancost"]["arms"]),
+                "decomposition": {
+                    k: sum(a["decomposition"][k] for a in L["humancost"]["arms"])
+                    for k in ("unnamed", "impossible", "not_in_this_work",
+                              "contradicted")}},
+    flags=["⚠️⚠️ IDENTITY AXIS ONLY. This scores staff NAMING. The reviewer's "
+           "larger load is note-level diffs and has no harness at all, so a high "
+           "number here must never be read as 'review is nearly free'. Rendering "
+           "it beside `scan:omr_ned` without that caption would be the most "
+           "misleading pairing on the board.",
+           "2 of the harness's 59 arms are exported, which is why this is 46 of "
+           "1,571 while FINDINGS reports 197 of 3,543 — a COVERAGE gap, not a "
+           "schema gap (round 2 called it a schema gap and was wrong).",
+           "58 of 59 arms are clef-blind REPLAYS and one is a transcription; a "
+           "cost figure that mixes regimes is not one figure (backlog F)"]))
 
 # ───────────────────────────────────────────────────────────────────── assemble
 scoreable = [r for r in rows if r["scoreable"]]
 doc = {
-    "schema_version": "0.2.0",
+    "schema_version": "0.3.0",
     "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/build_metric_registry.py",
-    "round": 2,
+    "round": 3,
+    "changes_since_0_2_0": [
+        "human review cost — the project's PURPOSE — is on the board: 46 of "
+        "1,571 records, 97.07% of achievable. Round 2's 'irreproducible' "
+        "verdict is WITHDRAWN: score.py derives `impossible`/`not-in-this-work` "
+        "from corpus.py, which is committed, and work/page/emitted are all on "
+        "the record. The fields were absent; the information was not.",
+        "the hairpin `input` ceiling has a VALUE (bar recall 0.80, n=5) and the "
+        "matched comparison round 2 never made: ZERO hairpin detections in "
+        "10,523 on the same three pages a human swept",
+        "every probe that globs now takes OMR_FIXTURE_ROOT and exits non-zero "
+        "on an empty glob, per the verifier's endorsed fix",
+    ],
     "changes_since_0_1_0": [
         "the scan structural floor is MEASURED (probe_structural_floor.py) "
         "instead of estimated; it is a CONSTRAINED floor — the price of page "

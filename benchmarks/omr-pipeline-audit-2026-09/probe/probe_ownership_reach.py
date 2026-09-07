@@ -1,7 +1,11 @@
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS  # fail-loud
+chdir_root()
+
 import json, glob, os
 from collections import Counter
-ROOT="/Users/seanjohnson/Desktop/ReEngrave"
-files=sorted(glob.glob(f"{ROOT}/benchmarks/omr-additive-vs-gated-2026-09/out/contests/*.contests.json"))
+files=sorted(fixtures(CONTESTS, expect_at_least=20))
 diff=Counter(); diff_cat=Counter()
 for f in files:
     d=json.load(open(f))
@@ -15,8 +19,8 @@ print("different-class contests by category:", dict(diff_cat))
 for k,v in diff.most_common(15): print("  ",k,v)
 print()
 # reach of the three ownership decisions across both families
-for fam,pat in (("scan",f"{ROOT}/benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"),
-                ("engraved",f"{ROOT}/benchmarks/omr-orchestral-e2e/fixtures/*.omr.json")):
+for fam,pat in (("scan","benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"),
+                ("engraved","benchmarks/omr-orchestral-e2e/fixtures/*.omr.json")):
     dup=clip=unl=det=nh=0
     for f in sorted(glob.glob(pat)):
         d=json.load(open(f))

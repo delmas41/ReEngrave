@@ -214,3 +214,65 @@ hard-code `/Users/seanjohnson/Desktop/ReEngrave`. Byte-identical today, but it i
 **the stale-tree incident installed into the audit's own instruments** — a probe
 that reads an absolute path measures a tree other than the one it is run against.
 Ordered fixed before round 2 lands.
+
+---
+
+## Phase 2 — build. Sean's authority, 2026-09-07 ~23:40
+
+> *"I am giving you authority to turn analysis into fixes … new agents be spun up to
+> do the fixes and then use the analysis agents that dug up the work double check and
+> advise the fixing/building agents. You manage, our current agents analyze, advise
+> and check the work, new agents you send out do the fixes and builds."*
+
+**The separation is the control.** An agent does not review its own build, and the
+agent that found a thing does not implement it.
+
+| role | agents | may edit |
+|---|---|---|
+| coordinate, merge | this session | audit dir + merges |
+| analyse · advise · **review the builds** | I, II, III | nothing in `tools/` |
+| **build** | A, B, C (new) | only their own file list |
+| verify | IV | nothing — reports only |
+
+**Isolation:** each build agent has its own git worktree cut from `main` at
+`974971e3` — ⚠️ **not** from the audit branch, and **re-cut after main moved 5
+commits under us**, because tonight's first incident was an audit that began 28
+commits stale. Venv and weights symlinks pre-created so no agent re-bootstraps.
+
+**File ownership is disjoint by construction** — the only reliable way to run three
+builders at once:
+
+| agent | branch | owns |
+|---|---|---|
+| A | `claude/fix-record-refusals-clef` | `transcribe.py` · `clef_locator.py` · `clef_correction.py` · `key_signature_vote.py` · `time_signature_locator.py` |
+| B | `claude/fix-barline-evidence` | `types.py` · `measure_extractor.py` · `staff_detector.py` |
+| C | `claude/fix-probe-hygiene-dashboard` | `benchmarks/omr-pipeline-audit-2026-09/**` · new files in `tools/dashboard/` |
+
+### The acceptance bar, identical for all three
+
+1. **Exported MusicXML byte-identical**, scanned page and engraved fixture, before
+   and after. Proven by `diff`, never asserted.
+2. Result JSON may gain **new keys only** — a committed comparison walks both and
+   asserts no pre-existing key changed value. The auditors re-run it.
+3. Unit tests **run RED first**, with the change removed. ⚠️ This repo has shipped a
+   test that passed vacuously; the ledger-zone parity test is the precedent.
+4. Targeted test files only. **Nobody runs the whole suite** — seven concurrent
+   agents once timed it out at 10 minutes.
+
+⚠️ **Change no default, and fix no decision you are recording.** A builder who wants
+to correct the decision it is instrumenting must stop and report. *Record first,
+decide later — including deciding not to.* That is the audit's own shortlist item 1
+and it is what makes this phase byte-identical.
+
+### What is deliberately NOT being built tonight
+
+- **The clef / key-signature / meter guard.** The strongest finding of the audit,
+  and it is **coupled to the held `OMR_INSTRUMENT_CLEF_DEFAULT` decision, which is
+  Sean's.** Queued to be built default-OFF behind its own flag once the recording
+  sweep lands, so the evidence exists before the repair does.
+- **`_drop_close_outliers` consuming the new `Barline` evidence.** Recording is
+  byte-identical; consuming it is a measured change and needs an A/B this machine
+  cannot afford beside three builders.
+- **Dashboard integration.** The renderer is standalone; the `generate.py` diff is
+  proposed and not applied. A generated artefact with a staleness gate does not get
+  edited unreviewed at 2am.

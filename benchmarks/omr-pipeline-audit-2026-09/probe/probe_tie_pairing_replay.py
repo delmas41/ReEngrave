@@ -1,3 +1,8 @@
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS  # fail-loud
+chdir_root()
+
 """Replay _pair_ties_in_staff over committed transcriptions (read-only)."""
 import json, glob, os
 from collections import Counter

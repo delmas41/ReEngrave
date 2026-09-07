@@ -1,8 +1,12 @@
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS  # fail-loud
+chdir_root()
+
 import json, glob, os
 from collections import Counter
-ROOT="/Users/seanjohnson/Desktop/ReEngrave"
-for fam,pat in (("scan",f"{ROOT}/benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"),
-                ("engraved",f"{ROOT}/benchmarks/omr-orchestral-e2e/fixtures/*.omr.json")):
+for fam,pat in (("scan","benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"),
+                ("engraved","benchmarks/omr-orchestral-e2e/fixtures/*.omr.json")):
     winconf=[]; wincls=Counter(); octave=Counter(); nullclef=Counter()
     for f in sorted(glob.glob(pat)):
         d=json.load(open(f))

@@ -49,6 +49,8 @@ OUT = HERE / "structural-floor-measured.json"
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "benchmarks" / "omr-scan-e2e-2026-09"))
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _fixtureroot import fixture_root, require_nonempty  # noqa: E402
 import page_normalise                                    # noqa: E402
 from tools.omr import omr_ned as omr_ned_mod             # noqa: E402
 
@@ -60,8 +62,10 @@ SCAN = ROOT / "benchmarks" / "omr-scan-e2e-2026-09"
 #: was scored on, and the binding is CHECKED (every truth's sha256 is compared
 #: against the canonical arm's `sha.truth`, and the run refuses on a mismatch)
 #: rather than assumed from a path.
-FIXTURES = Path("/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/"
-                "reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures")
+#: override with OMR_FIXTURE_ROOT (a directory holding *.truth.musicxml).
+FIXTURES = fixture_root(Path(
+    "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/"
+    "benchmarks/omr-scan-e2e-2026-09/fixtures"))
 WORKS = SCAN / "works.json"
 DERIVED = HERE / "derived-truth-floor"
 NORM20 = (ROOT / "benchmarks" / "omr-page-normalise-fixes-2026-09"
@@ -175,6 +179,7 @@ def main() -> int:
         # THE MEASUREMENT: derived truth AS THE PREDICTION, raw truth as truth.
         pairs.append((rid, norm_xml, truth))
 
+    require_nonempty(pairs, "scoreable (derived truth, raw truth) pairs", FIXTURES)
     scored = omr_ned_mod.score_batch(pairs, detail="AllObjects")
     by_name = {p["name"]: p for p in scored.get("pairs", [])}
 

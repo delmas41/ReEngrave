@@ -1,13 +1,17 @@
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS  # fail-loud
+chdir_root()
+
 import json, glob, os
 from collections import Counter
-ROOT="/Users/seanjohnson/Desktop/ReEngrave"
 def bands(st):
     g=st.get("staff_geometry") or {}
     ys=g.get("line_ys_page")
     if not ys or len(ys)<2: return None
     return min(ys), max(ys), (max(ys)-min(ys))/(len(ys)-1)
-for fam,pat in (("scan",f"{ROOT}/benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"),
-                ("engraved",f"{ROOT}/benchmarks/omr-orchestral-e2e/fixtures/*.omr.json")):
+for fam,pat in (("scan","benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"),
+                ("engraved","benchmarks/omr-orchestral-e2e/fixtures/*.omr.json")):
     hist=Counter(); inside=Counter(); tot_out=0; tot_in=0
     for f in sorted(glob.glob(pat)):
         d=json.load(open(f))

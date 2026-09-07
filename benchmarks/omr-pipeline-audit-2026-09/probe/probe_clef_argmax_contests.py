@@ -1,8 +1,12 @@
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _fixtures import fixtures, root, chdir_root, SCAN, ENGRAVED, CONTESTS  # fail-loud
+chdir_root()
+
 import json, glob, os
 from collections import Counter
-ROOT="/Users/seanjohnson/Desktop/ReEngrave"
-FAM={"scan":sorted(glob.glob(f"{ROOT}/benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json")),
-     "engraved":sorted(glob.glob(f"{ROOT}/benchmarks/omr-orchestral-e2e/fixtures/*.omr.json"))}
+FAM={"scan":sorted(fixtures(SCAN, expect_at_least=11)),
+     "engraved":sorted(fixtures(ENGRAVED, expect_at_least=11))}
 for fam,files in FAM.items():
     print("===",fam)
     pairs=Counter(); midstaff=0; firstcell=0; changes=[]

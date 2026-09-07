@@ -36,6 +36,31 @@ import ast, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
+
+# ── OMR_AUDIT_GUARD ─────────────────────────────────────────────────────────
+# ⚠️ A probe that prints a clean all-zero table when it means "I looked in the
+# wrong place" is this audit's own recurring failure — it produced the round-2
+# N4 retraction. Inputs are resolved from THIS FILE's location (never the CWD),
+# `OMR_FIXTURE_ROOT` names the checkout for anything gitignored, and a missing
+# or empty input set is a NON-ZERO EXIT, never a result.
+import os as _os
+
+FIXTURE_ROOT = Path(_os.environ.get(
+    "OMR_FIXTURE_ROOT", "/Users/seanjohnson/Desktop/ReEngrave"))
+
+
+def _require(paths, what):
+    """Abort with exit 2 unless every named input exists and the set is non-empty."""
+    missing = [str(p) for p in paths if not Path(p).exists()]
+    if not paths or missing:
+        print(f"FATAL: {len(missing) or 'all'} {what} missing "
+              f"(set OMR_FIXTURE_ROOT if these are gitignored inputs)",
+              file=sys.stderr)
+        for m in missing[:5]:
+            print(f"  {m}", file=sys.stderr)
+        raise SystemExit(2)
+    return list(paths)
+# ────────────────────────────────────────────────────────────────────────────
 SLICE = ["yolo_detector.py", "line_detection.py", "pitch_resolver.py",
          "rhythm.py", "voicing.py", "measure_extractor.py", "transcribe.py"]
 SELECTORS = {"max", "min", "sorted", "most_common", "median", "argmax",
@@ -137,6 +162,7 @@ def deletion_sites(path: Path):
 
 
 def main() -> int:
+    _require([ROOT / "tools/omr" / f for f in SLICE], "slice source files")
     print(f"{'file':22s}{'decisions':>11s}{'discarding':>12s}{'selectors':>11s}")
     tot = [0, 0, 0]
     for f in SLICE:

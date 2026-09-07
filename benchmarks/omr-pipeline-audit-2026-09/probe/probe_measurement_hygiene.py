@@ -17,6 +17,10 @@ import json
 import re
 from pathlib import Path
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _fixtureroot import require_nonempty  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parents[1]
 OUT = HERE / "measurement-hygiene.json"
@@ -89,6 +93,7 @@ def stamps() -> dict:
             "has_era": bool(keys & set(ERA_KEYS)),
             "n_rows": len(doc.get("rows") or doc.get("works") or []) or None,
         })
+    require_nonempty(rows, "result artefacts", ROOT / "benchmarks", "results*.json")
     n = len(rows)
     return {
         "n_result_artefacts": n,

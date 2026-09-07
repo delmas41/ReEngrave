@@ -17,4 +17,3 @@
     margin < 0.05: 14  < 0.10: 25
     runner-up a DIFFERENT class: 19 of 90
   staves whose per-measure clef CHANGES: 0 of 224 multi-measure staves
-
