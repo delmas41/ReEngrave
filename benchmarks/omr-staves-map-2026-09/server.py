@@ -61,9 +61,12 @@ Every path is in the MAIN checkout, so the work outlives any worktree.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import shutil
 import sys
+import threading
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Optional
@@ -76,6 +79,7 @@ from pydantic import BaseModel
 BENCH = Path(__file__).resolve().parent
 sys.path.insert(0, str(BENCH))
 from build_cache import MAIN, SCAN, default_cache  # noqa: E402
+from merge_additions import prove_normalises  # noqa: E402
 
 OUT_DEFAULT = SCAN / "works.staves-additions.json"
 
@@ -218,6 +222,127 @@ def validate(row_state: dict, n_parts: int, *, needs_ack: bool = False) -> dict:
 
 # ---------------------------------------------------------------------- app
 
+
+# ------------------------------- would it actually normalise? (the real gate)
+
+class Prover:
+    """Runs `merge_additions.prove_normalises` off the request thread.
+
+    ⚠️ WHY THIS EXISTS. Until 2026-09-07 this UI checked only the CHEAP
+    structural facts — every part named once, every staff decided — and never
+    asked `page_normalise` anything. `merge_additions` does ask, before it
+    writes, so a row could go green here, be marked `done`, and refuse at merge
+    time with the human's whole pass already spent. That is exactly what two
+    `page_normalise` faults did to Mahler p3 and p4.
+
+    ⚠️ AND IT MAY NEVER COST A VERDICT. Sean's decisions are irreplaceable and
+    the proof is a nicety beside them, so:
+
+      * nothing here runs on the save path — a PATCH stores the verdict and
+        returns; the proof is computed afterwards, on a worker thread;
+      * a proof that RAISES is caught and reported as "could not run", never
+        propagated into a request;
+      * `done` is the one place that waits, because it is one deliberate
+        keystroke, and even there a proof that could not RUN only warns.
+
+    MEASURED on the five completion rows: 0.18-0.47 s per proof (Mahler's
+    38-part truth 0.35-0.47 s, Bach 0.18 s). Fast enough that the worker is
+    finished before the next keystroke lands, and far too slow to sit on
+    `/api/index`, which would pay it five times on every page load.
+    """
+
+    def __init__(self) -> None:
+        self._lock = threading.Lock()
+        self._done: dict = {}          # fingerprint -> result
+        self._running: set = set()
+
+    @staticmethod
+    def fingerprint(row_id: str, staves) -> str:
+        body = json.dumps([[s.get("name"), list(s.get("parts") or [])]
+                           for s in staves], sort_keys=True)
+        return f"{row_id}:{hashlib.sha256(body.encode()).hexdigest()[:16]}"
+
+    def _compute(self, row_id: str, staves, source_reference) -> dict:
+        t0 = time.time()
+        try:
+            res = prove_normalises(row_id, staves,
+                                   source_reference=source_reference)
+        except Exception as exc:                       # noqa: BLE001
+            # ⚠️ The prover itself failing is NOT the map being wrong.
+            res = {"ok": False, "unavailable": True, "normalised": None,
+                   "problem": f"the normalisation check could not run: "
+                              f"{type(exc).__name__}: {exc}"}
+        res["state"] = "ok" if res["ok"] else (
+            "unavailable" if res.get("unavailable") else "refused")
+        res["seconds"] = round(time.time() - t0, 3)
+        return res
+
+    def peek(self, row_id: str, staves, source_reference=None) -> dict:
+        """The cached proof, or `checking` — and start one if none is running.
+
+        Never blocks. The browser re-reads the row when it sees `checking`.
+        """
+        fp = self.fingerprint(row_id, staves)
+        with self._lock:
+            hit = self._done.get(fp)
+            if hit is not None:
+                return hit
+            if fp in self._running:
+                return {"state": "checking", "ok": None, "problem": None}
+            self._running.add(fp)
+        snapshot = [{"name": s.get("name"), "parts": list(s.get("parts") or [])}
+                    for s in staves]
+
+        def work() -> None:
+            res = self._compute(row_id, snapshot, source_reference)
+            with self._lock:
+                self._done[fp] = res
+                self._running.discard(fp)
+
+        threading.Thread(target=work, daemon=True).start()
+        return {"state": "checking", "ok": None, "problem": None}
+
+    def wait(self, row_id: str, staves, source_reference=None,
+             timeout_s: float = 20.0) -> dict:
+        """The proof, computing it here if it is not cached. Used by `done`."""
+        fp = self.fingerprint(row_id, staves)
+        deadline = time.time() + timeout_s
+        while True:
+            with self._lock:
+                hit = self._done.get(fp)
+                running = fp in self._running
+            if hit is not None:
+                return hit
+            if not running:
+                snapshot = [{"name": s.get("name"),
+                             "parts": list(s.get("parts") or [])}
+                            for s in staves]
+                res = self._compute(row_id, snapshot, source_reference)
+                with self._lock:
+                    self._done[fp] = res
+                return res
+            if time.time() > deadline:
+                return {"state": "unavailable", "ok": False, "unavailable": True,
+                        "problem": "the normalisation check did not finish in "
+                                   f"{timeout_s:.0f}s — merge_additions will "
+                                   "still check before anything is written"}
+            time.sleep(0.05)
+
+
+def done_problems(validation: dict, proof: dict) -> list[str]:
+    """What still blocks `done`. The structural problems, plus a REFUSED proof.
+
+    ⚠️ A proof that could not RUN does not block, and that asymmetry is
+    deliberate — see `merge_additions.prove_normalises`. A missing fixture on
+    this machine is not evidence about the map, and `merge_additions` refuses
+    on it anyway before anything reaches `works.json`.
+    """
+    out = list(validation.get("problems") or [])
+    if proof.get("state") == "refused" and proof.get("problem"):
+        out.append(proof["problem"])
+    return out
+
+
 class StaffPatch(BaseModel):
     # ⚠️ `Optional[...]`, not `str | None`: the host is Python 3.9 and pydantic
     # evaluates these annotations at runtime, where PEP 604 does not exist.
@@ -230,6 +355,7 @@ def create_app(cache: Path, out: Path) -> FastAPI:
     index = json.loads((cache / "index.json").read_text())
     seeds = {r["row_id"]: r for r in index["rows"]}
     store = Store(out)
+    prover = Prover()
 
     app = FastAPI(title="staves-map confirmation")
 
@@ -238,13 +364,23 @@ def create_app(cache: Path, out: Path) -> FastAPI:
             raise HTTPException(404, f"no cached row {row_id}")
         return seeds[row_id]
 
-    def check(seed: dict, st: dict) -> dict:
+    def check(seed: dict, st: dict, *, prove: bool = True) -> dict:
         conflicts = (seed["proposal"].get("conflicts") or [])
         # Only a lineup DIFFERENCE needs acknowledging. A system that merely
         # suppresses staves (p.3's 8 against 11) is a subset of the chosen
         # lineup and the map covers it exactly; there is nothing to choose.
         needs = any(c.get("staves_only_in_this_system") for c in conflicts)
-        return validate(st, seed["reference"]["n_parts_music21"], needs_ack=needs)
+        v = validate(st, seed["reference"]["n_parts_music21"], needs_ack=needs)
+        if prove:
+            # NON-BLOCKING. `peek` returns the cached proof or `checking` and
+            # starts a worker; it never runs page_normalise on the request
+            # thread, so a verdict is stored and answered at the speed it
+            # always was.
+            v["normalise"] = prover.peek(
+                seed["row_id"], st["staves"],
+                source_reference=seed["reference"].get("catalog_path"))
+            v["ok_to_finish"] = not done_problems(v, v["normalise"])
+        return v
 
     @app.get("/", response_class=HTMLResponse)
     def home() -> str:
@@ -255,7 +391,7 @@ def create_app(cache: Path, out: Path) -> FastAPI:
         rows = []
         for r in index["rows"]:
             st = store.row(r["row_id"], r)
-            v = check(r, st)
+            v = check(r, st, prove=False)   # five proofs per page load: no
             rows.append({
                 "row_id": r["row_id"], "label": r["label"],
                 "usable": r["usable"], "blocking": r.get("blocking", False),
@@ -348,11 +484,20 @@ def create_app(cache: Path, out: Path) -> FastAPI:
     def api_done(row_id: str) -> JSONResponse:
         seed = seed_or_404(row_id)
         st = store.row(row_id, seed)
-        v = check(seed, st)
-        if not v["ok"]:
+        v = check(seed, st, prove=False)
+        # ⚠️ THE ONE PLACE THAT WAITS. `done` is a single deliberate
+        # keystroke, so the proof is computed here if the worker has not
+        # already cached it — the same proof `merge_additions` runs.
+        v["normalise"] = prover.wait(
+            row_id, st["staves"],
+            source_reference=seed["reference"].get("catalog_path"))
+        problems = done_problems(v, v["normalise"])
+        v["ok_to_finish"] = not problems
+        if problems:
             # ⚠️ REFUSE. A half-finished map that reads as finished is worse
             # than no map: page_normalise would raise on it, or worse, quietly
             # normalise against a part list that is missing evidence.
+            v = dict(v, ok=False, problems=problems)
             return JSONResponse(
                 status_code=409,
                 content={"error": "refusing to mark this page done",
@@ -563,6 +708,18 @@ async function load(id){
   ROW=id;const r=await j('/api/row/'+id);DATA=r.body;CUR=firstPending();
   await loadIndex();draw();
 }
+
+// The proof runs on a worker thread, so the first answer for a changed map is
+// `checking`. Re-read the row once it should be ready, and redraw ONLY the
+// proof's own panel state — never the verdicts, which are already saved.
+let PROOF_T=null;
+async function refreshProof(){
+  const at=ROW;
+  const r=await j('/api/row/'+at);
+  if(at!==ROW)return;                       // Sean moved on; drop the answer
+  if(r.ok&&r.body&&r.body.validation)DATA.validation=r.body.validation;
+  draw();
+}
 function firstPending(){
   const i=DATA.state.staves.findIndex(s=>s.verdict==='pending');
   return i<0?0:i;
@@ -661,6 +818,36 @@ function draw(){
   (v.problems||[]).forEach(p=>{
     const e=document.createElement('div');e.className='err';e.textContent=p;
     L.appendChild(e);});
+
+  // ---- WOULD IT MERGE? the same page_normalise proof merge_additions runs.
+  // Shown while Sean works, not at the end: the whole point is that a row
+  // which cannot merge says so before the pass is spent on it.
+  const nm=v.normalise;
+  if(nm){
+    const e=document.createElement('div');
+    if(nm.state==='checking'){
+      e.className='note';e.textContent='… checking this map against '+
+        'page_normalise';
+      // one poll; the proof is 0.2-0.5s and the worker is already running
+      clearTimeout(PROOF_T);PROOF_T=setTimeout(refreshProof,400);
+    }else if(nm.state==='ok'){
+      e.className='note';e.style.color='#7fd18c';
+      const n=nm.normalised||{};
+      e.textContent='✓ this map NORMALISES — '+n.n_source_parts+
+        ' reference parts → '+n.n_output_parts+' printed staves'+
+        ' (divisi '+(n.divisi_share!==undefined?n.divisi_share:'?')+')'+
+        '. merge_additions will accept it.';
+    }else if(nm.state==='refused'){
+      e.className='err';
+      e.textContent='✗ WOULD NOT MERGE — '+nm.problem;
+    }else{
+      e.className='warn';
+      e.textContent='⚠ the merge check could not run here — '+(nm.problem||'')+
+        '. Your verdicts are saved; merge_additions still checks before '+
+        'anything is written.';
+    }
+    L.appendChild(e);
+  }
   const p=seed.proposal;
   const prov=document.createElement('div');prov.className='note';
   prov.textContent='PROPOSAL: '+p.source+' of '+p.n_systems+
@@ -826,6 +1013,11 @@ async function markDone(){
   // An inline banner, not an alert(): a modal steals the keyboard, and the
   // whole point of this tool is that the keyboard never leaves the human.
   BANNER=r.ok?'':('REFUSED — '+r.body.validation.problems.join(' · '));
+  if(!r.ok&&r.body.validation&&r.body.validation.normalise&&
+     r.body.validation.normalise.state==='refused'){
+    BANNER+='   [this is the SAME check merge_additions runs before it '+
+            'writes works.json — nothing you have decided is lost]';
+  }
   await loadIndex();draw();
 }
 async function adoptTwin(){
