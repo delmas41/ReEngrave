@@ -1,0 +1,7998 @@
+{
+ "n_strings": 1651,
+ "n_rosters": 223,
+ "kinds": {
+  "vetoed": 19995,
+  "disambiguated": 1911,
+  "recovered": 1553
+ },
+ "claims": [
+  {
+   "kind": "recovered",
+   "text": "V elles",
+   "before": null,
+   "after": "Cello",
+   "rosters": 174
+  },
+  {
+   "kind": "recovered",
+   "text": "V^{\\text{elles}}",
+   "before": null,
+   "after": "Cello",
+   "rosters": 174
+  },
+  {
+   "kind": "recovered",
+   "text": "\\mathbf{v}^{\\text{elles}}",
+   "before": null,
+   "after": "Cello",
+   "rosters": 174
+  },
+  {
+   "kind": "recovered",
+   "text": "\\text{V}^{\\text{elles}}",
+   "before": null,
+   "after": "Cello",
+   "rosters": 174
+  },
+  {
+   "kind": "recovered",
+   "text": "elles",
+   "before": null,
+   "after": "Cello",
+   "rosters": 174
+  },
+  {
+   "kind": "recovered",
+   "text": "High Wood Block",
+   "before": null,
+   "after": "Percussion",
+   "rosters": 167
+  },
+  {
+   "kind": "recovered",
+   "text": "Low Wood Block",
+   "before": null,
+   "after": "Percussion",
+   "rosters": 167
+  },
+  {
+   "kind": "recovered",
+   "text": "Side Stick",
+   "before": null,
+   "after": "Percussion",
+   "rosters": 167
+  },
+  {
+   "kind": "vetoed",
+   "text": "A. Chor",
+   "before": "Chorus",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "ALTO",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Alt",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Alto",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Alto\rViloin 2",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Alto 1",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Alto 2",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Alto I",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Alto II",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Alto solo",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "B. Chor",
+   "before": "Chorus",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bariton (Natura)",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass solo",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Contralto",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Mezzo I",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Mezzo II",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Mezzo-soprano",
+   "before": "Alto",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "S. Chor",
+   "before": "Chorus",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Singstimme\nTenor",
+   "before": "Tenor",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sopran",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano 1",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano 1 solo",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano 2",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano 2 solo",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano 2 solo (sic)",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano I",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano I.",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano II",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano II.",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano solo",
+   "before": "Soprano",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "T. Chor",
+   "before": "Chorus",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "TENORE",
+   "before": "Tenor",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenor",
+   "before": "Tenor",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenor 1",
+   "before": "Tenor",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenor 2",
+   "before": "Tenor",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenor solo",
+   "before": "Tenor",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenore",
+   "before": "Tenor",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenore I",
+   "before": "Tenor",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenore II",
+   "before": "Tenor",
+   "after": null,
+   "rosters": 151
+  },
+  {
+   "kind": "disambiguated",
+   "text": "BASSO",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "Bass",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "Bass\rContinuo",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "Bass 1",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "Bass 2",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "Bass Continuo",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "Basso",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "Basso I",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "Basso II",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "Basso.",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "B\u00e4sse",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "B\u00e4sse get.",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "disambiguated",
+   "text": "B\u00e4sse.",
+   "before": "Bass voice",
+   "after": "Contrabass",
+   "rosters": 147
+  },
+  {
+   "kind": "vetoed",
+   "text": "Acoustic Grand Piano",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "CELESTA",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Celesta",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cembalo",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Grand Piano",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "HARPE",
+   "before": "Harp",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Harfe.",
+   "before": "Harp",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Harp",
+   "before": "Harp",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Harp 1",
+   "before": "Harp",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Harp 2",
+   "before": "Harp",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Harpe",
+   "before": "Harp",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Harpes",
+   "before": "Harp",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Harpsichord",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Klavier",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Klavier\nPiano",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Klavier linke Hand",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Org",
+   "before": "Organ",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Org.",
+   "before": "Organ",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Organ",
+   "before": "Organ",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Organ.   Orgel.",
+   "before": "Organ",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Organ. Orgel.",
+   "before": "Organ",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "P Org",
+   "before": "Organ",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "PIANO",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "PIANO.",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "recovered",
+   "text": "Parallel mixture lines (12th/17th, 7th partial)",
+   "before": null,
+   "after": "Violin",
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Piano",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Piano\n\n          \n          (For\nrehearsal\nonly)",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Piano (2)",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Piano, Piano right",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pianoforte",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pianoforte.",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pipe Organ",
+   "before": "Organ",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pno",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pno.",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Celesta}",
+   "before": "Piano",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Harpe}",
+   "before": "Harp",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "freet 2d Harpes",
+   "before": "Harp",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "vetoed",
+   "text": "pe Harpe",
+   "before": "Harp",
+   "after": null,
+   "rosters": 106
+  },
+  {
+   "kind": "recovered",
+   "text": "Harmony (tutti chords)",
+   "before": null,
+   "after": "Piano",
+   "rosters": 72
+  },
+  {
+   "kind": "vetoed",
+   "text": "(C) Hr",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "(C) Hr.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "(E) Hr.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "(Es) Hr.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "(F) Hr.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "(des fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": ". (C) Hr.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "1 2 8 Hoboen",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "1 3 5 6 Contraf.",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "1 COR ANGLAIS",
+   "before": "English horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "1 GLOCKENSPIEL (*)",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "1 PETITE FL\u00dbTE",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "1 e  et 2 e  CORS chromatiques en FA",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "2 CLARINETTES en LA",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "2 Fagotte",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "2 Fl\u00f6ten",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "2 GRANDES FL\u00dbTES",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "2 HAUTBOIS",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "2 Klarinetten in B",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "2 Oboen",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "2 TAMBOURS 3 TIMBALES CYMBALES TAM-TAM",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "2 Trompeten in C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "3 4 Fag. 1 2",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "3 5 F-H\u00f6rner 1 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "3 BASSONS",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "3 SAXOPHONES Sopranino en Fa Soprano en Si b T\u00e9nor en Si b",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "3 TROMBONES",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "3 TROMPETTES chromatiques en FA",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "3 Tromp.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "3 e  et 4 e  CORS chromatiques en FA",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "4 CORS en fa",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "4 Fl\u00f6ten",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "7 Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Bass Clarinet",
+   "before": "Bass clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Cl.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Cl. 1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Cl. 2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Clarinet",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Clarinet 1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Clarinet 2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Kl.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Ob2 Vn2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Tpt.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Trb",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A Trumpet",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A-Klar.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "A. Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Acoustic Bass Drum",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Alto Flute",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Alto Oboe 2 Viloin 2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Alto Trombone",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         (alto) Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         (alto) Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         (basso) Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         (basso) Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         (basso) Horn 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         (basso) Horn 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         Clarinet",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         Clarinet 1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         Clarinet 2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         Trumpet 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         Trumpet 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         basso Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\n        flat\n         basso Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B Cl",
+   "before": "Bass clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B Horn 3\n[NB: B natural]",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B Horn 4\n[NB: B natural]",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B Trb",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B Trumpet 1\n[NB: B natural]",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B Trumpet 1\n[sic, B not B\n        flat\n        ]",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B Trumpet 1\n[sic, B not Bb]",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B Trumpet 2\n[NB: B natural]",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B Trumpet 2\n[sic, B not B\n        flat\n        ]",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B Trumpet 2\n[sic, B not Bb]",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B basso Horn 1\n[sic, B not B\n        flat\n        ]",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B basso Horn 1\n[sic, B not Bb]",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B basso Horn 2\n[sic, B not B\n        flat\n        ]",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B basso Horn 2\n[sic, B not Bb]",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B, D, E Timpani",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B-Klar.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B-Klar.  2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B-Klar. 1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B-Klar. 2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B-Tromp.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B-Tromp. 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B-Tromp. 1 2 3 5",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B. Cl.",
+   "before": "Bass clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B. Ob.",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B. Tbn.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B.Cl.",
+   "before": "Bass clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "BASSONS 2 Bassons Contrebasson",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Baritone Oboe",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Barock Trompete in D",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bas Tr",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Clarinet",
+   "before": "Bass clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drum",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drum 1",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drum 1 Rim Knock",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drum 2",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drum 2 Rim Knock",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drum 3",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drum 3 Rim Knock",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drum 4",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drum 4 Rim Knock",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drum 5",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drum 5 Rim Knock",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Drums",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Oboe",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Sarrusophone",
+   "before": "Sarrusophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Trombone",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Tuba",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Tuba in F",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bassoon",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bassoon 1",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bassoon 1 2",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bassoon 2",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bassoon 3",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bassoons",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bassoons 1 2",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Basstuba.",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb (alto) Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb (alto) Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb (basso) Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb (basso) Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb (basso) Horn 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb (basso) Horn 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb Clarinet",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb Clarinet 1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb Clarinet 2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb Trumpet 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb Trumpet 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb basso Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bb basso Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Becken",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Becken.",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\u266d Cl. 1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\u266d Cl. 2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\u266d Clarinet",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\u266d Clarinet 1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\u266d Clarinet 2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\u266d Cornet",
+   "before": "Cornet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\u266d Trumpet",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\u266d-horn",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Clarinet",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Clarinet 1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Clarinet 2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Fag.",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Horn 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Horn 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Tpt 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Tpt 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Tpt.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Trumpet",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Trumpet 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C Trumpet 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C, G Timpani",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C-Klar.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C. Fag.",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C. I.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "C.A.",
+   "before": "English horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "CI.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "CLARINETTES Petite Cl. en Mi b 2 Cl. en Si b Cl. basse en Si b",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Chinese Cymbal",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl 1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl 2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl. 1\nin A",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl. 1\nin B\u266d",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl. 2\nin A",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl. 2\nin B\u266d",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl. 3\nin A",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl. 3\nin B\u266d",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl. I",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl. I. II.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl. II",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl. in A 2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl. in B\u266d",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl.1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl.2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl.B.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cl.Eb",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clar.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinet",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinet 1 in A",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinet 1 in B\u266d",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinet 2 in A",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinet 2 in B\u266d",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinet 3 in A",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinet 3 in B\u266d",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinet in Bb 1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinet in Bb 2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinet in C",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinet in Eb",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinetti\nI. II. A",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinetti in A",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinetti in A.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinetti in B.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinetto in B\u266d I",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarinetto in B\u266d II",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarino I in C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Clarino II in C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cloches",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Co r.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Concert Bass Drum",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Contrabassoon",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Contraf.",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Contrafagott",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Contrafagott.",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Contrafagotte.",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor A.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor,",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor.\nI II",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor.\nI. II.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor.\nI. II. E",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor.\nIII IV",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor.\nIII. IV.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor.\nIII. IV. E",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor. ingl.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cor:",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cornet 1",
+   "before": "Cornet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cornet 2",
+   "before": "Cornet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cornets",
+   "before": "Cornet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corni\nI. II. E",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corni\nIII. IV. C",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corni\nIII. IV. E",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corni I. II. in E.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corni III. IV. in C.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corni in Es.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corni in F I II",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corni in F III IV",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corni in G.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno I in C",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno I in F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno II",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno II in C",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno II in F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno III",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno IV",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno Inglese",
+   "before": "English horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno in B.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno in F I",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno in F II",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno in F III",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno in F IV",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno in G.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno obligato in F.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Corno. I",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cors",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Crash Cymbal",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Crash Cymbal 1",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Crash Cymbal 2",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cymbal",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cymbals",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "D Clarinet",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "D Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "D Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "D Trumpet",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "D Trumpet 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "D Trumpet 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "D, A Timpani",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "D-Klar.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "D-horn",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Drei Hoboen",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Drei Hoboen.",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Drei Klarinetten in A",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Drei Klarinetten in C.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Drei Posaunen",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Drei Posaunen.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Drei Trompeten in F.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E\n        flat\n         Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E\n        flat\n         Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E\n        flat\n         Horn 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E\n        flat\n         Horn 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E\n        flat\n         Trumpet 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E\n        flat\n         Trumpet 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Hn",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Hn.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Horn",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Horn 1\n(orig. E and A)",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Horn 2\n(orig. E and A)",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Horn 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Horn 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Tpt.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Trumpet",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Trumpet 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E Trumpet 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E. Hn.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Eb Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Eb Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Eb Horn 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Eb Horn 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Eb Trumpet 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Eb Trumpet 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Engl. Horn.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "English Horn",
+   "before": "English horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Erster Fagott.",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Erstes Horn in F.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Euphonium (Treble Clef)",
+   "before": "Euphonium",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E\u266d Hn.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E\u266d Tpt.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E\u266d Trumpet",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "E\u266d-horn",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F -Tromp.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Hn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Hn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Hn 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Hn 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Hn.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Hn. 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Hn. 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Hn. 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Hn. 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Horn  1 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Horn 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Horn 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F L",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Tpt.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Tpt. 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Tpt. 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Trumpet",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Trumpet 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Trumpet 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F Trumpet 3",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F, B\n        flat\n         Timpani",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F, Bb Timpani",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F, F Timpani",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-Corno obl.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-H\u00f6rner",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-H\u00f6rner      4 2256",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-H\u00f6rner 1 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-H\u00f6rner 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-H\u00f6rner 2 4 6",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-H\u00f6rner.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-Tromp.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-Tromp.      4 2256",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-Tromp. 1 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-Tromp. 2 4",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F-horn",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F1.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "FI",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "FI.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "FL\u00dcTES 2 Grandes Fl\u00fctes Petites Fl\u00fctes",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "F_1",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fag",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fag.",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fag.      4 2253",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fag.  1 2",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fag. 1",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fag. 1 2",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fag. 1 2 3 4 5 6 7 8",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fag. I",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fag. I. II.",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fag. II",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fag:",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fagott",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fagotti",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fagotti\nI. II.",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fagotti.",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fagotto I",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fagotto II",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl 1",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl 2",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl-",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. \n pic. \n \n \n  \n Fl. \n  \n \n \n  \n Ob. \n  \n \n \n  \n Cl. \n  \n \n \n  \n Fag. \n  \n \n \n  \n C. \n  \n \n \n  \n Fag. \n  \n \n \n  \n Cor. \n  \n \n \n  \n Tr. \n  \n \n \n  \n Tp. \n  \n \n \n  \n Tr. \n  \n \n \n  \n Alt. \n  \n \n \n  \n Tr. \n  \n \n \n  \n Ten. \n  \n \n \n  \n Tr. \n  \n \n \n  \n Bas.",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl.   pic.",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. 1",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. 2",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. 3",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. 4",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. Fig.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. I",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. I. II.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. II",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. fl. pic.",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. pic.",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. pie.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl. pir.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl.2",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl1",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flauti",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flauti\nI. II.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flauti.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flauto",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flauto I",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flauto I.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flauto II",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flauto.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flute",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flute 1",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flute 2",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flute 3",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flute 4",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Flutes",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl\u00f6te",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl\u00f6ten 1 2",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl\u00f6ten 8 4",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl\u00f6ten.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl\u00f6tten \n 3 \n 8 \n 4 \n 3 \n 2 \n 1 \n 0 \n \n \n  \n Hoboen \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n A-Klar. \n 3 \n 5 \n 6 \n 7 \n 8 \n 9 \n 10 \n \n \n  \n Fag. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Contraf. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n F-Corno obl. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n F-H\u00f6rner \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n 8 \n \n \n  \n B-Tromp. \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n 8 \n \n \n  \n Posaunen \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Posaune u. Tuba \n 3 \n 4 \n 5 \n 6 \n 7 \n 8 \n 9 \n \n \n  \n Pauken \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Glockensp. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Gr. Tr. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Erste Viol. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Zweite Viol. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Violen \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n Vcelle. \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n \n \n  \n B\u00e4sse \n 1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Fl\u00f8yte",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "G Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "G Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Gdes Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Glockenspiel",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Glockenspiel.",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Gloss Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Godes fi",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Gods Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Gr. Tr.",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Gr. Tr.      4 2257",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Gr.Tr.",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Gran Cassa",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Grosse Trommel Becken Gr. Trommel) von einem geschlagen",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Grosse Trommel.",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "HAUTBOIS 2 Hautbois Hautb. d'amour Cor Anglais",
+   "before": "English horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hautbois",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn. 1\nin F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn. 2\nin F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn. 3\nin F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn. 4\nin F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn. 5\nin F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn. 6\nin F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn. in C 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn. in E 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn. in E 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn. in E 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn.1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn.2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn.3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hn.4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hoboen 1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hoboen 1 2 3",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hoboen.",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn 1 in F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn 2 in F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn 3 in F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn 4 in F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn 5 in F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn 6 in F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in B\u266d",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in B\u266d alto",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in B\u266d basso",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in C",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in D",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in E",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in Es",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in E\u266d",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in F 1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in F 2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in F 3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in F 4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in G",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Horn in tiefem B",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hr. (E)",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hr. (Es)",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hr. 1. (C) 2.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hr. 1. (Es) 2.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hr.1. (Es)2.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Hunting Horn",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "K-Fag",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "K-Fag.",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "K.Fag.",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "K:Fag.",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Kl. Tr.",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Klar. (A)",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Klar. (B)",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Klarinette in A",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Klarinette in B",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Klarinette in C",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Kleine Trommel Tamtam",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Kleine Trommel.",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Kontrafagott",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Mute Triangle",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob 1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob 2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob 3",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob d'a 1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob d'a 2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob d\u2019a 1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob d\u2019a 2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob.",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob. 1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob. 2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob. 3",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob. I",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob. I. II.",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob. II",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob.1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob.2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Ob.d'a.",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe  2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe 1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe 2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe 3",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe I",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe II",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe d'amore",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe da caccia",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe d\u2019amore",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe d\u2019amore 1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboe d\u2019amore 2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboes",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboi",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboi\nI. II.",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboi I",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboi II",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Oboi.",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Obol.",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Open Triangle",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "P Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "P te  Cl.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "P te Cl.",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "P te Tr en R\u00e9",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "P tes Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "P*\u00b0s Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "P^{\\text{e}} \\text{ Tr} \\\\ \\text{en R}",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "P^{\\text{test}}  FI.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "P^{\\text{tes}}  Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pauken",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pauken      4 2257",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pauken Becken",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pauken in C u. G",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pauken.",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Perc.",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Percussion (B.D., cymbals, tam-tam)",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Piatti",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Picc",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Picc.",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Picc. 1",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Picc. 2",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Piccolo",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Piccolo 1",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Piccolo 2",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Piccolo.",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pk.",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pk. (C)",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pos.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Posaune 3 u. Tuba .",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Posaune 3 uTuba",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Posaunen      4 2258",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Posaunen 1 2",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Posaunen 1 2 3 5",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Posaunen 2 3",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Posaunen.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pte Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Recorder 1",
+   "before": "Recorder",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Recorder 2",
+   "before": "Recorder",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Recorder 3",
+   "before": "Recorder",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Recorders",
+   "before": "Recorder",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "S\rOb1,2\rVn1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "S Ob1 Vn1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sax, S^{\\text{ons}}",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sax. S ano",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sax. S ino",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sax. S on",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sax. S. nns",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sax. T.",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sax. \u00a7ano",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sax.S.",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sax.T.",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sax.so",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sechs H\u00f6rner in F",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sechs H\u00f6rner in F.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Snare Drum",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Snare Drum (bolero ostinato)",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Snare Drum 1",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Snare Drum 2",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Sopranino Saxophone",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano Recorder",
+   "before": "Recorder",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano Saxophone",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "T Trb",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "T Trb 1",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "T Trb 2",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "T. Tbn. 1",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "T. Tbn. 2",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "TRIANGLE",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "TROMPETTES 3 Tromp. en Ut Petite Tromp. en R\u00e9",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "TUBA",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tam-Tam",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tam-tam",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tambourine",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tamburo Militare",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tamtam",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tamtam.",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tb",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tb.",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn 1",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn 2",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn 3",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn.\nB.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn. 1",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn. 2",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn. 3",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn. 3\nB. Tbn.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn. B",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn. B.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn. T. I",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn. T. II",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn.1",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn.2",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tbn.3",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenor Saxophone",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenor Trombone",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenor Trombone 1",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenor Trombone 2",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenor Tuba in B\u266d",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timp",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timp.",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timp. 1",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timp. 2",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timp. Des",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani 1",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani 2",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani G. B. E\u266d.",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani in A.D.E.",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani in B and F",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani in C and G",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani in C.G.",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani in C\u2013G",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani in D and A",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani in E  and B",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Timpani in E flat and B",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tp",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tp.",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt 3",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt. 1\nin C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt. 2\nin C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt. 3\nin C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt. 4\nin C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt. in E 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt.1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt.2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt.3",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tpt.D",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr 3",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr Ten",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr. Alt",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr. Alt.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr. Bas",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr. Bas.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr. I",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr. II",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tr. Ten.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trb 1",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trb 2",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trb 3",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trb.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Triangel",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Triangel.",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Triangle",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Triangolo",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tromba 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tromba 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tromba 3",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tromba I II",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombe\nI. II. E",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombe E\u266d I",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombe E\u266d II",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombe in A",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombe in C.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombe in E.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombe inC.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombone",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombone\nIII.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombone 1",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombone 2",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombone 3",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombone 3 &amp;\nBass Trombone",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombone Basso",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombone Tenore I",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombone Tenore II",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trombone basso.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tromboni\nAlto e Tenore",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tromboni\nI. II.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tromboni I. II.",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tromp.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trompete in A",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trompete in C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trompete in Es",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trompete in F",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trpt.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trpt. (C)",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet 1 in C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet 1,2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet 2 in C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet 3",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet 3 in C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet 4 in C",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet in C 1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet in C 2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet in C 3",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Trumpet in D",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tuba",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tuba      4 2258",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tuba (unspecified)",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tuba.",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tubular Bells",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tympani A. E. H.",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vier Fl\u00f6ten",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vier Fl\u00f6ten.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vier H\u00f6rner in F.",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vier Trompeten in B",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vier Trompeten in B.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vier Trompeten in F.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Wood Blocks",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Xylophone",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Zwei Fagotte",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "Zwei Fagotte.",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Cl.B.}",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Clar.}",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Clar}",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Cor A}",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Cors}",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Fl}.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{P}^{\\text{tes}} \\text{Fl}.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Sax S}^{\\text{est}}",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Sax T}",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Sax. S}^{\\text{ens}}",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Sax. T}",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Sax.T}",
+   "before": "Saxophone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Trb.}",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Trb}",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Tromp.}",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Tromp}",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Tuba}",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "b tbn",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "bassoon",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "bassoon1",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "bassoon12",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "bassoon2",
+   "before": "Bassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "c. Fag.",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "cl",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "cl1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "cl2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "clarinet",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "clarinet1",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "clarinet12",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "clarinet2",
+   "before": "Clarinet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "contrabassoon",
+   "before": "Contrabassoon",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "cymbal",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "fl",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "fl1",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "fl2",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "fl2.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "fl3",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "fle fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "flute",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "flute1",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "flute12",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "flute2",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "flute23",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "flute3",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "gless Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "hn1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "hn12",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "hn2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "hn3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "hn34",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "hn4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "horn",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "horn1",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "horn12",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "horn2",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "horn3",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "horn34",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "horn4",
+   "before": "Horn",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "in B 3 4 Tromp. 3 4",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "ob",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "ob1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "ob2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "oboe",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "oboe1",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "oboe12",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "oboe2",
+   "before": "Oboe",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "p 10  Fl.",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "p^{\\text{tes}} \\text{ Fl.}",
+   "before": "Flute",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "picc",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "piccolo",
+   "before": "Piccolo",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tamtam",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tb1",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tb12",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tb2",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tb3",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tbn",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tbn12",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "timp",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "timp.",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "timpani",
+   "before": "Timpani",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tpt1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tpt2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tr.",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tr12",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "triangle",
+   "before": "Percussion",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "trombone",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "trombone1",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "trombone12",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "trombone2",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "trombone3",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "trombone4",
+   "before": "Trombone",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "trumpet",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "trumpet1",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "trumpet12",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "trumpet2",
+   "before": "Trumpet",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "tuba",
+   "before": "Tuba",
+   "after": null,
+   "rosters": 11
+  },
+  {
+   "kind": "vetoed",
+   "text": "1 rs  VIOLONS",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "1\"\u00b0 VIOLONS",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "1. Violine",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "1.Viol",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "1.Viol.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "1Viol.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "2 ds  VIOLONS",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "2. Violine",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "2.Viol.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "2Viol.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "2\u00b0* VIOLONS",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "ALTOS",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Altos",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "BASSO",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass\rContinuo",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass 1",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass 2",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bass Continuo",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bassi",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Basso",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Basso I",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Basso II",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Basso.",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Br.",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bratsche",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bratsche\nViola",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Bratsche.\nViola",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\u00e4sse",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\u00e4sse get.",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "B\u00e4sse.",
+   "before": "Bass voice",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "C, B^{\\text{est}}",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "C. B.",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "C. Bassi",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "C.B.",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "C.B^{\\text{ens}}",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "C.B^{\\text{on}}",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "C.B\u00b0\"",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "CONTREBASSES",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cb",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cb.",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cb. 1",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cb. 2",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Celli",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cello",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cello 1",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cello 1 solo",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cello 2",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cello 2 solo",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cello 3",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cello 3 solo",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cello 4",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Cello 4 solo",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Contrabass",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Contrabasses",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Contrabassi",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Contrabasso",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Contrabasso.",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Double Bass",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Erste Viol.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Erste Viol.      4 2257",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Erste Violinen",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Erste Violinen.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "K-B.",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "K.-B.",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "K.B.",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "K:B.",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Kb.",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Kontraba\u00df",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "recovered",
+   "text": "Parallel mixture lines (12th/17th, 7th partial)",
+   "before": null,
+   "after": "Mandolin",
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Pr Vln",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Principal Violin",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Solo Viol.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano\rOboe 1,2\rViolin1",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Soprano Oboe 1 Violin1",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "T\rVla",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "T Vla",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenor\rViola",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Tenor Viola",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "VIOLONCELLES",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "VIOLONS",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vc",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vc 1",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vc 2",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vc 3",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vc solo",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vc.",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vc. 1",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vc. 2",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vc. Solo",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vc1",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vcelle.",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vcl.",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Viol. I.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Viol. II.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Viola",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Viola 1",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Viola 1 solo",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Viola 2",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Viola 2 solo",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Viola 3",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Viola.",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violas",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violas (pizz. ostinato)",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Viole",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Viole II",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violen",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violen      4 2257",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violen.",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violin",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violin 1",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violin 1 div(2)",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violin 1 div(3)",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violin 1 solo",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violin 1 tutti",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violin 2",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violin 3",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violin I",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violin II",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violin solo",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violinen",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violini",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violini\nI.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violini\nII.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violini I",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violini II",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violino I",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violino I.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violino II",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violino II.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violino ].",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violins",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violins I",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violins II",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncell",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncelle",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncelle.",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncelli",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncelli II",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncello",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncello 1",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncello 2",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncello 3",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncello solo",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncello.",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncellos",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violoncellos (pizz. C\u2013G pedal)",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Violone",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vl. I",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vl. II",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vla",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vla 1",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vla 2",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vla 3",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vla.",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vla. 1",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vla. 2",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vla1",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln 1",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln 1 solo",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln 1 tutti",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln 2",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln 2 div.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln 3",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln Solo.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln solo",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln. 1",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln. 1 div(2)",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln. 1 div(3)",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln. 2",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln. 2 Solo",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln. I",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vln. II",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vn 1",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vn.I",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Vn1",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Yiolino II.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Zweite Viol.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Zweite Viol.      4 2257",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Zweite Violinen",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "Zweite Violinen.",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "\\text{Altos}",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "db",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "db1",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "db2",
+   "before": "Contrabass",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "vc",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "vc2",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "viola",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "viola1",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "viola2",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "violin1",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "violin2",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "violoncello",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "violoncello1",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "violoncello2",
+   "before": "Cello",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "vla",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "vla1",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "vln1",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "vln2",
+   "before": "Violin",
+   "after": null,
+   "rosters": 4
+  },
+  {
+   "kind": "vetoed",
+   "text": "{\\rm v}^{\\text{altos}}",
+   "before": "Viola",
+   "after": null,
+   "rosters": 4
+  }
+ ]
+}
