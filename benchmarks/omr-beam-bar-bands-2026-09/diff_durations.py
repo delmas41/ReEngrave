@@ -17,19 +17,43 @@ from pathlib import Path
 
 
 def notes(path: Path) -> list[tuple[str, str, int, str, str, str]]:
-    """(part, measure, index-in-measure, step+octave, type, duration) per note."""
+    """(part, measure, index, pitch, written value, duration IN WHOLE NOTES).
+
+    ⚠️ **`<duration>` is not comparable across the two arms and comparing it
+    raw is a measurement bug — one this probe shipped with and which invented
+    1,144 duration changes on `brahms-sym1-mvt1-317803-p4`, every note in the
+    file.** `<duration>` is an integer count of `<divisions>` per quarter, and
+    `export._compute_divisions` sets divisions as the LCM over the part's note
+    values. One note on the page becoming a 16th where the part had none takes
+    divisions 8 -> 16 and DOUBLES every `<duration>` integer in that part while
+    every `<type>` stays exactly as it was. The notes did not change; the scale
+    they are counted in did.
+
+    So the value is normalised by its own part's divisions, and the written
+    `<type>` (with dots and any tuplet ratio) is compared alongside it.
+    """
     root = ET.parse(path).getroot()
     out = []
     for part in root.findall("part"):
         pid = part.get("id", "?")
+        divisions = 1.0
         for measure in part.findall("measure"):
             mno = measure.get("number", "?")
+            d = measure.find("attributes/divisions")
+            if d is not None and d.text:
+                divisions = float(d.text)
             for i, n in enumerate(measure.findall("note")):
                 p = n.find("pitch")
                 name = (f"{p.findtext('step','?')}{p.findtext('octave','?')}"
                         if p is not None else "rest")
-                out.append((pid, mno, i, name,
-                            n.findtext("type", "-"), n.findtext("duration", "-")))
+                written = n.findtext("type", "-") + "." * len(n.findall("dot"))
+                tm = n.find("time-modification")
+                if tm is not None:
+                    written += (f"[{tm.findtext('actual-notes','?')}:"
+                                f"{tm.findtext('normal-notes','?')}]")
+                raw = n.findtext("duration")
+                quarters = f"{float(raw) / divisions:.6g}" if raw else "-"
+                out.append((pid, mno, i, name, written, quarters))
     return out
 
 
