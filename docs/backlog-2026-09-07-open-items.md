@@ -67,6 +67,40 @@ earlier today, the test suite timed out at 10 minutes, and the lineup-swap agent
 **abandoned its control runs at 13 of 166 pages** rather than compete for cores.
 Serial is slower per task and faster to a trustworthy answer.
 
+## A0b. QUEUED — re-price `OMR_SLOT_STITCH` against the page-normalised truth
+
+**Sean, 2026-09-07: commissioned, to fire once coverage lands.** Not dispatched
+yet, deliberately — it needs 19/20 map coverage to be answerable, and running it
+now would both measure the wrong thing and compete with `page_normalise` for
+cores.
+
+**The hypothesis, which is Sean's** (*"I am not fully convinced about the slot
+stitch — something feels off, like maybe it needs something else solved first"*):
+`_stitch_slots` does the structurally RIGHT thing — Brahms p2 recovers 14
+continuous parts from 27 fragments and correctly leaves the suppressed trumpet
+slot short — and is dormant only because it scores worse. But the recorded reason
+is that **musicdiff charges an unpaired truth PART more than that part's unpaired
+MEASURES**, so `entire staff` doubles (715 → 1,632). **Unpaired truth parts are
+the condensation artefact**, not the stitcher's fault: the truth has 18 parts
+where the page prints 12 staves, so any structurally correct output leaves parts
+unpaired and is billed for them. Normalise the truth to the page and they should
+pair.
+
+This is §A00's standing rule applied to its clearest candidate: the metric was
+charging for something other than correctness.
+
+**Firing order:** `page_normalise` fixes → Mahler rows merge (15/20 → 19/20) →
+this. Queue behind the two crash-interrupted agents (§A0).
+
+**What the arm must do:** re-price slot stitch OFF vs ON against BOTH truths —
+raw and page-normalised — same predictions, one shared read pass, `--tag=` per
+arm. ⚠️ Report the normalised delta as a SEPARATE BENCHMARK ERA that may not be
+differenced against the raw figure or any historical one. ⚠️ The prior figure was
+priced on **n=1 page**, so a null is a real possibility and would itself settle
+the question. ⚠️ `OMR_CONDENSED_PARTS` composes with it (oracle ceiling −4,557
+together) but is separately argued to be an anti-feature — measure stitch alone
+first.
+
 ## A. BLOCKING — someone's finished work cannot land until these are fixed
 
 | # | item | evidence |
