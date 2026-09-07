@@ -193,10 +193,10 @@
   }
  },
  "stamps": {
-  "n_result_artefacts": 48,
-  "with_commit": 6,
-  "with_era": 35,
-  "with_both": 6,
+  "n_result_artefacts": 68,
+  "with_commit": 26,
+  "with_era": 55,
+  "with_both": 26,
   "with_neither": 13,
   "machine_checked_era": 1,
   "machine_checked_era_note": "exactly one artefact has an era stamp a test refuses to let drift: current-accuracy.json, guarded by accuracy_record.check() + test_accuracy_record.py. Every other `era` here is prose a reader must notice.",
@@ -333,6 +333,126 @@
     "has_commit": false,
     "has_era": false,
     "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-condensation-arm.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-det-a.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-det-b.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-det-c.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-graft09-arm.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-reconciliation.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 20
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-resolution-arm.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 1
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-restamp-composed.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round3-e10.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round3-e5.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round3-prodbase.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round4-e5.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round4-i512e5.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round5-d25graft.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round5-d25graftprod.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round5-shift0.9.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round5-shift1.5.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-widened-graft.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-widened-hollowft.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
    },
    {
     "path": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",

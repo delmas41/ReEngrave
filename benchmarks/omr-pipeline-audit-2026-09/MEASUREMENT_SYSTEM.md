@@ -19,6 +19,9 @@ Artefacts written by this session:
 | `probe/build_metric_registry.py` → `metric-registry.json` | the machine-readable registry, 48 rows |
 | `README-metric-registry.md` | what wiring it into the dashboard would take |
 
+Round 2 adds four more probes and takes the registry to v0.2.0 — see **ROUND 2**
+at the end of this file, which also corrects four things stated in Part A and B.
+
 ---
 
 # PART A — the critique
@@ -416,10 +419,13 @@ part-stitching diverges, so the charge there is partly engine behaviour and the
 ceiling does not hold. Those three rows are `scoreable: false` in the registry
 with that reason.
 
-⚠️ And the ceiling is corroborated *three ways* on the two Dvořák rows: Audiveris
-charges 0, we charge 0, and the normalising transform is the identity on them
-(15 source parts → 15 output parts, byte-identical scores). Three independent
-routes to the same fact.
+⚠️ **CORRECTED IN ROUND 2 (§R1/D5) — this paragraph originally claimed the
+Dvořák rows were "corroborated three ways" (Audiveris charges 0, we charge 0, the
+transform is the identity). Those are ONE FACT SEEN THREE TIMES**: 15 reference
+parts map to 15 printed staves, so there is nothing to condense, so no engine can
+be charged for condensation and no transform has anything to do. It is one route.
+What the row genuinely provides is a CONTROL on the transform, not evidence for
+the ceiling.
 
 ## B3. The assumption-direction rule — why a missing ceiling cannot flatter
 
@@ -434,8 +440,8 @@ which is the failure this project would rather have.
 
 The row still says so: `ceiling.status` is one of `measured`,
 `measured_and_corroborated`, `measured_unreliable`, `assumed`, `unmeasured`, and
-`metric-registry.json` reports the census. Today, over its 48 rows: **25 measured,
-1 measured-single-source, 1 measured-and-corroborated, 1 measured-unreliable,
+`metric-registry.json` reports the census. (Round-1 figures; §R8 has v0.2.0's.)
+Over its 48 rows at v0.1.0: **25 measured, 1 measured-single-source, 1 measured-and-corroborated, 1 measured-unreliable,
 17 assumed, 3 unmeasured**.
 
 ## B4. What a ceiling actually buys, on real rows
@@ -614,3 +620,327 @@ registry makes them un-poolable on purpose. Two numbers, always.
   I would rank first.
 - The engine-independence result rests on ten rows and one external engine. A
   second engine, or the same engine on the 20-row era, would strengthen it.
+
+---
+
+# ROUND 2 — the floor measured, the input ceiling opened, and four corrections
+
+*Run permissions widened to musicdiff scoring. `scan_eval` and `orchestral_eval`
+still embargoed and not run. Four symlinks made per CLAUDE.md; `OMRNED_PYTHON`
+pointed at the main checkout's `.venv-omrned`.*
+
+New artefacts:
+
+| file | what |
+|---|---|
+| `probe/probe_structural_floor.py` → `structural-floor-measured.json` | the scan floor, **measured** |
+| `probe/probe_input_ceiling_from_labels.py` → `input-ceiling-from-labels.json` | can the labeling corpus supply an `input` ceiling? |
+| `probe/probe_retro_stamp.py` → `retro-stamp.json` + `stamped-copies/` | the era stamp `scan_eval` does not write, proposed and demonstrated on copies |
+| `probe/probe_human_cost.py` → `human-cost-identity.json` | review cost on the identity axis |
+| `metric-registry.json` **v0.2.0** (v0.1.0 kept as `metric-registry.v0.2.0.json` snapshot) | 55 rows, 38 scoreable |
+
+## R1. The corrections first
+
+**D4 — my count was wrong and the finding survives.** I wrote that *none* of the
+scan results files records the commit. `results-condensation-arm.json` carries
+`git_head`. `probe_retro_stamp.py` counts them properly: **20 files, 1 with a
+commit, 19 without.** The corrected sentence is the one to quote.
+
+**D5 — the one place I failed to apply my own standard to myself.** I called
+Dvořák's zero structural charge *"corroborated three ways — Audiveris charges 0,
+we charge 0, and the transform is the identity."* Those are **one fact seen three
+times**: 15 reference parts map to 15 printed staves, so there is nothing to
+condense, so no engine can be charged for condensation and no transform has
+anything to do. I audited two other agents for shared substrate and missed it in
+my own paragraph. **It is one route.** What genuinely corroborates it is
+different and weaker: the row is an *identity* case, so it functions as a control
+on the transform (§R2), not as three-way evidence for the ceiling.
+
+**D6 — 46 vs 48.** Stale internal count from before the `OMR_CONDENSED_PARTS` and
+15-row rows landed. The registry now reports its own row count and the prose
+reads it from the file.
+
+**M3 — the noise-floor corroboration is 8 of 11, not 10, and it localises rather
+than weakens.** The eleven shared rows differ by −5, +2, 0, 0, +14, +10, +3, +1,
++1, +1, +572; eight are within ±6. The two above the floor (Dvořák p5 +14, p6
++10) are both in the Tier-A pool. **That does not touch the floor**, and the
+reason is the structural point of round 2: `F` is measured with **no prediction
+of ours in it at all** — it is a property of (reference encoding, hand-read page
+map). Arm-to-arm noise moves `M`; it cannot move `F`. So the rule is: the
+noise floor is a property of the numerator, and the comparability relation pins
+`F` to its own evidence separately.
+
+**And a correction of the coordinator's that I did not inherit:**
+`condensed_parts.py` is *not* an orphan module — `players_for_label` has three
+benchmark importers, making it a *production* orphan (`probe` by the map's own
+legend). The `condensed_parts` **field** half of §A13 stands: read at
+`export.py:3331`, written nowhere, so `OMR_CONDENSED_PARTS` is inert.
+
+## R2. The scan structural floor, measured
+
+The definition has always been exact and nobody had run it:
+
+> A perfect page-faithful reader emits exactly the page-normalised truth. Score
+> **that as the prediction** against the raw truth, and the number is the OMR-NED
+> such a reader is charged.
+
+15 rows, all on the canonical `.reconciliation` arm. **No output of ours appears
+in the measurement.**
+
+**Three controls, and the binding was checked rather than assumed:**
+
+- every truth fixture's sha256 equals the one `results-normalised-arm-20row.json`
+  scored — **20 of 20**, and the probe refuses to run otherwise;
+- all 15 derived truths reproduce the committed control's **canonical** hashes
+  (`derived-truth-bytes.json`) — 15 of 15, from a different worktree on a
+  different music21;
+- **the three identity-transform rows score EXACTLY 0 edits.** Dvořák is 15 parts
+  into 15 staves, so the transform must change nothing; if that row moved, the
+  transform would be distorting the truth and no other floor would mean anything.
+
+⚠️ **Two of my own controls were mis-specified before one was right, and both
+failed loudly**, which is why they are kept in the probe rather than tidied away:
+`n_output_parts == page.n_staves` (wrong — `n_staves` is summed over systems,
+22 = 2 × 11; failed all ten two-system rows) and `page.n_staves // n_systems`
+(wrong — a printed score suppresses tacet staves so systems are *unequal*, 11+8
+and 14+13, documented in `works.json`'s own `n_staves_note`; failed exactly those
+three rows). The correct assertion is one part per hand-read staff slot.
+
+⚠️ **A byte-determinism scare I raised and then refuted against myself.** The
+derived truth is not byte-reproducible — music21 stamps a fresh 32-hex instrument
+id on every write, 48 differing lines per file, and two writes in one process
+disagree. `derived-truth-bytes.json` asserts `writer_is_deterministic: true`, and
+I was one sentence from reporting that as a false committed control. It is not:
+its `_canonical()` masks exactly those ids. **What *is* worth recording** is that
+`results-normalised-arm-20row.json`'s `sha.normalised_truth` is a **raw** hash and
+therefore cannot be used to verify reproduction, unlike its `sha.truth` and
+`sha.pred` which can.
+
+### The floor is a ladder, and only the bottom rung is unambiguous
+
+| rung | what it counts | pooled F |
+|---|---|--:|
+| **unpaired parts** | `entire staff insert/delete` — a truth PART with no printed staff | **0.2123** |
+| structural | + `entire measure insert/delete` — mostly the bars inside those parts | 0.4982 |
+| total | + residue (`wrong lyric`, `wrong note`, …) | 0.6348 |
+
+**A larger floor raises every score above it**, so the ladder is climbed only as
+far as the evidence is unambiguous — the bottom rung. The residue is **21.5 % of
+the total floor** (9,516 of 44,226 edits), which is precisely the overstatement
+the coordinator warned of, and it is excluded.
+
+**The measurement validates the round-1 estimate on 12 of 15 rows and corrects it
+on 3 — all three upward.** `floor_low` was exact on beethoven p1/p2/p4,
+575951 p1/p2/p4 and every Brahms row but p2; it was too low on
+`beethoven-…-p3` (0.0238 → 0.2905), `575951-p3` (0.0246 → 0.2905) and
+`brahms-p2` (0.1127 → 0.2573), i.e. exactly the rows where *our own*
+`entire staff` charge was anomalously small. The estimator's self-reference bit
+where predicted, and in the conservative direction.
+
+**Result:** pooled over the 15 normalisable rows, OMR-NED 0.8417 against a
+measured floor of 0.2123 → **20.09 % of achievable** (round 1's estimate gave
+18.28 %).
+
+### ⚠️ THE FLOOR IS CONSTRAINED, AND THIS CORRECTS MY OWN ROUND-1 FRAMING
+
+I called `F` "the achievable floor". It is not the metric's floor. **The metric's
+unconstrained floor is ZERO** — emit the *encoding* rather than the page and
+score 0. That is exactly what `OMR_CONDENSED_PARTS` would harvest, and exactly
+what CLAUDE.md and the headline-validity work call an **anti-feature**: improving
+the number by making the output less faithful to the page.
+
+So the honest name for the scan unit is **“% of achievable *under page
+fidelity*”**, and the constraint is declared on the row
+(`ceiling.constraint`). It is not a technicality: it is the difference between a
+scale that rewards Sean's stated requirement — *"the ground truth should be the
+scan as it is on the page"* — and one that would quietly reward abandoning it.
+
+## R3. The `input` ceiling — the coordinator's suggestion, taken, and it answered the sharper question
+
+The proposal holds, with the three hazards restricting the answer rather than
+voiding it. Only **one** batch in the whole corpus carries a `completion` pass
+(`omr-labeling-hollow2-2026-09-breitkopf-brahms1`, 55 cells) — every other batch
+is a single-symbol sweep where the rest is unboxed by instruction, so hazard (b)
+alone rules out ten of eleven batches. `inspected_passes` is exactly the field
+that makes that decidable.
+
+**Noteheads, 47 usable cells, real 1876 Breitkopf scan:** a human drew **201
+noteheads against 207 reference notes = 0.971**.
+
+⚠️ **That is an upper bound, not a ceiling to score against**, and it is a ratio
+of *counts*, not a matched recall: grace notes are on the page and absent from
+the encoding (0 in 28,579), so human boxes are inflated and the true figure is at
+or below 0.971. It is recorded `scoreable: false`,
+`ceiling.status: "bounded_above"`. What it establishes is worth having anyway:
+**C = 1.0 is very nearly right for noteheads on this print**, so `scan:pitch` at
+83.4 % is an achievement number and not a fixture artefact.
+
+**And the sharper question got a clean answer.** The open question was whether
+`scan:hairpin_detect` at **1.01 %** is a catastrophe or a hard ceiling. Counting
+human-affirmed boxes across the 55 completion cells:
+
+| class | human boxes |
+|---|--:|
+| noteheadBlack (on line / in space) | 186 |
+| **tie** | **62** |
+| augmentationDot | 54 |
+| rest8th | 39 |
+| **slur** | **27** |
+| **dynamicCrescendoHairpin + dynamicDiminuendoHairpin** | **17** |
+
+**A human found seventeen hairpins on 55 scanned cells.** The ink is visible to a
+reader, so 1 of 99 is a **detector failure, not missing ink** — recorded as
+`ceiling:input:hairpin:scan`, `status: "refuted_as_a_ceiling"`. The same sweep
+drew 62 ties and 27 slurs, the other two families a fine-tune is documented to
+delete to zero.
+
+⚠️ Incidental, and someone else's to act on: those human boxes use
+`dynamicLetterF`/`dynamicLetterP`/`dynamicLetterS` — the **coarse** spelling
+CLAUDE.md records the exporter cannot read (`class_aliases.py`,
+`COARSER_THAN_CANONICAL`). 26 boxes in this batch.
+
+## R4. M2 — comparability is not one relation
+
+The round-1 rule (`era_key` equality) **forbade the competitive comparison this
+document prints.** We and Audiveris can never share an era key and are exactly
+comparable on the same fixtures through the same scorer. Fixed in the schema:
+
+| relation | condition | answers |
+|---|---|---|
+| `comparable_as.time_series` | equal key **and** equal `ceiling.value`/`evidence` **and** same arm | *are we improving?* |
+| `comparable_as.head_to_head` | equal key — same fixtures, same scorer, same row set, **different system** | *are we better than them?* |
+| neither | — | may not appear in one sentence with an arrow between them |
+
+Worked: `engraved:omr_ned` **88.78** and `competitive:engraved:audiveris`
+**87.48** share a head-to-head key and no time-series key — a valid head-to-head,
+**not** a delta. `scan:omr_ned` and `scan:omr_ned:page_fidelity_15rows` share
+neither.
+
+## R5. M1 — three estates the round-1 registry omitted
+
+**Calibration: `scoreable: false`, and forcing it would be the very defect this
+unit exists to remove.** `pct = 100·(W−M)/(W−F)` needs a defensible **worst
+case**. OMR-NED has one — predict nothing, score exactly 1. ECE does not: its
+arithmetic maximum is 1.0, unreachable and meaningless, so a percentage against
+it would be a number with no referent. A third transform kind would need an
+*empirical* worst case (the ECE of a constant predictor on this corpus) that
+nobody has measured. And the estate's own finding argues against scoring it at
+all: ECE 0.1277 → 0.0204 across n=197 → 1571 is **not** calibration (Brier skill
+vs a constant predictor +0.0004, 95.8 % of mass in one bin). Recorded with that
+reason.
+
+**The ledger-zone audit — the confusion Sean commissioned this unit to fix, live,
+and the best demonstration available.** The parity auditor flags **7 of 102
+(6.9 %)**; hand adjudication found **one** real error (**0.9 %**). A 7× gap, both
+reported as percentages, in a project where 1.000 is sometimes the target and
+sometimes a disaster.
+
+The registry's answer is that these are **two rows and never one**:
+
+| row | value | scoreable | why |
+|---|--:|---|---|
+| `labeling:ledger_zone:screening_rate` | 6.9 % | **false** | a SCREEN. It is a workload figure — how many candidates a human must adjudicate — and it is never an achievement number. |
+| `labeling:ledger_zone:defect_rate` | 0.98 % | **true → 99.02 %** | a DEFECT rate, F = 0 assumed (a perfect pass has no defects). |
+
+A dashboard printing either alone is wrong in a *named direction*: 6.9 %
+overstates the defect sevenfold; 0.9 % understates the reviewer's workload
+sevenfold. The defect row carries a flag requiring the screen beside it.
+**A screening number and a quality number are different KINDS, and the unit's
+job is to make a screen visibly unscoreable rather than to rescale it.**
+
+**Pre-fill precision — and the most useful ceiling kind in the registry.**
+`prefill:precision:blind_out_of_sample` is 0.915 against a ceiling of **0.97**
+whose `status` is `pre_registered`: the admission bar was set *in advance*, the
+cells were pre-registered at seed 20260903 with their status recorded before
+labeling, and the pass was run blind. **94.33 % of achievable — and the control
+fired**: the measurement came in under the bar and pre-filled verdicts stayed a
+queue rather than becoming labels. This is a ceiling that is a *decision rule*
+rather than a physical limit, which is the right kind for anything gated on human
+trust, and it is the only pre-registered ceiling in the registry.
+
+## R6. Item 2 — the era stamp, proposed and demonstrated on copies
+
+`probe_retro_stamp.py`. **Nothing in `tools/omr/` or
+`benchmarks/omr-scan-e2e-2026-09/` was modified**; twenty stamped copies are
+written to `stamped-copies/` so the shape can be reviewed against the originals.
+
+The stamp mirrors `accuracy_record`'s `benchmark` block: `name`, `since` (the
+date the ROW SET last changed), `rows` (the ids, in order), `n_rows`, `commit`,
+`arm` (which predictions), `flags` (the `protocol` block already written), and
+the note saying a figure under a different row set is not a comparison. It needs
+a `SCAN_ROWS` constant in code plus a `check()` that refuses a file whose
+`benchmark.rows` disagrees — the exact mechanism that stops the engraved headline
+crossing an era silently.
+
+**The wasting asset is confirmed and still intact: 20 of 20 commits are
+recoverable from `git log` today.** Four row-set eras live in one directory —
+1 row (1 file), 5 rows (14), 11 rows (4), 20 rows (1) — distinguishable today
+only by `len(rows)`.
+
+⚠️ **A retro-fitted commit is weaker than a recorded one and the copies say so**
+(`commit_source: "RETRO-FITTED … NOT recorded at measurement time"`).
+`git log -1 -- <path>` gives the commit that last *touched* the file, which
+equals the measurement commit only for a file committed once. `since` is left
+`null` for a human to set: the date a row set changed is a decision, not a
+derivation.
+
+## R7. Item 3 — human review cost: measured, and it does not reproduce
+
+`probe_human_cost.py`, over the committed `records.json` (1,571 records, 2 arms).
+Definition taken from the harness rather than invented: a staff record costs a
+human if it is **unnamed** or **contradicted by its own margin label**.
+
+**It does not reproduce the project's only figure, and that is the finding.**
+FINDINGS.md reports 197 over 3,543 records in four categories (150 contradicted-
+only, 24 unnamed, 15 not-in-this-work, 8 both). The committed export holds 1,571
+records in two arms, has **no `not-in-this-work` field** and **zero unnamed
+records** (0 of 1,571). Only the `contradicted` component re-derives: **26 of
+1,571 = 1.66 %**.
+
+> The project's stated purpose is measured in exactly one place, and that place
+> cannot be re-derived from the tree.
+
+⚠️ **And its floor is open, not zero.** By this definition the floor computes to
+**0**, which would say a perfect pipeline leaves a reviewer nothing to do —
+contradicting the identity scope's own claim. The floor a `% of achievable` needs
+is *staves unnameable from the page*, which requires the label-evidence channel
+recorded per record — the same gap backlog §F names for clefs.
+
+Recorded `scoreable: false` with the reproducible partial as a companion. **Not
+scoring it is the right answer tonight and the wrong answer for the project.**
+
+## R8. Where the numbers stand after round 2
+
+| row | value | ceiling | **% of achievable** |
+|---|--:|---|--:|
+| `engraved:omr_ned` | 0.1122 | structural, measured, F=0 | **88.78** |
+| `competitive:engraved:audiveris` | 0.1252 | head-to-head | 87.48 |
+| `reading:POOLED` | F1 0.9192 | assumed C=1, render excluded | **91.92** |
+| `scan:omr_ned` (20 rows) | 0.8444 | assumed F=0 | 15.56 |
+| `scan:omr_ned:page_fidelity_15rows` | 0.8417 | **structural, measured directly, F=0.2123** | **20.09** |
+| `scan:omr_ned:ceiling_corroborated_subset` (5) | 0.7473 | corroborated, F=0.152 | 29.80 |
+| `competitive:scan:audiveris` (10 rows) | 0.7919 | head-to-head | 20.81 |
+| `prefill:precision:blind_out_of_sample` | 0.915 | **pre-registered C=0.97** | **94.33** |
+| `labeling:ledger_zone:defect_rate` | 0.0098 | assumed F=0 | 99.02 |
+
+Ceiling census over 55 rows: 25 measured, 1 measured-directly, 1 corroborated,
+1 single-source, 1 bounded-above, 1 refuted-as-a-ceiling, 1 pre-registered,
+1 measured-unreliable, 1 not-a-defect-rate, 18 assumed, 4 unmeasured.
+**38 scoreable, 17 not.**
+
+## R9. What round 2 did not do
+
+- **The `input` ceiling has a bound for noteheads and a refutation for hairpins;
+  it still has no VALUE for any class.** Pairing human hairpin boxes to the
+  reference's `<wedge>` positions on the same bars would give one, and the data
+  is on disk.
+- **One batch, one publisher.** The completion-pass corpus is 55 cells of
+  Breitkopf Brahms. The other ten batches could each be given a completion pass
+  cheaply — `inspected_passes` already makes coverage provable.
+- **The five Mahler/Bach scan rows still have no floor**, because they have no
+  hand-read staves map (backlog §A2's 57-slot confirmation pass would close four
+  of them).
+- **No delta was measured**, because measuring one needs an arm and arms are
+  embargoed. Everything above is a level, not a direction.
+- **`orchestral_eval` still has no repeat-run noise floor**, so no engraved row
+  can carry one.

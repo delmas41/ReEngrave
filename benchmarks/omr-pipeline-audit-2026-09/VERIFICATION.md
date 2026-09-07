@@ -547,3 +547,384 @@ is reliably, if weakly, the higher-confidence copy — which is what you would
 expect if distance and confidence are mildly correlated, and is still not evidence
 about *correctness*. Both halves of that are worth carrying: the effect is real
 and it is not about being right.
+
+---
+
+# ROUND 2 — verification of `DECISION_TYPES.md` §R0–R7
+
+**Appended 2026-09-07.** Agent II's round 2 (lines 889–1412), its seven new
+probes and their `out/` captures, checked against the tree. `tools/` and
+`backend/` are **unchanged since `350f0532`** (`git diff 350f0532..HEAD --
+tools/ backend/` is empty), so every citation is against the tree the coordinator
+named. My scripts are in `probe/verify/`.
+
+**Round 2 is the most accurate work this audit has produced.** Of **31 distinct
+quantities** I recomputed, **28 reproduced exactly** — including every headline
+figure — and **19 of 19 spot-checked line numbers are exact**. Agent II
+self-corrected two of its own round-1 claims before I reached them, and both
+self-corrections are substantively right.
+
+⚠️ The six defects are again concentrated: **one unit error inside the headline**,
+one over-read negative, one arithmetic slip that *understates* its own case, and
+the coordinator's M4 not actioned — with a **new and worse** failure mode
+substituted for it.
+
+## WHAT HELD (round 2)
+
+### Tier 1 — the headline asymmetry: verified in code, and stronger than stated
+
+**(a) Both defaults, from the code, not the docstrings.**
+
+| | site | how it is gated | default |
+|---|---|---|---|
+| **METER** | `rhythm.drop_uncorroborated_meter_changes:597` | called at `rhythm.py:689` inside `backfill_page_time_signatures`, **with no flag of any kind**; that function is itself called unconditionally at `transcribe.py:4757` and `export.py:59` | **ON — and it is not a default, it is unconditional** |
+| **CLEF** | `clef_correction.veto_implausible_clef_changes:460` | **one** production caller, `contextual.py:1518`, gated `if (instrument_clef_default and apply_clefs)`; `instrument_clef_default` is `os.environ.get("OMR_INSTRUMENT_CLEF_DEFAULT", "0")…not in ("0","","false","no","off")` at `contextual.py:1003` | **OFF** |
+
+I traced every caller of both (`grep -rn` over `tools/` and `backend/`); the only
+other references are tests. **The asymmetry is real and Agent II understates the
+meter side** — "default ON" implies a flag that could be turned off, and there
+is none. `_PROPAGATE_MIN_CHANGE_FRACTION = 0.5` (`rhythm.py:494`) confirms the
+`max(2, 0.5 × n_staves)` quorum.
+
+**(b) The 21 and the 11, recomputed** (`probe/verify/verify_r4_units.py`, written
+from scratch against the artefacts):
+
+```
+scan:     11 pages, 193 staves
+  meter MEASURES reverted (the field the guard writes) : 21
+  meter CHANGES surviving in the artefact              : 0
+  clef  CHANGES surviving in the artefact              : 11
+engraved: 11 pages, 224 staves      →  0 / 0 / 0
+```
+
+Exact on every cell, **including the engraved control** — the fault is scan-only
+in both channels, as claimed. Per-page, the 21 comes from three pages only:
+Beethoven 984073-p1 (12), Brahms 317803-p1 (6), Mahler p2 (3). *(See D11 for the
+unit problem this exposes.)*
+
+**(c) The two sites are genuinely the same shape.** Read at
+`transcribe.py:1592-1636`:
+
+- **clef**, `:1604` `if d.confidence > best_clef_conf:` seeded `best_clef_conf =
+  -1.0` at `:1594` — an argmax with **no floor** — then `:1616`
+  `active_clef = best_clef_read.name + suffix`, unconditional on any resolvable
+  clef detection;
+- **meter**, `:1634` `new_time_sig = parse_time_signature(dets)` then `:1636`
+  `active_time_sig = new_time_sig`, unconditional on non-None.
+
+Both per-cell, both unconditional, both carried forward onto every later measure
+of the staff. And I checked the one thing that could have broken the symmetry:
+**`parse_time_signature` (`rhythm.py:206`) reads `confidence` nowhere** — it sorts
+digit detections by x. So the meter site is not merely unfloored, it never forms
+the quantity at all. **The shape claim holds, and holds more strongly than
+written.**
+
+**(d) The docstring quote is verbatim.** `rhythm.py:609-611` reads:
+
+> *"It matters because a meter, once read, is carried forward onto every later
+> measure of the staff, so a single false reading rewrites the rest of the staff
+> and then votes for itself as many times as there are bars left."*
+
+Agent II quotes it exactly, and the Beethoven 5 p.1 diagnosis that follows it in
+the docstring (five `timeSig4` boxes on barline fragments, a 2/4 page shipped as
+common time) is also as described. **The pipeline did write down this audit's
+clef finding, for the meter, and then guarded only the meter.**
+
+**R4.2's discipline holds throughout.** I read §R4.1–R4.3 and the R5 table
+looking for any place the cross-staff meter witness is used to license a clef
+change. There is none: R4.2 states the disanalogy explicitly, R5's R1 row repeats
+the warning inline, and the three clef witnesses it lists (own header
+contradiction, two-cell agreement, same part on another system) are all
+staff-local. **No leakage.**
+
+### Tier 2 — the negatives
+
+| claim | recomputed | verdict |
+|---|---|---|
+| `accepted[0]` funnel: 139 → 134 → 20 → 20, **0 conflicts**, surya 19 / tesseract 1 | exact | ✅ *(see D12)* |
+| `clef_weights: null` on every fixture → specialist reach **0 of 193, 0 of 224** | 0 non-null of 22 files | ✅ exact |
+| ties: **1,459** scan / 298 both / 422 one / 739 none; engraved 155 / 70 / 30 / 55 | exact, and 298+422+739 = 1,459; 1,161/1,459 = **79.57%** | ✅ exact |
+| tie `\|dy\|` median 0.42, p90 1.79, max 4.66; 122 of 298 > 0.5 nh; 199 of 298 differ in pitch | exact | ✅ |
+| the bare `30` px floor **never binds** (median `avg_nh_h` 30.5 scan / 43.5 engraved) | `floor binds: {False: 1459}` / `{False: 155}` | ✅ exact |
+| `time_signature_final` on **32 of 193** scan staves, **0** surviving meter changes; engraved 0 of 224 | exact | ✅ |
+| Surya supplies **134 of 153 (87.6%)**; tiers 12 / 134 / 7 / 0 / 0; 132 labelled, 15 unresolved, 32 from score order | exact | ✅ |
+| `_stitch_slots` refuses **2 of 11** scan, **0 of 11** engraved, **51** fragments; `brahms-317803-p2` = `[14, 13]`, Bach = `[12,3,3,3,1,2]` | exact | ✅ |
+| lexicon refusals 71 / 50 / 10 / 2 / 2 = 135; **121 of 135 (89.6%)** carry no legal term | exact | ✅ |
+
+**The tie replay is faithful, and I checked it line for line** against
+`_pair_ties_in_staff` (`transcribe.py:2038-2123`). It reproduces all four
+non-obvious details: notehead **centre** x rather than edges, a `w*3` window
+using *each notehead's own* width, `avg_nh_h` as a **mean** not a median, the
+`if not tie_list or len(nh_list) < 2: return 0` guard, and the
+`best_left is not best_right` distinctness test. ⚠️ My own first-pass replay used
+edges, a median and no `<2` guard and got **1,658 / 224 / 484 / 950** — a 199-tie
+difference caused entirely by the `<2` guard. **Agent II's probe is right and
+mine was not**; recorded because it is the kind of near-miss that would otherwise
+read as a discrepancy.
+
+**"Nothing counts them" is *stronger* than claimed.** `transcribe.py:4644` is
+`_pair_ties_in_staff(staff_dict)` — the return value `n_new_pairs` is **discarded
+at the call site**. So nothing counts the 1,161 unanchored ties *and* nothing
+counts the 298 that anchored either. The only consumers of unpaired ties are
+`export.py:2036`/`:2043`'s `tie_to_slur_unpaired_*` refusal reasons, which live
+behind `OMR_ARC_RECLASS`, **default off** — which Agent II says.
+
+**`time_signature_final`'s causal story checks out**: written at
+`transcribe.py:4683` (`staff_dict["time_signature_final"] = (`) inside the staff
+loop; `backfill_page_time_signatures` runs at `:4757` and `_reconcile_page_to_meter`
+at `:4785`, both at page scope, both after. **Stale by construction**, as stated.
+
+### Tier 3 — the self-corrections
+
+**R0.1's withdrawal is right, and it is right for the reason given.** I
+reproduced the additive survey's own figures from the shared dumps, on the
+survey's own slices, exactly:
+
+| slice | n (ties excl.) | P(winner conf > loser conf) | survey publishes |
+|---|--:|--:|--:|
+| distance-decided | 4,233 | **0.5452** | **0.545** ✅ |
+| ladder-decided | 264 | **0.6174** | **0.617** ✅ |
+
+So the two are measuring one quantity on one dataset and Agent II is right to
+withdraw. *(The stated arithmetic identity is not exact — D15.)*
+
+**The reversibility finding does not depend on confidence, as claimed.**
+`probe_ownership_reversibility.py` computes `parked` as
+`t == "distance" and cat == "notehead"` — the tier × category cross-tab and
+nothing else. Confidence is computed further down and only *reported*. The
+550 / 12.2% / 87.8% figures are untouched by R0.1. ✅
+
+### Line numbers and the drift correction
+
+**19 of 19 spot-checked citations are exact at HEAD**, and `tools/`/`backend/`
+are byte-identical to `350f0532`: `rhythm.py:494, 597, 689, 1523` ·
+`clef_correction.py:460` · `transcribe.py:1604, 1616, 1634, 1636, 2038, 2801,
+4644, 4683, 4757, 4785` · `contextual.py:1003, 1518` · `direction_text.py:282,
+614, 798, 801` · `export.py:1770, 1804`. The reported re-derivation was done
+properly.
+
+---
+
+## WHAT DID NOT (round 2)
+
+### D11 — ⚠️ The headline compares two different units: **21 MEASURES against 11 CHANGES**
+
+`drop_uncorroborated_meter_changes` increments `reverted` **inside the per-measure
+loop** (`rhythm.py:666`), and its own docstring says so: *"Returns how many
+**measures** were reverted"*. The clef figure — 11 — counts **changes** (flips).
+R4.1's table and R5's conclusion R1 put them side by side as though commensurable:
+*"21 meter changes reverted and 0 surviving, against 0 reverted and 11 surviving
+clef changes."*
+
+**How large the error is cannot be recovered from the artefact**, because the
+guard mutates in place and records only the measure count. The bound is
+`3 ≤ changes ≤ 21`, and the per-page distribution makes the floor look likely:
+12 reverted measures on a 16-measure Beethoven page, 6 on a 7-measure Brahms
+page and 3 on Mahler p2 are each consistent with **exactly one** change per
+page — because one change at measure index *k* reverts every measure from *k* to
+the end of the staff. **So the true comparison may be as small as 3 reverted
+against 11 surviving.**
+
+**Corrected statement:** *the meter guard reverted **21 measures** across three
+of eleven scan pages, leaving 0 surviving mid-staff meter changes; the clef guard
+reverted **0** and left **11** surviving mid-staff clef changes. The number of
+meter CHANGES reverted is between 3 and 21 and is not recoverable from the
+committed artefacts.*
+
+⚠️ **And this is Agent II's own thesis landing on Agent II's headline.** The
+guard destroys the deciding quantity — it records the consequence (measures
+rewritten) and not the decision (changes vetoed) — which is exactly the
+"the margin is computed and discarded" pattern §R2.2 and §R4 are built around.
+The asymmetry survives, comfortably. The number does not.
+
+### D12 — ⚠️ "Zero conflicts" is true as the pipeline defines a conflict, and is read as more than that
+
+I checked the bias the coordinator asked about, and the good news first: **it is
+not a short-circuit artefact.** `direction_text.py:781-787` runs every reader over
+every crop unconditionally, with a comment saying that is deliberate so
+disagreement can surface. The conflict test at `:801-808` fires when ≥2 rungs are
+**accepted** and their normalised texts differ.
+
+**But `accepted` is post-lexicon.** A crop where Surya reads `legato` (accepted)
+and Tesseract reads `f legato` (refused — and `f legato` appears **twice** in the
+refusal list) is a real disagreement between the rungs and is **not a conflict**.
+Worse, it is invisible: `info["rejected"]` is extended **only `if not accepted`**
+(`:798`) — the asymmetry Agent II identifies four paragraphs later. The two
+findings interlock, and the report does not join them.
+
+**Corrected statement:** *`accepted[0]` has arbitrated zero times — on no crop did
+two rungs both clear the lexicon with different readings, so the decision has
+never had to choose. This is not evidence that the rungs agreed: a crop where one
+rung is accepted and the other's reading is refused is not counted as a conflict
+and, by the `:798` asymmetry, is not recorded at all.* The demotion is still
+correct — `accepted[0]`'s reach really is 0.
+
+### D13 — "ten lines apart" is twenty, or thirty
+
+The overwrites are `transcribe.py:1616` (clef) and `:1636` (meter) — **20 lines**;
+the cited lines `:1604` and `:1634` are **30**. Cosmetic, but it is a stated
+quantity in the round's headline sentence and both line numbers are otherwise
+exact.
+
+### D14 — "Six of the ten PARTIAL refusals fail on `f`" is **seven**, and Agent II's own table says so
+
+From `out/probe_direction_refusals.txt`, reproduced exactly:
+
+```
+x3  'F legato'   unknown=['f']
+x2  'f legato'   unknown=['f']
+x2  'f  legato'  unknown=['f']     →  3 + 2 + 2 = 7
+x1  'F espr.e legato'  unknown=['f', 'espr.e']   (an eighth involving f)
+```
+
+**7 of 10 fail on `f` alone; 8 of 10 involve `f`.** The block quoted in §R1.3 is
+the block that sums to 7. The slip **understates** the finding, which is the
+harmless direction, but the arithmetic is visible in the report's own evidence.
+
+### D15 — R0.1's arithmetic identity is not exact (the withdrawal still is)
+
+R0.1 says the 44.8% *"is the arithmetic complement"* of the survey's 0.545, and
+that *"Winner-higher 55.2% ⇔ loser-higher 44.8%"*. Three mismatches:
+
+| | denominator | ties | P(winner > loser) | P(loser > winner) |
+|---|--:|--:|--:|--:|
+| **survey** (distance only) | 4,233 | excluded | **0.5452** | 0.4548 |
+| **Agent II r1** (all tiers) | 4,521 | 24 **included** | 0.5466 | **0.4481** |
+
+The complement of the survey's figure on the survey's own denominator is
+**0.455**, not 0.448; and the complement of Agent II's 0.448 on *its* denominator
+is **0.5466**, not the 0.552 R0.1 asserts (ties are neither). The numbers are
+close because the ladder tier is only 266 pairs and the ties are 24.
+
+**Corrected statement:** *the 44.8% and the survey's 0.545 are the same
+measurement of the same quantity on overlapping data — one signal, not two — but
+they are computed on different denominators (all 4,521 pairs with ties included,
+against 4,233 distance-decided pairs with ties excluded) and are therefore not
+arithmetic complements. On the survey's own slice I reproduce 0.5452 exactly.*
+The withdrawal is correct and the credit assignment is correct; only the word
+"complement" overstates the tightness.
+
+### D16 — ⚠️ M4 is not actioned, and round 2 substituted a **worse** failure mode
+
+All six round-1 probes still carry `ROOT="/Users/seanjohnson/Desktop/ReEngrave"`.
+Only `probe_clef_ladder_reach.py` has the `OMR_FIXTURE_ROOT` escape.
+
+**And the seven round-2 probes did not adopt the escape — they went
+CWD-relative**, with `§R7` instructing `cd /Users/seanjohnson/Desktop/ReEngrave`
+first. Run from anywhere else they **find nothing and exit 0**. Demonstrated,
+from this worktree:
+
+```
+$ python3 …/probe_meter_guard_reach.py
+=== scan: 0 pages, 0 measures
+   uncorroborated meter changes REVERTED: 0
+   measures carrying rhythm_sum_warning: 0 (0.0%)  severity {}
+exit=0
+```
+
+That is a **believable wrong answer** — "the guard never fired, and no measure
+anywhere fails its bar-sum" — where the absolute path at least always reads the
+right tree. ⚠️ I hit this myself: my first `verify_r4_units.py` resolved ROOT to
+the worktree and printed a clean all-zeros table before I noticed
+`benchmarks/omr-scan-e2e-2026-09/fixtures/` **does not exist in this worktree at
+all** (gitignored).
+
+⚠️ **And the round-1 hard-coding was not laziness** — I said so too glibly. The
+fixtures exist *only* in the main checkout, so a relative path genuinely cannot
+work from here. The correct fix is neither: it is the `OMR_FIXTURE_ROOT` pattern
+already in `probe_clef_ladder_reach.py`, **plus a non-zero exit on an empty
+glob**. This is the same "an abstention and a failure look alike" fault Agent II
+diagnoses for `_assign` in §R1.4, in the audit's own instruments.
+
+---
+
+## WHAT IS MISSING (round 2)
+
+### M7 — ⚠️ The KEY SIGNATURE is the third instance of the same shape, and it sits **between** the two being compared
+
+`transcribe.py:1629-1631`:
+
+```python
+new_key_sig = _detect_key_sig_from_cell(dets, cell, active_clef)
+if new_key_sig is not None:
+    active_key_sig = new_key_sig
+```
+
+Per-cell, unconditional on non-None, carried forward — **identical to both sites
+R4.1 compares, and physically between them** (clef `:1616`, key `:1631`, meter
+`:1636`). R4.1 says "the same fault, in the same function, ten lines apart"; it is
+the same fault in the same function **three times**, twenty lines apart.
+
+Measured: **no page-scope corroboration guard exists for it** —
+`grep -rn "uncorroborated" tools/omr/` returns only the meter's. And the third
+leg completes the `*_final` table R4.3 opens: **26 of 193 scan staves carry
+`key_signature_final`** and **0 staves show a surviving mid-staff key change** on
+either family (193 scan, 224 engraved), so it is stale at the same 100% rate as
+the meter's. R4.3 names `key_signature_final` as the third stale field but does
+not connect it to R4.1's symmetry, where it is the strongest available point:
+
+> **guarded and corroborated: the meter. Guarded by an allowlist, default-off:
+> the clef. Unguarded entirely: the key signature — currently inert, 0 surviving
+> changes, which by this round's own reach-before-accuracy rule makes it a
+> hazard to record rather than a defect to fix.**
+
+*(I do not claim to know why the key channel is inert; `skip_key_sig_detection`
+and the cross-page vote both suppress mid-staff key readings upstream and I did
+not separate them.)*
+
+### M8 — the reach that would price §R1.1's free fix is never computed
+
+R1.1 correctly demotes `accepted[0]` and correctly identifies that the live
+defect is `:798`'s asymmetry. But the number that would justify fixing it — **how
+often exactly one rung was accepted while the other read something different** —
+is not measured. Agent II gives only the upper bound ("up to 20").
+
+⚠️ **And it cannot be measured from the current artefacts**, because that is
+precisely what `:798` fails to record. Worth saying explicitly, because it
+inverts the usual ordering: here the *fix must precede the measurement*, which is
+unusual in this project and is the strongest argument for making a free change
+without a prior number. Round 2 has the argument and does not make it.
+
+### M9 — nothing checks whether the 21 reverted measures were reverted *correctly*
+
+R4.1 uses the meter guard as the precedent that licenses the clef proposal. Its
+reach is measured; its **accuracy** is not, on either side. The truth MusicXML for
+all three affected pages is on disk and carries its own `<time>` elements, so
+"did the reverted measures end up with the meter the truth prints" is answerable
+from committed artefacts with no run — and it is the question that decides whether
+the precedent is a good one. *(I did not run it: it is a round-3 item, not a
+defect.)*
+
+### M10 — R2.1's three-way cause split is named as the needed work and one leg is already measurable
+
+R2.1 says the 1,161 unanchored ties are "spurious detection / missed head / head
+deleted by the ownership rules" and that the three are not separable. **The third
+leg is separable today**: the contest dumps record every deleted detection with
+its staff, class and category, and 118 `beam`/`tie` plus 74 `slur`/`tie` plus 18
+`staff`/`tie` plus 5 `ledgerLine`/`tie` disagreements are already enumerated in
+round 1's §4.3. Joining the deleted noteheads to the unanchored ties by page
+position is a probe over two committed artefacts. It would not separate the first
+two legs, and Agent II is right that those need a run — but "not separable" is
+stated of all three.
+
+---
+
+## Round 2 summary table
+
+| # | claim | verdict |
+|---|---|---|
+| D11 | headline compares 21 **measures** to 11 **changes** | **UNIT ERROR** — true change count is 3–21, unrecoverable |
+| D12 | "zero conflicts … the rungs produced no different readings" | **OVER-READ** — zero *accepted* conflicts; refused-side disagreement is unrecorded |
+| D13 | "ten lines apart" | **FALSE** — 20 (overwrites) or 30 (cited lines) |
+| D14 | "six of the ten PARTIAL refusals fail on `f`" | **FALSE** — seven; understates its own case |
+| D15 | 44.8% is "the arithmetic complement" of 0.545 | **NOT EXACT** — different denominators and tie handling; the withdrawal itself is right |
+| D16 | M4 (hard-coded probe roots) | **NOT ACTIONED**, and round 2 added a silent-empty variant |
+
+**Everything else held.** Both guard defaults in code; the 21/0 and 0/11 and the
+engraved 0/0 control; the identical unfloored per-cell shape at both sites and
+`parse_time_signature` touching confidence nowhere; the docstring quoted verbatim;
+R4.2's discipline maintained without leakage; the full direction funnel; the
+specialist's reach of zero; the tie replay, verified faithful line-for-line; the
+`*_final` staleness and its causal story; Surya's 87.6%; the stitch refusals; the
+lexicon refusal table; the survey's 0.545 and 0.617 reproduced exactly; and 19 of
+19 line numbers.

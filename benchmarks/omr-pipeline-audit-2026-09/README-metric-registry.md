@@ -16,18 +16,38 @@ sentence when false.
 Regenerate:
 
 ```bash
-python3 benchmarks/omr-pipeline-audit-2026-09/probe/probe_ceiling_engine_independence.py
-python3 benchmarks/omr-pipeline-audit-2026-09/probe/probe_pct_of_achievable.py
-python3 benchmarks/omr-pipeline-audit-2026-09/probe/probe_measurement_hygiene.py
-python3 benchmarks/omr-pipeline-audit-2026-09/probe/build_metric_registry.py
+P=benchmarks/omr-pipeline-audit-2026-09/probe
+python3 $P/probe_ceiling_engine_independence.py
+python3 $P/probe_measurement_hygiene.py
+python3 $P/probe_input_ceiling_from_labels.py
+python3 $P/probe_retro_stamp.py
+python3 $P/probe_human_cost.py
+# these two need musicdiff; the rest do not
+OMRNED_PYTHON=/path/to/.venv-omrned/bin/python python3 $P/probe_structural_floor.py
+python3 $P/probe_pct_of_achievable.py
+python3 $P/build_metric_registry.py
 ```
 
-All four are read-only over committed artefacts. They run no pipeline, score no
-XML, need no venv and take under two seconds.
+Six of the eight are read-only over committed artefacts and need no venv. Only
+`probe_structural_floor.py` scores XML — 15 small pairs through the musicdiff
+bridge, seconds, no pipeline. It reads truth fixtures from the `reconciliation`
+worktree (`fixtures/` is gitignored) and **refuses to run** unless every
+fixture's sha256 matches the canonical arm's.
 
-Today: **48 rows — 35 scoreable, 13 not.** Ceiling status: 25 measured,
-1 measured-single-source, 1 measured-and-corroborated, 1 measured-unreliable,
-17 assumed, 3 unmeasured.
+**v0.2.0 (round 2): 55 rows — 38 scoreable, 17 not.** Ceiling status: 25
+measured, 1 measured-directly, 1 measured-and-corroborated, 1
+measured-single-source, 1 bounded-above, 1 refuted-as-a-ceiling, 1
+pre-registered, 1 measured-unreliable, 1 not-a-defect-rate, 18 assumed, 4
+unmeasured. v0.1.0 is preserved in git at `ac88148e`; `metric-registry.v0.2.0.json`
+is a snapshot of the current file.
+
+⚠️ **Two schema changes since v0.1.0 that a consumer must handle.**
+`comparable_as` replaces the single `era_key` equality test — see §R4, and note
+the round-1 rule forbade the competitive comparison the registry itself prints.
+And every **scan** row's unit is now explicitly *"% of achievable **under page
+fidelity**"* (`ceiling.constraint`): the metric's unconstrained floor is zero,
+reachable by emitting the encoding instead of the page, which the project calls
+an anti-feature.
 
 ## Wiring it into `docs/progress-dashboard.html`
 
@@ -99,12 +119,15 @@ Both understate. A missing ceiling must never be able to manufacture a 100.
   of forty-eight result artefacts cannot be dated from their own contents. Until
   that is fixed, `era_key` for scan rows is assembled by hand in
   `build_metric_registry.py` and is only as good as the assembly.
-- **The scan structural floor is an estimate, not a number** (§B4). The exact
-  value would come from scoring the page-normalised truth *as the prediction*
-  against the raw truth — one cheap musicdiff run over 15 small files. That is
-  the single highest-value measurement on this list.
-- **The `input` ceiling is empty** (§B6). Every scan detector row is scored
-  against an assumed ceiling of 1.0 — the claim that a perfect reader could
-  recover every symbol from a bitonal 600 dpi scan of 1870 type.
-- **Human review cost is not measured at all** (§A9), and it is the thing the
-  project exists to reduce.
+- ✅ **The scan structural floor is now MEASURED** (§R2): 0.2123 pooled over 15
+  rows, three controls passing, no output of ours in the measurement.
+- **The `input` ceiling has a bound and a refutation, not a value** (§R3).
+  Noteheads are bounded above at 0.971 on one batch; hairpins are refuted as a
+  ceiling (a human drew 17 on 55 scanned cells). No class has a ceiling VALUE.
+- **Human review cost does not reproduce from committed artefacts** (§R7). The
+  project's only figure (197) is computed over a record set that is not
+  committed; only its `contradicted` component re-derives (26 of 1,571).
+- **Five scan rows still have no floor** — the four Mahler and one Bach rows have
+  no hand-read staves map.
+- **`orchestral_eval` still has no repeat-run noise floor**, so no engraved row
+  can carry one and no engraved delta can be gated.
