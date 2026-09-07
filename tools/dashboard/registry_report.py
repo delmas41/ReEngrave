@@ -93,7 +93,7 @@ OUT_MD = AUDIT / "registry-report.md"
 
 #: Bump ONLY together with a read of `changes_since_*`. Silent forward
 #: compatibility is the failure family this page exists to expose.
-UNDERSTOOD_SCHEMA_VERSIONS = ("0.4.0",)
+UNDERSTOOD_SCHEMA_VERSIONS = ("0.5.0",)
 
 #: `consumer_contract.fields_a_consumer_may_never_drop`, as this build handles
 #: them. A registry naming a field NOT in this set is refused — that is the
@@ -101,6 +101,7 @@ UNDERSTOOD_SCHEMA_VERSIONS = ("0.4.0",)
 HANDLED_NEVER_DROP_FIELDS = {
     "mandatory_caption",
     "ceiling.edition (via the edition clause)",
+    "render_with",
 }
 
 GREEN, AMBER = 90.0, 60.0
@@ -182,7 +183,12 @@ def gate_schema_version(reg: dict) -> None:
             "  Read `changes_since_*` in the registry, handle what changed, then "
             "add the version to UNDERSTOOD_SCHEMA_VERSIONS.")
 
-    contract = reg.get("consumer_contract") or {}
+    contract = reg.get("consumer_contract")
+    if not contract:
+        raise Refused(
+            "the registry declares no `consumer_contract`. A conforming registry "
+            "always carries one; without it there is nothing to gate on and this "
+            "consumer cannot tell what it is required to render.")
     current = contract.get("current")
     if current is not None and current != got:
         raise Refused(
@@ -196,6 +202,17 @@ def gate_schema_version(reg: dict) -> None:
             f"the registry's own contract does not list {got!r} as understandable "
             f"by a conforming consumer ({declared!r}).")
 
+    # ⚠️ ABSENCE IS NOT AN EMPTY LIST. Reading a missing key as `[]` made the
+    # whole clause vanish: a registry that simply omitted
+    # `fields_a_consumer_may_never_drop` sailed through and exited 0. The one
+    # thing this check exists to catch is a consumer not knowing what it is
+    # required to render — and "the list is gone" is the loudest form of that.
+    if "fields_a_consumer_may_never_drop" not in contract:
+        raise Refused(
+            "the contract carries no `fields_a_consumer_may_never_drop` list. "
+            "That list IS the mechanism by which a consumer learns what it must "
+            "not silently drop; its absence defeats the check rather than "
+            "passing it.")
     unhandled = [f for f in (contract.get("fields_a_consumer_may_never_drop") or [])
                  if f not in HANDLED_NEVER_DROP_FIELDS]
     if unhandled:
@@ -263,6 +280,74 @@ def caption_problem(row: dict) -> str | None:
 
 
 # ── grouping ─────────────────────────────────────────────────────────────────
+
+def bind_groups(rows: list[dict]) -> tuple[list[list[dict]], list[tuple[str, str, str]]]:
+    """`render_with` — rows that must be READ TOGETHER, per the schema.
+
+    ⚠️ WHY THIS IS NOT `era_key`. An earlier build of this renderer held the
+    ledger screen/defect pair together by grouping on `era_key`, and reported
+    that as the rule working. It was not: `era_key` says two numbers were MADE
+    under the same conditions, `render_with` says they may only be READ
+    together, and the two coincided here for one run only. Measured on that
+    page the pair sat 200 px apart with a full metadata row between them, and
+    the flattering number rendered ABOVE the caveat. Re-measure either row on
+    another corpus and the era key changes and the pair separates with nothing
+    failing. A rule whose enforcement evaporates when an unrelated field moves
+    is not a rule.
+
+    (The era grouping is KEPT, for what it is actually good at: it puts the
+    five blind engraved stages inside the era that produces the 88.78 %
+    headline. That contextualises a family; this binds a pair.)
+
+    Returns the groups (transitively closed) and any symmetry faults. Symmetry
+    is build-enforced upstream; it is re-checked here for the same reason the
+    edition clause is — the point of a never-drop field is that a consumer
+    cannot be trusted to have read it.
+    """
+    by_id = {r["id"]: r for r in rows}
+    faults: list[tuple[str, str, str]] = []
+
+    parent: dict[str, str] = {}
+
+    def find(a):
+        while parent.setdefault(a, a) != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+
+    def union(a, b):
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[rb] = ra
+
+    for r in rows:
+        for other in (r.get("render_with") or []):
+            if other not in by_id:
+                faults.append((r["id"], "render_with names a row that is not in "
+                                        "the registry", other))
+                continue
+            if r["id"] not in (by_id[other].get("render_with") or []):
+                faults.append((r["id"], "render_with is one-sided — the named row "
+                                        "does not name it back", other))
+                continue
+            union(r["id"], other)
+
+    clusters: dict[str, list[dict]] = {}
+    for rid in list(parent):
+        clusters.setdefault(find(rid), []).append(by_id[rid])
+
+    # ⚠️ ANTI-FLATTERING ORDER, and it is the defect that was measured: an
+    # unscoreable member carries the caveat and a scoreable one carries the
+    # number, so the caveat goes FIRST. Within each half, worst first.
+    out = []
+    for members in clusters.values():
+        members.sort(key=lambda m: (bool(m.get("scoreable")),
+                                    m.get("pct_of_achievable") if m.get("scoreable")
+                                    else 0))
+        out.append(members)
+    out.sort(key=lambda g: g[0]["id"])
+    return out, faults
+
 
 def era_groups(rows: list[dict]) -> list[dict]:
     """Rows measured on the same sample, kept together.
@@ -452,14 +537,34 @@ def row_html(row: dict) -> str:
         '<div class="stage">%s</div></div><div class="badges">%s</div>%s</div>\n'
         '  %s%s%s%s%s\n'
         '  <div class="chips">%s</div>\n'
-        '  <div class="src">evidence: %s</div>\n'
+        '  <div class="src">%s</div>\n'
         '</article>\n'
     ) % (rid, "true" if scoreable else "false", esc(row.get("family")),
          "true" if cap else "false",
          number, rid, esc(row.get("stage") or ""), "".join(badges), caption_html,
          bar, why, trust, comp_html, flags,
          comparability_chips(row),
-         ", ".join(esc(e) for e in ((row.get("ceiling") or {}).get("evidence") or [])) or esc(row.get("source") or "—"))
+         _evidence_html(row))
+
+
+def _evidence_html(row: dict) -> str:
+    """Openable paths and prose pointers, kept apart.
+
+    v0.5.0 split `ceiling.evidence_prose` out of `evidence` precisely because a
+    pointer like "CLAUDE.md · OMR_CHOIR_GROUPING" cannot be opened or existence-
+    checked. Rendering the two as one list would put them back together.
+    """
+    c = row.get("ceiling") or {}
+    bits = []
+    paths = [esc(e) for e in (c.get("evidence") or [])]
+    if paths:
+        bits.append("evidence: " + ", ".join(paths))
+    prose_ptrs = [esc(e) for e in (c.get("evidence_prose") or [])]
+    if prose_ptrs:
+        bits.append("<i>not an openable path:</i> " + "; ".join(prose_ptrs))
+    if not bits:
+        bits.append("evidence: " + esc(row.get("source") or "—"))
+    return " · ".join(bits)
 
 
 def group_html(g: dict) -> str:
@@ -476,6 +581,68 @@ def group_html(g: dict) -> str:
             '<span class="eracount">%d row%s</span></header>%s%s</section>\n'
             % (esc(g["era_key"]), len(g["rows"]), "" if len(g["rows"]) == 1 else "s",
                banner, "".join(row_html(r) for r in g["rows"])))
+
+
+def _short_number(row: dict) -> str:
+    """The figure alone, for the paired strip at the head of a bound block."""
+    pct = row.get("pct_of_achievable")
+    if row.get("scoreable") and pct is not None:
+        return '<span class="bindpct %s">%.2f%%</span>' % (band(pct), pct)
+    return '<span class="bindpct unscoreable">unscoreable</span>'
+
+
+def bind_block_html(members: list[dict]) -> str:
+    """One block; the NUMBERS adjacent, with nothing between them.
+
+    ⚠️ Being inside one bordered box is not "rendered together" — that was the
+    measured failure. So the members' figures are lifted into a single strip at
+    the head of the block, side by side, before any metadata: whatever a row's
+    detail rows do below, no scoreable row can come between the two numbers,
+    which is what the schema rule requires.
+    """
+    strip = "".join(
+        '<div class="bindside">%s<code>%s</code><span class="bindmetric">%s</span></div>'
+        % (_short_number(m), esc(m["id"]), esc(m.get("raw_metric") or ""))
+        for m in members)
+    return ('<section class="bindgroup"><header class="bindhead">'
+            '<span class="bindlabel">bound by <code>render_with</code></span>'
+            '<span class="bindnote">These %d figures may only be read together. '
+            'Either alone misleads in a named direction.</span></header>'
+            '<div class="bindstrip">%s</div>%s</section>\n'
+            % (len(members), strip, "".join(row_html(m) for m in members)))
+
+
+def _rank(rows: list[dict]) -> float:
+    """Worst first; a block with no number at all sorts ahead of every number."""
+    scored = [r["pct_of_achievable"] for r in rows
+              if r.get("scoreable") and r.get("pct_of_achievable") is not None]
+    return min(scored) if scored else -1.0
+
+
+def family_blocks(fam_rows: list[dict], binds: list[list[dict]]) -> list[str]:
+    """Era groups and bound blocks, interleaved worst-first.
+
+    A bound group is rendered ONCE, in the family of its worst member, and its
+    members are withheld from era grouping everywhere — otherwise a pair
+    spanning two families would print twice and the adjacency rule would be
+    satisfied in one place and broken in the other.
+    """
+    fam = fam_rows[0].get("family") if fam_rows else None
+    bound_here, bound_ids = [], set()
+    for members in binds:
+        bound_ids.update(m["id"] for m in members)
+        home = min(members, key=lambda m: (m.get("pct_of_achievable")
+                                           if m.get("scoreable") and
+                                           m.get("pct_of_achievable") is not None
+                                           else -1.0))
+        if home.get("family") == fam:
+            bound_here.append(members)
+
+    blocks = [(_rank(g["rows"]), group_html(g))
+              for g in era_groups([r for r in fam_rows if r["id"] not in bound_ids])]
+    blocks += [(_rank(m), bind_block_html(m)) for m in bound_here]
+    blocks.sort(key=lambda b: b[0])
+    return [html for _rank_, html in blocks]
 
 
 # ── page ─────────────────────────────────────────────────────────────────────
@@ -509,7 +676,16 @@ border-bottom:1px solid var(--line)}
 border-bottom:1px solid var(--line)}
 .row{padding:14px 14px 12px;border-bottom:1px solid var(--line)}
 .row:last-child{border-bottom:0}
-.headline{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
+/* `width:100%` is explicit rather than inherited — a grid container should not
+   depend on shrink-to-fit for a rule whose evidence is geometric.
+   ⚠️ IT IS NOT THE FIX FOR THE REVIEWER'S ZERO-WIDTH READING, and saying so
+   would be a mechanism claimed without measurement. Re-measured 2026-09-07:
+   in that browser state `innerWidth` and `document.body` are BOTH 0 — the pane
+   was hidden, so every element on the page measured zero and the screenshots
+   came back blank from the same cause. In a live pane earlier the same day the
+   headline measured normally and the captions read 20-38 px under their
+   numbers at >100 px wide. The kept change is defensive, not corrective. */
+.headline{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;width:100%}
 .pct{font-size:30px;font-weight:640;line-height:1;font-variant-numeric:tabular-nums;
 min-width:132px}
 .pctunit{display:block;font-size:10px;font-weight:400;color:var(--mut);letter-spacing:.04em}
@@ -556,6 +732,20 @@ table.inv{width:100%;border-collapse:collapse;font-size:12.5px}
 table.inv th,table.inv td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
 .warnbox{border:1px solid var(--amber);border-radius:6px;padding:10px 12px;margin:14px 0;
 font-size:13px;background:color-mix(in srgb,var(--amber) 8%, transparent)}
+.bindgroup{margin:16px 0 26px;border:2px solid var(--red);border-radius:8px;
+background:var(--card);overflow:hidden}
+.bindhead{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;padding:8px 12px;
+background:color-mix(in srgb,var(--red) 12%, transparent);border-bottom:1px solid var(--line)}
+.bindlabel{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.bindnote{font-size:12.5px}
+/* The two figures, side by side, with nothing between them. */
+.bindstrip{display:flex;flex-wrap:wrap;gap:10px 28px;padding:14px 14px 12px;
+border-bottom:1px solid var(--line);align-items:flex-start}
+.bindside{display:flex;flex-direction:column;gap:2px}
+.bindpct{font-size:30px;font-weight:640;line-height:1;font-variant-numeric:tabular-nums}
+.bindpct.green{color:var(--green)}.bindpct.amber{color:var(--amber)}.bindpct.red{color:var(--red)}
+.bindpct.unscoreable{font-size:16px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+.bindmetric{font-size:11.5px;color:var(--mut);max-width:38ch}
 .scroll{overflow-x:auto}
 """
 
@@ -577,8 +767,43 @@ def _spread_sentence(rows: list[dict]) -> str:
             % (len(scored), min(scored), max(scored), blind))
 
 
+def prepare(reg: dict) -> tuple[list[dict], list[list[dict]], list[tuple[str, str]],
+                                list[tuple[str, str, str]]]:
+    """What may be rendered, and what may not — computed ONCE, for both formats.
+
+    Two withholding rules, and the second CASCADES:
+      * a row that requires a caption and cannot be given one (R1);
+      * a row bound by `render_with` to a withheld row — the schema says a
+        consumer that cannot place them together must render NEITHER, so a
+        caption fault on one member takes the whole pair off the page rather
+        than leaving the survivor to be read alone, which is the exact harm
+        the binding exists to prevent.
+    """
+    skipped = {r["id"]: p for r in reg["rows"] if (p := caption_problem(r))}
+    all_binds, faults = bind_groups(reg["rows"])
+
+    for rid, kind, other in faults:                 # a broken link binds nothing
+        skipped.setdefault(rid, "%s (%s) — the pair is withheld rather than "
+                                "rendered apart" % (kind, other))
+        skipped.setdefault(other, "named by `%s` in a link that is not "
+                                  "reciprocal — the pair is withheld" % rid)
+
+    for members in all_binds:                       # cascade
+        hit = [m["id"] for m in members if m["id"] in skipped]
+        if hit:
+            for m in members:
+                skipped.setdefault(
+                    m["id"], "bound by `render_with` to a withheld row (%s), and "
+                             "the schema says a consumer that cannot place them "
+                             "together must render NEITHER" % ", ".join(hit))
+
+    rows = [r for r in reg["rows"] if r["id"] not in skipped]
+    binds = [m for m in all_binds if all(x["id"] not in skipped for x in m)]
+    return rows, binds, sorted(skipped.items()), faults
+
+
 def render_html(reg: dict, warnings: list[str], skipped: list[tuple[str, str]]) -> str:
-    rows = [r for r in reg["rows"] if caption_problem(r) is None]
+    rows, binds, _skipped, _faults = prepare(reg)
     declared, fallback = head_to_head(rows)
     parts = []
 
@@ -605,10 +830,11 @@ def render_html(reg: dict, warnings: list[str], skipped: list[tuple[str, str]]) 
 
     if skipped:
         parts.append(
-            "<div class='warnbox'><b>%d row%s WITHHELD.</b> A row whose "
-            "<code>mandatory_caption</code> cannot be placed beside its number is "
-            "not rendered bare — the schema's rule is that the renderer must not "
-            "show it at all.<ul>%s</ul></div>"
+            "<div class='warnbox'><b>%d row%s WITHHELD.</b> A row that cannot be "
+            "rendered as the schema requires — its <code>mandatory_caption</code> "
+            "unplaceable, or its <code>render_with</code> partner withheld — is not "
+            "rendered bare. The rule is that the renderer must not show it at all."
+            "<ul>%s</ul></div>"
             % (len(skipped), "" if len(skipped) == 1 else "s",
                "".join("<li><code>%s</code> — %s</li>" % (esc(i), esc(w)) for i, w in skipped)))
     if warnings:
@@ -656,8 +882,7 @@ def render_html(reg: dict, warnings: list[str], skipped: list[tuple[str, str]]) 
             continue
         parts.append("<h2 id='family-%s'>%s</h2>" % (esc(fam), esc(FAMILY_TITLE.get(fam, fam))))
         parts.append("<p class='lede'>%s</p>" % FAMILY_NOTE.get(fam, ""))
-        for g in era_groups(fam_rows):
-            parts.append(group_html(g))
+        parts.extend(family_blocks(fam_rows, binds))
 
     # ── R6: the page ends here, on what nothing measures ────────────────────
     blind = [r for r in rows if not r.get("scoreable")]
@@ -681,7 +906,8 @@ def render_html(reg: dict, warnings: list[str], skipped: list[tuple[str, str]]) 
 
 
 def render_md(reg: dict, warnings: list[str], skipped: list[tuple[str, str]]) -> str:
-    rows = [r for r in reg["rows"] if caption_problem(r) is None]
+    rows, binds, _skipped, _faults = prepare(reg)
+    bound_ids = {m["id"] for g in binds for m in g}
     out = ["# % of achievable",
            "",
            "One unit, one direction: **higher is better, everywhere.** "
@@ -701,25 +927,42 @@ def render_md(reg: dict, warnings: list[str], skipped: list[tuple[str, str]]) ->
     if fallback:
         out += ["**FALLBACK — not a declared head-to-head:** "
                 + ", ".join("`%s`" % m["id"] for m in fallback), ""]
+    def _bullet(r):
+        pct = r.get("pct_of_achievable")
+        head = ("**%.2f%% of achievable** — `%s`" % (pct, r["id"])) if (
+            r.get("scoreable") and pct is not None) else (
+            "**unscoreable** — `%s`" % r["id"])
+        cap = r.get("mandatory_caption")
+        # R1 in Markdown: the caption is on the SAME line as the number.
+        if cap:
+            head += " — ⚠️ MUST BE READ WITH THIS NUMBER: %s" % prose(cap)
+        lines = ["- " + head]
+        if not r.get("scoreable"):
+            lines.append("  - %s" % prose(r.get("why_not") or ""))
+        return lines
+
     for fam in FAMILY_ORDER:
         fam_rows = [r for r in rows if r.get("family") == fam]
         if not fam_rows:
             continue
         out += ["## %s" % FAMILY_TITLE.get(fam, fam), ""]
-        for g in era_groups(fam_rows):
+        # Bound pairs FIRST and in one block, so the two figures are adjacent
+        # lines here exactly as they are adjacent elements in the HTML.
+        for members in binds:
+            home = min(members, key=lambda m: (m.get("pct_of_achievable")
+                                               if m.get("scoreable") and
+                                               m.get("pct_of_achievable") is not None
+                                               else -1.0))
+            if home.get("family") != fam:
+                continue
+            out += ["### bound by `render_with` — read together, never apart", ""]
+            for m in members:
+                out += _bullet(m)
+            out.append("")
+        for g in era_groups([r for r in fam_rows if r["id"] not in bound_ids]):
             out += ["### sample `%s`" % g["era_key"], ""]
             for r in g["rows"]:
-                pct = r.get("pct_of_achievable")
-                head = ("**%.2f%% of achievable** — `%s`" % (pct, r["id"])) if (
-                    r.get("scoreable") and pct is not None) else (
-                    "**unscoreable** — `%s`" % r["id"])
-                cap = r.get("mandatory_caption")
-                # R1 in Markdown: the caption is on the SAME line as the number.
-                if cap:
-                    head += " — ⚠️ MUST BE READ WITH THIS NUMBER: %s" % prose(cap)
-                out.append("- " + head)
-                if not r.get("scoreable"):
-                    out.append("  - %s" % prose(r.get("why_not") or ""))
+                out += _bullet(r)
             out.append("")
     blind = [r for r in rows if not r.get("scoreable")]
     out += ["## What nothing here measures", "",
@@ -757,10 +1000,10 @@ def collect_warnings(reg: dict, root: Path) -> list[tuple[str, str, str]]:
 
 def build(reg: dict, root: Path) -> tuple[str, str, list[str], list[tuple[str, str]]]:
     gate_schema_version(reg)
-    skipped = [(r["id"], p) for r in reg["rows"] if (p := caption_problem(r))]
+    _rows, _binds, skipped, faults = prepare(reg)
     warns = collect_warnings(reg, root)
-    warns += [(i, "WITHHELD — the mandatory caption cannot be placed", w)
-              for i, w in skipped]
+    warns += [(rid, "render_with: " + kind, other) for rid, kind, other in faults]
+    warns += [(i, "WITHHELD", w) for i, w in skipped]
     return render_html(reg, warns, skipped), render_md(reg, warns, skipped), warns, skipped
 
 

@@ -108,8 +108,9 @@ def reg():
 @pytest.fixture(scope="module")
 def built(reg):
     html_s, md_s, warns, skipped = rr.build(reg, rr.ROOT)
+    _rows, binds, _sk, _f = rr.prepare(reg)
     return {"html": html_s, "md": md_s, "warnings": warns, "skipped": skipped,
-            "dom": dom(html_s)}
+            "binds": binds, "dom": dom(html_s)}
 
 
 def _mutate(reg, fn):
@@ -450,13 +451,16 @@ def test_R6_cross_cutting_rows_are_met_first_and_never_last(reg, built):
         "a cross-cutting row is the last metric on the page")
 
 
-def test_R6_no_metric_row_is_rendered_outside_an_era_group(built):
-    """Adjacency is only ever WITHIN a stated sample. MUTATION: render rows
-    straight into the family section — every row then has no eragroup ancestor
-    and this fails."""
+def test_R6_no_metric_row_is_rendered_outside_a_named_block(built):
+    """Adjacency is only ever WITHIN a block that says what holds these rows
+    together — a stated sample (`eragroup`) or a schema binding (`bindgroup`).
+
+    MUTATION: render rows straight into the family section — every row then has
+    neither ancestor and this fails."""
     for art in built["dom"].find_all(tag="article"):
-        assert any("eragroup" in a.classes for a in art.ancestors()), (
-            f"{art.attrs.get('data-row-id')} is rendered outside any sample group")
+        anc = [c for a in art.ancestors() for c in a.classes]
+        assert "eragroup" in anc or "bindgroup" in anc, (
+            f"{art.attrs.get('data-row-id')} is rendered outside any named block")
 
 
 def test_R6_rows_of_one_sample_are_contiguous(reg, built):
@@ -468,7 +472,9 @@ def test_R6_rows_of_one_sample_are_contiguous(reg, built):
 
     MUTATION: sort rows by percentage across the whole family — the pair is
     separated by twenty rows and this fails."""
-    order = [a.attrs["data-row-id"] for a in built["dom"].find_all(tag="article")]
+    bound = {m["id"] for g in built["binds"] for m in g}
+    order = [a.attrs["data-row-id"] for a in built["dom"].find_all(tag="article")
+             if a.attrs["data-row-id"] not in bound]
     era = {r["id"]: (r.get("family"), r.get("era_key")) for r in reg["rows"]}
     seen_spans = {}
     for i, rid in enumerate(order):
@@ -476,6 +482,190 @@ def test_R6_rows_of_one_sample_are_contiguous(reg, built):
     for key, idxs in seen_spans.items():
         assert idxs == list(range(idxs[0], idxs[0] + len(idxs))), (
             f"rows of sample {key} are not contiguous: {idxs}")
+
+
+# ══ R7 — `render_with`: bound rows are read together, never apart ═══════════
+#
+# ⚠️ WHY THIS IS A SEPARATE RULE AND NOT THE ERA GROUPING. An earlier build of
+# this renderer held the ledger screen/defect pair together by grouping on
+# `era_key` and reported that as the rule working. Measured on the rendered
+# page, the two figures sat 200 px apart with a full metadata row between them
+# and the flattering number came FIRST. Co-location by era is adjacency by
+# coincidence: `era_key` is how a number was MADE, `render_with` is how it may
+# be READ, and re-measuring either row on another corpus separates the pair
+# with nothing failing.
+
+def _bound(reg):
+    binds, faults = rr.bind_groups(reg["rows"])
+    return binds, faults
+
+
+def test_R7_the_registry_declares_a_binding_at_all(reg):
+    binds, faults = _bound(reg)
+    assert binds, "no `render_with` group — every test below would be vacuous"
+    assert not faults, f"the registry's own bindings are not symmetric: {faults}"
+
+
+def test_R7_bound_rows_render_in_one_block_with_their_numbers_adjacent(reg, built):
+    """MUTATION: drop the `bindstrip` and let each member's figure stay in its
+    own row — the two numbers are then separated by a metadata row, which is
+    the exact defect measured on the previous build."""
+    for members in built["binds"]:
+        ids = [m["id"] for m in members]
+        arts = [_article(built["dom"], i) for i in ids]
+        assert all(a is not None for a in arts), f"{ids} did not all render"
+
+        blocks = [next(a for a in art.ancestors() if "bindgroup" in a.classes)
+                  for art in arts]
+        assert len({id(b) for b in blocks}) == 1, (
+            f"{ids} are bound but render in different blocks")
+
+        # The figures are in ONE strip, with nothing between them.
+        strip = list(blocks[0].find_all(cls="bindstrip"))
+        assert len(strip) == 1
+        figures = list(strip[0].find_all(cls="bindpct"))
+        assert len(figures) == len(members), (
+            "the bound block does not carry every member's figure adjacently")
+
+
+def test_R7_no_scoreable_row_comes_between_two_bound_rows(reg, built):
+    """The schema's words: *no scoreable row between them*.
+
+    MUTATION: place bound members by percentage among the era groups — an
+    unrelated scoreable row lands between them and this fails."""
+    order = [a.attrs["data-row-id"] for a in built["dom"].find_all(tag="article")]
+    scoreable = {r["id"] for r in reg["rows"] if r.get("scoreable")}
+    for members in built["binds"]:
+        idx = sorted(order.index(m["id"]) for m in members)
+        between = order[idx[0] + 1:idx[-1]]
+        intruders = [i for i in between
+                     if i in scoreable and i not in {m["id"] for m in members}]
+        assert not intruders, f"{intruders} sit between two bound rows"
+
+
+def test_R7_the_caveat_is_rendered_before_the_flattering_number(reg, built):
+    """⚠️ THE MEASURED DEFECT, as an assertion. On the rejected arrangement the
+    99.02% defect rate rendered ABOVE the unscoreable screening rate, so a
+    reader met the good number first.
+
+    MUTATION: sort bound members by percentage descending — this fails."""
+    order = [a.attrs["data-row-id"] for a in built["dom"].find_all(tag="article")]
+    for members in built["binds"]:
+        unscoreable = [m["id"] for m in members if not m.get("scoreable")]
+        scored = [m["id"] for m in members if m.get("scoreable")]
+        if unscoreable and scored:
+            assert max(order.index(i) for i in unscoreable) < min(
+                order.index(i) for i in scored), (
+                "a scored figure is rendered above the caveat it must be read with")
+
+
+def test_R7_a_withheld_member_takes_the_WHOLE_pair_off_the_page(reg):
+    """*A consumer that cannot place them together must render NEITHER.*
+
+    MUTATION: withhold only the faulty member — the survivor then renders alone,
+    which is precisely the harm the binding exists to prevent."""
+    binds, _f = _bound(reg)
+    members = [m["id"] for m in binds[0]]
+
+    def blank(r):
+        for row in r["rows"]:
+            if row["id"] == members[0]:
+                # force a caption fault on ONE member
+                row["ceiling"]["edition"] = "Some Publisher, Some Work"
+                row["mandatory_caption"] = None
+    html_s, _md, _w, skipped = rr.build(_mutate(reg, blank), rr.ROOT)
+    for m in members:
+        assert m in dict(skipped), f"{m} survived its partner being withheld"
+        assert f'data-row-id="{m}"' not in html_s
+
+
+def test_R7_a_one_sided_link_withholds_both_rows(reg):
+    """Symmetry is build-enforced upstream; re-checked here for the same reason
+    the edition clause is — a never-drop field exists because a consumer cannot
+    be trusted to have read it.
+
+    MUTATION: delete the reciprocity check in `bind_groups` — the pair is then
+    silently un-bound and both rows render apart."""
+    binds, _f = _bound(reg)
+    a, b = binds[0][0]["id"], binds[0][1]["id"]
+
+    def unlink(r):
+        for row in r["rows"]:
+            if row["id"] == b:
+                row["render_with"] = []
+    mutated = _mutate(reg, unlink)
+    _binds2, faults = rr.bind_groups(mutated["rows"])
+    assert faults, "a one-sided render_with was not detected"
+
+    html_s, _md, _w, skipped = rr.build(mutated, rr.ROOT)
+    assert a in dict(skipped) and b in dict(skipped)
+    assert f'data-row-id="{a}"' not in html_s
+    assert f'data-row-id="{b}"' not in html_s
+
+
+def test_R7_the_markdown_keeps_bound_rows_adjacent_too(reg, built):
+    lines = built["md"].splitlines()
+    for members in built["binds"]:
+        idx = sorted(next(i for i, ln in enumerate(lines) if m["id"] in ln)
+                     for m in members)
+        assert idx[-1] - idx[0] <= 2 * len(members), (
+            "bound rows are not adjacent in the markdown")
+
+
+def test_R7_binding_does_not_depend_on_the_era_key(reg):
+    """⚠️ THE COINCIDENCE, REMOVED. Change one member's `era_key` — which is a
+    fact about how it was measured, not about how it reads — and the pair must
+    still render together.
+
+    MUTATION: re-implement the binding as era grouping — this fails."""
+    binds, _f = _bound(reg)
+    a = binds[0][0]["id"]
+
+    def move_era(r):
+        for row in r["rows"]:
+            if row["id"] == a:
+                row["era_key"] = "some-other-corpus|2027-01-01"
+    mutated = _mutate(reg, move_era)
+    html_s, _md, _w, skipped = rr.build(mutated, rr.ROOT)
+    assert not skipped
+    d = dom(html_s)
+    blocks = [next(x for x in _article(d, m["id"]).ancestors()
+                   if "bindgroup" in x.classes) for m in binds[0]]
+    assert len({id(b) for b in blocks}) == 1, (
+        "moving an era key separated a bound pair — the binding is riding on "
+        "the era grouping rather than on `render_with`")
+
+
+# ══ contract clause 3, and the hole the reviewer found in it ════════════════
+
+def test_R2_a_contract_with_NO_never_drop_list_is_refused(reg, capsys):
+    """⚠️ ABSENCE DEFEATED THE CLAUSE. Reading a missing key as `[]` meant a
+    registry that simply omitted the list passed the gate and exited 0 — the
+    one check whose job is "does this consumer know what it must render" was
+    silently satisfied by deleting its input.
+
+    MUTATION: restore `contract.get(...) or []` — this fails."""
+    def drop(r):
+        r["consumer_contract"].pop("fields_a_consumer_may_never_drop")
+    with pytest.raises(SystemExit) as exc:
+        rr.build(_mutate(reg, drop), rr.ROOT)
+    assert exc.value.code != 0
+    assert "fields_a_consumer_may_never_drop" in capsys.readouterr().err
+
+
+def test_R2_a_registry_with_no_contract_at_all_is_refused(reg):
+    def drop(r):
+        r.pop("consumer_contract")
+    with pytest.raises(SystemExit):
+        rr.build(_mutate(reg, drop), rr.ROOT)
+
+
+def test_R2_render_with_is_declared_as_handled(reg):
+    """The gate refused v0.5.0 the moment `render_with` landed — correctly.
+    Widening it means DECLARING the field, not deleting the check."""
+    assert "render_with" in rr.HANDLED_NEVER_DROP_FIELDS
+    for f in reg["consumer_contract"]["fields_a_consumer_may_never_drop"]:
+        assert f in rr.HANDLED_NEVER_DROP_FIELDS
 
 
 # ══ the unit's own trap: never a fabricated number ══════════════════════════

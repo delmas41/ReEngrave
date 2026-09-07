@@ -29,7 +29,16 @@ border-bottom:1px solid var(--line)}
 border-bottom:1px solid var(--line)}
 .row{padding:14px 14px 12px;border-bottom:1px solid var(--line)}
 .row:last-child{border-bottom:0}
-.headline{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
+/* `width:100%` is explicit rather than inherited — a grid container should not
+   depend on shrink-to-fit for a rule whose evidence is geometric.
+   ⚠️ IT IS NOT THE FIX FOR THE REVIEWER'S ZERO-WIDTH READING, and saying so
+   would be a mechanism claimed without measurement. Re-measured 2026-09-07:
+   in that browser state `innerWidth` and `document.body` are BOTH 0 — the pane
+   was hidden, so every element on the page measured zero and the screenshots
+   came back blank from the same cause. In a live pane earlier the same day the
+   headline measured normally and the captions read 20-38 px under their
+   numbers at >100 px wide. The kept change is defensive, not corrective. */
+.headline{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;width:100%}
 .pct{font-size:30px;font-weight:640;line-height:1;font-variant-numeric:tabular-nums;
 min-width:132px}
 .pctunit{display:block;font-size:10px;font-weight:400;color:var(--mut);letter-spacing:.04em}
@@ -76,13 +85,26 @@ table.inv{width:100%;border-collapse:collapse;font-size:12.5px}
 table.inv th,table.inv td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
 .warnbox{border:1px solid var(--amber);border-radius:6px;padding:10px 12px;margin:14px 0;
 font-size:13px;background:color-mix(in srgb,var(--amber) 8%, transparent)}
+.bindgroup{margin:16px 0 26px;border:2px solid var(--red);border-radius:8px;
+background:var(--card);overflow:hidden}
+.bindhead{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;padding:8px 12px;
+background:color-mix(in srgb,var(--red) 12%, transparent);border-bottom:1px solid var(--line)}
+.bindlabel{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.bindnote{font-size:12.5px}
+/* The two figures, side by side, with nothing between them. */
+.bindstrip{display:flex;flex-wrap:wrap;gap:10px 28px;padding:14px 14px 12px;
+border-bottom:1px solid var(--line);align-items:flex-start}
+.bindside{display:flex;flex-direction:column;gap:2px}
+.bindpct{font-size:30px;font-weight:640;line-height:1;font-variant-numeric:tabular-nums}
+.bindpct.green{color:var(--green)}.bindpct.amber{color:var(--amber)}.bindpct.red{color:var(--red)}
+.bindpct.unscoreable{font-size:16px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+.bindmetric{font-size:11.5px;color:var(--mut);max-width:38ch}
 .scroll{overflow-x:auto}
 </style>
 <div class='wrap'>
 <h1>% of achievable</h1>
-<p class='lede'>Every measurement this project makes, in one unit and one direction. <b>Higher is better, everywhere.</b> Read from <code>metric-registry.json</code> v0.4.0; rendered 2026-09-07.</p>
+<p class='lede'>Every measurement this project makes, in one unit and one direction. <b>Higher is better, everywhere.</b> Read from <code>metric-registry.json</code> v0.5.0; rendered 2026-09-07.</p>
 <div class='unitbar'><b>Why one unit.</b> The raw metrics disagree about direction — an OMR-NED of 1.000 is catastrophic and a recall of 1.000 is perfect. Here <b>100 means the ceiling this row was measured against</b>, and every ceiling is named, with whether it was <b>measured</b> or <b>assumed</b>. Bars drawn <span style='background-image:repeating-linear-gradient(45deg,rgba(128,128,128,.5) 0 3px,transparent 3px 7px);padding:0 10px'>hatched</span> are scored against a ceiling nobody has measured.<br><br><b>40 rows carry a number and they span 1.01% to 100.00%</b> — the worst and the best are measured on different samples against different ceilings and are not each other's context. <b>16 further rows carry no number at all</b>, listed at the foot of the page.<br><br><b>There is no page-level number, by construction.</b> Engraved and scan have different ceilings, noise floors and eras; one colour across them would be a lie. Rows are grouped by the <i>sample they were measured on</i> and never shown alone.</div>
-<div class='warnbox'><b>8 warnings</b> (non-zero exit under <code>--strict</code>):<ul><li><b>8 ×</b> ceiling evidence is a prose pointer, not a checkable path — <code>reading:accidental</code>, <code>scan:omr_ned:ceiling_measured_15rows</code>, <code>scan:omr_ned:ceiling_corroborated_subset</code>, <code>engraved:stage2</code>, <code>scan:stage4</code>, <code>engraved:stage9</code>, <code>scan:stage11</code>, <code>scan:input_ceiling:hollow_noteheads</code></li></ul></div>
 <h2 id='head-to-head'>Head-to-head</h2>
 <p class='lede'>Grouped on <code>comparable_as.head_to_head</code> and on nothing else — same fixtures, same scorer, same row set, <b>different system</b>. This is a comparison, <b>not a delta</b>: it says nothing about direction over time.</p>
 <div class='h2hgroup'><code>engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects</code><div class='side'><span><code>engraved:omr_ned</code></span><span class='num amber'>88.78%</span></div><div class='side'><span><code>competitive:engraved:audiveris</code></span><span class='num amber'>87.48%</span></div></div>
@@ -181,7 +203,7 @@ font-size:13px;background:color-mix(in srgb,var(--amber) 8%, transparent)}
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>reading:accidental</h4><div class="stage">4 symbol detection</div></div><div class="badges"></div></div>
   <p class="whynot">the FIXTURE is unreadable for this family — a score here measures Verovio, not the pipeline</p><div class="trust"><span>n = 226 printed symbols</span><span>ceiling render · measured_unreliable</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>native 0.4056 — detection F1 vs exact page truth (higher is better)</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: benchmarks/omr-reading-vs-reproduction-2026-09/results.json, tools/omr/page_truth.py render_fidelity</div>
+  <div class="src">evidence: benchmarks/omr-reading-vs-reproduction-2026-09/results.json, tools/omr/page_truth.py · <i>not an openable path:</i> page_truth.render_fidelity declares the family unreliable</div>
 </article>
 <article class="row" data-row-id="reading:barline" data-scoreable="false" data-family="engraved" data-has-caption="false">
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>reading:barline</h4><div class="stage">3 measure + barline</div></div><div class="badges"><span class="badge blind">HARNESS BLIND</span></div></div>
@@ -267,31 +289,31 @@ font-size:13px;background:color-mix(in srgb,var(--amber) 8%, transparent)}
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>engraved:stage2</h4><div class="stage">2 System grouping</div></div><div class="badges"><span class="badge blind">HARNESS BLIND</span></div></div>
   <p class="whynot">the harness cannot see this stage at all — not exercised. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</p><div class="trust"><span>n = 0 observations</span><span>ceiling visibility · measured</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>None: not a point value</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: CLAUDE.md · OMR_CHOIR_GROUPING (benchmarks/omr-choir-grouping-2026-09/FINDINGS.md)</div>
+  <div class="src"><i>not an openable path:</i> CLAUDE.md · OMR_CHOIR_GROUPING (benchmarks/omr-choir-grouping-2026-09/FINDINGS.md)</div>
 </article>
 <article class="row" data-row-id="engraved:stage3" data-scoreable="false" data-family="engraved" data-has-caption="false">
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>engraved:stage3</h4><div class="stage">3 Measure + barline extraction</div></div><div class="badges"><span class="badge blind">HARNESS BLIND</span></div></div>
   <p class="whynot">the harness cannot see this stage at all — not scoreable. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</p><div class="trust"><span>n = 0 observations</span><span>ceiling visibility · measured</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>None: not a point value</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div>
+  <div class="src"><i>not an openable path:</i> benchmarks/omr-reading-vs-reproduction-2026-09/results.json</div>
 </article>
 <article class="row" data-row-id="engraved:stage9" data-scoreable="false" data-family="engraved" data-has-caption="false">
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>engraved:stage9</h4><div class="stage">9 Margin labels → instrument</div></div><div class="badges"><span class="badge blind">HARNESS BLIND</span></div></div>
   <p class="whynot">the harness cannot see this stage at all — invisible to the metric. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</p><div class="trust"><span>n = 0 observations</span><span>ceiling visibility · measured</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>None: not a point value</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: CLAUDE.md · the 2026-09-05 landing (part-name assumption measured)</div>
+  <div class="src"><i>not an openable path:</i> CLAUDE.md · the 2026-09-05 landing (part-name assumption measured)</div>
 </article>
 <article class="row" data-row-id="engraved:stage10" data-scoreable="false" data-family="engraved" data-has-caption="false">
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>engraved:stage10</h4><div class="stage">10 Staff → slot alignment, part identity</div></div><div class="badges"><span class="badge blind">HARNESS BLIND</span></div></div>
   <p class="whynot">the harness cannot see this stage at all — not exercised. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</p><div class="trust"><span>n = 0 observations</span><span>ceiling visibility · measured</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>None: not a point value</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: benchmarks/omr-headline-validity-2026-09/engraved-1to1.json</div>
+  <div class="src"><i>not an openable path:</i> benchmarks/omr-headline-validity-2026-09/engraved-1to1.json</div>
 </article>
 <article class="row" data-row-id="engraved:stage11" data-scoreable="false" data-family="engraved" data-has-caption="false">
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>engraved:stage11</h4><div class="stage">11 Export → MusicXML / LilyPond</div></div><div class="badges"><span class="badge blind">HARNESS BLIND</span></div></div>
   <p class="whynot">the harness cannot see this stage at all — no isolated figure. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</p><div class="trust"><span>n = 0 observations</span><span>ceiling visibility · measured</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>None: not a point value</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: tools/omr/export_coverage.py</div>
+  <div class="src"><i>not an openable path:</i> tools/omr/export_coverage.py</div>
 </article>
 </section>
 
@@ -307,7 +329,7 @@ font-size:13px;background:color-mix(in srgb,var(--amber) 8%, transparent)}
 <p class='lede'>Real printed pages. ⚠️ Every scan row is <b>% of achievable under page fidelity</b> (<code>ceiling.constraint</code>) — the metric's unconstrained floor is zero, reachable by emitting the encoding instead of the page, which this project calls an anti-feature.</p>
 <section class="eragroup"><header class="erahead"><span class="eralabel">sample</span><code>(no era key declared)</code><span class="eracount">1 row</span></header><article class="row" data-row-id="flag:OMR_CONDENSED_PARTS:oracle_ceiling" data-scoreable="false" data-family="scan" data-has-caption="false">
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>flag:OMR_CONDENSED_PARTS:oracle_ceiling</h4><div class="stage">11 export</div></div><div class="badges"></div></div>
-  <p class="whynot">⚠️ THE CEILING GRADES A CONFIGURATION THAT CANNOT OCCUR. Verified in this tree 2026-09-07: `condensed_parts` is READ at export.py:3331 (`s.get(&quot;condensed_parts&quot;)`) and WRITTEN nowhere in tools/omr, so every staff reports 1 and the flag is inert even when set. The -4,557 figure was measured with ORACLE counts. A quoted ceiling for an unreachable configuration is the mirror image of a fabricated 100%: it makes a gap look bigger than the pipeline can act on.</p><div class="trust"><span>n = — edits</span><span>ceiling none · unmeasured</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>oracle ceiling quoted in CLAUDE.md&#x27;s knobs table (-4,557 scan edits): not a point value</span></div>
+  <p class="whynot">⚠️ THE CEILING GRADES A CONFIGURATION THAT CANNOT OCCUR. Verified in this tree 2026-09-07: `condensed_parts` is READ at export.py:3331 (`s.get(&quot;condensed_parts&quot;)`) and WRITTEN nowhere in tools/omr, so every staff reports 1 and the flag is inert even when set. The -4,557 figure was measured with ORACLE counts. A quoted ceiling for an unreachable configuration is the mirror image of a fabricated 100%: it makes a gap look bigger than the pipeline can act on.</p><div class="trust"><span>n = — edits</span><span>ceiling unreachable_configuration · unmeasured</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>oracle ceiling quoted in CLAUDE.md&#x27;s knobs table (-4,557 scan edits): not a point value</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
   <div class="src">evidence: tools/omr/export.py:3278-3331 (grep: only reader, no writer)</div>
 </article>
@@ -317,7 +339,7 @@ font-size:13px;background:color-mix(in srgb,var(--amber) 8%, transparent)}
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>scan:input_ceiling:hollow_noteheads</h4><div class="stage">4 symbol detection</div></div><div class="badges"></div></div>
   <p class="whynot">the page prints 68 half notes and the detector found 8, now 31 — but NOTHING measures how many of those counters are actually closed at 600 dpi bitonal, so there is no denominator of &#x27;recoverable ink&#x27;. An INPUT ceiling is the one kind this project has never measured.</p><div class="trust"><span>n = 68 printed half notes</span><span>ceiling input · unmeasured</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>half-noteheads detected on Beethoven 5 p.1: not a point value</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: CLAUDE.md · benchmarks/omr-first-run-2026-08/DURATIONS.md</div>
+  <div class="src">evidence: benchmarks/omr-first-run-2026-08/DURATIONS.md · <i>not an openable path:</i> CLAUDE.md, the hollow-notehead thread</div>
 </article>
 </section>
 
@@ -387,19 +409,19 @@ font-size:13px;background:color-mix(in srgb,var(--amber) 8%, transparent)}
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>scan:stage4</h4><div class="stage">4 Symbol detection</div></div><div class="badges"><span class="badge blind">HARNESS BLIND</span></div></div>
   <p class="whynot">the harness cannot see this stage at all — no ground truth. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</p><div class="trust"><span>n = 0 observations</span><span>ceiling visibility · measured</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>None: not a point value</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: CLAUDE.md · benchmarks/omr-hairpin-cv-2026-09 + benchmarks/omr-first-run-2026-08/DURATIONS.md</div>
+  <div class="src"><i>not an openable path:</i> CLAUDE.md · benchmarks/omr-hairpin-cv-2026-09 + benchmarks/omr-first-run-2026-08/DURATIONS.md</div>
 </article>
 <article class="row" data-row-id="scan:stage5" data-scoreable="false" data-family="scan" data-has-caption="false">
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>scan:stage5</h4><div class="stage">5 Stems + beams</div></div><div class="badges"><span class="badge blind">HARNESS BLIND</span></div></div>
   <p class="whynot">the harness cannot see this stage at all — not isolated. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</p><div class="trust"><span>n = 0 observations</span><span>ceiling visibility · measured</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>None: not a point value</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json</div>
+  <div class="src"><i>not an openable path:</i> benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json</div>
 </article>
 <article class="row" data-row-id="scan:stage11" data-scoreable="false" data-family="scan" data-has-caption="false">
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>scan:stage11</h4><div class="stage">11 Export → MusicXML / LilyPond</div></div><div class="badges"><span class="badge blind">HARNESS BLIND</span></div></div>
   <p class="whynot">the harness cannot see this stage at all — no isolated figure. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</p><div class="trust"><span>n = 0 observations</span><span>ceiling visibility · measured</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>None: not a point value</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: tools/omr/export_coverage.py · benchmarks/omr-dynamics-band-2026-09</div>
+  <div class="src"><i>not an openable path:</i> tools/omr/export_coverage.py · benchmarks/omr-dynamics-band-2026-09</div>
 </article>
 </section>
 
@@ -421,7 +443,7 @@ font-size:13px;background:color-mix(in srgb,var(--amber) 8%, transparent)}
   <div class="headline"><div class="pct red">18.28<span class="pctunit">% of achievable</span></div><div class="idblock"><h4>scan:omr_ned:ceiling_measured_15rows</h4><div class="stage">= finished file</div></div><div class="badges"><span class="badge measured">MEASURED_SINGLE_SOURCE CEILING</span></div></div>
   <div class="bar"><div class="fill red solid" style="width:18.28%"></div></div><div class="trust"><span>n = 15 pages</span><span>ceiling structural = 0.133999 · measured_single_source</span><span>noise floor ±6 edits (measured)</span><span>native 0.8417 — OMR-NED (lower is better)</span></div><ul class="flags"><li>15 of 20 rows: the five Mahler/Bach rows have no hand-read staves map and are not guessed at</li></ul>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json, benchmarks/omr-scan-e2e-2026-09/works.json (hand-read map), benchmarks/omr-pipeline-audit-2026-09/ceiling-engine-independence.json</div>
+  <div class="src">evidence: benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json, benchmarks/omr-scan-e2e-2026-09/works.json, benchmarks/omr-pipeline-audit-2026-09/ceiling-engine-independence.json · <i>not an openable path:</i> works.json&#x27;s staves map is HAND-READ off the scan</div>
 </article>
 </section>
 
@@ -437,7 +459,7 @@ font-size:13px;background:color-mix(in srgb,var(--amber) 8%, transparent)}
   <div class="headline"><div class="pct red">29.80<span class="pctunit">% of achievable</span></div><div class="idblock"><h4>scan:omr_ned:ceiling_corroborated_subset</h4><div class="stage">= finished file</div></div><div class="badges"><span class="badge measured">MEASURED_AND_CORROBORATED CEILING</span></div></div>
   <div class="bar"><div class="fill red solid" style="width:29.80%"></div></div><div class="trust"><span>n = 5 pages</span><span>ceiling structural = 0.151995 · measured_and_corroborated</span><span>noise floor ±6 edits (measured)</span><span>native 0.7473 — OMR-NED (lower is better)</span></div><ul class="flags"><li>5 of 20 rows, 3 of 6 works — NOT the headline. Since 2026-09-07 it is on the SAME arm as the headline (the 20-row normalised artefact), so the arm mismatch that made this incomparable is closed; the ROW-SET mismatch stands and still refuses the difference.</li></ul>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
-  <div class="src">evidence: benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json, benchmarks/omr-pipeline-audit-2026-09/ceiling-engine-independence.json, benchmarks/omr-scan-e2e-2026-09/works.json (hand-read map)</div>
+  <div class="src">evidence: benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json, benchmarks/omr-pipeline-audit-2026-09/ceiling-engine-independence.json, benchmarks/omr-scan-e2e-2026-09/works.json · <i>not an openable path:</i> works.json&#x27;s staves map is HAND-READ off the scan</div>
 </article>
 </section>
 
@@ -449,16 +471,16 @@ font-size:13px;background:color-mix(in srgb,var(--amber) 8%, transparent)}
 </article>
 </section>
 
-<section class="eragroup"><header class="erahead"><span class="eralabel">sample</span><code>labeling-audit|simrock-dvorak9|2026-09-03</code><span class="eracount">2 rows</span></header><p class="mixbanner">⚠️ One sample, 1 scored row and 1 that cannot be scored. Printed together because either half alone misleads: a number here is not a verdict on what stands beside it unmeasured, and an unscoreable row is not a failing one.</p><article class="row" data-row-id="labeling:ledger_zone:defect_rate" data-scoreable="true" data-family="scan" data-has-caption="false">
-  <div class="headline"><div class="pct green">99.02<span class="pctunit">% of achievable</span></div><div class="idblock"><h4>labeling:ledger_zone:defect_rate</h4><div class="stage">(labeling QA)</div></div><div class="badges"><span class="badge assumed">ASSUMED CEILING</span></div></div>
-  <div class="bar"><div class="fill green hatched" style="width:99.02%"></div></div><div class="trust"><span>n = 102 ledger-zone labels</span><span>ceiling assumed = 0 · assumed</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>native 0.009804 — ledger-zone labels ADJUDICATED wrong by a human (lower is better)</span></div><div class="companions"><span class="complabel">measured alongside</span><span class="comp"><b>screening_rate</b> 0.069</span><span class="comp"><b>screen_to_defect_ratio</b> 7.0</span></div><ul class="flags"><li>ALWAYS render beside `labeling:ledger_zone:screening_rate`. The two differ by 7x and both are percentages; showing either alone misleads in a named direction.</li></ul>
-  <div class="chips"><span class="chip ts" title="may be differenced over time">Δ labeling-audit|ledger-zone|adjudicated</span></div>
-  <div class="src">evidence: benchmarks/omr-snap-ledger-2026-09/LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md</div>
-</article>
-<article class="row" data-row-id="labeling:ledger_zone:screening_rate" data-scoreable="false" data-family="scan" data-has-caption="false">
+<section class="bindgroup"><header class="bindhead"><span class="bindlabel">bound by <code>render_with</code></span><span class="bindnote">These 2 figures may only be read together. Either alone misleads in a named direction.</span></header><div class="bindstrip"><div class="bindside"><span class="bindpct unscoreable">unscoreable</span><code>labeling:ledger_zone:screening_rate</code><span class="bindmetric">ledger-zone labels FLAGGED by the parity auditor</span></div><div class="bindside"><span class="bindpct green">99.02%</span><code>labeling:ledger_zone:defect_rate</code><span class="bindmetric">ledger-zone labels ADJUDICATED wrong by a human</span></div></div><article class="row" data-row-id="labeling:ledger_zone:screening_rate" data-scoreable="false" data-family="scan" data-has-caption="false">
   <div class="headline"><div class="pct unscoreable">unscoreable</div><div class="idblock"><h4>labeling:ledger_zone:screening_rate</h4><div class="stage">(labeling QA)</div></div><div class="badges"><span class="badge blind">HARNESS BLIND</span></div></div>
   <p class="whynot">⚠️ A SCREENING RATE IS NOT A DEFECT RATE, AND THIS IS THE CLEAREST CASE IN THE PROJECT OF THE CONFUSION THIS UNIT EXISTS TO FIX. The auditor flags 7 of 102 (6.9%); hand adjudication found ONE real error (~0.9%) — a 7x gap, and six of the seven share one mechanism (a printed ledger line print-merging into the notehead&#x27;s connected component, pulling the centroid up to a half-step). Both numbers are percentages; only one is a quality figure. A dashboard that prints either alone is wrong: 6.9% overstates the defect sevenfold, and 0.9% understates the reviewer&#x27;s workload sevenfold. The registry&#x27;s answer is that they are TWO ROWS with different `stage` semantics — a SCREEN and a DEFECT — never one, and a screen is never scoreable on the achievement axis.</p><div class="trust"><span>n = 102 ledger-zone labels</span><span>ceiling visibility · not_a_defect_rate</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>native 0.069 — ledger-zone labels FLAGGED by the parity auditor (lower is better)</span></div>
   <div class="chips"><span class="chip no">no time-series key — may not be differenced</span></div>
+  <div class="src">evidence: benchmarks/omr-snap-ledger-2026-09/LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md</div>
+</article>
+<article class="row" data-row-id="labeling:ledger_zone:defect_rate" data-scoreable="true" data-family="scan" data-has-caption="false">
+  <div class="headline"><div class="pct green">99.02<span class="pctunit">% of achievable</span></div><div class="idblock"><h4>labeling:ledger_zone:defect_rate</h4><div class="stage">(labeling QA)</div></div><div class="badges"><span class="badge assumed">ASSUMED CEILING</span></div></div>
+  <div class="bar"><div class="fill green hatched" style="width:99.02%"></div></div><div class="trust"><span>n = 102 ledger-zone labels</span><span>ceiling assumed = 0 · assumed</span><span>no repeat-run noise floor — <b>a delta on this row cannot be gated</b></span><span>native 0.009804 — ledger-zone labels ADJUDICATED wrong by a human (lower is better)</span></div><div class="companions"><span class="complabel">measured alongside</span><span class="comp"><b>screening_rate</b> 0.069</span><span class="comp"><b>screen_to_defect_ratio</b> 7.0</span></div><ul class="flags"><li>ALWAYS render beside `labeling:ledger_zone:screening_rate`. The two differ by 7x and both are percentages; showing either alone misleads in a named direction.</li></ul>
+  <div class="chips"><span class="chip ts" title="may be differenced over time">Δ labeling-audit|ledger-zone|adjudicated</span></div>
   <div class="src">evidence: benchmarks/omr-snap-ledger-2026-09/LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md</div>
 </article>
 </section>
@@ -466,12 +488,12 @@ font-size:13px;background:color-mix(in srgb,var(--amber) 8%, transparent)}
 <h2 id='nothing-measures'>What nothing here measures</h2>
 <p class='lede'>The page ends on this deliberately. 16 of 56 rows carry no number at all — most because the harness cannot see the stage, which is a ceiling of <b>zero information</b> and not a low score. A reader who takes ten seconds should leave with this, not with the best figure above it.</p>
 <div class='scroll'><table class='inv'><tr><th>row</th><th>stage</th><th>ceiling kind</th><th>why it is not scored</th></tr>
-<tr><td><code>flag:OMR_CONDENSED_PARTS:oracle_ceiling</code></td><td>11 export</td><td>—</td><td>⚠️ THE CEILING GRADES A CONFIGURATION THAT CANNOT OCCUR. Verified in this tree 2026-09-07: `condensed_parts` is READ at export.py:3331 (`s.get(&quot;condensed_parts&quot;)`) and WRITTEN nowhere in tools/omr, so every staff reports 1 and the flag is inert even when set. The -4,557 figure was measured with ORACLE counts. A quoted ceiling for an unreachable configuration is the mirror image of a fabricated 100%: it makes a gap look bigger than the pipeline can act on.</td></tr>
-<tr><td><code>identity:calibration:ECE</code></td><td>10 staff -&gt; slot, part identity</td><td>—</td><td>⚠️ NEITHER TRANSFORM CAN EXPRESS THIS, and forcing it would be worse than omitting it. `pct = 100*(W-M)/(W-F)` needs a defensible WORST CASE. OMR-NED has one (predict nothing scores exactly 1). A calibration error has none: ECE&#x27;s arithmetic maximum is 1.0 but that is unreachable in practice and carries no meaning, so a percentage against it would be a number with no referent — the exact defect this unit exists to remove. A THIRD transform kind would need an empirical worst case (e.g. the ECE of a constant predictor on this corpus), which nobody has measured. Note also that the estate&#x27;s own finding is that the ECE improvement from n=197 to n=1571 is NOT calibration — Brier skill vs a constant predictor is +0.0004 and 95.8% of mass sits in one bin — so a score here would be worse than absent. Blocked on WORKS, not records (backlog D5).</td></tr>
 <tr><td><code>ceiling:input:hairpin:scan</code></td><td>4 symbol detection</td><td>input</td><td>A BOUND, not a point, so it is not scored — but it is now a ceiling rather than a refutation. `scan:hairpin_detect` reads 1.01% against a ceiling measured at AT LEAST 0.80 on this edition, so the detector is at roughly one part in eighty of what a reader recovers. ⚠️ AND THE MATCHED COMPARISON IS WORSE THAN THE CORPUS RATE: on the SAME three pages the human swept, the transcription contains 10,523 detections and ZERO of either hairpin class. The 1-of-99 is not a thin-sample artefact — on this edition it is zero. n = 5 bars is the whole sample the corpus can offer; the same sweep drew 62 ties and 27 slurs, the other two families a fine-tune is documented to delete.</td></tr>
 <tr><td><code>ceiling:input:notehead:scan</code></td><td>4 symbol detection</td><td>input</td><td>an UPPER BOUND, not a ceiling to score against. 201 human noteheads against 207 reference notes is a ratio of COUNTS, not a matched recall: grace notes are on the page and absent from the encoding (0 in 28,579), so human boxes are inflated and the true figure is at or below 0.971. What it DOES establish is that C = 1.0 is very nearly right for noteheads on this print — so `scan:pitch` at 83.4% is an achievement number, not a fixture artefact. One batch, one publisher, density-selected cells.</td></tr>
 <tr><td><code>scan:input_ceiling:hollow_noteheads</code></td><td>4 symbol detection</td><td>input</td><td>the page prints 68 half notes and the detector found 8, now 31 — but NOTHING measures how many of those counters are actually closed at 600 dpi bitonal, so there is no denominator of &#x27;recoverable ink&#x27;. An INPUT ceiling is the one kind this project has never measured.</td></tr>
+<tr><td><code>identity:calibration:ECE</code></td><td>10 staff -&gt; slot, part identity</td><td>none</td><td>⚠️ NEITHER TRANSFORM CAN EXPRESS THIS, and forcing it would be worse than omitting it. `pct = 100*(W-M)/(W-F)` needs a defensible WORST CASE. OMR-NED has one (predict nothing scores exactly 1). A calibration error has none: ECE&#x27;s arithmetic maximum is 1.0 but that is unreachable in practice and carries no meaning, so a percentage against it would be a number with no referent — the exact defect this unit exists to remove. A THIRD transform kind would need an empirical worst case (e.g. the ECE of a constant predictor on this corpus), which nobody has measured. Note also that the estate&#x27;s own finding is that the ECE improvement from n=197 to n=1571 is NOT calibration — Brier skill vs a constant predictor is +0.0004 and 95.8% of mass sits in one bin — so a score here would be worse than absent. Blocked on WORKS, not records (backlog D5).</td></tr>
 <tr><td><code>reading:accidental</code></td><td>4 symbol detection</td><td>render</td><td>the FIXTURE is unreadable for this family — a score here measures Verovio, not the pipeline</td></tr>
+<tr><td><code>flag:OMR_CONDENSED_PARTS:oracle_ceiling</code></td><td>11 export</td><td>unreachable_configuration</td><td>⚠️ THE CEILING GRADES A CONFIGURATION THAT CANNOT OCCUR. Verified in this tree 2026-09-07: `condensed_parts` is READ at export.py:3331 (`s.get(&quot;condensed_parts&quot;)`) and WRITTEN nowhere in tools/omr, so every staff reports 1 and the flag is inert even when set. The -4,557 figure was measured with ORACLE counts. A quoted ceiling for an unreachable configuration is the mirror image of a fabricated 100%: it makes a gap look bigger than the pipeline can act on.</td></tr>
 <tr><td><code>engraved:stage10</code></td><td>10 Staff → slot alignment, part identity</td><td>visibility</td><td>the harness cannot see this stage at all — not exercised. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</td></tr>
 <tr><td><code>engraved:stage11</code></td><td>11 Export → MusicXML / LilyPond</td><td>visibility</td><td>the harness cannot see this stage at all — no isolated figure. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</td></tr>
 <tr><td><code>engraved:stage2</code></td><td>2 System grouping</td><td>visibility</td><td>the harness cannot see this stage at all — not exercised. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.</td></tr>

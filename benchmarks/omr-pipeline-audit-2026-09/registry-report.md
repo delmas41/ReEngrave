@@ -1,6 +1,6 @@
 # % of achievable
 
-One unit, one direction: **higher is better, everywhere.** Registry v0.4.0. Generated — do not hand-edit.
+One unit, one direction: **higher is better, everywhere.** Registry v0.5.0. Generated — do not hand-edit.
 
 ## Head-to-head (grouped on `comparable_as.head_to_head` only)
 
@@ -71,6 +71,12 @@ One unit, one direction: **higher is better, everywhere.** Registry v0.4.0. Gene
 
 ## Scanned input
 
+### bound by `render_with` — read together, never apart
+
+- **unscoreable** — `labeling:ledger_zone:screening_rate`
+  - ⚠️ A SCREENING RATE IS NOT A DEFECT RATE, AND THIS IS THE CLEAREST CASE IN THE PROJECT OF THE CONFUSION THIS UNIT EXISTS TO FIX. The auditor flags 7 of 102 (6.9%); hand adjudication found ONE real error (~0.9%) — a 7x gap, and six of the seven share one mechanism (a printed ledger line print-merging into the notehead's connected component, pulling the centroid up to a half-step). Both numbers are percentages; only one is a quality figure. A dashboard that prints either alone is wrong: 6.9% overstates the defect sevenfold, and 0.9% understates the reviewer's workload sevenfold. The registry's answer is that they are TWO ROWS with different `stage` semantics — a SCREEN and a DEFECT — never one, and a screen is never scoreable on the achievement axis.
+- **99.02% of achievable** — `labeling:ledger_zone:defect_rate`
+
 ### sample `(no era key declared)`
 
 - **unscoreable** — `flag:OMR_CONDENSED_PARTS:oracle_ceiling`
@@ -135,12 +141,6 @@ One unit, one direction: **higher is better, everywhere.** Registry v0.4.0. Gene
 
 - **94.33% of achievable** — `prefill:precision:blind_out_of_sample`
 
-### sample `labeling-audit|simrock-dvorak9|2026-09-03`
-
-- **99.02% of achievable** — `labeling:ledger_zone:defect_rate`
-- **unscoreable** — `labeling:ledger_zone:screening_rate`
-  - ⚠️ A SCREENING RATE IS NOT A DEFECT RATE, AND THIS IS THE CLEAREST CASE IN THE PROJECT OF THE CONFUSION THIS UNIT EXISTS TO FIX. The auditor flags 7 of 102 (6.9%); hand adjudication found ONE real error (~0.9%) — a 7x gap, and six of the seven share one mechanism (a printed ledger line print-merging into the notehead's connected component, pulling the centroid up to a half-step). Both numbers are percentages; only one is a quality figure. A dashboard that prints either alone is wrong: 6.9% overstates the defect sevenfold, and 0.9% understates the reviewer's workload sevenfold. The registry's answer is that they are TWO ROWS with different `stage` semantics — a SCREEN and a DEFECT — never one, and a screen is never scoreable on the achievement axis.
-
 ## What nothing here measures
 
 16 of 56 rows carry no number at all.
@@ -158,6 +158,6 @@ One unit, one direction: **higher is better, everywhere.** Registry v0.4.0. Gene
 - `ceiling:input:notehead:scan` (input) — an UPPER BOUND, not a ceiling to score against. 201 human noteheads against 207 reference notes is a ratio of COUNTS, not a matched recall: grace notes are on the page and absent from the encoding (0 in 28,579), so human boxes are inflated and the true figure is at or below 0.971. What it DOES establish is that C = 1.0 is very nearly right for noteheads on this print — so `scan:pitch` at 83.4% is an achievement number, not a fixture artefact. One batch, one publisher, density-selected cells.
 - `ceiling:input:hairpin:scan` (input) — A BOUND, not a point, so it is not scored — but it is now a ceiling rather than a refutation. `scan:hairpin_detect` reads 1.01% against a ceiling measured at AT LEAST 0.80 on this edition, so the detector is at roughly one part in eighty of what a reader recovers. ⚠️ AND THE MATCHED COMPARISON IS WORSE THAN THE CORPUS RATE: on the SAME three pages the human swept, the transcription contains 10,523 detections and ZERO of either hairpin class. The 1-of-99 is not a thin-sample artefact — on this edition it is zero. n = 5 bars is the whole sample the corpus can offer; the same sweep drew 62 ties and 27 slurs, the other two families a fine-tune is documented to delete.
 - `scan:input_ceiling:hollow_noteheads` (input) — the page prints 68 half notes and the detector found 8, now 31 — but NOTHING measures how many of those counters are actually closed at 600 dpi bitonal, so there is no denominator of 'recoverable ink'. An INPUT ceiling is the one kind this project has never measured.
-- `flag:OMR_CONDENSED_PARTS:oracle_ceiling` (None) — ⚠️ THE CEILING GRADES A CONFIGURATION THAT CANNOT OCCUR. Verified in this tree 2026-09-07: `condensed_parts` is READ at export.py:3331 (`s.get("condensed_parts")`) and WRITTEN nowhere in tools/omr, so every staff reports 1 and the flag is inert even when set. The -4,557 figure was measured with ORACLE counts. A quoted ceiling for an unreachable configuration is the mirror image of a fabricated 100%: it makes a gap look bigger than the pipeline can act on.
-- `identity:calibration:ECE` (None) — ⚠️ NEITHER TRANSFORM CAN EXPRESS THIS, and forcing it would be worse than omitting it. `pct = 100*(W-M)/(W-F)` needs a defensible WORST CASE. OMR-NED has one (predict nothing scores exactly 1). A calibration error has none: ECE's arithmetic maximum is 1.0 but that is unreachable in practice and carries no meaning, so a percentage against it would be a number with no referent — the exact defect this unit exists to remove. A THIRD transform kind would need an empirical worst case (e.g. the ECE of a constant predictor on this corpus), which nobody has measured. Note also that the estate's own finding is that the ECE improvement from n=197 to n=1571 is NOT calibration — Brier skill vs a constant predictor is +0.0004 and 95.8% of mass sits in one bin — so a score here would be worse than absent. Blocked on WORKS, not records (backlog D5).
+- `flag:OMR_CONDENSED_PARTS:oracle_ceiling` (unreachable_configuration) — ⚠️ THE CEILING GRADES A CONFIGURATION THAT CANNOT OCCUR. Verified in this tree 2026-09-07: `condensed_parts` is READ at export.py:3331 (`s.get("condensed_parts")`) and WRITTEN nowhere in tools/omr, so every staff reports 1 and the flag is inert even when set. The -4,557 figure was measured with ORACLE counts. A quoted ceiling for an unreachable configuration is the mirror image of a fabricated 100%: it makes a gap look bigger than the pipeline can act on.
+- `identity:calibration:ECE` (none) — ⚠️ NEITHER TRANSFORM CAN EXPRESS THIS, and forcing it would be worse than omitting it. `pct = 100*(W-M)/(W-F)` needs a defensible WORST CASE. OMR-NED has one (predict nothing scores exactly 1). A calibration error has none: ECE's arithmetic maximum is 1.0 but that is unreachable in practice and carries no meaning, so a percentage against it would be a number with no referent — the exact defect this unit exists to remove. A THIRD transform kind would need an empirical worst case (e.g. the ECE of a constant predictor on this corpus), which nobody has measured. Note also that the estate's own finding is that the ECE improvement from n=197 to n=1571 is NOT calibration — Brier skill vs a constant predictor is +0.0004 and 95.8% of mass sits in one bin — so a score here would be worse than absent. Blocked on WORKS, not records (backlog D5).
 - `labeling:ledger_zone:screening_rate` (visibility) — ⚠️ A SCREENING RATE IS NOT A DEFECT RATE, AND THIS IS THE CLEAREST CASE IN THE PROJECT OF THE CONFUSION THIS UNIT EXISTS TO FIX. The auditor flags 7 of 102 (6.9%); hand adjudication found ONE real error (~0.9%) — a 7x gap, and six of the seven share one mechanism (a printed ledger line print-merging into the notehead's connected component, pulling the centroid up to a half-step). Both numbers are percentages; only one is a quality figure. A dashboard that prints either alone is wrong: 6.9% overstates the defect sevenfold, and 0.9% understates the reviewer's workload sevenfold. The registry's answer is that they are TWO ROWS with different `stage` semantics — a SCREEN and a DEFECT — never one, and a screen is never scoreable on the achievement axis.
