@@ -62,6 +62,9 @@ from .dossier import join_parts_to_slots
 from .instruments import Instrument, candidates_for_alias, lookup
 from .label_contradiction import (contradictable, find_contradictions,
                                   summarise as summarise_contradictions)
+from .offroster_name import (enabled as offroster_enabled,
+                             find_offroster_vetoes,
+                             summarise as summarise_offroster)
 from .preprocessing import render_page
 from .score_layouts import fit_layouts, resolve_ambiguous_label
 from .roster import Roster, acquire_roster
@@ -1198,6 +1201,58 @@ def apply_contextual_analysis(
             "vetoes": absent_vetoes,
         }
 
+    # ── The off-roster deduced-name veto (OMR_ROSTER_SCORE_ORDER_VETO, off) ──
+    # A name the score-order prior DEDUCED may not be an instrument the work's
+    # roster does not contain. Brahms 1's finale braces 3 trombones over TWO
+    # staves and the second one is named `Tuba` in a work with no tuba; see
+    # `offroster_name.py` for the measurement and why the attestation veto
+    # above is structurally blind to it.
+    #
+    # ⚠️ The roster supplier is `work_roster.py` (a sibling branch) and this
+    # module reads no catalog of its own — a second reader for the same facts
+    # is how two rosters come to disagree. Until that module lands the import
+    # fails, `admissible` is None, and the layer is a complete no-op. The
+    # abstention is REPORTED rather than silent: `roster: null` in the summary
+    # says "no roster was available", which is not the same fact as "nothing
+    # was vetoed", and this project has paid for confusing those.
+    offroster_vetoed_keys: set[tuple[int, int, int]] = set()
+    if offroster_enabled():
+        _admissible = None
+        _work_id = None
+        try:
+            from .work_roster import roster_for_pdf as _roster_for_pdf
+        except ImportError:
+            _roster_for_pdf = None
+        if _roster_for_pdf is not None and pdf_path is not None:
+            try:
+                _wr = _roster_for_pdf(pdf_path)
+            except Exception as exc:                     # pragma: no cover
+                logger.info("work roster unavailable: %s", exc)
+                _wr = None
+            if _wr is not None:
+                _admissible = set(_wr.instruments)
+                _work_id = _wr.work_id
+        _offroster = find_offroster_vetoes(
+            staff_keys=_keys, slot_by_staff=slot_by_staff,
+            instrument_name_by_slot=_name_by_slot,
+            instrument_source=instrument_source,
+            admissible=_admissible, evidence=_evidence)
+        offroster_vetoed_keys = {
+            (r["page_index"], r["system_index"], r["staff_index"])
+            for r in _offroster}
+        vetoed_keys = vetoed_keys | offroster_vetoed_keys
+        summary["offroster_name_veto"] = summarise_offroster(
+            _offroster, _admissible, _work_id)
+        if _offroster:
+            logger.warning(
+                "%d staff record(s) left UNNAMED: the score-order prior "
+                "deduced %s, which the work's roster does not contain. A "
+                "deduced name is not a reading, and an instrument the work "
+                "does not have cannot be right whatever the staff is "
+                "(benchmarks/omr-brahms-tuba-2026-09/).",
+                len(_offroster),
+                summary["offroster_name_veto"]["by_instrument"])
+
     # ── A staff that contradicts its own label ───────────────────────────────
     # UNCONDITIONAL and evidence-only: it renames nothing, refuses nothing, and
     # has no flag, because there is no behaviour to gate. See
@@ -1278,7 +1333,14 @@ def apply_contextual_analysis(
                     # its name" audit unable to disagree.)
                     instrument = None
                     raw = None
-                    staff["instrument_veto"] = "absent_instrument"
+                    # Which veto refused it. The two ask different questions —
+                    # one "was this name read NEAR here", the other "can this
+                    # name be right at all" — and a reader auditing a refusal
+                    # needs to know which, so they are never merged into one
+                    # marker.
+                    staff["instrument_veto"] = (
+                        "offroster_name" if key in offroster_vetoed_keys
+                        else "absent_instrument")
                 if raw:
                     staff["instrument_label"] = raw
                 if instrument is not None:
