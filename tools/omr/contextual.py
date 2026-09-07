@@ -48,6 +48,7 @@ from __future__ import annotations
 
 import logging
 import os
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
@@ -68,6 +69,7 @@ from .roster import enabled as roster_enabled
 from .slots import (MIN_LABEL_CONFIDENCE, Slot, SystemView, align,
                     assign_slots, labels_by_staff)
 from .staff_detector import detect_staves
+from . import work_roster
 from .staff_labels import StaffLabel, has_text_layer, read_staff_labels
 
 # Both margin readers log and degrade when they fail rather than taking the
@@ -547,6 +549,62 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
                      ocr_fallback: bool = True,
                      tiers: list[int] | None = None,
                      review_dir: Path | None = None) -> list[StaffLabel]:
+    """`_read_labels_for_page`, then the work's roster read over the result.
+
+    The ladder has eight `return` points and the roster pass has to see all of
+    them, including the one `roster.acquire_roster` reaches through its injected
+    `read_labels` — so it is a wrapper rather than a line at the bottom.
+
+    ⚠️ **The roster pass changes what a label RESOLVES TO, never what it SAYS.**
+    `StaffLabel.text` is the reader's own string in every case; only
+    `instrument` / `confidence` / `alias` move. A reader is never made to
+    "read" something it did not see, which is the trap the truncation session
+    refused for the same family of faults
+    (`benchmarks/omr-margin-window-truncation-2026-09/FINDINGS.md` §5).
+    """
+    labels = _read_labels_for_page(
+        pws, pdf_path, page_index, assist=assist, budget=budget,
+        surya_fallback=surya_fallback, ocr_fallback=ocr_fallback,
+        tiers=tiers, review_dir=review_dir)
+    if not work_roster.enabled() or not labels:
+        return labels
+    try:
+        roster = work_roster.roster_for_pdf(pdf_path)
+    except Exception as exc:                              # noqa: BLE001
+        # An optional enrichment must never lose a page's labels. Loud, because
+        # a failure here is a defect and not an abstention — the abstention is
+        # `roster_for_pdf` returning None for a PDF outside the store.
+        logger.warning("work roster unavailable for %s: %s", pdf_path, exc)
+        return labels
+    if roster is None:
+        return labels
+    out: list[StaffLabel] = []
+    for lab in labels:
+        d = work_roster.decide(lab.text, roster,
+                               hit=work_roster.match_of(lab))
+        if d.kind == "unchanged":
+            out.append(lab)
+            continue
+        logger.info("roster %s: staff %d %r %s %s -> %s",
+                    roster.work_id, lab.staff_index, lab.text, d.kind,
+                    d.before or lab.confidence,
+                    d.match.instrument.name if d.match else "None")
+        out.append(replace(
+            lab,
+            instrument=d.match.instrument if d.match else None,
+            fifths_offset=d.match.fifths_offset if d.match else 0,
+            confidence=d.match.confidence if d.match else "none",
+            alias=d.match.alias if d.match else "",
+        ))
+    return out
+
+
+def _read_labels_for_page(pws, pdf_path: Path, page_index: int, *,
+                          assist, budget: list[int],
+                          surya_fallback: bool = True,
+                          ocr_fallback: bool = True,
+                          tiers: list[int] | None = None,
+                          review_dir: Path | None = None) -> list[StaffLabel]:
     """Instrument labels, cheapest reader first.
 
         PDF text layer  ->  Surya 2  ->  Tesseract  ->  whoever `assist` names
