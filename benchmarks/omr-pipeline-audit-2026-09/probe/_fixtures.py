@@ -18,7 +18,45 @@ import glob as _glob
 import os
 import sys
 
-DEFAULT_ROOT = "/Users/seanjohnson/Desktop/ReEngrave"
+
+def _repo_root() -> str:
+    """The checkout THIS FILE lives in — never the CWD.
+
+    `<root>/benchmarks/omr-pipeline-audit-2026-09/probe/_fixtures.py`
+    """
+    return os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__)))))
+
+
+def _main_checkout(root: str) -> str:
+    """A git WORKTREE resolved to the checkout that holds the build products.
+
+    ⚠️ Fixtures are gitignored, so they exist only in the main checkout. This
+    used to be handled by hard-coding one machine's absolute path — which is
+    the mirror of the CWD defect this module was written against: it does not
+    silently glob nothing, it silently globs ANOTHER TREE, or nothing at all on
+    any other machine. A worktree's `.git` is a file naming
+    `<main>/.git/worktrees/<name>`, so the main checkout is derivable.
+    """
+    dot_git = os.path.join(root, ".git")
+    if not os.path.isfile(dot_git):
+        return root
+    try:
+        line = open(dot_git).readline().strip()
+    except OSError:
+        return root
+    if not line.startswith("gitdir:"):
+        return root
+    gitdir = line.split(":", 1)[1].strip()
+    marker = os.sep + ".git" + os.sep + "worktrees" + os.sep
+    if marker not in gitdir:
+        return root
+    return os.path.dirname(gitdir.split(marker)[0] + os.sep + ".git")
+
+
+#: Resolved from `__file__`, then from git — never from the CWD and never from
+#: one machine's home directory. `OMR_FIXTURE_ROOT` still overrides everything.
+DEFAULT_ROOT = _main_checkout(_repo_root())
 
 SCAN = "benchmarks/omr-scan-e2e-2026-09/fixtures/*..graft09.omr.json"
 ENGRAVED = "benchmarks/omr-orchestral-e2e/fixtures/*.omr.json"
