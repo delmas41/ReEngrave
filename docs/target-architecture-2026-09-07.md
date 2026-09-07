@@ -14,8 +14,11 @@
 lives in three documents on `main` — `docs/architecture-decision-map.md`
 (what every decision sees and who reads it),
 `docs/pipeline-gather-then-adjudicate-2026-09-07.md` (which orderings are real),
-`docs/scope-part-correspondence-2026-09-07.md` (scope and witnesses). **They are
-input here and are not re-derived.** There is no new census below.
+`docs/scope-part-correspondence-2026-09-07.md` (scope and witnesses) — and
+⚠️ **`benchmarks/omr-partition-truth-2026-09/FINDINGS.md`, the pre-registered
+gate that falsified the third document's one recommendation** and, in the first
+draft, this document's step 1. **They are input here and are not re-derived.**
+There is no new census below.
 
 ⚠️ **No pipeline code was changed.** One read-only probe over stored artefacts:
 `benchmarks/omr-target-architecture-2026-09/probe_clef_double_read.py`.
@@ -130,17 +133,27 @@ number is.
 
 ## The first step, so it is on this page
 
-**Move part boundaries out of the exporter.** `export._stitch_slots`
-(`export.py:3218`) decides what a `<part>` IS from staff ordinal alone;
-`apply_contextual_analysis` already decided it — `slot_index`, set on **193 of
-193 staves**. No new evidence, no probability, no refused edge; falsifiable
-read-only before any code changes. It installs the transport an adjudicated fact
-needs, in the era with nine recorded instances of the same fault.
+**Move brace grouping out of the exporter.** `export.py:3523` and `:681` both
+decide it with `len(staves) == 2`, while `group_index` — the page's own
+statement of family grouping, read off the raster by `staff_detector` with no
+lexicon and no template — sits on the staff dict with **no reader in
+`export.py`**. It is a MEASUREMENT, which is what a migration toward *"keep the
+measurement, move the decision"* should move first. And because bracket blocks
+are **precise but under-recalled** (22/22 precise, 22/39 recalled), the
+absent-fact case is common rather than hypothetical — so the discipline the step
+exists to install gets exercised on the first try.
 
-**Then the cheapness test:** brace grouping, `len(staves) == 2` at
-`export.py:3523` and `:681` while `group_index` sits unread on the same dict.
-Same era, same file, a different fact. **If step 2 is not nearly free, step 1
-was a point fix and this document is wrong.** Part 4 has both, plus the third.
+**Then the cheapness test:** part boundaries, `export._stitch_slots`
+(`:3218`) deciding what a `<part>` IS from staff ordinal alone while
+`slot_index` sits on the same dict. Same era, same file, same transport — but
+`slot_index` is an ADJUDICATED fact, so it must arrive with its provenance and
+the consumer must gate on it. **If step 2 is not nearly free, step 1 was a point
+fix and this document is wrong.**
+
+⚠️ **Steps 1 and 2 were the other way round in the first draft of this document,
+and the swap is a correction, not a preference** — see Part 4, which has the
+falsifier that forced it and why the target's own principle predicts the new
+order.
 
 ---
 
@@ -356,57 +369,131 @@ without an adjudication surface produces more orphans**, and there are already
 three. Record the refusals *as each decision migrates*, not ahead of all of
 them.
 
-## Step 1 — move a decision to the site that can already see the evidence
+## ⚠️ The correction: what the first draft got wrong, and what it proves
 
-**Part boundaries.** `export._stitch_slots` (`export.py:3218`) decides what a
-`<part>` IS from **staff ordinal and nothing else**, while
-`apply_contextual_analysis` has already decided it — `slot_index`, **set on
-193 of 193 staves, measured**. The stronger join exists
-(`_stitch_slots_by_slot`, `:3338`) and is reachable only as a fallback behind
-`OMR_SLOT_STITCH`, default off.
+The first draft made **part boundaries** step 1, citing `slot_index` as *"set on
+193 of 193 staves, measured"* and the claim that on Brahms 1 p.2 *"the slot join
+expresses exactly the tacet case the page prints."*
 
-The fault in one sentence: **the exporter trusts contextual's identity for what
-to CALL a part (`export.py:3466`, `:3657`) and refuses it for what a part IS
-(`:3218`).**
+**That claim was falsified by a pre-registered gate the same afternoon, in this
+document's own base tree** —
+[`benchmarks/omr-partition-truth-2026-09/FINDINGS.md`](../benchmarks/omr-partition-truth-2026-09/FINDINGS.md),
+at `482c6104`, an ancestor of `6ec22487`. I did not read it, and the draft was
+wrong for it.
 
-**Why this one is first.** No new evidence, no new measurement, no probability,
-no refused edge, no held decision. It is falsifiable read-only *before* any code
-changes. And it lands in the **export era** — the era with nine recorded
-instances of the same fault — so the plumbing it installs has customers waiting.
+| | |
+|---|---|
+| where ordinal **succeeds** | slot and ordinal both match hand truth **exactly**, 3 distinct documents, 100% per-staff — using the real exporter functions, not a restatement. The prior n=3 agreement claim is *strengthened* |
+| where ordinal **refuses** — the only population the change newly touches | `_stitch_slots_by_slot` succeeds and is **wrong on 3 of 27 staves (0.889)**: it fails to continue *"4 Hörner in Es"* across the tacet break and grafts the genuinely-tacet *"2 Trompeten in C"* slot onto the horn's continuation |
 
-**What it installs, and this is the point:** the discipline for an adjudicated
-fact travelling from the decision that made it to a consumer that used to
-re-derive it — including what happens when it is **absent**. That last part is
-load-bearing: the three dead carry dicts
-(`transcribe.py:4851/4873/4885` read, `:5232-5234` written, same loop nest, one
-visit per key) went unnoticed for exactly this reason — **a dead lookup with a
-good default is indistinguishable from a live one that agrees.** An adjudicated
-fact must arrive or the consumer must record that it did not.
+⚠️ **`193/193` is COVERAGE, not correctness.** The draft cited it as if it were
+evidence the fact is right. The probe it came from counts `len(slots)` and never
+which staff landed in which slot, so a 14-slot output that is wrong in three
+places and one that is exactly right are indistinguishable to it. **A completeness
+figure is not an accuracy figure**, and I used one as the other.
 
-**Before any code**: replay both partitions over *every* stored transcription —
-11 scan rows, 11 engraved fixtures, the whole-work artefacts — and count rows
-where they disagree while the ordinal join succeeded. Any disagreement kills it.
-Then repeat under `OMR_SPAN_REFERENCE_FIT=off`, the arm known to poison the
-reference; if the slot partition shatters there, the reference must be hardened
-first. ⚠️ The measured agreement today is **n = 3 rows**, and it is the claim the
-step rests on.
+### ⚠️ And the root cause is this document's own Part 5 rule
 
-## Step 2 — the cheapness test, on purpose
+All four contested staves carry `instrument_source: "score_order"` — **no margin
+label was read** — and contextual is already wrong there, calling both
+horn-family staves *Trumpet*. `slots.assign_slots` inherits that into
+`slot_index`, and the exporter would then have consumed a **deduced** identity as
+though it were a read one.
 
-**Piano / brace grouping.** `export.py:3523` and `:681` both decide it with
-`len(staves) == 2`. The page's own statement of family grouping is already on
-the staff dict — `group_index`, the bracket block — emitted with a comment
-saying nothing reads it yet, and **no reader in `export.py`**.
+That is the exact edge the codebase refuses in three other places
+(`clef_correction.py:566`, `dossier.py:434`, `score_layouts.py:682`). **So the
+gate did not falsify the architecture — it exhibited it.** The failure is a
+provenance-chain violation, which Part 5 names, and it is worst precisely where
+the change would newly matter: a suppressed staff is where the score-order DP has
+the fewest anchors, so *the refusing population is largely the population with no
+label*.
 
-Same era, same file, same mechanism as step 1, a different fact. If step 1 was
-architecture rather than a point fix, step 2 is nearly free: the transport, the
-absent-fact discipline and the flag-off byte-identity harness all already exist.
-**If step 2 is not cheap, step 1 was a point fix and the target is wrong.** That
-is the experiment.
+### The principle that fixes the ordering, and it is not "pick the less-wrong fact"
 
-⚠️ Its constraint is measured and must be respected: bracket blocks are
-**precise and under-recalled** (22/22 precise, 22/39 recalled). They may ANCHOR
-a grouping where present and must ABSTAIN where absent — never assign.
+> **Move MEASUREMENTS before INTERPRETATIONS.** `group_index` is read off the
+> raster. `slot_index` is a conclusion whose ancestors include deduced identity.
+> A migration whose thesis is *"keep the measurement, move the decision"* should
+> prove its transport on a measurement.
+
+The swap is derived from the target, not chosen for convenience — which is the
+test any re-ordering here should have to pass.
+
+## Step 1 — move a MEASUREMENT to the site that re-derives it
+
+**Brace / PianoStaff grouping.** `export.py:3523` (MusicXML) and `:681`
+(LilyPond) both decide it with `len(staves) == 2`. `group_index` — the bracket
+block `staff_detector` assigned, *"the PAGE's own statement of family grouping,
+and the only one that needs no lexicon and no template"* — is on the staff dict
+and **no reader in `export.py`** touches it. It was emitted specifically because
+it had never reached the dict, with a comment saying nothing reads it yet.
+
+**Why this one is first.** It is a gathered fact: its only ancestors are the
+raster and the page geometry, so it closes no loop, needs no provenance gate,
+and cannot launder a deduced identity. No new measurement, no probability, no
+refused edge, no held decision. And it lands in the **export era** — the era with
+nine recorded instances of *computed correctly, then re-derived downstream* — so
+the plumbing has customers waiting.
+
+**What it installs, and this is the point:** the discipline for a decided fact
+travelling from the site that made it to a consumer that used to re-derive it,
+**including what happens when it is absent**. That part is load-bearing here
+rather than hypothetical: bracket blocks are **precise and under-recalled —
+22/22 precise, 22/39 recalled** — so the absent case is roughly *half* the
+population. They may ANCHOR a grouping where present and must ABSTAIN where
+absent, never assign, falling back to `len(staves) == 2`.
+
+⚠️ **The absent case is exactly what nothing has ever caught.** The three dead
+carry dicts (`transcribe.py:4851/4873/4885` read, `:5232-5234` written, same loop
+nest, one visit per key) survived because **a dead lookup with a good default is
+indistinguishable from a live one that agrees.** A moved fact must arrive, or the
+consumer must record that it did not.
+
+**Before any code**: over every stored transcription, count staves where
+`group_index` is present and disagrees with `len(staves) == 2`, and how many
+systems carry no block at all. That is a read of committed JSON. ⚠️ **Its reach
+is UNMEASURED** — if `group_index` never disagrees on any stored page, the step
+is byte-identical and installs the transport at zero accuracy cost, which is a
+fine outcome for a step whose product is machinery, but it must be *stated* as
+that rather than discovered later.
+
+## Step 2 — the cheapness test, and the falsified step done correctly
+
+**Part boundaries.** `export._stitch_slots` (`:3218`) decides what a `<part>` IS
+from **staff ordinal and nothing else**, while `slot_index` sits on the same
+dict; the stronger join exists (`_stitch_slots_by_slot`, `:3338`) and is
+reachable only as a fallback behind `OMR_SLOT_STITCH`, default off.
+
+The fault is still real, and stated the same way: **the exporter trusts
+contextual's identity for what to CALL a part (`export.py:3466`, `:3657`) and
+refuses it for what a part IS (`:3218`).**
+
+**What changes after the falsifier: the fact must arrive with its provenance,
+and the consumer must gate on it.**
+
+| the situation | what the consumer does |
+|---|---|
+| ordinal **succeeds** | no-op — measured identical to truth and to each other, 3 documents |
+| ordinal **refuses** and the slot's identity was **read** (`instrument_source == "label"`) | use the slot join |
+| ordinal **refuses** and the identity was **deduced** (`score_order`) | **abstain** — record it and fall back to ordinal |
+
+On Brahms 1 p.2 all four contested staves are `score_order`, so **the measured
+3-of-27 error never ships**: that row abstains and behaves exactly as it does
+today. ⚠️ Which means the **reach of this step is UNMEASURED and may be zero** —
+how many refusing rows carry label-read slots is not known, and Brahms p.2 has
+none. **That is its pre-registered gate**, on the same terms the clef-contest
+reach gate was run: measure the population before claiming the accuracy.
+
+**Why it is the cheapness test.** Same era, same file, same transport as step 1,
+a different fact. The one thing it adds is provenance gating — and that is one
+existing field (`instrument_source`) consumed the way four other consumers
+already consume it, not a new mechanism. **If step 2 is not nearly free, step 1
+was a point fix and the target is wrong.** That is the experiment, and the swap
+did not weaken it: step 1 now installs *transport + absent-fact abstention* and
+step 2 adds *provenance*, so the increment is still one small dimension.
+
+⚠️ And before it: replay both partitions over every stored transcription under
+`OMR_SPAN_REFERENCE_FIT=off`, the arm known to poison the reference. If the slot
+partition shatters there, the reference must be hardened first.
 
 ## Step 3 — keep the first new measurement, and adjudicate the clef on it
 
@@ -422,17 +509,22 @@ to go and a way for its consumer to abstain.
 3. Fold in the crop-choice finding of Part 3: the divergent-crop staves are
    already-computed evidence that a staff's clef is contested.
 
-**Why third.** It needs a new measurement (step 1 and 2 need none), it aims at
+**Why third.** It needs a new measurement (steps 1 and 2 need none), it aims at
 accuracy rather than at machinery, and it is the first step where the
 circularity rule actually binds (Part 5).
 
 ## Order, restated
 
-| # | decision | new evidence? | why here |
-|--:|---|---|---|
-| 1 | part boundaries: `slot_index` over ordinal | none | evidence complete and measured; installs the transport |
-| 2 | brace grouping: `group_index` over `len(staves)==2` | none | **the cheapness test** for step 1 |
-| 3 | clef from staff POSITIONS, not resolved pitches | `pos_float` | first new measurement; aimed at the ceiling |
+| # | decision | the fact being moved | new evidence? | why here |
+|--:|---|---|---|---|
+| 1 | brace grouping: `group_index` over `len(staves)==2` | **measurement** — page geometry | none | no provenance question can arise; installs transport + absent-fact abstention, and the absent case is ~half the population |
+| 2 | part boundaries: `slot_index` over ordinal, **provenance-gated** | **interpretation** — ancestors include deduced identity | none | **the cheapness test**; adds exactly one existing field (`instrument_source`) |
+| 3 | clef from staff POSITIONS, not resolved pitches | new measurement (`pos_float`) | yes | first new measurement; aimed at the documented ceiling |
+
+⚠️ **Steps 1 and 2 changed places after
+`benchmarks/omr-partition-truth-2026-09/FINDINGS.md`.** The reason is stated
+above and is a principle, not a preference: move measurements before
+interpretations.
 
 ## What is irreversible, and what needs everything at once
 
@@ -462,14 +554,21 @@ police.
 
 ## Are provenance tags a prerequisite?
 
-**For step 1 and step 2: no — independent.** `slot_index` is produced from
-labels, position and bracket group; `<part>` boundaries feed nothing back.
-`group_index` is produced by `staff_detector` from page geometry. Neither closes
-a loop, and both consumers already gate on `instrument_source` where identity is
-involved. The hazard on step 1 is a **bad ancestor**, not a cycle —
-`slots.align` inherits `build_reference`'s single-system pick, which once named
-149 Brahms staves an instrument the work has not got — and the guard for that is
-the `OMR_SPAN_REFERENCE_FIT=off` replay, not a tag.
+**For step 1: no — genuinely independent.** `group_index` is produced by
+`staff_detector` from page geometry; its only ancestors are the raster and the
+staff lines. It closes no loop and there is nothing to tag.
+
+**For step 2: yes — but the tag already exists, so it is a new USE, not a new
+field.** ⚠️ This is the answer the first draft got wrong, and the partition-truth
+gate is why. `slot_index`'s ancestors include the identity `contextual` assigned,
+which on the refusing rows is `score_order` — deduced, not read. Consuming it
+unconditionally is the same edge `clef_correction.py:566`, `dossier.py:434` and
+`score_layouts.py:682` each refuse. The tag that binds it is `instrument_source`
+(1 writer, 4 readers, already load-bearing), and step 2's gate is one more reader
+of it. ⚠️ There is a *second*, separate hazard on step 2 that no tag fixes: a
+**bad ancestor** — `slots.align` inherits `build_reference`'s single-system pick,
+which once named 149 Brahms staves an instrument the work has not got. Its guard
+is the `OMR_SPAN_REFERENCE_FIT=off` replay.
 
 **For step 3: yes — prerequisite.** Positions → clef → pitch, and the pitch must
 never re-enter. Today the resolved pitch carries **no provenance tag at all**,
@@ -503,8 +602,16 @@ argument is required. This project has twice declined to build one.**
 - **Whether the 5 contradicted clef staves are wrong.** Reach is an upper bound;
   converting it to a defect count needs a human against the print — the same
   standing that the clef-contest reach gate ended on.
-- **The ordinal-vs-slot partition agreement beyond n = 3 rows.** Step 1's
-  load-bearing claim; the falsifying replay is its whole job.
+- **Step 1's reach** — how often `group_index` is present AND disagrees with
+  `len(staves) == 2` on a stored page. It may be zero, in which case the step is
+  byte-identical and buys only machinery. Read-only to settle.
+- **Step 2's reach** — how many rows where the ordinal join REFUSES carry
+  slots whose identity was **read** rather than deduced. Brahms 1 p.2, the only
+  refusing row with hand truth, has **none**, so the reach may be zero. This is
+  step 2's pre-registered gate.
+- **The refusing population's failure rate in general.** `n = 1` distinct
+  document; 1-of-1 failing is not a rate. It is enough to block shipping on the
+  stated justification, and no more than that.
 - **Step 3's reach** — how many staves have a clef read *wrong* that a
   position-distribution adjudicator could see. Unmeasured, and it is the gate.
 - **The net effect of the three dead carry dicts.** Reach is every staff; damage
