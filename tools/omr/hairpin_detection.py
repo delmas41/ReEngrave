@@ -1,7 +1,8 @@
 """Hairpins, read by classical CV in the band below each staff.
 
-THE DETECTOR DOES NOT SEE THEM ON SCANS. Over eleven scanned pages with
-hand-verified windows it finds **1 hairpin against 99** the truth carries, while
+THE DETECTOR BARELY SEES THEM ON SCANS. Over eleven scanned pages with
+hand-verified windows it finds **1 hairpin against 99** the truth carries — and
+over the widened twenty-row gate, **3 against 192** — while
 a 600 dpi crop shows them plainly — straight arms, connected apex, sitting in the
 gap under the staff. A hairpin is a thin diagonal line, which is the shape
 Phase 4f moved stems and beams out of the detector for, on the stated grounds
@@ -39,6 +40,29 @@ and its arms run a few pixels apart along most of the length.
 Gate, constants set on one page then run unchanged across eleven: **59 of 99
 hairpins against the detector's 1, and zero false positives on five of the six
 pages that carry none.**
+
+⚠️ **THAT GATE WAS RE-RUN BEFORE THE CALL SITE WAS ADDED (2026-09-07) AND IT
+REPRODUCES** — a measurement for code nothing imports is exactly the kind this
+repo has been bitten by, so it was not taken on trust.
+`benchmarks/omr-hairpin-cv-2026-09/probe/reproduce_gate.py`, over the same
+eleven rows on the current `graft09` fixtures, truth 99 hairpins:
+
+    ink recipe                           found   FPs on the 6 blank pages
+    gray < 180, fresh 600 dpi render        62   3, silent on 5 of 6
+    PageImage.binary (Sauvola, deskewed)    57   2, silent on 5 of 6
+
+Same categorical result on both, and the same weak row (Mahler 5 p3, 2 against
+17). ⚠️ **The near-miss needs no excuse: 59 lies BETWEEN the two arms measured
+here.** 57 and 62 are the same code on the same pages differing only in how the
+page was binarized, so the original figure is inside the spread the ink recipe
+alone produces. An earlier draft reached for changed weights to explain a gap
+that is not outside the noise.
+
+**The pipeline reads the second recipe**, because `PageImage.binary` is already
+rendered, already deskewed, and already the frame every `bbox_page_px` on the
+page dict is in. It yields five fewer and invents one fewer; on a metric that
+charges an invented direction exactly what it charges a missed one, that trade
+is close to neutral and the shared frame is not.
 """
 
 from __future__ import annotations
@@ -64,6 +88,11 @@ MAX_OUTLINE_RMS_SPACES = 0.10
 #: attached to something. The population is 1.0x against 3248x; any value in
 #: that gap gives the same answer.
 MAX_COMPONENT_GROWTH = 2.0
+
+#: A page whose "ink" exceeds this after inversion was handed the wrong
+#: polarity. Not a tuned number — a printed orchestral page is a few percent
+#: ink, and the ceiling only has to sit below "most of the page".
+_INK_FRACTION_CEILING = 0.5
 
 MIN_WIDTH_SPACES = 0.8
 MAX_WIDTH_SPACES = 30.0
@@ -342,3 +371,116 @@ def attach_to_page(page: dict[str, Any], page_ink: np.ndarray,
         meas["n_detections"] = len(meas["detections"])
         added += 1
     return added
+
+
+def _detection_boxes(page: dict[str, Any]) -> list[tuple[float, float, float, float, str]]:
+    """Every detection on a built page dict, as a PAGE-pixel box.
+
+    ⚠️ A DETECTION's `bbox` is canonical-cell `[x, y, w, h]` and its cell's
+    `bbox_page_px` is `(x0, y0, x1, y1)` — CORNERS. Only the corner ORIGIN is
+    used here, which is the half both conventions agree on; `_measure_for`
+    documents what reading the far corner as a width cost.
+    """
+    out: list[tuple[float, float, float, float, str]] = []
+    for system in page.get("systems", []):
+        for staff in system.get("staves", []):
+            for meas in staff.get("measures", []):
+                box = meas.get("bbox_page_px") or [0, 0, 0, 0]
+                up = float(meas.get("upscale_factor") or 1.0) or 1.0
+                for det in meas.get("detections", []):
+                    b = det.get("bbox")
+                    if not b or len(b) != 4:
+                        continue
+                    out.append((float(box[0]) + b[0] / up,
+                                float(box[1]) + b[1] / up,
+                                b[2] / up, b[3] / up, det.get("class") or ""))
+    return out
+
+
+def read_hairpins_for_page(page: dict[str, Any], page_binary: np.ndarray) -> int:
+    """The whole rung, on one built page dict: blank, search, attach.
+
+    ⚠️ `page_binary` is the pipeline's own `types.PageImage.binary` — **0 = ink,
+    255 = paper** — and the inversion to this module's ink-non-zero convention
+    happens HERE rather than at the call site. Both polarities live in this
+    repo, and getting one wrong does not crash: it searches the PAPER, finds
+    nothing, and reports a clean zero. A silent null is the one result this
+    project treats as worse than a loud failure, so the polarity is asserted
+    (`_INK_FRACTION_CEILING`) instead of trusted.
+
+    The image is the WHOLE page — not a band, not a cell, and not the
+    staff-line-erased variant the other CV rungs take. All three are deliberate
+    and each is measured:
+
+      * whole page, because ISOLATION is a property of a component's full
+        extent and a crop severs a beam from the stems that betray it;
+      * staff lines INTACT — and this one is an exception to the rule the rest
+        of the CV rungs follow, so it is argued rather than asserted.
+        `remove_staff_lines` erases per CELL because for `line_detection` and
+        `staff_header` the lines are NOISE. Here they are SIGNAL: they are a
+        large part of what makes an attached component big, which is the whole
+        content of the isolation test. Two reasons, both narrower than the
+        first draft of this docstring claimed:
+
+          1. **Calibration.** The 1.0x-against-3248x growth gap, and
+             `MAX_COMPONENT_GROWTH` read off it, were measured on lines-intact
+             ink. A constant keeps its meaning on the substrate it was fitted
+             to and loses it on any other, whether or not the other still
+             works.
+          2. **Erased ink is unpredictable in exactly the way this gate is
+             sensitive to.** Measured elsewhere in this repo, erasing staff
+             lines before YOLO took `beam` detections 46 -> 105 on staff-line
+             RESIDUE. A gate keyed on connectivity is precisely what residue
+             perturbs — it manufactures the bridges the test reads.
+
+        ⚠️ **What is NOT claimed: that erasure breaks the test.** An earlier
+        draft here said the constant "no longer separates anything", and that
+        overclaims. Measured on a synthetic page (a beam with two stems
+        crossing a staff, an isolated hairpin below, this module's own
+        `_is_isolated` arithmetic): erasure cuts the beam's growth from
+        **130.7x to 13.75x** — a 9.5x collapse of the margin that still leaves
+        it far above the 2.0 threshold, because the STEMS alone keep the beam
+        attached. So the direction is real and the categorical claim is not
+        demonstrated. ⚠️ That case is n=1 and hand-built, so it does not show
+        erasure is SAFE either: **nobody has run the erased arm on a real
+        page.** `probe/reproduce_gate.py` compares two ink RECIPES and both are
+        lines-intact.
+
+    Returns how many hairpins were added as detections.
+
+    ⚠️ **A hairpin added here is not a `<wedge>` exported.** Measured end to end
+    over the eleven scan rows, 2026-09-07: 56 added, 112 wedge tags exported —
+    but one of those 55 pairs is DEGENERATE, a crescendo and its stop emitted
+    back to back with no note between them, on Mahler 5 p3. That is export-side
+    (an eventless bar taking the directions-only path while the anchor pair
+    lands in the next bar), not this module's, and it is recorded here because
+    this is where anyone reading a wedge count will start.
+    """
+    spacings = sorted(s["spacing"] for s in _staff_meta(page))
+    if not spacings:
+        return 0
+    page_ink = (page_binary == 0).astype(np.uint8) * 255
+    ink_fraction = float(np.count_nonzero(page_ink)) / max(1, page_ink.size)
+    if ink_fraction > _INK_FRACTION_CEILING:
+        raise ValueError(
+            f"page_binary looks inverted: {ink_fraction:.2f} of the page is ink "
+            f"after 0=ink inversion. Pass `PageImage.binary` (0=ink), not an "
+            f"ink-non-zero mask. The densest page measured here is far under "
+            f"{_INK_FRACTION_CEILING}.")
+    sp_med = spacings[len(spacings) // 2]
+    blanked = blank_point_detections(page_ink, _detection_boxes(page), sp_med)
+    return attach_to_page(page, page_ink, blanked)
+
+
+def _staff_meta(page: dict[str, Any]) -> list[dict[str, Any]]:
+    """`{"index", "top", "bottom", "spacing"}` per staff of a built page dict."""
+    out = []
+    for system in page.get("systems", []):
+        for staff in system.get("staves", []):
+            g = staff.get("staff_geometry") or {}
+            ys = g.get("line_ys_page") or []
+            if len(ys) >= 5 and g.get("line_spacing_px"):
+                out.append({"index": staff.get("staff_index"),
+                            "top": float(min(ys)), "bottom": float(max(ys)),
+                            "spacing": float(g["line_spacing_px"])})
+    return sorted(out, key=lambda s: s["bottom"])

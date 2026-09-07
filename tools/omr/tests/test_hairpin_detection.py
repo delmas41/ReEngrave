@@ -271,3 +271,168 @@ def test_a_page_with_no_staff_geometry_adds_nothing():
     from tools.omr.hairpin_detection import attach_to_page
     page = {"systems": [{"staves": [{"staff_index": 0, "measures": []}]}]}
     assert attach_to_page(page, np.zeros((50, 50), np.uint8)) == 0
+
+
+# --------------------------------------------------------------------------
+# The rung: polarity, blanking, and the CALL SITE
+#
+# ⚠️ The module above was measured, tested and imported by NOTHING for three
+# days. Nineteen green tests said the reader worked and none of them could have
+# noticed that `transcribe` never called it. These tests are addressed to that
+# gap specifically: the functional ones pin `read_hairpins_for_page`, and the
+# `TestWiring` block pins the call site, so removing it fails more than one.
+# --------------------------------------------------------------------------
+
+import ast
+import inspect
+import os
+import re
+
+
+def _binary_of(ink: np.ndarray) -> np.ndarray:
+    """`ink` (non-zero = ink) as the pipeline's `PageImage.binary` (0 = ink)."""
+    return np.where(ink > 0, 0, 255).astype(np.uint8)
+
+
+def test_the_rung_reads_the_pipelines_own_binary_polarity():
+    from tools.omr.hairpin_detection import read_hairpins_for_page
+    page, ink = _page_dict(), _page_with(_wedge())
+    assert read_hairpins_for_page(page, _binary_of(ink)) == 1
+    d = page["systems"][0]["staves"][0]["measures"][1]["detections"][0]
+    assert d["class"] == "dynamicCrescendoHairpin"
+
+
+def test_the_wrong_polarity_raises_instead_of_reporting_zero():
+    """⚠️ The failure this guard exists for is SILENT, not loud.
+
+    Handed an ink-non-zero mask, the reader searches the PAPER: every test
+    passes, the run completes, and it reports a clean zero — indistinguishable
+    from an honest abstention on a page with no hairpin. Both polarities live in
+    this repo.
+    """
+    from tools.omr.hairpin_detection import read_hairpins_for_page
+    page, ink = _page_dict(), _page_with(_wedge())
+    with pytest.raises(ValueError, match="inverted"):
+        read_hairpins_for_page(page, ink)      # the mask, not the binary
+
+
+def test_the_rung_blanks_the_point_detections_before_searching():
+    """A detection standing on the hairpin must not survive into the search.
+
+    Pinned by CONSEQUENCE rather than by asserting a call: a black box painted
+    over the wedge's open end breaks its outline, and only a reader that erases
+    the box named by that detection still finds the hairpin.
+    """
+    from tools.omr.hairpin_detection import read_hairpins_for_page
+    # The wedge lives at rows 200..225, cols 300..499 (`_page_with`'s default
+    # placement). This blob ABUTS its open end rather than covering it, so it
+    # fuses into one band component — breaking the outline fit — while blanking
+    # its box takes away none of the wedge's own ink.
+    BLOB = (slice(195, 235), slice(500, 516))
+    page, ink = _page_dict(), _page_with(_wedge())
+    ink[BLOB] = 255
+    assert read_hairpins_for_page(page, _binary_of(ink)) == 0, (
+        "unblanked, the blob should break the outline fit — if this passes, the "
+        "fixture is not exercising the blanking and the test below is vacuous")
+
+    page2, ink2 = _page_dict(), _page_with(_wedge())
+    ink2[BLOB] = 255
+    # measure 1 starts at x0 = 280 with upscale 1.0, so canonical == page - 280
+    page2["systems"][0]["staves"][0]["measures"][1]["detections"].append(
+        {"class": "dynamicF", "bbox": [220, 105, 16, 40], "confidence": 0.9})
+    assert read_hairpins_for_page(page2, _binary_of(ink2)) == 1, (
+        "the blob is a named point detection and must be erased first")
+
+
+def test_a_page_with_no_staff_geometry_reads_nothing_rather_than_dividing_by_zero():
+    from tools.omr.hairpin_detection import read_hairpins_for_page
+    page = {"systems": [{"staves": [{"staff_index": 0, "measures": []}]}]}
+    assert read_hairpins_for_page(page, np.full((50, 50), 255, np.uint8)) == 0
+
+
+# --------------------------------------------------------------------------
+
+
+class TestWiring:
+    """The call site in `transcribe`, asserted at source level.
+
+    ⚠️ Every assertion here was run RED with the call site removed
+    (`benchmarks/omr-hairpin-cv-2026-09/probe/mutate_wiring.py`), because a
+    wiring test that cannot fail is the exact defect this class is about.
+    """
+
+    @staticmethod
+    def _transcribe_ast():
+        from tools.omr import transcribe as T
+        src = inspect.getsource(T)
+        tree = ast.parse(src)
+        for node in tree.body:
+            if isinstance(node, ast.FunctionDef) and node.name == "transcribe":
+                return T, src, node
+        raise AssertionError("no `transcribe` function in tools/omr/transcribe.py")
+
+    @staticmethod
+    def _calls(node, name):
+        return [n for n in ast.walk(node)
+                if isinstance(n, ast.Call)
+                and getattr(n.func, "id", getattr(n.func, "attr", None)) == name]
+
+    def test_transcribe_calls_the_reader(self):
+        _T, _src, fn = self._transcribe_ast()
+        assert self._calls(fn, "read_hairpins_for_page"), (
+            "hairpin_detection is unreachable again — `transcribe` does not "
+            "call read_hairpins_for_page")
+
+    def test_the_call_is_gated_on_the_flag(self):
+        _T, _src, fn = self._transcribe_ast()
+        gated = [ifs for ifs in ast.walk(fn)
+                 if isinstance(ifs, ast.If)
+                 and self._calls(ifs.test, "_cv_hairpins_enabled")
+                 and self._calls(ifs, "read_hairpins_for_page")]
+        assert gated, "the reader must run only under _cv_hairpins_enabled()"
+
+    def test_the_reader_runs_before_the_cross_staff_arbitration(self):
+        """⚠️ ORDER IS THE WHOLE POINT, not a tidiness preference.
+
+        A CV hairpin is attributed by BAND and is right by construction; a
+        detector hairpin is not, and `_dedupe_cross_staff_detections` exists to
+        rescue those. Run after it, a CV reading and a YOLO reading of one
+        printed hairpin both ship and the page grows a wedge it does not have.
+        """
+        _T, _src, fn = self._transcribe_ast()
+        cv = self._calls(fn, "read_hairpins_for_page")
+        dedupe = self._calls(fn, "_dedupe_cross_staff_detections")
+        assert cv and dedupe
+        assert min(c.lineno for c in cv) < min(d.lineno for d in dedupe)
+
+    def test_the_call_site_hands_over_the_binary_not_a_mask(self):
+        """The polarity convention, pinned where it is chosen.
+
+        `read_hairpins_for_page` raises on the wrong polarity, but only when it
+        RUNS — and it is off by default, so a mistake here would sit unexercised
+        until somebody turned the flag on.
+        """
+        _T, src, fn = self._transcribe_ast()
+        call = self._calls(fn, "read_hairpins_for_page")[0]
+        # ⚠️ An `endswith(".binary")` on the unparsed source was the first
+        # version and it is VACUOUS: `255 - page.binary` ends with it too, and
+        # the mutation harness caught that the check accepted the exact
+        # inversion it was written to forbid. The argument must be a bare
+        # attribute access, nothing wrapped around it.
+        attrs = [a for a in call.args
+                 if isinstance(a, ast.Attribute) and a.attr == "binary"]
+        assert attrs, (
+            "expected a bare `<page>.binary`, got "
+            f"{[ast.unparse(a) for a in call.args]} — the module owns the "
+            "inversion, and a second one at the call site cancels it")
+
+    def test_the_flag_is_off_by_default(self, monkeypatch):
+        from tools.omr.transcribe import _cv_hairpins_enabled
+        monkeypatch.delenv("OMR_CV_HAIRPINS", raising=False)
+        assert _cv_hairpins_enabled() is False
+        for off in ("0", "", "off", "false", "no"):
+            monkeypatch.setenv("OMR_CV_HAIRPINS", off)
+            assert _cv_hairpins_enabled() is False, off
+        for on in ("1", "true", "yes", "on", "ON"):
+            monkeypatch.setenv("OMR_CV_HAIRPINS", on)
+            assert _cv_hairpins_enabled() is True, on
