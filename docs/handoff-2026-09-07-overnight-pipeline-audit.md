@@ -284,9 +284,22 @@ identity gate this pipeline; detection work is downstream of them.**
 | CV hairpin reader wired | default OFF. **56 hairpins recovered where the detector finds zero**, 2 invented. Reads lines-**intact**, deliberately. |
 | Registry v0.6.0 → v0.7.0 | detail level in the era key; `ceiling.control` for flag-conditional ceilings |
 
-⚠️ **`ceiling.value` 0.2123 was measured with `OMR_SLOT_STITCH` OFF.** If that flag ever
-defaults ON, **the ceiling must be re-measured before any `% of achievable` derived from
-it is quoted.**
+⚠️ **CORRECTED — the first version of this line was wrong and is withdrawn.** The
+page-fidelity floor (**0.2123**) is **NOT** flag-conditional: it scores derived truth
+against raw truth, so **no prediction of ours appears in it** and no pipeline flag can
+move it.
+
+**The real discriminator is not "measured under the default" — it is
+`reads_our_output`.** Two *other* structural ceilings are conditional, both estimated as
+`min(ours, audiveris)`: `ceiling_measured_15rows` (0.1340) and
+`ceiling_corroborated_subset` (0.1520).
+
+⚠️ **And the hazard runs the flattering way.** Flipping `OMR_SLOT_STITCH` moves our raw
+`entire staff` charge **87 → 1,062** on two rows, and a larger floor **RAISES** every
+`% of achievable` above it. **A ceiling that reads our own output can be improved by
+making our output worse.** Now machine-readable: `ceiling.measured_under` on all 21
+measured ceilings, 19 declaring `reads_our_output: false` with the reason, 2 declaring
+`true` and naming their flags, with the re-measure stop condition in the row.
 
 ## A6. The methodological finding of the morning
 

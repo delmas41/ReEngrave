@@ -1,11 +1,12 @@
 {
- "schema_version": "0.6.0",
+ "schema_version": "0.7.0",
  "consumer_contract": {
-  "current": "0.6.0",
+  "current": "0.7.0",
   "understood_by_a_conforming_consumer": [
-   "0.6.0"
+   "0.7.0"
   ],
   "superseded": {
+   "0.6.0": "added `ceiling.measured_under` \u2014 the configuration a ceiling was measured under, with a stop condition. A 0.6.0 consumer cannot tell a flag-conditional ceiling from a flag-independent one and will quote the first after the flag flips",
    "0.5.0": "added `scored_at_detail_level`, put the musicdiff detail level inside every OMR-NED row's era_key and both `comparable_as` keys, and gave every OMR-NED row a mandatory_caption naming the configuration share; a 0.5.0 consumer can difference two figures across an alignment model that moves them ~29%",
    "0.4.0": "added `render_with` (symmetric, build-enforced) and `evidence_prose`; a 0.4.0 consumer cannot know the ledger screen/defect pair must render adjacently",
    "0.3.0": "added `mandatory_caption` + `rules.mandatory_caption` and `ceiling.edition`; a 0.2.0 consumer drops both silently",
@@ -16,7 +17,8 @@
    "mandatory_caption",
    "ceiling.edition (via the edition clause)",
    "render_with",
-   "scored_at_detail_level"
+   "scored_at_detail_level",
+   "ceiling.measured_under (with its stop_condition)"
   ],
   "\u26a0\ufe0f_arm_writer_protocol": {
    "rule": "ONE musicdiff DETAIL LEVEL PER PROCESS. Never score two detail levels in one interpreter.",
@@ -28,6 +30,11 @@
  },
  "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/build_metric_registry.py",
  "round": 5,
+ "changes_since_0_6_0": [
+  "ADDED `ceiling.measured_under` to every ceiling carrying a measured value: the flags it was measured under, whether its estimator READS OUR OUTPUT, and a stop condition. Build-enforced.",
+  "\u26a0\ufe0f THE DISCRIMINATOR IS `reads_our_output`, NOT `was it the default`. A ceiling derived from a truth file, a render, a human's labels or another system contains no output of ours and no flag can move it; a ceiling whose ESTIMATOR reads our export is conditional on every flag that changes that export, default or not.",
+  "\u26a0\ufe0f AND IT CORRECTED THE CLAIM THAT PROMPTED IT. I reported the page-fidelity floor (0.2123) as flag-conditional. It is NOT \u2014 it is (derived truth vs raw truth) and no prediction appears in it. The two ESTIMATOR-based floors ARE, and flipping OMR_SLOT_STITCH moves the estimator 87 -> 1,062 and 90 -> 1,062 on two rows, RAISING the floor and so raising every % of achievable above it \u2014 the flattering direction the independence guard exists to stop."
+ ],
  "changes_since_0_5_0": [
   "THE DETAIL-LEVEL AXIS. musicdiff's `AllObjects` IGNORES CHORDS and pairs notes by pitch; re-scoring identical prediction files under `AllObjects|Voicing` removes ~29% of the 20-row scan gate's pooled edits. That is the arm/row-set stamp applied to a third axis nobody had noticed was an axis, so the detail level now sits inside every OMR-NED row's `era_key` and both `comparable_as` keys \u2014 a cross-detail difference is refused mechanically, not by review.",
   "\u26a0\ufe0f NOT FILED AS A CEILING, and the refusal is the important half. A ceiling bounds what is ACHIEVABLE; this bounds what is ATTRIBUTABLE. Filing 29% of the scan figure as a ceiling would license SUBTRACTING it \u2014 precisely the flattering read the caption mechanism exists to prevent. Nothing improved.",
@@ -161,7 +168,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "the page-normalising transform is a NO-OP on all 11 works (is_a_no_op: true) \u2014 these fixtures are 1:1, so no part of this figure is a charge for a printing convention. The control COULD have failed: on the scan side the same transform removes 33.8% of the edits."
+    "control": "the page-normalising transform is a NO-OP on all 11 works (is_a_no_op: true) \u2014 these fixtures are 1:1, so no part of this figure is a charge for a printing convention. The control COULD have failed: on the scan side the same transform removes 33.8% of the edits.",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 88.78,
    "n": 11,
@@ -210,7 +222,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "per-work no-op, delta_edits 0"
+    "control": "per-work no-op, delta_edits 0",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 97.07,
    "n": 1,
@@ -255,7 +272,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "per-work no-op, delta_edits 0"
+    "control": "per-work no-op, delta_edits 0",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 90.57,
    "n": 1,
@@ -300,7 +322,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "per-work no-op, delta_edits 0"
+    "control": "per-work no-op, delta_edits 0",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 97.91,
    "n": 1,
@@ -345,7 +372,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "per-work no-op, delta_edits 0"
+    "control": "per-work no-op, delta_edits 0",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 85.85,
    "n": 1,
@@ -392,7 +424,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "per-work no-op, delta_edits 0"
+    "control": "per-work no-op, delta_edits 0",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 89.75,
    "n": 1,
@@ -437,7 +474,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "per-work no-op, delta_edits 0"
+    "control": "per-work no-op, delta_edits 0",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 87.06,
    "n": 1,
@@ -482,7 +524,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "per-work no-op, delta_edits 0"
+    "control": "per-work no-op, delta_edits 0",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 78.64,
    "n": 1,
@@ -527,7 +574,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "per-work no-op, delta_edits 0"
+    "control": "per-work no-op, delta_edits 0",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 66.2,
    "n": 1,
@@ -574,7 +626,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "per-work no-op, delta_edits 0"
+    "control": "per-work no-op, delta_edits 0",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 95.56,
    "n": 1,
@@ -619,7 +676,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "per-work no-op, delta_edits 0"
+    "control": "per-work no-op, delta_edits 0",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 81.45,
    "n": 1,
@@ -664,7 +726,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
     ],
-    "control": "per-work no-op, delta_edits 0"
+    "control": "per-work no-op, delta_edits 0",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 90.69,
    "n": 1,
@@ -1324,7 +1391,12 @@
     "evidence": [
      "benchmarks/omr-headline-validity-2026-09/engraved-1to1.json"
     ],
-    "control": "these fixtures are 1:1 BY CONSTRUCTION \u2014 every truth part gets its own printed staff \u2014 so 1.0 is genuinely reachable and this stage is never asked the hard question a conductor's page asks"
+    "control": "these fixtures are 1:1 BY CONSTRUCTION \u2014 every truth part gets its own printed staff \u2014 so 1.0 is genuinely reachable and this stage is never asked the hard question a conductor's page asks",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 90.91,
    "n": 11,
@@ -1418,7 +1490,12 @@
     "evidence": [
      "benchmarks/omr-pipeline-audit-2026-09/structural-floor-measured.json"
     ],
-    "control": "the derived truth is scored AS THE PREDICTION against the raw truth, so no output of ours appears in the measurement at all. Controls: the three identity-transform rows (Dvorak, 15 parts into 15 staves) score EXACTLY 0 edits; all 15 derived truths reproduce the committed control's canonical hashes; every truth fixture's sha256 equals the canonical arm's."
+    "control": "the derived truth is scored AS THE PREDICTION against the raw truth, so no output of ours appears in the measurement at all. Controls: the three identity-transform rows (Dvorak, 15 parts into 15 staves) score EXACTLY 0 edits; all 15 derived truths reproduce the committed control's canonical hashes; every truth fixture's sha256 equals the canonical arm's.",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "NONE from pipeline configuration. This floor is (derived truth vs raw truth) and contains no output of ours, so no flag can move it. It is invalidated only by a change to the page-normalising TRANSFORM (currently 1.2.0) or to the hand-read staves map."
+    }
    },
    "pct_of_achievable": 20.09,
    "n": 15,
@@ -1475,7 +1552,15 @@
     "evidence_prose": [
      "works.json's staves map is HAND-READ off the scan"
     ],
-    "control": "the QUANTITY is defined by (reference truth, hand-read page map) and is independent of our output; the ESTIMATOR is the MINIMUM `entire staff` charge over every engine measured on each row, which is our own on 10 of the 15. On the other 5 an independent engine produces the identical number."
+    "control": "the QUANTITY is defined by (reference truth, hand-read page map) and is independent of our output; the ESTIMATOR is the MINIMUM `entire staff` charge over every engine measured on each row, which is our own on 10 of the 15. On the other 5 an independent engine produces the identical number.",
+    "measured_under": {
+     "flags": {
+      "OMR_SLOT_STITCH": "0",
+      "OMR_CONDENSED_PARTS": "0"
+     },
+     "reads_our_output": true,
+     "stop_condition": "\u26a0\ufe0f RE-MEASURE BEFORE QUOTING if OMR_SLOT_STITCH or OMR_CONDENSED_PARTS changes state. The estimator is min(ours, audiveris) over raw `entire staff`, so it reads our export. Measured: flipping OMR_SLOT_STITCH moves our charge 87 -> 1,062 and 90 -> 1,062 on the two Beethoven p3 rows, raising the floor and so raising every % of achievable above it."
+    }
    },
    "pct_of_achievable": 18.28,
    "n": 15,
@@ -1524,7 +1609,15 @@
     "evidence_prose": [
      "works.json's staves map is HAND-READ off the scan"
     ],
-    "control": "the ceiling is bit-identical for an INDEPENDENT engine (Audiveris 5.11) on all 5 rows. The control fired: it is NOT identical on 3 further rows, which are therefore excluded \u2014 every one of those is a two-system page."
+    "control": "the ceiling is bit-identical for an INDEPENDENT engine (Audiveris 5.11) on all 5 rows. The control fired: it is NOT identical on 3 further rows, which are therefore excluded \u2014 every one of those is a two-system page.",
+    "measured_under": {
+     "flags": {
+      "OMR_SLOT_STITCH": "0",
+      "OMR_CONDENSED_PARTS": "0"
+     },
+     "reads_our_output": true,
+     "stop_condition": "\u26a0\ufe0f RE-MEASURE BEFORE QUOTING if OMR_SLOT_STITCH or OMR_CONDENSED_PARTS changes state \u2014 same estimator as the 15-row row. Its five rows are the engine-corroborated subset, where ours and Audiveris agree TODAY; a flag that moves our charge can break that agreement and with it the corroboration."
+    }
    },
    "pct_of_achievable": 29.8,
    "n": 5,
@@ -1568,7 +1661,12 @@
     "evidence": [
      "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json"
     ],
-    "control": "the printed counts are HAND-READ off the scan, so 1.0 is what the page actually contains"
+    "control": "the printed counts are HAND-READ off the scan, so 1.0 is what the page actually contains",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 100.0,
    "n": 20,
@@ -1608,7 +1706,12 @@
     "evidence": [
      "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json"
     ],
-    "control": "the printed counts are HAND-READ off the scan, so 1.0 is what the page actually contains"
+    "control": "the printed counts are HAND-READ off the scan, so 1.0 is what the page actually contains",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 100.0,
    "n": 20,
@@ -1762,7 +1865,12 @@
     "evidence": [
      "benchmarks/omr-vs-industry-2026-09/results.json"
     ],
-    "control": "same fixtures, same musicdiff bridge \u2014 the only valid comparison. Published paper figures are pooled over other corpora and are context, never comparison."
+    "control": "same fixtures, same musicdiff bridge \u2014 the only valid comparison. Published paper figures are pooled over other corpora and are context, never comparison.",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 87.48,
    "n": 11,
@@ -2235,7 +2343,12 @@
      "benchmarks/omr-pipeline-audit-2026-09/hairpin-ceiling-value.json"
     ],
     "edition": "Breitkopf & H\u00e4rtel, Brahms 1 mvt 1 \u2014 ONE EDITION, irreducibly so today (only one batch in the corpus has a COMPLETION pass). Quote with the publisher NAMED; it is not a claim about scans in general.",
-    "control": "counted directly: over 55 completion-swept cells a human drew 13 dynamicCrescendoHairpin + 4 dynamicDiminuendoHairpin = SEVENTEEN. At bar level, of the 5 swept bars where the encoding STARTS a hairpin, a human found ink in 4 \u2014 a bar recall of 0.80 at n=5. The count ratio (17 human / 11 reference starts = 1.545) is NOT usable: a barline cuts one hairpin into two boxes and a three-bar hairpin is one start drawn across three cells, so the two units are biased in opposite directions."
+    "control": "counted directly: over 55 completion-swept cells a human drew 13 dynamicCrescendoHairpin + 4 dynamicDiminuendoHairpin = SEVENTEEN. At bar level, of the 5 swept bars where the encoding STARTS a hairpin, a human found ink in 4 \u2014 a bar recall of 0.80 at n=5. The count ratio (17 human / 11 reference starts = 1.545) is NOT usable: a barline cuts one hairpin into two boxes and a three-bar hairpin is one start drawn across three cells, so the two units are biased in opposite directions.",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": null,
    "n": 5,
@@ -2466,7 +2579,12 @@
      "benchmarks/omr-prefill-admission-2026-09/FINDINGS.md",
      "benchmarks/omr-prefill-admission-2026-09/PHASE_C_CELLS.json"
     ],
-    "control": "0.97 is the ADMISSION BAR set in advance, and the cells were pre-registered at seed 20260903 with their status recorded BEFORE labeling; the pass was run blind (annotate.server --blind). The measurement came in UNDER the bar and pre-filled verdicts stayed a queue rather than becoming labels \u2014 a control that fired."
+    "control": "0.97 is the ADMISSION BAR set in advance, and the cells were pre-registered at seed 20260903 with their status recorded BEFORE labeling; the pass was run blind (annotate.server --blind). The measurement came in UNDER the bar and pre-filled verdicts stayed a queue rather than becoming labels \u2014 a control that fired.",
+    "measured_under": {
+     "flags": {},
+     "reads_our_output": false,
+     "stop_condition": "no pipeline flag can move this \u2014 it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration."
+    }
    },
    "pct_of_achievable": 94.33,
    "n": 141,

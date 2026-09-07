@@ -984,6 +984,108 @@ for r in rows:
         "%s %s" % (r["mandatory_caption"], add) if r.get("mandatory_caption") else add)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# WHAT CONFIGURATION WAS A CEILING MEASURED UNDER? A general field, because the
+# question is general: a ceiling silently conditional on a flag's state is a
+# ceiling that will be quoted after the flag flips.
+#
+# ⚠️ THE DISCRIMINATOR IS `reads_our_output`, NOT "was it the default". A ceiling
+# derived from a truth file and a hand-read page map contains no output of ours
+# and no pipeline flag can move it. A ceiling whose ESTIMATOR reads our export
+# is conditional on every flag that changes that export — whether or not that
+# flag is currently the default.
+#
+# ⚠️ MEASURED, NOT ASSUMED, AND IT CORRECTED MY OWN CLAIM. I reported to the
+# coordinator that the page-fidelity floor (0.2123) was flag-conditional. It is
+# NOT: `probe_structural_floor.py` scores (derived truth, raw truth) and no
+# prediction appears in it. What IS conditional are the two ESTIMATOR-based
+# floors, whose estimator is `min(ours, audiveris)` over raw `entire staff`.
+# Priced against `benchmarks/omr-slot-stitch-reprice-2026-09`: flipping
+# OMR_SLOT_STITCH moves our raw entire-staff charge 87 -> 1,062 and 90 -> 1,062
+# on the two Beethoven p3 rows (Audiveris does not cover them, so the estimator
+# is ours alone); Brahms p2 is unchanged because Audiveris's 143 is the minimum
+# either way. The move RAISES the floor, which RAISES % of achievable — the
+# flattering direction, and exactly what the independence guard exists to stop.
+_DEFAULT_FLAGS = {"OMR_SLOT_STITCH": "0", "OMR_CONDENSED_PARTS": "0"}
+
+_MEASURED_UNDER = {
+    "scan:omr_ned:page_fidelity_15rows": {
+        "flags": {},
+        "reads_our_output": False,
+        "stop_condition": "NONE from pipeline configuration. This floor is "
+                          "(derived truth vs raw truth) and contains no output "
+                          "of ours, so no flag can move it. It is invalidated "
+                          "only by a change to the page-normalising TRANSFORM "
+                          "(currently 1.2.0) or to the hand-read staves map.",
+    },
+    "scan:omr_ned:ceiling_measured_15rows": {
+        "flags": dict(_DEFAULT_FLAGS),
+        "reads_our_output": True,
+        "stop_condition": "⚠️ RE-MEASURE BEFORE QUOTING if OMR_SLOT_STITCH or "
+                          "OMR_CONDENSED_PARTS changes state. The estimator is "
+                          "min(ours, audiveris) over raw `entire staff`, so it "
+                          "reads our export. Measured: flipping OMR_SLOT_STITCH "
+                          "moves our charge 87 -> 1,062 and 90 -> 1,062 on the "
+                          "two Beethoven p3 rows, raising the floor and so "
+                          "raising every % of achievable above it.",
+    },
+    "scan:omr_ned:ceiling_corroborated_subset": {
+        "flags": dict(_DEFAULT_FLAGS),
+        "reads_our_output": True,
+        "stop_condition": "⚠️ RE-MEASURE BEFORE QUOTING if OMR_SLOT_STITCH or "
+                          "OMR_CONDENSED_PARTS changes state — same estimator "
+                          "as the 15-row row. Its five rows are the "
+                          "engine-corroborated subset, where ours and Audiveris "
+                          "agree TODAY; a flag that moves our charge can break "
+                          "that agreement and with it the corroboration.",
+    },
+}
+
+_GENERIC_MEASURED_UNDER = {
+    "no_pipeline_output": {
+        "flags": {},
+        "reads_our_output": False,
+        "stop_condition": "no pipeline flag can move this — it is measured from "
+                          "a truth file, a render, a human's labels or another "
+                          "system. Invalidated by a change to that source, not "
+                          "by our configuration.",
+    },
+}
+
+for r in rows:
+    c = r.get("ceiling") or {}
+    if c.get("value") is None:
+        continue
+    if not str(c.get("status") or "").startswith(("measured", "bounded", "pre_reg")):
+        continue
+    c["measured_under"] = _MEASURED_UNDER.get(
+        r["id"], _GENERIC_MEASURED_UNDER["no_pipeline_output"])
+    r["ceiling"] = c
+
+
+# EVERY CEILING WITH A MEASURED VALUE DECLARES ITS CONFIGURATION, or the build
+# fails. A ceiling that reads our output must name the flags it was measured
+# under; one that does not must say so, so the distinction is a recorded
+# judgement rather than an omission.
+_mu_err = []
+for r in rows:
+    c = r.get("ceiling") or {}
+    if c.get("value") is None:
+        continue
+    if not str(c.get("status") or "").startswith(("measured", "bounded", "pre_reg")):
+        continue
+    mu = c.get("measured_under")
+    if not mu or not str(mu.get("stop_condition") or "").strip():
+        _mu_err.append((r["id"], "no measured_under / stop_condition"))
+    elif mu.get("reads_our_output") and not mu.get("flags"):
+        _mu_err.append((r["id"], "reads_our_output but names no flags"))
+if _mu_err:
+    raise SystemExit(
+        "ceilings with a measured value that do not declare the configuration "
+        "they were measured under: %s\n"
+        "  A ceiling silently conditional on a flag's state is a ceiling that "
+        "will be quoted after the flag flips." % _mu_err)
+
 # EVERY OMR-NED ROW CARRIES ITS DETAIL LEVEL AND ITS CAPTION, or the build fails.
 _d_err = [r["id"] for r in rows if _is_omr_ned(r)
           and (not r.get("era_key") or _DETAIL_TOKEN not in r["era_key"]
@@ -1074,7 +1176,7 @@ if _missing:
 
 scoreable = [r for r in rows if r["scoreable"]]
 doc = {
-    "schema_version": "0.6.0",
+    "schema_version": "0.7.0",
     #: ⚠️ WHAT A CONSUMER MUST GATE ON. A renderer written against 0.2.0 read
     #: 0.3.0 without a word and silently dropped `mandatory_caption` and
     #: `ceiling.edition` — the two fields whose entire purpose is that they
@@ -1082,9 +1184,14 @@ doc = {
     #: with a non-zero exit naming the version, and never forward-compat
     #: silently: an unknown minor may have added a field that MUST be shown.
     "consumer_contract": {
-        "current": "0.6.0",
-        "understood_by_a_conforming_consumer": ["0.6.0"],
+        "current": "0.7.0",
+        "understood_by_a_conforming_consumer": ["0.7.0"],
         "superseded": {
+            "0.6.0": "added `ceiling.measured_under` — the configuration a "
+                     "ceiling was measured under, with a stop condition. A "
+                     "0.6.0 consumer cannot tell a flag-conditional ceiling "
+                     "from a flag-independent one and will quote the first "
+                     "after the flag flips",
             "0.5.0": "added `scored_at_detail_level`, put the musicdiff detail "
                      "level inside every OMR-NED row's era_key and both "
                      "`comparable_as` keys, and gave every OMR-NED row a "
@@ -1104,6 +1211,7 @@ doc = {
         "fields_a_consumer_may_never_drop": [
             "mandatory_caption", "ceiling.edition (via the edition clause)",
             "render_with", "scored_at_detail_level",
+            "ceiling.measured_under (with its stop_condition)",
         ],
         "⚠️_arm_writer_protocol": {
             "rule": "ONE musicdiff DETAIL LEVEL PER PROCESS. Never score two "
@@ -1138,6 +1246,23 @@ doc = {
     },
     "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/build_metric_registry.py",
     "round": 5,
+    "changes_since_0_6_0": [
+        "ADDED `ceiling.measured_under` to every ceiling carrying a measured "
+        "value: the flags it was measured under, whether its estimator READS "
+        "OUR OUTPUT, and a stop condition. Build-enforced.",
+        "⚠️ THE DISCRIMINATOR IS `reads_our_output`, NOT `was it the default`. "
+        "A ceiling derived from a truth file, a render, a human's labels or "
+        "another system contains no output of ours and no flag can move it; a "
+        "ceiling whose ESTIMATOR reads our export is conditional on every flag "
+        "that changes that export, default or not.",
+        "⚠️ AND IT CORRECTED THE CLAIM THAT PROMPTED IT. I reported the "
+        "page-fidelity floor (0.2123) as flag-conditional. It is NOT — it is "
+        "(derived truth vs raw truth) and no prediction appears in it. The two "
+        "ESTIMATOR-based floors ARE, and flipping OMR_SLOT_STITCH moves the "
+        "estimator 87 -> 1,062 and 90 -> 1,062 on two rows, RAISING the floor "
+        "and so raising every % of achievable above it — the flattering "
+        "direction the independence guard exists to stop.",
+    ],
     "changes_since_0_5_0": [
         "THE DETAIL-LEVEL AXIS. musicdiff's `AllObjects` IGNORES CHORDS and "
         "pairs notes by pitch; re-scoring identical prediction files under "
