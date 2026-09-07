@@ -279,12 +279,19 @@ def lineup_spans(page_systems: Sequence[tuple[int, Sequence[int]]],
         running, seen_at_running = v, 1
 
     spans = _split_at(pages, starts)
+    swap = page_labels is not None and swap_split_enabled()
     if len(spans) > 1 and not _well_supported(spans, page_systems):
+        # ⚠️ The early return is kept on the flag-off path rather than folded
+        # into the code below, so flag-off is identical by CONSTRUCTION and not
+        # merely by argument: this returns the caller's own page order, where
+        # `_readmit_empty` returns a sorted one.
+        if not swap:
+            return [[p for p, _ in page_systems]]
         spans = [pages]
-    if page_labels is not None and swap_split_enabled():
+    if swap:
         spans = _apply_swap_splits(spans, page_systems, page_labels)
-    if len(spans) > 1 and not _well_supported(spans, page_systems):
-        return [[p for p, _ in page_systems]]
+        if len(spans) > 1 and not _well_supported(spans, page_systems):
+            return [[p for p, _ in page_systems]]
     # Pages with no staves at all (front matter) belong to whichever span
     # follows them; they carry nothing either way.
     return _readmit_empty(spans, [p for p, _ in page_systems])
