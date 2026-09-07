@@ -19,9 +19,12 @@ scores it against two truths.
    says *"It is OFF because it still costs OMR-NED"*. The FINDINGS it cites
    records the opposite — **−216 edits and −0.0048 pooled NED, an improvement**.
    The real recorded reason is **n=1**, which is a different and much better one.
-2. **This arm reproduces the original to the edit** on the raw truth
-   (Brahms p2 `entire staff` **715 → 1632**, parts **27 → 14**, net **−214**
-   against the recorded −216).
+2. **This arm reproduces the original's STRUCTURAL figures exactly** — Brahms
+   p2 `entire staff` **715 → 1632** and parts **27 → 14** — **and its net to
+   within two edits** (−214 against the recorded −216, on a tree two months of
+   commits later). *Not* "to the edit": the structure is, the net is not.
+   Emitted per field as `exact` / `close` in
+   `results-reprice.json → reproduces_recorded_n1_measurement`.
 3. **The raw truth understates the flag by ~9.5×.** Pooled, ON is **−240 edits**
    raw and **−2,278 edits** page-normalised.
 4. **On the normalised truth `entire staff` goes to ZERO on every reached row**
@@ -87,7 +90,13 @@ contextual slot.
 Reached: `beethoven-sym5-mvt1-984073-p3`, `beethoven-sym5-mvt1-575951-p3`,
 `brahms-sym1-mvt1-317803-p2`.
 
-### ⚠️ Reach is bounded by contextual slot COMPLETENESS, not by refusal rate
+### Reach is gated by contextual slot completeness BY CONSTRUCTION — though no current row is lost to it
+
+⚠️ **Stated carefully, because the strong form over-asserts.** In the current 20
+rows, **not one** row is unreached for slot incompleteness: the 17 are
+single-system (9) or ordinal-succeeds (8). The gate is real in the *code*, and
+the only page ever observed losing to it is a historical transcription. So this
+is a **mechanism** claim with one archival instance, not a measured rate.
 
 `_stitch_slots_by_slot` abstains on **a single** staff with `slot_index = -1`,
 deliberately — placing the staves that resolved and dropping the rest would lose
@@ -98,9 +107,12 @@ in system 0** (`slot_index = [-1 ×9, 0, 1, 2]`). That page was structurally the
 most fragmented in the corpus and the flag could not touch it.
 
 **So the identity layer is UPSTREAM of this structural gain, not parallel to
-it.** Every additional staff the contextual pass names converts a page from
-*unreachable* to *reachable*; no amount of work on the stitcher itself does.
-That is a scheduling conclusion and it holds regardless of what the score did.
+it** — in the weaker, surviving form: *where* a page is lost to slot
+incompleteness, only the contextual pass can recover it, and no amount of work
+on the stitcher itself can. That is a scheduling conclusion about the dependency
+direction; it is **not** a claim that slot incompleteness is currently costing
+this corpus anything measurable, because on these 20 rows it costs exactly
+nothing.
 
 ⚠️ *Caveat recorded honestly*: at `e9a0a577` Bach's ordinal join now **succeeds**
 (its segmentation changed with the bracket/choir work), so Bach is no longer an
@@ -196,22 +208,54 @@ those notes more correct — it is exposing them to being scored at all.
 
 ## 5. What the transform ADDED vs what it REMOVED (rule 4)
 
-Raw → normalised, within one arm, over the 19 normalisable rows:
+Raw → normalised, within one arm, over the 19 normalisable rows. **All four
+figures below are emitted by the harness** into
+`results-reprice.json → transform_accounting`; none is derived in prose.
+Structural guard: `check_harness_structure.py` (see §6b).
 
-| arm | removed | added | net | added ÷ gross |
-|---|--:|--:|--:|--:|
-| OFF | 28,215 | 5,777 | −22,438 | **17.0%** |
-| ON | 32,080 | 7,604 | −24,476 | **19.2%** |
+⚠️ **TWO DENOMINATORS AND TWO SCOPES, AND THE SCOPE FLIPS THE OFF-vs-ON SIGN.**
+
+* **denominator** — the headline percentage is `added ÷ (added + removed)`,
+  the share of *gross movement* that is manufactured. The other reading,
+  `added ÷ removed`, is a larger number (20.5% for OFF).
+* **scope** — `pool_net` pools each bucket over the rows *first* and then takes
+  the raw→norm delta, so within-bucket movement in opposite directions on
+  different rows cancels. `row_gross` sums per-(row, bucket) positives and
+  negatives separately and cancels nothing.
+
+| arm | scope | removed | added | added ÷ (a+r) | added ÷ removed |
+|---|---|--:|--:|--:|--:|
+| OFF | **pool_net** | 28,215 | 5,777 | **17.0%** | 20.5% |
+| ON | **pool_net** | 32,080 | 7,604 | **19.2%** | 23.7% |
+| OFF | row_gross | 30,207 | 7,769 | 20.5% | 25.7% |
+| ON | row_gross | 32,309 | 7,833 | 19.5% | 24.2% |
+
+⚠️ **Two of those cells are 20.5% and they are different quantities** — OFF's
+`pool_net` *added ÷ removed* and OFF's `row_gross` *added ÷ (a+r)*. Quote the
+scope and the denominator together or the number does not identify itself.
+
+**I quote `pool_net`, and the choice is deliberate**: the claim it supports is a
+*pooled* one, and pooling before differencing is the same operation the pooled
+edit counts elsewhere in this file use. ⚠️ **A reader who re-derives the ratio
+per row gets the opposite ordering** — `row_gross` says OFF carries the larger
+artefact share (20.5% vs 19.5%, or 25.7% vs 24.2% on the other denominator),
+while `pool_net` says ON does (17.0% vs 19.2%). The reversal holds on **both**
+denominators, so it is a property of the scope and not of the ratio. Both are
+emitted so the disagreement is visible rather than latent.
 
 The transform manufactures real artefacts and they are not negligible: ~1 edit in
 5 of the gross movement is **added**, led by `wrong note` +3,661, `wrong
 flag/beam` +486, `wrong direction` +430, `wrong accidental` +221, `wrong tie`
 +214 and `wrong lyric` +201 (6 → 249, the artefact the commission flagged).
 
-⚠️ **The ON arm has MORE added artefact than the OFF arm** (7,604 vs 5,777), so
-the normalised comparison is **not** flattering ON by giving it a cleaner truth —
-if anything the transform charges ON slightly more of its own noise. The −2,278
-survives that.
+⚠️ **On `pool_net` the ON arm carries MORE added artefact than OFF** (7,604 vs
+5,777), so on that scope the normalised comparison is **not** flattering ON with
+a cleaner truth. ⚠️ **On `row_gross` that reverses** (24.2% vs 25.7%), so this
+is a statement about the pooled scope and not a scope-free fact. What does not
+depend on the choice: the added artefact is **roughly 1 edit in 5 of gross
+movement on either scope and either arm** (17.0-20.5%), i.e. of the same order
+for both arms — far too similar between them to manufacture the −2,278, which is
+4.4% of the OFF arm's normalised total.
 
 ---
 
@@ -223,13 +267,44 @@ survives that.
 | predictions differ **iff** reached | **20/20, 0 mismatches** |
 | 17 unreached rows identical to the edit, both columns | **PASS** |
 | export deterministic (same flag, fresh load) | **byte-identical** |
-| reproduces the recorded n=1 figures | **715 → 1632, 27 → 14 parts, −214 vs −216** |
+| reproduces the recorded n=1 figures | `entire staff` **715 → 1632 EXACT**, parts **27 → 14 EXACT**, net **−214 vs −216 (close, differs by +2)** |
 | **dilution** — is ON just emitting fewer symbols? | **No.** pred symbols 38,919 → 38,884 (**−35, 0.09%**) while edits fall 240 (raw) / 2,278 (norm). Both `omr_ed` and the ratio fall together, which is the opposite of the symmetry artefact. |
 | OFF/normalised cell agrees with `scan_eval`'s own run | **0.6465 / 51,360, exact** (same derived-truth files reused, not regenerated) |
 
 **`Could not import wedge` (music21)** appears while parsing the truth. It is
 pre-existing, applies to both arms identically, and therefore cannot affect any
 delta reported here.
+
+---
+
+## 6b. Two harness faults found while emitting the above — both silent, one expensive
+
+Recorded because each produced a **clean-looking exit** and neither would have
+been caught by the checks that were being run.
+
+**(1) `ast.parse` validates syntax, not STRUCTURE — and a `def` at column 0 ends
+the function it is written inside.** Adding `transform_accounting` and
+`reproduces_recorded` by text-insertion put two module-level `def`s in the middle
+of `main()`. That is *valid Python*: it terminated `main()`'s body, and the 150
+lines after it — the pooling, the `doc` literal, **the file write** and the whole
+report — silently became the body of `reproduces_recorded`. `main()` then fell
+off its end returning `None`, so `sys.exit(None)` **exited 0**, printed nothing,
+wrote nothing, and burned **615 s of musicdiff first**. `ast.parse` passed
+throughout.
+
+The replacement check asks where the code *is*, not whether it parses — it walks
+the AST, extracts `main`'s own source segment, and asserts the write, the return
+and each call site are inside it. It fails RED against the broken revision.
+
+**(2) The musicdiff batch sits at a 0.5% margin against its own default
+timeout.** `omr_ned.score_batch` defaults to **600 s**; this 78-pair batch took
+**596.9 s** on the run that produced the committed numbers and **timed out at
+exactly 600.0 s** on the very next run of the identical pairs. A timeout raises
+rather than returning a wrong number, so no result was ever corrupted — but the
+arm was reproducible by luck. `timeout_s=3600` is now passed explicitly.
+
+⚠️ **Anyone scoring a batch this size on scans should pass `timeout_s`.** The
+default was set for smaller batches and 78 dense orchestral pairs is over it.
 
 ---
 
@@ -290,8 +365,9 @@ truth shaped like the page.
 
 ### Recommendation
 
-**`OMR_SLOT_STITCH` is a legitimate candidate for default-ON**, and the three
-reasons it was not are each now addressed: the score is better in both columns,
+**`OMR_SLOT_STITCH` is a legitimate candidate for default-ON, but the evidence
+does not yet carry it** — and the reason is *n*, exactly as the original said,
+not the score. Three of the four stated objections are now addressed: the score is better in both columns,
 the named-bucket regression is an artefact of a truth with too many parts, and
 n has moved from 1 to 2 pages. Before flipping it, someone should:
 
@@ -305,6 +381,29 @@ n has moved from 1 to 2 pages. Before flipping it, someone should:
    (+2,864 on reached rows) while the pooled figure improves. Anyone attributing
    by that bucket alone will read a regression — the corollary the original
    already recorded, now with a second and third row behind it.
+
+### The named blocker for default-ON, with its cost
+
+**One multi-system scanned page from a different WORK and a different PUBLISHER
+where the ordinal join refuses.**
+
+That is the single piece of evidence this arm cannot supply and that would
+settle the default. The reached population is 2 distinct pages of one structural
+shape (multi-system scan, tacet staff suppressed), in two publishers — Litolff
+and Breitkopf — but only two pieces of music. `OMR_MOVEMENT_REFERENCE` is the
+precedent: a structural change that looked settled on a narrow set and needed a
+second, differently-sourced page before it could be trusted.
+
+⚠️ **Cost: this is CORPUS WIDENING, not a re-run.** The current 20-row gate
+contains no further candidate — every other row is single-system or joins by
+ordinal. A new row needs a scanned multi-system page located, its measure window
+hand-verified against the print, and its `staves[i].parts` map hand-read, which
+is the `works.json` row-verification protocol (`ROW_VERIFICATION_CHECKLIST`),
+not a benchmark invocation. Until such a row exists, **the flag should stay off**
+— not because it scores badly, which it does not, but because two pages of one
+shape is the same evidentiary objection the original raised, merely doubled.
+
+---
 
 ⚠️ **Not measured here, deliberately:** `OMR_CONDENSED_PARTS`. It composes with
 this flag and is separately argued to be an anti-feature (it improves the metric

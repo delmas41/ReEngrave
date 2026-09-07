@@ -127,6 +127,92 @@ def reach(raw_json: Path) -> dict:
             "why": why}
 
 
+def transform_accounting(rows_: list[dict], arm: str) -> dict:
+    """What the page-normalise transform ADDS vs REMOVES, both ways of counting.
+
+    ⚠️ THE TWO DENOMINATORS AND THE TWO SCOPES ARE NOT THE SAME NUMBER, AND THE
+    SCOPE CHANGES THE SIGN OF THE OFF-vs-ON COMPARISON. Emitted here rather than
+    computed in prose so a reader can check the claim against the artefact.
+
+      pool_net    pool each bucket over the rows FIRST, then take the raw->norm
+                  delta. Within-bucket movement in opposite directions on
+                  different rows CANCELS. This is the right scope for a POOLED
+                  claim, and it is the one the findings quotes.
+
+      row_gross   take the delta per (row, bucket) and sum the positives and the
+                  negatives separately. Nothing cancels, so this is strictly
+                  larger -- and on this data it REVERSES the OFF-vs-ON ordering
+                  (OFF 25.7% vs ON 24.2%, against pool_net's 17.0% vs 19.2%).
+
+      share_of_gross   added / (added + removed)
+      ratio_to_removed added / removed        -- a different, larger number
+    """
+    def ratios(add: int, rem: int) -> dict:
+        return {"added": add, "removed": rem, "net": add - rem,
+                "share_of_gross": (add / (add + rem)) if (add + rem) else None,
+                "ratio_to_removed": (add / rem) if rem else None}
+
+    net_add = net_rem = 0
+    pooled_raw: dict[str, int] = {}
+    pooled_norm: dict[str, int] = {}
+    gross_add = gross_rem = 0
+    for e in rows_:
+        a = (e[f"{arm}_raw"].get("categories") or {})
+        b = (e[f"{arm}_norm"].get("categories") or {})
+        for k in set(a) | set(b):
+            pooled_raw[k] = pooled_raw.get(k, 0) + a.get(k, 0)
+            pooled_norm[k] = pooled_norm.get(k, 0) + b.get(k, 0)
+            d = b.get(k, 0) - a.get(k, 0)
+            if d > 0:
+                gross_add += d
+            else:
+                gross_rem += -d
+    for k in set(pooled_raw) | set(pooled_norm):
+        d = pooled_norm.get(k, 0) - pooled_raw.get(k, 0)
+        if d > 0:
+            net_add += d
+        else:
+            net_rem += -d
+    return {"pool_net": ratios(net_add, net_rem),
+            "row_gross": ratios(gross_add, gross_rem),
+            "quoted_in_findings": "pool_net.share_of_gross",
+            "per_bucket_pool_net": {
+                k: {"raw": pooled_raw.get(k, 0), "norm": pooled_norm.get(k, 0),
+                    "delta": pooled_norm.get(k, 0) - pooled_raw.get(k, 0)}
+                for k in sorted(set(pooled_raw) | set(pooled_norm))},
+            }
+
+
+def reproduces_recorded(entries: list[dict]) -> dict:
+    """Against `omr-staff-structure-2026-09/FINDINGS.md` section 4, on brahms p2.
+
+    ⚠️ THE STRUCTURAL FIGURES REPRODUCE EXACTLY; THE NET DOES NOT -- it is -214
+    here against a recorded -216, on a tree ~2 months of commits later. Recorded
+    as `exact` vs `close` per field rather than summarised as "to the edit",
+    which would overstate it by two.
+    """
+    row = next((e for e in entries
+                if e["row_id"] == "brahms-sym1-mvt1-317803-p2"), None)
+    if not row:
+        return {"available": False}
+    es_off = (row["off_raw"]["categories"] or {}).get(
+        "entire staff insert/delete", 0)
+    es_on = (row["on_raw"]["categories"] or {}).get(
+        "entire staff insert/delete", 0)
+    net = row["on_raw"]["omr_ed"] - row["off_raw"]["omr_ed"]
+    return {
+        "available": True,
+        "source": "benchmarks/omr-staff-structure-2026-09/FINDINGS.md section 4",
+        "entire_staff": {"recorded": [715, 1632], "measured": [es_off, es_on],
+                         "EXACT": [es_off, es_on] == [715, 1632]},
+        "parts": {"recorded": [27, 14],
+                  "measured": [row["parts"]["off"], row["parts"]["on"]],
+                  "EXACT": [row["parts"]["off"], row["parts"]["on"]] == [27, 14]},
+        "net_edits": {"recorded": -216, "measured": net,
+                      "EXACT": net == -216, "difference": net - (-216)},
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--rows", nargs="+", default=None)
@@ -212,7 +298,14 @@ def main(argv: list[str] | None = None) -> int:
 
     t_export = time.time() - t0
     t1 = time.time()
-    scored = omr_ned_mod.score_batch(pairs, detail="AllObjects")
+    # ⚠️ timeout_s IS LOAD-BEARING HERE. `omr_ned.score_batch` defaults to 600 s
+    # and this batch is 78 pairs of dense orchestral scans: the first run of
+    # this arm took 596.9 s and PASSED with a 0.5% margin, and the very next
+    # run of the same 78 pairs timed out at exactly 600.0 s. A timeout raises
+    # rather than returning a wrong number, so this could never have corrupted
+    # a result -- but it makes the arm non-reproducible by luck, which is worse
+    # than slow. Raised well clear of the observed cost.
+    scored = omr_ned_mod.score_batch(pairs, detail="AllObjects", timeout_s=3600)
     t_score = time.time() - t1
     by_name = {p["name"]: p for p in scored.get("pairs", [])}
     for e in entries:
@@ -255,6 +348,11 @@ def main(argv: list[str] | None = None) -> int:
         rec["PASS"] = ok_raw and rec.get("norm_edits_identical", True)
         control.append(rec)
 
+    _pa = pool("off_raw", poolable) or {}
+    _pb = pool("on_raw", poolable) or {}
+    doc_pred_off = _pa.get("pred_symbols")
+    doc_pred_on = _pb.get("pred_symbols")
+
     doc = {
         "generated_by": "benchmarks/omr-slot-stitch-reprice-2026-09/reprice_arm.py",
         "git_head": git_head(),
@@ -294,6 +392,26 @@ def main(argv: list[str] | None = None) -> int:
             "off_raw": pool("off_raw", reached), "on_raw": pool("on_raw", reached),
             "off_norm": pool("off_norm", [e for e in reached if e["normalised"]]),
             "on_norm": pool("on_norm", [e for e in reached if e["normalised"]]),
+        },
+        "transform_accounting": {
+            "what": "what page_normalise ADDS vs REMOVES, over the "
+                    "normalisable rows. Emitted from the harness so the "
+                    "findings' percentages are checkable against the artefact "
+                    "rather than re-derived by the reader.",
+            "off_arm": transform_accounting(norml, "off"),
+            "on_arm": transform_accounting(norml, "on"),
+            "⚠️_scope_changes_the_sign": (
+                "pool_net says the ON arm carries MORE added artefact than OFF "
+                "(so the normalised comparison is not flattering ON); "
+                "row_gross says the opposite. pool_net is quoted because the "
+                "claim it supports is a POOLED one."),
+        },
+        "reproduces_recorded_n1_measurement": reproduces_recorded(entries),
+        "dilution_control": {
+            "what": "OMR-NED is symmetric, so emitting FEWER symbols lowers it "
+                    "for free. If this were dilution, omr_ed would rise while "
+                    "the ratio fell.",
+            "pred_symbols_off": doc_pred_off, "pred_symbols_on": doc_pred_on,
         },
         "skipped": skipped,
         "rows": entries,
@@ -336,6 +454,28 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"  {cell:9s} NED {v['omr_ned']:.4f}  {v['omr_ed']:>6d} ed"
                       f"   entire-staff {es:>6d}  entire-measure {em:>6d}")
         print()
+    ta = doc["transform_accounting"]
+    print("--- transform accounting (rule 4) ---")
+    for arm in ("off_arm", "on_arm"):
+        for scope in ("pool_net", "row_gross"):
+            v = ta[arm][scope]
+            print(f"  {arm:7s} {scope:9s} removed {v['removed']:>6d}  added "
+                  f"{v['added']:>5d}  added/(a+r) {v['share_of_gross']:.1%}  "
+                  f"added/removed {v['ratio_to_removed']:.1%}")
+    print(f"  quoted in FINDINGS: "
+          f"{ta['off_arm']['quoted_in_findings']} "
+          f"(⚠️ pool_net and row_gross can order the two arms differently)")
+    rr = doc["reproduces_recorded_n1_measurement"]
+    if rr.get("available"):
+        print("\n--- reproduces the recorded n=1 measurement ---")
+        print(f"  entire staff {rr['entire_staff']['measured']} vs recorded "
+              f"{rr['entire_staff']['recorded']}  EXACT={rr['entire_staff']['EXACT']}")
+        print(f"  parts        {rr['parts']['measured']} vs recorded "
+              f"{rr['parts']['recorded']}  EXACT={rr['parts']['EXACT']}")
+        print(f"  net edits    {rr['net_edits']['measured']} vs recorded "
+              f"{rr['net_edits']['recorded']}  EXACT={rr['net_edits']['EXACT']} "
+              f"(differs by {rr['net_edits']['difference']:+d})")
+    print()
     ctl = doc["control_unreached_rows_must_be_identical"]["PASS"]
     print(f"CONTROL (unreached rows identical to the edit): {ctl}")
     print(f"reached: {doc['reach']['n_reached']} / {len(poolable)} pooled rows")

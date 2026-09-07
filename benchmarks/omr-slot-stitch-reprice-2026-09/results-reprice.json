@@ -1,14 +1,14 @@
 {
  "generated_by": "benchmarks/omr-slot-stitch-reprice-2026-09/reprice_arm.py",
- "git_head": "e9a0a577",
+ "git_head": "832b7582",
  "commission": "backlog A0b - re-price OMR_SLOT_STITCH against the page-normalised truth (Sean)",
  "transform_version": "1.2.0",
  "merge_convention": "silent/unison -> one voice (exact duplication, the measured 69.8%); divisi with every event aligned on (offset,duration) -> one voice of chords; divisi otherwise -> stacked Voices, one per source part; any bar carrying an UNPITCHED (percussion) note takes the voice path, because a chord holds pitches and would drop it",
  "era_warning": "the NORMALISED column is a SEPARATE BENCHMARK ERA and may not be differenced against any un-normalised figure. ON-vs-OFF WITHIN one column is the valid comparison: both cells share a truth, a tree and a transcription.",
  "arms_share_one_transcription": "BY CONSTRUCTION - the flag is export-only. Proven executed by the prediction hashes differing on every reached row.",
  "seconds": {
-  "export_and_normalise": 1.3,
-  "musicdiff_batch": 596.9
+  "export_and_normalise": 1.1,
+  "musicdiff_batch": 622.2
  },
  "reach": {
   "n_reached": 3,
@@ -471,6 +471,315 @@
    },
    "n_rows": 3
   }
+ },
+ "transform_accounting": {
+  "what": "what page_normalise ADDS vs REMOVES, over the normalisable rows. Emitted from the harness so the findings' percentages are checkable against the artefact rather than re-derived by the reader.",
+  "off_arm": {
+   "pool_net": {
+    "added": 5777,
+    "removed": 28215,
+    "net": -22438,
+    "share_of_gross": 0.16995175335373028,
+    "ratio_to_removed": 0.20474924685451001
+   },
+   "row_gross": {
+    "added": 7769,
+    "removed": 30207,
+    "net": -22438,
+    "share_of_gross": 0.20457657467874446,
+    "ratio_to_removed": 0.2571920415797663
+   },
+   "quoted_in_findings": "pool_net.share_of_gross",
+   "per_bucket_pool_net": {
+    "entire measure insert/delete": {
+     "raw": 29450,
+     "norm": 14640,
+     "delta": -14810
+    },
+    "entire staff insert/delete": {
+     "raw": 16871,
+     "norm": 3596,
+     "delta": -13275
+    },
+    "wrong accidental": {
+     "raw": 82,
+     "norm": 303,
+     "delta": 221
+    },
+    "wrong articulation": {
+     "raw": 55,
+     "norm": 123,
+     "delta": 68
+    },
+    "wrong barline": {
+     "raw": 42,
+     "norm": 52,
+     "delta": 10
+    },
+    "wrong clef": {
+     "raw": 200,
+     "norm": 120,
+     "delta": -80
+    },
+    "wrong crescendo": {
+     "raw": 44,
+     "norm": 44,
+     "delta": 0
+    },
+    "wrong diminuendo": {
+     "raw": 32,
+     "norm": 36,
+     "delta": 4
+    },
+    "wrong direction": {
+     "raw": 410,
+     "norm": 840,
+     "delta": 430
+    },
+    "wrong dot": {
+     "raw": 282,
+     "norm": 382,
+     "delta": 100
+    },
+    "wrong dynamic": {
+     "raw": 509,
+     "norm": 649,
+     "delta": 140
+    },
+    "wrong fingered tremolo": {
+     "raw": 6,
+     "norm": 6,
+     "delta": 0
+    },
+    "wrong flag/beam": {
+     "raw": 689,
+     "norm": 1175,
+     "delta": 486
+    },
+    "wrong keysig": {
+     "raw": 460,
+     "norm": 410,
+     "delta": -50
+    },
+    "wrong lyric": {
+     "raw": 48,
+     "norm": 249,
+     "delta": 201
+    },
+    "wrong note": {
+     "raw": 22096,
+     "norm": 25757,
+     "delta": 3661
+    },
+    "wrong note head": {
+     "raw": 1736,
+     "norm": 1816,
+     "delta": 80
+    },
+    "wrong ornament": {
+     "raw": 42,
+     "norm": 57,
+     "delta": 15
+    },
+    "wrong slur": {
+     "raw": 220,
+     "norm": 327,
+     "delta": 107
+    },
+    "wrong tempo": {
+     "raw": 4,
+     "norm": 4,
+     "delta": 0
+    },
+    "wrong tie": {
+     "raw": 68,
+     "norm": 282,
+     "delta": 214
+    },
+    "wrong timesig": {
+     "raw": 440,
+     "norm": 444,
+     "delta": 4
+    },
+    "wrong tuplet": {
+     "raw": 12,
+     "norm": 48,
+     "delta": 36
+    }
+   }
+  },
+  "on_arm": {
+   "pool_net": {
+    "added": 7604,
+    "removed": 32080,
+    "net": -24476,
+    "share_of_gross": 0.191613748614051,
+    "ratio_to_removed": 0.23703241895261845
+   },
+   "row_gross": {
+    "added": 7833,
+    "removed": 32309,
+    "net": -24476,
+    "share_of_gross": 0.1951322804045638,
+    "ratio_to_removed": 0.24244018694481415
+   },
+   "quoted_in_findings": "pool_net.share_of_gross",
+   "per_bucket_pool_net": {
+    "entire measure insert/delete": {
+     "raw": 26725,
+     "norm": 13094,
+     "delta": -13631
+    },
+    "entire staff insert/delete": {
+     "raw": 19735,
+     "norm": 1358,
+     "delta": -18377
+    },
+    "wrong accidental": {
+     "raw": 79,
+     "norm": 334,
+     "delta": 255
+    },
+    "wrong articulation": {
+     "raw": 55,
+     "norm": 125,
+     "delta": 70
+    },
+    "wrong barline": {
+     "raw": 40,
+     "norm": 52,
+     "delta": 12
+    },
+    "wrong clef": {
+     "raw": 176,
+     "norm": 124,
+     "delta": -52
+    },
+    "wrong crescendo": {
+     "raw": 41,
+     "norm": 54,
+     "delta": 13
+    },
+    "wrong diminuendo": {
+     "raw": 31,
+     "norm": 48,
+     "delta": 17
+    },
+    "wrong direction": {
+     "raw": 401,
+     "norm": 890,
+     "delta": 489
+    },
+    "wrong dot": {
+     "raw": 307,
+     "norm": 440,
+     "delta": 133
+    },
+    "wrong dynamic": {
+     "raw": 511,
+     "norm": 687,
+     "delta": 176
+    },
+    "wrong fingered tremolo": {
+     "raw": 6,
+     "norm": 6,
+     "delta": 0
+    },
+    "wrong flag/beam": {
+     "raw": 695,
+     "norm": 1235,
+     "delta": 540
+    },
+    "wrong keysig": {
+     "raw": 473,
+     "norm": 453,
+     "delta": -20
+    },
+    "wrong lyric": {
+     "raw": 48,
+     "norm": 276,
+     "delta": 228
+    },
+    "wrong note": {
+     "raw": 21628,
+     "norm": 26514,
+     "delta": 4886
+    },
+    "wrong note head": {
+     "raw": 1840,
+     "norm": 2122,
+     "delta": 282
+    },
+    "wrong ornament": {
+     "raw": 42,
+     "norm": 57,
+     "delta": 15
+    },
+    "wrong slur": {
+     "raw": 219,
+     "norm": 397,
+     "delta": 178
+    },
+    "wrong tempo": {
+     "raw": 4,
+     "norm": 4,
+     "delta": 0
+    },
+    "wrong tie": {
+     "raw": 70,
+     "norm": 316,
+     "delta": 246
+    },
+    "wrong timesig": {
+     "raw": 420,
+     "norm": 448,
+     "delta": 28
+    },
+    "wrong tuplet": {
+     "raw": 12,
+     "norm": 48,
+     "delta": 36
+    }
+   }
+  },
+  "\u26a0\ufe0f_scope_changes_the_sign": "pool_net says the ON arm carries MORE added artefact than OFF (so the normalised comparison is not flattering ON); row_gross says the opposite. pool_net is quoted because the claim it supports is a POOLED one."
+ },
+ "reproduces_recorded_n1_measurement": {
+  "available": true,
+  "source": "benchmarks/omr-staff-structure-2026-09/FINDINGS.md section 4",
+  "entire_staff": {
+   "recorded": [
+    715,
+    1632
+   ],
+   "measured": [
+    715,
+    1632
+   ],
+   "EXACT": true
+  },
+  "parts": {
+   "recorded": [
+    27,
+    14
+   ],
+   "measured": [
+    27,
+    14
+   ],
+   "EXACT": true
+  },
+  "net_edits": {
+   "recorded": -216,
+   "measured": -214,
+   "EXACT": false,
+   "difference": 2
+  }
+ },
+ "dilution_control": {
+  "what": "OMR-NED is symmetric, so emitting FEWER symbols lowers it for free. If this were dilution, omr_ed would rise while the ratio fell.",
+  "pred_symbols_off": 38919,
+  "pred_symbols_on": 38884
  },
  "skipped": [],
  "rows": [
