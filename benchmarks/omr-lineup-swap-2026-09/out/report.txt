@@ -1,0 +1,345 @@
+################ 1. SUPPORT PROFILES (the signal, and its noise floor)
+
+=== span 0-40: full size 13, 20 full systems ===
+  q=  8  support= 0  agree=12  <== BEST
+  q=  9  support= 0  agree=12
+  q= 12  support= 0  agree=12
+  q= 13  support= 0  agree=12
+  q= 16  support= 0  agree=12
+  q= 17  support= 0  agree=12
+  q= 23  support= 0  agree=12
+  q= 24  support= 0  agree=12
+  q= 25  support= 0  agree=12
+  q= 27  support= 0  agree=12
+  q= 28  support= 0  agree=12
+  q= 29  support= 0  agree=12
+  q= 35  support= 0  agree=12
+  q= 37  support= 0  agree=12
+
+=== span 41-98: full size 16, 32 full systems ===
+  q= 47  support= 5  agree= 7
+  q= 54  support= 2  agree= 6
+  q= 55  support= 6  agree= 7
+  q= 63  support= 7  agree= 7
+  q= 64  support= 2  agree= 6
+  q= 65  support= 7  agree= 6
+  q= 66  support= 7  agree= 6
+  q= 67  support= 8  agree= 6  <== BEST
+  q= 68  support= 7  agree= 6
+  q= 69  support= 3  agree= 6
+  q= 76  support= 3  agree= 6
+  q= 77  support= 2  agree= 7
+  q= 78  support= 2  agree= 8
+  q= 79  support= 1  agree= 8
+  q= 80  support= 1  agree= 8
+  q= 81  support= 1  agree=10
+  q= 82  support= 1  agree=10
+  q= 83  support= 1  agree=10
+  q= 85  support= 0  agree=10
+  q= 86  support= 0  agree=10
+  q= 87  support= 0  agree=10
+  q= 90  support= 0  agree=10
+  q= 91  support= 0  agree=12
+  q= 92  support= 0  agree=11
+  q= 93  support= 0  agree=12
+  q= 94  support= 0  agree=13
+  q= 95  support= 0  agree=13
+
+=== span 1-43: full size 12, 12 full systems ===
+  q= 12  support= 0  agree= 6  <== BEST
+  q= 14  support= 0  agree= 7
+  q= 17  support= 0  agree= 7
+  q= 23  support= 0  agree= 7
+  q= 28  support= 0  agree= 6
+  q= 30  support= 0  agree= 6
+  q= 31  support= 0  agree= 3
+
+=== span 44-87: full size 17, 39 full systems ===
+  q= 47  support= 0  agree=12
+  q= 48  support= 0  agree=12
+  q= 49  support= 0  agree=12
+  q= 50  support= 0  agree=12
+  q= 51  support= 0  agree=12
+  q= 52  support= 0  agree=12
+  q= 53  support= 0  agree=12
+  q= 54  support= 0  agree=12
+  q= 55  support= 0  agree=12
+  q= 58  support= 0  agree=12
+  q= 59  support= 0  agree=12
+  q= 60  support= 0  agree=12
+  q= 61  support= 0  agree=12
+  q= 62  support= 0  agree=12
+  q= 64  support= 0  agree=12
+  q= 66  support= 0  agree=12
+  q= 67  support= 0  agree=12
+  q= 68  support= 0  agree=12
+  q= 69  support= 0  agree=12
+  q= 70  support= 0  agree=12
+  q= 71  support= 0  agree=12
+  q= 72  support= 0  agree=12
+  q= 73  support= 0  agree=12
+  q= 74  support= 0  agree=12
+  q= 75  support= 0  agree=12
+  q= 76  support= 0  agree=12
+  q= 77  support= 0  agree=12
+  q= 78  support= 0  agree=11
+  q= 79  support= 0  agree=11
+  q= 80  support= 0  agree=11
+  q= 81  support= 0  agree=11
+  q= 82  support= 1  agree=11  <== BEST
+  q= 83  support= 1  agree=11
+  q= 84  support= 1  agree= 9
+
+=== span 0-26: full size 10, 26 full systems ===
+  q=  4  support= 0  agree= 5  <== BEST
+  q=  5  support= 0  agree= 5
+  q=  6  support= 0  agree= 5
+  q=  7  support= 0  agree= 5
+  q= 11  support= 0  agree= 5
+  q= 12  support= 0  agree= 5
+  q= 13  support= 0  agree= 5
+  q= 19  support= 0  agree= 5
+  q= 20  support= 0  agree= 5
+  q= 21  support= 0  agree= 5
+  q= 22  support= 0  agree= 5
+  q= 23  support= 0  agree= 5
+  q= 24  support= 0  agree= 5
+  q= 25  support= 0  agree= 5
+
+=== span 27-45: full size 11, 3 full systems ===
+  no candidate split has enough systems on both sides
+
+=== span 46-78: full size 14, 2 full systems ===
+  no candidate split has enough systems on both sides
+
+=== span 0-44: full size 14, 30 full systems ===
+  q=  3  support= 0  agree=12
+  q=  4  support= 0  agree=13
+  q=  5  support= 0  agree=13
+  q= 10  support= 0  agree=13
+  q= 11  support= 0  agree=13
+  q= 12  support= 0  agree=13
+  q= 13  support= 0  agree=13
+  q= 14  support= 0  agree=13
+  q= 16  support= 0  agree=13
+  q= 17  support= 0  agree=13
+  q= 18  support= 0  agree=13
+  q= 19  support= 0  agree=13
+  q= 24  support= 0  agree=13
+  q= 25  support= 2  agree=10  <== BEST
+
+=== span 45-85: full size 16, 17 full systems ===
+  q= 50  support= 0  agree=10  <== BEST
+  q= 59  support= 0  agree=11
+  q= 68  support= 0  agree=13
+  q= 69  support= 0  agree=13
+  q= 75  support= 0  agree=12
+  q= 76  support= 0  agree=12
+  q= 77  support= 0  agree=12
+  q= 78  support= 0  agree=12
+  q= 79  support= 0  agree=12
+  q= 80  support= 0  agree=12
+  q= 81  support= 0  agree=11
+  q= 82  support= 0  agree=10
+
+################ 2. THE RULE — flag off vs on, five label dumps
+
+brahms4: 99 pages
+  flag off, no evidence : [[0, 40], [41, 98]]
+  flag off, evidence    : [[0, 40], [41, 98]]
+  flag ON,  no evidence : [[0, 40], [41, 98]]
+  flag ON,  evidence    : [[0, 40], [41, 66], [67, 98]]
+  SPLIT
+
+beet5: 88 pages
+  flag off, no evidence : [[0, 43], [44, 87]]
+  flag off, evidence    : [[0, 43], [44, 87]]
+  flag ON,  no evidence : [[0, 43], [44, 87]]
+  flag ON,  evidence    : [[0, 43], [44, 87]]
+  unchanged
+
+beet6: 79 pages
+  flag off, no evidence : [[0, 26], [27, 45], [46, 78]]
+  flag off, evidence    : [[0, 26], [27, 45], [46, 78]]
+  flag ON,  no evidence : [[0, 26], [27, 45], [46, 78]]
+  flag ON,  evidence    : [[0, 26], [27, 45], [46, 78]]
+  unchanged
+
+brahms1: 86 pages
+  flag off, no evidence : [[0, 44], [45, 85]]
+  flag off, evidence    : [[0, 44], [45, 85]]
+  flag ON,  no evidence : [[0, 44], [45, 85]]
+  flag ON,  evidence    : [[0, 44], [45, 85]]
+  unchanged
+
+beet5-blob: 87 pages
+  flag off, no evidence : [[1, 43], [44, 87]]
+  flag off, evidence    : [[1, 43], [44, 87]]
+  flag ON,  no evidence : [[1, 43], [44, 87]]
+  flag ON,  evidence    : [[1, 43], [44, 87]]
+  unchanged
+
+################ 3. EXPRESSIBILITY — can the reference SAY the lineup?
+
+=== brahms4-lineups
+  largest printed lineup: 16 staves (pages 41-66)
+  union over spans      : 18 staves  ['Flute', 'Piccolo', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Horn', 'Trumpet', 'Trombone', 'Trombone', 'Timpani', 'Triangle', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+  pages   0- 40 (13): expressible in the largest printed lineup? YES
+  pages  41- 66 (16): expressible in the largest printed lineup? YES
+  pages  67- 98 (16): expressible in the largest printed lineup? NO    short of: ['Trombone']
+  => AT LEAST ONE span is NOT expressible — no choice of span boundaries can name it
+  => union 18 vs largest printed 16: a swap, 2 names with nowhere to live
+
+=== beet6-lineups
+  largest printed lineup: 14 staves (pages 46-78)
+  union over spans      : 14 staves  ['Piccolo', 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Trombone', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+  pages   0- 26 (10): expressible in the largest printed lineup? YES
+  pages  46- 78 (14): expressible in the largest printed lineup? YES
+  => EVERY span is expressible — the document reference can name them all
+  => union 14 vs largest printed 14: equal, growth-only
+
+=== lineups-beet5
+  largest printed lineup: 17 staves (pages 44-200)
+  union over spans      : 17 staves  ['Piccolo', 'Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Trumpet', 'Timpani', 'Trombone', 'Trombone', 'Trombone', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+  pages   0- 43 (12): expressible in the largest printed lineup? YES
+  pages  44-200 (17): expressible in the largest printed lineup? YES
+  => EVERY span is expressible — the document reference can name them all
+  => union 17 vs largest printed 17: equal, growth-only
+
+=== lineups-brahms1
+  largest printed lineup: 16 staves (pages 45-85)
+  union over spans      : 17 staves  ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Horn', 'Trumpet', 'Trombone', 'Trombone', 'Timpani', 'Violin', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+  pages   0- 25 (14): expressible in the largest printed lineup? YES
+  pages  33- 35 (14): expressible in the largest printed lineup? NO    short of: ['Violin']
+  pages  36- 44 (12): expressible in the largest printed lineup? YES
+  pages  45- 85 (16): expressible in the largest printed lineup? YES
+  => AT LEAST ONE span is NOT expressible — no choice of span boundaries can name it
+  => union 17 vs largest printed 16: a swap, 1 names with nowhere to live
+
+################ 4. CEILING — what any span rule could reach
+reference the run built: 16 slots
+  ['Flute', 'Piccolo', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Trumpet', 'Trumpet', 'Timpani', 'Percussion', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+
+region           systems  size  ceiling/sys   ceiling   counterfactual ceilings (reference = each other region)
+0-40                  20    13          n/a       n/a   
+41-66                 10    16           14       140   67-98:7
+67-98                 22    16            8       176   41-66:7
+
+################ 5. THE REFERENCE TIE-BREAK, off committed labels
+reference contest: top key = size 16, labels 15; 7 system(s) tied
+  document order (shipped)   p41 s0  shared by 1 system(s)
+      ['Flute', 'Piccolo', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', '-', 'Trumpet', 'Timpani', 'Percussion', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+  shape frequency            p76 s0  shared by 2 system(s)
+      ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Horn', 'Trumpet', '-', 'Trombone', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+
+region         size  systems  ceiling(order)  ceiling(shape)
+0-40             13       20             n/a             n/a
+41-66            16       10           14/16            7/16
+67-98            16       22            7/16           15/16
+TOTAL (same-size regions only)                        294             400
+
+⚠️ The ceiling is over the regions whose size equals the reference's; a region of a DIFFERENT size is aligned by subsequence and is not fixed by this arithmetic.
+reference contest: top key = size 16, labels 14; 3 system(s) tied
+  document order (shipped)   p45 s0  shared by 1 system(s)
+      ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', '-', 'Trumpet', 'Trombone', '-', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Contrabass']
+  shape frequency            p59 s0  shared by 2 system(s)
+      ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', 'Horn', 'Horn', 'Trumpet', 'Trombone', '-', 'Timpani', 'Violin', 'Violin', 'Viola', '-', 'Contrabass']
+
+region         size  systems  ceiling(order)  ceiling(shape)
+0-25             14       28             n/a             n/a
+33-35            14        2             n/a             n/a
+36-44            12        6             n/a             n/a
+45-85            16       17           14/16           14/16
+TOTAL (same-size regions only)                        238             238
+
+⚠️ The ceiling is over the regions whose size equals the reference's; a region of a DIFFERENT size is aligned by subsequence and is not fixed by this arithmetic.
+
+################ 6. IDENTITY, per region, per arm (Brahms 4)
+judgeable staves on full systems: 772
+
+arm                               r0 c/w/u        r1 c/w/u        r2 c/w/u       TOTAL c/w/u
+no-spans                    234/  26/   0  140/  20/   0  176/ 176/   0    550/ 222/   0
+shipped                     240/  20/   0  140/  20/   0  176/ 176/   0    556/ 216/   0
+swap                        240/  20/   0  140/  20/   0  132/ 154/  66    512/ 194/  66
+refuse                      240/  20/   0  140/  20/   0  176/ 176/   0    556/ 216/   0
+refuse+swap                 234/  26/   0  140/  20/   0  176/ 176/   0    550/ 222/   0
+shapetie                    260/   0/   0   70/  90/   0  352/   0/   0    682/  90/   0
+shapetie+swap               260/   0/   0   60/  60/  40  352/   0/   0    672/  60/  40
+
+no-spans — wrong (region: printed -> emitted):
+   r2    22  Oboe           -> Piccolo
+   r2    22  Clarinet       -> Oboe
+   r2    22  Bassoon        -> Clarinet
+   r2    22  Contrabassoon  -> Bassoon
+   r2    22  Horn           -> Contrabassoon
+   r2    22  Trombone       -> Trumpet
+   r2    22  Trombone       -> Timpani
+   r2    22  Timpani        -> Percussion
+   r0    20  Horn           -> Trumpet
+   r1    10  Horn           -> Trumpet
+
+shipped — wrong (region: printed -> emitted):
+   r2    22  Oboe           -> Piccolo
+   r2    22  Clarinet       -> Oboe
+   r2    22  Bassoon        -> Clarinet
+   r2    22  Contrabassoon  -> Bassoon
+   r2    22  Horn           -> Contrabassoon
+   r2    22  Trombone       -> Trumpet
+   r2    22  Trombone       -> Timpani
+   r2    22  Timpani        -> Percussion
+   r0    20  Horn           -> Trumpet
+   r1    10  Horn           -> Trumpet
+
+swap — wrong (region: printed -> emitted):
+   r2    44  Trombone       -> Trumpet
+   r2    22  Bassoon        -> Flute
+   r2    22  Contrabassoon  -> Oboe
+   r2    22  Horn           -> Clarinet
+   r2    22  Horn           -> Bassoon
+   r2    22  Trumpet        -> Horn
+   r0    20  Horn           -> Trumpet
+   r1    10  Horn           -> Trumpet
+   r1    10  Triangle       -> Percussion
+
+refuse — wrong (region: printed -> emitted):
+   r2    22  Oboe           -> Piccolo
+   r2    22  Clarinet       -> Oboe
+   r2    22  Bassoon        -> Clarinet
+   r2    22  Contrabassoon  -> Bassoon
+   r2    22  Horn           -> Contrabassoon
+   r2    22  Trombone       -> Trumpet
+   r2    22  Trombone       -> Timpani
+   r2    22  Timpani        -> Percussion
+   r0    20  Horn           -> Trumpet
+   r1    10  Horn           -> Trumpet
+
+refuse+swap — wrong (region: printed -> emitted):
+   r2    22  Oboe           -> Piccolo
+   r2    22  Clarinet       -> Oboe
+   r2    22  Bassoon        -> Clarinet
+   r2    22  Contrabassoon  -> Bassoon
+   r2    22  Horn           -> Contrabassoon
+   r2    22  Trombone       -> Trumpet
+   r2    22  Trombone       -> Timpani
+   r2    22  Timpani        -> Percussion
+   r0    20  Horn           -> Trumpet
+   r1    10  Horn           -> Trumpet
+
+shapetie — wrong (region: printed -> emitted):
+   r1    10  Piccolo        -> Oboe
+   r1    10  Oboe           -> Clarinet
+   r1    10  Clarinet       -> Bassoon
+   r1    10  Bassoon        -> Contrabassoon
+   r1    10  Contrabassoon  -> Horn
+   r1    10  Horn           -> Trumpet
+   r1    10  Trumpet        -> Trombone
+   r1    10  Timpani        -> Trombone
+   r1    10  Triangle       -> Timpani
+
+shapetie+swap — wrong (region: printed -> emitted):
+   r1    10  Bassoon        -> Oboe
+   r1    10  Contrabassoon  -> Clarinet
+   r1    10  Horn           -> Bassoon
+   r1    10  Trumpet        -> Horn
+   r1    10  Timpani        -> Trumpet
+   r1    10  Triangle       -> Timpani

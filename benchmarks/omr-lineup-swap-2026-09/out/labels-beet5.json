@@ -1,0 +1,6921 @@
+[
+ {
+  "page": 0,
+  "systems": [],
+  "n_staves": 0,
+  "labels": []
+ },
+ {
+  "page": 1,
+  "systems": [
+   12
+  ],
+  "n_staves": 12,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Flauti."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "low",
+    "text": "Obol."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Clarinetti in B."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fagotti."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "medium",
+    "text": "Corni in Es."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Trombe in C."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timpani in C.G."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Violin",
+    "confidence": "high",
+    "text": "Violino I."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Violin",
+    "confidence": "high",
+    "text": "Violino II."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Viola",
+    "confidence": "high",
+    "text": "Viola."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Cello",
+    "confidence": "high",
+    "text": "Violoncello."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Bass voice",
+    "confidence": "high",
+    "text": "Basso."
+   }
+  ]
+ },
+ {
+  "page": 2,
+  "systems": [
+   11,
+   11
+  ],
+  "n_staves": 22,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 3,
+  "systems": [
+   11,
+   8
+  ],
+  "n_staves": 19,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   }
+  ]
+ },
+ {
+  "page": 4,
+  "systems": [
+   11,
+   11
+  ],
+  "n_staves": 22,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 5,
+  "systems": [
+   9,
+   7
+  ],
+  "n_staves": 16,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   }
+  ]
+ },
+ {
+  "page": 6,
+  "systems": [
+   10,
+   12
+  ],
+  "n_staves": 22,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 17,
+    "instrument": null,
+    "confidence": "none",
+    "text": "|"
+   }
+  ]
+ },
+ {
+  "page": 7,
+  "systems": [
+   11,
+   11
+  ],
+  "n_staves": 22,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 8,
+  "systems": [
+   9,
+   11
+  ],
+  "n_staves": 20,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   }
+  ]
+ },
+ {
+  "page": 9,
+  "systems": [
+   12,
+   10
+  ],
+  "n_staves": 22,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Fig."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 10,
+  "systems": [
+   11,
+   11
+  ],
+  "n_staves": 22,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 11,
+  "systems": [
+   9,
+   11
+  ],
+  "n_staves": 20,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Oh."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 12,
+  "systems": [
+   12,
+   11
+  ],
+  "n_staves": 23,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 18,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 13,
+  "systems": [
+   11,
+   11
+  ],
+  "n_staves": 22,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 14,
+  "systems": [
+   12,
+   11
+  ],
+  "n_staves": 23,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 18,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 15,
+  "systems": [
+   11,
+   11
+  ],
+  "n_staves": 22,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 16,
+  "systems": [
+   11,
+   11
+  ],
+  "n_staves": 22,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Fug."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 17,
+  "systems": [
+   12,
+   4,
+   4
+  ],
+  "n_staves": 20,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Flauti."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Oboi."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Clarinetti in B."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fagotti."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Corni in C."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Trombe in C."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timpani in C.G."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Violin",
+    "confidence": "high",
+    "text": "Violino I."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Violin",
+    "confidence": "high",
+    "text": "Violino II."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Viola",
+    "confidence": "high",
+    "text": "Viola."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Cello",
+    "confidence": "high",
+    "text": "Violoncello."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Bass voice",
+    "confidence": "high",
+    "text": "Basso."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 13,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Oh."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   }
+  ]
+ },
+ {
+  "page": 18,
+  "systems": [
+   11,
+   8
+  ],
+  "n_staves": 19,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 19,
+  "systems": [
+   11,
+   9
+  ],
+  "n_staves": 20,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   }
+  ]
+ },
+ {
+  "page": 20,
+  "systems": [
+   8,
+   8
+  ],
+  "n_staves": 16,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   }
+  ]
+ },
+ {
+  "page": 21,
+  "systems": [
+   11,
+   9
+  ],
+  "n_staves": 20,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 22,
+  "systems": [
+   9,
+   8
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   }
+  ]
+ },
+ {
+  "page": 23,
+  "systems": [
+   9,
+   12
+  ],
+  "n_staves": 21,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 24,
+  "systems": [
+   11,
+   11
+  ],
+  "n_staves": 22,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 25,
+  "systems": [
+   8,
+   11
+  ],
+  "n_staves": 19,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag"
+   }
+  ]
+ },
+ {
+  "page": 26,
+  "systems": [
+   11,
+   7
+  ],
+  "n_staves": 18,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   }
+  ]
+ },
+ {
+  "page": 27,
+  "systems": [
+   8,
+   8
+  ],
+  "n_staves": 16,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   }
+  ]
+ },
+ {
+  "page": 28,
+  "systems": [
+   8,
+   12
+  ],
+  "n_staves": 20,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor, |"
+   },
+   {
+    "staff_index": 18,
+    "instrument": null,
+    "confidence": "none",
+    "text": "|"
+   }
+  ]
+ },
+ {
+  "page": 29,
+  "systems": [
+   11,
+   8
+  ],
+  "n_staves": 19,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   }
+  ]
+ },
+ {
+  "page": 30,
+  "systems": [
+   12,
+   8
+  ],
+  "n_staves": 20,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   }
+  ]
+ },
+ {
+  "page": 31,
+  "systems": [
+   7,
+   12
+  ],
+  "n_staves": 19,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 10,
+    "instrument": null,
+    "confidence": "none",
+    "text": "ag."
+   },
+   {
+    "staff_index": 11,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Lor."
+   },
+   {
+    "staff_index": 12,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Gr."
+   },
+   {
+    "staff_index": 13,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Gp."
+   }
+  ]
+ },
+ {
+  "page": 32,
+  "systems": [
+   11,
+   5,
+   4
+  ],
+  "n_staves": 20,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Flauti."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Oboi."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Clarinetti in B."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fagotti."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "medium",
+    "text": "Corni in Es."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Trombe in C."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timpani in C.G."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Violin",
+    "confidence": "high",
+    "text": "Violino I."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Violin",
+    "confidence": "high",
+    "text": "Violino II."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Viola",
+    "confidence": "high",
+    "text": "Viola."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Cello",
+    "confidence": "high",
+    "text": "Violoncello et Basso."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   }
+  ]
+ },
+ {
+  "page": 33,
+  "systems": [
+   9,
+   9
+  ],
+  "n_staves": 18,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   }
+  ]
+ },
+ {
+  "page": 34,
+  "systems": [
+   11,
+   11
+  ],
+  "n_staves": 22,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 35,
+  "systems": [
+   11,
+   10
+  ],
+  "n_staves": 21,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Jor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 36,
+  "systems": [
+   11,
+   9
+  ],
+  "n_staves": 20,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 37,
+  "systems": [
+   10,
+   5,
+   8
+  ],
+  "n_staves": 23,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Contrabass",
+    "confidence": "high",
+    "text": "Db."
+   },
+   {
+    "staff_index": 2,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Pag."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 10,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Pag."
+   },
+   {
+    "staff_index": 15,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Dh."
+   },
+   {
+    "staff_index": 16,
+    "instrument": null,
+    "confidence": "none",
+    "text": "21."
+   },
+   {
+    "staff_index": 17,
+    "instrument": null,
+    "confidence": "none",
+    "text": "ag."
+   },
+   {
+    "staff_index": 18,
+    "instrument": null,
+    "confidence": "none",
+    "text": "DR."
+   }
+  ]
+ },
+ {
+  "page": 38,
+  "systems": [
+   12,
+   12
+  ],
+  "n_staves": 24,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Rig."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 15,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Fig."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 18,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 39,
+  "systems": [
+   4,
+   7,
+   8
+  ],
+  "n_staves": 19,
+  "labels": [
+   {
+    "staff_index": 4,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   }
+  ]
+ },
+ {
+  "page": 40,
+  "systems": [
+   7,
+   7,
+   7
+  ],
+  "n_staves": 21,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 19,
+    "instrument": null,
+    "confidence": "none",
+    "text": "|"
+   }
+  ]
+ },
+ {
+  "page": 41,
+  "systems": [
+   5,
+   7,
+   7
+  ],
+  "n_staves": 19,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   }
+  ]
+ },
+ {
+  "page": 42,
+  "systems": [
+   5,
+   6,
+   5
+  ],
+  "n_staves": 16,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Fig."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   }
+  ]
+ },
+ {
+  "page": 43,
+  "systems": [
+   5,
+   10
+  ],
+  "n_staves": 15,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 7,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Pag."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   }
+  ]
+ },
+ {
+  "page": 44,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "medium",
+    "text": "Flauto piccolo."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Flauti."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Oboi."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Clarinetti in C."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fagotti."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "Contrafagotto."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Corni in C."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Trombe in C."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timpani in C.G."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Trombone Alto."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "medium",
+    "text": "Trombone Tenore."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Trombone Basso."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Violin",
+    "confidence": "high",
+    "text": "Violino I."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Violin",
+    "confidence": "high",
+    "text": "Violino II."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Viola",
+    "confidence": "high",
+    "text": "Viola."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Cello",
+    "confidence": "high",
+    "text": "Violoncello."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Bass voice",
+    "confidence": "high",
+    "text": "Basso."
+   }
+  ]
+ },
+ {
+  "page": 45,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl.  pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C.   Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Bass."
+   }
+  ]
+ },
+ {
+  "page": 46,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 47,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 5,
+    "instrument": null,
+    "confidence": "none",
+    "text": "C. Fug."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Tinp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   }
+  ]
+ },
+ {
+  "page": 48,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trumpet",
+    "confidence": "medium",
+    "text": "Tr. Teq."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 49,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 50,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "medium",
+    "text": "Fl. plc."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timp"
+   }
+  ]
+ },
+ {
+  "page": 51,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 52,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl.  pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C.   Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Bas."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timp"
+   },
+   {
+    "staff_index": 14,
+    "instrument": null,
+    "confidence": "none",
+    "text": "|"
+   }
+  ]
+ },
+ {
+  "page": 53,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "(ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 54,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "medium",
+    "text": "Fl. G. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Timp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 55,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "medium",
+    "text": "Fl. Fil. pic. C."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "medium",
+    "text": "Fl. Fil."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "medium",
+    "text": "Ob. Fil."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "medium",
+    "text": "Cl. Fil."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "medium",
+    "text": "Fag. Fil."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "medium",
+    "text": "C. Fag. Fil."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "medium",
+    "text": "Cor. Fil."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "medium",
+    "text": "Tr. Fil."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "medium",
+    "text": "Tp. Fil."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt. Fil."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten. Fil."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas. Fil."
+   }
+  ]
+ },
+ {
+  "page": 56,
+  "systems": [
+   10,
+   9
+  ],
+  "n_staves": 19,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl.  pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C.   Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   }
+  ]
+ },
+ {
+  "page": 57,
+  "systems": [
+   9,
+   15
+  ],
+  "n_staves": 24,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C Fag."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 12,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 18,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 19,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 58,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 59,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": []
+ },
+ {
+  "page": 60,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag"
+   }
+  ]
+ },
+ {
+  "page": 61,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": null,
+    "confidence": "none",
+    "text": "C. Pag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   }
+  ]
+ },
+ {
+  "page": 62,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 63,
+  "systems": [
+   6,
+   7,
+   10
+  ],
+  "n_staves": 23,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 13,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 14,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 15,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 16,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 17,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 18,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor"
+   }
+  ]
+ },
+ {
+  "page": 64,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trumpet",
+    "confidence": "medium",
+    "text": "Tr. Bar."
+   }
+  ]
+ },
+ {
+  "page": 65,
+  "systems": [
+   16
+  ],
+  "n_staves": 16,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trumpet",
+    "confidence": "medium",
+    "text": "Tr. Bar."
+   }
+  ]
+ },
+ {
+  "page": 66,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 67,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl pic"
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Oh"
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 68,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "medium",
+    "text": "Fl. Fig."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Fig."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 69,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 70,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trumpet",
+    "confidence": "medium",
+    "text": "Tr. Buss."
+   }
+  ]
+ },
+ {
+  "page": 71,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl.  pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C.   Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Bass."
+   }
+  ]
+ },
+ {
+  "page": 72,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bass."
+   }
+  ]
+ },
+ {
+  "page": 73,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Fug."
+   },
+   {
+    "staff_index": 5,
+    "instrument": null,
+    "confidence": "none",
+    "text": "C. Fug."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 74,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 75,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Fig."
+   },
+   {
+    "staff_index": 5,
+    "instrument": null,
+    "confidence": "none",
+    "text": "C. Fig."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 76,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl.  pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C.   Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr.   Bas."
+   }
+  ]
+ },
+ {
+  "page": 77,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 78,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 79,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 80,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "medium",
+    "text": "Fl. g pic"
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob"
+   }
+  ]
+ },
+ {
+  "page": 81,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic"
+   },
+   {
+    "staff_index": 1,
+    "instrument": null,
+    "confidence": "none",
+    "text": "F}"
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag"
+   },
+   {
+    "staff_index": 5,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Cc. Fa"
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor"
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr"
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": null,
+    "confidence": "none",
+    "text": "T:. Teu"
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trumpet",
+    "confidence": "medium",
+    "text": "Tr. Kas"
+   }
+  ]
+ },
+ {
+  "page": 82,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": ".Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": null,
+    "confidence": "none",
+    "text": "F o  5"
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 83,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "medium",
+    "text": "Fl. g. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 84,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "medium",
+    "text": "Fl. of pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "medium",
+    "text": "Fl. of"
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. - Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 85,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. Pic"
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob"
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "low",
+    "text": "C1."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": null,
+    "confidence": "none",
+    "text": "Cer"
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten"
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas"
+   }
+  ]
+ },
+ {
+  "page": 86,
+  "systems": [
+   16
+  ],
+  "n_staves": 16,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Piccolo",
+    "confidence": "high",
+    "text": "Fl. pic."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   }
+  ]
+ },
+ {
+  "page": 87,
+  "systems": [
+   17
+  ],
+  "n_staves": 17,
+  "labels": [
+   {
+    "staff_index": 0,
+    "instrument": "Flute",
+    "confidence": "medium",
+    "text": "Fl. pir."
+   },
+   {
+    "staff_index": 1,
+    "instrument": "Flute",
+    "confidence": "high",
+    "text": "Fl."
+   },
+   {
+    "staff_index": 2,
+    "instrument": "Oboe",
+    "confidence": "high",
+    "text": "Ob."
+   },
+   {
+    "staff_index": 3,
+    "instrument": "Clarinet",
+    "confidence": "high",
+    "text": "Cl."
+   },
+   {
+    "staff_index": 4,
+    "instrument": "Bassoon",
+    "confidence": "high",
+    "text": "Fag."
+   },
+   {
+    "staff_index": 5,
+    "instrument": "Contrabassoon",
+    "confidence": "high",
+    "text": "C. Fag."
+   },
+   {
+    "staff_index": 6,
+    "instrument": "Horn",
+    "confidence": "high",
+    "text": "Cor."
+   },
+   {
+    "staff_index": 7,
+    "instrument": "Trumpet",
+    "confidence": "high",
+    "text": "Tr."
+   },
+   {
+    "staff_index": 8,
+    "instrument": "Timpani",
+    "confidence": "high",
+    "text": "Tp."
+   },
+   {
+    "staff_index": 9,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Alt."
+   },
+   {
+    "staff_index": 10,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Ten."
+   },
+   {
+    "staff_index": 11,
+    "instrument": "Trombone",
+    "confidence": "high",
+    "text": "Tr. Bas."
+   },
+   {
+    "staff_index": 13,
+    "instrument": null,
+    "confidence": "none",
+    "text": "|"
+   }
+  ]
+ }
+]

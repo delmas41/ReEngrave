@@ -45,9 +45,9 @@ times worse. That is the precedent these items exist to respect.
 
 | # | hazard |
 |---|---|
-| D0 | ⚠️ **D1 and D2 below were RELAYED BY ME AS FINDINGS AND THEY ARE NOT.** The harness's own FINDINGS says in bold: *"Not attributed, deliberately. The two passes also differ in CODE (pass A predates the group-map and span-composition fixes), and committed artefacts cannot separate 'the extra evidence did it' from 'the code drift did it'."* What IS established is the floor (two passes of one PDF differ by 50 records) and the mechanism (**ONE slot decision, inherited by 50 staves** — pass A names slot 8 `Timpani` from a label, pass B names it `Trumpet` from `score_order_ambiguity`). What is NOT established is the cause. Sean refused the claim on exactly this ground before the confound was surfaced to him. **The settling experiment is defined and cheap** — one ~26-min whole-work read pass at ONE commit, serving both label sets off one cache through the `_labels_for_page` patch `compose.py` already implements. Until it runs, D2 is a hypothesis. |
-| D1 | **The read-pass floor is LARGER than the faults being measured.** Two whole-work passes of the same PDF differ by **50 of 807** records where a flag moves 6 — and pass B's margin evidence *strictly contains* pass A's (962/962 shared rows agree, 11 extra labels, zero contradictions) yet scores WORSE. **More correct evidence, worse answer.** Settling it is one ~26-min read pass at one commit; until then, no single-pass identity delta under ~50 records is evidence. |
-| D2 | **HYPOTHESIS (see D0), not a finding: that the identity join is not monotone in label evidence** — which phases 2 and 4 of the identity scope both assume. If true it is the most consequential thing found all day; if it is code drift it is nothing. **Do not build on it either way until the D0 experiment runs.** The unexplained part that keeps it alive: pass B read TWO EXTRA `Timpani` labels on exactly the staff position slot 8 covers (p50 s8, p52 s8) and still named that slot by deduction. |
+| D0 | ✅ **SETTLED 2026-09-07 — the experiment ran and the answer is NO** (`benchmarks/omr-readpass-monotonicity-2026-09/FINDINGS.md`). At one commit off one cached read pass (staves identical 1616/1616), withholding the 11 extra labels moves **0 of 807** records: 0.9368 with 973 labels and with 962, 1.0000 with either once CLEFS are supplied. **Neither the evidence nor the code did it — the two passes were a TRANSCRIPTION and a clef-blind REPLAY.** An identity-only replay passes empty page dicts, `_read_clefs_by_slot` returns `{}`, and `fit_layouts` decides the ambiguous `Tp.` (Timpani-or-Trumpet) at slot 8 blind: it answers Trumpet, which is a candidate, so the label is overturned document-wide; with the real bass clef it answers Trombone, which is not, so the label stands. The decisive control was already on disk — the same session's own `whole-identity.json`, same commit, byte-identical 962-row label evidence, scores 750/807 = 0.9294 against its transcription's 0.9913. The clefs are worth **51 records**; the labels are worth **0**. ⚠️ Sean was right to refuse the claim. Original text follows. — ⚠️ **D1 and D2 below were RELAYED BY ME AS FINDINGS AND THEY ARE NOT.** The harness's own FINDINGS says in bold: *"Not attributed, deliberately. The two passes also differ in CODE (pass A predates the group-map and span-composition fixes), and committed artefacts cannot separate 'the extra evidence did it' from 'the code drift did it'."* What IS established is the floor (two passes of one PDF differ by 50 records) and the mechanism (**ONE slot decision, inherited by 50 staves** — pass A names slot 8 `Timpani` from a label, pass B names it `Trumpet` from `score_order_ambiguity`). What is NOT established is the cause. Sean refused the claim on exactly this ground before the confound was surfaced to him. **The settling experiment is defined and cheap** — one ~26-min whole-work read pass at ONE commit, serving both label sets off one cache through the `_labels_for_page` patch `compose.py` already implements. Until it runs, D2 is a hypothesis. |
+| D1 | ⚠️ **CORRECTED by D0's settling experiment: it is not a READ-PASS floor, it is a HARNESS floor.** The 50 records are the difference between a transcription and a clef-blind replay, not between two reads. The operational rule survives in a sharper form: **never compare an identity figure across harnesses**, and stamp every arm with its clef regime as well as its page-set regime. Original text follows. — **The read-pass floor is LARGER than the faults being measured.** Two whole-work passes of the same PDF differ by **50 of 807** records where a flag moves 6 — and pass B's margin evidence *strictly contains* pass A's (962/962 shared rows agree, 11 extra labels, zero contradictions) yet scores WORSE. **More correct evidence, worse answer.** Settling it is one ~26-min read pass at one commit; until then, no single-pass identity delta under ~50 records is evidence. |
+| D2 | ✅ **REFUTED 2026-09-07. Phases 2 and 4 are unblocked.** The label manipulation moves 0 of 807 records in both clef conditions; the reference lineup is identical between the two label sets; the two extra `Timpani` labels at p50 s8 / p52 s8 are inert because slot 8 is decided by the layout fit, not by the label count. The evidence that DID matter — clefs — is additive and monotone in the right direction (0.9368 → 1.0000). Original text follows. — **HYPOTHESIS (see D0), not a finding: that the identity join is not monotone in label evidence** — which phases 2 and 4 of the identity scope both assume. If true it is the most consequential thing found all day; if it is code drift it is nothing. **Do not build on it either way until the D0 experiment runs.** The unexplained part that keeps it alive: pass B read TWO EXTRA `Timpani` labels on exactly the staff position slot 8 covers (p50 s8, p52 s8) and still named that slot by deduction. |
 | D3 | **Page-set regime dominates every flag.** The same printed Beethoven system reads **4/12** in a 5-page run and 12/12 whole-work; a boundary-crossing window reads **0 of 85**. `OMR_MAX_PAGES=5` is the web app's default. `run_harness` refuses to pool across regimes — keep that. |
 | D4 | **Human cost is nearly orthogonal to identity accuracy.** Between two passes identity moved 44 records and human cost moved **2** (197 → 195). Driving `impossible` to zero converted categorical errors into contradictions and left the reviewer the same number of staves. This is the scope §7 failure, now measurable — and it is the thing Sean's "human interaction is the most expensive part" was meant to prevent. |
 | D5 | **Calibration is blocked on WORKS, not records.** ECE 0.1277 (n=197) → 0.0204 (n=1571) is not calibration: Brier skill vs a constant predictor **+0.0004**, 95.8% of mass in one bin, and every non-`label` tier is unseen in its own fold (`score_order` predicted 0.990, observed **0.000**). `label` was 89% of the old corpus and is 89% of this one. **Two more hand-read works, or the held-out-label design.** Dvořák 9's lineup is already in `corpus.py` awaiting an arm. |
@@ -64,9 +64,38 @@ times worse. That is the precedent these items exist to respect.
 Phase 0 **done** — the harness exists, runs in ~10 s off committed JSON, 78 arms,
 1571 graded records, three self-tests passing in both directions.
 
-Phases 1-4 not started. ⚠️ **Re-read them against D1/D2 before starting**: phase 1
-(a write-only evidence store) is unaffected, but phase 2 and phase 4 both assume
-adding evidence improves the answer, and that is now measured false at least once.
+Phases 1-4 not started. ✅ **D2 is refuted and phases 2 and 4 are unblocked** —
+adding evidence was measured to make the answer worse exactly zero times; see D0.
+⚠️ Two things to carry in instead: (a) **phase 1's evidence store should record
+the CLEF channel**, which is worth 51 records on Beethoven 5 where the label
+channel is worth 0, and which a replay harness silently drops; (b) **58 of the
+harness's 59 arms are clef-blind replays and exactly one is a transcription**, so
+an identity figure needs a clef-regime stamp beside its page-set regime stamp.
+
+## F2. The architecture / decision map (commissioned 2026-09-07)
+
+Sean: *"a map of every recognition point, every time there is a decision and a
+list of what information that decision needs, as well as a tracking of how each
+piece of information is used once it is gathered and where it should be used…
+**We need the architectural blueprints.**"* Purpose is a **checkpoint for every
+agent building a tool or process** — what is available, what could help, and how
+what it is gathering fits the whole.
+
+Commissioned with three axes: the decision inventory; **dependencies, best order,
+what can run in parallel, and the interreferential cycles**; and — ⚠️ **LOW
+PRIORITY, tracked here so it is not lost if the agent skips it** — a **VISUAL**
+version, generated rather than hand-drawn, in which an unconsumed output, a
+cycle, and an unsatisfiable dependency are each obvious at a glance rather than
+findable only in a table.
+
+Why it is worth a commission of its own: this project's most-repeated defect is
+information gathered correctly and then silently unused — nine export gaps found
+by forensics, 85 inert consistency warnings, `confidence` reaching `export.py`
+only as a comment, ~20 sites that compute a number and discard it while
+refusing, and (2026-09-07) the clef channel worth **51 records** on a work where
+labels were worth **0**, dropped without complaint by 58 of the identity
+harness's 59 arms. **The map's job is to make that visible by construction
+instead of by a day of forensics.**
 
 ## G. Housekeeping
 
