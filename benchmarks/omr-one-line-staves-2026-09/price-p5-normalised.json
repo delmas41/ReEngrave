@@ -1,0 +1,132 @@
+{
+ "generated_by": "benchmarks/omr-one-line-staves-2026-09/price_arms.py",
+ "git_head": "687d1c4e",
+ "pooled": {
+  "off": {
+   "omr_ned": 0.8388990825688073,
+   "omr_ed": 2286,
+   "truth_symbols": 1617,
+   "pred_symbols": 1108,
+   "categories": {
+    "wrong note": 678,
+    "wrong note head": 38,
+    "wrong flag/beam": 12,
+    "wrong dot": 1,
+    "wrong tuplet": 2,
+    "wrong accidental": 4,
+    "wrong tie": 3,
+    "wrong clef": 8,
+    "wrong timesig": 22,
+    "wrong keysig": 28,
+    "wrong direction": 59,
+    "wrong dynamic": 29,
+    "wrong diminuendo": 1,
+    "wrong slur": 9,
+    "entire measure insert/delete": 888,
+    "entire staff insert/delete": 504
+   },
+   "n_rows": 1
+  },
+  "on": {
+   "omr_ned": 0.7407142857142858,
+   "omr_ed": 2074,
+   "truth_symbols": 1617,
+   "pred_symbols": 1183,
+   "categories": {
+    "wrong note": 932,
+    "wrong note head": 30,
+    "wrong flag/beam": 22,
+    "wrong dot": 3,
+    "wrong tuplet": 8,
+    "wrong accidental": 13,
+    "wrong tie": 5,
+    "wrong articulation": 6,
+    "wrong ornament": 6,
+    "wrong clef": 16,
+    "wrong timesig": 40,
+    "wrong keysig": 30,
+    "wrong direction": 87,
+    "wrong dynamic": 37,
+    "wrong diminuendo": 2,
+    "wrong slur": 11,
+    "entire measure insert/delete": 826
+   },
+   "n_rows": 1
+  }
+ },
+ "rows": [
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "arm": "off",
+   "pred": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-sad-austin-7e16e7/b81e3aa0-ca89-423c-bd57-dc4279932df3/scratchpad/m5_off.musicxml",
+   "sha": {
+    "truth": "fda7bf33f77e96d5",
+    "pred": "a0a7f811ae39abb8"
+   },
+   "score": {
+    "name": "mahler-sym5-mvt1-local-p5|off",
+    "pred": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-sad-austin-7e16e7/b81e3aa0-ca89-423c-bd57-dc4279932df3/scratchpad/m5_off.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a64f7fb5bce33d36a/benchmarks/omr-one-line-staves-2026-09/derived-truth/mahler-sym5-mvt1-local-p5.normalised.musicxml",
+    "omr_ned": 0.8388990825688073,
+    "omr_ed": 2286,
+    "pred_symbols": 1108,
+    "truth_symbols": 1617,
+    "categories": {
+     "wrong note": 678,
+     "wrong note head": 38,
+     "wrong flag/beam": 12,
+     "wrong dot": 1,
+     "wrong tuplet": 2,
+     "wrong accidental": 4,
+     "wrong tie": 3,
+     "wrong clef": 8,
+     "wrong timesig": 22,
+     "wrong keysig": 28,
+     "wrong direction": 59,
+     "wrong dynamic": 29,
+     "wrong diminuendo": 1,
+     "wrong slur": 9,
+     "entire measure insert/delete": 888,
+     "entire staff insert/delete": 504
+    }
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "arm": "on",
+   "pred": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-sad-austin-7e16e7/b81e3aa0-ca89-423c-bd57-dc4279932df3/scratchpad/m5_on.musicxml",
+   "sha": {
+    "truth": "fda7bf33f77e96d5",
+    "pred": "31685f3e40356d21"
+   },
+   "score": {
+    "name": "mahler-sym5-mvt1-local-p5|on",
+    "pred": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-sad-austin-7e16e7/b81e3aa0-ca89-423c-bd57-dc4279932df3/scratchpad/m5_on.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a64f7fb5bce33d36a/benchmarks/omr-one-line-staves-2026-09/derived-truth/mahler-sym5-mvt1-local-p5.normalised.musicxml",
+    "omr_ned": 0.7407142857142858,
+    "omr_ed": 2074,
+    "pred_symbols": 1183,
+    "truth_symbols": 1617,
+    "categories": {
+     "wrong note": 932,
+     "wrong note head": 30,
+     "wrong flag/beam": 22,
+     "wrong dot": 3,
+     "wrong tuplet": 8,
+     "wrong accidental": 13,
+     "wrong tie": 5,
+     "wrong articulation": 6,
+     "wrong ornament": 6,
+     "wrong clef": 16,
+     "wrong timesig": 40,
+     "wrong keysig": 30,
+     "wrong direction": 87,
+     "wrong dynamic": 37,
+     "wrong diminuendo": 2,
+     "wrong slur": 11,
+     "entire measure insert/delete": 826
+    }
+   }
+  }
+ ]
+}

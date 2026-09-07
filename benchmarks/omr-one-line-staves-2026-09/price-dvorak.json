@@ -1,0 +1,102 @@
+{
+ "generated_by": "benchmarks/omr-one-line-staves-2026-09/price_arms.py",
+ "git_head": "ee14bccd",
+ "pooled": {
+  "off": {
+   "omr_ned": 0.33804809052333806,
+   "omr_ed": 239,
+   "truth_symbols": 373,
+   "pred_symbols": 334,
+   "categories": {
+    "wrong note": 105,
+    "wrong clef": 8,
+    "wrong keysig": 6,
+    "wrong tempo": 1,
+    "wrong direction": 24,
+    "wrong dynamic": 4,
+    "wrong slur": 5,
+    "wrong staff info": 1,
+    "entire measure insert/delete": 33,
+    "entire staff insert/delete": 42,
+    "wrong staff group": 10
+   },
+   "n_rows": 1
+  },
+  "on": {
+   "omr_ned": 0.13249651324965134,
+   "omr_ed": 95,
+   "truth_symbols": 373,
+   "pred_symbols": 344,
+   "categories": {
+    "wrong note": 47,
+    "wrong keysig": 4,
+    "wrong tempo": 1,
+    "wrong direction": 24,
+    "wrong dynamic": 5,
+    "wrong slur": 4,
+    "wrong staff group": 10
+   },
+   "n_rows": 1
+  }
+ },
+ "rows": [
+  {
+   "row_id": "dvorak-sym9-mvt4",
+   "arm": "off",
+   "pred": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-sad-austin-7e16e7/b81e3aa0-ca89-423c-bd57-dc4279932df3/scratchpad/dv_off.musicxml",
+   "sha": {
+    "truth": "bb54c58f30096971",
+    "pred": "9a362cd0aea762fd"
+   },
+   "score": {
+    "name": "dvorak-sym9-mvt4|off",
+    "pred": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-sad-austin-7e16e7/b81e3aa0-ca89-423c-bd57-dc4279932df3/scratchpad/dv_off.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-orchestral-e2e/fixtures/dvorak-sym9-mvt4.musicxml",
+    "omr_ned": 0.33804809052333806,
+    "omr_ed": 239,
+    "pred_symbols": 334,
+    "truth_symbols": 373,
+    "categories": {
+     "wrong note": 105,
+     "wrong clef": 8,
+     "wrong keysig": 6,
+     "wrong tempo": 1,
+     "wrong direction": 24,
+     "wrong dynamic": 4,
+     "wrong slur": 5,
+     "wrong staff info": 1,
+     "entire measure insert/delete": 33,
+     "entire staff insert/delete": 42,
+     "wrong staff group": 10
+    }
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt4",
+   "arm": "on",
+   "pred": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-sad-austin-7e16e7/b81e3aa0-ca89-423c-bd57-dc4279932df3/scratchpad/dv_on.musicxml",
+   "sha": {
+    "truth": "bb54c58f30096971",
+    "pred": "2ef133875b4c92c6"
+   },
+   "score": {
+    "name": "dvorak-sym9-mvt4|on",
+    "pred": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-sad-austin-7e16e7/b81e3aa0-ca89-423c-bd57-dc4279932df3/scratchpad/dv_on.musicxml",
+    "truth": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-orchestral-e2e/fixtures/dvorak-sym9-mvt4.musicxml",
+    "omr_ned": 0.13249651324965134,
+    "omr_ed": 95,
+    "pred_symbols": 344,
+    "truth_symbols": 373,
+    "categories": {
+     "wrong note": 47,
+     "wrong keysig": 4,
+     "wrong tempo": 1,
+     "wrong direction": 24,
+     "wrong dynamic": 5,
+     "wrong slur": 4,
+     "wrong staff group": 10
+    }
+   }
+  }
+ ]
+}

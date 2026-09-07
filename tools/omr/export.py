@@ -845,6 +845,7 @@ def _mxl_attributes_block(
     divisions: int,
     indent: str,
     include_divisions: bool,
+    staff_lines: int | None = None,
 ) -> str:
     """First measure of every part needs <attributes> with divisions,
     key, time, clef. Subsequent measures can include partial attributes
@@ -879,6 +880,22 @@ def _mxl_attributes_block(
         lines.append(f"{indent}  </time>")
     if clef is not None:
         base, octave_change = _split_clef_octave(clef)
+        # A PERCUSSION clef names no line, and `_MXL_CLEF_SIGN` is built from
+        # `CLEF_BY_FAMILY_LINE`, which only holds the pitched families — so
+        # without this branch a percussion staff falls through to the ("G", 2)
+        # default and exports as treble. `clef_geometry` already treats
+        # percussion as the pitchless case (`line_named_by` returns None for
+        # it); this is the same fact stated in MusicXML.
+        if base == "percussion":
+            lines.append(f"{indent}  <clef>")
+            lines.append(f"{indent}    <sign>percussion</sign>")
+            lines.append(f"{indent}  </clef>")
+            if staff_lines is not None:
+                lines.append(f"{indent}  <staff-details>")
+                lines.append(f"{indent}    <staff-lines>{staff_lines}</staff-lines>")
+                lines.append(f"{indent}  </staff-details>")
+            lines.append(f"{indent}</attributes>")
+            return "\n".join(lines)
         sign, line = _MXL_CLEF_SIGN.get(base, ("G", 2))
         lines.append(f"{indent}  <clef>")
         lines.append(f"{indent}    <sign>{sign}</sign>")
@@ -3133,6 +3150,7 @@ def _staff_measures_xml(
             inner.append(_mxl_attributes_block(
                 attrs_clef, attrs_key, attrs_time, divisions,
                 "      ", include_divisions,
+                staff_lines=staff.get("staff_lines"),
             ))
         state["clef"] = m_clef
         state["key"] = m_key
@@ -3550,6 +3568,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
                         inner.append(_mxl_attributes_block(
                             attrs_clef, attrs_key, attrs_time, divisions,
                             "      ", include_divisions,
+                            staff_lines=staff.get("staff_lines"),
                         ))
                     last_clef = m_clef
                     last_key_sig = m_key
