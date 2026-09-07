@@ -128,6 +128,20 @@ one decision at a time, so that the N+1th decision reuses the Nth's plumbing.
 next step cheaper?** A step that fails that test is a point fix however good its
 number is.
 
+## The first step, so it is on this page
+
+**Move part boundaries out of the exporter.** `export._stitch_slots`
+(`export.py:3218`) decides what a `<part>` IS from staff ordinal alone;
+`apply_contextual_analysis` already decided it — `slot_index`, set on **193 of
+193 staves**. No new evidence, no probability, no refused edge; falsifiable
+read-only before any code changes. It installs the transport an adjudicated fact
+needs, in the era with nine recorded instances of the same fault.
+
+**Then the cheapness test:** brace grouping, `len(staves) == 2` at
+`export.py:3523` and `:681` while `group_index` sits unread on the same dict.
+Same era, same file, a different fact. **If step 2 is not nearly free, step 1
+was a point fix and this document is wrong.** Part 4 has both, plus the third.
+
 ---
 
 # Part 2 · Score the measurement, not the interpretation
