@@ -1264,3 +1264,260 @@ records it.* Relay it as corroboration of a shipped fix, not as a new finding.
   *pair* (M, F) noisy only in M, which means the per-row noise floor must be
   applied to M alone — and the registry's `noise_floor` field is attached to the
   row, not to M. A one-line schema distinction, unstated.
+
+---
+
+# ROUND 4 — `TECHNOLOGY_LEDGER.md` (Agent II)
+
+**29 discrete claims checked; 25 reproduce exactly.** The Tier-1 class-space
+distinction — the claim that prices future work — **holds on three independent
+substrates**, including the one the ledger did not use. Four defects, one of them
+consequential and in exactly the row the coordinator flagged as most likely to be
+re-discovered.
+
+## WHAT HELD
+
+### Tier 1 — the presence/absence distinction survives the duplication trap
+
+The ledger enumerates `data/user-labeled/catalog.yaml`. **I checked all three
+substrates that could disagree**, because a name-based test on one of them could
+get either answer wrong:
+
+| substrate | `barline` | family `bracket` | `stem` `beam` `staff` `ledgerLine` `tie` `slur` | hairpins |
+|---|---|---|---|---|
+| `catalog.yaml` (208 names) | **NONE** | none — only `ottavaBracket`, `tupleBracket`, `tupletBracket` | all present | both present |
+| after `class_aliases.canonicalize_names` | **NONE** | none — `ottavaBracket`, `tupletBracket` | all present | both present |
+| **the shipped weights' own `names`** (`…hollow-graft-shift09….pt`, nc=208) | **NONE** | none — same three | all present | both present, twice each |
+
+**Every presence and both absences confirmed.** ⚠️ The absence is stronger than
+the ledger states: I searched by *substring*, not exact match, so `barline`
+appears **nowhere in the class space under any spelling**.
+
+**The trap is navigated, and I confirmed why.** `catalog.yaml` carries **40
+duplicated names** (matching CLAUDE.md's "forty classes carry the SAME name at
+both ids"), and `class_aliases.ALIASES` contains **exactly one** entry touching
+any of these targets — `tupleBracket → tupletBracket`. Nothing maps to or from
+`barline`, `staff`, `stem`, `beam`, `tie`, `slur` or either hairpin, so no
+renaming could flip membership either way. The weights are the authority for what
+the detector can emit and they agree with the catalog.
+
+**So the load-bearing inference stands**: removing an absence requires expanding
+`nc`, which re-initialises the head — and `benchmarks/omr-phase3.4b/comparison-trained-v4.md`
+prices that at **F1 98.8% → 79.3%** — while improving a present class is an
+ordinary fine-tune. Two different experiments, correctly separated.
+
+### Tier 2 — the `staff` count and the non-consumption
+
+**2,729 exact**, recounted from the same corpora, and the ledger's other observed
+counts reproduce alongside it:
+
+```
+scan      11 files   staff=1150   stem=76   beam=1896  ledgerLine=2461
+engraved  11 files   staff=1579   stem=0    beam=366   ledgerLine=488
+                     ------------
+                     staff total = 2729
+```
+
+**The negative holds, and the property/alias trap does not apply here** — `staff`
+canonicalizes to `staff`, so there is no aliased spelling to miss. Every
+occurrence of the class string in the tree, adjudicated:
+
+| site | is it a consumer? |
+|---|---|
+| `yolo_detector.py:155` `"staff": "structural"` | no — the category map |
+| `page_truth.py:86` `"staff": "a layout container, not a printed symbol"` | no — a *measurement* path excluding it |
+| `hairpin_detection.py:74` `SPAN_CLASSES` | ⚠️ a real consumer — **in a module with zero call sites** |
+| `staff_detector.py:307, :791` | no — docstring prose about CV-detected staves |
+| `direction_text.py:805`, `musicxml_builder.py` | no — a dict key and a MusicXML element |
+
+**No production consumer.** ✅
+
+⚠️ **And the reason is stronger than "nobody wired it".** `detect_staves(page: PageImage)`
+(`staff_detector.py:1050`) takes a **raster**, and the module imports only
+`header_ink`, `system_grouping`, `types`, numpy and scipy — nothing
+detector-related. Staff detection runs **before** the detector, and the detector
+reads measure cells that are cut *from* the staves it would be consulting. **The
+class is not merely unconsulted; it is not available at that point in the
+pipeline.** *(This qualifies the ledger's actionability claim — see D25.)*
+
+**"No rationale recorded anywhere" holds against my own independent searches**:
+`git log --all -S` on `staff_detector.py` returns two commits, both of which
+touch only the docstring prose at `:307`/`:791` (about CV-detected staves, not the
+class); `git log --grep="staff class"` returns nothing; and a prose sweep over
+`docs/`, `CLAUDE.md` and every `benchmarks/**/*.md` returns nothing.
+
+### Tier 3 — the verdict column
+
+| claim | verdict |
+|---|---|
+| `hairpin_detection.py` — **zero non-test call sites** | ✅ `grep -rn` over `tools/` + `backend/` minus its own file and tests returns **nothing** |
+| its docstring reports *"59 of 99 hairpins against the detector's 1, and zero false positives on five of the six"* | ✅ verbatim, `hairpin_detection.py:39-40` |
+| the gap is live: 0 hairpin detections on 11 scan pages | ✅ consistent with my own class counts |
+| `bracket_reader.py` — **zero non-test call sites** | ✅ likewise nothing |
+| `ceadb7bb` = *"Reading the bracket LOSES to inferring it"* | ✅ exact subject: *"Reading the bracket LOSES to inferring it — and the inference now has an accuracy number"* |
+| reading 5/22 and 1/15 · pixel 16/22 and 0/15 · columns 22/22 and 15/15 | ✅ all six figures in CLAUDE.md verbatim |
+| beam **`replace` scores best and was refused**: 0.1855 vs kept 0.1861, "five edits" | ✅ CLAUDE.md:622-624 — union 0.1917/1355, replace **0.1855/1310**, kept 0.1861/1315. 1315 − 1310 = **five** |
+
+⚠️ **The `hairpin_detection` / `bracket_reader` distinction is correct in both
+directions**, which is the one the coordinator called dangerous if wrong. Same
+symptom (zero call sites), opposite verdicts, and the difference is real: the
+hairpin reader's measured 59-of-99 **beats** the incumbent's 1, while the bracket
+reader's 5/22 and 1/15 **lose** to inferring's 22/22 and 15/15. The ledger's
+instruction *"Do not merge this one; it is on the list to stop someone finding it
+and assuming it was forgotten"* is exactly the right treatment.
+
+### Tier 4 — the honest gap is honest, and worse than stated
+
+`benchmarks/omr-detection-probe-2026-07/` contains **one file, `findings.md`** —
+no JSONs, no scripts. Line 67 reads verbatim:
+
+> *"Raw probe JSONs were scratch (not committed); the numbers above are the record."*
+
+✅ **The ScoreAug/Augraphy refutation is prose-only and cannot be re-run**, exactly
+as the ledger says. *(And see D24 — the numbers are not even in that file.)*
+
+**The other UNDOCUMENTED rows are genuinely undocumented, not merely un-found.**
+Spot-checked two:
+
+- **stage-1 constants** — `binarize(rgb, window_size: int = 25, k: float = 0.2)`
+  (`preprocessing.py:76`) and `max_correction_deg: float = 5.0` (`:98`). No sweep,
+  no measurement, no citation anywhere in the module. ✅
+- **`_page_ink`'s grey 180** — `cv2.threshold(gray, 180, 255, THRESH_BINARY_INV)`
+  at `direction_text.py:278`, and the whole docstring is *"Taken from the render
+  rather than `page.binary`, whose Sauvola windowing is tuned for staff lines and
+  leaves italic text ragged"* — the routing reason, with nothing on the 180. ✅
+
+---
+
+## WHAT DID NOT
+
+### D21 — ⚠️ The arc `drop` row pairs the wrong two numbers, in the row most likely to be re-opened
+
+The ledger (§2.4 and §4) says:
+
+> `drop` (delete instead of regift) → **REFUTED at a BETTER score**: 2,388 vs 2,371 edits
+
+**2,388 against 2,371 is `drop` scoring WORSE**, since edits are lower-is-better.
+`benchmarks/omr-arc-attribution-2026-09/FINDINGS.md:158-176` states the actual
+comparison:
+
+| arm | pooled edits |
+|---|--:|
+| baseline | 2,473 |
+| **drop** | **2,388** |
+| move, margin 1.0 | 2,411 |
+| **shipped: move, margin 0.5** | **2,371** |
+
+> *"Deleting a mis-attributed arc instead of regifting it scores **2,388 against
+> the move arm's 2,411 at the same margin** — better, on the arm-for-arm
+> comparison … Once the margin is set from the population sweep rather than from
+> the score, **the shipped arm wins outright (2,371 vs 2,388)**."*
+
+**Corrected statement:** *`drop` beat the COMPARABLE move arm at the same margin
+(2,388 vs 2,411) and lost to the SHIPPED arm (2,388 vs 2,371). It was refused on
+the arc-COUNT control — 20 fewer slurs emitted, at least 12 of them real, pooled
+199 → 183 against a truth of 241 — not on the pooled score, which the shipped arm
+also wins.*
+
+⚠️ **Why this is the consequential one.** The ledger's §4 headline is *"Two of
+these were refused while SCORING BETTER"* and offers it as *"the single most
+useful thing in this table for a future agent"*. **One of the two is misstated.**
+A future agent who checks and finds 2,388 > 2,371 may conclude the ledger is
+wrong about the refusal and re-open `drop` — which is the precise failure the row
+exists to prevent. ⚠️ CLAUDE.md carries the same slip but keeps the qualifier
+*"better arm-for-arm"*; the ledger drops it and supplies the wrong pairing.
+
+**The beam `replace` half of that headline is correct** (0.1855 < 0.1861, refused
+anyway), so the section's argument survives with one of its two examples repaired.
+
+### D22 — §5's stated method does not match one of its own rows
+
+§5's preamble says every entry was verified by *"`grep -rn <module> tools/ backend/`
+excluding the module's own file and its tests"*. For `staff_labels_human.py` that
+grep is **not** empty:
+
+```
+tools/omr/contextual.py:860   from .staff_labels_human import read_staff_labels_human
+tools/omr/contextual.py:861   answered = read_staff_labels_human(
+tools/omr/assist.py:59        #: Every human answer, with provenance.
+```
+
+**The row's own claim is right** — it says *"unreachable from `transcribe`"*, not
+"zero call sites", and gives the mechanism (`_contextual_call_kwargs` synthesises
+the assist mode). So the verdict is sound and only the section's blanket method
+statement is wrong. Worth fixing because the method sentence is what a reader
+would re-run to check the table.
+
+### D23 — the bracket enumeration is one name short
+
+The ledger writes *"(only `tupletBracket` / `ottavaBracket`, different objects)"*.
+The raw 208-name space holds **three** bracket-named classes: `ottavaBracket`,
+`tupletBracket` and **`tupleBracket`** — the coarse spelling, which
+`class_aliases` maps onto `tupletBracket`. So the statement is right *after*
+canonicalization and incomplete *before* it. **Immaterial to the verdict** — none
+of the three is a family bracket — but the ledger's method is the raw enumeration,
+so its own command would have shown three.
+
+### D24 — the ScoreAug numbers are cited to a file that does not contain them
+
+The ledger attributes both the disclaimer and the figures to
+`benchmarks/omr-detection-probe-2026-07/findings.md`. The disclaimer is there
+(line 67, verbatim). **The numbers are not**: `0.652` and `0.122` appear in
+`benchmarks/omr-first-run-2026-08/DURATIONS.md:105`.
+
+This **strengthens** the ledger's own conclusion rather than weakening it: the
+refutation's number and its evidence-disclaimer live in two different prose
+documents, neither with any data. *"One bad memory away from being re-tried"* is
+if anything generous.
+
+### D25 — "the cheapest untried comparison in this ledger" is not cheap
+
+§2.1 and §3 call the `staff`-class comparison **UNTRIED** — correct — and §2.1
+adds *"it is the cheapest untried comparison in this ledger"*. That does not
+follow from the pipeline's shape. Because `detect_staves` consumes a `PageImage`
+and the detector consumes measure cells cut from its output, an arm using the
+`staff` class would need a **full-page detector pass before staff detection
+exists** — a new inference regime, not an A/B over an existing artefact. Compare
+the genuinely cheap untried item in the same document (the nearest-legal-word
+dynamic conversion, §2.4), which needs no new inference at all.
+
+**Corrected statement:** *UNTRIED, and the reason nobody has tried it is
+structural: the class is produced downstream of the thing it would inform, so the
+comparison requires a full-page detection pass that no harness currently makes.*
+
+---
+
+## UNVERIFIABLE
+
+| claim | why | the run that would settle it |
+|---|---|---|
+| the `staff` class would actually *help* if consulted | I verified it **fires** 2,729 times; nothing measures its precision or localisation against hand-read staff geometry. "Present in the class space" is not "usable" | a full-page detector pass on the 22 fixture pages, `staff` boxes scored against `staff_geometry.line_ys_page` |
+| `hairpin_detection.py`'s "59 of 99" | it is the module's own docstring, on a corpus I cannot re-derive without running it | the merge the ledger recommends, then the scan gate |
+| every REFUTED row's scope | I spot-checked six of sixteen. The other ten are cited to benchmark FINDINGS I did not open | opening each cited file |
+
+---
+
+## WHAT IS MISSING
+
+- **M17 — §3's distinction is about the LABEL SPACE and is silently read as being
+  about capability.** "Present in the class space" only means the head has a row
+  for it; it says nothing about whether the model emits it usefully. The ledger's
+  own evidence shows the gap: `stem` is **present** and fires **76 times on 11
+  scan pages and 0 on 11 engraved works** against 5,896 noteheads — present, and
+  effectively absent in practice. The verdict ("CV is a deliberate replacement")
+  is right, but the row that proves it is also the row showing that presence and
+  usability are different axes, and §3's table has only one column.
+- **M18 — the ledger has no row for tonight's `direction_text` findings**, though
+  §2.4 covers direction text and §6 already lists `_page_ink`'s grey 180 as
+  UNDOCUMENTED in the same module. The flag defect (`transcribe.py:5111`
+  `default=True`), the absent degeneracy guard on `read_crops_text`, and the fact
+  that the rung is a *generative* decoder with no temperature, seed or token cap
+  set anywhere in this repo are all technology-attribution facts of exactly the
+  kind this document exists to hold. **"OCR over subtracted ink" understates what
+  the mechanism is.**
+- **M19 — §4 records the scope of every REFUTED row and none of the SHIPPED
+  constants' scopes.** The arc-attribution margin (0.5), the beam `kept` rule and
+  the articulation window all sit on measured plateaus with scopes as narrow as
+  the refutations beside them, and a future agent re-deriving one of them has no
+  scope column to consult. The document's own thesis — *a refutation without its
+  scope is a superstition* — applies symmetrically to an adoption.

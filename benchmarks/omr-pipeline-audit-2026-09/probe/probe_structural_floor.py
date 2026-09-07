@@ -76,14 +76,26 @@ NORM20 = (ROOT / "benchmarks" / "omr-page-normalise-fixes-2026-09"
 #: PART with no printed staff to pair with. `entire measure insert/delete` is
 #: mostly the bars inside those parts, but a bar the transform mangled would also
 #: land here, so it forms a second, less certain rung.
+#: the day `derived-truth-bytes.json` was written; its hashes reproduce on that
+#: date and no other, because `_canonical` does not mask `<encoding-date>`.
+CONTROL_WRITTEN_ON = "2026-09-06"
+
 STRUCTURAL_CERTAIN = ("entire staff insert/delete",)
 STRUCTURAL_LIKELY = ("entire staff insert/delete", "entire measure insert/delete")
 
-#: music21 stamps a fresh 32-hex instrument id on every write, so the derived
-#: truth is SEMANTICALLY deterministic and not BYTE-deterministic. The committed
-#: control (`probe_derived_truth_unmoved.py`) already normalises these; this
-#: reproduces its hash exactly so the two can be compared.
-_RANDOM_ID = re.compile(r'"I[0-9a-f]{32}"')
+#: music21 stamps a fresh 32-hex id on every write, so the derived truth is
+#: SEMANTICALLY deterministic and not BYTE-deterministic. It does this on BOTH
+#: `<score-instrument>`/`<midi-instrument>` (`I...`) and `<score-part>` (`P...`).
+_RANDOM_ID = re.compile(r'"I[0-9a-f]{32}"')          # the committed control's mask
+_RANDOM_ID_WIDE = re.compile(r'"[IP][0-9a-f]{32}"')  # every family it randomises
+
+#: ⚠️ AND IT STAMPS TODAY'S DATE. `<encoding-date>` is written from the clock, so
+#: a hash that does not mask it reproduces on exactly ONE DAY. This was found
+#: live: `derived-truth-bytes.json`'s canonical hashes matched 15 of 15 on
+#: 2026-09-06 and 0 of 15 on 2026-09-07, on unchanged code and unchanged inputs
+#: — the session simply crossed midnight. Re-inserting `2026-09-06` reproduces
+#: the committed hash exactly, which is the proof. See MEASUREMENT_SYSTEM.md §T6.
+_ENCODING_DATE = re.compile(r"<encoding-date>[^<]*</encoding-date>")
 
 
 def sha(p: Path) -> str:
@@ -91,10 +103,21 @@ def sha(p: Path) -> str:
 
 
 def canonical_sha(p: Path) -> str:
-    """sha256 with music21's random instrument ids masked — the writer's own
-    randomness, not a content difference. Identical to the helper in
-    `benchmarks/omr-page-normalise-fixes-2026-09/probe_derived_truth_unmoved.py`."""
-    return hashlib.sha256(_RANDOM_ID.sub('"I#"', p.read_text()).encode()).hexdigest()
+    """sha256 with EVERY thing the writer randomises masked: both id families
+    and the encoding date. This is what a reproduction check has to hash; the
+    committed control's helper masks only the `I` ids and is therefore stable
+    for one day only."""
+    t = _RANDOM_ID_WIDE.sub('"X#"', p.read_text())
+    return hashlib.sha256(_ENCODING_DATE.sub("", t).encode()).hexdigest()
+
+
+def control_compatible_sha(p: Path, date: str | None = None) -> str:
+    """The committed control's own hash, optionally re-dated to the day it was
+    written. `date=None` hashes the file as it stands, which is what fails."""
+    t = p.read_text()
+    if date:
+        t = _ENCODING_DATE.sub(f"<encoding-date>{date}</encoding-date>", t)
+    return hashlib.sha256(_RANDOM_ID.sub('"I#"', t).encode()).hexdigest()
 
 
 def git_head() -> str:
@@ -172,8 +195,14 @@ def main() -> int:
             },
             "sha": {"raw_truth": sha(truth), "derived_truth": sha(norm_xml),
                     "derived_truth_canonical": canonical_sha(norm_xml)},
+            # ⚠️ Compared under the control's OWN hash, re-dated to the day it
+            # was written (2026-09-06). Without the re-dating this is False for
+            # all 15 rows on any other day — see the module docstring.
             "derived_truth_reproduces_committed_control": (
-                canonical_sha(norm_xml) == bytes_ctl.get(rid)),
+                control_compatible_sha(norm_xml, CONTROL_WRITTEN_ON)
+                == bytes_ctl.get(rid)),
+            "reproduces_without_redating": (
+                control_compatible_sha(norm_xml) == bytes_ctl.get(rid)),
             "identity_transform": report["n_source_parts"] == report["n_output_parts"],
         })
         # THE MEASUREMENT: derived truth AS THE PREDICTION, raw truth as truth.
@@ -250,6 +279,29 @@ def main() -> int:
         "what": "every truth fixture's raw sha256 equals the one "
                 "results-normalised-arm-20row.json scored; the run refuses "
                 "otherwise"}
+    controls["⚠️_committed_control_hash_is_date_dependent"] = {
+        "finding": "benchmarks/omr-page-normalise-fixes-2026-09/"
+                   "derived-truth-bytes.json holds CANONICAL hashes whose helper "
+                   "masks music21's random `I` ids but NOT `<encoding-date>`, "
+                   "which music21 stamps from the clock. The hashes therefore "
+                   "reproduce on the day they were written and on no other.",
+        "how_it_was_found": "live: this probe's reproduction control passed "
+                            "15/15 on 2026-09-06 and 0/15 on 2026-09-07, on "
+                            "unchanged code and unchanged inputs.",
+        "proof": "re-inserting <encoding-date>2026-09-06</encoding-date> "
+                 "reproduces the committed hash exactly.",
+        "n_rows_reproducing_without_redating": sum(
+            1 for e in entries if e["reproduces_without_redating"]),
+        "n_rows_reproducing_with_redating": sum(
+            1 for e in entries
+            if e["derived_truth_reproduces_committed_control"]),
+        "the_general_rule": "a canonical hash must mask EVERY field the writer "
+                            "derives from its environment — every random id "
+                            "family AND the clock — and must say which it "
+                            "masked. This is the third instance tonight of one "
+                            "family: a provenance hash that cannot verify what "
+                            "it appears to verify.",
+    }
     controls["derived_truth_note"] = (
         "`results-normalised-arm-20row.json`'s `sha.normalised_truth` is a RAW "
         "sha256 and cannot be reproduced across runs — music21 stamps a fresh "
