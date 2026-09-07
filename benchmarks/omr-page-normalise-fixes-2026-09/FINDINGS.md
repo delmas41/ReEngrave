@@ -367,6 +367,21 @@ against merged truth. ⚠️ **A normalised pool is its own benchmark era** — 
 not be differenced against 0.8444 or any historical figure in either direction,
 and the raw→normalised gap is structural charge removed, never improvement.
 
+✅ **AND `normalised_arm.py` REPRODUCES IT INDEPENDENTLY.** Re-run on this tree
+with `--tag .reconciliation` (`results-normalised-arm-20row.json`): 20 rows
+scored, 15 normalisable, pooled **raw 0.8417 / 57,511 → normalised 0.6065 /
+37,642**, `entire staff` **11,927 → 2,236** — the same figures `controls.py`
+reached by its own path, to the edit. Two tools, one answer.
+
+⚠️⚠️ **THE COMMITTED `results-normalised-arm.json` IS A DIFFERENT ERA AND MUST
+NOT BE COMPARED TO THIS TABLE.** It records `n_rows_scored: 11`, of which 8
+normalised, on prediction tag `..graft09` at head `504a1e34` — measured before
+the gate widened to 20 rows and before five more maps were merged. Its pooled
+`0.8361 → 0.6099` is a measurement of a smaller pool, and reading it beside the
+15-row `0.8417 → 0.6065` would attribute a widening to the transform. The
+current-era file is written here rather than over it, since it belongs to the
+headline-validity workstream.
+
 ⚠️ **AND THE `divisi` COLUMN IS THE PART OF IT THAT RESTS ON A JUDGEMENT.**
 `silent_all`, `unison`, `silent_others` and `single` are exact duplication —
 the page prints one line and one line is what the derived truth carries, nothing
@@ -453,7 +468,104 @@ of them and touch nothing — a no-op that reads like a refusal.
 
 ---
 
-## 7. What was verified, and what was not
+## 7. This work put through `docs/architecture-decision-map.md`
+
+Asked for at Sean's instruction: every agent runs its own work through the map.
+
+### ⚠️ FIRST, THE MAP IS SILENT ABOUT THIS MODULE — and the brief said otherwise
+
+The commission stated *"the map documents `page_normalise`'s consumers"*. **It
+does not.** `grep -n "page_normalise"` over all 1,303 lines returns **one hit**,
+and it is the contention warning at line 1064 (*"five agents are active on
+`page_normalise`…"*), not a row. `scan_eval`, `structural_divergence`,
+`works.json`, `normalised_arm` and `musicdiff` appear nowhere in §5, §6 or §7.
+
+**And the map is not WRONG about this — it is correctly scoped.** §5 catalogues
+the recognition pipeline (stages 1-11), and §6's ledger tracks the fields of the
+result JSON. `page_normalise` is on the **truth side of the benchmark**: it
+never touches a prediction, never runs in `transcribe`, and produces no key of
+that JSON. So its absence is a boundary, not an omission — and saying so is
+worth more than quietly assuming a row exists. What WOULD be worth adding, in
+the map's own vocabulary, is one line recording that the whole structural
+accounting is `TEST-ONLY`: see (2).
+
+### (1) What is available to this decision and not used
+
+`page_normalise` is blind to the prediction, to detection confidence, to the
+roster and to the reference's own `<part-group>` / `<staves>` structure — and
+**every one of those is a deliberate refusal, not a gap**: reading any of them
+is what rule 2 forbids (deriving the condensation from the encoding is
+circular, F1 0.064 in the closed MXL-warp path) or what would make the truth a
+function of our own output. The one genuinely unused signal in scope is
+`works.json`'s `lines: 1` — the transform cannot tell a one-line percussion
+rule from a five-line staff. It does not need to; `scan_eval.note_recall` does,
+and that proposal is already recorded (completion findings §7).
+
+### (2) ⚠️ What consumes the output — and the answer changes what these faults WERE
+
+`grep -rl page_normalise backend tools/omr --include=*.py | grep -v tests`
+returns **nothing**. Every consumer is under `benchmarks/` plus one test file:
+
+| consumer | what it does with it | verdict in §6's vocabulary |
+|---|---|---|
+| `scan_eval.py` (`--page-normalised`) | the normalised scoring arm | TEST-ONLY |
+| `normalised_arm.py`, `probe_engraved_normalise_noop.py` | pricing and the no-op control | TEST-ONLY |
+| the staves-map benchmarks (7 files) | proposing, pricing, adjudicating maps | TEST-ONLY |
+| **`merge_additions.check_row`** | **the GATE on writing hand-verified truth** | **not a measurement at all** |
+
+The last row is why these were urgent rather than merely open. A fault in a
+TEST-ONLY module costs a number; a fault in **`merge_additions`' proof step**
+costs a human's finished work — the tool runs `normalise` on the map before it
+writes, so p3 and p4 could not be merged no matter who had confirmed them.
+
+⚠️ **And the failure lands AFTER the effort, not before it.** The confirmation
+UI's own `validate()` re-implements the completeness checks (unnamed, doubled,
+out-of-range, undecided) and **never calls `page_normalise`**. So Sean could
+have spent the 57 slots, seen every row go green, marked them `done`, and met
+the `KeyError` only at merge time. That is the shape the commission called
+urgent, and it is now confirmed mechanically rather than assumed.
+
+Nothing this work produces is about to join §7's "gathered and never used" list
+— but `probe_coverage_after.py`'s split and `summarise_pools.py`'s `divisi`
+share are one plausible candidate each, so both are wired into the FINDINGS
+they exist for rather than left as JSON.
+
+### (3) Dependencies, and one that is UNSATISFIABLE in §9.4's sense
+
+| dependency | satisfiable? |
+|---|---|
+| a hand-read `staves` map per row | **yes, 15 of 20 today**; the four Mahler rows need the confirmation pass, which is prepared and waiting — *not done*, not *impossible* |
+| **Bach's Cembalo** | ⚠️ **UNSATISFIABLE by the map idiom.** The reference encodes ONE part where the page prints a GRAND STAFF; an entry names the parts a staff CARRIES and cannot split one part across two entries. No human effort closes this — it needs a different idiom. A §9.4 entry, offered for the map. |
+| the reconciliation worktree's fixtures | machine-local; four symlinks, three of which fail on the scan side only |
+
+### (4) Cycles — none created, and one hazard the new headline would open
+
+This change adds no input, so it cannot create a cycle: `_has_unpitched` and
+`_is_silent` read the truth only. ⚠️ **But making the page-normalised figure
+"the number to beat" does open one, and it is worth stating before it is
+adopted.** The derived truth is a function of a hand map; the *proposals* those
+maps start from were drafted with help from our own reading (`draft_windows.py`
+chains measure windows off a transcription, and the completion candidates were
+transcribed from prose that used margin-label reads). Truth partially derived
+from our own output is exactly §4's governing rule. **The human confirmation
+step is what breaks it** — which is a second, independent reason not to merge a
+transcription that no one has confirmed (§6).
+
+### (5) Already gathered elsewhere — two of my numbers are NOT corroboration
+
+⚠️ `probe_coverage_after.py`'s "today" column and
+`probe_map_coverage_cost.py`'s output share **one ancestor** (`works.json` plus
+`results-reconciliation.json`) and are the same arithmetic; their agreement is
+an implementation check, not independent evidence. Same for
+`scan_eval.structural_divergence`, which counts condensed staves off that same
+map. **The genuinely independent corroborations here are the ones that come
+from a different tool over different inputs:** the raw 20-row pool landing on
+exactly `0.8444`, `normalised_arm.py` reproducing controls.py's 15-row
+`0.8417 → 0.6065` to the edit, and the byte-identity of the derived truths.
+
+---
+
+## 8. What was verified, and what was not
 
 **Verified.** Both crashes reproduced on the exact bars named by the completion
 findings, and reproduced again on written-and-reparsed synthetic fixtures; all
@@ -466,7 +578,7 @@ exact no-op on 11 of 11 works; the `Unpitched` census over all 20 scan-gate
 truths and over every condensed entry of every candidate map; `merge_additions`
 accepting all five rows through its own validation; the full suite.
 
-**Not verified.** No pooled scan figure was re-measured and no default changed.
+**Not verified.** No default changed.
 `works.json` is untouched, so §5's "after" column is a PROJECTION of an
 accounting, not a measurement of a merged file — though the accounting is exact
 arithmetic on the baseline's own per-row counts, and merging cannot move the
