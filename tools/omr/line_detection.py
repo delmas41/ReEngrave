@@ -369,9 +369,23 @@ def _stacked_bar_bands(labels, label: int, x: int, y: int, w: int, h: int,
     ⚠️ **Through the real pipeline this changes 55 durations on 9 scan pages** —
     not the handful a bounding-box-sized repair sounds like. All 55 are a single
     beam level (42 longer, 13 shorter), no pitch moves and nothing is added or
-    dropped. Which way the pooled metric goes is UNMEASURED: this landed without
-    permission to run `scan_eval`, and 55 changes over 9 pages is plausibly
-    above that gate's ±6 edit noise floor rather than lost in it.
+    dropped.
+
+    **Priced on the 20-row scan gate**, both arms on one merge base differing in
+    this file alone: pooled OMR-NED 0.8441 -> 0.8440, **-37 edits**, of which
+    +6 is the gate's documented nondeterminism on the row CLAUDE.md names, so
+    **-43 is attributable**. 10 of the 11 rows carrying no multi-bar component
+    are identical to the edit. `wrong note` -21 is where it lands, not
+    `wrong flag/beam` (+1) — the expected signature, since that bucket counts
+    notes the aligner would not PAIR and a duration is what usually stops it.
+
+    ⚠️ **Read that as "does not harm", not as "helps".** ~8 edits per misread
+    rhythm would predict hundreds from 55 corrections; 21 is what moves. Most of
+    the 55 bought nothing measurable AND THAT IS NOT EVIDENCE THEY WERE WRONG:
+    `entire measure insert/delete` is 39.6% of this corpus, and a correct local
+    fix inside a bar already charged whole-plus-whole is invisible by
+    construction. The metric cannot separate "useless" from "right, and the bar
+    was already billed".
 
     ⚠️ **And the trade is two-sided in one place, which is worth knowing before
     widening this.** An excursion band is the right answer for the EDGE test and
