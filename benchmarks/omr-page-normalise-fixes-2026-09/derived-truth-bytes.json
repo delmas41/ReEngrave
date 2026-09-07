@@ -1,0 +1,194 @@
+{
+ "generated_by": "benchmarks/omr-page-normalise-fixes-2026-09/probe_derived_truth_unmoved.py",
+ "base_rev": "687d1c4e",
+ "fixed_transform_version": "1.2.0",
+ "rows_whose_derived_truth_moved": [],
+ "rows_the_fix_makes_possible_at_all": [
+  "mahler-sym5-mvt1-local-p3",
+  "mahler-sym5-mvt1-local-p4"
+ ],
+ "self_control_rows_the_writer_was_not_deterministic_on": [],
+ "verdict": "PASS",
+ "rows": [
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "map_kind": "works.json hand map",
+   "pre_fix": "50e21c5b1aa978efcaf2b8df568a1b6a606b4346f7a5e0814a0a37a63effcccc",
+   "fixed": "50e21c5b1aa978efcaf2b8df568a1b6a606b4346f7a5e0814a0a37a63effcccc",
+   "fixed_again": "50e21c5b1aa978efcaf2b8df568a1b6a606b4346f7a5e0814a0a37a63effcccc",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "map_kind": "works.json hand map",
+   "pre_fix": "fa93276f158b603e01b3e71e2832accf9fb66dfb6d552c30ae04d403f3cef4e7",
+   "fixed": "fa93276f158b603e01b3e71e2832accf9fb66dfb6d552c30ae04d403f3cef4e7",
+   "fixed_again": "fa93276f158b603e01b3e71e2832accf9fb66dfb6d552c30ae04d403f3cef4e7",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "map_kind": "works.json hand map",
+   "pre_fix": "bbbb8a6070cd70140b1bb8b01ae3cbdb7599d6375ad47dafc046b02c61ec113a",
+   "fixed": "bbbb8a6070cd70140b1bb8b01ae3cbdb7599d6375ad47dafc046b02c61ec113a",
+   "fixed_again": "bbbb8a6070cd70140b1bb8b01ae3cbdb7599d6375ad47dafc046b02c61ec113a",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "map_kind": "works.json hand map",
+   "pre_fix": "57cd18a134b5d9a92025f9df01880b633f2227a404439e8fd6d0e5479d5fe4cb",
+   "fixed": "57cd18a134b5d9a92025f9df01880b633f2227a404439e8fd6d0e5479d5fe4cb",
+   "fixed_again": "57cd18a134b5d9a92025f9df01880b633f2227a404439e8fd6d0e5479d5fe4cb",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "map_kind": "works.json hand map",
+   "pre_fix": "50e21c5b1aa978efcaf2b8df568a1b6a606b4346f7a5e0814a0a37a63effcccc",
+   "fixed": "50e21c5b1aa978efcaf2b8df568a1b6a606b4346f7a5e0814a0a37a63effcccc",
+   "fixed_again": "50e21c5b1aa978efcaf2b8df568a1b6a606b4346f7a5e0814a0a37a63effcccc",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "map_kind": "works.json hand map",
+   "pre_fix": "fa93276f158b603e01b3e71e2832accf9fb66dfb6d552c30ae04d403f3cef4e7",
+   "fixed": "fa93276f158b603e01b3e71e2832accf9fb66dfb6d552c30ae04d403f3cef4e7",
+   "fixed_again": "fa93276f158b603e01b3e71e2832accf9fb66dfb6d552c30ae04d403f3cef4e7",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "map_kind": "works.json hand map",
+   "pre_fix": "bbbb8a6070cd70140b1bb8b01ae3cbdb7599d6375ad47dafc046b02c61ec113a",
+   "fixed": "bbbb8a6070cd70140b1bb8b01ae3cbdb7599d6375ad47dafc046b02c61ec113a",
+   "fixed_again": "bbbb8a6070cd70140b1bb8b01ae3cbdb7599d6375ad47dafc046b02c61ec113a",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "map_kind": "works.json hand map",
+   "pre_fix": "57cd18a134b5d9a92025f9df01880b633f2227a404439e8fd6d0e5479d5fe4cb",
+   "fixed": "57cd18a134b5d9a92025f9df01880b633f2227a404439e8fd6d0e5479d5fe4cb",
+   "fixed_again": "57cd18a134b5d9a92025f9df01880b633f2227a404439e8fd6d0e5479d5fe4cb",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "map_kind": "works.json hand map",
+   "pre_fix": "a4a16e8853bd677d4c82ebe8caa9a63bce1a62666d53bb935db3a5b5d7ab091e",
+   "fixed": "a4a16e8853bd677d4c82ebe8caa9a63bce1a62666d53bb935db3a5b5d7ab091e",
+   "fixed_again": "a4a16e8853bd677d4c82ebe8caa9a63bce1a62666d53bb935db3a5b5d7ab091e",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "map_kind": "works.json hand map",
+   "pre_fix": "f6322bf8800f33e777f190de228daf0caf3aee2f3d890074643e2e91b69a2de9",
+   "fixed": "f6322bf8800f33e777f190de228daf0caf3aee2f3d890074643e2e91b69a2de9",
+   "fixed_again": "f6322bf8800f33e777f190de228daf0caf3aee2f3d890074643e2e91b69a2de9",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "map_kind": "works.json hand map",
+   "pre_fix": "8a169a5ab28349be32b01f4d74079bb77470050a7aa4745b57cb6bdcae4784b0",
+   "fixed": "8a169a5ab28349be32b01f4d74079bb77470050a7aa4745b57cb6bdcae4784b0",
+   "fixed_again": "8a169a5ab28349be32b01f4d74079bb77470050a7aa4745b57cb6bdcae4784b0",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "map_kind": "works.json hand map",
+   "pre_fix": "dcaf167f6fe19cec512b17989d4106b8288f20b74522a72225b7068a80cc41c2",
+   "fixed": "dcaf167f6fe19cec512b17989d4106b8288f20b74522a72225b7068a80cc41c2",
+   "fixed_again": "dcaf167f6fe19cec512b17989d4106b8288f20b74522a72225b7068a80cc41c2",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "map_kind": "works.json hand map",
+   "pre_fix": "dfa3ac9098fe85b40fe40c09d14eb94dea4dee440a8e2ead5d4afa9feef36c4b",
+   "fixed": "dfa3ac9098fe85b40fe40c09d14eb94dea4dee440a8e2ead5d4afa9feef36c4b",
+   "fixed_again": "dfa3ac9098fe85b40fe40c09d14eb94dea4dee440a8e2ead5d4afa9feef36c4b",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "map_kind": "works.json hand map",
+   "pre_fix": "dc21b4b5a9084ee1f3c923aaf0c71c2b9f7c192d21a4944bb4c912055b4b3ef0",
+   "fixed": "dc21b4b5a9084ee1f3c923aaf0c71c2b9f7c192d21a4944bb4c912055b4b3ef0",
+   "fixed_again": "dc21b4b5a9084ee1f3c923aaf0c71c2b9f7c192d21a4944bb4c912055b4b3ef0",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "map_kind": "works.json hand map",
+   "pre_fix": "c474147c0fdf42e6d0f812d1819eb9f84d3dbe52a634310a4b8b7b2ae8b113b1",
+   "fixed": "c474147c0fdf42e6d0f812d1819eb9f84d3dbe52a634310a4b8b7b2ae8b113b1",
+   "fixed_again": "c474147c0fdf42e6d0f812d1819eb9f84d3dbe52a634310a4b8b7b2ae8b113b1",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "map_kind": "candidate map",
+   "pre_fix": "63ae2adce32be0893435f357c1e9ed6a12078b7efd019d9b584baeeae6b92daa",
+   "fixed": "63ae2adce32be0893435f357c1e9ed6a12078b7efd019d9b584baeeae6b92daa",
+   "fixed_again": "63ae2adce32be0893435f357c1e9ed6a12078b7efd019d9b584baeeae6b92daa",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "map_kind": "candidate map",
+   "pre_fix": "RAISED KeyError: 4416538656",
+   "fixed": "6313f1a0a50d0e28a713edd3a98b75b84d4b7198eeb5b0ea6f8189e9e7b621f5",
+   "fixed_again": "6313f1a0a50d0e28a713edd3a98b75b84d4b7198eeb5b0ea6f8189e9e7b621f5",
+   "writer_is_deterministic": true,
+   "identical": false
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "map_kind": "candidate map",
+   "pre_fix": "RAISED TypeError: '<' not supported between instances of 'tuple' and 'str'",
+   "fixed": "ecda558a8643b31f3d5993383c52246d3d8fb2c8ebb806731b1f4fbb81556157",
+   "fixed_again": "ecda558a8643b31f3d5993383c52246d3d8fb2c8ebb806731b1f4fbb81556157",
+   "writer_is_deterministic": true,
+   "identical": false
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "map_kind": "candidate map",
+   "pre_fix": "f1ef1f3ff4add5e14fa175e2e4c0214e513b5747435a3b631a4f3464576728c3",
+   "fixed": "f1ef1f3ff4add5e14fa175e2e4c0214e513b5747435a3b631a4f3464576728c3",
+   "fixed_again": "f1ef1f3ff4add5e14fa175e2e4c0214e513b5747435a3b631a4f3464576728c3",
+   "writer_is_deterministic": true,
+   "identical": true
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "map_kind": "candidate map",
+   "pre_fix": "5c2bcdf137079e8468c57e140d9a159403e23dae34f2201d8f17479f2ffaa5bf",
+   "fixed": "5c2bcdf137079e8468c57e140d9a159403e23dae34f2201d8f17479f2ffaa5bf",
+   "fixed_again": "5c2bcdf137079e8468c57e140d9a159403e23dae34f2201d8f17479f2ffaa5bf",
+   "writer_is_deterministic": true,
+   "identical": true
+  }
+ ]
+}

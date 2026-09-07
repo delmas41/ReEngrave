@@ -1,0 +1,198 @@
+{
+ "generated_by": "benchmarks/omr-headline-validity-2026-09/probe_engraved_normalise_noop.py",
+ "transform_version": "1.2.0",
+ "verdict": {
+  "n_scored": 11,
+  "works_that_moved": [],
+  "is_a_no_op": true
+ },
+ "works": [
+  {
+   "work": "beethoven-sym5-mvt1",
+   "n_source_parts": 18,
+   "n_output_parts": 18,
+   "measure_census": {
+    "single": 144
+   },
+   "raw": {
+    "omr_ned": 0.0421875,
+    "omr_ed": 54
+   },
+   "identity_normalised": {
+    "omr_ned": 0.0421875,
+    "omr_ed": 54
+   },
+   "delta_edits": 0
+  },
+  {
+   "work": "brahms-sym1-mvt1",
+   "n_source_parts": 21,
+   "n_output_parts": 21,
+   "measure_census": {
+    "single": 147
+   },
+   "raw": {
+    "omr_ned": 0.12920927912197555,
+    "omr_ed": 518
+   },
+   "identity_normalised": {
+    "omr_ned": 0.12920927912197555,
+    "omr_ed": 518
+   },
+   "delta_edits": 0
+  },
+  {
+   "work": "mahler-sym5-mvt1",
+   "n_source_parts": 38,
+   "n_output_parts": 38,
+   "measure_census": {
+    "single": 304
+   },
+   "raw": {
+    "omr_ned": 0.020887728459530026,
+    "omr_ed": 40
+   },
+   "identity_normalised": {
+    "omr_ned": 0.020887728459530026,
+    "omr_ed": 40
+   },
+   "delta_edits": 0
+  },
+  {
+   "work": "mozart-sym40-mvt1",
+   "n_source_parts": 11,
+   "n_output_parts": 11,
+   "measure_census": {
+    "single": 66
+   },
+   "raw": {
+    "omr_ned": 0.14146658014276445,
+    "omr_ed": 218
+   },
+   "identity_normalised": {
+    "omr_ned": 0.14146658014276445,
+    "omr_ed": 218
+   },
+   "delta_edits": 0
+  },
+  {
+   "work": "mozart-sym41-mvt1",
+   "n_source_parts": 17,
+   "n_output_parts": 17,
+   "measure_census": {
+    "single": 102
+   },
+   "raw": {
+    "omr_ned": 0.10776599384194321,
+    "omr_ed": 315
+   },
+   "identity_normalised": {
+    "omr_ned": 0.10776599384194321,
+    "omr_ed": 315
+   },
+   "delta_edits": 0
+  },
+  {
+   "work": "beethoven-sym3-mvt1",
+   "n_source_parts": 19,
+   "n_output_parts": 19,
+   "measure_census": {
+    "single": 152
+   },
+   "raw": {
+    "omr_ned": 0.1398176291793313,
+    "omr_ed": 230
+   },
+   "identity_normalised": {
+    "omr_ned": 0.1398176291793313,
+    "omr_ed": 230
+   },
+   "delta_edits": 0
+  },
+  {
+   "work": "brahms-sym4-mvt1",
+   "n_source_parts": 20,
+   "n_output_parts": 20,
+   "measure_census": {
+    "single": 120
+   },
+   "raw": {
+    "omr_ned": 0.2136387852956846,
+    "omr_ed": 401
+   },
+   "identity_normalised": {
+    "omr_ned": 0.2136387852956846,
+    "omr_ed": 401
+   },
+   "delta_edits": 0
+  },
+  {
+   "work": "dvorak-sym9-mvt4",
+   "n_source_parts": 19,
+   "n_output_parts": 19,
+   "measure_census": {
+    "single": 57
+   },
+   "raw": {
+    "omr_ned": 0.33804809052333806,
+    "omr_ed": 239
+   },
+   "identity_normalised": {
+    "omr_ned": 0.33804809052333806,
+    "omr_ed": 239
+   },
+   "delta_edits": 0
+  },
+  {
+   "work": "tchaikovsky-sym4-mvt2",
+   "n_source_parts": 20,
+   "n_output_parts": 20,
+   "measure_census": {
+    "single": 160
+   },
+   "raw": {
+    "omr_ned": 0.03875968992248062,
+    "omr_ed": 60
+   },
+   "identity_normalised": {
+    "omr_ned": 0.03875968992248062,
+    "omr_ed": 60
+   },
+   "delta_edits": 0
+  },
+  {
+   "work": "tchaikovsky-sym6-mvt2",
+   "n_source_parts": 17,
+   "n_output_parts": 17,
+   "measure_census": {
+    "single": 68
+   },
+   "raw": {
+    "omr_ned": 0.18549511854951187,
+    "omr_ed": 266
+   },
+   "identity_normalised": {
+    "omr_ned": 0.18549511854951187,
+    "omr_ed": 266
+   },
+   "delta_edits": 0
+  },
+  {
+   "work": "bruckner-sym5-mvt1",
+   "n_source_parts": 25,
+   "n_output_parts": 25,
+   "measure_census": {
+    "single": 200
+   },
+   "raw": {
+    "omr_ned": 0.09641595153962645,
+    "omr_ed": 191
+   },
+   "identity_normalised": {
+    "omr_ned": 0.09641595153962645,
+    "omr_ed": 191
+   },
+   "delta_edits": 0
+  }
+ ]
+}

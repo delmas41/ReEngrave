@@ -240,3 +240,145 @@ class TestPageNormaliseRefusesAndPreserves:
         out, report = pn.normalise(src, [{"name": "Corni", "parts": [0, 1]}])
         assert report["measure_census"].get("unison") == 1
         assert len(list(out.recurse().notes)) == 1
+
+
+# ------------------------------- the three faults the Mahler maps ran into
+
+class TestPageNormaliseOnOrchestralShapesTheGateHadNotSeen:
+    """⚠️ Each of these is a bar no row that already carries a hand map
+    contains, and two of them blocked a HAND-CONFIRMED map from being merged.
+
+    Diagnosed in `benchmarks/omr-staves-map-completion-2026-09/FINDINGS.md` §4
+    with the exact reproducing bar; fixed and priced in
+    `benchmarks/omr-page-normalise-fixes-2026-09/FINDINGS.md`. Every fixture
+    below is WRITTEN AND RE-PARSED rather than merged in memory, because one
+    of the faults is a property of what `converter.parse` hands back — built
+    in memory it does not fire.
+    """
+
+    def test_a_rest_and_a_note_at_one_offset_do_not_raise(self, tmp_path):
+        """FAULT A — `_tokens` sorted a heterogeneous key.
+
+        A rest's body was the bare `str` "R" beside a note's `tuple`, and the
+        key is sorted, so two events sharing `(offset, duration)` compared
+        `str` against `tuple`: `TypeError` on Python 3. It needs both in ONE
+        measure, i.e. a part whose bar already has two `Voice`s with one
+        resting where the other sounds — Mahler 5's `Vier Trompeten in B.`,
+        p3 mm 12 and 14 and p4 mm 17-19.
+        """
+        from music21 import note, stream
+
+        pn = _load("page_normalise")
+
+        def trumpets(pitch):
+            part = stream.Part(id=f"T{pitch}")
+            m = stream.Measure(number=12)
+            v1 = stream.Voice(id="1")
+            v1.insert(0.0, note.Note(pitch, quarterLength=4.0))
+            v2 = stream.Voice(id="2")
+            v2.insert(0.0, note.Rest(quarterLength=4.0))   # the SAME offset
+            m.insert(0.0, v1)
+            m.insert(0.0, v2)
+            part.append(m)
+            return part
+
+        score = stream.Score()
+        score.append(trumpets("C5"))
+        score.append(trumpets("E5"))
+        src = tmp_path / "src.musicxml"
+        score.write("musicxml", fp=str(src))
+
+        out, report = pn.normalise(src,
+                                   [{"name": "Vier Trompeten", "parts": [0, 1]}])
+        assert report["n_output_parts"] == 1
+        pitches = {p.nameWithOctave
+                   for n in out.recurse().notes for p in n.pitches}
+        assert pitches == {"C5", "E5"}, "both players must survive the merge"
+
+    def test_every_token_body_is_a_tuple_so_the_key_can_always_sort(self):
+        """The mechanism, not just the symptom: no body may be a bare string."""
+        from music21 import note, stream
+
+        pn = _load("page_normalise")
+        m = stream.Measure(number=1)
+        m.insert(0.0, note.Note("C4", quarterLength=1.0))
+        m.insert(1.0, note.Rest(quarterLength=1.0))
+        for _off, _dur, body in pn._tokens(m):
+            assert isinstance(body, tuple), \
+                "a str body cannot be sorted against a tuple one"
+
+    def test_unaligned_divisi_becomes_stacked_voices_and_keeps_every_event(
+            self, tmp_path):
+        """FAULT B — `_voice_merge` inserted a copy still pointing at its old
+        parent.
+
+        A deepcopied `Chord` comes back with `activeSite` set to the SOURCE
+        measure while its own `sites` dict holds only `None`, so `insert`'s
+        is-this-still-sorted check calls `sortTuple()` and raises a bare
+        `KeyError`. Mahler 5 p3's `Sechs Hörner in F.` mm 15-16 — two parts in
+        different rhythms, so the chord path cannot be taken.
+        """
+        from music21 import chord, note, stream
+
+        pn = _load("page_normalise")
+        score = stream.Score()
+        upper = stream.Part(id="Horn135")
+        m = stream.Measure(number=15)
+        m.append(chord.Chord(["E4", "G#4", "B4"], quarterLength=1.0))
+        m.append(chord.Chord(["E4", "G#4"], quarterLength=1.0))
+        m.append(chord.Chord(["C#5", "E4"], quarterLength=2.0))
+        upper.append(m)
+        score.append(upper)
+        lower = stream.Part(id="Horn246")
+        m = stream.Measure(number=15)
+        m.append(note.Note("B3", quarterLength=2.0))      # a DIFFERENT rhythm
+        m.append(note.Note("A3", quarterLength=2.0))
+        lower.append(m)
+        score.append(lower)
+        src = tmp_path / "src.musicxml"
+        score.write("musicxml", fp=str(src))
+
+        out, report = pn.normalise(src,
+                                   [{"name": "Sechs Hörner", "parts": [0, 1]}])
+        assert report["measure_census"].get("divisi_voiced") == 1
+        voices = list(out.recurse().getElementsByClass(stream.Voice))
+        assert len(voices) == 2, "one voice per SOUNDING source part"
+        assert len(list(out.recurse().notes)) == 5, \
+            "stacking voices must lose no event"
+        assert {float(n.offset) for n in voices[1].notes} == {0.0, 2.0}, \
+            "an event keeps the offset it had on the page"
+
+    def test_a_condensed_percussion_staff_keeps_both_players(self, tmp_path):
+        """FAULTS C and D — an `Unpitched` note is neither `Note` nor `Chord`.
+
+        `_is_silent` read a bar of percussion as SILENT, so condensing two
+        rules onto one printed staff would DISCARD one player without a word
+        (the quiet half), and `_tokens` reached for `.pitch` on an `Unpitched`
+        (the loud half). ⚠️ No map in the gate — hand-read or candidate — puts
+        an `Unpitched`-bearing part on a condensed staff today, so this test is
+        the only thing guarding it, and it is why the fix is a correctness
+        floor rather than a measurable change.
+        """
+        from music21 import note, stream
+
+        pn = _load("page_normalise")
+        score = stream.Score()
+        for step, ql in (("E", 1.0), ("G", 2.0)):        # different rhythms
+            part = stream.Part(id=f"perc{step}")
+            m = stream.Measure(number=1)
+            for _ in range(int(4 / ql)):
+                u = note.Unpitched()
+                u.displayStep = step
+                u.duration.quarterLength = ql
+                m.append(u)
+            part.append(m)
+            score.append(part)
+        src = tmp_path / "src.musicxml"
+        score.write("musicxml", fp=str(src))
+
+        out, report = pn.normalise(
+            src, [{"name": "Becken u. Gr.Trommel", "parts": [0, 1]}])
+        assert report["measure_census"].get("silent_all") is None, \
+            "a bar of percussion notes is not a silent bar"
+        assert len(list(out.recurse().notesAndRests)) == 6, \
+            "4 + 2 unpitched events, and none of them dropped"

@@ -61,13 +61,18 @@ from typing import Any
 from music21 import chord, converter, note, stream
 
 #: Bump on ANY change to how measures are merged. Stamped into every sidecar.
-TRANSFORM_VERSION = "1.1.0"   # 1.1.0: refuse a map that does not name every part
+TRANSFORM_VERSION = "1.2.0"   # 1.1.0: refuse a map that does not name every part
+#                             # 1.2.0: a rest, and an UNPITCHED note, are both
+#                             #        first-class here — see `_tokens`,
+#                             #        `_is_silent` and `_detached`
 
 #: What rule 3 above resolves to, in one string, for the sidecar.
 MERGE_CONVENTION = (
     "silent/unison -> one voice (exact duplication, the measured 69.8%); "
     "divisi with every event aligned on (offset,duration) -> one voice of "
-    "chords; divisi otherwise -> stacked Voices, one per source part"
+    "chords; divisi otherwise -> stacked Voices, one per source part; "
+    "any bar carrying an UNPITCHED (percussion) note takes the voice path, "
+    "because a chord holds pitches and would drop it"
 )
 
 
@@ -78,24 +83,93 @@ def _tokens(measure: stream.Measure) -> tuple:
 
     Offsets and durations are `Fraction`s so a triplet compares exactly; a
     float would make 1/3 an inequality with itself across two parts.
+
+    ⚠️ EVERY BODY IS A TUPLE OF STRINGS, AND THAT IS LOAD-BEARING, NOT TIDY.
+    The key is sorted, so two events sharing `(offset, duration)` fall through
+    to comparing their bodies — and a rest's body used to be the bare `str`
+    "R" beside a note's `tuple`, which raises `TypeError: '<' not supported
+    between instances of 'str' and 'tuple'` on Python 3. It takes a source bar
+    holding both at once, i.e. a part whose measure already has two `Voice`s
+    with one resting where the other sounds: Mahler 5's `Vier Trompeten in B.`
+    writes exactly that (p3 mm 12 and 14, p4 mm 17-19), which is why no
+    already-mapped row reached it. Wrapping the rest changes the sort order of
+    nothing that previously sorted, because a `str` and a `tuple` never
+    compared successfully; and it shifts every measure's key identically, so
+    the equality tests in `classify` are unmoved.
+
+    ⚠️ AND THE `else` BRANCH IS NOT A NOTE. `notesAndRests` also yields
+    `Unpitched` — what every one-line percussion part parses to — which has no
+    `.pitch` at all, so reaching for one raised `AttributeError` on any
+    edition condensing two percussion parts onto one rule. An `Unpitched` is
+    identified by the staff position it is DRAWN at, so that is its body.
     """
     out = []
     for el in measure.recurse().notesAndRests:
         off = Fraction(el.getOffsetInHierarchy(measure)).limit_denominator(10080)
         dur = Fraction(el.duration.quarterLength).limit_denominator(10080)
+        body: Any
         if isinstance(el, note.Rest):
-            body: Any = "R"
+            body = ("R",)
         elif isinstance(el, chord.Chord):
             body = tuple(sorted(p.nameWithOctave for p in el.pitches))
-        else:
+        elif isinstance(el, note.Note):
             body = (el.pitch.nameWithOctave,)
+        else:
+            body = ("U", str(getattr(el, "displayStep", "")),
+                    str(getattr(el, "displayOctave", "")))
         out.append((off, dur, body))
     return tuple(sorted(out))
 
 
 def _is_silent(measure: stream.Measure) -> bool:
-    return not any(isinstance(el, (note.Note, chord.Chord))
+    """Does this bar sound at all?
+
+    ⚠️ `NotRest`, not `(Note, Chord)`. A bar of `Unpitched` percussion notes is
+    neither, and reading it as SILENT is the quiet half of the same fault: a
+    condensed percussion staff would take the `silent_all` branch and its notes
+    would be DISCARDED without a word — precisely the "better score for the
+    wrong reason" this module exists to refuse. Measured over the 20-row scan
+    gate: 17 rows carry no `Unpitched` at all, the three Mahler rows that do
+    carry it only on one-line percussion parts that stand ALONE on their own
+    printed staff, and no map — hand-read or candidate — puts an
+    `Unpitched`-bearing part on a CONDENSED staff. So this is a no-op on
+    everything currently measurable and a correctness floor for the first
+    edition that is not.
+    """
+    return not any(isinstance(el, note.NotRest)
                    for el in measure.recurse().notesAndRests)
+
+
+def _has_unpitched(measures: list[stream.Measure]) -> bool:
+    """Does any of these bars carry a percussion note with no pitch?
+
+    A `Chord` holds `Pitch`es, so the chord merge cannot represent an
+    `Unpitched` and would drop it silently (its `.pitches` is empty, so the
+    "add what the other part plays" loop adds nothing). Where one appears the
+    transform takes the VOICE path instead, which copies whole events and is
+    lossless. Nothing is refused and nothing is guessed.
+    """
+    return any(isinstance(el, note.Unpitched)
+               for m in measures for el in m.recurse().notesAndRests)
+
+
+def _detached(el):
+    """A deepcopy safe to `insert` into a NEW parent stream.
+
+    ⚠️ THE COPY KEEPS A POINTER TO THE ORIGINAL'S PARENT. Measured on Mahler 5
+    p3's `Sechs Hörner in F.` m15: `copy.deepcopy` of a `Chord` comes back with
+    `activeSite` still set to the SOURCE measure while its own `sites` dict
+    holds only `None` — so when `Stream.insert` runs its is-this-still-sorted
+    check it calls `sortTuple()`, which does
+    `self.sites.siteDict[id(self.activeSite)]`, and raises a bare
+    `KeyError: <id>`. (A `Note` copy comes back with `activeSite` None and does
+    not, which is why the fault looked intermittent: p5 m31 is the same
+    musical shape and does not fire.) Clearing the stale pointer is enough —
+    `insert` sets the real one immediately afterwards.
+    """
+    c = copy.deepcopy(el)
+    c.activeSite = None
+    return c
 
 
 def classify(measures: list[stream.Measure]) -> str:
@@ -219,18 +293,25 @@ def _chord_merge(measures: list[stream.Measure]) -> stream.Measure:
 
 
 def _voice_merge(measures: list[stream.Measure]) -> stream.Measure:
-    """Stacked Voices, one per SOUNDING source part."""
+    """Stacked Voices, one per SOUNDING source part.
+
+    Every copy goes in through `_detached` — see there for the `KeyError` a
+    copy still pointing at its old parent raises on the way in. The OFFSET is
+    right as it stands: `getOffsetInHierarchy(m)` is measured against the
+    source MEASURE, the new `Voice` is inserted at 0.0 in the new measure, so
+    a nested-voice event keeps the position it had on the page.
+    """
     sounding = [m for m in measures if not _is_silent(m)]
     base = copy.deepcopy(sounding[0])
     out = stream.Measure(number=base.number)
     for el in base:
-        if isinstance(el, (note.Note, note.Rest, chord.Chord, stream.Voice)):
+        if isinstance(el, (note.NotRest, note.Rest, stream.Voice)):
             continue
-        out.insert(el.offset, copy.deepcopy(el))   # clef, key, meter, barline…
+        out.insert(el.offset, _detached(el))       # clef, key, meter, barline…
     for i, m in enumerate(sounding):
         v = stream.Voice(id=str(i + 1))
         for el in m.recurse().notesAndRests:
-            v.insert(el.getOffsetInHierarchy(m), copy.deepcopy(el))
+            v.insert(el.getOffsetInHierarchy(m), _detached(el))
         out.insert(0.0, v)
     return out
 
@@ -309,7 +390,7 @@ def normalise(truth_xml: Path, staves_map: list[dict] | None,
                         continue                  # keep IS the sounding part
                     source = next(b for b in bars if not _is_silent(b))
                     merged = copy.deepcopy(source)
-                elif _aligned(bars):
+                elif _aligned(bars) and not _has_unpitched(bars):
                     staff_census["divisi_chorded"] = \
                         staff_census.get("divisi_chorded", 0) + 1
                     census["divisi_chorded"] = census.get("divisi_chorded", 0) + 1

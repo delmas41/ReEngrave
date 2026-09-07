@@ -1,0 +1,29 @@
+{
+ "generated_by": "benchmarks/omr-page-normalise-fixes-2026-09/probe_coverage_after.py",
+ "wrote_works_json": false,
+ "projection": true,
+ "note": "`printed_staves_a_human_would_read` counts works.json's own `page.n_staves`, which is FIVE-LINE staves only \u2014 Mahler's one-line percussion rules are not in it and the residual they leave is a pipeline ceiling, not a labelling gap.",
+ "would_merge": [
+  "mahler-sym5-mvt1-local-p2",
+  "mahler-sym5-mvt1-local-p3",
+  "mahler-sym5-mvt1-local-p4",
+  "mahler-sym5-mvt1-local-p5"
+ ],
+ "today": {
+  "rows_mapped": 15,
+  "rows_total": 20,
+  "entire_staff_attributable": 11927,
+  "entire_staff_cause_unknown": 5593,
+  "printed_staves_a_human_would_read": 89
+ },
+ "after_the_four_mahler_rows": {
+  "rows_mapped": 19,
+  "rows_total": 20,
+  "entire_staff_attributable": 17234,
+  "entire_staff_cause_unknown": 286,
+  "printed_staves_a_human_would_read": 24
+ },
+ "still_unattributed_after": {
+  "bach-brandenburg3-mvt1-468678-p1": 286
+ }
+}
