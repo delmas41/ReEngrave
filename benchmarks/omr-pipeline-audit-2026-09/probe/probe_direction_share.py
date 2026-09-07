@@ -15,7 +15,10 @@ import glob, json
 from collections import Counter
 
 rows = []
-for f in sorted(glob.glob("benchmarks/**/fixtures/*.omr.json", recursive=True)):
+# ⚠️ WAS a raw `glob.glob` while importing `fixtures` purely for `chdir_root`,
+# so the lint's token heuristic saw "fixtures(" and passed it. An empty match
+# here still printed a table.
+for f in fixtures("benchmarks/**/fixtures/*.omr.json", expect_at_least=11):
     try:
         d = json.load(open(f))
     except Exception:

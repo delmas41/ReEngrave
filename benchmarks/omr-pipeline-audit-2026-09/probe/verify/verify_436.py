@@ -1,7 +1,13 @@
 """VERIFIER: independently recompute the 436 class-disagreement figure and both
 agents' class breakdowns from the OMR_CONTEST_DUMP artefacts."""
 import json, glob, collections
-files = sorted(glob.glob('benchmarks/omr-additive-vs-gated-2026-09/out/contests/*.contests.json'))
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), _os.pardir))
+from _fixtures import fixtures, root as _fixroot, CONTESTS, SCAN, ENGRAVED  # noqa: E402
+# ⚠️ verify/ was invisible to test_probe_hygiene.py, whose file sweep was
+# non-recursive and never descended. All four files here carried the very defect that lint
+# exists to catch. Deferring to _fixtures.py, the designated survivor.
+files = fixtures(CONTESTS, expect_at_least=20)
 rows = []
 for f in files:
     d = json.load(open(f))
