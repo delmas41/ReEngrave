@@ -148,6 +148,76 @@
  },
  {
   "boundaries": [
+   25,
+   73
+  ],
+  "edition": "mahler--symphony-4-gmw-37--edition-1911--imslp280767",
+  "n_spans": 3,
+  "pages": 125,
+  "ranges": [
+   [
+    0,
+    24
+   ],
+   [
+    25,
+    72
+   ],
+   [
+    73,
+    124
+   ]
+  ],
+  "raw_peak": 26,
+  "seconds": 710.5,
+  "span_levels": [
+   20,
+   22,
+   24
+  ],
+  "span_peaks": [
+   20,
+   22,
+   26
+  ]
+ },
+ {
+  "boundaries": [
+   36,
+   55
+  ],
+  "edition": "prokofiev--symphony-1-op25--editions-russes-de-musiq-1925--imslp5981",
+  "n_spans": 3,
+  "pages": 97,
+  "ranges": [
+   [
+    0,
+    35
+   ],
+   [
+    36,
+    54
+   ],
+   [
+    55,
+    96
+   ]
+  ],
+  "raw_peak": 14,
+  "seconds": 137.1,
+  "span_levels": [
+   12,
+   13,
+   14
+  ],
+  "span_peaks": [
+   12,
+   13,
+   14
+  ]
+ },
+ {
+  "boundaries": [
    32,
    42
   ],
@@ -246,6 +316,34 @@
  },
  {
   "boundaries": [
+   50
+  ],
+  "edition": "brahms--piano-concerto-1-op15--breitkopf-hartel-brahms--imslp317582",
+  "n_spans": 2,
+  "pages": 91,
+  "ranges": [
+   [
+    0,
+    49
+   ],
+   [
+    50,
+    90
+   ]
+  ],
+  "raw_peak": 28,
+  "seconds": 583.3,
+  "span_levels": [
+   15,
+   17
+  ],
+  "span_peaks": [
+   15,
+   17
+  ]
+ },
+ {
+  "boundaries": [
    45
   ],
   "edition": "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803",
@@ -302,6 +400,118 @@
  },
  {
   "boundaries": [
+   91
+  ],
+  "edition": "faure--requiem-op48--hamelle-1901--imslp30151",
+  "n_spans": 2,
+  "pages": 128,
+  "ranges": [
+   [
+    0,
+    90
+   ],
+   [
+    91,
+    127
+   ]
+  ],
+  "raw_peak": 24,
+  "seconds": 761.8,
+  "span_levels": [
+   23,
+   24
+  ],
+  "span_peaks": [
+   23,
+   24
+  ]
+ },
+ {
+  "boundaries": [
+   38
+  ],
+  "edition": "nielsen--symphony-4-op29--hansen-1916--imslp214811",
+  "n_spans": 2,
+  "pages": 120,
+  "ranges": [
+   [
+    0,
+    37
+   ],
+   [
+    38,
+    119
+   ]
+  ],
+  "raw_peak": 23,
+  "seconds": 597.1,
+  "span_levels": [
+   22,
+   23
+  ],
+  "span_peaks": [
+   22,
+   23
+  ]
+ },
+ {
+  "boundaries": [
+   65
+  ],
+  "edition": "rachmaninoff--piano-concerto-2-op18--gutheil-1901--imslp528309",
+  "n_spans": 2,
+  "pages": 114,
+  "ranges": [
+   [
+    0,
+    64
+   ],
+   [
+    65,
+    113
+   ]
+  ],
+  "raw_peak": 18,
+  "seconds": 558.7,
+  "span_levels": [
+   17,
+   18
+  ],
+  "span_peaks": [
+   17,
+   18
+  ]
+ },
+ {
+  "boundaries": [
+   125
+  ],
+  "edition": "schumann--symphony-2-op61--peters-1887--imslp514290",
+  "n_spans": 2,
+  "pages": 141,
+  "ranges": [
+   [
+    0,
+    124
+   ],
+   [
+    125,
+    140
+   ]
+  ],
+  "raw_peak": 15,
+  "seconds": 484.8,
+  "span_levels": [
+   14,
+   15
+  ],
+  "span_peaks": [
+   14,
+   15
+  ]
+ },
+ {
+  "boundaries": [
    15
   ],
   "edition": "sibelius--symphony-2-op43--breitkopf-und-hartel-fro-1905--imslp15919",
@@ -325,6 +535,34 @@
   ],
   "span_peaks": [
    16,
+   20
+  ]
+ },
+ {
+  "boundaries": [
+   23
+  ],
+  "edition": "tchaikovsky--the-nutcracker-suite-op71a--jurgenson-1892--imslp231707",
+  "n_spans": 2,
+  "pages": 120,
+  "ranges": [
+   [
+    0,
+    22
+   ],
+   [
+    23,
+    119
+   ]
+  ],
+  "raw_peak": 20,
+  "seconds": 704.0,
+  "span_levels": [
+   18,
+   20
+  ],
+  "span_peaks": [
+   18,
    20
   ]
  },
@@ -394,6 +632,26 @@
   ],
   "span_peaks": [
    12
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "dvorak--symphony-6-op60--simrock-1888--imslp26977",
+  "n_spans": 1,
+  "pages": 140,
+  "ranges": [
+   [
+    0,
+    139
+   ]
+  ],
+  "raw_peak": 15,
+  "seconds": 723.7,
+  "span_levels": [
+   15
+  ],
+  "span_peaks": [
+   15
   ]
  },
  {
@@ -514,6 +772,46 @@
   ],
   "span_peaks": [
    11
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "schumann--piano-concerto-op54--schumanncomplete-1883--imslp291223",
+  "n_spans": 1,
+  "pages": 93,
+  "ranges": [
+   [
+    0,
+    92
+   ]
+  ],
+  "raw_peak": 14,
+  "seconds": 391.0,
+  "span_levels": [
+   14
+  ],
+  "span_peaks": [
+   14
+  ]
+ },
+ {
+  "boundaries": [],
+  "edition": "schumann--piano-concerto-op7--chang-2019--imslp573002",
+  "n_spans": 1,
+  "pages": 106,
+  "ranges": [
+   [
+    0,
+    105
+   ]
+  ],
+  "raw_peak": 21,
+  "seconds": 1132.2,
+  "span_levels": [
+   21
+  ],
+  "span_peaks": [
+   21
   ]
  }
 ]
