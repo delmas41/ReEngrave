@@ -25,9 +25,22 @@ are about to gather already exists and is being thrown away.
 ⚠️ **No pipeline behaviour was changed to write this.** It is documentation
 plus one read-only probe (`benchmarks/omr-decision-map-2026-09/verify.py`).
 
+⚠️ **ADVERSARIALLY VERIFIED 2026-09-07**, at Sean's instruction, because a wrong
+entry here will be believed and built on:
+[`benchmarks/omr-decision-map-verify-2026-09/FINDINGS.md`](../benchmarks/omr-decision-map-verify-2026-09/FINDINGS.md).
+≈93 entries checked; the mechanical half held (all 27 §8 rows re-derived from
+code, 24 exactly, 3 narrowed), and **11 errors were found and corrected in
+place** — every one of them a *negative* about consumers, plus three whole
+stages §5 had dropped. Corrections are marked inline. **The measured half —
+every quoted figure in §5 and §7 — was NOT re-run and is unverified.**
+
 ---
 
 ## 0. How to read a row, and what the labels mean
+
+⚠️ **Corrected 2026-09-07: this is the INTENT, not the state.** Six of §5's
+twelve tables carry no `CONSUMED BY` column — see the warning at the head of
+§5, which names them and says why it matters.
 
 Every decision point in §5 carries the same ten fields. Three of them are the
 reason this document exists.
@@ -383,11 +396,20 @@ identity produced.
   precision 0 of 11.** Every firing is a *family boundary* — bassoon above horn,
   timpani above violin — because an orchestral score is ordered by family, not
   by register. `docs/scope-identity-upstream-2026-09-06.md` §9 nominated it and
-  then refuted it the same day. **Do not resurrect it.**
+  then refuted it the same day. **Do not resurrect the ADJACENT-PAIR form.**
 
 What survives: the check is Class C (computed, unconsumed) and that is still a
-defect of the same family. What does not survive is that consuming it would
-help.
+defect of the same family. What does not survive is that consuming *this* form
+would help.
+
+⚠️ **Scope of the refutation, narrowed 2026-09-07 under
+`docs/backlog-2026-09-07-open-items.md` §A00** (*a worse score does not condemn
+the mechanism*). What was measured is **one form** — the adjacent-staff register
+comparison — on **n = 11 firings**, and the source itself says "in every form
+tried so far". §9.4 of this document names two untried variants (restricted to
+one bracket group; a staff against **its own** reading on other systems) and
+requires a reach measurement first. The earlier flat "do not resurrect it"
+contradicted §9.4; this wording is the one to carry.
 
 #### Cycle 4 — meter ⇄ duration
 
@@ -449,7 +471,22 @@ this is an index into it, not a replacement for it.
 
 Legend for the consumer column: **`NOBODY`** = nothing reads it anywhere;
 **`probe`** = only a benchmark or test; **`app`** = it crosses into
-`backend/`/`frontend/`.
+`backend/`/`frontend/`. ⚠️ **Use `probe`, not `NOBODY`, the moment a benchmark
+reads the field** — the difference decides whether a signal can be priced from
+disk, which is what §9.5 item 1 turns on. Three cells got this wrong and were
+corrected 2026-09-07.
+
+⚠️⚠️ **SIX OF THE TWELVE TABLES BELOW HAVE NO `produces → consumed by` COLUMN,
+and §0's "every decision point in §5 carries the same ten fields" is therefore
+false.** The six are **8a (clef), 8b (key signature), 8c (time signature),
+9 (labels → instrument), 10 (slots + identity) and 11 (export)** — i.e. the
+whole identity-and-export half, which is where **every one of §9.5's six
+shortlist items lives**. So the question this document exists to answer —
+*"what consumes my output — does anything?"* — is **unanswerable from §5 for
+exactly the areas §9 tells you to build in**. Reproduce with
+`grep -n "^| decision (file:line)" docs/architecture-decision-map.md`.
+Filling the column is mechanical (the same grep `V6` already runs) and is the
+single largest usability improvement available to this document.
 
 ---
 
@@ -523,10 +560,35 @@ corpus… insurance").
 
 ⚠️ **`if len(s.line_ys) >= 5` at `:464`, `:1148`, `:1471`** excludes one-line
 percussion staves from the barline vote, from cell extraction and from
-resegmentation. They are detected only to preserve slot numbering — and
-`Staff.nominal_line_spacing_px` exists specifically so such a staff could size
-its windows, **and no production site reads it.** This is backlog item C3 with
-its three locations.
+resegmentation. They are detected only to preserve slot numbering. This is
+backlog item C3. ⚠️ **There is a FOURTH guard the item's "three locations" does
+not name**, `measure_extractor.py:849` (`len(other.line_ys) < 5`).
+
+⚠️⚠️ **CORRECTED 2026-09-07 — this paragraph used to say
+`Staff.nominal_line_spacing_px` "exists specifically so such a staff could size
+its windows, and no production site reads it". THAT WAS FALSE, and it was the
+entry the one-line-staves workstream would have read first.** It is read at
+`types.py:102`, inside the `Staff.line_spacing_px` **property**:
+
+```python
+    if len(self.line_ys) < 2:
+        return float(self.nominal_line_spacing_px or 0.0)
+```
+
+and `line_spacing_px` has **15 production readers** — among them
+`system_grouping.py:237` and `:299`
+(`max(upper.line_spacing_px, lower.line_spacing_px)`, the crossing band's own
+scale), `:255`, `:357`, `:370`, `:601`, `staff_detector.py:671`/`:755`,
+`measure_extractor.py:152`/`:772`/`:973`, `direction_text.py:270`. **A one-line
+staff bordering an inter-staff gap already contributes its nominal spacing to
+system grouping.** The field is live, not dormant, and "wiring it up" would
+change grouping geometry while believing itself inert.
+
+**Why this map got it wrong, and the lesson for every other negative in it:** a
+direct grep for the field name finds only the write site and the property. The
+consumption is **transitive through a property**. An import graph is not a
+consumption graph, and neither is a name grep.
+(`benchmarks/omr-decision-map-verify-2026-09/FINDINGS.md` E1.)
 
 ---
 
@@ -537,11 +599,11 @@ its three locations.
 | `yolo_detector.detect:345` | every detection that exists | ⚠️ **`OMR_CONF_THRESHOLD = 0.25` is ONE global number for 208 classes.** There is no per-class floor in code — the shipped weights bake per-class floors into the head BIASES because there was nowhere else to put them | `SymbolDetection.confidence` | A→D |
 | `imgsz_for_cell:252` | how many pixels of a staff space the model sees | the page DPI, and ⚠️ **the weight-routing verdict** — already computed at document level, and the two checkpoints were fine-tuned at different imgsz | an int passed to `predict`; ⚠️ **never recorded in the result** | A |
 | `_class_name_to_category:178` | the `category` every downstream filter keys on | `conf` and the bbox (both in hand in the caller loop); the class **id**, so the fine/coarse block boundary that would say which vocabulary it came from is discarded | `category`, `smufl_name` | D |
-| `_drop_clipped_notehead_fragments:558` | is this a neighbour's ink the crop sliced | ⚠️ `confidence` — a 0.95 detection is deleted on geometry alone, while its sibling rule `_drop_unladdered_noteheads` is built entirely on confidence; also `width_canonical` (a fragment's aspect is as much a giveaway as its height) | a count → **NOBODY** | E |
-| `_drop_unladdered_noteheads:3098` | delete an unsupported outside-staff note | ⚠️ `det["pitch"]` (already resolved — an `Ab1` on a flute staff is exactly the impossible the range veto exists for), `det["class"]` (the documented fakes are whole-note-shaped), and the detection's own height in staff spaces | a count → **NOBODY** | **B → hard gate**, the pipeline's one confidence threshold |
+| `_drop_clipped_notehead_fragments:558` | is this a neighbour's ink the crop sliced | ⚠️ `confidence` — a 0.95 detection is deleted on geometry alone, while its sibling rule `_drop_unladdered_noteheads` is built entirely on confidence; also `width_canonical` (a fragment's aspect is as much a giveaway as its height) | a count → **`probe`** (`omr-ned-2026-08/probe_edge_fragments.py:76`, `probe_gate_reach.py:81`) | E |
+| `_drop_unladdered_noteheads:3098` | delete an unsupported outside-staff note | ⚠️ `det["pitch"]` (already resolved — an `Ab1` on a flute staff is exactly the impossible the range veto exists for), `det["class"]` (the documented fakes are whole-note-shaped), and the detection's own height in staff spaces | a count → **`probe`** (`probe_gate_reach.py:80`) | **B → hard gate**, the pipeline's one confidence threshold |
 | **`_dedupe_cross_staff_detections:2645`** | **which staff owns a contested glyph** | ⚠️ **both confidences are in hand and NEITHER is read** — proven in the same function: they are fetched at `:2801-2802` into the `OMR_CONTEST_DUMP` blob, which the docstring certifies is verdict-neutral. Also unread: the IoU value, the band distances, the ladder rung counts | removals; `deferred` | D — ladder(2) → range/hairpin(1) → **distance(0)** |
 | `_apply_roster_range_veto:2919` | reverse a distance-only verdict | both confidences again (the parked records carry the full dicts) | `n_swapped`, `swaps` → **reported, not acted on** | E |
-| `_drop_furniture_measures:3032` | drop leading/trailing empty columns | column **width** — ⚠️ checked and **rejected on the record**, the rare case where the unused signal is unused on purpose | a count → **NOBODY** | E |
+| `_drop_furniture_measures:3032` | drop leading/trailing empty columns | column **width** — ⚠️ checked and **rejected on the record**, the rare case where the unused signal is unused on purpose | a count → **NOBODY** (verified: `n_measures_dropped_as_furniture` has zero readers anywhere) | E |
 | `line_detection.detect_stems:302` | what is a stem | ⚠️ **the YOLO detections for the same cell.** `detect_lines(cell)` is passed only the cell; `dets` exist at that moment and are not handed in | `LineDetection(confidence=1.0)` | **A — no probability is ever formed**, and the dataclass says so |
 | `_drop_paired_strokes:200` | is this pair a sharp's two strokes | ⚠️ **the YOLO `accidental` detections.** The sibling rule `_filter_stems_overlapping_tremolo` does exactly this shape for ornaments; the identical evidence exists for accidentals one call away | filtered stems | A, symmetric deletion |
 | `detect_beams:527` | what is a beam | the YOLO `beam`/`slur`/`tie` detections (both sources exist — `rhythm.py:1523` merges them later); noteheads; the component's slope | `n_bars` beam objects | A / quorum vote |
@@ -611,7 +673,9 @@ column.
 Measured: reach 7 of 193 scan staves, **precision as a clef-error detector
 0 of 11.** Every firing is a family boundary — bassoon above horn, timpani
 above violin — because an orchestral score is ordered by family, not by
-register. Do not resurrect it.
+register. **Do not resurrect the ADJACENT-PAIR form**; §4.2 Cycle 3 carries the
+scope of that refutation (one form, n = 11) and §9.4 names the two variants it
+does not cover.
 
 ⚠️ **`phase1_warning` is the counter-example worth knowing.** The one
 STRUCTURAL warning IS consumed — `rhythm.py:451`, `transcribe.py:3383`/`:3505`
@@ -795,7 +859,7 @@ in the pipeline.**
 | `_wedge_anchors:2672` | which note a hairpin opens on | head **y** — though a hairpin is always BELOW its staff, 8 of 8 in the page truth | **D** |
 | `_wedge_anchors:2695` | where it stops | ⚠️ **`duration_beats` of the note still sounding** — which answers "is it still sounding at the ink's end" DIRECTLY, and is answered by geometry instead | **D** + **E** |
 | **`_stitch_slots:3231`** | may the systems be joined into parts | ⚠️ **the largest unread set in the file.** `staff["instrument"]` — the exact fact that would join a tacet-suppressed system, read four functions later for NAMING and never for joining; `staff["slot_index"]` (unread on the default path — the whole `_stitch_slots_by_slot` that uses it is behind `OMR_SLOT_STITCH`); `staff_geometry`; `clef`; `key_signature`; measure counts | **E**, the canonical one — an all-or-nothing refusal on a single scalar equality |
-| `_condensed_count:3313` | how many parts one condensed staff emits | ⚠️ **the TIER that produced the count.** `condensed_parts.players_for_label` has four evidence tiers (explicit / compound / numeral / plural) and only the integer travels onto the staff dict, so export cannot weigh `Corni I.II.` against a bare `Flauti` — which is precisely the distinction the Dvořák control falsifies | **E** + **A** |
+| `_condensed_count:3313` | how many parts one condensed staff emits | ⚠️⚠️ **CORRECTED 2026-09-07 — THE INTEGER NEVER TRAVELS, so this decision is INERT.** Nothing in `tools/` or `backend/` calls `condensed_parts.players_for_label`, and nothing in `tools/` writes the `condensed_parts` staff field; its sole writer is `benchmarks/omr-condensed-parts-2026-09/run_arms.py:133`. So in production `counts` is always `{1}` and **`OMR_CONDENSED_PARTS` is a no-op even when set** — consistent with CLAUDE.md's "blocked on a count source", but a stronger and more useful statement than the tier one. The blind-to below is what would be lost *if a producer existed*: the four evidence tiers (explicit / compound / numeral / plural), so export could not weigh `Corni I.II.` against a bare `Flauti` — the distinction the Dvořák control falsifies | **E** + **A** |
 | piano grouping `:3428`, `:3505` | emit a brace | ⚠️ **`staff["instrument"]`** (a 2-staff orchestral extract becomes a piano) and **the bracket block**, which `transcribe.py:4436` emits specifically because it had never reached the dict, and which export still does not read | **A** |
 
 ⚠️ **LilyPond gets strictly less, and it is not in `KNOWN_GAPS`.**
@@ -833,9 +897,12 @@ Reproduce the whole table with
 | **SERIALISED-ONLY** | `weight_routing` · `clef_proposal` · `label_contradiction` · `group_index` · `pitch_candidates` · `contested_notehead_pairs` · `roster_range_veto` · `n_clipped_notehead_fragments_dropped` · `n_cross_staff_duplicates_removed` · `n_unladdered_noteheads_dropped` · `key_signature_reason` · `key_signature_unread_reason` · `instrument_label` · `instrument_family` · `instrument_veto` · `page_size_px` · `skew_corrected_deg` · `weights` · `imgsz` · `iou_threshold` · `agnostic_nms` |
 | **NOBODY** | `n_measures_dropped_as_furniture` · `clef_overridden_by_dossier` · `key_signature_final` · `time_signature_final` · `rhythm_reconciliation` (the per-measure RECORD — only the integer counter is read) · `contextual.clef_fills` · `contextual.dossier_clefs` |
 
-⚠️ **`confidence_label`: nine write sites, zero readers anywhere in the tree.**
-Every warning block computes a high/medium/low label that nothing consults.
-That is the purest dead field in the schema.
+⚠️ **`confidence_label`: nine write sites, and NO DECISION reads it.** Every
+warning block computes a high/medium/low label that nothing consults. That is
+the purest dead field in the schema. ⚠️ Narrowed 2026-09-07 from "zero readers
+anywhere in the tree", which was too strong: `clef_correction.py:627` reads
+`proposal.confidence_label` to serialise it, 13 test assertions read it back,
+and two benchmark probes harvest it. Nothing *acts* on it.
 
 ### 6.2 The application boundary — ten fields of a 67k-detection JSON
 
@@ -844,9 +911,19 @@ That is the purest dead field in the schema.
 `n_noteheads_total`, `n_noteheads_pitched_total`,
 `n_noteheads_with_duration_total`, `phase1_warning` (presence),
 `rhythm_sum_warning` (presence), `detections[].confidence` (mean).
-`backend/main.py` re-opens the file for the same per-page mean.
-`musicxml_builder.py` reads `clef`, `key_signature`, `time_signature`, `pitch`,
-`dots`, `articulations`.
+`backend/main.py` re-opens the file for the same per-page mean. **That is the
+whole boundary.**
+
+⚠️ **CORRECTED 2026-09-07.** This paragraph used to add *"`musicxml_builder.py`
+reads `clef`, `key_signature`, `time_signature`, `pitch`, `dots`,
+`articulations`"* — **which is a different engine's boundary, not this one's.**
+`musicxml_builder` is imported by `backend/modules/claude_vision_omr.py:29` and
+by nothing else; it serialises the **Claude Vision** OMR's JSON, whose shape
+`transcribe` never emits (`data["staves"]` at top level, `staff_id`,
+`instrument_name`, `measures[].staves[].voices[].elements[]` —
+`musicxml_builder.py:581-626`). The local pipeline's `clef` / `pitch` /
+`key_signature` do **not** reach the application through it. This strengthens
+the conclusion below rather than weakening it.
 
 **The frontend reads ZERO OMR-result keys.** The only OMR-derived numbers a
 user ever sees are the per-page mean confidence (surfaced as
@@ -936,10 +1013,25 @@ number the pipeline already computes.
 - **`hairpin_detection.py` (344 lines) is imported by nothing but its own
   tests.** Its docstring reports shipped results — *"59 of 99 hairpins against
   the detector's 1"* — for a module with no call site.
+- ⚠️ **`bracket_reader.py` (390 lines) is imported by nothing but its own tests
+  and one benchmark's probes** — the same shape as `hairpin_detection.py` and
+  the LARGER of the two. Added 2026-09-07; the map missed it entirely. Its own
+  docstring is honest about it (*"Nothing in the pipeline consumes this
+  module"*), which makes it a smaller hazard than the hairpin reader's — but
+  §7.4 is where an agent asks *"is this already written?"*, and a
+  bracket-structure workstream reading the earlier version of this list would
+  not have learned that 390 lines of measured classical CV exist. Record:
+  `benchmarks/omr-bracket-reading-2026-09/`.
+- ⚠️ **`condensed_parts.py` (127 lines) likewise** — `players_for_label` is
+  called only by tests and by `benchmarks/omr-condensed-parts-2026-09/`. See
+  the Stage 11 `_condensed_count` row for the consequence: the field it would
+  fill is never written in production, so `OMR_CONDENSED_PARTS` is inert even
+  when set.
 - **`template_matcher.py`** survives in the live pipeline only as the home of
-  the `SymbolDetection` dataclass; `detect_symbols` is called by tests and one
-  annotate tool. Two live env flags (`OMR_PHASE26_FIXES`,
-  `OMR_PHASE28_FIX_TEXT_GATE`) gate dead code.
+  the `SymbolDetection` dataclass; `detect_symbols` is called by tests and
+  **two** annotate tools (`build_template.py:34`, `port_verdicts.py:39`). Two
+  live env flags (`OMR_PHASE26_FIXES`, `OMR_PHASE28_FIX_TEXT_GATE`) gate dead
+  code.
 - **`voicing.group_chords_in_transcribe_result`** — hardcodes one voice per
   staff, ignoring `split_events_into_voices` 40 lines above; `grep` finds one
   occurrence, its own definition.
@@ -952,7 +1044,20 @@ number the pipeline already computes.
   test checks the committed JSON, not the loaded checkpoint.
 - **`Decision.names_a_staff`**, **`Match.is_ambiguous`**,
   **`LocatedTimeSignature.as_dict`**, **`staff_header.extract_header_cell`** —
-  zero callers each.
+  zero **production** callers each. ⚠️ Corrected 2026-09-07 from "zero callers":
+  all four have 2-4 test callers (`test_work_roster.py:136,226`;
+  `test_instruments.py:641,643,647,736`;
+  `test_time_signature_locator.py:191,194,197`; `test_staff_header.py:180,187`),
+  so deleting one on this list's word would break the suite. The map has the
+  vocabulary for this — `probe` — and this bullet did not use it.
+
+⚠️ **This list is complete for `tools/omr/*.py` as of 2026-09-07, and the way it
+was completed is worth reusing**:
+`benchmarks/omr-decision-map-verify-2026-09/probe_orphan_modules.py`. Note the
+probe's own caveat, which is this section's hazard in miniature — **a module
+invoked as a subprocess, as a `python3 -m` entry point, or inside another venv
+has no importer and is not an orphan**; four such false positives are named in
+the probe's docstring.
 
 ---
 
@@ -1003,6 +1108,7 @@ it does.
 | **D17** | `class_aliases.py:69-71`: *"`unaccounted()` fails on anything absent from both tables, so a new weights file is a **loud failure** rather than a silent drop"* | `yolo_detector._ensure_loaded` calls `canonicalize_names(raw)` and **never `unaccounted()`**. The test checks the committed JSON, not the loaded checkpoint. A checkpoint with a new class falls through to `category="unknown"` in silence. |
 | **D18** | `transcribe.py:5044`: `--clef-reader-conf` *"Min confidence for a clef-specialist detection to **override** the main clef"* | `:1769` is gap-fill only, and the adjacent comment at `:1755` says so: *"GAP-FILL ONLY … never overwrites one that did."* |
 | **D19** | `transcribe._pair_ties_in_cell` docstring `:2238-2240`: *"Pitch match: not checked (**and not available**)"* | `pitch_by_id` is complete at `:1905`; the call is at `:1948`, same scope. "Not available" describes an attribute, not the information. |
+| **D28** | `export._paired_spans`, comment at `:2477-2478`: *"**Prefer the longest run the curve covers WITHIN one voice** over dropping it."* | The code takes the voice of the **first** covered head and discards the rest: `voice = voice_of.get(id(covered[0][2]), 0)` (`:2479`). No run length is computed. An arc covering one head of voice 1 and three of voice 2 keeps **one**, fails the `len(in_voice) < 2` test two lines down, and the slur is dropped — where the documented rule would have kept it. Found 2026-09-07 by independent enumeration, not by this map's own pass. |
 | **D20** | `key_signature_locator.py:84-86`: *"`transcribe` only reads a key signature for a staff whose clef is actually known — **never** for one on the positional default"* | `transcribe.py:1407-1411` **does** read against `_default_clef_for_position`, at a halved, capped weight. The guard moved from the staff to the vote; CLAUDE.md has the corrected version, the module docstring does not. |
 
 ### 8.5 Prose about a module that is not wired in
@@ -1017,9 +1123,9 @@ it does.
 
 | # | finding |
 |---|---|
-| **D24** | ⚠️ **CLAUDE.md's env table is not the tree's env surface.** `[V4]`: **36 `OMR_*` variables are read in the tree; 16 are absent from CLAUDE.md**, and several are DEFAULT-ON behaviour flags: `OMR_ABSENT_INSTRUMENT_VETO` (on), `OMR_ROSTER` (on), `OMR_LABEL_MERGE_QUALITY` (on), `OMR_MOVEMENT_REFERENCE` (on), plus `OMR_ROSTER_CLEF`, `OMR_INSTRUMENT_CLEF_DEFAULT`, `OMR_SLOT_GROUP_MAP`, `OMR_SPAN_REFERENCE_FIT`, `OMR_REFERENCE_MOST_LABELLED`, `OMR_TAIL_RULE`, `OMR_ROSTER_RANGE_VETO`, `OMR_CONTEST_DUMP`, `OMR_DIRECTION_READERS`, `OMR_PHASE26_FIXES`, `OMR_PHASE28_FIX_TEXT_GATE`, `OMR_SURYA_*`. |
-| **D25** | `OMR_TAIL_RULE` is bound at **import time** (`dossier.py:521`), so unlike every other flag it cannot be changed per call. |
-| **D26** | `_WEDGE_START_RULE` (`export.py:2587`) is presented with a measured comparison table as a selectable rule and is a module literal with no override — the `"before"` branch at `:2669` is unreachable. |
+| **D24** | ⚠️ **CLAUDE.md's env table is not the tree's env surface.** `[V4]`: **36 `OMR_*` variables are read in the tree; 16 are absent from CLAUDE.md**, and several are DEFAULT-ON behaviour flags: `OMR_ABSENT_INSTRUMENT_VETO` (on), `OMR_ROSTER` (on), `OMR_LABEL_MERGE_QUALITY` (on), `OMR_MOVEMENT_REFERENCE` (on), plus `OMR_ROSTER_CLEF`, `OMR_INSTRUMENT_CLEF_DEFAULT`, `OMR_SLOT_GROUP_MAP`, `OMR_SPAN_REFERENCE_FIT`, `OMR_REFERENCE_MOST_LABELLED`, `OMR_TAIL_RULE`, `OMR_ROSTER_RANGE_VETO`, `OMR_CONTEST_DUMP`, `OMR_DIRECTION_READERS`, `OMR_PHASE26_FIXES`, `OMR_PHASE28_FIX_TEXT_GATE`, `OMR_SURYA_*`. ⚠️⚠️ **AND `[V4]` ITSELF UNDERCOUNTS — the probe that keeps this entry current is defeated by the same indirection this map warns about.** `verify.py:129` matches only the literal `os.environ.get("OMR_…")` in `tools/omr/*.py` (not `rglob`, no other read form), so it misses four flags — including **`OMR_ABSENT_INSTRUMENT_VETO`**, whose name lives in a constant (`absent_instrument.py:85: ENV_VAR = "…"`) and which this row names as a default-ON flag *only because a human wrote the list*. A `--json` re-run drops it in silence. Wider scan (`benchmarks/omr-decision-map-verify-2026-09/probe_env_surface.py`, 2026-09-07): **41 in the tree, 20 undocumented**; V4 sees 37/17. Also: this row lists `OMR_SPAN_REFERENCE_FIT` as undocumented, and CLAUDE.md does mention it at line 1609 — in prose, not in the env TABLE, so the claim is true of the table and overstated as written. |
+| **D25** | `OMR_TAIL_RULE` is bound at **import time** (`dossier.py:521`) and read directly at both decision sites (`:550`, `:552`), so it has **no per-call escape**. ⚠️ Narrowed 2026-09-07: the original wording, "unlike every other flag", is false — `staff_labels_surya.py:77` and `:91` bind `OMR_SURYA_TIMEOUT_S` and `OMR_SURYA_KEEP_ALIVE` at import too. What is unique to `OMR_TAIL_RULE` is the missing escape: the Surya pair are consumed as `X if arg is None else arg` defaults (`:242`, `:248`, `:307`, `:314`) and a caller can override them. |
+| **D26** | `_WEDGE_START_RULE` (`export.py:2587`) is presented with a measured comparison table as a selectable rule and is a module literal with no runtime override — no env read, no CLI flag, no reassignment in `tools/`, so the `"before"` branch at `:2669` is dead on every production and test path. ⚠️ Narrowed 2026-09-07: it is **not unreachable**. `benchmarks/omr-hairpins-2026-09/probe_stop_rule.py:101` monkeypatches the module global, and that probe is where the 1-of-8 vs 4-of-8 figures in the constant's own comment came from. It is a retained A/B arm reachable only by that probe. |
 | **D27** | `_DYNAMIC_WORDS` and `_DYNAMIC_ELEMENTS` (`export.py:1303-1310`) are two literals with identical membership, and the comment at `:1302` describes a distinction between them that no longer exists. A live drift hazard: one gates acceptance, the other gates element choice. |
 
 ---
@@ -1126,7 +1232,7 @@ python3 benchmarks/omr-decision-map-2026-09/verify.py --write-doc
 | **V1** | `export.py` never reads a detection confidence | 1 hit, 0 of them code — **holds** |
 | **V2** | how many of the five consistency checks reach a consumer | **4 of 6 tracked keys have zero consumers.** `rhythm_sum_warning`'s only consumer is `backend/modules/local_omr.py:360` (a boolean presence count; the grep also hits that file's docstring, hence 2). `clef_proposal` has none |
 | **V3** | two warning keys named in prose do not exist | **holds** — 0 hits each |
-| **V4** | CLAUDE.md's env table vs the tree's env surface | 36 in tree, **16 undocumented** |
+| **V4** | CLAUDE.md's env table vs the tree's env surface | 36 in tree, **16 undocumented** when written; 37/17 on 2026-09-07. ⚠️ **V4 UNDERCOUNTS** — it matches only literal `os.environ.get("OMR_…")` in `tools/omr/*.py` and misses a name held in a constant, notably `OMR_ABSENT_INSTRUMENT_VETO`. Wider scan: **41/20**. See D24 and `benchmarks/omr-decision-map-verify-2026-09/probe_env_surface.py` |
 | **V5** | the three circularity refusals still stand | **holds** — `clef_correction.py:396`, `dossier.py:434`, `score_layouts.py:682` |
 | **V6** | consumer counts for the tracked result-JSON keys | 10 of 11 never leave `tools/omr/` |
 | **V7** | line numbers quoted in prose against the tree | **3 of 6 have drifted** |
@@ -1167,8 +1273,55 @@ consumers.
 
 ## 11. What this map does NOT cover
 
-Scope was cut uniformly in depth rather than by dropping stages, per the
-commission. What was cut, so the holes are in known places:
+The intent was to cut uniformly in depth rather than by dropping stages, per
+the commission. ⚠️⚠️ **THE INTENT WAS NOT MET, and the first list below is the
+correction (2026-09-07).** An enumeration made from the code alone, without
+reading this document, found **185 decision points** in five scopes; §5 has
+rows for two of them.
+
+### 11.0 ⚠️ Stages §2 names and §5 never catalogues
+
+`grep -n "direction_text\|_pair_ties\|_merge_arcs\|annotate_slurs" ` on this
+file returns five hits — three in §2/§3.1, one in §6.1's key list, one in D19.
+**§5 contains not one decision row for any of them.**
+
+| area | independent count | §5 rows | in §2's spine? |
+|---|--:|--:|---|
+| **`direction_text.py`** | **72** | **0** | ✅ stage 9′ |
+| **tie pairing** (`_pair_ties_in_staff` / `_in_cell`) | **25** | **0** | ✅ stage 4b |
+| **slur merge + pairing** (`_merge_arcs_across_barlines`, `annotate_slurs_in_slot` and callees) | **46** | **0** | — (export) |
+| `condensed_parts.py` | 17 | 0 (one consumer row) | — |
+
+Three of the omitted decisions are this document's own thesis pattern:
+
+- **`direction_text.read_directions:801` — `accepted[0]`.** The winning OCR
+  rung is chosen by **list position**, no score; the rung disagreement is
+  computed at `:802-809` and reaches only the report. And the `Reader` type at
+  `:614` is `Callable[[list[np.ndarray]], list[str]]` — **no OCR confidence
+  exists in the interface at all**, so this is structural Class A. That
+  signature is itself a decision.
+- **`direction_text.read_directions:795` — the lexicon gate**, which CLAUDE.md
+  calls load-bearing, on the feature §3.3 measures at ~75% of whole-work wall
+  clock.
+- **`export._number_spans:2519-2520` — a 7th simultaneous slur is dropped
+  silently.** `if number is None: continue`; no counter, no warning, no field.
+  A Class-E refusal with no record — §7.1 item 1's exact target, missing from
+  the shortlist it belongs on.
+
+**Modules named nowhere in these 1,300 lines**, each with production decisions:
+**`staff_labels_surya`** (the free DEFAULT rung, `contextual.py:685` — §5's
+Stage 9 catalogues the *unreachable* human rung and skips this one) and
+**`_surya_worker._assign:89`**, which carries the block-height gate CLAUDE.md
+records as a landed 2026-09-05 fix; **`staff_labels_vision`**
+(`contextual.py:809-813`); **`key_signature_template`**
+(`transcribe.py:1394`/`:1409` — the reader behind D20, and the one CLAUDE.md
+credits with 11 of 12 staves where the locator reads 2); and
+**`movement_reference`** (`OMR_MOVEMENT_REFERENCE`, default ON per D24;
+`slots.py:565`, `:587`).
+
+Record: `benchmarks/omr-decision-map-verify-2026-09/FINDINGS.md` §4.
+
+### 11.1 What was cut deliberately, so those holes are in known places:
 
 - **Per-constant provenance.** §5 says whether a constant sits on a measured
   gap, a plateau, or nothing. It does not reproduce the measurement. Follow the
@@ -1278,6 +1431,8 @@ flowchart TD
   d_align(["the slot alignment DP score<br/><i>never returned — no margin exists</i>"])
   s10 --> d_align
   o_hair[/"hairpin_detection.py<br/><i>imported only by its own tests</i>"/]
+  o_brack[/"bracket_reader.py (390 lines)<br/><i>tests + one benchmark's probes only</i>"/]
+  o_cond[/"condensed_parts.py<br/><i>no producer — so OMR_CONDENSED_PARTS is inert</i>"/]
   o_tmpl[/"template_matcher.py<br/><i>dead detector; 2 live env flags on it</i>"/]
   u_clef{{"clef OVERRIDE needs source is 'label'<br/><i>29 of 29 unresolved non-treble scan staves print NO label</i>"}}
   u_range{{"_dedupe range tier needs a dossier<br/><i>scan gate is dossier-free BY PROTOCOL — 0 of 4,256 firings</i>"}}
@@ -1288,7 +1443,7 @@ flowchart TD
   classDef unsat fill:#78350f,stroke:#f59e0b,color:#fef3c7;
   classDef stage fill:#1e293b,stroke:#64748b,color:#e2e8f0;
   class d_conf,d_pc,d_rhy,d_mc,d_key,d_reg,d_ts,d_sym,d_prop,d_lc,d_dt,d_align dead;
-  class o_hair,o_tmpl orphan;
+  class o_hair,o_brack,o_cond,o_tmpl orphan;
   class u_clef,u_range unsat;
   class s1,s2,s3,s8a,s8b,s4,s5,s6,s7,sown,s8c,s9,s10,s11 stage;
   %% measured: 4 of 6 checks have no consumer; 10 of 11 tracked result keys never leave tools/omr/
