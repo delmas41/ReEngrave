@@ -421,6 +421,14 @@ def read_hairpins_for_page(page: dict[str, Any], page_binary: np.ndarray) -> int
         want it.)
 
     Returns how many hairpins were added as detections.
+
+    ⚠️ **A hairpin added here is not a `<wedge>` exported.** Measured end to end
+    over the eleven scan rows, 2026-09-07: 56 added, 112 wedge tags exported —
+    but one of those 55 pairs is DEGENERATE, a crescendo and its stop emitted
+    back to back with no note between them, on Mahler 5 p3. That is export-side
+    (an eventless bar taking the directions-only path while the anchor pair
+    lands in the next bar), not this module's, and it is recorded here because
+    this is where anyone reading a wedge count will start.
     """
     spacings = sorted(s["spacing"] for s in _staff_meta(page))
     if not spacings:
