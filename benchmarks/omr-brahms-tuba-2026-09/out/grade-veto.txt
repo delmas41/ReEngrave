@@ -1,0 +1,51 @@
+INPUT ASSERTION: systems-in-run=151 staff-records-in-run=1927  ->  FULL systems scored=53 staff-records-scored=764 (39.6% of the document)
+INPUT ASSERTION: every arm shares one staff-record key set (1927 keys), so a difference below is the flag
+
+arm              veto   judgeable   correct   wrong  unnamed   rate
+base             on           764       642     122        0   0.8403
+exempt           on           764       642     109       13   0.8403
+noexempt         on           764       642      69       53   0.8403
+
+--- base  veto=on
+      lineup p0-25/14     (28 systems):  308/ 392 = 0.7857
+      lineup p33-35/14    ( 2 systems):   24/  28 = 0.8571
+      lineup p36-44/12    ( 6 systems):   55/  72 = 0.7639
+      lineup p45-85/16    (17 systems):  255/ 272 = 0.9375
+    confusions (truth -> emitted), most common first:
+         33  Horn             -> Trumpet
+         33  Trumpet          -> Trombone
+         28  Timpani          -> Tuba
+         17  Trombone         -> Tuba
+          8  Violin           -> Tuba
+          2  Timpani          -> Trombone
+          1  Horn             -> Contrabassoon
+
+--- exempt  veto=on
+      lineup p0-25/14     (28 systems):  308/ 392 = 0.7857
+      lineup p33-35/14    ( 2 systems):   24/  28 = 0.8571
+      lineup p36-44/12    ( 6 systems):   55/  72 = 0.7639
+      lineup p45-85/16    (17 systems):  255/ 272 = 0.9375
+    confusions (truth -> emitted), most common first:
+         33  Horn             -> Trumpet
+         33  Trumpet          -> Trombone
+         28  Timpani          -> Tuba
+         13  Trombone         -> (unnamed)
+          8  Violin           -> Tuba
+          4  Trombone         -> Tuba
+          2  Timpani          -> Trombone
+          1  Horn             -> Contrabassoon
+
+--- noexempt  veto=on
+      lineup p0-25/14     (28 systems):  308/ 392 = 0.7857
+      lineup p33-35/14    ( 2 systems):   24/  28 = 0.8571
+      lineup p36-44/12    ( 6 systems):   55/  72 = 0.7639
+      lineup p45-85/16    (17 systems):  255/ 272 = 0.9375
+    confusions (truth -> emitted), most common first:
+         33  Horn             -> Trumpet
+         33  Trumpet          -> Trombone
+         28  Timpani          -> (unnamed)
+         17  Trombone         -> (unnamed)
+          8  Violin           -> (unnamed)
+          2  Timpani          -> Trombone
+          1  Horn             -> Contrabassoon
+

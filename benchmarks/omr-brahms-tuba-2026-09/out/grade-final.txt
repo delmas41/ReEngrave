@@ -1,0 +1,29 @@
+INPUT ASSERTION: systems-in-run=151 staff-records-in-run=1927  ->  FULL systems scored=53 staff-records-scored=764 (39.6% of the document)
+INPUT ASSERTION: every arm shares one staff-record key set (1927 keys), so a difference below is the flag
+
+arm              veto   judgeable   correct   wrong  unnamed   rate
+shipped          on           764       741      23        0   0.9699
+veto             on           764       741       6       17   0.9699
+
+--- shipped  veto=on
+      lineup p0-25/14     (28 systems):  392/ 392 = 1.0000
+      lineup p33-35/14    ( 2 systems):   22/  28 = 0.7857
+      lineup p36-44/12    ( 6 systems):   72/  72 = 1.0000
+      lineup p45-85/16    (17 systems):  255/ 272 = 0.9375
+    confusions (truth -> emitted), most common first:
+         17  Trombone         -> Tuba
+          2  Trumpet          -> Horn
+          2  Timpani          -> Trumpet
+          2  Violin           -> Timpani
+
+--- veto  veto=on
+      lineup p0-25/14     (28 systems):  392/ 392 = 1.0000
+      lineup p33-35/14    ( 2 systems):   22/  28 = 0.7857
+      lineup p36-44/12    ( 6 systems):   72/  72 = 1.0000
+      lineup p45-85/16    (17 systems):  255/ 272 = 0.9375
+    confusions (truth -> emitted), most common first:
+         17  Trombone         -> (unnamed)
+          2  Trumpet          -> Horn
+          2  Timpani          -> Trumpet
+          2  Violin           -> Timpani
+

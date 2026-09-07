@@ -1,0 +1,31 @@
+=== baseline (must be all green)
+14 passed in 0.68s
+=== 1. the veto never fires (rule removed)
+  break: if name in admissible -> if True
+    -> 3 failed, 11 passed in 0.67s
+=== 2. an empty roster STRIPS instead of abstaining (the dangerous one)
+  break: the abstention guard removed
+    -> 1 failed, 13 passed in 0.68s
+=== 3. a READ name becomes vetoable (source scope widened)
+  break: VETOABLE_SOURCES widened to include label + ambiguity
+    -> 2 failed, 12 passed in 0.65s
+=== 4. the speaks-for-itself exemption REINSTATED (the measured reversal)
+  break: exemption put back — this is what leaves 4 of 17 standing
+    -> 1 failed, 13 passed in 0.68s
+=== 5. the flag defaults ON
+  break: DEFAULT_MODE off -> on
+    -> 1 failed, 13 passed in 0.67s
+=== 6. the summary cannot tell abstention from a clean run
+  break: roster: None collapsed to []
+    -> 1 failed, 13 passed in 0.69s
+=== 7. WIRING: the veto's keys never reach vetoed_keys
+  break: union removed
+    -> 1 failed, 13 passed in 0.71s
+=== 8. WIRING: the two vetoes share one marker
+  break: markers merged
+    -> 1 failed, 13 passed in 0.73s
+=== 9. the module grows a catalog reader of its own
+  break: json import + catalog.json path added to the module body
+    -> 1 failed, 13 passed in 0.67s
+=== restored; baseline again
+14 passed in 0.72s
