@@ -72,6 +72,7 @@ from .roster import enabled as roster_enabled
 from .slots import (MIN_LABEL_CONFIDENCE, Slot, SystemView, align,
                     assign_slots, labels_by_staff)
 from .staff_detector import detect_staves
+from . import score_language
 from . import work_roster
 from .staff_labels import StaffLabel, has_text_layer, read_staff_labels
 
@@ -602,6 +603,73 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
     return out
 
 
+def _read_score_language(staff_labels_per_page: list[list[StaffLabel]]):
+    """The document's printing tradition, voted from the whole run's labels.
+
+    ⚠️ **DOCUMENT-scoped, and that is not a detail.** A language is a property
+    of one printing, so the vote pools every page this run read rather than
+    deciding page by page — a per-page verdict would make the answer depend on
+    which page you were looking at, and a vote that GREW page by page would
+    make it depend on how many pages had been read. Both are the regime fault
+    `benchmarks/omr-score-language-2026-09/FINDINGS.md` §1.1 is about, where the
+    same document reads "no evidence at all" from ten sampled pages and `it` at
+    share 1.00 from its own page 0.
+
+    ⚠️ It is still REGIME-DEPENDENT in the honest sense — a run that never reads
+    a page carrying a spelled-out roster abstains — which is exactly the
+    property `roster.acquire_roster` has, and abstention is the safe direction.
+
+    ⚠️ **Votes off `StaffLabel.alias`, never off the text, and that is what
+    makes it free enough to run unconditionally.** The readers already resolved
+    every one of these strings and the alias is the answer they kept;
+    re-resolving costs a measured **21.98 s on Ravel's 427 labels** because
+    `instruments.lookup` is 23-136 ms per string. See
+    `score_language.detect_from_aliases`.
+    """
+    return score_language.detect_from_aliases(
+        [lab.alias for page in staff_labels_per_page for lab in page])
+
+
+def _apply_score_language(staff_labels_per_page: list[list[StaffLabel]],
+                          reading) -> tuple[list[list[StaffLabel]], list[dict]]:
+    """Re-decide the labels this document's tradition settles.
+
+    ⚠️ **Changes what a label RESOLVES TO, never what it SAYS** — the contract
+    `_labels_for_page`'s roster pass states, for the same reason: a reader is
+    never made to "read" something it did not see.
+
+    Only `instrument` moves. `fifths_offset` is deliberately carried across
+    unchanged, and `test_a_re_decided_instrument_never_transposes` is what makes
+    that safe — every instrument reachable through `LANGUAGE_READINGS` is
+    non-transposing, so the offset parsed from the printed key suffix is still
+    the right one. An entry that broke this would fail that test rather than
+    silently transpose a staff.
+    """
+    out: list[list[StaffLabel]] = []
+    changes: list[dict] = []
+    for page_index, page in enumerate(staff_labels_per_page):
+        kept: list[StaffLabel] = []
+        for lab in page:
+            name = (score_language.resolve_alias(lab.alias, reading)
+                    if lab.alias else None)
+            inst = (score_language.instrument_named(name)
+                    if name and lab.instrument is not None
+                    and name != lab.instrument.name else None)
+            if inst is None:
+                kept.append(lab)
+                continue
+            logger.info("score language %s: page %d staff %d %r %s -> %s",
+                        reading.language, page_index, lab.staff_index,
+                        lab.text, lab.instrument.name, inst.name)
+            changes.append({"page_index": page_index,
+                            "staff_index": lab.staff_index,
+                            "text": lab.text, "alias": lab.alias,
+                            "from": lab.instrument.name, "to": inst.name})
+            kept.append(replace(lab, instrument=inst))
+        out.append(kept)
+    return out, changes
+
+
 def _read_labels_for_page(pws, pdf_path: Path, page_index: int, *,
                           assist, budget: list[int],
                           surya_fallback: bool = True,
@@ -996,7 +1064,6 @@ def apply_contextual_analysis(
     # Labels credited to each reader, page set wide:
     # [text layer, Surya, Tesseract, vision, human].
     tiers = [0, 0, 0, 0, 0]
-    labels = []
     staff_labels_per_page = []
 
     if staved is None:
@@ -1010,7 +1077,39 @@ def apply_contextual_analysis(
             surya_fallback=surya_fallback, ocr_fallback=ocr_fallback,
             tiers=tiers, review_dir=review_dir)
         staff_labels_per_page.append(read)
-        labels.append(labels_by_staff(read))
+
+    # ── The document's printing tradition ────────────────────────────────────
+    # Litolff prints `Flauti / Oboi / Corni / Trombe`, Breitkopf `Flöten /
+    # Oboen / Hörner / Trompeten` — and a score does not name one instrument in
+    # two languages, so a rival spelling from another tradition EXCLUDES a
+    # reading. `instruments.lookup` is a pure function of the string with no
+    # context at all; this supplies the one piece of context that is a property
+    # of the DOCUMENT rather than of the staff.
+    #
+    # DETECTION IS UNCONDITIONAL AND ITS RESULT IS RECORDED; only its USE is
+    # behind `OMR_SCORE_LANGUAGE`. Same contract as the roster below, for the
+    # same reason: recording what the margins said changes no music, and a
+    # signal read correctly and then discarded is the shape this project has
+    # paid for nine times.
+    #
+    # ⚠️ It may only decide aliases `instruments.AMBIGUOUS_ALIASES` does NOT
+    # declare. A declared one is arbitrated by `_resolve_ambiguous_labels`
+    # using the layout fit and the clef, and both channels read these same
+    # labels — two signals sharing an ancestor are ONE signal. The split is
+    # enforced in `score_language`, not here.
+    language = _read_score_language(staff_labels_per_page)
+    summary["score_language"] = {
+        "language": language.language, "votes": language.votes,
+        "diagnostic_votes": language.n_diagnostic, "labels": language.n_labels,
+        "share": round(language.share, 4), "mixed": language.is_mixed,
+        "applied": score_language.enabled(), "changes": [],
+    }
+    if score_language.enabled() and language.language is not None:
+        staff_labels_per_page, _changes = _apply_score_language(
+            staff_labels_per_page, language)
+        summary["score_language"]["changes"] = _changes
+
+    labels = [labels_by_staff(read) for read in staff_labels_per_page]
 
     reference = assign_slots(staved, labels)
     if not reference:

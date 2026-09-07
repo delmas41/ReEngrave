@@ -1,0 +1,16 @@
+[ok ] tp re-admitted to LANGUAGE_READINGS (double-counts the clef channel)
+        shipped: pass   fault restored: FAIL (seen)
+[ok ] `flutes` tagged English-only (voted EN on Ravel's French head page)
+        shipped: pass   fault restored: FAIL (seen)
+[ok ] `basse` tagged French-only (12 FR votes off Mahler's German `Bässe`)
+        shipped: pass   fault restored: FAIL (seen)
+[ok ] `trpt` tagged English (8 EN votes off a BREITKOPF edition)
+        shipped: pass   fault restored: FAIL (seen)
+[ok ] `basso` given a language reading (would break Handel's one page)
+        shipped: pass   fault restored: FAIL (seen)
+[ok ] the share gate removed (a pool of four traditions gets an answer)
+        shipped: pass   fault restored: FAIL (seen)
+[ok ] `tb` tagged Italian — the decided alias voting for its own verdict, which is the evidence cycle §4.1 refuses
+        shipped: pass   fault restored: FAIL (seen)
+
+GATE PASSED — 7 faults, each seen by its test, each absent under the shipped tables

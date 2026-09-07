@@ -43,20 +43,29 @@ alias lists inside the lexicon would fragment the one table every consumer
 reads. The tagging lives beside it, keyed on the aliases the lexicon already
 has, and `test_score_language.py` fails if any spelling here stops being one.
 
-⚠️ **It ABSTAINS far more than it fires, on purpose.** Three of the ambiguous
-alias families the corpus exercises are undecidable BY LANGUAGE and are left
-alone:
+⚠️ **It ABSTAINS far more than it fires, on purpose**, for two separate
+reasons that must not be confused.
+
+**Undecidable by language.** Some ambiguous families have both readings inside
+one tradition, so no reading of the document separates them:
 
 * `basso` / `basse` / `bassi` — the bass VOICE and the double basses are the
-  same word in Italian, French and English alike. Language separates nothing,
-  and Handel's Messiah prints `BASSO` (the voice) and `Bassi` (the strings) on
-  one page. Score order settles this; language must not touch it.
+  same word in Italian, French and English alike. Handel's Messiah prints
+  `BASSO` (the voice) and `Bassi` (the strings) on one page. Score order
+  settles this; language must not touch it.
 * `tr bas` — `Trombone basso` and `Tromba bassa` are both Italian.
 * `cor` — Horn in French and the standard Italian abbreviation of `Corni`
   alike, so no reading of the document changes the answer.
 
-That leaves the families where the two candidates come from two traditions,
-which is where a language reading is evidence rather than decoration.
+**Owned by another channel.** `tp` and `altos` ARE separable by language, and
+this module still declines them, because `contextual._resolve_ambiguous_labels`
+already arbitrates every alias `instruments.AMBIGUOUS_ALIASES` declares — using
+the layout fit and, decisively, the CLEF. See `LANGUAGE_READINGS` below for the
+measurement and the provenance rule behind that refusal.
+
+What is left is one population: aliases the lexicon resolves to a single
+instrument with no ambiguity declared, where the right answer is a fact about
+the PRINTING rather than about the position. `Tb.` is the worked example.
 """
 
 from __future__ import annotations
@@ -185,37 +194,72 @@ def is_diagnostic(alias: str) -> bool:
 # ABSTAINS in that language: the entry means "this tradition prints this
 # abbreviation for this instrument", never "the other reading is unlikely".
 #
-# ⚠️ Every family here is one where the two candidates come from two
-# traditions. The families where BOTH readings live in ONE language are
-# deliberately absent — see the module docstring; adding them would break
-# Handel.
+# ⚠️⚠️ **THE TABLE MAY HOLD ONLY ALIASES `instruments.AMBIGUOUS_ALIASES` HAS
+# NOT DECLARED, AND THAT BOUNDARY IS THE WHOLE COMPOSITION STORY.**
+#
+# A DECLARED ambiguity already has an owner. `contextual._resolve_ambiguous_labels`
+# withholds such a slot from the layout fit (`_ambiguous_label_slots`), asks the
+# fit what sits at that ordinal, and takes whichever CANDIDATE it proposes —
+# and on 2026-09-07 that channel was measured to need the CLEF, not more label
+# evidence: clef-blind it proposes `Trumpet` for a `Tp.` slot and overturns a
+# correct label document-wide; clef-informed it proposes `Trombone`, which is
+# not a `Tp.` candidate, so it declines and the label stands. Worth **51
+# records on Beethoven 5**, where the label channel was worth 0
+# (`benchmarks/omr-readpass-monotonicity-2026-09/FINDINGS.md` §4).
+#
+# A language reading of the same slot would be a SECOND mechanism aimed at a
+# case that already has one, and both are computed from the document's own
+# labels — the scope's provenance rule (two signals sharing an ancestor are ONE
+# signal) says that is double-counting, not corroboration. So `tp` is NOT here,
+# and neither is `altos`, `basso`, `basse`, `bassi`, `cor` or `tr bas`.
+#
+# What is left is the population NO channel can reach: an alias the lexicon
+# resolves to exactly one instrument with no ambiguity declared. The fit never
+# questions it, because nothing told the fit there was a question. That is not
+# a gap in the position model — it is a gap in what the lexicon says out loud,
+# and a per-DOCUMENT fact is what fills it, because the answer differs by
+# printing rather than by position.
+#
+# `test_score_language.py` asserts the boundary in both directions.
 LANGUAGE_READINGS: dict[str, dict[str, str]] = {
-    # `Tp.` is Timpani in the Italian and German orchestral tradition (Timpani,
-    # and German scores that keep the Italian nouns) and Trumpet in the modern
-    # English one. French prints `Timbales` and abbreviates `Timb.`, never
-    # `Tp.`, so French ABSTAINS rather than guessing.
-    "tp": {"it": "Timpani", "de": "Timpani", "en": "Trumpet"},
     # `Tb.` is Tromboni in an Italian score and the Tuba in a German one
-    # (`Tb.` for Basstuba). ⚠️ The lexicon reads it as Tuba unconditionally,
-    # and over the 1422-label corpus EVERY bare `Tb.` is Litolff's Beethoven 6,
-    # an Italian score whose `Tb.` is the two trombones — while every real tuba
-    # in that corpus is spelled `Tuba` in full. English abstains: `Tbn.` and
-    # `Tba.` are the unambiguous English abbreviations and `tbn` already
-    # resolves on its own.
+    # (`Tb.` for Basstuba). ⚠️ The lexicon resolves it to Tuba unconditionally
+    # and declares NO ambiguity, so no position channel questions it — and over
+    # the 1422-label corpus EVERY bare `Tb.` is Litolff's Beethoven 6, an
+    # Italian score whose `Tb.` is the two trombones the work's IMSLP roster
+    # lists (`source_kind: catalog`, independent of any encoding: "2
+    # trombones", and no tuba anywhere in the work). Every real tuba in that
+    # corpus is spelled `Tuba` in full.
+    #
+    # English abstains rather than guessing: `Tbn.` and `Tba.` are the
+    # unambiguous English abbreviations and `tbn` already resolves on its own.
+    # French abstains too — a French score writes `Trombones` and `Tuba`.
     "tb": {"it": "Trombone", "de": "Tuba"},
-    # French `Altos` are an orchestra's VIOLAS; English/Italian `Altos` are a
-    # chorus's. This agrees with the lexicon's own first answer on the French
-    # side — it is listed so the agreement is EVIDENCED rather than lucky, and
-    # so an English choral score gets the other reading.
-    "altos": {"fr": "Viola", "en": "Alto", "it": "Alto"},
 }
 
 #: Aliases this module may decide that `instruments.AMBIGUOUS_ALIASES` does not
-#: yet declare. Kept HERE and not there, because declaring an alias ambiguous in
-#: the lexicon changes what `dossier.join_parts_to_slots` will let PIN a staff —
-#: a default change, and this module changes no default.
+#: declare. Kept HERE and not there, because declaring an alias ambiguous in the
+#: lexicon changes what `dossier.join_parts_to_slots` will let PIN a staff and
+#: what `contextual._ambiguous_label_slots` withholds from the layout fit — two
+#: default changes, and this module changes no default.
+#:
+#: ⚠️ Promoting one of these into the lexicon is a REAL option and a different
+#: decision: it would hand the alias to the clef-informed position channel
+#: instead, which is the better owner wherever position separates the readings.
+#: For `tb` it does not obviously — a tuba staff and a bass-trombone staff sit
+#: adjacent in the brass and both read bass clef — which is why the
+#: per-document printing fact is the one with something to say here.
 EXTRA_AMBIGUOUS: dict[str, tuple[str, ...]] = {
     "tb": ("Tuba", "Trombone"),
+}
+
+#: Readings language COULD make on aliases the lexicon has ALREADY declared
+#: ambiguous. Never consulted by `resolve_alias` — held here so a probe can ask
+#: whether the two channels AGREE, which is corroboration worth measuring and is
+#: not the same thing as letting both vote.
+CORROBORATION_ONLY: dict[str, dict[str, str]] = {
+    "tp": {"it": "Timpani", "de": "Timpani", "en": "Trumpet"},
+    "altos": {"fr": "Viola", "en": "Alto", "it": "Alto"},
 }
 
 
@@ -285,14 +329,40 @@ def detect(labels: Iterable[str]) -> LanguageReading:
     return _detect_from_matches(_matches(seen), len(seen))
 
 
-def _detect_from_matches(matches: Sequence, n_labels: int) -> LanguageReading:
+def detect_from_aliases(aliases: Sequence[str | None],
+                        n_labels: int | None = None) -> LanguageReading:
+    """`detect`, for a caller that already knows which alias fired.
+
+    ⚠️ **This is the entry point a pipeline consumer should use, and the reason
+    is a measured 22 seconds.** `instruments.lookup` costs 23-136 ms per string
+    — the alias index is thousands of entries wide and a garbled label pays the
+    OCR-fold second pass — so voting a language by re-resolving a document's
+    labels costs **21.98 s on Ravel's 427 labels (162 distinct)** and 2.77 s on
+    Brahms's 209.
+
+    None of it is necessary. Every reader in the ladder already resolved each
+    label and `StaffLabel.alias` carries the answer, so a consumer votes off a
+    field it is holding and pays nothing. `detect` re-resolves only because the
+    probes are handed bare strings out of a committed dump.
+    """
     votes = {lang: 0 for lang in LANGUAGES}
-    for match in matches:
-        if match is None:
+    for alias in aliases:
+        if not alias:
             continue
-        langs = _ALIAS_LANGUAGES.get(match.alias, ())
+        langs = _ALIAS_LANGUAGES.get(alias, ())
         if len(langs) == 1:
             votes[next(iter(langs))] += 1
+    return _reading_from_votes(
+        votes, len(aliases) if n_labels is None else n_labels)
+
+
+def _detect_from_matches(matches: Sequence, n_labels: int) -> LanguageReading:
+    return detect_from_aliases(
+        [None if m is None else m.alias for m in matches], n_labels)
+
+
+def _reading_from_votes(votes: dict[str, int], n_labels: int) -> LanguageReading:
+    """The two gates, in one place: enough evidence, and enough agreement."""
     n = sum(votes.values())
     reading = LanguageReading(None, votes, n, n_labels)
     if n < MIN_DIAGNOSTIC_VOTES:
@@ -315,6 +385,31 @@ def resolve_alias(alias: str, reading: LanguageReading) -> str | None:
     if reading.language is None:
         return None
     return LANGUAGE_READINGS.get(alias, {}).get(reading.language)
+
+
+def corroborating_reading(alias: str, reading: LanguageReading) -> str | None:
+    """What language WOULD say about an alias another channel already owns.
+
+    Never consulted by `resolve_alias`, and a caller must not use it to decide
+    anything — it exists so a probe can ask whether the language channel and
+    the clef-informed position channel agree where both have an opinion.
+    Agreement is corroboration; letting both vote would be double-counting.
+    """
+    if reading.language is None:
+        return None
+    return CORROBORATION_ONLY.get(alias, {}).get(reading.language)
+
+
+def instrument_named(name: str):
+    """The `Instrument` a reading names, or None if the lexicon lost it.
+
+    Returns rather than raises, because an optional enrichment must never lose
+    a page's labels to a table that drifted.
+    """
+    for inst in _instruments.INSTRUMENTS:
+        if inst.name == name:
+            return inst
+    return None
 
 
 def candidates(alias: str) -> tuple[str, ...]:

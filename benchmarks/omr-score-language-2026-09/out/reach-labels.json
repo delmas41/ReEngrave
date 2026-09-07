@@ -15,7 +15,8 @@
    "share": 1.0,
    "mixed": false,
    "ambiguous_labels": 0,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   },
   {
    "document": "bach-wtc1",
@@ -31,7 +32,8 @@
    "share": 1.0,
    "mixed": false,
    "ambiguous_labels": 0,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   },
   {
    "document": "beethoven5-575951-textlayer",
@@ -47,7 +49,8 @@
    "share": 1.0,
    "mixed": false,
    "ambiguous_labels": 43,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   },
   {
    "document": "beethoven5-984073-scan",
@@ -63,7 +66,8 @@
    "share": 1.0,
    "mixed": false,
    "ambiguous_labels": 21,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   },
   {
    "document": "beethoven6-504082-textlayer",
@@ -79,7 +83,8 @@
    "share": 0.0,
    "mixed": false,
    "ambiguous_labels": 40,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   },
   {
    "document": "brahms1-breitkopf-scan",
@@ -95,7 +100,8 @@
    "share": 1.0,
    "mixed": false,
    "ambiguous_labels": 0,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   },
   {
    "document": "debussy-lamer-scan",
@@ -111,7 +117,8 @@
    "share": 1.0,
    "mixed": false,
    "ambiguous_labels": 9,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   },
   {
    "document": "dvorak9-simrock-scan",
@@ -127,7 +134,8 @@
    "share": 1.0,
    "mixed": false,
    "ambiguous_labels": 0,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   },
   {
    "document": "handel-messiah-leadsheet",
@@ -143,7 +151,8 @@
    "share": 1.0,
    "mixed": false,
    "ambiguous_labels": 7,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   },
   {
    "document": "handel-messiah-reduction",
@@ -159,7 +168,8 @@
    "share": 1.0,
    "mixed": false,
    "ambiguous_labels": 1,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   },
   {
    "document": "mahler5-local-scan",
@@ -175,7 +185,8 @@
    "share": 0.9608,
    "mixed": true,
    "ambiguous_labels": 12,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   },
   {
    "document": "ravel-bolero-textlayer",
@@ -191,7 +202,8 @@
    "share": 1.0,
    "mixed": false,
    "ambiguous_labels": 34,
-   "changed": 0
+   "changed": 0,
+   "from_head_pages": false
   }
  ],
  "totals": {
