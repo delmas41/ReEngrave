@@ -233,6 +233,25 @@ so it is not dilution.
 
 <!--DVORAK-->
 
+### 4.0 ⚠️ The recommended identity harness is BLIND to this change
+
+The commission named `benchmarks/omr-identity-harness-2026-09/` as the
+instrument to use. It cannot see this one, and that is a property of its corpus
+rather than of the change: its 1571 records cover **`beet5` and `brahms1`
+only**, and
+
+    grep -ic "percussion|drum|cymbal|triangle|trommel|becken" \
+        probe/corpus.py out/records.json     ->  0   0
+
+Neither work prints a one-line staff — corroborated independently by
+`probe_engraved_exposure.py`, which detects 0 one-line staves on both. So the
+harness would report **no movement whatever the flag did**, and a green run on
+it is not evidence here. Said plainly because a future reader will otherwise
+assume the named instrument was applied and passed.
+
+The honest instruments for this change are the two used above: the structural
+`entire staff` bucket, and the printed-vs-emitted staff count.
+
 ### 4.1 ⚠️ Working §A00's list, because the shipped-era arm is worse
 
 Sean's rule: *a worse score does not condemn the mechanism — ask what ELSE is
