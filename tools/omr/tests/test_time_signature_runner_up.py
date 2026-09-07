@@ -115,8 +115,16 @@ class TestTheRefusalKeepsItsTable:
 
 
 class TestTheVoteRecordsItsOpposition:
-    """Run RED by deleting the `runner_up_meter` / `median_score_margin` block
-    in `vote_system_time_signature`."""
+    """⚠️ The record goes in `trace`, NOT in the returned meter dict.
+
+    `transcribe` copies that dict onto every measure of the system, so a scalar
+    added to it is written once per bar — which cost 9% of the scan page's
+    result JSON while these four rode in it. Pinned below, because the cheap
+    place to put a record is exactly the expensive place to put it.
+
+    Run RED by deleting the `if trace is not None` block in
+    `vote_system_time_signature`.
+    """
 
     @staticmethod
     def _read(raw, num, den, score, margin=0.2):
@@ -128,23 +136,37 @@ class TestTheVoteRecordsItsOpposition:
 
     def test_the_meter_that_came_second_in_VOTES_is_named(self):
         reads = [self._read("3/4", 3, 4, 0.7)] * 3 + [self._read("6/8", 6, 8, 0.9)]
-        meter = vote_system_time_signature(reads)
+        trace: dict = {}
+        meter = vote_system_time_signature(reads, trace=trace)
         assert (meter["numerator"], meter["denominator"]) == (3, 4)
-        assert meter["runner_up_meter"] == "6/8"
-        assert meter["runner_up_votes"] == 1
+        assert trace["runner_up_meter"] == "6/8"
+        assert trace["runner_up_votes"] == 1
 
     def test_the_winners_own_template_margins_are_summarised(self):
         """A different question from the vote margin: a system where every
         staff reads 3/4 at 0.61 over a 0.60 runner-up and one where they read it
         over a 0.20 agree equally, and are not equally sure."""
         reads = [self._read("3/4", 3, 4, 0.7, margin=m) for m in (0.05, 0.3, 0.4)]
-        meter = vote_system_time_signature(reads)
-        assert meter["median_score_margin"] == pytest.approx(0.3)
-        assert meter["min_score_margin"] == pytest.approx(0.05)
+        trace: dict = {}
+        vote_system_time_signature(reads, trace=trace)
+        assert trace["median_score_margin"] == pytest.approx(0.3)
+        assert trace["min_score_margin"] == pytest.approx(0.05)
 
     def test_an_unopposed_vote_names_no_runner_up(self):
-        meter = vote_system_time_signature([self._read("3/4", 3, 4, 0.7)] * 3)
-        assert "runner_up_meter" not in meter
+        trace: dict = {}
+        vote_system_time_signature([self._read("3/4", 3, 4, 0.7)] * 3,
+                                   trace=trace)
+        assert "runner_up_meter" not in trace
+
+    def test_the_METER_DICT_carries_no_record_at_all(self):
+        """The per-bar cost, pinned. Anything added to this dict is written
+        once per measure of the system; a record belongs where the vote is
+        recorded once."""
+        reads = [self._read("3/4", 3, 4, 0.7)] * 3 + [self._read("6/8", 6, 8, 0.9)]
+        meter = vote_system_time_signature(reads, trace={})
+        for key in ("runner_up_meter", "runner_up_votes",
+                    "median_score_margin", "min_score_margin"):
+            assert key not in meter, f"{key} would be copied onto every bar"
 
 
 class TestTheSystemEvidenceReachesAnAbstainingSystem:
@@ -170,3 +192,5 @@ class TestTheSystemEvidenceReachesAnAbstainingSystem:
         assert (out[0]["numerator"], out[0]["denominator"]) == (2, 4)
         assert evidence[0]["voted"] is True
         assert evidence[0]["staves"][1]["cleared_floor"] is True
+        # The vote's own record rides here, once per system.
+        assert "median_score_margin" in evidence[0]["vote"]

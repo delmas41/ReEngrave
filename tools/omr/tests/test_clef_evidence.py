@@ -19,7 +19,9 @@ A third feeds `staff["clef_proposal_evidence"]`:
 * `clef_correction.propose_clef` has FIVE returns, four of them refusals, and
   every one discarded the whole `fits` table — so the additive-vs-gated survey
   had to reimplement the function to learn that ~50% of both populations exit
-  at `already_in_effect`.
+  at `already_in_effect`. (Five returns, SEVEN exit labels: two of the five
+  `_note` sites are ternaries. One of the seven is unreachable with the shipped
+  constants, which is asserted rather than faked.)
 
 ⚠️ Every test here was run RED first, with the recording removed, to prove it
 exercises the mechanism rather than passing on the shape of an empty dict —
@@ -104,12 +106,10 @@ def _run(cell, detector=None, **kwargs):
         imgsz=512,
         iou_threshold=0.5,
         agnostic_nms=True,
-        active_clef=None,
         active_key_sig={},
         active_time_sig=None,
-        read_clef=True,
         clef_evidence=evidence,
-        **kwargs,
+        **{"active_clef": None, "read_clef": True, **kwargs},
     )
     return evidence
 
@@ -402,6 +402,31 @@ class TestProposeClefRecordsItsFits:
         assert trace["chosen"] == "treble"
         assert trace["chosen_fit"] < trace["current_fit"]
 
+    def test_the_SEVENTH_exit_label_is_unreachable_and_that_is_why_it_is_untested(
+            self):
+        """⚠️ Five `_note` sites yield SEVEN labels, not six — two are
+        ternaries. Review caught the undercount, and the missing one
+        (`no_candidate_clefs`) has zero test hits for a reason better than
+        neglect: it cannot fire.
+
+        `fits` is empty only if every CANDIDATE_CLEFS entry fails
+        `clef_diatonic_shift`, and all four are in `_CLEF_ANCHORS` — so once
+        `current` clears the anchor test there is always a table. Asserting the
+        unreachability is worth more than a monkeypatched hit, because the day
+        someone adds an unanchored candidate this goes red and the branch
+        becomes live.
+        """
+        from tools.omr.clef_correction import CANDIDATE_CLEFS
+        from tools.omr.pitch_resolver import _CLEF_ANCHORS, clef_diatonic_shift
+
+        assert all(c in _CLEF_ANCHORS for c in CANDIDATE_CLEFS), (
+            "an unanchored candidate makes `no_candidate_clefs` reachable — "
+            "give it a test"
+        )
+        for anchored in _CLEF_ANCHORS:
+            assert any(clef_diatonic_shift(anchored, c) is not None
+                       for c in CANDIDATE_CLEFS), anchored
+
     def test_the_recorded_exit_agrees_with_the_verdict(self):
         """A record that could disagree with the decision would be worse than
         none. `proposed` if and only if a proposal came back."""
@@ -432,3 +457,138 @@ class TestProposeClefRecordsItsFits:
         assert records == []                      # it refused, as before
         assert staff["clef_proposal_evidence"]["exit"] == "already_in_effect"
         assert "clef_proposal" not in staff
+
+
+# ─── the flip: a LATER cell overturning the staff's clef ───────────────────
+
+
+class TestTheOverturnIsRecorded:
+    """⚠️ `read_clef` does NOT gate the detector argmax.
+
+    An earlier version of the caller passed `clef_evidence` only on
+    `cell_idx == 0`, on the stated grounds that "only the staff's first cell
+    reads a clef". That is false in the failure direction: `read_clef` gates the
+    CV locator, the header rung and the specialist, and the argmax is ungated —
+    it sets `clef_source = "detector"` on EVERY cell. So one detection in the
+    middle of a staff can flip its clef, and those cells were exactly the ones
+    the record was skipping.
+
+    ⚠️ `disagrees` cannot answer this. Each such flip is the ONLY clef detection
+    in its cell, so it carries `n_resolved == 1` and no `disagrees` key at all;
+    the comparison that matters is the winner against the INHERITED clef.
+    """
+
+    def test_read_clef_does_not_gate_the_argmax(self):
+        """The falsified premise, pinned so it cannot be re-assumed."""
+        cell = cell_with_c_clef(4)
+        det = _clef_detection(cell, name="clefF", conf=0.5, y=98, h=48)
+        _dets, active_clef, _ks, _ts, source = T._detections_for_cell(
+            _NoDetections([det]), cell,
+            conf_threshold=0.25, imgsz=512, iou_threshold=0.5,
+            agnostic_nms=True, active_clef="treble", active_key_sig={},
+            active_time_sig=None, read_clef=False,
+        )[:5]
+        assert source == "detector", "the argmax ran with read_clef False"
+        assert active_clef == "bass", "...and it moved the staff's clef"
+
+    def test_a_later_cell_that_OVERTURNS_the_inherited_clef_says_so(self):
+        cell = cell_with_c_clef(4)
+        det = _clef_detection(cell, name="clefF", conf=0.32, y=98, h=48)
+        contest = _run(cell, detector=_NoDetections([det]),
+                       active_clef="treble", read_clef=False)["contest"]
+        assert contest["clef_in_effect_before"] == "treble"
+        assert contest["clef_in_effect_after"] == "bass"
+        assert contest["overturns_inherited"] is True
+        assert contest["read_clef_rung_ran"] is False
+        # ...and this is exactly the shape `disagrees` cannot see.
+        assert contest["n_resolved"] == 1
+        assert "disagrees" not in contest
+
+    def test_a_later_cell_that_CONFIRMS_the_inherited_clef_says_so(self):
+        cell = cell_with_c_clef(4)
+        contest = _run(cell, detector=_NoDetections([_clef_detection(cell)]),
+                       active_clef="treble", read_clef=False)["contest"]
+        assert contest["clef_in_effect_before"] == "treble"
+        assert contest["overturns_inherited"] is False
+
+    def test_a_staff_opening_with_no_inherited_clef_does_not_claim_an_overturn(
+            self):
+        """None is not a clef, and a first reading is not an overturn."""
+        cell = cell_with_c_clef(4)
+        contest = _run(cell, detector=_NoDetections([_clef_detection(cell)]),
+                       active_clef=None)["contest"]
+        assert contest["clef_in_effect_before"] is None
+        assert contest["overturns_inherited"] is False
+
+    def test_a_cell_that_decided_NOTHING_records_nothing(self):
+        """The population is bounded on purpose: a mid-staff cell with no clef
+        detection and no reader rung decided nothing, and a record on each of a
+        112-measure page's cells would be noise rather than evidence."""
+        evidence = _run(cell_with_c_clef(4), active_clef="treble",
+                        read_clef=False)
+        assert "contest" not in evidence
+
+
+# ─── the wiring, asserted against the source ───────────────────────────────
+
+
+class TestTheClefRecordIsWiredIn:
+    """⚠️ THIS CLASS EXISTS BECAUSE ITS ABSENCE WAS CAUGHT IN REVIEW.
+
+    Every other test in this file calls `_detections_for_cell` directly, so
+    deleting the `clef_evidence=` argument from `transcribe()`'s only call site
+    — switching the entire record off in production — left all 44 of them green.
+    The key-signature site got an AST wiring guard and the clef site, with the
+    harder wiring, did not.
+
+    Each test below was run RED: the argument deleted, the value re-gated to
+    `cell_idx == 0`, and each of the two dict writes removed in turn.
+    """
+
+    @staticmethod
+    def _calls(name):
+        source = Path(inspect.getfile(T)).read_text()
+        return [
+            node for node in ast.walk(ast.parse(source))
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == name
+        ]
+
+    def test_the_pipeline_call_site_passes_clef_evidence(self):
+        calls = self._calls("_detections_for_cell")
+        # Counted BEFORE iterating: `all([])` over an empty list is True, and a
+        # wiring test that passes when it found nothing guards nothing.
+        assert len(calls) == 1, (
+            f"expected transcribe()'s one call site, found {len(calls)}"
+        )
+        assert "clef_evidence" in {kw.arg for kw in calls[0].keywords}, (
+            "the whole record is switched off at the call site"
+        )
+
+    def test_the_record_is_NOT_gated_back_to_the_first_cell(self):
+        """The blocking defect this class was added for. A conditional value
+        here means later cells pass None, and the mid-staff flips — the
+        population the sweep exists for — go unrecorded."""
+        call, = self._calls("_detections_for_cell")
+        value, = [kw.value for kw in call.keywords if kw.arg == "clef_evidence"]
+        assert not isinstance(value, ast.IfExp), (
+            "clef_evidence is passed conditionally; `read_clef` does not gate "
+            "the detector argmax, so every cell can read a clef"
+        )
+        assert isinstance(value, ast.Name), (
+            f"expected a plain name, got {type(value).__name__}"
+        )
+
+    def test_both_the_staff_and_the_measure_are_given_the_record(self):
+        source = Path(inspect.getfile(T)).read_text()
+        writes = [
+            node for node in ast.walk(ast.parse(source))
+            if isinstance(node, ast.Subscript)
+            and isinstance(node.slice, ast.Constant)
+            and node.slice.value == "clef_evidence"
+        ]
+        assert len(writes) >= 2, (
+            "expected the staff-level and measure-level writes; found "
+            f"{len(writes)}"
+        )

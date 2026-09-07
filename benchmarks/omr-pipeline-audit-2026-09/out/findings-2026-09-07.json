@@ -1,0 +1,482 @@
+[
+  {
+    "source": "beet5-scan.json",
+    "thin_key_majority": [
+      {
+        "page": 1,
+        "system": 0,
+        "majority": 0.5294,
+        "min_majority": 0.5,
+        "over_the_gate": 0.0294,
+        "reference_fifths": -3,
+        "vote_totals": {
+          "-3": 9.0,
+          "-2": 4.0,
+          "-1": 4.0
+        }
+      }
+    ],
+    "thin_meter_margin": [
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 0,
+        "winner": "2/4",
+        "winner_score": 0.5047,
+        "runner_up": "3/4",
+        "runner_up_score": 0.4965,
+        "margin": 0.0082,
+        "min_score": 0.5,
+        "over_the_gate": 0.0047
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 8,
+        "winner": "2/4",
+        "winner_score": 0.5491,
+        "runner_up": "C",
+        "runner_up_score": 0.525,
+        "margin": 0.0241,
+        "min_score": 0.5,
+        "over_the_gate": 0.0491
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 10,
+        "winner": "2/4",
+        "winner_score": 0.5216,
+        "runner_up": "5/4",
+        "runner_up_score": 0.4884,
+        "margin": 0.0332,
+        "min_score": 0.5,
+        "over_the_gate": 0.0216
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 2,
+        "winner": "2/4",
+        "winner_score": 0.5556,
+        "runner_up": "3/4",
+        "runner_up_score": 0.5188,
+        "margin": 0.0368,
+        "min_score": 0.5,
+        "over_the_gate": 0.0556
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 3,
+        "winner": "2/4",
+        "winner_score": 0.5448,
+        "runner_up": "4/4",
+        "runner_up_score": 0.4923,
+        "margin": 0.0525,
+        "min_score": 0.5,
+        "over_the_gate": 0.0448
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 6,
+        "winner": "2/4",
+        "winner_score": 0.5488,
+        "runner_up": "3/4",
+        "runner_up_score": 0.4938,
+        "margin": 0.055,
+        "min_score": 0.5,
+        "over_the_gate": 0.0488
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 4,
+        "winner": "2/4",
+        "winner_score": 0.538,
+        "runner_up": "7/4",
+        "runner_up_score": 0.4816,
+        "margin": 0.0564,
+        "min_score": 0.5,
+        "over_the_gate": 0.038
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 11,
+        "winner": "2/4",
+        "winner_score": 0.5936,
+        "runner_up": "9/4",
+        "runner_up_score": 0.4962,
+        "margin": 0.0974,
+        "min_score": 0.5,
+        "over_the_gate": 0.0936
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 5,
+        "winner": "2/4",
+        "winner_score": 0.5897,
+        "runner_up": "9/4",
+        "runner_up_score": 0.4856,
+        "margin": 0.1041,
+        "min_score": 0.5,
+        "over_the_gate": 0.0897
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 9,
+        "winner": "2/4",
+        "winner_score": 0.6036,
+        "runner_up": "9/4",
+        "runner_up_score": 0.494,
+        "margin": 0.1096,
+        "min_score": 0.5,
+        "over_the_gate": 0.1036
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 1,
+        "winner": "2/4",
+        "winner_score": 0.6431,
+        "runner_up": "C",
+        "runner_up_score": 0.5268,
+        "margin": 0.1163,
+        "min_score": 0.5,
+        "over_the_gate": 0.1431
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 7,
+        "winner": "2/4",
+        "winner_score": 0.6172,
+        "runner_up": "9/4",
+        "runner_up_score": 0.4858,
+        "margin": 0.1314,
+        "min_score": 0.5,
+        "over_the_gate": 0.1172
+      }
+    ],
+    "midstaff_clef_flips": [
+      {
+        "page": 1,
+        "staff": 9,
+        "measure": 4,
+        "from": "alto",
+        "to": "bass",
+        "on_confidence": 0.5904,
+        "n_resolved": 1,
+        "has_disagrees_key": false
+      },
+      {
+        "page": 1,
+        "staff": 11,
+        "measure": 3,
+        "from": "bass",
+        "to": "treble",
+        "on_confidence": 0.6639,
+        "n_resolved": 1,
+        "has_disagrees_key": false
+      }
+    ],
+    "clef_proposal_exits": {
+      "too_few_noteheads": 6,
+      "already_in_effect": 5
+    }
+  },
+  {
+    "source": "brahms-eng.json",
+    "thin_key_majority": [
+      {
+        "page": 0,
+        "system": 0,
+        "majority": 0.84,
+        "min_majority": 0.5,
+        "over_the_gate": 0.34,
+        "reference_fifths": -3,
+        "vote_totals": {
+          "-3": 42.0,
+          "-2": 2.0,
+          "-1": 2.0,
+          "2": 4.0
+        }
+      }
+    ],
+    "thin_meter_margin": [
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 16,
+        "winner": "6/8",
+        "winner_score": 0.775,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6425,
+        "margin": 0.1325,
+        "min_score": 0.5,
+        "over_the_gate": 0.275
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 20,
+        "winner": "6/8",
+        "winner_score": 0.7815,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6392,
+        "margin": 0.1423,
+        "min_score": 0.5,
+        "over_the_gate": 0.2815
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 9,
+        "winner": "6/8",
+        "winner_score": 0.781,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6384,
+        "margin": 0.1426,
+        "min_score": 0.5,
+        "over_the_gate": 0.281
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 3,
+        "winner": "6/8",
+        "winner_score": 0.7795,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6309,
+        "margin": 0.1486,
+        "min_score": 0.5,
+        "over_the_gate": 0.2795
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 8,
+        "winner": "6/8",
+        "winner_score": 0.7813,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6321,
+        "margin": 0.1492,
+        "min_score": 0.5,
+        "over_the_gate": 0.2813
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 12,
+        "winner": "6/8",
+        "winner_score": 0.7806,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6308,
+        "margin": 0.1498,
+        "min_score": 0.5,
+        "over_the_gate": 0.2806
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 14,
+        "winner": "6/8",
+        "winner_score": 0.7905,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6402,
+        "margin": 0.1503,
+        "min_score": 0.5,
+        "over_the_gate": 0.2905
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 13,
+        "winner": "6/8",
+        "winner_score": 0.7804,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6287,
+        "margin": 0.1517,
+        "min_score": 0.5,
+        "over_the_gate": 0.2804
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 2,
+        "winner": "6/8",
+        "winner_score": 0.7849,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6323,
+        "margin": 0.1526,
+        "min_score": 0.5,
+        "over_the_gate": 0.2849
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 0,
+        "winner": "6/8",
+        "winner_score": 0.7842,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6309,
+        "margin": 0.1533,
+        "min_score": 0.5,
+        "over_the_gate": 0.2842
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 5,
+        "winner": "6/8",
+        "winner_score": 0.777,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6228,
+        "margin": 0.1542,
+        "min_score": 0.5,
+        "over_the_gate": 0.277
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 17,
+        "winner": "6/8",
+        "winner_score": 0.7779,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6236,
+        "margin": 0.1543,
+        "min_score": 0.5,
+        "over_the_gate": 0.2779
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 6,
+        "winner": "6/8",
+        "winner_score": 0.7788,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6244,
+        "margin": 0.1544,
+        "min_score": 0.5,
+        "over_the_gate": 0.2788
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 1,
+        "winner": "6/8",
+        "winner_score": 0.7796,
+        "runner_up": "9/8",
+        "runner_up_score": 0.625,
+        "margin": 0.1546,
+        "min_score": 0.5,
+        "over_the_gate": 0.2796
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 4,
+        "winner": "6/8",
+        "winner_score": 0.7796,
+        "runner_up": "9/8",
+        "runner_up_score": 0.625,
+        "margin": 0.1546,
+        "min_score": 0.5,
+        "over_the_gate": 0.2796
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 7,
+        "winner": "6/8",
+        "winner_score": 0.779,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6243,
+        "margin": 0.1547,
+        "min_score": 0.5,
+        "over_the_gate": 0.279
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 10,
+        "winner": "6/8",
+        "winner_score": 0.779,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6243,
+        "margin": 0.1547,
+        "min_score": 0.5,
+        "over_the_gate": 0.279
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 18,
+        "winner": "6/8",
+        "winner_score": 0.7802,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6254,
+        "margin": 0.1548,
+        "min_score": 0.5,
+        "over_the_gate": 0.2802
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 19,
+        "winner": "6/8",
+        "winner_score": 0.7802,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6254,
+        "margin": 0.1548,
+        "min_score": 0.5,
+        "over_the_gate": 0.2802
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 15,
+        "winner": "6/8",
+        "winner_score": 0.791,
+        "runner_up": "9/8",
+        "runner_up_score": 0.6356,
+        "margin": 0.1554,
+        "min_score": 0.5,
+        "over_the_gate": 0.291
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 11,
+        "winner": "6/8",
+        "winner_score": 0.7898,
+        "runner_up": "9/8",
+        "runner_up_score": 0.634,
+        "margin": 0.1558,
+        "min_score": 0.5,
+        "over_the_gate": 0.2898
+      }
+    ],
+    "midstaff_clef_flips": [
+      {
+        "page": 0,
+        "staff": 19,
+        "measure": 5,
+        "from": "tenor",
+        "to": "bass",
+        "on_confidence": 0.9355,
+        "n_resolved": 1,
+        "has_disagrees_key": false
+      }
+    ],
+    "clef_proposal_exits": {
+      "already_in_effect": 14,
+      "too_few_noteheads": 6,
+      "proposed": 1
+    }
+  }
+]

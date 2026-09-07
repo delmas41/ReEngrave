@@ -1636,6 +1636,13 @@ def _detections_for_cell(
     best_clef_read = None
     best_clef_det = None
     best_clef_conf = -1.0
+    # The clef this cell INHERITED — carried from an earlier cell of the same
+    # staff, or from an earlier system. Captured before any reader can move it,
+    # because it is the baseline the cell's own reading either confirms or
+    # OVERTURNS, and the overturn is the interesting event: this argmax is not
+    # gated by `read_clef` and sets `clef_source = "detector"` on every cell, so
+    # one detection anywhere in a staff can flip the clef mid-staff.
+    inherited_clef = active_clef
     # Every candidate this argmax considered. `best_clef_conf` is the one
     # quantity the loop keeps and it is discarded four lines below, so a clef
     # won at 0.98 with nothing behind it and a clef won at 0.26 over a 0.25
@@ -1700,7 +1707,24 @@ def _detections_for_cell(
             "winner_confidence": (
                 round(best_clef_conf, 4) if best_clef_read else None
             ),
+            # ⚠️ THE CONTEST THAT MATTERS IS NOT THE ONE INSIDE THIS CELL.
+            # `disagrees` below compares the runner-up to the winner, which
+            # needs two resolved candidates — and the mid-staff clef FLIPS this
+            # record exists to make measurable are each the ONLY clef detection
+            # in their cell, so they carry `n_resolved == 1` and no `disagrees`
+            # key at all. The flip is the winner against the clef the cell came
+            # in with, so that comparison is recorded directly here rather than
+            # left to be reconstructed by joining to the preceding measure.
+            "clef_in_effect_before": inherited_clef,
+            "read_clef_rung_ran": read_clef,
         }
+        if best_clef_read is not None:
+            # `active_clef` carries the octave suffix the raw read does not, so
+            # this is the comparison the pitch resolver will actually act on.
+            contest["clef_in_effect_after"] = active_clef
+            contest["overturns_inherited"] = (
+                inherited_clef is not None and active_clef != inherited_clef
+            )
         if len(ranked) > 1:
             runner_up = ranked[1]
             contest["runner_up"] = runner_up["clef"]
@@ -1712,7 +1736,12 @@ def _detections_for_cell(
             # duplicate, not a contest, and conflating them would inflate this
             # population on exactly the dense pages where it is read.
             contest["disagrees"] = runner_up["clef"] != ranked[0]["clef"]
-        clef_evidence["contest"] = contest
+        # Recorded on EVERY cell that read a clef, not only the staff's first.
+        # A cell with no clef detection at all and no reader rung is skipped:
+        # it decided nothing, and a record per measure of a 112-measure page
+        # would be noise rather than evidence.
+        if clef_candidates or read_clef:
+            clef_evidence["contest"] = contest
 
     # ── Key-signature pass: scan for keySharp / keyFlat. None ⇒ no update. ──
     #
@@ -4668,6 +4697,17 @@ def transcribe(
                 # them won. Only the staff's first cell reads a clef
                 # (`read_clef=(cell_idx == 0)`), so one dict per staff is the
                 # whole population.
+                # ⚠️ NOT "only the first cell reads a clef" — that is what an
+                # earlier version of this comment said, and it is false in the
+                # failure direction. `read_clef=(cell_idx == 0)` gates the CV
+                # locator, the header rung and the specialist; it does NOT gate
+                # the detector argmax, which sets `clef_source = "detector"` on
+                # every cell. So a later cell can flip a staff's clef mid-staff
+                # on one detection, and recording only cell 0 would miss exactly
+                # the population this sweep exists to make measurable. Every
+                # cell gets a dict; the staff-level record keeps cell 0's, which
+                # is where the per-staff rungs (locator, specialist, dossier)
+                # spoke.
                 first_cell_clef_evidence: dict[str, Any] = {}
                 if staff_idx in header_prepass_locator_traces:
                     first_cell_clef_evidence["cv_locator_header_prepass"] = (
@@ -4676,6 +4716,9 @@ def transcribe(
                 first_cell_effective_key_sig: dict[str, str] | None = None
                 first_cell_effective_time_sig: dict[str, Any] | None = None
                 for cell_idx, cell in enumerate(staff_cells):
+                    cell_clef_evidence: dict[str, Any] = (
+                        first_cell_clef_evidence if cell_idx == 0 else {}
+                    )
                     (
                         detections,
                         active_clef,
@@ -4710,10 +4753,7 @@ def transcribe(
                             locate_c_clefs=locate_c_clefs,
                             pdf_path=pdf_path,
                             page_dpi=dpi,
-                            clef_evidence=(
-                                first_cell_clef_evidence if cell_idx == 0
-                                else None
-                            ),
+                            clef_evidence=cell_clef_evidence,
                         )
                     )
                     if cell_idx == 0:
@@ -4741,6 +4781,14 @@ def transcribe(
                         "n_detections": len(detections),
                         "detections": detections,
                     })
+                    # Per CELL, because the clef argmax runs per cell. Cell 0's
+                    # record is also carried on the staff (below); the overlap
+                    # is one dict per staff and is worth it, so that a consumer
+                    # sweeping either level sees a uniform population.
+                    if cell_clef_evidence:
+                        staff_dict["measures"][-1]["clef_evidence"] = (
+                            cell_clef_evidence
+                        )
                     out["n_clipped_notehead_fragments_dropped"] += (
                         cell_clipped_dropped
                     )

@@ -18,8 +18,8 @@ Exits non-zero if `changed` or `removed` is non-empty.
 
 ⚠️ **A control ran first, and it is what defines `IGNORED_LEAVES`.** Two runs
 of ONE tree on the same page are not byte-identical: the wall-clock fields
-(`runtime/*`, `weight_routing/classification/ms`) differ every run, and nothing
-else does — measured 2026-09-06 on an engraved fixture (brahms-sym1-mvt1 p0)
+(the five `runtime/*` fields and `weight_routing/classification/ms` — six
+leaves, matched by two patterns) differ every run, and nothing else does — measured 2026-09-06 on an engraved fixture (brahms-sym1-mvt1 p0)
 and a scan (Litolff Beethoven 5 / imslp984073 p1), 6 differing leaves each,
 all of them clocks. So those leaves are excluded by NAME, and a difference
 anywhere else is a real difference. Run the control yourself before trusting a
@@ -63,10 +63,17 @@ from pathlib import Path
 #: clocks, plus the OCR rung's rejected-string list — see the two controls
 #: described in the module docstring. Every entry here was MEASURED to move on
 #: an unmodified tree; do not add one because a comparison went red.
+#:
+#: ⚠️ AND EVERY ENTRY WAS MEASURED TO MATCH SOMETHING. A fourth pattern, `/_s$`,
+#: was removed in review: the path separator makes it require a key literally
+#: named `_s`, so it matched 0 of 14,065 leaves and the five `runtime/*_s`
+#: clocks it was meant to name were already caught by `^/runtime/`. It was
+#: inert, which makes the control result STRONGER than it was stated — six
+#: ignored leaves, not seven — but a dead entry reads as coverage, and an
+#: ignore list is exactly where a reader will believe it.
 IGNORED_LEAVES = (
     re.compile(r"^/runtime/"),
     re.compile(r"^/weight_routing/classification/ms$"),
-    re.compile(r"/_s$"),
     re.compile(r"^/direction_text/pages\[\d+\]/rejected"),
 )
 

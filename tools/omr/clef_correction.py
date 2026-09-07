@@ -267,6 +267,15 @@ def propose_clef(staff: dict[str, Any], instrument: Instrument,
         trace["fits"] = {k: round(v, 4) for k, v in fits.items()}
         trace["n_noteheads"] = n
     if n < MIN_NOTEHEADS or not fits:
+        # ⚠️ Two labels, and `no_candidate_clefs` is UNREACHABLE with the
+        # shipped constants — not merely untested. `fits` is empty only if
+        # every entry of CANDIDATE_CLEFS fails `clef_diatonic_shift`, and all
+        # four are in `_CLEF_ANCHORS`, so once `current` has cleared the anchor
+        # test above there is always a table. It is kept because the branch
+        # becomes live the moment CANDIDATE_CLEFS gains an unanchored clef, and
+        # a silent `too_few_noteheads` would then be a lie about which failure
+        # occurred. `TestProposeClefRecordsItsFits` pins the unreachability so
+        # the day it stops holding is loud.
         _note("too_few_noteheads" if fits else "no_candidate_clefs")
         return None
 

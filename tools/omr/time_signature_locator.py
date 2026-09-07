@@ -513,6 +513,7 @@ def vote_system_time_signature(
     *,
     n_staves: int | None = None,
     config: TimeSignatureLocatorConfig = DEFAULT_LOCATOR_CONFIG,
+    trace: dict[str, object] | None = None,
 ) -> dict[str, object] | None:
     """Reconcile one system's per-staff readings into a meter, or abstain.
 
@@ -532,6 +533,11 @@ def vote_system_time_signature(
 
     `n_staves` defaults to `len(reads)`; pass it when `reads` has already been
     filtered so the denominator stays the size of the system.
+
+    `trace`, when given, takes the RECORD of the vote — the meter that came
+    second and the winners' own template margins. Deliberately not the returned
+    meter dict: that dict is copied onto every measure of the system, so a
+    record placed in it is written once per bar.
     """
     total = len(reads) if n_staves is None else n_staves
     if total <= 0:
@@ -560,6 +566,18 @@ def vote_system_time_signature(
         "voters": total,
         "median_score": round(scores[len(scores) // 2], 4),
     }
+    # ⚠️ THE RECORD GOES IN `trace`, NOT IN `out`. This dict is the METER, and
+    # `transcribe` copies it onto every measure of the system — so a scalar
+    # added here is written once per bar, which on a 112-measure scan page cost
+    # 9% of the result JSON when these four rode along in it. They are records
+    # about ONE vote and belong where the vote is recorded once.
+    #
+    # ⚠️ Worth stating for the record rather than fixing here: `votes`,
+    # `voters` and `median_score` are already in `out` and are records by the
+    # same argument, so they are duplicated per bar too. That pattern is
+    # inherited, not invented — and the reasoning that moved these four
+    # condemns those three.
+    #
     # Two runners-up, and they are different questions. `runner_up_meter` is the
     # meter that came second in VOTES — the opposition the agreement gate had to
     # clear. `median_score_margin` is the median, over the winning staves, of how
@@ -568,14 +586,15 @@ def vote_system_time_signature(
     # one where they read it at 0.61 against 0.20 agree equally and are not
     # equally sure. RECORD ONLY — `median_score` is documented as deliberately
     # NOT a tie-break here, and neither of these is either.
-    if len(ranked) > 1:
-        out["runner_up_meter"] = ranked[1][0][2]
-        out["runner_up_votes"] = ranked[1][1]
-    margins = sorted(r.score_margin for r in winners
-                     if r.score_margin is not None)
-    if margins:
-        out["median_score_margin"] = round(margins[len(margins) // 2], 4)
-        out["min_score_margin"] = round(margins[0], 4)
+    if trace is not None:
+        if len(ranked) > 1:
+            trace["runner_up_meter"] = ranked[1][0][2]
+            trace["runner_up_votes"] = ranked[1][1]
+        margins = sorted(r.score_margin for r in winners
+                         if r.score_margin is not None)
+        if margins:
+            trace["median_score_margin"] = round(margins[len(margins) // 2], 4)
+            trace["min_score_margin"] = round(margins[0], 4)
     # The glyph is part of the meter and the exporter writes it (MusicXML
     # `symbol=`); the winners all read the same `raw`, so they all read the same
     # glyph. See `LocatedTimeSignature.symbol`.
@@ -615,13 +634,16 @@ def read_system_time_signatures(
             reads.append(locate_time_signature(header_cells[i], config=config,
                                                trace=trace))
             traces[i] = trace
-        meter = vote_system_time_signature(reads, n_staves=len(indices), config=config)
+        vote_trace: dict[str, object] = {}
+        meter = vote_system_time_signature(reads, n_staves=len(indices),
+                                           config=config, trace=vote_trace)
         if evidence is not None:
             # Kept per SYSTEM whether or not the vote reached a meter — a system
             # that abstained is the case where the per-staff tables are most
             # worth having, and it is exactly the case that reaches no `out` row.
             evidence[system_index] = {
                 "voted": meter is not None,
+                "vote": vote_trace,
                 "staves": traces,
             }
         if meter is not None:
