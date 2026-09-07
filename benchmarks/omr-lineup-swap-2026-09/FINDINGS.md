@@ -243,6 +243,12 @@ lineups rather than one printed system.**
   the split makes 6 of them fail, and the inertness test asserts BOTH
   directions (the same fixture must split under the flag) so it cannot pass
   vacuously.
+* `tools/omr/tests/test_lineup_swap_inertness.py` — 4 more, on the two shapes
+  that could hide a drift the clean fixture cannot: front-matter pages with no
+  staves, and `page_systems` arriving out of page order. The refusal path
+  returns the CALLER'S order and `_readmit_empty` returns a sorted one, so the
+  early return is kept on the flag-off branch and flag-off executes the
+  pre-existing statements and nothing else.
 * Flag-off is byte-identical at the ARTEFACT level too: `swap0-spans-on.json`
   md5-matches the span-reach session's committed `spans-on.json` for Brahms 4,
   through the patched call site.
