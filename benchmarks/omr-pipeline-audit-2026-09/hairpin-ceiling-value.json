@@ -1,0 +1,567 @@
+{
+ "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_hairpin_ceiling_value.py",
+ "edition": "Breitkopf & H\u00e4rtel, Brahms Symphony 1 mvt 1 \u2014 ONE EDITION. Every figure here must be quoted with the publisher named; it is not a claim about scans in general.",
+ "why_one_edition": "exactly one batch in the corpus carries a COMPLETION pass. Every other is a single-symbol sweep, where the other classes are unboxed BY INSTRUCTION, so a count of human hairpin boxes there would measure the pass and not the ink. Irreducible today.",
+ "units": {
+  "encoding": "a <wedge> at EACH END \u2014 wedge STARTS (crescendo|diminuendo) are counted, so one printed hairpin is one unit",
+  "page": "the engraver draws one arc",
+  "cell": "a measure cell CUTS the arc, so one printed hairpin crossing a barline becomes TWO human boxes \u2014 a human box count is an UPPER bound on hairpins in that bar"
+ },
+ "coverage": {
+  "completion_swept_cells": 55,
+  "cells_with_a_bar_and_parts_map": 55,
+  "cells_without": 0,
+  "pages": [
+   "p2",
+   "p3",
+   "p4"
+  ]
+ },
+ "item_1b_matched_comparison": {
+  "question": "on THESE cells, what did the detector find?",
+  "detector_detections_on_these_pages_total": 10523,
+  "detector_HAIRPIN_detections": 0,
+  "human_hairpin_boxes": 17,
+  "verdict": "the detector found 0 hairpins on the same three pages where a human drew 17 on 55 cells \u2014 out of 10523 detections it did make. The corpus-level 1 of 99 is not a thin-sample artefact: on this edition it is ZERO.",
+  "\u26a0\ufe0f_scope": "the transcription is per PAGE, not per cell; a page-level count of zero entails a per-cell count of zero, which is why no per-cell join was needed. Had it been non-zero, the join would have been required."
+ },
+ "item_1_ceiling_value": {
+  "reference_wedge_elements_in_the_whole_file": 1366,
+  "reference_wedge_STARTS_in_the_swept_bars": 11,
+  "human_hairpin_boxes_in_the_swept_bars": 17,
+  "ratio_human_over_reference": 1.5454545454545454,
+  "cells_both": 4,
+  "cells_reference_only": 1,
+  "cells_human_only": 7,
+  "\u26a0\ufe0f_bias": "human boxes are an UPPER bound (a barline cuts one hairpin into two boxes) and the reference count is per BAR OF ENTRY (a hairpin spanning three bars is one start). The two biases push opposite ways and neither is quantified here, so this is a BAND, not a point."
+ },
+ "item_1_ceiling_BAR_LEVEL": {
+  "why_this_and_not_the_ratio": "the count ratio (1.545) is unusable as a ceiling: both units are biased and in opposite directions. What IS well defined is a BAR-LEVEL question with no unit mismatch \u2014 of the swept bars where the encoding STARTS a hairpin, in how many did a human find hairpin ink?",
+  "swept_bars_with_a_reference_wedge_start": 5,
+  "of_those_where_a_human_drew_a_box": 4,
+  "human_bar_recall": 0.8,
+  "\u26a0\ufe0f_n": "n = 5 bars. Thin, and it is the whole sample this corpus can offer: only one batch has a completion pass, and only 5 of its 55 swept bars carry a reference hairpin start. The figure is a BOUND worth having and not a point estimate worth quoting to three places.",
+  "what_it_licenses": "C_input(hairpin, Breitkopf Brahms 1) is near 1 and is certainly not near 0.01. That converts `scan:hairpin_detect` from 'refuted as a ceiling' to 'bounded below' \u2014 the detector is at ~0.01 of a ceiling that is at least 0.8.",
+  "the_other_12_boxes": "12 human boxes fall in bars where the encoding starts no hairpin. Those are continuations \u2014 a hairpin spanning three bars is ONE start and is drawn across three cells \u2014 plus barline cuts. They are not false positives and are not evidence against the encoding."
+ },
+ "per_cell": [
+  {
+   "cell_id": "brahms1-p2-sys0-s0-m1",
+   "measure": 9,
+   "parts": [
+    0,
+    1
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s1-m1",
+   "measure": 9,
+   "parts": [
+    2,
+    3
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s1-m5",
+   "measure": 13,
+   "parts": [
+    2,
+    3
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s10-m3",
+   "measure": 11,
+   "parts": [
+    17
+   ],
+   "reference_wedge_starts": 2,
+   "human_hairpin_boxes": 3
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s2-m2",
+   "measure": 10,
+   "parts": [
+    4,
+    5
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s2-m5",
+   "measure": 13,
+   "parts": [
+    4,
+    5
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s3-m4",
+   "measure": 12,
+   "parts": [
+    6,
+    7
+   ],
+   "reference_wedge_starts": 4,
+   "human_hairpin_boxes": 3
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s3-m6",
+   "measure": 14,
+   "parts": [
+    6,
+    7
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s9-m0",
+   "measure": 8,
+   "parts": [
+    16
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 1
+  },
+  {
+   "cell_id": "brahms1-p2-sys0-s9-m5",
+   "measure": 13,
+   "parts": [
+    16
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s19-m0",
+   "measure": 15,
+   "parts": [
+    9,
+    10
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s20-m6",
+   "measure": 21,
+   "parts": [
+    13,
+    14
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s21-m6",
+   "measure": 21,
+   "parts": [
+    15
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s22-m0",
+   "measure": 15,
+   "parts": [
+    16
+   ],
+   "reference_wedge_starts": 3,
+   "human_hairpin_boxes": 3
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s23-m2",
+   "measure": 17,
+   "parts": [
+    17
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 1
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s24-m2",
+   "measure": 17,
+   "parts": [
+    18
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 1
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s25-m3",
+   "measure": 18,
+   "parts": [
+    19
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 1
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s26-m0",
+   "measure": 15,
+   "parts": [
+    20
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p2-sys1-s26-m3",
+   "measure": 18,
+   "parts": [
+    20
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 1
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s1-m0",
+   "measure": 23,
+   "parts": [
+    2,
+    3
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s12-m2",
+   "measure": 25,
+   "parts": [
+    19
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s13-m1",
+   "measure": 24,
+   "parts": [
+    20
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s13-m4",
+   "measure": 27,
+   "parts": [
+    20
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 1
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s3-m3",
+   "measure": 26,
+   "parts": [
+    6,
+    7
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s4-m5",
+   "measure": 28,
+   "parts": [
+    8
+   ],
+   "reference_wedge_starts": 1,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s5-m4",
+   "measure": 27,
+   "parts": [
+    9,
+    10
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s5-m5",
+   "measure": 28,
+   "parts": [
+    9,
+    10
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s8-m3",
+   "measure": 26,
+   "parts": [
+    15
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s9-m1",
+   "measure": 24,
+   "parts": [
+    16
+   ],
+   "reference_wedge_starts": 1,
+   "human_hairpin_boxes": 1
+  },
+  {
+   "cell_id": "brahms1-p3-sys0-s9-m4",
+   "measure": 27,
+   "parts": [
+    16
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 1
+  },
+  {
+   "cell_id": "brahms1-p3-sys1-s18-m1",
+   "measure": 30,
+   "parts": [
+    8
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys1-s18-m2",
+   "measure": 31,
+   "parts": [
+    8
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys1-s23-m0",
+   "measure": 29,
+   "parts": [
+    16
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys1-s23-m5",
+   "measure": 34,
+   "parts": [
+    16
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p3-sys1-s27-m0",
+   "measure": 29,
+   "parts": [
+    20
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s0-m3",
+   "measure": 41,
+   "parts": [
+    0,
+    1
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s1-m0",
+   "measure": 38,
+   "parts": [
+    2,
+    3
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s1-m3",
+   "measure": 41,
+   "parts": [
+    2,
+    3
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s10-m5",
+   "measure": 43,
+   "parts": [
+    17
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s12-m2",
+   "measure": 40,
+   "parts": [
+    19
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s13-m3",
+   "measure": 41,
+   "parts": [
+    20
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s2-m0",
+   "measure": 38,
+   "parts": [
+    4,
+    5
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s3-m8",
+   "measure": 46,
+   "parts": [
+    6,
+    7
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys0-s9-m3",
+   "measure": 41,
+   "parts": [
+    16
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s15-m0",
+   "measure": 48,
+   "parts": [
+    2,
+    3
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s15-m7",
+   "measure": 55,
+   "parts": [
+    2,
+    3
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s17-m7",
+   "measure": 55,
+   "parts": [
+    6,
+    7
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s18-m1",
+   "measure": 49,
+   "parts": [
+    8
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s18-m2",
+   "measure": 50,
+   "parts": [
+    8
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s19-m0",
+   "measure": 48,
+   "parts": [
+    9,
+    10
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s20-m0",
+   "measure": 48,
+   "parts": [
+    11,
+    12
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s22-m1",
+   "measure": 49,
+   "parts": [
+    15
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s23-m1",
+   "measure": 49,
+   "parts": [
+    16
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s24-m3",
+   "measure": 51,
+   "parts": [
+    17
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  },
+  {
+   "cell_id": "brahms1-p4-sys1-s24-m9",
+   "measure": 57,
+   "parts": [
+    17
+   ],
+   "reference_wedge_starts": 0,
+   "human_hairpin_boxes": 0
+  }
+ ]
+}

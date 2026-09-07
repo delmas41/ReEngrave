@@ -1,0 +1,615 @@
+{
+ "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_measurement_hygiene.py",
+ "visibility": {
+  "n_stages": 14,
+  "stages": [
+   {
+    "n": "1",
+    "name": "Render + staff detection",
+    "engraved": {
+     "scoreable": true,
+     "reason": null
+    },
+    "scan": {
+     "scoreable": true,
+     "reason": null
+    }
+   },
+   {
+    "n": "2",
+    "name": "System grouping",
+    "engraved": {
+     "scoreable": false,
+     "reason": "not exercised"
+    },
+    "scan": {
+     "scoreable": true,
+     "reason": null
+    }
+   },
+   {
+    "n": "3",
+    "name": "Measure + barline extraction",
+    "engraved": {
+     "scoreable": false,
+     "reason": "not scoreable"
+    },
+    "scan": {
+     "scoreable": true,
+     "reason": null
+    }
+   },
+   {
+    "n": "4",
+    "name": "Symbol detection",
+    "engraved": {
+     "scoreable": true,
+     "reason": null
+    },
+    "scan": {
+     "scoreable": false,
+     "reason": "no ground truth"
+    }
+   },
+   {
+    "n": "5",
+    "name": "Stems + beams",
+    "engraved": {
+     "scoreable": true,
+     "reason": null
+    },
+    "scan": {
+     "scoreable": false,
+     "reason": "not isolated"
+    }
+   },
+   {
+    "n": "6",
+    "name": "Pitch resolution",
+    "engraved": {
+     "scoreable": true,
+     "reason": null
+    },
+    "scan": {
+     "scoreable": true,
+     "reason": null
+    }
+   },
+   {
+    "n": "7",
+    "name": "Rhythm / durations",
+    "engraved": {
+     "scoreable": true,
+     "reason": null
+    },
+    "scan": {
+     "scoreable": true,
+     "reason": null
+    }
+   },
+   {
+    "n": "8a",
+    "name": "Header: clef",
+    "engraved": {
+     "scoreable": true,
+     "reason": null
+    },
+    "scan": {
+     "scoreable": true,
+     "reason": null
+    }
+   },
+   {
+    "n": "8b",
+    "name": "Header: key signature",
+    "engraved": {
+     "scoreable": true,
+     "reason": null
+    },
+    "scan": {
+     "scoreable": true,
+     "reason": null
+    }
+   },
+   {
+    "n": "8c",
+    "name": "Header: time signature",
+    "engraved": {
+     "scoreable": true,
+     "reason": null
+    },
+    "scan": {
+     "scoreable": true,
+     "reason": null
+    }
+   },
+   {
+    "n": "9",
+    "name": "Margin labels \u2192 instrument",
+    "engraved": {
+     "scoreable": false,
+     "reason": "invisible to the metric"
+    },
+    "scan": {
+     "scoreable": true,
+     "reason": null
+    }
+   },
+   {
+    "n": "10",
+    "name": "Staff \u2192 slot alignment, part identity",
+    "engraved": {
+     "scoreable": false,
+     "reason": "not exercised"
+    },
+    "scan": {
+     "scoreable": true,
+     "reason": null
+    }
+   },
+   {
+    "n": "11",
+    "name": "Export \u2192 MusicXML / LilyPond",
+    "engraved": {
+     "scoreable": false,
+     "reason": "no isolated figure"
+    },
+    "scan": {
+     "scoreable": false,
+     "reason": "no isolated figure"
+    }
+   },
+   {
+    "n": "=",
+    "name": "The finished file, scored",
+    "engraved": {
+     "scoreable": true,
+     "reason": null
+    },
+    "scan": {
+     "scoreable": true,
+     "reason": null
+    }
+   }
+  ],
+  "blind": {
+   "engraved": [
+    "2 System grouping \u2014 not exercised",
+    "3 Measure + barline extraction \u2014 not scoreable",
+    "9 Margin labels \u2192 instrument \u2014 invisible to the metric",
+    "10 Staff \u2192 slot alignment, part identity \u2014 not exercised",
+    "11 Export \u2192 MusicXML / LilyPond \u2014 no isolated figure"
+   ],
+   "scan": [
+    "4 Symbol detection \u2014 no ground truth",
+    "5 Stems + beams \u2014 not isolated",
+    "11 Export \u2192 MusicXML / LilyPond \u2014 no isolated figure"
+   ]
+  },
+  "summary": {
+   "engraved_stages_with_no_number": 5,
+   "scan_stages_with_no_number": 3,
+   "stages_blind_on_both_sides": 1
+  }
+ },
+ "stamps": {
+  "n_result_artefacts": 68,
+  "with_commit": 26,
+  "with_era": 55,
+  "with_both": 26,
+  "with_neither": 13,
+  "machine_checked_era": 1,
+  "machine_checked_era_note": "exactly one artefact has an era stamp a test refuses to let drift: current-accuracy.json, guarded by accuracy_record.check() + test_accuracy_record.py. Every other `era` here is prose a reader must notice.",
+  "note": "`has_era` is generous \u2014 any of ('benchmark', 'era', 'work_set', 'transform_version', 'protocol', 'arm', 'tag', 'headline_is') counts, and `protocol` names the configuration but NOT the row set. Only benchmarks/omr-ned-2026-08/current-accuracy.json carries a machine-CHECKED era (accuracy_record.check refuses a record whose stamp disagrees with BENCHMARK_WORKS).",
+  "rows": [
+   {
+    "path": "benchmarks/omr-cell-grid-tilt-2026-09/results-baseline.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-cell-grid-tilt-2026-09/results-localized.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-cell-grid-tilt-2026-09/results-widened-baseline.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-cell-grid-tilt-2026-09/results-widened-localized.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-choir-grouping-2026-09/results-bach-choiroff.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 1
+   },
+   {
+    "path": "benchmarks/omr-choir-grouping-2026-09/results-bach-choiron.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 1
+   },
+   {
+    "path": "benchmarks/omr-clef-string-staves-2026-09/results-clefdef-on-fixedrows.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 4
+   },
+   {
+    "path": "benchmarks/omr-clef-string-staves-2026-09/results-clefdef-on.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-clef-string-staves-2026-09/results-condensation-off.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 3
+   },
+   {
+    "path": "benchmarks/omr-clef-string-staves-2026-09/results-condensation-on.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 3
+   },
+   {
+    "path": "benchmarks/omr-detection-probe-2026-08/results.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-dsv2-rehearsal-2026-09/results-rehprod-e0.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-dynamics-band-2026-09/results.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-hairpin-cv-2026-09/results-brahms-p2.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-hairpin-cv-2026-09/results-publishers.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-hairpin-cv-2026-09/results-scored-pages.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-headline-validity-2026-09/results-wiring-smoke.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 3
+   },
+   {
+    "path": "benchmarks/omr-imgsz-sweep-2026-08/results.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 20
+   },
+   {
+    "path": "benchmarks/omr-phase4-extension/output/results.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-condensation-arm.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-det-a.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-det-b.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-det-c.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-graft09-arm.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-reconciliation.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 20
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-resolution-arm.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 1
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-restamp-composed.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round3-e10.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round3-e5.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round3-prodbase.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round4-e5.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round4-i512e5.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round5-d25graft.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round5-d25graftprod.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round5-shift0.9.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-round5-shift1.5.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-widened-graft.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results-widened-hollowft.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-pipeline-audit-2026-09/stamped-copies/results.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-condensation-arm.json",
+    "has_commit": true,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-det-a.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-det-b.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-det-c.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-graft09-arm.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 20
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-resolution-arm.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 1
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-restamp-composed.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-round3-e10.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-round3-e5.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-round3-prodbase.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-round4-e5.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-round4-i512e5.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-round5-d25graft.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-round5-d25graftprod.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-round5-shift0.9.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-round5-shift1.5.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-widened-graft.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results-widened-hollowft.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-scan-e2e-2026-09/results.json",
+    "has_commit": false,
+    "has_era": true,
+    "n_rows": 5
+   },
+   {
+    "path": "benchmarks/omr-vs-industry-2026-09/results-audiveris-scan.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": 11
+   },
+   {
+    "path": "benchmarks/omr-vs-industry-2026-09/results-ocr-arm.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-vs-industry-2026-09/results.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": null
+   },
+   {
+    "path": "benchmarks/omr-vs-industry-2026-09/scan-comparison.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": null
+   },
+   {
+    "path": "benchmarks/vlm-vqa-pilot-2026-07/results.json",
+    "has_commit": false,
+    "has_era": false,
+    "n_rows": null
+   }
+  ]
+ }
+}

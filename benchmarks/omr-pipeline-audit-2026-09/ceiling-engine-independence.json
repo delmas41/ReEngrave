@@ -1,0 +1,167 @@
+{
+ "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_ceiling_engine_independence.py",
+ "question": "is the `entire staff insert/delete` charge a fact about the FIXTURE (a ceiling) or about the ENGINE (a defect)?",
+ "sources": {
+  "ours": "benchmarks/omr-scan-e2e-2026-09/results-restamp-composed.json",
+  "ours_20row": "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json",
+  "audiveris": "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+ },
+ "caveat": "The Audiveris arm covers the 11-row scan era, NOT the 20-row era the headline quotes. Rows are compared within the era they share; the 20-row column is shown for reference only and is a DIFFERENT run of our pipeline.",
+ "verdict": {
+  "n_rows_comparable": 10,
+  "n_entire_staff_identical": 7,
+  "rows_identical": [
+   "beethoven-sym5-mvt1-575951-p1",
+   "beethoven-sym5-mvt1-984073-p1",
+   "brahms-sym1-mvt1-317803-p1",
+   "dvorak-sym9-mvt1-405834-p5",
+   "dvorak-sym9-mvt1-405834-p6",
+   "mahler-sym5-mvt1-local-p2",
+   "mahler-sym5-mvt1-local-p3"
+  ],
+  "audiveris_total_entire_staff": 5576,
+  "ours_total_entire_staff": 8167,
+  "systems_hypothesis": {
+   "claim": "the structural charge is engine-independent on a SINGLE-system page and engine-dependent on a multi-system one, because a multi-system page is where the two engines' part-stitching differs",
+   "identical_rows_by_n_systems": [
+    1
+   ],
+   "differing_rows_by_n_systems": [
+    2
+   ],
+   "predicts_all_10": true
+  }
+ },
+ "rows": [
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "audiveris_entire_staff": 513,
+   "audiveris_omr_ed": 1288,
+   "audiveris_omr_ned": 0.7268623024830699,
+   "ours_restamp-composed_entire_staff": 513,
+   "ours_restamp-composed_omr_ed": 1358,
+   "ours_restamp-composed_omr_ned": 0.7595078299776287,
+   "ours_reconciliation_entire_staff": 513,
+   "ours_reconciliation_omr_ed": 1358,
+   "ours_reconciliation_omr_ned": 0.7595078299776287,
+   "n_systems": 1
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "audiveris_entire_staff": 401,
+   "audiveris_omr_ed": 4450,
+   "audiveris_omr_ned": 0.7937923653228683,
+   "ours_restamp-composed_entire_staff": 1551,
+   "ours_restamp-composed_omr_ed": 4407,
+   "ours_restamp-composed_omr_ned": 0.8707765263781861,
+   "ours_reconciliation_entire_staff": 1551,
+   "ours_reconciliation_omr_ed": 4407,
+   "ours_reconciliation_omr_ned": 0.8704325498716177,
+   "n_systems": 2
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "audiveris_entire_staff": 513,
+   "audiveris_omr_ed": 1521,
+   "audiveris_omr_ned": 0.8492462311557789,
+   "ours_restamp-composed_entire_staff": 513,
+   "ours_restamp-composed_omr_ed": 1278,
+   "ours_restamp-composed_omr_ned": 0.710789766407119,
+   "ours_reconciliation_entire_staff": 513,
+   "ours_reconciliation_omr_ed": 1283,
+   "ours_reconciliation_omr_ned": 0.7131739855475264,
+   "n_systems": 1
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "audiveris_entire_staff": 682,
+   "audiveris_omr_ed": 4584,
+   "audiveris_omr_ned": 0.8510954326030449,
+   "ours_restamp-composed_entire_staff": 1551,
+   "ours_restamp-composed_omr_ed": 4343,
+   "ours_restamp-composed_omr_ned": 0.8703406813627255,
+   "ours_reconciliation_entire_staff": 1551,
+   "ours_reconciliation_omr_ed": 4341,
+   "ours_reconciliation_omr_ned": 0.8695913461538461,
+   "n_systems": 2
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "audiveris_entire_staff": 1001,
+   "audiveris_omr_ed": 3687,
+   "audiveris_omr_ned": 0.9268,
+   "ours_restamp-composed_entire_staff": 1001,
+   "ours_restamp-composed_omr_ed": 3434,
+   "ours_restamp-composed_omr_ned": 0.9191648822269807,
+   "ours_reconciliation_entire_staff": 1001,
+   "ours_reconciliation_omr_ed": 3431,
+   "ours_reconciliation_omr_ned": 0.9183618843683083,
+   "n_systems": 1
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "audiveris_entire_staff": 143,
+   "audiveris_omr_ed": 4641,
+   "audiveris_omr_ned": 0.7479,
+   "ours_restamp-composed_entire_staff": 715,
+   "ours_restamp-composed_omr_ed": 6563,
+   "ours_restamp-composed_omr_ned": 0.9425534970558668,
+   "ours_reconciliation_entire_staff": 715,
+   "ours_reconciliation_omr_ed": 6562,
+   "ours_reconciliation_omr_ned": 0.9424098807985064,
+   "n_systems": 2
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "audiveris_entire_staff": 0,
+   "audiveris_omr_ed": 777,
+   "audiveris_omr_ned": 0.5381,
+   "ours_restamp-composed_entire_staff": 0,
+   "ours_restamp-composed_omr_ed": 675,
+   "ours_restamp-composed_omr_ned": 0.43103448275862066,
+   "ours_reconciliation_entire_staff": 0,
+   "ours_reconciliation_omr_ed": 661,
+   "ours_reconciliation_omr_ned": 0.4220945083014049,
+   "n_systems": 1
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "audiveris_entire_staff": 0,
+   "audiveris_omr_ed": 2753,
+   "audiveris_omr_ned": 0.7317916002126529,
+   "ours_restamp-composed_entire_staff": 0,
+   "ours_restamp-composed_omr_ed": 2596,
+   "ours_restamp-composed_omr_ned": 0.7243303571428571,
+   "ours_reconciliation_entire_staff": 0,
+   "ours_reconciliation_omr_ed": 2586,
+   "ours_reconciliation_omr_ned": 0.722144652331751,
+   "n_systems": 1
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "audiveris_entire_staff": 649,
+   "audiveris_omr_ed": 1120,
+   "audiveris_omr_ned": 0.6534422403733956,
+   "ours_restamp-composed_entire_staff": 649,
+   "ours_restamp-composed_omr_ed": 1119,
+   "ours_restamp-composed_omr_ned": 0.6894639556377079,
+   "ours_reconciliation_entire_staff": 649,
+   "ours_reconciliation_omr_ed": 1118,
+   "ours_reconciliation_omr_ned": 0.6884236453201971,
+   "n_systems": 1
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "audiveris_entire_staff": 1674,
+   "audiveris_omr_ed": 3113,
+   "audiveris_omr_ned": 0.8604201216141515,
+   "ours_restamp-composed_entire_staff": 1674,
+   "ours_restamp-composed_omr_ed": 3076,
+   "ours_restamp-composed_omr_ned": 0.888760473851488,
+   "ours_reconciliation_entire_staff": 1674,
+   "ours_reconciliation_omr_ed": 3075,
+   "ours_reconciliation_omr_ned": 0.8866782006920415,
+   "n_systems": 1
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+=== scan: 193 staves
+   CLEF  supplied by: {'detector_header': 14, None: 30, 'detector': 144, 'cv_locator': 5}
+   KEY   supplied by: {None: 94, 'header_vote': 99}
+   METER supplied by: {None: 164, 'header_reader': 29}
+   MARGIN LABEL rung: {'text_layer': 12, 'surya': 134, 'tesseract': 7, 'vision': 0, 'human': 0}
+   DIRECTION rung   : {'surya': 19, 'tesseract': 1}
+   detector classes actually emitted, by family:
+      notehead         4339
+      stem             76
+      beam             1896
+      staff line       1150
+      ledger line      2461
+      tie              1658
+      slur             413
+      hairpin          0
+      barline          0
+      family bracket   0
+=== engraved: 224 staves
+   CLEF  supplied by: {'detector': 212, 'dossier': 10, None: 2}
+   KEY   supplied by: {'header_vote': 116, None: 108}
+   METER supplied by: {'dossier': 203, None: 18, 'header_reader': 3}
+   MARGIN LABEL rung: {'text_layer': 124, 'surya': 83, 'tesseract': 5, 'vision': 0, 'human': 0}
+   DIRECTION rung   : no report (built --no-direction-text)
+   detector classes actually emitted, by family:
+      notehead         1557
+      stem             0
+      beam             366
+      staff line       1579
+      ledger line      488
+      tie              171
+      slur             306
+      hairpin          9
+      barline          0
+      family bracket   0

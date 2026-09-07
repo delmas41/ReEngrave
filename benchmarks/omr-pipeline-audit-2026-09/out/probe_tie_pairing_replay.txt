@@ -1,0 +1,12 @@
+=== scan
+   {'ties': 1459, 'paired': 298, 'ONE side only': 422, 'no side': 739}
+   y_tol 30px floor binds: {False: 1459}  median avg notehead h: 30.5
+   |dy| between the two paired heads, in notehead heights: median=0.42 p90=1.79 p99=3.5 max=4.66
+   pairs whose two heads differ in y by >0.5 nh: 122 of 298
+   paired heads with SAME resolved pitch (True/False/unknown): {False: 199, True: 99}
+=== engraved
+   {'ties': 155, 'no side': 55, 'paired': 70, 'ONE side only': 30}
+   y_tol 30px floor binds: {False: 155}  median avg notehead h: 43.5
+   |dy| between the two paired heads, in notehead heights: median=0.01 p90=0.47 p99=1.47 max=1.47
+   pairs whose two heads differ in y by >0.5 nh: 4 of 70
+   paired heads with SAME resolved pitch (True/False/unknown): {False: 23, True: 47}

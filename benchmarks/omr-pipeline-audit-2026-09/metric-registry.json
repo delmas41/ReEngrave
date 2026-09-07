@@ -1,0 +1,2293 @@
+{
+ "schema_version": "0.3.0",
+ "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/build_metric_registry.py",
+ "round": 3,
+ "changes_since_0_2_0": [
+  "human review cost \u2014 the project's PURPOSE \u2014 is on the board: 46 of 1,571 records, 97.07% of achievable. Round 2's 'irreproducible' verdict is WITHDRAWN: score.py derives `impossible`/`not-in-this-work` from corpus.py, which is committed, and work/page/emitted are all on the record. The fields were absent; the information was not.",
+  "the hairpin `input` ceiling has a VALUE (bar recall 0.80, n=5) and the matched comparison round 2 never made: ZERO hairpin detections in 10,523 on the same three pages a human swept",
+  "every probe that globs now takes OMR_FIXTURE_ROOT and exits non-zero on an empty glob, per the verifier's endorsed fix"
+ ],
+ "changes_since_0_1_0": [
+  "the scan structural floor is MEASURED (probe_structural_floor.py) instead of estimated; it is a CONSTRAINED floor \u2014 the price of page fidelity \u2014 and every scan % is now '% of achievable under page fidelity'",
+  "`comparability` replaces the single `era_key` equality test, which forbade the competitive comparison this registry prints (M2)",
+  "the `input` ceiling is no longer wholly empty: bounded above for noteheads (<= 0.971) and REFUTED as an explanation for hairpins",
+  "three omitted estates added \u2014 calibration (scoreable:false, no defensible worst case), the ledger-zone screen/defect pair, and pre-fill precision against a PRE-REGISTERED ceiling"
+ ],
+ "_comment": "PROPOSAL, not yet wired into anything. Every value is read from a committed artefact named in `source`. Nothing here changes pipeline behaviour.",
+ "unit": {
+  "name": "% of achievable",
+  "range": [
+   0,
+   100
+  ],
+  "direction": "higher_is_better",
+  "why": "Sean, 2026-09-07: today 1.000 means perfect in one table and catastrophic in the next. One unit, one direction, every row."
+ },
+ "transforms": {
+  "error": {
+   "formula": "pct = 100 * (W - M) / (W - F)",
+   "inverse": "M = W - (pct/100) * (W - F)",
+   "W_for_omr_ned": 1.0,
+   "why_W_is_1": "OMR-NED of an empty prediction is truth/(truth+0) = 1 exactly, so the metric has a natural worst case and the span is well defined"
+  },
+  "rate": {
+   "formula": "pct = 100 * V / C",
+   "inverse": "V = C * pct / 100"
+  }
+ },
+ "rules": {
+  "independence_guard": "a ceiling may ONLY be derived from an artefact independent of our own output \u2014 a truth file, a render, an external engine. A ceiling inferred from what we currently produce lets the pipeline grade itself against its own limitations and reach 100 by standing still.",
+  "assumption_direction": "where a ceiling is unknown it is assumed at the value that MINIMISES the score (F=0 for an error metric, C=1 for a rate). A missing ceiling can therefore never manufacture a high number. Such a row is stamped status 'assumed'.",
+  "mandatory_caption": {
+   "_why": "\u26a0\ufe0f A ROW CAN BE INDIVIDUALLY CORRECT AND COLLECTIVELY MISLEADING. `human:review_cost:identity` reads 97.07 and `scan:omr_ned` reads 15.56, on one axis, in one unit, in one table \u2014 and the first scores staff NAMING while the second scores everything. A reader takes the pair to mean 'naming is nearly solved, reading is not'; what it actually means is that one of them has a harness and the reviewer's real load (note-level diffs) has none. No amount of care in the renderer fixes that, because the mistake is not made in the renderer.",
+   "rule": "a row carrying a non-null `mandatory_caption` MUST be rendered with that text visible beside the number \u2014 not in a tooltip, not on hover, not behind a disclosure. A renderer that cannot show it MUST NOT show the row.",
+   "enforcement": "this is a SCHEMA constraint, not a rendering convention. If the renderer can drop the caption the schema is wrong, not the renderer \u2014 so a consumer that omits captions should fail its own build rather than degrade silently.",
+   "when_to_set_it": "when the row's SCOPE is narrower than its neighbours' and the unit hides the difference. Not for ordinary caveats \u2014 those are `flags`."
+  },
+  "no_fabricated_100": "a row with no ceiling evidence AND no value gets scoreable:false and renders as an explicit 'unscoreable \u2014 <reason>', never a number.",
+  "pooling": "rows may be pooled only within one `pool_key`, and a pool is recomputed FROM THE UNDERLYING COUNTS, never by averaging percentages \u2014 a 3-bar excerpt and a 27-staff page must not carry equal weight. A pool's trust is the MINIMUM of its members' ceiling statuses.",
+  "comparability": {
+   "_why": "\u26a0\ufe0f CORRECTED IN ROUND 2. The round-1 rule was a single `era_key` equality test, and it FORBADE the competitive comparison this very registry prints: we and Audiveris are different systems and so can never share an era key, yet on the same fixtures through the same scorer we are exactly comparable. Comparability is not one relation.",
+   "time_series": "may difference only if `comparable_as.time_series` is equal AND `ceiling.value` and `ceiling.evidence` are equal AND the arm (which predictions) is the same. This is the accuracy_record.check() shape and it answers 'are we improving'.",
+   "head_to_head": "may compare only if `comparable_as.head_to_head` is equal \u2014 same fixtures, same scorer, same row set, different SYSTEM. It answers 'are we better than them' and says nothing about direction over time.",
+   "neither": "a pair sharing neither key may not be put in one sentence with an arrow between them.",
+   "worked_example": "`engraved:omr_ned` and `competitive:engraved:audiveris` share a head_to_head key and no time_series key: 88.78 vs 87.48 is a valid head-to-head and NOT a delta. `scan:omr_ned` and `scan:omr_ned:page_fidelity_15rows` share neither: different row sets and different ceilings."
+  },
+  "dilution_guard": "a delta on an error-rate metric is REFUSED as an improvement when the ratio falls while `companions.edits` rises \u2014 that is under-prediction being rewarded by a symmetric metric, not recognition. Live example in MEASUREMENT_SYSTEM.md \u00a7A6.",
+  "noise_floor": "a delta smaller than the row's own measured noise floor is reported as 'within noise', not as a direction. A row whose noise floor is unmeasured may not carry a delta at all."
+ },
+ "ceiling_kinds": {
+  "structural": "the truth encodes what the page does not print",
+  "render": "the fixture carries ink no reader could have read, or lost ink it should have",
+  "visibility": "the harness cannot see the stage \u2014 a ceiling of ZERO INFORMATION, not of 100%",
+  "input": "the ink is genuinely gone",
+  "competitive": "best external system, our fixtures, our scorer",
+  "assumed": "no evidence; set by the assumption-direction rule"
+ },
+ "coverage": {
+  "n_rows": 55,
+  "n_scoreable": 39,
+  "n_unscoreable": 16,
+  "by_ceiling_status": {
+   "measured": 25,
+   "measured_unreliable": 1,
+   "assumed": 19,
+   "measured_directly": 1,
+   "measured_single_source": 1,
+   "measured_and_corroborated": 1,
+   "bounded_above": 1,
+   "bounded_below": 1,
+   "unmeasured": 3,
+   "not_a_defect_rate": 1,
+   "pre_registered": 1
+  }
+ },
+ "rows": [
+  {
+   "id": "engraved:omr_ned",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": "orchestral-e2e|2026-09-02|11works|direction_text",
+    "head_to_head": "engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects"
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED (musicdiff 5.2)",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.11223035256105673,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "the page-normalising transform is a NO-OP on all 11 works (is_a_no_op: true) \u2014 these fixtures are 1:1, so no part of this figure is a charge for a printing convention. The control COULD have failed: on the scan side the same transform removes 33.8% of the edits."
+   },
+   "pct_of_achievable": 88.78,
+   "n": 11,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value_edits": 0,
+    "status": "measured_on_a_2_work_subset",
+    "evidence": "benchmarks/omr-pipeline-audit-2026-09/engraved-noise-floor.json",
+    "note": "two arms of `orchestral_eval --omr-ned --no-direction-text` over mahler-sym5-mvt1 + brahms-sym1-mvt1 on one unchanged tree, run serially: 40/40 and 518/518, and the exports are BYTE-IDENTICAL rather than merely equal-scoring. Both arms demonstrably ran (415 s vs 270 s wall, and per-work pipeline runtime 341.9 s vs 206.7 s).",
+    "\u26a0\ufe0f_scope": "n=2 works, direction text OFF. It does NOT license a zero floor for the eleven-work pool or for the default configuration: the scan harness measured exactly 0 on its five-row era and \u00b16 on its twenty-row era, so a floor is a property of the POOL as much as of the pipeline. A delta on this row still may not be gated."
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 2362,
+    "truth_symbols": 10665,
+    "pred_symbols": 10381
+   }
+  },
+  {
+   "id": "engraved:omr_ned:beethoven-sym5-mvt1",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.029320987654320986,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "per-work no-op, delta_edits 0"
+   },
+   "pct_of_achievable": 97.07,
+   "n": 1,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured"
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 38
+   },
+   "flags": []
+  },
+  {
+   "id": "engraved:omr_ned:brahms-sym1-mvt1",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.09427121102248005,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "per-work no-op, delta_edits 0"
+   },
+   "pct_of_achievable": 90.57,
+   "n": 1,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured"
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 390
+   },
+   "flags": []
+  },
+  {
+   "id": "engraved:omr_ned:mahler-sym5-mvt1",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.020887728459530026,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "per-work no-op, delta_edits 0"
+   },
+   "pct_of_achievable": 97.91,
+   "n": 1,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured"
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 40
+   },
+   "flags": []
+  },
+  {
+   "id": "engraved:omr_ned:mozart-sym40-mvt1",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.14146658014276445,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "per-work no-op, delta_edits 0"
+   },
+   "pct_of_achievable": 85.85,
+   "n": 1,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured"
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 218
+   },
+   "flags": [
+    "~41% of notes land in `order` bars with every pitch present on both sides \u2014 a divisi voice-split convention, not recognition"
+   ]
+  },
+  {
+   "id": "engraved:omr_ned:mozart-sym41-mvt1",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.10248552945182159,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "per-work no-op, delta_edits 0"
+   },
+   "pct_of_achievable": 89.75,
+   "n": 1,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured"
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 301
+   },
+   "flags": []
+  },
+  {
+   "id": "engraved:omr_ned:beethoven-sym3-mvt1",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.12936221419975932,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "per-work no-op, delta_edits 0"
+   },
+   "pct_of_achievable": 87.06,
+   "n": 1,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured"
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 215
+   },
+   "flags": []
+  },
+  {
+   "id": "engraved:omr_ned:brahms-sym4-mvt1",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.2136387852956846,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "per-work no-op, delta_edits 0"
+   },
+   "pct_of_achievable": 78.64,
+   "n": 1,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured"
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 401
+   },
+   "flags": []
+  },
+  {
+   "id": "engraved:omr_ned:dvorak-sym9-mvt4",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.33804809052333806,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "per-work no-op, delta_edits 0"
+   },
+   "pct_of_achievable": 66.2,
+   "n": 1,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured"
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 239
+   },
+   "flags": [
+    "denominator is a 3-bar excerpt, a third of every other row \u2014 noisiest ratio in the set"
+   ]
+  },
+  {
+   "id": "engraved:omr_ned:tchaikovsky-sym4-mvt2",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.044430135222150675,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "per-work no-op, delta_edits 0"
+   },
+   "pct_of_achievable": 95.56,
+   "n": 1,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured"
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 69
+   },
+   "flags": []
+  },
+  {
+   "id": "engraved:omr_ned:tchaikovsky-sym6-mvt2",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.18549511854951187,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "per-work no-op, delta_edits 0"
+   },
+   "pct_of_achievable": 81.45,
+   "n": 1,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured"
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 266
+   },
+   "flags": []
+  },
+  {
+   "id": "engraved:omr_ned:bruckner-sym5-mvt1",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.09310518369401108,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json"
+    ],
+    "control": "per-work no-op, delta_edits 0"
+   },
+   "pct_of_achievable": 90.69,
+   "n": 1,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured"
+   },
+   "summability_class": "omr_ned_engraved",
+   "pool_key": "engraved/orchestral-e2e/11",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-ned-2026-08/current-accuracy.json",
+   "companions": {
+    "edits": 185
+   },
+   "flags": []
+  },
+  {
+   "id": "reading:accidental",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.40559440559440557,
+   "transform": null,
+   "ceiling": {
+    "kind": "render",
+    "value": null,
+    "status": "measured_unreliable",
+    "evidence": [
+     "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+     "tools/omr/page_truth.py render_fidelity"
+    ],
+    "control": "Verovio draws one accidental per <alter>, not per <accidental> \u2014 the rendered page carries ink a real engraver would never print (Brahms 1: 54 <accidental>, 149 <alter>, 149 drawn). page_truth.render_fidelity declares the family unreliable."
+   },
+   "pct_of_achievable": null,
+   "n": 226,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": null,
+   "summability_class": "reading_f1",
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "the FIXTURE is unreadable for this family \u2014 a score here measures Verovio, not the pipeline",
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json"
+  },
+  {
+   "id": "reading:augmentation_dot",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.961904761904762,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score"
+   },
+   "pct_of_achievable": 96.19,
+   "n": 102,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured",
+    "note": "re-rendering at 600 dpi moved Brahms 1 0.854->0.868 and Tchaikovsky 4 0.787->0.789 (FINDINGS controls)"
+   },
+   "summability_class": "reading_f1",
+   "pool_key": "engraved/page-truth/reading",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 102,
+    "pred": 108,
+    "matched": 101
+   },
+   "flags": []
+  },
+  {
+   "id": "reading:barline",
+   "stage": "3 measure + barline",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": "visibility",
+    "value": null,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-reading-vs-reproduction-2026-09/results.json"
+    ],
+    "control": "CV-detected in CELL-relative coordinates and never expressed in page coordinates \u2014 45 printed against 0 comparable. A frame mismatch, not a miss."
+   },
+   "pct_of_achievable": null,
+   "n": 45,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": null,
+   "summability_class": "reading_f1",
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "CV-detected in CELL-relative coordinates and never expressed in page coordinates \u2014 45 printed against 0 comparable. A frame mismatch, not a miss.",
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json"
+  },
+  {
+   "id": "reading:beam",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.7534246575342465,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score"
+   },
+   "pct_of_achievable": 75.34,
+   "n": 110,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured",
+    "note": "re-rendering at 600 dpi moved Brahms 1 0.854->0.868 and Tchaikovsky 4 0.787->0.789 (FINDINGS controls)"
+   },
+   "summability_class": "reading_f1",
+   "pool_key": null,
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 110,
+    "pred": 182,
+    "matched": 110
+   },
+   "flags": [
+    "held out of the pooled F1: CV-detected, unit is a STROKE not a per-note-per-level <beam>"
+   ]
+  },
+  {
+   "id": "reading:clef",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.9692982456140351,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score"
+   },
+   "pct_of_achievable": 96.93,
+   "n": 226,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured",
+    "note": "re-rendering at 600 dpi moved Brahms 1 0.854->0.868 and Tchaikovsky 4 0.787->0.789 (FINDINGS controls)"
+   },
+   "summability_class": "reading_f1",
+   "pool_key": "engraved/page-truth/reading",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 226,
+    "pred": 230,
+    "matched": 221
+   },
+   "flags": []
+  },
+  {
+   "id": "reading:dynamic_letter",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.5515151515151515,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score"
+   },
+   "pct_of_achievable": 55.15,
+   "n": 114,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured",
+    "note": "re-rendering at 600 dpi moved Brahms 1 0.854->0.868 and Tchaikovsky 4 0.787->0.789 (FINDINGS controls)"
+   },
+   "summability_class": "reading_f1",
+   "pool_key": "engraved/page-truth/reading",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 114,
+    "pred": 216,
+    "matched": 91
+   },
+   "flags": []
+  },
+  {
+   "id": "reading:flag",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.9915966386554621,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score"
+   },
+   "pct_of_achievable": 99.16,
+   "n": 118,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured",
+    "note": "re-rendering at 600 dpi moved Brahms 1 0.854->0.868 and Tchaikovsky 4 0.787->0.789 (FINDINGS controls)"
+   },
+   "summability_class": "reading_f1",
+   "pool_key": "engraved/page-truth/reading",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 118,
+    "pred": 120,
+    "matched": 118
+   },
+   "flags": []
+  },
+  {
+   "id": "reading:key_accidental",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.8388746803069054,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score"
+   },
+   "pct_of_achievable": 83.89,
+   "n": 328,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured",
+    "note": "re-rendering at 600 dpi moved Brahms 1 0.854->0.868 and Tchaikovsky 4 0.787->0.789 (FINDINGS controls)"
+   },
+   "summability_class": "reading_f1",
+   "pool_key": "engraved/page-truth/reading",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 328,
+    "pred": 454,
+    "matched": 328
+   },
+   "flags": []
+  },
+  {
+   "id": "reading:notehead",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.9988331388564761,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score"
+   },
+   "pct_of_achievable": 99.88,
+   "n": 856,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured",
+    "note": "re-rendering at 600 dpi moved Brahms 1 0.854->0.868 and Tchaikovsky 4 0.787->0.789 (FINDINGS controls)"
+   },
+   "summability_class": "reading_f1",
+   "pool_key": "engraved/page-truth/reading",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 856,
+    "pred": 858,
+    "matched": 856
+   },
+   "flags": []
+  },
+  {
+   "id": "reading:rest",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.9925133689839573,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score"
+   },
+   "pct_of_achievable": 99.25,
+   "n": 929,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured",
+    "note": "re-rendering at 600 dpi moved Brahms 1 0.854->0.868 and Tchaikovsky 4 0.787->0.789 (FINDINGS controls)"
+   },
+   "summability_class": "reading_f1",
+   "pool_key": "engraved/page-truth/reading",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 929,
+    "pred": 941,
+    "matched": 928
+   },
+   "flags": []
+  },
+  {
+   "id": "reading:slur",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.5177304964539007,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score"
+   },
+   "pct_of_achievable": 51.77,
+   "n": 137,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured",
+    "note": "re-rendering at 600 dpi moved Brahms 1 0.854->0.868 and Tchaikovsky 4 0.787->0.789 (FINDINGS controls)"
+   },
+   "summability_class": "reading_f1",
+   "pool_key": "engraved/page-truth/reading",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 137,
+    "pred": 145,
+    "matched": 73
+   },
+   "flags": []
+  },
+  {
+   "id": "reading:tie",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.2601626016260163,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score"
+   },
+   "pct_of_achievable": 26.02,
+   "n": 52,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured",
+    "note": "re-rendering at 600 dpi moved Brahms 1 0.854->0.868 and Tchaikovsky 4 0.787->0.789 (FINDINGS controls)"
+   },
+   "summability_class": "reading_f1",
+   "pool_key": "engraved/page-truth/reading",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 52,
+    "pred": 71,
+    "matched": 16
+   },
+   "flags": []
+  },
+  {
+   "id": "reading:time_signature_digit",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.9972067039106145,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement says a perfect reader could not reach F1 1.000 here; C=1 is the assumption-direction default and can only UNDERSTATE the score"
+   },
+   "pct_of_achievable": 99.72,
+   "n": 358,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": {
+    "value": null,
+    "status": "unmeasured",
+    "note": "re-rendering at 600 dpi moved Brahms 1 0.854->0.868 and Tchaikovsky 4 0.787->0.789 (FINDINGS controls)"
+   },
+   "summability_class": "reading_f1",
+   "pool_key": "engraved/page-truth/reading",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 358,
+    "pred": 358,
+    "matched": 357
+   },
+   "flags": []
+  },
+  {
+   "id": "reading:POOLED",
+   "stage": "4 symbol detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "detection F1 vs exact page truth, pooled",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.9192084511233447,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "the RENDER ceiling is enacted as an EXCLUSION, not as C<1: including the render-unreliable accidental family would read 0.8982 instead of 0.9192"
+   },
+   "pct_of_achievable": 91.92,
+   "n": 3220,
+   "n_unit": "printed symbols",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": null,
+   "summability_class": "reading_f1",
+   "pool_key": "engraved/page-truth/reading",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-reading-vs-reproduction-2026-09/results.json",
+   "companions": {
+    "truth": 3220,
+    "pred": 3501,
+    "matched": 3089
+   }
+  },
+  {
+   "id": "engraved:structure",
+   "stage": "1 render + staff detection",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": "These fixtures are 1:1 BY CONSTRUCTION \u2014 every truth part gets its own printed staff. A conductor's page condenses and splits; this stage is never asked that question here.",
+   "raw_metric": "works whose part count equals the truth's",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.9090909090909091,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "structural",
+    "value": 1.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-1to1.json"
+    ],
+    "control": "these fixtures are 1:1 BY CONSTRUCTION \u2014 every truth part gets its own printed staff \u2014 so 1.0 is genuinely reachable and this stage is never asked the hard question a conductor's page asks"
+   },
+   "pct_of_achievable": 90.91,
+   "n": 11,
+   "n_unit": "works",
+   "era_key": "page-truth|verovio-render|300dpi|tol0.5spaces|11works",
+   "noise_floor": null,
+   "summability_class": "structure_rate",
+   "pool_key": null,
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-headline-validity-2026-09/engraved-1to1.json",
+   "flags": [
+    "EASY BY CONSTRUCTION \u2014 a 100 here does not predict a conductor's page"
+   ]
+  },
+  {
+   "id": "scan:omr_ned",
+   "stage": "= finished file",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED (musicdiff 5.2)",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.8443958865999122,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 0.0,
+    "status": "assumed",
+    "evidence": [
+     "benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json",
+     "benchmarks/omr-pipeline-audit-2026-09/ceiling-engine-independence.json"
+    ],
+    "control": "F=0 is the assumption-direction default and UNDERSTATES. A measured floor now exists for 15 of these 20 rows, on THIS arm (the 20-row normalised artefact's raw pool is exactly the canonical 0.8444). Over those 15 the floor is 0.134 and the score is 18.3% instead of 15.8%. The pooled 20-row row keeps F=0 because 5 rows have no map and a pool's trust is the MINIMUM of its members'."
+   },
+   "pct_of_achievable": 15.56,
+   "n": 20,
+   "n_unit": "hand-verified pages",
+   "era_key": "scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT",
+   "noise_floor": {
+    "value_edits": 6,
+    "value_pct_points": 0.007,
+    "status": "measured",
+    "note": "\u00b16 edits pooled; on a single row the same 6 edits are worth ~0.5 pct-points. Source: CLAUDE.md, beethoven-984073-p4 4673 then 4679 on one tree."
+   },
+   "summability_class": "omr_ned_scan",
+   "pool_key": "scan/scan-e2e/20",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json",
+   "companions": {
+    "edits": 74968,
+    "truth_symbols": 49846,
+    "pred_symbols": 38937
+   },
+   "flags": [
+    "the artefact carries NO commit and NO machine-checked era stamp",
+    "34.5% of the edits on the 15 normalisable rows are structural charge for a printing convention, not recognition error"
+   ]
+  },
+  {
+   "id": "scan:omr_ned:page_fidelity_15rows",
+   "stage": "= finished file",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": "scan-e2e|20rows|reconciliation|normalised-transform1.2.0",
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.8417147206041624,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.21229475255482833,
+    "status": "measured_directly",
+    "constraint": "PAGE FIDELITY. The metric's unconstrained floor is ZERO \u2014 emitting the ENCODING rather than the page scores 0, which is exactly what OMR_CONDENSED_PARTS would harvest and what CLAUDE.md calls an anti-feature. This floor is the price of an output faithful to the printed page, which is the output Sean asked for. Every scan % below is therefore '% of achievable UNDER PAGE FIDELITY'.",
+    "evidence": [
+     "benchmarks/omr-pipeline-audit-2026-09/structural-floor-measured.json"
+    ],
+    "control": "the derived truth is scored AS THE PREDICTION against the raw truth, so no output of ours appears in the measurement at all. Controls: the three identity-transform rows (Dvorak, 15 parts into 15 staves) score EXACTLY 0 edits; all 15 derived truths reproduce the committed control's canonical hashes; every truth fixture's sha256 equals the canonical arm's."
+   },
+   "pct_of_achievable": 20.09,
+   "n": 15,
+   "n_unit": "pages",
+   "era_key": "scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba",
+   "noise_floor": {
+    "value_edits": 6,
+    "status": "measured",
+    "applies_to": "M only \u2014 F contains no prediction of ours, so arm-to-arm noise cannot move it"
+   },
+   "summability_class": "omr_ned_scan_ceilinged",
+   "pool_key": "scan/page-fidelity/15",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-pipeline-audit-2026-09/structural-floor-measured.json",
+   "companions": {
+    "floor_unpaired_parts": 0.21229475255482833,
+    "floor_structural": 0.4981915260075784,
+    "floor_total": 0.6347743713399931,
+    "residue_share_of_total_floor": 0.21516754850088182
+   },
+   "flags": [
+    "the floor is the MOST CONSERVATIVE rung of a three-rung ladder (0.2123 unpaired-parts / 0.4982 structural / 0.6348 total). A larger floor raises the score, so the ladder is climbed only as far as the evidence is unambiguous.",
+    "15 of 20 rows: the four Mahler and one Bach rows have no hand-read staves map and are not guessed at"
+   ]
+  },
+  {
+   "id": "scan:omr_ned:ceiling_measured_15rows",
+   "stage": "= finished file",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.8417147206041624,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.1339993110575267,
+    "status": "measured_single_source",
+    "evidence": [
+     "benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json",
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read map)",
+     "benchmarks/omr-pipeline-audit-2026-09/ceiling-engine-independence.json"
+    ],
+    "control": "the QUANTITY is defined by (reference truth, hand-read page map) and is independent of our output; the ESTIMATOR is the MINIMUM `entire staff` charge over every engine measured on each row, which is our own on 10 of the 15. On the other 5 an independent engine produces the identical number."
+   },
+   "pct_of_achievable": 18.28,
+   "n": 15,
+   "n_unit": "pages",
+   "era_key": "scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba",
+   "noise_floor": {
+    "value_edits": 6,
+    "status": "measured"
+   },
+   "summability_class": "omr_ned_scan_ceilinged",
+   "pool_key": "scan/ceiling-measured/15",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-pipeline-audit-2026-09/pct-of-achievable-prototype.json",
+   "flags": [
+    "15 of 20 rows: the five Mahler/Bach rows have no hand-read staves map and are not guessed at"
+   ]
+  },
+  {
+   "id": "scan:omr_ned:ceiling_corroborated_subset",
+   "stage": "= finished file",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.7473135525260626,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "structural",
+    "value": 0.15199460107978405,
+    "status": "measured_and_corroborated",
+    "evidence": [
+     "benchmarks/omr-page-normalise-fixes-2026-09/results-normalised-arm-20row.json",
+     "benchmarks/omr-pipeline-audit-2026-09/ceiling-engine-independence.json",
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read map)"
+    ],
+    "control": "the ceiling is bit-identical for an INDEPENDENT engine (Audiveris 5.11) on all 5 rows. The control fired: it is NOT identical on 3 further rows, which are therefore excluded \u2014 every one of those is a two-system page."
+   },
+   "pct_of_achievable": 29.8,
+   "n": 5,
+   "n_unit": "pages",
+   "era_key": "scan-e2e|20rows|reconciliation|ceiling-corroborated-5|transform1.2.0|afea84ba",
+   "noise_floor": {
+    "value_edits": 6,
+    "status": "measured"
+   },
+   "summability_class": "omr_ned_scan_ceilinged",
+   "pool_key": "scan/ceiling-corroborated/5",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-pipeline-audit-2026-09/pct-of-achievable-prototype.json",
+   "flags": [
+    "5 of 20 rows, 3 of 6 works \u2014 NOT the headline. Since 2026-09-07 it is on the SAME arm as the headline (the 20-row normalised artefact), so the arm mismatch that made this incomparable is closed; the ROW-SET mismatch stands and still refuses the difference."
+   ]
+  },
+  {
+   "id": "scan:staves",
+   "stage": "1 render + staff detection",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "rows exact",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 1.0,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "input",
+    "value": 1.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json"
+    ],
+    "control": "the printed counts are HAND-READ off the scan, so 1.0 is what the page actually contains"
+   },
+   "pct_of_achievable": 100.0,
+   "n": 20,
+   "n_unit": "pages",
+   "era_key": "scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT",
+   "noise_floor": null,
+   "summability_class": "structure_rate",
+   "pool_key": null,
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json",
+   "companions": {
+    "exact_rows": 20
+   }
+  },
+  {
+   "id": "scan:systems",
+   "stage": "2 system grouping",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "rows exact",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 1.0,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "input",
+    "value": 1.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json"
+    ],
+    "control": "the printed counts are HAND-READ off the scan, so 1.0 is what the page actually contains"
+   },
+   "pct_of_achievable": 100.0,
+   "n": 20,
+   "n_unit": "pages",
+   "era_key": "scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT",
+   "noise_floor": null,
+   "summability_class": "structure_rate",
+   "pool_key": null,
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json",
+   "companions": {
+    "exact_rows": 20
+   }
+  },
+  {
+   "id": "scan:pitch",
+   "stage": "6 pitch resolution",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "staff-position recall vs truth notes",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.834262175914708,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "no measurement of how much ink is genuinely unrecoverable on these scans exists \u2014 the INPUT ceiling is unmeasured, so C=1 under the assumption-direction rule"
+   },
+   "pct_of_achievable": 83.43,
+   "n": 4127,
+   "n_unit": "truth notes",
+   "era_key": "scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT",
+   "noise_floor": null,
+   "summability_class": "note_recall",
+   "pool_key": "scan/scan-e2e/20",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json",
+   "companions": {
+    "rows_with_hand_map": 10,
+    "spelled_pitch_recall": 0.76399321541071
+   }
+  },
+  {
+   "id": "scan:duration",
+   "stage": "7 rhythm / durations",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "of pitch-matched notes, share whose duration is also right",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.7497621313035204,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": null
+   },
+   "pct_of_achievable": 74.98,
+   "n": 3153,
+   "n_unit": "pitch-matched notes",
+   "era_key": "scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT",
+   "noise_floor": null,
+   "summability_class": "duration_rate",
+   "pool_key": "scan/scan-e2e/20",
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json"
+  },
+  {
+   "id": "scan:hairpin_detect",
+   "stage": "4 symbol detection",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": "Scores the DETECTOR only. A classical-CV reader added later carries 118 of 198 <wedge> into the file, so this is not what reaches a user.",
+   "raw_metric": "hairpins the YOLO detector finds",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.010101010101010102,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "input",
+    "value": 1.0,
+    "status": "assumed",
+    "evidence": [
+     "benchmarks/omr-hairpin-cv-2026-09/results-scored-pages.json"
+    ],
+    "control": "against exact engraved page truth the same detector scores F1 1.000 (n=3), so the ink IS readable in principle \u2014 but nothing measures how much of a hairpin survives a bitonal 600 dpi scan, so C=1 is assumed"
+   },
+   "pct_of_achievable": 1.01,
+   "n": 99,
+   "n_unit": "truth hairpins",
+   "era_key": "hairpin-cv|11 scanned pages",
+   "noise_floor": null,
+   "summability_class": "detector_recall",
+   "pool_key": null,
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-hairpin-cv-2026-09/results-scored-pages.json",
+   "flags": [
+    "the classical-CV reader added later carries 118 of 198 <wedge> into the file \u2014 this row scores the DETECTOR only"
+   ]
+  },
+  {
+   "id": "competitive:engraved:audiveris",
+   "stage": "= finished file",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED of Audiveris 5.11, our fixtures, our scorer",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.1251644336175396,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "competitive",
+    "value": 0.0,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-vs-industry-2026-09/results.json"
+    ],
+    "control": "same fixtures, same musicdiff bridge \u2014 the only valid comparison. Published paper figures are pooled over other corpora and are context, never comparison."
+   },
+   "pct_of_achievable": 87.48,
+   "n": 11,
+   "n_unit": "works",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|audiveris-5.11",
+   "noise_floor": null,
+   "summability_class": "omr_ned_engraved",
+   "pool_key": null,
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-vs-industry-2026-09/results.json",
+   "companions": {
+    "ours": 88.78,
+    "we_are_ahead_by_points": 1.3
+   }
+  },
+  {
+   "id": "competitive:scan:audiveris",
+   "stage": "= finished file",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": "scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects"
+   },
+   "mandatory_caption": null,
+   "raw_metric": "OMR-NED of Audiveris 5.11 on the 11-row scan era",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.7918698265109423,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "competitive",
+    "value": 0.0,
+    "status": "assumed",
+    "evidence": [
+     "benchmarks/omr-vs-industry-2026-09/results-audiveris-scan.json"
+    ],
+    "control": "\u26a0\ufe0f this arm covers the ELEVEN-row scan era; the headline moved to 20 rows on 2026-09-04 and the arm was not widened. Comparable to our 11-row 0.8345 only."
+   },
+   "pct_of_achievable": 20.81,
+   "n": 10,
+   "n_unit": "pages",
+   "era_key": "scan-e2e|11rows|restamp-composed|audiveris-5.11",
+   "noise_floor": null,
+   "summability_class": "omr_ned_scan",
+   "pool_key": null,
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-vs-industry-2026-09/results-audiveris-scan.json",
+   "flags": [
+    "Audiveris is AHEAD of us on this pool (0.7919 vs our 0.8345 on the same 10 rows) \u2014 recorded, not hidden",
+    "on 7 of 10 rows its structural charge is bit-identical to ours, which is how we know that charge is a ceiling and not a defect"
+   ]
+  },
+  {
+   "id": "engraved:stage2",
+   "stage": "2 System grouping",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": null,
+   "native_direction": null,
+   "native_worst": null,
+   "native_best": null,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": "visibility",
+    "value": null,
+    "status": "measured",
+    "evidence": [
+     "CLAUDE.md \u00b7 OMR_CHOIR_GROUPING (benchmarks/omr-choir-grouping-2026-09/FINDINGS.md)"
+    ],
+    "control": "The choir-grouping A/B left all 11 engraved works <b>edit-for-edit identical</b> \u2014 which is the same fact as this benchmark being unable to see the stage. Its guards are the end-to-end tests, not the pooled figure."
+   },
+   "pct_of_achievable": null,
+   "n": 0,
+   "n_unit": "observations",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "the harness cannot see this stage at all \u2014 not exercised. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.",
+   "source": "docs/progress-dashboard.content.json"
+  },
+  {
+   "id": "engraved:stage3",
+   "stage": "3 Measure + barline extraction",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": null,
+   "native_direction": null,
+   "native_worst": null,
+   "native_best": null,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": "visibility",
+    "value": null,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-reading-vs-reproduction-2026-09/results.json"
+    ],
+    "control": "The page-truth harness cannot score barlines: they are CV-detected in <em>cell-relative</em> coordinates and never appear in page coordinates, so its table reads 45 printed against 0 comparable. Not a failure \u2014 a frame mismatch, flagged rather than counted."
+   },
+   "pct_of_achievable": null,
+   "n": 0,
+   "n_unit": "observations",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "the harness cannot see this stage at all \u2014 not scoreable. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.",
+   "source": "docs/progress-dashboard.content.json"
+  },
+  {
+   "id": "scan:stage4",
+   "stage": "4 Symbol detection",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": null,
+   "native_direction": null,
+   "native_worst": null,
+   "native_best": null,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": "visibility",
+    "value": null,
+    "status": "measured",
+    "evidence": [
+     "CLAUDE.md \u00b7 benchmarks/omr-hairpin-cv-2026-09 + benchmarks/omr-first-run-2026-08/DURATIONS.md"
+    ],
+    "control": "\u26a0\ufe0f <b>There is no symbol-level ground truth for real printed scans to measure against</b> \u2014 DeepScoresV2 is rendered and MUSCIMA++ is handwritten \u2014 so this stage has no F1 on the scan side, and saying so is more useful than guessing. The two per-class probes that do exist are not reassuring: hairpins <b>1 of 99</b> found across 11 scanned pages, and Beethoven 5 p.1 prints 68 half notes of which th"
+   },
+   "pct_of_achievable": null,
+   "n": 0,
+   "n_unit": "observations",
+   "era_key": "scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "the harness cannot see this stage at all \u2014 no ground truth. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.",
+   "source": "docs/progress-dashboard.content.json"
+  },
+  {
+   "id": "scan:stage5",
+   "stage": "5 Stems + beams",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": null,
+   "native_direction": null,
+   "native_worst": null,
+   "native_best": null,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": "visibility",
+    "value": null,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json"
+    ],
+    "control": "No stem/beam ground truth exists for the scan rows. What the gate does show is the downstream symptom: <code>wrong flag/beam</code> is 687 edits of the 74,968, under 1% \u2014 the scan's rhythm loss is dominated by heads that were never detected, not by beams that were miscounted."
+   },
+   "pct_of_achievable": null,
+   "n": 0,
+   "n_unit": "observations",
+   "era_key": "scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "the harness cannot see this stage at all \u2014 not isolated. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.",
+   "source": "docs/progress-dashboard.content.json"
+  },
+  {
+   "id": "engraved:stage9",
+   "stage": "9 Margin labels \u2192 instrument",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": null,
+   "native_direction": null,
+   "native_worst": null,
+   "native_best": null,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": "visibility",
+    "value": null,
+    "status": "measured",
+    "evidence": [
+     "CLAUDE.md \u00b7 the 2026-09-05 landing (part-name assumption measured)"
+    ],
+    "control": "musicdiff cannot score <code>&lt;part-name&gt;</code> at all \u2014 <em>measured</em>, not assumed: rewriting every part name in the export scores exactly 0 edits. So no engraved harness can see this stage, which is also why the roster work ships default-ON despite pricing at zero."
+   },
+   "pct_of_achievable": null,
+   "n": 0,
+   "n_unit": "observations",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "the harness cannot see this stage at all \u2014 invisible to the metric. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.",
+   "source": "docs/progress-dashboard.content.json"
+  },
+  {
+   "id": "engraved:stage10",
+   "stage": "10 Staff \u2192 slot alignment, part identity",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": null,
+   "native_direction": null,
+   "native_worst": null,
+   "native_best": null,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": "visibility",
+    "value": null,
+    "status": "measured",
+    "evidence": [
+     "benchmarks/omr-headline-validity-2026-09/engraved-1to1.json"
+    ],
+    "control": "These fixtures are 1:1 by construction \u2014 every truth part gets its own printed staff on all 11 works \u2014 so the join is never asked the hard question. A conductor's page condenses (Fl 1+2 share a staff) and splits (divisi); an engraved fixture does neither."
+   },
+   "pct_of_achievable": null,
+   "n": 0,
+   "n_unit": "observations",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "the harness cannot see this stage at all \u2014 not exercised. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.",
+   "source": "docs/progress-dashboard.content.json"
+  },
+  {
+   "id": "engraved:stage11",
+   "stage": "11 Export \u2192 MusicXML / LilyPond",
+   "family": "engraved",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": null,
+   "native_direction": null,
+   "native_worst": null,
+   "native_best": null,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": "visibility",
+    "value": null,
+    "status": "measured",
+    "evidence": [
+     "tools/omr/export_coverage.py"
+    ],
+    "control": "Export is only ever measured <em>end to end</em>, which is exactly why those nine gaps had to be found by forensics \u2014 in OMR-NED a symbol read perfectly and lost in the exporter is indistinguishable from one never read. What guards it now is <code>export_coverage.py</code>, run on every suite, firing on the categorical signature of a gap (the truth has some, we emit <b>zero</b>); <code>KNOWN_GAPS<"
+   },
+   "pct_of_achievable": null,
+   "n": 0,
+   "n_unit": "observations",
+   "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "the harness cannot see this stage at all \u2014 no isolated figure. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.",
+   "source": "docs/progress-dashboard.content.json"
+  },
+  {
+   "id": "scan:stage11",
+   "stage": "11 Export \u2192 MusicXML / LilyPond",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": null,
+   "native_direction": null,
+   "native_worst": null,
+   "native_best": null,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": "visibility",
+    "value": null,
+    "status": "measured",
+    "evidence": [
+     "tools/omr/export_coverage.py \u00b7 benchmarks/omr-dynamics-band-2026-09"
+    ],
+    "control": "Same harness, same blind spot. The scan side does have one export bug the engraved corpus provably could not see \u2014 a measure with no detected events computed its dynamics and discarded them (14 marks over 11 scanned pages, <b>0</b> over the engraved eleven) \u2014 found by reading the branch, not by the metric."
+   },
+   "pct_of_achievable": null,
+   "n": 0,
+   "n_unit": "observations",
+   "era_key": "scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "the harness cannot see this stage at all \u2014 no isolated figure. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.",
+   "source": "docs/progress-dashboard.content.json"
+  },
+  {
+   "id": "ceiling:input:notehead:scan",
+   "stage": "4 symbol detection",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "reference notes a HUMAN could box on a real scan, per reference note",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.9710144927536232,
+   "transform": null,
+   "ceiling": {
+    "kind": "input",
+    "value": null,
+    "status": "bounded_above",
+    "evidence": [
+     "benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json",
+     "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1"
+    ],
+    "control": "the labeler drew boxes on the same scanned cells the detector saw, with no reference to our output \u2014 the MXL says what the MUSIC is, a human's box says what the INK is. Restricted to the ONE batch carrying a COMPLETION pass, because a single-symbol sweep leaves every other class unboxed by instruction."
+   },
+   "pct_of_achievable": null,
+   "n": 207,
+   "n_unit": "reference notes",
+   "era_key": "labeling|breitkopf-brahms1|completion-pass|47 cells",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "an UPPER BOUND, not a ceiling to score against. 201 human noteheads against 207 reference notes is a ratio of COUNTS, not a matched recall: grace notes are on the page and absent from the encoding (0 in 28,579), so human boxes are inflated and the true figure is at or below 0.971. What it DOES establish is that C = 1.0 is very nearly right for noteheads on this print \u2014 so `scan:pitch` at 83.4%% is an achievement number, not a fixture artefact. One batch, one publisher, density-selected cells.",
+   "source": "benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json"
+  },
+  {
+   "id": "ceiling:input:hairpin:scan",
+   "stage": "4 symbol detection",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "can a human see a hairpin on these scans at all?",
+   "native_direction": "higher_is_better",
+   "native_worst": null,
+   "native_best": null,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": "input",
+    "value": 0.8,
+    "status": "bounded_below",
+    "evidence": [
+     "benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json",
+     "benchmarks/omr-pipeline-audit-2026-09/hairpin-ceiling-value.json"
+    ],
+    "edition": "Breitkopf & H\u00e4rtel, Brahms 1 mvt 1 \u2014 ONE EDITION, irreducibly so today (only one batch in the corpus has a COMPLETION pass). Quote with the publisher NAMED; it is not a claim about scans in general.",
+    "control": "counted directly: over 55 completion-swept cells a human drew 13 dynamicCrescendoHairpin + 4 dynamicDiminuendoHairpin = SEVENTEEN. At bar level, of the 5 swept bars where the encoding STARTS a hairpin, a human found ink in 4 \u2014 a bar recall of 0.80 at n=5. The count ratio (17 human / 11 reference starts = 1.545) is NOT usable: a barline cuts one hairpin into two boxes and a three-bar hairpin is one start drawn across three cells, so the two units are biased in opposite directions."
+   },
+   "pct_of_achievable": null,
+   "n": 5,
+   "n_unit": "swept bars carrying a reference hairpin start",
+   "era_key": "labeling|breitkopf-brahms1|completion-pass|55 cells",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "A BOUND, not a point, so it is not scored \u2014 but it is now a ceiling rather than a refutation. `scan:hairpin_detect` reads 1.01%% against a ceiling measured at AT LEAST 0.80 on this edition, so the detector is at roughly one part in eighty of what a reader recovers. \u26a0\ufe0f AND THE MATCHED COMPARISON IS WORSE THAN THE CORPUS RATE: on the SAME three pages the human swept, the transcription contains 10,523 detections and ZERO of either hairpin class. The 1-of-99 is not a thin-sample artefact \u2014 on this edition it is zero. n = 5 bars is the whole sample the corpus can offer; the same sweep drew 62 ties and 27 slurs, the other two families a fine-tune is documented to delete.",
+   "source": "benchmarks/omr-pipeline-audit-2026-09/input-ceiling-from-labels.json"
+  },
+  {
+   "id": "scan:input_ceiling:hollow_noteheads",
+   "stage": "4 symbol detection",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "half-noteheads detected on Beethoven 5 p.1",
+   "native_direction": "higher_is_better",
+   "native_worst": null,
+   "native_best": null,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": "input",
+    "value": null,
+    "status": "unmeasured",
+    "evidence": [
+     "CLAUDE.md \u00b7 benchmarks/omr-first-run-2026-08/DURATIONS.md"
+    ],
+    "control": null
+   },
+   "pct_of_achievable": null,
+   "n": 68,
+   "n_unit": "printed half notes",
+   "era_key": "ad-hoc|beethoven-sym5-mvt1-984073-p1",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "the page prints 68 half notes and the detector found 8, now 31 \u2014 but NOTHING measures how many of those counters are actually closed at 600 dpi bitonal, so there is no denominator of 'recoverable ink'. An INPUT ceiling is the one kind this project has never measured.",
+   "source": "CLAUDE.md"
+  },
+  {
+   "id": "flag:OMR_CONDENSED_PARTS:oracle_ceiling",
+   "stage": "11 export",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "oracle ceiling quoted in CLAUDE.md's knobs table (-4,557 scan edits)",
+   "native_direction": "lower_is_better",
+   "native_worst": null,
+   "native_best": null,
+   "value": null,
+   "transform": null,
+   "ceiling": {
+    "kind": null,
+    "value": null,
+    "status": "unmeasured",
+    "evidence": [],
+    "control": null
+   },
+   "pct_of_achievable": null,
+   "n": null,
+   "n_unit": "edits",
+   "era_key": null,
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "\u26a0\ufe0f THE CEILING GRADES A CONFIGURATION THAT CANNOT OCCUR. Verified in this tree 2026-09-07: `condensed_parts` is READ at export.py:3331 (`s.get(\"condensed_parts\")`) and WRITTEN nowhere in tools/omr, so every staff reports 1 and the flag is inert even when set. The -4,557 figure was measured with ORACLE counts. A quoted ceiling for an unreachable configuration is the mirror image of a fabricated 100%: it makes a gap look bigger than the pipeline can act on.",
+   "source": "tools/omr/export.py:3278-3331 (grep: only reader, no writer)"
+  },
+  {
+   "id": "identity:calibration:ECE",
+   "stage": "10 staff -> slot, part identity",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "Expected Calibration Error of P(name)",
+   "native_direction": "lower_is_better",
+   "native_worst": null,
+   "native_best": 0.0,
+   "value": 0.1277,
+   "transform": null,
+   "ceiling": {
+    "kind": null,
+    "value": null,
+    "status": "unmeasured",
+    "evidence": [],
+    "control": null
+   },
+   "pct_of_achievable": null,
+   "n": 197,
+   "n_unit": "graded records",
+   "era_key": "staff-identity-layer|2026-09-05|n197",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "\u26a0\ufe0f NEITHER TRANSFORM CAN EXPRESS THIS, and forcing it would be worse than omitting it. `pct = 100*(W-M)/(W-F)` needs a defensible WORST CASE. OMR-NED has one (predict nothing scores exactly 1). A calibration error has none: ECE's arithmetic maximum is 1.0 but that is unreachable in practice and carries no meaning, so a percentage against it would be a number with no referent \u2014 the exact defect this unit exists to remove. A THIRD transform kind would need an empirical worst case (e.g. the ECE of a constant predictor on this corpus), which nobody has measured. Note also that the estate's own finding is that the ECE improvement from n=197 to n=1571 is NOT calibration \u2014 Brier skill vs a constant predictor is +0.0004 and 95.8%% of mass sits in one bin \u2014 so a score here would be worse than absent. Blocked on WORKS, not records (backlog D5).",
+   "source": "docs/backlog-2026-09-07-open-items.md D5; benchmarks/omr-staff-identity-layer-2026-09/"
+  },
+  {
+   "id": "labeling:ledger_zone:screening_rate",
+   "stage": "(labeling QA)",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": null,
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "ledger-zone labels FLAGGED by the parity auditor",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.069,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "visibility",
+    "value": null,
+    "status": "not_a_defect_rate",
+    "evidence": [
+     "benchmarks/omr-snap-ledger-2026-09/LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md"
+    ],
+    "control": null
+   },
+   "pct_of_achievable": null,
+   "n": 102,
+   "n_unit": "ledger-zone labels",
+   "era_key": "labeling-audit|simrock-dvorak9|2026-09-03",
+   "noise_floor": null,
+   "summability_class": null,
+   "pool_key": null,
+   "scoreable": false,
+   "why_not": "\u26a0\ufe0f A SCREENING RATE IS NOT A DEFECT RATE, AND THIS IS THE CLEAREST CASE IN THE PROJECT OF THE CONFUSION THIS UNIT EXISTS TO FIX. The auditor flags 7 of 102 (6.9%%); hand adjudication found ONE real error (~0.9%%) \u2014 a 7x gap, and six of the seven share one mechanism (a printed ledger line print-merging into the notehead's connected component, pulling the centroid up to a half-step). Both numbers are percentages; only one is a quality figure. A dashboard that prints either alone is wrong: 6.9%% overstates the defect sevenfold, and 0.9%% understates the reviewer's workload sevenfold. The registry's answer is that they are TWO ROWS with different `stage` semantics \u2014 a SCREEN and a DEFECT \u2014 never one, and a screen is never scoreable on the achievement axis.",
+   "source": "benchmarks/omr-snap-ledger-2026-09/LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md"
+  },
+  {
+   "id": "labeling:ledger_zone:defect_rate",
+   "stage": "(labeling QA)",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": "labeling-audit|ledger-zone|adjudicated",
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "ledger-zone labels ADJUDICATED wrong by a human",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.00980392156862745,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 0.0,
+    "status": "assumed",
+    "evidence": [],
+    "control": "F=0 assumed: a perfect labeling pass has no defects. Conservative by the assumption-direction rule."
+   },
+   "pct_of_achievable": 99.02,
+   "n": 102,
+   "n_unit": "ledger-zone labels",
+   "era_key": "labeling-audit|simrock-dvorak9|2026-09-03",
+   "noise_floor": null,
+   "summability_class": "label_defect_rate",
+   "pool_key": null,
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-snap-ledger-2026-09/LEDGER_ZONE_LABEL_AUDIT_2026-09-03.md",
+   "companions": {
+    "screening_rate": 0.069,
+    "screen_to_defect_ratio": 7.0
+   },
+   "flags": [
+    "ALWAYS render beside `labeling:ledger_zone:screening_rate`. The two differ by 7x and both are percentages; showing either alone misleads in a named direction."
+   ]
+  },
+  {
+   "id": "prefill:precision:blind_out_of_sample",
+   "stage": "(labeling pre-fill)",
+   "family": "scan",
+   "comparable_as": {
+    "time_series": "prefill|brahms1-breitkopf|phase-C|blind",
+    "head_to_head": null
+   },
+   "mandatory_caption": null,
+   "raw_metric": "exact-class precision of reference-driven pre-filled verdicts, blind sample",
+   "native_direction": "higher_is_better",
+   "native_worst": 0.0,
+   "native_best": 1.0,
+   "value": 0.915,
+   "transform": "pct = 100 * V / C",
+   "ceiling": {
+    "kind": "competitive",
+    "value": 0.97,
+    "status": "pre_registered",
+    "evidence": [
+     "benchmarks/omr-prefill-admission-2026-09/FINDINGS.md",
+     "benchmarks/omr-prefill-admission-2026-09/PHASE_C_CELLS.json"
+    ],
+    "control": "0.97 is the ADMISSION BAR set in advance, and the cells were pre-registered at seed 20260903 with their status recorded BEFORE labeling; the pass was run blind (annotate.server --blind). The measurement came in UNDER the bar and pre-filled verdicts stayed a queue rather than becoming labels \u2014 a control that fired."
+   },
+   "pct_of_achievable": 94.33,
+   "n": 141,
+   "n_unit": "pre-filled boxes",
+   "era_key": "prefill|brahms1-breitkopf|phase-C|blind|2026-09-03",
+   "noise_floor": null,
+   "summability_class": "prefill_precision",
+   "pool_key": null,
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-prefill-admission-2026-09/FINDINGS.md",
+   "companions": {
+    "pre_registered_25_cells": 0.838,
+    "other_24_cells": 1.0,
+    "noteheads": 0.943,
+    "rests": 0.722
+   },
+   "flags": [
+    "a rare case where the CEILING IS A DECISION RULE rather than a physical limit \u2014 the bar a human set in advance for admitting the output without review. That is the most useful ceiling kind for anything gated on human trust, and the only pre-registered one in the registry."
+   ]
+  },
+  {
+   "id": "human:review_cost:identity",
+   "stage": "(the purpose)",
+   "family": "both",
+   "comparable_as": {
+    "time_series": "identity-harness|human-cost|identity-axis|2 committed arms",
+    "head_to_head": null
+   },
+   "mandatory_caption": "Staff NAMING only. The reviewer's larger load \u2014 note-level diffs \u2014 has no harness at all, so this is not a measure of how much review a score needs.",
+   "raw_metric": "share of staff records a human must open \u2014 unnamed, categorically impossible, not-in-this-work, or contradicted by the staff's own margin label",
+   "native_direction": "lower_is_better",
+   "native_worst": 1.0,
+   "native_best": 0.0,
+   "value": 0.02928071292170592,
+   "transform": "pct = 100 * (1 - M) / (1 - F)",
+   "ceiling": {
+    "kind": "assumed",
+    "value": 0.0,
+    "status": "assumed",
+    "evidence": [
+     "benchmarks/omr-pipeline-audit-2026-09/human-cost-identity.json"
+    ],
+    "control": "W = 1.0 is REAL, not a convention: a pipeline that names nothing leaves every staff to the reviewer. F = 0 is assumed and conservative. \u26a0\ufe0f The floor is NOT zero and is now LOCATED: a CONDENSED staff (`Violoncello e Basso`) has a margin label and a slot name that disagree and are BOTH RIGHT, and costs a look no pipeline work removes. Neither edition here condenses that way, which is a fact about two publishers, not about the floor."
+   },
+   "pct_of_achievable": 97.07,
+   "n": 1571,
+   "n_unit": "staff records",
+   "era_key": "identity-harness|2026-09-07|1571 committed records|2 arms|clef-regime MIXED",
+   "noise_floor": null,
+   "summability_class": "human_cost_rate",
+   "pool_key": null,
+   "scoreable": true,
+   "why_not": null,
+   "source": "benchmarks/omr-pipeline-audit-2026-09/human-cost-identity.json",
+   "companions": {
+    "human_cost_records": 46,
+    "n_records": 1571,
+    "decomposition": {
+     "unnamed": 0,
+     "impossible": 7,
+     "not_in_this_work": 17,
+     "contradicted": 26
+    }
+   },
+   "flags": [
+    "\u26a0\ufe0f\u26a0\ufe0f IDENTITY AXIS ONLY. This scores staff NAMING. The reviewer's larger load is note-level diffs and has no harness at all, so a high number here must never be read as 'review is nearly free'. Rendering it beside `scan:omr_ned` without that caption would be the most misleading pairing on the board.",
+    "2 of the harness's 59 arms are exported, which is why this is 46 of 1,571 while FINDINGS reports 197 of 3,543 \u2014 a COVERAGE gap, not a schema gap (round 2 called it a schema gap and was wrong).",
+    "58 of 59 arms are clef-blind REPLAYS and one is a transcription; a cost figure that mixes regimes is not one figure (backlog F)"
+   ]
+  }
+ ]
+}

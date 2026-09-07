@@ -1,0 +1,19 @@
+=== scan: 11 files, 193 staves, 2235 cells
+  clef_source: {'detector_header': 14, None: 30, 'detector': 144, 'cv_locator': 5}
+  cells with >=1 clef detection: 197
+  clef detections per cell: {0: 2038, 1: 158, 2: 35, 3: 4}
+  ARGMAX CONTESTS (>=2 clef dets in one cell): 39
+    margin p10=0.031 p25=0.053 median=0.156 p75=0.341 max=0.61
+    margin < 0.05: 9  < 0.10: 17
+    runner-up a DIFFERENT class: 12 of 39
+  staves whose per-measure clef CHANGES: 11 of 193 multi-measure staves
+
+=== engraved: 11 files, 224 staves, 1517 cells
+  clef_source: {'detector': 212, 'dossier': 10, None: 2}
+  cells with >=1 clef detection: 230
+  clef detections per cell: {0: 1287, 1: 140, 2: 73, 3: 17}
+  ARGMAX CONTESTS (>=2 clef dets in one cell): 90
+    margin p10=0.047 p25=0.085 median=0.243 p75=0.465 max=0.713
+    margin < 0.05: 14  < 0.10: 25
+    runner-up a DIFFERENT class: 19 of 90
+  staves whose per-measure clef CHANGES: 0 of 224 multi-measure staves

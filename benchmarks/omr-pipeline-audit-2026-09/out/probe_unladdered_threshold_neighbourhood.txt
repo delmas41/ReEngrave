@@ -1,0 +1,28 @@
+=== scan: kept noteheads inside-ladder-zone=3583 OUTSIDE (n_expected>=1)=756
+  OUTSIDE-staff kept noteheads, confidence histogram (0.05 buckets):
+    0.25: 1
+    0.30: 11
+    0.35: 11
+    0.40: 12
+    0.45: 8
+    0.50: 12
+    0.55: 19
+    0.60: 27
+    0.65: 35
+    0.70: 62
+    0.75: 132
+    0.80: 261
+    0.85: 160
+    0.90: 5
+  of these, in [0.65,0.75): 97   in [0.75,0.85): 393
+=== engraved: kept noteheads inside-ladder-zone=1200 OUTSIDE (n_expected>=1)=357
+  OUTSIDE-staff kept noteheads, confidence histogram (0.05 buckets):
+    0.35: 1
+    0.45: 1
+    0.60: 1
+    0.65: 2
+    0.75: 8
+    0.80: 27
+    0.85: 184
+    0.90: 133
+  of these, in [0.65,0.75): 2   in [0.75,0.85): 35

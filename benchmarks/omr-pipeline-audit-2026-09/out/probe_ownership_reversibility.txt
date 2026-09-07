@@ -1,0 +1,44 @@
+files: 20 total contested pairs: 4521
+by tier: {'distance': 4255, 'ladder': 266}
+same class on both sides: {True: 4085, False: 436}
+
+category x tier (n, and how many are REVERSIBLE=parked):
+  structural   total= 2197  {'distance': 2197}   reversible=0
+  dynamic      total=  869  {'distance': 869}   reversible=0
+  notehead     total=  816  {'distance': 550, 'ladder': 266}   reversible=550
+  ornament     total=  215  {'distance': 215}   reversible=0
+  accidental   total=  198  {'distance': 198}   reversible=0
+  flag         total=  102  {'distance': 102}   reversible=0
+  rest         total=   91  {'distance': 91}   reversible=0
+  clef         total=   24  {'distance': 24}   reversible=0
+  time_sig_digit total=    7  {'distance': 7}   reversible=0
+  stem         total=    2  {'distance': 2}   reversible=0
+
+REVERSIBLE (parked: rank-0 AND notehead) = 550 = 12.2%
+IRREVERSIBLE by construction             = 3971 = 87.8%
+
+pairs with both confidences: 4521
+  DELETED copy scored HIGHER than the survivor: 2026 (44.8%); ties 24
+  |delta conf| p25=0.026 median=0.064 p75=0.144 p95=0.343
+
+per row:
+   bach-brandenburg3-mvt1-468678-p1     110
+   beethoven-sym5-mvt1-575951-p1        53
+   beethoven-sym5-mvt1-575951-p2        362
+   beethoven-sym5-mvt1-575951-p3        102
+   beethoven-sym5-mvt1-575951-p4        404
+   beethoven-sym5-mvt1-984073-p1        41
+   beethoven-sym5-mvt1-984073-p2        273
+   beethoven-sym5-mvt1-984073-p3        102
+   beethoven-sym5-mvt1-984073-p4        371
+   brahms-sym1-mvt1-317803-p1           73
+   brahms-sym1-mvt1-317803-p2           537
+   brahms-sym1-mvt1-317803-p3           420
+   brahms-sym1-mvt1-317803-p4           648
+   dvorak-sym9-mvt1-405834-p5           19
+   dvorak-sym9-mvt1-405834-p6           6
+   dvorak-sym9-mvt1-405834-p7           677
+   mahler-sym5-mvt1-local-p2            26
+   mahler-sym5-mvt1-local-p3            44
+   mahler-sym5-mvt1-local-p4            141
+   mahler-sym5-mvt1-local-p5            112

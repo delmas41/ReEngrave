@@ -1,0 +1,585 @@
+{
+ "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_pct_of_achievable.py",
+ "unit": "% of achievable, 0-100, higher is better, on every row",
+ "transforms": {
+  "error": "pct = 100 * (W - M) / (W - F); W = 1.0 for OMR-NED (predict nothing); reversible: M = W - (pct/100)*(W - F)",
+  "rate": "pct = 100 * V / C; reversible: V = C * pct/100"
+ },
+ "assumption_direction_rule": "an unknown ceiling is assumed at the value that MINIMISES the score (F=0 / C=1), so a missing ceiling can never manufacture 100",
+ "scan": {
+  "rows": [
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p1",
+    "family": "scan",
+    "raw_omr_ned": 0.7131739855475264,
+    "raw_omr_ed": 1283,
+    "truth_symbols_raw": 1064,
+    "pred_symbols": 735,
+    "floor_estimator": {
+     "ours_entire_staff": 513,
+     "audiveris_entire_staff": 513,
+     "used": 513,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "A_corroborated",
+    "ceiling_status": "measured_and_corroborated",
+    "ceiling_caveat": null,
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 513,
+    "floor_low": 0.27565824825362706,
+    "floor_high": 0.3358409457281032,
+    "pct_of_achievable": 39.598161194069235,
+    "pct_of_achievable_upper": 43.186344085441206,
+    "pct_naive_no_ceiling": 28.682601445247357
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p2",
+    "family": "scan",
+    "raw_omr_ned": 0.8695913461538461,
+    "raw_omr_ed": 4341,
+    "truth_symbols_raw": 3004,
+    "pred_symbols": 1988,
+    "floor_estimator": {
+     "ours_entire_staff": 1551,
+     "audiveris_entire_staff": 682,
+     "used": 682,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "B_single_source",
+    "ceiling_status": "measured_single_source",
+    "ceiling_caveat": "the floor is estimated from OUR OWN `entire staff` count. The QUANTITY (truth vs hand-read page map) is independent of us; the ESTIMATOR is not. Audiveris does not corroborate this row \u2014 it is a two-system page, or outside the arm it was run on.",
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 682,
+    "floor_low": 0.13040152963671128,
+    "floor_high": 0.3738049713193117,
+    "pct_of_achievable": 14.99642171537785,
+    "pct_of_achievable_upper": 20.825565179095715,
+    "pct_naive_no_ceiling": 13.040865384615385
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p3",
+    "family": "scan",
+    "raw_omr_ned": 0.8705882352941177,
+    "raw_omr_ed": 3034,
+    "truth_symbols_raw": 2134,
+    "pred_symbols": 1351,
+    "floor_estimator": {
+     "ours_entire_staff": 87,
+     "audiveris_entire_staff": null,
+     "used": 87,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "B_single_source",
+    "ceiling_status": "measured_single_source",
+    "ceiling_caveat": "the floor is estimated from OUR OWN `entire staff` count. The QUANTITY (truth vs hand-read page map) is independent of us; the ESTIMATOR is not. Audiveris does not corroborate this row \u2014 it is a two-system page, or outside the arm it was run on.",
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 87,
+    "floor_low": 0.023796498905908098,
+    "floor_high": 0.30935448577680524,
+    "pct_of_achievable": 13.256638043281194,
+    "pct_of_achievable_upper": 18.737798485730924,
+    "pct_naive_no_ceiling": 12.941176470588234
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-984073-p4",
+    "family": "scan",
+    "raw_omr_ned": 0.9010206046601194,
+    "raw_omr_ed": 4679,
+    "truth_symbols_raw": 2929,
+    "pred_symbols": 2264,
+    "floor_estimator": {
+     "ours_entire_staff": 1377,
+     "audiveris_entire_staff": null,
+     "used": 1377,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "B_single_source",
+    "ceiling_status": "measured_single_source",
+    "ceiling_caveat": "the floor is estimated from OUR OWN `entire staff` count. The QUANTITY (truth vs hand-read page map) is independent of us; the ESTIMATOR is not. Audiveris does not corroborate this row \u2014 it is a two-system page, or outside the arm it was run on.",
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 1377,
+    "floor_low": 0.26040090771558244,
+    "floor_high": 0.3731089258698941,
+    "pct_of_achievable": 13.3828443507361,
+    "pct_of_achievable_upper": 15.788930393885034,
+    "pct_naive_no_ceiling": 9.897939533988065
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p1",
+    "family": "scan",
+    "raw_omr_ned": 0.7595078299776287,
+    "raw_omr_ed": 1358,
+    "truth_symbols_raw": 1064,
+    "pred_symbols": 724,
+    "floor_estimator": {
+     "ours_entire_staff": 513,
+     "audiveris_entire_staff": 513,
+     "used": 513,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "A_corroborated",
+    "ceiling_status": "measured_and_corroborated",
+    "ceiling_caveat": null,
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 513,
+    "floor_low": 0.27565824825362706,
+    "floor_high": 0.353573347662547,
+    "pct_of_achievable": 33.20147836881551,
+    "pct_of_achievable_upper": 37.20331906996118,
+    "pct_naive_no_ceiling": 24.049217002237132
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p2",
+    "family": "scan",
+    "raw_omr_ned": 0.8704325498716177,
+    "raw_omr_ed": 4407,
+    "truth_symbols_raw": 3004,
+    "pred_symbols": 2059,
+    "floor_estimator": {
+     "ours_entire_staff": 1551,
+     "audiveris_entire_staff": 401,
+     "used": 401,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "B_single_source",
+    "ceiling_status": "measured_single_source",
+    "ceiling_caveat": "the floor is estimated from OUR OWN `entire staff` count. The QUANTITY (truth vs hand-read page map) is independent of us; the ESTIMATOR is not. Audiveris does not corroborate this row \u2014 it is a two-system page, or outside the arm it was run on.",
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 401,
+    "floor_low": 0.07667304015296367,
+    "floor_high": 0.47151051625239004,
+    "pct_of_achievable": 14.032672689406493,
+    "pct_of_achievable_upper": 24.516561655985512,
+    "pct_naive_no_ceiling": 12.956745012838233
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p3",
+    "family": "scan",
+    "raw_omr_ned": 0.8811111111111111,
+    "raw_omr_ed": 3172,
+    "truth_symbols_raw": 2134,
+    "pred_symbols": 1466,
+    "floor_estimator": {
+     "ours_entire_staff": 90,
+     "audiveris_entire_staff": null,
+     "used": 90,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "B_single_source",
+    "ceiling_status": "measured_single_source",
+    "ceiling_caveat": "the floor is estimated from OUR OWN `entire staff` count. The QUANTITY (truth vs hand-read page map) is independent of us; the ESTIMATOR is not. Audiveris does not corroborate this row \u2014 it is a two-system page, or outside the arm it was run on.",
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 90,
+    "floor_low": 0.02461706783369803,
+    "floor_high": 0.3853938730853392,
+    "pct_of_achievable": 12.188944974138472,
+    "pct_of_achievable_upper": 19.343915343915352,
+    "pct_naive_no_ceiling": 11.888888888888893
+   },
+   {
+    "row_id": "beethoven-sym5-mvt1-575951-p4",
+    "family": "scan",
+    "raw_omr_ned": 0.881615859360389,
+    "raw_omr_ed": 4714,
+    "truth_symbols_raw": 2929,
+    "pred_symbols": 2418,
+    "floor_estimator": {
+     "ours_entire_staff": 1377,
+     "audiveris_entire_staff": null,
+     "used": 1377,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "B_single_source",
+    "ceiling_status": "measured_single_source",
+    "ceiling_caveat": "the floor is estimated from OUR OWN `entire staff` count. The QUANTITY (truth vs hand-read page map) is independent of us; the ESTIMATOR is not. Audiveris does not corroborate this row \u2014 it is a two-system page, or outside the arm it was run on.",
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 1377,
+    "floor_low": 0.26040090771558244,
+    "floor_high": 0.4037443267776097,
+    "pct_of_achievable": 16.00652865513329,
+    "pct_of_achievable_upper": 19.854593583960135,
+    "pct_naive_no_ceiling": 11.8384140639611
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p5",
+    "family": "scan",
+    "raw_omr_ned": 0.4220945083014049,
+    "raw_omr_ed": 661,
+    "truth_symbols_raw": 792,
+    "pred_symbols": 774,
+    "floor_estimator": {
+     "ours_entire_staff": 0,
+     "audiveris_entire_staff": 0,
+     "used": 0,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "A_corroborated",
+    "ceiling_status": "measured_and_corroborated",
+    "ceiling_caveat": null,
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 0,
+    "floor_low": 0.0,
+    "floor_high": 0.0,
+    "pct_of_achievable": 57.7905491698595,
+    "pct_of_achievable_upper": 57.7905491698595,
+    "pct_naive_no_ceiling": 57.7905491698595
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p6",
+    "family": "scan",
+    "raw_omr_ned": 0.722144652331751,
+    "raw_omr_ed": 2586,
+    "truth_symbols_raw": 2022,
+    "pred_symbols": 1559,
+    "floor_estimator": {
+     "ours_entire_staff": 0,
+     "audiveris_entire_staff": 0,
+     "used": 0,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "A_corroborated",
+    "ceiling_status": "measured_and_corroborated",
+    "ceiling_caveat": null,
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 0,
+    "floor_low": 0.0,
+    "floor_high": 0.0,
+    "pct_of_achievable": 27.785534766824902,
+    "pct_of_achievable_upper": 27.785534766824902,
+    "pct_naive_no_ceiling": 27.785534766824902
+   },
+   {
+    "row_id": "dvorak-sym9-mvt1-405834-p7",
+    "family": "scan",
+    "raw_omr_ned": 0.7133199799699549,
+    "raw_omr_ed": 5698,
+    "truth_symbols_raw": 4295,
+    "pred_symbols": 3693,
+    "floor_estimator": {
+     "ours_entire_staff": 0,
+     "audiveris_entire_staff": null,
+     "used": 0,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "B_single_source",
+    "ceiling_status": "measured_single_source",
+    "ceiling_caveat": "the floor is estimated from OUR OWN `entire staff` count. The QUANTITY (truth vs hand-read page map) is independent of us; the ESTIMATOR is not. Audiveris does not corroborate this row \u2014 it is a two-system page, or outside the arm it was run on.",
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 0,
+    "floor_low": 0.0,
+    "floor_high": 0.0,
+    "pct_of_achievable": 28.66800200300451,
+    "pct_of_achievable_upper": 28.66800200300451,
+    "pct_naive_no_ceiling": 28.66800200300451
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p1",
+    "family": "scan",
+    "raw_omr_ned": 0.9183618843683083,
+    "raw_omr_ed": 3431,
+    "truth_symbols_raw": 2083,
+    "pred_symbols": 1653,
+    "floor_estimator": {
+     "ours_entire_staff": 1001,
+     "audiveris_entire_staff": 1001,
+     "used": 1001,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "A_corroborated",
+    "ceiling_status": "measured_and_corroborated",
+    "ceiling_caveat": null,
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 1001,
+    "floor_low": 0.2511289513296538,
+    "floor_high": 0.4249874560963372,
+    "pct_of_achievable": 10.90149175570931,
+    "pct_of_achievable_upper": 14.197623425302046,
+    "pct_naive_no_ceiling": 8.163811563169165
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p2",
+    "family": "scan",
+    "raw_omr_ned": 0.9424098807985064,
+    "raw_omr_ed": 6562,
+    "truth_symbols_raw": 3399,
+    "pred_symbols": 3564,
+    "floor_estimator": {
+     "ours_entire_staff": 715,
+     "audiveris_entire_staff": 143,
+     "used": 143,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "B_single_source",
+    "ceiling_status": "measured_single_source",
+    "ceiling_caveat": "the floor is estimated from OUR OWN `entire staff` count. The QUANTITY (truth vs hand-read page map) is independent of us; the ESTIMATOR is not. Audiveris does not corroborate this row \u2014 it is a two-system page, or outside the arm it was run on.",
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 143,
+    "floor_low": 0.022540983606557378,
+    "floor_high": 0.16283102143757883,
+    "pct_of_achievable": 5.8918193229200995,
+    "pct_of_achievable_upper": 6.879151124350882,
+    "pct_naive_no_ceiling": 5.7590119201493595
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p3",
+    "family": "scan",
+    "raw_omr_ned": 0.8929896504588948,
+    "raw_omr_ed": 4573,
+    "truth_symbols_raw": 2731,
+    "pred_symbols": 2390,
+    "floor_estimator": {
+     "ours_entire_staff": 1292,
+     "audiveris_entire_staff": null,
+     "used": 1292,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "B_single_source",
+    "ceiling_status": "measured_single_source",
+    "ceiling_caveat": "the floor is estimated from OUR OWN `entire staff` count. The QUANTITY (truth vs hand-read page map) is independent of us; the ESTIMATOR is not. Audiveris does not corroborate this row \u2014 it is a two-system page, or outside the arm it was run on.",
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 1292,
+    "floor_low": 0.25428065341468215,
+    "floor_high": 0.31883487502460145,
+    "pct_of_achievable": 14.349949485836781,
+    "pct_of_achievable_upper": 15.709898469181036,
+    "pct_naive_no_ceiling": 10.701034954110522
+   },
+   {
+    "row_id": "brahms-sym1-mvt1-317803-p4",
+    "family": "scan",
+    "raw_omr_ned": 0.8652517275419546,
+    "raw_omr_ed": 7012,
+    "truth_symbols_raw": 4383,
+    "pred_symbols": 3721,
+    "floor_estimator": {
+     "ours_entire_staff": 1860,
+     "audiveris_entire_staff": null,
+     "used": 1860,
+     "rule": "min over measured engines \u2014 a charge no reader avoided"
+    },
+    "scoreable": true,
+    "tier": "B_single_source",
+    "ceiling_status": "measured_single_source",
+    "ceiling_caveat": "the floor is estimated from OUR OWN `entire staff` count. The QUANTITY (truth vs hand-read page map) is independent of us; the ESTIMATOR is not. Audiveris does not corroborate this row \u2014 it is a two-system page, or outside the arm it was run on.",
+    "ceiling_kind": "structural",
+    "ceiling_evidence": [
+     "benchmarks/omr-scan-e2e-2026-09/works.json (hand-read staves map)",
+     "benchmarks/omr-headline-validity-2026-09/results-normalised-arm.json",
+     "benchmarks/omr-vs-industry-2026-09/categories-audiveris-scan11.json"
+    ],
+    "entire_staff_both_engines": 1860,
+    "floor_low": 0.23328734478866173,
+    "floor_high": 0.3975918725699235,
+    "pct_of_achievable": 17.574807399116576,
+    "pct_of_achievable_upper": 22.36826933808029,
+    "pct_naive_no_ceiling": 13.474827245804544
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p2",
+    "family": "scan",
+    "raw_omr_ned": 0.6884236453201971,
+    "raw_omr_ed": 1118,
+    "truth_symbols_raw": 1148,
+    "pred_symbols": 476,
+    "scoreable": false,
+    "tier": null,
+    "why": "no hand-read staves map, so no page-normalised truth",
+    "ceiling_kind": null,
+    "pct_of_achievable": null
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p3",
+    "family": "scan",
+    "raw_omr_ned": 0.8866782006920415,
+    "raw_omr_ed": 3075,
+    "truth_symbols_raw": 2248,
+    "pred_symbols": 1220,
+    "scoreable": false,
+    "tier": null,
+    "why": "no hand-read staves map, so no page-normalised truth",
+    "ceiling_kind": null,
+    "pct_of_achievable": null
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p4",
+    "family": "scan",
+    "raw_omr_ned": 0.9152878888153541,
+    "raw_omr_ed": 4149,
+    "truth_symbols_raw": 2870,
+    "pred_symbols": 1663,
+    "scoreable": false,
+    "tier": null,
+    "why": "no hand-read staves map, so no page-normalised truth",
+    "ceiling_kind": null,
+    "pct_of_achievable": null
+   },
+   {
+    "row_id": "mahler-sym5-mvt1-local-p5",
+    "family": "scan",
+    "raw_omr_ned": 0.9298025697273582,
+    "raw_omr_ed": 2967,
+    "truth_symbols_raw": 2064,
+    "pred_symbols": 1127,
+    "scoreable": false,
+    "tier": null,
+    "why": "no hand-read staves map, so no page-normalised truth",
+    "ceiling_kind": null,
+    "pct_of_achievable": null
+   },
+   {
+    "row_id": "bach-brandenburg3-mvt1-468678-p1",
+    "family": "scan",
+    "raw_omr_ned": 0.804606726868211,
+    "raw_omr_ed": 6148,
+    "truth_symbols_raw": 3549,
+    "pred_symbols": 4092,
+    "scoreable": false,
+    "tier": null,
+    "why": "no hand-read staves map, so no page-normalised truth",
+    "ceiling_kind": null,
+    "pct_of_achievable": null
+   }
+  ],
+  "pool": {
+   "tier": "A_corroborated",
+   "n_rows": 5,
+   "row_ids": [
+    "beethoven-sym5-mvt1-984073-p1",
+    "beethoven-sym5-mvt1-575951-p1",
+    "dvorak-sym9-mvt1-405834-p5",
+    "dvorak-sym9-mvt1-405834-p6",
+    "brahms-sym1-mvt1-317803-p1"
+   ],
+   "pooled_omr_ned": 0.7473135525260626,
+   "pooled_floor_low": 0.15199460107978405,
+   "pct_of_achievable": 29.797740414823853,
+   "pct_naive_no_ceiling": 25.268644747393743,
+   "\u26a0\ufe0f": "This pool is 5 of the scan gate's 20 rows and 3 of its 6 works. It is NOT the headline and may not be differenced against the 20-row figure \u2014 different era, different arm."
+  },
+  "pool_all_normalisable": {
+   "tier": "B_single_source",
+   "n_rows": 15,
+   "pooled_omr_ned": 0.8417147206041624,
+   "pooled_floor_low": 0.1339993110575267,
+   "pct_of_achievable": 18.277731347896438,
+   "pct_naive_no_ceiling": 15.828527939583758,
+   "\u26a0\ufe0f": "every normalisable row of the CANONICAL 20-row arm. The floor's estimator is our own `entire staff` count on 10 of the 15; on the other 5 an independent engine produces the identical number."
+  },
+  "arm": ".reconciliation",
+  "transform_version": "1.2.0",
+  "git_head": "afea84ba",
+  "arm_matches_headline": true
+ },
+ "engraved_reading": {
+  "metric": "stage-1 reading F1 vs exact Verovio page truth, 11 engraved works",
+  "as_shipped_excludes_render_unreliable": 0.9192084511233447,
+  "if_render_unreliable_family_included": 0.8982446125303268,
+  "render_ceiling_worth_points": 0.02096383859301787,
+  "ceiling_kind": "render",
+  "ceiling_evidence": "tools/omr/page_truth.py render_fidelity \u2014 Verovio draws one accidental per <alter>, not per <accidental>; Brahms 1 has 54 <accidental> and 149 <alter> and it drew 149",
+  "pct_of_achievable": 91.92084511233448,
+  "note": "C = 1.0 is ASSUMED here (no measurement says a perfect reader could not reach F1 1.000 on the families we score), so this is conservative by the assumption-direction rule. The render ceiling is enacted as an EXCLUSION, not as a C < 1."
+ },
+ "engraved_omr_ned": {
+  "metric": "pooled OMR-NED, 11 engraved orchestral works",
+  "omr_ned": 0.11223035256105673,
+  "ceiling_kind": "structural",
+  "floor": 0.0,
+  "floor_evidence": "benchmarks/omr-headline-validity-2026-09/engraved-normalise-noop.json \u2014 the page-normalising transform is a NO-OP on all 11 (is_a_no_op: true), i.e. these fixtures are 1:1 and carry no structural charge",
+  "\u26a0\ufe0f": "the no-op control was run at transform_version 1.0.0 and against the no_direction_text arm; the scan arm it certifies is 1.1.0 and direction-text-on. Re-running it is cheap and should be done.",
+  "pct_of_achievable": 88.77696474389433,
+  "era_key": "orchestral-e2e/2026-09-02/11works/direction_text/6b230bd7"
+ },
+ "noise_floor": {
+  "documented_noise_floor_edits": 6,
+  "source": "CLAUDE.md \u2014 beethoven-984073-p4 scored 4673 then 4679 on two runs of one tree",
+  "pooled_denominator_20row": 88783,
+  "worth_in_omr_ned": 6.758050527691112e-05,
+  "worth_in_pct_of_achievable_at_floor_0": 0.006758050527691112,
+  "note": "on a single ROW the same 6 edits are worth far more \u2014 on beethoven-984073-p1 (denominator 1798) they are 0.33 OMR-NED points, i.e. ~0.46 points of % of achievable at floor 0 and ~0.6 at its measured floor. A per-row delta must be compared against a PER-ROW noise floor."
+ }
+}

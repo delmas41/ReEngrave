@@ -1,0 +1,57 @@
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+work                    bars       parts   measures        notes  recall   prec    dur  dossier
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/partStaffExporter.py:266: MusicXMLWarning: Got overlapping StaffGroups; will not merge ANY groups.
+  warnings.warn(
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+1 of 38 labelled staff record(s) CONTRADICT their own margin label: the reader read one instrument on that staff and the file names another. Measured over two whole works, 0.873 of these are a wrong EXPORTED name and 0.127 a misread label, and nothing on the record says which — so each is worth a look, none is self-resolving. By source: {'score_order_ambiguity': 1}. By pair: {'Bass voice -> Contrabass': 1} (benchmarks/omr-label-contradiction-2026-09/)
+/Users/seanjohnson/Library/Python/3.9/lib/python/site-packages/music21/musicxml/xmlToM21.py:1730: MusicXMLWarning: 52 does not map to a valid instrument!
+  warnings.warn(MusicXMLWarning(mpe))
+mahler-sym5-mvt1           8    38/38       8/8        24/24       0.917  0.917  1.000  slot_clef=2
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+musicxml.m21ToXml: WARNING: we are out of midi channels! help!
+brahms-sym1-mvt1           7    21/21       7/7       506/505      0.956  0.955  0.992  clean
+
+OMR-NED (pooled over 2 scores): 0.0942   [lower is better; 0 = identical]
+  558 symbol edits over 3041 truth + 2883 predicted symbols
+
+work                            OMR-NED   edits   truth    pred  dominant error
+mahler-sym5-mvt1                 0.0209      40     958     957  entire measure insert/delete
+brahms-sym1-mvt1                 0.1292     518    2083    1926  wrong note
+
+where the edits are (pooled):
+  wrong note                                 230   41.2%
+  wrong direction                            135   24.2%
+  entire measure insert/delete               102   18.3%
+  wrong barline                               19    3.4%
+  wrong dynamic                               17    3.0%
+  wrong keysig                                13    2.3%
+  (8 more)                                    42    7.5%

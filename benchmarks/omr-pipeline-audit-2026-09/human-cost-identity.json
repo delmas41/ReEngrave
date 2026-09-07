@@ -1,0 +1,74 @@
+{
+ "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_human_cost.py",
+ "what": "review cost on the IDENTITY axis \u2014 staff records a human must open because the name is missing or contradicted by the page",
+ "definition": {
+  "costly": "not `named`, OR `contradicted` by the staff's own margin label. Counted once.",
+  "floor_candidate": "records where NO margin label was read at all AND nothing was emitted \u2014 unnameable from the page, so irreducible by pipeline work."
+ },
+ "not_this": "note-level review load, which is the larger half and has no harness at all",
+ "source": "benchmarks/omr-identity-harness-2026-09/out/records.json",
+ "era_key": "identity-harness|2026-09-07|1571 graded records|58 replay arms + 1 transcription",
+ "\u26a0\ufe0f_clef_regime": "58 of the harness's 59 arms are clef-blind REPLAYS and exactly one is a transcription (backlog F). A human-cost figure needs a clef-regime stamp beside its page-set regime stamp; these arms are not interchangeable.",
+ "\u26a0\ufe0f_VERDICT": {
+  "reproducible_from_committed_artefacts": true,
+  "round2_said_otherwise_and_was_WRONG": "Round 2 reported this estate as irreproducible because records.json carries no `impossible` or `not-in-this-work` field. It does not need to: score.py DERIVES both from corpus.is_impossible(work, page, name) and corpus.is_never(work, name), and work / page / emitted are all on the record, and corpus.py is committed. The fields were absent; the INFORMATION was not. I checked which fields existed and did not check how the missing ones were computed.",
+  "still_true": "the committed export is 1,571 records over 2 arms, so it cannot reproduce FINDINGS' 197 over 3,543 \u2014 that is a COVERAGE gap (which arms were exported), not a schema gap.",
+  "superseded_why": false,
+  "_old_why": "FINDINGS.md reports human cost as 197 over 3543 records, decomposed 150 contradicted-only / 24 unnamed / 15 not-in-this-work / 8 both. The COMMITTED records.json holds 1571 records across 2 arms and carries no `not-in-this-work` field and no unnamed record at all (0 of 1571). So only the `contradicted` component is reproducible here: 26 of 1571 = 0.0166. The project's stated PURPOSE is measured in exactly one place and that place cannot be re-derived from the tree.",
+  "floor_is_still_open_but_now_LOCATED": "0 of 1,571 records are unnamed, so the floor is not in that category. It is in `contradicted`: the label-contradiction check's documented STRUCTURAL false positive is a CONDENSED staff \u2014 `Violoncello e Basso` names one instrument in the margin and the slot names the other, and BOTH are right. Those records cost a reviewer a look that no pipeline work can remove. Neither edition here condenses that way (0 of 158 in the label-contradiction study), which is a fact about two publishers, not about the floor. So the floor is measurable and is the condensed-staff rate \u2014 not zero, and not measured.",
+  "what_it_would_take": "(1) export MORE ARMS \u2014 the committed set is 2 of the harness's 59, which is why 46 here cannot be 197 there; no schema change is needed. (2) Measure the condensed-staff rate on an edition that condenses, to give the floor a value. (3) Stamp the CLEF REGIME on each arm: 58 of 59 arms are clef-blind replays and one is a transcription (backlog F), and a cost figure that mixes them is not one figure."
+ },
+ "arms": [
+  {
+   "arm": "beet5/shipped",
+   "n_records": 807,
+   "accuracy": 0.9913258983890955,
+   "human_cost_records": 22,
+   "human_cost_rate": 0.027261462205700124,
+   "decomposition": {
+    "unnamed": 0,
+    "impossible": 7,
+    "not_in_this_work": 0,
+    "contradicted": 15
+   },
+   "human_breakdown": {
+    "contradicted": 15,
+    "impossible": 7
+   },
+   "floor_candidate": {
+    "staves_with_no_label_read": 283,
+    "of_those_also_unnamed": 0,
+    "floor_rate": 0.0
+   }
+  },
+  {
+   "arm": "brahms1/fit=search,spans=on",
+   "n_records": 764,
+   "accuracy": 0.9698952879581152,
+   "human_cost_records": 24,
+   "human_cost_rate": 0.031413612565445025,
+   "decomposition": {
+    "unnamed": 0,
+    "impossible": 0,
+    "not_in_this_work": 17,
+    "contradicted": 11
+   },
+   "human_breakdown": {
+    "contradicted": 7,
+    "contradicted+not-in-this-work": 4,
+    "not-in-this-work": 13
+   },
+   "floor_candidate": {
+    "staves_with_no_label_read": 108,
+    "of_those_also_unnamed": 0,
+    "floor_rate": 0.0
+   }
+  }
+ ],
+ "orthogonality": {
+  "n_comparable_arm_pairs": 0,
+  "pairs_where_accuracy_moved_10_or_more_records": 0,
+  "of_those_human_cost_unchanged": 0,
+  "examples": []
+ }
+}

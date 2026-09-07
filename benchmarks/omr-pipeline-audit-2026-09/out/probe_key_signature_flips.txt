@@ -1,0 +1,18 @@
+=== scan: 193 staves
+   key_signature_source: {None: 94, 'header_vote': 99}
+   cells with a key marker: first cell = 104, LATER cell = 19
+   later-cell marker confidence: min=0.26 median=0.49 max=0.73
+   key_signature_final present=26, of which STALE=19
+   MID-STAFF KEY-SIGNATURE FLIPS: 7
+      ('beethoven-sym5-mvt1-575951-p1', 2, 'Clarinet', 11, (0, 0), (0, 1), 'header_vote', [('keyFlat', 0.32)])
+      ('beethoven-sym5-mvt1-575951-p2', 0, 'Flute', 15, (0, 2), (0, 1), 'header_vote', [('keyFlat', 0.26)])
+      ('beethoven-sym5-mvt1-575951-p2', 3, 'Bassoon', 2, (0, 2), (0, 1), 'header_vote', [('keyFlat', 0.42)])
+      ('beethoven-sym5-mvt1-575951-p2', 20, 'Violin', 3, (0, 3), (0, 1), None, [('keyFlat', 0.5)])
+      ('beethoven-sym5-mvt1-984073-p2', 3, 'Bassoon', 2, (0, 2), (0, 1), 'header_vote', [('keyFlat', 0.57)])
+      ('dvorak-sym9-mvt1-405834-p5', 4, 'Horn', 3, (0, 0), (0, 1), None, [('keyFlat', 0.49)])
+      ('mahler-sym5-mvt1-local-p2', 15, 'Violin', 6, (4, 0), (1, 0), 'header_vote', [('keySharp', 0.33)])
+=== engraved: 224 staves
+   key_signature_source: {'header_vote': 116, None: 108}
+   cells with a key marker: first cell = 176, LATER cell = 0
+   key_signature_final present=0, of which STALE=0
+   MID-STAFF KEY-SIGNATURE FLIPS: 0
