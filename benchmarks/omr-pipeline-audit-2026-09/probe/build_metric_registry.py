@@ -32,6 +32,7 @@ A = {
     "retro": HERE / "retro-stamp.json",
     "hairpinceil": HERE / "hairpin-ceiling-value.json",
     "humancost": HERE / "human-cost-identity.json",
+    "noisefloor": HERE / "engraved-noise-floor.json",
     "content": ROOT / "docs/progress-dashboard.content.json",
     "pct": HERE / "pct-of-achievable-prototype.json",
 }
@@ -51,6 +52,10 @@ def row(**kw):
     base = {
         "id": None, "stage": None, "family": None,
         "comparable_as": {"time_series": None, "head_to_head": None},
+        # ⚠️ SCHEMA-ENFORCED. A row whose number is easy to misread beside its
+        # neighbours carries the sentence that disambiguates it, and a renderer
+        # may not drop it. See `rules.mandatory_caption`.
+        "mandatory_caption": None,
         "raw_metric": None, "native_direction": None,
         "native_worst": None, "native_best": None,
         "value": None,
@@ -95,9 +100,24 @@ rows.append(row(
     pct_of_achievable=pct_err(dt["pooled"], 0.0),
     n=len(dt["works"]), n_unit="works",
     era_key=ERA_ENG,
-    noise_floor={"value": None, "status": "unmeasured",
-                 "note": "no repeat-run determinism probe exists for "
-                         "orchestral_eval; the ±6 figure is the SCAN harness's"},
+    noise_floor={
+        "value_edits": 0,
+        "status": "measured_on_a_2_work_subset",
+        "evidence": "benchmarks/omr-pipeline-audit-2026-09/"
+                    "engraved-noise-floor.json",
+        "note": "two arms of `orchestral_eval --omr-ned --no-direction-text` "
+                "over mahler-sym5-mvt1 + brahms-sym1-mvt1 on one unchanged "
+                "tree, run serially: 40/40 and 518/518, and the exports are "
+                "BYTE-IDENTICAL rather than merely equal-scoring. Both arms "
+                "demonstrably ran (415 s vs 270 s wall, and per-work pipeline "
+                "runtime 341.9 s vs 206.7 s).",
+        "⚠️_scope": "n=2 works, direction text OFF. It does NOT license a zero "
+                    "floor for the eleven-work pool or for the default "
+                    "configuration: the scan harness measured exactly 0 on its "
+                    "five-row era and ±6 on its twenty-row era, so a floor is a "
+                    "property of the POOL as much as of the pipeline. A delta "
+                    "on this row still may not be gated.",
+    },
     summability_class="omr_ned_engraved", pool_key="engraved/orchestral-e2e/11",
     comparable_as={"time_series": "orchestral-e2e|2026-09-02|11works|direction_text",
                    "head_to_head": "engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects"},
@@ -249,6 +269,10 @@ rows.append(row(
     pct_of_achievable=pct_rate(ok / len(o), 1.0),
     n=len(o), n_unit="works", era_key=ERA_READ,
     summability_class="structure_rate", pool_key=None,
+    mandatory_caption="These fixtures are 1:1 BY CONSTRUCTION — every truth "
+                      "part gets its own printed staff. A conductor's page "
+                      "condenses and splits; this stage is never asked that "
+                      "question here.",
     scoreable=True, source=REL["one2one"],
     flags=["EASY BY CONSTRUCTION — a 100 here does not predict a conductor's page"]))
 
@@ -470,6 +494,9 @@ rows.append(row(
                         "nothing measures how much of a hairpin survives a bitonal "
                         "600 dpi scan, so C=1 is assumed"},
     pct_of_achievable=pct_rate(yolo / truth, 1.0),
+    mandatory_caption="Scores the DETECTOR only. A classical-CV reader added "
+                      "later carries 118 of 198 <wedge> into the file, so this "
+                      "is not what reaches a user.",
     n=truth, n_unit="truth hairpins", era_key="hairpin-cv|11 scanned pages",
     summability_class="detector_recall", pool_key=None,
     scoreable=True, source=REL["hairpin"],
@@ -790,6 +817,9 @@ rows.append(row(
                                   "2 committed arms",
                    "head_to_head": None},
     summability_class="human_cost_rate", pool_key=None,
+    mandatory_caption="Staff NAMING only. The reviewer's larger load — "
+                      "note-level diffs — has no harness at all, so this is not "
+                      "a measure of how much review a score needs.",
     scoreable=True,
     source="benchmarks/omr-pipeline-audit-2026-09/human-cost-identity.json",
     companions={"human_cost_records": sum(a["human_cost_records"]
@@ -811,6 +841,13 @@ rows.append(row(
            "cost figure that mixes regimes is not one figure (backlog F)"]))
 
 # ───────────────────────────────────────────────────────────────────── assemble
+# ── schema self-check: a mandatory caption must be real text on a scored row.
+_bad = [r["id"] for r in rows
+        if r.get("mandatory_caption") is not None
+        and (not r["scoreable"] or not str(r["mandatory_caption"]).strip())]
+if _bad:
+    raise SystemExit("mandatory_caption is set but unusable on: %s" % _bad)
+
 scoreable = [r for r in rows if r["scoreable"]]
 doc = {
     "schema_version": "0.3.0",
@@ -872,6 +909,30 @@ doc = {
                                 "metric, C=1 for a rate). A missing ceiling can "
                                 "therefore never manufacture a high number. Such a "
                                 "row is stamped status 'assumed'.",
+        "mandatory_caption": {
+            "_why": "⚠️ A ROW CAN BE INDIVIDUALLY CORRECT AND COLLECTIVELY "
+                    "MISLEADING. `human:review_cost:identity` reads 97.07 and "
+                    "`scan:omr_ned` reads 15.56, on one axis, in one unit, in "
+                    "one table — and the first scores staff NAMING while the "
+                    "second scores everything. A reader takes the pair to mean "
+                    "'naming is nearly solved, reading is not'; what it "
+                    "actually means is that one of them has a harness and the "
+                    "reviewer's real load (note-level diffs) has none. No "
+                    "amount of care in the renderer fixes that, because the "
+                    "mistake is not made in the renderer.",
+            "rule": "a row carrying a non-null `mandatory_caption` MUST be "
+                    "rendered with that text visible beside the number — not in "
+                    "a tooltip, not on hover, not behind a disclosure. A "
+                    "renderer that cannot show it MUST NOT show the row.",
+            "enforcement": "this is a SCHEMA constraint, not a rendering "
+                           "convention. If the renderer can drop the caption "
+                           "the schema is wrong, not the renderer — so a "
+                           "consumer that omits captions should fail its own "
+                           "build rather than degrade silently.",
+            "when_to_set_it": "when the row's SCOPE is narrower than its "
+                              "neighbours' and the unit hides the difference. "
+                              "Not for ordinary caveats — those are `flags`.",
+        },
         "no_fabricated_100": "a row with no ceiling evidence AND no value gets "
                              "scoreable:false and renders as an explicit "
                              "'unscoreable — <reason>', never a number.",

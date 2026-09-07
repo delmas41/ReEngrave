@@ -1,0 +1,157 @@
+{
+ "generated_by": "benchmarks/omr-pipeline-audit-2026-09/probe/probe_engraved_noise_floor.py",
+ "configuration": {
+  "harness": "orchestral_eval --omr-ned",
+  "works": [
+   "mahler-sym5-mvt1",
+   "brahms-sym1-mvt1"
+  ],
+  "direction_text": false,
+  "why_no_direction_text": "isolates the detector+pipeline from Surya (whose nondeterminism is a separate documented lead) AND is a configuration current-accuracy.json records, so the floor attaches to a real recorded row. The direction-text arm's floor is UNMEASURED and is >= this one.",
+  "separate_work_dirs": true,
+  "run_serially": true
+ },
+ "\u26a0\ufe0f_anti_cache_control": {
+  "why": "two identical numbers from a second arm that never ran is the worst way to report a zero floor \u2014 the cached-A/B shape where nothing in the output invites suspicion and the only tell is the clock",
+  "armA_wall_clock_s": 415,
+  "armB_wall_clock_s": 270,
+  "per_work_pipeline_runtime_s": {
+   "mahler-sym5-mvt1": [
+    341.94,
+    206.74
+   ],
+   "brahms-sym1-mvt1": [
+    47.44,
+    45.98
+   ]
+  },
+  "orchestral_eval_has_no_cache_guard": "verified by reading `run_work`: it calls excerpt() and transcribe() unconditionally. There is no `if pred.is_file() and not force: return` of the kind scan_eval.run_pipeline opens with.",
+  "both_arms_demonstrably_executed": true
+ },
+ "load_observed": {
+  "armA": "23:50  up  3:30, 6 users, load averages: 4.97 4.07 3.86",
+  "armB": "23:57  up  3:37, 6 users, load averages: 3.57 3.50 3.65"
+ },
+ "result": {
+  "noise_floor_edits": 0,
+  "per_work_delta_edits": {
+   "mahler-sym5-mvt1": 0,
+   "brahms-sym1-mvt1": 0
+  },
+  "exports_byte_identical": true,
+  "verdict": "ZERO on this configuration, and byte-identical rather than merely equal-scoring",
+  "\u26a0\ufe0f_scope": "n=2 works, one configuration, one tree, one machine. This does NOT license a zero floor for the eleven-work pool: the scan harness measured exactly 0 on its five-row era and +-6 on its twenty-row era, so a floor is a property of the POOL, not only of the pipeline."
+ },
+ "per_work": [
+  {
+   "work_id": "mahler-sym5-mvt1",
+   "armA": {
+    "omr_ned": 0.0209,
+    "edits": 40,
+    "truth_symbols": 958,
+    "pred_symbols": 957
+   },
+   "armB": {
+    "omr_ned": 0.0209,
+    "edits": 40,
+    "truth_symbols": 958,
+    "pred_symbols": 957
+   },
+   "delta_edits": 0,
+   "export_byte_identical": true,
+   "truth_identical_modulo_music21_ids": true,
+   "truth_byte_identical": false,
+   "armA_runtime_s": 341.94,
+   "armB_runtime_s": 206.74
+  },
+  {
+   "work_id": "brahms-sym1-mvt1",
+   "armA": {
+    "omr_ned": 0.1292,
+    "edits": 518,
+    "truth_symbols": 2083,
+    "pred_symbols": 1926
+   },
+   "armB": {
+    "omr_ned": 0.1292,
+    "edits": 518,
+    "truth_symbols": 2083,
+    "pred_symbols": 1926
+   },
+   "delta_edits": 0,
+   "export_byte_identical": true,
+   "truth_identical_modulo_music21_ids": true,
+   "truth_byte_identical": false,
+   "armA_runtime_s": 47.44,
+   "armB_runtime_s": 45.98
+  }
+ ],
+ "arms": {
+  "armA": {
+   "wall_clock_s": 415,
+   "exit_code": 0,
+   "uptime_before": "23:50  up  3:30, 6 users, load averages: 4.97 4.07 3.86",
+   "scores": {
+    "mahler-sym5-mvt1": {
+     "omr_ned": 0.0209,
+     "edits": 40,
+     "truth_symbols": 958,
+     "pred_symbols": 957
+    },
+    "brahms-sym1-mvt1": {
+     "omr_ned": 0.1292,
+     "edits": 518,
+     "truth_symbols": 2083,
+     "pred_symbols": 1926
+    }
+   },
+   "runtime": {
+    "mahler-sym5-mvt1": {
+     "phase1_s": 10.9,
+     "yolo_s": 33.84,
+     "total_s": 341.94,
+     "contextual_s": 284.89
+    },
+    "brahms-sym1-mvt1": {
+     "phase1_s": 9.92,
+     "yolo_s": 17.14,
+     "total_s": 47.44,
+     "contextual_s": 17.0
+    }
+   }
+  },
+  "armB": {
+   "wall_clock_s": 270,
+   "exit_code": 0,
+   "uptime_before": "23:57  up  3:37, 6 users, load averages: 3.57 3.50 3.65",
+   "scores": {
+    "mahler-sym5-mvt1": {
+     "omr_ned": 0.0209,
+     "edits": 40,
+     "truth_symbols": 958,
+     "pred_symbols": 957
+    },
+    "brahms-sym1-mvt1": {
+     "omr_ned": 0.1292,
+     "edits": 518,
+     "truth_symbols": 2083,
+     "pred_symbols": 1926
+    }
+   },
+   "runtime": {
+    "mahler-sym5-mvt1": {
+     "phase1_s": 9.53,
+     "yolo_s": 25.39,
+     "total_s": 206.74,
+     "contextual_s": 160.53
+    },
+    "brahms-sym1-mvt1": {
+     "phase1_s": 9.73,
+     "yolo_s": 16.01,
+     "total_s": 45.98,
+     "contextual_s": 16.67
+    }
+   }
+  }
+ }
+}

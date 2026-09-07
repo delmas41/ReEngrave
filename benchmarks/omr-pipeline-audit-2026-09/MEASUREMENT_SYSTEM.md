@@ -17,6 +17,7 @@ Artefacts written by this session:
 | `probe/probe_pct_of_achievable.py` → `pct-of-achievable-prototype.json` | the unit, computed on real rows |
 | `probe/probe_measurement_hygiene.py` → `measurement-hygiene.json` | visibility census + stamp census |
 | `probe/build_metric_registry.py` → `metric-registry.json` | the machine-readable registry, 48 rows |
+| `probe/probe_engraved_noise_floor.py` → `engraved-noise-floor.json` | **round 4** — the authorised two-work determinism arm |
 | `README-metric-registry.md` | what wiring it into the dashboard would take |
 
 Round 2 adds four more probes and takes the registry to v0.2.0; **round 3** adds
@@ -1177,3 +1178,147 @@ measured-unreliable · 1 not-a-defect-rate · 19 assumed · 3 unmeasured.
   *for that class on that print*; nothing licenses it for durations.
 - **The five Mahler/Bach scan rows still have no structural floor.**
 - **Nothing was wired into the dashboard**, per the standing instruction.
+
+---
+
+# ROUND 4 — the authorised arm, and the caption made structural
+
+## T1. The engraved noise floor: **ZERO, and byte-identical rather than equal-scoring**
+
+Authorised in the cheaper form and run in exactly that form:
+`orchestral_eval --omr-ned --no-direction-text` over `mahler-sym5-mvt1` and
+`brahms-sym1-mvt1`, twice, **serially**, on one unchanged tree, each arm in its
+own `--work-dir`. Recorded in `engraved-noise-floor.json`.
+
+| | arm A | arm B |
+|---|---|---|
+| load (1-min) before launch | **4.97** | **3.57** |
+| wall clock | **415 s** | **270 s** |
+| `mahler-sym5-mvt1` | 0.0209 / **40 edits** | 0.0209 / **40 edits** |
+| `brahms-sym1-mvt1` | 0.1292 / **518 edits** | 0.1292 / **518 edits** |
+
+Both loads were under the ~6 hold threshold; neither arm was held.
+
+**The anti-cache control, four ways, because two identical numbers from an arm
+that never ran is the worst possible way to report a zero:**
+
+1. **Wall clock differs** — 415 s vs 270 s. A cached arm returns in seconds.
+2. **The pipeline's own `runtime` differs per work** — Mahler `total_s` 341.9 vs
+   206.7, with `contextual_s` 284.9 vs 160.5 as the dominant term. Recorded
+   *inside* each arm's `.omr.json`, so it is not my stopwatch.
+3. **`orchestral_eval` has no cache guard** — verified by reading `run_work`,
+   which calls `excerpt()` and `transcribe()` unconditionally. There is no
+   `if pred.is_file() and not force: return` of the kind `scan_eval.run_pipeline`
+   opens with. That difference between the two harnesses is worth knowing on its
+   own.
+4. Separate `--work-dir`s, so neither arm could see the other's files.
+
+**Why the result is stronger than "the scores matched":** the exported
+`.omr.musicxml` is **byte-identical** for both works, and every detection
+confidence agrees — 971 and 1,725 detections, confidence sums identical to six
+decimal places. So this is not two different reads that happened to score the
+same; it is the same read.
+
+⚠️ **What it does NOT license.** n = 2 works, direction text OFF, one tree, one
+machine. **A floor is a property of the POOL as much as of the pipeline** — the
+scan harness measured exactly 0 on its five-row era and ±6 on its twenty-row era.
+So `engraved:omr_ned` now carries
+`noise_floor.status = "measured_on_a_2_work_subset"`, and **a delta on the
+eleven-work row still may not be gated.** The full arm is now worth scheduling
+rather than guessing at: it would cost roughly 11/2 × 400 s ≈ 35 min per arm at
+this load, twice.
+
+⚠️ **And it says nothing about the DEFAULT configuration.** Direction text is on
+by default and Surya's nondeterminism is a separate documented lead; that arm's
+floor is unmeasured and is ≥ this one.
+
+### A fixture non-determinism found on the way, and closed
+
+The Mahler **truth** fixture differed between arms and Brahms's did not — which
+would mean the two arms scored against different truths and the identical score
+was luck. It is not: the difference is entirely music21's random ids. My first
+canonicaliser masked only `"I…"` (`<score-instrument>`, `<midi-instrument>`) and
+Mahler's truth also carries `<score-part id="P…">`. Widened to `"[IP]…"`, **both
+truths are identical across arms.**
+
+⚠️ **The same narrow mask is in the committed control.**
+`benchmarks/omr-page-normalise-fixes-2026-09/probe_derived_truth_unmoved.py::_canonical`
+masks `"I[0-9a-f]{32}"` only. Measured: across the 15 derived truths there are
+**840 `I`-ids and 0 `P`-ids**, so it is **correct today and latently fragile** —
+a derived truth that ever carried a `<score-part id="P…">` would break its
+reproduction check silently. Not a defect; a hazard with a location. It sharpens
+the round-3 stamp requirement: *a canonical hash must mask every id family the
+writer randomises, and say which it masked.*
+
+## T2. The caption is now a schema constraint, not a rendering convention
+
+`rules.mandatory_caption` in **v0.3.0**, with `mandatory_caption` in the row
+skeleton so it cannot be forgotten:
+
+> A row carrying a non-null `mandatory_caption` **must** be rendered with that
+> text visible beside the number — not in a tooltip, not on hover, not behind a
+> disclosure. **A renderer that cannot show it must not show the row.**
+
+Enforcement is on the schema, not the renderer: *if the renderer can drop the
+caption, the schema is wrong.* A consumer that omits captions should fail its own
+build rather than degrade silently. `build_metric_registry.py` raises if a
+caption is set on an unscoreable row or is empty.
+
+Three rows carry one today:
+
+| row | caption |
+|---|---|
+| `human:review_cost:identity` | Staff **naming** only. The reviewer's larger load — note-level diffs — has no harness at all, so this is not a measure of how much review a score needs. |
+| `engraved:structure` | These fixtures are 1:1 **by construction**; a conductor's page condenses and splits and this stage is never asked that question here. |
+| `scan:hairpin_detect` | Scores the **detector** only; a classical-CV reader added later carries 118 of 198 `<wedge>` into the file. |
+
+The case that forced it: 97.07 beside 15.56, in one unit, on one axis, in one
+table, where the first scores naming and the second scores everything. **The
+mistake is not made in the renderer**, which is why the fix is not in the
+renderer. Handed to Fix Agent C with v0.3.0.
+
+## T3. The runbook's first paragraph now says the expensive thing
+
+Per the coordinator, the reframing is at the top, before anyone can skim past it:
+**the ask is not more labeling, it is more PAIRED labeling.** A completion pass
+yields human boxes; a ceiling needs those boxes measured against what the
+encoding says is in those bars, which needs a `reference.mxl`, a `prefill/` and a
+hand-confirmed window map. Only the Brahms batch has all three; nine of ten have
+none. *A weekend spent completing the other nine batches without step 1 produces
+~5,000 human boxes and zero ceilings.*
+
+## T4. On the withdrawal — what actually saved it
+
+Stated as the coordinator asked, because the distinction is the one this audit
+has been enforcing on everyone else all night.
+
+My round-2 negative ("human cost cannot be re-derived from the tree") was wrong,
+and the thing that caught it was **not** a second look at the same artefact. It
+was the recomputed Brahms **17 `not-in-this-work`** matching the independently
+documented **`Trombone → Tuba` ×17** residue — a prior result, from a different
+session, produced for a different purpose, arrived at by a different route.
+
+Re-reading `records.json` would have shown me the same absent fields a second
+time and confirmed me in the same error. **Corroboration by an independent prior
+result is worth more than any number of confirmations from the substrate that
+produced the claim** — which is exactly the standard
+`feedback_corroboration_is_not_evidence` records, now demonstrated in my own
+favour rather than against someone else's.
+
+## T5. Where round 4 leaves the estate
+
+- `metric-registry.json` **v0.3.0** — 55 rows, 39 scoreable, `mandatory_caption`
+  on 3, `rules.mandatory_caption` enforced at build time.
+- `engraved:omr_ned` is the **first row in the registry with a measured noise
+  floor** (0 edits, 2-work subset). It still cannot gate a delta at pool scale,
+  and the row says so.
+- **Nothing in `tools/omr/`, `backend/` or `frontend/` was modified**, in any
+  round.
+- Ten probes, all exit 0 on the real tree; the four that glob refuse with a
+  non-zero exit on an empty one.
+
+**What is still unmeasured, ranked:** the eleven-work noise floor (now cheap to
+schedule and worth it); the same for the default direction-text configuration;
+the `input` ceiling on a second edition; the condensed-staff rate that would give
+human cost a floor; and the 57 remaining harness arms whose export would let the
+project's own purpose be scored on more than two.

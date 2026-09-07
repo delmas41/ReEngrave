@@ -38,6 +38,12 @@
  "rules": {
   "independence_guard": "a ceiling may ONLY be derived from an artefact independent of our own output \u2014 a truth file, a render, an external engine. A ceiling inferred from what we currently produce lets the pipeline grade itself against its own limitations and reach 100 by standing still.",
   "assumption_direction": "where a ceiling is unknown it is assumed at the value that MINIMISES the score (F=0 for an error metric, C=1 for a rate). A missing ceiling can therefore never manufacture a high number. Such a row is stamped status 'assumed'.",
+  "mandatory_caption": {
+   "_why": "\u26a0\ufe0f A ROW CAN BE INDIVIDUALLY CORRECT AND COLLECTIVELY MISLEADING. `human:review_cost:identity` reads 97.07 and `scan:omr_ned` reads 15.56, on one axis, in one unit, in one table \u2014 and the first scores staff NAMING while the second scores everything. A reader takes the pair to mean 'naming is nearly solved, reading is not'; what it actually means is that one of them has a harness and the reviewer's real load (note-level diffs) has none. No amount of care in the renderer fixes that, because the mistake is not made in the renderer.",
+   "rule": "a row carrying a non-null `mandatory_caption` MUST be rendered with that text visible beside the number \u2014 not in a tooltip, not on hover, not behind a disclosure. A renderer that cannot show it MUST NOT show the row.",
+   "enforcement": "this is a SCHEMA constraint, not a rendering convention. If the renderer can drop the caption the schema is wrong, not the renderer \u2014 so a consumer that omits captions should fail its own build rather than degrade silently.",
+   "when_to_set_it": "when the row's SCOPE is narrower than its neighbours' and the unit hides the difference. Not for ordinary caveats \u2014 those are `flags`."
+  },
   "no_fabricated_100": "a row with no ceiling evidence AND no value gets scoreable:false and renders as an explicit 'unscoreable \u2014 <reason>', never a number.",
   "pooling": "rows may be pooled only within one `pool_key`, and a pool is recomputed FROM THE UNDERLYING COUNTS, never by averaging percentages \u2014 a 3-bar excerpt and a 27-staff page must not carry equal weight. A pool's trust is the MINIMUM of its members' ceiling statuses.",
   "comparability": {
@@ -85,6 +91,7 @@
     "time_series": "orchestral-e2e|2026-09-02|11works|direction_text",
     "head_to_head": "engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects"
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED (musicdiff 5.2)",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -105,9 +112,11 @@
    "n_unit": "works",
    "era_key": "orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7",
    "noise_floor": {
-    "value": null,
-    "status": "unmeasured",
-    "note": "no repeat-run determinism probe exists for orchestral_eval; the \u00b16 figure is the SCAN harness's"
+    "value_edits": 0,
+    "status": "measured_on_a_2_work_subset",
+    "evidence": "benchmarks/omr-pipeline-audit-2026-09/engraved-noise-floor.json",
+    "note": "two arms of `orchestral_eval --omr-ned --no-direction-text` over mahler-sym5-mvt1 + brahms-sym1-mvt1 on one unchanged tree, run serially: 40/40 and 518/518, and the exports are BYTE-IDENTICAL rather than merely equal-scoring. Both arms demonstrably ran (415 s vs 270 s wall, and per-work pipeline runtime 341.9 s vs 206.7 s).",
+    "\u26a0\ufe0f_scope": "n=2 works, direction text OFF. It does NOT license a zero floor for the eleven-work pool or for the default configuration: the scan harness measured exactly 0 on its five-row era and \u00b16 on its twenty-row era, so a floor is a property of the POOL as much as of the pipeline. A delta on this row still may not be gated."
    },
    "summability_class": "omr_ned_engraved",
    "pool_key": "engraved/orchestral-e2e/11",
@@ -128,6 +137,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -169,6 +179,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -210,6 +221,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -251,6 +263,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -294,6 +307,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -335,6 +349,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -376,6 +391,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -417,6 +433,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -460,6 +477,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -501,6 +519,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -542,6 +561,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -583,6 +603,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -618,6 +639,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -660,6 +682,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -694,6 +717,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -738,6 +762,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -780,6 +805,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -822,6 +848,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -864,6 +891,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -906,6 +934,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -948,6 +977,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -990,6 +1020,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1032,6 +1063,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1074,6 +1106,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1116,6 +1149,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "detection F1 vs exact page truth, pooled",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1153,6 +1187,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": "These fixtures are 1:1 BY CONSTRUCTION \u2014 every truth part gets its own printed staff. A conductor's page condenses and splits; this stage is never asked that question here.",
    "raw_metric": "works whose part count equals the truth's",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1190,6 +1225,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED (musicdiff 5.2)",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -1239,6 +1275,7 @@
     "time_series": "scan-e2e|20rows|reconciliation|normalised-transform1.2.0",
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -1288,6 +1325,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -1330,6 +1368,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -1372,6 +1411,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "rows exact",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1409,6 +1449,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "rows exact",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1446,6 +1487,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "staff-position recall vs truth notes",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1482,6 +1524,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "of pitch-matched notes, share whose duration is also right",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1514,6 +1557,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": "Scores the DETECTOR only. A classical-CV reader added later carries 118 of 198 <wedge> into the file, so this is not what reaches a user.",
    "raw_metric": "hairpins the YOLO detector finds",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1551,6 +1595,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED of Audiveris 5.11, our fixtures, our scorer",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -1589,6 +1634,7 @@
     "time_series": null,
     "head_to_head": "scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects"
    },
+   "mandatory_caption": null,
    "raw_metric": "OMR-NED of Audiveris 5.11 on the 11-row scan era",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -1627,6 +1673,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": null,
    "native_direction": null,
    "native_worst": null,
@@ -1661,6 +1708,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": null,
    "native_direction": null,
    "native_worst": null,
@@ -1695,6 +1743,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": null,
    "native_direction": null,
    "native_worst": null,
@@ -1729,6 +1778,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": null,
    "native_direction": null,
    "native_worst": null,
@@ -1763,6 +1813,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": null,
    "native_direction": null,
    "native_worst": null,
@@ -1797,6 +1848,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": null,
    "native_direction": null,
    "native_worst": null,
@@ -1831,6 +1883,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": null,
    "native_direction": null,
    "native_worst": null,
@@ -1865,6 +1918,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": null,
    "native_direction": null,
    "native_worst": null,
@@ -1899,6 +1953,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "reference notes a HUMAN could box on a real scan, per reference note",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -1934,6 +1989,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "can a human see a hairpin on these scans at all?",
    "native_direction": "higher_is_better",
    "native_worst": null,
@@ -1970,6 +2026,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "half-noteheads detected on Beethoven 5 p.1",
    "native_direction": "higher_is_better",
    "native_worst": null,
@@ -2004,6 +2061,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "oracle ceiling quoted in CLAUDE.md's knobs table (-4,557 scan edits)",
    "native_direction": "lower_is_better",
    "native_worst": null,
@@ -2036,6 +2094,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "Expected Calibration Error of P(name)",
    "native_direction": "lower_is_better",
    "native_worst": null,
@@ -2068,6 +2127,7 @@
     "time_series": null,
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "ledger-zone labels FLAGGED by the parity auditor",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -2102,6 +2162,7 @@
     "time_series": "labeling-audit|ledger-zone|adjudicated",
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "ledger-zone labels ADJUDICATED wrong by a human",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,
@@ -2141,6 +2202,7 @@
     "time_series": "prefill|brahms1-breitkopf|phase-C|blind",
     "head_to_head": null
    },
+   "mandatory_caption": null,
    "raw_metric": "exact-class precision of reference-driven pre-filled verdicts, blind sample",
    "native_direction": "higher_is_better",
    "native_worst": 0.0,
@@ -2185,6 +2247,7 @@
     "time_series": "identity-harness|human-cost|identity-axis|2 committed arms",
     "head_to_head": null
    },
+   "mandatory_caption": "Staff NAMING only. The reviewer's larger load \u2014 note-level diffs \u2014 has no harness at all, so this is not a measure of how much review a score needs.",
    "raw_metric": "share of staff records a human must open \u2014 unnamed, categorically impossible, not-in-this-work, or contradicted by the staff's own margin label",
    "native_direction": "lower_is_better",
    "native_worst": 1.0,

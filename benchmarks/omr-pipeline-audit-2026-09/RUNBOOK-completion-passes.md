@@ -1,9 +1,20 @@
 # Runbook — completion passes for an INPUT ceiling across publishers
 
 **Scoped by Agent III, 2026-09-07. HUMAN WORK, not agent work — this is a
-labeling plan, and no agent should attempt it.** It exists because the audit's
-one empty ceiling kind (`input`) now has evidence from exactly **one edition**,
-and one publisher is not a ceiling.
+labeling plan, and no agent should attempt it.**
+
+⚠️⚠️ **READ THIS SENTENCE BEFORE PLANNING ANY OF IT: the ask is not more
+labeling, it is more PAIRED labeling.** A completion pass on a batch yields
+human boxes. It does **not** yield a ceiling. A ceiling needs those boxes
+measured *against what the encoding says is printed in those bars*, and that
+needs a `reference.mxl`, a `prefill/` and a hand-confirmed window map. **Only
+the Brahms batch has all three; nine of ten have none of them.** Step 1 below —
+attaching a reference and a window map — is therefore the real cost, and it
+needs judgement rather than clicks. A weekend spent completing the other nine
+batches without it produces 5,000 human boxes and **zero** ceilings.
+
+It exists because the audit's one empty ceiling kind (`input`) now has evidence
+from exactly **one edition**, and one publisher is not a ceiling.
 
 ## Why this, and why it is not optional
 
@@ -19,6 +30,8 @@ this bad on Peters, Simrock, Durand and Novello too, or is Breitkopf's engraving
 unusually kind?** Nothing in the corpus can say.
 
 ## The blocker is not labeling effort — it is that only one batch can be SCORED
+
+(Restating the warning above, because this is the section someone will skim to.)
 
 Ten batches were swept for one symbol at a time. A completion pass on any of them
 yields human boxes. **It does not yield a ceiling**, because a ceiling needs the

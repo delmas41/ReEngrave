@@ -41,11 +41,24 @@ pre-registered, 1 measured-unreliable, 1 not-a-defect-rate, 18 assumed, 4
 unmeasured. v0.1.0 is preserved in git at `ac88148e`; `metric-registry.v0.2.0.json`
 is a snapshot of the current file.
 
-⚠️ **v0.3.0 adds a row a dashboard must caption or not print at all**:
-`human:review_cost:identity` scores **97.07 %**, and it measures staff NAMING
-only. The reviewer's larger load is note-level diffs and has no harness. Printed
-beside `scan:omr_ned` at 15.56 % without its caption it is the most misleading
-pairing available.
+⚠️ **v0.3.0 adds `mandatory_caption`, and it is a SCHEMA constraint, not a
+rendering convention.** Three rows carry one today. A row with a non-null
+`mandatory_caption` **must** be rendered with that text visible beside the
+number — not in a tooltip, not on hover, not behind a disclosure — and **a
+renderer that cannot show it must not show the row.** If the renderer can drop
+the caption, the schema is wrong, not the renderer; a consumer that omits
+captions should fail its own build rather than degrade silently.
+
+The case that forced it: `human:review_cost:identity` reads **97.07 %** and
+`scan:omr_ned` reads **15.56 %**, in one unit, on one axis, in one table — and
+the first scores staff *naming* while the second scores everything. A reader
+takes the pair to mean "naming is nearly solved, reading is not". What it
+actually means is that one of them has a harness and the reviewer's real load —
+note-level diffs — has none. No care in the renderer fixes that, because the
+mistake is not made in the renderer.
+
+`build_metric_registry.py` fails the build if a `mandatory_caption` is set on an
+unscoreable row or is empty.
 
 ⚠️ **Two schema changes since v0.1.0 that a consumer must handle.**
 `comparable_as` replaces the single `era_key` equality test — see §R4, and note
