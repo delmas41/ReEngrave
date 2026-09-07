@@ -1,0 +1,62 @@
+judgeable staves on full systems: 772
+
+arm                               r0 c/w/u        r1 c/w/u        r2 c/w/u       TOTAL c/w/u
+no-spans                    234/  26/   0  140/  20/   0  176/ 176/   0    550/ 222/   0
+shipped                     240/  20/   0  140/  20/   0  176/ 176/   0    556/ 216/   0
+swap                        240/  20/   0  140/  20/   0  132/ 154/  66    512/ 194/  66
+shapetie                    260/   0/   0   70/  90/   0  352/   0/   0    682/  90/   0
+shapetie+swap               260/   0/   0   60/  60/  40  352/   0/   0    672/  60/  40
+
+no-spans — wrong (region: printed -> emitted):
+   r2    22  Oboe           -> Piccolo
+   r2    22  Clarinet       -> Oboe
+   r2    22  Bassoon        -> Clarinet
+   r2    22  Contrabassoon  -> Bassoon
+   r2    22  Horn           -> Contrabassoon
+   r2    22  Trombone       -> Trumpet
+   r2    22  Trombone       -> Timpani
+   r2    22  Timpani        -> Percussion
+   r0    20  Horn           -> Trumpet
+   r1    10  Horn           -> Trumpet
+
+shipped — wrong (region: printed -> emitted):
+   r2    22  Oboe           -> Piccolo
+   r2    22  Clarinet       -> Oboe
+   r2    22  Bassoon        -> Clarinet
+   r2    22  Contrabassoon  -> Bassoon
+   r2    22  Horn           -> Contrabassoon
+   r2    22  Trombone       -> Trumpet
+   r2    22  Trombone       -> Timpani
+   r2    22  Timpani        -> Percussion
+   r0    20  Horn           -> Trumpet
+   r1    10  Horn           -> Trumpet
+
+swap — wrong (region: printed -> emitted):
+   r2    44  Trombone       -> Trumpet
+   r2    22  Bassoon        -> Flute
+   r2    22  Contrabassoon  -> Oboe
+   r2    22  Horn           -> Clarinet
+   r2    22  Horn           -> Bassoon
+   r2    22  Trumpet        -> Horn
+   r0    20  Horn           -> Trumpet
+   r1    10  Horn           -> Trumpet
+   r1    10  Triangle       -> Percussion
+
+shapetie — wrong (region: printed -> emitted):
+   r1    10  Piccolo        -> Oboe
+   r1    10  Oboe           -> Clarinet
+   r1    10  Clarinet       -> Bassoon
+   r1    10  Bassoon        -> Contrabassoon
+   r1    10  Contrabassoon  -> Horn
+   r1    10  Horn           -> Trumpet
+   r1    10  Trumpet        -> Trombone
+   r1    10  Timpani        -> Trombone
+   r1    10  Triangle       -> Timpani
+
+shapetie+swap — wrong (region: printed -> emitted):
+   r1    10  Bassoon        -> Oboe
+   r1    10  Contrabassoon  -> Clarinet
+   r1    10  Horn           -> Bassoon
+   r1    10  Trumpet        -> Horn
+   r1    10  Timpani        -> Trumpet
+   r1    10  Triangle       -> Timpani

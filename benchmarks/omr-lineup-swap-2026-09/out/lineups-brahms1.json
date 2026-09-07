@@ -1,0 +1,90 @@
+[
+ {
+  "first": 0,
+  "last": 25,
+  "size": 14,
+  "lineup": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Contrabassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ],
+  "read_off": "corpus.LINEUPS['brahms1'] \u2014 Breitkopf"
+ },
+ {
+  "first": 33,
+  "last": 35,
+  "size": 14,
+  "lineup": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Contrabassoon",
+   "Horn",
+   "Trumpet",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ],
+  "read_off": "corpus.LINEUPS['brahms1'] \u2014 Breitkopf"
+ },
+ {
+  "first": 36,
+  "last": 44,
+  "size": 12,
+  "lineup": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ],
+  "read_off": "corpus.LINEUPS['brahms1'] \u2014 Breitkopf"
+ },
+ {
+  "first": 45,
+  "last": 85,
+  "size": 16,
+  "lineup": [
+   "Flute",
+   "Oboe",
+   "Clarinet",
+   "Bassoon",
+   "Contrabassoon",
+   "Horn",
+   "Horn",
+   "Trumpet",
+   "Trombone",
+   "Trombone",
+   "Timpani",
+   "Violin",
+   "Violin",
+   "Viola",
+   "Cello",
+   "Contrabass"
+  ],
+  "read_off": "corpus.LINEUPS['brahms1'] \u2014 Breitkopf"
+ }
+]
