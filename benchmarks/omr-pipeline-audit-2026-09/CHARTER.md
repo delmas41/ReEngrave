@@ -276,3 +276,72 @@ and it is what makes this phase byte-identical.
 - **Dashboard integration.** The renderer is standalone; the `generate.py` diff is
   proposed and not applied. A generated artefact with a staleness gate does not get
   edited unreviewed at 2am.
+
+---
+
+## Round 3, Agent III — the purpose metric IS on the board, and the negative was its own
+
+⚠️ **Bookkeeping note:** this round's files were swept into `5c53bc10`/`054ff819` by a
+`git add -A` before their finding was written up. The content is committed; this
+section is the message those commits should have carried.
+
+**WITHDRAWN, and it is the most instructive correction of the night.** Round 2
+reported that human review cost — Sean's stated purpose — cannot be re-derived from
+the tree, because `records.json` lacks the `not-in-this-work` and `impossible`
+fields. **The fields are absent; the information is not.** `score.py` derives both
+from `corpus.is_impossible(work, page, name)` / `corpus.is_never(work, name)`;
+`work`, `page` and `emitted` are all on the record and `corpus.py` is committed.
+*It checked which fields existed and not how the missing ones were computed.*
+
+Recomputed from committed artefacts alone: unnamed **0** · impossible **7** ·
+not-in-this-work **17** · contradicted **26** = **46 of 1,571 = 2.93 %**, i.e.
+**97.07 % of achievable**. `W = 1.0` is real here — a pipeline that names nothing
+leaves every staff to the reviewer.
+
+⚠️ **What makes it trustworthy is not a second look at the same artefact**: the
+Brahms **17 `not-in-this-work` reproduces the documented `Trombone → Tuba` ×17
+residue exactly** — corroboration by an *independent prior result*, which is the
+standard this audit has enforced on everyone else, arriving in its own favour.
+
+⚠️⚠️ **AND IT CARRIES THE LOUDEST FLAG IN THE REGISTRY. 97 beside a scan 20 is the
+most misleading pairing the board could print** — one scores staff NAMING, the
+other scores everything, and the reviewer's real load, note-level diffs, **has no
+harness at all**. Ordered non-optional in the schema: *if the renderer can drop
+that caption, the schema is wrong, not the renderer.*
+
+**The floor is located rather than open**: zero records are unnamed, so it is not
+there. It is in `contradicted`, specifically the **condensed staff** — `Violoncello
+e Basso`, where the margin and the slot disagree and **both are right** — a look no
+pipeline work removes. Neither edition here condenses that way, which is a fact
+about two publishers and not about the floor.
+
+### The hairpin ceiling has a value, and the matched comparison is worse than the rate
+
+On the same three pages the human swept: **10,523 detections and ZERO of either
+hairpin class**, against 17 human boxes. So 1-of-99 is **not** a thin-sample
+artefact — it is **zero**, on pages where the detector was otherwise productive.
+
+⚠️ The obvious ratio is unusable and is reported as such: the encoding writes a
+`<wedge>` at each end, the engraver draws one arc, and a measure cell **cuts** it —
+17 boxes / 11 reference starts = 1.545 is junk in both directions. The defensible
+form is **bar-level: 4 of 5 swept bars where the encoding starts a hairpin have
+human ink — recall 0.80**, n=5, the entire sample the corpus can offer.
+`ceiling:input:hairpin:scan` moves `refuted_as_a_ceiling` → **`bounded_below`,
+0.80**: the detector runs at roughly **one part in eighty** of what a reader
+recovers. Publisher named everywhere it appears: **Breitkopf & Härtel, Brahms 1.**
+
+### Item 2 reframed — the blocker is not labeling effort
+
+A completion pass yields human boxes but **not a ceiling**: that needs boxes
+*against what the encoding says is in those bars*, and only the Brahms batch has
+all three of a reference, a `prefill/` and a confirmed window map. Nine of ten lack
+all three. **"More labeling" is the wrong ask; "more PAIRED labeling" is the right
+one**, and it is materially more expensive. First in `RUNBOOK-completion-passes.md`
+so nobody spends a weekend on the wrong nine batches.
+
+**Registry v0.3.0 — 55 rows, 39 scoreable.** Ceiling census: 25 measured · 19
+assumed · 3 unmeasured · the rest single-source, bounded, pre-registered or
+corroborated. Two fixture helpers now exist independently with the same env var;
+**Agent II's `probe/_fixtures.py` is the designated survivor** (16 probes, and it
+handles the partially-populated case) — convergence scheduled as its own task, not
+attempted at 1am by two agents refactoring each other's instruments.
