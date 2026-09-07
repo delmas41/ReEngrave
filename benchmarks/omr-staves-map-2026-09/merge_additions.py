@@ -11,7 +11,11 @@ it cannot prove:
     someone else's hand reading);
   * the additions row is `done`;
   * the map's shape is works.json's shape exactly — a list of
-    `{"name": str, "parts": [int, ...]}`, nothing else;
+    `{"name": str, "parts": [int, ...]}`, nothing else. ⚠️ `parts` must be
+    UNIQUE but is deliberately NOT required to be sorted: `page_normalise`
+    keeps `parts[0]`, so the order chooses the merged staff's identity and
+    sorting it renames three printed staves `Piccolo` — measured, see
+    `shape_problems`;
   * every reference part is named exactly ONCE.  `page_normalise` raises
     `IncompleteMap` on a map that leaves a part out, because a normalised truth
     missing a part scores BETTER for the wrong reason; a part named TWICE is the
@@ -62,9 +66,46 @@ def shape_problems(staves) -> list[str]:
         if not isinstance(p, list) or not p or not all(
                 isinstance(i, int) and not isinstance(i, bool) for i in p):
             out.append(f"entry {k} `parts` is not a non-empty list of ints")
-        elif sorted(set(p)) != list(p):
-            out.append(f"entry {k} `parts` is not sorted-unique: {p}")
+        elif len(set(p)) != len(p):
+            # DUPLICATE within one entry: a real fault. The same staff cannot
+            # carry one reference part twice, and `page_normalise` would merge
+            # a part into itself.
+            out.append(f"entry {k} `parts` names a part twice: {p}")
     return out
+
+
+#: ⚠️ `parts` IS ORDERED, AND THE ORDER IS NOT A STORAGE CONVENTION.
+#: `page_normalise.normalise` does `keep = parts[idx[0]]` and merges the rest
+#: INTO it, so the FIRST index decides which reference part the merged staff
+#: IS — its name, and whose bar survives a `silent_all` measure.
+#:
+#: This check used to demand `sorted-unique`, which conflated two different
+#: things: uniqueness (a real invariant, still enforced above) and sortedness
+#: (a canonicalisation that MOVES the answer). It refused three rows of a
+#: finished human pass on 2026-09-07, and the repair was nearly to sort them.
+#: Measured instead, on those rows' own maps
+#: (`benchmarks/omr-page-normalise-fixes-2026-09/probe_parts_order.py` and
+#: `…_diff.py`):
+#:
+#:   * the NOTES are untouched — 15/15, 21/21 and 21/21 output parts compare
+#:     bar-for-bar identical under both orderings;
+#:   * the merged part's IDENTITY is not. Sorting puts the silent, tacet-folded
+#:     Piccolo ahead of the printed staff, so `Zwei Fagotte.`, `Drei Hoboen.`
+#:     and `Drei Klarinetten in A` all come back named **Piccolo**;
+#:   * and musicdiff then pairs those parts by the wrong name: −3, +19, −8
+#:     edits across the three rows, +8 net.
+#:
+#: So a sorted map is not a tidier spelling of the same truth — it is a truth
+#: in which three printed staves claim to be a piccolo. The convention the
+#: proposals carry (printed part first, tacet folds after) is the meaningful
+#: one and is preserved verbatim.
+#:
+#: ⚠️ THE PRINCIPLED FOLLOW-UP, NOT DONE HERE: `keep` is chosen by list
+#: POSITION, which is why an ordering can carry meaning at all. An explicit
+#: rule — prefer the first part that SOUNDS on this page — would agree with
+#: the human's order on all three rows and make ordering irrelevant. That
+#: changes the transform, so it needs the Dvořák +0 and engraved no-op
+#: controls before it ships, and it is not what unblocks a finished pass.
 
 
 # ------------------------------------------------- the one normalisation proof

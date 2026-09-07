@@ -1,0 +1,219 @@
+{
+ "generated_by": "benchmarks/omr-headline-validity-2026-09/probe_map_coverage_cost.py",
+ "baseline": {
+  "file": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a55d26ae101530890/benchmarks/omr-scan-e2e-2026-09/results-reconciliation.json",
+  "pooled_omr_ned": 0.8443958865999122,
+  "pooled_omr_ed": 74968,
+  "pooled_entire_staff": 17520
+ },
+ "coverage": {
+  "n_rows": 20,
+  "n_mapped": 19,
+  "n_unmapped": 1,
+  "entire_staff_on_mapped_rows": 16871,
+  "entire_staff_on_unmapped_rows": 649,
+  "staves_a_human_would_read_to_close_the_gap": 17
+ },
+ "rows": [
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "has_hand_map": true,
+   "n_systems": 1,
+   "staves_on_page": 12,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 513,
+   "entire_measure": 434,
+   "omr_ed": 1283
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "has_hand_map": true,
+   "n_systems": 2,
+   "staves_on_page": 22,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 1551,
+   "entire_measure": 1664,
+   "omr_ed": 4341
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "has_hand_map": true,
+   "n_systems": 2,
+   "staves_on_page": 19,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 87,
+   "entire_measure": 2187,
+   "omr_ed": 3034
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "has_hand_map": true,
+   "n_systems": 2,
+   "staves_on_page": 22,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 1377,
+   "entire_measure": 2361,
+   "omr_ed": 4679
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "has_hand_map": true,
+   "n_systems": 1,
+   "staves_on_page": 12,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 513,
+   "entire_measure": 526,
+   "omr_ed": 1358
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "has_hand_map": true,
+   "n_systems": 2,
+   "staves_on_page": 22,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 1551,
+   "entire_measure": 1851,
+   "omr_ed": 4407
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "has_hand_map": true,
+   "n_systems": 2,
+   "staves_on_page": 19,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 90,
+   "entire_measure": 2309,
+   "omr_ed": 3172
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "has_hand_map": true,
+   "n_systems": 2,
+   "staves_on_page": 22,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 1377,
+   "entire_measure": 2342,
+   "omr_ed": 4714
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "has_hand_map": true,
+   "n_systems": 1,
+   "staves_on_page": 15,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 0,
+   "entire_measure": 63,
+   "omr_ed": 661
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "has_hand_map": true,
+   "n_systems": 1,
+   "staves_on_page": 15,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 0,
+   "entire_measure": 246,
+   "omr_ed": 2586
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "has_hand_map": true,
+   "n_systems": 2,
+   "staves_on_page": 30,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 0,
+   "entire_measure": 742,
+   "omr_ed": 5698
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "has_hand_map": true,
+   "n_systems": 1,
+   "staves_on_page": 14,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 1001,
+   "entire_measure": 1354,
+   "omr_ed": 3431
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "has_hand_map": true,
+   "n_systems": 2,
+   "staves_on_page": 27,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 715,
+   "entire_measure": 3628,
+   "omr_ed": 6562
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "has_hand_map": true,
+   "n_systems": 2,
+   "staves_on_page": 28,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 1292,
+   "entire_measure": 1861,
+   "omr_ed": 4573
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "has_hand_map": true,
+   "n_systems": 2,
+   "staves_on_page": 28,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 1860,
+   "entire_measure": 3118,
+   "omr_ed": 7012
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "has_hand_map": false,
+   "n_systems": 1,
+   "staves_on_page": 17,
+   "staves_a_human_would_read": 17,
+   "entire_staff": 649,
+   "entire_measure": 183,
+   "omr_ed": 1118
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "has_hand_map": true,
+   "n_systems": 1,
+   "staves_on_page": 13,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 1674,
+   "entire_measure": 634,
+   "omr_ed": 3075
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "has_hand_map": true,
+   "n_systems": 1,
+   "staves_on_page": 18,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 1764,
+   "entire_measure": 1240,
+   "omr_ed": 4149
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "has_hand_map": true,
+   "n_systems": 1,
+   "staves_on_page": 17,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 1220,
+   "entire_measure": 1130,
+   "omr_ed": 2967
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "has_hand_map": true,
+   "n_systems": 2,
+   "staves_on_page": 24,
+   "staves_a_human_would_read": 0,
+   "entire_staff": 286,
+   "entire_measure": 1812,
+   "omr_ed": 6148
+  }
+ ]
+}
