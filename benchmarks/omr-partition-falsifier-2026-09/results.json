@@ -1,0 +1,2970 @@
+{
+  "rows": [
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/apply-default-p23p44.extract.json",
+      "reconstructed": false,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/apply-p23p44.extract.json",
+      "reconstructed": false,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/brahms-p10.extract.json",
+      "reconstructed": false,
+      "n_systems": 2,
+      "total_staves": 27,
+      "has_measures_field": false,
+      "system_sizes": [
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/brahms-p10p75.extract.json",
+      "reconstructed": false,
+      "n_systems": 3,
+      "total_staves": 43,
+      "has_measures_field": false,
+      "system_sizes": [
+        13,
+        14,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/report-p1p44.extract.json",
+      "reconstructed": false,
+      "n_systems": 2,
+      "total_staves": 29,
+      "has_measures_field": false,
+      "system_sizes": [
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/report-p23p44.extract.json",
+      "reconstructed": false,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-control-p0004.extract.json",
+      "reconstructed": false,
+      "n_systems": 7,
+      "total_staves": 75,
+      "has_measures_field": false,
+      "system_sizes": [
+        8,
+        11,
+        12
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-control-p23p44.extract.json",
+      "reconstructed": false,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-fix-p0004.extract.json",
+      "reconstructed": false,
+      "n_systems": 7,
+      "total_staves": 75,
+      "has_measures_field": false,
+      "system_sizes": [
+        8,
+        11,
+        12
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/tpfix-fix-p23p44.extract.json",
+      "reconstructed": false,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/whole-identity.json",
+      "reconstructed": false,
+      "n_systems": 0,
+      "total_staves": 0,
+      "has_measures_field": false,
+      "status": "empty_no_systems"
+    },
+    {
+      "row": "benchmarks/omr-absent-instrument-veto-2026-09/out/whole-report2.extract.json",
+      "reconstructed": false,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-brahms-tuba-2026-09/out/run/-shipped-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-brahms-tuba-2026-09/out/run/-shipped-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-brahms-tuba-2026-09/out/run/veto-spansoff.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-brahms-tuba-2026-09/out/run/veto.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-brahms-tuba-2026-09/out/stub/wired-spans-on.json",
+      "reconstructed": false,
+      "n_systems": 0,
+      "total_staves": 0,
+      "has_measures_field": false,
+      "status": "empty_no_systems"
+    },
+    {
+      "row": "benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/transcription.json",
+      "reconstructed": false,
+      "n_systems": 6,
+      "total_staves": 83,
+      "has_measures_field": true,
+      "system_sizes": [
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/beet5/shapetie-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/beet5/shapetie-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/beet6/shapetie-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 169,
+      "total_staves": 1594,
+      "has_measures_field": false,
+      "system_sizes": [
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/beet6/shapetie-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 169,
+      "total_staves": 1594,
+      "has_measures_field": false,
+      "system_sizes": [
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/refuse-swap0-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/refuse-swap0-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/refuse-swap1-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/refuse-swap1-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-swap0-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-swap0-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-swap1-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/shapetie-swap1-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap0-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap0-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap1-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-lineup-swap-2026-09/out/brahms4/swap1-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-7ea27a4b-962-clefs.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-7ea27a4b-962-noclefs.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-full973-clefs-readers-only.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-full973-clefs.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-full973-structure-only.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-full973.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-groupmap-map-clefs.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-groupmap-map-noclefs.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-groupmap-ordinal-clefs.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-groupmap-ordinal-noclefs.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-minus11-962-clefs.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/arm-minus11-962.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/5d6e76a8.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/776f8e4f.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/7ea27a4b.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/HEAD.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/a827fa36.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/b6233a9e.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/bisect/fd94b270.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-readpass-monotonicity-2026-09/out/whole-identity.normalized.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-reference-selection-2026-09/out/beet5-p02-off.json",
+      "reconstructed": false,
+      "n_systems": 3,
+      "total_staves": 34,
+      "has_measures_field": true,
+      "system_sizes": [
+        11,
+        12
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-reference-selection-2026-09/out/beet5-p02-on.json",
+      "reconstructed": false,
+      "n_systems": 3,
+      "total_staves": 34,
+      "has_measures_field": true,
+      "system_sizes": [
+        11,
+        12
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-reference-selection-2026-09/out/beet5-p1-off.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 12,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-reference-selection-2026-09/out/beet5-p1-on.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 12,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-slot-alignment-2026-09/out/-map-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-slot-alignment-2026-09/out/-map-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-slot-alignment-2026-09/out/-ordinal-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-slot-alignment-2026-09/out/-ordinal-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-slot-alignment-2026-09/out/brahms1/-map-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-slot-alignment-2026-09/out/brahms1/-map-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-slot-alignment-2026-09/out/brahms1/-ordinal-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-slot-alignment-2026-09/out/brahms1/-ordinal-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/beet5/-fitoff-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/beet5/-fitoff-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/beet5/-fitrefuse-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/beet5/-fitrefuse-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/beet5/-fitsearch-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/beet5/-fitsearch-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/brahms1/-fitoff-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/brahms1/-fitoff-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/brahms1/-fitrefuse-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/brahms1/-fitrefuse-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/brahms1/-fitsearch-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/brahms1/-noshape-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/brahms1/-noshape-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-off-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-off-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-refuse-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-refuse-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-search-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-adhoc-search-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-off-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 19,
+      "total_staves": 175,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-off-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 19,
+      "total_staves": 175,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-refuse-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 19,
+      "total_staves": 175,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-refuse-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 19,
+      "total_staves": 175,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-search-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 19,
+      "total_staves": 175,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-cross-search-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 19,
+      "total_staves": 175,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-off-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 7,
+      "total_staves": 75,
+      "has_measures_field": false,
+      "system_sizes": [
+        8,
+        11,
+        12
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-off-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 7,
+      "total_staves": 75,
+      "has_measures_field": false,
+      "system_sizes": [
+        8,
+        11,
+        12
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-refuse-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 7,
+      "total_staves": 75,
+      "has_measures_field": false,
+      "system_sizes": [
+        8,
+        11,
+        12
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-refuse-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 7,
+      "total_staves": 75,
+      "has_measures_field": false,
+      "system_sizes": [
+        8,
+        11,
+        12
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-search-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 7,
+      "total_staves": 75,
+      "has_measures_field": false,
+      "system_sizes": [
+        8,
+        11,
+        12
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-beet5-front-search-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 7,
+      "total_staves": 75,
+      "has_measures_field": false,
+      "system_sizes": [
+        8,
+        11,
+        12
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-off-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 36,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-off-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 36,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-refuse-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 36,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-refuse-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 36,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-search-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 36,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-adhoc-search-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 36,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-off-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 17,
+      "total_staves": 211,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        11,
+        12,
+        13,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-off-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 17,
+      "total_staves": 211,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        11,
+        12,
+        13,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-refuse-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 17,
+      "total_staves": 211,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        11,
+        12,
+        13,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-refuse-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 17,
+      "total_staves": 211,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        11,
+        12,
+        13,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-search-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 17,
+      "total_staves": 211,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        11,
+        12,
+        13,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-cross-search-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 17,
+      "total_staves": 211,
+      "has_measures_field": false,
+      "system_sizes": [
+        10,
+        11,
+        12,
+        13,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-off-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 9,
+      "total_staves": 125,
+      "has_measures_field": false,
+      "system_sizes": [
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-off-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 9,
+      "total_staves": 125,
+      "has_measures_field": false,
+      "system_sizes": [
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-refuse-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 9,
+      "total_staves": 125,
+      "has_measures_field": false,
+      "system_sizes": [
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-refuse-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 9,
+      "total_staves": 125,
+      "has_measures_field": false,
+      "system_sizes": [
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-search-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 9,
+      "total_staves": 125,
+      "has_measures_field": false,
+      "system_sizes": [
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-composition-2026-09/out/regimes/-brahms-front-search-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 9,
+      "total_staves": 125,
+      "has_measures_field": false,
+      "system_sizes": [
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-reach-2026-09/out/beet6/spans-off.json",
+      "reconstructed": true,
+      "n_systems": 169,
+      "total_staves": 1594,
+      "has_measures_field": false,
+      "system_sizes": [
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-reach-2026-09/out/beet6/spans-on.json",
+      "reconstructed": true,
+      "n_systems": 169,
+      "total_staves": 1594,
+      "has_measures_field": false,
+      "system_sizes": [
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-reach-2026-09/out/brahms4/spans-off.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-span-reach-2026-09/out/brahms4/spans-on.json",
+      "reconstructed": true,
+      "n_systems": 158,
+      "total_staves": 1991,
+      "has_measures_field": false,
+      "system_sizes": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-spans-veto-composition-2026-09/out/smoke-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-spans-veto-composition-2026-09/out/smoke-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-spans-veto-composition-2026-09/out/smokeapply-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-spans-veto-composition-2026-09/out/smokeapply-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 3,
+      "total_staves": 38,
+      "has_measures_field": false,
+      "system_sizes": [
+        9,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-spans-veto-composition-2026-09/out/whole-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-spans-veto-composition-2026-09/out/whole-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 140,
+      "total_staves": 1616,
+      "has_measures_field": false,
+      "system_sizes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-spans-veto-composition-2026-09/out/win24-spans-off.json",
+      "reconstructed": true,
+      "n_systems": 36,
+      "total_staves": 431,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        8,
+        9,
+        11,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-spans-veto-composition-2026-09/out/win24-spans-on.json",
+      "reconstructed": true,
+      "n_systems": 36,
+      "total_staves": 431,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        8,
+        9,
+        11,
+        12,
+        17
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-timesig-2026-09/out/beet3_page.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 12,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-veto-refusal-pricing-2026-09/out/brahms1/spans-off.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-veto-refusal-pricing-2026-09/out/brahms1/spans-on.json",
+      "reconstructed": true,
+      "n_systems": 151,
+      "total_staves": 1927,
+      "has_measures_field": false,
+      "system_sizes": [
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        27,
+        28
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/beethoven-sym3-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 19,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/mozart-sym40-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 11,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/mahler-sym5-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 38,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/tchaikovsky-sym4-mvt2.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 20,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/bruckner-sym5-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 25,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/brahms-sym4-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 20,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/dvorak-sym9-mvt4.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 18,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/brahms-sym1-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 21,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/tchaikovsky-sym6-mvt2.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 17,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/beethoven-sym5-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 18,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/mozart-sym41-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 17,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym3-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 19,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym40-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 11,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mahler-sym5-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 38,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym4-mvt2.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 20,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/bruckner-sym5-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 25,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym4-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 20,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/dvorak-sym9-mvt4.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 18,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/brahms-sym1-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 21,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/tchaikovsky-sym6-mvt2.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 17,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/beethoven-sym5-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 18,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-indent35/mozart-sym41-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 17,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.restamp-composed.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 12,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1..graft09.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 12,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.restamp-composed.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 15,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.restamp-composed.omr.json",
+      "reconstructed": false,
+      "n_systems": 2,
+      "total_staves": 24,
+      "has_measures_field": true,
+      "ordinal_parts": 12,
+      "cross_check_n_via_first_system_size": 12,
+      "slot_parts": 12,
+      "cross_check_n_via_distinct_slot_values": 12,
+      "status": "TESTABLE_AGREE",
+      "comparison": {
+        "reason": "identical",
+        "ordinal_blocks_that_split_under_slot": {},
+        "slot_blocks_that_merge_ordinal_blocks": {}
+      },
+      "content_fingerprint": "5d1bd2709fa0"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1..graft09.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 14,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.restamp-composed.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 13,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5..graft09.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 15,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1..graft09.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 12,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1..graft09.omr.json",
+      "reconstructed": false,
+      "n_systems": 6,
+      "total_staves": 24,
+      "has_measures_field": true,
+      "system_sizes": [
+        1,
+        2,
+        3,
+        12
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2..graft09.omr.json",
+      "reconstructed": false,
+      "n_systems": 2,
+      "total_staves": 27,
+      "has_measures_field": true,
+      "system_sizes": [
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6..graft09.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 15,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2..graft09.omr.json",
+      "reconstructed": false,
+      "n_systems": 2,
+      "total_staves": 22,
+      "has_measures_field": true,
+      "ordinal_parts": 11,
+      "cross_check_n_via_first_system_size": 11,
+      "slot_parts": 11,
+      "cross_check_n_via_distinct_slot_values": 11,
+      "status": "TESTABLE_AGREE",
+      "comparison": {
+        "reason": "identical",
+        "ordinal_blocks_that_split_under_slot": {},
+        "slot_blocks_that_merge_ordinal_blocks": {}
+      },
+      "content_fingerprint": "ade6679c11ef"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.restamp-composed.omr.json",
+      "reconstructed": false,
+      "n_systems": 2,
+      "total_staves": 27,
+      "has_measures_field": true,
+      "system_sizes": [
+        13,
+        14
+      ],
+      "status": "refused_size_mismatch"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.restamp-composed.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 12,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2..graft09.omr.json",
+      "reconstructed": false,
+      "n_systems": 2,
+      "total_staves": 22,
+      "has_measures_field": true,
+      "ordinal_parts": 11,
+      "cross_check_n_via_first_system_size": 11,
+      "slot_parts": 11,
+      "cross_check_n_via_distinct_slot_values": 11,
+      "status": "TESTABLE_AGREE",
+      "comparison": {
+        "reason": "identical",
+        "ordinal_blocks_that_split_under_slot": {},
+        "slot_blocks_that_merge_ordinal_blocks": {}
+      },
+      "content_fingerprint": "ade6679c11ef"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.restamp-composed.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 15,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.restamp-composed.omr.json",
+      "reconstructed": false,
+      "n_systems": 2,
+      "total_staves": 22,
+      "has_measures_field": true,
+      "ordinal_parts": 11,
+      "cross_check_n_via_first_system_size": 11,
+      "slot_parts": 11,
+      "cross_check_n_via_distinct_slot_values": 11,
+      "status": "TESTABLE_AGREE",
+      "comparison": {
+        "reason": "identical",
+        "ordinal_blocks_that_split_under_slot": {},
+        "slot_blocks_that_merge_ordinal_blocks": {}
+      },
+      "content_fingerprint": "ade6679c11ef"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.restamp-composed.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 17,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.restamp-composed.omr.json",
+      "reconstructed": false,
+      "n_systems": 2,
+      "total_staves": 22,
+      "has_measures_field": true,
+      "ordinal_parts": 11,
+      "cross_check_n_via_first_system_size": 11,
+      "slot_parts": 11,
+      "cross_check_n_via_distinct_slot_values": 11,
+      "status": "TESTABLE_AGREE",
+      "comparison": {
+        "reason": "identical",
+        "ordinal_blocks_that_split_under_slot": {},
+        "slot_blocks_that_merge_ordinal_blocks": {}
+      },
+      "content_fingerprint": "ade6679c11ef"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2..graft09.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 17,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.restamp-composed.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 14,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3..graft09.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 13,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-orchestral-e2e/fixtures/beethoven-sym3-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 19,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-orchestral-e2e/fixtures/mozart-sym40-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 11,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-orchestral-e2e/fixtures/mahler-sym5-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 38,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-orchestral-e2e/fixtures/tchaikovsky-sym4-mvt2.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 20,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-orchestral-e2e/fixtures/bruckner-sym5-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 25,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-orchestral-e2e/fixtures/brahms-sym4-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 20,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-orchestral-e2e/fixtures/dvorak-sym9-mvt4.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 18,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-orchestral-e2e/fixtures/brahms-sym1-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 21,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-orchestral-e2e/fixtures/tchaikovsky-sym6-mvt2.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 17,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-orchestral-e2e/fixtures/beethoven-sym5-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 18,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    },
+    {
+      "row": "benchmarks/omr-orchestral-e2e/fixtures/mozart-sym41-mvt1.omr.json",
+      "reconstructed": false,
+      "n_systems": 1,
+      "total_staves": 17,
+      "has_measures_field": true,
+      "status": "single_system_excluded"
+    }
+  ],
+  "primary_summary": {
+    "label": "primary",
+    "n_files": 138,
+    "by_status": {
+      "refused_size_mismatch": 81,
+      "empty_no_systems": 2,
+      "single_system_excluded": 50,
+      "TESTABLE_AGREE": 5
+    },
+    "n_testable": 5,
+    "n_kills": 0,
+    "kill_rows": [],
+    "staves_in_testable_rows": 112,
+    "cross_check_ordinal_n_matches": "5/5",
+    "cross_check_slot_n_matches": "5/5"
+  },
+  "span_summaries": {
+    "fitoff-spans-on": {
+      "label": "POISONED: OMR_SPAN_REFERENCE_FIT=off, spans(movement-ref)=on",
+      "n_files": 2,
+      "by_status": {
+        "refused_size_mismatch": 2
+      },
+      "n_testable": 0,
+      "n_kills": 0,
+      "kill_rows": [],
+      "staves_in_testable_rows": 0,
+      "cross_check_ordinal_n_matches": "0/0",
+      "cross_check_slot_n_matches": "0/0"
+    },
+    "fitrefuse-spans-on": {
+      "label": "refuse arm, spans=on",
+      "n_files": 2,
+      "by_status": {
+        "refused_size_mismatch": 2
+      },
+      "n_testable": 0,
+      "n_kills": 0,
+      "kill_rows": [],
+      "staves_in_testable_rows": 0,
+      "cross_check_ordinal_n_matches": "0/0",
+      "cross_check_slot_n_matches": "0/0"
+    },
+    "fitsearch-spans-on": {
+      "label": "shipped default (search), spans=on \u2014 in-harness control",
+      "n_files": 2,
+      "by_status": {
+        "refused_size_mismatch": 2
+      },
+      "n_testable": 0,
+      "n_kills": 0,
+      "kill_rows": [],
+      "staves_in_testable_rows": 0,
+      "cross_check_ordinal_n_matches": "0/0",
+      "cross_check_slot_n_matches": "0/0"
+    },
+    "fitoff-spans-off": {
+      "label": "SPAN_REFERENCE_FIT=off, spans=off (pre-2026-09-06 behaviour)",
+      "n_files": 2,
+      "by_status": {
+        "refused_size_mismatch": 2
+      },
+      "n_testable": 0,
+      "n_kills": 0,
+      "kill_rows": [],
+      "staves_in_testable_rows": 0,
+      "cross_check_ordinal_n_matches": "0/0",
+      "cross_check_slot_n_matches": "0/0"
+    },
+    "fitrefuse-spans-off": {
+      "label": "refuse arm, spans=off",
+      "n_files": 2,
+      "by_status": {
+        "refused_size_mismatch": 2
+      },
+      "n_testable": 0,
+      "n_kills": 0,
+      "kill_rows": [],
+      "staves_in_testable_rows": 0,
+      "cross_check_ordinal_n_matches": "0/0",
+      "cross_check_slot_n_matches": "0/0"
+    },
+    "fitsearch-spans-off": {
+      "label": "search arm, spans=off",
+      "n_files": 2,
+      "by_status": {
+        "refused_size_mismatch": 2
+      },
+      "n_testable": 0,
+      "n_kills": 0,
+      "kill_rows": [],
+      "staves_in_testable_rows": 0,
+      "cross_check_ordinal_n_matches": "0/0",
+      "cross_check_slot_n_matches": "0/0"
+    },
+    "noshape-spans-on": {
+      "label": "noshape variant, spans=on",
+      "n_files": 1,
+      "by_status": {
+        "refused_size_mismatch": 1
+      },
+      "n_testable": 0,
+      "n_kills": 0,
+      "kill_rows": [],
+      "staves_in_testable_rows": 0,
+      "cross_check_ordinal_n_matches": "0/0",
+      "cross_check_slot_n_matches": "0/0"
+    },
+    "noshape-spans-off": {
+      "label": "noshape variant, spans=off",
+      "n_files": 1,
+      "by_status": {
+        "refused_size_mismatch": 1
+      },
+      "n_testable": 0,
+      "n_kills": 0,
+      "kill_rows": [],
+      "staves_in_testable_rows": 0,
+      "cross_check_ordinal_n_matches": "0/0",
+      "cross_check_slot_n_matches": "0/0"
+    }
+  }
+}
