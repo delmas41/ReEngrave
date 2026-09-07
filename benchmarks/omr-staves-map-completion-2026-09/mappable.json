@@ -1,0 +1,185 @@
+{
+ "rows": [
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "n_reference_parts": 38,
+   "n_map_entries": 21,
+   "covers_every_part": true,
+   "unnamed_parts": [],
+   "duplicate_named_parts": [],
+   "absent_parts": [],
+   "absent_all_silent": true,
+   "absent_sounding": {},
+   "printed_only_covers": 38,
+   "unrepresentable_printed_staves": [
+    "Becken u. Gr.Trommel von einem geschlagen (1 line) — works.json: 'printed, labelled, and carrying its own meter and rest — the reference has no part for it'"
+   ],
+   "normalise": {
+    "accepted": true,
+    "n_source_parts": 38,
+    "n_output_parts": 21,
+    "measure_census": {
+     "silent_all": 99,
+     "single": 81,
+     "silent_others": 9
+    },
+    "exact_duplication_share": 1.0,
+    "divisi_share": 0.0
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "n_reference_parts": 38,
+   "n_map_entries": 15,
+   "covers_every_part": true,
+   "unnamed_parts": [],
+   "duplicate_named_parts": [],
+   "absent_parts": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    22,
+    25,
+    26
+   ],
+   "absent_all_silent": true,
+   "absent_sounding": {},
+   "printed_only_covers": 25,
+   "unrepresentable_printed_staves": [],
+   "normalise": {
+    "accepted": true,
+    "n_source_parts": 38,
+    "n_output_parts": 15,
+    "measure_census": {
+     "silent_all": 43,
+     "silent_others": 40,
+     "single": 32,
+     "unison": 2,
+     "divisi": 3,
+     "divisi_chorded": 1,
+     "divisi_voiced": 2
+    },
+    "exact_duplication_share": 0.975,
+    "divisi_share": 0.025
+   },
+   "fold_target_control": {
+    "moved_absent_to": "Bässe",
+    "identical_content": true,
+    "n_parts_a": 15,
+    "n_parts_b": 15
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "n_reference_parts": 38,
+   "n_map_entries": 21,
+   "covers_every_part": true,
+   "unnamed_parts": [],
+   "duplicate_named_parts": [],
+   "absent_parts": [
+    0,
+    1,
+    2,
+    26
+   ],
+   "absent_all_silent": true,
+   "absent_sounding": {},
+   "printed_only_covers": 34,
+   "unrepresentable_printed_staves": [],
+   "normalise": {
+    "accepted": true,
+    "n_source_parts": 38,
+    "n_output_parts": 21,
+    "measure_census": {
+     "silent_others": 55,
+     "silent_all": 8,
+     "single": 77,
+     "divisi": 6,
+     "divisi_chorded": 6,
+     "unison": 1
+    },
+    "exact_duplication_share": 0.9592,
+    "divisi_share": 0.0408
+   },
+   "fold_target_control": {
+    "moved_absent_to": "Bässe get. (lower)",
+    "identical_content": true,
+    "n_parts_a": 21,
+    "n_parts_b": 21
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "n_reference_parts": 38,
+   "n_map_entries": 21,
+   "covers_every_part": true,
+   "unnamed_parts": [],
+   "duplicate_named_parts": [],
+   "absent_parts": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "absent_all_silent": true,
+   "absent_sounding": {},
+   "printed_only_covers": 32,
+   "unrepresentable_printed_staves": [],
+   "normalise": {
+    "accepted": true,
+    "n_source_parts": 38,
+    "n_output_parts": 21,
+    "measure_census": {
+     "silent_all": 20,
+     "silent_others": 36,
+     "single": 104,
+     "unison": 7,
+     "divisi": 1,
+     "divisi_voiced": 1
+    },
+    "exact_duplication_share": 0.994,
+    "divisi_share": 0.006
+   },
+   "fold_target_control": {
+    "moved_absent_to": "Bässe get. (lower)",
+    "identical_content": true,
+    "n_parts_a": 21,
+    "n_parts_b": 21
+   }
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "n_reference_parts": 11,
+   "n_map_entries": 11,
+   "covers_every_part": true,
+   "unnamed_parts": [],
+   "duplicate_named_parts": [],
+   "absent_parts": [],
+   "absent_all_silent": true,
+   "absent_sounding": {},
+   "printed_only_covers": 11,
+   "unrepresentable_printed_staves": [
+    "Cembalo lower staff — the reference encodes the Cembalo as ONE part spanning both printed staves (a grand staff), and the map idiom cannot split one part across two entries"
+   ],
+   "normalise": {
+    "accepted": true,
+    "n_source_parts": 11,
+    "n_output_parts": 11,
+    "measure_census": {
+     "single": 110
+    },
+    "exact_duplication_share": 1.0,
+    "divisi_share": 0.0
+   }
+  }
+ ]
+}

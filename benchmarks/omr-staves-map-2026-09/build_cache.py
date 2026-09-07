@@ -76,6 +76,35 @@ ROWS = [
     "brahms-sym1-mvt1-317803-p2",
 ]
 
+# ─── The five rows that were called research, 2026-09-06 ────────────────────
+#
+# ⚠️ THE COMMENT ABOVE USED TO SAY "NO MAHLER", and the reason it gave —
+# "its printed one-line percussion staves break a positional part->staff join"
+# — is true of `scan_eval.note_recall` and NOT of `page_normalise`, which is the
+# consumer the `entire staff` bucket is about and which never sees the
+# prediction at all.  Measured: all four Mahler rows normalise, worth 4,135 of
+# their 5,307 `entire staff` edits.  See
+# `benchmarks/omr-staves-map-completion-2026-09/FINDINGS.md`.
+#
+# They are listed apart because THREE things differ from the five above:
+#
+#   * the proposal comes from `condensation.staves_as_printed` (p2) or from the
+#     row's own `notes` (p3/p4/p5), transcribed in `candidate_maps.py`, not
+#     from `systems_as_printed`, which these rows do not have;
+#   * the one-line percussion staves are NOT in the run's artefact — the
+#     detector finds them and `measure_extractor.extract_measures` skips them
+#     (`if len(s.line_ys) >= 5`) — so their bands are recovered by re-running
+#     `detect_staves` on the same render;
+#   * a map entry carries `lines`, because 1 vs 5 is exactly what tells a
+#     positional consumer which entries have no predicted part to pair with.
+RESEARCH_ROWS = [
+    "mahler-sym5-mvt1-local-p2",
+    "mahler-sym5-mvt1-local-p3",
+    "mahler-sym5-mvt1-local-p4",
+    "mahler-sym5-mvt1-local-p5",
+    "bach-brandenburg3-mvt1-468678-p1",
+]
+
 #: Where a canonical `.reconciliation.omr.json` may live, best first.  The
 #: reconciliation worktree holds the artefacts behind the quoted 0.8444; the
 #: main fixtures dir holds whatever the last local run left.  Both are read
@@ -190,8 +219,57 @@ def find_fixture(row_id: str, suffix: str) -> tuple[Path, str] | tuple[None, Non
     return None, None
 
 
-def staff_bands(omr_json: Path) -> dict:
-    """Detected staff bands, per system, in the DESKEWED 600 dpi page frame."""
+def one_line_bands(pdf: Path, page_index: int) -> list[dict]:
+    """The PRINTED one-line percussion staves, which the run's artefact lacks.
+
+    ⚠️ THEY ARE NOT MISSED BY DETECTION. `staff_detector._single_line_staff_rows`
+    finds them on purpose, full width, in the right slots — measured on the four
+    Mahler pages: 2, 2, 3 and 4 of them, and their `staff_index` values are
+    exactly the gaps in the artefact's own numbering. What drops them is
+    `measure_extractor.extract_measures`, whose `if len(s.line_ys) >= 5` is a
+    documented decision ("a cell is canonicalised by its staff's five-line span
+    and a single rule has none"), so they never reach a measure cell, the
+    exported score, or the JSON the UI reads.
+
+    A single rule has ZERO height, so a band drawn at its own extent would crop
+    to nothing. The band is opened to the page's own line spacing, which is what
+    makes the printed rule and its rest visible in the crop.
+    """
+    sys.path.insert(0, str(MAIN))
+    from tools.omr.preprocessing import render_page                # noqa: E402
+    from tools.omr.staff_detector import detect_staves             # noqa: E402
+
+    pws = detect_staves(render_page(str(pdf), page_index, dpi=DPI))
+    spacing = None
+    for st in pws.staves:
+        if len(st.line_ys) >= 5:
+            spacing = (max(st.line_ys) - min(st.line_ys)) / 4.0
+            break
+    spacing = spacing or 20.0
+    out = []
+    for st in pws.staves:
+        if len(st.line_ys) >= 5:
+            continue
+        y = float(st.line_ys[0])
+        out.append({"staff_index": st.staff_index,
+                    "y0": y - 2 * spacing, "y1": y + 2 * spacing,
+                    "x0": float(st.x_start), "x1": float(st.x_end),
+                    "lines": 1, "printed_rule_y": y,
+                    "clef": None, "instrument": None,
+                    "instrument_source": "one-line percussion rule "
+                                         "(recovered by re-running "
+                                         "detect_staves; absent from the run's "
+                                         "own artefact by design)"})
+    return out
+
+
+def staff_bands(omr_json: Path, extra: list[dict] | None = None) -> dict:
+    """Detected staff bands, per system, in the DESKEWED 600 dpi page frame.
+
+    `extra` splices in bands the artefact does not carry — the one-line
+    percussion rules — by `staff_index`, which is the artefact's own numbering
+    and has the gaps to receive them. Every spliced band is marked `lines: 1`.
+    """
     doc = json.loads(omr_json.read_text())
     if doc.get("dpi") != DPI:
         raise SystemExit(f"{omr_json.name}: dpi is {doc.get('dpi')}, expected {DPI}")
@@ -215,6 +293,22 @@ def staff_bands(omr_json: Path) -> dict:
             })
         systems.append({"system_index": s.get("system_index", len(systems)),
                         "staves": staves})
+    for band in extra or []:
+        # The artefact numbers staves across the PAGE, and a one-line rule's
+        # index is a gap in that numbering — so the band goes into the system
+        # whose indices bracket it, at the position its index names.
+        target = None
+        for s in systems:
+            idx = [st["staff_index"] for st in s["staves"]]
+            if idx and min(idx) <= band["staff_index"] <= max(idx):
+                target = s
+                break
+        if target is None:
+            target = systems[-1] if systems else None
+        if target is None:
+            continue
+        target["staves"].append(band)
+        target["staves"].sort(key=lambda st: st["staff_index"])
     return {
         "page_index": page["page_index"],
         "page_size_px": page["page_size_px"],
@@ -342,6 +436,90 @@ def write_images(page_img, geom: dict, out_dir: Path, force: bool) -> dict:
 
 # ----------------------------------------------------------------------- main
 
+def research_proposal(row_id: str, n_parts: int) -> dict:
+    """The proposal for a RESEARCH_ROW, transcribed from works.json's own prose.
+
+    These rows have no `systems_as_printed`; what they have is a structured
+    `condensation.staves_as_printed` (Mahler p2) or an instrument-by-instrument
+    allocation written out in the row's `notes` (p3/p4/p5), drafted by the
+    sessions that verified those windows against the print.
+    `candidate_maps.py` transcribes those, with the source quoted per row, and
+    marks its own two conventions (`absent` folds, and the entries dropped
+    because the reference has no part for them).
+
+    ⚠️ THE FOLDS ARE SHOWN AS FOLDS. A part with no printed staff on this page
+    is listed separately in `absent`, so the human confirms the printed
+    allocation and the fold as two different things.
+    """
+    # Beside THIS file's own checkout, not MAIN's: the maps are this branch's
+    # work and the cache must be buildable before anything is merged.
+    sys.path.insert(0, str(BENCH.parent / "omr-staves-map-completion-2026-09"))
+    import candidate_maps                                        # noqa: E402
+
+    entries = candidate_maps.CANDIDATES[row_id]
+    staves = []
+    for spec in entries:
+        staves.append({
+            # SORTED, because `merge_additions.shape_problems` refuses an entry
+            # whose `parts` is not sorted-unique and every already-merged row
+            # satisfies that. ⚠️ It is not free: `page_normalise` keeps
+            # `parts[0]` and merges the rest into it, so sorting a tacet fold
+            # ahead of the printed part makes a SILENT part's bar the one that
+            # survives a `silent_all` measure. Measured on the three rows that
+            # have folds — sorted costs +8 edits of 7,668 (p3 -3, p4 +19,
+            # p5 -8), all of it rest spelling — so works.json's convention
+            # wins. See price-maps.json, arm `sorted-parts`.
+            "name": spec["name"],
+            "parts": sorted(list(spec["parts"])
+                            + list(spec.get("absent") or [])),
+            "printed_parts": list(spec["parts"]),
+            "absent_parts": list(spec.get("absent") or []),
+            "lines": spec.get("lines", 5),
+        })
+    covered = {i for s in staves for i in s["parts"]}
+    return {
+        "staves": staves,
+        "source": "candidate_maps (transcribed from works.json's own prose)",
+        "n_systems": 1,
+        "parts_named": sorted(covered),
+        "parts_unnamed": sorted(set(range(n_parts)) - covered),
+        "conflicts": [],
+        "unrepresentable_printed_staves":
+            candidate_maps.UNREPRESENTABLE.get(row_id, []),
+    }
+
+
+def _research_note(row_id: str, row: dict, prop: dict, refs: dict) -> str:
+    """The row's own `n_staves_note`, plus what a RESEARCH_ROW's map does extra.
+
+    The UI prints this under the system strips, and it is the only place the
+    human is told that some entries carry parts the page does NOT print. Left
+    exactly as works.json wrote it for the original five rows.
+    """
+    base = row["page"].get("n_staves_note") or ""
+    if row_id not in RESEARCH_ROWS:
+        return base
+    names = {p["index"]: p["name"] for p in refs["parts"]}
+    folds = []
+    for s in prop["staves"]:
+        if s.get("absent_parts"):
+            folds.append(f"{s['name']} also carries "
+                         + ", ".join(f"{i} {names.get(i, '?')}"
+                                     for i in s["absent_parts"]))
+    extra = []
+    if folds:
+        extra.append(
+            "TACET FOLDS (this branch's convention, not works.json's): a "
+            "reference part with NO printed staff on this page is folded onto "
+            "a nominated staff, because page_normalise refuses to drop a part. "
+            "Every one is silent over this window, and moving them to a "
+            "different staff was measured to leave the derived truth "
+            "unchanged. Here: " + "; ".join(folds) + ".")
+    for u in prop.get("unrepresentable_printed_staves") or []:
+        extra.append("PRINTED BUT UNMAPPABLE: " + u)
+    return " ".join(x for x in ([base] + extra) if x)
+
+
 def build_row(row_id: str, row: dict, cache: Path, force: bool) -> dict:
     out_dir = cache / row_id
     omr, origin = find_fixture(row_id, ".omr.json")
@@ -355,14 +533,18 @@ def build_row(row_id: str, row: dict, cache: Path, force: bool) -> dict:
                 "reason": "no <row>.truth.musicxml — cannot enumerate the "
                           "reference parts in page_normalise's index space"}
 
-    geom = staff_bands(omr)
-    geom["artefact_origin"] = origin
-    refs = reference_parts(truth)
-
-    prop = propose(row, refs["n_parts_music21"])
-
     pdf = MAIN / "library" / row["edition"]["catalog_path"]
     page_index = row["page"]["pdf_page_index"]
+    research = row_id in RESEARCH_ROWS
+
+    extra = one_line_bands(pdf, page_index) if research else None
+    geom = staff_bands(omr, extra)
+    geom["artefact_origin"] = origin
+    geom["one_line_bands_spliced"] = len(extra or [])
+    refs = reference_parts(truth)
+
+    prop = (research_proposal(row_id, refs["n_parts_music21"]) if research
+            else propose(row, refs["n_parts_music21"]))
     if geom["page_index"] != page_index:
         return {"row_id": row_id, "usable": False,
                 "reason": f"artefact is page {geom['page_index']}, works.json "
@@ -410,14 +592,30 @@ def build_row(row_id: str, row: dict, cache: Path, force: bool) -> dict:
         "pdf": str(pdf),
         "page_index": page_index,
         "printed_page": row["page"].get("printed_page"),
-        "n_staves_note": row["page"].get("n_staves_note"),
+        "n_staves_note": _research_note(row_id, row, prop, refs),
         "window": {k: row["window"].get(k)
                    for k in ("first_ref_measure", "last_ref_measure",
                              "confidence", "established_by")},
         "reference": {"catalog_path": row["reference"]["catalog_path"], **refs},
         "detected": geom,
-        "systems_as_printed": systems_of(row),
-        "systems_as_printed_note": (row.get("systems_as_printed") or {}).get("_purpose"),
+        # A RESEARCH_ROW has no `systems_as_printed`. Mahler's four pages are one
+        # system each, so the proposal IS that system's lineup and is offered
+        # under the same key — which is what lets the UI's crop panel join a map
+        # entry to its printed instance by PARTS rather than by ordinal.
+        # ⚠️ Bach is two systems of the SAME lineup, and both are offered, so a
+        # slot shows both printings.
+        "systems_as_printed": (
+            systems_of(row) if row_id not in RESEARCH_ROWS
+            else [{"system": f"system_{i}",
+                   "staves": [{"name": s["name"], "parts": s["parts"]}
+                              for s in prop["staves"]]}
+                  for i in range(len(geom["systems"]))]),
+        "systems_as_printed_note": (
+            (row.get("systems_as_printed") or {}).get("_purpose")
+            if row_id not in RESEARCH_ROWS else
+            "SYNTHESISED from the proposal — these rows record their hand-read "
+            "allocation as `condensation.staves_as_printed` (Mahler p2) or in "
+            "`notes` (p3/p4/p5), not as `systems_as_printed`."),
         "same_as": (row.get("_same_as") or {}).get("systems_as_printed"),
         "proposal": prop,
         "images": files,
@@ -429,11 +627,19 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--rows", nargs="+", default=ROWS)
+    ap.add_argument("--rows", nargs="+", default=None)
+    ap.add_argument("--research", action="store_true",
+                    help="build the five rows that were called research "
+                         "(the four Mahler pages and Bach Brandenburg 3 p1)")
+    ap.add_argument("--all", action="store_true",
+                    help="build both sets")
     ap.add_argument("--cache-dir", default=str(default_cache()))
     ap.add_argument("--force", action="store_true",
                     help="re-render the PNGs even where they exist")
     args = ap.parse_args(argv)
+    if args.rows is None:
+        args.rows = (ROWS + RESEARCH_ROWS if args.all
+                     else RESEARCH_ROWS if args.research else ROWS)
 
     cache = Path(args.cache_dir)
     cache.mkdir(parents=True, exist_ok=True)
