@@ -1,0 +1,10 @@
+score.pdf p0: 15 staves detected
+
+(surya: 5.0 s)
+
+text layer     0 labels -> ABSTAINS share 0.00  votes {}
+             []
+surya         11 labels -> it       share 1.00  votes {'it': 8}
+             ['Flauti.', 'Oboi.', 'Clarinetti in B.', 'Fagotti.', 'Corni in F.', 'Violino I.', 'Violino II.', 'Viola.', 'Violoncello e Basso.', 'Fag.', 'Cor.']
+
+language reachable by the production ladder: YES via surya

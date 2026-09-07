@@ -1,0 +1,44 @@
+{
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/imslp/beethoven-symphony-6/pdfs/imslp-504082/score.pdf",
+ "page": 0,
+ "dpi": 600,
+ "staves": 15,
+ "rungs": {
+  "text layer": {
+   "labels": [],
+   "language": null,
+   "diagnostic_votes": 0,
+   "share": 0.0,
+   "votes": {
+    "it": 0,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   }
+  },
+  "surya": {
+   "labels": [
+    "Flauti.",
+    "Oboi.",
+    "Clarinetti in B.",
+    "Fagotti.",
+    "Corni in F.",
+    "Violino I.",
+    "Violino II.",
+    "Viola.",
+    "Violoncello e Basso.",
+    "Fag.",
+    "Cor."
+   ],
+   "language": "it",
+   "diagnostic_votes": 8,
+   "share": 1.0,
+   "votes": {
+    "it": 8,
+    "de": 0,
+    "fr": 0,
+    "en": 0
+   }
+  }
+ }
+}
