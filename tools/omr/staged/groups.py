@@ -81,12 +81,11 @@ the bracket/staff-grouping decisions, which are a different thing entirely.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
-from typing import (Any, Callable, Dict, FrozenSet, List, Optional, Sequence,
-                    Set, Tuple)
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
-from .record import (Kind, Log, Observation, Outcome, Q, Row, Subject, Verdict)
+from .record import Kind, Log, Observation, Outcome, Q, Row, Subject
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -555,7 +554,6 @@ def _one_group(log: Log, red: Redundancy, key: Any, rows: List[Row],
 def _class_count(ids: Sequence[str], classes: Sequence[Sequence[int]],
                  rows: Sequence[Row]) -> int:
     """How many SIGNAL CLASSES those row ids span — the vote unit."""
-    idx = {r.id: i for i, r in enumerate(rows)}
     spanned = set()
     for n, members in enumerate(classes):
         if any(rows[i].id in ids for i in members):

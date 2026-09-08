@@ -29,7 +29,7 @@ origin/main...HEAD` modifies no file outside `tools/omr/staged/`,
 
 ---
 
-## STATE OF THE BUILD — accurate at commit `cf1b46d3`
+## STATE OF THE BUILD — accurate at the head of `claude/redundant-groups-2026-09-07`
 
 **Nothing is half-finished. Redundant groups landed clean and the session
 ended at a green commit.**

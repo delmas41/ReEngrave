@@ -18,10 +18,9 @@ import unittest
 
 from tools.omr.staged import adjudicate, groups
 from tools.omr.staged import record as R
-from tools.omr.staged.groups import (Agreement, Group, Redundancy, Source,
-                                     Witness)
-from tools.omr.staged.record import (ABSTAIN, Kind, Log, Observation, Outcome,
-                                     Q, READERS, Subject, Verdict)
+from tools.omr.staged.groups import Agreement, Group, Source
+from tools.omr.staged.record import (ABSTAIN, Kind, Log, Outcome, Q,
+                                     READERS, Subject, Verdict)
 
 FRAME = "header_window"
 
