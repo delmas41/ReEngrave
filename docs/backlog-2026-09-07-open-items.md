@@ -219,6 +219,76 @@ labels were worth **0**, dropped without complaint by 58 of the identity
 harness's 59 arms. **The map's job is to make that visible by construction
 instead of by a day of forensics.**
 
+## F3. The staged pipeline — BUILT ALONGSIDE, not yet tested (2026-09-07)
+
+Sean, after the map came back: *"The order is the key… We have the information
+but not in the right order so it kills or discards or miscalculates."* And then
+the build directive: *"Let's wire everything up the way we imagine it will work
+best. Then test it."*
+
+**Where it lives:** `tools/omr/staged/` — three stages (GATHER / ADJUDICATE /
+EVALUATE), behind `OMR_ADJUDICATE` (`0` default / `shadow` / `1`; a typo reads
+as `0`). ⚠️ **Zero existing files modified**, by construction — the incumbent
+pipeline is untouched and this cannot affect a production run until the flag is
+turned on.
+
+**Its own record of itself is `tools/omr/staged/ASSUMPTIONS.md`**, which opens
+with a STATE OF THE BUILD section naming what is wired, what is stubbed, what is
+in flight, and — the part that matters — **judgments formed but not yet built**,
+since everything else is already on disk. **That file, the commit messages, and
+the tests are the handoff**; there is deliberately no separate handoff document.
+
+**Two documents hold the reasoning**, both merged:
+`docs/ideal-reader-2026-09-07.md` (what a correct reader would do, and every
+assumption re-derived against it) and `docs/architecture-design-2026-09-07.md`.
+
+### What is NOT yet done, in order
+
+1. **Stubs** — `duration` + `tuplet_ratio`, then the remaining EVALUATE
+   consequences, then `slot_index`.
+2. **Candidate sets** — a decision can currently decide or abstain, but cannot
+   say *"it is one of these three"*. ⚠️ **Constraint works by DELETION**, so a
+   narrowed set is the state most of the chain is in most of the time, and a
+   decision that got five candidates down to two is currently
+   indistinguishable from one that knows nothing.
+3. **Redundant groups as first-class** — nothing anywhere says *"these N rows
+   are witnesses to ONE fact, and here is whether they agree."*
+4. **Implication tests** — Sean's own move: compose a candidate forward and
+   check the consequence. ⚠️ **Candidate sets must land first**, because the
+   test runs over the set.
+5. **Then testing** — shadow mode, both pipelines, one gather. ⚠️ **Not a
+   headline score**: a divergence list ranked by how many staves each
+   disagreement touches, each traceable to the decision that caused it.
+
+### Findings from the build worth keeping even if the build is abandoned
+
+- ⚠️ **`Ruling.detail` was being dropped by the harness** — three decisions
+  filled it, none of it reached the `Verdict`. **Detected-then-dropped,
+  occurring inside the architecture built to stop it, three days old.** Found by
+  a test asserting on a field that did not exist. A standing check for the whole
+  carrier-field family was commissioned off the back of it.
+- **The key-signature fit is a second implication test for the CLEF, free.**
+  Which clefs the accidental run fits is evidence about the clef, **needs no
+  instrument identity**, and therefore reaches exactly the staves the
+  written-range test structurally cannot — on a scan, **29 of 29** unresolved
+  non-treble staves print no label at all. ⚠️ It contributes only where it
+  DISCRIMINATES: a run fitting every candidate says nothing, and **a
+  0-accidental key fits them all**, so a page in C major must record an
+  abstention and not an agreement.
+- ⚠️ **`key_signature_locator` returns `None` when the FIT fails**, discarding
+  boxes it already found — so a single call with a wrong clef loses precisely
+  the staff whose clef is wrong. That is the population that matters, which is
+  why GATHER asks once per candidate clef.
+- **The decision categorisation** (Sean: *"this measure is 4/4 and it has 9
+  eighth notes is a provable mistake — other things like is this a C or a C#
+  will not be internally provable"*): every decision is tagged CHECKABLE /
+  UNCHECKABLE / MIXED. ⚠️ **A failed check is certain about the GROUP and silent
+  about the MEMBER** — nine eighths in 4/4 proves an error without naming which
+  symbol, so a violated constraint must raise every member's suspicion rather
+  than convict the cheapest one to change. ⚠️ **Errors in checkable facts are
+  findable on any page with no truth file**, which is the part that matters for
+  the IMSLP plan, where almost nothing will ever have a reference encoding.
+
 ## G. Housekeeping
 
 - **~108 worktrees**, survey at `docs/worktree-prune-survey-2026-09-06.md`. Nothing deleted. ⚠️ Merge state does NOT protect gitignored cell PNGs — 6,486 images were rescued into the main checkout today for exactly this reason.
