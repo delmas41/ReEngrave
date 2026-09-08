@@ -5,6 +5,94 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-08 — The tenth export gap, and the hole in the check built to catch them
+
+- **`<ornaments>` was never emitted.** `grep -c ornaments tools/omr/export.py`
+  was 0 while the detector fires `ornamentTrill`/`Turn`/`TurnInverted`/`Mordent`
+  freely. Same shape as the nine forensic "detected then dropped" bugs.
+  `transcribe._attach_ornaments_in_cell` (beside `_attach_articulations_in_cell`)
+  → `voicing` → `export._mxl_ornament_elements`. `<ornaments>` sits between
+  `<tuplet>` and `<articulations>` in one `<notations>`; music21 10.5 round-trips
+  both `Trill` and `Tremolo`.
+- ⚠️ **THE HANDOFF TABLE DOUBLE-COUNTED, AND CONFIRMING IT INVERTED THE JOB.**
+  It listed `<ornaments>` (truth 12 engraved) and `tremolo` (truth 12) as two
+  gaps. They are one: `beethoven-sym3-mvt1` is the ONLY one of the eleven
+  benchmark truths carrying ornaments, and its 12 `<ornaments>` contain 12
+  `<tremolo type="single">1</tremolo>` and nothing else. Pinned by
+  `test_the_engraved_ornaments_are_ALL_tremolo`.
+- ⚠️ **SO THE ENGRAVED GAP DOES NOT CLOSE, AND IT IS NOW A DETECTION PROBLEM.**
+  Census over the committed transcriptions: **ZERO `tremolo1`–`5` detections**
+  against a positive control of 34,115 detections walked across 11 files, and
+  none of the ornament detections is on a benchmark work. The export half is
+  closed and the engraved count will stay at 0 until the detector fires. Filed
+  in `KNOWN_GAPS` with the evidence, so
+  `test_the_inventory_has_no_stale_entries` evicts it the day a detection lands.
+- ⚠️ **The class IS taught, it just does not fire.** Independently checked while
+  verifying the above: `tremolo2` and friends appear as **hand-labeled** boxes in
+  `benchmarks/omr-labeling-*/verdicts/*.verdict.json` (46 occurrences over 8
+  files) with `human_category: ornament`. So this is not an absent class in the
+  label corpus — it is a class the corpus carries and the checkpoint does not
+  produce. That is a narrower and more actionable statement than "no detections".
+- **LilyPond gets the four ornament marks and NOT tremolo, deliberately.**
+  LilyPond's `c4:32` is a *duration subdivision*, so a wrong mapping writes a
+  different RHYTHM rather than a different mark. Hairpin precedent; reason
+  recorded rather than the construct approximated.
+- **`export_coverage`'s element set is now DERIVED from the truth files.** The
+  hand-written 19-name `VISIBLE` dict is deleted — an element in neither
+  `VISIBLE` nor `KNOWN_GAPS` failed nothing, which is precisely the blindness the
+  module exists to remove. Scope is now: inside `<measure>` (structural — the
+  header lives outside it) → categorical → **rollup to the shallowest missing
+  ancestor** → a 3-name `NOT_NOTATION` deny-list. That answers the docstring's
+  own objection to deriving ("55 elements, ignored, then deleted"): on the
+  committed 11-work fixture copy, 88 in-measure elements → 40 categorical → 19
+  heads → **16 reported**, the rollup doing 21 of the 24 reductions and the
+  deny-list only 3.
+- **The decisive RED:** reinstating the pre-2026-09-08 allow-list makes
+  `test_ornaments_IS_one_of_them` fail — the old check does not report
+  `<ornaments>` on the real committed truth pool. It reported 5 elements and was
+  blind to 15.
+- **14 new `KNOWN_GAPS` entries**, every one a gap that had been reported by
+  nothing. Largest after `<stem>` is **`<transpose>` at 92**.
+- ⚠️ **Two self-inflicted faults caught by the discipline, both worth keeping.**
+  A reach probe read `bbox_page` as `[x0,y0,x1,y1]` when it is `[x,y,w,h]`, so
+  every median notehead width was negative and nothing said so — the probe now
+  asserts that quantity is positive before using it. And
+  `test_the_rollup_walks_more_than_one_level` PASSED under the mutation it was
+  written to catch (chained immediate-parent rollup gives the same answer);
+  rewritten to the one distinguishing case and re-run red.
+- **`stale_entries` had to be redefined.** `expected − missing` meant three
+  different things; `grace`/`unpitched` are gaps on scan truths and absent from
+  engraved ones, so without this the suite would go red on a machine with
+  fixtures for a non-defect. It now asks our own output.
+- ⚠️ **`TestTheRepositoryItself` skips wherever fixtures are absent — the one
+  test that would have looked never ran.** New `TestTheCommittedFixtureCopy`
+  runs on a clean clone, asserting on the tables only, never on the exporter.
+- **Measured with the symbol ledger, not OMR-NED** (handoff §2: musicdiff
+  attribution is void — amplification differs 6×–2× by error kind and one changed
+  `<type>` scores ZERO on 10 of 20 files). On the committed Breitkopf Brahms 1
+  transcription: `<ornaments>` 0 → 4, ledger `ornament` rows none →
+  `{'trill-mark': 4}`, **non-ornament rows 6,086 → 6,086 identical** (additive).
+  Reach 4 of 8 trills find a notehead; confidence does not separate the two
+  groups.
+- **Parked, observation kept:** `arpeggiato` at 856 detections (99 on three
+  Brahms pages) — a different element (`<arpeggiate/>`, not inside `<ornaments>`)
+  and the rate looks like over-detection.
+- `_ORNAMENT_MAX_DX_NOTEHEAD_WIDTHS = 1.0` is **declared UNMEASURED** — unlike
+  the articulation constant beside it, there is no corpus to sweep it on.
+- ⚠️ **NOT MEASURED, and no number is claimed:** this container has no weights,
+  no fixtures and no venvs, so no `orchestral_eval`, no `scan_eval`, no OMR-NED.
+  `test_score_language.py` is **unverified here** (corpus-wide, does not finish);
+  it passed on the clean-`HEAD` baseline and this change touches neither it nor
+  its subjects. Full suite on the final tree: 2,948 passed, 64 skipped, 2 failed
+  — the two being the documented `.venv-surya` `TestReaderSelection` pair,
+  failing on clean `HEAD` too.
+- **Files:** `transcribe.py`, `voicing.py`, `export.py`, `export_coverage.py`,
+  `class_aliases.py`, `score_translation.py`, 4 test files;
+  `benchmarks/omr-export-gaps-2026-09/FINDINGS-2026-09-08-ornaments-and-the-derived-check.md`
+  and `probe-ornaments-2026-09-08/`.
+
+---
+
 ## 2026-09-06 — The prior may not overturn a label the system contradicts
 
 - **`Tp.` exported as a second trumpet on Beethoven 5 / Litolff, with a CORRECT

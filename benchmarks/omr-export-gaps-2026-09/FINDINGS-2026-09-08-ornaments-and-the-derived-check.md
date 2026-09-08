@@ -28,7 +28,7 @@ What *was* available, and what every figure here rests on:
 | `benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/` | **a COMMITTED copy of all 11 benchmark works' truth + that run's export.** The coverage funnel, and the prediction of what will fire on Sean's machine |
 | `benchmarks/omr-labeling-hollow2-2026-09-breitkopf-brahms1/transcription.json` | the one real transcription in the repo carrying ornament detections (3 pages, 10,523 detections). The end-to-end A/B |
 | `tools/omr/symbol_ledger.py` | the scoring instrument. Pure stdlib, runs here |
-| the unit suite | 2,910 pass on clean `HEAD` in ~10 min |
+| the unit suite | 2,910 pass on clean `HEAD`; 2,948 pass on the final tree with one slow file excluded — see §6 |
 | 7,090 committed JSON artifacts | the detection census |
 
 **Measured here** — §1's arithmetic, §2's detection census, §4's A/B, §5's
@@ -322,12 +322,36 @@ rewritten to remove.
 
 ## 6. EVERY TEST RUN RED BEFORE GREEN
 
-Baseline first: the full suite on a clean copy of `HEAD` (`a526745a`) is
-**2,910 passed, 64 skipped, 7 failed in 609 s** — 2 `test_direction_text.py::
-TestReaderSelection` (the documented `.venv-surya` absence) and 5
-`test_label_contradiction.py` (environment-dependent, artefact-driven). **None
-of the seven is mine**, and the after-run is compared against that list, not
-against zero.
+**Baseline first, before a line was changed.** The full suite on a clean
+`git archive` of `HEAD` (`a526745a`): **2,910 passed, 64 skipped, 7 failed in
+609 s**. ⚠️ Two of those seven are the documented `.venv-surya` absence
+(`test_direction_text.py::TestReaderSelection`); the other five are
+`test_label_contradiction.py` and are an artefact of the ARCHIVE COPY — that
+file's tests read gitignored artefacts, and **all 24 pass in the working
+checkout**. So the pre-existing failure set here is **exactly two**, and
+neither is mine.
+
+**After, on the final tree:** `pytest tools/omr/tests/` with
+`--ignore=tools/omr/tests/test_score_language.py` gives **2,948 passed, 64
+skipped, 2 failed in 216 s** — and the two are exactly that
+`TestReaderSelection` pair. **No new failure.** The six most relevant files run
+green on their own too (`test_export.py`, `test_export_coverage.py`,
+`test_transcribe_helpers.py`, `test_class_aliases.py`, `test_voicing.py`,
+`test_symbol_ledger.py`: **656 passed, 4 skipped**).
+
+⚠️ **`test_score_language.py` was excluded from that run and is therefore NOT
+verified here.** It is a corpus-wide test over all 1,422 margin labels and does
+not complete inside this container's CPU budget; it passed on the clean-`HEAD`
+baseline, and nothing in this change touches `score_language.py`,
+`instruments.py` or that test. **Run it once on a normal machine** —
+`python3 -m pytest tools/omr/tests/ -q` with nothing ignored — and expect the
+same 2 failures and nothing else.
+
+⚠️ Earlier readings of this same run that looked like a stall were **self-
+inflicted**: several overlapping background pytest invocations were competing
+for one throttled core, and the run that finished in 216 s uncontended had
+looked frozen at 66% for forty minutes. Recorded because it is exactly the
+shape of a wrong conclusion: *the tell was the process table, not the numbers.*
 
 | # | mutation | test that went RED |
 |--:|---|---|
@@ -367,7 +391,12 @@ document-wide), it goes red. **It was pinning nothing and passing.**
 
 Nothing below was run; no number is claimed for any of it.
 
-**(a) The exporter against real fixtures, and the first honest run of the
+**(a) THE FULL UNIT SUITE WITH NOTHING IGNORED.** `python3 -m pytest
+tools/omr/tests/ -q`. Everything but `test_score_language.py` was run here
+(2,948 passed / 2 known failures); that one file does not finish in this
+container. Expect the same 2 `TestReaderSelection` failures and nothing else.
+
+**(b) The exporter against real fixtures, and the first honest run of the
 derived check.** ⚠️ **Expect it to list gaps.** That is the point: 14 entries
 were added to `KNOWN_GAPS` from the committed 11-work copy, and anything the
 live fixtures show beyond those is a *real finding* needing its own line — a
@@ -380,7 +409,7 @@ python3 -m tools.omr.export_coverage --all                # the report, with tie
 python3 -m pytest tools/omr/tests/test_export_coverage.py -q
 ```
 
-**(b) Does an ornament reach the file on the engraved benchmark?** §2 predicts
+**(c) Does an ornament reach the file on the engraved benchmark?** §2 predicts
 **no** — the truth's ornaments are all tremolo and nothing detects a tremolo.
 If `<ornaments>` does appear, its `KNOWN_GAPS` entry is stale and
 `test_the_inventory_has_no_stale_entries` will say so, which is the mechanism
@@ -391,7 +420,7 @@ python3 -m tools.omr.training.orchestral_eval --omr-ned --works beethoven-sym3-m
 grep -c '<ornaments>' benchmarks/omr-orchestral-e2e/fixtures/beethoven-sym3-mvt1.omr.musicxml
 ```
 
-**(c) The scan gate — where the trills actually are.** The scan truth carries
+**(d) The scan gate — where the trills actually are.** The scan truth carries
 **131 `<ornaments>` / 123 `tremolo`**, so 8 non-tremolo, and the detector reads
 `ornamentTrill` on scans (8 on the Brahms 1 / Breitkopf pages, of which 4 place
 — §4). ⚠️ **There is no flag on this change**, so the A/B is across the two
@@ -415,12 +444,12 @@ The prediction to test: the `ornament` family goes from **0 rows to a small
 positive number** and every other family is **unchanged**, exactly as §4's A/B
 shows on the one page that can be run here.
 
-**(d) Sweep `_ORNAMENT_MAX_DX_NOTEHEAD_WIDTHS`.** Requires per-mark truth,
+**(e) Sweep `_ORNAMENT_MAX_DX_NOTEHEAD_WIDTHS`.** Requires per-mark truth,
 which requires ornament detections on a page whose reference encoding is held.
 The scan gate's Brahms 1 row is the candidate: same PDF as the labeling batch
 whose 8 trills are measured in §4.
 
-**(e) `arpeggiato` at 769 detections.** Parked. `<arpeggiate/>` is a different
+**(f) `arpeggiato` at 769 detections.** Parked. `<arpeggiate/>` is a different
 element in a different place, and the count looks like over-detection.
 
 ---

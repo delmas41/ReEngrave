@@ -1973,6 +1973,24 @@ only the categorical case — the truth has some, we emit **zero**. That is the
 signature of an export gap; emitting fewer than the truth is a recognition
 shortfall and belongs to the accuracy metric. All seven read `truth N, ours 0`.
 
+⚠️⚠️ **THE CHECK ITSELF WAS BLIND, AND `<ornaments>` IS WHAT IT MISSED (fixed
+2026-09-08).** `compare()` iterated a **hand-written 19-name `VISIBLE` dict**,
+so an element in neither `VISIBLE` nor `KNOWN_GAPS` **failed nothing** — a
+curated allow-list reintroducing exactly the blindness the module exists to
+remove. `VISIBLE` is deleted. The element set is now **derived from the truth
+files**: inside `<measure>` (structural — MusicXML puts the header outside it)
+→ categorical → **rollup to the shallowest missing ancestor** → a 3-name
+`NOT_NOTATION` deny-list. That answers the docstring's own objection to
+deriving (*"a check that reported it would list 55 elements, be ignored, and
+then be deleted"*): on the committed 11-work fixture copy, **88 in-measure
+elements → 40 categorical → 19 heads → 16 reported**, with the ROLLUP doing 21
+of the 24 reductions and the deny-list only 3. The old allow-list reported 5
+and was blind to 15. Decisive RED: reinstating it makes
+`test_ornaments_IS_one_of_them` fail on the real committed truth pool.
+⚠️ It surfaced **14 further gaps reported by nothing**, largest after `<stem>`
+being **`<transpose>` at 92** — expect a run with fixtures to list more, and
+each is a finding needing its own line, never a suppression.
+
 ⚠️ **The obvious version of this check does not work**, and the reason is worth
 keeping: auditing the DETECTOR'S CLASS SPACE for classes nothing downstream
 mentions calls accidentals *consumed* — because they are, into `pitch` — and
@@ -1985,8 +2003,36 @@ reader would SEE come out".
 knowingly drop, with its reason and its size — and anything not on it fails.
 **And an entry that has been CLOSED must leave it**, or the list stops
 describing the exporter and starts describing its history —
-`test_the_inventory_has_no_stale_entries` enforces exactly that. Both former
-open items are now closed: **hairpins** (`wedge`) left the list when the
+`test_the_inventory_has_no_stale_entries` enforces exactly that.
+
+⚠️ **THE TENTH IS THE FIRST THAT DOES NOT CLOSE, AND SAYING SO IS THE POINT.**
+`<ornaments>` was never emitted (`grep -c ornaments export.py` was 0) while
+`ornamentTrill`/`Turn`/`TurnInverted`/`Mordent` fire freely; the export is now
+wired (`transcribe._attach_ornaments_in_cell` → `voicing` →
+`export._mxl_ornament_elements`, between `<tuplet>` and `<articulations>`).
+⚠️ **But the handoff's table double-counted and confirming it INVERTED the
+job**: `<ornaments>` (truth 12 engraved) and `tremolo` (truth 12) are ONE
+finding — `beethoven-sym3-mvt1` is the only one of the eleven truths carrying
+ornaments and its 12 blocks hold 12 `<tremolo type="single">1</tremolo>` and
+nothing else. And the detector produces **ZERO `tremolo1`–`5` detections**
+against a positive control of 34,115 detections walked over 11 committed
+transcriptions. **So the engraved count stays 0 and this is now a DETECTION
+problem**, filed in `KNOWN_GAPS` with the evidence so the stale-entry test
+evicts it the day a detection lands. ⚠️ The class is nonetheless **taught** —
+`tremolo2` and friends appear as hand-labeled boxes with `human_category:
+ornament` in `benchmarks/omr-labeling-*/verdicts/` (46 occurrences over 8
+files) — so the honest statement is *a class the label corpus carries and the
+checkpoint does not produce*, not *an absent class*. LilyPond gets the four
+ornament marks and deliberately **not** tremolo: `c4:32` is a duration
+SUBDIVISION, so a wrong mapping writes a different rhythm rather than a
+different mark. Measured with the **symbol ledger, not OMR-NED** (see the
+handoff on why musicdiff attribution is void): Brahms 1 `<ornaments>` 0 → 4,
+ledger `ornament` rows none → `{'trill-mark': 4}`, **non-ornament rows 6,086 →
+6,086 identical**; reach 4 of 8 trills.
+⚠️ `_ORNAMENT_MAX_DX_NOTEHEAD_WIDTHS = 1.0` is **declared UNMEASURED** — unlike
+the articulation constant it copies, no corpus exists to sweep it on.
+
+Both former open items are closed: **hairpins** (`wedge`) left the list when the
 hairpin export landed (staff attribution + `<wedge>`/LilyPond emission, merged
 in the 09-05 reconciliation; export closed — DETECTION is still partial, 4 of
 Mahler's 6, so hairpin counts remain a recognition matter), and **accents**

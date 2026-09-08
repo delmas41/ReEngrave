@@ -103,6 +103,27 @@ changes week to week.
   manifest, refusing anything whose frame does not match. Where the work stands and
   Sean's checklist: [docs/handoff-2026-09-03-prefill-session.md](docs/handoff-2026-09-03-prefill-session.md).
 
+## The tenth export gap, and the check that could not see it (2026-09-08)
+
+Ten times now the pipeline has recognised something correctly and then lost it
+on the way to the file. The check built to catch that class of bug —
+`export_coverage` — was itself iterating a **hand-written list of 19 element
+names**, so anything not on that list failed nothing. `<ornaments>` was one of
+the things it could not see. The list is gone; the elements to check are now
+**derived from the reference files themselves**, with deliberate exclusions
+written down and justified rather than silently omitted.
+
+⚠️ **Confirming the report inverted the job, and that is the finding.** The
+handoff listed two gaps; they are one, and the marks involved are **tremolos**,
+which the detector does not currently produce at all — zero detections across
+every stored transcription. So the export side is now wired and correct, and
+the engraved number will not move until the detector reads the symbol. That is
+recorded as a detection problem rather than reported as a fix, which is the
+distinction this project has been burned by in both directions.
+
+Full reading:
+[benchmarks/omr-export-gaps-2026-09/FINDINGS-2026-09-08-ornaments-and-the-derived-check.md](benchmarks/omr-export-gaps-2026-09/FINDINGS-2026-09-08-ornaments-and-the-derived-check.md).
+
 ## Decisions made without a probability (2026-09-05)
 
 Work on clef assignment found that a lot was being lost because a staff's clef
