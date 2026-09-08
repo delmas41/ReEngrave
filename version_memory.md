@@ -5,6 +5,46 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-08 (late) — causes A/B/C closed, `OMR_SLOT_STITCH` default ON, and the meter's own garbage filter wired to its keeper
+
+- **`OMR_SLOT_STITCH` is DEFAULT ON** (Sean's call). Never scored worse
+  (−240 raw / −2,278 page-normalised); flipped once the separated `entire
+  staff` bucket showed its 3 rows own **46.3% of the unassessable symbol
+  mass**, so the cost of `off` is a blocked measurement rather than a foregone
+  score, and once the blast radius was shown confined to rows the ordinal join
+  has ALREADY refused (**10 of 11 exports byte-identical**; Brahms p2's 27
+  fragments → 14 continuous parts, 0% → 100% ledger correspondence).
+  ⚠️ The flag site's docstring still carried the refuted *"it still costs more
+  OMR-NED"* claim a day after CLAUDE.md was corrected.
+- **⚠️ The canary recommended for that flip could not reach it.**
+  `label_contradiction` is computed in the contextual pass; the flag is read in
+  `export.py`, strictly downstream — identical on and off **by construction**.
+  Recommended before checking; the check was one grep. Its QUESTION does reach
+  the join: `slot_stitch_canary.py` asks whether the staves a stitched part is
+  built from carry margin labels that AGREE — **30 parts with evidence, 0
+  disagreements**, `no_evidence` reported apart, positive control printed.
+- **Causes B and C closed by DATA, not code**: `one_line: true` (nine
+  percussion entries) and `printed_staves: 2` (bach's cembalo) are now fields
+  in `works.json`, each asserted against the derivable count and pinned by
+  `test_works_json_staff_lineup.py` (run RED against two mutants).
+  Rows with a resolved part join over the 11 committed pairs: **7 → 9 → 10**;
+  on the 20-row gate pooled `part_unresolved` **14,992 → 7,985**. Only cause D
+  (mahler p2's missing lineup) remains.
+- **`rhythm._drop_implausible_meters`** — unconditional. `_is_propagatable_meter`
+  names `1/4` as garbage in its own docstring and was consulted only for
+  VOTING eligibility, never for whether a staff may KEEP a reading: **4 of 227
+  staves and 45 of 2,538 measures**, all `1/4`, across three publishers.
+  ⚠️ **Its payoff arrived through a channel not being measured** — 0 rests,
+  4 notes re-read `16th` → `eighth`, `rhythm_sum_warnings` 48 → 39 — via the
+  meter→rhythm loop. The 37 wrongly-sized rests belong to two parked guards
+  (a lone dissenter, 7; three corroborating dissenters, 30).
+- **The pattern of the day, recorded as such**: four of five findings were *the
+  value existed and nothing read it*, two of them inside the measuring
+  instruments. Big-picture handoff:
+  [docs/handoff-2026-09-08-big-picture.md](docs/handoff-2026-09-08-big-picture.md).
+
+---
+
 ## 2026-09-08 (evening) — Step 4 separated the `entire staff` bucket; Step 3's measure-rest convention fixed
 
 - **STEP 4: `entire staff` is FOUR problems, not three, and only one is the
