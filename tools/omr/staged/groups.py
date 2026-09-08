@@ -73,7 +73,10 @@ between that and this is that this one says so, in its own docstring, with the
 consumer named.
 
 ⚠️ AND NOTHING HERE HAS BEEN MEASURED. No arm has been run. Every declaration
-below is an assumption; see ASSUMPTIONS.md `A-GROUPS-*`.
+below is an assumption; see ASSUMPTIONS.md `A-WIT-*`.
+
+⚠️ The section is `A-WIT` and NOT `A-GROUP` — `A-GROUP` is already taken by
+the bracket/staff-grouping decisions, which are a different thing entirely.
 """
 
 from __future__ import annotations

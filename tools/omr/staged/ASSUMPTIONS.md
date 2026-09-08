@@ -4,16 +4,17 @@
 
 **If your recollection disagrees with this file, a code tag, or a test, THE
 FILE IS RIGHT.** Do not re-derive a settled question from a summary; open the
-file. **153 coherence tests** across 11 `tools/omr/tests/test_staged_*.py`
+file. **195 coherence tests** across 12 `tools/omr/tests/test_staged_*.py`
 files are the real guard — a contradiction of a pinned decision fails a test
 rather than passing quietly.
 
 **What this is.** `tools/omr/staged/` is an alternative OMR pipeline built
 ALONGSIDE `tools/omr/transcribe.py`, selected by `OMR_ADJUDICATE`
-(`0` default / `shadow` / `1`). Three stages: **GATHER** (readers emit
+(`0` default / `shadow` / `1`). Four stages: **GATHER** (readers emit
 measurements as rows), **ADJUDICATE** (decisions declare their evidence and
-return a value *and* a record), **EVALUATE** (consequences, downhill only, one
-pass, no fixpoint). Design: `docs/architecture-design-2026-09-07.md`. The
+return a value *and* a record), **GROUPS** (redundant groups — N witnesses to
+one fact, and whether they agree), **EVALUATE** (consequences, downhill only,
+one pass, no fixpoint). Design: `docs/architecture-design-2026-09-07.md`. The
 standard its assumptions are audited against:
 `docs/ideal-reader-2026-09-07.md`.
 
@@ -28,10 +29,18 @@ origin/main...HEAD` modifies no file outside `tools/omr/staged/`,
 
 ---
 
-## STATE OF THE BUILD — accurate at commit `d9904e5a`
+## STATE OF THE BUILD — accurate at commit `cf1b46d3`
 
-**Nothing is half-finished. Candidate sets landed clean and the session ended
-at a green commit.**
+**Nothing is half-finished. Redundant groups landed clean and the session
+ended at a green commit.**
+
+**⚠️ REDUNDANT GROUPS ARE IN (`groups.py`), and they are the fourth stage.**
+`GATHER → ADJUDICATE → GROUPS → EVALUATE`, surfaced as `result["agreement"]`
+and printed by the CLI. **5 redundancies declared, 3 refused with their
+reasons, 42 tests, 13 mutations run RED.** ⚠️ **It has NO CONSUMER, on
+purpose**: seeing that witnesses disagree is this stage; deciding what to do
+about it is D4. That is stated in the module's own docstring so it cannot
+become the ninth complete recorder that recorded nothing.
 
 **Decisions: 15 wired of 21** (`adjudicate.ORDER`) — `system_membership`,
 `system_staff_count`, `staff_ordinal`, `measure_partition`, `staff_group`,
@@ -60,35 +69,39 @@ stub behind its hard edge (D13).
 ```bash
 python3 -m tools.omr.staged score.pdf --pages 0-2 --weights <file>.pt
 python3 -m tools.omr.staged score.pdf --pages 0        # no weights: it still runs
-python3 -m pytest tools/omr/tests/test_staged_*.py -q  # 153, seconds, no venv
+python3 -m pytest tools/omr/tests/test_staged_*.py -q  # 195, seconds, no venv
 ```
 
 ---
 
 ## NEXT, IN ORDER — and the order IS the thesis
 
-1. **Redundant groups as first-class** (D2). A fact printed more than once —
-   the meter on every staff, the clef at every system head, a tie's pitch at
-   both ends — is several witnesses to ONE fact, and **agreement among them is
-   the only correctness signal available with no ground truth**. Nothing today
-   represents *"these N rows are witnesses to one fact; here is whether they
-   agree."* First because everything after it consumes it.
+1. ✅ **DONE — redundant groups** (`groups.py`, was D2). See A-GROUPS-* below.
 2. **Implication tests over them** (D4). A composition can be run FORWARD on a
    candidate and its output checked: do these implied pitches fit this
    instrument's range; do these durations sum to this meter. It reaches the
    compositional chain, where *nothing is printed twice* and agreement cannot
-   help. Second because it needs the groups and needs candidate sets, both of
-   which now exist.
+   help. It is next because it now has both of its inputs — candidate sets and
+   groups — and because it is **the named consumer of the group report**, which
+   today has none.
+   ⚠️ **AGREEMENT AND IMPLICATION ARE DIFFERENT MACHINES AND THE SPLIT IS
+   CLEAN.** `measure_count_warning` is an AGREEMENT check — several staves
+   witnessing one bar count — and is now a declared redundancy.
+   `rhythm_sum_warning` is an IMPLICATION check — one bar's durations composed
+   forward and compared to its meter — and is **not** a group, because a bar
+   sum has exactly one witness. Do not look for the bar sum in `groups.py`; it
+   belongs to D4, and `Group.implicates` is the field it will reuse.
 3. **`join_parts`** (D9), once the partition abstention is priced.
 4. **The arcs** — `arc_owner`, then `arc_kind`. Last because they are
    self-contained and nothing else waits on them.
 
-⚠️ **Why this order and not "finish the stubs first":** the stubs are
-*breadth*; groups and implication tests are *depth on what is already wired*.
-A sixth stub adds another decision with no self-check; the groups give the
-fifteen already wired a way to be wrong out loud.
-
----
+⚠️ **Why groups came before "finish the stubs":** the stubs are *breadth*;
+groups and implication tests are *depth on what is already wired*. A sixth
+stub adds another decision with no self-check; the groups give the fifteen
+already wired a way to be wrong out loud. **And for Sean's actual input —
+IMSLP scans, where 27 of 235 held editions have a reference encoding —
+internal agreement is the only self-check that will ever exist on the real
+work.**
 
 ## ⚠️ WHAT A FRESH AGENT MUST NOT DO
 
@@ -107,6 +120,9 @@ re-tried, and this project has paid for that repeatedly.**
 | **Delete the loser of a contest** | `move_glyph` **supersedes**. Arc attribution measured `drop` at **2,388 vs 2,371** — better arm-for-arm — and refused it, because it got there by emitting **20 fewer slurs, 12 of them real**. Keeping the loser addressable is what lets a later identity correction reach it. |
 | **Widen `_reconcile_measure_to_meter`'s bound** | It repairs only when the answer is **UNIQUE** — i.e. it declines exactly when more than one member could explain the failure. That is "certain about the GROUP, silent about the MEMBER" implemented. **Never condemn the cheapest member to change.** |
 | **Let a key signature be fitted against a guessed clef** | Three flats fitted against a guessed clef came back as **TWO SHARPS**. GATHER asks the reader once per *candidate* clef; the adjudicator reads the answer for the clef that won, and abstains if none did. |
+| **Declare a redundant group over a quantity that merely LOOKS printed twice** | Three are refused at the head of `groups.py` with their reasons. The sharpest: a KEY SIGNATURE across the staves of one system, where transposing instruments genuinely carry different written keys at the same bar — a B-flat clarinet in a 3-flat movement is `fifths: -1`. `key_signature_corroboration` says it outright: *"the other staves read something else" is not evidence of anything.* What IS redundant across a system is a key change's POSITION, not its value. |
+| **Read a group's `dissenting` as "the member that is wrong"** | It is the plurality's complement and nothing more. `suspects` — EVERY witness, majority included — is the implicated set, and a SPLIT names no dissenter at all. `_reconcile_measure_to_meter` is the tree's one correct implementation of this: it repairs ONLY when the answer is UNIQUE, i.e. declines exactly when more than one member could explain the failure. |
+| **Reuse `adjudicate._one_signal` for a group's witnesses** | It matches on `(reader, frame, quantity)` and is SUBJECT-BLIND. That reads correctly inside a decision, whose evidence is almost always about one subject — and a redundant group is the opposite case by construction, so it would collapse a whole system's twelve-staff meter vote into ONE witness. `groups.one_signal` adds `subject` to the key; the divergence is pinned by a test so unifying them is a decision, not an accident. |
 | **Build the systematic version of a fix mid-stream** | Scope rule: **FIX NOW only if it corrupts the thing being built; PARK everything else — and the systematic version of a fix is a PARK even when the instance is a fix-now.** A borderline case is a PARK, not a judgment call. |
 
 ---
@@ -131,7 +147,6 @@ seen is a deletion with extra steps.
 
 | # | what | why parked | what it would take |
 |--:|---|---|---|
-| D2 | **Redundant groups as first-class** — `(quantity, scope)` → witnesses, majority, dissenters | the largest principle-driven gap (ideal-reader §4.1), but additive: nothing already wired is wrong without it | a group declaration and a harness-derived agreement row. Every witness is already a row, so it is close to free |
 | D3 | **`tally()` should take a MINIMUM over `composed_from`** | ideal-reader §5.4. Wrong *weighting*, not a wrong *record* — no verdict is corrupted, so waiting costs nothing | agreement SUMS; composition is as strong as its weakest link. `composed_from` is already declared on all 21 |
 | D4 | **The implication tests as consumed terms** — `propose_clef`'s range test per candidate; `rhythm_sum_warning` given a consumer | needs D1 and D2 to be worth doing properly | ideal-reader §4.6 |
 | D5 | **GATHER out-parameters instead of the translating layer** | A-BUILD-1. The end state, but it touches a dozen files the OLD path runs through — the opposite of "alongside" | a `log` kwarg per reader; deletes the `mirror=True` rows |
@@ -145,11 +160,16 @@ seen is a deletion with extra steps.
 | D13 | **Direction text gather** | a declared stub behind its hard edge (it subtracts every detection from the ink) | wiring `direction_text.find_candidates` after detection |
 | D14 | **`BEAM_EDGE_TOLERANCE_WIDTHS = 1.0`** — how far past a stroke's end a notehead may sit and still *maybe* be under it | a constant with no measurement behind it; it decides how often a duration NARROWS rather than decides | a sweep once measuring is allowed. ⚠️ Too small and the set never forms; too large and every note narrows |
 | D15 | **A NARROWED verdict has no exporter** | nothing exports yet, so it costs nothing today — but MusicXML has no way to say *"one of these two"* | a decision about what a narrowed fact serialises as. ⚠️ **Do not resolve it by silently taking `candidates[0]`** — that is the collapse this whole feature removed, moved one stage later |
+| D16 | ⚠️ **`adjudicate._one_signal` is SUBJECT-BLIND, so `Verdict.correlated` is wrong on any decision that reads across subjects** — `adjudicate_meter` reads `Q.METER_TEMPLATE` with `SELF_AND_DESCENDANTS`, so every meter verdict records all twelve staves as ONE signal | **INERT TODAY, and only just.** The two decisions that pass `correlated=` into `tally` (`clef`, `glyph_owner`) both read a single subject, so no weight is currently wrong. What is wrong is the RECORD. Parked because the fix touches `adjudicate` and every verdict's `correlated` field — the systematic version of a fix, which is a PARK by the rule even when the instance is real | add `subject` to the Observation key, as `groups.one_signal` already does, and re-run the suite. ⚠️ **The moment any decision reading across subjects starts consuming `correlated`, this becomes a live defect** — flag it to whoever wires one |
+| D17 | **Cross-READER groups** — the detector's `Q.METER_GLYPH` and the template reader's `Q.METER_TEMPLATE` are two witnesses to one meter and are not joined | a group needs one `reading` function, and those two value shapes are a SMuFL name (`timeSig4`) and a pair `(4, 4)`. Mapping one onto the other is a DECISION, not a group — and the two readers are documented as COMPLEMENTARY (`timeSigCommon`/`timeSigCutCommon` are the two the detector reads well and the template library has no digits for) | a declared normalisation per reader pair. ⚠️ Cross-reader agreement is plausibly the most valuable kind, so this is a park worth reopening early |
+| D18 | **The key CHANGE group** — a mid-staff key change is corroborated by another staff of the same system changing at the SAME BAR | blocked on a row: nothing emits a mid-staff key change as a measurement, so the group would have nothing to assess. The value-across-systems group that IS declared cannot substitute — it compares values, and a genuine change shows up there as a disagreement | a `Q.KEY_SIGNATURE` row at cell scope, then a redundancy whose `reading` is the CHANGE POSITION and not the value. `key_signature_corroboration` has the witness argument already worked out, including why it is the WEAKER and therefore usable claim |
+| D19 | **A group's `silent` members are placed best-effort** — a subject that produced no row is keyed through `_PhantomRow`, which carries only its subject, and a `fact_key` needing more raises and files it as unplaceable | correct by construction (it never guesses a subject into a group it may not belong to) but it means a silent staff with no `slot_index` verdict is invisible to the part-scoped groups | either emit a slot verdict for every staff, or key the silent set from the subject tree rather than from the fact function |
 
-⚠️ **D1 (candidate sets) was CLOSED and has LEFT this table**, per the rule
-`export_coverage` already applies: an entry that is closed must leave, or the
-list stops describing the code and starts describing its history. The work is
-recorded in build finding 4 below, where the *argument* lives.
+⚠️ **D1 (candidate sets) and D2 (redundant groups) were CLOSED and have LEFT
+this table**, per the rule `export_coverage` already applies: an entry that is
+closed must leave, or the list stops describing the code and starts describing
+its history. D1's argument is build finding 4 below; D2's is `A-WIT` and
+`groups.py`'s own docstring.
 
 ⚠️ **RETRO-APPLIED, INCLUDING TO MYSELF.** Under this rule two things I did
 mid-stream were parks, not fix-nows:
@@ -285,6 +305,49 @@ enough to be provably safe was tight enough to be useless, and it looked
 correct for four days because nothing exercised it. **A rail nothing has driven
 into is an untested rail** — and the test that pinned it was pinning the wrong
 rule, so it passed too.
+
+### 8. ⚠️ "One signal" is not a global predicate — it INVERTS between a decision and a group
+
+`adjudicate._one_signal` calls two Observations one signal when
+`(reader, frame, quantity)` match. Inside a decision that is right: a
+decision's evidence is almost always about ONE subject, so the triple reads as
+*the same reader on the same crop*, and it is what stops the two clef crops
+being counted twice.
+
+**A redundant group is the opposite case by construction.** Its witnesses are
+twelve different staves, read by one reader, on one KIND of crop — so the
+triple matches for all twelve and the identical predicate would collapse an
+entire system's meter vote to ONE witness, reporting `SINGLE` on the
+strongest agreement the page can offer.
+
+⚠️ **Same code, same rows, opposite correct answers.** What changed is not the
+evidence but the QUESTION: correlation is relative to what the rows are being
+compared *for*. `groups.one_signal` adds `subject` to the key and the
+divergence is pinned by a test, so unifying them later is a decision rather
+than an accident — and D16 records that the adjudicate side is wrong on its
+own terms too, inertly, in `Verdict.correlated`.
+
+### 9. ⚠️ A WALL OF AGREEMENT IS THE SAME NULL AS A WALL OF ZEROS
+
+The first smoke run of the group stage produced a healthy-looking table: six
+facts for `clef_across_systems`, six `SINGLE`; six for
+`instrument_across_systems`, six `NONE`. Nothing in it said *"four of these
+five redundancies corroborated precisely nothing"* — and `SINGLE` and
+`UNANIMOUS` both read, at a glance, as *no problems found*.
+
+This project already knows that **a zero is a suspect, not a result** — seven
+plus probes have printed clean tables of zeros at exit 0. The new form is
+worse, because the number is not zero: `n_facts: 6` looks like coverage.
+**The quantity that matters is not how many groups agreed but how many had TWO
+INDEPENDENT SIGNALS to agree with**, and until `Group.uninformative` and the
+report's `checked_nothing` list existed, that number was computable and
+uncomputed.
+
+⚠️ Generalised, and worth carrying past this module: **a check reports three
+things — it passed, it failed, and it could not run — and a check that could
+not run must never be counted in the first bucket.** The five internal
+consistency checks fail this test today from the other direction (85 warnings,
+all inert); this one would have failed it from the agreement side.
 
 ## ⚠️ PRINCIPLE vs CONTINGENCY
 
@@ -715,6 +778,149 @@ cannot query for it. (`Log.verdict` is that query.)
 
 ---
 
+## A-WIT — redundant groups (the witnesses)
+
+⚠️ **`A-WIT`, not `A-GROUP`.** `A-GROUP` above is the bracket/staff-grouping
+decisions and is a different thing entirely. These are about *several
+witnesses to one fact*.
+
+### A-WIT-1 · ⚠️ A disagreement implicates the GROUP, never a member
+
+**PRINCIPLE** — Sean's own statement of it, and the property the whole module is shaped around.
+*`Group.suspects`, `Group.dissenting`*
+
+**Assumption.** A group that disagrees raises the suspicion of **every**
+witness, the majority included. `suspects` is all of them; a SPLIT names no
+dissenter at all; there is no `culprit`, `correct_value` or `repair` field, and
+a test asserts structurally that none is ever added.
+
+**Why.** Nine eighths in a 4/4 bar proves an error without naming which symbol
+— it could be the meter, a duration, a spurious note, a missing one, or a
+mis-owned glyph. `_reconcile_measure_to_meter` is the tree's one correct
+implementation: it repairs only when the answer is **UNIQUE**, i.e. declines
+exactly when more than one member could explain the failure.
+
+**How to falsify.** Not falsifiable by measurement — it is a statement about
+what the evidence supports. What IS measurable is the cost: hand-adjudicate a
+sample of MAJORITY groups and count how often the dissenter really is the
+error. ⚠️ **Even a high rate would not license convicting it**, because the
+cases where it is wrong are the ones the metric cannot see. It would license a
+RANKING for a human queue, which is a different product.
+
+**Blast radius.** Everything downstream of a disagreement. Get it wrong and a
+failed bar sum confidently rewrites whatever is cheapest to alter.
+
+### A-WIT-2 · The vote unit is the SIGNAL CLASS, not the row
+
+**PRINCIPLE** — two signals sharing an ancestor are ONE signal, not corroboration.
+*`groups.one_signal`, `Group.n_signals`, `Group.uninformative`*
+
+**Assumption.** Witnesses are partitioned into signal classes; a class votes
+once, and only if its own rows agree. Fewer than two classes is `SINGLE`,
+never `UNANIMOUS`.
+
+**Why.** Measured, on the old pipeline: the header clef pre-pass and the
+measure-pass argmax LOOK like two readings and are the same call on the same
+list object — divergent on **0 of 396 staves** — and counting them as
+agreement would have produced a healthy-looking **77% agreement rate carrying
+no information**. `Verdict.basis` makes the ancestor closure a set operation,
+so the rule is enforced rather than remembered.
+
+**How to falsify.** Count the groups whose `n_signals` is below their witness
+count on a real page. If the number is ~0, the collapse is buying nothing here
+and the cost of computing it is unpaid. ⚠️ **A zero there is a suspect**: it
+is also what a broken closure walk produces.
+
+**Blast radius.** Every agreement figure. Over-collapse hides real
+corroboration; under-collapse manufactures it.
+
+### A-WIT-3 · ⚠️ The redundant thing is an ASPECT, and `reading` names it
+
+**PRINCIPLE** — arrived at by injury, in `key_signature_corroboration`, and it survives on its merits.
+*`Redundancy.reading`, `Redundancy.aspect` (required prose)*
+
+**Assumption.** Each redundancy declares which aspect of a fact is printed more
+than once, and compares only that.
+
+**Why.** A meter is corroborated by other staves reading the same METER,
+because a meter is one fact shared by the system. A key signature is not:
+transposing instruments genuinely carry different written keys at the same bar,
+so *"the other staves read something else" is not evidence of anything*. What
+transplants is the POSITION of a change, not its value. A wrong `reading`
+therefore manufactures disagreement out of correct engraving.
+
+**How to falsify.** For each declared redundancy, find printed music where the
+declared aspect legitimately differs. That is not a bug report — it is either a
+`legitimate_difference` to declare or a redundancy to refuse.
+
+**Blast radius.** Confined to the redundancy that gets it wrong.
+
+### A-WIT-4 · A part is joined across systems by ORDINAL, and only within one lineup
+
+**CONTINGENCY** — an artefact of `slot_index` being a per-system ordinal today.
+*`groups._slot_fact`*
+
+**Assumption.** Two staves witness one part only when their systems print the
+**same number of staves**; the staff count is in the fact key.
+
+**Why.** `adjudicate_slot_index` returns the staff's ordinal within its own
+system and says so. A printed score suppresses tacet staves, so joining slot 4
+of an 11-staff system to slot 4 of an 8-staff system grafts a horn's
+continuation onto a trumpet's part — the population `export._stitch_slots`
+refuses outright, and where the partition gate measured **3 of 27 staves
+misgrouped**.
+
+⚠️ **THE COST IS REAL AND IS THE OPPOSITE OF SAFE-LOOKING.** On a document
+whose systems suppress staves, every part-scoped group (`clef`, `instrument`,
+`key_signature`) degrades to `SINGLE` across the board and corroborates
+nothing — and a wall of `SINGLE` reads as "no problems found". That is what
+`checked_nothing` in the report exists to say out loud.
+
+**How to falsify.** Count part-scoped groups with ≥2 witnesses on a real
+orchestral scan. If it is near zero, the join is too strict to be useful and
+the answer is a document-wide reference lineup (D10), not a looser key.
+
+**Blast radius.** Three of the five declared redundancies.
+
+### A-WIT-5 · Groups run AFTER adjudication and BEFORE evaluation
+
+**MIXED** — "verdict witnesses need verdicts" is forced; the choice of before-EVALUATE is ours.
+
+**Assumption.** `GATHER → ADJUDICATE → GROUPS → EVALUATE`.
+
+**Why.** Verdict-sourced redundancies need the decisions to have run. Placing
+it before EVALUATE means the report describes what was **adjudicated** rather
+than what a consequence later restated, which is the cleaner claim — and
+consequences supersede verdicts, so the other order would report a mixture.
+
+**How to falsify.** Run it in both positions and diff the report. Any group
+that changes is a fact a consequence revised, which is worth knowing either
+way.
+
+**Blast radius.** None today: nothing consumes the report.
+
+### A-WIT-6 · ⚠️ The report has NO CONSUMER, deliberately
+
+**CONTINGENCY** — a phase boundary, not a design position.
+
+**Assumption.** `result["agreement"]` is produced, surfaced and acted on by
+nothing.
+
+**Why.** Seeing that witnesses disagree is one job; deciding what to do about a
+disagreement is another, and doing them together is how a failed check ends up
+convicting the cheapest member. The named consumer is D4.
+
+⚠️ **This is exactly the Class-C shape this project keeps paying for** — the
+five internal-consistency checks fire **85 warnings on one real document and
+every one is inert**. The difference is that this one says so in its own
+docstring, names its consumer, and is printed by the CLI rather than left in a
+JSON nobody opens. **If D4 does not land, this entry becomes the accusation
+rather than the excuse.**
+
+**How to falsify.** It is a plan, not a claim. It fails by not being executed.
+
+---
+
 ## A-BUILD — decisions forced by the build itself
 
 ### A-BUILD-1 · ⚠️ GATHER is a TRANSLATING layer, not an out-parameter
@@ -907,8 +1113,10 @@ which the tester should not spend time re-deriving.
 ## What would make this list shorter
 
 Every stub in `adjudicate.stubs()` is an assumption-generator: a decision that
-does not run cannot have its precedence tested. **13 of 21 decisions and 5 of 6
-consequences are declared stubs today.** The fastest way to make this list
+does not run cannot have its precedence tested. **6 of 21 decisions and 1 of 6
+consequences are declared stubs today** (the count was stale at 13/5 for two
+days — the ledger dual of a stale figure, in the file that says the tree
+outranks the ledger). The fastest way to make this list
 smaller is to wire identity — it is the input to four other decisions and the
 one whose absence makes A-ORDER-2, A-GROUP-2 and A-OWN-1 untestable by
 construction.
