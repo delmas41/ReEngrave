@@ -251,6 +251,15 @@ LEGACY_ONLY = "legacy_only"
 #: NOT folded into DIFFER -- see `_canonical`.
 NOT_COMPARABLE = "not_comparable"
 
+#: The mirror of `LEGACY_ONLY`: a staged verdict the legacy extractor carries
+#: no counterpart for, so the comparison loop never reached it.
+#:
+#: ⚠️ THIS IS NOT A RESULT, IT IS A MEASURE OF THE TABLE'S OWN BLINDNESS.
+#: A large number here means the divergence table is describing a fraction of
+#: what the staged path decided, and the fraction is now stated instead of
+#: being left for a reader to discover by counting quantities by hand.
+STAGED_ONLY = "staged_only"
+
 
 def _fifths_from_legacy_key(v: Any) -> Any:
     """`{'sharps': 0, 'flats': 2, ...}` -> `-2`, the staged path's own unit.
@@ -318,6 +327,71 @@ def _canonical(quantity: str, legacy_value: Any, staged_value: Any):
     return legacy_value, staged_value, True
 
 
+
+def _staves_touched(sub: Subject, legacy: Dict[str, Any]) -> int:
+    """How many staves a disagreement at this subject reaches.
+
+    The ranking key Step 2 asks for. A wrong clef on one staff is one staff
+    wrong; a wrong staff COUNT on a system is wrong about every staff in it,
+    and ranking them equally would put the cheap fix above the expensive one.
+
+    ⚠️ The system's width is taken from the LEGACY extractor's own
+    `system_staff_count`, not from the staged log -- because on exactly the
+    rows where that quantity DIFFERS the two disagree about the answer, and
+    ranking a disagreement by the staged side's number would let a decision
+    inflate its own importance. Where legacy has no count the row falls back
+    to 1, which under-ranks rather than over-ranks it.
+    """
+    if sub.kind in (Kind.STAFF, Kind.CELL, Kind.GLYPH):
+        return 1
+    if sub.kind is Kind.SYSTEM:
+        n = legacy.get(Q.SYSTEM_STAFF_COUNT, {}).get(sub.to_key())
+        return int(n) if isinstance(n, int) and n > 0 else 1
+    # PAGE / DOCUMENT: every staff underneath it.
+    total = 0
+    for key, n in legacy.get(Q.SYSTEM_STAFF_COUNT, {}).items():
+        other = Subject.from_key(key)
+        if sub.contains(other) and isinstance(n, int):
+            total += n
+    return total or 1
+
+
+def _basis_summary(log: Log, v: "Verdict | None") -> Dict[str, Any] | None:
+    """What this verdict RESTED ON, as quantities rather than row ids.
+
+    `Verdict.basis` is the ancestor closure -- the whole point of the record,
+    and the thing that makes a divergence traceable to the decision that caused
+    it ("this note is B" back through the clef, the key and the notehead
+    position). Raw it is a list of opaque ids; translated into the quantities
+    they carry it is readable, and the ids stay for anyone who wants to walk it.
+    """
+    if v is None or not v.basis:
+        return None
+    quantities: Dict[str, int] = {}
+    for rid in v.basis:
+        row = log.row(rid)
+        if row is not None:
+            quantities[row.quantity] = quantities.get(row.quantity, 0) + 1
+    return {"rests_on": quantities, "n_rows": len(v.basis),
+            "used": list(v.used), "ids": list(v.basis)}
+
+
+def _coverage(log: Log, legacy: Dict[str, Any]) -> Dict[str, Any]:
+    """Which quantities each side speaks about -- the table's own blind spots.
+
+    ⚠️ Written because the shape of this failure is not a wrong number but a
+    MISSING ONE, and a missing number looks like agreement. Stating both
+    vocabularies makes "the extractor does not carry this" a fact on the
+    record rather than something a reader has to notice.
+    """
+    staged = sorted({v.quantity for v in log.all_verdicts()})
+    old = sorted(legacy)
+    return {"legacy_quantities": old, "staged_quantities": staged,
+            "compared": sorted(set(old) & set(staged)),
+            "staged_not_extracted": sorted(set(staged) - set(old)),
+            "legacy_not_decided": sorted(set(old) - set(staged))}
+
+
 def divergence(log: Log, legacy: Dict[str, Any]) -> Dict[str, Any]:
     """Compare the staged verdicts against the legacy path's values.
 
@@ -359,7 +433,55 @@ def divergence(log: Log, legacy: Dict[str, Any]) -> Dict[str, Any]:
             counts[outcome] += 1
             rows.append({"quantity": quantity, "subject": subject_key,
                          "legacy": old, "staged": new, "outcome": outcome,
-                         "reason": v.reason if v is not None else None})
+                         "reason": v.reason if v is not None else None,
+                         "staves_touched": _staves_touched(sub, legacy),
+                         "basis": _basis_summary(log, v)})
 
-    # A staged verdict with no legacy counterpart at all.
-    return {"counts": counts, "rows": rows}
+    # ── the other direction ─────────────────────────────────────────────────
+    # ⚠️ A STAGED VERDICT WITH NO LEGACY COUNTERPART WAS INVISIBLE, AND THIS
+    # COMMENT USED TO BE THE WHOLE OF IT -- an unfinished sentence directly
+    # above `return`. The loop above iterates `legacy.items()`, so a quantity
+    # the extractor does not carry produced NO ROW AT ALL: not an agreement,
+    # not a divergence, not a `legacy_only`, nothing. `LEGACY_ONLY` covers only
+    # the opposite direction. Six of the fifteen wired decisions were in that
+    # state -- `staff_group`, `group_symbol`, `part_partition`, `glyph_owner`,
+    # `tuplet_ratio`, `duration` -- so a reader could total the table, find it
+    # coherent, and never learn that 40% of the decisions were not in it.
+    #
+    # ⚠️ SUMMARISED PER QUANTITY RATHER THAN EMITTED AS ROWS, deliberately.
+    # `duration` alone decides 113 subjects on ONE page and `glyph_owner` 60;
+    # as rows they would swamp a table whose purpose is to be READ, and rank
+    # above every real disagreement while comparing against nothing. A count
+    # that says "113 duration verdicts have no legacy counterpart" is the
+    # honest form of the same fact.
+    staged_only: Dict[str, Dict[str, Any]] = {}
+    for v in log.all_verdicts():
+        if v.subject.to_key() in legacy.get(v.quantity, {}):
+            continue
+        e = staged_only.setdefault(v.quantity, {"decided": 0, "abstained": 0,
+                                                "narrowed": 0, "kinds": {}})
+        if v.outcome is Outcome.ABSTAINED:
+            e["abstained"] += 1
+        elif v.outcome is Outcome.NARROWED:
+            e["narrowed"] += 1
+        else:
+            e["decided"] += 1
+        k = v.subject.kind.value
+        e["kinds"][k] = e["kinds"].get(k, 0) + 1
+    counts[STAGED_ONLY] = sum(
+        e["decided"] + e["abstained"] + e["narrowed"]
+        for e in staged_only.values())
+
+    # ── the ranking Step 2 actually asks for ────────────────────────────────
+    # "a divergence list ranked by how many staves each disagreement touches,
+    # each traceable to the decision that caused it". Rank the rows where the
+    # two paths genuinely say different things -- an abstention is a separate
+    # column on purpose (see the docstring) and does not belong in a list of
+    # disagreements.
+    ranked = sorted(
+        (r for r in rows if r["outcome"] in (DIFFER, NOT_COMPARABLE)),
+        key=lambda r: (-r["staves_touched"], r["quantity"], r["subject"]))
+
+    return {"counts": counts, "rows": rows, "ranked": ranked,
+            "staged_only": staged_only,
+            "coverage": _coverage(log, legacy)}

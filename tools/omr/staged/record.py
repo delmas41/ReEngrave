@@ -821,6 +821,16 @@ class Log:
     def row(self, row_id: str) -> Row | None:
         return self._obs.get(row_id) or self._abs.get(row_id) or self._vrd.get(row_id)
 
+    def all_verdicts(self) -> tuple[Verdict, ...]:
+        """Every verdict in the log, superseded ones included.
+
+        ⚠️ Unlike `verdict()` this does NOT resolve supersession -- it is for
+        asking what the log CONTAINS (coverage, blind spots), not what it
+        currently concludes. A consumer that wants the live answer per subject
+        must go through `verdict()`.
+        """
+        return tuple(self._vrd.values())
+
     def all_rows(self) -> tuple[Row, ...]:
         return tuple(self._obs.values()) + tuple(self._abs.values()) + \
             tuple(self._vrd.values())
