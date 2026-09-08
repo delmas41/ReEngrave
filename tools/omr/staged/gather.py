@@ -463,6 +463,44 @@ def _stub_per_staff(log: Log, cells: Sequence[Any],
                     reason=ABSTAIN.NOT_IMPLEMENTED, note=note)
 
 
+def gather_clef_seed(log: Log, cells, local, *, dossier: Any,
+                     sources: Dict[str, str]) -> None:
+    """The dossier's clef for each staff, DERIVED FROM the dossier fact.
+
+    ⚠️ THE `derived_from` IS THE WHOLE POINT OF THIS FUNCTION.
+
+    A dossier that supplies a clef seed AND an instrument has supplied ONE
+    source twice. With both rows carrying the dossier fact in their basis, the
+    correlation check sees them as one signal and `tally` counts them once.
+    Without it they look like two independent witnesses agreeing -- which is
+    the more insidious form of the dossier hazard, and the form the staged
+    split does NOT dissolve.
+    """
+    if dossier is None or "dossier" not in sources:
+        return
+    clefs = {}
+    if isinstance(dossier, dict):
+        clefs = dossier.get("clef_by_staff") or {}
+    seen = set()
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.staff(c.page_index, key[0], key[1])
+        if sub.to_key() in seen:
+            continue
+        seen.add(sub.to_key())
+        value = clefs.get(key[1]) or clefs.get(str(key[1]))
+        if value is None:
+            log.abstain(sub, Q.CLEF_SEED, reader=READERS.DOSSIER,
+                        frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
+                        note="the dossier names no clef for this staff")
+            continue
+        log.observe(sub, Q.CLEF_SEED, value, reader=READERS.DOSSIER,
+                    frame=FRAME_PAGE, tier="dossier",
+                    derived_from=(sources["dossier"],))
+
+
 def gather_key_signature(log: Log, cells, local) -> None:
     """⚠️ DECLARED STUB, and the one that needs a reader CHANGED rather than
     called.
@@ -572,7 +610,7 @@ def gather_direction_text(log: Log, pws, cells, local) -> None:
 
 
 def gather_external(log: Log, pws, *, dossier: Any = None,
-                    roster: Any = None) -> None:
+                    roster: Any = None) -> Dict[str, str]:
     """Facts that are not read off THIS raster.
 
     ⚠️ They are still Observations -- their ancestor is not our page, so they
@@ -580,21 +618,26 @@ def gather_external(log: Log, pws, *, dossier: Any = None,
     consumer can hold them out on QUALITY grounds, which is a different
     question from circularity and is kept separate on purpose.
     """
-    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    sources: Dict[str, str] = {}
     if dossier is None:
         log.abstain(R.DOCUMENT, Q.DOSSIER_FACT, reader=READERS.DOSSIER,
                     frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
                     note="no dossier supplied")
     else:
-        log.observe(R.DOCUMENT, Q.DOSSIER_FACT, dossier,
-                    reader=READERS.DOSSIER, frame=FRAME_PAGE, tier="dossier")
+        row = log.observe(R.DOCUMENT, Q.DOSSIER_FACT, dossier,
+                          reader=READERS.DOSSIER, frame=FRAME_PAGE,
+                          tier="dossier")
+        sources["dossier"] = row.id
     if roster is None:
         log.abstain(R.DOCUMENT, Q.ROSTER_ENTRY, reader=READERS.CATALOG,
                     frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
                     note="no work id / roster supplied")
     else:
-        log.observe(R.DOCUMENT, Q.ROSTER_ENTRY, roster,
-                    reader=READERS.CATALOG, frame=FRAME_PAGE, tier="roster")
+        row = log.observe(R.DOCUMENT, Q.ROSTER_ENTRY, roster,
+                          reader=READERS.CATALOG, frame=FRAME_PAGE,
+                          tier="roster")
+        sources["roster"] = row.id
+    return sources
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -629,6 +672,13 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
     log = log if log is not None else Log()
 
     for pws, cells in pws_and_cells:
+        # ⚠️ EXTERNAL FACTS FIRST. Not an ordering preference: anything
+        # DERIVED from a dossier or roster must be able to name that row in
+        # its `derived_from`, and `Log.observe` refuses a `derived_from` that
+        # is not already in the log -- deliberately, because a dangling
+        # reference would silently restore the double-counting this ordering
+        # exists to prevent.
+        sources = gather_external(log, pws, dossier=dossier, roster=roster)
         local = gather_geometry(log, pws)
         gather_systems(log, pws, getattr(pws, "used_bridging", True))
         gather_measures(log, pws, cells, local)
@@ -640,13 +690,13 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_notehead_positions(log, cells, local, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, cells, local)
+        gather_clef_seed(log, cells, local, dossier=dossier, sources=sources)
         gather_key_signature(log, cells, local)
         gather_meter(log, cells, local)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)
         gather_direction_text(log, pws, cells, local)   # hard edge: last
-        gather_external(log, pws, dossier=dossier, roster=roster)
 
     log.freeze()
     return log

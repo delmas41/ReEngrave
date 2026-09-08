@@ -218,6 +218,124 @@ class TestTheThreeStandingRefusals(unittest.TestCase):
                             for r in self.log.rows(Q.ROSTER_ENTRY, R.DOCUMENT)))
 
 
+class TestTheDossierDoubleCount(unittest.TestCase):
+    """⚠️ THE DOSSIER HAZARD IN ITS SECOND FORM, and the coordinator's ruling.
+
+    The FIRST form -- a clef adjudicator reading back its own dossier seed --
+    really does dissolve under the staged split: the dossier becomes a row
+    among rows, it overwrites nothing, and there is no seed to read back.
+
+    THE SECOND FORM DOES NOT DISSOLVE. If a dossier supplies BOTH the clef
+    seed AND the instrument, a clef decision that weighs both is counting ONE
+    SOURCE TWICE. That is not self-reference, it is the other rule -- two
+    signals sharing an ancestor are ONE signal -- and it is more insidious,
+    because it looks like two independent pieces of evidence agreeing.
+
+    ⚠️ THIS TEST FAILED WHEN FIRST WRITTEN, and the failure was a modelling
+    error in the design: `Observation.basis` was empty "by definition", so a
+    dossier's two descendants shared no ancestor and the correlation check saw
+    two independent witnesses. The invariant is now narrower and true -- a row
+    read off THIS RASTER has no ancestors; a row derived from an EXTERNAL
+    DOCUMENT carries that document's row.
+    """
+
+    def setUp(self):
+        self.log = Log()
+        self.sub = R.staff(0, 0, 0)
+        self.dossier = self.log.observe(
+            R.DOCUMENT, Q.DOSSIER_FACT, {"clef": "alto", "instrument": "Viola"},
+            reader=READERS.DOSSIER, frame="page", tier="dossier")
+
+    def test_the_seed_and_the_instrument_share_the_dossier_as_ancestor(self):
+        seed = self.log.observe(self.sub, Q.CLEF_SEED, "alto",
+                                reader=READERS.DOSSIER, frame="page",
+                                tier="dossier",
+                                derived_from=(self.dossier.id,))
+        instrument = self.log.record(Verdict(
+            id=self.log._next_id("vrd"), subject=self.sub,
+            quantity=Q.INSTRUMENT, outcome=Outcome.DECIDED,
+            value={"name": "Viola", "expected_clef": "alto"},
+            decider="identity", reason="r",
+            considered=(self.dossier.id,), basis=(self.dossier.id,)))
+
+        shared = ((self.log.closure(seed.id) & self.log.closure(instrument.id))
+                  - {seed.id, instrument.id})
+        self.assertEqual(shared, {self.dossier.id})
+
+    def test_the_correlation_check_sees_them_as_ONE_signal(self):
+        seed = self.log.observe(self.sub, Q.CLEF_SEED, "alto",
+                                reader=READERS.DOSSIER, frame="page",
+                                tier="dossier",
+                                derived_from=(self.dossier.id,))
+        instrument = self.log.record(Verdict(
+            id=self.log._next_id("vrd"), subject=self.sub,
+            quantity=Q.INSTRUMENT, outcome=Outcome.DECIDED,
+            value={"name": "Viola", "expected_clef": "alto"},
+            decider="identity", reason="r",
+            considered=(self.dossier.id,), basis=(self.dossier.id,)))
+
+        ev = Evidence(self.log, self.sub,
+                      _spec(quantity=Q.CLEF,
+                            wants=(Q.CLEF_SEED, Q.INSTRUMENT)))
+        ev.rows(Q.CLEF_SEED)
+        ev.verdict(Q.INSTRUMENT)
+        groups = ev.correlated_groups()
+        self.assertTrue(groups, "the dossier's two descendants must group")
+        self.assertTrue(any({seed.id, instrument.id} <= g for g in groups))
+
+    def test_and_tally_therefore_counts_the_dossier_ONCE(self):
+        """The behavioural consequence: agreement between two descendants of
+        one source must not score as corroboration."""
+        seed = self.log.observe(self.sub, Q.CLEF_SEED, "alto",
+                                reader=READERS.DOSSIER, frame="page",
+                                tier="dossier",
+                                derived_from=(self.dossier.id,))
+        instrument = self.log.record(Verdict(
+            id=self.log._next_id("vrd"), subject=self.sub,
+            quantity=Q.INSTRUMENT, outcome=Outcome.DECIDED,
+            value={"name": "Viola", "expected_clef": "alto"},
+            decider="identity", reason="r",
+            considered=(self.dossier.id,), basis=(self.dossier.id,)))
+        ev = Evidence(self.log, self.sub,
+                      _spec(quantity=Q.CLEF,
+                            wants=(Q.CLEF_SEED, Q.INSTRUMENT)))
+        ev.rows(Q.CLEF_SEED)
+        ev.verdict(Q.INSTRUMENT)
+        groups = ev.correlated_groups()
+
+        terms = [Term("dossier_seed", 4.0, (seed.id,)),
+                 Term("instrument", 1.0, (instrument.id,))]
+        self.assertEqual(tally(terms), 5.0)               # naive: double-counted
+        self.assertEqual(tally(terms, correlated=groups), 4.0)   # one source
+
+    def test_a_reader_of_THIS_page_is_NOT_correlated_with_the_dossier(self):
+        """⚠️ The control. The rule must collapse a shared ancestor, not
+        everything that agrees -- a detector reading the same clef IS
+        independent corroboration and must still count."""
+        seed = self.log.observe(self.sub, Q.CLEF_SEED, "alto",
+                                reader=READERS.DOSSIER, frame="page",
+                                tier="dossier",
+                                derived_from=(self.dossier.id,))
+        detected = self.log.observe(self.sub, Q.CLEF_GLYPH, "clefC",
+                                    reader=READERS.DETECTOR, frame="cell:0",
+                                    score=0.8)
+        ev = Evidence(self.log, self.sub,
+                      _spec(quantity=Q.CLEF,
+                            wants=(Q.CLEF_SEED, Q.CLEF_GLYPH)))
+        ev.rows(Q.CLEF_SEED)
+        ev.rows(Q.CLEF_GLYPH)
+        groups = ev.correlated_groups()
+        self.assertFalse(any(detected.id in g and seed.id in g for g in groups))
+
+    def test_a_dangling_derived_from_is_refused(self):
+        """A reference to a row that is not in the log would silently restore
+        the double-count, so it is an error rather than an empty closure."""
+        with self.assertRaises(ValueError):
+            self.log.observe(self.sub, Q.CLEF_SEED, "alto",
+                             reader=READERS.DOSSIER, frame="page",
+                             derived_from=("obs:999999",))
+
+
 class TestSignedTerms(unittest.TestCase):
     def test_correlated_evidence_is_counted_once(self):
         """⚠️ The live case: two rows that LOOK like two readings and are

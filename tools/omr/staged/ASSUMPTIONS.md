@@ -368,6 +368,22 @@ boundary.
 
 **Blast radius.** Every subject key. Getting it wrong misfiles every row.
 
+### A-BUILD-6 · An external fact's descendants carry it; a page reading's do not
+
+**Assumption.** `Observation.basis` is empty for anything read off this
+raster, and non-empty for anything derived from an external document.
+
+**Why.** Forced by the dossier double-count (finding 5 below). The first
+invariant — "empty by definition" — made two descendants of one dossier look
+like two independent witnesses.
+
+**How to falsify.** Find an external source whose descendants reach one
+decision by paths that should NOT be collapsed. (I could not construct one:
+if two facts really do come from one document, agreement between them is not
+corroboration.)
+
+**Blast radius.** Anything with a `tier`. Today: dossier and roster.
+
 ### A-BUILD-4 · The margin-label cascade runs with the FREE rung only
 
 **Assumption.** `gather_margin_labels` calls `contextual._labels_for_page`
@@ -438,16 +454,52 @@ which the tester should not spend time re-deriving.
    `instrument_source.get(slot, "label")`, and `"label"` is the one tier the
    refusals admit. Whether the default is reachable is **UNMEASURED**; the shape
    is the hazard.
-5. **The dossier-seeding circularity dissolves rather than needing policing.**
-   The standing warning is that a clef adjudicator must exclude
-   `clef_evidence["dossier"]` on a seeded run or it reads back its own seed.
-   That hazard exists because the dossier *overwrites a reading* and the reading
-   is then re-read. In the staged design the dossier is a separate row and
-   overwrites nothing, so there is no seed to read back.
-   ⚠️ **The residual is real and is NOT dissolved:** if a dossier seeds the
-   part↔staff **join**, and that join feeds identity, and identity feeds the
-   clef, the chain is genuine — and *that* one the filter does catch, because
-   the join is a verdict with a basis.
+5. ⚠️⚠️ **THE DOSSIER HAZARD DOES NOT DISSOLVE. IT CHANGES SHAPE — and the
+   second shape is worse.** Both halves belong together, and this entry is
+   written as one item precisely because **a hazard recorded as "dissolved"
+   is exactly the kind of claim that gets quoted later without the second
+   half.**
+
+   **The half that really does dissolve — SELF-REFERENCE.** The standing
+   warning is that a clef adjudicator must exclude `clef_evidence["dossier"]`
+   on a seeded run or it reads back its own seed. That hazard exists because
+   the dossier *overwrites a reading* and the reading is then re-read. In the
+   staged design the dossier is a row among rows, it overwrites nothing, and
+   there is no seed to read back. That half is genuinely gone.
+
+   **The half it becomes — DOUBLE-COUNTING.** If a dossier supplies BOTH the
+   clef seed AND the instrument, a clef decision that weighs the dossier row
+   *and* the instrument is counting **one source twice**. That is not
+   self-reference; it is the other rule — *two signals sharing an ancestor are
+   ONE signal, not corroboration* — and it is **more insidious, because it
+   looks like two independent pieces of evidence agreeing.**
+
+   ⚠️ **AND IT WAS NOT CAUGHT AS FIRST BUILT.** The design said
+   `Observation.basis` is empty *"by definition"*, so a dossier's two
+   descendants shared no ancestor and the correlation check saw two
+   independent witnesses. **That was a modelling error, and the invariant is
+   now narrower and true:**
+
+   > A row read off **this raster** has no ancestors.
+   > A row derived from an **external document** carries that document's row.
+
+   `Log.observe(..., derived_from=(...))` is how a descendant carries it, and
+   a dangling reference is **refused** rather than silently producing an empty
+   closure. `gather_external` therefore runs FIRST in the page loop, because
+   nothing can name a row that does not exist yet.
+
+   Pinned by `TestTheDossierDoubleCount` (5 tests, in the same family as the
+   three refusal-reproduction tests), including a **control** — a detector
+   reading the same clef is *not* correlated with the dossier, because the
+   rule must collapse a shared ancestor and not everything that agrees.
+   Mutation-tested: dropping `derived_from` fails exactly the three positive
+   tests and leaves the control green.
+
+   ⚠️ **A third form is still open and is NOT addressed here:** if a dossier
+   seeds the part↔staff **join**, and that join feeds identity, and identity
+   feeds the clef, the chain is genuine. That one the filter *does* catch,
+   because the join is a verdict with a basis — but it has no test, because
+   no join is wired yet.
 
 ---
 

@@ -37,7 +37,8 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field, replace
 from enum import Enum
-from typing import Any, Dict, Iterator, List, Mapping, Optional, Set, Union
+from typing import (Any, Dict, Iterator, List, Mapping, Optional, Sequence,
+                    Set, Union)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Addressing
@@ -381,8 +382,26 @@ class ABSTAIN(_Vocab):
 class Observation:
     """A quantity read off the raster. NEVER a name, NEVER an interpretation.
 
-    `basis` is empty BY DEFINITION -- an observation's only ancestor is the
-    raster -- which is what makes the circularity closure finite and cheap.
+    ⚠️ THE INVARIANT, REFINED 2026-09-07 AFTER IT WAS FOUND TOO STRONG:
+
+        A row read off THIS RASTER has no ancestors.
+        A row DERIVED FROM AN EXTERNAL DOCUMENT carries that document's row.
+
+    The first draft said `basis` is empty "by definition", and that was a
+    modelling error with a live consequence. A dossier does not observe this
+    page: it supplies a fact about the WORK, which is then joined to a staff.
+    So `Q.CLEF_SEED` and a dossier-derived `Q.INSTRUMENT` are both DERIVED
+    FROM ONE SOURCE -- and with empty bases they share no ancestor, so the
+    correlation check saw two independent witnesses where there is one.
+
+    That is the dossier hazard in its second form. It stops being
+    self-reference (the clef reading back its own seed, which the staged split
+    really does dissolve) and becomes DOUBLE-COUNTING, which is more insidious
+    because it looks like two independent pieces of evidence agreeing.
+
+    `derived_from` is how an external fact's descendants carry it. The closure
+    is still finite and cheap: it terminates at the external row, which has no
+    ancestors of its own.
     """
 
     id: str
@@ -402,7 +421,8 @@ class Observation:
         return {"id": self.id, "subject": self.subject.to_key(),
                 "quantity": self.quantity, "value": self.value,
                 "reader": self.reader, "frame": self.frame,
-                "score": self.score, "detail": dict(self.detail)}
+                "score": self.score, "detail": dict(self.detail),
+                "basis": list(self.basis)}
 
 
 @dataclass(frozen=True)
@@ -542,19 +562,34 @@ class Log:
 
     def observe(self, subject: Subject, quantity: str, value: Any, *,
                 reader: str, frame: str, score: float | None = None,
+                derived_from: Sequence[str] = (),
                 **detail: Any) -> Observation:
         """Record a measurement.
 
         ⚠️ `value` is required and positional. There is deliberately no
         `observe_if(...)` and no default: a reader that has nothing to say
         calls `abstain`, which forces it to say WHY.
+
+        ⚠️ `derived_from` is for rows that come from an EXTERNAL document
+        rather than from this raster -- a dossier's clef, a catalog roster's
+        instrument. It is what stops one external source being counted twice
+        when two of its descendants both reach a decision. A row read off the
+        page leaves it empty.
         """
         if self._frozen:
             raise RuntimeError("the log is frozen; GATHER is over")
         Q.check(quantity, "quantity")
         READERS.check(reader, "reader")
+        for rid in derived_from:
+            if self.row(rid) is None:
+                raise ValueError(
+                    f"derived_from names {rid!r}, which is not in this log. "
+                    f"An external fact's descendants must carry the row they "
+                    f"came from, or the correlation check cannot see them as "
+                    f"one signal.")
         row = Observation(self._next_id("obs"), subject, quantity, value,
-                          reader, frame, score, dict(detail))
+                          reader, frame, score, dict(detail),
+                          tuple(derived_from))
         self._obs[row.id] = row
         self._index(quantity, subject, row.id)
         return row
