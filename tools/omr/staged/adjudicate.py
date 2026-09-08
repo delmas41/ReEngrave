@@ -649,8 +649,13 @@ ORDER: Tuple[str, ...] = (
     Q.ARTICULATION_OWNER,
     Q.WEDGE_ANCHOR,
     # rhythm
-    Q.DURATION,
+    # ⚠️ TUPLET BEFORE DURATION. `adjudicate_duration` reads the tuplet
+    # verdict to scale its beats, so a tuplet decided afterwards would arrive
+    # too late and every triplet would export at its written value -- the
+    # exact fault the ratio exists to fix. Found by wiring them, not by
+    # reasoning: the ORDER list had them the other way round.
     Q.TUPLET_RATIO,
+    Q.DURATION,
     Q.METER,
     # text
     Q.DYNAMIC,

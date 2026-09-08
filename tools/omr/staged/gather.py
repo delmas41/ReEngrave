@@ -566,6 +566,95 @@ def _observe_ladder(log: Log, g: Subject, box, cand_key: str,
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Rhythm marks -- MEASUREMENTS. The duration they compose into is a VERDICT.
+# ─────────────────────────────────────────────────────────────────────────────
+
+_FLAG_PREFIX = "flag"
+_DOT_CLASS = "augmentationDot"
+#: ⚠️ DSv2's `tuplet3` / `fingering3` distinction is POSITIONAL -- a `3` over a
+#: beamed group vs a `3` beside a notehead -- and the detector reproduces it
+#: badly on orchestral pages: 33 `fingering3` against 16 `tuplet3` over twelve
+#: works, and ALL 33 sit in a cell holding a real triplet. Both are read; the
+#: positional gate in the adjudicator is what keeps that safe.
+_TUPLET_CLASSES = ("tuplet3", "fingering3", "tupletBracket", "tupleBracket")
+
+
+def gather_rhythm_marks(log: Log, cells: Sequence[Any],
+                        local: Dict[int, Tuple[int, int]],
+                        detections: Dict[str, List[Any]]) -> None:
+    """Flags, augmentation dots, tuplet markers -- per glyph, as measurements.
+
+    ⚠️ WHAT IS NOT HERE: `Q.BEAM_STROKE` and `Q.STEM`. Those come from the
+    CLASSICAL CV rung (`line_detection`), not the detector, because YOLO
+    bounding boxes are structurally bad at thin lines -- that is why Phase 4f
+    moved them. They are gathered by `gather_cv_lines` and are a DECLARED STUB
+    until that rung is wired.
+
+    ⚠️ AND A DOT IS NOT MEASURED AGAINST ITS OWN BOX. The gate that decides
+    which notehead a dot belongs to is expressed in STAFF SPACES, asymmetric
+    (0.75 above, 0.25 below), because a dot goes above its note or level with
+    it and NEVER under -- a symmetric window ties on Brahms's double stops and
+    double-dots the upper note while the lower loses its dot. That arithmetic
+    is the adjudicator's; this only records where the ink is.
+    """
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        frame = frame_cell(sub.cell)
+        for gi, d in enumerate(dets):
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            name = d.smufl_name
+            if name.startswith(_FLAG_PREFIX):
+                log.observe(g, Q.FLAG, name, reader=READERS.DETECTOR,
+                            frame=frame, score=float(d.confidence),
+                            y_center=d.y_center, x_center=d.x_center)
+            elif name == _DOT_CLASS:
+                log.observe(g, Q.AUG_DOT, (d.x_center, d.y_center),
+                            reader=READERS.DETECTOR, frame=frame,
+                            score=float(d.confidence))
+            elif name in _TUPLET_CLASSES:
+                log.observe(g, Q.TUPLET_MARKER, name,
+                            reader=READERS.DETECTOR, frame=frame,
+                            score=float(d.confidence),
+                            x0=d.x_canonical,
+                            x1=d.x_canonical + d.width_canonical,
+                            x_center=d.x_center,
+                            is_bracket=name.lower().endswith("bracket"))
+
+
+def gather_cv_lines(log: Log, cells: Sequence[Any],
+                    local: Dict[int, Tuple[int, int]]) -> None:
+    """⚠️ DECLARED STUB -- the classical-CV stem and beam rung.
+
+    `line_detection` reads these off the STAFF-LINE-REMOVED cell variant while
+    the detector reads the ORIGINAL. That split is deliberate and measured:
+    erasing staff lines before YOLO costs 7-13 pooled reading points and up to
+    a third of the noteheads, and MANUFACTURES beam confusion (46 -> 105
+    detections at precision 0.783 -> 0.343 on residue). **Erase for the CV
+    consumer, never for the detector.**
+
+    ⚠️ And when this is wired, a YOLO beam box must be KEPT ONLY where no CV
+    beam overlaps its x-range. A YOLO box bounds the STACK, not a stroke, so
+    unioning them contributes a centre in the GAP between two strokes and
+    three sixteenths read as three eighths.
+    """
+    seen = set()
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        if sub.to_key() in seen:
+            continue
+        seen.add(sub.to_key())
+        for quantity in (Q.BEAM_STROKE, Q.STEM):
+            log.abstain(sub, quantity, reader=READERS.CV_LINES,
+                        frame=frame_cell(c.measure_index),
+                        reason=ABSTAIN.NOT_IMPLEMENTED,
+                        note="line_detection not wired; erase for the CV "
+                             "consumer, never for the detector")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # The clef -- every reader, and BOTH crops
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -1133,6 +1222,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
 
         gather_notehead_positions(log, cells, local, detections)
         gather_ownership_evidence(log, pws, cells, local, detections)
+        gather_rhythm_marks(log, cells, local, detections)
+        gather_cv_lines(log, cells, local)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)
         gather_clef_seed(log, cells, local, dossier=dossier, sources=sources)

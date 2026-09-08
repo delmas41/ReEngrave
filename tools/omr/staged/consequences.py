@@ -111,22 +111,81 @@ def respell_accidental(log, subject, key) -> List[Verdict]:
       bound="Re-reads a beam level by +/-1 ONLY. The corrected bar must land "
             "EXACTLY on the meter. The answer must be UNIQUE. Single-voice "
             "measures only. Never adds, deletes or re-pitches a note. "
-            "Tuplet notes are excluded -- the level re-derivation would "
-            "silently drop the ratio.",
-      stub=True)
-def reconcile_duration(log, subject, meter) -> List[Verdict]:
-    """⚠️ DECLARED STUB, and the ONLY rule here that revises a fact rather
-    than deriving a new one.
+            "Tuplet notes are EXCLUDED -- the level re-derivation would "
+            "silently drop the ratio.")
+def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdict]:
+    """The meter settles, so a bar that does not fit it is re-read -- ONCE.
 
-    ⚠️ IT IS THE LOOP. Durations vote the meter; the meter then re-reads the
-    durations. The existing pipeline breaks it by ordering -- vote once at
-    `transcribe.py:5382`, repair once at `:5410` -- and the bound above is
-    what stops the repair laundering a guess. When this is wired it must
-    declare `revises=Q.DURATION` on the adjudicator side so `Log.record`
-    admits the second verdict; without that declaration it raises
-    `AlreadyAdjudicated`, which is the guard working.
+    ⚠️ THIS IS THE ONLY LOOP IN THE PIPELINE AND THE BOUND IS WHAT REPLACES A
+    FIXPOINT. Durations vote the meter; the meter then re-reads the durations.
+    The existing pipeline breaks it by ORDERING -- vote once, repair once --
+    and the bound is what stops the repair laundering a guess.
+
+    ⚠️ IT MAY ONLY MOVE THE BEAM LEVEL, and that is not arbitrary: durations
+    come from clustering beam y-positions, so one extra or missing cluster
+    HALVES OR DOUBLES a note. The beam level is the one input fragile enough
+    to be worth arbitrating, and everything else -- how many notes there are,
+    what pitch they carry -- is left alone. It cannot paper over a detection
+    fault because it cannot add or remove a note.
+
+    ⚠️ AND IT REFUSES WHEN THE ANSWER IS NOT UNIQUE. That is the
+    "certain about the GROUP, silent about the MEMBER" rule, implemented: a
+    failed bar sum implicates the meter, every duration, a spurious note, a
+    missing one and a mis-owned glyph, so where more than one re-reading
+    lands the bar exactly on the meter, NOTHING is changed and the warning
+    stands. It must never condemn the cheapest member to change.
     """
-    return []
+    value = meter.value or {}
+    num, den = value.get("numerator"), value.get("denominator")
+    if not num or not den:
+        return []
+    expected = float(num) * 4.0 / float(den)
+
+    notes = [v for v in log.verdicts(Q.DURATION, subject,
+                                     scope=Scope.SELF_AND_DESCENDANTS)
+             if v.outcome is Outcome.DECIDED and isinstance(v.value, dict)]
+    if not notes:
+        return []
+
+    total = sum(float(n.value.get("beats") or 0.0) for n in notes)
+    if abs(total - expected) < 1e-6:
+        return []                       # the bar already fits
+
+    # ⚠️ Tuplet members are excluded: `beats` there is already scaled by the
+    # ratio, and re-deriving a level would silently drop it.
+    candidates = [n for n in notes
+                  if float(n.value.get("beats") or 0.0)
+                  == float(n.value.get("written") or -1.0)]
+
+    landings = []
+    for note in candidates:
+        for delta in (-1, +1):
+            level = int(note.value.get("beam_levels") or 0) + delta
+            if level < 0:
+                continue
+            written = float(note.value.get("written") or 0.0)
+            old_level = int(note.value.get("beam_levels") or 0)
+            base = written * (2 ** old_level)
+            new_beats = base / (2 ** level)
+            if abs(total - written + new_beats - expected) < 1e-6:
+                landings.append((note, level, new_beats))
+
+    if len(landings) != 1:
+        # ⚠️ Zero landings: no single beam level explains the bar, so the
+        # fault is elsewhere in the group. More than one: the evidence does
+        # not distinguish them. BOTH refuse, and the bar keeps its warning.
+        return []
+
+    note, level, new_beats = landings[0]
+    out = Verdict(
+        id=log._next_id("vrd"), subject=note.subject, quantity=Q.DURATION,
+        outcome=Outcome.DECIDED,
+        value={**note.value, "beats": new_beats, "written": new_beats,
+               "beam_levels": level, "reconciled": True},
+        decider="reconcile_duration", reason="meter_reconciliation",
+        considered=(note.id, meter.id), basis=(note.id, meter.id),
+        supersedes=note.id)
+    return [log.record(out)]
 
 
 @rule(consequence=Consequence.MOVE_GLYPH,

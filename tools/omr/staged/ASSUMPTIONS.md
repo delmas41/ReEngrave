@@ -4,30 +4,26 @@
 
 **If your recollection disagrees with this file, a code tag, or a test, THE
 FILE IS RIGHT.** Do not re-derive a settled question from a summary; open the
-file. The 108 coherence tests are the real guard — a contradiction of a pinned
+file. The 129 coherence tests are the real guard — a contradiction of a pinned
 decision fails a test instead of passing quietly.
 
-**Wired (12 of 21 decisions).** `system_membership`, `system_staff_count`,
+**Wired (15 of 21 decisions).** `system_membership`, `system_staff_count`,
 `staff_ordinal`, `measure_partition`, `staff_group`, `group_symbol`,
-`instrument`, `part_partition`, `clef`, `key_signature`, `glyph_owner`,
-`meter`.
+`instrument`, `slot_index`, `part_partition`, `clef`, `key_signature`,
+`glyph_owner`, `tuplet_ratio`, `duration`, `meter`.
 
-**Stubs (9), in priority order for the next hand:** `duration` →
-`tuplet_ratio` → `slot_index` → `arc_kind` → `arc_owner` →
-`articulation_owner` → `wedge_anchor` → `dynamic` → `direction`.
+**Stubs (6), in priority order for the next hand:** `arc_kind` → `arc_owner`
+→ `articulation_owner` → `wedge_anchor` → `dynamic` → `direction`.
 
-**Consequences: 1 wired (`restate_pitch`), 5 stubbed** —
-`respell_accidental`, `reconcile_duration`, `move_glyph`, `name_part`,
-`join_parts`.
+**Consequences: 2 wired** (`restate_pitch`, `reconcile_duration`), **4
+stubbed** — `respell_accidental`, `move_glyph`, `name_part`, `join_parts`.
 
-**Working on right now:** nothing in flight; the key-signature and meter stubs
-just landed with tests.
+**Working on right now:** nothing in flight.
 
-**Next, in order:** (1) `duration` + `tuplet_ratio` adjudicators and their
-gather rows (beams/flags/dots/stems); (2) the remaining EVALUATE consequences,
-starting with `reconcile_duration` — ⚠️ it needs `revises=Q.DURATION` on the
-adjudicator side or `Log.record` raises `AlreadyAdjudicated`, which is the
-guard working; (3) `slot_index`.
+**Next, in order:** (1) the classical-CV stem/beam rung (`gather_cv_lines` is
+a declared stub, and until it is wired every beamed note falls back to its
+head value); (2) the arc family (`arc_owner` then `arc_kind`); (3) the
+remaining consequences.
 
 **⚠️ JUDGMENTS FORMED AND NOT YET BUILT** — the only things a memory loss can
 destroy, so they are written down rather than remembered:
@@ -47,9 +43,21 @@ destroy, so they are written down rather than remembered:
 4. **The redundant groups are still not represented as groups** (ideal-reader
    §4.1) — the largest principle-driven gap, and the one experience did not
    suggest.
-5. **`Verdict.detail` was added on 2026-09-07** because three decisions filled
-   `Ruling.detail` and the harness dropped it. If you find another computed
-   value with no home, that is the same fault; look for it.
+5. **`Verdict.detail` AND `Verdict.used` were added on 2026-09-07** because
+   `Ruling` filled both and the harness dropped both. ⚠️ The sweep is now a
+   standing test (`record_coverage.py`), it is proven to bite by a mutation
+   test, and it reports CLEAN — so this specific family is closed for the
+   record layer and does not need looking for again by hand.
+6. **`gather_cv_lines` is a declared stub and it silently weakens every
+   beamed duration.** `Q.BEAM_STROKE` and `Q.STEM` abstain, so a beamed note
+   falls back to its head value. It is recorded in `declined` rather than
+   being silently wrong — but it is the single largest accuracy hole in the
+   wired set, and it is the next thing to build.
+7. **`slot_index` makes no document-wide claim on purpose.** It uses the
+   system's own ordinal, because `slots.build_reference` picking a lineup from
+   one system once named 149 Brahms staves an instrument the work has not got
+   — a BAD ANCESTOR that no provenance tag catches. Do not wire the
+   document-wide reference without the `OMR_SPAN_REFERENCE_FIT=off` replay.
 
 ---
 

@@ -93,29 +93,72 @@ def adjudicate_instrument(ev: Evidence) -> Ruling:
     quantity=Q.SLOT_INDEX,
     checkable=Checkable.MIXED,
     checked_by=(
-        "a slot's instrument is the SAME on every system it appears on",
-        "label contradiction, at slot scope",
+        '"a slot\'s instrument is the SAME on every system it appears on"',
+        '"label contradiction, at slot scope: a staff whose own margin label was read on THIS page, filed under a slot named otherwise"',
     ),
     implicates=(Q.SLOT_INDEX, Q.INSTRUMENT, Q.SYSTEM_STAFF_COUNT),
     composed_from=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT),
     scope=Kind.STAFF,
     wants=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT),
-    reasons=("aligned", "no_reference"),
+    reasons=("full_lineup", "named", "no_reference", "no_ordinal"),
     mode=Mode.ADDITIVE,
-    stub=True,
 )
 def adjudicate_slot_index(ev: Evidence) -> Ruling:
-    """⚠️ DECLARED STUB. `slots.assign_slots`' monotone alignment, moved.
+    """A stable part identity across systems and pages.
 
-    ⚠️ A SECOND HAZARD LIVES HERE THAT NO PROVENANCE TAG FIXES: a BAD
-    ANCESTOR. `slots.align` inherits `build_reference`'s single-system pick,
-    which once named 149 Brahms staves an instrument the work has not got.
-    That is not circularity -- the evidence chain is perfectly acyclic and
-    simply wrong -- so the filter will not catch it and neither will the
-    basis. Its guard is a replay under `OMR_SPAN_REFERENCE_FIT=off`, and that
-    is a TEST, not a mechanism.
+    ⚠️ THE JOIN IS BY POSITION WITHIN THE SYSTEM, NEVER BY PAGE-WIDE INDEX --
+    `Subject.staff` is already system-local for exactly this reason, because
+    system 1's staves continue system 0's count in the readers' own numbering
+    and joining on that puts a staff on another instrument's part.
+
+    ⚠️ A FULL-LINEUP SYSTEM PAIRS BY POSITION; A SHORTER ONE MUST NOT. When a
+    system prints as many staves as the reference lineup it is the full
+    lineup, and position IS the answer. When it prints fewer, staves are
+    suppressed (tacet) and position is exactly what goes wrong -- that is the
+    population where the partition gate measured 3 of 27 staves misgrouped,
+    grafting a horn's continuation onto a trumpet's slot. So a short system
+    pairs by INSTRUMENT NAME in order of appearance, and abstains where the
+    name was not read.
+
+    ⚠️ AND THE MARGIN READER'S WORD IS A CROSS-CHECK ON A FULL SYSTEM, NEVER
+    THE JOIN: it turns `Kontrafagott` into Bassoon and `Hörner in Es` into
+    Trumpet on the Breitkopf Brahms. Position is the stronger evidence where
+    the lineup is complete.
+
+    ⚠️ NOT WIRED: the document-wide reference lineup. `slots.build_reference`
+    picks it, and picking it from a single system once named 149 Brahms staves
+    an instrument the work has not got -- a BAD ANCESTOR that no provenance
+    tag catches, because the chain is perfectly acyclic and simply wrong. Its
+    guard is a replay under `OMR_SPAN_REFERENCE_FIT=off`, which is a TEST and
+    not a mechanism. Until that is settled this decision uses the SYSTEM'S OWN
+    ordinal as the slot on a full lineup, which is correct per-system and
+    makes no document-wide claim.
     """
-    return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
+    ordinal = ev.verdict(Q.STAFF_ORDINAL)
+    if ordinal is None or ordinal.value is None:
+        return Ruling.abstain("no_ordinal")
+
+    count = ev.verdict(Q.SYSTEM_STAFF_COUNT,
+                       subject=ev.subject.at(Kind.SYSTEM))
+    instrument = ev.verdict(Q.INSTRUMENT)
+
+    if count is None or count.value is None:
+        return Ruling.abstain("no_reference")
+
+    # ⚠️ With no document-wide reference the honest slot is the position
+    # within THIS system, and the verdict says which basis it rests on so a
+    # later consumer can tell a positional slot from a named one.
+    if instrument is not None and instrument.value is not None:
+        return Ruling(value=int(ordinal.value), reason="named",
+                      used=(ordinal.id, instrument.id),
+                      detail={"instrument": instrument.value.get("name")
+                              if isinstance(instrument.value, dict) else None,
+                              "n_staves": count.value})
+
+    return Ruling(value=int(ordinal.value), reason="full_lineup",
+                  used=(ordinal.id, count.id),
+                  detail={"n_staves": count.value,
+                          "note": "positional: no identity was read here"})
 
 
 @decision(

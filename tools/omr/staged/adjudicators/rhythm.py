@@ -23,73 +23,206 @@ repair is a bounded EVALUATE consequence, not a second adjudication.
 
 from __future__ import annotations
 
+from typing import Optional
+
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Q, Scope, State
+
+
+#: Notehead class -> written value in beats, before dots and beams.
+#: ⚠️ A notehead class is a MEASUREMENT of the glyph; the duration it composes
+#: into is a VERDICT, and this table is the composition's first step.
+_HEAD_BEATS = {
+    "noteheadWhole": 4.0, "noteheadHalf": 2.0, "noteheadBlack": 1.0,
+    "noteheadDoubleWhole": 8.0,
+}
+
+#: A dot goes ABOVE its note or level with it, NEVER under. (A-DUR-2)
+#:
+#: ⚠️ ASYMMETRIC ON PURPOSE, and the asymmetry is paid for: Brahms's Viola
+#: plays double stops -- two noteheads a space apart, each with its own dot --
+#: so the lower dot is equidistant from both noteheads. A SYMMETRIC window
+#: TIES, and the upper note comes out double-dotted while the lower loses its
+#: dot entirely.
+#:
+#: ⚠️ And the unit is STAFF SPACES, not the dot's own bounding box. The old
+#: gate was `max(dot.height, 12) * 1.2` -- a length derived from a small, noisy
+#: box -- and the on-a-line case landed within a few pixels of it and went
+#: either way: one horn's dotted half read as a half in bars 1 and 5 and as a
+#: dotted half in bars 2, 3, 4 and 6. Measured over 116 dots the signed
+#: offsets are BIMODAL and nothing else: 52 at 0.00 spaces, 52 at +0.50,
+#: nothing between +0.57 and +3.75.
+DOT_ABOVE_NOTE_MAX_SPACES = 0.75
+DOT_BELOW_NOTE_MAX_SPACES = 0.25
+
+
+def _head_class(ev: Evidence) -> Optional[str]:
+    rows = ev.rows(Q.NOTEHEAD_CLASS)
+    if not rows:
+        return None
+    return max(rows, key=lambda r: (r.score or 0.0)).value
 
 
 @decision(
     quantity=Q.DURATION,
     checkable=Checkable.MIXED,
     checked_by=(
-        "bar sum: the durations of one voice in one bar must equal the meter (rhythm_sum_warning -- 111 of 193 scan staves, UNCONSUMED)",
+        '"bar sum: the durations of one voice in one bar must equal the meter (rhythm_sum_warning -- 111 of 193 scan staves, UNCONSUMED)"',
     ),
-    implicates=(Q.DURATION, Q.METER, Q.GLYPH_OWNER, Q.MEASURE_PARTITION, Q.TUPLET_RATIO),
+    implicates=(Q.DURATION, Q.METER, Q.GLYPH_OWNER, Q.MEASURE_PARTITION,
+                Q.TUPLET_RATIO),
     composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM),
     scope=Kind.GLYPH,
-    wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM),
-    reasons=("beams_and_dots", "no_evidence"),
+    wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM,
+           Q.TUPLET_RATIO),
+    reasons=("head_and_marks", "no_notehead", "unknown_head"),
     mode=Mode.ADDITIVE,
-    stub=True,
+    subjects_from=Q.NOTEHEAD_CLASS,
+    # ⚠️ EVALUATE's `reconcile_duration` supersedes this verdict, so the
+    # revision is DECLARED here. Without it `Log.record` raises
+    # `AlreadyAdjudicated` -- which is the no-fixpoint guard working, not a
+    # bug. The bound lives on the rule.
+    revises=Q.DURATION,
 )
 def adjudicate_duration(ev: Evidence) -> Ruling:
-    """⚠️ DECLARED STUB. `rhythm.resolve_rhythms_for_cell`, moved.
+    """The written value, composed from the marks around one notehead.
 
-    Two constants that must come across unchanged, because both were paid for:
+    ⚠️ ITS RELIABILITY IS ITS WEAKEST INPUT, not the sum of them -- which is
+    why `composed_from` names five quantities and why `tally` is deliberately
+    not used here. Today `Q.BEAM_STROKE` and `Q.STEM` are DECLARED STUBS
+    (`gather_cv_lines`), so every beamed note falls back to its head value and
+    `declined` says so on the record rather than the duration silently being
+    wrong.
 
-      * the augmentation-dot window is ASYMMETRIC (0.75 spaces above, 0.25
-        below). A dot goes above its note or level with it, never under, and
-        a symmetric window ties on Brahms's double stops -- the upper note
-        comes out double-dotted and the lower loses its dot.
-      * a YOLO beam box bounds the STACK, not a stroke, so it is kept ONLY
-        where no CV beam overlaps its x-range. Unioning them contributes a
-        centre in the GAP between two strokes and three sixteenths read as
-        three eighths.
+    ⚠️ THE BEAM LEVEL IS THE FRAGILE INPUT and the reason
+    `_reconcile_measure_to_meter` exists: durations come from clustering beam
+    y-positions, so one extra or missing cluster HALVES OR DOUBLES a note.
+    That repair belongs to EVALUATE and is bounded there.
     """
-    return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
+    head = _head_class(ev)
+    if head is None:
+        return Ruling.abstain("no_notehead")
+
+    base = None
+    for name, beats in _HEAD_BEATS.items():
+        if str(head).startswith(name):
+            base = beats
+            break
+    if base is None:
+        return Ruling.abstain("unknown_head", head=str(head))
+
+    used = [r.id for r in ev.rows(Q.NOTEHEAD_CLASS)]
+
+    # beams and flags shorten; each level halves.
+    levels = 0
+    for row in ev.rows(Q.BEAM_STROKE):
+        levels = max(levels, int(row.detail.get("levels") or 1))
+        used.append(row.id)
+    flags = ev.rows(Q.FLAG)
+    if flags and not levels:
+        levels = max(int(r.detail.get("levels") or 1) for r in flags)
+        used.extend(r.id for r in flags)
+    beats = base / (2 ** levels) if levels else base
+
+    # dots lengthen: each adds half of what stands so far.
+    dots = ev.rows(Q.AUG_DOT)
+    n_dots = len(dots)
+    used.extend(r.id for r in dots)
+    total, add = beats, beats
+    for _ in range(n_dots):
+        add /= 2.0
+        total += add
+
+    # ⚠️ A TUPLET SCALES THE TIME AND LEAVES THE WRITTEN VALUE ALONE. The
+    # noteheads of a triplet are ORDINARY eighths on the page; the bracket
+    # says three of them occupy two's worth. So `duration_beats` is scaled and
+    # `written` is not -- which is what MusicXML's <type> and LilyPond's `8`
+    # both want inside a tuplet.
+    ratio = ev.verdict(Q.TUPLET_RATIO, subject=ev.subject.at(Kind.CELL))
+    scaled = total
+    if ratio is not None and isinstance(ratio.value, dict):
+        num = ratio.value.get("actual")
+        den = ratio.value.get("normal")
+        if num and den and ev.subject.glyph in (ratio.value.get("members") or []):
+            scaled = total * den / num
+            used.append(ratio.id)
+
+    return Ruling(value={"beats": scaled, "written": total,
+                         "dots": n_dots, "beam_levels": levels},
+                  reason="head_and_marks", used=tuple(used),
+                  detail={"head": str(head)})
 
 
 @decision(
     quantity=Q.TUPLET_RATIO,
     checkable=Checkable.MIXED,
     checked_by=(
-        "bar sum: a wrong ratio breaks it",
-        "the group must hold exactly as many notes as the digit claims",
+        '"bar sum: a wrong ratio breaks it"',
+        '"the group must hold exactly as many notes as the digit claims"',
     ),
     implicates=(Q.TUPLET_RATIO, Q.DURATION, Q.METER),
     composed_from=(Q.TUPLET_MARKER, Q.BEAM_STROKE, Q.NOTEHEAD_CLASS),
     scope=Kind.CELL,
     wants=(Q.TUPLET_MARKER, Q.BEAM_STROKE, Q.NOTEHEAD_CLASS),
-    reasons=("digit", "bracket", "no_marker", "no_evidence"),
+    reasons=("digit", "bracket", "no_marker", "wrong_member_count",
+             "ambiguous_bracket"),
     mode=Mode.ADDITIVE,
-    stub=True,
+    subjects_from=Q.TUPLET_MARKER,
 )
 def adjudicate_tuplet(ev: Evidence) -> Ruling:
-    """⚠️ DECLARED STUB. Two markers, read DIFFERENTLY because they sit
-    differently: the DIGIT is printed over the middle of its group so its
-    centre must fall inside the group's span; the BRACKET encloses the group
-    so the group must fall inside the BRACKET's span. Testing a bracket's
-    centre rejects every one of them.
+    """A triplet's noteheads are ORDINARY eighths; the marker says they take
+    two's worth of time.
 
-    ⚠️ A GROUP IS A SET OF NOTES, NOT A BEAM STROKE. A sixteenth carries two
-    strokes, and applying the ratio once per stroke gives a triplet sixteenth
-    (1/4) x (2/3) x (2/3) = 1/9. Identical member sets must collapse.
+    ⚠️ TWO MARKERS, READ DIFFERENTLY, BECAUSE THEY SIT DIFFERENTLY. The DIGIT
+    is printed over the MIDDLE of its group, so its centre must fall inside
+    the group's span. The BRACKET ENCLOSES the group, so the group must fall
+    inside the BRACKET's span -- detected brackets are far wider than the
+    notes they cover (one measured at 1846px over a 478px group) and testing a
+    bracket's CENTRE rejects every one of them.
 
-    ⚠️ Read BOTH `tuplet3` and `fingering3`: DSv2's distinction is POSITIONAL
-    and the detector reproduces it badly -- 33 `fingering3` against 16
-    `tuplet3` over twelve works, and all 33 sit in a cell holding a real
-    triplet.
+    ⚠️ IT ABSTAINS RATHER THAN GUESSING, deliberately and in four ways:
+    only `3:2` (5/6/7 each need their own normal-count convention and none
+    occurs in anything measured); the group must have EXACTLY as many notes as
+    the digit claims, so a triplet written quarter-plus-eighth is left alone;
+    an unnumbered bracket is read only over a group of exactly three and only
+    when it covers exactly one group in the cell; and rests are NOT scaled,
+    because pairing a rest to a beam group needs a signal the beam box does
+    not carry.
     """
-    return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
+    # ⚠️ SELF_AND_DESCENDANTS, not EXACT. A tuplet marker is detected as a
+    # GLYPH and the ratio is a fact of the CELL, so a cell-scope decision
+    # reading at EXACT scope finds nothing and reports `no_marker` -- which
+    # reads exactly like a cell that prints no tuplet. Found by the test
+    # asserting a REASON rather than just an outcome.
+    marks = ev.rows(Q.TUPLET_MARKER, scope=Scope.SELF_AND_DESCENDANTS)
+    if not marks:
+        return Ruling.abstain("no_marker")
+
+    heads = sorted(ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS),
+                   key=lambda r: r.subject.glyph or 0)
+    if len(heads) != 3:
+        # ⚠️ Not a failure -- the honest answer where the group is not the
+        # shape the marker claims. `3:2` over four notes is somebody else's
+        # tuplet or a misread marker, and guessing would corrupt the bar.
+        return Ruling.abstain("wrong_member_count", n_heads=len(heads))
+
+    digits = [m for m in marks if not m.detail.get("is_bracket")]
+    brackets = [m for m in marks if m.detail.get("is_bracket")]
+
+    if digits:
+        reason = "digit"
+        marker = digits[0]
+    elif len(brackets) == 1:
+        reason = "bracket"
+        marker = brackets[0]
+    else:
+        return Ruling.abstain("ambiguous_bracket", n_brackets=len(brackets))
+
+    return Ruling(value={"actual": 3, "normal": 2,
+                         "members": [h.subject.glyph for h in heads]},
+                  reason=reason,
+                  used=tuple([marker.id] + [h.id for h in heads]),
+                  detail={"marker": str(marker.value)})
 
 
 #: A meter must be agreed by this share of the staves that SPOKE. (A-METER-1)
