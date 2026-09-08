@@ -86,10 +86,11 @@ else. **`key_signature_template` is referenced nowhere under `tools/omr/staged/`
 `transcribe.py:272` imports it.
 
 And the run reproduces the locator's documented figure. Of twelve staves, the
-staged path decided **4** and got **3** right; of the nine staves that print
-three flats, **five found no run at all**, one (Flauti) found a single box that
-its settled clef refused, and one (Viola) fitted a box outside the band. Only
-Violino II and Violoncello read the signature the page prints.
+staged path decided **4** and got **3** right. Of the **eight** staves that
+print three flats (0, 1, 3, 7, 8, 9, 10, 11): **four found no run at all**
+(Oboi, Fagotti, Violino I, Basso), one (Flauti) found a single box its settled
+clef refused, one (Viola) fitted a box outside the band, and **two** — Violino
+II and Violoncello — read the signature the page prints.
 
 **So the Viola is one symptom of a wired-reader gap, not a bug of its own.**
 Fixing the Viola specifically would be fixing the least informative instance.
