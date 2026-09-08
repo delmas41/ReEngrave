@@ -78,6 +78,60 @@ the whole thing on assumed best practice and record the assumptions rather than
 stop to measure; **this file is the record, and it is the input to the testing
 phase.**
 
+## ⚠️ DEFERRED — parked, with the evidence kept
+
+**The rule (Sean, 2026-09-07):**
+
+> **FIX NOW** only if it corrupts the thing being built — a defect in this
+> pipeline's own substrate propagates into every decision wired after it.
+> **PARK** everything else. ⚠️ **The systematic version of a fix is a PARK
+> even when the instance is a fix-now**: correct the instance, park the
+> checker. ⚠️ **A borderline case is a PARK, not a judgment call** — parking
+> is reversible in one message and a detour is not.
+
+**The test is not "is this real".** Everything below is real; that is what
+makes it tempting. **The test is: does the BUILD get worse if I wait?**
+
+⚠️ **A parked item keeps its evidence.** The cheap half of a find is the
+observation and the expensive half is the fix — a park that loses what was
+seen is a deletion with extra steps.
+
+| # | what | why parked | what it would take |
+|--:|---|---|---|
+| D1 | **Candidate sets — a `NARROWED` outcome** carrying surviving candidates | ⚠️ **Asked for a re-order; awaiting a ruling.** Not fix-now: today's collapse to a single value is *lossy*, not *wrong*, so nothing wired inherits a defect | a third `Outcome`, and `Ruling` able to return a set. Evidence: `_beam_levels` collapses *"two, possibly three"* to an int at the moment of counting — **the same shape as `pos_float` being rounded away at `pitch_resolver.py:181`**, one layer up |
+| D2 | **Redundant groups as first-class** — `(quantity, scope)` → witnesses, majority, dissenters | the largest principle-driven gap (ideal-reader §4.1), but additive: nothing already wired is wrong without it | a group declaration and a harness-derived agreement row. Every witness is already a row, so it is close to free |
+| D3 | **`tally()` should take a MINIMUM over `composed_from`** | ideal-reader §5.4. Wrong *weighting*, not a wrong *record* — no verdict is corrupted, so waiting costs nothing | agreement SUMS; composition is as strong as its weakest link. `composed_from` is already declared on all 21 |
+| D4 | **The implication tests as consumed terms** — `propose_clef`'s range test per candidate; `rhythm_sum_warning` given a consumer | needs D1 and D2 to be worth doing properly | ideal-reader §4.6 |
+| D5 | **GATHER out-parameters instead of the translating layer** | A-BUILD-1. The end state, but it touches a dozen files the OLD path runs through — the opposite of "alongside" | a `log` kwarg per reader; deletes the `mirror=True` rows |
+| D6 | **`Q.BRACKET_BLOCK` / `Q.GAP_BRIDGING` are MIRRORS**, re-derived rather than the reader's own word | the mirror is honest and marked; converting it is D5 | `_assign_groups` emitting its own branch |
+| D7 | **`Mode.ADDITIVE` needs an expiry** | A-GROUP-3: correct while an incumbent exists, should not calcify | a decision, not an edit |
+| D8 | **The six remaining stubs** — `arc_owner`, `arc_kind`, `articulation_owner`, `wedge_anchor`, `dynamic`, `direction` | ordinary remaining work, not a deferral of a fix | each is a declared stub and says what it needs |
+| D9 | **`join_parts` consequence** | blocked: it is the consequence of the decision a pre-registered gate falsified, and `adjudicate_part_partition` correctly abstains there | pricing that abstention first |
+| D10 | **Document-wide slot reference** | blocked: `build_reference` picking a lineup from one system once named 149 Brahms staves an instrument the work has not got | the `OMR_SPAN_REFERENCE_FIT=off` replay |
+| D11 | **`W_KEYSIG_FIT` (1.5) exceeds `MARGIN_FLOOR` (1.0)**, so a lone key-signature fit decides a clef | a weight, not a defect; changing it without evidence is guessing twice | a sweep, once measuring is allowed. ⚠️ Lower the WEIGHT, not the floor — A-CLEF-6 says the floor carries two jobs |
+| D12 | **Asking the locator per candidate clef costs 4 calls per staff** | correctness first, and the shape is right (ask every candidate, including ones that never proposed themselves) | measurement, then caching if it bites |
+| D13 | **Direction text gather** | a declared stub behind its hard edge (it subtracts every detection from the ink) | wiring `direction_text.find_candidates` after detection |
+
+⚠️ **RETRO-APPLIED, INCLUDING TO MYSELF.** Under this rule two things I did
+mid-stream were parks, not fix-nows:
+
+* **`record_coverage.py`** — the coordinator commissioned it and has named it
+  drift. Fixing `Verdict.detail` and `.used` was fix-now (they corrupt the
+  substrate: every verdict wired afterwards would inherit the loss). **Building
+  the checker and its mutation test was the systematic version and should have
+  been D-something.** It is built, passing, and kept — and it is the last thing
+  of its kind built mid-stream.
+* **`subjects_from`** — added while wiring ownership because a verdict per
+  detection would bury 4,521 contests under tens of thousands of no-ops. ⚠️
+  **Borderline, therefore a PARK under the rule**, and I did it inline. The
+  build was noisy without it, not wrong. Recorded here as an honest miss.
+
+**Applied correctly as FIX-NOW, with the criterion:** the `ORDER` inversion
+(every later duration inherits an unscaled triplet), `Verdict.detail`/`.used`
+(every later verdict inherits the loss), and `remove_staff_lines` missing from
+`prepare_pages` (**every** duration built on a silently-degraded beam rung).
+All three corrupt the substrate; none could wait.
+
 ## ⚠️ EVIDENCE FOR THE ARCHITECTURE, FOUND BY BUILDING IT
 
 **Not a changelog. A bug fixed in a diff disappears; these are arguments, and
@@ -128,6 +182,40 @@ pooled reading points**, takes noteheads to **0.774** on Mozart 41, and
 **manufactures** beam confusion (YOLO beams 46 → 105, precision 0.783 → 0.343,
 firing on staff-line residue). **Erase for the CV consumer, bound the search
 for everyone else, never erase for the detector.**
+
+### 4. ⚠️ We reproduced `pitch_resolver.py:181` ON PURPOSE, one layer up
+
+`_beam_levels` counts the strokes covering a notehead's column and returns an
+**integer**. Where a stroke's x-range ends near the note the honest reading is
+*"two, possibly three"* — and that alternative is destroyed at the moment of
+counting, exactly as `pos_float` is computed at `pitch_resolver.py:180` and
+rounded away at `:181`.
+
+⚠️ **This is the most damning of the four findings, because we did it while
+trying not to.** The thesis of the whole architecture is *keep the
+measurement, move the decision*; the new code kept the measurement (strokes
+with x-ranges are rows) and then collapsed the **interpretation** to a single
+value at the first opportunity, which reintroduces the same loss one level
+higher. The duration composed from it inherits a precision the reading never
+had.
+
+**Fixed by candidate sets** — `Outcome.NARROWED`. Recorded here rather than
+only in a diff, because the lesson is that *keeping the measurement is not
+sufficient*: a decision that collapses early throws away just as much, and it
+is harder to see because the row underneath still looks intact.
+
+### 5. A silent fallback turns a whole-rung failure into a thin page
+
+`line_detection` **prefers** `cell.image_no_staff` and falls back to
+`cell.image` without complaint. So a missing erased variant does not fail — it
+degrades the entire CV rung quietly, and the page presents as sparse.
+
+⚠️ **The incumbent already learned this from the other direction.**
+`_optional_pass_failure` exists because an optional pass that *abstains* and
+one that *fails like a defect* were indistinguishable, and a renamed parameter
+went dark for hours behind an honest-looking "unavailable". Same lesson,
+arrived at independently in new code: **not-raising is not the same as
+not-telling-anyone.**
 
 ## ⚠️ PRINCIPLE vs CONTINGENCY
 

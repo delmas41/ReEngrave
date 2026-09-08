@@ -94,32 +94,33 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
 
 @rule(consequence=Consequence.RECONCILE_DURATION,
       cause=Q.METER, effect=Q.DURATION, scope=Kind.CELL,
-      bound="Re-reads a beam level by +/-1 ONLY. The corrected bar must land "
-            "EXACTLY on the meter. The answer must be UNIQUE. Single-voice "
-            "measures only. Never adds, deletes or re-pitches a note. "
-            "Tuplet notes are EXCLUDED -- the level re-derivation would "
+      bound="Searches only the levels a note ADMITS -- its own narrowed "
+            "candidates, or +/-1 for a note that decided. Changes at most ONE "
+            "note. The corrected bar must land EXACTLY on the meter. The "
+            "answer must be UNIQUE. Never adds, deletes or re-pitches a note. "
+            "Tuplet members are excluded -- re-deriving a level would "
             "silently drop the ratio.")
 def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdict]:
     """The meter settles, so a bar that does not fit it is re-read -- ONCE.
 
-    ⚠️ THIS IS THE ONLY LOOP IN THE PIPELINE AND THE BOUND IS WHAT REPLACES A
-    FIXPOINT. Durations vote the meter; the meter then re-reads the durations.
-    The existing pipeline breaks it by ORDERING -- vote once, repair once --
-    and the bound is what stops the repair laundering a guess.
+    ⚠️ THIS IS THE ONLY LOOP IN THE PIPELINE AND THE BOUND REPLACES A FIXPOINT.
+    Durations vote the meter; the meter then re-reads the durations. The
+    existing pipeline breaks it by ORDERING -- vote once, repair once -- and
+    the bound stops the repair laundering a guess.
 
-    ⚠️ IT MAY ONLY MOVE THE BEAM LEVEL, and that is not arbitrary: durations
-    come from clustering beam y-positions, so one extra or missing cluster
-    HALVES OR DOUBLES a note. The beam level is the one input fragile enough
-    to be worth arbitrating, and everything else -- how many notes there are,
-    what pitch they carry -- is left alone. It cannot paper over a detection
-    fault because it cannot add or remove a note.
+    ⚠️⚠️ SINCE CANDIDATE SETS IT SEARCHES WHAT THE NOTE ADMITS, NOT ARITHMETIC.
+    A NARROWED duration already says *"two levels, possibly three"*, so the
+    meter is choosing among readings the beams actually support rather than
+    among numbers one step away. That is a strictly better bound: a +/-1 that
+    the strokes do not support is no longer reachable, and the uniqueness test
+    now runs over REAL alternatives.
 
-    ⚠️ AND IT REFUSES WHEN THE ANSWER IS NOT UNIQUE. That is the
-    "certain about the GROUP, silent about the MEMBER" rule, implemented: a
-    failed bar sum implicates the meter, every duration, a spurious note, a
-    missing one and a mis-owned glyph, so where more than one re-reading
-    lands the bar exactly on the meter, NOTHING is changed and the warning
-    stands. It must never condemn the cheapest member to change.
+    ⚠️ AND IT STILL REFUSES WHEN THE ANSWER IS NOT UNIQUE. That is
+    "certain about the GROUP, silent about the MEMBER" implemented: a failed
+    bar sum implicates the meter, every duration, a spurious note, a missing
+    one and a mis-owned glyph, so where more than one re-reading lands the bar
+    exactly, NOTHING changes and the warning stands. It must never condemn the
+    cheapest member.
     """
     value = meter.value or {}
     num, den = value.get("numerator"), value.get("denominator")
@@ -129,49 +130,77 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
 
     notes = [v for v in log.verdicts(Q.DURATION, subject,
                                      scope=Scope.SELF_AND_DESCENDANTS)
-             if v.outcome is Outcome.DECIDED and isinstance(v.value, dict)]
+             if v.outcome in (Outcome.DECIDED, Outcome.NARROWED)]
     if not notes:
         return []
 
-    total = sum(float(n.value.get("beats") or 0.0) for n in notes)
+    # A narrowed note contributes its BEST-SUPPORTED reading to the running
+    # total -- the same reading the exporter would take today.
+    def _current(v: Verdict):
+        if v.outcome is Outcome.DECIDED:
+            return v.value
+        return v.candidates[0].value if v.candidates else None
+
+    current = {v.id: _current(v) for v in notes}
+    if any(c is None for c in current.values()):
+        return []
+    total = sum(float(c.get("beats") or 0.0) for c in current.values())
     if abs(total - expected) < 1e-6:
         return []                       # the bar already fits
 
-    # ⚠️ Tuplet members are excluded: `beats` there is already scaled by the
-    # ratio, and re-deriving a level would silently drop it.
-    candidates = [n for n in notes
-                  if float(n.value.get("beats") or 0.0)
-                  == float(n.value.get("written") or -1.0)]
-
     landings = []
-    for note in candidates:
-        for delta in (-1, +1):
-            level = int(note.value.get("beam_levels") or 0) + delta
-            if level < 0:
+    for note in notes:
+        now = current[note.id]
+        # ⚠️ A tuplet member's `beats` is already scaled by the ratio, so
+        # re-deriving a level would silently drop it.
+        if float(now.get("beats") or 0.0) != float(now.get("written") or -1.0):
+            continue
+        for option in _admitted(note):
+            if option.get("beam_levels") == now.get("beam_levels"):
                 continue
-            written = float(note.value.get("written") or 0.0)
-            old_level = int(note.value.get("beam_levels") or 0)
-            base = written * (2 ** old_level)
-            new_beats = base / (2 ** level)
-            if abs(total - written + new_beats - expected) < 1e-6:
-                landings.append((note, level, new_beats))
+            moved = total - float(now.get("beats") or 0.0) \
+                + float(option.get("beats") or 0.0)
+            if abs(moved - expected) < 1e-6:
+                landings.append((note, option))
 
     if len(landings) != 1:
-        # ⚠️ Zero landings: no single beam level explains the bar, so the
-        # fault is elsewhere in the group. More than one: the evidence does
+        # ⚠️ Zero: no admitted reading of any single note explains the bar, so
+        # the fault is elsewhere in the group. More than one: the evidence does
         # not distinguish them. BOTH refuse, and the bar keeps its warning.
         return []
 
-    note, level, new_beats = landings[0]
+    note, option = landings[0]
     out = Verdict(
         id=log._next_id("vrd"), subject=note.subject, quantity=Q.DURATION,
         outcome=Outcome.DECIDED,
-        value={**note.value, "beats": new_beats, "written": new_beats,
-               "beam_levels": level, "reconciled": True},
+        value={**option, "reconciled": True},
         decider="reconcile_duration", reason="meter_reconciliation",
         considered=(note.id, meter.id), basis=(note.id, meter.id),
         supersedes=note.id)
     return [log.record(out)]
+
+
+def _admitted(note: Verdict) -> List[dict]:
+    """The readings this note allows.
+
+    ⚠️ A NARROWED note offers exactly its candidates -- readings the BEAMS
+    support. A DECIDED note keeps the old arithmetic +/-1, because a note whose
+    strokes were unambiguous can still have had a stroke missed entirely, and
+    that is the case the original bound was built for.
+    """
+    if note.outcome is Outcome.NARROWED:
+        return [c.value for c in note.candidates if isinstance(c.value, dict)]
+    out = []
+    written = float(note.value.get("written") or 0.0)
+    old = int(note.value.get("beam_levels") or 0)
+    base = written * (2 ** old)
+    for level in (old - 1, old + 1):
+        if level < 0:
+            continue
+        beats = base / (2 ** level)
+        out.append({**note.value, "beats": beats, "written": beats,
+                    "beam_levels": level})
+    return out
 
 
 @rule(consequence=Consequence.MOVE_GLYPH,

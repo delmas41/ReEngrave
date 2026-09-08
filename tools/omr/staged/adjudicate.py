@@ -27,8 +27,11 @@ from enum import Enum
 from typing import (Any, Callable, Dict, FrozenSet, Iterable, List, Optional,
                     Sequence, Set, Tuple)
 
-from .record import (ABSTAIN, Abstention, Kind, Log, Observation, Outcome, Q,
-                     Scope, State, Subject, Verdict)
+from .record import (ABSTAIN, Abstention, Candidate, Kind, Log, Observation,
+                     Outcome, Q, Scope, State, Subject, Verdict)
+
+
+__all_reexport__ = (Candidate,)
 
 
 class UndeclaredEvidence(RuntimeError):
@@ -221,13 +224,27 @@ class Ruling:
     used: Tuple[str, ...] = ()
     detail: Dict[str, Any] = field(default_factory=dict)
 
+    #: Every value still admitted, best first. ⚠️ `support` is in the
+    #: decision's OWN units and is NOT a probability -- see `record.Candidate`.
+    candidates: Tuple[Candidate, ...] = ()
+
     @staticmethod
     def abstain(reason: str, **detail: Any) -> "Ruling":
         return Ruling(value=None, reason=reason, detail=dict(detail))
 
+    @staticmethod
+    def narrow(candidates: Sequence[Candidate], reason: str, *,
+               used: Sequence[str] = (), **detail: Any) -> "Ruling":
+        """⚠️ "It is one of these." Not a weaker abstention -- a DIFFERENT
+        answer, and usually a more useful one than the single value a
+        decide-or-abstain decision would have been forced to invent."""
+        ordered = tuple(sorted(candidates, key=lambda c: -c.support))
+        return Ruling(value=None, reason=reason, candidates=ordered,
+                      used=tuple(used), detail=dict(detail))
+
     @property
     def abstained(self) -> bool:
-        return self.value is None
+        return self.value is None and not self.candidates
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -303,6 +320,23 @@ class Evidence:
         for v in kept:
             self._seen.append(v.id)
         return kept
+
+    def admitted(self, quantity: str, *,
+                 subject: Optional[Subject] = None) -> Tuple[Any, ...]:
+        """Every value still admitted for `quantity`, best first.
+
+        ⚠️ THE POINT IS THAT A CONSUMER NEED NOT COLLAPSE THE SET EARLY. One
+        value for a DECIDED verdict, N for a NARROWED one, none for an
+        ABSTAINED one -- so a consumer can carry the ambiguity forward and let
+        its OWN evidence settle it, which is what `reconcile_duration` does
+        with the meter.
+        """
+        v = self.verdict(quantity, subject=subject)
+        if v is None:
+            return ()
+        if v.outcome is Outcome.DECIDED:
+            return (v.value,)
+        return tuple(c.value for c in v.candidates)
 
     def state(self, quantity: str, *, scope: Scope = Scope.EXACT,
               subject: Optional[Subject] = None) -> State:
@@ -583,15 +617,29 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
             f"{spec.name} returned reason {ruling.reason!r}, which is not in "
             f"its declared vocabulary {spec.reasons}.")
 
-    # ── the margin floor: abstain rather than take an unsupported argmax ────
+    # ── the margin floor ────────────────────────────────────────────────────
+    #
+    # ⚠️ A CONTEST TOO CLOSE TO CALL NOW *NARROWS* RATHER THAN VANISHING.
+    # Before candidate sets this discarded the whole contest and reported
+    # `margin_below_floor` with nothing attached -- so "the readers disagreed
+    # between alto and tenor" and "nothing was read at all" arrived at the
+    # consumer as the same answer. Where the decision supplied candidates they
+    # survive; where it did not, the old abstention stands.
     value, reason, margin = ruling.value, ruling.reason, ruling.margin
+    candidates = tuple(ruling.candidates)
     if (spec.mode is Mode.COMPETITIVE and value is not None
             and spec.margin_floor is not None):
         if margin is None or margin < spec.margin_floor:
             value = None
             reason = "margin_below_floor"
 
-    outcome = Outcome.ABSTAINED if value is None else Outcome.DECIDED
+    if value is not None:
+        outcome = Outcome.DECIDED
+    elif len(candidates) >= 2:
+        outcome = Outcome.NARROWED
+    else:
+        outcome = Outcome.ABSTAINED
+        candidates = ()          # a single survivor is not a narrowing
 
     considered = tuple(dict.fromkeys(ev._seen))
     basis: Set[str] = set(considered)
@@ -603,6 +651,7 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
     verdict = Verdict(
         id=log._next_id("vrd"), subject=subject, quantity=spec.quantity,
         outcome=outcome, value=value, decider=spec.name, reason=reason,
+        candidates=candidates,
         considered=considered,
         used=tuple(ruling.used),
         missing=tuple(sorted(ev._missing)),

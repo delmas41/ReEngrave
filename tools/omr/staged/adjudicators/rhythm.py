@@ -23,9 +23,10 @@ repair is a bounded EVALUATE consequence, not a second adjudication.
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, Tuple
 
-from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
+from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
+                          decision)
 from ..record import ABSTAIN, Kind, Q, READERS, Scope, State
 
 
@@ -84,19 +85,43 @@ def _kept_beams(ev: Evidence, cell):
     return kept, cv, yolo
 
 
-def _beam_levels(beams, x_center: Optional[float]) -> int:
-    """How many strokes cover this notehead's column.
+#: How far past a stroke's end a notehead may sit and still MAYBE be under it,
+#: in notehead widths. (A-DUR-3)
+#:
+#: ⚠️ A beam stroke ends at the last stem it joins, so a note at the end of a
+#: group sits within a notehead's width of the end and the reading is
+#: genuinely *"under it, possibly not"*. That ambiguity is the whole reason
+#: this returns a RANGE.
+BEAM_EDGE_TOLERANCE_WIDTHS = 1.0
+
+
+def _beam_levels(beams, x_center, width):
+    """How many strokes cover this notehead's column: (CERTAIN, POSSIBLE).
 
     ⚠️ THE LEVEL IS AN INTERPRETATION OVER STROKES, WHICH IS WHY IT IS
-    COMPUTED HERE AND NOT IN GATHER. Emitting a level as a measurement would
-    put the arbitration in the gathering phase -- the fault the whole split
-    exists to remove.
+    COMPUTED HERE AND NOT IN GATHER.
+
+    ⚠️⚠️ AND IT RETURNS A RANGE, NOT A NUMBER, BECAUSE THE READING IS A RANGE.
+    The first version returned an int, and that reproduced
+    `pitch_resolver.py:181` ONE LAYER UP: `pos_float` is computed and rounded
+    away there, and a level "two, possibly three" was collapsed at the moment
+    of counting here. **Keeping the measurement is not sufficient** -- the
+    strokes were on the record and intact -- if the INTERPRETATION collapses at
+    the first opportunity.
     """
     if x_center is None:
-        return 0
-    return sum(1 for b in beams
-               if b.detail.get("x0", 0) <= x_center <= b.detail.get("x1", 0))
-
+        return (0, 0)
+    pad = (width or 0.0) * BEAM_EDGE_TOLERANCE_WIDTHS
+    certain = possible = 0
+    for b in beams:
+        x0 = b.detail.get("x0", 0)
+        x1 = b.detail.get("x1", 0)
+        if x0 <= x_center <= x1:
+            certain += 1
+            possible += 1
+        elif x0 - pad <= x_center <= x1 + pad:
+            possible += 1
+    return (certain, possible)
 
 def _head_class(ev: Evidence) -> Optional[str]:
     rows = ev.rows(Q.NOTEHEAD_CLASS)
@@ -117,7 +142,8 @@ def _head_class(ev: Evidence) -> Optional[str]:
     scope=Kind.GLYPH,
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM,
            Q.TUPLET_RATIO, Q.GLYPH_BOX),
-    reasons=("head_and_marks", "no_notehead", "unknown_head"),
+    reasons=("head_and_marks", "beams_ambiguous", "no_notehead",
+             "unknown_head"),
     mode=Mode.ADDITIVE,
     subjects_from=Q.NOTEHEAD_CLASS,
     # ⚠️ EVALUATE's `reconcile_duration` supersedes this verdict, so the
@@ -156,16 +182,18 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     used = [r.id for r in ev.rows(Q.NOTEHEAD_CLASS)]
 
     box = ev.rows(Q.GLYPH_BOX)
-    x_center = None
+    x_center = head_width = None
     if box:
         v = box[-1].value
         if isinstance(v, (list, tuple)) and len(v) >= 4:
             x_center = float(v[1]) + float(v[3]) / 2.0
+            head_width = float(v[3])
         used.append(box[-1].id)
 
     cell = ev.subject.at(Kind.CELL)
     kept, cv, yolo = _kept_beams(ev, cell)
-    levels = _beam_levels(kept, x_center)
+    certain, possible = _beam_levels(kept, x_center, head_width)
+    levels = certain
     used.extend(b.id for b in kept)
 
     # ⚠️ THREE STATES, AND THEY MUST NOT COLLAPSE INTO ONE. A duration that is
@@ -212,13 +240,45 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             scaled = total * den / num
             used.append(ratio.id)
 
+    shared = {"head": str(head), "beam_evidence": beam_evidence,
+              "cv_beams": len(cv), "yolo_beams": len(yolo),
+              "yolo_kept": len(kept) - len(cv),
+              "levels_certain": certain, "levels_possible": possible}
+
+    # ⚠️ WHERE THE BEAM READING IS A RANGE, SO IS THE DURATION. Narrowing is
+    # not a weaker answer than deciding -- it is the true one, and it is what
+    # lets `reconcile_duration` search ADMITTED levels instead of arithmetic
+    # +/-1. A note whose strokes are unambiguous still DECIDES.
+    if possible > certain and beam_evidence in ("read", "none_over_this_note"):
+        cands = []
+        for level in range(certain, possible + 1):
+            b = base / (2 ** level) if level else base
+            t, add = b, b
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            cands.append(Candidate(
+                value={"beats": _scale(t, ratio, ev), "written": t,
+                       "dots": n_dots, "beam_levels": level},
+                # ⚠️ SUPPORT, NOT PROBABILITY: a stroke that certainly covers
+                # the note outranks one that merely might, and the ORDER is
+                # the whole claim. These numbers are in this function's own
+                # units and must never be normalised.
+                support=2.0 if level == certain else 1.0))
+        return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used),
+                             **shared)
+
     return Ruling(value={"beats": scaled, "written": total,
                          "dots": n_dots, "beam_levels": levels},
-                  reason="head_and_marks", used=tuple(used),
-                  detail={"head": str(head),
-                          "beam_evidence": beam_evidence,
-                          "cv_beams": len(cv), "yolo_beams": len(yolo),
-                          "yolo_kept": len(kept) - len(cv)})
+                  reason="head_and_marks", used=tuple(used), detail=shared)
+
+
+def _scale(total: float, ratio, ev: Evidence) -> float:
+    if ratio is not None and isinstance(ratio.value, dict):
+        num, den = ratio.value.get("actual"), ratio.value.get("normal")
+        if num and den and ev.subject.glyph in (ratio.value.get("members") or []):
+            return total * den / num
+    return total
 
 
 @decision(

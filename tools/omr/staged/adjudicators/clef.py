@@ -24,7 +24,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple
 
-from ..adjudicate import (Checkable, READINGS, Evidence, Mode, Ruling, Term, decision,
+from ..adjudicate import (Candidate, Checkable, READINGS, Evidence, Mode, Ruling, Term, decision,
                           tally)
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
@@ -253,5 +253,13 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
 
     used = tuple(t.rows[0] for terms in candidates.values() for t in terms
                  if t.rows)
+    # ⚠️ THE CONTEST TRAVELS WITH THE VERDICT, and it costs nothing: `scored`
+    # was already computed and thrown away. Where the margin clears the floor
+    # this rides along on a DECIDED verdict so a consumer can see the winner
+    # was close; where it does not, the harness turns it into a NARROWED one
+    # instead of the old bare `margin_below_floor` -- which reported
+    # "the readers disagreed between alto and tenor" and "nothing was read"
+    # as the same answer.
+    cands = tuple(Candidate(value=n, support=sc) for sc, n in scored)
     return Ruling(value=top_name, reason="scored", margin=margin, used=used,
-                  detail={"scores": {n: s for s, n in scored}})
+                  candidates=cands, detail={"scores": {n: s for s, n in scored}})

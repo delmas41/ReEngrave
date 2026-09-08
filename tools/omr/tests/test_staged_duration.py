@@ -19,11 +19,15 @@ CELL = R.cell(0, 0, 0, 0)
 X = 100          # every synthetic notehead sits in the same column
 
 
-def _note(log, gi, head="noteheadBlack", **marks):
+def _note(log, gi, head="noteheadBlack", x=None, **marks):
+    """⚠️ `x` defaults to the shared column X. Notes that must NOT share a
+    beam need their own x -- beams are cell-scoped, so two notes in one column
+    see the same strokes."""
+    x = X if x is None else x
     g = R.glyph(0, 0, 0, 0, gi)
     log.observe(g, Q.NOTEHEAD_CLASS, head, reader=READERS.DETECTOR,
                 frame="cell:0", score=0.9)
-    log.observe(g, Q.GLYPH_BOX, (head, X - 10, 0, 20, 16),
+    log.observe(g, Q.GLYPH_BOX, (head, x - 10, 0, 20, 16),
                 reader=READERS.DETECTOR, frame="cell:0", score=0.9)
     for _ in range(marks.get("dots", 0)):
         log.observe(g, Q.AUG_DOT, (1, 1), reader=READERS.DETECTOR,

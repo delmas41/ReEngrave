@@ -135,12 +135,32 @@ class TestSinglePassRegime(unittest.TestCase):
                                                supersedes=first.id))
         self.assertEqual(self.log.verdict(Q.CLEF, self.sub).id, second.id)
 
-    def test_superseding_something_in_your_own_basis_is_refused(self):
-        """That is the fixpoint. Do not build one."""
+    def test_a_revision_MAY_read_what_it_revises(self):
+        """⚠️ CORRECTED 2026-09-07, and the first version of this test pinned
+        the wrong rule. A revision by definition reads what it revises --
+        `reconcile_duration` takes the old duration's written value and
+        re-reads its beam level -- so refusing "the superseded id appears in
+        the basis" forbade the single bounded loop the architecture exists to
+        permit. Found by that rule never firing."""
         first = self.log.record(self._verdict())
+        second = self.log.record(self._verdict(value="bass",
+                                               supersedes=first.id,
+                                               basis=(first.id,)))
+        self.assertEqual(self.log.verdict(Q.CLEF, self.sub).id, second.id)
+
+    def test_but_reaching_it_again_through_ANOTHER_input_is_refused(self):
+        """⚠️ THE REAL FIXPOINT: the new value derived through something that
+        itself depends on the value it replaces. If the meter were voted out
+        of these very durations, meter -> duration -> meter is a cycle and no
+        bound saves it."""
+        first = self.log.record(self._verdict())
+        downstream = self.log.record(Verdict(
+            id=self.log._next_id("vrd"), subject=self.sub, quantity=Q.PITCH,
+            outcome=Outcome.DECIDED, value="C4", decider="t", reason="r",
+            basis=(first.id,)))
         with self.assertRaises(UphillConsequence):
             self.log.record(self._verdict(value="bass", supersedes=first.id,
-                                          basis=(first.id,)))
+                                          basis=(first.id, downstream.id)))
 
     def test_current_value_is_a_query_not_a_field(self):
         """Nothing caches "the current clef", so nothing can go stale the way
