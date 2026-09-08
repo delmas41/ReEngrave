@@ -261,6 +261,45 @@ class TestDivergence(unittest.TestCase):
         self.assertIn(pipeline.DIFFER, div["counts"])
 
 
+class TestAnEmptyStageIsNotAnEmptyResult(unittest.TestCase):
+    """⚠️ Found during the build, and it is the design's own failure shape.
+
+    A test imported the adjudicators but not the consequences; EVALUATE
+    reported `fired: []` and `skipped: []`; and the empty run READ AS A PASS.
+    That is exactly `OMR_CONTEST_DUMP` and `locate_clef(trace=)` -- complete
+    recorders that recorded nothing because they were off, with nothing about
+    the output saying so.
+    """
+
+    def test_evaluate_refuses_to_run_with_no_rules(self):
+        saved = list(evaluate.RULES)
+        evaluate.RULES.clear()
+        try:
+            import sys
+            mod = sys.modules.pop("tools.omr.staged.consequences", None)
+            with self.assertRaises(evaluate.NoRulesRegistered):
+                evaluate.run(_log_from(build_page()))
+        finally:
+            evaluate.RULES.clear()
+            evaluate.RULES.extend(saved)
+            if mod is not None:
+                sys.modules["tools.omr.staged.consequences"] = mod
+
+    def test_adjudicate_refuses_to_run_with_an_empty_registry(self):
+        saved = dict(adjudicate.REGISTRY)
+        adjudicate.REGISTRY.clear()
+        try:
+            import sys
+            mod = sys.modules.pop("tools.omr.staged.adjudicators", None)
+            with self.assertRaises(adjudicate.NoDecisionsRegistered):
+                adjudicate.run(_log_from(build_page()))
+        finally:
+            adjudicate.REGISTRY.clear()
+            adjudicate.REGISTRY.update(saved)
+            if mod is not None:
+                sys.modules["tools.omr.staged.adjudicators"] = mod
+
+
 def _log_from(prepared):
     return gather.gather(prepared, detector=FakeDetector())
 

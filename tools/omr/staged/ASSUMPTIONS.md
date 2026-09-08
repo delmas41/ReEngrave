@@ -368,6 +368,44 @@ boundary.
 
 **Blast radius.** Every subject key. Getting it wrong misfiles every row.
 
+### A-BUILD-4 · The margin-label cascade runs with the FREE rung only
+
+**Assumption.** `gather_margin_labels` calls `contextual._labels_for_page`
+with `surya_fallback=False` and `ocr_fallback=False` by default, so only the
+PDF text layer speaks.
+
+**Why.** Conservative for a build phase in which nothing is measured: the
+free rung costs nothing and cannot spawn a model. ⚠️ **The A/B must turn both
+on to be comparable** — the old path defaults them to `True`, so a shadow run
+with them off is comparing a thinner reader against a fuller one and every
+`differ` row on a text-layer-less page is an artefact of the flag, not of the
+architecture.
+
+⚠️ **And an operational warning for whoever turns them on.** Surya's
+keep-alive server is ONE PER MACHINE and `--serve` detaches to ppid 1, so a
+stray worker cannot be told from the daemon by parent pid. **Never
+`pkill -f llama-server`** — it has already destroyed a sibling agent's
+multi-hour transcription. Use `--stop`, or `OMR_SURYA_KEEP_ALIVE=0` for an
+unattended run, on the principle that an unattended run should not depend on
+shared state it is not allowed to repair.
+
+**How to falsify.** Run both arms on a page with no text layer and count the
+labels each rung supplies.
+
+### A-BUILD-5 · ⚠️ An empty stage is an ERROR, not an empty result
+
+**Assumption.** `adjudicate.run` and `evaluate.run` raise when their registry
+is empty rather than reporting a clean, empty pass.
+
+**Why.** Found during this build, by exactly the route it guards against: a
+test imported the adjudicators but not the consequences, EVALUATE reported
+`fired: []` / `skipped: []`, **and the empty run read as a pass.** That is the
+same shape as `OMR_CONTEST_DUMP` and `locate_clef(trace=)` — complete
+recorders that recorded nothing because they were off, with nothing about the
+output saying so.
+
+**Blast radius.** None; it converts a silent null into a startup failure.
+
 ### A-BUILD-3 · `detector=None` is a supported mode
 
 **Assumption.** With no weights, every cell abstains `READER_UNAVAILABLE` and

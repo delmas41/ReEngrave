@@ -151,6 +151,33 @@ class Report:
                            "skipped": len(self.skipped)}}
 
 
+class NoRulesRegistered(RuntimeError):
+    """EVALUATE was asked to run with no consequence rules loaded.
+
+    ⚠️ THIS IS AN ERROR, NOT AN EMPTY RESULT, and the distinction is the same
+    one the whole record layer is about. A stage that runs with zero rules
+    produces `fired: []` and `skipped: []` -- which is indistinguishable from
+    a stage that ran and found nothing to do. The tree already has that fault
+    twice over: `OMR_CONTEST_DUMP` and `locate_clef(trace=)` are complete
+    recorders that recorded NOTHING because they were off, and nothing about
+    their output said so.
+
+    Found during the build by exactly this route: a test imported
+    `adjudicators` but not `consequences`, EVALUATE reported an empty run, and
+    the empty run read as a pass.
+    """
+
+
+def _ensure_rules() -> None:
+    """Load the consequence rules. Idempotent, and a lazy import so
+    `consequences` can import this module."""
+    if not RULES:
+        from . import consequences  # noqa: F401
+    if not RULES:
+        raise NoRulesRegistered(
+            "EVALUATE has no rules. An empty stage is not an empty result.")
+
+
 def run(log: Log, *, progress: bool = False) -> Report:
     """One pass, downhill, in DOWNHILL order.
 
@@ -158,6 +185,7 @@ def run(log: Log, *, progress: bool = False) -> Report:
     be one. If you find yourself wanting to re-run it until stable, that is
     the escalation signal.
     """
+    _ensure_rules()
     report = Report(fired=[], skipped=[], stubs=[])
     ordered = sorted(RULES, key=lambda r: DOWNHILL.index(r.cause))
 

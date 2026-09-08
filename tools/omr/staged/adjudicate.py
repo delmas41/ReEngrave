@@ -557,12 +557,32 @@ def subjects_for(log: Log, spec: DecisionSpec) -> Tuple[Subject, ...]:
     return log.subjects(spec.scope)
 
 
+class NoDecisionsRegistered(RuntimeError):
+    """ADJUDICATE was asked to run with an empty registry.
+
+    ⚠️ An error rather than an empty result, for the same reason
+    `evaluate.NoRulesRegistered` is: a stage that produces no verdicts because
+    nothing was loaded is indistinguishable from one that produced no verdicts
+    because it had nothing to decide.
+    """
+
+
+def _ensure_decisions() -> None:
+    if not REGISTRY:
+        from . import adjudicators  # noqa: F401
+    if not REGISTRY:
+        raise NoDecisionsRegistered(
+            "ADJUDICATE has no decisions. An empty stage is not an empty "
+            "result.")
+
+
 def run(log: Log, *, order: Sequence[str] = ORDER,
         progress: bool = False) -> List[Verdict]:
     """Run every registered decision, in `order`, over every subject.
 
     The log is frozen first: ADJUDICATE may not gather.
     """
+    _ensure_decisions()
     if not log.frozen:
         log.freeze()
     out: List[Verdict] = []

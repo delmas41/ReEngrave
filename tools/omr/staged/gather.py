@@ -495,23 +495,69 @@ def gather_meter(log: Log, cells, local) -> None:
                     FRAME_HEADER_WINDOW, "locate_time_signature not wired")
 
 
-def gather_margin_labels(log: Log, cells, local) -> None:
-    """⚠️ DECLARED STUB.
+def gather_margin_labels(log: Log, pws: Any, cells, local, *,
+                         pdf_path: Any = None, surya_fallback: bool = False,
+                         ocr_fallback: bool = False) -> None:
+    """The printed instrument name, as a STRING, before the lexicon.
 
-    ⚠️ AND A CONSTRAINT ON HOW IT MUST BE WIRED WHEN IT IS.
-    `contextual._labels_for_page` is a CHEAPEST-FIRST CASCADE -- the PDF text
-    layer, then Surya, then the paid Vision rung -- and it only pays for the
-    next rung when the free one comes back empty. GATHER must call the
-    cascade, not the three readers. Running them in parallel, or eagerly,
-    spends the money the cascade exists to save.
+    ⚠️ IT CALLS THE CASCADE, NOT THE READERS. `contextual._labels_for_page`
+    goes PDF text layer -> Surya -> Tesseract -> whoever `assist` names, and
+    it only pays for the next rung when the free one comes back empty.
+    Calling the three readers separately -- or in parallel -- spends the money
+    the cascade exists to save.
 
-    The row to emit is the STRING, before the lexicon: `"Tr. Alt."`, never
-    `Trombone`. The lexicon lookup is an adjudication.
+    ⚠️ AND THE SPLIT THIS FUNCTION EXISTS TO MAKE: `StaffLabel` already
+    carries BOTH the raw text AND a resolved `instrument`, because the reader
+    runs the lexicon itself. GATHER emits ONLY `text`. The lexicon lookup is
+    an INTERPRETATION and belongs to `adjudicators.identity`; keeping it here
+    would be the same fusion the whole architecture is against -- and it is
+    exactly the fusion that let `Tr. Alt.` become a singer at high confidence
+    while the raw string sat right beside it.
+
+    The reader's own `confidence` and `alias` are kept in `detail` as its
+    annotation, deliberately NOT as the row's value or score: they describe
+    a lexicon match this row is not making.
     """
-    _stub_per_staff(log, cells, local, Q.MARGIN_LABEL, READERS.TEXT_LAYER,
-                    FRAME_MARGIN,
-                    "must call contextual._labels_for_page (the cascade), "
-                    "never the three readers separately")
+    if pdf_path is None:
+        _stub_per_staff(log, cells, local, Q.MARGIN_LABEL, READERS.TEXT_LAYER,
+                        FRAME_MARGIN, "no pdf_path supplied to gather()")
+        return
+
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    try:
+        from pathlib import Path as _Path
+        from ..assist import Assist
+        from ..contextual import _labels_for_page
+        labels = _labels_for_page(
+            pws, _Path(str(pdf_path)), p, assist=Assist("none"), budget=[0],
+            surya_fallback=surya_fallback, ocr_fallback=ocr_fallback)
+    except Exception as exc:                                  # noqa: BLE001
+        # ⚠️ An optional reader that cannot run ABSTAINS -- it does not lose
+        # the page. But it abstains LOUDLY enough to be told from a reader
+        # that ran and found nothing: the exception class goes in the detail.
+        _stub_per_staff(log, cells, local, Q.MARGIN_LABEL, READERS.TEXT_LAYER,
+                        FRAME_MARGIN, f"reader failed: {type(exc).__name__}")
+        return
+
+    by_staff = {lab.staff_index: lab for lab in labels}
+    seen = set()
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.staff(c.page_index, key[0], key[1])
+        if sub.to_key() in seen:
+            continue
+        seen.add(sub.to_key())
+        lab = by_staff.get(c.staff_index)
+        if lab is None or not (lab.text or "").strip():
+            log.abstain(sub, Q.MARGIN_LABEL, reader=READERS.TEXT_LAYER,
+                        frame=FRAME_MARGIN, reason=ABSTAIN.NO_INK)
+            continue
+        log.observe(sub, Q.MARGIN_LABEL, lab.text,
+                    reader=READERS.TEXT_LAYER, frame=FRAME_MARGIN,
+                    reader_confidence=lab.confidence, reader_alias=lab.alias,
+                    y_center_px=lab.y_center_px)
 
 
 def gather_direction_text(log: Log, pws, cells, local) -> None:
@@ -559,7 +605,9 @@ def gather_external(log: Log, pws, *, dossier: Any = None,
 def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
            detector: Any = None, conf_threshold: float = 0.25,
            imgsz: Optional[int] = None, dossier: Any = None,
-           roster: Any = None, log: Optional[Log] = None,
+           roster: Any = None, pdf_path: Any = None,
+           surya_fallback: bool = False, ocr_fallback: bool = False,
+           log: Optional[Log] = None,
            progress: bool = False) -> Log:
     """Run every reader over already-prepared pages and return a frozen Log.
 
@@ -594,7 +642,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_clef_locator(log, cells, local)
         gather_key_signature(log, cells, local)
         gather_meter(log, cells, local)
-        gather_margin_labels(log, cells, local)
+        gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
+                             surya_fallback=surya_fallback,
+                             ocr_fallback=ocr_fallback)
         gather_direction_text(log, pws, cells, local)   # hard edge: last
         gather_external(log, pws, dossier=dossier, roster=roster)
 

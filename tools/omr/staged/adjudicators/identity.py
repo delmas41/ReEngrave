@@ -17,35 +17,68 @@ from ..record import ABSTAIN, Kind, Q, Scope, State
     quantity=Q.INSTRUMENT,
     scope=Kind.STAFF,
     wants=(Q.MARGIN_LABEL, Q.ROSTER_ENTRY, Q.STAFF_ORDINAL, Q.STAFF_GROUP),
-    reasons=("label", "roster", "score_order", "no_evidence"),
+    reasons=("label", "roster", "score_order", "not_in_lexicon",
+             "no_evidence"),
     mode=Mode.ADDITIVE,
-    stub=True,
 )
 def adjudicate_instrument(ev: Evidence) -> Ruling:
-    """⚠️ DECLARED STUB, and the most consequential one in the build.
+    """Name the staff's instrument from the STRING its margin printed.
 
-    What it must do when wired: consume `Q.MARGIN_LABEL` (the STRING, before
-    the lexicon), run `instruments.lookup`, and fall back to the score-order
-    layout prior. Its `Ruling.value` is a dict carrying at least
-    `{"name", "family", "expected_clef"}` -- `adjudicators.clef` and
-    `adjudicators.structure.adjudicate_group_symbol` both read those keys.
+    ⚠️ THE SPLIT THIS DECISION EXISTS TO MAKE. `StaffLabel` already carries a
+    resolved `instrument` beside its raw `text`, because the reader runs the
+    lexicon itself -- so today reading and naming happen in one act and the
+    string is kept only as an annotation. GATHER emits the STRING; this names
+    it. That separation is what makes the string re-interpretable when the
+    lexicon changes, and it is exactly the fusion that let `Tr. Alt.` resolve
+    to a SINGER at high confidence with the raw text sitting right beside it.
 
-    ⚠️ THE PROVENANCE IS NOT A FIELD IT WRITES. Today identity records
-    `instrument_source` and four consumers gate on it, and the tag is read at
-    `contextual.py:1298` and `:1451` through `.get(slot, "label")` -- with
-    the MOST PERMISSIVE tier as the default, which is the one value the three
-    circularity refusals admit. Under this design the provenance is
-    `Verdict.basis`, which cannot be defaulted because it is not a lookup.
+    ⚠️ PROVENANCE IS NOT A FIELD THIS WRITES. Today identity writes
+    `instrument_source` and four consumers gate on it -- and it is read at
+    `contextual.py:1298` and `:1451` through `.get(slot, "label")`, defaulting
+    to the MOST PERMISSIVE tier, the one value all three circularity refusals
+    admit. Here the provenance is `Verdict.basis`, which cannot be defaulted
+    because it is not a lookup: a name derived from a label has the label's
+    row in its basis, and a name derived from position does not.
 
-    ⚠️ AND THE CIRCULARITY IT MUST NOT INTRODUCE: the score-order prior
-    consumes clefs (`contextual.py:1208-1209`, `fit_layouts(..., clefs=
-    clef_by_slot)`). That is what makes a `score_order` identity ineligible
-    to anchor a clef decision, and the harness derives it from the basis --
-    provided this decision actually records the clef verdicts it consumed.
-    Wire the prior by READING `Q.CLEF` through `Evidence`, never by reaching
-    around it, or the basis will lie.
+    ⚠️ THE SCORE-ORDER TIER IS A DECLARED GAP, NOT AN OVERSIGHT. Wiring it
+    means consuming the layout prior, and the prior consumes CLEFS
+    (`contextual.py:1208-1209`, `fit_layouts(..., clefs=clef_by_slot)`). It
+    must therefore read `Q.CLEF` THROUGH `Evidence` -- never by reaching
+    around it -- or the basis will not record the dependency and the
+    circularity filter will admit a deduced identity into the clef decision,
+    which is the precise failure `clef_correction.py:566` exists to prevent
+    and which the partition-truth gate caught costing 3 of 27 staves.
     """
-    return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
+    labels = ev.rows(Q.MARGIN_LABEL)
+    if not labels:
+        # ⚠️ DECLINED and ABSENT both land here, and the harness records
+        # which on the verdict without this function asking. On a scan that
+        # matters: 29 of 29 unresolved non-treble staves print NO LABEL AT
+        # ALL -- not a lexicon refusal, not an OCR miss -- so "we could not
+        # read it" and "there was nothing to read" are the two answers, and
+        # only one of them is a reader problem.
+        return Ruling.abstain("no_evidence")
+
+    from ...instruments import lookup
+
+    text = str(labels[-1].value)
+    match = lookup(text)
+    if match is None:
+        # ⚠️ NOT a fallback to position. A label we cannot spell is a
+        # different state from a staff with no label, and guessing here would
+        # destroy the distinction the row was kept for.
+        return Ruling.abstain("not_in_lexicon", text=text)
+
+    inst = match.instrument
+    return Ruling(
+        value={"name": inst.name, "family": inst.family,
+               "expected_clef": inst.default_clef,
+               "written_range": list(inst.written_range),
+               "unpitched": inst.unpitched},
+        reason="label",
+        used=tuple(r.id for r in labels),
+        detail={"alias": match.alias, "coverage": match.coverage,
+                "reader_text": text})
 
 
 @decision(
