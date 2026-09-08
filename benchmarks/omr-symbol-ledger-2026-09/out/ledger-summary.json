@@ -1,0 +1,3282 @@
+{
+ "detail": "AllObjects",
+ "controls": {
+  "identity": [],
+  "cross_parser": [],
+  "ok": true,
+  "files_checked": 40
+ },
+ "pooled": {
+  "n_rows": 20,
+  "rows_with_a_resolved_part_join": 12,
+  "outcomes": {
+   "uncorresponded": 15044,
+   "spurious": 3186,
+   "ambiguous": 2904,
+   "matched_attribute_error": 2879,
+   "missing": 2783,
+   "matched_exact": 2723
+  },
+  "uncorresponded_reasons": {
+   "part_unresolved": 14992,
+   "measure_unresolved": 52
+  },
+  "attributes_wrong": {
+   "note.pitch": 1034,
+   "rest.duration_ql": 471,
+   "rest.type": 471,
+   "note.duration_ql": 383,
+   "note.type": 371,
+   "note.accidental": 162,
+   "key.fifths": 68,
+   "dynamic.text": 48,
+   "rest.dots": 36,
+   "note.dots": 21,
+   "tie.endpoint": 15,
+   "clef.clef": 15,
+   "time.beats": 11,
+   "time.beat_type": 7,
+   "word.text": 3,
+   "time.symbol": 1,
+   "articulation.mark": 1
+  },
+  "attributes_wrong_single_key": {
+   "note.pitch": 622,
+   "note.duration_ql": 313,
+   "note.type": 304,
+   "note.accidental": 96,
+   "rest.duration_ql": 76,
+   "rest.type": 72,
+   "rest.dots": 40,
+   "dynamic.text": 25,
+   "note.dots": 22,
+   "tie.endpoint": 14,
+   "slur.endpoint": 3,
+   "articulation.mark": 2,
+   "word.text": 1
+  },
+  "attributes_not_assessable": {
+   "note.duration_ql": 435,
+   "note.type": 435,
+   "note.dots": 435,
+   "note.pitch": 361,
+   "note.accidental": 361,
+   "note.grace": 361,
+   "rest.duration_ql": 114,
+   "rest.type": 114,
+   "rest.dots": 114
+  },
+  "correspondence_basis": {
+   "joint+onset+ord+pitch": 1762,
+   "onset+ord": 1006,
+   "joint+onset+ord": 572,
+   "pitch": 502,
+   "onset": 446,
+   "ord+pitch": 420,
+   "ord": 388,
+   "joint+onset+pitch": 375,
+   "joint+onset": 126,
+   "joint+pitch": 2,
+   "onset+pitch": 1,
+   "joint+ord+pitch": 1,
+   "joint": 1
+  },
+  "by_family": {
+   "articulation": {
+    "uncorresponded": 305,
+    "matched_exact": 278,
+    "missing": 156,
+    "ambiguous": 87,
+    "spurious": 63,
+    "matched_attribute_error": 3
+   },
+   "barline": {
+    "missing": 43,
+    "uncorresponded": 21
+   },
+   "clef": {
+    "uncorresponded": 379,
+    "matched_exact": 141,
+    "spurious": 32,
+    "missing": 24,
+    "matched_attribute_error": 15
+   },
+   "dynamic": {
+    "uncorresponded": 572,
+    "matched_exact": 244,
+    "spurious": 186,
+    "missing": 127,
+    "matched_attribute_error": 73,
+    "ambiguous": 28
+   },
+   "fermata": {
+    "matched_exact": 67,
+    "spurious": 26,
+    "missing": 25,
+    "uncorresponded": 5
+   },
+   "hairpin": {
+    "uncorresponded": 235,
+    "missing": 140
+   },
+   "key": {
+    "uncorresponded": 370,
+    "matched_exact": 87,
+    "matched_attribute_error": 68,
+    "spurious": 49
+   },
+   "metronome": {
+    "missing": 5
+   },
+   "note": {
+    "uncorresponded": 7181,
+    "ambiguous": 2533,
+    "matched_attribute_error": 2118,
+    "matched_exact": 1090,
+    "spurious": 972,
+    "missing": 866
+   },
+   "ornament": {
+    "uncorresponded": 70,
+    "missing": 64
+   },
+   "rest": {
+    "uncorresponded": 3851,
+    "spurious": 1288,
+    "matched_attribute_error": 552,
+    "missing": 347,
+    "matched_exact": 300,
+    "ambiguous": 34
+   },
+   "slur": {
+    "uncorresponded": 590,
+    "missing": 314,
+    "matched_exact": 204,
+    "spurious": 167,
+    "ambiguous": 83,
+    "matched_attribute_error": 3
+   },
+   "tie": {
+    "uncorresponded": 1057,
+    "missing": 485,
+    "spurious": 383,
+    "matched_exact": 242,
+    "ambiguous": 139,
+    "matched_attribute_error": 29
+   },
+   "time": {
+    "uncorresponded": 270,
+    "missing": 102,
+    "matched_exact": 54,
+    "matched_attribute_error": 14,
+    "spurious": 14
+   },
+   "word": {
+    "uncorresponded": 138,
+    "missing": 85,
+    "matched_exact": 16,
+    "spurious": 6,
+    "matched_attribute_error": 4
+   }
+  },
+  "musicdiff_categories": {
+   "entire measure insert/delete": 29655,
+   "wrong note": 22174,
+   "entire staff insert/delete": 17520,
+   "wrong note head": 1788,
+   "wrong flag/beam": 688,
+   "wrong dynamic": 512,
+   "wrong keysig": 507,
+   "wrong direction": 500,
+   "wrong timesig": 468,
+   "wrong dot": 282,
+   "wrong slur": 220,
+   "wrong clef": 205,
+   "wrong accidental": 82,
+   "wrong tie": 68,
+   "wrong articulation": 56,
+   "wrong lyric": 48,
+   "wrong crescendo": 44,
+   "wrong ornament": 43,
+   "wrong barline": 42,
+   "wrong diminuendo": 32,
+   "wrong tuplet": 12,
+   "wrong fingered tremolo": 6,
+   "wrong tempo": 4
+  },
+  "musicdiff_total_edits": 74956,
+  "join_resolved_rows": [
+   "beethoven-sym5-mvt1-575951-p1",
+   "beethoven-sym5-mvt1-575951-p2",
+   "beethoven-sym5-mvt1-575951-p4",
+   "beethoven-sym5-mvt1-984073-p1",
+   "beethoven-sym5-mvt1-984073-p2",
+   "beethoven-sym5-mvt1-984073-p4",
+   "brahms-sym1-mvt1-317803-p1",
+   "brahms-sym1-mvt1-317803-p3",
+   "brahms-sym1-mvt1-317803-p4",
+   "dvorak-sym9-mvt1-405834-p5",
+   "dvorak-sym9-mvt1-405834-p6",
+   "dvorak-sym9-mvt1-405834-p7"
+  ],
+  "corresponded_population": {
+   "n_rows": 12,
+   "outcomes": {
+    "spurious": 3186,
+    "ambiguous": 2904,
+    "matched_attribute_error": 2879,
+    "missing": 2783,
+    "matched_exact": 2723,
+    "uncorresponded": 52
+   },
+   "attributes_wrong": {
+    "note.pitch": 1034,
+    "rest.duration_ql": 471,
+    "rest.type": 471,
+    "note.duration_ql": 383,
+    "note.type": 371,
+    "note.accidental": 162,
+    "key.fifths": 68,
+    "dynamic.text": 48,
+    "rest.dots": 36,
+    "note.dots": 21,
+    "tie.endpoint": 15,
+    "clef.clef": 15,
+    "time.beats": 11,
+    "time.beat_type": 7,
+    "word.text": 3,
+    "time.symbol": 1,
+    "articulation.mark": 1
+   }
+  }
+ },
+ "rows": [
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "outcomes": {
+    "matched_exact": 127,
+    "missing": 97,
+    "spurious": 141,
+    "matched_attribute_error": 70,
+    "ambiguous": 37
+   },
+   "by_family": {
+    "clef": {
+     "matched_exact": 12,
+     "spurious": 2
+    },
+    "dynamic": {
+     "missing": 1,
+     "spurious": 2,
+     "matched_exact": 10
+    },
+    "fermata": {
+     "matched_exact": 24
+    },
+    "key": {
+     "matched_exact": 4,
+     "matched_attribute_error": 8
+    },
+    "metronome": {
+     "missing": 1
+    },
+    "note": {
+     "ambiguous": 37,
+     "matched_exact": 56,
+     "spurious": 12,
+     "matched_attribute_error": 30,
+     "missing": 24
+    },
+    "rest": {
+     "spurious": 122,
+     "matched_exact": 12,
+     "matched_attribute_error": 28,
+     "missing": 9
+    },
+    "slur": {
+     "missing": 2,
+     "spurious": 2
+    },
+    "tie": {
+     "spurious": 1,
+     "matched_attribute_error": 1,
+     "missing": 59
+    },
+    "time": {
+     "matched_exact": 9,
+     "matched_attribute_error": 3
+    },
+    "word": {
+     "missing": 1
+    }
+   },
+   "attributes_wrong": {
+    "rest.duration_ql": 27,
+    "rest.type": 27,
+    "note.pitch": 21,
+    "key.fifths": 8,
+    "note.accidental": 3,
+    "time.beats": 3,
+    "note.duration_ql": 3,
+    "note.type": 3,
+    "tie.endpoint": 1
+   },
+   "attributes_wrong_single_key": {
+    "note.pitch": 9,
+    "rest.duration_ql": 1,
+    "rest.type": 1
+   },
+   "attributes_not_assessable": {
+    "note.duration_ql": 9,
+    "note.type": 9,
+    "note.dots": 9,
+    "rest.duration_ql": 6,
+    "rest.type": 6,
+    "rest.dots": 6,
+    "note.pitch": 4,
+    "note.accidental": 4,
+    "note.grace": 4
+   },
+   "uncorresponded_reasons": {},
+   "correspondence_basis": {
+    "joint+onset+ord+pitch": 103,
+    "joint+onset+ord": 32,
+    "onset+ord": 22,
+    "ord+pitch": 15,
+    "onset": 8,
+    "joint+onset": 7,
+    "pitch": 4,
+    "ord": 3,
+    "joint+onset+pitch": 3
+   },
+   "measure_map": {
+    "offset": 0,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 1,
+    "pred_measures": 16,
+    "truth_measures": 16
+   },
+   "part_join": {
+    "resolved": 12,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 543,
+    "pred_symbols_in": 357,
+    "truth_rows": 312,
+    "pred_rows_own": 160,
+    "pred_as_partner": 197,
+    "pred_accounted": 357,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": false
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 12,
+    "n_pred_parts": 12,
+    "n_staves_printed": 12,
+    "status": "resolved",
+    "staves_resolved": 12,
+    "staff_names": [
+     "Flauti",
+     "Oboi",
+     "Clarinetti in B",
+     "Fagotti",
+     "Corni in Es",
+     "Trombe in C",
+     "Timpani in C.G.",
+     "Violino I",
+     "Violino II",
+     "Viola",
+     "Violoncello",
+     "Basso"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.7052631578947368,
+    "omr_ed": 1273,
+    "categories": {
+     "wrong note": 182,
+     "wrong note head": 74,
+     "wrong flag/beam": 11,
+     "wrong ornament": 6,
+     "wrong clef": 12,
+     "wrong timesig": 6,
+     "wrong keysig": 18,
+     "wrong tempo": 1,
+     "wrong direction": 16,
+     "wrong dynamic": 9,
+     "entire measure insert/delete": 425,
+     "entire staff insert/delete": 513
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "outcomes": {
+    "matched_exact": 136,
+    "spurious": 466,
+    "missing": 398,
+    "matched_attribute_error": 274,
+    "ambiguous": 138
+   },
+   "by_family": {
+    "articulation": {
+     "spurious": 3,
+     "missing": 5,
+     "matched_exact": 7
+    },
+    "clef": {
+     "matched_exact": 10,
+     "missing": 2,
+     "spurious": 2,
+     "matched_attribute_error": 1
+    },
+    "dynamic": {
+     "matched_exact": 39,
+     "spurious": 38,
+     "missing": 42,
+     "matched_attribute_error": 15
+    },
+    "fermata": {
+     "spurious": 22,
+     "missing": 22
+    },
+    "key": {
+     "matched_exact": 4,
+     "spurious": 7,
+     "matched_attribute_error": 7
+    },
+    "note": {
+     "matched_attribute_error": 218,
+     "ambiguous": 132,
+     "missing": 198,
+     "spurious": 174,
+     "matched_exact": 47
+    },
+    "ornament": {
+     "missing": 7
+    },
+    "rest": {
+     "spurious": 199,
+     "matched_attribute_error": 29,
+     "missing": 18,
+     "matched_exact": 8
+    },
+    "slur": {
+     "missing": 8,
+     "spurious": 6,
+     "matched_exact": 6
+    },
+    "tie": {
+     "spurious": 12,
+     "matched_attribute_error": 4,
+     "missing": 70,
+     "matched_exact": 14,
+     "ambiguous": 6
+    },
+    "time": {
+     "missing": 11,
+     "spurious": 2
+    },
+    "word": {
+     "missing": 15,
+     "matched_exact": 1,
+     "spurious": 1
+    }
+   },
+   "attributes_wrong": {
+    "note.pitch": 122,
+    "rest.duration_ql": 25,
+    "rest.type": 25,
+    "note.duration_ql": 21,
+    "note.type": 21,
+    "note.accidental": 17,
+    "dynamic.text": 12,
+    "key.fifths": 7,
+    "tie.endpoint": 4,
+    "clef.clef": 1
+   },
+   "attributes_wrong_single_key": {
+    "note.pitch": 79,
+    "note.duration_ql": 16,
+    "note.type": 16,
+    "note.accidental": 9,
+    "rest.duration_ql": 4,
+    "rest.type": 4,
+    "dynamic.text": 3
+   },
+   "attributes_not_assessable": {
+    "note.duration_ql": 60,
+    "note.type": 60,
+    "note.dots": 60,
+    "note.pitch": 17,
+    "note.accidental": 17,
+    "note.grace": 17,
+    "rest.duration_ql": 6,
+    "rest.type": 6,
+    "rest.dots": 6
+   },
+   "uncorresponded_reasons": {},
+   "correspondence_basis": {
+    "onset+ord": 143,
+    "joint+onset+ord+pitch": 100,
+    "onset": 63,
+    "joint+onset+ord": 26,
+    "ord": 24,
+    "joint+onset+pitch": 23,
+    "pitch": 17,
+    "ord+pitch": 8,
+    "joint+onset": 6
+   },
+   "measure_map": {
+    "offset": 16,
+    "status": "hypothesised",
+    "reason": "the page's verified window holds 32 bars and the prediction emitted 31; the offset map is a hypothesis, not a correspondence",
+    "first_ref_measure": 17,
+    "pred_measures": 31,
+    "truth_measures": 32
+   },
+   "part_join": {
+    "resolved": 11,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 1463,
+    "pred_symbols_in": 948,
+    "truth_rows": 874,
+    "pred_rows_own": 538,
+    "pred_as_partner": 410,
+    "pred_accounted": 948,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": false
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 11,
+    "n_pred_parts": 11,
+    "n_staves_printed": 22,
+    "status": "resolved",
+    "staves_resolved": 11,
+    "staff_names": [
+     "Flauti",
+     "Oboi",
+     "Clarinetti in B",
+     "Fagotti",
+     "Corni in Es",
+     "Trombe in C",
+     "Timpani in C.G.",
+     "Violino I",
+     "Violino II",
+     "Viola",
+     "Violoncello e Basso"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.8697478991596639,
+    "omr_ed": 4347,
+    "categories": {
+     "wrong note": 756,
+     "wrong note head": 218,
+     "wrong flag/beam": 20,
+     "wrong accidental": 1,
+     "wrong tie": 3,
+     "wrong articulation": 1,
+     "wrong ornament": 6,
+     "wrong clef": 5,
+     "wrong timesig": 24,
+     "wrong keysig": 19,
+     "wrong direction": 18,
+     "wrong dynamic": 57,
+     "wrong slur": 2,
+     "entire measure insert/delete": 1666,
+     "entire staff insert/delete": 1551
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "outcomes": {
+    "uncorresponded": 1903
+   },
+   "by_family": {
+    "articulation": {
+     "uncorresponded": 4
+    },
+    "clef": {
+     "uncorresponded": 37
+    },
+    "dynamic": {
+     "uncorresponded": 65
+    },
+    "hairpin": {
+     "uncorresponded": 4
+    },
+    "key": {
+     "uncorresponded": 40
+    },
+    "note": {
+     "uncorresponded": 820
+    },
+    "ornament": {
+     "uncorresponded": 17
+    },
+    "rest": {
+     "uncorresponded": 537
+    },
+    "slur": {
+     "uncorresponded": 142
+    },
+    "tie": {
+     "uncorresponded": 219
+    },
+    "time": {
+     "uncorresponded": 18
+    }
+   },
+   "attributes_wrong": {},
+   "attributes_wrong_single_key": {},
+   "attributes_not_assessable": {},
+   "uncorresponded_reasons": {
+    "part_unresolved": 1903
+   },
+   "correspondence_basis": {},
+   "measure_map": {
+    "offset": 48,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 49,
+    "pred_measures": 34,
+    "truth_measures": 34
+   },
+   "part_join": {
+    "resolved": 0,
+    "unresolved": 19
+   },
+   "coverage": {
+    "truth_symbols_in": 1233,
+    "pred_symbols_in": 670,
+    "truth_rows": 1233,
+    "pred_rows_own": 670,
+    "pred_as_partner": 0,
+    "pred_accounted": 670,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 11,
+    "n_pred_parts": 19,
+    "n_staves_printed": 19,
+    "status": "unresolved",
+    "reason": "the hand-verified lineup names 11 staves and the prediction emitted 19 parts \u2014 a positional join would be a guess"
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.8705882352941177,
+    "omr_ed": 3034,
+    "categories": {
+     "wrong note": 439,
+     "wrong note head": 204,
+     "wrong flag/beam": 8,
+     "wrong accidental": 4,
+     "wrong tie": 3,
+     "wrong lyric": 6,
+     "wrong clef": 16,
+     "wrong timesig": 32,
+     "wrong keysig": 25,
+     "wrong dynamic": 10,
+     "wrong slur": 13,
+     "entire measure insert/delete": 2187,
+     "entire staff insert/delete": 87
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "outcomes": {
+    "matched_exact": 235,
+    "matched_attribute_error": 314,
+    "spurious": 305,
+    "missing": 319,
+    "ambiguous": 398
+   },
+   "by_family": {
+    "articulation": {
+     "missing": 24,
+     "matched_exact": 32,
+     "spurious": 7,
+     "ambiguous": 12
+    },
+    "clef": {
+     "matched_exact": 9,
+     "spurious": 2,
+     "missing": 6,
+     "matched_attribute_error": 2
+    },
+    "dynamic": {
+     "matched_attribute_error": 7,
+     "matched_exact": 13,
+     "missing": 5,
+     "spurious": 9
+    },
+    "fermata": {
+     "spurious": 3
+    },
+    "key": {
+     "matched_attribute_error": 7,
+     "spurious": 11,
+     "matched_exact": 4
+    },
+    "note": {
+     "spurious": 106,
+     "matched_attribute_error": 284,
+     "ambiguous": 366,
+     "missing": 106,
+     "matched_exact": 125
+    },
+    "rest": {
+     "spurious": 110,
+     "missing": 26,
+     "matched_exact": 10,
+     "matched_attribute_error": 10
+    },
+    "slur": {
+     "missing": 62,
+     "matched_exact": 15,
+     "spurious": 12,
+     "ambiguous": 2
+    },
+    "tie": {
+     "missing": 73,
+     "matched_exact": 27,
+     "ambiguous": 18,
+     "spurious": 44,
+     "matched_attribute_error": 1
+    },
+    "time": {
+     "missing": 11
+    },
+    "word": {
+     "missing": 6,
+     "spurious": 1,
+     "matched_attribute_error": 3
+    }
+   },
+   "attributes_wrong": {
+    "note.pitch": 152,
+    "note.duration_ql": 36,
+    "note.type": 34,
+    "note.accidental": 13,
+    "rest.duration_ql": 10,
+    "rest.type": 10,
+    "key.fifths": 7,
+    "dynamic.text": 5,
+    "clef.clef": 2,
+    "word.text": 2,
+    "note.dots": 2,
+    "tie.endpoint": 1
+   },
+   "attributes_wrong_single_key": {
+    "note.pitch": 110,
+    "note.accidental": 15,
+    "note.duration_ql": 15,
+    "note.type": 15,
+    "dynamic.text": 2,
+    "word.text": 1
+   },
+   "attributes_not_assessable": {
+    "note.duration_ql": 78,
+    "note.type": 78,
+    "note.dots": 78,
+    "note.pitch": 20,
+    "note.accidental": 20,
+    "note.grace": 20
+   },
+   "uncorresponded_reasons": {},
+   "correspondence_basis": {
+    "joint+onset+ord+pitch": 174,
+    "onset+ord": 128,
+    "onset": 80,
+    "joint+onset+pitch": 68,
+    "ord": 34,
+    "pitch": 25,
+    "ord+pitch": 20,
+    "joint+onset+ord": 19,
+    "joint+onset": 1
+   },
+   "measure_map": {
+    "offset": 82,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 83,
+    "pred_measures": 30,
+    "truth_measures": 30
+   },
+   "part_join": {
+    "resolved": 11,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 1493,
+    "pred_symbols_in": 1047,
+    "truth_rows": 1073,
+    "pred_rows_own": 498,
+    "pred_as_partner": 549,
+    "pred_accounted": 1047,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": false
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 11,
+    "n_pred_parts": 11,
+    "n_staves_printed": 22,
+    "status": "resolved",
+    "staves_resolved": 11,
+    "staff_names": [
+     "Flauti",
+     "Oboi",
+     "Clarinetti in B",
+     "Fagotti",
+     "Corni in Es",
+     "Trombe in C",
+     "Timpani in C.G.",
+     "Violino I",
+     "Violino II",
+     "Viola",
+     "Bassi (Violoncello e Basso)"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.9009061114324273,
+    "omr_ed": 4673,
+    "categories": {
+     "wrong note": 738,
+     "wrong note head": 64,
+     "wrong flag/beam": 21,
+     "wrong accidental": 7,
+     "wrong tie": 6,
+     "wrong articulation": 5,
+     "wrong ornament": 2,
+     "wrong clef": 10,
+     "wrong timesig": 22,
+     "wrong keysig": 21,
+     "wrong direction": 33,
+     "wrong dynamic": 10,
+     "wrong slur": 2,
+     "entire measure insert/delete": 2355,
+     "entire staff insert/delete": 1377
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "outcomes": {
+    "matched_exact": 124,
+    "missing": 75,
+    "spurious": 125,
+    "matched_attribute_error": 87,
+    "ambiguous": 56
+   },
+   "by_family": {
+    "articulation": {
+     "spurious": 1
+    },
+    "clef": {
+     "matched_exact": 11,
+     "matched_attribute_error": 1
+    },
+    "dynamic": {
+     "missing": 1,
+     "spurious": 1,
+     "matched_exact": 10
+    },
+    "fermata": {
+     "matched_exact": 23,
+     "missing": 1
+    },
+    "key": {
+     "matched_exact": 6,
+     "matched_attribute_error": 6,
+     "spurious": 1
+    },
+    "metronome": {
+     "missing": 1
+    },
+    "note": {
+     "spurious": 22,
+     "ambiguous": 56,
+     "matched_exact": 49,
+     "matched_attribute_error": 43,
+     "missing": 10
+    },
+    "rest": {
+     "spurious": 88,
+     "matched_attribute_error": 33,
+     "missing": 10,
+     "matched_exact": 6
+    },
+    "slur": {
+     "missing": 2,
+     "spurious": 6
+    },
+    "tie": {
+     "spurious": 6,
+     "missing": 49,
+     "matched_exact": 11
+    },
+    "time": {
+     "matched_exact": 8,
+     "matched_attribute_error": 4
+    },
+    "word": {
+     "missing": 1
+    }
+   },
+   "attributes_wrong": {
+    "note.pitch": 34,
+    "rest.type": 31,
+    "rest.duration_ql": 30,
+    "key.fifths": 6,
+    "time.beats": 4,
+    "note.duration_ql": 4,
+    "note.type": 4,
+    "note.accidental": 2,
+    "clef.clef": 1
+   },
+   "attributes_wrong_single_key": {
+    "note.pitch": 8,
+    "rest.duration_ql": 2,
+    "rest.type": 2
+   },
+   "attributes_not_assessable": {
+    "note.pitch": 7,
+    "note.accidental": 7,
+    "note.grace": 7,
+    "note.duration_ql": 5,
+    "note.type": 5,
+    "note.dots": 5
+   },
+   "uncorresponded_reasons": {},
+   "correspondence_basis": {
+    "joint+onset+ord+pitch": 103,
+    "onset+ord": 38,
+    "joint+onset+ord": 36,
+    "ord+pitch": 13,
+    "pitch": 7,
+    "ord": 6,
+    "onset": 5,
+    "joint+onset+pitch": 3
+   },
+   "measure_map": {
+    "offset": 0,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 1,
+    "pred_measures": 16,
+    "truth_measures": 16
+   },
+   "part_join": {
+    "resolved": 12,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 543,
+    "pred_symbols_in": 366,
+    "truth_rows": 312,
+    "pred_rows_own": 155,
+    "pred_as_partner": 211,
+    "pred_accounted": 366,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": false
+   },
+   "part_join_info": {
+    "source": "same-as:beethoven-sym5-mvt1-984073-p1",
+    "n_staves_map": 12,
+    "n_pred_parts": 12,
+    "n_staves_printed": 12,
+    "status": "resolved",
+    "staves_resolved": 12,
+    "staff_names": [
+     "Flauti",
+     "Oboi",
+     "Clarinetti in B",
+     "Fagotti",
+     "Corni in Es",
+     "Trombe in C",
+     "Timpani in C.G.",
+     "Violino I",
+     "Violino II",
+     "Viola",
+     "Violoncello",
+     "Basso"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.7547380156075808,
+    "omr_ed": 1354,
+    "categories": {
+     "wrong note": 176,
+     "wrong note head": 80,
+     "wrong flag/beam": 8,
+     "wrong ornament": 4,
+     "wrong clef": 8,
+     "wrong timesig": 8,
+     "wrong keysig": 21,
+     "wrong tempo": 1,
+     "wrong direction": 16,
+     "wrong dynamic": 10,
+     "entire measure insert/delete": 509,
+     "entire staff insert/delete": 513
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "outcomes": {
+    "matched_exact": 334,
+    "matched_attribute_error": 249,
+    "spurious": 277,
+    "missing": 156,
+    "ambiguous": 270
+   },
+   "by_family": {
+    "articulation": {
+     "spurious": 5,
+     "matched_exact": 10,
+     "missing": 2
+    },
+    "clef": {
+     "matched_exact": 10,
+     "missing": 2,
+     "spurious": 4,
+     "matched_attribute_error": 1
+    },
+    "dynamic": {
+     "matched_exact": 66,
+     "missing": 16,
+     "matched_attribute_error": 14,
+     "spurious": 13
+    },
+    "fermata": {
+     "matched_exact": 20,
+     "missing": 2,
+     "spurious": 1
+    },
+    "key": {
+     "matched_attribute_error": 9,
+     "spurious": 8,
+     "matched_exact": 2
+    },
+    "note": {
+     "matched_attribute_error": 196,
+     "ambiguous": 258,
+     "missing": 34,
+     "spurious": 36,
+     "matched_exact": 167
+    },
+    "ornament": {
+     "missing": 7
+    },
+    "rest": {
+     "spurious": 176,
+     "matched_attribute_error": 28,
+     "matched_exact": 14,
+     "missing": 13
+    },
+    "slur": {
+     "spurious": 12,
+     "missing": 6,
+     "matched_exact": 8
+    },
+    "tie": {
+     "missing": 53,
+     "spurious": 19,
+     "matched_exact": 31,
+     "ambiguous": 12,
+     "matched_attribute_error": 1
+    },
+    "time": {
+     "missing": 11,
+     "spurious": 1
+    },
+    "word": {
+     "missing": 10,
+     "spurious": 2,
+     "matched_exact": 6
+    }
+   },
+   "attributes_wrong": {
+    "note.pitch": 146,
+    "rest.duration_ql": 28,
+    "rest.type": 28,
+    "note.accidental": 15,
+    "dynamic.text": 12,
+    "key.fifths": 9,
+    "note.duration_ql": 6,
+    "note.type": 6,
+    "tie.endpoint": 1,
+    "clef.clef": 1
+   },
+   "attributes_wrong_single_key": {
+    "note.pitch": 48,
+    "note.duration_ql": 5,
+    "note.type": 5,
+    "note.accidental": 3,
+    "dynamic.text": 2
+   },
+   "attributes_not_assessable": {
+    "note.duration_ql": 37,
+    "note.type": 37,
+    "note.dots": 37,
+    "note.pitch": 10,
+    "note.accidental": 10,
+    "note.grace": 10
+   },
+   "uncorresponded_reasons": {},
+   "correspondence_basis": {
+    "joint+onset+ord+pitch": 282,
+    "onset+ord": 143,
+    "joint+onset+ord": 41,
+    "onset": 38,
+    "ord+pitch": 30,
+    "joint+onset+pitch": 25,
+    "ord": 13,
+    "pitch": 9,
+    "joint+pitch": 2
+   },
+   "measure_map": {
+    "offset": 16,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 17,
+    "pred_measures": 32,
+    "truth_measures": 32
+   },
+   "part_join": {
+    "resolved": 11,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 1463,
+    "pred_symbols_in": 995,
+    "truth_rows": 874,
+    "pred_rows_own": 412,
+    "pred_as_partner": 583,
+    "pred_accounted": 995,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": false
+   },
+   "part_join_info": {
+    "source": "same-as:beethoven-sym5-mvt1-984073-p2",
+    "n_staves_map": 11,
+    "n_pred_parts": 11,
+    "n_staves_printed": 22,
+    "status": "resolved",
+    "staves_resolved": 11,
+    "staff_names": [
+     "Flauti",
+     "Oboi",
+     "Clarinetti in B",
+     "Fagotti",
+     "Corni in Es",
+     "Trombe in C",
+     "Timpani in C.G.",
+     "Violino I",
+     "Violino II",
+     "Viola",
+     "Violoncello e Basso"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.8704581358609794,
+    "omr_ed": 4408,
+    "categories": {
+     "wrong note": 679,
+     "wrong note head": 184,
+     "wrong flag/beam": 16,
+     "wrong accidental": 1,
+     "wrong tie": 4,
+     "wrong articulation": 3,
+     "wrong ornament": 4,
+     "wrong clef": 7,
+     "wrong timesig": 19,
+     "wrong keysig": 29,
+     "wrong direction": 12,
+     "wrong dynamic": 46,
+     "wrong slur": 2,
+     "entire measure insert/delete": 1851,
+     "entire staff insert/delete": 1551
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "outcomes": {
+    "uncorresponded": 1994
+   },
+   "by_family": {
+    "clef": {
+     "uncorresponded": 37
+    },
+    "dynamic": {
+     "uncorresponded": 71
+    },
+    "hairpin": {
+     "uncorresponded": 4
+    },
+    "key": {
+     "uncorresponded": 39
+    },
+    "note": {
+     "uncorresponded": 872
+    },
+    "ornament": {
+     "uncorresponded": 17
+    },
+    "rest": {
+     "uncorresponded": 523
+    },
+    "slur": {
+     "uncorresponded": 152
+    },
+    "tie": {
+     "uncorresponded": 260
+    },
+    "time": {
+     "uncorresponded": 18
+    },
+    "word": {
+     "uncorresponded": 1
+    }
+   },
+   "attributes_wrong": {},
+   "attributes_wrong_single_key": {},
+   "attributes_not_assessable": {},
+   "uncorresponded_reasons": {
+    "part_unresolved": 1994
+   },
+   "correspondence_basis": {},
+   "measure_map": {
+    "offset": 48,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 49,
+    "pred_measures": 34,
+    "truth_measures": 34
+   },
+   "part_join": {
+    "resolved": 0,
+    "unresolved": 19
+   },
+   "coverage": {
+    "truth_symbols_in": 1233,
+    "pred_symbols_in": 761,
+    "truth_rows": 1233,
+    "pred_rows_own": 761,
+    "pred_as_partner": 0,
+    "pred_accounted": 761,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 11,
+    "n_pred_parts": 19,
+    "n_staves_printed": 19,
+    "status": "unresolved",
+    "reason": "the hand-verified lineup names 11 staves and the prediction emitted 19 parts \u2014 a positional join would be a guess"
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.8811111111111111,
+    "omr_ed": 3172,
+    "categories": {
+     "wrong note": 449,
+     "wrong note head": 212,
+     "wrong flag/beam": 5,
+     "wrong accidental": 1,
+     "wrong tie": 4,
+     "wrong lyric": 12,
+     "wrong clef": 13,
+     "wrong timesig": 28,
+     "wrong keysig": 21,
+     "wrong direction": 5,
+     "wrong dynamic": 10,
+     "wrong slur": 13,
+     "entire measure insert/delete": 2309,
+     "entire staff insert/delete": 90
+    }
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "outcomes": {
+    "matched_exact": 156,
+    "matched_attribute_error": 407,
+    "spurious": 428,
+    "missing": 367,
+    "ambiguous": 282,
+    "uncorresponded": 35
+   },
+   "by_family": {
+    "articulation": {
+     "spurious": 22,
+     "missing": 35,
+     "matched_exact": 26,
+     "ambiguous": 5
+    },
+    "clef": {
+     "matched_exact": 8,
+     "spurious": 6,
+     "missing": 6,
+     "matched_attribute_error": 3
+    },
+    "dynamic": {
+     "matched_exact": 3,
+     "missing": 17,
+     "spurious": 30,
+     "ambiguous": 3,
+     "matched_attribute_error": 4
+    },
+    "key": {
+     "matched_attribute_error": 6,
+     "spurious": 9,
+     "matched_exact": 5
+    },
+    "note": {
+     "spurious": 142,
+     "matched_attribute_error": 370,
+     "ambiguous": 253,
+     "matched_exact": 46,
+     "missing": 156,
+     "uncorresponded": 33
+    },
+    "rest": {
+     "spurious": 131,
+     "uncorresponded": 2,
+     "missing": 26,
+     "matched_attribute_error": 13,
+     "matched_exact": 7
+    },
+    "slur": {
+     "missing": 55,
+     "spurious": 13,
+     "matched_exact": 22,
+     "matched_attribute_error": 1
+    },
+    "tie": {
+     "missing": 59,
+     "matched_attribute_error": 9,
+     "spurious": 74,
+     "matched_exact": 33,
+     "ambiguous": 21
+    },
+    "time": {
+     "missing": 11
+    },
+    "word": {
+     "matched_exact": 6,
+     "missing": 2,
+     "matched_attribute_error": 1,
+     "spurious": 1
+    }
+   },
+   "attributes_wrong": {
+    "note.pitch": 212,
+    "note.duration_ql": 18,
+    "note.type": 16,
+    "rest.duration_ql": 12,
+    "rest.type": 12,
+    "note.accidental": 8,
+    "key.fifths": 6,
+    "tie.endpoint": 6,
+    "clef.clef": 3,
+    "dynamic.text": 2,
+    "note.dots": 2,
+    "word.text": 1
+   },
+   "attributes_wrong_single_key": {
+    "note.pitch": 150,
+    "note.accidental": 24,
+    "note.duration_ql": 6,
+    "note.type": 5,
+    "tie.endpoint": 3,
+    "dynamic.text": 2,
+    "rest.duration_ql": 1,
+    "rest.type": 1,
+    "slur.endpoint": 1,
+    "note.dots": 1
+   },
+   "attributes_not_assessable": {
+    "note.duration_ql": 134,
+    "note.type": 134,
+    "note.dots": 134,
+    "note.pitch": 4,
+    "note.accidental": 4,
+    "note.grace": 4
+   },
+   "uncorresponded_reasons": {
+    "measure_unresolved": 35
+   },
+   "correspondence_basis": {
+    "onset+ord": 227,
+    "onset": 136,
+    "joint+onset+ord+pitch": 117,
+    "joint+onset+pitch": 29,
+    "ord": 21,
+    "joint+onset+ord": 19,
+    "ord+pitch": 7,
+    "pitch": 6,
+    "joint+onset": 1
+   },
+   "measure_map": {
+    "offset": 82,
+    "status": "hypothesised",
+    "reason": "the page's verified window holds 30 bars and the prediction emitted 31; the offset map is a hypothesis, not a correspondence",
+    "first_ref_measure": 83,
+    "pred_measures": 31,
+    "truth_measures": 30
+   },
+   "part_join": {
+    "resolved": 11,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 1493,
+    "pred_symbols_in": 1165,
+    "truth_rows": 1073,
+    "pred_rows_own": 602,
+    "pred_as_partner": 563,
+    "pred_accounted": 1165,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": false
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 11,
+    "n_pred_parts": 11,
+    "n_staves_printed": 22,
+    "status": "resolved",
+    "staves_resolved": 11,
+    "staff_names": [
+     "Flauti",
+     "Oboi",
+     "Clarinetti in B",
+     "Fagotti",
+     "Corni in Es",
+     "Trombe in C",
+     "Timpani in C.G.",
+     "Violino I",
+     "Violino II",
+     "Viola",
+     "Bassi (Violoncello e Basso)"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.881615859360389,
+    "omr_ed": 4714,
+    "categories": {
+     "wrong note": 800,
+     "wrong note head": 54,
+     "wrong flag/beam": 16,
+     "wrong accidental": 2,
+     "wrong tie": 5,
+     "wrong articulation": 7,
+     "wrong lyric": 3,
+     "wrong clef": 17,
+     "wrong timesig": 22,
+     "wrong keysig": 28,
+     "wrong direction": 14,
+     "wrong dynamic": 18,
+     "wrong slur": 9,
+     "entire measure insert/delete": 2342,
+     "entire staff insert/delete": 1377
+    }
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "outcomes": {
+    "matched_exact": 149,
+    "missing": 89,
+    "spurious": 48,
+    "matched_attribute_error": 135,
+    "ambiguous": 48
+   },
+   "by_family": {
+    "articulation": {
+     "matched_exact": 7,
+     "missing": 8,
+     "spurious": 2,
+     "ambiguous": 3
+    },
+    "clef": {
+     "matched_exact": 14,
+     "spurious": 1,
+     "missing": 1
+    },
+    "dynamic": {
+     "matched_exact": 8,
+     "missing": 5,
+     "matched_attribute_error": 2,
+     "spurious": 4
+    },
+    "hairpin": {
+     "missing": 14
+    },
+    "key": {
+     "matched_exact": 14,
+     "spurious": 1,
+     "matched_attribute_error": 1
+    },
+    "metronome": {
+     "missing": 1
+    },
+    "note": {
+     "spurious": 18,
+     "matched_exact": 41,
+     "matched_attribute_error": 31,
+     "ambiguous": 37,
+     "missing": 6
+    },
+    "rest": {
+     "matched_attribute_error": 100,
+     "missing": 33,
+     "spurious": 12,
+     "matched_exact": 19
+    },
+    "slur": {
+     "matched_exact": 22,
+     "missing": 11,
+     "ambiguous": 5,
+     "spurious": 2
+    },
+    "tie": {
+     "matched_exact": 10,
+     "spurious": 8,
+     "missing": 9,
+     "ambiguous": 3
+    },
+    "time": {
+     "matched_exact": 14,
+     "matched_attribute_error": 1
+    },
+    "word": {
+     "missing": 1
+    }
+   },
+   "attributes_wrong": {
+    "rest.type": 97,
+    "rest.duration_ql": 96,
+    "note.duration_ql": 17,
+    "note.type": 17,
+    "note.pitch": 6,
+    "note.dots": 2,
+    "rest.dots": 2,
+    "time.beat_type": 1,
+    "key.fifths": 1
+   },
+   "attributes_wrong_single_key": {
+    "note.pitch": 9,
+    "rest.duration_ql": 3,
+    "rest.type": 3,
+    "note.duration_ql": 3,
+    "note.type": 3,
+    "dynamic.text": 2
+   },
+   "attributes_not_assessable": {
+    "rest.duration_ql": 9,
+    "rest.type": 9,
+    "rest.dots": 9,
+    "note.duration_ql": 4,
+    "note.type": 4,
+    "note.dots": 4,
+    "note.pitch": 3,
+    "note.accidental": 3,
+    "note.grace": 3
+   },
+   "uncorresponded_reasons": {},
+   "correspondence_basis": {
+    "joint+onset+ord+pitch": 102,
+    "joint+onset+ord": 102,
+    "ord+pitch": 26,
+    "ord": 15,
+    "joint+onset+pitch": 10,
+    "joint+onset": 9,
+    "pitch": 8,
+    "onset+ord": 8,
+    "onset": 4
+   },
+   "measure_map": {
+    "offset": 0,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 1,
+    "pred_measures": 8,
+    "truth_measures": 8
+   },
+   "part_join": {
+    "resolved": 15,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 397,
+    "pred_symbols_in": 356,
+    "truth_rows": 397,
+    "pred_rows_own": 72,
+    "pred_as_partner": 284,
+    "pred_accounted": 356,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 15,
+    "n_pred_parts": 15,
+    "n_staves_printed": 15,
+    "status": "resolved",
+    "staves_resolved": 15,
+    "staff_names": [
+     "Flauti",
+     "Oboi",
+     "Clarinetti in A",
+     "Fagotti",
+     "Corni I.II. in E",
+     "Corni III.IV. in C",
+     "Trombe in E",
+     "Tromboni I.II.",
+     "Trombone basso",
+     "Tympani A.E.H.",
+     "Violino I",
+     "Violino II",
+     "Viola",
+     "Violoncello",
+     "Contrabasso"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.4220945083014049,
+    "omr_ed": 661,
+    "categories": {
+     "wrong note": 500,
+     "wrong note head": 12,
+     "wrong flag/beam": 17,
+     "wrong dot": 6,
+     "wrong tie": 7,
+     "wrong articulation": 5,
+     "wrong clef": 3,
+     "wrong timesig": 2,
+     "wrong keysig": 2,
+     "wrong tempo": 1,
+     "wrong direction": 6,
+     "wrong dynamic": 13,
+     "wrong crescendo": 1,
+     "wrong diminuendo": 6,
+     "wrong slur": 17,
+     "entire measure insert/delete": 63
+    }
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "outcomes": {
+    "matched_exact": 243,
+    "missing": 171,
+    "matched_attribute_error": 172,
+    "spurious": 112,
+    "ambiguous": 59
+   },
+   "by_family": {
+    "articulation": {
+     "missing": 17,
+     "matched_exact": 61,
+     "ambiguous": 14
+    },
+    "clef": {
+     "matched_exact": 15
+    },
+    "dynamic": {
+     "missing": 7,
+     "matched_exact": 17,
+     "matched_attribute_error": 4,
+     "spurious": 4
+    },
+    "hairpin": {
+     "missing": 8
+    },
+    "key": {
+     "matched_exact": 15
+    },
+    "note": {
+     "matched_exact": 78,
+     "missing": 36,
+     "matched_attribute_error": 92,
+     "spurious": 37,
+     "ambiguous": 37
+    },
+    "ornament": {
+     "missing": 2
+    },
+    "rest": {
+     "matched_exact": 48,
+     "missing": 76,
+     "matched_attribute_error": 74,
+     "spurious": 46,
+     "ambiguous": 8
+    },
+    "slur": {
+     "spurious": 2,
+     "missing": 4,
+     "matched_exact": 6
+    },
+    "tie": {
+     "missing": 7,
+     "matched_exact": 3,
+     "spurious": 20
+    },
+    "time": {
+     "missing": 13,
+     "spurious": 3,
+     "matched_attribute_error": 2
+    },
+    "word": {
+     "missing": 1
+    }
+   },
+   "attributes_wrong": {
+    "rest.duration_ql": 62,
+    "rest.type": 61,
+    "note.duration_ql": 29,
+    "note.type": 28,
+    "rest.dots": 15,
+    "note.accidental": 3,
+    "time.beats": 2,
+    "time.beat_type": 2,
+    "note.pitch": 2,
+    "dynamic.text": 2
+   },
+   "attributes_wrong_single_key": {
+    "note.duration_ql": 60,
+    "note.type": 59,
+    "rest.duration_ql": 12,
+    "rest.type": 12,
+    "note.pitch": 5,
+    "rest.dots": 4,
+    "dynamic.text": 2,
+    "note.accidental": 2
+   },
+   "attributes_not_assessable": {
+    "note.pitch": 85,
+    "note.accidental": 85,
+    "note.grace": 85,
+    "rest.duration_ql": 29,
+    "rest.type": 29,
+    "rest.dots": 29,
+    "note.duration_ql": 4,
+    "note.type": 4,
+    "note.dots": 4
+   },
+   "uncorresponded_reasons": {},
+   "correspondence_basis": {
+    "pitch": 112,
+    "joint+onset+ord+pitch": 85,
+    "joint+onset+ord": 70,
+    "ord+pitch": 63,
+    "joint+onset": 33,
+    "ord": 28,
+    "joint+onset+pitch": 18,
+    "onset+ord": 4,
+    "onset": 2
+   },
+   "measure_map": {
+    "offset": 8,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 9,
+    "pred_measures": 7,
+    "truth_measures": 7
+   },
+   "part_join": {
+    "resolved": 15,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 619,
+    "pred_symbols_in": 553,
+    "truth_rows": 619,
+    "pred_rows_own": 138,
+    "pred_as_partner": 415,
+    "pred_accounted": 553,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 15,
+    "n_pred_parts": 15,
+    "n_staves_printed": 15,
+    "status": "resolved",
+    "staves_resolved": 15,
+    "staff_names": [
+     "Flauti",
+     "Oboi",
+     "Clarinetti in A",
+     "Fagotti",
+     "Corni I.II. in E",
+     "Corni III.IV. in C",
+     "Trombe in E",
+     "Tromboni I.II.",
+     "Trombone basso",
+     "Tympani A.E.H.",
+     "Violino I",
+     "Violino II",
+     "Viola",
+     "Violoncello",
+     "Contrabasso"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.722144652331751,
+    "omr_ed": 2586,
+    "categories": {
+     "wrong note": 2039,
+     "wrong note head": 82,
+     "wrong flag/beam": 81,
+     "wrong dot": 46,
+     "wrong tuplet": 2,
+     "wrong tie": 4,
+     "wrong articulation": 1,
+     "wrong clef": 2,
+     "wrong timesig": 38,
+     "wrong direction": 2,
+     "wrong dynamic": 33,
+     "wrong crescendo": 2,
+     "wrong diminuendo": 2,
+     "wrong slur": 4,
+     "wrong fingered tremolo": 2,
+     "entire measure insert/delete": 246
+    }
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "outcomes": {
+    "matched_exact": 377,
+    "matched_attribute_error": 444,
+    "missing": 392,
+    "ambiguous": 298,
+    "spurious": 258
+   },
+   "by_family": {
+    "articulation": {
+     "matched_exact": 70,
+     "missing": 47,
+     "ambiguous": 31,
+     "spurious": 6,
+     "matched_attribute_error": 2
+    },
+    "barline": {
+     "missing": 15
+    },
+    "clef": {
+     "matched_exact": 13,
+     "matched_attribute_error": 2,
+     "spurious": 3
+    },
+    "dynamic": {
+     "matched_exact": 39,
+     "matched_attribute_error": 10,
+     "spurious": 21,
+     "ambiguous": 13,
+     "missing": 11
+    },
+    "hairpin": {
+     "missing": 66
+    },
+    "key": {
+     "matched_exact": 10,
+     "matched_attribute_error": 5,
+     "spurious": 5
+    },
+    "metronome": {
+     "missing": 1
+    },
+    "note": {
+     "matched_attribute_error": 279,
+     "ambiguous": 230,
+     "missing": 57,
+     "spurious": 87,
+     "matched_exact": 137
+    },
+    "ornament": {
+     "missing": 44
+    },
+    "rest": {
+     "matched_attribute_error": 146,
+     "matched_exact": 81,
+     "missing": 99,
+     "spurious": 80,
+     "ambiguous": 12
+    },
+    "slur": {
+     "missing": 8,
+     "ambiguous": 12,
+     "matched_exact": 4,
+     "spurious": 2
+    },
+    "tie": {
+     "missing": 6,
+     "matched_exact": 10,
+     "spurious": 51
+    },
+    "time": {
+     "missing": 18,
+     "spurious": 2,
+     "matched_exact": 12
+    },
+    "word": {
+     "missing": 20,
+     "matched_exact": 1,
+     "spurious": 1
+    }
+   },
+   "attributes_wrong": {
+    "note.type": 137,
+    "note.duration_ql": 134,
+    "rest.type": 102,
+    "rest.duration_ql": 101,
+    "note.pitch": 51,
+    "rest.dots": 17,
+    "note.accidental": 17,
+    "key.fifths": 5,
+    "dynamic.text": 4,
+    "clef.clef": 2,
+    "note.dots": 1
+   },
+   "attributes_wrong_single_key": {
+    "note.duration_ql": 116,
+    "note.type": 115,
+    "rest.duration_ql": 42,
+    "rest.type": 38,
+    "rest.dots": 36,
+    "note.pitch": 29,
+    "note.accidental": 7,
+    "dynamic.text": 6,
+    "note.dots": 6,
+    "articulation.mark": 2
+   },
+   "attributes_not_assessable": {
+    "note.pitch": 118,
+    "note.accidental": 118,
+    "note.grace": 118,
+    "rest.duration_ql": 21,
+    "rest.type": 21,
+    "rest.dots": 21,
+    "note.duration_ql": 8,
+    "note.type": 8,
+    "note.dots": 8
+   },
+   "uncorresponded_reasons": {},
+   "correspondence_basis": {
+    "joint+onset+ord+pitch": 195,
+    "pitch": 155,
+    "joint+onset+ord": 117,
+    "ord": 116,
+    "ord+pitch": 115,
+    "joint+onset+pitch": 62,
+    "onset+ord": 28,
+    "joint+onset": 22,
+    "onset": 11
+   },
+   "measure_map": {
+    "offset": 15,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 16,
+    "pred_measures": 15,
+    "truth_measures": 15
+   },
+   "part_join": {
+    "resolved": 15,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 1360,
+    "pred_symbols_in": 1230,
+    "truth_rows": 1360,
+    "pred_rows_own": 409,
+    "pred_as_partner": 821,
+    "pred_accounted": 1230,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 15,
+    "n_pred_parts": 15,
+    "n_staves_printed": 30,
+    "status": "resolved",
+    "staves_resolved": 15,
+    "staff_names": [
+     "Flauti",
+     "Oboi",
+     "Clarinetti in A",
+     "Fagotti",
+     "Corni I.II. in E",
+     "Corni III.IV. in C",
+     "Trombe in E",
+     "Tromboni I.II.",
+     "Trombone basso",
+     "Tympani A.E.H.",
+     "Violino I",
+     "Violino II",
+     "Viola",
+     "Violoncello",
+     "Contrabasso"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.7133199799699549,
+    "omr_ed": 5698,
+    "categories": {
+     "wrong note": 4270,
+     "wrong note head": 92,
+     "wrong flag/beam": 234,
+     "wrong dot": 35,
+     "wrong tuplet": 8,
+     "wrong accidental": 20,
+     "wrong tie": 10,
+     "wrong articulation": 18,
+     "wrong ornament": 19,
+     "wrong clef": 9,
+     "wrong timesig": 38,
+     "wrong keysig": 18,
+     "wrong barline": 11,
+     "wrong direction": 66,
+     "wrong dynamic": 67,
+     "wrong crescendo": 21,
+     "wrong diminuendo": 7,
+     "wrong slur": 9,
+     "wrong fingered tremolo": 4,
+     "entire measure insert/delete": 742
+    }
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "outcomes": {
+    "matched_exact": 231,
+    "matched_attribute_error": 138,
+    "missing": 215,
+    "ambiguous": 415,
+    "spurious": 145,
+    "uncorresponded": 17
+   },
+   "by_family": {
+    "barline": {
+     "missing": 14
+    },
+    "clef": {
+     "matched_exact": 15,
+     "spurious": 1
+    },
+    "dynamic": {
+     "matched_attribute_error": 2,
+     "missing": 1,
+     "matched_exact": 9,
+     "spurious": 17,
+     "ambiguous": 3
+    },
+    "key": {
+     "matched_attribute_error": 6,
+     "matched_exact": 8
+    },
+    "metronome": {
+     "missing": 1
+    },
+    "note": {
+     "ambiguous": 359,
+     "matched_attribute_error": 126,
+     "spurious": 32,
+     "missing": 101,
+     "matched_exact": 100,
+     "uncorresponded": 7
+    },
+    "rest": {
+     "uncorresponded": 9,
+     "spurious": 19
+    },
+    "slur": {
+     "matched_exact": 68,
+     "spurious": 49,
+     "missing": 36,
+     "ambiguous": 29,
+     "matched_attribute_error": 1
+    },
+    "tie": {
+     "spurious": 27,
+     "missing": 52,
+     "matched_exact": 18,
+     "ambiguous": 24,
+     "uncorresponded": 1
+    },
+    "time": {
+     "matched_exact": 11,
+     "matched_attribute_error": 3
+    },
+    "word": {
+     "missing": 10,
+     "matched_exact": 2
+    }
+   },
+   "attributes_wrong": {
+    "note.pitch": 82,
+    "note.accidental": 13,
+    "note.duration_ql": 11,
+    "note.type": 11,
+    "key.fifths": 6,
+    "time.beat_type": 3,
+    "dynamic.text": 1,
+    "time.beats": 1,
+    "time.symbol": 1
+   },
+   "attributes_wrong_single_key": {
+    "note.pitch": 34,
+    "note.duration_ql": 13,
+    "note.type": 12,
+    "note.accidental": 4,
+    "note.dots": 4,
+    "slur.endpoint": 1,
+    "dynamic.text": 1
+   },
+   "attributes_not_assessable": {
+    "note.pitch": 21,
+    "note.accidental": 21,
+    "note.grace": 21,
+    "note.duration_ql": 14,
+    "note.type": 14,
+    "note.dots": 14
+   },
+   "uncorresponded_reasons": {
+    "measure_unresolved": 17
+   },
+   "correspondence_basis": {
+    "joint+onset+ord+pitch": 154,
+    "onset+ord": 83,
+    "pitch": 44,
+    "joint+onset+pitch": 31,
+    "ord": 21,
+    "ord+pitch": 20,
+    "onset": 15,
+    "joint+onset": 1
+   },
+   "measure_map": {
+    "offset": 0,
+    "status": "hypothesised",
+    "reason": "the page's verified window holds 7 bars and the prediction emitted 8; the offset map is a hypothesis, not a correspondence",
+    "first_ref_measure": 1,
+    "pred_measures": 8,
+    "truth_measures": 7
+   },
+   "part_join": {
+    "resolved": 14,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 919,
+    "pred_symbols_in": 742,
+    "truth_rows": 788,
+    "pred_rows_own": 373,
+    "pred_as_partner": 369,
+    "pred_accounted": 742,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": false
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 14,
+    "n_pred_parts": 14,
+    "n_staves_printed": 14,
+    "status": "resolved",
+    "staves_resolved": 14,
+    "staff_names": [
+     "2 Floten",
+     "2 Oboen",
+     "2 Klarinetten in B",
+     "2 Fagotte",
+     "Kontrafagott",
+     "4 Horner in C 1./2.",
+     "4 Horner in Es 3./4.",
+     "2 Trompeten in C",
+     "Pauken in C u.G",
+     "1. Violine",
+     "2. Violine",
+     "Bratsche",
+     "Violoncell",
+     "Kontrabass"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.9183618843683083,
+    "omr_ed": 3431,
+    "categories": {
+     "wrong note": 834,
+     "wrong note head": 4,
+     "wrong flag/beam": 7,
+     "wrong dot": 4,
+     "wrong accidental": 3,
+     "wrong clef": 14,
+     "wrong timesig": 7,
+     "wrong keysig": 39,
+     "wrong tempo": 1,
+     "wrong barline": 3,
+     "wrong direction": 88,
+     "wrong dynamic": 31,
+     "wrong slur": 41,
+     "entire measure insert/delete": 1354,
+     "entire staff insert/delete": 1001
+    }
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "outcomes": {
+    "uncorresponded": 3040
+   },
+   "by_family": {
+    "articulation": {
+     "uncorresponded": 28
+    },
+    "barline": {
+     "uncorresponded": 21
+    },
+    "clef": {
+     "uncorresponded": 52
+    },
+    "dynamic": {
+     "uncorresponded": 111
+    },
+    "hairpin": {
+     "uncorresponded": 136
+    },
+    "key": {
+     "uncorresponded": 48
+    },
+    "note": {
+     "uncorresponded": 1429
+    },
+    "ornament": {
+     "uncorresponded": 2
+    },
+    "rest": {
+     "uncorresponded": 568
+    },
+    "slur": {
+     "uncorresponded": 184
+    },
+    "tie": {
+     "uncorresponded": 386
+    },
+    "time": {
+     "uncorresponded": 58
+    },
+    "word": {
+     "uncorresponded": 17
+    }
+   },
+   "attributes_wrong": {},
+   "attributes_wrong_single_key": {},
+   "attributes_not_assessable": {},
+   "uncorresponded_reasons": {
+    "part_unresolved": 3040
+   },
+   "correspondence_basis": {},
+   "measure_map": {
+    "offset": 7,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 8,
+    "pred_measures": 15,
+    "truth_measures": 15
+   },
+   "part_join": {
+    "resolved": 0,
+    "unresolved": 27
+   },
+   "coverage": {
+    "truth_symbols_in": 1569,
+    "pred_symbols_in": 1471,
+    "truth_rows": 1569,
+    "pred_rows_own": 1471,
+    "pred_as_partner": 0,
+    "pred_accounted": 1471,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 14,
+    "n_pred_parts": 27,
+    "n_staves_printed": 27,
+    "status": "unresolved",
+    "reason": "the hand-verified lineup names 14 staves and the prediction emitted 27 parts \u2014 a positional join would be a guess"
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.9424098807985064,
+    "omr_ed": 6562,
+    "categories": {
+     "wrong note": 1832,
+     "wrong note head": 104,
+     "wrong flag/beam": 24,
+     "wrong dot": 43,
+     "wrong accidental": 6,
+     "wrong tie": 3,
+     "wrong articulation": 1,
+     "wrong lyric": 6,
+     "wrong clef": 21,
+     "wrong timesig": 46,
+     "wrong keysig": 36,
+     "wrong barline": 15,
+     "wrong direction": 13,
+     "wrong dynamic": 22,
+     "wrong crescendo": 14,
+     "wrong diminuendo": 7,
+     "wrong slur": 26,
+     "entire measure insert/delete": 3628,
+     "entire staff insert/delete": 715
+    }
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "outcomes": {
+    "matched_exact": 202,
+    "spurious": 360,
+    "missing": 253,
+    "matched_attribute_error": 238,
+    "ambiguous": 346
+   },
+   "by_family": {
+    "articulation": {
+     "spurious": 3
+    },
+    "barline": {
+     "missing": 14
+    },
+    "clef": {
+     "matched_exact": 12,
+     "matched_attribute_error": 3,
+     "spurious": 4,
+     "missing": 1
+    },
+    "dynamic": {
+     "spurious": 18,
+     "matched_attribute_error": 12,
+     "matched_exact": 11,
+     "ambiguous": 6,
+     "missing": 10
+    },
+    "hairpin": {
+     "missing": 50
+    },
+    "key": {
+     "matched_exact": 8,
+     "matched_attribute_error": 6,
+     "spurious": 1
+    },
+    "note": {
+     "matched_attribute_error": 172,
+     "missing": 75,
+     "spurious": 152,
+     "ambiguous": 305,
+     "matched_exact": 85
+    },
+    "ornament": {
+     "missing": 4
+    },
+    "rest": {
+     "spurious": 102,
+     "matched_attribute_error": 41,
+     "matched_exact": 33,
+     "missing": 8,
+     "ambiguous": 8
+    },
+    "slur": {
+     "missing": 52,
+     "matched_exact": 26,
+     "ambiguous": 12,
+     "spurious": 22
+    },
+    "tie": {
+     "spurious": 56,
+     "matched_exact": 27,
+     "ambiguous": 15,
+     "missing": 16,
+     "matched_attribute_error": 4
+    },
+    "time": {
+     "missing": 14,
+     "spurious": 2
+    },
+    "word": {
+     "missing": 9
+    }
+   },
+   "attributes_wrong": {
+    "note.pitch": 63,
+    "note.duration_ql": 42,
+    "note.type": 39,
+    "rest.duration_ql": 36,
+    "rest.type": 36,
+    "note.accidental": 20,
+    "dynamic.text": 9,
+    "key.fifths": 6,
+    "clef.clef": 3,
+    "note.dots": 3,
+    "tie.endpoint": 2
+   },
+   "attributes_wrong_single_key": {
+    "note.pitch": 63,
+    "note.duration_ql": 34,
+    "note.type": 34,
+    "note.accidental": 7,
+    "rest.duration_ql": 5,
+    "rest.type": 5,
+    "dynamic.text": 3,
+    "tie.endpoint": 2
+   },
+   "attributes_not_assessable": {
+    "note.duration_ql": 39,
+    "note.type": 39,
+    "note.dots": 39,
+    "note.pitch": 34,
+    "note.accidental": 34,
+    "note.grace": 34,
+    "rest.duration_ql": 12,
+    "rest.type": 12,
+    "rest.dots": 12
+   },
+   "uncorresponded_reasons": {},
+   "correspondence_basis": {
+    "joint+onset+ord+pitch": 112,
+    "onset+ord": 76,
+    "joint+onset+ord": 47,
+    "pitch": 46,
+    "ord": 42,
+    "onset": 41,
+    "ord+pitch": 36,
+    "joint+onset+pitch": 27,
+    "joint+onset": 12,
+    "onset+pitch": 1
+   },
+   "measure_map": {
+    "offset": 22,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 23,
+    "pred_measures": 15,
+    "truth_measures": 15
+   },
+   "part_join": {
+    "resolved": 14,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 1134,
+    "pred_symbols_in": 983,
+    "truth_rows": 856,
+    "pred_rows_own": 543,
+    "pred_as_partner": 440,
+    "pred_accounted": 983,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": false
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 14,
+    "n_pred_parts": 14,
+    "n_staves_printed": 28,
+    "status": "resolved",
+    "staves_resolved": 14,
+    "staff_names": [
+     "2 Floten",
+     "2 Oboen",
+     "2 Klarinetten in B",
+     "2 Fagotte",
+     "Kontrafagott",
+     "4 Horner in C 1./2.",
+     "4 Horner in Es 3./4.",
+     "2 Trompeten in C",
+     "Pauken in C u.G",
+     "1. Violine",
+     "2. Violine",
+     "Bratsche",
+     "Violoncell",
+     "Kontrabass"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.8929896504588948,
+    "omr_ed": 4573,
+    "categories": {
+     "wrong note": 1003,
+     "wrong note head": 154,
+     "wrong flag/beam": 24,
+     "wrong dot": 78,
+     "wrong accidental": 8,
+     "wrong tie": 2,
+     "wrong clef": 10,
+     "wrong timesig": 20,
+     "wrong keysig": 27,
+     "wrong barline": 13,
+     "wrong direction": 18,
+     "wrong dynamic": 34,
+     "wrong crescendo": 6,
+     "wrong diminuendo": 1,
+     "wrong slur": 22,
+     "entire measure insert/delete": 1861,
+     "entire staff insert/delete": 1292
+    }
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "outcomes": {
+    "matched_exact": 409,
+    "ambiguous": 557,
+    "matched_attribute_error": 351,
+    "spurious": 521,
+    "missing": 251
+   },
+   "by_family": {
+    "articulation": {
+     "missing": 18,
+     "spurious": 14,
+     "matched_exact": 65,
+     "ambiguous": 22,
+     "matched_attribute_error": 1
+    },
+    "clef": {
+     "matched_exact": 12,
+     "missing": 6,
+     "spurious": 7,
+     "matched_attribute_error": 2
+    },
+    "dynamic": {
+     "matched_exact": 19,
+     "missing": 11,
+     "spurious": 29,
+     "matched_attribute_error": 3,
+     "ambiguous": 3
+    },
+    "hairpin": {
+     "missing": 2
+    },
+    "key": {
+     "matched_exact": 7,
+     "matched_attribute_error": 7,
+     "spurious": 6
+    },
+    "note": {
+     "ambiguous": 463,
+     "matched_attribute_error": 277,
+     "missing": 63,
+     "spurious": 154,
+     "matched_exact": 159
+    },
+    "rest": {
+     "spurious": 203,
+     "matched_exact": 62,
+     "missing": 29,
+     "matched_attribute_error": 50,
+     "ambiguous": 6
+    },
+    "slur": {
+     "matched_exact": 27,
+     "missing": 68,
+     "spurious": 39,
+     "ambiguous": 23,
+     "matched_attribute_error": 1
+    },
+    "tie": {
+     "spurious": 65,
+     "matched_exact": 58,
+     "missing": 32,
+     "ambiguous": 40,
+     "matched_attribute_error": 9
+    },
+    "time": {
+     "missing": 13,
+     "spurious": 4,
+     "matched_attribute_error": 1
+    },
+    "word": {
+     "missing": 9
+    }
+   },
+   "attributes_wrong": {
+    "note.pitch": 143,
+    "note.duration_ql": 62,
+    "note.type": 55,
+    "note.accidental": 51,
+    "rest.duration_ql": 44,
+    "rest.type": 42,
+    "note.dots": 11,
+    "key.fifths": 7,
+    "clef.clef": 2,
+    "rest.dots": 2,
+    "dynamic.text": 1,
+    "time.beats": 1,
+    "time.beat_type": 1,
+    "articulation.mark": 1
+   },
+   "attributes_wrong_single_key": {
+    "note.pitch": 78,
+    "note.duration_ql": 45,
+    "note.type": 40,
+    "note.accidental": 25,
+    "note.dots": 11,
+    "tie.endpoint": 9,
+    "rest.duration_ql": 6,
+    "rest.type": 6,
+    "dynamic.text": 2,
+    "slur.endpoint": 1
+   },
+   "attributes_not_assessable": {
+    "note.duration_ql": 43,
+    "note.type": 43,
+    "note.dots": 43,
+    "note.pitch": 38,
+    "note.accidental": 38,
+    "note.grace": 38,
+    "rest.duration_ql": 31,
+    "rest.type": 31,
+    "rest.dots": 31
+   },
+   "uncorresponded_reasons": {},
+   "correspondence_basis": {
+    "joint+onset+ord+pitch": 235,
+    "onset+ord": 106,
+    "joint+onset+pitch": 76,
+    "pitch": 69,
+    "ord+pitch": 67,
+    "ord": 65,
+    "joint+onset+ord": 63,
+    "onset": 43,
+    "joint+onset": 34,
+    "joint+ord+pitch": 1,
+    "joint": 1
+   },
+   "measure_map": {
+    "offset": 37,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 38,
+    "pred_measures": 21,
+    "truth_measures": 21
+   },
+   "part_join": {
+    "resolved": 14,
+    "unresolved": 0
+   },
+   "coverage": {
+    "truth_symbols_in": 1809,
+    "pred_symbols_in": 1570,
+    "truth_rows": 1279,
+    "pred_rows_own": 810,
+    "pred_as_partner": 760,
+    "pred_accounted": 1570,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": false
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 14,
+    "n_pred_parts": 14,
+    "n_staves_printed": 28,
+    "status": "resolved",
+    "staves_resolved": 14,
+    "staff_names": [
+     "2 Floten",
+     "2 Oboen",
+     "2 Klarinetten in B",
+     "2 Fagotte",
+     "Kontrafagott",
+     "4 Horner in C 1./2.",
+     "4 Horner in Es 3./4.",
+     "2 Trompeten in C",
+     "Pauken in C u.G",
+     "1. Violine",
+     "2. Violine",
+     "Bratsche",
+     "Violoncell",
+     "Kontrabass"
+    ]
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.8652517275419546,
+    "omr_ed": 7012,
+    "categories": {
+     "wrong note": 1635,
+     "wrong note head": 106,
+     "wrong flag/beam": 37,
+     "wrong dot": 66,
+     "wrong accidental": 12,
+     "wrong tie": 7,
+     "wrong articulation": 11,
+     "wrong lyric": 3,
+     "wrong clef": 11,
+     "wrong timesig": 28,
+     "wrong keysig": 31,
+     "wrong direction": 7,
+     "wrong dynamic": 54,
+     "wrong slur": 26,
+     "entire measure insert/delete": 3118,
+     "entire staff insert/delete": 1860
+    }
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "outcomes": {
+    "uncorresponded": 771
+   },
+   "by_family": {
+    "articulation": {
+     "uncorresponded": 11
+    },
+    "clef": {
+     "uncorresponded": 55
+    },
+    "dynamic": {
+     "uncorresponded": 12
+    },
+    "fermata": {
+     "uncorresponded": 3
+    },
+    "hairpin": {
+     "uncorresponded": 6
+    },
+    "key": {
+     "uncorresponded": 53
+    },
+    "note": {
+     "uncorresponded": 73
+    },
+    "rest": {
+     "uncorresponded": 501
+    },
+    "tie": {
+     "uncorresponded": 6
+    },
+    "time": {
+     "uncorresponded": 45
+    },
+    "word": {
+     "uncorresponded": 6
+    }
+   },
+   "attributes_wrong": {},
+   "attributes_wrong_single_key": {},
+   "attributes_not_assessable": {},
+   "uncorresponded_reasons": {
+    "part_unresolved": 771
+   },
+   "correspondence_basis": {},
+   "measure_map": {
+    "offset": -1,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 0,
+    "pred_measures": 9,
+    "truth_measures": 9
+   },
+   "part_join": {
+    "resolved": 0,
+    "unresolved": 17
+   },
+   "coverage": {
+    "truth_symbols_in": 527,
+    "pred_symbols_in": 244,
+    "truth_rows": 527,
+    "pred_rows_own": 244,
+    "pred_as_partner": 0,
+    "pred_accounted": 244,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "part_join_info": {
+    "source": "no staves map on this row",
+    "n_staves_map": 0,
+    "n_pred_parts": 17,
+    "n_staves_printed": 17,
+    "status": "unresolved",
+    "reason": "no staves map on this row"
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.6884236453201971,
+    "omr_ed": 1118,
+    "categories": {
+     "wrong note": 60,
+     "wrong note head": 52,
+     "wrong ornament": 1,
+     "wrong clef": 5,
+     "wrong timesig": 28,
+     "wrong keysig": 47,
+     "wrong direction": 90,
+     "wrong dynamic": 3,
+     "entire measure insert/delete": 183,
+     "entire staff insert/delete": 649
+    }
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "outcomes": {
+    "uncorresponded": 1420
+   },
+   "by_family": {
+    "articulation": {
+     "uncorresponded": 20
+    },
+    "clef": {
+     "uncorresponded": 54
+    },
+    "dynamic": {
+     "uncorresponded": 85
+    },
+    "hairpin": {
+     "uncorresponded": 34
+    },
+    "key": {
+     "uncorresponded": 48
+    },
+    "note": {
+     "uncorresponded": 499
+    },
+    "ornament": {
+     "uncorresponded": 5
+    },
+    "rest": {
+     "uncorresponded": 538
+    },
+    "slur": {
+     "uncorresponded": 26
+    },
+    "tie": {
+     "uncorresponded": 46
+    },
+    "time": {
+     "uncorresponded": 40
+    },
+    "word": {
+     "uncorresponded": 25
+    }
+   },
+   "attributes_wrong": {},
+   "attributes_wrong_single_key": {},
+   "attributes_not_assessable": {},
+   "uncorresponded_reasons": {
+    "part_unresolved": 1420
+   },
+   "correspondence_basis": {},
+   "measure_map": {
+    "offset": 8,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 9,
+    "pred_measures": 8,
+    "truth_measures": 8
+   },
+   "part_join": {
+    "resolved": 0,
+    "unresolved": 13
+   },
+   "coverage": {
+    "truth_symbols_in": 928,
+    "pred_symbols_in": 492,
+    "truth_rows": 928,
+    "pred_rows_own": 492,
+    "pred_as_partner": 0,
+    "pred_accounted": 492,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 15,
+    "n_pred_parts": 13,
+    "n_staves_printed": 13,
+    "status": "unresolved",
+    "reason": "the hand-verified lineup names 15 staves and the prediction emitted 13 parts \u2014 a positional join would be a guess"
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.8866782006920415,
+    "omr_ed": 3075,
+    "categories": {
+     "wrong note": 603,
+     "wrong note head": 30,
+     "wrong flag/beam": 17,
+     "wrong dot": 1,
+     "wrong accidental": 1,
+     "wrong tie": 1,
+     "wrong clef": 10,
+     "wrong timesig": 30,
+     "wrong keysig": 34,
+     "wrong direction": 13,
+     "wrong dynamic": 20,
+     "wrong diminuendo": 1,
+     "wrong slur": 6,
+     "entire measure insert/delete": 634,
+     "entire staff insert/delete": 1674
+    }
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "outcomes": {
+    "uncorresponded": 1889
+   },
+   "by_family": {
+    "articulation": {
+     "uncorresponded": 170
+    },
+    "clef": {
+     "uncorresponded": 60
+    },
+    "dynamic": {
+     "uncorresponded": 126
+    },
+    "hairpin": {
+     "uncorresponded": 35
+    },
+    "key": {
+     "uncorresponded": 65
+    },
+    "note": {
+     "uncorresponded": 765
+    },
+    "ornament": {
+     "uncorresponded": 10
+    },
+    "rest": {
+     "uncorresponded": 507
+    },
+    "slur": {
+     "uncorresponded": 10
+    },
+    "tie": {
+     "uncorresponded": 53
+    },
+    "time": {
+     "uncorresponded": 41
+    },
+    "word": {
+     "uncorresponded": 47
+    }
+   },
+   "attributes_wrong": {},
+   "attributes_wrong_single_key": {},
+   "attributes_not_assessable": {},
+   "uncorresponded_reasons": {
+    "part_unresolved": 1889
+   },
+   "correspondence_basis": {},
+   "measure_map": {
+    "offset": 16,
+    "status": "hypothesised",
+    "reason": "the page's verified window holds 7 bars and the prediction emitted 8; the offset map is a hypothesis, not a correspondence",
+    "first_ref_measure": 17,
+    "pred_measures": 8,
+    "truth_measures": 7
+   },
+   "part_join": {
+    "resolved": 0,
+    "unresolved": 18
+   },
+   "coverage": {
+    "truth_symbols_in": 1111,
+    "pred_symbols_in": 778,
+    "truth_rows": 1111,
+    "pred_rows_own": 778,
+    "pred_as_partner": 0,
+    "pred_accounted": 778,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 21,
+    "n_pred_parts": 18,
+    "n_staves_printed": 18,
+    "status": "unresolved",
+    "reason": "the hand-verified lineup names 21 staves and the prediction emitted 18 parts \u2014 a positional join would be a guess"
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.9152878888153541,
+    "omr_ed": 4149,
+    "categories": {
+     "wrong note": 940,
+     "wrong note head": 20,
+     "wrong flag/beam": 2,
+     "wrong dot": 1,
+     "wrong tuplet": 2,
+     "wrong accidental": 6,
+     "wrong tie": 2,
+     "wrong articulation": 2,
+     "wrong clef": 16,
+     "wrong timesig": 34,
+     "wrong keysig": 44,
+     "wrong direction": 34,
+     "wrong dynamic": 33,
+     "wrong diminuendo": 6,
+     "wrong slur": 3,
+     "entire measure insert/delete": 1240,
+     "entire staff insert/delete": 1764
+    }
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "outcomes": {
+    "uncorresponded": 1506
+   },
+   "by_family": {
+    "articulation": {
+     "uncorresponded": 70
+    },
+    "clef": {
+     "uncorresponded": 60
+    },
+    "dynamic": {
+     "uncorresponded": 101
+    },
+    "fermata": {
+     "uncorresponded": 2
+    },
+    "hairpin": {
+     "uncorresponded": 16
+    },
+    "key": {
+     "uncorresponded": 52
+    },
+    "note": {
+     "uncorresponded": 527
+    },
+    "ornament": {
+     "uncorresponded": 19
+    },
+    "rest": {
+     "uncorresponded": 495
+    },
+    "slur": {
+     "uncorresponded": 42
+    },
+    "tie": {
+     "uncorresponded": 43
+    },
+    "time": {
+     "uncorresponded": 39
+    },
+    "word": {
+     "uncorresponded": 40
+    }
+   },
+   "attributes_wrong": {},
+   "attributes_wrong_single_key": {},
+   "attributes_not_assessable": {},
+   "uncorresponded_reasons": {
+    "part_unresolved": 1506
+   },
+   "correspondence_basis": {},
+   "measure_map": {
+    "offset": 23,
+    "status": "verified",
+    "reason": null,
+    "first_ref_measure": 24,
+    "pred_measures": 8,
+    "truth_measures": 8
+   },
+   "part_join": {
+    "resolved": 0,
+    "unresolved": 17
+   },
+   "coverage": {
+    "truth_symbols_in": 966,
+    "pred_symbols_in": 540,
+    "truth_rows": 966,
+    "pred_rows_own": 540,
+    "pred_as_partner": 0,
+    "pred_accounted": 540,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 21,
+    "n_pred_parts": 17,
+    "n_staves_printed": 17,
+    "status": "unresolved",
+    "reason": "the hand-verified lineup names 21 staves and the prediction emitted 17 parts \u2014 a positional join would be a guess"
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.9298245614035088,
+    "omr_ed": 2968,
+    "categories": {
+     "wrong note": 414,
+     "wrong note head": 38,
+     "wrong flag/beam": 7,
+     "wrong dot": 2,
+     "wrong accidental": 4,
+     "wrong tie": 1,
+     "wrong ornament": 1,
+     "wrong clef": 12,
+     "wrong timesig": 28,
+     "wrong keysig": 37,
+     "wrong direction": 31,
+     "wrong dynamic": 32,
+     "wrong diminuendo": 2,
+     "wrong slur": 9,
+     "entire measure insert/delete": 1130,
+     "entire staff insert/delete": 1220
+    }
+   }
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "outcomes": {
+    "uncorresponded": 2469
+   },
+   "by_family": {
+    "articulation": {
+     "uncorresponded": 2
+    },
+    "clef": {
+     "uncorresponded": 24
+    },
+    "dynamic": {
+     "uncorresponded": 1
+    },
+    "key": {
+     "uncorresponded": 25
+    },
+    "note": {
+     "uncorresponded": 2156
+    },
+    "rest": {
+     "uncorresponded": 171
+    },
+    "slur": {
+     "uncorresponded": 34
+    },
+    "tie": {
+     "uncorresponded": 43
+    },
+    "time": {
+     "uncorresponded": 11
+    },
+    "word": {
+     "uncorresponded": 2
+    }
+   },
+   "attributes_wrong": {},
+   "attributes_wrong_single_key": {},
+   "attributes_not_assessable": {},
+   "uncorresponded_reasons": {
+    "part_unresolved": 2469
+   },
+   "correspondence_basis": {},
+   "measure_map": {
+    "offset": 0,
+    "status": "hypothesised",
+    "reason": "the page's verified window holds 10 bars and the prediction emitted 11; the offset map is a hypothesis, not a correspondence",
+    "first_ref_measure": 1,
+    "pred_measures": 11,
+    "truth_measures": 10
+   },
+   "part_join": {
+    "resolved": 0,
+    "unresolved": 12
+   },
+   "coverage": {
+    "truth_symbols_in": 1052,
+    "pred_symbols_in": 1417,
+    "truth_rows": 1052,
+    "pred_rows_own": 1417,
+    "pred_as_partner": 0,
+    "pred_accounted": 1417,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "part_join_info": {
+    "source": "own",
+    "n_staves_map": 11,
+    "n_pred_parts": 12,
+    "n_staves_printed": 24,
+    "status": "unresolved",
+    "reason": "the hand-verified lineup names 11 staves and the prediction emitted 12 parts \u2014 a positional join would be a guess"
+   },
+   "window_confidence": "verified",
+   "musicdiff": {
+    "omr_ned": 0.804606726868211,
+    "omr_ed": 6148,
+    "categories": {
+     "wrong note": 3825,
+     "wrong note head": 4,
+     "wrong flag/beam": 133,
+     "wrong accidental": 6,
+     "wrong tie": 6,
+     "wrong articulation": 2,
+     "wrong lyric": 18,
+     "wrong clef": 4,
+     "wrong timesig": 8,
+     "wrong keysig": 10,
+     "wrong direction": 18,
+     "wrong slur": 16,
+     "entire measure insert/delete": 1812,
+     "entire staff insert/delete": 286
+    }
+   }
+  }
+ ]
+}
