@@ -77,6 +77,27 @@ never will, and a check that reported it would list 55 elements, be ignored,
 and then be deleted. `VISIBLE` is therefore a curated list of things a reader
 sees on the page, and everything else is out of scope by construction.
 
+AND IT LOOKS AT ONE EXPORTER. Both sides of `compare` are MusicXML, so a signal
+that reaches `to_musicxml` and is dropped by `to_lilypond` is invisible here —
+categorically, not by degree, because our MusicXML side is not zero and never
+trips the test. That is not a hole to plug: an inventory of what one exporter
+drops that another does not is a different report, on a different pair of
+files. It is written down so nobody reads a green run as a statement about the
+`.ly`. Two instances are known and neither belongs in `KNOWN_GAPS`, whose
+entries are element names on the MusicXML side:
+
+  * **dynamics and directions.** `to_lilypond` never calls
+    `measure_directions`, so it drops them on EVERY measure, not just the
+    eventless ones the MusicXML side used to lose.
+  * **mid-staff key changes** (fixed 2026-09-07). `_lily_staff_block` emitted
+    one `\\key` per staff, out of `staff["key_signature"]`, and never read
+    `measure["key_signature"]` — which the MusicXML side has tracked through
+    `state["key"]` all along. Found sideways: an `OMR_KEYSIG_CORROBORATION`
+    A/B changed the MusicXML of five scanned rows and left four of their `.ly`
+    files BYTE-IDENTICAL, because the key change being reverted had never been
+    written there. Guarded by `TestMidStaffKeyChangeReachesLilyPond` in
+    `test_export.py`, since nothing here can.
+
 WHERE OUR SIDE COMES FROM, AND WHY IT IS NOT THE FILE ON DISK. Until 2026-09-02
 this read the benchmark's `<work>.omr.musicxml` — a gitignored artifact of
 whatever configuration last ran the eval — so the three repository tests

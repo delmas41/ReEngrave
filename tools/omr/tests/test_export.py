@@ -1697,6 +1697,116 @@ class TestOpeningClefInExport:
             _m(1, "alto", [_clef_det(), _note_det(20)]),
         ])
         assert "\\clef alto" in to_lilypond(_one_staff_result(staff))
+
+
+# ─── mid-staff key changes ───────────────────────────────────────
+#
+# The MusicXML exporter has tracked `state["key"]` and written a `<key>` change
+# since it was written; `_lily_staff_block` emitted ONE `\key` per staff, from
+# `staff["key_signature"]`, and never read `measure["key_signature"]` — so every
+# mid-staff key change was dropped on the way out. That is the
+# detected-then-dropped family `export_coverage` exists to catch, and it is the
+# one instance that harness is structurally blind to: it compares MusicXML,
+# where this signal is present and correct.
+#
+# Found while measuring `OMR_KEYSIG_CORROBORATION`: four of the five scanned
+# rows whose MusicXML changed under that flag produced BYTE-IDENTICAL LilyPond,
+# because the key change being reverted had never been written there.
+
+
+def _key(sharps=0, flats=0):
+    alt = {}
+    for i, name in zip(range(sharps), "FCGDAEB"):
+        alt[name] = "#"
+    for i, name in zip(range(flats), "BEADGCF"):
+        alt[name] = "b"
+    return {"sharps": sharps, "flats": flats, "alterations": alt}
+
+
+def _mk(index, key_sig, dets, clef="treble"):
+    m = _m(index, clef, dets)
+    m["key_signature"] = key_sig
+    return m
+
+
+def _staff_keyed(measures, key_sig):
+    staff = _staff_with(measures)
+    staff["key_signature"] = key_sig
+    return staff
+
+
+class TestMidStaffKeyChangeReachesLilyPond:
+    def test_a_key_change_is_written_where_it_happens(self):
+        staff = _staff_keyed([
+            _mk(0, _key(flats=2), [_note_det(20)]),
+            _mk(1, _key(flats=2), [_note_det(20)]),
+            _mk(2, _key(flats=1), [_note_det(20)]),
+        ], _key(flats=2))
+        body = to_lilypond(_one_staff_result(staff)).splitlines()
+        keys = [i for i, ln in enumerate(body) if "\\key" in ln]
+        assert len(keys) == 2, body
+        assert body[keys[0]].strip() == "\\key bes \\major"
+        assert body[keys[1]].strip() == "\\key f \\major"
+        # written BEFORE the third measure, not at the head of the staff
+        measures = [i for i, ln in enumerate(body) if ln.rstrip().endswith("|")]
+        assert measures[1] < keys[1] < measures[2]
+
+    def test_the_musicxml_side_agrees_measure_for_measure(self):
+        """The two exporters read the same field; this is the assertion that
+        they now say the same thing about it."""
+        staff = _staff_keyed([
+            _mk(0, _key(flats=2), [_note_det(20)]),
+            _mk(1, _key(flats=1), [_note_det(20)]),
+        ], _key(flats=2))
+        root = ET.fromstring(to_musicxml(_one_staff_result(staff)))
+        fifths = [(m.get("number"), k.findtext("fifths"))
+                  for m in root.iter("measure") for k in m.iter("key")]
+        assert fifths == [("1", "-2"), ("2", "-1")]
+        assert to_lilypond(_one_staff_result(staff)).count("\\key") == 2
+
+    def test_an_unchanging_key_is_still_written_exactly_once(self):
+        staff = _staff_keyed(
+            [_mk(i, _key(sharps=3), [_note_det(20)]) for i in range(4)],
+            _key(sharps=3))
+        ly = to_lilypond(_one_staff_result(staff))
+        assert ly.count("\\key") == 1
+        assert "\\key a \\major" in ly
+
+    def test_none_and_an_explicit_zero_are_not_a_change(self):
+        """LilyPond cannot say "no signature" apart from C major, so a reading
+        that goes from absent to zero-accidental must not write a `\\key`: it
+        is a change in the JSON and no change on the page."""
+        staff = _staff_keyed([
+            _mk(0, None, [_note_det(20)]),
+            _mk(1, _key(), [_note_det(20)]),
+        ], None)
+        ly = to_lilypond(_one_staff_result(staff))
+        assert ly.count("\\key") == 1
+        assert "\\key c \\major" in ly
+
+    def test_a_two_voice_staff_writes_the_change_in_voice_one_only(self):
+        """`\\key` is read by the Key_engraver in the STAFF context, so one
+        voice sets it for the staff and both would set it twice."""
+        up = dict(_note_det(20), stem_direction="up")
+        down = dict(_note_det(40, pitch="E3"), stem_direction="down")
+        staff = _staff_keyed([
+            _mk(0, _key(flats=2), [up, down]),
+            _mk(1, _key(flats=1), [up, down]),
+        ], _key(flats=2))
+        ly = to_lilypond(_one_staff_result(staff))
+        assert "\\voiceTwo" in ly, "the fixture must exercise the 2-voice path"
+        head, _, rest = ly.partition("\\voiceTwo")
+        assert rest.count("\\key") == 0
+        assert head.count("\\key") == 2
+
+    def test_the_engraved_benchmark_shape_is_untouched(self):
+        """Every measure carrying the staff's own signature — the 11 engraved
+        works, all of which export byte-identically across this change."""
+        staff = _staff_keyed(
+            [_mk(i, None, [_note_det(20)]) for i in range(3)], _key(flats=3))
+        assert to_lilypond(_one_staff_result(staff)).count("\\key") == 1
+
+
 # ─── Fermatas: detected since Phase 3.3, exported since 2026-09-01 ──────────
 #
 # `fermataAbove` is in the DSv2 class space and the detector reads it at 0.90 -

@@ -293,6 +293,22 @@ def _lily_key_for_sig(sharps: int, flats: int) -> str | None:
     return None  # C major / no signature
 
 
+def _lily_key_name(key_sig: dict[str, Any] | None) -> str:
+    """The `\\key` argument for one signature — `"c"` where there is none.
+
+    LilyPond has no way to say "no key signature" separately from C major, so
+    the two collapse here, and that collapse is what makes this the right unit
+    to compare mid-staff key changes on: a reading that goes from an absent
+    signature to an explicit zero-accidental one is a change in the JSON and
+    NOT a change on the page, and comparing rendered names rather than the
+    dicts refuses to write a `\\key` for it. The MusicXML side compares the
+    dicts instead, because `<key><fifths>0</fifths></key>` is a thing that can
+    be written there and a missing `<key>` is a different thing.
+    """
+    sig = key_sig or {}
+    return _lily_key_for_sig(sig.get("sharps", 0), sig.get("flats", 0)) or "c"
+
+
 def _clef_to_lily(clef: str) -> str:
     """Translate a pitch_resolver clef key to its LilyPond `\\clef` argument.
 
@@ -540,13 +556,8 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
 
     lines: list[str] = [f"{indent}\\new Staff {{"]
     lines.append(f"{indent}  \\clef {_clef_to_lily(clef)}")
-    lily_key = _lily_key_for_sig(
-        key_sig.get("sharps", 0), key_sig.get("flats", 0)
-    )
-    if lily_key is not None:
-        lines.append(f"{indent}  \\key {lily_key} \\major")
-    else:
-        lines.append(f"{indent}  \\key c \\major")
+    running_key = _lily_key_name(key_sig)
+    lines.append(f"{indent}  \\key {running_key} \\major")
     if time_sig is not None:
         n = time_sig.get("numerator", 4)
         d = time_sig.get("denominator", 4)
@@ -566,11 +577,34 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     needs_two_voices = False
     per_measure_events: list[list[dict[str, Any]]] = []
     per_measure_time_sig: list[dict[str, Any] | None] = []
+    # The `\key` to write BEFORE each measure, or None where the signature has
+    # not moved. `measure["key_signature"]` is the key in EFFECT at that
+    # measure — `transcribe` carries `active_key_sig` forward — so a change in
+    # this list is a change the reader saw, and it is what the MusicXML side
+    # has emitted as a `<key>` since it started tracking `state["key"]`. The
+    # LilyPond side emitted the staff's OPENING signature and nothing else, so
+    # every mid-staff key change was dropped on the way out, real or spurious.
+    #
+    # ⚠️ THE CLEF'S ONE-PER-STAFF SHAPE IS NOT A PRECEDENT FOR THIS, and
+    # `_first_clef_bearing_measure` is where the difference is written down.
+    # That comment does not argue one-per-staff is right; it says LilyPond has
+    # "no later measure to recover it" and then picks the least-wrong single
+    # clef. What makes a per-measure clef actively unsafe is that a measure's
+    # `clef` field is an INHERITANCE where none was read — system furniture
+    # caught as a measure carries the positional default — so emitting one per
+    # measure writes a clef change TO the default and another one back. The key
+    # has no positional default: `active_key_sig` is only ever replaced by a
+    # reading, so a difference between adjacent measures is a reading and not
+    # an absence.
+    per_measure_key: list[str | None] = []
     for measure in staff.get("measures", []):
         events = group_chords_in_measure(measure.get("detections", []))
         annotate_fermatas(events, measure.get("detections", []))
         per_measure_events.append(events)
         per_measure_time_sig.append(measure.get("time_signature") or time_sig)
+        m_key = _lily_key_name(measure.get("key_signature") or key_sig)
+        per_measure_key.append(m_key if m_key != running_key else None)
+        running_key = m_key
         voices = split_events_into_voices(events)
         if len(voices) > 1:
             needs_two_voices = True
@@ -613,9 +647,16 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
         # voice 1, as before.
         v1_lines: list[str] = [f"{indent}    \\voiceOne"]
         v2_lines: list[str] = [f"{indent}    \\voiceTwo"]
-        for (v1_events, v2_events), m_time in zip(lanes, per_measure_time_sig):
+        for (v1_events, v2_events), m_time, m_key in zip(
+                lanes, per_measure_time_sig, per_measure_key):
             empty_rest = _lily_measure_rest(m_time)
             spacer = _lily_measure_spacer(m_time)
+            # `\key` is read by the Key_engraver, which lives in the STAFF
+            # context, so writing it in one voice sets it for the staff — and
+            # writing it in both would set the same property twice. Voice 1
+            # carries it, and carries it even where voice 1 is only a spacer.
+            if m_key is not None:
+                v1_lines.append(f"{indent}    \\key {m_key} \\major")
             # An entirely empty measure prints ONE whole-bar rest, so it goes
             # in voice 1 and voice 2 stays invisible — two stacked printed
             # rests were the same duplication in rest form.
@@ -638,7 +679,10 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
         lines.append(f"{indent}  >>")
     else:
         # Single voice (the normal case).
-        for events, m_time in zip(per_measure_events, per_measure_time_sig):
+        for events, m_time, m_key in zip(
+                per_measure_events, per_measure_time_sig, per_measure_key):
+            if m_key is not None:
+                lines.append(f"{indent}  \\key {m_key} \\major")
             if not events:
                 lines.append(f"{indent}  {_lily_measure_rest(m_time)} |")
                 continue
