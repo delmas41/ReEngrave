@@ -346,13 +346,25 @@ class ABSTAIN(_Vocab):
     NO_STAFF_GEOMETRY = "no_staff_geometry"
     NO_BARLINE = "no_barline"
 
-    # the CV clef locator's own rejecting branches
+    # ⚠️ The CV clef locator's own rejecting branches, spelled EXACTLY as the
+    # reader spells them (`clef_locator._note`). Keeping the reader's own word
+    # is the difference between "the reader told us why" and "we bucketed it".
+    # `locate_clef(trace=...)` has always been able to say this and NEITHER
+    # pipeline call site passes a trace, so today every one of these is lost.
     OCCUPIED = "occupied"
     CLUSTER_TOO_BIG = "cluster_too_big"
     NO_CLUSTERS = "no_clusters"
     DOT_VETO = "dot_veto"
     OFF_STAFF = "off_staff"
     STAFF_LEFT_UNMEASURABLE = "staff_left_unmeasurable"
+    AMBIGUOUS_SNAP = "ambiguous_snap"
+    ASYMMETRIC = "asymmetric"
+    F_CLEF_DOTS = "f_clef_dots"
+    MEZZOSOPRANO_SYMMETRY = "mezzosoprano_symmetry"
+    NO_MASK = "no_mask"
+    ONLY_DEBRIS = "only_debris"
+    TOO_FAR_RIGHT = "too_far_right"
+    OFF_STAFF_ONLY = "off_staff_only"
 
     # readers with nothing to read
     NO_INK = "no_ink"

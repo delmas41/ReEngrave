@@ -56,30 +56,56 @@ W_DOSSIER = 4.0           # external truth, when admitted
 #: so the number matters far less than its existence: the reachable change is
 #: "a staff whose readers disagree says so" rather than "the winner is
 #: better chosen".
+#:
+#: ⚠️ AND IT CARRIES TWO JOBS (A-CLEF-6). With a single candidate the
+#: runner-up is 0, so this is also an ABSOLUTE floor on a lone reading -- a
+#: solitary clef at confidence 0.05 with nothing corroborating it does not
+#: take a staff. That is deliberate, but a sweep of this constant moves both
+#: behaviours at once and the two should be reported apart.
 MARGIN_FLOOR = 1.0
 
 _GLYPH_TO_CLEF = {
     "clefG": "treble",
     "clefF": "bass",
-    "clefC": "alto",       # ⚠️ SEE BELOW -- this is a placeholder, not a read
     "clefUnpitchedPercussion": "percussion",
 }
 
+#: The five clefs that are the SAME GLYPH on different lines.
+C_CLEF_NAMES = ("alto", "tenor", "soprano", "mezzosoprano", "baritone")
+
+#: What a `clefC` detection is worth as support for a C clef the LOCATOR
+#: named. It cannot name one itself. (A-CLEF-5)
+W_C_FAMILY = 1.5
+
 
 def _clef_of(glyph_name: str) -> Optional[str]:
-    """⚠️ A CLASS NAME CANNOT NAME A C CLEF, AND THIS IS A KNOWN CEILING.
+    """⚠️ A CLASS NAME CANNOT NAME A C CLEF. `clefC` returns None, on purpose.
 
     Alto, tenor, soprano, mezzo and baritone are THE SAME GLYPH on different
-    lines, so `clefC` does not say which one it is -- only geometry does
-    (`clef_geometry.py` measures which line the clef names, and that is why
-    it exists). Mapping `clefC -> alto` here is a PLACEHOLDER that reproduces
-    the commonest case; the real value must come from a
-    `Q.CLEF_LOCATED` row, which carries the located line.
+    lines, so `clefC` says a C clef is present and nothing about WHICH -- only
+    geometry can, which is exactly why `clef_geometry.py` exists.
 
-    Recorded rather than quietly shipped: this is the single largest known
-    wrongness in this module.
+    ⚠️ THE FIRST CUT OF THIS MODULE MAPPED `clefC -> alto` AND CALLED IT A
+    PLACEHOLDER. That was worse than it looked: the detector's weight (3.0 at
+    high confidence) would have BEATEN the locator's measured name (2.0), so
+    the placeholder would have outvoted the only reader that can actually
+    answer the question -- and any measurement taken then would have priced
+    the placeholder rather than the mechanism.
+
+    So a `clefC` detection now contributes FAMILY SUPPORT to whichever C clef
+    the locator named, and names none on its own. With no locator reading, the
+    clef abstains rather than guessing alto.
     """
     return _GLYPH_TO_CLEF.get(glyph_name)
+
+
+def _c_family_support(ev: Evidence):
+    """`clefC` detections, as support for a C clef somebody else named."""
+    out = []
+    for row in ev.rows(Q.CLEF_GLYPH):
+        if str(row.value) == "clefC":
+            out.append(row)
+    return out
 
 
 def _detector_terms(ev: Evidence) -> Dict[str, List[Term]]:
@@ -163,6 +189,17 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
         if expected:
             candidates.setdefault(str(expected), []).append(
                 Term("instrument", W_INSTRUMENT, (instrument.id,)))
+
+    # ⚠️ A `clefC` detection supports every C clef a reader NAMED, and names
+    # none itself. If nothing named one, it supports nothing -- which is the
+    # honest outcome, not a fallback to alto.
+    for row in _c_family_support(ev):
+        named_c = [n for n in candidates if n in C_CLEF_NAMES]
+        for name in named_c:
+            candidates[name].append(
+                Term("detector_c_family", W_C_FAMILY, (row.id,)))
+        if not named_c:
+            ev._declined.add(Q.CLEF_LOCATED)
 
     if not candidates:
         return Ruling.abstain("no_candidates")

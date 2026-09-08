@@ -605,46 +605,118 @@ def gather_clef(log: Log, cells: Sequence[Any],
                         y_center=d.y_center, x_center=d.x_center)
 
 
-def gather_clef_locator(log: Log, cells: Sequence[Any],
-                        local: Dict[int, Tuple[int, int]], *,
-                        enabled: bool = True) -> None:
-    """The CV C-clef locator, on BOTH crops.
+#: The locator's own branch names -> our abstention vocabulary. Where a name
+#: is identical it is kept identical, deliberately.
+_LOCATOR_REASON = {
+    "no_staff_metrics": ABSTAIN.NO_STAFF_GEOMETRY,
+    "no_mask": ABSTAIN.NO_MASK,
+    "no_clusters": ABSTAIN.NO_CLUSTERS,
+    "occupied": ABSTAIN.OCCUPIED,
+    "off_staff_only": ABSTAIN.OFF_STAFF_ONLY,
+    "only_debris": ABSTAIN.ONLY_DEBRIS,
+    "too_far_right": ABSTAIN.TOO_FAR_RIGHT,
+    "asymmetric": ABSTAIN.ASYMMETRIC,
+    "ambiguous_snap": ABSTAIN.AMBIGUOUS_SNAP,
+    "f_clef_dots": ABSTAIN.F_CLEF_DOTS,
+    "mezzosoprano_symmetry": ABSTAIN.MEZZOSOPRANO_SYMMETRY,
+}
+
+
+def gather_clef_locator(log: Log, pws: Any, cells: Sequence[Any],
+                        local: Dict[int, Tuple[int, int]],
+                        detections: Dict[str, List[Any]]) -> None:
+    """The CV C-clef locator, on BOTH crops, with its own refusal reason.
 
     ⚠️ TWO GATES ARE DELETED HERE AND THAT IS THE POINT OF THE STAGE.
 
     1. `transcribe.py:1953` runs the locator only `if clef_source is None` --
-       it is silenced by PRESENCE, not by score, so a detector clef at 0.11
+       silenced by PRESENCE, not by score, so a detector clef at 0.11
        permanently mutes it.
     2. `_header_cell_beats_measure_cell` (`:1669`, called `:4940`) is a
-       boolean that picks ONE crop for the locator to read. On 14 of 14
-       divergent staves it chose the MEASURE CELL -- the crop the reader could
-       not read -- while the other crop had already been read and thrown away
-       in the same run.
+       BOOLEAN that picks ONE crop for the locator to read. Measured: on 14 of
+       14 divergent staves it chose the MEASURE CELL -- the crop the reader
+       could not read -- while the other crop had already been read and thrown
+       away in the same run. 13 of those 14 are the header crop reading a C
+       clef at symmetry 0.78-0.97 that the measure cell refused for
+       `occupied` / `too_big` / `no_clusters`: too much other ink.
 
-    Under the split both crops are read unconditionally and both are
-    recorded, and the choice becomes a scoring term in ADJUDICATE where it
-    can be seen and can abstain.
+    Here both crops are read unconditionally, both are recorded, and the
+    choice becomes a scoring term in ADJUDICATE where it can be seen.
 
-    ⚠️ DECLARED STUB. The locator's own call needs a header crop built by
-    `staff_header.header_cells_for_page` plus the occupied-box list, and
-    wiring that faithfully is a follow-on. It abstains with
-    NOT_IMPLEMENTED so the stage is present and its absence is on the record
-    rather than silent.
+    ⚠️ AND `trace` IS PASSED. `locate_clef` has always been able to say which
+    branch ended it, and NEITHER pipeline call site passes a trace -- so today
+    every refusal is an indistinguishable `None`. That is a Class-A fault
+    (the score is never formed) sitting one keyword argument away from fixed.
     """
-    seen = set()
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    try:
+        from ..clef_locator import locate_clef
+        from ..staff_header import header_cells_for_page
+    except Exception:                                         # noqa: BLE001
+        _stub_per_staff(log, cells, local, Q.CLEF_LOCATED, READERS.CV_LOCATOR,
+                        FRAME_HEADER_WINDOW, "clef_locator unavailable")
+        return
+
+    try:
+        header_cells = header_cells_for_page(pws)
+    except Exception as exc:                                  # noqa: BLE001
+        header_cells = {}
+
+    first_cell = {}
     for c in cells:
-        key = local.get(c.staff_index)
-        if key is None or c.measure_index != 0:
-            continue
-        sub = R.staff(c.page_index, key[0], key[1])
-        if sub.to_key() in seen:
-            continue
-        seen.add(sub.to_key())
-        for frame in (FRAME_HEADER_WINDOW, frame_cell(0)):
-            log.abstain(sub, Q.CLEF_LOCATED, reader=READERS.CV_LOCATOR,
-                        frame=frame, reason=ABSTAIN.NOT_IMPLEMENTED,
-                        note="both crops are addressed; the reader is not "
-                             "wired yet -- see gather.gather_clef_locator")
+        if c.measure_index == 0:
+            first_cell.setdefault(c.staff_index, c)
+
+    for staff_index, key in sorted(local.items()):
+        sub = R.staff(p, key[0], key[1])
+        crops = ((FRAME_HEADER_WINDOW, header_cells.get(staff_index)),
+                 (frame_cell(0), first_cell.get(staff_index)))
+        for frame, crop in crops:
+            if crop is None:
+                log.abstain(sub, Q.CLEF_LOCATED, reader=READERS.CV_LOCATOR,
+                            frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                            note="no crop of this kind for this staff")
+                continue
+            occupied = _occupied_boxes(detections, p, key, frame)
+            trace: Dict[str, Any] = {}
+            try:
+                found = locate_clef(crop, occupied_boxes=occupied, trace=trace)
+            except Exception as exc:                          # noqa: BLE001
+                log.abstain(sub, Q.CLEF_LOCATED, reader=READERS.CV_LOCATOR,
+                            frame=frame, reason=ABSTAIN.READER_UNAVAILABLE,
+                            error=type(exc).__name__)
+                continue
+            if found is None:
+                branch = str(trace.get("reason", "no_clusters"))
+                log.abstain(
+                    sub, Q.CLEF_LOCATED, reader=READERS.CV_LOCATOR,
+                    frame=frame,
+                    reason=_LOCATOR_REASON.get(branch, ABSTAIN.NO_CLUSTERS),
+                    locator_branch=branch, **{k: v for k, v in trace.items()
+                                              if k != "reason"})
+                continue
+            log.observe(sub, Q.CLEF_LOCATED, found.read.name,
+                        reader=READERS.CV_LOCATOR, frame=frame,
+                        score=float(found.symmetry),
+                        family=found.read.family, line=found.read.line,
+                        line_source=found.read.source)
+
+
+def _occupied_boxes(detections, page: int, key, frame: str):
+    """The noteheads the detector is already sure about.
+
+    A clef never overlaps one, so a candidate that does is rejected -- which
+    matters where a cell begins PAST its clef, because the first cluster is
+    then real notation and a stacked chord is tall, glyph-sized and vertically
+    symmetric enough to pass for a C clef.
+    """
+    cell_key = R.cell(page, key[0], key[1], 0).to_key()
+    out = []
+    for d in detections.get(cell_key, ()):
+        if d.smufl_name.startswith(_NOTEHEAD_PREFIX):
+            out.append((d.x_canonical, d.y_canonical,
+                        d.width_canonical, d.height_canonical))
+    return out
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -895,7 +967,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_notehead_positions(log, cells, local, detections)
         gather_ownership_evidence(log, pws, cells, local, detections)
         gather_clef(log, cells, local, detections)
-        gather_clef_locator(log, cells, local)
+        gather_clef_locator(log, pws, cells, local, detections)
         gather_clef_seed(log, cells, local, dossier=dossier, sources=sources)
         gather_key_signature(log, cells, local)
         gather_meter(log, cells, local)
