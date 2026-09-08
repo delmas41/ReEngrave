@@ -307,9 +307,11 @@ not**, and §7a is about why.
 musicdiff side is read from the **committed** `arm-allobjects.csv`, never
 re-measured, so it cannot drift from the figure the project already reports.
 
-The pattern is uniform and stark: **musicdiff's unnamed share is 85–96% on
-every one of the 20 rows** — it does not fall on the rows where the ledger
-corresponds everything. On `beethoven-984073-p1`, where the part join resolves,
+The pattern is uniform and stark: **musicdiff's unnamed share is 80–96% on
+every one of the 20 rows, and 85–96% on the twelve where the part join
+resolves** — it does not fall on the rows where the ledger corresponds
+everything. Its lowest value on the whole gate, 80%, is on `mahler-p2`, one of
+the rows the ledger cannot correspond at all. On `beethoven-984073-p1`, where the part join resolves,
 the measure map is verified and the ledger corresponds **100%** of symbols,
 musicdiff still puts **88%** of its 1,273 edits in buckets that name nothing.
 
