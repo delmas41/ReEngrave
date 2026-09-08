@@ -656,12 +656,34 @@ class GroupReport:
             }
         return {
             "per_redundancy": per,
-            # ⚠️ A DECLARED redundancy that found no fact is reported by name.
-            # A zero is a suspect, not a result: seven-plus probes in this
-            # project have printed clean tables of zeros at exit 0.
+            # ⚠️ THREE KINDS OF ZERO, REPORTED APART. A zero is a suspect,
+            # not a result -- seven-plus probes in this project have printed
+            # clean tables of zeros at exit 0 -- and these three have
+            # different causes and different fixes.
+            #
+            #   declared_but_empty  the declaration placed NO FACT. Its
+            #                       fact_key is wrong, or the quantity is
+            #                       never emitted. A bug in the declaration.
+            #   witnessed_by_nobody facts exist and NOT ONE witness spoke.
+            #                       The readers are silent, not the
+            #                       declaration. A page printing no meter is
+            #                       the honest common case.
+            #   checked_nothing     EVERY group has fewer than two
+            #                       independent signals. ⚠️ THE ONE THAT
+            #                       HIDES: such a redundancy can report a
+            #                       wall of UNANIMOUS or SINGLE and look
+            #                       busy while corroborating precisely
+            #                       nothing. It is the 77%-agreement-rate
+            #                       shape at the level of a whole redundancy.
             "declared_but_empty": sorted(
                 name for name, groups in self.by_redundancy().items()
                 if not groups),
+            "witnessed_by_nobody": sorted(
+                name for name, groups in self.by_redundancy().items()
+                if groups and not any(g.witnesses for g in groups)),
+            "checked_nothing": sorted(
+                name for name, groups in self.by_redundancy().items()
+                if all(g.uninformative for g in groups)),
             "n_groups": len(self.groups),
             "n_disagreements": len(self.disagreements()),
             "disagreements": [g.to_json() for g in self.disagreements()],

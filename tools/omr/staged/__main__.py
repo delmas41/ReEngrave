@@ -105,9 +105,13 @@ def _report(result: dict) -> None:
                   file=sys.stderr)
         # ⚠️ A DECLARED redundancy that found nothing is named, because a zero
         # is a suspect and not a result.
-        if ag["declared_but_empty"]:
-            print(f"  ⚠️ declared but empty: {ag['declared_but_empty']}",
-                  file=sys.stderr)
+        for key, gloss in (("declared_but_empty", "placed no fact"),
+                           ("witnessed_by_nobody", "no witness spoke"),
+                           ("checked_nothing",
+                            "never two independent signals -- corroborated "
+                            "NOTHING, however busy it looks")):
+            if ag.get(key):
+                print(f"  ⚠️ {key} ({gloss}): {ag[key]}", file=sys.stderr)
         print(f"  ⚠️ DISAGREEMENTS: {ag['n_disagreements']} "
               f"(each implicates its WHOLE group, not its dissenter)",
               file=sys.stderr)

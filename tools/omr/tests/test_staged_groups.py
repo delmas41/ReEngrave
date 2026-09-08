@@ -474,6 +474,41 @@ class TestTheReport(unittest.TestCase):
         self.assertIn("meter_across_staves", named)
         self.assertIn("clef_across_systems", named)
 
+    def test_the_three_kinds_of_zero_are_reported_APART(self):
+        """⚠️ They have different causes and different fixes: a declaration
+        that placed no fact is a bug in the declaration; a fact nobody
+        witnessed is silent readers; and a redundancy that never got two
+        independent signals corroborated NOTHING however busy it looks."""
+        log = Log()
+        # one system, one staff, one reading -> a fact, a witness, and no
+        # corroboration anywhere.
+        a_system_of(log, 1, ["2/4"])
+        log.freeze()
+        js = groups.run(log).to_json()
+        self.assertNotIn("meter_across_staves", js["declared_but_empty"])
+        self.assertNotIn("meter_across_staves", js["witnessed_by_nobody"])
+        self.assertIn("meter_across_staves", js["checked_nothing"])
+
+    def test_a_fact_nobody_witnessed_is_named_apart_from_an_empty_one(self):
+        log = Log()
+        a_system_of(log, 2, [None, None])
+        log.freeze()
+        js = groups.run(log).to_json()
+        self.assertNotIn("meter_across_staves", js["declared_but_empty"],
+                         "the fact exists; its staves declined")
+        self.assertIn("meter_across_staves", js["witnessed_by_nobody"])
+
+    def test_a_corroborated_redundancy_is_in_NONE_of_the_three(self):
+        """The control. All three lists must be able to be empty, or they are
+        constants dressed as checks."""
+        log = Log()
+        a_system_of(log, 3, ["2/4", "2/4", "2/4"])
+        log.freeze()
+        js = groups.run(log).to_json()
+        for key in ("declared_but_empty", "witnessed_by_nobody",
+                    "checked_nothing"):
+            self.assertNotIn("meter_across_staves", js[key], key)
+
     def test_a_redundancy_that_found_something_is_NOT_named_as_empty(self):
         """The control: `declared_but_empty` must be able to be non-trivial in
         both directions, or it is a constant."""
