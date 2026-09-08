@@ -685,6 +685,138 @@ this and does not pretend to.
 
 ---
 
+## A whole-rest glyph is not four quarters of silence
+
+An engraver fills an otherwise silent bar with **one centred whole rest,
+whatever the meter**, and the glyph stands for the BAR. So its `<duration>` is
+the bar's length and not the glyph's nominal 4.0 quarters, and MusicXML says
+so with `<rest measure="yes"/>` and **no `<type>` at all**. We were reading the
+glyph correctly and applying the wrong rule to it: in Dvořák 9's 4/8 the
+exporter wrote `<time>4/8</time>` into a part's `<attributes>` and then a
+4.0-quarter rest into its 2.0-quarter bars.
+
+⚠️ **THE PREVIOUS DIAGNOSIS WAS WRONG AND SAID `_measure_rest_beats` WAS
+"correct and simply not fed".** That function computes `num*4.0/den` and is
+**never called** for these bars: the detector FOUND a `restWhole`, so `events`
+is non-empty and the empty-measure branch — its only caller — is not taken.
+The measure dict carries `{'numerator': 4, 'denominator': 8}` on every measure
+of that page. Nothing was starved of the meter; a second consumer never knew
+the convention.
+
+`export._is_lone_measure_rest` routes a bar whose only event is a lone rest
+through the existing `_mxl_empty_measure` / `_lily_measure_rest`, which
+already do the arithmetic. Measured over the 7 scan-gate rows whose part join
+resolves: **558 of 618 wrong rest durations (90.3%) are such a bar**, 543 of
+them our `whole`/4.0 against a truth measure rest of 2.0.
+
+⚠️ **THE GLYPH IS PART OF THE RULE, and leaving it out cost 34 edits.** The
+first cut accepted any lone rest and inflated bars holding a single detected
+**quarter** rest into full-bar rests (engraved pooled 0.1214 → 0.1225 on
+`brahms-sym4-mvt1` alone). Those bars are not silent — they are bars we read
+one symbol of. Restricted to a lone **whole** rest with no dots, which keeps
+553 of the 558 rows and gives back every engraved edit. ⚠️ `measure="yes"` is
+also withheld where the meter is UNKNOWN, because `_measure_rest_beats` falls
+back to 4.0 there and asserting a length we never read would be a guess.
+
+⚠️⚠️ **OMR-NED CANNOT SEE ANY OF THIS, ON EITHER FAMILY.** Engraved pooled is
+**0.12138 / 2532 in both arms, identical in all 23 categories**; the scan gate
+is **34,963 edits in both arms, all eleven rows identical to the edit**. The
+positive control that makes those zeros a result: the change reaches all
+eleven engraved files (953 measure rests where there were none) and **six
+works' rest `<duration>` values MOVED** — Beethoven 3 is in 3/4 and its whole
+rests went 4.0 → 3.0, matching its truth. Scored with the symbol ledger
+instead, on the same eleven works: **`rest.type` 933 → 10, `rest.duration_ql`
+328 → 4, `matched_exact` 3,154 → 4,077, and every non-rest family identical to
+the row** (note.pitch 26, note.duration_ql 25, note.type 22, clef 7, dynamic
+5, key 5, articulation 5, time 1; uncorresponded/ambiguous/missing/spurious
+unchanged). 1,251 attribute errors corrected and the metric charged nothing.
+This is the handoff's *"musicdiff can score ZERO for a real duration error"*
+arriving on the real corpus rather than in a mutation matrix.
+
+⚠️ **The residual is a METER problem and is the next lever.** 354 wrong rest
+durations survive on the scan gate; **435 lone whole rests were not converted
+and 405 of them (93%) sit in an exported part carrying no `<time>` anywhere**,
+against a control of **only 86 of 159 exported parts carrying a `<time>` at
+all**. Full reading:
+[benchmarks/omr-rests-2026-09/FINDINGS.md](benchmarks/omr-rests-2026-09/FINDINGS.md)
+§7-§12 (§1-§5 are the superseded first look, kept because the corrections are
+the finding).
+
+---
+
+## `entire staff` is four problems wearing one name
+
+**8 of 20 scan-gate rows have no part correspondence — 51% of symbols** — and
+the causes were filed as one bucket, so any structural fix priced against it
+was priced against a mixture. Separated by a **derived** classifier over three
+hand-verified `works.json` facts (`page.n_systems`, `page.n_staves` — FIVE-LINE
+staves summed over systems — and `len(staves)`, one entry per PRINTED staff)
+plus our own part count:
+
+| | rows | symbol rows | share | whose fault |
+|---|--:|--:|--:|---|
+| **A** `_stitch_slots` refuses — one part per system-staff | 3 | 6,937 | **46.3%** | **the reader** |
+| **B** the lineup names one-line percussion staves | 3 | 4,815 | 32.1% | the ledger's arity gate |
+| **C** one lineup entry covers several printed staves | 1 | 2,469 | 16.5% | the ledger's arity gate |
+| **D** no lineup at all (mahler p2) | 1 | 771 | 5.1% | a missing hand-verified fact |
+
+⚠️ **The causes sum to the pooled `part_unresolved` mass exactly** (14,992 vs
+14,992) with **0 rows `unexplained`**, so this accounts for the bucket to the
+symbol rather than partitioning it for convenience. ⚠️ **Three causes were
+named and there are FOUR** — D was silently inside it and is not a reading
+fault of any kind.
+
+**B's arithmetic is exact on all three rows**: lineup minus the one-line
+percussion rules equals `page.n_staves` equals the parts we emit (15−2=13,
+21−3=18, 21−4=17), and each row's own `n_staves_note` already says in words
+*"compare `detected` against 13/18/17"*. Our staff count is right and the gate
+compares it to the wrong number; the 2-4 one-line staves' music is genuinely
+unread, a real but **bounded** gap that today costs the assessability of the
+whole page. **C** is bach's lineup entry literally named `Cembalo (grand
+staff, 2 printed staves)`. **A** is brahms p2's 27 part names reading
+`Flute … Contrabass, Flute … Contrabass` — 14+13, the two systems, unstitched.
+
+⚠️ **Cause A's three rows are exactly `OMR_SLOT_STITCH`'s measured reach.** So
+the flag is the only one of the four whose fix already exists, is measured and
+has never scored worse — but the **n** objection in its knobs-table entry
+stands unchanged; 46.3% of the unassessable mass is a different argument for
+the same change, not a new score. **B and C** need an arity gate that compares
+like with like, and the durable form is a FIELD in `works.json` (`one_line`,
+`printed_staves`) — WHICH entries are one-line is not structural today, only
+the count is derivable. **D** needs a fact nothing on disk can supply.
+
+Full reading:
+[benchmarks/omr-part-join-2026-09/FINDINGS.md](benchmarks/omr-part-join-2026-09/FINDINGS.md).
+
+⚠️⚠️ **AND THE LEDGER WAS LOSING 1,771 TRUTH SYMBOLS while this was measured.**
+`coverage_check()` was computed on every row, written into
+`out/ledger-summary.json` and **read by nothing** — reporting `balanced=False`
+on 9 of 20 rows for as long as it existed, which its own docstring calls "an
+instrument defect. Nothing downstream may quote a figure from an unbalanced
+ledger." Class C inside the instrument built to make the metric legible.
+`_merge_truth_parts_symbols` collapsed a condensed staff's twins while
+`seen_truth` marked every input as seen. ⚠️ **And its rest rule was 98.5%
+wrong**: it dropped EVERY rest of a condensed staff because *"one part rests
+while the other plays: no rest is printed"* — true only when another part
+PLAYS, and **1,050 of the 1,066 absorbed rests are the all-parts-rest case**,
+where the engraver prints exactly one rest. Fixed: absorbed symbols own a row
+under the new outcome `absorbed_by_condensation`, a rest is dropped only where
+some part of the staff has a note at that onset, and `run_ledger` READS the
+control. Controlled A/B over the committed 20-row summary: unbalanced 9 → 0,
+`spurious` 3,186 → 2,327, `rest.type` 471 → **963**, `rest.duration_ql` 471 →
+**942**, and **every non-rest figure identical to the unit**. ⚠️ `playing` must
+be supplied by the CALLER — `truth_by` is keyed by FAMILY, so deriving it
+locally looked right and kept all 1,066 rests including the 16.
+
+⚠️ **A correction to `benchmarks/omr-rests-2026-09/FINDINGS.md` §1**: its
+*"416 of 4,239 rest rows assessable (9.8%), from 2 of 11 rows"* came from the
+bare `python3 -m tools.omr.symbol_ledger` CLI, which takes **no `part_join`**.
+Fed `works.json` as `run_ledger.py` does it, **7 of 11 committed pairs resolve
+at 99.5% correspondence**. The 9.8% was a property of how the instrument was
+invoked.
+
+---
+
 ## Tuplets
 
 A triplet's noteheads are ORDINARY eighths on the page. The printed value is

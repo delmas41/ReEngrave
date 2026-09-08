@@ -5,6 +5,50 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-08 (evening) — Step 4 separated the `entire staff` bucket; Step 3's measure-rest convention fixed
+
+- **STEP 4: `entire staff` is FOUR problems, not three, and only one is the
+  reader's.** A derived classifier over three hand-verified `works.json` facts
+  accounts for the bucket to the symbol — 14,992 vs 14,992 pooled
+  `part_unresolved`, 0 rows `unexplained`: **A** `_stitch_slots` refusing (3
+  rows, 6,937 symbol rows, 46.3%, the reader); **B** the lineup naming one-line
+  percussion staves (3 rows, 32.1%, the ledger's arity gate, and the arithmetic
+  is exact to the staff on all three); **C** one lineup entry covering two
+  printed staves (bach's cembalo, 16.5%); **D** no lineup at all (mahler p2,
+  5.1%) — which the handoff had silently inside the bucket and which is not a
+  reading fault. Cause A's three rows are exactly `OMR_SLOT_STITCH`'s measured
+  reach; its **n** objection is unchanged.
+  `benchmarks/omr-part-join-2026-09/FINDINGS.md`.
+- **The symbol ledger was losing 1,771 truth symbols, and its own control said
+  so to nobody.** `coverage_check()` reported `balanced=False` on 9 of 20 rows,
+  was written into the summary JSON and read by nothing — Class C inside the
+  instrument built to make the metric legible. Its rest rule was **98.5%
+  wrong**: it dropped every rest of a condensed staff, where 1,050 of 1,066 are
+  the all-parts-rest case an engraver prints. Fixed with a new
+  `absorbed_by_condensation` outcome; controlled A/B: unbalanced 9 → 0,
+  `rest.type` 471 → 963, `rest.duration_ql` 471 → 942, **every non-rest figure
+  identical to the unit**.
+- **STEP 3: a whole-rest glyph is not four quarters of silence.** The previous
+  diagnosis (`_measure_rest_beats` fed `None`) was wrong — that function is
+  never CALLED for these bars, and the measure carries its meter. The fault is
+  the convention. `export._is_lone_measure_rest` routes a lone whole rest
+  through the measure-rest path; 558 of 618 wrong rest durations (90.3%) are
+  such a bar. ⚠️ Restricted to the **whole**-rest glyph after the first cut
+  inflated single detected QUARTER rests into full bars and cost 34 edits on
+  `brahms-sym4-mvt1`.
+- **⚠️ OMR-NED cannot see it, on either family** — engraved 0.12138/2532 in both
+  arms in all 23 categories, scan gate 34,963 edits in both arms on all 11 rows
+  — while the ledger records `rest.type` 933 → 10 and `rest.duration_ql` 328 → 4
+  on the engraved eleven with every non-rest family identical. The positive
+  control: six works' rest `<duration>` values MOVED (Beethoven 3's whole rests
+  4.0 → 3.0 in 3/4, matching truth).
+- **The residual is a METER problem**: 405 of 435 unconverted lone whole rests
+  sit in a part carrying no `<time>` anywhere, and only **86 of 159 exported
+  parts carry a `<time>` at all**.
+  `benchmarks/omr-rests-2026-09/FINDINGS.md` §7-§12.
+
+---
+
 ## 2026-09-08 (night) — Steps 1 and 2 CLOSED; Step 4 promoted ahead of Step 3
 
 Handoff: [docs/handoff-2026-09-08-night-step4-then-step3.md](docs/handoff-2026-09-08-night-step4-then-step3.md).

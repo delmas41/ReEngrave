@@ -317,7 +317,8 @@ class TestEventlessMeasureKeepsItsMarks:
     def test_a_dynamic_survives_a_bar_with_no_events(self):
         out = to_musicxml(self._with([self._letter("dynamicF", 10)]))
         assert "<dynamics>" in out and "<f/>" in out
-        assert "<rest/>" in out, "the whole-measure rest must still be emitted"
+        assert '<rest measure="yes"/>' in out, \
+            "the whole-measure rest must still be emitted, and it is a MEASURE rest"
 
     def test_the_letters_still_join_into_one_word(self):
         out = to_musicxml(self._with(
@@ -329,12 +330,12 @@ class TestEventlessMeasureKeepsItsMarks:
         """Same branch, same loss — dynamics were simply the measurable half."""
         out = to_musicxml(self._with(words=["legato"]))
         assert "<words>legato</words>" in out
-        assert "<rest/>" in out
+        assert '<rest measure="yes"/>' in out
 
     def test_the_direction_precedes_the_rest(self):
         """`<direction>` carries no duration, so it applies where it SITS."""
         out = to_musicxml(self._with([self._letter("dynamicF", 10)]))
-        assert out.index("<dynamics>") < out.index("<rest/>")
+        assert out.index("<dynamics>") < out.index('<rest measure="yes"/>')
 
     def test_marks_are_emitted_in_x_order(self):
         out = to_musicxml(self._with(
@@ -356,7 +357,7 @@ class TestEventlessMeasureKeepsItsMarks:
                          "confidence": 0.93, "bbox": [40, 5, 20, 14]}])
         out = to_musicxml(r)
         assert "<fermata" in out
-        assert "<rest/>" in out
+        assert '<rest measure="yes"/>' in out
 
     def test_a_bar_with_no_fermata_gets_none(self):
         assert "<fermata" not in to_musicxml(self._with())
@@ -376,7 +377,11 @@ class TestEventlessMeasureKeepsItsMarks:
         src = inspect.getsource(export_mod).splitlines()
         checked = 0
         for i, line in enumerate(src):
-            if line.strip() != "if not events:":
+            # ⚠️ the condition WIDENED on 2026-09-08 to route a lone
+            # measure rest down the same branch; match either spelling so the
+            # anti-drift test guards the CALL, not the condition's text.
+            if line.strip() not in ("if not events:",
+                                    "if not events or _is_lone_measure_rest(events):"):
                 continue
             body = "\n".join(src[i:i + 8])
             if "_mxl_empty_measure" not in body:
@@ -402,7 +407,8 @@ class TestEventlessMeasureKeepsItsMarks:
         src = inspect.getsource(export_mod).splitlines()
         checked = 0
         for i, line in enumerate(src):
-            if line.strip() != "if not events:":
+            if line.strip() not in ("if not events:",
+                                    "if not events or _is_lone_measure_rest(events):"):
                 continue
             body = "\n".join(src[i:i + 8])
             if "_mxl_empty_measure" not in body:
@@ -411,6 +417,73 @@ class TestEventlessMeasureKeepsItsMarks:
         assert checked == 2, (
             "both MusicXML emitters must route an eventless bar through "
             f"`_mxl_empty_measure`; found {checked}")
+
+
+def _tiny_result_lone_rest(time_sig, rest_class="restWhole"):
+    """One staff, one measure whose ONLY detection is a rest glyph.
+
+    The convention case: an engraver fills an otherwise silent bar with one
+    centred rest whatever the meter, so the glyph stands for the BAR.
+    """
+    r = _tiny_result_empty_measure(time_sig)
+    m = r["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+    m["detections"] = [{
+        "class": rest_class, "category": "rest", "confidence": 0.9,
+        "bbox_page": [40, 10, 60, 20], "bbox_cell": [40, 10, 60, 20],
+        "duration_type": "whole", "duration_beats": 4.0, "dots": 0,
+    }]
+    m["n_detections"] = 1
+    return r
+
+
+class TestALoneRestIsTheMeasureRest:
+    """⚠️ A WHOLE-REST GLYPH IS NOT FOUR QUARTERS OF SILENCE.
+
+    Measured: 558 of 618 wrong rest durations on the 7 joined scan-gate rows
+    are a bar of ours holding exactly one rest and nothing else — 543 of them
+    our `whole`/4.0 against a truth measure rest of 2.0 in 4/8 and 2/4.
+    `benchmarks/omr-rests-2026-09/FINDINGS.md`.
+    """
+
+    def test_a_lone_whole_rest_in_four_eight_is_half_a_whole_note_long(self):
+        out = to_musicxml(_tiny_result_lone_rest(
+            {"numerator": 4, "denominator": 8}))
+        # 4/8 == 2.0 quarters; divisions 4 -> <duration>8</duration>
+        assert "<duration>8</duration>" in out, out
+        assert "<duration>16</duration>" not in out, \
+            "4.0 quarters is the whole-note reading this fix exists to remove"
+        assert '<rest measure="yes"/>' in out
+
+    def test_it_names_no_note_value(self):
+        out = to_musicxml(_tiny_result_lone_rest(
+            {"numerator": 4, "denominator": 8}))
+        assert "<type>" not in out and "<dot/>" not in out
+
+    def test_lilypond_sizes_it_to_the_meter_too(self):
+        out = to_lilypond(_tiny_result_lone_rest(
+            {"numerator": 3, "denominator": 4}))
+        assert "r2. |" in out and "r1 |" not in out
+
+    def test_with_no_meter_the_old_whole_rest_stands(self):
+        """⚠️ Falling back to 4.0 is right for an UNKNOWN meter, and the
+        `measure="yes"` claim is withheld there rather than guessed."""
+        out = to_musicxml(_tiny_result_lone_rest(None))
+        assert "<duration>16</duration>" in out
+        assert 'measure="yes"' not in out
+
+    def test_a_bar_with_a_rest_AND_a_note_is_untouched(self):
+        r = _tiny_result_lone_rest({"numerator": 4, "denominator": 8})
+        m = r["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+        m["detections"].append({
+            "class": "noteheadBlackOnLine", "category": "notehead",
+            "confidence": 0.9, "bbox_page": [70, 12, 80, 20],
+            "bbox_cell": [70, 12, 80, 20], "pitch": "C5",
+            "duration_type": "quarter", "duration_beats": 1.0, "dots": 0,
+        })
+        m["n_detections"] = 2
+        out = to_musicxml(r)
+        assert 'measure="yes"' not in out, \
+            "the bar is not silent, so nothing here is a measure rest"
 
 
 class TestEmptyMeasurePadding:
@@ -428,9 +501,12 @@ class TestEmptyMeasurePadding:
         # divisions defaults to 4 (no detections force finer resolution):
         # 3 beats * 4 divisions = 12.
         assert "<duration>12</duration>" in out
-        assert "<rest/>" in out
-        assert "<type>half</type>" in out
-        assert "<dot/>" in out
+        assert '<rest measure="yes"/>' in out
+        # ⚠️ A MEASURE REST NAMES NO NOTE VALUE. The duration is the bar's, and
+        # `<type>`/`<dot>` are deliberately absent — which is what the
+        # reference files do. Before 2026-09-08 this asserted
+        # `<type>half</type>` + `<dot/>`.
+        assert "<type>" not in out and "<dot/>" not in out
 
     def test_musicxml_no_time_sig_falls_back_to_whole(self):
         out = to_musicxml(_tiny_result_empty_measure(None))
@@ -2856,9 +2932,9 @@ class TestEmptyMeasureDirections:
         ff = [{"category": "dynamic", "class": "dynamicP", "confidence": 0.9,
                "bbox": [20, 40, 8, 10], "bbox_page": [20, 40, 8, 10]}]
         xml = to_musicxml(self._staff_with_one_empty_bar(ff))
-        assert xml.index("<p/>") < xml.index("<rest/>")
+        assert xml.index("<p/>") < xml.index('<rest measure="yes"/>')
 
     def test_a_bar_with_no_marks_is_unchanged(self):
         xml = to_musicxml(self._staff_with_one_empty_bar([]))
         assert "<direction" not in xml
-        assert "<rest/>" in xml
+        assert '<rest measure="yes"/>' in xml

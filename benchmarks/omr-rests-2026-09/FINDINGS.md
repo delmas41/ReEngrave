@@ -1,4 +1,13 @@
-# Step 3 — rests: the first look, and 80% of it is one mechanism
+# Step 3 — rests
+
+⚠️⚠️ **§1–§5 WERE WRITTEN FIRST AND TWO OF THEIR CLAIMS ARE WRONG.** The
+assessability figure in §1 (9.8%, 2 of 11 rows) came from invoking the ledger
+without its part-join input, and §3/§5's cause (`_measure_rest_beats` fed
+`None`) is not the mechanism — that function is never called for these bars.
+**Read §7 onward.** The sections are kept rather than rewritten because the
+corrections are the finding.
+
+## The first look, and 80% of it is one mechanism
 
 Step 3 as the handoff sets it: *"476 rests carry a wrong duration against 235
 notes — 55% of the duration mass, and every duration analysis in this repo is
@@ -100,4 +109,174 @@ for t in "$M"/*.truth.musicxml; do b=$(basename "$t" .truth.musicxml)
   python3 -m tools.omr.symbol_ledger \
       "$M/$b.restamp-composed.omr.musicxml" "$t" --json "led/$b.json"; done
 python3 benchmarks/omr-rests-2026-09/probe_rest_durations.py led/
+```
+
+---
+
+# Step 3, second pass (2026-09-08 later): the diagnosis above is WRONG, and the fix is a convention
+
+Everything above §5 stands as a description of the symptom. §5's *cause* does
+not, and neither does §1's assessability figure. Both are corrected here, with
+what replaced them.
+
+## 7. ⚠️⚠️ `_measure_rest_beats` IS NOT "correct and simply not fed". IT IS NEVER REACHED.
+
+§3 says the fault is that both call sites resolve `m_time` to `None`. Checked
+against the transcription rather than the code path:
+
+    dvorak-sym9-mvt1-405834-p5.restamp-composed.omr.json
+      staff time_signature   {'numerator': 4, 'denominator': 8, 'raw': '4/8'}
+      measure 0..3 time_sig  {'numerator': 4, 'denominator': 8, 'raw': '4/8'}
+      measure 0 detections   ['clefG','timeSig8','flag16thUp','timeSig4','restWhole','staff']
+
+**Every measure of that page carries its meter**, which is exactly why
+`<time>4/8</time>` reaches `<attributes>` — the exporter reads the same dict
+one line above. `_measure_rest_beats` is not being fed `None`; it is not
+CALLED. The bar holds a detected `restWhole`, so `events` is non-empty and the
+empty-measure branch — the only caller — is never taken. The rest is written
+by `_mxl_voice_events` at the glyph's nominal value.
+
+**So the fault is the CONVENTION, not the plumbing.** ⚠️ A whole-rest glyph is
+not four quarters of silence. An engraver fills an otherwise silent bar with
+one centred whole rest **whatever the meter**, and the glyph stands for the
+bar; the reference files say so with `<rest measure="yes"/>` and no `<type>`
+at all. We were reading the glyph correctly and applying the wrong rule to it.
+
+The self-contradiction §3 records is real and this explains it: the same
+measure dict supplies `<time>4/8</time>` to the attributes and a whole-rest
+glyph to the note stream, and only one of the two consumers knew about the
+other.
+
+## 8. Measured properly: 90.3% is the convention, on 7 rows not 2
+
+`probe_measure_rests.py` — which builds the ledger the way `run_ledger.py`
+does, from `works.json`, and asks the question the confusion table cannot:
+**was our rest the only event in its bar?**
+
+    7 rows joined (not 2)   rest rows 1826   ASSESSABLE 1817 (99.5%)
+
+| ours (type, ql) | truth (type, ql) | n | our bar held ONLY this rest |
+|---|---|--:|--:|
+| **`whole`, 4.0** | **`None`, 2.0** | **543** | **530 (98%)** |
+| `whole`, 4.0 | `quarter`, 1.0 | 10 | 10 (100%) |
+| `whole`, 4.0 | `None`, 3.0 | 9 | 9 (100%) |
+| `whole`, 4.0 | `eighth`, 0.5 | 10 | 4 |
+| `half`, 3.0 | `None`, 2.0 | 5 | 5 (100%) |
+| `32nd`, 0.125 | `16th`, 0.4375 | 8 | 0 |
+
+**558 of 618 wrong rest durations — 90.3% — are a bar of ours holding exactly
+one rest and nothing else**, and `truth type = None` is the measure-rest
+signature.
+
+⚠️ **The first cut of this table said 55%, and the error was a FRAME error of
+the kind the last session paid for.** On a `truth`-side ledger row
+`part_index` is the **truth** part index, not ours — a condensed staff makes
+those different numbers — and mapping it straight onto our part list said a
+Beethoven bar holding no rest at all held one. Same shape as
+`clef_located` (cell frame) versus `staff_extent` (page frame). Fixed, with
+the reason written at the call site.
+
+## 9. The fix, and ⚠️ THE GLYPH IS PART OF THE RULE
+
+`export._is_lone_measure_rest` + routing both MusicXML emitters and both
+LilyPond branches through the existing `_mxl_empty_measure` /
+`_lily_measure_rest`, which already do the arithmetic. `_mxl_note` gains
+`measure_rest`, emitting `<rest measure="yes"/>` and **no `<type>`/`<dot>`** —
+a measure rest names no note value.
+
+⚠️ `measure="yes"` is withheld where the meter is UNKNOWN. `_measure_rest_beats`
+falls back to 4.0 there, and asserting "this bar is exactly 4.0 long" on a page
+whose meter we never read would be a guess dressed as a fact.
+
+⚠️⚠️ **THE FIRST CUT ACCEPTED ANY LONE REST AND COST 34 EDITS ON
+`brahms-sym4-mvt1`** (pooled engraved 0.1214 → 0.1225). It was turning bars
+holding a single detected **quarter** rest into full-bar rests — 1.0 quarters
+becoming 4.0. Those bars are not silent; they are bars we read one symbol of.
+A measure rest is the **whole-rest glyph** in every meter, so a lone quarter or
+eighth rest is a partial reading and inflating it is a guess. Restricting to
+`duration_type == "whole"`, no dots, keeps 553 of the 558 rows and gives back
+every engraved edit.
+
+## 10. ⚠️ PRICED ON THE ENGRAVED BENCHMARK, WHICH CANNOT SEE IT — AND THE CONTROL PROVES THAT
+
+Export-only A/B over the eleven stored engraved transcriptions
+(`benchmarks/omr-hairpins-2026-09/score_export_arm.py`, so the detector never
+re-runs):
+
+| | OMR-NED | edits |
+|---|--:|--:|
+| before | 0.12138 | 2532 |
+| after | **0.12138** | **2532** |
+
+**Identical to the edit, in every one of 23 categories.** ⚠️ A zero is a
+suspect, so the positive control: the change reaches **all eleven** exported
+files — 953 measure rests where there were none — and **six works have rest
+`<duration>` values that MOVED** (beethoven 3: 188 lines, tchaikovsky 4: 246,
+beethoven 5: 178, tchaikovsky 6: 72, brahms 1: 36, bruckner 5 and mahler 5: 2).
+Beethoven 3 is in 3/4: a whole rest at 4.0 became 3.0, matching its truth.
+**musicdiff charged nothing either way.**
+
+That is §2 of the handoff arriving on the real corpus rather than in a mutation
+matrix: *"musicdiff can score ZERO for a real duration error — blind, not
+merely imprecise."*
+
+**Scored with the ledger, on the same eleven engraved works** (they pair 1:1 by
+construction, so the join is positional and every rest row is assessable):
+
+| | before | after |
+|---|--:|--:|
+| **`rest.type`** | **933** | **10** |
+| **`rest.duration_ql`** | **328** | **4** |
+| `matched_exact` | 3,154 | **4,077** |
+| `matched_attribute_error` | 1,039 | 116 |
+| `note.pitch` / `note.duration_ql` / `note.type` | 26 / 25 / 22 | **26 / 25 / 22** |
+| `clef.clef` / `dynamic.text` / `key.fifths` / `articulation.mark` / `time.beats` | 7 / 5 / 5 / 5 / 1 | **identical** |
+| `uncorresponded` / `ambiguous` / `missing` / `spurious` | 674 / 356 / 293 / 169 | **identical** |
+
+**1,251 attribute errors corrected, nothing else moved by a single row, and
+OMR-NED did not notice.**
+
+Scan gate, secondary, the 7 rows whose part join resolves:
+
+| | before | after |
+|---|--:|--:|
+| `rest.type` | 600 | **277** |
+| `rest.duration_ql` | 576 | **354** |
+| `rest.dots` | 17 | 12 |
+| `matched_exact` | 1,470 | **1,717** |
+| every non-rest family | — | **identical** |
+
+⚠️ **AND THE SCAN GATE'S OMR-NED IS ALSO IDENTICAL — 34,963 edits, all
+eleven rows unchanged to the edit.** So the metric is blind to this on BOTH
+families, engraved and scanned, while the ledger records 1,251 + 545 corrected
+attribute errors. Direction still comes from an A/B; this is what "attribution
+is VOID" costs when the change is a duration.
+
+Controls on the new output: `self_check_identity` and the music21
+cross-parser are clean on **22 of 22** re-exported files, so the absent
+`<type>` is not a parse problem.
+
+## 11. ⚠️ THE RESIDUAL IS A METER PROBLEM, AND IT IS THE NEXT LEVER
+
+354 wrong rest durations survive on the scan gate. **435 lone whole rests were
+NOT converted, and 405 of them (93%) sit in an exported part that carries no
+`<time>` ANYWHERE.** Control: **only 86 of 159 exported parts carry a `<time>`
+at all.**
+
+So the handoff's closing question — *"why does the staff carry no
+`time_signature`?"* — has a real answer, and it is not the one it assumed.
+On Dvořák p5 the staff DOES carry it (§7). On Beethoven 5 p2, Mahler 5 p2/p3
+and Brahms 1 p2, **46% of the parts we emit have no meter at all**, so
+`_measure_rest_beats` legitimately falls back to 4.0 and no rest rule can
+help. That is a meter-reading problem — `time_signature_locator`, the vote,
+and meter carry across systems — and it is where the rest of Step 3's mass
+lives.
+
+## 12. Reproduce
+
+```bash
+python3 benchmarks/omr-rests-2026-09/probe_measure_rests.py \
+    --pairs benchmarks/omr-part-join-2026-09/pairs-restamp-composed.json
+OMRNED_PYTHON=/…/.venv-omrned/bin/python \
+python3 benchmarks/omr-hairpins-2026-09/score_export_arm.py --label after
 ```

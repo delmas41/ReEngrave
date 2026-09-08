@@ -627,6 +627,8 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
             # An entirely empty measure prints ONE whole-bar rest, so it goes
             # in voice 1 and voice 2 stays invisible — two stacked printed
             # rests were the same duplication in rest form.
+            if v1_events and not v2_events and _is_lone_measure_rest(v1_events):
+                v1_events = []          # a lone rest IS the measure rest
             v1_lines.append(
                 f"{indent}    " + _lily_measure(v1_events, wedges) + " |"
                 if v1_events
@@ -647,7 +649,10 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     else:
         # Single voice (the normal case).
         for events, m_time in zip(per_measure_events, per_measure_time_sig):
-            if not events:
+            # A lone rest is the bar's own measure rest, sized to the meter —
+            # the same convention `_is_lone_measure_rest` documents for the
+            # MusicXML side. `_lily_measure_rest` already does the arithmetic.
+            if not events or _is_lone_measure_rest(events):
                 lines.append(f"{indent}  {_lily_measure_rest(m_time)} |")
                 continue
             lines.append(f"{indent}  {_lily_measure(events, wedges)} |")
@@ -983,7 +988,8 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               articulations: list[str] | None = None,
               ornaments: list[dict] | None = None,
               fermata: bool = False,
-              accidental: str | None = None) -> str:
+              accidental: str | None = None,
+              measure_rest: bool = False) -> str:
     """Render one <note> for MusicXML — used for both chord members and rests.
 
     Tie semantics (per MusicXML 3.x):
@@ -999,7 +1005,13 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     if is_chord:
         lines.append(f"{indent}  <chord/>")
     if is_rest:
-        lines.append(f"{indent}  <rest/>")
+        # ⚠️ `measure="yes"` is the ENGRAVING FACT that this bar is silent and
+        # its one centred glyph stands for the whole bar — which is why the
+        # bar's length, not the glyph's nominal value, is its duration. The
+        # reference files carry it and we never did. It also carries NO
+        # `<type>`, for the same reason: there is no note value to name.
+        lines.append(f'{indent}  <rest measure="yes"/>' if measure_rest
+                     else f"{indent}  <rest/>")
     elif event_pitch is not None:
         pblock = _mxl_pitch_block(event_pitch, indent + "  ")
         if pblock is None:
@@ -1013,9 +1025,10 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     if tied_to_next:
         lines.append(f'{indent}  <tie type="start"/>')
     lines.append(f"{indent}  <voice>{voice}</voice>")
-    lines.append(f"{indent}  <type>{xml_type}</type>")
-    for _ in range(dots):
-        lines.append(f"{indent}  <dot/>")
+    if not measure_rest:
+        lines.append(f"{indent}  <type>{xml_type}</type>")
+        for _ in range(dots):
+            lines.append(f"{indent}  <dot/>")
     # <accidental> sits after <dot> and before <time-modification>. It is what
     # the engraver DREW; `<alter>` inside <pitch> is what sounds. The two are
     # independent — a natural has alter 0 and a printed glyph — which is why
@@ -1601,6 +1614,55 @@ def eventless_wedges(
     return sorted(out)
 
 
+def _is_lone_measure_rest(events: list[dict[str, Any]]) -> bool:
+    """A bar whose only event is ONE rest is a MEASURE REST.
+
+    ⚠️⚠️ **A WHOLE-REST GLYPH DOES NOT MEAN A WHOLE NOTE'S WORTH OF SILENCE.**
+    The convention is the other way round: an engraver fills an otherwise
+    silent bar with one centred whole-rest glyph *whatever the meter*, and the
+    glyph stands for the bar. So its `<duration>` is the BAR's length, not the
+    glyph's nominal 4.0 quarters, and the reference files say so with
+    `<rest measure="yes"/>` and no `<type>` at all.
+
+    Measured over the 7 scan-gate rows whose part join resolves
+    (`benchmarks/omr-rests-2026-09/probe_measure_rests.py`): **558 of 618
+    wrong rest durations — 90.3% — are a bar of ours holding exactly one rest
+    and nothing else**, 543 of them our `whole`/4.0 against a truth measure
+    rest of 2.0 in 4/8 and 2/4.
+
+    ⚠️ THIS CORRECTS THE PREVIOUS DIAGNOSIS, which said
+    `export._measure_rest_beats` was "correct and simply not fed" because both
+    call sites resolve `m_time` to `None`. **The measure DOES carry its meter**
+    — Dvořák p5's every measure dict holds `{'numerator': 4, 'denominator': 8}`
+    and the exporter writes `<time>4/8</time>` from the same value one line
+    above. `_measure_rest_beats` is never reached for these bars at all: the
+    detector FOUND a `restWhole`, so `events` is non-empty and the
+    empty-measure branch is not taken. The fault is the CONVENTION, not the
+    plumbing.
+
+    ⚠️⚠️ **THE GLYPH IS PART OF THE RULE, and leaving it out cost 34 edits on
+    `brahms-sym4-mvt1`.** The first cut accepted ANY lone rest, and on the
+    engraved benchmark it turned bars holding a single detected QUARTER rest
+    into full-bar rests — 1.0 quarters becoming 4.0. Those bars are not
+    silent; they are bars we read one symbol of. An engraver's measure rest is
+    the **whole-rest glyph**, in every meter (4/2's breve aside, which nothing
+    here prints), so a lone quarter or eighth rest is a partial reading and
+    inflating it is a guess. Restricting to `whole` keeps 553 of the 558
+    scan-gate rows this fix is for and gives back every engraved edit.
+
+    Deliberately narrow beyond that — exactly one event, of kind `rest`, no
+    pitch, no dots. A bar holding two rests and nothing else is the same
+    convention error one step further along and is left alone: which of the
+    two glyphs stands for the bar is a question this cannot answer, and the
+    corpus holds none (`1 rest(s) x558`, nothing else).
+    """
+    if len(events) != 1:
+        return False
+    e = events[0]
+    return (e.get("kind") == "rest" and not e.get("pitch")
+            and e.get("duration_type") == "whole" and not e.get("dots"))
+
+
 def _mxl_empty_measure(time_sig: dict[str, Any] | None, divisions: int,
                        directions: list[tuple[float, str, str]] | None,
                        indent: str, fermata: bool = False,
@@ -1643,10 +1705,14 @@ def _mxl_empty_measure(time_sig: dict[str, Any] | None, divisions: int,
               for x, number, kind in (wedges or [])]
     lines = [xml for _x, xml in sorted(marks, key=lambda m: m[0])]
     r_beats, r_type, r_dots = _mxl_measure_rest(time_sig)
+    # ⚠️ `measure="yes"` only where the METER IS KNOWN. With no meter
+    # `_measure_rest_beats` falls back to 4.0, and asserting "this bar is
+    # exactly 4.0 long" on a page whose meter we never read would be a guess
+    # dressed as a fact. Without the flag the old output is unchanged.
     lines.append(_mxl_note(
         None, "", r_type, r_dots, r_beats, divisions,
         is_chord=False, is_rest=True, indent=indent, voice=1,
-        fermata=fermata,
+        fermata=fermata, measure_rest=bool(time_sig),
     ))
     return lines
 
@@ -3247,7 +3313,7 @@ def _staff_measures_xml(
         # elements placed by x, and belong to the staff for the same reason.
         _dyn = measure_directions(measure)
 
-        if not events:
+        if not events or _is_lone_measure_rest(events):
             inner.extend(_mxl_empty_measure(
                 m_time, divisions, _dyn, "      ",
                 fermata=measure_has_fermata(measure.get("detections", [])),
@@ -3666,7 +3732,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     # belong to the staff for the same reason.
                     _dyn = measure_directions(measure)
 
-                    if not events:
+                    if not events or _is_lone_measure_rest(events):
                         inner.extend(_mxl_empty_measure(
                             m_time, divisions, _dyn, "      ",
                             fermata=measure_has_fermata(

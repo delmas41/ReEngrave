@@ -147,6 +147,63 @@ distinction this project has been burned by in both directions.
 Full reading:
 [benchmarks/omr-export-gaps-2026-09/FINDINGS-2026-09-08-ornaments-and-the-derived-check.md](benchmarks/omr-export-gaps-2026-09/FINDINGS-2026-09-08-ornaments-and-the-derived-check.md).
 
+## Two problems that were four, and a rest that was not a whole note (2026-09-08)
+
+**The largest single thing wrong with the pipeline's output was 51% of symbols
+having no reference part to compare against at all** — eight of twenty scanned
+pages. It was recorded as three causes filed under one name, which meant any
+attempted fix would have been measured against a mixture of them.
+
+Separated, it is **four** causes, and only one is the reader's fault: on three
+pages we genuinely emit one part per system instead of joining them (a fix for
+which is already built and measured, sitting behind a flag); on four more, our
+staff count is **right** and the measurement is comparing it to a lineup that
+counts different things — one-line percussion rules, or a harpsichord's two
+printed staves listed as one instrument; and on one page the hand-verified
+lineup simply does not exist. So more than half of the "biggest problem in the
+output" is a problem in how it is being measured, and the split is exact:
+14,992 symbols accounted for, none unexplained.
+
+**Underneath that, the measuring instrument was quietly losing 1,771 reference
+symbols** — its own self-check said so on nine of twenty pages, wrote the
+verdict into a file, and nothing ever read it. Two thirds of what it lost were
+rests, because a rule dropped every rest on a shared staff on the grounds that
+"one part rests while the other plays, so no rest is printed" — true only when
+another part *does* play. Where every part rests, the engraver prints exactly
+one rest, and that was 1,050 of the 1,066 it was discarding.
+
+**Then the rests themselves.** A whole-rest glyph does not mean a whole note's
+worth of silence. An engraver fills any silent bar with one centred whole rest
+whatever the time signature, and the glyph stands for the *bar* — so in 4/8 it
+is half as long as it looks. We were reading the glyph correctly and applying
+the wrong rule to it, and that single convention accounts for **90% of every
+wrong rest duration** on the pages that can be checked.
+
+⚠️ **The previous session's diagnosis of this was wrong in an instructive way.**
+It concluded that the sizing function was correct but never given the time
+signature. The function is correct — and it is never *called*: the detector
+found the rest glyph, so the bar was not empty, so the branch that calls it was
+never taken. The page knew its meter perfectly well; a second consumer had
+never been told the convention.
+
+⚠️ **And the standard metric cannot see the fix, on either kind of page.** Both
+before-and-after scores are identical to the edit — 2,532 on engraved pages,
+34,963 on scans — while the per-symbol ledger records 1,251 rest errors
+corrected and *nothing else changed by a single row*. The control that makes
+those zeros a result rather than a suspect: six works' rest durations
+demonstrably moved, and Beethoven's Third — which is in 3/4 — now writes its
+silent bars at three beats instead of four, matching its reference exactly.
+This is a concrete instance of something the project measured in the abstract
+last week: this metric can score a genuine duration error at zero.
+
+What is left of the rest problem turns out to be a **time signature** problem:
+only 86 of the 159 parts we export carry a meter at all, and 93% of the rests
+still sized wrong are in a part that has none.
+
+Full reading:
+[benchmarks/omr-part-join-2026-09/FINDINGS.md](benchmarks/omr-part-join-2026-09/FINDINGS.md)
+and [benchmarks/omr-rests-2026-09/FINDINGS.md](benchmarks/omr-rests-2026-09/FINDINGS.md).
+
 ## Decisions made without a probability (2026-09-05)
 
 Work on clef assignment found that a lot was being lost because a staff's clef
