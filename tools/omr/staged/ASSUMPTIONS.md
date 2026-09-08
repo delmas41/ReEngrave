@@ -1,82 +1,115 @@
 # Assumptions in the staged pipeline
 
-## ⚠️ STATE OF THE BUILD — read this first, and trust it over memory
+## ⚠️ START HERE — you are a fresh agent and this file outranks your memory
 
 **If your recollection disagrees with this file, a code tag, or a test, THE
 FILE IS RIGHT.** Do not re-derive a settled question from a summary; open the
-file. The 129 coherence tests are the real guard — a contradiction of a pinned
-decision fails a test instead of passing quietly.
+file. **153 coherence tests** across 11 `tools/omr/tests/test_staged_*.py`
+files are the real guard — a contradiction of a pinned decision fails a test
+rather than passing quietly.
 
-**Wired (15 of 21 decisions).** Unchanged; the gather side beneath them
-moved. `system_membership`, `system_staff_count`, `staff_ordinal`,
-`measure_partition`, `staff_group`, `group_symbol`, `instrument`,
-`slot_index`, `part_partition`, `clef`, `key_signature`, `glyph_owner`,
-`tuplet_ratio`, `duration`, `meter`.
+**What this is.** `tools/omr/staged/` is an alternative OMR pipeline built
+ALONGSIDE `tools/omr/transcribe.py`, selected by `OMR_ADJUDICATE`
+(`0` default / `shadow` / `1`). Three stages: **GATHER** (readers emit
+measurements as rows), **ADJUDICATE** (decisions declare their evidence and
+return a value *and* a record), **EVALUATE** (consequences, downhill only, one
+pass, no fixpoint). Design: `docs/architecture-design-2026-09-07.md`. The
+standard its assumptions are audited against:
+`docs/ideal-reader-2026-09-07.md`.
 
-**Stubs (6), in priority order:** `arc_owner` → `arc_kind` →
-`articulation_owner` → `wedge_anchor` → `dynamic` → `direction`.
+⚠️ **NOTHING HERE HAS BEEN MEASURED. Not one accuracy arm has been run.** No
+`scan_eval`, no `orchestral_eval`, no OMR-NED. Every ordering, constant and
+precedence rule is an assumption recorded below, and the point of writing them
+down is that they are what the testing phase attacks.
 
-**Consequences: 5 wired** (`restate_pitch`, `reconcile_duration`,
-`move_glyph`, `respell_accidental`, `name_part`), **1 stubbed** —
-`join_parts`, deliberately last, because it is the consequence of the decision
-a pre-registered gate already falsified.
-
-**GATHER is now complete except the arcs**: geometry, detections, notehead
-positions, ownership evidence, rhythm marks, **the classical-CV stem/beam
-rung**, both clef crops, the per-candidate key fit, the meter, margin labels.
-Direction text remains a declared stub behind its hard edge.
-
-**Working on right now:** nothing in flight.
-
-**Next, in order — but ⚠️ SEE THE OPEN QUESTION BELOW FIRST:** (1) candidate
-sets; (2) redundant groups as first-class; (3) the implication tests over
-them; (4) the arc family.
-
-**⚠️ JUDGMENTS FORMED AND NOT YET BUILT** — the only things a memory loss can
-destroy, so they are written down rather than remembered:
-
-1. **`tally()` sums everything, and that is wrong for composition.** Agreement
-   among witnesses SUMS; a fact composed from inputs is as reliable as its
-   WEAKEST input, so it should take a MINIMUM over `composed_from`. Recorded in
-   ideal-reader §5.4; not implemented.
-2. **`label_contradiction` is the cheapest available win in the whole
-   project** — 158 firings over two whole works, hand-adjudicated 0.873 the
-   EXPORT is wrong, needs no truth file, and nothing acts on it. It is not
-   wired into the staged pipeline at all.
-3. **A clef decided by a lone `keysig_slot_fit` clears the floor**
-   (`W_KEYSIG_FIT` 1.5 > `MARGIN_FLOOR` 1.0). Deliberate but untested against
-   real pages; if it proves too strong, lower the weight, not the floor —
-   A-CLEF-6 says the floor carries two jobs.
-4. **The redundant groups are still not represented as groups** (ideal-reader
-   §4.1) — the largest principle-driven gap, and the one experience did not
-   suggest.
-5. **`Verdict.detail` AND `Verdict.used` were added on 2026-09-07** because
-   `Ruling` filled both and the harness dropped both. ⚠️ The sweep is now a
-   standing test (`record_coverage.py`), it is proven to bite by a mutation
-   test, and it reports CLEAN — so this specific family is closed for the
-   record layer and does not need looking for again by hand.
-6. ✅ **CLOSED — the CV stem/beam rung is wired.** `Q.BEAM_STROKE` now has two
-   readers and `adjudicate_duration` arbitrates them: a YOLO box is kept only
-   where **no CV stroke overlaps its x-range**. ⚠️ Three beam states stay
-   distinct on the record — `read`, `none_over_this_note`,
-   `reader_declined` — so a duration right *because the beams were read* is
-   never confused with one right *because the note was unbeamed*.
-7. **`slot_index` makes no document-wide claim on purpose.** It uses the
-   system's own ordinal, because `slots.build_reference` picking a lineup from
-   one system once named 149 Brahms staves an instrument the work has not got
-   — a BAD ANCESTOR that no provenance tag catches. Do not wire the
-   document-wide reference without the `OMR_SPAN_REFERENCE_FIT=off` replay.
+⚠️ **The existing pipeline is untouched.** `git diff --diff-filter=M
+origin/main...HEAD` modifies no file outside `tools/omr/staged/`,
+`tools/omr/tests/test_staged_*` and `docs/`.
 
 ---
 
-**Nothing in `tools/omr/staged/` has been measured.** Not one accuracy arm has
-been run against it. Every ordering, constant and precedence rule below is an
-**assumed best practice**, written down so the testing phase can attack it.
+## STATE OF THE BUILD — accurate at commit `d9904e5a`
 
-That is the point of the list. Sean's instruction for this phase was to build
-the whole thing on assumed best practice and record the assumptions rather than
-stop to measure; **this file is the record, and it is the input to the testing
-phase.**
+**Nothing is half-finished. Candidate sets landed clean and the session ended
+at a green commit.**
+
+**Decisions: 15 wired of 21** (`adjudicate.ORDER`) — `system_membership`,
+`system_staff_count`, `staff_ordinal`, `measure_partition`, `staff_group`,
+`group_symbol`, `instrument`, `slot_index`, `part_partition`, `clef`,
+`key_signature`, `glyph_owner`, `tuplet_ratio`, `duration`, `meter`.
+
+**Stubs: 6** — `arc_owner`, `arc_kind`, `articulation_owner`, `wedge_anchor`,
+`dynamic`, `direction`. Each is a *declared* stub (`stub=True`), abstains with
+`ABSTAIN.NOT_IMPLEMENTED`, and its docstring says what it needs. ⚠️ A stub is
+fine; a MISSING decision is not, because a missing one is indistinguishable
+from one that always abstains.
+
+**Consequences: 5 wired of 6** — `restate_pitch`, `reconcile_duration`,
+`move_glyph`, `respell_accidental`, `name_part`. **Stub: `join_parts`**,
+deliberately last (D9).
+
+**GATHER is complete except direction text and the arcs**: page geometry,
+detections, notehead positions (clef-free, fraction kept), cross-staff
+ownership evidence, rhythm marks, the classical-CV stem/beam rung, both clef
+crops with the locator's own refusal branch, the per-candidate key-signature
+fit, the meter, margin labels via the cascade. `Q.DIRECTION_WORD` is a declared
+stub behind its hard edge (D13).
+
+**Run it:**
+
+```bash
+python3 -m tools.omr.staged score.pdf --pages 0-2 --weights <file>.pt
+python3 -m tools.omr.staged score.pdf --pages 0        # no weights: it still runs
+python3 -m pytest tools/omr/tests/test_staged_*.py -q  # 153, seconds, no venv
+```
+
+---
+
+## NEXT, IN ORDER — and the order IS the thesis
+
+1. **Redundant groups as first-class** (D2). A fact printed more than once —
+   the meter on every staff, the clef at every system head, a tie's pitch at
+   both ends — is several witnesses to ONE fact, and **agreement among them is
+   the only correctness signal available with no ground truth**. Nothing today
+   represents *"these N rows are witnesses to one fact; here is whether they
+   agree."* First because everything after it consumes it.
+2. **Implication tests over them** (D4). A composition can be run FORWARD on a
+   candidate and its output checked: do these implied pitches fit this
+   instrument's range; do these durations sum to this meter. It reaches the
+   compositional chain, where *nothing is printed twice* and agreement cannot
+   help. Second because it needs the groups and needs candidate sets, both of
+   which now exist.
+3. **`join_parts`** (D9), once the partition abstention is priced.
+4. **The arcs** — `arc_owner`, then `arc_kind`. Last because they are
+   self-contained and nothing else waits on them.
+
+⚠️ **Why this order and not "finish the stubs first":** the stubs are
+*breadth*; groups and implication tests are *depth on what is already wired*.
+A sixth stub adds another decision with no self-check; the groups give the
+fifteen already wired a way to be wrong out loud.
+
+---
+
+## ⚠️ WHAT A FRESH AGENT MUST NOT DO
+
+**Each of these is a refusal that was paid for. An unrecorded refusal gets
+re-tried, and this project has paid for that repeatedly.**
+
+| ✗ do not | because — with the number |
+|---|---|
+| **Put a probability or calibrated weight on `Candidate.support`** | An uncalibrated probability is **worse than none** — it launders a guess into something that reads as evidence. Measured: **ECE 0.1277**, top bin promising **0.989** and delivering **0.692**, failing worst exactly where a consumer sets its bar. Relative support, **ordered**, is enough. A test asserts the supports do not sum to 1. |
+| **Erase staff lines before the detector** | Costs **7–13 pooled reading points**, takes noteheads to **0.774** on Mozart 41, and MANUFACTURES beam confusion: YOLO beams **46 → 105**, precision **0.783 → 0.343**, firing on staff-line residue. The rule is **erase for the CV consumer, bound the search for everyone else, never erase for the detector.** |
+| **Union YOLO and CV beams, or replace CV with YOLO outright** | A YOLO box bounds the **stack**, not a stroke, so a union adds a centre in the GAP between two strokes and three sixteenths read as three eighths — union cost pooled **0.1917** against **0.1861**. ⚠️ REPLACE scores **five edits better** and is REFUSED: it throws real beams away and takes notes that lose every beam from **4 to 7**. Keep a YOLO beam only where no CV stroke overlaps its x-range. |
+| **Retrofit every decision to emit candidate sets** | Only beams and the clef are natively set-shaped. **A decision that genuinely has one answer must not be dressed as a set to look uniform.** |
+| **Use detection confidence to break an ownership tie** | P(winner conf > loser conf) = **0.545** against a 0.500 null, and a `|Δconf| > 0` tie-break would **overturn distance on 45.5%** of 4,521 contests. It is in `wants` so it must be declined *deliberately*, never merely unseen. |
+| **Resurrect `clef_register_warning`'s adjacent-staff form** | Reach **7 of 193** scan staves, precision **0 of 11** — every firing a family boundary, because an orchestral score is ordered by **family, not register**. The self-contained per-staff form (`propose_clef`) is a different thing and is fine. |
+| **Count ledger rungs instead of testing completeness** | Two broken ladders are **not** evidence either way: a found rung can belong to the other staff's note exactly as a gap can. On the Beethoven bassoon pair the ghost's one rung WAS the real C4's own ledger, and counting beat the real note. |
+| **Delete the loser of a contest** | `move_glyph` **supersedes**. Arc attribution measured `drop` at **2,388 vs 2,371** — better arm-for-arm — and refused it, because it got there by emitting **20 fewer slurs, 12 of them real**. Keeping the loser addressable is what lets a later identity correction reach it. |
+| **Widen `_reconcile_measure_to_meter`'s bound** | It repairs only when the answer is **UNIQUE** — i.e. it declines exactly when more than one member could explain the failure. That is "certain about the GROUP, silent about the MEMBER" implemented. **Never condemn the cheapest member to change.** |
+| **Let a key signature be fitted against a guessed clef** | Three flats fitted against a guessed clef came back as **TWO SHARPS**. GATHER asks the reader once per *candidate* clef; the adjudicator reads the answer for the clef that won, and abstains if none did. |
+| **Build the systematic version of a fix mid-stream** | Scope rule: **FIX NOW only if it corrupts the thing being built; PARK everything else — and the systematic version of a fix is a PARK even when the instance is a fix-now.** A borderline case is a PARK, not a judgment call. |
+
+---
 
 ## ⚠️ DEFERRED — parked, with the evidence kept
 
@@ -98,7 +131,6 @@ seen is a deletion with extra steps.
 
 | # | what | why parked | what it would take |
 |--:|---|---|---|
-| D1 | **Candidate sets — a `NARROWED` outcome** carrying surviving candidates | ⚠️ **Asked for a re-order; awaiting a ruling.** Not fix-now: today's collapse to a single value is *lossy*, not *wrong*, so nothing wired inherits a defect | a third `Outcome`, and `Ruling` able to return a set. Evidence: `_beam_levels` collapses *"two, possibly three"* to an int at the moment of counting — **the same shape as `pos_float` being rounded away at `pitch_resolver.py:181`**, one layer up |
 | D2 | **Redundant groups as first-class** — `(quantity, scope)` → witnesses, majority, dissenters | the largest principle-driven gap (ideal-reader §4.1), but additive: nothing already wired is wrong without it | a group declaration and a harness-derived agreement row. Every witness is already a row, so it is close to free |
 | D3 | **`tally()` should take a MINIMUM over `composed_from`** | ideal-reader §5.4. Wrong *weighting*, not a wrong *record* — no verdict is corrupted, so waiting costs nothing | agreement SUMS; composition is as strong as its weakest link. `composed_from` is already declared on all 21 |
 | D4 | **The implication tests as consumed terms** — `propose_clef`'s range test per candidate; `rhythm_sum_warning` given a consumer | needs D1 and D2 to be worth doing properly | ideal-reader §4.6 |
@@ -111,6 +143,13 @@ seen is a deletion with extra steps.
 | D11 | **`W_KEYSIG_FIT` (1.5) exceeds `MARGIN_FLOOR` (1.0)**, so a lone key-signature fit decides a clef | a weight, not a defect; changing it without evidence is guessing twice | a sweep, once measuring is allowed. ⚠️ Lower the WEIGHT, not the floor — A-CLEF-6 says the floor carries two jobs |
 | D12 | **Asking the locator per candidate clef costs 4 calls per staff** | correctness first, and the shape is right (ask every candidate, including ones that never proposed themselves) | measurement, then caching if it bites |
 | D13 | **Direction text gather** | a declared stub behind its hard edge (it subtracts every detection from the ink) | wiring `direction_text.find_candidates` after detection |
+| D14 | **`BEAM_EDGE_TOLERANCE_WIDTHS = 1.0`** — how far past a stroke's end a notehead may sit and still *maybe* be under it | a constant with no measurement behind it; it decides how often a duration NARROWS rather than decides | a sweep once measuring is allowed. ⚠️ Too small and the set never forms; too large and every note narrows |
+| D15 | **A NARROWED verdict has no exporter** | nothing exports yet, so it costs nothing today — but MusicXML has no way to say *"one of these two"* | a decision about what a narrowed fact serialises as. ⚠️ **Do not resolve it by silently taking `candidates[0]`** — that is the collapse this whole feature removed, moved one stage later |
+
+⚠️ **D1 (candidate sets) was CLOSED and has LEFT this table**, per the rule
+`export_coverage` already applies: an entry that is closed must leave, or the
+list stops describing the code and starts describing its history. The work is
+recorded in build finding 4 below, where the *argument* lives.
 
 ⚠️ **RETRO-APPLIED, INCLUDING TO MYSELF.** Under this rule two things I did
 mid-stream were parks, not fix-nows:
@@ -216,6 +255,36 @@ one that *fails like a defect* were indistinguishable, and a renamed parameter
 went dark for hours behind an honest-looking "unavailable". Same lesson,
 arrived at independently in new code: **not-raising is not the same as
 not-telling-anyone.**
+
+### 6. A consequence whose CAUSE was coarser than its EFFECT was silently dead
+
+`reconcile_duration` acts on a **cell**; the meter is decided at **system**
+scope. The exact-subject lookup found nothing, so the rule reported
+`cause_absent` and did nothing — **identically to a page that prints no
+meter.** Every consequence with a coarser cause was dead the same way.
+
+⚠️ **Found by a test refusing to fire, not by reading.** And it is the
+abstention/defect distinction again, a third time: *nothing raised, nothing
+logged, and the output was indistinguishable from a legitimate silence.*
+
+### 7. ⚠️ The no-fixpoint guard forbade the one revision the design permits
+
+`Log.record` refused any verdict that superseded something appearing in its own
+`basis`. **But a revision READS WHAT IT REVISES** —
+`reconcile_duration` takes the old duration's written value and re-reads its
+beam level — so the guard refused *every revision there can be*, and the
+pipeline's single bounded loop could never fire.
+
+The real fixpoint is deriving the new value **through something that itself
+depends on the old one**: if the meter were voted out of these very durations,
+then meter → duration → meter is a cycle and no bound saves it. The check now
+excludes the superseded verdict from its own closure test.
+
+⚠️ **The lesson is about safety rails, not about this rule.** A guard tight
+enough to be provably safe was tight enough to be useless, and it looked
+correct for four days because nothing exercised it. **A rail nothing has driven
+into is an untested rail** — and the test that pinned it was pinning the wrong
+rule, so it passed too.
 
 ## ⚠️ PRINCIPLE vs CONTINGENCY
 
