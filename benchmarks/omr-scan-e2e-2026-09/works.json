@@ -2301,6 +2301,151 @@
     ],
     "confidence": "verified"
    },
+   "staves": [
+    {
+     "name": "Vier Fl\u00f6ten",
+     "parts": [
+      0,
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Drei Hoboen",
+     "parts": [
+      3,
+      4,
+      5
+     ]
+    },
+    {
+     "name": "Drei Klarinetten in A",
+     "parts": [
+      6,
+      7,
+      8,
+      9
+     ]
+    },
+    {
+     "name": "Zwei Fagotte",
+     "parts": [
+      10
+     ]
+    },
+    {
+     "name": "Contrafagott",
+     "parts": [
+      11
+     ]
+    },
+    {
+     "name": "Sechs H\u00f6rner in F (upper)",
+     "parts": [
+      12,
+      13
+     ]
+    },
+    {
+     "name": "Sechs H\u00f6rner in F (lower)",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "Vier Trompeten in B (upper)",
+     "parts": [
+      15,
+      17
+     ]
+    },
+    {
+     "name": "Vier Trompeten in B (lower)",
+     "parts": [
+      16,
+      18
+     ]
+    },
+    {
+     "name": "Drei Posaunen",
+     "parts": [
+      19,
+      20
+     ]
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21
+     ]
+    },
+    {
+     "name": "Pauken",
+     "parts": [
+      22
+     ]
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ]
+    },
+    {
+     "name": "Grosse Trommel",
+     "parts": [
+      24
+     ]
+    },
+    {
+     "name": "Kleine Trommel",
+     "parts": [
+      25
+     ]
+    },
+    {
+     "name": "Tamtam",
+     "parts": [
+      26
+     ]
+    },
+    {
+     "name": "Erste Violinen",
+     "parts": [
+      27,
+      28
+     ]
+    },
+    {
+     "name": "Zweite Violinen",
+     "parts": [
+      29,
+      30,
+      31
+     ]
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ]
+    },
+    {
+     "name": "Violoncelle",
+     "parts": [
+      34,
+      35
+     ]
+    },
+    {
+     "name": "B\u00e4sse",
+     "parts": [
+      36,
+      37
+     ]
+    }
+   ],
    "notes": "PDF index 0 is the Peters title page; a horizontal-rule probe called it music because of the decorative frame. Reference measure 0 has ql 1.0 and paddingLeft 3.0 \u2014 the solo trumpet upbeat, and the printed page shows exactly that. Staff count established 2026-09-01: 17 five-line + 5 one-line = 22 printed staves (see condensation). Same music as mahler-sym5-mvt1 in the engraved benchmark. \u26a0\ufe0f The reference's pickup carries TWENTY invisible notes (style.hideObjectOnPrint) \u2014 a hidden quarter beside the visible quarter rest on every staff but the solo trumpet. The trimmer drops them: the page is the truth, and the engraver said these are not on the page. Beethoven 5 and Brahms 1 have none; Dvorak 9 has 19 hidden RESTS which are ordinary voice-2 padding and are kept.",
    "condensation": {
     "printed_staves_total": 22,

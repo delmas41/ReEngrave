@@ -272,7 +272,7 @@
   },
   "beethoven-sym5-mvt1-984073-p4": {
    "row_id": "beethoven-sym5-mvt1-984073-p4",
-   "status": "done",
+   "status": "in_progress",
    "proposal_source": "system_2",
    "n_reference_parts": 18,
    "reference": "reference/beethoven/symphony-5/beethoven--symphony-5--mvt1--gradus.mxl",
@@ -453,7 +453,6 @@
     }
    ],
    "lineup_chosen": "system_2",
-   "confirmed_at": "2026-09-07T00:22:10+00:00",
    "staves_for_works_json": [
     {
      "name": "Flauti",
@@ -1342,7 +1341,1649 @@
     }
    ],
    "confirmed_at": "2026-09-07T00:21:09+00:00"
+  },
+  "mahler-sym5-mvt1-local-p2": {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "status": "done",
+   "proposal_source": "candidate_maps (transcribed from works.json's own prose)",
+   "n_reference_parts": 38,
+   "reference": "reference/mahler/symphony-5/mahler--symphony-5--mvt1--gradus.mxl",
+   "evidence": {
+    "run_artefact": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.reconciliation.omr.json",
+    "run_artefact_origin": "reconciliation",
+    "truth_for_part_indices": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.truth.musicxml",
+    "dpi": 600
+   },
+   "staves": [
+    {
+     "name": "Vier Fl\u00f6ten",
+     "parts": [
+      0,
+      1,
+      2
+     ],
+     "proposed": {
+      "name": "Vier Fl\u00f6ten",
+      "parts": [
+       0,
+       1,
+       2
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Drei Hoboen",
+     "parts": [
+      3,
+      4,
+      5
+     ],
+     "proposed": {
+      "name": "Drei Hoboen",
+      "parts": [
+       3,
+       4,
+       5
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Drei Klarinetten in A",
+     "parts": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "proposed": {
+      "name": "Drei Klarinetten in A",
+      "parts": [
+       6,
+       7,
+       8,
+       9
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Zwei Fagotte",
+     "parts": [
+      10
+     ],
+     "proposed": {
+      "name": "Zwei Fagotte",
+      "parts": [
+       10
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Contrafagott",
+     "parts": [
+      11
+     ],
+     "proposed": {
+      "name": "Contrafagott",
+      "parts": [
+       11
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Sechs H\u00f6rner in F (upper)",
+     "parts": [
+      12,
+      13
+     ],
+     "proposed": {
+      "name": "Sechs H\u00f6rner in F (upper)",
+      "parts": [
+       12,
+       13
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Sechs H\u00f6rner in F (lower)",
+     "parts": [
+      14
+     ],
+     "proposed": {
+      "name": "Sechs H\u00f6rner in F (lower)",
+      "parts": [
+       14
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Vier Trompeten in B (upper)",
+     "parts": [
+      15,
+      17
+     ],
+     "proposed": {
+      "name": "Vier Trompeten in B (upper)",
+      "parts": [
+       15,
+       17
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Vier Trompeten in B (lower)",
+     "parts": [
+      16,
+      18
+     ],
+     "proposed": {
+      "name": "Vier Trompeten in B (lower)",
+      "parts": [
+       16,
+       18
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Drei Posaunen",
+     "parts": [
+      19,
+      20
+     ],
+     "proposed": {
+      "name": "Drei Posaunen",
+      "parts": [
+       19,
+       20
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21
+     ],
+     "proposed": {
+      "name": "Tuba",
+      "parts": [
+       21
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Pauken",
+     "parts": [
+      22
+     ],
+     "proposed": {
+      "name": "Pauken",
+      "parts": [
+       22
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ],
+     "proposed": {
+      "name": "Becken",
+      "parts": [
+       23
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Grosse Trommel",
+     "parts": [
+      24
+     ],
+     "proposed": {
+      "name": "Grosse Trommel",
+      "parts": [
+       24
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Kleine Trommel",
+     "parts": [
+      25
+     ],
+     "proposed": {
+      "name": "Kleine Trommel",
+      "parts": [
+       25
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Tamtam",
+     "parts": [
+      26
+     ],
+     "proposed": {
+      "name": "Tamtam",
+      "parts": [
+       26
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Erste Violinen",
+     "parts": [
+      27,
+      28
+     ],
+     "proposed": {
+      "name": "Erste Violinen",
+      "parts": [
+       27,
+       28
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Zweite Violinen",
+     "parts": [
+      29,
+      30,
+      31
+     ],
+     "proposed": {
+      "name": "Zweite Violinen",
+      "parts": [
+       29,
+       30,
+       31
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ],
+     "proposed": {
+      "name": "Violen",
+      "parts": [
+       32,
+       33
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violoncelle",
+     "parts": [
+      34,
+      35
+     ],
+     "proposed": {
+      "name": "Violoncelle",
+      "parts": [
+       34,
+       35
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "B\u00e4sse",
+     "parts": [
+      36,
+      37
+     ],
+     "proposed": {
+      "name": "B\u00e4sse",
+      "parts": [
+       36,
+       37
+      ]
+     },
+     "verdict": "confirmed"
+    }
+   ],
+   "confirmed_at": "2026-09-08T23:23:53+00:00",
+   "staves_for_works_json": [
+    {
+     "name": "Vier Fl\u00f6ten",
+     "parts": [
+      0,
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Drei Hoboen",
+     "parts": [
+      3,
+      4,
+      5
+     ]
+    },
+    {
+     "name": "Drei Klarinetten in A",
+     "parts": [
+      6,
+      7,
+      8,
+      9
+     ]
+    },
+    {
+     "name": "Zwei Fagotte",
+     "parts": [
+      10
+     ]
+    },
+    {
+     "name": "Contrafagott",
+     "parts": [
+      11
+     ]
+    },
+    {
+     "name": "Sechs H\u00f6rner in F (upper)",
+     "parts": [
+      12,
+      13
+     ]
+    },
+    {
+     "name": "Sechs H\u00f6rner in F (lower)",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "Vier Trompeten in B (upper)",
+     "parts": [
+      15,
+      17
+     ]
+    },
+    {
+     "name": "Vier Trompeten in B (lower)",
+     "parts": [
+      16,
+      18
+     ]
+    },
+    {
+     "name": "Drei Posaunen",
+     "parts": [
+      19,
+      20
+     ]
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21
+     ]
+    },
+    {
+     "name": "Pauken",
+     "parts": [
+      22
+     ]
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ]
+    },
+    {
+     "name": "Grosse Trommel",
+     "parts": [
+      24
+     ]
+    },
+    {
+     "name": "Kleine Trommel",
+     "parts": [
+      25
+     ]
+    },
+    {
+     "name": "Tamtam",
+     "parts": [
+      26
+     ]
+    },
+    {
+     "name": "Erste Violinen",
+     "parts": [
+      27,
+      28
+     ]
+    },
+    {
+     "name": "Zweite Violinen",
+     "parts": [
+      29,
+      30,
+      31
+     ]
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ]
+    },
+    {
+     "name": "Violoncelle",
+     "parts": [
+      34,
+      35
+     ]
+    },
+    {
+     "name": "B\u00e4sse",
+     "parts": [
+      36,
+      37
+     ]
+    }
+   ]
+  },
+  "mahler-sym5-mvt1-local-p3": {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "status": "done",
+   "proposal_source": "candidate_maps (transcribed from works.json's own prose)",
+   "n_reference_parts": 38,
+   "reference": "reference/mahler/symphony-5/mahler--symphony-5--mvt1--gradus.mxl",
+   "evidence": {
+    "run_artefact": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.reconciliation.omr.json",
+    "run_artefact_origin": "reconciliation",
+    "truth_for_part_indices": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.truth.musicxml",
+    "dpi": 600
+   },
+   "staves": [
+    {
+     "name": "Fag. 1/2",
+     "parts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "proposed": {
+      "name": "Fag. 1/2",
+      "parts": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Contraf.",
+     "parts": [
+      11
+     ],
+     "proposed": {
+      "name": "Contraf.",
+      "parts": [
+       11
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "F-H\u00f6rner 1/3/5",
+     "parts": [
+      12,
+      13
+     ],
+     "proposed": {
+      "name": "F-H\u00f6rner 1/3/5",
+      "parts": [
+       12,
+       13
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "F-H\u00f6rner 2/4/6",
+     "parts": [
+      14
+     ],
+     "proposed": {
+      "name": "F-H\u00f6rner 2/4/6",
+      "parts": [
+       14
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "B-Tromp. 1/2",
+     "parts": [
+      15,
+      17
+     ],
+     "proposed": {
+      "name": "B-Tromp. 1/2",
+      "parts": [
+       15,
+       17
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "B-Tromp. 3/4",
+     "parts": [
+      16,
+      18
+     ],
+     "proposed": {
+      "name": "B-Tromp. 3/4",
+      "parts": [
+       16,
+       18
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Posaunen 1/2/3",
+     "parts": [
+      19,
+      20
+     ],
+     "proposed": {
+      "name": "Posaunen 1/2/3",
+      "parts": [
+       19,
+       20
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21,
+      22,
+      25,
+      26
+     ],
+     "proposed": {
+      "name": "Tuba",
+      "parts": [
+       21,
+       22,
+       25,
+       26
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ],
+     "proposed": {
+      "name": "Becken",
+      "parts": [
+       23
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Gr.Tr.",
+     "parts": [
+      24
+     ],
+     "proposed": {
+      "name": "Gr.Tr.",
+      "parts": [
+       24
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Erste Viol.",
+     "parts": [
+      27,
+      28
+     ],
+     "proposed": {
+      "name": "Erste Viol.",
+      "parts": [
+       27,
+       28
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Zweite Viol.",
+     "parts": [
+      29,
+      30,
+      31
+     ],
+     "proposed": {
+      "name": "Zweite Viol.",
+      "parts": [
+       29,
+       30,
+       31
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ],
+     "proposed": {
+      "name": "Violen",
+      "parts": [
+       32,
+       33
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "Vcelle.",
+     "parts": [
+      34,
+      35
+     ],
+     "proposed": {
+      "name": "Vcelle.",
+      "parts": [
+       34,
+       35
+      ]
+     },
+     "verdict": "confirmed"
+    },
+    {
+     "name": "B\u00e4sse",
+     "parts": [
+      36,
+      37
+     ],
+     "proposed": {
+      "name": "B\u00e4sse",
+      "parts": [
+       36,
+       37
+      ]
+     },
+     "verdict": "confirmed"
+    }
+   ],
+   "confirmed_at": "2026-09-08T23:24:32+00:00",
+   "staves_for_works_json": [
+    {
+     "name": "Fag. 1/2",
+     "parts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+     ]
+    },
+    {
+     "name": "Contraf.",
+     "parts": [
+      11
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 1/3/5",
+     "parts": [
+      12,
+      13
+     ]
+    },
+    {
+     "name": "F-H\u00f6rner 2/4/6",
+     "parts": [
+      14
+     ]
+    },
+    {
+     "name": "B-Tromp. 1/2",
+     "parts": [
+      15,
+      17
+     ]
+    },
+    {
+     "name": "B-Tromp. 3/4",
+     "parts": [
+      16,
+      18
+     ]
+    },
+    {
+     "name": "Posaunen 1/2/3",
+     "parts": [
+      19,
+      20
+     ]
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21,
+      22,
+      25,
+      26
+     ]
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ]
+    },
+    {
+     "name": "Gr.Tr.",
+     "parts": [
+      24
+     ]
+    },
+    {
+     "name": "Erste Viol.",
+     "parts": [
+      27,
+      28
+     ]
+    },
+    {
+     "name": "Zweite Viol.",
+     "parts": [
+      29,
+      30,
+      31
+     ]
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ]
+    },
+    {
+     "name": "Vcelle.",
+     "parts": [
+      34,
+      35
+     ]
+    },
+    {
+     "name": "B\u00e4sse",
+     "parts": [
+      36,
+      37
+     ]
+    }
+   ]
+  },
+  "mahler-sym5-mvt1-local-p4": {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "status": "in_progress",
+   "proposal_source": "candidate_maps (transcribed from works.json's own prose)",
+   "n_reference_parts": 38,
+   "reference": "reference/mahler/symphony-5/mahler--symphony-5--mvt1--gradus.mxl",
+   "evidence": {
+    "run_artefact": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.reconciliation.omr.json",
+    "run_artefact_origin": "reconciliation",
+    "truth_for_part_indices": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.truth.musicxml",
+    "dpi": 600
+   },
+   "staves": [
+    {
+     "name": "Hoboen 1.2.3",
+     "parts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "proposed": {
+      "name": "Hoboen 1.2.3",
+      "parts": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "A-Klar. 1.2.3",
+     "parts": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "proposed": {
+      "name": "A-Klar. 1.2.3",
+      "parts": [
+       6,
+       7,
+       8,
+       9
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Fag. 1/2",
+     "parts": [
+      10
+     ],
+     "proposed": {
+      "name": "Fag. 1/2",
+      "parts": [
+       10
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Contraf.",
+     "parts": [
+      11
+     ],
+     "proposed": {
+      "name": "Contraf.",
+      "parts": [
+       11
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "F-H\u00f6rner 1.3.5",
+     "parts": [
+      12,
+      13
+     ],
+     "proposed": {
+      "name": "F-H\u00f6rner 1.3.5",
+      "parts": [
+       12,
+       13
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "F-H\u00f6rner 2.4.6",
+     "parts": [
+      14
+     ],
+     "proposed": {
+      "name": "F-H\u00f6rner 2.4.6",
+      "parts": [
+       14
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "B-Tromp. 1.2",
+     "parts": [
+      15,
+      17
+     ],
+     "proposed": {
+      "name": "B-Tromp. 1.2",
+      "parts": [
+       15,
+       17
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "B-Tromp. 3.4",
+     "parts": [
+      16,
+      18
+     ],
+     "proposed": {
+      "name": "B-Tromp. 3.4",
+      "parts": [
+       16,
+       18
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Posaunen",
+     "parts": [
+      19,
+      20
+     ],
+     "proposed": {
+      "name": "Posaunen",
+      "parts": [
+       19,
+       20
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21
+     ],
+     "proposed": {
+      "name": "Tuba",
+      "parts": [
+       21
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Pauken",
+     "parts": [
+      22,
+      26
+     ],
+     "proposed": {
+      "name": "Pauken",
+      "parts": [
+       22,
+       26
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ],
+     "proposed": {
+      "name": "Becken",
+      "parts": [
+       23
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Gr.Tr.",
+     "parts": [
+      24
+     ],
+     "proposed": {
+      "name": "Gr.Tr.",
+      "parts": [
+       24
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Kl.Tr.",
+     "parts": [
+      25
+     ],
+     "proposed": {
+      "name": "Kl.Tr.",
+      "parts": [
+       25
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Erste Viol.",
+     "parts": [
+      27,
+      28
+     ],
+     "proposed": {
+      "name": "Erste Viol.",
+      "parts": [
+       27,
+       28
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Zweite Viol.",
+     "parts": [
+      29,
+      30,
+      31
+     ],
+     "proposed": {
+      "name": "Zweite Viol.",
+      "parts": [
+       29,
+       30,
+       31
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ],
+     "proposed": {
+      "name": "Violen",
+      "parts": [
+       32,
+       33
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Vcelle. get. (upper)",
+     "parts": [
+      34
+     ],
+     "proposed": {
+      "name": "Vcelle. get. (upper)",
+      "parts": [
+       34
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Vcelle. get. (lower)",
+     "parts": [
+      35
+     ],
+     "proposed": {
+      "name": "Vcelle. get. (lower)",
+      "parts": [
+       35
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "B\u00e4sse get. (upper)",
+     "parts": [
+      36
+     ],
+     "proposed": {
+      "name": "B\u00e4sse get. (upper)",
+      "parts": [
+       36
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "B\u00e4sse get. (lower)",
+     "parts": [
+      37
+     ],
+     "proposed": {
+      "name": "B\u00e4sse get. (lower)",
+      "parts": [
+       37
+      ]
+     },
+     "verdict": "pending"
+    }
+   ]
+  },
+  "mahler-sym5-mvt1-local-p5": {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "status": "in_progress",
+   "proposal_source": "candidate_maps (transcribed from works.json's own prose)",
+   "n_reference_parts": 38,
+   "reference": "reference/mahler/symphony-5/mahler--symphony-5--mvt1--gradus.mxl",
+   "evidence": {
+    "run_artefact": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.reconciliation.omr.json",
+    "run_artefact_origin": "reconciliation",
+    "truth_for_part_indices": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.truth.musicxml",
+    "dpi": 600
+   },
+   "staves": [
+    {
+     "name": "A-Klar. 1.2",
+     "parts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ],
+     "proposed": {
+      "name": "A-Klar. 1.2",
+      "parts": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Fag. 1/2",
+     "parts": [
+      10
+     ],
+     "proposed": {
+      "name": "Fag. 1/2",
+      "parts": [
+       10
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Contraf.",
+     "parts": [
+      11
+     ],
+     "proposed": {
+      "name": "Contraf.",
+      "parts": [
+       11
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "F-H\u00f6rner 1.3.5",
+     "parts": [
+      12,
+      13
+     ],
+     "proposed": {
+      "name": "F-H\u00f6rner 1.3.5",
+      "parts": [
+       12,
+       13
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "F-H\u00f6rner 2.4.6",
+     "parts": [
+      14
+     ],
+     "proposed": {
+      "name": "F-H\u00f6rner 2.4.6",
+      "parts": [
+       14
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "B-Tromp. 1.2",
+     "parts": [
+      15,
+      17
+     ],
+     "proposed": {
+      "name": "B-Tromp. 1.2",
+      "parts": [
+       15,
+       17
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "B-Tromp. 3.4",
+     "parts": [
+      16,
+      18
+     ],
+     "proposed": {
+      "name": "B-Tromp. 3.4",
+      "parts": [
+       16,
+       18
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Posaunen",
+     "parts": [
+      19,
+      20
+     ],
+     "proposed": {
+      "name": "Posaunen",
+      "parts": [
+       19,
+       20
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Tuba",
+     "parts": [
+      21
+     ],
+     "proposed": {
+      "name": "Tuba",
+      "parts": [
+       21
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Pauken",
+     "parts": [
+      22
+     ],
+     "proposed": {
+      "name": "Pauken",
+      "parts": [
+       22
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Becken",
+     "parts": [
+      23
+     ],
+     "proposed": {
+      "name": "Becken",
+      "parts": [
+       23
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Gr.Tr.",
+     "parts": [
+      24
+     ],
+     "proposed": {
+      "name": "Gr.Tr.",
+      "parts": [
+       24
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Kl.Tr.",
+     "parts": [
+      25
+     ],
+     "proposed": {
+      "name": "Kl.Tr.",
+      "parts": [
+       25
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Tamtam",
+     "parts": [
+      26
+     ],
+     "proposed": {
+      "name": "Tamtam",
+      "parts": [
+       26
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Erste Viol.",
+     "parts": [
+      27,
+      28
+     ],
+     "proposed": {
+      "name": "Erste Viol.",
+      "parts": [
+       27,
+       28
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Zweite Viol.",
+     "parts": [
+      29,
+      30,
+      31
+     ],
+     "proposed": {
+      "name": "Zweite Viol.",
+      "parts": [
+       29,
+       30,
+       31
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Violen",
+     "parts": [
+      32,
+      33
+     ],
+     "proposed": {
+      "name": "Violen",
+      "parts": [
+       32,
+       33
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Vcelle. get. (upper)",
+     "parts": [
+      34
+     ],
+     "proposed": {
+      "name": "Vcelle. get. (upper)",
+      "parts": [
+       34
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Vcelle. get. (lower)",
+     "parts": [
+      35
+     ],
+     "proposed": {
+      "name": "Vcelle. get. (lower)",
+      "parts": [
+       35
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "B\u00e4sse get. (upper)",
+     "parts": [
+      36
+     ],
+     "proposed": {
+      "name": "B\u00e4sse get. (upper)",
+      "parts": [
+       36
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "B\u00e4sse get. (lower)",
+     "parts": [
+      37
+     ],
+     "proposed": {
+      "name": "B\u00e4sse get. (lower)",
+      "parts": [
+       37
+      ]
+     },
+     "verdict": "pending"
+    }
+   ]
+  },
+  "bach-brandenburg3-mvt1-468678-p1": {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "status": "in_progress",
+   "proposal_source": "candidate_maps (transcribed from works.json's own prose)",
+   "n_reference_parts": 11,
+   "reference": "reference/bach/brandenburg-concerto-3/bach--brandenburg-concerto-3--mvt1--gradus.mxl",
+   "evidence": {
+    "run_artefact": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.reconciliation.omr.json",
+    "run_artefact_origin": "reconciliation",
+    "truth_for_part_indices": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reconciliation/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.truth.musicxml",
+    "dpi": 600
+   },
+   "staves": [
+    {
+     "name": "Violini I",
+     "parts": [
+      0
+     ],
+     "proposed": {
+      "name": "Violini I",
+      "parts": [
+       0
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Violini II",
+     "parts": [
+      1
+     ],
+     "proposed": {
+      "name": "Violini II",
+      "parts": [
+       1
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Violini III",
+     "parts": [
+      2
+     ],
+     "proposed": {
+      "name": "Violini III",
+      "parts": [
+       2
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Viole I",
+     "parts": [
+      3
+     ],
+     "proposed": {
+      "name": "Viole I",
+      "parts": [
+       3
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Viole II",
+     "parts": [
+      4
+     ],
+     "proposed": {
+      "name": "Viole II",
+      "parts": [
+       4
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Viole III",
+     "parts": [
+      5
+     ],
+     "proposed": {
+      "name": "Viole III",
+      "parts": [
+       5
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Violoncelli I",
+     "parts": [
+      6
+     ],
+     "proposed": {
+      "name": "Violoncelli I",
+      "parts": [
+       6
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Violoncelli II",
+     "parts": [
+      7
+     ],
+     "proposed": {
+      "name": "Violoncelli II",
+      "parts": [
+       7
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Violoncelli III",
+     "parts": [
+      8
+     ],
+     "proposed": {
+      "name": "Violoncelli III",
+      "parts": [
+       8
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Contrabasso",
+     "parts": [
+      9
+     ],
+     "proposed": {
+      "name": "Contrabasso",
+      "parts": [
+       9
+      ]
+     },
+     "verdict": "pending"
+    },
+    {
+     "name": "Cembalo (grand staff, 2 printed staves)",
+     "parts": [
+      10
+     ],
+     "proposed": {
+      "name": "Cembalo (grand staff, 2 printed staves)",
+      "parts": [
+       10
+      ]
+     },
+     "verdict": "pending"
+    }
+   ]
   }
  },
- "updated_at": "2026-09-07T00:22:10+00:00"
+ "updated_at": "2026-09-08T23:25:34+00:00"
 }

@@ -8,11 +8,11 @@
  },
  "coverage": {
   "n_rows": 20,
-  "n_mapped": 15,
-  "n_unmapped": 5,
-  "entire_staff_on_mapped_rows": 11927,
-  "entire_staff_on_unmapped_rows": 5593,
-  "staves_a_human_would_read_to_close_the_gap": 89
+  "n_mapped": 20,
+  "n_unmapped": 0,
+  "entire_staff_on_mapped_rows": 17520,
+  "entire_staff_on_unmapped_rows": 0,
+  "staves_a_human_would_read_to_close_the_gap": 0
  },
  "rows": [
   {
@@ -167,50 +167,50 @@
   },
   {
    "row_id": "mahler-sym5-mvt1-local-p2",
-   "has_hand_map": false,
+   "has_hand_map": true,
    "n_systems": 1,
    "staves_on_page": 17,
-   "staves_a_human_would_read": 17,
+   "staves_a_human_would_read": 0,
    "entire_staff": 649,
    "entire_measure": 183,
    "omr_ed": 1118
   },
   {
    "row_id": "mahler-sym5-mvt1-local-p3",
-   "has_hand_map": false,
+   "has_hand_map": true,
    "n_systems": 1,
    "staves_on_page": 13,
-   "staves_a_human_would_read": 13,
+   "staves_a_human_would_read": 0,
    "entire_staff": 1674,
    "entire_measure": 634,
    "omr_ed": 3075
   },
   {
    "row_id": "mahler-sym5-mvt1-local-p4",
-   "has_hand_map": false,
+   "has_hand_map": true,
    "n_systems": 1,
    "staves_on_page": 18,
-   "staves_a_human_would_read": 18,
+   "staves_a_human_would_read": 0,
    "entire_staff": 1764,
    "entire_measure": 1240,
    "omr_ed": 4149
   },
   {
    "row_id": "mahler-sym5-mvt1-local-p5",
-   "has_hand_map": false,
+   "has_hand_map": true,
    "n_systems": 1,
    "staves_on_page": 17,
-   "staves_a_human_would_read": 17,
+   "staves_a_human_would_read": 0,
    "entire_staff": 1220,
    "entire_measure": 1130,
    "omr_ed": 2967
   },
   {
    "row_id": "bach-brandenburg3-mvt1-468678-p1",
-   "has_hand_map": false,
+   "has_hand_map": true,
    "n_systems": 2,
    "staves_on_page": 24,
-   "staves_a_human_would_read": 24,
+   "staves_a_human_would_read": 0,
    "entire_staff": 286,
    "entire_measure": 1812,
    "omr_ed": 6148
