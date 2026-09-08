@@ -861,11 +861,51 @@ def gather_clef_locator(log: Log, pws: Any, cells: Sequence[Any],
                     locator_branch=branch, **{k: v for k, v in trace.items()
                                               if k != "reason"})
                 continue
+            # ⚠️ THE X IS RECORDED BECAUSE WITHOUT IT NOTHING DOWNSTREAM CAN
+            # SAY WHERE ON THE STAFF THIS CLEF WAS FOUND. `clef_glyph` has
+            # carried `x_center` all along; this reader recorded
+            # `family`/`line`/`line_source` and no position at all.
+            #
+            # ⚠️⚠️ AN EARLIER VERSION OF THIS COMMENT TOLD THE STORY BACKWARDS
+            # AND WAS WRONG. It said the locator "read the mid-staff C clef
+            # correctly" on Beethoven 5 / Litolff p.2. It did not, and it could
+            # not: this loop examines the HEADER WINDOW and `frame_cell(0)`
+            # only, and on that page the C clef stands at page x≈755, past the
+            # first barline at ≈700, i.e. in measure 1 — a region no arm here
+            # ever looks at. The claim came from matching the value `tenor`
+            # against a human's "it goes to a C clef" without checking WHICH
+            # CROP produced it.
+            #
+            # What actually happened, with its own control on the same page:
+            # the Fagotti staff of system 1 detects `clefF` and the locator
+            # abstains `asymmetric` on BOTH arms — correctly declining to call
+            # a bass clef a C clef. The Fagotti staff of system 2 prints the
+            # same bass clef, the detector finds NOTHING, and the locator fires
+            # `tenor` on cell 0. That is a FALSE POSITIVE of the family
+            # CLAUDE.md tracks at length (48 → 21 → 13 → 5), and with no
+            # detector reading to contest it it became the staff's clef
+            # unopposed at support 2.0, single candidate.
+            #
+            # Two separate facts, and neither excuses the other:
+            #   * the locator misread a bass clef as a C clef here;
+            #   * and the page prints two mid-staff clef changes (to C at ≈755,
+            #     back to bass at ≈930, adjudicated against the print by Sean)
+            #     that this pipeline cannot express AT ALL, because `Q.CLEF` is
+            #     staff-scoped and no arm reads past cell 0.
+            #
+            # ⚠️ NOTHING CONSUMES THIS POSITION YET, deliberately rather than
+            # by omission: expressing a clef CHANGE needs a cell-scoped
+            # quantity and a change-position redundancy — the shape D18 already
+            # describes for key signatures — which is a design step. Recording
+            # where a reading came from is the half that is free and unblocks
+            # it.
+            x0, _y0, w, _h = found.bbox
             log.observe(sub, Q.CLEF_LOCATED, found.read.name,
                         reader=READERS.CV_LOCATOR, frame=frame,
                         score=float(found.symmetry),
                         family=found.read.family, line=found.read.line,
-                        line_source=found.read.source)
+                        line_source=found.read.source,
+                        x_center=int(x0 + w / 2), bbox=list(found.bbox))
 
 
 def _occupied_boxes(detections, page: int, key, frame: str):
