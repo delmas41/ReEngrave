@@ -1,3 +1,27 @@
+# ⚠️ SUPERSEDED — read `handoff-2026-09-09-staged-accounting.md` first
+
+⚠️ **THIS FILE'S RANKED LIST IS RETIRED AND TWO OF ITS CLAIMS ARE FALSE.**
+Sean redirected the project on 2026-09-08: the metric is no longer the
+organising goal, and the work is the staged pipeline. Everything below about
+`page_normalise`, normalised eras and `check 3` is GRADING and is banked, not
+next.
+
+The two false claims, both acted on and both costly:
+
+1. *"`page_normalise` ... is NOT imported by `scan_eval`"* — it never was true.
+   The module and its `scan_eval` wiring landed in the SAME commit
+   (`1de175b7`, main, 2026-09-06), and the two latent faults were fixed on main
+   in `492f1e07`.
+2. *"5 rows unmapped, 89 printed staves for a human to read"* — stale by hours
+   when written. `833afe9f` had already mapped mahler p3/p4/p5 and bach. **Only
+   Mahler p2 needed a pass**, and it is now done: the scan gate is **20/20
+   mapped, 0 staves left to read**.
+
+The history below — the four causes, the rest fix, the value-computed-and-unread
+pattern — is still accurate and still worth reading.
+
+---
+
 # Handoff — 2026-09-08 close: where the project actually is, for a big-picture session
 
 ⚠️ **This is the file to read first.** It replaces

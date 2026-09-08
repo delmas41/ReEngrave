@@ -26,6 +26,18 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-09-staged-accounting.md](docs/handoff-2026-09-09-staged-accounting.md)
+— **the metric is no longer the organising goal** (Sean, 2026-09-08: the numbers
+*"dont feel like they have represented much that has been helpful"*). The work is
+the **staged pipeline** — GATHER · ADJUDICATE · EVALUATE — because OMR-NED
+compares two FILES AT THE FAR END and can never say WHICH DECISION went wrong,
+while an adjudicator returns a value **and a record of what it saw, including
+when it abstained**. Measured on one real page: of 21 decisions, **12 decide, 6
+are declared stubs, 1 (`tuplet_ratio`) produces no row at all**, and ⚠️ **there
+is NO EXPORTER**, so the staged path cannot yet produce a file. Three ranked
+tasks are in §4. ⚠️ It also corrects **two false claims** in its predecessor that
+cost real time — see its §5 before trusting any inventory in this repo.
+Its predecessor
 [docs/handoff-2026-09-08-big-picture.md](docs/handoff-2026-09-08-big-picture.md)
 — written to hand the BIG PICTURE to a fresh session: **Steps 1-4 are closed**
 (the `entire staff` bucket separated into four causes, three of them shut, and
@@ -33,10 +45,12 @@ the rest mechanism found and fixed), **`OMR_SLOT_STITCH` is now DEFAULT ON**,
 and the two things a strategic session should carry are that **four of five
 findings today were "the value existed and nothing read it"** — twice inside
 the measuring instruments — and that **the measurement layer, not the reader, is
-now the binding constraint**. It also names the one genuinely open strategic
-question: two separately-measured conclusions in this repo disagree about
-whether condensed staves should be split at all, and nobody has reconciled
-them. Its predecessor
+now the binding constraint**. ⚠️ Its claim that the condensed-staff
+question is "unreconciled" is WRONG — Sean settled it 2026-09-05 (the page
+prints one staff, so give back one staff; the -4,557 is a benchmark artefact),
+and its `page_normalise` item is stale twice over: that module and its
+`scan_eval` wiring landed in ONE commit, and the scan gate is now **20/20
+mapped**. Its predecessor
 [docs/handoff-2026-09-08-late-step4-and-step3-done.md](docs/handoff-2026-09-08-late-step4-and-step3-done.md)
 — the most recent handoff: **Step 4 is separated** (four causes, not three,
 summing to the bucket exactly — only one is the reader's) and **Step 3's
