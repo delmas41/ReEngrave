@@ -70,7 +70,12 @@ instrument that works; OMR-NED remains valid for DIRECTION only.
   ⚠️ The flag site's docstring still carried the refuted *"it still costs more
   OMR-NED"* claim; corrected in place.
 * **`rhythm._drop_implausible_meters`** — unconditional, no flag. 4 of 227
-  staves / 45 of 2,538 measures across three publishers.
+  staves / 45 of 2,538 measures across three publishers. ⚠️ Measured end to
+  end it fixes **0 rests, 4 durations and 9 bar-sum warnings** — its payoff
+  came through the meter→rhythm feedback loop, not the rest sizing that
+  motivated it, and the 37 wrongly-sized rests on that page belong entirely to
+  the two PARKED meter guards. See `benchmarks/omr-rests-2026-09/FINDINGS.md`
+  §14.
 * Everything else unchanged.
 
 ## 5. ⚠️ Two claims I made today and had to withdraw — the pattern matters

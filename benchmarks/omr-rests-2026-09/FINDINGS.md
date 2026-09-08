@@ -423,8 +423,34 @@ a vote-override are different rules with different risks, and the four staves
 that looked like one bucket need one each.** Same shape as §Step-4's four
 causes, one level down.
 
-### What it costs today
+### ⚠️ Measured end to end, and the 37 rests belong to (b) and (c) — NOT to (a)
 
-37 wrongly-sized measure rests on the two pages, out of 255 lone whole rests
-(85% already correct). So (a)/(b)/(c) are a tail, not the main line — recorded
-because the *reasons* are separable and the cheapest of the three was free.
+Re-transcribed the same two pages with (a) in the tree. Attributing every
+wrongly-sized measure rest to the part that holds it:
+
+| part | its meter | 4.0-quarter rests | case |
+|---|---|--:|---|
+| Trumpet (p1) | 4/4 | 13 | **(c)** corroborated dissent |
+| Contrabass (p1) | 4/4 | 12 | **(c)** |
+| Viola (p1) | 4/4 | 5 | **(c)** |
+| Flute (p2) | 4/4 | 7 | **(b)** lone dissenter |
+| | | **37** | |
+
+**Not one of the 37 belongs to the `1/4` staff**, so the shipped guard (a)
+fixes **zero** of them: 30 need the vote-override (c) and 7 need the
+corroboration guard (b). An earlier draft of this section implied otherwise by
+quoting the 37 under all three cases together.
+
+⚠️ **(a)'s payoff arrived through a channel I was not measuring.** Its 16
+cleared records on page 2 change the export by 24 lines, and only one of those
+is the `<time>2/4</time>` the guard is nominally about. The rest is RHYTHM:
+**four notes go from `16th` to `eighth`**, because giving the staff its true
+meter lets `transcribe._reconcile_measure_to_meter` re-read a beam level — the
+meter→rhythm feedback loop this project built in 2026-08-28 — and page 2's
+**`rhythm_sum_warnings` fall 48 → 39**, nine bars that now sum to their own
+meter.
+
+So the honest summary of (a) is: **0 rests, 4 durations, 9 bar-sum warnings.**
+It was shipped because the predicate already called the value garbage, not
+because of a predicted number — and the number it did produce was in a
+different bucket from the one that motivated it.
