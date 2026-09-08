@@ -61,19 +61,17 @@ def main(argv=None) -> int:
         from ..yolo_detector import YoloDetector
         detector = YoloDetector(args.weights)
 
+    # ⚠️ ONE gather, including under `--against`. The legacy side is loaded
+    # BEFORE the run and handed in, so the divergence table is built from the
+    # same log the adjudication report describes. Until 2026-09-08 this
+    # re-ran prepare/gather/adjudicate a second time, which doubled the work
+    # and compared against a different pass of a detector with documented
+    # run-to-run jitter.
     result = pipeline.run_staged(
         args.pdf, parse_pages(args.pages), detector=detector, dpi=args.dpi,
-        conf_threshold=args.conf, imgsz=args.imgsz, progress=args.progress)
-
-    if args.against:
-        prepared = pipeline.prepare_pages(args.pdf, parse_pages(args.pages),
-                                          dpi=args.dpi)
-        from . import gather as G
-        log = G.gather(prepared, detector=detector, conf_threshold=args.conf,
-                       imgsz=args.imgsz)
-        from . import adjudicate
-        adjudicate.run(log)
-        result["divergence"] = pipeline.divergence(log, legacy.load(args.against))
+        conf_threshold=args.conf, imgsz=args.imgsz,
+        legacy=legacy.load(args.against) if args.against else None,
+        progress=args.progress)
 
     text = json.dumps(result, indent=2, default=str)
     if args.out:

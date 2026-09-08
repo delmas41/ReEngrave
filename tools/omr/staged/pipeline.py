@@ -105,24 +105,53 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                detector: Any = None, dpi: int = 600,
                conf_threshold: float = 0.25, imgsz: Optional[int] = None,
                dossier: Any = None, roster: Any = None,
+               legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                progress: bool = False) -> Dict[str, Any]:
-    """GATHER -> ADJUDICATE -> EVALUATE, once, in that order."""
+    """GATHER -> ADJUDICATE -> EVALUATE, once, in that order.
+
+    `legacy` is `{quantity: {subject_key: value}}` from `legacy.load`. Pass it
+    here rather than gathering a second time to build the divergence table --
+    see `run_staged_on`.
+    """
     prepared = prepare_pages(pdf_path, pages, dpi=dpi)
     return run_staged_on(prepared, detector=detector,
                          conf_threshold=conf_threshold, imgsz=imgsz,
-                         dossier=dossier, roster=roster, progress=progress)
+                         dossier=dossier, roster=roster, legacy=legacy,
+                         progress=progress)
 
 
 def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                   detector: Any = None, conf_threshold: float = 0.25,
                   imgsz: Optional[int] = None, dossier: Any = None,
                   roster: Any = None,
+                  legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                   progress: bool = False) -> Dict[str, Any]:
     """The stages, over pages someone else prepared.
 
     Split out so a test can drive the whole pipeline on a synthesized page
     with no PDF, no weights and no venv -- which is what makes the coherence
     tests cheap enough to run every time.
+
+    ⚠️ `legacy` BUILDS THE DIVERGENCE TABLE FROM *THIS* LOG, and that is the
+    whole point of the parameter. Until 2026-09-08 the CLI called this
+    function and then, under `--against`, ran `prepare_pages` -> `gather` ->
+    `adjudicate` A SECOND TIME and compared against that second log. So
+    `result["adjudication"]` and `result["divergence"]` described two
+    different passes -- which contradicts this module's own docstring, where
+    "both paths consume the same detections and jitter cancels exactly" is
+    given as a reason shadow mode is one process on one gather. Detector
+    jitter is documented and real here: a from-scratch rebuild of the hairpin
+    fix reproduced the categorical result and not the edit count, the same
+    four boxes' confidences moving between runs on byte-identical code. It
+    also doubled the runtime of every `--against` run.
+
+    ⚠️ COMPUTED IMMEDIATELY AFTER ADJUDICATE, BEFORE GROUPS AND EVALUATE, and
+    the position is the claim -- the same reasoning `groups` states for its
+    own position. A consequence may RESTATE a value in the log, so a table
+    built after EVALUATE would compare the legacy path against post-
+    consequence values while calling them decisions. That is a different
+    measurement, and a defensible one, but it is not the one the old code
+    took and it must not change silently.
     """
     if progress:
         print("GATHER")
@@ -133,6 +162,10 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     if progress:
         print("ADJUDICATE")
     verdicts = adjudicate.run(log, progress=progress)
+
+    # On THIS log, before any consequence can restate a value. See the
+    # docstring -- the position is load-bearing, not incidental.
+    divergence_report = None if legacy is None else divergence(log, legacy)
 
     # ⚠️ BETWEEN ADJUDICATE AND EVALUATE, and the position is the claim: the
     # verdict-sourced groups need the decisions to have run, and running
@@ -161,6 +194,8 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
             "decisions": list(adjudicate.stubs()),
             "consequences": sorted(set(report.stubs)),
         },
+        **({} if divergence_report is None
+           else {"divergence": divergence_report}),
     }
 
 
