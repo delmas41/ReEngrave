@@ -9,6 +9,26 @@ the whole thing on assumed best practice and record the assumptions rather than
 stop to measure; **this file is the record, and it is the input to the testing
 phase.**
 
+## ⚠️ PRINCIPLE vs CONTINGENCY
+
+Every entry carries a tag, re-derived against
+[`docs/ideal-reader-2026-09-07.md`](../../../docs/ideal-reader-2026-09-07.md),
+which asks what correctly reading a page requires **from the music rather than
+from our components**.
+
+* **PRINCIPLE** — true of reading music, and of any correct reader. Keep it.
+* **CONTINGENCY** — true only of the parts we happen to have. Say what would
+  make it go away.
+* **MIXED** — a principled shape carrying a contingent constant or list.
+
+⚠️ **A principle that arrived through a scar is still a principle.** Several
+below are ours by injury and survive on their merits.
+
+⚠️ **The tags are the point of the audit, not decoration.** A list that does not
+separate the two cements the second kind into the architecture. **25 entries:
+12 PRINCIPLE, 8 CONTINGENCY, 5 MIXED** — and one contingency (A-EVAL-2) is
+currently doing a principle's job.
+
 ## How to read a row
 
 | field | meaning |
@@ -28,6 +48,8 @@ merely resembles ours. Do not promote a "why" to a result.
 ## A-ORDER — what runs when
 
 ### A-ORDER-1 · The adjudication order
+
+**MIXED** — the RULE (order binds only on verdict-consumption) is principle; the 21-item LIST is ours.
 *`adjudicate.ORDER`*
 
 **Assumption.** Decisions run structure → identity → header facts → ownership →
@@ -46,6 +68,8 @@ verdict that would have existed and abstains. It fails **quiet and safe** — th
 verdict records `missing`, so the symptom is visible rather than a wrong answer.
 
 ### A-ORDER-2 · ⚠️ Identity BEFORE ownership and BEFORE the clef
+
+**PRINCIPLE** — Sean's chain: identity NARROWS the clef, range and transposition.
 
 **Assumption.** The instrument is adjudicated before glyph ownership and before
 the clef.
@@ -68,6 +92,8 @@ construction* — the tier it unlocks is not yet computed by anything.
 
 ### A-GATHER-1 · Only three gathering edges are forced
 
+**MIXED** — geometry-before-everything is principle; the other two edges are facts about OUR readers.
+
 **Assumption.** Within GATHER only three orderings are real: page geometry
 before every reader; detection before direction text; detection before notehead
 positions.
@@ -84,6 +110,8 @@ inherit this count either. Nine further input edges are listed in the design
 document §7.1(3) and none is re-asserted here.
 
 ### A-DUR-1 · ⚠️ Duration is a VERDICT, not a measurement
+
+**PRINCIPLE** — a duration is COMPOSED from marks; the marks are measurements, the value is not.
 
 **Assumption.** `Q.DURATION` is adjudicated from `Q.BEAM_STROKE`, `Q.FLAG`,
 `Q.AUG_DOT`, `Q.NOTEHEAD_CLASS` and `Q.STEM`; the meter then consumes the
@@ -110,6 +138,8 @@ bound matters more.
 
 ### A-GROUP-1 · An all-zero bracket reading ABSTAINS
 
+**CONTINGENCY** — an artefact of one function writing the same 0 from four branches.
+
 **Assumption.** When every staff of a system reads `group_index == 0`, we record
 an **abstention**, not a reading of "one family".
 
@@ -130,6 +160,8 @@ today's behaviour**, which is why it is the safe choice while the mirror stands.
 
 ### A-GROUP-2 · ⚠️ A brace means ONE PLAYER, so its evidence is the INSTRUMENT
 
+**PRINCIPLE** — a brace states WHO PLAYS, not how many staves.
+
 **Assumption.** `Q.GROUP_SYMBOL` is `brace` when the group's instrument family
 is keyboard or harp, `bracket` otherwise, and **abstains with no identity**.
 
@@ -149,6 +181,8 @@ a pure no-op and the incumbent rule stands everywhere.
 
 ### A-GROUP-3 · Grouping is ADDITIVE, never overruling
 
+**CONTINGENCY** — 'additive' presupposes an incumbent; a migration mode, not a permanent one.
+
 **Assumption.** `Q.STAFF_GROUP` and `Q.GROUP_SYMBOL` may only add a fact where
 none stood.
 
@@ -161,6 +195,8 @@ above.
 **How to falsify.** Run the competitive arm and hand-adjudicate every overturn.
 
 ### A-GROUP-4 · ⚠️ The measurement is SILENT on the population the incumbent fires on
+
+**CONTINGENCY** — our reader refuses systems under 3 staves; notation does not.
 
 **Not an assumption — a limit, recorded here so nobody reads a null as a pass.**
 
@@ -176,6 +212,8 @@ silence, not the fix.
 ## A-CLEF — the clef adjudicator
 
 ### A-CLEF-1 · Confidence is a TIER, never a multiplier
+
+**MIXED** — 'an uncalibrated number is worse than none' is epistemic principle; the three bands are ours.
 *`CONF_HIGH = 0.60`, `CONF_LOW = 0.30`*
 
 **Assumption.** Detector confidence enters as one of three bands.
@@ -194,6 +232,8 @@ sweep has found the real boundary.
 **Blast radius.** Only the clef.
 
 ### A-CLEF-2 · The relative weights
+
+**CONTINGENCY** — ours entirely -- and weighting may be the wrong SHAPE, see ideal-reader Part 4.3.
 *`W_DETECTOR_HIGH 3.0`, `W_DETECTOR_MID 1.5`, `W_DETECTOR_LOW 0.4`,
 `W_LOCATOR 2.0`, `W_SPECIALIST 1.0`, `W_CARRY 1.5`, `W_INSTRUMENT 1.0`,
 `W_DOSSIER 4.0`*
@@ -211,6 +251,8 @@ ordering actually decides. Test the **order**, not the magnitudes.
 **Blast radius.** Only the clef.
 
 ### A-CLEF-3 · ⚠️ A floor exists at all
+
+**PRINCIPLE** — a reader must be able to say 'I do not know'.
 *`MARGIN_FLOOR = 1.0`*
 
 **Assumption.** A contest closer than 1.0 abstains.
@@ -227,27 +269,65 @@ every abstention costs OMR-NED, because musicdiff charges an absent element.
 `restate_pitch` (A-EVAL-2). This is the single largest behavioural difference
 between the two paths.
 
-### A-CLEF-4 · ⚠️ `clefC → alto` is a PLACEHOLDER, and it is the largest known wrongness
+### A-CLEF-4 · ✅ CLOSED — `clefC` now names nothing
 
-**Assumption.** A `clefC` detection is read as alto.
+**PRINCIPLE** — alto/tenor/soprano/mezzo/baritone ARE the same glyph on different lines.
 
-**Why.** It is **not** a reading and is marked as such in the code. Alto, tenor,
-soprano, mezzo and baritone are the *same glyph on different lines*, so a class
-name cannot name a C clef — only geometry can, which is why `clef_geometry.py`
-exists. Alto is the commonest case.
+**Was:** a `clefC` detection was read as alto, marked in the code as a
+placeholder.
 
-**How to falsify.** Trivially wrong on any tenor-clef staff. It is repaired by
-wiring `Q.CLEF_LOCATED`, which carries the located line.
+⚠️ **AND IT WAS WORSE THAN "A PLACEHOLDER".** A detector clef at high
+confidence weighs 3.0 and the locator's **measured** name weighs 2.0 — so the
+placeholder would have **outvoted the only reader that can answer the
+question**, and any measurement taken then would have priced the placeholder
+rather than the mechanism.
 
-**Blast radius.** Every C-clef staff. **Do not measure the clef adjudicator
-against a corpus with C clefs until this is fixed** — the result would price the
-placeholder, not the mechanism.
+**Now:** `_clef_of("clefC")` returns `None`. A `clefC` contributes **family
+support** to whichever C clef the locator named and names none itself; with no
+locator reading the clef **abstains** rather than guessing alto.
+`Q.CLEF_LOCATED` is wired on **both crops** with `locate_clef(trace=...)`, so a
+refusal carries the reader's own branch name.
+
+⚠️ **THIS ENTRY WAS STALE FOR A DAY.** It described `clefC → alto` as live
+after the code had closed it — my edit silently matched nothing and I did not
+check. *Fixed-then-kept-open-in-prose*, the documentation dual of
+detected-then-dropped, in a file three days old. **A tagging pass that only
+adds tags would not have caught it; re-deriving each entry against a standard
+did.**
+
+### A-CLEF-5 · A `clefC` is worth 1.5 as family support
+
+**MIXED** — 'a glyph naming a family constrains without deciding' is principle; 1.5 is ours.
+*`W_C_FAMILY = 1.5`*
+
+**Assumption.** Enough to break a tie between two located C clefs, not enough
+to carry one on its own.
+
+**How to falsify.** Sweep it against pages where the locator names two
+different C clefs on one staff from the two crops.
+
+### A-CLEF-6 · ⚠️ `MARGIN_FLOOR` carries TWO jobs
+
+**CONTINGENCY** — an artefact of computing margin against a runner-up of 0.
+
+**Found by writing a test, not designed in.** With a single candidate the
+runner-up is `0`, so the floor is *also* an absolute floor on a lone reading —
+a solitary clef at confidence 0.05 with nothing corroborating it does not take
+a staff.
+
+**Why it stays.** It is the right behaviour and matches A-EVAL-2's philosophy.
+
+**How to falsify.** ⚠️ **A sweep moves BOTH behaviours at once** — separation
+between two candidates, and sufficiency of one. Report them apart, or the sweep
+will attribute one's effect to the other.
 
 ---
 
 ## A-OWN — ownership
 
 ### A-OWN-1 · Tier order, and confidence declared but unweighted
+
+**PRINCIPLE** — a veto on the IMPOSSIBLE and a preference among the possible are not on one scale.
 *`W_LADDER_COMPLETE 4.0`, `W_RANGE_IMPOSSIBLE -6.0`, `W_DISTANCE 0.5`*
 
 **Assumption.** Ladder completeness, then the written-range veto, then distance.
@@ -266,6 +346,8 @@ the staged path is the check that it still holds.
 
 ### A-OWN-2 · The range veto reads POSITION + CLEF, not a resolved pitch
 
+**PRINCIPLE** — never consume an interpretation where the mark is available.
+
 **Assumption.** Ownership's range tier consumes `Q.NOTEHEAD_STAFF_POSITION` plus
 the `Q.CLEF` verdict.
 
@@ -283,6 +365,8 @@ resolved pitch. They should agree exactly where the clef agrees.
 ## A-EVAL — the third stage
 
 ### A-EVAL-1 · The downhill order
+
+**MIXED** — composition HAS a direction (principle); the list is ours.
 *`evaluate.DOWNHILL`*
 
 **Assumption.** Consequences flow structure → identity → parts → clef → key →
@@ -297,6 +381,8 @@ unmeasured.
 escalate.**
 
 ### A-EVAL-2 · ⚠️ An abstained clef produces NO pitches
+
+**CONTINGENCY** — ⚠️ CURRENTLY DOING A PRINCIPLE'S JOB. The principle is 'never present a guess as a reading'; SILENCE is our output format's answer, not the only one.
 
 **Assumption.** `restate_pitch` emits nothing for a staff whose clef abstained.
 
@@ -314,6 +400,8 @@ with the reason recorded. Read `new_abstention` before reading any score.
 
 ### A-EVAL-3 · Consequences are events; no `*_final` value is written
 
+**PRINCIPLE** — a record that must be re-maintained by every writer WILL go stale; three did.
+
 **Assumption.** Nothing in EVALUATE writes a value-shaped summary field.
 
 **Why.** A value must be re-maintained by every later writer and the existing
@@ -329,6 +417,8 @@ cannot query for it. (`Log.verdict` is that query.)
 ## A-BUILD — decisions forced by the build itself
 
 ### A-BUILD-1 · ⚠️ GATHER is a TRANSLATING layer, not an out-parameter
+
+**CONTINGENCY** — we are not touching the old path.
 
 **Assumption.** GATHER calls the existing readers unchanged and translates what
 they *return* into rows, instead of adding a `log` out-parameter to each.
@@ -354,6 +444,8 @@ This is the one place the build knowingly owes the design something.
 
 ### A-BUILD-2 · `Subject.staff` is SYSTEM-LOCAL
 
+**PRINCIPLE** — a staff's identity within its system is what every join needs.
+
 **Assumption.** Staves are addressed by index **within their system**; the
 page-wide index is kept in `detail["page_staff_index"]`.
 
@@ -370,6 +462,8 @@ boundary.
 
 ### A-BUILD-6 · An external fact's descendants carry it; a page reading's do not
 
+**PRINCIPLE** — two witnesses derived from one source are ONE witness.
+
 **Assumption.** `Observation.basis` is empty for anything read off this
 raster, and non-empty for anything derived from an external document.
 
@@ -385,6 +479,8 @@ corroboration.)
 **Blast radius.** Anything with a `tier`. Today: dossier and roster.
 
 ### A-BUILD-4 · The margin-label cascade runs with the FREE rung only
+
+**CONTINGENCY** — a build-phase safety choice.
 
 **Assumption.** `gather_margin_labels` calls `contextual._labels_for_page`
 with `surya_fallback=False` and `ocr_fallback=False` by default, so only the
@@ -410,6 +506,8 @@ labels each rung supplies.
 
 ### A-BUILD-5 · ⚠️ An empty stage is an ERROR, not an empty result
 
+**PRINCIPLE** — a stage that produced nothing because nothing loaded is indistinguishable from one with nothing to do.
+
 **Assumption.** `adjudicate.run` and `evaluate.run` raise when their registry
 is empty rather than reporting a clean, empty pass.
 
@@ -423,6 +521,8 @@ output saying so.
 **Blast radius.** None; it converts a silent null into a startup failure.
 
 ### A-BUILD-3 · `detector=None` is a supported mode
+
+**PRINCIPLE** — a missing reader is an abstention, not a failure.
 
 **Assumption.** With no weights, every cell abstains `READER_UNAVAILABLE` and
 the pipeline runs end to end.
