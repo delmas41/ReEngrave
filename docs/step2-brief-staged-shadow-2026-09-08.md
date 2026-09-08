@@ -45,19 +45,65 @@ there a downstream consumer → only then the mechanism.
   `AGREE / DIFFER / NEW_ABSTENTION / NEW_DECISION / LEGACY_ONLY`.
 - `benchmarks/omr-symbol-ledger-2026-09/run_ledger.py` and its siblings.
 
-## The two things that do NOT exist yet — this is the actual work
+## ⚠️ CORRECTION (2026-09-08, same day): the legacy extractor DOES exist
 
-1. **The legacy extractor.** `divergence()` documents its `legacy` argument as
-   `{quantity: {subject_key: value}}` — *"whatever the old pipeline concluded,
-   **extracted by the caller**"*. That caller does not exist. Writing it is
-   most of Step 2, and it is where the subtlety is: a `Subject` key must mean
-   the same page/system/staff on both sides, or every row is a false `DIFFER`.
-   **Prove the join before trusting one row of the table** — a positive control
-   is a quantity where the two paths must agree by construction, and it must
-   come back AGREE at a high rate.
-2. **The ranking by staves touched.** `divergence()` returns flat rows. The
-   handoff asks for a list ordered by blast radius, each row carrying its
-   `Verdict.basis` closure.
+**An earlier revision of this brief said `divergence()`'s `legacy` argument had
+no caller and that writing it was most of Step 2. That was wrong** — found by
+reading `tools/omr/staged/__main__.py` rather than trusting the earlier read.
+`tools/omr/staged/legacy.py` (102 lines) implements `extract()` / `load()`, and
+the CLI already calls it. It is careful: it mirrors `gather._system_local`
+because the `staff_index` FIELD is page-wide and using it as a subject
+coordinate would misfile every row of every system after the first, and it
+deliberately excludes `group_index` because that field reaches the serialised
+staff dict and **no reader in `export.py` consumes it** — delivered-and-unread,
+a different failure from stranded-in-process, available as
+`group_index_for_reference()` so the distinction is unmissable.
+
+**The tree outranks this document. It outranked it within hours.**
+
+## What actually needs doing
+
+### 1. FIX FIRST — the CLI gathers TWICE, which breaks the instrument
+
+`pipeline.run_staged` does prepare → gather → adjudicate. Then `__main__`, under
+`--against`, calls `prepare_pages` → `gather` → `adjudicate` **a second time**
+and computes the divergence table from THAT log. So `result["adjudication"]` and
+`result["divergence"]` come from two independent passes.
+
+⚠️ **This contradicts the design property the shadow docstring claims**: *"both
+paths consume the same detections and jitter cancels exactly."* Detector jitter
+is documented and real in this repo — a from-scratch rebuild of the hairpin fix
+reproduced the categorical result and not the edit count, the same four boxes'
+confidences moving between runs on byte-identical code. Two gathers reintroduce
+exactly that. It also doubles the runtime.
+
+Per the scope rule this is a **FIX NOW**, not a park: it corrupts the thing being
+built. Reuse the single log.
+
+### 2. A staged decision with NO legacy counterpart is INVISIBLE, not counted
+
+`divergence()` iterates `legacy.items()`, so a quantity the old path never
+concludes produces no row at all. `legacy.extract` covers **9** quantities —
+`SYSTEM_STAFF_COUNT`, `SYSTEM_MEMBERSHIP`, `STAFF_ORDINAL`, `CLEF`,
+`KEY_SIGNATURE`, `INSTRUMENT`, `SLOT_INDEX`, `MEASURE_PARTITION`, `METER` —
+against **15 wired decisions**. The other six (`staff_group`, `group_symbol`,
+`part_partition`, `glyph_owner`, `tuplet_ratio`, `duration`) are silently absent
+from the table. The `LEGACY_ONLY` outcome covers the opposite direction only.
+Decide deliberately: extend `extract`, or report the staged-only set separately
+so it is *counted* rather than missing. **Do not let it stay invisible** — that
+is the shape of every bug in this project's export-gap list.
+
+### 3. Validate the join before trusting one row
+
+`STAFF_ORDINAL` is the positive control: the staged path and the legacy path
+must agree on it by construction, so a low AGREE rate there means the subject
+keys do not line up and **every other row of the table is meaningless**. Print
+it beside the counts.
+
+### 4. Rank by staves touched
+
+`divergence()` returns flat rows. The handoff asks for a list ordered by blast
+radius, each row carrying its `Verdict.basis` ancestor closure.
 
 ---
 
