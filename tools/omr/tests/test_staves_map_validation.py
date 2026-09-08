@@ -303,3 +303,80 @@ class TestPartsOrderIsMeaningfulAndPreserved:
             ("sorting an edited entry renames the printed staff after a "
              "silent folded part — measured")
         assert "list(dict.fromkeys(patch.parts))" in src
+
+
+COMPLETION = ROOT / "benchmarks" / "omr-staves-map-completion-2026-09"
+
+
+class TestUnrepresentableStavesAreShownNotOmitted:
+    """A printed staff the reference cannot represent must be VISIBLE.
+
+    ⚠️ THE FAULT THIS CLOSES WAS FOUND BY A HUMAN COUNTING THE PAGE. Mahler p2
+    prints 22 staves and its map has 21 entries: the reference writes Becken
+    and Grosse Trommel as their own parts and has none for the combined
+    `Becken u. Gr.Trommel von einem geschlagen` player, so no entry could name
+    a part and `page_normalise` refuses an entry whose `parts` is empty. The
+    exclusion is right. What was wrong is that the UI listed 21 rows and said
+    nothing, so a reader checking the list against the print found a staff
+    missing with no way to tell a deliberate exclusion from a bug.
+
+    ⚠️ AND THE OPPOSITE FAILURE IS WORSE. These are not map entries. If one
+    ever reached `staves` it would be an entry naming no part, which is exactly
+    what `page_normalise` raises on -- so the display path and the decision
+    path must stay separate.
+    """
+
+    def _maps(self):
+        return _load("candidate_maps", COMPLETION)
+
+    def test_every_entry_carries_a_position_and_a_reason(self):
+        cm = self._maps()
+        assert cm.UNREPRESENTABLE, "the record must not be empty"
+        for row_id, entries in cm.UNREPRESENTABLE.items():
+            for e in entries:
+                assert isinstance(e, dict), \
+                    f"{row_id}: a bare string cannot be placed in the list"
+                for key in ("name", "after", "lines", "reason"):
+                    assert key in e, f"{row_id}: missing {key!r}"
+                assert e["reason"].strip(), f"{row_id}: empty reason"
+
+    def test_after_names_a_real_entry_of_that_rows_map(self):
+        """Otherwise the row is placed nowhere and silently vanishes again."""
+        cm = self._maps()
+        for row_id, entries in cm.UNREPRESENTABLE.items():
+            names = {s["name"] for s in cm.CANDIDATES[row_id]}
+            for e in entries:
+                if e["after"] is None:
+                    continue
+                assert e["after"] in names, (
+                    f"{row_id}: after={e['after']!r} names no map entry; "
+                    f"the greyed row would be orphaned")
+
+    def test_an_unrepresentable_staff_is_never_a_map_entry(self):
+        """The safety property: display path and decision path stay apart."""
+        cm = self._maps()
+        for row_id, entries in cm.UNREPRESENTABLE.items():
+            names = {s["name"] for s in cm.CANDIDATES[row_id]}
+            for e in entries:
+                assert e["name"] not in names, (
+                    f"{row_id}: {e['name']!r} is BOTH unrepresentable and a "
+                    f"map entry — page_normalise would refuse the map")
+
+    def test_mahler_p2_places_it_between_the_two_drums(self):
+        """The concrete case, against the print: it is printed below Gr.Tr."""
+        cm = self._maps()
+        e = cm.UNREPRESENTABLE["mahler-sym5-mvt1-local-p2"][0]
+        assert e["after"] == "Grosse Trommel"
+        assert e["lines"] == 1
+        order = [s["name"] for s in cm.CANDIDATES["mahler-sym5-mvt1-local-p2"]]
+        # the next printed staff below it is the Kleine Trommel
+        assert order[order.index("Grosse Trommel") + 1] == "Kleine Trommel"
+
+    def test_the_ui_renders_them_and_never_makes_them_clickable(self):
+        """Source assertion — the render path is JS and has no unit seam."""
+        src = (MAPS / "server.py").read_text()
+        assert "unrepresentable_printed_staves" in src, \
+            "the UI must read the record"
+        assert "staffrow unrep" in src, "no greyed row is emitted"
+        assert ".staffrow.unrep{cursor:default" in src, \
+            "a greyed row must not look or behave clickable"

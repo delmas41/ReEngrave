@@ -628,6 +628,14 @@ main{display:grid;grid-template-columns:230px 1fr 300px;height:calc(100vh - 46px
           border:1px solid var(--line);border-radius:4px;margin-bottom:5px;
           cursor:pointer}
 .staffrow.cur{border-color:var(--sel);background:#20263a}
+/* A printed staff the REFERENCE cannot represent. Shown so the list can be
+   counted against the page, never selectable: it is not a map entry and
+   `page_normalise` refuses an entry naming no part. */
+.staffrow.unrep{cursor:default;opacity:.62;border-style:dashed;
+                background:repeating-linear-gradient(135deg,
+                  transparent 0 6px, rgba(255,255,255,.03) 6px 12px)}
+.staffrow.unrep .nm{font-weight:500;font-style:italic}
+.staffrow.unrep .pp{color:#8a8f98}
 .staffrow .k{width:20px;color:var(--dim);text-align:right;flex:none}
 .staffrow .nm{flex:1;font-weight:600}
 .staffrow .pp{color:var(--dim);font-variant-numeric:tabular-nums}
@@ -825,6 +833,28 @@ function draw(){
   // ---- staff list
   const L=$('#list');L.innerHTML='<h3>printed staves of this page — '+
     'the map, one entry per staff</h3>';
+  // Printed staves the REFERENCE cannot represent, keyed by the mapped staff
+  // they are printed BELOW. They are NOT map entries -- they carry no index,
+  // are not selectable, and never enter st.staves -- but they are printed, so
+  // omitting them makes the list uncountable against the page.
+  const UNREP=((seed.proposal||{}).unrepresentable_printed_staves||[])
+    .map(u=>(typeof u==='string'?{name:u,after:undefined,reason:''}:u));
+  const unrepAfter=(nm)=>UNREP.filter(u=>u.after===nm);
+  const addUnrep=(u)=>{
+    const d=document.createElement('div');
+    d.className='staffrow unrep';
+    d.innerHTML='<div class="dot"></div>'+
+      '<div class="k">—</div>'+
+      '<div class="nm">'+u.name+
+        '<div class="note">printed on this page; the reference has no part '+
+        'for it, so it is not a map entry'+
+        (u.lines===1?' · 1-line staff':'')+'</div></div>'+
+      '<div class="pp">n/a<br><span style="font-size:11px">unmappable</span></div>';
+    d.title=u.reason||'';
+    L.appendChild(d);
+  };
+  // one printed above every mapped staff
+  UNREP.filter(u=>u.after===null).forEach(addUnrep);
   st.staves.forEach((s,k)=>{
     const d=document.createElement('div');
     d.className='staffrow'+(k===CUR?' cur':'');
@@ -837,7 +867,13 @@ function draw(){
         '<br><span style="font-size:11px">'+s.verdict+'</span></div>';
     d.onclick=()=>{CUR=k;EDITING=null;draw();};
     L.appendChild(d);
+    unrepAfter(s.name).forEach(addUnrep);
   });
+  // An entry whose `after` names no staff of this map would vanish silently,
+  // which is the fault this whole block exists to fix. Show it at the foot.
+  {const placed=new Set(st.staves.map(s=>s.name));
+   UNREP.filter(u=>u.after!==null&&u.after!==undefined&&!placed.has(u.after))
+        .forEach(addUnrep);}
 
   // ---- warnings / conflicts / provenance
   (seed.warnings||[]).forEach(w=>{

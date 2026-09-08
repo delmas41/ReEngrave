@@ -535,7 +535,11 @@ def _research_note(row_id: str, row: dict, prop: dict, refs: dict) -> str:
             "different staff was measured to leave the derived truth "
             "unchanged. Here: " + "; ".join(folds) + ".")
     for u in prop.get("unrepresentable_printed_staves") or []:
-        extra.append("PRINTED BUT UNMAPPABLE: " + u)
+        # `candidate_maps.UNREPRESENTABLE` carries {name, after, lines, reason}
+        # so the UI can place a greyed row; a bare string is still accepted.
+        extra.append("PRINTED BUT UNMAPPABLE: "
+                     + (f"{u['name']} — {u['reason']}"
+                        if isinstance(u, dict) else str(u)))
     return " ".join(x for x in ([base] + extra) if x)
 
 

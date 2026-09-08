@@ -189,15 +189,37 @@ CANDIDATES = {
 
 #: Printed staves the REFERENCE cannot represent, by row. Recorded so the map's
 #: entry count can be reconciled with the page's printed count.
+#:
+#: ⚠️ THESE ARE NOT MAP ENTRIES AND MUST NEVER BECOME ONE. A `staves` entry
+#: names at least one reference part; `page_normalise` raises on an empty
+#: `parts`, correctly, because a staff mapping to nothing is not a merge
+#: instruction. They are recorded so the count reconciles -- Mahler p2's map
+#: has 21 entries for 22 printed staves -- and so the confirmation UI can SHOW
+#: the staff greyed out instead of silently omitting it.
+#:
+#: `after` is the `name` of the map entry this staff is printed BELOW, so a
+#: consumer can place it without knowing the page. `None` means it is printed
+#: above every mapped staff. Found the hard way: Sean counted the percussion on
+#: p2 against the print, found the combined-player rule missing from the list,
+#: and had no way to tell a deliberate exclusion from a bug.
 UNREPRESENTABLE = {
     "mahler-sym5-mvt1-local-p2": [
-        "Becken u. Gr.Trommel von einem geschlagen (1 line) — works.json: "
-        "'printed, labelled, and carrying its own meter and rest — the "
-        "reference has no part for it'"],
+        {"name": "Becken u. Gr.Trommel von einem geschlagen",
+         "after": "Grosse Trommel",
+         "lines": 1,
+         "reason":
+             "works.json: 'printed, labelled, and carrying its own meter and "
+             "rest — the reference has no part for it'. The encoding writes "
+             "Becken and Grosse Trommel as their own parts and has none for "
+             "the combined player, so no entry here could name a part."}],
     "bach-brandenburg3-mvt1-468678-p1": [
-        "Cembalo lower staff — the reference encodes the Cembalo as ONE part "
-        "spanning both printed staves (a grand staff), and the map idiom "
-        "cannot split one part across two entries"],
+        {"name": "Cembalo, lower printed staff",
+         "after": "Cembalo (grand staff, 2 printed staves)",
+         "lines": 5,
+         "reason":
+             "the reference encodes the Cembalo as ONE part spanning both "
+             "printed staves (a grand staff), and the map idiom cannot split "
+             "one part across two entries"}],
 }
 
 
