@@ -521,6 +521,40 @@ def _is_propagatable_meter(ts: dict[str, Any]) -> bool:
     )
 
 
+def _drop_implausible_meters(page: dict[str, Any]) -> int:
+    """Clear every READ meter that `_is_propagatable_meter` rejects, so the
+    page's decided meter can be back-filled over it. Returns how many.
+
+    ⚠️ Only READINGS are considered — a meter this module itself propagated or
+    carried is already the page's answer and re-testing it would be circular.
+
+    ⚠️ **CLEARING IS BETTER THAN KEEPING EVEN WHEN THE PAGE DECIDES NOTHING.**
+    `None` means "meter unknown", which the exporter renders as no `<time>` and
+    `export._measure_rest_beats` treats as the documented 4.0 fallback. A kept
+    `1/4` is a CONFIDENT WRONG ANSWER: it writes `<time>1/4</time>` into the
+    part and sizes that part's measure rests at one quarter.
+
+    ⚠️ It cannot harm a polymetric page: a page that genuinely prints different
+    meters on different staves prints PLAUSIBLE ones, and this only ever
+    removes a reading the predicate already calls garbage (`6/6`, `6/66`,
+    `1/1`, `1/4`).
+    """
+    n = 0
+    for system in page.get("systems", []):
+        for staff in system.get("staves", []):
+            for holder in [staff, *staff.get("measures", [])]:
+                ts = holder.get("time_signature")
+                if not ts:
+                    continue
+                if ts.get("source") and ts["source"] not in _READING_SOURCES:
+                    continue
+                if _is_propagatable_meter(ts):
+                    continue
+                holder["time_signature"] = None
+                n += 1
+    return n
+
+
 def _dominant_detected_meter(
     page: dict[str, Any],
     *,
@@ -685,7 +719,20 @@ def backfill_page_time_signatures(page: dict[str, Any], **kwargs: Any) -> dict[s
     Uncorroborated mid-staff meter changes are undone first
     (`drop_uncorroborated_meter_changes`); without that, one misread bar votes
     once for every bar after it.
+
+    ⚠️ **AND A METER THIS MODULE'S OWN PREDICATE CALLS GARBAGE IS CLEARED**
+    (`_drop_implausible_meters`), so the back-fill below can supply the page's
+    decided meter instead. `_is_propagatable_meter` names `1/4` in its own
+    docstring as exactly the kind of thing that survives upstream filtering —
+    and it was consulted only to decide who may VOTE, never to decide whether a
+    staff may KEEP a reading. Measured over 21 stored scan transcriptions:
+    **4 of 227 staves and 45 of 2,538 measures carried a meter the predicate
+    rejects, and every one of them is `1/4`**, across three works and three
+    publishers. The code knew, and nothing asked it. Class C again.
     """
+    implausible = _drop_implausible_meters(page)
+    if implausible:
+        page["implausible_meters_dropped"] = implausible
     dropped = drop_uncorroborated_meter_changes(page)
     if dropped:
         page["uncorroborated_meter_changes_reverted"] = dropped

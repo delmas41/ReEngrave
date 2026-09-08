@@ -351,3 +351,80 @@ and it is a vote/override question rather than a reading one.
 spans pages.** The meter carry is one; anything else keyed on "the previous
 page" is equally invisible to it, and will read as a pipeline gap. Check
 whether a mechanism is page-spanning before pricing it on that corpus.
+
+---
+
+## 14. §13's residual, opened: THREE causes, one shipped and two parked
+
+§13 left "4 staves of 34 reading 4/4 or 1/4 on a 2/4 movement" as the next
+meter question. Opened, and it is not one question. Exact readings from the
+two-page run:
+
+    page 1, one system of 12 staves
+      inferred_time_signature: 2/4, source detected_propagated, votes 9 of 12
+        ('2/4', header_reader)  x7
+        ('4/4', None)           x3     <- dissent, and it CORROBORATES ITSELF
+        ('2/4', None)           x2
+    page 2, system 1 of 11 staves
+        ('2/4', carried_from_previous_page)  x9
+        ('4/4', None)                       x1   <- a lone dissenter
+        ('1/4', None)                       x1   <- not a meter at all
+
+**The mechanism is one line.** `backfill_page_time_signatures` fills only
+staves whose meter is *empty* — *"Genuine detected meters are never
+overwritten"*, deliberately. So the page decides 2/4 by a 9-of-12 vote,
+records it as `inferred_time_signature`, and a dissenting staff keeps its own
+reading regardless.
+
+### (a) SHIPPED — a meter the module's own predicate calls garbage
+
+⚠️ **`_is_propagatable_meter` names `1/4` IN ITS OWN DOCSTRING** — *"Rejects
+garbage that could survive upstream filtering (6/6, 6/66, 1/1, 1/4)"* — and it
+was consulted only to decide who may VOTE, never whether a staff may KEEP a
+reading. **The code knew and nothing asked it. Class C, again.**
+
+Measured over 21 stored scan transcriptions: **4 of 227 staves and 45 of 2,538
+measures carry a meter the predicate rejects, and every one is `1/4`** — on
+Beethoven 5 / Litolff, Brahms 1 / Breitkopf, Mahler 5 / Peters and the two-page
+run, i.e. three works and three publishers rather than one page's accident.
+
+`rhythm._drop_implausible_meters` clears them before the back-fill, so the
+page's decided meter takes over. ⚠️ Only READINGS are tested — re-testing this
+module's own propagated output would be circular. ⚠️ **Clearing beats keeping
+even when the page decides nothing**: `None` means "unknown", which the
+exporter renders as no `<time>` and `_measure_rest_beats` treats as the
+documented 4.0 fallback, whereas a kept `1/4` writes `<time>1/4</time>` into
+the part and sizes its measure rests at ONE QUARTER — a confident wrong answer.
+⚠️ **It cannot harm a polymetric page**: a page that genuinely prints different
+meters per staff prints plausible ones. `test_rhythm_implausible_meter.py`, run
+RED against two mutants.
+
+### (b) PARKED — a lone plausible dissenter
+
+Page 2's `4/4` staff is alone among nine, which is the exact shape of the
+`OMR_KEYSIG_CORROBORATION` guard shipped the day before: *a meter is printed on
+one bar of one system, on every staff of that system, so the BAR is the shared
+fact.* The weak form — revert a reading no other staff of the system
+corroborates — reaches it. **Not shipped here** because it is one staff and the
+corpus that could price it is the same corpus §13 shows cannot see page-spanning
+behaviour.
+
+### (c) PARKED, and it needs the STRONGER claim — corroborated dissent
+
+⚠️ **Page 1's three `4/4` staves CORROBORATE EACH OTHER**, so the weak guard in
+(b) does not reach them and would be wrong to claim it did. Only *"the page's
+decided meter overrides a staff-opening meter that contradicts it"* reaches
+these, and that is a materially stronger rule with a real cost: it would
+overwrite a genuinely polymetric staff. **Parked with the risk named rather
+than shipped on three staves of one page.**
+
+⚠️ The split (b)/(c) is the finding, not the count: **a corroboration guard and
+a vote-override are different rules with different risks, and the four staves
+that looked like one bucket need one each.** Same shape as §Step-4's four
+causes, one level down.
+
+### What it costs today
+
+37 wrongly-sized measure rests on the two pages, out of 255 lone whole rests
+(85% already correct). So (a)/(b)/(c) are a tail, not the main line — recorded
+because the *reasons* are separable and the cheapest of the three was free.
