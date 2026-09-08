@@ -92,9 +92,14 @@ def expand_lineup(staves: list[dict]) -> list[dict | None]:
     Two declared shapes, both facts about the ENGRAVING and both now fields in
     `works.json` rather than prose:
 
-    * `one_line: true` — a single-rule percussion staff. **A five-line staff
+    * `lines: 1` — a single-rule percussion staff. **A five-line staff
       detector cannot find it by construction**, so we emit no part for it and
-      it drops out of the arity check. ⚠️ Its reference parts then belong to NO
+      it drops out of the arity check. ⚠️ Spelled `lines`, not `one_line`:
+      `benchmarks/omr-staves-map-completion-2026-09/candidate_maps.py` already
+      proposed `lines=1` for this exact fact, and a second spelling of one fact
+      is the `class_aliases.py` trap — 32 glyphs named twice, consumers written
+      against one spelling. Renamed the same day, before anything depended on
+      it. ⚠️ Its reference parts then belong to NO
       predicted part and stay `uncorresponded`, which is correct: that music is
       genuinely unread. This is a MEASUREMENT unlock, not a claim to read it.
     * `printed_staves: N` — one lineup entry the page prints as N staves
@@ -109,7 +114,7 @@ def expand_lineup(staves: list[dict]) -> list[dict | None]:
         if not isinstance(s, dict):
             out.append(None)
             continue
-        if s.get("one_line"):
+        if int(s.get("lines") or 5) != 5:
             continue                      # we emit no part for a one-line rule
         n = int(s.get("printed_staves") or 1)
         out.append(s)
@@ -130,8 +135,9 @@ def part_join_for(row: dict, rows: dict[str, dict],
                  for i in range(n_pred_parts)], info)
     slots = expand_lineup(staves)
     info["n_lineup_slots"] = len(slots)
-    info["n_one_line_dropped"] = sum(1 for s in staves
-                                     if isinstance(s, dict) and s.get("one_line"))
+    info["n_one_line_dropped"] = sum(
+        1 for s in staves
+        if isinstance(s, dict) and int(s.get("lines") or 5) != 5)
     info["n_extra_printed_staves"] = len(slots) - (len(staves)
                                                    - info["n_one_line_dropped"])
     if len(slots) != n_pred_parts:

@@ -9,7 +9,7 @@ and declared the difference a guess, so three Mahler rows and one Bach row were
 `part_unresolved` in full for a reason that was arithmetic, not evidence.
 `benchmarks/omr-part-join-2026-09/FINDINGS.md`.
 
-The two engraving facts are now FIELDS rather than prose: `one_line: true` and
+The two engraving facts are now FIELDS rather than prose: `lines: 1` and
 `printed_staves: N`. These tests are what stop the next hand-verified row from
 reintroducing the mismatch silently — a new one-line staff added to a lineup
 without its flag fails here rather than showing up as an unexplained refusal
@@ -77,7 +77,7 @@ def test_the_lineup_expands_to_the_five_line_staves_the_page_prints(rid):
     assert len(slots) == n_staves // n_sys, (
         f"{rid}: the lineup expands to {len(slots)} five-line staves but the "
         f"page prints {n_staves // n_sys} per system. Either a one-line "
-        f"percussion rule is missing `one_line: true`, or a lineup entry the "
+        f"percussion rule is missing `lines: 1`, or a lineup entry the "
         f"page prints as several staves is missing `printed_staves: N`.")
 
 
@@ -94,11 +94,13 @@ def test_one_line_entries_reconcile_with_the_prose_count():
         if not staves or not page.get("n_staves") or (page.get("n_systems") or 1) != 1:
             continue
         derivable = len(staves) - page["n_staves"]
-        flagged = sum(1 for s in staves if isinstance(s, dict) and s.get("one_line"))
+        flagged = sum(1 for s in staves if isinstance(s, dict)
+                      and int(s.get("lines") or 5) != 5)
         extra = sum(int(s.get("printed_staves") or 1) - 1
-                    for s in staves if isinstance(s, dict) and not s.get("one_line"))
+                    for s in staves if isinstance(s, dict)
+                    and int(s.get("lines") or 5) == 5)
         assert flagged - extra == derivable, (
-            f"{rid}: {flagged} entries flagged one_line and {extra} extra "
+            f"{rid}: {flagged} entries flagged lines:1 and {extra} extra "
             f"printed staves, but len(staves) - n_staves = {derivable}")
         checked += 1
     # ⚠️ a positive control: a zero here would pass vacuously
@@ -108,7 +110,7 @@ def test_one_line_entries_reconcile_with_the_prose_count():
 def test_a_one_line_staff_emits_no_part_and_an_extra_printed_staff_emits_one():
     m = _run_ledger()
     lineup = [{"name": "Fl", "parts": [0]},
-              {"name": "Becken", "parts": [1], "one_line": True},
+              {"name": "Becken", "parts": [1], "lines": 1},
               {"name": "Cembalo", "parts": [2], "printed_staves": 2},
               {"name": "Vln", "parts": [3]}]
     slots = m.expand_lineup(lineup)
