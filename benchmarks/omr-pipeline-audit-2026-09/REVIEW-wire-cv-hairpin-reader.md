@@ -243,3 +243,152 @@ of the 6 hairpin-free rows across two publishers**, inventing on one.
 - **Refusing to fudge the near-miss.** Reporting 62 and 57 against a documented
   59, with the discrepancy named, is the right call even though the explanation
   offered is weaker than the one available.
+
+---
+
+# FINAL — the arm, at `ee66a0dd`
+
+## VERDICT: **MERGE**, dormant, on the `OMR_ARC_RECLASS` terms. And the pairing diagnosis is **NOT established** — the row that dominates the result has a different cause.
+
+## 1. The pairing diagnosis — plausible, unproven, and refuted on the largest row
+
+**The bucket evidence cannot carry the inference.** musicdiff maps a wedge we
+invent and a wedge we miss to the *same* name. So `wrong crescendo` / `wrong
+diminuendo` rising tells you the count of **unpaired wedge objects** went up. It
+does not say why they are unpaired, and at least four causes produce the identical
+movement: a mispaired anchor, a wedge on the wrong staff, a false positive, and —
+the one nobody checked — **a wedge on a part that pairs with nothing at all.**
+
+Work the arithmetic on the biggest row. Truth 68, previously exported 0, so the
+bucket already stood at 68 deletions. Add 40 wedges:
+
+| what happened to them | bucket becomes |
+|---|--:|
+| paired correctly | 28 |
+| **mispaired anchors** | **108** |
+| **landed on unpaired parts** | **108** |
+
+**The mispairing and non-pairing hypotheses predict the same number.** They are
+separable only by asking whether the parts paired — which is not in the report.
+
+**I asked it, from committed artefacts:**
+
+```
+row                              truth found   system staff counts   _stitch_slots
+brahms-sym1-mvt1-317803-p2          68    40             [14, 13]    REFUSES
+bach-brandenburg3-mvt1-468678-p1     0     0  [12,3,3,3,1,2]         REFUSES
+(every other row)                                                    joins
+```
+
+⚠️ **`brahms-317803-p2` carries 68 of the 99 truth hairpins (69%) and 40 of the 57
+found (70%), and it is one of only two rows where `_stitch_slots` REFUSES.** On a
+refusing row the exporter emits per-system FRAGMENT parts, which pair with nothing
+in the truth — so on that row **no hairpin can cancel a truth hairpin no matter
+which note `_wedge_anchors` picks.** Every one of the 40 is charged as an insertion
+on top of 68 deletions that were already there, and the anchor rule is not in the
+causal path.
+
+**So the honest split:**
+
+- **The row that dominates the negative result is explained by a structural
+  refusal that has nothing to do with anchoring.** Anchors cannot be the cause
+  there.
+- **The anchor hypothesis stays live on the joining rows** — Dvořák p5 (4 of 7),
+  Mahler p3 (2 of 17), Mahler p2 (5 against a truth of 3) — and there
+  `_wedge_anchors`' documented blindness to `duration_beats` of the note still
+  sounding (`export.py:2695`, answering *"is it still sounding at the ink's end"*
+  by geometry) is a real candidate.
+
+**A00, applied in order:** (1) the comparison is valid — enforced, 0 of 20 rows
+differ in any non-hairpin detection, neither arm cached, wall clocks 1720/1664 s.
+(2) **Is the metric charging for something other than correctness? YES, on the
+dominant row, and that is where enquiry stops for now.** Steps 3 and 4 have not
+been reached.
+
+### The next task is NOT the anchors. It is one bucket split over the arm that already ran.
+
+No new arm, no re-transcription:
+
+> For each row that moved, split the delta by musicdiff bucket.
+> **`entire staff` / `entire measure` → the stitch refusal.**
+> **`wrong crescendo` / `wrong diminuendo` on a row whose parts JOINED → the anchors.**
+
+`benchmarks/omr-ned-2026-08/dump_ops.py` does this today and the arm's outputs
+are on disk. If the delta on the joining rows is small once Brahms is set aside,
+the reader is fine and the anchors are a minor item; if it is large, the anchor
+work is justified **and will have been justified on rows where it can actually
+act.** ⚠️ Either way `OMR_SLOT_STITCH` is queued for re-pricing against the
+page-normalised truth (backlog §A0b) — and this arm is now a second, independent
+reason that item matters, because it is the first thing measured to be *charged*
+by the refusal rather than merely structurally wrong.
+
+## 2. Merge — yes, dormant, with the negative number travelling with it
+
+The precedent is exact: `OMR_ARC_RECLASS` was built, measured on both families,
+found net-negative on one, and **shipped default-OFF with its figure recorded**.
+Same shape, same terms.
+
+Four reasons, the last specific to this module:
+
+1. **Flag-off identity is structural, not measured** — one call site
+   (`transcribe.py:5237`), inside one `if _cv_hairpins_enabled():` branch,
+   verified by AST. Merging dormant cannot change any output.
+2. **The measurement is the asset.** 96 hairpins where the detector finds zero;
+   precision 6 of 8 blank rows silent; validity enforced rather than asserted.
+3. **It is the only branch tonight that committed its own evidence.** Three
+   others left their numbers in prose. Burying the one artefact-backed result on
+   a branch is precisely how this project loses things.
+4. ⚠️ **The state this module was in IS the finding.** It sat built, measured and
+   imported by nothing, with a docstring reporting shipped results — which is what
+   put it in the ledger as UNREACHABLE. **Dormant-with-a-call-site is strictly
+   better than dormant-with-none**: a flag is discoverable and an unimported
+   module is not. Holding the branch restores the exact condition the ledger
+   entry was written about.
+
+**Two conditions:**
+
+- The negative result travels **in the flag's own docstring**, not only in the
+  benchmark: *11 rows worse (+1 to +37), 8 unchanged, 1 better; 96 recovered
+  against a detector that finds 0.* A future reader must meet both halves at the
+  same time.
+- The diagnosis is recorded as **OPEN**, with the Brahms confound named. Not
+  "the anchors are next" — that is the claim the bucket split has to earn.
+
+## 3. The two-scans-of-one-plate result — accepted, and it sharpens the rule further than stated
+
+Beethoven 984073 p4 and 575951 p4: same Litolff plate, same printed page, two
+scans; one invents a hairpin, the other is silent. Edition, era, publisher and
+plate are all held.
+
+**That is a stronger control than anything I produced for the row-is-the-unit
+argument**, and it changes the rule's justification rather than just supporting
+it. My version was *"an edition aggregate can hide opposite directions"* — an
+argument about aggregation. This is an argument about **identity**: two rows can
+share every attribute the corpus records and still differ, because the thing that
+varies is the raster, which is not an attribute the corpus records at all.
+
+⚠️ So the sharpened form: **the row is not merely the finest available unit, it is
+the only unit at which the input is held constant.** Any grouping above it —
+edition, publisher, era — pools inputs that differ in the one variable that
+demonstrably moved the answer. That applies to the hollow-notehead edition effect
+and to every future publisher-shaped claim on this corpus.
+
+## 4. The third silent zero — and what caught it is the generalisable part
+
+Three on one branch: the ink polarity (silent null on the wrong image), two
+vacuous tests, and now a results grid keyed `{row}-hpon.omr.json` against a
+harness writing `{row}.-hpon.omr.json` — every file missed, every count zero, and
+the table read *"the flag changed nothing"* with no gaps in it.
+
+**What caught it was a second column keyed differently that disagreed.** That is
+the transferable lesson and it is not "check your filenames":
+
+> A table with one keying has **no internal contradiction available**. Two columns
+> derived through independent keys give you one for free.
+
+It is the same principle as asserting on a schema rather than a value — the fault
+I shipped myself in round 2, where a probe read fields that did not exist and
+printed a clean constant table at exit 0. **Same failure, three different
+surfaces, in one night: the wrong image, the wrong assertion, the wrong key.**
+The common shape is that a null result is indistinguishable from a healthy one
+unless something independent is asked the same question.
