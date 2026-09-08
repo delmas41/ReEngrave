@@ -1606,11 +1606,27 @@ python3 -m tools.omr.label_contradiction out.json
 runs** (Beethoven 5 / Litolff 88pp: 110 of 973 labelled staff records; Brahms 1
 / Breitkopf 86pp: 48 of 1713): **138 (0.873) the EXPORT is wrong, 20 (0.127) the
 LABEL is, 0 both right.** The largest single population is 93 Beethoven staves
-printed `Tp.` and exported `Trumpet` — the `Tp.` defect diagnosed on
-`claude/agitated-bassi-e3a0ab` and not in main, worth 93 wrong `<part-name>`
-elements on one document, and invisible to everything standing (musicdiff does
-not score `<part-name>`, and the absent-instrument veto exempts a staff that
-speaks for itself, so all 93 are exempt BY RULE).
+printed `Tp.` and exported `Trumpet` — worth 93 wrong `<part-name>` elements on
+one document, and invisible to everything standing (musicdiff does not score
+`<part-name>`, and the absent-instrument veto exempts a staff that speaks for
+itself, so all 93 are exempt BY RULE).
+
+⚠️ **THIS PARAGRAPH SAID THE `Tp.` DEFECT WAS "diagnosed on
+`claude/agitated-bassi-e3a0ab` AND NOT IN MAIN". IT IS IN MAIN, and has been
+since 2026-09-06** — checked 2026-09-08 against the remote, not from memory:
+`tools/omr/tests/test_contextual_ambiguity_uniqueness.py` is present on
+`origin/main`, the guard's rationale comment stands in `contextual.py`, and the
+branch is **0 commits ahead of main and 282 behind** — fully contained, nothing
+to merge. The *fix* section above this one describes it as shipped, so the file
+contradicted itself for two days. **`fixed-then-kept-open-in-prose` again**, the
+documentation dual of detected-then-dropped, and the second instance recorded
+here after the accents claim. ⚠️ It cost more than a stale sentence: it named a
+branch as the place to go and get something, which is a work order.
+
+⚠️ **And the check that would have caught it is cheap.** A prose claim of the
+form *"X is on branch B and not in main"* is mechanically falsifiable —
+`git rev-list --count origin/main..origin/B` is 0 when it is false. It went
+unchecked because nobody re-asks a sentence they did not write.
 
 **It caught a 149-staff regression it was never told about.** On Brahms the
 count reads 44 with spans off, **167** under `OMR_SPAN_REFERENCE_FIT=off` with
