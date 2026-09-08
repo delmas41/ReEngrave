@@ -648,6 +648,215 @@ def _lily_staff_block(staff: dict[str, Any], indent: str = "    ") -> str:
     return "\n".join(lines)
 
 
+# ---------------------------------------------------------------------------
+# Staff grouping — the first migrated decision
+# ---------------------------------------------------------------------------
+#
+# Step 1 of `docs/target-architecture-2026-09-07.md`: move a MEASUREMENT to the
+# site that re-derives it.
+#
+# Both exporters decided staff grouping from `len(staves) == 2` — so a two-staff
+# orchestral extract became piano music, and a real grand staff printed on a
+# page with other staves got nothing. Meanwhile `group_index` — the bracket
+# block `staff_detector` assigned, the PAGE's own statement of family grouping,
+# needing no lexicon and no template — sat on the staff dict with no reader in
+# this file at all.
+#
+# ⚠️ **WHAT THE MEASUREMENT DOES AND DOES NOT LICENSE.** A bracket block of two
+# staves is NOT a grand staff: `2 Flöten` on two staves is one block and two
+# players, and Brahms 1 p.1 reads FIVE such blocks. So the block decides the
+# GROUPING and never the SYMBOL. A brace is still, and only, the whole-system
+# two-staff case — which is exactly the population the measurement cannot speak
+# about (below), so the two answers never contend.
+#
+# ⚠️ **ABSENCE IS THE COMMON CASE AND MUST BE VISIBLE.** Bracket blocks are
+# PRECISE AND UNDER-RECALLED — 22/22 precise, 22/39 recalled — and
+# `system_grouping._assign_groups` records a non-read as `group_index = 0` on
+# every staff of the system: a system it declined to partition is
+# indistinguishable from one it read as a single family. So a single-block
+# system counts as ABSENT here, not as "one group". Three dead carry dicts in
+# this codebase survived because *a `.get()` with a sound default is
+# indistinguishable from a lookup that fires and agrees*; that is what
+# `_StaffGroupRecord` exists to prevent. Every decision records which source it
+# used, and a fallback records WHY the measurement was unavailable.
+#
+# The record is written whether or not the flag is on, so the reach of the
+# change is measurable from a flag-OFF run.
+
+#: `<group-symbol>` / LilyPond context per grouping symbol.
+_GROUP_SYMBOL_CONTEXT = {"brace": "PianoStaff", "bracket": "StaffGroup"}
+
+#: A system with fewer than this many staves never has bracket evidence:
+#: `system_grouping._assign_groups` returns one group without looking. Mirrored
+#: here so the abstention is named rather than inferred from a zero.
+_MIN_STAVES_FOR_BRACKET_EVIDENCE = 3
+
+
+def _staff_groups_enabled() -> bool:
+    """`OMR_STAFF_GROUPS` — default OFF.
+
+    ON: a system whose staves state a bracket partition is grouped by that
+    partition (`<part-group>` with `<group-symbol>bracket</group-symbol>`,
+    `\\new StaffGroup` in LilyPond). OFF: the `len(staves) == 2` brace rule
+    alone, byte-identically.
+
+    The record in `result["staff_grouping"]` is written either way.
+    """
+    return os.environ.get("OMR_STAFF_GROUPS", "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def decide_staff_groups(
+    group_indices: list[int | None],
+    *,
+    scope: str,
+    enabled: bool | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Which runs of staves are bound together, and by which symbol.
+
+    The gathered key this decision reads is named in the signature and is the
+    only one: `group_indices`, one per staff of one system (or one per SLOT on
+    the stitched path), straight off the staff dicts. No raster, no identity,
+    no lexicon — so nothing here can launder an interpretation.
+
+    Returns `(groups, record)`.
+
+    `groups` is a list of `{"start", "stop", "symbol"}`, `stop` exclusive,
+    non-overlapping and in order. `record` says what was considered, what the
+    measurement would have answered, what the fallback would have answered,
+    which was applied, and — when the measurement was unavailable — why.
+    """
+    if enabled is None:
+        enabled = _staff_groups_enabled()
+    n = len(group_indices)
+
+    # The incumbent rule, kept intact as the fallback.
+    fallback = ([{"start": 0, "stop": 2, "symbol": "brace"}] if n == 2 else [])
+
+    blocks: list[list[int]] | None = None
+    absent_reason: str | None = None
+    if n < _MIN_STAVES_FOR_BRACKET_EVIDENCE:
+        # `_assign_groups` writes 0 for every staff without measuring anything.
+        absent_reason = "system_too_small_for_bracket_evidence"
+    elif any(g is None for g in group_indices):
+        absent_reason = "null_group_index"
+    elif len(set(group_indices)) < 2:
+        # An abstention and a read single family are the same bytes. Refuse.
+        absent_reason = "single_block"
+    else:
+        blocks = []
+        for i, g in enumerate(group_indices):
+            if i and g == group_indices[i - 1]:
+                blocks[-1].append(i)
+            else:
+                blocks.append([i])
+
+    measurement: list[dict[str, Any]] | None = None
+    if blocks is not None:
+        # A block of one staff is not a group; a block of the whole system is
+        # the system, and bracketing it says nothing the page did not already.
+        measurement = [
+            {"start": b[0], "stop": b[-1] + 1, "symbol": "bracket"}
+            for b in blocks if len(b) > 1 and len(b) < n
+        ]
+
+    use_measurement = enabled and measurement is not None
+    record = {
+        "scope": scope,
+        "n_staves": n,
+        "group_index": list(group_indices),
+        "blocks": ([len(b) for b in blocks] if blocks is not None else None),
+        "measurement": measurement,
+        "fallback": fallback,
+        "applied": "measurement" if use_measurement else "fallback",
+        "absent_reason": absent_reason,
+        "would_change": (measurement is not None and measurement != fallback),
+    }
+    return (measurement if use_measurement else fallback), record
+
+
+def _new_staff_grouping_record(result: dict[str, Any], exporter: str) -> None:
+    """Start a fresh grouping record on `result`. One per export call."""
+    result["staff_grouping"] = {
+        "flag": "OMR_STAFF_GROUPS",
+        "enabled": _staff_groups_enabled(),
+        "exporter": exporter,
+        "decisions": [],
+        "counts": {
+            "systems": 0,
+            "staves": 0,
+            "staves_group_index_null": 0,
+            "fact_present": 0,
+            "fact_absent": 0,
+            "absent_reasons": {},
+            "applied_measurement": 0,
+            "applied_fallback": 0,
+            "would_change": 0,
+            "groups_emitted": 0,
+        },
+    }
+
+
+def _record_staff_groups(
+    result: dict[str, Any], record: dict[str, Any], groups: list[dict[str, Any]],
+    **where: Any,
+) -> None:
+    """Append one decision to the record and roll it into the counts.
+
+    ⚠️ Every call lands in exactly one of `fact_present` / `fact_absent` and in
+    exactly one of `applied_measurement` / `applied_fallback`. A fallback also
+    increments a NAMED reason, so a silent fallback cannot occur: an absent fact
+    with no reason would leave the two totals disagreeing, which
+    `test_export_staff_groups.py` asserts on.
+    """
+    book = result.get("staff_grouping")
+    if book is None:                       # exporter called without a record
+        _new_staff_grouping_record(result, "unknown")
+        book = result["staff_grouping"]
+    entry = dict(record)
+    entry.update(where)
+    entry["groups"] = groups
+    book["decisions"].append(entry)
+    c = book["counts"]
+    c["systems"] += 1
+    c["staves"] += record["n_staves"]
+    c["staves_group_index_null"] += sum(
+        g is None for g in record["group_index"])
+    if record["measurement"] is None:
+        c["fact_absent"] += 1
+        reason = record["absent_reason"] or "UNRECORDED"
+        c["absent_reasons"][reason] = c["absent_reasons"].get(reason, 0) + 1
+    else:
+        c["fact_present"] += 1
+    c["applied_" + record["applied"]] += 1
+    c["would_change"] += int(record["would_change"])
+    c["groups_emitted"] += len(groups)
+
+
+def _group_starting_at(groups: list[dict[str, Any]], i: int) -> dict[str, Any] | None:
+    for g in groups:
+        if g["start"] == i:
+            return g
+    return None
+
+
+def staff_grouping_report(result: dict[str, Any]) -> str:
+    """One-screen summary of the last export's grouping decisions."""
+    book = result.get("staff_grouping")
+    if not book:
+        return "no staff-grouping record (no export run on this result)"
+    c = book["counts"]
+    return (
+        f"OMR_STAFF_GROUPS={'on' if book['enabled'] else 'off'} "
+        f"({book['exporter']}): {c['systems']} systems / {c['staves']} staves\n"
+        f"  fact PRESENT {c['fact_present']}   ABSENT {c['fact_absent']} "
+        f"{c['absent_reasons']}\n"
+        f"  applied: measurement {c['applied_measurement']}, "
+        f"fallback {c['applied_fallback']}\n"
+        f"  would_change {c['would_change']}   groups emitted {c['groups_emitted']}"
+    )
+
+
 def to_lilypond(result: dict[str, Any]) -> str:
     """Serialize a transcribe.py result to a LilyPond .ly source string.
 
@@ -662,6 +871,7 @@ def to_lilypond(result: dict[str, Any]) -> str:
     """
     _ensure_inferred_time_signatures(result)
     arbitrate_arcs_across_staves(result)
+    _new_staff_grouping_record(result, "lilypond")
     lines: list[str] = []
     lines.append('\\version "2.20.0"')
     lines.append("")
@@ -676,18 +886,30 @@ def to_lilypond(result: dict[str, Any]) -> str:
 
     system_blocks: list[str] = []
     for page in result.get("pages", []):
-        for sys_ in page.get("systems", []):
+        for sys_idx, sys_ in enumerate(page.get("systems", [])):
             staves = sys_.get("staves", [])
-            if len(staves) == 2:
-                # PianoStaff grouping
-                block_lines = ["  \\new PianoStaff <<"]
-                for staff in staves:
+            # The page's own bracket partition where it stated one, the
+            # `len(staves) == 2` brace rule where it did not — and the record
+            # says which, per system. See `decide_staff_groups`.
+            groups, rec = decide_staff_groups(
+                [st.get("group_index") for st in staves], scope="lilypond")
+            _record_staff_groups(result, rec, groups,
+                                 page_index=page.get("page_index"),
+                                 system_index=sys_idx)
+            i = 0
+            while i < len(staves):
+                g = _group_starting_at(groups, i)
+                if g is None:
+                    system_blocks.append(_lily_staff_block(staves[i], indent="  "))
+                    i += 1
+                    continue
+                ctx = _GROUP_SYMBOL_CONTEXT[g["symbol"]]
+                block_lines = [f"  \\new {ctx} <<"]
+                for staff in staves[g["start"]:g["stop"]]:
                     block_lines.append(_lily_staff_block(staff, indent="    "))
                 block_lines.append("  >>")
                 system_blocks.append("\n".join(block_lines))
-            else:
-                for staff in staves:
-                    system_blocks.append(_lily_staff_block(staff, indent="  "))
+                i = g["stop"]
 
     lines.append("\\score {")
     lines.append("  <<")
@@ -3394,6 +3616,25 @@ def _stitch_slots_by_slot(
     return slots, slot_systems
 
 
+def _slot_group_indices(
+    slots: list[list[dict[str, Any]]]
+) -> list[int | None]:
+    """One `group_index` per SLOT, or `None` where the systems do not agree.
+
+    A slot is one staff ordinal carried through every system it appears in, so
+    the page's bracket partition speaks about a slot only where every system
+    that shows the slot puts it in the same block. A system that abstained
+    writes `0` on every staff, which would silently flatten a partition another
+    system read — so a disagreement returns `None` for that slot and
+    `decide_staff_groups` records the whole system as ABSENT rather than voting.
+    """
+    out: list[int | None] = []
+    for slot in slots:
+        seen = {st.get("group_index") for st in slot}
+        out.append(seen.pop() if len(seen) == 1 else None)
+    return out
+
+
 def _is_fragmented(result: dict[str, Any]) -> bool:
     """Several systems that did NOT stitch into continuous parts."""
     systems = [s for page in result.get("pages", [])
@@ -3418,6 +3659,7 @@ def to_musicxml(result: dict[str, Any]) -> str:
     """
     _ensure_inferred_time_signatures(result)
     arbitrate_arcs_across_staves(result)
+    _new_staff_grouping_record(result, "musicxml")
     divisions = _compute_divisions(result)
 
     parts_xml: list[str] = []
@@ -3443,14 +3685,18 @@ def to_musicxml(result: dict[str, Any]) -> str:
             for system in page.get("systems", [])
             if system.get("staves")
         ]
-        is_piano = len(slots) == 2
-        if is_piano:
-            part_list.append(
-                "  <part-group type=\"start\" number=\"1\">\n"
-                "    <group-symbol>brace</group-symbol>\n"
-                "    <group-barline>yes</group-barline>\n"
-                "  </part-group>"
-            )
+        # Grouping over SLOTS: a slot is one staff ordinal carried through
+        # every system, so the page's bracket partition can only speak here
+        # where every system states the SAME one. It usually will — the
+        # ordinal join already refused where the systems disagree about staff
+        # count — but a system that abstained (all-zero) or was read
+        # differently must not have its partition imposed on the rest, so a
+        # disagreement is an ABSENCE with its own reason, not a vote.
+        slot_group_indices = _slot_group_indices(slots)
+        groups, rec = decide_staff_groups(
+            slot_group_indices, scope="musicxml/slots")
+        _record_staff_groups(result, rec, groups, stitched=True)
+        open_groups: list[tuple[int, int]] = []
         # Where each system's measures begin, so numbering runs on through the
         # piece rather than restarting per system.
         starts: list[int] = []
@@ -3459,6 +3705,16 @@ def to_musicxml(result: dict[str, Any]) -> str:
             starts.append(running)
             running += max(len(s.get("measures", [])) for s in system["staves"])
         for ordinal, slot in enumerate(slots):
+            g = _group_starting_at(groups, ordinal)
+            if g is not None:
+                pg_number += 1
+                part_list.append(
+                    f"  <part-group type=\"start\" number=\"{pg_number}\">\n"
+                    f"    <group-symbol>{g['symbol']}</group-symbol>\n"
+                    f"    <group-barline>yes</group-barline>\n"
+                    f"  </part-group>"
+                )
+                open_groups.append((g["stop"], pg_number))
             # Prefer the instrument the contextual pass named, as the
             # per-system path below does — a slot is the same staff on every
             # system, so any system's reading names the whole part.
@@ -3504,8 +3760,10 @@ def to_musicxml(result: dict[str, Any]) -> str:
                     + "\n".join(measures_xml)
                     + "\n  </part>"
                 )
-        if is_piano:
-            part_list.append("  <part-group type=\"stop\" number=\"1\"/>")
+            while open_groups and open_groups[-1][0] == ordinal + 1:
+                part_list.append(
+                    f"  <part-group type=\"stop\" number=\"{open_groups.pop()[1]}\"/>"
+                )
         return _score_partwise(result, part_list, parts_xml)
 
     # Reached either because the page holds ONE system (where a part is
@@ -3520,7 +3778,16 @@ def to_musicxml(result: dict[str, Any]) -> str:
             staves = sys_.get("staves", [])
             if not staves:
                 continue
+            # ⚠️ `is_piano` below decides ONLY the fragmented-row gate, which
+            # asks "is this a two-staff system" and nothing about grouping.
+            # The grouping question is `decide_staff_groups`'s.
             is_piano = len(staves) == 2
+            groups, rec = decide_staff_groups(
+                [st.get("group_index") for st in staves], scope="musicxml/system")
+            _record_staff_groups(result, rec, groups,
+                                 page_index=page.get("page_index"),
+                                 system_index=sys_idx)
+            open_groups_sys: list[tuple[int, int]] = []
             # "Fragmented row" pattern: OMR layout detector sometimes splits
             # a single melodic line on a page into many "staves" with one
             # measure each (typically vertically-stacked single-line music).
@@ -3639,15 +3906,17 @@ def to_musicxml(result: dict[str, Any]) -> str:
             sys_start_num = global_measure_num + 1
             sys_max_measures = max(len(s.get("measures", [])) for s in staves)
 
-            if is_piano:
-                pg_number += 1
-                part_list.append(
-                    f"  <part-group type=\"start\" number=\"{pg_number}\">\n"
-                    f"    <group-symbol>brace</group-symbol>\n"
-                    f"    <group-barline>yes</group-barline>\n"
-                    f"  </part-group>"
-                )
             for staff_idx_in_sys, staff in enumerate(staves):
+                g = _group_starting_at(groups, staff_idx_in_sys)
+                if g is not None:
+                    pg_number += 1
+                    part_list.append(
+                        f"  <part-group type=\"start\" number=\"{pg_number}\">\n"
+                        f"    <group-symbol>{g['symbol']}</group-symbol>\n"
+                        f"    <group-barline>yes</group-barline>\n"
+                        f"  </part-group>"
+                    )
+                    open_groups_sys.append((g["stop"], pg_number))
                 # Prefer the instrument the contextual pass named. Until it was
                 # wired into `transcribe` nothing here HAD a name to use, so
                 # every part came out as its own grid reference — the complaint
@@ -3681,12 +3950,15 @@ def to_musicxml(result: dict[str, Any]) -> str:
                         + "\n".join(measures_xml)
                         + "\n  </part>"
                     )
-            # After all staves in this piano system are listed, close
-            # the part-group.
-            if is_piano:
-                part_list.append(
-                    f"  <part-group type=\"stop\" number=\"{pg_number}\"/>"
-                )
+                # After every part of the group's last staff is listed, close
+                # it. Blocks are contiguous and non-overlapping, so a stack is
+                # exact and the innermost group always closes first.
+                while (open_groups_sys
+                       and open_groups_sys[-1][0] == staff_idx_in_sys + 1):
+                    part_list.append(
+                        f"  <part-group type=\"stop\" "
+                        f"number=\"{open_groups_sys.pop()[1]}\"/>"
+                    )
             global_measure_num += sys_max_measures
 
     return _score_partwise(result, part_list, parts_xml)
