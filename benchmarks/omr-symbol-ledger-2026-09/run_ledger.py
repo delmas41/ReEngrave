@@ -120,7 +120,7 @@ def run(pairs_path: Path, out_dir: Path, detail: str,
     rows_meta = load_rows()
 
     # ---- CONTROLS FIRST. Nothing below is quoted if these are not clean. ----
-    controls = {"identity": [], "cross_parser": []}
+    controls = {"identity": [], "cross_parser": [], "unbalanced": []}
     for p in pairs:
         for f in (p["pred"], p["truth"]):
             si = self_check_identity(f)
@@ -133,7 +133,6 @@ def run(pairs_path: Path, out_dir: Path, detail: str,
                     {"file": f, "n_mine": cc["n_mine"], "n_theirs": cc["n_theirs"],
                      "only_mine": cc["only_mine"][:3],
                      "only_theirs": cc["only_theirs"][:3]})
-    controls["ok"] = not controls["identity"] and not controls["cross_parser"]
     controls["files_checked"] = len(pairs) * 2
 
     all_rows = []
@@ -156,6 +155,14 @@ def run(pairs_path: Path, out_dir: Path, detail: str,
                            part_join=join, first_ref_measure=first,
                            expected_measures=expected)
         s = summarise(res)
+        # ⚠️ THE ACCOUNTING CONTROL, READ. `coverage_check` has always been
+        # computed and written to this file's own JSON, and nothing consumed
+        # it — so it reported `balanced=False` on 5 of 7 joined scan rows for
+        # as long as it existed and no run ever said so. Class C, in the
+        # instrument built to make the metric legible.
+        cov = res.coverage_check()
+        if not cov["balanced"]:
+            controls["unbalanced"].append({"row_id": rid, **cov})
         s["part_join_info"] = join_info
         s["window_confidence"] = window.get("confidence")
         if not skip_musicdiff:
@@ -177,6 +184,9 @@ def run(pairs_path: Path, out_dir: Path, detail: str,
               f"map/pred={pj.get('n_staves_map')}/{pj.get('n_pred_parts'):<3} "
               f"meas={s['measure_map']['status'][:4]:<4} "
               f"rows={tot:>5}  corresp={1 - oc.get('uncorresponded', 0)/tot:5.1%}")
+
+    controls["ok"] = (not controls["identity"] and not controls["cross_parser"]
+                      and not controls["unbalanced"])
 
     (out_dir / "ledger-rows.csv").write_text(rows_to_csv(all_rows))
 
@@ -253,8 +263,13 @@ def _pool(per_row: list[dict], all_rows: list) -> dict[str, Any]:
 
 def _print_pooled(p: dict[str, Any], controls: dict[str, Any]) -> None:
     print("\n" + "=" * 72)
-    print(f"CONTROLS  identity+cross-parser over {controls['files_checked']} files: "
+    print(f"CONTROLS  identity+cross-parser over {controls['files_checked']} files, "
+          f"and per-row symbol accounting: "
           f"{'CLEAN' if controls['ok'] else 'FAILED — nothing below may be quoted'}")
+    for u in controls.get("unbalanced", []):
+        print(f"  ⚠️ UNBALANCED {u['row_id']}: {u['truth_symbols_in']} truth "
+              f"symbols in, {u['truth_rows']} truth rows; {u['pred_symbols_in']} "
+              f"pred in, {u['pred_accounted']} accounted")
     print("=" * 72)
     tot = sum(p["outcomes"].values()) or 1
     print(f"\n{p['n_rows']} rows, {p['rows_with_a_resolved_part_join']} with a "

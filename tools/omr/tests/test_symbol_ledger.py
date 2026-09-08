@@ -340,9 +340,62 @@ class TestOutcomes(unittest.TestCase):
             truth_path=write(self.tmp, "t2.musicxml", truth),
             part_join=[PartJoin(0, (0, 1), "resolved")])
         notes = [r for r in res.rows if r.family == "note"]
-        self.assertEqual([r.outcome for r in notes], ["matched_exact"],
-                         "two flutes printing a2 are ONE notehead")
+        # ONE notehead is compared; the twin is ACCOUNTED, not discarded.
+        self.assertEqual(
+            sorted(r.outcome for r in notes),
+            ["absorbed_by_condensation", "matched_exact"],
+            "two flutes printing a2 are ONE notehead, and the second flute's "
+            "note still owns a row")
         self.assertTrue(all(r.condensed for r in notes))
+        self.assertTrue(res.coverage_check()["balanced"])
+
+    def test_a_condensed_staff_KEEPS_the_rest_it_actually_prints(self):
+        """⚠️ The regression that cost 1,050 invisible rests on 7 scan rows.
+
+        The old rule dropped every rest of a condensed staff on the ground
+        that "one part rests while the other plays: no rest is printed". Where
+        BOTH parts rest, one rest IS printed.
+        """
+        global _NAMES
+        _NAMES = ["Flute 1", "Flute 2"]
+        rest = '<note><rest/><duration>4</duration><type>whole</type></note>'
+        truth = _score(
+            f'<part id="P1">{_measure(1, rest, attrs=ATTRS)}</part>'
+            f'<part id="P2">{_measure(1, rest, attrs=ATTRS)}</part>')
+        _NAMES = ["Flauti"]
+        pred = _score(f'<part id="P1">{_measure(1, rest, attrs=ATTRS)}</part>')
+        res = build_ledger(
+            row_id="t",
+            pred_path=write(self.tmp, "p3.musicxml", pred),
+            truth_path=write(self.tmp, "t3.musicxml", truth),
+            part_join=[PartJoin(0, (0, 1), "resolved")])
+        rests = [r for r in res.rows if r.family == "rest"]
+        self.assertEqual(sorted(r.outcome for r in rests),
+                         ["absorbed_by_condensation", "matched_exact"],
+                         "both parts rest, so the staff prints one rest and we "
+                         "are scored on it")
+        self.assertTrue(res.coverage_check()["balanced"])
+
+    def test_a_condensed_staff_DROPS_a_rest_another_part_plays_through(self):
+        global _NAMES
+        _NAMES = ["Flute 1", "Flute 2"]
+        rest = '<note><rest/><duration>4</duration><type>whole</type></note>'
+        truth = _score(
+            f'<part id="P1">{_measure(1, _note("C", 5, 4, "whole"), attrs=ATTRS)}</part>'
+            f'<part id="P2">{_measure(1, rest, attrs=ATTRS)}</part>')
+        _NAMES = ["Flauti"]
+        pred = _score(
+            f'<part id="P1">{_measure(1, _note("C", 5, 4, "whole"), attrs=ATTRS)}</part>')
+        res = build_ledger(
+            row_id="t",
+            pred_path=write(self.tmp, "p4.musicxml", pred),
+            truth_path=write(self.tmp, "t4.musicxml", truth),
+            part_join=[PartJoin(0, (0, 1), "resolved")])
+        rests = [r for r in res.rows if r.family == "rest"]
+        self.assertEqual([r.outcome for r in rests],
+                         ["absorbed_by_condensation"],
+                         "flute 1 plays, so flute 2's rest is not printed")
+        self.assertTrue(res.coverage_check()["balanced"])
 
     def test_every_row_carries_a_traceable_address_in_the_csv(self):
         res = self._ledger(one_part_three_bars(("C", 5)), one_part_three_bars())

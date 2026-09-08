@@ -199,6 +199,12 @@ OUTCOMES = (
     "spurious",
     "uncorresponded",
     "ambiguous",
+    # ⚠️ A TRUTH symbol a CONDENSED staff does not print separately: the
+    # second voice of a unison, or a rest another part of the staff plays
+    # through. It is not a defect and it is not an error of ours — but it owns
+    # a row, so `coverage_check` can hold "every truth symbol owns exactly one
+    # row" as an invariant rather than an aspiration.
+    "absorbed_by_condensation",
 )
 
 UNCORRESPONDED_REASONS = (
@@ -861,9 +867,12 @@ class LedgerResult:
         }
 
 
-def _merge_truth_parts_symbols(per_part: list[list[Symbol]]) -> list[Symbol]:
+def _merge_truth_parts_symbols(
+        per_part: list[list[Symbol]],
+        playing: frozenset[float] = frozenset(),
+) -> tuple[list[Symbol], list[Symbol]]:
     """Several reference parts printed on ONE staff, as one onset-ordered list
-    with unisons collapsed.
+    with unisons collapsed. Returns `(merged, absorbed)`.
 
     The same modelling `training/measure_align.merge_truth_parts` makes and for
     the same reason: two flutes on one staff print `a2` as ONE notehead. ⚠️ It
@@ -872,6 +881,31 @@ def _merge_truth_parts_symbols(per_part: list[list[Symbol]]) -> list[Symbol]:
     does use pitch, and that is recorded: a condensed staff's unison collapse
     is a pitch-keyed decision on the truth side, stated here rather than
     hidden.
+
+    ⚠️⚠️ **EVERY SYMBOL THE MERGE REMOVES IS RETURNED IN `absorbed`, AND THE
+    CALLER GIVES IT A ROW.** It did not, until 2026-09-08, and
+    `coverage_check` was reporting `balanced=False` on 5 of 7 joined scan
+    rows — 1,771 truth symbols owning no row at all — while `run_ledger`
+    computed that verdict, wrote it to JSON and never read it. Absorption is
+    legitimate modelling; absorption that leaves no trace is the measure
+    going blank inside the instrument built to stop it.
+
+    ⚠️⚠️ **AND THE REST RULE WAS 98.5% WRONG.** It dropped every rest of every
+    condensed staff, on the stated ground that "one part rests while the other
+    plays: no rest is printed". True — but only when another part PLAYS. Where
+    every part of the staff rests, the engraver prints exactly one rest, and
+    that rest is on the page for us to read. Measured over the 7 joined
+    scan-gate rows: **1,050 of the 1,066 absorbed rests are the all-parts-rest
+    case** and only 16 are the case the rule was written for. So a rest is
+    dropped only at an onset where some part of this staff has a NOTE, and
+    otherwise kept, collapsed to one.
+
+    ⚠️ `playing` MUST BE SUPPLIED BY THE CALLER and cannot be derived here:
+    `truth_by` is keyed by FAMILY, so the `rest` cell handed to this function
+    holds only rests and the notes that decide the question are in a different
+    cell. Deriving it locally looked right and kept every rest, including the
+    16 the rule is genuinely for — caught by
+    `test_a_condensed_staff_DROPS_a_rest_another_part_plays_through`.
     """
     if len(per_part) == 1:
         # ⚠️ DOCUMENT ORDER, NOT SORTED. Sorting a single part by pitch was the
@@ -879,17 +913,21 @@ def _merge_truth_parts_symbols(per_part: list[list[Symbol]]) -> list[Symbol]:
         # members relative to the same file's own document order, so `ord` and
         # `onset` propose one pairing and `pitch` another, and a file scored
         # against ITSELF came out `ambiguous` on every double stop.
-        return list(per_part[0])
+        return list(per_part[0]), []
     seen: set[tuple[float, str, str]] = set()
     merged: list[Symbol] = []
+    absorbed: list[Symbol] = []
     for syms in per_part:
         for s in syms:
-            if s.family == "rest":
-                # one part rests while the other plays: no rest is printed
+            o = round(s.onset_ql, _ONSET_Q)
+            if s.family == "rest" and o in playing:
+                # another part of this staff plays here: no rest is printed
+                absorbed.append(s)
                 continue
-            k = (round(s.onset_ql, _ONSET_Q), s.family,
+            k = (o, s.family,
                  str(s.attrs.get("pitch") or _key_attr(s, s.family)))
             if k in seen:
+                absorbed.append(s)
                 continue
             seen.add(k)
             merged.append(s)
@@ -901,7 +939,7 @@ def _merge_truth_parts_symbols(per_part: list[list[Symbol]]) -> list[Symbol]:
     # every row from a condensed staff is flagged `condensed=True` and its
     # figures are reported apart.
     merged.sort(key=lambda s: (s.onset_ql, s.family))
-    return merged
+    return merged, absorbed
 
 
 def build_ledger(*, row_id: str, pred_path: str | Path, truth_path: str | Path,
@@ -1023,10 +1061,21 @@ def build_ledger(*, row_id: str, pred_path: str | Path, truth_path: str | Path,
             continue
         pj = resolved[ppart]
         per_part = [truth_by.get((tp, tmeasure, family), []) for tp in pj.truth_parts]
-        tsyms = _merge_truth_parts_symbols([x for x in per_part])
+        playing = frozenset(
+            round(n.onset_ql, _ONSET_Q)
+            for tp in pj.truth_parts
+            for n in truth_by.get((tp, tmeasure, "note"), []))
+        tsyms, absorbed = _merge_truth_parts_symbols(
+            [x for x in per_part], playing=playing)
         for x in per_part:
             for s in x:
                 seen_truth.add(s.uid)
+        for s in absorbed:
+            _row(s, "absorbed_by_condensation", measure=tmeasure,
+                 measure_map=measure_status, condensed=True,
+                 reason=("a rest another part of this staff plays through"
+                         if s.family == "rest"
+                         else "a unison or duplicate the staff prints once"))
         if not tsyms and not psyms:
             continue
         _account_cell(rows, _row, tsyms, psyms, family, tmeasure,

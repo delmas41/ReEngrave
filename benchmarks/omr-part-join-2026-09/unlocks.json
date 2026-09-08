@@ -1,0 +1,121 @@
+[
+ {
+  "row_id": "mahler-sym5-mvt1-local-p3",
+  "strict": {
+   "rows": 1413,
+   "uncorresponded": 1413,
+   "assessable": 0,
+   "balanced": true,
+   "coverage": {
+    "truth_symbols_in": 928,
+    "pred_symbols_in": 485,
+    "truth_rows": 928,
+    "pred_rows_own": 485,
+    "pred_as_partner": 0,
+    "pred_accounted": 485,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "outcomes": {
+    "uncorresponded": 1413
+   },
+   "attributes_wrong": {}
+  },
+  "relaxed": {
+   "rows": 1119,
+   "uncorresponded": 60,
+   "assessable": 1059,
+   "balanced": true,
+   "coverage": {
+    "truth_symbols_in": 928,
+    "pred_symbols_in": 485,
+    "truth_rows": 928,
+    "pred_rows_own": 191,
+    "pred_as_partner": 294,
+    "pred_accounted": 485,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "outcomes": {
+    "absorbed_by_condensation": 291,
+    "ambiguous": 106,
+    "missing": 226,
+    "matched_attribute_error": 138,
+    "spurious": 142,
+    "matched_exact": 156,
+    "uncorresponded": 60
+   },
+   "attributes_wrong": {
+    "rest.type": 50,
+    "note.pitch": 22,
+    "note.duration_ql": 12,
+    "note.type": 10,
+    "key.fifths": 5,
+    "note.accidental": 4,
+    "note.dots": 2,
+    "rest.duration_ql": 2,
+    "time.beats": 1,
+    "time.beat_type": 1,
+    "slur.endpoint": 1
+   }
+  }
+ },
+ {
+  "row_id": "bach-brandenburg3-mvt1-468678-p1",
+  "strict": {
+   "rows": 2469,
+   "uncorresponded": 2469,
+   "assessable": 0,
+   "balanced": true,
+   "coverage": {
+    "truth_symbols_in": 1052,
+    "pred_symbols_in": 1417,
+    "truth_rows": 1052,
+    "pred_rows_own": 1417,
+    "pred_as_partner": 0,
+    "pred_accounted": 1417,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "outcomes": {
+    "uncorresponded": 2469
+   },
+   "attributes_wrong": {}
+  },
+  "relaxed": {
+   "rows": 2023,
+   "uncorresponded": 177,
+   "assessable": 1846,
+   "balanced": true,
+   "coverage": {
+    "truth_symbols_in": 1052,
+    "pred_symbols_in": 1417,
+    "truth_rows": 1052,
+    "pred_rows_own": 971,
+    "pred_as_partner": 446,
+    "pred_accounted": 1417,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "outcomes": {
+    "matched_exact": 83,
+    "matched_attribute_error": 363,
+    "ambiguous": 512,
+    "spurious": 521,
+    "missing": 367,
+    "uncorresponded": 177
+   },
+   "attributes_wrong": {
+    "note.pitch": 12,
+    "note.duration_ql": 12,
+    "note.type": 12,
+    "key.fifths": 8,
+    "clef.clef": 4
+   }
+  }
+ }
+]

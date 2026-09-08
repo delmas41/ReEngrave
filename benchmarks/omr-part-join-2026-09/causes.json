@@ -1,0 +1,238 @@
+{
+ "rows": [
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p1",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 12,
+   "n_pred": 12,
+   "n_staves": 12,
+   "n_systems": 1,
+   "uncorresponded": 0,
+   "rows": 622
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p2",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 11,
+   "n_pred": 11,
+   "n_staves": 22,
+   "n_systems": 2,
+   "uncorresponded": 0,
+   "rows": 1859
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p3",
+   "resolved": false,
+   "cause": "A_stitch_refused",
+   "n_map": 11,
+   "n_pred": 19,
+   "n_staves": 19,
+   "n_systems": 2,
+   "uncorresponded": 1903,
+   "rows": 1903
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-984073-p4",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 11,
+   "n_pred": 11,
+   "n_staves": 22,
+   "n_systems": 2,
+   "uncorresponded": 0,
+   "rows": 1923
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p1",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 12,
+   "n_pred": 12,
+   "n_staves": 12,
+   "n_systems": 1,
+   "uncorresponded": 0,
+   "rows": 617
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p2",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 11,
+   "n_pred": 11,
+   "n_staves": 22,
+   "n_systems": 2,
+   "uncorresponded": 0,
+   "rows": 1716
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p3",
+   "resolved": false,
+   "cause": "A_stitch_refused",
+   "n_map": 11,
+   "n_pred": 19,
+   "n_staves": 19,
+   "n_systems": 2,
+   "uncorresponded": 1994,
+   "rows": 1994
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1-575951-p4",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 11,
+   "n_pred": 11,
+   "n_staves": 22,
+   "n_systems": 2,
+   "uncorresponded": 35,
+   "rows": 2014
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p5",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 15,
+   "n_pred": 15,
+   "n_staves": 15,
+   "n_systems": 1,
+   "uncorresponded": 0,
+   "rows": 469
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p6",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 15,
+   "n_pred": 15,
+   "n_staves": 15,
+   "n_systems": 1,
+   "uncorresponded": 0,
+   "rows": 757
+  },
+  {
+   "row_id": "dvorak-sym9-mvt1-405834-p7",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 15,
+   "n_pred": 15,
+   "n_staves": 30,
+   "n_systems": 2,
+   "uncorresponded": 0,
+   "rows": 1769
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p1",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 14,
+   "n_pred": 14,
+   "n_staves": 14,
+   "n_systems": 1,
+   "uncorresponded": 17,
+   "rows": 1278
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p2",
+   "resolved": false,
+   "cause": "A_stitch_refused",
+   "n_map": 14,
+   "n_pred": 27,
+   "n_staves": 27,
+   "n_systems": 2,
+   "uncorresponded": 3040,
+   "rows": 3040
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p3",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 14,
+   "n_pred": 14,
+   "n_staves": 28,
+   "n_systems": 2,
+   "uncorresponded": 0,
+   "rows": 1605
+  },
+  {
+   "row_id": "brahms-sym1-mvt1-317803-p4",
+   "resolved": true,
+   "cause": "-",
+   "n_map": 14,
+   "n_pred": 14,
+   "n_staves": 28,
+   "n_systems": 2,
+   "uncorresponded": 0,
+   "rows": 2460
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p2",
+   "resolved": false,
+   "cause": "D_no_lineup",
+   "n_map": 0,
+   "n_pred": 17,
+   "n_staves": 17,
+   "n_systems": 1,
+   "uncorresponded": 771,
+   "rows": 771
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p3",
+   "resolved": false,
+   "cause": "B_undetectable_staves",
+   "n_map": 15,
+   "n_pred": 13,
+   "n_staves": 13,
+   "n_systems": 1,
+   "uncorresponded": 1420,
+   "rows": 1420
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p4",
+   "resolved": false,
+   "cause": "B_undetectable_staves",
+   "n_map": 21,
+   "n_pred": 18,
+   "n_staves": 18,
+   "n_systems": 1,
+   "uncorresponded": 1889,
+   "rows": 1889
+  },
+  {
+   "row_id": "mahler-sym5-mvt1-local-p5",
+   "resolved": false,
+   "cause": "B_undetectable_staves",
+   "n_map": 21,
+   "n_pred": 17,
+   "n_staves": 17,
+   "n_systems": 1,
+   "uncorresponded": 1506,
+   "rows": 1506
+  },
+  {
+   "row_id": "bach-brandenburg3-mvt1-468678-p1",
+   "resolved": false,
+   "cause": "C_lineup_arity",
+   "n_map": 11,
+   "n_pred": 12,
+   "n_staves": 24,
+   "n_systems": 2,
+   "uncorresponded": 2469,
+   "rows": 2469
+  }
+ ],
+ "mass": {
+  "A_stitch_refused": 6937,
+  "D_no_lineup": 771,
+  "B_undetectable_staves": 4815,
+  "C_lineup_arity": 2469
+ },
+ "rows_per_cause": {
+  "A_stitch_refused": 3,
+  "D_no_lineup": 1,
+  "B_undetectable_staves": 3,
+  "C_lineup_arity": 1
+ },
+ "pooled_part_unresolved": 14992,
+ "ledger": "benchmarks/omr-symbol-ledger-2026-09/out/ledger-summary.json"
+}
