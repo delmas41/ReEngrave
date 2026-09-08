@@ -274,13 +274,16 @@ is what makes the tenth gap unrepeatable. Both tables carry a staleness test.
 
 ### What the old list was actually seeing
 
+On the same committed 11-work pool:
+
 | | count | which |
 |---|--:|---|
-| old allow-list reported | 5 | `bar-style`, `barline`, `lyric`, `metronome`, `stem` — and `bar-style` was `barline` counted twice, which rollup now folds |
-| it was **blind** to | 15 | `ornaments`, `transpose`, `staff`, `staves`, `grace`†, `unpitched`†, `spiccato`, `detached-legato`, `display-step`, `display-octave`, `offset`, `normal-type`, `tuplet-actual`, `tuplet-normal`, + the 3 bookkeeping |
+| the old allow-list reported | **5** | `bar-style`, `barline`, `lyric`, `metronome`, `stem` — and `bar-style` was `barline` counted twice, which the rollup now folds |
+| it was **blind** to | **15** | `ornaments`, `transpose`, `staff`, `staves`, `spiccato`, `detached-legato`, `display-step`, `display-octave`, `offset`, `normal-type`, `tuplet-actual`, `tuplet-normal`, and the three bookkeeping (`print`, `sound`, `staff-details`) |
 
-† `grace` and `unpitched` are gaps on the **scan** truths; the engraved pool
-does not print them.
+⚠️ Two more, `grace` (24) and `unpitched` (14), are gaps on the **scan**-derived
+truth and are absent from the engraved pool — which is what forced the
+`stale_entries` redefinition below.
 
 ### The fourteen new `KNOWN_GAPS` entries are the backlog, not a suppression list
 

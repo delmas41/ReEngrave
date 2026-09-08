@@ -306,6 +306,13 @@ def notation_index(truth_xml: str) -> dict[str, TruthElement]:
 
     Namespaces are stripped, and a document with no `<measure>` yields nothing —
     which `Survey.incomplete` and the caller's own emptiness checks catch.
+
+    ⚠️ Only the TRUTH side is parsed. Our side stays a regex count
+    (`element_counts`), because the tests build a broken export on purpose and
+    a parser would raise on exactly the input this check exists to describe. A
+    truth that does not parse raises here rather than producing a quiet partial
+    answer — a corrupt truth invalidates the comparison and musicdiff would
+    refuse it too.
     """
     root = ET.fromstring(truth_xml)
     found: dict[str, TruthElement] = {}
