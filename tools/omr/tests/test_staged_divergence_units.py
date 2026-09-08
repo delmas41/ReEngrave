@@ -66,7 +66,7 @@ class TestTheAdapterCannotManufactureAgreement:
 # ─── the two Step-2 gaps: invisibility, and no ranking ──────────────────────
 
 from tools.omr.staged.record import (           # noqa: E402
-    Kind, Log, Outcome, Subject, Verdict,
+    Candidate, Kind, Log, Outcome, Subject, Verdict,
 )
 from tools.omr.staged import record as R        # noqa: E402
 
@@ -120,6 +120,18 @@ class TestAStagedVerdictWithNoLegacyCounterpartIsVISIBLE:
         c = self._fixture()["coverage"]
         assert c["compared"] == ["clef"]
         assert set(c["staged_not_extracted"]) == {"staff_group", "glyph_owner"}
+
+    def test_extractable_but_silent_is_NOT_reported_as_missing_code(self):
+        """⚠️ Two different facts that look identical -- both are an absent
+        key. `meter` IS extractable; on Brahms 1 p2 it was reported "not
+        extracted" because that page's systems carried `time_signature: None`,
+        which sends a reader looking for code that is already there."""
+        s0, sysA = R.staff(0, 0, 0), R.system(0, 0)
+        log = _log_with([(Q.METER, sysA, (4, 4), Outcome.DECIDED, []),
+                         (Q.CLEF, s0, "treble", Outcome.DECIDED, [])])
+        c = P.divergence(log, {Q.CLEF: {s0.to_key(): "treble"}})["coverage"]
+        assert Q.METER in c["extractable_but_legacy_silent"]
+        assert Q.METER not in c["staged_not_extracted"]
 
     def test_summarised_not_emitted_as_rows(self):
         """⚠️ `duration` decides 113 subjects on ONE page and `glyph_owner` 60.
@@ -194,3 +206,71 @@ class TestADivergenceIsTraceableToWhatCausedIt:
         log = _log_with([(Q.CLEF, s0, "bass", Outcome.DECIDED, [])])
         d = P.divergence(log, {Q.CLEF: {s0.to_key(): "treble"}})
         assert d["ranked"][0]["basis"] is None
+
+
+class TestANarrowingIsNotADisagreement:
+    """⚠️ LIVE DEFECT, found by the first multi-system run. `divergence`
+    special-cased ABSTAINED only, so a NARROWED verdict -- whose `value` is
+    None by construction -- fell through to the comparison and read DIFFER
+    against whatever legacy decided. On Brahms 1 p2 that was 4 of 16
+    "disagreements", every one a clef narrowed to {treble, bass} with support
+    3.0 each, and legacy's answer INSIDE the set.
+
+    This is the collapse `Outcome.NARROWED` exists to prevent, one stage later:
+    D15 warns against resolving a narrowing by taking candidates[0]; this
+    resolved it by calling it wrong."""
+
+    def _narrowed(self, legacy_value):
+        s0 = R.staff(0, 0, 0)
+        log = Log()
+        log.record(Verdict(
+            id="vrd:000001", subject=s0, quantity=Q.CLEF,
+            outcome=Outcome.NARROWED, value=None, decider="d",
+            reason="margin_below_floor",
+            # ⚠️ REAL `Candidate` objects, not dicts. The first draft of this
+            # fixture used dicts, the code under test called `.get("value")`,
+            # the suite was green -- and it raised AttributeError on the first
+            # real page, because the pipeline carries dataclasses and only
+            # serialisation makes them dicts. A fixture of the wrong shape
+            # tests the wrong code.
+            candidates=(Candidate(value="treble", support=3.0),
+                        Candidate(value="bass", support=3.0))))
+        return P.divergence(log, {Q.CLEF: {s0.to_key(): legacy_value}})
+
+    def test_it_is_not_counted_as_a_disagreement(self):
+        d = self._narrowed("treble")
+        assert d["counts"][P.DIFFER] == 0
+        assert d["counts"][P.NEW_NARROWING] == 1
+
+    def test_legacy_inside_the_set_stays_OUT_of_the_ranked_list(self):
+        assert self._narrowed("treble")["ranked"] == []
+
+    def test_the_candidates_are_reported_not_discarded(self):
+        row = [r for r in self._narrowed("treble")["rows"]][0]
+        assert row["staged"]["candidates"] == ["treble", "bass"]
+        assert row["staged"]["legacy_in_candidates"] is True
+
+    def test_legacy_OUTSIDE_the_set_IS_a_disagreement(self):
+        """The other half. "It is treble or bass" against a legacy 'alto' is
+        the two paths genuinely differing, and must not be excused."""
+        d = self._narrowed("alto")
+        assert d["ranked"], "a narrowing that excludes legacy's answer differs"
+        assert d["ranked"][0]["staged"]["legacy_in_candidates"] is False
+
+    def test_the_membership_test_goes_THROUGH_the_unit_adapter(self):
+        """A narrowed key signature's candidates are ints and legacy's value is
+        a dict, so a raw `in` would report every one of them outside the set --
+        the same defect `be76d961` fixed for the decided rows."""
+        s0 = R.staff(0, 0, 0)
+        log = Log()
+        log.record(Verdict(
+            id="vrd:000001", subject=s0, quantity=Q.KEY_SIGNATURE,
+            outcome=Outcome.NARROWED, value=None, decider="d", reason="r",
+            candidates=(Candidate(value=-3, support=1.0),
+                        Candidate(value=2, support=1.0))))
+        d = P.divergence(log, {Q.KEY_SIGNATURE: {s0.to_key(): {
+            "sharps": 0, "flats": 3, "alterations": {}}}})
+        row = d["rows"][0]
+        assert row["staged"]["legacy_in_candidates"] is True, \
+            "3 flats IS -3; a raw comparison would have missed it"
+        assert d["ranked"] == []

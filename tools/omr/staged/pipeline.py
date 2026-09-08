@@ -251,6 +251,20 @@ LEGACY_ONLY = "legacy_only"
 #: NOT folded into DIFFER -- see `_canonical`.
 NOT_COMPARABLE = "not_comparable"
 
+#: A staged verdict that NARROWED -- "it is one of these, and I cannot choose".
+#:
+#: ⚠️ NOT A DISAGREEMENT, and reporting it as one was a live defect until
+#: 2026-09-08. `divergence` special-cased ABSTAINED only, so a NARROWED verdict
+#: (whose `value` is None by construction) fell through to the comparison and
+#: read DIFFER against whatever legacy decided. On Brahms 1 p2 that was 4 of
+#: 16 "disagreements", every one of them a clef narrowed to {treble, bass}
+#: with support 3.0 each -- and legacy's answer INSIDE the candidate set.
+#:
+#: The collapse `Outcome.NARROWED` exists to prevent, arriving one stage later:
+#: ASSUMPTIONS D15 warns against resolving a narrowing by taking candidates[0];
+#: this resolved it by calling it wrong.
+NEW_NARROWING = "new_narrowing"
+
 #: The mirror of `LEGACY_ONLY`: a staged verdict the legacy extractor carries
 #: no counterpart for, so the comparison loop never reached it.
 #:
@@ -384,11 +398,21 @@ def _coverage(log: Log, legacy: Dict[str, Any]) -> Dict[str, Any]:
     vocabularies makes "the extractor does not carry this" a fact on the
     record rather than something a reader has to notice.
     """
+    from .legacy import EXTRACTED_QUANTITIES
+
     staged = sorted({v.quantity for v in log.all_verdicts()})
     old = sorted(legacy)
+    missing = set(staged) - set(old)
+    # ⚠️ TWO DIFFERENT FACTS, and they look identical in the output -- both are
+    # just an absent key. `meter` is EXTRACTABLE and was reported "not
+    # extracted" on Brahms 1 p2 because that page's systems carried
+    # `time_signature: None`, which would have sent a reader looking for
+    # missing code. Split them.
     return {"legacy_quantities": old, "staged_quantities": staged,
             "compared": sorted(set(old) & set(staged)),
-            "staged_not_extracted": sorted(set(staged) - set(old)),
+            "staged_not_extracted": sorted(missing - EXTRACTED_QUANTITIES),
+            "extractable_but_legacy_silent": sorted(
+                missing & EXTRACTED_QUANTITIES),
             "legacy_not_decided": sorted(set(old) - set(staged))}
 
 
@@ -407,8 +431,8 @@ def divergence(log: Log, legacy: Dict[str, Any]) -> Dict[str, Any]:
     """
     rows: List[Dict[str, Any]] = []
     counts: Dict[str, int] = {AGREE: 0, DIFFER: 0, NEW_ABSTENTION: 0,
-                              NEW_DECISION: 0, LEGACY_ONLY: 0,
-                              NOT_COMPARABLE: 0}
+                              NEW_NARROWING: 0, NEW_DECISION: 0,
+                              LEGACY_ONLY: 0, NOT_COMPARABLE: 0}
 
     for quantity, by_subject in sorted(legacy.items()):
         for subject_key, old in sorted(by_subject.items()):
@@ -420,6 +444,28 @@ def divergence(log: Log, legacy: Dict[str, Any]) -> Dict[str, Any]:
             elif v.outcome is Outcome.ABSTAINED:
                 outcome = NEW_ABSTENTION
                 new = None
+            elif v.outcome is Outcome.NARROWED:
+                # ⚠️ A narrowing is only a DISAGREEMENT if legacy's answer is
+                # not among the candidates. "It is treble or bass" against a
+                # legacy 'treble' is the staged path declining to choose, and
+                # one of its choices being right; against a legacy 'alto' it
+                # is the two paths genuinely differing. Recording both as one
+                # outcome would hide the distinction the state exists for.
+                # ⚠️ `Verdict.candidates` holds `Candidate` DATACLASSES at
+                # runtime and dicts only once serialised. The first cut wrote
+                # `c.get("value")`, whose unit test passed because the FIXTURE
+                # used dicts -- green on a shape the pipeline never produces,
+                # and it died on the first real page. Accept both.
+                cands = [getattr(c, "value", None) if not isinstance(c, dict)
+                         else c.get("value") for c in (v.candidates or [])]
+                inside = False
+                for c in cands:
+                    lc, sc, ok = _canonical(quantity, old, c)
+                    if ok and lc == sc:
+                        inside = True
+                        break
+                outcome = NEW_NARROWING
+                new = {"candidates": cands, "legacy_in_candidates": inside}
             elif old is None:
                 outcome = NEW_DECISION
                 new = v.value
@@ -478,9 +524,17 @@ def divergence(log: Log, legacy: Dict[str, Any]) -> Dict[str, Any]:
     # two paths genuinely say different things -- an abstention is a separate
     # column on purpose (see the docstring) and does not belong in a list of
     # disagreements.
-    ranked = sorted(
-        (r for r in rows if r["outcome"] in (DIFFER, NOT_COMPARABLE)),
-        key=lambda r: (-r["staves_touched"], r["quantity"], r["subject"]))
+    def _is_disagreement(r: Dict[str, Any]) -> bool:
+        if r["outcome"] in (DIFFER, NOT_COMPARABLE):
+            return True
+        if r["outcome"] == NEW_NARROWING:
+            st = r.get("staged") or {}
+            return not st.get("legacy_in_candidates", False)
+        return False
+
+    ranked = sorted((r for r in rows if _is_disagreement(r)),
+                    key=lambda r: (-r["staves_touched"], r["quantity"],
+                                   r["subject"]))
 
     return {"counts": counts, "rows": rows, "ranked": ranked,
             "staged_only": staged_only,

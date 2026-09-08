@@ -27,6 +27,20 @@ from . import record as R
 from .record import Q, Subject
 
 
+#: Every quantity `extract` is CAPABLE of emitting.
+#:
+#: ⚠️ Needed because "the extractor carries no code for this" and "legacy
+#: decided nothing here on this page" are different facts that look identical
+#: in the output -- both are simply an absent key. On Brahms 1 p2 the coverage
+#: report listed `meter` as not extracted, which is false: `extract` puts it,
+#: and that page's systems carried `time_signature: None`. A reader would have
+#: gone looking for missing code.
+EXTRACTED_QUANTITIES: frozenset[str] = frozenset({
+    Q.SYSTEM_STAFF_COUNT, Q.SYSTEM_MEMBERSHIP, Q.STAFF_ORDINAL, Q.CLEF,
+    Q.KEY_SIGNATURE, Q.INSTRUMENT, Q.SLOT_INDEX, Q.MEASURE_PARTITION, Q.METER,
+})
+
+
 def _system_local(staves: List[dict]) -> Dict[int, int]:
     """Page-wide staff index -> index within its system.
 
