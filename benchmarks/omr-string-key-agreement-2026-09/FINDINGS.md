@@ -37,10 +37,24 @@ would matter, and a head-only test cannot see it.
     agrees                  142
     DISAGREES                 7
 
-⚠️ **COVERAGE IS THE HEADLINE CAVEAT.** Only 149 of 1745 files carry ≥2
-resolvable string parts; the rest are solo/chamber or their part names do not
-resolve through `instruments.lookup`. This is a measurement over 149 scores,
-not over the library.
+⚠️ **COVERAGE, characterised rather than guessed.** Only 149 of 1745 files
+carry ≥2 resolvable string parts. The first wording of this paragraph implied
+the rest were partly lexicon failures; measured, they are not:
+
+    solo_or_duo (<=2 parts)          1095
+    multi-part, <2 strings resolved   501
+    >=2 string parts (SCORED)         149
+
+The 501 are dominated by **SATB choral works** — `Alto` 425, `Tenor` 424,
+`Bass` 424, `Soprano` 423 — i.e. the library's Bach chorale holdings, which
+have no string parts to disagree. So the exclusions are overwhelmingly
+LEGITIMATE, and 149 is close to the library's whole orchestral subset rather
+than an arbitrary tenth of it. **That strengthens the reading**: it is 142 of
+149 orchestral scores, not 142 of 1745 with 1596 unexplained.
+
+⚠️ One genuine unknown remains: **164 part-name occurrences are the EMPTY
+STRING**, which resolve to nothing and are invisible to this test. Unquantified
+as files.
 
 ⚠️ **A disagreement is not automatically a falsification** — it can be genuine
 bitonality, scordatura, or an encoding artefact. All seven are printed with
