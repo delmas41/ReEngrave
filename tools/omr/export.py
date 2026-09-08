@@ -426,6 +426,12 @@ def _lily_event(event: dict[str, Any],
     artic_suffix = "".join(_LILY_ARTICULATION[k]
                            for k in (event.get("articulations") or [])
                            if k in _LILY_ARTICULATION)
+    # Ornaments attach the same way and sit beside the articulations. Tremolo
+    # is not among them by design — see `_LILY_ORNAMENT`.
+    ornament_suffix = "".join(
+        _LILY_ORNAMENT[k] for k in
+        ((o or {}).get("kind") for o in (event.get("ornaments") or []))
+        if k in _LILY_ORNAMENT)
     # `\fermata` is an articulation in LilyPond and attaches to a rest exactly
     # as it does to a note, which is the case that matters on an orchestral
     # page — the mark usually sits over a whole-bar rest.
@@ -458,9 +464,11 @@ def _lily_event(event: dict[str, Any],
         return f"r{lily_suffix}{dot_str}"  # fallback if all pitches unparsable
     if len(pitches) == 1:
         return (f"{pitches[0]}{lily_suffix}{dot_str}{tie_suffix}"
-                f"{artic_suffix}{fermata_suffix}{slur_suffix}{wedge_suffix}")
+                f"{artic_suffix}{ornament_suffix}{fermata_suffix}"
+                f"{slur_suffix}{wedge_suffix}")
     return (f"<{' '.join(pitches)}>{lily_suffix}{dot_str}{tie_suffix}"
-            f"{artic_suffix}{fermata_suffix}{slur_suffix}{wedge_suffix}")
+            f"{artic_suffix}{ornament_suffix}{fermata_suffix}"
+            f"{slur_suffix}{wedge_suffix}")
 
 
 def _lily_measure(events: list[dict[str, Any]],
@@ -745,6 +753,60 @@ _LILY_ARTICULATION = {
     "tenuto": "--",
 }
 
+#: `transcribe.ornament_kind` -> the MusicXML element inside
+#: `<notations><ornaments>`. Tremolo is NOT here: it is the one mark of the
+#: five that carries a VALUE (its stroke count) as well as a name, so it is
+#: written by `_mxl_ornament_elements` rather than looked up.
+_MXL_ORNAMENT = {
+    "trill": "trill-mark",
+    "turn": "turn",
+    "inverted-turn": "inverted-turn",
+    "mordent": "mordent",
+}
+
+#: The same marks in LilyPond, as post-events on the note they follow.
+#:
+#: ⚠️ **TREMOLO IS DELIBERATELY ABSENT, and this is the hairpin precedent
+#: applied rather than an oversight.** LilyPond spells a single-note tremolo
+#: `c4:32` — a DURATION SUBDIVISION, not a stroke count: the number is the
+#: value of the notes the stroke stands for, so the same three strokes are
+#: `:32` on a quarter and `:64` on an eighth. Deriving it needs the note's own
+#: written value, and getting that wrong writes a different RHYTHM rather than
+#: a different mark, which is a worse failure than dropping the ornament. There
+#: is no measurement to price it against — the repository holds zero `tremolo1`-
+#: `tremolo5` detections — so MusicXML gets it and LilyPond does not, exactly
+#: as `_lily_wedge_plan` drops the hairpins it cannot express safely.
+_LILY_ORNAMENT = {
+    "trill": "\\trill",
+    "turn": "\\turn",
+    "inverted-turn": "\\reverseturn",
+    "mordent": "\\mordent",
+}
+
+
+def _mxl_ornament_elements(ornaments: list[dict] | None) -> list[str]:
+    """The `<ornaments>` children for one note, in the order given.
+
+    A tremolo carries its stroke count as the element's text and `type="single"`
+    — the only type either truth file in this repository prints, and the only
+    one the pipeline can claim: a `start`/`stop` pair is a BOWED tremolo shared
+    between two noteheads, and nothing here pairs two heads to one mark. A mark
+    whose kind is unknown, or a tremolo with no stroke count (the coarse
+    `tremoloMark` spelling), is dropped rather than guessed at.
+    """
+    out: list[str] = []
+    for orn in ornaments or []:
+        kind = (orn or {}).get("kind")
+        if kind == "tremolo":
+            strokes = (orn or {}).get("strokes")
+            if isinstance(strokes, int) and 1 <= strokes <= 8:
+                out.append(f'<tremolo type="single">{strokes}</tremolo>')
+            continue
+        name = _MXL_ORNAMENT.get(kind or "")
+        if name:
+            out.append(f"<{name}/>")
+    return out
+
 
 # Suffix → MusicXML <clef-octave-change> value
 # (positive = sounds higher than written; negative = lower)
@@ -919,6 +981,7 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
               time_modification: dict[str, int] | None = None,
               tuplet_state: str | None = None,
               articulations: list[str] | None = None,
+              ornaments: list[dict] | None = None,
               fermata: bool = False,
               accidental: str | None = None) -> str:
     """Render one <note> for MusicXML — used for both chord members and rests.
@@ -990,8 +1053,20 @@ def _mxl_note(event_pitch: str | None, lily_suffix: str, xml_type: str,
     # <tuplet> follows <slur> in the <notations> content model.
     if tuplet_state:
         notations.append(f'{indent}    <tuplet type="{tuplet_state}" number="1"/>')
-    # <articulations> follows <tuplet>, and is one element wrapping all of the
-    # marks on this note rather than one block each.
+    # <ornaments> sits between <tuplet> and <articulations>. MusicXML's
+    # <notations> content model is an UNBOUNDED CHOICE, so no order among its
+    # children is schema-enforced — this follows the order the schema LISTS
+    # them in (tied, slur, tuplet, glissando, slide, ornaments, technical,
+    # articulations, dynamics, fermata) so the file reads the way a MusicXML
+    # reader expects, which is the same convention the <tuplet> comment above
+    # states. One block wraps every mark on the note, as <articulations> does.
+    orn_elements = _mxl_ornament_elements(ornaments) if not is_rest else []
+    if orn_elements:
+        notations.append(f"{indent}    <ornaments>")
+        notations.extend(f"{indent}      {e}" for e in orn_elements)
+        notations.append(f"{indent}    </ornaments>")
+    # <articulations> follows <ornaments> (and <tuplet> before it), and is one
+    # element wrapping all of the marks on this note rather than one block each.
     marks = [_MXL_ARTICULATION[k] for k in (articulations or [])
              if k in _MXL_ARTICULATION]
     if marks:
@@ -3029,6 +3104,9 @@ def _mxl_voice_events(
                     # slur, and hung off its first <note>.
                     articulations=(event.get("articulations") if ni == 0
                                    else None),
+                    # Ornaments the same: printed once against the chord and
+                    # hung off its first <note>.
+                    ornaments=(event.get("ornaments") if ni == 0 else None),
                     # A chord takes one fermata, through its first note.
                     fermata=(bool(event.get("fermata")) and ni == 0),
                     # ...but an accidental belongs to the NOTEHEAD. A chord can

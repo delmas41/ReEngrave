@@ -24,6 +24,8 @@ each other. Counted once, in the order they were fixed:
     7  printed accidentals  d112052   folded into <alter>, <accidental> dropped
     8  articulations        0eb1271   ten artic* classes, one docstring mention
     9  hairpins             (in §9)   two classes, no mention downstream
+   10  ornaments            (in §10)  four ornament classes + five tremolo,
+                                 and THE CHECK ITSELF COULD NOT SEE IT
 
 ⚠️ THE NINTH IS NOT THE EIGHT REPEATED, and the difference is worth keeping.
 The first eight were export fixes outright: the detector had the symbol and the
@@ -71,11 +73,49 @@ an export gap is categorical — truth has N, we emit ZERO — which is exactly
 what distinguishes it from a recognition shortfall, where we emit some and miss
 some. All nine read `truth N, ours 0`.
 
-WHAT IT DOES NOT LOOK AT. A MusicXML file is mostly not notation: metadata,
-page layout, MIDI playback hints, part bookkeeping. We emit none of that and
-never will, and a check that reported it would list 55 elements, be ignored,
-and then be deleted. `VISIBLE` is therefore a curated list of things a reader
-sees on the page, and everything else is out of scope by construction.
+⚠️ AND THE TENTH WAS THE CHECK'S OWN BLIND SPOT (2026-09-08). `<ornaments>` —
+truth 12 on the engraved benchmark, 131 on the scan gate, ours ZERO, with
+`ornamentTrill` firing 21 times across the committed artifacts — was invisible
+here for the same reason the class-space audit above is useless: the question
+was asked of a HAND-WRITTEN LIST. `compare()` iterated a 19-name `VISIBLE`
+dict, so an element in neither `VISIBLE` nor `KNOWN_GAPS` failed nothing, and
+nobody had to write anything down for that to be true. **A check built to
+remove a blind spot had one, in the same shape.**
+
+WHAT IT DOES NOT LOOK AT, AND WHY THAT IS NOW DERIVED. The old paragraph here
+said: a MusicXML file is mostly not notation — metadata, page layout, MIDI
+playback hints, part bookkeeping — and a check that reported all of it would
+list 55 elements, be ignored, and then be deleted. **That objection is real and
+it survives the rewrite**; deriving the set from the truth files brings all 55
+back. It is answered by three structural rules and one short deny-list, in this
+order, measured over the committed copy of the whole 11-work benchmark in
+`benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/` (truth
+and that run's export, both in git — so the funnel is reproducible on a clean
+clone with no eval run; `benchmarks/omr-export-gaps-2026-09/
+probe-ornaments-2026-09-08/probe_derived_coverage.py` prints it):
+
+    every element inside <measure>, pooled                       88
+    ... minus the ones we DO emit (the categorical rule)          40   <- "55"
+    ... minus every element whose PARENT is also missing (rollup) 19
+    ... minus NOT_NOTATION (print, sound, staff-details)          16
+
+⚠️ THE ROLLUP DOES 21 OF THE 24, and the deny-list 3. The short list is a
+CONSEQUENCE of a structural rule, not a promise anyone has to keep.
+
+**The rollup is the load-bearing half, and it is the ornaments arithmetic
+itself.** `<tremolo>` lives inside `<ornaments>`; if we emit no `<ornaments>`
+then `<tremolo>` is not a second gap, it is the same gap seen from the inside.
+The handoff table that opened this work listed `ornaments` 12 and `tremolo` 12
+as two rows — and the truth file holds twelve `<ornaments>` blocks containing
+twelve `<tremolo>` and nothing else. Rollup makes that one row by construction.
+
+⚠️ **`NOT_NOTATION` IS NOT `VISIBLE` WEARING A DIFFERENT HAT**, and the
+difference is the point rather than a defence of it. `VISIBLE` was an
+ALLOW-list, so the default for an unmet element was *silently unchecked*.
+`NOT_NOTATION` is a DENY-list, so the default is *fails until someone writes
+down why*. The failure direction is inverted; that is the property that makes
+the tenth gap impossible to repeat, and it is why the list being short is a
+consequence of the rules above rather than a promise.
 
 WHERE OUR SIDE COMES FROM, AND WHY IT IS NOT THE FILE ON DISK. Until 2026-09-02
 this read the benchmark's `<work>.omr.musicxml` — a gitignored artifact of
@@ -150,8 +190,9 @@ import argparse
 import json
 import re
 import sys
+import xml.etree.ElementTree as ET
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -173,32 +214,164 @@ FIXTURES = ROOT / "benchmarks" / "omr-orchestral-e2e" / "fixtures"
 #: widens what the check can see without changing what it means.
 WORKS = accuracy_record.BENCHMARK_WORKS
 
-#: MusicXML elements that are NOTATION — ink a reader sees on the page. Only
-#: these are checked. Each is here because losing it would change what the score
-#: says, which is the test for membership; `<midi-program>` and `<tenths>` fail
-#: it, and so do `<voice>` and `<duration>`, which are bookkeeping for a
-#: renderer rather than marks on paper.
-VISIBLE: dict[str, str] = {
-    "accidental":    "the sharp/flat/natural the engraver drew",
-    "articulations": "staccato, accent, tenuto — the marks on a notehead",
-    "accent":        "an accent specifically, the commonest of them here",
-    "barline":       "a repeat, a double bar, a final bar",
-    "bar-style":     "which kind of barline it is",
-    "beam":          "the beams joining a group",
-    "dot":           "an augmentation dot",
-    "dynamics":      "p, f, sf — the dynamic letters",
-    "fermata":       "a pause over a note or a rest",
-    "lyric":         "sung text under a note",
-    "metronome":     "a metronome mark",
-    "notations":     "the block that carries ties, slurs, tuplets, fermatas",
-    "slur":          "a phrase slur",
-    "stem":          "which way a stem points",
-    "tied":          "the tie's notation half",
-    "time-modification": "the 3-in-the-time-of-2 of a tuplet",
-    "tuplet":        "the tuplet bracket",
-    "wedge":         "a crescendo or diminuendo hairpin",
-    "words":         "a printed direction — legato, Allegro con brio",
+#: The scope of the question, and the ONE structural fact this check rests on.
+#:
+#: A MusicXML file is mostly not notation — metadata, page layout, MIDI
+#: playback hints, part bookkeeping — and MusicXML puts all of it OUTSIDE
+#: `<measure>`. `<score-partwise>` opens with `<work>`, `<identification>`,
+#: `<defaults>` and `<part-list>`, and then every note, rest, clef, direction
+#: and barline in the document lives inside a `<measure>`. So "the music" is
+#: not a curated opinion here; it is a subtree, named once.
+#:
+#: ⚠️ WHAT THIS EXCLUDES, stated rather than implied: `<part-name>` and
+#: `<work-title>` ARE ink a reader sees and are outside a measure, so this
+#: check does not watch them. `label_contradiction.py` watches part naming
+#: from the other side (the printed margin against the exported name), which is
+#: a stronger question than presence; nothing watches `<work-title>`.
+MUSIC_SUBTREE = "measure"
+
+#: In-measure elements that are BOOKKEEPING — no reader ever sees them, so
+#: "the truth has them and we emit none" says nothing about the exporter.
+#:
+#: ⚠️ THIS IS NOT `VISIBLE` WEARING A DIFFERENT HAT, and the difference is the
+#: whole point of the rewrite. `VISIBLE` was an ALLOW-list: an element in
+#: neither it nor `KNOWN_GAPS` was checked by NOTHING, silently, and nobody had
+#: to write anything down — which is how `<ornaments>` (truth 12 engraved, 131
+#: scan, ours 0) sat unreported by the very module built to report it. This is
+#: a DENY-list: the default is now "fails until someone writes down why", and
+#: an element missing from this table is loud rather than invisible. The
+#: failure direction is inverted, which is the property that matters.
+#:
+#: It is also short — three entries against nineteen — because the ROLLUP below
+#: removes the bulk of what a derived set would otherwise report. Each entry
+#: must be OBSERVED in the truth (`Survey.stale_bookkeeping`, asserted by
+#: `test_a_bookkeeping_entry_the_truth_never_shows_is_flagged`), so it
+#: cannot grow into a list describing history.
+NOT_NOTATION: dict[str, str] = {
+    "print": (
+        "A layout instruction — page and system breaks, staff distances, "
+        "margins. It positions ink; it is not ink. We lay nothing out and "
+        "never will: the renderer does."
+    ),
+    "sound": (
+        "MIDI playback — tempo, dynamics as velocities, segno/dacapo jumps for "
+        "a player rather than for a reader. `<direction>`'s audible twin, and "
+        "the reader sees the `<direction-type>` beside it, which IS checked."
+    ),
+    "staff-details": (
+        "How many lines a staff has and how far apart they are printed — a "
+        "property of the rendering surface. `<staff-lines>` on a one-line "
+        "percussion staff is real information we do not carry, but its "
+        "NOTATION consequence is `<unpitched>`, which this check reports."
+    ),
 }
+
+
+_ELEMENT = re.compile(r"<([a-z][a-z0-9-]*)[ />]")
+
+
+def element_counts(xml: str) -> Counter:
+    """Every element name in a document, however malformed.
+
+    Deliberately a regex and not a parser: our side is compared by COUNT only,
+    and the tests build a broken export on purpose (`<dropped>x</accidental>`)
+    to prove a dropped element is seen. A parser would raise on exactly the
+    input this check exists to describe.
+    """
+    return Counter(_ELEMENT.findall(xml))
+
+
+@dataclass(frozen=True)
+class TruthElement:
+    """One element name as the TRUTH document uses it."""
+    name: str
+    count: int
+    #: Every ancestor name observed above it, within the music subtree.
+    ancestors: frozenset[str]
+    #: One observed path from the subtree root down to it, for a message.
+    path: tuple[str, ...]
+
+    @property
+    def where(self) -> str:
+        return " > ".join(self.path)
+
+
+def notation_index(truth_xml: str) -> dict[str, TruthElement]:
+    """Every element the truth prints INSIDE the music, with its parentage.
+
+    Derived from the document, not from a list. `ancestors` is what makes the
+    rollup possible: an element whose parent we also emit none of is the same
+    gap seen from the inside, and reporting both is what would turn this into
+    the 55-line report nobody reads.
+
+    Namespaces are stripped, and a document with no `<measure>` yields nothing —
+    which `Survey.incomplete` and the caller's own emptiness checks catch.
+    """
+    root = ET.fromstring(truth_xml)
+    found: dict[str, TruthElement] = {}
+
+    def tag(e) -> str:
+        t = e.tag
+        return t.rsplit("}", 1)[-1] if isinstance(t, str) and "}" in t else str(t)
+
+    def walk(node, path: tuple[str, ...]) -> None:
+        for child in node:
+            name = tag(child)
+            here = path + (name,)
+            prev = found.get(name)
+            if prev is None:
+                found[name] = TruthElement(name, 1, frozenset(path), here)
+            else:
+                found[name] = TruthElement(
+                    name, prev.count + 1, prev.ancestors | frozenset(path),
+                    prev.path)
+            walk(child, here)
+
+    for measure in root.iter():
+        if tag(measure) == MUSIC_SUBTREE:
+            walk(measure, (MUSIC_SUBTREE,))
+    return found
+
+
+def compare(truth_xml: str, ours_xml: str) -> list[tuple[str, int, int]]:
+    """`(element, in_truth, in_ours)` for every gap-HEAD the truth shows.
+
+    Three rules, in order, and each is structural rather than curated:
+
+    1. **Scope.** Only elements inside `MUSIC_SUBTREE`. Everything above it is
+       the file's header and we do not claim to reproduce it.
+    2. **Categorical only.** Truth has some, we have zero. Emitting fewer is a
+       recognition shortfall and belongs to the accuracy metric; conflating the
+       two is what would make this noisy enough to ignore.
+    3. **Rollup.** An element is reported only if no ANCESTOR of it is also
+       missing. `<tremolo>` lives inside `<ornaments>`; if we emit no
+       `<ornaments>` then `<tremolo>` is not a second gap, it is the same one
+       counted twice — which is exactly the arithmetic that made the handoff
+       table read as two findings when the two truth files carrying ornaments
+       contain 12 `<ornaments>` holding 12 `<tremolo>` and nothing else.
+
+    `NOT_NOTATION` then removes what survives all three and is still invisible
+    to a reader. It is applied by the caller (`Survey.unexplained`) rather than
+    here, so `compare` reports the honest structural answer and the report says
+    which entries spent it.
+    """
+    index = notation_index(truth_xml)
+    ours = element_counts(ours_xml)
+    missing = {n for n, e in index.items() if e.count > 0 and ours[n] == 0}
+    return sorted((n, index[n].count, 0) for n in missing
+                  if not (index[n].ancestors & missing))
+
+
+def gap_locations(truth_xml: str) -> dict[str, str]:
+    """`element -> "measure > note > notations > ornaments"`, for a message.
+
+    Replaces the hand-written `VISIBLE[name]` description the failure line used
+    to carry. Deriving the set means there is no blurb for an element nobody
+    has met yet — and where the element SITS is more use than a blurb anyway:
+    it names the block a reader would have to open to fix it.
+    """
+    return {n: e.where for n, e in notation_index(truth_xml).items()}
+
 
 #: Elements the truth shows that we knowingly do not emit, each with the reason
 #: and its size. This is an INVENTORY, not a suppression list: it is the honest
@@ -208,11 +381,12 @@ VISIBLE: dict[str, str] = {
 KNOWN_GAPS: dict[str, str] = {
     "barline": (
         "Documented limitation — repeat signs are dropped on export, tied to "
-        "multi-type barline classification. NOTES.md items 5 and 6."
-    ),
-    "bar-style": (
-        "The style of a barline, so it arrives with `barline` and is the "
-        "same open item — a repeat cannot be written without it."
+        "multi-type barline classification. NOTES.md items 5 and 6. ⚠️ Covers "
+        "`<bar-style>` and `<repeat>` too, which had an entry of their own "
+        "until the rollup landed: both are CHILDREN of <barline>, so they are "
+        "the same gap seen from the inside and are no longer reportable "
+        "separately. A repeat cannot be written without its bar-style anyway, "
+        "which is what that entry said."
     ),
     "lyric": (
         "We do not read vocal text at all and there is no detector for it. "
@@ -243,6 +417,105 @@ KNOWN_GAPS: dict[str, str] = {
         "musicdiff does not score it, so it costs nothing today — which is why "
         "it stayed invisible to every forensic hunt."
     ),
+    # ---- ⚠️ THE FOURTEEN BELOW ARRIVED WITH THE DERIVED SET (2026-09-08) ----
+    # Every one of them was ALREADY a gap and was reported by nothing, because
+    # it was absent from the hand-written `VISIBLE` allow-list. They are the
+    # backlog the old check could not see, written down once. Predicted here
+    # against the committed 11-work fixture copy in
+    # `benchmarks/omr-margin-window-truncation-2026-09/out/fixtures-control/`
+    # (truth + that run's export); the sizes are that pool's.
+    "ornaments": (
+        "⚠️ THE EXPORT IS BUILT AND THE REMAINING GAP IS DETECTION. "
+        "`transcribe._attach_ornaments_in_cell` places trill/turn/mordent/"
+        "tremolo and both exporters emit them (2026-09-08). The 12 "
+        "<ornaments> in the engraved truth are 12 <tremolo> and NOTHING ELSE "
+        "— all of Beethoven 3's, all `type=\"single\">1` — and across all "
+        "7,090 committed JSON artifacts there is not ONE `tremolo1`-"
+        "`tremolo5` detection at any confidence. The 33 ornament detections "
+        "that DO exist (21 `ornamentTrill`, 6 `ornamentTurn`, 3 "
+        "`ornamentTurnInverted`, 3 `ornamentMordent`) are all on scans, none "
+        "on a benchmark work. Same shape as hairpins on scans: emitting is "
+        "not reading. ⚠️ THIS ENTRY MUST LEAVE THE DAY THE DETECTOR FIRES "
+        "ONE HERE — `test_the_inventory_has_no_stale_entries` enforces that."
+    ),
+    "transpose": (
+        "The written-to-sounding interval of a transposing part. `instruments."
+        "py` carries the offsets and the contextual pass names the "
+        "instruments, so the fact is in the pipeline and the exporter never "
+        "writes <transpose>. 92 in the engraved truth. A real open item, and "
+        "the largest single one on this list after <stem>."
+    ),
+    "detached-legato": (
+        "An articulation outside the five DSv2 labels (staccato, "
+        "staccatissimo, accent, marcato, tenuto). No class exists for it, so "
+        "it is unreadable rather than dropped — 14 in the engraved truth."
+    ),
+    "spiccato": (
+        "The same: an articulation with no DSv2 class. 4 in the engraved "
+        "truth. Listed apart from `detached-legato` because they are separate "
+        "elements and each must leave on its own evidence."
+    ),
+    "grace": (
+        "A grace note. ⚠️ MEASURED AND RECORDED AS A CEILING, not a "
+        "conjecture: the transcription holds ZERO `*Small` detections on any "
+        "page — a grace head is read as an ordinary notehead — and the "
+        "pre-fill work priced two candidate fixes and refuted both "
+        "(docs/handoff-2026-09-03-prefill-measured.md). The untried route is "
+        "geometry: a grace head measures 41x38 against 51-83 in the same cell."
+    ),
+    "unpitched": (
+        "A percussion note on a staff with no pitch. Handoff step 4 names the "
+        "cause: one-line percussion staves the detector never finds, 3 of the "
+        "20 scan rows. Its <attributes> twin `<staff-details>` is in "
+        "NOT_NOTATION — the LINE COUNT is a rendering property, the note on it "
+        "is not."
+    ),
+    "normal-type": (
+        "The third child of <time-modification>. We write <actual-notes> and "
+        "<normal-notes> — the RATIO, which is what the note is worth — and not "
+        "the written value the ratio is against, which a reader derives from "
+        "the notes under the bracket. 141 in the engraved truth, and worth "
+        "nothing to musicdiff; kept written down rather than closed silently."
+    ),
+    "tuplet-actual": (
+        "An optional display child of <tuplet> saying how the bracket's "
+        "NUMBER should be drawn. We write the bracket and its `number=` "
+        "attribute; how a renderer letters it is the renderer's. 47 in the "
+        "engraved truth."
+    ),
+    "tuplet-normal": (
+        "The other half of the same pair, and the same reason. Two entries "
+        "rather than one because they are two elements and each must leave on "
+        "its own evidence."
+    ),
+    "display-step": (
+        "Where on the staff a REST is printed. The pipeline knows a rest's y "
+        "— that is how it is assigned to a staff at all — and the exporter "
+        "places every rest at the renderer's default height instead. 5 in the "
+        "engraved truth. Placement rather than presence, so it is here and not "
+        "in NOT_NOTATION: it changes where visible ink lands."
+    ),
+    "display-octave": (
+        "The other half of the same coordinate, and the same reason."
+    ),
+    "offset": (
+        "How far along the bar a <direction> is drawn from the note it is "
+        "attached to, in divisions. Our directions are emitted at the head of "
+        "the bar or beside the note they anchor to, with no sub-beat offset — "
+        "3 in the engraved truth. Placement rather than presence, like "
+        "`display-step`."
+    ),
+    "staff": (
+        "Which staff of a MULTI-STAFF part a note belongs to. `_stitch_slots` "
+        "joins staves into parts one staff at a time, so every part we write "
+        "has exactly one staff and <staff> has nothing to say. It becomes a "
+        "real gap the day a part carries two staves — which is handoff step 4 "
+        "and `OMR_CONDENSED_PARTS`, not this list."
+    ),
+    "staves": (
+        "The <attributes> declaration of the same fact, and the same reason: "
+        "one staff per part means the default of 1 is correct."
+    ),
 }
 
 #: The entries of `KNOWN_GAPS` whose status is a FLAG decision rather than a
@@ -257,27 +530,6 @@ KNOWN_GAPS: dict[str, str] = {
 #: and the structured form is not built, so it is an ordinary unconditional gap
 #: — and exempting it would hide a real regression on the day it is built.
 FLAG_DEPENDENT: frozenset[str] = frozenset({"words"})
-
-
-_ELEMENT = re.compile(r"<([a-z][a-z0-9-]*)[ />]")
-
-
-def element_counts(xml: str) -> Counter:
-    return Counter(_ELEMENT.findall(xml))
-
-
-def compare(truth_xml: str, ours_xml: str) -> list[tuple[str, int, int]]:
-    """`(element, in_truth, in_ours)` for every VISIBLE element we emit NONE of.
-
-    Only the categorical case — truth has some, we have zero. Emitting fewer
-    than the truth is a recognition shortfall and belongs to the accuracy
-    metric, not here; conflating the two is what would make this noisy enough
-    to ignore.
-    """
-    t, o = element_counts(truth_xml), element_counts(ours_xml)
-    return [(name, t[name], o[name])
-            for name in sorted(VISIBLE)
-            if t[name] > 0 and o[name] == 0]
 
 
 @dataclass(frozen=True)
@@ -412,6 +664,13 @@ class Survey:
     expected: dict[str, str]
     disagreement: str | None
     absent: tuple[str, ...] = ()
+    #: `element -> "measure > note > notations > ornaments"`, derived from the
+    #: truth. Replaces the hand-written blurb the failure line used to carry.
+    where: dict[str, str] = field(default_factory=dict)
+    #: Pooled element counts on OUR side. Only `stale_entries` reads it, and
+    #: only it can: "we emit this now" is a fact about our output, and neither
+    #: the gap list nor the truth index can state it — see that property.
+    ours_counts: Counter = field(default_factory=Counter)
 
     @property
     def incomplete(self) -> str | None:
@@ -433,13 +692,57 @@ class Survey:
 
     @property
     def unexplained(self) -> list[tuple[str, int, int]]:
-        """Gaps not written down in the inventory this configuration expects."""
-        return [g for g in self.gaps if g[0] not in self.expected]
+        """Gaps explained by NEITHER table — the ones that fail.
+
+        Two tables, and they are different claims about the same element:
+        `NOT_NOTATION` says *no reader ever sees this*, `expected` (KNOWN_GAPS
+        minus what the configuration has spent) says *a reader sees it and we
+        deliberately do not emit it, here is why*. Keeping them apart is what
+        stops the second becoming a dumping ground for the first.
+        """
+        return [g for g in self.gaps
+                if g[0] not in self.expected and g[0] not in NOT_NOTATION]
+
+    @property
+    def bookkeeping(self) -> list[tuple[str, int, int]]:
+        """The gaps `NOT_NOTATION` accounts for — reported by `--all`, never a
+        failure. Named so the deny-list is visible in the report rather than
+        merely subtracted out of it."""
+        return [g for g in self.gaps if g[0] in NOT_NOTATION]
+
+    @property
+    def stale_bookkeeping(self) -> list[str]:
+        """`NOT_NOTATION` entries this truth never shows.
+
+        The same discipline `stale_entries` applies to `KNOWN_GAPS`: an
+        exclusion for an element nobody prints is dead text, and a deny-list
+        allowed to accumulate dead text is how `VISIBLE` got to nineteen names
+        nobody re-read. ⚠️ Only meaningful on a COMPLETE survey — see
+        `incomplete`.
+        """
+        return sorted(n for n in NOT_NOTATION if n not in self.where)
 
     @property
     def stale_entries(self) -> list[str]:
-        """Inventory entries for elements we now emit — history, not exporter."""
-        return sorted(set(self.expected) - self.missing)
+        """Inventory entries for elements WE NOW EMIT — history, not exporter.
+
+        ⚠️ REDEFINED WITH THE DERIVED SET (2026-09-08), and the old definition
+        was only ever right by luck. It was `expected - missing`, which calls
+        an entry stale in three different situations and means it in one:
+
+          * we emit it now — genuinely stale, the case this test is for;
+          * the truth does not print it at all — says nothing either way, and
+            with a curated `VISIBLE` this could not arise because every entry
+            named something all three canonical truths printed. It arises now:
+            `<grace>` and `<unpitched>` are gaps on the SCAN truths and absent
+            from the engraved ones;
+          * it is rolled up under a missing parent — reported through its
+            parent, not closed.
+
+        So the question is asked of our own output directly. An entry is spent
+        when the exporter writes the element, and by nothing else.
+        """
+        return sorted(n for n in self.expected if self.ours_counts[n] > 0)
 
     @property
     def missing(self) -> set[str]:
@@ -456,15 +759,35 @@ def survey(fixtures: Path | None = None,
     loaded = {w: load_run(w, fixtures) for w in works}
     runs = [r for r in loaded.values() if r is not None]
     absent = tuple(w for w, r in loaded.items() if r is None)
-    truth, ours = Counter(), Counter()
-    for run in runs:
-        truth += element_counts(run.truth)
-        ours += element_counts(run.ours)
-    gaps = [(name, truth[name], ours[name])
-            for name in sorted(VISIBLE)
-            if truth[name] > 0 and ours[name] == 0]
+    # POOLED, and pooled correctly: the truth's structure is unioned across
+    # works before the rollup runs, so an element one work nests under a parent
+    # another work never prints is still rolled up. Concatenating the truths
+    # into one document is what makes that a fact about the pool rather than a
+    # per-work answer summed afterwards.
+    pooled_truth = ("<pool>" + "".join(_strip_prolog(r.truth) for r in runs)
+                    + "</pool>")
+    pooled_ours = "".join(r.ours for r in runs)
+    gaps = compare(pooled_truth, pooled_ours) if runs else []
+    where = gap_locations(pooled_truth) if runs else {}
     return Survey(runs=runs, gaps=gaps, expected=expected_gaps(runs),
-                  disagreement=configuration_disagreement(runs), absent=absent)
+                  disagreement=configuration_disagreement(runs), absent=absent,
+                  where=where, ours_counts=element_counts(pooled_ours))
+
+
+_PROLOG = re.compile(r"^\s*(<\?xml[^>]*\?>|<!DOCTYPE[^>]*>)\s*", re.I)
+
+
+def _strip_prolog(xml: str) -> str:
+    """Drop the XML declaration and DOCTYPE so several files can be wrapped.
+
+    Both are legal only at the head of a document, so a naive concatenation is
+    not parseable. Nothing else is touched — this is a splice, not a rewrite.
+    """
+    prev = None
+    while prev != xml:
+        prev = xml
+        xml = _PROLOG.sub("", xml, count=1)
+    return xml
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -490,16 +813,29 @@ def main(argv: list[str] | None = None) -> int:
         print("every visible element the truth shows also appears in ours")
         return 0
     if args.all:
-        print("VISIBLE elements the truth shows and we emit none of:\n")
+        print(f"{len(s.where)} elements inside <measure> in the truth; "
+              f"{len(s.gaps)} of them are gap HEADS (an element whose own "
+              "parent is also missing is the same gap, and is rolled up).\n")
         for name, t, o in s.gaps:
-            note = s.expected.get(name, "*** NOT EXPLAINED ***")
-            print(f"  {name:18s} truth {t:4d}   ours {o}\n      {note}\n")
+            note = (NOT_NOTATION.get(name) or s.expected.get(name)
+                    or "*** NOT EXPLAINED ***")
+            tier = "bookkeeping" if name in NOT_NOTATION else "known gap"
+            if name not in NOT_NOTATION and name not in s.expected:
+                tier = "UNEXPLAINED"
+            print(f"  {name:18s} truth {t:4d}   ours {o}   [{tier}]"
+                  f"\n      at  {s.where.get(name, '?')}"
+                  f"\n      {note}\n")
     for name, t, o in s.unexplained:
+        # No hand-written blurb any more — the set is derived, so there is none
+        # for an element nobody has met. Where it SITS is derived too, and says
+        # more: it names the block someone would have to open.
         print(f"NEW EXPORT GAP: <{name}> — the truth has {t} and we emit none. "
-              f"{VISIBLE[name]}.", file=sys.stderr)
+              f"It sits at {s.where.get(name, '?')}.", file=sys.stderr)
     if s.unexplained:
-        print("\nIf this is deliberate, add it to KNOWN_GAPS with the reason. "
-              "If it is not, it is the shape that has cost this project seven "
+        print("\nIf a reader sees it and we deliberately drop it, add it to "
+              "KNOWN_GAPS with the reason. If no reader ever sees it, add it "
+              "to NOT_NOTATION instead — the two are different claims. If it "
+              "is neither, it is the shape that has cost this project ten "
               "fixes.", file=sys.stderr)
     return 1 if s.unexplained else 0
 

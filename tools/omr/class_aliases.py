@@ -126,9 +126,19 @@ COARSER_THAN_CANONICAL: dict[str, str] = {
         "agrees with `noteheadWholeOnLine`."
     ),
     "tremoloMark": (
-        "no STROKE COUNT (`tremolo1`-`tremolo5`). Nothing downstream reads a "
-        "tremolo's count today — both names give category `ornament` and "
-        "stop there — so there is nothing to lose yet and nothing to rename."
+        "no STROKE COUNT (`tremolo1`-`tremolo5`). ⚠️ THIS ENTRY'S REASON "
+        "EXPIRED ON 2026-09-08 and the CONCLUSION did not. It used to say "
+        "'nothing downstream reads a tremolo's count today, so there is "
+        "nothing to lose yet'; `transcribe.ornament_kind` now reads it and "
+        "`export._mxl_ornament_elements` writes it as <tremolo>'s text, so "
+        "there IS something to lose. It still cannot be renamed, for the "
+        "stronger reason: the count is not recoverable from this name, and the "
+        "two truth files in the repository that print tremolos print counts 1 "
+        "AND 2 — so a guessed count writes a different RHYTHM, not merely a "
+        "different mark. Both consumers therefore ABSTAIN on it by name, and "
+        "`test_class_aliases` / `test_transcribe_helpers` pin that. Closing it "
+        "needs the fine spelling, i.e. a weights file whose head separates the "
+        "five stroke counts."
     ),
     "graceNoteAcciaccatura": (
         "no STEM DIRECTION. Every consumer already agrees with "

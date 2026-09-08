@@ -9,6 +9,16 @@ looked at its bucket.
 This is that comparison, kept. The point is the eighth: it should be caught the
 day it appears rather than after a day of forensics.
 
+⚠️ AND THE TENTH WAS THE CHECK'S OWN. `<ornaments>` — truth 12 engraved, 131
+scan, ours ZERO — was reported by nothing, because `compare()` iterated a
+hand-written 19-name `VISIBLE` dict and an element in neither `VISIBLE` nor
+`KNOWN_GAPS` failed nothing. The set is now DERIVED from the truth documents,
+inside `<measure>`, rolled up to the shallowest missing element, with a
+three-name `NOT_NOTATION` deny-list for what survives and is still invisible.
+The tests below are written against that: `TestTheSetIsDerived` is the new
+half, and `test_the_old_allow_list_is_gone` is the one that would go green
+again if someone reinstated it.
+
 THE COMPARISON'S OWN SIDE IS GENERATED HERE. `export_coverage` exports the
 stored transcription itself rather than reading the `.omr.musicxml` beside it,
 because that file is a gitignored artifact of whatever tree last ran the eval —
@@ -21,12 +31,16 @@ ever starts looking too clever.
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import pytest
 
 from tools.omr import export_coverage as ec
 
 
+#: ⚠️ EVERY FIXTURE HERE PUTS ITS NOTATION INSIDE A `<measure>`, because that
+#: is now the check's scope and not an incidental detail of the sample. A
+#: fragment outside one is the file's header, which this check does not watch.
 TRUTH = """<score-partwise>
   <part><measure>
     <note><pitch><step>C</step><octave>4</octave></pitch>
@@ -85,20 +99,22 @@ class TestTheComparison:
 
     def test_metadata_and_layout_are_out_of_scope(self):
         """A MusicXML file is mostly not notation, and a check that said so
-        would list 55 elements and be ignored."""
-        truth = ("<a><midi-program>1</midi-program><tenths>7</tenths>"
-                 "<software>x</software><voice>1</voice></a>")
-        assert ec.compare(truth, "<a></a>") == []
+        would list 55 elements and be ignored.
+
+        ⚠️ NOW A STRUCTURAL FACT rather than a curated one: MusicXML puts the
+        header — `<identification>`, `<defaults>`, `<part-list>` and the MIDI
+        blocks inside it — OUTSIDE `<measure>`, and the check reads the music
+        subtree. Nothing was hand-listed to make this pass.
+        """
+        truth = ("<score-partwise><identification><midi-program>1"
+                 "</midi-program><tenths>7</tenths><software>x</software>"
+                 "</identification><part><measure><note/></measure></part>"
+                 "</score-partwise>")
+        ours = "<score-partwise><part><measure><note/></measure></part>"
+        assert ec.compare(truth, ours) == []
 
     def test_an_element_only_we_emit_is_not_a_gap(self):
         assert ec.compare("<a></a>", TRUTH) == []
-
-    def test_every_visible_element_carries_its_reason(self):
-        assert all(VISIBLE_reason.strip() for VISIBLE_reason in ec.VISIBLE.values())
-
-    def test_every_known_gap_is_a_visible_element(self):
-        """A reason for something the check never looks at is dead text."""
-        assert set(ec.KNOWN_GAPS) <= set(ec.VISIBLE)
 
     def test_every_known_gap_carries_a_reason(self):
         for name, why in ec.KNOWN_GAPS.items():
@@ -115,6 +131,180 @@ class TestTheComparison:
         it would hide the regression on the day somebody builds it."""
         assert "metronome" not in ec.FLAG_DEPENDENT
         assert "metronome" in ec.KNOWN_GAPS
+
+
+def _truth_with(inner: str) -> str:
+    """A minimal well-formed truth carrying `inner` inside a `<measure>`."""
+    return (f"<score-partwise><part><measure>{inner}</measure></part>"
+            "</score-partwise>")
+
+
+class TestTheSetIsDerived:
+    """THE HOLE THE TENTH GAP FELL THROUGH, and the rules that close it.
+
+    `compare()` used to iterate a hand-written 19-name `VISIBLE` dict, so an
+    element in neither `VISIBLE` nor `KNOWN_GAPS` was checked by NOTHING — and
+    nobody had to write anything down for that to be true. The default is now
+    "fails until someone writes down why".
+    """
+
+    def test_the_old_allow_list_is_gone(self):
+        """⚠️ The regression guard on the whole rewrite. Reinstating a curated
+        set of names to check reinstates the blind spot."""
+        assert not hasattr(ec, "VISIBLE"), (
+            "a hand-written allow-list is back — that is the mechanism that "
+            "hid <ornaments> from the module built to report it")
+
+    def test_an_element_NOBODY_hand_listed_is_reported(self):
+        """The tenth gap, in miniature. `<ornaments>` was in no list."""
+        truth = _truth_with("<note><notations><ornaments><trill-mark/>"
+                            "</ornaments></notations></note>")
+        ours = _truth_with("<note><notations/></note>")
+        assert ("ornaments", 1, 0) in ec.compare(truth, ours)
+
+    def test_the_old_rule_would_have_MISSED_it(self):
+        """The non-vacuity check on the test above: the same input under a
+        19-name allow-list that did not contain `ornaments` reports nothing.
+        Written out rather than asserted against deleted code."""
+        truth = _truth_with("<note><notations><ornaments><trill-mark/>"
+                            "</ornaments></notations></note>")
+        ours = _truth_with("<note><notations/></note>")
+        old_visible = {"accidental", "articulations", "beam", "slur", "wedge"}
+        t, o = ec.element_counts(truth), ec.element_counts(ours)
+        old_answer = [n for n in sorted(old_visible) if t[n] > 0 and o[n] == 0]
+        assert old_answer == []
+
+    def test_a_child_of_a_missing_element_is_ROLLED_UP(self):
+        """The ornaments/tremolo arithmetic, made structural.
+
+        The handoff listed `<ornaments>` 12 and `tremolo` 12 as two findings.
+        They are the same twelve elements — the engraved truth holds twelve
+        `<ornaments>` containing twelve `<tremolo>` and nothing else. An
+        element whose own parent is also missing is that gap seen from the
+        inside, and reporting both is what turns this into the 55-line report
+        nobody reads.
+        """
+        truth = _truth_with("<note><notations><ornaments>"
+                            '<tremolo type="single">1</tremolo>'
+                            "</ornaments></notations></note>")
+        ours = _truth_with("<note><notations/></note>")
+        names = [n for n, _, _ in ec.compare(truth, ours)]
+        assert names == ["ornaments"]
+
+    def test_a_child_whose_parent_we_DO_emit_is_reported(self):
+        """The other half of the rollup, and the one that keeps it from being
+        a suppression rule: `<tremolo>` is a gap in its own right once
+        `<ornaments>` comes out."""
+        truth = _truth_with("<note><notations><ornaments>"
+                            '<tremolo type="single">1</tremolo>'
+                            "</ornaments></notations></note>")
+        ours = _truth_with("<note><notations><ornaments><trill-mark/>"
+                           "</ornaments></notations></note>")
+        names = [n for n, _, _ in ec.compare(truth, ours)]
+        assert names == ["tremolo"]
+
+    def test_the_rollup_tests_EVERY_ancestor_not_just_the_parent(self):
+        """⚠️ THIS TEST WAS VACUOUS WHEN FIRST WRITTEN, and the RED run is what
+        said so. The first version nested `tuplet-number` under `tuplet-actual`
+        under `tuplet` with none of the three emitted — and an
+        immediate-parent-only rollup gives the SAME answer there, because each
+        intermediate is missing too and the suppression chains.
+
+        The two rules differ in exactly one situation, which is the one built
+        here: a MIDDLE ancestor that we emit SOMEWHERE ELSE in the document.
+        Counts are document-wide, so `<tuplet-actual>` is "present" on our
+        side while the `<tuplet>` above this instance of it is not.
+        Immediate-parent rollup then reports `tuplet-number`; testing every
+        ancestor suppresses it, because the gap is `<tuplet>`.
+        """
+        truth = _truth_with("<note><notations><tuplet><tuplet-actual>"
+                            "<tuplet-number>3</tuplet-number></tuplet-actual>"
+                            "</tuplet></notations></note>")
+        ours = _truth_with("<note><notations><tuplet-actual/></notations>"
+                           "</note>")
+        assert [n for n, _, _ in ec.compare(truth, ours)] == ["tuplet"]
+
+    def test_bookkeeping_is_a_DENY_list_not_an_allow_list(self):
+        """`NOT_NOTATION` removes what a reader never sees. The property that
+        matters is the direction: an element in NEITHER table FAILS, where
+        under `VISIBLE` an element in neither was silently unchecked."""
+        truth = _truth_with("<print/><harmony/>")
+        ours = _truth_with("")
+        names = [n for n, _, _ in ec.compare(truth, ours)]
+        assert "print" in names and "harmony" in names
+        s = _survey_of(truth, ours)
+        assert [g[0] for g in s.bookkeeping] == ["print"]
+        assert [g[0] for g in s.unexplained] == ["harmony"]
+
+    def test_the_failure_message_needs_no_hand_written_blurb(self):
+        """Deriving the set means there is no description for an element
+        nobody has met. Where it SITS is derived and says more."""
+        truth = _truth_with("<note><notations><ornaments><trill-mark/>"
+                            "</ornaments></notations></note>")
+        assert (ec.gap_locations(truth)["ornaments"]
+                == "measure > note > notations > ornaments")
+
+    def test_every_bookkeeping_entry_carries_a_reason(self):
+        for name, why in ec.NOT_NOTATION.items():
+            assert len(why) > 40, f"{name}'s reason is too thin to act on"
+
+    def test_the_two_tables_are_disjoint(self):
+        """They are different claims — "no reader sees this" against "a reader
+        sees it and we deliberately drop it". An element in both means one of
+        them is wrong."""
+        assert not (set(ec.NOT_NOTATION) & set(ec.KNOWN_GAPS))
+
+    def test_several_truths_pool_without_a_parse_error(self):
+        """`survey` concatenates the works' truths so the rollup is computed
+        over the POOL. An XML declaration and a DOCTYPE are legal only at the
+        head of a document, so they have to come off first."""
+        doc = ('<?xml version="1.0"?>\n<!DOCTYPE score-partwise PUBLIC "x" "y">'
+               + _truth_with("<note/>"))
+        pooled = "<pool>" + ec._strip_prolog(doc) * 2 + "</pool>"
+        assert ec.notation_index(pooled)["note"].count == 2
+
+
+def _survey_of(truth: str, ours: str) -> ec.Survey:
+    return ec.Survey(runs=[], gaps=ec.compare(truth, ours),
+                     expected=ec.KNOWN_GAPS, disagreement=None,
+                     where=ec.gap_locations(truth),
+                     ours_counts=ec.element_counts(ours))
+
+
+class TestStalenessIsAskedOfOurOwnOutput:
+    """⚠️ REDEFINED WITH THE DERIVED SET, and the old definition was right by
+    luck. `expected - missing` called an entry stale in three situations and
+    meant it in one; with a curated `VISIBLE` the other two could not arise,
+    because every entry named something all three canonical truths printed."""
+
+    def test_an_entry_for_something_we_now_emit_is_stale(self):
+        truth = _truth_with("<note><lyric><text>a</text></lyric></note>")
+        ours = _truth_with("<note><lyric><text>a</text></lyric></note>")
+        assert "lyric" in _survey_of(truth, ours).stale_entries
+
+    def test_an_entry_the_TRUTH_never_prints_is_not_stale(self):
+        """`<grace>` and `<unpitched>` are gaps on the SCAN truths and absent
+        from the engraved ones. A truth that does not print an element says
+        nothing about whether we emit it — and the old rule called that stale
+        and would have failed the suite on Sean's machine."""
+        truth = _truth_with("<note/>")
+        ours = _truth_with("<note/>")
+        assert _survey_of(truth, ours).stale_entries == []
+
+    def test_an_entry_ROLLED_UP_under_a_missing_parent_is_not_stale(self):
+        """It is reported through its parent, not closed."""
+        truth = _truth_with("<barline><bar-style>light-heavy</bar-style>"
+                            "<repeat/></barline>")
+        ours = _truth_with("")
+        s = _survey_of(truth, ours)
+        assert [g[0] for g in s.gaps] == ["barline"]
+        assert "barline" not in s.stale_entries
+
+    def test_a_bookkeeping_entry_the_truth_never_shows_is_flagged(self):
+        """The same discipline, on the other table: an exclusion for an element
+        nobody prints is dead text."""
+        s = _survey_of(_truth_with("<note/>"), _truth_with("<note/>"))
+        assert set(s.stale_bookkeeping) == set(ec.NOT_NOTATION)
 
 
 class TestTheConfigurationIsReadOffTheArtifact:
@@ -184,11 +374,9 @@ class TestOurSideIsExportedNow:
         that has none. The survey must report `beam` missing — if it reads the
         leftover file instead, it reports a healthy exporter that isn't.
         """
-        (tmp_path / "w.musicxml").write_text(
-            "<score-partwise><beam>1</beam></score-partwise>")
+        (tmp_path / "w.musicxml").write_text(_truth_with("<beam>1</beam>"))
         (tmp_path / "w.omr.json").write_text(json.dumps({"pages": []}))
-        (tmp_path / "w.omr.musicxml").write_text(
-            "<score-partwise><beam>1</beam></score-partwise>")
+        (tmp_path / "w.omr.musicxml").write_text(_truth_with("<beam>1</beam>"))
 
         s = ec.survey(fixtures=tmp_path, works=("w",))
         assert "beam" in s.missing
@@ -198,8 +386,8 @@ class TestOurSideIsExportedNow:
         """No JSON means no fresh export, and reading the leftover instead is
         exactly the silent fallback that would reinstate the defect on the
         machines where nobody would notice."""
-        (tmp_path / "w.musicxml").write_text("<a><beam>1</beam></a>")
-        (tmp_path / "w.omr.musicxml").write_text("<a><beam>1</beam></a>")
+        (tmp_path / "w.musicxml").write_text(_truth_with("<beam>1</beam>"))
+        (tmp_path / "w.omr.musicxml").write_text(_truth_with("<beam>1</beam>"))
         assert ec.load_run("w", tmp_path) is None
         assert ec.survey(fixtures=tmp_path, works=("w",)).runs == []
 
@@ -223,7 +411,7 @@ class TestAPartialSetIsRefusedRatherThanPooled:
 
     def _fixture_dir(self, tmp_path, works):
         for w in works:
-            (tmp_path / f"{w}.musicxml").write_text("<a><beam>1</beam></a>")
+            (tmp_path / f"{w}.musicxml").write_text(_truth_with("<beam>1</beam>"))
             (tmp_path / f"{w}.omr.json").write_text(json.dumps({"pages": []}))
         return tmp_path
 
@@ -249,6 +437,101 @@ def test_it_surveys_every_work_the_benchmark_writes():
     """
     from tools.omr import accuracy_record as ar
     assert ec.WORKS == ar.BENCHMARK_WORKS
+
+
+class TestTheCommittedFixtureCopy:
+    """A COMMITTED 11-work truth pool, so the tables are checked on a clean
+    clone instead of only where `orchestral_eval` has run.
+
+    ⚠️ `TestTheRepositoryItself` below SKIPS on any machine with no
+    `benchmarks/omr-orchestral-e2e/fixtures/` — which is every fresh checkout,
+    every worktree and every container. That skip is why `<ornaments>` could be
+    absent from the exporter and from `VISIBLE` for as long as it was: the one
+    test that would have looked never ran. `benchmarks/omr-margin-window-
+    truncation-2026-09/out/fixtures-control/` holds all eleven works' truth
+    AND that run's export, in git.
+
+    ⚠️ WHAT THIS MAY AND MAY NOT ASSERT. The `.omr.musicxml` beside each truth
+    was written by an OLDER tree, and reading a leftover export is the exact
+    defect the module was rewritten to remove — a broken exporter would pass
+    against it. So this asserts on the TABLES (does every gap head the truth
+    pool shows have an entry) and never on the exporter. The exporter is
+    covered by `TestOurSideIsExportedNow`, which exports here and now.
+    """
+
+    FIXTURES = (Path(__file__).resolve().parents[3] / "benchmarks"
+                / "omr-margin-window-truncation-2026-09" / "out"
+                / "fixtures-control")
+
+    def _pool(self):
+        from tools.omr import accuracy_record as ar
+        truths, ours = [], []
+        for work in ar.BENCHMARK_WORKS:
+            t = self.FIXTURES / f"{work}.musicxml"
+            o = self.FIXTURES / f"{work}.omr.musicxml"
+            if not (t.is_file() and o.is_file()):
+                pytest.skip(f"committed fixture copy is missing {work}")
+            truths.append(ec._strip_prolog(t.read_text()))
+            ours.append(o.read_text())
+        return "<pool>" + "".join(truths) + "</pool>", "".join(ours), len(truths)
+
+    def test_the_pool_is_the_whole_benchmark(self):
+        """A positive control on everything below: an empty or partial pool
+        would make every assertion here vacuously true."""
+        from tools.omr import accuracy_record as ar
+        truth, ours, n = self._pool()
+        assert n == len(ar.BENCHMARK_WORKS) == 11
+        index = ec.notation_index(truth)
+        assert len(index) > 60, f"only {len(index)} in-measure elements — thin"
+        assert index["note"].count > 1000, "the pool has almost no notes in it"
+        assert len(ec.element_counts(ours)) > 40
+
+    def test_every_gap_head_is_accounted_for_by_one_of_the_two_tables(self):
+        """⚠️ RUN RED BEFORE BELIEVING GREEN: removing `ornaments` from
+        KNOWN_GAPS fails this, and the pre-2026-09-08 `compare()` did not
+        report it at all. That is the whole of the tenth gap, pinned."""
+        truth, ours, _ = self._pool()
+        gaps = ec.compare(truth, ours)
+        unexplained = [g for g in gaps
+                       if g[0] not in ec.KNOWN_GAPS and g[0] not in ec.NOT_NOTATION]
+        assert unexplained == [], (
+            "the committed 11-work truth shows these and that run's export had "
+            f"none, and neither table explains them: {unexplained}")
+
+    def test_ornaments_IS_one_of_them(self):
+        """The non-vacuity check on the test above. If `<ornaments>` ever stops
+        being a gap here this test fails and says to look — the committed
+        artifacts are frozen, so it can only change if someone edits them."""
+        truth, ours, _ = self._pool()
+        assert ("ornaments", 12, 0) in ec.compare(truth, ours)
+
+    def test_the_engraved_ornaments_are_ALL_tremolo(self):
+        """⚠️ THE ARITHMETIC THAT CHOSE WHAT TO WIRE, pinned so it cannot be
+        re-derived wrongly. The handoff listed `<ornaments>` 12 and `tremolo`
+        12 as two findings; they are the same twelve elements. So on the
+        engraved side "close the ornaments gap" means emit `<tremolo>`, and
+        wiring trills alone would move nothing here."""
+        import re
+        text = (self.FIXTURES / "beethoven-sym3-mvt1.musicxml").read_text()
+        blocks = re.findall(r"<ornaments>(.*?)</ornaments>", text, re.S)
+        assert len(blocks) == 12
+        kinds = {tuple(sorted(set(re.findall(r"<([a-z][a-z0-9-]*)", b))))
+                 for b in blocks}
+        assert kinds == {("tremolo",)}
+
+    def test_the_rollup_is_what_keeps_the_report_readable(self):
+        """The answer to the docstring's own objection — "55 elements, be
+        ignored, then be deleted" — as a number rather than a claim."""
+        truth, ours, _ = self._pool()
+        index = ec.notation_index(truth)
+        counts = ec.element_counts(ours)
+        categorical = [n for n in index if counts[n] == 0]
+        heads = ec.compare(truth, ours)
+        reported = [g for g in heads if g[0] not in ec.NOT_NOTATION]
+        assert len(index) > 4 * len(reported), (
+            f"{len(index)} in-measure elements -> {len(categorical)} "
+            f"categorical -> {len(heads)} heads -> {len(reported)} reported")
+        assert len(categorical) >= 2 * len(heads)
 
 
 class TestTheRepositoryItself:

@@ -2294,6 +2294,12 @@ def _detections_for_cell(
     articulations: dict[int, list[str]] = {}
     _attach_articulations_in_cell(dets, articulations)
 
+    # Ornaments, matched the same way. A separate pass because the side rule
+    # differs: a trill is printed above its note and a tremolo rides the stem,
+    # so the geometry test that applies to one does not apply to the other.
+    ornaments: dict[int, list[dict[str, Any]]] = {}
+    _attach_ornaments_in_cell(dets, ornaments)
+
     # ── Build output dicts. Convert cell-local bbox → page-pixel bbox. ────
     out: list[dict[str, Any]] = []
     cell_x0, cell_y0, cell_x1, cell_y1 = cell.bbox_page_px
@@ -2352,6 +2358,11 @@ def _detections_for_cell(
         # and the tie flags below.
         if id(d) in articulations:
             out_d["articulations"] = articulations[id(d)]
+        # Ornaments printed against this notehead — trill, turn, mordent, or a
+        # tremolo with the stroke count its class name states. Same terseness
+        # policy as `articulations` above: carried only where there are some.
+        if id(d) in ornaments:
+            out_d["ornaments"] = ornaments[id(d)]
         # THE ACCIDENTAL THAT WAS PRINTED, which is not the same fact as the
         # pitch. `inline_map` already pairs each accidental detection to its
         # notehead and the alteration is folded into `pitch` above — but the
@@ -2561,6 +2572,127 @@ def _attach_articulations_in_cell(dets, out: dict[int, list[str]]) -> int:
         if best is None:
             continue
         out.setdefault(id(best[1]), []).append(kind)
+        placed += 1
+    return placed
+
+
+#: DSv2's ornament marks, as `class -> (kind, strokes, printed_above)`.
+#:
+#: THE TENTH SIGNAL DETECTED AND NEVER EXPORTED. `grep -c ornaments export.py`
+#: returned 0 while `ornamentTrill` fired 21 times, `ornamentTurn` 6,
+#: `ornamentTurnInverted` 3 and `ornamentMordent` 3 across every committed
+#: transcription and detection artifact in the repository.
+#:
+#: ⚠️ TWO FAMILIES, AND THEY STAND IN DIFFERENT PLACES, which is the whole
+#: reason this is not a second `_ARTICULATION_KINDS`:
+#:
+#:   * a TRILL / TURN / MORDENT is printed clear ABOVE the note, centred on it,
+#:     which is an articulation's geometry with the side fixed by convention
+#:     rather than stated by the class name;
+#:   * a TREMOLO is drawn ON THE STEM, so it stands beside the notehead's
+#:     centre by about half a notehead width and on NEITHER side vertically —
+#:     above for a stem-up note, below for a stem-down one. `above=None` means
+#:     "do not test the side", and it is the honest reading rather than a
+#:     loosening: the stem direction is what would decide it and the mark's own
+#:     class does not carry it.
+#:
+#: ⚠️ **`tremoloMark` (class id 161) IS DELIBERATELY ABSENT.** It is the coarse
+#: vocabulary's spelling and carries no stroke count, and the count is the
+#: whole of what `<tremolo>` says — the two truth files in this repository that
+#: print tremolos print stroke counts 1 AND 2, so guessing one would write a
+#: different rhythm. `class_aliases.COARSER_THAN_CANONICAL` records it, and
+#: this consumer abstains on it rather than picking a number.
+_ORNAMENT_KINDS: dict[str, tuple[str, int | None, bool | None]] = {
+    "ornamenttrill": ("trill", None, True),
+    "ornamentturn": ("turn", None, True),
+    "ornamentturninverted": ("inverted-turn", None, True),
+    "ornamentmordent": ("mordent", None, True),
+    **{f"tremolo{n}": ("tremolo", n, None) for n in range(1, 6)},
+}
+
+#: How far along x an ornament may sit from the notehead it belongs to, in
+#: NOTEHEAD WIDTHS — the same unit `_ARTIC_MAX_DX_NOTEHEAD_WIDTHS` is measured
+#: in, for the same reason (a mark's own bounding box is the mistake the
+#: augmentation-dot gate paid 193 edits for).
+#:
+#: ⚠️ **UNMEASURED, and declared as such.** The articulation constant sits on a
+#: swept plateau; this one cannot, because there is no corpus to sweep it on:
+#: across all 7,090 committed JSON artifacts there is not ONE `tremolo1`-`5`
+#: detection, and the 33 trill/turn/mordent detections have no per-mark truth
+#: to score a placement against. It is set to 1.0 rather than the
+#: articulations' 0.75 for a stated reason — a tremolo stands on the STEM,
+#: which is at the notehead's edge, so a value tuned for a mark centred on the
+#: notehead is the wrong prior for it — and it should be swept the day a
+#: measurement is possible. See `benchmarks/omr-export-gaps-2026-09/`.
+_ORNAMENT_MAX_DX_NOTEHEAD_WIDTHS = 1.0
+
+
+def ornament_kind(class_name: str) -> tuple[str, int | None, bool | None] | None:
+    """`("trill", None, True)` for `ornamentTrill`. None if not an ornament.
+
+    The tuple is `(kind, strokes, printed_above)`. `strokes` is the tremolo
+    stroke count the class name states and is None for every other mark;
+    `printed_above` is None where the mark's side is not a fact its class
+    carries, and the geometry test is then skipped rather than guessed.
+    """
+    norm = "".join(ch for ch in (class_name or "").lower() if ch.isalnum())
+    return _ORNAMENT_KINDS.get(norm)
+
+
+def _attach_ornaments_in_cell(dets, out: dict[int, list[dict]]) -> int:
+    """Give each ornament mark to the notehead it is printed against.
+
+    The same shape as `_attach_articulations_in_cell` and for the same reason:
+    the mark and its note are separate detections and only geometry joins them.
+    Written out rather than folded into that function because the side rule
+    differs (see `_ORNAMENT_KINDS`) and because that function's constant is
+    measured — sharing a body would put a measured plateau and an unmeasured
+    guess behind one number.
+
+    A mark with no notehead within reach on the correct side is left unattached
+    rather than given to the nearest thing available, which is the rule that
+    keeps the articulation pass's precision at 0.980.
+
+    Mutates `out` (notehead id -> list of `{"kind": ..., "strokes": ...}`) and
+    returns the number of marks placed.
+    """
+    noteheads = [d for d in dets if (d.category or "") == "notehead"]
+    if not noteheads:
+        return 0
+    marks = [(d, k) for d in dets
+             if (k := ornament_kind(d.smufl_name or "")) is not None]
+    if not marks:
+        return 0
+
+    widths = sorted(n.width_canonical for n in noteheads)
+    nh_width = widths[len(widths) // 2] or 1.0
+    limit = nh_width * _ORNAMENT_MAX_DX_NOTEHEAD_WIDTHS
+
+    placed = 0
+    for mark, (kind, strokes, above) in marks:
+        mx = mark.x_canonical + mark.width_canonical / 2.0
+        my = mark.y_canonical + mark.height_canonical / 2.0
+        best = None
+        for n in noteheads:
+            ny = n.y_canonical + n.height_canonical / 2.0
+            # Larger canonical y is LOWER on the page, so a mark printed above
+            # its notehead has the smaller y of the two. `above is None` is a
+            # tremolo: it rides the stem and sits on whichever side that is.
+            if above is True and my >= ny:
+                continue
+            if above is False and my <= ny:
+                continue
+            dx = abs(mx - (n.x_canonical + n.width_canonical / 2.0))
+            if dx > limit:
+                continue
+            if best is None or dx < best[0]:
+                best = (dx, n)
+        if best is None:
+            continue
+        entry: dict[str, Any] = {"kind": kind}
+        if strokes is not None:
+            entry["strokes"] = strokes
+        out.setdefault(id(best[1]), []).append(entry)
         placed += 1
     return placed
 

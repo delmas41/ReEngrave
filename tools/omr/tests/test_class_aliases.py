@@ -183,3 +183,26 @@ def test_detector_canonicalizes_the_model_vocabulary(monkeypatch):
     assert det._class_names[192] == "dynamicF", "the coarse spelling was not renamed"
     assert det._class_names[95] == "dynamicF"
     assert det._class_names[205] == "tuple", "a coarser name must be left alone"
+
+
+def test_a_countless_tremolo_is_not_given_a_count():
+    """⚠️ `tremoloMark`'s entry in COARSER_THAN_CANONICAL had a reason that
+    EXPIRED on 2026-09-08 — "nothing downstream reads a tremolo's count today".
+    Something does now: `transcribe.ornament_kind` reads it and
+    `export._mxl_ornament_elements` writes it as `<tremolo>`'s text. The
+    conclusion survives for a stronger reason — the count is not recoverable
+    from this name, and the two truth files in this repository that print
+    tremolos print counts 1 AND 2, so a guess writes a different RHYTHM. Both
+    consumers abstain, and this pins the pair rather than the sentence.
+    """
+    from tools.omr.export import _mxl_ornament_elements
+    from tools.omr.transcribe import ornament_kind
+
+    assert "tremoloMark" in COARSER_THAN_CANONICAL
+    assert "tremoloMark" not in ALIASES, "a coarser name is not a synonym"
+    assert ornament_kind("tremoloMark") is None
+    assert ornament_kind("tremolo3") == ("tremolo", 3, None)
+    # And the exporter refuses one that reaches it without a count anyway.
+    assert _mxl_ornament_elements([{"kind": "tremolo"}]) == []
+    assert _mxl_ornament_elements(
+        [{"kind": "tremolo", "strokes": 3}]) == ['<tremolo type="single">3</tremolo>']

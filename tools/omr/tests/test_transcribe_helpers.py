@@ -1432,6 +1432,127 @@ class TestAttachArticulations:
         assert tr._attach_articulations_in_cell([self._mark(109, 560)], out) == 0
 
 
+class TestOrnamentKind:
+    """The class name states which mark it is, and for a tremolo how many
+    strokes. `tremoloMark` states neither and is refused."""
+
+    @pytest.mark.parametrize("cls,expected", [
+        ("ornamentTrill", ("trill", None, True)),
+        ("ornamentTurn", ("turn", None, True)),
+        ("ornamentTurnInverted", ("inverted-turn", None, True)),
+        ("ornamentMordent", ("mordent", None, True)),
+        ("tremolo1", ("tremolo", 1, None)),
+        ("tremolo5", ("tremolo", 5, None)),
+    ])
+    def test_it_reads_the_class(self, cls, expected):
+        assert tr.ornament_kind(cls) == expected
+
+    def test_the_coarse_tremolo_spelling_is_REFUSED(self):
+        """⚠️ `tremoloMark` is id 161 of the 208-class space — the coarse
+        vocabulary's spelling, carrying no stroke count. The count is the whole
+        of what <tremolo> says: the two truth files in this repository that
+        print tremolos print counts 1 AND 2, so a guess would write a different
+        rhythm. `class_aliases.COARSER_THAN_CANONICAL` records it and this
+        abstains on it."""
+        assert tr.ornament_kind("tremoloMark") is None
+
+    @pytest.mark.parametrize("cls", [
+        "noteheadBlackOnLine", "fermataAbove", "arpeggiato", "", "ornament",
+        "articStaccatoAbove", "tremolo", "tremolo0", "tremolo6",
+    ])
+    def test_it_refuses_everything_else(self, cls):
+        assert tr.ornament_kind(cls) is None
+
+
+class TestAttachOrnaments:
+    """THE TENTH SIGNAL DETECTED AND NEVER EXPORTED.
+
+    Same geometry as the articulation pass with one difference that is the
+    reason it is a separate pass: a trill is printed clear ABOVE its note and
+    a tremolo rides the STEM, so it stands on whichever side the stem does and
+    its side must not be tested at all.
+    """
+
+    @staticmethod
+    def _nh(x, y=500):
+        return FakeDet(smufl_name="noteheadBlackInSpace", category="notehead",
+                       x_canonical=x, y_canonical=y,
+                       width_canonical=30, height_canonical=20)
+
+    @staticmethod
+    def _mark(x, y, cls="ornamentTrill"):
+        return FakeDet(smufl_name=cls, category="ornament",
+                       x_canonical=x, y_canonical=y,
+                       width_canonical=12, height_canonical=12)
+
+    def test_a_trill_goes_to_the_note_below_it(self):
+        nh = self._nh(100)
+        out: dict = {}
+        assert tr._attach_ornaments_in_cell([nh, self._mark(109, 440)], out) == 1
+        assert out[id(nh)] == [{"kind": "trill"}]
+
+    def test_a_trill_BELOW_the_only_note_is_left_unattached(self):
+        """The side is obeyed, not just the distance — a trill is printed
+        above. Abstaining is what keeps the articulation pass's precision at
+        0.980 and the same rule applies here."""
+        nh = self._nh(100)
+        out: dict = {}
+        assert tr._attach_ornaments_in_cell([nh, self._mark(109, 560)], out) == 0
+        assert out == {}
+
+    def test_a_tremolo_attaches_from_EITHER_side(self):
+        """The difference from articulations, and the point of `above=None`. A
+        tremolo rides the stem, so it is above a stem-up note and below a
+        stem-down one, and the class name says nothing about which."""
+        for y in (440, 560):
+            nh = self._nh(100)
+            out: dict = {}
+            assert tr._attach_ornaments_in_cell(
+                [nh, self._mark(109, y, "tremolo3")], out) == 1
+            assert out[id(nh)] == [{"kind": "tremolo", "strokes": 3}]
+
+    def test_the_stroke_count_reaches_the_entry(self):
+        nh = self._nh(100)
+        out: dict = {}
+        tr._attach_ornaments_in_cell([nh, self._mark(109, 440, "tremolo2")], out)
+        assert out[id(nh)] == [{"kind": "tremolo", "strokes": 2}]
+
+    def test_it_picks_the_nearest_notehead_in_x(self):
+        near, far = self._nh(100), self._nh(400)
+        out: dict = {}
+        tr._attach_ornaments_in_cell([near, far, self._mark(109, 440)], out)
+        assert out.get(id(near)) == [{"kind": "trill"}]
+        assert id(far) not in out
+
+    def test_a_mark_too_far_in_x_is_left_unattached(self):
+        nh = self._nh(100)
+        out: dict = {}
+        assert tr._attach_ornaments_in_cell(
+            [nh, self._mark(400, 440)], out) == 0
+
+    def test_a_cell_with_no_noteheads_places_nothing(self):
+        out: dict = {}
+        assert tr._attach_ornaments_in_cell([self._mark(109, 440)], out) == 0
+
+    def test_it_does_not_touch_articulations(self):
+        """The two passes read disjoint classes. An `artic*` reaching the
+        ornament pass would double-count the mark."""
+        nh = self._nh(100)
+        out: dict = {}
+        assert tr._attach_ornaments_in_cell(
+            [nh, self._mark(109, 440, "articStaccatoAbove")], out) == 0
+
+    def test_the_stem_rejection_veto_still_sees_these_classes(self):
+        """⚠️ `_filter_stems_overlapping_tremolo` reads the SAME detections
+        from a different direction — a CV stem substantially inside an ornament
+        glyph is that glyph's ink, not a stem. Wiring an export consumer must
+        not have narrowed what that veto sees. Asserted here rather than
+        assumed because the two lists are maintained apart."""
+        for cls in ("tremolo1", "tremolo5", "ornamentTrill", "ornamentTurn",
+                    "ornamentTurnInverted", "ornamentMordent"):
+            assert tr._is_tremolo_or_ornament_det(FakeDet(smufl_name=cls))
+
+
 # ─── the weight a defaulted clef leaves on a key-signature reading ───────────
 
 class TestDefaultedClefWeight:

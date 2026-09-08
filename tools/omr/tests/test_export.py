@@ -532,6 +532,118 @@ class TestArticulations:
         assert "->" in to_lilypond(self._result(["accent"]))
 
 
+class TestOrnaments:
+    """THE TENTH GAP. `grep -c ornaments export.py` returned 0 while the
+    detector fired 21 `ornamentTrill` across the committed artifacts, and
+    `export_coverage` reported nothing because `<ornaments>` was absent from
+    its hand-written `VISIBLE` list.
+
+    ⚠️ THE ARITHMETIC THAT CHOSE WHAT TO WIRE. The handoff table listed
+    `<ornaments>` 12 and `tremolo` 12 as two findings. They are the same twelve
+    elements: `beethoven-sym3-mvt1.musicxml` holds twelve `<ornaments>` blocks
+    containing twelve `<tremolo type="single">1</tremolo>` and nothing else. So
+    on the ENGRAVED side "close the ornaments gap" means emit `<tremolo>`; on a
+    scan it means the trills, which is what the detector actually reads.
+    """
+
+    @staticmethod
+    def _result(ornaments, articulations=None):
+        r = _tiny_result()
+        nh = (r["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+              ["detections"][0])
+        nh["ornaments"] = ornaments
+        if articulations:
+            nh["articulations"] = articulations
+        return r
+
+    def test_a_trill_reaches_the_file(self):
+        out = to_musicxml(self._result([{"kind": "trill"}]))
+        assert "<ornaments>" in out and "<trill-mark/>" in out
+
+    @pytest.mark.parametrize("kind,element", [
+        ("trill", "trill-mark"), ("turn", "turn"),
+        ("inverted-turn", "inverted-turn"), ("mordent", "mordent"),
+    ])
+    def test_every_named_mark_maps(self, kind, element):
+        out = to_musicxml(self._result([{"kind": kind}]))
+        assert f"<{element}/>" in out
+
+    def test_a_tremolo_carries_its_STROKE_COUNT(self):
+        """The count is the whole of what <tremolo> says — the two truth files
+        in this repository that print tremolos print 1 and 2."""
+        out = to_musicxml(self._result([{"kind": "tremolo", "strokes": 3}]))
+        assert '<tremolo type="single">3</tremolo>' in out
+
+    def test_a_tremolo_with_NO_count_is_dropped_not_guessed(self):
+        """The coarse `tremoloMark` spelling reaches here with no count. A
+        guessed count writes a different rhythm."""
+        out = to_musicxml(self._result([{"kind": "tremolo"}]))
+        assert "<tremolo" not in out and "<ornaments>" not in out
+
+    def test_one_wrapper_holds_every_mark_on_the_note(self):
+        out = to_musicxml(self._result(
+            [{"kind": "trill"}, {"kind": "tremolo", "strokes": 2}]))
+        assert out.count("<ornaments>") == 1
+        assert "<trill-mark/>" in out and ">2</tremolo>" in out
+
+    def test_an_unknown_kind_is_dropped_not_guessed(self):
+        out = to_musicxml(self._result(
+            [{"kind": "trill"}, {"kind": "schleifer"}]))
+        assert "<trill-mark/>" in out and "schleifer" not in out
+
+    def test_a_score_with_no_ornaments_emits_none(self):
+        assert "<ornaments>" not in to_musicxml(_tiny_result())
+
+    def test_ornaments_precede_articulations_inside_notations(self):
+        """MusicXML's <notations> content model is an unbounded CHOICE, so no
+        order is schema-enforced — this follows the order the schema LISTS them
+        in (… tuplet, glissando, slide, ornaments, technical, articulations …),
+        the same convention the <tuplet> comment in `_mxl_note` states."""
+        out = to_musicxml(self._result([{"kind": "trill"}], ["staccato"]))
+        assert out.index("<ornaments>") < out.index("<articulations>")
+
+    def test_both_blocks_sit_inside_ONE_notations(self):
+        """Emitting a second <notations> per note is invalid MusicXML."""
+        out = to_musicxml(self._result([{"kind": "trill"}], ["staccato"]))
+        assert out.count("<notations>") == 1
+
+    def test_music21_round_trips_a_trill_and_a_tremolo(self):
+        """The check that a wrongly-ordered or wrongly-nested child would fail,
+        made against a real MusicXML reader rather than against a string."""
+        m21 = pytest.importorskip("music21")
+        from music21 import converter
+        import tempfile
+        for result, expected in ((self._result([{"kind": "trill"}]), "Trill"),
+                                 (self._result([{"kind": "tremolo",
+                                                 "strokes": 3}]), "Tremolo")):
+            with tempfile.NamedTemporaryFile("w", suffix=".musicxml",
+                                             delete=False) as f:
+                f.write(to_musicxml(result))
+                path = f.name
+            score = converter.parse(path)
+            names = [type(e).__name__
+                     for n in score.recurse().notes for e in n.expressions]
+            assert expected in names, f"{expected} did not round-trip: {names}"
+
+    def test_lilypond_carries_the_NAMED_marks(self):
+        assert "\\trill" in to_lilypond(self._result([{"kind": "trill"}]))
+        assert "\\turn" in to_lilypond(self._result([{"kind": "turn"}]))
+        assert "\\mordent" in to_lilypond(self._result([{"kind": "mordent"}]))
+        assert "\\reverseturn" in to_lilypond(
+            self._result([{"kind": "inverted-turn"}]))
+
+    def test_lilypond_does_NOT_carry_a_tremolo(self):
+        """⚠️ DELIBERATE, and the hairpin precedent applied. LilyPond spells a
+        single-note tremolo `c4:32` — a DURATION SUBDIVISION, so the number
+        depends on the note's own written value and a wrong mapping writes a
+        different RHYTHM rather than a different mark. Nothing in this
+        repository detects a tremolo, so there is no measurement to price it
+        against. MusicXML gets it; LilyPond does not."""
+        out = to_lilypond(self._result([{"kind": "tremolo", "strokes": 3}]))
+        assert ":" not in out.split("\\score")[-1] or ":32" not in out
+        assert ":32" not in out and ":16" not in out
+
+
 # ─── to_lilypond (smoke test on a tiny synthetic JSON) ─────────────────────
 
 

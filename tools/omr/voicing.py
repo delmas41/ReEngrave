@@ -263,6 +263,20 @@ def group_chords_in_measure(
                     marks.append(kind)
         if marks:
             event["articulations"] = marks
+        # Ornaments ride up identically, and for the identical reason: a trill
+        # or a tremolo is printed once against the chord, and MusicXML hangs
+        # <ornaments> off the chord's first <note>. Deduplicated on the whole
+        # entry rather than on the kind alone — a tremolo's STROKE COUNT is
+        # part of what the mark says, so `{tremolo,1}` and `{tremolo,2}` are
+        # two different marks and must not collapse into one. Inert on any
+        # result whose transcription predates the attach pass.
+        orns: list[dict] = []
+        for note in group:
+            for orn in note.get("ornaments") or []:
+                if orn not in orns:
+                    orns.append(orn)
+        if orns:
+            event["ornaments"] = orns
         events.append(event)
 
     # ── Add rest events ───────────────────────────────────────────────────

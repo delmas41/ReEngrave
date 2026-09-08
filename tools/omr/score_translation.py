@@ -38,8 +38,12 @@ from .export import to_musicxml
 from .export_coverage import element_counts
 
 #: `family -> (detector class prefixes, MusicXML element, unit note)`.
-#: The element is `export_coverage.VISIBLE`'s name, so the two tools cannot
-#: drift apart on what a thing is called.
+#: The element is the MusicXML element's own name. ⚠️ It used to be described
+#: as `export_coverage.VISIBLE`'s name, "so the two tools cannot drift apart on
+#: what a thing is called" — that list was deleted on 2026-09-08 when the
+#: coverage check started deriving its element set from the truth documents,
+#: and the shared vocabulary is now MusicXML's own, which is a stronger anchor
+#: than a list either module maintained.
 FAMILIES: dict[str, tuple[tuple[str, ...], str, str | None]] = {
     "accidental":      (("accidental",), "accidental", None),
     "augmentation_dot": (("augmentationdot",), "dot", None),
