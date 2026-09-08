@@ -4,7 +4,7 @@
 
 **If your recollection disagrees with this file, a code tag, or a test, THE
 FILE IS RIGHT.** Do not re-derive a settled question from a summary; open the
-file. **195 coherence tests** across 12 `tools/omr/tests/test_staged_*.py`
+file. **197 coherence tests** across 12 `tools/omr/tests/test_staged_*.py`
 files are the real guard — a contradiction of a pinned decision fails a test
 rather than passing quietly.
 
@@ -36,8 +36,8 @@ ended at a green commit.**
 
 **⚠️ REDUNDANT GROUPS ARE IN (`groups.py`), and they are the fourth stage.**
 `GATHER → ADJUDICATE → GROUPS → EVALUATE`, surfaced as `result["agreement"]`
-and printed by the CLI. **5 redundancies declared, 3 refused with their
-reasons, 42 tests, 13 mutations run RED.** ⚠️ **It has NO CONSUMER, on
+and printed by the CLI. **6 redundancies declared, 3 refused with their
+reasons, 44 tests, 15 mutations run RED.** ⚠️ **It has NO CONSUMER, on
 purpose**: seeing that witnesses disagree is this stage; deciding what to do
 about it is D4. That is stated in the module's own docstring so it cannot
 become the ninth complete recorder that recorded nothing.
@@ -69,7 +69,7 @@ stub behind its hard edge (D13).
 ```bash
 python3 -m tools.omr.staged score.pdf --pages 0-2 --weights <file>.pt
 python3 -m tools.omr.staged score.pdf --pages 0        # no weights: it still runs
-python3 -m pytest tools/omr/tests/test_staged_*.py -q  # 195, seconds, no venv
+python3 -m pytest tools/omr/tests/test_staged_*.py -q  # 197, seconds, no venv
 ```
 
 ---
@@ -880,7 +880,8 @@ nothing — and a wall of `SINGLE` reads as "no problems found". That is what
 orchestral scan. If it is near zero, the join is too strict to be useful and
 the answer is a document-wide reference lineup (D10), not a looser key.
 
-**Blast radius.** Three of the five declared redundancies.
+**Blast radius.** Four of the six declared redundancies — `clef`,
+`instrument`, `key_signature` and `staff_group` are all part-scoped.
 
 ### A-WIT-5 · Groups run AFTER adjudication and BEFORE evaluation
 

@@ -439,11 +439,63 @@ class TestDeclarationDiscipline(unittest.TestCase):
 
     def test_every_declared_redundancy_names_prior_art_or_a_reason(self):
         groups._ensure_declarations()
-        self.assertGreaterEqual(len(groups.REDUNDANCIES), 5)
+        self.assertGreaterEqual(len(groups.REDUNDANCIES), 6)
         for red in groups.REDUNDANCIES:
             with self.subTest(red=red.name):
                 self.assertGreater(len(red.why), 40)
                 self.assertGreater(len(red.aspect), 40)
+
+
+class TestTheBracketGroupIsWitnessedAcrossSystems(unittest.TestCase):
+    """⚠️ Bracket groups are a property of the SCORE, not of a system, and
+    within-page instability is the measured signal `OMR_BRACKET_COLUMNS` was
+    shipped on: 0.384 for the pixel rule against 0.055, over 144 pages and
+    five publishers."""
+
+    def _log(self, per_system_blocks):
+        log = Log()
+        for sys_idx, blocks in per_system_blocks.items():
+            for st_idx, _b in enumerate(blocks):
+                log.observe(R.staff(0, sys_idx, st_idx), Q.STAFF_LINES,
+                            [1, 2, 3, 4, 5], reader=READERS.GEOMETRY,
+                            frame="page")
+        log.freeze()
+        for sys_idx, blocks in per_system_blocks.items():
+            log.record(Verdict(id=log._next_id("vrd"),
+                               subject=R.system(0, sys_idx),
+                               quantity=Q.SYSTEM_STAFF_COUNT,
+                               outcome=Outcome.DECIDED, value=len(blocks),
+                               decider="test", reason="counted"))
+            for st_idx, block in enumerate(blocks):
+                st = R.staff(0, sys_idx, st_idx)
+                log.record(Verdict(id=log._next_id("vrd"), subject=st,
+                                   quantity=Q.SLOT_INDEX,
+                                   outcome=Outcome.DECIDED, value=st_idx,
+                                   decider="test", reason="full_lineup"))
+                log.record(Verdict(id=log._next_id("vrd"), subject=st,
+                                   quantity=Q.STAFF_GROUP,
+                                   outcome=Outcome.DECIDED, value=block,
+                                   decider="test", reason="bracket_block"))
+        return log
+
+    def test_a_stable_bracketing_is_unanimous_part_by_part(self):
+        log = self._log({0: [0, 0, 1, 1], 1: [0, 0, 1, 1]})
+        found = [g for g in groups.assess(
+            log, only("staff_group_across_systems"))
+            if g.fact != "<unplaced>"]
+        self.assertEqual(len(found), 4)
+        for g in found:
+            self.assertIs(g.agreement, Agreement.UNANIMOUS)
+
+    def test_one_system_bracketing_differently_is_a_disagreement(self):
+        """The within-page instability, seen. ⚠️ It implicates the whole
+        part, not the odd system out."""
+        log = self._log({0: [0, 0, 1, 1], 1: [0, 0, 1, 1], 2: [0, 1, 1, 1]})
+        bad = [g for g in groups.assess(
+            log, only("staff_group_across_systems")) if g.disagrees]
+        self.assertEqual(len(bad), 1)
+        self.assertIs(bad[0].agreement, Agreement.MAJORITY)
+        self.assertEqual(len(bad[0].suspects), 3)
 
 
 class TestTheReport(unittest.TestCase):

@@ -860,6 +860,33 @@ def _declare() -> None:
     )
 
     redundancy(
+        name="staff_group_across_systems",
+        quantity=Q.STAFF_GROUP,
+        source=Source.VERDICT,
+        witness_scope=Kind.STAFF,
+        fact_key=_slot_fact,
+        reading=lambda log, r: r.value,
+        why=("Bracket groups are a property of the SCORE, not of a system — an "
+             "engraver brackets the same families the same way on every system "
+             "of a work, so a page of five systems states one bracketing five "
+             "times."),
+        aspect=("Which family block a part falls in. ⚠️ The reading is the "
+                "BLOCK INDEX, which is a proxy for block MEMBERSHIP and is "
+                "only comparable within one lineup — which is exactly what the "
+                "staff-count key already enforces. Compare indices across "
+                "different lineups and the proxy breaks."),
+        implicates=(Q.STAFF_GROUP, Q.SLOT_INDEX, Q.BRACKET_BLOCK,
+                    Q.SYSTEM_MEMBERSHIP),
+        legitimate_difference=(
+            "⚠️ Only where the lineup changes, which the fact key already "
+            "separates. Within one lineup a genuine difference between systems "
+            "is instability, and it is measured: the pixel rule's within-page "
+            "instability was 0.384 over 144 pages and five publishers, against "
+            "0.055 for the systemic-column rule — so a disagreement here is "
+            "the signal `OMR_BRACKET_COLUMNS` was shipped on."),
+    )
+
+    redundancy(
         name="key_signature_across_systems",
         quantity=Q.KEY_SIGNATURE,
         source=Source.VERDICT,
