@@ -75,6 +75,48 @@ def staves_of(row: dict, rows: dict[str, dict]) -> tuple[list[dict] | None, str]
     return st, src
 
 
+def expand_lineup(staves: list[dict]) -> list[dict | None]:
+    """The lineup as one entry per PART WE COULD EMIT, or `None` where we emit
+    none. This is what makes the arity check compare like with like.
+
+    ⚠️ **THE OLD GATE COMPARED TWO DIFFERENT COUNTS AND CALLED THE DIFFERENCE A
+    GUESS.** `len(staves)` is one entry per PRINTED staff, including one-line
+    percussion rules; our part list is one per FIVE-LINE staff we detected. On
+    the three Mahler rows the gap is exactly the one-line rules — 15−2=13,
+    21−3=18, 21−4=17, matching `page.n_staves` and our part count to the staff
+    — and each row's own `n_staves_note` already said in words *"compare
+    `detected` against 13/18/17."* Refusing there declared 4,815 symbol rows
+    `part_unresolved` for a units error.
+    `benchmarks/omr-part-join-2026-09/FINDINGS.md`.
+
+    Two declared shapes, both facts about the ENGRAVING and both now fields in
+    `works.json` rather than prose:
+
+    * `one_line: true` — a single-rule percussion staff. **A five-line staff
+      detector cannot find it by construction**, so we emit no part for it and
+      it drops out of the arity check. ⚠️ Its reference parts then belong to NO
+      predicted part and stay `uncorresponded`, which is correct: that music is
+      genuinely unread. This is a MEASUREMENT unlock, not a claim to read it.
+    * `printed_staves: N` — one lineup entry the page prints as N staves
+      (bach's `Cembalo (grand staff, 2 printed staves)`). We emit N parts; the
+      **first** takes the reference parts and the rest are declared unresolved.
+      ⚠️ NOT all N mapped to the same reference part — that would visit the
+      same truth symbols N times and unbalance the ledger's own accounting
+      control.
+    """
+    out: list[dict | None] = []
+    for s in staves:
+        if not isinstance(s, dict):
+            out.append(None)
+            continue
+        if s.get("one_line"):
+            continue                      # we emit no part for a one-line rule
+        n = int(s.get("printed_staves") or 1)
+        out.append(s)
+        out.extend([None] * (n - 1))      # the extra printed staves of one entry
+    return out
+
+
 def part_join_for(row: dict, rows: dict[str, dict],
                   n_pred_parts: int) -> tuple[list[PartJoin], dict[str, Any]]:
     staves, src = staves_of(row, rows)
@@ -86,8 +128,17 @@ def part_join_for(row: dict, rows: dict[str, dict],
         info["reason"] = src
         return ([PartJoin(i, (), "unresolved", reason=src, source="none")
                  for i in range(n_pred_parts)], info)
-    if len(staves) != n_pred_parts:
-        reason = (f"the hand-verified lineup names {len(staves)} staves and the "
+    slots = expand_lineup(staves)
+    info["n_lineup_slots"] = len(slots)
+    info["n_one_line_dropped"] = sum(1 for s in staves
+                                     if isinstance(s, dict) and s.get("one_line"))
+    info["n_extra_printed_staves"] = len(slots) - (len(staves)
+                                                   - info["n_one_line_dropped"])
+    if len(slots) != n_pred_parts:
+        reason = (f"the hand-verified lineup expands to {len(slots)} five-line "
+                  f"staves ({len(staves)} entries, "
+                  f"{info['n_one_line_dropped']} one-line dropped, "
+                  f"{info['n_extra_printed_staves']} extra printed) and the "
                   f"prediction emitted {n_pred_parts} parts — a positional join "
                   f"would be a guess")
         info["status"] = "unresolved"
@@ -95,8 +146,15 @@ def part_join_for(row: dict, rows: dict[str, dict],
         return ([PartJoin(i, (), "unresolved", reason=reason, source="none")
                  for i in range(n_pred_parts)], info)
     join: list[PartJoin] = []
-    for i, s in enumerate(staves):
-        parts = tuple(int(p) for p in (s.get("parts") or [])) if isinstance(s, dict) else ()
+    for i, s in enumerate(slots):
+        if s is None:
+            join.append(PartJoin(
+                i, (), "unresolved",
+                reason="an extra printed staff of a lineup entry the reference "
+                       "encodes as one part",
+                source="works.json printed_staves"))
+            continue
+        parts = tuple(int(p) for p in (s.get("parts") or []))
         if parts:
             join.append(PartJoin(i, parts, "resolved"))
         else:
@@ -105,8 +163,8 @@ def part_join_for(row: dict, rows: dict[str, dict],
                                  source="works.json"))
     info["status"] = "resolved"
     info["staves_resolved"] = sum(1 for p in join if p.status == "resolved")
-    info["staff_names"] = [s.get("name") if isinstance(s, dict) else str(s)
-                           for s in staves]
+    info["staff_names"] = [(s.get("name") if isinstance(s, dict) else None)
+                           for s in slots]
     return join, info
 
 

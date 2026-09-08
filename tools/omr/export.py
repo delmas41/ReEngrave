@@ -3405,17 +3405,45 @@ def _stitch_slots(result: dict[str, Any]) -> list[list[dict[str, Any]]] | None:
 def _slot_stitch_enabled() -> bool:
     """`OMR_SLOT_STITCH` — join by contextual SLOT where the ordinal join refuses.
 
-    DEFAULT OFF, and measured rather than assumed. See
-    `benchmarks/omr-staff-structure-2026-09/FINDINGS.md`: the join it produces
-    is structurally CORRECT — on Brahms 1 p.2 it recovers 14 continuous parts
-    from the 27 per-system fragments the refusal falls back to, and the slot it
-    leaves short is exactly the Trompeten staff the second system suppresses —
-    and it still costs more OMR-NED than the fragments do, because musicdiff
-    charges an unpaired truth PART more than it charges that part's unpaired
-    MEASURES. The flag exists so the finding is reproducible, not because the
-    default is in doubt.
+    **DEFAULT ON since 2026-09-08 (Sean's call.)**
+
+    ⚠️⚠️ **THIS DOCSTRING SAID FOR DAYS THAT THE FLAG "still costs more OMR-NED
+    than the fragments do". THAT IS FALSE, AND IT WAS THE STATED REASON TO LEAVE
+    IT OFF.** `benchmarks/omr-staff-structure-2026-09/FINDINGS.md` §4 measured
+    **0.8283 → 0.8235 and 34,962 → 34,746 edits — an IMPROVEMENT** — and the
+    2026-09-07 re-price (`benchmarks/omr-slot-stitch-reprice-2026-09/`),
+    transcribe-once-export-twice so the delta carries no detector noise,
+    measured **−240 edits raw over 20 rows and −2,278 page-normalised over
+    19**, with all three reached rows improving on the RAW truth too and 17
+    unreached rows byte-identical. CLAUDE.md has carried the correction since;
+    the code did not. **The tree outranks the ledger — including when the tree
+    is the thing that is wrong.**
+
+    The join is structurally correct: on Brahms 1 p.2 it recovers 14 continuous
+    parts from the 27 per-system fragments the refusal falls back to, and the
+    slot it leaves short is exactly the Trompeten staff the second system
+    suppresses.
+
+    **Why it is now ON**, given that the evidence is still 3 rows of one
+    structural shape (a multi-system scan with a suppressed tacet staff):
+
+    * **The blast radius is confined to rows that are already broken.** It acts
+      only where `_stitch_slots` has REFUSED, i.e. where today's output is
+      per-system fragment parts that pair with nothing. 17 of 20 rows are
+      byte-identical and predictions differ iff the flag is reached (20/20), so
+      it cannot regress a page that currently works.
+    * **The cost of leaving it off is a blocked measurement, not just a
+      foregone score.** Those 3 rows own **46.3% of the unassessable symbol
+      mass** on the scan gate (`benchmarks/omr-part-join-2026-09/FINDINGS.md`),
+      so while it is off no instrument can say anything about 6,937 symbol
+      rows.
+    * It has never once measured worse, across two independent pricings.
+
+    ⚠️ Reach is bounded by contextual slot COMPLETENESS, not by this flag:
+    `_stitch_slots_by_slot` abstains on a single staff with no `slot_index`, so
+    the identity layer is upstream of this gain.
     """
-    return os.environ.get("OMR_SLOT_STITCH", "0").strip().lower() in (
+    return os.environ.get("OMR_SLOT_STITCH", "1").strip().lower() in (
         "1", "true", "yes", "on")
 
 

@@ -196,3 +196,73 @@ python3 benchmarks/omr-part-join-2026-09/separate_causes.py \
     --ledger benchmarks/omr-symbol-ledger-2026-09/out/ledger-summary.json
 python3 benchmarks/omr-part-join-2026-09/price_unlocks.py
 ```
+
+
+---
+
+## 7. RESOLVED, 2026-09-08 later the same day: causes B, C and A all closed
+
+### B and C — the arity gate now compares like with like
+
+The two engraving facts are **fields in `works.json`** rather than prose:
+`one_line: true` on nine percussion-rule entries, `printed_staves: 2` on bach's
+cembalo. `run_ledger.expand_lineup` turns the lineup into one entry per part we
+could emit — a one-line rule contributes none, a `printed_staves: N` entry
+contributes N with only the first carrying the reference parts (⚠️ **not all N
+mapped to the same truth part**, which would visit those symbols N times and
+unbalance the accounting control).
+
+⚠️ Each declaration is **asserted against the number that IS derivable**
+(`len(staves) - page.n_staves`) at write time, and `test_works_json_staff_lineup.py`
+re-asserts it on every suite run — **run RED against two mutants** (a removed
+`one_line`, a removed `printed_staves`). A future hand-verified row that gains a
+one-line staff without its flag fails there rather than surfacing weeks later
+as an unexplained refusal.
+
+### A — `OMR_SLOT_STITCH` is DEFAULT ON (Sean's call, 2026-09-08)
+
+⚠️ **The flag site's own docstring carried the refuted claim** — *"it still
+costs more OMR-NED than the fragments do"* — which was the stated reason to
+leave it off, and which `benchmarks/omr-staff-structure-2026-09/FINDINGS.md` §4
+and the 2026-09-07 re-price both contradict. CLAUDE.md had carried the
+correction for a day; the code had not. Corrected in place.
+
+⚠️⚠️ **AND THE CANARY THIS FILE'S AUTHOR RECOMMENDED DOES NOT REACH THE FLAG.**
+`label_contradiction` looked like the free check for a grafting join — it needs
+no truth file and asks whether `staff → slot → name` is broken. It is computed
+in the CONTEXTUAL pass and stored in the transcription; `OMR_SLOT_STITCH` is
+read in `export.py`, strictly downstream. A transcription's contradiction count
+is identical with the flag on and off **by construction**. Naming a mechanism
+is not measuring one, and this was recommended before it was checked.
+
+Its QUESTION does reach it, applied at the join instead of at the staff:
+`slot_stitch_canary.py` asks, for each part the slot join builds out of several
+staves, whether **those staves' own margin labels agree with each other**. No
+truth file; the document is asked to agree with itself.
+
+    reached 4 of 11 rows   agree 30   DISAGREE 0   no_evidence 18
+    positive control: 30 stitched parts had label evidence at all
+
+⚠️ The `no_evidence` column is reported, never folded into `agree`: on a scan
+most staves carry no printed label, and a part of unlabelled staves is not
+corroboration. ⚠️ The canary reaches a SUPERSET of the flag — it scores the
+slot join wherever it is computable, including rows where the ordinal join
+succeeds and the flag never fires, which is corroboration that the join is
+sound where an independent join can be checked against it.
+
+### The arc, measured on the 11 committed pairs
+
+| | rows with a resolved part join |
+|---|--:|
+| session start (ledger fed `works.json` as it stood) | **7 of 11** |
+| + `one_line` / `printed_staves` fields (B, C) | **9 of 11** |
+| + `OMR_SLOT_STITCH` default ON (A) | **10 of 11** |
+
+Brahms 1 p2 goes from **0% correspondence to 100%**; 10 of 11 exports are
+**byte-identical** with the flag on and off, and the one that changes is
+exactly the 27 fragments becoming 14 continuous parts. On the 20-row gate the
+arity fields alone take pooled `part_unresolved` **14,992 → 7,985** and joined
+rows 12 → 16.
+
+**Only cause D remains** — mahler p2 needs a `staves` map, and nothing on disk
+can supply it.

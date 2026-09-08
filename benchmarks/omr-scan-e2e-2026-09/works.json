@@ -2718,13 +2718,15 @@
      "name": "Becken",
      "parts": [
       23
-     ]
+     ],
+     "one_line": true
     },
     {
      "name": "Gr.Tr.",
      "parts": [
       24
-     ]
+     ],
+     "one_line": true
     },
     {
      "name": "Erste Viol.",
@@ -2889,19 +2891,22 @@
      "name": "Becken",
      "parts": [
       23
-     ]
+     ],
+     "one_line": true
     },
     {
      "name": "Gr.Tr.",
      "parts": [
       24
-     ]
+     ],
+     "one_line": true
     },
     {
      "name": "Kl.Tr.",
      "parts": [
       25
-     ]
+     ],
+     "one_line": true
     },
     {
      "name": "Erste Viol.",
@@ -3071,25 +3076,29 @@
      "name": "Becken",
      "parts": [
       23
-     ]
+     ],
+     "one_line": true
     },
     {
      "name": "Gr.Tr.",
      "parts": [
       24
-     ]
+     ],
+     "one_line": true
     },
     {
      "name": "Kl.Tr.",
      "parts": [
       25
-     ]
+     ],
+     "one_line": true
     },
     {
      "name": "Tamtam",
      "parts": [
       26
-     ]
+     ],
+     "one_line": true
     },
     {
      "name": "Erste Viol.",
@@ -3247,7 +3256,8 @@
      "name": "Cembalo (grand staff, 2 printed staves)",
      "parts": [
       10
-     ]
+     ],
+     "printed_staves": 2
     }
    ],
    "notes": "This drafts the completion of the works.json row with the same row_id (window null, 'NOT RUNNABLE until last_ref_measure is established'). Promotion REPLACES that row's page/window fields \u2014 do not add a second row with this id. The only work in the table whose reference numbering runs +1 against the print. No staves map: the Cembalo grand staff (2 staves, 1 part) breaks the one-staff-one-entry pairing, and the segmentation failure makes positional pairing meaningless until it is fixed; OMR-NED only."
