@@ -745,14 +745,36 @@ unchanged). 1,251 attribute errors corrected and the metric charged nothing.
 This is the handoff's *"musicdiff can score ZERO for a real duration error"*
 arriving on the real corpus rather than in a mutation matrix.
 
-⚠️ **The residual is a METER problem and is the next lever.** 354 wrong rest
-durations survive on the scan gate; **435 lone whole rests were not converted
-and 405 of them (93%) sit in an exported part carrying no `<time>` anywhere**,
-against a control of **only 86 of 159 exported parts carrying a `<time>` at
-all**. Full reading:
+⚠️⚠️ **THE RESIDUAL IS A FIXTURE ARTEFACT, NOT A METER-READING GAP — and this
+paragraph claimed otherwise for an hour.** 354 wrong rest durations survive on
+the scan gate and 405 of 435 unconverted lone whole rests sit in a part
+carrying no `<time>` anywhere — but broken out per row, **every
+movement-OPENING page reads its meter on 100% of staves** (12/12, 12/12,
+14/14, 15/15) and **every CONTINUATION page reads almost none** (0/22, 2/22,
+1/13, 2/15). That is correct: a meter is printed at a movement's start and
+nowhere else, and `transcribe` already carries it forward as
+`source="carried_from_previous_page"`. **The scan gate transcribes ONE PAGE PER
+ROW, so the carry has no previous page.** Pages 1-2 of the same PDF in ONE
+call: page 2 goes **0 → 20 of 22** staves with a meter, exported parts
+**12 → 34 of 34**, and **218 of 255 lone whole rests come out at the printed
+2/4 bar length** where the one-page fixture sized every one of them at 4.0.
+**So the fix is worth MORE in production** (`OMR_MAX_PAGES=5`, one call) than
+the benchmark can show — invisible for the same structural reason it is
+invisible to OMR-NED.
+
+⚠️ **The standing hazard is bigger than the number: the scan gate's one-page
+cut silently disables every PAGE-SPANNING mechanism, which then reads as a
+pipeline gap.** Check whether a mechanism spans pages before pricing it there.
+
+What genuinely remains is **4 staves of 34 reading 4/4 or 1/4 on a 2/4
+movement**, all `source: None` — a staff keeping a disagreement with its own
+system's majority, which is a VOTE/override question
+(`rhythm.drop_uncorroborated_meter_changes`, the half-the-staves page vote) and
+not a reading one, costing 37 wrongly-sized measure rests on two pages. Full
+reading:
 [benchmarks/omr-rests-2026-09/FINDINGS.md](benchmarks/omr-rests-2026-09/FINDINGS.md)
-§7-§12 (§1-§5 are the superseded first look, kept because the corrections are
-the finding).
+§7-§13 (§1-§5 are the superseded first look and §11 is corrected by §13, kept
+because the corrections are the finding).
 
 ---
 

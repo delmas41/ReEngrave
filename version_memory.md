@@ -42,10 +42,18 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   on the engraved eleven with every non-rest family identical. The positive
   control: six works' rest `<duration>` values MOVED (Beethoven 3's whole rests
   4.0 → 3.0 in 3/4, matching truth).
-- **The residual is a METER problem**: 405 of 435 unconverted lone whole rests
-  sit in a part carrying no `<time>` anywhere, and only **86 of 159 exported
-  parts carry a `<time>` at all**.
-  `benchmarks/omr-rests-2026-09/FINDINGS.md` §7-§12.
+- **⚠️ The "residual is a METER problem" conclusion was itself an artefact, and
+  was corrected the same hour.** Per row, every movement-OPENING page reads its
+  meter on 100% of staves and every CONTINUATION page reads almost none —
+  correct, because a meter is printed at a movement's start and `transcribe`
+  carries it forward, but **the gate transcribes ONE PAGE PER ROW so the carry
+  has no previous page**. Pages 1-2 in one call: page 2 goes 0 → 20 of 22
+  staves with a meter, parts 12 → 34 of 34, and **218 of 255 lone whole rests
+  come out at the printed 2/4 length**. So the rest fix is worth MORE in
+  production than the benchmark can show. ⚠️ **The standing hazard: the gate's
+  one-page cut silently disables every page-spanning mechanism.** What remains
+  is 4 staves of 34 reading 4/4 on a 2/4 movement — a vote/override question,
+  37 rests. `benchmarks/omr-rests-2026-09/FINDINGS.md` §7-§13.
 
 ---
 

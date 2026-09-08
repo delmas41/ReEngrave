@@ -79,17 +79,41 @@ were regenerated under the fixed instrument and are committed.
 
 ---
 
-## THE NEXT STEP, and it is not one of the numbered ones
+## ⚠️⚠️ THE "NEXT STEP" THIS FILE FIRST NAMED WAS A FIXTURE ARTEFACT
 
-**The residual rest mass is a METER problem.** 435 lone whole rests were not
-converted and **405 of them (93%) sit in an exported part carrying no `<time>`
-anywhere**; control: **only 86 of 159 exported parts carry a `<time>` at all.**
+This section originally said the residual rest mass is a meter-READING gap —
+*"only 86 of 159 exported parts carry a `<time>` at all"*. **Checked before
+acting on it, and it is not.** Per row rather than pooled: every
+movement-OPENING page reads its meter on **100%** of staves (12/12, 12/12,
+14/14, 15/15) and every CONTINUATION page reads almost none (0/22, 2/22, 1/13,
+2/15). Correct — a meter is printed at a movement's start and nowhere else, and
+`transcribe` has carried it forward as `source="carried_from_previous_page"`
+since 2026-08-31. **The gate transcribes ONE PAGE PER ROW, so the carry has no
+previous page.**
 
-That is `time_signature_locator`, `key_signature_vote`'s meter sibling, and
-meter carry across systems — a well-documented area with a corpus that can see
-it. It also subsumes the old handoff's closing question (*"why does the staff
-carry no `time_signature`?"*), whose answer differs per page: Dvořák p5 DOES
-carry it, Beethoven 5 p2 / Mahler p2-p3 / Brahms p2 do not.
+Pages 1-2 of the same PDF in ONE call (65.5 s): page 2 goes **0 → 20 of 22**
+staves with a meter, exported parts **12 → 34 of 34**, and **218 of 255 lone
+whole rests come out at the printed 2/4 bar length** where the one-page fixture
+sized every one at 4.0. **So the §Step-3 fix is worth MORE in production**
+(`OMR_MAX_PAGES=5`, one call) than the benchmark can show.
+
+⚠️ **CARRY THIS, it is bigger than the number: the scan gate's one-page cut
+silently disables every PAGE-SPANNING mechanism, which then reads as a pipeline
+gap.** Ask whether a mechanism spans pages before pricing it on that corpus.
+
+**What genuinely remains** is 4 staves of 34 reading 4/4 or 1/4 on a 2/4
+movement, all `source: None` — a staff keeping a disagreement with its own
+system's majority. That is a VOTE/override question
+(`rhythm.drop_uncorroborated_meter_changes`, the half-the-staves page vote),
+not a reading one, and costs 37 wrongly-sized measure rests on two pages. It
+also answers the old handoff's closing question (*"why does the staff carry no
+`time_signature`?"*): on Dvořák p5 it DOES; elsewhere it is the one-page cut.
+
+So the ranked next work is: **(1)** the `works.json` arity field for causes B
+and C above — cheapest, needs Sean's confirmation of nine hand-read indices,
+unlocks 4 of the 8 rows; **(2)** re-measure the rest residual with 11 rows
+joined instead of 7, which would be the first corpus-wide rest figure; **(3)**
+the 4-staff meter-vote question.
 
 Then, in the original order: **Step 5** (six staged stubs) — still deliberately
 last, and the staged pipeline **still has no exporter**, which is a missing

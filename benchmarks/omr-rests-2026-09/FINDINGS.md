@@ -5,7 +5,10 @@ assessability figure in §1 (9.8%, 2 of 11 rows) came from invoking the ledger
 without its part-join input, and §3/§5's cause (`_measure_rest_beats` fed
 `None`) is not the mechanism — that function is never called for these bars.
 **Read §7 onward.** The sections are kept rather than rewritten because the
-corrections are the finding.
+corrections are the finding. ⚠️ **And §11 is wrong too — see §13**: the
+missing meters are a fixture artefact (the gate transcribes one page at a
+time, so the meter carry has no previous page), and the §9 fix is worth MORE
+in production than the benchmark can show.
 
 ## The first look, and 80% of it is one mechanism
 
@@ -280,3 +283,71 @@ python3 benchmarks/omr-rests-2026-09/probe_measure_rests.py \
 OMRNED_PYTHON=/…/.venv-omrned/bin/python \
 python3 benchmarks/omr-hairpins-2026-09/score_export_arm.py --label after
 ```
+
+---
+
+## 13. ⚠️⚠️ §11 IS WRONG: "only 86 of 159 parts carry a `<time>`" IS A FIXTURE ARTEFACT
+
+§11 concluded that the residual is a meter-READING gap and named it the next
+lever. Checked before acting on it, and it is not. Broken out per row instead
+of pooled:
+
+| row | parts with `<time>` | staves with a meter | source |
+|---|--:|--:|---|
+| beethoven p1 (both scans) | **12/12** | 12/12 | `header_reader` |
+| brahms p1 | **14/14** | 14/14 | `header_reader` |
+| dvorak p5 | **15/15** | 15/15 | — |
+| beethoven 984073 **p2** | 2/11 | **2/22** | — |
+| beethoven 575951 **p2** | 1/11 | **0/22** | — |
+| mahler **p3** | 2/13 | 1/13 | — |
+| dvorak **p6** | 5/15 | 2/15 | — |
+
+**Every movement-OPENING page reads its meter on 100% of staves. Every
+CONTINUATION page reads almost none** — which is correct: a time signature is
+printed at the start of a movement and nowhere else. CLAUDE.md has recorded the
+answer since 2026-08-31: `transcribe` carries the previous page's meter forward
+as `source="carried_from_previous_page"`.
+
+⚠️ **The scan-gate fixtures are transcribed ONE PAGE AT A TIME, so a
+continuation page has no previous page to carry from.** The pooled 86/159 is a
+property of how the benchmark is cut.
+
+### Measured, not argued: pages 1-2 of the same PDF in ONE `transcribe` call
+
+    python3 -m tools.omr.transcribe <litolff-984073>.pdf --pages 1-2 \
+        --no-direction-text --out carry-p1p2.json     # 65.5 s
+
+| | single-page fixture | one two-page run |
+|---|--:|--:|
+| page 2 staves with a meter | **0 of 22** | **20 of 22**, `carried_from_previous_page` 2/4 |
+| exported parts with `<time>` | 12 of 34 | **34 of 34** |
+| lone whole rests sized **2.0** (the true 2/4 bar) | 0 | **218** |
+| lone whole rests sized 4.0 | all of them | 37 |
+| lone rests not converted | — | 2 (`quarter`, correctly refused) |
+
+**The carry works and the fix is already in the tree.** So the meter lever
+largely dissolves — and the corollary is the better half of this finding:
+**the §9 rest fix is worth MORE in production than the benchmark can show.**
+The web app runs `OMR_MAX_PAGES=5` (pages 0-4 in one call), so a continuation
+page DOES get its meter there, the conversion fires, and **218 of 255 lone
+whole rests (85%) come out at the printed bar length** where the one-page
+fixture sized 100% of them at 4.0. The benchmark could not see the fix (§10)
+and cannot see most of its reach either, for the same structural reason.
+
+### ⚠️ What IS left is small, real, and differently shaped
+
+The 37 rests still at 4.0 are not missing meters — they are **staves whose
+meter reads 4/4 (and one 1/4) on a 2/4 movement**: 3 of 12 staves on p1 and 2
+of 22 on p2, all `source: None`, i.e. neither the header reader nor the carry.
+So the residual is a staff **disagreeing with its own system's majority** and
+keeping the disagreement, which is what `rhythm.drop_uncorroborated_meter_changes`
+and the half-the-staves page vote exist to prevent. **4 staves of 34, costing
+37 wrongly-sized measure rests on two pages.** That is the next meter question,
+and it is a vote/override question rather than a reading one.
+
+### ⚠️ The standing hazard this exposes, worth more than the number
+
+**The scan gate's one-page-per-row cut silently disables every mechanism that
+spans pages.** The meter carry is one; anything else keyed on "the previous
+page" is equally invisible to it, and will read as a pipeline gap. Check
+whether a mechanism is page-spanning before pricing it on that corpus.

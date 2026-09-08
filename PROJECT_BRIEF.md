@@ -196,9 +196,24 @@ silent bars at three beats instead of four, matching its reference exactly.
 This is a concrete instance of something the project measured in the abstract
 last week: this metric can score a genuine duration error at zero.
 
-What is left of the rest problem turns out to be a **time signature** problem:
-only 86 of the 159 parts we export carry a meter at all, and 93% of the rests
-still sized wrong are in a part that has none.
+⚠️ **And the conclusion I first drew from what was left was wrong, which is
+worth recording as plainly as the fix.** It looked like a time-signature
+problem — only 86 of the 159 parts we export carry a meter at all. Checked
+before acting on it: every page that OPENS a movement reads its meter on every
+single staff, and every continuation page reads almost none, because a time
+signature is printed once at a movement's start and the pipeline already
+carries it forward from the previous page. **The benchmark transcribes one page
+at a time, so there is no previous page to carry from.** Reading two
+consecutive pages in a single pass, the second page goes from 0 of 22 staves
+knowing its meter to 20 of 22, and 218 of 255 silent bars come out at the
+printed length instead of twice it.
+
+So the rest fix is worth **more** in real use than the benchmark can show — and
+the general lesson is larger than the rest problem: the benchmark's one-page-
+per-row design silently switches off anything that works across pages, and then
+that reads as a fault in the pipeline. What genuinely remains is four staves out
+of thirty-four misreading the time signature itself, which is a disagreement-
+resolution question rather than a reading one.
 
 Full reading:
 [benchmarks/omr-part-join-2026-09/FINDINGS.md](benchmarks/omr-part-join-2026-09/FINDINGS.md)
