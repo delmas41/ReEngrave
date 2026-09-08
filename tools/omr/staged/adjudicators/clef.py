@@ -24,7 +24,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple
 
-from ..adjudicate import (READINGS, Evidence, Mode, Ruling, Term, decision,
+from ..adjudicate import (Checkable, READINGS, Evidence, Mode, Ruling, Term, decision,
                           tally)
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
@@ -159,6 +159,14 @@ def _carry_terms(ev: Evidence) -> Dict[str, List[Term]]:
 
 @decision(
     quantity=Q.CLEF,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "implied pitches: this staff's own measured positions under this candidate must fall in the instrument's written range (clef_correction.propose_clef)",
+        "key-signature slot fit: the measured accidental RUN fits this candidate's slot table and not another's -- needs NO identity",
+        "continuity: a part's clef is stable across systems unless a change is printed",
+    ),
+    implicates=(Q.CLEF, Q.INSTRUMENT, Q.NOTEHEAD_STAFF_POSITION, Q.KEY_SIGNATURE),
+    composed_from=(Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.CLEF_SEED),
     scope=Kind.STAFF,
     wants=(Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.CLEF_SEED,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT),

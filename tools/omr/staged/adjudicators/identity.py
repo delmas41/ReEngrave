@@ -9,12 +9,20 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple
 
-from ..adjudicate import Evidence, Mode, Ruling, Term, decision, tally
+from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
 
 @decision(
     quantity=Q.INSTRUMENT,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "roster membership: an instrument the work is not scored for is IMPOSSIBLE",
+        "label contradiction: a staff whose OWN margin label was read on THIS page, named something else",
+        "the implied written range must contain this staff's own positions under its clef",
+    ),
+    implicates=(Q.INSTRUMENT, Q.SLOT_INDEX, Q.MARGIN_LABEL, Q.CLEF),
+    composed_from=(Q.MARGIN_LABEL, Q.ROSTER_ENTRY, Q.STAFF_ORDINAL),
     scope=Kind.STAFF,
     wants=(Q.MARGIN_LABEL, Q.ROSTER_ENTRY, Q.STAFF_ORDINAL, Q.STAFF_GROUP),
     reasons=("label", "roster", "score_order", "not_in_lexicon",
@@ -83,6 +91,13 @@ def adjudicate_instrument(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.SLOT_INDEX,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "a slot's instrument is the SAME on every system it appears on",
+        "label contradiction, at slot scope",
+    ),
+    implicates=(Q.SLOT_INDEX, Q.INSTRUMENT, Q.SYSTEM_STAFF_COUNT),
+    composed_from=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT),
     scope=Kind.STAFF,
     wants=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT),
     reasons=("aligned", "no_reference"),
@@ -105,6 +120,13 @@ def adjudicate_slot_index(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.PART_PARTITION,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "the part count may not exceed the work roster",
+        "each part carries ONE instrument across every system it appears on",
+    ),
+    implicates=(Q.PART_PARTITION, Q.SLOT_INDEX, Q.INSTRUMENT, Q.SYSTEM_STAFF_COUNT),
+    composed_from=(Q.SLOT_INDEX, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT),
     scope=Kind.DOCUMENT,
     wants=(Q.SLOT_INDEX, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT, Q.INSTRUMENT),
     reasons=("ordinal", "slot", "deduced_anchor", "no_evidence"),

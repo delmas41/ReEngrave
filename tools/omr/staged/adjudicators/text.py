@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from ..adjudicate import Evidence, Mode, Ruling, decision
+from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
 
 @decision(
     quantity=Q.DYNAMIC,
+    composed_from=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER),
     scope=Kind.CELL,
     wants=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER),
     reasons=("spelled", "unspellable", "no_letters"),
@@ -31,6 +32,7 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.DIRECTION,
+    composed_from=(Q.DIRECTION_WORD,),
     scope=Kind.CELL,
     wants=(Q.DIRECTION_WORD,),
     reasons=("in_lexicon", "not_in_lexicon", "no_words"),

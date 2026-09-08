@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple
 
-from ..adjudicate import Evidence, Mode, Ruling, Term, decision, tally
+from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
 # ⚠️ ASSUMED WEIGHTS (A-OWN-1). Ordered to match the tiers the existing code
@@ -27,6 +27,13 @@ W_DISTANCE = 0.5            # the tie-break, and only that
 
 @decision(
     quantity=Q.GLYPH_OWNER,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "a spurious or missing notehead breaks the OWNING bar's duration sum -- so rhythm_sum_warning's group includes OWNERSHIP, not only duration and meter",
+        "the owned glyph's implied pitch must fall in the owner's written range",
+    ),
+    implicates=(Q.GLYPH_OWNER, Q.DURATION, Q.METER, Q.INSTRUMENT),
+    composed_from=(Q.GLYPH_BAND_DISTANCE, Q.GLYPH_LADDER, Q.INSTRUMENT, Q.CLEF),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_LADDER, Q.GLYPH_BAND_DISTANCE, Q.GLYPH_CONF,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF),
@@ -180,6 +187,7 @@ def _range_veto(ev: Evidence, cand_key: str, band_row):
                 (instrument.id, clef.id, band_row.id))
 @decision(
     quantity=Q.ARC_OWNER,
+    composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION),
     scope=Kind.GLYPH,
     wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_OWNER),
     reasons=("hugs_noteheads", "no_better_staff", "no_evidence"),
@@ -202,6 +210,12 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.ARC_KIND,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "a TIE joins two heads of the SAME staff step; an arc whose flanked heads sit on different steps is a SLUR",
+    ),
+    implicates=(Q.ARC_KIND, Q.NOTEHEAD_STAFF_POSITION, Q.CLEF),
+    composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION),
     scope=Kind.GLYPH,
     wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION),
     reasons=("tie", "slur", "no_evidence"),
@@ -223,6 +237,7 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.ARTICULATION_OWNER,
+    composed_from=(Q.ARTICULATION_MARK, Q.GLYPH_BOX),
     scope=Kind.GLYPH,
     wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX),
     reasons=("nearest_on_declared_side", "no_notehead", "no_evidence"),
@@ -240,6 +255,7 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.WEDGE_ANCHOR,
+    composed_from=(Q.WEDGE_BOX, Q.GLYPH_BOX),
     scope=Kind.GLYPH,
     wants=(Q.WEDGE_BOX, Q.GLYPH_BOX),
     reasons=("nearest_either_side", "no_anchor", "no_evidence"),

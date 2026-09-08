@@ -23,12 +23,18 @@ repair is a bounded EVALUATE consequence, not a second adjudication.
 
 from __future__ import annotations
 
-from ..adjudicate import Evidence, Mode, Ruling, decision
+from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
 
 @decision(
     quantity=Q.DURATION,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "bar sum: the durations of one voice in one bar must equal the meter (rhythm_sum_warning -- 111 of 193 scan staves, UNCONSUMED)",
+    ),
+    implicates=(Q.DURATION, Q.METER, Q.GLYPH_OWNER, Q.MEASURE_PARTITION, Q.TUPLET_RATIO),
+    composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM),
     scope=Kind.GLYPH,
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM),
     reasons=("beams_and_dots", "no_evidence"),
@@ -54,6 +60,13 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.TUPLET_RATIO,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "bar sum: a wrong ratio breaks it",
+        "the group must hold exactly as many notes as the digit claims",
+    ),
+    implicates=(Q.TUPLET_RATIO, Q.DURATION, Q.METER),
+    composed_from=(Q.TUPLET_MARKER, Q.BEAM_STROKE, Q.NOTEHEAD_CLASS),
     scope=Kind.CELL,
     wants=(Q.TUPLET_MARKER, Q.BEAM_STROKE, Q.NOTEHEAD_CLASS),
     reasons=("digit", "bracket", "no_marker", "no_evidence"),
@@ -81,6 +94,13 @@ def adjudicate_tuplet(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.METER,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "bar sum, on every bar of every staff it governs",
+        "a meter is a SYSTEM fact: a mid-staff change no other staff witnessed is a misread (21 fired on scans, 0 survive)",
+    ),
+    implicates=(Q.METER, Q.DURATION, Q.MEASURE_PARTITION),
+    composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION),
     scope=Kind.SYSTEM,
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION, Q.DOSSIER_FACT),
     reasons=("read", "voted", "carried", "no_evidence"),

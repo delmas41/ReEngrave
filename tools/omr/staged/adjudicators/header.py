@@ -2,12 +2,20 @@
 
 from __future__ import annotations
 
-from ..adjudicate import Evidence, Mode, Ruling, decision
+from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
 
 @decision(
     quantity=Q.KEY_SIGNATURE,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "the accidental ORDER is fixed (F#-C#-G#... / Bb-Eb-Ab...): a run that SKIPS a slot is impossible",
+        "across the staves of a system the DELTA is shared, never the value -- transposing parts print different signatures for one key",
+        "a key CHANGE is printed on every staff at the same bar (key_signature_corroboration -- CONSUMED, default-ON)",
+    ),
+    implicates=(Q.KEY_SIGNATURE, Q.CLEF, Q.KEYSIG_RUN_POSITION),
+    composed_from=(Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER, Q.CLEF),
     scope=Kind.STAFF,
     wants=(Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER, Q.CLEF, Q.DOSSIER_FACT),
     reasons=("fitted", "needs_clef", "no_run", "no_evidence"),

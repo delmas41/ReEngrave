@@ -29,6 +29,30 @@ separate the two cements the second kind into the architecture. **25 entries:
 12 PRINCIPLE, 8 CONTINGENCY, 5 MIXED** — and one contingency (A-EVAL-2) is
 currently doing a principle's job.
 
+## ⚠️ CHECKABLE vs UNCHECKABLE — where self-correction is possible at all
+
+Every decision in `adjudicate.ORDER` carries `checkable=` / `checked_by=` /
+`implicates=` / `composed_from=` **in its decorator**, enforced by
+`test_staged_discipline.py`. The reasoning is
+[ideal-reader Part 5](../../../docs/ideal-reader-2026-09-07.md); the summary a
+builder needs:
+
+* **0 of 21 decisions are purely CHECKABLE. 14 are MIXED, 7 UNCHECKABLE.**
+  Checkability is a property of a fact's **consequences**, never of its reading.
+* ⚠️ **A failed check is certain about the GROUP and silent about the MEMBER.**
+  Nine eighths in a 4/4 bar proves an error and does not say which of the meter,
+  a duration, a spurious note, a missing one, or a **mis-owned glyph** is wrong.
+  `implicates=` is that membership. **Never condemn the cheapest member.**
+* **Weight by kind:** agreement **sums**; composition takes the **minimum** over
+  `composed_from` (a chain is as strong as its weakest link); a violated
+  constraint is a **negative on every member**; a satisfied one is a **weak**
+  positive, because wrong readings pass too. ⚠️ `tally` currently sums
+  everything — right for agreement, wrong for composition.
+* ⚠️ **Why it matters:** the library pairs a PDF with a reference for **27 of
+  235 editions**, and Sean's input is IMSLP scans. **The checkable class is what
+  the system can police on the actual work; the uncheckable class will always
+  need a reference or a human** — so human attention belongs on the second.
+
 ## How to read a row
 
 | field | meaning |

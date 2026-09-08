@@ -161,6 +161,64 @@ class TestEveryConsequenceDeclaresABound(unittest.TestCase):
             evaluate.check_downhill(r.cause, r.effect)
 
 
+class TestEveryDecisionDeclaresItsCheckability(unittest.TestCase):
+    """⚠️ Sean: "Every decision point should be categorized that way so that we
+    don't lose the helpful implications."
+
+    A decision that does not say whether it can be checked without ground
+    truth cannot be weighed correctly, and a CHECK whose failure has no stated
+    membership will convict whichever member is cheapest to change.
+    """
+
+    def test_a_checkable_decision_names_its_constraint_AND_its_group(self):
+        from tools.omr.staged.adjudicate import Checkable
+        for quantity, spec in adjudicate.REGISTRY.items():
+            if spec.checkable is Checkable.UNCHECKABLE:
+                continue
+            with self.subTest(quantity=quantity):
+                self.assertTrue(spec.checked_by, "no constraint named")
+                self.assertTrue(spec.implicates, "no group named")
+                # ⚠️ "consistency" is not a constraint, it is a word.
+                for c in spec.checked_by:
+                    self.assertNotEqual(c.strip().lower(), "consistency")
+                    self.assertGreater(len(c), 30)
+
+    def test_a_failed_check_implicates_the_decision_ITSELF(self):
+        """⚠️ The group always contains the fact under test. A check that
+        implicates only OTHER facts has quietly decided it is innocent."""
+        from tools.omr.staged.adjudicate import Checkable
+        for quantity, spec in adjudicate.REGISTRY.items():
+            if spec.checkable is Checkable.UNCHECKABLE:
+                continue
+            with self.subTest(quantity=quantity):
+                self.assertIn(quantity, spec.implicates)
+
+    def test_an_unverifiable_decision_names_what_it_is_composed_FROM(self):
+        """Its reliability is its WEAKEST input, so a consumer cannot weigh it
+        without knowing what they are."""
+        from tools.omr.staged.adjudicate import Checkable
+        for quantity, spec in adjudicate.REGISTRY.items():
+            if spec.checkable is Checkable.CHECKABLE:
+                continue
+            with self.subTest(quantity=quantity):
+                self.assertTrue(spec.composed_from)
+
+    def test_every_named_quantity_exists(self):
+        """A group or an input naming a quantity nobody emits is a typo that
+        would read as 'nothing implicated'."""
+        from tools.omr.staged.record import Q
+        for quantity, spec in adjudicate.REGISTRY.items():
+            for name in tuple(spec.implicates) + tuple(spec.composed_from):
+                with self.subTest(quantity=quantity, names=name):
+                    Q.check(name, "quantity")
+
+    def test_the_map_covers_every_ordered_decision(self):
+        covered = set()
+        for group in adjudicate.by_checkability().values():
+            covered |= set(group)
+        self.assertEqual(set(adjudicate.ORDER) - covered, set())
+
+
 class TestVocabulariesAreClosed(unittest.TestCase):
     def test_no_adjudicator_invents_an_abstention_reason(self):
         """Every `reason` a decision can return is declared, so a reason that
