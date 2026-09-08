@@ -218,6 +218,14 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
         for row in discriminating:
             candidates.setdefault(str(row.value), []).append(
                 Term("keysig_slot_fit", W_KEYSIG_FIT, (row.id,)))
+    elif fits:
+        # ⚠️ THE TEST RAN AND SAID NOTHING, AND THAT MUST READ AS AN
+        # ABSTENTION RATHER THAN AS AGREEMENT. A run fitting every candidate
+        # discriminates nothing, and a 0-ACCIDENTAL KEY FITS THEM ALL -- so on
+        # a page in C major this contributes exactly zero and must not appear
+        # to have contributed. Recording it in `declined` is what stops a
+        # later reader counting silence as support.
+        ev._declined.add(Q.KEYSIG_CLEF_FIT)
 
     # ⚠️ A `clefC` detection supports every C clef a reader NAMED, and names
     # none itself. If nothing named one, it supports nothing -- which is the

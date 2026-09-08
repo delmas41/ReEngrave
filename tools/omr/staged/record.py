@@ -491,6 +491,16 @@ class Verdict:
 
     # ── harness-filled ──────────────────────────────────────────────────────
     considered: tuple[str, ...] = ()
+    #: What the DECISION says it actually weighed, as against `considered`,
+    #: which is what the harness handed it.
+    #:
+    #: ⚠️ ADDED 2026-09-07 BY THE SECOND FIND OF THE SAME SWEEP. `Ruling.used`
+    #: was filled by five decisions and dropped by the harness, exactly as
+    #: `Ruling.detail` was. The two are NOT the same fact: a decision handed
+    #: ten rows may weigh three, and "what was available" and "what counted"
+    #: are different questions -- the gap between them is where a decision
+    #: quietly ignores evidence it declared.
+    used: tuple[str, ...] = ()
     missing: tuple[str, ...] = ()      # declared, and the log held NOTHING
     declined: tuple[str, ...] = ()     # declared, and a reader ABSTAINED
     excluded: tuple[tuple[str, str], ...] = ()   # (row_id, why)
@@ -527,6 +537,7 @@ class Verdict:
                 "quantity": self.quantity, "outcome": self.outcome.value,
                 "value": self.value, "decider": self.decider,
                 "reason": self.reason, "considered": list(self.considered),
+                "used": list(self.used),
                 "missing": list(self.missing), "declined": list(self.declined),
                 "excluded": [list(e) for e in self.excluded],
                 "correlated": [sorted(g) for g in self.correlated],

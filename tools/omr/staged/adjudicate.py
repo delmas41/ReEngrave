@@ -604,6 +604,7 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
         id=log._next_id("vrd"), subject=subject, quantity=spec.quantity,
         outcome=outcome, value=value, decider=spec.name, reason=reason,
         considered=considered,
+        used=tuple(ruling.used),
         missing=tuple(sorted(ev._missing)),
         declined=tuple(sorted(ev._declined)),
         excluded=tuple(ev._excluded),
