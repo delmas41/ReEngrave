@@ -26,10 +26,15 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-08-night-step4-then-step3.md](docs/handoff-2026-09-08-night-step4-then-step3.md)
+— the most recent handoff: **Steps 1 and 2 are CLOSED**, and **Step 4 now comes
+before Step 3**, measured rather than argued (only 9.8% of rest rows are
+assessable, because the part join fails on 9 of 11 scan rows — Step 4's bucket
+sitting upstream of Step 3's measurement). It also records that **the staged
+pipeline cannot be scored at all: it has no exporter**, which is a missing
+component rather than an oversight. Its predecessor
 [docs/handoff-2026-09-08-evening-to-local-session.md](docs/handoff-2026-09-08-evening-to-local-session.md)
-— the most recent handoff: Step 1 CLOSED, Step 2 OPENED with the first shadow
-run on real ink, and the one open question (the Viola's key signature, with the
-single number that splits its two candidate causes). Then read
+opened Step 2 and posed the Viola question (now answered). Then read
 [docs/handoff-2026-09-08-next-steps.md](docs/handoff-2026-09-08-next-steps.md)
 — what the staged pipeline and the symbol ledger are, **why musicdiff bucket
 totals can no longer rank work** (amplification differs 6×–2× by error kind; one

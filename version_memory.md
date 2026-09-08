@@ -5,6 +5,72 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-08 (night) — Steps 1 and 2 CLOSED; Step 4 promoted ahead of Step 3
+
+Handoff: [docs/handoff-2026-09-08-night-step4-then-step3.md](docs/handoff-2026-09-08-night-step4-then-step3.md).
+
+- **The Viola question is ANSWERED**: `detail.n_accidentals` is **1** — a
+  detection shortfall, not the alto slot table, corroborated from inside the
+  same run (two staves that found 3 boxes read −3; the Clarinet found 1 and is
+  correctly −1). Underneath it, **`staged/gather.py` imports
+  `locate_key_signature` and nothing else** — `key_signature_template`, measured
+  11 of 12 on that exact page against the locator's 2 of 12, is referenced
+  nowhere under `tools/omr/staged/`. Parked **D20**.
+  `benchmarks/omr-staged-shadow-2026-09/FINDINGS.md`.
+
+- **Step 2 CLOSED** — `benchmarks/omr-staged-shadow-2026-09/STEP2_2026-09-08.md`.
+  The divergence table **was blind to 99.3% of what staged decides** (12 of 20
+  quantities, 18,177 of 18,302 verdicts) because `divergence()` iterates
+  `legacy.items()`; now `staged_only` + `coverage`. **4 of 16 "disagreements"
+  were NARROWED verdicts** read as DIFFER with legacy's answer inside the
+  candidate set; now `NEW_NARROWING`. The list is ranked by staves touched with
+  each row's `basis` closure translated to quantities.
+
+- **GROUPS exercised for the first time, and "run a multi-system page" was
+  NECESSARY AND NOT SUFFICIENT.** `_slot_fact` puts the system's staff count in
+  the fact key deliberately, so a 14+13 page corroborates nothing BY
+  CONSTRUCTION. The 11+11 control works: `clef_across_systems` 8 unanimous +
+  **1 split**, `staff_group` 11 unanimous, `checked_nothing` 4 of 6 → 2 of 6.
+  **Its first catch, adjudicated by Sean against the print**: the Fagotti staff
+  opens in bass, goes to a C clef, returns to bass two bars later — yielding a
+  `clef_locator` **false positive** (it fired `tenor` on cell 0, which prints a
+  bass clef, unopposed because the detector read nothing) and **a mid-staff clef
+  change neither pipeline can express** (`Q.CLEF` is staff-scoped; no arm reads
+  past cell 0).
+
+- ⚠️ **THE STAGED PIPELINE CANNOT BE SCORED — IT HAS NO EXPORTER.** Both
+  instruments take MusicXML on both sides; staged produces none and has no
+  `pages` key. `git log --all -S` finds no bridge on any branch and nothing
+  outside `tools/omr/staged/` and its tests imports it. "Never scored" is a
+  missing component, not an oversight.
+
+- ⚠️ **Step 3 opened and is BLOCKED BY STEP 4, measured**: only **416 of 4,239
+  rest rows are assessable (9.8%)**, from 2 of 11 rows, because the part join
+  fails on the other nine. Still, the first look found the mechanism: **139 of
+  173 rest duration errors are one thing** — a whole-measure rest emitted as a
+  literal whole note (4.0 ql) regardless of meter, so a 4/8 bar comes out twice
+  over-full. **The sizing code is correct and simply not fed**; the exporter
+  writes `<time>4/8</time>` into a part and then a 4.0-quarter rest into its
+  2.0-quarter bars. NOT FIXED — priced on the wrong corpus.
+  `benchmarks/omr-rests-2026-09/FINDINGS.md`.
+
+- **`tools/omr/key_consensus.py`** (new, wired into nothing, parked **D21**):
+  concert key by consensus over concert-pitch staves, written key per staff by
+  deduction through `fifths_offset`. Flags the Viola from 3 witnesses without
+  being told. False positives on already-correct data **15.1% → 5.9%** over 152
+  orchestral encodings, the whole gap being one defect (`unpitched` honoured
+  only half — a drum has no key). Found four transposing instruments the
+  lexicon calls concert pitch: **Alto Flute (in G), Oboe d'amore (in A), Bass
+  Sarrusophone (in B♭)** — recorded, NOT fixed, because a lexicon change is
+  global. `benchmarks/omr-string-key-agreement-2026-09/FINDINGS.md`.
+
+- **`claude/rescue-midstaff-key-lilypond`** — mid-staff KEY changes reaching the
+  LilyPond exporter, rescued from **uncommitted** working-tree changes in a
+  stale worktree; it exists nowhere else in history. ⚠️ Not merge-ready (its
+  `export_coverage.py` hunk targets the `VISIBLE` list `74aa7272` deleted).
+
+---
+
 ## 2026-09-08 (evening) — Step 2 opened: the first shadow run on real ink
 
 - **The staged pipeline ran against the existing one on a real scanned page**
