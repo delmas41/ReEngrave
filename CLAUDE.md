@@ -26,11 +26,23 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-08-late-step4-and-step3-done.md](docs/handoff-2026-09-08-late-step4-and-step3-done.md)
+— the most recent handoff: **Step 4 is separated** (four causes, not three,
+summing to the bucket exactly — only one is the reader's) and **Step 3's
+mechanism is found and fixed** (a whole-rest glyph means the BAR; the previous
+diagnosis named a function that is never called). It also records that
+**OMR-NED is identical on both families** while the ledger records 1,251 rest
+corrections, that the **ledger's own accounting control was computed and read
+by nothing** for as long as it existed, and that the next lever is the
+**meter** — only 86 of 159 exported parts carry a `<time>` at all. Its
+predecessor
 [docs/handoff-2026-09-08-night-step4-then-step3.md](docs/handoff-2026-09-08-night-step4-then-step3.md)
-— the most recent handoff: **Steps 1 and 2 are CLOSED**, and **Step 4 now comes
-before Step 3**, measured rather than argued (only 9.8% of rest rows are
-assessable, because the part join fails on 9 of 11 scan rows — Step 4's bucket
-sitting upstream of Step 3's measurement). It also records that **the staged
+— **Steps 1 and 2 are CLOSED**, and it is what put Step 4 before Step 3.
+⚠️ Its "only 9.8% of rest rows are assessable, because the part join fails on 9
+of 11 scan rows" is **corrected**: that came from invoking the ledger without
+its part-join input, and fed `works.json` **7 of 11 pairs resolve at 99.5%
+correspondence**. The ORDER was still right, for the reason the four-cause
+separation gives. It also records that **the staged
 pipeline cannot be scored at all: it has no exporter**, which is a missing
 component rather than an oversight. Its predecessor
 [docs/handoff-2026-09-08-evening-to-local-session.md](docs/handoff-2026-09-08-evening-to-local-session.md)
