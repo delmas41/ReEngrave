@@ -73,9 +73,18 @@ _GLYPH_TO_CLEF = {
 #: The five clefs that are the SAME GLYPH on different lines.
 C_CLEF_NAMES = ("alto", "tenor", "soprano", "mezzosoprano", "baritone")
 
+#: The clefs `key_signature_geometry` has slot tables for. A run fitting all
+#: four discriminates nothing.
+_SLOT_TABLE_CLEFS = ("treble", "bass", "alto", "tenor")
+
 #: What a `clefC` detection is worth as support for a C clef the LOCATOR
 #: named. It cannot name one itself. (A-CLEF-5)
 W_C_FAMILY = 1.5
+
+#: What "the measured accidental run fits this clef's slot table" is worth.
+#: (A-CLEF-7) ⚠️ Contributed only when the fit DISCRIMINATES -- a run that fits
+#: every candidate says nothing, and a 0-accidental key fits them all.
+W_KEYSIG_FIT = 1.5
 
 
 def _clef_of(glyph_name: str) -> Optional[str]:
@@ -169,7 +178,7 @@ def _carry_terms(ev: Evidence) -> Dict[str, List[Term]]:
     composed_from=(Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.CLEF_SEED),
     scope=Kind.STAFF,
     wants=(Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.CLEF_SEED,
-           Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT),
+           Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.KEYSIG_CLEF_FIT),
     reasons=("scored", "no_candidates", "margin_below_floor",
              "all_candidates_excluded"),
     mode=Mode.COMPETITIVE,
@@ -197,6 +206,18 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
         if expected:
             candidates.setdefault(str(expected), []).append(
                 Term("instrument", W_INSTRUMENT, (instrument.id,)))
+
+    # ⚠️ THE IMPLICATION TEST THAT NEEDS NO IDENTITY. The run's positions are
+    # clef-free; the slot table is chosen by the clef. So which clefs the run
+    # FITS is evidence about the clef -- and it reaches exactly the staves the
+    # written-range test cannot, because on a scan 29 of 29 unresolved
+    # non-treble staves print no label at all.
+    fits = ev.rows(Q.KEYSIG_CLEF_FIT)
+    discriminating = [r for r in fits if (r.detail.get("n_accidentals") or 0) > 0]
+    if discriminating and len(discriminating) < len(_SLOT_TABLE_CLEFS):
+        for row in discriminating:
+            candidates.setdefault(str(row.value), []).append(
+                Term("keysig_slot_fit", W_KEYSIG_FIT, (row.id,)))
 
     # ⚠️ A `clefC` detection supports every C clef a reader NAMED, and names
     # none itself. If nothing named one, it supports nothing -- which is the

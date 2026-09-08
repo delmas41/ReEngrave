@@ -269,6 +269,17 @@ class Q(_Vocab):
     CLEF_SEED = "clef_seed"                  # the dossier's clef
     KEYSIG_RUN_POSITION = "keysig_run_position"   # accidental positions, NO clef
     KEYSIG_MARKER = "keysig_marker"          # detector keySharp/keyFlat
+    #: ⚠️ Which candidate CLEF the measured accidental run fits.
+    #:
+    #: This is the clef implication test that needs NO identity (ideal-reader
+    #: Part 4.6). The run's POSITIONS are clef-free geometry; the SLOT TABLE is
+    #: chosen by the clef -- so a run that fits treble's slots and not bass's
+    #: is evidence about the CLEF. The evidence that it discriminates is the
+    #: documented bug: three flats fitted against a GUESSED clef came back as
+    #: TWO SHARPS. A fit that changes that much with the clef is a sensor for
+    #: it. Vacuous where no accidentals were found, and a 0-accidental key fits
+    #: every clef -- so it covers different staves from the range test.
+    KEYSIG_CLEF_FIT = "keysig_clef_fit"
     METER_GLYPH = "meter_glyph"              # timeSig digits / C / cut-C
     METER_TEMPLATE = "meter_template"        # the template reader's score
 
@@ -489,6 +500,18 @@ class Verdict:
     margin: float | None = None
     supersedes: str | None = None
 
+    #: What the decision computed on its way to the answer -- the clef's per
+    #: candidate scores, the meter's agreement share, ownership's
+    #: `would_win_on_distance`.
+    #:
+    #: ⚠️ ADDED 2026-09-07 AFTER A TEST FOUND IT MISSING. `Ruling.detail` was
+    #: filled by three decisions and DROPPED by the harness, so every one of
+    #: those numbers was computed and thrown away -- the exact failure this
+    #: architecture exists to stop, occurring inside it. Found because a test
+    #: asserted on a field that did not exist; fixed in the code rather than
+    #: the test.
+    detail: Mapping[str, Any] = field(default_factory=dict)
+
     def __post_init__(self) -> None:
         if self.outcome is Outcome.ABSTAINED and self.value is not None:
             raise ValueError(
@@ -508,7 +531,7 @@ class Verdict:
                 "excluded": [list(e) for e in self.excluded],
                 "correlated": [sorted(g) for g in self.correlated],
                 "basis": list(self.basis), "margin": self.margin,
-                "supersedes": self.supersedes}
+                "supersedes": self.supersedes, "detail": dict(self.detail)}
 
 
 Row = Union[Observation, Abstention, Verdict]

@@ -1,5 +1,58 @@
 # Assumptions in the staged pipeline
 
+## ⚠️ STATE OF THE BUILD — read this first, and trust it over memory
+
+**If your recollection disagrees with this file, a code tag, or a test, THE
+FILE IS RIGHT.** Do not re-derive a settled question from a summary; open the
+file. The 108 coherence tests are the real guard — a contradiction of a pinned
+decision fails a test instead of passing quietly.
+
+**Wired (12 of 21 decisions).** `system_membership`, `system_staff_count`,
+`staff_ordinal`, `measure_partition`, `staff_group`, `group_symbol`,
+`instrument`, `part_partition`, `clef`, `key_signature`, `glyph_owner`,
+`meter`.
+
+**Stubs (9), in priority order for the next hand:** `duration` →
+`tuplet_ratio` → `slot_index` → `arc_kind` → `arc_owner` →
+`articulation_owner` → `wedge_anchor` → `dynamic` → `direction`.
+
+**Consequences: 1 wired (`restate_pitch`), 5 stubbed** —
+`respell_accidental`, `reconcile_duration`, `move_glyph`, `name_part`,
+`join_parts`.
+
+**Working on right now:** nothing in flight; the key-signature and meter stubs
+just landed with tests.
+
+**Next, in order:** (1) `duration` + `tuplet_ratio` adjudicators and their
+gather rows (beams/flags/dots/stems); (2) the remaining EVALUATE consequences,
+starting with `reconcile_duration` — ⚠️ it needs `revises=Q.DURATION` on the
+adjudicator side or `Log.record` raises `AlreadyAdjudicated`, which is the
+guard working; (3) `slot_index`.
+
+**⚠️ JUDGMENTS FORMED AND NOT YET BUILT** — the only things a memory loss can
+destroy, so they are written down rather than remembered:
+
+1. **`tally()` sums everything, and that is wrong for composition.** Agreement
+   among witnesses SUMS; a fact composed from inputs is as reliable as its
+   WEAKEST input, so it should take a MINIMUM over `composed_from`. Recorded in
+   ideal-reader §5.4; not implemented.
+2. **`label_contradiction` is the cheapest available win in the whole
+   project** — 158 firings over two whole works, hand-adjudicated 0.873 the
+   EXPORT is wrong, needs no truth file, and nothing acts on it. It is not
+   wired into the staged pipeline at all.
+3. **A clef decided by a lone `keysig_slot_fit` clears the floor**
+   (`W_KEYSIG_FIT` 1.5 > `MARGIN_FLOOR` 1.0). Deliberate but untested against
+   real pages; if it proves too strong, lower the weight, not the floor —
+   A-CLEF-6 says the floor carries two jobs.
+4. **The redundant groups are still not represented as groups** (ideal-reader
+   §4.1) — the largest principle-driven gap, and the one experience did not
+   suggest.
+5. **`Verdict.detail` was added on 2026-09-07** because three decisions filled
+   `Ruling.detail` and the harness dropped it. If you find another computed
+   value with no home, that is the same fault; look for it.
+
+---
+
 **Nothing in `tools/omr/staged/` has been measured.** Not one accuracy arm has
 been run against it. Every ordering, constant and precedence rule below is an
 **assumed best practice**, written down so the testing phase can attack it.

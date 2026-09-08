@@ -92,36 +92,68 @@ def adjudicate_tuplet(ev: Evidence) -> Ruling:
     return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
 
 
+#: A meter must be agreed by this share of the staves that SPOKE. (A-METER-1)
+#: ⚠️ Not tuned here, but not arbitrary either: over an 11-source corpus every
+#: one of the 12 correct readings was agreed by 0.909 of its system or more,
+#: and the single WRONG reading by exactly 0.500.
+METER_AGREEMENT_FLOOR = 0.70
+
+
 @decision(
     quantity=Q.METER,
     checkable=Checkable.MIXED,
     checked_by=(
-        "bar sum, on every bar of every staff it governs",
-        "a meter is a SYSTEM fact: a mid-staff change no other staff witnessed is a misread (21 fired on scans, 0 survive)",
+        '"bar sum, on every bar of every staff it governs"',
+        '"a meter is a SYSTEM fact: a mid-staff change no other staff witnessed is a misread (21 fired on scans, 0 survive)"',
     ),
     implicates=(Q.METER, Q.DURATION, Q.MEASURE_PARTITION),
     composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION),
     scope=Kind.SYSTEM,
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION, Q.DOSSIER_FACT),
-    reasons=("read", "voted", "carried", "no_evidence"),
+    reasons=("voted", "no_agreement", "no_evidence"),
     mode=Mode.ADDITIVE,
-    stub=True,
 )
 def adjudicate_meter(ev: Evidence) -> Ruling:
-    """⚠️ DECLARED STUB. A meter is a fact of the SYSTEM, read per staff.
+    """A meter is a fact of the SYSTEM, printed once on every staff.
 
-    Three rules that must survive the port:
+    ⚠️ ONE VOTE PER STAFF. The rows are already per-staff (GATHER emits one),
+    which is the fix for the fault that once turned a single `timeSig4` at
+    confidence 0.42 into eighteen unanimous votes.
 
-      * ONE VOTE PER STAFF. A meter is carried onto every later measure of
-        its staff, so counting measures counts one reading many times -- a
-        single `timeSig4` at confidence 0.42 on one staff of nineteen once
-        arrived at the page vote as eighteen unanimous votes for common time.
-      * A MID-STAFF CHANGE NEEDS A SYSTEM-WIDE WITNESS. A change is printed
-        on every staff at the same bar. 21 fired on scans, 0 survive.
-      * A DERIVED METER MAY NOT VOTE FOR ITSELF. That is
-        `rhythm._READING_SOURCES`, the best-enforced provenance tag in the
-        tree, and under this design it is the circularity filter: a meter
-        whose basis contains `Q.DURATION` cannot also be evidence for the
-        duration that produced it.
+    ⚠️ THE VOTE KEY IS THE PRINTED FORM, NOT THE BAR LENGTH. `C` and `4/4` are
+    one bar length and two engravings, and a page must not average them into
+    one answer -- musicdiff charges the difference at 3 edits per staff.
+
+    ⚠️ NOT WIRED HERE: the bar-sum check. It is this decision's strongest
+    constraint (`implicates` names it) and it is the one redundant group with
+    a DERIVED member, so consuming it is a bounded REPAIR and belongs in
+    EVALUATE, not in this vote. See `consequences.reconcile_duration`.
     """
-    return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
+    rows = ev.rows(Q.METER_TEMPLATE, scope=Scope.SELF_AND_DESCENDANTS)
+    if not rows:
+        return Ruling.abstain("no_evidence")
+
+    tally_: dict = {}
+    for row in rows:
+        raw = row.detail.get("raw") or str(row.value)
+        tally_.setdefault(raw, []).append(row)
+
+    best_raw, witnesses = max(tally_.items(), key=lambda kv: len(kv[1]))
+    share = len(witnesses) / len(rows)
+    if share < METER_AGREEMENT_FLOOR:
+        # ⚠️ Recorded, not defaulted. A system whose staves disagree about the
+        # meter is exactly the page a human should see.
+        return Ruling.abstain("no_agreement",
+                              share=round(share, 3),
+                              readings={k: len(v) for k, v in tally_.items()})
+
+    return Ruling(value={"numerator": witnesses[0].value[0],
+                         "denominator": witnesses[0].value[1],
+                         "raw": best_raw},
+                  reason="voted", margin=share,
+                  used=tuple(r.id for r in witnesses),
+                  detail={"share": round(share, 3),
+                          "n_staves_spoke": len(rows)})
+
+
+

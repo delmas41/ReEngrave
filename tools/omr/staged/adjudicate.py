@@ -611,6 +611,7 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
         basis=tuple(sorted(basis)),
         margin=margin,
         supersedes=prior.id if prior is not None else None,
+        detail=dict(ruling.detail),
     )
     return log.record(verdict)
 

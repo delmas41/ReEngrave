@@ -778,36 +778,203 @@ def gather_clef_seed(log: Log, cells, local, *, dossier: Any,
                     derived_from=(sources["dossier"],))
 
 
-def gather_key_signature(log: Log, cells, local) -> None:
-    """⚠️ DECLARED STUB, and the one that needs a reader CHANGED rather than
-    called.
+#: The clefs whose slot tables `key_signature_geometry` covers.
+#: ⚠️ Six more (soprano, mezzo, baritone, french, varbaritone, subbass) have no
+#: table, so a key signature on one of those is UNSATISFIABLE, not merely
+#: unread. Recorded so an abstention there is not read as a reader failure.
+_SLOT_TABLE_CLEFS = ("treble", "bass", "alto", "tenor")
 
-    `key_signature_locator.py:310` is `if not clef: return None` -- the reader
-    refuses to run without a clef. For GATHER it must emit the accidental
-    RUN's positions with NO clef, because those positions are pure geometry:
-    `:322-337` finds components and clusters them, `:347-368` locates where
-    the clef ended by HEIGHT IN STAFF SPACES without consulting the clef
-    argument, and the clef enters only at `:398-399` in `fit_key_signature`.
+_KEYSIG_CLASSES = ("keySharp", "keyFlat", "keyNatural")
 
-    ⚠️ THE GUARD IS NOT DELETED WHEN THIS IS DONE. It MOVES to the fit. It is
-    deliberate and paid for: fitting against a guessed clef once read three
-    flats as TWO SHARPS. After the move the reader still refuses to NAME a
-    key without a clef; what changes is that the positions survive to the
-    adjudicator, which has the clef verdict in hand and can abstain instead
-    of guessing.
+
+def gather_key_signature(log: Log, pws: Any, cells: Sequence[Any],
+                         local: Dict[int, Tuple[int, int]],
+                         detections: Dict[str, List[Any]]) -> None:
+    """The accidental run's POSITIONS -- and which clefs the run fits.
+
+    ⚠️ THE GUARD IS NOT DELETED. `key_signature_locator.py:310` is
+    `if not clef: return None`, and it is deliberate and paid for: fitting
+    three flats against a GUESSED clef once returned TWO SHARPS, a different
+    accidental type fitting a different prefix well inside tolerance.
+    `transcribe.py:4670-4679` says it in the code's own words -- *"reading a key
+    signature against a guessed clef is guessing twice."*
+
+    ⚠️ SO THE READER IS ASKED THE QUESTION ONCE PER CANDIDATE CLEF instead of
+    once with a guess. That is not a workaround for the guard, it is the
+    honest form of the question: the run's POSITIONS are clef-free geometry
+    and the SLOT TABLE is what the clef chooses, so *which clefs the run fits*
+    is evidence about the CLEF (`Q.KEYSIG_CLEF_FIT`) and the positions are a
+    measurement in their own right.
+
+    ⚠️ AND IT IS WHY THE POSITIONS CANNOT BE TAKEN FROM ONE CALL. The reader
+    returns `None` when the FIT fails, discarding the boxes it already found --
+    so a single call with a wrong clef loses exactly the staff whose clef is
+    wrong, which is the population that matters.
     """
-    _stub_per_staff(log, cells, local, Q.KEYSIG_RUN_POSITION,
-                    READERS.CV_HEADER, FRAME_HEADER_WINDOW,
-                    "needs key_signature_locator's clef guard moved to the fit")
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    try:
+        from ..key_signature_locator import locate_key_signature
+        from ..staff_header import header_cells_for_page
+    except Exception:                                         # noqa: BLE001
+        _stub_per_staff(log, cells, local, Q.KEYSIG_RUN_POSITION,
+                        READERS.CV_HEADER, FRAME_HEADER_WINDOW,
+                        "key_signature_locator unavailable")
+        return
+
+    try:
+        header_cells = header_cells_for_page(pws)
+    except Exception:                                         # noqa: BLE001
+        header_cells = {}
+
+    for staff_index, key in sorted(local.items()):
+        sub = R.staff(p, key[0], key[1])
+        _gather_keysig_markers(log, sub, detections, p, key)
+
+        crop = header_cells.get(staff_index)
+        if crop is None:
+            log.abstain(sub, Q.KEYSIG_RUN_POSITION, reader=READERS.CV_HEADER,
+                        frame=FRAME_HEADER_WINDOW,
+                        reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+
+        occupied = _occupied_boxes(detections, p, key, FRAME_HEADER_WINDOW)
+        positions = None
+        fitted_any = False
+        for candidate in _SLOT_TABLE_CLEFS:
+            try:
+                found = locate_key_signature(crop, candidate,
+                                             occupied_boxes=occupied)
+            except Exception:                                 # noqa: BLE001
+                continue
+            if found is None:
+                continue
+            fitted_any = True
+            log.observe(sub, Q.KEYSIG_CLEF_FIT, candidate,
+                        reader=READERS.CV_HEADER, frame=FRAME_HEADER_WINDOW,
+                        n_accidentals=len(found.boxes),
+                        accidental=found.accidental,
+                        decided_by=found.decided_by,
+                        fifths=getattr(found.read, "fifths", None))
+            if positions is None:
+                positions = [b[0] for b in found.boxes]
+
+        if not fitted_any:
+            # ⚠️ Two different states collapse here and the detail says which:
+            # a run that fits NO slot table, and a header with no run at all.
+            log.abstain(sub, Q.KEYSIG_RUN_POSITION, reader=READERS.CV_HEADER,
+                        frame=FRAME_HEADER_WINDOW, reason=ABSTAIN.NO_CLUSTERS,
+                        note="no candidate clef's slot table fits this header",
+                        clefs_tried=list(_SLOT_TABLE_CLEFS))
+            continue
+
+        log.observe(sub, Q.KEYSIG_RUN_POSITION, positions or [],
+                    reader=READERS.CV_HEADER, frame=FRAME_HEADER_WINDOW,
+                    n_accidentals=len(positions or []))
 
 
-def gather_meter(log: Log, cells, local) -> None:
-    """⚠️ DECLARED STUB. `time_signature_locator.locate_time_signature` and
-    the template reader both return a reading that would translate directly;
-    the vote (`vote_system_time_signature`) is an ADJUDICATION and belongs in
-    the next stage, not here."""
-    _stub_per_staff(log, cells, local, Q.METER_GLYPH, READERS.DETECTOR,
-                    FRAME_HEADER_WINDOW, "locate_time_signature not wired")
+def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
+                           key) -> None:
+    """The DETECTOR's own key accidentals, from the staff's first cell."""
+    cell_key = R.cell(p, key[0], key[1], 0).to_key()
+    marks = [d for d in detections.get(cell_key, ())
+             if d.smufl_name in _KEYSIG_CLASSES]
+    if not marks:
+        log.abstain(sub, Q.KEYSIG_MARKER, reader=READERS.DETECTOR,
+                    frame=frame_cell(0), reason=ABSTAIN.NO_DETECTIONS)
+        return
+    for d in sorted(marks, key=lambda m: m.x_canonical):
+        log.observe(sub, Q.KEYSIG_MARKER, d.smufl_name,
+                    reader=READERS.DETECTOR, frame=frame_cell(0),
+                    score=float(d.confidence), x=d.x_canonical,
+                    y_center=d.y_center)
+
+
+_METER_CLASSES = ("timeSigCommon", "timeSigCutCommon")
+
+
+def gather_meter(log: Log, pws: Any, cells: Sequence[Any],
+                 local: Dict[int, Tuple[int, int]],
+                 detections: Dict[str, List[Any]]) -> None:
+    """The meter, read per STAFF. The vote is an adjudication, not a reading.
+
+    ⚠️ ONE ROW PER STAFF, NOT PER MEASURE. A meter is carried onto every later
+    measure of its staff, so counting measures counts one reading many times:
+    a single `timeSig4` at confidence 0.42, on one staff of nineteen, once
+    arrived at a page vote as EIGHTEEN unanimous votes for common time.
+
+    ⚠️ AND THE TEMPLATE READER ALREADY CARRIES ITS OWN CONTEST -- `raw`,
+    `runner_up_raw`, `runner_up_score`, `score_margin` -- which is the shape
+    this architecture asks every decision for, sitting on a dataclass since
+    before it. All four are recorded.
+    """
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    try:
+        from ..staff_header import header_cells_for_page
+        from ..time_signature_locator import locate_time_signature
+    except Exception:                                         # noqa: BLE001
+        _stub_per_staff(log, cells, local, Q.METER_TEMPLATE, READERS.TEMPLATE,
+                        FRAME_HEADER_WINDOW, "time_signature_locator missing")
+        return
+    try:
+        header_cells = header_cells_for_page(pws)
+    except Exception:                                         # noqa: BLE001
+        header_cells = {}
+
+    for staff_index, key in sorted(local.items()):
+        sub = R.staff(p, key[0], key[1])
+        _gather_meter_glyphs(log, sub, detections, p, key)
+
+        crop = header_cells.get(staff_index)
+        if crop is None:
+            log.abstain(sub, Q.METER_TEMPLATE, reader=READERS.TEMPLATE,
+                        frame=FRAME_HEADER_WINDOW,
+                        reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+        trace: Dict[str, Any] = {}
+        try:
+            found = locate_time_signature(crop, trace=trace)
+        except Exception:                                     # noqa: BLE001
+            log.abstain(sub, Q.METER_TEMPLATE, reader=READERS.TEMPLATE,
+                        frame=FRAME_HEADER_WINDOW,
+                        reason=ABSTAIN.READER_UNAVAILABLE)
+            continue
+        if found is None:
+            # ⚠️ A page that prints no meter at all is the COMMON case -- a
+            # meter is printed at the start of a movement and nowhere else --
+            # so this abstention is usually correct, not a miss.
+            log.abstain(sub, Q.METER_TEMPLATE, reader=READERS.TEMPLATE,
+                        frame=FRAME_HEADER_WINDOW,
+                        reason=ABSTAIN.BELOW_THRESHOLD,
+                        **{k: v for k, v in trace.items() if k != "reason"})
+            continue
+        log.observe(sub, Q.METER_TEMPLATE,
+                    (int(found.numerator), int(found.denominator)),
+                    reader=READERS.TEMPLATE, frame=FRAME_HEADER_WINDOW,
+                    score=float(found.score), raw=found.raw,
+                    runner_up=found.runner_up_raw,
+                    runner_up_score=found.runner_up_score,
+                    score_margin=found.score_margin)
+
+
+def _gather_meter_glyphs(log: Log, sub: Subject, detections, p: int,
+                         key) -> None:
+    """The detector's own meter glyphs. ⚠️ `timeSigCommon` and
+    `timeSigCutCommon` are the two the detector reads WELL and the template
+    library has no digits for -- so the two readers are complementary, not
+    redundant, and both belong on the record."""
+    cell_key = R.cell(p, key[0], key[1], 0).to_key()
+    marks = [d for d in detections.get(cell_key, ())
+             if d.smufl_name.startswith("timeSig")]
+    if not marks:
+        log.abstain(sub, Q.METER_GLYPH, reader=READERS.DETECTOR,
+                    frame=frame_cell(0), reason=ABSTAIN.NO_DETECTIONS)
+        return
+    for d in sorted(marks, key=lambda m: (m.x_canonical, m.y_canonical)):
+        log.observe(sub, Q.METER_GLYPH, d.smufl_name,
+                    reader=READERS.DETECTOR, frame=frame_cell(0),
+                    score=float(d.confidence), x=d.x_canonical,
+                    y_center=d.y_center,
+                    letter=(d.smufl_name in _METER_CLASSES))
 
 
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
@@ -969,8 +1136,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)
         gather_clef_seed(log, cells, local, dossier=dossier, sources=sources)
-        gather_key_signature(log, cells, local)
-        gather_meter(log, cells, local)
+        gather_key_signature(log, pws, cells, local, detections)
+        gather_meter(log, pws, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)
