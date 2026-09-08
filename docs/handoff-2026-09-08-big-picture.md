@@ -96,20 +96,49 @@ constantly; budget a grep per claim.
 
 | | what | instrument that can see it |
 |---|---|---|
-| **1** | **`OMR_CONDENSED_PARTS`** — oracle ceiling **−4,557 scan edits**, composes with the now-ON slot stitch, blocked because the COUNT is a property of the ENCODING (proved). ⚠️ But the page-truth redirect says condensed staves should STAY condensed, which makes it an anti-feature. **These two conclusions contradict and nobody has reconciled them.** | needs the reconciliation first, not a measurement |
+| **1** | **Build check 3 of the page-truth benchmark** — compare music STAFF-TO-STAFF instead of part-to-part. See below; this is the missing half of the structural programme. | itself: it is the instrument |
 | **2** | **Cause D** — Mahler p2's `staves` map. One hand-verified fact. | unblocks the 20th row |
 | **3** | the meter guards (b) and (c) parked in `benchmarks/omr-rests-2026-09/FINDINGS.md` §14 — a corroboration guard and a vote-override, **different rules, different risks** | needs a multi-page corpus, which the gate is not |
 | **4** | `<transpose>` — 92 in the engraved truth, ours 0, the fact is in the pipeline | `export_coverage`, already reports it |
 | **5** | `<stem>` — 1,534 in truth, ours 0, musicdiff does not score it | the ledger, if a family were added |
 | **6** | step 5, the six staged stubs — and ⚠️ **the staged pipeline still has no exporter**, a missing component rather than plumbing. **Do not start one as a side quest.** | nothing, until an exporter exists |
 
-⚠️ **Item 1 is the interesting one for a big-picture session** and it is not a
-coding task: two separately-measured conclusions in this repo disagree about
-whether condensed staves should be split at all
-(`benchmarks/omr-condensed-parts-2026-09/FINDINGS.md` says −4,557 edits;
-`project_page_truth_benchmark` says the truth should stop expecting the split).
-**One of them is measuring the wrong thing and the repo does not currently say
-which.**
+### ⚠️ Item 1, and a correction to an earlier draft of this file
+
+An earlier draft called the condensed-staff question *"a contradiction nobody
+has reconciled"*. **That was wrong and it is worth saying why**, because the
+next session would have spent time re-deciding a settled question.
+
+It LOOKS like a contradiction: `benchmarks/omr-condensed-parts-2026-09/FINDINGS.md`
+measures splitting a condensed staff at **−4,557 scan edits**, the largest
+single lever on the corpus (87% of the `entire staff` bucket, with our
+detection already correct); `project_page_truth_benchmark` calls the same flag
+an **anti-feature**.
+
+**It is settled, by Sean, 2026-09-05:** *"If the scan comes in with 2 parts on a
+staff I want it to stay 2 parts on a staff — so this is a measurement issue
+against the MXL."* The page prints one staff; the user wants one staff back.
+The −4,557 is a **benchmark artefact, not user-visible quality**. A second and
+independent reason it was never shippable: the COUNT is a property of the
+ENCODING, not the engraving (proved — a label rule costs +2,181 on Dvořák).
+
+**So the open item is the BENCHMARK, not the question.** Its consequence is the
+uncomfortable part and belongs in every summary: ⚠️ **when the exporter stops
+splitting condensed staves, OMR-NED gets WORSE on those rows while the output
+gets BETTER.** Today's rest fix is the same shape — 1,251 corrected errors
+scored at exactly zero.
+
+The replacement, scoring structure against the PAGE rather than against
+MusicXML, is three checks and is half-built:
+
+| check | state |
+|---|---|
+| 1 — parts emitted == staves detected, systems preserved | **built and run**, 17/20, **needs no truth file at all** |
+| 2 — detection vs the page | already exact 20/20; a regression guard |
+| 3 — music compared **staff-to-staff** | **DESIGNED, NOT BUILT** — the piece that sidesteps condensation entirely |
+
+**Check 3 is the missing half**, and until it exists the project measures
+structure with an instrument that rewards the wrong answer.
 
 ## 7. Operational, for whoever picks this up
 
