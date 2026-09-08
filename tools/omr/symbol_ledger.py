@@ -274,6 +274,7 @@ class LedgerRow:
     # correspondence
     partner_uid: str | None = None
     basis: tuple[str, ...] = ()            # keys that agreed on the partner
+    basis_strength: str = ""               # "corroborated" | "single_key"
     dissenting: dict[str, str | None] = field(default_factory=dict)
     reason: str | None = None              # why uncorresponded / ambiguous
     measure_map: str = "verified"          # "verified" | "hypothesised" | "none"
@@ -988,7 +989,26 @@ def build_ledger(*, row_id: str, pred_path: str | Path, truth_path: str | Path,
                          for pj in part_join if pj.status != "resolved"}
     joined_truth_parts = {tp for pj in resolved.values() for tp in pj.truth_parts}
 
-    for (ppart, tmeasure, family), psyms in sorted(pred_by.items()):
+    # ⚠️ THE CELL SET IS THE UNION OF BOTH SIDES', NOT THE PREDICTION'S.
+    # Driving it off `pred_by` alone was a real defect, and the mutation
+    # matrix is what caught it: delete the only <slur> of a bar and that
+    # (staff, bar, slur) cell vanishes from the prediction, so the truth slur
+    # was never visited and fell through to the leftover loop as
+    # `uncorresponded/measure_unresolved` — the instrument reporting "I could
+    # not establish correspondence" for a symbol whose correspondence was
+    # perfectly well established and simply had no partner. That is the
+    # measure going blank, in the instrument built to stop it.
+    cells: set[tuple[int, int, str]] = set(pred_by)
+    for pj in part_join:
+        if pj.status != "resolved":
+            continue
+        for tp in pj.truth_parts:
+            for (tpart, tmeas, fam) in truth_by:
+                if tpart == tp:
+                    cells.add((pj.pred_part, tmeas, fam))
+
+    for (ppart, tmeasure, family) in sorted(cells):
+        psyms = pred_by.get((ppart, tmeasure, family), [])
         if ppart not in resolved:
             for s in psyms:
                 _row(s, "uncorresponded", reason="part_unresolved",
@@ -1007,6 +1027,8 @@ def build_ledger(*, row_id: str, pred_path: str | Path, truth_path: str | Path,
         for x in per_part:
             for s in x:
                 seen_truth.add(s.uid)
+        if not tsyms and not psyms:
+            continue
         _account_cell(rows, _row, tsyms, psyms, family, tmeasure,
                       measure_status, seen_truth, seen_pred, row_id,
                       condensed=len(pj.truth_parts) > 1)
@@ -1064,8 +1086,19 @@ def _account_cell(rows: list[LedgerRow], _row, tsyms: list[Symbol],
         basis = adj.basis.get(i, ())
         wrong, unknown = compare_attrs(t, p, basis, family)
         outcome = "matched_exact" if not wrong else "matched_attribute_error"
+        # ⚠️ ONE KEY IS ONE SIGNAL. A pairing named by a single key while the
+        # others explicitly DECLINE is not corroborated, and an attribute
+        # verdict taken from it is weaker than one taken from a pairing two
+        # blind keys agree on. Measured shape: delete the 2nd note of a Bach
+        # bar and every later note becomes `ambiguous` (onset says one
+        # partner, pitch another) EXCEPT the one at the boundary, where only
+        # `onset` names anything — and that lone row is where the instrument's
+        # own residual pitch misattribution lives. It is reported, split out,
+        # and never pooled with the corroborated verdicts.
+        strength = "corroborated" if len(basis) > 1 else "single_key"
         _row(t, outcome, measure=tmeasure, measure_map=measure_status,
-             condensed=condensed, partner_uid=p.uid, basis=basis, attrs_wrong=wrong,
+             condensed=condensed, partner_uid=p.uid, basis=basis,
+             basis_strength=strength, attrs_wrong=wrong,
              attrs_not_assessable=unknown, partner_attrs=dict(p.attrs),
              dissenting=dict(adj.dissent.get(i) or {}))
 
@@ -1162,10 +1195,12 @@ def summarise(res: LedgerResult) -> dict[str, Any]:
     for r in res.rows:
         by_family_outcome[r.family][r.outcome] += 1
     attr_wrong: Counter = Counter()
+    attr_wrong_weak: Counter = Counter()
     attr_unknown: Counter = Counter()
     for r in res.rows:
+        target = attr_wrong if r.basis_strength != "single_key" else attr_wrong_weak
         for a in r.attrs_wrong:
-            attr_wrong[f"{r.family}.{a}"] += 1
+            target[f"{r.family}.{a}"] += 1
         for a in r.attrs_not_assessable:
             attr_unknown[f"{r.family}.{a}"] += 1
     uncorr = Counter(r.reason for r in res.rows if r.outcome == "uncorresponded")
@@ -1175,6 +1210,7 @@ def summarise(res: LedgerResult) -> dict[str, Any]:
         "outcomes": dict(by_outcome),
         "by_family": {k: dict(v) for k, v in sorted(by_family_outcome.items())},
         "attributes_wrong": dict(attr_wrong.most_common()),
+        "attributes_wrong_single_key": dict(attr_wrong_weak.most_common()),
         "attributes_not_assessable": dict(attr_unknown.most_common()),
         "uncorresponded_reasons": dict(uncorr),
         "correspondence_basis": dict(basis.most_common()),
@@ -1192,7 +1228,8 @@ def rows_to_csv(rows: Iterable[LedgerRow]) -> str:
     buf = io.StringIO()
     cols = ["row_id", "side", "family", "outcome", "reason", "part_index",
             "part_name", "measure", "onset_ql", "voice", "ordinal",
-            "chord_member", "condensed", "measure_map", "basis", "attrs_wrong",
+            "chord_member", "condensed", "measure_map", "basis",
+            "basis_strength", "attrs_wrong",
             "attrs_not_assessable", "description", "partner_uid", "uid"]
     w = csv.DictWriter(buf, fieldnames=cols, extrasaction="ignore")
     w.writeheader()
