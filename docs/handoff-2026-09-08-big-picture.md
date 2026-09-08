@@ -123,8 +123,10 @@ which.**
   `benchmarks/omr-part-join-2026-09/pairs-restamp-composed.json` is the fast
   scan-side instrument. **Its controls now include per-row symbol accounting
   and it REFUSES to quote a figure when that fails.**
-* Full suite 3,057 passed / 8m50s (excluding `test_direction_text.py`, whose
-  Surya-venv test is environment-dependent in a worktree).
+* Full suite **3,079 passed, 4 skipped, 0 failed / 8m57s** on the final tree —
+  after the `rhythm.py` change and the `OMR_SLOT_STITCH` flip (excluding
+  `test_direction_text.py`, whose Surya-venv test is environment-dependent in a
+  worktree). `export_coverage --all` exits 0.
 * `timeout` does not exist on this macOS; `| tail` buffers a whole pytest run.
 * ⚠️ `OMR_SURYA_KEEP_ALIVE=0` for unattended runs; **never `pkill` the shared
   Surya daemon.**
