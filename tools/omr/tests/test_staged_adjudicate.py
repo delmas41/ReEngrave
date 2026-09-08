@@ -31,6 +31,31 @@ from tools.omr.staged.record import (ABSTAIN, Log, Outcome, Q, READERS, Scope,
                                      State, Verdict)
 
 
+class _owns:
+    """Temporarily take ownership of a quantity.
+
+    ⚠️ The registry refuses two owners for one quantity -- "one quantity, one
+    owner" -- so a test that registers a probe must displace the incumbent and
+    put it back. That the guard fires when these tests run alongside the real
+    adjudicators is the guard WORKING, and it is why this helper exists rather
+    than a flag loosening the rule.
+    """
+
+    def __init__(self, quantity):
+        self.quantity = quantity
+        self.prior = None
+
+    def __enter__(self):
+        self.prior = A.REGISTRY.pop(self.quantity, None)
+        return self
+
+    def __exit__(self, *exc):
+        A.REGISTRY.pop(self.quantity, None)
+        if self.prior is not None:
+            A.REGISTRY[self.quantity] = self.prior
+        return False
+
+
 def _spec(quantity=Q.CLEF, wants=(Q.INSTRUMENT,), excludes=()):
     return A.DecisionSpec(
         name="probe", quantity=quantity, scope=R.Kind.STAFF, wants=tuple(wants),
@@ -54,19 +79,17 @@ class TestDeclaredEvidence(unittest.TestCase):
         log = Log()
         sub = R.staff(0, 0, 0)
 
-        @A.decision(quantity=Q.STAFF_GROUP, scope=R.Kind.STAFF,
-                    wants=(Q.BRACKET_BLOCK,), reasons=("r",))
-        def _probe(ev):
-            ev.rows(Q.BRACKET_BLOCK)               # asks, gets nothing
-            return Ruling(value=1, reason="r")
+        with _owns(Q.STAFF_GROUP):
+            @A.decision(quantity=Q.STAFF_GROUP, scope=R.Kind.STAFF,
+                        wants=(Q.BRACKET_BLOCK,), reasons=("r",))
+            def _probe(ev):
+                ev.rows(Q.BRACKET_BLOCK)           # asks, gets nothing
+                return Ruling(value=1, reason="r")
 
-        try:
             log.freeze()
             v = A.adjudicate_one(log, A.REGISTRY[Q.STAFF_GROUP], sub)
             self.assertIn(Q.BRACKET_BLOCK, v.missing)
             self.assertEqual(v.declined, ())
-        finally:
-            del A.REGISTRY[Q.STAFF_GROUP]
 
     def test_declined_and_missing_are_recorded_apart(self):
         log = Log()
@@ -74,21 +97,19 @@ class TestDeclaredEvidence(unittest.TestCase):
         log.abstain(sub, Q.BRACKET_BLOCK, reader=READERS.GEOMETRY,
                     frame="system", reason=ABSTAIN.SYSTEM_TOO_SMALL)
 
-        @A.decision(quantity=Q.STAFF_GROUP, scope=R.Kind.STAFF,
-                    wants=(Q.BRACKET_BLOCK, Q.SYSTEMIC_COLUMN),
-                    reasons=("r",))
-        def _probe(ev):
-            ev.rows(Q.BRACKET_BLOCK)
-            ev.rows(Q.SYSTEMIC_COLUMN)
-            return Ruling(value=1, reason="r")
+        with _owns(Q.STAFF_GROUP):
+            @A.decision(quantity=Q.STAFF_GROUP, scope=R.Kind.STAFF,
+                        wants=(Q.BRACKET_BLOCK, Q.SYSTEMIC_COLUMN),
+                        reasons=("r",))
+            def _probe(ev):
+                ev.rows(Q.BRACKET_BLOCK)
+                ev.rows(Q.SYSTEMIC_COLUMN)
+                return Ruling(value=1, reason="r")
 
-        try:
             log.freeze()
             v = A.adjudicate_one(log, A.REGISTRY[Q.STAFF_GROUP], sub)
             self.assertEqual(v.declined, (Q.BRACKET_BLOCK,))
             self.assertEqual(v.missing, (Q.SYSTEMIC_COLUMN,))
-        finally:
-            del A.REGISTRY[Q.STAFF_GROUP]
 
 
 class TestTheThreeStandingRefusals(unittest.TestCase):
@@ -223,12 +244,13 @@ class TestSignedTerms(unittest.TestCase):
 
 class TestCompetitiveNeedsAFloor(unittest.TestCase):
     def test_competitive_without_margin_floor_is_refused(self):
-        with self.assertRaises(ValueError):
-            @A.decision(quantity=Q.ARC_KIND, scope=R.Kind.GLYPH,
-                        wants=(Q.ARC_BOX,), reasons=("r",),
-                        mode=Mode.COMPETITIVE)
-            def _bad(ev):
-                return Ruling(value=1, reason="r")
+        with _owns(Q.ARC_KIND):
+            with self.assertRaises(ValueError):
+                @A.decision(quantity=Q.ARC_KIND, scope=R.Kind.GLYPH,
+                            wants=(Q.ARC_BOX,), reasons=("r",),
+                            mode=Mode.COMPETITIVE)
+                def _bad(ev):
+                    return Ruling(value=1, reason="r")
 
     def test_a_margin_below_the_floor_abstains(self):
         """Today the clef argmax wins at ANY confidence -- there is no floor
@@ -236,21 +258,38 @@ class TestCompetitiveNeedsAFloor(unittest.TestCase):
         log = Log()
         sub = R.staff(0, 0, 0)
 
-        @A.decision(quantity=Q.ARC_KIND, scope=R.Kind.GLYPH,
-                    wants=(Q.ARC_BOX,), reasons=("r",),
-                    mode=Mode.COMPETITIVE, margin_floor=1.0)
-        def _probe(ev):
-            return Ruling(value="tie", reason="r", margin=0.2)
+        with _owns(Q.ARC_KIND):
+            @A.decision(quantity=Q.ARC_KIND, scope=R.Kind.GLYPH,
+                        wants=(Q.ARC_BOX,), reasons=("r",),
+                        mode=Mode.COMPETITIVE, margin_floor=1.0)
+            def _probe(ev):
+                return Ruling(value="tie", reason="r", margin=0.2)
 
-        try:
             log.freeze()
             v = A.adjudicate_one(log, A.REGISTRY[Q.ARC_KIND], sub)
             self.assertIs(v.outcome, Outcome.ABSTAINED)
             self.assertEqual(v.reason, "margin_below_floor")
             self.assertIsNone(v.value)
             self.assertEqual(v.margin, 0.2)
-        finally:
-            del A.REGISTRY[Q.ARC_KIND]
+
+
+class TestOneQuantityOneOwner(unittest.TestCase):
+    """⚠️ Found by these tests colliding with the real adjudicators, which is
+    the guard working. Two owners for one quantity would mean the answer
+    depends on import order."""
+
+    def test_a_second_owner_is_refused(self):
+        with _owns(Q.ARC_KIND):
+            @A.decision(quantity=Q.ARC_KIND, scope=R.Kind.GLYPH,
+                        wants=(Q.ARC_BOX,), reasons=("r",))
+            def _first(ev):
+                return Ruling(value=1, reason="r")
+
+            with self.assertRaises(ValueError):
+                @A.decision(quantity=Q.ARC_KIND, scope=R.Kind.GLYPH,
+                            wants=(Q.ARC_BOX,), reasons=("r",))
+                def _second(ev):
+                    return Ruling(value=2, reason="r")
 
 
 class TestStubsAreDeclared(unittest.TestCase):
