@@ -393,15 +393,27 @@ grep -c '<ornaments>' benchmarks/omr-orchestral-e2e/fixtures/beethoven-sym3-mvt1
 
 **(c) The scan gate — where the trills actually are.** The scan truth carries
 **131 `<ornaments>` / 123 `tremolo`**, so 8 non-tremolo, and the detector reads
-`ornamentTrill` on scans. ⚠️ Give every arm its own `--tag=` — `scan_eval`
-caches by default and a cached A/B reports "identical on every bucket", which
-reads exactly like a clean no-regression result. The tell is wall time.
+`ornamentTrill` on scans (8 on the Brahms 1 / Breitkopf pages, of which 4 place
+— §4). ⚠️ **There is no flag on this change**, so the A/B is across the two
+COMMITS, not two env settings — and ⚠️ **give each arm its own `--tag=` (it
+needs the `=`)**: `scan_eval.run_pipeline` returns early when the prediction
+file exists, so two arms sharing a fixtures dir with an empty tag reuse the
+first arm's transcriptions and the second never runs, reporting *"identical on
+every bucket and every row"* — exactly the clean no-regression result a change
+like this hopes for. **The tell is wall time, not the numbers.**
 
 ```bash
-python3 -m tools.omr.training.scan_eval --tag=-ornaments-off   # OMR_ORNAMENTS is not a flag;
-python3 -m tools.omr.training.scan_eval --tag=-ornaments-on    # A/B across the two commits
-python3 benchmarks/omr-symbol-ledger-2026-09/run_ledger.py     # score with the LEDGER, not OMR-NED
+git checkout <merge-base>
+python3 benchmarks/omr-scan-e2e-2026-09/scan_eval.py --tag=-orn-before
+git checkout <this branch>
+python3 benchmarks/omr-scan-e2e-2026-09/scan_eval.py --tag=-orn-after
+# score it with the LEDGER, not with OMR-NED (handoff §2)
+python3 benchmarks/omr-symbol-ledger-2026-09/run_ledger.py
 ```
+
+The prediction to test: the `ornament` family goes from **0 rows to a small
+positive number** and every other family is **unchanged**, exactly as §4's A/B
+shows on the one page that can be run here.
 
 **(d) Sweep `_ORNAMENT_MAX_DX_NOTEHEAD_WIDTHS`.** Requires per-mark truth,
 which requires ornament detections on a page whose reference encoding is held.

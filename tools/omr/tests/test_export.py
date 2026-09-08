@@ -640,8 +640,14 @@ class TestOrnaments:
         repository detects a tremolo, so there is no measurement to price it
         against. MusicXML gets it; LilyPond does not."""
         out = to_lilypond(self._result([{"kind": "tremolo", "strokes": 3}]))
-        assert ":" not in out.split("\\score")[-1] or ":32" not in out
-        assert ":32" not in out and ":16" not in out
+        # The whole family of subdivision spellings, not just the one a
+        # 3-stroke quarter would produce — a wrong mapping is the failure this
+        # guards, and it would land on some other value.
+        for spelling in (":8", ":16", ":32", ":64", ":128"):
+            assert spelling not in out, f"LilyPond got a tremolo as {spelling}"
+        # ...and the control: the named marks DO come out, so this is not just
+        # asserting that `to_lilypond` produced nothing.
+        assert "\\trill" in to_lilypond(self._result([{"kind": "trill"}]))
 
 
 # ─── to_lilypond (smoke test on a tiny synthetic JSON) ─────────────────────

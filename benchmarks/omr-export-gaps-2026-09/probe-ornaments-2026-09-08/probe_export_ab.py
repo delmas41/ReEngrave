@@ -37,6 +37,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))   # for the sibling probe
 
 from tools.omr.export import to_musicxml                       # noqa: E402
 from tools.omr.symbol_ledger import extract_symbols            # noqa: E402
