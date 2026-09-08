@@ -99,7 +99,25 @@ twelve and is wrong on every one that can be checked. The honest form:
 least 4 wrong.** That is `NEW_ABSTENTION` being a feature that scores as a
 loss, exactly as the design predicted.
 
-### OPEN — the Viola, and the one number that splits it
+### ANSWERED 2026-09-08 (local session) — it is a READER, not the alto table
+
+**`detail.n_accidentals` is 1.** Only one flat was found, so this is the
+detection-shortfall branch and the fit reported what it had; the alto slot
+table is not implicated. Two staves that found three boxes read −3, and the
+Clarinet found one box and is CORRECTLY −1 — the Viola behaves exactly like the
+Clarinet. Its one box also sits at x 1161 against a system-wide accidental band
+of 580–948, so it is likely not a flat at all.
+
+Underneath it: **GATHER imports `locate_key_signature` and nothing else**, and
+`key_signature_template` — measured at 11 of 12 on THIS page against the
+locator's 2 of 12 — is referenced nowhere under `tools/omr/staged/`. The Viola
+is one symptom of that, and the least informative one. Parked as **D20** in
+`ASSUMPTIONS.md` with the measured restraint that constrains the fix.
+Full reading: `benchmarks/omr-staged-shadow-2026-09/FINDINGS.md`.
+
+<details><summary>The question as it was posed (kept — a park keeps its evidence)</summary>
+
+#### OPEN — the Viola, and the one number that splits it
 
 Sean's hypothesis was that the alto clef fired a wrong signal. **Falsified:
 the clef read `alto` correctly.** And his correction is the right one — an
@@ -124,6 +142,8 @@ coordinator's own.** It indexed rows on `'row_id'`; the serialised key is
 version prints `len(by)` and `len(basis)` as positive controls. The
 adjudicator declares `used=(row.id, clef.id)` and abstains `needs_clef`
 without one, so the clef is certainly in the basis.
+
+</details>
 
 ### What Step 2 still needs
 
