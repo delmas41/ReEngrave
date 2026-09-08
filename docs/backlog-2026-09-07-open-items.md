@@ -308,6 +308,58 @@ assumption re-derived against it) and `docs/architecture-design-2026-09-07.md`.
   findable on any page with no truth file**, which is the part that matters for
   the IMSLP plan, where almost nothing will ever have a reference encoding.
 
+## F4. ⚠️ What the symbol ledger overturned (2026-09-07, merged `0b07f1c5`)
+
+**Ranking work by which musicdiff bucket is biggest was never valid.** Measured
+by a mutation matrix over 20 truth files — inject a known error, ask both
+instruments what it was:
+
+| injected | ledger | musicdiff |
+|---|--:|--:|
+| one note's pitch | 1 | **4–12 (median 6)**, never named a pitch error |
+| one written `<type>`, duration untouched | 1 | **ZERO on 10 of 20 files** |
+| two parts swapped | 4–174 | **34–590**, mostly `wrong note` |
+
+⚠️ **Amplification differs 6× to 2× BY ERROR KIND**, so bucket totals are not
+comparable to each other. ⚠️ **And musicdiff can score ZERO for a real duration
+error** — blind, not merely imprecise. On the real gate the **unnamed share is
+80–96% on every one of 20 rows**, including rows where the ledger corresponds
+100% of symbols.
+
+**A/B direction is still sound** — both arms are scored identically. What is
+void is attribution, and every "this is the biggest bucket, so work on it"
+decision rests on attribution.
+
+### Three items this opens
+
+1. ⚠️⚠️ **RESTS ARE 55% OF THE DURATION MASS AND NOBODY HAS LOOKED.** 476 rests
+   carry a wrong duration against 235 notes. Every duration analysis in this
+   repo is note-level and therefore blind to the larger half.
+2. ⚠️ **A TENTH detected-then-dropped gap, found through a hole in the check
+   built to catch them.** `export_coverage.compare()` iterates a hand-written
+   19-name `VISIBLE` dict (`export_coverage.py:181`), so an element in neither
+   `VISIBLE` nor `KNOWN_GAPS` **fails nothing**. `<ornaments>`: truth 12
+   engraved / **131 scan**, ours **0**, exporter mentions it **0** times, and
+   `ornamentTrill` ×12 is detected. Same shape for `tremolo` (12/123/0) and
+   `transpose`. **Fix the check as well as the gap** — a curated allow-list
+   reintroduces exactly the blindness the check exists to remove.
+3. **`entire staff` is three causes wearing one name.** 8 of 20 rows have NO
+   part correspondence (51% of symbols): `_stitch_slots` refusing (3 rows),
+   one-line percussion staves never detected (3), and a `works.json` arity
+   convention (bach). ⚠️ Any structural fix priced against that bucket is
+   priced against a mixture.
+
+### Smaller, recorded
+
+- `works.json`'s `"same-as:<row_id>"` alias has five resolvers and
+  `mxl_verdicts._staff_specs` is not one — it reads the string as 37
+  one-character staff names.
+- `arpeggiato` ×893 across 19 scan pages, larger than `slur`.
+- `test_direction_text.py::TestReaderSelection::test_the_env_var_restricts_the_rungs`
+  passes in the main checkout and **fails in a worktree without `.venv-surya`**
+  — environment-dependent where it should not be. Not a main breakage; it makes
+  an agent think it broke something it did not.
+
 ## G. Housekeeping
 
 - **~108 worktrees**, survey at `docs/worktree-prune-survey-2026-09-06.md`. Nothing deleted. ⚠️ Merge state does NOT protect gitignored cell PNGs — 6,486 images were rescued into the main checkout today for exactly this reason.
