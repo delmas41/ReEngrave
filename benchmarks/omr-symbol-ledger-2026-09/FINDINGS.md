@@ -244,6 +244,16 @@ is a number nothing in this project has reported before, and it is not an
 instrument limitation to be tuned away — it is the honest size of the
 population where the encoding admits more than one reading.
 
+**And it is LOCALISED, which is the encouraging half.** Of 7,577
+(staff, bar, family) cells on the joined rows, **1,304 — 17.2% — hold any
+ambiguity at all**, and **594 of those hold exactly one**. The mode is a single
+symbol at an insert/delete boundary, not a bar dissolving: the mechanism §2
+item 3 describes, where `onset` proposes the shifted partner and `pitch` the
+unshifted one. It is 2,533 notes, 139 ties, 87 articulations, 83 slurs, and it
+splits almost exactly evenly between the two sides (1,432 truth, 1,472 pred),
+which is what a boundary effect looks like and what a systematic bias would
+not.
+
 **Named attribute errors, corroborated pairings only.** ⚠️ Counted by SYMBOL,
 not by attribute: `duration_ql` and `type` are not independent (a rest read as
 the wrong value has both wrong), and adding them double-counts.
