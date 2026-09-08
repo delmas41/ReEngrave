@@ -36,7 +36,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from . import consequences  # noqa: F401  -- registers the EVALUATE rules
 from . import adjudicators  # noqa: F401  -- registers the decisions
-from . import adjudicate, evaluate, gather
+from . import adjudicate, evaluate, gather, groups
 from .record import Kind, Log, Outcome, Q, State, Subject
 
 MODE_OFF = "0"
@@ -134,6 +134,14 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
         print("ADJUDICATE")
     verdicts = adjudicate.run(log, progress=progress)
 
+    # ⚠️ BETWEEN ADJUDICATE AND EVALUATE, and the position is the claim: the
+    # verdict-sourced groups need the decisions to have run, and running
+    # before EVALUATE means the report describes what was ADJUDICATED rather
+    # than what a consequence later restated.
+    if progress:
+        print("GROUPS")
+    agreement = groups.run(log, progress=progress)
+
     if progress:
         print("EVALUATE")
     report = evaluate.run(log, progress=progress)
@@ -142,6 +150,12 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
         "record": log.to_json(),
         "summary": log.summary(),
         "adjudication": _adjudication_report(log, verdicts),
+        # ⚠️ Redundant groups: several witnesses to ONE fact, and whether they
+        # agree. It has NO CONSUMER today, deliberately -- seeing that
+        # witnesses disagree is one job and acting on it is another. Surfaced
+        # here rather than kept internal so it cannot become the ninth
+        # complete recorder that recorded nothing.
+        "agreement": agreement.to_json(),
         "evaluation": report.to_json(),
         "stubs": {
             "decisions": list(adjudicate.stubs()),

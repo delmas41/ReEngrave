@@ -94,6 +94,27 @@ def _report(result: dict) -> None:
     if adj["excluded_as_circular"]:
         print(f"  ⚠️ excluded as circular: {len(adj['excluded_as_circular'])}",
               file=sys.stderr)
+    ag = result.get("agreement")
+    if ag is not None:
+        print("── GROUPS ─────────────────────────────────────────────",
+              file=sys.stderr)
+        for name, row in sorted(ag["per_redundancy"].items()):
+            print(f"  {name}: {row['n_facts']} facts, "
+                  f"{row['n_witnesses']} witnesses, "
+                  f"{row['uninformative']} uninformative, {row['agreement']}",
+                  file=sys.stderr)
+        # ⚠️ A DECLARED redundancy that found nothing is named, because a zero
+        # is a suspect and not a result.
+        for key, gloss in (("declared_but_empty", "placed no fact"),
+                           ("witnessed_by_nobody", "no witness spoke"),
+                           ("checked_nothing",
+                            "never two independent signals -- corroborated "
+                            "NOTHING, however busy it looks")):
+            if ag.get(key):
+                print(f"  ⚠️ {key} ({gloss}): {ag[key]}", file=sys.stderr)
+        print(f"  ⚠️ DISAGREEMENTS: {ag['n_disagreements']} "
+              f"(each implicates its WHOLE group, not its dissenter)",
+              file=sys.stderr)
     ev = result["evaluation"]
     print(f"── EVALUATE: {ev['counts']['fired']} fired, "
           f"{ev['counts']['skipped']} skipped", file=sys.stderr)
