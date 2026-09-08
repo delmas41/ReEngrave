@@ -382,7 +382,7 @@ escalate.**
 
 ### A-EVAL-2 · ⚠️ An abstained clef produces NO pitches
 
-**CONTINGENCY** — ⚠️ CURRENTLY DOING A PRINCIPLE'S JOB. The principle is 'never present a guess as a reading'; SILENCE is our output format's answer, not the only one.
+**CONTINGENCY** — ⚠️ **SUPERSEDED 2026-09-07 BY SEAN'S OWN PROCEDURE.** He neither leaves it blank nor guesses: he narrows from context, TESTS the candidates by what they imply, and falls back to *"the primary simple choice"* only when the test cannot discriminate. So `emit nothing` is not the alternative to `guess silently` — see [ideal-reader Part 4.2](../../../docs/ideal-reader-2026-09-07.md). The three-outcome replacement (decided-by-test / decided-by-convention / abstained) is the one to build.
 
 **Assumption.** `restate_pitch` emits nothing for a staff whose clef abstained.
 

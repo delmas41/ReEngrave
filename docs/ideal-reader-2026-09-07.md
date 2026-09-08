@@ -19,21 +19,52 @@ mirrored into that file so the two cannot drift.
 contingency is currently shaping that it should not, and does not rebuild it.
 
 ⚠️ **Part 1 is derived from Sean's own account of reading a score**, relayed by
-the coordinator and treated here as primary source. Three of his statements do
+the coordinator and treated here as primary source. Four of his statements do
 real work below and are quoted where they are used: the **chain** (*system →
 instrument → clef → key → time signature → note*), the **accidental scope
-rule**, and the observation that a key change is shared across transposing
-staves *"because the relationship between the two changes together"*. The third
-corrected a row of my own table.
+rule**, the observation that a key change is shared across transposing staves
+*"because the relationship between the two changes together"*, and — the
+largest — **what he does when a mark is unreadable**, which supplied property
+(d) and answered a live build fork.
+
+⚠️ **Two of the four corrected me rather than confirming me.** The key-change
+remark overturned a row of my own redundancy table (the invariant is the delta,
+not the value), and the unreadable-mark answer overturned both my Part 1
+conclusion (*"only agreement is checkable"*) and the two-way fork I had put to
+him. **The parts of this document that came from asking are the parts that
+changed.**
 
 ---
 
 # PART 1 — THE IDEAL
 
+## In one paragraph
+
+A score **composes** (a sounding pitch is a function of five marks with no
+redundancy — remove one and the answer is unrecoverable), **repeats** (an
+enumerable set of facts printed several times: the meter on every staff, the
+clef at every system head, a tie's pitch at both ends), **constrains** (an
+earlier fact deletes candidates for a later one — a flute cannot be in bass
+clef), and **is testable by consequence** (a candidate can be run forward
+through a composition and its output checked against what is independently
+known — do these implied pitches fit this instrument's range; do these
+durations sum to this meter). Composition is where errors hide, repetition is
+where they show, constraint is why the chain has an order, and consequence is
+how a reader settles what is unreadable. **So a correct reader keeps every mark
+apart from what it composes into, carries each fact's scope, holds a candidate
+SET and a disagreement as values, knows which witnesses are independent, and can
+say "I do not know" — after testing, and distinguishably from a convention.** A
+reading is correct when every composition evaluates to what the page means and
+every redundant group agrees; **the second is checkable directly and the first
+by implication, and those two self-checks are the whole of what a reader with no
+ground truth has.**
+
+⚠️ The rest of Part 1 is the derivation. A reader who stops here has the ideal.
+
 ## What a printed score is, considered as a thing to be read
 
 A score is an encoding designed for a performer who must read it **at speed, at
-a distance, while playing**. **Three** consequences follow, and they are
+a distance, while playing**. **Four** consequences follow, and they are
 different in kind. ⚠️ **Confusing the first two is the single most expensive
 mistake a reader can make; missing the third is why a reader works harder than
 it needs to.**
@@ -72,22 +103,14 @@ performer's eye cannot hold them:
 These are genuine redundancy: **one fact, several witnesses, each readable
 without the others.**
 
-⚠️ **One row of that table is subtler than the rest, and Sean's account
-corrected my first draft of it.** A key signature is **not** redundant in VALUE
-across the staves of a system — a clarinet in A and a flute print different
-signatures for the same music. What is shared is the **change**:
+⚠️ **Sean corrected my first draft of one row.** A key signature is **not**
+redundant in VALUE across staves — a clarinet in A and a flute print different
+ones. What is shared is the **change**: *"transposing instruments help define
+the key, because the relationship between the two changes together."* A reader
+looking for a shared *value* sees disagreement on every orchestral page.
 
-> *"Transposing instruments help define the key, because the relationship
-> between the two changes together."*
-
-So the invariant across staves is **the delta**, and a reader that looks for a
-shared *value* will see disagreement everywhere on any orchestral page. He gives
-the same shape for spotting a change at all: *"a new group of accidentals that
-always adds sharps or flats in the same order"* — **the order is the invariant,
-not the count.**
-
-⚠️ The general lesson is bigger than the key signature: **for each redundant
-group, the invariant must be stated, and it is not always the value.**
+⚠️ The lesson is bigger than the key signature: **for each redundant group the
+invariant must be STATED, and it is not always the value.**
 
 > ⚠️ **Composition is where errors HIDE. Repetition is where they SHOW.**
 
@@ -119,42 +142,82 @@ the unlikely.*
 ⚠️ **And constraint is MONOTONE**: each step only removes candidates, never adds
 them. That matters in Part 3.
 
+### (d) A composition can be RUN FORWARD ON A CANDIDATE and its output tested
+
+⚠️ **This is the operation that turns (a) from a liability into a test, and it
+is the one I missed.** It comes from Sean, answering what a reader does when a
+mark is unreadable:
+
+> *"If a clef is unreadable then I would look to what instrument it is and
+> usually there are only a few options and almost always a primary simple
+> choice — then I would look to see if the clef were what I think it is would
+> the pitches it implies make sense? If it looks like a time signature changes
+> then the math of the notes in the measure would verify."*
+
+A composition has no redundancy among its **inputs** — that is (a) — but its
+**output is not free**. A pitch must lie in the instrument's range; a bar's
+durations must sum to its meter; a tie's two ends must be the same pitch. So an
+unknown input is recovered by **generate and test**: enumerate candidates, run
+the composition forward on each, keep those whose output satisfies what is
+already known.
+
+> **The evidence is not new. It is the evidence already gathered, evaluated
+> THROUGH the candidate.**
+
+It costs nothing to acquire and it discriminates **precisely where repetition
+cannot** — on the compositional chain, which is where (a) says errors hide.
+
+⚠️ **Note the symmetry with (c), and that termination survives.** Constraint by
+**antecedent** deletes candidates *before* the fact is read (a flute cannot be
+in bass clef). Constraint by **consequence** deletes them *after*, by what they
+would imply. **Both only ever delete**, so the narrowing is monotone in both
+directions and Part 3's argument is untouched.
+
 ## What follows, for any correct reader
 
-0. **Represent a candidate SET, not just a chosen value.** Constraint (c) works
-   by deletion, so a reader that only ever holds one answer has nowhere to put
-   *"it is one of these three"* — and that is the state most of the chain is in
-   most of the time.
-1. **Keep each mark separately from what it composes into.** One mark
-   participates in several compositions and any of them may later be revised.
-   Sean states the composition rule for accidentals exactly: *"If there is a key
-   signature then that should apply to all of the notes after until there is
-   another accidental, which will affect all the same notes in that bar only."*
-   ⚠️ Note the two different SCOPES in one sentence — the signature is
-   part-scoped and until-revoked, the accidental is bar-scoped and pitch-scoped.
-   **A reader that cannot represent a fact's scope cannot apply either rule.**
-2. **Hold "two readings of one fact, and they disagree" as a VALUE.** In a
-   redundant group this is the only correctness signal available without
-   external truth.
-3. **Distinguish not-printed from printed-and-unread from read-as-zero.** In a
-   redundant group a *silent* witness is not a *dissenting* one, and a reader
-   that cannot tell them apart cannot count a majority.
-4. **Know which witnesses are independent.** Two witnesses derived from one
-   source are one witness; counting them twice manufactures confidence out of
-   nothing.
-5. **Be able to say "I do not know."** Without it, a group with no majority
-   forces a guess, and the record can no longer distinguish that guess from a
-   reading.
+Six requirements, each falling out of (a)–(d) above rather than from our parts.
+
+0. **Represent a candidate SET, not only a chosen value** — (c) and (d) both
+   work by deletion, and a narrowed set is the *input* to the implication test.
+   Sean narrows to a few options **in order to** test them.
+1. **Keep each mark separately from what it composes into** — one mark feeds
+   several compositions, and (d) re-runs them on candidates.
+2. **Carry a fact's SCOPE.** Sean states two in one sentence: *"a key signature
+   … applies to all of the notes after until there is another accidental, which
+   will affect all the same notes in that bar only."* Part-scoped and
+   until-revoked; bar-scoped and pitch-scoped. **A reader that cannot represent
+   scope can apply neither rule.**
+3. **Hold "two witnesses to one fact disagree" as a VALUE** — (b)'s whole
+   product.
+4. **Distinguish not-printed from printed-and-unread from read-as-zero** — a
+   *silent* witness is not a *dissenting* one, and a reader that confuses them
+   cannot count a majority.
+5. **Know which witnesses are independent** — two derived from one source are
+   one witness; counting twice manufactures confidence.
+6. **Be able to say "I do not know"** — and, per (d), to say it only *after*
+   testing, and to distinguish it from a declared convention.
 
 ## What "correct" means — and what is checkable at runtime
 
 > A reading is correct when **every composition evaluates to what the page
 > means** and **every redundant group agrees**.
 
-**Only the second is checkable without the answer.** So the redundant groups of
-(b) are the *entire* self-check available to a reader with no ground truth, and
-**enumerating them is the highest-value thing such a reader can do.** Everything
-else is a guess about a guess.
+The second is checkable directly. ⚠️ **And the first is checkable INDIRECTLY,
+by (d)** — not against the page's meaning, which we do not have, but against
+what the composition's output must satisfy. **That is the correction Sean's
+answer forces on my first draft**, which said only the second was checkable and
+concluded that enumerating redundant groups was the highest-value thing a reader
+could do.
+
+It is not the only one. **A reader with no ground truth has two self-checks, and
+they cover different ground:**
+
+| | checks | reaches |
+|---|---|---|
+| **agreement** (b) | witnesses to one fact disagreeing | facts that are *printed more than once* |
+| **implication** (d) | a candidate's consequences violating what is known | the *compositional chain*, where nothing is printed twice |
+
+Neither subsumes the other, and (d) is the one aimed at where errors hide.
 
 ---
 
@@ -234,9 +297,10 @@ it terminates by construction, and it cannot launder a guess.
 
 ## ⚠️ And constraint settles it independently
 
-Part 1c gives a second, stronger argument that needs no case split.
-**Constraint is MONOTONE** — identity deletes clef candidates, the clef deletes
-pitch candidates, and nothing in the chain ever *adds* one back. A monotone
+Part 1c and 1d give a second, stronger argument that needs no case split.
+**Constraint is MONOTONE IN BOTH DIRECTIONS** — narrowing by antecedent deletes
+clef candidates *before* the clef is read, testing by consequence deletes them
+*after* by what they would imply, and neither ever *adds* one back. A monotone
 narrowing **terminates by construction**: the candidate set is finite and every
 step shrinks it or leaves it alone.
 
@@ -306,17 +370,35 @@ decision can declare in `wants` (per Part 3). **This is the one addition Part 1
 demands that experience did not suggest**, and it is close to free: every
 witness is already a row.
 
-### 4.2 A-EVAL-2 — silence is our output format, not a principle
+### 4.2 ⚠️ A-EVAL-2 — ANSWERED, and the answer is neither option I offered
 
-An abstained clef currently produces **no pitches**. The principle is *never
-present a guess as a reading*; silence is one way to obey it and a **marked
-provisional reading** is another, and better for the human reviewer this project
-exists to serve.
+I asked Sean whether he leaves an unreadable clef blank or pencils a guess.
+**He does neither**, and his procedure has three steps where I offered two:
 
-**What it would look like:** the consequence still runs, and every pitch it
-derives from an abstained clef is stamped `provisional`, with the abstention in
-its basis. Cheap to switch, as the coordinator asked — it is one branch in
-`restate_pitch`.
+> narrow from context → **test the candidates by what they imply** → if still
+> undecided, take *"the primary simple choice"*
+
+So the fork was a false one. `abstain → emit nothing` is not the alternative to
+`guess silently`; **the alternative is to decide by implication, and to fall
+back to a declared convention only when the test cannot discriminate.**
+
+**What it becomes:**
+
+| situation | outcome |
+|---|---|
+| the implication test discriminates | `DECIDED`, with the test in the basis |
+| candidates survive the test equally | `DECIDED` on the conventional default, `reason="convention"` |
+| no candidates, or no test available | `ABSTAINED` — genuinely nothing to say |
+
+The middle row is the one that did not exist before, and it is Sean's *"almost
+always a primary simple choice"*. ⚠️ **It is not a silent guess**: `reason` and
+`basis` distinguish a convention from a reading on the record, which is the
+whole point of the verdict shape. **Requirement 5 — "be able to say I do not
+know" — is preserved and its population shrinks.**
+
+⚠️ **How much it shrinks is UNMEASURED and I am not measuring it.** The
+implication test needs *something* known about the output, and §4.7 shows the
+clef has two such tests with different reach.
 
 ### 4.3 A-CLEF-2 — weighting destroys the group structure
 
@@ -345,12 +427,86 @@ constraints compose. ⚠️ It also gives abstention a floor: a decision that
 narrowed 5 candidates to 2 and then could not choose has said something useful,
 and today it is indistinguishable from one that knew nothing.
 
+⚠️ **And (d) is what makes it pay.** A narrowed set is not just a more honest
+abstention — **it is the input to the implication test.** Sean narrows to a few
+options *in order to* test them; a set with no test is a shrug, and a test with
+no set has nothing to run over. The two features are one feature.
+
 ### 4.5 A-GROUP-3 — "additive" is a migration mode
 
 Correct while an incumbent exists; it should not calcify into the architecture.
 Nothing to change now; it needs an expiry, not an edit.
 
-### 4.6 A-GATHER-1 — label the two contingent edges
+### 4.6 ⚠️ The two implication tests already exist. Neither needs rebuilding.
+
+Reasoning from what is already recorded — **no measurement taken.**
+
+⚠️⚠️ **THE TRAP, AND IT HAS ALREADY BEEN MEASURED AND REFUTED IN ONE FORM.**
+`clef_register_warning` asks whether a staff's median pitch is inverted
+relative to its **neighbour** — reach 7 of 193 scan staves, precision **0 of
+11**, because an orchestral score is ordered by **family, not by register**, so
+every firing was a family boundary (bassoon above horn). **That form is dead.**
+What Sean describes differs on four counts and none of them is cosmetic:
+
+| | the refuted check | the implication test |
+|---|---|---|
+| scope | two staves compared | **one staff, self-contained** |
+| reference | the neighbour's reading | **this instrument's own written range** |
+| subject | a settled reading, audited | **a candidate, being tested** |
+| assumption | that staves are ordered by register — **false** | none about ordering at all |
+
+**Anyone proposing this must be able to state those four differences.** It is
+also *not* either of the two variants `docs/architecture-decision-map.md` §9.4
+leaves open (one bracket group; a staff against its own reading on other
+systems) — it is a third, and it is the mechanism `clef_correction.propose_clef`
+already implements.
+
+**`clef_correction.propose_clef` — RIGHT MECHANISM, WRONG GATE.** It proposes a
+clef from the instrument's written range: exactly Sean's *"would the pitches it
+implies make sense?"*, self-contained on one staff. Its problem is not
+correctness, it is **reach**: it fires only where **no clef was read**, so it
+sees 34 of 396 staves (8.6%) and produced 5 proposals on 193 scan staves,
+applying **0**. ⚠️ **The documented ceiling is clefs read WRONG — a population
+the fill tier cannot see BY CONSTRUCTION.**
+
+The staged pipeline removes the gate structurally rather than widening it: the
+clef adjudicator holds a candidate **set**, so the test runs over *every*
+candidate on *every* staff that has an instrument, and "fill where empty"
+stops being a tier at all. ⚠️ **Its reach is then bounded by IDENTITY**, and on
+scans that is the binding constraint — 29 of 29 unresolved non-treble staves
+print no label at all.
+
+⚠️ **So the clef needs a SECOND implication test that needs no identity, and one
+is already in the tree.** The accidental run's **positions** are measured
+clef-free; the **slot table** is chosen by the clef. So running
+`fit_key_signature` over each candidate clef and comparing the fits is a test of
+the *clef*, needing no instrument. **The evidence that it discriminates is the
+documented bug**: fitting three flats against a *guessed* clef returned **two
+sharps** — a different accidental type fitting a different prefix. A fit that
+changes that much with the clef is a sensor for it. **A bug becomes an
+instrument when you run it deliberately over all candidates instead of
+accidentally over one.** ⚠️ It is vacuous where no accidentals were found, and
+a 0-accidental key fits every clef — so the two tests cover different staves,
+which is the point of having both.
+
+**`rhythm_sum_warning` — RIGHT MECHANISM, RIGHT REACH, NO CONSUMER.** *"The math
+of the notes in the measure would verify"* is already computed, and it fires
+**111 times on 193 scan staves**. Its only consumer is a boolean presence count
+feeding a UI percentage. ⚠️ **The arithmetic Sean describes is already being
+done and thrown away** — and it is the one high-volume check with **no
+confidence field at all**.
+
+⚠️ **One caution specific to this half.** Meter-vs-durations is the redundant
+group with a **derived** member (Part 3), so it is the one place a test could
+become a loop. As a **test** it is free. As a **repair** it needs the bound that
+already exists — ±1 beam level, exact landing, unique answer, single voice.
+**Test freely; repair only under the bound.**
+
+**Verdict: neither is the wrong shape.** One is absence-gated and one is
+consumer-less. In the staged pipeline both are ordinary implication terms in a
+decision that declares them — which is what `wants` is for.
+
+### 4.7 A-GATHER-1 — label the two contingent edges
 
 Two of the three "hard gathering edges" are facts about our readers, not about
 notation. They are currently written as if all three were laws. A one-line
