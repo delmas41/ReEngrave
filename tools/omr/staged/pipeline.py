@@ -247,6 +247,75 @@ DIFFER = "differ"
 NEW_ABSTENTION = "new_abstention"
 NEW_DECISION = "new_decision"
 LEGACY_ONLY = "legacy_only"
+#: ⚠️ The two sides state the same fact in shapes that cannot be compared.
+#: NOT folded into DIFFER -- see `_canonical`.
+NOT_COMPARABLE = "not_comparable"
+
+
+def _fifths_from_legacy_key(v: Any) -> Any:
+    """`{'sharps': 0, 'flats': 2, ...}` -> `-2`, the staged path's own unit.
+
+    ⚠️ THE TWO PATHS STATE THE KEY IN DIFFERENT UNITS AND `==` NEVER NOTICED.
+    `transcribe` writes a dict; `adjudicators.header` returns `int(fifths)`.
+    A dict never equals an int, so before 2026-09-08 EVERY key-signature row
+    where both sides decided was reported DIFFER **by construction** --
+    including perfect agreement. Measured on Beethoven 5 / Litolff p1: 4 of 4
+    decided rows reported `differ`, and adjudicated against the dossier's
+    written keys the staged path was RIGHT on 3 of them, so the table was
+    accidentally telling the truth for the wrong reason.
+    """
+    if isinstance(v, dict) and ("sharps" in v or "flats" in v):
+        return int(v.get("sharps") or 0) - int(v.get("flats") or 0)
+    return v
+
+
+def _instrument_name(v: Any) -> Any:
+    """Compare instruments on the field BOTH sides carry, and only that.
+
+    Legacy emits `{"name": ...}`; the staged path emits name plus family and
+    more. Two dicts with different key sets are never equal, so this would
+    have reported DIFFER on every decided row the day `instrument` stopped
+    abstaining -- latent rather than observed, and found by asking what each
+    adjudicator returns rather than by reading a table.
+
+    ⚠️ Comparing on the shared field NARROWS the claim: agreement here means
+    the two paths named the same instrument, NOT that they agree about family
+    or transposition. The row keeps both raw values so that is checkable.
+    """
+    return v.get("name") if isinstance(v, dict) else v
+
+
+#: Per-quantity adapters onto a shared representation. A quantity absent here
+#: is compared as-is.
+#:
+#: ⚠️ THIS IS AN ADAPTER, NOT A COERCION. It may only re-express a value in
+#: the other side's unit. It must never make two genuinely different readings
+#: look equal -- that would manufacture agreement, which is worse than the
+#: false disagreement it replaces, because a false DIFFER gets investigated
+#: and a false AGREE does not.
+_CANONICAL = {
+    Q.KEY_SIGNATURE: _fifths_from_legacy_key,
+    Q.INSTRUMENT: _instrument_name,
+}
+
+
+def _canonical(quantity: str, legacy_value: Any, staged_value: Any):
+    """`(legacy, staged, comparable)` in a shared representation."""
+    fn = _CANONICAL.get(quantity)
+    if fn is not None:
+        legacy_value, staged_value = fn(legacy_value), fn(staged_value)
+    # ⚠️ A shape mismatch no adapter handles is its OWN outcome, counted, not
+    # absorbed into DIFFER. The symbol ledger settled this principle already:
+    # `uncorresponded` and `not_assessable` are first-class and are COUNTED.
+    # Reporting "these disagree" about two things that were never comparable
+    # is a claim the data does not support.
+    scalar = (str, int, float, bool, type(None))
+    if isinstance(legacy_value, dict) != isinstance(staged_value, dict):
+        return legacy_value, staged_value, False
+    if isinstance(legacy_value, scalar) and isinstance(staged_value, scalar):
+        if isinstance(legacy_value, bool) != isinstance(staged_value, bool):
+            return legacy_value, staged_value, False
+    return legacy_value, staged_value, True
 
 
 def divergence(log: Log, legacy: Dict[str, Any]) -> Dict[str, Any]:
@@ -264,7 +333,8 @@ def divergence(log: Log, legacy: Dict[str, Any]) -> Dict[str, Any]:
     """
     rows: List[Dict[str, Any]] = []
     counts: Dict[str, int] = {AGREE: 0, DIFFER: 0, NEW_ABSTENTION: 0,
-                              NEW_DECISION: 0, LEGACY_ONLY: 0}
+                              NEW_DECISION: 0, LEGACY_ONLY: 0,
+                              NOT_COMPARABLE: 0}
 
     for quantity, by_subject in sorted(legacy.items()):
         for subject_key, old in sorted(by_subject.items()):
@@ -281,7 +351,11 @@ def divergence(log: Log, legacy: Dict[str, Any]) -> Dict[str, Any]:
                 new = v.value
             else:
                 new = v.value
-                outcome = AGREE if new == old else DIFFER
+                lc, sc, comparable = _canonical(quantity, old, new)
+                if not comparable:
+                    outcome = NOT_COMPARABLE
+                else:
+                    outcome = AGREE if lc == sc else DIFFER
             counts[outcome] += 1
             rows.append({"quantity": quantity, "subject": subject_key,
                          "legacy": old, "staged": new, "outcome": outcome,
