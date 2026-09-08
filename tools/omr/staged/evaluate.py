@@ -178,6 +178,30 @@ def _ensure_rules() -> None:
             "EVALUATE has no rules. An empty stage is not an empty result.")
 
 
+def _cause_for(log: Log, quantity: str, subject: Subject):
+    """The causing verdict, looked up at the subject OR any ancestor.
+
+    ⚠️ FIX-NOW, FOUND BY A TEST REFUSING TO FIRE. A rule's `scope` is the
+    scope of its EFFECT, and the cause can legitimately be coarser: the meter
+    is decided at SYSTEM scope while `reconcile_duration` acts on a CELL. An
+    exact-subject lookup found nothing, so the rule reported `cause_absent`
+    and did nothing -- **silently, and identically to a page with no meter.**
+
+    Every consequence whose cause sits at a coarser scope than its effect was
+    dead the same way, which is why this is a substrate fix rather than a
+    one-rule patch: a rule wired after it would have inherited the same
+    silence.
+    """
+    found = log.verdict(quantity, subject)
+    if found is not None:
+        return found
+    for ancestor in subject.ancestors():
+        found = log.verdict(quantity, ancestor)
+        if found is not None:
+            return found
+    return None
+
+
 def run(log: Log, *, progress: bool = False) -> Report:
     """One pass, downhill, in DOWNHILL order.
 
@@ -194,7 +218,7 @@ def run(log: Log, *, progress: bool = False) -> Report:
             report.stubs.append(f"{r.consequence.value}({r.cause}->{r.effect})")
             continue
         for subject in log.subjects(r.scope):
-            cause = log.verdict(r.cause, subject)
+            cause = _cause_for(log, r.cause, subject)
             if cause is None:
                 report.skipped.append(
                     (r.consequence.value, subject.to_key(), "cause_absent"))
@@ -204,6 +228,16 @@ def run(log: Log, *, progress: bool = False) -> Report:
                 # of a fact nobody settled must not fire on a default.
                 report.skipped.append(
                     (r.consequence.value, subject.to_key(), "cause_abstained"))
+                continue
+            if cause.outcome is Outcome.NARROWED:
+                # ⚠️ REPORTED APART FROM AN ABSTENTION, deliberately. "It is
+                # one of these two" and "I have nothing" are different states,
+                # and a rule that could choose among the survivors on its own
+                # evidence is exactly what `reconcile_duration` is -- so a
+                # narrowed cause is an opportunity a future rule may take, not
+                # a dead end. Collapsing the two would hide the opportunity.
+                report.skipped.append(
+                    (r.consequence.value, subject.to_key(), "cause_narrowed"))
                 continue
             produced = r.fn(log, subject, cause)
             for v in produced:

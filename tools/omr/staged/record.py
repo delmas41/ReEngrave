@@ -191,7 +191,42 @@ class State(str, Enum):
 
 class Outcome(str, Enum):
     DECIDED = "decided"
+    #: ⚠️ "It is one of these, and I cannot choose between them."
+    #:
+    #: The state most of a reading is in most of the time, and the one a
+    #: decide-or-abstain pipeline cannot express. Narrowing five candidates to
+    #: two IS progress, and until this existed it was indistinguishable from
+    #: knowing nothing.
+    NARROWED = "narrowed"
     ABSTAINED = "abstained"
+
+
+@dataclass(frozen=True)
+class Candidate:
+    """One surviving possibility, with the support the decision found for it.
+
+    ⚠️⚠️ `support` IS NOT A PROBABILITY AND MUST NEVER BE TREATED AS ONE.
+
+    It is a sum of signed terms in the deciding function's OWN units. It is not
+    normalised, it does not sum to 1 across candidates, and a value of 3.0 does
+    not mean "twice as likely" as 1.5. **The ORDER is the claim; the numbers
+    are how the order was reached.**
+
+    This project measured what happens when an uncalibrated number is treated
+    as evidence: ECE 0.1277, with the top bin promising 0.989 and delivering
+    0.692 — failing WORST exactly where a consumer would set its bar. An
+    uncalibrated probability is worse than none, because it launders a guess
+    into something that reads as evidence.
+
+    ⚠️ If you find yourself wanting `P(correct)` here, stop. Relative support,
+    ordered, is enough for every consumer written so far.
+    """
+
+    value: Any
+    support: float
+
+    def to_json(self) -> dict:
+        return {"value": self.value, "support": self.support}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -269,6 +304,17 @@ class Q(_Vocab):
     CLEF_SEED = "clef_seed"                  # the dossier's clef
     KEYSIG_RUN_POSITION = "keysig_run_position"   # accidental positions, NO clef
     KEYSIG_MARKER = "keysig_marker"          # detector keySharp/keyFlat
+    #: ⚠️ Which candidate CLEF the measured accidental run fits.
+    #:
+    #: This is the clef implication test that needs NO identity (ideal-reader
+    #: Part 4.6). The run's POSITIONS are clef-free geometry; the SLOT TABLE is
+    #: chosen by the clef -- so a run that fits treble's slots and not bass's
+    #: is evidence about the CLEF. The evidence that it discriminates is the
+    #: documented bug: three flats fitted against a GUESSED clef came back as
+    #: TWO SHARPS. A fit that changes that much with the clef is a sensor for
+    #: it. Vacuous where no accidentals were found, and a 0-accidental key fits
+    #: every clef -- so it covers different staves from the range test.
+    KEYSIG_CLEF_FIT = "keysig_clef_fit"
     METER_GLYPH = "meter_glyph"              # timeSig digits / C / cut-C
     METER_TEMPLATE = "meter_template"        # the template reader's score
 
@@ -480,35 +526,81 @@ class Verdict:
 
     # ── harness-filled ──────────────────────────────────────────────────────
     considered: tuple[str, ...] = ()
+    #: What the DECISION says it actually weighed, as against `considered`,
+    #: which is what the harness handed it.
+    #:
+    #: ⚠️ ADDED 2026-09-07 BY THE SECOND FIND OF THE SAME SWEEP. `Ruling.used`
+    #: was filled by five decisions and dropped by the harness, exactly as
+    #: `Ruling.detail` was. The two are NOT the same fact: a decision handed
+    #: ten rows may weigh three, and "what was available" and "what counted"
+    #: are different questions -- the gap between them is where a decision
+    #: quietly ignores evidence it declared.
+    used: tuple[str, ...] = ()
     missing: tuple[str, ...] = ()      # declared, and the log held NOTHING
     declined: tuple[str, ...] = ()     # declared, and a reader ABSTAINED
     excluded: tuple[tuple[str, str], ...] = ()   # (row_id, why)
     correlated: tuple[frozenset[str], ...] = ()  # groups counted once
     basis: tuple[str, ...] = ()
 
+    #: Every value still admitted, ordered by support, best first.
+    #:
+    #: Present on a NARROWED verdict by definition, and OPTIONAL on a DECIDED
+    #: one — where it carries the contest the winner won, which is what lets a
+    #: later consumer see that a decision was close without re-deriving it.
+    candidates: tuple = ()
+
     margin: float | None = None
     supersedes: str | None = None
 
+    #: What the decision computed on its way to the answer -- the clef's per
+    #: candidate scores, the meter's agreement share, ownership's
+    #: `would_win_on_distance`.
+    #:
+    #: ⚠️ ADDED 2026-09-07 AFTER A TEST FOUND IT MISSING. `Ruling.detail` was
+    #: filled by three decisions and DROPPED by the harness, so every one of
+    #: those numbers was computed and thrown away -- the exact failure this
+    #: architecture exists to stop, occurring inside it. Found because a test
+    #: asserted on a field that did not exist; fixed in the code rather than
+    #: the test.
+    detail: Mapping[str, Any] = field(default_factory=dict)
+
     def __post_init__(self) -> None:
-        if self.outcome is Outcome.ABSTAINED and self.value is not None:
-            raise ValueError(
-                "an ABSTAINED verdict must carry value=None; "
-                "a decision that has a value has not abstained")
+        if self.outcome is Outcome.ABSTAINED:
+            if self.value is not None:
+                raise ValueError(
+                    "an ABSTAINED verdict must carry value=None; "
+                    "a decision that has a value has not abstained")
+            if self.candidates:
+                raise ValueError(
+                    "an ABSTAINED verdict may not carry candidates -- a "
+                    "decision holding survivors has NARROWED, not abstained, "
+                    "and collapsing the two throws away the narrowing")
         if self.outcome is Outcome.DECIDED and self.value is None:
             raise ValueError(
                 "a DECIDED verdict must carry a value; "
                 "use Outcome.ABSTAINED to say 'I have no answer'")
+        if self.outcome is Outcome.NARROWED:
+            if self.value is not None:
+                raise ValueError(
+                    "a NARROWED verdict must carry value=None -- if one "
+                    "candidate won, the outcome is DECIDED")
+            if len(self.candidates) < 2:
+                raise ValueError(
+                    "a NARROWED verdict needs at least two candidates; with "
+                    "one it has DECIDED and with none it has ABSTAINED")
 
     def to_json(self) -> dict:
         return {"id": self.id, "subject": self.subject.to_key(),
                 "quantity": self.quantity, "outcome": self.outcome.value,
                 "value": self.value, "decider": self.decider,
                 "reason": self.reason, "considered": list(self.considered),
+                "used": list(self.used),
                 "missing": list(self.missing), "declined": list(self.declined),
                 "excluded": [list(e) for e in self.excluded],
                 "correlated": [sorted(g) for g in self.correlated],
+                "candidates": [c.to_json() for c in self.candidates],
                 "basis": list(self.basis), "margin": self.margin,
-                "supersedes": self.supersedes}
+                "supersedes": self.supersedes, "detail": dict(self.detail)}
 
 
 Row = Union[Observation, Abstention, Verdict]
@@ -629,11 +721,32 @@ class Log:
                 f"decided by {prior.decider} ({prior.id}). A second "
                 f"adjudication must declare revises= and carry a bound.")
         if verdict.supersedes is not None:
-            if verdict.supersedes in verdict.basis:
+            # ⚠️ THE SUPERSEDED VERDICT IS EXCLUDED FROM ITS OWN CHECK, and
+            # getting this wrong made the guard forbid the one thing the
+            # architecture explicitly permits.
+            #
+            # A REVISION READS WHAT IT REVISES -- `reconcile_duration` takes
+            # the old duration's `written` value and re-reads its beam level,
+            # so the old verdict is necessarily in the new one's basis. The
+            # first version of this check refused exactly that, which meant
+            # the single bounded loop in the pipeline could never fire.
+            #
+            # THE REAL FIXPOINT is deriving the new value through something
+            # that itself DEPENDS ON the old one: if the meter had been voted
+            # out of these very durations, then meter -> duration -> meter is
+            # a cycle and no bound saves it. So the test is whether the
+            # superseded verdict reappears in the closure of the OTHER inputs.
+            others = tuple(b for b in verdict.basis if b != verdict.supersedes)
+            reachable = set()
+            for rid in others:
+                reachable |= self.closure(rid)
+            if verdict.supersedes in reachable:
                 raise UphillConsequence(
-                    f"{verdict.id} supersedes {verdict.supersedes}, which is "
-                    f"in its own basis. That is a fixpoint. Do not build one "
-                    f"-- record the tension and escalate.")
+                    f"{verdict.id} supersedes {verdict.supersedes}, and reaches "
+                    f"it again through its other inputs. That is a fixpoint -- "
+                    f"the new value was derived through something that depends "
+                    f"on the value it replaces. Do not build one; record the "
+                    f"tension and escalate.")
         self._vrd[verdict.id] = verdict
         self._index(verdict.quantity, verdict.subject, verdict.id)
         return verdict

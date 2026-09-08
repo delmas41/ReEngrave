@@ -514,6 +514,139 @@ correction in the docstring, so nobody later treats them as immovable.
 
 ---
 
+# PART 5 — WHICH FACTS CAN BE CHECKED WITHOUT TRUTH
+
+> Sean: *"There will be certain facts that can be determined by themselves:
+> this measure is 4/4 and it has 9 eighth notes is a provable mistake. Other
+> things like is this a C or a C# will not be internally provable. That needs
+> to be connected to what weighs in the process."*
+
+Every decision in `adjudicate.ORDER` now carries `checkable=`, `checked_by=`,
+`implicates=` and `composed_from=` **in the decorator**, enforced by
+`test_staged_discipline.py`. This part says what the categorisation is, what
+testing it changed, and what it implies for weight.
+
+## 5.1 The distinction, and three things the binary hides
+
+**CHECKABLE** — an independent constraint must hold, so a violation is
+detectable with no ground truth. **UNCHECKABLE** — the fact is *determined* but
+not *verified*; read the marks right and the answer is forced, and nothing
+independently confirms it. ⚠️ **The uncertainty is in the reading, not in the
+logic** — which is why "wrong" and "unverifiable" are different words.
+
+Testing it against the 21 decisions surfaced three refinements, each of which
+changes a weight:
+
+1. ⚠️ **A check has RESOLUTION.** It catches errors larger than its own
+   granularity and is blind below. The written-range test catches a whole
+   **clef** error — two or more diatonic steps — and cannot see **C vs C#**, one
+   semitone. *That is why Sean's example is the example*: C# is not mysterious,
+   it is simply below the resolution of every constraint available.
+2. ⚠️ **A check has COVERAGE.** A tie's two ends must be the same pitch — so
+   C vs C# **is** checkable *at a tie* and nowhere else. "Uncheckable" nearly
+   always means *"uncheckable in general, checkable in special positions"*, and
+   the special positions are worth naming because they are free.
+3. ⚠️ **A check inherits its inputs' reliability.** A sound check over
+   unreliable inputs is an unreliable check — and this is measured, not
+   supposed. The tie/slur grammar veto is exactly the constraint in (2), and it
+   scored **neutral on engravings and +130 edits on SCANS**, because its input
+   is the resolved pitch and `wrong note` is 26% of that pool. **The check was
+   never wrong; its evidence was.**
+
+## 5.2 ⚠️ The result: nothing is purely CHECKABLE
+
+| | count | decisions |
+|---|--:|---|
+| **CHECKABLE** | **0** | — |
+| **MIXED** | 14 | system membership, system staff count, measure partition, staff group, instrument, slot index, part partition, clef, key signature, glyph owner, arc kind, duration, tuplet ratio, meter |
+| **UNCHECKABLE** | 7 | staff ordinal, group symbol, arc owner, articulation owner, wedge anchor, dynamic, direction |
+
+**Every fact that can be checked at all is checkable only through what it
+composes INTO, never by re-reading it.** That is property (d) arriving as a
+result rather than an assertion, and it is why the empty first row matters:
+**checkability is a property of a fact's CONSEQUENCES, not of its reading.**
+
+## 5.3 ⚠️ A failed check is certain about the GROUP and silent about the MEMBER
+
+Nine eighths in a 4/4 bar proves an error. It does not say **which**: the meter,
+a duration, a spurious note, a missing one, or a mis-owned glyph from the staff
+above. So a violated constraint must **raise every member's suspicion** and must
+never **condemn the cheapest member to change**. `implicates=` is that
+membership, declared, and a test asserts the fact under test is always in its
+own group — *a check that implicates only other facts has quietly decided it is
+innocent.*
+
+✅ **The tree already honours this in the one place it is implemented.**
+`_reconcile_measure_to_meter` repairs a failed bar sum only when the corrected
+bar lands **exactly** on the meter and the answer is **unique** — i.e. it
+declines precisely when more than one member could explain the failure. That is
+the rule, implemented, before it was stated.
+
+⚠️ **And the membership is wider than it looks.** `rhythm_sum_warning`'s group
+contains **glyph ownership**: a notehead wrongly awarded from the staff above
+breaks the receiving bar's sum. So the highest-volume unconsumed check in the
+tree is also a check on the 4,521-contest arbitration that today resolves 94.1%
+of cases by distance.
+
+## 5.4 What it implies for weight — four rules, differentiated by kind
+
+| evidence | how it combines | why |
+|---|---|---|
+| **agreement** among independent witnesses (b) | **SUM**, correlated groups counted once | more witnesses is more evidence |
+| **composition** from inputs (a) | ⚠️ **MINIMUM over the inputs**, not the sum | if any input of a composition is wrong the output is wrong — a chain is as strong as its weakest link. `composed_from=` is what a consumer needs to compute it |
+| a **violated** constraint (d) | a **negative** term on **every** member of `implicates` | §5.3 |
+| a **satisfied** constraint (d) | a **weak positive** on all members | ⚠️ **asymmetric on purpose**: many wrong readings also pass. A bar summing to 4/4 could hold two compensating errors. **Failing is strong disconfirmation; passing is weak confirmation.** |
+
+⚠️ **The second row is the correction to a naive terms model** and the staged
+pipeline does not implement it yet: `tally` sums everything. Summing is right
+for agreement and wrong for composition.
+
+## 5.5 ⚠️ Why this matters beyond the design
+
+The score library holds **235 editions** and pairs a PDF with a reference
+encoding for **27 works**. Sean's stated primary input is scanned orchestral
+scores from IMSLP, and **almost none of them will ever have a reference
+encoding.**
+
+> **So the CHECKABLE class is the part the system can police on the actual
+> work, and the UNCHECKABLE class is the part that will always need either a
+> reference or a human.**
+
+Two consequences worth acting on:
+
+* Every error in the 7 UNCHECKABLE decisions — *and* every error finer than a
+  check's resolution (§5.1.1), which includes **C vs C#** — is invisible to the
+  system on a page with no reference. **That is not a gap to close; it is the
+  permanent shape of the problem**, and it is what the review UI exists for.
+* ⚠️ **It follows that human attention should be spent on the uncheckable
+  class**, because the checkable class can be found without them. A review
+  queue ordered by *"what can I not check?"* is worth more than one ordered by
+  confidence — and it needs no model to build, only `checkable=`.
+
+## 5.6 The checks that already exist and are not consumed
+
+⚠️ **The cheapest work on this entire list.** Ranked by what is recorded; **no
+measurement taken here.**
+
+| check | volume | precision | consumed? |
+|---|---|---|---|
+| ⚠️ **`label_contradiction`** — a staff whose OWN margin label was read on THIS page, exported under a different name | **158 firings** over two whole works (110 of 973 and 48 of 1713 labelled staff records) | ⚠️ **hand-adjudicated 0.873 the EXPORT is wrong**, 0.127 the label is, 0 both right | ❌ **computed on every contextual pass, acted on by nothing** |
+| `rhythm_sum_warning` | **111 of 193** scan staves | unmeasured | ❌ a boolean presence count feeding a UI percentage; ⚠️ the one high-volume check with **no confidence field at all** |
+| `time_signature_disagreement` | 17 of 193 scan | unmeasured | ❌ |
+| `propose_clef` | 34 of 396 staves (8.6%) | 5 proposals on 193 scan staves, **0 applied** | ⚠️ right mechanism, **absence-gated** — fires only where NO clef was read, while the ceiling is clefs read WRONG |
+| `key_signature_warning` | 0 scan / 3 engraved | — | ❌ near-silent |
+| `measure_count_warning` | **0 / 0** | — | ⚠️ a check that never fires cannot order anything. Corroborated by a separate probe finding 0 disagreeing staves over 27 systems, so it may be *true* rather than broken — but it has no discriminating power on this corpus |
+| `clef_register_warning` | 7 of 193 | **0 of 11** | ⚠️ **refuted in its adjacent-staff form** — see Part 4.6 |
+| ✅ `key_signature_corroboration` | 7 flips | — | ✅ **CONSUMED, default-ON since 2026-09-07 — the model to copy** |
+
+⚠️ **`label_contradiction` is the headline and it is not close.** It has the
+highest volume, the only *measured* precision on the list, and — decisively for
+§5.5 — **it needs no truth file, no dossier and no roster**: it asks the
+document to agree with itself. It is also invisible to every standing
+measurement, because musicdiff does not score `<part-name>`.
+
+---
+
 # WHAT IS UNMEASURED HERE
 
 Everything. This is reasoning about notation and about the code in this tree.

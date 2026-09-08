@@ -24,7 +24,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple
 
-from ..adjudicate import (READINGS, Evidence, Mode, Ruling, Term, decision,
+from ..adjudicate import (Candidate, Checkable, READINGS, Evidence, Mode, Ruling, Term, decision,
                           tally)
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
@@ -73,9 +73,18 @@ _GLYPH_TO_CLEF = {
 #: The five clefs that are the SAME GLYPH on different lines.
 C_CLEF_NAMES = ("alto", "tenor", "soprano", "mezzosoprano", "baritone")
 
+#: The clefs `key_signature_geometry` has slot tables for. A run fitting all
+#: four discriminates nothing.
+_SLOT_TABLE_CLEFS = ("treble", "bass", "alto", "tenor")
+
 #: What a `clefC` detection is worth as support for a C clef the LOCATOR
 #: named. It cannot name one itself. (A-CLEF-5)
 W_C_FAMILY = 1.5
+
+#: What "the measured accidental run fits this clef's slot table" is worth.
+#: (A-CLEF-7) ⚠️ Contributed only when the fit DISCRIMINATES -- a run that fits
+#: every candidate says nothing, and a 0-accidental key fits them all.
+W_KEYSIG_FIT = 1.5
 
 
 def _clef_of(glyph_name: str) -> Optional[str]:
@@ -159,9 +168,17 @@ def _carry_terms(ev: Evidence) -> Dict[str, List[Term]]:
 
 @decision(
     quantity=Q.CLEF,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "implied pitches: this staff's own measured positions under this candidate must fall in the instrument's written range (clef_correction.propose_clef)",
+        "key-signature slot fit: the measured accidental RUN fits this candidate's slot table and not another's -- needs NO identity",
+        "continuity: a part's clef is stable across systems unless a change is printed",
+    ),
+    implicates=(Q.CLEF, Q.INSTRUMENT, Q.NOTEHEAD_STAFF_POSITION, Q.KEY_SIGNATURE),
+    composed_from=(Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.CLEF_SEED),
     scope=Kind.STAFF,
     wants=(Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.CLEF_SEED,
-           Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT),
+           Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.KEYSIG_CLEF_FIT),
     reasons=("scored", "no_candidates", "margin_below_floor",
              "all_candidates_excluded"),
     mode=Mode.COMPETITIVE,
@@ -190,6 +207,26 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
             candidates.setdefault(str(expected), []).append(
                 Term("instrument", W_INSTRUMENT, (instrument.id,)))
 
+    # ⚠️ THE IMPLICATION TEST THAT NEEDS NO IDENTITY. The run's positions are
+    # clef-free; the slot table is chosen by the clef. So which clefs the run
+    # FITS is evidence about the clef -- and it reaches exactly the staves the
+    # written-range test cannot, because on a scan 29 of 29 unresolved
+    # non-treble staves print no label at all.
+    fits = ev.rows(Q.KEYSIG_CLEF_FIT)
+    discriminating = [r for r in fits if (r.detail.get("n_accidentals") or 0) > 0]
+    if discriminating and len(discriminating) < len(_SLOT_TABLE_CLEFS):
+        for row in discriminating:
+            candidates.setdefault(str(row.value), []).append(
+                Term("keysig_slot_fit", W_KEYSIG_FIT, (row.id,)))
+    elif fits:
+        # ⚠️ THE TEST RAN AND SAID NOTHING, AND THAT MUST READ AS AN
+        # ABSTENTION RATHER THAN AS AGREEMENT. A run fitting every candidate
+        # discriminates nothing, and a 0-ACCIDENTAL KEY FITS THEM ALL -- so on
+        # a page in C major this contributes exactly zero and must not appear
+        # to have contributed. Recording it in `declined` is what stops a
+        # later reader counting silence as support.
+        ev._declined.add(Q.KEYSIG_CLEF_FIT)
+
     # ⚠️ A `clefC` detection supports every C clef a reader NAMED, and names
     # none itself. If nothing named one, it supports nothing -- which is the
     # honest outcome, not a fallback to alto.
@@ -216,5 +253,13 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
 
     used = tuple(t.rows[0] for terms in candidates.values() for t in terms
                  if t.rows)
+    # ⚠️ THE CONTEST TRAVELS WITH THE VERDICT, and it costs nothing: `scored`
+    # was already computed and thrown away. Where the margin clears the floor
+    # this rides along on a DECIDED verdict so a consumer can see the winner
+    # was close; where it does not, the harness turns it into a NARROWED one
+    # instead of the old bare `margin_below_floor` -- which reported
+    # "the readers disagreed between alto and tenor" and "nothing was read"
+    # as the same answer.
+    cands = tuple(Candidate(value=n, support=sc) for sc, n in scored)
     return Ruling(value=top_name, reason="scored", margin=margin, used=used,
-                  detail={"scores": {n: s for s, n in scored}})
+                  candidates=cands, detail={"scores": {n: s for s, n in scored}})

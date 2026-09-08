@@ -86,9 +86,16 @@ class TestBothCropsAreEvidence(unittest.TestCase):
 
 
 class TestTheFloor(unittest.TestCase):
-    def test_a_close_contest_abstains(self):
+    def test_a_close_contest_NARROWS_and_keeps_both_readings(self):
         """⚠️ Today the measure-cell argmax wins at ANY confidence -- there is
-        no floor anywhere in the chain. The floor's EXISTENCE is the change."""
+        no floor anywhere in the chain. The floor's EXISTENCE is the change.
+
+        ⚠️ AND SINCE CANDIDATE SETS, THE CONTEST SURVIVES THE FLOOR. Before,
+        `margin_below_floor` discarded it, so *"the readers disagreed between
+        treble and bass"* and *"nothing was read at all"* arrived at a
+        consumer as the same answer. Now the survivors travel with the verdict
+        and a later decision can settle them on its own evidence.
+        """
         log = _log()
         log.observe(SUB, Q.CLEF_GLYPH, "clefG", reader=READERS.DETECTOR,
                     frame="cell:0", score=0.20)
@@ -96,9 +103,29 @@ class TestTheFloor(unittest.TestCase):
                     frame="cell:0", score=0.20)
         adjudicate.run(log)
         v = log.verdict(Q.CLEF, SUB)
-        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertIs(v.outcome, Outcome.NARROWED)
         self.assertEqual(v.reason, "margin_below_floor")
         self.assertEqual(v.margin, 0.0)
+        self.assertIsNone(v.value, "it still refuses to pick one")
+        self.assertEqual({c.value for c in v.candidates}, {"treble", "bass"})
+
+    def test_a_narrowed_clef_still_produces_NO_pitches(self):
+        """⚠️ Narrowing is not deciding. A consequence may not fire on a set
+        it cannot resolve -- and EVALUATE records `cause_narrowed` apart from
+        `cause_abstained`, because a rule that COULD choose among survivors on
+        its own evidence is an opportunity, not a dead end."""
+        from tools.omr.staged import evaluate
+        log = _log()
+        for glyph_class, score in (("clefG", 0.2), ("clefF", 0.2)):
+            log.observe(SUB, Q.CLEF_GLYPH, glyph_class,
+                        reader=READERS.DETECTOR, frame="cell:0", score=score)
+        log.observe(R.glyph(0, 0, 0, 0, 0), Q.NOTEHEAD_STAFF_POSITION, 4.0,
+                    reader=READERS.GEOMETRY, frame="cell:0")
+        adjudicate.run(log)
+        report = evaluate.run(log)
+        self.assertEqual([f for f in report.fired if f[0] == "restate_pitch"],
+                         [])
+        self.assertTrue(any(s[2] == "cause_narrowed" for s in report.skipped))
 
     def test_a_clear_winner_decides_and_records_its_margin(self):
         log = _log()

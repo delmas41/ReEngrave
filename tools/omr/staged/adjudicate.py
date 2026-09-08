@@ -27,8 +27,11 @@ from enum import Enum
 from typing import (Any, Callable, Dict, FrozenSet, Iterable, List, Optional,
                     Sequence, Set, Tuple)
 
-from .record import (ABSTAIN, Abstention, Kind, Log, Observation, Outcome, Q,
-                     Scope, State, Subject, Verdict)
+from .record import (ABSTAIN, Abstention, Candidate, Kind, Log, Observation,
+                     Outcome, Q, Scope, State, Subject, Verdict)
+
+
+__all_reexport__ = (Candidate,)
 
 
 class UndeclaredEvidence(RuntimeError):
@@ -80,6 +83,45 @@ READINGS: Dict[str, Tuple[str, ...]] = {
     Q.WEDGE_ANCHOR: (Q.WEDGE_BOX,),
     Q.PITCH: (Q.NOTEHEAD_STAFF_POSITION,),
 }
+
+
+class Checkable(str, Enum):
+    """Can this fact's own correctness be tested with NO ground truth?
+
+    Sean, 2026-09-07:
+
+        "There will be certain facts that can be determined by themselves:
+        this measure is 4/4 and it has 9 eighth notes is a provable mistake.
+        Other things like is this a C or a C# will not be internally provable.
+        That needs to be connected to what weighs in the process."
+
+    ⚠️ THIS IS NOT AN ACADEMIC DISTINCTION. Sean's stated primary input is
+    SCANNED ORCHESTRAL SCORES FROM IMSLP, and the score library pairs a PDF
+    with a reference encoding for **27 works out of 235 held editions**. For
+    the overwhelming majority of real inputs there is no truth file and never
+    will be, so **CHECKABLE names the errors the system can find on the actual
+    work** and UNCHECKABLE names the ones that will always need a reference or
+    a human. It is a map of where self-correction is possible at all.
+
+    ⚠️ THREE REFINEMENTS THE BINARY HIDES, each of which changes a weight:
+
+    1. **A check has RESOLUTION.** It catches errors larger than its own
+       granularity and is blind below. The written-range test catches a whole
+       CLEF error (two or more diatonic steps) and cannot see C vs C# (one
+       semitone) -- which is precisely why Sean's example is the example.
+    2. **A check has COVERAGE.** A tie's two ends must be the same pitch, so
+       C vs C# IS checkable *at a tie* and nowhere else. "Uncheckable" almost
+       always means "uncheckable in general, checkable in special positions".
+    3. **A check inherits its inputs' reliability.** A test run on composed
+       outputs is only as good as the composition -- which is why the tie/slur
+       grammar veto measured NEUTRAL on engravings and +130 edits on SCANS:
+       its input is the resolved pitch, and `wrong note` is 26% of that pool.
+       ⚠️ A sound check over unreliable inputs is an unreliable check.
+    """
+
+    CHECKABLE = "checkable"      # an independent constraint must hold
+    UNCHECKABLE = "uncheckable"  # determined, not verified
+    MIXED = "mixed"              # unverifiable in itself, verifiable by (d)
 
 
 class Mode(str, Enum):
@@ -182,13 +224,27 @@ class Ruling:
     used: Tuple[str, ...] = ()
     detail: Dict[str, Any] = field(default_factory=dict)
 
+    #: Every value still admitted, best first. ⚠️ `support` is in the
+    #: decision's OWN units and is NOT a probability -- see `record.Candidate`.
+    candidates: Tuple[Candidate, ...] = ()
+
     @staticmethod
     def abstain(reason: str, **detail: Any) -> "Ruling":
         return Ruling(value=None, reason=reason, detail=dict(detail))
 
+    @staticmethod
+    def narrow(candidates: Sequence[Candidate], reason: str, *,
+               used: Sequence[str] = (), **detail: Any) -> "Ruling":
+        """⚠️ "It is one of these." Not a weaker abstention -- a DIFFERENT
+        answer, and usually a more useful one than the single value a
+        decide-or-abstain decision would have been forced to invent."""
+        ordered = tuple(sorted(candidates, key=lambda c: -c.support))
+        return Ruling(value=None, reason=reason, candidates=ordered,
+                      used=tuple(used), detail=dict(detail))
+
     @property
     def abstained(self) -> bool:
-        return self.value is None
+        return self.value is None and not self.candidates
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -264,6 +320,23 @@ class Evidence:
         for v in kept:
             self._seen.append(v.id)
         return kept
+
+    def admitted(self, quantity: str, *,
+                 subject: Optional[Subject] = None) -> Tuple[Any, ...]:
+        """Every value still admitted for `quantity`, best first.
+
+        ⚠️ THE POINT IS THAT A CONSUMER NEED NOT COLLAPSE THE SET EARLY. One
+        value for a DECIDED verdict, N for a NARROWED one, none for an
+        ABSTAINED one -- so a consumer can carry the ambiguity forward and let
+        its OWN evidence settle it, which is what `reconcile_duration` does
+        with the meter.
+        """
+        v = self.verdict(quantity, subject=subject)
+        if v is None:
+            return ()
+        if v.outcome is Outcome.DECIDED:
+            return (v.value,)
+        return tuple(c.value for c in v.candidates)
 
     def state(self, quantity: str, *, scope: Scope = Scope.EXACT,
               subject: Optional[Subject] = None) -> State:
@@ -408,6 +481,29 @@ class DecisionSpec:
     #: ABOUT.
     subjects_from: Optional[str] = None
 
+    #: Can this fact be checked with NO ground truth? See `Checkable`.
+    checkable: Checkable = Checkable.UNCHECKABLE
+    #: The SPECIFIC constraints, named. Never "consistency".
+    checked_by: Tuple[str, ...] = ()
+    #: ⚠️ What a FAILED check implicates -- the GROUP, not the culprit.
+    #:
+    #: A failed check is CERTAIN ABOUT THE GROUP AND SILENT ABOUT THE MEMBER.
+    #: Nine eighths in a 4/4 bar proves an error; it does not say whether the
+    #: meter, a duration, a spurious note or a missing one is wrong. A
+    #: violated constraint must raise EVERY member's suspicion and must never
+    #: condemn the cheapest member to change.
+    #:
+    #: ⚠️ The tree already honours this in the one place it is implemented:
+    #: `_reconcile_measure_to_meter` refuses unless the corrected bar lands
+    #: EXACTLY on the meter and the answer is UNIQUE -- i.e. it declines
+    #: whenever more than one member could explain the failure.
+    implicates: Tuple[str, ...] = ()
+    #: What an unverifiable fact is COMPOSED FROM. ⚠️ Its reliability is its
+    #: WEAKEST INPUT, not the sum of them: agreement among witnesses ADDS,
+    #: composition takes the MINIMUM, because if any input of a composition is
+    #: wrong the output is wrong.
+    composed_from: Tuple[str, ...] = ()
+
 
 REGISTRY: Dict[str, DecisionSpec] = {}
 
@@ -418,6 +514,10 @@ def decision(*, quantity: str, scope: Kind, wants: Sequence[str],
              excludes_tiers: Sequence[str] = (),
              revises: Optional[str] = None,
              subjects_from: Optional[str] = None,
+             checkable: Checkable = Checkable.UNCHECKABLE,
+             checked_by: Sequence[str] = (),
+             implicates: Sequence[str] = (),
+             composed_from: Sequence[str] = (),
              stub: bool = False):
     """Declare a decision.
 
@@ -437,6 +537,21 @@ def decision(*, quantity: str, scope: Kind, wants: Sequence[str],
     ABSTAIN.NOT_IMPLEMENTED and is listed by `stubs()`.
     """
     Q.check(quantity, "quantity")
+    if checkable in (Checkable.CHECKABLE, Checkable.MIXED):
+        if not checked_by or not implicates:
+            raise ValueError(
+                f"{quantity} is declared {checkable.value} and must name both "
+                f"`checked_by` (the SPECIFIC constraint, never 'consistency') "
+                f"and `implicates` (the GROUP a failure raises suspicion on). "
+                f"A check whose failure has no stated membership will convict "
+                f"whichever member is cheapest to change.")
+    if checkable in (Checkable.UNCHECKABLE, Checkable.MIXED):
+        if not composed_from:
+            raise ValueError(
+                f"{quantity} is declared {checkable.value} and must name "
+                f"`composed_from`: an unverifiable fact's reliability is its "
+                f"WEAKEST INPUT, and a consumer cannot weigh it without "
+                f"knowing what those are.")
     if mode is Mode.COMPETITIVE and margin_floor is None:
         raise ValueError(
             f"a COMPETITIVE decision on {quantity} must declare a "
@@ -450,7 +565,10 @@ def decision(*, quantity: str, scope: Kind, wants: Sequence[str],
             wants=tuple(wants), reasons=tuple(reasons) + (ABSTAIN.NOT_IMPLEMENTED,),
             mode=mode, margin_floor=margin_floor,
             excludes_tiers=tuple(excludes_tiers), revises=revises,
-            stub=stub, fn=fn, subjects_from=subjects_from)
+            stub=stub, fn=fn, subjects_from=subjects_from,
+            checkable=checkable, checked_by=tuple(checked_by),
+            implicates=tuple(implicates),
+            composed_from=tuple(composed_from))
         if quantity in REGISTRY:
             raise ValueError(
                 f"{quantity} already has an adjudicator "
@@ -460,6 +578,14 @@ def decision(*, quantity: str, scope: Kind, wants: Sequence[str],
         return fn
 
     return wrap
+
+
+def by_checkability() -> Dict[str, Tuple[str, ...]]:
+    """The map of where self-correction is possible at all."""
+    out: Dict[str, List[str]] = {c.value: [] for c in Checkable}
+    for quantity, spec in REGISTRY.items():
+        out[spec.checkable.value].append(quantity)
+    return {k: tuple(sorted(v)) for k, v in out.items()}
 
 
 def stubs() -> Tuple[str, ...]:
@@ -491,15 +617,29 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
             f"{spec.name} returned reason {ruling.reason!r}, which is not in "
             f"its declared vocabulary {spec.reasons}.")
 
-    # ── the margin floor: abstain rather than take an unsupported argmax ────
+    # ── the margin floor ────────────────────────────────────────────────────
+    #
+    # ⚠️ A CONTEST TOO CLOSE TO CALL NOW *NARROWS* RATHER THAN VANISHING.
+    # Before candidate sets this discarded the whole contest and reported
+    # `margin_below_floor` with nothing attached -- so "the readers disagreed
+    # between alto and tenor" and "nothing was read at all" arrived at the
+    # consumer as the same answer. Where the decision supplied candidates they
+    # survive; where it did not, the old abstention stands.
     value, reason, margin = ruling.value, ruling.reason, ruling.margin
+    candidates = tuple(ruling.candidates)
     if (spec.mode is Mode.COMPETITIVE and value is not None
             and spec.margin_floor is not None):
         if margin is None or margin < spec.margin_floor:
             value = None
             reason = "margin_below_floor"
 
-    outcome = Outcome.ABSTAINED if value is None else Outcome.DECIDED
+    if value is not None:
+        outcome = Outcome.DECIDED
+    elif len(candidates) >= 2:
+        outcome = Outcome.NARROWED
+    else:
+        outcome = Outcome.ABSTAINED
+        candidates = ()          # a single survivor is not a narrowing
 
     considered = tuple(dict.fromkeys(ev._seen))
     basis: Set[str] = set(considered)
@@ -511,7 +651,9 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
     verdict = Verdict(
         id=log._next_id("vrd"), subject=subject, quantity=spec.quantity,
         outcome=outcome, value=value, decider=spec.name, reason=reason,
+        candidates=candidates,
         considered=considered,
+        used=tuple(ruling.used),
         missing=tuple(sorted(ev._missing)),
         declined=tuple(sorted(ev._declined)),
         excluded=tuple(ev._excluded),
@@ -519,6 +661,7 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
         basis=tuple(sorted(basis)),
         margin=margin,
         supersedes=prior.id if prior is not None else None,
+        detail=dict(ruling.detail),
     )
     return log.record(verdict)
 
@@ -555,8 +698,13 @@ ORDER: Tuple[str, ...] = (
     Q.ARTICULATION_OWNER,
     Q.WEDGE_ANCHOR,
     # rhythm
-    Q.DURATION,
+    # ⚠️ TUPLET BEFORE DURATION. `adjudicate_duration` reads the tuplet
+    # verdict to scale its beats, so a tuplet decided afterwards would arrive
+    # too late and every triplet would export at its written value -- the
+    # exact fault the ratio exists to fix. Found by wiring them, not by
+    # reasoning: the ORDER list had them the other way round.
     Q.TUPLET_RATIO,
+    Q.DURATION,
     Q.METER,
     # text
     Q.DYNAMIC,

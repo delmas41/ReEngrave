@@ -81,7 +81,8 @@ class TestDeclaredEvidence(unittest.TestCase):
 
         with _owns(Q.STAFF_GROUP):
             @A.decision(quantity=Q.STAFF_GROUP, scope=R.Kind.STAFF,
-                        wants=(Q.BRACKET_BLOCK,), reasons=("r",))
+                        wants=(Q.BRACKET_BLOCK,), reasons=("r",),
+                        composed_from=(Q.BRACKET_BLOCK,))
             def _probe(ev):
                 ev.rows(Q.BRACKET_BLOCK)           # asks, gets nothing
                 return Ruling(value=1, reason="r")
@@ -100,7 +101,7 @@ class TestDeclaredEvidence(unittest.TestCase):
         with _owns(Q.STAFF_GROUP):
             @A.decision(quantity=Q.STAFF_GROUP, scope=R.Kind.STAFF,
                         wants=(Q.BRACKET_BLOCK, Q.SYSTEMIC_COLUMN),
-                        reasons=("r",))
+                        reasons=("r",), composed_from=(Q.BRACKET_BLOCK,))
             def _probe(ev):
                 ev.rows(Q.BRACKET_BLOCK)
                 ev.rows(Q.SYSTEMIC_COLUMN)
@@ -366,7 +367,8 @@ class TestCompetitiveNeedsAFloor(unittest.TestCase):
             with self.assertRaises(ValueError):
                 @A.decision(quantity=Q.ARC_KIND, scope=R.Kind.GLYPH,
                             wants=(Q.ARC_BOX,), reasons=("r",),
-                            mode=Mode.COMPETITIVE)
+                            mode=Mode.COMPETITIVE,
+                            composed_from=(Q.ARC_BOX,))
                 def _bad(ev):
                     return Ruling(value=1, reason="r")
 
@@ -379,7 +381,8 @@ class TestCompetitiveNeedsAFloor(unittest.TestCase):
         with _owns(Q.ARC_KIND):
             @A.decision(quantity=Q.ARC_KIND, scope=R.Kind.GLYPH,
                         wants=(Q.ARC_BOX,), reasons=("r",),
-                        mode=Mode.COMPETITIVE, margin_floor=1.0)
+                        mode=Mode.COMPETITIVE, margin_floor=1.0,
+                        composed_from=(Q.ARC_BOX,))
             def _probe(ev):
                 return Ruling(value="tie", reason="r", margin=0.2)
 
@@ -399,13 +402,15 @@ class TestOneQuantityOneOwner(unittest.TestCase):
     def test_a_second_owner_is_refused(self):
         with _owns(Q.ARC_KIND):
             @A.decision(quantity=Q.ARC_KIND, scope=R.Kind.GLYPH,
-                        wants=(Q.ARC_BOX,), reasons=("r",))
+                        wants=(Q.ARC_BOX,), reasons=("r",),
+                        composed_from=(Q.ARC_BOX,))
             def _first(ev):
                 return Ruling(value=1, reason="r")
 
             with self.assertRaises(ValueError):
                 @A.decision(quantity=Q.ARC_KIND, scope=R.Kind.GLYPH,
-                            wants=(Q.ARC_BOX,), reasons=("r",))
+                            wants=(Q.ARC_BOX,), reasons=("r",),
+                            composed_from=(Q.ARC_BOX,))
                 def _second(ev):
                     return Ruling(value=2, reason="r")
 

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple
 
-from ..adjudicate import Evidence, Mode, Ruling, Term, decision, tally
+from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -23,6 +23,13 @@ BRACE_FAMILIES = frozenset({"keyboard", "harp"})
 
 @decision(
     quantity=Q.SYSTEM_MEMBERSHIP,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "cross-staff measure count: every staff of a system prints the SAME number of bars",
+        "a systemic barline crosses every staff of the system at one x",
+    ),
+    implicates=(Q.SYSTEM_MEMBERSHIP, Q.MEASURE_PARTITION, Q.BARLINE_COLUMN),
+    composed_from=(Q.GAP_BRIDGING, Q.SYSTEMIC_COLUMN),
     scope=Kind.SYSTEM,
     wants=(Q.SYSTEM_STAFF_COUNT, Q.GAP_BRIDGING),
     reasons=("counted", "no_evidence"),
@@ -43,6 +50,13 @@ def adjudicate_system_membership(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.SYSTEM_STAFF_COUNT,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "the count may not EXCEED the work roster -- a page cannot print an instrument the work has not got",
+        "across systems of one page the count is equal, or a subset explained by tacet staves",
+    ),
+    implicates=(Q.SYSTEM_STAFF_COUNT, Q.SYSTEM_MEMBERSHIP, Q.STAFF_LINES),
+    composed_from=(Q.STAFF_LINES,),
     scope=Kind.SYSTEM,
     wants=(Q.SYSTEM_STAFF_COUNT,),
     reasons=("counted", "no_evidence"),
@@ -57,6 +71,7 @@ def adjudicate_system_staff_count(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.STAFF_ORDINAL,
+    composed_from=(Q.STAFF_LINES,),
     scope=Kind.STAFF,
     wants=(Q.STAFF_ORDINAL,),
     reasons=("read", "no_evidence"),
@@ -71,6 +86,13 @@ def adjudicate_staff_ordinal(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.MEASURE_PARTITION,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "cross-staff measure count agreement (measure_count_warning)",
+        "a merged bar sums to a MULTIPLE of the meter; a split bar to a fraction (rhythm_sum_warning)",
+    ),
+    implicates=(Q.MEASURE_PARTITION, Q.BARLINE_COLUMN, Q.SYSTEM_MEMBERSHIP, Q.DURATION),
+    composed_from=(Q.BARLINE_COLUMN,),
     scope=Kind.STAFF,
     wants=(Q.BARLINE_COLUMN,),
     reasons=("read", "no_barline"),
@@ -90,6 +112,12 @@ def adjudicate_measure_partition(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.STAFF_GROUP,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "staves of one bracket group are one instrument FAMILY -- checkable only where identity came from a READ label",
+    ),
+    implicates=(Q.STAFF_GROUP, Q.INSTRUMENT),
+    composed_from=(Q.BRACKET_BLOCK,),
     scope=Kind.STAFF,
     wants=(Q.BRACKET_BLOCK,),
     reasons=("bracket_block", "block_unavailable"),
@@ -131,6 +159,7 @@ def adjudicate_staff_group(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.GROUP_SYMBOL,
+    composed_from=(Q.STAFF_GROUP, Q.INSTRUMENT),
     scope=Kind.SYSTEM,
     wants=(Q.STAFF_GROUP, Q.INSTRUMENT, Q.SYSTEM_STAFF_COUNT),
     reasons=("brace_family", "bracket", "no_identity", "no_group"),

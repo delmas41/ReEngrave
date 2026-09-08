@@ -1,13 +1,290 @@
 # Assumptions in the staged pipeline
 
-**Nothing in `tools/omr/staged/` has been measured.** Not one accuracy arm has
-been run against it. Every ordering, constant and precedence rule below is an
-**assumed best practice**, written down so the testing phase can attack it.
+## ⚠️ START HERE — you are a fresh agent and this file outranks your memory
 
-That is the point of the list. Sean's instruction for this phase was to build
-the whole thing on assumed best practice and record the assumptions rather than
-stop to measure; **this file is the record, and it is the input to the testing
-phase.**
+**If your recollection disagrees with this file, a code tag, or a test, THE
+FILE IS RIGHT.** Do not re-derive a settled question from a summary; open the
+file. **153 coherence tests** across 11 `tools/omr/tests/test_staged_*.py`
+files are the real guard — a contradiction of a pinned decision fails a test
+rather than passing quietly.
+
+**What this is.** `tools/omr/staged/` is an alternative OMR pipeline built
+ALONGSIDE `tools/omr/transcribe.py`, selected by `OMR_ADJUDICATE`
+(`0` default / `shadow` / `1`). Three stages: **GATHER** (readers emit
+measurements as rows), **ADJUDICATE** (decisions declare their evidence and
+return a value *and* a record), **EVALUATE** (consequences, downhill only, one
+pass, no fixpoint). Design: `docs/architecture-design-2026-09-07.md`. The
+standard its assumptions are audited against:
+`docs/ideal-reader-2026-09-07.md`.
+
+⚠️ **NOTHING HERE HAS BEEN MEASURED. Not one accuracy arm has been run.** No
+`scan_eval`, no `orchestral_eval`, no OMR-NED. Every ordering, constant and
+precedence rule is an assumption recorded below, and the point of writing them
+down is that they are what the testing phase attacks.
+
+⚠️ **The existing pipeline is untouched.** `git diff --diff-filter=M
+origin/main...HEAD` modifies no file outside `tools/omr/staged/`,
+`tools/omr/tests/test_staged_*` and `docs/`.
+
+---
+
+## STATE OF THE BUILD — accurate at commit `d9904e5a`
+
+**Nothing is half-finished. Candidate sets landed clean and the session ended
+at a green commit.**
+
+**Decisions: 15 wired of 21** (`adjudicate.ORDER`) — `system_membership`,
+`system_staff_count`, `staff_ordinal`, `measure_partition`, `staff_group`,
+`group_symbol`, `instrument`, `slot_index`, `part_partition`, `clef`,
+`key_signature`, `glyph_owner`, `tuplet_ratio`, `duration`, `meter`.
+
+**Stubs: 6** — `arc_owner`, `arc_kind`, `articulation_owner`, `wedge_anchor`,
+`dynamic`, `direction`. Each is a *declared* stub (`stub=True`), abstains with
+`ABSTAIN.NOT_IMPLEMENTED`, and its docstring says what it needs. ⚠️ A stub is
+fine; a MISSING decision is not, because a missing one is indistinguishable
+from one that always abstains.
+
+**Consequences: 5 wired of 6** — `restate_pitch`, `reconcile_duration`,
+`move_glyph`, `respell_accidental`, `name_part`. **Stub: `join_parts`**,
+deliberately last (D9).
+
+**GATHER is complete except direction text and the arcs**: page geometry,
+detections, notehead positions (clef-free, fraction kept), cross-staff
+ownership evidence, rhythm marks, the classical-CV stem/beam rung, both clef
+crops with the locator's own refusal branch, the per-candidate key-signature
+fit, the meter, margin labels via the cascade. `Q.DIRECTION_WORD` is a declared
+stub behind its hard edge (D13).
+
+**Run it:**
+
+```bash
+python3 -m tools.omr.staged score.pdf --pages 0-2 --weights <file>.pt
+python3 -m tools.omr.staged score.pdf --pages 0        # no weights: it still runs
+python3 -m pytest tools/omr/tests/test_staged_*.py -q  # 153, seconds, no venv
+```
+
+---
+
+## NEXT, IN ORDER — and the order IS the thesis
+
+1. **Redundant groups as first-class** (D2). A fact printed more than once —
+   the meter on every staff, the clef at every system head, a tie's pitch at
+   both ends — is several witnesses to ONE fact, and **agreement among them is
+   the only correctness signal available with no ground truth**. Nothing today
+   represents *"these N rows are witnesses to one fact; here is whether they
+   agree."* First because everything after it consumes it.
+2. **Implication tests over them** (D4). A composition can be run FORWARD on a
+   candidate and its output checked: do these implied pitches fit this
+   instrument's range; do these durations sum to this meter. It reaches the
+   compositional chain, where *nothing is printed twice* and agreement cannot
+   help. Second because it needs the groups and needs candidate sets, both of
+   which now exist.
+3. **`join_parts`** (D9), once the partition abstention is priced.
+4. **The arcs** — `arc_owner`, then `arc_kind`. Last because they are
+   self-contained and nothing else waits on them.
+
+⚠️ **Why this order and not "finish the stubs first":** the stubs are
+*breadth*; groups and implication tests are *depth on what is already wired*.
+A sixth stub adds another decision with no self-check; the groups give the
+fifteen already wired a way to be wrong out loud.
+
+---
+
+## ⚠️ WHAT A FRESH AGENT MUST NOT DO
+
+**Each of these is a refusal that was paid for. An unrecorded refusal gets
+re-tried, and this project has paid for that repeatedly.**
+
+| ✗ do not | because — with the number |
+|---|---|
+| **Put a probability or calibrated weight on `Candidate.support`** | An uncalibrated probability is **worse than none** — it launders a guess into something that reads as evidence. Measured: **ECE 0.1277**, top bin promising **0.989** and delivering **0.692**, failing worst exactly where a consumer sets its bar. Relative support, **ordered**, is enough. A test asserts the supports do not sum to 1. |
+| **Erase staff lines before the detector** | Costs **7–13 pooled reading points**, takes noteheads to **0.774** on Mozart 41, and MANUFACTURES beam confusion: YOLO beams **46 → 105**, precision **0.783 → 0.343**, firing on staff-line residue. The rule is **erase for the CV consumer, bound the search for everyone else, never erase for the detector.** |
+| **Union YOLO and CV beams, or replace CV with YOLO outright** | A YOLO box bounds the **stack**, not a stroke, so a union adds a centre in the GAP between two strokes and three sixteenths read as three eighths — union cost pooled **0.1917** against **0.1861**. ⚠️ REPLACE scores **five edits better** and is REFUSED: it throws real beams away and takes notes that lose every beam from **4 to 7**. Keep a YOLO beam only where no CV stroke overlaps its x-range. |
+| **Retrofit every decision to emit candidate sets** | Only beams and the clef are natively set-shaped. **A decision that genuinely has one answer must not be dressed as a set to look uniform.** |
+| **Use detection confidence to break an ownership tie** | P(winner conf > loser conf) = **0.545** against a 0.500 null, and a `|Δconf| > 0` tie-break would **overturn distance on 45.5%** of 4,521 contests. It is in `wants` so it must be declined *deliberately*, never merely unseen. |
+| **Resurrect `clef_register_warning`'s adjacent-staff form** | Reach **7 of 193** scan staves, precision **0 of 11** — every firing a family boundary, because an orchestral score is ordered by **family, not register**. The self-contained per-staff form (`propose_clef`) is a different thing and is fine. |
+| **Count ledger rungs instead of testing completeness** | Two broken ladders are **not** evidence either way: a found rung can belong to the other staff's note exactly as a gap can. On the Beethoven bassoon pair the ghost's one rung WAS the real C4's own ledger, and counting beat the real note. |
+| **Delete the loser of a contest** | `move_glyph` **supersedes**. Arc attribution measured `drop` at **2,388 vs 2,371** — better arm-for-arm — and refused it, because it got there by emitting **20 fewer slurs, 12 of them real**. Keeping the loser addressable is what lets a later identity correction reach it. |
+| **Widen `_reconcile_measure_to_meter`'s bound** | It repairs only when the answer is **UNIQUE** — i.e. it declines exactly when more than one member could explain the failure. That is "certain about the GROUP, silent about the MEMBER" implemented. **Never condemn the cheapest member to change.** |
+| **Let a key signature be fitted against a guessed clef** | Three flats fitted against a guessed clef came back as **TWO SHARPS**. GATHER asks the reader once per *candidate* clef; the adjudicator reads the answer for the clef that won, and abstains if none did. |
+| **Build the systematic version of a fix mid-stream** | Scope rule: **FIX NOW only if it corrupts the thing being built; PARK everything else — and the systematic version of a fix is a PARK even when the instance is a fix-now.** A borderline case is a PARK, not a judgment call. |
+
+---
+
+## ⚠️ DEFERRED — parked, with the evidence kept
+
+**The rule (Sean, 2026-09-07):**
+
+> **FIX NOW** only if it corrupts the thing being built — a defect in this
+> pipeline's own substrate propagates into every decision wired after it.
+> **PARK** everything else. ⚠️ **The systematic version of a fix is a PARK
+> even when the instance is a fix-now**: correct the instance, park the
+> checker. ⚠️ **A borderline case is a PARK, not a judgment call** — parking
+> is reversible in one message and a detour is not.
+
+**The test is not "is this real".** Everything below is real; that is what
+makes it tempting. **The test is: does the BUILD get worse if I wait?**
+
+⚠️ **A parked item keeps its evidence.** The cheap half of a find is the
+observation and the expensive half is the fix — a park that loses what was
+seen is a deletion with extra steps.
+
+| # | what | why parked | what it would take |
+|--:|---|---|---|
+| D2 | **Redundant groups as first-class** — `(quantity, scope)` → witnesses, majority, dissenters | the largest principle-driven gap (ideal-reader §4.1), but additive: nothing already wired is wrong without it | a group declaration and a harness-derived agreement row. Every witness is already a row, so it is close to free |
+| D3 | **`tally()` should take a MINIMUM over `composed_from`** | ideal-reader §5.4. Wrong *weighting*, not a wrong *record* — no verdict is corrupted, so waiting costs nothing | agreement SUMS; composition is as strong as its weakest link. `composed_from` is already declared on all 21 |
+| D4 | **The implication tests as consumed terms** — `propose_clef`'s range test per candidate; `rhythm_sum_warning` given a consumer | needs D1 and D2 to be worth doing properly | ideal-reader §4.6 |
+| D5 | **GATHER out-parameters instead of the translating layer** | A-BUILD-1. The end state, but it touches a dozen files the OLD path runs through — the opposite of "alongside" | a `log` kwarg per reader; deletes the `mirror=True` rows |
+| D6 | **`Q.BRACKET_BLOCK` / `Q.GAP_BRIDGING` are MIRRORS**, re-derived rather than the reader's own word | the mirror is honest and marked; converting it is D5 | `_assign_groups` emitting its own branch |
+| D7 | **`Mode.ADDITIVE` needs an expiry** | A-GROUP-3: correct while an incumbent exists, should not calcify | a decision, not an edit |
+| D8 | **The six remaining stubs** — `arc_owner`, `arc_kind`, `articulation_owner`, `wedge_anchor`, `dynamic`, `direction` | ordinary remaining work, not a deferral of a fix | each is a declared stub and says what it needs |
+| D9 | **`join_parts` consequence** | blocked: it is the consequence of the decision a pre-registered gate falsified, and `adjudicate_part_partition` correctly abstains there | pricing that abstention first |
+| D10 | **Document-wide slot reference** | blocked: `build_reference` picking a lineup from one system once named 149 Brahms staves an instrument the work has not got | the `OMR_SPAN_REFERENCE_FIT=off` replay |
+| D11 | **`W_KEYSIG_FIT` (1.5) exceeds `MARGIN_FLOOR` (1.0)**, so a lone key-signature fit decides a clef | a weight, not a defect; changing it without evidence is guessing twice | a sweep, once measuring is allowed. ⚠️ Lower the WEIGHT, not the floor — A-CLEF-6 says the floor carries two jobs |
+| D12 | **Asking the locator per candidate clef costs 4 calls per staff** | correctness first, and the shape is right (ask every candidate, including ones that never proposed themselves) | measurement, then caching if it bites |
+| D13 | **Direction text gather** | a declared stub behind its hard edge (it subtracts every detection from the ink) | wiring `direction_text.find_candidates` after detection |
+| D14 | **`BEAM_EDGE_TOLERANCE_WIDTHS = 1.0`** — how far past a stroke's end a notehead may sit and still *maybe* be under it | a constant with no measurement behind it; it decides how often a duration NARROWS rather than decides | a sweep once measuring is allowed. ⚠️ Too small and the set never forms; too large and every note narrows |
+| D15 | **A NARROWED verdict has no exporter** | nothing exports yet, so it costs nothing today — but MusicXML has no way to say *"one of these two"* | a decision about what a narrowed fact serialises as. ⚠️ **Do not resolve it by silently taking `candidates[0]`** — that is the collapse this whole feature removed, moved one stage later |
+
+⚠️ **D1 (candidate sets) was CLOSED and has LEFT this table**, per the rule
+`export_coverage` already applies: an entry that is closed must leave, or the
+list stops describing the code and starts describing its history. The work is
+recorded in build finding 4 below, where the *argument* lives.
+
+⚠️ **RETRO-APPLIED, INCLUDING TO MYSELF.** Under this rule two things I did
+mid-stream were parks, not fix-nows:
+
+* **`record_coverage.py`** — the coordinator commissioned it and has named it
+  drift. Fixing `Verdict.detail` and `.used` was fix-now (they corrupt the
+  substrate: every verdict wired afterwards would inherit the loss). **Building
+  the checker and its mutation test was the systematic version and should have
+  been D-something.** It is built, passing, and kept — and it is the last thing
+  of its kind built mid-stream.
+* **`subjects_from`** — added while wiring ownership because a verdict per
+  detection would bury 4,521 contests under tens of thousands of no-ops. ⚠️
+  **Borderline, therefore a PARK under the rule**, and I did it inline. The
+  build was noisy without it, not wrong. Recorded here as an honest miss.
+
+**Applied correctly as FIX-NOW, with the criterion:** the `ORDER` inversion
+(every later duration inherits an unscaled triplet), `Verdict.detail`/`.used`
+(every later verdict inherits the loss), and `remove_staff_lines` missing from
+`prepare_pages` (**every** duration built on a silently-degraded beam rung).
+All three corrupt the substrate; none could wait.
+
+## ⚠️ EVIDENCE FOR THE ARCHITECTURE, FOUND BY BUILDING IT
+
+**Not a changelog. A bug fixed in a diff disappears; these are arguments, and
+they are the answer to "why build before measuring".**
+
+### 1. `duration` sat before `tuplet_ratio`, and duration READS the tuplet
+
+`adjudicate_duration` consumes the tuplet verdict to scale its beats. In the
+first `ORDER` list it ran **first** — so the ratio would have arrived too late
+and **every triplet would have exported at its written value**: the exact fault
+the ratio exists to fix, reintroduced by ordering alone, **in a pipeline built
+specifically to get ordering right.**
+
+That is Sean's claim demonstrated on the architecture's own body:
+
+> *"We have the information but not in the right order so it kills or discards
+> or miscalculates."*
+
+⚠️ **It was found by WIRING, not by reasoning** — I wrote the ORDER list by
+hand, read it twice, and it was wrong both times. And **no measurement would
+have shown it**, which is the part that matters: both orders run clean, produce
+a full result, and raise nothing. The wrong one is merely *wrong*. A metric
+sees a triplet exported at 1.0 instead of 0.667 as a few edits somewhere in a
+bar, indistinguishable from a hundred other causes.
+
+**Pinned by `test_the_tuplet_decides_BEFORE_the_duration`.**
+
+### 2. `used` vs `considered` — the gap nothing could previously express
+
+`considered` is what the **harness handed in**; `used` is what the **decision
+weighed**. A decision handed ten rows may weigh three.
+
+⚠️ **The gap between them is where a decision quietly ignores evidence it
+declared** — which is the shape of every dropped-signal fault this project has
+paid for, and until the split there was nowhere to even write it down. It was
+itself found by the coverage sweep after `Ruling.detail` turned out to be a
+family rather than an instance.
+
+### 3. Two readers, two images, one silent fallback
+
+`line_detection` **prefers** `cell.image_no_staff` and **silently falls back**
+to `cell.image` when it is missing. `extract_measures` leaves it `None`. So a
+pipeline that forgets `remove_staff_lines` does not fail — **it degrades the CV
+rung quietly**, and a whole-rung failure looks like a thin page.
+
+⚠️ And the two images must stay apart: erasing for the detector costs **7–13
+pooled reading points**, takes noteheads to **0.774** on Mozart 41, and
+**manufactures** beam confusion (YOLO beams 46 → 105, precision 0.783 → 0.343,
+firing on staff-line residue). **Erase for the CV consumer, bound the search
+for everyone else, never erase for the detector.**
+
+### 4. ⚠️ We reproduced `pitch_resolver.py:181` ON PURPOSE, one layer up
+
+`_beam_levels` counts the strokes covering a notehead's column and returns an
+**integer**. Where a stroke's x-range ends near the note the honest reading is
+*"two, possibly three"* — and that alternative is destroyed at the moment of
+counting, exactly as `pos_float` is computed at `pitch_resolver.py:180` and
+rounded away at `:181`.
+
+⚠️ **This is the most damning of the four findings, because we did it while
+trying not to.** The thesis of the whole architecture is *keep the
+measurement, move the decision*; the new code kept the measurement (strokes
+with x-ranges are rows) and then collapsed the **interpretation** to a single
+value at the first opportunity, which reintroduces the same loss one level
+higher. The duration composed from it inherits a precision the reading never
+had.
+
+**Fixed by candidate sets** — `Outcome.NARROWED`. Recorded here rather than
+only in a diff, because the lesson is that *keeping the measurement is not
+sufficient*: a decision that collapses early throws away just as much, and it
+is harder to see because the row underneath still looks intact.
+
+### 5. A silent fallback turns a whole-rung failure into a thin page
+
+`line_detection` **prefers** `cell.image_no_staff` and falls back to
+`cell.image` without complaint. So a missing erased variant does not fail — it
+degrades the entire CV rung quietly, and the page presents as sparse.
+
+⚠️ **The incumbent already learned this from the other direction.**
+`_optional_pass_failure` exists because an optional pass that *abstains* and
+one that *fails like a defect* were indistinguishable, and a renamed parameter
+went dark for hours behind an honest-looking "unavailable". Same lesson,
+arrived at independently in new code: **not-raising is not the same as
+not-telling-anyone.**
+
+### 6. A consequence whose CAUSE was coarser than its EFFECT was silently dead
+
+`reconcile_duration` acts on a **cell**; the meter is decided at **system**
+scope. The exact-subject lookup found nothing, so the rule reported
+`cause_absent` and did nothing — **identically to a page that prints no
+meter.** Every consequence with a coarser cause was dead the same way.
+
+⚠️ **Found by a test refusing to fire, not by reading.** And it is the
+abstention/defect distinction again, a third time: *nothing raised, nothing
+logged, and the output was indistinguishable from a legitimate silence.*
+
+### 7. ⚠️ The no-fixpoint guard forbade the one revision the design permits
+
+`Log.record` refused any verdict that superseded something appearing in its own
+`basis`. **But a revision READS WHAT IT REVISES** —
+`reconcile_duration` takes the old duration's written value and re-reads its
+beam level — so the guard refused *every revision there can be*, and the
+pipeline's single bounded loop could never fire.
+
+The real fixpoint is deriving the new value **through something that itself
+depends on the old one**: if the meter were voted out of these very durations,
+then meter → duration → meter is a cycle and no bound saves it. The check now
+excludes the superseded verdict from its own closure test.
+
+⚠️ **The lesson is about safety rails, not about this rule.** A guard tight
+enough to be provably safe was tight enough to be useless, and it looked
+correct for four days because nothing exercised it. **A rail nothing has driven
+into is an untested rail** — and the test that pinned it was pinning the wrong
+rule, so it passed too.
 
 ## ⚠️ PRINCIPLE vs CONTINGENCY
 
@@ -28,6 +305,30 @@ below are ours by injury and survive on their merits.
 separate the two cements the second kind into the architecture. **25 entries:
 12 PRINCIPLE, 8 CONTINGENCY, 5 MIXED** — and one contingency (A-EVAL-2) is
 currently doing a principle's job.
+
+## ⚠️ CHECKABLE vs UNCHECKABLE — where self-correction is possible at all
+
+Every decision in `adjudicate.ORDER` carries `checkable=` / `checked_by=` /
+`implicates=` / `composed_from=` **in its decorator**, enforced by
+`test_staged_discipline.py`. The reasoning is
+[ideal-reader Part 5](../../../docs/ideal-reader-2026-09-07.md); the summary a
+builder needs:
+
+* **0 of 21 decisions are purely CHECKABLE. 14 are MIXED, 7 UNCHECKABLE.**
+  Checkability is a property of a fact's **consequences**, never of its reading.
+* ⚠️ **A failed check is certain about the GROUP and silent about the MEMBER.**
+  Nine eighths in a 4/4 bar proves an error and does not say which of the meter,
+  a duration, a spurious note, a missing one, or a **mis-owned glyph** is wrong.
+  `implicates=` is that membership. **Never condemn the cheapest member.**
+* **Weight by kind:** agreement **sums**; composition takes the **minimum** over
+  `composed_from` (a chain is as strong as its weakest link); a violated
+  constraint is a **negative on every member**; a satisfied one is a **weak**
+  positive, because wrong readings pass too. ⚠️ `tally` currently sums
+  everything — right for agreement, wrong for composition.
+* ⚠️ **Why it matters:** the library pairs a PDF with a reference for **27 of
+  235 editions**, and Sean's input is IMSLP scans. **The checkable class is what
+  the system can police on the actual work; the uncheckable class will always
+  need a reference or a human** — so human attention belongs on the second.
 
 ## How to read a row
 
