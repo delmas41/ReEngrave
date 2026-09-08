@@ -219,6 +219,43 @@ Full reading:
 [benchmarks/omr-part-join-2026-09/FINDINGS.md](benchmarks/omr-part-join-2026-09/FINDINGS.md)
 and [benchmarks/omr-rests-2026-09/FINDINGS.md](benchmarks/omr-rests-2026-09/FINDINGS.md).
 
+## The pattern worth naming (2026-09-08, close of day)
+
+Four of the five real findings in a single session were the same thing: **a
+value the code had already worked out, correctly, that nothing ever read.**
+
+- The measuring instrument's own self-check said "these figures are invalid" on
+  nine of twenty pages, wrote that verdict into a file, and no run ever looked
+  at it. It was flagging 1,771 reference symbols being silently dropped.
+- A function that decides which time signatures are plausible names `1/4` as
+  garbage *in its own documentation* — and was only ever asked which readings
+  may vote, never whether a staff may keep one. Four staves shipped a
+  meaningless time signature.
+- The score library already recorded how many staves a page prints and even
+  said in words which number to compare against; the measurement compared the
+  other one, and wrote off 4,815 symbols as uncomparable over a units error.
+- The exporter still treats a symbol recognised with 26% confidence and one
+  recognised with 98% confidence as equally true. (Known since last week, still
+  true.)
+
+None of these needed a better reader, a new corpus, or more training. Together
+they recovered 1,771 reference symbols, unblocked 7,007 more for comparison,
+and corrected 1,251 rest errors. **Before building anything new here, the first
+question is what the code already knows and throws away.**
+
+⚠️ **Two claims had to be withdrawn the same day, and both were the same
+mistake in reverse:** naming a mechanism without checking it. One said a
+measurement gap was a reading problem when it was an artefact of how the
+benchmark is cut; the other proposed a safety check for a change that, by
+construction, cannot see that change. In both cases the check that would have
+caught it was a single search of the codebase.
+
+⚠️ **And one fix paid off somewhere other than where it was aimed.** The time
+signature filter was shipped to correct silent-bar lengths and corrected none
+of them; what it actually did was let the rhythm layer re-read four note
+durations and clear nine bar-length warnings. Worth attributing effects after
+the fact rather than assuming them in advance.
+
 ## Decisions made without a probability (2026-09-05)
 
 Work on clef assignment found that a lot was being lost because a staff's clef
