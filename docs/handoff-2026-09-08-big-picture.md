@@ -89,14 +89,25 @@ instrument that works; OMR-NED remains valid for DIRECTION only.
 
 Both were mechanism claims asserted from plausibility, which
 `feedback_measure_the_mechanism` already names. **The cheap check in both cases
-was one grep.** A big-picture session will be making exactly this kind of claim
-constantly; budget a grep per claim.
+was one grep.**
+
+⚠️ **And there were TWO MORE of the same shape in the strategic layer**, which
+is why this is a hard rule and not an observation: this file first called the
+condensed-staff question *"unreconciled"* when Sean had settled it 2026-09-05,
+and then recommended **building check 3** without discovering that
+`page_normalise` — the same idea, from Sean's own 2026-09-06 ask — was already
+built, tested and priced. **Four claims, one day, all cheap to check.**
+
+**RULE: before recommending that anything be BUILT, run
+`git log --all -S "<the thing>" -- <dir>` and `find . -name "*<thing>*"`.** This
+repo is large enough that "does this exist" is a real question, and the answer
+has been YES three times this week.
 
 ## 6. What is genuinely open, ranked, with what could price each
 
 | | what | instrument that can see it |
 |---|---|---|
-| **1** | **Build check 3 of the page-truth benchmark** — compare music STAFF-TO-STAFF instead of part-to-part. See below; this is the missing half of the structural programme. | itself: it is the instrument |
+| **1** | **Adopt `page_normalise`** — Sean's own 2026-09-06 ask, ALREADY BUILT, priced (`entire staff` 5,593 → 1,458 on five rows) and **not imported by `scan_eval`**. A decision plus wiring, not invention. Needs the staff maps completed, which is the same input as cause D. | itself; ⚠️ rule 5 — a normalised figure is a NEW ERA and may not be differenced against the old |
 | **2** | **Cause D** — Mahler p2's `staves` map. One hand-verified fact. | unblocks the 20th row |
 | **3** | the meter guards (b) and (c) parked in `benchmarks/omr-rests-2026-09/FINDINGS.md` §14 — a corroboration guard and a vote-override, **different rules, different risks** | needs a multi-page corpus, which the gate is not |
 | **4** | `<transpose>` — 92 in the engraved truth, ours 0, the fact is in the pipeline | `export_coverage`, already reports it |
@@ -137,8 +148,42 @@ MusicXML, is three checks and is half-built:
 | 2 — detection vs the page | already exact 20/20; a regression guard |
 | 3 — music compared **staff-to-staff** | **DESIGNED, NOT BUILT** — the piece that sidesteps condensation entirely |
 
-**Check 3 is the missing half**, and until it exists the project measures
-structure with an instrument that rewards the wrong answer.
+### ⚠️ AND THE ANSWER IS ALREADY BUILT — I recommended check 3 without finding it
+
+⚠️⚠️ **`benchmarks/omr-scan-e2e-2026-09/page_normalise.py` EXISTS**, and it is
+Sean's own ask from 2026-09-06, quoted in its docstring: *"The ground truth
+should be the scan as it is on the page… I would think we should fix a VERSION
+of the MXL to match what we know."* `normalise(truth_xml, staves_map)` merges
+the reference's parts down to the page's staves.
+
+Its five safety rules are the whole argument and they are already right: it
+never touches `library/reference/`; **the merge map comes from a HUMAN**
+(`works.json`'s `staves[i].parts`) and a row without one RAISES rather than
+guessing; **divisi is reported separately** (69.8% of condensed staff-measures
+are exact duplication, the rest is a real engraver's choice between a chord and
+two voices, and every measure's class is counted so a normalised figure cannot
+hide it); the transform is VERSIONED; and ⚠️ **rule 5 — a normalised figure is a
+NEW BENCHMARK ERA**, because OMR-NED is symmetric so merging parts moves the
+denominator, and edits it removes are STRUCTURAL CHARGE REMOVED, never the
+pipeline improving.
+
+Priced: `entire staff` **5,593 → 1,458** across the five worst rows. **But
+`scan_eval` does not import it** — the headline is still un-normalised. So this
+is a DECISION plus wiring.
+
+`page_normalise` (change the truth) and check 3 (change the comparison to be
+staff-to-staff) are two routes to the same end. **The former is built.** Check
+3 remains the more general answer and is still unbuilt, but it is no longer the
+cheapest next step.
+
+⚠️ **It converges with cause D.** `page_normalise` needs a hand map per row;
+Mahler p2 carries a `condensation` block instead of a `staves` map, which is
+exactly cause D. And `benchmarks/omr-staves-map-completion-2026-09/FINDINGS.md`
+finds all four Mahler rows **mappable after all**, the one-line percussion
+staves being the only residual. **Completing the staff maps unblocks cause D
+and normalisation at once**, and today's `one_line: true` field is the same
+convention that work proposed as `"lines": 1` — reconcile the two spellings
+before either is relied on.
 
 ## 7. Operational, for whoever picks this up
 
