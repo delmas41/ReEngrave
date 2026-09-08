@@ -42,7 +42,8 @@ ROOT = BENCH.parents[1]
 sys.path.insert(0, str(ROOT))
 
 from tools.omr import omr_ned  # noqa: E402
-from tools.omr.symbol_ledger import build_ledger, summarise  # noqa: E402
+from tools.omr.symbol_ledger import (  # noqa: E402
+    build_ledger, load_side, summarise)
 
 _ALTER_TEXT = {-2: "bb", -1: "b", 0: "", 1: "#", 2: "##"}
 
@@ -191,10 +192,11 @@ def mut_dynamic(root: ET.Element) -> str:
                     dyn = dt.find("dynamics")
                     if dyn is not None and len(dyn):
                         old = _tag(dyn[0])
+                        new = "ff" if old != "ff" else "pp"
                         dyn.remove(dyn[0])
-                        dyn.append(ET.Element("pp"))
+                        dyn.append(ET.Element(new))
                         return (f"part {pi} measure {m.get('number')}: a dynamic "
-                                f"{old} -> pp")
+                                f"{old} -> {new}")
     return "SKIPPED: this file carries no <dynamics>"
 
 
@@ -256,12 +258,6 @@ def mut_swap_parts(root: ET.Element) -> str:
     if len(parts) < 2:
         return "SKIPPED: fewer than 2 parts"
     a, b = parts[0], parts[1]
-    if _normalised(_measures(a)) == _normalised(_measures(b)):
-        # ⚠️ A VACUOUS MUTATION IS NOT A FAILED INSTRUMENT. Mahler 5 p.3 prints
-        # two parts whose bars are byte-identical (both tacet), so swapping
-        # them changes nothing and BOTH instruments correctly report nothing.
-        # Detected here rather than read as a miss.
-        return "SKIPPED: parts 0 and 1 carry identical music — the swap is a no-op"
     am = _measures(a)
     bm = _measures(b)
     for x in am:
@@ -318,6 +314,31 @@ MUTATIONS: dict[str, tuple[Callable[[ET.Element], str], set[str], set[str]]] = {
 # ---------------------------------------------------------------------------
 # Running the two instruments over one mutant
 # ---------------------------------------------------------------------------
+
+
+def is_vacuous(mutant: Path, truth: Path) -> bool:
+    """Did the mutation change any SYMBOL at all?
+
+    ⚠️ A VACUOUS MUTATION IS NOT A BLIND INSTRUMENT, and three of eleven turn
+    out vacuous on some files: Mahler 5 p.3 and p.5 print two reference parts
+    whose symbol streams are identical, so swapping them is a no-op, and
+    Dvořák 9 p.6's first dynamic was already the value the mutation writes.
+    Decided here from the extracted symbols rather than guessed from markup —
+    an earlier markup-level test missed both, because the parts differ in
+    `<print>` page furniture that carries no symbol.
+
+    ⚠️ It is the LEDGER's own symbol space, so it could in principle call a
+    mutation vacuous that the ledger merely cannot see. That is why `--assert`
+    ALSO requires musicdiff to report nothing on a vacuous row: an independent
+    instrument seeing a change the ledger calls a no-op is a blind spot, and
+    is reported as a failure.
+    """
+    def sig(p: Path) -> Counter:
+        syms, _ = load_side(p, "truth")
+        return Counter((s.part_index, s.measure, s.onset_ql, s.family,
+                        tuple(sorted((k, str(v)) for k, v in s.attrs.items())))
+                       for s in syms)
+    return sig(mutant) == sig(truth)
 
 
 def ledger_verdict(mutant: Path, truth: Path) -> dict[str, Any]:
@@ -388,8 +409,16 @@ def run(truth: Path, out: Path | None, detail: str, do_assert: bool,
                 "ledger": ledger_verdict(path, truth),
                 "musicdiff": {} if skip_musicdiff else musicdiff_verdict(path, truth, detail),
             }
+            entry["vacuous"] = is_vacuous(path, truth)
             rows.append(entry)
             if what.startswith("SKIPPED"):
+                continue
+            if entry["vacuous"]:
+                md = entry["musicdiff"]
+                if md and md.get("omr_ed"):
+                    failures.append(
+                        f"{name}: the ledger calls this mutation vacuous but "
+                        f"musicdiff charges {md['omr_ed']} edits — a BLIND SPOT")
                 continue
             named = set(entry["ledger"]["named"])
             weak_named = set(entry["ledger"]["named_single_key"])
@@ -433,6 +462,9 @@ def _print(report: dict[str, Any], skip_musicdiff: bool) -> None:
         print(f"── {r['mutation']}  (accepts: {r['expects']}; must not say: {r.get('forbids', '')})")
         print(f"   what        {r['what']}")
         lg = r["ledger"]
+        if r.get("vacuous"):
+            print(f"   {'VACUOUS':<{w}}the mutation changed no symbol on this "
+                  f"file — both instruments correctly report nothing")
         print(f"   {'LEDGER':<{w}}{lg['named'] or 'nothing — clean'}")
         if lg.get("named_single_key"):
             print(f"   {'  single-key':<{w}}{lg['named_single_key']}  (uncorroborated pairing)")

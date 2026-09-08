@@ -47,6 +47,7 @@
      "wrong note": 6
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.pitch"
    ],
@@ -78,6 +79,7 @@
      "wrong note": 6
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.pitch"
    ],
@@ -107,6 +109,7 @@
     "omr_ed": 0,
     "categories": {}
    },
+   "vacuous": false,
    "named_correctly": [
     "note.type"
    ],
@@ -142,6 +145,7 @@
      "wrong lyric": 1
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.duration_ql",
     "note.type"
@@ -187,6 +191,7 @@
      "wrong slur": 1
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "ambiguous"
    ],
@@ -223,6 +228,7 @@
      "wrong slur": 1
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "ambiguous"
    ],
@@ -254,6 +260,7 @@
      "wrong accidental": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.accidental"
    ],
@@ -285,6 +292,7 @@
      "wrong dynamic": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "dynamic.text"
    ],
@@ -316,6 +324,7 @@
      "wrong slur": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "slur:missing"
    ],
@@ -353,6 +362,7 @@
      "wrong dot": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note:missing",
     "time:missing"
@@ -412,6 +422,7 @@
      "wrong timesig": 4
     }
    },
+   "vacuous": false,
    "named_correctly": [],
    "misattributed": [],
    "misattributed_single_key": []

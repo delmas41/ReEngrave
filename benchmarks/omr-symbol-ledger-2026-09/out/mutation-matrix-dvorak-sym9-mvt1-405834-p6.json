@@ -47,6 +47,7 @@
      "wrong note": 4
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.pitch"
    ],
@@ -78,6 +79,7 @@
      "wrong note": 4
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.pitch"
    ],
@@ -109,6 +111,7 @@
      "wrong flag/beam": 4
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.type"
    ],
@@ -142,6 +145,7 @@
      "wrong flag/beam": 8
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.duration_ql",
     "note.type"
@@ -180,6 +184,7 @@
      "wrong note": 92
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "ambiguous",
     "note:missing"
@@ -216,6 +221,7 @@
      "wrong note": 12
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "ambiguous"
    ],
@@ -247,6 +253,7 @@
      "wrong accidental": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.accidental"
    ],
@@ -257,23 +264,31 @@
    "mutation": "dynamic_text",
    "expects": "dynamic.text",
    "forbids": "note.duration_ql/note.pitch",
-   "what": "part 0 measure 9: a dynamic pp -> pp",
+   "what": "part 0 measure 9: a dynamic pp -> ff",
    "ledger": {
     "outcomes": {
-     "matched_exact": 619
+     "matched_exact": 618,
+     "matched_attribute_error": 1
     },
-    "named": {},
+    "named": {
+     "dynamic.text": 1
+    },
     "named_single_key": {},
     "coverage_balanced": true,
     "measure_map": "verified",
     "not_assessable": {}
    },
    "musicdiff": {
-    "omr_ned": 0.0,
-    "omr_ed": 0,
-    "categories": {}
+    "omr_ned": 0.0004945598417408506,
+    "omr_ed": 2,
+    "categories": {
+     "wrong dynamic": 2
+    }
    },
-   "named_correctly": [],
+   "vacuous": false,
+   "named_correctly": [
+    "dynamic.text"
+   ],
    "misattributed": [],
    "misattributed_single_key": []
   },
@@ -302,6 +317,7 @@
      "wrong slur": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "slur:missing"
    ],
@@ -335,6 +351,7 @@
      "entire measure insert/delete": 27
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note:missing",
     "rest:missing"
@@ -383,12 +400,11 @@
      "wrong note": 338
     }
    },
+   "vacuous": false,
    "named_correctly": [],
    "misattributed": [],
    "misattributed_single_key": []
   }
  ],
- "failures": [
-  "dynamic_text: the ledger noticed NOTHING"
- ]
+ "failures": []
 }

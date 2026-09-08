@@ -47,6 +47,7 @@
      "wrong note": 6
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.pitch"
    ],
@@ -78,6 +79,7 @@
      "wrong note": 6
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.pitch"
    ],
@@ -107,6 +109,7 @@
     "omr_ed": 0,
     "categories": {}
    },
+   "vacuous": false,
    "named_correctly": [
     "note.type"
    ],
@@ -132,7 +135,8 @@
     "omr_ned": 0.0,
     "omr_ed": 0,
     "categories": {}
-   }
+   },
+   "vacuous": true
   },
   {
    "mutation": "delete_note",
@@ -166,6 +170,7 @@
      "wrong note": 9
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "ambiguous"
    ],
@@ -197,6 +202,7 @@
      "wrong note": 9
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "ambiguous"
    ],
@@ -228,6 +234,7 @@
      "wrong accidental": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.accidental"
    ],
@@ -238,7 +245,7 @@
    "mutation": "dynamic_text",
    "expects": "dynamic.text",
    "forbids": "note.duration_ql/note.pitch",
-   "what": "part 0 measure 18: a dynamic p -> pp",
+   "what": "part 0 measure 18: a dynamic p -> ff",
    "ledger": {
     "outcomes": {
      "matched_exact": 1462,
@@ -259,6 +266,7 @@
      "wrong dynamic": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "dynamic.text"
    ],
@@ -290,6 +298,7 @@
      "wrong slur": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "slur:missing"
    ],
@@ -324,6 +333,7 @@
      "entire measure insert/delete": 19
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note:missing",
     "rest:missing"
@@ -370,6 +380,7 @@
      "wrong tie": 6
     }
    },
+   "vacuous": false,
    "named_correctly": [],
    "misattributed": [],
    "misattributed_single_key": []

@@ -48,6 +48,7 @@
      "wrong note": 7
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.pitch"
    ],
@@ -79,6 +80,7 @@
      "wrong note": 8
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.pitch"
    ],
@@ -110,6 +112,7 @@
      "wrong flag/beam": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.type"
    ],
@@ -143,6 +146,7 @@
      "wrong flag/beam": 1
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.duration_ql",
     "note.type"
@@ -179,6 +183,7 @@
      "wrong slur": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "ambiguous"
    ],
@@ -211,6 +216,7 @@
      "wrong slur": 1
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "ambiguous"
    ],
@@ -242,6 +248,7 @@
      "wrong accidental": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note.accidental"
    ],
@@ -273,6 +280,7 @@
      "wrong dynamic": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "dynamic.text"
    ],
@@ -304,6 +312,7 @@
      "wrong slur": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "slur:missing"
    ],
@@ -337,6 +346,7 @@
      "wrong slur": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [
     "note:missing"
    ],
@@ -391,6 +401,7 @@
      "wrong slur": 2
     }
    },
+   "vacuous": false,
    "named_correctly": [],
    "misattributed": [],
    "misattributed_single_key": []
