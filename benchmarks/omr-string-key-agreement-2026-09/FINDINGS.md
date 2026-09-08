@@ -168,3 +168,141 @@ knows why it was wrong.
 * Whether the "prints no signature by convention" set can be identified from the
   page is untested. It may need the era or the publisher, which is a fact about
   the edition and not about the staff.
+
+---
+
+# BUILT — `tools/omr/key_consensus.py` (2026-09-08)
+
+Sean: *"Go for it."* The deduction half of §3 is implemented, tested and
+measured. **Nothing is wired into either pipeline; the module is pure and
+reports only.**
+
+    python3 -m tools.omr.key_consensus <transcription.json>
+
+## 7. What it does
+
+Establishes the concert key from the concert-pitch staves, then deduces every
+staff's WRITTEN key as `concert + fifths_offset` and compares it to what was
+read. Outcomes per staff: `agrees` / `contradicts` /
+`convention_no_signature` / `unpitched` / `no_reading` / `no_instrument` /
+`key_dependent_transposition_unknown`.
+
+**It never repairs.** A contradicting staff keeps its own reading;
+`TestItNeverRepairs` pins that.
+
+## 8. The four cases it is built on
+
+| | consensus | result |
+|---|---|---|
+| Beethoven 5 p1, TRUTH keys | unanimous 8/8 → −3 | **0 contradictions**; Clarinetti in B deduced to −1; Trombe and Timpani explained by convention |
+| Beethoven 5 p1, the STAGED readings (8 of 12 abstained) | majority 2/3 → −3 | **flags exactly the Viola** (read −1, expected −3) and nothing else |
+| Holst *Mercury*, full orchestra | majority, `no_signature_score` | the 6 genuinely BITONAL parts, clarinet false positives gone |
+| Tchaikovsky 6 mvt1 m161 | **abstains** (7/13) | 0 contradictions — was 6 CORRECT staves flagged |
+
+⚠️ **Two of those four are FAILURES OF MY OWN DESIGN, found by running it.**
+I predicted Mercury would abstain on bitonality; at full-orchestra scale it did
+not, because Holst writes the whole score without signatures and 28 of 34
+witnesses read 0. And a bare strict majority admitted Tchaikovsky's 7-vs-6
+split, **picked the wrong side** (the second subject is in D major, so the six
+reading 2 sharps were right) and confidently flagged six correct staves.
+
+Both repairs are principled rather than tuned:
+
+* **`MAJORITY_SHARE = 0.60`** — the weakest form of the premise. The claim is
+  that concert-pitch instruments AGREE, so a one-vote plurality is not
+  agreement. 7/13 = 0.538 abstains; 2/3 and 8/8 stand.
+* **A score that prints NO signatures is detected two ways.** The first needs
+  no constant, because such a page contradicts ITSELF: two staves of one
+  instrument built in DIFFERENT keys printing the SAME signature is impossible
+  unless the signature is absent. Mercury prints `Clarinet 1 in B♭` and
+  `Clarinet 1 in A`, expectations +2 and −3, and both read 0.
+
+Both carve-outs only ever explain a **ZERO**. A trumpet reading two sharps is
+still a contradiction (`test_the_carve_out_only_ever_explains_a_ZERO`).
+
+## 9. False-positive rate on data that is already correct — 15.1% → **5.9%**
+
+A reference encoding is a published human-made score, so a contradiction
+against one is a false positive until a human says otherwise.
+`probe_false_positive_rate.py` over **152 orchestral encodings** (≥8 parts):
+
+    decided: unanimous 147, majority 5
+    clean                       143
+    with contradictions           9   (5.9%)
+
+⚠️ **The first run read 15.1%, and the whole gap was ONE defect.**
+`Instrument.unpitched` is documented "exclude from key / pitch reasoning" and
+the first cut honoured only half of it — Triangle, Snare Drum, Cymbal, Tamtam,
+Gran Cassa and Glockenspiel were kept out of the WITNESS set and then judged
+anyway. **A drum has no key.**
+
+## 10. ⚠️ And most of the surviving 9 are TRUE findings — four lexicon gaps
+
+The module's own contradictions caught **transposing instruments the lexicon
+treats as concert pitch**, each confirmed by arithmetic on independent works:
+
+| label | lexicon | actually | evidence |
+|---|---|---|---|
+| **Alto Flute** | Flute, +0 | **in G, −1** | Holst mvt2 −3+(−1)=−4 ✓; mvt4 0+(−1)=−1 ✓ |
+| **Oboe d'amore** | Oboe, +0 | **in A, −3** | Bach B minor Mass 3+(−3)=0 ✓ |
+| **Bass Sarrusophone** | Sarrusophone, +0 | **in B♭, +2** | Boulanger 0+2=2 ✓ |
+
+⚠️ **NOT fixed here.** A lexicon change is global — an alias admitted for one
+score is admitted for every score ever read — and this repo's standing rule is
+that one is validated against the 1422-label margin corpus
+(`benchmarks/omr-lexicon-2026-09/`). Recorded as a finding, not applied.
+⚠️ `Alto Flute` is also the exact trap CLAUDE.md already names in the roster
+work: `Fl. Alt.` is an ALTO FLUTE, not a trombone.
+
+Of the nine: 1 genuine musical (Mercury's bitonality), 4 lexicon, 2 harp-only
+(`MAY_DIFFER_NOT_A_WITNESS` keeps harps from voting but still reports them),
+and **3 unadjudicated** — Mozart 41's `Corno in F` reading 1 where the
+deduction says 0, on all three movements, i.e. one underlying cause; and Bach's
+Timpani reading 1, which the convention carve-out correctly declines to explain
+because it is not a zero.
+
+## 10b. ⚠️ MODERN SCORES — a whole repertoire, and the corpus cannot price it
+
+Sean, mid-session: *"It is common for modern scores to have no key
+signatures."* The self-contradiction proof above **cannot see that case**: it
+needs the page to print one instrument in two different keys, which most
+scores never do. Left there, every signature-less score would charge each of
+its transposing staves — a confident contradiction against correct engraving,
+applied to an era.
+
+So a second, general test asks the staves that SHOULD show something: of those
+whose deduced signature is non-zero, what share printed nothing?
+`NO_SIGNATURE_SHARE = 0.80` over `NO_SIGNATURE_MIN_STAVES = 3`, set high
+deliberately — a false positive HERE buys silence about real contradictions,
+so it must take a near-sweep.
+
+⚠️ **The denominator is every staff with a non-zero expectation, not the
+transposing ones alone**, and the reason is a fixture rather than taste: a
+tonal score whose three transposing staves were all misread as zero answers
+3 of 3 = 1.0 under the narrow denominator and is declared signature-less,
+turning three misreads into a blanket amnesty. Wide, it is 3 of 11 and the
+three are still reported.
+
+⚠️ **AND THE FIRST TEST WRITTEN FOR THAT DENOMINATOR WAS VACUOUS**, with a
+docstring that asserted a falsehood: it claimed Beethoven 5 p1 would read 2 of
+2 under the narrow rule, when Trombe in C and Timpani are CONCERT pitch and
+that rule EXCLUDES them. Both denominators answer "no" on that page. Caught by
+mutating the denominator and watching the suite stay green; the discriminating
+fixture is `test_misread_transposers_alone_must_not_declare_a_score_signature_less`.
+
+⚠️⚠️ **The 152-score corpus does not exercise this rule at all** — the figure
+below is IDENTICAL with and without it, because the library is 18th–19th
+century repertoire and holds no signature-less modern score. It is guarded by
+unit tests and by nothing else. **The lever is corpus widening, not a re-run.**
+
+## 11. What is NOT done
+
+* **Nothing is wired.** Neither `transcribe` nor `staged` calls this. No
+  accuracy arm was run and no export changed.
+* The **staged** home for it is a redundancy in `groups.py` plus a `Q` for the
+  deduced key — D21 — and that is a design step, not an import.
+* `MAY_DIFFER_NOT_A_WITNESS = {Harp}` is **declared, not measured**: no corpus
+  here prices how often a harp actually departs.
+* The 152 scored are orchestral encodings, not scans. On a scan the readings
+  are far sparser — the Beethoven case had 3 witnesses, not 8 — and the
+  false-positive rate there is unmeasured.
