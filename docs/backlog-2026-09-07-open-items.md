@@ -219,7 +219,26 @@ labels were worth **0**, dropped without complaint by 58 of the identity
 harness's 59 arms. **The map's job is to make that visible by construction
 instead of by a day of forensics.**
 
-## F3. The staged pipeline — BUILT ALONGSIDE, not yet tested (2026-09-07)
+## F3. The staged pipeline — BUILT AND MERGED, not yet tested (2026-09-07)
+
+⚠️ **MERGED to main as `fd0b72e1`.** 15 of 21 decisions wired, 6 declared stubs
+that abstain with `NOT_IMPLEMENTED`; 5 of 6 consequences; **153 tests**. Behind
+`OMR_ADJUDICATE` (default `0`), **no pre-existing pipeline file modified** —
+verified by diffing the branch's own commits, not by assertion.
+
+**Read `tools/omr/staged/ASSUMPTIONS.md` first.** It opens with STATE OF THE
+BUILD, states that it outranks the reader's memory, and carries an
+**eleven-entry refusals table** — each entry cost someone a measurement. If a
+fresh agent reads one section, that one.
+
+⚠️ **The next agent will want to start with the six stubs. The build agent
+recommends against it**: stubs are breadth, while redundant groups give the
+fifteen already-wired decisions a way to be **wrong out loud** — and with no
+ground truth on IMSLP scans, that agreement signal is the only self-check that
+exists. Recorded because it is the one ordering call expected to be overturned
+by instinct.
+
+
 
 Sean, after the map came back: *"The order is the key… We have the information
 but not in the right order so it kills or discards or miscalculates."* And then
