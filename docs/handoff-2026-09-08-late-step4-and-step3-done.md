@@ -95,6 +95,14 @@ Then, in the original order: **Step 5** (six staged stubs) — still deliberatel
 last, and the staged pipeline **still has no exporter**, which is a missing
 component, not plumbing. Do not start one as a side quest.
 
+## Suite
+
+**3,057 passed in 8m50s**, `tools/omr/tests/` with `test_direction_text.py`
+excluded (its Surya-venv test is environment-dependent in a worktree and is a
+documented pre-existing condition, not a breakage). `export_coverage --all`
+exits 0. The music21 cross-parser and the ledger's identity self-check are
+clean on all 22 re-exported files.
+
 ## Traps this session paid for
 
 * ⚠️ **`part_index` on a TRUTH-side ledger row is the TRUTH part index**, not
