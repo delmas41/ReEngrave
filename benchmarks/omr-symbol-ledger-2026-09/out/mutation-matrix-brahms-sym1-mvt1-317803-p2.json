@@ -1,5 +1,5 @@
 {
- "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-beam-bars/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.truth.musicxml",
+ "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/fix-beam-bars/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.truth.musicxml",
  "detail": "AllObjects",
  "rows": [
   {
@@ -8,7 +8,7 @@
    "what": "the file, copied",
    "ledger": {
     "outcomes": {
-     "matched_exact": 527
+     "matched_exact": 1569
     },
     "named": {},
     "named_single_key": {},
@@ -26,10 +26,10 @@
    "mutation": "pitch_step",
    "expects": "note.pitch",
    "forbids": "note.dots/note.duration_ql/note.type",
-   "what": "part 17 measure 0: the 2nd note's step D -> C",
+   "what": "part 0 measure 8: the 2nd note's step A -> C",
    "ledger": {
     "outcomes": {
-     "matched_exact": 526,
+     "matched_exact": 1568,
      "matched_attribute_error": 1
     },
     "named": {
@@ -41,10 +41,10 @@
     "not_assessable": {}
    },
    "musicdiff": {
-    "omr_ned": 0.005226480836236934,
-    "omr_ed": 12,
+    "omr_ned": 0.00088261253309797,
+    "omr_ed": 6,
     "categories": {
-     "wrong note": 12
+     "wrong note": 6
     }
    },
    "named_correctly": [
@@ -57,10 +57,10 @@
    "mutation": "pitch_octave",
    "expects": "note.pitch",
    "forbids": "note.dots/note.duration_ql/note.type",
-   "what": "part 17 measure 0: the 2nd note's octave 4 -> 3",
+   "what": "part 0 measure 8: the 2nd note's octave 5 -> 4",
    "ledger": {
     "outcomes": {
-     "matched_exact": 526,
+     "matched_exact": 1568,
      "matched_attribute_error": 1
     },
     "named": {
@@ -72,10 +72,10 @@
     "not_assessable": {}
    },
    "musicdiff": {
-    "omr_ned": 0.005226480836236934,
-    "omr_ed": 12,
+    "omr_ned": 0.00088261253309797,
+    "omr_ed": 6,
     "categories": {
-     "wrong note": 12
+     "wrong note": 6
     }
    },
    "named_correctly": [
@@ -88,10 +88,10 @@
    "mutation": "written_type",
    "expects": "note.type",
    "forbids": "note.accidental/note.pitch",
-   "what": "part 17 measure 0: the 2nd note's <type> eighth -> 16th",
+   "what": "part 0 measure 8: the 2nd note's <type> eighth -> 16th",
    "ledger": {
     "outcomes": {
-     "matched_exact": 526,
+     "matched_exact": 1568,
      "matched_attribute_error": 1
     },
     "named": {
@@ -117,10 +117,10 @@
    "mutation": "duration_swap",
    "expects": "note.duration_ql/note.type",
    "forbids": "note.accidental/note.pitch",
-   "what": "part 17 measure 1: notes 0 and 1 exchange durations",
+   "what": "part 0 measure 11: notes 0 and 1 exchange durations",
    "ledger": {
     "outcomes": {
-     "matched_exact": 525,
+     "matched_exact": 1567,
      "matched_attribute_error": 2
     },
     "named": {
@@ -133,10 +133,13 @@
     "not_assessable": {}
    },
    "musicdiff": {
-    "omr_ned": 0.01872006965607314,
-    "omr_ed": 43,
+    "omr_ned": 0.0019123271550456017,
+    "omr_ed": 13,
     "categories": {
-     "entire measure insert/delete": 43
+     "wrong note": 9,
+     "wrong crescendo": 2,
+     "wrong flag/beam": 1,
+     "wrong lyric": 1
     }
    },
    "named_correctly": [
@@ -150,16 +153,19 @@
    "mutation": "delete_note",
    "expects": "ambiguous/note:missing",
    "forbids": "note.duration_ql/note.pitch",
-   "what": "part 17 measure 0: the 2nd note deleted",
+   "what": "part 0 measure 8: the 2nd note deleted",
    "ledger": {
     "outcomes": {
-     "matched_exact": 525,
-     "ambiguous": 2
+     "matched_exact": 1560,
+     "matched_attribute_error": 1,
+     "ambiguous": 15
     },
     "named": {
-     "ambiguous": 2
+     "ambiguous": 15
     },
-    "named_single_key": {},
+    "named_single_key": {
+     "note.pitch": 1
+    },
     "coverage_balanced": true,
     "measure_map": "verified",
     "not_assessable": {
@@ -172,32 +178,35 @@
     }
    },
    "musicdiff": {
-    "omr_ned": 0.0034934497816593887,
-    "omr_ed": 8,
+    "omr_ned": 0.006475349521707138,
+    "omr_ed": 44,
     "categories": {
-     "wrong note": 6,
-     "wrong flag/beam": 1,
-     "wrong tuplet": 1
+     "wrong note": 39,
+     "wrong flag/beam": 2,
+     "wrong tie": 2,
+     "wrong slur": 1
     }
    },
    "named_correctly": [
     "ambiguous"
    ],
    "misattributed": [],
-   "misattributed_single_key": []
+   "misattributed_single_key": [
+    "note.pitch"
+   ]
   },
   {
    "mutation": "insert_note",
    "expects": "ambiguous/note:spurious",
    "forbids": "note.duration_ql/note.pitch",
-   "what": "part 17 measure 0: the 2nd note duplicated",
+   "what": "part 0 measure 8: the 2nd note duplicated",
    "ledger": {
     "outcomes": {
-     "matched_exact": 521,
-     "ambiguous": 14
+     "matched_exact": 1559,
+     "ambiguous": 21
     },
     "named": {
-     "ambiguous": 14
+     "ambiguous": 21
     },
     "named_single_key": {},
     "coverage_balanced": true,
@@ -205,12 +214,13 @@
     "not_assessable": {}
    },
    "musicdiff": {
-    "omr_ned": 0.0034752389226759338,
-    "omr_ed": 8,
+    "omr_ned": 0.006469636818114983,
+    "omr_ed": 44,
     "categories": {
-     "wrong note": 6,
-     "wrong flag/beam": 1,
-     "wrong tuplet": 1
+     "wrong note": 39,
+     "wrong flag/beam": 2,
+     "wrong tie": 2,
+     "wrong slur": 1
     }
    },
    "named_correctly": [
@@ -223,10 +233,10 @@
    "mutation": "accidental",
    "expects": "note.accidental",
    "forbids": "note.duration_ql/note.pitch/note.type",
-   "what": "part 17 measure 0: a printed <accidental> sharp -> natural (pitch untouched)",
+   "what": "part 0 measure 8: a printed <accidental> natural -> sharp (pitch untouched)",
    "ledger": {
     "outcomes": {
-     "matched_exact": 526,
+     "matched_exact": 1568,
      "matched_attribute_error": 1
     },
     "named": {
@@ -238,7 +248,7 @@
     "not_assessable": {}
    },
    "musicdiff": {
-    "omr_ned": 0.0008710801393728223,
+    "omr_ned": 0.0002942041776993233,
     "omr_ed": 2,
     "categories": {
      "wrong accidental": 2
@@ -254,10 +264,10 @@
    "mutation": "dynamic_text",
    "expects": "dynamic.text",
    "forbids": "note.duration_ql/note.pitch",
-   "what": "part 17 measure 0: a dynamic p -> pp",
+   "what": "part 0 measure 9: a dynamic ff -> pp",
    "ledger": {
     "outcomes": {
-     "matched_exact": 526,
+     "matched_exact": 1568,
      "matched_attribute_error": 1
     },
     "named": {
@@ -269,7 +279,7 @@
     "not_assessable": {}
    },
    "musicdiff": {
-    "omr_ned": 0.0008710801393728223,
+    "omr_ned": 0.0002942041776993233,
     "omr_ed": 2,
     "categories": {
      "wrong dynamic": 2
@@ -285,35 +295,49 @@
    "mutation": "delete_slur",
    "expects": "ambiguous/slur:missing",
    "forbids": "note.duration_ql/note.pitch/uncorresponded:measure_unresolved",
-   "what": "SKIPPED: this file carries no <slur>",
+   "what": "part 0 measure 8: one <slur> endpoint deleted",
    "ledger": {
     "outcomes": {
-     "matched_exact": 527
+     "matched_exact": 1568,
+     "missing": 1
     },
-    "named": {},
+    "named": {
+     "slur:missing": 1
+    },
     "named_single_key": {},
     "coverage_balanced": true,
     "measure_map": "verified",
     "not_assessable": {}
    },
    "musicdiff": {
-    "omr_ned": 0.0,
-    "omr_ed": 0,
-    "categories": {}
-   }
+    "omr_ned": 0.0002942041776993233,
+    "omr_ed": 2,
+    "categories": {
+     "wrong slur": 2
+    }
+   },
+   "named_correctly": [
+    "slur:missing"
+   ],
+   "misattributed": [],
+   "misattributed_single_key": []
   },
   {
    "mutation": "delete_measure",
    "expects": "ambiguous/clef:missing/key:missing/note:missing/rest:missing/time:missing/uncorresponded:measure_unresolved",
    "forbids": "note.duration_ql/note.pitch",
-   "what": "part 0: measure 1 deleted",
+   "what": "part 0: measure 9 deleted",
    "ledger": {
     "outcomes": {
-     "matched_exact": 526,
-     "missing": 1
+     "matched_exact": 1561,
+     "missing": 8
     },
     "named": {
-     "rest:missing": 1
+     "note:missing": 3,
+     "dynamic:missing": 2,
+     "articulation:missing": 1,
+     "tie:missing": 1,
+     "time:missing": 1
     },
     "named_single_key": {},
     "coverage_balanced": true,
@@ -321,14 +345,17 @@
     "not_assessable": {}
    },
    "musicdiff": {
-    "omr_ned": 0.0008718395815170009,
-    "omr_ed": 2,
+    "omr_ned": 0.0035408675125405725,
+    "omr_ed": 24,
     "categories": {
-     "entire measure insert/delete": 2
+     "entire measure insert/delete": 18,
+     "wrong note head": 4,
+     "wrong dot": 2
     }
    },
    "named_correctly": [
-    "rest:missing"
+    "note:missing",
+    "time:missing"
    ],
    "misattributed": [],
    "misattributed_single_key": []
@@ -340,30 +367,49 @@
    "what": "parts 0 and 1 exchange all their music",
    "ledger": {
     "outcomes": {
-     "matched_exact": 522,
-     "spurious": 5,
-     "missing": 5
+     "matched_exact": 1443,
+     "matched_attribute_error": 40,
+     "missing": 83,
+     "spurious": 83,
+     "ambiguous": 6
     },
     "named": {
-     "word:missing": 4,
-     "word:spurious": 4,
-     "rest:spurious": 1,
-     "rest:missing": 1
+     "note.pitch": 30,
+     "note:missing": 30,
+     "note:spurious": 30,
+     "rest:spurious": 25,
+     "rest:missing": 25,
+     "tie:missing": 12,
+     "tie:spurious": 12,
+     "note.accidental": 10
     },
-    "named_single_key": {},
+    "named_single_key": {
+     "note.pitch": 10,
+     "note.accidental": 7
+    },
     "coverage_balanced": true,
     "measure_map": "verified",
     "not_assessable": {
+     "note.duration_ql": 10,
+     "note.type": 10,
+     "note.dots": 10,
      "rest.duration_ql": 2,
      "rest.type": 2,
      "rest.dots": 2
     }
    },
    "musicdiff": {
-    "omr_ned": 0.078397212543554,
-    "omr_ed": 180,
+    "omr_ned": 0.08679023242130038,
+    "omr_ed": 590,
     "categories": {
-     "wrong direction": 180
+     "entire measure insert/delete": 328,
+     "wrong note": 216,
+     "wrong flag/beam": 8,
+     "wrong slur": 8,
+     "wrong lyric": 6,
+     "wrong crescendo": 6,
+     "wrong diminuendo": 6,
+     "wrong timesig": 4
     }
    },
    "named_correctly": [],

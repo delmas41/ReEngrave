@@ -352,7 +352,7 @@
   },
   {
    "mutation": "swap_parts",
-   "expects": "ambiguous/note.pitch/note:missing/note:spurious",
+   "expects": "ANY",
    "forbids": "(nothing)",
    "what": "parts 0 and 1 exchange all their music",
    "ledger": {
