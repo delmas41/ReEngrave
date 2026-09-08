@@ -5,6 +5,69 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-08 (evening) — Step 2 opened: the first shadow run on real ink
+
+- **The staged pipeline ran against the existing one on a real scanned page**
+  for the first time (Beethoven 5 / Litolff, `pdf_page_index` 1, 12 staves).
+  **agree 50, differ 4, new_abstention 20, new_decision 0, legacy_only 0** over
+  74 rows. **JOIN CONTROL: `staff_ordinal` 12 of 12** — the subject keys line
+  up, which is what makes the rest readable.
+- **`4e089e00` — the CLI gathered TWICE.** `--against` re-ran
+  prepare/gather/adjudicate and built the divergence table from a SECOND log,
+  so `result["adjudication"]` and `result["divergence"]` described different
+  passes of a detector with documented run-to-run jitter — contradicting
+  `pipeline.py`'s own docstring, where "one gather, jitter cancels exactly" is
+  given as the reason shadow mode exists. Also doubled every `--against` run.
+  ⚠️ The table is now built **immediately after ADJUDICATE, before GROUPS and
+  EVALUATE**: a consequence may restate a value, and building it later would
+  compare legacy against post-consequence values while calling them decisions.
+- ⚠️ **`be76d961` — the two paths stated the same fact in different shapes and
+  `==` never noticed.** `key_signature`: legacy writes
+  `{'sharps':0,'flats':2,…}`, staged returns `int(fifths)`; a dict never equals
+  an int, so **every decided key-signature row was DIFFER by construction —
+  including perfect agreement.** `instrument` had the same defect **latently**
+  (`{"name":…}` vs name+family+more), found by asking what each adjudicator
+  returns rather than by reading a table. `NOT_COMPARABLE` is now a counted
+  first-class outcome — the symbol ledger's principle, that `uncorresponded`
+  and `not_assessable` are counted and never absorbed.
+  ⚠️ **The guard points the other way**: an adapter may only re-express a unit,
+  never make two different readings look equal. A false DIFFER gets
+  investigated; a false AGREE does not.
+- **The result, stated honestly.** All four `differ` rows are key signatures.
+  Against the dossier's written keys joined through `works.json`: staged right
+  on 3, legacy on 0. ⚠️ **But that is not "3/4 vs 0/4"** — staged decided only
+  **4 of 12** staves and declined 8, while legacy decided all 12 and is wrong
+  on every one checkable. **`NEW_ABSTENTION` is a feature that scores as a
+  loss**, exactly as designed.
+- ⚠️ **OPEN: the Viola.** Hypothesis (Sean) that the alto clef fired a wrong
+  signal is **FALSIFIED — the clef read `alto` correctly** — and his correction
+  is the right one: an alto clef changes *where* accidentals are drawn, not
+  *how many*; a non-transposing viola in C minor is −3 like everyone else.
+  Correct clef, correct slot table, still −1. `detail.n_accidentals` splits it:
+  **1** = only one flat found (detection shortfall, the fit may not infer);
+  **3** = all found and mis-fitted (a real alto slot-table bug). Different
+  fixes. First job on the next session.
+- ⚠️ **A coordinator-written probe produced a false finding.** It indexed
+  record rows on `'row_id'` when the serialised key is `'id'`, so the index was
+  empty, every lookup missed, and the basis walk returned `Counter()`
+  regardless of content — briefly "showing" that a key-signature verdict rested
+  on nothing. *A zero is a suspect.* The corrected probe prints `len(by)` and
+  `len(basis)` as positive controls.
+- **Branch audit — nothing needed merging.** `agitated-bassi` and
+  `dynamics-letters-clef-approach` are **0 ahead of main**; `compassionate-kilby`
+  and `slot-group-mapping` **do not exist on origin at all** and may hold
+  review-ready work only on the Mac. ⚠️ The first pass read "634 ahead, no merge
+  base" — **artefacts of a shallow clone**, corrected with `--unshallow`.
+- **`49247b6f` — CLAUDE.md contradicted itself** about whether the `Tp.` fix is
+  in main. It is. `fixed-then-kept-open-in-prose`, second recorded instance, and
+  worse than a stale sentence because naming a branch as the place to get
+  something is a work order.
+- **Still not measured anywhere on this branch**: no `orchestral_eval`, no
+  `scan_eval`, no OMR-NED. Handoff:
+  [docs/handoff-2026-09-08-evening-to-local-session.md](docs/handoff-2026-09-08-evening-to-local-session.md).
+
+---
+
 ## 2026-09-08 — The tenth export gap, and the hole in the check built to catch them
 
 - **`<ornaments>` was never emitted.** `grep -c ornaments tools/omr/export.py`

@@ -103,6 +103,29 @@ changes week to week.
   manifest, refusing anything whose frame does not match. Where the work stands and
   Sean's checklist: [docs/handoff-2026-09-03-prefill-session.md](docs/handoff-2026-09-03-prefill-session.md).
 
+## The alternative pipeline met the real one (2026-09-08)
+
+A second OMR pipeline has been built alongside the existing one — the same
+page read twice, by two different designs, with the disagreements listed.
+It ran against real ink for the first time today.
+
+On one scanned Beethoven page the two paths agreed on 50 of 74 facts. The
+interesting column is not the disagreements but the **abstentions**: the new
+pipeline declined to answer 20 times, where the old one always answers. On
+key signatures the old pipeline gave a reading for all twelve staves and was
+wrong on every one that could be checked; the new one answered four and got
+three right.
+
+⚠️ **That is a feature that looks like a failure to a score.** A metric
+charges for a missing answer, so a pipeline that declines to guess measures
+worse while being more honest. The project has hit this before and the rule
+is written down: read the abstention column before reading any score.
+
+One open question, deliberately not guessed at: a viola staff read its key a
+third short. The obvious explanation — that its unusual clef confused the
+reader — was tested and **proved wrong**, so the cause is somewhere else and
+a single recorded number will say where.
+
 ## The tenth export gap, and the check that could not see it (2026-09-08)
 
 Ten times now the pipeline has recognised something correctly and then lost it

@@ -26,6 +26,10 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-08-evening-to-local-session.md](docs/handoff-2026-09-08-evening-to-local-session.md)
+— the most recent handoff: Step 1 CLOSED, Step 2 OPENED with the first shadow
+run on real ink, and the one open question (the Viola's key signature, with the
+single number that splits its two candidate causes). Then read
 [docs/handoff-2026-09-08-next-steps.md](docs/handoff-2026-09-08-next-steps.md)
 — what the staged pipeline and the symbol ledger are, **why musicdiff bucket
 totals can no longer rank work** (amplification differs 6×–2× by error kind; one
