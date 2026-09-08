@@ -26,6 +26,17 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-08-big-picture.md](docs/handoff-2026-09-08-big-picture.md)
+— written to hand the BIG PICTURE to a fresh session: **Steps 1-4 are closed**
+(the `entire staff` bucket separated into four causes, three of them shut, and
+the rest mechanism found and fixed), **`OMR_SLOT_STITCH` is now DEFAULT ON**,
+and the two things a strategic session should carry are that **four of five
+findings today were "the value existed and nothing read it"** — twice inside
+the measuring instruments — and that **the measurement layer, not the reader, is
+now the binding constraint**. It also names the one genuinely open strategic
+question: two separately-measured conclusions in this repo disagree about
+whether condensed staves should be split at all, and nobody has reconciled
+them. Its predecessor
 [docs/handoff-2026-09-08-late-step4-and-step3-done.md](docs/handoff-2026-09-08-late-step4-and-step3-done.md)
 — the most recent handoff: **Step 4 is separated** (four causes, not three,
 summing to the bucket exactly — only one is the reader's) and **Step 3's
