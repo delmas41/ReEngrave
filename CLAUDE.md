@@ -25,6 +25,12 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Frontend:** React + Vite + React Query + TypeScript
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
+⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-08-next-steps.md](docs/handoff-2026-09-08-next-steps.md)
+— what the staged pipeline and the symbol ledger are, **why musicdiff bucket
+totals can no longer rank work** (amplification differs 6×–2× by error kind; one
+changed `<type>` scores ZERO on 10 of 20 files), and the ranked next steps.
+
 **Backlog / research notes:** see [NOTES.md](NOTES.md) — surface these at the start of a ReEngrave session.
 
 **Where the work stands today:** see [PROJECT_STATUS.md](PROJECT_STATUS.md).
