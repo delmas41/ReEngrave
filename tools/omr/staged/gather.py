@@ -361,6 +361,211 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Cross-staff ownership evidence
+#
+# ⚠️ THIS IS THE EVIDENCE THE EXISTING PIPELINE DECIDES ON AND DOES NOT WRITE
+# DOWN. `OMR_CONTEST_DUMP` records both confidences and the deciding tier, and
+# NOT the band distances or the ladder rung counts -- i.e. the one quantity
+# documented as a coin flip is the one quantity not on the record. And it is
+# off by default, so today it records nothing at all.
+# ─────────────────────────────────────────────────────────────────────────────
+
+_LEDGER_CLASS = "ledgerLine"
+
+#: Two boxes are the same ink if they overlap this much. (A-OWN-3)
+CONTEST_IOU = 0.5
+
+#: Expected ledger rungs between a notehead and its staff.
+#: ⚠️ `+ 0.25` before truncation is NOT a fudge: a note sitting ON the first
+#: ledger measures ~0.994 spacings, and plain truncation read that as needing
+#: NO rung -- so the same note needed its ledger in one bar and not the next,
+#: one pixel apart.
+LEDGER_ROUND_UP = 0.25
+
+
+def _page_box(cell: Any, det: Any) -> Optional[Tuple[float, float, float, float]]:
+    """Canonical cell coordinates -> page pixels."""
+    bbox = getattr(cell, "bbox_page_px", None)
+    up = getattr(cell, "upscale_factor", None)
+    if not bbox or not up:
+        return None
+    x0, y0 = bbox[0], bbox[1]
+    return (x0 + det.x_canonical / up, y0 + det.y_canonical / up,
+            x0 + (det.x_canonical + det.width_canonical) / up,
+            y0 + (det.y_canonical + det.height_canonical) / up)
+
+
+def _iou(a, b) -> float:
+    ix0, iy0 = max(a[0], b[0]), max(a[1], b[1])
+    ix1, iy1 = min(a[2], b[2]), min(a[3], b[3])
+    if ix1 <= ix0 or iy1 <= iy0:
+        return 0.0
+    inter = (ix1 - ix0) * (iy1 - iy0)
+    area_a = (a[2] - a[0]) * (a[3] - a[1])
+    area_b = (b[2] - b[0]) * (b[3] - b[1])
+    union = area_a + area_b - inter
+    return inter / union if union > 0 else 0.0
+
+
+def _band_distance_spaces(y: float, line_ys: Sequence[float],
+                          spacing: float) -> float:
+    """Distance from `y` to the staff's five-line band, in staff spaces.
+
+    Zero inside the band. ⚠️ This is the quantity measured to be very nearly a
+    coin flip -- the misattributed hairpins sat 5-62 px nearer the wrong staff
+    against 25 px the other way for the one kept correctly -- so it is
+    gathered so a decision can WEIGH it, never so a decision can trust it.
+    """
+    top, bottom = min(line_ys), max(line_ys)
+    if top <= y <= bottom:
+        return 0.0
+    gap = (top - y) if y < top else (y - bottom)
+    return gap / spacing if spacing else gap
+
+
+def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
+                              local: Dict[int, Tuple[int, int]],
+                              detections: Dict[str, List[Any]]) -> None:
+    """Every cross-staff contest, with the evidence for BOTH candidates.
+
+    A measure cell is the staff plus four to six staff spaces of air, so on a
+    conductor's page the same ink lands in two staves' cells and is detected
+    twice. Today `_dedupe_cross_staff_detections` resolves 94.1% of 4,521 such
+    contests BY DISTANCE, because its strongest tier needs an instrument that
+    arrives 309 lines later -- and on a scan that tier is vacuous anyway.
+
+    This writes the contest down instead of deciding it.
+    """
+    geom: Dict[str, Tuple[List[float], float]] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        if key is None:
+            continue
+        sub = R.staff(pws.page.page_index if hasattr(pws.page, "page_index")
+                      else 0, key[0], key[1])
+        sp = _spacing(st)
+        if sp:
+            geom[sub.to_key()] = ([float(y) for y in st.line_ys], float(sp))
+
+    cell_by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+
+    # every detection in page space, with its glyph subject
+    placed: List[Tuple[Subject, Tuple[float, float, float, float], Any]] = []
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        for gi, d in enumerate(dets):
+            box = _page_box(c, d)
+            if box is None:
+                continue
+            placed.append(
+                (R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi), box, d))
+
+    if not placed:
+        return
+
+    # contests: same class, different STAFF, same system, overlapping ink
+    by_system: Dict[Tuple[int, int], List[int]] = {}
+    for i, (g, _b, _d) in enumerate(placed):
+        by_system.setdefault((g.page, g.system), []).append(i)
+
+    contests: Dict[int, set] = {}
+    for members in by_system.values():
+        for ai in range(len(members)):
+            i = members[ai]
+            for j in members[ai + 1:]:
+                gi, bi, di = placed[i]
+                gj, bj, dj = placed[j]
+                if gi.staff == gj.staff:
+                    continue
+                if di.smufl_name != dj.smufl_name:
+                    continue
+                if _iou(bi, bj) < CONTEST_IOU:
+                    continue
+                contests.setdefault(i, set()).add(gj.at(R.Kind.STAFF).to_key())
+                contests.setdefault(j, set()).add(gi.at(R.Kind.STAFF).to_key())
+
+    ledgers = _ledger_index(placed)
+
+    for i, others in sorted(contests.items()):
+        g, box, det = placed[i]
+        own = g.at(R.Kind.STAFF).to_key()
+        y_center = (box[1] + box[3]) / 2.0
+        for cand_key in sorted({own} | others):
+            lines_sp = geom.get(cand_key)
+            if lines_sp is None:
+                log.abstain(g, Q.GLYPH_BAND_DISTANCE, reader=READERS.GEOMETRY,
+                            frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                            candidate=cand_key)
+                continue
+            line_ys, spacing = lines_sp
+            # ⚠️ The staff POSITION this glyph would have IF this candidate
+            # owned it -- clef-free, measured in the candidate's own frame.
+            # Emitted here so the range veto never has to reach across to the
+            # twin copy's row, and never has to touch a resolved pitch:
+            # today the veto reads `det["pitch"]` (transcribe.py:3153-3154),
+            # an interpretation, which is not a cycle yet but becomes one the
+            # moment a clef adjudicator reads ownership.
+            half = spacing / 2.0 if spacing else 1.0
+            log.observe(g, Q.GLYPH_BAND_DISTANCE,
+                        _band_distance_spaces(y_center, line_ys, spacing),
+                        reader=READERS.GEOMETRY, frame=FRAME_PAGE,
+                        candidate=cand_key, own=(cand_key == own),
+                        position_in_candidate=(y_center - min(line_ys)) / half)
+            if det.smufl_name.startswith(_NOTEHEAD_PREFIX):
+                _observe_ladder(log, g, box, cand_key, line_ys, spacing,
+                                ledgers)
+
+
+def _ledger_index(placed) -> Dict[Tuple[int, int], List[Tuple[float, float, float]]]:
+    """Ledger-line detections per system, as (x0, x1, y_centre) in page px."""
+    out: Dict[Tuple[int, int], List[Tuple[float, float, float]]] = {}
+    for g, box, det in placed:
+        if det.smufl_name != _LEDGER_CLASS:
+            continue
+        out.setdefault((g.page, g.system), []).append(
+            (box[0], box[2], (box[1] + box[3]) / 2.0))
+    return out
+
+
+def _observe_ladder(log: Log, g: Subject, box, cand_key: str,
+                    line_ys: Sequence[float], spacing: float, ledgers) -> None:
+    """⚠️ COMPLETENESS ONLY, NEVER COUNT.
+
+    An unbroken run of rungs joins a note to its staff and outranks anything
+    broken -- but TWO BROKEN LADDERS ARE NOT EVIDENCE EITHER WAY, because a
+    found rung can belong to the other staff's note exactly as a gap can. On
+    the Beethoven bassoon pair the ghost's single rung WAS the real C4's own
+    ledger, and counting rungs beat the real note.
+    """
+    y = (box[1] + box[3]) / 2.0
+    top, bottom = min(line_ys), max(line_ys)
+    if top <= y <= bottom:
+        return                       # inside the staff: no ladder to have
+    gap = (top - y) if y < top else (y - bottom)
+    expected = int(gap / spacing + LEDGER_ROUND_UP)
+    if expected <= 0:
+        return
+    rungs = ledgers.get((g.page, g.system), [])
+    x0, x1 = box[0], box[2]
+    found = 0
+    for k in range(1, expected + 1):
+        want = (top - k * spacing) if y < top else (bottom + k * spacing)
+        if any(rx0 <= x1 and rx1 >= x0 and abs(ry - want) <= spacing * 0.5
+               for rx0, rx1, ry in rungs):
+            found += 1
+    log.observe(g, Q.GLYPH_LADDER, found == expected,
+                reader=READERS.DETECTOR, frame=FRAME_PAGE,
+                candidate=cand_key, expected=expected, found=found)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # The clef -- every reader, and BOTH crops
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -688,6 +893,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
             conf_threshold=conf_threshold, imgsz=imgsz, progress=progress)
 
         gather_notehead_positions(log, cells, local, detections)
+        gather_ownership_evidence(log, pws, cells, local, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, cells, local)
         gather_clef_seed(log, cells, local, dossier=dossier, sources=sources)

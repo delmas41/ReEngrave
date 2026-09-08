@@ -397,6 +397,16 @@ class DecisionSpec:
     revises: Optional[str]
     stub: bool
     fn: Callable[[Evidence], Optional[Ruling]]
+    #: The quantity whose rows define this decision's DOMAIN. `None` means
+    #: every subject at `scope`.
+    #:
+    #: ⚠️ This is not an optimisation. `Q.GLYPH_OWNER`'s domain is the
+    #: CONTESTED population -- a glyph nobody disputes has nothing to
+    #: arbitrate -- and adjudicating every detection would emit a verdict per
+    #: glyph on a page that can carry 67,000 of them, burying the contests in
+    #: their own no-ops. A decision that names its domain says what it is
+    #: ABOUT.
+    subjects_from: Optional[str] = None
 
 
 REGISTRY: Dict[str, DecisionSpec] = {}
@@ -407,6 +417,7 @@ def decision(*, quantity: str, scope: Kind, wants: Sequence[str],
              margin_floor: Optional[float] = None,
              excludes_tiers: Sequence[str] = (),
              revises: Optional[str] = None,
+             subjects_from: Optional[str] = None,
              stub: bool = False):
     """Declare a decision.
 
@@ -439,7 +450,7 @@ def decision(*, quantity: str, scope: Kind, wants: Sequence[str],
             wants=tuple(wants), reasons=tuple(reasons) + (ABSTAIN.NOT_IMPLEMENTED,),
             mode=mode, margin_floor=margin_floor,
             excludes_tiers=tuple(excludes_tiers), revises=revises,
-            stub=stub, fn=fn)
+            stub=stub, fn=fn, subjects_from=subjects_from)
         if quantity in REGISTRY:
             raise ValueError(
                 f"{quantity} already has an adjudicator "
@@ -554,7 +565,21 @@ ORDER: Tuple[str, ...] = (
 
 
 def subjects_for(log: Log, spec: DecisionSpec) -> Tuple[Subject, ...]:
-    return log.subjects(spec.scope)
+    """The subjects this decision is ABOUT.
+
+    With `subjects_from`, only subjects carrying a row of that quantity --
+    which for ownership is the contested population and nothing else.
+    """
+    if spec.subjects_from is None:
+        return log.subjects(spec.scope)
+    out = {}
+    for row in log.all_rows():
+        if getattr(row, "quantity", None) != spec.subjects_from:
+            continue
+        sub = row.subject.at(spec.scope)
+        if sub is not None:
+            out[sub.to_key()] = sub
+    return tuple(sorted(out.values()))
 
 
 class NoDecisionsRegistered(RuntimeError):
