@@ -16,17 +16,36 @@ from tools.omr.staged.record import (ABSTAIN, AlreadyAdjudicated, Log, Outcome,
 CELL = R.cell(0, 0, 0, 0)
 
 
+X = 100          # every synthetic notehead sits in the same column
+
+
 def _note(log, gi, head="noteheadBlack", **marks):
     g = R.glyph(0, 0, 0, 0, gi)
     log.observe(g, Q.NOTEHEAD_CLASS, head, reader=READERS.DETECTOR,
                 frame="cell:0", score=0.9)
+    log.observe(g, Q.GLYPH_BOX, (head, X - 10, 0, 20, 16),
+                reader=READERS.DETECTOR, frame="cell:0", score=0.9)
     for _ in range(marks.get("dots", 0)):
         log.observe(g, Q.AUG_DOT, (1, 1), reader=READERS.DETECTOR,
                     frame="cell:0", score=0.8)
-    if marks.get("levels"):
-        log.observe(g, Q.BEAM_STROKE, "beam", reader=READERS.CV_LINES,
-                    frame="cell:0", levels=marks["levels"])
+    for lv in range(marks.get("levels", 0)):
+        _beam(log, y=40 + lv * 12)
     return g
+
+
+def _beam(log, *, y, x0=X - 40, x1=X + 40, reader=READERS.CV_LINES):
+    """One beam STROKE, cell-scoped, with an x-range -- the real row shape.
+
+    ⚠️ A level is not a field on a beam. How many strokes cover a NOTE is an
+    interpretation `adjudicate_duration` performs over these rows; emitting a
+    level here would put the arbitration in the gathering phase.
+    """
+    return log.observe(CELL, Q.BEAM_STROKE, (x0, y, x1 - x0, 4),
+                       reader=reader, frame="cell:0",
+                       x0=x0, x1=x1, y_center=y,
+                       image="no_staff" if reader == READERS.CV_LINES
+                       else "original",
+                       staff_lines_erased=reader == READERS.CV_LINES)
 
 
 class TestDurationComposes(unittest.TestCase):
@@ -49,11 +68,11 @@ class TestDurationComposes(unittest.TestCase):
         adjudicate.run(log)
         self.assertEqual(log.verdict(Q.DURATION, g).value["beats"], 0.25)
 
-    def test_the_stubbed_CV_rung_is_RECORDED_not_silent(self):
-        """⚠️ `Q.BEAM_STROKE` and `Q.STEM` come from the classical-CV rung,
-        which is a declared stub -- so every beamed note falls back to its head
-        value, and `declined` says so rather than the duration silently being
-        wrong."""
+    def test_THREE_beam_states_stay_distinct(self):
+        """⚠️ A duration right BECAUSE THE BEAMS WERE READ and one right
+        because the note HAPPENED TO BE UNBEAMED are different facts, and the
+        second must not be promoted to the first when the CV rung lands."""
+        # (a) the reader declined entirely
         log = Log()
         g = _note(log, 0)
         log.abstain(CELL, Q.BEAM_STROKE, reader=READERS.CV_LINES,
@@ -61,6 +80,52 @@ class TestDurationComposes(unittest.TestCase):
         adjudicate.run(log)
         v = log.verdict(Q.DURATION, g)
         self.assertEqual(v.value["beats"], 1.0)
+        self.assertEqual(v.detail["beam_evidence"], "reader_declined")
+        self.assertIn(Q.BEAM_STROKE, v.declined)
+
+        # (b) the reader spoke and found no beam over THIS note
+        log = Log()
+        g = _note(log, 0)
+        _beam(log, y=40, x0=500, x1=600)     # elsewhere in the cell
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.value["beats"], 1.0)
+        self.assertEqual(v.detail["beam_evidence"], "none_over_this_note")
+        self.assertEqual(v.declined, ())
+
+        # (c) the reader spoke and beams cover it
+        log = Log()
+        g = _note(log, 0, levels=1)
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.DURATION, g).detail["beam_evidence"],
+                         "read")
+
+    def test_a_YOLO_beam_is_kept_only_where_no_CV_beam_explains_it(self):
+        """⚠️ A YOLO box bounds the STACK, not a stroke: a box over two strokes
+        contributes a centre in the GAP between them and three sixteenths read
+        as three eighths. Unioning cost pooled 0.1917 vs 0.1861; REPLACING
+        scores five edits better and is refused because it throws real beams
+        away."""
+        log = Log()
+        g = _note(log, 0, levels=2)                 # two CV strokes
+        _beam(log, y=46, reader=READERS.DETECTOR)   # a box spanning both
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.detail["cv_beams"], 2)
+        self.assertEqual(v.detail["yolo_beams"], 1)
+        self.assertEqual(v.detail["yolo_kept"], 0, "the box overlaps CV ink")
+        self.assertEqual(v.value["beam_levels"], 2)
+
+    def test_a_YOLO_beam_the_CV_rung_MISSED_is_kept(self):
+        """The Phase-4f reason is still half true: replacing outright throws
+        real beams away."""
+        log = Log()
+        g = _note(log, 0)
+        _beam(log, y=40, reader=READERS.DETECTOR)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.detail["yolo_kept"], 1)
+        self.assertEqual(v.value["beam_levels"], 1)
 
 
 class TestTupletScalesTimeNotValue(unittest.TestCase):
@@ -224,3 +289,111 @@ class TestSlotIndex(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTheRemainingConsequences(unittest.TestCase):
+    """⚠️ COHERENCE. Each rule is checked for the thing its `bound` promises."""
+
+    def test_the_key_supplies_a_DEFAULT_that_an_accidental_overrides(self):
+        """⚠️ Sean states both scopes in one sentence: the signature is
+        part-scoped and until-revoked; an inline accidental is bar-scoped AND
+        pitch-scoped and OVERRIDES it."""
+        from tools.omr.staged.record import Outcome as O
+        log = Log()
+        st = R.staff(0, 0, 0)
+        g0, g1 = R.glyph(0, 0, 0, 0, 0), R.glyph(0, 0, 0, 0, 1)
+        for g, name in ((g0, "F5"), (g1, "F4")):
+            log.record(Verdict(id=log._next_id("vrd"), subject=g,
+                               quantity=Q.PITCH, outcome=O.DECIDED,
+                               value=name, decider="t", reason="r"))
+        # g1 carries its own accidental already
+        log.record(Verdict(id=log._next_id("vrd"), subject=g1,
+                           quantity=Q.ACCIDENTAL, outcome=O.DECIDED,
+                           value="natural", decider="t", reason="r"))
+        log.record(Verdict(id=log._next_id("vrd"), subject=st,
+                           quantity=Q.KEY_SIGNATURE, outcome=O.DECIDED,
+                           value=1, decider="t", reason="r"))
+        log.freeze()
+        evaluate.run(log)
+        self.assertEqual(log.verdict(Q.ACCIDENTAL, g0).value, "#")
+        self.assertEqual(log.verdict(Q.ACCIDENTAL, g1).value, "natural")
+
+    def test_C_major_alters_nothing(self):
+        from tools.omr.staged.record import Outcome as O
+        log = Log()
+        st, g = R.staff(0, 0, 0), R.glyph(0, 0, 0, 0, 0)
+        log.record(Verdict(id=log._next_id("vrd"), subject=g, quantity=Q.PITCH,
+                           outcome=O.DECIDED, value="F5", decider="t",
+                           reason="r"))
+        log.record(Verdict(id=log._next_id("vrd"), subject=st,
+                           quantity=Q.KEY_SIGNATURE, outcome=O.DECIDED,
+                           value=0, decider="t", reason="r"))
+        log.freeze()
+        evaluate.run(log)
+        self.assertIsNone(log.verdict(Q.ACCIDENTAL, g))
+
+    def test_a_moved_glyph_SUPERSEDES_rather_than_deletes(self):
+        """⚠️ A contest resolved by deleting the loser leaves nothing to
+        re-examine when the identity that decided it turns out wrong."""
+        from tools.omr.staged.record import Outcome as O
+        log = Log()
+        loser, winner = R.staff(0, 0, 0), R.staff(0, 0, 1)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.GLYPH_BAND_DISTANCE, 3.0, reader=READERS.GEOMETRY,
+                    frame="page", candidate=winner.to_key(), own=False,
+                    position_in_candidate=4.0)
+        log.record(Verdict(id=log._next_id("vrd"), subject=winner,
+                           quantity=Q.CLEF, outcome=O.DECIDED, value="treble",
+                           decider="t", reason="r"))
+        first = log.record(Verdict(id=log._next_id("vrd"), subject=g,
+                                   quantity=Q.PITCH, outcome=O.DECIDED,
+                                   value="WRONG", decider="t", reason="r"))
+        log.record(Verdict(id=log._next_id("vrd"), subject=g,
+                           quantity=Q.GLYPH_OWNER, outcome=O.DECIDED,
+                           value=winner.to_key(), decider="t", reason="r"))
+        log.freeze()
+        evaluate.run(log)
+        now = log.verdict(Q.PITCH, g)
+        self.assertEqual(now.supersedes, first.id)
+        self.assertEqual(now.value, "B4")
+        self.assertIsNotNone(log.row(first.id), "the loser is still on record")
+
+    def test_a_moved_glyph_gets_NO_pitch_where_the_new_staff_has_no_clef(self):
+        from tools.omr.staged.record import Outcome as O
+        log = Log()
+        winner = R.staff(0, 0, 1)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.GLYPH_BAND_DISTANCE, 3.0, reader=READERS.GEOMETRY,
+                    frame="page", candidate=winner.to_key(), own=False,
+                    position_in_candidate=4.0)
+        log.record(Verdict(id=log._next_id("vrd"), subject=g,
+                           quantity=Q.GLYPH_OWNER, outcome=O.DECIDED,
+                           value=winner.to_key(), decider="t", reason="r"))
+        log.freeze()
+        evaluate.run(log)
+        self.assertIsNone(log.verdict(Q.PITCH, g))
+
+    def test_a_part_name_carries_its_SLOT_in_the_basis(self):
+        """⚠️ A name is stamped per SLOT and written onto every staff of that
+        slot on every page -- 93 `Tp.` staves once exported as Trumpet on one
+        document. The basis makes the blast radius traceable."""
+        from tools.omr.staged.record import Outcome as O
+        log = Log()
+        st = R.staff(0, 0, 0)
+        slot = log.record(Verdict(id=log._next_id("vrd"), subject=st,
+                                  quantity=Q.SLOT_INDEX, outcome=O.DECIDED,
+                                  value=0, decider="t", reason="r"))
+        log.record(Verdict(id=log._next_id("vrd"), subject=st,
+                           quantity=Q.INSTRUMENT, outcome=O.DECIDED,
+                           value={"name": "Horn"}, decider="t", reason="r"))
+        log.freeze()
+        evaluate.run(log)
+        v = log.verdict(Q.PART_NAME, st)
+        self.assertEqual(v.value, "Horn")
+        self.assertIn(slot.id, v.basis)
+
+    def test_every_live_rule_is_downhill_and_bounded(self):
+        for r in evaluate.RULES:
+            with self.subTest(rule=r.consequence.value):
+                evaluate.check_downhill(r.cause, r.effect)
+                self.assertGreater(len(r.bound), 40)

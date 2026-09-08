@@ -623,20 +623,67 @@ def gather_rhythm_marks(log: Log, cells: Sequence[Any],
 
 def gather_cv_lines(log: Log, cells: Sequence[Any],
                     local: Dict[int, Tuple[int, int]]) -> None:
-    """⚠️ DECLARED STUB -- the classical-CV stem and beam rung.
+    """Stems and beams from the classical-CV rung, on the ERASED image.
 
-    `line_detection` reads these off the STAFF-LINE-REMOVED cell variant while
-    the detector reads the ORIGINAL. That split is deliberate and measured:
-    erasing staff lines before YOLO costs 7-13 pooled reading points and up to
-    a third of the noteheads, and MANUFACTURES beam confusion (46 -> 105
-    detections at precision 0.783 -> 0.343 on residue). **Erase for the CV
-    consumer, never for the detector.**
+    ⚠️ THE TWO READERS SEE DIFFERENT IMAGES OF THE SAME PAGE, DELIBERATELY.
+    `line_detection` prefers `cell.image_no_staff`; the detector reads
+    `cell.image`. Erasing for the detector costs 7-13 pooled reading points
+    and MANUFACTURES beam confusion -- YOLO beams 46 -> 105 at precision
+    0.783 -> 0.343, firing on staff-line residue. Every row here records WHICH
+    image it came from, so a later reader can never assume they agree.
 
-    ⚠️ And when this is wired, a YOLO beam box must be KEPT ONLY where no CV
-    beam overlaps its x-range. A YOLO box bounds the STACK, not a stroke, so
-    unioning them contributes a centre in the GAP between two strokes and
-    three sixteenths read as three eighths.
+    ⚠️ AND THE FALLBACK IS SILENT, so it is checked. `line_detection` degrades
+    to `cell.image` when the erased variant is missing rather than refusing,
+    which would make a whole-rung failure look like a thin page.
+
+    ⚠️ THESE ARE STROKES, NOT LEVELS. How many beams a NOTE carries is an
+    interpretation over these rows and belongs to `adjudicate_duration` --
+    emitting a level here would put the arbitration in the gathering phase,
+    which is the fault the whole split exists to remove.
     """
+    try:
+        from ..line_detection import detect_lines
+    except Exception:                                         # noqa: BLE001
+        _stub_cv_lines(log, cells, local, "line_detection unavailable")
+        return
+
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        frame = frame_cell(c.measure_index)
+        erased = getattr(c, "image_no_staff", None) is not None
+        try:
+            found = detect_lines(c)
+        except Exception as exc:                              # noqa: BLE001
+            for quantity in (Q.BEAM_STROKE, Q.STEM):
+                log.abstain(sub, quantity, reader=READERS.CV_LINES,
+                            frame=frame, reason=ABSTAIN.READER_UNAVAILABLE,
+                            error=type(exc).__name__)
+            continue
+
+        for quantity, kind in ((Q.STEM, "stems"), (Q.BEAM_STROKE, "beams")):
+            rows = found.get(kind) or []
+            if not rows:
+                log.abstain(sub, quantity, reader=READERS.CV_LINES,
+                            frame=frame, reason=ABSTAIN.NO_INK,
+                            image="no_staff" if erased else "original",
+                            staff_lines_erased=erased)
+                continue
+            for d in rows:
+                log.observe(sub, quantity,
+                            (d.x_canonical, d.y_canonical,
+                             d.width_canonical, d.height_canonical),
+                            reader=READERS.CV_LINES, frame=frame,
+                            x0=d.x_canonical,
+                            x1=d.x_canonical + d.width_canonical,
+                            y_center=d.y_center,
+                            image="no_staff" if erased else "original",
+                            staff_lines_erased=erased)
+
+
+def _stub_cv_lines(log: Log, cells, local, note: str) -> None:
     seen = set()
     for c in cells:
         key = local.get(c.staff_index)
@@ -649,9 +696,39 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         for quantity in (Q.BEAM_STROKE, Q.STEM):
             log.abstain(sub, quantity, reader=READERS.CV_LINES,
                         frame=frame_cell(c.measure_index),
-                        reason=ABSTAIN.NOT_IMPLEMENTED,
-                        note="line_detection not wired; erase for the CV "
-                             "consumer, never for the detector")
+                        reason=ABSTAIN.NOT_IMPLEMENTED, note=note)
+
+
+def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
+    """The DETECTOR's beam boxes, kept as rows beside the CV strokes.
+
+    ⚠️ A YOLO BEAM BOX BOUNDS THE STACK, NOT A STROKE. A box spanning two
+    strokes contributes a centre in the GAP between them, and the run then has
+    no gap wide enough to cluster: on Brahms's Violin 2 the CV strokes sit 60px
+    apart against a 35px tolerance -- two levels -- and the YOLO box adds a
+    third centre between them, so three sixteenths read as three eighths.
+
+    ⚠️ SO THE ARBITRATION IS THE ADJUDICATOR'S, NOT A FILTER HERE. Both
+    readers emit; `adjudicate_duration` keeps a YOLO beam only where NO CV
+    beam overlaps its x-range. Unioning them was worth pooled 0.1917 -> 0.1861
+    to fix; REPLACING outright scores five edits BETTER and is REFUSED,
+    because it throws real beams away and takes the notes that lose every beam
+    they had from 4 to 7.
+    """
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        for d in dets:
+            if d.smufl_name != "beam":
+                continue
+            log.observe(sub, Q.BEAM_STROKE,
+                        (d.x_canonical, d.y_canonical,
+                         d.width_canonical, d.height_canonical),
+                        reader=READERS.DETECTOR, frame=frame_cell(sub.cell),
+                        score=float(d.confidence),
+                        x0=d.x_canonical,
+                        x1=d.x_canonical + d.width_canonical,
+                        y_center=d.y_center, image="original",
+                        staff_lines_erased=False)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1224,6 +1301,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_ownership_evidence(log, pws, cells, local, detections)
         gather_rhythm_marks(log, cells, local, detections)
         gather_cv_lines(log, cells, local)
+        gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)
         gather_clef_seed(log, cells, local, dossier=dossier, sources=sources)

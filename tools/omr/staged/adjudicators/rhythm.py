@@ -26,7 +26,7 @@ from __future__ import annotations
 from typing import Optional
 
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
-from ..record import ABSTAIN, Kind, Q, Scope, State
+from ..record import ABSTAIN, Kind, Q, READERS, Scope, State
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -56,6 +56,48 @@ DOT_ABOVE_NOTE_MAX_SPACES = 0.75
 DOT_BELOW_NOTE_MAX_SPACES = 0.25
 
 
+def _kept_beams(ev: Evidence, cell):
+    """CV strokes, plus the YOLO boxes no CV stroke already explains.
+
+    ⚠️ KEPT, NOT UNIONED AND NOT REPLACED, and both alternatives are measured.
+    A YOLO beam box bounds the STACK: a box over two strokes contributes a
+    centre in the GAP between them, and the run then has no gap wide enough to
+    cluster -- three sixteenths read as three eighths. UNIONING them cost
+    pooled 0.1917 against 0.1861 for this rule. REPLACING outright scores five
+    edits BETTER and is REFUSED: it is the only arm that regresses an authored
+    fixture, and the notes that lose EVERY beam they had go from 4 to 7. Five
+    edits is less than one measure's amplification is worth; the beams are the
+    thing.
+    """
+    rows = ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    cv = [r for r in rows if r.reader == READERS.CV_LINES]
+    yolo = [r for r in rows if r.reader == READERS.DETECTOR]
+
+    def _overlaps(a, b) -> bool:
+        return (a.detail.get("x0", 0) <= b.detail.get("x1", 0)
+                and a.detail.get("x1", 0) >= b.detail.get("x0", 0))
+
+    kept = list(cv)
+    for box in yolo:
+        if not any(_overlaps(box, stroke) for stroke in cv):
+            kept.append(box)
+    return kept, cv, yolo
+
+
+def _beam_levels(beams, x_center: Optional[float]) -> int:
+    """How many strokes cover this notehead's column.
+
+    ⚠️ THE LEVEL IS AN INTERPRETATION OVER STROKES, WHICH IS WHY IT IS
+    COMPUTED HERE AND NOT IN GATHER. Emitting a level as a measurement would
+    put the arbitration in the gathering phase -- the fault the whole split
+    exists to remove.
+    """
+    if x_center is None:
+        return 0
+    return sum(1 for b in beams
+               if b.detail.get("x0", 0) <= x_center <= b.detail.get("x1", 0))
+
+
 def _head_class(ev: Evidence) -> Optional[str]:
     rows = ev.rows(Q.NOTEHEAD_CLASS)
     if not rows:
@@ -74,7 +116,7 @@ def _head_class(ev: Evidence) -> Optional[str]:
     composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM),
     scope=Kind.GLYPH,
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM,
-           Q.TUPLET_RATIO),
+           Q.TUPLET_RATIO, Q.GLYPH_BOX),
     reasons=("head_and_marks", "no_notehead", "unknown_head"),
     mode=Mode.ADDITIVE,
     subjects_from=Q.NOTEHEAD_CLASS,
@@ -113,15 +155,38 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
 
     used = [r.id for r in ev.rows(Q.NOTEHEAD_CLASS)]
 
-    # beams and flags shorten; each level halves.
-    levels = 0
-    for row in ev.rows(Q.BEAM_STROKE):
-        levels = max(levels, int(row.detail.get("levels") or 1))
-        used.append(row.id)
+    box = ev.rows(Q.GLYPH_BOX)
+    x_center = None
+    if box:
+        v = box[-1].value
+        if isinstance(v, (list, tuple)) and len(v) >= 4:
+            x_center = float(v[1]) + float(v[3]) / 2.0
+        used.append(box[-1].id)
+
+    cell = ev.subject.at(Kind.CELL)
+    kept, cv, yolo = _kept_beams(ev, cell)
+    levels = _beam_levels(kept, x_center)
+    used.extend(b.id for b in kept)
+
+    # ⚠️ THREE STATES, AND THEY MUST NOT COLLAPSE INTO ONE. A duration that is
+    # right BECAUSE THE BEAMS WERE READ and one that is right because the note
+    # HAPPENED TO BE UNBEAMED are different facts, and the second must not be
+    # promoted to the first when the CV rung lands. `beam_evidence` says
+    # which, and `declined` carries the reader's own abstention beside it.
+    if ev.state(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS,
+                subject=cell) is not State.READ:
+        beam_evidence = "reader_declined"
+    elif levels:
+        beam_evidence = "read"
+    else:
+        beam_evidence = "none_over_this_note"
+
     flags = ev.rows(Q.FLAG)
     if flags and not levels:
-        levels = max(int(r.detail.get("levels") or 1) for r in flags)
+        # A flag says the same thing a beam does for an unbeamed note.
+        levels = len(flags)
         used.extend(r.id for r in flags)
+        beam_evidence = "flag"
     beats = base / (2 ** levels) if levels else base
 
     # dots lengthen: each adds half of what stands so far.
@@ -150,7 +215,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     return Ruling(value={"beats": scaled, "written": total,
                          "dots": n_dots, "beam_levels": levels},
                   reason="head_and_marks", used=tuple(used),
-                  detail={"head": str(head)})
+                  detail={"head": str(head),
+                          "beam_evidence": beam_evidence,
+                          "cv_beams": len(cv), "yolo_beams": len(yolo),
+                          "yolo_kept": len(kept) - len(cv)})
 
 
 @decision(

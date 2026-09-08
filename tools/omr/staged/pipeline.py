@@ -72,11 +72,26 @@ def prepare_pages(pdf_path: str, pages: Sequence[int], *,
     from ..preprocessing import render_page
     from ..staff_detector import detect_staves
     from ..measure_extractor import extract_measures
+    from ..staff_line_removal import remove_staff_lines
 
     out: List[Tuple[Any, List[Any]]] = []
     for p in pages:
         pws = detect_staves(render_page(pdf_path, p, dpi=dpi))
         cells = extract_measures(pws)
+        # ⚠️ THE SECOND IMAGE, AND IT IS NOT OPTIONAL. `extract_measures`
+        # leaves `image_no_staff=None`; `line_detection` PREFERS that variant
+        # and SILENTLY FALLS BACK to `cell.image` when it is missing
+        # (`:265-267`, `:599-601`). So omitting this does not fail -- it
+        # degrades the CV rung quietly, which is the exact shape this whole
+        # architecture exists to make impossible.
+        #
+        # ⚠️ AND THE TWO IMAGES GO TO DIFFERENT CONSUMERS ON PURPOSE. Erasing
+        # staff lines before YOLO costs 7-13 pooled reading points, takes
+        # noteheads to 0.774 on Mozart 41, and MANUFACTURES beam confusion
+        # (YOLO beams 46 -> 105, precision 0.783 -> 0.343, firing on staff-line
+        # residue). The rule is: ERASE FOR THE CV CONSUMER, BOUND THE SEARCH
+        # FOR EVERYONE ELSE, NEVER ERASE FOR THE DETECTOR.
+        remove_staff_lines(cells)
         out.append((pws, cells))
     return out
 

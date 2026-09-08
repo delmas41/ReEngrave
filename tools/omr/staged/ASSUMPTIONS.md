@@ -7,23 +7,30 @@ FILE IS RIGHT.** Do not re-derive a settled question from a summary; open the
 file. The 129 coherence tests are the real guard — a contradiction of a pinned
 decision fails a test instead of passing quietly.
 
-**Wired (15 of 21 decisions).** `system_membership`, `system_staff_count`,
-`staff_ordinal`, `measure_partition`, `staff_group`, `group_symbol`,
-`instrument`, `slot_index`, `part_partition`, `clef`, `key_signature`,
-`glyph_owner`, `tuplet_ratio`, `duration`, `meter`.
+**Wired (15 of 21 decisions).** Unchanged; the gather side beneath them
+moved. `system_membership`, `system_staff_count`, `staff_ordinal`,
+`measure_partition`, `staff_group`, `group_symbol`, `instrument`,
+`slot_index`, `part_partition`, `clef`, `key_signature`, `glyph_owner`,
+`tuplet_ratio`, `duration`, `meter`.
 
-**Stubs (6), in priority order for the next hand:** `arc_kind` → `arc_owner`
-→ `articulation_owner` → `wedge_anchor` → `dynamic` → `direction`.
+**Stubs (6), in priority order:** `arc_owner` → `arc_kind` →
+`articulation_owner` → `wedge_anchor` → `dynamic` → `direction`.
 
-**Consequences: 2 wired** (`restate_pitch`, `reconcile_duration`), **4
-stubbed** — `respell_accidental`, `move_glyph`, `name_part`, `join_parts`.
+**Consequences: 5 wired** (`restate_pitch`, `reconcile_duration`,
+`move_glyph`, `respell_accidental`, `name_part`), **1 stubbed** —
+`join_parts`, deliberately last, because it is the consequence of the decision
+a pre-registered gate already falsified.
+
+**GATHER is now complete except the arcs**: geometry, detections, notehead
+positions, ownership evidence, rhythm marks, **the classical-CV stem/beam
+rung**, both clef crops, the per-candidate key fit, the meter, margin labels.
+Direction text remains a declared stub behind its hard edge.
 
 **Working on right now:** nothing in flight.
 
-**Next, in order:** (1) the classical-CV stem/beam rung (`gather_cv_lines` is
-a declared stub, and until it is wired every beamed note falls back to its
-head value); (2) the arc family (`arc_owner` then `arc_kind`); (3) the
-remaining consequences.
+**Next, in order — but ⚠️ SEE THE OPEN QUESTION BELOW FIRST:** (1) candidate
+sets; (2) redundant groups as first-class; (3) the implication tests over
+them; (4) the arc family.
 
 **⚠️ JUDGMENTS FORMED AND NOT YET BUILT** — the only things a memory loss can
 destroy, so they are written down rather than remembered:
@@ -48,11 +55,12 @@ destroy, so they are written down rather than remembered:
    standing test (`record_coverage.py`), it is proven to bite by a mutation
    test, and it reports CLEAN — so this specific family is closed for the
    record layer and does not need looking for again by hand.
-6. **`gather_cv_lines` is a declared stub and it silently weakens every
-   beamed duration.** `Q.BEAM_STROKE` and `Q.STEM` abstain, so a beamed note
-   falls back to its head value. It is recorded in `declined` rather than
-   being silently wrong — but it is the single largest accuracy hole in the
-   wired set, and it is the next thing to build.
+6. ✅ **CLOSED — the CV stem/beam rung is wired.** `Q.BEAM_STROKE` now has two
+   readers and `adjudicate_duration` arbitrates them: a YOLO box is kept only
+   where **no CV stroke overlaps its x-range**. ⚠️ Three beam states stay
+   distinct on the record — `read`, `none_over_this_note`,
+   `reader_declined` — so a duration right *because the beams were read* is
+   never confused with one right *because the note was unbeamed*.
 7. **`slot_index` makes no document-wide claim on purpose.** It uses the
    system's own ordinal, because `slots.build_reference` picking a lineup from
    one system once named 149 Brahms staves an instrument the work has not got
@@ -69,6 +77,57 @@ That is the point of the list. Sean's instruction for this phase was to build
 the whole thing on assumed best practice and record the assumptions rather than
 stop to measure; **this file is the record, and it is the input to the testing
 phase.**
+
+## ⚠️ EVIDENCE FOR THE ARCHITECTURE, FOUND BY BUILDING IT
+
+**Not a changelog. A bug fixed in a diff disappears; these are arguments, and
+they are the answer to "why build before measuring".**
+
+### 1. `duration` sat before `tuplet_ratio`, and duration READS the tuplet
+
+`adjudicate_duration` consumes the tuplet verdict to scale its beats. In the
+first `ORDER` list it ran **first** — so the ratio would have arrived too late
+and **every triplet would have exported at its written value**: the exact fault
+the ratio exists to fix, reintroduced by ordering alone, **in a pipeline built
+specifically to get ordering right.**
+
+That is Sean's claim demonstrated on the architecture's own body:
+
+> *"We have the information but not in the right order so it kills or discards
+> or miscalculates."*
+
+⚠️ **It was found by WIRING, not by reasoning** — I wrote the ORDER list by
+hand, read it twice, and it was wrong both times. And **no measurement would
+have shown it**, which is the part that matters: both orders run clean, produce
+a full result, and raise nothing. The wrong one is merely *wrong*. A metric
+sees a triplet exported at 1.0 instead of 0.667 as a few edits somewhere in a
+bar, indistinguishable from a hundred other causes.
+
+**Pinned by `test_the_tuplet_decides_BEFORE_the_duration`.**
+
+### 2. `used` vs `considered` — the gap nothing could previously express
+
+`considered` is what the **harness handed in**; `used` is what the **decision
+weighed**. A decision handed ten rows may weigh three.
+
+⚠️ **The gap between them is where a decision quietly ignores evidence it
+declared** — which is the shape of every dropped-signal fault this project has
+paid for, and until the split there was nowhere to even write it down. It was
+itself found by the coverage sweep after `Ruling.detail` turned out to be a
+family rather than an instance.
+
+### 3. Two readers, two images, one silent fallback
+
+`line_detection` **prefers** `cell.image_no_staff` and **silently falls back**
+to `cell.image` when it is missing. `extract_measures` leaves it `None`. So a
+pipeline that forgets `remove_staff_lines` does not fail — **it degrades the CV
+rung quietly**, and a whole-rung failure looks like a thin page.
+
+⚠️ And the two images must stay apart: erasing for the detector costs **7–13
+pooled reading points**, takes noteheads to **0.774** on Mozart 41, and
+**manufactures** beam confusion (YOLO beams 46 → 105, precision 0.783 → 0.343,
+firing on staff-line residue). **Erase for the CV consumer, bound the search
+for everyone else, never erase for the detector.**
 
 ## ⚠️ PRINCIPLE vs CONTINGENCY
 

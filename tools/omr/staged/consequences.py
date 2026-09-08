@@ -92,20 +92,6 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-@rule(consequence=Consequence.RESPELL_ACCIDENTAL,
-      cause=Q.KEY_SIGNATURE, effect=Q.ACCIDENTAL, scope=Kind.STAFF,
-      bound="Re-spells the LETTER of an existing pitch only. Never changes a "
-            "staff position, never adds or removes a note, and never "
-            "re-derives the key from the new spelling.",
-      stub=True)
-def respell_accidental(log, subject, key) -> List[Verdict]:
-    """⚠️ DECLARED STUB. `key_signature_corroboration` already does this
-    correctly and is the pattern to port: it re-spells the notes AND their
-    pitch candidates, and pointedly does NOT re-derive the key from the new
-    spelling -- which is what keeps the edge downhill."""
-    return []
-
-
 @rule(consequence=Consequence.RECONCILE_DURATION,
       cause=Q.METER, effect=Q.DURATION, scope=Kind.CELL,
       bound="Re-reads a beam level by +/-1 ONLY. The corrected bar must land "
@@ -190,38 +176,148 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
 
 @rule(consequence=Consequence.MOVE_GLYPH,
       cause=Q.GLYPH_OWNER, effect=Q.PITCH, scope=Kind.GLYPH,
-      bound="Moves a detection from one staff to another. Emits no new "
-            "detection and destroys none -- a losing copy is superseded, not "
-            "deleted, so the contest stays on the record.",
-      stub=True)
-def move_glyph(log, subject, owner) -> List[Verdict]:
-    """⚠️ DECLARED STUB. Ownership settles, so the glyph's pitch is restated
-    against its NEW staff's clef and lines."""
-    return []
+      bound="Restates one glyph's pitch against the staff that won it. Emits "
+            "no detection and destroys none -- a losing copy is SUPERSEDED, "
+            "not deleted, so the contest stays on the record.")
+def move_glyph(log: Log, subject: Subject, owner: Verdict) -> List[Verdict]:
+    """Ownership settles, so the glyph's pitch is restated on its NEW staff.
+
+    ⚠️ THE LOSING COPY IS SUPERSEDED, NOT DELETED. A contest resolved by
+    deleting the loser leaves nothing to re-examine when the identity that
+    decided it turns out to be wrong -- and identity is exactly the evidence
+    this arbitration was starved of until the split. `supersedes` keeps both.
+    """
+    if not isinstance(owner.value, str):
+        return []
+    winner = Subject.from_key(owner.value)
+    if winner.to_key() == subject.at(Kind.STAFF).to_key():
+        return []                       # it stayed where it was cut
+
+    clef = log.verdict(Q.CLEF, winner)
+    if clef is None or clef.value is None:
+        # ⚠️ No clef on the winning staff means no pitch, exactly as
+        # `restate_pitch` refuses. A moved glyph must not acquire a pitch the
+        # staff it moved to could not have given it.
+        return []
+
+    band = [r for r in log.rows(Q.GLYPH_BAND_DISTANCE, subject)
+            if r.detail.get("candidate") == owner.value]
+    if not band:
+        return []
+    pos = band[0].detail.get("position_in_candidate")
+    if pos is None:
+        return []
+
+    from ..pitch_resolver import _pitch_from_position
+    name = _pitch_from_position(int(round(float(pos))), str(clef.value))
+    if name is None:
+        return []
+
+    prior = log.verdict(Q.PITCH, subject)
+    out = Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.PITCH,
+        outcome=Outcome.DECIDED, value=name, decider="move_glyph",
+        reason="reowned", considered=(owner.id, clef.id, band[0].id),
+        basis=(owner.id, clef.id, band[0].id),
+        supersedes=prior.id if prior is not None else None)
+    return [log.record(out)]
+
+
+@rule(consequence=Consequence.RESPELL_ACCIDENTAL,
+      cause=Q.KEY_SIGNATURE, effect=Q.ACCIDENTAL, scope=Kind.STAFF,
+      bound="Re-spells the LETTER of an existing pitch only. Never changes a "
+            "staff position, never adds or removes a note, and NEVER "
+            "re-derives the key from the new spelling -- which is what keeps "
+            "the edge downhill.")
+def respell_accidental(log: Log, subject: Subject, key: Verdict) -> List[Verdict]:
+    """The key settles, so the notes on this staff carry its alterations.
+
+    ⚠️ IT MUST NEVER RE-DERIVE THE KEY FROM THE NEW SPELLING. That is the one
+    move that would turn this edge uphill, and `key_signature_corroboration`
+    -- the pattern this ports -- pointedly does not make it: it re-spells the
+    notes AND their candidates, and reads the restored key back rather than
+    recomputing it.
+
+    ⚠️ SCOPE, AND SEAN STATES BOTH IN ONE SENTENCE: *"a key signature applies
+    to all of the notes after until there is another accidental, which will
+    affect all the same notes in that bar only."* The signature is
+    part-scoped and until-revoked; an inline accidental is bar-scoped AND
+    pitch-scoped and OVERRIDES it. This rule may only supply the DEFAULT --
+    a note carrying its own accidental is left alone.
+    """
+    fifths = key.value if isinstance(key.value, int) else None
+    if not fifths:
+        return []                       # C major alters nothing
+
+    sharps = ("F", "C", "G", "D", "A", "E", "B")
+    altered = set(sharps[:fifths] if fifths > 0
+                  else list(reversed(sharps))[:abs(fifths)])
+    accidental = "#" if fifths > 0 else "b"
+
+    out: List[Verdict] = []
+    for pitch in log.verdicts(Q.PITCH, subject,
+                              scope=Scope.SELF_AND_DESCENDANTS):
+        if pitch.outcome is not Outcome.DECIDED or not isinstance(pitch.value, str):
+            continue
+        letter = pitch.value[0]
+        if letter not in altered:
+            continue
+        # ⚠️ An inline accidental OVERRIDES the signature, so a note that
+        # already carries one is not touched.
+        if log.verdict(Q.ACCIDENTAL, pitch.subject) is not None:
+            continue
+        out.append(_verdict(
+            log, pitch.subject, Q.ACCIDENTAL, accidental,
+            decider="respell_accidental", reason="from_key_signature",
+            basis=(pitch.id, key.id)))
+    return out
 
 
 @rule(consequence=Consequence.NAME_PART,
       cause=Q.INSTRUMENT, effect=Q.PART_NAME, scope=Kind.STAFF,
-      bound="Writes a name onto a part. Changes no note, no clef and no "
-            "structure -- musicdiff does not score <part-name> at all, so "
-            "this consequence is invisible to the metric and must be checked "
-            "by the label-contradiction audit instead.",
-      stub=True)
-def name_part(log, subject, instrument) -> List[Verdict]:
-    """⚠️ DECLARED STUB. And a warning attached to it: a name is stamped per
-    SLOT and written onto every staff of that slot on every page, so ONE
-    wrong slot assignment renames a part across a whole document -- 93 `Tp.`
-    staves exported as Trumpet on one Beethoven run. The check that catches
-    it needs no truth file: a staff whose OWN margin label was read on THAT
-    page, exported under a different name."""
-    return []
+      bound="Writes a name onto a staff. Changes no note, no clef and no "
+            "structure.")
+def name_part(log: Log, subject: Subject, instrument: Verdict) -> List[Verdict]:
+    """The instrument settles, so the part gets its name.
+
+    ⚠️ INVISIBLE TO EVERY STANDING MEASUREMENT -- musicdiff does not score
+    `<part-name>` at all -- so this consequence cannot be checked by the
+    metric and must be checked by the label-contradiction audit instead: a
+    staff whose OWN margin label was read on THIS page, exported under a
+    different name. Adjudicated over 158 firings, 0.873 the EXPORT is wrong.
+
+    ⚠️ AND ONE WRONG SLOT RENAMES A PART ACROSS A WHOLE DOCUMENT, because a
+    name is stamped per SLOT and written onto every staff of that slot on
+    every page -- 93 `Tp.` staves once exported as Trumpet on one Beethoven
+    run. That is why the name's `basis` carries the slot: the blast radius is
+    traceable rather than merely large.
+    """
+    if not isinstance(instrument.value, dict):
+        return []
+    name = instrument.value.get("name")
+    if not name:
+        return []
+    slot = log.verdict(Q.SLOT_INDEX, subject)
+    basis = (instrument.id,) + ((slot.id,) if slot is not None else ())
+    return [_verdict(log, subject, Q.PART_NAME, name,
+                     decider="name_part", reason="from_instrument",
+                     basis=basis)]
 
 
 @rule(consequence=Consequence.JOIN_PARTS,
       cause=Q.PART_PARTITION, effect=Q.PART_NAME, scope=Kind.DOCUMENT,
-      bound="Joins staves into parts. Emits no music and moves no note "
-            "between staves; it decides only which staves are the same part.",
+      bound="Decides which staves are the same part. Emits no music and moves "
+            "no note between staves.",
       stub=True)
 def join_parts(log, subject, partition) -> List[Verdict]:
-    """⚠️ DECLARED STUB."""
+    """⚠️ DECLARED STUB, and deliberately the last one.
+
+    It is the consequence of the decision a pre-registered gate already
+    falsified once: where the ordinal join REFUSES, the slot join succeeded
+    and was wrong on 3 of 27 staves, grafting a horn's continuation onto a
+    genuinely-tacet trumpet's slot. `adjudicate_part_partition` abstains there
+    rather than joining, so there is nothing for this rule to carry -- and
+    wiring it before that abstention is priced would be building on the one
+    result we know to be wrong.
+    """
     return []
