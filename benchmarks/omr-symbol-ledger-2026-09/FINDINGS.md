@@ -418,6 +418,38 @@ an implausible count is worth someone's eye.
 
 ---
 
+## 10. Reproducibility — a second, independently transcribed arm
+
+⚠️ Everything in §4 is measured on the `basectl` predictions from another
+agent's worktree. A single set of predictions is a single set of predictions,
+so the whole gate was **re-transcribed from `origin/main` in this worktree**
+(`scan_eval.py --tag=-ledger`, own fixtures dir, own `results-ledger.json` —
+the caching trap the scan-gate notes warn about needs a distinct `--tag=` and
+that is what this used) and the ledger run again over the new pairs.
+
+The two transcription runs agree with each other on OMR-NED to within the
+gate's documented noise: **74,873 edits (0.8438) against the basectl arm's
+74,956**, ~4 edits a row.
+
+And the ledger's picture is the same to within a few rows in twenty-nine
+thousand:
+
+| | basectl arm | own `origin/main` arm |
+|---|--:|--:|
+| `spurious` | 21.9% | 21.8% |
+| `ambiguous` | **20.0%** | **20.1%** |
+| `matched_attribute_error` | 19.8% | 19.8% |
+| `missing` | 19.2% | 19.2% |
+| `matched_exact` | 18.7% | 18.8% |
+| corroborated `note.pitch` | 1,034 | 1,031 |
+| corroborated `rest.duration_ql` | 471 | 471 |
+| rows with a resolved part join | 12 of 20 | 12 of 20 |
+
+So none of §4 is an artefact of which tree produced the predictions.
+`out/` holds the first arm, `out-ownrun/` the second.
+
+---
+
 ## 9. Reproducing
 
 ```bash
