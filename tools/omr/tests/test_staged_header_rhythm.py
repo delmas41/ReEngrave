@@ -1540,3 +1540,95 @@ class TestDigitsWinOverALetterAtTheSameBar(unittest.TestCase):
         self.assertEqual(len(segs), 2)
         self.assertEqual((segs[1]["numerator"], segs[1]["denominator"]), (3, 8),
                          "the digits, not the C")
+
+
+class TestAChangeIsAgainstTheMeterInFORCE(unittest.TestCase):
+    """⚠️⚠️ `_meter_changes` compared every candidate against the system's
+    OPENING, which was two bugs pulling in opposite directions.
+
+    Measured on Brahms 1 / Breitkopf p.1 — a scanned page whose meter glyphs
+    are badly read — the system emitted **five consecutive segments, every one
+    of them `4/4`**, because each differed from the (misread) opening `9/4` and
+    nothing compared a candidate to the segment already accepted. A system does
+    not change meter five times to the meter it is already in.
+
+    The mirror image costs a real change instead of inventing one: a movement
+    going `3/4 -> 4/4 -> 3/4` recorded the departure and dropped the RETURN,
+    because the return equals the opening. Beethoven 9's finale does exactly
+    that, repeatedly.
+    """
+
+    N_STAVES = 4
+
+    def _log(self, *, opening=(3, 4), opening_raw="3/4", changes=()):
+        """`changes` is (cell, numerator_digit, denominator_digit), printed on
+        EVERY staff.
+
+        ⚠️ THE TWO DIGITS NEED DIFFERENT `y_center` AND DIFFERENT SUBJECTS, and
+        the first draft of this harness gave them neither — so no pair formed,
+        no change was proposed, and every assertion below failed for a reason
+        that had nothing to do with the rule under test. `y_center` is the WHOLE
+        of what tells a numerator from a denominator (`_meter_from_digits`).
+
+        ⚠️ Bars are left unassessable on purpose: this class is about the GLYPH
+        bookkeeping, and supplying bar evidence would let the bar terms decide.
+        """
+        log = Log()
+        sysj = R.system(0, 0)
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=sysj,
+            quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+            value=self.N_STAVES, decider="t", reason="counted"))
+        for st in range(self.N_STAVES):
+            if opening is not None:
+                log.observe(R.staff(0, 0, st), Q.METER_TEMPLATE, opening,
+                            reader=READERS.TEMPLATE, frame="header_window",
+                            score=0.7, raw=opening_raw)
+            for cell, num, den in changes:
+                for idx, (digit, y) in enumerate(((num, 10.0), (den, 30.0))):
+                    log.observe(R.glyph(0, 0, st, cell, 900 + idx),
+                                Q.METER_GLYPH, "timeSig%d" % digit,
+                                reader=READERS.DETECTOR,
+                                frame="cell:%d" % cell, score=0.9, cell=cell,
+                                x=10.0, y_center=y, letter=False)
+        return log, sysj
+
+    def _segments(self, log, sysj):
+        log.freeze()
+        adjudicate._ensure_decisions()
+        adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.METER], sysj)
+        v = log.verdict(Q.METER, sysj)
+        return [(s.get("from_cell"), s.get("raw"))
+                for s in ((v.value or {}).get("segments") or [])]
+
+    def test_the_SAME_meter_proposed_at_five_bars_is_ONE_change(self):
+        """⚠️ The shape measured on the Breitkopf scan, reduced to its bones."""
+        log, sysj = self._log(changes=tuple((c, 4, 4) for c in (2, 3, 4, 5, 6)))
+        self.assertEqual(self._segments(log, sysj), [(0, "3/4"), (2, "4/4")])
+
+    def test_a_DIFFERENT_meter_at_a_later_bar_is_still_a_change(self):
+        """The positive control: without it the test above passes for free the
+        moment `_meter_changes` stops proposing anything at all."""
+        log, sysj = self._log(changes=((2, 4, 4), (5, 6, 8)))
+        self.assertEqual(self._segments(log, sysj),
+                         [(0, "3/4"), (2, "4/4"), (5, "6/8")])
+
+    def test_a_change_BACK_to_the_opening_is_NOT_dropped(self):
+        """⚠️ The bug in the other direction. `3/4 -> 4/4 -> 3/4`: the return
+        equals the opening, and comparing against the opening deleted it."""
+        log, sysj = self._log(changes=((2, 4, 4), (5, 3, 4)))
+        self.assertEqual(self._segments(log, sysj),
+                         [(0, "3/4"), (2, "4/4"), (5, "3/4")])
+
+    def test_a_restatement_of_the_OPENING_is_still_dropped(self):
+        """The behaviour that was already right stays right: the opening IS
+        the meter in force until something supersedes it."""
+        log, sysj = self._log(changes=((2, 3, 4),))
+        self.assertEqual(self._segments(log, sysj), [(0, "3/4")])
+
+    def test_an_UNKNOWN_opening_lets_the_first_change_stand(self):
+        """`_change_only` passes `{}` — a system whose opening was never read
+        must still record the change printed on it, and must not then record
+        the same meter again two bars later."""
+        log, sysj = self._log(opening=None, changes=((3, 4, 4), (6, 4, 4)))
+        self.assertEqual(self._segments(log, sysj), [(3, "4/4")])

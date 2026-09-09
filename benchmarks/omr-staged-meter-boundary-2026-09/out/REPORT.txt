@@ -285,9 +285,50 @@
        segment@2=4/4(support=4.0,0+/0-)  segment@3=4/4(support=3.5,0+/0-)  segment@4=4/4(support=3.5,0+/0-)  segment@5=4/4(support=3.5,0+/0-)  segment@6=4/4(support=3.5,0+/0-)
   system/1/1     truth=prints no change decided   change_only                          4/4    WRONG
        change@4=4/4(support=6.0,staves=1,2+/0-)  change@5=4/4(support=5.0,staves=1,2+/0-)
+
+── m4full-CARRY.json ─────────────────────────────
+  system/0/0     truth=C    decided   voted                                C      OK 
+  system/1/0     truth=C    abstained carry_not_corroborated               None   ·
+       bars_agree=1  bars_disagree=0  carried_from=system/0/0  bar_lengths_seen={'4.0': 1}  instead_of=no_evidence
+  system/2/0     truth=3/4  decided   voted                                3/4    OK 
+  system/3/0     truth=3/4  decided   carried                              3/4    OK 
+       support=6.0  bars_agree=7  bars_disagree=2  carried_from=system/2/0  bar_lengths_seen={'3.0': 7, '5.0': 2}  instead_of=no_evidence
+
+── m4rev-OFF.json ─────────────────────────────
+  system/0/0     truth=3/4  decided   voted                                3/4    OK 
+  system/1/0     truth=chg@3=C decided   change_only                          C      OK 
+       change@3=C(support=66.0,staves=23,1+/4-)
+  system/2/0     truth=4/4  abstained no_evidence                          None   ·
+
+── m4brahms1eng-OFF.json ─────────────────────────────
+  system/0/0     truth=6/8 no change decided   voted                                6/8    WRONG(segment)
+       segment@6=9/8(support=57.0,0+/0-)
+  system/1/0     truth=9/8  decided   voted                                9/8    OK 
+       segment@1=6/8(support=60.0,0+/3-)
+  system/2/0     truth=6/8  abstained no_evidence                          None   ·
+
+── m4brahms4eng-OFF.json ─────────────────────────────
+  system/0/0     truth=C    decided   voted                                C      OK 
+       segment@6=C|(support=74.0,2+/0-)
+  system/1/0     truth=C|   abstained no_evidence                          None   ·
+  system/2/0     truth=C|   abstained no_evidence                          None   ·
+
+── m4brahms1scan-OFF.json ─────────────────────────────
+  system/0/0     truth=6/8 no change decided   voted                                6/8    WRONG(segment)
+       segment@7=9/8(support=26.5,0+/1-)
+  system/1/0     truth=9/8 chg@1=6/8 decided   voted                                9/4    WRONG
+       segment@2=4/4(support=4.0,0+/0-)
+  system/1/1     truth=prints no change decided   change_only                          4/4    WRONG
+       change@4=4/4(support=6.0,staves=1,2+/0-)
+
+── m4lit6162-OFF.json ─────────────────────────────
+  system/61/0    truth=prints no change decided   change_only                          C      WRONG
+       change@3=C(support=4.5,staves=1,1+/0-)
+  system/62/0    truth=chg@8=3/4 decided   change_only                          3/4    OK 
+       change@8=3/4(support=3.0,staves=1,0+/0-)
                                     printed  proposed  found  FALSE
 Brahms 1 i   ENGRAVED                     1         2      1      1
-Brahms 1 i   BREITKOPF SCAN               1         8      0      8
+Brahms 1 i   BREITKOPF SCAN               1         3      0      3
 Brahms 1 iv  ENGRAVED (C -> cut)          1         1      1      0
 Beethoven 5 iv ENGRAVED (fwd)             0         0      0      0
 Beethoven 5 iv ENGRAVED (rev)             1         1      1      0

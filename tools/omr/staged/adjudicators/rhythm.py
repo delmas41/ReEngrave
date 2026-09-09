@@ -1219,6 +1219,26 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
 
     out = []
     cautionary: list = []
+    # ⚠️⚠️ THE METER IN FORCE, NOT THE OPENING — and comparing against the
+    # opening was TWO bugs, both measured.
+    #
+    # 1. A RESTATEMENT OF THE SEGMENT ALREADY ACCEPTED WAS EMITTED AGAIN. Each
+    #    candidate was tested against the system's OPENING only, so once a
+    #    change to `4/4` was accepted at cell 2, cells 3, 4, 5 and 6 proposing
+    #    `4/4` all differed from the opening and were appended too. Measured on
+    #    Brahms 1 / Breitkopf p.1: **five consecutive segments, every one of
+    #    them `4/4`** — a system does not change meter five times to the meter
+    #    it is already in.
+    # 2. A CHANGE *BACK* TO THE OPENING WAS SILENTLY DROPPED, which is the same
+    #    comparison failing in the other direction. A movement that goes
+    #    `3/4 -> 4/4 -> 3/4` — Beethoven 9's finale does it repeatedly — could
+    #    record the departure and never the return.
+    #
+    # Both disappear by comparing against what is actually in force at that
+    # bar, which is the opening until a segment supersedes it. ⚠️ This is not
+    # a threshold and there is nothing to tune: a segment identical to its
+    # predecessor changes nothing, by the definition of `record.meter_at`.
+    in_force = (opening.get("numerator"), opening.get("denominator"))
     for cell in sorted(by_cell):
         per_staff = {}
         for r in by_cell[cell]:
@@ -1300,10 +1320,14 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
                 best = cand
         if best is None or best["support"] < METER_CHANGE_FLOOR:
             continue
-        if (best["numerator"], best["denominator"]) == \
-                (opening.get("numerator"), opening.get("denominator")):
+        if (best["numerator"], best["denominator"]) == in_force:
             continue                      # a RESTATEMENT, not a change
         out.append(best)
+        # ⚠️ IN FORCE ADVANCES ONLY ON AN ACCEPTED CHANGE. A candidate refused
+        # as a COURTESY `continue`s above without touching this, which is
+        # right: a signature announcing the next system does not change what
+        # governs the bars of this one.
+        in_force = (best["numerator"], best["denominator"])
     # ⚠️ REPORTED, NOT DROPPED. A cautionary is real ink that was read on every
     # staff; what it is not is a change to a bar of THIS system. Recording the
     # cells keeps a refusal distinguishable from a glyph nobody saw.

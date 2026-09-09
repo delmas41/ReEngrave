@@ -181,6 +181,16 @@ Every system these mechanisms were asked about, on clean engraving:
 | rev `system/1/0` m206+ | 9 | 7 (78%) | 3.1 | `{3.5: 3, 2.0: 2, 4.0: 1, 6.0: 1}` |
 | rev `system/2/0` m215+ | 6 | **2 (33%)** | 4.5 | `{4.5: 1, 4.0: 1}` |
 
+✅ **A MECHANISM FOR THIS WAS DIAGNOSED INDEPENDENTLY THE SAME DAY** and is
+worth reading beside it: `benchmarks/omr-staged-meter-engraved-2026-09/` finds
+that `_bar_lengths_for` consumes a NARROWED duration verdict by taking
+`candidates[0]`, which `Ruling.narrow` orders by support — so a verdict saying
+*"it is one of these"* is spent as if it had decided, always on the longer
+note, inflating the bar. ⚠️ It also measures that *"take the lowest"* is **not**
+the repair (it fixes one page and breaks another) and locates the honest one
+upstream, in beam detection. That is a cause of the density effect below, not
+a competitor to it.
+
 Monotone over these four, and it inverts the intuition that more staves
 playing means more evidence: a dense bar needs every one of its durations right
 to sum, so **the bar-sum mechanisms are strongest exactly where the music is
@@ -371,6 +381,86 @@ this as `LEN-OK/FORM-WRONG` rather than OK, because musicdiff charges a wrong
 length, only ink names the engraving* is this mechanism's own claim. What makes
 it actionable is that the right answer WAS on the record: the `¢` segment, read
 on all 24 staves, one system earlier.
+
+## 4c. THE SCAN SIDE, OPENED — and one fault was a bookkeeping bug, not a reading one
+
+§4b said the second-publisher block is READING. Opening it found that **more
+than half of the damage was not**: of the nine false segments on the two
+scanned pages, **five were one system proposing the SAME meter at five
+consecutive bars.**
+
+### ⚠️ TWO HYPOTHESES WERE MEASURED AND REFUTED FIRST, both by looking at the right population
+
+The false `timeSig4` rows *looked* separable, and neither candidate survived
+contact with a clean comparison:
+
+* **"a stack is two digits aligned in x and adjacent in y."** Over 130
+  per-staff pairs the two populations overlap completely — TRUE `dy` 32-548
+  against FALSE 26-555, TRUE `dx` 0-13 against FALSE 0-16. There is no gap.
+* **"the false ones sit flush at the cell's left edge" (`x_canonical == 0`).**
+  A per-cell table made this look decisive. Restricted to *clean two-digit
+  stacks* — the population the rule would actually run on — it is **1 of 110
+  TRUE and 4 of 50 FALSE**. The apparent split came from pooling contaminated
+  groups of three and four digits and reporting their min.
+
+⚠️ Both were killed by asking the same question of a *comparable* population.
+The first table was not wrong about its numbers; it was wrong about what they
+were numbers OF.
+
+### ⚠️⚠️ THE ACTUAL FAULT: a change was compared against the OPENING, never against the meter IN FORCE
+
+`_meter_changes` tested every candidate against `opening` alone, so once a
+change to `4/4` was accepted at cell 2, cells 3, 4, 5 and 6 proposing `4/4`
+each differed from the (misread) opening `9/4` and were appended too. **A
+system does not change meter five times to the meter it is already in.**
+
+⚠️ **And the same comparison was losing a real change in the other direction**:
+a movement going `3/4 → 4/4 → 3/4` recorded the departure and dropped the
+RETURN, because the return equals the opening. Beethoven 9's finale does that
+repeatedly (`3/4 → 2/4 → 3/4 → 4/4 → 3/4 …`, 17 changes), and nothing in this
+corpus would have shown it.
+
+**Fixed** — compare against the meter in force, which is the opening until a
+segment supersedes it. No threshold, nothing to tune: a segment identical to
+its predecessor changes nothing, by the definition of `record.meter_at`.
+
+| | printed | proposed | found | FALSE |
+|---|--:|--:|--:|--:|
+| Brahms 1 i **Breitkopf scan**, before | 1 | 8 | 0 | **8** |
+| Brahms 1 i **Breitkopf scan**, after | 1 | 3 | 0 | **3** |
+| every engraved row, before and after | — | — | — | **unchanged** |
+| Beethoven 5 Litolff scan, before and after | 1 | 2 | 1 | **1** |
+
+**False segments across the two scans 9 → 4. No true change lost. The engraved
+arms are identical to the row**, which is the control that says this is a
+bookkeeping repair and not a tightening.
+
+`TestAChangeIsAgainstTheMeterInFORCE` pins it — 5 tests, **4 mutation arms all
+red** (revert to comparing against the opening; never advance the in-force
+meter; drop the check; ignore the opening as the seed). ⚠️ Its first harness
+gave both digits the same `y_center` AND the same subject, so no pair formed
+and every assertion failed for a reason unrelated to the rule — the harness is
+now commented with that, because a test that fails for the wrong reason is one
+edit away from being "fixed" by weakening the assertion.
+
+### What the scan side still gets wrong, measured and NOT fixed
+
+1. ⚠️ **The opening `9/8` is voted `9/4`.** The header template reader returns
+   `[9, 4]` on 10 staves at scores **0.500-0.531** — against `min_score` 0.50 —
+   where page 0's correct `6/8` reads 0.656-0.750 on 14 of 14. The numerator is
+   right and the denominator is wrong. ⚠️⚠️ **And the document contains the
+   correct answer one system earlier**: the cautionary at the end of page 0 is
+   the same meter, and the DETECTOR reads it as `9` over `8` on 10 and 20
+   staves. Using it means feeding a cautionary forward — which is carry/borrow,
+   and belongs with §5.
+2. ⚠️ **The cautionary is read as a change on the system that prints it**, on
+   BOTH printings (§4b). Same root: it announces the NEXT system.
+3. **The real change to `6/8` at cell 1 is still missed** — the detector finds
+   one `timeSig1` there and no pair. That one is genuinely a reading gap.
+
+So of the nine false segments §4b reported, **five were bookkeeping, three are
+the cautionary and its Litolff twin, and one is a detector false positive** —
+and the two remaining reading faults both have the same repair available.
 
 ## 5. ⚠️⚠️ THREE GAPS, ONE PIECE OF WORK — the segments are read and nothing downstream uses them
 

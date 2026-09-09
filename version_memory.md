@@ -143,10 +143,85 @@ digits must win) is kept as `TestDigitsWinOverALetterAtTheSameBar`.
   experiment; the tell was `system/0/0` abstaining where it had to read 3/4.
   Now REQUIRED. (2) A top-margin heuristic for locating movement starts missed
   p.17, the one known boundary — that print does not indent one. Discarded.
+- ⚠️⚠️ **AND THE WRONG SUMS WERE THEN DIAGNOSED, OFFLINE ON THE SAVED RECORD —
+  TWO INDEPENDENT FAULTS.** (1) **A NARROWED duration is collapsed to its top
+  candidate, and it biases LONG.** 77 of 428 duration verdicts on the dense
+  page (18%) are `narrowed`/`beams_ambiguous`, **every one with the candidate
+  set `(1.0, 0.5)`**; `Ruling.narrow` orders by support so `candidates[0]` is
+  1.0, and `_bar_lengths_for` takes exactly that — *"it is one of these"*
+  consumed as if it had decided, always the longer note. That is this repo's
+  own anti-pattern and `Evidence.admitted`'s docstring says so in as many
+  words. Page 2, truth 4/4: `candidates[0]` → 1 assessable / **0 correct**;
+  lowest → 4 / **4 correct** (up to 22/23); dropped → 1 / 0.
+  ⚠️ **"Take the lowest" is NOT the fix** — on the mixed page it is WORSE
+  (2 correct of 4 against 3 of 5). A policy that fixes one page and breaks
+  another is a fudge that fits; the table establishes the MECHANISM and its
+  DIRECTION only. The repair is upstream: `beam_evidence:
+  "none_over_this_note"` with `yolo_kept: 0` **on a clean engraving** is a
+  beam-detection failure, and a note whose beam is missed reads too long.
+  (2) **A separate confident wrongness no candidate policy touches** — page 1
+  cells 4 and 5 read **3.5 at 17 of 23** and **6.0 at 20 of 23** against a
+  truth of 4.0, wrong under both policies. Two-thirds of staves agreeing on 6.0
+  is a shared systematic misread, not ambiguity. **Work the two separately.**
 - `benchmarks/omr-staged-meter-engraved-2026-09/` — `render_meter_change.py`
   (the `excerpt` recipe without its one-page shrink, which exists for an
   EXPORTER reason that does not apply when the question is per-SYSTEM),
-  `hide_change_signature.py`, and `FINDINGS.md`.
+  `hide_change_signature.py`, `probe_narrowed_policy.py` (takes any staged
+  record), and `FINDINGS.md`.
+
+---
+
+## 2026-09-09 — The scan side of the meter, opened: five of nine false changes were BOOKKEEPING
+
+**What:** `_meter_changes` now compares a candidate against the meter **in
+force** rather than against the system's OPENING
+(`tools/omr/staged/adjudicators/rhythm.py`), plus
+`TestAChangeIsAgainstTheMeterInFORCE` (5 tests, 4 mutation arms).
+
+**Why:** the boundary work measured that the second-publisher block is READING
+— a Breitkopf scan of the same 22 bars proposed **8 false meter changes** where
+the engraved arm proposed 1. Opening it showed **more than half was not a
+reading fault at all**: five of the eight were ONE system proposing `4/4` at
+five consecutive bars. Each candidate was tested against the (misread) opening
+`9/4`, and nothing compared it to the segment already accepted.
+
+⚠️ **The same comparison was losing a real change in the other direction.** A
+movement going `3/4 → 4/4 → 3/4` recorded the departure and dropped the
+RETURN, because the return equals the opening — Beethoven 9's finale does that
+repeatedly (17 changes, `3/4 → 2/4 → 3/4 → 4/4 → 3/4 …`) and nothing in this
+corpus would have surfaced it.
+
+**Measured:** false segments across the two scanned pages **9 → 4**, no true
+change lost, **every engraved row identical to the row** — the control that
+says this is a bookkeeping repair, not a tightening.
+
+⚠️ **TWO HYPOTHESES WERE REFUTED FIRST, both by fixing the population rather
+than the number.** *"A stack is two digits aligned in x and adjacent in y"* —
+TRUE `dy` 32-548 against FALSE 26-555, complete overlap. *"The false ones sit
+at `x_canonical == 0`"* — decisive-looking in a per-cell table, and **1 of 110
+TRUE vs 4 of 50 FALSE** once restricted to clean two-digit stacks; the first
+table had pooled contaminated groups of three and four digits and reported
+their min. Neither table was wrong about its numbers, only about what they
+were numbers of.
+
+⚠️ **The first test harness failed for the wrong reason** — it gave both digits
+the same `y_center` and the same subject, so no pair formed and every assertion
+failed on something unrelated to the rule. That is one edit away from being
+"fixed" by weakening the assertion, so the harness now says so in a comment.
+
+**Still wrong on the scan, measured and not fixed:** the opening `9/8` is voted
+**`9/4`** (the header template reader returns `[9, 4]` on 10 staves at
+**0.500-0.531** against a `min_score` of 0.50, where page 0's correct `6/8`
+reads 0.656-0.750 on 14 of 14); the CAUTIONARY is read as a change on the
+system printing it, on both printings; and the real change to `6/8` is missed.
+⚠️⚠️ **The first two share a repair, and the document already holds the
+answer**: the cautionary at the end of page 0 is the same meter as page 1's
+opening and the DETECTOR reads it correctly as `9` over `8` on 10 and 20
+staves. Feeding a cautionary forward is carry/borrow, so it belongs to the
+queued segments session rather than to a new reader.
+
+Suite **3407 passed, 11 skipped**.
+[benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md) §4c.
 
 ---
 

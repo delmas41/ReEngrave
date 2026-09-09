@@ -177,3 +177,66 @@ which covers the boundary itself far more widely (two engraved fixtures, a
 second document AND publisher, engraved 4 printed / 4 found / 1 false against
 scanned 2 printed / 1 found / 9 false). **This file's contribution is the
 DENSE-texture arm and the carry's measured cost**, not the boundary result.
+
+---
+
+## 6. ⚠️⚠️ THE DIAGNOSIS — where the wrong bar sums come from, and it is TWO faults
+
+Done offline, on the **saved record** of the dense fixture — no
+re-transcription, so nothing here is detector jitter.
+
+### Fault 1 — a NARROWED duration is collapsed to its top candidate, and it biases LONG
+
+Of 428 duration verdicts on page 2, **77 (18%) are `narrowed`, reason
+`beams_ambiguous`**, and **every one has the same candidate set: `(1.0, 0.5)`**
+— a quarter or an eighth. Their detail says why:
+
+```
+beam_evidence: "none_over_this_note"
+cv_beams: 2   yolo_beams: 2   yolo_kept: 0
+levels_certain: 0   levels_possible: 1
+```
+
+`Ruling.narrow` orders candidates by support, so `candidates[0]` is **1.0** —
+and `_bar_lengths_for` takes exactly that:
+
+```python
+val = (got.value if got.outcome is Outcome.DECIDED
+       else (got.candidates[0].value if got.candidates else None))
+```
+
+⚠️ **A verdict that says "it is one of these" is consumed as if it had decided,
+and the choice is always the longer note.** That is this project's own named
+anti-pattern, and `Evidence.admitted`'s docstring is explicit about it: *"THE
+POINT IS THAT A CONSUMER NEED NOT COLLAPSE THE SET EARLY … so a consumer can
+carry the ambiguity forward and let its OWN evidence settle it"*. The bar sum
+collapses it early, in the one direction that inflates a bar.
+
+**Measured, three policies, same record, page 2 (truth 4/4):**
+
+| narrowed duration → | assessable bars | correct |
+|---|--:|--:|
+| `candidates[0]` — **what ships** | 1 | **0** (4.5 at 12/23) |
+| the LOWEST candidate | 4 | **4** (4.0 at 19/23, 13/23, 22/23, 13/23) |
+| dropped from the bar | 1 | 0 |
+
+⚠️⚠️ **BUT "TAKE THE LOWEST" IS NOT THE FIX, AND THE SECOND PAGE SAYS SO.** On
+page 1 (mixed 3/4 → 4/4) it is **worse**: 2 correct of 4 against the current
+3 of 5, because it loses a bar the current policy gets right. A policy that
+fixes one page and breaks another is a fudge that fits, not a reading. **What
+the table establishes is the MECHANISM and its DIRECTION, not a repair.**
+
+The honest repair is upstream: `beam_evidence: "none_over_this_note"` with
+`yolo_kept: 0` on a **clean engraving** is a beam-detection failure, and a note
+whose beam is missed is read an octave of duration too long. Fix the beam, and
+the narrowing does not arise.
+
+### Fault 2 — a separate, confident wrongness no candidate policy touches
+
+Page 1 cells 4 and 5 read **3.5 at 17 of 23 staves** and **6.0 at 20 of 23**,
+where the truth is 4.0. They are wrong under **both** policies above, so
+whatever produces them is not the narrowing. Two-thirds of the staves agreeing
+on 6.0 is not ambiguity — it is a shared, systematic misreading, and it is the
+one that most needs a crop in front of a human.
+
+**These two faults are independent and should be worked separately.**
