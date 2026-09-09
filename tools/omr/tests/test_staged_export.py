@@ -508,3 +508,101 @@ class TestNothingDetectedGoesUnaccounted(unittest.TestCase):
     def test_every_excuse_names_a_reason(self):
         for cls, why in SX.NOT_NOTATION.items():
             self.assertTrue(why and why.strip(), cls)
+
+
+class TestTheMeterIsReadPerBARNotPerRUN(unittest.TestCase):
+    """⚠️⚠️ `Q.METER`'s `segments` REACHED NO FILE. `_part_xml` took
+    `_meter_dict(run.meter)` once per staff-run and used that one meter for
+    every bar of it, so a printed mid-system meter change could not be
+    exported at all — and `record.meter_at`, whose own docstring says it *is*
+    how a bar's meter is read, was called by nothing but its own tests.
+
+    Measured on the boundary benchmark's engraved Brahms 1 iv: the `¢` sits on
+    the record at `from_cell 6` with `staves_reading_it` = all 24 and support
+    74.0, and before this the file declared `<time>` exactly once per part,
+    `4/4 symbol="common"`, at measure 1.
+    """
+
+    def _page(self, segments, n_measures=4):
+        return _one_staff_page(
+            notes=[], n_measures=n_measures,
+            meter={"numerator": segments[0]["numerator"],
+                   "denominator": segments[0]["denominator"],
+                   "raw": segments[0]["raw"], "segments": segments})
+
+    def _times(self, xml):
+        root = ET.fromstring(xml)
+        out = []
+        for m in root.iter("measure"):
+            at = m.find("attributes")
+            t = at.find("time") if at is not None else None
+            if t is not None:
+                out.append((m.get("number"),
+                            f"{t.findtext('beats')}/{t.findtext('beat-type')}",
+                            t.get("symbol")))
+        return out
+
+    def _run(self, page, on):
+        import os
+        prev = os.environ.get(SX.METER_SEGMENTS_ENV)
+        if on:
+            os.environ[SX.METER_SEGMENTS_ENV] = "1"
+        else:
+            os.environ.pop(SX.METER_SEGMENTS_ENV, None)
+        try:
+            return SX.to_musicxml(page)
+        finally:
+            if prev is None:
+                os.environ.pop(SX.METER_SEGMENTS_ENV, None)
+            else:
+                os.environ[SX.METER_SEGMENTS_ENV] = prev
+
+    def _export(self, page, on):
+        return self._run(page, on)[0]
+
+    SEGS = [{"from_cell": 0, "numerator": 3, "denominator": 4, "raw": "3/4"},
+            {"from_cell": 2, "numerator": 4, "denominator": 4, "raw": "C"}]
+
+    def test_the_change_reaches_the_file_at_the_BAR_it_is_printed_on(self):
+        times = self._times(self._export(self._page(self.SEGS), on=True))
+        self.assertEqual(times, [("1", "3/4", None), ("3", "4/4", "common")])
+
+    def test_flag_OFF_is_the_old_behaviour_exactly(self):
+        """⚠️ The control every new mechanism here needs: off, only the
+        system's opening is declared and it is declared once."""
+        times = self._times(self._export(self._page(self.SEGS), on=False))
+        self.assertEqual(times, [("1", "3/4", None)])
+
+    def test_a_system_with_ONE_segment_is_byte_identical_either_way(self):
+        """A page that prints no change must not move at all — which is what
+        makes the flag's blast radius exactly 'pages with a read change'."""
+        page = self._page([{"from_cell": 0, "numerator": 2,
+                            "denominator": 4, "raw": "2/4"}])
+        self.assertEqual(self._export(page, on=False),
+                         self._export(page, on=True))
+
+    def test_a_bar_NO_segment_covers_gets_no_time_rather_than_the_next_one(self):
+        """⚠️ `meter_at` RETURNS None THERE, AND THAT IS A REAL ANSWER. A
+        system can print a change at bar 2 while never stating what bars 0-1
+        were in — *unknown until then, 3/4 from there* is exactly what a
+        range-scoped fact can say. Inheriting the meter that FOLLOWS would
+        assert a bar length the page never states, and the measure-rest
+        arithmetic would then be a guess dressed as a fact.
+
+        Measured on Litolff p.61-62: the printed `3/4` moved from measure 8,
+        the first bar of its system, to measure 16 — its ninth, where the
+        hand-read truth puts it.
+        """
+        page = self._page([{"from_cell": 2, "numerator": 3,
+                            "denominator": 4, "raw": "3/4"}])
+        xml, rep = self._run(page, on=True)
+        self.assertEqual(self._times(xml), [("3", "3/4", None)])
+        # ⚠️ and the bars BEFORE it are padded without a meter, not with the
+        # one that follows them
+        self.assertEqual(rep["written"].get(
+            "empty_bars_padded_without_meter"), 2)
+        # the control: flag off, every bar inherits the opening and none is
+        # padded meterless
+        _, off = self._run(page, on=False)
+        self.assertEqual(off["written"].get(
+            "empty_bars_padded_without_meter", 0), 0)

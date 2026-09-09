@@ -46,6 +46,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import os
 import json
 import pathlib
 import sys
@@ -56,7 +57,40 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from .. import export as _legacy
 from ..voicing import group_chords_in_measure
 from . import adjudicate as A
-from .record import Q
+from .record import Q, meter_at
+
+
+METER_SEGMENTS_ENV = "OMR_METER_SEGMENTS"
+
+
+def meter_segments_enabled() -> bool:
+    """Read the flag. Anything but an explicit "1" is off.
+
+    ⚠️⚠️ WHAT IT GATES IS A BUG FIX, AND IT IS OFF ANYWAY — ON `n`, NOT ON
+    THE MECHANISM. `Q.METER` has carried `segments` since 2026-09-09 and this
+    exporter read only the system's opening, so a printed mid-system meter
+    change could not reach a MusicXML file at all. Turning it on is measured
+    strictly better on every ENGRAVED fixture: Brahms 1 iv's `¢` — read on 24
+    staves of 24 at support 74.0 — went from reaching NO file to reaching all
+    24 parts, and Beethoven 5 / Litolff's printed `3/4` moved from the first
+    bar of its system to the ninth, which is where the hand-read truth puts
+    it.
+
+    ⚠️ THE BLOCKING OBJECTION IS THE SCAN'S READING, NOT THIS. With the
+    cautionary rule in, the boundary benchmark's scanned arm still proposes
+    seven false segments on one page of one publisher — five spurious `4/4`
+    changes at support 3.5-4.0 against a floor of 3.0, read on ONE staff of
+    twenty — and with this flag on, every one of them re-sizes bars in the
+    file instead of sitting inertly on the record. FINDINGS §4b already
+    attributes that fixture's failure to the meter GLYPH readers rather than
+    to the weighing; until that is fixed, a default-on would trade an engraved
+    gain for a scanned regression.
+
+    Same reasoning, and the same owner, as `OMR_METER_CARRY` and
+    `OMR_METER_FROM_BARS`: both are off on `n` rather than on hazard, and the
+    default is Sean's call.
+    """
+    return os.environ.get(METER_SEGMENTS_ENV, "0").strip() == "1"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -495,10 +529,28 @@ def _part_xml(part: Sequence[StaffRun], pid: str, divisions: int,
     number = 0
     prev = {"clef": object(), "key": object(), "time": object()}
     first = True
+    segments_on = meter_segments_enabled()
     for run in part:
         key = _key_dict(run.fifths)
-        meter = _meter_dict(run.meter)
         for i in range(run.n_measures):
+            # ⚠️⚠️ THE METER IS READ PER BAR, AND FOR A LONG TIME IT WAS NOT.
+            # This line used to sit outside the loop, one meter for the whole
+            # run — so `Q.METER`'s `segments`, the field the last three
+            # sessions built to say *"6/8, then 9/8 from bar 6"*, reached no
+            # file at all and `record.meter_at` was called by nothing but its
+            # own tests. Measured on Brahms 1 iv: the `¢` sat on the record at
+            # `from_cell 6` on 24 staves of 24 at support 74.0, and the export
+            # declared `<time>` once per part, `4/4 symbol="common"`, at
+            # measure 1.
+            #
+            # ⚠️ `meter_at` MAY RETURN None FOR A BAR NO SEGMENT COVERS, and
+            # that is a real answer rather than a gap: a system can print a
+            # change at bar 8 while never stating what bars 0-7 were in. The
+            # `meter is None` branch below already withholds `measure="yes"`
+            # for exactly that reason, so an unknown opening stays unknown
+            # instead of inheriting the meter that follows it.
+            meter = _meter_dict(meter_at(run.meter, i) if segments_on
+                                else run.meter)
             number += 1
             lines.append(f'    <measure number="{number}">')
             changed = (run.clef != prev["clef"] or key != prev["key"]

@@ -1158,3 +1158,280 @@ class TestARefusalMayNotBlockALaterRung(unittest.TestCase):
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "no_evidence")
+
+
+class TestACourtesySignatureIsNotAChange(unittest.TestCase):
+    """⚠️⚠️ `_meter_changes` HAD NO NOTION OF A CAUTIONARY: any glyph in a cell
+    after the first was a change. A courtesy signature after a system's final
+    barline announces the NEXT system's meter and governs no bar here, so a
+    segment built on it re-sizes the last bar of this system to a meter the
+    page never applies to it.
+
+    Measured on the boundary benchmark: it is the ONE false positive the
+    engraved arms produce, BOTH printings of Brahms 1 page 0 show it, and over
+    all fourteen proposed segments the separation is saturated — every one of
+    the four TRUE changes has 0.000 of its bar's ink to the left of the glyph
+    and both cautionaries have 1.000.
+
+    ⚠️ The Beethoven forward fixture HID it: its cautionary page holds one
+    cell, so the glyph landed at cell 0 and was read as an opening. A one-cell
+    page cannot exercise the rule a seven-cell page breaks.
+    """
+
+    N_STAVES = 4
+
+    def _log(self, *, meter_x, n_cells=3, glyph_cell=2, ink=True,
+             opening=True):
+        """One system reading `3/4`, with a `2/4` printed in `glyph_cell`.
+
+        `meter_x` is the only thing that varies: put it left of the bar's
+        noteheads and it is a change, right of them and it is a courtesy.
+        """
+        log = Log()
+        sysj = R.system(0, 0)
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=sysj,
+            quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+            value=self.N_STAVES, decider="t", reason="counted"))
+        for st in range(self.N_STAVES):
+            if opening:
+                log.observe(R.staff(0, 0, st), Q.METER_TEMPLATE, (3, 4),
+                            reader=READERS.TEMPLATE, frame="header_window",
+                            score=0.7, raw="3/4")
+            for klass, y in (("timeSig2", 10.0), ("timeSig4", 30.0)):
+                log.observe(R.glyph(0, 0, st, glyph_cell, 90 + len(klass)),
+                            Q.METER_GLYPH, klass, reader=READERS.DETECTOR,
+                            frame="cell:%d" % glyph_cell, score=0.9,
+                            cell=glyph_cell, x=meter_x, y_center=y,
+                            letter=False)
+            for c in range(n_cells):
+                cell, g = R.cell(0, 0, st, c), R.glyph(0, 0, st, c, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                if ink or c != glyph_cell:
+                    # the bar's own music, centred at x = 500
+                    log.observe(g, Q.GLYPH_BOX,
+                                ("noteheadBlack", 400, 0, 600, 16),
+                                reader=READERS.DETECTOR,
+                                frame="cell:%d" % c, score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": 3.0 if c < glyph_cell else 2.0,
+                           "written": 3.0, "duration_type": "quarter",
+                           "dots": 0},
+                    decider="t", reason="head_and_marks"))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 500.0,
+                                       "kind": "chord"}]},
+                    decider="t", reason="x_clustered"))
+        return log, sysj
+
+    def _run(self, log, sysj):
+        log.freeze()
+        adjudicate._ensure_decisions()
+        adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.METER], sysj)
+        return log.verdict(Q.METER, sysj)
+
+    def _segments(self, v):
+        return (v.value or {}).get("segments") or []
+
+    # ── the control: a real change, printed at the head of its bar ─────────
+
+    def test_a_glyph_BEFORE_the_bars_music_IS_a_change(self):
+        v = self._run(*self._log(meter_x=10.0))
+        self.assertEqual([(s["from_cell"], s["raw"])
+                          for s in self._segments(v)], [(0, "3/4"), (2, "2/4")])
+
+    # ── the fix ───────────────────────────────────────────────────────────
+
+    def test_a_glyph_AFTER_the_bars_music_is_NOT_a_change(self):
+        """⚠️ RUN THIS RED: drop the `_looks_cautionary` guard in
+        `_meter_changes` and a second segment appears, silently re-sizing the
+        last bar of the system."""
+        v = self._run(*self._log(meter_x=900.0))
+        self.assertEqual([(s["from_cell"], s["raw"])
+                          for s in self._segments(v)], [(0, "3/4")])
+
+    def test_the_courtesy_is_RECORDED_not_silently_dropped(self):
+        """It is real ink read on every staff; what it is not is a change to a
+        bar of THIS system. A refusal must stay distinguishable from a glyph
+        nobody saw."""
+        v = self._run(*self._log(meter_x=900.0))
+        self.assertEqual(v.value.get("cautionary_cells"), [2])
+
+    def test_a_bar_with_no_other_ink_is_NOT_called_a_courtesy(self):
+        """⚠️ NO OPINION IS NOT A CAUTIONARY. A bar we read no other ink in
+        cannot say where its music sits, and refusing there would be the rule
+        deciding on absence — which is exactly what it does on the Breitkopf
+        scan, whose final cell holds nine detections against a normal cell's
+        several hundred."""
+        v = self._run(*self._log(meter_x=900.0, ink=False))
+        self.assertEqual([s["from_cell"] for s in self._segments(v)], [0, 2])
+
+    def test_a_system_whose_ONLY_glyph_is_a_courtesy_abstains_naming_it(self):
+        """Beethoven 5 / Litolff p.61: one staff of seventeen reads a `C`
+        after the final barline, and before this that became a `change_only`
+        verdict asserting a meter change the page does not print."""
+        # no opening reading, so `_change_only` is the only route left
+        v = self._run(*self._log(meter_x=900.0, opening=False))
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual((v.detail or {}).get("cautionary_cells"), [2])
+
+
+class TestTheCarryTakesTheMeterInForceAtTheSourcesEND(unittest.TestCase):
+    """⚠️⚠️ THE CARRY TOOK THE SOURCE'S OPENING AND DELETED ITS SEGMENTS —
+    `{k: v for k, v in found.value.items() if k != "segments"}` — so a source
+    that PRINTED a change handed on the meter it had already stopped being in.
+
+    Measured twice on Brahms 1: movement 1's system 2 was handed `9/8`, the
+    ONE bar that opens the source system, instead of the `6/8` governing seven
+    of its eight bars; and movement 4's continuation was handed `C` instead of
+    the `¢` the same system had just read on 24 staves of 24 at support 74.0.
+    Both times the answer was already on the record, one system back, in the
+    field the carry threw away.
+    """
+
+    N_STAVES = 4
+
+    def _bars(self, log, page, beats, n_bars=3, n_staves=None):
+        for st in range(n_staves or self.N_STAVES):
+            for c in range(n_bars):
+                cell, g = R.cell(page, 0, st, c), R.glyph(page, 0, st, c, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 400, 0, 600, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": beats, "written": beats,
+                           "duration_type": "quarter", "dots": 0},
+                    decider="t", reason="head_and_marks"))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 500.0,
+                                       "kind": "chord"}]},
+                    decider="t", reason="x_clustered"))
+
+    def _log(self, *, source_changes, dst_beats=2.0):
+        """Page 0 reads `3/4` and (optionally) changes to `2/4` at its bar 1;
+        page 1 reads nothing and its bars measure 2.0 — the meter the source
+        ENDS in, not the one it opens with."""
+        log = Log()
+        src, dst = R.system(0, 0), R.system(1, 0)
+        for sysj in (src, dst):
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=self.N_STAVES, decider="t", reason="counted"))
+        for st in range(self.N_STAVES):
+            log.observe(R.staff(0, 0, st), Q.METER_TEMPLATE, (3, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw="3/4")
+            if source_changes:
+                for klass, y in (("timeSig2", 10.0), ("timeSig4", 30.0)):
+                    log.observe(R.glyph(0, 0, st, 1, 90 + len(klass)),
+                                Q.METER_GLYPH, klass, reader=READERS.DETECTOR,
+                                frame="cell:1", score=0.9, cell=1,
+                                x=10.0, y_center=y, letter=False)
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=R.staff(0, 0, st),
+                quantity=Q.MEASURE_PARTITION, outcome=Outcome.DECIDED,
+                value=3, decider="t", reason="barlines"))
+        self._bars(log, 0, 2.0)
+        # ⚠️ The destination's bars are the SECOND witness and must match the
+        # meter actually being carried, or the carry is refused on its own
+        # (correct) terms and the test measures nothing about which meter was
+        # chosen. 2.0 for the changed source (`2/4`), 3.0 for the control.
+        self._bars(log, 1, dst_beats)
+        return log, src, dst
+
+    def _run(self, log):
+        import os
+        log.freeze()
+        adjudicate._ensure_decisions()
+        spec = adjudicate.REGISTRY[Q.METER]
+        prev = os.environ.get(rhythm_mod.METER_CARRY_ENV)
+        os.environ[rhythm_mod.METER_CARRY_ENV] = "1"
+        try:
+            for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
+                adjudicate.adjudicate_one(log, spec, sysj)
+        finally:
+            if prev is None:
+                os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
+            else:
+                os.environ[rhythm_mod.METER_CARRY_ENV] = prev
+
+    def test_a_source_that_CHANGED_hands_on_what_it_changed_TO(self):
+        """⚠️ RUN THIS RED: restore the old
+        `{k: v for k, v in found.value.items() if k != "segments"}` and the
+        carried meter comes back `3/4`, the bar the source had already left."""
+        log, src, dst = self._log(source_changes=True)
+        self._run(log)
+        self.assertEqual(
+            [(s["from_cell"], s["raw"])
+             for s in log.verdict(Q.METER, src).value["segments"]],
+            [(0, "3/4"), (1, "2/4")])
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "carried")
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (2, 4))
+
+    def test_the_SOURCES_segments_do_not_travel(self):
+        """They are the SOURCE's bar ranges and mean nothing in this system's
+        numbering. This system's own segments come from its own ink."""
+        log, _src, dst = self._log(source_changes=True)
+        self._run(log)
+        segs = log.verdict(Q.METER, dst).value["segments"]
+        self.assertEqual([(s["from_cell"], s["raw"]) for s in segs],
+                         [(0, "2/4")])
+
+    def test_a_source_with_NO_change_is_unaffected(self):
+        """The control: where the source never changed, opening and end are
+        the same meter and the carry behaves exactly as it always did."""
+        log, _src, dst = self._log(source_changes=False, dst_beats=3.0)
+        self._run(log)
+        v = log.verdict(Q.METER, dst)
+        self.assertEqual(v.reason, "carried")
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (3, 4))
+
+
+class TestAReadChangeMayBeACarrySource(unittest.TestCase):
+    """⚠️ THE GATE WAS `reason == "voted"` ALONE, AND THAT EXCLUDED INK. A
+    `change_only` verdict's value is a meter READ on its own system's staves
+    and weighed against its own bars, so refusing it as a source refused
+    exactly the evidence the gate exists to require.
+
+    Beethoven 5 / Litolff p.62 is the case: it reads the printed `3/4` at the
+    bar the reference names, on a system whose opening is unknown — and no
+    later system could be handed it.
+
+    ⚠️ WHAT STAYS OUT IS WHAT A CARRY WOULD CHAIN ONTO: `carried` is another
+    system's answer repeated and `derived_from_bars` is arithmetic with a
+    borrowed spelling, so admitting either would make `pages_since_read` a lie
+    about the distance back to ink.
+    """
+
+    def test_the_admissible_reasons_are_the_ones_that_READ_ink(self):
+        self.assertEqual(set(rhythm_mod.METER_SOURCE_REASONS),
+                         {"voted", "change_only"})
+
+    def test_a_carry_is_NOT_a_source_so_a_carry_never_chains(self):
+        self.assertNotIn("carried", rhythm_mod.METER_SOURCE_REASONS)
+
+    def test_a_borrowed_form_is_NOT_a_source(self):
+        self.assertNotIn("derived_from_bars", rhythm_mod.METER_SOURCE_REASONS)
+
+    def test_every_admissible_reason_is_one_the_decision_can_actually_emit(self):
+        """⚠️ A source list naming a reason no decision produces is inert, and
+        would read as protection that is not there."""
+        spec = adjudicate.REGISTRY[Q.METER]
+        for reason in rhythm_mod.METER_SOURCE_REASONS:
+            self.assertIn(reason, spec.reasons)

@@ -253,6 +253,29 @@ def _legacy_for(fn: Any, mods: List[str]) -> Dict[str, List[str]]:
     }
 
 
+#: How far into a decision's own helpers a `Q.` read counts as the decision
+#: reading it.
+#:
+#: ⚠️ IT WAS 3, AND 3 WAS ONE LEVEL SHORT OF A REAL READ. `adjudicate_meter`
+#: reaches `Q.GLYPH_BOX` through `_with_segments -> _meter_changes ->
+#: _looks_cautionary` and `Q.MEASURE_PARTITION` through `_meter_fallbacks ->
+#: _carry_meter -> _meter_in_force_at_end -> _cell_count`, so both were
+#: reported inert while the code plainly reads them. That is the SAME
+#: objection the comment below already records against depth 1 -- the limit
+#: measures how deeply a module nests its helpers, not whether a declaration
+#: is dead -- and the meter decision is genuinely layered because its
+#: fallbacks are.
+#:
+#: ⚠️ MEASURED BEFORE IT WAS RAISED, over the whole registry: 17 inert at
+#: depth 3, 16 at 4, **15 at 5, and 15 at every depth beyond**. The only two
+#: that clear are the meter's own, and `meter declares 'dossier_fact'` stays
+#: inert exactly as its `KNOWN_GAPS` entry says. So this does not quietly
+#: retire any standing finding -- including `clef declares
+#: 'notehead_staff_position'`, which is depth-independent and confirmed by
+#: grep. 6 sits one level past the saturation point rather than on it.
+_HELPER_DEPTH = 6
+
+
 def _never_read(spec) -> List[str]:
     """`wants` entries whose `Q.` name appears nowhere in the decision's body.
 
@@ -279,14 +302,14 @@ def _never_read(spec) -> List[str]:
     # `adjudicate_clef` asks for `clef_glyph` through `_detector_terms(ev)`;
     # a check that looked only at the decision body reported six decisions
     # reading nothing they declared, which is a measure of code STYLE, not of
-    # inertness. Followed to depth 3 within the decision's own module.
+    # inertness. Followed within the decision's own module to `_HELPER_DEPTH`.
     mod = ast.parse(pathlib.Path(inspect.getfile(spec.fn)).read_text())
     helpers = {n.name: n for n in ast.walk(mod)
                if isinstance(n, ast.FunctionDef)}
     names: Set[str] = set()
     seen: Set[str] = set()
     frontier = [fn]
-    for _ in range(3):
+    for _ in range(_HELPER_DEPTH):
         nxt: List[ast.AST] = []
         for node in frontier:
             body = node.body if isinstance(node, ast.FunctionDef) else [node]
