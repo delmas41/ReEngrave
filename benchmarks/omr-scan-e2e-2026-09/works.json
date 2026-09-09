@@ -2389,25 +2389,29 @@
      "name": "Becken",
      "parts": [
       23
-     ]
+     ],
+     "lines": 1
     },
     {
      "name": "Grosse Trommel",
      "parts": [
       24
-     ]
+     ],
+     "lines": 1
     },
     {
      "name": "Kleine Trommel",
      "parts": [
       25
-     ]
+     ],
+     "lines": 1
     },
     {
      "name": "Tamtam",
      "parts": [
       26
-     ]
+     ],
+     "lines": 1
     },
     {
      "name": "Erste Violinen",

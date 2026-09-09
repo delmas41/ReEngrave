@@ -335,20 +335,13 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
         c = by_key.get((sub.page, sub.system, sub.staff, sub.cell))
         if c is None:
             continue
-        lines = list(c.staff_line_ys_canonical or [])
-        if len(lines) < 2:
+        grid = _cell_grid(c)
+        if grid is None:
             log.abstain(sub, Q.NOTEHEAD_STAFF_POSITION,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         reason=ABSTAIN.NO_STAFF_GEOMETRY)
             continue
-        gaps = [lines[i + 1] - lines[i] for i in range(len(lines) - 1)]
-        half_step = (sum(gaps) / len(gaps)) / 2.0
-        top_y = lines[0]
-        if half_step <= 0:
-            log.abstain(sub, Q.NOTEHEAD_STAFF_POSITION,
-                        reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
-                        reason=ABSTAIN.NO_STAFF_GEOMETRY)
-            continue
+        top_y, half_step = grid
         for gi, d in enumerate(dets):
             if not d.smufl_name.startswith(_NOTEHEAD_PREFIX):
                 continue
@@ -621,6 +614,92 @@ def gather_rhythm_marks(log: Log, cells: Sequence[Any],
                             is_bracket=name.lower().endswith("bracket"))
 
 
+#: Which detected class belongs to which notation family.
+#:
+#: ⚠️ ROUTED BY CLASS, NOT BY THE DETECTOR'S `category`, and the hairpins are
+#: why. `dynamicDiminuendoHairpin` carries category `dynamic` and is a WEDGE,
+#: not a letter -- so a category-keyed router would spell it into a dynamic
+#: word. Articulations are the mirror: all ten `artic*` classes carry category
+#: `ornament`, which they share with `ornamentTrill`, `fermataAbove` and
+#: `arpeggiato`, so the category cannot separate them either.
+_WEDGE_CLASSES = ("dynamicCrescendoHairpin", "dynamicDiminuendoHairpin")
+_ARC_CLASSES = ("tie", "slur")
+_ARTIC_PREFIX = "artic"
+_DYNAMIC_PREFIX = "dynamic"
+_REST_PREFIX = "rest"
+
+
+def _artic_side(name: str) -> Optional[str]:
+    """The side an articulation's own class NAMES, or None where it does not.
+
+    ⚠️ Not every class states one. `class_aliases.COARSER_THAN_CANONICAL`
+    records `articulationAccent` / `Staccato` / `Tenuto` as coarser than the
+    canonical spelling precisely because they carry no side, and the legacy
+    attach pass requires the geometry to AGREE with the side when there is
+    one. So this returns None rather than guessing, and the adjudicator gets a
+    row that says "no side declared" instead of a wrong one.
+    """
+    if name.endswith("Above"):
+        return "above"
+    if name.endswith("Below"):
+        return "below"
+    return None
+
+
+def gather_glyph_families(log: Log, detections: Dict[str, List[Any]]) -> None:
+    """Rests, arcs, wedges, dynamic letters and articulation marks.
+
+    ⚠️ EVERY ONE OF THESE WAS DETECTED AND READ BY NOTHING until 2026-09-09.
+    Measured over four real conductor's pages, the ink that reached
+    `GLYPH_BOX` and no typed row: **838 rests, 755 ties, 291 slurs, 542
+    dynamic letters, 40 articulation marks, 1 hairpin** -- 2,467 glyphs. Four
+    of the five quantities existed in `Q` and in a stub's `wants` and were
+    OBSERVED BY NOTHING, so writing those adjudicators would have produced
+    nothing; the fifth, `Q.REST`, did not exist at all.
+
+    ⚠️ THIS FUNCTION DECIDES NOTHING, and the split is the point. A rest's
+    DURATION, an arc's OWNER and KIND, a hairpin's ANCHORS, the spelling of
+    `f`+`f` into `ff` -- each is an interpretation with its own evidence and
+    its own right to abstain. What belongs here is only "this ink is of this
+    kind, and here is where it is".
+
+    ⚠️ The extents are recorded because the consumers need them and the box
+    alone is not enough: an arc is PAIRED across a barline by its ends, a
+    hairpin is anchored by its edges (its ink does not overlap the notes it
+    binds at all -- 0 of 4 on Mahler), and `f`+`f` becomes `ff` by x-adjacency.
+    """
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        frame = frame_cell(sub.cell)
+        for gi, d in enumerate(dets):
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            name = d.smufl_name
+            box = dict(
+                x0=d.x_canonical, x1=d.x_canonical + d.width_canonical,
+                y0=d.y_canonical, y1=d.y_canonical + d.height_canonical,
+                x_center=d.x_center, y_center=d.y_center,
+            )
+            common = dict(reader=READERS.DETECTOR, frame=frame,
+                          score=float(d.confidence))
+
+            if name in _WEDGE_CLASSES:
+                # ⚠️ BEFORE the dynamic-letter branch: a hairpin's class starts
+                # with `dynamic` too, and reading it as a letter would spell a
+                # crescendo into a dynamic word.
+                log.observe(g, Q.WEDGE_BOX, name, **common, **box,
+                            kind=("crescendo" if "Crescendo" in name
+                                  else "diminuendo"))
+            elif name in _ARC_CLASSES:
+                log.observe(g, Q.ARC_BOX, name, **common, **box)
+            elif name.startswith(_ARTIC_PREFIX):
+                log.observe(g, Q.ARTICULATION_MARK, name, **common, **box,
+                            side=_artic_side(name))
+            elif name.startswith(_DYNAMIC_PREFIX):
+                log.observe(g, Q.DYNAMIC_LETTER, name, **common, **box)
+            elif name.lower().startswith(_REST_PREFIX):
+                log.observe(g, Q.REST, name, **common, **box)
+
+
 def gather_cv_lines(log: Log, cells: Sequence[Any],
                     local: Dict[int, Tuple[int, int]]) -> None:
     """Stems and beams from the classical-CV rung, on the ERASED image.
@@ -736,6 +815,26 @@ def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _cell_grid(cell: Any) -> Optional[Tuple[float, float]]:
+    """`(top_y, half_step)` for a cell, in its own canonical frame.
+
+    ⚠️ ONE SPELLING, USED TWICE. `gather_notehead_positions` computed this
+    inline and threw it away, so the only thing on the record in cell
+    coordinates was a notehead's position -- and a consumer asking "where is
+    this OTHER glyph, in staff steps" had nothing to ask with. That is the
+    pattern this architecture exists to kill, one layer down from where it was
+    already caught (`pitch_resolver` rounding `pos_float` away).
+    """
+    lines = list(getattr(cell, "staff_line_ys_canonical", None) or [])
+    if len(lines) < 2:
+        return None
+    gaps = [lines[i + 1] - lines[i] for i in range(len(lines) - 1)]
+    half_step = (sum(gaps) / len(gaps)) / 2.0
+    if half_step <= 0:
+        return None
+    return float(lines[0]), float(half_step)
+
+
 def gather_clef(log: Log, cells: Sequence[Any],
                 local: Dict[int, Tuple[int, int]],
                 detections: Dict[str, List[Any]]) -> None:
@@ -749,12 +848,19 @@ def gather_clef(log: Log, cells: Sequence[Any],
     correlation machinery stays for the cases where two rows really are one
     signal; this particular duplicate simply ceases to exist.
     """
+    by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+
     for cell_key, dets in detections.items():
         sub = Subject.from_key(cell_key)
         if sub.cell != 0:
             continue          # a clef is read at the head of the staff
         staff_sub = R.staff(sub.page, sub.system, sub.staff)
         frame = frame_cell(0)
+        grid = _cell_grid(by_key.get((sub.page, sub.system, sub.staff, 0)))
         clefs = [d for d in dets if d.smufl_name in _CLEF_CLASSES]
         if not clefs:
             log.abstain(staff_sub, Q.CLEF_GLYPH, reader=READERS.DETECTOR,
@@ -764,11 +870,45 @@ def gather_clef(log: Log, cells: Sequence[Any],
         # candidates ARE recorded (`clef_evidence["contest"]`, 29 writer
         # references) and read by nobody, and the winner takes the staff at
         # any confidence because there is no floor anywhere.
+        # ⚠️ WHERE THE GLYPH SITS ON *THIS* STAFF, IN STAFF STEPS -- the same
+        # measurement a notehead gets, and for the same reason. A measure cell
+        # is the staff plus four staff spaces of air, so on a conductor's page
+        # a NEIGHBOURING staff's clef lands in this staff's cell: measured on
+        # Brahms 1 p.2, five staves each detect one `clefG` AND one `clefF`,
+        # at nearly the same x and 250-350 canonical px apart in y, and the
+        # adjudicator scores them 3.0 against 3.0 and abstains
+        # `margin_below_floor`. Sixty-seven notes on Beethoven p.3 have no
+        # pitch for exactly that reason.
+        #
+        # ⚠️ RECORDED, NOT ACTED ON. Which of the two is this staff's is an
+        # arbitration with its own evidence and its own right to abstain, and
+        # a filter here would make that decision invisibly. `position_steps`
+        # is measured DOWN FROM THE TOP LINE in half-spaces, so a five-line
+        # staff spans 0..+8 and anything far outside that is standing off the
+        # staff.
         for d in clefs:
             log.observe(staff_sub, Q.CLEF_GLYPH, d.smufl_name,
                         reader=READERS.DETECTOR, frame=frame,
                         score=float(d.confidence),
                         y_center=d.y_center, x_center=d.x_center)
+
+        # ⚠️ A SEPARATE ROW FROM A SEPARATE READER, and it has to be. Every
+        # `CLEF_GLYPH` row here shares a reader, a frame and a quantity, so
+        # the correlation rule calls them ONE SIGNAL and `tally` counts the
+        # group once -- a term citing a glyph row is absorbed by that glyph's
+        # own detector term. Measured: 1.5 beside 3.0 left the contest at 3.0
+        # against 3.0. The GRID is a different reader and its evidence stands
+        # on its own.
+        if grid is None:
+            log.abstain(staff_sub, Q.CLEF_POSITION, reader=READERS.GEOMETRY,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+        else:
+            top_y, half_step = grid
+            for d in clefs:
+                log.observe(staff_sub, Q.CLEF_POSITION,
+                            (d.y_center - top_y) / half_step,
+                            reader=READERS.GEOMETRY, frame=frame,
+                            glyph=d.smufl_name, y_center=d.y_center)
 
 
 #: The locator's own branch names -> our abstention vocabulary. Where a name
@@ -1168,19 +1308,49 @@ def _gather_meter_glyphs(log: Log, sub: Subject, detections, p: int,
     `timeSigCutCommon` are the two the detector reads WELL and the template
     library has no digits for -- so the two readers are complementary, not
     redundant, and both belong on the record."""
-    cell_key = R.cell(p, key[0], key[1], 0).to_key()
-    marks = [d for d in detections.get(cell_key, ())
-             if d.smufl_name.startswith("timeSig")]
+    # ⚠️⚠️ EVERY CELL, NOT CELL 0 — and the hardcoded `0` this replaces is what
+    # made a printed METER CHANGE invisible. A meter is printed at the head of
+    # a staff AND wherever it changes, and both readers were looking only at
+    # the header: this one at cell 0 and the template reader at the header
+    # crop. Measured on Beethoven 5 / Litolff p.62, whose print carries a
+    # double barline, "Tempo I." and a new time signature on every staff
+    # mid-system: the detector fired `timeSig3` + five `timeSig4` in CELL 8,
+    # those detections sat on the record as ordinary `glyph_box` rows, and
+    # `meter_glyph` abstained `no_detections` on all 17 staves.
+    #
+    # ⚠️ The CELL is recorded on every row, because WHERE a meter glyph stands
+    # is the whole of its meaning here: at cell 0 it states the staff's meter,
+    # anywhere else it announces a change at that bar.
+    marks = []
+    for cell_index, cell_dets in _meter_cells(detections, p, key):
+        for d in cell_dets:
+            if d.smufl_name.startswith("timeSig"):
+                marks.append((cell_index, d))
     if not marks:
         log.abstain(sub, Q.METER_GLYPH, reader=READERS.DETECTOR,
                     frame=frame_cell(0), reason=ABSTAIN.NO_DETECTIONS)
         return
-    for d in sorted(marks, key=lambda m: (m.x_canonical, m.y_canonical)):
+    for cell_index, d in sorted(marks, key=lambda m: (m[0], m[1].x_canonical,
+                                                      m[1].y_canonical)):
         log.observe(sub, Q.METER_GLYPH, d.smufl_name,
-                    reader=READERS.DETECTOR, frame=frame_cell(0),
+                    reader=READERS.DETECTOR, frame=frame_cell(cell_index),
                     score=float(d.confidence), x=d.x_canonical,
-                    y_center=d.y_center,
+                    y_center=d.y_center, cell=cell_index,
                     letter=(d.smufl_name in _METER_CLASSES))
+
+
+def _meter_cells(detections, p: int, key):
+    """(cell_index, detections) for every cell of this staff, in bar order."""
+    prefix = R.cell(p, key[0], key[1], 0).to_key().rsplit("/", 1)[0] + "/"
+    out = []
+    for cell_key, dets in detections.items():
+        if not cell_key.startswith(prefix):
+            continue
+        try:
+            out.append((int(cell_key.rsplit("/", 1)[1]), dets))
+        except ValueError:
+            continue
+    return sorted(out)
 
 
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
@@ -1340,6 +1510,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_notehead_positions(log, cells, local, detections)
         gather_ownership_evidence(log, pws, cells, local, detections)
         gather_rhythm_marks(log, cells, local, detections)
+        gather_glyph_families(log, detections)
         gather_cv_lines(log, cells, local)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)

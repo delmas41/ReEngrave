@@ -1,0 +1,660 @@
+{
+  "n_tests": 318,
+  "by_stage": {
+    "ADJUDICATE": {
+      "tests": 239,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_candidates.py",
+        "test_staged_clef.py",
+        "test_staged_discipline.py",
+        "test_staged_duration.py",
+        "test_staged_glyph_families.py",
+        "test_staged_groups.py",
+        "test_staged_header_rhythm.py",
+        "test_staged_health.py",
+        "test_staged_identity_chain.py",
+        "test_staged_inventory.py",
+        "test_staged_ownership.py",
+        "test_staged_pipeline.py",
+        "test_staged_record_coverage.py",
+        "test_staged_stage_contract.py"
+      ]
+    },
+    "EVALUATE": {
+      "tests": 97,
+      "files": [
+        "test_staged_candidates.py",
+        "test_staged_clef.py",
+        "test_staged_discipline.py",
+        "test_staged_duration.py",
+        "test_staged_identity_chain.py",
+        "test_staged_pipeline.py"
+      ]
+    },
+    "EXPORT": {
+      "tests": 32,
+      "files": [
+        "test_staged_export.py"
+      ]
+    },
+    "GATHER": {
+      "tests": 41,
+      "files": [
+        "test_staged_glyph_families.py",
+        "test_staged_pipeline.py",
+        "test_staged_record_coverage.py",
+        "test_staged_single_gather.py"
+      ]
+    },
+    "GROUPS": {
+      "tests": 44,
+      "files": [
+        "test_staged_groups.py"
+      ]
+    },
+    "META": {
+      "tests": 13,
+      "files": [
+        "test_staged_inventory.py"
+      ]
+    },
+    "PIPELINE": {
+      "tests": 92,
+      "files": [
+        "test_staged_divergence_units.py",
+        "test_staged_groups.py",
+        "test_staged_pipeline.py",
+        "test_staged_single_gather.py"
+      ]
+    },
+    "RECORD": {
+      "tests": 294,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_candidates.py",
+        "test_staged_clef.py",
+        "test_staged_discipline.py",
+        "test_staged_divergence_units.py",
+        "test_staged_duration.py",
+        "test_staged_export.py",
+        "test_staged_glyph_families.py",
+        "test_staged_groups.py",
+        "test_staged_header_rhythm.py",
+        "test_staged_identity_chain.py",
+        "test_staged_ownership.py",
+        "test_staged_pipeline.py",
+        "test_staged_record.py",
+        "test_staged_record_coverage.py",
+        "test_staged_stage_contract.py"
+      ]
+    }
+  },
+  "per_decision": {
+    "system_membership": {
+      "stub": false,
+      "decides": 1,
+      "abstains": 2,
+      "records": 2,
+      "files": [
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_MISSING_records_what_was_ASKED_FOR_and_absent_not_what_was_declared",
+        "test_it_ABSTAINS_with_a_reason_when_nothing_counted",
+        "test_it_DECIDES_from_the_staff_count_it_was_given",
+        "test_it_RECORDS_the_row_it_used"
+      ]
+    },
+    "staff_group": {
+      "stub": false,
+      "decides": 3,
+      "abstains": 3,
+      "records": 3,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_groups.py",
+        "test_staged_pipeline.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_staff_with_no_slot_verdict_is_UNPLACED_not_guessed",
+        "test_declined_and_missing_are_recorded_apart",
+        "test_staff_group_abstains_where_the_block_declined",
+        "test_the_group_symbol_records_the_groups_it_read",
+        "test_the_harness_fills_missing_without_asking_the_decision"
+      ]
+    },
+    "measure_partition": {
+      "stub": false,
+      "decides": 1,
+      "abstains": 9,
+      "records": 8,
+      "files": [
+        "test_staged_export.py",
+        "test_staged_groups.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_MEASURE_rest_carries_measure_yes_and_NO_type",
+        "test_a_class_no_family_claims_is_reported_by_name",
+        "test_a_family_class_is_not_reported_as_unclaimed",
+        "test_a_family_that_came_out_is_not_listed_as_missing",
+        "test_a_family_with_NO_QUANTITY_is_named_and_its_ink_counted",
+        "test_a_note_with_no_pitch_is_not_defaulted_to_treble",
+        "test_a_starved_stub_is_reported_apart_from_a_plain_stub",
+        "test_an_ABSTAINED_verdict_is_silent_and_not_a_witness",
+        "test_an_EXCUSED_class_is_silent_and_says_why",
+        "test_an_UNREADABLE_rest_is_dropped_and_counted_as_a_REST",
+        "test_an_ordinary_rest_is_written_with_its_value",
+        "test_an_unbalanced_export_RAISES_rather_than_reporting_a_flag",
+        "test_it_DECIDES_the_bar_count_it_read",
+        "test_measure_yes_is_withheld_when_the_meter_is_unknown",
+        "test_no_barline_ABSTAINS_and_names_that_reason_specifically",
+        "test_rests_are_NO_LONGER_a_NO_QUANTITY_family"
+      ]
+    },
+    "staff_ordinal": {
+      "stub": false,
+      "decides": 4,
+      "abstains": 14,
+      "records": 5,
+      "files": [
+        "test_staged_duration.py",
+        "test_staged_identity_chain.py",
+        "test_staged_ownership.py",
+        "test_staged_record.py"
+      ],
+      "tests": [
+        "test_a_broken_ladder_contributes_NOTHING_not_a_penalty",
+        "test_a_clef_produces_a_pitch_carrying_both_ancestors",
+        "test_a_complete_ladder_outranks_distance",
+        "test_a_named_staff_records_its_instrument",
+        "test_a_read_identity_is_admitted_into_the_clef",
+        "test_a_staff_with_no_evidence_at_all_abstains",
+        "test_a_two_staff_wind_pair_is_a_BRACKET_not_a_brace",
+        "test_an_exact_tie_ABSTAINS",
+        "test_an_uncontested_glyph_gets_no_verdict_at_all",
+        "test_an_unnamed_staff_says_its_slot_is_POSITIONAL",
+        "test_an_unspellable_label_abstains_rather_than_guessing",
+        "test_no_clef_means_no_pitch",
+        "test_no_label_and_unreadable_label_are_different_states",
+        "test_the_instrument_contributes_a_clef_term",
+        "test_the_string_is_gathered_and_the_name_is_adjudicated",
+        "test_the_veto_records_its_three_ancestors",
+        "test_with_identity_the_RANGE_VETO_overturns_it",
+        "test_with_no_identity_the_symbol_ABSTAINS",
+        "test_without_identity_DISTANCE_wins_and_gets_it_wrong"
+      ]
+    },
+    "system_staff_count": {
+      "stub": false,
+      "decides": 8,
+      "abstains": 22,
+      "records": 17,
+      "files": [
+        "test_staged_divergence_units.py",
+        "test_staged_duration.py",
+        "test_staged_export.py",
+        "test_staged_groups.py",
+        "test_staged_identity_chain.py",
+        "test_staged_ownership.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_MISSING_records_what_was_ASKED_FOR_and_absent_not_what_was_declared",
+        "test_a_MEASURE_rest_carries_measure_yes_and_NO_type",
+        "test_a_broken_ladder_contributes_NOTHING_not_a_penalty",
+        "test_a_class_no_family_claims_is_reported_by_name",
+        "test_a_clef_produces_a_pitch_carrying_both_ancestors",
+        "test_a_complete_ladder_outranks_distance",
+        "test_a_family_class_is_not_reported_as_unclaimed",
+        "test_a_family_that_came_out_is_not_listed_as_missing",
+        "test_a_family_with_NO_QUANTITY_is_named_and_its_ink_counted",
+        "test_a_named_staff_records_its_instrument",
+        "test_a_note_with_no_pitch_is_not_defaulted_to_treble",
+        "test_a_read_identity_is_admitted_into_the_clef",
+        "test_a_staff_with_no_evidence_at_all_abstains",
+        "test_a_staff_with_no_slot_verdict_is_UNPLACED_not_guessed",
+        "test_a_starved_stub_is_reported_apart_from_a_plain_stub",
+        "test_a_two_staff_wind_pair_is_a_BRACKET_not_a_brace",
+        "test_an_EXCUSED_class_is_silent_and_says_why",
+        "test_an_UNREADABLE_rest_is_dropped_and_counted_as_a_REST",
+        "test_an_ordinary_rest_is_written_with_its_value",
+        "test_an_unbalanced_export_RAISES_rather_than_reporting_a_flag",
+        "test_an_unnamed_staff_says_its_slot_is_POSITIONAL",
+        "test_an_unspellable_label_abstains_rather_than_guessing",
+        "test_coverage_states_both_vocabularies",
+        "test_equal_counts_DECIDE_the_ordinal_join",
+        "test_it_DECIDES_from_the_staff_count_it_was_given",
+        "test_it_RECORDS_the_row_it_used",
+        "test_it_RECORDS_which_counts_it_read",
+        "test_measure_yes_is_withheld_when_the_meter_is_unknown",
+        "test_no_clef_means_no_pitch",
+        "test_no_label_and_unreadable_label_are_different_states",
+        "test_rests_are_NO_LONGER_a_NO_QUANTITY_family",
+        "test_the_instrument_contributes_a_clef_term",
+        "test_the_string_is_gathered_and_the_name_is_adjudicated",
+        "test_the_veto_records_its_three_ancestors",
+        "test_they_are_named_per_quantity_with_their_outcome",
+        "test_unequal_counts_with_no_usable_slot_fall_to_deduced_anchor",
+        "test_with_identity_the_RANGE_VETO_overturns_it",
+        "test_with_no_identity_the_symbol_ABSTAINS",
+        "test_without_identity_DISTANCE_wins_and_gets_it_wrong"
+      ]
+    },
+    "instrument": {
+      "stub": false,
+      "decides": 8,
+      "abstains": 4,
+      "records": 7,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_divergence_units.py",
+        "test_staged_duration.py",
+        "test_staged_identity_chain.py",
+        "test_staged_ownership.py"
+      ],
+      "tests": [
+        "test_a_join_that_consumed_clefs_may_not_score_the_clef",
+        "test_a_part_name_carries_its_SLOT_in_the_basis",
+        "test_a_quality_holdout_is_separate_from_circularity",
+        "test_a_reader_of_THIS_page_is_NOT_correlated_with_the_dossier",
+        "test_an_unspellable_label_abstains_rather_than_guessing",
+        "test_and_tally_therefore_counts_the_dossier_ONCE",
+        "test_no_label_and_unreadable_label_are_different_states",
+        "test_the_correlation_check_sees_them_as_ONE_signal",
+        "test_the_instrument_contributes_a_clef_term",
+        "test_the_seed_and_the_instrument_share_the_dossier_as_ancestor",
+        "test_the_string_is_gathered_and_the_name_is_adjudicated",
+        "test_the_veto_records_its_three_ancestors"
+      ]
+    },
+    "slot_index": {
+      "stub": false,
+      "decides": 3,
+      "abstains": 3,
+      "records": 2,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_duration.py",
+        "test_staged_export.py",
+        "test_staged_groups.py"
+      ],
+      "tests": [
+        "test_a_join_that_consumed_clefs_may_not_score_the_clef",
+        "test_a_named_staff_records_its_instrument",
+        "test_a_part_name_carries_its_SLOT_in_the_basis",
+        "test_a_staff_with_no_slot_verdict_is_UNPLACED_not_guessed",
+        "test_an_unnamed_staff_says_its_slot_is_POSITIONAL"
+      ]
+    },
+    "part_partition": {
+      "stub": false,
+      "decides": 1,
+      "abstains": 9,
+      "records": 9,
+      "files": [
+        "test_staged_export.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_MEASURE_rest_carries_measure_yes_and_NO_type",
+        "test_a_class_no_family_claims_is_reported_by_name",
+        "test_a_family_class_is_not_reported_as_unclaimed",
+        "test_a_family_that_came_out_is_not_listed_as_missing",
+        "test_a_family_with_NO_QUANTITY_is_named_and_its_ink_counted",
+        "test_a_note_with_no_pitch_is_not_defaulted_to_treble",
+        "test_a_starved_stub_is_reported_apart_from_a_plain_stub",
+        "test_an_EXCUSED_class_is_silent_and_says_why",
+        "test_an_UNREADABLE_rest_is_dropped_and_counted_as_a_REST",
+        "test_an_ordinary_rest_is_written_with_its_value",
+        "test_an_unbalanced_export_RAISES_rather_than_reporting_a_flag",
+        "test_equal_counts_DECIDE_the_ordinal_join",
+        "test_it_RECORDS_which_counts_it_read",
+        "test_measure_yes_is_withheld_when_the_meter_is_unknown",
+        "test_no_evidence_at_all_ABSTAINS",
+        "test_rests_are_NO_LONGER_a_NO_QUANTITY_family",
+        "test_unequal_counts_with_no_usable_slot_fall_to_deduced_anchor"
+      ]
+    },
+    "group_symbol": {
+      "stub": false,
+      "decides": 2,
+      "abstains": 4,
+      "records": 1,
+      "files": [
+        "test_staged_identity_chain.py",
+        "test_staged_pipeline.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_two_staff_wind_pair_is_a_BRACKET_not_a_brace",
+        "test_group_symbol_abstains_with_no_identity",
+        "test_the_group_symbol_records_the_groups_it_read",
+        "test_with_no_group_at_all_it_says_no_group",
+        "test_with_no_identity_the_symbol_ABSTAINS"
+      ]
+    },
+    "clef": {
+      "stub": false,
+      "decides": 21,
+      "abstains": 21,
+      "records": 23,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_candidates.py",
+        "test_staged_clef.py",
+        "test_staged_divergence_units.py",
+        "test_staged_duration.py",
+        "test_staged_export.py",
+        "test_staged_groups.py",
+        "test_staged_header_rhythm.py",
+        "test_staged_identity_chain.py",
+        "test_staged_ownership.py",
+        "test_staged_pipeline.py",
+        "test_staged_record.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_MEASURE_rest_carries_measure_yes_and_NO_type",
+        "test_a_class_no_family_claims_is_reported_by_name",
+        "test_a_clef_produces_a_pitch_carrying_both_ancestors",
+        "test_a_close_contest_NARROWS_and_keeps_both_readings",
+        "test_a_family_class_is_not_reported_as_unclaimed",
+        "test_a_family_that_came_out_is_not_listed_as_missing",
+        "test_a_family_with_NO_QUANTITY_is_named_and_its_ink_counted",
+        "test_a_join_that_consumed_clefs_may_not_score_the_clef",
+        "test_a_lone_glyph_standing_OFF_the_staff_is_still_the_best_evidence",
+        "test_a_lone_weak_reading_abstains",
+        "test_a_moved_glyph_SUPERSEDES_rather_than_deletes",
+        "test_a_note_with_no_pitch_is_not_defaulted_to_treble",
+        "test_a_pitch_records_both_its_ancestors",
+        "test_a_quality_holdout_is_separate_from_circularity",
+        "test_a_read_identity_is_admitted_into_the_clef",
+        "test_a_reader_of_THIS_page_is_NOT_correlated_with_the_dossier",
+        "test_a_staff_with_no_evidence_at_all_abstains",
+        "test_a_staff_with_no_slot_verdict_is_UNPLACED_not_guessed",
+        "test_a_starved_stub_is_reported_apart_from_a_plain_stub",
+        "test_abstained_may_not_carry_a_value",
+        "test_abstained_may_not_carry_candidates",
+        "test_an_EXCUSED_class_is_silent_and_says_why",
+        "test_an_UNREADABLE_rest_is_dropped_and_counted_as_a_REST",
+        "test_an_abstaining_key_signature_records_what_it_ASKED_FOR",
+        "test_an_abstention_is_not_a_disagreement",
+        "test_an_ordinary_rest_is_written_with_its_value",
+        "test_an_unbalanced_export_RAISES_rather_than_reporting_a_flag",
+        "test_and_tally_therefore_counts_the_dossier_ONCE",
+        "test_and_the_clef_then_abstains_rather_than_defaulting",
+        "test_but_reaching_it_again_through_ANOTHER_input_is_refused",
+        "test_clefC_alone_ABSTAINS_rather_than_guessing_alto",
+        "test_coverage_states_both_vocabularies",
+        "test_decided_must_carry_a_value",
+        "test_extractable_but_silent_is_NOT_reported_as_missing_code",
+        "test_measure_yes_is_withheld_when_the_meter_is_unknown",
+        "test_narrowed_may_not_carry_a_value",
+        "test_narrowed_needs_at_least_two",
+        "test_no_basis_is_None_not_an_empty_shell",
+        "test_rests_are_NO_LONGER_a_NO_QUANTITY_family",
+        "test_the_basis_is_reported_as_quantities",
+        "test_the_clef_is_decided_and_carries_a_margin",
+        "test_the_correlation_check_sees_them_as_ONE_signal",
+        "test_the_instrument_contributes_a_clef_term",
+        "test_the_key_signature_records_the_evidence_it_fitted",
+        "test_the_tie_that_abstained_now_decides",
+        "test_the_veto_records_its_three_ancestors",
+        "test_they_are_named_per_quantity_with_their_outcome",
+        "test_two_crops_agreeing_are_two_signals",
+        "test_without_the_position_it_still_abstains"
+      ]
+    },
+    "key_signature": {
+      "stub": false,
+      "decides": 5,
+      "abstains": 6,
+      "records": 2,
+      "files": [
+        "test_staged_divergence_units.py",
+        "test_staged_duration.py",
+        "test_staged_header_rhythm.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_C_major_alters_nothing",
+        "test_a_run_fitting_no_slot_table_of_the_settled_clef_is_a_CONTRADICTION",
+        "test_an_abstaining_key_signature_records_what_it_ASKED_FOR",
+        "test_no_clef_means_no_key",
+        "test_no_clef_means_no_key_and_the_reason_SAYS_no_clef",
+        "test_the_basis_is_reported_as_quantities",
+        "test_the_key_signature_records_the_evidence_it_fitted",
+        "test_the_key_supplies_a_DEFAULT_that_an_accidental_overrides",
+        "test_the_membership_test_goes_THROUGH_the_unit_adapter"
+      ]
+    },
+    "glyph_owner": {
+      "stub": false,
+      "decides": 2,
+      "abstains": 7,
+      "records": 1,
+      "files": [
+        "test_staged_duration.py",
+        "test_staged_ownership.py"
+      ],
+      "tests": [
+        "test_a_broken_ladder_contributes_NOTHING_not_a_penalty",
+        "test_a_complete_ladder_outranks_distance",
+        "test_a_moved_glyph_SUPERSEDES_rather_than_deletes",
+        "test_a_moved_glyph_gets_NO_pitch_where_the_new_staff_has_no_clef",
+        "test_an_exact_tie_ABSTAINS",
+        "test_an_uncontested_glyph_gets_no_verdict_at_all",
+        "test_the_veto_records_its_three_ancestors",
+        "test_with_identity_the_RANGE_VETO_overturns_it",
+        "test_without_identity_DISTANCE_wins_and_gets_it_wrong"
+      ]
+    },
+    "arc_owner": {
+      "stub": true,
+      "decides": 0,
+      "abstains": 4,
+      "records": 1,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_discipline.py",
+        "test_staged_glyph_families.py",
+        "test_staged_health.py",
+        "test_staged_inventory.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_stub_is_still_reached_by_the_ORDER",
+        "test_a_test_iterating_stubs_counts_as_naming_every_stub",
+        "test_each_stub_abstains_with_not_implemented_and_records_it",
+        "test_every_stub_declares_itself"
+      ]
+    },
+    "arc_kind": {
+      "stub": true,
+      "decides": 0,
+      "abstains": 5,
+      "records": 1,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_discipline.py",
+        "test_staged_glyph_families.py",
+        "test_staged_health.py",
+        "test_staged_inventory.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_margin_below_the_floor_abstains",
+        "test_a_stub_is_still_reached_by_the_ORDER",
+        "test_a_test_iterating_stubs_counts_as_naming_every_stub",
+        "test_each_stub_abstains_with_not_implemented_and_records_it",
+        "test_every_stub_declares_itself"
+      ]
+    },
+    "articulation_owner": {
+      "stub": true,
+      "decides": 0,
+      "abstains": 4,
+      "records": 1,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_discipline.py",
+        "test_staged_glyph_families.py",
+        "test_staged_health.py",
+        "test_staged_inventory.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_stub_is_still_reached_by_the_ORDER",
+        "test_a_test_iterating_stubs_counts_as_naming_every_stub",
+        "test_each_stub_abstains_with_not_implemented_and_records_it",
+        "test_every_stub_declares_itself"
+      ]
+    },
+    "wedge_anchor": {
+      "stub": true,
+      "decides": 0,
+      "abstains": 4,
+      "records": 1,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_discipline.py",
+        "test_staged_glyph_families.py",
+        "test_staged_health.py",
+        "test_staged_inventory.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_stub_is_still_reached_by_the_ORDER",
+        "test_a_test_iterating_stubs_counts_as_naming_every_stub",
+        "test_each_stub_abstains_with_not_implemented_and_records_it",
+        "test_every_stub_declares_itself"
+      ]
+    },
+    "tuplet_ratio": {
+      "stub": false,
+      "decides": 2,
+      "abstains": 2,
+      "records": 1,
+      "files": [
+        "test_staged_duration.py",
+        "test_staged_export.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_group_of_the_wrong_size_ABSTAINS",
+        "test_fingering3_is_read_as_a_tuplet_marker",
+        "test_the_tuplet_records_the_marker_that_decided_it",
+        "test_two_unnumbered_brackets_ABSTAIN"
+      ]
+    },
+    "duration": {
+      "stub": false,
+      "decides": 3,
+      "abstains": 9,
+      "records": 14,
+      "files": [
+        "test_staged_candidates.py",
+        "test_staged_duration.py",
+        "test_staged_export.py",
+        "test_staged_glyph_families.py"
+      ],
+      "tests": [
+        "test_THREE_beam_states_stay_distinct",
+        "test_a_MEASURE_rest_carries_measure_yes_and_NO_type",
+        "test_a_YOLO_beam_is_kept_only_where_no_CV_beam_explains_it",
+        "test_a_YOLO_beam_the_CV_rung_MISSED_is_kept",
+        "test_a_class_no_family_claims_is_reported_by_name",
+        "test_a_family_class_is_not_reported_as_unclaimed",
+        "test_a_family_that_came_out_is_not_listed_as_missing",
+        "test_a_family_with_NO_QUANTITY_is_named_and_its_ink_counted",
+        "test_a_note_with_no_pitch_is_not_defaulted_to_treble",
+        "test_a_starved_stub_is_reported_apart_from_a_plain_stub",
+        "test_a_stroke_ending_AT_the_note_narrows",
+        "test_an_EXCUSED_class_is_silent_and_says_why",
+        "test_an_UNREADABLE_rest_is_dropped_and_counted_as_a_REST",
+        "test_an_ordinary_rest_is_written_with_its_value",
+        "test_an_unambiguous_note_still_DECIDES",
+        "test_an_unbalanced_export_RAISES_rather_than_reporting_a_flag",
+        "test_measure_yes_is_withheld_when_the_meter_is_unknown",
+        "test_rests_are_NO_LONGER_a_NO_QUANTITY_family",
+        "test_the_certain_reading_is_ordered_first",
+        "test_the_meter_settles_a_narrowed_note",
+        "test_the_superseded_reading_stays_on_the_record"
+      ]
+    },
+    "meter": {
+      "stub": false,
+      "decides": 1,
+      "abstains": 7,
+      "records": 10,
+      "files": [
+        "test_staged_candidates.py",
+        "test_staged_divergence_units.py",
+        "test_staged_export.py",
+        "test_staged_groups.py",
+        "test_staged_header_rhythm.py"
+      ],
+      "tests": [
+        "test_a_MEASURE_rest_carries_measure_yes_and_NO_type",
+        "test_a_class_no_family_claims_is_reported_by_name",
+        "test_a_family_class_is_not_reported_as_unclaimed",
+        "test_a_family_that_came_out_is_not_listed_as_missing",
+        "test_a_family_with_NO_QUANTITY_is_named_and_its_ink_counted",
+        "test_a_note_with_no_pitch_is_not_defaulted_to_treble",
+        "test_a_starved_stub_is_reported_apart_from_a_plain_stub",
+        "test_a_system_that_disagrees_ABSTAINS",
+        "test_an_EXCUSED_class_is_silent_and_says_why",
+        "test_an_UNREADABLE_rest_is_dropped_and_counted_as_a_REST",
+        "test_an_ordinary_rest_is_written_with_its_value",
+        "test_an_unbalanced_export_RAISES_rather_than_reporting_a_flag",
+        "test_extractable_but_silent_is_NOT_reported_as_missing_code",
+        "test_measure_yes_is_withheld_when_the_meter_is_unknown",
+        "test_one_vote_per_staff",
+        "test_rests_are_NO_LONGER_a_NO_QUANTITY_family"
+      ]
+    },
+    "dynamic": {
+      "stub": true,
+      "decides": 0,
+      "abstains": 4,
+      "records": 1,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_discipline.py",
+        "test_staged_glyph_families.py",
+        "test_staged_health.py",
+        "test_staged_inventory.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_stub_is_still_reached_by_the_ORDER",
+        "test_a_test_iterating_stubs_counts_as_naming_every_stub",
+        "test_each_stub_abstains_with_not_implemented_and_records_it",
+        "test_every_stub_declares_itself"
+      ]
+    },
+    "direction": {
+      "stub": true,
+      "decides": 0,
+      "abstains": 4,
+      "records": 1,
+      "files": [
+        "test_staged_adjudicate.py",
+        "test_staged_discipline.py",
+        "test_staged_health.py",
+        "test_staged_inventory.py",
+        "test_staged_stage_contract.py"
+      ],
+      "tests": [
+        "test_a_stub_is_still_reached_by_the_ORDER",
+        "test_a_test_iterating_stubs_counts_as_naming_every_stub",
+        "test_each_stub_abstains_with_not_implemented_and_records_it",
+        "test_every_stub_declares_itself"
+      ]
+    }
+  },
+  "problems": []
+}

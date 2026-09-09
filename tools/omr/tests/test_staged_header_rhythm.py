@@ -151,3 +151,418 @@ class TestTheMeterIsASystemFact(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestAMeterIsPrintedOnEVERYStaffOfItsSystem(unittest.TestCase):
+    """⚠️ THE OTHER HALF OF THE LEGACY RULE, AND DROPPING IT SHIPPED A WRONG
+    METER AT FULL AGREEMENT.
+
+    `METER_AGREEMENT_FLOOR` divides by the staves that SPOKE, so three
+    spurious readings that happen to agree score 3/3 = 1.0.
+    `rhythm._dominant_detected_meter` says exactly this in its own docstring —
+    *"two spurious readings that happen to agree are unanimous among
+    themselves"* — and requires half the page's staves as well.
+
+    Measured on Beethoven 5 / Litolff p.2, whose reference is 2/4 on all 18
+    parts and which **prints no time signature at all** (it opens at bar 17):
+    system 1 had **3 staves of 11** match a common-time `C`, agreed 1.0, and
+    shipped 4/4; page 1 of the same run had **12 of 12** read the true 2/4.
+    """
+
+    def _system(self, n_staves, spoke, raw=(4, 4), rawname="C"):
+        log = Log()
+        sysj = R.system(0, 0)
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=sysj, quantity=Q.SYSTEM_STAFF_COUNT,
+            outcome=Outcome.DECIDED, value=n_staves, decider="t",
+            reason="counted"))
+        for i in range(spoke):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, raw,
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw=rawname)
+        log.freeze()
+        adjudicate._ensure_decisions()
+        return adjudicate.adjudicate_one(
+            log, adjudicate.REGISTRY[Q.METER], sysj)
+
+    def test_three_staves_of_eleven_do_not_carry_a_system(self):
+        v = self._system(11, 3)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "too_few_staves_read_it")
+        self.assertEqual(v.detail["n_staves_on_system"], 11)
+        self.assertEqual(v.detail["would_have_been"], "C")
+
+    def test_the_true_reading_on_every_staff_is_untouched(self):
+        v = self._system(12, 12, raw=(2, 4), rawname="2/4")
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["numerator"], 2)
+        self.assertEqual(v.value["denominator"], 4)
+
+    def test_coverage_and_agreement_are_reported_APART(self):
+        """⚠️ "Do the staves that spoke agree?" and "did enough of them
+        speak?" are two facts, and a handful of spurious readings passes the
+        first trivially. A page that shipped a wrong meter and a page whose
+        staves disagreed must never be the same row."""
+        few = self._system(11, 3)
+        self.assertEqual(few.reason, "too_few_staves_read_it")
+
+        log = Log()
+        sysj = R.system(0, 0)
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=sysj, quantity=Q.SYSTEM_STAFF_COUNT,
+            outcome=Outcome.DECIDED, value=4, decider="t", reason="counted"))
+        for i, (raw, name) in enumerate([((4, 4), "C"), ((4, 4), "C"),
+                                         ((3, 4), "3/4"), ((2, 4), "2/4")]):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, raw,
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw=name)
+        log.freeze()
+        disagree = adjudicate.adjudicate_one(
+            log, adjudicate.REGISTRY[Q.METER], sysj)
+        self.assertEqual(disagree.reason, "no_agreement")
+
+    def test_with_no_staff_count_the_floor_declines_to_judge(self):
+        """A system whose staff count never decided cannot be asked what share
+        of it spoke, and inventing a denominator would be worse than the gap."""
+        log = Log()
+        sysj = R.system(0, 0)
+        for i in range(3):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, (4, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw="C")
+        log.freeze()
+        adjudicate._ensure_decisions()
+        v = adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.METER], sysj)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+
+
+class TestTheMeterCarry(unittest.TestCase):
+    """A meter is a fact of the MOVEMENT — printed at its start and nowhere
+    else — so a system that reads none may take the last one that was READ.
+
+    ⚠️ OFF BY DEFAULT, AND THE HAZARD IS MEASURED RATHER THAN FEARED. On
+    Beethoven 5 / Litolff `984073`, page 17 is the *Andante con moto*: a NEW
+    MOVEMENT printing `3/8` on every staff, whose three systems all abstain
+    `no_evidence` because the template reader ran on all 20 staves and
+    declined `below_threshold` — Litolff sets `3` over `8` as heavy
+    nearly-touching digits. So an unconditional carry stamps movement 1's
+    `2/4` onto the whole Andante, which is what `test_the_hazard` pins.
+    """
+
+    def _bars(self, log, page, *, beats, n_staves=4, n_bars=3):
+        """Give a system BARS that measure `beats`, so the carry's second
+        witness has something to say.
+
+        ⚠️ A carried meter is a CANDIDATE and must be corroborated by the bars
+        it claims to govern, so a log with NO bars carries nothing — which is
+        `test_a_page_that_cannot_corroborate_does_not_carry`.
+        """
+        for st in range(n_staves):
+            for c in range(n_bars):
+                cell = R.cell(page, 0, st, c)
+                g = R.glyph(page, 0, st, c, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 100, 0, 20, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": beats, "written": beats,
+                           "duration_type": "quarter", "dots": 0},
+                    decider="t", reason="head_and_marks"))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 100.0,
+                                       "kind": "chord"}]},
+                    decider="t", reason="x_clustered"))
+
+    def _log(self, carried_pages=(0, 1), dst_beats=2.0, bars=True):
+        """Page 0 system 0 reads 2/4 on 12 of 12; page 1 system 0 reads no
+        meter at all, and its BARS measure `dst_beats`."""
+        log = Log()
+        src = R.system(carried_pages[0], 0)
+        dst = R.system(carried_pages[1], 0)
+        for sysj, n in ((src, 12), (dst, 11)):
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=n, decider="t", reason="counted"))
+        for i in range(12):
+            log.observe(R.staff(carried_pages[0], 0, i), Q.METER_TEMPLATE,
+                        (2, 4), reader=READERS.TEMPLATE,
+                        frame="header_window", score=0.7, raw="2/4")
+        if bars:
+            self._bars(log, carried_pages[1], beats=dst_beats)
+        return log, src, dst
+
+    def _run(self, log, on):
+        """Adjudicate METER ONLY, over its systems in reading order.
+
+        ⚠️ Deliberately not `adjudicate.run`: these logs pre-record the staff
+        counts the carry needs, and the full harness would re-decide them and
+        trip `AlreadyAdjudicated` — the single-pass guard working, not a bug.
+        Reading order is what makes the carry reachable at all, so it is
+        asserted here rather than assumed: `Subject` is an ordered dataclass.
+        """
+        import os
+        log.freeze()
+        adjudicate._ensure_decisions()
+        spec = adjudicate.REGISTRY[Q.METER]
+        systems = sorted(log.subjects(R.Kind.SYSTEM))
+        self.assertEqual(systems, sorted(systems))
+        prev = os.environ.get(rhythm_mod.METER_CARRY_ENV)
+        if on:
+            os.environ[rhythm_mod.METER_CARRY_ENV] = "1"
+        else:
+            os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
+        try:
+            for sysj in systems:
+                adjudicate.adjudicate_one(log, spec, sysj)
+        finally:
+            if prev is None:
+                os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
+            else:
+                os.environ[rhythm_mod.METER_CARRY_ENV] = prev
+
+    def test_off_by_default_the_system_still_abstains(self):
+        """⚠️ The control for every claim below. Measured on the real page
+        too: flag-OFF reproduced all 4,498 verdicts of the pre-change run
+        identically, reasons and values included."""
+        log, _src, dst = self._log()
+        self._run(log, on=False)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_evidence")
+
+    def test_on_it_takes_the_last_meter_that_was_READ(self):
+        log, src, dst = self._log()
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "carried")
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (2, 4))
+        self.assertEqual(v.detail["carried_from"], src.to_key())
+        self.assertEqual(v.detail["pages_since_read"], 1)
+        self.assertEqual(v.detail["instead_of"], "no_evidence")
+
+    def test_it_never_overturns_a_system_that_read_its_own(self):
+        """The carry is reached only from an abstention branch, so a system
+        with its own evidence cannot be overwritten by an older page."""
+        log, src, _dst = self._log()
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, src)
+        self.assertEqual(v.reason, "voted")
+
+    def test_a_carry_NEVER_chains_onto_a_carry(self):
+        """⚠️ THE NUMBER IN THE RECORD IS THE POINT. Only a `voted` verdict is
+        a source, so `pages_since_read` is the true distance back to INK. A
+        chain of one-page hops would each look local while the third page's
+        meter was in fact sixteen pages and one movement away.
+        """
+        log = Log()
+        src = R.system(0, 0)
+        mid = R.system(1, 0)
+        far = R.system(2, 0)
+        for sysj, n in ((src, 12), (mid, 11), (far, 11)):
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=n, decider="t", reason="counted"))
+        for i in range(12):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, (2, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw="2/4")
+        self._bars(log, 1, beats=2.0)
+        self._bars(log, 2, beats=2.0)
+        self._run(log, on=True)
+        mid_v = log.verdict(Q.METER, mid)
+        far_v = log.verdict(Q.METER, far)
+        self.assertEqual(mid_v.reason, "carried")
+        self.assertEqual(far_v.reason, "carried")
+        # both name the READING, not each other, and the distance is honest
+        self.assertEqual(mid_v.detail["carried_from"], src.to_key())
+        self.assertEqual(far_v.detail["carried_from"], src.to_key())
+        self.assertEqual(far_v.detail["pages_since_read"], 2)
+
+    def test_a_NEW_MOVEMENT_REFUSES_the_carry_with_no_movement_detector(self):
+        """⚠️⚠️ THIS TEST USED TO PIN A WRONG ANSWER ON PURPOSE, and its own
+        comment said to change it only when a MOVEMENT-START signal existed.
+        What arrived instead is a SECOND WITNESS, which is better: the bars a
+        carried meter claims to govern confirm or refuse it, so a movement
+        boundary needs no detecting at all — the new movement's bars simply
+        contradict the old movement's meter.
+
+        ⚠️⚠️ THIS TEST SHOWS THE MECHANISM, NOT A SOLVED PROBLEM, and the
+        distinction was nearly lost. Here the destination's bars measure 1.5
+        cleanly, so they genuinely contradict a carried 2/4. On the REAL
+        Andante they do not speak at all: scored against `3/8`, the meter that
+        page actually prints, it refuses THAT too (-1.0, against -3.0 for the
+        wrong 2/4). Its durations are noise and a noisy page refuses
+        everything, so the real page is protected by "when it cannot speak,
+        abstain" rather than by this. A boundary on a page that READS WELL is
+        unmeasured. See FINDINGS.md §10.
+
+        What IS measured, on three well-read systems: the true meter scores
+        +14, +7 and +16, and the wrong one -12, -9 and -14.
+        """
+        log, _src, dst = self._log(carried_pages=(1, 17), dst_beats=1.5)
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "carry_outweighed_by_the_bars")
+        self.assertLess(v.detail["support"], rhythm_mod.METER_CARRY_FLOOR)
+        self.assertGreater(v.detail["bars_disagree"], v.detail["bars_agree"])
+        self.assertEqual(v.detail["pages_since_read"], 16)
+
+    def test_the_bars_of_the_SAME_movement_confirm_the_carry(self):
+        """The other half, and the one that keeps the carry useful. Without
+        this the corroboration would be indistinguishable from switching the
+        carry off."""
+        log, src, dst = self._log(dst_beats=2.0)
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "carried")
+        self.assertGreaterEqual(v.detail["support"], rhythm_mod.METER_CARRY_FLOOR)
+        self.assertGreater(v.detail["bars_agree"], 0)
+
+    def test_a_LONE_WHOLE_REST_MAY_NOT_CORROBORATE_ANYTHING(self):
+        """⚠️⚠️ THE CIRCULARITY, AND LEAVING IT IN INVERTS THE ANSWER.
+
+        An engraver fills an otherwise silent bar with ONE centred whole rest
+        whatever the meter, so the glyph stands for THE BAR and says nothing
+        about its length — and the 4.0 we give it is *our own default for want
+        of a meter*. Counting it would read that default straight back as
+        evidence, and a page of rests would confirm 4/4 for ever.
+
+        Measured on Beethoven 5 / Litolff p.17: left in, 13 of 17 agreeing
+        bars vote 4.0 and the true 1.5 gets none.
+
+        ⚠️ This test exists because a mutation SURVIVED. Disabling the
+        exclusion broke nothing in the suite, which meant the single rule that
+        makes the corroboration usable was untested.
+        """
+        log = Log()
+        src, dst = R.system(0, 0), R.system(1, 0)
+        for sysj, n in ((src, 12), (dst, 11)):
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=n, decider="t", reason="counted"))
+        # the source reads 4/4 — the very value a whole rest would "confirm"
+        for i in range(12):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, (4, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw="4/4")
+        # every bar of the destination is a LONE WHOLE REST at 4.0
+        for st in range(4):
+            for c in range(3):
+                cell, g = R.cell(1, 0, st, c), R.glyph(1, 0, st, c, 0)
+                log.observe(g, Q.REST, "restWhole", reader=READERS.DETECTOR,
+                            frame="cell:%d" % c, score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("restWhole", 100, 0, 20, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": 4.0, "written": 4.0,
+                           "duration_type": "whole", "dots": 0},
+                    decider="t", reason="rest_class",
+                    detail={"rest": "restWhole"}))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 100.0,
+                                       "kind": "rest"}]},
+                    decider="t", reason="x_clustered"))
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, dst)
+        # the rests match 4/4 EXACTLY, and must still corroborate nothing
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.detail["state"], "too_few_assessable_bars")
+
+    def test_the_BARS_outweigh_the_carry_and_the_carry_never_outweighs_them(self):
+        """⚠️ SEAN'S ORDERING, MADE STRUCTURAL RATHER THAN TUNED.
+
+        *"the math that can be determined by its own equation could be weighed
+        more heavily than information that can only be derived"* — so a fact
+        checkable by its own arithmetic must not be outvotable by one merely
+        inherited. At these weights two net contradicting bars outweigh ANY
+        carry, and no amount of carrying outweighs the bars.
+
+        This is a property of the CONSTANTS, so it is asserted on them
+        directly: a sweep that broke the ordering would pass every other test
+        in this file.
+        """
+        carry = rhythm_mod.W_METER_CARRIED
+        against = abs(rhythm_mod.W_METER_BAR_CONTRADICTS)
+        self.assertLess(carry + 2 * rhythm_mod.W_METER_BAR_CONTRADICTS,
+                        rhythm_mod.METER_CARRY_FLOOR,
+                        "two contradicting bars must sink any carry")
+        self.assertLess(carry, rhythm_mod.METER_CARRY_FLOOR,
+                        "a carry with NOTHING to check against must not stand")
+        self.assertGreaterEqual(against, rhythm_mod.W_METER_BAR_FITS * 0.5,
+                                "a contradicting bar may not be a rounding "
+                                "error next to an agreeing one")
+
+    def test_the_support_and_the_counts_are_BOTH_on_the_record(self):
+        """⚠️ A single number hides which of three pages you are looking at.
+        Sean: "keep reporting the counts"."""
+        log, _src, dst = self._log(dst_beats=2.0)
+        self._run(log, on=True)
+        d = log.verdict(Q.METER, dst).detail
+        for key in ("support", "floor", "bars_agree", "bars_disagree",
+                    "bar_lengths_seen", "pages_since_read", "carried_from"):
+            self.assertIn(key, d)
+
+    def test_the_bars_own_reading_is_recorded_even_when_it_names_nothing(self):
+        """On the *Andante* the bars name NOTHING — 1.0, 3.0, 5.0 with no
+        mode. That is a different fact from "they disagree with the carry",
+        and the record keeps it rather than collapsing both to a refusal."""
+        log, _src, dst = self._log(carried_pages=(1, 17), dst_beats=1.5)
+        self._run(log, on=True)
+        d = log.verdict(Q.METER, dst).detail
+        self.assertTrue(d["bar_lengths_seen"])
+        self.assertIn(1.5, [float(k) for k in d["bar_lengths_seen"]])
+
+    def test_a_page_that_cannot_corroborate_does_not_carry(self):
+        """⚠️ NOT "carry anyway". A carry is only as good as its
+        corroboration, and a page with no assessable bar is exactly the page
+        where a movement may have started unseen. Abstaining is the status
+        quo; carrying unverified is the hazard."""
+        log, _src, dst = self._log(bars=False)
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.detail["state"], "too_few_assessable_bars")
+
+    def test_a_carried_meter_is_never_labelled_voted(self):
+        """The whole record depends on a consumer being able to tell a meter
+        that was READ from one that was inherited."""
+        log, _src, dst = self._log()
+        self._run(log, on=True)
+        self.assertNotEqual(log.verdict(Q.METER, dst).reason, "voted")
+
+
+class TestEvidenceSubjectsIsStructural(unittest.TestCase):
+    """`Evidence.subjects` answers "what pages and systems are there", which
+    is layout, not evidence — so it takes no quantity and checks no
+    declaration. Reading a VALUE off one of them is still checked."""
+
+    def test_it_needs_no_declaration_but_a_read_still_does(self):
+        log = Log()
+        log.observe(R.staff(0, 0, 0), Q.METER_TEMPLATE, (2, 4),
+                    reader=READERS.TEMPLATE, frame="header_window",
+                    score=0.7, raw="2/4")
+        log.freeze()
+        adjudicate._ensure_decisions()
+        spec = adjudicate.REGISTRY[Q.METER]
+        ev = adjudicate.Evidence(log, R.system(0, 0), spec)
+        self.assertIn(R.system(0, 0), ev.subjects(R.Kind.SYSTEM))
+        with self.assertRaises(adjudicate.UndeclaredEvidence):
+            ev.rows(Q.MARGIN_LABEL)

@@ -479,18 +479,31 @@ def research_proposal(row_id: str, n_parts: int) -> dict:
     staves = []
     for spec in entries:
         staves.append({
-            # SORTED, because `merge_additions.shape_problems` refuses an entry
-            # whose `parts` is not sorted-unique and every already-merged row
-            # satisfies that. ⚠️ It is not free: `page_normalise` keeps
-            # `parts[0]` and merges the rest into it, so sorting a tacet fold
-            # ahead of the printed part makes a SILENT part's bar the one that
-            # survives a `silent_all` measure. Measured on the three rows that
-            # have folds — sorted costs +8 edits of 7,668 (p3 -3, p4 +19,
-            # p5 -8), all of it rest spelling — so works.json's convention
-            # wins. See price-maps.json, arm `sorted-parts`.
+            # ⚠️ PRINTED FIRST, THEN THE FOLDS — NOT SORTED, and the previous
+            # comment here justified sorting by a rule that had already been
+            # removed ON THE SAME DAY it was written. `shape_problems`
+            # demanded sorted-unique at `71b26806`; `833afe9f` split that into
+            # uniqueness (a real invariant, still enforced) and sortedness (a
+            # canonicalisation that MOVES the answer) and dropped the second.
+            # The comment stayed, and so did the `sorted()` — while the same
+            # comment's own conclusion said "works.json's convention wins".
+            #
+            # `page_normalise.normalise` does `keep = parts[idx[0]]` and merges
+            # the rest INTO it, so `parts[0]` decides which reference part the
+            # merged staff IS — its name, and whose bar survives a
+            # `silent_all` measure. Sorting a tacet fold ahead of the printed
+            # part renamed `Zwei Fagotte.`, `Drei Hoboen.` and
+            # `Drei Klarinetten in A` all to **Piccolo**, and cost +8 edits of
+            # 7,668 across the three rows that have folds (p3 −3, p4 +19,
+            # p5 −8). See `merge_additions`' own note and
+            # `benchmarks/omr-page-normalise-fixes-2026-09/probe_parts_order.py`.
+            #
+            # Nothing stopped that reaching a row: the only thing that did was
+            # the unrelated "works.json already has a map" refusal. Luck, not
+            # a guard — which is why `test_staves_map_validation.py` now pins
+            # the PROPOSAL as well as the edited path.
             "name": spec["name"],
-            "parts": sorted(list(spec["parts"])
-                            + list(spec.get("absent") or [])),
+            "parts": list(spec["parts"]) + list(spec.get("absent") or []),
             "printed_parts": list(spec["parts"]),
             "absent_parts": list(spec.get("absent") or []),
             "lines": spec.get("lines", 5),

@@ -1,30 +1,14 @@
 {
   "class_space": {
     "classes": 146,
-    "declared_ungathered": {
+    "declared_ungathered": {},
+    "families": 35,
+    "gathered": {
       "artic": {
         "classes": 10,
         "quantity": "ARTICULATION_MARK",
-        "state": "quantity declared, ungathered"
+        "state": "gathered"
       },
-      "dynamic": {
-        "classes": 14,
-        "quantity": "DYNAMIC_LETTER",
-        "state": "quantity declared, ungathered"
-      },
-      "slur": {
-        "classes": 1,
-        "quantity": "ARC_BOX",
-        "state": "quantity declared, ungathered"
-      },
-      "tie": {
-        "classes": 1,
-        "quantity": "ARC_BOX",
-        "state": "quantity declared, ungathered"
-      }
-    },
-    "families": 35,
-    "gathered": {
       "augmentation": {
         "classes": 1,
         "quantity": "AUG_DOT",
@@ -43,6 +27,11 @@
       "clef": {
         "classes": 2,
         "quantity": "CLEF_GLYPH",
+        "state": "gathered"
+      },
+      "dynamic": {
+        "classes": 14,
+        "quantity": "DYNAMIC_LETTER",
         "state": "gathered"
       },
       "f": {
@@ -80,6 +69,16 @@
         "quantity": "NOTEHEAD_CLASS",
         "state": "gathered"
       },
+      "rest": {
+        "classes": 11,
+        "quantity": "REST",
+        "state": "gathered"
+      },
+      "slur": {
+        "classes": 1,
+        "quantity": "ARC_BOX",
+        "state": "gathered"
+      },
       "staff": {
         "classes": 1,
         "quantity": "STAFF_LINES",
@@ -88,6 +87,11 @@
       "stem": {
         "classes": 1,
         "quantity": "STEM",
+        "state": "gathered"
+      },
+      "tie": {
+        "classes": 1,
+        "quantity": "ARC_BOX",
         "state": "gathered"
       },
       "time": {
@@ -157,11 +161,6 @@
         "quantity": null,
         "state": "no quantity names this family"
       },
-      "rest": {
-        "classes": 11,
-        "quantity": null,
-        "state": "no quantity names this family"
-      },
       "segno": {
         "classes": 1,
         "quantity": null,
@@ -187,10 +186,10 @@
   },
   "counts": {
     "abstain_only": 2,
-    "declared": 63,
-    "declared_ungathered": 10,
-    "no_vocabulary": 11,
-    "observed": 31,
+    "declared": 66,
+    "declared_ungathered": 6,
+    "no_vocabulary": 7,
+    "observed": 37,
     "unaccounted": 0
   },
   "gathered": {
@@ -199,6 +198,22 @@
       "SYSTEMIC_COLUMN"
     ],
     "detail": {
+      "ARC_BOX": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_glyph_families"
+        ],
+        "readers": [],
+        "reasons": []
+      },
+      "ARTICULATION_MARK": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_glyph_families"
+        ],
+        "readers": [],
+        "reasons": []
+      },
       "AUG_DOT": {
         "abstained_by": [],
         "observed_by": [
@@ -282,6 +297,20 @@
           "READER_UNAVAILABLE"
         ]
       },
+      "CLEF_POSITION": {
+        "abstained_by": [
+          "gather_clef"
+        ],
+        "observed_by": [
+          "gather_clef"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": [
+          "NO_STAFF_GEOMETRY"
+        ]
+      },
       "CLEF_SEED": {
         "abstained_by": [
           "gather_clef_seed"
@@ -321,6 +350,14 @@
         "reasons": [
           "OUT_OF_SCOPE"
         ]
+      },
+      "DYNAMIC_LETTER": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_glyph_families"
+        ],
+        "readers": [],
+        "reasons": []
       },
       "FLAG": {
         "abstained_by": [],
@@ -502,6 +539,14 @@
           "NO_STAFF_GEOMETRY"
         ]
       },
+      "REST": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_glyph_families"
+        ],
+        "readers": [],
+        "reasons": []
+      },
       "ROSTER_ENTRY": {
         "abstained_by": [
           "gather_external"
@@ -622,18 +667,30 @@
           "DETECTOR"
         ],
         "reasons": []
+      },
+      "WEDGE_BOX": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_glyph_families"
+        ],
+        "readers": [],
+        "reasons": []
       }
     },
     "mentioned_only": [],
     "observed": [
+      "ARC_BOX",
+      "ARTICULATION_MARK",
       "AUG_DOT",
       "BARLINE_COLUMN",
       "BEAM_STROKE",
       "BRACKET_BLOCK",
       "CLEF_GLYPH",
       "CLEF_LOCATED",
+      "CLEF_POSITION",
       "CLEF_SEED",
       "DOSSIER_FACT",
+      "DYNAMIC_LETTER",
       "FLAG",
       "GAP_BRIDGING",
       "GLYPH_BAND_DISTANCE",
@@ -648,6 +705,7 @@
       "METER_TEMPLATE",
       "NOTEHEAD_CLASS",
       "NOTEHEAD_STAFF_POSITION",
+      "REST",
       "ROSTER_ENTRY",
       "STAFF_EXTENT",
       "STAFF_LINES",
@@ -656,7 +714,8 @@
       "STAFF_SPACING",
       "STEM",
       "SYSTEM_STAFF_COUNT",
-      "TUPLET_MARKER"
+      "TUPLET_MARKER",
+      "WEDGE_BOX"
     ]
   },
   "ink_present_elsewhere": {
@@ -708,29 +767,9 @@
     }
   },
   "no_vocabulary": {
-    "events": {
-      "seen_in": [
-        "voicing:event"
-      ],
-      "why": "THE EVENT LIST ITSELF -- the ordered simultaneities a staff-measure resolves to. `Q.MEASURE_PARTITION` says where the bars are and nothing says what is INSIDE one. This is the container the chord finding is about; `kind` and `x_position` are its two axes."
-    },
     "fermata": {
       "seen_in": [],
       "why": "read by the detector and emitted by the exporter -- Beethoven 5 detects 36 against a truth of 36 and 35 reach the file. No `Q`."
-    },
-    "kind": {
-      "seen_in": [
-        "export:read",
-        "voicing:event",
-        "voicing:read"
-      ],
-      "why": "chord | rest -- WHICH EVENT A GLYPH IS PART OF. The simultaneity itself: `voicing.group_chords_in_measure` groups noteheads within 0.6 notehead widths of each other in x, with a divisi guard on stem direction and a mode-vote over the group's durations. That is an ADJUDICATION with a tolerance, a veto and a vote, and the record has no name for its subject, its input or its verdict."
-    },
-    "n_events": {
-      "seen_in": [
-        "voicing:event"
-      ],
-      "why": "the event count, written beside `events`; see `events`."
     },
     "ornaments": {
       "seen_in": [
@@ -774,14 +813,6 @@
         "voicing:read"
       ],
       "why": "a staff-measure's 1-2 VOICE STREAMS, split by `voicing.split_events_into_voices` on stem direction. MusicXML pairs `<slur>` WITHIN a `<voice>` and separates the streams with `<backup>`, so `Q.ARC_OWNER` already depends on a quantity the record cannot express -- and `export._lone_voice_is_the_second` re-decides the lane per measure downstream of it."
-    },
-    "x_position": {
-      "seen_in": [
-        "export:read",
-        "voicing:event",
-        "voicing:read"
-      ],
-      "why": "the event's ONSET -- x-centre as musical time, the axis events are sorted on. Raw x IS inside `Q.GLYPH_BOX`, which is exactly why this reads as covered and is not: no consumer can ask for onset, and nothing can abstain on it."
     }
   },
   "not_gathered": {
@@ -790,15 +821,11 @@
     ],
     "declared_ungathered": [
       "ACCIDENTAL",
-      "ARC_BOX",
-      "ARTICULATION_MARK",
       "CLEF_REFUSAL_BRANCH",
-      "DYNAMIC_LETTER",
       "INPUT_DOMAIN",
       "LEFT_EDGE_INK",
       "PART_NAME",
-      "TEXT_LAYER",
-      "WEDGE_BOX"
+      "TEXT_LAYER"
     ],
     "verdict_elsewhere": [
       "ARC_KIND",
@@ -808,6 +835,7 @@
       "DIRECTION",
       "DURATION",
       "DYNAMIC",
+      "EVENT",
       "GLYPH_OWNER",
       "GROUP_SYMBOL",
       "INSTRUMENT",
@@ -824,18 +852,14 @@
   },
   "stub_starvation": {
     "ARC_KIND": {
-      "ungathered_inputs": [
-        "ARC_BOX"
-      ],
+      "ungathered_inputs": [],
       "wants": [
         "ARC_BOX",
         "NOTEHEAD_STAFF_POSITION"
       ]
     },
     "ARC_OWNER": {
-      "ungathered_inputs": [
-        "ARC_BOX"
-      ],
+      "ungathered_inputs": [],
       "wants": [
         "ARC_BOX",
         "NOTEHEAD_STAFF_POSITION",
@@ -843,9 +867,7 @@
       ]
     },
     "ARTICULATION_OWNER": {
-      "ungathered_inputs": [
-        "ARTICULATION_MARK"
-      ],
+      "ungathered_inputs": [],
       "wants": [
         "ARTICULATION_MARK",
         "GLYPH_BOX"
@@ -860,18 +882,14 @@
       ]
     },
     "DYNAMIC": {
-      "ungathered_inputs": [
-        "DYNAMIC_LETTER"
-      ],
+      "ungathered_inputs": [],
       "wants": [
         "DYNAMIC_LETTER",
         "GLYPH_OWNER"
       ]
     },
     "WEDGE_ANCHOR": {
-      "ungathered_inputs": [
-        "WEDGE_BOX"
-      ],
+      "ungathered_inputs": [],
       "wants": [
         "WEDGE_BOX",
         "GLYPH_BOX"
@@ -880,21 +898,8 @@
   },
   "unaccounted": {},
   "wanted_but_ungathered": {
-    "ARC_BOX": [
-      "ARC_KIND",
-      "ARC_OWNER"
-    ],
-    "ARTICULATION_MARK": [
-      "ARTICULATION_OWNER"
-    ],
     "DIRECTION_WORD": [
       "DIRECTION"
-    ],
-    "DYNAMIC_LETTER": [
-      "DYNAMIC"
-    ],
-    "WEDGE_BOX": [
-      "WEDGE_ANCHOR"
     ]
   }
 }

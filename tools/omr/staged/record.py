@@ -150,6 +150,45 @@ class Subject:
         return Subject(kind, **kw)
 
 
+def meter_at(value, cell_index):
+    """The meter in force at one BAR, out of a `Q.METER` verdict's value.
+
+    ⚠️⚠️ A METER IS A PROPERTY OF A RANGE OF BARS, NOT OF A SYSTEM, and this
+    helper is where that is expressed. The value carries `segments` -- one
+    entry per stretch, each with the `from_cell` it starts at -- so a system
+    holding a printed meter CHANGE says so in ONE fact rather than in two that
+    can drift apart. Sean, 2026-09-09: *"I don't want the dichotomy of it's a
+    system or a group of notes surrounding it. It is both."*
+
+    ⚠️ THE ALTERNATIVE WAS REFUSED ON THIS PROJECT'S OWN HISTORY. Keeping the
+    system meter as it was and adding a separate "there is a change at bar N"
+    fact is less work and leaves TWO RECORDS OF ONE THING that nothing forces
+    to agree -- the shape that let one accuracy figure go stale in three of
+    four places, and that made an `instrument_label` audit unable to disagree
+    with itself.
+
+    ⚠️ Top-level `numerator`/`denominator` remain and describe the FIRST
+    segment, so an unchanged single-meter system serialises exactly as before.
+    They are deliberately NOT the thing consumers should read -- a bar past a
+    change would get the wrong answer -- which is why every consumer goes
+    through here and a test asserts it.
+    """
+    if not value:
+        return None
+    segments = value.get("segments")
+    if not segments:
+        return value
+    chosen = None
+    for seg in segments:
+        if int(seg.get("from_cell") or 0) <= int(cell_index or 0):
+            chosen = seg
+    # ⚠️ None where NO segment covers this bar, which is a real answer and not
+    # a gap: a system may print a meter change at bar 8 while never stating
+    # what bars 0-7 were in. "3/4 from bar 8, unknown before" is exactly what
+    # a range-scoped fact can say and a system-scoped one cannot.
+    return chosen
+
+
 DOCUMENT = Subject(Kind.DOCUMENT)
 
 
@@ -287,6 +326,24 @@ class Q(_Vocab):
     GLYPH_LADDER = "glyph_ladder"            # ledger rung completeness
     NOTEHEAD_STAFF_POSITION = "notehead_staff_position"   # pos_float, CLEF-FREE
     NOTEHEAD_CLASS = "notehead_class"        # black/half/whole, before duration
+    #: ⚠️ The REST GLYPH's class -- whole/half/quarter/8th -- before duration,
+    #: the exact parallel of `NOTEHEAD_CLASS`.
+    #:
+    #: ⚠️⚠️ IT WAS ABSENT FROM THIS VOCABULARY UNTIL 2026-09-09, and that made
+    #: rests the worst case of the family this architecture exists to kill.
+    #: The four starved stubs at least ABSTAIN `not_implemented` and are
+    #: therefore accounted for; a rest was detected -- 838 of them over four
+    #: real pages, 460 of them `restWhole` -- reached `GLYPH_BOX`, and NOTHING
+    #: ANYWHERE DECLARED THE ABSENCE. No gather site, no adjudicator, no stub,
+    #: no `wants`. `tools/omr/staged/export.py` found it by asking, per
+    #: notation family, which of four different zeros was true.
+    #:
+    #: ⚠️ `restHBar` / `restHNr` are MULTI-MEASURE REST INDICATORS and carry no
+    #: single duration; they are observed here like any other rest and the
+    #: adjudicator abstains on them by name. Recording the ink and declining
+    #: to read it is the honest pair; dropping it at the gather site is how
+    #: this quantity came to be missing in the first place.
+    REST = "rest"
     STEM = "stem"                            # CV stem: x, y0, y1
     BEAM_STROKE = "beam_stroke"              # CV beam stroke centre
     FLAG = "flag"                            # detected flag
@@ -301,6 +358,21 @@ class Q(_Vocab):
     CLEF_GLYPH = "clef_glyph"                # detector's clef, with frame
     CLEF_LOCATED = "clef_located"            # CV locator: shape, line, symmetry
     CLEF_REFUSAL_BRANCH = "clef_refusal_branch"   # which veto the locator hit
+    #: ⚠️ WHERE A CLEF GLYPH STANDS ON THIS STAFF, in half-spaces measured DOWN
+    #: from the top line -- the same measurement a notehead gets, from the same
+    #: grid, and for the same reason.
+    #:
+    #: ⚠️⚠️ IT IS A SEPARATE ROW FROM A SEPARATE READER BECAUSE A DETAIL FIELD
+    #: ON THE GLYPH ROW CANNOT WORK, and that is structural rather than
+    #: stylistic. Every `CLEF_GLYPH` row on a staff shares a reader, a frame
+    #: and a quantity, so `Evidence.correlated_groups` calls them ONE SIGNAL
+    #: and `tally` counts the group once, taking its strongest term. A term
+    #: citing a glyph row is therefore absorbed by that glyph's own detector
+    #: term -- measured: a 1.5 added beside a 3.0 left the contest at 3.0
+    #: against 3.0. **No refinement of the DETECTOR's evidence can break a
+    #: clef contest**; a tie-breaker has to come from another reader, and the
+    #: staff's measured line grid is one.
+    CLEF_POSITION = "clef_position"
     CLEF_SEED = "clef_seed"                  # the dossier's clef
     KEYSIG_RUN_POSITION = "keysig_run_position"   # accidental positions, NO clef
     KEYSIG_MARKER = "keysig_marker"          # detector keySharp/keyFlat
@@ -337,6 +409,11 @@ class Q(_Vocab):
     KEY_SIGNATURE = "key_signature"
     METER = "meter"
     DURATION = "duration"                    # ⚠️ a VERDICT, not a measurement
+    #: Which glyphs of a bar sound TOGETHER — one event, N noteheads.
+    #: ⚠️ A VERDICT, and the distinction matters: the x POSITION is a
+    #: measurement (`GLYPH_BOX` carries it), but "these are simultaneous" is
+    #: an interpretation of those positions under a tolerance.
+    EVENT = "event"
     GLYPH_OWNER = "glyph_owner"
     ARC_OWNER = "arc_owner"
     ARC_KIND = "arc_kind"                    # tie | slur
@@ -552,6 +629,27 @@ class Verdict:
     margin: float | None = None
     supersedes: str | None = None
 
+    #: This revision's cause DEPENDS ON the value being revised, and that is
+    #: declared, bounded and single-pass. (Sean's call, 2026-09-09.)
+    #:
+    #: ⚠️⚠️ THE ONE EXEMPTION FROM THE FIXPOINT GUARD, AND IT IS PER-VERDICT
+    #: RATHER THAN GLOBAL SO IT CANNOT SPREAD BY ACCIDENT.
+    #:
+    #: The guard refuses any revision reachable from its own cause. That is
+    #: right for a genuine fixpoint and too strict for the pipeline's ONE
+    #: sanctioned loop: durations vote the meter, then the meter re-reads the
+    #: durations. UNROLLED that is a straight line -- `duration_v1 -> meter ->
+    #: duration_v2` -- and it runs once and stops; `transcribe` has run
+    #: exactly this loop for as long as the meter has been read, on the stated
+    #: rule "vote once, repair once".
+    #:
+    #: ⚠️ WHAT MAKES IT SAFE IS THE BOUND, NOT THIS FLAG. `reconcile_duration`
+    #: searches only the levels a note ADMITS, changes at most ONE note, the
+    #: corrected bar must land EXACTLY on the meter, and the answer must be
+    #: UNIQUE -- so it cannot iterate even in principle. A rule that cannot
+    #: state such a bound must not set this.
+    single_pass_revision: bool = False
+
     #: What the decision computed on its way to the answer -- the clef's per
     #: candidate scores, the meter's agreement share, ownership's
     #: `would_win_on_distance`.
@@ -740,13 +838,17 @@ class Log:
             reachable = set()
             for rid in others:
                 reachable |= self.closure(rid)
-            if verdict.supersedes in reachable:
+            if verdict.supersedes in reachable and \
+                    not verdict.single_pass_revision:
                 raise UphillConsequence(
                     f"{verdict.id} supersedes {verdict.supersedes}, and reaches "
                     f"it again through its other inputs. That is a fixpoint -- "
                     f"the new value was derived through something that depends "
                     f"on the value it replaces. Do not build one; record the "
-                    f"tension and escalate.")
+                    f"tension and escalate. If the loop is genuinely SINGLE "
+                    f"PASS and the rule's bound makes iteration impossible, "
+                    f"the rule may declare single_pass=True -- deliberately, "
+                    f"and per rule.")
         self._vrd[verdict.id] = verdict
         self._index(verdict.quantity, verdict.subject, verdict.id)
         return verdict

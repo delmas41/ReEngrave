@@ -380,3 +380,100 @@ class TestUnrepresentableStavesAreShownNotOmitted:
         assert "staffrow unrep" in src, "no greyed row is emitted"
         assert ".staffrow.unrep{cursor:default" in src, \
             "a greyed row must not look or behave clickable"
+
+
+class TestTheINITIALProposalIsUnsortedToo:
+    """⚠️ THE HALF THAT WAS UNGUARDED, AND IT WAS LUCK THAT SAVED p3.
+
+    `833afe9f` split `shape_problems`' `sorted-unique` into uniqueness (a real
+    invariant) and sortedness (a canonicalisation that MOVES the answer) and
+    dropped the second — but only the EDITED path was pinned. The INITIAL
+    proposal, `build_cache.research_proposal`, still called `sorted()`, under a
+    comment justifying it by the rule that had been removed **the same day**
+    (`71b26806` wrote the comment; `833afe9f` removed its reason) and whose own
+    closing sentence said *"works.json's convention wins"*.
+
+    `page_normalise.normalise` does `keep = parts[idx[0]]`, so `parts[0]`
+    decides which reference part the merged staff IS. Sorting a tacet fold
+    ahead of the printed part renamed `Zwei Fagotte.`, `Drei Hoboen.` and
+    `Drei Klarinetten in A` all to **Piccolo**.
+
+    Sean's p3 pass matched works.json on 15 of 15 entries EXCEPT entry 0
+    `Fag. 1/2`. The only thing that stopped the sorted proposal reaching a row
+    was the unrelated "works.json already has a map" refusal.
+    """
+
+    def _proposals(self):
+        bc = _load("build_cache", MAPS)
+        completion = MAPS.parent / "omr-staves-map-completion-2026-09"
+        if not (completion / "candidate_maps.py").is_file():
+            pytest.skip("candidate_maps not present")
+        return bc
+
+    def test_the_proposal_puts_the_PRINTED_part_first_and_the_folds_after(self):
+        bc = self._proposals()
+        sys.path.insert(0, str(MAPS.parent / "omr-staves-map-completion-2026-09"))
+        import candidate_maps                                    # noqa: E402
+        seen_a_fold = False
+        for row_id, entries in candidate_maps.CANDIDATES.items():
+            got = bc.research_proposal(row_id, n_parts=64)
+            by_name = {s["name"]: s for s in got["staves"]}
+            for spec in entries:
+                if not spec.get("absent"):
+                    continue
+                seen_a_fold = True
+                s = by_name[spec["name"]]
+                assert s["parts"] == list(spec["parts"]) + list(spec["absent"]), \
+                    f"{row_id}/{spec['name']}: the proposal re-ordered `parts`"
+                assert s["parts"][0] in spec["parts"], \
+                    (f"{row_id}/{spec['name']}: parts[0] is a FOLD, so "
+                     f"page_normalise would name the merged staff after a "
+                     f"silent part")
+        assert seen_a_fold, "no folded entry exercised — the test is vacuous"
+
+    def test_the_proposal_reproduces_works_json_on_every_row_already_merged(self):
+        """⚠️ THE CONTROL THAT MAKES THE ABOVE A RESULT: ask the TREE.
+
+        `works.json` already holds these rows, confirmed by hand against the
+        print. The proposal must agree with it entry for entry — and the
+        SORTED proposal did not, on exactly the three entries
+        `merge_additions`' own note names."""
+        import json
+        bc = self._proposals()
+        sys.path.insert(0, str(MAPS.parent / "omr-staves-map-completion-2026-09"))
+        import candidate_maps                                    # noqa: E402
+        works = json.loads((SCAN / "works.json").read_text())
+        rows = {r["row_id"]: r for r in works["rows"]}
+        compared = 0
+        for row_id in candidate_maps.CANDIDATES:
+            held = rows.get(row_id, {}).get("staves")
+            if not held:
+                continue
+            proposed = {s["name"]: s["parts"]
+                        for s in bc.research_proposal(row_id, 64)["staves"]}
+            for entry in held:
+                if entry["name"] not in proposed:
+                    continue
+                compared += 1
+                assert proposed[entry["name"]] == entry["parts"], (
+                    f"{row_id}/{entry['name']}: proposal "
+                    f"{proposed[entry['name']]} against the confirmed "
+                    f"{entry['parts']}")
+        assert compared > 10, f"only {compared} entries compared"
+
+    def test_the_proposal_still_passes_the_merge_steps_own_shape_check(self):
+        bc = self._proposals()
+        ma = _load("merge_additions", MAPS)
+        sys.path.insert(0, str(MAPS.parent / "omr-staves-map-completion-2026-09"))
+        import candidate_maps                                    # noqa: E402
+        for row_id in candidate_maps.CANDIDATES:
+            staves = [{"name": s["name"], "parts": s["parts"]}
+                      for s in bc.research_proposal(row_id, 64)["staves"]]
+            assert ma.shape_problems(staves) == [], row_id
+
+    def test_the_source_no_longer_canonicalises(self):
+        """SOURCE-level, the same shape as `test_the_ui_does_not_sort_a_human
+        _edit`: the proposal builder must not re-introduce a sort."""
+        text = (MAPS / "build_cache.py").read_text()
+        assert 'sorted(list(spec["parts"])' not in text, \
+            "research_proposal is canonicalising `parts` again"

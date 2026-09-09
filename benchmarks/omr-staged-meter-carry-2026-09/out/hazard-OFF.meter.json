@@ -1,0 +1,37 @@
+[
+  {
+    "subject": "system/1/0",
+    "outcome": "decided",
+    "reason": "voted",
+    "value": {
+      "numerator": 2,
+      "denominator": 4,
+      "raw": "2/4"
+    },
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 12
+    }
+  },
+  {
+    "subject": "system/17/0",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  },
+  {
+    "subject": "system/17/1",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  },
+  {
+    "subject": "system/17/2",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  }
+]

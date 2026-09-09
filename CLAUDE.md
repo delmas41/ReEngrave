@@ -26,7 +26,32 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-09-meter-as-a-range-fact.md](docs/handoff-2026-09-09-meter-as-a-range-fact.md)
+— **the meter became a fact about BARS rather than about a system**
+(`Q.METER` carries `segments`; `record.meter_at` reads a bar's meter), a carried
+meter is **WEIGHED by the bars rather than gated**, and **`Q.EVENT`** closed a
+silent double-count that had disabled the pipeline's own bar-sum check on every
+bar holding a chord. The change detector finds the printed `3/4` **on the exact
+bar the reference names**. ⚠️ Read its **§4 before quoting anything**: n = 1
+document, the *Andante* refusal is **SAFE but NOT discriminating** (it refuses
+the CORRECT meter too), and the bar-math half contributed *nothing* even on the
+case that works — the result rests on the glyph alone. **§5 ranks the next
+work, and it is Sean's model**: a long RUN of bar sums proposing a meter where
+no glyph stands (DIRECTIONAL — bars after a candidate are evidence for the new
+meter, before it for the old), the per-bar evidence order (`A-DUR-6`), and
+**unclassified ink as a gathered fact** (`A-DUR-5`, flagged below). Its
+predecessor
+[docs/handoff-2026-09-09-gather-and-the-record-that-answers.md](docs/handoff-2026-09-09-gather-and-the-record-that-answers.md)
+— the staged pipeline now EXPORTS A FILE, gathers the five families it used to
+drop, and answers *which decision* held a note back. It ranks the next three
+(**the meter carry**, the arc adjudicators, dynamics) and records **three of
+its own author's inferences that were wrong**, each caught by looking at ink
+rather than by counting. Its predecessor
 [docs/handoff-2026-09-09-staged-accounting.md](docs/handoff-2026-09-09-staged-accounting.md)
+— ⚠️ **and its three ranked tasks are DONE (2026-09-09); read the section
+*The staged pipeline: an inventory, an exporter, and a health report* below
+for what doing them found, and for the four claims of that handoff they
+correct.** Its §1 redirect stands and is the governing one.
 — **the metric is no longer the organising goal** (Sean, 2026-09-08: the numbers
 *"dont feel like they have represented much that has been helpful"*). The work is
 the **staged pipeline** — GATHER · ADJUDICATE · EVALUATE — because OMR-NED
@@ -76,6 +101,22 @@ opened Step 2 and posed the Viola question (now answered). Then read
 — what the staged pipeline and the symbol ledger are, **why musicdiff bucket
 totals can no longer rank work** (amplification differs 6×–2× by error kind; one
 changed `<type>` scores ZERO on 10 of 20 files), and the ranked next steps.
+
+⚠️⚠️ **STANDING REQUEST FROM SEAN, 2026-09-09 — UNCLASSIFIED INK AS A
+FIRST-CLASS GATHERED FACT, NOT YET BUILT.** *"I really don't want to lose the
+'here is a blob of ink but we don't know what it is' gather data point. It can
+be used in every decision point ... this is the same unrecognizable blob on
+every system at bar 51 ... or we know what this blob is in 3 of the 10 systems
+and they all line up and are there for the same thing."* The power is in the
+ALIGNMENT: unnamed ink at the same bar across staves is a printed event
+whatever it is, and where a few staves classify it the minority names what the
+majority corroborates. ⚠️ It is **not reachable from the detection record** —
+measured on Beethoven 5 / Litolff p.62, where a meter is printed on every staff,
+classified on 2 of 17, and the other 15 carry no unclassified detection at that
+column: the ink was never detected at all. It needs a RASTER pass in GATHER,
+and the precedent is `direction_text._blank_detections`, which already subtracts
+every detection from the page's ink so "find the text" becomes "find the ink".
+Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**.
 
 **Backlog / research notes:** see [NOTES.md](NOTES.md) — surface these at the start of a ReEngrave session.
 
@@ -373,8 +414,243 @@ ReEngrave/
 | `OMR_CHOIR_GROUPING`  | `1` (on) | **On by default since 2026-09-05** (Sean's call, coupled with the Bach row's pool re-admission; the re-stamped 11-row baseline is recorded beside WIDENED_BASELINE_2026-09-04.md). Two cues for choir-grouped / differently-indented pages, both riding this one flag. The Bach Brandenburg 3 stress row shatters (6 "systems", 122 measure-cells vs 10) because the wide connectivity window and cue A's band are both anchored on the page-MEDIAN `x_start`, and on a page whose systems are indented differently (792–836 vs 178–200) the median lands between the modes and cuts the full-width system's bracket + systemic barline out of the scan — while the page is also choir-barred (interior barlines stop at choir edges), so nothing else crosses its choir gaps. **Cue B** (merge-only mirror of cue A, `system_grouping.py`): a break the wide rule made for lack of evidence is re-examined in the cue-A band anchored at the PAIR's own left edge; a crossing column there cancels the break. A cue-B merge is exempt from cue A's re-split (the cues act on disjoint gap sets — bridging > 0 vs == 0). **Cue C** (`measure_extractor.py`): a system whose staves form ≥2 bracket-groups (≥ half in multi-staff groups) AND that holds a **window-blind internal gap** — a gap nothing in-window crosses, the choir-barred signature, impossible for a true open score — is never flipped into open-score mode, so a merged rhythm-unison tutti's aligned stems stop out-voting its barlines. ⚠️ Bracket-groups ALONE was falsified on the engraved benchmark (LilyPond open scores manufacture "groups" from bridging jitter; pooled 0.1306 → 0.8560, nine works' barlines deleted) and repaired before shipping — do not loosen the second condition. Flag ON: Bach row 0.9241 → **0.8152** OMR-NED, 6735 → 6236 edits, 122 → 11 cells vs true 10; all ten pooled scan rows byte-identical (pooled 0.8387 untouched); the 11-work engraved benchmark **edit-for-edit identical** (0.1306 / 2745) and the `boulanger` structure canary byte-identical; 969-page library probe: 757 examined break-gaps read 0 ×735 / ≥4 ×22 with nothing at 1–3, and the 10 pages that change were each hand-adjudicated toward the truth (7 exact heals incl. both operas' vocal systems; zero false merges). Flag OFF: byte-identical by construction (Bach flag-off hash-matches the widened-graft baseline fixture). Re-admitting the Bach row to the scan pool is coupled to a default-ON decision and a re-stamped pool. See `benchmarks/omr-choir-grouping-2026-09/FINDINGS.md`. |
 | `OMR_BRACKET_COLUMNS` | `1` (on) | **On by default since 2026-09-07** (Sean's call). Which staves form a bracket GROUP — the instrument-family boundaries. ⚠️ **Nothing detects a bracket**: `bracket` is not in the 208-class space (only `tupletbracket`, a tuplet marker), and `gap_bridging_counts` counts *columns of ink crossing each inter-staff gap* knowing nothing about what the ink is. Family boundaries are INFERRED from where the interior barlines stop. The fault was a UNIT error: that count is `(crossing objects) × (each object's width)`, mixing systemic columns (bracket, systemic barline, interior barlines — same x in every gap) with incidental ink (stems, slurs, measure numbers — no shared x). On Beethoven 5 / Litolff p.38 the two systems print the same 12 staves; system 1's winds|brass gap keeps 3 crossing runs, system 0's keeps 9 with six at no barline column — 52 px against a median of 66 → 0.788 → no split. **No threshold could have worked**: the numerator is ~3 spanning objects and the denominator is *how many bars the system prints*, so the ratio is ≈ `3/(n_bars+3)` and crosses 0.5 near three bars a system; over 2841 gaps the largest value below the cut is **0.4962** and the smallest above is **0.5000**. This rule counts systemic COLUMNS instead and drops any cluster crossing *every* gap (a constant on both sides of a ratio is not neutral). Within-page instability **0.384 → 0.055** over 144 pages and all five publishers; the 0.5 constant moves onto an EMPTY interval (0.3333 / 0.7778). ⚠️ `BRACKET_COLUMN_MIN_EVIDENCE = 3` is load-bearing — a LilyPond render bars per staff, a 25-staff Bruckner system carries two crossing columns total, and without the floor the rule manufactured **11 groups** from it, which is `OMR_CHOIR_GROUPING` cue C's falsification arriving by the same road. **Why it is ON**: it shipped OFF at zero measured edits (exports byte-identical on 11 of 11 engraved fixtures and both exposed scan-gate pages; an exact cue-C control found zero reachable pages across 144), asking to be flipped alongside the measurement that turns *"the readings agree"* into *"the readings are RIGHT"*. That measurement arrived the same day from the independent bracket-READING investigation, against hand-read print truth: Bach / Peters printed 3|3|3 — pixel rule **16/22**, this rule **22/22**; Brahms / Breitkopf printed 9|5 — pixel rule **0/15**, this rule **15/15**. The incumbent is not merely unstable, it is wrong on 15 of 15 Brahms systems. Set `0` to restore the pixel rule. See [benchmarks/omr-bracket-stability-2026-09/FINDINGS.md](benchmarks/omr-bracket-stability-2026-09/FINDINGS.md) and [benchmarks/omr-bracket-reading-2026-09/FINDINGS.md](benchmarks/omr-bracket-reading-2026-09/FINDINGS.md) (which also measures that READING the bracket loses to inferring it — 5/22 and 1/15 — and that two of five publishers print no family bracket at all). |
 | `OMR_KEYSIG_CORROBORATION` | `1` (on) | **On by default since 2026-09-07** (Sean's call). Reverts a mid-staff key-signature change that no other staff of the same system corroborates changing AT THE SAME BAR — a key change is printed at one bar of one system, on every staff of that system, so the BAR is the shared fact even where the VALUE differs by transposition. Measured over 11 scanned + 11 engraved stored transcriptions: **7 of 7** spurious mid-staff flips on the scan corpus are stopped (5 of the 7 had already been rejected once by the cross-page header vote and the mid-staff reader overturned it anyway), flag-ON changes 5 of 11 scan fixtures and 0 of 11 engraved (the engraved family prints no later-cell key markers at all). ⚠️ **The corpus contains ZERO real mid-staff key changes, so only the BENEFIT is measured — the cost of a wrong revert is not**, and there is concrete reason to expect it non-trivial: later-cell key markers appear on only 15 cells across 193 scanned staves with no two sharing a bar, so a genuine mid-staff change would more likely fail its own witness test than pass it. Shipped ON anyway because the guard is structurally the WEAKER of two possible claims (needing only that another staff changes at the same bar, not that it reads the same key) and fails safe relative to the untaken alternative. Flag OFF is byte-identical by construction — verified with `diff` against `main`'s output on one scan and one engraved fixture, controlled by a before/before run of the unchanged tree first. See `tools/omr/key_signature_corroboration.py` and `benchmarks/omr-keysig-corroboration-2026-09/`. |
+| `OMR_METER_CARRY` | `0` (off) | **Staged pipeline only. The carry is WEIGHED, not gated — the bars it claims to govern confirm or refuse it, so a movement boundary needs no movement detector.** A meter is a fact of the MOVEMENT, printed at its start and nowhere else, so the staged pipeline had no meter from a movement's second page onward while the answer sat in the same log one page earlier. A system whose own meter decision ABSTAINED takes the last meter that was READ — as a **candidate**. It then enters a signed-term sum with every bar of its system: `carried_from_read_meter` **+1.0**, each bar that FITS **+1.0**, each bar that does NOT **−1.0**, against `METER_CARRY_FLOOR` **2.0** and `METER_CARRY_MIN_BARS` **2**. ⚠️ **The ordering is STRUCTURAL, not tuned**: two net contradicting bars outweigh ANY carry and no amount of carrying outweighs the bars — Sean's rule that *"the math that can be determined by its own equation"* outranks what can only be derived, asserted directly on the constants so a sweep that breaks it fails even when every behavioural test passes. ⚠️ **Not a probability**, and the ban it respects is narrower than it reads: `adjudicate`'s docstring forbids them because calibrated IDENTITY probabilities measured ECE 0.1277 and failed worst at the top of the range — but that failure was diagnosed as the CORPUS, and a bar sum is `Checkable.CHECKABLE`, provable against itself with no truth file, so this family could be genuinely calibrated later from the score library alone (nothing does that yet). **MEASURED**, Beethoven 5 / Litolff `984073`: page 2's two systems (continuation, truth 2/4) carry at support **+7.0** and **+8.0**; all three systems of page 17 — the *Andante con moto*, a NEW MOVEMENT in 3/8 — refuse the carried 2/4. ⚠️⚠️ **BUT THE ANDANTE REFUSAL IS SAFE, NOT DISCRIMINATING, and an earlier draft of this row overstated it.** The control: scored against `3/8`, the meter that page ACTUALLY PRINTS, page 17 **refuses that too** (−1.0 and −1.0). Its durations are noise and a noisy page refuses everything, so the protection there is *"when the page cannot speak, abstain"* rather than *"the bars know it is 3/8"*. What IS established is that **where the bars can speak they discriminate in both directions** — on the three well-read systems the true meter scores +14/+7/+16 and the wrong one −12/−9/−14. **A movement boundary on a page that READS WELL — the case actually claimed — remains unmeasured.** In the file, whole rests written at 4.0 ql inside a 2.0 ql bar go **194 → 70**, `written.notes` 648 → 665 against `not_written.duration_narrowed` 163 → 146, and `reconcile_duration` fires **13 → 47**. ⚠️ **A LONE WHOLE REST MAY NOT CORROBORATE ANYTHING and is never even read** — it stands for THE BAR whatever the meter and its 4.0 is our own default for want of one, so counting it reads that default back as evidence (measured: left in, 13 of 17 agreeing bars vote 4.0 and the true 1.5 gets none); it is also what `size_measure_rest` supersedes, so touching it puts it in the meter's basis and the record reports a real fixpoint. ⚠️ **Still `0`.** The blocking objection is now (1) a movement boundary on a well-read page, which nothing has measured; then (2) a second document and publisher; (3) weights that are asserted, not measured — `METER_CARRY_MIN_STAVES_PER_BAR = 3` is set by analogy to `METER_COVERAGE_FLOOR` and never measured at all. See [benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md). |
 
 | `OMR_ROSTER_LABELS`   | `0` (off) | **Measured, deliberately dormant — the reach is small and the number says so.** A margin label whose leading characters are gone (`'larinetti in A'`, `'orni in F I II'`) either abstains or, worse, is CAPTURED by a shorter alias inside what survives: `Tromboni Alto e Tenore` cut to `Alto e Tenore` reads as **Tenor**, `Trombone Basso` cut to `mbone Basso` as **Bass voice** — two singers on a Tchaikovsky symphony, at `medium` confidence, invisible to the unmatched-label report, feeding `clef_correction`, the written-range veto and the part→staff join. Widening the lexicon stays refused (an alias is GLOBAL: `orni` admitted for Tchaikovsky is admitted for every score ever read); this narrows the QUESTION instead, matching the surviving tail against the ~10 instruments the **catalog's `works` tier** says the work is scored for (`source_kind: "catalog"`, independent of the truth MusicXML — the `editions` tier is `page`, an OMR output of the same raster, and is refused). Four outcomes, reported apart because the risk differs: **recovered** and **disambiguated** (`Basso.` → Contrabass, the ambiguity the edition-tier work prices at 35 rows) NAME a staff; **vetoed** only removes a name that was already wrong. ⚠️ A truncation is the tail of a WORD — matching across a space would read a truncated `Fl. Alt.` (an ALTO FLUTE) as a trombone via `tr alt` — and ambiguity ABSTAINS (91 distinct tails are owned by two instruments of the Brahms 1 roster alone). ⚠️ **A roster is a POSITIVE list and the parse loses families two ways**: Tchaikovsky 6's `strings` went to `segments_ignored` so its roster names no string at `parse_rate 1.0`, and the parse reads ONE field, so *Egmont*'s `soprano` is nowhere in it — **4 works with real singers admitted no voice family** until families were also read off both RAW fields through `instruments.lookup` per segment. Measured: **20 of 1422 real margin labels change (1.4%)** across 4 of 13 editions, 8 of 223 engraved-fixture labels, and all 28 firings were hand-adjudicated correct. ⚠️ The reference corpus fires 0 BY CONSTRUCTION (those strings carry no work), so the false-positive test is a 1651 × 223 cross-product instead — which is what found `Vier Flöten` → **Piano** (`vier` is a tail of `klavier`) and `Soprano Saxophone` → **Alto** (`soprano` is a tail of `mezzosoprano`); both guards came out of that table and cost none of the 28. ⚠️ Reach limits: 205 of the 1422 labels are on works the `works` tier does not hold (Mahler 5, Messiah), and the engraved fixtures are build products OUTSIDE the store, so the layer is a **no-op on the eleven-work benchmark** unless a harness names the work with `OMR_WORK_ID`. No pooled figure is claimed — musicdiff does not score `<part-name>`. See [benchmarks/omr-roster-constrained-labels-2026-09/FINDINGS.md](benchmarks/omr-roster-constrained-labels-2026-09/FINDINGS.md). |
+
+
+---
+
+## The staged pipeline: an inventory, an exporter, and a health report
+
+The 2026-09-09 handoff's three ranked tasks, done — and **each one found
+something the task itself was not about.** Three runnable tools, in the shape
+`export_coverage` set: derive it from the code, ship the script beside its
+output, `--check` non-zero when an invariant breaks.
+
+```bash
+python3 -m tools.omr.staged.inventory            # the 21 decisions, derived
+python3 -m tools.omr.staged.inventory --run staged.json
+python3 -m tools.omr.staged.export staged.json --out score.musicxml
+python3 -m tools.omr.staged --musicxml out.musicxml <pdf> --pages 2 --weights <...>
+python3 -m tools.omr.staged.health --check       # decides / abstains / records
+```
+
+Findings: [benchmarks/omr-staged-inventory-2026-09/FINDINGS.md](benchmarks/omr-staged-inventory-2026-09/FINDINGS.md),
+[HEALTH_FINDINGS.md](benchmarks/omr-staged-inventory-2026-09/HEALTH_FINDINGS.md),
+[benchmarks/omr-staged-export-2026-09/FINDINGS.md](benchmarks/omr-staged-export-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE HEADLINE: 2,541 DETECTED GLYPHS THE RECORD CANNOT CARRY**, pooled
+over four real conductor's pages, each figure the detector's own count in the
+log — the positive control beside the zero.
+
+| family | detector found | why nothing comes out |
+|---|--:|---|
+| **rest** | **838** | ⚠️⚠️ **NO QUANTITY AT ALL** — no `Q.REST`, no adjudicator, no stub, no `wants` |
+| tie / slur | 755 / 291 | stub **and `arc_box` is never gathered** |
+| dynamic | 543 | stub **and `dynamic_letter` is never gathered** |
+| fermata / ornament | 66 / 6 | ⚠️ **NO QUANTITY** |
+| articulation / wedge | 41 / 1 | stub **and its input is never gathered** |
+
+⚠️ **RESTS ARE THE FINDING, AND THEY ARE WORSE THAN THE STUBS.** A stub
+abstains `not_implemented` 2,728 times a page and is therefore accounted for;
+nothing anywhere declares the rests. `grep -rn 'rest' tools/omr/staged/record.py`
+returns three matches and all three are the word inside `*rest` unpacking. It
+also means *a whole-rest glyph means the BAR* cannot be honoured on this path
+yet, and the exporter says so instead of pretending: **a bar with no notes
+gets a measure rest because we read NOTHING in it, not because we read
+silence.**
+
+⚠️ **FIVE OF THE SIX STUBS ARE STARVED ONE STAGE EARLIER.** The handoff says
+*"everything else in there is a stub that can be filled incrementally"* —
+derived, that is true of exactly one of them (`direction`). For the other
+four, writing the adjudicator produces nothing: the measurement it decides
+over is not in the log. `stub=True` says *this decision is not written*; it
+does not say *and the page is never read for it either*. **The next work is in
+GATHER**, which is also the thinnest stage by tests (27 against RECORD's 261).
+
+### The exporter — a file, and a record of what did not reach it
+
+`tools/omr/staged/export.py`. **Not a port**: it takes `tools/omr/export.py`'s
+POSITIONS and reuses its pure renderers (`_mxl_note`,
+`_mxl_attributes_block`, `_mxl_measure_rest`, `_score_partwise`,
+`voicing.group_chords_in_measure`), because those ARE the positions in
+executable form. Four scan pages export and all four parse under **music21**.
+Every re-derived rule has a test: `divisions` is an **LCM not a max** (48 on
+Beethoven p3 where a triplet lands, still 4 on plain music); `measure="yes"`
+**only where the meter is known** (86 of 148 bars withhold it); a dot is **one
+fact, not two**; lowest note first; a tuplet **scales the time and leaves
+`<type>` alone**, and only the ratio's own `members`; a staff whose clef
+abstained gets **no pitches, not treble**.
+
+⚠️ **The meter's `symbol` rule is RESTATED, not copied, and the same field
+name needs the opposite treatment.** `export.py` refuses `raw` because
+`rhythm._propagated_meter` SYNTHESISES it; the staged `raw` comes from
+`Q.METER_TEMPLATE`, which is the **matched letter glyph**, so it IS evidence.
+`LETTER_METERS` is imported so the two cannot drift.
+
+⚠️ **THE ACCOUNTING CONTROL IS READ, AND IT RAISES.** Every notehead in the
+log is written or counted; the two must sum to the `notehead_class` rows, and
+all four pages balance. `to_musicxml` raises `Unbalanced` rather than
+returning a flag — because the flag was tried: `symbol_ledger.coverage_check`
+computed this same control, reported `balanced=False` on 9 of 20 rows and was
+read by nothing. It reveals **595 notes held in the record and absent from the
+file** — `duration_narrowed` 441, `no_pitch` 142 — and the narrowed ones are
+**the exporter refusing to decide**: the candidates carry `support`, so an
+argmax is one line away and would overturn, silently and downstream, a call
+`adjudicate_duration` explicitly declined to make.
+
+⚠️ **The part join is the VERDICT's, including where the verdict is known to
+be wrong.** Brahms p2's ordinal join refuses (13 vs 14 staves) and the slot
+join gives **14 continuous parts instead of 27 fragments** — the
+`OMR_SLOT_STITCH` result arriving from a recorded decision rather than a flag.
+That decision's own docstring records it measured wrong on 3 of 27 staves on
+that exact page; the exporter honours it anyway and puts
+`join_decided`/`join_used` in the coverage report, because an exporter that
+quietly disagrees with a decision is how a measured judgement goes missing.
+
+### GATHER — the five families that were detected and read by nothing
+
+The lever the three tools above identified, taken the same day.
+`gather.gather_glyph_families` emits one typed row per glyph for **rests,
+arcs, wedges, dynamic letters and articulation marks**. Findings:
+[benchmarks/omr-staged-gather-2026-09/FINDINGS.md](benchmarks/omr-staged-gather-2026-09/FINDINGS.md).
+
+⚠️ **Routed by CLASS, never by the detector's `category`, and the hairpins are
+why.** `dynamicDiminuendoHairpin` carries category `dynamic` AND a name
+starting with `dynamic`, so a prefix test alone spells a crescendo into a
+dynamic word. Articulations are the mirror: all ten `artic*` classes carry
+category `ornament`, shared with `ornamentTrill`, `fermataAbove` and
+`arpeggiato`.
+
+⚠️ **THE STUBS NOW ABSTAIN ON THEIR OWN POPULATION.** A stub with no
+`subjects_from` runs on every subject at its scope, so `arc_owner` abstained
+**once per detection** — 2,728 rows on Beethoven p3, its 199 real subjects
+inside 2,529 no-ops, an abstention meaning "there was a glyph here" rather
+than "I could not read this arc". Now 199. `wedge_anchor` writes **nothing at
+all** on a page that prints no hairpin, which is silence where there is
+nothing to decide.
+
+**Rests go end to end.** `adjudicate_duration`'s domain is now the TUPLE
+`(notehead_class, rest)` — ⚠️ **one question, "how long is this event", for
+two kinds of ink**; a separate `rest_duration` quantity would make every
+consumer ask twice for one fact. The value comes from
+`rhythm._REST_DURATIONS`, **imported rather than restated**, including the
+entries it deliberately omits: `restHBar` / `restHNr` name no single value, so
+the decision abstains `unreadable_rest` rather than inventing one.
+
+⚠️ **The bar-length convention is a CONSEQUENCE, not part of the reading.**
+`consequences.size_measure_rest` (`meter` → `duration`, CELL scope): a bar
+whose only standing duration is one dotless `restWhole` takes the BAR's
+length. Its evidence is the CELL's contents and the SETTLED meter, neither of
+which `adjudicate_duration` has when it reads one glyph. All six cases the
+legacy fix was priced on hold — including that it **fires in 4/4 where the
+number does not move**, because the MARKING (`measure="yes"`, no `<type>`) is
+the point and not the arithmetic, and that it **refuses a lone quarter rest**,
+which is the 34-edit lesson.
+
+⚠️⚠️ **AND IT EXPOSED A REAL HAZARD IN `reconcile_duration`.** That rule
+offers a DECIDED event its own beam level ±1, so a lone 4.0 whole rest in a
+2/4 bar would land EXACTLY on 2.0 and be UNIQUE — **the right number by the
+wrong reasoning**, exported as a HALF rest with `<type>half</type>` where the
+engraving prints a measure rest with no type at all. A rest carries no beam to
+re-read; rests are excluded there. ⚠️ A second latent bug arrived with the
+second writer: reconcile summed `log.verdicts(...)` — every ROW, not the
+standing one — so a superseded duration would be double-counted.
+`_standing()` resolves it once, for both rules.
+
+| | beet5 p3 | brahms p2 |
+|---|--:|--:|
+| rests written | **209 + 19 measure rests** | **338 + 11** |
+| bars padded because we read NOTHING | 148 → **48** | 60 → **4** |
+| detected glyphs the record cannot carry | 761 → **533** | 1,270 → **920** |
+
+⚠️ **`empty_bars_padded` is reported apart from `measure_rests_read`.** The
+first is a bar we read NOTHING in; the second a bar where a whole rest was
+actually read. Conflating them reports a page as full of measure rests when
+what it is full of is unread bars.
+
+⚠️⚠️ **THE DERIVED CHECK FOUND A DETECTOR FAULT NOBODY WAS LOOKING FOR.**
+`coverage()` now derives what no family claims — `NOT_NOTATION` excuses a
+class only WITH A WRITTEN REASON, so the default for an unthought-of class is
+*reported*. What it left is **`arpeggiato`, 98 and 86 over two pages**, and
+neither work prints ninety arpeggios a page: median **56×388** and **40×243**
+boxes at confidence **0.39** and **0.35**, against noteheads' 146×131 at 0.67.
+A 1:7 tall thin box at half a notehead's confidence is a **stem or a
+barline**. It is deliberately NOT excused into `NOT_NOTATION` — `arpeggiato`
+really is a notation family, and burying it there would hide the misread
+rather than record it.
+
+**Still unrepresented, and now one piece of work each rather than two:** ties
+and slurs (843 over two pages) need `arc_kind` + `arc_owner`; dynamics (489)
+need the `f`+`f` → `ff` spelling; articulations (37) need the nearest-notehead
+attach. ⚠️ **`fermata` (35) and `ornament` (6) still have NO QUANTITY.**
+
+### Four claims of the 2026-09-09 handoff, corrected
+
+1. ***"`tuplet_ratio` produced no row — page or wiring?"*** **The page, with a
+   positive control.** `subjects_from=Q.TUPLET_MARKER` means an empty domain
+   yields **zero subjects and therefore no verdict** — which is not an
+   abstention. Beethoven 5 / Litolff `984073` `--pages 2` reads 1 marker and
+   decides 1 ratio, on the same tree, weights and CLI. ⚠️ **The silence is
+   still a real hole and is not tuplet-specific** — `glyph_owner` and
+   `duration` can go quiet the same way — so `inventory --run` reads the
+   registry against the record and names what never appeared.
+2. ***"Beethoven 5 / Litolff p.2 (`--pages 1` of `984073`) is two systems"***
+   — **it is one**, and `works.json` (hand-verified) says the two-system page
+   is `pdf_page_index` **2**. On the right page the redundancy layer works:
+   `clef_across_systems` single ×12 → **unanimous ×8**, `checked_nothing`
+   4 groups → 2. ⚠️ **Brahms p2 IS two systems and still checks nothing**, and
+   that is a different result: `groups._slot_fact` puts the system's staff
+   count in the join key on purpose, and its systems print 14 and 13 — so **the
+   redundancy layer's cross-system correspondence is exactly as good as the
+   ordinal join and inherits its refusal.**
+3. ***"153 tests"*** — **226** at `b2494cbc` across 16 files. One more
+   hand-counted figure that rotted.
+4. ***"everything else in there is a stub that can be filled incrementally"***
+   — true of one of the six; see above.
+
+### The health report, and the check that emptied itself
+
+`health.py` asks, per decision, whether a test says it **DECIDES** what it
+can, **ABSTAINS** when it cannot, and **RECORDS** both — `Ruling`'s own
+contract, and Sean's bar (*"are our tools and stages working"*, not
+better-or-worse). What it found, every zero confirmed by one `grep`:
+`system_membership` — **decision #0** — was named by no staged test at all;
+`part_partition` only by the EXPORTER's tests, which supply its verdict as a
+fixture; and **five declared stubs were named by nothing**, so `stub=True`'s
+promise (always abstains `not_implemented`, on an EMPTY basis) was unchecked.
+All closed in `tools/omr/tests/test_staged_stage_contract.py`.
+
+⚠️ **It reported "EMPTY CELLS: none" once by accident.** Crediting a test that
+iterates `adjudicate.REGISTRY` / `ORDER` with covering every decision emptied
+it in one line — the discipline tests iterate the registry to assert
+declaration properties. **A check that cannot fail is worse than no check**;
+the clause is gone and its absence is pinned. The bounded case (`stubs()`) IS
+resolved.
+
+⚠️ **A `wants` entry the decision never reads is INERT** — found by a test
+that asserted the opposite and failed. `Evidence` fills `missing`/`declined`
+only for quantities actually queried, so a declaration nothing reads records
+nothing and cannot be told from one that is read and always present. Ten
+decisions have one; **`glyph_owner` declares `glyph_conf` and never reads
+it**, which is the standing observation that `_dedupe_cross_staff_detections`
+*"has both detections' confidences in hand and uses neither"*, reproduced in
+the rewrite and now loud. ⚠️ That check reported **zero** when first written,
+because `inspect.getsource` includes the decorator and `wants` lives there.
+
+⚠️⚠️ **Two of the twelve are worth opening, both confirmed by grep.**
+`adjudicate_clef` declares `notehead_staff_position` and never reads it — and
+that is its **own first `checked_by` entry**, *"implied pitches: this staff's
+own measured positions under this candidate must fall in the instrument's
+written range"*. `grep -n NOTEHEAD_STAFF_POSITION …/clef.py` returns two
+lines, `implicates` and `wants`, **and nothing in the body**: a declared
+constraint naming a check the code does not run. The machinery exists one
+module over, in `ownership._range_veto`. And `glyph_owner`'s declaration is
+**misdirected rather than inert** — `_range_veto` does read a staff position,
+out of `band_row.detail["position_in_candidate"]`, so the `wants` entry names
+the wrong quantity for a real dependency and a missing
+`notehead_staff_position` row could never be recorded as `missing` there.
 
 ---
 
@@ -1576,107 +1852,83 @@ has been bitten by before.
 
 ---
 
-## The GATHER stage collects 31 of 63 quantities, and cannot NAME 11 more
+## The GATHER stage collects 37 of 66 quantities, and cannot NAME 7 more
 
 Sean, 2026-09-09: *"I just found that we were not tracking chords - notes
 aligning in a bar. I want to know how many other things we are missing."*
-**It generalises.** Answered by a derived tool, never a written list, because
-that is the shape this repo has been bitten by most:
+Answered by a derived tool, never a written list:
 
 ```bash
 python3 -m tools.omr.staged.gather_coverage           # the two lists
 python3 -m tools.omr.staged.gather_coverage --json    # machine-readable
 ```
 
-`record.Q` declares **63** quantities and a gatherer **OBSERVES 31**. Two more
-are declared and only ever ABSTAINED on — `DIRECTION_WORD` (`NOT_IMPLEMENTED`;
-`gather_direction_text` is itself a stub) and `SYSTEMIC_COLUMN`.
+⚠️⚠️ **THE CHORD GAP IS CLOSED, AND THIS TOOL REPORTED IT OPEN FOR A DAY.**
+`Q.EVENT` (*"which glyphs of a bar sound TOGETHER — one event, N noteheads"*),
+`Q.REST`, and `gather_glyph_families` all landed on main in the same window
+this was written on a branch — closing the chord finding, the rest finding and
+four of the five naming gaps. **The tool is still right; its DOCUMENTATION was
+stale on arrival**, which is *fixed-then-kept-open-in-prose*, the third
+instance recorded in this file. It was caught by a trial merge, not by review.
 
-⚠️ **THE TWO FAULTS ARE DIFFERENT AND NEED DIFFERENT REPAIRS.** *Not gathered*
-means no row carries it — `fermata` is the clean case: two detector classes,
-Beethoven 5 detects 36 against a truth of 36, the exporter writes them, and
-there is no `Q`. *Collected in the wrong place* means the ink IS in the log,
-under a name no consumer can ask for: `gather_detections` files **every**
-detection as `Q.GLYPH_BOX`, and a decision declaring `wants=(Q.ARC_BOX,)`
-resolves to nothing because `Evidence` refuses a quantity the decision did not
-declare. The arc is in the same log, unreachable.
+`record.Q` declares **66** quantities and a gatherer **OBSERVES 37**. Two more
+are declared and only ever ABSTAINED on (`DIRECTION_WORD`, `SYSTEMIC_COLUMN`).
+**One decision is still starved** — `DIRECTION` wants `DIRECTION_WORD`, whose
+gatherer is itself a stub. It was six.
 
-⚠️ **So "is x gathered?" gives a useless YES.** A notehead's x sits inside its
-`Q.GLYPH_BOX` tuple, so onset looks covered — and nothing can ask for onset,
-nor, which is the property the record exists for, **ABSTAIN** on it. An absent
-chord is indistinguishable from a chord nobody looked for.
+⚠️ **THE TWO FAULTS ARE STILL DIFFERENT.** *Not gathered*: no row carries it —
+`fermata` is the clean case, detected 36-for-36 on Beethoven 5, exported, and
+with no `Q`. *Wrong place*: the ink IS in the log as an anonymous
+`Q.GLYPH_BOX`, and `Evidence` refuses a quantity the decision did not declare.
+The second was the larger half and is the half that got fixed.
 
-⚠️⚠️ **THE STRUCTURAL FINDING: ALL SIX DECLARED STUBS ARE ALSO STARVED AT
-GATHER.** The handoff reads them as six adjudicators left to write; every one
-declares a measurement no gatherer emits, so **a stub is two repairs, not one**
-— writing the adjudicator would leave it abstaining for lack of evidence.
-`arc_kind`/`arc_owner` want `ARC_BOX` (2 classes), `articulation_owner` wants
-`ARTICULATION_MARK` (10), `dynamic` wants `DYNAMIC_LETTER` (12),
-`wedge_anchor` wants `WEDGE_BOX` (2 hairpin classes) — **all four are NAMING
-gaps, and cheap: the ink is already in the log.** Only `direction` is a reading
-gap. ✅ **The 15 non-stub decisions are all fed** — measured, not assumed.
+**Still unnamed — 7 legacy event keys**: `voices`/`voice_index` (⚠️ MusicXML
+pairs `<slur>` WITHIN a `<voice>`, so `Q.ARC_OWNER` already depends on it),
+`stem_direction` (`Q.STEM` carries the BOX, not the direction — and direction
+is what the divisi veto runs on), `tied_to_next`/`tied_from_prev` (the tie
+CHAIN, not one arc), `fermata`, `ornaments`.
 
-**The chord family**, 11 legacy event keys with no name in the record:
-`events` (the simultaneities themselves — `Q.MEASURE_PARTITION` says where the
-BARS are and nothing says what is inside one), `kind`, `x_position` (ONSET),
-`voices`/`voice_index`, `stem_direction`, `tied_to_next`/`tied_from_prev`,
-`fermata`, `ornaments`. ⚠️ `voicing.group_chords_in_measure` is a full
-ADJUDICATION — a 0.6-notehead-width tolerance, a divisi veto on stem direction,
-a mode-vote over the group's durations — with no subject, no input and no
-verdict in the record. And `Q.ARC_OWNER` already depends on `voices`, since
-MusicXML pairs `<slur>` WITHIN a `<voice>`.
+**15 of 35 detector families have no gather quantity**, led by **`accidental`
+(8)** — deliberate and recorded in `FAMILY_Q_IS_ELSEWHERE`: `Q.ACCIDENTAL` is
+an EVALUATE consequence, not a reading, and ⚠️ **an in-bar accidental is SCOPE,
+not a mark** (it holds to the barline; `transcribe.py:2210` implements that),
+which is a span the record has nowhere to put. Then `tremolo`, `grace`,
+`ornament`, and `ottava`, where a miss costs every note in its span an octave.
 
-**16 of 35 detector families have no quantity naming them**, led by **`rest`
-(11 classes)** — a rest is half of every duration decision, and a whole-rest
-glyph means the BAR — and **`accidental` (8)**; then `tremolo`, `grace`,
-`ornament`, `keyboard`, `strings`, `fermata`, `repeat`, `brace` and six more.
+⚠️⚠️ **THE ANTI-DRIFT GUARD HAD THE BUG IT EXISTS TO PREVENT.** It compared
+names for exact equality, so `events` never matched `Q.EVENT` — singular
+against plural — and a closed finding stayed open in four documents. `rest`
+sat at `None` after `Q.REST` landed for the same reason. `q_covering()` now
+normalises (and is deliberately NOT a substring test: `stem_direction` would
+false-match `Q.STEM`), a second guard asks the vocabulary rather than trusting
+the family table, and a third evicts a stale exemption. **An anti-drift check
+is itself an artefact that drifts** — this one was written, reviewed and run
+RED, and was still wrong in the way its own subject matter predicts.
 
-⚠️ **THE TOOL NEARLY MANUFACTURED ITS OWN FINDINGS, TWICE, AND BOTH ARE PINNED.**
-`Q.STEM` is observed through a loop variable (`for quantity, kind in ((Q.STEM,
-"stems"), …)`), so the first version reported it ungathered and accused
-`adjudicate_duration` of starving on it — the walker resolves loop-bound
-quantities and `test_a_loop_bound_quantity_is_seen_as_observed` was run RED with
-the resolver disabled. And reading the class space from `_CATEGORY_MAP`'s KEYS
-— an allow-list resolved by SUBSTRING fallback — reported hairpins as having no
-detector class, which is the same allow-list fault `export_coverage.compare()`
-was repaired for on 2026-09-08. **A coverage tool's own blind spot invents
-work.**
-
-**Anti-drift, because a list of this shape rots**: `unaccounted()` fails on a
-legacy event key in neither `LEGACY_TO_Q` nor `NO_VOCABULARY`,
-`class_space_coverage()["unmapped"]` on an unmapped detector family, and
-`test_no_vocabulary_entries_still_have_no_vocabulary` fails the day a gap is
-FILLED — a closed entry must LEAVE the table, the same contract
-`export_coverage.KNOWN_GAPS` holds.
+⚠️ **It does not overlap `staged/inventory.py`** (landed on main the same day):
+that is a derived inventory of the 21 DECISIONS, this of the gather-stage
+QUANTITIES, the legacy event vocabulary and the class space.
 
 ⚠️ **No arm was run and no page was read** — every figure is a property of the
-tree, so nothing here says how OFTEN a missing quantity would fire. **Measure
-REACH before accuracy.** Full reading:
+tree. **Measure REACH before accuracy.** Full reading, including the
+superseded first-draft figures kept as history:
 [benchmarks/omr-gather-coverage-2026-09/FINDINGS.md](benchmarks/omr-gather-coverage-2026-09/FINDINGS.md).
 
-**The complement, reasoned from the PAGE rather than from the code:**
+**The complement, reasoned from the PAGE rather than the code:**
 [docs/exploration-what-is-on-the-page-2026-09-09.md](docs/exploration-what-is-on-the-page-2026-09-09.md)
-— present / left out / implied. ⚠️ Exploratory and mostly UNPRICED, and it says
-so. Three things worth carrying out of it. (1) ⚠️ **VERTICAL ALIGNMENT ACROSS
-STAVES IS SIMULTANEITY AND NOTHING READS IT** — the chord finding one scope up.
-Verified: the only cross-staff reasoning in the tree is
-`_dedupe_cross_staff_detections`, which asks which staff OWNS a glyph, never
-which moment it belongs to. It is the only large source of **redundant**
-evidence on the page (a 21-staff system is 21 readings of one stretch of time),
-and the coarse form of the check is SATURATED — `measure_count_warning` fires
-ZERO times over 29 transcriptions — while `rhythm_sum_warning` fires 78 on one
-document and is inert, so the constraint is unexploited exactly at the
-resolution where the errors are. (2) ⚠️ **`_mxl_empty_measure` cannot tell
-SILENT from UNREAD**: a bar with no detected events exports as a whole-measure
-rest either way, which is the ABSENT/DECLINED collapse `record.py` exists to
-prevent, occurring in the musical content instead of the metadata — and ink
-coverage, already computed by `direction_text._blank_detections`, separates
-them. (3) **An accidental is SCOPE, not a glyph** (it holds to the barline —
-`transcribe.py:2210` implements it and staged has nowhere to keep it), as is
-`ottavaBracket`, where a miss costs every note in the span an octave.
-⚠️ Its own first draft named `breath` and `glissando` as detector families from
-musical memory; **neither is in the class space**, and the corrected entries
-are marked in place.
+— present / left out / implied. ⚠️ Exploratory and mostly UNPRICED. Its
+headline **survives the merge and is sharpened by it**: `Q.EVENT` is scoped
+`Kind.CELL`, so simultaneity is now read WITHIN a staff and still nowhere
+ACROSS staves — yet a column through a system is an instant of music, and a
+21-staff system is 21 independent readings of one stretch of time. That makes
+it the only large source of **redundant** evidence on a page, and the coarse
+form of the check is saturated (`measure_count_warning`: 0 firings over 29
+transcriptions) while `rhythm_sum_warning` fires 78 on one document and is
+inert. Also there: **`_mxl_empty_measure` cannot tell SILENT from UNREAD** (a
+bar with no detected events exports as a whole-measure rest either way — the
+ABSENT/DECLINED collapse `record.py` exists to prevent, in the music rather
+than the metadata), and ⚠️ its own first draft named `breath` and `glissando`
+as detector families from musical memory; **neither is in the class space**.
 
 
 ---
@@ -2630,6 +2882,7 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_CHOIR_GROUPING` | `1` on (default since 2026-09-05) → cues for choir-barred / differently-indented pages (pair-local left-edge merge + grouped-system open-score guard). `0` disables. See the knobs table. |
 | `OMR_BRACKET_COLUMNS` | `1` on (default since 2026-09-07) → decide bracket groups by counting systemic COLUMNS rather than crossing pixels; within-page instability 0.384 → 0.055, and 22/22 + 15/15 against print truth where the pixel rule reads 16/22 and 0/15. `0` restores the pixel rule. See the knobs table. |
 | `OMR_KEYSIG_CORROBORATION` | `1` on (default since 2026-09-07) → revert a mid-staff key-signature change no other staff of the same system also changes at the same bar; stops all 7 spurious flips measured. ⚠️ The corpus has no real mid-staff key change, so only the benefit is measured — the cost of a wrong revert is not. `0` disables. See the knobs table. |
+| `OMR_METER_CARRY` | `0` off (default) → staged pipeline only: a system that read no meter takes the last one that WAS read, as a CANDIDATE the bars then confirm or refuse (signed terms; two contradicting bars outweigh any carry). All three *Andante* systems refuse the wrong meter with no movement detector. Off on **n**, not on the hazard. See the knobs table. |
 | `OMR_SCORE_LANGUAGE` | `0` off (default) → read the document's printing tradition (Italian `Flauti/Corni/Trombe` vs German `Flöten/Hörner/Trompeten`) from its own unambiguous labels, and use it to settle abbreviations the lexicon resolves one way for every score. DETECTION is unconditional and recorded in `contextual.score_language`; only the re-decision is behind the flag. Decides ONLY aliases `AMBIGUOUS_ALIASES` does not declare — a declared one is owned by the clef-informed position channel, and two signals sharing an ancestor are one signal. Measured: 167 of 1422 labels ambiguous, 167 reachable, **9 re-decided** — all `Tb.` → Trombone on Litolff's Beethoven 6, a work whose IMSLP roster has 2 trombones and no tuba. See [benchmarks/omr-score-language-2026-09/FINDINGS.md](benchmarks/omr-score-language-2026-09/FINDINGS.md). |
 | `OMR_ROSTER_LABELS` | `0` off (default) → resolve margin labels against the work's catalog roster: recover a truncated name, disambiguate `Basso.`, veto a singer on a work with no singers. Measured; 1.4% of real margin labels. See the knobs table. |
 | `OMR_WORK_ID` | Name the catalogued work for a PDF the score library does not hold — the score LIBRARY's id (`tchaikovsky--symphony-6`), never the dossier's (`tchaikovsky-sym6-mvt2`). Consumed only by `OMR_ROSTER_LABELS`; nothing sets it by default. |

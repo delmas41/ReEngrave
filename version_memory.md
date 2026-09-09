@@ -5,88 +5,384 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
-## 2026-09-09 — GATHER-stage coverage: the chord gap generalises (derived, no arm run)
+## 2026-09-09 (night) — the meter carry is WEIGHED, not gated; a change the glyph opens
 
-- **Sean found that chords — notes aligning in a bar — are not tracked.** The
-  finding generalises, and the answer is a derived tool rather than a written
-  list: `python3 -m tools.omr.staged.gather_coverage`. New:
+Sean: *"I want to make sure we don't get stuck in binary on or off ... If the
+measure is what we think it is - does the math of the notes make sense. If not
+then the meter should decrease in probability."*
+
+- **The carry is now a CANDIDATE the bars judge.** `carried_from_read_meter`
+  **+1.0**, each bar that FITS **+1.0**, each that does not **−1.0**, against
+  `METER_CARRY_FLOOR` 2.0 and `METER_CARRY_MIN_BARS` 2.
+- ⚠️⚠️ **CORRECTED SAME DAY — the boundary problem is NOT solved.** Sean:
+  *"It feels a ways out to me."* Right: the control I had not run is whether
+  page 17 would refuse the CORRECT meter too. **It does** — `3/8`, the meter
+  it prints, scores −1.0 and is refused as firmly as the wrong `2/4` at −3.0.
+  Its durations are noise and a noisy page refuses everything, so the Andante
+  refusal is SAFE but not discriminating. What IS established: **where the
+  bars can speak they discriminate both ways** (true meter +14/+7/+16, wrong
+  meter −12/−9/−14 on three well-read systems). **A movement boundary on a
+  well-read page — the case actually claimed — is unmeasured.**
+- ⚠️ The first run of that control keyed bars by SYSTEM and dropped the PAGE,
+  merging page 1's systems into page 17's and appearing to show the mechanism
+  carrying a wrong meter onto the Andante. Caught because it contradicted the
+  live run's own recorded detail. **Check a probe against the pipeline's own
+  record before believing it.**
+- The original (overstated) claim, kept for the record: measured
+  on Beethoven 5 / Litolff `984073`: page 2's two systems (continuation, truth
+  2/4) carry at **+7.0** and **+8.0**; **all three systems of page 17 — the
+  *Andante*, a NEW MOVEMENT in 3/8 — REFUSE the carried 2/4** (−3.0, −1.0, and
+  one on too-few-bars). The new movement's bars simply contradict the old
+  movement's meter.
+- File effect, pages 0-2: whole rests at 4.0 ql inside a 2.0 ql bar
+  **194 → 70**, `written.notes` 648 → 665 against `duration_narrowed`
+  163 → 146, `empty_bars_padded_without_meter: 47` gone,
+  `reconcile_duration` **13 → 47**. Control: `no_pitch` 54 → 54.
+- ⚠️ **The ordering is STRUCTURAL, not tuned**: two net contradicting bars
+  outweigh ANY carry, no carry outweighs the bars — asserted on the constants
+  so a sweep breaking it fails even when every behavioural test passes. The
+  weights themselves are symmetric and **declared unmeasured** (both
+  asymmetries are arguable; n=2 separates under every ratio).
+- ⚠️ **Not a probability**, and the ban is narrower than it reads:
+  `adjudicate` forbids them because calibrated IDENTITY probabilities measured
+  ECE 0.1277, failing worst at the top of the range — but that was diagnosed
+  as the CORPUS, and a bar sum is `Checkable.CHECKABLE`, provable with no truth
+  file. **So this family could be genuinely calibrated from the score library
+  alone.** Nothing does that yet; it is the open route.
+- ⚠️ **A LEAK FOUND AND CLOSED.** At first one *Andante* system carried at
+  support exactly +2.0 — a single bar summing to 2.0, landing on the floor.
+  Fixed with a SEPARATE `METER_CARRY_MIN_BARS` rather than a higher floor,
+  because `A-CLEF-6` records that one constant carrying two jobs makes a sweep
+  move both behaviours at once.
+- ⚠️ **A LONE WHOLE REST IS NEVER READ** — it stands for the bar whatever the
+  meter and its 4.0 is our own default (left in, 13 of 17 agreeing bars vote
+  4.0 on the Andante); it is also what `size_measure_rest` supersedes, so
+  touching it makes the record report a real fixpoint.
+- **`rule(single_pass=True)` / `Verdict.single_pass_revision`** — the
+  pipeline's ONE sanctioned loop, declared PER RULE. Corroboration makes the
+  meter depend on the durations `reconcile_duration` rewrites, and
+  `UphillConsequence` refused it. Unrolled it is a straight line — "vote once,
+  repair once" — and the BOUND is what makes it safe. Sean's call; the guard
+  escalated exactly as its own message instructs, and its text now names the
+  exemption. A-DUR-3.
+- ⚠️⚠️ **AN OPERATIONAL TRAP THAT INVALIDATED A MUTATION RUN.** macOS system
+  Python caches bytecode OUTSIDE the tree, in
+  `~/Library/Caches/com.apple.python/<abs path>/`; `find . -name __pycache__`
+  never sees it. A reverted mutation stayed live — `grep` showed `-1.0` while
+  `import` returned `-0.0` on a file whose md5 matched `inspect.getsource`.
+  **Clear that path between mutation arms.** Same family as the cached
+  `scan_eval` A/B.
+- Suite **3,286 passed / 9 skipped / 0 failed**; `inventory --check` and
+  `health --check` exit 0. Still default `0` — on **n** (one document), not on
+  the hazard.
+
+---
+
+## 2026-09-09 (night) — Q.EVENT: the chord was grouped after the stage that needed it
+
+Sean: *"determining when notes and voices and chords line up should be very
+early in the process."* Right, and the record said so three ways.
+
+- **The defect.** `grep -rn chord tools/omr/staged/` outside `export.py`
+  returned NOTHING and the record held no chord/event/onset/voicing quantity
+  at all; `group_chords_in_measure` was called only from `export._events`, at
+  serialisation time. So every stage before EXPORT counted each chord member
+  as a separate time-advancing event — including
+  `consequences.reconcile_duration`, the pipeline's own bar-sum check.
+  ⚠️ **It failed SILENTLY**: an inflated total simply never equals the meter,
+  so the rule did nothing and said nothing.
+- **Measured** on Beethoven 5 / Litolff: page 17 is **38.2% chord bars**, and
+  ungrouped the bars landing exactly on the printed meter fall **18 → 13** —
+  28% of the evidence destroyed before any consumer sees it. The inflation is
+  not a constant to subtract: 13 distinct values, 0.125 to 6.0 ql.
+- **`Q.EVENT`** — a CELL-scoped decision, which glyphs of a bar sound
+  together. ⚠️ A VERDICT, not a measurement: `GLYPH_BOX` already carried every
+  glyph's x (the ingredient was on the record and nothing read it), but
+  "these are simultaneous" is an interpretation under a tolerance. A rest is
+  its own event. `EVENT_X_TOLERANCE_WIDTHS = 0.6` is not a new constant — it
+  is the legacy default, adaptive to the bar's own notehead width.
+- **`reconcile_duration` sums EVENTS**, taking the MODE where a chord's
+  members disagree. ⚠️ No event verdict means **no repair**, not a fall back
+  to the old sum: a bar whose grouping is unknown is a bar whose sum is
+  unknown. Effect: page 1 fires **13 → 16**; page 17 is 0 → 0 because with the
+  carry off it has no meter at all.
+- ⚠️ **The two groupings do NOT agree and I could not make them.** 24 chord
+  members here against the exporter's 16 (172 against 102 on p17); most is a
+  POPULATION difference (every notehead READ vs only those WRITABLE), and two
+  explanations for the 1-and-7 residual were tested and **refuted** — the
+  tolerance base (identical numbers) and narrowed durations (overshoots, 24
+  and 115). The exporter's population sits BETWEEN, so the boundary is its own
+  filter chain, not the clustering. **RULE parity is pinned instead.** This
+  argues for the exporter consuming the verdict — the next step, now evidenced
+  as necessary rather than tidy.
+- ⚠️⚠️ **A field that claimed a check that never ran.** The first draft wrote
+  `divisi_guard: "ran"` wherever `Q.STEM` rows merely EXISTED; the guard is not
+  built. Caught by reading the field's own output on a real page. Now
+  `divisi_guard: "not_implemented"` with `stem_evidence` reporting the input's
+  state — and `stem_evidence: read` on some cells means the guard is buildable.
+- The architecture caught one of my errors: `implicates` omitted `Q.EVENT` and
+  `test_a_failed_check_implicates_the_decision_ITSELF` failed. A bar that does
+  not sum may hold two notes I wrongly merged.
+- 12 tests, each run RED under three mutations. Suite **3,280 passed / 9
+  skipped / 0 failed**; `inventory --check` and `health --check` exit 0.
+  `benchmarks/omr-staged-event-grouping-2026-09/FINDINGS.md`.
+
+---
+
+## 2026-09-09 (night) — the meter carry: measured on both sides, shipped OFF
+
+- **`OMR_METER_CARRY`** (staged pipeline, default `0`). A meter is a fact of
+  the MOVEMENT, printed at its start and nowhere else, so the staged pipeline
+  had no meter from a movement's second page onward while the answer sat in
+  the same log one page earlier. A system whose own meter decision ABSTAINED
+  now takes the last meter that was READ. ⚠️ **Never chains onto a carry** —
+  only a `voted` verdict is a source, so `pages_since_read` is the true
+  distance back to ink.
+- **BENEFIT**, Beethoven 5 / Litolff `984073` `--pages 0-2`: page 1 decides
+  `2/4` from 12 of 12 staves, both page-2 systems take it. **123 whole rests
+  stop being 4.0 quarters of silence in a 2.0-quarter bar**; 22 notes with NO
+  duration at all get one; `written.notes` 646 → 664 against
+  `not_written.duration_narrowed` 165 → 147 — the same 18, agreeing to the
+  unit; `written.empty_bars_padded_without_meter: 47` disappears as a field.
+  Exactly two quantities move, `meter` (2) and `duration` (111), all on page 2.
+- **CONTROLS.** Flag-off reproduces all 4,498 pre-change verdicts exactly
+  (which also proves the run deterministic, so the delta is attributable);
+  `no_pitch` 54 → 54 and `detected_and_unrepresented` 659 → 659 both unchanged,
+  because a meter says nothing about pitch and reads no new ink.
+- ⚠️ **A −1 was chased rather than rounded off**: rests 433 → 432. Not a lost
+  rest — P4 m44 had been PADDED because its only note had no duration, and the
+  note is now written. One of the 18 recoveries, arriving in the rest column.
+- ⚠️⚠️ **WHY IT IS OFF — the hazard is on the same document.** Page 17 is the
+  *Andante con moto*, a NEW MOVEMENT printing `3/8` on every staff, and all
+  three of its systems abstain `no_evidence`: the template reader RAN on all 20
+  staves and declined `below_threshold`, because Litolff sets `3` over `8` as
+  heavy nearly-touching digits. `3/8` IS in `DEFAULT_METERS`, so it is a
+  reading failure, not a missing template. A carry therefore does not merely
+  RISK crossing a movement boundary here — it **does**, and holds `2/4` for the
+  rest of the movement.
+- ⚠️ **Four guards measured, all four refused.** *"A movement start reads SOME
+  meter"* is **INVERTED** (continuations p14-16 read 1-4 spurious `C`/`4/4`;
+  the movement start reads 0). Key signatures are too noisy on a scan (p14/s1
+  reads {−5, −3, −1, 2}; the Andante's true −4 appears nowhere on p17). The
+  printed TEMPO HEADING is the right signal but `direction` yields **0 decided
+  verdicts**. A DISTANCE BOUND is arithmetically impossible: movement 1
+  occupies 16 pages, so any bound under 16 truncates a legitimate carry and any
+  bound of 16 or more reaches the Andante. **The blocking input is a
+  MOVEMENT-START signal, not a threshold.**
+- `Evidence.subjects(kind)` — structural subject enumeration, no quantity and
+  no declaration check, because "what pages are there" is layout and not
+  evidence. Reading a value off one is still checked.
+- Tests: `TestTheMeterCarry` (6) + `TestEvidenceSubjectsIsStructural`, each run
+  RED under two mutations before being believed — the no-chain rule is pinned
+  by a test that fails when the `voted`-only line is removed. `A-DUR-2` in
+  `tools/omr/staged/ASSUMPTIONS.md`;
+  `benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md`.
+
+---
+
+## 2026-09-09 (evening) — the clef's neighbour, the meter's missing half, and three wrong inferences
+
+- **`Q.CLEF_POSITION`** — where each clef glyph stands on THIS staff, in
+  half-spaces from the top line. Five of six abstaining staves were an exact
+  `{treble: 3.0, bass: 3.0}` tie caused by a NEIGHBOURING staff's clef landing
+  in the cell's four spaces of padding. Clef decided 20→21 of 22 and 23→27 of
+  27; pitches 835→881 and 1,329→1,470; `no_pitch` 67→54 and 75→**0**.
+  ⚠️ Two controls: 19/19 decided staves unchanged (0 would flip), and the
+  REGISTER of the newly-decided staves matches the established bass staves.
+- ⚠️ **The structural finding is bigger than the fix**: every `CLEF_GLYPH` row
+  on a staff shares reader+frame+quantity, so `tally` counts them as ONE
+  correlated group and takes the strongest term. **No refinement of the
+  detector's own evidence can break a clef contest** — a tie-breaker must come
+  from another reader, which is why the position is a GEOMETRY row.
+- **`METER_COVERAGE_FLOOR`** — the half of the legacy meter rule the staged
+  vote had dropped. Agreement was divided by the staves that SPOKE, so 3 of 11
+  shipped a 4/4 at share 1.0 on a page that prints no time signature (truth
+  2/4, 18 parts). Coverage and agreement now report apart, with their own
+  reasons. ⚠️ It bore on `size_measure_rest` from the same day: with a WRONG
+  meter that consequence fired and laundered the error into a `measure="yes"`
+  claim; now the system abstains and `measure_rests_read` goes 19 → 0.
+- ⚠️ **A second meter fault filed, not fixed**: Brahms p2 reads `9/4` where the
+  truth is `9/8` — the denominator digit, at NCC 0.42–0.53, with `9/8` a
+  candidate and not even the runner-up. Never tune this family on one edition.
+- **`probe_beam_mix.py`** — CV, YOLO and the bar sum together. The bar sum can
+  settle only 13 and 6 of 142 and 296 narrowed notes, because half the bars
+  have no meter.
+
+⚠️⚠️ **THREE OF MY OWN INFERENCES WERE WRONG, each one step from being
+reported.** (1) The written-range test as the fix for an abstaining clef — it
+needs the instrument, which abstains on 22/22 and 27/27 staves. (2) "The
+staff-line erasure is destroying the beam rung" — 98 strokes against 609, and
+rendering ONE CELL killed it: 557 of the 609 (91%) sit on a staff line. (3)
+"Durations are systematically doubled" — the bar sum counted every chord member
+separately; 83 of the 94 4.0-bars are a lone whole rest. **A number large
+enough to be convincing is not evidence about its own cause.**
+
+---
+
+## 2026-09-09 (later) — GATHER: the five families detected and read by nothing, and rests end to end
+
+The lever the morning's tools identified, taken. Five notation families reached
+`GLYPH_BOX` and no typed row, so four stubs could not have been filled where
+they stood and rests had nowhere to go at all.
+
+- **`gather.gather_glyph_families`** — one typed row per glyph for rests, arcs,
+  wedges, dynamic letters and articulation marks. `Q.REST` is new; the other
+  four quantities existed and were observed by nothing. ⚠️ Routed by CLASS,
+  never by the detector's `category`: `dynamicDiminuendoHairpin` is a WEDGE
+  wearing the `dynamic` category and prefix, and all ten `artic*` classes carry
+  category `ornament`.
+- **The stubs abstain on their own population now.** `arc_owner` ran on every
+  subject at its scope — 2,728 abstentions on one page around 199 real
+  subjects. With `subjects_from` it is 199, and `wedge_anchor` writes NOTHING
+  on a page that prints no hairpin.
+- **Rests reach the file.** `adjudicate_duration`'s domain is the tuple
+  `(notehead_class, rest)` — one question for two kinds of ink. Values from
+  `rhythm._REST_DURATIONS`, imported; `restHBar` abstains `unreadable_rest`.
+- **The bar convention is a CONSEQUENCE**, `size_measure_rest` (meter →
+  duration, CELL). All six priced cases hold, including firing in 4/4 where the
+  number does not move and refusing a lone quarter rest.
+- ⚠️ **It exposed a real hazard in `reconcile_duration`**: a lone 4.0 whole rest
+  in a 2/4 bar would land exactly at 2.0 and be UNIQUE — the right number by
+  the wrong reasoning, exported as a HALF rest with a `<type>`. Rests excluded.
+  ⚠️ And a second latent bug came with the second writer: reconcile summed
+  every verdict ROW, so a superseded duration would double-count.
+- ⚠️ **The derived unclaimed-class check found a DETECTOR fault nobody was
+  looking for**: `arpeggiato` 98 + 86 over two pages, median 56×388 and 40×243
+  boxes at confidence 0.39 and 0.35 — a stem or a barline, not an arpeggio
+  sign. Not excused into `NOT_NOTATION`, because that would hide it.
+- **Three checks fired on this work**: ten now-stale `KNOWN_GAPS` entries were
+  evicted; a latent `NameError` in `_problems` surfaced the moment a domain was
+  not directly gathered; and `test_an_unsatisfiable_want_is_reported` followed
+  its own written instruction and became a test of the DISTINCTION.
+
+Rests written 209+19 and 338+11 of 228 and 350; bars padded because we read
+nothing 148 → 48 and 60 → 4; detected-and-unrepresented 761 → 533 and
+1,270 → 920. Both balance, both parse under music21.
+
+---
+
+## 2026-09-09 — the staged pipeline gets an inventory, an EXPORTER and a health report; and the record turns out not to hold rests
+
+The three ranked tasks of `docs/handoff-2026-09-09-staged-accounting.md`, done
+in order, plus the open defect its §6 filed. **No benchmark was run as a goal**
+— the metric is retired (Sean, 2026-09-08) and the runs here are controls, not
+scores.
+
+- **`tools/omr/staged/inventory.py`** — the 21 decisions, DERIVED from
+  `adjudicate.REGISTRY`, `ORDER`, `evaluate.RULES`, `groups`' redundancies,
+  `legacy.EXTRACTED_QUANTITIES` and the AST of `gather.py`. Nothing typed.
+  `--check` is non-zero on a broken invariant; `--run` folds in what each
+  decision actually did on a page.
+- **`tools/omr/staged/export.py`** — the staged path **can produce a file**,
+  and the CLI wires it as `--musicxml`. Four real conductor's pages export and
+  all four parse under music21. Not a port: it takes `tools/omr/export.py`'s
+  POSITIONS and reuses its pure renderers, and restates every rule that has to
+  be re-derived on a different input, each with a test.
+- **`tools/omr/staged/health.py`** — per decision: is there a test saying it
+  DECIDES, one saying it ABSTAINS, one saying it RECORDS. Sean's bar, applied
+  literally.
+
+**⚠️ WHAT DOING THEM FOUND**
+
+- **2,541 detected glyphs the record cannot carry**, pooled over four pages —
+  and **838 of them are RESTS, which have no quantity at all**: no `Q.REST`,
+  no adjudicator, no stub, no `wants`, so unlike the stubs nothing declares the
+  absence. Detected-then-dropped, inside the architecture built to stop it,
+  third instance after `Ruling.detail` and the starved stubs.
+- **Five of the six stubs are starved one stage earlier** — `arc_box`,
+  `articulation_mark`, `wedge_box`, `dynamic_letter` are observed by nothing,
+  so writing those adjudicators would still produce nothing. The next work is
+  in GATHER, the thinnest stage by tests (27 against RECORD's 261).
+- **`tuplet_ratio`'s missing row is THE PAGE**, with a positive control on the
+  same tree and weights (Beethoven 5 / Litolff `984073` `--pages 2`: 1 marker,
+  1 ratio). ⚠️ The SILENCE is a real hole and is not tuplet-specific: an empty
+  `subjects_from` domain writes nothing at all, which is not an abstention.
+- **The redundancy layer's `checked_nothing` was the fixture** — but the
+  handoff's control page was off by one. ⚠️ And **Brahms p2 is two systems and
+  still checks nothing**: `_slot_fact` keys on the system's staff count, so the
+  redundancy layer inherits the ordinal join's refusal exactly.
+- **The exporter's accounting control RAISES** rather than returning a flag
+  (`symbol_ledger.coverage_check` tried the flag and was read by nobody). It
+  balances on all four pages and reveals **595 notes held in the record and
+  absent from the file**, 441 of them a NARROWED duration the exporter
+  deliberately refuses to collapse.
+- **A `wants` entry a decision never reads is INERT**, found by a test that
+  asserted the opposite and failed. Ten decisions have one; `glyph_owner`
+  declares `glyph_conf` and never reads it — the standing
+  `_dedupe_cross_staff_detections` observation, reproduced.
+- ⚠️ **Two of the new checks were wrong when first written and both reported a
+  clean ZERO**: a literal-argument AST matcher missed
+  `for quantity, kind in ((Q.STEM, …), …)`, and the inert-`wants` check saw the
+  decorator (where `wants` lives) as the body. Both are recorded in the code.
+- ⚠️ **The health report said "EMPTY CELLS: none" once by accident** — one
+  over-broad attribution clause made every decision look covered. A check that
+  cannot fail is worse than no check; removed and pinned.
+- **The §6 defect is fixed**: `build_cache.research_proposal` sorted `parts`
+  under a comment justifying it by a rule removed the SAME DAY, whose own last
+  sentence said the opposite. The unsorted proposal reproduces `works.json`
+  exactly on all five folded entries across three rows; the sorted one
+  disagreed on the three that came back named Piccolo. Four tests, all run RED
+  with the fix reverted.
+- **Handoff counts corrected**: "153 tests" is **226**.
+## 2026-09-09 — GATHER-stage coverage: the tool stands, its first draft was stale on arrival
+
+⚠️⚠️ **CORRECTED BEFORE MERGE, AND THE CORRECTION IS THE ENTRY.** This work was
+done on a branch while **31 commits landed on main**, and in that window
+parallel sessions found the same gaps and FIXED them: `Q.EVENT` (*"which
+glyphs of a bar sound TOGETHER — one event, N noteheads"*) closes the chord
+finding, `Q.REST` closes the rest finding, and `gather_glyph_families` closes
+four of the five naming gaps. **The tool was right; its documentation asserted
+open gaps that were closed** — *fixed-then-kept-open-in-prose*, the third
+instance recorded in CLAUDE.md, caught by a trial merge rather than by review.
+
+- **The derived tool, `python3 -m tools.omr.staged.gather_coverage`.** New:
   `tools/omr/staged/gather_coverage.py`,
-  `tools/omr/tests/test_staged_gather_coverage.py` (8 tests),
+  `tools/omr/tests/test_staged_gather_coverage.py` (12 tests),
   [benchmarks/omr-gather-coverage-2026-09/FINDINGS.md](benchmarks/omr-gather-coverage-2026-09/FINDINGS.md)
   and its committed output.
-- **Measured: `record.Q` declares 63 quantities and a gatherer OBSERVES 31.**
-  Two more are declared and only ever abstained on (`DIRECTION_WORD` —
-  `gather_direction_text` is itself a stub — and `SYSTEMIC_COLUMN`).
-- **⚠️ THE TWO FAULTS ARE DIFFERENT AND THE TOOL KEEPS THEM APART.** *Not
-  gathered*: no row carries it at all (`fermata` — detected, exported, 36-for-36
-  on Beethoven 5, and no `Q`). *Wrong place*: the ink IS in the log as an
-  anonymous `Q.GLYPH_BOX` and no consumer can ask for it, because `Evidence`
-  refuses a quantity the decision did not declare.
-- **⚠️ THE STRUCTURAL FINDING: all six declared stubs are ALSO starved at the
-  gather stage.** The handoff reads them as six adjudicators left to write;
-  every one wants a measurement no gatherer emits, so a stub is **two** repairs,
-  not one. Four of the five missing quantities are NAMING gaps (the ink is
-  already there: 2 arc classes, 10 artic, 12 dynamic, 2 hairpin); only
-  `DIRECTION_WORD` is a reading gap. **The 15 non-stub decisions are all fed.**
-- **11 legacy event keys have no name in the record** — `events`, `kind`,
-  `x_position` (onset), `voices`/`voice_index`, `stem_direction`,
-  `tied_to_next`/`tied_from_prev`, `fermata`, `ornaments`. Chord grouping in
-  `voicing.group_chords_in_measure` is a full adjudication — a 0.6-notehead-width
-  tolerance, a divisi veto on stem direction, a mode-vote over durations — with
-  no subject, no input and no verdict in the record.
-- **16 of 35 detector families have no quantity naming them**, led by **`rest`
-  (11 classes)** and **`accidental` (8)**. A rest is half of every duration
-  decision.
-- **⚠️ The tool nearly manufactured its own finding.** `Q.STEM` is observed
-  through a loop variable, so the first version reported it ungathered and
-  accused `adjudicate_duration` of starving. The AST walker now resolves
-  loop-bound quantities; the guard was run RED to prove it load-bearing. A
-  second self-inflicted miss: reading the class space from `_CATEGORY_MAP`'s
-  KEYS (an allow-list resolved by substring fallback) reported hairpins as
-  having no detector class — the same allow-list fault `export_coverage.compare`
-  was just repaired for.
-- **Anti-drift, because a list of this shape rots**: `unaccounted()` fails on a
-  legacy event key in neither table, `class_space_coverage()["unmapped"]` on an
-  unmapped detector family, and `test_no_vocabulary_entries_still_have_no_vocabulary`
-  fails the day a gap is FILLED — a closed entry must leave the table.
-- **⚠️ No arm was run and no page was read.** Every figure is a property of the
-  tree, so it says nothing about how often a missing quantity would fire.
-  Measure REACH before accuracy.
-
-- **Companion exploration, reasoned from the PAGE rather than the code**:
-  [docs/exploration-what-is-on-the-page-2026-09-09.md](docs/exploration-what-is-on-the-page-2026-09-09.md)
-  — present / left out / implied. ⚠️ Exploratory and mostly UNPRICED, and it
-  says so; it ranks candidates and prices nothing.
-- **⚠️ THE HEADLINE IDEA: vertical alignment ACROSS staves is simultaneity, and
-  nothing reads it.** The chord finding one scope up. Verified — the only
-  cross-staff reasoning in the tree is `_dedupe_cross_staff_detections`, an
-  OWNERSHIP question. It is the only large source of **redundant** evidence on
-  a page (a 21-staff system is 21 independent readings of one stretch of time),
-  which is what lets a record say WHICH decision went wrong. The coarse form is
-  saturated (`measure_count_warning`: 0 firings over 29 transcriptions) while
-  `rhythm_sum_warning` fires 78 on one document and is inert — so the
-  constraint is unexploited exactly where the errors are.
-- **⚠️ `export._mxl_empty_measure` cannot tell SILENT from UNREAD.** A bar with
-  no detected events exports as a whole-measure rest either way — the
-  ABSENT/DECLINED collapse `record.py` exists to prevent, in the musical
-  content rather than the metadata. Ink coverage (already computed by
-  `direction_text._blank_detections`) separates them.
-- **An accidental is SCOPE, not a glyph** — it holds to the barline;
-  `transcribe.py:2210` implements it and staged has nowhere to keep the state.
-  Same shape as `ottavaBracket`, where a miss costs every note in the span an
-  octave.
-- **⚠️ Corrected in place: the exploration's own first draft named `breath` and
-  `glissando` as detector families from musical memory.** Neither is in the
-  class space; `volta` is not either, and the `repeat` family is `repeatDot`
-  ONLY — the dots, not the sign, which is why the repeat-export TODO has stayed
-  open. Checked against the committed class list rather than recalled.
+- **On the merged tree: `record.Q` declares 66 and a gatherer OBSERVES 37**;
+  2 declared-and-only-abstained; 6 declared-ungathered; **1 decision still
+  starved** (`DIRECTION`, whose gatherer is itself a stub) where the first
+  draft measured six.
+- **7 legacy event keys still have no name** (was 11): `voices`/`voice_index`,
+  `stem_direction`, `tied_to_next`/`tied_from_prev`, `fermata`, `ornaments`.
+  ⚠️ `Q.ARC_OWNER` already depends on `voices`, since MusicXML pairs `<slur>`
+  WITHIN a `<voice>`.
+- **15 of 35 detector families have no gather quantity** (was 16), led by
+  `accidental` (8) — deliberate, recorded in `FAMILY_Q_IS_ELSEWHERE`:
+  `Q.ACCIDENTAL` is an EVALUATE consequence, and an in-bar accidental is
+  **SCOPE, not a mark** (it holds to the barline), a span the record cannot
+  hold.
+- **⚠️⚠️ THE ANTI-DRIFT GUARD HAD THE BUG IT EXISTS TO PREVENT.** It compared
+  names for exact equality, so the legacy key `events` never matched `Q.EVENT`
+  — singular against plural — and the stale claim reached a PR body, CLAUDE.md,
+  PROJECT_BRIEF and a findings file. `rest` sat at `None` after `Q.REST`
+  landed, same class. Repaired with `q_covering()` (normalising, and
+  deliberately NOT a substring test — `stem_direction` would false-match
+  `Q.STEM`), a guard that asks the vocabulary instead of trusting the family
+  table, and a third that evicts a stale exemption. **An anti-drift check is
+  itself an artefact that drifts.**
+- **What caught it was a DIFFERENT test** — the stub-starvation guard failing
+  with *"ARC_KIND is no longer input-starved"* during a trial merge — not the
+  guard whose job it was.
+- **⚠️ No overlap with `staged/inventory.py`** (landed on main the same day):
+  that inventories the 21 DECISIONS, this the gather-stage QUANTITIES, the
+  legacy event vocabulary and the detector class space.
+- **⚠️ No arm was run and no page was read.** Measure REACH before accuracy.
+- **Companion exploration, reasoned from the PAGE**:
+  [docs/exploration-what-is-on-the-page-2026-09-09.md](docs/exploration-what-is-on-the-page-2026-09-09.md).
+  ⚠️ Its headline **survives the merge and is sharpened by it**: `Q.EVENT` is
+  scoped `Kind.CELL`, so simultaneity is now read WITHIN a staff and still
+  nowhere ACROSS staves — the only large source of REDUNDANT evidence on a
+  page. Also: `_mxl_empty_measure` cannot tell SILENT from UNREAD; and its own
+  first draft named `breath`/`glissando` as detector families from memory when
+  neither is in the class space.
 
 **Files touched:** `tools/omr/staged/gather_coverage.py` (new),
 `tools/omr/tests/test_staged_gather_coverage.py` (new),
-`benchmarks/omr-gather-coverage-2026-09/` (new), CLAUDE.md, PROJECT_BRIEF.md,
-version_memory.md. Second commit adds
-`docs/exploration-what-is-on-the-page-2026-09-09.md` and links it from CLAUDE.md.
-
+`benchmarks/omr-gather-coverage-2026-09/` (new),
+`docs/exploration-what-is-on-the-page-2026-09-09.md` (new), CLAUDE.md,
+PROJECT_BRIEF.md, version_memory.md.
 ---
 
 ## 2026-09-09 — dynamics: the block is HAIRPINS, not letters (scoping, no arm run)

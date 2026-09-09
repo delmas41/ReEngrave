@@ -11,6 +11,11 @@ from ..record import ABSTAIN, Kind, Q, Scope, State
     composed_from=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER),
     scope=Kind.CELL,
     wants=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER),
+    # ⚠️ A CELL that holds a dynamic letter, not every cell on the page. The
+    # spelling of `f`+`f` into `ff` is an x-adjacency question WITHIN a bar,
+    # so the subject stays the CELL -- but a bar with no letters in it has no
+    # dynamic to decline.
+    subjects_from=Q.DYNAMIC_LETTER,
     reasons=("spelled", "unspellable", "no_letters"),
     mode=Mode.ADDITIVE,
     stub=True,
