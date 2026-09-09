@@ -250,8 +250,11 @@ def printed_only(row_id: str) -> list[dict]:
 def flat_sorted(row_id: str) -> list[dict]:
     """The same map with each entry's `parts` SORTED — works.json's own shape.
 
-    `merge_additions.shape_problems` refuses an entry whose `parts` is not
-    sorted-unique, and every already-merged row satisfies that. But
+    ⚠️ `merge_additions.shape_problems` USED TO refuse an entry whose `parts`
+    was not sorted-unique; `833afe9f` split that into uniqueness (kept) and
+    sortedness (removed, because it MOVES the answer — see below), so this arm
+    is now a priced alternative rather than the shape the writer demands. Every
+    already-merged row happens to satisfy it. But
     `page_normalise` keeps `parts[idx[0]]` and merges the rest INTO it, so the
     first index decides whose bar survives a `silent_all` measure — i.e. whose
     RESTS the derived truth carries. On the existing rows the two conventions

@@ -10,12 +10,23 @@ it cannot prove:
   * the row exists and does NOT already carry a `staves` map (never overwrite
     someone else's hand reading);
   * the additions row is `done`;
-  * the map's shape is works.json's shape exactly — a list of
-    `{"name": str, "parts": [int, ...]}`, nothing else. ⚠️ `parts` must be
-    UNIQUE but is deliberately NOT required to be sorted: `page_normalise`
-    keeps `parts[0]`, so the order chooses the merged staff's identity and
-    sorting it renames three printed staves `Piccolo` — measured, see
-    `shape_problems`;
+  * the map's shape is works.json's shape — `name` + `parts`, plus the extra
+    hand-read facts `staves_schema` accounts for (`lines`, `printed_staves`,
+    `clef`, `key`). ⚠️ `parts` must be UNIQUE but is deliberately NOT required
+    to be sorted: `page_normalise` keeps `parts[0]`, so the order chooses the
+    merged staff's identity and sorting it renames three printed staves
+    `Piccolo` — measured, see the note below `shape_problems`;
+  * ⚠️ **and an extra fact is CARRIED, not quietly dropped.** This module used
+    to project every entry down to a hand-written `{name, parts}` on its
+    fallback branch and, separately, to REFUSE anything else in
+    `shape_problems` — a premise six of the twenty committed rows already
+    violated. The refusal was merely visible; the projection was silent, and
+    it is what put `mahler-sym5-mvt1-local-p2` into works.json with a correct
+    21-entry lineup and none of its four `lines: 1` flags. One definition of
+    the shape now lives in
+    `benchmarks/omr-scan-e2e-2026-09/staves_schema.py`, derived from the
+    consumer that reads it, and every projection in this workflow calls its
+    `project()`;
   * every reference part is named exactly ONCE.  `page_normalise` raises
     `IncompleteMap` on a map that leaves a part out, because a normalised truth
     missing a part scores BETTER for the wrong reason; a part named TWICE is the
@@ -35,12 +46,18 @@ import argparse
 import json
 import shutil
 import sys
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
 BENCH = Path(__file__).resolve().parent
 sys.path.insert(0, str(BENCH))
 from build_cache import MAIN, SCAN, find_fixture  # noqa: E402
+# ⚠️ FROM `build_cache`, NOT A SECOND LOAD. `SCAN` points at the MAIN checkout
+# (`works.json` is hand-verified DATA, one copy) while the SHAPE of a `staves`
+# entry is CODE and must be this checkout's — `build_cache` loads it by path
+# for exactly that reason, and re-loading it here would give two instances.
+from build_cache import staves_schema  # noqa: E402
 
 WORKS = SCAN / "works.json"
 ADDITIONS = SCAN / "works.staves-additions.json"
@@ -49,29 +66,17 @@ sys.path.insert(0, str(SCAN))
 
 
 def shape_problems(staves) -> list[str]:
-    out = []
-    if not isinstance(staves, list) or not staves:
-        return ["`staves` is not a non-empty list"]
-    for k, s in enumerate(staves):
-        if not isinstance(s, dict):
-            out.append(f"entry {k} is not an object")
-            continue
-        extra = set(s) - {"name", "parts"}
-        if extra:
-            out.append(f"entry {k} has unexpected key(s) {sorted(extra)} — "
-                       f"works.json entries are exactly name+parts")
-        if not isinstance(s.get("name"), str) or not s["name"].strip():
-            out.append(f"entry {k} has no printed name")
-        p = s.get("parts")
-        if not isinstance(p, list) or not p or not all(
-                isinstance(i, int) and not isinstance(i, bool) for i in p):
-            out.append(f"entry {k} `parts` is not a non-empty list of ints")
-        elif len(set(p)) != len(p):
-            # DUPLICATE within one entry: a real fault. The same staff cannot
-            # carry one reference part twice, and `page_normalise` would merge
-            # a part into itself.
-            out.append(f"entry {k} `parts` names a part twice: {p}")
-    return out
+    """`works.json`'s own shape, asked of `staves_schema` — never of a copy.
+
+    ⚠️ THIS FUNCTION USED TO CARRY THE ALLOW-LIST ITSELF, and the allow-list
+    was the sentence *"works.json entries are exactly name+parts"*, which the
+    committed file outgrew on three separate days. Six of its twenty rows —
+    four Mahler (`lines: 1`), one Bach (`printed_staves: 2`) and Beethoven p1
+    (`clef`/`key`) — were refused by the only tool that may write the file.
+    A hand-written allow-list going stale is the `export_coverage.VISIBLE`
+    fault, and the repair is the same: derive it. See `staves_schema`.
+    """
+    return staves_schema.problems(staves)
 
 
 #: ⚠️ `parts` IS ORDERED, AND THE ORDER IS NOT A STORAGE CONVENTION.
@@ -164,10 +169,26 @@ def check_row(row_id: str, row: dict, add: dict) -> dict:
         problems.append("works.json already carries a `staves` map for this row "
                         "— refusing to overwrite a hand reading")
 
+    # ⚠️ TWO BRANCHES, AND THE SECOND ONE USED TO DROP FACTS IN SILENCE.
+    # `staves_for_works_json` is written by the UI when a row is marked done;
+    # the fallback is the UI's own working state, which carries bookkeeping
+    # (`proposed`, `verdict`, `adopted_from`) that must NOT reach hand-verified
+    # truth. So a projection is right — what was wrong was projecting onto a
+    # hand-written `{name, parts}`, which threw away `lines: 1` and
+    # `printed_staves: N` with it. Both branches go through the ONE projection
+    # now, and what it dropped is reported rather than assumed to be junk.
+    dropped: dict[int, list[str]] = {}
     staves = add.get("staves_for_works_json")
     if staves is None:
-        staves = [{"name": s.get("name"), "parts": s.get("parts")}
-                  for s in add.get("staves", [])]
+        staves = []
+        for k, s in enumerate(add.get("staves", [])):
+            if not isinstance(s, dict):
+                staves.append(s)
+                continue
+            entry, gone = staves_schema.project(s)
+            staves.append(entry)
+            if gone:
+                dropped[k] = gone
     problems += shape_problems(staves)
 
     counts: dict[int, int] = {}
@@ -205,7 +226,7 @@ def check_row(row_id: str, row: dict, add: dict) -> dict:
             problems.append(f"parts unaccounted for: {missing}")
 
     return {"row_id": row_id, "staves": staves, "problems": problems,
-            "normalised": normalised,
+            "normalised": normalised, "dropped": dropped,
             "n_staves": len(staves or []),
             "n_parts_named": len(counts)}
 
@@ -248,6 +269,17 @@ def main(argv: list[str] | None = None) -> int:
                  if c["normalised"] else ""))
         for p in c["problems"]:
             print(f"          - {p}")
+        # Never silent: a key the projection did not carry is either UI
+        # bookkeeping (expected) or a misspelled fact (the whole reason this is
+        # printed). ⚠️ Reported as `key xN/M`, not entry by entry: bookkeeping
+        # is on EVERY entry, so a `linnes` on one entry of twenty-one stands
+        # out against `proposed x21/21` instead of scrolling past inside it.
+        if c.get("dropped"):
+            tally = Counter(k for gone in c["dropped"].values() for k in gone)
+            n = c["n_staves"] or 1
+            print("          . not carried into works.json: "
+                  + ", ".join(f"{k} x{v}/{n}"
+                              for k, v in sorted(tally.items())))
         if not c["problems"]:
             ready.append(c)
             for s in c["staves"]:

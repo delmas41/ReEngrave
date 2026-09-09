@@ -49,6 +49,7 @@ WHAT EACH FACT COMES FROM, AND WHY IT HAS TO COME FROM THERE
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import sys
 import xml.etree.ElementTree as ET
@@ -62,6 +63,19 @@ BENCH = Path(__file__).resolve().parent
 MAIN = Path("/Users/seanjohnson/Desktop/ReEngrave")
 
 SCAN = MAIN / "benchmarks" / "omr-scan-e2e-2026-09"
+
+# ⚠️ THE SHAPE OF A `staves` ENTRY, LOADED BY PATH FROM *THIS* CHECKOUT.
+# `SCAN` above deliberately points at the MAIN checkout — `works.json` is
+# hand-verified DATA and there is one copy of it — but `staves_schema` is CODE,
+# and a worktree that imported MAIN's copy would check its own edits against a
+# shape it cannot see. Loaded here once; `server.py` and `merge_additions.py`
+# take it from this module so there is one instance and no `sys.path` race.
+_SCHEMA = (Path(__file__).resolve().parents[2] / "benchmarks"
+           / "omr-scan-e2e-2026-09" / "staves_schema.py")
+_spec = importlib.util.spec_from_file_location("staves_schema", _SCHEMA)
+staves_schema = importlib.util.module_from_spec(_spec)
+sys.modules.setdefault("staves_schema", staves_schema)
+_spec.loader.exec_module(staves_schema)
 WORKS = SCAN / "works.json"
 
 #: The five rows this tool is for.  ⚠️ NO MAHLER: its printed one-line
@@ -506,7 +520,16 @@ def research_proposal(row_id: str, n_parts: int) -> dict:
             "parts": list(spec["parts"]) + list(spec.get("absent") or []),
             "printed_parts": list(spec["parts"]),
             "absent_parts": list(spec.get("absent") or []),
-            "lines": spec.get("lines", 5),
+            # ⚠️ EVERY FACT THE SPEC CARRIES, NOT A HAND LIST OF ONE.
+            # This dict said `"lines": spec.get("lines", 5)` and stopped, so
+            # `candidate_maps`' `Cembalo (grand staff, 2 printed staves)` —
+            # written `printed_staves=2` one file over — reached neither the UI
+            # nor `works.json`, and the Bach row's arity gate had to be told
+            # the fact by hand afterwards. Carried VERBATIM: `_s` omits `lines`
+            # when it is 5 and so does `works.json`, so spelling the default in
+            # here (which the old line did) would have written `lines: 5` onto
+            # every entry of every future row.
+            **{k: spec[k] for k in staves_schema.optional_keys() if k in spec},
         })
     covered = {i for s in staves for i in s["parts"]}
     return {
