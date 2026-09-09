@@ -5,6 +5,72 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-09 — the staged pipeline gets an inventory, an EXPORTER and a health report; and the record turns out not to hold rests
+
+The three ranked tasks of `docs/handoff-2026-09-09-staged-accounting.md`, done
+in order, plus the open defect its §6 filed. **No benchmark was run as a goal**
+— the metric is retired (Sean, 2026-09-08) and the runs here are controls, not
+scores.
+
+- **`tools/omr/staged/inventory.py`** — the 21 decisions, DERIVED from
+  `adjudicate.REGISTRY`, `ORDER`, `evaluate.RULES`, `groups`' redundancies,
+  `legacy.EXTRACTED_QUANTITIES` and the AST of `gather.py`. Nothing typed.
+  `--check` is non-zero on a broken invariant; `--run` folds in what each
+  decision actually did on a page.
+- **`tools/omr/staged/export.py`** — the staged path **can produce a file**,
+  and the CLI wires it as `--musicxml`. Four real conductor's pages export and
+  all four parse under music21. Not a port: it takes `tools/omr/export.py`'s
+  POSITIONS and reuses its pure renderers, and restates every rule that has to
+  be re-derived on a different input, each with a test.
+- **`tools/omr/staged/health.py`** — per decision: is there a test saying it
+  DECIDES, one saying it ABSTAINS, one saying it RECORDS. Sean's bar, applied
+  literally.
+
+**⚠️ WHAT DOING THEM FOUND**
+
+- **2,541 detected glyphs the record cannot carry**, pooled over four pages —
+  and **838 of them are RESTS, which have no quantity at all**: no `Q.REST`,
+  no adjudicator, no stub, no `wants`, so unlike the stubs nothing declares the
+  absence. Detected-then-dropped, inside the architecture built to stop it,
+  third instance after `Ruling.detail` and the starved stubs.
+- **Five of the six stubs are starved one stage earlier** — `arc_box`,
+  `articulation_mark`, `wedge_box`, `dynamic_letter` are observed by nothing,
+  so writing those adjudicators would still produce nothing. The next work is
+  in GATHER, the thinnest stage by tests (27 against RECORD's 261).
+- **`tuplet_ratio`'s missing row is THE PAGE**, with a positive control on the
+  same tree and weights (Beethoven 5 / Litolff `984073` `--pages 2`: 1 marker,
+  1 ratio). ⚠️ The SILENCE is a real hole and is not tuplet-specific: an empty
+  `subjects_from` domain writes nothing at all, which is not an abstention.
+- **The redundancy layer's `checked_nothing` was the fixture** — but the
+  handoff's control page was off by one. ⚠️ And **Brahms p2 is two systems and
+  still checks nothing**: `_slot_fact` keys on the system's staff count, so the
+  redundancy layer inherits the ordinal join's refusal exactly.
+- **The exporter's accounting control RAISES** rather than returning a flag
+  (`symbol_ledger.coverage_check` tried the flag and was read by nobody). It
+  balances on all four pages and reveals **595 notes held in the record and
+  absent from the file**, 441 of them a NARROWED duration the exporter
+  deliberately refuses to collapse.
+- **A `wants` entry a decision never reads is INERT**, found by a test that
+  asserted the opposite and failed. Ten decisions have one; `glyph_owner`
+  declares `glyph_conf` and never reads it — the standing
+  `_dedupe_cross_staff_detections` observation, reproduced.
+- ⚠️ **Two of the new checks were wrong when first written and both reported a
+  clean ZERO**: a literal-argument AST matcher missed
+  `for quantity, kind in ((Q.STEM, …), …)`, and the inert-`wants` check saw the
+  decorator (where `wants` lives) as the body. Both are recorded in the code.
+- ⚠️ **The health report said "EMPTY CELLS: none" once by accident** — one
+  over-broad attribution clause made every decision look covered. A check that
+  cannot fail is worse than no check; removed and pinned.
+- **The §6 defect is fixed**: `build_cache.research_proposal` sorted `parts`
+  under a comment justifying it by a rule removed the SAME DAY, whose own last
+  sentence said the opposite. The unsorted proposal reproduces `works.json`
+  exactly on all five folded entries across three rows; the sorted one
+  disagreed on the three that came back named Piccolo. Four tests, all run RED
+  with the fix reverted.
+- **Handoff counts corrected**: "153 tests" is **226**.
+
+---
+
 ## 2026-09-08 (late) — causes A/B/C closed, `OMR_SLOT_STITCH` default ON, and the meter's own garbage filter wired to its keeper
 
 - **`OMR_SLOT_STITCH` is DEFAULT ON** (Sean's call). Never scored worse

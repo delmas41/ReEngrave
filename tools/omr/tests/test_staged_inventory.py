@@ -67,8 +67,12 @@ class TestTheChecksHaveTeeth(unittest.TestCase):
         sites, indirect = inventory._gather_sites()
         self.assertNotIn("stem", sites)
         self.assertIn("stem", indirect)
+        # ⚠️ Specifically the UNSATISFIABLE alarm. `stem` legitimately appears
+        # in a different problem — `duration` declares it and never reads it —
+        # and matching the bare quantity name made this test fail the moment
+        # that second check landed.
         self.assertFalse([p for p in inventory.build()["problems"]
-                          if "'stem'" in p])
+                          if "'stem'" in p and "no gather site" in p])
 
     def test_a_quantity_that_is_both_observed_and_decided_is_not_a_cycle(self):
         """`system_staff_count` is gathered by `gather_measures` AND decided.
