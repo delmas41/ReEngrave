@@ -135,8 +135,20 @@ def length_of(raw):
 
 
 def meters(path):
-    rec = json.loads(Path(path).read_text())["record"]
-    return [v for v in rec["verdicts"] if v["quantity"] == "meter"]
+    """Every `meter` verdict of a run, from the full record OR the reduction.
+
+    ⚠️ THE COMMITTED ARTEFACT IS THE REDUCTION, AND IT COULD NOT BE READ BACK.
+    `.gitignore` keeps `out/*.json` (2-10 MB build products) and commits
+    `out/*.meter.json` as "what every claim in FINDINGS.md is read off" -- but
+    this function took only the full record's shape, so `--tally` reported
+    every fixture `(not run)` on a fresh clone and the published baseline was
+    not checkable without re-transcribing six fixtures. The reduction is a
+    bare list of these same verdicts; both shapes are accepted.
+    """
+    blob = json.loads(Path(path).read_text())
+    if isinstance(blob, list):                       # the committed reduction
+        return [v for v in blob if v.get("quantity") == "meter"]
+    return [v for v in blob["record"]["verdicts"] if v["quantity"] == "meter"]
 
 
 def durations(path, page):
@@ -309,6 +321,11 @@ def tally(out_dir):
     print(f"{'':34s} {'printed':>8} {'proposed':>9} {'found':>6} {'FALSE':>6}")
     for name, tag, label in TALLY_SET:
         f = Path(out_dir) / f"{name}.json"
+        if not f.is_file():
+            # ⚠️ The full record is a build product; the reduction is what is
+            # committed. Prefer the record when a run is present, fall back to
+            # the reduction so a fresh clone can still check the baseline.
+            f = Path(out_dir) / f"{name}.meter.json"
         if not f.is_file():
             print(f"{label:34s} {'(not run)':>31}")
             continue
