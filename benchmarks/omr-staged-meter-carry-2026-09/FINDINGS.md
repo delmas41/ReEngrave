@@ -389,3 +389,71 @@ one without saying so.
 `grep` and `import` as this until proved otherwise. Same family as the cached
 `scan_eval` A/B already recorded in CLAUDE.md — the arms did not run the code
 you think they ran, and nothing in the output says so.
+
+
+---
+
+## 10. ⚠️⚠️ CORRECTION TO §7 — THE ANDANTE REFUSAL IS SAFE BUT NOT DISCRIMINATING
+
+Sean, on reading §7: *"Did we solve this? It feels a ways out to me."* He was
+right, and the control that settles it is one I had not run.
+
+§7 reports that all three *Andante* systems refuse the carried `2/4` and reads
+that as **the bars contradicting the old movement's meter**. An alternative
+explanation fits the same numbers: **page 2 reads well and page 17 reads
+badly, and a noisy page refuses everything.** The two are distinguished by one
+question — *would page 17 refuse the CORRECT meter too?*
+
+It would. Scored against `3/8`, the meter page 17 actually prints:
+
+| page/system | candidate | fit | not | support | verdict |
+|---|---|--:|--:|--:|---|
+| p1/sys0 | **TRUE 2/4** | 13 | 0 | **+14.0** | carries |
+| p1/sys0 | other (3/8) | 0 | 13 | −12.0 | refuses |
+| p2/sys0 | **TRUE 2/4** | 8 | 2 | **+7.0** | carries |
+| p2/sys0 | other (3/8) | 0 | 10 | −9.0 | refuses |
+| p2/sys1 | **TRUE 2/4** | 15 | 0 | **+16.0** | carries |
+| p2/sys1 | other (3/8) | 0 | 15 | −14.0 | refuses |
+| **p17/sys0** | **TRUE 3/8** | 1 | 3 | **−1.0** | **refuses** |
+| p17/sys0 | other (2/4) | 0 | 4 | −3.0 | refuses |
+| **p17/sys2** | **TRUE 3/8** | 0 | 2 | **−1.0** | **refuses** |
+| p17/sys2 | other (2/4) | 0 | 2 | −1.0 | refuses |
+
+**So what is actually established, and what is not:**
+
+* ✅ **Where the bars can speak, they discriminate, in both directions.** On the
+  three well-read systems the true meter scores +14, +7, +16 and the wrong one
+  −12, −9, −14. That gap is real and it is the mechanism working.
+* ❌ **The *Andante* refusal is NOT evidence that the mechanism detects a
+  movement boundary.** Page 17 refuses everything, the right answer included.
+  The protection there comes from *"when the page cannot speak, abstain"* — a
+  safe default, not a reading.
+* ⚠️ So the boundary case remains **untested on a page that reads well**. A new
+  movement whose page reads badly is protected by the abstention; a new
+  movement whose page reads WELL should be caught by the bars (p2's "other"
+  column shows what a well-read page does to a wrong meter — 0 fit, 10-15 not)
+  but **no such page has been measured.**
+
+⚠️ **A methodological note, because it nearly produced a second wrong claim.**
+The first run of this control keyed bars by SYSTEM INDEX and dropped the page,
+so page 1's systems merged with page 17's and p17/sys0 appeared to score
+**+7.0 for 2/4** — it would have been reported as "the mechanism carries a
+wrong meter onto the Andante". The tell was that it contradicted the live run's
+own recorded detail (`0 fit / 4 not`). **Check a probe against the pipeline's
+own record before believing it.**
+
+### What "solved" would take
+
+1. A movement boundary on a page that reads well — the case the mechanism is
+   actually claimed to handle, and the one no measurement covers.
+2. A second document and publisher. Everything above is one edition.
+3. Weights that are measured rather than asserted. They are symmetric and
+   declared unmeasured; `METER_CARRY_MIN_STAVES_PER_BAR = 3` is set by analogy
+   to `METER_COVERAGE_FLOOR` and never measured at all.
+4. A calibration pass. The `CHECKABLE` route (a bar sum needs no truth file)
+   makes this reachable across the library and nothing has built it.
+
+**Until then the honest summary is: the carry is SAFE — it never writes a
+wrong meter on any page measured — and its boundary behaviour is
+under-determined.** Default `0` stands, and the reason is now (1) above rather
+than "n".

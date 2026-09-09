@@ -396,9 +396,18 @@ class TestTheMeterCarry(unittest.TestCase):
         boundary needs no detecting at all — the new movement's bars simply
         contradict the old movement's meter.
 
-        Measured on Beethoven 5 / Litolff `984073`, carrying `2/4` forward:
-        page 2 (a CONTINUATION of movement 1, truth 2/4) — 8 bars agree, 1
-        disagrees; page 17 (the *Andante*, truth 3/8) — 1 agrees, 7 disagree.
+        ⚠️⚠️ THIS TEST SHOWS THE MECHANISM, NOT A SOLVED PROBLEM, and the
+        distinction was nearly lost. Here the destination's bars measure 1.5
+        cleanly, so they genuinely contradict a carried 2/4. On the REAL
+        Andante they do not speak at all: scored against `3/8`, the meter that
+        page actually prints, it refuses THAT too (-1.0, against -3.0 for the
+        wrong 2/4). Its durations are noise and a noisy page refuses
+        everything, so the real page is protected by "when it cannot speak,
+        abstain" rather than by this. A boundary on a page that READS WELL is
+        unmeasured. See FINDINGS.md §10.
+
+        What IS measured, on three well-read systems: the true meter scores
+        +14, +7 and +16, and the wrong one -12, -9 and -14.
         """
         log, _src, dst = self._log(carried_pages=(1, 17), dst_beats=1.5)
         self._run(log, on=True)

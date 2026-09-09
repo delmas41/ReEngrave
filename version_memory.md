@@ -36,9 +36,17 @@ MERGED tree.
    of a movement-boundary detector: it arrives as a CANDIDATE and the bars it
    claims to govern confirm or refuse it, so **the boundary problem dissolved
    with no detector anywhere** — all three systems of Beethoven 5 p.17 (the
-   *Andante*, a new movement in 3/8) refuse the carried 2/4. It is merged, and
-   the flag is still `0` **on n — one document, two pages — not on the
-   hazard.** Checked before believing it was finished: that worktree is clean
+   *Andante*, a new movement in 3/8) refuse the carried 2/4. It is merged.
+   ⚠️⚠️ **AND THEN A SECOND COMMIT (`dfaaa71b`) CORRECTED THAT CLAIM, after
+   Sean pushed back — *"Did we solve this? It feels a ways out to me."*** The
+   Andante refusal is **SAFE but NOT DISCRIMINATING**: page 17 refuses the
+   CORRECT 3/8 too (−1.0, −1.0), so it is a page that refuses everything, not
+   a boundary being detected. What stands is narrower and still real — **where
+   the bars can speak they discriminate both ways** (true meter +14/+7/+16
+   against the wrong one −12/−9/−14 on the three well-read systems), and a
+   page that cannot speak abstains. **A movement boundary on a page that reads
+   well remains UNMEASURED**, and that — not `n` — is now the blocking
+   objection to the default. Checked before believing it was finished: that worktree is clean
    and the commit is on `origin`.
    ⚠️ It **subsumes `reengraved-staged-pipeline-068163` entirely** — that
    branch's tip is an ancestor — so that branch was NOT merged separately.
@@ -214,7 +222,21 @@ then the meter should decrease in probability."*
 - **The carry is now a CANDIDATE the bars judge.** `carried_from_read_meter`
   **+1.0**, each bar that FITS **+1.0**, each that does not **−1.0**, against
   `METER_CARRY_FLOOR` 2.0 and `METER_CARRY_MIN_BARS` 2.
-- ⚠️ **THE MOVEMENT-BOUNDARY PROBLEM DISSOLVED — no detector needed.** Measured
+- ⚠️⚠️ **CORRECTED SAME DAY — the boundary problem is NOT solved.** Sean:
+  *"It feels a ways out to me."* Right: the control I had not run is whether
+  page 17 would refuse the CORRECT meter too. **It does** — `3/8`, the meter
+  it prints, scores −1.0 and is refused as firmly as the wrong `2/4` at −3.0.
+  Its durations are noise and a noisy page refuses everything, so the Andante
+  refusal is SAFE but not discriminating. What IS established: **where the
+  bars can speak they discriminate both ways** (true meter +14/+7/+16, wrong
+  meter −12/−9/−14 on three well-read systems). **A movement boundary on a
+  well-read page — the case actually claimed — is unmeasured.**
+- ⚠️ The first run of that control keyed bars by SYSTEM and dropped the PAGE,
+  merging page 1's systems into page 17's and appearing to show the mechanism
+  carrying a wrong meter onto the Andante. Caught because it contradicted the
+  live run's own recorded detail. **Check a probe against the pipeline's own
+  record before believing it.**
+- The original (overstated) claim, kept for the record: measured
   on Beethoven 5 / Litolff `984073`: page 2's two systems (continuation, truth
   2/4) carry at **+7.0** and **+8.0**; **all three systems of page 17 — the
   *Andante*, a NEW MOVEMENT in 3/8 — REFUSE the carried 2/4** (−3.0, −1.0, and
