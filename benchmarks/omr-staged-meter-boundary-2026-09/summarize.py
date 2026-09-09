@@ -23,6 +23,16 @@ FIXTURE_OF = {
     "rev": "boundary-m204-232", "rev-p1p2": "boundary-m204-232",
     "revfix": "boundary-m204-232", "fullfix": "boundary-m150-180",
     "lit012fix": "litolff-984073", "lit6162fix": "litolff-984073",
+    "brahms1eng": "brahms1-m1-22", "brahms4eng": "brahms4-m386-412",
+    "brahms1scan": "brahms1-317803",
+    # ⚠️ The `m2` runs are the SAME arms re-measured on the MERGED tree.
+    # 221 lines of `rhythm.py` and 404 of `gather.py` landed on main between
+    # the first measurement and the merge, and `gather.py` is where the
+    # `Q.EVENT` / `Q.DURATION` rows these decisions read come from. A result
+    # that is not re-run across a merge like that is an assumption.
+    "m2full": "boundary-m150-180", "m2p0p3": "boundary-m150-180",
+    "m2rev": "boundary-m204-232", "m2brahms1eng": "brahms1-m1-22",
+    "m2brahms4eng": "brahms4-m386-412", "m2brahms1scan": "brahms1-317803",
 }
 
 

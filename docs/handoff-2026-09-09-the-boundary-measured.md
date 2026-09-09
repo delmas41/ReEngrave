@@ -55,11 +55,55 @@ rests written at 4.0 ql inside a 3.0 ql bar **196 → 38**, proper measure rests
 **byte-identical**. All 38 residuals are bars holding more than one note, which
 `size_measure_rest` refuses by design.
 
+## 2b. ⚠️⚠️ A SECOND DOCUMENT AND PUBLISHER — the result SPLITS
+
+Done in the same session. `brahms-sym1-mvt1` prints `6/8`, ONE bar of `9/8` at
+m8, then `6/8` — and the **Breitkopf scan of that music is already in the scan
+gate with a hand-verified window** (`works.json`; Sean against the print). So
+the same 22 bars run ENGRAVED and SCANNED and the arms differ **only in the
+printing**. A third fixture, `brahms-sym1-mvt4`, changes `C` → `¢` at m392,
+where **both meters are 4.0 quarter notes** and the bars are blind by
+construction.
+
+| fixture | printed changes | proposed | found | FALSE |
+|---|--:|--:|--:|--:|
+| Brahms 1 i **engraved** | 1 | 2 | **1** | 1 |
+| Brahms 1 i **Breitkopf scan** *(same 22 bars)* | 1 | **8** | **0** | **8** |
+| Brahms 1 iv engraved (`C` → `¢`) | 1 | 1 | **1** | 0 |
+| Beethoven 5 iv engraved ×2 | 1 | 1 | **1** | 0 |
+| Beethoven 5 Litolff scan | 1 | 2 | **1** | 1 |
+
+**ENGRAVED 4 printed / 4 found / 1 false. SCANNED 2 printed / 1 found / 9
+false.** ⚠️ **The result holds on a second DOCUMENT and does not hold on a
+second PUBLISHER'S SCAN, and the Brahms pair says the block is READING.** On
+the same bars the engraved arm votes `9/8` and finds the change to `6/8` at the
+exact bar (support 60.0); the scan votes **`9/4`**, misses the change, and
+proposes **five spurious `4/4` changes at cells 2-6**, all at support 3.5-4.0
+against a floor of 3.0. Its bar segmentation is right (7 and 8 cells, matching
+the hand-verified window) — the meter GLYPHS fail.
+
+⚠️ **The one engraved false positive is a CAUTIONARY signature** printed after
+page 0's final barline, and BOTH printings show it (segment@6 support 57.0
+engraved, segment@7 support 26.5 scanned). It governs no bar on its page. A
+courtesy signature at a line end is standard engraving, and `_meter_changes`
+has no notion of one: any glyph past the first cell is a change. ⚠️ The
+Beethoven fixture hid this because its cautionary page holds ONE cell.
+
+⚠️⚠️ **AND THE LENGTH-BLIND CHANGE IS THE DESIGNED LIMIT, OBSERVED.** The `¢`
+is read at the exact bar on **24 staves of 24, support 74.0** — then the next
+systems are carried `C` (+2.0, +8.0) and derived `4/4` (+7.0), with the bars
+AGREEING, because `C` and `¢` are the same 4.0 quarters. Right length, wrong
+engraving, and musicdiff charges `symbol=` at three edits per staff. Scored
+`LEN-OK/FORM-WRONG`, not OK.
+
 ## 3. ⚠️ WHAT IS *NOT* ESTABLISHED
 
-* **Still one document.** A different movement and a different engraving, which
-  removes the LEGIBILITY confound and nothing else. **Ranked task 2 — a second
-  document and publisher — is untouched and is now the top open item.**
+* ✅ **The one-document caveat is retired** — see §2b, and read it before
+  quoting §2 as a general result.
+* ✅ **Every figure was RE-MEASURED on the merged tree.** `origin/main` moved
+  27+ commits under this branch, including **221 changed lines of `rhythm.py`
+  and 404 of `gather.py`** — where the rows these decisions read come from.
+  Identical on every arm.
 * **n = 4 systems**; the discrimination result is ONE page asked twice.
 * ⚠️ **`METER_CARRY_MIN_BARS = 2` refused a CORRECT carry here** — the
   one-bar fermata system, truth 4/4, its single bar reading 4.0. First time
@@ -69,8 +113,11 @@ rests written at 4.0 ql inside a 3.0 ql bar **196 → 38**, proper measure rests
   **4.5** events per bar. A dense bar needs every duration right to sum, so
   these mechanisms are strongest where the music is SPARSE — which is also
   where the measure-rest payoff is largest. n = 4; suggestive, not established.
-* **Neither flag is flipped.** For the carry, objection (1) of its knobs-table
-  entry is now closed and (2) and (3) stand.
+* **Neither flag is flipped.** For the carry, objections (1) AND (2) of its
+  knobs-table entry are now closed; (3) — weights that are asserted rather
+  than measured — stands, and §2b adds a new one: **on a scanned second
+  publisher the meter is misread badly enough that the weighing never gets a
+  fair candidate.**
 
 ## 4. ⚠️ THE FIX — a `C` change was detected on 23 staves of 23 and dropped
 
@@ -107,30 +154,37 @@ and p.62's `3/4` at cell 8 preserved to the unit.
 
 ## 5. THE NEXT WORK, RANKED
 
-### 1. A SECOND DOCUMENT AND PUBLISHER
+### 1. ⚠️⚠️ THE SEGMENTS ARE READ AND NOTHING DOWNSTREAM USES THEM — three gaps, ONE fix
 
-Promoted from task 2 and now the only thing between the carry and a default.
-230 reference works encode a mid-piece `<time>` change and the library holds
-editions for many; `render_boundary.py` makes an engraved arm out of any of
-them in ~15 s, and the scan arm is the same PDF.
+All three confirmed by `grep`, none built here (each needs its own measurement
+and the session's request was the second document):
 
-### 2. ⚠️ TWO CARRY-SOURCE GAPS, FOUND AND NOT BUILT
+1. ⚠️⚠️ **THE EXPORT IGNORES `segments`, so a meter change cannot reach a
+   file.** `staged/export.py:210` takes one meter per system run, and
+   **`record.meter_at` — whose docstring says it *is* how a bar's meter is
+   read — is called by nothing but its own tests.** Measured: the `¢` sits on
+   the record at `from_cell 6`, 24 of 24 staves, support 74.0, and the file
+   declares `<time>` once per part, `4/4 symbol="common"`, at measure 1. **The
+   whole mid-system change machinery cannot currently produce a file.**
+2. **The carry takes the source's OPENING, not the meter in force at its END**
+   (`rhythm.py:1246`) — measured twice: Brahms 1 i handed `9/8` (a one-bar
+   meter) instead of the `6/8` governing seven of eight bars, and Brahms 1 iv
+   handed `C` instead of the `¢` the same system had just read.
+3. **A system that READ a change cannot be a carry source** (`found.reason !=
+   "voted"`, `rhythm.py:1206`, `:1321`).
 
-One `grep` each, both demonstrable on the reverse fixture, and they are ONE
-piece of work because fixing either alone is wrong in the same direction:
+**One fix: carry, borrow from, and EXPORT the meter in force at each bar, off
+the `segments` that already exist.** ⚠️ Price the false positives first — §4
+and §2b record **nine false segments on two scanned pages**, and each would
+propagate forward under (2) and (3) instead of staying put.
 
-* a system that READ a change cannot be a carry source (`found.reason !=
-  "voted"`, `rhythm.py:1206` and `:1321`) — so the system that read `C` on
-  23 staves at support 66.0 cannot tell the very next system, which is in that
-  meter, anything;
-* a carry takes the source's OPENING and drops its segments
-  (`rhythm.py:1246`), so carrying across a system that changed meter carries
-  the pre-change meter.
+### 2. ⚠️ THE SCAN SIDE IS A READING PROBLEM, AND IT IS NOW MEASURED
 
-**Carry the meter in force at the END of the nearest preceding system whose
-meter came from INK.** ⚠️ Needs a corpus that can show it going wrong first: a
-false `change_only` (§4 has one) would then propagate forward instead of
-staying put.
+`9/8` read as `9/4`; five spurious `4/4` changes just clearing a floor of 3.0.
+The lever is the meter GLYPH readers (`_meter_from_digits` on the detector's
+boxes, and `time_signature_locator` at the header), not the weighing. A
+CAUTIONARY signature at a line end also needs a notion of its own — it is the
+only false positive the engraved arms produce, and both printings show it.
 
 ### 3. UNCHANGED FROM THE LAST HANDOFF
 
@@ -163,3 +217,29 @@ the previous handoff.
   through `linecache`); markdown is safe.
 * `OMR_SURYA_KEEP_ALIVE=0` for unattended runs; **never `pkill` the shared
   `llama-server`.**
+
+
+## 7. ⚠️ COORDINATION — a sibling session is in the same two files
+
+`claude/reengraved-meter-range-9814dc` was working the same thread in parallel
+and has **uncommitted** changes to `staged/adjudicators/rhythm.py` and
+`tools/omr/tests/test_staged_header_rhythm.py`. **We did not duplicate the
+measurement**, and the split is worth recording:
+
+* **that session** hunted the SCAN side — it located all three movement starts
+  on the Litolff Beethoven, measured that **none reads well**, and concluded
+  *"the remaining route is the ENGRAVED one"*. It also found a real bug this
+  session did not: **a refused carry was blocking the rungs behind it**
+  (`_meter_fallbacks`).
+* **this session** took that engraved route and did it, plus the second
+  document and publisher.
+
+So its conclusion and this session's work compose; its §5 item naming the
+engraved route as outstanding is now satisfied. ⚠️ **The two branches touch
+different functions in the same two files** — `_meter_from_letter` /
+`_meter_changes` here, `_meter_fallbacks` / `adjudicate_meter`'s dispatch there
+— so the merge is mechanical but not automatic, and both append test classes to
+the same file. ⚠️ Its `_meter_fallbacks` reordering changes what a REFUSED
+carry does, which is the branch `brahms1eng` system 2 and `boundary-m150-180`
+system 1 land on: **re-run this benchmark's arms after that merge**, not
+before.

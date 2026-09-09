@@ -39,8 +39,12 @@ from pathlib import Path
 #: 4/4 from 209. Keyed by (fixture tag, page index) -> the truth for the
 #: system on that page.
 TRUTH = {
-    ("boundary-m150-180", 0): "4/4",   # m150-154, printed as a common-time C
-    ("boundary-m150-180", 1): "4/4",   # m154 alone, the fermata bar
+    # ⚠️ THE TRUTH STRING IS THE ENGRAVING, NOT THE FRACTION. LilyPond sets
+    # 4/4 as a common-time `C` and this page prints one, so the truth is `C`;
+    # writing "4/4" here scored a CORRECT reading as FORM-WRONG once the
+    # length/form split arrived.
+    ("boundary-m150-180", 0): "C",     # m150-154, printed as a common-time C
+    ("boundary-m150-180", 1): "C",     # m154 alone, the fermata bar
     ("boundary-m150-180", 2): "3/4",   # m155+, the change, printed at the head
     ("boundary-m150-180", 3): "3/4",   # m172+, NO meter printed
     ("boundary-m204-232", 0): "3/4",   # m204+, printed at the head
@@ -56,6 +60,23 @@ TRUTH = {
     ("litolff-984073", 2): "2/4",
     ("litolff-984073", 61): "4/4",
     ("litolff-984073", 62): "4/4",
+    # Brahms 1 mvt 1 — 6/8, with ONE bar of 9/8 at m8 and 6/8 again from m9.
+    # The engraved render and the Breitkopf scan print the SAME structure,
+    # including the cautionary 9/8 after page 0's final barline.
+    ("brahms1-m1-22", 0): "6/8",     # mm 1-7
+    ("brahms1-m1-22", 1): "9/8",     # opens ON the 9/8 bar, m8
+    ("brahms1-m1-22", 2): "6/8",
+    # ⚠️ THE SCAN'S PAGE 1 HOLDS TWO SYSTEMS WITH DIFFERENT TRUTHS, so these
+    # keys carry the SYSTEM as well. `works.json` (hand-verified by Sean
+    # against the print) has system 1 = mm 8-14 and system 2 = mm 15-22.
+    ("brahms1-317803", 0): "6/8",    # the SAME music, scanned
+    ("brahms1-317803", 1, 0): "9/8",   # opens on m8, the 9/8 bar
+    ("brahms1-317803", 1, 1): "6/8",   # mm 15-22, no meter printed
+    # Brahms 1 mvt 4 — 4/4 printed `C` to m391, 2/2 printed `¢` from m392.
+    # ⚠️ BOTH ARE 4.0 QUARTER NOTES. The bars are blind here by construction.
+    ("brahms4-m386-412", 0): "C",
+    ("brahms4-m386-412", 1): "C|",
+    ("brahms4-m386-412", 2): "C|",
 }
 
 #: Where a page prints a meter CHANGE mid-system: page -> (cell it stands at,
@@ -77,6 +98,19 @@ TRUTH_CHANGES = {
     ("litolff-984073", 61): None,      # bar 140; the page prints no meter
     ("litolff-984073", 1): None,
     ("litolff-984073", 2): None,
+    # ⚠️ p0's 9/8 is a CAUTIONARY printed AFTER the final barline; it announces
+    # the NEXT system's meter and governs no bar on this page. A change
+    # proposed at that page's last cell is WRONG — it would re-size m7.
+    ("brahms1-m1-22", 0): None,
+    ("brahms1-m1-22", 1): (1, "6/8"),
+    ("brahms1-m1-22", 2): None,
+    ("brahms1-317803", 0): None,
+    ("brahms1-317803", 1, 0): (1, "6/8"),
+    ("brahms1-317803", 1, 1): None,
+    # m392 is the 7th bar of an excerpt opening at 386, so cell 6.
+    ("brahms4-m386-412", 0): (6, "C|"),
+    ("brahms4-m386-412", 1): None,
+    ("brahms4-m386-412", 2): None,
 }
 
 
@@ -87,7 +121,12 @@ def length_of(raw):
     if raw in ("C", "common"):
         return 4.0
     if raw in ("C|", "cut"):
-        return 2.0
+        # ⚠️ 4.0, NOT 2.0 — and this line was WRONG until the Brahms 4 fixture
+        # made it matter. Cut common is 2/2: two HALF notes, which is four
+        # quarter notes, exactly as many as `C`. That identity is the whole
+        # point of the length-blind fixture — the bars cannot tell `C` from
+        # `¢`, so only ink can.
+        return 4.0
     try:
         n, d = raw.split("/")
         return float(n) * 4.0 / float(d)
@@ -112,6 +151,43 @@ def durations(path, page):
     return out
 
 
+def _same_form(got, want):
+    """Is the ENGRAVING the same, not merely the bar length?
+
+    ⚠️ `4/4` and `C` are one length and two printings and this repository
+    already pays for the difference — `export._mxl_attributes_block` emits
+    `symbol="common"` / `"cut"` from `raw`, and musicdiff charges a wrong
+    `symbol=` at THREE EDITS PER STAFF.
+    """
+    if got is None or want is None:
+        return False
+    norm = {"common": "C", "cut": "C|"}
+    return norm.get(str(got), str(got)) == norm.get(str(want), str(want))
+
+
+def partitions(path):
+    """Each system's bar COUNT, as `measure_partition` decided it.
+
+    ⚠️ THIS IS WHAT MAKES A CROSS-ARM CONTROL A CONTROL. `--control bars`
+    compares runs by SUBJECT KEY, and subject keys are positional
+    (`system/2/0`) — so two runs of entirely different music happily "match"
+    and the tool reports a difference as if it meant something. It did exactly
+    that once here, comparing a Brahms first movement against a Brahms finale.
+    Two runs of the same pages agree on every shared system's bar count; two
+    runs of different music essentially never do.
+    """
+    out = {}
+    rec = json.loads(Path(path).read_text())["record"]
+    for v in rec["verdicts"]:
+        if v["quantity"] != "measure_partition":
+            continue
+        sub = str(v["subject"]).split("/")
+        val = v.get("value")
+        n = val if isinstance(val, int) else (val or {}).get("n_cells")
+        out.setdefault(f"system/{sub[1]}/{sub[2]}", set()).add(n)
+    return {k: sorted(x for x in v if x is not None) for k, v in out.items()}
+
+
 def bars_seen(path):
     """Each system's `bar_lengths_seen`, as the METER DECISION recorded it.
 
@@ -131,7 +207,15 @@ def show(path, tag):
     for v in meters(path):
         sub = v["subject"]
         page = int(str(sub).split("/")[1])
-        truth = TRUTH.get((tag, page), "?")
+        system = int(str(sub).split("/")[2])
+        # ⚠️ A PAGE CAN HOLD TWO SYSTEMS WITH DIFFERENT METERS, so a
+        # (tag, page, system) key wins over a (tag, page) one. Keying only on
+        # the page marked the scan's second system against the first's truth.
+        def _truth(table, default=None):
+            if (tag, page, system) in table:
+                return table[(tag, page, system)]
+            return table.get((tag, page), default)
+        truth = _truth(TRUTH, "?")
         val = v.get("value") or {}
         raw = val.get("raw")
         d = v.get("detail") or {}
@@ -141,7 +225,9 @@ def show(path, tag):
         if v["outcome"] == "decided":
             if v.get("reason") == "change_only":
                 known = (tag, page) in TRUTH_CHANGES
-                want = TRUTH_CHANGES.get((tag, page))
+                known = ((tag, page, system) in TRUTH_CHANGES
+                         or (tag, page) in TRUTH_CHANGES)
+                want = _truth(TRUTH_CHANGES)
                 segs = (val.get("segments") or [])
                 got = ((segs[0].get("from_cell"), segs[0].get("raw"))
                        if segs else None)
@@ -150,7 +236,33 @@ def show(path, tag):
                 truth = (f"chg@{want[0]}={want[1]}" if want
                          else ("prints no change" if known else "?"))
             else:
-                mark = "OK " if got_len == want_len else "WRONG"
+                # ⚠️⚠️ LENGTH AND FORM ARE SCORED APART, and reporting only the
+                # length would call a KNOWN-WRONG answer "OK". `C` and `¢` are
+                # both 4.0 quarter notes, so a mechanism that reasons from bar
+                # sums gets the length right and the engraving wrong — and
+                # musicdiff charges `symbol=` at 3 edits per staff. A row that
+                # is LENGTH-OK and FORM-WRONG is the designed limit of the bar
+                # mechanisms observed, not a pass.
+                same_form = _same_form(raw, truth)
+                mark = ("OK " if got_len == want_len and same_form
+                        else ("LEN-OK/FORM-WRONG" if got_len == want_len
+                              else "WRONG"))
+                # ⚠️ A `voted` VERDICT CAN STILL CARRY A WRONG SEGMENT, and
+                # scoring only the opening hides it. Brahms 1 page 0 votes the
+                # right 6/8 and then proposes a change at its LAST cell out of
+                # the CAUTIONARY 9/8 printed after the final barline — a
+                # standard engraving convention, and the segment would re-size
+                # a bar the cautionary does not govern.
+                known = ((tag, page, system) in TRUTH_CHANGES
+                         or (tag, page) in TRUTH_CHANGES)
+                want_c = _truth(TRUTH_CHANGES)
+                segs = (val.get("segments") or [])[1:]
+                got_c = ((segs[0].get("from_cell"), segs[0].get("raw"))
+                         if segs else None)
+                if known and got_c != want_c:
+                    mark = "WRONG(segment)" if mark == "OK " else mark
+                    truth = (truth + " " + (f"chg@{want_c[0]}={want_c[1]}"
+                                            if want_c else "no change"))
         bits: list = []
         for seg in (val.get("segments") or [])[1:] if v.get("reason") != "change_only" else []:
             bits.append(f"segment@{seg.get('from_cell')}={seg.get('raw')}"
@@ -173,9 +285,55 @@ def show(path, tag):
             print(f"       {'  '.join(bits)}")
 
 
+#: Which fixture each run tag belongs to, so `--tally` can score a whole set.
+#: ⚠️ The ENGRAVED and SCANNED rows of the same music are the isolating pair —
+#: same work, same measures, same code, one difference.
+TALLY_SET = (
+    ("m2brahms1eng-OFF", "brahms1-m1-22", "Brahms 1 i   ENGRAVED"),
+    ("m2brahms1scan-OFF", "brahms1-317803", "Brahms 1 i   BREITKOPF SCAN"),
+    ("m2brahms4eng-OFF", "brahms4-m386-412", "Brahms 1 iv  ENGRAVED (C -> cut)"),
+    ("fullfix-OFF", "boundary-m150-180", "Beethoven 5 iv ENGRAVED (fwd)"),
+    ("m2rev-OFF", "boundary-m204-232", "Beethoven 5 iv ENGRAVED (rev)"),
+    ("lit6162fix-OFF", "litolff-984073", "Beethoven 5  LITOLFF SCAN"),
+)
+
+
+def tally(out_dir):
+    """Printed meter changes against proposed ones, per fixture.
+
+    ⚠️ COUNTS SEGMENTS, NOT VERDICTS. A `voted` system can carry a wrong
+    segment while its opening is right, and a system-level pass/fail hides
+    exactly that — which is what page 0 of both Brahms printings does with the
+    CAUTIONARY signature after its final barline.
+    """
+    print(f"{'':34s} {'printed':>8} {'proposed':>9} {'found':>6} {'FALSE':>6}")
+    for name, tag, label in TALLY_SET:
+        f = Path(out_dir) / f"{name}.json"
+        if not f.is_file():
+            print(f"{label:34s} {'(not run)':>31}")
+            continue
+        proposed = correct = 0
+        for v in meters(f):
+            sub = str(v["subject"])
+            page, system = int(sub.split("/")[1]), int(sub.split("/")[2])
+            want = TRUTH_CHANGES.get((tag, page, system),
+                                     TRUTH_CHANGES.get((tag, page), "?"))
+            val = v.get("value") or {}
+            segs = val.get("segments") or []
+            segs = segs if v.get("reason") == "change_only" else segs[1:]
+            proposed += len(segs)
+            if want not in (None, "?") and segs and \
+                    (segs[0].get("from_cell"), segs[0].get("raw")) == want:
+                correct += 1
+        truths = sum(1 for k, x in TRUTH_CHANGES.items()
+                     if k[0] == tag and x is not None)
+        print(f"{label:34s} {truths:>8} {proposed:>9} {correct:>6} "
+              f"{proposed - correct:>6}")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("files", nargs="+")
+    ap.add_argument("files", nargs="*")
     ap.add_argument("--tag", default="boundary-m150-180")
     ap.add_argument("--control", choices=("bars", "durations"), default=None,
                     help="bars: the meter decisions' own `bar_lengths_seen` "
@@ -184,10 +342,27 @@ if __name__ == "__main__":
                          "meter outcome is the same in both arms, because a "
                          "decided meter rewrites them.")
     ap.add_argument("--page", type=int, default=3)
+    ap.add_argument("--tally", default=None, metavar="OUT_DIR",
+                    help="printed vs proposed meter changes across the "
+                         "fixture set, engraved rows against scanned ones")
     a = ap.parse_args()
+    if a.tally:
+        tally(a.tally)
+        raise SystemExit(0)
     if a.control:
         assert len(a.files) == 2, "--control takes exactly two runs"
         if a.control == "bars":
+            px, py = (partitions(f) for f in a.files)
+            shared_sys = sorted(set(px) & set(py))
+            mismatch = [k for k in shared_sys if px[k] != py[k]]
+            if not shared_sys or mismatch:
+                print("CONTROL bars REFUSED: these runs are not of the same "
+                      "pages.")
+                for k in (mismatch or shared_sys):
+                    print(f"  {k}: bar counts {px.get(k)} vs {py.get(k)}")
+                if not shared_sys:
+                    print("  (no system subject appears in both runs)")
+                raise SystemExit(2)
             x, y = (bars_seen(f) for f in a.files)
             shared = sorted(set(x) & set(y))
             bad = [s for s in shared if x[s] != y[s]]
