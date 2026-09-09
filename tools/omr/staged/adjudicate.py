@@ -730,7 +730,7 @@ ORDER: Tuple[str, ...] = (
     # ⚠️ EVENTS BEFORE THE METER, and it is the bar sum that forces it. A bar
     # is summed over EVENTS, not over noteheads -- a chord's members sound
     # together and advance time once -- so anything that checks a bar against
-    # a meter needs this first. Until 2026-09-10 the grouping existed ONLY in
+    # a meter needs this first. Until 2026-09-09 the grouping existed ONLY in
     # `export._events`, at serialisation time, so every stage before EXPORT
     # counted each chord member as a separate event.
     Q.EVENT,

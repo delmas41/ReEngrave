@@ -467,7 +467,7 @@ def _box_of(rows):
 def adjudicate_event(ev: Evidence) -> Ruling:
     """Which glyphs of this bar sound TOGETHER.
 
-    ⚠️ THIS EXISTED ONLY AT SERIALISATION TIME UNTIL 2026-09-10.
+    ⚠️ THIS EXISTED ONLY AT SERIALISATION TIME UNTIL 2026-09-09.
     `group_chords_in_measure` was called from exactly one place —
     `export._events` — so every stage before EXPORT counted each chord member
     as a separate time-advancing event. That includes
@@ -642,7 +642,7 @@ def meter_carry_enabled() -> bool:
 # ─────────────────────────────────────────────────────────────────────────────
 # A carried meter is WEIGHED, not gated. (A-METER-3)
 #
-# Sean, 2026-09-10: *"We need probability based decisions with layers of
+# Sean, 2026-09-09: *"We need probability based decisions with layers of
 # information ... this is where the math that can be determined by its own
 # equation could be weighed more heavily than information that can only be
 # derived. If the measure is what we think it is - does the math of the notes
@@ -758,6 +758,19 @@ def _corroborate(ev: Evidence, candidate: dict) -> dict:
                    ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS)
                    if r.value == "restWhole"}
 
+    bars = _bar_lengths_for(ev)
+    agree = disagree = 0
+    observed = Counter()
+    return _score_bars(bars, expected)
+
+
+def _bar_lengths_for(ev: Evidence) -> dict:
+    """{cell_index: [length per staff]} for every bar of this system that can
+    speak about its own LENGTH. See `_corroborate` for why a whole rest is
+    never read here."""
+    whole_rests = {r.subject for r in
+                   ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS)
+                   if r.value == "restWhole"}
     bars: dict = {}
     for grouping in ev.verdicts(Q.EVENT, scope=Scope.SELF_AND_DESCENDANTS):
         if grouping.outcome is not Outcome.DECIDED:
@@ -795,7 +808,11 @@ def _corroborate(ev: Evidence, candidate: dict) -> dict:
                 total += Counter(beats).most_common(1)[0][0]
         if total > 0:
             bars.setdefault(cell.cell, []).append(round(total, 4))
+    return bars
 
+
+def _score_bars(bars: dict, expected: float) -> dict:
+    """Signed terms for one candidate meter, over the bars that can speak."""
     terms = []
     agree = disagree = 0
     observed = Counter()
@@ -829,6 +846,206 @@ def _corroborate(ev: Evidence, candidate: dict) -> dict:
             # different fact from "they disagree with the carry" and a reader
             # of the record should be able to tell them apart.
             "bar_lengths_seen": dict(observed.most_common(6))}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# A METER CHANGE, in Sean's order: the GLYPH opens the question, the MATH
+# settles it. (A-METER-4)
+#
+# Sean, 2026-09-09: *"any time signature glyph should be the heaviest weight
+# ... Any glyph registers should be the biggest sign that all measures at that
+# point should be viewed as likely a new time signature then does the math add
+# up and for how long - the longer the more likely."*
+#
+# ⚠️ MEASURED, AND IT INVERTED THE RATIONALE I HAD. On Beethoven 5 / Litolff
+# p.62 the print changes to 3/4 mid-system. The page prints bar 147, so the
+# reference's change at bar 155 is CELL 8 -- and the detector's `timeSig3` +
+# `timeSig4` land on cell 8 EXACTLY, while the bar-math anomaly sits at cell 6,
+# two bars early and wrong. The glyph is the precise signal; the arithmetic is
+# the noisy corroborator.
+#
+# ⚠️ SO A CHANGE IS NEVER PROPOSED FROM BAR MATH ALONE. A run of odd sums is
+# what a badly-read page looks like -- the *Andante* refuses every meter
+# including its own -- and proposing a change from it would manufacture meters
+# out of noise. The glyph must open the question; the math may then confirm it,
+# refuse it, or choose between two readings of it.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: One staff that reads a COMPLETE meter (a numerator over a denominator) at a
+#: mid-staff bar. Alone it clears `METER_CHANGE_FLOOR` -- which is Sean's
+#: ordering taken literally: a printed time signature IS the biggest sign.
+W_CHANGE_GLYPH_PAIR = 3.0
+
+#: A digit at that bar that does NOT pair into a meter. Weak, and deliberately
+#: so: it says "something meter-shaped is printed here" without saying what.
+W_CHANGE_GLYPH_LOOSE = 0.5
+
+#: Each subsequent bar whose length matches the proposed new meter, and each
+#: that does not. ⚠️ "for how long - the longer the more likely" is expressed
+#: by these ACCUMULATING over the run rather than by any run-length constant.
+W_CHANGE_BAR_FITS = 1.0
+W_CHANGE_BAR_CONTRADICTS = -1.0
+
+#: What a change needs before it is written into the meter's segments.
+#: ⚠️ At 3.0 a single staff reading a complete meter clears it and two
+#: contradicting bars sink it again -- the same structural ordering the carry
+#: uses, with the glyph in the place the carry gives to a prior reading.
+METER_CHANGE_FLOOR = 3.0
+
+
+#: The meters the repertoire actually prints, from the template reader's own
+#: `DEFAULT_METERS` -- imported rather than restated so the two readers cannot
+#: drift apart about what a meter IS.
+#:
+#: ⚠️ IMPORTED AT MODULE LOAD AND NOT GUARDED. The first version wrapped this
+#: in `except Exception: frozenset()`, which swallowed a wrong relative import
+#: and left the set EMPTY -- so the gate silently admitted nothing and every
+#: change was refused. That is this project's own "an optional pass may abstain
+#: quietly, it may not fail like a defect quietly", reproduced inside the fix
+#: for a different quiet failure.
+from ... import time_signature_locator as _tsl
+_PLAUSIBLE_METERS = frozenset((n, d) for n, d, _raw in _tsl.DEFAULT_METERS)
+
+
+def _meter_from_digits(rows) -> Optional[tuple]:
+    """One staff's meter glyphs at one bar -> (numerator, denominator).
+
+    ⚠️ THE STACK IS THE READING. A time signature is two digits stacked, so the
+    numerator is simply the higher one -- `y_center` is on every row and is the
+    whole of what distinguishes them. A bar whose digits do not separate into
+    two heights says "something is printed here" and nothing more, which is
+    what `W_CHANGE_GLYPH_LOOSE` is for.
+    """
+    digits = []
+    for r in rows:
+        name = str(r.value)
+        if not name.startswith("timeSig"):
+            continue
+        tail = name[len("timeSig"):]
+        if not tail.isdigit():
+            continue                      # timeSigCommon and friends: no pair
+        y = (r.detail or {}).get("y_center")
+        if y is None:
+            continue
+        digits.append((float(y), int(tail)))
+    if len(digits) < 2:
+        return None
+    digits.sort()
+    top, bottom = digits[0], digits[-1]
+    if top[0] == bottom[0]:
+        return None                       # all at one height: not a stack
+    return (top[1], bottom[1])
+
+
+def _bar_run(bars: dict, from_cell: int, expected: float) -> tuple:
+    """(bars that FIT, bars that do NOT) from `from_cell` onward."""
+    fits = misses = 0
+    for cell_index, lengths in sorted(bars.items()):
+        if cell_index < from_cell or len(lengths) < METER_CARRY_MIN_STAVES_PER_BAR:
+            continue
+        mode, n = Counter(lengths).most_common(1)[0]
+        if n / len(lengths) < 0.5:
+            continue
+        if abs(mode - expected) < 1e-6:
+            fits += 1
+        else:
+            misses += 1
+    return fits, misses
+
+
+def _meter_changes(ev: Evidence, opening: dict, bars: dict) -> list:
+    """Every mid-system meter change this system's own evidence supports.
+
+    Returns segment dicts, in bar order, each with `from_cell` and the terms
+    that carried it. The GLYPH opens each candidate; the bar math confirms it,
+    refuses it, or chooses between two staves that read it differently.
+    """
+    rows = ev.rows(Q.METER_GLYPH, scope=Scope.SELF_AND_DESCENDANTS)
+    by_cell: dict = {}
+    for r in rows:
+        cell = (r.detail or {}).get("cell")
+        if cell is None or int(cell) == 0:
+            continue                      # cell 0 states the staff's OPENING
+        by_cell.setdefault(int(cell), []).append(r)
+
+    out = []
+    for cell in sorted(by_cell):
+        per_staff = {}
+        for r in by_cell[cell]:
+            per_staff.setdefault(r.subject.staff, []).append(r)
+
+        # ⚠️ THE STAVES MAY DISAGREE, AND THE MATH IS WHAT SETTLES IT. On p.62
+        # cell 8 one staff reads 3 over 4 and another reads four 4s; a vote
+        # alone would tie. Each distinct reading is scored on its own, and the
+        # bars that follow decide -- which is the layering working rather than
+        # a tie-break rule.
+        readings: dict = {}
+        loose = 0
+        for staff, staff_rows in per_staff.items():
+            pair = _meter_from_digits(staff_rows)
+            if pair is None:
+                loose += len(staff_rows)
+            else:
+                readings.setdefault(pair, []).append(staff)
+        if not readings:
+            continue
+
+        best = None
+        for (num, den), staves in sorted(readings.items()):
+            # ⚠️ A METER MUST BE ONE THE REPERTOIRE PRINTS, and without this
+            # the detector proposes meters that do not exist. Measured: p.61
+            # cell 3 produced a change to **1/1** at support 5.0, out of
+            # `timeSig1` detections -- a confident reading of a meter nobody
+            # has ever engraved. The list is `time_signature_locator`'s own
+            # `DEFAULT_METERS`, imported rather than restated so the two
+            # readers cannot drift apart about what a meter is.
+            if (num, den) not in _PLAUSIBLE_METERS:
+                continue
+            expected = float(num) * 4.0 / float(den)
+            fits, misses = _bar_run(bars, cell, expected)
+            terms = [Term(f"glyph_pair_staff_{st}", W_CHANGE_GLYPH_PAIR)
+                     for st in staves]
+            terms += [Term("glyph_loose", W_CHANGE_GLYPH_LOOSE)
+                      for _ in range(loose)]
+            terms += [Term(f"bar_fits_{i}", W_CHANGE_BAR_FITS)
+                      for i in range(fits)]
+            terms += [Term(f"bar_contradicts_{i}", W_CHANGE_BAR_CONTRADICTS)
+                      for i in range(misses)]
+            support = tally(terms)
+            cand = {"from_cell": cell, "numerator": num, "denominator": den,
+                    "raw": f"{num}/{den}", "support": round(support, 3),
+                    "staves_reading_it": sorted(staves),
+                    "bars_fit": fits, "bars_contradict": misses,
+                    "loose_digits": loose}
+            if best is None or support > best["support"]:
+                best = cand
+        if best is None or best["support"] < METER_CHANGE_FLOOR:
+            continue
+        if (best["numerator"], best["denominator"]) == \
+                (opening.get("numerator"), opening.get("denominator")):
+            continue                      # a RESTATEMENT, not a change
+        out.append(best)
+    return out
+
+
+def _with_segments(ev: Evidence, opening: dict) -> dict:
+    """The system's meter, plus any change its own evidence supports.
+
+    ⚠️ ONE FACT, NOT TWO. `segments` always exists -- a one-entry list where
+    nothing changes -- so a consumer never has to ask whether this system is
+    the special case. `record.meter_at` is how a bar's meter is read.
+    """
+    changes = _meter_changes(ev, opening, _bar_lengths_for(ev))
+    segments = [dict(opening, from_cell=0)]
+    for c in changes:
+        segments.append({"from_cell": c["from_cell"],
+                         "numerator": c["numerator"],
+                         "denominator": c["denominator"],
+                         "raw": c["raw"], "support": c["support"],
+                         "staves_reading_it": c["staves_reading_it"],
+                         "bars_fit": c["bars_fit"],
+                         "bars_contradict": c["bars_contradict"]})
+    return dict(opening, segments=segments)
 
 
 def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
@@ -887,9 +1104,40 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
             # and a page with no carry available are three different pages,
             # and a reader must be able to tell them apart.
             return Ruling.abstain("carry_outweighed_by_the_bars", **detail)
-        return Ruling(value=dict(found.value), reason="carried",
+        # ⚠️ A CARRIED METER IS STILL SUBJECT TO A CHANGE PRINTED ON THIS
+        # SYSTEM. The carry says what the music was doing; a time signature
+        # standing at bar N says it stopped doing it there.
+        carried = {k: v for k, v in found.value.items() if k != "segments"}
+        return Ruling(value=_with_segments(ev, carried), reason="carried",
                       used=(found.id,), margin=support, detail=detail)
     return None
+
+
+def _change_only(ev: Evidence, why: str, **detail) -> Ruling:
+    """A system whose OPENING meter is unknown but which prints a CHANGE.
+
+    ⚠️ THIS IS THE RANGE-SCOPED FACT EARNING ITS KEEP. Beethoven 5 / Litolff
+    p.62 reads a usable meter on 2 staves of 17 -- far under the coverage
+    floor -- so the system abstains and a system-scoped meter would have had
+    nowhere to put the `3/4` its print states plainly at bar 155. As segments
+    it says the true thing: *unknown until bar 8, 3/4 from there*.
+    """
+    changes = _meter_changes(ev, {}, _bar_lengths_for(ev))
+    if not changes:
+        return Ruling.abstain(why, **detail)
+    first = changes[0]
+    segments = [{"from_cell": c["from_cell"], "numerator": c["numerator"],
+                 "denominator": c["denominator"], "raw": c["raw"],
+                 "support": c["support"],
+                 "staves_reading_it": c["staves_reading_it"],
+                 "bars_fit": c["bars_fit"],
+                 "bars_contradict": c["bars_contradict"]} for c in changes]
+    return Ruling(value={"numerator": first["numerator"],
+                         "denominator": first["denominator"],
+                         "raw": first["raw"], "segments": segments},
+                  reason="change_only",
+                  detail={"opening_unknown_because": why,
+                          "n_changes": len(changes), **detail})
 
 
 @decision(
@@ -906,7 +1154,8 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
            Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST),
     reasons=("voted", "no_agreement", "no_evidence",
              "too_few_staves_read_it", "carried",
-             "carry_not_corroborated", "carry_outweighed_by_the_bars"),
+             "carry_not_corroborated", "carry_outweighed_by_the_bars",
+             "change_only"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_meter(ev: Evidence) -> Ruling:
@@ -930,7 +1179,8 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
         # ⚠️ THE CARRY IS TRIED ONLY WHERE THIS SYSTEM'S OWN EVIDENCE FAILED,
         # so it can never overturn a reading. Off by default -- see
         # `METER_CARRY_ENV` for the movement-boundary hazard, measured.
-        return _carry_meter(ev, "no_evidence") or Ruling.abstain("no_evidence")
+        return (_carry_meter(ev, "no_evidence")
+                or _change_only(ev, "no_evidence"))
 
     tally_: dict = {}
     for row in rows:
@@ -949,8 +1199,8 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     total = n_staves.value if n_staves is not None and n_staves.value else None
     coverage = (len(witnesses) / float(total)) if total else None
     if coverage is not None and coverage < METER_COVERAGE_FLOOR:
-        return _carry_meter(ev, "too_few_staves_read_it") or Ruling.abstain(
-            "too_few_staves_read_it",
+        return _carry_meter(ev, "too_few_staves_read_it") or _change_only(
+            ev, "too_few_staves_read_it",
             coverage=round(coverage, 3),
             n_staves_spoke=len(rows),
             n_staves_on_system=total,
@@ -960,14 +1210,15 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     if share < METER_AGREEMENT_FLOOR:
         # ⚠️ Recorded, not defaulted. A system whose staves disagree about the
         # meter is exactly the page a human should see.
-        return _carry_meter(ev, "no_agreement") or Ruling.abstain(
-            "no_agreement",
+        return _carry_meter(ev, "no_agreement") or _change_only(
+            ev, "no_agreement",
             share=round(share, 3),
             readings={k: len(v) for k, v in tally_.items()})
 
-    return Ruling(value={"numerator": witnesses[0].value[0],
-                         "denominator": witnesses[0].value[1],
-                         "raw": best_raw},
+    opening = {"numerator": witnesses[0].value[0],
+               "denominator": witnesses[0].value[1],
+               "raw": best_raw}
+    return Ruling(value=_with_segments(ev, opening),
                   reason="voted", margin=share,
                   used=tuple(r.id for r in witnesses),
                   detail={"share": round(share, 3),

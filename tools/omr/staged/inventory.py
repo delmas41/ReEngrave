@@ -117,13 +117,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "inert declaration. `adjudicate_duration` DOES read `beam_stroke` -- "
         "both come from `gather_cv_lines` -- but nothing reads the stem: no "
         "stem-direction or stem-presence tier exists on this path.",
-    "meter declares 'meter_glyph'":
-        "⚠️ inert, and the DETECTOR's meter reading is what is unread. The "
-        "vote runs on `meter_template` alone, so a `timeSigCommon` detection "
-        "-- which the legacy exporter uses for `symbol=` -- reaches no "
-        "decision. The staged exporter derives `symbol` from the template "
-        "reader's own matched letter instead, so nothing is lost today; a "
-        "second witness is.",
     "meter declares 'dossier_fact'":
         "inert declaration; no dossier is supplied on the scan path by "
         "protocol.",

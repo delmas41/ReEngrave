@@ -3,14 +3,16 @@
 A running log of changes made to this project, newest first. Updated after
 every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
-⚠️ **ORDER IS CAUSAL, AND THE DATED HEADINGS DISAGREE WITH THE COMMIT DATES
-ACROSS SESSIONS — this is not a sorting error.** Parallel sessions dated their
-own blocks by their own reckoning, and one dated its work a day ahead of the
-commits that carry it. The 09-09 GATHER-coverage entry stands ABOVE the two
-09-10 entries because it *builds on* them: it generalises the chord gap the
-`Q.EVENT` block found. Headings are left exactly as each session wrote them —
-rewriting another session's dated claim to tidy a sort would be the ledger
-overwriting the tree.
+⚠️ **ORDER IS CAUSAL — several entries share a date, so the sequence is what
+carries the dependency, not the heading.** Parallel sessions dated their own
+blocks by their own reckoning; the GATHER-coverage entry stands above the
+`Q.EVENT` one because it *builds on* it, generalising the chord gap that block
+found. Headings are left as each session wrote them — rewriting another
+session's dated claim to tidy a sort would be the ledger overwriting the tree.
+⚠️ *(This note previously pointed at "the two 09-10 entries". The session that
+wrote them re-dated its own blocks to `2026-09-09 (night)` in the same commits
+that landed on main, so that wording is gone — corrected here rather than left
+pointing at headings no longer in the file.)*
 
 ---
 
@@ -220,7 +222,9 @@ version_memory.md. Second commit adds
 
 ---
 
-## 2026-09-10 (later still) — the meter carry is WEIGHED, not gated
+---
+
+## 2026-09-09 (night) — the meter carry is WEIGHED, not gated; a change the glyph opens
 
 Sean: *"I want to make sure we don't get stuck in binary on or off ... If the
 measure is what we think it is - does the math of the notes make sense. If not
@@ -293,7 +297,7 @@ then the meter should decrease in probability."*
 
 ---
 
-## 2026-09-10 (later) — the chord was grouped after the stage that needed it
+## 2026-09-09 (night) — Q.EVENT: the chord was grouped after the stage that needed it
 
 Sean: *"determining when notes and voices and chords line up should be very
 early in the process."* Right, and the record said so three ways.
@@ -344,7 +348,7 @@ early in the process."* Right, and the record said so three ways.
 
 ---
 
-## 2026-09-10 — the meter carry: measured on both sides, shipped OFF
+## 2026-09-09 (night) — the meter carry: measured on both sides, shipped OFF
 
 - **`OMR_METER_CARRY`** (staged pipeline, default `0`). A meter is a fact of
   the MOVEMENT, printed at its start and nowhere else, so the staged pipeline

@@ -3,7 +3,7 @@
 `Q.EVENT`, `rhythm.adjudicate_event`, and `consequences._event_totals`.
 No flag — this closes a defect rather than adding a behaviour.
 
-Sean, 2026-09-10: *"I feel like determining when notes and voices and chords
+Sean, 2026-09-09: *"I feel like determining when notes and voices and chords
 line up should be very early in the process."*
 
 He is right, and the record says so three ways.

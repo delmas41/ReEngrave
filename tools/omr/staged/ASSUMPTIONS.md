@@ -511,7 +511,7 @@ onto a carry and `pages_since_read` is the true distance back to ink.
 
 **Why.** A meter is a fact of the MOVEMENT, printed at its start and nowhere
 else, so a page-at-a-time pipeline has none from a movement's second page on.
-Sean, 2026-09-10: *"If the measure is what we think it is - does the math of
+Sean, 2026-09-09: *"If the measure is what we think it is - does the math of
 the notes make sense. If not then the meter should decrease in probability."*
 So the bars do not veto, they move its standing — and the movement-boundary
 problem dissolves, because a new movement's bars simply contradict the old
@@ -547,9 +547,142 @@ carry the bars refuse simply abstains, which is the status quo. Still `0` on
 **n** — one document — not because the hazard is unhandled. See
 `benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md`.
 
+### A-DUR-4 · ⚠️ A meter governs a RANGE OF BARS, and the glyph opens a change
+
+**PRINCIPLE** — Sean, 2026-09-09: *"I don't want the dichotomy of it's a system or a group of notes surrounding it. It is both."*
+*`record.meter_at`, `rhythm._meter_changes`, `W_CHANGE_GLYPH_PAIR`, `METER_CHANGE_FLOOR`*
+
+**Assumption.** A `Q.METER` verdict's value carries `segments` — one entry per
+stretch of bars, each with the `from_cell` it starts at. A change is proposed
+only where a time-signature GLYPH stands at that bar; the bar math then
+confirms it, refuses it, or chooses between staves that read it differently.
+
+**Why.** Measured on Beethoven 5 / Litolff p.62, which prints a mid-system
+change to 3/4. The page prints bar 147, so the reference's change at bar 155 is
+CELL 8 — and the detector's `timeSig3`+`timeSig4` land on cell 8 **exactly**,
+while the bar-math anomaly sits at cell 6, two bars early and wrong. **The
+glyph is the precise signal; the arithmetic is the noisy corroborator.**
+
+⚠️ **ONE FACT, NOT TWO.** Adding a separate "there is a change at bar N" fact
+beside an unchanged system meter was refused on this project's own history: two
+records of one thing that nothing forces to agree is what let an accuracy
+figure go stale in three of four places.
+
+⚠️ **A CHANGE-ONLY VERDICT IS A REAL ANSWER.** p.62 reads a usable meter on 2
+staves of 17, far under the coverage floor, so the system abstains — and a
+system-scoped meter would have had nowhere to put the 3/4 its print states
+plainly. As segments it says the true thing: *unknown until bar 8, 3/4 from
+there*. `meter_at` returns None for a bar no segment covers.
+
+⚠️ **A PROPOSED METER MUST BE ONE THE REPERTOIRE PRINTS.** Without the gate,
+p.61 produced a confident change to **1/1** at support 5.0 out of `timeSig1`
+detections. The list is `time_signature_locator.DEFAULT_METERS`, imported.
+
+**How to falsify.** A printed change the glyph does not mark, or a glyph-marked
+bar that is not a change. ⚠️ **The second half is barely tested**: the bar-math
+corroborator contributed `0 fit / 0 not` even on the case that works, because
+the whole-rest exclusion removes exactly the post-change bars (a change is
+typically followed by most instruments resting).
+
+**Blast radius.** n = 1 change, 1 document. Controls are clean (pages 0-2 and
+p.17 report one segment and no change), but one true positive is one.
+
+### A-DUR-6 · ⚠️⚠️ THE TARGET MODEL — a meter is decided PER BAR, from layered evidence
+
+**SEAN'S DESIGN, 2026-09-09, recorded verbatim so it is not lost or paraphrased away.**
+
+> *"It's almost as if each bar needs to do its own math but submit first to
+> contextual elements. Example: 1. Does the bar have a meter glyph? 2. Are
+> there meter glyphs on different systems on this same bar. 3. What is the sum
+> of durations for this bar. 4. What is the sum of this same bar on all the
+> other systems? 5. The bars on either side for 4 bars have the same equivalent
+> of the sum? ... I think eventually we can add beat subdivision matches the
+> time signature? And are there any undefined blobs of ink?"*
+
+> *"If there is an established meter and no sign of change then it starts the
+> same meter. If there is no established meter then it must derive the most
+> likely meter based off of the order of determination above."*
+
+**The governing rule.** Persistence by default; a change must be argued for.
+Where nothing is established, the meter is DERIVED from the ranked evidence
+rather than defaulted.
+
+**The evidence, in Sean's order** — status against what exists today:
+
+| # | evidence | today |
+|--:|---|---|
+| 1 | a meter glyph at this bar | ✅ `Q.METER_GLYPH`, now gathered at EVERY cell |
+| 2 | meter glyphs at the same bar on other staves | ✅ voted in `_meter_changes` |
+| 3 | this bar's own duration sum | ✅ `_bar_lengths_for` |
+| 4 | the same bar's sum on every other staff | ✅ the per-bar modal vote |
+| 5 | the surrounding bars' sums | ⚠️ PARTIAL — only FORWARD of a candidate (`_bar_run`) |
+| 6 | beat subdivision agrees with the meter | ❌ not built; beams are gathered, grouping is not read |
+| 7 | undefined blobs of ink | ❌ not built — see A-DUR-5 |
+
+**Three things to carry into building it, each paid for by a measurement here:**
+
+⚠️ **THE RUN MUST BE DIRECTIONAL.** Bars AFTER a candidate change point are
+evidence for the NEW meter and bars BEFORE it are evidence for the OLD one, so
+a symmetric ±4 window blurs exactly the boundary it is meant to find. Run
+LENGTH is legitimate evidence ("the longer the more likely"); a symmetric
+window around a suspected change is not.
+
+⚠️ **A RUN MAY PROPOSE, BUT ONLY A LONG ONE.** Not admitted today because the
+*Andante* (p.17) names nothing coherent — 4 assessable bars at 4 different
+values — and would manufacture meters from noise. The discriminator is the run
+itself: *10 staves agreeing for 6 bars* is not *4 bars at 4 values*. This is
+the gap between what is built and what Sean described, and it is the next
+piece of work.
+
+⚠️ **EVIDENCE STILL HAS TO BE INDEPENDENT.** Ten bars whose durations all trace
+to one misread beam level are ONE signal. `correlated_groups` exists for this
+and the clef work is the warning: every clef detection on a staff is one group,
+so no amount of detector evidence breaks a clef tie.
+
+**Worth adding to the list, and cheap:** a **double barline** at the candidate
+bar. A meter change is nearly always printed after one, it is an independent
+reader (`barline_column`), and it needs no new CV. Also a tempo word at that
+bar ("Tempo I.", "Allegro") — the engraver's own section marker, blocked only
+on `direction` being a stub.
+
+### A-DUR-5 · ⚠️⚠️ UNBUILT AND WANTED — unclassified ink as a first-class fact
+
+**SEAN'S REQUEST, 2026-09-09, recorded so it is not lost.**
+
+> *"I really don't want to lose the 'here is a blob of ink but we don't know
+> what it is' gather data point. It can be used in every decision point if
+> needed to help rule things out or determine patterns like — this is the same
+> unrecognizable blob on every system at bar 51... or we know what this blob is
+> in 3 of the 10 systems and they all line up and are there for the same
+> thing."*
+
+**The idea.** GATHER records ink it cannot name, as a quantity, with position.
+Then any decision may ask: *is there something here?* — and, more powerfully,
+**do the unnamed things LINE UP across staves and systems?** A blob at the same
+bar on every staff is a printed event whatever it is; a blob at one bar on one
+staff is noise. Where a few staves DO classify it and the rest only see a blob,
+the classified minority names what the majority corroborates.
+
+⚠️ **THIS IS NOT REACHABLE FROM THE DETECTION RECORD, AND THE MEASUREMENT SAYS
+SO.** At p.62 cell 8 the meter is printed on every staff, we classify it on
+**2 of 17**, and the other 15 carry **no unclassified detection at that
+column** — the ink was not detected at all, rather than detected and unnamed.
+So the tier needs a **RASTER pass in GATHER**, not a re-weighting of what is
+already recorded.
+
+**The precedent exists.** `direction_text._blank_detections` subtracts every
+detection from the page's ink so that *"find the text"* becomes *"find the
+ink"*. The same subtraction, kept as rows rather than consumed for OCR, is the
+whole mechanism.
+
+**Why it is worth doing.** It is the only proposal on the table that helps the
+case where a reader classifies nothing — which is every hard page measured
+here: p.17's meter change, p.62's other 15 staves, and the scan corpus's
+hairpins (1 detected against 198 encoded).
+
 ### A-DUR-3 · ⚠️ The pipeline's ONE sanctioned loop, declared per rule
 
-**CONTINGENCY** — allowed by Sean, 2026-09-10, after the guard escalated it.
+**CONTINGENCY** — allowed by Sean, 2026-09-09, after the guard escalated it.
 *`evaluate.rule(single_pass=True)`, `Verdict.single_pass_revision`, `record.UphillConsequence`*
 
 **Assumption.** `reconcile_duration` may revise a duration even though the

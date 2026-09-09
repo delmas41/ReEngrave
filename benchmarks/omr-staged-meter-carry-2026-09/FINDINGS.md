@@ -278,7 +278,7 @@ not what any stage can read today.
 
 ## 7. THE CARRY IS NOW WEIGHED, NOT GATED — and the flag can come off the binary
 
-Sean, 2026-09-10, on §2's default-OFF conclusion:
+Sean, 2026-09-09, on §2's default-OFF conclusion:
 
 > *"I want to make sure that we don't get stuck in binary on or off based on
 > current measurements ... We need probability based decisions with layers of
@@ -521,3 +521,138 @@ page's early bars read 6.0, 5.0, 6.0, so it is noisy too, only less so than
 page 17.
 
 **Not built. Parked at Sean's request for a design pass.**
+
+
+---
+
+## 12. WHAT WAS ACTUALLY PREVENTING "3/4" — three wiring facts, no evidence problem
+
+Sean: *"Modal sum + some written 3/4 should be more than enough. What is
+actually preventing us from saying 3/4 with what we have?"*
+
+Nothing about the evidence. Three things in the wiring, in order of cost:
+
+1. ⚠️ **BOTH METER READERS LOOKED ONLY AT THE STAFF HEADER.**
+   `_gather_meter_glyphs` hardcoded `R.cell(p, ..., 0)` and the template reader
+   uses `header_cells_for_page`. A meter printed at a CHANGE is outside both
+   windows by construction — so on p.62 the detector's `timeSig3` and five
+   `timeSig4` sat on the record as ordinary `glyph_box` rows while
+   `meter_glyph` abstained `no_detections` on all **17** staves. **FIXED**: the
+   gather now walks every cell and records the CELL on each row, because WHERE
+   a meter glyph stands is the whole of its meaning — at cell 0 it states the
+   staff's meter, anywhere else it announces a change at that bar.
+2. **The decision ignores `Q.METER_GLYPH`.** Declared in `wants`, never read —
+   already on `KNOWN_GAPS` in those words. The vote runs on `meter_template`
+   alone, so even a header detection reaches no decision. **NOT YET FIXED**,
+   which is why the widening above is measured INERT (meter verdicts
+   byte-identical on `--pages 0-2`).
+3. **`Q.METER` is `scope=Kind.SYSTEM`.** One verdict per system, so "4/4 until
+   bar 8, 3/4 after" is inexpressible even with perfect evidence. This is the
+   real design change and it is a SUBJECT question: a meter is a property of a
+   RANGE OF BARS, not of a system.
+
+### ⚠️ CORRECTION TO §11: the alignment was NOT off by two
+
+§11 records the cell→bar alignment as off by about two and the cause as
+unchecked. **It is not off.** The page prints bar **147** at top-left, so cell
+8 is bar **155** — and the reference's change is at bar **155**. The
+`timeSig3`+`timeSig4` lands on it **exactly**.
+
+What §11 actually compared was the BAR-MATH signal (a modal 3.0 at cell 6),
+which is two cells early and is therefore *not* the change. So on this page:
+
+| signal | says | truth |
+|---|---|---|
+| **meter glyph** | change at **cell 8** | **bar 155 = cell 8 ✓** |
+| bar math | anomaly at cell 6 | ✗ two cells early |
+
+**That inverts the weighting rationale, in Sean's favour**: the glyph is the
+precise signal and the arithmetic is the noisy corroborator, not the other way
+round. `measure_partition` decided **13 cells on all 17 staves**, so cell
+indices do align across the system and the comparison is sound.
+
+### ⚠️ Two things the same measurement rules out or complicates
+
+* **The "undefined blob" tier cannot be built from the detection record.**
+  Sean: *"an undefined blob should also be a factor — there is something there
+  but we aren't sure what it is."* Sound idea, and there is precedent
+  (`direction_text._blank_detections` subtracts every detection from the page
+  ink so "find the text" becomes "find the ink"). But at p.62 cell 8 the other
+  15 staves carry **no unclassified detection** at the meter column — the ink
+  was not detected at all, rather than detected and unnamed. So the tier needs
+  a RASTER pass in GATHER, not a re-weighting of what is already recorded.
+* ⚠️ **The whole-rest exclusion thins the evidence exactly where a change
+  happens.** It is necessary (§7) — a whole rest would read our own default
+  back as evidence — but a meter change is typically followed by most
+  instruments RESTING, so cells 7-12 of this system drop to one assessable
+  staff each. **The bar-math corroborator is systematically weakest
+  immediately after a change**, which is another reason the glyph must carry
+  the weight.
+
+
+---
+
+## 13. THE METER CHANGE, BUILT — glyph opens it, math settles it
+
+Sean's ordering, implemented and measured.
+
+**The value shape changed.** `Q.METER` now carries `segments` — one entry per
+stretch of bars with the `from_cell` it starts at — and `record.meter_at(value,
+cell)` is how a bar's meter is read. One fact, not two; the alternative (a
+separate change fact beside an unchanged system meter) was refused on this
+project's own history of two records of one thing drifting apart.
+
+**Weights, in Sean's order:**
+
+| term | weight |
+|---|--:|
+| a staff reading a COMPLETE meter (numerator over denominator) at that bar | **+3.0** |
+| a digit at that bar that does not pair | +0.5 |
+| each following bar whose length matches | +1.0 |
+| each that does not | −1.0 |
+| `METER_CHANGE_FLOOR` | 3.0 |
+
+So **one staff reading a printed time signature clears the floor alone**, and
+two contradicting bars sink it again. `_meter_from_digits` reads the stack: the
+numerator is simply the higher digit, which is what `y_center` is for.
+
+### Measured
+
+| run | result |
+|---|---|
+| **p.62** (prints 3/4 at bar 155 = cell 8) | **`3/4` at cell 8** — support 3.0, staff 11 |
+| p.61 | abstains, no change |
+| pages 0-2 (no change) | 1 segment each, **no spurious change** |
+| p.17 (new movement, no mid-system change) | no change proposed |
+
+**The change lands on the exact printed bar**, and the negative controls are
+clean.
+
+⚠️ **A FALSE POSITIVE WAS FOUND AND GATED.** Before the plausibility gate, p.61
+proposed a change to **`1/1`** at support 5.0, out of `timeSig1` detections — a
+confident reading of a meter nobody has ever engraved. Proposals are now
+restricted to `time_signature_locator.DEFAULT_METERS`, imported rather than
+restated so the two readers cannot drift about what a meter is.
+
+⚠️ **AND THE GATE ITSELF FAILED SILENTLY FIRST.** It was written as
+`try: ... except Exception: frozenset()`, which swallowed a wrong relative
+import and left the set EMPTY — so the gate admitted nothing and every change
+was refused. That is this repo's own *"an optional pass may abstain quietly, it
+may not fail like a defect quietly"*, reproduced inside the fix for a different
+quiet failure. It is now a hard module-level import.
+
+### ⚠️ What is NOT established
+
+* **n = 1 change, 1 document.** One true positive is one.
+* **The bar-math half is barely exercised.** Even on the case that works it
+  contributed `0 fit / 0 not`, because the whole-rest exclusion removes exactly
+  the post-change bars — a change is typically followed by most instruments
+  resting. So the measured result rests on the GLYPH alone.
+* ⚠️ **A change with NO glyph cannot be proposed at all.** Sean: *"If there is
+  no meter glyph then we have to deal with bar sums... We have 12 systems and
+  10 of them say 4/4 for 6 measures."* That is right and is NOT built. The
+  reason a run was not admitted as a proposer is p.17, where the bars name
+  nothing coherent and would manufacture meters out of noise — but the
+  discriminator is the RUN (10 staves × 6 bars is not 4 bars at 4 different
+  values), which is exactly Sean's *"for how long — the longer the more
+  likely"*. **This is the next piece of work.**

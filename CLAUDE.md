@@ -26,6 +26,21 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-09-meter-as-a-range-fact.md](docs/handoff-2026-09-09-meter-as-a-range-fact.md)
+— **the meter became a fact about BARS rather than about a system**
+(`Q.METER` carries `segments`; `record.meter_at` reads a bar's meter), a carried
+meter is **WEIGHED by the bars rather than gated**, and **`Q.EVENT`** closed a
+silent double-count that had disabled the pipeline's own bar-sum check on every
+bar holding a chord. The change detector finds the printed `3/4` **on the exact
+bar the reference names**. ⚠️ Read its **§4 before quoting anything**: n = 1
+document, the *Andante* refusal is **SAFE but NOT discriminating** (it refuses
+the CORRECT meter too), and the bar-math half contributed *nothing* even on the
+case that works — the result rests on the glyph alone. **§5 ranks the next
+work, and it is Sean's model**: a long RUN of bar sums proposing a meter where
+no glyph stands (DIRECTIONAL — bars after a candidate are evidence for the new
+meter, before it for the old), the per-bar evidence order (`A-DUR-6`), and
+**unclassified ink as a gathered fact** (`A-DUR-5`, flagged below). Its
+predecessor
 [docs/handoff-2026-09-09-gather-and-the-record-that-answers.md](docs/handoff-2026-09-09-gather-and-the-record-that-answers.md)
 — the staged pipeline now EXPORTS A FILE, gathers the five families it used to
 drop, and answers *which decision* held a note back. It ranks the next three
@@ -93,6 +108,22 @@ opened Step 2 and posed the Viola question (now answered). Then read
 — what the staged pipeline and the symbol ledger are, **why musicdiff bucket
 totals can no longer rank work** (amplification differs 6×–2× by error kind; one
 changed `<type>` scores ZERO on 10 of 20 files), and the ranked next steps.
+
+⚠️⚠️ **STANDING REQUEST FROM SEAN, 2026-09-09 — UNCLASSIFIED INK AS A
+FIRST-CLASS GATHERED FACT, NOT YET BUILT.** *"I really don't want to lose the
+'here is a blob of ink but we don't know what it is' gather data point. It can
+be used in every decision point ... this is the same unrecognizable blob on
+every system at bar 51 ... or we know what this blob is in 3 of the 10 systems
+and they all line up and are there for the same thing."* The power is in the
+ALIGNMENT: unnamed ink at the same bar across staves is a printed event
+whatever it is, and where a few staves classify it the minority names what the
+majority corroborates. ⚠️ It is **not reachable from the detection record** —
+measured on Beethoven 5 / Litolff p.62, where a meter is printed on every staff,
+classified on 2 of 17, and the other 15 carry no unclassified detection at that
+column: the ink was never detected at all. It needs a RASTER pass in GATHER,
+and the precedent is `direction_text._blank_detections`, which already subtracts
+every detection from the page's ink so "find the text" becomes "find the ink".
+Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**.
 
 **Backlog / research notes:** see [NOTES.md](NOTES.md) — surface these at the start of a ReEngrave session.
 
