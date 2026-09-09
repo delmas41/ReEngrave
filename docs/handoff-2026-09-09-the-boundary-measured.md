@@ -201,16 +201,24 @@ their min.
 * the opening `9/8` is voted **`9/4`** — the header template reader returns
   `[9, 4]` on 10 staves at **0.500-0.531** against a `min_score` of 0.50, where
   page 0's correct `6/8` reads 0.656-0.750 on 14 of 14;
-* the CAUTIONARY is read as a change on the system that prints it, on both
-  printings;
+* ✅ the CAUTIONARY is **fixed** — a meter in a system's LAST cell governs no
+  bar there, so it is recorded as `cautionary` rather than proposed as a
+  change. All four TRUE changes in the corpus sit at a non-last cell and both
+  cautionaries at a last cell, checked BEFORE the rule was written;
 * the real change to `6/8` is missed — one `timeSig1` detected, no pair.
 
-⚠️⚠️ **The first two have the SAME repair available and it is §1's**: the
-cautionary at the end of page 0 is the same meter as page 1's opening, and the
-DETECTOR reads it correctly as `9` over `8` on 10 and 20 staves. **The document
-holds the right answer one system earlier and nothing carries it forward.**
-Feeding a cautionary to the next system's opening is carry/borrow — so it lands
-naturally in the segments session, not in a new reader.
+**Both fixes together: false meter changes 10 → 3 across the six fixtures,
+every true change still found, and the ENGRAVED arms are now clean — 4 printed,
+4 found, 0 false.**
+
+⚠️⚠️ **The `9/4` now has its answer sitting ON THE RECORD.** The cautionary
+ending page 0 reads **`9/8` on 9 staves at support 26.5**; the opening it
+announces is voted `9/4` on 10 staves at 0.500-0.531. The document holds the
+right answer one system earlier and nothing carries it forward — and consuming
+a recorded cautionary is carry/borrow, so it lands in the segments session
+rather than in a new reader. ⚠️ It is EVIDENCE, not an answer: the same scan
+also records a cautionary at support **3.5 on ONE staff**, out of the spurious
+`timeSig4`s, and the support and staff count are what tell them apart.
 
 ### 3. UNCHANGED FROM THE LAST HANDOFF
 

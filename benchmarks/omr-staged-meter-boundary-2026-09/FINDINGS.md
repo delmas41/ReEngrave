@@ -348,6 +348,9 @@ plus two more on the page's second system. Its bar SEGMENTATION is right (7 and
 
 ### ⚠️ THE ONE ENGRAVED FALSE POSITIVE IS A CAUTIONARY, AND BOTH PRINTINGS SHOW IT
 
+✅ **FIXED — read §4c's cautionary section before quoting the table above.**
+The diagnosis below stands; the behaviour it describes no longer ships.
+
 Page 0 of both arms votes the correct `6/8` and then proposes a change out of
 the courtesy `9/8` printed after the final barline — **segment@6 at support
 57.0 engraved, segment@7 at 26.5 on the scan**. The cautionary announces the
@@ -443,6 +446,75 @@ and every assertion failed for a reason unrelated to the rule — the harness is
 now commented with that, because a test that fails for the wrong reason is one
 edit away from being "fixed" by weakening the assertion.
 
+### ⚠️⚠️ AND THE CAUTIONARY: a courtesy signature is not a change
+
+The other false positive — the only one the ENGRAVED arms produced, and the
+same one on both printings of the same music. An engraver announcing a new
+meter prints it **twice**: once after the final barline of the system that is
+ending, once at the head of the system that begins. **The first governs no
+bar.** `_meter_changes` had no notion of one; any glyph past cell 0 was a
+change, so both printings proposed one at page 0's last cell (support **57.0**
+engraved, 19 staves; **26.5** scanned) and the segment would re-size a bar the
+cautionary does not govern.
+
+**The rule is the engraving convention, not a fitted threshold**: a change is
+put at a system's START, and the cautionary exists precisely so that it can be.
+So a meter standing in a system's **LAST cell** is the announcement — unless
+the bar it would govern fits, which is the one thing that separates a genuine
+last-bar change from a courtesy.
+
+⚠️ **Measured over every change in this corpus before writing the rule**, which
+is what makes it more than a story: **all four TRUE changes sit at a non-last
+cell** (Litolff p.62 cell 8 of 13, Brahms 1 i cell 1 of 8, Beethoven 5 iv cell
+3 of 9, Brahms 1 iv cell 6 of 8) and **both cautionaries sit at a last cell**,
+6 of 7 and 7 of 8. The Litolff headline result is not at a last cell and is
+untouched — checked before the rule was written, not after.
+
+⚠️ **IT IS RECORDED, NOT DISCARDED**, on the meter's own value as
+`cautionary`. That matters because it is the document's answer to the very
+next thing this benchmark gets wrong:
+
+| | reads | on | support |
+|---|---|--:|--:|
+| the cautionary ending page 0 | **`9/8`** | 9 staves | 26.5 |
+| the opening it announces (page 1) | `9/4` ✗ | 10 staves | scores 0.500-0.531 |
+
+⚠️ **A recorded cautionary is evidence, not an answer** — the same scan also
+records one at support **3.5 on ONE staff**, out of the spurious `timeSig4`s.
+The support and the staff count are exactly what tell the two apart, and a
+consumer must weigh them rather than take the last one.
+
+⚠️ **AND THE INVENTORY CAUGHT THE CALL CHAIN.** Declaring
+`Q.MEASURE_PARTITION` in `wants` made `inventory._never_read` report it as an
+INERT declaration — that check follows a decision's own helpers to depth 3, and
+fetching the cell counts inside `_meter_changes` put the read one level too
+deep. The report was right that the chain was one link longer than every other
+fact the same function uses: `bars` is computed by the CALLER and passed in, so
+`last_cell` now is too. **Behaviour-identical, verified by re-running both
+cautionary arms and comparing every meter verdict field.** The fix was the one
+the check was pointing at, not a workaround for it.
+
+`TestACautionaryIsNotAChange` pins it — 8 tests, **6 mutation arms all red**.
+⚠️ A seventh mutation (`any` staff at its last cell instead of `all`)
+**survived**, so a test was written to distinguish them rather than leaving a
+gate nobody had exercised: a cautionary is a SYSTEM-WIDE event, so a staff that
+still has a bar after the glyph contradicts it, and the safe reading of a
+contradiction keeps the change.
+
+### The two fixes together
+
+| | printed | proposed | found | FALSE |
+|---|--:|--:|--:|--:|
+| **engraved**, before either fix | 4 | 5 | 4 | **1** |
+| **engraved**, after both | 4 | 4 | 4 | **0** |
+| **scanned**, before either fix | 2 | 11 | 1 | **10** |
+| **scanned**, after the meter-in-force fix | 2 | 6 | 1 | **5** |
+| **scanned**, after both | 2 | 5 | 1 | **4** |
+
+⚠️ Counting the two scans together (Breitkopf 8 → 3 → 2, Litolff 1 → 1 → 1)
+and both engraved cautionary rows: **false meter changes 10 → 3 across the six
+fixtures, every true change still found, and the engraved arms are now clean.**
+
 ### What the scan side still gets wrong, measured and NOT fixed
 
 1. ⚠️ **The opening `9/8` is voted `9/4`.** The header template reader returns
@@ -453,14 +525,15 @@ edit away from being "fixed" by weakening the assertion.
    the same meter, and the DETECTOR reads it as `9` over `8` on 10 and 20
    staves. Using it means feeding a cautionary forward — which is carry/borrow,
    and belongs with §5.
-2. ⚠️ **The cautionary is read as a change on the system that prints it**, on
-   BOTH printings (§4b). Same root: it announces the NEXT system.
+2. ✅ **The cautionary is FIXED** — see the section above. What remains of it is
+   that nothing yet CONSUMES the recorded one.
 3. **The real change to `6/8` at cell 1 is still missed** — the detector finds
    one `timeSig1` there and no pair. That one is genuinely a reading gap.
 
-So of the nine false segments §4b reported, **five were bookkeeping, three are
-the cautionary and its Litolff twin, and one is a detector false positive** —
-and the two remaining reading faults both have the same repair available.
+So of the ten false segments §4b reported across the six fixtures, **five were
+bookkeeping, two were cautionaries, and three are detector false positives** —
+and the one remaining reading fault that matters (`9/4`) has its answer sitting
+on the record one system earlier.
 
 ## 5. ⚠️⚠️ THREE GAPS, ONE PIECE OF WORK — the segments are read and nothing downstream uses them
 

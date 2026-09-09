@@ -1,0 +1,92 @@
+[
+  {
+    "id": "vrd:014216",
+    "subject": "system/61/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "C",
+      "segments": [
+        {
+          "from_cell": 3,
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "support": 4.5,
+          "staves_reading_it": [
+            0
+          ],
+          "bars_fit": 1,
+          "bars_contradict": 0
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "change_only",
+    "used": [],
+    "missing": [],
+    "declined": [],
+    "excluded": [],
+    "candidates": [],
+    "margin": null,
+    "supersedes": null,
+    "detail": {
+      "opening_unknown_because": "too_few_staves_read_it",
+      "n_changes": 1,
+      "coverage": 0.059,
+      "n_staves_spoke": 1,
+      "n_staves_on_system": 17,
+      "would_have_been": "C"
+    },
+    "n_considered": 762,
+    "n_basis": 2816,
+    "n_correlated": 97
+  },
+  {
+    "id": "vrd:014217",
+    "subject": "system/62/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 3,
+      "denominator": 4,
+      "raw": "3/4",
+      "segments": [
+        {
+          "from_cell": 8,
+          "numerator": 3,
+          "denominator": 4,
+          "raw": "3/4",
+          "support": 3.0,
+          "staves_reading_it": [
+            11
+          ],
+          "bars_fit": 0,
+          "bars_contradict": 0
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "change_only",
+    "used": [],
+    "missing": [],
+    "declined": [],
+    "excluded": [],
+    "candidates": [],
+    "margin": null,
+    "supersedes": null,
+    "detail": {
+      "opening_unknown_because": "too_few_staves_read_it",
+      "n_changes": 1,
+      "coverage": 0.118,
+      "n_staves_spoke": 2,
+      "n_staves_on_system": 17,
+      "would_have_been": "C"
+    },
+    "n_considered": 922,
+    "n_basis": 3033,
+    "n_correlated": 101
+  }
+]
