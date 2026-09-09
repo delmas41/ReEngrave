@@ -45,7 +45,12 @@ while an adjudicator returns a value **and a record of what it saw, including
 when it abstained**. Measured on one real page: of 21 decisions, **12 decide, 6
 are declared stubs, 1 (`tuplet_ratio`) produces no row at all**, and ⚠️ **there
 is NO EXPORTER**, so the staged path cannot yet produce a file. Three ranked
-tasks are in §4. ⚠️ It also corrects **two false claims** in its predecessor that
+tasks are in §4. ⚠️⚠️ **ALL THREE ARE DONE AND THE EXPORTER EXISTS** —
+`tools/omr/staged/export.py`, merged 2026-09-09; the counts above are that
+handoff's snapshot and are NOT the current state (`dynamic` is no longer a
+stub either, so it is five). Read them as history. The current state is the
+section *The staged pipeline: an inventory, an exporter, and a health report*
+below, which is generated from the tree rather than restated. ⚠️ It also corrects **two false claims** in its predecessor that
 cost real time — see its §5 before trusting any inventory in this repo.
 Its predecessor
 [docs/handoff-2026-09-08-big-picture.md](docs/handoff-2026-09-08-big-picture.md)
@@ -79,7 +84,9 @@ its part-join input, and fed `works.json` **7 of 11 pairs resolve at 99.5%
 correspondence**. The ORDER was still right, for the reason the four-cause
 separation gives. It also records that **the staged
 pipeline cannot be scored at all: it has no exporter**, which is a missing
-component rather than an oversight. Its predecessor
+component rather than an oversight — ⚠️ **closed 2026-09-09**, see the note on
+the newest handoff above; this sentence describes what that handoff said, not
+what the tree does. Its predecessor
 [docs/handoff-2026-09-08-evening-to-local-session.md](docs/handoff-2026-09-08-evening-to-local-session.md)
 opened Step 2 and posed the Viola question (now answered). Then read
 [docs/handoff-2026-09-08-next-steps.md](docs/handoff-2026-09-08-next-steps.md)
