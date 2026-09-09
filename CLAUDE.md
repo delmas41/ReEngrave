@@ -26,6 +26,12 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-09-gather-and-the-record-that-answers.md](docs/handoff-2026-09-09-gather-and-the-record-that-answers.md)
+— the staged pipeline now EXPORTS A FILE, gathers the five families it used to
+drop, and answers *which decision* held a note back. It ranks the next three
+(**the meter carry**, the arc adjudicators, dynamics) and records **three of
+its own author's inferences that were wrong**, each caught by looking at ink
+rather than by counting. Its predecessor
 [docs/handoff-2026-09-09-staged-accounting.md](docs/handoff-2026-09-09-staged-accounting.md)
 — ⚠️ **and its three ranked tasks are DONE (2026-09-09); read the section
 *The staged pipeline: an inventory, an exporter, and a health report* below
