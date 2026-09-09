@@ -5,6 +5,47 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-09 — dynamics: the block is HAIRPINS, not letters (scoping, no arm run)
+
+- **Scoped, nothing measured new**:
+  [docs/scope-dynamics-reading-2026-09-09.md](docs/scope-dynamics-reading-2026-09-09.md).
+  Every figure is read off a committed artefact; no benchmark arm was run.
+- **The two halves separate cleanly in the symbol ledger** (20-row scan gate):
+  `hairpin` **matched_exact = 0** with 0 spurious beside it — on every row whose
+  parts join we emit no wedge at all — while `dynamic` (letters) reads 244
+  matched_exact + 73 attribute-error against 127 missing, ≈71% truth-side
+  recall. ⚠️ **They had been filed as one problem, which is why neither moved.**
+- **"They're just alphabet letters, use a text tool" is half right.** They are
+  SMuFL music-font glyphs (`dynamicForte` U+E522), not text-font letters, and
+  `direction_text.py` already runs Surya + Tesseract by default and
+  *deliberately refuses* them — its own gate is a 181-word musical lexicon, and
+  a single character has no lexicon to be gated by. The tool genuinely missing
+  is the third one: **`symbol_library/` holds 38 Bravura templates and not one
+  dynamic glyph**, while `glyphnames.json` carries all 42 including the
+  COMPOSITES (`dynamicFF`, `dynamicSforzando`) — which would dissolve the
+  letter-assembly problem rather than improve it.
+- **⚠️ The `OMR_CV_HAIRPINS` pricing is STALE BY ONE DAY, in the direction that
+  matters.** The flag is off because it costs OMR-NED, but its own docstring
+  attributes half the cost (+37 of +76 edits) to Brahms 1 p2 — a row where
+  `_stitch_slots` REFUSED, so no hairpin could pair whatever the anchor picked.
+  That arm ran **2026-09-07**; `OMR_SLOT_STITCH` went default ON **2026-09-08**
+  and Brahms p2 is *the* row it repairs (27 fragments → 14 parts, 0% → 100%
+  correspondence). **The top action is a re-run, not new code** — and it is
+  ranked first precisely because the prediction could be wrong.
+- **Staged pipeline**: `Q.DYNAMIC`, `Q.DIRECTION` and `Q.WEDGE_ANCHOR` are all
+  three declared stubs, and ⚠️ **nothing is behind them** — `Q.DYNAMIC_LETTER`
+  and `Q.WEDGE_BOX` are declared in `record.py` and emitted by no gatherer. The
+  declared composition is already right, and `Q.GLYPH_OWNER` is the one piece
+  that is NOT a stub — so gathering the letters hands the placement fix to a
+  real ownership adjudicator instead of bolting the band rule into
+  `_dedupe_cross_staff_detections` by hand.
+- Four refusals recorded so they are not re-tried: confidence as a filter (233
+  of 911 good letters lost to remove half of 35 bad), a band GATE (under-emits
+  on both arms), a cross-staff column vote (deletes the soloist-against-section
+  `p`), and OCR on single letters.
+
+---
+
 ## 2026-09-08 (late) — causes A/B/C closed, `OMR_SLOT_STITCH` default ON, and the meter's own garbage filter wired to its keeper
 
 - **`OMR_SLOT_STITCH` is DEFAULT ON** (Sean's call). Never scored worse
