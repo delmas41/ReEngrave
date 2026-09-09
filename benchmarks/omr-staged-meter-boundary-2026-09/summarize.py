@@ -40,6 +40,12 @@ FIXTURE_OF = {
     "m3full": "boundary-m150-180", "m3p0p3": "boundary-m150-180",
     "m3rev": "boundary-m204-232", "m3brahms1eng": "brahms1-m1-22",
     "m3brahms4eng": "brahms4-m386-412", "m3brahms1scan": "brahms1-317803",
+    # `m4` = the same arms again, with `_meter_changes` comparing a
+    # candidate against the meter IN FORCE rather than against the
+    # system's opening.
+    "m4full": "boundary-m150-180", "m4rev": "boundary-m204-232",
+    "m4brahms1eng": "brahms1-m1-22", "m4brahms4eng": "brahms4-m386-412",
+    "m4brahms1scan": "brahms1-317803", "m4lit6162": "litolff-984073",
 }
 
 
