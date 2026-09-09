@@ -24,7 +24,7 @@ repair is a bounded EVALUATE consequence, not a second adjudication.
 from __future__ import annotations
 
 import os
-from typing import Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
                           Term, decision, tally)
@@ -1500,3 +1500,222 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
 
 
 
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Cross-staff simultaneity — the column through a system
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: How close two staves' events must sit to be called the same instant.
+#:
+#: ⚠️ READ OFF A MEASURED DISTRIBUTION AGAINST A NULL, NOT TUNED TO A SCORE.
+#: Over 51 real bars (Brahms 1 / Breitkopf, 6 systems, 13-14 staves) the
+#: nearest event in another staff sits at a median 0.027 staff spaces; a
+#: reshuffle of the same events inside the same bar span gives 0.122. The
+#: separation is ~4x at the median and holds at every density, while the mere
+#: EXISTENCE of a near neighbour does not (see `ONSET_COLUMN_*` in FINDINGS).
+#: 0.10 is where the real/null ratio is largest; 0.25 and 0.5 wash out.
+ONSET_COLUMN_TOLERANCE_SPACES = 0.10
+
+#: Below this many staves a "column" is not corroboration, it is one reading.
+ONSET_COLUMN_MIN_WITNESSES = 2
+
+
+def _page_x_of(rows) -> Dict[Tuple[int, int, int], float]:
+    """(staff, cell, glyph) -> page-frame x centre, for rows that carry one.
+
+    ⚠️ Rows WITHOUT a page frame are dropped rather than fallen back to the
+    canonical x. A canonical x is measured inside one rescaled cell, so using
+    it here would silently compare two different units across staves — the
+    exact fault this decision exists to avoid.
+
+    ⚠️⚠️ THE KEY IS THE WHOLE ADDRESS, AND KEYING ON THE GLYPH ORDINAL ALONE
+    IS A REAL BUG THAT WAS WRITTEN AND MEASURED. `Subject.glyph` counts
+    within its CELL, so it is unique for `adjudicate_event` (scope `CELL`,
+    where `_box_of` may key on it) and NOT unique here (scope `SYSTEM`):
+    glyph 3 of staff 0 and glyph 3 of staff 9 are different ink at the same
+    ordinal, and one dict entry silently took the other's x. The tell was
+    that 699 of 814 corroborated columns had a residual of EXACTLY zero —
+    fourteen staves agreeing to the float, which no scan does. A plausible
+    column count is not evidence that the columns are real.
+    """
+    out: Dict[Tuple[int, int, int], float] = {}
+    for r in rows:
+        sub = r.subject
+        if sub.glyph is None or sub.cell is None or sub.staff is None:
+            continue
+        x = (r.detail or {}).get("x_center_page")
+        if x is not None:
+            out[(sub.staff, sub.cell, sub.glyph)] = float(x)
+    return out
+
+
+@decision(
+    quantity=Q.ONSET_COLUMN,
+    checkable=Checkable.CHECKABLE,
+    checked_by=(
+        '"a column is an instant: every staff of the system either sounds '
+        'something in it or is silent there, and a staff whose event sits '
+        'alone at an x its neighbours all skip is the one to look at"',
+    ),
+    # ⚠️ It implicates the GROUPING, never the pitch or the duration. A
+    # misaligned event says this staff read a different set of onsets — which
+    # is Q.EVENT's business one scope down — and says nothing about how long
+    # any of them are.
+    implicates=(Q.ONSET_COLUMN, Q.EVENT),
+    # ⚠️ `Q.STAFF_SPACING` is in here because it is not decoration: the
+    # tolerance IS a staff-space count, so a wrong spacing moves every column
+    # boundary on the system. A consumer weighing this verdict has to be able
+    # to see that its unit came from somewhere.
+    composed_from=(Q.EVENT, Q.GLYPH_BOX, Q.STAFF_SPACING),
+    scope=Kind.SYSTEM,
+    wants=(Q.EVENT, Q.GLYPH_BOX, Q.STAFF_SPACING),
+    reasons=("columns_read", "single_staff", "no_page_frame", "nothing_to_align"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_onset_column(ev: Evidence) -> Ruling:
+    """Which events of DIFFERENT staves sound at the same instant.
+
+    ⚠️⚠️ THIS RECORDS; IT DOES NOT OVERTURN. Sean's governing principle is
+    additive evidence rather than a gate, and the measurement says why it must
+    be here in particular: against a circular-shift null on 51 real bars the
+    page needs 1,483 columns where the null needs 2,409 — but the
+    corroboration RATE rises with density while the information falls (sparse
+    2.06x, dense 1.52x), so much of the alignment on a crowded bar is
+    available by chance. A rule that re-grouped a staff's events to match its
+    neighbours would, on a 26-staff page, be enforcing density.
+
+    ⚠️ `Q.EVENT` IS CONSUMED, NOT REDONE. Within-staff simultaneity is already
+    decided per cell under a tolerance measured off that bar's own noteheads;
+    this groups those verdicts. Re-clustering the glyphs here would answer the
+    same question twice and let the two answers disagree.
+
+    ⚠️ THE UNIT IS STAFF SPACES AND THE FRAME IS THE PAGE. Both are load-
+    bearing: pixels are a property of one scan's resolution, and a canonical x
+    is measured inside one rescaled cell, so neither crosses a staff boundary.
+    A cell whose glyphs carry no page frame is DECLINED by name.
+    """
+    ev_verdicts = ev.verdicts(Q.EVENT, scope=Scope.SELF_AND_DESCENDANTS)
+    if not ev_verdicts:
+        return Ruling.abstain("nothing_to_align")
+
+    boxes = _page_x_of(ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS))
+    if not boxes:
+        return Ruling.abstain("no_page_frame")
+
+    # (measure index) -> staff -> [page x of each event]
+    per_bar: Dict[int, Dict[int, List[float]]] = {}
+    used: List[str] = []
+    for v in ev_verdicts:
+        sub = v.subject
+        if sub.cell is None or sub.staff is None or not isinstance(v.value, dict):
+            continue
+        xs: List[float] = []
+        for e in v.value.get("events", ()):
+            gx = [boxes[(sub.staff, sub.cell, g)]
+                  for g in e.get("glyphs", ())
+                  if (sub.staff, sub.cell, g) in boxes]
+            if gx:
+                xs.append(sum(gx) / len(gx))
+        if xs:
+            per_bar.setdefault(sub.cell, {}).setdefault(sub.staff, []).extend(xs)
+            used.append(v.id)
+
+    if not per_bar:
+        return Ruling.abstain("no_page_frame")
+
+    spacing = _system_spacing(ev)
+    if spacing is None:
+        return Ruling.abstain("no_page_frame")
+    tol_px = spacing * ONSET_COLUMN_TOLERANCE_SPACES
+
+    bars: List[Dict[str, Any]] = []
+    for mi in sorted(per_bar):
+        by_staff = per_bar[mi]
+        if len(by_staff) < ONSET_COLUMN_MIN_WITNESSES:
+            bars.append({"measure": mi, "staves": len(by_staff),
+                         "note": "single_staff"})
+            continue
+        points = sorted((x, st) for st, xs in by_staff.items() for x in xs)
+        # ⚠️ Single-link chaining is REFUSED. A first cut merged distinct
+        # onsets 323 px apart on a dense bar by walking neighbour to
+        # neighbour; a column must stay within the tolerance of its OWN
+        # centre, which is the same discipline `_dedupe_cross_staff_detections`
+        # needed when one-winner-per-cluster chained distinct glyphs.
+        cols: List[List[Tuple[float, int]]] = []
+        for x, st in points:
+            if cols and abs(x - (sum(p[0] for p in cols[-1]) / len(cols[-1]))) <= tol_px:
+                cols[-1].append((x, st))
+            else:
+                cols.append([(x, st)])
+        span = points[-1][0] - points[0][0]
+        n_ev = len(points)
+        rows_out = []
+        for c in cols:
+            xs = [p[0] for p in c]
+            witnesses = sorted({p[1] for p in c})
+            centre = sum(xs) / len(xs)
+            rows_out.append({
+                "x_page": round(centre, 2),
+                "witnesses": witnesses,
+                "n_witness": len(witnesses),
+                "residual_spaces": round(
+                    (max(xs) - min(xs)) / spacing, 4) if len(xs) > 1 else 0.0,
+            })
+        corroborated = [c for c in rows_out
+                        if c["n_witness"] >= ONSET_COLUMN_MIN_WITNESSES]
+        bars.append({
+            "measure": mi,
+            "staves": len(by_staff),
+            "columns": rows_out,
+            "n_columns": len(rows_out),
+            "n_corroborated": len(corroborated),
+            "alone": [c["x_page"] for c in rows_out if c["n_witness"] == 1],
+            # ⚠️ THE DENSITY TRAVELS WITH THE VERDICT. A consumer that reads
+            # corroboration without it cannot tell evidence from crowding.
+            "events_per_space": round(n_ev / (span / spacing), 2)
+            if span > spacing else None,
+        })
+
+    read = [b for b in bars if "columns" in b]
+    if not read:
+        return Ruling.abstain("single_staff")
+    all_res = [c["residual_spaces"] for b in read for c in b["columns"]
+               if c["n_witness"] > 1]
+    return Ruling(
+        value={"bars": bars},
+        reason="columns_read",
+        used=tuple(used),
+        detail={
+            "n_bars": len(read),
+            "n_columns": sum(b["n_columns"] for b in read),
+            "n_corroborated": sum(b["n_corroborated"] for b in read),
+            "n_alone": sum(len(b["alone"]) for b in read),
+            "median_residual_spaces": round(
+                sorted(all_res)[len(all_res) // 2], 4) if all_res else None,
+            "tolerance_spaces": ONSET_COLUMN_TOLERANCE_SPACES,
+            "staff_spacing_px": round(spacing, 2),
+        },
+    )
+
+
+def _system_spacing(ev: Evidence) -> Optional[float]:
+    """The system's staff-line spacing in PAGE pixels, or None.
+
+    ⚠️ Read from `Q.STAFF_SPACING`, which `gather_geometry` measures per staff
+    in the page frame. Median across the system's staves: one warped staff
+    must not set the unit for the rest.
+    """
+    rows = ev.rows(Q.STAFF_SPACING, scope=Scope.SELF_AND_DESCENDANTS)
+    vals = []
+    for r in rows:
+        try:
+            v = float(r.value)
+        except (TypeError, ValueError):
+            continue
+        if v > 0:
+            vals.append(v)
+    if not vals:
+        return None
+    vals.sort()
+    return vals[len(vals) // 2]

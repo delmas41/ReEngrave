@@ -80,7 +80,14 @@ BENCH = Path(__file__).resolve().parent
 sys.path.insert(0, str(BENCH))
 from build_cache import MAIN, SCAN, default_cache  # noqa: E402
 from build_cache import strip_crop_geometry  # noqa: E402
+# ⚠️ The prover AND the works.json projection come from the merge step, so
+# the UI cannot drift from what will actually be written. ⚠️ Kept as
+# separate single-line imports: `test_the_confirmation_ui_asks_it_too`
+# asserts the prover's import LITERALLY, and a test is not to be loosened
+# to suit a later edit.
 from merge_additions import prove_normalises  # noqa: E402
+from merge_additions import ARITY_FIELDS as _ARITY_FIELDS  # noqa: E402
+from merge_additions import _entry_for_works_json  # noqa: E402
 
 OUT_DEFAULT = SCAN / "works.staves-additions.json"
 
@@ -153,10 +160,17 @@ class Store:
                     "truth_for_part_indices": seed["reference"]["source"],
                     "dpi": 600,
                 },
+                # ⚠️ THE ARITY FIELDS RIDE ALONG. `research_proposal` computes
+                # `lines` for every entry and this projection used to drop it,
+                # so a one-line percussion rule reached the human — and the
+                # file — indistinguishable from an ordinary staff. See
+                # `merge_additions.ARITY_FIELDS`.
                 "staves": [
-                    {"name": s["name"], "parts": list(s["parts"]),
-                     "proposed": {"name": s["name"], "parts": list(s["parts"])},
-                     "verdict": "pending"}
+                    dict({"name": s["name"], "parts": list(s["parts"]),
+                          "proposed": {"name": s["name"],
+                                       "parts": list(s["parts"])},
+                          "verdict": "pending"},
+                         **{f: s[f] for f in _ARITY_FIELDS if s.get(f) is not None})
                     for s in seed["proposal"]["staves"]
                 ],
             }
@@ -522,8 +536,11 @@ def create_app(cache: Path, out: Path) -> FastAPI:
         st["status"] = "done"
         st["confirmed_at"] = datetime.now(timezone.utc).isoformat(
             timespec="seconds")
+        # ⚠️ ONE projection, shared with the merge step — see
+        # `merge_additions._entry_for_works_json`. Spelled inline here and
+        # there, the two drifted and both dropped `lines`.
         st["staves_for_works_json"] = [
-            {"name": s["name"], "parts": list(s["parts"])} for s in st["staves"]]
+            _entry_for_works_json(s) for s in st["staves"]]
         store.save()
         return JSONResponse({"state": st, "validation": v})
 
@@ -552,10 +569,15 @@ def create_app(cache: Path, out: Path) -> FastAPI:
             return JSONResponse(status_code=409, content={
                 "error": f"finish {twin_id} first — there is nothing to adopt"})
         st = store.row(row_id, seed)
+        # ⚠️ THE THIRD INLINE REBUILD, AND IT HAD THE SAME DROP. Same plate
+        # means the same map INCLUDING its `lines` / `printed_staves` facts —
+        # adopting only `{name, parts}` hands the twin a lineup that differs
+        # from the one that was confirmed, and `arity_problems` would then
+        # refuse it with the human unable to see why.
         st["staves"] = [
-            {"name": s["name"], "parts": list(s["parts"]),
-             "proposed": s.get("proposed"), "verdict": s["verdict"],
-             "adopted_from": twin_id}
+            dict(_entry_for_works_json(s),
+                 proposed=s.get("proposed"), verdict=s["verdict"],
+                 adopted_from=twin_id)
             for s in twin["staves"]]
         st["adopted_from"] = twin_id
         st["adopted_note"] = (
@@ -859,10 +881,16 @@ function draw(){
     const d=document.createElement('div');
     d.className='staffrow'+(k===CUR?' cur':'');
     const prop=s.proposed?('proposed '+(s.proposed.parts||[]).join(', ')):'added by hand';
+    // ⚠️ THE ARITY FIELDS WERE CARRIED AND STILL NOT SHOWN. `lines` was read
+    // here only on `unrepresentable_printed_staves` rows, so a lineup could be
+    // confirmed staff by staff while the claim about the ENGRAVING that
+    // decides its arity gate was never put in front of the human.
+    const shape=(s.lines===1?' · 1-line staff':'')+
+      (s.printed_staves>1?(' · '+s.printed_staves+' printed staves'):'');
     d.innerHTML='<div class="dot '+s.verdict+'"></div>'+
       '<div class="k">'+k+'</div>'+
       '<div class="nm">'+(s.name||'<i style="color:#e2624c">unnamed</i>')+
-        '<div class="note">'+prop+'</div></div>'+
+        '<div class="note">'+prop+shape+'</div></div>'+
       '<div class="pp v-'+s.verdict+'">'+(s.parts.length?s.parts.join(' '):'—')+
         '<br><span style="font-size:11px">'+s.verdict+'</span></div>';
     d.onclick=()=>{CUR=k;EDITING=null;draw();};

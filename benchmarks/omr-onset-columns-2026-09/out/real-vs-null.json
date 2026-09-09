@@ -1,0 +1,177 @@
+{
+  "density_tertile_edges": [
+    0.0,
+    4.71,
+    5.82
+  ],
+  "real": {
+    "bars": 51,
+    "columns": 1483,
+    "corroborated": 739,
+    "rate": 0.4983,
+    "alone": 744,
+    "median_residual_spaces": 0.0734,
+    "by_density": {
+      "sparse": {
+        "bars": 16,
+        "columns": 403,
+        "corroborated": 176,
+        "rate": 0.4367
+      },
+      "mid": {
+        "bars": 18,
+        "columns": 457,
+        "corroborated": 233,
+        "rate": 0.5098
+      },
+      "dense": {
+        "bars": 17,
+        "columns": 623,
+        "corroborated": 330,
+        "rate": 0.5297
+      }
+    }
+  },
+  "nulls": {
+    "1": {
+      "bars": 51,
+      "columns": 2416,
+      "corroborated": 709,
+      "rate": 0.2935,
+      "alone": 1707,
+      "median_residual_spaces": 0.0708,
+      "by_density": {
+        "sparse": {
+          "bars": 17,
+          "columns": 616,
+          "corroborated": 137,
+          "rate": 0.2224
+        },
+        "mid": {
+          "bars": 13,
+          "columns": 590,
+          "corroborated": 145,
+          "rate": 0.2458
+        },
+        "dense": {
+          "bars": 21,
+          "columns": 1210,
+          "corroborated": 427,
+          "rate": 0.3529
+        }
+      }
+    },
+    "2": {
+      "bars": 51,
+      "columns": 2419,
+      "corroborated": 712,
+      "rate": 0.2943,
+      "alone": 1707,
+      "median_residual_spaces": 0.067,
+      "by_density": {
+        "sparse": {
+          "bars": 15,
+          "columns": 555,
+          "corroborated": 125,
+          "rate": 0.2252
+        },
+        "mid": {
+          "bars": 12,
+          "columns": 533,
+          "corroborated": 139,
+          "rate": 0.2608
+        },
+        "dense": {
+          "bars": 24,
+          "columns": 1331,
+          "corroborated": 448,
+          "rate": 0.3366
+        }
+      }
+    },
+    "3": {
+      "bars": 51,
+      "columns": 2373,
+      "corroborated": 720,
+      "rate": 0.3034,
+      "alone": 1653,
+      "median_residual_spaces": 0.0734,
+      "by_density": {
+        "sparse": {
+          "bars": 17,
+          "columns": 630,
+          "corroborated": 125,
+          "rate": 0.1984
+        },
+        "mid": {
+          "bars": 10,
+          "columns": 451,
+          "corroborated": 127,
+          "rate": 0.2816
+        },
+        "dense": {
+          "bars": 24,
+          "columns": 1292,
+          "corroborated": 468,
+          "rate": 0.3622
+        }
+      }
+    },
+    "4": {
+      "bars": 51,
+      "columns": 2420,
+      "corroborated": 682,
+      "rate": 0.2818,
+      "alone": 1738,
+      "median_residual_spaces": 0.071,
+      "by_density": {
+        "sparse": {
+          "bars": 17,
+          "columns": 632,
+          "corroborated": 122,
+          "rate": 0.193
+        },
+        "mid": {
+          "bars": 13,
+          "columns": 587,
+          "corroborated": 141,
+          "rate": 0.2402
+        },
+        "dense": {
+          "bars": 21,
+          "columns": 1201,
+          "corroborated": 419,
+          "rate": 0.3489
+        }
+      }
+    },
+    "5": {
+      "bars": 51,
+      "columns": 2418,
+      "corroborated": 693,
+      "rate": 0.2866,
+      "alone": 1725,
+      "median_residual_spaces": 0.0696,
+      "by_density": {
+        "sparse": {
+          "bars": 17,
+          "columns": 611,
+          "corroborated": 136,
+          "rate": 0.2226
+        },
+        "mid": {
+          "bars": 12,
+          "columns": 530,
+          "corroborated": 121,
+          "rate": 0.2283
+        },
+        "dense": {
+          "bars": 22,
+          "columns": 1277,
+          "corroborated": 436,
+          "rate": 0.3414
+        }
+      }
+    }
+  }
+}

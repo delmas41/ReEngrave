@@ -278,12 +278,29 @@ class TestEveryDeclaredStubKeepsItsPromise(unittest.TestCase):
         for quantity in adjudicate.stubs():
             self.assertIn(quantity, adjudicate.ORDER)
 
-    def test_the_five_previously_unnamed_stubs_are_named_now(self):
+    def test_the_previously_unnamed_stubs_are_named_now(self):
         """The regression this file exists to prevent: a stub landing with no
-        test that names it."""
+        test that names it.
+
+        ⚠️ `Q.DYNAMIC` WAS ON THIS LIST AND HAS LEFT IT, because it is no
+        longer a stub -- `adjudicate_dynamic` is implemented. A roster of
+        stubs that keeps an entry after it graduates stops describing the
+        pipeline and starts describing its history, the same fault
+        `export_coverage.KNOWN_GAPS` has `test_the_inventory_has_no_stale
+        _entries` to prevent. Its graduation is pinned below rather than
+        merely un-asserted.
+        """
         for quantity in (Q.ARC_OWNER, Q.ARTICULATION_OWNER, Q.WEDGE_ANCHOR,
-                         Q.DYNAMIC, Q.DIRECTION):
+                         Q.DIRECTION):
             self.assertIn(quantity, adjudicate.stubs())
+
+    def test_dynamic_has_GRADUATED_from_the_stub_roster(self):
+        """The other half of the line above: assert the implementation, so a
+        silent regression to a stub fails here rather than passing quietly."""
+        self.assertNotIn(Q.DYNAMIC, adjudicate.stubs())
+        spec = adjudicate.REGISTRY[Q.DYNAMIC]
+        self.assertFalse(spec.stub)
+        self.assertEqual(spec.fn.__name__, "adjudicate_dynamic")
 
 
 def _subject_at(kind):

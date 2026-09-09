@@ -414,6 +414,31 @@ class Q(_Vocab):
     #: measurement (`GLYPH_BOX` carries it), but "these are simultaneous" is
     #: an interpretation of those positions under a tolerance.
     EVENT = "event"
+    #: ⚠️ Which events of DIFFERENT STAVES sound at the same instant — the
+    #: column through a system. `Q.EVENT` is the same question one scope down
+    #: and stops at the staff (`Kind.CELL`); a conductor's page is many staves
+    #: reading one stretch of time, so a column is the only place the record
+    #: holds REDUNDANT evidence about the same moment.
+    #:
+    #: ⚠️⚠️ AND THE ALIGNMENT IS ONLY PARTLY INFORMATION — the rest is DENSITY.
+    #: Measured through this decision on 51 real bars (Brahms 1 / Breitkopf,
+    #: 3,006 events) against a CIRCULAR-SHIFT null that keeps every
+    #: within-staff interval and destroys only the phase: the page needs
+    #: **1,483 columns where the null needs 2,409** (1.62x) and leaves 744
+    #: events standing alone against 1,706 (2.29x). But the corroboration
+    #: RATE rises with density while the information falls — sparse bars
+    #: 0.437 vs 0.212 (2.06x), dense bars 0.530 vs 0.348 (1.52x) — so the
+    #: verdict carries `events_per_space` on every bar: a consumer reading
+    #: corroboration without it cannot tell evidence from crowding.
+    #:
+    #: ⚠️ DO NOT READ THE RESIDUAL AS EVIDENCE. It does not separate (0.0734
+    #: real vs 0.0704 null) and cannot: a column is BUILT to lie within the
+    #: tolerance. An earlier draft of this docstring said it separated at
+    #: every density — that figure came from the nearest-neighbour probe,
+    #: which measures an unbounded quantity, and was carried across
+    #: definitions. It is a diagnostic only, and a good one: a residual of
+    #: exactly 0.0 is what exposed the glyph-ordinal collision bug.
+    ONSET_COLUMN = "onset_column"
     GLYPH_OWNER = "glyph_owner"
     ARC_OWNER = "arc_owner"
     ARC_KIND = "arc_kind"                    # tie | slur
@@ -443,6 +468,13 @@ class READERS(_Vocab):
     SPECIALIST = "specialist"                # OMR_CLEF_WEIGHTS
     CV_LOCATOR = "cv_locator"                # clef_locator
     CV_LINES = "cv_lines"                    # line_detection: stems, beams
+    #: `hairpin_detection` -- a SEPARATE reader from CV_LINES, not a mode of
+    #: it. Two rows from one reader on one crop are ONE signal
+    #: (`adjudicate.Evidence.independent`), and this rung reads the WHOLE page
+    #: with staff lines INTACT while `line_detection` reads an ERASED cell.
+    #: Filing them together would collapse two genuinely independent readings
+    #: of the same band into one.
+    CV_HAIRPINS = "cv_hairpins"              # hairpin_detection: wedge ink
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor

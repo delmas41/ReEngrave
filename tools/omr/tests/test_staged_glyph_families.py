@@ -58,9 +58,17 @@ class TestEachFamilyGetsATypedRow(unittest.TestCase):
         log = _log(Det("tie"), Det("slur", x=200))
         self.assertEqual(sorted(_values(log, Q.ARC_BOX)), ["slur", "tie"])
 
-    def test_a_dynamic_letter_is_observed(self):
+    def test_a_dynamic_letter_is_NOT_this_functions_to_claim(self):
+        """⚠️ IT USED TO BE, AND THE CHANGE IS DELIBERATE.
+        `gather_dynamic_letters` owns `Q.DYNAMIC_LETTER`: it reads the same
+        ink in the STAFF's own frame, so it can record the band offset that a
+        per-cell frame cannot express. Emitting the letter here as well would
+        put two rows from ONE reader on one glyph -- the "two rows from one
+        reader are ONE signal" fault, arrived at by accident rather than by
+        argument. See `test_staged_dynamics.py` for the owner's own tests.
+        """
         log = _log(Det("dynamicF", category="dynamic"))
-        self.assertEqual(_values(log, Q.DYNAMIC_LETTER), ["dynamicF"])
+        self.assertEqual(_values(log, Q.DYNAMIC_LETTER), [])
 
     def test_an_articulation_is_observed_with_the_side_its_class_names(self):
         log = _log(Det("articStaccatoAbove", category="ornament"))
@@ -81,25 +89,37 @@ class TestEachFamilyGetsATypedRow(unittest.TestCase):
         self.assertIsNone(rows[0].detail["side"])
 
 
-class TestTheHairpinIsRoutedBeforeTheLetter(unittest.TestCase):
-    """⚠️ THE ONE ORDERING THIS FUNCTION HAS, AND WHY IT IS NOT INCIDENTAL.
+class TestAHairpinIsNeverReadAsALetter(unittest.TestCase):
+    """⚠️ THE HAZARD IS UNCHANGED; ITS OWNER MOVED.
     `dynamicDiminuendoHairpin` carries the detector's `dynamic` category AND a
-    class name starting with `dynamic`, so a prefix test alone spells a
-    crescendo into a dynamic word."""
+    class name starting with `dynamic`, so any PREFIX test spells a crescendo
+    into a dynamic word. This function used to hold the ordering that kept
+    them apart; the dynamics rungs now do, and they do it structurally rather
+    than by ordering -- `_DYNAMIC_LETTER_CLASSES` is an explicit six-member
+    set, so a hairpin cannot fall into it whatever order the branches run in.
+    A structural guarantee still needs a test, because the set could be
+    widened to a prefix by someone who did not know why it was not one.
+    """
 
-    def test_a_hairpin_is_a_wedge_and_not_a_dynamic_letter(self):
-        log = _log(Det("dynamicDiminuendoHairpin", category="dynamic"))
-        self.assertEqual(_values(log, Q.WEDGE_BOX),
-                         ["dynamicDiminuendoHairpin"])
-        self.assertEqual(_values(log, Q.DYNAMIC_LETTER), [])
+    def test_the_letter_set_is_EXPLICIT_and_holds_no_hairpin(self):
+        for cls in gather._WEDGE_CLASSES:
+            self.assertNotIn(cls, gather._DYNAMIC_LETTER_CLASSES)
+        # ⚠️ Six letters, not a `dynamic` prefix. If this becomes a prefix
+        # test, the hairpins come back in with it.
+        self.assertEqual(len(gather._DYNAMIC_LETTER_CLASSES), 6)
 
-    def test_the_wedge_records_which_way_it_opens(self):
+    def test_both_hairpin_classes_name_which_way_they_open(self):
+        self.assertEqual(gather._WEDGE_CLASSES, {
+            "dynamicCrescendoHairpin": "crescendo",
+            "dynamicDiminuendoHairpin": "diminuendo",
+        })
+
+    def test_this_function_claims_NEITHER_quantity(self):
+        """Single ownership, asserted from the other side."""
         log = _log(Det("dynamicCrescendoHairpin", category="dynamic"),
-                   Det("dynamicDiminuendoHairpin", x=300, category="dynamic"))
-        kinds = sorted(r.detail["kind"] for r in
-                       log.rows(Q.WEDGE_BOX, CELL,
-                                scope=Scope.SELF_AND_DESCENDANTS))
-        self.assertEqual(kinds, ["crescendo", "diminuendo"])
+                   Det("dynamicF", x=300, category="dynamic"))
+        self.assertEqual(_values(log, Q.WEDGE_BOX), [])
+        self.assertEqual(_values(log, Q.DYNAMIC_LETTER), [])
 
 
 class TestItRecordsWhereTheInkIs(unittest.TestCase):

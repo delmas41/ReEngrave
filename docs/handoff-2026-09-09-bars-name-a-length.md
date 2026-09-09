@@ -53,6 +53,14 @@ In the file (pages 0-2): `empty_bars_padded_without_meter` **47 → 0**,
 `measure_rests_read` 92 → **169**, `written.notes` 648 → 665,
 `not_written.duration_narrowed` 163 → 146.
 
+✅ **Re-measured on the MERGED tree and identical.** 27 commits landed on main
+during this session, including 376 changed lines of `staged/gather.py` — where
+the `Q.EVENT` / `Q.DURATION` / `Q.REST` rows this reads come from — so all
+three arms were re-run after merging rather than assumed to survive it. All
+three `.meter.txt` files compare byte-for-byte. Merged-tree suite **3370
+passed / 11 skipped / 0 failed**, `inventory --check` and `health --check`
+both 0.
+
 ---
 
 ## 3. ⚠️⚠️ WHAT IS *NOT* ESTABLISHED — read before quoting §2
