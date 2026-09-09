@@ -16,6 +16,64 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-09 — `Q.METER`'s segments reach the file, and a courtesy stops being a change
+
+The top-ranked item of `docs/handoff-2026-09-09-the-boundary-measured.md` §5.
+Three gaps found by `grep` and left unbuilt, which are one piece of work.
+
+**What was wrong.** The staged export took ONE meter per staff-run, so a
+printed mid-system meter change could not reach a MusicXML file at all — and
+`record.meter_at`, whose docstring says it *is* how a bar's meter is read, was
+called by nothing but its own tests. The carry took its source's OPENING and
+deleted its segments. And a system whose meter came from a READ change could
+be neither a carry nor a form source.
+
+**What it is worth, engraved** (controlled A/B on saved records): Brahms 1 iv's
+cut-common — read on 24 staves of 24 at support 74.0 — went from reaching NO
+file to `{4/4(common): 24, 2/2(cut): 24}`; Litolff's printed `3/4` moved from
+measure 8, the first bar of its system, to **measure 16, its ninth**, where the
+hand-read truth puts it.
+
+**The false positive it would have propagated: a CAUTIONARY.** A change is
+printed immediately after the barline that OPENS its bar; a courtesy stands
+after the system's final barline. Per reading, the corpus's one visible
+cautionary reads **1.000 on all 19 staves** against **≤ 0.118 for every other
+segment, true or false**.
+
+**Tally: ENGRAVED 4 printed / 4 found / 1 → 0 false; SCANNED 2 / 1 / 9
+unchanged.** 1 of 9 false segments removed, 0 of 4 true positives lost. ⚠️ The
+scan being untouched is the expected result — its false segments all read
+0.000, at the head of their bars, so they are misreads and no placement rule
+can reach them.
+
+`OMR_METER_SEGMENTS`, default off, gates the export half only; the other two
+travel behind the existing meter flags. The cautionary rule is unflagged.
+
+⚠️⚠️ **THREE CLAIMS OF MY OWN, CORRECTED IN FLIGHT, and the first is the one
+worth carrying.** The first measurement arm came back BYTE-IDENTICAL to its
+baseline — while five unit tests and three mutation arms were green. `gather`
+files `Q.METER_GLYPH` on the **STAFF** with the bar in `detail["cell"]`; my
+fixture filed it on a **GLYPH**, and `subject.at(Kind.CELL)` returns None for a
+staff, so the rule read no boxes on any real page. **A fixture that does not
+match GATHER tests the test**, and the pre-existing
+`TestAMeterChangeIsReadFromTheInk` fixture had the same mismatch, which is why
+the bug had somewhere to hide. The shape is now asserted against the gather
+site by AST. Then: a cautionary belongs to a READING, not to a cell. And
+*"both cautionaries read 1.000"* was a probe bug — it pooled every staff at a
+cell instead of the staves that READ the segment; the corpus holds exactly
+one. **What caught all three was a number that did not move, and a number that
+was too good.**
+
+Also: `inventory._HELPER_DEPTH` 3 → 6, measured over the whole registry first
+(17 inert at 3, 16 at 4, 15 at 5 and every depth beyond), so no standing
+finding is retired. And `report_boundary.py --tally` can now read the
+committed `.meter.json` reduction, so the published baseline is checkable on a
+fresh clone with no weights.
+
+`benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md`. Suite 3419 passed.
+
+---
+
 *(Two sessions inserted here on the same day. They are INDEPENDENT — the
 boundary measurement did not need the fallback-ordering fix and vice versa —
 and they compose: the ordering fix is what lets a REFUSED carry give way to the
