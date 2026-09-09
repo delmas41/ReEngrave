@@ -955,3 +955,88 @@ class TestARefusalMayNotBlockALaterRung(unittest.TestCase):
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "no_evidence")
+
+
+class TestALetterMeterIsAChangeToo(unittest.TestCase):
+    """⚠️⚠️ 23 OF 23 STAVES DETECTED IT AND THE SYSTEM ABSTAINED.
+
+    `_meter_from_digits` required two stacked DIGITS and skipped
+    `timeSigCommon` with the comment *"timeSigCommon and friends: no pair"* —
+    so the caller counted it as a `loose` glyph, built no `readings` entry, and
+    skipped the bar. Found on an ENGRAVED fixture (Beethoven 5 mvt4, bars
+    203-218, which changes to 4/4 at bar 209; LilyPond prints that as `C`):
+    the detector fired `timeSigCommon` on **23 of 23 staves at exactly the
+    right cell** and the system reported `no_evidence`. Perfect detection,
+    dropped by the rule.
+    """
+
+    def _log(self, cls, *, n_staves=6, opening=(3, 4), opening_raw="3/4"):
+        log = Log()
+        sysj = R.system(0, 0)
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=sysj,
+            quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+            value=n_staves, decider="t", reason="counted"))
+        for i in range(n_staves):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, opening,
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.8, raw=opening_raw)
+            # the CHANGE, mid-staff, at cell 3 — one letter glyph per staff
+            log.observe(R.staff(0, 0, i), Q.METER_GLYPH, cls,
+                        reader=READERS.DETECTOR, frame="cell:3",
+                        score=0.9, cell=3, y_center=100.0, letter=True)
+        return log, sysj
+
+    def _run(self, log):
+        log.freeze()
+        adjudicate._ensure_decisions()
+        adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.METER],
+                                  R.system(0, 0))
+
+    def test_a_common_time_glyph_mid_staff_IS_a_change(self):
+        log, sysj = self._log("timeSigCommon")
+        self._run(log)
+        v = log.verdict(Q.METER, sysj)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        segs = v.value["segments"]
+        self.assertEqual(len(segs), 2, "opening + the change")
+        self.assertEqual(segs[1]["from_cell"], 3)
+        self.assertEqual((segs[1]["numerator"], segs[1]["denominator"]), (4, 4))
+
+    def test_the_LETTER_reaches_the_segment_because_the_glyph_WAS_matched(self):
+        """⚠️ Unlike a BORROWED spelling, this one is evidence: `C` was read
+        here, so `raw` carries it and `staged.export` may write
+        `symbol="common"`."""
+        log, sysj = self._log("timeSigCommon")
+        self._run(log)
+        segs = log.verdict(Q.METER, sysj).value["segments"]
+        self.assertEqual(segs[1]["raw"], "C")
+
+    def test_cut_common_is_two_two(self):
+        log, sysj = self._log("timeSigCutCommon")
+        self._run(log)
+        segs = log.verdict(Q.METER, sysj).value["segments"]
+        self.assertEqual((segs[1]["numerator"], segs[1]["denominator"]), (2, 2))
+        self.assertEqual(segs[1]["raw"], "C|")
+
+    def test_a_letter_RESTATING_the_opening_is_not_a_change(self):
+        """The same guard the digit path has: a meter reprinted is not a
+        meter changed."""
+        log, sysj = self._log("timeSigCommon", opening=(4, 4), opening_raw="C")
+        self._run(log)
+        self.assertEqual(len(log.verdict(Q.METER, sysj).value["segments"]), 1)
+
+    def test_digits_still_win_where_BOTH_are_present(self):
+        """⚠️ The letter is a FALLBACK, never an override — so nothing about
+        the existing digit path changes."""
+        log, sysj = self._log("timeSigCommon")
+        for i in range(6):
+            log.observe(R.staff(0, 0, i), Q.METER_GLYPH, "timeSig3",
+                        reader=READERS.DETECTOR, frame="cell:3", score=0.9,
+                        cell=3, y_center=10.0)
+            log.observe(R.staff(0, 0, i), Q.METER_GLYPH, "timeSig8",
+                        reader=READERS.DETECTOR, frame="cell:3", score=0.9,
+                        cell=3, y_center=90.0)
+        self._run(log)
+        segs = log.verdict(Q.METER, sysj).value["segments"]
+        self.assertEqual((segs[1]["numerator"], segs[1]["denominator"]), (3, 8))

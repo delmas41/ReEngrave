@@ -585,6 +585,18 @@ system-scoped meter would have had nowhere to put the 3/4 its print states
 plainly. As segments it says the true thing: *unknown until bar 8, 3/4 from
 there*. `meter_at` returns None for a bar no segment covers.
 
+⚠️⚠️ **A CHANGE TO A LETTER METER WAS INVISIBLE, AND 23 OF 23 STAVES DETECTED
+IT.** `_meter_from_digits` required two stacked digits and skipped
+`timeSigCommon` — *"timeSigCommon and friends: no pair"* — so the caller
+counted it as a `loose` glyph, built no `readings` entry and skipped the bar.
+Found on the engraved fixture (`A-DUR-8`), where LilyPond spells 4/4 as `C`:
+`meter_glyph` = 23 rows, all `timeSigCommon`, all at the right cell, and the
+system abstained `no_evidence`. **Perfect detection dropped by the rule.**
+Fixed: `_CHANGE_LETTERS` is derived from
+`time_signature_locator.LETTER_METERS`, digits still win where both are
+present, and the letter reaches `raw` because — unlike a BORROWED spelling —
+the glyph was matched here.
+
 ⚠️ **A PROPOSED METER MUST BE ONE THE REPERTOIRE PRINTS.** Without the gate,
 p.61 produced a confident change to **1/1** at support 5.0 out of `timeSig1`
 detections. The list is `time_signature_locator.DEFAULT_METERS`, imported.
@@ -677,6 +689,50 @@ DECIDED branch on a page the carry does not already serve** — the two systems
 it newly speaks for (p.63) name 3.0 with no `voted` 3.0 anywhere to spell it,
 so they take the abstaining branch. See
 `benchmarks/omr-staged-meter-from-bars-2026-09/FINDINGS.md`.
+
+### A-DUR-8 · ⚠️⚠️ BAR SUMS ARE WRONG ON PERFECT INK — the bar-sum family is blocked UPSTREAM
+
+**MEASUREMENT, not a design decision.**
+*`benchmarks/omr-staged-meter-engraved-2026-09/`, `render_meter_change.py`, `hide_change_signature.py`*
+
+**What was measured.** `beethoven-sym5-mvt4` bars 203-218 rendered through
+LilyPond — 23 parts, every part playing in every bar, ink perfect by
+construction — changes to 4/4 at bar 209. The bar sums we read:
+
+| system | truth | read |
+|---|---|---|
+| bars 203-205 | 3/4 | **3.0, 3.0, 3.0** ✅ |
+| bars 206-214 | 3/4 → 4/4 at cell 3 | 3.0 ✅, **4.0 at 20/23** ✅, then **3.5 (18/23)**, **6.0 (20/23)** ✗ |
+| bars 215-218 | 4/4 | **5.0, 4.5, 5.0, 4.5** ✗ |
+
+**Why it matters.** The whole bar-sum family — the carry's second witness
+(`A-DUR-2`), `OMR_METER_FROM_BARS` (`A-DUR-7`) and Sean's per-bar model
+(`A-DUR-6`, items 3, 4 and 5) — assumes a page's own arithmetic is readable
+where the page is legible. **It is not, and the scan was never the reason.**
+These are confident wrong readings: 18 of 23 staves agree on 3.5 against a
+truth of 4.0, so the cross-staff majority that is supposed to make a bar
+trustworthy passes them.
+
+⚠️ **The errors run LONG** (3.5, 4.5, 5.0, 6.0 vs 4.0) on a page with no
+missing ink — a diagnosis to open, not a conclusion.
+
+⚠️ **AND IT HAS A MEASURED COST ALREADY.** `A-DUR-2` records that only the
+BENEFIT of the carry was measured. On the engraved fixture at bar 155 a
+**correct** carry is refused — 4 bars agree, 4 disagree, +1.0 against a floor
+of 2.0. That is the cost side, and it is a direct consequence of this entry.
+
+**What it does NOT overturn.** Where the bars are read right, both mechanisms
+behave: the carry brings the new 3/4 forward at +5.0 (4/0) and the bar reader
+independently derives the same 3/4 at +4.0, borrowing the spelling from the
+system that read it.
+
+**How to falsify.** Render any other change (bar 364 is 2/2, one command) and
+find the sums correct. **Do not tune `METER_CARRY_FLOOR` or
+`METER_FROM_BARS_FLOOR` against this** — that is fitting a constant to a
+broken input.
+
+**Blast radius.** No behaviour changed for this entry; it is a measurement that
+re-ranks the work. n = 2 changes in 1 movement of 1 work.
 
 ### A-DUR-6 · ⚠️⚠️ THE TARGET MODEL — a meter is decided PER BAR, from layered evidence
 

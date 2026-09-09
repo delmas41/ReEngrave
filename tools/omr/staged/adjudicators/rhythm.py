@@ -985,34 +985,63 @@ for _n, _d in sorted(_PLAUSIBLE_METERS):
     _METER_LENGTHS.setdefault(round(_n * 4.0 / _d, 6), []).append((_n, _d))
 
 
+#: A meter printed as ONE LETTER rather than two digits, and what it means.
+#: Derived from `time_signature_locator.LETTER_METERS` (`{raw: class}`) rather
+#: than restated, so the two readers cannot drift about which glyphs these are;
+#: the bar lengths are the definitions of the letters themselves.
+_LETTER_METER_VALUES = {"C": (4, 4), "C|": (2, 2)}
+_CHANGE_LETTERS = {cls: (_LETTER_METER_VALUES[raw][0],
+                         _LETTER_METER_VALUES[raw][1], raw)
+                   for raw, cls in _tsl.LETTER_METERS.items()}
+
+
 def _meter_from_digits(rows) -> Optional[tuple]:
-    """One staff's meter glyphs at one bar -> (numerator, denominator).
+    """One staff's meter glyphs at one bar -> (numerator, denominator, raw).
 
     ⚠️ THE STACK IS THE READING. A time signature is two digits stacked, so the
     numerator is simply the higher one -- `y_center` is on every row and is the
     whole of what distinguishes them. A bar whose digits do not separate into
     two heights says "something is printed here" and nothing more, which is
     what `W_CHANGE_GLYPH_LOOSE` is for.
+
+    ⚠️⚠️ A LETTER METER IS A CHANGE TOO, AND REQUIRING A STACK MADE ONE
+    INVISIBLE. This function used to `continue` past `timeSigCommon` with the
+    comment *"timeSigCommon and friends: no pair"* -- true, and then the caller
+    counted it as a `loose` digit and skipped the bar because no `readings`
+    entry existed. Measured on an ENGRAVED fixture, which is what found it:
+    Beethoven 5 mvt4 bars 203-218 changes to 4/4 at bar 209, LilyPond prints
+    that as a common-time `C`, the detector fired **`timeSigCommon` on 23 of
+    23 staves at exactly the right cell** -- and the system abstained
+    `no_evidence`. Perfect detection, dropped by the rule. This project's own
+    signature failure, inside the meter-change reader.
+
+    ⚠️ The letter is returned as `raw` and carried into the segment, because
+    unlike a BORROWED spelling it IS evidence: the glyph was matched here.
     """
     digits = []
+    letter = None
     for r in rows:
         name = str(r.value)
+        if name in _CHANGE_LETTERS:
+            letter = _CHANGE_LETTERS[name]
+            continue
         if not name.startswith("timeSig"):
             continue
         tail = name[len("timeSig"):]
         if not tail.isdigit():
-            continue                      # timeSigCommon and friends: no pair
+            continue                      # a numeral we cannot place
         y = (r.detail or {}).get("y_center")
         if y is None:
             continue
         digits.append((float(y), int(tail)))
-    if len(digits) < 2:
-        return None
-    digits.sort()
-    top, bottom = digits[0], digits[-1]
-    if top[0] == bottom[0]:
-        return None                       # all at one height: not a stack
-    return (top[1], bottom[1])
+    if len(digits) >= 2:
+        digits.sort()
+        top, bottom = digits[0], digits[-1]
+        # ⚠️ DIGITS FIRST where both are present, so nothing about the existing
+        # digit path changes; the letter is a fallback, never an override.
+        if top[0] != bottom[0]:
+            return (top[1], bottom[1], "%d/%d" % (top[1], bottom[1]))
+    return letter
 
 
 def _bar_run(bars: dict, from_cell: int, expected: float) -> tuple:
@@ -1060,16 +1089,16 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict) -> list:
         readings: dict = {}
         loose = 0
         for staff, staff_rows in per_staff.items():
-            pair = _meter_from_digits(staff_rows)
-            if pair is None:
+            reading = _meter_from_digits(staff_rows)
+            if reading is None:
                 loose += len(staff_rows)
             else:
-                readings.setdefault(pair, []).append(staff)
+                readings.setdefault(reading, []).append(staff)
         if not readings:
             continue
 
         best = None
-        for (num, den), staves in sorted(readings.items()):
+        for (num, den, raw), staves in sorted(readings.items()):
             # ⚠️ A METER MUST BE ONE THE REPERTOIRE PRINTS, and without this
             # the detector proposes meters that do not exist. Measured: p.61
             # cell 3 produced a change to **1/1** at support 5.0, out of
@@ -1091,7 +1120,7 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict) -> list:
                       for i in range(misses)]
             support = tally(terms)
             cand = {"from_cell": cell, "numerator": num, "denominator": den,
-                    "raw": f"{num}/{den}", "support": round(support, 3),
+                    "raw": raw, "support": round(support, 3),
                     "staves_reading_it": sorted(staves),
                     "bars_fit": fits, "bars_contradict": misses,
                     "loose_digits": loose}

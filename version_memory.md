@@ -16,6 +16,78 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-09 (night) — the engraved render: bar sums are WRONG on perfect ink
+
+Sean: *"now do the engraved render to settle it"*. Done — and it settled the
+question by moving it upstream.
+
+**The fixture.** `beethoven-sym5-mvt4` from the Gradus library, meter map read
+off the file (**`{1: 4/4, 155: 3/4, 209: 4/4, 364: 2/2}`**, 23 parts, 446
+bars), rendered through `musicxml2ly` + LilyPond at a3/16pt — `excerpt`'s own
+recipe, minus its one-page shrink, which exists for an EXPORTER reason that
+does not apply when the question is what `Q.METER` decides per system.
+`render_meter_change.py` + `hide_change_signature.py`.
+
+- ⚠️⚠️ **THE HEADLINE: THE BAR SUMS ARE WRONG ON PERFECT INK.** Bars 203-218,
+  23 parts, every part playing in every bar. Truth 4/4 from bar 209; we read
+  **5.0, 4.5, 5.0, 4.5** on the last system and **3.5 (18 of 23 staves)** and
+  **6.0 (20 of 23)** on the middle one. These are not noisy readings but
+  CONFIDENT WRONG ones — the cross-staff majority that is supposed to make a
+  bar trustworthy passes them. ⚠️ And the errors run **LONG** on a page with no
+  missing ink, which is a diagnosis to open rather than a conclusion.
+- **So the block on the whole bar-sum family** — the carry's second witness
+  (`A-DUR-2`), `OMR_METER_FROM_BARS` (`A-DUR-7`), Sean's per-bar model
+  (`A-DUR-6` items 3-5) — **is the DURATION READER, not the scan.** Every
+  earlier conclusion of the form *"the bars cannot speak here because the page
+  is hard"* needs re-reading, including this session's own about Litolff p.17 /
+  p.32 / p.44. ⚠️ **Do not tune `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR`
+  against it** — that is fitting a constant to a broken input. Recorded as
+  `A-DUR-8`.
+- ⚠️⚠️ **AND THE COST SIDE IS MEASURED AT LAST.** `A-DUR-2` says in its own
+  words that *"only the BENEFIT is measured — the cost of a wrong revert is
+  not"*. On the bar-155 engraving a **correct** carry is refused: 4 bars agree,
+  4 disagree, support **+1.0** against a floor of 2.0. A direct consequence of
+  the headline.
+- ✅ **WHAT WORKS, where the bars are read right.** On the bar-155 fixture the
+  carry brings the new **3/4** forward at **+5.0 (4 agree / 0 disagree)** and
+  the bar reader INDEPENDENTLY derives the same 3/4 at **+4.0**, borrowing the
+  spelling from the system that read it — two mechanisms, one answer. A wrong
+  carried meter is refused at **−1.0** on the bar-209 fixture. The layered
+  model does what it was built to do.
+- ⚠️⚠️ **A DETECTED-THEN-DROPPED BUG, FOUND AND FIXED — a change to COMMON TIME
+  was invisible.** LilyPond spells 4/4 as `C`, and `_meter_from_digits` demanded
+  two stacked digits, skipping the letter with the comment *"timeSigCommon and
+  friends: no pair"*; the caller then counted it `loose`, built no `readings`
+  entry and skipped the bar. On the record: `meter_glyph` = **23 rows, every one
+  `timeSigCommon`, every one at the right cell** — and the system abstained
+  `no_evidence`. **Perfect detection dropped by the rule**, this project's
+  signature failure inside the meter-change reader. Fixed: `_CHANGE_LETTERS` is
+  DERIVED from `time_signature_locator.LETTER_METERS`, digits still win where
+  both are present (the letter is a fallback, never an override), and the letter
+  reaches `raw` because unlike a BORROWED spelling the glyph was matched here.
+  **Measured after the fix**: `no_evidence` → `change_only` **C** at
+  `from_cell: 3` = original bar **209**, all 23 staves, support 68.0.
+- ⚠️ **And look at that segment's `bars_contradict: 2`.** The arithmetic
+  DISAGREED with the change and 23 unanimous glyphs carried it anyway
+  (23 × 3.0 − 2 × 1.0). That is Sean's ordering — *"any time signature glyph
+  should be the heaviest weight"* — behaving exactly as specified, and the same
+  page is both the argument for the ordering and the argument for fixing the
+  durations.
+- ⚠️ **Two fixture mistakes, both caught by looking, both recorded in the code
+  that made them possible.** (1) The hide script's `--marker` was a DEFAULT, and
+  `\time 3/4` is the CHANGE at bar 155 but the OPENING at bar 203 — so the 209
+  run hid the carry's own source and left the change printed, inverting the
+  experiment; the tell was `system/0/0` abstaining where it had to read 3/4. The
+  argument is now REQUIRED. (2) A top-margin heuristic for finding movement
+  starts missed p.17, the one known boundary — discarded, not trusted.
+- ⚠️ **A courtesy signature is a real structural case nothing had shown.** At
+  bar 155 the change falls on a system boundary, so LilyPond prints the new
+  `3/4` at the END of the preceding system as well. A change reader that trusts
+  the cell a glyph stands in would propose the change one bar early. It does not
+  fire here, and nothing in the rule prevents it.
+
+---
+
 ## 2026-09-09 (night) — the boundary case, found; and a refusal that was blocking every rung behind it
 
 Sean: *"go find that movement boundary on a page that reads well"*. Done, and
