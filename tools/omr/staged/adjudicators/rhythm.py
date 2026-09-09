@@ -1077,14 +1077,82 @@ def _bar_run(bars: dict, from_cell: int, expected: float) -> tuple:
     return fits, misses
 
 
-def _meter_changes(ev: Evidence, opening: dict, bars: dict) -> list:
+def _last_cell_per_staff(ev: Evidence) -> dict:
+    """Each staff of this system -> the index of its LAST measure cell.
+
+    ⚠️ PER STAFF, NOT PER SYSTEM, because the staves of one system do not
+    always agree about how many bars they hold — on the Breitkopf Brahms the
+    scan reads 8 cells where the print has 7 bars, and the extra one is the
+    trailing sliver the cautionary sits in.
+    """
+    out = {}
+    for v in ev.verdicts(Q.MEASURE_PARTITION, scope=Scope.SELF_AND_DESCENDANTS):
+        if v.outcome is not Outcome.DECIDED or not isinstance(v.value, int):
+            continue
+        staff = getattr(v.subject, "staff", None)
+        if staff is not None and v.value > 0:
+            out[staff] = v.value - 1
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# A CAUTIONARY IS NOT A CHANGE. (A-METER-5)
+#
+# An engraver announcing a new meter prints it TWICE: once after the final
+# barline of the system that is ending -- the courtesy, or cautionary,
+# signature -- and once at the head of the system that is beginning. The first
+# governs NO BAR. It is a statement about the next system.
+#
+# `_meter_changes` had no notion of one: any meter glyph past cell 0 was a
+# change. Measured on Brahms 1 mvt 1, whose LilyPond render and whose Breitkopf
+# scan both print a cautionary `9/8` after page 0's last barline, it proposed a
+# change at that page's last cell in BOTH printings -- support 57.0 engraved
+# (19 staves) and 26.5 scanned -- and the segment would re-size a bar the
+# cautionary does not govern.
+#
+# ⚠️ THE RULE IS THE ENGRAVING CONVENTION, NOT A FITTED THRESHOLD: a change is
+# put at a system's START, and the cautionary exists precisely so it can be.
+# So a meter standing in a system's LAST cell is the announcement, not the
+# change -- unless the bar it would govern says otherwise, which is the one
+# thing that could distinguish a genuine last-bar change from a courtesy.
+#
+# Measured over every change in this corpus: **all four TRUE changes sit at a
+# non-last cell** (Litolff p.62 cell 8 of 13, Brahms 1 mvt 1 cell 1 of 8,
+# Beethoven 5 mvt 4 cell 3 of 9, Brahms 1 mvt 4 cell 6 of 8) and **both
+# cautionaries sit at a last cell**, 6 of 7 and 7 of 8.
+#
+# ⚠️ IT IS RECORDED, NOT DISCARDED. A cautionary states the meter of the NEXT
+# system, and the document's own answer to a misread opening is often exactly
+# that -- on the Breitkopf scan the opening `9/8` is voted `9/4` while the
+# cautionary one system earlier reads `9` over `8` on ten and twenty staves.
+# Consuming it belongs with the carry, so it goes on the record where the carry
+# can find it rather than being dropped here.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _meter_changes(ev: Evidence, opening: dict, bars: dict,
+                   last_cell: dict) -> tuple:
     """Every mid-system meter change this system's own evidence supports.
 
-    Returns segment dicts, in bar order, each with `from_cell` and the terms
-    that carried it. The GLYPH opens each candidate; the bar math confirms it,
-    refuses it, or chooses between two staves that read it differently.
+    Takes its facts as arguments — `opening`, `bars` and `last_cell` — rather
+    than reaching for them, which is how `bars` already worked. ⚠️ The
+    inconsistency was surfaced by `inventory._never_read`, which follows a
+    decision's own helpers to depth 3: with `last_cell` fetched HERE the read
+    sat one level too deep and `measure_partition` was reported as an inert
+    `wants` entry. The check was right that the call chain was one link longer
+    than the others, and moving the fetch beside `_bar_lengths_for` is the fix
+    the report was pointing at — not a workaround for it.
+
+    Returns `(changes, cautionaries)` — segment dicts in bar order, each with
+    `from_cell` and the terms that carried it. The GLYPH opens each candidate;
+    the bar math confirms it, refuses it, or chooses between two staves that
+    read it differently.
+
+    ⚠️ A CAUTIONARY IS SEPARATED OUT RATHER THAN DROPPED — see `A-METER-5`
+    above. It is a statement about the NEXT system and governs nothing here.
     """
     rows = ev.rows(Q.METER_GLYPH, scope=Scope.SELF_AND_DESCENDANTS)
+    cautionaries: list = []
     by_cell: dict = {}
     for r in rows:
         cell = (r.detail or {}).get("cell")
@@ -1177,11 +1245,19 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict) -> list:
                 best = cand
         if best is None or best["support"] < METER_CHANGE_FLOOR:
             continue
+        # ⚠️ THE CAUTIONARY TEST COMES BEFORE THE RESTATEMENT ONE, because a
+        # courtesy signature is not a restatement of anything on THIS system —
+        # it names the next one, and calling it a restatement would lose it.
+        reading = best["staves_reading_it"]
+        if (reading and all(last_cell.get(st) == cell for st in reading)
+                and not best["bars_fit"]):
+            cautionaries.append(dict(best, cautionary=True))
+            continue
         if (best["numerator"], best["denominator"]) == in_force:
             continue                      # a RESTATEMENT, not a change
         out.append(best)
         in_force = (best["numerator"], best["denominator"])
-    return out
+    return out, cautionaries
 
 
 def _with_segments(ev: Evidence, opening: dict) -> dict:
@@ -1191,7 +1267,8 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
     nothing changes -- so a consumer never has to ask whether this system is
     the special case. `record.meter_at` is how a bar's meter is read.
     """
-    changes = _meter_changes(ev, opening, _bar_lengths_for(ev))
+    changes, cautionaries = _meter_changes(ev, opening, _bar_lengths_for(ev),
+                                          _last_cell_per_staff(ev))
     segments = [dict(opening, from_cell=0)]
     for c in changes:
         segments.append({"from_cell": c["from_cell"],
@@ -1201,7 +1278,13 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
                          "staves_reading_it": c["staves_reading_it"],
                          "bars_fit": c["bars_fit"],
                          "bars_contradict": c["bars_contradict"]})
-    return dict(opening, segments=segments)
+    out = dict(opening, segments=segments)
+    if cautionaries:
+        # ⚠️ ON THE VALUE, NOT IN `detail`, because it is a fact about the
+        # music the next system opens with — a consumer reading this system's
+        # meter is exactly who needs to find it.
+        out["cautionary"] = cautionaries[-1]
+    return out
 
 
 def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
@@ -1412,7 +1495,10 @@ def _change_only(ev: Evidence, why: str, **detail) -> Ruling:
     nowhere to put the `3/4` its print states plainly at bar 155. As segments
     it says the true thing: *unknown until bar 8, 3/4 from there*.
     """
-    changes = _meter_changes(ev, {}, _bar_lengths_for(ev))
+    changes, cautionaries = _meter_changes(ev, {}, _bar_lengths_for(ev),
+                                          _last_cell_per_staff(ev))
+    if cautionaries:
+        detail = dict(detail, cautionary=cautionaries[-1])
     if not changes:
         return Ruling.abstain(why, **detail)
     first = changes[0]
@@ -1482,7 +1568,8 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
     composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION),
     scope=Kind.SYSTEM,
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION, Q.DOSSIER_FACT,
-           Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST),
+           Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST,
+           Q.MEASURE_PARTITION),
     reasons=("voted", "no_agreement", "no_evidence",
              "too_few_staves_read_it", "carried",
              "carry_not_corroborated", "carry_outweighed_by_the_bars",

@@ -100,6 +100,54 @@ digits must win) is kept as `TestDigitsWinOverALetterAtTheSameBar`.
 
 ---
 
+## 2026-09-09 — A CAUTIONARY is not a change: the engraved arms go clean
+
+**What:** `_meter_changes` now separates a CAUTIONARY (courtesy) time signature
+from a change, and records it on the meter's value
+(`tools/omr/staged/adjudicators/rhythm.py`, `A-METER-5`), plus
+`TestACautionaryIsNotAChange` (8 tests, 6 mutation arms).
+
+**Why:** an engraver announcing a new meter prints it **twice** — once after
+the final barline of the system that is ending, once at the head of the system
+that begins. **The first governs no bar.** Nothing knew that: any glyph past
+cell 0 was a change, so both printings of Brahms 1 mvt 1 proposed one at page
+0's last cell (support **57.0** engraved on 19 staves, **26.5** scanned), and
+the segment would re-size a bar the cautionary does not govern.
+
+⚠️ **THE RULE WAS CHECKED AGAINST THE CORPUS BEFORE IT WAS WRITTEN**, which is
+what separates it from a story that fits: **all four TRUE changes sit at a
+non-last cell** (Litolff p.62 cell 8 of 13, Brahms 1 i cell 1 of 8, Beethoven 5
+iv cell 3 of 9, Brahms 1 iv cell 6 of 8) and **both cautionaries at a last
+cell**. The Litolff headline result is not at a last cell and is untouched.
+A last-cell candidate whose own bar FITS is still a change — the one thing that
+can tell a genuine last-bar change from a courtesy.
+
+⚠️ **RECORDED, NOT DISCARDED**, because it is the document's own answer to the
+next thing this benchmark gets wrong: the cautionary ending page 0 reads
+**`9/8` on 9 staves**, while the opening it announces is voted **`9/4`** at
+0.500-0.531. ⚠️ It is EVIDENCE and not an answer — the same scan records
+another at support **3.5 on ONE staff** out of spurious `timeSig4`s.
+
+**Both meter fixes together: false meter changes 10 → 3 across the six
+fixtures, every true change still found, and the ENGRAVED arms are now clean —
+4 printed, 4 found, 0 false.**
+
+⚠️ **A seventh mutation SURVIVED** (`any` staff at its last cell instead of
+`all`) and a test was written to distinguish them rather than leaving an
+unexercised gate: a cautionary is a SYSTEM-WIDE event, so a staff that still
+has a bar after the glyph contradicts it, and the safe reading keeps the
+change. ⚠️ **`inventory._never_read` then caught the call chain** — it follows
+a decision's helpers to depth 3 and the new read sat at depth 4, so
+`measure_partition` reported as an inert `wants` entry. The chain really was
+one link longer than every other fact that function uses; the fetch moved
+beside `_bar_lengths_for`, behaviour verified identical by re-running both
+cautionary arms.
+
+Suite **3415 passed, 11 skipped**.
+[benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md) §4c.
+
+---
+
 ## 2026-09-09 — The scan side of the meter, opened: five of nine false changes were BOOKKEEPING
 
 **What:** `_meter_changes` now compares a candidate against the meter **in
