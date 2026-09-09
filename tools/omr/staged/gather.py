@@ -282,11 +282,37 @@ def gather_detections(log: Log, cells: Sequence[Any],
         found[cell_sub.to_key()] = list(dets)
         for gi, d in enumerate(dets):
             g = R.glyph(p, sys_idx, st_idx, c.measure_index, gi)
+            # ⚠️⚠️ THE PAGE FRAME IS CARRIED BESIDE THE CANONICAL ONE, AND
+            # ITS ABSENCE IS WHY CROSS-STAFF SIMULTANEITY WAS UNREACHABLE.
+            # A canonical x is measured inside ONE cell, rescaled so the staff
+            # span is constant -- so two staves' canonical x are not the same
+            # quantity and comparing them is meaningless. `Q.EVENT` groups
+            # glyphs WITHIN a bar and is right to use canonical; a column
+            # through a SYSTEM is an instant of music and needs page pixels.
+            # Same fault CLAUDE.md records for the dynamics: the hairpin
+            # reader works in page pixels per staff and is right by
+            # construction, the letters go through per-measure cells and lose
+            # 24% to the staff above.
+            #
+            # ⚠️ DECLINED, never defaulted to the cell frame, exactly as
+            # `gather_dynamic_letters` declines: a glyph whose page position
+            # is unknown and one measured at page x 1841 are different facts,
+            # and only the second may reach a cross-staff consumer.
+            page_box = _page_box(c, d)
+            box_detail: Dict[str, Any] = {"category": d.category}
+            if page_box is None:
+                box_detail["frame_note"] = (
+                    "no page box: cell has no bbox_page_px/upscale_factor")
+            else:
+                px0, py0, px1, py1 = page_box
+                box_detail.update(bbox_page_px=[px0, py0, px1, py1],
+                                  x_center_page=(px0 + px1) / 2.0,
+                                  y_center_page=(py0 + py1) / 2.0)
             log.observe(g, Q.GLYPH_BOX,
                         (d.smufl_name, d.x_canonical, d.y_canonical,
                          d.width_canonical, d.height_canonical),
                         reader=READERS.DETECTOR, frame=frame,
-                        score=float(d.confidence), category=d.category)
+                        score=float(d.confidence), **box_detail)
             # ⚠️ Emitted SEPARATELY from the box, deliberately. `export.py`
             # contains exactly one occurrence of the word `confidence` and it
             # is a comment: the exporter treats a notehead detected at 0.26

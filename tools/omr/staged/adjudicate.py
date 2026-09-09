@@ -734,6 +734,12 @@ ORDER: Tuple[str, ...] = (
     # `export._events`, at serialisation time, so every stage before EXPORT
     # counted each chord member as a separate event.
     Q.EVENT,
+    # ⚠️ AFTER `EVENT`, because it consumes that verdict rather than
+    # re-clustering the glyphs: within-staff simultaneity is decided per
+    # cell, and this groups those decisions across the staves of one
+    # system. Answering the same question twice would let the two
+    # answers disagree.
+    Q.ONSET_COLUMN,
     Q.METER,
     # text
     Q.DYNAMIC,
