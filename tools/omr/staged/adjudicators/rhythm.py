@@ -23,11 +23,12 @@ repair is a bounded EVALUATE consequence, not a second adjudication.
 
 from __future__ import annotations
 
+import os
 from typing import Optional, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
                           decision)
-from ..record import ABSTAIN, Kind, Q, READERS, Scope, State
+from ..record import ABSTAIN, Kind, Outcome, Q, READERS, Scope, State
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -442,6 +443,91 @@ METER_AGREEMENT_FLOOR = 0.70
 METER_COVERAGE_FLOOR = 0.5
 
 
+#: Carry a DECIDED meter forward onto systems that read none. Default OFF.
+#:
+#: ⚠️⚠️ IT IS OFF BECAUSE THE HAZARD IS MEASURED, NOT BECAUSE IT IS FEARED.
+#: A meter is a fact of the MOVEMENT, so a carry is right until a movement
+#: starts and catastrophic afterwards -- and on the very document the benefit
+#: was measured on, THE MOVEMENT START READS NOTHING.
+#:
+#: Beethoven 5 / Litolff `984073`, one call each:
+#:
+#:   * BENEFIT -- p1/s0 decides `2/4` from **12 of 12** staves; p2/s0 reads
+#:     nothing and p2/s1 reads 3 spurious `C`. Both want p1's answer.
+#:   * HAZARD -- p17 is the *Andante con moto*, a NEW MOVEMENT printing `3/8`
+#:     on every staff. All three of its systems abstain `no_evidence`: the
+#:     template reader RAN on all 20 staves and declined `below_threshold`,
+#:     because Litolff sets `3` over `8` as heavy nearly-touching digits that
+#:     do not correlate with the Bravura templates. So an unconditional carry
+#:     stamps movement 1's `2/4` onto the whole Andante.
+#:
+#: Four guards were looked for and each is REFUTED by measurement, not by
+#: argument:
+#:
+#:   1. *"a movement start reads SOME meter, a continuation reads none"* --
+#:      inverted. The continuations p14-p16 read 1-4 spurious `C`/`4/4`; the
+#:      movement start reads 0.
+#:   2. *the KEY SIGNATURE changes at a movement boundary* -- unusable on a
+#:      scan. Only a handful of staves per system decide a key and they
+#:      disagree with each other (p14/s1 reads {-5, -3, -1, 2}); the true -4
+#:      of the Andante is never among them.
+#:   3. *the printed TEMPO HEADING* -- p17 prints "Andante con moto." three
+#:      times, and it is the right signal in principle. `direction` yields
+#:      **0 decided verdicts** in the staged record today, so it cannot be
+#:      asked.
+#:   4. *a distance bound* -- DECISIVE. Movement 1 occupies pages 1-16, so a
+#:      meter read on p1 legitimately governs 16 pages. Any bound under 16
+#:      truncates a legitimate carry in this document and any bound of 16 or
+#:      more reaches the Andante. No reach constant separates them.
+#:
+#: So the blocking input is named and it is a MOVEMENT-START signal, not a
+#: tuning constant. Flip this the day one exists.
+METER_CARRY_ENV = "OMR_METER_CARRY"
+
+
+def meter_carry_enabled() -> bool:
+    """Read the flag. Anything but an explicit "1" is off -- a typo must not
+    switch a document onto a mechanism whose hazard is a whole wrong
+    movement."""
+    return os.environ.get(METER_CARRY_ENV, "0").strip() == "1"
+
+
+def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
+    """The nearest preceding system whose meter was READ, or None.
+
+    ⚠️ A CARRY NEVER CHAINS ONTO A CARRY. Only a `voted` verdict is a source,
+    so `pages_since_read` is the true distance back to ink rather than the
+    distance to whoever last repeated the answer. That is what makes the
+    number in the record worth reading: a meter carried 16 pages is visibly
+    suspect where a chain of 16 one-page hops would each look local.
+
+    ⚠️ It is also why this needs no reach constant of its own -- see
+    `METER_CARRY_ENV`, where the reach bound is refuted outright.
+    """
+    if not meter_carry_enabled():
+        return None
+    here = ev.subject
+    for src in reversed([s for s in ev.subjects(Kind.SYSTEM) if s < here]):
+        found = ev.verdict(Q.METER, subject=src)
+        if found is None or found.outcome is not Outcome.DECIDED:
+            continue
+        if found.reason != "voted":
+            continue
+        pages = (here.page or 0) - (src.page or 0)
+        return Ruling(
+            value=dict(found.value),
+            reason="carried",
+            used=(found.id,),
+            detail={"carried_from": src.to_key(),
+                    "pages_since_read": pages,
+                    "instead_of": instead_of,
+                    "source_share": (found.detail or {}).get("share"),
+                    "source_staves_spoke":
+                        (found.detail or {}).get("n_staves_spoke")},
+        )
+    return None
+
+
 @decision(
     quantity=Q.METER,
     checkable=Checkable.MIXED,
@@ -453,9 +539,9 @@ METER_COVERAGE_FLOOR = 0.5
     composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION),
     scope=Kind.SYSTEM,
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION, Q.DOSSIER_FACT,
-           Q.SYSTEM_STAFF_COUNT),
+           Q.SYSTEM_STAFF_COUNT, Q.METER),
     reasons=("voted", "no_agreement", "no_evidence",
-             "too_few_staves_read_it"),
+             "too_few_staves_read_it", "carried"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_meter(ev: Evidence) -> Ruling:
@@ -476,7 +562,10 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     """
     rows = ev.rows(Q.METER_TEMPLATE, scope=Scope.SELF_AND_DESCENDANTS)
     if not rows:
-        return Ruling.abstain("no_evidence")
+        # ⚠️ THE CARRY IS TRIED ONLY WHERE THIS SYSTEM'S OWN EVIDENCE FAILED,
+        # so it can never overturn a reading. Off by default -- see
+        # `METER_CARRY_ENV` for the movement-boundary hazard, measured.
+        return _carry_meter(ev, "no_evidence") or Ruling.abstain("no_evidence")
 
     tally_: dict = {}
     for row in rows:
@@ -495,19 +584,21 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     total = n_staves.value if n_staves is not None and n_staves.value else None
     coverage = (len(witnesses) / float(total)) if total else None
     if coverage is not None and coverage < METER_COVERAGE_FLOOR:
-        return Ruling.abstain("too_few_staves_read_it",
-                              coverage=round(coverage, 3),
-                              n_staves_spoke=len(rows),
-                              n_staves_on_system=total,
-                              would_have_been=best_raw)
+        return _carry_meter(ev, "too_few_staves_read_it") or Ruling.abstain(
+            "too_few_staves_read_it",
+            coverage=round(coverage, 3),
+            n_staves_spoke=len(rows),
+            n_staves_on_system=total,
+            would_have_been=best_raw)
 
     share = len(witnesses) / len(rows)
     if share < METER_AGREEMENT_FLOOR:
         # ⚠️ Recorded, not defaulted. A system whose staves disagree about the
         # meter is exactly the page a human should see.
-        return Ruling.abstain("no_agreement",
-                              share=round(share, 3),
-                              readings={k: len(v) for k, v in tally_.items()})
+        return _carry_meter(ev, "no_agreement") or Ruling.abstain(
+            "no_agreement",
+            share=round(share, 3),
+            readings={k: len(v) for k, v in tally_.items()})
 
     return Ruling(value={"numerator": witnesses[0].value[0],
                          "denominator": witnesses[0].value[1],

@@ -5,6 +5,57 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-10 — the meter carry: measured on both sides, shipped OFF
+
+- **`OMR_METER_CARRY`** (staged pipeline, default `0`). A meter is a fact of
+  the MOVEMENT, printed at its start and nowhere else, so the staged pipeline
+  had no meter from a movement's second page onward while the answer sat in
+  the same log one page earlier. A system whose own meter decision ABSTAINED
+  now takes the last meter that was READ. ⚠️ **Never chains onto a carry** —
+  only a `voted` verdict is a source, so `pages_since_read` is the true
+  distance back to ink.
+- **BENEFIT**, Beethoven 5 / Litolff `984073` `--pages 0-2`: page 1 decides
+  `2/4` from 12 of 12 staves, both page-2 systems take it. **123 whole rests
+  stop being 4.0 quarters of silence in a 2.0-quarter bar**; 22 notes with NO
+  duration at all get one; `written.notes` 646 → 664 against
+  `not_written.duration_narrowed` 165 → 147 — the same 18, agreeing to the
+  unit; `written.empty_bars_padded_without_meter: 47` disappears as a field.
+  Exactly two quantities move, `meter` (2) and `duration` (111), all on page 2.
+- **CONTROLS.** Flag-off reproduces all 4,498 pre-change verdicts exactly
+  (which also proves the run deterministic, so the delta is attributable);
+  `no_pitch` 54 → 54 and `detected_and_unrepresented` 659 → 659 both unchanged,
+  because a meter says nothing about pitch and reads no new ink.
+- ⚠️ **A −1 was chased rather than rounded off**: rests 433 → 432. Not a lost
+  rest — P4 m44 had been PADDED because its only note had no duration, and the
+  note is now written. One of the 18 recoveries, arriving in the rest column.
+- ⚠️⚠️ **WHY IT IS OFF — the hazard is on the same document.** Page 17 is the
+  *Andante con moto*, a NEW MOVEMENT printing `3/8` on every staff, and all
+  three of its systems abstain `no_evidence`: the template reader RAN on all 20
+  staves and declined `below_threshold`, because Litolff sets `3` over `8` as
+  heavy nearly-touching digits. `3/8` IS in `DEFAULT_METERS`, so it is a
+  reading failure, not a missing template. A carry therefore does not merely
+  RISK crossing a movement boundary here — it **does**, and holds `2/4` for the
+  rest of the movement.
+- ⚠️ **Four guards measured, all four refused.** *"A movement start reads SOME
+  meter"* is **INVERTED** (continuations p14-16 read 1-4 spurious `C`/`4/4`;
+  the movement start reads 0). Key signatures are too noisy on a scan (p14/s1
+  reads {−5, −3, −1, 2}; the Andante's true −4 appears nowhere on p17). The
+  printed TEMPO HEADING is the right signal but `direction` yields **0 decided
+  verdicts**. A DISTANCE BOUND is arithmetically impossible: movement 1
+  occupies 16 pages, so any bound under 16 truncates a legitimate carry and any
+  bound of 16 or more reaches the Andante. **The blocking input is a
+  MOVEMENT-START signal, not a threshold.**
+- `Evidence.subjects(kind)` — structural subject enumeration, no quantity and
+  no declaration check, because "what pages are there" is layout and not
+  evidence. Reading a value off one is still checked.
+- Tests: `TestTheMeterCarry` (6) + `TestEvidenceSubjectsIsStructural`, each run
+  RED under two mutations before being believed — the no-chain rule is pinned
+  by a test that fails when the `voted`-only line is removed. `A-DUR-2` in
+  `tools/omr/staged/ASSUMPTIONS.md`;
+  `benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md`.
+
+---
+
 ## 2026-09-09 (evening) — the clef's neighbour, the meter's missing half, and three wrong inferences
 
 - **`Q.CLEF_POSITION`** — where each clef glyph stands on THIS staff, in

@@ -498,6 +498,46 @@ the code. Falsify by showing the vote can be computed from measurements alone.
 measurement — the meter loop is tighter than modelled and `reconcile_duration`'s
 bound matters more.
 
+### A-DUR-2 · ⚠️ A meter may be CARRIED, and the carry is off because the hazard is measured
+
+**CONTINGENCY** — blocked on a MOVEMENT-START signal, not on a threshold.
+*`rhythm.meter_carry_enabled`, `rhythm._carry_meter`, `OMR_METER_CARRY` (default `0`)*
+
+**Assumption.** A system that read no usable meter may take the last meter that
+was READ, and only a `voted` verdict is a source — a carry never chains onto a
+carry, so `pages_since_read` is the true distance back to ink.
+
+**Why.** A meter is a fact of the MOVEMENT, printed at its start and nowhere
+else, so a page-at-a-time pipeline has no meter from the second page onward.
+Measured on Beethoven 5 / Litolff `984073` `--pages 0-2`: the carry takes page
+1's `2/4` (voted, 12 of 12 staves) onto both of page 2's systems, and **123
+whole rests stop being 4.0 quarters of silence in a 2.0-quarter bar** while 22
+notes that had no duration at all get one. Flag-off is byte-identical — all
+4,498 verdicts of the pre-change run reproduce exactly.
+
+**Why it is nevertheless OFF.** On the SAME document, page 17 is the *Andante
+con moto* — a new movement printing `3/8` on every staff — and all three of its
+systems abstain `no_evidence`, because the template reader ran on all 20 staves
+and declined `below_threshold` (Litolff sets `3` over `8` as heavy touching
+digits). So the carry does not merely risk crossing a movement boundary here,
+it **does** cross it, and holds `2/4` for the rest of the movement. Four guards
+were measured and all four refused: the "a movement start reads something"
+heuristic is INVERTED (continuations read 1-4 spurious `C`, the movement start
+reads 0); key signatures are too noisy on a scan to see the boundary; the
+printed tempo heading is the right signal but `direction` yields 0 decided
+verdicts; and a distance bound is arithmetically impossible, since movement 1
+occupies 16 pages so any bound under 16 truncates a legitimate carry and any
+bound of 16 or more reaches the Andante.
+
+**How to falsify.** Supply a movement-start signal and show the carry stops at
+it. Or find a document where a carry is wrong *within* one movement — that would
+falsify the assumption itself rather than its guard.
+
+**Blast radius.** Bounded by the flag. With it on, every system downstream of a
+missed movement start inherits the wrong meter, and the only thing that says so
+is `pages_since_read` in the record. See
+`benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md`.
+
 ---
 
 ## A-GROUP — the grouping decisions

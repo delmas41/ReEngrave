@@ -234,3 +234,161 @@ class TestAMeterIsPrintedOnEVERYStaffOfItsSystem(unittest.TestCase):
         adjudicate._ensure_decisions()
         v = adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.METER], sysj)
         self.assertIs(v.outcome, Outcome.DECIDED)
+
+
+class TestTheMeterCarry(unittest.TestCase):
+    """A meter is a fact of the MOVEMENT — printed at its start and nowhere
+    else — so a system that reads none may take the last one that was READ.
+
+    ⚠️ OFF BY DEFAULT, AND THE HAZARD IS MEASURED RATHER THAN FEARED. On
+    Beethoven 5 / Litolff `984073`, page 17 is the *Andante con moto*: a NEW
+    MOVEMENT printing `3/8` on every staff, whose three systems all abstain
+    `no_evidence` because the template reader ran on all 20 staves and
+    declined `below_threshold` — Litolff sets `3` over `8` as heavy
+    nearly-touching digits. So an unconditional carry stamps movement 1's
+    `2/4` onto the whole Andante, which is what `test_the_hazard` pins.
+    """
+
+    def _log(self, carried_pages=(0, 1)):
+        """Page 0 system 0 reads 2/4 on 12 of 12; page 1 system 0 reads
+        nothing at all."""
+        log = Log()
+        src = R.system(carried_pages[0], 0)
+        dst = R.system(carried_pages[1], 0)
+        for sysj, n in ((src, 12), (dst, 11)):
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=n, decider="t", reason="counted"))
+        for i in range(12):
+            log.observe(R.staff(carried_pages[0], 0, i), Q.METER_TEMPLATE,
+                        (2, 4), reader=READERS.TEMPLATE,
+                        frame="header_window", score=0.7, raw="2/4")
+        return log, src, dst
+
+    def _run(self, log, on):
+        """Adjudicate METER ONLY, over its systems in reading order.
+
+        ⚠️ Deliberately not `adjudicate.run`: these logs pre-record the staff
+        counts the carry needs, and the full harness would re-decide them and
+        trip `AlreadyAdjudicated` — the single-pass guard working, not a bug.
+        Reading order is what makes the carry reachable at all, so it is
+        asserted here rather than assumed: `Subject` is an ordered dataclass.
+        """
+        import os
+        log.freeze()
+        adjudicate._ensure_decisions()
+        spec = adjudicate.REGISTRY[Q.METER]
+        systems = sorted(log.subjects(R.Kind.SYSTEM))
+        self.assertEqual(systems, sorted(systems))
+        prev = os.environ.get(rhythm_mod.METER_CARRY_ENV)
+        if on:
+            os.environ[rhythm_mod.METER_CARRY_ENV] = "1"
+        else:
+            os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
+        try:
+            for sysj in systems:
+                adjudicate.adjudicate_one(log, spec, sysj)
+        finally:
+            if prev is None:
+                os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
+            else:
+                os.environ[rhythm_mod.METER_CARRY_ENV] = prev
+
+    def test_off_by_default_the_system_still_abstains(self):
+        """⚠️ The control for every claim below. Measured on the real page
+        too: flag-OFF reproduced all 4,498 verdicts of the pre-change run
+        identically, reasons and values included."""
+        log, _src, dst = self._log()
+        self._run(log, on=False)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_evidence")
+
+    def test_on_it_takes_the_last_meter_that_was_READ(self):
+        log, src, dst = self._log()
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "carried")
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (2, 4))
+        self.assertEqual(v.detail["carried_from"], src.to_key())
+        self.assertEqual(v.detail["pages_since_read"], 1)
+        self.assertEqual(v.detail["instead_of"], "no_evidence")
+
+    def test_it_never_overturns_a_system_that_read_its_own(self):
+        """The carry is reached only from an abstention branch, so a system
+        with its own evidence cannot be overwritten by an older page."""
+        log, src, _dst = self._log()
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, src)
+        self.assertEqual(v.reason, "voted")
+
+    def test_a_carry_NEVER_chains_onto_a_carry(self):
+        """⚠️ THE NUMBER IN THE RECORD IS THE POINT. Only a `voted` verdict is
+        a source, so `pages_since_read` is the true distance back to INK. A
+        chain of one-page hops would each look local while the third page's
+        meter was in fact sixteen pages and one movement away.
+        """
+        log = Log()
+        src = R.system(0, 0)
+        mid = R.system(1, 0)
+        far = R.system(2, 0)
+        for sysj, n in ((src, 12), (mid, 11), (far, 11)):
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=n, decider="t", reason="counted"))
+        for i in range(12):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, (2, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw="2/4")
+        self._run(log, on=True)
+        mid_v = log.verdict(Q.METER, mid)
+        far_v = log.verdict(Q.METER, far)
+        self.assertEqual(mid_v.reason, "carried")
+        self.assertEqual(far_v.reason, "carried")
+        # both name the READING, not each other, and the distance is honest
+        self.assertEqual(mid_v.detail["carried_from"], src.to_key())
+        self.assertEqual(far_v.detail["carried_from"], src.to_key())
+        self.assertEqual(far_v.detail["pages_since_read"], 2)
+
+    def test_the_hazard_a_carry_crosses_a_movement_boundary(self):
+        """⚠️⚠️ THIS TEST PINS A WRONG ANSWER ON PURPOSE — it is why the flag
+        is off. Page 17 of the real document is a new movement in 3/8 whose
+        systems read nothing; the carry gives them page 1's 2/4 and the record
+        can only say how far it came. Change this test the day a
+        MOVEMENT-START signal exists, never before.
+        """
+        log, src, dst = self._log(carried_pages=(1, 17))
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (2, 4))
+        self.assertEqual(v.detail["pages_since_read"], 16)
+
+    def test_a_carried_meter_is_never_labelled_voted(self):
+        """The whole record depends on a consumer being able to tell a meter
+        that was READ from one that was inherited."""
+        log, _src, dst = self._log()
+        self._run(log, on=True)
+        self.assertNotEqual(log.verdict(Q.METER, dst).reason, "voted")
+
+
+class TestEvidenceSubjectsIsStructural(unittest.TestCase):
+    """`Evidence.subjects` answers "what pages and systems are there", which
+    is layout, not evidence — so it takes no quantity and checks no
+    declaration. Reading a VALUE off one of them is still checked."""
+
+    def test_it_needs_no_declaration_but_a_read_still_does(self):
+        log = Log()
+        log.observe(R.staff(0, 0, 0), Q.METER_TEMPLATE, (2, 4),
+                    reader=READERS.TEMPLATE, frame="header_window",
+                    score=0.7, raw="2/4")
+        log.freeze()
+        adjudicate._ensure_decisions()
+        spec = adjudicate.REGISTRY[Q.METER]
+        ev = adjudicate.Evidence(log, R.system(0, 0), spec)
+        self.assertIn(R.system(0, 0), ev.subjects(R.Kind.SYSTEM))
+        with self.assertRaises(adjudicate.UndeclaredEvidence):
+            ev.rows(Q.MARGIN_LABEL)

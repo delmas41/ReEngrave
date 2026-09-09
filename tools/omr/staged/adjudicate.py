@@ -338,6 +338,22 @@ class Evidence:
             return (v.value,)
         return tuple(c.value for c in v.candidates)
 
+    def subjects(self, kind: Kind) -> Tuple[Subject, ...]:
+        """Every subject of `kind` the log holds, in reading order.
+
+        ⚠️ STRUCTURAL, AND THAT IS WHY IT TAKES NO QUANTITY AND CHECKS NO
+        DECLARATION. It answers "what pages and systems does this document
+        have", which is a fact about the raster's layout, not evidence about
+        anything. Nothing is read here -- a decision that wants a VALUE off
+        one of these subjects must still go through `rows`/`verdict` with the
+        quantity declared, and is still checked.
+
+        `Subject` is an ordered dataclass keyed (kind, page, system, ...), so
+        the tuple is already in reading order and a caller asking "what came
+        BEFORE me" can compare directly.
+        """
+        return self.log.subjects(kind)
+
     def state(self, quantity: str, *, scope: Scope = Scope.EXACT,
               subject: Optional[Subject] = None) -> State:
         """⚠️ The three-state answer. Use it: DECLINED carries a reason and
