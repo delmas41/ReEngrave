@@ -1,0 +1,24 @@
+CONTROLS  OFF ok=True unbalanced=0 | ON ok=True unbalanced=0
+rows with a resolved part join: OFF 19  ON 19
+
+family                  matched_exac  matched_attr       missing      spurious  uncorrespond
+hairpin                    0->    97     0->     4   323->   187     4->    57    18->    30
+word                      17->    17     6->     7   194->   193    16->    16     9->     9
+
+--- families IDENTICAL in both arms (the validity control, family-side) ---
+articulation, barline, clef, dynamic, fermata, key, metronome, note, ornament, rest, slur, tie, time
+
+=== HAIRPIN family, PER ROW (never pooled) ===
+row                                  join        exact       missing     spurious
+beethoven-sym5-mvt1-984073-p4         yes    0->     0     0->     0    0->     2
+brahms-sym1-mvt1-317803-p1            yes    0->     0     0->     0    0->     4
+brahms-sym1-mvt1-317803-p2            yes    0->    41   110->    43    0->    18
+brahms-sym1-mvt1-317803-p3            yes    0->     4    50->    46    0->     4
+brahms-sym1-mvt1-317803-p4            yes    0->     0     2->     2    0->     2
+dvorak-sym9-mvt1-405834-p5            yes    0->     5    14->     7    0->     2
+dvorak-sym9-mvt1-405834-p6            yes    0->     8     8->     0    0->     0
+dvorak-sym9-mvt1-405834-p7            yes    0->    33    66->    24    0->     5
+mahler-sym5-mvt1-local-p3             yes    0->     3    26->    22    0->     2
+mahler-sym5-mvt1-local-p4             yes    0->     0    27->    27    4->    14
+mahler-sym5-mvt1-local-p5             yes    0->     3    16->    12    0->     4
+SUMMED over the rows that moved              0->    97   319->   183    4->    57

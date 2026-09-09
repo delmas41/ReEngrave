@@ -299,8 +299,33 @@ right tool.
 The hairpins are the real gap, and a reader for them already exists in the
 codebase, switched off because an earlier measurement said it made the overall
 score worse. That measurement was taken one day before an unrelated fix repaired
-the single page responsible for half of its cost — so the first move is to
+the single page responsible for half of its cost — so the first move was to
 measure again rather than to build anything.
+
+**That re-measurement has now been done, and it did two things at once.** The
+guess was wrong: the page was indeed repaired, and the hairpin reader's cost on
+it did not change by a single point. But the re-run also scored the same two
+readings with a second instrument — one that compares symbol to symbol instead
+of comparing two finished files — and that instrument says the reader recovers
+**136 of the wedges the score actually contains, 97 of them exactly right**,
+where before it found none at all, at the price of inventing 53 that are not
+there.
+
+So the two measurements disagree, and the disagreement is the finding rather
+than a puzzle. The older one is a whole-document comparison, and adding a
+correct symbol to a bar that already fails to line up makes that comparison
+*worse*, not better — most of the cost is that effect and not the hairpins being
+wrong. The recommendation is to switch the reader on; it is left off for now
+because it is the owner's call, and because it does buy those 136 real marks
+with 53 invented ones.
+
+The same work also put both kinds of loud marking into the newer,
+decision-by-decision pipeline for the first time, so that *which staff a marking
+belongs to* is settled by the part of the system built to answer that question,
+rather than by which slice of the page the marking happened to be cut into.
+A third, smaller change — keeping half-read letters instead of discarding them —
+was built, measured, and rejected: it recovers real ink, and nothing on the
+page improved by it.
 
 Part of that measuring can now be done away from the main machine. A cloud
 session has none of the large files — no trained model, no score library — so it
@@ -308,6 +333,132 @@ cannot read a page. But one real scanned page's worth of already-read symbols,
 its ground truth, and the hand-checked notes that line the two up are all small
 enough to live in the repository, so a change to how a reading is *written out*
 can be scored there. A change to how a page is *read* still cannot.
+
+## A fact can arrive and still not be usable (2026-09-08)
+
+To judge how well a page was read, the project has to know which printed staff
+corresponds to which part of the reference score. For one dense Mahler page
+that correspondence had never been written down, and it was the last such gap:
+a human read the page and supplied it, closing the item.
+
+The page still could not be judged. It prints four percussion staves that are a
+single line rather than the usual five — a shape the staff finder cannot see at
+all — so the new list named 21 staves while the reader had produced 17, the
+two counts disagreed, and the tool refused to guess. The gap had not closed so
+much as changed its name.
+
+The repair was to record, for each of those four staves, that it is a one-line
+staff. Nothing was inferred from the instrument names: the page's own notes
+already listed the four in words, and a separate hand-read table in the same
+file already carried the answer for all 21 staves, so the two independent
+records could be checked against each other. The timpani, which looks like
+percussion but is printed on a normal five-line staff, is the case a
+name-matching shortcut would have got wrong.
+
+Measured before and after with everything else held fixed, the page went from
+nothing that could be said about it to 17 of its staves being assessable, and
+exactly one page in the twenty changed. The four one-line staves are still
+unread — the fix makes the tool *say* they are unread instead of giving up on
+the whole page.
+
+Two things worth carrying, and the second was then fixed. A test written
+earlier for exactly this mistake is the only thing that caught it; every other
+check passed. And the tool that writes these staff lists could not record the
+one-line fact at all — it rejected it — so the next page mapped this way would
+have arrived with the same problem.
+
+That second half is now closed. The fact was being worked out correctly early
+on and thrown away four separate times before reaching the file, so the writing
+path can now carry it, and it checks the value rather than merely permitting
+it. More importantly the tool now asks, *before* it writes, the same question
+the test asks afterwards: does this list of staves add up to the number the
+page says it prints? Run against the existing records, it correctly objects to
+all five pages whose entries predate the field — the whole group that had the
+problem, not just the one that was noticed.
+
+The distinction worth keeping is *when* a check runs. Asking after the fact
+means a person has already spent an hour confirming twenty-one staves by eye;
+asking at the point of writing costs them nothing and names the missing piece.
+
+---
+
+## Taking stock of what the reader writes down
+
+The project is being rebuilt around three stages: **gather** what is on the
+page, **adjudicate** what it means, **evaluate** what follows. The point of the
+split is that every decision leaves a record — including a record of having
+declined to decide — so that when something is wrong you can find out *which*
+judgement went wrong, rather than only that the final file differs.
+
+That only works if the record has a word for everything worth writing down. In
+September Sean noticed one it did not: **chords**. Notes stacked at the same
+moment in a bar are grouped by a real piece of judgement — how close in
+horizontal position counts as "the same moment", a check that two notes sharing
+a position but pointing their stems opposite ways are two separate lines rather
+than one chord, and a vote on how long the group lasts — and none of that had a
+name in the record. It was happening, and it was invisible.
+
+Rather than write a list of what else might be missing, the answer is a small
+program that works it out from the code itself and can be re-run whenever the
+code changes. Lists written by hand in this project have a poor record of
+staying true.
+
+It found two different problems that look the same from a distance. Some things
+are **not collected at all** — fermatas, for instance, are recognised on the
+page and written into the final file, and the record has no word for one. Others
+**are collected, under a name too general to be useful**: every mark the
+recogniser finds is filed as "a symbol", so slurs, ties, accents and dynamic
+markings are all genuinely in there, and the step that needs to reason about
+slurs specifically cannot reach them — it asks for slurs and is told there are
+none. The first needs a new reader. The second only needs the filing corrected,
+which is much cheaper.
+
+The most useful thing it turned up was about work already planned. Six steps in
+the new pipeline are known to be unwritten placeholders, and the natural reading
+was that each needs its decision-making written. In fact **every one of them is
+also missing its input** — so each is two jobs rather than one, and for four of
+the six the missing half is the cheap filing fix rather than new recognition
+work. Encouragingly, every step that is finished is properly fed.
+
+
+## What else is on the page
+
+The same question asked the other way round: not "what does the code collect"
+but "what is actually printed on a page of music, and what does a musician read
+that we have no word for". Three kinds of thing, and they need different work.
+
+Some are simply **ink we don't pick up** — rests as a category of their own,
+accidentals, the octave-shift bracket that moves everything under it by an
+octave. And two that are quietly valuable because the engraver has already done
+work for us: **bar numbers and rehearsal letters**. We currently count the bars
+on a line by measuring where the barlines are, when the printing often states
+the answer.
+
+Some are **left out on purpose, and the omission is the meaning**. Music
+notation is unusual in that absence is a value: a bar left empty means that
+instrument is silent, a note without an accidental inherits the one printed
+earlier in the bar, a continuation line without a key signature means the key
+has not changed. The project already handles some of these well. But one is a
+real hole — **a bar we read nothing in and a bar that is genuinely silent come
+out identical**, both written as a full bar of rest. That is exactly the
+distinction the new pipeline was built to preserve, appearing in the music
+rather than in the bookkeeping, and the thing that separates them (is there ink
+there or not?) is already being measured for another purpose.
+
+The third kind is not ink at all — **relations between things**. The most
+valuable one is a direct enlargement of the chord finding. Notes stacked at the
+same point in a bar are a chord; notes at the same point *across the whole
+system* are the same moment of music. That is what a conductor's score is. It
+means a page of twenty-one staves is twenty-one independent readings of the
+same stretch of time, which have to agree — and nothing in the project compares
+them. It is the only place on the page where the evidence is *repeated*, and
+repeated evidence is what lets you work out which reading was wrong rather than
+only that something is. The coarse version of this check (do the staves agree
+how many bars are on the line?) already exists and has never once found a
+disagreement — the disagreements are inside the bar, where nothing looks.
+
+Full reasoning, including what is deliberately not proposed:
+`docs/exploration-what-is-on-the-page-2026-09-09.md`.
 
 ## Running it
 

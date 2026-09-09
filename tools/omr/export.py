@@ -1461,6 +1461,67 @@ _DYNAMIC_ELEMENTS = {
 }
 
 
+def _partial_dynamics_mode() -> str:
+    """`OMR_PARTIAL_DYNAMICS` — what a letter run that spells NOTHING exports as.
+
+    `measure_dynamics` assembles adjacent `dynamic*` letters into a word and,
+    where the word is not one of the 17 in `_DYNAMIC_WORDS`, **discards the run
+    whole.** That is a mark the detector READ being thrown away on the way out,
+    the shape this project has now paid for ten times.
+
+    ⚠️ **AND THE OBVIOUS FIX — export the run's own text — IS REFUSED, because
+    most of what is dropped is not one mark.** Measured over the 20-row scan
+    gate (`benchmarks/omr-dynamics-staged-2026-09/`), the dropped population is
+    NOT uniformly the lone `s` an earlier note described: it also holds
+    `ppmsf`, `ppzmf`, `pmff` — five letters run together, which no dynamic is.
+    Those are an ASSEMBLY failure (several marks, or a neighbour staff's ink,
+    joined by the x-adjacency rule), and emitting one `<other-dynamics>ppmsf`
+    would be worse than silence. ⚠️ Re-assembling on the MEDIAN letter width
+    instead of the max was tried and is not the lever: on Brahms 1 p1-p3 it
+    moves kept runs 159 -> 162 and leaves the dropped count at 20, `ppmsf`
+    included.
+
+    So the modes are graded by how much they assert:
+
+      `off`       today. The run is dropped.
+      `complete`  the run is exported ONLY where every dynamic word it could
+                  still become AGREES on more letters — the longest common
+                  prefix of its completions — and that agreed string is itself
+                  a real dynamic. A lone `s` can only become `sf`, `sfp` or
+                  `sfz`, all of which begin `sf`, so `sf` is asserted by every
+                  candidate and nothing is guessed. A lone `m` can become `mf`
+                  or `mp`, which agree on nothing further, so it stays dropped.
+      `other`     `complete`, plus `<other-dynamics>` carrying the run's own
+                  text for a run that is a prefix of something but whose
+                  completions do not agree. Asserts a mark is THERE while
+                  declining to spell it.
+
+    ⚠️ A run that is a prefix of NOTHING is dropped under every mode. That is
+    the assembly-failure population and no mode here claims to read it.
+    """
+    mode = os.environ.get("OMR_PARTIAL_DYNAMICS", "off").strip().lower()
+    return mode if mode in ("complete", "other") else "off"
+
+
+def _partial_dynamic_word(word: str) -> str | None:
+    """The most a partial run may be exported as, or None to keep dropping it.
+
+    ⚠️ Returns only what EVERY surviving candidate agrees on. This is the
+    difference between an inference and a guess: `s` -> `sf` adds a letter that
+    all of `sf`/`sfp`/`sfz` carry, while `s` -> `sfz` would pick one of three.
+    """
+    mode = _partial_dynamics_mode()
+    if mode == "off" or not word:
+        return None
+    candidates = sorted(w for w in _DYNAMIC_WORDS if w.startswith(word))
+    if not candidates:
+        return None                       # a prefix of nothing: assembly noise
+    agreed = os.path.commonprefix(candidates)
+    if agreed in _DYNAMIC_WORDS:
+        return agreed
+    return word if mode == "other" else None
+
+
 def measure_dynamics(detections: list[dict[str, Any]]) -> list[tuple[float, str, str]]:
     """`(x, "dynamic", word)` for each dynamic marking in a measure, left to right.
 
@@ -1488,13 +1549,28 @@ def measure_dynamics(detections: list[dict[str, Any]]) -> list[tuple[float, str,
         if x - prev_right <= width and abs(y - run_y) <= width:
             word += letter
         else:
-            if word in _DYNAMIC_WORDS:
-                out.append((run_x, "dynamic", word))
+            _emit_dynamic_run(out, run_x, word)
             run_x, run_y, word = x, y, letter
         prev_right = x + w
-    if word in _DYNAMIC_WORDS:
-        out.append((run_x, "dynamic", word))
+    _emit_dynamic_run(out, run_x, word)
     return out
+
+
+def _emit_dynamic_run(out: list[tuple[float, str, str]], x: float,
+                      word: str) -> None:
+    """One assembled run -> zero or one `<direction>`.
+
+    A run that spells a dynamic is emitted as it always was. A run that does
+    not is passed to `_partial_dynamic_word`, which returns None under the
+    default `off` mode -- so the shipped behaviour is byte-identical until the
+    flag is set. See `_partial_dynamics_mode`.
+    """
+    if word in _DYNAMIC_WORDS:
+        out.append((x, "dynamic", word))
+        return
+    recovered = _partial_dynamic_word(word)
+    if recovered is not None:
+        out.append((x, "dynamic", recovered))
 
 
 def measure_direction_words(measure: dict[str, Any]) -> list[tuple[float, str, str]]:

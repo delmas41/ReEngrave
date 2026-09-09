@@ -1,0 +1,103 @@
+═══ GATHER COVERAGE ═══
+  declared quantities          63
+  OBSERVED by a gatherer       31
+  abstain-only (declared)       2
+  declared, never gathered     10
+  NO VOCABULARY AT ALL         11
+  unaccounted (must be 0)       0
+
+─── 1. GATHERED (observed) ───
+  AUG_DOT                      DETECTOR                         gather_rhythm_marks
+  BARLINE_COLUMN               GEOMETRY                         gather_measures
+  BEAM_STROKE                  CV_LINES,DETECTOR                gather_cv_lines,gather_detector_beams
+  BRACKET_BLOCK                GEOMETRY                         _gather_bracket_blocks
+  CLEF_GLYPH                   DETECTOR                         gather_clef
+  CLEF_LOCATED                 CV_LOCATOR                       gather_clef_locator
+  CLEF_SEED                    DOSSIER                          gather_clef_seed
+  DOSSIER_FACT                 DOSSIER                          gather_external
+  FLAG                         DETECTOR                         gather_rhythm_marks
+  GAP_BRIDGING                 GEOMETRY                         gather_systems
+  GLYPH_BAND_DISTANCE          GEOMETRY                         gather_ownership_evidence
+  GLYPH_BOX                    DETECTOR                         gather_detections
+  GLYPH_CONF                   DETECTOR                         gather_detections
+  GLYPH_LADDER                 DETECTOR                         _observe_ladder
+  KEYSIG_CLEF_FIT              CV_HEADER                        gather_key_signature
+  KEYSIG_MARKER                DETECTOR                         _gather_keysig_markers
+  KEYSIG_RUN_POSITION          CV_HEADER                        gather_key_signature
+  MARGIN_LABEL                 TEXT_LAYER                       gather_margin_labels
+  METER_GLYPH                  DETECTOR                         _gather_meter_glyphs
+  METER_TEMPLATE               TEMPLATE                         gather_meter
+  NOTEHEAD_CLASS               DETECTOR                         gather_detections
+  NOTEHEAD_STAFF_POSITION      GEOMETRY                         gather_notehead_positions
+  ROSTER_ENTRY                 CATALOG                          gather_external
+  STAFF_EXTENT                 GEOMETRY                         gather_geometry
+  STAFF_LINES                  GEOMETRY                         gather_geometry
+  STAFF_ORDINAL                GEOMETRY                         gather_measures
+  STAFF_SKEW                   GEOMETRY                         gather_geometry
+  STAFF_SPACING                GEOMETRY                         gather_geometry
+  STEM                         CV_LINES                         gather_cv_lines
+  SYSTEM_STAFF_COUNT           GEOMETRY                         gather_measures
+  TUPLET_MARKER                DETECTOR                         gather_rhythm_marks
+
+─── 1b. ABSTAIN-ONLY (a reader declared it and never read) ───
+  DIRECTION_WORD               NOT_IMPLEMENTED
+  SYSTEMIC_COLUMN              SYSTEM_TOO_SMALL
+
+─── 2. NOT GATHERED ───
+  owned by adjudicate  : ARC_KIND, ARC_OWNER, ARTICULATION_OWNER, CLEF, DIRECTION, DURATION, DYNAMIC, GLYPH_OWNER, GROUP_SYMBOL, INSTRUMENT, KEY_SIGNATURE, MEASURE_PARTITION, METER, PART_PARTITION, SLOT_INDEX, STAFF_GROUP, SYSTEM_MEMBERSHIP, TUPLET_RATIO, WEDGE_ANCHOR
+  owned by evaluate    : PITCH
+  DECLARED, UNGATHERED : ACCIDENTAL, ARC_BOX, ARTICULATION_MARK, CLEF_REFUSAL_BRANCH, DYNAMIC_LETTER, INPUT_DOMAIN, LEFT_EDGE_INK, PART_NAME, TEXT_LAYER, WEDGE_BOX
+
+─── 3. WANTED BY A DECISION AND NEVER GATHERED ───
+  ARC_BOX                      wanted by ARC_KIND, ARC_OWNER
+  ARTICULATION_MARK            wanted by ARTICULATION_OWNER
+  DIRECTION_WORD               wanted by DIRECTION
+  DYNAMIC_LETTER               wanted by DYNAMIC
+  WEDGE_BOX                    wanted by WEDGE_ANCHOR
+
+─── 4. NO VOCABULARY (legacy carries it, record cannot name it) ───
+  events             THE EVENT LIST ITSELF -- the ordered simultaneities a staff-measure resolves to. `Q.MEASURE_PARTITIO
+  fermata            read by the detector and emitted by the exporter -- Beethoven 5 detects 36 against a truth of 36 and
+  kind               chord | rest -- WHICH EVENT A GLYPH IS PART OF. The simultaneity itself: `voicing.group_chords_in_me
+  n_events           the event count, written beside `events`; see `events`.
+  ornaments          trill / turn / mordent / tremolo, attached by `transcribe._attach_ornaments_in_cell`. The tenth expo
+  stem_direction     up | down, measured by `transcribe._stem_direction` from the stem against its noteheads. `Q.STEM` ca
+  tied_from_prev     the other end of the same chain; see `tied_to_next`.
+  tied_to_next       tie state carried on the notehead, chained across barlines by `transcribe._pair_ties_in_staff`. `Q.A
+  voice_index        which stream an event landed in; see `voices`.
+  voices             a staff-measure's 1-2 VOICE STREAMS, split by `voicing.split_events_into_voices` on stem direction. 
+  x_position         the event's ONSET -- x-centre as musical time, the axis events are sorted on. Raw x IS inside `Q.GLY
+
+─── 3b. DECLARED STUBS WHOSE INPUT IS ALSO UNGATHERED ───
+  ARC_KIND               ungathered: ARC_BOX
+                           ARC_BOX: filed under Q.GLYPH_BOX -- a NAMING gap
+  ARC_OWNER              ungathered: ARC_BOX
+                           ARC_BOX: filed under Q.GLYPH_BOX -- a NAMING gap
+  ARTICULATION_OWNER     ungathered: ARTICULATION_MARK
+                           ARTICULATION_MARK: filed under Q.GLYPH_BOX -- a NAMING gap
+  DIRECTION              ungathered: DIRECTION_WORD
+  DYNAMIC                ungathered: DYNAMIC_LETTER
+                           DYNAMIC_LETTER: filed under Q.GLYPH_BOX -- a NAMING gap
+  WEDGE_ANCHOR           ungathered: WEDGE_BOX
+                           WEDGE_BOX: filed under Q.GLYPH_BOX -- a NAMING gap
+
+─── 5. DETECTOR CLASS SPACE (146 classes, 35 families) ───
+  named and gathered   : augmentation, beam, c, clef, f, fingering, flag, g, key, ledger, notehead, staff, stem, time, tuplet
+  named, not gathered  : artic, dynamic, slur, tie
+  NO QUANTITY NAMES IT :
+      accidental       8 classes   no quantity names this family
+      arpeggiato       1 classes   no quantity names this family
+      brace            1 classes   no quantity names this family
+      caesura          1 classes   no quantity names this family
+      coda             1 classes   no quantity names this family
+      fermata          2 classes   no quantity names this family
+      grace            4 classes   no quantity names this family
+      keyboard         2 classes   no quantity names this family
+      ornament         4 classes   no quantity names this family
+      ottava           1 classes   no quantity names this family
+      repeat           1 classes   no quantity names this family
+      rest            11 classes   no quantity names this family
+      segno            1 classes   no quantity names this family
+      strings          2 classes   no quantity names this family
+      tremolo          5 classes   no quantity names this family
+      unpitched        1 classes   no quantity names this family

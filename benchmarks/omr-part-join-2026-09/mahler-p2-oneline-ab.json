@@ -1,0 +1,128 @@
+{
+ "_README": "Controlled A/B for the four `lines: 1` fields added to mahler-sym5-mvt1-local-p2's staff lineup in works.json. SAME TREE, same fixtures, same pairs file, run_ledger.py run twice with only works.json differing. The control is HEAD (2017fb11) with the row's map as 1cf44dbc left it; the arm adds the four fields and nothing else.",
+ "control_commit": "2017fb11",
+ "rows_with_a_resolved_part_join": {
+  "control": 16,
+  "arm": 17,
+  "of": 20
+ },
+ "pooled_outcomes": {
+  "control": {
+   "uncorresponded": 8179,
+   "matched_attribute_error": 4269,
+   "missing": 4253,
+   "ambiguous": 3762,
+   "matched_exact": 3590,
+   "spurious": 3473,
+   "absorbed_by_condensation": 3155
+  },
+  "arm": {
+   "uncorresponded": 7460,
+   "matched_attribute_error": 4417,
+   "missing": 4312,
+   "ambiguous": 3779,
+   "matched_exact": 3636,
+   "spurious": 3517,
+   "absorbed_by_condensation": 3366
+  }
+ },
+ "pooled_uncorresponded_reasons": {
+  "control": {
+   "part_unresolved": 7985,
+   "measure_unresolved": 194
+  },
+  "arm": {
+   "part_unresolved": 7266,
+   "measure_unresolved": 194
+  }
+ },
+ "rows_whose_outcomes_changed": [
+  "mahler-sym5-mvt1-local-p2"
+ ],
+ "mahler_p2": {
+  "part_join_info": {
+   "control": {
+    "source": "own",
+    "n_staves_map": 21,
+    "n_pred_parts": 17,
+    "n_staves_printed": 17,
+    "n_lineup_slots": 21,
+    "n_one_line_dropped": 0,
+    "n_extra_printed_staves": 0,
+    "status": "unresolved",
+    "reason": "the hand-verified lineup expands to 21 five-line staves (21 entries, 0 one-line dropped, 0 extra printed) and the prediction emitted 17 parts — a positional join would be a guess"
+   },
+   "arm": {
+    "source": "own",
+    "n_staves_map": 21,
+    "n_pred_parts": 17,
+    "n_staves_printed": 17,
+    "n_lineup_slots": 17,
+    "n_one_line_dropped": 4,
+    "n_extra_printed_staves": 0,
+    "status": "resolved",
+    "staves_resolved": 17
+   }
+  },
+  "outcomes": {
+   "control": {
+    "uncorresponded": 771
+   },
+   "arm": {
+    "absorbed_by_condensation": 211,
+    "matched_exact": 46,
+    "missing": 59,
+    "matched_attribute_error": 148,
+    "ambiguous": 17,
+    "spurious": 44,
+    "uncorresponded": 52
+   }
+  },
+  "coverage": {
+   "control": {
+    "truth_symbols_in": 527,
+    "pred_symbols_in": 244,
+    "truth_rows": 527,
+    "pred_rows_own": 244,
+    "pred_as_partner": 0,
+    "pred_accounted": 244,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   },
+   "arm": {
+    "truth_symbols_in": 527,
+    "pred_symbols_in": 244,
+    "truth_rows": 527,
+    "pred_rows_own": 50,
+    "pred_as_partner": 194,
+    "pred_accounted": 244,
+    "duplicate_truth_rows": 0,
+    "duplicate_pred_accounts": 0,
+    "balanced": true
+   }
+  },
+  "residual_uncorresponded": {
+   "n": 52,
+   "by_family": {
+    "rest": 40,
+    "clef": 4,
+    "key": 4,
+    "time": 4
+   },
+   "truth_parts": {
+    "23 Becken.": 13,
+    "24 Grosse Trommel.": 13,
+    "25 Kleine Trommel.": 13,
+    "26 Tamtam.": 13
+   },
+   "note": "EXACTLY the four one-line percussion parts, 13 rows each. Correct and declared: a five-line staff detector cannot find a single printed rule, so that music is genuinely unread. This is the behaviour expand_lineup's docstring states, not a residual fault."
+  }
+ },
+ "controls": {
+  "musicdiff_pooled_identical": true,
+  "coverage_balanced_both_arms": true,
+  "same_symbols_in": true,
+  "other_19_rows_identical": true
+ }
+}

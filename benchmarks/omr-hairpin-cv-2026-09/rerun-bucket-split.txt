@@ -1,0 +1,17 @@
+row                                 delta  wedge  struct  other   other buckets that moved
+beethoven-sym5-mvt1-984073-p4          +7     +0      +7     +0   
+brahms-sym1-mvt1-317803-p1             +2     +2      +0     +0   
+brahms-sym1-mvt1-317803-p2            +37     +9     +28     +0   
+brahms-sym1-mvt1-317803-p3             +4     +2      +2     +0   
+brahms-sym1-mvt1-317803-p4             +1     +1      +0     +0   
+dvorak-sym9-mvt1-405834-p5             +1     +1      +0     +0   
+dvorak-sym9-mvt1-405834-p6             -1     -1      +0     +0   
+dvorak-sym9-mvt1-405834-p7            +14    +11      +3     +0   
+mahler-sym5-mvt1-local-p2              +4     +2      +2     +0   
+mahler-sym5-mvt1-local-p3              +2     +3     +21    -22   wrong direction:13->9 wrong dynamic:20->14 wrong flag/beam:17->16 wrong note:603->594 wrong note head:20->18
+mahler-sym5-mvt1-local-p4              +7     +1      +6     +0   
+mahler-sym5-mvt1-local-p5              +4     +4      +0     +0   
+
+SUMMED (12 moved rows)                +82    +35     +69    -22
+
+wedge buckets are 43% of the movement; structural 84%; everything else -27%
