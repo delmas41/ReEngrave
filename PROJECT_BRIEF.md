@@ -380,6 +380,86 @@ The distinction worth keeping is *when* a check runs. Asking after the fact
 means a person has already spent an hour confirming twenty-one staves by eye;
 asking at the point of writing costs them nothing and names the missing piece.
 
+---
+
+## Taking stock of what the reader writes down
+
+The project is being rebuilt around three stages: **gather** what is on the
+page, **adjudicate** what it means, **evaluate** what follows. The point of the
+split is that every decision leaves a record — including a record of having
+declined to decide — so that when something is wrong you can find out *which*
+judgement went wrong, rather than only that the final file differs.
+
+That only works if the record has a word for everything worth writing down. In
+September Sean noticed one it did not: **chords**. Notes stacked at the same
+moment in a bar are grouped by a real piece of judgement — how close in
+horizontal position counts as "the same moment", a check that two notes sharing
+a position but pointing their stems opposite ways are two separate lines rather
+than one chord, and a vote on how long the group lasts — and none of that had a
+name in the record. It was happening, and it was invisible.
+
+Rather than write a list of what else might be missing, the answer is a small
+program that works it out from the code itself and can be re-run whenever the
+code changes. Lists written by hand in this project have a poor record of
+staying true.
+
+It found two different problems that look the same from a distance. Some things
+are **not collected at all** — fermatas, for instance, are recognised on the
+page and written into the final file, and the record has no word for one. Others
+**are collected, under a name too general to be useful**: every mark the
+recogniser finds is filed as "a symbol", so slurs, ties, accents and dynamic
+markings are all genuinely in there, and the step that needs to reason about
+slurs specifically cannot reach them — it asks for slurs and is told there are
+none. The first needs a new reader. The second only needs the filing corrected,
+which is much cheaper.
+
+The most useful thing it turned up was about work already planned. Six steps in
+the new pipeline are known to be unwritten placeholders, and the natural reading
+was that each needs its decision-making written. In fact **every one of them is
+also missing its input** — so each is two jobs rather than one, and for four of
+the six the missing half is the cheap filing fix rather than new recognition
+work. Encouragingly, every step that is finished is properly fed.
+
+
+## What else is on the page
+
+The same question asked the other way round: not "what does the code collect"
+but "what is actually printed on a page of music, and what does a musician read
+that we have no word for". Three kinds of thing, and they need different work.
+
+Some are simply **ink we don't pick up** — rests as a category of their own,
+accidentals, the octave-shift bracket that moves everything under it by an
+octave. And two that are quietly valuable because the engraver has already done
+work for us: **bar numbers and rehearsal letters**. We currently count the bars
+on a line by measuring where the barlines are, when the printing often states
+the answer.
+
+Some are **left out on purpose, and the omission is the meaning**. Music
+notation is unusual in that absence is a value: a bar left empty means that
+instrument is silent, a note without an accidental inherits the one printed
+earlier in the bar, a continuation line without a key signature means the key
+has not changed. The project already handles some of these well. But one is a
+real hole — **a bar we read nothing in and a bar that is genuinely silent come
+out identical**, both written as a full bar of rest. That is exactly the
+distinction the new pipeline was built to preserve, appearing in the music
+rather than in the bookkeeping, and the thing that separates them (is there ink
+there or not?) is already being measured for another purpose.
+
+The third kind is not ink at all — **relations between things**. The most
+valuable one is a direct enlargement of the chord finding. Notes stacked at the
+same point in a bar are a chord; notes at the same point *across the whole
+system* are the same moment of music. That is what a conductor's score is. It
+means a page of twenty-one staves is twenty-one independent readings of the
+same stretch of time, which have to agree — and nothing in the project compares
+them. It is the only place on the page where the evidence is *repeated*, and
+repeated evidence is what lets you work out which reading was wrong rather than
+only that something is. The coarse version of this check (do the staves agree
+how many bars are on the line?) already exists and has never once found a
+disagreement — the disagreements are inside the bar, where nothing looks.
+
+Full reasoning, including what is deliberately not proposed:
+`docs/exploration-what-is-on-the-page-2026-09-09.md`.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost

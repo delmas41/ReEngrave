@@ -1,0 +1,900 @@
+{
+  "class_space": {
+    "classes": 146,
+    "declared_ungathered": {
+      "artic": {
+        "classes": 10,
+        "quantity": "ARTICULATION_MARK",
+        "state": "quantity declared, ungathered"
+      },
+      "dynamic": {
+        "classes": 14,
+        "quantity": "DYNAMIC_LETTER",
+        "state": "quantity declared, ungathered"
+      },
+      "slur": {
+        "classes": 1,
+        "quantity": "ARC_BOX",
+        "state": "quantity declared, ungathered"
+      },
+      "tie": {
+        "classes": 1,
+        "quantity": "ARC_BOX",
+        "state": "quantity declared, ungathered"
+      }
+    },
+    "families": 35,
+    "gathered": {
+      "augmentation": {
+        "classes": 1,
+        "quantity": "AUG_DOT",
+        "state": "gathered"
+      },
+      "beam": {
+        "classes": 1,
+        "quantity": "BEAM_STROKE",
+        "state": "gathered"
+      },
+      "c": {
+        "classes": 4,
+        "quantity": "CLEF_GLYPH",
+        "state": "gathered"
+      },
+      "clef": {
+        "classes": 2,
+        "quantity": "CLEF_GLYPH",
+        "state": "gathered"
+      },
+      "f": {
+        "classes": 2,
+        "quantity": "CLEF_GLYPH",
+        "state": "gathered"
+      },
+      "fingering": {
+        "classes": 6,
+        "quantity": "TUPLET_MARKER",
+        "state": "gathered"
+      },
+      "flag": {
+        "classes": 12,
+        "quantity": "FLAG",
+        "state": "gathered"
+      },
+      "g": {
+        "classes": 2,
+        "quantity": "CLEF_GLYPH",
+        "state": "gathered"
+      },
+      "key": {
+        "classes": 3,
+        "quantity": "KEYSIG_MARKER",
+        "state": "gathered"
+      },
+      "ledger": {
+        "classes": 1,
+        "quantity": "GLYPH_LADDER",
+        "state": "gathered"
+      },
+      "notehead": {
+        "classes": 16,
+        "quantity": "NOTEHEAD_CLASS",
+        "state": "gathered"
+      },
+      "staff": {
+        "classes": 1,
+        "quantity": "STAFF_LINES",
+        "state": "gathered"
+      },
+      "stem": {
+        "classes": 1,
+        "quantity": "STEM",
+        "state": "gathered"
+      },
+      "time": {
+        "classes": 12,
+        "quantity": "METER_GLYPH",
+        "state": "gathered"
+      },
+      "tuplet": {
+        "classes": 10,
+        "quantity": "TUPLET_MARKER",
+        "state": "gathered"
+      }
+    },
+    "no_quantity": {
+      "accidental": {
+        "classes": 8,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "arpeggiato": {
+        "classes": 1,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "brace": {
+        "classes": 1,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "caesura": {
+        "classes": 1,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "coda": {
+        "classes": 1,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "fermata": {
+        "classes": 2,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "grace": {
+        "classes": 4,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "keyboard": {
+        "classes": 2,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "ornament": {
+        "classes": 4,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "ottava": {
+        "classes": 1,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "repeat": {
+        "classes": 1,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "rest": {
+        "classes": 11,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "segno": {
+        "classes": 1,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "strings": {
+        "classes": 2,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "tremolo": {
+        "classes": 5,
+        "quantity": null,
+        "state": "no quantity names this family"
+      },
+      "unpitched": {
+        "classes": 1,
+        "quantity": null,
+        "state": "no quantity names this family"
+      }
+    },
+    "unmapped": []
+  },
+  "counts": {
+    "abstain_only": 2,
+    "declared": 63,
+    "declared_ungathered": 10,
+    "no_vocabulary": 11,
+    "observed": 31,
+    "unaccounted": 0
+  },
+  "gathered": {
+    "abstain_only": [
+      "DIRECTION_WORD",
+      "SYSTEMIC_COLUMN"
+    ],
+    "detail": {
+      "AUG_DOT": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_rhythm_marks"
+        ],
+        "readers": [
+          "DETECTOR"
+        ],
+        "reasons": []
+      },
+      "BARLINE_COLUMN": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_measures"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": []
+      },
+      "BEAM_STROKE": {
+        "abstained_by": [
+          "gather_cv_lines",
+          "_stub_cv_lines"
+        ],
+        "observed_by": [
+          "gather_cv_lines",
+          "gather_detector_beams"
+        ],
+        "readers": [
+          "CV_LINES",
+          "DETECTOR"
+        ],
+        "reasons": [
+          "READER_UNAVAILABLE",
+          "NO_INK",
+          "NOT_IMPLEMENTED"
+        ]
+      },
+      "BRACKET_BLOCK": {
+        "abstained_by": [
+          "_gather_bracket_blocks"
+        ],
+        "observed_by": [
+          "_gather_bracket_blocks"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": [
+          "SYSTEM_TOO_SMALL",
+          "NO_COLUMN_EVIDENCE"
+        ]
+      },
+      "CLEF_GLYPH": {
+        "abstained_by": [
+          "gather_clef"
+        ],
+        "observed_by": [
+          "gather_clef"
+        ],
+        "readers": [
+          "DETECTOR"
+        ],
+        "reasons": [
+          "NO_DETECTIONS"
+        ]
+      },
+      "CLEF_LOCATED": {
+        "abstained_by": [
+          "gather_clef_locator"
+        ],
+        "observed_by": [
+          "gather_clef_locator"
+        ],
+        "readers": [
+          "CV_LOCATOR"
+        ],
+        "reasons": [
+          "NO_STAFF_GEOMETRY",
+          "READER_UNAVAILABLE"
+        ]
+      },
+      "CLEF_SEED": {
+        "abstained_by": [
+          "gather_clef_seed"
+        ],
+        "observed_by": [
+          "gather_clef_seed"
+        ],
+        "readers": [
+          "DOSSIER"
+        ],
+        "reasons": [
+          "OUT_OF_SCOPE"
+        ]
+      },
+      "DIRECTION_WORD": {
+        "abstained_by": [
+          "gather_direction_text"
+        ],
+        "observed_by": [],
+        "readers": [
+          "SURYA"
+        ],
+        "reasons": [
+          "NOT_IMPLEMENTED"
+        ]
+      },
+      "DOSSIER_FACT": {
+        "abstained_by": [
+          "gather_external"
+        ],
+        "observed_by": [
+          "gather_external"
+        ],
+        "readers": [
+          "DOSSIER"
+        ],
+        "reasons": [
+          "OUT_OF_SCOPE"
+        ]
+      },
+      "FLAG": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_rhythm_marks"
+        ],
+        "readers": [
+          "DETECTOR"
+        ],
+        "reasons": []
+      },
+      "GAP_BRIDGING": {
+        "abstained_by": [
+          "gather_systems"
+        ],
+        "observed_by": [
+          "gather_systems"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": [
+          "NO_INK"
+        ]
+      },
+      "GLYPH_BAND_DISTANCE": {
+        "abstained_by": [
+          "gather_ownership_evidence"
+        ],
+        "observed_by": [
+          "gather_ownership_evidence"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": [
+          "NO_STAFF_GEOMETRY"
+        ]
+      },
+      "GLYPH_BOX": {
+        "abstained_by": [
+          "gather_detections"
+        ],
+        "observed_by": [
+          "gather_detections"
+        ],
+        "readers": [
+          "DETECTOR"
+        ],
+        "reasons": [
+          "READER_UNAVAILABLE",
+          "NO_DETECTIONS"
+        ]
+      },
+      "GLYPH_CONF": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_detections"
+        ],
+        "readers": [
+          "DETECTOR"
+        ],
+        "reasons": []
+      },
+      "GLYPH_LADDER": {
+        "abstained_by": [],
+        "observed_by": [
+          "_observe_ladder"
+        ],
+        "readers": [
+          "DETECTOR"
+        ],
+        "reasons": []
+      },
+      "KEYSIG_CLEF_FIT": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_key_signature"
+        ],
+        "readers": [
+          "CV_HEADER"
+        ],
+        "reasons": []
+      },
+      "KEYSIG_MARKER": {
+        "abstained_by": [
+          "_gather_keysig_markers"
+        ],
+        "observed_by": [
+          "_gather_keysig_markers"
+        ],
+        "readers": [
+          "DETECTOR"
+        ],
+        "reasons": [
+          "NO_DETECTIONS"
+        ]
+      },
+      "KEYSIG_RUN_POSITION": {
+        "abstained_by": [
+          "gather_key_signature"
+        ],
+        "observed_by": [
+          "gather_key_signature"
+        ],
+        "readers": [
+          "CV_HEADER"
+        ],
+        "reasons": [
+          "NO_STAFF_GEOMETRY",
+          "NO_CLUSTERS"
+        ]
+      },
+      "MARGIN_LABEL": {
+        "abstained_by": [
+          "gather_margin_labels"
+        ],
+        "observed_by": [
+          "gather_margin_labels"
+        ],
+        "readers": [
+          "TEXT_LAYER"
+        ],
+        "reasons": [
+          "NO_INK"
+        ]
+      },
+      "METER_GLYPH": {
+        "abstained_by": [
+          "_gather_meter_glyphs"
+        ],
+        "observed_by": [
+          "_gather_meter_glyphs"
+        ],
+        "readers": [
+          "DETECTOR"
+        ],
+        "reasons": [
+          "NO_DETECTIONS"
+        ]
+      },
+      "METER_TEMPLATE": {
+        "abstained_by": [
+          "gather_meter"
+        ],
+        "observed_by": [
+          "gather_meter"
+        ],
+        "readers": [
+          "TEMPLATE"
+        ],
+        "reasons": [
+          "NO_STAFF_GEOMETRY",
+          "READER_UNAVAILABLE",
+          "BELOW_THRESHOLD"
+        ]
+      },
+      "NOTEHEAD_CLASS": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_detections"
+        ],
+        "readers": [
+          "DETECTOR"
+        ],
+        "reasons": []
+      },
+      "NOTEHEAD_STAFF_POSITION": {
+        "abstained_by": [
+          "gather_notehead_positions"
+        ],
+        "observed_by": [
+          "gather_notehead_positions"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": [
+          "NO_STAFF_GEOMETRY"
+        ]
+      },
+      "ROSTER_ENTRY": {
+        "abstained_by": [
+          "gather_external"
+        ],
+        "observed_by": [
+          "gather_external"
+        ],
+        "readers": [
+          "CATALOG"
+        ],
+        "reasons": [
+          "OUT_OF_SCOPE"
+        ]
+      },
+      "STAFF_EXTENT": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_geometry"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": []
+      },
+      "STAFF_LINES": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_geometry"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": []
+      },
+      "STAFF_ORDINAL": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_measures"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": []
+      },
+      "STAFF_SKEW": {
+        "abstained_by": [
+          "gather_geometry"
+        ],
+        "observed_by": [
+          "gather_geometry"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": [
+          "NO_STAFF_GEOMETRY"
+        ]
+      },
+      "STAFF_SPACING": {
+        "abstained_by": [
+          "gather_geometry"
+        ],
+        "observed_by": [
+          "gather_geometry"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": [
+          "NO_STAFF_GEOMETRY"
+        ]
+      },
+      "STEM": {
+        "abstained_by": [
+          "gather_cv_lines",
+          "_stub_cv_lines"
+        ],
+        "observed_by": [
+          "gather_cv_lines"
+        ],
+        "readers": [
+          "CV_LINES"
+        ],
+        "reasons": [
+          "READER_UNAVAILABLE",
+          "NO_INK",
+          "NOT_IMPLEMENTED"
+        ]
+      },
+      "SYSTEMIC_COLUMN": {
+        "abstained_by": [
+          "_gather_bracket_blocks"
+        ],
+        "observed_by": [],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": [
+          "SYSTEM_TOO_SMALL"
+        ]
+      },
+      "SYSTEM_STAFF_COUNT": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_measures"
+        ],
+        "readers": [
+          "GEOMETRY"
+        ],
+        "reasons": []
+      },
+      "TUPLET_MARKER": {
+        "abstained_by": [],
+        "observed_by": [
+          "gather_rhythm_marks"
+        ],
+        "readers": [
+          "DETECTOR"
+        ],
+        "reasons": []
+      }
+    },
+    "mentioned_only": [],
+    "observed": [
+      "AUG_DOT",
+      "BARLINE_COLUMN",
+      "BEAM_STROKE",
+      "BRACKET_BLOCK",
+      "CLEF_GLYPH",
+      "CLEF_LOCATED",
+      "CLEF_SEED",
+      "DOSSIER_FACT",
+      "FLAG",
+      "GAP_BRIDGING",
+      "GLYPH_BAND_DISTANCE",
+      "GLYPH_BOX",
+      "GLYPH_CONF",
+      "GLYPH_LADDER",
+      "KEYSIG_CLEF_FIT",
+      "KEYSIG_MARKER",
+      "KEYSIG_RUN_POSITION",
+      "MARGIN_LABEL",
+      "METER_GLYPH",
+      "METER_TEMPLATE",
+      "NOTEHEAD_CLASS",
+      "NOTEHEAD_STAFF_POSITION",
+      "ROSTER_ENTRY",
+      "STAFF_EXTENT",
+      "STAFF_LINES",
+      "STAFF_ORDINAL",
+      "STAFF_SKEW",
+      "STAFF_SPACING",
+      "STEM",
+      "SYSTEM_STAFF_COUNT",
+      "TUPLET_MARKER"
+    ]
+  },
+  "ink_present_elsewhere": {
+    "ARC_BOX": {
+      "detector_classes": [
+        "slur",
+        "tie"
+      ],
+      "verdict": "filed under Q.GLYPH_BOX -- a NAMING gap"
+    },
+    "ARTICULATION_MARK": {
+      "detector_classes": [
+        "articaccentabove",
+        "articaccentbelow",
+        "articmarcatoabove",
+        "articmarcatobelow",
+        "articstaccatissimoabove",
+        "articstaccatissimobelow",
+        "articstaccatoabove",
+        "articstaccatobelow",
+        "artictenutoabove",
+        "artictenutobelow"
+      ],
+      "verdict": "filed under Q.GLYPH_BOX -- a NAMING gap"
+    },
+    "DYNAMIC_LETTER": {
+      "detector_classes": [
+        "dynamicf",
+        "dynamicforte",
+        "dynamicm",
+        "dynamicmezzo",
+        "dynamicniente",
+        "dynamicp",
+        "dynamicpiano",
+        "dynamicr",
+        "dynamicrinforzando",
+        "dynamics",
+        "dynamicsforzando",
+        "dynamicz"
+      ],
+      "verdict": "filed under Q.GLYPH_BOX -- a NAMING gap"
+    },
+    "WEDGE_BOX": {
+      "detector_classes": [
+        "dynamiccrescendohairpin",
+        "dynamicdiminuendohairpin"
+      ],
+      "verdict": "filed under Q.GLYPH_BOX -- a NAMING gap"
+    }
+  },
+  "no_vocabulary": {
+    "events": {
+      "seen_in": [
+        "voicing:event"
+      ],
+      "why": "THE EVENT LIST ITSELF -- the ordered simultaneities a staff-measure resolves to. `Q.MEASURE_PARTITION` says where the bars are and nothing says what is INSIDE one. This is the container the chord finding is about; `kind` and `x_position` are its two axes."
+    },
+    "fermata": {
+      "seen_in": [],
+      "why": "read by the detector and emitted by the exporter -- Beethoven 5 detects 36 against a truth of 36 and 35 reach the file. No `Q`."
+    },
+    "kind": {
+      "seen_in": [
+        "export:read",
+        "voicing:event",
+        "voicing:read"
+      ],
+      "why": "chord | rest -- WHICH EVENT A GLYPH IS PART OF. The simultaneity itself: `voicing.group_chords_in_measure` groups noteheads within 0.6 notehead widths of each other in x, with a divisi guard on stem direction and a mode-vote over the group's durations. That is an ADJUDICATION with a tolerance, a veto and a vote, and the record has no name for its subject, its input or its verdict."
+    },
+    "n_events": {
+      "seen_in": [
+        "voicing:event"
+      ],
+      "why": "the event count, written beside `events`; see `events`."
+    },
+    "ornaments": {
+      "seen_in": [
+        "export:read",
+        "voicing:read"
+      ],
+      "why": "trill / turn / mordent / tremolo, attached by `transcribe._attach_ornaments_in_cell`. The tenth export gap. `Q.ARTICULATION_MARK` is a different family and does not cover it."
+    },
+    "stem_direction": {
+      "seen_in": [
+        "export:read",
+        "voicing:event",
+        "voicing:read"
+      ],
+      "why": "up | down, measured by `transcribe._stem_direction` from the stem against its noteheads. `Q.STEM` carries the stem's BOX and not its direction, so the quantity is derivable and undeclared -- and it is the discriminator the divisi guard runs on."
+    },
+    "tied_from_prev": {
+      "seen_in": [
+        "export:read",
+        "voicing:event",
+        "voicing:read"
+      ],
+      "why": "the other end of the same chain; see `tied_to_next`."
+    },
+    "tied_to_next": {
+      "seen_in": [
+        "export:read",
+        "voicing:event",
+        "voicing:read"
+      ],
+      "why": "tie state carried on the notehead, chained across barlines by `transcribe._pair_ties_in_staff`. `Q.ARC_KIND` decides tie-vs-slur for one arc; nothing names the CHAIN a tie makes between two events."
+    },
+    "voice_index": {
+      "seen_in": [
+        "voicing:event"
+      ],
+      "why": "which stream an event landed in; see `voices`."
+    },
+    "voices": {
+      "seen_in": [
+        "voicing:read"
+      ],
+      "why": "a staff-measure's 1-2 VOICE STREAMS, split by `voicing.split_events_into_voices` on stem direction. MusicXML pairs `<slur>` WITHIN a `<voice>` and separates the streams with `<backup>`, so `Q.ARC_OWNER` already depends on a quantity the record cannot express -- and `export._lone_voice_is_the_second` re-decides the lane per measure downstream of it."
+    },
+    "x_position": {
+      "seen_in": [
+        "export:read",
+        "voicing:event",
+        "voicing:read"
+      ],
+      "why": "the event's ONSET -- x-centre as musical time, the axis events are sorted on. Raw x IS inside `Q.GLYPH_BOX`, which is exactly why this reads as covered and is not: no consumer can ask for onset, and nothing can abstain on it."
+    }
+  },
+  "not_gathered": {
+    "consequence_elsewhere": [
+      "PITCH"
+    ],
+    "declared_ungathered": [
+      "ACCIDENTAL",
+      "ARC_BOX",
+      "ARTICULATION_MARK",
+      "CLEF_REFUSAL_BRANCH",
+      "DYNAMIC_LETTER",
+      "INPUT_DOMAIN",
+      "LEFT_EDGE_INK",
+      "PART_NAME",
+      "TEXT_LAYER",
+      "WEDGE_BOX"
+    ],
+    "verdict_elsewhere": [
+      "ARC_KIND",
+      "ARC_OWNER",
+      "ARTICULATION_OWNER",
+      "CLEF",
+      "DIRECTION",
+      "DURATION",
+      "DYNAMIC",
+      "GLYPH_OWNER",
+      "GROUP_SYMBOL",
+      "INSTRUMENT",
+      "KEY_SIGNATURE",
+      "MEASURE_PARTITION",
+      "METER",
+      "PART_PARTITION",
+      "SLOT_INDEX",
+      "STAFF_GROUP",
+      "SYSTEM_MEMBERSHIP",
+      "TUPLET_RATIO",
+      "WEDGE_ANCHOR"
+    ]
+  },
+  "stub_starvation": {
+    "ARC_KIND": {
+      "ungathered_inputs": [
+        "ARC_BOX"
+      ],
+      "wants": [
+        "ARC_BOX",
+        "NOTEHEAD_STAFF_POSITION"
+      ]
+    },
+    "ARC_OWNER": {
+      "ungathered_inputs": [
+        "ARC_BOX"
+      ],
+      "wants": [
+        "ARC_BOX",
+        "NOTEHEAD_STAFF_POSITION",
+        "GLYPH_OWNER"
+      ]
+    },
+    "ARTICULATION_OWNER": {
+      "ungathered_inputs": [
+        "ARTICULATION_MARK"
+      ],
+      "wants": [
+        "ARTICULATION_MARK",
+        "GLYPH_BOX"
+      ]
+    },
+    "DIRECTION": {
+      "ungathered_inputs": [
+        "DIRECTION_WORD"
+      ],
+      "wants": [
+        "DIRECTION_WORD"
+      ]
+    },
+    "DYNAMIC": {
+      "ungathered_inputs": [
+        "DYNAMIC_LETTER"
+      ],
+      "wants": [
+        "DYNAMIC_LETTER",
+        "GLYPH_OWNER"
+      ]
+    },
+    "WEDGE_ANCHOR": {
+      "ungathered_inputs": [
+        "WEDGE_BOX"
+      ],
+      "wants": [
+        "WEDGE_BOX",
+        "GLYPH_BOX"
+      ]
+    }
+  },
+  "unaccounted": {},
+  "wanted_but_ungathered": {
+    "ARC_BOX": [
+      "ARC_KIND",
+      "ARC_OWNER"
+    ],
+    "ARTICULATION_MARK": [
+      "ARTICULATION_OWNER"
+    ],
+    "DIRECTION_WORD": [
+      "DIRECTION"
+    ],
+    "DYNAMIC_LETTER": [
+      "DYNAMIC"
+    ],
+    "WEDGE_BOX": [
+      "WEDGE_ANCHOR"
+    ]
+  }
+}

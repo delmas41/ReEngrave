@@ -3,6 +3,196 @@
 A running log of changes made to this project, newest first. Updated after
 every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
+⚠️ **ORDER IS CAUSAL, AND THE DATED HEADINGS DISAGREE WITH THE COMMIT DATES
+ACROSS SESSIONS — this is not a sorting error.** Parallel sessions dated their
+own blocks by their own reckoning, and one dated its work a day ahead of the
+commits that carry it. The 09-09 GATHER-coverage entry stands ABOVE the two
+09-10 entries because it *builds on* them: it generalises the chord gap the
+`Q.EVENT` block found. Headings are left exactly as each session wrote them —
+rewriting another session's dated claim to tidy a sort would be the ledger
+overwriting the tree.
+
+---
+
+## 2026-09-09 — four parallel sessions merged, and the merge is where two findings changed
+
+Four sessions that had been running concurrently were landed onto one branch.
+Three of the four merges needed a real decision rather than a text resolution,
+and **two claims were only falsifiable once the trees were together** — the
+literal case for this repo's standing rule that a change is measured on the
+MERGED tree.
+
+**What landed** (in merge order):
+
+1. `reengraved-meter-carry-0c9da4` — the staged pipeline gets an **EXPORTER**
+   (`staged/export.py` — the handoff's *"⚠️ there is NO EXPORTER"* is closed),
+   a **derived inventory** (`staged/inventory.py`), a **health report**
+   (`staged/health.py`), the GATHER pass for five families read by nothing, the
+   meter carry measured both ways and shipped OFF, and `Q.EVENT` (chord
+   grouping happening after the stage that needed it).
+   ⚠️ It **subsumes `reengraved-staged-pipeline-068163` entirely** — that
+   branch's tip is an ancestor — so that branch was NOT merged separately.
+2. `brave-diffie-f56a0c` — the staves-map WRITER carries the arity fields, and
+   the arity question is asked BEFORE the write.
+3. `gracious-kare-2cddc3` — dynamics enter the staged pipeline; `OMR_CV_HAIRPINS`
+   re-priced (its stale-pricing prediction REFUTED, the answer changed anyway).
+4. `gather-stage-coverage-qp6j01` — `staged/gather_coverage.py`, the derived
+   answer to "what does the reader actually write down".
+
+**⚠️ THE THREE SEMANTIC CONFLICTS, and why concatenating would have shipped
+bugs:**
+
+- **Two sessions gathered the SAME two quantities from the SAME reader.**
+  `gather_glyph_families` (session 1) and `gather_dynamic_letters` /
+  `gather_wedge_boxes` (session 3) both observed `Q.DYNAMIC_LETTER` and
+  `Q.WEDGE_BOX` as `READERS.DETECTOR`. Keeping both would put **two rows from
+  one reader on one glyph** — the "two rows from one reader are ONE signal"
+  fault, arrived at by accident, and named in session 3's own comment.
+  Resolved by OWNERSHIP: the dynamics rungs own both (they carry the band
+  offset a per-cell frame cannot express, and the CV rung); `glyph_families`
+  keeps rests, arcs and articulations.
+- **`subjects_from` vs the wider `reasons` tuple** in `adjudicate_dynamic`.
+  Both kept, and the composition was **checked rather than assumed**:
+  `subjects_for` reads `log.all_rows()` and an abstention IS a row, so session
+  3's deliberate row-for-every-cell still yields a subject for a bar with no
+  letter of its own. The comment claiming otherwise was corrected, not shipped.
+- **Four tests then failed, every one at a seam, every one asserting a truth
+  the merge changed.** They were updated to the merged truth and re-run RED.
+
+**⚠️⚠️ FINDING 1 — `Q.DYNAMIC` GRADUATED, so it must LEAVE the stub roster.**
+`test_the_five_previously_unnamed_stubs_are_named_now` failed because
+`adjudicate_dynamic` is implemented. A roster that keeps a graduated entry
+describes history rather than the pipeline — the same fault
+`export_coverage`'s `test_the_inventory_has_no_stale_entries` exists to
+prevent — so the entry was removed AND its graduation pinned by a new test.
+
+**⚠️⚠️ FINDING 2 — "ALL SIX STUBS ARE STARVED AT GATHER" IS NO LONGER TRUE OF
+THE MERGED TREE, AND THE FINDING IS CORROBORATED RATHER THAN OVERTURNED.**
+Session 4 measured, on its own branch, that all six declared stubs wanted a
+measurement no gatherer emitted — *"a stub is two repairs, not one"* — and
+named four of them **NAMING gaps, cheap, the ink is already in the log**.
+Sessions 1 and 3 then landed **exactly those four gatherers**, without having
+read that finding. Measured on the merged tree:
+
+| stub | starved on its own branch | starved MERGED | closed by |
+|---|---|---|---|
+| `arc_kind`, `arc_owner` | `ARC_BOX` | **fed** | `gather_glyph_families` |
+| `articulation_owner` | `ARTICULATION_MARK` | **fed** | `gather_glyph_families` |
+| `dynamic` | `DYNAMIC_LETTER` | **fed, and NOT A STUB** | `gather_dynamic_letters` + `adjudicate_dynamic` |
+| `wedge_anchor` | `WEDGE_BOX` | **fed** | `gather_wedge_boxes` |
+| `direction` | `DIRECTION_WORD` | **still starved** | — |
+
+- `dynamic` is the only one of the six that got BOTH repairs, and the only one
+  that now decides anything — the finding holding exactly as stated.
+- The four that got only the gatherer are still stubs abstaining honestly,
+  which is what a half-repair was predicted to produce.
+- **The work plan changes**: four of the five remaining stubs are now ONE
+  repair each (write the adjudicator, the evidence is waiting); `direction`
+  alone is still two, and it is the one already named as the sole READING gap.
+- ⚠️ **Found by a TEST, not by re-reading prose** — it failed with `5 != 6`
+  exactly as its own docstring promised, and now pins both halves.
+
+**Documentation kept coherent**: the superseded claim was stated in **four
+places** (CLAUDE.md ×2, this file ×2, `FINDINGS.md`) — the exact
+restated-figure-goes-stale hazard CLAUDE.md warns about. CLAUDE.md and
+FINDINGS.md were corrected in place; the two dated entries in this file were
+**left standing with a pointer**, because a dated measurement is a frozen fact
+and is never rewritten.
+
+⚠️ The committed `out/gather-coverage.json` is likewise left as session 4
+measured it, and is now a BRANCH measurement rather than the tree's state; run
+`python3 -m tools.omr.staged.gather_coverage` for the current answer.
+
+---
+
+## 2026-09-09 — GATHER-stage coverage: the chord gap generalises (derived, no arm run)
+
+- **Sean found that chords — notes aligning in a bar — are not tracked.** The
+  finding generalises, and the answer is a derived tool rather than a written
+  list: `python3 -m tools.omr.staged.gather_coverage`. New:
+  `tools/omr/staged/gather_coverage.py`,
+  `tools/omr/tests/test_staged_gather_coverage.py` (8 tests),
+  [benchmarks/omr-gather-coverage-2026-09/FINDINGS.md](benchmarks/omr-gather-coverage-2026-09/FINDINGS.md)
+  and its committed output.
+- **Measured: `record.Q` declares 63 quantities and a gatherer OBSERVES 31.**
+  Two more are declared and only ever abstained on (`DIRECTION_WORD` —
+  `gather_direction_text` is itself a stub — and `SYSTEMIC_COLUMN`).
+- **⚠️ THE TWO FAULTS ARE DIFFERENT AND THE TOOL KEEPS THEM APART.** *Not
+  gathered*: no row carries it at all (`fermata` — detected, exported, 36-for-36
+  on Beethoven 5, and no `Q`). *Wrong place*: the ink IS in the log as an
+  anonymous `Q.GLYPH_BOX` and no consumer can ask for it, because `Evidence`
+  refuses a quantity the decision did not declare.
+- **⚠️ THE STRUCTURAL FINDING: all six declared stubs are ALSO starved at the
+  gather stage.** The handoff reads them as six adjudicators left to write;
+  every one wants a measurement no gatherer emits, so a stub is **two** repairs,
+  not one. Four of the five missing quantities are NAMING gaps (the ink is
+  already there: 2 arc classes, 10 artic, 12 dynamic, 2 hairpin); only
+  `DIRECTION_WORD` is a reading gap. **The 15 non-stub decisions are all fed.**
+  ⚠️ *(merge note, 2026-09-09 — the claim above is TRUE OF THIS SESSION'S
+  BRANCH and superseded in the merged tree: four of the four naming gaps were
+  filed by sibling sessions and `dynamic` stopped being a stub. The finding is
+  corroborated, not overturned. See the merge entry at the head of this file
+  and FINDINGS.md §2b-addendum. The dated claim is left standing because it is
+  what was measured.)*
+- **11 legacy event keys have no name in the record** — `events`, `kind`,
+  `x_position` (onset), `voices`/`voice_index`, `stem_direction`,
+  `tied_to_next`/`tied_from_prev`, `fermata`, `ornaments`. Chord grouping in
+  `voicing.group_chords_in_measure` is a full adjudication — a 0.6-notehead-width
+  tolerance, a divisi veto on stem direction, a mode-vote over durations — with
+  no subject, no input and no verdict in the record.
+- **16 of 35 detector families have no quantity naming them**, led by **`rest`
+  (11 classes)** and **`accidental` (8)**. A rest is half of every duration
+  decision.
+- **⚠️ The tool nearly manufactured its own finding.** `Q.STEM` is observed
+  through a loop variable, so the first version reported it ungathered and
+  accused `adjudicate_duration` of starving. The AST walker now resolves
+  loop-bound quantities; the guard was run RED to prove it load-bearing. A
+  second self-inflicted miss: reading the class space from `_CATEGORY_MAP`'s
+  KEYS (an allow-list resolved by substring fallback) reported hairpins as
+  having no detector class — the same allow-list fault `export_coverage.compare`
+  was just repaired for.
+- **Anti-drift, because a list of this shape rots**: `unaccounted()` fails on a
+  legacy event key in neither table, `class_space_coverage()["unmapped"]` on an
+  unmapped detector family, and `test_no_vocabulary_entries_still_have_no_vocabulary`
+  fails the day a gap is FILLED — a closed entry must leave the table.
+- **⚠️ No arm was run and no page was read.** Every figure is a property of the
+  tree, so it says nothing about how often a missing quantity would fire.
+  Measure REACH before accuracy.
+
+- **Companion exploration, reasoned from the PAGE rather than the code**:
+  [docs/exploration-what-is-on-the-page-2026-09-09.md](docs/exploration-what-is-on-the-page-2026-09-09.md)
+  — present / left out / implied. ⚠️ Exploratory and mostly UNPRICED, and it
+  says so; it ranks candidates and prices nothing.
+- **⚠️ THE HEADLINE IDEA: vertical alignment ACROSS staves is simultaneity, and
+  nothing reads it.** The chord finding one scope up. Verified — the only
+  cross-staff reasoning in the tree is `_dedupe_cross_staff_detections`, an
+  OWNERSHIP question. It is the only large source of **redundant** evidence on
+  a page (a 21-staff system is 21 independent readings of one stretch of time),
+  which is what lets a record say WHICH decision went wrong. The coarse form is
+  saturated (`measure_count_warning`: 0 firings over 29 transcriptions) while
+  `rhythm_sum_warning` fires 78 on one document and is inert — so the
+  constraint is unexploited exactly where the errors are.
+- **⚠️ `export._mxl_empty_measure` cannot tell SILENT from UNREAD.** A bar with
+  no detected events exports as a whole-measure rest either way — the
+  ABSENT/DECLINED collapse `record.py` exists to prevent, in the musical
+  content rather than the metadata. Ink coverage (already computed by
+  `direction_text._blank_detections`) separates them.
+- **An accidental is SCOPE, not a glyph** — it holds to the barline;
+  `transcribe.py:2210` implements it and staged has nowhere to keep the state.
+  Same shape as `ottavaBracket`, where a miss costs every note in the span an
+  octave.
+- **⚠️ Corrected in place: the exploration's own first draft named `breath` and
+  `glissando` as detector families from musical memory.** Neither is in the
+  class space; `volta` is not either, and the `repeat` family is `repeatDot`
+  ONLY — the dots, not the sign, which is why the repeat-export TODO has stayed
+  open. Checked against the committed class list rather than recalled.
+
+**Files touched:** `tools/omr/staged/gather_coverage.py` (new),
+`tools/omr/tests/test_staged_gather_coverage.py` (new),
+`benchmarks/omr-gather-coverage-2026-09/` (new), CLAUDE.md, PROJECT_BRIEF.md,
+version_memory.md. Second commit adds
+`docs/exploration-what-is-on-the-page-2026-09-09.md` and links it from CLAUDE.md.
+
 ---
 
 ## 2026-09-10 (later) — the chord was grouped after the stage that needed it
@@ -220,6 +410,9 @@ scores.
   `articulation_mark`, `wedge_box`, `dynamic_letter` are observed by nothing,
   so writing those adjudicators would still produce nothing. The next work is
   in GATHER, the thinnest stage by tests (27 against RECORD's 261).
+  ⚠️ *(merge note, 2026-09-09 — all four ARE observed in the merged tree, by
+  this session's own `gather_glyph_families` plus the dynamics session's two
+  rungs. Only `direction` is still starved. Left standing as measured.)*
 - **`tuplet_ratio`'s missing row is THE PAGE**, with a positive control on the
   same tree and weights (Beethoven 5 / Litolff `984073` `--pages 2`: 1 marker,
   1 ratio). ⚠️ The SILENCE is a real hole and is not tuplet-specific: an empty
