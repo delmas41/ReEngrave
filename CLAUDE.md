@@ -1091,6 +1091,55 @@ symbol rather than partitioning it for convenience. ⚠️ **Three causes were
 named and there are FOUR** — D was silently inside it and is not a reading
 fault of any kind.
 
+⚠️⚠️ **D IS CLOSED AND THE ROW LANDED IN B — a map can arrive without its
+arity fields, and that moves the label rather than the mass** (2026-09-08).
+`1cf44dbc` gave mahler p2 the 21-entry `staves` map D was waiting for (the
+gate is **20/20 mapped**), but the map lists PRINTED staves and the page
+prints four one-line percussion rules, so `expand_lineup` read 21 slots
+against our 17 parts and the arity gate refused: `separate_causes.classify`
+reclassifies the row `D_no_lineup` → `B_undetectable_staves` on `n_map >
+n_pred`, and the bucket total does not move. **`test_works_json_staff_lineup.py`
+is the only thing that noticed** — `merge_additions` had already proved the map
+normalises, and the ledger's refusal reads as an honest abstention. Fixed by
+four `lines: 1` fields (`Becken`, `Grosse Trommel`, `Kleine Trommel`,
+`Tamtam`); ⚠️ **`Pauken` is five-line and is not flagged**, the entry a
+name-matching rule gets wrong. Neither the identity nor the count was inferred
+from names — `page.n_staves_note` names the rules in prose and
+`condensation.staves_as_printed` carries `lines` for all 21 entries
+independently, and after the fix all 21 agree. ⚠️ The prose says FIVE rules
+and four entries are flagged: the fifth is the combined-player staff the
+reference has no part for, so it is not a lineup entry (21 − 4 = 17 =
+`page.n_staves`). Controlled A/B, same tree, only `works.json` differing:
+joined rows **16 → 17 of 20**, pooled `part_unresolved` **7,985 → 7,266**,
+p2's `uncorresponded` **771 → 52**, **exactly one row changes** and pooled
+musicdiff is identical between arms. ⚠️ **The row gains no new symbols** — the
+same 527 truth / 244 predicted enter both arms and `coverage.balanced` is
+`True` in both; 194 predicted symbols stop owning a row and become a truth
+row's PARTNER. ⚠️ **The 52 that remain are the right 52**: 13 rows each on
+parts 23-26 (`Becken.`, `Grosse Trommel.`, `Kleine Trommel.`, `Tamtam.`) — a
+five-line detector cannot find a single printed rule, so that music is
+genuinely unread and the field SAYS SO. ⚠️⚠️ **AND IT WILL RECUR: the writer
+cannot carry the field.** `merge_additions.shape_problems` refuses any key
+beyond `name`/`parts`, and the confirmation UI proposes none — while
+`build_cache.py:496` computes `"lines": spec.get("lines", 5)` and drops it on
+the way out, the computed-and-unread pattern again — **FOUR** projections
+between the cache and the file each dropped it. ⚠️ **FIXED the same day**: the
+two arity fields are allowed and VALIDATED (`lines` must be 1 or 5, unknown
+keys still refuse), the projection is written ONCE
+(`merge_additions._entry_for_works_json`, imported by the UI so the two cannot
+drift), and `arity_problems()` now asks of the map about to be WRITTEN exactly
+what `test_works_json_staff_lineup.py` asks of the file — calling
+`run_ledger.expand_lineup` rather than recomputing it, and abstaining on
+non-uniform pages as the test does. ⚠️ **The point is WHEN it fires**: a test
+on the data fires after a 21-staff human pass is spent; the writer refuses the
+merge instead, naming the missing field. Retrospective control: the guard
+refuses **all five** historical rows whose additions entries predate the field
+(mahler p2-p5 and bach), changing behaviour for none of them (all already
+refuse on *"already carries a map"*). Five mutants, each red on exactly the
+intended test. ⚠️ The deferral *"no unmapped row remains to exercise it"* was
+reversed on the reasoning that it is an argument for a cheap fix, not against
+one — the failure costs a HUMAN PASS, not compute.
+
 **B's arithmetic is exact on all three rows**: lineup minus the one-line
 percussion rules equals `page.n_staves` equals the parts we emit (15−2=13,
 21−3=18, 21−4=17), and each row's own `n_staves_note` already says in words
@@ -1108,7 +1157,9 @@ stands unchanged; 46.3% of the unassessable mass is a different argument for
 the same change, not a new score. **B and C** need an arity gate that compares
 like with like, and the durable form is a FIELD in `works.json` (`one_line`,
 `printed_staves`) — WHICH entries are one-line is not structural today, only
-the count is derivable. **D** needs a fact nothing on disk can supply.
+the count is derivable. **D** needed a fact nothing on disk could supply, and
+a human supplied it (`1cf44dbc`) — ⚠️ **which then landed the row in B**, see
+above.
 
 Full reading:
 [benchmarks/omr-part-join-2026-09/FINDINGS.md](benchmarks/omr-part-join-2026-09/FINDINGS.md).

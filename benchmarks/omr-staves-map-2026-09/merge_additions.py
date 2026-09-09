@@ -48,6 +48,22 @@ ADDITIONS = SCAN / "works.staves-additions.json"
 sys.path.insert(0, str(SCAN))
 
 
+#: The two ARITY fields, both facts about the ENGRAVING rather than about the
+#: reference encoding, and both optional. See `run_ledger.expand_lineup`, which
+#: is the consumer that gives them meaning.
+#:
+#: ⚠️ THIS WRITER USED TO REFUSE THEM, AND THAT COST A WHOLE PAGE. `lines`
+#: landed in `166759fc`; this function predates it and kept demanding entries
+#: be "exactly name+parts", so a CORRECT map carrying `lines: 1` would have
+#: been rejected at merge time — while `build_cache.research_proposal` was
+#: computing `"lines": spec.get("lines", 5)` for every entry and four
+#: projections down the path threw it away. mahler p2's hand-confirmed map
+#: arrived unflagged and its whole page stayed unassessable; the only thing
+#: that noticed was `test_works_json_staff_lineup.py`, AFTER the human pass was
+#: spent. See `benchmarks/omr-part-join-2026-09/FINDINGS.md` §7.
+ARITY_FIELDS = ("lines", "printed_staves")
+
+
 def shape_problems(staves) -> list[str]:
     out = []
     if not isinstance(staves, list) or not staves:
@@ -56,10 +72,34 @@ def shape_problems(staves) -> list[str]:
         if not isinstance(s, dict):
             out.append(f"entry {k} is not an object")
             continue
-        extra = set(s) - {"name", "parts"}
+        extra = set(s) - {"name", "parts"} - set(ARITY_FIELDS)
         if extra:
             out.append(f"entry {k} has unexpected key(s) {sorted(extra)} — "
-                       f"works.json entries are exactly name+parts")
+                       f"works.json entries are name+parts, optionally "
+                       f"{' / '.join(ARITY_FIELDS)}")
+        # ⚠️ ALLOWED IS NOT UNCHECKED. A typo'd `lines` silently changes how
+        # many parts the row is expected to emit, which is exactly the failure
+        # these fields exist to prevent — so the values are constrained and a
+        # surprise is LOUD rather than absorbed.
+        if "lines" in s and s["lines"] not in (1, 5):
+            out.append(f"entry {k} `lines` is {s['lines']!r} — works.json "
+                       f"models 1 (a percussion rule) or 5 (an ordinary "
+                       f"staff); anything else needs a decision, not a default")
+        if "printed_staves" in s:
+            n = s["printed_staves"]
+            if not isinstance(n, int) or isinstance(n, bool) or n < 1:
+                out.append(f"entry {k} `printed_staves` is {n!r}, not an "
+                           f"integer >= 1")
+        # A single printed rule is not also several five-line staves.
+        # ⚠️ Guarded on the VALIDATED values: a validator must refuse bad input,
+        # never raise on it, and `int()` on an arbitrary value does raise.
+        if (s.get("lines") in (1, 5) or "lines" not in s) and (
+                isinstance(s.get("printed_staves"), int)
+                and not isinstance(s.get("printed_staves"), bool)):
+            if (s.get("lines") or 5) != 5 and s["printed_staves"] > 1:
+                out.append(f"entry {k} is both a one-line rule and "
+                           f"{s['printed_staves']} printed staves — "
+                           f"contradictory")
         if not isinstance(s.get("name"), str) or not s["name"].strip():
             out.append(f"entry {k} has no printed name")
         p = s.get("parts")
@@ -156,6 +196,85 @@ def prove_normalises(row_id: str, staves, *, source_reference=None) -> dict:
             }}
 
 
+def _entry_for_works_json(s: dict) -> dict:
+    """One additions-file staff as works.json spells it.
+
+    ⚠️ THE ONE PLACE THE PROJECTION IS WRITTEN. It used to be spelled inline in
+    two places — here and `server.api_done`'s `staves_for_works_json` — and
+    both rebuilt the entry as `{name, parts}` literally, so a field the
+    proposal carried could not survive to the file however many writers
+    allowed it. A projection repeated is a projection that drops something.
+    """
+    out = {"name": s.get("name"), "parts": list(s.get("parts") or [])}
+    for f in ARITY_FIELDS:
+        if s.get(f) is not None:
+            out[f] = s[f]
+    # `lines: 5` is the default and every merged row omits it; writing it would
+    # make this writer's output differ from the file it is appending to.
+    if out.get("lines") == 5:
+        del out["lines"]
+    if out.get("printed_staves") == 1:
+        del out["printed_staves"]
+    return out
+
+
+def arity_problems(row: dict, staves) -> list[str]:
+    """Does this map claim as many FIVE-LINE staves as the page prints?
+
+    ⚠️ THIS IS THE GUARD THE WRITER DID NOT HAVE, AND ITS ABSENCE IS THE WHOLE
+    DEFECT. `test_works_json_staff_lineup.py` asserts this of the FILE, so it
+    fires after a map is merged — which on mahler p2 meant after a 21-staff
+    human confirmation pass had been spent. The same question asked HERE
+    refuses the merge instead, with the fields named in the message.
+
+    ⚠️ It calls `run_ledger.expand_lineup` rather than recomputing the count.
+    That function IS the definition of "how many parts this lineup expects",
+    and this file already refuses to hold a second copy of a shared answer —
+    see `prove_normalises`, which exists for exactly that reason.
+
+    Asserted only where the systems are UNIFORM (`n_staves % n_systems == 0`),
+    the same abstention the test makes: a tacet-suppressed page prints a
+    different lineup per system (beethoven p3 is 11 then 8), so one lineup
+    names no single count and there is nothing to check against.
+    """
+    if not isinstance(staves, list) or not staves:
+        return []
+    page = row.get("page") or {}
+    n_staves, n_sys = page.get("n_staves"), page.get("n_systems") or 1
+    if not n_staves or not n_sys or n_staves % n_sys:
+        return []
+    expand = _expand_lineup()
+    if expand is None:                      # the ledger is not importable here
+        return []
+    per_system = n_staves // n_sys
+    got = len(expand(staves))
+    if got == per_system:
+        return []
+    one_line = sum(1 for s in staves
+                   if isinstance(s, dict) and int(s.get("lines") or 5) != 5)
+    return [f"the lineup expands to {got} five-line staves but the page prints "
+            f"{per_system} per system ({len(staves)} entries, {one_line} "
+            f"flagged `lines: 1`). Either a one-line percussion rule is "
+            f"missing `lines: 1`, or an entry the page prints as several "
+            f"staves is missing `printed_staves: N`."]
+
+
+def _expand_lineup():
+    """`run_ledger.expand_lineup`, or None if the ledger is not on this tree."""
+    ledger = BENCH.parent / "omr-symbol-ledger-2026-09"
+    if not (ledger / "run_ledger.py").is_file():
+        return None
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "_run_ledger_for_merge", ledger / "run_ledger.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod.expand_lineup
+    except Exception:                                          # noqa: BLE001
+        return None
+
+
 def check_row(row_id: str, row: dict, add: dict) -> dict:
     problems: list[str] = []
     if add.get("status") != "done":
@@ -166,9 +285,17 @@ def check_row(row_id: str, row: dict, add: dict) -> dict:
 
     staves = add.get("staves_for_works_json")
     if staves is None:
-        staves = [{"name": s.get("name"), "parts": s.get("parts")}
-                  for s in add.get("staves", [])]
-    problems += shape_problems(staves)
+        staves = [_entry_for_works_json(s) for s in add.get("staves", [])]
+    shape = shape_problems(staves)
+    problems += shape
+    # ⚠️ Gated on the SHAPE problems specifically, not on `problems` — which by
+    # here can already hold "works.json already carries a map". Gating on all
+    # of them silences the arity report on exactly the rows most worth seeing
+    # it (every already-merged row), and that is how the retrospective control
+    # in FINDINGS §8 was briefly lost. The narrow gate is only about not
+    # RAISING: `expand_lineup` reads `int(s["lines"])`.
+    if not shape:
+        problems += arity_problems(row, staves)
 
     counts: dict[int, int] = {}
     for s in staves or []:

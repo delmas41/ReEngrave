@@ -309,6 +309,52 @@ its ground truth, and the hand-checked notes that line the two up are all small
 enough to live in the repository, so a change to how a reading is *written out*
 can be scored there. A change to how a page is *read* still cannot.
 
+## A fact can arrive and still not be usable (2026-09-08)
+
+To judge how well a page was read, the project has to know which printed staff
+corresponds to which part of the reference score. For one dense Mahler page
+that correspondence had never been written down, and it was the last such gap:
+a human read the page and supplied it, closing the item.
+
+The page still could not be judged. It prints four percussion staves that are a
+single line rather than the usual five — a shape the staff finder cannot see at
+all — so the new list named 21 staves while the reader had produced 17, the
+two counts disagreed, and the tool refused to guess. The gap had not closed so
+much as changed its name.
+
+The repair was to record, for each of those four staves, that it is a one-line
+staff. Nothing was inferred from the instrument names: the page's own notes
+already listed the four in words, and a separate hand-read table in the same
+file already carried the answer for all 21 staves, so the two independent
+records could be checked against each other. The timpani, which looks like
+percussion but is printed on a normal five-line staff, is the case a
+name-matching shortcut would have got wrong.
+
+Measured before and after with everything else held fixed, the page went from
+nothing that could be said about it to 17 of its staves being assessable, and
+exactly one page in the twenty changed. The four one-line staves are still
+unread — the fix makes the tool *say* they are unread instead of giving up on
+the whole page.
+
+Two things worth carrying, and the second was then fixed. A test written
+earlier for exactly this mistake is the only thing that caught it; every other
+check passed. And the tool that writes these staff lists could not record the
+one-line fact at all — it rejected it — so the next page mapped this way would
+have arrived with the same problem.
+
+That second half is now closed. The fact was being worked out correctly early
+on and thrown away four separate times before reaching the file, so the writing
+path can now carry it, and it checks the value rather than merely permitting
+it. More importantly the tool now asks, *before* it writes, the same question
+the test asks afterwards: does this list of staves add up to the number the
+page says it prints? Run against the existing records, it correctly objects to
+all five pages whose entries predate the field — the whole group that had the
+problem, not just the one that was noticed.
+
+The distinction worth keeping is *when* a check runs. Asking after the fact
+means a person has already spent an hour confirming twenty-one staves by eye;
+asking at the point of writing costs them nothing and names the missing piece.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost

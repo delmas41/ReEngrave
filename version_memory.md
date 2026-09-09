@@ -362,6 +362,90 @@ scores.
 
 ---
 
+## 2026-09-08 — works.json: mahler p2's four one-line percussion staves, and the row that closed cause D into cause B
+
+- **`test_works_json_staff_lineup.py` had two tests failing on `main`, and it
+  was a DATA defect, not a code one.** `1cf44dbc` added mahler p2's
+  hand-confirmed 21-entry `staves` map — closing cause D, the scan gate 20/20
+  mapped — but the map lists PRINTED staves and the page prints four one-line
+  percussion rules, so `expand_lineup` read 21 five-line slots against our 17
+  parts and the arity gate refused. **The row moved from cause D straight into
+  cause B; the bucket total never moved, only its label.**
+- **Fixed with four `lines: 1` fields** on `Becken`, `Grosse Trommel`,
+  `Kleine Trommel`, `Tamtam`. ⚠️ **`Pauken` is a five-line staff and is not
+  flagged** — the one entry a name-matching rule would get wrong. Neither the
+  identity nor the count was inferred from names: `page.n_staves_note` names
+  the rules in prose and `condensation.staves_as_printed` carries `lines` for
+  all 21 entries independently, and after the fix every one of the 21 agrees.
+  ⚠️ The prose says FIVE rules and four entries are flagged — the fifth is the
+  combined-player staff the reference has no part for, so it is not a lineup
+  entry (21 − 4 = 17 = `page.n_staves`).
+- **Controlled A/B, same tree, only `works.json` differing** (record:
+  `benchmarks/omr-part-join-2026-09/mahler-p2-oneline-ab.json`): joined rows
+  **16 → 17 of 20**, pooled `part_unresolved` **7,985 → 7,266 (−719)**, p2's
+  `uncorresponded` **771 → 52**. **Exactly one row changes**, the other 19
+  identical outcome for outcome, and pooled musicdiff is identical between
+  arms — a live control, since `works.json` cannot reach it.
+- ⚠️ **The row gains no new symbols.** The same 527 truth / 244 predicted enter
+  both arms and `coverage.balanced` is `True` in both; 194 predicted symbols
+  stop owning a row of their own and become a truth row's PARTNER. The 771 → 52
+  fall is that pairing, not new evidence.
+- ⚠️ **The 52 that remain are the right 52**: 13 rows each on truth parts 23-26
+  (`Becken.`, `Grosse Trommel.`, `Kleine Trommel.`, `Tamtam.`) — a clef, a key,
+  a time signature and 10 rests apiece. A five-line staff detector cannot find
+  a single printed rule, so that music is genuinely unread and the field says
+  so instead of joining it to something.
+- ⚠️⚠️ **AND IT WILL RECUR — the writer cannot carry the field.**
+  `merge_additions.shape_problems` refuses any key beyond `name`/`parts`, and
+  the confirmation UI proposes none (p2's additions row is `{name, parts,
+  proposed, verdict}`), while `build_cache.py:496` computes `"lines":
+  spec.get("lines", 5)` and it is dropped on the way out — the
+  computed-and-unread pattern again. **Not fixed here**: it changes a writer's
+  contract and the additions schema, and no unmapped row remains to exercise
+  it. The next row mapped through that path with one-line percussion lands
+  unflagged and its whole page unassessable, with the test as the only alarm —
+  after the human pass is spent.
+- **⚠️ THE GENERATOR GAP IS CLOSED TOO (same day).** The deferral in the
+  bullet above was reversed: *"no unmapped row remains to exercise it"* argues
+  for a cheap fix, not against one, because the failure costs a HUMAN
+  CONFIRMATION PASS rather than compute. Four projections between
+  `build_cache` (which computes `lines`) and `works.json` each dropped it —
+  the UI's row seed, the UI's `staves_for_works_json`, `check_row`'s fallback,
+  and `shape_problems`' refusal of any key but `name`/`parts`. Now: the two
+  arity fields are allowed and **validated** (`lines` must be 1 or 5,
+  `printed_staves` a positive int, no entry both a one-line rule and several
+  printed staves, unknown keys still refuse); the projection is written ONCE as
+  `merge_additions._entry_for_works_json` and **imported by the UI** so the two
+  cannot drift.
+- **The guard now runs at the WRITER.** `arity_problems(row, staves)` asks of
+  the map about to be written exactly what `test_works_json_staff_lineup.py`
+  asks of the file, calling `run_ledger.expand_lineup` rather than recomputing
+  it, and abstaining on non-uniform pages as the test does. ⚠️ The point is
+  WHEN it fires: a data test fires after a 21-staff human pass is spent.
+- **⚠️ Retrospective control:** dry-run against today's additions file, the
+  guard refuses **all five** rows whose entries predate the field (mahler
+  p2-p5 and bach) — the whole population that had the defect, not just the row
+  that was noticed. Behaviour changes for none of them (all already refuse on
+  *"already carries a map"*), and a stale `staves_for_works_json` from the old
+  UI now fails loudly instead of writing an unflagged map.
+- **Five mutants, each red on exactly the intended test**, and the decisive
+  test is not synthetic — it feeds `arity_problems` mahler p2's map *as
+  `1cf44dbc` merged it*. `TestAOneLineRuleSurvivesTheWholeWritePath` proves the
+  chain rather than the links, against a control removing only that field.
+- ⚠️ **One existing test was left alone rather than loosened**:
+  `test_the_confirmation_ui_asks_it_too` asserts a literal import string that a
+  tidy parenthesised import broke, so the import was written back out as single
+  lines. A guard is not relaxed to suit a later edit.
+- **Files touched:** `benchmarks/omr-scan-e2e-2026-09/works.json` (4 fields),
+  `benchmarks/omr-part-join-2026-09/FINDINGS.md` (§7),
+  `benchmarks/omr-part-join-2026-09/mahler-p2-oneline-ab.json` (new),
+  `benchmarks/omr-staves-map-2026-09/merge_additions.py`,
+  `benchmarks/omr-staves-map-2026-09/server.py`,
+  `tools/omr/tests/test_staves_map_validation.py`,
+  `CLAUDE.md`, `PROJECT_BRIEF.md`, `version_memory.md`.
+
+---
+
 ## 2026-09-08 (late) — causes A/B/C closed, `OMR_SLOT_STITCH` default ON, and the meter's own garbage filter wired to its keeper
 
 - **`OMR_SLOT_STITCH` is DEFAULT ON** (Sean's call). Never scored worse
