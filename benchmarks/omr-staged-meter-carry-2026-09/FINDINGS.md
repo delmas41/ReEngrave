@@ -457,3 +457,67 @@ own record before believing it.**
 wrong meter on any page measured — and its boundary behaviour is
 under-determined.** Default `0` stands, and the reason is now (1) above rather
 than "n".
+
+
+---
+
+## 11. A REAL MID-MOVEMENT METER CHANGE, LOCATED — and what it shows
+
+§10 says the boundary case is untested because the one boundary available is on
+a page that cannot speak. So one was looked for. **Found, on the same document,
+so nothing else varies.**
+
+Scanning all 1,745 reference encodings for a part whose `<time>` changes
+mid-piece returns **230 works**. The best is Beethoven 5 itself:
+`beethoven--symphony-5--mvt4` encodes **4/4 → 3/4 at bar 155 → 4/4 at bar 209
+→ 2/2 at bar 364**.
+
+**In the Litolff print that is page 62** (bar 147 top-left): a double barline
+mid-system, "Tempo I. ♩=96", and a new time signature on every staff. ⚠️ The
+change is **MID-SYSTEM**, so one system contains two meters — a harder and more
+useful case than a page boundary.
+
+Run `--pages 61-62`:
+
+* ⚠️ **The printed 3/4 is NOT read.** `meter_template` returns `C` on 2 staves
+  and nothing else; the system abstains `too_few_staves_read_it`. Same as page
+  17 — on this edition the glyph route to a meter change is closed.
+* ✅ **The BAR SUMS see it.** Page 62 system 0, modal sum per bar across staves:
+
+  | bar # | staves | mode | agreement |
+  |--:|--:|--:|--:|
+  | 3 | 11 | 4.0 | 9/11 |
+  | 5 | 12 | 4.0 | 6/12 |
+  | **6** | **16** | **3.0** | **9/16** |
+  | 9, 10 | 1 each | 3.0 | — |
+
+  Bar 6 carries the **strongest cross-staff agreement on the page** and it
+  agrees on the NEW meter. The arithmetic finds the change the reader missed.
+
+⚠️ **BUT THE PROPOSED DISCRIMINATOR CANNOT FIRE HERE, and that is the finding.**
+The rule Sean describes — *if the dissenting bars agree with EACH OTHER it is a
+meter change; if they are incoherent it is noise* — needs at least two
+dissenters. Against a carried 4/4 only three bars clear the quorum (≥3 staves,
+≥50% agreeing): two at 4.0 and **one** at 3.0. The bars that would prove
+coherence (9 and 10, both 3.0) read on **one staff each** and fall below it.
+
+So the evidence exists on the page and sits under the quorum. **Building the
+coherence rule against this page would repeat §10's mistake one step earlier:
+a mechanism validated where it cannot be exercised.**
+
+### The route that avoids it
+
+Test the rule where reading quality is NOT the confound first.
+`orchestral_eval` renders a truth MXL through LilyPond, and
+`beethoven--symphony-5--mvt4` is in the library — so the same meter change can
+be produced engraved. If the rule fires there it is a rule; if it does not, no
+amount of scan work would have said so. Only then is the scan number about
+reach rather than about legibility.
+
+⚠️ **Two things unverified here**, recorded rather than smoothed over: the page
+prints bar 147 so cell 6 should be bar 153 against the reference's 155 — the
+cell→bar alignment is off by about two and the cause is unchecked; and the
+page's early bars read 6.0, 5.0, 6.0, so it is noisy too, only less so than
+page 17.
+
+**Not built. Parked at Sean's request for a design pass.**
