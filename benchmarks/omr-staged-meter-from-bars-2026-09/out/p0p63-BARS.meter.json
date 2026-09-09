@@ -1,0 +1,66 @@
+[
+  {
+    "subject": "system/63/0",
+    "outcome": "abstained",
+    "reason": "bars_name_a_length_without_a_form",
+    "value": null,
+    "detail": {
+      "instead_of": "no_evidence",
+      "candidate_forms": [
+        "3/4",
+        "6/8",
+        "12/16"
+      ],
+      "state": "named",
+      "length": 3.0,
+      "support": 5.0,
+      "floor": 4.0,
+      "bars_assessable": 9,
+      "bars_agree": 7,
+      "bars_disagree": 2,
+      "bar_lengths_seen": {
+        "3.0": 7,
+        "2.0": 1,
+        "6.0": 1
+      }
+    }
+  },
+  {
+    "subject": "system/63/1",
+    "outcome": "abstained",
+    "reason": "too_few_staves_read_it",
+    "value": null,
+    "detail": {
+      "coverage": 0.286,
+      "n_staves_spoke": 2,
+      "n_staves_on_system": 7,
+      "would_have_been": "C"
+    }
+  },
+  {
+    "subject": "system/63/2",
+    "outcome": "abstained",
+    "reason": "bars_name_a_length_without_a_form",
+    "value": null,
+    "detail": {
+      "instead_of": "too_few_staves_read_it",
+      "candidate_forms": [
+        "3/4",
+        "6/8",
+        "12/16"
+      ],
+      "state": "named",
+      "length": 3.0,
+      "support": 4.0,
+      "floor": 4.0,
+      "bars_assessable": 8,
+      "bars_agree": 6,
+      "bars_disagree": 2,
+      "bar_lengths_seen": {
+        "3.0": 6,
+        "1.5": 1,
+        "1.0": 1
+      }
+    }
+  }
+]

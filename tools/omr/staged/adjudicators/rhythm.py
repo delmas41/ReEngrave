@@ -722,6 +722,75 @@ METER_CARRY_MIN_BARS = 2
 METER_CARRY_MIN_STAVES_PER_BAR = 3
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# THE BARS MAY NAME A LENGTH ON THEIR OWN. (A-DUR-7)
+#
+# Sean, 2026-09-09: *"If there is no meter glyph then we have to deal with bar
+# sums... We have 12 systems and 10 of them say 4/4 for 6 measures."* And
+# A-DUR-6's governing rule: *"If there is no established meter then it must
+# derive the most likely meter based off of the order of determination
+# above."*
+#
+# Until now the bars could only CORROBORATE a candidate someone else proposed
+# -- a carried meter or a printed glyph. A system with neither had nothing,
+# however clearly its own arithmetic spoke.
+#
+# ⚠️ WHAT THE BARS CAN AND CANNOT SAY, and the split is the whole design. A
+# bar sum is a LENGTH in quarter-notes. It is not a meter: 2.0 is `2/4` and
+# also `4/8`, and 4.0 is `4/4`, `2/2` and a common-time `C`. So the bars name
+# the length and the ENGRAVING is borrowed from a system that actually read
+# one -- and where no such system exists the decision says exactly that
+# rather than picking a spelling. Naming a form we never saw would be the
+# laundered guess this module's own docstring bans.
+# ─────────────────────────────────────────────────────────────────────────────
+
+METER_FROM_BARS_ENV = "OMR_METER_FROM_BARS"
+
+
+def meter_from_bars_enabled() -> bool:
+    """Read the flag. Anything but an explicit "1" is off."""
+    return os.environ.get(METER_FROM_BARS_ENV, "0").strip() == "1"
+
+
+#: ⚠️⚠️ THERE IS ONE CONSTANT HERE AND THERE WERE TWO. A separate
+#: `METER_FROM_BARS_MIN_ASSESSABLE = 4` was written first, on
+#: `METER_CARRY_MIN_BARS`'s reasoning that *"is there enough evidence to
+#: judge?"* and *"does the evidence support it?"* are two questions and
+#: folding the first into the threshold hides it. **On these weights it
+#: cannot bind, and a mutation proved it**: a bar is worth 1.0, so support
+#: can never reach a floor of 4.0 without four assessable bars, and deleting
+#: the constant outright broke no test. It is gone rather than left as
+#: decoration -- a gate that cannot fire reads to the next person as a
+#: protection that is not there. The reasoning stands and would need weights
+#: that separate the two, which n = 20 systems on one document cannot supply.
+
+#: The support a bar-named length needs before it stands, in the same signed
+#: currency the carry uses (`W_METER_BAR_FITS` / `W_METER_BAR_CONTRADICTS`,
+#: reused rather than restated so the two mechanisms cannot drift apart about
+#: what a bar is worth).
+#:
+#: ⚠️ "THE LONGER THE MORE LIKELY" IS THE ACCUMULATION, NOT A RUN-LENGTH
+#: CONSTANT. Each agreeing bar adds 1.0 and each disagreeing bar subtracts
+#: 1.0, so a long coherent stretch clears any floor and a short one does not
+#: -- which is Sean's ordering without a second threshold to tune.
+#:
+#: ⚠️ CONSECUTIVENESS IS DELIBERATELY NOT REQUIRED, and that is a measurement
+#: rather than a simplification. The literal reading of "for 6 measures" is a
+#: RUN of consecutive bars; over the same 20 systems the longest such run
+#: is **5** on the one page whose meter is read, **3** on the two that want
+#: one, and **1** on the two dense finale systems -- because an unassessable
+#: bar (under three staves, or no cross-staff majority) breaks a run without
+#: contradicting anything. Requiring consecutiveness would spend the evidence
+#: on the page's legibility rather than on its meter.
+#:
+#: ⚠️ AT 4.0 THE FLOOR IS EXERCISED BY A REAL NEGATIVE. Reached systems score
+#: +10 (p.1, meter read, control), +6 and +7 (p.2, truth 2/4, both correct)
+#: and **-2** on the *Andante*'s first system, whose four assessable bars
+#: read four different lengths. The n is 4 and it is not a sweep.
+METER_FROM_BARS_FLOOR = 4.0
+
+
+
 def _corroborate(ev: Evidence, candidate: dict) -> dict:
     """Do this system's own bars agree with `candidate`?
 
@@ -905,6 +974,15 @@ METER_CHANGE_FLOOR = 3.0
 #: for a different quiet failure.
 from ... import time_signature_locator as _tsl
 _PLAUSIBLE_METERS = frozenset((n, d) for n, d, _raw in _tsl.DEFAULT_METERS)
+
+#: Bar length in quarter-notes -> the meters that print it, from the template
+#: reader's own table. ⚠️ A LENGTH NO METER HAS IS NOT A CANDIDATE: without
+#: this the *Andante*'s bars would nominate 1.0 quarter-notes, and
+#: `rhythm._drop_implausible_meters` already names `1/4` in its own docstring
+#: as garbage that survives upstream filtering.
+_METER_LENGTHS: dict = {}
+for _n, _d in sorted(_PLAUSIBLE_METERS):
+    _METER_LENGTHS.setdefault(round(_n * 4.0 / _d, 6), []).append((_n, _d))
 
 
 def _meter_from_digits(rows) -> Optional[tuple]:
@@ -1113,6 +1191,140 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
     return None
 
 
+def _bars_opinion(ev: Evidence) -> dict:
+    """What this system's OWN bars say about their length, on their own.
+
+    ⚠️ NO CANDIDATE IS SUPPLIED, which is what separates this from
+    `_corroborate`. There the bars answer *"is it 2/4?"*; here they answer
+    *"what is it?"*, and the difference is that a wrong answer cannot be
+    inherited from somewhere else -- the reach of this reader is exactly one
+    system.
+    """
+    bars = _bar_lengths_for(ev)
+    voted = []
+    for cell_index, lengths in sorted(bars.items()):
+        if len(lengths) < METER_CARRY_MIN_STAVES_PER_BAR:
+            continue
+        mode, n = Counter(lengths).most_common(1)[0]
+        if n / len(lengths) < 0.5:
+            continue                 # the staves do not agree with EACH OTHER
+        voted.append(round(mode, 6))
+    seen = Counter(voted)
+    if not voted:
+        return {"state": "no_assessable_bars", "bars_assessable": 0,
+                "bar_lengths_seen": {}}
+    # ⚠️ ONLY A LENGTH SOME METER PRINTS may stand for election. See
+    # `_METER_LENGTHS`.
+    plausible = Counter({length: n for length, n in seen.items()
+                         if length in _METER_LENGTHS})
+    if not plausible:
+        return {"state": "no_plausible_length",
+                "bars_assessable": len(voted),
+                "bar_lengths_seen": dict(seen.most_common(6))}
+    # ⚠️ A TIE HERE IS RESOLVED BY FIRST APPEARANCE, and it does not matter:
+    # a tie means no length dominates, so whichever is chosen scores at or
+    # below (n/2 - n/2) = 0 and the floor refuses it. This is the *Andante*'s
+    # own case -- 3.0, 3.5 and 1.5 at one bar each.
+    length, _ = plausible.most_common(1)[0]
+    scored = _score_bars(bars, length)
+    if "terms" not in scored:
+        return dict(scored, state="too_few_assessable_bars")
+    return {"state": "named", "length": length,
+            "support": round(tally(scored["terms"]), 3),
+            "floor": METER_FROM_BARS_FLOOR,
+            "terms": scored["terms"],
+            "bars_assessable": len(voted),
+            "bars_agree": scored["bars_agree"],
+            "bars_disagree": scored["bars_disagree"],
+            "bar_lengths_seen": scored["bar_lengths_seen"]}
+
+
+def _form_for_length(ev: Evidence, length: float) -> Optional[dict]:
+    """A preceding system that READ a meter of exactly this length, if any.
+
+    ⚠️ THE BARS NAME THE LENGTH; THE ENGRAVING IS BORROWED. `2/4` and `4/8`
+    are one bar length and two printings, and no arithmetic separates them --
+    so the spelling comes from a system that actually saw one, on the same
+    "only ink is a source" discipline `_carry_meter` uses (`reason == "voted"`
+    and nothing else, so a borrow can never chain onto a borrow).
+
+    ⚠️⚠️ THE LETTER IS DELIBERATELY NOT BORROWED. `raw` reaches
+    `staged.export` as `symbol="common"` / `"cut"`, which is a positive claim
+    that a `C` is PRINTED on this system -- and this system printed nothing we
+    could read. So the borrowed meter is spelled in digits and the source's
+    own `raw` is recorded beside it rather than copied. The same distinction
+    `export._mxl_attributes_block` already makes for `rhythm._propagated_meter`.
+    """
+    here = ev.subject
+    for src in reversed([s for s in ev.subjects(Kind.SYSTEM) if s < here]):
+        found = ev.verdict(Q.METER, subject=src)
+        if found is None or found.outcome is not Outcome.DECIDED:
+            continue
+        if found.reason != "voted":
+            continue
+        num, den = (found.value or {}).get("numerator"), \
+                   (found.value or {}).get("denominator")
+        if not num or not den:
+            continue
+        if abs(float(num) * 4.0 / float(den) - length) > 1e-6:
+            continue
+        return {"numerator": int(num), "denominator": int(den),
+                "source": src.to_key(), "source_raw": (found.value or {}).get("raw"),
+                "source_id": found.id}
+    return None
+
+
+def _meter_from_bars(ev: Evidence, instead_of: str) -> Optional[Ruling]:
+    """This system's own bars, asked what the meter is. Default OFF.
+
+    ⚠️ IT RUNS ONLY WHERE THE READING AND THE CARRY BOTH FAILED, so it can
+    never overturn ink and never overturn a carry the bars already weighed.
+
+    ⚠️ IT CANNOT CROSS A MOVEMENT BOUNDARY, and that is the structural reason
+    it is a different mechanism from the carry rather than a second copy of
+    it. Every term comes from bars inside this one system, so the *Andante*'s
+    first system cannot be handed movement 1's `2/4` by this route however
+    many pages of `2/4` precede it -- its own four bars read four different
+    lengths and it scores -2.0. The only thing that reaches back is the
+    SPELLING, and that is gated on the length already matching.
+    """
+    if not meter_from_bars_enabled():
+        return None
+    op = _bars_opinion(ev)
+    if op["state"] != "named":
+        return None                   # the caller's own abstention stands
+    # ⚠️ The `Term` objects are dropped before `op` becomes record `detail`:
+    # the SUPPORT and the counts are what a reader needs, and a Term does not
+    # serialise. Their sum is already in `op["support"]`.
+    op.pop("terms")
+    if op["support"] < METER_FROM_BARS_FLOOR:
+        # ⚠️ Falls THROUGH rather than abstaining here: a system whose bars
+        # name nothing may still print a change, and `_change_only` is what
+        # finds it.
+        return None
+    form = _form_for_length(ev, op["length"])
+    if form is None:
+        # ⚠️ A REAL ANSWER, NOT A GAP: *"these bars are 3.0 quarter-notes
+        # long and nothing on this document has told us whether that is
+        # printed 3/4, 6/8 or 12/16"*. Still routed through `_change_only`,
+        # because a printed change on this same system is evidence this
+        # reader does not have.
+        return _change_only(ev, "bars_name_a_length_without_a_form",
+                            instead_of=instead_of,
+                            candidate_forms=[f"{n}/{d}" for n, d
+                                             in _METER_LENGTHS[op["length"]]],
+                            **op)
+    opening = {"numerator": form["numerator"],
+               "denominator": form["denominator"],
+               "raw": f"{form['numerator']}/{form['denominator']}"}
+    detail = {"instead_of": instead_of,
+              "form_borrowed_from": form["source"],
+              "form_source_raw": form["source_raw"], **op}
+    return Ruling(value=_with_segments(ev, opening), reason="derived_from_bars",
+                  used=(form["source_id"],), margin=op["support"],
+                  detail=detail)
+
+
 def _change_only(ev: Evidence, why: str, **detail) -> Ruling:
     """A system whose OPENING meter is unknown but which prints a CHANGE.
 
@@ -1155,7 +1367,8 @@ def _change_only(ev: Evidence, why: str, **detail) -> Ruling:
     reasons=("voted", "no_agreement", "no_evidence",
              "too_few_staves_read_it", "carried",
              "carry_not_corroborated", "carry_outweighed_by_the_bars",
-             "change_only"),
+             "change_only", "derived_from_bars",
+             "bars_name_a_length_without_a_form"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_meter(ev: Evidence) -> Ruling:
@@ -1180,6 +1393,7 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
         # so it can never overturn a reading. Off by default -- see
         # `METER_CARRY_ENV` for the movement-boundary hazard, measured.
         return (_carry_meter(ev, "no_evidence")
+                or _meter_from_bars(ev, "no_evidence")
                 or _change_only(ev, "no_evidence"))
 
     tally_: dict = {}
@@ -1199,7 +1413,8 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     total = n_staves.value if n_staves is not None and n_staves.value else None
     coverage = (len(witnesses) / float(total)) if total else None
     if coverage is not None and coverage < METER_COVERAGE_FLOOR:
-        return _carry_meter(ev, "too_few_staves_read_it") or _change_only(
+        return _carry_meter(ev, "too_few_staves_read_it") or \
+            _meter_from_bars(ev, "too_few_staves_read_it") or _change_only(
             ev, "too_few_staves_read_it",
             coverage=round(coverage, 3),
             n_staves_spoke=len(rows),
@@ -1210,7 +1425,8 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     if share < METER_AGREEMENT_FLOOR:
         # ⚠️ Recorded, not defaulted. A system whose staves disagree about the
         # meter is exactly the page a human should see.
-        return _carry_meter(ev, "no_agreement") or _change_only(
+        return _carry_meter(ev, "no_agreement") or \
+            _meter_from_bars(ev, "no_agreement") or _change_only(
             ev, "no_agreement",
             share=round(share, 3),
             readings={k: len(v) for k, v in tally_.items()})

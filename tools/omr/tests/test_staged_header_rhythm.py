@@ -566,3 +566,260 @@ class TestEvidenceSubjectsIsStructural(unittest.TestCase):
         self.assertIn(R.system(0, 0), ev.subjects(R.Kind.SYSTEM))
         with self.assertRaises(adjudicate.UndeclaredEvidence):
             ev.rows(Q.MARGIN_LABEL)
+
+
+class TestTheBarsMayNameTheMeter(unittest.TestCase):
+    """⚠️ A system with NO glyph and NO carry may still be told what it is in,
+    by its own arithmetic.
+
+    Sean, 2026-09-09: *"If there is no meter glyph then we have to deal with
+    bar sums... We have 12 systems and 10 of them say 4/4 for 6 measures."*
+    And A-DUR-6: *"If there is no established meter then it must derive the
+    most likely meter based off of the order of determination above."*
+
+    ⚠️ THE SPLIT THIS CLASS EXISTS TO PIN: the bars name a LENGTH, and only a
+    system that actually READ a meter can name the ENGRAVING. 2.0 quarters is
+    `2/4` and also `4/8`; no arithmetic separates them.
+    """
+
+    def _bars(self, log, page, per_cell, *, n_staves=4, system=0):
+        """One cell per entry of `per_cell`, every staff reading that length."""
+        for st in range(n_staves):
+            for c, beats in enumerate(per_cell):
+                cell = R.cell(page, system, st, c)
+                g = R.glyph(page, system, st, c, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 100, 0, 20, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": beats, "written": beats,
+                           "duration_type": "quarter", "dots": 0},
+                    decider="t", reason="head_and_marks"))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 100.0,
+                                       "kind": "chord"}]},
+                    decider="t", reason="x_clustered"))
+
+    def _log(self, per_cell, *, source=(2, 4), source_raw="2/4",
+             source_page=0, dst_page=1):
+        log = Log()
+        src, dst = R.system(source_page, 0), R.system(dst_page, 0)
+        for sysj, n in ((src, 12), (dst, 11)):
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=n, decider="t", reason="counted"))
+        if source is not None:
+            for i in range(12):
+                log.observe(R.staff(source_page, 0, i), Q.METER_TEMPLATE,
+                            source, reader=READERS.TEMPLATE,
+                            frame="header_window", score=0.7, raw=source_raw)
+        self._bars(log, dst_page, per_cell)
+        return log, src, dst
+
+    def _run(self, log, *, from_bars, carry=False):
+        import os
+        log.freeze()
+        adjudicate._ensure_decisions()
+        spec = adjudicate.REGISTRY[Q.METER]
+        env = {rhythm_mod.METER_FROM_BARS_ENV: "1" if from_bars else None,
+               rhythm_mod.METER_CARRY_ENV: "1" if carry else None}
+        prev = {k: os.environ.get(k) for k in env}
+        try:
+            for k, v in env.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+            for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
+                adjudicate.adjudicate_one(log, spec, sysj)
+        finally:
+            for k, v in prev.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+
+    # ── the control ─────────────────────────────────────────────────────────
+
+    def test_off_by_default_the_system_still_abstains(self):
+        """The control for every claim below."""
+        log, _src, dst = self._log([2.0] * 6)
+        self._run(log, from_bars=False)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_evidence")
+
+    # ── what it does ────────────────────────────────────────────────────────
+
+    def test_six_bars_agreeing_name_the_meter(self):
+        """Six bars at 2.0 with a `2/4` read elsewhere: the length is the
+        bars', the spelling is borrowed, and both are on the record."""
+        log, src, dst = self._log([2.0] * 6)
+        self._run(log, from_bars=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "derived_from_bars")
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (2, 4))
+        self.assertEqual(v.detail["length"], 2.0)
+        self.assertEqual(v.detail["bars_agree"], 6)
+        self.assertEqual(v.detail["bars_disagree"], 0)
+        self.assertEqual(v.detail["support"], 6.0)
+        self.assertEqual(v.detail["form_borrowed_from"], src.to_key())
+        self.assertEqual(v.detail["instead_of"], "no_evidence")
+
+    def test_a_segment_is_written_so_meter_at_answers(self):
+        """`Q.METER` is a fact about a RANGE OF BARS however it was decided,
+        so a derived meter must serialise like a read one."""
+        log, _src, dst = self._log([2.0] * 6)
+        self._run(log, from_bars=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertEqual(R.meter_at(v.value, 0)["raw"], "2/4")
+        self.assertEqual(R.meter_at(v.value, 5)["raw"], "2/4")
+
+    # ── what it refuses ─────────────────────────────────────────────────────
+
+    def test_it_CANNOT_cross_a_movement_boundary(self):
+        """⚠️⚠️ THE STRUCTURAL SAFETY CLAIM, AND IT IS WHY THIS IS NOT A
+        SECOND COPY OF THE CARRY.
+
+        Every term comes from bars inside this ONE system, so a page opening a
+        new movement cannot be handed the old movement's meter by this route
+        however many pages of it precede. The shape is the real *Andante*'s:
+        four assessable bars reading four different lengths (measured on
+        Beethoven 5 / Litolff p.17 system 0 — 3.0, 3.5, 1.0, 1.5).
+        """
+        log, _src, dst = self._log([3.0, 3.5, 1.0, 1.5])
+        self._run(log, from_bars=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_evidence")
+
+    def test_three_bars_are_not_enough_however_well_they_agree(self):
+        """⚠️ AND THE FLOOR IS THE ONLY THING REFUSING THEM.
+
+        This test was written to pin a separate minimum-assessable-bars
+        constant and it PASSED WITH THAT CONSTANT DELETED — a bar is worth
+        1.0, so three of them score +3 and the floor refuses them anyway.
+        The constant is gone; this now pins the floor's lower reach, which is
+        what actually holds.
+        """
+        log, _src, dst = self._log([2.0] * 3)
+        self._run(log, from_bars=True)
+        self.assertIs(log.verdict(Q.METER, dst).outcome, Outcome.ABSTAINED)
+
+    def test_a_length_NO_METER_PRINTS_is_not_a_candidate(self):
+        """⚠️ Six bars unanimously one quarter-note long propose NOTHING.
+        `rhythm._drop_implausible_meters` names `1/4` in its own docstring as
+        garbage that survives upstream filtering; a bar-sum reader must not
+        reintroduce it by the back door."""
+        log, _src, dst = self._log([1.0] * 6)
+        self._run(log, from_bars=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertNotIn(1.0, rhythm_mod._METER_LENGTHS)
+
+    def test_a_split_page_scores_below_the_floor(self):
+        """Eight bars, five agreeing and three not: +2, under the floor. The
+        floor is what "the longer the more likely" cashes out as."""
+        log, _src, dst = self._log([2.0] * 5 + [3.0, 4.0, 6.0])
+        self._run(log, from_bars=True)
+        self.assertIs(log.verdict(Q.METER, dst).outcome, Outcome.ABSTAINED)
+
+    # ── the length / form split ─────────────────────────────────────────────
+
+    def test_a_length_with_no_form_NAMES_THE_LENGTH_and_refuses(self):
+        """⚠️ A REAL ANSWER, NOT A GAP: *these bars are three quarter-notes
+        long, and nothing on this document has said whether that is printed
+        3/4, 6/8 or 12/16*. Refusing to spell it is the point."""
+        log, _src, dst = self._log([3.0] * 6, source=(2, 4), source_raw="2/4")
+        self._run(log, from_bars=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "bars_name_a_length_without_a_form")
+        self.assertEqual(v.detail["length"], 3.0)
+        self.assertEqual(v.detail["support"], 6.0)
+        self.assertEqual(sorted(v.detail["candidate_forms"]),
+                         ["12/16", "3/4", "6/8"])
+
+    def test_the_LETTER_form_is_never_borrowed(self):
+        """⚠️⚠️ `raw` reaches `staged.export` as `symbol="common"`, which is a
+        positive claim that a `C` is PRINTED on this system — and this system
+        printed nothing we could read. The numbers are borrowed; the
+        engraving is not, and the source's own `raw` is recorded beside the
+        answer rather than copied into it."""
+        log, _src, dst = self._log([4.0] * 6, source=(4, 4), source_raw="C")
+        self._run(log, from_bars=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (4, 4))
+        self.assertEqual(v.value["raw"], "4/4")
+        self.assertEqual(v.detail["form_source_raw"], "C")
+        from tools.omr.time_signature_locator import LETTER_METERS
+        self.assertIn("C", LETTER_METERS)
+        self.assertNotIn(v.value["raw"], LETTER_METERS)
+
+    def test_a_borrowed_form_never_chains_onto_a_borrowed_form(self):
+        """Only INK is a source. A `derived_from_bars` verdict is not a
+        `voted` one, so it can never lend its spelling onward — the same
+        discipline `_carry_meter` states for the carry."""
+        log = Log()
+        src, mid, far = R.system(0, 0), R.system(1, 0), R.system(2, 0)
+        for sysj, n in ((src, 12), (mid, 11), (far, 11)):
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=n, decider="t", reason="counted"))
+        for i in range(12):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, (2, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw="2/4")
+        self._bars(log, 1, [2.0] * 6)
+        self._bars(log, 2, [2.0] * 6)
+        self._run(log, from_bars=True)
+        for sysj in (mid, far):
+            v = log.verdict(Q.METER, sysj)
+            self.assertEqual(v.reason, "derived_from_bars")
+            # both name the READING, never each other
+            self.assertEqual(v.detail["form_borrowed_from"], src.to_key())
+
+    # ── the ordering ────────────────────────────────────────────────────────
+
+    def test_it_never_overturns_a_system_that_read_its_own_meter(self):
+        log, src, _dst = self._log([3.0] * 6)
+        self._run(log, from_bars=True)
+        self.assertEqual(log.verdict(Q.METER, src).reason, "voted")
+
+    def test_the_CARRY_is_asked_first_where_both_could_speak(self):
+        """⚠️ Reach, not merit: the carry names an ENGRAVING it actually saw,
+        so where it stands there is nothing for a borrow to add."""
+        log, _src, dst = self._log([2.0] * 6)
+        self._run(log, from_bars=True, carry=True)
+        self.assertEqual(log.verdict(Q.METER, dst).reason, "carried")
+
+    def test_the_constants_keep_the_floor_reachable_by_a_real_page(self):
+        """⚠️ A PROPERTY OF THE CONSTANTS, asserted on them directly so a
+        sweep that broke it fails even when every behavioural test passes.
+
+        The floor must sit at or below what the *Andante*'s own four
+        assessable bars could score, so that page REACHES it and is refused
+        by it — a floor no real negative can reach is justified by nothing.
+        """
+        self.assertGreater(rhythm_mod.METER_FROM_BARS_FLOOR,
+                           rhythm_mod.W_METER_BAR_FITS
+                           + 3 * rhythm_mod.W_METER_BAR_CONTRADICTS,
+                           "the Andante's 1-agree/3-disagree must not stand")
+        self.assertLessEqual(rhythm_mod.METER_FROM_BARS_FLOOR,
+                             4 * rhythm_mod.W_METER_BAR_FITS,
+                             "the Andante's four bars must still REACH the "
+                             "floor, so a real page refuses them")
+        self.assertFalse(hasattr(rhythm_mod, "METER_FROM_BARS_MIN_ASSESSABLE"),
+                         "a gate that cannot fire reads as a protection that "
+                         "is not there — see the constant's own note")
