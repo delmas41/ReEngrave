@@ -824,6 +824,209 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
                          "a gate that cannot fire reads as a protection that "
                          "is not there — see the constant's own note")
 
+class TestAMeterChangeIsReadFromTheInk(unittest.TestCase):
+    """⚠️⚠️ THE CHANGE DETECTOR HAD NO UNIT TESTS AT ALL until this class:
+    `grep -c METER_GLYPH tools/omr/tests/*.py` returned zero across the suite
+    while `_meter_changes`, `_change_only` and the whole `segments` mechanism
+    were shipping. The letter-meter hole below is what that bought.
+
+    ⚠️ THE HOLE: a meter CHANGE engraved as a common-time `C` proposed
+    NOTHING. `_meter_from_digits` needs two stacked digits and says so
+    (*"timeSigCommon and friends: no pair"*), so the candidate list came back
+    empty and `_meter_changes` skipped the bar. Measured on an engraved
+    Beethoven 5 finale at its 3/4 -> 4/4 change of bar 209: `timeSigCommon`
+    detected on **23 staves of 23**, unanimous, maximal agreement, and the
+    change was not proposed. Detected, then dropped — this repository's most
+    expensive recurring shape, inside the meter itself.
+    """
+
+    N_STAVES = 4
+
+    def _log(self, *, opening=(3, 4), opening_raw="3/4", glyphs=(),
+             per_cell=(3.0, 3.0, 3.0)):
+        """One system: an opening read by the template reader on every staff,
+        bars of the given lengths, and `glyphs` as (cell, class) pairs printed
+        on EVERY staff.
+        """
+        log = Log()
+        sysj = R.system(0, 0)
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=sysj,
+            quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+            value=self.N_STAVES, decider="t", reason="counted"))
+        for st in range(self.N_STAVES):
+            if opening is not None:
+                log.observe(R.staff(0, 0, st), Q.METER_TEMPLATE, opening,
+                            reader=READERS.TEMPLATE, frame="header_window",
+                            score=0.7, raw=opening_raw)
+            for cell, klass in glyphs:
+                # ⚠️ `y_center` differs per digit on purpose: it is the WHOLE
+                # of what tells a numerator from a denominator.
+                y = 10.0 if klass.endswith(("2", "3", "6", "9", "12")) else 30.0
+                log.observe(R.glyph(0, 0, st, cell, 90 + len(klass)),
+                            Q.METER_GLYPH, klass, reader=READERS.DETECTOR,
+                            frame="cell:%d" % cell, score=0.9, cell=cell,
+                            x=10.0, y_center=y,
+                            letter=klass in ("timeSigCommon",
+                                             "timeSigCutCommon"))
+            for c, beats in enumerate(per_cell):
+                cell = R.cell(0, 0, st, c)
+                g = R.glyph(0, 0, st, c, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 100, 0, 20, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": beats, "written": beats,
+                           "duration_type": "quarter", "dots": 0},
+                    decider="t", reason="head_and_marks"))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 100.0,
+                                       "kind": "chord"}]},
+                    decider="t", reason="x_clustered"))
+        return log, sysj
+
+    def _run(self, log, sysj):
+        log.freeze()
+        adjudicate._ensure_decisions()
+        adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.METER], sysj)
+        return log.verdict(Q.METER, sysj)
+
+    def _segments(self, v):
+        return (v.value or {}).get("segments") or []
+
+    # ── the control: digits, which always worked ────────────────────────────
+
+    def test_a_change_printed_in_DIGITS_is_read(self):
+        log, sysj = self._log(glyphs=((1, "timeSig2"), (1, "timeSig4")),
+                              per_cell=(3.0, 2.0, 2.0, 2.0))
+        v = self._run(log, sysj)
+        segs = self._segments(v)
+        self.assertEqual([(s["from_cell"], s["raw"]) for s in segs],
+                         [(0, "3/4"), (1, "2/4")])
+
+    # ── the fix ────────────────────────────────────────────────────────────
+
+    def test_a_change_printed_as_a_LETTER_is_read(self):
+        """⚠️ RUN THIS RED: delete `_meter_from_letter`'s call site in
+        `_meter_changes` and the system reports ONE segment, silently."""
+        log, sysj = self._log(glyphs=((1, "timeSigCommon"),),
+                              per_cell=(3.0, 4.0, 4.0, 4.0))
+        v = self._run(log, sysj)
+        segs = self._segments(v)
+        self.assertEqual([(s["from_cell"], s["numerator"], s["denominator"])
+                          for s in segs], [(0, 3, 4), (1, 4, 4)])
+
+    def test_the_LETTER_reaches_the_segment_as_raw_so_the_export_can_say_symbol(self):
+        """⚠️ THE OPPOSITE CASE TO A BORROWED FORM, and the distinction is the
+        whole of why `raw` may travel here. `_form_for_length` refuses to copy
+        a `C` because the borrowing system printed nothing we could read; here
+        this system's own staves read the `C`, so `symbol="common"` reaching
+        the file is a claim the page supports.
+        """
+        log, sysj = self._log(glyphs=((1, "timeSigCommon"),),
+                              per_cell=(3.0, 4.0, 4.0, 4.0))
+        v = self._run(log, sysj)
+        self.assertEqual(self._segments(v)[1]["raw"], "C")
+        self.assertEqual(R.meter_at(v.value, 1)["raw"], "C")
+
+    def test_cut_common_names_two_two(self):
+        log, sysj = self._log(glyphs=((1, "timeSigCutCommon"),),
+                              per_cell=(3.0, 2.0, 2.0, 2.0))
+        v = self._run(log, sysj)
+        seg = self._segments(v)[1]
+        self.assertEqual((seg["numerator"], seg["denominator"], seg["raw"]),
+                         (2, 2, "C|"))
+
+    def test_a_letter_earns_the_COMPLETE_meter_weight_not_the_loose_one(self):
+        """⚠️ `W_CHANGE_GLYPH_PAIR` is worth what it is because the staff read
+        a numerator AND a denominator; a letter meter is complete in ONE
+        glyph, so it earns the same. Four staves at 3.0 each = 12.0, plus
+        three bars that fit."""
+        log, sysj = self._log(glyphs=((1, "timeSigCommon"),),
+                              per_cell=(3.0, 4.0, 4.0, 4.0))
+        seg = self._segments(self._run(log, sysj))[1]
+        self.assertEqual(seg["staves_reading_it"], list(range(self.N_STAVES)))
+        self.assertEqual(seg["support"],
+                         self.N_STAVES * rhythm_mod.W_CHANGE_GLYPH_PAIR
+                         + 3 * rhythm_mod.W_CHANGE_BAR_FITS)
+
+    # ── what it refuses ────────────────────────────────────────────────────
+
+    def test_a_staff_reading_BOTH_letters_at_one_bar_has_read_neither(self):
+        """⚠️ A stroke through a `C` is exactly the distinction that is easy
+        to lose — `time_signature_locator._looks_cut` reads it by POSITION
+        rather than by template for that reason. Contradictory ink is loose
+        ink: 4 staves x 2 rows x 0.5 = 4.0, over the floor on its own, and
+        still no change, because `loose` names no meter to change TO."""
+        log, sysj = self._log(
+            glyphs=((1, "timeSigCommon"), (1, "timeSigCutCommon")),
+            per_cell=(3.0, 4.0, 4.0, 4.0))
+        self.assertEqual(len(self._segments(self._run(log, sysj))), 1)
+        # ⚠️ THE POSITIVE CONTROL IS IN THE TEST, not in another one. Without
+        # it this passes for free the moment the letter path stops working at
+        # all -- which is exactly the vacuous-test shape this repo has been
+        # bitten by twice.
+        ok, ok_sysj = self._log(glyphs=((1, "timeSigCommon"),),
+                                per_cell=(3.0, 4.0, 4.0, 4.0))
+        self.assertEqual(len(self._segments(self._run(ok, ok_sysj))), 2)
+
+    def test_a_letter_at_CELL_ZERO_is_the_opening_not_a_change(self):
+        """The staff head states the staff's meter; only a later bar announces
+        one. Pinned because the courtesy signature at a LINE END lands in the
+        last cell and must not be re-read as a change either."""
+        log, sysj = self._log(glyphs=((0, "timeSigCommon"),),
+                              per_cell=(3.0, 3.0, 3.0))
+        self.assertEqual(len(self._segments(self._run(log, sysj))), 1)
+        moved, moved_sysj = self._log(glyphs=((1, "timeSigCommon"),),
+                                      per_cell=(3.0, 4.0, 4.0))
+        self.assertEqual(len(self._segments(self._run(moved, moved_sysj))), 2,
+                         "the SAME glyph one bar later IS a change -- without "
+                         "this the assertion above passes for free")
+
+    def test_a_C_that_RESTATES_a_4_4_opening_is_not_a_change(self):
+        log, sysj = self._log(opening=(4, 4), opening_raw="4/4",
+                              glyphs=((1, "timeSigCommon"),),
+                              per_cell=(4.0, 4.0, 4.0))
+        self.assertEqual(len(self._segments(self._run(log, sysj))), 1)
+        other, other_sysj = self._log(opening=(3, 4), opening_raw="3/4",
+                                      glyphs=((1, "timeSigCommon"),),
+                                      per_cell=(3.0, 4.0, 4.0))
+        self.assertEqual(len(self._segments(self._run(other, other_sysj))), 2,
+                         "the same C against a 3/4 opening IS a change -- "
+                         "without this the assertion above passes for free")
+
+    def test_the_bars_can_still_sink_a_letter_change(self):
+        """⚠️ The glyph opens the question, the math settles it — for a letter
+        exactly as for digits. One staff's `C` is 3.0; four bars at 3.0 that
+        contradict it take it under the floor."""
+        log, sysj = self._log(glyphs=((1, "timeSigCommon"),),
+                              per_cell=(3.0, 3.0, 3.0, 3.0, 3.0))
+        v = self._run(log, sysj)
+        segs = self._segments(v)
+        self.assertEqual([s["from_cell"] for s in segs], [0, 1],
+                         "four staves reading it outweigh four contradicting "
+                         "bars (12.0 - 4.0 = 8.0); this asserts the terms are "
+                         "actually summed, not that the change is refused")
+        self.assertEqual(segs[1]["bars_contradict"], 4)
+        self.assertEqual(segs[1]["bars_fit"], 0)
+
+    def test_the_glyph_detail_LETTER_flag_is_not_what_decides(self):
+        """⚠️ GATHER writes `letter=True` on every `timeSigCommon` row and
+        NOTHING reads it — 'the value existed and nothing read it', again. It
+        cannot be the input either: a boolean cannot tell a `C` from a `C|`,
+        and those are different meters. The class NAME is the evidence.
+        """
+        rows = [type("R", (), {"value": "timeSigCommon",
+                               "detail": {"letter": False}})()]
+        self.assertEqual(rhythm_mod._meter_from_letter(rows), (4, 4, "C"))
+
 
 class TestARefusalMayNotBlockALaterRung(unittest.TestCase):
     """⚠️⚠️ AN ABSTENTION IS NOT AN ANSWER, and chaining the meter's fallbacks

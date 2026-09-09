@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-09-09 — four parallel sessions merged; the **metric is no longer the organising goal** and the staged pipeline (GATHER · ADJUDICATE · EVALUATE) is, see the September 8–9 entry below and [CLAUDE.md](CLAUDE.md)'s START HERE pointer. ⚠️ The arc list below is a running history and the entries between 2026-09-03 and 2026-09-08 were never written into this file — read [version_memory.md](version_memory.md) for that week. Previously: 2026-09-02 (two parallel arcs merged: the overnight generalization session — the engraved benchmark widened 3 → 10 works and opened at twice the incumbent error rate, a five-row SCAN benchmark now exists, the cut-common meter bug and two key-signature vote bugs fixed, see [docs/overnight-2026-09-01-summary.md](docs/overnight-2026-09-01-summary.md) — and the day queue's export-gap arc (fermatas, printed accidentals, the coverage check) plus the branch audit, per [docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md); the current accuracy figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section, is generated from `benchmarks/omr-ned-2026-08/current-accuracy.json`, and the suite goes red if the two disagree)
+**Last updated:** 2026-09-09 — the meter boundary MEASURED on engraved fixtures and on a second document and publisher (the result splits: the weighing holds, a second publisher's SCAN does not read the meter), and `Q.METER`'s `segments` found to reach no file at all; before that, four parallel sessions merged; the **metric is no longer the organising goal** and the staged pipeline (GATHER · ADJUDICATE · EVALUATE) is, see the September 8–9 entry below and [CLAUDE.md](CLAUDE.md)'s START HERE pointer. ⚠️ The arc list below is a running history and the entries between 2026-09-03 and 2026-09-08 were never written into this file — read [version_memory.md](version_memory.md) for that week. Previously: 2026-09-02 (two parallel arcs merged: the overnight generalization session — the engraved benchmark widened 3 → 10 works and opened at twice the incumbent error rate, a five-row SCAN benchmark now exists, the cut-common meter bug and two key-signature vote bugs fixed, see [docs/overnight-2026-09-01-summary.md](docs/overnight-2026-09-01-summary.md) — and the day queue's export-gap arc (fermatas, printed accidentals, the coverage check) plus the branch audit, per [docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md); the current accuracy figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section, is generated from `benchmarks/omr-ned-2026-08/current-accuracy.json`, and the suite goes red if the two disagree)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -143,6 +143,26 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
   by re-reading prose. Full account: the merge entry at the head of
   [version_memory.md](version_memory.md), and
   `benchmarks/omr-gather-coverage-2026-09/FINDINGS.md` §2b-addendum.
+
+  ⚠️ **Later the same day the boundary claim was MEASURED rather than argued,
+  and it needed a fixture.** *"The movement-boundary problem dissolved"* rested
+  on the *Andante* refusing a carried `2/4` — but that page refuses the meter it
+  actually PRINTS as well, so the refusal was **safe and not discriminating**.
+  Rendering a real meter change ENGRAVED (`beethoven-sym5-mvt4`, 4/4 → 3/4 at
+  bar 155) removed legibility as the confound: the same page carries the TRUE
+  meter at **+6.0** and refuses the FALSE one at **−8.0**, and in the file whole
+  rests written at 4.0 ql inside a 3.0 ql bar go **196 → 38**. A second document
+  and publisher followed — Brahms 1 mvt 1 read ENGRAVED and from the Breitkopf
+  SCAN, the *same 22 bars*, differing only in the printing — and the result
+  **splits**: engraved 4 printed changes / 4 found / 1 false, scanned 2 / 1 /
+  **9**. **So the weighing is sound and the second-publisher block is READING.**
+  Two gaps were closed on the way (a change engraved as a common-time `C` was
+  detected on 23 staves of 23 and proposed nothing; the change detector had no
+  unit tests at all) and ⚠️ **one larger one was found and deliberately left**:
+  `Q.METER` carries `segments` and **nothing downstream reads them** —
+  `record.meter_at` is called by nothing but its own tests — so the mid-system
+  change machinery cannot currently produce a file. Queued as its own session.
+  `benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md`.
 
 ---
 

@@ -16,6 +16,89 @@ pointing at headings no longer in the file.)*
 
 ---
 
+*(Two sessions inserted here on the same day. They are INDEPENDENT — the
+boundary measurement did not need the fallback-ordering fix and vice versa —
+and they compose: the ordering fix is what lets a REFUSED carry give way to the
+bars, and the boundary fixtures are what say whether either is right. Neither
+block has been rewritten to tidy the sort.)*
+
+## 2026-09-09 — The meter boundary, MEASURED: two mechanisms told apart, and a `C` change that reached nothing
+
+**What:** `benchmarks/omr-staged-meter-boundary-2026-09/` — engraved fixtures
+carrying a REAL meter change, four arms over each, the reports and the
+controls; plus `rhythm._meter_from_letter` (no flag) and
+`TestAMeterChangeIsReadFromTheInk` (10 tests, 8 mutation arms).
+
+**Why it was blocking:** `OMR_METER_CARRY` and `OMR_METER_FROM_BARS` were
+indistinguishable. The only movement boundary on the Litolff Beethoven is
+page 17, whose bars are noise — it refuses the WRONG meter and the CORRECT one
+too. A mechanism that refuses everything cannot be told from one that refuses
+the right thing.
+
+**The route, from `omr-staged-meter-carry-2026-09` §11 and unspent until now:**
+render a real change ENGRAVED, so legibility is not the confound.
+`beethoven-sym5-mvt4` is 4/4 → 3/4 at bar 155 → 4/4 at 209. ⚠️ **The structure
+is an engraving convention, not an ablation** — a signature is printed at the
+CHANGE and at nothing after it, so a system wholly inside the new meter prints
+none and abstains honestly.
+
+**Measured** — the same page, asked twice, only the preceding page differing:
+the TRUE meter carries at **+6.0** (7 bars fit / 2 not), the FALSE one is
+refused at **−8.0** (0 / 9). In the file, whole rests written at 4.0 ql inside
+a 3.0 ql bar **196 → 38**, measure rests **305 → 463**, and the CARRY and BARS
+exports **byte-identical**.
+
+**Then the second document and publisher, same session.** Brahms 1 mvt 1 prints
+`6/8`, ONE bar of `9/8`, then `6/8` — and the Breitkopf scan of that music was
+already in the scan gate with a **hand-verified window**, so the same 22 bars
+run ENGRAVED and SCANNED differing only in the printing.
+**ENGRAVED 4 printed changes / 4 found / 1 false; SCANNED 2 / 1 / 9.**
+⚠️ **It holds on a second DOCUMENT and not on a second PUBLISHER'S SCAN, and
+the pair says the block is READING** — the scan votes `9/4` for the `9/8`,
+misses the change, and proposes five spurious `4/4` changes just over the
+floor, while its bar segmentation is right.
+
+**The fix it found:** a meter change engraved as a common-time `C` was detected
+on **23 staves of 23** and proposed nothing — `_meter_from_digits` needs two
+stacked digits and says so in its own comment. `Q.METER_GLYPH` already carried
+`letter=True`, written by GATHER and read by nothing; and the change detector
+had **no unit tests at all**. ⚠️ It produces a false change on one Litolff scan
+page from a 0.377-confidence glyph, reported rather than gated — the hazard is
+`METER_CHANGE_FLOOR`, and the p.62 `3/4` this project celebrates rests on the
+same one-staff property.
+
+**Three things worth carrying:**
+* ⚠️ **A duration-level A/B across meter arms is invalid by construction** — a
+  decided meter is consumed by `size_measure_rest` and `reconcile_duration`,
+  and 159 of 314 duration verdicts move on one page. Control on the meter
+  decision's own `bar_lengths_seen`, written before any consequence runs.
+* ⚠️ **Bar assessability falls with DENSITY, not with print quality** — 100% /
+  100% / 78% / **33%** as events per bar go 1.0 / 1.5 / 3.1 / **4.5**. These
+  mechanisms are strongest where the music is sparse.
+* ⚠️ **Score LENGTH and FORM apart.** `C` and `¢` are both 4.0 quarter notes,
+  so a bar-sum mechanism gets the length right and the engraving wrong;
+  musicdiff charges `symbol=` at three edits per staff.
+
+**⚠️ AND THE LARGEST GAP OF THE THREAD, FOUND AND DELIBERATELY NOT BUILT:**
+`Q.METER` carries `segments` and **nothing downstream reads them**.
+`staged/export.py:210` takes one meter per system run, and `record.meter_at` —
+whose own docstring says it *is* how a bar's meter is read — is called by
+nothing but its own tests. The `¢` sits on the record at 24 of 24 staves,
+support 74.0, and the exported file declares `<time>` once per part at measure
+1. **The mid-system change machinery two sessions built cannot currently
+produce a file.** Two siblings share the cause: `_carry_meter` takes a source's
+OPENING and drops its segments, and a `change_only` system can be neither a
+carry nor a form source. One fix, three symptoms — **queued as its own
+session** at Sean's direction, because it needs its own measurement and the
+nine false scan segments above would propagate forward under it.
+
+⚠️ Re-measured on the merged tree (27+ commits, 221 changed lines of
+`rhythm.py`, 404 of `gather.py`) — identical on every arm. Suite **3395 passed,
+11 skipped**. Handoff:
+[docs/handoff-2026-09-09-the-boundary-measured.md](docs/handoff-2026-09-09-the-boundary-measured.md).
+
+---
+
 ## 2026-09-09 (night) — the boundary case, found; and a refusal that was blocking every rung behind it
 
 Sean: *"go find that movement boundary on a page that reads well"*. Done, and
