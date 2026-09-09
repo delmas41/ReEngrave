@@ -1,0 +1,42 @@
+{
+  "kept_runs": 159,
+  "kept_letters": 216,
+  "dropped_runs": 20,
+  "dropped_letters": 49,
+  "kept_by_word": {
+    "f": 89,
+    "ff": 22,
+    "p": 17,
+    "pp": 12,
+    "fp": 9,
+    "mf": 3,
+    "ppp": 2,
+    "sf": 2,
+    "fz": 1,
+    "pppp": 1,
+    "mp": 1
+  },
+  "dropped_by_word": {
+    "m": 3,
+    "ffp": 2,
+    "z": 2,
+    "s": 2,
+    "fsf": 1,
+    "fmm": 1,
+    "mm": 1,
+    "pmff": 1,
+    "pf": 1,
+    "pz": 1,
+    "mmf": 1,
+    "ppmsf": 1,
+    "ppzmf": 1,
+    "pfsf": 1,
+    "psf": 1
+  },
+  "dropped_prefix_classification": {
+    "prefix_of_NOTHING": 15,
+    "prefix_of_mf|mp": 3,
+    "prefix_of_sf|sfp|sfz": 2
+  },
+  "dropped_that_are_a_prefix_of_something": 5
+}

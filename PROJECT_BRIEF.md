@@ -299,8 +299,33 @@ right tool.
 The hairpins are the real gap, and a reader for them already exists in the
 codebase, switched off because an earlier measurement said it made the overall
 score worse. That measurement was taken one day before an unrelated fix repaired
-the single page responsible for half of its cost — so the first move is to
+the single page responsible for half of its cost — so the first move was to
 measure again rather than to build anything.
+
+**That re-measurement has now been done, and it did two things at once.** The
+guess was wrong: the page was indeed repaired, and the hairpin reader's cost on
+it did not change by a single point. But the re-run also scored the same two
+readings with a second instrument — one that compares symbol to symbol instead
+of comparing two finished files — and that instrument says the reader recovers
+**136 of the wedges the score actually contains, 97 of them exactly right**,
+where before it found none at all, at the price of inventing 53 that are not
+there.
+
+So the two measurements disagree, and the disagreement is the finding rather
+than a puzzle. The older one is a whole-document comparison, and adding a
+correct symbol to a bar that already fails to line up makes that comparison
+*worse*, not better — most of the cost is that effect and not the hairpins being
+wrong. The recommendation is to switch the reader on; it is left off for now
+because it is the owner's call, and because it does buy those 136 real marks
+with 53 invented ones.
+
+The same work also put both kinds of loud marking into the newer,
+decision-by-decision pipeline for the first time, so that *which staff a marking
+belongs to* is settled by the part of the system built to answer that question,
+rather than by which slice of the page the marking happened to be cut into.
+A third, smaller change — keeping half-read letters instead of discarding them —
+was built, measured, and rejected: it recovers real ink, and nothing on the
+page improved by it.
 
 Part of that measuring can now be done away from the main machine. A cloud
 session has none of the large files — no trained model, no score library — so it

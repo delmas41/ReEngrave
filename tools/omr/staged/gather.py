@@ -622,10 +622,8 @@ def gather_rhythm_marks(log: Log, cells: Sequence[Any],
 #: word. Articulations are the mirror: all ten `artic*` classes carry category
 #: `ornament`, which they share with `ornamentTrill`, `fermataAbove` and
 #: `arpeggiato`, so the category cannot separate them either.
-_WEDGE_CLASSES = ("dynamicCrescendoHairpin", "dynamicDiminuendoHairpin")
 _ARC_CLASSES = ("tie", "slur")
 _ARTIC_PREFIX = "artic"
-_DYNAMIC_PREFIX = "dynamic"
 _REST_PREFIX = "rest"
 
 
@@ -647,7 +645,7 @@ def _artic_side(name: str) -> Optional[str]:
 
 
 def gather_glyph_families(log: Log, detections: Dict[str, List[Any]]) -> None:
-    """Rests, arcs, wedges, dynamic letters and articulation marks.
+    """Rests, arcs and articulation marks.
 
     ⚠️ EVERY ONE OF THESE WAS DETECTED AND READ BY NOTHING until 2026-09-09.
     Measured over four real conductor's pages, the ink that reached
@@ -682,22 +680,368 @@ def gather_glyph_families(log: Log, detections: Dict[str, List[Any]]) -> None:
             common = dict(reader=READERS.DETECTOR, frame=frame,
                           score=float(d.confidence))
 
-            if name in _WEDGE_CLASSES:
-                # ⚠️ BEFORE the dynamic-letter branch: a hairpin's class starts
-                # with `dynamic` too, and reading it as a letter would spell a
-                # crescendo into a dynamic word.
-                log.observe(g, Q.WEDGE_BOX, name, **common, **box,
-                            kind=("crescendo" if "Crescendo" in name
-                                  else "diminuendo"))
-            elif name in _ARC_CLASSES:
+            # ⚠️ WEDGES AND DYNAMIC LETTERS ARE NOT GATHERED HERE, and the
+            # omission is deliberate. `gather_wedge_boxes` and
+            # `gather_dynamic_letters` own `Q.WEDGE_BOX` and
+            # `Q.DYNAMIC_LETTER`: they read the same ink in the STAFF's own
+            # frame (the band offset a per-cell frame cannot express) and the
+            # wedge rung also reads the CV hairpins. Emitting them here too
+            # would put two rows from ONE reader on one glyph, which is the
+            # "two rows from one reader are ONE signal" fault made by accident.
+            if name in _ARC_CLASSES:
                 log.observe(g, Q.ARC_BOX, name, **common, **box)
             elif name.startswith(_ARTIC_PREFIX):
                 log.observe(g, Q.ARTICULATION_MARK, name, **common, **box,
                             side=_artic_side(name))
-            elif name.startswith(_DYNAMIC_PREFIX):
-                log.observe(g, Q.DYNAMIC_LETTER, name, **common, **box)
             elif name.lower().startswith(_REST_PREFIX):
                 log.observe(g, Q.REST, name, **common, **box)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Dynamics — the letters and the wedges, gathered in ONE frame on purpose
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The six letter glyphs a dynamic is spelled from. ⚠️ CANONICAL spellings
+#: only: the 208-class space carries `dynamicLetterF` at id 192 as well as
+#: `dynamicF` at its fine id, and `class_aliases` renames the coarse block at
+#: the one place the model's `names` are read -- so by the time a detection
+#: reaches here it is spelled the fine way. Listing both would not be harmless
+#: duplication, it would hide a regression in that renaming.
+_DYNAMIC_LETTER_CLASSES = frozenset({
+    "dynamicF", "dynamicP", "dynamicM", "dynamicS", "dynamicZ", "dynamicR",
+})
+
+#: The wedge classes the DETECTOR can fire, and the kind each names.
+_WEDGE_CLASSES = {
+    "dynamicCrescendoHairpin": "crescendo",
+    "dynamicDiminuendoHairpin": "diminuendo",
+}
+
+#: ⚠️ Glyph indices for wedges the CV rung read, offset far past any detector
+#: index so the two readers can never collide in one cell's key space. A
+#: collision here would not raise -- it would silently merge a CV reading and
+#: a detector reading into one subject, which is precisely the "two rows from
+#: one reader are ONE signal" mistake, made by accident.
+_CV_GLYPH_BASE = 100_000
+
+
+def _band_offset_spaces(y: float, bottom_line: float,
+                        spacing: float) -> Optional[float]:
+    """Staff spaces BELOW this staff's own bottom line. Negative means above.
+
+    ⚠️ THE FRAME IS THE POINT OF THIS FUNCTION. A dynamic letter reaches the
+    exporter today through a per-MEASURE cell whose padding is 4 to 6 staff
+    spaces depending on how crowded the staff's neighbours are
+    (`measure_extractor.PAD_*_STAFF_LINES` grows where the next staff is more
+    than 6 spaces off). Measuring a letter's height against that frame moves
+    the number when the page's crowding changes and the ink does not. Against
+    the staff's own bottom line and its own spacing, it does not.
+
+    This is also the frame `hairpin_detection` already works in
+    (`BAND_TOP_SPACES = 0.3` / `BAND_BOTTOM_SPACES = 6.0` below the bottom
+    line), which is why the letters and the wedges become comparable at all:
+    they are two readings of ONE row of the page, and only the wedge reader
+    has ever measured it that way. The dynamics-band study measured the letter
+    population at +0.0 to +5.6 spaces -- the same band, arrived at
+    independently.
+    """
+    if not spacing:
+        return None
+    return (y - bottom_line) / spacing
+
+
+def _staff_bands(pws: Any, local: Dict[int, Tuple[int, int]]
+                 ) -> Dict[str, Tuple[float, float, float]]:
+    """Per staff subject key -> (top_line, bottom_line, spacing), page px."""
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    out: Dict[str, Tuple[float, float, float]] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        if key is None:
+            continue
+        sp = _spacing(st)
+        ys = [float(y) for y in st.line_ys]
+        if not sp or len(ys) < 2:
+            continue
+        out[R.staff(p, key[0], key[1]).to_key()] = (min(ys), max(ys), float(sp))
+    return out
+
+
+def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
+                           local: Dict[int, Tuple[int, int]],
+                           detections: Dict[str, List[Any]]) -> None:
+    """One row per dynamic LETTER glyph, in page pixels, before any spelling.
+
+    ⚠️ A LETTER IS NOT A DYNAMIC, and keeping them apart is the whole reason
+    this is a separate quantity from `Q.DYNAMIC`. The detector emits one glyph
+    per letter -- `ff` arrives as two `dynamicF` -- so joining them into a word
+    is an INTERPRETATION over these rows and belongs to `adjudicate_dynamic`.
+    Emitting a spelled word here would put the arbitration in the gathering
+    phase, the fault the whole split exists to remove.
+
+    ⚠️ AND THE PLACEMENT EVIDENCE IS NOT GATHERED HERE EITHER. Which staff a
+    contested letter belongs to is `Q.GLYPH_OWNER`'s question, and
+    `gather_ownership_evidence` already writes the contest down for EVERY
+    class, letters included -- it needs no per-family code. What this adds is
+    the band offset in the staff's OWN frame, which the ownership rows do not
+    carry and which is what makes a letter comparable to a wedge.
+
+    ⚠️ NOTHING IS FILTERED BY BAND. A band GATE was measured and REFUSED: it
+    under-emits on both families (0.63 engraved, 0.59 scanned) because a mark
+    whose only surviving detection sits in the neighbour's cell is DELETED
+    rather than moved. The offset is recorded so a decision can weigh it.
+
+    ⚠️ EVERY CELL GETS A ROW, including one with no dynamic letter in it, and
+    that is LOAD-BEARING rather than tidy. A decision's subjects come from the
+    rows in the log, so a staff carrying no letter of its own would have no
+    `Q.DYNAMIC` subject -- and a letter that ownership moves ONTO it would be
+    silently lost. `test_staged_dynamics` pins exactly that.
+    """
+    bands = _staff_bands(pws, local)
+    cell_by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+
+    seen_cells = set()
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        seen_cells.add(cell_key)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        frame = frame_cell(sub.cell)
+        band = bands.get(sub.at(R.Kind.STAFF).to_key())
+        n = 0
+        for gi, d in enumerate(dets):
+            if d.smufl_name not in _DYNAMIC_LETTER_CLASSES:
+                continue
+            n += 1
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            box = _page_box(c, d) if c is not None else None
+            detail: Dict[str, Any] = {
+                "letter": d.smufl_name.replace("dynamic", "").lower(),
+                "cell_frame": frame,
+            }
+            if box is None:
+                # ⚠️ DECLINED, not defaulted to the cell frame. A letter whose
+                # page position is unknown and a letter measured at +2.1
+                # spaces are different facts, and the second is the only one a
+                # band consumer may read.
+                detail["frame_note"] = "no page box: cell has no bbox/upscale"
+                log.observe(g, Q.DYNAMIC_LETTER, d.smufl_name,
+                            reader=READERS.DETECTOR, frame=frame,
+                            score=float(d.confidence), **detail)
+                continue
+            x0, y0, x1, y1 = box
+            detail.update(bbox_page_px=[x0, y0, x1, y1],
+                          x_center_page=(x0 + x1) / 2.0,
+                          y_center_page=(y0 + y1) / 2.0)
+            if band is not None:
+                top, bottom, spacing = band
+                detail.update(
+                    staff_bottom_line_page=bottom,
+                    staff_spacing_px=spacing,
+                    band_offset_spaces=_band_offset_spaces(
+                        (y0 + y1) / 2.0, bottom, spacing),
+                    # the same window `hairpin_detection` searches, so a
+                    # letter and a wedge can be said to share a row
+                    in_hairpin_band=_in_hairpin_band((y0 + y1) / 2.0,
+                                                     bottom, spacing))
+            log.observe(g, Q.DYNAMIC_LETTER, d.smufl_name,
+                        reader=READERS.DETECTOR, frame=FRAME_PAGE,
+                        score=float(d.confidence), **detail)
+        if n == 0:
+            log.abstain(sub, Q.DYNAMIC_LETTER, reader=READERS.DETECTOR,
+                        frame=frame, reason=ABSTAIN.NO_INK)
+
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        if sub.to_key() not in seen_cells:
+            log.abstain(sub, Q.DYNAMIC_LETTER, reader=READERS.DETECTOR,
+                        frame=frame_cell(c.measure_index),
+                        reason=ABSTAIN.NO_DETECTIONS)
+
+
+def _in_hairpin_band(y: float, bottom_line: float, spacing: float) -> bool:
+    try:
+        from ..hairpin_detection import BAND_TOP_SPACES, BAND_BOTTOM_SPACES
+    except Exception:                                         # noqa: BLE001
+        return False
+    off = (y - bottom_line) / spacing if spacing else 0.0
+    return BAND_TOP_SPACES <= off <= BAND_BOTTOM_SPACES
+
+
+def gather_wedge_boxes(log: Log, pws: Any, cells: Sequence[Any],
+                       local: Dict[int, Tuple[int, int]],
+                       detections: Dict[str, List[Any]]) -> None:
+    """Hairpin ink, from BOTH readers, in page pixels per staff.
+
+    ⚠️ TWO READERS, AND THEY ARE NOT INTERCHANGEABLE. The detector fires on a
+    hairpin ~never on a scan -- 1 across eleven scanned pages against a truth
+    of 198 `<wedge>`, and the symbol ledger reads `hairpin matched_exact = 0`
+    with ZERO spurious beside it over the 20-row gate, which is silence rather
+    than error. `hairpin_detection` reads 96 across the same 20 rows. Both are
+    emitted, tagged by reader, because a wedge the detector DID see is a
+    genuinely independent second reading and the whole point of the log is
+    that a consumer decides which to believe.
+
+    ⚠️ THE CV RUNG IS GATHERED WHATEVER `OMR_CV_HAIRPINS` SAYS. That flag
+    guards what the legacy EXPORTER does with a hairpin; this is the
+    observation phase, whose job is to write down what the page shows. A
+    reader silenced by an export-side flag would make the log a record of a
+    configuration rather than of the page -- and the flag's own docstring says
+    its cost is under-attributed, which is a question only a record can
+    settle.
+
+    ⚠️ AND IT NEEDS THE RASTER, so it abstains loudly where there is none.
+    `read_hairpins_for_page` takes `PageImage.binary` (0 = ink) and asserts the
+    polarity rather than trusting it, because the wrong polarity does not
+    crash -- it searches the paper and reports a clean zero.
+    """
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    bands = _staff_bands(pws, local)
+
+    # ── reader 1: the detector ───────────────────────────────────────────────
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        for gi, d in enumerate(dets):
+            kind = _WEDGE_CLASSES.get(d.smufl_name)
+            if kind is None:
+                continue
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            log.observe(g, Q.WEDGE_BOX, kind, reader=READERS.DETECTOR,
+                        frame=frame_cell(sub.cell),
+                        score=float(d.confidence),
+                        detector_class=d.smufl_name)
+
+    # ── reader 2: classical CV over the whole page ───────────────────────────
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    staff_rows = []
+    by_page_index = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        band = bands.get(R.staff(p, key[0], key[1]).to_key()) if key else None
+        if key is None or band is None:
+            continue
+        top, bottom, spacing = band
+        staff_rows.append({"index": st.staff_index, "top": top,
+                           "bottom": bottom, "spacing": spacing})
+        by_page_index[st.staff_index] = (key, band)
+
+    if binary is None or not staff_rows:
+        for st_key in sorted(bands):
+            log.abstain(Subject.from_key(st_key), Q.WEDGE_BOX,
+                        reader=READERS.CV_HAIRPINS, frame=FRAME_PAGE,
+                        reason=ABSTAIN.READER_UNAVAILABLE,
+                        note=("no page raster" if binary is None
+                              else "no staff geometry"))
+        return
+
+    try:
+        import numpy as np
+        from ..hairpin_detection import (blank_point_detections,
+                                         detect_hairpins)
+        page_ink = (binary == 0).astype(np.uint8) * 255
+        spacings = sorted(s["spacing"] for s in staff_rows)
+        # ⚠️ `blank_point_detections` takes (x, y, W, H) while `_page_box`
+        # returns CORNERS. Both conventions live in this repo and confusing
+        # them does not raise -- it blanks the wrong rectangle. Converted here,
+        # once, explicitly.
+        boxes = []
+        cell_by_key = {}
+        for c in cells:
+            key = local.get(c.staff_index)
+            if key is not None:
+                cell_by_key[(c.page_index, key[0], key[1],
+                             c.measure_index)] = c
+        for cell_key, dets in detections.items():
+            sub = Subject.from_key(cell_key)
+            c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+            if c is None:
+                continue
+            for d in dets:
+                box = _page_box(c, d)
+                if box is None:
+                    continue
+                x0, y0, x1, y1 = box
+                boxes.append((x0, y0, x1 - x0, y1 - y0, d.smufl_name))
+        blanked = blank_point_detections(
+            page_ink, boxes, spacings[len(spacings) // 2])
+        found = detect_hairpins(page_ink, staff_rows, blanked)
+    except Exception as exc:                                  # noqa: BLE001
+        for st_key in sorted(bands):
+            log.abstain(Subject.from_key(st_key), Q.WEDGE_BOX,
+                        reader=READERS.CV_HAIRPINS, frame=FRAME_PAGE,
+                        reason=ABSTAIN.READER_UNAVAILABLE,
+                        error=type(exc).__name__, note=str(exc)[:200])
+        return
+
+    per_staff: Dict[int, int] = {}
+    for h in found:
+        entry = by_page_index.get(h.staff_index)
+        if entry is None:
+            continue
+        (sys_idx, st_idx), (_top, bottom, spacing) = entry
+        n = per_staff.get(h.staff_index, 0)
+        per_staff[h.staff_index] = n + 1
+        # ⚠️ Attributed to the staff whose BAND it was found in, which is right
+        # BY CONSTRUCTION here: this reader searches one staff's band at a
+        # time in page pixels, so it never inherits the per-measure cell's
+        # padding and never needs the distance arbitration the letters do.
+        g = R.glyph(p, sys_idx, st_idx, _cell_of(cells, local, h),
+                    _CV_GLYPH_BASE + n)
+        log.observe(g, Q.WEDGE_BOX, h.kind, reader=READERS.CV_HAIRPINS,
+                    frame=FRAME_PAGE,
+                    bbox_page_px=[float(h.x), float(h.y),
+                                  float(h.x + h.width), float(h.y + h.height)],
+                    x_center_page=float(h.x + h.width / 2.0),
+                    y_center_page=float(h.y + h.height / 2.0),
+                    staff_bottom_line_page=bottom,
+                    staff_spacing_px=spacing,
+                    band_offset_spaces=_band_offset_spaces(
+                        float(h.y + h.height / 2.0), bottom, spacing),
+                    open_spaces=float(h.open_spaces),
+                    outline_rms_spaces=float(h.outline_rms_spaces),
+                    page_staff_index=int(h.staff_index))
+
+    for page_st, (key, _band) in sorted(by_page_index.items()):
+        if per_staff.get(page_st):
+            continue
+        # ⚠️ A staff the reader RAN over and found nothing under is a
+        # measurement, not an absence -- it is the `0 spurious` half of the
+        # ledger's reading, and a consumer that cannot tell it from "the rung
+        # never ran" cannot tell silence from blindness.
+        log.abstain(R.staff(p, key[0], key[1]), Q.WEDGE_BOX,
+                    reader=READERS.CV_HAIRPINS, frame=FRAME_PAGE,
+                    reason=ABSTAIN.NO_INK, page_staff_index=int(page_st))
+
+
+def _cell_of(cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+             h: Any) -> int:
+    """Which measure cell of its own staff a CV hairpin's centre falls in.
+
+    ⚠️ Falls back to the staff's FIRST cell rather than refusing, and says so
+    in the row: the wedge's page coordinates are the load-bearing fact and the
+    cell is an addressing convenience. Refusing here would drop a real reading
+    over a bookkeeping question.
+    """
+    x = h.x + h.width / 2.0
+    best, best_dx = None, None
+    for c in cells:
+        if c.staff_index != h.staff_index:
+            continue
+        box = getattr(c, "bbox_page_px", None)
+        if not box:
+            continue
+        if box[0] <= x <= box[2]:
+            return int(c.measure_index)
+        dx = min(abs(x - box[0]), abs(x - box[2]))
+        if best_dx is None or dx < best_dx:
+            best, best_dx = int(c.measure_index), dx
+    return best if best is not None else 0
 
 
 def gather_cv_lines(log: Log, cells: Sequence[Any],
@@ -1481,6 +1825,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_ownership_evidence(log, pws, cells, local, detections)
         gather_rhythm_marks(log, cells, local, detections)
         gather_glyph_families(log, detections)
+        # ⚠️ AFTER detection (the letters ARE detections, and the CV wedge
+        # search blanks the point detections out of the ink first) and BEFORE
+        # direction text, which subtracts every detection from the page: these
+        # two read the SAME band and the ordering between them is real.
+        gather_dynamic_letters(log, pws, cells, local, detections)
+        gather_wedge_boxes(log, pws, cells, local, detections)
         gather_cv_lines(log, cells, local)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)
