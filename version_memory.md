@@ -48,9 +48,43 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   it. The next row mapped through that path with one-line percussion lands
   unflagged and its whole page unassessable, with the test as the only alarm —
   after the human pass is spent.
+- **⚠️ THE GENERATOR GAP IS CLOSED TOO (same day).** The deferral in the
+  bullet above was reversed: *"no unmapped row remains to exercise it"* argues
+  for a cheap fix, not against one, because the failure costs a HUMAN
+  CONFIRMATION PASS rather than compute. Four projections between
+  `build_cache` (which computes `lines`) and `works.json` each dropped it —
+  the UI's row seed, the UI's `staves_for_works_json`, `check_row`'s fallback,
+  and `shape_problems`' refusal of any key but `name`/`parts`. Now: the two
+  arity fields are allowed and **validated** (`lines` must be 1 or 5,
+  `printed_staves` a positive int, no entry both a one-line rule and several
+  printed staves, unknown keys still refuse); the projection is written ONCE as
+  `merge_additions._entry_for_works_json` and **imported by the UI** so the two
+  cannot drift.
+- **The guard now runs at the WRITER.** `arity_problems(row, staves)` asks of
+  the map about to be written exactly what `test_works_json_staff_lineup.py`
+  asks of the file, calling `run_ledger.expand_lineup` rather than recomputing
+  it, and abstaining on non-uniform pages as the test does. ⚠️ The point is
+  WHEN it fires: a data test fires after a 21-staff human pass is spent.
+- **⚠️ Retrospective control:** dry-run against today's additions file, the
+  guard refuses **all five** rows whose entries predate the field (mahler
+  p2-p5 and bach) — the whole population that had the defect, not just the row
+  that was noticed. Behaviour changes for none of them (all already refuse on
+  *"already carries a map"*), and a stale `staves_for_works_json` from the old
+  UI now fails loudly instead of writing an unflagged map.
+- **Five mutants, each red on exactly the intended test**, and the decisive
+  test is not synthetic — it feeds `arity_problems` mahler p2's map *as
+  `1cf44dbc` merged it*. `TestAOneLineRuleSurvivesTheWholeWritePath` proves the
+  chain rather than the links, against a control removing only that field.
+- ⚠️ **One existing test was left alone rather than loosened**:
+  `test_the_confirmation_ui_asks_it_too` asserts a literal import string that a
+  tidy parenthesised import broke, so the import was written back out as single
+  lines. A guard is not relaxed to suit a later edit.
 - **Files touched:** `benchmarks/omr-scan-e2e-2026-09/works.json` (4 fields),
   `benchmarks/omr-part-join-2026-09/FINDINGS.md` (§7),
   `benchmarks/omr-part-join-2026-09/mahler-p2-oneline-ab.json` (new),
+  `benchmarks/omr-staves-map-2026-09/merge_additions.py`,
+  `benchmarks/omr-staves-map-2026-09/server.py`,
+  `tools/omr/tests/test_staves_map_validation.py`,
   `CLAUDE.md`, `PROJECT_BRIEF.md`, `version_memory.md`.
 
 ---

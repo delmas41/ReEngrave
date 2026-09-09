@@ -877,9 +877,23 @@ genuinely unread and the field SAYS SO. ⚠️⚠️ **AND IT WILL RECUR: the wr
 cannot carry the field.** `merge_additions.shape_problems` refuses any key
 beyond `name`/`parts`, and the confirmation UI proposes none — while
 `build_cache.py:496` computes `"lines": spec.get("lines", 5)` and drops it on
-the way out, the computed-and-unread pattern again. Not fixed (it changes a
-writer's contract, and no unmapped row remains to exercise it); the next row
-mapped that way with one-line percussion lands unflagged.
+the way out, the computed-and-unread pattern again — **FOUR** projections
+between the cache and the file each dropped it. ⚠️ **FIXED the same day**: the
+two arity fields are allowed and VALIDATED (`lines` must be 1 or 5, unknown
+keys still refuse), the projection is written ONCE
+(`merge_additions._entry_for_works_json`, imported by the UI so the two cannot
+drift), and `arity_problems()` now asks of the map about to be WRITTEN exactly
+what `test_works_json_staff_lineup.py` asks of the file — calling
+`run_ledger.expand_lineup` rather than recomputing it, and abstaining on
+non-uniform pages as the test does. ⚠️ **The point is WHEN it fires**: a test
+on the data fires after a 21-staff human pass is spent; the writer refuses the
+merge instead, naming the missing field. Retrospective control: the guard
+refuses **all five** historical rows whose additions entries predate the field
+(mahler p2-p5 and bach), changing behaviour for none of them (all already
+refuse on *"already carries a map"*). Five mutants, each red on exactly the
+intended test. ⚠️ The deferral *"no unmapped row remains to exercise it"* was
+reversed on the reasoning that it is an argument for a cheap fix, not against
+one — the failure costs a HUMAN PASS, not compute.
 
 **B's arithmetic is exact on all three rows**: lineup minus the one-line
 percussion rules equals `page.n_staves` equals the parts we emit (15−2=13,

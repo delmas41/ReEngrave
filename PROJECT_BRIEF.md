@@ -336,10 +336,24 @@ exactly one page in the twenty changed. The four one-line staves are still
 unread — the fix makes the tool *say* they are unread instead of giving up on
 the whole page.
 
-Two things worth carrying. A test written earlier for exactly this mistake is
-the only thing that caught it; every other check passed. And the tool that
-writes these staff lists cannot record the one-line fact at all — it rejects
-it — so the next page mapped this way will arrive with the same problem.
+Two things worth carrying, and the second was then fixed. A test written
+earlier for exactly this mistake is the only thing that caught it; every other
+check passed. And the tool that writes these staff lists could not record the
+one-line fact at all — it rejected it — so the next page mapped this way would
+have arrived with the same problem.
+
+That second half is now closed. The fact was being worked out correctly early
+on and thrown away four separate times before reaching the file, so the writing
+path can now carry it, and it checks the value rather than merely permitting
+it. More importantly the tool now asks, *before* it writes, the same question
+the test asks afterwards: does this list of staves add up to the number the
+page says it prints? Run against the existing records, it correctly objects to
+all five pages whose entries predate the field — the whole group that had the
+problem, not just the one that was noticed.
+
+The distinction worth keeping is *when* a check runs. Asking after the fact
+means a person has already spent an hour confirming twenty-one staves by eye;
+asking at the point of writing costs them nothing and names the missing piece.
 
 ## Running it
 

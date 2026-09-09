@@ -386,11 +386,11 @@ is computed upstream and dropped between the cache and the file** — the patter
 CLAUDE.md now records four instances of in one day. The `lines` field landed in
 `166759fc`; this writer predates it and was never widened.
 
-**Not fixed here** (it changes a writer's contract and the additions schema,
-and no unmapped row remains to exercise it). The consequence to carry: the next
-row mapped through that path with one-line percussion lands unflagged, its
-whole page unassessable, and `test_works_json_staff_lineup.py` is what will say
-so — after the human pass is spent.
+⚠️ **FIXED 2026-09-08, in §8 below** — the deferral above was reversed the same
+day, and the reason is worth keeping: *"no unmapped row remains to exercise
+it"* is an argument for a cheap fix, not against one, because the failure costs
+a HUMAN CONFIRMATION PASS rather than compute, and corpus widening is what the
+score library is for.
 
 ### Reproduce
 
@@ -405,3 +405,103 @@ python3 benchmarks/omr-symbol-ledger-2026-09/run_ledger.py \
 20 rows is ~4 minutes here. (The `scan_eval` caching trap CLAUDE.md records is
 a different harness, but the same instinct applies — an A/B that returns
 instantly did not run.)
+
+
+---
+
+## 8. The writer now carries the fields — and asks the arity question BEFORE the merge (2026-09-08)
+
+§7's gap, closed. The chain was never one broken link: `build_cache` computed
+`lines` and **four** projections between it and the file dropped it.
+
+| site | was | now |
+|---|---|---|
+| `server.py` row seed | rebuilt `{name, parts}` from `seed["proposal"]["staves"]` | carries `ARITY_FIELDS` |
+| `server.py` `staves_for_works_json` | rebuilt `{name, parts}` inline | calls the shared projection |
+| `merge_additions.check_row` | rebuilt `{name, parts}` | calls the shared projection |
+| `merge_additions.shape_problems` | refused any key but `name`/`parts` | allows the two, **validated** |
+
+**One projection, `_entry_for_works_json`, imported by the UI from the merge
+step** — the same "two consumers cannot drift apart" move `prove_normalises`
+already makes in this file. A projection repeated is a projection that drops
+something.
+
+⚠️ **ALLOWED IS NOT UNCHECKED.** A typo'd `lines` silently changes how many
+parts a row is expected to emit — the exact failure the field exists to
+prevent — so `lines` must be 1 or 5 (anything else "needs a decision, not a
+default"), `printed_staves` a positive int, and an entry may not be both a
+one-line rule and several printed staves. Unknown keys still refuse, which the
+pre-existing `test_the_other_shape_refusals_are_untouched` pins.
+
+### The guard that was missing, and where it belongs
+
+`arity_problems(row, staves)` asks of the map about to be WRITTEN exactly what
+`test_works_json_staff_lineup.py` asks of the file: does the lineup expand to
+the five-line count `page.n_staves` states? It calls
+**`run_ledger.expand_lineup` rather than recomputing** — that function *is* the
+definition of how many parts a lineup expects, and a second copy would drift
+from the consumer. It abstains on non-uniform pages (beethoven p3 is 11 then 8)
+exactly as the test does.
+
+⚠️ **The point is WHEN it fires.** A test on the data fires after a map is
+merged — on mahler p2 that meant after a 21-staff human pass had been spent.
+The same question asked at the writer refuses the merge, with the missing field
+named in the message.
+
+### ⚠️ Retrospective control: it refuses ALL FIVE historical rows
+
+Dry-running the merge step against the additions file as it stands today, the
+guard fires on mahler p2/p3/p4/p5 **and** bach — every row whose additions
+entries predate the `lines` field:
+
+```
+REFUSE mahler-sym5-mvt1-local-p2: the lineup expands to 21 five-line staves
+       but the page prints 17 per system (21 entries, 0 flagged `lines: 1`)
+REFUSE bach-brandenburg3-mvt1-468678-p1: … 11 … but the page prints 12 …
+```
+
+So it reproduces the defect on the whole population that had it, not only on
+the row that was noticed. **No behaviour changes for them** — all five already
+refuse on *"works.json already carries a `staves` map"*; the guard adds a line
+to an already-refusing row. And a stale additions file whose
+`staves_for_works_json` was stamped by the old UI now fails LOUDLY instead of
+writing an unflagged map.
+
+### Tests, each run RED against a mutant
+
+`tools/omr/tests/test_staves_map_validation.py`, +200 lines. Five mutants, each
+failing exactly the intended test and nothing else:
+
+| mutant | red test |
+|---|---|
+| `check_row` stops calling the guard | `test_check_row_asks_it` |
+| the guard always returns `[]` | `test_THE_REAL_MAP_THAT_SLIPPED_THROUGH_is_refused` |
+| `shape_problems` refuses extras again | the two acceptance tests |
+| the projection drops the fields | `test_the_projection_preserves_them` |
+| the UI rebuilds `{name, parts}` inline | `test_the_ui_uses_the_shared_projection` |
+
+⚠️ **The decisive test is not synthetic**: it feeds `arity_problems` mahler p2's
+map *exactly as `1cf44dbc` merged it* and asserts the refusal names the missing
+field. And `TestAOneLineRuleSurvivesTheWholeWritePath` proves the chain rather
+than the links — a declared one-line rule passes every gate and reaches
+`works.json` with the field intact, against a control that removes only that
+field and is refused.
+
+### ⚠️ A regression made and caught while building the guard
+
+Gating `arity_problems` on `problems` rather than on the SHAPE problems
+specifically silences it wherever a row *already carries a map* — that is, on
+every historical row, which is exactly the population the retrospective control
+above is made of. **The dry run went 5 refusals → 0 and nothing else moved.**
+The narrow gate exists only so a malformed `lines` cannot RAISE inside
+`expand_lineup`; it must not also swallow the report. Both halves are now
+pinned (`test_an_ALREADY_MERGED_row_still_gets_the_arity_report`, run red
+against the broad gate; `test_a_malformed_shape_does_not_reach_the_guard`).
+**A gate that suppresses a report is a second thing, and it needs its own
+test.**
+
+⚠️ **One existing test was left alone rather than loosened.**
+`test_the_confirmation_ui_asks_it_too` asserts the literal
+`from merge_additions import prove_normalises`, which a tidy parenthesised
+import broke. The import was written back out as separate single lines: a guard
+is not to be relaxed to suit a later edit.
