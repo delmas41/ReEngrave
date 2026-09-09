@@ -140,6 +140,24 @@ this session* (`omr-staged-meter-carry-2026-09/out/p012-OFF.meter.json`) on
 every subject, outcome, reason and value — the one difference being the
 `segments` field, which that session added afterwards.
 
+## 2c. ✅ RE-MEASURED ON THE MERGED TREE, AND IT REPRODUCES EXACTLY
+
+27 commits landed on `main` while this was being measured — including **376
+changed lines of `staged/gather.py`**, which is where the `Q.EVENT`,
+`Q.DURATION` and `Q.REST` rows this mechanism reads come from. So the arms
+were re-run after the merge rather than assumed to survive it, which is this
+project's own *measure the MERGED tree* rule.
+
+| arm | pre-merge | merged tree |
+|---|---|---|
+| `--pages 0-2` flag ON | +6.0 (8+/2−), +7.0 (8+/1−) | **identical** |
+| `--pages 0-2` flag OFF | abstains `no_evidence` / `too_few_staves_read_it` | **identical** |
+| `--pages 1,17` (*Andante*) | all three abstain | **identical** |
+
+`.meter.txt` files compare byte-for-byte (`merged-*` beside the originals in
+`out/`). Suite on the merged tree: **3370 passed, 11 skipped, 0 failed**;
+`inventory --check` and `health --check` both exit 0.
+
 ## 3. ⚠️ THE LITERAL READING OF "FOR 6 MEASURES" IS THE WRONG ONE
 
 Sean's phrase is a RUN of consecutive bars, and consecutiveness was measured
