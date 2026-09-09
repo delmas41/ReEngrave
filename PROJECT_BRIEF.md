@@ -348,6 +348,45 @@ the six the missing half is the cheap filing fix rather than new recognition
 work. Encouragingly, every step that is finished is properly fed.
 
 
+## What else is on the page
+
+The same question asked the other way round: not "what does the code collect"
+but "what is actually printed on a page of music, and what does a musician read
+that we have no word for". Three kinds of thing, and they need different work.
+
+Some are simply **ink we don't pick up** — rests as a category of their own,
+accidentals, the octave-shift bracket that moves everything under it by an
+octave. And two that are quietly valuable because the engraver has already done
+work for us: **bar numbers and rehearsal letters**. We currently count the bars
+on a line by measuring where the barlines are, when the printing often states
+the answer.
+
+Some are **left out on purpose, and the omission is the meaning**. Music
+notation is unusual in that absence is a value: a bar left empty means that
+instrument is silent, a note without an accidental inherits the one printed
+earlier in the bar, a continuation line without a key signature means the key
+has not changed. The project already handles some of these well. But one is a
+real hole — **a bar we read nothing in and a bar that is genuinely silent come
+out identical**, both written as a full bar of rest. That is exactly the
+distinction the new pipeline was built to preserve, appearing in the music
+rather than in the bookkeeping, and the thing that separates them (is there ink
+there or not?) is already being measured for another purpose.
+
+The third kind is not ink at all — **relations between things**. The most
+valuable one is a direct enlargement of the chord finding. Notes stacked at the
+same point in a bar are a chord; notes at the same point *across the whole
+system* are the same moment of music. That is what a conductor's score is. It
+means a page of twenty-one staves is twenty-one independent readings of the
+same stretch of time, which have to agree — and nothing in the project compares
+them. It is the only place on the page where the evidence is *repeated*, and
+repeated evidence is what lets you work out which reading was wrong rather than
+only that something is. The coarse version of this check (do the staves agree
+how many bars are on the line?) already exists and has never once found a
+disagreement — the disagreements are inside the bar, where nothing looks.
+
+Full reasoning, including what is deliberately not proposed:
+`docs/exploration-what-is-on-the-page-2026-09-09.md`.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost

@@ -53,10 +53,39 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
   tree, so it says nothing about how often a missing quantity would fire.
   Measure REACH before accuracy.
 
+- **Companion exploration, reasoned from the PAGE rather than the code**:
+  [docs/exploration-what-is-on-the-page-2026-09-09.md](docs/exploration-what-is-on-the-page-2026-09-09.md)
+  — present / left out / implied. ⚠️ Exploratory and mostly UNPRICED, and it
+  says so; it ranks candidates and prices nothing.
+- **⚠️ THE HEADLINE IDEA: vertical alignment ACROSS staves is simultaneity, and
+  nothing reads it.** The chord finding one scope up. Verified — the only
+  cross-staff reasoning in the tree is `_dedupe_cross_staff_detections`, an
+  OWNERSHIP question. It is the only large source of **redundant** evidence on
+  a page (a 21-staff system is 21 independent readings of one stretch of time),
+  which is what lets a record say WHICH decision went wrong. The coarse form is
+  saturated (`measure_count_warning`: 0 firings over 29 transcriptions) while
+  `rhythm_sum_warning` fires 78 on one document and is inert — so the
+  constraint is unexploited exactly where the errors are.
+- **⚠️ `export._mxl_empty_measure` cannot tell SILENT from UNREAD.** A bar with
+  no detected events exports as a whole-measure rest either way — the
+  ABSENT/DECLINED collapse `record.py` exists to prevent, in the musical
+  content rather than the metadata. Ink coverage (already computed by
+  `direction_text._blank_detections`) separates them.
+- **An accidental is SCOPE, not a glyph** — it holds to the barline;
+  `transcribe.py:2210` implements it and staged has nowhere to keep the state.
+  Same shape as `ottavaBracket`, where a miss costs every note in the span an
+  octave.
+- **⚠️ Corrected in place: the exploration's own first draft named `breath` and
+  `glissando` as detector families from musical memory.** Neither is in the
+  class space; `volta` is not either, and the `repeat` family is `repeatDot`
+  ONLY — the dots, not the sign, which is why the repeat-export TODO has stayed
+  open. Checked against the committed class list rather than recalled.
+
 **Files touched:** `tools/omr/staged/gather_coverage.py` (new),
 `tools/omr/tests/test_staged_gather_coverage.py` (new),
 `benchmarks/omr-gather-coverage-2026-09/` (new), CLAUDE.md, PROJECT_BRIEF.md,
-version_memory.md.
+version_memory.md. Second commit adds
+`docs/exploration-what-is-on-the-page-2026-09-09.md` and links it from CLAUDE.md.
 
 ---
 

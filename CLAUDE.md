@@ -1654,6 +1654,30 @@ tree, so nothing here says how OFTEN a missing quantity would fire. **Measure
 REACH before accuracy.** Full reading:
 [benchmarks/omr-gather-coverage-2026-09/FINDINGS.md](benchmarks/omr-gather-coverage-2026-09/FINDINGS.md).
 
+**The complement, reasoned from the PAGE rather than from the code:**
+[docs/exploration-what-is-on-the-page-2026-09-09.md](docs/exploration-what-is-on-the-page-2026-09-09.md)
+— present / left out / implied. ⚠️ Exploratory and mostly UNPRICED, and it says
+so. Three things worth carrying out of it. (1) ⚠️ **VERTICAL ALIGNMENT ACROSS
+STAVES IS SIMULTANEITY AND NOTHING READS IT** — the chord finding one scope up.
+Verified: the only cross-staff reasoning in the tree is
+`_dedupe_cross_staff_detections`, which asks which staff OWNS a glyph, never
+which moment it belongs to. It is the only large source of **redundant**
+evidence on the page (a 21-staff system is 21 readings of one stretch of time),
+and the coarse form of the check is SATURATED — `measure_count_warning` fires
+ZERO times over 29 transcriptions — while `rhythm_sum_warning` fires 78 on one
+document and is inert, so the constraint is unexploited exactly at the
+resolution where the errors are. (2) ⚠️ **`_mxl_empty_measure` cannot tell
+SILENT from UNREAD**: a bar with no detected events exports as a whole-measure
+rest either way, which is the ABSENT/DECLINED collapse `record.py` exists to
+prevent, occurring in the musical content instead of the metadata — and ink
+coverage, already computed by `direction_text._blank_detections`, separates
+them. (3) **An accidental is SCOPE, not a glyph** (it holds to the barline —
+`transcribe.py:2210` implements it and staged has nowhere to keep it), as is
+`ottavaBracket`, where a miss costs every note in the span an octave.
+⚠️ Its own first draft named `breath` and `glissando` as detector families from
+musical memory; **neither is in the class space**, and the corrected entries
+are marked in place.
+
 
 ---
 
