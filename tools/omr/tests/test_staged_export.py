@@ -636,7 +636,7 @@ class TestTheMeterSegmentsFlagIsONByDefault(unittest.TestCase):
 
     def test_an_explicit_zero_still_turns_it_off(self):
         import os
-        for off in ("0", "off", "false", "no"):
+        for off in ("0", "off", "false", "no", ""):
             os.environ[SX.METER_SEGMENTS_ENV] = off
             self.assertFalse(SX.meter_segments_enabled(), off)
 
@@ -645,8 +645,14 @@ class TestTheMeterSegmentsFlagIsONByDefault(unittest.TestCase):
         While it was off, `_carry_meter`'s rule applied — anything but an
         explicit "1" is off, so a typo could not switch a document ONTO a
         mechanism. On by default the hazard runs the other way: a typo must
-        not switch it OFF and quietly restore the bug."""
+        not switch it OFF and quietly restore the bug.
+
+        ⚠️ `""` IS NOT A TYPO HERE, it is an off word — the repo's existing
+        idiom for a `"1"`-defaulted flag (`OMR_LEFT_EDGE_SPLIT`,
+        `OMR_DIRECTION_TEXT`), and what `test_roster.py::test_flag_parsing`
+        pins. Whether an empty value SHOULD mean off is a real question this
+        does not settle; what it declines to do is fork a third convention."""
         import os
-        for typo in ("", "  ", "yess", "1 1", "ON!"):
+        for typo in ("yess", "1 1", "ON!", "tru", "0x0"):
             os.environ[SX.METER_SEGMENTS_ENV] = typo
             self.assertTrue(SX.meter_segments_enabled(), repr(typo))

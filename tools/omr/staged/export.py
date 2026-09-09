@@ -119,9 +119,17 @@ def meter_segments_enabled() -> bool:
     copy it.
 
     See `benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md`.
-    """
+        ⚠️ `""` COUNTS AS OFF, matching `OMR_LEFT_EDGE_SPLIT` and
+    `OMR_DIRECTION_TEXT` — the repo's existing idiom for a `"1"`-defaulted
+    flag, and what `test_roster.py::test_flag_parsing` already pins. It is a
+    genuinely ambiguous value (`OMR_X=` may be a deliberate blank or an
+    expanded-but-unset variable) and this does NOT settle that; it declines to
+    fork a third convention over it. A flag whose DEFAULT is `""` — choir
+    grouping, bracket columns, keysig corroboration, cell line trace — must of
+    course read empty as ON, or its default would be off.
+"""
     return os.environ.get(METER_SEGMENTS_ENV, "1").strip().lower() not in (
-        "0", "false", "no", "off")
+        "0", "", "false", "no", "off")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

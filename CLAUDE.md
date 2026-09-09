@@ -3206,6 +3206,51 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 
 ---
 
+## A flag's OFF test must follow its DEFAULT
+
+⚠️⚠️ **Five shipped flags had it backwards, and the failure direction is the
+one that hides.** Found 2026-09-09 while flipping `OMR_METER_SEGMENTS` on, by
+a test written for the flip that failed on its first run.
+
+`_carry_meter`'s rule — *"anything but an explicit `1` is off"* — is right for
+a **default-OFF** mechanism: a typo must not switch a document ONTO something
+whose hazard is a whole wrong movement. Written as an allow-list
+(`in ("1", "true", "yes", "on")`) it is exactly **wrong for a default-ON** one,
+because then `OMR_X=`, `OMR_X=yess` and `OMR_X=ON!` all read as false and
+**silently restore the bug the default exists to fix**. The mirror holds too: a
+default-OFF flag written as a deny-list is switched ON by a typo.
+
+| the default is | the test must be | so a typo | so an explicit word |
+|---|---|---|---|
+| **ON** | `not in ("0", "", "false", "no", "off")` | leaves it ON | `0`/`off`/… turns it off |
+| **OFF** | `in ("1", "true", "yes", "on")` | leaves it OFF | `1`/`on`/… turns it on |
+
+**Corrected:** `OMR_SLOT_STITCH`, `OMR_MOVEMENT_REFERENCE`, `OMR_ROSTER` and
+`OMR_LABEL_MERGE_QUALITY` were default-ON allow-lists;
+`OMR_INSTRUMENT_CLEF_DEFAULT` (both reads) was a default-OFF deny-list — the
+mirror, and it was invisible until the guard's off-set admitted `""`.
+
+⚠️ **`""` counts as OFF for a `"1"`-defaulted flag** (`OMR_LEFT_EDGE_SPLIT`,
+`OMR_DIRECTION_TEXT`, and now the four above), and **as ON for a
+`""`-defaulted one** (`OMR_CHOIR_GROUPING`, `OMR_BRACKET_COLUMNS`,
+`OMR_KEYSIG_CORROBORATION`, `OMR_CELL_LINE_TRACE`) — where it must, or their
+default would be off. Whether an empty value *should* mean off is a real
+question this does not settle; what it declines to do is fork a third
+convention.
+
+**The guard is DERIVED, never a written list**
+(`tools/omr/tests/test_flag_default_direction.py`): it walks the AST for every
+`os.environ.get(<FLAG>, <default>)` compared to a literal word set, resolves a
+flag named through a module constant (`OMR_METER_SEGMENTS` is read via
+`METER_SEGMENTS_ENV` and a literals-only scan skipped it), and decides
+default-ON **by evaluating the predicate on its own default** rather than
+guessing from the string. Today: **9 default-ON, 10 default-OFF, all
+consistent.** ⚠️ Its positive control earned its keep immediately — the first
+version's AST descent stepped *through* `environ.get` onto `os.environ`, so
+the scan matched NOTHING and both real assertions passed vacuously.
+
+---
+
 ## Common tasks
 
 ### Add a new backend route

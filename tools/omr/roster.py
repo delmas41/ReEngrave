@@ -122,9 +122,23 @@ def enabled() -> bool:
     project has paid for nine times.
 
     Full record: `benchmarks/omr-roster-wiring-2026-09/`.
-    """
-    return os.environ.get("OMR_ROSTER", "1").strip().lower() in (
-        "1", "true", "yes", "on")
+        ⚠️ THE TEST IS A DENY-LIST BECAUSE THE DEFAULT IS ON. With an allow-list
+    (`in ("1", "true", "yes", "on")`) an EMPTY value or a typo — `OMR_X=`,
+    `yess`, `ON!` — reads as false and silently turns a shipped default OFF,
+    which is the failure direction that hides. A default-OFF flag is right to
+    use the allow-list: there a typo leaves the mechanism off, which is safe.
+    Only an explicit off word turns this one off.
+    ⚠️ `""` COUNTS AS OFF, matching `OMR_LEFT_EDGE_SPLIT` and
+    `OMR_DIRECTION_TEXT` — the repo's existing idiom for a `"1"`-defaulted
+    flag, and what `test_roster.py::test_flag_parsing` already pins. It is a
+    genuinely ambiguous value (`OMR_X=` may be a deliberate blank or an
+    expanded-but-unset variable) and this does NOT settle that; it declines to
+    fork a third convention over it. A flag whose DEFAULT is `""` — choir
+    grouping, bracket columns, keysig corroboration, cell line trace — must of
+    course read empty as ON, or its default would be off.
+"""
+    return os.environ.get("OMR_ROSTER", "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
 
 
 @dataclass(frozen=True)

@@ -523,9 +523,24 @@ def quality_merge_enabled() -> bool:
     **What would reverse it:** any edition where a rung's text gets *worse*.
     Every measurement so far is one-directional, and that is the claim to
     falsify. Record: `benchmarks/omr-label-ladder-2026-09/`.
-    """
-    return os.environ.get("OMR_LABEL_MERGE_QUALITY", "1").strip().lower() in (
-        "1", "true", "yes", "on")
+        ⚠️ THE TEST IS A DENY-LIST BECAUSE THE DEFAULT IS ON. With an allow-list
+    (`in ("1", "true", "yes", "on")`) an EMPTY value or a typo — `OMR_X=`,
+    `yess`, `ON!` — reads as false and silently turns a shipped default OFF,
+    which is the failure direction that hides. A default-OFF flag is right to
+    use the allow-list: there a typo leaves the mechanism off, which is safe.
+    Only an explicit off word turns this one off.
+    ⚠️ `""` COUNTS AS OFF, matching `OMR_LEFT_EDGE_SPLIT` and
+    `OMR_DIRECTION_TEXT` — the repo's existing idiom for a `"1"`-defaulted
+    flag, and what `test_roster.py::test_flag_parsing` already pins. It is a
+    genuinely ambiguous value (`OMR_X=` may be a deliberate blank or an
+    expanded-but-unset variable) and this does NOT settle that; it declines to
+    fork a third convention over it. A flag whose DEFAULT is `""` — choir
+    grouping, bracket columns, keysig corroboration, cell line trace — must of
+    course read empty as ON, or its default would be off.
+"""
+    return os.environ.get(
+        "OMR_LABEL_MERGE_QUALITY", "1").strip().lower() not in (
+            "0", "", "false", "no", "off")
 
 
 def _well_covered(labels: list[StaffLabel], pws) -> bool:
@@ -999,9 +1014,14 @@ def apply_contextual_analysis(
         # `import os` inside this `if` makes `os` local to the WHOLE function,
         # so any other `os.environ` read further down raises UnboundLocalError
         # on the branch where a caller passed an explicit bool.
+        # ⚠️ ALLOW-LIST, BECAUSE THIS FLAG IS DEFAULT-OFF. Written as a
+        # deny-list (`not in ("0", "", ...)`), a typo — `OMR_..=yess`, `ON!` —
+        # reads as TRUE and silently switches a document ONTO an unmeasured
+        # mechanism. That is the mirror of the hazard that made the default-ON
+        # flags use a deny-list, and the direction has to follow the default.
         instrument_clef_default = os.environ.get(
-            "OMR_INSTRUMENT_CLEF_DEFAULT", "0").strip().lower() not in (
-            "0", "", "false", "no", "off")
+            "OMR_INSTRUMENT_CLEF_DEFAULT", "0").strip().lower() in (
+            "1", "true", "yes", "on")
     summary: dict[str, Any] = {
         "available": False, "reason": None, "reference": [],
         "labelled_staves": 0, "proposals": [], "clefs_applied": 0,

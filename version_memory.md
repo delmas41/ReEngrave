@@ -62,6 +62,22 @@ test is a **deny-list**: with the default on, the allow-list form the other
 default-on flags use would let an empty value or a typo silently restore the
 bug — caught by a test written for the flip, which failed on its first run.
 
+⚠️⚠️ **AND THAT TEST THEN FOUND FIVE SHIPPED FLAGS WITH THE SAME FAULT.**
+`OMR_SLOT_STITCH`, `OMR_MOVEMENT_REFERENCE`, `OMR_ROSTER` and
+`OMR_LABEL_MERGE_QUALITY` were default-ON allow-lists — a typo or an empty
+value silently turned a shipped default OFF. `OMR_INSTRUMENT_CLEF_DEFAULT`
+(both reads) was the MIRROR: default-OFF written as a deny-list, so a typo
+switched it ON. All six sites corrected; the convention is now a section of
+CLAUDE.md and a DERIVED guard,
+`tools/omr/tests/test_flag_default_direction.py` (9 default-ON, 10
+default-OFF, all consistent). ⚠️ The guard decides default-ON by EVALUATING
+the predicate on its own default rather than reading the default string —
+`OMR_CHOIR_GROUPING` and `OMR_BRACKET_COLUMNS` default to `""` and are ON, and
+a first version reported both as faults. ⚠️ Its positive control earned its
+keep on the first run: the AST descent stepped THROUGH `environ.get` onto
+`os.environ`, so the scan matched nothing and both real assertions passed
+vacuously — the third vacuous-check instance recorded in this file.
+
 ⚠️⚠️ **THREE CLAIMS OF MY OWN, CORRECTED IN FLIGHT, and the first is the one
 worth carrying.** The first measurement arm came back BYTE-IDENTICAL to its
 baseline — while five unit tests and three mutation arms were green. `gather`
