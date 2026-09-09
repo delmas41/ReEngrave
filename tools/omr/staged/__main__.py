@@ -7,6 +7,10 @@
     # no weights: every cell abstains READER_UNAVAILABLE and it still runs
     python3 -m tools.omr.staged score.pdf --pages 0
 
+    # a FILE, plus the record of what did not reach it
+    python3 -m tools.omr.staged score.pdf --pages 0 --weights <...> \
+        --musicxml out.musicxml
+
     # the A/B: compare against a legacy transcribe result
     python3 -m tools.omr.staged score.pdf --pages 0-2 --weights <...> \
         --against legacy.omr.json
@@ -51,6 +55,10 @@ def main(argv=None) -> int:
     ap.add_argument("--against", default=None,
                     help="a legacy transcribe result JSON, for the divergence "
                          "table")
+    ap.add_argument("--musicxml", default=None,
+                    help="also EXPORT the run to MusicXML here. The coverage "
+                         "report -- what the record could NOT carry -- goes "
+                         "beside it as <path>.coverage.json.")
     ap.add_argument("--progress", action="store_true")
     args = ap.parse_args(argv)
 
@@ -80,7 +88,17 @@ def main(argv=None) -> int:
     else:
         print(text)
 
+    if args.musicxml:
+        from . import export as staged_export
+        xml, report = staged_export.to_musicxml(result)
+        Path(args.musicxml).write_text(xml)
+        cov = Path(args.musicxml + ".coverage.json")
+        cov.write_text(json.dumps(report, indent=2, default=str))
+        print(f"wrote {args.musicxml} and {cov}")
+
     _report(result)
+    if args.musicxml:
+        staged_export._report(report)
     return 0
 
 

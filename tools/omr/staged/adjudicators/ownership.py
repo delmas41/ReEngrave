@@ -190,6 +190,12 @@ def _range_veto(ev: Evidence, cand_key: str, band_row):
     composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION),
     scope=Kind.GLYPH,
     wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_OWNER),
+    # ⚠️ THE DOMAIN IS THE ARCS, NOT EVERY GLYPH ON THE PAGE. Until the arc
+    # rows existed there was nothing to name here, so this stub abstained once
+    # per DETECTION -- 2,728 rows on one page, burying its own 199 real
+    # subjects in 2,529 no-ops. `subjects_from` is what makes an abstention
+    # mean "I could not read THIS arc".
+    subjects_from=Q.ARC_BOX,
     reasons=("hugs_noteheads", "no_better_staff", "no_evidence"),
     mode=Mode.ADDITIVE,
     stub=True,
@@ -218,6 +224,7 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
     composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION),
     scope=Kind.GLYPH,
     wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION),
+    subjects_from=Q.ARC_BOX,
     reasons=("tie", "slur", "no_evidence"),
     mode=Mode.ADDITIVE,
     stub=True,
@@ -240,6 +247,7 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
     composed_from=(Q.ARTICULATION_MARK, Q.GLYPH_BOX),
     scope=Kind.GLYPH,
     wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX),
+    subjects_from=Q.ARTICULATION_MARK,
     reasons=("nearest_on_declared_side", "no_notehead", "no_evidence"),
     mode=Mode.ADDITIVE,
     stub=True,
@@ -258,6 +266,7 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
     composed_from=(Q.WEDGE_BOX, Q.GLYPH_BOX),
     scope=Kind.GLYPH,
     wants=(Q.WEDGE_BOX, Q.GLYPH_BOX),
+    subjects_from=Q.WEDGE_BOX,
     reasons=("nearest_either_side", "no_anchor", "no_evidence"),
     mode=Mode.ADDITIVE,
     stub=True,

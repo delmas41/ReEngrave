@@ -1,0 +1,17 @@
+wrote /tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-scan-weights-round4-continue-074940/0c9aa586-b8a0-4373-bd76-267bd2481753/scratchpad/staged/beet5-p3-2sys.json
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'clef': 20, 'duration': 568, 'glyph_owner': 518, 'key_signature': 6, 'measure_partition': 22, 'meter': 1, 'part_partition': 1, 'slot_index': 22, 'staff_group': 22, 'staff_ordinal': 22, 'system_membership': 2, 'system_staff_count': 2, 'tuplet_ratio': 1}
+  abstained: {'arc_kind': {'not_implemented': 2728}, 'arc_owner': {'not_implemented': 2728}, 'articulation_owner': {'not_implemented': 2728}, 'clef': {'margin_below_floor': 1, 'no_candidates': 1}, 'direction': {'not_implemented': 341}, 'duration': {'beams_ambiguous': 143}, 'dynamic': {'not_implemented': 341}, 'group_symbol': {'no_identity': 2}, 'instrument': {'no_evidence': 22}, 'key_signature': {'no_evidence': 13, 'run_fits_no_slot_table': 1, 'needs_clef': 2}, 'meter': {'no_evidence': 1}, 'wedge_anchor': {'not_implemented': 2728}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 11 facts, 20 witnesses, 2 uninformative, {'none': 0, 'single': 2, 'unanimous': 8, 'majority': 0, 'split': 1}
+  instrument_across_systems: 11 facts, 0 witnesses, 11 uninformative, {'none': 11, 'single': 0, 'unanimous': 0, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 11 facts, 6 witnesses, 11 uninformative, {'none': 5, 'single': 6, 'unanimous': 0, 'majority': 0, 'split': 0}
+  measure_count_across_staves: 2 facts, 22 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 2, 'majority': 0, 'split': 0}
+  meter_across_staves: 2 facts, 3 witnesses, 1 uninformative, {'none': 1, 'single': 0, 'unanimous': 1, 'majority': 0, 'split': 0}
+  staff_group_across_systems: 11 facts, 22 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 11, 'majority': 0, 'split': 0}
+  ⚠️ witnessed_by_nobody (no witness spoke): ['instrument_across_systems']
+  ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['instrument_across_systems', 'key_signature_across_systems']
+  ⚠️ DISAGREEMENTS: 1 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 888 fired, 2426 skipped
+── DECLARED STUBS: 6 decisions, 1 consequences

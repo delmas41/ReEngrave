@@ -51,6 +51,7 @@ class Consequence(str, Enum):
     MOVE_GLYPH = "move_glyph"                # ownership settled
     JOIN_PARTS = "join_parts"                # part boundaries settled
     NAME_PART = "name_part"                  # instrument settled
+    SIZE_MEASURE_REST = "size_measure_rest"  # meter settled, over a silent bar
 
 
 @dataclass(frozen=True)

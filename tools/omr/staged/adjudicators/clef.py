@@ -81,6 +81,34 @@ _SLOT_TABLE_CLEFS = ("treble", "bass", "alto", "tenor")
 #: named. It cannot name one itself. (A-CLEF-5)
 W_C_FAMILY = 1.5
 
+#: What "this glyph is standing ON this staff" is worth. (A-CLEF-8)
+#:
+#: ⚠️ THE ONE CONSTANT IN THIS FILE THAT SITS ON AN EMPTY GAP RATHER THAN ON
+#: AN ASSUMPTION, and the gap is wide. A measure cell is the staff plus four
+#: staff spaces of air, so on a conductor's page a NEIGHBOURING staff's clef
+#: lands in this staff's cell. Measured over two scanned pages, the six staves
+#: whose clef could not decide each hold one glyph at **+3.1 to +3.5 steps**
+#: and the rest at **-6.9, -5.8, -4.8, +13.3, +13.6, +14.8** -- nothing
+#: between +3.5 and +13.3, nothing between -4.8 and +3.1.
+#:
+#: It must EXCEED `MARGIN_FLOOR`, because the population it is for is an exact
+#: tie: five of those six score 3.0 against 3.0, two clef glyphs at high
+#: confidence on one staff, and a term that only matches the floor leaves them
+#: abstaining.
+W_ON_THIS_STAFF = 1.5
+
+#: A five-line staff spans 0..+8 steps measured DOWN from the top line. The
+#: band is widened by one space each way because a clef's BOX centre is not
+#: its notated line -- a bass clef reads +3.1..+3.5 here and a treble clef
+#: sits lower in its own box.
+#:
+#: ⚠️ WIDE ON PURPOSE. The separation measured is 8 steps clear on the near
+#: side, so nothing here needs a tight band; a tight one would start deciding
+#: cases the evidence does not separate.
+ON_STAFF_MIN_STEPS = -2.0
+ON_STAFF_MAX_STEPS = 10.0
+
+
 #: What "the measured accidental run fits this clef's slot table" is worth.
 #: (A-CLEF-7) ⚠️ Contributed only when the fit DISCRIMINATES -- a run that fits
 #: every candidate says nothing, and a 0-accidental key fits them all.
@@ -117,8 +145,35 @@ def _c_family_support(ev: Evidence):
     return out
 
 
+def _on_staff_rows(ev: Evidence) -> Dict[float, Any]:
+    """`{y_center: position row}` for the clef glyphs the GRID could place.
+
+    ⚠️ Keyed on `y_center` because that is what the two readers share: the
+    detector's row records where it saw the glyph, and the geometry row
+    records what that y means on this staff's own lines. Nothing else pairs
+    them, and inventing a shared index would put an ordering assumption
+    between two readers.
+    """
+    return {float(r.detail.get("y_center", -1e9)): r
+            for r in ev.rows(Q.CLEF_POSITION)}
+
+
+def _stands_on_this_staff(row) -> Optional[bool]:
+    """Is this clef glyph standing on THIS staff, or on a neighbour?
+
+    ⚠️ `None` WHERE THE CELL HAD NO GRID, not False. A staff whose lines were
+    never measured cannot answer the question, and treating "unmeasured" as
+    "off the staff" would silently withdraw the detector's evidence on exactly
+    the pages whose geometry is worst.
+    """
+    if row is None:
+        return None
+    return ON_STAFF_MIN_STEPS <= float(row.value) <= ON_STAFF_MAX_STEPS
+
+
 def _detector_terms(ev: Evidence) -> Dict[str, List[Term]]:
     out: Dict[str, List[Term]] = {}
+    placed = _on_staff_rows(ev)
     for row in ev.rows(Q.CLEF_GLYPH):
         name = _clef_of(str(row.value))
         if name is None:
@@ -135,6 +190,20 @@ def _detector_terms(ev: Evidence) -> Dict[str, List[Term]]:
             w = W_DETECTOR_LOW
         out.setdefault(name, []).append(
             Term(f"detector@{score:.2f}", w, (row.id,)))
+
+        # ⚠️ ADDITIVE, NOT A FILTER, and the difference is the whole design.
+        # Removing an off-staff glyph's term would make an arbitration
+        # invisibly -- and it would be the WRONG call where a staff's only
+        # candidate stands off it, which is still the best evidence there is.
+        # A glyph standing ON this staff simply gets a second term.
+        #
+        # ⚠️ AND IT CITES THE GEOMETRY ROW, NOT THE GLYPH ROW. Citing the
+        # glyph would put this term in the detector's own correlated group,
+        # where `tally` counts the group once and 1.5 beside 3.0 is 3.0.
+        pos_row = placed.get(float(row.detail.get("y_center", -1e9)))
+        if _stands_on_this_staff(pos_row):
+            out[name].append(
+                Term("stands_on_this_staff", W_ON_THIS_STAFF, (pos_row.id,)))
     return out
 
 
@@ -170,14 +239,15 @@ def _carry_terms(ev: Evidence) -> Dict[str, List[Term]]:
     quantity=Q.CLEF,
     checkable=Checkable.MIXED,
     checked_by=(
-        "implied pitches: this staff's own measured positions under this candidate must fall in the instrument's written range (clef_correction.propose_clef)",
+        "implied pitches: this staff's own measured positions under this candidate must fall in the instrument's written range (clef_correction.propose_clef) -- ⚠️ DECLARED AND NOT IMPLEMENTED, and it cannot be here: it needs the INSTRUMENT, which abstains on 22 of 22 and 27 of 27 staves of the two scanned pages measured. `inventory --check` lists it",
+        "the glyph stands ON this staff: a measure cell is the staff plus four staff spaces of air, so a neighbour's clef lands in it -- and unlike the range test this needs NO identity",
         "key-signature slot fit: the measured accidental RUN fits this candidate's slot table and not another's -- needs NO identity",
         "continuity: a part's clef is stable across systems unless a change is printed",
     ),
     implicates=(Q.CLEF, Q.INSTRUMENT, Q.NOTEHEAD_STAFF_POSITION, Q.KEY_SIGNATURE),
-    composed_from=(Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.CLEF_SEED),
+    composed_from=(Q.CLEF_GLYPH, Q.CLEF_POSITION, Q.CLEF_LOCATED, Q.CLEF_SEED),
     scope=Kind.STAFF,
-    wants=(Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.CLEF_SEED,
+    wants=(Q.CLEF_GLYPH, Q.CLEF_POSITION, Q.CLEF_LOCATED, Q.CLEF_SEED,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.KEYSIG_CLEF_FIT),
     reasons=("scored", "no_candidates", "margin_below_floor",
              "all_candidates_excluded"),

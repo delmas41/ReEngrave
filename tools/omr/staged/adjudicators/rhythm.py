@@ -23,11 +23,12 @@ repair is a bounded EVALUATE consequence, not a second adjudication.
 
 from __future__ import annotations
 
+import os
 from typing import Optional, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
                           decision)
-from ..record import ABSTAIN, Kind, Q, READERS, Scope, State
+from ..record import ABSTAIN, Kind, Outcome, Q, READERS, Scope, State
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -138,14 +139,20 @@ def _head_class(ev: Evidence) -> Optional[str]:
     ),
     implicates=(Q.DURATION, Q.METER, Q.GLYPH_OWNER, Q.MEASURE_PARTITION,
                 Q.TUPLET_RATIO),
-    composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM),
+    composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS,
+                   Q.STEM, Q.REST),
     scope=Kind.GLYPH,
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM,
-           Q.TUPLET_RATIO, Q.GLYPH_BOX),
+           Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST),
     reasons=("head_and_marks", "beams_ambiguous", "no_notehead",
-             "unknown_head"),
+             "unknown_head", "rest_class", "unreadable_rest"),
     mode=Mode.ADDITIVE,
-    subjects_from=Q.NOTEHEAD_CLASS,
+    # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
+    # two kinds of ink. A rest reads its value straight off its class and
+    # needs no beam, flag or stem, so the branch below is short; what it must
+    # NOT be is a second quantity, or every consumer would ask twice for one
+    # fact.
+    subjects_from=(Q.NOTEHEAD_CLASS, Q.REST),
     # ⚠️ EVALUATE's `reconcile_duration` supersedes this verdict, so the
     # revision is DECLARED here. Without it `Log.record` raises
     # `AlreadyAdjudicated` -- which is the no-fixpoint guard working, not a
@@ -167,6 +174,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     y-positions, so one extra or missing cluster HALVES OR DOUBLES a note.
     That repair belongs to EVALUATE and is bounded there.
     """
+    rest = ev.rows(Q.REST)
+    if rest:
+        return _rest_ruling(ev, rest)
+
     head = _head_class(ev)
     if head is None:
         return Ruling.abstain("no_notehead")
@@ -273,6 +284,55 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                   reason="head_and_marks", used=tuple(used), detail=shared)
 
 
+def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
+    """A rest's value is its CLASS, and almost nothing else.
+
+    ⚠️ THE TABLE IS `rhythm._REST_DURATIONS`, IMPORTED RATHER THAN RESTATED.
+    It is the paid-for mapping, including the two entries it deliberately
+    omits -- `restHBar` / `restHNr` are MULTI-MEASURE REST INDICATORS and name
+    no single value, so the lookup returns None and this abstains with a
+    reason instead of inventing one.
+
+    ⚠️ A TUPLET DOES NOT SCALE A REST HERE, and that is a measured position
+    rather than an omission: pairing a rest to a beam group needs a signal the
+    beam box does not carry, so the legacy reader leaves rests out of the
+    ratio and so does this. A triplet whose middle member is a rest therefore
+    comes out long; that is the honest reading of the evidence available, and
+    it is recorded (`tuplet_in_cell`) so a later decision can see the case
+    without re-deriving it.
+
+    ⚠️ AND THE BAR-LENGTH CONVENTION IS NOT HERE. A lone whole rest stands for
+    the BAR whatever the meter -- 90.3% of wrong rest durations on the scan
+    gate are exactly that -- but it is a fact about the CELL and the METER,
+    not about the glyph, so it belongs to EVALUATE where the meter is settled.
+    See `consequences.size_measure_rest`.
+    """
+    from ...rhythm import _rest_duration
+
+    row = max(rest_rows, key=lambda r: (r.score or 0.0))
+    found = _rest_duration(str(row.value))
+    if found is None:
+        return Ruling.abstain("unreadable_rest", rest=str(row.value),
+                              note="multi-measure indicator: names no single "
+                                   "value")
+    base, written_type = found
+
+    dots = ev.rows(Q.AUG_DOT)
+    used = [row.id] + [r.id for r in dots]
+    total, add = base, base
+    for _ in range(len(dots)):
+        add /= 2.0
+        total += add
+
+    ratio = ev.verdict(Q.TUPLET_RATIO, subject=ev.subject.at(Kind.CELL))
+    return Ruling(
+        value={"beats": total, "written": total, "dots": len(dots),
+               "beam_levels": 0, "is_rest": True},
+        reason="rest_class", used=tuple(used),
+        detail={"rest": str(row.value), "written_type": written_type,
+                "tuplet_in_cell": ratio is not None and ratio.value is not None})
+
+
 def _scale(total: float, ratio, ev: Evidence) -> float:
     if ratio is not None and isinstance(ratio.value, dict):
         num, den = ratio.value.get("actual"), ratio.value.get("normal")
@@ -353,11 +413,263 @@ def adjudicate_tuplet(ev: Evidence) -> Ruling:
                   detail={"marker": str(marker.value)})
 
 
+#: A chord's noteheads sit within this fraction of a NOTEHEAD WIDTH of each
+#: other in x. (A-EVENT-1)
+#:
+#: ⚠️ NOT A NEW CONSTANT — it is `voicing.group_chords_in_measure`'s own
+#: default, reproduced so the record's grouping and the exporter's are ONE
+#: rule rather than two that can drift. Adaptive rather than a pixel count:
+#: 0.6 of the MEAN notehead width in the bar, wide enough for the stem-shifted
+#: seconds of a chord and narrow enough to keep a rapid passage's notes apart.
+EVENT_X_TOLERANCE_WIDTHS = 0.6
+
+#: Fallback when the bar holds no notehead to measure a width from — the same
+#: number, and the same reason, as the legacy fallback.
+EVENT_X_TOLERANCE_FALLBACK_PX = 30.0
+
+
+def _box_of(rows):
+    """`glyph_box` value is (class, x, y, w, h)."""
+    out = {}
+    for r in rows:
+        val = r.value
+        if not isinstance(val, (list, tuple)) or len(val) < 5:
+            continue
+        _name, x, _y, w, _h = val[0], val[1], val[2], val[3], val[4]
+        sub = r.subject
+        if sub.glyph is None:
+            continue
+        out[sub.glyph] = (float(x) + float(w) / 2.0, float(w))
+    return out
+
+
+@decision(
+    quantity=Q.EVENT,
+    checkable=Checkable.CHECKABLE,
+    checked_by=(
+        '"the bar sum: one event contributes ONE duration, so a bar of events must equal the meter"',
+    ),
+    # ⚠️ THE GROUPING IMPLICATES ITSELF. A bar that does not sum may hold a
+    # wrong duration, a wrong meter -- or two notes I merged that are not
+    # simultaneous, or one chord I split in two. A check that implicated only
+    # the durations would have quietly decided the grouping was innocent.
+    implicates=(Q.EVENT, Q.DURATION, Q.METER),
+    composed_from=(Q.GLYPH_BOX,),
+    scope=Kind.CELL,
+    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM),
+    reasons=("x_clustered", "nothing_to_group"),
+    mode=Mode.ADDITIVE,
+    subjects_from=(Q.NOTEHEAD_CLASS, Q.REST),
+)
+def adjudicate_event(ev: Evidence) -> Ruling:
+    """Which glyphs of this bar sound TOGETHER.
+
+    ⚠️ THIS EXISTED ONLY AT SERIALISATION TIME UNTIL 2026-09-10.
+    `group_chords_in_measure` was called from exactly one place —
+    `export._events` — so every stage before EXPORT counted each chord member
+    as a separate time-advancing event. That includes
+    `consequences.reconcile_duration`, the pipeline's own bar-sum check, which
+    therefore could not match the meter on any bar holding a chord: 38.2% of
+    the bars on one measured page, where the double-count destroyed 5 of the
+    18 bars that landed exactly on the printed meter.
+
+    ⚠️ THE POSITION IS A MEASUREMENT; THE GROUPING IS NOT. `Q.GLYPH_BOX`
+    already carries every glyph's x — the ingredient was on the record all
+    along and nothing read it — but *"these are simultaneous"* is an
+    interpretation of those positions under a tolerance, so it is a decision.
+
+    ⚠️ A REST IS ITS OWN EVENT. It occupies time alone; nothing sounds with
+    silence.
+
+    ⚠️⚠️ THE DIVISI GUARD IS UNAVAILABLE HERE, AND IT IS RECORDED RATHER THAN
+    OMITTED. The legacy rule additionally refuses to merge two noteheads at
+    the same x whose STEMS POINT OPPOSITE WAYS — two divisi voices, not one
+    chord — an audit follow-up from 2026-07. `Q.STEM` is a declared stub on
+    this path, so that tier cannot run, and `_directions_conflict` is
+    consequently already inert in `export._events` too (it never sets
+    `stem_direction`). So this reproduces what the exporter does TODAY,
+    exactly; it does not reproduce what the legacy rule can do with stems.
+    The state of `Q.STEM` is read and reported per cell so the missing tier is
+    on the record and not in a comment.
+    """
+    heads = ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS)
+    rests = ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS)
+    boxes = _box_of(ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS))
+
+    head_ids = sorted({r.subject.glyph for r in heads
+                       if r.subject.glyph is not None and r.subject.glyph in boxes})
+    rest_ids = sorted({r.subject.glyph for r in rests
+                       if r.subject.glyph is not None and r.subject.glyph in boxes})
+    if not head_ids and not rest_ids:
+        return Ruling.abstain("nothing_to_group")
+
+    # The tolerance is measured off THIS bar's own noteheads.
+    if head_ids:
+        widths = [boxes[g][1] for g in head_ids]
+        tol = (sum(widths) / len(widths)) * EVENT_X_TOLERANCE_WIDTHS
+    else:
+        tol = EVENT_X_TOLERANCE_FALLBACK_PX
+
+    groups = []
+    for g in sorted(head_ids, key=lambda i: boxes[i][0]):
+        x = boxes[g][0]
+        target = None
+        # Backward scan: groups are created in non-decreasing x, so once one
+        # is further than the tolerance every earlier one is too.
+        for grp in reversed(groups):
+            gx = sum(boxes[i][0] for i in grp) / len(grp)
+            if abs(x - gx) > tol:
+                break
+            target = grp
+            break
+        if target is None:
+            groups.append([g])
+        else:
+            target.append(g)
+
+    events = [{"glyphs": sorted(grp),
+               "x": round(sum(boxes[i][0] for i in grp) / len(grp), 2),
+               "kind": "chord"} for grp in groups]
+    events += [{"glyphs": [g], "x": round(boxes[g][0], 2), "kind": "rest"}
+               for g in rest_ids]
+    events.sort(key=lambda e: (e["x"], e["glyphs"][0]))
+
+    stem_state = ev.state(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS)
+    chorded = sum(1 for e in events if len(e["glyphs"]) > 1)
+    return Ruling(
+        value={"events": events},
+        reason="x_clustered",
+        used=tuple(r.id for r in heads) + tuple(r.id for r in rests),
+        detail={"n_events": len(events),
+                "n_glyphs": len(head_ids) + len(rest_ids),
+                "n_chords": chorded,
+                "tolerance_px": round(tol, 2),
+                # ⚠️ THE GUARD IS NOT BUILT, AND THIS FIELD MUST NOT IMPLY
+                # IT IS. An earlier draft wrote `divisi_guard: "ran"` wherever
+                # stem rows merely EXISTED -- a field claiming a check that
+                # never happened, which is the failure this whole record
+                # exists to make impossible. What is reported is the STATE OF
+                # THE INPUT the guard would need. Where chords were formed and
+                # this says anything but `read`, two divisi voices may have
+                # been merged into one chord and nothing could have caught it.
+                "divisi_guard": "not_implemented",
+                "stem_evidence": stem_state.value},
+    )
+
+
 #: A meter must be agreed by this share of the staves that SPOKE. (A-METER-1)
 #: ⚠️ Not tuned here, but not arbitrary either: over an 11-source corpus every
 #: one of the 12 correct readings was agreed by 0.909 of its system or more,
 #: and the single WRONG reading by exactly 0.500.
 METER_AGREEMENT_FLOOR = 0.70
+
+#: ...and the share of the SYSTEM'S OWN STAVES that must have read it at all.
+#: (A-METER-2)
+#:
+#: ⚠️⚠️ THE OTHER HALF OF THE LEGACY RULE, AND DROPPING IT SHIPPED A WRONG
+#: METER AT FULL AGREEMENT. `METER_AGREEMENT_FLOOR` divides by the staves that
+#: SPOKE, so three spurious readings that happen to agree score 3/3 = 1.0 --
+#: `rhythm._dominant_detected_meter` says exactly this in its own docstring:
+#: *"two spurious readings that happen to agree are unanimous among
+#: themselves"*, and requires `_PROPAGATE_MIN_STAFF_FRACTION = 0.5` of the
+#: page's staves as well.
+#:
+#: Measured on Beethoven 5 / Litolff p.2, whose reference is 2/4 on all 18
+#: parts and which PRINTS NO TIME SIGNATURE AT ALL (it opens at bar 17):
+#:
+#:   * system 1 -- **3 staves of 11** matched a common-time `C`, agreed 1.0,
+#:     and the system shipped **4/4**;
+#:   * page 1 of the same run -- **12 staves of 12** read the true `2/4`.
+#:
+#: 3/11 = 0.27 against 12/12 = 1.0, so the floor separates them with room to
+#: spare. A meter is printed on EVERY staff of a system; a reading on a
+#: handful of them is a misread however much those few agree.
+METER_COVERAGE_FLOOR = 0.5
+
+
+#: Carry a DECIDED meter forward onto systems that read none. Default OFF.
+#:
+#: ⚠️⚠️ IT IS OFF BECAUSE THE HAZARD IS MEASURED, NOT BECAUSE IT IS FEARED.
+#: A meter is a fact of the MOVEMENT, so a carry is right until a movement
+#: starts and catastrophic afterwards -- and on the very document the benefit
+#: was measured on, THE MOVEMENT START READS NOTHING.
+#:
+#: Beethoven 5 / Litolff `984073`, one call each:
+#:
+#:   * BENEFIT -- p1/s0 decides `2/4` from **12 of 12** staves; p2/s0 reads
+#:     nothing and p2/s1 reads 3 spurious `C`. Both want p1's answer.
+#:   * HAZARD -- p17 is the *Andante con moto*, a NEW MOVEMENT printing `3/8`
+#:     on every staff. All three of its systems abstain `no_evidence`: the
+#:     template reader RAN on all 20 staves and declined `below_threshold`,
+#:     because Litolff sets `3` over `8` as heavy nearly-touching digits that
+#:     do not correlate with the Bravura templates. So an unconditional carry
+#:     stamps movement 1's `2/4` onto the whole Andante.
+#:
+#: Four guards were looked for and each is REFUTED by measurement, not by
+#: argument:
+#:
+#:   1. *"a movement start reads SOME meter, a continuation reads none"* --
+#:      inverted. The continuations p14-p16 read 1-4 spurious `C`/`4/4`; the
+#:      movement start reads 0.
+#:   2. *the KEY SIGNATURE changes at a movement boundary* -- unusable on a
+#:      scan. Only a handful of staves per system decide a key and they
+#:      disagree with each other (p14/s1 reads {-5, -3, -1, 2}); the true -4
+#:      of the Andante is never among them.
+#:   3. *the printed TEMPO HEADING* -- p17 prints "Andante con moto." three
+#:      times, and it is the right signal in principle. `direction` yields
+#:      **0 decided verdicts** in the staged record today, so it cannot be
+#:      asked.
+#:   4. *a distance bound* -- DECISIVE. Movement 1 occupies pages 1-16, so a
+#:      meter read on p1 legitimately governs 16 pages. Any bound under 16
+#:      truncates a legitimate carry in this document and any bound of 16 or
+#:      more reaches the Andante. No reach constant separates them.
+#:
+#: So the blocking input is named and it is a MOVEMENT-START signal, not a
+#: tuning constant. Flip this the day one exists.
+METER_CARRY_ENV = "OMR_METER_CARRY"
+
+
+def meter_carry_enabled() -> bool:
+    """Read the flag. Anything but an explicit "1" is off -- a typo must not
+    switch a document onto a mechanism whose hazard is a whole wrong
+    movement."""
+    return os.environ.get(METER_CARRY_ENV, "0").strip() == "1"
+
+
+def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
+    """The nearest preceding system whose meter was READ, or None.
+
+    ⚠️ A CARRY NEVER CHAINS ONTO A CARRY. Only a `voted` verdict is a source,
+    so `pages_since_read` is the true distance back to ink rather than the
+    distance to whoever last repeated the answer. That is what makes the
+    number in the record worth reading: a meter carried 16 pages is visibly
+    suspect where a chain of 16 one-page hops would each look local.
+
+    ⚠️ It is also why this needs no reach constant of its own -- see
+    `METER_CARRY_ENV`, where the reach bound is refuted outright.
+    """
+    if not meter_carry_enabled():
+        return None
+    here = ev.subject
+    for src in reversed([s for s in ev.subjects(Kind.SYSTEM) if s < here]):
+        found = ev.verdict(Q.METER, subject=src)
+        if found is None or found.outcome is not Outcome.DECIDED:
+            continue
+        if found.reason != "voted":
+            continue
+        pages = (here.page or 0) - (src.page or 0)
+        return Ruling(
+            value=dict(found.value),
+            reason="carried",
+            used=(found.id,),
+            detail={"carried_from": src.to_key(),
+                    "pages_since_read": pages,
+                    "instead_of": instead_of,
+                    "source_share": (found.detail or {}).get("share"),
+                    "source_staves_spoke":
+                        (found.detail or {}).get("n_staves_spoke")},
+        )
+    return None
 
 
 @decision(
@@ -370,8 +682,10 @@ METER_AGREEMENT_FLOOR = 0.70
     implicates=(Q.METER, Q.DURATION, Q.MEASURE_PARTITION),
     composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION),
     scope=Kind.SYSTEM,
-    wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION, Q.DOSSIER_FACT),
-    reasons=("voted", "no_agreement", "no_evidence"),
+    wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION, Q.DOSSIER_FACT,
+           Q.SYSTEM_STAFF_COUNT, Q.METER),
+    reasons=("voted", "no_agreement", "no_evidence",
+             "too_few_staves_read_it", "carried"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_meter(ev: Evidence) -> Ruling:
@@ -392,7 +706,10 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     """
     rows = ev.rows(Q.METER_TEMPLATE, scope=Scope.SELF_AND_DESCENDANTS)
     if not rows:
-        return Ruling.abstain("no_evidence")
+        # ⚠️ THE CARRY IS TRIED ONLY WHERE THIS SYSTEM'S OWN EVIDENCE FAILED,
+        # so it can never overturn a reading. Off by default -- see
+        # `METER_CARRY_ENV` for the movement-boundary hazard, measured.
+        return _carry_meter(ev, "no_evidence") or Ruling.abstain("no_evidence")
 
     tally_: dict = {}
     for row in rows:
@@ -400,13 +717,32 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
         tally_.setdefault(raw, []).append(row)
 
     best_raw, witnesses = max(tally_.items(), key=lambda kv: len(kv[1]))
+
+    # ⚠️ COVERAGE FIRST, AND IT IS A DIFFERENT QUESTION FROM AGREEMENT.
+    # "Do the staves that spoke agree?" and "did enough of them speak?" are
+    # two facts, and the second is the one a handful of spurious readings
+    # passes trivially -- they are unanimous among themselves. Reported apart,
+    # with its own reason, so a page that shipped a wrong meter and a page
+    # whose staves disagreed are never the same row.
+    n_staves = ev.verdict(Q.SYSTEM_STAFF_COUNT)
+    total = n_staves.value if n_staves is not None and n_staves.value else None
+    coverage = (len(witnesses) / float(total)) if total else None
+    if coverage is not None and coverage < METER_COVERAGE_FLOOR:
+        return _carry_meter(ev, "too_few_staves_read_it") or Ruling.abstain(
+            "too_few_staves_read_it",
+            coverage=round(coverage, 3),
+            n_staves_spoke=len(rows),
+            n_staves_on_system=total,
+            would_have_been=best_raw)
+
     share = len(witnesses) / len(rows)
     if share < METER_AGREEMENT_FLOOR:
         # ⚠️ Recorded, not defaulted. A system whose staves disagree about the
         # meter is exactly the page a human should see.
-        return Ruling.abstain("no_agreement",
-                              share=round(share, 3),
-                              readings={k: len(v) for k, v in tally_.items()})
+        return _carry_meter(ev, "no_agreement") or Ruling.abstain(
+            "no_agreement",
+            share=round(share, 3),
+            readings={k: len(v) for k, v in tally_.items()})
 
     return Ruling(value={"numerator": witnesses[0].value[0],
                          "denominator": witnesses[0].value[1],

@@ -14,6 +14,7 @@ a startup failure rather than a run that does not terminate.
 
 from __future__ import annotations
 
+from collections import Counter
 from typing import Any, Dict, List, Optional
 
 from . import record as R
@@ -92,6 +93,124 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _standing(log: Log, subject: Subject, quantity: str) -> List[Verdict]:
+    """The verdicts of `quantity` under `subject` that a LATER one has not
+    superseded.
+
+    ⚠️ `Log.verdicts` returns every ROW; `Log.verdict` resolves `supersedes`
+    but answers for ONE subject. A rule that walks a cell's descendants needs
+    both, and using the plural alone DOUBLE-COUNTS anything an earlier
+    consequence restated. That could not happen while `reconcile_duration`
+    was the only writer of `Q.DURATION` in EVALUATE; `size_measure_rest` makes
+    it two, so the resolution is written once here rather than twice badly.
+    """
+    rows = log.verdicts(quantity, subject, scope=Scope.SELF_AND_DESCENDANTS)
+    superseded = {v.supersedes for v in rows if v.supersedes}
+    return [v for v in rows if v.id not in superseded]
+
+
+def _is_rest(v: Verdict) -> bool:
+    return bool(isinstance(v.value, dict) and v.value.get("is_rest"))
+
+
+@rule(consequence=Consequence.SIZE_MEASURE_REST,
+      cause=Q.METER, effect=Q.DURATION, scope=Kind.CELL,
+      bound="Fires only on a bar whose ONLY standing duration is ONE rest, "
+            "whose glyph is `restWhole`, with no dots, and only where the "
+            "meter is DECIDED. Rewrites that one duration to the bar's "
+            "length and marks it. Adds no event, deletes none, and touches "
+            "no bar holding anything else.")
+def size_measure_rest(log: Log, subject: Subject, meter: Verdict) -> List[Verdict]:
+    """A whole-rest glyph means the BAR, not four quarters of silence.
+
+    ⚠️ THE CONVENTION IS THE OTHER WAY ROUND FROM THE ARITHMETIC. An engraver
+    fills an otherwise silent bar with ONE centred whole-rest glyph whatever
+    the meter, and the glyph stands for the bar -- so its duration is the
+    BAR's length and MusicXML says so with `<rest measure="yes"/>` and NO
+    `<type>` at all. Measured over the seven scan-gate rows whose part join
+    resolves: **558 of 618 wrong rest durations -- 90.3% -- are exactly this
+    bar**, 543 of them a `whole`/4.0 against a truth of 2.0.
+
+    ⚠️ THE GLYPH IS PART OF THE RULE, and leaving it out cost 34 edits on
+    `brahms-sym4-mvt1`. The first cut of the legacy fix accepted ANY lone rest
+    and inflated bars holding a single detected QUARTER rest into full bars.
+    Those bars are not silent -- they are bars we read one symbol of.
+
+    ⚠️ IT FIRES EVEN WHEN THE NUMBER DOES NOT MOVE, and that is deliberate: in
+    4/4 the bar length IS 4.0, so nothing changes arithmetically and the
+    MARKING still has to be made. `measure_rest` is what tells the exporter to
+    write `measure="yes"` and omit `<type>`; without it a correct 4.0 is
+    exported as an ordinary whole rest, which is a different claim about the
+    engraving.
+
+    ⚠️ AND IT IS A CONSEQUENCE RATHER THAN PART OF THE DURATION DECISION
+    BECAUSE ITS EVIDENCE IS NOT THE GLYPH'S. It needs the CELL's other
+    contents and the SETTLED meter, neither of which `adjudicate_duration`
+    has when it reads one rest. Putting it here is what lets the bound be
+    stated and the meter be known.
+    """
+    value = meter.value or {}
+    num, den = value.get("numerator"), value.get("denominator")
+    if not num or not den:
+        # ⚠️ NO METER, NO ASSERTION. Sizing a bar we never read the meter of
+        # would be a guess dressed as a fact, and the legacy exporter withholds
+        # `measure="yes"` for the same reason.
+        return []
+
+    standing = _standing(log, subject, Q.DURATION)
+    if len(standing) != 1:
+        return []
+    only = standing[0]
+    if only.outcome is not Outcome.DECIDED or not _is_rest(only):
+        return []
+    if only.detail.get("rest") != "restWhole" or only.value.get("dots"):
+        return []
+
+    beats = float(num) * 4.0 / float(den)
+    out = Verdict(
+        id=log._next_id("vrd"), subject=only.subject, quantity=Q.DURATION,
+        outcome=Outcome.DECIDED,
+        value={**only.value, "beats": beats, "written": beats,
+               "measure_rest": True},
+        decider="size_measure_rest", reason="whole_rest_means_the_bar",
+        considered=(only.id, meter.id), basis=(only.id, meter.id),
+        detail={**only.detail, "bar_beats": beats},
+        supersedes=only.id)
+    return [log.record(out)]
+
+
+def _event_totals(log: Log, subject: Subject, notes, current) -> Optional[float]:
+    """The bar's length, counting each EVENT once, or None if unknowable.
+
+    One event contributes ONE duration. Where a chord's members disagree about
+    their value the MODE is taken -- which is `voicing.group_chords_in_measure`'s
+    own definition of an event's duration, so the record and the exporter
+    answer this question the same way.
+    """
+    grouping = log.verdict(Q.EVENT, subject)
+    if grouping is None or grouping.outcome is not Outcome.DECIDED:
+        return None
+    by_glyph = {v.subject.glyph: v for v in notes}
+    total = 0.0
+    seen = set()
+    for event in (grouping.value or {}).get("events", ()):
+        members = [by_glyph[g] for g in event.get("glyphs", ())
+                   if g in by_glyph]
+        if not members:
+            continue
+        beats = Counter(float(current[m.id].get("beats") or 0.0)
+                        for m in members)
+        total += beats.most_common(1)[0][0]
+        seen.update(m.id for m in members)
+    # ⚠️ A duration the grouping does not mention is still time in the bar.
+    # Dropping it would understate the total as silently as the double-count
+    # overstated it.
+    for v in notes:
+        if v.id not in seen:
+            total += float(current[v.id].get("beats") or 0.0)
+    return total
+
+
 @rule(consequence=Consequence.RECONCILE_DURATION,
       cause=Q.METER, effect=Q.DURATION, scope=Kind.CELL,
       bound="Searches only the levels a note ADMITS -- its own narrowed "
@@ -128,8 +247,7 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
         return []
     expected = float(num) * 4.0 / float(den)
 
-    notes = [v for v in log.verdicts(Q.DURATION, subject,
-                                     scope=Scope.SELF_AND_DESCENDANTS)
+    notes = [v for v in _standing(log, subject, Q.DURATION)
              if v.outcome in (Outcome.DECIDED, Outcome.NARROWED)]
     if not notes:
         return []
@@ -144,12 +262,39 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     current = {v.id: _current(v) for v in notes}
     if any(c is None for c in current.values()):
         return []
-    total = sum(float(c.get("beats") or 0.0) for c in current.values())
+
+    # ⚠️ A BAR IS SUMMED OVER EVENTS, NOT OVER NOTEHEADS. A chord's members
+    # sound together and advance time ONCE, so summing each of them was a
+    # double-count -- and it was silent, because an inflated total simply
+    # never equals the meter and this rule then does nothing. Measured on
+    # Beethoven 5 / Litolff p.17: 38.2% of bars hold a chord, and ungrouped
+    # the bars landing exactly on the printed meter fell 18 -> 13. The
+    # inflation is not a constant to subtract either: 13 distinct values from
+    # 0.125 to 6.0 quarter-lengths.
+    #
+    # ⚠️ NO EVENT VERDICT MEANS NO REPAIR, rather than a fall back to the old
+    # per-notehead sum. A bar whose grouping is unknown is a bar whose sum is
+    # unknown, and repairing against a total that may be inflated is exactly
+    # the laundered guess `bound` exists to prevent.
+    grouped = _event_totals(log, subject, notes, current)
+    if grouped is None:
+        return []
+    total = grouped
     if abs(total - expected) < 1e-6:
         return []                       # the bar already fits
 
     landings = []
     for note in notes:
+        # ⚠️ A REST IS NOT RE-READ HERE, and the case is concrete rather than
+        # tidy. `_admitted` offers a DECIDED event its own level +/-1, so a
+        # lone 4.0 whole rest in a 2/4 bar would "land exactly" at 2.0 and be
+        # UNIQUE -- the right number by the wrong reasoning, reported as a
+        # HALF rest with `<type>half</type>` where the engraving prints a
+        # measure rest with no type at all. A rest carries no beam to re-read;
+        # the bar-length convention is `size_measure_rest`'s, and it has
+        # already run.
+        if _is_rest(note):
+            continue
         now = current[note.id]
         # ⚠️ A tuplet member's `beats` is already scaled by the ratio, so
         # re-deriving a level would silently drop it.

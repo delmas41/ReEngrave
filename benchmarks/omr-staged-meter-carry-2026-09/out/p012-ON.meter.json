@@ -1,0 +1,50 @@
+[
+  {
+    "subject": "system/1/0",
+    "outcome": "decided",
+    "reason": "voted",
+    "value": {
+      "numerator": 2,
+      "denominator": 4,
+      "raw": "2/4"
+    },
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 12
+    }
+  },
+  {
+    "subject": "system/2/0",
+    "outcome": "decided",
+    "reason": "carried",
+    "value": {
+      "numerator": 2,
+      "denominator": 4,
+      "raw": "2/4"
+    },
+    "detail": {
+      "carried_from": "system/1/0",
+      "pages_since_read": 1,
+      "instead_of": "no_evidence",
+      "source_share": 1.0,
+      "source_staves_spoke": 12
+    }
+  },
+  {
+    "subject": "system/2/1",
+    "outcome": "decided",
+    "reason": "carried",
+    "value": {
+      "numerator": 2,
+      "denominator": 4,
+      "raw": "2/4"
+    },
+    "detail": {
+      "carried_from": "system/1/0",
+      "pages_since_read": 1,
+      "instead_of": "too_few_staves_read_it",
+      "source_share": 1.0,
+      "source_staves_spoke": 12
+    }
+  }
+]

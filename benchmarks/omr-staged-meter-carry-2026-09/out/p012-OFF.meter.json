@@ -1,0 +1,35 @@
+[
+  {
+    "subject": "system/1/0",
+    "outcome": "decided",
+    "reason": "voted",
+    "value": {
+      "numerator": 2,
+      "denominator": 4,
+      "raw": "2/4"
+    },
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 12
+    }
+  },
+  {
+    "subject": "system/2/0",
+    "outcome": "abstained",
+    "reason": "no_evidence",
+    "value": null,
+    "detail": {}
+  },
+  {
+    "subject": "system/2/1",
+    "outcome": "abstained",
+    "reason": "too_few_staves_read_it",
+    "value": null,
+    "detail": {
+      "coverage": 0.273,
+      "n_staves_spoke": 3,
+      "n_staves_on_system": 11,
+      "would_have_been": "C"
+    }
+  }
+]

@@ -287,6 +287,24 @@ class Q(_Vocab):
     GLYPH_LADDER = "glyph_ladder"            # ledger rung completeness
     NOTEHEAD_STAFF_POSITION = "notehead_staff_position"   # pos_float, CLEF-FREE
     NOTEHEAD_CLASS = "notehead_class"        # black/half/whole, before duration
+    #: ⚠️ The REST GLYPH's class -- whole/half/quarter/8th -- before duration,
+    #: the exact parallel of `NOTEHEAD_CLASS`.
+    #:
+    #: ⚠️⚠️ IT WAS ABSENT FROM THIS VOCABULARY UNTIL 2026-09-09, and that made
+    #: rests the worst case of the family this architecture exists to kill.
+    #: The four starved stubs at least ABSTAIN `not_implemented` and are
+    #: therefore accounted for; a rest was detected -- 838 of them over four
+    #: real pages, 460 of them `restWhole` -- reached `GLYPH_BOX`, and NOTHING
+    #: ANYWHERE DECLARED THE ABSENCE. No gather site, no adjudicator, no stub,
+    #: no `wants`. `tools/omr/staged/export.py` found it by asking, per
+    #: notation family, which of four different zeros was true.
+    #:
+    #: ⚠️ `restHBar` / `restHNr` are MULTI-MEASURE REST INDICATORS and carry no
+    #: single duration; they are observed here like any other rest and the
+    #: adjudicator abstains on them by name. Recording the ink and declining
+    #: to read it is the honest pair; dropping it at the gather site is how
+    #: this quantity came to be missing in the first place.
+    REST = "rest"
     STEM = "stem"                            # CV stem: x, y0, y1
     BEAM_STROKE = "beam_stroke"              # CV beam stroke centre
     FLAG = "flag"                            # detected flag
@@ -301,6 +319,21 @@ class Q(_Vocab):
     CLEF_GLYPH = "clef_glyph"                # detector's clef, with frame
     CLEF_LOCATED = "clef_located"            # CV locator: shape, line, symmetry
     CLEF_REFUSAL_BRANCH = "clef_refusal_branch"   # which veto the locator hit
+    #: ⚠️ WHERE A CLEF GLYPH STANDS ON THIS STAFF, in half-spaces measured DOWN
+    #: from the top line -- the same measurement a notehead gets, from the same
+    #: grid, and for the same reason.
+    #:
+    #: ⚠️⚠️ IT IS A SEPARATE ROW FROM A SEPARATE READER BECAUSE A DETAIL FIELD
+    #: ON THE GLYPH ROW CANNOT WORK, and that is structural rather than
+    #: stylistic. Every `CLEF_GLYPH` row on a staff shares a reader, a frame
+    #: and a quantity, so `Evidence.correlated_groups` calls them ONE SIGNAL
+    #: and `tally` counts the group once, taking its strongest term. A term
+    #: citing a glyph row is therefore absorbed by that glyph's own detector
+    #: term -- measured: a 1.5 added beside a 3.0 left the contest at 3.0
+    #: against 3.0. **No refinement of the DETECTOR's evidence can break a
+    #: clef contest**; a tie-breaker has to come from another reader, and the
+    #: staff's measured line grid is one.
+    CLEF_POSITION = "clef_position"
     CLEF_SEED = "clef_seed"                  # the dossier's clef
     KEYSIG_RUN_POSITION = "keysig_run_position"   # accidental positions, NO clef
     KEYSIG_MARKER = "keysig_marker"          # detector keySharp/keyFlat
@@ -337,6 +370,11 @@ class Q(_Vocab):
     KEY_SIGNATURE = "key_signature"
     METER = "meter"
     DURATION = "duration"                    # ⚠️ a VERDICT, not a measurement
+    #: Which glyphs of a bar sound TOGETHER — one event, N noteheads.
+    #: ⚠️ A VERDICT, and the distinction matters: the x POSITION is a
+    #: measurement (`GLYPH_BOX` carries it), but "these are simultaneous" is
+    #: an interpretation of those positions under a tolerance.
+    EVENT = "event"
     GLYPH_OWNER = "glyph_owner"
     ARC_OWNER = "arc_owner"
     ARC_KIND = "arc_kind"                    # tie | slur

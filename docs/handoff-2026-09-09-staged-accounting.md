@@ -1,5 +1,42 @@
 # Handoff — the staged pipeline, and why grading stops being the goal
 
+⚠️⚠️ **STATUS, 2026-09-09: THE THREE RANKED TASKS OF §4 ARE DONE.** Do not
+re-do them. What doing them found — and **four claims of this file they
+correct** — is in CLAUDE.md, section *The staged pipeline: an inventory, an
+exporter, and a health report*, with the measurements in
+`benchmarks/omr-staged-inventory-2026-09/` and
+`benchmarks/omr-staged-export-2026-09/`. In brief:
+
+* **§3's "there is no exporter" is closed for MusicXML.**
+  `tools/omr/staged/export.py`, wired as `--musicxml` on the staged CLI. Four
+  scan pages export and parse under music21.
+* **§2's `tuplet_ratio` question: it is THE PAGE**, with a positive control
+  (Beethoven 5 / Litolff `984073` `--pages 2` reads 1 marker, decides 1
+  ratio). The SILENCE is still a hole and is not tuplet-specific.
+* **§2's redundancy control page is off by one** — `--pages 1` of `984073` is
+  the ONE-system row; `works.json` says the two-system page is
+  `pdf_page_index` 2. On the right page the layer works. ⚠️ Brahms p2 is two
+  systems and still checks nothing, for a different and structural reason.
+* **§4's "153 tests" is 226**, and **§3's "everything else is a stub that can
+  be filled incrementally" is true of one of the six** — five are starved of
+  input one stage earlier, in GATHER.
+* **§6's open defect is fixed** and pinned by four tests that run RED without
+  it.
+* ⚠️ **§7's "suite 3,081 passed" was already stale**: two
+  `test_works_json_staff_lineup.py` tests fail on a clean archive of
+  `b2494cbc`. Fixed in `62eb59cd`.
+
+⚠️ **§1's redirect is untouched and remains the governing instruction.**
+
+**THE NEXT WORK IS IN GATHER.** Rests have no quantity at all (838 detected
+over four pages, nothing declares the absence), and `arc_box`,
+`articulation_mark`, `wedge_box` and `dynamic_letter` are observed by nothing —
+so **2,541 detected glyphs cannot reach a file**, and no adjudicator or
+exporter work changes that.
+
+---
+
+
 ⚠️ **READ THIS FIRST.** It replaces `docs/handoff-2026-09-08-big-picture.md` as
 the entry point. That file is still worth reading for the four-causes and
 rest-fix history, but **two of its claims are now false and are corrected in

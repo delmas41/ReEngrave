@@ -176,3 +176,83 @@ class TestWeakEvidenceIsKept(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestAGlyphStandingOnANeighbouringStaff(unittest.TestCase):
+    """⚠️ A measure cell is the staff plus four staff spaces of air, so on a
+    conductor's page a NEIGHBOURING staff's clef lands in this staff's cell —
+    two clef glyphs, at nearly the same x and 250–350 canonical px apart in y,
+    each scoring `W_DETECTOR_HIGH`. Five of the six staves whose clef could not
+    decide across two scanned pages were an exact **3.0 against 3.0** tie for
+    that reason, and 67 notes on Beethoven p3 had no pitch because of it.
+
+    ⚠️ THE FILED FIX DOES NOT REACH THIS. `adjudicate_clef`'s first
+    `checked_by` is the written-range test, which needs the INSTRUMENT — and
+    instrument abstains on 22 of 22 and 27 of 27 staves of those pages. The
+    glyph's own position needs no identity, which is what makes it usable on a
+    scan.
+    """
+
+    def _staff(self, *glyphs):
+        """`glyphs` = (class, score, position_steps or None)."""
+        log = Log()
+        st = R.staff(0, 0, 0)
+        for i, (name, score, pos) in enumerate(glyphs):
+            log.observe(st, Q.CLEF_GLYPH, name, reader=READERS.DETECTOR,
+                        frame="cell:0", score=score, y_center=100 * i)
+            if pos is not None:
+                log.observe(st, Q.CLEF_POSITION, pos, reader=READERS.GEOMETRY,
+                            frame="cell:0", glyph=name, y_center=100 * i)
+        log.freeze()
+        adjudicate._ensure_decisions()
+        return adjudicate.adjudicate_one(
+            log, adjudicate.REGISTRY[Q.CLEF], st)
+
+    def test_the_tie_that_abstained_now_decides(self):
+        """The measured shape: one glyph at +3.2 steps, one at −4.8."""
+        v = self._staff(("clefF", 0.88, 3.2), ("clefG", 0.95, -4.8))
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, "bass")
+
+    def test_without_the_position_it_still_abstains(self):
+        """The control: the SAME two readings with no grid measured tie at
+        3.0 and 3.0, which is what they did before this evidence existed."""
+        v = self._staff(("clefF", 0.88, None), ("clefG", 0.95, None))
+        self.assertIsNot(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "margin_below_floor")
+
+    def test_a_lone_glyph_standing_OFF_the_staff_is_still_the_best_evidence(self):
+        """⚠️ ADDITIVE, NEVER A FILTER. Removing an off-staff glyph's term
+        would make an arbitration invisibly, and it would be the wrong call
+        where a staff's only candidate stands off it."""
+        v = self._staff(("clefG", 0.90, 13.6))
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, "treble")
+
+    def test_an_UNMEASURED_position_is_not_read_as_off_the_staff(self):
+        """`None` means the cell had no grid. Treating that as "off the staff"
+        would silently withdraw the detector's evidence on exactly the pages
+        whose geometry is worst."""
+        on = self._staff(("clefG", 0.90, None), ("clefF", 0.40, -9.0))
+        self.assertEqual(on.value, "treble")   # decided on confidence alone
+
+    def test_the_term_is_worth_more_than_the_margin_floor(self):
+        """The population it is for is an EXACT tie, so a term that only
+        matches the floor leaves it abstaining."""
+        from tools.omr.staged.adjudicators import clef as C
+        self.assertGreater(C.W_ON_THIS_STAFF, C.MARGIN_FLOOR)
+
+    def test_the_band_is_wider_than_the_staff_on_purpose(self):
+        """A clef's BOX centre is not its notated line, and the measured
+        separation is 8 steps clear on the near side — so nothing needs a
+        tight band, and a tight one would start deciding cases the evidence
+        does not separate."""
+        from tools.omr.staged.adjudicators import clef as C
+        self.assertLess(C.ON_STAFF_MIN_STEPS, 0.0)
+        self.assertGreater(C.ON_STAFF_MAX_STEPS, 8.0)
+        for measured in (3.1, 3.2, 3.3, 3.4, 3.5):
+            self.assertTrue(C.ON_STAFF_MIN_STEPS <= measured
+                            <= C.ON_STAFF_MAX_STEPS)
+        for measured in (-6.9, -5.8, -4.8, 13.3, 13.6, 14.8):
+            self.assertFalse(C.ON_STAFF_MIN_STEPS <= measured
+                             <= C.ON_STAFF_MAX_STEPS)

@@ -1,0 +1,14 @@
+{
+  "n_cells": 223,
+  "n_glyphs": 745,
+  "n_events": 573,
+  "n_chorded_events": 114,
+  "divisi_guard": [
+    "not_implemented"
+  ],
+  "stem_evidence": [
+    "declined",
+    "read"
+  ],
+  "reconcile_duration_fired": 0
+}
