@@ -302,6 +302,13 @@ score worse. That measurement was taken one day before an unrelated fix repaired
 the single page responsible for half of its cost — so the first move is to
 measure again rather than to build anything.
 
+Part of that measuring can now be done away from the main machine. A cloud
+session has none of the large files — no trained model, no score library — so it
+cannot read a page. But one real scanned page's worth of already-read symbols,
+its ground truth, and the hand-checked notes that line the two up are all small
+enough to live in the repository, so a change to how a reading is *written out*
+can be scored there. A change to how a page is *read* still cannot.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost

@@ -7,6 +7,38 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ## 2026-09-09 — dynamics: the block is HAIRPINS, not letters (scoping, no arm run)
 
+- **Cloud-session capability established by inventory, not memory**:
+  [docs/cloud-session-capabilities-2026-09-09.md](docs/cloud-session-capabilities-2026-09-09.md).
+  A web container clones the repo and nothing else — `omr-weights/` and
+  `library/` are both gitignored, so no transcription, no `scan_eval`, no
+  `orchestral_eval`. **The line is exact: a change acting on an already-made
+  transcription can be measured there; a change acting on the PAGE cannot.**
+- **⚠️ musicdiff runs NATIVELY in a cloud container and the four-symlink
+  workaround does not apply.** CLAUDE.md's OMR-NED section exists because the
+  desktop host is Python 3.9; a cloud box is **3.11**, so `pip install music21
+  musicdiff` is the whole setup. Verified end-to-end on a committed pair
+  (beet5-p1-shift09 vs truth: **0.7152 / 1286 edits**). ⚠️ Run
+  `_omrned_worker.py` from ANY directory but the repo root — `tools/omr/types.py`
+  shadows the stdlib `types` and fails circularly inside `weakref`, which is
+  precisely why that worker is documented as never importing from `tools.*`.
+- **⚠️ THREE SCAN-GATE ROWS ARE FULLY REPRODUCIBLE FROM COMMITTED FILES.**
+  Brahms 1 / Breitkopf p1-p3: the transcription (`…hollow2…/transcription.json`,
+  3 pages, 83 staves, 10,523 detections), its truth (`reference.mxl`) and the
+  hand-verified windows (`works.json`) are all in git, so
+  **transcription → export → musicdiff → OMR-NED closes without weights.**
+  ⚠️ `cells/` is still gitignored — coordinates yes, rasters no. ⚠️ One row is
+  not the gate (and the gate's own noise floor is ±6 edits).
+- **The dynamics finding was REPRODUCED rather than quoted**: that committed
+  transcription carries **265 dynamic-letter detections and ZERO of either
+  hairpin class**, and its export emits **159 `<dynamics>` and 0 `<wedge>`**. So
+  the ledger's `hairpin matched_exact = 0` is not an instrument artefact — the
+  detector sees the letters and is blind to the wedges, confirmed end to end
+  with no weights present.
+- ⚠️ Checked and NOT a finding: `mahler_p11_finetuned.omr.json` carries
+  `dynamicLetterP` (the coarse 136-207 block), but `class_aliases.ALIASES` maps
+  all six `dynamicLetter*` → `dynamic*`, so that artefact is pre-fix raw model
+  output rather than a live gap.
+
 - **Follow-up (Sean: "not sure our primary issue is the hairpins or the letters
   or both — we will need both read and able to interact in the adjudication
   stage"). Answer: BOTH, and they are the same size.** On the assessable rows

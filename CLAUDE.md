@@ -2040,6 +2040,22 @@ ln -sfn /Users/seanjohnson/Desktop/ReEngrave/.venv-omrned .venv-omrned
 **Four symlinks, and three of the four fail on the SCAN side only** — a worktree
 that runs `orchestral_eval` cleanly proves nothing about `scan_eval`.
 
+⚠️ **NONE OF THAT APPLIES IN A CLOUD SESSION, AND THE REASON IS THE PYTHON
+VERSION.** This whole workaround exists because the desktop host is 3.9; a
+Claude Code web container is **3.11**, so `pip install music21 musicdiff` makes
+the scorer importable in-process — no venv, no `OMRNED_PYTHON`, no symlinks.
+⚠️ Run `_omrned_worker.py` from ANY directory but the repo root: there
+`tools/omr/types.py` **shadows the stdlib `types`** and fails circularly inside
+`weakref`, which is exactly why that worker is documented as never importing
+from `tools.*`. ⚠️ A cloud container has **no `omr-weights/` and no `library/`**
+(both gitignored), so it can measure a change acting on an ALREADY-MADE
+transcription and never one acting on the page. **Brahms 1 / Breitkopf p1-p3 are
+fully reproducible there from committed files alone** — `transcription.json`
+(3 pages, 83 staves, 10,523 detections), `reference.mxl`, and the hand-verified
+`works.json` windows — so `transcription → export → musicdiff → OMR-NED` closes
+without weights. ⚠️ One row is not the gate. Full inventory:
+[docs/cloud-session-capabilities-2026-09-09.md](docs/cloud-session-capabilities-2026-09-09.md).
+
 ⚠️⚠️ **A CACHED A/B FAILS SAFE-LOOKING, AND `scan_eval` CACHES BY DEFAULT.**
 `scan_eval.run_pipeline` opens with `if pred.is_file() and raw.is_file() and not
 force: return`, so **two arms sharing a fixtures dir with an empty `--tag` reuse
