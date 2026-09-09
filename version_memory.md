@@ -46,7 +46,14 @@ MERGED tree.
    against the wrong one −12/−9/−14 on the three well-read systems), and a
    page that cannot speak abstains. **A movement boundary on a page that reads
    well remains UNMEASURED**, and that — not `n` — is now the blocking
-   objection to the default. Checked before believing it was finished: that worktree is clean
+   objection to the default.
+   ⚠️ A **fourth** commit (`8ace2b79`) then went looking for that missing case
+   and FOUND one — Beethoven 5 mvt 4 changes 4/4 → 3/4 mid-system on Litolff
+   p.62 — and reports that it still does not settle the rule: the printed 3/4
+   **is not read** (the glyph route is closed on this edition too), the **bar
+   sums DO see it** (9 of 16 staves agree on 3.0, the new meter — the thesis
+   working), but the proposed discriminator needs two dissenters and only one
+   clears quorum. Parked for a design pass, not built. Documentation only. Checked before believing it was finished: that worktree is clean
    and the commit is on `origin`.
    ⚠️ It **subsumes `reengraved-staged-pipeline-068163` entirely** — that
    branch's tip is an ancestor — so that branch was NOT merged separately.
