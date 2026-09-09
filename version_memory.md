@@ -14,7 +14,21 @@ then the meter should decrease in probability."*
 - **The carry is now a CANDIDATE the bars judge.** `carried_from_read_meter`
   **+1.0**, each bar that FITS **+1.0**, each that does not **−1.0**, against
   `METER_CARRY_FLOOR` 2.0 and `METER_CARRY_MIN_BARS` 2.
-- ⚠️ **THE MOVEMENT-BOUNDARY PROBLEM DISSOLVED — no detector needed.** Measured
+- ⚠️⚠️ **CORRECTED SAME DAY — the boundary problem is NOT solved.** Sean:
+  *"It feels a ways out to me."* Right: the control I had not run is whether
+  page 17 would refuse the CORRECT meter too. **It does** — `3/8`, the meter
+  it prints, scores −1.0 and is refused as firmly as the wrong `2/4` at −3.0.
+  Its durations are noise and a noisy page refuses everything, so the Andante
+  refusal is SAFE but not discriminating. What IS established: **where the
+  bars can speak they discriminate both ways** (true meter +14/+7/+16, wrong
+  meter −12/−9/−14 on three well-read systems). **A movement boundary on a
+  well-read page — the case actually claimed — is unmeasured.**
+- ⚠️ The first run of that control keyed bars by SYSTEM and dropped the PAGE,
+  merging page 1's systems into page 17's and appearing to show the mechanism
+  carrying a wrong meter onto the Andante. Caught because it contradicted the
+  live run's own recorded detail. **Check a probe against the pipeline's own
+  record before believing it.**
+- The original (overstated) claim, kept for the record: measured
   on Beethoven 5 / Litolff `984073`: page 2's two systems (continuation, truth
   2/4) carry at **+7.0** and **+8.0**; **all three systems of page 17 — the
   *Andante*, a NEW MOVEMENT in 3/8 — REFUSE the carried 2/4** (−3.0, −1.0, and
