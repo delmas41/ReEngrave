@@ -537,6 +537,17 @@ as evidence (left in, 13 of 17 agreeing bars vote 4.0 on the Andante); and it
 is what `size_measure_rest` supersedes, so touching it makes the record report
 a genuine fixpoint.
 
+✅ **THE OPEN QUESTION IS ANSWERED, 2026-09-09** — *"a movement boundary on a
+page that READS WELL is unmeasured"*. It was the wrong name for the case: this
+decision never asks whether a movement started, only whether the carried meter
+FITS. On p.63 of the same document (mid-Finale, carried `2/4` from p.1,
+printed `3/4`) the carry is refused at **−6.0** (1 agree / 8 disagree) and
+**−7.0** (0/8), and the same bars name **3.0 at +5.0** — so the refusal there
+IS discriminating, unlike the *Andante*'s. ⚠️ A movement-START page remains
+unmeasured and **this document has none that reads well** (p.17 / p.32 / p.44
+all fail, for opposite reasons: sparse opening vs dense tutti). See
+`A-DUR-7` and `benchmarks/omr-staged-meter-from-bars-2026-09/FINDINGS.md` §4b.
+
 **How to falsify.** Find a document where the bars corroborate a meter that is
 wrong, or contradict one that is right. The weights are the place to look:
 they are symmetric and DECLARED UNMEASURED, because the two pages available
@@ -617,7 +628,7 @@ comes from bars inside one system, so the *Andante* cannot be handed movement
 bars read four different lengths and it scores **-2.0**. Only the SPELLING
 reaches back, and only where the length already matches.
 
-⚠️ **"FOR 6 MEASURES" IS NOT A RUN.** Measured over 20 systems, the longest
+⚠️ **"FOR 6 MEASURES" IS NOT A RUN.** Measured over 24 systems, the longest
 CONSECUTIVE run of assessable bars is 5 where the meter is read, 3 where it is
 wanted and 1 on the dense finale pages — because an unassessable bar breaks a
 run without contradicting anything, which is a fact about legibility, not
@@ -630,6 +641,27 @@ two-questions reasoning and **a mutation arm proved it could not fire** — a
 bar is worth 1.0, so the floor of 4.0 already implies four assessable bars.
 Deleted rather than left as decoration: a gate that cannot fire reads as a
 protection that is not there.
+
+⚠️⚠️ **A REFUSAL MAY NOT BLOCK A LATER RUNG, AND THE `or`-CHAIN LET IT.**
+`_carry_meter` returns a `Ruling` when it decides AND when the bars outweigh
+it, both truthy, so `a() or b() or c()` stopped at a refusal — the bar reader
+unreachable behind the refusal it had itself caused, at exactly the case both
+mechanisms exist for. `_meter_fallbacks` orders the rungs by what each KNOWS
+(corroborated carry → this system's own bars → a printed change → the most
+informative refusal, **not the last one tried**). ⚠️ Half the gap predates
+this entry: `_change_only` sat behind the same `or`, so a refused carry also
+suppressed a meter change printed on that system.
+
+⚠️⚠️ **"A MOVEMENT BOUNDARY ON A PAGE THAT READS WELL" WAS THE WRONG NAME FOR
+THE OPEN CASE.** The mechanism never asks whether a movement started, only
+whether the carried meter FITS. Measured on p.63 (mid-Finale, carried `2/4`,
+printed `3/4`): the carry is refused at **−6.0** (1 agree / 8 disagree) and
+the same bars name **3.0 at +5.0** — a wrong meter refused and a right length
+named on one well-read page, which is the discrimination the *Andante* could
+not give. ⚠️ A movement-START page specifically is still unmeasured **and
+this document has none that reads well**: all three were located (p.17, p.32,
+p.44) and all three fail, for OPPOSITE reasons — an opening is either sparse
+(most instruments resting) or a dense tutti. The remaining route is engraved.
 
 **How to falsify.** A page whose bars coherently agree on a length that is not
 its meter — most likely one where a systematic duration misread is shared by

@@ -762,7 +762,7 @@ def meter_from_bars_enabled() -> bool:
 #: the constant outright broke no test. It is gone rather than left as
 #: decoration -- a gate that cannot fire reads to the next person as a
 #: protection that is not there. The reasoning stands and would need weights
-#: that separate the two, which n = 20 systems on one document cannot supply.
+#: that separate the two, which n = 24 systems on one document cannot supply.
 
 #: The support a bar-named length needs before it stands, in the same signed
 #: currency the carry uses (`W_METER_BAR_FITS` / `W_METER_BAR_CONTRADICTS`,
@@ -776,7 +776,7 @@ def meter_from_bars_enabled() -> bool:
 #:
 #: ⚠️ CONSECUTIVENESS IS DELIBERATELY NOT REQUIRED, and that is a measurement
 #: rather than a simplification. The literal reading of "for 6 measures" is a
-#: RUN of consecutive bars; over the same 20 systems the longest such run
+#: RUN of consecutive bars; over the same 24 systems the longest such run
 #: is **5** on the one page whose meter is read, **3** on the two that want
 #: one, and **1** on the two dense finale systems -- because an unassessable
 #: bar (under three staves, or no cross-staff majority) breaks a run without
@@ -1410,6 +1410,47 @@ def _change_only(ev: Evidence, why: str, **detail) -> Ruling:
                           "n_changes": len(changes), **detail})
 
 
+def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
+    """Everything to try when this system's own READING failed, in order.
+
+    ⚠️⚠️ AN ABSTENTION IS NOT AN ANSWER, AND CHAINING THESE WITH `or` TREATED
+    IT AS ONE. `_carry_meter` returns a `Ruling` both when it decides and when
+    the bars OUTWEIGH it, and both are truthy -- so `a() or b() or c()`
+    stopped at a refusal and never asked the later rungs. Measured on
+    Beethoven 5 / Litolff p.63, which is exactly the case the mechanisms exist
+    for: the carried `2/4` is refused at **-6.0 (1 agree / 8 disagree)** and
+    **-7.0 (0/8)**, and with `OMR_METER_FROM_BARS` also on the page STILL
+    abstained `carry_outweighed_by_the_bars` -- because the bar reader was
+    unreachable behind the refusal it had itself caused. Off its own flag the
+    same page names **length 3.0 at +5.0**, which is the printed 3/4.
+
+    ⚠️ IT ALSO COST THE PRINTED CHANGE. `_change_only` sat behind the same
+    `or`, so a system whose carry was refused could not report a meter change
+    printed on it either. That half predates `OMR_METER_FROM_BARS`.
+
+    So the order is by WHAT EACH KNOWS, and a refusal never blocks a rung that
+    might know more:
+
+      1. a CARRY the bars corroborated -- it names an engraving that was read;
+      2. this system's OWN BARS -- self-checking arithmetic, which is why it
+         outranks a carry the same bars just refused (Sean's ordering);
+      3. a CHANGE printed on this system;
+      4. failing all three, the most INFORMATIVE refusal, which is not the
+         last one tried: a refusal naming the bar length beats one naming only
+         the carry's support, which beats a bare "nothing here".
+    """
+    carried = _carry_meter(ev, why)
+    if carried is not None and not carried.abstained:
+        return carried
+    from_bars = _meter_from_bars(ev, why)
+    if from_bars is not None and not from_bars.abstained:
+        return from_bars
+    changed = _change_only(ev, why, **detail)
+    if not changed.abstained:
+        return changed
+    return from_bars or carried or changed
+
+
 @decision(
     quantity=Q.METER,
     checkable=Checkable.MIXED,
@@ -1450,9 +1491,7 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
         # ⚠️ THE CARRY IS TRIED ONLY WHERE THIS SYSTEM'S OWN EVIDENCE FAILED,
         # so it can never overturn a reading. Off by default -- see
         # `METER_CARRY_ENV` for the movement-boundary hazard, measured.
-        return (_carry_meter(ev, "no_evidence")
-                or _meter_from_bars(ev, "no_evidence")
-                or _change_only(ev, "no_evidence"))
+        return _meter_fallbacks(ev, "no_evidence")
 
     tally_: dict = {}
     for row in rows:
@@ -1471,8 +1510,7 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     total = n_staves.value if n_staves is not None and n_staves.value else None
     coverage = (len(witnesses) / float(total)) if total else None
     if coverage is not None and coverage < METER_COVERAGE_FLOOR:
-        return _carry_meter(ev, "too_few_staves_read_it") or \
-            _meter_from_bars(ev, "too_few_staves_read_it") or _change_only(
+        return _meter_fallbacks(
             ev, "too_few_staves_read_it",
             coverage=round(coverage, 3),
             n_staves_spoke=len(rows),
@@ -1483,8 +1521,7 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     if share < METER_AGREEMENT_FLOOR:
         # ⚠️ Recorded, not defaulted. A system whose staves disagree about the
         # meter is exactly the page a human should see.
-        return _carry_meter(ev, "no_agreement") or \
-            _meter_from_bars(ev, "no_agreement") or _change_only(
+        return _meter_fallbacks(
             ev, "no_agreement",
             share=round(share, 3),
             readings={k: len(v) for k, v in tally_.items()})

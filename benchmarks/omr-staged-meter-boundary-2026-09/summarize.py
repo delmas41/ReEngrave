@@ -33,6 +33,13 @@ FIXTURE_OF = {
     "m2full": "boundary-m150-180", "m2p0p3": "boundary-m150-180",
     "m2rev": "boundary-m204-232", "m2brahms1eng": "brahms1-m1-22",
     "m2brahms4eng": "brahms4-m386-412", "m2brahms1scan": "brahms1-317803",
+    # `m3` = re-measured again after a SIBLING session's `_meter_fallbacks`
+    # landed on main. That change reorders what a REFUSED carry does, which
+    # is the branch two of these fixtures land on — so it is re-run, not
+    # assumed. See the handoff's coordination section.
+    "m3full": "boundary-m150-180", "m3p0p3": "boundary-m150-180",
+    "m3rev": "boundary-m204-232", "m3brahms1eng": "brahms1-m1-22",
+    "m3brahms4eng": "brahms4-m386-412", "m3brahms1scan": "brahms1-317803",
 }
 
 

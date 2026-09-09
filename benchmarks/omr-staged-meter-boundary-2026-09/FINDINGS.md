@@ -63,7 +63,14 @@ offered differs and the page itself does not:
 `--pages 2,3` reproduces the first row to the unit (+6.0, 7/2), so the swing is
 the candidate's and not the window's.
 
-✅ **RE-MEASURED ON THE MERGED TREE AND IDENTICAL.** `origin/main` moved 27+
+✅ **RE-MEASURED TWICE ON MERGED TREES AND IDENTICAL BOTH TIMES** — the second
+time after a SIBLING session's `_meter_fallbacks` landed on main, which reorders
+what a REFUSED carry does and is therefore the branch two of these fixtures sit
+on. ⚠️ **That merge also gave this benchmark a cross-session corroboration it
+did not set out to produce**: with both flags on, `--pages 0,3` used to abstain
+`carry_outweighed_by_the_bars` — the bar reader unreachable behind the refusal
+it had caused — and now reports `bars_name_a_length_without_a_form` at +5.0
+with the truth in its shortlist. Their fix, measured on a page they never ran. `origin/main` moved 27+
 commits under this branch while these arms ran, including **221 changed lines
 of `staged/adjudicators/rhythm.py` and 404 of `staged/gather.py`** — and
 `gather.py` is where the `Q.EVENT` / `Q.DURATION` rows these decisions read

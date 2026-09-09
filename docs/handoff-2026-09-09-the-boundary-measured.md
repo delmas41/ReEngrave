@@ -239,7 +239,13 @@ engraved route as outstanding is now satisfied. ⚠️ **The two branches touch
 different functions in the same two files** — `_meter_from_letter` /
 `_meter_changes` here, `_meter_fallbacks` / `adjudicate_meter`'s dispatch there
 — so the merge is mechanical but not automatic, and both append test classes to
-the same file. ⚠️ Its `_meter_fallbacks` reordering changes what a REFUSED
-carry does, which is the branch `brahms1eng` system 2 and `boundary-m150-180`
-system 1 land on: **re-run this benchmark's arms after that merge**, not
-before.
+the same file. ✅ **THAT MERGE HAS NOW HAPPENED AND THE ARMS WERE RE-RUN** (`m3*`): every
+figure in §2 and §2b is identical after it, and the `BOTH` arm now shows their
+fix working on a fixture they never ran — `--pages 0,3` used to abstain
+`carry_outweighed_by_the_bars` and now reports
+`bars_name_a_length_without_a_form` at +5.0 with the truth in the shortlist.
+The two test classes coexist green (56 passing in that file). ⚠️ Three files
+conflicted and were resolved **keeping both sessions' work**: both test classes
+in full, their new `OMR_METER_FROM_BARS` knobs row with this session's edits
+re-applied to the `OMR_METER_CARRY` row, and both `version_memory.md` blocks
+with a note that they are independent.

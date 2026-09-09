@@ -49,10 +49,11 @@ on a system that printed nothing we could read.
 
 ---
 
-## 2. WHAT THE BARS ACTUALLY SAY, over 20 systems on 15 pages
+## 2. WHAT THE BARS ACTUALLY SAY, over 24 systems on 17 pages
 
-Probed over **20 systems on 15 pages** of the one document (pages 1-2,
-17, 61-62 and 63-72). The nine that bear on the question are below.
+Probed over **24 systems on 17 pages** of the one document (pages 1-2, 17,
+32, 44, 61-62 and 63-72). The nine that bear on the length question are
+below; the three movement-start pages are §4b.
 
 Measured with `probe_runs.py`, which drives `prepare -> gather -> adjudicate`
 and then builds a real `Evidence` over the **live log**, so the bars it
@@ -155,8 +156,8 @@ project's own *measure the MERGED tree* rule.
 | `--pages 1,17` (*Andante*) | all three abstain | **identical** |
 
 `.meter.txt` files compare byte-for-byte (`merged-*` beside the originals in
-`out/`). Suite on the merged tree: **3370 passed, 11 skipped, 0 failed**;
-`inventory --check` and `health --check` both exit 0.
+`out/`). Suite at that point: **3370 passed, 11 skipped, 0 failed** — a
+historical figure for the merge itself; the current tree is in §4c.
 
 ## 3. ⚠️ THE LITERAL READING OF "FOR 6 MEASURES" IS THE WRONG ONE
 
@@ -233,6 +234,119 @@ of `3/4`, `6/8`, `12/16`; nothing on this document has told us which"* —
 dossier or a second page can close, and it is on the record where it was not
 before.
 
+## 4b. ⚠️⚠️ THE HUNT FOR A MOVEMENT BOUNDARY THAT READS WELL — and it changed the question
+
+§4a and both preceding handoffs name one open case: *a movement boundary on a
+page that READS WELL*. It was looked for on this document, properly. Two
+results, and the second matters more than the first.
+
+### The three movement starts were found and measured. NONE reads well.
+
+Located by rendering page tops (⚠️ a top-margin heuristic was tried first and
+**missed p.17**, the one known boundary — this print does not indent a
+movement start, so the heuristic was discarded rather than trusted):
+
+* **p.17** — *Andante con moto*, 3/8
+* **p.32** — *Allegro ♩=96*, the Scherzo, 3/4 (full instrument names, fresh key
+  signature, a printed 3/4)
+* **p.44** — the Finale, 4/4 (p.45 numbers its first bar 9)
+
+| page | movement | assessable bars per system | the bars' verdict |
+|---|---|---|---|
+| p.17 | *Andante* 3/8 | 4 / 1 / 2 | four bars at four values — nothing |
+| p.32 | Scherzo 3/4 | 2 / 3 / **8** | best system: 3.0 ×4 against 2.0 ×2 and 5.0 ×2 → support **0**, under the floor |
+| p.44 | Finale 4/4 | **0** / — | not one bar reaches a cross-staff majority |
+
+⚠️⚠️ **AND THE TWO FAILURES HAVE OPPOSITE CAUSES, WHICH IS WHY THIS LOOKS
+STRUCTURAL RATHER THAN UNLUCKY.** A movement OPENING is either sparse — most
+instruments resting, and a lone whole rest may never corroborate a meter, so
+the bars that survive are few — or it is a dense tutti, which is the texture
+this reader is worst at. p.17 and p.32 fail the first way; p.44, a 17-staff
+fortissimo, fails the second. **Both ends of the distribution are bad pages,
+for reasons a better threshold cannot reach.**
+
+### But the mechanism never asks whether a movement started
+
+It asks *"does the carried meter fit these bars?"*. **"Movement boundary" was
+the wrong name for the case all along** — what is needed is *a page whose
+carried meter is WRONG and whose bars read well*, and that page exists on this
+document: **p.63**, mid-Finale, where the last READ meter is p.1's `2/4` and
+the print is `3/4`.
+
+| p.63, carry ON | support |
+|---|--:|
+| `system/63/0` | **−6.0** (1 agree / 8 disagree) |
+| `system/63/1` | −1.0 (0/2) |
+| `system/63/2` | **−7.0** (0 agree / 8 disagree) |
+
+⚠️ **THIS IS THE DISCRIMINATION THE *ANDANTE* COULD NOT PROVIDE.** There the
+refusal was SAFE but not discriminating — the page refuses the correct meter
+too, because its durations are noise. Here the same bars that refuse the
+carried `2/4` at −6.0 go on to name **3.0 at +5.0**, which is the printed
+`3/4`. **A wrong carried meter is refused, and a right length is named, on the
+same well-read page.** That is the substance of the open question, arrived at
+from a direction nobody was looking in.
+
+⚠️ What remains genuinely unmeasured is a movement-START page specifically —
+and on this document there is no such page to measure. That is a reach
+finding, not a correctness one, and it points at §11 of
+`omr-staged-meter-carry-2026-09/FINDINGS.md`: an engraved LilyPond render,
+where legibility is not the confound.
+
+---
+
+## 4c. ⚠️⚠️ AND THE HUNT FOUND A BUG: A REFUSAL WAS BLOCKING THE RUNGS BEHIND IT
+
+The arm that proved §4b also produced a result that made no sense: with
+**both** flags on, p.63 abstained `carry_outweighed_by_the_bars` — *identical
+to carry-only* — while the same page off the carry named length 3.0 at +5.0.
+
+`adjudicate_meter` chained its fallbacks with `or`:
+
+```python
+return (_carry_meter(ev, why) or _meter_from_bars(ev, why)
+        or _change_only(ev, why, **detail))
+```
+
+⚠️ **`_carry_meter` returns a `Ruling` when it DECIDES and also when the bars
+OUTWEIGH it, and both are truthy.** So the chain stopped at a refusal and
+never asked the rungs behind it — **the bar reader was unreachable behind the
+refusal it had itself caused**, at precisely the case both mechanisms exist
+for.
+
+⚠️ **The other half predates `OMR_METER_FROM_BARS`:** `_change_only` sat behind
+the same `or`, so a system whose carry was refused could not report a meter
+change printed on it either.
+
+`_meter_fallbacks` replaces the chain and orders the rungs by **what each
+knows**, never by which is newer:
+
+1. a CARRY the bars corroborated — it names an engraving that was read;
+2. this system's OWN BARS — self-checking arithmetic, which is why it outranks
+   a carry those same bars just refused (Sean's ordering);
+3. a CHANGE printed on this system;
+4. failing all three, the **most informative refusal — not the last one
+   tried**: one naming the bar length beats one naming only the carry's
+   support, which beats a bare "nothing here".
+
+**Measured on p.63, both flags on:**
+
+| system | before | after |
+|---|---|---|
+| `63/0` | `carry_outweighed_by_the_bars`, −6.0 | **`bars_name_a_length_without_a_form`, length 3.0, +5.0** |
+| `63/2` | `carry_outweighed_by_the_bars`, −7.0 | **length 3.0, +4.0** |
+| `63/1` | `carry_outweighed_by_the_bars`, −1.0 | **unchanged** — 2 assessable bars, so the carry's refusal really is the most informative thing available |
+
+**Controls, all measured:** carry-only on p.63 is **identical** to before the
+fix; `--pages 0-2` with either flag is **identical**; and the *Andante* with
+both flags on **still refuses on all three systems** (−3.0, `carry_not_corroborated`,
+−1.0) — the bars are now asked there and still name nothing, which is the
+mechanism behaving as designed rather than being bypassed.
+
+Suite on this tree: **3376 passed, 11 skipped, 0 failed**, with the source
+md5 checked identical before and after the run; `inventory --check` and
+`health --check` both exit 0.
+
 ## 5. THE CONSTANT, AND THE ONE THAT WAS DELETED
 
 `METER_FROM_BARS_FLOOR = 4.0`, in the same signed currency the carry uses
@@ -254,12 +368,12 @@ deleting the constant outright broke no test, because a bar is worth 1.0 so
 support can never reach a floor of 4.0 without four assessable bars. It is
 gone rather than left as decoration — **a gate that cannot fire reads to the
 next person as a protection that is not there.** The reasoning still stands
-and would need weights that separate the two, which n = 20 systems on one
+and would need weights that separate the two, which n = 24 systems on one
 document cannot supply.
 
 ---
 
-## 6. NINE MUTATION ARMS, AND WHAT SURVIVED
+## 6. ELEVEN MUTATION ARMS, AND WHAT SURVIVED
 
 Every rule was run RED before it was believed, clearing
 `~/Library/Caches/com.apple.python/<abs path>/` between arms — the previous
@@ -276,6 +390,8 @@ session's §6.3 trap, where a reverted mutation stayed live.
 | borrow a form of the WRONG length | 1 |
 | ignore the flag (default ON) | 1 |
 | ask the bars BEFORE the carry | 1 |
+| revert `_meter_fallbacks` to the `or`-chain | 3 |
+| report the LAST refusal, not the most informative | 3 |
 
 ---
 

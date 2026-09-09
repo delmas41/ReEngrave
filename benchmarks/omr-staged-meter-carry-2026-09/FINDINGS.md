@@ -428,6 +428,16 @@ It would. Scored against `3/8`, the meter page 17 actually prints:
   movement boundary.** Page 17 refuses everything, the right answer included.
   The protection there comes from *"when the page cannot speak, abstain"* — a
   safe default, not a reading.
+* ✅ **ANSWERED 2026-09-09 — see `omr-staged-meter-from-bars-2026-09/FINDINGS.md`
+  §4b.** "A page that reads well" did not have to be a movement boundary: the
+  decision only asks whether the carried meter FITS. On **p.63** of this same
+  document the carried `2/4` is refused at **−6.0** (1 agree / 8 disagree) and
+  the same bars name **3.0 at +5.0**, the printed `3/4` — a wrong meter refused
+  and a right length named on one well-read page. ⚠️ A movement-START page is
+  still unmeasured and **this document has none that reads well**: p.17, p.32
+  and p.44 were all located and all fail, for OPPOSITE reasons (sparse opening
+  vs dense tutti). The remaining route is the engraved one this section
+  recommends. The paragraph below is kept as written.
 * ⚠️ So the boundary case remains **untested on a page that reads well**. A new
   movement whose page reads badly is protected by the abstention; a new
   movement whose page reads WELL should be caught by the bars (p2's "other"
@@ -444,7 +454,7 @@ own record before believing it.**
 
 ### What "solved" would take
 
-1. A movement boundary on a page that reads well — the case the mechanism is
+1. ✅ **DONE 2026-09-09 (see above).** A movement boundary on a page that reads well — the case the mechanism is
    actually claimed to handle, and the one no measurement covers.
 2. A second document and publisher. Everything above is one edition.
 3. Weights that are measured rather than asserted. They are symmetric and
