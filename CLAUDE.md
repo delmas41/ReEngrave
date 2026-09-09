@@ -1576,6 +1576,87 @@ has been bitten by before.
 
 ---
 
+## The GATHER stage collects 31 of 63 quantities, and cannot NAME 11 more
+
+Sean, 2026-09-09: *"I just found that we were not tracking chords - notes
+aligning in a bar. I want to know how many other things we are missing."*
+**It generalises.** Answered by a derived tool, never a written list, because
+that is the shape this repo has been bitten by most:
+
+```bash
+python3 -m tools.omr.staged.gather_coverage           # the two lists
+python3 -m tools.omr.staged.gather_coverage --json    # machine-readable
+```
+
+`record.Q` declares **63** quantities and a gatherer **OBSERVES 31**. Two more
+are declared and only ever ABSTAINED on — `DIRECTION_WORD` (`NOT_IMPLEMENTED`;
+`gather_direction_text` is itself a stub) and `SYSTEMIC_COLUMN`.
+
+⚠️ **THE TWO FAULTS ARE DIFFERENT AND NEED DIFFERENT REPAIRS.** *Not gathered*
+means no row carries it — `fermata` is the clean case: two detector classes,
+Beethoven 5 detects 36 against a truth of 36, the exporter writes them, and
+there is no `Q`. *Collected in the wrong place* means the ink IS in the log,
+under a name no consumer can ask for: `gather_detections` files **every**
+detection as `Q.GLYPH_BOX`, and a decision declaring `wants=(Q.ARC_BOX,)`
+resolves to nothing because `Evidence` refuses a quantity the decision did not
+declare. The arc is in the same log, unreachable.
+
+⚠️ **So "is x gathered?" gives a useless YES.** A notehead's x sits inside its
+`Q.GLYPH_BOX` tuple, so onset looks covered — and nothing can ask for onset,
+nor, which is the property the record exists for, **ABSTAIN** on it. An absent
+chord is indistinguishable from a chord nobody looked for.
+
+⚠️⚠️ **THE STRUCTURAL FINDING: ALL SIX DECLARED STUBS ARE ALSO STARVED AT
+GATHER.** The handoff reads them as six adjudicators left to write; every one
+declares a measurement no gatherer emits, so **a stub is two repairs, not one**
+— writing the adjudicator would leave it abstaining for lack of evidence.
+`arc_kind`/`arc_owner` want `ARC_BOX` (2 classes), `articulation_owner` wants
+`ARTICULATION_MARK` (10), `dynamic` wants `DYNAMIC_LETTER` (12),
+`wedge_anchor` wants `WEDGE_BOX` (2 hairpin classes) — **all four are NAMING
+gaps, and cheap: the ink is already in the log.** Only `direction` is a reading
+gap. ✅ **The 15 non-stub decisions are all fed** — measured, not assumed.
+
+**The chord family**, 11 legacy event keys with no name in the record:
+`events` (the simultaneities themselves — `Q.MEASURE_PARTITION` says where the
+BARS are and nothing says what is inside one), `kind`, `x_position` (ONSET),
+`voices`/`voice_index`, `stem_direction`, `tied_to_next`/`tied_from_prev`,
+`fermata`, `ornaments`. ⚠️ `voicing.group_chords_in_measure` is a full
+ADJUDICATION — a 0.6-notehead-width tolerance, a divisi veto on stem direction,
+a mode-vote over the group's durations — with no subject, no input and no
+verdict in the record. And `Q.ARC_OWNER` already depends on `voices`, since
+MusicXML pairs `<slur>` WITHIN a `<voice>`.
+
+**16 of 35 detector families have no quantity naming them**, led by **`rest`
+(11 classes)** — a rest is half of every duration decision, and a whole-rest
+glyph means the BAR — and **`accidental` (8)**; then `tremolo`, `grace`,
+`ornament`, `keyboard`, `strings`, `fermata`, `repeat`, `brace` and six more.
+
+⚠️ **THE TOOL NEARLY MANUFACTURED ITS OWN FINDINGS, TWICE, AND BOTH ARE PINNED.**
+`Q.STEM` is observed through a loop variable (`for quantity, kind in ((Q.STEM,
+"stems"), …)`), so the first version reported it ungathered and accused
+`adjudicate_duration` of starving on it — the walker resolves loop-bound
+quantities and `test_a_loop_bound_quantity_is_seen_as_observed` was run RED with
+the resolver disabled. And reading the class space from `_CATEGORY_MAP`'s KEYS
+— an allow-list resolved by SUBSTRING fallback — reported hairpins as having no
+detector class, which is the same allow-list fault `export_coverage.compare()`
+was repaired for on 2026-09-08. **A coverage tool's own blind spot invents
+work.**
+
+**Anti-drift, because a list of this shape rots**: `unaccounted()` fails on a
+legacy event key in neither `LEGACY_TO_Q` nor `NO_VOCABULARY`,
+`class_space_coverage()["unmapped"]` on an unmapped detector family, and
+`test_no_vocabulary_entries_still_have_no_vocabulary` fails the day a gap is
+FILLED — a closed entry must LEAVE the table, the same contract
+`export_coverage.KNOWN_GAPS` holds.
+
+⚠️ **No arm was run and no page was read** — every figure is a property of the
+tree, so nothing here says how OFTEN a missing quantity would fire. **Measure
+REACH before accuracy.** Full reading:
+[benchmarks/omr-gather-coverage-2026-09/FINDINGS.md](benchmarks/omr-gather-coverage-2026-09/FINDINGS.md).
+
+
+---
+
 ## Instrument identity — three readers, cheapest first
 
 `contextual._labels_for_page` runs them in order and only pays when the free

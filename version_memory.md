@@ -5,6 +5,61 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-09 — GATHER-stage coverage: the chord gap generalises (derived, no arm run)
+
+- **Sean found that chords — notes aligning in a bar — are not tracked.** The
+  finding generalises, and the answer is a derived tool rather than a written
+  list: `python3 -m tools.omr.staged.gather_coverage`. New:
+  `tools/omr/staged/gather_coverage.py`,
+  `tools/omr/tests/test_staged_gather_coverage.py` (8 tests),
+  [benchmarks/omr-gather-coverage-2026-09/FINDINGS.md](benchmarks/omr-gather-coverage-2026-09/FINDINGS.md)
+  and its committed output.
+- **Measured: `record.Q` declares 63 quantities and a gatherer OBSERVES 31.**
+  Two more are declared and only ever abstained on (`DIRECTION_WORD` —
+  `gather_direction_text` is itself a stub — and `SYSTEMIC_COLUMN`).
+- **⚠️ THE TWO FAULTS ARE DIFFERENT AND THE TOOL KEEPS THEM APART.** *Not
+  gathered*: no row carries it at all (`fermata` — detected, exported, 36-for-36
+  on Beethoven 5, and no `Q`). *Wrong place*: the ink IS in the log as an
+  anonymous `Q.GLYPH_BOX` and no consumer can ask for it, because `Evidence`
+  refuses a quantity the decision did not declare.
+- **⚠️ THE STRUCTURAL FINDING: all six declared stubs are ALSO starved at the
+  gather stage.** The handoff reads them as six adjudicators left to write;
+  every one wants a measurement no gatherer emits, so a stub is **two** repairs,
+  not one. Four of the five missing quantities are NAMING gaps (the ink is
+  already there: 2 arc classes, 10 artic, 12 dynamic, 2 hairpin); only
+  `DIRECTION_WORD` is a reading gap. **The 15 non-stub decisions are all fed.**
+- **11 legacy event keys have no name in the record** — `events`, `kind`,
+  `x_position` (onset), `voices`/`voice_index`, `stem_direction`,
+  `tied_to_next`/`tied_from_prev`, `fermata`, `ornaments`. Chord grouping in
+  `voicing.group_chords_in_measure` is a full adjudication — a 0.6-notehead-width
+  tolerance, a divisi veto on stem direction, a mode-vote over durations — with
+  no subject, no input and no verdict in the record.
+- **16 of 35 detector families have no quantity naming them**, led by **`rest`
+  (11 classes)** and **`accidental` (8)**. A rest is half of every duration
+  decision.
+- **⚠️ The tool nearly manufactured its own finding.** `Q.STEM` is observed
+  through a loop variable, so the first version reported it ungathered and
+  accused `adjudicate_duration` of starving. The AST walker now resolves
+  loop-bound quantities; the guard was run RED to prove it load-bearing. A
+  second self-inflicted miss: reading the class space from `_CATEGORY_MAP`'s
+  KEYS (an allow-list resolved by substring fallback) reported hairpins as
+  having no detector class — the same allow-list fault `export_coverage.compare`
+  was just repaired for.
+- **Anti-drift, because a list of this shape rots**: `unaccounted()` fails on a
+  legacy event key in neither table, `class_space_coverage()["unmapped"]` on an
+  unmapped detector family, and `test_no_vocabulary_entries_still_have_no_vocabulary`
+  fails the day a gap is FILLED — a closed entry must leave the table.
+- **⚠️ No arm was run and no page was read.** Every figure is a property of the
+  tree, so it says nothing about how often a missing quantity would fire.
+  Measure REACH before accuracy.
+
+**Files touched:** `tools/omr/staged/gather_coverage.py` (new),
+`tools/omr/tests/test_staged_gather_coverage.py` (new),
+`benchmarks/omr-gather-coverage-2026-09/` (new), CLAUDE.md, PROJECT_BRIEF.md,
+version_memory.md.
+
+---
+
 ## 2026-09-09 — dynamics: the block is HAIRPINS, not letters (scoping, no arm run)
 
 - **Cloud-session capability established by inventory, not memory**:
