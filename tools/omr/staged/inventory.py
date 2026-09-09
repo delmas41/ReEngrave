@@ -153,6 +153,64 @@ def _legacy_for(fn: Any, mods: List[str]) -> Dict[str, List[str]]:
     }
 
 
+def _never_read(spec) -> List[str]:
+    """`wants` entries whose `Q.` name appears nowhere in the decision's body.
+
+    Deliberately CONSERVATIVE — any mention counts as a read, including one
+    inside a loop tuple — so what it reports is a declaration the code does
+    not touch at all.
+    """
+    if spec.stub:
+        return []                       # a stub reads nothing, by definition
+    try:
+        src = inspect.getsource(spec.fn)
+    except OSError:                                          # noqa: BLE001
+        return []
+    # ⚠️ THE DECORATOR MUST BE EXCLUDED, AND LEAVING IT IN MADE THIS CHECK
+    # REPORT ZERO. `inspect.getsource` includes decorator lines, and `wants`
+    # lives there — so every declared quantity "appeared in the source" and
+    # nothing could ever be flagged. A zero is a suspect, not a result.
+    tree = ast.parse(_dedent(src))
+    fn = next((n for n in ast.walk(tree)
+               if isinstance(n, ast.FunctionDef) and n.name == spec.name), None)
+    if fn is None:
+        return []
+    # ⚠️ AND THE MODULE'S OWN HELPERS COUNT AS THE DECISION READING.
+    # `adjudicate_clef` asks for `clef_glyph` through `_detector_terms(ev)`;
+    # a check that looked only at the decision body reported six decisions
+    # reading nothing they declared, which is a measure of code STYLE, not of
+    # inertness. Followed to depth 3 within the decision's own module.
+    mod = ast.parse(pathlib.Path(inspect.getfile(spec.fn)).read_text())
+    helpers = {n.name: n for n in ast.walk(mod)
+               if isinstance(n, ast.FunctionDef)}
+    names: Set[str] = set()
+    seen: Set[str] = set()
+    frontier = [fn]
+    for _ in range(3):
+        nxt: List[ast.AST] = []
+        for node in frontier:
+            body = node.body if isinstance(node, ast.FunctionDef) else [node]
+            for stmt in body:
+                for a in ast.walk(stmt):
+                    if (isinstance(a, ast.Attribute)
+                            and isinstance(a.value, ast.Name)
+                            and a.value.id == "Q"):
+                        names.add(a.attr)
+                    if isinstance(a, ast.Call):
+                        f = a.func
+                        called = (f.id if isinstance(f, ast.Name)
+                                  else f.attr if isinstance(f, ast.Attribute)
+                                  else None)
+                        if called in helpers and called not in seen:
+                            seen.add(called)
+                            nxt.append(helpers[called])
+        frontier = nxt
+        if not frontier:
+            break
+    read = {getattr(Q, n) for n in names if isinstance(getattr(Q, n, None), str)}
+    return [w for w in spec.wants if w not in read]
+
+
 def _dedent(src: str) -> str:
     lines = src.splitlines()
     pad = min((len(l) - len(l.lstrip()) for l in lines if l.strip()), default=0)
@@ -213,6 +271,12 @@ def build() -> Dict[str, Any]:
             "revises": spec.revises,
             "excludes_tiers": list(spec.excludes_tiers),
             "consumes": consumes,
+            # ⚠️ A `wants` entry the body never mentions is INERT: the harness
+            # fills `missing`/`declined` only for quantities the decision
+            # actually QUERIED, so a declaration nothing reads records
+            # nothing and cannot be told from one that is read and always
+            # present. Found by a test that asserted the opposite and failed.
+            "declared_and_never_read": _never_read(spec),
             "produces": {
                 "quantity": quantity,
                 "causes": [r.effect for r in E.RULES if r.cause == quantity],
@@ -298,6 +362,11 @@ def _problems(rows: List[Dict[str, Any]], order: List[str],
                     f"{q} is a declared STUB whose input is ALSO never "
                     f"gathered ({', '.join(starved)}) -- implementing the "
                     f"adjudicator alone would still produce nothing")
+        for w in row["declared_and_never_read"]:
+            out.append(
+                f"{q} declares {w!r} in `wants` and never reads it — the "
+                f"declaration is inert: nothing records it as missing or "
+                f"declined")
         d = row["domain"]
         if d and d not in sites and d not in indirect and d not in A.REGISTRY:
             out.append(

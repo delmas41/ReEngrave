@@ -32,6 +32,9 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [
+        "gap_bridging"
+      ],
       "produces": {
         "quantity": "system_membership",
         "causes": [],
@@ -92,6 +95,7 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [],
       "produces": {
         "quantity": "staff_group",
         "causes": [],
@@ -154,6 +158,7 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [],
       "produces": {
         "quantity": "measure_partition",
         "causes": [],
@@ -215,6 +220,7 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [],
       "produces": {
         "quantity": "staff_ordinal",
         "causes": [],
@@ -268,6 +274,7 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [],
       "produces": {
         "quantity": "system_staff_count",
         "causes": [],
@@ -350,6 +357,11 @@
           "gathered_by": [],
           "gathered_indirectly_by": []
         }
+      ],
+      "declared_and_never_read": [
+        "roster_entry",
+        "staff_ordinal",
+        "staff_group"
       ],
       "produces": {
         "quantity": "instrument",
@@ -449,6 +461,7 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [],
       "produces": {
         "quantity": "slot_index",
         "causes": [],
@@ -538,6 +551,10 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [
+        "staff_ordinal",
+        "instrument"
+      ],
       "produces": {
         "quantity": "part_partition",
         "causes": [
@@ -619,6 +636,9 @@
           ],
           "gathered_indirectly_by": []
         }
+      ],
+      "declared_and_never_read": [
+        "system_staff_count"
       ],
       "produces": {
         "quantity": "group_symbol",
@@ -713,6 +733,9 @@
           ],
           "gathered_indirectly_by": []
         }
+      ],
+      "declared_and_never_read": [
+        "notehead_staff_position"
       ],
       "produces": {
         "quantity": "clef",
@@ -820,6 +843,10 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [
+        "keysig_marker",
+        "dossier_fact"
+      ],
       "produces": {
         "quantity": "key_signature",
         "causes": [
@@ -926,6 +953,10 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [
+        "glyph_conf",
+        "notehead_staff_position"
+      ],
       "produces": {
         "quantity": "glyph_owner",
         "causes": [
@@ -1008,6 +1039,7 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [],
       "produces": {
         "quantity": "arc_owner",
         "causes": [],
@@ -1066,6 +1098,7 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [],
       "produces": {
         "quantity": "arc_kind",
         "causes": [],
@@ -1129,6 +1162,7 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [],
       "produces": {
         "quantity": "articulation_owner",
         "causes": [],
@@ -1186,6 +1220,7 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [],
       "produces": {
         "quantity": "wedge_anchor",
         "causes": [],
@@ -1255,6 +1290,9 @@
           ],
           "gathered_indirectly_by": []
         }
+      ],
+      "declared_and_never_read": [
+        "beam_stroke"
       ],
       "produces": {
         "quantity": "tuplet_ratio",
@@ -1373,6 +1411,9 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [
+        "stem"
+      ],
       "produces": {
         "quantity": "duration",
         "causes": [],
@@ -1467,6 +1508,11 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [
+        "meter_glyph",
+        "duration",
+        "dossier_fact"
+      ],
       "produces": {
         "quantity": "meter",
         "causes": [
@@ -1538,6 +1584,7 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [],
       "produces": {
         "quantity": "dynamic",
         "causes": [],
@@ -1591,6 +1638,7 @@
           "gathered_indirectly_by": []
         }
       ],
+      "declared_and_never_read": [],
       "produces": {
         "quantity": "direction",
         "causes": [],
@@ -1673,6 +1721,18 @@
     }
   ],
   "problems": [
+    "system_membership declares 'gap_bridging' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "instrument declares 'roster_entry' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "instrument declares 'staff_ordinal' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "instrument declares 'staff_group' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "part_partition declares 'staff_ordinal' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "part_partition declares 'instrument' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "group_symbol declares 'system_staff_count' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "clef declares 'notehead_staff_position' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "key_signature declares 'keysig_marker' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "key_signature declares 'dossier_fact' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "glyph_owner declares 'glyph_conf' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "glyph_owner declares 'notehead_staff_position' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
     "arc_owner wants 'arc_box', which no gather site observes and no decision produces",
     "arc_owner is a declared STUB whose input is ALSO never gathered (arc_box) -- implementing the adjudicator alone would still produce nothing",
     "arc_kind wants 'arc_box', which no gather site observes and no decision produces",
@@ -1681,6 +1741,11 @@
     "articulation_owner is a declared STUB whose input is ALSO never gathered (articulation_mark) -- implementing the adjudicator alone would still produce nothing",
     "wedge_anchor wants 'wedge_box', which no gather site observes and no decision produces",
     "wedge_anchor is a declared STUB whose input is ALSO never gathered (wedge_box) -- implementing the adjudicator alone would still produce nothing",
+    "tuplet_ratio declares 'beam_stroke' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "duration declares 'stem' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "meter declares 'meter_glyph' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "meter declares 'duration' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
+    "meter declares 'dossier_fact' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
     "dynamic wants 'dynamic_letter', which no gather site observes and no decision produces",
     "dynamic is a declared STUB whose input is ALSO never gathered (dynamic_letter) -- implementing the adjudicator alone would still produce nothing"
   ]
