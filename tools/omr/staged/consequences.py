@@ -218,7 +218,18 @@ def _event_totals(log: Log, subject: Subject, notes, current) -> Optional[float]
             "note. The corrected bar must land EXACTLY on the meter. The "
             "answer must be UNIQUE. Never adds, deletes or re-pitches a note. "
             "Tuplet members are excluded -- re-deriving a level would "
-            "silently drop the ratio.")
+            "silently drop the ratio.",
+      # ⚠️⚠️ THE PIPELINE'S ONE SANCTIONED LOOP, DECLARED. Since the meter
+      # carry is corroborated by the bars, the meter now DEPENDS ON the very
+      # durations this rule revises -- and the fixpoint guard refuses that by
+      # default, correctly, because it cannot see that the loop terminates.
+      # This one does: `duration_v1 -> meter -> duration_v2` is a straight
+      # line unrolled, run once and stopped, which is the rule `transcribe`
+      # has always stated as "vote once, repair once". The BOUND above is what
+      # makes it safe -- at most one note, an exact landing, a unique answer,
+      # so it cannot iterate even in principle. Sean's call, 2026-09-10, after
+      # the guard escalated it exactly as its message says to.
+      single_pass=True)
 def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdict]:
     """The meter settles, so a bar that does not fit it is re-read -- ONCE.
 
@@ -321,7 +332,12 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
         value={**option, "reconciled": True},
         decider="reconcile_duration", reason="meter_reconciliation",
         considered=(note.id, meter.id), basis=(note.id, meter.id),
-        supersedes=note.id)
+        supersedes=note.id,
+        # ⚠️ MUST MATCH THIS RULE'S OWN `single_pass=` DECLARATION, and
+        # `test_the_single_pass_flag_matches_its_rule` asserts that it does --
+        # a verdict claiming the exemption its rule does not declare would be
+        # the guard disabled by a typo.
+        single_pass_revision=True)
     return [log.record(out)]
 
 

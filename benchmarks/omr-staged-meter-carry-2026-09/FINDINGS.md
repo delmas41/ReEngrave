@@ -272,3 +272,120 @@ Two consequences worth carrying:
 ⚠️ Note this also means §5's own table, measured off the EXPORT, is the
 *optimistic* one: it is what the bar sum could say once grouping precedes it,
 not what any stage can read today.
+
+
+---
+
+## 7. THE CARRY IS NOW WEIGHED, NOT GATED — and the flag can come off the binary
+
+Sean, 2026-09-10, on §2's default-OFF conclusion:
+
+> *"I want to make sure that we don't get stuck in binary on or off based on
+> current measurements ... We need probability based decisions with layers of
+> information ... this is where the math that can be determined by its own
+> equation could be weighed more heavily than information that can only be
+> derived. If the measure is what we think it is - does the math of the notes
+> make sense. If not then the meter should decrease in probability."*
+
+§2 was the wrong shape. The carry was built to DECIDE, so a case where it
+decided wrongly could only be answered by switching it off. It now arrives as
+a **candidate** whose standing the bars move.
+
+### The mechanism
+
+A carried meter enters as one signed term and every bar it claims to govern
+adds another:
+
+| term | weight |
+|---|--:|
+| `carried_from_read_meter` | **+1.0** |
+| each bar that FITS | **+1.0** |
+| each bar that does NOT | **−1.0** |
+| `METER_CARRY_FLOOR` (support needed) | **2.0** |
+| `METER_CARRY_MIN_BARS` (evidence needed) | **2** |
+
+⚠️ **The ordering is structural, not tuned.** At these weights two net
+contradicting bars outweigh ANY carry, and no amount of carrying outweighs the
+bars — Sean's principle made a property of the constants, asserted directly by
+`test_the_BARS_outweigh_the_carry_and_the_carry_never_outweighs_them` so that a
+sweep breaking it fails even if every behavioural test still passes.
+
+⚠️ **NOT a probability, and the ban it respects is narrower than it reads.**
+`adjudicate`'s docstring forbids probabilities because the one attempt at
+calibrated identity probabilities reached ECE 0.1277 and failed worst at the
+top of the range (a bin promising 0.989, delivering 0.692). Signed terms summed
+against a threshold are the same shape without the claim. ⚠️ **And that
+objection does not extend to this family**: the failure was diagnosed as the
+CORPUS, and a bar sum is `Checkable.CHECKABLE` — provable against itself on any
+document with no truth file — so it could generate its own calibration data
+from the score library alone. Nothing here does that yet; it is the open route
+to genuine probabilities where the math self-checks.
+
+### Measured, same document, same weights
+
+| system | outcome | support | bars |
+|---|---|--:|---|
+| `system/2/0` — continuation, truth 2/4 | **carried** | **+7.0** | 8 fit / 2 not |
+| `system/2/1` — continuation, truth 2/4 | **carried** | **+8.0** | 8 fit / 1 not |
+| `system/17/0` — *Andante*, truth 3/8 | **refused** | **−3.0** | 0 fit / 4 not |
+| `system/17/1` — *Andante* | **refused** | — | only 1 assessable bar |
+| `system/17/2` — *Andante* | **refused** | **−1.0** | 0 fit / 2 not |
+
+**All three Andante systems refuse the wrong meter, with no movement detector
+anywhere in the pipeline**, and both continuation systems carry.
+
+⚠️ **A LEAK WAS FOUND AND CLOSED, and it is why `METER_CARRY_MIN_BARS` exists.**
+At first `system/17/1` **carried `2/4` onto the Andante** at support exactly
++2.0 — one bar that happened to sum to 2.0, nothing contradicting it, landing
+precisely on the floor. The fix is a SEPARATE constant rather than a higher
+floor: `A-CLEF-6` records that `MARGIN_FLOOR` carries two jobs and that a sweep
+of it moves both behaviours at once. *"Is there enough evidence to judge?"* and
+*"does the evidence support it?"* are two questions.
+
+### In the file (pages 0-2, carry OFF vs ON)
+
+| | OFF | ON |
+|---|--:|--:|
+| whole rests written at **4.0 ql in a 2.0 ql bar** | **194** | **70** |
+| `<rest measure="yes"/>` | 108 | **232** |
+| `written.notes` | 648 | **665** |
+| `not_written.duration_narrowed` | 163 | **146** |
+| `written.empty_bars_padded_without_meter` | **47** | *field gone* |
+| `not_written.no_pitch` (control) | 54 | 54 |
+| `reconcile_duration` fired | 13 *(pre-`Q.EVENT`)* | **47** |
+
+## 8. ⚠️ THE PIPELINE'S ONE SANCTIONED LOOP, NOW DECLARED
+
+Corroboration makes the meter depend on the durations, and
+`reconcile_duration` rewrites those same durations FROM the meter. The record
+detected it and refused: `UphillConsequence`, *"the new value was derived
+through something that depends on the value it replaces."*
+
+**The guard was right to stop and it is not a fixpoint.** Unrolled it is
+`duration_v1 -> meter -> duration_v2` — a straight line, run once and stopped,
+which is the rule `transcribe` has always stated as *"vote once, repair once"*.
+Sean's call was to allow it, and the exemption is **declared per rule**
+(`rule(single_pass=True)` → `Verdict.single_pass_revision`) rather than as a
+global loosening, so it cannot spread by accident. What makes it safe is the
+BOUND, not the flag: at most one note, an exact landing, a unique answer.
+
+⚠️ The error message now names the exemption, so the next person meets a
+choice rather than a wall — and the guard escalated exactly as its own text
+instructs.
+
+## 9. ⚠️ AN OPERATIONAL TRAP THAT INVALIDATED A MUTATION RUN
+
+macOS system Python caches bytecode **outside the source tree**, in
+`~/Library/Caches/com.apple.python/<abs path>/`. `find . -name __pycache__` does
+not see it and `rm -rf __pycache__` does not clear it.
+
+Live consequence: after a mutation was reverted, the *mutated* constant stayed
+live — `grep` showed `-1.0` in the file while `import` returned `-0.0`, on a
+file whose md5 matched `inspect.getsource`. A restored tree kept failing a test
+it should have passed, and, worse, a later mutation ran on top of an earlier
+one without saying so.
+
+**So: clear that path between mutation arms**, and treat a disagreement between
+`grep` and `import` as this until proved otherwise. Same family as the cached
+`scan_eval` A/B already recorded in CLAUDE.md — the arms did not run the code
+you think they ran, and nothing in the output says so.

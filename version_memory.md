@@ -5,6 +5,65 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-10 (later still) — the meter carry is WEIGHED, not gated
+
+Sean: *"I want to make sure we don't get stuck in binary on or off ... If the
+measure is what we think it is - does the math of the notes make sense. If not
+then the meter should decrease in probability."*
+
+- **The carry is now a CANDIDATE the bars judge.** `carried_from_read_meter`
+  **+1.0**, each bar that FITS **+1.0**, each that does not **−1.0**, against
+  `METER_CARRY_FLOOR` 2.0 and `METER_CARRY_MIN_BARS` 2.
+- ⚠️ **THE MOVEMENT-BOUNDARY PROBLEM DISSOLVED — no detector needed.** Measured
+  on Beethoven 5 / Litolff `984073`: page 2's two systems (continuation, truth
+  2/4) carry at **+7.0** and **+8.0**; **all three systems of page 17 — the
+  *Andante*, a NEW MOVEMENT in 3/8 — REFUSE the carried 2/4** (−3.0, −1.0, and
+  one on too-few-bars). The new movement's bars simply contradict the old
+  movement's meter.
+- File effect, pages 0-2: whole rests at 4.0 ql inside a 2.0 ql bar
+  **194 → 70**, `written.notes` 648 → 665 against `duration_narrowed`
+  163 → 146, `empty_bars_padded_without_meter: 47` gone,
+  `reconcile_duration` **13 → 47**. Control: `no_pitch` 54 → 54.
+- ⚠️ **The ordering is STRUCTURAL, not tuned**: two net contradicting bars
+  outweigh ANY carry, no carry outweighs the bars — asserted on the constants
+  so a sweep breaking it fails even when every behavioural test passes. The
+  weights themselves are symmetric and **declared unmeasured** (both
+  asymmetries are arguable; n=2 separates under every ratio).
+- ⚠️ **Not a probability**, and the ban is narrower than it reads:
+  `adjudicate` forbids them because calibrated IDENTITY probabilities measured
+  ECE 0.1277, failing worst at the top of the range — but that was diagnosed
+  as the CORPUS, and a bar sum is `Checkable.CHECKABLE`, provable with no truth
+  file. **So this family could be genuinely calibrated from the score library
+  alone.** Nothing does that yet; it is the open route.
+- ⚠️ **A LEAK FOUND AND CLOSED.** At first one *Andante* system carried at
+  support exactly +2.0 — a single bar summing to 2.0, landing on the floor.
+  Fixed with a SEPARATE `METER_CARRY_MIN_BARS` rather than a higher floor,
+  because `A-CLEF-6` records that one constant carrying two jobs makes a sweep
+  move both behaviours at once.
+- ⚠️ **A LONE WHOLE REST IS NEVER READ** — it stands for the bar whatever the
+  meter and its 4.0 is our own default (left in, 13 of 17 agreeing bars vote
+  4.0 on the Andante); it is also what `size_measure_rest` supersedes, so
+  touching it makes the record report a real fixpoint.
+- **`rule(single_pass=True)` / `Verdict.single_pass_revision`** — the
+  pipeline's ONE sanctioned loop, declared PER RULE. Corroboration makes the
+  meter depend on the durations `reconcile_duration` rewrites, and
+  `UphillConsequence` refused it. Unrolled it is a straight line — "vote once,
+  repair once" — and the BOUND is what makes it safe. Sean's call; the guard
+  escalated exactly as its own message instructs, and its text now names the
+  exemption. A-DUR-3.
+- ⚠️⚠️ **AN OPERATIONAL TRAP THAT INVALIDATED A MUTATION RUN.** macOS system
+  Python caches bytecode OUTSIDE the tree, in
+  `~/Library/Caches/com.apple.python/<abs path>/`; `find . -name __pycache__`
+  never sees it. A reverted mutation stayed live — `grep` showed `-1.0` while
+  `import` returned `-0.0` on a file whose md5 matched `inspect.getsource`.
+  **Clear that path between mutation arms.** Same family as the cached
+  `scan_eval` A/B.
+- Suite **3,286 passed / 9 skipped / 0 failed**; `inventory --check` and
+  `health --check` exit 0. Still default `0` — on **n** (one document), not on
+  the hazard.
+
+---
+
 ## 2026-09-10 (later) — the chord was grouped after the stage that needed it
 
 Sean: *"determining when notes and voices and chords line up should be very

@@ -27,8 +27,11 @@ import os
 from typing import Optional, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
-                          decision)
-from ..record import ABSTAIN, Kind, Outcome, Q, READERS, Scope, State
+                          Term, decision, tally)
+from collections import Counter
+
+from ..record import (ABSTAIN, Kind, Outcome, Q, READERS, Scope, State,
+                      Subject)
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -636,6 +639,198 @@ def meter_carry_enabled() -> bool:
     return os.environ.get(METER_CARRY_ENV, "0").strip() == "1"
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# A carried meter is WEIGHED, not gated. (A-METER-3)
+#
+# Sean, 2026-09-10: *"We need probability based decisions with layers of
+# information ... this is where the math that can be determined by its own
+# equation could be weighed more heavily than information that can only be
+# derived. If the measure is what we think it is - does the math of the notes
+# make sense. If not then the meter should decrease in probability."*
+#
+# So the bars do not VETO the carry, they move its standing. A carried meter
+# starts with the support of the reading it came from, and every bar it claims
+# to govern adds to or subtracts from that, in this module's one sanctioned
+# form: signed terms summed against a threshold (`adjudicate.Term`/`tally`).
+#
+# ⚠️ NOT A PROBABILITY, and the distinction is measured rather than stylistic.
+# `adjudicate`'s docstring bans them because the one attempt at calibrated
+# identity probabilities reached ECE 0.1277 and failed WORST at the top of the
+# range -- a bin promising 0.989 and delivering 0.692. Summed signed terms are
+# the same shape without the claim: they order and they threshold, they do not
+# assert that a number is a frequency.
+#
+# ⚠️ WHAT IS CALIBRATABLE HERE, AND IT IS THE INTERESTING PART. That failure
+# was diagnosed as the CORPUS, not the estimator -- the tier that would supply
+# labels was empty. A bar sum needs no such corpus: it is
+# `Checkable.CHECKABLE`, provable against itself on any document with no truth
+# file and no human, so this family COULD be genuinely calibrated later from
+# the score library alone. Nothing here does that yet.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: What the carry is worth alone: a real reading, voted by every staff of its
+#: system -- but on another system, and possibly in another movement.
+W_METER_CARRIED = 1.0
+
+#: What one bar that FITS the carried meter is worth, and one that does not.
+#:
+#: ⚠️ SYMMETRIC, AND DECLARED UNMEASURED. There is a real argument for
+#: asymmetry in EACH direction: an agreeing bar is unlikely by chance, while a
+#: disagreeing bar is routine because our durations are unreliable -- even on
+#: a page whose meter is READ, only half the bars land exactly. The two pages
+#: available separate under every ratio tried, so the corpus cannot choose,
+#: and a constant a measurement cannot settle is left neutral rather than
+#: tuned to n=2.
+W_METER_BAR_FITS = 1.0
+W_METER_BAR_CONTRADICTS = -1.0
+
+#: The support a carried meter needs before it stands.
+#:
+#: ⚠️ THE STRUCTURE IS THE CLAIM, NOT THE NUMBER: at these weights TWO net
+#: contradicting bars outweigh ANY carry, and no amount of carrying outweighs
+#: the bars. That is Sean's ordering made structural -- information checkable
+#: by its own arithmetic cannot be outvoted by information merely inherited.
+#:
+#: At 2.0 a carry also needs at least one net agreeing bar to stand at all, so
+#: a page with nothing to check against does not carry (`W_METER_CARRIED`
+#: alone is 1.0 and falls short). Measured on Beethoven 5 / Litolff `984073`
+#: carrying `2/4`: page 2 (a CONTINUATION, truth 2/4) scores 1 + 8 - 2 = +7;
+#: page 17 (the *Andante*, truth 3/8) scores 1 + 1 - 7 = -5.
+METER_CARRY_FLOOR = 2.0
+
+#: How many bars must be assessable before the bars may settle anything.
+#:
+#: ⚠️ A SEPARATE CONSTANT FROM THE FLOOR, DELIBERATELY, and `A-CLEF-6` is why:
+#: `MARGIN_FLOOR` there carries two jobs and the file records that a sweep of
+#: it moves both behaviours at once. "Is there enough evidence to judge?" and
+#: "does the evidence support it?" are two questions, and folding the first
+#: into the threshold would hide it.
+#:
+#: ⚠️ MEASURED, AND IT CLOSES A REAL LEAK. On the *Andante* two of its three
+#: systems refuse the carried `2/4` outright (support -3.0 and -1.0), and the
+#: third CARRIED IT WRONGLY at support exactly +2.0: one bar that happened to
+#: sum to 2.0, nothing contradicting it, landing precisely on the floor. One
+#: bar is not a system's worth of evidence -- the same argument
+#: `METER_COVERAGE_FLOOR` makes for readings ("two spurious readings that
+#: happen to agree are unanimous among themselves"), applied to bars. Page 2's
+#: systems have 10 and 9 assessable bars and are untouched.
+METER_CARRY_MIN_BARS = 2
+
+#: A bar needs this many staves reading it before it may vote on bar LENGTH.
+#: ⚠️ Two staves that agree are not a system; the same "unanimous among
+#: themselves" fault `METER_COVERAGE_FLOOR` exists for.
+METER_CARRY_MIN_STAVES_PER_BAR = 3
+
+
+def _corroborate(ev: Evidence, candidate: dict) -> dict:
+    """Do this system's own bars agree with `candidate`?
+
+    ⚠️ THE BARS NEED ONLY REFUSE A WRONG METER, NOT NAME THE RIGHT ONE, and
+    the difference is what makes this usable at all. On the *Andante* the bars
+    name NOTHING -- with lone whole rests excluded only 8 of 29 bars reach a
+    majority and the true 1.5 gets zero votes, because a movement's opening
+    page has most instruments resting and the few that play are the dense ones
+    we read worst. They are still perfectly able to say the bar is not 2.0.
+
+    ⚠️⚠️ A LONE WHOLE REST IS NEVER READ HERE, AND "not read" IS STRONGER THAN
+    "read then discarded". Two separate reasons:
+
+    * THE CIRCULARITY. An engraver fills an otherwise silent bar with ONE
+      centred whole rest whatever the meter, so the glyph stands for THE BAR
+      and says nothing about its length -- and the 4.0 we give it is our own
+      default *for want of a meter*. Counting it reads that default straight
+      back as evidence, and a page of rests would confirm 4/4 for ever.
+      Measured on p.17: left in, 13 of 17 agreeing bars vote 4.0.
+    * THE PROVENANCE. `size_measure_rest` SUPERSEDES exactly these durations
+      using the meter, so merely touching them puts them in the meter's basis
+      and the record then reports a genuine fixpoint
+      (`UphillConsequence`) -- correctly, because a basis is what a decision
+      TOUCHED, not what it finally believed. So the lone rest is identified
+      from the EVENT grouping plus the `Q.REST` measurement, and its duration
+      verdict is never requested.
+    """
+    num, den = candidate.get("numerator"), candidate.get("denominator")
+    if not num or not den:
+        return {"state": "no_candidate"}
+    expected = float(num) * 4.0 / float(den)
+
+    whole_rests = {r.subject for r in
+                   ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS)
+                   if r.value == "restWhole"}
+
+    bars: dict = {}
+    for grouping in ev.verdicts(Q.EVENT, scope=Scope.SELF_AND_DESCENDANTS):
+        if grouping.outcome is not Outcome.DECIDED:
+            continue
+        cell = grouping.subject
+        events = (grouping.value or {}).get("events") or []
+
+        def _sub(gi):
+            return Subject(Kind.GLYPH, page=cell.page, system=cell.system,
+                           staff=cell.staff, cell=cell.cell, glyph=gi)
+
+        # ⚠️ ANY whole rest disqualifies the BAR, not just a lone one. The
+        # narrower "only if it is the bar's single event" rule left a real
+        # hole: the EVENT grouping and `size_measure_rest`'s own population
+        # can disagree about whether a rest is alone (a glyph with no standing
+        # duration verdict is an event here and invisible there), so a bar
+        # this rule kept was still a bar whose rest the consequence later
+        # superseded -- and the record reported the fixpoint. A bar holding a
+        # whole rest cannot corroborate a meter that may rewrite it.
+        if any(_sub(gi) in whole_rests
+               for e in events for gi in (e.get("glyphs") or [])):
+            continue
+        total = 0.0
+        for event in events:
+            beats = []
+            for gi in event.get("glyphs") or []:
+                got = ev.verdict(Q.DURATION, subject=_sub(gi))
+                if got is None:
+                    continue
+                val = (got.value if got.outcome is Outcome.DECIDED
+                       else (got.candidates[0].value if got.candidates else None))
+                if val:
+                    beats.append(float(val.get("beats") or 0.0))
+            if beats:
+                total += Counter(beats).most_common(1)[0][0]
+        if total > 0:
+            bars.setdefault(cell.cell, []).append(round(total, 4))
+
+    terms = []
+    agree = disagree = 0
+    observed = Counter()
+    for cell_index, lengths in sorted(bars.items()):
+        if len(lengths) < METER_CARRY_MIN_STAVES_PER_BAR:
+            continue
+        mode, n = Counter(lengths).most_common(1)[0]
+        if n / len(lengths) < 0.5:
+            continue                 # the staves do not agree with EACH OTHER
+        observed[mode] += 1
+        if abs(mode - expected) < 1e-6:
+            agree += 1
+            terms.append(Term("bar_%d_fits" % cell_index, W_METER_BAR_FITS))
+        else:
+            disagree += 1
+            terms.append(Term("bar_%d_is_%s" % (cell_index, mode),
+                              W_METER_BAR_CONTRADICTS))
+    if len(terms) < METER_CARRY_MIN_BARS:
+        # ⚠️ NOT "carry anyway", and NOT the same row as a carry the bars
+        # outweighed. A page with too little to check against is exactly the
+        # page where a movement may have started unseen; abstaining is the
+        # status quo, carrying unverified is the hazard.
+        return {"state": "too_few_assessable_bars",
+                "bars_assessable": len(terms),
+                "bars_agree": agree, "bars_disagree": disagree,
+                "bar_lengths_seen": dict(observed.most_common(6))}
+    return {"terms": terms, "bars_agree": agree, "bars_disagree": disagree,
+            # ⚠️ WHAT THE BARS THEMSELVES SAY, recorded even though nothing
+            # consumes it. On the *Andante* it is the honest answer that they
+            # name NOTHING -- 1.0, 3.0 and 5.0 with no mode -- which is a
+            # different fact from "they disagree with the carry" and a reader
+            # of the record should be able to tell them apart.
+            "bar_lengths_seen": dict(observed.most_common(6))}
+
+
 def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
     """The nearest preceding system whose meter was READ, or None.
 
@@ -658,17 +853,42 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
         if found.reason != "voted":
             continue
         pages = (here.page or 0) - (src.page or 0)
-        return Ruling(
-            value=dict(found.value),
-            reason="carried",
-            used=(found.id,),
-            detail={"carried_from": src.to_key(),
-                    "pages_since_read": pages,
-                    "instead_of": instead_of,
-                    "source_share": (found.detail or {}).get("share"),
-                    "source_staves_spoke":
-                        (found.detail or {}).get("n_staves_spoke")},
-        )
+        # ⚠️⚠️ THE SECOND WITNESS, AND IT IS WHAT MAKES THE CARRY SAFE
+        # WITHOUT A MOVEMENT DETECTOR. A carried meter is a CANDIDATE; this
+        # system's own bars confirm or refuse it. A movement boundary needs no
+        # detecting because the new movement's bars simply contradict the old
+        # movement's meter -- measured 8 agree / 1 disagree on a continuation
+        # page and 1 / 7 on the Andante.
+        check = _corroborate(ev, found.value)
+        if "terms" not in check:
+            return Ruling.abstain("carry_not_corroborated",
+                                  carried_from=src.to_key(),
+                                  pages_since_read=pages,
+                                  instead_of=instead_of, **check)
+        # ⚠️ THE CARRY IS A TERM, NOT A DECISION. It enters the sum on the
+        # same footing as the bars and can be outweighed by them.
+        terms = [Term("carried_from_read_meter", W_METER_CARRIED,
+                      (found.id,))] + check["terms"]
+        support = tally(terms)
+        detail = {"carried_from": src.to_key(),
+                  "pages_since_read": pages,
+                  "instead_of": instead_of,
+                  "source_share": (found.detail or {}).get("share"),
+                  "source_staves_spoke":
+                      (found.detail or {}).get("n_staves_spoke"),
+                  "support": round(support, 3),
+                  "floor": METER_CARRY_FLOOR,
+                  "bars_agree": check["bars_agree"],
+                  "bars_disagree": check["bars_disagree"],
+                  "bar_lengths_seen": check["bar_lengths_seen"]}
+        if support < METER_CARRY_FLOOR:
+            # ⚠️ Its own reason, and the SUPPORT is on the record beside it: a
+            # carry the bars outweighed, a carry with nothing to check against
+            # and a page with no carry available are three different pages,
+            # and a reader must be able to tell them apart.
+            return Ruling.abstain("carry_outweighed_by_the_bars", **detail)
+        return Ruling(value=dict(found.value), reason="carried",
+                      used=(found.id,), margin=support, detail=detail)
     return None
 
 
@@ -683,9 +903,10 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
     composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION),
     scope=Kind.SYSTEM,
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION, Q.DOSSIER_FACT,
-           Q.SYSTEM_STAFF_COUNT, Q.METER),
+           Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST),
     reasons=("voted", "no_agreement", "no_evidence",
-             "too_few_staves_read_it", "carried"),
+             "too_few_staves_read_it", "carried",
+             "carry_not_corroborated", "carry_outweighed_by_the_bars"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_meter(ev: Evidence) -> Ruling:
