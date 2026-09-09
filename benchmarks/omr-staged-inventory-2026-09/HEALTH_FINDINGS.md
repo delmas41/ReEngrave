@@ -18,7 +18,8 @@ missing one is untested in a way a green suite cannot show.
 `for f in tools/omr/tests/test_staged_*.py; do pytest "$f"; done` at
 `b2494cbc` totals 226 test functions across 16 files, not 153. One more
 hand-counted figure that rotted — which is the argument for this being a
-script.
+script. (`HEALTH.md` reads **281** because it includes the four files this
+session added; the 226 is the baseline it was measured against.)
 
 ## 2. ⚠️ WHAT THE EMPTY CELLS WERE, ALL CONFIRMED BY GREP BEFORE BEING BELIEVED
 
