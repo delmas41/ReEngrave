@@ -31,7 +31,7 @@ from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
 from collections import Counter
 
 from ..record import (ABSTAIN, Kind, Outcome, Q, READERS, Scope, State,
-                      Subject, meter_at)
+                      Subject, cell as R_cell, meter_at)
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -986,29 +986,41 @@ METER_CHANGE_FLOOR = 3.0
 #: signature announcing the next system's.
 #:
 #: ⚠️⚠️ A CAUTIONARY IS STANDARD ENGRAVING AND `_meter_changes` HAD NO NOTION
-#: OF IT: any glyph in a cell after the first was a change. Measured over the
-#: boundary benchmark's fourteen proposed segments, the separation is
-#: SATURATED -- every one of the four TRUE changes reads **0.000** and both
-#: cautionaries read **1.000**, with nothing whatever between. That is the
-#: engraving convention showing up as a number: a change is printed
-#: immediately after the barline that OPENS its bar, so the bar's music lies
-#: entirely to its right; a courtesy stands after the system's final barline,
-#: so the music lies entirely to its left.
+#: OF IT: any glyph in a cell after the first was a change. The engraving fact
+#: is that a change is printed immediately after the barline that OPENS its
+#: bar, so the bar's music lies to its right; a courtesy stands after the
+#: system's final barline, so the music lies to its left.
 #:
-#: ⚠️ THE FRACTION IS UNIT-FREE ON PURPOSE, and the alternative was measured
-#: and refused. Position WITHIN THE CELL separates too (true changes 0.000 to
-#: 0.074 of the cell's width, cautionaries 0.406 to 0.969) but its gap is
-#: narrow at the bottom and its worst case, 0.406, sits close to any natural
-#: threshold -- because that cell is a 298-px sliver where a 2048-px cell is
-#: normal. Comparing the glyph to the bar's own ink needs no width at all.
+#: MEASURED over every segment the boundary benchmark proposes, per READING
+#: (the staves that actually read it — see `_meter_changes`, and the note
+#: below about what pooling a whole cell does to this number):
 #:
-#: ⚠️ IT DELIBERATELY DOES NOT CATCH ALL OF THEM. Brahms 1 / Breitkopf page 0
-#: prints the same courtesy `9/8` the engraved arm does, and this reads it at
-#: 0.000 -- that degenerate final cell holds NINE detections against a normal
-#: cell's several hundred, so the bar has no ink to speak of and nothing is
-#: left of the glyph. That is the READING failing, which is what FINDINGS §4b
-#: already concludes about the whole of that fixture, and widening this rule
-#: to reach it would be fitting a placement rule to a detection gap.
+#:   the one cautionary in the corpus   1.000  (19 staves, 38 rows,
+#:                                              min = median = max)
+#:   every other segment, true or false  <= 0.118
+#:
+#: So the constant sits in an empty interval from 0.118 to 1.000. 0.5 is the
+#: middle of it and means "the bar's music is mostly behind the glyph".
+#:
+#: ⚠️⚠️ THE CORPUS CONTAINS EXACTLY ONE CAUTIONARY THIS CAN SEE, AND AN
+#: EARLIER DRAFT OF THIS COMMENT CLAIMED TWO. That draft's figures came from a
+#: probe that pooled EVERY staff with a glyph at the cell instead of the
+#: staves that read the segment, which turned Litolff p.61's mixture of three
+#: different readings into a single 1.000. Measured properly, that page's
+#: false `C` is read on ONE staff at 0.118 — at the HEAD of its bar — so it is
+#: a misread, not a courtesy, and this rule is right not to touch it.
+#:
+#: ⚠️ IT ALSO DOES NOT REACH THE BREITKOPF SCAN'S OWN COURTESY, which both
+#: printings of Brahms 1 page 0 engrave. That degenerate final cell holds five
+#: detections against the engraved arm's several hundred, so the glyph reads
+#: 0.000 — there is no music left of it because almost none was found. That is
+#: the READING failing, which is what FINDINGS §4b concludes about the whole of
+#: that fixture; widening this rule to reach it would fit a placement rule to
+#: a detection gap.
+#:
+#: ⚠️ THE FRACTION IS UNIT-FREE ON PURPOSE. Position within the CELL separates
+#: too, but needs the cell's width, and the widths run 298 to 2048 px on these
+#: pages. Comparing the glyph to the bar's own ink needs no width at all.
 METER_CAUTIONARY_LEFT_FRACTION = 0.5
 
 
@@ -1148,14 +1160,20 @@ def _looks_cautionary(ev: Evidence, staff_rows) -> bool:
         x = (r.detail or {}).get("x")
         if x is None:
             continue
-        # ⚠️ THE CELL IS THE SUBJECT TO ASK, NOT THE GLYPH. A meter glyph's
-        # own subject is a GLYPH and has no descendants, so querying it
-        # returned nothing and every candidate looked non-cautionary --
-        # caught by `test_the_courtesy_is_RECORDED_not_silently_dropped`
-        # failing, not by reading the code.
-        cell = r.subject.at(Kind.CELL)
-        if cell is None:
+        # ⚠️⚠️ THE CELL IS BUILT FROM THE ROW'S `cell` DETAIL, NOT FROM ITS
+        # SUBJECT, AND GETTING THAT WRONG COST A WHOLE MEASUREMENT ROUND.
+        # `gather` files `Q.METER_GLYPH` against the STAFF -- the cell is in
+        # `detail` -- so `r.subject.at(Kind.CELL)` returns None (a cell is
+        # DEEPER than a staff), this function bailed before reading a single
+        # box, and every candidate looked non-cautionary. The unit tests
+        # passed throughout because their fixture filed the glyphs on GLYPH
+        # subjects, which no gather site does: a fixture that does not match
+        # what GATHER emits tests the test.
+        staff = r.subject.at(Kind.STAFF)
+        cell_index = (r.detail or {}).get("cell")
+        if staff is None or cell_index is None:
             continue
+        cell = R_cell(staff.page, staff.system, staff.staff, int(cell_index))
         boxes = ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
                         subject=cell)
         xs = []
@@ -1211,14 +1229,6 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
         # alone would tie. Each distinct reading is scored on its own, and the
         # bars that follow decide -- which is the layering working rather than
         # a tie-break rule.
-        # ⚠️ THE COURTESY SIGNATURE IS REFUSED BEFORE ANYTHING IS SCORED, not
-        # weighed against the bars. It is not weak evidence for a change here;
-        # it is strong evidence about the NEXT system, and the two are
-        # different claims. See `METER_CAUTIONARY_LEFT_FRACTION`.
-        if all(_looks_cautionary(ev, rs) for rs in per_staff.values()):
-            cautionary.append(cell)
-            continue
-
         readings: dict = {}
         loose = 0
         for staff, staff_rows in per_staff.items():
@@ -1247,6 +1257,23 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
             # `DEFAULT_METERS`, imported rather than restated so the two
             # readers cannot drift apart about what a meter is.
             if (num, den) not in _PLAUSIBLE_METERS:
+                continue
+            # ⚠️⚠️ THE COURTESY IS REFUSED PER READING, NOT PER CELL, and the
+            # difference is the whole of whether it reaches a real page. It is
+            # not weak evidence for a change here; it is strong evidence about
+            # the NEXT system, so it is refused before anything is scored
+            # rather than weighed against the bars.
+            #
+            # ⚠️ Asked of the CELL, it does not fire where it matters.
+            # Beethoven 5 / Litolff p.61 cell 3 carries three staves reading
+            # three different things -- staff 0 at the head of its bar, staff
+            # 3 likewise, and staff 16 a `C` standing after ALL of its bar's
+            # music. Only staff 16's reading is a courtesy, and it is the one
+            # that WINS; requiring every staff of the cell to agree meant the
+            # rule stayed silent and the false `C` shipped. A cautionary
+            # belongs to the staves that read it.
+            if all(_looks_cautionary(ev, per_staff[st]) for st in staves):
+                cautionary.append((cell, raw))
                 continue
             expected = float(num) * 4.0 / float(den)
             fits, misses = _bar_run(bars, cell, expected)
@@ -1310,6 +1337,8 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
         # one that follows, and a carry that could read it would have the
         # answer already. Nothing reads it yet; recording it is what makes
         # that possible without another pass over the raster.
+        # ⚠️ (cell, raw) pairs: a courtesy names a METER as well as a bar,
+        # and the next system is the consumer that would want both.
         out["cautionary_cells"] = sorted(cautionary)
     return out
 

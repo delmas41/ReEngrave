@@ -863,7 +863,11 @@ class TestAMeterChangeIsReadFromTheInk(unittest.TestCase):
                 # ⚠️ `y_center` differs per digit on purpose: it is the WHOLE
                 # of what tells a numerator from a denominator.
                 y = 10.0 if klass.endswith(("2", "3", "6", "9", "12")) else 30.0
-                log.observe(R.glyph(0, 0, st, cell, 90 + len(klass)),
+                # ⚠️ ON THE STAFF — see `gather.gather_meter_glyphs`. This
+                # fixture used a GLYPH subject until 2026-09-09, and that
+                # mismatch is what let `_looks_cautionary` read no boxes on
+                # every real page while its own tests stayed green.
+                log.observe(R.staff(0, 0, st),
                             Q.METER_GLYPH, klass, reader=READERS.DETECTOR,
                             frame="cell:%d" % cell, score=0.9, cell=cell,
                             x=10.0, y_center=y,
@@ -1168,10 +1172,17 @@ class TestACourtesySignatureIsNotAChange(unittest.TestCase):
     page never applies to it.
 
     Measured on the boundary benchmark: it is the ONE false positive the
-    engraved arms produce, BOTH printings of Brahms 1 page 0 show it, and over
-    all fourteen proposed segments the separation is saturated — every one of
-    the four TRUE changes has 0.000 of its bar's ink to the left of the glyph
-    and both cautionaries have 1.000.
+    engraved arms produce, and removing it takes that family to zero without
+    costing a true change. Over every segment the benchmark proposes, scored
+    per READING, the corpus's single visible cautionary reads **1.000** on all
+    19 staves (38 rows, min = median = max) and every other segment — true or
+    false — reads **at most 0.118**.
+
+    ⚠️ THE CORPUS HAS EXACTLY ONE CAUTIONARY THIS CAN SEE. Litolff p.61's
+    false `C` is read on ONE staff at 0.118, at the HEAD of its bar, so it is
+    a misread rather than a courtesy; and the Breitkopf scan's own courtesy
+    reads 0.000 because that degenerate final cell holds five detections and
+    there is no music left of the glyph to find.
 
     ⚠️ The Beethoven forward fixture HID it: its cautionary page holds one
     cell, so the glyph landed at cell 0 and was read as an opening. A one-cell
@@ -1199,7 +1210,15 @@ class TestACourtesySignatureIsNotAChange(unittest.TestCase):
                             reader=READERS.TEMPLATE, frame="header_window",
                             score=0.7, raw="3/4")
             for klass, y in (("timeSig2", 10.0), ("timeSig4", 30.0)):
-                log.observe(R.glyph(0, 0, st, glyph_cell, 90 + len(klass)),
+                # ⚠️ ON THE STAFF, WHICH IS WHERE `gather.gather_meter_glyphs`
+                # FILES IT — the cell is in `detail`, not in the subject. An
+                # earlier draft of this fixture used a GLYPH subject, which no
+                # gather site does, and it hid a real bug: `_looks_cautionary`
+                # derived the cell with `subject.at(Kind.CELL)`, got None on
+                # every real row, and read no boxes at all while these tests
+                # stayed green. A fixture that does not match GATHER tests the
+                # test.
+                log.observe(R.staff(0, 0, st),
                             Q.METER_GLYPH, klass, reader=READERS.DETECTOR,
                             frame="cell:%d" % glyph_cell, score=0.9,
                             cell=glyph_cell, x=meter_x, y_center=y,
@@ -1261,7 +1280,7 @@ class TestACourtesySignatureIsNotAChange(unittest.TestCase):
         bar of THIS system. A refusal must stay distinguishable from a glyph
         nobody saw."""
         v = self._run(*self._log(meter_x=900.0))
-        self.assertEqual(v.value.get("cautionary_cells"), [2])
+        self.assertEqual(v.value.get("cautionary_cells"), [(2, "2/4")])
 
     def test_a_bar_with_no_other_ink_is_NOT_called_a_courtesy(self):
         """⚠️ NO OPINION IS NOT A CAUTIONARY. A bar we read no other ink in
@@ -1279,7 +1298,8 @@ class TestACourtesySignatureIsNotAChange(unittest.TestCase):
         # no opening reading, so `_change_only` is the only route left
         v = self._run(*self._log(meter_x=900.0, opening=False))
         self.assertIs(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual((v.detail or {}).get("cautionary_cells"), [2])
+        self.assertEqual((v.detail or {}).get("cautionary_cells"),
+                         [(2, "2/4")])
 
 
 class TestTheCarryTakesTheMeterInForceAtTheSourcesEND(unittest.TestCase):
@@ -1337,7 +1357,7 @@ class TestTheCarryTakesTheMeterInForceAtTheSourcesEND(unittest.TestCase):
                         score=0.7, raw="3/4")
             if source_changes:
                 for klass, y in (("timeSig2", 10.0), ("timeSig4", 30.0)):
-                    log.observe(R.glyph(0, 0, st, 1, 90 + len(klass)),
+                    log.observe(R.staff(0, 0, st),
                                 Q.METER_GLYPH, klass, reader=READERS.DETECTOR,
                                 frame="cell:1", score=0.9, cell=1,
                                 x=10.0, y_center=y, letter=False)
@@ -1435,3 +1455,44 @@ class TestAReadChangeMayBeACarrySource(unittest.TestCase):
         spec = adjudicate.REGISTRY[Q.METER]
         for reason in rhythm_mod.METER_SOURCE_REASONS:
             self.assertIn(reason, spec.reasons)
+
+
+class TestTheFixturesFileMeterGlyphsWhereGATHERDoes(unittest.TestCase):
+    """⚠️⚠️ A FIXTURE THAT DOES NOT MATCH GATHER TESTS THE TEST, and this one
+    cost a whole measurement round. `gather.gather_meter_glyphs` files
+    `Q.METER_GLYPH` against the STAFF and puts the bar in `detail["cell"]`;
+    the fixtures above filed it against a GLYPH. `_looks_cautionary` derived
+    its cell with `subject.at(Kind.CELL)`, which returns None for a staff
+    (a cell is DEEPER), so on every real page it read no boxes and returned
+    False — while five unit tests written on the wrong shape stayed green and
+    the benchmark tally came back byte-identical to its baseline.
+
+    This asserts the shape against the gather site itself rather than against
+    a remembered string.
+    """
+
+    def test_gather_files_meter_glyphs_on_a_STAFF_subject(self):
+        import ast
+        import inspect
+        from tools.omr.staged import gather
+        src = ast.parse(inspect.getsource(gather))
+        calls = [n for n in ast.walk(src)
+                 if isinstance(n, ast.Call)
+                 and isinstance(n.func, ast.Attribute)
+                 and n.func.attr == "observe"
+                 and any(isinstance(a, ast.Attribute) and a.attr == "METER_GLYPH"
+                         for a in n.args)]
+        self.assertTrue(calls, "no gather site observes METER_GLYPH")
+        for c in calls:
+            # the bar index travels as a keyword, NOT in the subject
+            self.assertIn("cell", [k.arg for k in c.keywords],
+                          "gather stopped putting the bar in `detail`")
+
+    def test_the_cautionary_rule_reads_boxes_for_a_STAFF_filed_glyph(self):
+        """The positive control the zero above needed: with the fixture in the
+        shape gather emits, the rule actually reaches the ink."""
+        t = TestACourtesySignatureIsNotAChange()
+        log, sysj = t._log(meter_x=900.0)
+        v = t._run(log, sysj)
+        self.assertEqual((v.value or {}).get("cautionary_cells"),
+                         [(2, "2/4")])
