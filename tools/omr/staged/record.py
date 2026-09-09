@@ -150,6 +150,45 @@ class Subject:
         return Subject(kind, **kw)
 
 
+def meter_at(value, cell_index):
+    """The meter in force at one BAR, out of a `Q.METER` verdict's value.
+
+    ⚠️⚠️ A METER IS A PROPERTY OF A RANGE OF BARS, NOT OF A SYSTEM, and this
+    helper is where that is expressed. The value carries `segments` -- one
+    entry per stretch, each with the `from_cell` it starts at -- so a system
+    holding a printed meter CHANGE says so in ONE fact rather than in two that
+    can drift apart. Sean, 2026-09-10: *"I don't want the dichotomy of it's a
+    system or a group of notes surrounding it. It is both."*
+
+    ⚠️ THE ALTERNATIVE WAS REFUSED ON THIS PROJECT'S OWN HISTORY. Keeping the
+    system meter as it was and adding a separate "there is a change at bar N"
+    fact is less work and leaves TWO RECORDS OF ONE THING that nothing forces
+    to agree -- the shape that let one accuracy figure go stale in three of
+    four places, and that made an `instrument_label` audit unable to disagree
+    with itself.
+
+    ⚠️ Top-level `numerator`/`denominator` remain and describe the FIRST
+    segment, so an unchanged single-meter system serialises exactly as before.
+    They are deliberately NOT the thing consumers should read -- a bar past a
+    change would get the wrong answer -- which is why every consumer goes
+    through here and a test asserts it.
+    """
+    if not value:
+        return None
+    segments = value.get("segments")
+    if not segments:
+        return value
+    chosen = None
+    for seg in segments:
+        if int(seg.get("from_cell") or 0) <= int(cell_index or 0):
+            chosen = seg
+    # ⚠️ None where NO segment covers this bar, which is a real answer and not
+    # a gap: a system may print a meter change at bar 8 while never stating
+    # what bars 0-7 were in. "3/4 from bar 8, unknown before" is exactly what
+    # a range-scoped fact can say and a system-scoped one cannot.
+    return chosen
+
+
 DOCUMENT = Subject(Kind.DOCUMENT)
 
 

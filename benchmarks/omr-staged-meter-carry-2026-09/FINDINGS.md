@@ -588,3 +588,71 @@ indices do align across the system and the comparison is sound.
   staff each. **The bar-math corroborator is systematically weakest
   immediately after a change**, which is another reason the glyph must carry
   the weight.
+
+
+---
+
+## 13. THE METER CHANGE, BUILT — glyph opens it, math settles it
+
+Sean's ordering, implemented and measured.
+
+**The value shape changed.** `Q.METER` now carries `segments` — one entry per
+stretch of bars with the `from_cell` it starts at — and `record.meter_at(value,
+cell)` is how a bar's meter is read. One fact, not two; the alternative (a
+separate change fact beside an unchanged system meter) was refused on this
+project's own history of two records of one thing drifting apart.
+
+**Weights, in Sean's order:**
+
+| term | weight |
+|---|--:|
+| a staff reading a COMPLETE meter (numerator over denominator) at that bar | **+3.0** |
+| a digit at that bar that does not pair | +0.5 |
+| each following bar whose length matches | +1.0 |
+| each that does not | −1.0 |
+| `METER_CHANGE_FLOOR` | 3.0 |
+
+So **one staff reading a printed time signature clears the floor alone**, and
+two contradicting bars sink it again. `_meter_from_digits` reads the stack: the
+numerator is simply the higher digit, which is what `y_center` is for.
+
+### Measured
+
+| run | result |
+|---|---|
+| **p.62** (prints 3/4 at bar 155 = cell 8) | **`3/4` at cell 8** — support 3.0, staff 11 |
+| p.61 | abstains, no change |
+| pages 0-2 (no change) | 1 segment each, **no spurious change** |
+| p.17 (new movement, no mid-system change) | no change proposed |
+
+**The change lands on the exact printed bar**, and the negative controls are
+clean.
+
+⚠️ **A FALSE POSITIVE WAS FOUND AND GATED.** Before the plausibility gate, p.61
+proposed a change to **`1/1`** at support 5.0, out of `timeSig1` detections — a
+confident reading of a meter nobody has ever engraved. Proposals are now
+restricted to `time_signature_locator.DEFAULT_METERS`, imported rather than
+restated so the two readers cannot drift about what a meter is.
+
+⚠️ **AND THE GATE ITSELF FAILED SILENTLY FIRST.** It was written as
+`try: ... except Exception: frozenset()`, which swallowed a wrong relative
+import and left the set EMPTY — so the gate admitted nothing and every change
+was refused. That is this repo's own *"an optional pass may abstain quietly, it
+may not fail like a defect quietly"*, reproduced inside the fix for a different
+quiet failure. It is now a hard module-level import.
+
+### ⚠️ What is NOT established
+
+* **n = 1 change, 1 document.** One true positive is one.
+* **The bar-math half is barely exercised.** Even on the case that works it
+  contributed `0 fit / 0 not`, because the whole-rest exclusion removes exactly
+  the post-change bars — a change is typically followed by most instruments
+  resting. So the measured result rests on the GLYPH alone.
+* ⚠️ **A change with NO glyph cannot be proposed at all.** Sean: *"If there is
+  no meter glyph then we have to deal with bar sums... We have 12 systems and
+  10 of them say 4/4 for 6 measures."* That is right and is NOT built. The
+  reason a run was not admitted as a proposer is p.17, where the bars name
+  nothing coherent and would manufacture meters out of noise — but the
+  discriminator is the RUN (10 staves × 6 bars is not 4 bars at 4 different
+  values), which is exactly Sean's *"for how long — the longer the more
+  likely"*. **This is the next piece of work.**

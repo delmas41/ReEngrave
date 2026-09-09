@@ -87,6 +87,22 @@ opened Step 2 and posed the Viola question (now answered). Then read
 totals can no longer rank work** (amplification differs 6×–2× by error kind; one
 changed `<type>` scores ZERO on 10 of 20 files), and the ranked next steps.
 
+⚠️⚠️ **STANDING REQUEST FROM SEAN, 2026-09-10 — UNCLASSIFIED INK AS A
+FIRST-CLASS GATHERED FACT, NOT YET BUILT.** *"I really don't want to lose the
+'here is a blob of ink but we don't know what it is' gather data point. It can
+be used in every decision point ... this is the same unrecognizable blob on
+every system at bar 51 ... or we know what this blob is in 3 of the 10 systems
+and they all line up and are there for the same thing."* The power is in the
+ALIGNMENT: unnamed ink at the same bar across staves is a printed event
+whatever it is, and where a few staves classify it the minority names what the
+majority corroborates. ⚠️ It is **not reachable from the detection record** —
+measured on Beethoven 5 / Litolff p.62, where a meter is printed on every staff,
+classified on 2 of 17, and the other 15 carry no unclassified detection at that
+column: the ink was never detected at all. It needs a RASTER pass in GATHER,
+and the precedent is `direction_text._blank_detections`, which already subtracts
+every detection from the page's ink so "find the text" becomes "find the ink".
+Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**.
+
 **Backlog / research notes:** see [NOTES.md](NOTES.md) — surface these at the start of a ReEngrave session.
 
 **Where the work stands today:** see [PROJECT_STATUS.md](PROJECT_STATUS.md).
