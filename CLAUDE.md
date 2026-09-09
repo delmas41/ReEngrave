@@ -437,7 +437,7 @@ something the task itself was not about.** Three runnable tools, in the shape
 output, `--check` non-zero when an invariant breaks.
 
 ```bash
-python3 -m tools.omr.staged.inventory            # the 21 decisions, derived
+python3 -m tools.omr.staged.inventory            # the decisions, derived (23 at 2026-09-09; the tool is the count, not this line)
 python3 -m tools.omr.staged.inventory --run staged.json
 python3 -m tools.omr.staged.export staged.json --out score.musicxml
 python3 -m tools.omr.staged --musicxml out.musicxml <pdf> --pages 2 --weights <...>
@@ -2011,9 +2011,10 @@ superseded first-draft figures kept as history:
 
 **The complement, reasoned from the PAGE rather than the code:**
 [docs/exploration-what-is-on-the-page-2026-09-09.md](docs/exploration-what-is-on-the-page-2026-09-09.md)
-— present / left out / implied. ⚠️ Exploratory and mostly UNPRICED. Its
-headline **survives the merge and is sharpened by it**: `Q.EVENT` is scoped
-`Kind.CELL`, so simultaneity is now read WITHIN a staff and still nowhere
+— present / left out / implied. ⚠️ Exploratory and mostly UNPRICED. ⚠️⚠️ **ITS
+HEADLINE IS NOW BUILT AND MEASURED — see *Cross-staff simultaneity* below, and
+read that instead of the doc's own framing of it.** What it said: `Q.EVENT` is
+scoped `Kind.CELL`, so simultaneity was read WITHIN a staff and nowhere
 ACROSS staves — yet a column through a system is an instant of music, and a
 21-staff system is 21 independent readings of one stretch of time. That makes
 it the only large source of **redundant** evidence on a page, and the coarse
@@ -2025,6 +2026,70 @@ ABSENT/DECLINED collapse `record.py` exists to prevent, in the music rather
 than the metadata), and ⚠️ its own first draft named `breath` and `glissando`
 as detector families from musical memory; **neither is in the class space**.
 
+---
+
+## Cross-staff simultaneity — the column through a system
+
+`Q.ONSET_COLUMN` + `adjudicate_onset_column` (scope `Kind.SYSTEM`,
+`Mode.ADDITIVE`), 2026-09-09. Which events of DIFFERENT staves sound at the
+same instant — the one thing the exploration doc ranked first, now on the
+record. Findings:
+[benchmarks/omr-onset-columns-2026-09/FINDINGS.md](benchmarks/omr-onset-columns-2026-09/FINDINGS.md).
+
+⚠️ **IT WAS UNREACHABLE, NOT MERELY UNIMPLEMENTED, AND THE FIX IS A FRAME.**
+`Q.GLYPH_BOX` carried only a CANONICAL x — measured inside one cell rescaled
+so the staff span is constant, so **two staves' canonical frames coincide by
+construction** and agreeing there is not evidence of anything. `Q.EVENT` is
+right to use it (it never crosses a staff); a column cannot. `gather_detections`
+now carries `bbox_page_px` / `x_center_page` / `y_center_page` beside it, and a
+cell that cannot supply one gets a `frame_note` and **no page fields** — never a
+fallback. Same fault this file already records for the dynamics, in both
+directions: the hairpin reader works in page pixels per staff and is right BY
+CONSTRUCTION, the letters go through per-measure cells and lose 24% to the staff
+above.
+
+**Measured** on the committed Brahms 1 / Breitkopf transcription (51 bars, 6
+systems, 3,006 events; no weights needed), against a **CIRCULAR-SHIFT null**
+that keeps every within-staff interval and every chord exactly as printed and
+destroys only the PHASE — the stronger control, because beating a re-draw would
+only show that music is not uniform noise:
+
+| | real | null (5 seeds) | ratio |
+|---|--:|--:|--:|
+| columns needed for the same events | **1,483** | 2,409 | **1.62×** |
+| corroboration rate | **0.498** | 0.292 | **1.71×** |
+| events standing alone | **744** | 1,706 | **2.29×** |
+| median residual (staff spaces) | 0.0734 | 0.0704 | 1.00× |
+
+⚠️ **THE RATE RISES WITH DENSITY WHILE THE INFORMATION FALLS** — sparse bars
+0.437 vs 0.212 (**2.06×**), dense bars 0.530 vs 0.348 (1.52×) — so
+`events_per_space` travels on every bar of the verdict: **a consumer reading
+corroboration without it cannot tell evidence from crowding**, and would rank a
+1.52× bar above a 2.06× one for having a higher number. That is why this is
+ADDITIVE and not a gate: a rule re-grouping a staff's events to match its
+neighbours would, on a 26-staff page, be enforcing density.
+
+⚠️ **DO NOT READ THE RESIDUAL AS EVIDENCE.** It does not separate and cannot —
+a column is BUILT to lie within the tolerance. The claim that it did came from
+the nearest-neighbour probe, an unbounded quantity, and was carried across
+definitions into the quantity's own docstring before this run corrected it.
+
+⚠️⚠️ **A BUG WAS WRITTEN, REACHED A MEASUREMENT, AND WAS CAUGHT BY A NUMBER
+THAT WAS TOO GOOD.** `Subject.glyph` counts within its CELL, so keying the
+page-x lookup on that ordinal is correct at `Kind.CELL` and WRONG at
+`Kind.SYSTEM`: glyph 3 of staff 0 and glyph 3 of staff 9 are different ink at
+the same ordinal. It reported a plausible **1,062 columns at 76.6%
+corroborated**. The tell was not the rate — it was that **699 of 814
+corroborated columns had a residual of EXACTLY ZERO**, fourteen staves agreeing
+to the float, which no scan does. **A plausible aggregate is not evidence that
+its parts are real.** Pinned, and restoring the ordinal key turns four tests
+red.
+
+⚠️ **n = 1 document, 1 publisher, 3 pages, and NOTHING CONSUMES THE VERDICT
+YET** — it is recorded and reported; no export, no other decision, no metric
+reads it. The obvious first consumer is the one the exploration doc named: a
+staff standing ALONE at an x every one of its 13 neighbours skips (744 such
+events here against 1,706 in the null), ranked by its bar's own density.
 
 ---
 

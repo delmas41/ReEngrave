@@ -16,6 +16,53 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-09 — Cross-staff simultaneity: the column through a system
+
+**What:** `Q.ONSET_COLUMN` and `adjudicate_onset_column` (scope `Kind.SYSTEM`,
+`Mode.ADDITIVE`) — which events of DIFFERENT staves sound at the same instant.
+The item ranked first by
+`docs/exploration-what-is-on-the-page-2026-09-09.md`, now on the record.
+
+**Why it was not merely unimplemented:** `Q.GLYPH_BOX` carried only a CANONICAL
+x, measured inside one cell rescaled so the staff span is constant — so two
+staves' canonical frames coincide by construction and agreeing there means
+nothing. `gather_detections` now carries `bbox_page_px` / `x_center_page` /
+`y_center_page` beside it; a cell that cannot supply one gets a `frame_note`
+and **no page fields**, never a fallback to the canonical x.
+
+**Measured** on the committed Brahms 1 / Breitkopf transcription (51 bars, 6
+systems, 3,006 events — no weights needed), against a **circular-shift null**
+that keeps every within-staff interval and every chord and destroys only the
+phase: columns needed **1,483 vs 2,409** (1.62×), corroboration **0.498 vs
+0.292** (1.71×), events standing alone **744 vs 1,706** (2.29×).
+
+⚠️ **The rate rises with density while the information falls** — sparse bars
+2.06×, dense 1.52× — so `events_per_space` travels on every bar of the
+verdict. ⚠️ **The residual does NOT separate** (0.0734 vs 0.0704) and cannot,
+since a column is built to lie within the tolerance; a claim that it did was
+carried over from the nearest-neighbour probe and is corrected in the
+quantity's own docstring.
+
+⚠️⚠️ **A bug reached a measurement and was caught by a number that was too
+good.** `Subject.glyph` counts within its CELL, so keying the page-x lookup on
+that ordinal is right at `Kind.CELL` and wrong at `Kind.SYSTEM`. It reported a
+plausible 1,062 columns at 76.6% corroborated; the tell was that **699 of 814
+had a residual of exactly zero**. A plausible aggregate is not evidence that
+its parts are real.
+
+**Files touched:** `tools/omr/staged/record.py`, `tools/omr/staged/gather.py`,
+`tools/omr/staged/adjudicate.py`,
+`tools/omr/staged/adjudicators/rhythm.py`,
+`tools/omr/tests/test_staged_onset_column.py` (15 tests; the ordinal-collision
+guard mutation-tested — restoring the old key turns four red),
+`benchmarks/omr-onset-columns-2026-09/` (harness, null comparison, FINDINGS,
+`out/`), CLAUDE.md, PROJECT_BRIEF.md, this file.
+
+**Not done, deliberately:** nothing consumes the verdict — no export, no other
+decision, no metric. n = 1 document, 1 publisher, 3 pages.
+
+---
+
 ## 2026-09-09 — works.json's `staves` shape: derived, not a second hand list
 
 The upstream half of the mahler-p2 defect, and ⚠️ **a sibling session shipped

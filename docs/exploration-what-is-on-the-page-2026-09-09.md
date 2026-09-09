@@ -1,5 +1,18 @@
 # What is on the page — present, left out, implied
 
+
+> ⚠️⚠️ **STATUS, 2026-09-09: THE ITEM THIS DOC RANKS FIRST — cross-staff
+> simultaneity — IS NOW BUILT AND MEASURED.** `Q.ONSET_COLUMN` +
+> `adjudicate_onset_column`; see
+> [benchmarks/omr-onset-columns-2026-09/FINDINGS.md](../benchmarks/omr-onset-columns-2026-09/FINDINGS.md)
+> and the *Cross-staff simultaneity* section of CLAUDE.md, and prefer those to
+> this doc's framing of it. Two things it did not anticipate: the blocker was
+> a FRAME (`Q.GLYPH_BOX` carried only a canonical, per-cell x, so two staves'
+> positions were not comparable quantities), and the alignment is **partly
+> density** — the corroboration rate rises with crowding while the information
+> falls, so the verdict carries the bar's own density. The rest of this
+> document is unchanged and still UNPRICED.
+
 Sean, 2026-09-09: *"exploratory thinking — what is on the page? present, left
 out or implied that we should gather?"*
 
