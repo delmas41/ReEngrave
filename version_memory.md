@@ -5,6 +5,100 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-09 (night) — the bars may name a LENGTH; only ink may name the ENGRAVING
+
+The first ranked task of `docs/handoff-2026-09-09-meter-as-a-range-fact.md` §5
+— *"If there is no meter glyph then we have to deal with bar sums... We have 12
+systems and 10 of them say 4/4 for 6 measures"* — built as
+**`OMR_METER_FROM_BARS`, default `0`**.
+
+- ⚠️⚠️ **THE SPLIT IS THE RESULT, and it is narrower than "a run proposes a
+  meter".** This project already separates a meter's NUMBERS from its GLYPH
+  (`export.py` refuses `raw` because `_propagated_meter` synthesises it).
+  **What is new is that a bar sum does not determine the NUMBERS either**: 2.0
+  quarter-notes is `2/4` **and** `4/8`; 3.0 is `3/4`, `6/8` **and** `12/16`. So
+  the bars name the **LENGTH**; the ENGRAVING is borrowed from a system that
+  actually READ one **of that length**; and where none exists the decision
+  abstains **`bars_name_a_length_without_a_form`**, recording the length, the
+  support and every spelling it could be.
+- ⚠️ **The LETTER is never borrowed.** `raw` reaches `staged.export` as
+  `symbol="common"` / `"cut"` — a positive claim that a `C` is PRINTED on a
+  system that printed nothing we could read. Borrowed meters are spelled in
+  digits and the source's own `raw` is recorded beside the answer.
+- ⚠️ **"FOR 6 MEASURES" IS NOT A RUN**, and consecutiveness was measured before
+  it was designed away. Over 20 systems on 15 pages the longest CONSECUTIVE
+  run of assessable bars is **5** where the meter is read, **3** where it is
+  wanted and **1** on the dense finale pages — a run breaks on an
+  *unassessable* bar, which measures the page's legibility and not its meter.
+  The terms ACCUMULATE instead (+1.0 / −1.0 against `METER_FROM_BARS_FLOOR`
+  4.0), with no run-length constant.
+- ⚠️⚠️ **IT CANNOT CROSS A MOVEMENT BOUNDARY, which is why it is a different
+  mechanism from the carry and not a second copy.** Every term comes from bars
+  inside ONE system. The *Andante*'s four assessable bars read four different
+  lengths and it scores **−2.0**, with no special case anywhere.
+- **Measured** (Beethoven 5 / Litolff `984073`, carry OFF): `--pages 0-2` takes
+  both continuation systems from abstaining to **`derived_from_bars` 2/4** at
+  **+6.0** (8+/2−) and **+7.0** (8+/1−); `--pages 1,17` leaves all three
+  *Andante* systems **unchanged**; `--pages 1,63` records **length 3.0, forms
+  `3/4` `6/8` `12/16`** on two systems the pipeline previously had nothing to
+  say about — **truth `3/4`** — while correctly refusing to borrow the `2/4`
+  standing in front of them. Flag-off matches the artefact committed before
+  this session on every subject, outcome, reason and value.
+- **In the file**, pages 0-2: `empty_bars_padded_without_meter` **47 → 0**,
+  `measure_rests_read` 92 → **169**, `written.notes` 648 → 665,
+  `duration_narrowed` 163 → 146.
+- ⚠️⚠️ **AND THOSE ARE THE CARRY'S OWN NUMBERS, TO THE UNIT.** On this document
+  the DECIDED branch never fires on a system the carry does not already serve,
+  so **this is not a gain on top of the carry and must not be reported as
+  one.** What is new is the ABSTAINING branch, and *what each mechanism can be
+  wrong about*: the carry reaches across a movement boundary, this cannot.
+  **The case that separates them — a boundary on a page that READS WELL — is
+  still unmeasured, and is now the top task.**
+- ✅ **The `3/4` on p.63 was written up as an inference and then hand-read.**
+  The pages were rendered and looked at, because that row is what the
+  abstaining branch rests on: **p.62 prints `147` at top-left and p.63 prints
+  `160`**, and the reference's 3/4 runs bars 155-208.
+- ⚠️ **A MUTATION SURVIVED, AND THE RULE WAS DELETED RATHER THAN THE TEST
+  PATCHED.** `METER_FROM_BARS_MIN_ASSESSABLE = 4` was written on
+  `METER_CARRY_MIN_BARS`'s two-questions reasoning and **cannot bind**: a bar
+  is worth 1.0, so a floor of 4.0 already implies four assessable bars.
+  *A gate that cannot fire reads to the next person as a protection that is
+  not there.*
+- ⚠️ **CORRECTS `A-DUR-6`: the double barline is NOT the cheap independent
+  reader that entry calls it.** `Q.BARLINE_COLUMN` is a per-staff **count of
+  cells cut**, and no barline-type classification exists anywhere in the repo
+  (NOTES.md item 5, which is why `<repeat>` is dropped). It needs new CV *and*
+  a new gathered quantity.
+- **Nine mutation arms**, clearing `~/Library/Caches/com.apple.python/<abs
+  path>/` between each; eight turned tests RED and the ninth is the deleted
+  constant above.
+- ⚠️⚠️ **TWO HARNESS FAULTS THAT EACH PRODUCED A CLEAN, BELIEVABLE RESULT.**
+  (1) The first flag-on arm came back **byte-identical to the control** —
+  exactly what a mechanism with no reach looks like. It was **zsh**: `env $3`
+  does not word-split an unquoted expansion, so `env` set one variable
+  `OMR_METER_FROM_BARS="1 OMR_METER_CARRY=0"` and the flag was off in the arm
+  that existed to turn it on. Use `${=3}`. The tell was that a probe reading
+  the live log had said `+6` an hour earlier on the same tree.
+  (2) The first full suite failed `test_a_CLOSED_gap_must_LEAVE_the_list`
+  naming *"meter declares 'dossier_fact'"* — i.e. claiming this change had
+  silently CLOSED a `KNOWN_GAPS` entry. It had not: **editing a source file
+  while the suite runs breaks `inspect.getsource`**, because `linecache`
+  re-reads by mtime under an already-imported module. Re-run on a frozen tree
+  (md5 the file) before believing a stale-gap failure — it names a gap and a
+  quantity, so it reads as a real regression.
+- ⚠️ **A worktree needs FOUR symlinks** — `library`,
+  `tools/omr/training/data/weights`, `.venv-surya`, `.venv-omrned` — and the
+  `.venv-surya` one **FAILS** a `test_direction_text.py` reader-selection test
+  rather than skipping it.
+- Suite **3297 passed / 11 skipped / 0 failed** on a frozen tree;
+  `inventory --check` and `health --check` both exit 0.
+- `tools/omr/staged/adjudicators/rhythm.py` (`_bars_opinion`,
+  `_form_for_length`, `_meter_from_bars`), `ASSUMPTIONS.md` **A-DUR-7**,
+  `benchmarks/omr-staged-meter-from-bars-2026-09/`,
+  `docs/handoff-2026-09-09-bars-name-a-length.md`.
+
+---
+
 ## 2026-09-09 (night) — the meter carry is WEIGHED, not gated; a change the glyph opens
 
 Sean: *"I want to make sure we don't get stuck in binary on or off ... If the
