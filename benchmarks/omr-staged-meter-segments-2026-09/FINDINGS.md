@@ -154,22 +154,45 @@ disagreeing**. Found by a test failing, not by reading the function.
 
 ---
 
-## 6. The flag
+## 6. The flag — ON by default
 
-`OMR_METER_SEGMENTS`, **default off**, gating the export half only — findings
-2 and 3 live inside `_carry_meter` / `_meter_from_bars`, already gated by
-`OMR_METER_CARRY` and `OMR_METER_FROM_BARS`. The cautionary rule is
-**unflagged**: it only ever removes a false segment, and it is recorded
-(`cautionary_cells`, as `(cell, raw)` pairs) rather than dropped, because a
-courtesy is this system's statement about the NEXT one.
+`OMR_METER_SEGMENTS`, **default ON since 2026-09-09 (Sean's call)**, gating
+the export half only — findings 2 and 3 live inside `_carry_meter` /
+`_meter_from_bars`, already gated by `OMR_METER_CARRY` and
+`OMR_METER_FROM_BARS`. The cautionary rule is **unflagged**: it only ever
+removes a false segment, and it is recorded (`cautionary_cells`, as
+`(cell, raw)` pairs) rather than dropped, because a courtesy is this system's
+statement about the NEXT one.
 
-⚠️ **Off on `n`, not on the mechanism** — the same footing as its two
-siblings, and the same owner. Every engraved fixture is strictly better. What
-blocks a default-on is the scan's **reading**: seven false segments on one
-page of one publisher, which with the flag on would re-size bars in the file
-instead of sitting inertly on the record.
+It shipped OFF, on **n** rather than on the mechanism, and was flipped the same
+day. ⚠️⚠️ **THE FLIP OVERRIDES THE STANDING OBJECTION RATHER THAN RESOLVING
+IT**, and the objection is now a number instead of a description.
 
----
+| | `<time>` elements | |
+|---|--:|---|
+| Brahms 1 / Breitkopf p.1-2 (14 parts), `=0` | **41** | the per-run meter |
+| the same page, default | **138** | `4/4` 13 → 96, plus 14 spurious `9/8` |
+
+Those 83 extra `4/4` declarations are the five one-staff spurious changes at
+support 3.5-4.0; the 14 `9/8` are the courtesy signature this rule cannot
+reach on that degenerate final cell. **So a scan can now export a meter change
+its page does not print.** Every ENGRAVED fixture gains only correct changes,
+and **4 of the 9 committed boundary records are byte-identical either way** —
+which is the blast radius: pages carrying a read change, and no others.
+
+**The lever is the meter GLYPH readers** (`_meter_from_digits`,
+`time_signature_locator`), not the weighing and not a placement rule. Until
+that lands, `OMR_METER_SEGMENTS=0` restores the per-run meter exactly.
+
+⚠️ **THE OFF TEST IS A DENY-LIST, AND THE DIRECTION FLIPPED WITH THE
+DEFAULT.** `_carry_meter` reads *"anything but an explicit 1 is off"*, because
+while a mechanism is off a typo must not switch a document ONTO it. On by
+default the hazard runs the other way: with an allow-list — `in ("1", "true",
+"yes", "on")`, which is what `OMR_SLOT_STITCH` and the other default-on flags
+here use — an empty value or a misspelling silently RESTORES the bug. Only an
+explicit off word turns this one off. ⚠️ **The allow-list default-on flags
+carry that hazard today**; this one does not copy it. Caught by a test written
+for the flip, which failed on the first attempt.
 
 ## 7. Reproducing
 

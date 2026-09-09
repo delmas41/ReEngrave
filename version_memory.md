@@ -46,8 +46,21 @@ scan being untouched is the expected result — its false segments all read
 0.000, at the head of their bars, so they are misreads and no placement rule
 can reach them.
 
-`OMR_METER_SEGMENTS`, default off, gates the export half only; the other two
-travel behind the existing meter flags. The cautionary rule is unflagged.
+`OMR_METER_SEGMENTS` gates the export half only; the other two travel behind
+the existing meter flags. The cautionary rule is unflagged.
+
+⚠️⚠️ **FLIPPED ON THE SAME DAY (Sean), and the flip OVERRIDES the standing
+objection rather than resolving it.** It shipped off on **n** — the mechanism
+was never in doubt, the scan's READING was — and that objection is now priced:
+on Brahms 1 / Breitkopf p.1-2 the default takes `<time>` elements from **41 to
+138** (`4/4` 13 → 96 from the five spurious one-staff changes, plus 14 spurious
+`9/8` from the courtesy the rule cannot reach on that degenerate cell), so **a
+scan can now export a meter change its page does not print**. Every engraved
+fixture gains only correct changes and 4 of 9 boundary records are
+byte-identical either way. The lever is the meter GLYPH readers. ⚠️ The OFF
+test is a **deny-list**: with the default on, the allow-list form the other
+default-on flags use would let an empty value or a typo silently restore the
+bug — caught by a test written for the flip, which failed on its first run.
 
 ⚠️⚠️ **THREE CLAIMS OF MY OWN, CORRECTED IN FLIGHT, and the first is the one
 worth carrying.** The first measurement arm came back BYTE-IDENTICAL to its

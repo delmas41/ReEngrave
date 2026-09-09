@@ -545,10 +545,12 @@ class TestTheMeterIsReadPerBARNotPerRUN(unittest.TestCase):
     def _run(self, page, on):
         import os
         prev = os.environ.get(SX.METER_SEGMENTS_ENV)
-        if on:
-            os.environ[SX.METER_SEGMENTS_ENV] = "1"
-        else:
-            os.environ.pop(SX.METER_SEGMENTS_ENV, None)
+        # ⚠️ BOTH ARMS SET THE VARIABLE EXPLICITLY, including the off one.
+        # Popping it used to mean "off" and now means "on" — the default
+        # flipped on 2026-09-09 — so an arm that relies on absence silently
+        # measures the other arm. This is the same trap `run_arms.py` avoids by
+        # handing subprocess an environment dict with both flags set.
+        os.environ[SX.METER_SEGMENTS_ENV] = "1" if on else "0"
         try:
             return SX.to_musicxml(page)
         finally:
@@ -606,3 +608,45 @@ class TestTheMeterIsReadPerBARNotPerRUN(unittest.TestCase):
         _, off = self._run(page, on=False)
         self.assertEqual(off["written"].get(
             "empty_bars_padded_without_meter", 0), 0)
+
+
+class TestTheMeterSegmentsFlagIsONByDefault(unittest.TestCase):
+    """⚠️ Sean's call, 2026-09-09. The default is a DECISION and belongs in a
+    test, not only in a docstring — this repo has had a flag site's docstring
+    carry a refuted claim for a day after CLAUDE.md was corrected.
+
+    ⚠️ AND THE `0` ESCAPE IS PART OF THE DECISION. Flipping a default without
+    a working way back is not a default, it is a removal.
+    """
+
+    def setUp(self):
+        import os
+        self._prev = os.environ.get(SX.METER_SEGMENTS_ENV)
+        os.environ.pop(SX.METER_SEGMENTS_ENV, None)
+
+    def tearDown(self):
+        import os
+        if self._prev is None:
+            os.environ.pop(SX.METER_SEGMENTS_ENV, None)
+        else:
+            os.environ[SX.METER_SEGMENTS_ENV] = self._prev
+
+    def test_absent_means_ON(self):
+        self.assertTrue(SX.meter_segments_enabled())
+
+    def test_an_explicit_zero_still_turns_it_off(self):
+        import os
+        for off in ("0", "off", "false", "no"):
+            os.environ[SX.METER_SEGMENTS_ENV] = off
+            self.assertFalse(SX.meter_segments_enabled(), off)
+
+    def test_a_typo_does_not_silently_disable_it(self):
+        """⚠️ THE ASYMMETRY IS DELIBERATE AND IT REVERSED WITH THE DEFAULT.
+        While it was off, `_carry_meter`'s rule applied — anything but an
+        explicit "1" is off, so a typo could not switch a document ONTO a
+        mechanism. On by default the hazard runs the other way: a typo must
+        not switch it OFF and quietly restore the bug."""
+        import os
+        for typo in ("", "  ", "yess", "1 1", "ON!"):
+            os.environ[SX.METER_SEGMENTS_ENV] = typo
+            self.assertTrue(SX.meter_segments_enabled(), repr(typo))

@@ -64,33 +64,64 @@ METER_SEGMENTS_ENV = "OMR_METER_SEGMENTS"
 
 
 def meter_segments_enabled() -> bool:
-    """Read the flag. Anything but an explicit "1" is off.
+    """`OMR_METER_SEGMENTS` — export the meter in force at each BAR.
 
-    ⚠️⚠️ WHAT IT GATES IS A BUG FIX, AND IT IS OFF ANYWAY — ON `n`, NOT ON
-    THE MECHANISM. `Q.METER` has carried `segments` since 2026-09-09 and this
-    exporter read only the system's opening, so a printed mid-system meter
-    change could not reach a MusicXML file at all. Turning it on is measured
-    strictly better on every ENGRAVED fixture: Brahms 1 iv's `¢` — read on 24
-    staves of 24 at support 74.0 — went from reaching NO file to reaching all
-    24 parts, and Beethoven 5 / Litolff's printed `3/4` moved from the first
-    bar of its system to the ninth, which is where the hand-read truth puts
-    it.
+    **DEFAULT ON since 2026-09-09 (Sean's call.)** `Q.METER` carries
+    `segments`, and this exporter used to read only the system's OPENING — so
+    a printed mid-system meter change could not reach a MusicXML file at all,
+    and `record.meter_at`, whose own docstring says it *is* how a bar's meter
+    is read, was called by nothing but its own tests.
 
-    ⚠️ THE BLOCKING OBJECTION IS THE SCAN'S READING, NOT THIS. With the
-    cautionary rule in, the boundary benchmark's scanned arm still proposes
-    seven false segments on one page of one publisher — five spurious `4/4`
-    changes at support 3.5-4.0 against a floor of 3.0, read on ONE staff of
-    twenty — and with this flag on, every one of them re-sizes bars in the
-    file instead of sitting inertly on the record. FINDINGS §4b already
-    attributes that fixture's failure to the meter GLYPH readers rather than
-    to the weighing; until that is fixed, a default-on would trade an engraved
-    gain for a scanned regression.
+    ⚠️ WHAT IT GATES IS A BUG FIX OF THE `computed-and-unread` FAMILY, which
+    is why the shipped default is on. Measured strictly better on every
+    ENGRAVED fixture: Brahms 1 iv's `¢` — read on 24 staves of 24 at support
+    74.0 — went from reaching NO file to reaching all 24 parts, and Beethoven
+    5 / Litolff's printed `3/4` moved from the first bar of its system to the
+    ninth, which is where the hand-read truth puts it. The boundary tally goes
+    ENGRAVED 4 printed / 4 found / 1 -> 0 false.
 
-    Same reasoning, and the same owner, as `OMR_METER_CARRY` and
-    `OMR_METER_FROM_BARS`: both are off on `n` rather than on hazard, and the
-    default is Sean's call.
+    ⚠️⚠️ THE STANDING OBJECTION, WHICH THE FLIP OVERRIDES RATHER THAN
+    RESOLVES: the boundary benchmark's SCANNED arm still proposes seven false
+    segments on one page of one publisher — five spurious `4/4` changes at
+    support 3.5-4.0 against a floor of 3.0, read on ONE staff of twenty — and
+    with this on, every one of them RE-SIZES BARS IN THE FILE instead of
+    sitting inertly on the record. FINDINGS §4b attributes that fixture's
+    failure to the meter GLYPH readers rather than to the weighing, and the
+    left-fractions confirm it from the other side: each of those segments
+    reads 0.000, at the head of its bar where a real change stands, so they
+    are misreads and no placement rule can reach them. **The lever is the
+    glyph readers (`_meter_from_digits`, `time_signature_locator`), and until
+    that lands a scan can export a meter change its page does not print.**
+
+    ⚠️ PRICED, so the cost is a number rather than a worry. On that page —
+    Brahms 1 / Breitkopf p.1-2, 14 parts — the flip takes `<time>` elements
+    from **41 to 138**: `4/4` declarations 13 -> 96, plus 14 spurious `9/8`
+    from the courtesy signature this rule cannot reach there. Every ENGRAVED
+    fixture gains only correct changes, and four of the nine committed
+    boundary records are byte-identical either way.
+
+    ⚠️ Set `0` to restore the per-run meter exactly. Flag-off is byte-identical
+    to the pre-2026-09-09 exporter and is asserted so, per page and per
+    fixture; a system that prints no change is byte-identical either way BY
+    CONSTRUCTION, which is what bounds the blast radius to pages carrying a
+    read change.
+
+    ⚠️⚠️ THE TEST IS A DENY-LIST, NOT AN ALLOW-LIST, AND THE DIRECTION FLIPPED
+    WITH THE DEFAULT. `_carry_meter` reads *"anything but an explicit 1 is
+    off"* because a typo must not switch a document ONTO a mechanism whose
+    hazard is a whole wrong movement. On by default the hazard runs the other
+    way: with an allow-list (`in ("1", "true", "yes", "on")`, which is what
+    `OMR_SLOT_STITCH` and the other default-on flags here use) an empty value
+    or a typo silently RESTORES the bug, and a flag that fails closed on a
+    misspelling is a flag nobody can trust in an environment file. Only an
+    explicit off word turns it off. ⚠️ Worth knowing: the default-on flags
+    that use the allow-list form have this hazard today — this one does not
+    copy it.
+
+    See `benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md`.
     """
-    return os.environ.get(METER_SEGMENTS_ENV, "0").strip() == "1"
+    return os.environ.get(METER_SEGMENTS_ENV, "1").strip().lower() not in (
+        "0", "false", "no", "off")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
