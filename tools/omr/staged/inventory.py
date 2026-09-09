@@ -44,6 +44,129 @@ from .record import Q
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# The standing gaps — an INVENTORY, not a suppression list
+#
+# ⚠️ Same contract as `export_coverage.KNOWN_GAPS`, and for the same reason: a
+# `--check` that is permanently red is a check nobody can put in CI, and one
+# that hides its failures is worse. So every problem the derivation finds
+# TODAY is listed here WITH ITS REASON, and `--check` fails on anything NOT on
+# the list. An entry that is CLOSED must LEAVE it, or the list stops
+# describing the pipeline and starts describing its history --
+# `test_staged_inventory.py::TestTheGapListIsAnInventoryNotASuppressionList`
+# enforces exactly that, in `test_a_CLOSED_gap_must_LEAVE_the_list`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+KNOWN_GAPS: Dict[str, str] = {
+    "arc_owner wants 'arc_box'":
+        "GATHER gap. `arc_box` is in the Q vocabulary and observed by nothing; "
+        "the detector reads 755 ties and 291 slurs over four pages and they "
+        "reach `glyph_box` only. Closing it is a gather site, then the "
+        "adjudicator.",
+    "arc_kind wants 'arc_box'": "as arc_owner.",
+    "articulation_owner wants 'articulation_mark'":
+        "GATHER gap; 41 articulation glyphs detected over four pages.",
+    "wedge_anchor wants 'wedge_box'":
+        "GATHER gap; the CV hairpin reader exists on the legacy path "
+        "(`cf81b524`) and is not wired into `gather`.",
+    "dynamic wants 'dynamic_letter'":
+        "GATHER gap; 543 dynamic glyphs detected over four pages.",
+    "system_membership declares 'gap_bridging'":
+        "inert declaration. The connectivity veto already ran in GATHER and "
+        "`adjudicate_system_membership` records its result, so the decision "
+        "reads the count and not the bridging.",
+    "instrument declares 'roster_entry'":
+        "inert declaration; the roster tier is not wired into the staged "
+        "identity decision yet (`OMR_ROSTER_LABELS` is off on the legacy path "
+        "too).",
+    "instrument declares 'staff_ordinal'": "inert declaration.",
+    "instrument declares 'staff_group'": "inert declaration.",
+    "part_partition declares 'staff_ordinal'": "inert declaration.",
+    "part_partition declares 'instrument'":
+        "inert declaration; the join is decided from staff COUNTS and slots.",
+    "group_symbol declares 'system_staff_count'":
+        "inert declaration; the symbol is decided from the groups and the "
+        "instruments, deliberately NOT from the staff count -- which is the "
+        "incumbent rule it exists to replace.",
+    "clef declares 'notehead_staff_position'":
+        "⚠️ NOT MERELY INERT: this quantity is the clef's OWN FIRST "
+        "`checked_by` entry (implied pitches against the instrument's written "
+        "range) and the body never reads it, so a declared constraint names a "
+        "check the code does not run. The machinery exists in "
+        "`ownership._range_veto`. Wiring it is a decision with its own "
+        "measurement, not a cleanup.",
+    "key_signature declares 'keysig_marker'":
+        "inert declaration; the decision reads `keysig_clef_fit`, which the "
+        "markers already feed in GATHER.",
+    "key_signature declares 'dossier_fact'":
+        "inert declaration; no dossier is supplied on the scan path by "
+        "protocol.",
+    "glyph_owner declares 'glyph_conf'":
+        "⚠️ THE STANDING OBSERVATION, reproduced: "
+        "`_dedupe_cross_staff_detections` has both detections' confidences in "
+        "hand at the moment it decides and uses neither. The staged decision "
+        "declares it and still does not read it.",
+    "glyph_owner declares 'notehead_staff_position'":
+        "⚠️ MISDIRECTED rather than inert: `_range_veto` does read a staff "
+        "position, out of `band_row.detail['position_in_candidate']`, so "
+        "`wants` names the wrong quantity for a real dependency.",
+    "tuplet_ratio declares 'beam_stroke'":
+        "inert declaration. The legacy rule takes a tuplet group's EXTENT "
+        "from the beam box (`rhythm._beamed_groups`); the staged decision "
+        "groups by 'exactly as many heads as the digit claims' in the cell "
+        "instead, so the beam is declared and unused.",
+    "duration declares 'stem'":
+        "inert declaration. `adjudicate_duration` DOES read `beam_stroke` -- "
+        "both come from `gather_cv_lines` -- but nothing reads the stem: no "
+        "stem-direction or stem-presence tier exists on this path.",
+    "meter declares 'meter_glyph'":
+        "⚠️ inert, and the DETECTOR's meter reading is what is unread. The "
+        "vote runs on `meter_template` alone, so a `timeSigCommon` detection "
+        "-- which the legacy exporter uses for `symbol=` -- reaches no "
+        "decision. The staged exporter derives `symbol` from the template "
+        "reader's own matched letter instead, so nothing is lost today; a "
+        "second witness is.",
+    "meter declares 'duration'":
+        "declared and deliberately not read: the bar-sum check is this "
+        "decision's strongest constraint and `adjudicate_meter`'s own "
+        "docstring says it belongs in EVALUATE as a bounded repair "
+        "(`consequences.reconcile_duration`), not in the vote.",
+    "meter declares 'dossier_fact'":
+        "inert declaration; no dossier is supplied on the scan path by "
+        "protocol.",
+    "arc_owner is a declared STUB whose input is ALSO never gathered":
+        "the two-gaps-one-name case; see the `arc_box` entry.",
+    "arc_kind is a declared STUB whose input is ALSO never gathered":
+        "as arc_owner.",
+    "articulation_owner is a declared STUB whose input is ALSO never gathered":
+        "as arc_owner.",
+    "wedge_anchor is a declared STUB whose input is ALSO never gathered":
+        "as arc_owner.",
+    "dynamic is a declared STUB whose input is ALSO never gathered":
+        "as arc_owner.",
+}
+
+
+def _gap_key(problem: str) -> Optional[str]:
+    """Which KNOWN_GAPS entry a problem line belongs to, by prefix."""
+    for key in KNOWN_GAPS:
+        if problem.startswith(key):
+            return key
+    return None
+
+
+def unaccounted(problems: Sequence[str]) -> List[str]:
+    """Problems on no KNOWN_GAPS entry. These are what `--check` fails on."""
+    return [p for p in problems if _gap_key(p) is None]
+
+
+def stale_gaps(problems: Sequence[str]) -> List[str]:
+    """KNOWN_GAPS entries nothing reports any more -- a CLOSED gap that never
+    left the list. The list must describe the pipeline, not its history."""
+    hit = {_gap_key(p) for p in problems}
+    return sorted(k for k in KNOWN_GAPS if k not in hit)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Where a MEASUREMENT comes from: the AST of gather.py
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -493,10 +616,24 @@ def render(inv: Dict[str, Any]) -> str:
         lines.append("")
 
     if inv["problems"]:
-        lines.append("## ⚠️ PROBLEMS")
+        new_ = unaccounted(inv["problems"])
+        lines.append(f"## ⚠️ PROBLEMS — {len(inv['problems'])}, "
+                     f"{len(new_)} of them NOT on `KNOWN_GAPS`")
+        lines.append("")
+        lines.append("`KNOWN_GAPS` is an INVENTORY, not a suppression list: "
+                     "every standing gap with its reason. `--check` fails on "
+                     "anything not on it, **and on an entry nothing reports "
+                     "any more** — a closed gap must LEAVE the list or it "
+                     "stops describing the pipeline and starts describing its "
+                     "history.")
         lines.append("")
         for p in inv["problems"]:
-            lines.append(f"- {p}")
+            key = _gap_key(p)
+            if key is None:
+                lines.append(f"- ⚠️ **NEW, on no entry** — {p}")
+            else:
+                lines.append(f"- {p}")
+                lines.append(f"  - *known:* {KNOWN_GAPS[key]}")
     else:
         lines.append("## Problems: none")
         lines.append("")
@@ -532,11 +669,24 @@ def main(argv: Optional[List[str]] = None) -> int:
     else:
         print(text)
 
-    if inv["problems"]:
-        for p in inv["problems"]:
-            print(f"⚠️ {p}", file=sys.stderr)
-        if args.check:
-            return 1
+    for p in inv["problems"]:
+        mark = "⚠️" if _gap_key(p) is None else "·"
+        print(f"{mark} {p}", file=sys.stderr)
+
+    new = unaccounted(inv["problems"])
+    stale = stale_gaps(inv["problems"])
+    if new:
+        print(f"\n⚠️ {len(new)} problem(s) on NO `KNOWN_GAPS` entry:",
+              file=sys.stderr)
+        for p in new:
+            print(f"   {p}", file=sys.stderr)
+    if stale:
+        print(f"\n⚠️ {len(stale)} `KNOWN_GAPS` entr(ies) nothing reports any "
+              f"more — a closed gap that never left the list:", file=sys.stderr)
+        for k in stale:
+            print(f"   {k}", file=sys.stderr)
+    if args.check and (new or stale):
+        return 1
     return 0
 
 

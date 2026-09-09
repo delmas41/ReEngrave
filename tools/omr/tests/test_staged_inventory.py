@@ -120,3 +120,35 @@ class TestTheRunColumn(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTheGapListIsAnInventoryNotASuppressionList(unittest.TestCase):
+    """⚠️ Same contract as `export_coverage.KNOWN_GAPS`, and for the same
+    reason: a `--check` that is permanently red is a check nobody can put in
+    CI, and one that hides its failures is worse."""
+
+    def setUp(self):
+        self.problems = inventory.build()["problems"]
+
+    def test_every_problem_today_is_on_the_list_with_a_reason(self):
+        new = inventory.unaccounted(self.problems)
+        self.assertEqual(new, [], f"{len(new)} problem(s) on no entry")
+        for reason in inventory.KNOWN_GAPS.values():
+            self.assertTrue(reason.strip(), "an entry with no reason")
+
+    def test_a_CLOSED_gap_must_LEAVE_the_list(self):
+        """Otherwise the list stops describing the pipeline and starts
+        describing its history."""
+        stale = inventory.stale_gaps(self.problems)
+        self.assertEqual(stale, [], f"{len(stale)} entr(ies) nothing reports")
+
+    def test_a_NEW_problem_is_not_swallowed(self):
+        """The teeth: an unlisted problem must be reported, not absorbed."""
+        self.assertEqual(
+            inventory.unaccounted(["some brand new invariant broke"]),
+            ["some brand new invariant broke"])
+
+    def test_the_list_is_not_a_prefix_of_everything(self):
+        """A too-loose key would match unrelated problems and suppress them."""
+        self.assertIsNone(inventory._gap_key("clef wants 'clef_glyph', which "
+                                             "no gather site observes"))
