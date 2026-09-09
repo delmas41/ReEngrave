@@ -413,6 +413,150 @@ def adjudicate_tuplet(ev: Evidence) -> Ruling:
                   detail={"marker": str(marker.value)})
 
 
+#: A chord's noteheads sit within this fraction of a NOTEHEAD WIDTH of each
+#: other in x. (A-EVENT-1)
+#:
+#: ⚠️ NOT A NEW CONSTANT — it is `voicing.group_chords_in_measure`'s own
+#: default, reproduced so the record's grouping and the exporter's are ONE
+#: rule rather than two that can drift. Adaptive rather than a pixel count:
+#: 0.6 of the MEAN notehead width in the bar, wide enough for the stem-shifted
+#: seconds of a chord and narrow enough to keep a rapid passage's notes apart.
+EVENT_X_TOLERANCE_WIDTHS = 0.6
+
+#: Fallback when the bar holds no notehead to measure a width from — the same
+#: number, and the same reason, as the legacy fallback.
+EVENT_X_TOLERANCE_FALLBACK_PX = 30.0
+
+
+def _box_of(rows):
+    """`glyph_box` value is (class, x, y, w, h)."""
+    out = {}
+    for r in rows:
+        val = r.value
+        if not isinstance(val, (list, tuple)) or len(val) < 5:
+            continue
+        _name, x, _y, w, _h = val[0], val[1], val[2], val[3], val[4]
+        sub = r.subject
+        if sub.glyph is None:
+            continue
+        out[sub.glyph] = (float(x) + float(w) / 2.0, float(w))
+    return out
+
+
+@decision(
+    quantity=Q.EVENT,
+    checkable=Checkable.CHECKABLE,
+    checked_by=(
+        '"the bar sum: one event contributes ONE duration, so a bar of events must equal the meter"',
+    ),
+    # ⚠️ THE GROUPING IMPLICATES ITSELF. A bar that does not sum may hold a
+    # wrong duration, a wrong meter -- or two notes I merged that are not
+    # simultaneous, or one chord I split in two. A check that implicated only
+    # the durations would have quietly decided the grouping was innocent.
+    implicates=(Q.EVENT, Q.DURATION, Q.METER),
+    composed_from=(Q.GLYPH_BOX,),
+    scope=Kind.CELL,
+    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM),
+    reasons=("x_clustered", "nothing_to_group"),
+    mode=Mode.ADDITIVE,
+    subjects_from=(Q.NOTEHEAD_CLASS, Q.REST),
+)
+def adjudicate_event(ev: Evidence) -> Ruling:
+    """Which glyphs of this bar sound TOGETHER.
+
+    ⚠️ THIS EXISTED ONLY AT SERIALISATION TIME UNTIL 2026-09-10.
+    `group_chords_in_measure` was called from exactly one place —
+    `export._events` — so every stage before EXPORT counted each chord member
+    as a separate time-advancing event. That includes
+    `consequences.reconcile_duration`, the pipeline's own bar-sum check, which
+    therefore could not match the meter on any bar holding a chord: 38.2% of
+    the bars on one measured page, where the double-count destroyed 5 of the
+    18 bars that landed exactly on the printed meter.
+
+    ⚠️ THE POSITION IS A MEASUREMENT; THE GROUPING IS NOT. `Q.GLYPH_BOX`
+    already carries every glyph's x — the ingredient was on the record all
+    along and nothing read it — but *"these are simultaneous"* is an
+    interpretation of those positions under a tolerance, so it is a decision.
+
+    ⚠️ A REST IS ITS OWN EVENT. It occupies time alone; nothing sounds with
+    silence.
+
+    ⚠️⚠️ THE DIVISI GUARD IS UNAVAILABLE HERE, AND IT IS RECORDED RATHER THAN
+    OMITTED. The legacy rule additionally refuses to merge two noteheads at
+    the same x whose STEMS POINT OPPOSITE WAYS — two divisi voices, not one
+    chord — an audit follow-up from 2026-07. `Q.STEM` is a declared stub on
+    this path, so that tier cannot run, and `_directions_conflict` is
+    consequently already inert in `export._events` too (it never sets
+    `stem_direction`). So this reproduces what the exporter does TODAY,
+    exactly; it does not reproduce what the legacy rule can do with stems.
+    The state of `Q.STEM` is read and reported per cell so the missing tier is
+    on the record and not in a comment.
+    """
+    heads = ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS)
+    rests = ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS)
+    boxes = _box_of(ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS))
+
+    head_ids = sorted({r.subject.glyph for r in heads
+                       if r.subject.glyph is not None and r.subject.glyph in boxes})
+    rest_ids = sorted({r.subject.glyph for r in rests
+                       if r.subject.glyph is not None and r.subject.glyph in boxes})
+    if not head_ids and not rest_ids:
+        return Ruling.abstain("nothing_to_group")
+
+    # The tolerance is measured off THIS bar's own noteheads.
+    if head_ids:
+        widths = [boxes[g][1] for g in head_ids]
+        tol = (sum(widths) / len(widths)) * EVENT_X_TOLERANCE_WIDTHS
+    else:
+        tol = EVENT_X_TOLERANCE_FALLBACK_PX
+
+    groups = []
+    for g in sorted(head_ids, key=lambda i: boxes[i][0]):
+        x = boxes[g][0]
+        target = None
+        # Backward scan: groups are created in non-decreasing x, so once one
+        # is further than the tolerance every earlier one is too.
+        for grp in reversed(groups):
+            gx = sum(boxes[i][0] for i in grp) / len(grp)
+            if abs(x - gx) > tol:
+                break
+            target = grp
+            break
+        if target is None:
+            groups.append([g])
+        else:
+            target.append(g)
+
+    events = [{"glyphs": sorted(grp),
+               "x": round(sum(boxes[i][0] for i in grp) / len(grp), 2),
+               "kind": "chord"} for grp in groups]
+    events += [{"glyphs": [g], "x": round(boxes[g][0], 2), "kind": "rest"}
+               for g in rest_ids]
+    events.sort(key=lambda e: (e["x"], e["glyphs"][0]))
+
+    stem_state = ev.state(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS)
+    chorded = sum(1 for e in events if len(e["glyphs"]) > 1)
+    return Ruling(
+        value={"events": events},
+        reason="x_clustered",
+        used=tuple(r.id for r in heads) + tuple(r.id for r in rests),
+        detail={"n_events": len(events),
+                "n_glyphs": len(head_ids) + len(rest_ids),
+                "n_chords": chorded,
+                "tolerance_px": round(tol, 2),
+                # ⚠️ THE GUARD IS NOT BUILT, AND THIS FIELD MUST NOT IMPLY
+                # IT IS. An earlier draft wrote `divisi_guard: "ran"` wherever
+                # stem rows merely EXISTED -- a field claiming a check that
+                # never happened, which is the failure this whole record
+                # exists to make impossible. What is reported is the STATE OF
+                # THE INPUT the guard would need. Where chords were formed and
+                # this says anything but `read`, two divisi voices may have
+                # been merged into one chord and nothing could have caught it.
+                "divisi_guard": "not_implemented",
+                "stem_evidence": stem_state.value},
+    )
+
+
 #: A meter must be agreed by this share of the staves that SPOKE. (A-METER-1)
 #: ⚠️ Not tuned here, but not arbitrary either: over an 11-source corpus every
 #: one of the 12 correct readings was agreed by 0.909 of its system or more,

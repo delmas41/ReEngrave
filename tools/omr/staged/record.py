@@ -370,6 +370,11 @@ class Q(_Vocab):
     KEY_SIGNATURE = "key_signature"
     METER = "meter"
     DURATION = "duration"                    # ⚠️ a VERDICT, not a measurement
+    #: Which glyphs of a bar sound TOGETHER — one event, N noteheads.
+    #: ⚠️ A VERDICT, and the distinction matters: the x POSITION is a
+    #: measurement (`GLYPH_BOX` carries it), but "these are simultaneous" is
+    #: an interpretation of those positions under a tolerance.
+    EVENT = "event"
     GLYPH_OWNER = "glyph_owner"
     ARC_OWNER = "arc_owner"
     ARC_KIND = "arc_kind"                    # tie | slur

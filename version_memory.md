@@ -5,6 +5,57 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-10 (later) — the chord was grouped after the stage that needed it
+
+Sean: *"determining when notes and voices and chords line up should be very
+early in the process."* Right, and the record said so three ways.
+
+- **The defect.** `grep -rn chord tools/omr/staged/` outside `export.py`
+  returned NOTHING and the record held no chord/event/onset/voicing quantity
+  at all; `group_chords_in_measure` was called only from `export._events`, at
+  serialisation time. So every stage before EXPORT counted each chord member
+  as a separate time-advancing event — including
+  `consequences.reconcile_duration`, the pipeline's own bar-sum check.
+  ⚠️ **It failed SILENTLY**: an inflated total simply never equals the meter,
+  so the rule did nothing and said nothing.
+- **Measured** on Beethoven 5 / Litolff: page 17 is **38.2% chord bars**, and
+  ungrouped the bars landing exactly on the printed meter fall **18 → 13** —
+  28% of the evidence destroyed before any consumer sees it. The inflation is
+  not a constant to subtract: 13 distinct values, 0.125 to 6.0 ql.
+- **`Q.EVENT`** — a CELL-scoped decision, which glyphs of a bar sound
+  together. ⚠️ A VERDICT, not a measurement: `GLYPH_BOX` already carried every
+  glyph's x (the ingredient was on the record and nothing read it), but
+  "these are simultaneous" is an interpretation under a tolerance. A rest is
+  its own event. `EVENT_X_TOLERANCE_WIDTHS = 0.6` is not a new constant — it
+  is the legacy default, adaptive to the bar's own notehead width.
+- **`reconcile_duration` sums EVENTS**, taking the MODE where a chord's
+  members disagree. ⚠️ No event verdict means **no repair**, not a fall back
+  to the old sum: a bar whose grouping is unknown is a bar whose sum is
+  unknown. Effect: page 1 fires **13 → 16**; page 17 is 0 → 0 because with the
+  carry off it has no meter at all.
+- ⚠️ **The two groupings do NOT agree and I could not make them.** 24 chord
+  members here against the exporter's 16 (172 against 102 on p17); most is a
+  POPULATION difference (every notehead READ vs only those WRITABLE), and two
+  explanations for the 1-and-7 residual were tested and **refuted** — the
+  tolerance base (identical numbers) and narrowed durations (overshoots, 24
+  and 115). The exporter's population sits BETWEEN, so the boundary is its own
+  filter chain, not the clustering. **RULE parity is pinned instead.** This
+  argues for the exporter consuming the verdict — the next step, now evidenced
+  as necessary rather than tidy.
+- ⚠️⚠️ **A field that claimed a check that never ran.** The first draft wrote
+  `divisi_guard: "ran"` wherever `Q.STEM` rows merely EXISTED; the guard is not
+  built. Caught by reading the field's own output on a real page. Now
+  `divisi_guard: "not_implemented"` with `stem_evidence` reporting the input's
+  state — and `stem_evidence: read` on some cells means the guard is buildable.
+- The architecture caught one of my errors: `implicates` omitted `Q.EVENT` and
+  `test_a_failed_check_implicates_the_decision_ITSELF` failed. A bar that does
+  not sum may hold two notes I wrongly merged.
+- 12 tests, each run RED under three mutations. Suite **3,280 passed / 9
+  skipped / 0 failed**; `inventory --check` and `health --check` exit 0.
+  `benchmarks/omr-staged-event-grouping-2026-09/FINDINGS.md`.
+
+---
+
 ## 2026-09-10 — the meter carry: measured on both sides, shipped OFF
 
 - **`OMR_METER_CARRY`** (staged pipeline, default `0`). A meter is a fact of

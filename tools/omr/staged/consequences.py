@@ -14,6 +14,7 @@ a startup failure rather than a run that does not terminate.
 
 from __future__ import annotations
 
+from collections import Counter
 from typing import Any, Dict, List, Optional
 
 from . import record as R
@@ -178,6 +179,38 @@ def size_measure_rest(log: Log, subject: Subject, meter: Verdict) -> List[Verdic
     return [log.record(out)]
 
 
+def _event_totals(log: Log, subject: Subject, notes, current) -> Optional[float]:
+    """The bar's length, counting each EVENT once, or None if unknowable.
+
+    One event contributes ONE duration. Where a chord's members disagree about
+    their value the MODE is taken -- which is `voicing.group_chords_in_measure`'s
+    own definition of an event's duration, so the record and the exporter
+    answer this question the same way.
+    """
+    grouping = log.verdict(Q.EVENT, subject)
+    if grouping is None or grouping.outcome is not Outcome.DECIDED:
+        return None
+    by_glyph = {v.subject.glyph: v for v in notes}
+    total = 0.0
+    seen = set()
+    for event in (grouping.value or {}).get("events", ()):
+        members = [by_glyph[g] for g in event.get("glyphs", ())
+                   if g in by_glyph]
+        if not members:
+            continue
+        beats = Counter(float(current[m.id].get("beats") or 0.0)
+                        for m in members)
+        total += beats.most_common(1)[0][0]
+        seen.update(m.id for m in members)
+    # ⚠️ A duration the grouping does not mention is still time in the bar.
+    # Dropping it would understate the total as silently as the double-count
+    # overstated it.
+    for v in notes:
+        if v.id not in seen:
+            total += float(current[v.id].get("beats") or 0.0)
+    return total
+
+
 @rule(consequence=Consequence.RECONCILE_DURATION,
       cause=Q.METER, effect=Q.DURATION, scope=Kind.CELL,
       bound="Searches only the levels a note ADMITS -- its own narrowed "
@@ -229,7 +262,24 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     current = {v.id: _current(v) for v in notes}
     if any(c is None for c in current.values()):
         return []
-    total = sum(float(c.get("beats") or 0.0) for c in current.values())
+
+    # ⚠️ A BAR IS SUMMED OVER EVENTS, NOT OVER NOTEHEADS. A chord's members
+    # sound together and advance time ONCE, so summing each of them was a
+    # double-count -- and it was silent, because an inflated total simply
+    # never equals the meter and this rule then does nothing. Measured on
+    # Beethoven 5 / Litolff p.17: 38.2% of bars hold a chord, and ungrouped
+    # the bars landing exactly on the printed meter fell 18 -> 13. The
+    # inflation is not a constant to subtract either: 13 distinct values from
+    # 0.125 to 6.0 quarter-lengths.
+    #
+    # ⚠️ NO EVENT VERDICT MEANS NO REPAIR, rather than a fall back to the old
+    # per-notehead sum. A bar whose grouping is unknown is a bar whose sum is
+    # unknown, and repairing against a total that may be inflated is exactly
+    # the laundered guess `bound` exists to prevent.
+    grouped = _event_totals(log, subject, notes, current)
+    if grouped is None:
+        return []
+    total = grouped
     if abs(total - expected) < 1e-6:
         return []                       # the bar already fits
 
