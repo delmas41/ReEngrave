@@ -184,6 +184,120 @@ already exists, instead of needing the re-attribution tier bolted into
 
 ---
 
+## 5b. Which is primary — and how the two can interact
+
+*Added 2026-09-09 after Sean: "I'm not sure our primary issue with dynamics is
+the hairpins or the dynamic letters or both — we will obviously need to have
+both read and able to interact with each other in the adjudication stage."*
+
+### Neither is primary. They are the same size.
+
+On the assessable rows of the 20-row scan gate, the **absolute miss counts are
+within 10% of each other**:
+
+| family | truth-side | matched | attr-error | **missing** | recall | spurious |
+|---|--:|--:|--:|--:|--:|--:|
+| `dynamic` (letters) | 444 | 244 | 73 | **127** | 0.714 | 186 |
+| `hairpin` (wedges) | 140 | 0 | 0 | **140** | **0.000** | 0 |
+
+⚠️ **The recalls differ wildly and the misses do not.** Quoting either number
+alone gives the opposite answer to the other, which is why "is it the letters
+or the hairpins" has had no stable answer: **it is both, roughly equally,** and
+they are different KINDS of failure —
+
+- **letters**: 71% recall, but 186 spurious and 73 wrong-text beside it. A
+  **precision and placement** problem on a family we can already see.
+- **hairpins**: 0% recall with **0 spurious**. A **pure recall** problem — we
+  are not wrong about hairpins, we are silent about them.
+
+A precision problem and a blindness problem do not share a fix, and the two
+have been ranked against each other as if they did.
+
+### The obvious interaction is the wrong one, and the sweep says why
+
+The tempting adjudication check is musical: *a crescendo runs from a quieter
+dynamic to a louder one*, so the flanking letters corroborate the wedge's
+direction — an implication test of exactly the shape `staged/groups.py` exists
+for. Measured on the one reference encoding committed to this repo (Brahms 1 /
+Breitkopf, 21 parts, 1173 `<dynamics>`, 683 hairpins) with
+`benchmarks/omr-dynamics-coupling-2026-09/probe_letter_wedge_coupling.py`:
+
+```
+window   hairpins it can speak about        wrong about the TRUTH
+ +/-1       34  ( 5.0% of hairpins)          0 / 34   =  0.0%
+ +/-2       68  (10.0%)                      9 / 68   = 13.2%
+ +/-3      108  (15.8%)                     26 / 108  = 24.1%
+ +/-4      132  (19.3%)                     42 / 132  = 31.8%
+```
+
+⚠️⚠️ **The rule's accuracy is entirely a function of its reach, and that — not
+any single rate — is the finding.** At one measure it is **exact, 34 for 34**;
+at four it is wrong about a third of the time. The coupling is real and
+strictly **local**: a dynamic one bar from a hairpin end belongs to it, one
+four bars away is a different musical event the window merely reached.
+`cresc.` into a subito `p` is a standard gesture and appears the moment the
+window loosens.
+
+**So the constant is a cliff, not a tuning**: keep it at ±1 measure and
+ABSTAIN beyond, rather than buying reach with accuracy. And even there it is
+**additive evidence over ~5% of hairpins, never a veto** — a veto on the
+loosened version would fire on correctly-read hairpins, which is `groups.py`'s
+own stated failure mode: *a wrong `reading` manufactures disagreement out of
+correct engraving.*
+
+⚠️ **n = 1 work**, because the score library is machine-local and gitignored.
+Brahms is a heavy hairpin user, so any bias is toward *over*-stating the
+coupling. And it measures the ENCODING, not the page.
+
+### The interaction that IS strong runs the direction you would not guess
+
+**Both families live in the same band, and only one of the two readers
+respects it.**
+
+`hairpin_detection.BAND_TOP_SPACES = 0.3` / `BAND_BOTTOM_SPACES = 6.0` below
+the bottom staff line — and its own comment names the letters as sharing that
+band (`+0.0 to +5.6 spaces`, which is the dynamics-band study's measured letter
+population). They are the same row of the page.
+
+But the two readers reach it differently:
+
+| | frame | attribution |
+|---|---|---|
+| `hairpin_detection` | **page pixels, per staff** | right **by construction** — the band belongs to exactly one staff |
+| dynamic letters | per-**measure cell**, 4–6 spaces of padding | **24% land in the staff above**, and the upstream dedupe already kept the wrong copy by distance |
+
+**So the hairpin reader's band discipline is the fix for the letters'
+placement problem** — hairpins help letters, not the other way round. That is
+the opposite of the intuitive direction, and it is structural rather than
+musical, which is why it does not decay with distance the way the direction
+check does.
+
+A second, weaker positional interaction is worth noting because it is free:
+**67% of hairpins have a dynamic at at least one end** (40.8% one end, 13.5%
+both, at ±2). A letter in the same band at the same y is a better anchor for
+`_wedge_anchors` than a notehead is — and `_wedge_anchors`' documented
+blindness is `duration_beats`, i.e. it is already known to be picking anchors
+badly. ⚠️ Unmeasured as a fix; recorded as a candidate, not a plan.
+
+### What this means for the staged pipeline
+
+The composition already declared in `adjudicate.py` is the right one, and the
+interaction Sean is asking for happens at **ownership**, not at spelling:
+
+```
+Q.DYNAMIC_LETTER ─┐
+                  ├─> Q.GLYPH_OWNER ──> Q.DYNAMIC       (spell the word)
+Q.WEDGE_BOX ──────┴─> Q.WEDGE_ANCHOR                    (anchor the wedge)
+```
+
+Gather **both** observations **in the same band frame, in page pixels**, and
+they meet at `Q.GLYPH_OWNER` — the one piece of this that is already a real
+adjudicator rather than a stub. The direction check then rides on top as an
+additive witness at ±1 measure, where `groups.py` can record that two
+independent readers (YOLO for the letters, classical CV for the wedges) agree
+— genuinely independent, so the ancestor-closure rule admits it as
+corroboration rather than collapsing it to `SINGLE`.
+
 ## 6. Ranked options
 
 ### A. Re-price `OMR_CV_HAIRPINS` on the current default tree — *no new code*

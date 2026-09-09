@@ -7,6 +7,41 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ## 2026-09-09 — dynamics: the block is HAIRPINS, not letters (scoping, no arm run)
 
+- **Follow-up (Sean: "not sure our primary issue is the hairpins or the letters
+  or both — we will need both read and able to interact in the adjudication
+  stage"). Answer: BOTH, and they are the same size.** On the assessable rows
+  the absolute miss counts are within 10% of each other — letters **127
+  missing**, hairpins **140 missing** — while the recalls (0.714 vs 0.000) give
+  the opposite answer. ⚠️ Quoting either figure alone inverts the conclusion,
+  which is why the question had no stable answer. Different KINDS: letters are a
+  precision/placement problem (186 spurious, 73 wrong-text), hairpins a pure
+  recall one (0 spurious — we are silent, not wrong).
+- **⚠️⚠️ The obvious adjudication check was measured and is REACH-LIMITED, and
+  the sweep is the result rather than any single rate.** New probe
+  `benchmarks/omr-dynamics-coupling-2026-09/probe_letter_wedge_coupling.py`,
+  on the one committed reference encoding (Brahms 1, 21 parts, 1173
+  `<dynamics>`, 683 hairpins): "a crescendo runs quiet → loud" is **exact at
+  ±1 measure (34/34)** and **wrong 31.8% of the time at ±4**, reach 5.0% →
+  19.3%. So the coupling is real and strictly LOCAL — keep it at ±1 and
+  ABSTAIN beyond, additive evidence only, never a veto (`groups.py`: a wrong
+  `reading` manufactures disagreement out of correct engraving).
+  ⚠️ An earlier pass of this probe quoted "wrong three times in ten" from a
+  single ASYMMETRIC window; that is a point on the curve, not a property of the
+  rule, and the docstring now says so.
+- **⚠️ The interaction that IS strong runs the direction you would not guess.**
+  `hairpin_detection.BAND_TOP/BOTTOM_SPACES` (0.3–6.0 below the bottom line) is
+  the SAME band the letters occupy (+0.0..+5.6, per the band study) — but the
+  hairpin reader works in **page pixels per staff**, so attribution is right by
+  construction, while the letters go through per-measure cells and lose **24% to
+  the staff above**. **The hairpin reader's band discipline is the fix for the
+  letters' placement problem**, not the reverse. Structural, so it does not
+  decay with distance the way the direction check does.
+- Corollary for the staged pipeline: gather both observations in ONE band frame
+  and they meet at `Q.GLYPH_OWNER` — already a real adjudicator, not a stub. The
+  two readers are genuinely independent (YOLO letters, classical-CV wedges), so
+  the ancestor-closure rule admits them as corroboration rather than collapsing
+  them to `SINGLE`.
+
 - **Scoped, nothing measured new**:
   [docs/scope-dynamics-reading-2026-09-09.md](docs/scope-dynamics-reading-2026-09-09.md).
   Every figure is read off a committed artefact; no benchmark arm was run.
