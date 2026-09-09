@@ -866,6 +866,51 @@ verdict files **are already on `main`** — verified per file with `git cat-file
 not by reading the message. What remains on it is the July clef fine-tune,
 which is a recorded dead recipe.
 
+### Worktree / branch cleanup 2026-09-09
+
+**110 worktrees → 26; 269 local branches → 57.** Nothing was deleted that is
+not reachable from `origin/main`.
+
+Rules used, in order — each one caught something:
+
+1. **The main checkout classified as "merged" and nearly went with them.** It
+   is a worktree of `main`, so `ahead == 0`; it holds **8,371 gitignored cell
+   PNGs**. Excluded explicitly.
+2. **`git worktree remove` was run WITHOUT `--force`**, so anything holding
+   uncommitted files refused itself. 77 removed, 14 refused.
+3. **Removing a worktree deletes its gitignored files too.** Three worktrees
+   held hand-labeled cell PNGs — irreplaceable, since phase-1 has drifted and
+   they cannot be re-cut. Two were verified byte-identical to the main
+   checkout's copies (names diffed, checksums spot-checked) before removal.
+4. Of the 14 refused, **7 were removed after checking their uncommitted content
+   was regenerable or already in main** — venvs, `node_modules`, benchmark
+   fixtures and `ops-*`/`pred-*` scratch, a views cache, a `library` symlink, a
+   `+greenlet` line already in main's requirements, and a probe script already
+   committed as `0a35d3ab`.
+5. **7 worktrees were KEPT** — 5 hold uncommitted source edits, 2 hold unique
+   data (below).
+6. Local branches were deleted only where `git rev-list origin/main..<branch>`
+   is empty, with `git branch -d` as a second gate. It refused 11, of which
+   four hold commits **never pushed anywhere** (`agitated-bassi` 14,
+   `transcription-overnight-progress` 31, `omr-score-order-prior` 4,
+   `integrate/land-2026-09-01` 2). **No remote branch was deleted** — this
+   repo cites branch names as provenance throughout CLAUDE.md and the
+   benchmarks.
+
+⚠️ **Two uncommitted files exist nowhere else and are worth a decision:**
+
+- `.claude/worktrees/pdf-mxl-measure-matching-acce2c` →
+  `data/score-library/movement-boundaries.yaml`, **937 lines**, hand-curated:
+  the page on which each movement's first system begins, for the 31 paired
+  edition PDFs, with per-row `confirmed_bookmark` / `candidate_text` /
+  `NEEDS_INPUT` status. Not in `main`. ⚠️ **This is close to the input the open
+  meter-carry question is blocked on** — that work's own correction says *"a
+  movement boundary on a page that reads well remains UNMEASURED"*, and this
+  table is a list of exactly those boundaries.
+- `.claude/worktrees/weight-generalization-publishers-548504` →
+  `benchmarks/omr-labeling-grace2-2026-09/target_cells.json` (219 KB), the
+  batch's cell-selection record. Not in `main`.
+
 ### Audit 2026-09-01
 
 Verified with `git cherry` and by comparing file contents —
