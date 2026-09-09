@@ -1,0 +1,3 @@
+system/0/0       decided   voted                                3/4
+system/1/0       decided   change_only                          C
+system/2/0       abstained no_evidence                          None

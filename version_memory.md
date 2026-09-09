@@ -74,6 +74,69 @@ fresh clone with no weights.
 
 ---
 
+## 2026-09-09 (night) — the engraved render, DENSE texture: bar sums are wrong on perfect ink
+
+Sean: *"now do the engraved render to settle it"*. ⚠️ **A SIBLING SESSION DID
+THE SAME THING IN PARALLEL AND LANDED FIRST** — see the entry below, which is
+the fuller account of the boundary (two engraved fixtures, a second document
+AND publisher, no suppression needed). **Their `_meter_from_letter` and its ten
+tests supersede this session's independent `_CHANGE_LETTERS` fix, which was
+DELETED** along with four of its five tests; theirs is better, because it
+abstains on a staff reading BOTH letters and mine did not. What is recorded
+here is only what does NOT duplicate theirs.
+
+⚠️ **The duplicated work was still worth one thing:** this session's five
+letter tests were written against its OWN implementation and then run GREEN
+against the sibling's — two independent readings of one hole, agreeing. The one
+test they did not cover (a staff carrying a letter AND digits at the same bar;
+digits must win) is kept as `TestDigitsWinOverALetterAtTheSameBar`.
+
+- ⚠️⚠️ **THE COMPLEMENTARY FINDING, AND IT QUALIFIES THEIRS: BAR SUMS ARE WRONG
+  ON PERFECT INK WHEN THE TEXTURE IS DENSE.** Their fixture is the sparse
+  Scherzo recall (m172+, 3/4) and its bars read **7 fit / 2 not**. This one is
+  the **dense tutti** at bars 203-218, where all 23 parts play in every bar —
+  and the sums come out **5.0, 4.5, 5.0, 4.5** against a truth of 4/4, with
+  **3.5 at 18 of 23 staves** and **6.0 at 20 of 23** on the middle system.
+  Not one bar of the last system is right.
+- **So more witnesses is not better.** The intuition behind
+  `METER_CARRY_MIN_STAVES_PER_BAR` — that a bar many staves agree on is
+  trustworthy — fails exactly where the staves are most numerous: these are
+  CONFIDENT wrong readings and the cross-staff majority passes them. Recorded
+  as `A-DUR-8`.
+- ⚠️ **The errors run LONG** (3.5, 4.5, 5.0, 6.0 vs 4.0) on a page with no
+  missing ink. A shortfall would suggest missed ink; an excess suggests the
+  duration reader composing something twice or reading a written value too
+  long. **A diagnosis to open, not a conclusion.**
+- ⚠️⚠️ **AND THE CARRY'S COST SIDE IS MEASURED AT LAST.** `A-DUR-2` says in its
+  own words that *"only the BENEFIT is measured — the cost of a wrong revert is
+  not"*. On the bar-155 engraving a **correct** carry is refused: 4 bars agree,
+  4 disagree, support **+1.0** against a floor of 2.0. A direct consequence of
+  the above, and the reason ⚠️ **the meter floors must NOT be tuned against
+  this** — it would be fitting a constant to a broken input.
+- ✅ Where the bars ARE read right, both mechanisms behave, independently: on
+  the bar-155 fixture the carry brings the new **3/4** forward at **+5.0 (4
+  agree / 0 disagree)** and the bar reader derives the same 3/4 at **+4.0**,
+  borrowing the spelling from the system that read it.
+- ⚠️ **A courtesy signature at a system boundary is a structural case nothing
+  had shown.** At bar 155 the change falls on a system break, so LilyPond
+  prints the new `3/4` at the END of the preceding system as well as at the
+  start of the new one. A change reader that trusts the cell a glyph stands in
+  would propose the change one bar early. It does not fire here, and nothing in
+  the rule prevents it.
+- ⚠️ **Two fixture mistakes, caught by looking, each recorded in the code that
+  allowed it.** (1) `hide_change_signature.py`'s `--marker` was a DEFAULT, and
+  `\time 3/4` is the CHANGE at bar 155 but the OPENING at bar 203 — so the 209
+  run hid the carry's own source and left the change printed, inverting the
+  experiment; the tell was `system/0/0` abstaining where it had to read 3/4.
+  Now REQUIRED. (2) A top-margin heuristic for locating movement starts missed
+  p.17, the one known boundary — that print does not indent one. Discarded.
+- `benchmarks/omr-staged-meter-engraved-2026-09/` — `render_meter_change.py`
+  (the `excerpt` recipe without its one-page shrink, which exists for an
+  EXPORTER reason that does not apply when the question is per-SYSTEM),
+  `hide_change_signature.py`, and `FINDINGS.md`.
+
+---
+
 *(Two sessions inserted here on the same day. They are INDEPENDENT — the
 boundary measurement did not need the fallback-ordering fix and vice versa —
 and they compose: the ordering fix is what lets a REFUSED carry give way to the

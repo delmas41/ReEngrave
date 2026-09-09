@@ -44,7 +44,14 @@ anything**: still ONE document, n = 4 systems, `METER_CARRY_MIN_BARS` is now
 seen refusing a CORRECT carry, **bar assessability falls with DENSITY not with
 print quality** (100% → 33% as events per bar go 1.0 → 4.5), and the letter fix
 **produces a false change on a Litolff scan page** from one 0.377-confidence
-glyph. ⚠️⚠️ **AND THE SECOND DOCUMENT AND PUBLISHER IS DONE IN THE SAME SESSION, AND
+glyph. ⚠️⚠️ **A PARALLEL SESSION MEASURED THE SAME CHANGE ON THE DENSE SIDE AND
+ADDS ONE THING:** among the bars that DO clear the quorum there, **three of
+five are wrong** — 18 of 23 staves agreeing on 3.5 against a truth of 4.0, and
+20 of 23 on 6.0. So density costs assessability *and* corrupts the survivors,
+which is why the meter floors must not be tuned against either
+(`A-DUR-8`, `benchmarks/omr-staged-meter-engraved-2026-09/FINDINGS.md`; that
+session's own `C` fix was a duplicate of `_meter_from_letter` and was
+deleted). ⚠️⚠️ **AND THE SECOND DOCUMENT AND PUBLISHER IS DONE IN THE SAME SESSION, AND
 THE RESULT SPLITS.** Brahms 1 mvt 1 prints `6/8`, one bar of `9/8`, then `6/8`
 — and the **Breitkopf scan of that music is already in the scan gate with a
 hand-verified window**, so the same 22 bars run ENGRAVED and SCANNED differing
@@ -92,7 +99,22 @@ word-split `env $3`) and a **mutation that survived because the rule could not
 fire** — the constant was deleted, not patched. ⚠️ It also corrects `A-DUR-6`:
 the double barline is **not** the cheap independent reader that entry calls it
 (`Q.BARLINE_COLUMN` is a per-staff *count of cells*, and no barline-type
-classification exists). Its predecessor
+classification exists).
+⚠️⚠️ **AND THE ENGRAVED RENDER THEN MOVED THE WHOLE QUESTION UPSTREAM
+(`A-DUR-8`, `benchmarks/omr-staged-meter-engraved-2026-09/`): BAR SUMS ARE
+WRONG ON PERFECT INK.** On a LilyPond render of Beethoven 5 mvt4 bars 203-218 —
+23 parts, every part playing every bar — the sums read **5.0, 4.5, 5.0, 4.5**
+where the truth is 4/4, and **3.5 at 18 of 23 staves**. Confident wrong
+readings that the cross-staff majority passes. So the block on the bar-sum
+family (the carry's second witness, `OMR_METER_FROM_BARS`, `A-DUR-6` items 3-5)
+is the **DURATION READER, not the scan** — and a correct carry is refused on
+that same perfect page (4 agree / 4 disagree, +1.0 under a floor of 2.0), which
+is the cost side `A-DUR-2` says was never measured. **Do not tune the meter
+floors against this.** ⚠️ The same fixture found a **detected-then-dropped**
+bug and fixed it: a change to COMMON TIME was invisible because
+`_meter_from_digits` demanded two stacked digits, while the detector fired
+`timeSigCommon` on **23 of 23 staves at exactly the right bar** — now read, and
+the segment lands on original bar 209 to the bar. Its predecessor
 [docs/handoff-2026-09-09-meter-as-a-range-fact.md](docs/handoff-2026-09-09-meter-as-a-range-fact.md)
 — **the meter became a fact about BARS rather than about a system**
 (`Q.METER` carries `segments`; `record.meter_at` reads a bar's meter), a carried

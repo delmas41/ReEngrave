@@ -1496,3 +1496,47 @@ class TestTheFixturesFileMeterGlyphsWhereGATHERDoes(unittest.TestCase):
         v = t._run(log, sysj)
         self.assertEqual((v.value or {}).get("cautionary_cells"),
                          [(2, "2/4")])
+
+
+class TestDigitsWinOverALetterAtTheSameBar(unittest.TestCase):
+    """⚠️ THE ONE THING `TestAMeterChangeIsReadFromTheInk` DOES NOT COVER:
+    precedence when ONE staff carries a letter AND digits at the same bar.
+
+    That class (a sibling session's, landed first) tests digits alone, letters
+    alone, and two LETTERS at one bar. `_meter_changes` states "DIGITS FIRST
+    AND THE LETTER ONLY AFTER, so a bar that prints digits is never re-read as
+    a letter by a stray detection" — this is that sentence.
+
+    ⚠️ THE REST OF THIS CLASS WAS DELETED AS A DUPLICATE. This session reached
+    the same `C`-is-dropped finding independently, from the same engraved bar
+    209, and wrote its own `_CHANGE_LETTERS` fix and five tests. The sibling's
+    landed first and is better (it abstains on a staff reading BOTH letters,
+    which mine did not). The implementation was dropped in favour of theirs and
+    the four overlapping tests with it — but they were first run GREEN against
+    the sibling's code, which is a real cross-check: two independent readings
+    of one hole, agreeing.
+    """
+
+    def test_digits_still_win_where_BOTH_are_present(self):
+        log = Log()
+        sysj = R.system(0, 0)
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=sysj,
+            quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+            value=6, decider="t", reason="counted"))
+        for i in range(6):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, (3, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.8, raw="3/4")
+            for cls, y in (("timeSigCommon", 100.0),
+                           ("timeSig3", 10.0), ("timeSig8", 90.0)):
+                log.observe(R.staff(0, 0, i), Q.METER_GLYPH, cls,
+                            reader=READERS.DETECTOR, frame="cell:3",
+                            score=0.9, cell=3, y_center=y)
+        log.freeze()
+        adjudicate._ensure_decisions()
+        adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.METER], sysj)
+        segs = log.verdict(Q.METER, sysj).value["segments"]
+        self.assertEqual(len(segs), 2)
+        self.assertEqual((segs[1]["numerator"], segs[1]["denominator"]), (3, 8),
+                         "the digits, not the C")

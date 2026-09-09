@@ -1,5 +1,11 @@
 # Handoff — the bars can name a LENGTH, and only ink can name a METER
 
+⚠️ **SUPERSEDED AS THE ENTRY POINT** by
+[docs/handoff-2026-09-09-the-boundary-measured.md](handoff-2026-09-09-the-boundary-measured.md),
+which measured the boundary case this file leaves open. Read that first; this
+file's §1-§4 are still the account of what `OMR_METER_FROM_BARS` is and rests
+on.
+
 ⚠️ **READ THIS FIRST.** It replaces
 [docs/handoff-2026-09-09-meter-as-a-range-fact.md](handoff-2026-09-09-meter-as-a-range-fact.md)
 as the entry point. That file's §1 redirect still governs — **the metric is not
@@ -180,12 +186,24 @@ opening is either sparse (most instruments resting, and a lone whole rest may
 never corroborate) or a dense tutti, which is the texture the reader is worst
 at. p.32's best system gets 8 assessable bars and still scores **0**.
 
-**So the remaining route is the ENGRAVED one**, unspent since §11 of
-`omr-staged-meter-carry-2026-09/FINDINGS.md`: render
-`beethoven--symphony-5--mvt4` (4/4 → 3/4 → 4/4 → 2/2) through LilyPond with
-`orchestral_eval`, where legibility is not the confound. If the rule fires
-there it is a rule; if it does not, no amount of scan work would have said
-so.
+✅ **THE ENGRAVED ROUTE IS NOW SPENT, AND IT MOVED THE QUESTION UPSTREAM.**
+See `benchmarks/omr-staged-meter-engraved-2026-09/FINDINGS.md` and `A-DUR-8`.
+`beethoven-sym5-mvt4` bars 203-218 rendered through LilyPond — 23 parts, every
+part playing every bar, ink perfect by construction — reads its bar sums as
+**5.0, 4.5, 5.0, 4.5** where the truth is 4/4, and **3.5 at 18 of 23 staves**.
+**The bar sums are wrong on perfect ink.** So the block on this whole family is
+the DURATION READER, not the page — and tuning either meter floor would be
+fitting a constant to a broken input.
+
+✅ What the engraving DOES show, where the bars are read right: the carry
+brings the new 3/4 forward at **+5.0 (4 agree / 0 disagree)** and the bar
+reader independently derives the same 3/4 at **+4.0**, borrowing the spelling
+from the system that read it — two mechanisms, one answer. And a wrong carried
+meter is refused at **−1.0**.
+
+⚠️ It also measured the COST side `A-DUR-2` says was never measured: on that
+same perfect page a **correct** carry is refused, 4 agree / 4 disagree, +1.0
+under a floor of 2.0.
 
 ### 2. A SECOND DOCUMENT AND PUBLISHER
 
