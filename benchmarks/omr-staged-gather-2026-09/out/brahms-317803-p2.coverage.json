@@ -156,6 +156,10 @@
       "status": "stub"
     }
   ],
+  "unclaimed_classes": {
+    "arpeggiato": 86,
+    "caesura": 1
+  },
   "detected_and_unrepresented": {
     "articulation": 22,
     "dynamic": 205,

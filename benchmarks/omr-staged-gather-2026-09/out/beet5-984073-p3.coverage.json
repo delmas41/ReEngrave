@@ -156,6 +156,10 @@
       "status": "stub"
     }
   ],
+  "unclaimed_classes": {
+    "arpeggiato": 98,
+    "stringsDownBow": 1
+  },
   "detected_and_unrepresented": {
     "articulation": 15,
     "dynamic": 284,

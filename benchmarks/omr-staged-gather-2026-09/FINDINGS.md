@@ -128,7 +128,38 @@ full of measure rests when what it is full of is unread bars — Beethoven p3 is
   for the good reason, so the expectation is gone and what remains is the
   DISTINCTION — the check still fires on a fabricated starved decision.
 
-## 6. What is still unrepresented, and what each needs
+## 6. ⚠️ THE DERIVED CHECK FOUND A DETECTOR FAULT NOBODY WAS LOOKING FOR
+
+Listing notation families by hand has the same failure mode as
+`export_coverage`'s old `VISIBLE` allow-list: a class nobody thought about is
+*silently unchecked*. So `coverage()` DERIVES what it has not claimed —
+families claim their prefixes, `NOT_NOTATION` excuses the rest **with a written
+reason**, and whatever is left is reported by name and count.
+
+What it left, over two pages: **`arpeggiato` 98 + 86**, plus one
+`stringsDownBow` and one `caesura`.
+
+⚠️ **Neither Beethoven 5 nor Brahms 1 prints ninety arpeggios a page, and the
+geometry says what these are:**
+
+| | n | median conf | median w × h |
+|---|--:|--:|---|
+| `arpeggiato`, beet5 p3 | 98 | **0.39** | **56 × 388** |
+| `noteheads`, same page | 711 | 0.67 | 146 × 131 |
+| `arpeggiato`, brahms p2 | 86 | **0.35** | **40 × 243** |
+| `noteheads`, same page | 1015 | 0.72 | 110 × 85 |
+
+A 1:7 tall thin box at half the confidence of a notehead is a **stem or a
+barline**, not an arpeggio sign. It is the largest single unclaimed class on
+both pages and it is a DETECTION fault, so it is deliberately NOT excused into
+`NOT_NOTATION` — `arpeggiato` really is a notation family, and burying it
+there would hide the misread rather than record it.
+
+⚠️ This is what a derived check buys over a hand list: nobody was looking for
+it, and a hand-written family table would have been silently complete without
+it.
+
+## 7. What is still unrepresented, and what each needs
 
 | family | detected (2 pages) | what it needs |
 |---|--:|---|

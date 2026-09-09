@@ -718,6 +718,56 @@ FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
 }
 
 
+#: Detected classes that are NOT a notation family of their own, with the
+#: reason. ⚠️ A DENY-LIST, NOT AN ALLOW-LIST, and the direction is the point:
+#: the default for a class nobody has thought about is *reported*, not
+#: *silently unchecked*. `export_coverage` learned this the hard way -- its
+#: hand-written `VISIBLE` allow-list was blind to fifteen elements including
+#: the tenth export gap -- so the same inversion is used here.
+NOT_NOTATION: Dict[str, str] = {
+    "notehead": "the note itself; counted as the `note` family",
+    "rest": "counted as the `rest` family",
+    "beam": "consumed by `duration` as a beam stroke",
+    "stem": "CV-only; `Q.STEM` is gathered and no exporter writes a stem",
+    "staff": "the staff lines: page geometry, not a symbol",
+    "ledgerLine": "consumed by `glyph_owner`'s ladder arbitration",
+    "brace": "grouping; `group_symbol` decides the symbol",
+    "bracket": "as brace",
+    "augmentationDot": "consumed by `duration` as a dot",
+    "flag": "consumed by `duration`: a flag says what a beam says for an "
+            "unbeamed note (`Q.FLAG`)",
+    "accidental": "consumed into `pitch` and `accidental`",
+    "key": "consumed by `key_signature`",
+    "clef": "counted as the `clef` family",
+    "timeSig": "counted as the `time` family",
+    "tuplet": "counted as the `tuplet` family",
+    "fingering": "a performance marking, not a notation family we export",
+    "repeatDot": "repeat barlines are a KNOWN GAP of the legacy exporter too",
+    "barline": "structure; `measure_partition` decides the bars",
+}
+
+
+def _unclaimed(detected: Dict[str, int]) -> Dict[str, int]:
+    """Detected classes that no family claims and no reason excuses.
+
+    ⚠️ DERIVED, so it cannot go stale by my forgetting a class. Every family's
+    prefixes claim what they claim; `NOT_NOTATION` excuses the rest with a
+    written reason; and whatever is left is reported by name and count. A
+    class nobody has decided about shows up here the first time the detector
+    emits one.
+    """
+    claimed = tuple(p.lower() for _q, prefixes, _c in FAMILIES.values()
+                    for p in prefixes)
+    excused = tuple(k.lower() for k in NOT_NOTATION)
+    out: Dict[str, int] = {}
+    for cls, n in detected.items():
+        low = cls.lower()
+        if any(low.startswith(p) for p in claimed + excused):
+            continue
+        out[cls] = n
+    return dict(sorted(out.items(), key=lambda kv: -kv[1]))
+
+
 def coverage(result: Dict[str, Any],
              written: Optional[Dict[str, int]] = None) -> Dict[str, Any]:
     """For every notation family: did it come out, and if not, WHY NOT.
@@ -805,6 +855,10 @@ def coverage(result: Dict[str, Any],
               and r["detector_glyphs"]}
     return {
         "families": rows,
+        # ⚠️ Ink of a kind no family and no reason accounts for. Derived, so a
+        # class nobody has thought about appears here the first time the
+        # detector emits one.
+        "unclaimed_classes": _unclaimed(detected),
         # ⚠️ THE HEADLINE: ink the detector found and the record cannot carry.
         "detected_and_unrepresented": unread,
         "detected_and_unrepresented_total": sum(unread.values()),
@@ -862,6 +916,11 @@ def _report(report: Dict[str, Any]) -> None:
     total = report["detected_and_unrepresented_total"]
     print(f"  ⚠️ {total} detected glyphs the record cannot carry: "
           f"{report['detected_and_unrepresented']}", file=sys.stderr)
+    unclaimed = report.get("unclaimed_classes") or {}
+    if unclaimed:
+        print(f"  ⚠️ {sum(unclaimed.values())} detected glyphs of a kind NO "
+              f"family and no reason accounts for: {unclaimed}",
+              file=sys.stderr)
     return None
 
 

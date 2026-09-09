@@ -467,3 +467,44 @@ class TestRestsReachTheFile(unittest.TestCase):
         _, rep = SX.to_musicxml(page)
         self.assertEqual(rep["notes_not_written"]["rest_duration_abstained"], 1)
         self.assertTrue(rep["balance"]["balanced"])
+
+
+class TestNothingDetectedGoesUnaccounted(unittest.TestCase):
+    """⚠️ DERIVED, so it cannot go stale by anyone forgetting a class. The
+    families claim what they claim, `NOT_NOTATION` excuses the rest WITH A
+    WRITTEN REASON, and whatever is left is reported by name and count.
+
+    A DENY-list, not an allow-list, and the direction is the point: the
+    default for a class nobody has thought about is *reported*, not *silently
+    unchecked*. `export_coverage`'s hand-written `VISIBLE` allow-list was
+    blind to fifteen elements including the tenth export gap."""
+
+    def test_a_class_no_family_claims_is_reported_by_name(self):
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        page["record"]["observations"].append(
+            _obs(900, "glyph/0/0/0/0/9", Q.GLYPH_BOX,
+                 ["someGlyphNobodyThoughtAbout", 1, 1, 2, 2]))
+        rep = SX.coverage(page)
+        self.assertEqual(rep["unclaimed_classes"],
+                         {"someGlyphNobodyThoughtAbout": 1})
+
+    def test_a_family_class_is_not_reported_as_unclaimed(self):
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        _add_rest(page, 5, "restWhole", {"beats": 4.0, "written": 4.0,
+                                         "dots": 0, "is_rest": True})
+        self.assertEqual(SX.coverage(page)["unclaimed_classes"], {})
+
+    def test_an_EXCUSED_class_is_silent_and_says_why(self):
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        for i, cls in enumerate(("beam", "ledgerLine", "flag8thUp", "staff")):
+            page["record"]["observations"].append(
+                _obs(910 + i, f"glyph/0/0/0/0/{20 + i}", Q.GLYPH_BOX,
+                     [cls, 1, 1, 2, 2]))
+        self.assertEqual(SX.coverage(page)["unclaimed_classes"], {})
+        for cls in ("beam", "ledgerLine", "flag", "staff"):
+            self.assertTrue(SX.NOT_NOTATION[cls].strip(),
+                            f"{cls} is excused with no reason")
+
+    def test_every_excuse_names_a_reason(self):
+        for cls, why in SX.NOT_NOTATION.items():
+            self.assertTrue(why and why.strip(), cls)
