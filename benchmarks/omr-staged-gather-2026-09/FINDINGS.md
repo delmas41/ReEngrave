@@ -159,7 +159,54 @@ there would hide the misread rather than record it.
 it, and a hand-written family table would have been silently complete without
 it.
 
-## 7. What is still unrepresented, and what each needs
+## 7. ⚠️ THE RECORD ANSWERS "WHICH DECISION, AND WHY" — asked for the first time
+
+595 events over the two pages are HELD IN THE RECORD AND ABSENT FROM THE FILE.
+That number was visible before; what is new is that the record can be asked
+which decision stopped each one. This is the question OMR-NED structurally
+could not answer, so it is worth doing in full the first time.
+
+### `no_pitch` — 67 + 75, and it is TWO STAVES
+
+⚠️ **Verified, not inferred.** On Beethoven p3: 711 noteheads, **all 711 carry
+a POSITION row**, 644 get a pitch, 67 do not — and **67 of 67 sit on a staff
+whose clef did not decide.** Not one is a missing position or a failed
+`_pitch_from_position`.
+
+The clef decided on **20 of 22** staves. So **two staves cost 67 notes**, one
+abstaining `margin_below_floor` (the contest was too close to call) and one
+`no_candidates`. Brahms is the same shape: 4 staves of 27, all
+`margin_below_floor`.
+
+⚠️ **AND THE FIX IS ALREADY FILED.** `adjudicate_clef` declares
+`Q.NOTEHEAD_STAFF_POSITION` in `wants` and never reads it — and that quantity
+is its **own first `checked_by` entry**, *"implied pitches: this staff's own
+measured positions under this candidate must fall in the instrument's written
+range"*. A `margin_below_floor` abstention is precisely a contest that one
+more independent signal would break, and the machinery exists one module over
+in `ownership._range_veto`. `inventory --check` lists it as a KNOWN_GAP today.
+
+### `duration_narrowed` — 128 + 264, and it is the BEAM EDGE
+
+| | beet5 p3 | brahms p2 |
+|---|--:|--:|
+| narrowed | 143 of 960 | 296 of 1377 |
+| `beam_evidence: none_over_this_note` | **100 (70%)** | **167 (56%)** |
+| `beam_evidence: read` | 43 | 129 |
+| candidate spread of exactly 2 | 128 of 143 | 209 of 296 |
+| a YOLO beam but **no CV beam** | 31 | **96** |
+
+⚠️ **`none_over_this_note` + NARROWED means a beam sits NEAR the notehead and
+does not cover its centre** — `possible > certain` inside
+`BEAM_EDGE_TOLERANCE_WIDTHS`. So the dominant narrowing is not a missing
+stroke, it is a stroke whose x-range stops just short of the head, and the
+ambiguity is binary in 90% / 71% of cases: one level or two.
+
+That is a measurable question about one constant, answerable from the stored
+records with no re-run — and unlike a threshold sweep on a score, the record
+says per note what the reading would become.
+
+## 8. What is still unrepresented, and what each needs
 
 | family | detected (2 pages) | what it needs |
 |---|--:|---|
