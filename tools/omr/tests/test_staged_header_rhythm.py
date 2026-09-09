@@ -249,9 +249,40 @@ class TestTheMeterCarry(unittest.TestCase):
     `2/4` onto the whole Andante, which is what `test_the_hazard` pins.
     """
 
-    def _log(self, carried_pages=(0, 1)):
-        """Page 0 system 0 reads 2/4 on 12 of 12; page 1 system 0 reads
-        nothing at all."""
+    def _bars(self, log, page, *, beats, n_staves=4, n_bars=3):
+        """Give a system BARS that measure `beats`, so the carry's second
+        witness has something to say.
+
+        ⚠️ A carried meter is a CANDIDATE and must be corroborated by the bars
+        it claims to govern, so a log with NO bars carries nothing — which is
+        `test_a_page_that_cannot_corroborate_does_not_carry`.
+        """
+        for st in range(n_staves):
+            for c in range(n_bars):
+                cell = R.cell(page, 0, st, c)
+                g = R.glyph(page, 0, st, c, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 100, 0, 20, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": beats, "written": beats,
+                           "duration_type": "quarter", "dots": 0},
+                    decider="t", reason="head_and_marks"))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 100.0,
+                                       "kind": "chord"}]},
+                    decider="t", reason="x_clustered"))
+
+    def _log(self, carried_pages=(0, 1), dst_beats=2.0, bars=True):
+        """Page 0 system 0 reads 2/4 on 12 of 12; page 1 system 0 reads no
+        meter at all, and its BARS measure `dst_beats`."""
         log = Log()
         src = R.system(carried_pages[0], 0)
         dst = R.system(carried_pages[1], 0)
@@ -264,6 +295,8 @@ class TestTheMeterCarry(unittest.TestCase):
             log.observe(R.staff(carried_pages[0], 0, i), Q.METER_TEMPLATE,
                         (2, 4), reader=READERS.TEMPLATE,
                         frame="header_window", score=0.7, raw="2/4")
+        if bars:
+            self._bars(log, carried_pages[1], beats=dst_beats)
         return log, src, dst
 
     def _run(self, log, on):
@@ -343,6 +376,8 @@ class TestTheMeterCarry(unittest.TestCase):
             log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, (2, 4),
                         reader=READERS.TEMPLATE, frame="header_window",
                         score=0.7, raw="2/4")
+        self._bars(log, 1, beats=2.0)
+        self._bars(log, 2, beats=2.0)
         self._run(log, on=True)
         mid_v = log.verdict(Q.METER, mid)
         far_v = log.verdict(Q.METER, far)
@@ -353,19 +388,149 @@ class TestTheMeterCarry(unittest.TestCase):
         self.assertEqual(far_v.detail["carried_from"], src.to_key())
         self.assertEqual(far_v.detail["pages_since_read"], 2)
 
-    def test_the_hazard_a_carry_crosses_a_movement_boundary(self):
-        """⚠️⚠️ THIS TEST PINS A WRONG ANSWER ON PURPOSE — it is why the flag
-        is off. Page 17 of the real document is a new movement in 3/8 whose
-        systems read nothing; the carry gives them page 1's 2/4 and the record
-        can only say how far it came. Change this test the day a
-        MOVEMENT-START signal exists, never before.
+    def test_a_NEW_MOVEMENT_REFUSES_the_carry_with_no_movement_detector(self):
+        """⚠️⚠️ THIS TEST USED TO PIN A WRONG ANSWER ON PURPOSE, and its own
+        comment said to change it only when a MOVEMENT-START signal existed.
+        What arrived instead is a SECOND WITNESS, which is better: the bars a
+        carried meter claims to govern confirm or refuse it, so a movement
+        boundary needs no detecting at all — the new movement's bars simply
+        contradict the old movement's meter.
+
+        Measured on Beethoven 5 / Litolff `984073`, carrying `2/4` forward:
+        page 2 (a CONTINUATION of movement 1, truth 2/4) — 8 bars agree, 1
+        disagrees; page 17 (the *Andante*, truth 3/8) — 1 agrees, 7 disagree.
         """
-        log, src, dst = self._log(carried_pages=(1, 17))
+        log, _src, dst = self._log(carried_pages=(1, 17), dst_beats=1.5)
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "carry_outweighed_by_the_bars")
+        self.assertLess(v.detail["support"], rhythm_mod.METER_CARRY_FLOOR)
+        self.assertGreater(v.detail["bars_disagree"], v.detail["bars_agree"])
+        self.assertEqual(v.detail["pages_since_read"], 16)
+
+    def test_the_bars_of_the_SAME_movement_confirm_the_carry(self):
+        """The other half, and the one that keeps the carry useful. Without
+        this the corroboration would be indistinguishable from switching the
+        carry off."""
+        log, src, dst = self._log(dst_beats=2.0)
         self._run(log, on=True)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.DECIDED)
-        self.assertEqual((v.value["numerator"], v.value["denominator"]), (2, 4))
-        self.assertEqual(v.detail["pages_since_read"], 16)
+        self.assertEqual(v.reason, "carried")
+        self.assertGreaterEqual(v.detail["support"], rhythm_mod.METER_CARRY_FLOOR)
+        self.assertGreater(v.detail["bars_agree"], 0)
+
+    def test_a_LONE_WHOLE_REST_MAY_NOT_CORROBORATE_ANYTHING(self):
+        """⚠️⚠️ THE CIRCULARITY, AND LEAVING IT IN INVERTS THE ANSWER.
+
+        An engraver fills an otherwise silent bar with ONE centred whole rest
+        whatever the meter, so the glyph stands for THE BAR and says nothing
+        about its length — and the 4.0 we give it is *our own default for want
+        of a meter*. Counting it would read that default straight back as
+        evidence, and a page of rests would confirm 4/4 for ever.
+
+        Measured on Beethoven 5 / Litolff p.17: left in, 13 of 17 agreeing
+        bars vote 4.0 and the true 1.5 gets none.
+
+        ⚠️ This test exists because a mutation SURVIVED. Disabling the
+        exclusion broke nothing in the suite, which meant the single rule that
+        makes the corroboration usable was untested.
+        """
+        log = Log()
+        src, dst = R.system(0, 0), R.system(1, 0)
+        for sysj, n in ((src, 12), (dst, 11)):
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=n, decider="t", reason="counted"))
+        # the source reads 4/4 — the very value a whole rest would "confirm"
+        for i in range(12):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, (4, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw="4/4")
+        # every bar of the destination is a LONE WHOLE REST at 4.0
+        for st in range(4):
+            for c in range(3):
+                cell, g = R.cell(1, 0, st, c), R.glyph(1, 0, st, c, 0)
+                log.observe(g, Q.REST, "restWhole", reader=READERS.DETECTOR,
+                            frame="cell:%d" % c, score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("restWhole", 100, 0, 20, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": 4.0, "written": 4.0,
+                           "duration_type": "whole", "dots": 0},
+                    decider="t", reason="rest_class",
+                    detail={"rest": "restWhole"}))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 100.0,
+                                       "kind": "rest"}]},
+                    decider="t", reason="x_clustered"))
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, dst)
+        # the rests match 4/4 EXACTLY, and must still corroborate nothing
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.detail["state"], "too_few_assessable_bars")
+
+    def test_the_BARS_outweigh_the_carry_and_the_carry_never_outweighs_them(self):
+        """⚠️ SEAN'S ORDERING, MADE STRUCTURAL RATHER THAN TUNED.
+
+        *"the math that can be determined by its own equation could be weighed
+        more heavily than information that can only be derived"* — so a fact
+        checkable by its own arithmetic must not be outvotable by one merely
+        inherited. At these weights two net contradicting bars outweigh ANY
+        carry, and no amount of carrying outweighs the bars.
+
+        This is a property of the CONSTANTS, so it is asserted on them
+        directly: a sweep that broke the ordering would pass every other test
+        in this file.
+        """
+        carry = rhythm_mod.W_METER_CARRIED
+        against = abs(rhythm_mod.W_METER_BAR_CONTRADICTS)
+        self.assertLess(carry + 2 * rhythm_mod.W_METER_BAR_CONTRADICTS,
+                        rhythm_mod.METER_CARRY_FLOOR,
+                        "two contradicting bars must sink any carry")
+        self.assertLess(carry, rhythm_mod.METER_CARRY_FLOOR,
+                        "a carry with NOTHING to check against must not stand")
+        self.assertGreaterEqual(against, rhythm_mod.W_METER_BAR_FITS * 0.5,
+                                "a contradicting bar may not be a rounding "
+                                "error next to an agreeing one")
+
+    def test_the_support_and_the_counts_are_BOTH_on_the_record(self):
+        """⚠️ A single number hides which of three pages you are looking at.
+        Sean: "keep reporting the counts"."""
+        log, _src, dst = self._log(dst_beats=2.0)
+        self._run(log, on=True)
+        d = log.verdict(Q.METER, dst).detail
+        for key in ("support", "floor", "bars_agree", "bars_disagree",
+                    "bar_lengths_seen", "pages_since_read", "carried_from"):
+            self.assertIn(key, d)
+
+    def test_the_bars_own_reading_is_recorded_even_when_it_names_nothing(self):
+        """On the *Andante* the bars name NOTHING — 1.0, 3.0, 5.0 with no
+        mode. That is a different fact from "they disagree with the carry",
+        and the record keeps it rather than collapsing both to a refusal."""
+        log, _src, dst = self._log(carried_pages=(1, 17), dst_beats=1.5)
+        self._run(log, on=True)
+        d = log.verdict(Q.METER, dst).detail
+        self.assertTrue(d["bar_lengths_seen"])
+        self.assertIn(1.5, [float(k) for k in d["bar_lengths_seen"]])
+
+    def test_a_page_that_cannot_corroborate_does_not_carry(self):
+        """⚠️ NOT "carry anyway". A carry is only as good as its
+        corroboration, and a page with no assessable bar is exactly the page
+        where a movement may have started unseen. Abstaining is the status
+        quo; carrying unverified is the hazard."""
+        log, _src, dst = self._log(bars=False)
+        self._run(log, on=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.detail["state"], "too_few_assessable_bars")
 
     def test_a_carried_meter_is_never_labelled_voted(self):
         """The whole record depends on a consumer being able to tell a meter

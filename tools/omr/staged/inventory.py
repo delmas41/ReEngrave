@@ -124,11 +124,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "decision. The staged exporter derives `symbol` from the template "
         "reader's own matched letter instead, so nothing is lost today; a "
         "second witness is.",
-    "meter declares 'duration'":
-        "declared and deliberately not read: the bar-sum check is this "
-        "decision's strongest constraint and `adjudicate_meter`'s own "
-        "docstring says it belongs in EVALUATE as a bounded repair "
-        "(`consequences.reconcile_duration`), not in the vote.",
     "meter declares 'dossier_fact'":
         "inert declaration; no dossier is supplied on the scan path by "
         "protocol.",

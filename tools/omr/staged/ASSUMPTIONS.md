@@ -498,45 +498,81 @@ the code. Falsify by showing the vote can be computed from measurements alone.
 measurement — the meter loop is tighter than modelled and `reconcile_duration`'s
 bound matters more.
 
-### A-DUR-2 · ⚠️ A meter may be CARRIED, and the carry is off because the hazard is measured
+### A-DUR-2 · ⚠️ A carried meter is WEIGHED by the bars, not gated
 
-**CONTINGENCY** — blocked on a MOVEMENT-START signal, not on a threshold.
-*`rhythm.meter_carry_enabled`, `rhythm._carry_meter`, `OMR_METER_CARRY` (default `0`)*
+**PRINCIPLE** — self-checking arithmetic outranks inherited information.
+*`rhythm._corroborate`, `W_METER_CARRIED`, `W_METER_BAR_FITS`, `METER_CARRY_FLOOR`, `METER_CARRY_MIN_BARS`, `OMR_METER_CARRY` (default `0`)*
 
-**Assumption.** A system that read no usable meter may take the last meter that
-was READ, and only a `voted` verdict is a source — a carry never chains onto a
-carry, so `pages_since_read` is the true distance back to ink.
+**Assumption.** A system that read no usable meter may take the last meter
+that was READ, as a CANDIDATE; every bar of that system then adds `+1.0` if it
+fits and `-1.0` if it does not, against a floor of `2.0` and a minimum of two
+assessable bars. Only a `voted` verdict is a source, so a carry never chains
+onto a carry and `pages_since_read` is the true distance back to ink.
 
 **Why.** A meter is a fact of the MOVEMENT, printed at its start and nowhere
-else, so a page-at-a-time pipeline has no meter from the second page onward.
-Measured on Beethoven 5 / Litolff `984073` `--pages 0-2`: the carry takes page
-1's `2/4` (voted, 12 of 12 staves) onto both of page 2's systems, and **123
-whole rests stop being 4.0 quarters of silence in a 2.0-quarter bar** while 22
-notes that had no duration at all get one. Flag-off is byte-identical — all
-4,498 verdicts of the pre-change run reproduce exactly.
+else, so a page-at-a-time pipeline has none from a movement's second page on.
+Sean, 2026-09-10: *"If the measure is what we think it is - does the math of
+the notes make sense. If not then the meter should decrease in probability."*
+So the bars do not veto, they move its standing — and the movement-boundary
+problem dissolves, because a new movement's bars simply contradict the old
+movement's meter. Measured on Beethoven 5 / Litolff `984073`: page 2's two
+systems carry at +7.0 and +8.0; **all three systems of the *Andante* (page 17,
+truth 3/8) refuse the carried 2/4**, at -3.0, -1.0 and too-few-bars — with no
+movement detector anywhere.
 
-**Why it is nevertheless OFF.** On the SAME document, page 17 is the *Andante
-con moto* — a new movement printing `3/8` on every staff — and all three of its
-systems abstain `no_evidence`, because the template reader ran on all 20 staves
-and declined `below_threshold` (Litolff sets `3` over `8` as heavy touching
-digits). So the carry does not merely risk crossing a movement boundary here,
-it **does** cross it, and holds `2/4` for the rest of the movement. Four guards
-were measured and all four refused: the "a movement start reads something"
-heuristic is INVERTED (continuations read 1-4 spurious `C`, the movement start
-reads 0); key signatures are too noisy on a scan to see the boundary; the
-printed tempo heading is the right signal but `direction` yields 0 decided
-verdicts; and a distance bound is arithmetically impossible, since movement 1
-occupies 16 pages so any bound under 16 truncates a legitimate carry and any
-bound of 16 or more reaches the Andante.
+⚠️ **THE ORDERING IS STRUCTURAL, NOT TUNED.** Two net contradicting bars
+outweigh ANY carry and no carry outweighs the bars. Asserted on the constants
+themselves, so a sweep that breaks the ordering fails even if every
+behavioural test still passes.
 
-**How to falsify.** Supply a movement-start signal and show the carry stops at
-it. Or find a document where a carry is wrong *within* one movement — that would
-falsify the assumption itself rather than its guard.
+⚠️ **NOT A PROBABILITY.** `adjudicate` bans them on measurement — calibrated
+identity probabilities reached ECE 0.1277 and failed worst at the top of the
+range. Signed terms are the same shape without the claim. ⚠️ But that
+objection was diagnosed as the CORPUS, and a bar sum is CHECKABLE against
+itself with no truth file, so this family could be genuinely calibrated later.
 
-**Blast radius.** Bounded by the flag. With it on, every system downstream of a
-missed movement start inherits the wrong meter, and the only thing that says so
-is `pages_since_read` in the record. See
+⚠️ **A LONE WHOLE REST IS NEVER READ HERE** — it stands for the bar whatever
+the meter and its 4.0 is our own default, so it would read that default back
+as evidence (left in, 13 of 17 agreeing bars vote 4.0 on the Andante); and it
+is what `size_measure_rest` supersedes, so touching it makes the record report
+a genuine fixpoint.
+
+**How to falsify.** Find a document where the bars corroborate a meter that is
+wrong, or contradict one that is right. The weights are the place to look:
+they are symmetric and DECLARED UNMEASURED, because the two pages available
+separate under every ratio tried.
+
+**Blast radius.** Bounded by the flag, and self-limiting even with it on: a
+carry the bars refuse simply abstains, which is the status quo. Still `0` on
+**n** — one document — not because the hazard is unhandled. See
 `benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md`.
+
+### A-DUR-3 · ⚠️ The pipeline's ONE sanctioned loop, declared per rule
+
+**CONTINGENCY** — allowed by Sean, 2026-09-10, after the guard escalated it.
+*`evaluate.rule(single_pass=True)`, `Verdict.single_pass_revision`, `record.UphillConsequence`*
+
+**Assumption.** `reconcile_duration` may revise a duration even though the
+meter that triggers it now DEPENDS on that duration, because the loop is
+single-pass.
+
+**Why.** Corroboration makes the meter read the bars, and the repair rewrites
+those same bars from the meter — which `UphillConsequence` refuses by default,
+correctly, since it cannot see that a loop terminates. This one does: unrolled
+it is `duration_v1 -> meter -> duration_v2`, a straight line run once, which is
+the rule `transcribe` has always stated as *"vote once, repair once"*. What
+makes it safe is the BOUND, not the flag — at most one note, an exact landing,
+a unique answer, so it cannot iterate even in principle.
+
+⚠️ **DECLARED PER RULE, NOT GLOBALLY**, so the exemption cannot spread by
+accident, and the guard's error message now names it so the next person meets
+a choice rather than a wall.
+
+**How to falsify.** Show a rule declaring `single_pass` whose bound permits a
+second application, or a run where a value oscillates.
+
+**Blast radius.** One rule. Any other rule wanting the exemption must declare
+it and state a bound that makes iteration impossible.
 
 ---
 

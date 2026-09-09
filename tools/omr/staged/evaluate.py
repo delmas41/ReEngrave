@@ -70,6 +70,9 @@ class Rule:
     fn: Callable[[Log, Subject, Verdict], List[Verdict]]
     bound: str                     # ⚠️ REQUIRED. What stops it running away.
     stub: bool = False
+    #: ⚠️ Declares that this rule's cause depends on what it revises, and
+    #: that the loop is single-pass. See `Verdict.single_pass_revision`.
+    single_pass: bool = False
 
 
 #: The assumed downhill order. A rule may only write an `effect` that sits
@@ -99,7 +102,7 @@ RULES: List[Rule] = []
 
 
 def rule(*, consequence: Consequence, cause: str, effect: str, scope: Kind,
-         bound: str, stub: bool = False):
+         bound: str, stub: bool = False, single_pass: bool = False):
     """Register a consequence rule.
 
     ⚠️ `bound` is REQUIRED and is prose, deliberately. Every propagation in
@@ -114,7 +117,8 @@ def rule(*, consequence: Consequence, cause: str, effect: str, scope: Kind,
     check_downhill(cause, effect)
 
     def wrap(fn: Callable[[Log, Subject, Verdict], List[Verdict]]) -> Callable:
-        RULES.append(Rule(consequence, cause, effect, scope, fn, bound, stub))
+        RULES.append(Rule(consequence, cause, effect, scope, fn, bound, stub,
+                          single_pass))
         return fn
 
     return wrap
