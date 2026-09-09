@@ -477,3 +477,268 @@ class TestTheINITIALProposalIsUnsortedToo:
         text = (MAPS / "build_cache.py").read_text()
         assert 'sorted(list(spec["parts"])' not in text, \
             "research_proposal is canonicalising `parts` again"
+
+
+# ------------------------------------------- the arity fields, and their guard
+
+class TestTheWriterCanCarryTheArityFields:
+    """⚠️ THE FIELDS EXISTED AND THE WRITER REFUSED THEM.
+
+    `lines` landed in `166759fc`; `shape_problems` predates it and demanded
+    entries be "exactly name+parts", so a CORRECT map carrying `lines: 1` would
+    have been rejected at merge time — while `build_cache.research_proposal`
+    computed `"lines": spec.get("lines", 5)` for every entry and four
+    projections down the path threw it away. mahler p2's hand-confirmed
+    21-staff map arrived unflagged, its page stayed unassessable, and the only
+    thing that noticed was `test_works_json_staff_lineup.py` — a test on the
+    FILE, which fires after the human pass is spent.
+    `benchmarks/omr-part-join-2026-09/FINDINGS.md` §7.
+    """
+
+    def test_a_one_line_rule_is_accepted(self):
+        ma = _load("merge_additions", MAPS)
+        assert ma.shape_problems([{"name": "Becken", "parts": [23],
+                                   "lines": 1}]) == []
+
+    def test_an_entry_printed_as_several_staves_is_accepted(self):
+        ma = _load("merge_additions", MAPS)
+        assert ma.shape_problems([{"name": "Cembalo", "parts": [9],
+                                   "printed_staves": 2}]) == []
+
+    def test_an_unknown_key_STILL_refuses(self):
+        """Allowing two named fields is not allowing anything."""
+        ma = _load("merge_additions", MAPS)
+        assert ma.shape_problems([{"name": "A", "parts": [0], "extra": 1}])
+
+    def test_a_lines_value_the_file_does_not_model_refuses(self):
+        """⚠️ ALLOWED IS NOT UNCHECKED. A typo'd `lines` silently changes how
+        many parts the row is expected to emit — the exact failure these
+        fields exist to prevent — so a surprising value is LOUD."""
+        ma = _load("merge_additions", MAPS)
+        assert ma.shape_problems([{"name": "A", "parts": [0], "lines": 3}])
+        assert ma.shape_problems([{"name": "A", "parts": [0], "lines": "1"}])
+
+    def test_printed_staves_must_be_a_positive_int(self):
+        ma = _load("merge_additions", MAPS)
+        assert ma.shape_problems([{"name": "A", "parts": [0],
+                                   "printed_staves": 0}])
+        assert ma.shape_problems([{"name": "A", "parts": [0],
+                                   "printed_staves": True}])
+
+    def test_a_one_line_rule_cannot_also_be_several_printed_staves(self):
+        ma = _load("merge_additions", MAPS)
+        assert ma.shape_problems([{"name": "A", "parts": [0], "lines": 1,
+                                   "printed_staves": 2}])
+
+    def test_a_malformed_value_REFUSES_rather_than_RAISES(self):
+        """A validator must refuse bad input, never raise on it — `int()` on an
+        arbitrary value does raise, and this one is reached from the merge
+        step's own error path."""
+        ma = _load("merge_additions", MAPS)
+        for bad in ({"name": "A", "parts": [0], "lines": "abc"},
+                    {"name": "A", "parts": [0], "lines": None},
+                    {"name": "A", "parts": [0], "printed_staves": "2"}):
+            assert ma.shape_problems([bad]), bad
+
+    def test_the_projection_preserves_them(self):
+        ma = _load("merge_additions", MAPS)
+        got = ma._entry_for_works_json(
+            {"name": "Becken", "parts": [23], "lines": 1, "verdict": "confirmed"})
+        assert got == {"name": "Becken", "parts": [23], "lines": 1}
+
+    def test_the_projection_omits_the_defaults(self):
+        """Every merged row omits `lines: 5`; writing it would make this
+        writer's output differ from the file it appends to."""
+        ma = _load("merge_additions", MAPS)
+        got = ma._entry_for_works_json(
+            {"name": "Pauken", "parts": [22], "lines": 5, "printed_staves": 1})
+        assert got == {"name": "Pauken", "parts": [22]}
+
+
+class TestTheArityGuardRunsBeforeTheWrite:
+    """The guard `test_works_json_staff_lineup.py` asks of the FILE, asked
+    HERE — so the merge refuses instead of the suite failing afterwards."""
+
+    def _row(self):
+        import json
+        works = json.loads((SCAN / "works.json").read_text())
+        rows = {r["row_id"]: r for r in works["rows"]}
+        return rows["mahler-sym5-mvt1-local-p2"]
+
+    def test_THE_REAL_MAP_THAT_SLIPPED_THROUGH_is_refused(self):
+        """⚠️ THE DECISIVE CASE, and it is not synthetic: this is mahler p2's
+        map exactly as `1cf44dbc` merged it."""
+        ma = _load("merge_additions", MAPS)
+        row = self._row()
+        as_merged = [{"name": s["name"], "parts": list(s["parts"])}
+                     for s in row["staves"]]
+        problems = ma.arity_problems(row, as_merged)
+        assert problems, "the map that actually slipped through must refuse"
+        assert "21" in problems[0] and "17" in problems[0]
+        assert "lines" in problems[0], "the message must name the missing field"
+
+    def test_the_repaired_map_is_accepted(self):
+        ma = _load("merge_additions", MAPS)
+        row = self._row()
+        assert ma.arity_problems(row, row["staves"]) == []
+
+    def test_check_row_asks_it(self):
+        """Anti-drift, in the shape of `test_the_merge_step_asks_it`: the guard
+        is worthless if the write path does not call it."""
+        text = (MAPS / "merge_additions.py").read_text()
+        after = text.split("def check_row(", 1)[1].split("\ndef ", 1)[0]
+        assert "arity_problems(" in after
+
+    def test_it_reuses_expand_lineup_rather_than_recomputing(self):
+        """⚠️ `run_ledger.expand_lineup` IS the definition of how many parts a
+        lineup expects. A second copy here would drift from the consumer — the
+        same reason `prove_normalises` exists."""
+        text = (MAPS / "merge_additions.py").read_text()
+        assert "expand_lineup" in text
+
+    def test_a_non_uniform_page_abstains(self):
+        """A tacet-suppressed page prints a different lineup per system
+        (beethoven p3 is 11 then 8), so one lineup names no single count and
+        there is nothing to check against — the same abstention the file-level
+        test makes by name."""
+        ma = _load("merge_additions", MAPS)
+        import json
+        works = json.loads((SCAN / "works.json").read_text())
+        rows = {r["row_id"]: r for r in works["rows"]}
+        row = rows["beethoven-sym5-mvt1-984073-p3"]
+        assert row["page"]["n_staves"] % (row["page"]["n_systems"] or 1)
+        assert ma.arity_problems(row, row["staves"]) == []
+
+    def test_a_row_with_no_page_facts_abstains(self):
+        ma = _load("merge_additions", MAPS)
+        assert ma.arity_problems({}, [{"name": "A", "parts": [0]}]) == []
+
+    def test_an_ALREADY_MERGED_row_still_gets_the_arity_report(
+            self, tmp_path, monkeypatch):
+        """⚠️ A REGRESSION THAT HAPPENED AND WAS CAUGHT. Gating the guard on
+        `problems` rather than on the SHAPE problems silences it wherever a row
+        already carries a map — i.e. on every historical row, which is exactly
+        the population worth reporting. The dry run went from 5 refusals to 0
+        and nothing else moved."""
+        ma = _load("merge_additions", MAPS)
+        truth = _score(tmp_path, n_parts=3)
+        monkeypatch.setattr(ma, "find_fixture", lambda *a, **k: (truth, None))
+        row = {"reference": {"catalog_path": "x"},
+               "page": {"n_staves": 2, "n_systems": 1},
+               "staves": [{"name": "already", "parts": [0]}]}   # already merged
+        add = {"status": "done", "staves": [
+            {"name": "A", "parts": [0]}, {"name": "B", "parts": [1]},
+            {"name": "Tamtam", "parts": [2]}]}                  # missing lines:1
+        got = ma.check_row("row", row, add)
+        assert any("already carries" in p for p in got["problems"])
+        assert any("expands to 3 five-line staves" in p
+                   for p in got["problems"]), got["problems"]
+
+    def test_a_malformed_shape_does_not_reach_the_guard(
+            self, tmp_path, monkeypatch):
+        """The other half of the same gate: `expand_lineup` reads
+        `int(s["lines"])`, so a malformed value must be REFUSED by shape before
+        it can RAISE inside the reporter."""
+        ma = _load("merge_additions", MAPS)
+        truth = _score(tmp_path, n_parts=3)
+        monkeypatch.setattr(ma, "find_fixture", lambda *a, **k: (truth, None))
+        row = {"reference": {"catalog_path": "x"},
+               "page": {"n_staves": 2, "n_systems": 1}}
+        add = {"status": "done", "staves": [
+            {"name": "A", "parts": [0], "lines": "abc"},
+            {"name": "B", "parts": [1]}]}
+        got = ma.check_row("row", row, add)          # must not raise
+        assert any("`lines` is 'abc'" in p for p in got["problems"])
+
+
+class TestTheUIWritesWhatTheMergeStepReads:
+    """The UI stamps `staves_for_works_json` when a row is marked done. It used
+    to build `{name, parts}` inline — a second projection, which is why a field
+    the proposal carried could not reach the file however many writers allowed
+    it."""
+
+    def test_the_ui_uses_the_shared_projection(self):
+        text = (MAPS / "server.py").read_text()
+        assert "_entry_for_works_json" in text
+        after = text.split("staves_for_works_json\"] = ", 1)[1][:200]
+        assert "_entry_for_works_json" in after, (
+            "the UI must project through the merge step's own function")
+
+    def test_the_proposal_carries_the_fields_to_the_human(self):
+        """A one-line percussion rule must not reach the human — or the file —
+        indistinguishable from an ordinary staff."""
+        text = (MAPS / "server.py").read_text()
+        assert "_ARITY_FIELDS" in text
+
+    def test_build_cache_still_carries_the_fields_to_the_proposal(self):
+        """The upstream half of the chain. If this ever stops being computed,
+        the fields above have nothing to carry.
+
+        ⚠️ THIS USED TO ASSERT THE STRING `"lines"` APPEARED IN build_cache.py,
+        and it went VACUOUS the moment `research_proposal` stopped naming the
+        field literally and started carrying every schema key: two other
+        `"lines"` literals live in `_one_line_bands`, which is CROP GEOMETRY
+        and has nothing to do with the map. Asked of the function's OUTPUT
+        instead, which is what the chain actually needs — and which also covers
+        `printed_staves`, whose absence here is why the Bach grand staff never
+        reached the UI at all.
+        """
+        bc = _load("build_cache", MAPS)
+        mahler = bc.research_proposal("mahler-sym5-mvt1-local-p2", 38)
+        assert sum(1 for e in mahler["staves"] if e.get("lines") == 1) == 4, \
+            "the four one-line percussion rules must reach the human"
+        assert not [e for e in mahler["staves"] if e.get("lines") == 5], \
+            "the default is omitted, as every merged row omits it"
+        bach = bc.research_proposal("bach-brandenburg3-mvt1-468678-p1", 11)
+        assert [e["printed_staves"] for e in bach["staves"]
+                if "Cembalo" in e["name"]] == [2], \
+            "the grand staff's `printed_staves` must reach the proposal too"
+
+
+class TestAOneLineRuleSurvivesTheWholeWritePath:
+    """End to end through `check_row`: a map whose one-line rule is declared
+    must PASS every gate and reach `works.json` with the field intact.
+
+    ⚠️ The unit tests above prove each link; this proves the chain. The defect
+    was never one broken link — `build_cache` computed `lines`, and four
+    separate projections between it and the file each dropped it.
+    """
+
+    def _add(self, staves):
+        return {"status": "done", "staves": staves}
+
+    def test_the_declared_map_passes_and_keeps_the_field(
+            self, tmp_path, monkeypatch):
+        ma = _load("merge_additions", MAPS)
+        truth = _score(tmp_path, n_parts=3)
+        monkeypatch.setattr(ma, "find_fixture", lambda *a, **k: (truth, None))
+        # Three reference parts on three PRINTED staves, one of them a single
+        # percussion rule — so the page prints TWO five-line staves.
+        row = {"reference": {"catalog_path": "x"},
+               "page": {"n_staves": 2, "n_systems": 1}}
+        add = self._add([
+            {"name": "Violin", "parts": [0], "verdict": "confirmed"},
+            {"name": "Cello", "parts": [1], "verdict": "confirmed"},
+            {"name": "Tamtam", "parts": [2], "lines": 1, "verdict": "confirmed"},
+        ])
+        got = ma.check_row("row", row, add)
+        assert got["problems"] == [], got["problems"]
+        assert got["staves"][2] == {"name": "Tamtam", "parts": [2], "lines": 1}
+        assert "verdict" not in got["staves"][2], "UI bookkeeping must not leak"
+
+    def test_the_SAME_map_undeclared_is_refused(self, tmp_path, monkeypatch):
+        """The control that makes the test above mean something: identical
+        input, the one field removed."""
+        ma = _load("merge_additions", MAPS)
+        truth = _score(tmp_path, n_parts=3)
+        monkeypatch.setattr(ma, "find_fixture", lambda *a, **k: (truth, None))
+        row = {"reference": {"catalog_path": "x"},
+               "page": {"n_staves": 2, "n_systems": 1}}
+        add = self._add([
+            {"name": "Violin", "parts": [0], "verdict": "confirmed"},
+            {"name": "Cello", "parts": [1], "verdict": "confirmed"},
+            {"name": "Tamtam", "parts": [2], "verdict": "confirmed"},
+        ])
+        got = ma.check_row("row", row, add)
+        assert any("expands to 3 five-line staves" in p
+                   for p in got["problems"]), got["problems"]

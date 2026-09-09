@@ -35,12 +35,18 @@ import argparse
 import json
 import shutil
 import sys
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
 BENCH = Path(__file__).resolve().parent
 sys.path.insert(0, str(BENCH))
 from build_cache import MAIN, SCAN, find_fixture  # noqa: E402
+# ⚠️ FROM `build_cache`, NOT A SECOND LOAD. `SCAN` points at the MAIN checkout
+# (`works.json` is hand-verified DATA, one copy) while the SHAPE of a `staves`
+# entry is CODE and must be this checkout's — `build_cache` loads it by path
+# for exactly that reason, and re-loading it here would give two instances.
+from build_cache import staves_schema  # noqa: E402
 
 WORKS = SCAN / "works.json"
 ADDITIONS = SCAN / "works.staves-additions.json"
@@ -48,30 +54,41 @@ ADDITIONS = SCAN / "works.staves-additions.json"
 sys.path.insert(0, str(SCAN))
 
 
+#: The two ARITY fields, both facts about the ENGRAVING rather than about the
+#: reference encoding, and both optional.
+#:
+#: ⚠️ THIS WRITER USED TO REFUSE THEM, AND THAT COST A WHOLE PAGE. `lines`
+#: landed in `166759fc`; `shape_problems` predates it and kept demanding
+#: entries be "exactly name+parts", so a CORRECT map carrying `lines: 1` would
+#: have been rejected at merge time — while `build_cache.research_proposal` was
+#: computing `"lines": spec.get("lines", 5)` for every entry and four
+#: projections down the path threw it away. mahler p2's hand-confirmed map
+#: arrived unflagged and its whole page stayed unassessable; the only thing
+#: that noticed was `test_works_json_staff_lineup.py`, AFTER the human pass was
+#: spent. See `benchmarks/omr-part-join-2026-09/FINDINGS.md` §7.
+#:
+#: ⚠️⚠️ AND THE FIRST REPAIR ANSWERED A HAND LIST WITH A HAND LIST. `e9c82c82`
+#: wrote these two names out here — and on the day it landed the list was
+#: ALREADY incomplete: `beethoven-sym5-mvt1-984073-p1` carries `clef` and `key`
+#: on all twelve staves (`scan_eval`'s rule 2, THE PAGE IS THE TRUTH NOT THE
+#: FILE) and was still refused, so this writer still could not re-merge a sixth
+#: of the file it had written. They are now DERIVED BY AST from
+#: `run_ledger.expand_lineup` — the same function `arity_problems` below
+#: already refuses to second-guess — and the facts no consumer reads yet are
+#: DECLARED, with reasons, in `staves_schema.RECORDED_ONLY`.
+ARITY_FIELDS = staves_schema.arity_fields()
+
+
 def shape_problems(staves) -> list[str]:
-    out = []
-    if not isinstance(staves, list) or not staves:
-        return ["`staves` is not a non-empty list"]
-    for k, s in enumerate(staves):
-        if not isinstance(s, dict):
-            out.append(f"entry {k} is not an object")
-            continue
-        extra = set(s) - {"name", "parts"}
-        if extra:
-            out.append(f"entry {k} has unexpected key(s) {sorted(extra)} — "
-                       f"works.json entries are exactly name+parts")
-        if not isinstance(s.get("name"), str) or not s["name"].strip():
-            out.append(f"entry {k} has no printed name")
-        p = s.get("parts")
-        if not isinstance(p, list) or not p or not all(
-                isinstance(i, int) and not isinstance(i, bool) for i in p):
-            out.append(f"entry {k} `parts` is not a non-empty list of ints")
-        elif len(set(p)) != len(p):
-            # DUPLICATE within one entry: a real fault. The same staff cannot
-            # carry one reference part twice, and `page_normalise` would merge
-            # a part into itself.
-            out.append(f"entry {k} `parts` names a part twice: {p}")
-    return out
+    """`works.json`'s own shape, asked of `staves_schema` — never of a copy.
+
+    ⚠️ ALLOWED IS NOT UNCHECKED, and that rule survives the move: every
+    optional key has a validator, and `staves_schema.unvalidated()` fails the
+    suite on an allowed key without one — which a DERIVED list needs and a
+    hand-written one did not, because a hand list and its validators are edited
+    together while a derived list can grow a field on its own.
+    """
+    return staves_schema.problems(staves)
 
 
 #: ⚠️ `parts` IS ORDERED, AND THE ORDER IS NOT A STORAGE CONVENTION.
@@ -156,6 +173,81 @@ def prove_normalises(row_id: str, staves, *, source_reference=None) -> dict:
             }}
 
 
+def _entry_for_works_json(s: dict) -> dict:
+    """One additions-file staff as works.json spells it.
+
+    ⚠️ THE ONE PLACE THE PROJECTION IS WRITTEN — `staves_schema.project`, whose
+    second return value is what it DROPPED. It used to be spelled inline in
+    two places and both rebuilt the entry as `{name, parts}` literally, so a
+    field the proposal carried could not survive to the file however many
+    writers allowed it. A projection repeated is a projection that drops
+    something; a projection that drops SILENTLY is how a typo becomes
+    indistinguishable from an absent flag.
+
+    Defaults are omitted (`lines: 5`, `printed_staves: 1`): every merged row
+    omits them and writing them would make this writer's output differ from the
+    file it is appending to.
+    """
+    return staves_schema.project(s)[0]
+
+
+def arity_problems(row: dict, staves) -> list[str]:
+    """Does this map claim as many FIVE-LINE staves as the page prints?
+
+    ⚠️ THIS IS THE GUARD THE WRITER DID NOT HAVE, AND ITS ABSENCE IS THE WHOLE
+    DEFECT. `test_works_json_staff_lineup.py` asserts this of the FILE, so it
+    fires after a map is merged — which on mahler p2 meant after a 21-staff
+    human confirmation pass had been spent. The same question asked HERE
+    refuses the merge instead, with the fields named in the message.
+
+    ⚠️ It calls `run_ledger.expand_lineup` rather than recomputing the count.
+    That function IS the definition of "how many parts this lineup expects",
+    and this file already refuses to hold a second copy of a shared answer —
+    see `prove_normalises`, which exists for exactly that reason.
+
+    Asserted only where the systems are UNIFORM (`n_staves % n_systems == 0`),
+    the same abstention the test makes: a tacet-suppressed page prints a
+    different lineup per system (beethoven p3 is 11 then 8), so one lineup
+    names no single count and there is nothing to check against.
+    """
+    if not isinstance(staves, list) or not staves:
+        return []
+    page = row.get("page") or {}
+    n_staves, n_sys = page.get("n_staves"), page.get("n_systems") or 1
+    if not n_staves or not n_sys or n_staves % n_sys:
+        return []
+    expand = _expand_lineup()
+    if expand is None:                      # the ledger is not importable here
+        return []
+    per_system = n_staves // n_sys
+    got = len(expand(staves))
+    if got == per_system:
+        return []
+    one_line = sum(1 for s in staves
+                   if isinstance(s, dict) and int(s.get("lines") or 5) != 5)
+    return [f"the lineup expands to {got} five-line staves but the page prints "
+            f"{per_system} per system ({len(staves)} entries, {one_line} "
+            f"flagged `lines: 1`). Either a one-line percussion rule is "
+            f"missing `lines: 1`, or an entry the page prints as several "
+            f"staves is missing `printed_staves: N`."]
+
+
+def _expand_lineup():
+    """`run_ledger.expand_lineup`, or None if the ledger is not on this tree."""
+    ledger = BENCH.parent / "omr-symbol-ledger-2026-09"
+    if not (ledger / "run_ledger.py").is_file():
+        return None
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "_run_ledger_for_merge", ledger / "run_ledger.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod.expand_lineup
+    except Exception:                                          # noqa: BLE001
+        return None
+
+
 def check_row(row_id: str, row: dict, add: dict) -> dict:
     problems: list[str] = []
     if add.get("status") != "done":
@@ -164,11 +256,34 @@ def check_row(row_id: str, row: dict, add: dict) -> dict:
         problems.append("works.json already carries a `staves` map for this row "
                         "— refusing to overwrite a hand reading")
 
+    # ⚠️ WHAT THE PROJECTION DROPPED IS REPORTED, NOT ASSUMED TO BE JUNK. The
+    # fallback branch is the UI's working state, which carries bookkeeping
+    # (`proposed`, `verdict`, `adopted_from`) that must not reach truth — so a
+    # projection is right. But a misspelled `linnes: 1` is dropped by exactly
+    # the same rule, and the only thing separating it from bookkeeping is that
+    # the drop is printed.
+    dropped: dict[int, list[str]] = {}
     staves = add.get("staves_for_works_json")
     if staves is None:
-        staves = [{"name": s.get("name"), "parts": s.get("parts")}
-                  for s in add.get("staves", [])]
-    problems += shape_problems(staves)
+        staves = []
+        for k, s in enumerate(add.get("staves", [])):
+            if not isinstance(s, dict):
+                staves.append(s)
+                continue
+            entry, gone = staves_schema.project(s)
+            staves.append(entry)
+            if gone:
+                dropped[k] = gone
+    shape = shape_problems(staves)
+    problems += shape
+    # ⚠️ Gated on the SHAPE problems specifically, not on `problems` — which by
+    # here can already hold "works.json already carries a map". Gating on all
+    # of them silences the arity report on exactly the rows most worth seeing
+    # it (every already-merged row), and that is how the retrospective control
+    # in FINDINGS §8 was briefly lost. The narrow gate is only about not
+    # RAISING: `expand_lineup` reads `int(s["lines"])`.
+    if not shape:
+        problems += arity_problems(row, staves)
 
     counts: dict[int, int] = {}
     for s in staves or []:
@@ -205,7 +320,7 @@ def check_row(row_id: str, row: dict, add: dict) -> dict:
             problems.append(f"parts unaccounted for: {missing}")
 
     return {"row_id": row_id, "staves": staves, "problems": problems,
-            "normalised": normalised,
+            "normalised": normalised, "dropped": dropped,
             "n_staves": len(staves or []),
             "n_parts_named": len(counts)}
 
@@ -248,6 +363,15 @@ def main(argv: list[str] | None = None) -> int:
                  if c["normalised"] else ""))
         for p in c["problems"]:
             print(f"          - {p}")
+        # ⚠️ Reported as `key xN/M`, not entry by entry: bookkeeping is on
+        # EVERY entry, so a `linnes` on one entry of twenty-one stands out
+        # against `proposed x21/21` instead of scrolling past inside it.
+        if c.get("dropped"):
+            tally = Counter(k for gone in c["dropped"].values() for k in gone)
+            n = c["n_staves"] or 1
+            print("          . not carried into works.json: "
+                  + ", ".join(f"{k} x{v}/{n}"
+                              for k, v in sorted(tally.items())))
         if not c["problems"]:
             ready.append(c)
             for s in c["staves"]:
