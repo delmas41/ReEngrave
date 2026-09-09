@@ -99,14 +99,26 @@ class Record:
         self.verdicts = rec["verdicts"]
         self.abstentions = rec["abstentions"]
 
-        # ⚠️ LAST WINS, which is how `supersedes` resolves. A consequence may
-        # RESTATE a value (`move_glyph` re-pitches a glyph whose owner
-        # changed), and the log is append-only, so the last row for a
-        # (quantity, subject) is the standing answer. Taking the first would
-        # export the value a later decision overturned.
+        # ⚠️ THE STANDING VERDICT, resolved the way `Log.verdict` resolves
+        # it: drop every row a later one SUPERSEDES, then take the last of
+        # what is left, falling back to the last row when everything was
+        # superseded. A consequence may RESTATE a value (`move_glyph`
+        # re-pitches a glyph whose owner changed), so taking the first would
+        # export what a later decision overturned.
+        #
+        # On an append-only log this is the same answer as "last wins", and
+        # it is written out anyway: the rule lives in `record.py` and a second
+        # spelling of it here is how the two drift.
+        superseded = {v["supersedes"] for v in self.verdicts if v.get("supersedes")}
         self._v: Dict[Tuple[str, str], Dict[str, Any]] = {}
+        _fallback: Dict[Tuple[str, str], Dict[str, Any]] = {}
         for v in self.verdicts:
-            self._v[(v["quantity"], v["subject"])] = v
+            key = (v["quantity"], v["subject"])
+            _fallback[key] = v
+            if v["id"] not in superseded:
+                self._v[key] = v
+        for key, v in _fallback.items():
+            self._v.setdefault(key, v)
 
         self._o: Dict[Tuple[str, str], List[Dict[str, Any]]] = {}
         for o in self.observations:

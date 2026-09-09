@@ -309,3 +309,30 @@ class TestDots(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTheStandingVerdict(unittest.TestCase):
+    """⚠️ `supersedes` resolved the way `record.Log.verdict` resolves it, not
+    by a second spelling of the rule. A consequence RESTATES values —
+    `move_glyph` re-pitches a glyph whose owner changed — so exporting the
+    first row would ship what a later decision overturned."""
+
+    def test_a_superseded_pitch_does_not_reach_the_file(self):
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        first = next(v for v in page["record"]["verdicts"]
+                     if v["quantity"] == Q.PITCH)
+        later = dict(first, id="vrd:999999", value="G5",
+                     supersedes=first["id"], reason="moved")
+        page["record"]["verdicts"].append(later)
+        xml, _ = SX.to_musicxml(page)
+        self.assertEqual(ET.fromstring(xml).find(".//note/pitch/step").text, "G")
+
+    def test_the_superseding_row_is_the_one_kept_even_out_of_order(self):
+        """If every row for a key was superseded, the last still stands rather
+        than the value vanishing."""
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        first = next(v for v in page["record"]["verdicts"]
+                     if v["quantity"] == Q.PITCH)
+        first["supersedes"] = "vrd:000000"
+        xml, _ = SX.to_musicxml(page)
+        self.assertEqual(ET.fromstring(xml).find(".//note/pitch/step").text, "C")
