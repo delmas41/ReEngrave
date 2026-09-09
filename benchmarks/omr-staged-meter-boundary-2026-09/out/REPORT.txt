@@ -1,0 +1,125 @@
+
+── full-BARS.json ─────────────────────────────
+  system/0/0     truth=4/4  decided   voted                                C      OK 
+  system/1/0     truth=4/4  abstained no_evidence                          None   ·
+  system/2/0     truth=3/4  decided   voted                                3/4    OK 
+  system/3/0     truth=3/4  decided   derived_from_bars                    3/4    OK 
+       support=5.0  bars_agree=7  bars_disagree=2  length=3.0  form_borrowed_from=system/2/0  bar_lengths_seen={'3.0': 7, '5.0': 2}  instead_of=no_evidence
+
+── full-BOTH.json ─────────────────────────────
+  system/0/0     truth=4/4  decided   voted                                C      OK 
+  system/1/0     truth=4/4  abstained carry_not_corroborated               None   ·
+       bars_agree=1  bars_disagree=0  carried_from=system/0/0  bar_lengths_seen={'4.0': 1}  instead_of=no_evidence
+  system/2/0     truth=3/4  decided   voted                                3/4    OK 
+  system/3/0     truth=3/4  decided   carried                              3/4    OK 
+       support=6.0  bars_agree=7  bars_disagree=2  carried_from=system/2/0  bar_lengths_seen={'3.0': 7, '5.0': 2}  instead_of=no_evidence
+
+── full-CARRY.json ─────────────────────────────
+  system/0/0     truth=4/4  decided   voted                                C      OK 
+  system/1/0     truth=4/4  abstained carry_not_corroborated               None   ·
+       bars_agree=1  bars_disagree=0  carried_from=system/0/0  bar_lengths_seen={'4.0': 1}  instead_of=no_evidence
+  system/2/0     truth=3/4  decided   voted                                3/4    OK 
+  system/3/0     truth=3/4  decided   carried                              3/4    OK 
+       support=6.0  bars_agree=7  bars_disagree=2  carried_from=system/2/0  bar_lengths_seen={'3.0': 7, '5.0': 2}  instead_of=no_evidence
+
+── full-OFF.json ─────────────────────────────
+  system/0/0     truth=4/4  decided   voted                                C      OK 
+  system/1/0     truth=4/4  abstained no_evidence                          None   ·
+  system/2/0     truth=3/4  decided   voted                                3/4    OK 
+  system/3/0     truth=3/4  abstained no_evidence                          None   ·
+
+── p0p3-BARS.json ─────────────────────────────
+  system/0/0     truth=4/4  decided   voted                                C      OK 
+  system/3/0     truth=3/4  abstained bars_name_a_length_without_a_form    None   ·
+       support=5.0  bars_agree=7  bars_disagree=2  length=3.0  candidate_forms=['3/4', '6/8', '12/16']  bar_lengths_seen={'3.0': 7, '5.0': 2}  instead_of=no_evidence
+
+── p0p3-CARRY.json ─────────────────────────────
+  system/0/0     truth=4/4  decided   voted                                C      OK 
+  system/3/0     truth=3/4  abstained carry_outweighed_by_the_bars         None   ·
+       support=-8.0  bars_agree=0  bars_disagree=9  carried_from=system/0/0  bar_lengths_seen={'3.0': 7, '5.0': 2}  instead_of=no_evidence
+
+── p0p3-OFF.json ─────────────────────────────
+  system/0/0     truth=4/4  decided   voted                                C      OK 
+  system/3/0     truth=3/4  abstained no_evidence                          None   ·
+
+── p2p3-BARS.json ─────────────────────────────
+  system/2/0     truth=3/4  decided   voted                                3/4    OK 
+  system/3/0     truth=3/4  decided   derived_from_bars                    3/4    OK 
+       support=5.0  bars_agree=7  bars_disagree=2  length=3.0  form_borrowed_from=system/2/0  bar_lengths_seen={'3.0': 7, '5.0': 2}  instead_of=no_evidence
+
+── p2p3-CARRY.json ─────────────────────────────
+  system/2/0     truth=3/4  decided   voted                                3/4    OK 
+  system/3/0     truth=3/4  decided   carried                              3/4    OK 
+       support=6.0  bars_agree=7  bars_disagree=2  carried_from=system/2/0  bar_lengths_seen={'3.0': 7, '5.0': 2}  instead_of=no_evidence
+
+── p2p3-OFF.json ─────────────────────────────
+  system/2/0     truth=3/4  decided   voted                                3/4    OK 
+  system/3/0     truth=3/4  abstained no_evidence                          None   ·
+
+── rev-BARS.json ─────────────────────────────
+  system/0/0     truth=3/4  decided   voted                                3/4    OK 
+  system/1/0     truth=3/4  abstained no_evidence                          None   ·
+  system/2/0     truth=4/4  abstained no_evidence                          None   ·
+
+── rev-BOTH.json ─────────────────────────────
+  system/0/0     truth=3/4  decided   voted                                3/4    OK 
+  system/1/0     truth=3/4  abstained carry_outweighed_by_the_bars         None   ·
+       support=-6.0  bars_agree=0  bars_disagree=7  carried_from=system/0/0  bar_lengths_seen={'3.5': 3, '2.0': 2, '4.0': 1, '6.0': 1}  instead_of=no_evidence
+  system/2/0     truth=4/4  abstained carry_outweighed_by_the_bars         None   ·
+       support=-1.0  bars_agree=0  bars_disagree=2  carried_from=system/0/0  bar_lengths_seen={'4.5': 1, '4.0': 1}  instead_of=no_evidence
+
+── rev-CARRY.json ─────────────────────────────
+  system/0/0     truth=3/4  decided   voted                                3/4    OK 
+  system/1/0     truth=3/4  abstained carry_outweighed_by_the_bars         None   ·
+       support=-6.0  bars_agree=0  bars_disagree=7  carried_from=system/0/0  bar_lengths_seen={'3.5': 3, '2.0': 2, '4.0': 1, '6.0': 1}  instead_of=no_evidence
+  system/2/0     truth=4/4  abstained carry_outweighed_by_the_bars         None   ·
+       support=-1.0  bars_agree=0  bars_disagree=2  carried_from=system/0/0  bar_lengths_seen={'4.5': 1, '4.0': 1}  instead_of=no_evidence
+
+── rev-OFF.json ─────────────────────────────
+  system/0/0     truth=3/4  decided   voted                                3/4    OK 
+  system/1/0     truth=3/4  abstained no_evidence                          None   ·
+  system/2/0     truth=4/4  abstained no_evidence                          None   ·
+
+── rev-p1p2-BARS.json ─────────────────────────────
+  system/1/0     truth=3/4  abstained no_evidence                          None   ·
+  system/2/0     truth=4/4  abstained no_evidence                          None   ·
+
+── rev-p1p2-CARRY.json ─────────────────────────────
+  system/1/0     truth=3/4  abstained no_evidence                          None   ·
+  system/2/0     truth=4/4  abstained no_evidence                          None   ·
+
+── revfix-BARS.json ─────────────────────────────
+  system/0/0     truth=3/4  decided   voted                                3/4    OK 
+  system/1/0     truth=chg@3=C decided   change_only                          C      OK 
+       change@3=C(support=66.0,staves=23,1+/4-)
+  system/2/0     truth=4/4  abstained no_evidence                          None   ·
+
+── revfix-CARRY.json ─────────────────────────────
+  system/0/0     truth=3/4  decided   voted                                3/4    OK 
+  system/1/0     truth=3/4  abstained carry_outweighed_by_the_bars         None   ·
+       support=-6.0  bars_agree=0  bars_disagree=7  carried_from=system/0/0  bar_lengths_seen={'3.5': 3, '2.0': 2, '4.0': 1, '6.0': 1}  instead_of=no_evidence
+  system/2/0     truth=4/4  abstained carry_outweighed_by_the_bars         None   ·
+       support=-1.0  bars_agree=0  bars_disagree=2  carried_from=system/0/0  bar_lengths_seen={'4.5': 1, '4.0': 1}  instead_of=no_evidence
+
+── revfix-OFF.json ─────────────────────────────
+  system/0/0     truth=3/4  decided   voted                                3/4    OK 
+  system/1/0     truth=chg@3=C decided   change_only                          C      OK 
+       change@3=C(support=66.0,staves=23,1+/4-)
+  system/2/0     truth=4/4  abstained no_evidence                          None   ·
+
+── fullfix-OFF.json ─────────────────────────────
+  system/0/0     truth=4/4  decided   voted                                C      OK 
+  system/1/0     truth=4/4  abstained no_evidence                          None   ·
+  system/2/0     truth=3/4  decided   voted                                3/4    OK 
+  system/3/0     truth=3/4  abstained no_evidence                          None   ·
+
+── lit012fix-OFF.json ─────────────────────────────
+  system/1/0     truth=2/4  decided   voted                                2/4    OK 
+  system/2/0     truth=2/4  abstained no_evidence                          None   ·
+  system/2/1     truth=2/4  abstained too_few_staves_read_it               None   ·
+
+── lit6162fix-OFF.json ─────────────────────────────
+  system/61/0    truth=prints no change decided   change_only                          C      WRONG
+       change@3=C(support=4.5,staves=1,1+/0-)
+  system/62/0    truth=chg@8=3/4 decided   change_only                          3/4    OK 
+       change@8=3/4(support=3.0,staves=1,0+/0-)
