@@ -158,6 +158,13 @@ is evidence about the EDITION rather than the music. Filed as curiosity.
 **This is the generalisation of Sean's chord finding and I think it is the most
 valuable idea in this document.**
 
+⚠️ **SHARPENED BY THE MERGE, NOT WEAKENED BY IT.** `Q.EVENT` landed on main
+while this was written — but it is scoped `Kind.CELL`, one measure of one
+staff. So simultaneity is now read WITHIN a staff and still nowhere ACROSS
+staves, which makes this the remaining half of the same mechanism rather than
+a competing idea. Re-checked after the merge: no `SYSTEM`-scope simultaneity
+quantity exists.
+
 Within one staff, noteheads at the same x are a chord — that is the gap already
 found. **Across the staves of a system, notes at the same x are the same
 MOMENT.** That is not a convention, it is the defining property of a

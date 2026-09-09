@@ -132,94 +132,68 @@ measured it, and is now a BRANCH measurement rather than the tree's state; run
 
 ---
 
-## 2026-09-09 — GATHER-stage coverage: the chord gap generalises (derived, no arm run)
+## 2026-09-09 — GATHER-stage coverage: the tool stands, its first draft was stale on arrival
 
-- **Sean found that chords — notes aligning in a bar — are not tracked.** The
-  finding generalises, and the answer is a derived tool rather than a written
-  list: `python3 -m tools.omr.staged.gather_coverage`. New:
+⚠️⚠️ **THE CORRECTION IS THE ENTRY — AND IT DID NOT ARRIVE BEFORE THE MERGE.**
+PR #24 was merged at its pre-repair commit while this correction sat on the
+branch, so main carried the stale claims and the buggy guard until this landed
+as a follow-up. *A correction that is not merged is not a correction.* This work was
+done on a branch while **31 commits landed on main**, and in that window
+parallel sessions found the same gaps and FIXED them: `Q.EVENT` (*"which
+glyphs of a bar sound TOGETHER — one event, N noteheads"*) closes the chord
+finding, `Q.REST` closes the rest finding, and `gather_glyph_families` closes
+four of the five naming gaps. **The tool was right; its documentation asserted
+open gaps that were closed** — *fixed-then-kept-open-in-prose*, the third
+instance recorded in CLAUDE.md, caught by a trial merge rather than by review.
+
+- **The derived tool, `python3 -m tools.omr.staged.gather_coverage`.** New:
   `tools/omr/staged/gather_coverage.py`,
-  `tools/omr/tests/test_staged_gather_coverage.py` (8 tests),
+  `tools/omr/tests/test_staged_gather_coverage.py` (12 tests),
   [benchmarks/omr-gather-coverage-2026-09/FINDINGS.md](benchmarks/omr-gather-coverage-2026-09/FINDINGS.md)
   and its committed output.
-- **Measured: `record.Q` declares 63 quantities and a gatherer OBSERVES 31.**
-  Two more are declared and only ever abstained on (`DIRECTION_WORD` —
-  `gather_direction_text` is itself a stub — and `SYSTEMIC_COLUMN`).
-- **⚠️ THE TWO FAULTS ARE DIFFERENT AND THE TOOL KEEPS THEM APART.** *Not
-  gathered*: no row carries it at all (`fermata` — detected, exported, 36-for-36
-  on Beethoven 5, and no `Q`). *Wrong place*: the ink IS in the log as an
-  anonymous `Q.GLYPH_BOX` and no consumer can ask for it, because `Evidence`
-  refuses a quantity the decision did not declare.
-- **⚠️ THE STRUCTURAL FINDING: all six declared stubs are ALSO starved at the
-  gather stage.** The handoff reads them as six adjudicators left to write;
-  every one wants a measurement no gatherer emits, so a stub is **two** repairs,
-  not one. Four of the five missing quantities are NAMING gaps (the ink is
-  already there: 2 arc classes, 10 artic, 12 dynamic, 2 hairpin); only
-  `DIRECTION_WORD` is a reading gap. **The 15 non-stub decisions are all fed.**
-  ⚠️ *(merge note, 2026-09-09 — the claim above is TRUE OF THIS SESSION'S
-  BRANCH and superseded in the merged tree: four of the four naming gaps were
-  filed by sibling sessions and `dynamic` stopped being a stub. The finding is
-  corroborated, not overturned. See the merge entry at the head of this file
-  and FINDINGS.md §2b-addendum. The dated claim is left standing because it is
-  what was measured.)*
-- **11 legacy event keys have no name in the record** — `events`, `kind`,
-  `x_position` (onset), `voices`/`voice_index`, `stem_direction`,
-  `tied_to_next`/`tied_from_prev`, `fermata`, `ornaments`. Chord grouping in
-  `voicing.group_chords_in_measure` is a full adjudication — a 0.6-notehead-width
-  tolerance, a divisi veto on stem direction, a mode-vote over durations — with
-  no subject, no input and no verdict in the record.
-- **16 of 35 detector families have no quantity naming them**, led by **`rest`
-  (11 classes)** and **`accidental` (8)**. A rest is half of every duration
-  decision.
-- **⚠️ The tool nearly manufactured its own finding.** `Q.STEM` is observed
-  through a loop variable, so the first version reported it ungathered and
-  accused `adjudicate_duration` of starving. The AST walker now resolves
-  loop-bound quantities; the guard was run RED to prove it load-bearing. A
-  second self-inflicted miss: reading the class space from `_CATEGORY_MAP`'s
-  KEYS (an allow-list resolved by substring fallback) reported hairpins as
-  having no detector class — the same allow-list fault `export_coverage.compare`
-  was just repaired for.
-- **Anti-drift, because a list of this shape rots**: `unaccounted()` fails on a
-  legacy event key in neither table, `class_space_coverage()["unmapped"]` on an
-  unmapped detector family, and `test_no_vocabulary_entries_still_have_no_vocabulary`
-  fails the day a gap is FILLED — a closed entry must leave the table.
-- **⚠️ No arm was run and no page was read.** Every figure is a property of the
-  tree, so it says nothing about how often a missing quantity would fire.
-  Measure REACH before accuracy.
-
-- **Companion exploration, reasoned from the PAGE rather than the code**:
-  [docs/exploration-what-is-on-the-page-2026-09-09.md](docs/exploration-what-is-on-the-page-2026-09-09.md)
-  — present / left out / implied. ⚠️ Exploratory and mostly UNPRICED, and it
-  says so; it ranks candidates and prices nothing.
-- **⚠️ THE HEADLINE IDEA: vertical alignment ACROSS staves is simultaneity, and
-  nothing reads it.** The chord finding one scope up. Verified — the only
-  cross-staff reasoning in the tree is `_dedupe_cross_staff_detections`, an
-  OWNERSHIP question. It is the only large source of **redundant** evidence on
-  a page (a 21-staff system is 21 independent readings of one stretch of time),
-  which is what lets a record say WHICH decision went wrong. The coarse form is
-  saturated (`measure_count_warning`: 0 firings over 29 transcriptions) while
-  `rhythm_sum_warning` fires 78 on one document and is inert — so the
-  constraint is unexploited exactly where the errors are.
-- **⚠️ `export._mxl_empty_measure` cannot tell SILENT from UNREAD.** A bar with
-  no detected events exports as a whole-measure rest either way — the
-  ABSENT/DECLINED collapse `record.py` exists to prevent, in the musical
-  content rather than the metadata. Ink coverage (already computed by
-  `direction_text._blank_detections`) separates them.
-- **An accidental is SCOPE, not a glyph** — it holds to the barline;
-  `transcribe.py:2210` implements it and staged has nowhere to keep the state.
-  Same shape as `ottavaBracket`, where a miss costs every note in the span an
-  octave.
-- **⚠️ Corrected in place: the exploration's own first draft named `breath` and
-  `glissando` as detector families from musical memory.** Neither is in the
-  class space; `volta` is not either, and the `repeat` family is `repeatDot`
-  ONLY — the dots, not the sign, which is why the repeat-export TODO has stayed
-  open. Checked against the committed class list rather than recalled.
+- **On the merged tree: `record.Q` declares 66 and a gatherer OBSERVES 37**;
+  2 declared-and-only-abstained; 6 declared-ungathered; **1 decision still
+  starved** (`DIRECTION`, whose gatherer is itself a stub) where the first
+  draft measured six.
+- **7 legacy event keys still have no name** (was 11): `voices`/`voice_index`,
+  `stem_direction`, `tied_to_next`/`tied_from_prev`, `fermata`, `ornaments`.
+  ⚠️ `Q.ARC_OWNER` already depends on `voices`, since MusicXML pairs `<slur>`
+  WITHIN a `<voice>`.
+- **15 of 35 detector families have no gather quantity** (was 16), led by
+  `accidental` (8) — deliberate, recorded in `FAMILY_Q_IS_ELSEWHERE`:
+  `Q.ACCIDENTAL` is an EVALUATE consequence, and an in-bar accidental is
+  **SCOPE, not a mark** (it holds to the barline), a span the record cannot
+  hold.
+- **⚠️⚠️ THE ANTI-DRIFT GUARD HAD THE BUG IT EXISTS TO PREVENT.** It compared
+  names for exact equality, so the legacy key `events` never matched `Q.EVENT`
+  — singular against plural — and the stale claim reached a PR body, CLAUDE.md,
+  PROJECT_BRIEF and a findings file. `rest` sat at `None` after `Q.REST`
+  landed, same class. Repaired with `q_covering()` (normalising, and
+  deliberately NOT a substring test — `stem_direction` would false-match
+  `Q.STEM`), a guard that asks the vocabulary instead of trusting the family
+  table, and a third that evicts a stale exemption. **An anti-drift check is
+  itself an artefact that drifts.**
+- **What caught it was a DIFFERENT test** — the stub-starvation guard failing
+  with *"ARC_KIND is no longer input-starved"* during a trial merge — not the
+  guard whose job it was.
+- **⚠️ No overlap with `staged/inventory.py`** (landed on main the same day):
+  that inventories the 21 DECISIONS, this the gather-stage QUANTITIES, the
+  legacy event vocabulary and the detector class space.
+- **⚠️ No arm was run and no page was read.** Measure REACH before accuracy.
+- **Companion exploration, reasoned from the PAGE**:
+  [docs/exploration-what-is-on-the-page-2026-09-09.md](docs/exploration-what-is-on-the-page-2026-09-09.md).
+  ⚠️ Its headline **survives the merge and is sharpened by it**: `Q.EVENT` is
+  scoped `Kind.CELL`, so simultaneity is now read WITHIN a staff and still
+  nowhere ACROSS staves — the only large source of REDUNDANT evidence on a
+  page. Also: `_mxl_empty_measure` cannot tell SILENT from UNREAD; and its own
+  first draft named `breath`/`glissando` as detector families from memory when
+  neither is in the class space.
 
 **Files touched:** `tools/omr/staged/gather_coverage.py` (new),
 `tools/omr/tests/test_staged_gather_coverage.py` (new),
-`benchmarks/omr-gather-coverage-2026-09/` (new), CLAUDE.md, PROJECT_BRIEF.md,
-version_memory.md. Second commit adds
-`docs/exploration-what-is-on-the-page-2026-09-09.md` and links it from CLAUDE.md.
-
+`benchmarks/omr-gather-coverage-2026-09/` (new),
+`docs/exploration-what-is-on-the-page-2026-09-09.md` (new), CLAUDE.md,
+PROJECT_BRIEF.md, version_memory.md.
 ---
 
 ---

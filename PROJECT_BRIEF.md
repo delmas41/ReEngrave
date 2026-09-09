@@ -392,33 +392,39 @@ judgement went wrong, rather than only that the final file differs.
 
 That only works if the record has a word for everything worth writing down. In
 September Sean noticed one it did not: **chords**. Notes stacked at the same
-moment in a bar are grouped by a real piece of judgement — how close in
-horizontal position counts as "the same moment", a check that two notes sharing
-a position but pointing their stems opposite ways are two separate lines rather
-than one chord, and a vote on how long the group lasts — and none of that had a
-name in the record. It was happening, and it was invisible.
+moment in a bar are grouped by real judgement — how close counts as "the same
+moment", a check that two notes sharing a position but pointing their stems
+opposite ways are two lines rather than one chord, a vote on how long the group
+lasts — and none of it had a name in the record.
 
-Rather than write a list of what else might be missing, the answer is a small
+Rather than write a list of what else was missing, the answer was a small
 program that works it out from the code itself and can be re-run whenever the
 code changes. Lists written by hand in this project have a poor record of
 staying true.
 
-It found two different problems that look the same from a distance. Some things
-are **not collected at all** — fermatas, for instance, are recognised on the
-page and written into the final file, and the record has no word for one. Others
-**are collected, under a name too general to be useful**: every mark the
-recogniser finds is filed as "a symbol", so slurs, ties, accents and dynamic
-markings are all genuinely in there, and the step that needs to reason about
-slurs specifically cannot reach them — it asks for slurs and is told there are
-none. The first needs a new reader. The second only needs the filing corrected,
-which is much cheaper.
+**And then the program proved its own point at its own expense.** While it was
+being written, other sessions working in parallel found the same gaps and fixed
+them — chords and rests both have proper names now. The program was still
+correct, but the notes written *around* it described problems that had already
+been solved. That is the exact failure the project keeps paying for: a thing
+fixed in the code and left open in the writing. It was caught by trying the
+merge rather than by reading it over.
 
-The most useful thing it turned up was about work already planned. Six steps in
-the new pipeline are known to be unwritten placeholders, and the natural reading
-was that each needs its decision-making written. In fact **every one of them is
-also missing its input** — so each is two jobs rather than one, and for four of
-the six the missing half is the cheap filing fix rather than new recognition
-work. Encouragingly, every step that is finished is properly fed.
+Worse, the automatic check meant to prevent that had a small flaw — it compared
+words letter for letter, so the plural "events" never matched the new singular
+"event" — and waved the stale claim straight through. Four documents carried it
+before a *different* check happened to trip. The flaw is fixed and pinned, and
+the lesson is the durable part: **a safeguard against things going out of date
+is itself a thing that goes out of date.**
+
+What the program reports now: of 66 quantities the record can name, 37 are
+actually collected. Seven things the older pipeline carries still have no name
+at all — which voice a note belongs to, which way a stem points, whether a note
+is tied to the next one, fermatas, ornaments. Fifteen kinds of printed symbol
+are recognised on the page but land in the record only as "a symbol", with
+accidentals the largest — and an accidental is an awkward case, because it is
+not really a mark at all but a *stretch*: once printed it governs every later
+note of that bar, and the record has nowhere to keep a stretch.
 
 
 ## What else is on the page

@@ -336,6 +336,16 @@ LEGACY_TO_Q: Dict[str, str] = {
     "height_canonical": "GLYPH_BOX",
     "bbox": "GLYPH_BOX",
     "pages": "STAFF_LINES",
+    # ⚠️ CLOSED 2026-09-09 BY PARALLEL WORK, and this tool's first version
+    # reported them open for a day. `Q.EVENT` ("which glyphs of a bar sound
+    # TOGETHER -- one event, N noteheads") is the chord quantity; its own
+    # docstring settles `x_position` too, declaring the x POSITION a
+    # measurement that `GLYPH_BOX` already carries and the SIMULTANEITY the
+    # interpretation. Kept here rather than deleted so the closure is legible.
+    "events": "EVENT",
+    "n_events": "EVENT",
+    "kind": "EVENT",
+    "x_position": "GLYPH_BOX",
 }
 
 #: Legacy event keys with NO `record.Q` name, each with what it is and why its
@@ -346,18 +356,6 @@ LEGACY_TO_Q: Dict[str, str] = {
 #: neither table, and `test_gather_coverage.py` fails on an entry that has
 #: since grown a `Q`, the same contract `export_coverage.KNOWN_GAPS` holds.
 NO_VOCABULARY: Dict[str, str] = {
-    "kind": (
-        "chord | rest -- WHICH EVENT A GLYPH IS PART OF. The simultaneity "
-        "itself: `voicing.group_chords_in_measure` groups noteheads within "
-        "0.6 notehead widths of each other in x, with a divisi guard on stem "
-        "direction and a mode-vote over the group's durations. That is an "
-        "ADJUDICATION with a tolerance, a veto and a vote, and the record has "
-        "no name for its subject, its input or its verdict."),
-    "x_position": (
-        "the event's ONSET -- x-centre as musical time, the axis events are "
-        "sorted on. Raw x IS inside `Q.GLYPH_BOX`, which is exactly why this "
-        "reads as covered and is not: no consumer can ask for onset, and "
-        "nothing can abstain on it."),
     "stem_direction": (
         "up | down, measured by `transcribe._stem_direction` from the stem "
         "against its noteheads. `Q.STEM` carries the stem's BOX and not its "
@@ -383,13 +381,31 @@ NO_VOCABULARY: Dict[str, str] = {
         "record cannot express -- and `export._lone_voice_is_the_second` "
         "re-decides the lane per measure downstream of it."),
     "voice_index": "which stream an event landed in; see `voices`.",
-    "events": (
-        "THE EVENT LIST ITSELF -- the ordered simultaneities a staff-measure "
-        "resolves to. `Q.MEASURE_PARTITION` says where the bars are and "
-        "nothing says what is INSIDE one. This is the container the chord "
-        "finding is about; `kind` and `x_position` are its two axes."),
-    "n_events": "the event count, written beside `events`; see `events`.",
 }
+
+
+def q_covering(key: str) -> Optional[str]:
+    """The declared `Q` that would name this legacy key, or None.
+
+    ⚠️ THIS EXISTS BECAUSE THE OBVIOUS VERSION HAS A BUG AND THE BUG BIT.
+    The first cut compared lowercased names for exact equality, so the legacy
+    key `events` never matched `Q.EVENT` -- a singular/plural mismatch -- and
+    `test_no_vocabulary_entries_still_have_no_vocabulary` waved through a
+    finding that had been CLOSED on main. The stale claim reached a PR body,
+    CLAUDE.md and a findings file before a different test caught it.
+
+    ⚠️ It is deliberately NOT a substring test. `stem_direction` would match
+    `Q.STEM` under one, and they are different quantities: `Q.STEM` carries a
+    stem's BOX and says nothing about which way it points.
+    """
+    from .record import Q
+    names = {n for n in vars(Q) if n.isupper() and not n.startswith("_")}
+    probe = key.lower().strip("_")
+    for variant in (probe, probe.rstrip("s"), probe + "s"):
+        for n in names:
+            if n.lower() == variant:
+                return n
+    return None
 
 
 def unaccounted() -> Dict[str, List[str]]:
@@ -564,7 +580,7 @@ FAMILY_TO_Q: Dict[str, Optional[str]] = {
     "ornament": None,
     "ottava": None,
     "repeat": None,
-    "rest": None,                # ⚠️ no rest quantity of any kind
+    "rest": "REST",              # ⚠️ CLOSED on main 2026-09-09; was None
     "segno": None,
     "slur": "ARC_BOX",
     "staff": "STAFF_LINES",
@@ -575,6 +591,21 @@ FAMILY_TO_Q: Dict[str, Optional[str]] = {
     "tremolo": None,
     "tuplet": "TUPLET_MARKER",
     "unpitched": None,
+}
+
+
+#: A family whose `None` is DELIBERATE even though a `Q` of that name exists,
+#: with the reason. ⚠️ An inventory, not a suppression: the guard in
+#: `test_staged_gather_coverage.py` fails on any other None-with-a-Q, so a
+#: family that quietly grows a gather quantity is a loud failure.
+FAMILY_Q_IS_ELSEWHERE: Dict[str, str] = {
+    "accidental":
+        "`Q.ACCIDENTAL` exists but is an EVALUATE consequence -- the pitch "
+        "respelled once the key settles -- not a gather-stage reading of the "
+        "printed glyph. The in-bar accidental is still filed only as an "
+        "anonymous `Q.GLYPH_BOX`, and it is SCOPE rather than a mark: it "
+        "holds to the barline (`transcribe.py:2210` implements exactly that), "
+        "which is a span the record has nowhere to put.",
 }
 
 
