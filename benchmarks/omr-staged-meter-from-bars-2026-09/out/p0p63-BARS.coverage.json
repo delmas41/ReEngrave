@@ -1,0 +1,224 @@
+{
+  "families": [
+    {
+      "family": "articulation",
+      "quantity": "articulation_owner",
+      "detector_glyphs": 7,
+      "written": 0,
+      "decided": 0,
+      "abstained": {
+        "not_implemented": 7
+      },
+      "produced_by": "adjudicate",
+      "status": "stub"
+    },
+    {
+      "family": "clef",
+      "quantity": "clef",
+      "detector_glyphs": 41,
+      "written": 0,
+      "decided": 22,
+      "abstained": {
+        "margin_below_floor": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "direction",
+      "quantity": "direction",
+      "detector_glyphs": 0,
+      "written": 0,
+      "decided": 0,
+      "abstained": {
+        "not_implemented": 331
+      },
+      "produced_by": "adjudicate",
+      "status": "stub"
+    },
+    {
+      "family": "dynamic",
+      "quantity": "dynamic",
+      "detector_glyphs": 59,
+      "written": 0,
+      "decided": 0,
+      "abstained": {
+        "not_implemented": 23
+      },
+      "produced_by": "adjudicate",
+      "status": "stub"
+    },
+    {
+      "family": "fermata",
+      "quantity": null,
+      "detector_glyphs": 0,
+      "written": 0,
+      "status": "NO_QUANTITY",
+      "why": "the staged vocabulary has no quantity for this family: no gather site, no adjudicator, no stub and no `wants` naming it. Nothing in the record declares the absence."
+    },
+    {
+      "family": "key",
+      "quantity": "key_signature",
+      "detector_glyphs": 8,
+      "written": 0,
+      "decided": 1,
+      "abstained": {
+        "run_fits_no_slot_table": 3,
+        "no_evidence": 18,
+        "needs_clef": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "note",
+      "quantity": "pitch",
+      "detector_glyphs": 775,
+      "written": 724,
+      "decided": 874,
+      "abstained": {},
+      "produced_by": "evaluate",
+      "status": "emitted"
+    },
+    {
+      "family": "ornament",
+      "quantity": null,
+      "detector_glyphs": 2,
+      "written": 0,
+      "status": "NO_QUANTITY",
+      "why": "the staged vocabulary has no quantity for this family: no gather site, no adjudicator, no stub and no `wants` naming it. Nothing in the record declares the absence."
+    },
+    {
+      "family": "rest",
+      "quantity": "rest",
+      "detector_glyphs": 401,
+      "written": 401,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "evaluate",
+      "status": "abstained"
+    },
+    {
+      "family": "slur",
+      "quantity": "arc_kind",
+      "detector_glyphs": 27,
+      "written": 0,
+      "decided": 0,
+      "abstained": {
+        "not_implemented": 71
+      },
+      "produced_by": "adjudicate",
+      "status": "stub"
+    },
+    {
+      "family": "tie",
+      "quantity": "arc_kind",
+      "detector_glyphs": 44,
+      "written": 0,
+      "decided": 0,
+      "abstained": {
+        "not_implemented": 71
+      },
+      "produced_by": "adjudicate",
+      "status": "stub"
+    },
+    {
+      "family": "time",
+      "quantity": "meter",
+      "detector_glyphs": 1,
+      "written": 0,
+      "decided": 0,
+      "abstained": {
+        "bars_name_a_length_without_a_form": 2,
+        "too_few_staves_read_it": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "tuplet",
+      "quantity": "tuplet_ratio",
+      "detector_glyphs": 1,
+      "written": 0,
+      "decided": 0,
+      "abstained": {
+        "wrong_member_count": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "wedge",
+      "quantity": "wedge_anchor",
+      "detector_glyphs": 0,
+      "written": 0,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "stub"
+    }
+  ],
+  "unclaimed_classes": {
+    "arpeggiato": 101
+  },
+  "detected_and_unrepresented": {
+    "articulation": 7,
+    "dynamic": 59,
+    "ornament": 2,
+    "slur": 27,
+    "tie": 44
+  },
+  "detected_and_unrepresented_total": 139,
+  "written": {
+    "rests": 401,
+    "notes": 724,
+    "empty_bars_padded": 19,
+    "empty_bars_padded_without_meter": 19,
+    "accidentals": 37,
+    "parts": 10,
+    "divisions": 16
+  },
+  "part_join": {
+    "join_decided": "slot",
+    "join_used": "slot",
+    "join_reason": "slot",
+    "systems": [
+      "63/0",
+      "63/1",
+      "63/2"
+    ],
+    "staves_per_system": [
+      6,
+      7,
+      10
+    ],
+    "parts": 10,
+    "fragmented": false,
+    "slots": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "stranded": 0
+  },
+  "notes_not_written": {
+    "duration_narrowed": 30,
+    "no_pitch": 21
+  },
+  "notes_not_written_total": 51,
+  "balance": {
+    "events_in_log": 1176,
+    "noteheads_in_log": 775,
+    "rests_in_log": 401,
+    "events_written": 1125,
+    "events_not_written": 51,
+    "balanced": true
+  }
+}

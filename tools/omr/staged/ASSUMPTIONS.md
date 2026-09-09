@@ -587,6 +587,65 @@ typically followed by most instruments resting).
 **Blast radius.** n = 1 change, 1 document. Controls are clean (pages 0-2 and
 p.17 report one segment and no change), but one true positive is one.
 
+### A-DUR-7 · ⚠️ The bars name a LENGTH; only ink names the ENGRAVING
+
+**PRINCIPLE** — a decision may propose only what its evidence can distinguish.
+*`rhythm._bars_opinion`, `_form_for_length`, `_meter_from_bars`, `METER_FROM_BARS_FLOOR`, `_METER_LENGTHS`, `OMR_METER_FROM_BARS` (default `0`)*
+
+**Assumption.** A system that read no meter and could not carry one may take
+the bar length its own bars agree on, scored in the carry's currency (`+1.0`
+per bar that fits, `-1.0` per bar that does not, floor `4.0`). The printed
+FORM is borrowed from the nearest preceding system whose meter was `voted` AND
+whose length already matches; where none exists the decision abstains
+`bars_name_a_length_without_a_form`, recording the length, the support and
+every spelling that length could be.
+
+**Why.** A bar sum is a length in quarter-notes and a meter is a length AND an
+engraving: 2.0 is `2/4` and `4/8`, 3.0 is `3/4`, `6/8` and `12/16`. The
+arithmetic cannot separate them because it is the same arithmetic. Sean:
+*"If there is no established meter then it must derive the most likely meter
+based off of the order of determination above"* — so the half that can be
+derived is derived and the half that cannot is refused, not guessed. ⚠️ The
+guess is not free: `raw` reaches `staged.export` as `symbol="common"`, a
+positive claim that a `C` is PRINTED on a system that printed nothing we could
+read. The letter is therefore **never** borrowed even when the numbers are.
+
+⚠️ **IT CANNOT CROSS A MOVEMENT BOUNDARY, and that is what makes it a
+different mechanism from the carry rather than a second copy.** Every term
+comes from bars inside one system, so the *Andante* cannot be handed movement
+1's `2/4` by this route however many pages of it precede — its four assessable
+bars read four different lengths and it scores **-2.0**. Only the SPELLING
+reaches back, and only where the length already matches.
+
+⚠️ **"FOR 6 MEASURES" IS NOT A RUN.** Measured over 20 systems, the longest
+CONSECUTIVE run of assessable bars is 5 where the meter is read, 3 where it is
+wanted and 1 on the dense finale pages — because an unassessable bar breaks a
+run without contradicting anything, which is a fact about legibility, not
+meter. So the length of the evidence is expressed by the terms ACCUMULATING,
+not by a run-length constant.
+
+⚠️ **ONE CONSTANT, AND A SECOND WAS DELETED FOR BEING INERT.**
+`METER_FROM_BARS_MIN_ASSESSABLE = 4` was written on `METER_CARRY_MIN_BARS`'s
+two-questions reasoning and **a mutation arm proved it could not fire** — a
+bar is worth 1.0, so the floor of 4.0 already implies four assessable bars.
+Deleted rather than left as decoration: a gate that cannot fire reads as a
+protection that is not there.
+
+**How to falsify.** A page whose bars coherently agree on a length that is not
+its meter — most likely one where a systematic duration misread is shared by
+every staff, which is the correlated-evidence hazard `A-DUR-6` names. The
+per-bar cross-staff majority is the only thing standing against it, and it is
+weaker than it looks: bars on one staff share that staff's beam and clef
+regime, so they are not fully independent witnesses.
+
+**Blast radius.** Bounded by the flag, and self-limiting with it on: it is
+reached only where the reading AND the carry have both already failed, so it
+can overturn nothing. ⚠️ **On the one document available it never reaches its
+DECIDED branch on a page the carry does not already serve** — the two systems
+it newly speaks for (p.63) name 3.0 with no `voted` 3.0 anywhere to spell it,
+so they take the abstaining branch. See
+`benchmarks/omr-staged-meter-from-bars-2026-09/FINDINGS.md`.
+
 ### A-DUR-6 · ⚠️⚠️ THE TARGET MODEL — a meter is decided PER BAR, from layered evidence
 
 **SEAN'S DESIGN, 2026-09-09, recorded verbatim so it is not lost or paraphrased away.**
@@ -615,7 +674,7 @@ rather than defaulted.
 | 2 | meter glyphs at the same bar on other staves | ✅ voted in `_meter_changes` |
 | 3 | this bar's own duration sum | ✅ `_bar_lengths_for` |
 | 4 | the same bar's sum on every other staff | ✅ the per-bar modal vote |
-| 5 | the surrounding bars' sums | ⚠️ PARTIAL — only FORWARD of a candidate (`_bar_run`) |
+| 5 | the surrounding bars' sums | ⚠️ PARTIAL — forward of a candidate (`_bar_run`), and now the whole system's own bars as a proposer of the LENGTH (`A-DUR-7`) |
 | 6 | beat subdivision agrees with the meter | ❌ not built; beams are gathered, grouping is not read |
 | 7 | undefined blobs of ink | ❌ not built — see A-DUR-5 |
 
@@ -627,21 +686,27 @@ a symmetric ±4 window blurs exactly the boundary it is meant to find. Run
 LENGTH is legitimate evidence ("the longer the more likely"); a symmetric
 window around a suspected change is not.
 
-⚠️ **A RUN MAY PROPOSE, BUT ONLY A LONG ONE.** Not admitted today because the
-*Andante* (p.17) names nothing coherent — 4 assessable bars at 4 different
-values — and would manufacture meters from noise. The discriminator is the run
-itself: *10 staves agreeing for 6 bars* is not *4 bars at 4 values*. This is
-the gap between what is built and what Sean described, and it is the next
-piece of work.
+⚠️ **A RUN MAY PROPOSE — BUILT 2026-09-09, AND IT IS NOT A RUN.** See
+`A-DUR-7`. The discriminator turned out to be the ACCUMULATED agreement rather
+than consecutiveness (a run breaks on an unassessable bar, which measures the
+page's legibility and not its meter), and the thing a bar sum can propose is
+only a LENGTH — `2/4` and `4/8` are one arithmetic. The *Andante* refuses
+itself at −2.0 with no special case.
 
 ⚠️ **EVIDENCE STILL HAS TO BE INDEPENDENT.** Ten bars whose durations all trace
 to one misread beam level are ONE signal. `correlated_groups` exists for this
 and the clef work is the warning: every clef detection on a staff is one group,
 so no amount of detector evidence breaks a clef tie.
 
-**Worth adding to the list, and cheap:** a **double barline** at the candidate
-bar. A meter change is nearly always printed after one, it is an independent
-reader (`barline_column`), and it needs no new CV. Also a tempo word at that
+**Worth adding to the list:** a **double barline** at the candidate bar. A
+meter change is nearly always printed after one and it is a genuinely
+independent reader. ⚠️⚠️ **BUT IT IS NOT CHEAP, AND THIS ENTRY SAID IT WAS.**
+Checked 2026-09-09: `Q.BARLINE_COLUMN` is a per-staff **count of cells cut**
+(`gather.gather_measures` observes `last + 1`), not barline positions and not
+barline types — and the repo has **no barline-type classification at all**
+(NOTES.md item 5, which is why `<repeat>` is dropped on export). So this needs
+new CV *and* a new gathered quantity. Correct the estimate before budgeting
+for it. Also a tempo word at that
 bar ("Tempo I.", "Allegro") — the engraver's own section marker, blocked only
 on `direction` being a stub.
 

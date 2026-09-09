@@ -113,6 +113,13 @@ harness, not a second gatherer; nothing in the tree imports it.
 
 **51 bars, 6 systems, 703 cells grouped by `Q.EVENT`, 0 abstentions.**
 
+⚠️ **RE-RUN ON THE MERGED TREE AND IDENTICAL.** A concurrent session landed
+`OMR_METER_FROM_BARS` in the same file (`adjudicators/rhythm.py`, +222 lines)
+while this was measured; git merged the two without a conflict there, which is
+not by itself evidence that they compose. Re-run after the merge the harness
+reports **1,483 columns, 739 corroborated (0.498), 744 alone, median residual
+0.0734** — every figure below to the unit.
+
 ### The null is a CIRCULAR SHIFT, and that makes it the stronger control
 
 Each staff-bar's page x values are rotated by a random offset within that
