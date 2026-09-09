@@ -72,10 +72,31 @@ digits must win) is kept as `TestDigitsWinOverALetterAtTheSameBar`.
   experiment; the tell was `system/0/0` abstaining where it had to read 3/4.
   Now REQUIRED. (2) A top-margin heuristic for locating movement starts missed
   p.17, the one known boundary — that print does not indent one. Discarded.
+- ⚠️⚠️ **AND THE WRONG SUMS WERE THEN DIAGNOSED, OFFLINE ON THE SAVED RECORD —
+  TWO INDEPENDENT FAULTS.** (1) **A NARROWED duration is collapsed to its top
+  candidate, and it biases LONG.** 77 of 428 duration verdicts on the dense
+  page (18%) are `narrowed`/`beams_ambiguous`, **every one with the candidate
+  set `(1.0, 0.5)`**; `Ruling.narrow` orders by support so `candidates[0]` is
+  1.0, and `_bar_lengths_for` takes exactly that — *"it is one of these"*
+  consumed as if it had decided, always the longer note. That is this repo's
+  own anti-pattern and `Evidence.admitted`'s docstring says so in as many
+  words. Page 2, truth 4/4: `candidates[0]` → 1 assessable / **0 correct**;
+  lowest → 4 / **4 correct** (up to 22/23); dropped → 1 / 0.
+  ⚠️ **"Take the lowest" is NOT the fix** — on the mixed page it is WORSE
+  (2 correct of 4 against 3 of 5). A policy that fixes one page and breaks
+  another is a fudge that fits; the table establishes the MECHANISM and its
+  DIRECTION only. The repair is upstream: `beam_evidence:
+  "none_over_this_note"` with `yolo_kept: 0` **on a clean engraving** is a
+  beam-detection failure, and a note whose beam is missed reads too long.
+  (2) **A separate confident wrongness no candidate policy touches** — page 1
+  cells 4 and 5 read **3.5 at 17 of 23** and **6.0 at 20 of 23** against a
+  truth of 4.0, wrong under both policies. Two-thirds of staves agreeing on 6.0
+  is a shared systematic misread, not ambiguity. **Work the two separately.**
 - `benchmarks/omr-staged-meter-engraved-2026-09/` — `render_meter_change.py`
   (the `excerpt` recipe without its one-page shrink, which exists for an
   EXPORTER reason that does not apply when the question is per-SYSTEM),
-  `hide_change_signature.py`, and `FINDINGS.md`.
+  `hide_change_signature.py`, `probe_narrowed_policy.py` (takes any staged
+  record), and `FINDINGS.md`.
 
 ---
 
