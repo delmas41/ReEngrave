@@ -521,3 +521,70 @@ page's early bars read 6.0, 5.0, 6.0, so it is noisy too, only less so than
 page 17.
 
 **Not built. Parked at Sean's request for a design pass.**
+
+
+---
+
+## 12. WHAT WAS ACTUALLY PREVENTING "3/4" — three wiring facts, no evidence problem
+
+Sean: *"Modal sum + some written 3/4 should be more than enough. What is
+actually preventing us from saying 3/4 with what we have?"*
+
+Nothing about the evidence. Three things in the wiring, in order of cost:
+
+1. ⚠️ **BOTH METER READERS LOOKED ONLY AT THE STAFF HEADER.**
+   `_gather_meter_glyphs` hardcoded `R.cell(p, ..., 0)` and the template reader
+   uses `header_cells_for_page`. A meter printed at a CHANGE is outside both
+   windows by construction — so on p.62 the detector's `timeSig3` and five
+   `timeSig4` sat on the record as ordinary `glyph_box` rows while
+   `meter_glyph` abstained `no_detections` on all **17** staves. **FIXED**: the
+   gather now walks every cell and records the CELL on each row, because WHERE
+   a meter glyph stands is the whole of its meaning — at cell 0 it states the
+   staff's meter, anywhere else it announces a change at that bar.
+2. **The decision ignores `Q.METER_GLYPH`.** Declared in `wants`, never read —
+   already on `KNOWN_GAPS` in those words. The vote runs on `meter_template`
+   alone, so even a header detection reaches no decision. **NOT YET FIXED**,
+   which is why the widening above is measured INERT (meter verdicts
+   byte-identical on `--pages 0-2`).
+3. **`Q.METER` is `scope=Kind.SYSTEM`.** One verdict per system, so "4/4 until
+   bar 8, 3/4 after" is inexpressible even with perfect evidence. This is the
+   real design change and it is a SUBJECT question: a meter is a property of a
+   RANGE OF BARS, not of a system.
+
+### ⚠️ CORRECTION TO §11: the alignment was NOT off by two
+
+§11 records the cell→bar alignment as off by about two and the cause as
+unchecked. **It is not off.** The page prints bar **147** at top-left, so cell
+8 is bar **155** — and the reference's change is at bar **155**. The
+`timeSig3`+`timeSig4` lands on it **exactly**.
+
+What §11 actually compared was the BAR-MATH signal (a modal 3.0 at cell 6),
+which is two cells early and is therefore *not* the change. So on this page:
+
+| signal | says | truth |
+|---|---|---|
+| **meter glyph** | change at **cell 8** | **bar 155 = cell 8 ✓** |
+| bar math | anomaly at cell 6 | ✗ two cells early |
+
+**That inverts the weighting rationale, in Sean's favour**: the glyph is the
+precise signal and the arithmetic is the noisy corroborator, not the other way
+round. `measure_partition` decided **13 cells on all 17 staves**, so cell
+indices do align across the system and the comparison is sound.
+
+### ⚠️ Two things the same measurement rules out or complicates
+
+* **The "undefined blob" tier cannot be built from the detection record.**
+  Sean: *"an undefined blob should also be a factor — there is something there
+  but we aren't sure what it is."* Sound idea, and there is precedent
+  (`direction_text._blank_detections` subtracts every detection from the page
+  ink so "find the text" becomes "find the ink"). But at p.62 cell 8 the other
+  15 staves carry **no unclassified detection** at the meter column — the ink
+  was not detected at all, rather than detected and unnamed. So the tier needs
+  a RASTER pass in GATHER, not a re-weighting of what is already recorded.
+* ⚠️ **The whole-rest exclusion thins the evidence exactly where a change
+  happens.** It is necessary (§7) — a whole rest would read our own default
+  back as evidence — but a meter change is typically followed by most
+  instruments RESTING, so cells 7-12 of this system drop to one assessable
+  staff each. **The bar-math corroborator is systematically weakest
+  immediately after a change**, which is another reason the glyph must carry
+  the weight.

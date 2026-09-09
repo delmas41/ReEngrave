@@ -1308,19 +1308,49 @@ def _gather_meter_glyphs(log: Log, sub: Subject, detections, p: int,
     `timeSigCutCommon` are the two the detector reads WELL and the template
     library has no digits for -- so the two readers are complementary, not
     redundant, and both belong on the record."""
-    cell_key = R.cell(p, key[0], key[1], 0).to_key()
-    marks = [d for d in detections.get(cell_key, ())
-             if d.smufl_name.startswith("timeSig")]
+    # ⚠️⚠️ EVERY CELL, NOT CELL 0 — and the hardcoded `0` this replaces is what
+    # made a printed METER CHANGE invisible. A meter is printed at the head of
+    # a staff AND wherever it changes, and both readers were looking only at
+    # the header: this one at cell 0 and the template reader at the header
+    # crop. Measured on Beethoven 5 / Litolff p.62, whose print carries a
+    # double barline, "Tempo I." and a new time signature on every staff
+    # mid-system: the detector fired `timeSig3` + five `timeSig4` in CELL 8,
+    # those detections sat on the record as ordinary `glyph_box` rows, and
+    # `meter_glyph` abstained `no_detections` on all 17 staves.
+    #
+    # ⚠️ The CELL is recorded on every row, because WHERE a meter glyph stands
+    # is the whole of its meaning here: at cell 0 it states the staff's meter,
+    # anywhere else it announces a change at that bar.
+    marks = []
+    for cell_index, cell_dets in _meter_cells(detections, p, key):
+        for d in cell_dets:
+            if d.smufl_name.startswith("timeSig"):
+                marks.append((cell_index, d))
     if not marks:
         log.abstain(sub, Q.METER_GLYPH, reader=READERS.DETECTOR,
                     frame=frame_cell(0), reason=ABSTAIN.NO_DETECTIONS)
         return
-    for d in sorted(marks, key=lambda m: (m.x_canonical, m.y_canonical)):
+    for cell_index, d in sorted(marks, key=lambda m: (m[0], m[1].x_canonical,
+                                                      m[1].y_canonical)):
         log.observe(sub, Q.METER_GLYPH, d.smufl_name,
-                    reader=READERS.DETECTOR, frame=frame_cell(0),
+                    reader=READERS.DETECTOR, frame=frame_cell(cell_index),
                     score=float(d.confidence), x=d.x_canonical,
-                    y_center=d.y_center,
+                    y_center=d.y_center, cell=cell_index,
                     letter=(d.smufl_name in _METER_CLASSES))
+
+
+def _meter_cells(detections, p: int, key):
+    """(cell_index, detections) for every cell of this staff, in bar order."""
+    prefix = R.cell(p, key[0], key[1], 0).to_key().rsplit("/", 1)[0] + "/"
+    out = []
+    for cell_key, dets in detections.items():
+        if not cell_key.startswith(prefix):
+            continue
+        try:
+            out.append((int(cell_key.rsplit("/", 1)[1]), dets))
+        except ValueError:
+            continue
+    return sorted(out)
 
 
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
