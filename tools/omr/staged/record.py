@@ -157,7 +157,7 @@ def meter_at(value, cell_index):
     helper is where that is expressed. The value carries `segments` -- one
     entry per stretch, each with the `from_cell` it starts at -- so a system
     holding a printed meter CHANGE says so in ONE fact rather than in two that
-    can drift apart. Sean, 2026-09-10: *"I don't want the dichotomy of it's a
+    can drift apart. Sean, 2026-09-09: *"I don't want the dichotomy of it's a
     system or a group of notes surrounding it. It is both."*
 
     ⚠️ THE ALTERNATIVE WAS REFUSED ON THIS PROJECT'S OWN HISTORY. Keeping the
@@ -630,7 +630,7 @@ class Verdict:
     supersedes: str | None = None
 
     #: This revision's cause DEPENDS ON the value being revised, and that is
-    #: declared, bounded and single-pass. (Sean's call, 2026-09-10.)
+    #: declared, bounded and single-pass. (Sean's call, 2026-09-09.)
     #:
     #: ⚠️⚠️ THE ONE EXEMPTION FROM THE FIXPOINT GUARD, AND IT IS PER-VERDICT
     #: RATHER THAN GLOBAL SO IT CANNOT SPREAD BY ACCIDENT.

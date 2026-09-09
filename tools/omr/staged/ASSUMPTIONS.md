@@ -511,7 +511,7 @@ onto a carry and `pages_since_read` is the true distance back to ink.
 
 **Why.** A meter is a fact of the MOVEMENT, printed at its start and nowhere
 else, so a page-at-a-time pipeline has none from a movement's second page on.
-Sean, 2026-09-10: *"If the measure is what we think it is - does the math of
+Sean, 2026-09-09: *"If the measure is what we think it is - does the math of
 the notes make sense. If not then the meter should decrease in probability."*
 So the bars do not veto, they move its standing — and the movement-boundary
 problem dissolves, because a new movement's bars simply contradict the old
@@ -549,7 +549,7 @@ carry the bars refuse simply abstains, which is the status quo. Still `0` on
 
 ### A-DUR-4 · ⚠️ A meter governs a RANGE OF BARS, and the glyph opens a change
 
-**PRINCIPLE** — Sean, 2026-09-10: *"I don't want the dichotomy of it's a system or a group of notes surrounding it. It is both."*
+**PRINCIPLE** — Sean, 2026-09-09: *"I don't want the dichotomy of it's a system or a group of notes surrounding it. It is both."*
 *`record.meter_at`, `rhythm._meter_changes`, `W_CHANGE_GLYPH_PAIR`, `METER_CHANGE_FLOOR`*
 
 **Assumption.** A `Q.METER` verdict's value carries `segments` — one entry per
@@ -589,7 +589,7 @@ p.17 report one segment and no change), but one true positive is one.
 
 ### A-DUR-6 · ⚠️⚠️ THE TARGET MODEL — a meter is decided PER BAR, from layered evidence
 
-**SEAN'S DESIGN, 2026-09-10, recorded verbatim so it is not lost or paraphrased away.**
+**SEAN'S DESIGN, 2026-09-09, recorded verbatim so it is not lost or paraphrased away.**
 
 > *"It's almost as if each bar needs to do its own math but submit first to
 > contextual elements. Example: 1. Does the bar have a meter glyph? 2. Are
@@ -647,7 +647,7 @@ on `direction` being a stub.
 
 ### A-DUR-5 · ⚠️⚠️ UNBUILT AND WANTED — unclassified ink as a first-class fact
 
-**SEAN'S REQUEST, 2026-09-10, recorded so it is not lost.**
+**SEAN'S REQUEST, 2026-09-09, recorded so it is not lost.**
 
 > *"I really don't want to lose the 'here is a blob of ink but we don't know
 > what it is' gather data point. It can be used in every decision point if
@@ -682,7 +682,7 @@ hairpins (1 detected against 198 encoded).
 
 ### A-DUR-3 · ⚠️ The pipeline's ONE sanctioned loop, declared per rule
 
-**CONTINGENCY** — allowed by Sean, 2026-09-10, after the guard escalated it.
+**CONTINGENCY** — allowed by Sean, 2026-09-09, after the guard escalated it.
 *`evaluate.rule(single_pass=True)`, `Verdict.single_pass_revision`, `record.UphillConsequence`*
 
 **Assumption.** `reconcile_duration` may revise a duration even though the

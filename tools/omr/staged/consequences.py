@@ -227,7 +227,7 @@ def _event_totals(log: Log, subject: Subject, notes, current) -> Optional[float]
       # line unrolled, run once and stopped, which is the rule `transcribe`
       # has always stated as "vote once, repair once". The BOUND above is what
       # makes it safe -- at most one note, an exact landing, a unique answer,
-      # so it cannot iterate even in principle. Sean's call, 2026-09-10, after
+      # so it cannot iterate even in principle. Sean's call, 2026-09-09, after
       # the guard escalated it exactly as its message says to.
       single_pass=True)
 def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdict]:

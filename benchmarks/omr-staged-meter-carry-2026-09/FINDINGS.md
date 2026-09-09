@@ -278,7 +278,7 @@ not what any stage can read today.
 
 ## 7. THE CARRY IS NOW WEIGHED, NOT GATED — and the flag can come off the binary
 
-Sean, 2026-09-10, on §2's default-OFF conclusion:
+Sean, 2026-09-09, on §2's default-OFF conclusion:
 
 > *"I want to make sure that we don't get stuck in binary on or off based on
 > current measurements ... We need probability based decisions with layers of

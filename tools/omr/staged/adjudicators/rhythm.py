@@ -467,7 +467,7 @@ def _box_of(rows):
 def adjudicate_event(ev: Evidence) -> Ruling:
     """Which glyphs of this bar sound TOGETHER.
 
-    ⚠️ THIS EXISTED ONLY AT SERIALISATION TIME UNTIL 2026-09-10.
+    ⚠️ THIS EXISTED ONLY AT SERIALISATION TIME UNTIL 2026-09-09.
     `group_chords_in_measure` was called from exactly one place —
     `export._events` — so every stage before EXPORT counted each chord member
     as a separate time-advancing event. That includes
@@ -642,7 +642,7 @@ def meter_carry_enabled() -> bool:
 # ─────────────────────────────────────────────────────────────────────────────
 # A carried meter is WEIGHED, not gated. (A-METER-3)
 #
-# Sean, 2026-09-10: *"We need probability based decisions with layers of
+# Sean, 2026-09-09: *"We need probability based decisions with layers of
 # information ... this is where the math that can be determined by its own
 # equation could be weighed more heavily than information that can only be
 # derived. If the measure is what we think it is - does the math of the notes
@@ -852,7 +852,7 @@ def _score_bars(bars: dict, expected: float) -> dict:
 # A METER CHANGE, in Sean's order: the GLYPH opens the question, the MATH
 # settles it. (A-METER-4)
 #
-# Sean, 2026-09-10: *"any time signature glyph should be the heaviest weight
+# Sean, 2026-09-09: *"any time signature glyph should be the heaviest weight
 # ... Any glyph registers should be the biggest sign that all measures at that
 # point should be viewed as likely a new time signature then does the math add
 # up and for how long - the longer the more likely."*

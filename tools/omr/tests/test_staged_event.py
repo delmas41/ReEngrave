@@ -2,7 +2,7 @@
 
 ⚠️ COHERENCE, NOT ACCURACY.
 
-⚠️ THE POINT OF THIS FILE. Until 2026-09-10 chord grouping existed in exactly
+⚠️ THE POINT OF THIS FILE. Until 2026-09-09 chord grouping existed in exactly
 one place — `export._events`, at serialisation time — so every stage before
 EXPORT counted each chord member as a separate time-advancing event. The
 pipeline's own bar-sum check (`consequences.reconcile_duration`) therefore
