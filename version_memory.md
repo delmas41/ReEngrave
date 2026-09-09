@@ -5,6 +5,53 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-08 — `OMR_CV_HAIRPINS` re-priced, and dynamics enter the staged pipeline
+
+**The hairpin re-run (Task 1).** Two fresh `scan_eval` arms over the 20-row gate
+on the current default tree. ⚠️ **The prediction that motivated it was WRONG.**
+`docs/scope-dynamics-reading-2026-09-09.md` §4 argued the 2026-09-07 pricing was
+stale because Brahms 1 p2 supplied +37 of the +76 and `_stitch_slots` REFUSED on
+it; `OMR_SLOT_STITCH` went default ON the next day. The stitch flag DID repair
+that row — `stitch` verdict now `joined`, OFF-arm edits 6547 → 6335 — and **the
+hairpin cost on it is unchanged at +37**. Summed +82 against +76, same
+11 worse / 8 unchanged / 1 better. Neither arm cached (36m31s, 30m57s; validity
+20/20 rows differ only in CV hairpins).
+
+**The bucket split** the flag's docstring asked for refutes its own explanation:
++28 of Brahms p2's +37 is `entire measure insert/delete` **on a row whose parts
+join**, so the structural half was never the refusal — it is amplification.
+`beethoven-984073-p4` is the pure case: truth carries no hairpin, one invented,
++7 edits, zero wedge-bucket movement. Over the 12 moved rows: wedge +35,
+structural +69, other −22.
+
+⚠️⚠️ **And the symbol ledger says the opposite of OMR-NED.** Same two arms,
+accounting control passing on both: `hairpin` **matched_exact 0 → 97**, missing
+**323 → 187**, spurious 4 → 57, with 13 of 15 other families identical to the
+row. 136 truth hairpins recovered on a family whose recall was 0.000 with ZERO
+spurious. **Recommendation: default it ON — left OFF pending Sean's call**,
+since every default flip here is his and this one buys recall with 53 spurious
+wedges. `mahler-p4` (27 truth hairpins, 7 read, 0 paired) is where an anchor
+investigation starts, not Brahms p2.
+
+**Dynamics into the staged pipeline (Task 2).** `Q.DYNAMIC_LETTER` and
+`Q.WEDGE_BOX` were declared and emitted by no gatherer. Both are now gathered,
+**in page pixels against the staff's own bottom line** — the frame
+`hairpin_detection` already uses, and the reason the two families become
+comparable at all. `READERS.CV_HAIRPINS` is a new reader rather than a mode of
+`CV_LINES`. `adjudicate_dynamic` is implemented and **the fix is the ownership
+query, not the spelling**: a letter belongs to the cell whose STAFF
+`Q.GLYPH_OWNER` names, whatever cell it was cut from. An unspellable run
+`narrow`s rather than abstaining. Guarded by `test_staged_dynamics.py`, every
+central assertion run RED under a mutation first.
+
+**Partial letter runs (Task 3).** `OMR_PARTIAL_DYNAMICS`, default `off`,
+byte-identical to main. ⚠️ **Corrects a standing note**: the dropped population
+is "dominated by a lone `s`" on the 11-page band corpus and NOT on Brahms 1 /
+Breitkopf, where 15 of 20 dropped runs are a prefix of nothing and look like
+`ppmsf`. Priced over the 20-row gate with `probe/reexport_arm.py`: `complete`
++15 edits, `other` +30, **not one row better**. Refused, and re-priceable on the
+staged path where ownership is decided before the word is spelled.
+
 ## 2026-09-09 — dynamics: the block is HAIRPINS, not letters (scoping, no arm run)
 
 - **Cloud-session capability established by inventory, not memory**:
