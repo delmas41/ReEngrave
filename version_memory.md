@@ -5,6 +5,114 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-09 — dynamics: the block is HAIRPINS, not letters (scoping, no arm run)
+
+- **Cloud-session capability established by inventory, not memory**:
+  [docs/cloud-session-capabilities-2026-09-09.md](docs/cloud-session-capabilities-2026-09-09.md).
+  A web container clones the repo and nothing else — `omr-weights/` and
+  `library/` are both gitignored, so no transcription, no `scan_eval`, no
+  `orchestral_eval`. **The line is exact: a change acting on an already-made
+  transcription can be measured there; a change acting on the PAGE cannot.**
+- **⚠️ musicdiff runs NATIVELY in a cloud container and the four-symlink
+  workaround does not apply.** CLAUDE.md's OMR-NED section exists because the
+  desktop host is Python 3.9; a cloud box is **3.11**, so `pip install music21
+  musicdiff` is the whole setup. Verified end-to-end on a committed pair
+  (beet5-p1-shift09 vs truth: **0.7152 / 1286 edits**). ⚠️ Run
+  `_omrned_worker.py` from ANY directory but the repo root — `tools/omr/types.py`
+  shadows the stdlib `types` and fails circularly inside `weakref`, which is
+  precisely why that worker is documented as never importing from `tools.*`.
+- **⚠️ THREE SCAN-GATE ROWS ARE FULLY REPRODUCIBLE FROM COMMITTED FILES.**
+  Brahms 1 / Breitkopf p1-p3: the transcription (`…hollow2…/transcription.json`,
+  3 pages, 83 staves, 10,523 detections), its truth (`reference.mxl`) and the
+  hand-verified windows (`works.json`) are all in git, so
+  **transcription → export → musicdiff → OMR-NED closes without weights.**
+  ⚠️ `cells/` is still gitignored — coordinates yes, rasters no. ⚠️ One row is
+  not the gate (and the gate's own noise floor is ±6 edits).
+- **The dynamics finding was REPRODUCED rather than quoted**: that committed
+  transcription carries **265 dynamic-letter detections and ZERO of either
+  hairpin class**, and its export emits **159 `<dynamics>` and 0 `<wedge>`**. So
+  the ledger's `hairpin matched_exact = 0` is not an instrument artefact — the
+  detector sees the letters and is blind to the wedges, confirmed end to end
+  with no weights present.
+- ⚠️ Checked and NOT a finding: `mahler_p11_finetuned.omr.json` carries
+  `dynamicLetterP` (the coarse 136-207 block), but `class_aliases.ALIASES` maps
+  all six `dynamicLetter*` → `dynamic*`, so that artefact is pre-fix raw model
+  output rather than a live gap.
+
+- **Follow-up (Sean: "not sure our primary issue is the hairpins or the letters
+  or both — we will need both read and able to interact in the adjudication
+  stage"). Answer: BOTH, and they are the same size.** On the assessable rows
+  the absolute miss counts are within 10% of each other — letters **127
+  missing**, hairpins **140 missing** — while the recalls (0.714 vs 0.000) give
+  the opposite answer. ⚠️ Quoting either figure alone inverts the conclusion,
+  which is why the question had no stable answer. Different KINDS: letters are a
+  precision/placement problem (186 spurious, 73 wrong-text), hairpins a pure
+  recall one (0 spurious — we are silent, not wrong).
+- **⚠️⚠️ The obvious adjudication check was measured and is REACH-LIMITED, and
+  the sweep is the result rather than any single rate.** New probe
+  `benchmarks/omr-dynamics-coupling-2026-09/probe_letter_wedge_coupling.py`,
+  on the one committed reference encoding (Brahms 1, 21 parts, 1173
+  `<dynamics>`, 683 hairpins): "a crescendo runs quiet → loud" is **exact at
+  ±1 measure (34/34)** and **wrong 31.8% of the time at ±4**, reach 5.0% →
+  19.3%. So the coupling is real and strictly LOCAL — keep it at ±1 and
+  ABSTAIN beyond, additive evidence only, never a veto (`groups.py`: a wrong
+  `reading` manufactures disagreement out of correct engraving).
+  ⚠️ An earlier pass of this probe quoted "wrong three times in ten" from a
+  single ASYMMETRIC window; that is a point on the curve, not a property of the
+  rule, and the docstring now says so.
+- **⚠️ The interaction that IS strong runs the direction you would not guess.**
+  `hairpin_detection.BAND_TOP/BOTTOM_SPACES` (0.3–6.0 below the bottom line) is
+  the SAME band the letters occupy (+0.0..+5.6, per the band study) — but the
+  hairpin reader works in **page pixels per staff**, so attribution is right by
+  construction, while the letters go through per-measure cells and lose **24% to
+  the staff above**. **The hairpin reader's band discipline is the fix for the
+  letters' placement problem**, not the reverse. Structural, so it does not
+  decay with distance the way the direction check does.
+- Corollary for the staged pipeline: gather both observations in ONE band frame
+  and they meet at `Q.GLYPH_OWNER` — already a real adjudicator, not a stub. The
+  two readers are genuinely independent (YOLO letters, classical-CV wedges), so
+  the ancestor-closure rule admits them as corroboration rather than collapsing
+  them to `SINGLE`.
+
+- **Scoped, nothing measured new**:
+  [docs/scope-dynamics-reading-2026-09-09.md](docs/scope-dynamics-reading-2026-09-09.md).
+  Every figure is read off a committed artefact; no benchmark arm was run.
+- **The two halves separate cleanly in the symbol ledger** (20-row scan gate):
+  `hairpin` **matched_exact = 0** with 0 spurious beside it — on every row whose
+  parts join we emit no wedge at all — while `dynamic` (letters) reads 244
+  matched_exact + 73 attribute-error against 127 missing, ≈71% truth-side
+  recall. ⚠️ **They had been filed as one problem, which is why neither moved.**
+- **"They're just alphabet letters, use a text tool" is half right.** They are
+  SMuFL music-font glyphs (`dynamicForte` U+E522), not text-font letters, and
+  `direction_text.py` already runs Surya + Tesseract by default and
+  *deliberately refuses* them — its own gate is a 181-word musical lexicon, and
+  a single character has no lexicon to be gated by. The tool genuinely missing
+  is the third one: **`symbol_library/` holds 38 Bravura templates and not one
+  dynamic glyph**, while `glyphnames.json` carries all 42 including the
+  COMPOSITES (`dynamicFF`, `dynamicSforzando`) — which would dissolve the
+  letter-assembly problem rather than improve it.
+- **⚠️ The `OMR_CV_HAIRPINS` pricing is STALE BY ONE DAY, in the direction that
+  matters.** The flag is off because it costs OMR-NED, but its own docstring
+  attributes half the cost (+37 of +76 edits) to Brahms 1 p2 — a row where
+  `_stitch_slots` REFUSED, so no hairpin could pair whatever the anchor picked.
+  That arm ran **2026-09-07**; `OMR_SLOT_STITCH` went default ON **2026-09-08**
+  and Brahms p2 is *the* row it repairs (27 fragments → 14 parts, 0% → 100%
+  correspondence). **The top action is a re-run, not new code** — and it is
+  ranked first precisely because the prediction could be wrong.
+- **Staged pipeline**: `Q.DYNAMIC`, `Q.DIRECTION` and `Q.WEDGE_ANCHOR` are all
+  three declared stubs, and ⚠️ **nothing is behind them** — `Q.DYNAMIC_LETTER`
+  and `Q.WEDGE_BOX` are declared in `record.py` and emitted by no gatherer. The
+  declared composition is already right, and `Q.GLYPH_OWNER` is the one piece
+  that is NOT a stub — so gathering the letters hands the placement fix to a
+  real ownership adjudicator instead of bolting the band rule into
+  `_dedupe_cross_staff_detections` by hand.
+- Four refusals recorded so they are not re-tried: confidence as a filter (233
+  of 911 good letters lost to remove half of 35 bad), a band GATE (under-emits
+  on both arms), a cross-staff column vote (deletes the soloist-against-section
+  `p`), and OCR on single letters.
+
+---
+
 ## 2026-09-08 (late) — causes A/B/C closed, `OMR_SLOT_STITCH` default ON, and the meter's own garbage filter wired to its keeper
 
 - **`OMR_SLOT_STITCH` is DEFAULT ON** (Sean's call). Never scored worse

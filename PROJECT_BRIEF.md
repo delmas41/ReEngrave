@@ -281,6 +281,34 @@ which matters, because on real scans the names usually are not printed.
 ⚠️ Nothing in that document is a measured result; it is a survey that says what
 to measure next.
 
+## Loud markings and quiet ones (September 2026)
+
+A score tells a player how loud to be in two ways: with letters — *p*, *f*,
+*sf* — and with the long hairpin wedges that mean "get louder" or "get softer".
+The reader had been treated as failing at both. Measured, it is failing at
+exactly one: it finds the letters on real scans at roughly seven in ten, and it
+finds **none of the hairpins at all**.
+
+The natural guess is that the letters need a text-recognition tool, since they
+look like ordinary letters. They are not — they are music-font symbols that
+happen to be letter-shaped, and the text reader the project already runs on
+every page deliberately leaves them alone, because a single character gives it
+nothing to check a guess against. The letters are already being found by the
+right tool.
+
+The hairpins are the real gap, and a reader for them already exists in the
+codebase, switched off because an earlier measurement said it made the overall
+score worse. That measurement was taken one day before an unrelated fix repaired
+the single page responsible for half of its cost — so the first move is to
+measure again rather than to build anything.
+
+Part of that measuring can now be done away from the main machine. A cloud
+session has none of the large files — no trained model, no score library — so it
+cannot read a page. But one real scanned page's worth of already-read symbols,
+its ground truth, and the hand-checked notes that line the two up are all small
+enough to live in the repository, so a change to how a reading is *written out*
+can be scored there. A change to how a page is *read* still cannot.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost
