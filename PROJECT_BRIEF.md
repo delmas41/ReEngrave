@@ -380,6 +380,30 @@ The distinction worth keeping is *when* a check runs. Asking after the fact
 means a person has already spent an hour confirming twenty-one staves by eye;
 asking at the point of writing costs them nothing and names the missing piece.
 
+There was a third thing, found a day later. The repair above fixed the writer
+by giving it a new list of the two facts it was now allowed to record — and
+that list was already short on the day it was written. One page in the set
+records the clef and key signature printed on each of its staves, read by hand
+off the scan precisely because the printed page and the reference file
+disagree; those are not on the list, so the writer still could not re-read a
+sixth of its own file. Another fact — that one line in the list is printed as
+two staves — was still being dropped before the person ever saw it, so the new
+check would have objected to that page with no way for them to answer.
+
+So the list is no longer written down. It is now read out of the code that
+consumes it, which cannot fall behind that code by definition, and the facts
+nothing consumes yet are recorded separately with a note saying why they are
+kept. The check that runs before writing is unchanged and is still the stronger
+of the two: a list can only carry a fact that is there, while asking whether
+the staves add up catches one that is missing.
+
+One more thing worth carrying, because it is the same mistake in a smaller
+place. A test written for the earlier repair checked that a particular word
+still appeared somewhere in a file. When the code stopped using that word for
+this purpose, two unrelated uses of it elsewhere kept the test passing — so it
+could no longer fail. It was rewritten to check what the code actually
+produces, not what it says.
+
 ---
 
 ## Taking stock of what the reader writes down

@@ -569,10 +569,15 @@ def create_app(cache: Path, out: Path) -> FastAPI:
             return JSONResponse(status_code=409, content={
                 "error": f"finish {twin_id} first — there is nothing to adopt"})
         st = store.row(row_id, seed)
+        # ⚠️ THE THIRD INLINE REBUILD, AND IT HAD THE SAME DROP. Same plate
+        # means the same map INCLUDING its `lines` / `printed_staves` facts —
+        # adopting only `{name, parts}` hands the twin a lineup that differs
+        # from the one that was confirmed, and `arity_problems` would then
+        # refuse it with the human unable to see why.
         st["staves"] = [
-            {"name": s["name"], "parts": list(s["parts"]),
-             "proposed": s.get("proposed"), "verdict": s["verdict"],
-             "adopted_from": twin_id}
+            dict(_entry_for_works_json(s),
+                 proposed=s.get("proposed"), verdict=s["verdict"],
+                 adopted_from=twin_id)
             for s in twin["staves"]]
         st["adopted_from"] = twin_id
         st["adopted_note"] = (
@@ -876,10 +881,16 @@ function draw(){
     const d=document.createElement('div');
     d.className='staffrow'+(k===CUR?' cur':'');
     const prop=s.proposed?('proposed '+(s.proposed.parts||[]).join(', ')):'added by hand';
+    // ⚠️ THE ARITY FIELDS WERE CARRIED AND STILL NOT SHOWN. `lines` was read
+    // here only on `unrepresentable_printed_staves` rows, so a lineup could be
+    // confirmed staff by staff while the claim about the ENGRAVING that
+    // decides its arity gate was never put in front of the human.
+    const shape=(s.lines===1?' · 1-line staff':'')+
+      (s.printed_staves>1?(' · '+s.printed_staves+' printed staves'):'');
     d.innerHTML='<div class="dot '+s.verdict+'"></div>'+
       '<div class="k">'+k+'</div>'+
       '<div class="nm">'+(s.name||'<i style="color:#e2624c">unnamed</i>')+
-        '<div class="note">'+prop+'</div></div>'+
+        '<div class="note">'+prop+shape+'</div></div>'+
       '<div class="pp v-'+s.verdict+'">'+(s.parts.length?s.parts.join(' '):'—')+
         '<br><span style="font-size:11px">'+s.verdict+'</span></div>';
     d.onclick=()=>{CUR=k;EDITING=null;draw();};

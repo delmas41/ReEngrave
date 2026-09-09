@@ -242,130 +242,109 @@ benchmark era** and may not be differenced against 0.8444 in either direction
 (`page_normalise` rule 5). My own test keystrokes were deleted so Sean starts
 from an empty slate.
 
-## 9. The shape of a `staves` entry was typed out FIVE TIMES (2026-09-09)
 
-Added after the fact, because the workflow above had a fault that no test in
-it could see.
+## 9. The allow-list was answered with an allow-list (2026-09-09)
 
-### What was wrong
+⚠️ **§8 is the first pass over this fault and this is the second.** Read §8
+first: `e9c82c82` fixed the shape refusal, validated the two fields' values,
+wrote the projection once, and added `arity_problems`. **That last is the
+strongest thing in this area and is untouched here** — an allow-list can only
+ever carry a field that is PRESENT, while asking `run_ledger.expand_lineup` at
+WRITE time catches one that is ABSENT, which is the failure that actually cost
+a page. Nothing below weakens it.
 
-`merge_additions.shape_problems` computed `set(s) - {"name", "parts"}` and
-refused with *"works.json entries are exactly name+parts"*. **Six of the
-twenty committed rows already violated that premise**, over three legitimate
-keys:
+What it did not do is stop the allow-list being hand-written. **On the day it
+landed, the list was already incomplete**, measured against origin/main's own
+tree rather than inferred:
 
-| key | rows | read by |
-|---|---|---|
-| `lines: 1` | mahler p2/p3/p4/p5 | `run_ledger.expand_lineup` — a one-line percussion rule has no five-line part, so the arity gate must not count it |
-| `printed_staves: N` | bach-brandenburg3 p1 | `run_ledger.expand_lineup` — `Cembalo (grand staff, 2 printed staves)` |
-| `clef` / `key` | beethoven-sym5-984073-p1 | nothing yet — but they are `scan_eval`'s own rule 2 (*THE PAGE IS THE TRUTH, NOT THE FILE*), which says in as many words that this is why the file carries hand-read clef and key columns; what reads those twelve readings today is a DUPLICATE of them, a Python literal in `omr-first-run-2026-08/eval_first_run.py` |
-
-So the only tool permitted to write `works.json` could not re-merge the file
-it had written.
-
-### ⚠️ AND THE SECOND HALF WAS SILENT, WHICH IS WHY IT COST TIME
-
-A refusal is visible. A **projection** is not, and there were five of them,
-each a hand-typed `{"name": ..., "parts": ...}`, each disagreeing with the
-others:
-
-| site | kept |
+| left open by `e9c82c82` | evidence |
 |---|---|
-| `build_cache.research_proposal` | `lines` only — `printed_staves` never reached the UI at all |
-| `server.Store.row` (the seed) | neither |
-| `server.api_adopt` | neither |
-| `server.api_done` → `staves_for_works_json` | neither |
-| `merge_additions.check_row` (fallback branch) | neither |
-
-`mahler-sym5-mvt1-local-p2` therefore landed in `works.json` with a correct
-21-entry lineup and **none of its four `lines: 1` flags** — moving its part
-join from cause D ("no lineup at all") to cause B ("the lineup names one-line
-percussion staves") rather than closing it, and leaving two tests in
-`test_works_json_staff_lineup.py` failing until the flags were typed back in by
-hand (`981cbc41`).
-
-⚠️ **The flag was also invisible in the UI while it was being confirmed** —
-`server.py` read `lines` on `unrepresentable_printed_staves` rows and nowhere
-else — so a human could confirm a lineup staff by staff and still be confirming
-a claim about the engraving they were never shown. The staff row now carries
-`· 1-line staff` / `· N printed staves`.
+| `beethoven-sym5-mvt1-984073-p1` is **still refused** | `clef`/`key` are not `ARITY_FIELDS`; the only tool allowed to write `works.json` still cannot re-merge a sixth of the file it wrote |
+| Bach's grand staff **never reaches the UI** | `research_proposal` still named `lines` and dropped `printed_staves` — and `arity_problems` would now refuse that row with no way for the human to satisfy it |
+| `server.api_adopt` still rebuilds `{name, parts}` | a 575951 twin adopting its finished map loses the fields the twin was just confirmed to carry |
+| the fields are **invisible while being confirmed** | `lines` was read in the UI only on `unrepresentable_printed_staves` rows |
 
 ### The repair
 
-One definition, in `benchmarks/omr-scan-e2e-2026-09/staves_schema.py`, beside
-`works.json` and `page_normalise.py`. It is the `export_coverage` /
-`class_aliases` shape:
+`benchmarks/omr-scan-e2e-2026-09/staves_schema.py`, beside `works.json` and
+`page_normalise.py`. `merge_additions` keeps every name its tests assert on —
+`ARITY_FIELDS`, `shape_problems`, `_entry_for_works_json`, `arity_problems` —
+and the first three are now thin:
 
-* `REQUIRED` — `name` + `parts`, the structural invariants (`parts` unique,
-  **never sorted**);
-* `consumed_keys()` — **DERIVED BY AST** from `run_ledger.expand_lineup`, the
-  function that turns a lineup entry into the slots the arity gate counts.
-  Nobody types these; teaching that function a new key adds it here;
-* `RECORDED_ONLY` — hand-read facts committed to the file that no consumer
-  reads *yet*, each with its reason (`clef`, `key`);
-* `unaccounted()` — every key on a committed row in none of the three, so a new
-  fact is a failing test rather than a silent drop;
-* `project(entry)` → `(entry, dropped)` — the one projection, called by all
-  five sites. It still drops the UI's bookkeeping (`proposed`, `verdict`,
-  `adopted_from`), which is what a projection is for; what it no longer does is
-  drop the remainder without saying so. `merge_additions` prints
+* **`arity_fields()` is DERIVED BY AST** from `run_ledger.expand_lineup`, the
+  same function `arity_problems` already refuses to second-guess, read one
+  level up. `ARITY_FIELDS = staves_schema.arity_fields()`.
+* **`RECORDED_ONLY`** — hand-read facts no consumer reads *yet*, with reasons.
+  `clef`/`key` are `scan_eval`'s own rule 2 (*THE PAGE IS THE TRUTH, NOT THE
+  FILE*), which says in as many words that this is why the file carries them;
+  what reads those twelve readings today is a **duplicate**, a literal in
+  `omr-first-run-2026-08/eval_first_run.py`.
+* **`VALIDATORS`** — §8's *"allowed is not unchecked"* kept verbatim and
+  extended to every optional key, plus `unvalidated()`, which fails on an
+  allowed key with no validator. **A derived list needs that and a hand list
+  did not**: a hand list and its validators are edited together; a derived one
+  can grow a field on its own.
+* **`unaccounted()`** — a new hand-read fact on a committed row is a failing
+  test rather than a silent drop.
+* **`project()` → `(entry, dropped)`**, still omitting the defaults `lines: 5`
+  / `printed_staves: 1`. `merge_additions` prints
   `not carried into works.json: proposed x21/21, verdict x21/21`, so a
   misspelled `linnes` on one entry of twenty-one stands out instead of being
   indistinguishable from no flag at all.
 
-⚠️ **It deliberately does NOT derive the allow-list from `works.json` itself.**
-That would make "the committed rows conform" prove nothing, and it would bless
-a typo the moment one was committed.
+⚠️ It deliberately does **not** derive the allow-list from `works.json`. That
+would make "the committed rows conform" prove nothing and bless the first typo
+committed. And `arity_fields()` **raises** rather than returning empty: an
+empty derivation is not a smaller schema, it is a silent one — the allow-list
+narrows back to `name`+`parts`, `project()` drops `lines: 1` again and
+`problems()` refuses the committed file, both original faults at once.
 
-⚠️ **`staves_schema` is loaded BY PATH from this checkout**, in `build_cache`,
-and taken from there by `server` and `merge_additions`. `SCAN` points at the
-MAIN checkout on purpose — `works.json` is DATA and there is one copy — but a
-worktree importing MAIN's *code* would check its own edits against a shape it
-cannot see.
+⚠️ The schema is loaded **by path from this checkout**, in `build_cache`, and
+taken from there by `server` and `merge_additions`. `SCAN` points at the MAIN
+checkout on purpose (`works.json` is DATA, one copy) but a worktree importing
+MAIN's *code* would check its own edits against a shape it cannot see.
 
-### Pinned, each run RED first
+### ⚠️ A TEST OF §8's WAS MADE VACUOUS BY THIS CHANGE, AND IS FIXED NOT DELETED
 
-`tools/omr/tests/test_staves_schema.py`, 21 tests. The five RED demonstrations
-that matter, because three of them are vacuity traps:
+`test_build_cache_still_computes_lines` asserted the string `"lines"` appeared
+anywhere in `build_cache.py`. Once `research_proposal` stopped naming the field
+literally and started carrying every schema key, that assertion passed on two
+unrelated literals in `_one_line_bands` — **crop geometry, nothing to do with
+the map** — so it could no longer go red. Rewritten to ask the function's
+OUTPUT: four `lines: 1` rules in the Mahler proposal, no `lines: 5`, and the
+Bach grand staff's `printed_staves: 2`, which the old test never covered and
+which is the field that was being dropped.
 
-1. **the fallback projection** — `test_the_fallback_branch_carries_the_facts`
-   fails on `HEAD`'s `merge_additions`. ⚠️ The `staves_for_works_json` twin
-   passes on `HEAD` and is kept anyway *as the both-branches pin*: that branch
-   takes the list verbatim and never had the drop, so a test written only
-   against it would have proved nothing;
-2. **the allow-list** — restoring `optional_keys()` to `()` fails
-   `test_every_mapped_row_passes_the_shape_check` and
-   `test_nothing_on_the_committed_file_is_unaccounted_for`. The list is
-   declared in code, so this is a real check and not the file agreeing with
-   itself;
-3. **the derivation** — replacing `consumed_keys()`'s AST call with the
-   *correct* `frozenset({"lines", "printed_staves"})` literal left the whole
-   file green until `test_consumed_keys_FOLLOWS_the_consumer_file` existed.
-   That test points `CONSUMER` at a synthetic source reading different keys; a
-   constant does not move. A hand list wearing a derivation's decorator is the
-   original fault one level up;
-4. **the chain** — `test_the_whole_chain_carries_a_lines_flag_end_to_end`
-   drives the real `Store.row` (the seed has no other seam) through
-   `staves_for_works_json` into `check_row`, and raises `KeyError: 'lines'` on
-   `HEAD`'s server;
-5. **the identity** — `project()` reproduces all twenty rows' entries exactly,
-   keys AND order, so `--write` churns nothing; dropping `RECORDED_ONLY`
-   fails it along with the two conformance tests.
+### Pinned — `tools/omr/tests/test_staves_schema.py`, 24 tests, each run RED
 
-⚠️ **`consumed_keys()` RAISES rather than returning an empty set** when its
-consumer is missing or stops reading an entry key. An empty derivation is not a
-smaller schema, it is a silent one — the allow-list narrows to `name`+`parts`,
-`project()` drops `lines: 1` again and `problems()` refuses the committed file,
-i.e. both original faults return at once wearing the old behaviour's face.
+Five fail against `origin/main`'s writer/server/build_cache; three of the rest
+are vacuity traps that needed their own demonstration:
 
-Everything the old writer refused for a real reason still refuses: an empty
-`parts` (which `page_normalise` raises `NoHandMap` on, and which
-`candidate_maps.UNREPRESENTABLE` exists to display instead), a part named
-twice, an unnamed staff, and an undeclared key inside a hand-authored
-`staves_for_works_json`. `parts` order is still never canonicalised.
+1. **`test_THE_WRITER_ACCEPTS_EVERY_ROW_IT_HAS_ALREADY_WRITTEN`** — the
+   decisive one, and not synthetic: every committed `staves` map through the
+   writer's own front door. Red on main (the Beethoven row).
+2. **`test_the_writer_derives_its_arity_fields`** — `ARITY_FIELDS` equals the
+   derivation, and the literal tuple is gone.
+3. **the projections** — `research_proposal` carries both fields to the
+   proposal; `api_adopt` no longer rebuilds `{name, parts}`; the drop is
+   reported.
+4. **the derivation is not a constant** — replacing the AST call with the
+   *correct* `frozenset({"lines","printed_staves"})` literal left the whole
+   file green until `test_arity_fields_FOLLOWS_the_consumer_file` existed. A
+   hand list wearing a derivation's decorator is the original fault one level
+   up.
+5. **the allow-list is not read from the file** — narrowing `optional_keys()`
+   to the arity fields fails the two conformance tests and the identity;
+   `project()` is the identity on all twenty rows, keys and order, so `--write`
+   churns nothing.
 
-**Not verified:** nothing was merged into the real `works.json` — the dry run
-refuses all ten additions rows for pre-existing reasons (`in_progress`, or the
-row already carries a map). No pooled figure moved and none was measured; this
-is a writer fix, and the four `lines` flags it would have carried are already
-in the file by hand.
+Everything refused for a real reason still refuses, §8's value checks included:
+`lines` outside {1,5}, a non-positive `printed_staves`, both at once, an empty
+`parts` (`page_normalise` raises `NoHandMap`; `candidate_maps.UNREPRESENTABLE`
+is the display path), a part named twice, an unnamed staff, an unknown key.
+`parts` order is still never canonicalised.
+
+**Not verified:** nothing was merged into the real `works.json`. The dry run
+still refuses all ten additions rows for their pre-existing reasons, and
+`arity_problems` still reports on the five §8 named. No pooled figure moved and
+none was measured.

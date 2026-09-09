@@ -16,6 +16,87 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-09 — works.json's `staves` shape: derived, not a second hand list
+
+The upstream half of the mahler-p2 defect, and ⚠️ **a sibling session shipped
+most of it first** (`e9c82c82`, on main). Its writer and server are the base
+here, not something merged over — and its `arity_problems` is the strongest
+thing in this area and is untouched: an allow-list can only carry a field that
+is PRESENT, while asking `run_ledger.expand_lineup` at WRITE time catches one
+that is ABSENT, which is the failure that actually cost a page.
+
+⚠️⚠️ **WHAT IT DID WAS ANSWER A HAND LIST WITH A HAND LIST, AND
+`ARITY_FIELDS = ("lines", "printed_staves")` WAS ALREADY INCOMPLETE ON THE DAY
+IT LANDED.** Measured against origin/main's own tree, not inferred:
+
+- **`beethoven-sym5-mvt1-984073-p1` was still refused** — it carries `clef` and
+  `key` on all twelve staves, under `scan_eval`'s own rule 2 (*THE PAGE IS THE
+  TRUTH, NOT THE FILE*, which says in as many words that this is why the file
+  holds those columns). So the only tool allowed to write `works.json` still
+  could not re-merge a sixth of the file it had written.
+- **Bach's grand staff never reached the UI at all** — `research_proposal`
+  named `lines` and dropped `printed_staves`. With `arity_problems` now live,
+  that row would be REFUSED with no way for a human to satisfy it.
+- **`api_adopt` still rebuilt `{name, parts}`** — a 575951 twin adopting its
+  finished map loses the fields the twin was just confirmed to carry.
+- **Neither field was shown to the human confirming it** — `lines` was read in
+  the UI only on `unrepresentable_printed_staves` rows.
+
+**The repair** (`benchmarks/omr-scan-e2e-2026-09/staves_schema.py`, beside
+`works.json` and `page_normalise.py`). `merge_additions` keeps every name its
+tests assert on and the first three are now thin:
+
+- `arity_fields()` **DERIVED BY AST** from `run_ledger.expand_lineup` — the
+  same function `arity_problems` already refuses to second-guess, read one
+  level up. `ARITY_FIELDS = staves_schema.arity_fields()`.
+- `RECORDED_ONLY` — facts no consumer reads YET, with reasons. What reads
+  those twelve clef/key readings today is a **duplicate** of them, a literal in
+  `omr-first-run-2026-08/eval_first_run.py`.
+- `VALIDATORS` + `unvalidated()` — *"allowed is not unchecked"* kept and
+  extended to every optional key. ⚠️ **A derived list needs that and a hand
+  list did not**: a hand list and its validators are edited together; a derived
+  one can grow a field on its own.
+- `unaccounted()`, and `project() -> (entry, dropped)` with the drop PRINTED
+  (`proposed x21/21`), so a misspelled `linnes` on one entry of twenty-one is
+  visible rather than equivalent to no flag.
+
+⚠️ It deliberately does NOT derive the allow-list from `works.json` — that
+would make "the committed rows conform" prove nothing and bless the first typo
+committed. ⚠️ And `arity_fields()` RAISES rather than returning empty: an empty
+derivation is not a smaller schema, it is a silent one — the allow-list narrows
+to `name`+`parts`, `project()` drops `lines: 1` again and `problems()` refuses
+the committed file, both original faults at once wearing the old behaviour's
+face.
+
+⚠️⚠️ **A TEST OF THE FIRST FIX WENT VACUOUS UNDER THIS CHANGE AND WAS
+REPAIRED, NOT DELETED.** `test_build_cache_still_computes_lines` asserted the
+string `"lines"` appeared anywhere in `build_cache.py`; once
+`research_proposal` stopped naming the field literally, two unrelated literals
+in `_one_line_bands` — **crop geometry, nothing to do with the map** — kept it
+green. It now asks the function's OUTPUT, and covers `printed_staves`, the
+field that was actually being dropped.
+
+**Pinned:** `tools/omr/tests/test_staves_schema.py`, 24 tests. **Five go red
+against origin/main's tree**, the decisive one being
+`test_THE_WRITER_ACCEPTS_EVERY_ROW_IT_HAS_ALREADY_WRITTEN` — not synthetic,
+every committed map through the writer's own front door. ⚠️ Three vacuity traps
+needed their own demonstrations: replacing the AST call with the CORRECT
+`frozenset({"lines","printed_staves"})` literal left the whole file green until
+`test_arity_fields_FOLLOWS_the_consumer_file` existed; the conformance tests
+would prove nothing if the allow-list were read back out of `works.json`; and
+the `staves_for_works_json` branch passes on the pre-fix tree, so a test written
+only against it would have proved nothing about the fallback that had the drop.
+
+**Tests:** 118 passed across every works.json / staves-map consumer; two
+independent full `tools/omr` runs earlier on this branch, 3293 and 3294 passed,
+1 failed — `test_direction_text::test_the_env_var_restricts_the_rungs`, the
+documented worktree trap (no `.venv-surya`, so the rung list is empty).
+
+**Not verified:** nothing merged into the real `works.json`; no pooled figure
+moved and none was measured.
+
+---
+
 ## 2026-09-09 — four parallel sessions merged, and the merge is where two findings changed
 
 Four sessions that had been running concurrently were landed onto one branch.
@@ -197,6 +278,7 @@ PROJECT_BRIEF.md, version_memory.md.
 ---
 
 ---
+
 
 ## 2026-09-09 (night) — the meter carry is WEIGHED, not gated; a change the glyph opens
 
