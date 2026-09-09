@@ -418,6 +418,29 @@ def adjudicate_tuplet(ev: Evidence) -> Ruling:
 #: and the single WRONG reading by exactly 0.500.
 METER_AGREEMENT_FLOOR = 0.70
 
+#: ...and the share of the SYSTEM'S OWN STAVES that must have read it at all.
+#: (A-METER-2)
+#:
+#: ⚠️⚠️ THE OTHER HALF OF THE LEGACY RULE, AND DROPPING IT SHIPPED A WRONG
+#: METER AT FULL AGREEMENT. `METER_AGREEMENT_FLOOR` divides by the staves that
+#: SPOKE, so three spurious readings that happen to agree score 3/3 = 1.0 --
+#: `rhythm._dominant_detected_meter` says exactly this in its own docstring:
+#: *"two spurious readings that happen to agree are unanimous among
+#: themselves"*, and requires `_PROPAGATE_MIN_STAFF_FRACTION = 0.5` of the
+#: page's staves as well.
+#:
+#: Measured on Beethoven 5 / Litolff p.2, whose reference is 2/4 on all 18
+#: parts and which PRINTS NO TIME SIGNATURE AT ALL (it opens at bar 17):
+#:
+#:   * system 1 -- **3 staves of 11** matched a common-time `C`, agreed 1.0,
+#:     and the system shipped **4/4**;
+#:   * page 1 of the same run -- **12 staves of 12** read the true `2/4`.
+#:
+#: 3/11 = 0.27 against 12/12 = 1.0, so the floor separates them with room to
+#: spare. A meter is printed on EVERY staff of a system; a reading on a
+#: handful of them is a misread however much those few agree.
+METER_COVERAGE_FLOOR = 0.5
+
 
 @decision(
     quantity=Q.METER,
@@ -429,8 +452,10 @@ METER_AGREEMENT_FLOOR = 0.70
     implicates=(Q.METER, Q.DURATION, Q.MEASURE_PARTITION),
     composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION),
     scope=Kind.SYSTEM,
-    wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION, Q.DOSSIER_FACT),
-    reasons=("voted", "no_agreement", "no_evidence"),
+    wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION, Q.DOSSIER_FACT,
+           Q.SYSTEM_STAFF_COUNT),
+    reasons=("voted", "no_agreement", "no_evidence",
+             "too_few_staves_read_it"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_meter(ev: Evidence) -> Ruling:
@@ -459,6 +484,23 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
         tally_.setdefault(raw, []).append(row)
 
     best_raw, witnesses = max(tally_.items(), key=lambda kv: len(kv[1]))
+
+    # ⚠️ COVERAGE FIRST, AND IT IS A DIFFERENT QUESTION FROM AGREEMENT.
+    # "Do the staves that spoke agree?" and "did enough of them speak?" are
+    # two facts, and the second is the one a handful of spurious readings
+    # passes trivially -- they are unanimous among themselves. Reported apart,
+    # with its own reason, so a page that shipped a wrong meter and a page
+    # whose staves disagreed are never the same row.
+    n_staves = ev.verdict(Q.SYSTEM_STAFF_COUNT)
+    total = n_staves.value if n_staves is not None and n_staves.value else None
+    coverage = (len(witnesses) / float(total)) if total else None
+    if coverage is not None and coverage < METER_COVERAGE_FLOOR:
+        return Ruling.abstain("too_few_staves_read_it",
+                              coverage=round(coverage, 3),
+                              n_staves_spoke=len(rows),
+                              n_staves_on_system=total,
+                              would_have_been=best_raw)
+
     share = len(witnesses) / len(rows)
     if share < METER_AGREEMENT_FLOOR:
         # ⚠️ Recorded, not defaulted. A system whose staves disagree about the

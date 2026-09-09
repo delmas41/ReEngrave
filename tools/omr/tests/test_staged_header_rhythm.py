@@ -151,3 +151,86 @@ class TestTheMeterIsASystemFact(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestAMeterIsPrintedOnEVERYStaffOfItsSystem(unittest.TestCase):
+    """⚠️ THE OTHER HALF OF THE LEGACY RULE, AND DROPPING IT SHIPPED A WRONG
+    METER AT FULL AGREEMENT.
+
+    `METER_AGREEMENT_FLOOR` divides by the staves that SPOKE, so three
+    spurious readings that happen to agree score 3/3 = 1.0.
+    `rhythm._dominant_detected_meter` says exactly this in its own docstring —
+    *"two spurious readings that happen to agree are unanimous among
+    themselves"* — and requires half the page's staves as well.
+
+    Measured on Beethoven 5 / Litolff p.2, whose reference is 2/4 on all 18
+    parts and which **prints no time signature at all** (it opens at bar 17):
+    system 1 had **3 staves of 11** match a common-time `C`, agreed 1.0, and
+    shipped 4/4; page 1 of the same run had **12 of 12** read the true 2/4.
+    """
+
+    def _system(self, n_staves, spoke, raw=(4, 4), rawname="C"):
+        log = Log()
+        sysj = R.system(0, 0)
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=sysj, quantity=Q.SYSTEM_STAFF_COUNT,
+            outcome=Outcome.DECIDED, value=n_staves, decider="t",
+            reason="counted"))
+        for i in range(spoke):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, raw,
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw=rawname)
+        log.freeze()
+        adjudicate._ensure_decisions()
+        return adjudicate.adjudicate_one(
+            log, adjudicate.REGISTRY[Q.METER], sysj)
+
+    def test_three_staves_of_eleven_do_not_carry_a_system(self):
+        v = self._system(11, 3)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "too_few_staves_read_it")
+        self.assertEqual(v.detail["n_staves_on_system"], 11)
+        self.assertEqual(v.detail["would_have_been"], "C")
+
+    def test_the_true_reading_on_every_staff_is_untouched(self):
+        v = self._system(12, 12, raw=(2, 4), rawname="2/4")
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["numerator"], 2)
+        self.assertEqual(v.value["denominator"], 4)
+
+    def test_coverage_and_agreement_are_reported_APART(self):
+        """⚠️ "Do the staves that spoke agree?" and "did enough of them
+        speak?" are two facts, and a handful of spurious readings passes the
+        first trivially. A page that shipped a wrong meter and a page whose
+        staves disagreed must never be the same row."""
+        few = self._system(11, 3)
+        self.assertEqual(few.reason, "too_few_staves_read_it")
+
+        log = Log()
+        sysj = R.system(0, 0)
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=sysj, quantity=Q.SYSTEM_STAFF_COUNT,
+            outcome=Outcome.DECIDED, value=4, decider="t", reason="counted"))
+        for i, (raw, name) in enumerate([((4, 4), "C"), ((4, 4), "C"),
+                                         ((3, 4), "3/4"), ((2, 4), "2/4")]):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, raw,
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw=name)
+        log.freeze()
+        disagree = adjudicate.adjudicate_one(
+            log, adjudicate.REGISTRY[Q.METER], sysj)
+        self.assertEqual(disagree.reason, "no_agreement")
+
+    def test_with_no_staff_count_the_floor_declines_to_judge(self):
+        """A system whose staff count never decided cannot be asked what share
+        of it spoke, and inventing a denominator would be worse than the gap."""
+        log = Log()
+        sysj = R.system(0, 0)
+        for i in range(3):
+            log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, (4, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw="C")
+        log.freeze()
+        adjudicate._ensure_decisions()
+        v = adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.METER], sysj)
+        self.assertIs(v.outcome, Outcome.DECIDED)
