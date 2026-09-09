@@ -1,0 +1,17 @@
+density tertiles (events per staff space, summed over the system's staves): 4.71, 5.82
+
+REAL   columns  1483  corroborated  739 (0.498)  alone   744  median residual 0.0734
+null 1 columns  2416  corroborated  709 (0.293)  alone  1707  median residual 0.0708
+null 2 columns  2419  corroborated  712 (0.294)  alone  1707  median residual 0.067
+null 3 columns  2373  corroborated  720 (0.303)  alone  1653  median residual 0.0734
+null 4 columns  2420  corroborated  682 (0.282)  alone  1738  median residual 0.071
+null 5 columns  2418  corroborated  693 (0.287)  alone  1725  median residual 0.0696
+
+columns needed:   real 1483  null 2409  (1.62x)
+corroboration:    real 0.498  null 0.292  (1.71x)
+standing alone:   real 744  null 1706  (2.29x)
+
+by density (corroboration rate, real vs null mean):
+  sparse  bars  16  real 0.437  null 0.212  (2.06x)
+  mid     bars  18  real 0.510  null 0.251  (2.03x)
+  dense   bars  17  real 0.530  null 0.348  (1.52x)

@@ -487,8 +487,27 @@ only that something is. The coarse version of this check (do the staves agree
 how many bars are on the line?) already exists and has never once found a
 disagreement — the disagreements are inside the bar, where nothing looks.
 
+**That one is now built and measured (2026-09-09).** The blocker turned out
+not to be the idea but the *ruler*: every glyph's position was recorded inside
+its own bar, on a crop rescaled so every staff looks the same size — so two
+staves' positions were not comparable numbers at all. Recording the position on
+the *page* as well made the question askable. Asked of a real Brahms page, the
+staves agree about where the moments are far more than their own rhythm alone
+explains: the printed page needs 1,483 distinct instants to describe the same
+music that a shuffled version of itself needs 2,409 for, and half the events
+that would stand alone in the shuffle are corroborated in the print.
+
+⚠️ With two honest limits, both recorded rather than smoothed over. On a
+crowded bar much of that agreement is available by chance, so every reading
+carries how crowded its bar was — a consumer that ignores it would rank a
+weak bar above a strong one for having a bigger number. And nothing acts on
+the result yet: it is written down, not used. The first sensible use is the
+one the reasoning doc named — a staff playing at a moment all thirteen of its
+neighbours skip is the staff worth a second look.
+
 Full reasoning, including what is deliberately not proposed:
-`docs/exploration-what-is-on-the-page-2026-09-09.md`.
+`docs/exploration-what-is-on-the-page-2026-09-09.md`; the measurement, the
+null control and a bug it caught: `benchmarks/omr-onset-columns-2026-09/FINDINGS.md`.
 
 ## Running it
 
