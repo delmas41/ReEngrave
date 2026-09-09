@@ -621,6 +621,92 @@ def gather_rhythm_marks(log: Log, cells: Sequence[Any],
                             is_bracket=name.lower().endswith("bracket"))
 
 
+#: Which detected class belongs to which notation family.
+#:
+#: ⚠️ ROUTED BY CLASS, NOT BY THE DETECTOR'S `category`, and the hairpins are
+#: why. `dynamicDiminuendoHairpin` carries category `dynamic` and is a WEDGE,
+#: not a letter -- so a category-keyed router would spell it into a dynamic
+#: word. Articulations are the mirror: all ten `artic*` classes carry category
+#: `ornament`, which they share with `ornamentTrill`, `fermataAbove` and
+#: `arpeggiato`, so the category cannot separate them either.
+_WEDGE_CLASSES = ("dynamicCrescendoHairpin", "dynamicDiminuendoHairpin")
+_ARC_CLASSES = ("tie", "slur")
+_ARTIC_PREFIX = "artic"
+_DYNAMIC_PREFIX = "dynamic"
+_REST_PREFIX = "rest"
+
+
+def _artic_side(name: str) -> Optional[str]:
+    """The side an articulation's own class NAMES, or None where it does not.
+
+    ⚠️ Not every class states one. `class_aliases.COARSER_THAN_CANONICAL`
+    records `articulationAccent` / `Staccato` / `Tenuto` as coarser than the
+    canonical spelling precisely because they carry no side, and the legacy
+    attach pass requires the geometry to AGREE with the side when there is
+    one. So this returns None rather than guessing, and the adjudicator gets a
+    row that says "no side declared" instead of a wrong one.
+    """
+    if name.endswith("Above"):
+        return "above"
+    if name.endswith("Below"):
+        return "below"
+    return None
+
+
+def gather_glyph_families(log: Log, detections: Dict[str, List[Any]]) -> None:
+    """Rests, arcs, wedges, dynamic letters and articulation marks.
+
+    ⚠️ EVERY ONE OF THESE WAS DETECTED AND READ BY NOTHING until 2026-09-09.
+    Measured over four real conductor's pages, the ink that reached
+    `GLYPH_BOX` and no typed row: **838 rests, 755 ties, 291 slurs, 542
+    dynamic letters, 40 articulation marks, 1 hairpin** -- 2,467 glyphs. Four
+    of the five quantities existed in `Q` and in a stub's `wants` and were
+    OBSERVED BY NOTHING, so writing those adjudicators would have produced
+    nothing; the fifth, `Q.REST`, did not exist at all.
+
+    ⚠️ THIS FUNCTION DECIDES NOTHING, and the split is the point. A rest's
+    DURATION, an arc's OWNER and KIND, a hairpin's ANCHORS, the spelling of
+    `f`+`f` into `ff` -- each is an interpretation with its own evidence and
+    its own right to abstain. What belongs here is only "this ink is of this
+    kind, and here is where it is".
+
+    ⚠️ The extents are recorded because the consumers need them and the box
+    alone is not enough: an arc is PAIRED across a barline by its ends, a
+    hairpin is anchored by its edges (its ink does not overlap the notes it
+    binds at all -- 0 of 4 on Mahler), and `f`+`f` becomes `ff` by x-adjacency.
+    """
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        frame = frame_cell(sub.cell)
+        for gi, d in enumerate(dets):
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            name = d.smufl_name
+            box = dict(
+                x0=d.x_canonical, x1=d.x_canonical + d.width_canonical,
+                y0=d.y_canonical, y1=d.y_canonical + d.height_canonical,
+                x_center=d.x_center, y_center=d.y_center,
+            )
+            common = dict(reader=READERS.DETECTOR, frame=frame,
+                          score=float(d.confidence))
+
+            if name in _WEDGE_CLASSES:
+                # ⚠️ BEFORE the dynamic-letter branch: a hairpin's class starts
+                # with `dynamic` too, and reading it as a letter would spell a
+                # crescendo into a dynamic word.
+                log.observe(g, Q.WEDGE_BOX, name, **common, **box,
+                            kind=("crescendo" if "Crescendo" in name
+                                  else "diminuendo"))
+            elif name in _ARC_CLASSES:
+                log.observe(g, Q.ARC_BOX, name, **common, **box)
+            elif name.startswith(_ARTIC_PREFIX):
+                log.observe(g, Q.ARTICULATION_MARK, name, **common, **box,
+                            side=_artic_side(name))
+            elif name.startswith(_DYNAMIC_PREFIX):
+                log.observe(g, Q.DYNAMIC_LETTER, name, **common, **box)
+            elif name.lower().startswith(_REST_PREFIX):
+                log.observe(g, Q.REST, name, **common, **box)
+
+
 def gather_cv_lines(log: Log, cells: Sequence[Any],
                     local: Dict[int, Tuple[int, int]]) -> None:
     """Stems and beams from the classical-CV rung, on the ERASED image.
@@ -1340,6 +1426,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_notehead_positions(log, cells, local, detections)
         gather_ownership_evidence(log, pws, cells, local, detections)
         gather_rhythm_marks(log, cells, local, detections)
+        gather_glyph_families(log, detections)
         gather_cv_lines(log, cells, local)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)

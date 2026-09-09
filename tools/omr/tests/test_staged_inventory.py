@@ -37,12 +37,26 @@ class TestTheChecksHaveTeeth(unittest.TestCase):
     proves the corresponding invariant is actually evaluated."""
 
     def test_an_unsatisfiable_want_is_reported(self):
-        """Five of the six stubs want a quantity NOTHING gathers. If this ever
-        reads zero, either the gather sites landed (good -- delete the
-        expectation) or the check stopped looking (bad)."""
-        starved = [p for p in inventory.build()["problems"]
-                   if "never gathered" in p]
-        self.assertTrue(starved)
+        """⚠️ THIS TEST'S OWN INSTRUCTION, FOLLOWED. It used to assert that
+        five stubs want a quantity NOTHING gathers, and said: *"if this ever
+        reads zero, either the gather sites landed (good — delete the
+        expectation) or the check stopped looking (bad)."* On 2026-09-09
+        `gather_glyph_families` landed and it reads zero for the good reason —
+        so the expectation is gone and what remains is the DISTINCTION: the
+        check must still fire on a fabricated starved decision."""
+        self.assertEqual(
+            [p for p in inventory.build()["problems"]
+             if "never gathered" in p], [],
+            "the gather sites landed; a hit here is a NEW starved stub")
+
+        fake = {"quantity": "x", "registered": True, "stub": True,
+                "domain": [], "declared_and_never_read": [],
+                "consumes": [{"quantity": "nothing_observes_this",
+                              "kind": "UNSATISFIABLE", "gathered_by": [],
+                              "gathered_indirectly_by": []}]}
+        problems = inventory._problems([fake], ["x"], {"x": 0}, {}, {})
+        self.assertTrue(any("never gathered" in p for p in problems), problems)
+        self.assertTrue(any("no gather site" in p for p in problems), problems)
 
     def test_a_late_verdict_dependency_would_be_caught(self):
         """Reverse two entries of ORDER and the ordering check must fire.
@@ -102,8 +116,10 @@ class TestTheRunColumn(unittest.TestCase):
         self.assertIn("tuplet_ratio", out["run"]["no_row_at_all"])
         row = next(r for r in out["decisions"]
                    if r["quantity"] == "tuplet_ratio")
-        self.assertEqual(row["domain"], "tuplet_marker")
-        self.assertIsNone(row["run_domain_rows"])
+        self.assertEqual(row["domain"], ["tuplet_marker"])
+        # ⚠️ per-quantity now, because a domain can name more than one:
+        # `duration` answers for noteheads AND rests.
+        self.assertEqual(row["run_domain_rows"], {"tuplet_marker": None})
 
     def test_a_decision_that_fired_is_not_reported_silent(self):
         """The positive control the zero needs beside it."""

@@ -57,19 +57,13 @@ from .record import Q
 # ─────────────────────────────────────────────────────────────────────────────
 
 KNOWN_GAPS: Dict[str, str] = {
-    "arc_owner wants 'arc_box'":
-        "GATHER gap. `arc_box` is in the Q vocabulary and observed by nothing; "
-        "the detector reads 755 ties and 291 slurs over four pages and they "
-        "reach `glyph_box` only. Closing it is a gather site, then the "
-        "adjudicator.",
-    "arc_kind wants 'arc_box'": "as arc_owner.",
-    "articulation_owner wants 'articulation_mark'":
-        "GATHER gap; 41 articulation glyphs detected over four pages.",
-    "wedge_anchor wants 'wedge_box'":
-        "GATHER gap; the CV hairpin reader exists on the legacy path "
-        "(`cf81b524`) and is not wired into `gather`.",
-    "dynamic wants 'dynamic_letter'":
-        "GATHER gap; 543 dynamic glyphs detected over four pages.",
+    # ⚠️ TEN ENTRIES LEFT THIS LIST ON 2026-09-09 and the stale check is what
+    # made them leave: `arc_box`, `articulation_mark`, `wedge_box` and
+    # `dynamic_letter` are gathered now (`gather_glyph_families`), so the five
+    # "starved stub" entries and their five "wants X, which no gather site
+    # observes" twins report nothing and `--check` said so. A closed gap must
+    # LEAVE, or the list stops describing the pipeline and starts describing
+    # its history.
     "system_membership declares 'gap_bridging'":
         "inert declaration. The connectivity veto already ran in GATHER and "
         "`adjudicate_system_membership` records its result, so the decision "
@@ -133,16 +127,6 @@ KNOWN_GAPS: Dict[str, str] = {
     "meter declares 'dossier_fact'":
         "inert declaration; no dossier is supplied on the scan path by "
         "protocol.",
-    "arc_owner is a declared STUB whose input is ALSO never gathered":
-        "the two-gaps-one-name case; see the `arc_box` entry.",
-    "arc_kind is a declared STUB whose input is ALSO never gathered":
-        "as arc_owner.",
-    "articulation_owner is a declared STUB whose input is ALSO never gathered":
-        "as arc_owner.",
-    "wedge_anchor is a declared STUB whose input is ALSO never gathered":
-        "as arc_owner.",
-    "dynamic is a declared STUB whose input is ALSO never gathered":
-        "as arc_owner.",
 }
 
 
@@ -388,7 +372,9 @@ def build() -> Dict[str, Any]:
             "module": inspect.getmodule(spec.fn).__name__,
             "stub": spec.stub,
             "scope": spec.scope.value if hasattr(spec.scope, "value") else str(spec.scope),
-            "domain": spec.subjects_from,
+            # ⚠️ Always a tuple here, whichever form it was declared in, so a
+            # consumer never has to ask which.
+            "domain": list(A.domain_of(spec)),
             "mode": spec.mode.value if hasattr(spec.mode, "value") else str(spec.mode),
             "margin_floor": spec.margin_floor,
             "revises": spec.revises,
@@ -436,12 +422,13 @@ def build() -> Dict[str, Any]:
         "n_decisions": len(order),
         "decisions": rows,
         "consequences": consequence_rows,
-        "problems": _problems(rows, order, rank, sites),
+        "problems": _problems(rows, order, rank, sites, indirect),
     }
 
 
 def _problems(rows: List[Dict[str, Any]], order: List[str],
-              rank: Dict[str, int], sites: Dict[str, List[str]]) -> List[str]:
+              rank: Dict[str, int], sites: Dict[str, List[str]],
+              indirect: Optional[Dict[str, List[str]]] = None) -> List[str]:
     """The teeth. Each of these is a fact the inventory can prove wrong.
 
     ⚠️ These are DERIVED invariants, not style rules. Every one of them is a
@@ -490,11 +477,18 @@ def _problems(rows: List[Dict[str, Any]], order: List[str],
                 f"{q} declares {w!r} in `wants` and never reads it — the "
                 f"declaration is inert: nothing records it as missing or "
                 f"declined")
-        d = row["domain"]
-        if d and d not in sites and d not in indirect and d not in A.REGISTRY:
-            out.append(
-                f"{q}'s domain {d!r} is never produced, so it can never have "
-                f"a subject")
+        # ⚠️ A DOMAIN CAN NAME SEVERAL QUANTITIES. `duration` answers one
+        # question for two kinds of ink -- a notehead and a rest -- so its
+        # `subjects_from` is a tuple, and a check written for a bare string
+        # crashed on it. It crashed rather than passing because `indirect` was
+        # referenced here and never a parameter: a latent NameError that only
+        # a domain outside `sites` could reach, and no domain was until now.
+        indirect = indirect or {}
+        for d in (row["domain"] or ()):
+            if d not in sites and d not in indirect and d not in A.REGISTRY:
+                out.append(
+                    f"{q}'s domain {d!r} is never produced, so it can never "
+                    f"have a subject")
 
     for r in E.RULES:
         if r.cause not in A.REGISTRY:
@@ -525,7 +519,8 @@ def with_run(inv: Dict[str, Any], run_path: str) -> Dict[str, Any]:
         row["run_no_row_at_all"] = seen is None
         if seen is None:
             silent.append(q)
-            row["run_domain_rows"] = (summary.get(row["domain"])
+            row["run_domain_rows"] = ({d: summary.get(d)
+                                       for d in row["domain"]}
                                       if row.get("domain") else None)
     inv["run"] = {
         "path": run_path,
@@ -569,7 +564,8 @@ def render(inv: Dict[str, Any]) -> str:
         legacy = ", ".join(row["legacy"]["names"]) or "—"
         lines.append(
             f"| {i} | `{row['quantity']}` | `{row['decision']}` "
-            f"| {row['scope']} | {row['domain'] or 'all'} | {row['mode']} "
+            f"| {row['scope']} | {', '.join(row['domain']) or 'all'} "
+            f"| {row['mode']} "
             f"| {state} | {consumes} | {produces} | {legacy} "
             f"| {row['checkable']} |")
     lines.append("")
@@ -609,8 +605,9 @@ def render(inv: Dict[str, Any]) -> str:
                 dom = row.get("domain")
                 got = row.get("run_domain_rows")
                 lines.append(
-                    f"- `{q}` — domain `{dom or 'all subjects'}`, and the run "
-                    f"holds {got if got is not None else 'NO'} rows of it")
+                    f"- `{q}` — domain `{', '.join(dom) or 'all subjects'}`, "
+                    f"and the run holds {got if got is not None else 'NO'} "
+                    f"rows of it")
         else:
             lines.append("- every decision wrote at least one row")
         lines.append("")

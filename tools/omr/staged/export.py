@@ -302,13 +302,18 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
         s = _parse_subject(sub)
         if s["glyph"] is None:
             continue
-        if not rec.obs(Q.NOTEHEAD_CLASS, sub):
-            continue                       # not a notehead: nothing to place
-        pitch = rec.value(Q.PITCH, sub)
+        is_rest = bool(rec.obs(Q.REST, sub))
+        if not is_rest and not rec.obs(Q.NOTEHEAD_CLASS, sub):
+            continue                 # neither a notehead nor a rest
+        # ⚠️ A REST HAS NO PITCH AND MUST NOT BE ASKED FOR ONE. Requiring a
+        # pitch is what kept rests out of the file for as long as they had no
+        # quantity at all; asking for one now would keep them out for a
+        # second, subtler reason.
+        pitch = None if is_rest else rec.value(Q.PITCH, sub)
         dur_v = rec.verdict(Q.DURATION, sub)
         dur = dur_v["value"] if dur_v and dur_v["outcome"] == "decided" else None
 
-        if pitch is None:
+        if pitch is None and not is_rest:
             # ⚠️ NO POSITIONAL DEFAULT. A staff whose clef abstained produces
             # no pitches at all (`consequences.restate_pitch`), deliberately,
             # and the exporter must not undo that by writing treble.
@@ -327,7 +332,9 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
             # A `<note>` needs ONE duration, so a note whose duration is
             # narrowed cannot be written. It is dropped and COUNTED: the
             # shortfall belongs in the record, not in the silence.
-            dropped["duration_" + (dur_v["outcome"] if dur_v else "absent")] += 1
+            dropped[("rest_" if is_rest else "")
+                    + "duration_"
+                    + (dur_v["outcome"] if dur_v else "absent")] += 1
             continue
 
         owner = rec.value(Q.GLYPH_OWNER, sub)
@@ -346,6 +353,21 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
 
         name, x, y, w, h = o["value"]
         written = float(dur.get("written") or dur.get("beats") or 0.0)
+        # ⚠️ A MEASURE REST NEEDS NO NOTE VALUE, and demanding one would
+        # refuse the bar the convention exists for. `<rest measure="yes"/>`
+        # carries NO `<type>` at all -- there is no note value to name -- so a
+        # bar length that reduces to nothing (5/4, 7/8) is exportable here
+        # while the same number on a NOTE is not.
+        if dur.get("measure_rest"):
+            cell = run.cells.setdefault(
+                cell_index, Cell(run.page, run.system, run.staff, cell_index))
+            cell.detections.append({
+                "category": "rest", "class": name,
+                "bbox": [int(x), int(y), int(w), int(h)],
+                "duration_beats": written, "duration_type": "whole", "dots": 0,
+                "measure_rest": True, "glyph": sub,
+            })
+            continue
         fit = _legacy._dotted_duration_for_beats(written)
         if fit is None:
             # ⚠️ NO GUESS. A written value that reduces to no note value is
@@ -355,10 +377,10 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
             continue
         dtype, derived_dots = fit
         cell.detections.append({
-            "category": "notehead",
+            "category": "rest" if is_rest else "notehead",
             "class": name,
             "bbox": [int(x), int(y), int(w), int(h)],
-            "pitch": pitch,
+            **({} if is_rest else {"pitch": pitch}),
             # ⚠️ THE DOTS ARE ONE FACT, NOT TWO. `_duration_to_lily_xml`
             # takes `max` of the type's prefix and the dot count for exactly
             # this reason: summing them wrote a double-dotted quarter for
@@ -489,6 +511,13 @@ def _part_xml(part: Sequence[StaffRun], pid: str, divisions: int,
                 first = False
             events = _events(run.cells.get(i))
             if not events:
+                # ⚠️ COUNTED AS `empty_bars_padded`, NOT AS A MEASURE REST.
+                # We read NOTHING in this bar; a bar where we actually read a
+                # whole rest is `measure_rests_read`, and conflating the two
+                # would report a page as full of measure rests when what it is
+                # full of is unread bars. Beethoven p3: 48 padded against 19
+                # read.
+                #
                 # ⚠️ AN EVENTLESS BAR IS A BAR WE READ NOTHING IN, AND SAYING
                 # SO IS NOT THE SAME AS SAYING IT IS SILENT. `measure="yes"`
                 # is withheld where the meter is unknown, exactly as the
@@ -503,9 +532,9 @@ def _part_xml(part: Sequence[StaffRun], pid: str, divisions: int,
                 # ALL: see this module's header and `coverage()`. The position
                 # is stated here so that the day a rest quantity lands, the
                 # rule has a home rather than being rediscovered.
-                counters["measure_rests"] += 1
+                counters["empty_bars_padded"] += 1
                 if meter is None:
-                    counters["measure_rests_without_meter"] += 1
+                    counters["empty_bars_padded_without_meter"] += 1
                 lines.extend(_legacy._mxl_empty_measure(
                     meter, divisions, None, "      "))
             else:
@@ -519,6 +548,9 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                         counters: Dict[str, int]) -> List[str]:
     out: List[str] = []
     for ev in events:
+        if ev.get("kind") == "rest":
+            out.extend(_rest_xml(ev, divisions, counters))
+            continue
         heads = ev.get("noteheads") or []
         tup = next((h["tuplet"] for h in heads
                     if isinstance(h.get("tuplet"), dict)), None)
@@ -553,6 +585,30 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
     return out
 
 
+def _rest_xml(ev: Dict[str, Any], divisions: int,
+              counters: Dict[str, int]) -> List[str]:
+    """One `<rest>`, and the one place the BAR convention is written out.
+
+    ⚠️ `measure="yes"` CARRIES NO `<type>`, and the two go together. The glyph
+    stands for the bar, so there is no note value to name -- `_mxl_note`
+    already refuses to write `<type>` when `measure_rest` is set, which is why
+    this passes the flag rather than choosing a type of its own.
+    """
+    det = ev.get("rest") or {}
+    measure_rest = bool(det.get("measure_rest"))
+    beats = float(ev["duration_beats"])
+    if measure_rest:
+        counters["measure_rests_read"] += 1
+        xml_type, dots = "whole", 0
+    else:
+        counters["rests"] += 1
+        _lily, xml_type, dots = _legacy._duration_to_lily_xml(
+            ev.get("duration_type") or "quarter", int(ev.get("dots") or 0))
+    return [_legacy._mxl_note(
+        None, "", xml_type, dots, beats, divisions, is_chord=False,
+        is_rest=True, indent="      ", voice=1, measure_rest=measure_rest)]
+
+
 def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     """The file, and the record of what did not reach it."""
     rec = Record(result)
@@ -573,7 +629,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
 
     xml = _legacy._score_partwise(result.get("source", {}) or {},
                                   part_list, parts_xml)
-    report = coverage(result)
+    report = coverage(result, written=dict(counters))
     report["written"] = dict(counters)
     report["written"]["parts"] = len(parts)
     report["written"]["divisions"] = divisions
@@ -593,19 +649,26 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # `balanced=False` on 9 of 20 rows and WAS READ BY NOTHING for as long as
     # it existed. So `to_musicxml` raises rather than returning an unbalanced
     # report: a control nobody consults is not a control.
-    heads = len(rec.obs_of(Q.NOTEHEAD_CLASS))
-    written = int(counters["notes"])
+    events_in_log = (len(rec.obs_of(Q.NOTEHEAD_CLASS)) + len(rec.obs_of(Q.REST)))
+    written = (int(counters["notes"]) + int(counters["rests"])
+               + int(counters["measure_rests_read"]))
     report["balance"] = {
-        "noteheads_in_log": heads,
-        "notes_written": written,
-        "notes_not_written": report["notes_not_written_total"],
-        "balanced": heads == written + report["notes_not_written_total"],
+        # ⚠️ RESTS ARE IN THE CONTROL NOW. They were outside it while they had
+        # no quantity, which is exactly how 838 glyphs stayed invisible: a
+        # balance that does not count a family cannot be unbalanced by losing
+        # one.
+        "events_in_log": events_in_log,
+        "noteheads_in_log": len(rec.obs_of(Q.NOTEHEAD_CLASS)),
+        "rests_in_log": len(rec.obs_of(Q.REST)),
+        "events_written": written,
+        "events_not_written": report["notes_not_written_total"],
+        "balanced": events_in_log == written + report["notes_not_written_total"],
     }
     if not report["balance"]["balanced"]:
         raise Unbalanced(
-            f"{heads} noteheads in the log, {written} written and "
-            f"{report['notes_not_written_total']} accounted as dropped — the "
-            f"difference went nowhere. {report['notes_not_written']}")
+            f"{events_in_log} noteheads+rests in the log, {written} written "
+            f"and {report['notes_not_written_total']} accounted as dropped — "
+            f"the difference went nowhere. {report['notes_not_written']}")
     return xml, report
 
 
@@ -630,26 +693,33 @@ def _default_name(part: Sequence[StaffRun]) -> str:
 #: other column of the report — whether the quantity exists, whether its
 #: decision is a stub, whether its input is gathered, how many rows the run
 #: holds — is read out of the registry and the record.
-FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...]]] = {
-    "note": (Q.PITCH, ("notehead",)),
-    "rest": (None, ("rest",)),
-    "slur": (Q.ARC_KIND, ("slur",)),
-    "tie": (Q.ARC_KIND, ("tie",)),
-    "articulation": (Q.ARTICULATION_OWNER, ("artic",)),
-    "dynamic": (Q.DYNAMIC, ("dynamic",)),
+#: ⚠️ The third slot is the EXPORTER'S OWN COUNTER for the family, where one
+#: exists. A family's quantity says what must be DECIDED; only the counter
+#: says what reached the FILE, and for a measurement-shaped quantity like
+#: `Q.REST` -- which is observed, never adjudicated, its value settled by
+#: `duration` -- there is no decided verdict to count and the record alone
+#: would report a family that came out fine as `abstained`.
+FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
+    "note": (Q.PITCH, ("notehead",), ("notes",)),
+    "rest": (Q.REST, ("rest",), ("rests", "measure_rests_read")),
+    "slur": (Q.ARC_KIND, ("slur",), ()),
+    "tie": (Q.ARC_KIND, ("tie",), ()),
+    "articulation": (Q.ARTICULATION_OWNER, ("artic",), ()),
+    "dynamic": (Q.DYNAMIC, ("dynamic",), ()),
     "wedge": (Q.WEDGE_ANCHOR, ("dynamicCrescendoHairpin",
-                               "dynamicDiminuendoHairpin")),
-    "direction": (Q.DIRECTION, ()),
-    "ornament": (None, ("ornament", "tremolo")),
-    "fermata": (None, ("fermata",)),
-    "clef": (Q.CLEF, ("clef",)),
-    "key": (Q.KEY_SIGNATURE, ("key",)),
-    "time": (Q.METER, ("timeSig",)),
-    "tuplet": (Q.TUPLET_RATIO, ("tuplet", "fingering3")),
+                               "dynamicDiminuendoHairpin"), ()),
+    "direction": (Q.DIRECTION, (), ()),
+    "ornament": (None, ("ornament", "tremolo"), ()),
+    "fermata": (None, ("fermata",), ()),
+    "clef": (Q.CLEF, ("clef",), ()),
+    "key": (Q.KEY_SIGNATURE, ("key",), ()),
+    "time": (Q.METER, ("timeSig",), ()),
+    "tuplet": (Q.TUPLET_RATIO, ("tuplet", "fingering3"), ()),
 }
 
 
-def coverage(result: Dict[str, Any]) -> Dict[str, Any]:
+def coverage(result: Dict[str, Any],
+             written: Optional[Dict[str, int]] = None) -> Dict[str, Any]:
     """For every notation family: did it come out, and if not, WHY NOT.
 
     ⚠️ FOUR DIFFERENT ZEROS, REPORTED APART. The legacy `export_coverage`
@@ -674,7 +744,7 @@ def coverage(result: Dict[str, Any]) -> Dict[str, Any]:
     sites, indirect = inventory._gather_sites()
 
     rows: List[Dict[str, Any]] = []
-    for family, (quantity, prefixes) in sorted(FAMILIES.items()):
+    for family, (quantity, prefixes, counter_keys) in sorted(FAMILIES.items()):
         n_detected = sum(n for cls, n in detected.items()
                          if any(cls.lower().startswith(p.lower())
                                 for p in prefixes))
@@ -682,6 +752,7 @@ def coverage(result: Dict[str, Any]) -> Dict[str, Any]:
             "family": family,
             "quantity": quantity,
             "detector_glyphs": n_detected,
+            "written": sum((written or {}).get(k, 0) for k in counter_keys),
         }
         if quantity is None:
             row["status"] = "NO_QUANTITY"
@@ -717,9 +788,14 @@ def coverage(result: Dict[str, Any]) -> Dict[str, Any]:
                     f"declared stub AND its input is never gathered "
                     f"({', '.join(starved)}) — writing the adjudicator alone "
                     f"would still produce nothing")
+        elif row["written"]:
+            row["status"] = "emitted"
         elif decided:
-            row["status"] = "emitted" if family in ("note", "clef", "key",
-                                                    "time", "tuplet") else "decided"
+            row["status"] = "emitted" if family in (
+                "clef", "key", "time", "tuplet") else "decided"
+        elif written is not None:
+            # the exporter ran and wrote none of this family
+            row["status"] = "decided_but_unwritten" if decided else "abstained"
         else:
             row["status"] = "abstained"
         rows.append(row)

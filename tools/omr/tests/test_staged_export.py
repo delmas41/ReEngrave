@@ -38,6 +38,18 @@ def _vrd(i, subject, quantity, value, outcome="decided", reason="x",
             "supersedes": None, "detail": {}}
 
 
+def _add_rest(page, gi, cls, dur):
+    """A rest glyph plus its decided duration, in the shape gather emits."""
+    sub = f"glyph/0/0/0/0/{gi}"
+    page["record"]["observations"].append(
+        _obs(600 + gi, sub, Q.GLYPH_BOX, [cls, 300, 50, 20, 30],
+             category="rest"))
+    page["record"]["observations"].append(
+        _obs(700 + gi, sub, Q.REST, cls, category="rest"))
+    page["record"]["verdicts"].append(_vrd(800 + gi, sub, Q.DURATION, dur))
+    return page
+
+
 def _one_staff_page(*, notes, meter=None, clef="treble", n_measures=1):
     """A one-staff, one-system page carrying `notes` = [(pos, pitch, dur)]."""
     obs, vrd = [], []
@@ -84,9 +96,14 @@ class TestItWritesAFile(unittest.TestCase):
         self.assertEqual(
             root.find(".//note/pitch/step").text, "C")
 
-    def test_a_bar_with_no_events_gets_a_measure_rest(self):
+    def test_a_bar_with_no_events_is_PADDED_and_counted_as_such(self):
+        """⚠️ `empty_bars_padded`, NOT `measure_rests_read`. We read NOTHING
+        in this bar; a bar where a whole rest was actually read is a different
+        fact, and conflating them reports a page as full of measure rests when
+        what it is full of is unread bars."""
         xml, rep = SX.to_musicxml(_one_staff_page(notes=[], n_measures=2))
-        self.assertEqual(rep["written"]["measure_rests"], 2)
+        self.assertEqual(rep["written"]["empty_bars_padded"], 2)
+        self.assertEqual(rep["written"].get("measure_rests_read", 0), 0)
         self.assertEqual(len(ET.fromstring(xml).findall(".//rest")), 2)
 
 
@@ -96,14 +113,15 @@ class TestThePaidForPositions(unittest.TestCase):
         asserting `measure="yes"` on a page whose meter we never read is a
         guess dressed as a fact."""
         xml, rep = SX.to_musicxml(_one_staff_page(notes=[], n_measures=1))
-        self.assertEqual(rep["written"]["measure_rests_without_meter"], 1)
+        self.assertEqual(rep["written"]["empty_bars_padded_without_meter"], 1)
         self.assertIsNone(ET.fromstring(xml).find(".//rest").get("measure"))
 
     def test_measure_yes_IS_written_when_the_meter_is_known(self):
         xml, rep = SX.to_musicxml(_one_staff_page(
             notes=[], n_measures=1,
             meter={"numerator": 2, "denominator": 4, "raw": "2/4"}))
-        self.assertEqual(rep["written"].get("measure_rests_without_meter", 0), 0)
+        self.assertEqual(
+            rep["written"].get("empty_bars_padded_without_meter", 0), 0)
         self.assertEqual(ET.fromstring(xml).find(".//rest").get("measure"), "yes")
 
     def test_divisions_is_an_LCM_so_a_triplet_is_exact(self):
@@ -156,7 +174,21 @@ class TestTheAccountingControl(unittest.TestCase):
             notes=[("C4", QUARTER), ("D4", None), (None, QUARTER)]))
         b = rep["balance"]
         self.assertEqual(b["noteheads_in_log"], 3)
-        self.assertEqual(b["notes_written"] + b["notes_not_written"], 3)
+        self.assertEqual(b["events_written"] + b["events_not_written"], 3)
+        self.assertTrue(b["balanced"])
+
+    def test_RESTS_are_inside_the_control_too(self):
+        """⚠️ They were outside it while they had no quantity, which is
+        exactly how 838 glyphs stayed invisible: a balance that does not count
+        a family cannot be unbalanced by losing one."""
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        _add_rest(page, 5, "restQuarter", {"beats": 1.0, "written": 1.0,
+                                           "dots": 0, "is_rest": True})
+        _, rep = SX.to_musicxml(page)
+        b = rep["balance"]
+        self.assertEqual(b["rests_in_log"], 1)
+        self.assertEqual(b["events_in_log"], 2)
+        self.assertEqual(b["events_written"], 2)
         self.assertTrue(b["balanced"])
 
     def test_an_unbalanced_export_RAISES_rather_than_reporting_a_flag(self):
@@ -180,29 +212,48 @@ class TestTheAccountingControl(unittest.TestCase):
 
 
 class TestCoverageNamesTheFourZEROS(unittest.TestCase):
-    def test_rests_are_NO_QUANTITY_and_the_detections_are_counted_beside_it(self):
-        """⚠️ THE FINDING THIS MODULE EXISTS TO SURFACE. There is no rest
-        quantity anywhere in the staged pipeline, and the detector puts rests
-        in the log by the hundred. A zero is a suspect; this is its positive
-        control."""
+    def test_a_family_with_NO_QUANTITY_is_named_and_its_ink_counted(self):
+        """⚠️ THE FINDING THIS MODULE EXISTS TO SURFACE, still live for
+        fermatas and ornaments: a family nobody has decided exists, with the
+        detector's own count of it beside the zero. **Rests were the worst
+        case and are no longer in it** — `Q.REST` landed 2026-09-09 — which is
+        why this test moved to a family that still has none rather than being
+        deleted."""
         page = _one_staff_page(notes=[("C4", QUARTER)])
         page["record"]["observations"].append(
             _obs(500, "glyph/0/0/0/0/9", Q.GLYPH_BOX,
-                 ["restWhole", 10, 10, 20, 20], category="rest"))
+                 ["fermataAbove", 10, 10, 20, 20], category="ornament"))
         rep = SX.coverage(page)
+        f = next(r for r in rep["families"] if r["family"] == "fermata")
+        self.assertEqual(f["status"], "NO_QUANTITY")
+        self.assertIsNone(f["quantity"])
+        self.assertEqual(f["detector_glyphs"], 1)
+        self.assertEqual(rep["detected_and_unrepresented"]["fermata"], 1)
+
+    def test_rests_are_NO_LONGER_a_NO_QUANTITY_family(self):
+        """The gap this file recorded on 2026-09-09 morning, closed the same
+        day. A closed gap must leave the list, or the report stops describing
+        the pipeline and starts describing its history."""
+        rep = SX.coverage(_one_staff_page(notes=[("C4", QUARTER)]))
         rest = next(r for r in rep["families"] if r["family"] == "rest")
-        self.assertEqual(rest["status"], "NO_QUANTITY")
-        self.assertIsNone(rest["quantity"])
-        self.assertEqual(rest["detector_glyphs"], 1)
-        self.assertEqual(rep["detected_and_unrepresented"]["rest"], 1)
+        self.assertEqual(rest["quantity"], Q.REST)
+        self.assertNotEqual(rest["status"], "NO_QUANTITY")
 
     def test_a_starved_stub_is_reported_apart_from_a_plain_stub(self):
-        """Five of six stubs also have no gather site; `direction` is the one
-        that does. Two gaps and one gap are different work."""
-        rep = SX.coverage(_one_staff_page(notes=[("C4", QUARTER)]))
+        """⚠️ `starved` means the adjudicator is a stub AND its input is never
+        gathered — two pieces of work wearing one name. Five stubs were in
+        that state until the gather site landed; the report must still be able
+        to say it, so this asserts the DISTINCTION rather than a census."""
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        rep = SX.coverage(page)
         by = {r["family"]: r for r in rep["families"]}
-        self.assertEqual(by["slur"]["status"], "starved")
+        self.assertEqual(by["slur"]["status"], "stub",
+                         "arc_box is gathered now: this is a plain stub")
         self.assertEqual(by["direction"]["status"], "stub")
+        # and the mechanism that reports `starved` still works
+        import tools.omr.staged.inventory as inv
+        sites, indirect = inv._gather_sites()
+        self.assertIn(Q.ARC_BOX, sites)
 
     def test_a_family_that_came_out_is_not_listed_as_missing(self):
         rep = SX.coverage(_one_staff_page(notes=[("C4", QUARTER)]))
@@ -336,3 +387,83 @@ class TestTheStandingVerdict(unittest.TestCase):
         first["supersedes"] = "vrd:000000"
         xml, _ = SX.to_musicxml(page)
         self.assertEqual(ET.fromstring(xml).find(".//note/pitch/step").text, "C")
+
+
+class TestRestsReachTheFile(unittest.TestCase):
+    """⚠️ 838 rest glyphs over four real pages reached `GLYPH_BOX` and nothing
+    else until `Q.REST` landed on 2026-09-09. These assert the whole chain:
+    the gathered class, the decided duration, and the element."""
+
+    def test_an_ordinary_rest_is_written_with_its_value(self):
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        _add_rest(page, 5, "rest8th",
+                  {"beats": 0.5, "written": 0.5, "dots": 0, "is_rest": True})
+        xml, rep = SX.to_musicxml(page)
+        root = ET.fromstring(xml)
+        rests = root.findall(".//note/rest")
+        self.assertEqual(len(rests), 1)
+        self.assertIsNone(rests[0].get("measure"))
+        self.assertEqual(rep["written"]["rests"], 1)
+        note = [n for n in root.findall(".//note") if n.find("rest") is not None][0]
+        self.assertEqual(note.find("type").text, "eighth")
+
+    def test_a_MEASURE_rest_carries_measure_yes_and_NO_type(self):
+        """⚠️ The two go together. The glyph stands for the BAR, so there is
+        no note value to name — `<rest measure="yes"/>` and no `<type>`."""
+        page = _one_staff_page(
+            notes=[], meter={"numerator": 2, "denominator": 4, "raw": "2/4"})
+        _add_rest(page, 5, "restWhole",
+                  {"beats": 2.0, "written": 2.0, "dots": 0, "is_rest": True,
+                   "measure_rest": True})
+        xml, rep = SX.to_musicxml(page)
+        root = ET.fromstring(xml)
+        rest = root.find(".//note/rest")
+        self.assertEqual(rest.get("measure"), "yes")
+        note = root.find(".//note")
+        self.assertIsNone(note.find("type"))
+        self.assertEqual(rep["written"]["measure_rests_read"], 1)
+
+    def test_a_measure_rest_is_exportable_where_the_bar_reduces_to_no_value(self):
+        """⚠️ A bar length of 5/4 reduces to no single (possibly dotted) note
+        value, and demanding one would refuse the bar the convention exists
+        for. The same number on a NOTE is still refused."""
+        page = _one_staff_page(
+            notes=[], meter={"numerator": 5, "denominator": 4, "raw": "5/4"})
+        _add_rest(page, 5, "restWhole",
+                  {"beats": 5.0, "written": 5.0, "dots": 0, "is_rest": True,
+                   "measure_rest": True})
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["written"]["measure_rests_read"], 1)
+        self.assertEqual(rep["notes_not_written_total"], 0)
+        self.assertEqual(
+            ET.fromstring(xml).find(".//note/duration").text, "20")
+
+    def test_a_rest_is_never_asked_for_a_pitch(self):
+        """Requiring one is what kept rests out of the file for as long as
+        they had no quantity; asking now would keep them out for a second,
+        subtler reason."""
+        page = _one_staff_page(notes=[])
+        _add_rest(page, 5, "restQuarter",
+                  {"beats": 1.0, "written": 1.0, "dots": 0, "is_rest": True})
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["notes_not_written"].get("no_pitch", 0), 0)
+        self.assertEqual(ET.fromstring(xml).findall(".//pitch"), [])
+        self.assertEqual(rep["written"]["rests"], 1)
+
+    def test_an_UNREADABLE_rest_is_dropped_and_counted_as_a_REST(self):
+        """`restHBar` names no single value, so `adjudicate_duration` abstains
+        — and the shortfall is reported under its own key rather than folded
+        in with the notes."""
+        page = _one_staff_page(notes=[])
+        sub = "glyph/0/0/0/0/5"
+        page["record"]["observations"].append(
+            _obs(601, sub, Q.GLYPH_BOX, ["restHBar", 300, 50, 20, 30],
+                 category="rest"))
+        page["record"]["observations"].append(
+            _obs(701, sub, Q.REST, "restHBar", category="rest"))
+        page["record"]["verdicts"].append(
+            _vrd(801, sub, Q.DURATION, None, outcome="abstained",
+                 reason="unreadable_rest"))
+        _, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["notes_not_written"]["rest_duration_abstained"], 1)
+        self.assertTrue(rep["balance"]["balanced"])

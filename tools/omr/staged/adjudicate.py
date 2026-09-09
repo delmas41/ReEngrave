@@ -470,8 +470,14 @@ class DecisionSpec:
     revises: Optional[str]
     stub: bool
     fn: Callable[[Evidence], Optional[Ruling]]
-    #: The quantity whose rows define this decision's DOMAIN. `None` means
-    #: every subject at `scope`.
+    #: The quantity -- or quantities -- whose rows define this decision's
+    #: DOMAIN. `None` means every subject at `scope`.
+    #:
+    #: ⚠️ A TUPLE IS NOT A CONVENIENCE. `duration` answers ONE question --
+    #: how long is this event -- for two kinds of ink, a notehead and a rest,
+    #: and "one quantity, one owner" is about the ANSWER, not about the
+    #: evidence. Splitting it into `duration` and `rest_duration` would make
+    #: every consumer ask twice for one fact and would let the two drift.
     #:
     #: ⚠️ This is not an optimisation. `Q.GLYPH_OWNER`'s domain is the
     #: CONTESTED population -- a glyph nobody disputes has nothing to
@@ -712,17 +718,27 @@ ORDER: Tuple[str, ...] = (
 )
 
 
+def domain_of(spec: DecisionSpec) -> Tuple[str, ...]:
+    """`subjects_from` as a tuple, whichever form it was declared in."""
+    d = spec.subjects_from
+    if d is None:
+        return ()
+    return (d,) if isinstance(d, str) else tuple(d)
+
+
 def subjects_for(log: Log, spec: DecisionSpec) -> Tuple[Subject, ...]:
     """The subjects this decision is ABOUT.
 
     With `subjects_from`, only subjects carrying a row of that quantity --
-    which for ownership is the contested population and nothing else.
+    which for ownership is the contested population and nothing else, and for
+    `duration` is every notehead AND every rest.
     """
-    if spec.subjects_from is None:
+    wanted = domain_of(spec)
+    if not wanted:
         return log.subjects(spec.scope)
     out = {}
     for row in log.all_rows():
-        if getattr(row, "quantity", None) != spec.subjects_from:
+        if getattr(row, "quantity", None) not in wanted:
             continue
         sub = row.subject.at(spec.scope)
         if sub is not None:

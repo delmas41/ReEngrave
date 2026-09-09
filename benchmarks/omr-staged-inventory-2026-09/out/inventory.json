@@ -9,7 +9,7 @@
       "module": "tools.omr.staged.adjudicators.structure",
       "stub": false,
       "scope": "system",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -80,7 +80,7 @@
       "module": "tools.omr.staged.adjudicators.structure",
       "stub": false,
       "scope": "staff",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -143,7 +143,7 @@
       "module": "tools.omr.staged.adjudicators.structure",
       "stub": false,
       "scope": "staff",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -205,7 +205,7 @@
       "module": "tools.omr.staged.adjudicators.structure",
       "stub": false,
       "scope": "staff",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -259,7 +259,7 @@
       "module": "tools.omr.staged.adjudicators.structure",
       "stub": false,
       "scope": "system",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -321,7 +321,7 @@
       "module": "tools.omr.staged.adjudicators.identity",
       "stub": false,
       "scope": "staff",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -432,7 +432,7 @@
       "module": "tools.omr.staged.adjudicators.identity",
       "stub": false,
       "scope": "staff",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -516,7 +516,7 @@
       "module": "tools.omr.staged.adjudicators.identity",
       "stub": false,
       "scope": "document",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -610,7 +610,7 @@
       "module": "tools.omr.staged.adjudicators.structure",
       "stub": false,
       "scope": "system",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -679,7 +679,7 @@
       "module": "tools.omr.staged.adjudicators.clef",
       "stub": false,
       "scope": "staff",
-      "domain": null,
+      "domain": [],
       "mode": "competitive",
       "margin_floor": 1.0,
       "revises": null,
@@ -798,7 +798,7 @@
       "module": "tools.omr.staged.adjudicators.header",
       "stub": false,
       "scope": "staff",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -902,7 +902,9 @@
       "module": "tools.omr.staged.adjudicators.ownership",
       "stub": false,
       "scope": "glyph",
-      "domain": "glyph_band_distance",
+      "domain": [
+        "glyph_band_distance"
+      ],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -1012,7 +1014,9 @@
       "module": "tools.omr.staged.adjudicators.ownership",
       "stub": true,
       "scope": "glyph",
-      "domain": null,
+      "domain": [
+        "arc_box"
+      ],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -1020,8 +1024,10 @@
       "consumes": [
         {
           "quantity": "arc_box",
-          "kind": "UNSATISFIABLE",
-          "gathered_by": [],
+          "kind": "measurement",
+          "gathered_by": [
+            "gather_glyph_families"
+          ],
           "gathered_indirectly_by": []
         },
         {
@@ -1077,7 +1083,9 @@
       "module": "tools.omr.staged.adjudicators.ownership",
       "stub": true,
       "scope": "glyph",
-      "domain": null,
+      "domain": [
+        "arc_box"
+      ],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -1085,8 +1093,10 @@
       "consumes": [
         {
           "quantity": "arc_box",
-          "kind": "UNSATISFIABLE",
-          "gathered_by": [],
+          "kind": "measurement",
+          "gathered_by": [
+            "gather_glyph_families"
+          ],
           "gathered_indirectly_by": []
         },
         {
@@ -1141,7 +1151,9 @@
       "module": "tools.omr.staged.adjudicators.ownership",
       "stub": true,
       "scope": "glyph",
-      "domain": null,
+      "domain": [
+        "articulation_mark"
+      ],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -1149,8 +1161,10 @@
       "consumes": [
         {
           "quantity": "articulation_mark",
-          "kind": "UNSATISFIABLE",
-          "gathered_by": [],
+          "kind": "measurement",
+          "gathered_by": [
+            "gather_glyph_families"
+          ],
           "gathered_indirectly_by": []
         },
         {
@@ -1199,7 +1213,9 @@
       "module": "tools.omr.staged.adjudicators.ownership",
       "stub": true,
       "scope": "glyph",
-      "domain": null,
+      "domain": [
+        "wedge_box"
+      ],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -1207,8 +1223,10 @@
       "consumes": [
         {
           "quantity": "wedge_box",
-          "kind": "UNSATISFIABLE",
-          "gathered_by": [],
+          "kind": "measurement",
+          "gathered_by": [
+            "gather_glyph_families"
+          ],
           "gathered_indirectly_by": []
         },
         {
@@ -1257,7 +1275,9 @@
       "module": "tools.omr.staged.adjudicators.rhythm",
       "stub": false,
       "scope": "cell",
-      "domain": "tuplet_marker",
+      "domain": [
+        "tuplet_marker"
+      ],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -1346,7 +1366,10 @@
       "module": "tools.omr.staged.adjudicators.rhythm",
       "stub": false,
       "scope": "glyph",
-      "domain": "notehead_class",
+      "domain": [
+        "notehead_class",
+        "rest"
+      ],
       "mode": "additive",
       "margin_floor": null,
       "revises": "duration",
@@ -1409,6 +1432,14 @@
             "gather_detections"
           ],
           "gathered_indirectly_by": []
+        },
+        {
+          "quantity": "rest",
+          "kind": "measurement",
+          "gathered_by": [
+            "gather_glyph_families"
+          ],
+          "gathered_indirectly_by": []
         }
       ],
       "declared_and_never_read": [
@@ -1426,6 +1457,8 @@
         "beams_ambiguous",
         "no_notehead",
         "unknown_head",
+        "rest_class",
+        "unreadable_rest",
         "not_implemented"
       ],
       "checkable": "mixed",
@@ -1444,7 +1477,8 @@
         "flag",
         "aug_dot",
         "notehead_class",
-        "stem"
+        "stem",
+        "rest"
       ],
       "readings": [
         "beam_stroke",
@@ -1471,7 +1505,7 @@
       "module": "tools.omr.staged.adjudicators.rhythm",
       "stub": false,
       "scope": "system",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -1516,6 +1550,7 @@
       "produces": {
         "quantity": "meter",
         "causes": [
+          "duration",
           "duration"
         ],
         "consumed_by": []
@@ -1565,7 +1600,9 @@
       "module": "tools.omr.staged.adjudicators.text",
       "stub": true,
       "scope": "cell",
-      "domain": null,
+      "domain": [
+        "dynamic_letter"
+      ],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -1573,8 +1610,10 @@
       "consumes": [
         {
           "quantity": "dynamic_letter",
-          "kind": "UNSATISFIABLE",
-          "gathered_by": [],
+          "kind": "measurement",
+          "gathered_by": [
+            "gather_glyph_families"
+          ],
           "gathered_indirectly_by": []
         },
         {
@@ -1623,7 +1662,7 @@
       "module": "tools.omr.staged.adjudicators.text",
       "stub": true,
       "scope": "cell",
-      "domain": null,
+      "domain": [],
       "mode": "additive",
       "margin_floor": null,
       "revises": null,
@@ -1680,6 +1719,14 @@
       "bound": "One pitch per notehead that already has a POSITION row. Adds no notehead, deletes none, and re-reads no geometry. A staff whose clef ABSTAINED produces no pitches at all -- it does not fall back to treble."
     },
     {
+      "consequence": "size_measure_rest",
+      "cause": "meter",
+      "effect": "duration",
+      "scope": "cell",
+      "stub": false,
+      "bound": "Fires only on a bar whose ONLY standing duration is ONE rest, whose glyph is `restWhole`, with no dots, and only where the meter is DECIDED. Rewrites that one duration to the bar's length and marks it. Adds no event, deletes none, and touches no bar holding anything else."
+    },
+    {
       "consequence": "reconcile_duration",
       "cause": "meter",
       "effect": "duration",
@@ -1733,20 +1780,10 @@
     "key_signature declares 'dossier_fact' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
     "glyph_owner declares 'glyph_conf' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
     "glyph_owner declares 'notehead_staff_position' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
-    "arc_owner wants 'arc_box', which no gather site observes and no decision produces",
-    "arc_owner is a declared STUB whose input is ALSO never gathered (arc_box) -- implementing the adjudicator alone would still produce nothing",
-    "arc_kind wants 'arc_box', which no gather site observes and no decision produces",
-    "arc_kind is a declared STUB whose input is ALSO never gathered (arc_box) -- implementing the adjudicator alone would still produce nothing",
-    "articulation_owner wants 'articulation_mark', which no gather site observes and no decision produces",
-    "articulation_owner is a declared STUB whose input is ALSO never gathered (articulation_mark) -- implementing the adjudicator alone would still produce nothing",
-    "wedge_anchor wants 'wedge_box', which no gather site observes and no decision produces",
-    "wedge_anchor is a declared STUB whose input is ALSO never gathered (wedge_box) -- implementing the adjudicator alone would still produce nothing",
     "tuplet_ratio declares 'beam_stroke' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
     "duration declares 'stem' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
     "meter declares 'meter_glyph' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
     "meter declares 'duration' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
-    "meter declares 'dossier_fact' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined",
-    "dynamic wants 'dynamic_letter', which no gather site observes and no decision produces",
-    "dynamic is a declared STUB whose input is ALSO never gathered (dynamic_letter) -- implementing the adjudicator alone would still produce nothing"
+    "meter declares 'dossier_fact' in `wants` and never reads it \u2014 the declaration is inert: nothing records it as missing or declined"
   ]
 }

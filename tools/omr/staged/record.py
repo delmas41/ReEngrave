@@ -287,6 +287,24 @@ class Q(_Vocab):
     GLYPH_LADDER = "glyph_ladder"            # ledger rung completeness
     NOTEHEAD_STAFF_POSITION = "notehead_staff_position"   # pos_float, CLEF-FREE
     NOTEHEAD_CLASS = "notehead_class"        # black/half/whole, before duration
+    #: ⚠️ The REST GLYPH's class -- whole/half/quarter/8th -- before duration,
+    #: the exact parallel of `NOTEHEAD_CLASS`.
+    #:
+    #: ⚠️⚠️ IT WAS ABSENT FROM THIS VOCABULARY UNTIL 2026-09-09, and that made
+    #: rests the worst case of the family this architecture exists to kill.
+    #: The four starved stubs at least ABSTAIN `not_implemented` and are
+    #: therefore accounted for; a rest was detected -- 838 of them over four
+    #: real pages, 460 of them `restWhole` -- reached `GLYPH_BOX`, and NOTHING
+    #: ANYWHERE DECLARED THE ABSENCE. No gather site, no adjudicator, no stub,
+    #: no `wants`. `tools/omr/staged/export.py` found it by asking, per
+    #: notation family, which of four different zeros was true.
+    #:
+    #: ⚠️ `restHBar` / `restHNr` are MULTI-MEASURE REST INDICATORS and carry no
+    #: single duration; they are observed here like any other rest and the
+    #: adjudicator abstains on them by name. Recording the ink and declining
+    #: to read it is the honest pair; dropping it at the gather site is how
+    #: this quantity came to be missing in the first place.
+    REST = "rest"
     STEM = "stem"                            # CV stem: x, y0, y1
     BEAM_STROKE = "beam_stroke"              # CV beam stroke centre
     FLAG = "flag"                            # detected flag

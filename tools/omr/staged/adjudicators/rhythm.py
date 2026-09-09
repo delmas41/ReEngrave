@@ -138,14 +138,20 @@ def _head_class(ev: Evidence) -> Optional[str]:
     ),
     implicates=(Q.DURATION, Q.METER, Q.GLYPH_OWNER, Q.MEASURE_PARTITION,
                 Q.TUPLET_RATIO),
-    composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM),
+    composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS,
+                   Q.STEM, Q.REST),
     scope=Kind.GLYPH,
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM,
-           Q.TUPLET_RATIO, Q.GLYPH_BOX),
+           Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST),
     reasons=("head_and_marks", "beams_ambiguous", "no_notehead",
-             "unknown_head"),
+             "unknown_head", "rest_class", "unreadable_rest"),
     mode=Mode.ADDITIVE,
-    subjects_from=Q.NOTEHEAD_CLASS,
+    # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
+    # two kinds of ink. A rest reads its value straight off its class and
+    # needs no beam, flag or stem, so the branch below is short; what it must
+    # NOT be is a second quantity, or every consumer would ask twice for one
+    # fact.
+    subjects_from=(Q.NOTEHEAD_CLASS, Q.REST),
     # ⚠️ EVALUATE's `reconcile_duration` supersedes this verdict, so the
     # revision is DECLARED here. Without it `Log.record` raises
     # `AlreadyAdjudicated` -- which is the no-fixpoint guard working, not a
@@ -167,6 +173,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     y-positions, so one extra or missing cluster HALVES OR DOUBLES a note.
     That repair belongs to EVALUATE and is bounded there.
     """
+    rest = ev.rows(Q.REST)
+    if rest:
+        return _rest_ruling(ev, rest)
+
     head = _head_class(ev)
     if head is None:
         return Ruling.abstain("no_notehead")
@@ -271,6 +281,55 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     return Ruling(value={"beats": scaled, "written": total,
                          "dots": n_dots, "beam_levels": levels},
                   reason="head_and_marks", used=tuple(used), detail=shared)
+
+
+def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
+    """A rest's value is its CLASS, and almost nothing else.
+
+    ⚠️ THE TABLE IS `rhythm._REST_DURATIONS`, IMPORTED RATHER THAN RESTATED.
+    It is the paid-for mapping, including the two entries it deliberately
+    omits -- `restHBar` / `restHNr` are MULTI-MEASURE REST INDICATORS and name
+    no single value, so the lookup returns None and this abstains with a
+    reason instead of inventing one.
+
+    ⚠️ A TUPLET DOES NOT SCALE A REST HERE, and that is a measured position
+    rather than an omission: pairing a rest to a beam group needs a signal the
+    beam box does not carry, so the legacy reader leaves rests out of the
+    ratio and so does this. A triplet whose middle member is a rest therefore
+    comes out long; that is the honest reading of the evidence available, and
+    it is recorded (`tuplet_in_cell`) so a later decision can see the case
+    without re-deriving it.
+
+    ⚠️ AND THE BAR-LENGTH CONVENTION IS NOT HERE. A lone whole rest stands for
+    the BAR whatever the meter -- 90.3% of wrong rest durations on the scan
+    gate are exactly that -- but it is a fact about the CELL and the METER,
+    not about the glyph, so it belongs to EVALUATE where the meter is settled.
+    See `consequences.size_measure_rest`.
+    """
+    from ...rhythm import _rest_duration
+
+    row = max(rest_rows, key=lambda r: (r.score or 0.0))
+    found = _rest_duration(str(row.value))
+    if found is None:
+        return Ruling.abstain("unreadable_rest", rest=str(row.value),
+                              note="multi-measure indicator: names no single "
+                                   "value")
+    base, written_type = found
+
+    dots = ev.rows(Q.AUG_DOT)
+    used = [row.id] + [r.id for r in dots]
+    total, add = base, base
+    for _ in range(len(dots)):
+        add /= 2.0
+        total += add
+
+    ratio = ev.verdict(Q.TUPLET_RATIO, subject=ev.subject.at(Kind.CELL))
+    return Ruling(
+        value={"beats": total, "written": total, "dots": len(dots),
+               "beam_levels": 0, "is_rest": True},
+        reason="rest_class", used=tuple(used),
+        detail={"rest": str(row.value), "written_type": written_type,
+                "tuplet_in_cell": ratio is not None and ratio.value is not None})
 
 
 def _scale(total: float, ratio, ev: Evidence) -> float:
