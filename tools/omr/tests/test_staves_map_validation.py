@@ -670,11 +670,29 @@ class TestTheUIWritesWhatTheMergeStepReads:
         text = (MAPS / "server.py").read_text()
         assert "_ARITY_FIELDS" in text
 
-    def test_build_cache_still_computes_lines(self):
+    def test_build_cache_still_carries_the_fields_to_the_proposal(self):
         """The upstream half of the chain. If this ever stops being computed,
-        the fields above have nothing to carry."""
-        text = (MAPS / "build_cache.py").read_text()
-        assert '"lines"' in text
+        the fields above have nothing to carry.
+
+        ⚠️ THIS USED TO ASSERT THE STRING `"lines"` APPEARED IN build_cache.py,
+        and it went VACUOUS the moment `research_proposal` stopped naming the
+        field literally and started carrying every schema key: two other
+        `"lines"` literals live in `_one_line_bands`, which is CROP GEOMETRY
+        and has nothing to do with the map. Asked of the function's OUTPUT
+        instead, which is what the chain actually needs — and which also covers
+        `printed_staves`, whose absence here is why the Bach grand staff never
+        reached the UI at all.
+        """
+        bc = _load("build_cache", MAPS)
+        mahler = bc.research_proposal("mahler-sym5-mvt1-local-p2", 38)
+        assert sum(1 for e in mahler["staves"] if e.get("lines") == 1) == 4, \
+            "the four one-line percussion rules must reach the human"
+        assert not [e for e in mahler["staves"] if e.get("lines") == 5], \
+            "the default is omitted, as every merged row omits it"
+        bach = bc.research_proposal("bach-brandenburg3-mvt1-468678-p1", 11)
+        assert [e["printed_staves"] for e in bach["staves"]
+                if "Cembalo" in e["name"]] == [2], \
+            "the grand staff's `printed_staves` must reach the proposal too"
 
 
 class TestAOneLineRuleSurvivesTheWholeWritePath:

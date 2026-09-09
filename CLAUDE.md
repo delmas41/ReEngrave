@@ -1188,6 +1188,32 @@ refuse on *"already carries a map"*). Five mutants, each red on exactly the
 intended test. ⚠️ The deferral *"no unmapped row remains to exercise it"* was
 reversed on the reasoning that it is an argument for a cheap fix, not against
 one — the failure costs a HUMAN PASS, not compute.
+⚠️⚠️ **AND THAT FIX ANSWERED A HAND LIST WITH A HAND LIST — `ARITY_FIELDS` WAS
+ALREADY INCOMPLETE THE DAY IT LANDED** (2026-09-09,
+`benchmarks/omr-scan-e2e-2026-09/staves_schema.py`). `clef`/`key` are not arity
+fields, so `beethoven-sym5-mvt1-984073-p1` — which carries them on all twelve
+staves, under `scan_eval`'s own rule 2 *THE PAGE IS THE TRUTH, NOT THE FILE* —
+**was still refused, and the only tool allowed to write `works.json` still
+could not re-merge a sixth of the file it had written**. Three projections were
+also still lossy: `research_proposal` named `lines` and dropped
+`printed_staves`, so **bach's grand staff never reached the UI at all** and
+`arity_problems` would refuse that row with no way to satisfy it; `api_adopt`
+rebuilt `{name, parts}`; and neither field was SHOWN to the human confirming
+it. The shape is now DERIVED BY AST from `run_ledger.expand_lineup` — the same
+function `arity_problems` already refuses to second-guess, read one level up —
+with facts no consumer reads yet DECLARED in `RECORDED_ONLY` with reasons, and
+`unaccounted()` failing the suite on anything in neither. ⚠️ **`arity_problems`
+is untouched and remains the stronger guard**: an allow-list can only carry a
+field that is PRESENT; only the write-time arity question catches one that is
+ABSENT. ⚠️ `unvalidated()` is new and is what a DERIVED list needs and a hand
+list did not — a hand list and its validators are edited together, a derived
+one can grow a field on its own. ⚠️ And **one of the first fix's own tests went
+vacuous under this change and was repaired, not deleted**:
+`test_build_cache_still_computes_lines` asserted the string `"lines"` appeared
+anywhere in `build_cache.py`, which two unrelated CROP-GEOMETRY literals
+satisfy — it now asks the function's OUTPUT, and covers `printed_staves` too.
+`tools/omr/tests/test_staves_schema.py`, 24 tests, five red against the
+pre-fix tree.
 
 **B's arithmetic is exact on all three rows**: lineup minus the one-line
 percussion rules equals `page.n_staves` equals the parts we emit (15−2=13,
