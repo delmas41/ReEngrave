@@ -26,6 +26,21 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-09-meter-as-a-range-fact.md](docs/handoff-2026-09-09-meter-as-a-range-fact.md)
+— **the meter became a fact about BARS rather than about a system**
+(`Q.METER` carries `segments`; `record.meter_at` reads a bar's meter), a carried
+meter is **WEIGHED by the bars rather than gated**, and **`Q.EVENT`** closed a
+silent double-count that had disabled the pipeline's own bar-sum check on every
+bar holding a chord. The change detector finds the printed `3/4` **on the exact
+bar the reference names**. ⚠️ Read its **§4 before quoting anything**: n = 1
+document, the *Andante* refusal is **SAFE but NOT discriminating** (it refuses
+the CORRECT meter too), and the bar-math half contributed *nothing* even on the
+case that works — the result rests on the glyph alone. **§5 ranks the next
+work, and it is Sean's model**: a long RUN of bar sums proposing a meter where
+no glyph stands (DIRECTIONAL — bars after a candidate are evidence for the new
+meter, before it for the old), the per-bar evidence order (`A-DUR-6`), and
+**unclassified ink as a gathered fact** (`A-DUR-5`, flagged below). Its
+predecessor
 [docs/handoff-2026-09-09-gather-and-the-record-that-answers.md](docs/handoff-2026-09-09-gather-and-the-record-that-answers.md)
 — the staged pipeline now EXPORTS A FILE, gathers the five families it used to
 drop, and answers *which decision* held a note back. It ranks the next three
