@@ -1,5 +1,11 @@
 # Handoff — the bars can name a LENGTH, and only ink can name a METER
 
+⚠️ **SUPERSEDED AS THE ENTRY POINT** by
+[docs/handoff-2026-09-09-the-boundary-measured.md](handoff-2026-09-09-the-boundary-measured.md),
+which measured the boundary case this file leaves open. Read that first; this
+file's §1-§4 are still the account of what `OMR_METER_FROM_BARS` is and rests
+on.
+
 ⚠️ **READ THIS FIRST.** It replaces
 [docs/handoff-2026-09-09-meter-as-a-range-fact.md](handoff-2026-09-09-meter-as-a-range-fact.md)
 as the entry point. That file's §1 redirect still governs — **the metric is not

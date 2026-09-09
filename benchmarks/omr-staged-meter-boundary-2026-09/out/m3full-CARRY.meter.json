@@ -1,0 +1,206 @@
+[
+  {
+    "id": "vrd:016328",
+    "subject": "system/0/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "C",
+      "segments": [
+        {
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "from_cell": 0
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "voted",
+    "used": [
+      "obs:004741",
+      "obs:004743",
+      "obs:004745",
+      "obs:004747",
+      "obs:004749",
+      "obs:004751",
+      "obs:004753",
+      "obs:004755",
+      "obs:004757",
+      "obs:004759",
+      "obs:004761",
+      "obs:004763",
+      "obs:004765",
+      "obs:004767",
+      "obs:004769",
+      "obs:004771",
+      "obs:004773",
+      "obs:004775",
+      "obs:004777",
+      "obs:004779",
+      "obs:004781",
+      "obs:004783",
+      "obs:004785"
+    ],
+    "missing": [],
+    "declined": [],
+    "excluded": [],
+    "candidates": [],
+    "margin": 1.0,
+    "supersedes": null,
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 23
+    },
+    "n_considered": 529,
+    "n_basis": 2073,
+    "n_correlated": 90
+  },
+  {
+    "id": "vrd:016329",
+    "subject": "system/1/0",
+    "quantity": "meter",
+    "outcome": "abstained",
+    "value": null,
+    "decider": "adjudicate_meter",
+    "reason": "carry_not_corroborated",
+    "used": [],
+    "missing": [
+      "rest"
+    ],
+    "declined": [
+      "meter_template"
+    ],
+    "excluded": [],
+    "candidates": [],
+    "margin": null,
+    "supersedes": null,
+    "detail": {
+      "carried_from": "system/0/0",
+      "pages_since_read": 1,
+      "instead_of": "no_evidence",
+      "state": "too_few_assessable_bars",
+      "bars_assessable": 1,
+      "bars_agree": 1,
+      "bars_disagree": 0,
+      "bar_lengths_seen": {
+        "4.0": 1
+      }
+    },
+    "n_considered": 106,
+    "n_basis": 2437,
+    "n_correlated": 24
+  },
+  {
+    "id": "vrd:016330",
+    "subject": "system/2/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 3,
+      "denominator": 4,
+      "raw": "3/4",
+      "segments": [
+        {
+          "numerator": 3,
+          "denominator": 4,
+          "raw": "3/4",
+          "from_cell": 0
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "voted",
+    "used": [
+      "obs:010066",
+      "obs:010069",
+      "obs:010072",
+      "obs:010075",
+      "obs:010078",
+      "obs:010081",
+      "obs:010084",
+      "obs:010087",
+      "obs:010090",
+      "obs:010093",
+      "obs:010096",
+      "obs:010099",
+      "obs:010102",
+      "obs:010105",
+      "obs:010108",
+      "obs:010111",
+      "obs:010114",
+      "obs:010117",
+      "obs:010120",
+      "obs:010123",
+      "obs:010126",
+      "obs:010129",
+      "obs:010132"
+    ],
+    "missing": [],
+    "declined": [],
+    "excluded": [],
+    "candidates": [],
+    "margin": 1.0,
+    "supersedes": null,
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 23
+    },
+    "n_considered": 1154,
+    "n_basis": 2199,
+    "n_correlated": 92
+  },
+  {
+    "id": "vrd:016331",
+    "subject": "system/3/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 3,
+      "denominator": 4,
+      "raw": "3/4",
+      "segments": [
+        {
+          "numerator": 3,
+          "denominator": 4,
+          "raw": "3/4",
+          "from_cell": 0
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "carried",
+    "used": [
+      "vrd:016330"
+    ],
+    "missing": [],
+    "declined": [
+      "meter_glyph",
+      "meter_template"
+    ],
+    "excluded": [],
+    "candidates": [],
+    "margin": 6.0,
+    "supersedes": null,
+    "detail": {
+      "carried_from": "system/2/0",
+      "pages_since_read": 1,
+      "instead_of": "no_evidence",
+      "source_share": 1.0,
+      "source_staves_spoke": 23,
+      "support": 6.0,
+      "floor": 2.0,
+      "bars_agree": 7,
+      "bars_disagree": 2,
+      "bar_lengths_seen": {
+        "3.0": 7,
+        "5.0": 2
+      }
+    },
+    "n_considered": 584,
+    "n_basis": 3495,
+    "n_correlated": 215
+  }
+]

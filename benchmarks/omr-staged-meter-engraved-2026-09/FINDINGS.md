@@ -24,91 +24,86 @@ python3 benchmarks/omr-staged-meter-engraved-2026-09/hide_change_signature.py \
 
 ---
 
-## 1. ⚠️⚠️ THE HEADLINE — THE BAR SUMS ARE WRONG ON PERFECT INK
+## 1. ⚠️⚠️ ON A DENSE PAGE, THE BARS THAT SURVIVE THE QUORUM ARE STILL WRONG
 
-The whole bar-sum family — the carry's second witness, `OMR_METER_FROM_BARS`,
-and Sean's per-bar model in `A-DUR-6` — rests on a page's own arithmetic being
-readable. **It is not, and the scan was never the reason.**
+⚠️ **THIS TABLE WAS OVERSTATED IN A FIRST DRAFT AND THE CORRECTION IS THE
+POINT.** It listed the modal length of EVERY cell as *"what we read"*. Most of
+those cells never reached the quorum (≥3 staves, ≥50% agreeing), so the
+mechanism correctly declined them and was never wrong about them. Only the
+**assessable** bars are the mechanism's answers, and only they belong in a
+claim about it. Caught by comparing against the sibling session's own table for
+the same page.
 
-Measured on the engraved bars 203-218, 23 staves, every part playing in every
-bar (`playing parts per bar = 23` for all of 209-226):
+Engraved `beethoven-sym5-mvt4` bars 203-218, 23 parts, every part playing in
+every bar. **Assessable bars only:**
 
-| system | bars | truth | the bar sums we read |
-|---|---|---|---|
-| `0/0` | 203-205 | 3/4 | **3.0, 3.0, 3.0** ✅ at 5/8, 5/8, 5/9 |
-| `1/0` | 206-214 | 3/4 then **4/4 from cell 3** | 3.0 ✅, then **4.0 at 20 of 23** ✅ on the change bar, then **3.5 (18/23)** ✗, **6.0 (20/23)** ✗ |
-| `2/0` | 215-218 | 4/4 throughout | **5.0, 4.5, 5.0, 4.5** ✗ — not one bar right |
+| system | bars | truth | assessable | what they read |
+|---|---|---|--:|---|
+| `0/0` | 203-205 | 3/4 | 3 of 3 | **3.0, 3.0, 3.0** — all ✅ |
+| `1/0` | 206-214 | 3/4, then 4/4 from cell 3 | 4 of 9 | 3.0 ✅, **4.0 at 20/23** ✅ on the change bar, **3.5 (18/23)** ✗, **6.0 (20/23)** ✗ |
+| `2/0` | 215-218 | 4/4 | **1 of 4** | **4.5 (12/23)** ✗ |
 
-⚠️ **These are not noisy readings, they are CONFIDENT WRONG ones**: 18 of 23
-staves agree on 3.5 where the truth is 4.0, and 20 of 23 agree on 6.0. The
-cross-staff majority — the rule that is supposed to make a bar trustworthy —
-passes them.
+**Three of the five assessable bars on the two dense systems are wrong** — and
+they are not near misses or ties. 18 of 23 staves agree on 3.5 where the truth
+is 4.0; 20 of 23 agree on 6.0. **The cross-staff majority that is supposed to
+make a bar trustworthy passes them.**
 
-⚠️ **And the errors run LONG.** 3.5, 4.5, 5.0, 6.0 against a truth of 4.0.
-A shortfall would suggest missed ink; an excess on a page with no missing ink
-suggests the duration reader is composing something twice or reading a written
-value too long. That is a diagnosis to open, not a conclusion.
+⚠️ **THIS IS THE PART THAT IS ADDITIONAL TO THE SIBLING SESSION'S RESULT.**
+They measured that **assessability** falls with density — 100% of bars
+assessable at 1.5 events per bar, 33% at 4.5 — which is about how MANY bars
+speak. This is about whether the ones that do speak are RIGHT: on the dense
+fixture, mostly not. Their own m215+ row (`{4.5: 1, 4.0: 1}`) is the same
+finding at n=2 and agrees.
+
+⚠️ **The errors run LONG** (3.5, 4.5, 6.0 against 4.0) on a page with no
+missing ink. A shortfall would suggest missed ink; an excess suggests the
+duration reader composing something twice or reading a written value too long.
+**A diagnosis to open, not a conclusion.**
 
 **So the constraint on the bar-sum family is the DURATION READER, not page
-quality.** Every previous conclusion of the form *"the bars cannot speak here
+quality.** Every earlier conclusion of the form *"the bars cannot speak here
 because the page is hard"* needs re-reading with that in mind — including this
-session's own, which attributed the movement-start failures on Litolff p.17 /
-p.32 / p.44 partly to sparse texture and dense tutti. The texture explanation
-is still right about *how many staves* speak; it is not the reason the ones
-that do speak are wrong.
+session's own about Litolff p.17 / p.32 / p.44. ⚠️ And **the meter floors must
+not be tuned against it**: that is fitting a constant to a broken input.
 
 ---
 
-## 2. ⚠️⚠️ AND A DETECTED-THEN-DROPPED BUG: A CHANGE TO COMMON TIME WAS INVISIBLE
+## 2. ⚠️ THE SAME `C` BUG, FOUND INDEPENDENTLY — and the sibling's fix is the one that shipped
 
-The engraved fixture found this in its first arm, and only an engraving could
-have: LilyPond spells 4/4 as a common-time **`C`**, so the change at bar 209 is
-a letter, not two digits.
+This session reached the letter-meter hole from the same engraved bar 209,
+wrote its own `_CHANGE_LETTERS` fix and five tests, and measured the repair on
+the page (`no_evidence` → `change_only` **`C`** at `from_cell: 3` = original
+bar **209**, all 23 staves, support 68.0).
 
-**The detector's own numbers, off the record:** on the change page,
-`meter_glyph` = **23 rows, every one `timeSigCommon`, every one at cell 3** —
-one per staff, at exactly the right bar. `meter_template` = 0 rows there,
-correctly, since that reader only looks at the header window.
+⚠️ **A SIBLING SESSION DID IT IN PARALLEL AND LANDED FIRST**
+(`benchmarks/omr-staged-meter-boundary-2026-09/`, `rhythm._meter_from_letter`).
+**Theirs is better** — it abstains where one staff reads BOTH `timeSigCommon`
+and `timeSigCutCommon`, which mine did not — so **mine was deleted**, along
+with four of its five tests, on this repository's own precedent for a
+duplicated hairpin export.
 
-**And the system abstained `no_evidence`.**
+**What the duplication was worth, and it is not nothing:** the five tests were
+written against one implementation and then run GREEN against the other. Two
+independent readings of one hole, agreeing on the behaviour. The single test
+they did not cover — a staff carrying a letter AND digits at the same bar,
+where the digits must win — is kept as `TestDigitsWinOverALetterAtTheSameBar`.
 
-`_meter_from_digits` required two stacked digits and skipped the letter with
-the comment *"timeSigCommon and friends: no pair"* — true, and then the caller
-counted it as a `loose` glyph, built no `readings` entry, and skipped the bar
-entirely. **Perfect detection, dropped by the rule** — this project's signature
-failure, inside the meter-change reader itself.
-
-**Measured after the fix, same fixture, same command** — `system/1/0` goes
-`no_evidence` → **`change_only` `C`**, and the segment is exact:
-
-```
-from_cell: 3   raw: "C"   4/4   support: 68.0
-staves_reading_it: [0 … 22]      ← all 23
-bars_fit: 1   bars_contradict: 2
-```
-
-Cell 3 of that system is excerpt bar 7 = **original bar 209**, the printed
-change, to the bar.
-
-⚠️⚠️ **AND LOOK AT `bars_contradict: 2`.** The bar math *disagreed* with the
-change — because of §1 — and 23 unanimous glyphs carried it anyway
-(23 × 3.0 − 2 × 1.0 = 68.0). That is Sean's ordering behaving exactly as
-specified: *"any time signature glyph should be the heaviest weight"*, and
-arithmetic this unreliable cannot sink it. The same page is the argument for
-the ordering and the argument for fixing §1.
+**The measurement itself stands** and corroborates theirs from a second
+fixture: `meter_glyph` = **23 rows, every one `timeSigCommon`, every one at
+cell 3**, `meter_template` = 0 rows (correctly — that reader only sees the
+header window), and the system abstained `no_evidence`. Perfect detection,
+dropped by the rule.
 
 ⚠️ It is also why fixture **B** (built by mistake, see §4) produced *nothing at
 all* on three pages: with the opening hidden, the only printed meter in the
-whole document was that `C`, and it reached no decision.
+whole document was that `C`.
 
-**Fixed.** `_CHANGE_LETTERS` is derived from
-`time_signature_locator.LETTER_METERS` rather than restated, so the two readers
-cannot drift about which glyphs these are. Digits still win where both are
-present, so the existing digit path is untouched — the letter is a fallback,
-never an override. The letter reaches the segment's `raw`, because unlike a
-BORROWED spelling it **is** evidence: the glyph was matched here.
-
----
+⚠️⚠️ **AND THE REPAIRED SEGMENT CARRIES `bars_contradict: 2`.** The bar math
+*disagreed* with the change — because of §1 — and 23 unanimous glyphs carried
+it anyway (23 × 3.0 − 2 × 1.0 = 68.0). That is Sean's ordering behaving exactly
+as specified: *"any time signature glyph should be the heaviest weight"*, and
+arithmetic this unreliable cannot sink it. The same page is the argument for
+the ordering and the argument for fixing §1.
 
 ## 3. WHAT THE MECHANISMS DID — the part that works
 
@@ -174,5 +169,11 @@ the threshold — it is that **bar sums are wrong on clean ink**. No amount of
 tuning `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` reaches that, and a
 sweep of either would be fitting constants to a broken input.
 
-**Still open.** n = 2 changes in 1 movement of 1 work. The `2/2` change at bar
-364 is rendered by the same tool in one command and is not yet run.
+**Still open.** n = 2 changes in 1 movement of 1 work here. The `2/2` change at
+bar 364 renders from the same tool in one command and is not yet run.
+
+⚠️ **Read this beside `benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md`**,
+which covers the boundary itself far more widely (two engraved fixtures, a
+second document AND publisher, engraved 4 printed / 4 found / 1 false against
+scanned 2 printed / 1 found / 9 false). **This file's contribution is the
+DENSE-texture arm and the carry's measured cost**, not the boundary result.

@@ -985,63 +985,80 @@ for _n, _d in sorted(_PLAUSIBLE_METERS):
     _METER_LENGTHS.setdefault(round(_n * 4.0 / _d, 6), []).append((_n, _d))
 
 
-#: A meter printed as ONE LETTER rather than two digits, and what it means.
-#: Derived from `time_signature_locator.LETTER_METERS` (`{raw: class}`) rather
-#: than restated, so the two readers cannot drift about which glyphs these are;
-#: the bar lengths are the definitions of the letters themselves.
-_LETTER_METER_VALUES = {"C": (4, 4), "C|": (2, 2)}
-_CHANGE_LETTERS = {cls: (_LETTER_METER_VALUES[raw][0],
-                         _LETTER_METER_VALUES[raw][1], raw)
-                   for raw, cls in _tsl.LETTER_METERS.items()}
-
-
 def _meter_from_digits(rows) -> Optional[tuple]:
-    """One staff's meter glyphs at one bar -> (numerator, denominator, raw).
+    """One staff's meter glyphs at one bar -> (numerator, denominator).
 
     ⚠️ THE STACK IS THE READING. A time signature is two digits stacked, so the
     numerator is simply the higher one -- `y_center` is on every row and is the
     whole of what distinguishes them. A bar whose digits do not separate into
     two heights says "something is printed here" and nothing more, which is
     what `W_CHANGE_GLYPH_LOOSE` is for.
-
-    ⚠️⚠️ A LETTER METER IS A CHANGE TOO, AND REQUIRING A STACK MADE ONE
-    INVISIBLE. This function used to `continue` past `timeSigCommon` with the
-    comment *"timeSigCommon and friends: no pair"* -- true, and then the caller
-    counted it as a `loose` digit and skipped the bar because no `readings`
-    entry existed. Measured on an ENGRAVED fixture, which is what found it:
-    Beethoven 5 mvt4 bars 203-218 changes to 4/4 at bar 209, LilyPond prints
-    that as a common-time `C`, the detector fired **`timeSigCommon` on 23 of
-    23 staves at exactly the right cell** -- and the system abstained
-    `no_evidence`. Perfect detection, dropped by the rule. This project's own
-    signature failure, inside the meter-change reader.
-
-    ⚠️ The letter is returned as `raw` and carried into the segment, because
-    unlike a BORROWED spelling it IS evidence: the glyph was matched here.
     """
     digits = []
-    letter = None
     for r in rows:
         name = str(r.value)
-        if name in _CHANGE_LETTERS:
-            letter = _CHANGE_LETTERS[name]
-            continue
         if not name.startswith("timeSig"):
             continue
         tail = name[len("timeSig"):]
         if not tail.isdigit():
-            continue                      # a numeral we cannot place
+            continue                      # timeSigCommon and friends: no pair
         y = (r.detail or {}).get("y_center")
         if y is None:
             continue
         digits.append((float(y), int(tail)))
-    if len(digits) >= 2:
-        digits.sort()
-        top, bottom = digits[0], digits[-1]
-        # ⚠️ DIGITS FIRST where both are present, so nothing about the existing
-        # digit path changes; the letter is a fallback, never an override.
-        if top[0] != bottom[0]:
-            return (top[1], bottom[1], "%d/%d" % (top[1], bottom[1]))
-    return letter
+    if len(digits) < 2:
+        return None
+    digits.sort()
+    top, bottom = digits[0], digits[-1]
+    if top[0] == bottom[0]:
+        return None                       # all at one height: not a stack
+    return (top[1], bottom[1])
+
+
+#: The one-glyph meters, and what each one NAMES. Derived from
+#: `time_signature_locator.LETTER_METERS` (raw -> SMuFL glyph) inverted, so the
+#: two modules cannot drift about which glyph is which letter, and paired with
+#: the numbers `DEFAULT_METERS` already gives that raw.
+_LETTER_BY_GLYPH = {"timeSigCommon": (4, 4, "C"),
+                    "timeSigCutCommon": (2, 2, "C|")}
+#: ⚠️ BOTH ASSERTS ARE LOAD-BEARING AND NEITHER IS DECORATION. The first fails
+#: the moment `time_signature_locator` learns a third one-glyph meter and this
+#: table does not; the second is the same gate `_meter_changes` applies to a
+#: digit reading, so a letter can never nominate a meter the digits could not.
+assert set(_LETTER_BY_GLYPH) == set(_tsl.LETTER_METERS.values())
+assert all((n, d) in _PLAUSIBLE_METERS for n, d, _raw in _LETTER_BY_GLYPH.values())
+
+
+def _meter_from_letter(rows) -> Optional[tuple]:
+    """One staff's meter glyphs at one bar, read as a LETTER meter.
+
+    ⚠️⚠️ THIS EXISTS BECAUSE A CHANGE PRINTED AS `C` WAS DETECTED AND DROPPED,
+    which is this repository's most expensive recurring shape. `4/4` and `C`
+    are one bar length and two engravings; `_meter_from_digits` needs two
+    stacked digits and says so in its own comment (*"timeSigCommon and
+    friends: no pair"*), so a system whose meter CHANGES to common time
+    produced no candidate at all -- while the glyph sat on the record.
+    Measured on an engraved Beethoven 5 finale at the 3/4 -> 4/4 change of bar
+    209: `timeSigCommon` detected on **23 staves of 23**, unanimous, and
+    `_meter_changes` proposed nothing.
+
+    ⚠️ IT EARNS `W_CHANGE_GLYPH_PAIR`, NOT `W_CHANGE_GLYPH_LOOSE`, and the
+    weight's name is what misleads. That constant is worth what it is because
+    the staff read a COMPLETE meter -- a numerator AND a denominator -- and a
+    letter meter is complete in one glyph. The loose weight is for ink that is
+    meter-shaped without saying what it is, which a `C` never is.
+
+    ⚠️ AMBIGUOUS INK ABSTAINS. A staff carrying BOTH a `timeSigCommon` and a
+    `timeSigCutCommon` at one bar has not read a meter, it has read two, and a
+    stroke through a C is exactly the distinction that is easy to lose (see
+    `time_signature_locator._looks_cut`, which reads it by position rather than
+    by template for that reason).
+    """
+    seen = {_LETTER_BY_GLYPH[str(r.value)] for r in rows
+            if str(r.value) in _LETTER_BY_GLYPH}
+    if len(seen) != 1:
+        return None
+    return next(iter(seen))
 
 
 def _bar_run(bars: dict, from_cell: int, expected: float) -> tuple:
@@ -1089,11 +1106,18 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict) -> list:
         readings: dict = {}
         loose = 0
         for staff, staff_rows in per_staff.items():
-            reading = _meter_from_digits(staff_rows)
-            if reading is None:
+            # ⚠️ DIGITS FIRST AND THE LETTER ONLY AFTER, so a bar that prints
+            # digits is never re-read as a letter by a stray detection.
+            pair = _meter_from_digits(staff_rows)
+            # ⚠️ THE KEY CARRIES THE PRINTED FORM, because `adjudicate_meter`'s
+            # own rule is that `C` and `4/4` are ONE bar length and TWO
+            # engravings and a page must not average them into one answer.
+            read = ((pair[0], pair[1], f"{pair[0]}/{pair[1]}") if pair
+                    else _meter_from_letter(staff_rows))
+            if read is None:
                 loose += len(staff_rows)
             else:
-                readings.setdefault(reading, []).append(staff)
+                readings.setdefault(read, []).append(staff)
         if not readings:
             continue
 
@@ -1119,6 +1143,11 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict) -> list:
             terms += [Term(f"bar_contradicts_{i}", W_CHANGE_BAR_CONTRADICTS)
                       for i in range(misses)]
             support = tally(terms)
+            # ⚠️ `raw` IS THE INK HERE, unlike the form a bar-derived meter
+            # BORROWS. `_form_for_length` refuses to copy a letter because the
+            # borrowing system printed nothing we could read; this system's own
+            # staves read the `C`, so `symbol="common"` reaching the export is
+            # a claim the page supports.
             cand = {"from_cell": cell, "numerator": num, "denominator": den,
                     "raw": raw, "support": round(support, 3),
                     "staves_reading_it": sorted(staves),

@@ -16,75 +16,143 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-09-09 (night) — the engraved render: bar sums are WRONG on perfect ink
+## 2026-09-09 (night) — the engraved render, DENSE texture: bar sums are wrong on perfect ink
 
-Sean: *"now do the engraved render to settle it"*. Done — and it settled the
-question by moving it upstream.
+Sean: *"now do the engraved render to settle it"*. ⚠️ **A SIBLING SESSION DID
+THE SAME THING IN PARALLEL AND LANDED FIRST** — see the entry below, which is
+the fuller account of the boundary (two engraved fixtures, a second document
+AND publisher, no suppression needed). **Their `_meter_from_letter` and its ten
+tests supersede this session's independent `_CHANGE_LETTERS` fix, which was
+DELETED** along with four of its five tests; theirs is better, because it
+abstains on a staff reading BOTH letters and mine did not. What is recorded
+here is only what does NOT duplicate theirs.
 
-**The fixture.** `beethoven-sym5-mvt4` from the Gradus library, meter map read
-off the file (**`{1: 4/4, 155: 3/4, 209: 4/4, 364: 2/2}`**, 23 parts, 446
-bars), rendered through `musicxml2ly` + LilyPond at a3/16pt — `excerpt`'s own
-recipe, minus its one-page shrink, which exists for an EXPORTER reason that
-does not apply when the question is what `Q.METER` decides per system.
-`render_meter_change.py` + `hide_change_signature.py`.
+⚠️ **The duplicated work was still worth one thing:** this session's five
+letter tests were written against its OWN implementation and then run GREEN
+against the sibling's — two independent readings of one hole, agreeing. The one
+test they did not cover (a staff carrying a letter AND digits at the same bar;
+digits must win) is kept as `TestDigitsWinOverALetterAtTheSameBar`.
 
-- ⚠️⚠️ **THE HEADLINE: THE BAR SUMS ARE WRONG ON PERFECT INK.** Bars 203-218,
-  23 parts, every part playing in every bar. Truth 4/4 from bar 209; we read
-  **5.0, 4.5, 5.0, 4.5** on the last system and **3.5 (18 of 23 staves)** and
-  **6.0 (20 of 23)** on the middle one. These are not noisy readings but
-  CONFIDENT WRONG ones — the cross-staff majority that is supposed to make a
-  bar trustworthy passes them. ⚠️ And the errors run **LONG** on a page with no
-  missing ink, which is a diagnosis to open rather than a conclusion.
-- **So the block on the whole bar-sum family** — the carry's second witness
-  (`A-DUR-2`), `OMR_METER_FROM_BARS` (`A-DUR-7`), Sean's per-bar model
-  (`A-DUR-6` items 3-5) — **is the DURATION READER, not the scan.** Every
-  earlier conclusion of the form *"the bars cannot speak here because the page
-  is hard"* needs re-reading, including this session's own about Litolff p.17 /
-  p.32 / p.44. ⚠️ **Do not tune `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR`
-  against it** — that is fitting a constant to a broken input. Recorded as
-  `A-DUR-8`.
-- ⚠️⚠️ **AND THE COST SIDE IS MEASURED AT LAST.** `A-DUR-2` says in its own
-  words that *"only the BENEFIT is measured — the cost of a wrong revert is
+- ⚠️⚠️ **THE COMPLEMENTARY FINDING, AND IT QUALIFIES THEIRS: BAR SUMS ARE WRONG
+  ON PERFECT INK WHEN THE TEXTURE IS DENSE.** Their fixture is the sparse
+  Scherzo recall (m172+, 3/4) and its bars read **7 fit / 2 not**. This one is
+  the **dense tutti** at bars 203-218, where all 23 parts play in every bar —
+  and the sums come out **5.0, 4.5, 5.0, 4.5** against a truth of 4/4, with
+  **3.5 at 18 of 23 staves** and **6.0 at 20 of 23** on the middle system.
+  Not one bar of the last system is right.
+- **So more witnesses is not better.** The intuition behind
+  `METER_CARRY_MIN_STAVES_PER_BAR` — that a bar many staves agree on is
+  trustworthy — fails exactly where the staves are most numerous: these are
+  CONFIDENT wrong readings and the cross-staff majority passes them. Recorded
+  as `A-DUR-8`.
+- ⚠️ **The errors run LONG** (3.5, 4.5, 5.0, 6.0 vs 4.0) on a page with no
+  missing ink. A shortfall would suggest missed ink; an excess suggests the
+  duration reader composing something twice or reading a written value too
+  long. **A diagnosis to open, not a conclusion.**
+- ⚠️⚠️ **AND THE CARRY'S COST SIDE IS MEASURED AT LAST.** `A-DUR-2` says in its
+  own words that *"only the BENEFIT is measured — the cost of a wrong revert is
   not"*. On the bar-155 engraving a **correct** carry is refused: 4 bars agree,
   4 disagree, support **+1.0** against a floor of 2.0. A direct consequence of
-  the headline.
-- ✅ **WHAT WORKS, where the bars are read right.** On the bar-155 fixture the
-  carry brings the new **3/4** forward at **+5.0 (4 agree / 0 disagree)** and
-  the bar reader INDEPENDENTLY derives the same 3/4 at **+4.0**, borrowing the
-  spelling from the system that read it — two mechanisms, one answer. A wrong
-  carried meter is refused at **−1.0** on the bar-209 fixture. The layered
-  model does what it was built to do.
-- ⚠️⚠️ **A DETECTED-THEN-DROPPED BUG, FOUND AND FIXED — a change to COMMON TIME
-  was invisible.** LilyPond spells 4/4 as `C`, and `_meter_from_digits` demanded
-  two stacked digits, skipping the letter with the comment *"timeSigCommon and
-  friends: no pair"*; the caller then counted it `loose`, built no `readings`
-  entry and skipped the bar. On the record: `meter_glyph` = **23 rows, every one
-  `timeSigCommon`, every one at the right cell** — and the system abstained
-  `no_evidence`. **Perfect detection dropped by the rule**, this project's
-  signature failure inside the meter-change reader. Fixed: `_CHANGE_LETTERS` is
-  DERIVED from `time_signature_locator.LETTER_METERS`, digits still win where
-  both are present (the letter is a fallback, never an override), and the letter
-  reaches `raw` because unlike a BORROWED spelling the glyph was matched here.
-  **Measured after the fix**: `no_evidence` → `change_only` **C** at
-  `from_cell: 3` = original bar **209**, all 23 staves, support 68.0.
-- ⚠️ **And look at that segment's `bars_contradict: 2`.** The arithmetic
-  DISAGREED with the change and 23 unanimous glyphs carried it anyway
-  (23 × 3.0 − 2 × 1.0). That is Sean's ordering — *"any time signature glyph
-  should be the heaviest weight"* — behaving exactly as specified, and the same
-  page is both the argument for the ordering and the argument for fixing the
-  durations.
-- ⚠️ **Two fixture mistakes, both caught by looking, both recorded in the code
-  that made them possible.** (1) The hide script's `--marker` was a DEFAULT, and
+  the above, and the reason ⚠️ **the meter floors must NOT be tuned against
+  this** — it would be fitting a constant to a broken input.
+- ✅ Where the bars ARE read right, both mechanisms behave, independently: on
+  the bar-155 fixture the carry brings the new **3/4** forward at **+5.0 (4
+  agree / 0 disagree)** and the bar reader derives the same 3/4 at **+4.0**,
+  borrowing the spelling from the system that read it.
+- ⚠️ **A courtesy signature at a system boundary is a structural case nothing
+  had shown.** At bar 155 the change falls on a system break, so LilyPond
+  prints the new `3/4` at the END of the preceding system as well as at the
+  start of the new one. A change reader that trusts the cell a glyph stands in
+  would propose the change one bar early. It does not fire here, and nothing in
+  the rule prevents it.
+- ⚠️ **Two fixture mistakes, caught by looking, each recorded in the code that
+  allowed it.** (1) `hide_change_signature.py`'s `--marker` was a DEFAULT, and
   `\time 3/4` is the CHANGE at bar 155 but the OPENING at bar 203 — so the 209
   run hid the carry's own source and left the change printed, inverting the
-  experiment; the tell was `system/0/0` abstaining where it had to read 3/4. The
-  argument is now REQUIRED. (2) A top-margin heuristic for finding movement
-  starts missed p.17, the one known boundary — discarded, not trusted.
-- ⚠️ **A courtesy signature is a real structural case nothing had shown.** At
-  bar 155 the change falls on a system boundary, so LilyPond prints the new
-  `3/4` at the END of the preceding system as well. A change reader that trusts
-  the cell a glyph stands in would propose the change one bar early. It does not
-  fire here, and nothing in the rule prevents it.
+  experiment; the tell was `system/0/0` abstaining where it had to read 3/4.
+  Now REQUIRED. (2) A top-margin heuristic for locating movement starts missed
+  p.17, the one known boundary — that print does not indent one. Discarded.
+- `benchmarks/omr-staged-meter-engraved-2026-09/` — `render_meter_change.py`
+  (the `excerpt` recipe without its one-page shrink, which exists for an
+  EXPORTER reason that does not apply when the question is per-SYSTEM),
+  `hide_change_signature.py`, and `FINDINGS.md`.
+
+---
+
+## 2026-09-09 — The meter boundary, MEASURED: two mechanisms told apart, and a `C` change that reached nothing
+
+**What:** `benchmarks/omr-staged-meter-boundary-2026-09/` — engraved fixtures
+carrying a REAL meter change, four arms over each, the reports and the
+controls; plus `rhythm._meter_from_letter` (no flag) and
+`TestAMeterChangeIsReadFromTheInk` (10 tests, 8 mutation arms).
+
+**Why it was blocking:** `OMR_METER_CARRY` and `OMR_METER_FROM_BARS` were
+indistinguishable. The only movement boundary on the Litolff Beethoven is
+page 17, whose bars are noise — it refuses the WRONG meter and the CORRECT one
+too. A mechanism that refuses everything cannot be told from one that refuses
+the right thing.
+
+**The route, from `omr-staged-meter-carry-2026-09` §11 and unspent until now:**
+render a real change ENGRAVED, so legibility is not the confound.
+`beethoven-sym5-mvt4` is 4/4 → 3/4 at bar 155 → 4/4 at 209. ⚠️ **The structure
+is an engraving convention, not an ablation** — a signature is printed at the
+CHANGE and at nothing after it, so a system wholly inside the new meter prints
+none and abstains honestly.
+
+**Measured** — the same page, asked twice, only the preceding page differing:
+the TRUE meter carries at **+6.0** (7 bars fit / 2 not), the FALSE one is
+refused at **−8.0** (0 / 9). In the file, whole rests written at 4.0 ql inside
+a 3.0 ql bar **196 → 38**, measure rests **305 → 463**, and the CARRY and BARS
+exports **byte-identical**.
+
+**Then the second document and publisher, same session.** Brahms 1 mvt 1 prints
+`6/8`, ONE bar of `9/8`, then `6/8` — and the Breitkopf scan of that music was
+already in the scan gate with a **hand-verified window**, so the same 22 bars
+run ENGRAVED and SCANNED differing only in the printing.
+**ENGRAVED 4 printed changes / 4 found / 1 false; SCANNED 2 / 1 / 9.**
+⚠️ **It holds on a second DOCUMENT and not on a second PUBLISHER'S SCAN, and
+the pair says the block is READING** — the scan votes `9/4` for the `9/8`,
+misses the change, and proposes five spurious `4/4` changes just over the
+floor, while its bar segmentation is right.
+
+**The fix it found:** a meter change engraved as a common-time `C` was detected
+on **23 staves of 23** and proposed nothing — `_meter_from_digits` needs two
+stacked digits and says so in its own comment. `Q.METER_GLYPH` already carried
+`letter=True`, written by GATHER and read by nothing; and the change detector
+had **no unit tests at all**. ⚠️ It produces a false change on one Litolff scan
+page from a 0.377-confidence glyph, reported rather than gated — the hazard is
+`METER_CHANGE_FLOOR`, and the p.62 `3/4` this project celebrates rests on the
+same one-staff property.
+
+**Three things worth carrying:**
+* ⚠️ **A duration-level A/B across meter arms is invalid by construction** — a
+  decided meter is consumed by `size_measure_rest` and `reconcile_duration`,
+  and 159 of 314 duration verdicts move on one page. Control on the meter
+  decision's own `bar_lengths_seen`, written before any consequence runs.
+* ⚠️ **Bar assessability falls with DENSITY, not with print quality** — 100% /
+  100% / 78% / **33%** as events per bar go 1.0 / 1.5 / 3.1 / **4.5**. These
+  mechanisms are strongest where the music is sparse.
+* ⚠️ **Score LENGTH and FORM apart.** `C` and `¢` are both 4.0 quarter notes,
+  so a bar-sum mechanism gets the length right and the engraving wrong;
+  musicdiff charges `symbol=` at three edits per staff.
+
+**⚠️ AND THE LARGEST GAP OF THE THREAD, FOUND AND DELIBERATELY NOT BUILT:**
+`Q.METER` carries `segments` and **nothing downstream reads them**.
+`staged/export.py:210` takes one meter per system run, and `record.meter_at` —
+whose own docstring says it *is* how a bar's meter is read — is called by
+nothing but its own tests. The `¢` sits on the record at 24 of 24 staves,
+support 74.0, and the exported file declares `<time>` once per part at measure
+1. **The mid-system change machinery two sessions built cannot currently
+produce a file.** Two siblings share the cause: `_carry_meter` takes a source's
+OPENING and drops its segments, and a `change_only` system can be neither a
+carry nor a form source. One fix, three symptoms — **queued as its own
+session** at Sean's direction, because it needs its own measurement and the
+nine false scan segments above would propagate forward under it.
+
+⚠️ Re-measured on the merged tree (27+ commits, 221 changed lines of
+`rhythm.py`, 404 of `gather.py`) — identical on every arm. Suite **3395 passed,
+11 skipped**. Handoff:
+[docs/handoff-2026-09-09-the-boundary-measured.md](docs/handoff-2026-09-09-the-boundary-measured.md).
 
 ---
 

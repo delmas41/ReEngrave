@@ -592,8 +592,10 @@ counted it as a `loose` glyph, built no `readings` entry and skipped the bar.
 Found on the engraved fixture (`A-DUR-8`), where LilyPond spells 4/4 as `C`:
 `meter_glyph` = 23 rows, all `timeSigCommon`, all at the right cell, and the
 system abstained `no_evidence`. **Perfect detection dropped by the rule.**
-Fixed: `_CHANGE_LETTERS` is derived from
-`time_signature_locator.LETTER_METERS`, digits still win where both are
+Fixed by `rhythm._meter_from_letter` — **a sibling session's, landed first**;
+a second session reached the identical finding from the same bar and its
+duplicate implementation was deleted in favour of theirs, which additionally
+abstains where one staff reads BOTH letters. Digits still win where both are
 present, and the letter reaches `raw` because — unlike a BORROWED spelling —
 the glyph was matched here.
 
@@ -697,21 +699,27 @@ so they take the abstaining branch. See
 
 **What was measured.** `beethoven-sym5-mvt4` bars 203-218 rendered through
 LilyPond — 23 parts, every part playing in every bar, ink perfect by
-construction — changes to 4/4 at bar 209. The bar sums we read:
+construction — changes to 4/4 at bar 209. **Assessable bars only** (the ones
+that reached the quorum and are therefore the mechanism's own answers):
 
-| system | truth | read |
-|---|---|---|
-| bars 203-205 | 3/4 | **3.0, 3.0, 3.0** ✅ |
-| bars 206-214 | 3/4 → 4/4 at cell 3 | 3.0 ✅, **4.0 at 20/23** ✅, then **3.5 (18/23)**, **6.0 (20/23)** ✗ |
-| bars 215-218 | 4/4 | **5.0, 4.5, 5.0, 4.5** ✗ |
+| system | truth | assessable | read |
+|---|---|--:|---|
+| bars 203-205 | 3/4 | 3 of 3 | **3.0, 3.0, 3.0** ✅ |
+| bars 206-214 | 3/4 → 4/4 at cell 3 | 4 of 9 | 3.0 ✅, **4.0 at 20/23** ✅, **3.5 (18/23)** ✗, **6.0 (20/23)** ✗ |
+| bars 215-218 | 4/4 | 1 of 4 | **4.5 (12/23)** ✗ |
+
+**Three of five assessable bars on the two dense systems are wrong**, and not
+by ties or near misses: 18 of 23 staves agree on 3.5 against a truth of 4.0.
 
 **Why it matters.** The whole bar-sum family — the carry's second witness
 (`A-DUR-2`), `OMR_METER_FROM_BARS` (`A-DUR-7`) and Sean's per-bar model
 (`A-DUR-6`, items 3, 4 and 5) — assumes a page's own arithmetic is readable
 where the page is legible. **It is not, and the scan was never the reason.**
-These are confident wrong readings: 18 of 23 staves agree on 3.5 against a
-truth of 4.0, so the cross-staff majority that is supposed to make a bar
-trustworthy passes them.
+The cross-staff majority that is supposed to make a bar trustworthy passes
+them. ⚠️ **This is the half that is additional to the sibling session's
+measurement**: they measured that ASSESSABILITY falls with density (100% of
+bars at 1.5 events per bar, 33% at 4.5) — how many bars speak; this is whether
+the ones that do are RIGHT.
 
 ⚠️ **The errors run LONG** (3.5, 4.5, 5.0, 6.0 vs 4.0) on a page with no
 missing ink — a diagnosis to open, not a conclusion.
