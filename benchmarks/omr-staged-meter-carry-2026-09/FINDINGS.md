@@ -185,3 +185,90 @@ OMR_METER_CARRY=1 python3 -m tools.omr.staged "$PDF" --pages 1,17 --weights "$W"
 ⚠️ Measure a carry on a **multi-page run only**. The scan gate transcribes ONE
 PAGE PER ROW, which silently disables every page-spanning mechanism — it would
 report this change at exactly zero, twice.
+
+---
+
+## 5. THE SECOND WITNESS — do the bars name the meter? (added after review)
+
+Sean, on the §2 conclusion: *"I want to make sure we don't get stuck in binary
+on/off based on current measurements... it may be that the time sig gives the
+measure context or it may be that the measure math helps determine the time
+signature — which is why we separated reading from adjudication."*
+
+**That is the right reading and §2 was the wrong shape.** The carry was built
+to DECIDE, so a case where it decides wrongly could only be answered by
+switching it off. It should arrive as a **candidate** and be confirmed or
+refuted by the bars it claims to govern — then a movement boundary needs no
+movement detector, because the Andante's bars simply contradict the previous
+movement's meter.
+
+`probe_bar_sums.py`, on the **flag-OFF** exports (with the carry on,
+`reconcile_duration` rewrites durations FROM the meter, so bar sums there are
+downstream of what is being tested). Chord members skipped, lone measure/whole
+rests skipped, empty bars skipped — each for a measured reason, see the
+module docstring.
+
+| | page 1 — meter IS read (**control**) | page 17 — Andante, meter reads nothing |
+|---|--:|--:|
+| printed meter | 2/4 = 2.0 ql | 3/8 = 1.5 ql |
+| assessable bars | 84 | 135 |
+| **modal bar sum** | **2.0 ✓** | **1.5 ✓** |
+| bars exactly on the printed meter | 42 (0.500) | 18 (0.133) |
+| bars at 2.0 vs 1.5 | 42 vs 4 — **10.5× for 2/4** | 11 vs 18 — **1.6× for 3/8** |
+
+**The mode is the printed meter on BOTH pages, including the one where nothing
+read it.** So the bar math does carry the signal, and the page-1 row is the
+positive control that the method works where the answer is independently known.
+
+⚠️ **But on page 17 it is a lean, not a plateau.** 18 against 11 is a 7-bar
+margin over the meter the carry would have imposed. That is enough to REFUSE a
+carried `2/4` — which is all the second witness has to do — and **not** enough
+to name `3/8` on its own. The honest design is therefore: a carried meter is a
+candidate, the bars may veto it, and where they veto without naming a
+replacement the system ABSTAINS. That is strictly better than today's flag,
+because the wrong answer is removed without the right one being invented.
+
+## 6. ⚠️⚠️ THE CHORD IS GROUPED AFTER THE STAGE THAT NEEDS IT
+
+Sean, same review: *"we may need to reconsider where the chord happened in
+precedence?"* **Confirmed, and it is a live defect rather than a probe detail.**
+
+`grep -rn chord tools/omr/staged/` outside `export.py` returns **nothing**, and
+the record has **no chord, event, onset or voicing quantity at all**.
+`group_chords_in_measure` is called from exactly one place —
+`export._events`, at serialisation time.
+
+So every stage before EXPORT treats each chord member as a separate
+time-advancing event. That includes **`consequences.reconcile_duration`**,
+which runs in EVALUATE, sums `Q.DURATION` over a cell, and compares the total
+to the meter — the pipeline's own bar-sum check, computed on ungrouped
+durations.
+
+Measured on the same two exports, grouped (what the file says) against
+ungrouped (what `reconcile_duration` sums):
+
+| | page 1 | page 17 |
+|---|--:|--:|
+| bars containing a chord | 11 of 83 (13.3%) | **50 of 131 (38.2%)** |
+| bars exactly on the meter, **grouped** | 42 | **18** |
+| bars exactly on the meter, **ungrouped** | 41 | **13** |
+
+**On page 17 the double-count destroys 5 of the 18 correct bars — 28% of the
+evidence — before any consumer sees it.** The inflation is not a constant to
+subtract, either: it ranges 0.125 → 6.0 quarter-lengths across 13 distinct
+values.
+
+Two consequences worth carrying:
+
+1. **`reconcile_duration` is silently under-firing** wherever a bar holds a
+   chord, because its total can never match the meter there. It fired 13 times
+   on the `--pages 0-2` run.
+2. **The second witness of §5 cannot be built on the record as it stands.**
+   Making the bar sum the meter's corroborator requires the chord grouping to
+   become a decided quantity — one event, N noteheads — *before* EVALUATE,
+   rather than an export-time convenience. That is the precedence fix, and it
+   is the real prerequisite for §5.
+
+⚠️ Note this also means §5's own table, measured off the EXPORT, is the
+*optimistic* one: it is what the bar sum could say once grouping precedes it,
+not what any stage can read today.
