@@ -309,6 +309,38 @@ its ground truth, and the hand-checked notes that line the two up are all small
 enough to live in the repository, so a change to how a reading is *written out*
 can be scored there. A change to how a page is *read* still cannot.
 
+## A fact can arrive and still not be usable (2026-09-08)
+
+To judge how well a page was read, the project has to know which printed staff
+corresponds to which part of the reference score. For one dense Mahler page
+that correspondence had never been written down, and it was the last such gap:
+a human read the page and supplied it, closing the item.
+
+The page still could not be judged. It prints four percussion staves that are a
+single line rather than the usual five — a shape the staff finder cannot see at
+all — so the new list named 21 staves while the reader had produced 17, the
+two counts disagreed, and the tool refused to guess. The gap had not closed so
+much as changed its name.
+
+The repair was to record, for each of those four staves, that it is a one-line
+staff. Nothing was inferred from the instrument names: the page's own notes
+already listed the four in words, and a separate hand-read table in the same
+file already carried the answer for all 21 staves, so the two independent
+records could be checked against each other. The timpani, which looks like
+percussion but is printed on a normal five-line staff, is the case a
+name-matching shortcut would have got wrong.
+
+Measured before and after with everything else held fixed, the page went from
+nothing that could be said about it to 17 of its staves being assessable, and
+exactly one page in the twenty changed. The four one-line staves are still
+unread — the fix makes the tool *say* they are unread instead of giving up on
+the whole page.
+
+Two things worth carrying. A test written earlier for exactly this mistake is
+the only thing that caught it; every other check passed. And the tool that
+writes these staff lists cannot record the one-line fact at all — it rejects
+it — so the next page mapped this way will arrive with the same problem.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost

@@ -266,3 +266,142 @@ rows 12 → 16.
 
 **Only cause D remains** — mahler p2 needs a `staves` map, and nothing on disk
 can supply it.
+
+---
+
+## 7. ⚠️ CAUSE D WAS CLOSED AND THE ROW LANDED IN CAUSE **B** — the map arrived without its arity fields (2026-09-08)
+
+`1cf44dbc` supplied the fact §5 said nothing on disk could supply: Sean's
+confirmation pass gave mahler p2 a 21-entry `staves` map, every entry
+`confirmed`, and the scan gate went **20/20 mapped**. That closes D as stated.
+
+**It did not make the row assessable.** The map lists PRINTED staves and the
+row prints four one-line percussion rules, so `expand_lineup` read 21 five-line
+slots against our 17 parts and the arity gate refused — the row moved from
+`D_no_lineup` straight into `B_undetectable_staves`, which is
+`separate_causes.classify` doing exactly what it says (`n_map > n_pred`).
+The bucket total did not move; only its label did.
+
+⚠️ **`test_works_json_staff_lineup.py` caught it, and it is the only thing that
+did.** Both tests written with the B/C fields failed the moment the row landed:
+
+```
+mahler-sym5-mvt1-local-p2: the lineup expands to 21 five-line staves but the
+page prints 17 per system.
+mahler-sym5-mvt1-local-p2: 0 entries flagged lines:1 and 0 extra printed
+staves, but len(staves) - n_staves = 4
+```
+
+Nothing else notices. `merge_additions` proved the map NORMALISES, every
+`page_normalise` check passed, and the ledger's own refusal reads as an honest
+abstention rather than a defect.
+
+### The fix: four fields, and the row already carried the answer twice
+
+`Becken`, `Grosse Trommel`, `Kleine Trommel`, `Tamtam` take `lines: 1`.
+**Neither the identity nor the count was inferred from the instrument names** —
+both are read off facts the row already holds, and they agree:
+
+* `page.n_staves_note` names the rules in prose (*"FIVE one-line percussion
+  staves — Becken, Grosse Trommel, `Becken/Gr.Trommel von einem geschlagen`,
+  Kleine Trommel, Tamtam … Compare `detected` against 17, not against 22"*);
+* `condensation.staves_as_printed` carries a `lines` value for **all 21**
+  entries independently, and after the fix every one of the 21 agrees with it.
+
+⚠️ **`Pauken` is a five-line staff and is NOT flagged** — the one entry a
+name-matching rule would have got wrong.
+
+⚠️ **The prose says FIVE rules and only FOUR entries are flagged.** The fifth
+is `Becken u. Gr.Trommel von einem geschlagen`, the combined-player staff the
+Gradus reference has no part for, so it is not a lineup entry at all — the
+row's own `condensation.notes` records it as the 22nd printed staff. 21 − 4 =
+17 = `page.n_staves`, exactly.
+
+Extending §1's B table with the row that belongs in it:
+
+| row | lineup | one-line rules named in the row's own note | five-line | we emitted |
+|---|--:|---|--:|--:|
+| mahler p3 | 15 | Becken, Gr.Tr. (2) | 13 | **13** |
+| mahler p4 | 21 | Becken, Gr.Tr., Kl.Tr. (3) | 18 | **18** |
+| mahler p5 | 21 | + Tamtam (4) | 17 | **17** |
+| **mahler p2** | **21** | **Becken, Gr.Tr., Kl.Tr., Tamtam (4)** | **17** | **17** |
+
+### Measured — controlled A/B, same tree, only `works.json` differing
+
+`run_ledger.py` twice over the same fixtures and the same pairs file, control
+at `2017fb11` with the map as `1cf44dbc` left it, arm adding the four fields
+and nothing else. Full record: `mahler-p2-oneline-ab.json`.
+
+| | control | arm |
+|---|--:|--:|
+| rows with a resolved part join | 16 of 20 | **17 of 20** |
+| pooled `part_unresolved` | 7,985 | **7,266** (−719) |
+| pooled `uncorresponded` | 8,179 | **7,460** |
+| p2 `n_lineup_slots` / `n_one_line_dropped` | 21 / 0 | **17 / 4** |
+| p2 `uncorresponded` | 771 | **52** |
+
+⚠️ **EXACTLY ONE ROW CHANGES.** The other 19 are identical outcome for
+outcome, and pooled musicdiff is identical between the arms — it must be,
+because `works.json` does not reach it, which makes it a live control on the
+harness rather than a claim.
+
+⚠️ **THE ROW'S ASSESSABLE MASS IS NOT 719 NEW SYMBOLS.** The same 527 truth and
+244 predicted symbols enter both arms and `coverage.balanced` is `True` in
+both; what changes is that 194 predicted symbols stop owning a row of their own
+and become a truth row's PARTNER (`pred_rows_own` 244 → 50). The 771 → 52 fall
+is that pairing, not new evidence. p2 gains `matched_exact` 46,
+`matched_attribute_error` 148, `missing` 59, `ambiguous` 17, `spurious` 44 and
+`absorbed_by_condensation` 211, all of which were unsayable before.
+
+### ⚠️ The 52 that remain are the right 52
+
+Broken out, they are **13 rows each on truth parts 23–26 — `Becken.`,
+`Grosse Trommel.`, `Kleine Trommel.`, `Tamtam.`** — a clef, a key, a time
+signature and 10 rests apiece. That is `expand_lineup`'s declared behaviour,
+not a residual fault: a five-line staff detector cannot find a single printed
+rule, so those four staves' music is genuinely unread and the fields say so
+instead of joining it to something. **The fix buys the assessability of 17
+staves and declares 4 unread; it does not claim to read them.**
+
+### ⚠️⚠️ THE GENERATOR CANNOT CARRY THE FIELD, SO THIS WILL RECUR
+
+Not a typo in one row — a gap in the path that writes them.
+`merge_additions.shape_problems` **refuses** any key beyond `name`/`parts`:
+
+```python
+extra = set(s) - {"name", "parts"}
+if extra:
+    out.append(f"entry {k} has unexpected key(s) … entries are exactly name+parts")
+```
+
+and the confirmation pipeline never offers one: p2's row in
+`works.staves-additions.json` carries `{name, parts, proposed, verdict}` and
+its `proposed` entries are `{name, parts}`. So a map with `lines: 1` would have
+been **rejected at merge time**, and the UI had nothing to propose.
+
+⚠️ `build_cache.py` DOES compute it — `"lines": spec.get("lines", 5)` at line
+496, over a `lines: 1` band-splicing path with its own comment saying *"a map
+entry carries `lines`, because 1 vs 5 is exactly what tells a …"*. **The value
+is computed upstream and dropped between the cache and the file** — the pattern
+CLAUDE.md now records four instances of in one day. The `lines` field landed in
+`166759fc`; this writer predates it and was never widened.
+
+**Not fixed here** (it changes a writer's contract and the additions schema,
+and no unmapped row remains to exercise it). The consequence to carry: the next
+row mapped through that path with one-line percussion lands unflagged, its
+whole page unassessable, and `test_works_json_staff_lineup.py` is what will say
+so — after the human pass is spent.
+
+### Reproduce
+
+```bash
+python3 -m pytest tools/omr/tests/test_works_json_staff_lineup.py -q
+python3 benchmarks/omr-symbol-ledger-2026-09/run_ledger.py \
+    --pairs benchmarks/omr-wrongnote-decomposition-2026-09/scan-pairs.json \
+    --out-dir /tmp/ledger-arm
+```
+
+⚠️ Give each arm its own `--out-dir`, and check the clock: a run over the
+20 rows is ~4 minutes here. (The `scan_eval` caching trap CLAUDE.md records is
+a different harness, but the same instinct applies — an A/B that returns
+instantly did not run.)

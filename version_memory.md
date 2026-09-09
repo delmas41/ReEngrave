@@ -5,6 +5,56 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-08 — works.json: mahler p2's four one-line percussion staves, and the row that closed cause D into cause B
+
+- **`test_works_json_staff_lineup.py` had two tests failing on `main`, and it
+  was a DATA defect, not a code one.** `1cf44dbc` added mahler p2's
+  hand-confirmed 21-entry `staves` map — closing cause D, the scan gate 20/20
+  mapped — but the map lists PRINTED staves and the page prints four one-line
+  percussion rules, so `expand_lineup` read 21 five-line slots against our 17
+  parts and the arity gate refused. **The row moved from cause D straight into
+  cause B; the bucket total never moved, only its label.**
+- **Fixed with four `lines: 1` fields** on `Becken`, `Grosse Trommel`,
+  `Kleine Trommel`, `Tamtam`. ⚠️ **`Pauken` is a five-line staff and is not
+  flagged** — the one entry a name-matching rule would get wrong. Neither the
+  identity nor the count was inferred from names: `page.n_staves_note` names
+  the rules in prose and `condensation.staves_as_printed` carries `lines` for
+  all 21 entries independently, and after the fix every one of the 21 agrees.
+  ⚠️ The prose says FIVE rules and four entries are flagged — the fifth is the
+  combined-player staff the reference has no part for, so it is not a lineup
+  entry (21 − 4 = 17 = `page.n_staves`).
+- **Controlled A/B, same tree, only `works.json` differing** (record:
+  `benchmarks/omr-part-join-2026-09/mahler-p2-oneline-ab.json`): joined rows
+  **16 → 17 of 20**, pooled `part_unresolved` **7,985 → 7,266 (−719)**, p2's
+  `uncorresponded` **771 → 52**. **Exactly one row changes**, the other 19
+  identical outcome for outcome, and pooled musicdiff is identical between
+  arms — a live control, since `works.json` cannot reach it.
+- ⚠️ **The row gains no new symbols.** The same 527 truth / 244 predicted enter
+  both arms and `coverage.balanced` is `True` in both; 194 predicted symbols
+  stop owning a row of their own and become a truth row's PARTNER. The 771 → 52
+  fall is that pairing, not new evidence.
+- ⚠️ **The 52 that remain are the right 52**: 13 rows each on truth parts 23-26
+  (`Becken.`, `Grosse Trommel.`, `Kleine Trommel.`, `Tamtam.`) — a clef, a key,
+  a time signature and 10 rests apiece. A five-line staff detector cannot find
+  a single printed rule, so that music is genuinely unread and the field says
+  so instead of joining it to something.
+- ⚠️⚠️ **AND IT WILL RECUR — the writer cannot carry the field.**
+  `merge_additions.shape_problems` refuses any key beyond `name`/`parts`, and
+  the confirmation UI proposes none (p2's additions row is `{name, parts,
+  proposed, verdict}`), while `build_cache.py:496` computes `"lines":
+  spec.get("lines", 5)` and it is dropped on the way out — the
+  computed-and-unread pattern again. **Not fixed here**: it changes a writer's
+  contract and the additions schema, and no unmapped row remains to exercise
+  it. The next row mapped through that path with one-line percussion lands
+  unflagged and its whole page unassessable, with the test as the only alarm —
+  after the human pass is spent.
+- **Files touched:** `benchmarks/omr-scan-e2e-2026-09/works.json` (4 fields),
+  `benchmarks/omr-part-join-2026-09/FINDINGS.md` (§7),
+  `benchmarks/omr-part-join-2026-09/mahler-p2-oneline-ab.json` (new),
+  `CLAUDE.md`, `PROJECT_BRIEF.md`, `version_memory.md`.
+
+---
+
 ## 2026-09-09 — dynamics: the block is HAIRPINS, not letters (scoping, no arm run)
 
 - **Cloud-session capability established by inventory, not memory**:
