@@ -3,6 +3,199 @@
 A running log of changes made to this project, newest first. Updated after
 every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
+⚠️ **ORDER IS CAUSAL — several entries share a date, so the sequence is what
+carries the dependency, not the heading.** Parallel sessions dated their own
+blocks by their own reckoning; the GATHER-coverage entry stands above the
+`Q.EVENT` one because it *builds on* it, generalising the chord gap that block
+found. Headings are left as each session wrote them — rewriting another
+session's dated claim to tidy a sort would be the ledger overwriting the tree.
+⚠️ *(This note previously pointed at "the two 09-10 entries". The session that
+wrote them re-dated its own blocks to `2026-09-09 (night)` in the same commits
+that landed on main, so that wording is gone — corrected here rather than left
+pointing at headings no longer in the file.)*
+
+---
+
+## 2026-09-09 — four parallel sessions merged, and the merge is where two findings changed
+
+Four sessions that had been running concurrently were landed onto one branch.
+Three of the four merges needed a real decision rather than a text resolution,
+and **two claims were only falsifiable once the trees were together** — the
+literal case for this repo's standing rule that a change is measured on the
+MERGED tree.
+
+**What landed** (in merge order):
+
+1. `reengraved-meter-carry-0c9da4` — the staged pipeline gets an **EXPORTER**
+   (`staged/export.py` — the handoff's *"⚠️ there is NO EXPORTER"* is closed),
+   a **derived inventory** (`staged/inventory.py`), a **health report**
+   (`staged/health.py`), the GATHER pass for five families read by nothing, the
+   meter carry, and `Q.EVENT` (chord grouping happening after the stage that
+   needed it).
+   ⚠️ **This session pushed one more commit WHILE the merge was in progress**
+   (`d0da5f00`), and it SUPERSEDES the meter-carry conclusion the first four
+   commits landed. The carry is no longer a gate that had to ship OFF for want
+   of a movement-boundary detector: it arrives as a CANDIDATE and the bars it
+   claims to govern confirm or refuse it, so **the boundary problem dissolved
+   with no detector anywhere** — all three systems of Beethoven 5 p.17 (the
+   *Andante*, a new movement in 3/8) refuse the carried 2/4. It is merged.
+   ⚠️⚠️ **AND THEN A SECOND COMMIT (`dfaaa71b`) CORRECTED THAT CLAIM, after
+   Sean pushed back — *"Did we solve this? It feels a ways out to me."*** The
+   Andante refusal is **SAFE but NOT DISCRIMINATING**: page 17 refuses the
+   CORRECT 3/8 too (−1.0, −1.0), so it is a page that refuses everything, not
+   a boundary being detected. What stands is narrower and still real — **where
+   the bars can speak they discriminate both ways** (true meter +14/+7/+16
+   against the wrong one −12/−9/−14 on the three well-read systems), and a
+   page that cannot speak abstains. **A movement boundary on a page that reads
+   well remains UNMEASURED**, and that — not `n` — is now the blocking
+   objection to the default.
+   ⚠️ A **fourth** commit (`8ace2b79`) then went looking for that missing case
+   and FOUND one — Beethoven 5 mvt 4 changes 4/4 → 3/4 mid-system on Litolff
+   p.62 — and reports that it still does not settle the rule: the printed 3/4
+   **is not read** (the glyph route is closed on this edition too), the **bar
+   sums DO see it** (9 of 16 staves agree on 3.0, the new meter — the thesis
+   working), but the proposed discriminator needs two dissenters and only one
+   clears quorum. Parked for a design pass, not built. Documentation only. Checked before believing it was finished: that worktree is clean
+   and the commit is on `origin`.
+   ⚠️ It **subsumes `reengraved-staged-pipeline-068163` entirely** — that
+   branch's tip is an ancestor — so that branch was NOT merged separately.
+2. `brave-diffie-f56a0c` — the staves-map WRITER carries the arity fields, and
+   the arity question is asked BEFORE the write.
+3. `gracious-kare-2cddc3` — dynamics enter the staged pipeline; `OMR_CV_HAIRPINS`
+   re-priced (its stale-pricing prediction REFUTED, the answer changed anyway).
+4. `gather-stage-coverage-qp6j01` — `staged/gather_coverage.py`, the derived
+   answer to "what does the reader actually write down".
+
+**⚠️ THE THREE SEMANTIC CONFLICTS, and why concatenating would have shipped
+bugs:**
+
+- **Two sessions gathered the SAME two quantities from the SAME reader.**
+  `gather_glyph_families` (session 1) and `gather_dynamic_letters` /
+  `gather_wedge_boxes` (session 3) both observed `Q.DYNAMIC_LETTER` and
+  `Q.WEDGE_BOX` as `READERS.DETECTOR`. Keeping both would put **two rows from
+  one reader on one glyph** — the "two rows from one reader are ONE signal"
+  fault, arrived at by accident, and named in session 3's own comment.
+  Resolved by OWNERSHIP: the dynamics rungs own both (they carry the band
+  offset a per-cell frame cannot express, and the CV rung); `glyph_families`
+  keeps rests, arcs and articulations.
+- **`subjects_from` vs the wider `reasons` tuple** in `adjudicate_dynamic`.
+  Both kept, and the composition was **checked rather than assumed**:
+  `subjects_for` reads `log.all_rows()` and an abstention IS a row, so session
+  3's deliberate row-for-every-cell still yields a subject for a bar with no
+  letter of its own. The comment claiming otherwise was corrected, not shipped.
+- **Four tests then failed, every one at a seam, every one asserting a truth
+  the merge changed.** They were updated to the merged truth and re-run RED.
+
+**⚠️⚠️ FINDING 1 — `Q.DYNAMIC` GRADUATED, so it must LEAVE the stub roster.**
+`test_the_five_previously_unnamed_stubs_are_named_now` failed because
+`adjudicate_dynamic` is implemented. A roster that keeps a graduated entry
+describes history rather than the pipeline — the same fault
+`export_coverage`'s `test_the_inventory_has_no_stale_entries` exists to
+prevent — so the entry was removed AND its graduation pinned by a new test.
+
+**⚠️⚠️ FINDING 2 — "ALL SIX STUBS ARE STARVED AT GATHER" IS NO LONGER TRUE OF
+THE MERGED TREE, AND THE FINDING IS CORROBORATED RATHER THAN OVERTURNED.**
+Session 4 measured, on its own branch, that all six declared stubs wanted a
+measurement no gatherer emitted — *"a stub is two repairs, not one"* — and
+named four of them **NAMING gaps, cheap, the ink is already in the log**.
+Sessions 1 and 3 then landed **exactly those four gatherers**, without having
+read that finding. Measured on the merged tree:
+
+| stub | starved on its own branch | starved MERGED | closed by |
+|---|---|---|---|
+| `arc_kind`, `arc_owner` | `ARC_BOX` | **fed** | `gather_glyph_families` |
+| `articulation_owner` | `ARTICULATION_MARK` | **fed** | `gather_glyph_families` |
+| `dynamic` | `DYNAMIC_LETTER` | **fed, and NOT A STUB** | `gather_dynamic_letters` + `adjudicate_dynamic` |
+| `wedge_anchor` | `WEDGE_BOX` | **fed** | `gather_wedge_boxes` |
+| `direction` | `DIRECTION_WORD` | **still starved** | — |
+
+- `dynamic` is the only one of the six that got BOTH repairs, and the only one
+  that now decides anything — the finding holding exactly as stated.
+- The four that got only the gatherer are still stubs abstaining honestly,
+  which is what a half-repair was predicted to produce.
+- **The work plan changes**: four of the five remaining stubs are now ONE
+  repair each (write the adjudicator, the evidence is waiting); `direction`
+  alone is still two, and it is the one already named as the sole READING gap.
+- ⚠️ **Found by a TEST, not by re-reading prose** — it failed with `5 != 6`
+  exactly as its own docstring promised, and now pins both halves.
+
+**Documentation kept coherent**: the superseded claim was stated in **four
+places** (CLAUDE.md ×2, this file ×2, `FINDINGS.md`) — the exact
+restated-figure-goes-stale hazard CLAUDE.md warns about. CLAUDE.md and
+FINDINGS.md were corrected in place; the two dated entries in this file were
+**left standing with a pointer**, because a dated measurement is a frozen fact
+and is never rewritten.
+
+⚠️ The committed `out/gather-coverage.json` is likewise left as session 4
+measured it, and is now a BRANCH measurement rather than the tree's state; run
+`python3 -m tools.omr.staged.gather_coverage` for the current answer.
+
+---
+
+## 2026-09-09 — GATHER-stage coverage: the tool stands, its first draft was stale on arrival
+
+⚠️⚠️ **THE CORRECTION IS THE ENTRY — AND IT DID NOT ARRIVE BEFORE THE MERGE.**
+PR #24 was merged at its pre-repair commit while this correction sat on the
+branch, so main carried the stale claims and the buggy guard until this landed
+as a follow-up. *A correction that is not merged is not a correction.* This work was
+done on a branch while **31 commits landed on main**, and in that window
+parallel sessions found the same gaps and FIXED them: `Q.EVENT` (*"which
+glyphs of a bar sound TOGETHER — one event, N noteheads"*) closes the chord
+finding, `Q.REST` closes the rest finding, and `gather_glyph_families` closes
+four of the five naming gaps. **The tool was right; its documentation asserted
+open gaps that were closed** — *fixed-then-kept-open-in-prose*, the third
+instance recorded in CLAUDE.md, caught by a trial merge rather than by review.
+
+- **The derived tool, `python3 -m tools.omr.staged.gather_coverage`.** New:
+  `tools/omr/staged/gather_coverage.py`,
+  `tools/omr/tests/test_staged_gather_coverage.py` (12 tests),
+  [benchmarks/omr-gather-coverage-2026-09/FINDINGS.md](benchmarks/omr-gather-coverage-2026-09/FINDINGS.md)
+  and its committed output.
+- **On the merged tree: `record.Q` declares 66 and a gatherer OBSERVES 37**;
+  2 declared-and-only-abstained; 6 declared-ungathered; **1 decision still
+  starved** (`DIRECTION`, whose gatherer is itself a stub) where the first
+  draft measured six.
+- **7 legacy event keys still have no name** (was 11): `voices`/`voice_index`,
+  `stem_direction`, `tied_to_next`/`tied_from_prev`, `fermata`, `ornaments`.
+  ⚠️ `Q.ARC_OWNER` already depends on `voices`, since MusicXML pairs `<slur>`
+  WITHIN a `<voice>`.
+- **15 of 35 detector families have no gather quantity** (was 16), led by
+  `accidental` (8) — deliberate, recorded in `FAMILY_Q_IS_ELSEWHERE`:
+  `Q.ACCIDENTAL` is an EVALUATE consequence, and an in-bar accidental is
+  **SCOPE, not a mark** (it holds to the barline), a span the record cannot
+  hold.
+- **⚠️⚠️ THE ANTI-DRIFT GUARD HAD THE BUG IT EXISTS TO PREVENT.** It compared
+  names for exact equality, so the legacy key `events` never matched `Q.EVENT`
+  — singular against plural — and the stale claim reached a PR body, CLAUDE.md,
+  PROJECT_BRIEF and a findings file. `rest` sat at `None` after `Q.REST`
+  landed, same class. Repaired with `q_covering()` (normalising, and
+  deliberately NOT a substring test — `stem_direction` would false-match
+  `Q.STEM`), a guard that asks the vocabulary instead of trusting the family
+  table, and a third that evicts a stale exemption. **An anti-drift check is
+  itself an artefact that drifts.**
+- **What caught it was a DIFFERENT test** — the stub-starvation guard failing
+  with *"ARC_KIND is no longer input-starved"* during a trial merge — not the
+  guard whose job it was.
+- **⚠️ No overlap with `staged/inventory.py`** (landed on main the same day):
+  that inventories the 21 DECISIONS, this the gather-stage QUANTITIES, the
+  legacy event vocabulary and the detector class space.
+- **⚠️ No arm was run and no page was read.** Measure REACH before accuracy.
+- **Companion exploration, reasoned from the PAGE**:
+  [docs/exploration-what-is-on-the-page-2026-09-09.md](docs/exploration-what-is-on-the-page-2026-09-09.md).
+  ⚠️ Its headline **survives the merge and is sharpened by it**: `Q.EVENT` is
+  scoped `Kind.CELL`, so simultaneity is now read WITHIN a staff and still
+  nowhere ACROSS staves — the only large source of REDUNDANT evidence on a
+  page. Also: `_mxl_empty_measure` cannot tell SILENT from UNREAD; and its own
+  first draft named `breath`/`glissando` as detector families from memory when
+  neither is in the class space.
+
+**Files touched:** `tools/omr/staged/gather_coverage.py` (new),
+`tools/omr/tests/test_staged_gather_coverage.py` (new),
+`benchmarks/omr-gather-coverage-2026-09/` (new),
+`docs/exploration-what-is-on-the-page-2026-09-09.md` (new), CLAUDE.md,
+PROJECT_BRIEF.md, version_memory.md.
+---
+
 ---
 
 ## 2026-09-09 (night) — the meter carry is WEIGHED, not gated; a change the glyph opens
@@ -293,6 +486,9 @@ scores.
   `articulation_mark`, `wedge_box`, `dynamic_letter` are observed by nothing,
   so writing those adjudicators would still produce nothing. The next work is
   in GATHER, the thinnest stage by tests (27 against RECORD's 261).
+  ⚠️ *(merge note, 2026-09-09 — all four ARE observed in the merged tree, by
+  this session's own `gather_glyph_families` plus the dynamics session's two
+  rungs. Only `direction` is still starved. Left standing as measured.)*
 - **`tuplet_ratio`'s missing row is THE PAGE**, with a positive control on the
   same tree and weights (Beethoven 5 / Litolff `984073` `--pages 2`: 1 marker,
   1 ratio). ⚠️ The SILENCE is a real hole and is not tuplet-specific: an empty
@@ -324,6 +520,9 @@ scores.
   disagreed on the three that came back named Piccolo. Four tests, all run RED
   with the fix reverted.
 - **Handoff counts corrected**: "153 tests" is **226**.
+
+---
+
 ## 2026-09-09 — dynamics: the block is HAIRPINS, not letters (scoping, no arm run)
 
 - **Cloud-session capability established by inventory, not memory**:
@@ -429,6 +628,139 @@ scores.
   of 911 good letters lost to remove half of 35 bad), a band GATE (under-emits
   on both arms), a cross-staff column vote (deletes the soloist-against-section
   `p`), and OCR on single letters.
+
+---
+
+## 2026-09-08 — `OMR_CV_HAIRPINS` re-priced, and dynamics enter the staged pipeline
+
+**The hairpin re-run (Task 1).** Two fresh `scan_eval` arms over the 20-row gate
+on the current default tree. ⚠️ **The prediction that motivated it was WRONG.**
+`docs/scope-dynamics-reading-2026-09-09.md` §4 argued the 2026-09-07 pricing was
+stale because Brahms 1 p2 supplied +37 of the +76 and `_stitch_slots` REFUSED on
+it; `OMR_SLOT_STITCH` went default ON the next day. The stitch flag DID repair
+that row — `stitch` verdict now `joined`, OFF-arm edits 6547 → 6335 — and **the
+hairpin cost on it is unchanged at +37**. Summed +82 against +76, same
+11 worse / 8 unchanged / 1 better. Neither arm cached (36m31s, 30m57s; validity
+20/20 rows differ only in CV hairpins).
+
+**The bucket split** the flag's docstring asked for refutes its own explanation:
++28 of Brahms p2's +37 is `entire measure insert/delete` **on a row whose parts
+join**, so the structural half was never the refusal — it is amplification.
+`beethoven-984073-p4` is the pure case: truth carries no hairpin, one invented,
++7 edits, zero wedge-bucket movement. Over the 12 moved rows: wedge +35,
+structural +69, other −22.
+
+⚠️⚠️ **And the symbol ledger says the opposite of OMR-NED.** Same two arms,
+accounting control passing on both: `hairpin` **matched_exact 0 → 97**, missing
+**323 → 187**, spurious 4 → 57, with 13 of 15 other families identical to the
+row. 136 truth hairpins recovered on a family whose recall was 0.000 with ZERO
+spurious. **Recommendation: default it ON — left OFF pending Sean's call**,
+since every default flip here is his and this one buys recall with 53 spurious
+wedges. `mahler-p4` (27 truth hairpins, 7 read, 0 paired) is where an anchor
+investigation starts, not Brahms p2.
+
+**Dynamics into the staged pipeline (Task 2).** `Q.DYNAMIC_LETTER` and
+`Q.WEDGE_BOX` were declared and emitted by no gatherer. Both are now gathered,
+**in page pixels against the staff's own bottom line** — the frame
+`hairpin_detection` already uses, and the reason the two families become
+comparable at all. `READERS.CV_HAIRPINS` is a new reader rather than a mode of
+`CV_LINES`. `adjudicate_dynamic` is implemented and **the fix is the ownership
+query, not the spelling**: a letter belongs to the cell whose STAFF
+`Q.GLYPH_OWNER` names, whatever cell it was cut from. An unspellable run
+`narrow`s rather than abstaining. Guarded by `test_staged_dynamics.py`, every
+central assertion run RED under a mutation first.
+
+**Partial letter runs (Task 3).** `OMR_PARTIAL_DYNAMICS`, default `off`,
+byte-identical to main. ⚠️ **Corrects a standing note**: the dropped population
+is "dominated by a lone `s`" on the 11-page band corpus and NOT on Brahms 1 /
+Breitkopf, where 15 of 20 dropped runs are a prefix of nothing and look like
+`ppmsf`. Priced over the 20-row gate with `probe/reexport_arm.py`: `complete`
++15 edits, `other` +30, **not one row better**. Refused, and re-priceable on the
+staged path where ownership is decided before the word is spelled.
+
+---
+
+## 2026-09-08 — works.json: mahler p2's four one-line percussion staves, and the row that closed cause D into cause B
+
+- **`test_works_json_staff_lineup.py` had two tests failing on `main`, and it
+  was a DATA defect, not a code one.** `1cf44dbc` added mahler p2's
+  hand-confirmed 21-entry `staves` map — closing cause D, the scan gate 20/20
+  mapped — but the map lists PRINTED staves and the page prints four one-line
+  percussion rules, so `expand_lineup` read 21 five-line slots against our 17
+  parts and the arity gate refused. **The row moved from cause D straight into
+  cause B; the bucket total never moved, only its label.**
+- **Fixed with four `lines: 1` fields** on `Becken`, `Grosse Trommel`,
+  `Kleine Trommel`, `Tamtam`. ⚠️ **`Pauken` is a five-line staff and is not
+  flagged** — the one entry a name-matching rule would get wrong. Neither the
+  identity nor the count was inferred from names: `page.n_staves_note` names
+  the rules in prose and `condensation.staves_as_printed` carries `lines` for
+  all 21 entries independently, and after the fix every one of the 21 agrees.
+  ⚠️ The prose says FIVE rules and four entries are flagged — the fifth is the
+  combined-player staff the reference has no part for, so it is not a lineup
+  entry (21 − 4 = 17 = `page.n_staves`).
+- **Controlled A/B, same tree, only `works.json` differing** (record:
+  `benchmarks/omr-part-join-2026-09/mahler-p2-oneline-ab.json`): joined rows
+  **16 → 17 of 20**, pooled `part_unresolved` **7,985 → 7,266 (−719)**, p2's
+  `uncorresponded` **771 → 52**. **Exactly one row changes**, the other 19
+  identical outcome for outcome, and pooled musicdiff is identical between
+  arms — a live control, since `works.json` cannot reach it.
+- ⚠️ **The row gains no new symbols.** The same 527 truth / 244 predicted enter
+  both arms and `coverage.balanced` is `True` in both; 194 predicted symbols
+  stop owning a row of their own and become a truth row's PARTNER. The 771 → 52
+  fall is that pairing, not new evidence.
+- ⚠️ **The 52 that remain are the right 52**: 13 rows each on truth parts 23-26
+  (`Becken.`, `Grosse Trommel.`, `Kleine Trommel.`, `Tamtam.`) — a clef, a key,
+  a time signature and 10 rests apiece. A five-line staff detector cannot find
+  a single printed rule, so that music is genuinely unread and the field says
+  so instead of joining it to something.
+- ⚠️⚠️ **AND IT WILL RECUR — the writer cannot carry the field.**
+  `merge_additions.shape_problems` refuses any key beyond `name`/`parts`, and
+  the confirmation UI proposes none (p2's additions row is `{name, parts,
+  proposed, verdict}`), while `build_cache.py:496` computes `"lines":
+  spec.get("lines", 5)` and it is dropped on the way out — the
+  computed-and-unread pattern again. **Not fixed here**: it changes a writer's
+  contract and the additions schema, and no unmapped row remains to exercise
+  it. The next row mapped through that path with one-line percussion lands
+  unflagged and its whole page unassessable, with the test as the only alarm —
+  after the human pass is spent.
+- **⚠️ THE GENERATOR GAP IS CLOSED TOO (same day).** The deferral in the
+  bullet above was reversed: *"no unmapped row remains to exercise it"* argues
+  for a cheap fix, not against one, because the failure costs a HUMAN
+  CONFIRMATION PASS rather than compute. Four projections between
+  `build_cache` (which computes `lines`) and `works.json` each dropped it —
+  the UI's row seed, the UI's `staves_for_works_json`, `check_row`'s fallback,
+  and `shape_problems`' refusal of any key but `name`/`parts`. Now: the two
+  arity fields are allowed and **validated** (`lines` must be 1 or 5,
+  `printed_staves` a positive int, no entry both a one-line rule and several
+  printed staves, unknown keys still refuse); the projection is written ONCE as
+  `merge_additions._entry_for_works_json` and **imported by the UI** so the two
+  cannot drift.
+- **The guard now runs at the WRITER.** `arity_problems(row, staves)` asks of
+  the map about to be written exactly what `test_works_json_staff_lineup.py`
+  asks of the file, calling `run_ledger.expand_lineup` rather than recomputing
+  it, and abstaining on non-uniform pages as the test does. ⚠️ The point is
+  WHEN it fires: a data test fires after a 21-staff human pass is spent.
+- **⚠️ Retrospective control:** dry-run against today's additions file, the
+  guard refuses **all five** rows whose entries predate the field (mahler
+  p2-p5 and bach) — the whole population that had the defect, not just the row
+  that was noticed. Behaviour changes for none of them (all already refuse on
+  *"already carries a map"*), and a stale `staves_for_works_json` from the old
+  UI now fails loudly instead of writing an unflagged map.
+- **Five mutants, each red on exactly the intended test**, and the decisive
+  test is not synthetic — it feeds `arity_problems` mahler p2's map *as
+  `1cf44dbc` merged it*. `TestAOneLineRuleSurvivesTheWholeWritePath` proves the
+  chain rather than the links, against a control removing only that field.
+- ⚠️ **One existing test was left alone rather than loosened**:
+  `test_the_confirmation_ui_asks_it_too` asserts a literal import string that a
+  tidy parenthesised import broke, so the import was written back out as single
+  lines. A guard is not relaxed to suit a later edit.
+- **Files touched:** `benchmarks/omr-scan-e2e-2026-09/works.json` (4 fields),
+  `benchmarks/omr-part-join-2026-09/FINDINGS.md` (§7),
+  `benchmarks/omr-part-join-2026-09/mahler-p2-oneline-ab.json` (new),
+  `benchmarks/omr-staves-map-2026-09/merge_additions.py`,
+  `benchmarks/omr-staves-map-2026-09/server.py`,
+  `tools/omr/tests/test_staves_map_validation.py`,
+  `CLAUDE.md`, `PROJECT_BRIEF.md`, `version_memory.md`.
 
 ---
 

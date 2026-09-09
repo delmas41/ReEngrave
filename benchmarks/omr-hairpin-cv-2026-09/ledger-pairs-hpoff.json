@@ -1,0 +1,102 @@
+[
+ {
+  "name": "bach-brandenburg3-mvt1-468678-p1",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/bach-brandenburg3-mvt1-468678-p1.truth.musicxml"
+ },
+ {
+  "name": "beethoven-sym5-mvt1-575951-p1",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p1.truth.musicxml"
+ },
+ {
+  "name": "beethoven-sym5-mvt1-575951-p2",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p2.truth.musicxml"
+ },
+ {
+  "name": "beethoven-sym5-mvt1-575951-p3",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p3.truth.musicxml"
+ },
+ {
+  "name": "beethoven-sym5-mvt1-575951-p4",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-575951-p4.truth.musicxml"
+ },
+ {
+  "name": "beethoven-sym5-mvt1-984073-p1",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p1.truth.musicxml"
+ },
+ {
+  "name": "beethoven-sym5-mvt1-984073-p2",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p2.truth.musicxml"
+ },
+ {
+  "name": "beethoven-sym5-mvt1-984073-p3",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p3.truth.musicxml"
+ },
+ {
+  "name": "beethoven-sym5-mvt1-984073-p4",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/beethoven-sym5-mvt1-984073-p4.truth.musicxml"
+ },
+ {
+  "name": "brahms-sym1-mvt1-317803-p1",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p1.truth.musicxml"
+ },
+ {
+  "name": "brahms-sym1-mvt1-317803-p2",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p2.truth.musicxml"
+ },
+ {
+  "name": "brahms-sym1-mvt1-317803-p3",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p3.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p3.truth.musicxml"
+ },
+ {
+  "name": "brahms-sym1-mvt1-317803-p4",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p4.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/brahms-sym1-mvt1-317803-p4.truth.musicxml"
+ },
+ {
+  "name": "dvorak-sym9-mvt1-405834-p5",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p5.truth.musicxml"
+ },
+ {
+  "name": "dvorak-sym9-mvt1-405834-p6",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p6.truth.musicxml"
+ },
+ {
+  "name": "dvorak-sym9-mvt1-405834-p7",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p7.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/dvorak-sym9-mvt1-405834-p7.truth.musicxml"
+ },
+ {
+  "name": "mahler-sym5-mvt1-local-p2",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p2.truth.musicxml"
+ },
+ {
+  "name": "mahler-sym5-mvt1-local-p3",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p3.truth.musicxml"
+ },
+ {
+  "name": "mahler-sym5-mvt1-local-p4",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p4.truth.musicxml"
+ },
+ {
+  "name": "mahler-sym5-mvt1-local-p5",
+  "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.-hpoff.omr.musicxml",
+  "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/gracious-kare-2cddc3/benchmarks/omr-scan-e2e-2026-09/fixtures/mahler-sym5-mvt1-local-p5.truth.musicxml"
+ }
+]

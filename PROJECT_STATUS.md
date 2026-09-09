@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-09-02 (two parallel arcs merged: the overnight generalization session — the engraved benchmark widened 3 → 10 works and opened at twice the incumbent error rate, a five-row SCAN benchmark now exists, the cut-common meter bug and two key-signature vote bugs fixed, see [docs/overnight-2026-09-01-summary.md](docs/overnight-2026-09-01-summary.md) — and the day queue's export-gap arc (fermatas, printed accidentals, the coverage check) plus the branch audit, per [docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md); the current accuracy figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section, is generated from `benchmarks/omr-ned-2026-08/current-accuracy.json`, and the suite goes red if the two disagree)
+**Last updated:** 2026-09-09 — four parallel sessions merged; the **metric is no longer the organising goal** and the staged pipeline (GATHER · ADJUDICATE · EVALUATE) is, see the September 8–9 entry below and [CLAUDE.md](CLAUDE.md)'s START HERE pointer. ⚠️ The arc list below is a running history and the entries between 2026-09-03 and 2026-09-08 were never written into this file — read [version_memory.md](version_memory.md) for that week. Previously: 2026-09-02 (two parallel arcs merged: the overnight generalization session — the engraved benchmark widened 3 → 10 works and opened at twice the incumbent error rate, a five-row SCAN benchmark now exists, the cut-common meter bug and two key-signature vote bugs fixed, see [docs/overnight-2026-09-01-summary.md](docs/overnight-2026-09-01-summary.md) — and the day queue's export-gap arc (fermatas, printed accidentals, the coverage check) plus the branch audit, per [docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md); the current accuracy figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section, is generated from `benchmarks/omr-ned-2026-08/current-accuracy.json`, and the suite goes red if the two disagree)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -113,6 +113,36 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
 - **September 2 — the fixture stopped charging for ink it never printed.** The entire-measure diagnosis had left a decision open: the Beethoven truth carries 36 fermatas, 22 over whole-measure rests, and `musicxml2ly` drops every one of those — 105 edits charged against a page that never showed them, to a perfect reader too. The render was **completed** rather than the truth shrunk (`3f447f7`): the truth is what the work IS, those fermatas are printed in every real edition, and LilyPond takes `\fermata` on a multi-measure rest directly, so the fixture pipeline splits the compressed `R2*8` runs at the truth's fermata bars — anchored on musicxml2ly's own `| % n` comments and refusing to guess when anything disagrees. Shown the marks for the first time, the reader reads **21 of 22**: Beethoven **0.1519 → 0.0727** (191 → 93 edits), pooled **0.1342 → 0.1200**, Mahler and Brahms unchanged to the edit, the entire-measure bucket 130 → 30. Both recorded configurations were re-measured on the fixed fixture; every earlier figure carries the old floor, and the discontinuity is marked where the history is quoted (CLAUDE.md's OMR-NED section, `benchmarks/omr-ned-2026-08/FINDINGS.md`, and the fix table in `docs/next-steps-omr-2026-09-01.md`). On the merge with the same day's printed-accidentals fix the two compose exactly — Beethoven identical to the fermata side, Mahler and Brahms identical to the accidentals side — and both configurations were recorded again on the merge itself.
 
 - **September 3 — the weights forked by domain, and the fork got a router.** The hollow fine-tune's ship run (`SHIP_RESULTS.md`: dense recall held at exactly 0.941, scanned half-notes 8 → 27) was the first time the two domains demonstrably wanted **different checkpoints** — it cost a measured +0.0022 pooled on the engraved benchmark because there was one weights slot. Now, when nothing pins the weights, `transcribe()` classifies its input by **where the ink comes from** — a scanned page is one full-page raster image (total coverage ≥ 0.95 on every scan measured), an engraved page is vector drawings (428–2058 paths vs 0–4, the gap empty over 147 probed pages) — and routes: scans keep the hollow fine-tune, digitally engraved input gets back the prior production weights that measure best there (0.1399 vs 0.1421). Explicit weights skip classification, ambiguity abstains to the default, a missing engraved file falls back soft, and the verdict + evidence land in the result JSON as `weight_routing`. Verified by 35 tests and a byte-identity A/B on both sides of the fork; **no benchmark figure moves** (every harness pins weights explicitly), and the recorded engraved headline again describes shipped behavior. **Publisher- and era-specific weights were considered and DEFERRED** behind measured triggers — the strategy record is [docs/weight-routing-and-specialization-2026-09-03.md](docs/weight-routing-and-specialization-2026-09-03.md), the implementation record [benchmarks/omr-weight-routing-2026-09/FINDINGS.md](benchmarks/omr-weight-routing-2026-09/FINDINGS.md).
+
+- **September 8–9 — the metric stopped being the organising goal, and four
+  parallel sessions were merged into the pipeline that replaces it.** Sean,
+  2026-09-08: the numbers *"dont feel like they have represented much that has
+  been helpful"*. OMR-NED compares two FILES AT THE FAR END, so it can say a
+  file differs and never **which decision** went wrong. The work is now the
+  **staged pipeline** — GATHER · ADJUDICATE · EVALUATE — where every decision
+  leaves a record, including a record of having declined to decide.
+  Merged 2026-09-09 (five branches, one of them subsuming another):
+  the staged path now **EXPORTS A MusicXML FILE** (`tools/omr/staged/export.py`
+  — the standing *"there is NO EXPORTER"* hole is closed), plus a **derived**
+  decision inventory, a per-stage health report, and a GATHER pass for five
+  families that were detected and read by nothing. Dynamics entered the
+  pipeline; the staves-map writer learned to carry the arity fields it had been
+  silently rejecting; `Q.EVENT` fixed chord grouping happening *after* the
+  stage that needed it (the pipeline's own bar-sum check had been
+  double-counting every chord, silently). The meter carry is now **weighed by
+  the bars rather than gated**, and the movement-boundary problem dissolved
+  with no detector anywhere.
+  ⚠️ **Two findings exist only in the merged tree**, which is the standing rule
+  in this repo made literal. One session measured that *all six declared stubs
+  are also starved at the gather stage* — "a stub is two repairs, not one" —
+  and named four of them cheap NAMING gaps; two sibling sessions then landed
+  **exactly those four gatherers** without having read it. In the merged tree
+  only `direction` is still starved, `dynamic` got both repairs and is the only
+  one of the six that decides anything, and the finding is **corroborated
+  rather than overturned**. Both were found by TESTS failing at the seams, not
+  by re-reading prose. Full account: the merge entry at the head of
+  [version_memory.md](version_memory.md), and
+  `benchmarks/omr-gather-coverage-2026-09/FINDINGS.md` §2b-addendum.
 
 ---
 
@@ -807,7 +837,83 @@ The branch also carries **post-experiment OMR improvements that may still be val
 
 ## Unmerged work on branches
 
-Audit **2026-09-01**, verified with `git cherry` and by comparing file contents —
+### Audit 2026-09-09 (the session merge)
+
+The five sessions running on 2026-09-08/09 are **all merged** and none has
+unmerged commits left: `reengraved-meter-carry-0c9da4` (which SUBSUMES
+`reengraved-staged-pipeline-068163` — that tip is an ancestor, so it was not
+merged separately), `brave-diffie-f56a0c`, `gracious-kare-2cddc3`,
+`gather-stage-coverage-qp6j01`.
+
+⚠️ **The meter-carry branch pushed one more commit MID-MERGE** (`d0da5f00`),
+and it superseded the conclusion its earlier commits had landed. It is merged.
+The lesson is the standing one: re-check the remote before calling a branch
+finished.
+
+**24 branches still carry unmerged commits, all dated 2026-09-07 or earlier**,
+and they are backlog rather than pending work — several are explicitly negative
+results, superseded, or WIP by their own commit messages
+(`fix-probe-hygiene-superseded` says *"WIP, UNREVIEWED"*; `arc-anchor-round9`
+opens *"withdraw the headline — baselines superseded"*; `structural-parts-2026-09`
+is *"Consumer #1 priced and DEAD"*; `scoreaug-fair-test` is the disproven
+augmentation recipe). **None was merged here**, because merging a withdrawn
+headline or a dead recipe would put it back into the tree as current.
+
+✅ **Checked, because losing it would be unrecoverable**: `clef-phase0-eval`
+(2026-08-28) says it exists to *"preserve the hand-drawn verdicts this branch
+left uncommitted"*, and hand-labeled verdicts are irreplaceable human work. Its
+verdict files **are already on `main`** — verified per file with `git cat-file`,
+not by reading the message. What remains on it is the July clef fine-tune,
+which is a recorded dead recipe.
+
+### Worktree / branch cleanup 2026-09-09
+
+**110 worktrees → 26; 269 local branches → 57.** Nothing was deleted that is
+not reachable from `origin/main`.
+
+Rules used, in order — each one caught something:
+
+1. **The main checkout classified as "merged" and nearly went with them.** It
+   is a worktree of `main`, so `ahead == 0`; it holds **8,371 gitignored cell
+   PNGs**. Excluded explicitly.
+2. **`git worktree remove` was run WITHOUT `--force`**, so anything holding
+   uncommitted files refused itself. 77 removed, 14 refused.
+3. **Removing a worktree deletes its gitignored files too.** Three worktrees
+   held hand-labeled cell PNGs — irreplaceable, since phase-1 has drifted and
+   they cannot be re-cut. Two were verified byte-identical to the main
+   checkout's copies (names diffed, checksums spot-checked) before removal.
+4. Of the 14 refused, **7 were removed after checking their uncommitted content
+   was regenerable or already in main** — venvs, `node_modules`, benchmark
+   fixtures and `ops-*`/`pred-*` scratch, a views cache, a `library` symlink, a
+   `+greenlet` line already in main's requirements, and a probe script already
+   committed as `0a35d3ab`.
+5. **7 worktrees were KEPT** — 5 hold uncommitted source edits, 2 hold unique
+   data (below).
+6. Local branches were deleted only where `git rev-list origin/main..<branch>`
+   is empty, with `git branch -d` as a second gate. It refused 11, of which
+   four hold commits **never pushed anywhere** (`agitated-bassi` 14,
+   `transcription-overnight-progress` 31, `omr-score-order-prior` 4,
+   `integrate/land-2026-09-01` 2). **No remote branch was deleted** — this
+   repo cites branch names as provenance throughout CLAUDE.md and the
+   benchmarks.
+
+⚠️ **Two uncommitted files exist nowhere else and are worth a decision:**
+
+- `.claude/worktrees/pdf-mxl-measure-matching-acce2c` →
+  `data/score-library/movement-boundaries.yaml`, **937 lines**, hand-curated:
+  the page on which each movement's first system begins, for the 31 paired
+  edition PDFs, with per-row `confirmed_bookmark` / `candidate_text` /
+  `NEEDS_INPUT` status. Not in `main`. ⚠️ **This is close to the input the open
+  meter-carry question is blocked on** — that work's own correction says *"a
+  movement boundary on a page that reads well remains UNMEASURED"*, and this
+  table is a list of exactly those boundaries.
+- `.claude/worktrees/weight-generalization-publishers-548504` →
+  `benchmarks/omr-labeling-grace2-2026-09/target_cells.json` (219 KB), the
+  batch's cell-selection record. Not in `main`.
+
+### Audit 2026-09-01
+
+Verified with `git cherry` and by comparing file contents —
 not by commit count, which lies here. Anything not listed is an archive of a
 concluded experiment.
 

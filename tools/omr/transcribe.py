@@ -3161,11 +3161,43 @@ def _cv_hairpins_enabled() -> bool:
     of 3) — where `_wedge_anchors`' documented blindness to `duration_beats` is
     a real candidate and nothing here has tested it.
 
-    **NEXT STEP, and it needs no new arm:** split each moved row's delta BY
-    BUCKET over the artefacts already on disk — `entire staff` / `entire
-    measure` movement is the stitch refusal, `wrong crescendo` on a row whose
-    parts joined is the anchors. `benchmarks/omr-ned-2026-08/dump_ops.py` does
-    this today.
+    ⚠️⚠️ **RE-PRICED 2026-09-08, AND THE STITCH EXPLANATION DID NOT SURVIVE
+    THE BUCKET SPLIT THIS PARAGRAPH ASKED FOR.** Two fresh arms on the current
+    default tree, fixtures empty at start, own `--tag=` per arm, wall clocks
+    36m31s and 30m57s, validity 20 of 20 rows differing ONLY in CV hairpins:
+
+      * `OMR_SLOT_STITCH` went default ON on 2026-09-08 and DID repair Brahms
+        1 p2 — its `stitch` verdict is now `joined`, not `REFUSED`, and its
+        OFF-arm edits fell 6547 → 6335. **Its hairpin cost is unchanged at
+        +37.** Summed movement +82 against the old +76, same 11 worse / 8
+        unchanged / 1 better. The "the pricing is stale because that row has
+        since been fixed" argument is DEAD — do not re-open it.
+      * The split puts **+28 of Brahms p2's +37 in `entire measure
+        insert/delete` ON A ROW WHOSE PARTS JOIN**, so the structural half was
+        never the refusal. It is AMPLIFICATION — a bar that already fails to
+        correspond is charged whole-plus-whole, and a correct symbol added to
+        it raises a charge already being levied. `beethoven-984073-p4` is the
+        pure case: truth carries no hairpin, one is invented, +7 edits, ZERO
+        wedge-bucket movement. Over the 12 moved rows: wedge +35, structural
+        +69, everything else −22.
+
+    ⚠️⚠️ **AND THE SYMBOL LEDGER SAYS THE OPPOSITE OF OMR-NED, WHICH IS THE
+    POINT.** Same two arms, accounting control passing on both (`unbalanced:
+    []`, 19 of 20 rows joining): `hairpin` **matched_exact 0 → 97**, missing
+    **323 → 187**, spurious 4 → 57, with **13 of 15 other families identical to
+    the row**. 136 truth hairpins recovered on a family whose recall was 0.000
+    WITH ZERO SPURIOUS — silence, not error. 9 of the 11 moved rows recover
+    real hairpins (dvorak p6 is exact, 8 missing → 0); the 2 that do not are
+    the rows whose truth carries none.
+
+    ⚠️ **`mahler-p4` is where an anchor investigation starts, NOT Brahms p2**:
+    27 truth hairpins, 7 read, **0 paired**, 10 spurious added — the only clean
+    instance in the gate of the ink being found and the anchoring failing. Note
+    the bucket split no longer INDICATES the anchor rule; it merely fails to
+    exonerate it.
+
+    Full reading, both instruments and the per-row tables:
+    `benchmarks/omr-hairpin-cv-2026-09/RERUN_2026-09-08.md`.
     """
     return os.environ.get(
         "OMR_CV_HAIRPINS", "0").strip().lower() in ("1", "true", "yes", "on")

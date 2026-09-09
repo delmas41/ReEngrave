@@ -443,6 +443,13 @@ class READERS(_Vocab):
     SPECIALIST = "specialist"                # OMR_CLEF_WEIGHTS
     CV_LOCATOR = "cv_locator"                # clef_locator
     CV_LINES = "cv_lines"                    # line_detection: stems, beams
+    #: `hairpin_detection` -- a SEPARATE reader from CV_LINES, not a mode of
+    #: it. Two rows from one reader on one crop are ONE signal
+    #: (`adjudicate.Evidence.independent`), and this rung reads the WHOLE page
+    #: with staff lines INTACT while `line_detection` reads an ERASED cell.
+    #: Filing them together would collapse two genuinely independent readings
+    #: of the same band into one.
+    CV_HAIRPINS = "cv_hairpins"              # hairpin_detection: wedge ink
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor
