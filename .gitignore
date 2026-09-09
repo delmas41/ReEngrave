@@ -148,7 +148,12 @@ labels.cache
 # Central score library — the PDF/MusicXML store is machine-local (650 MB).
 # Its catalog (data/score-library/catalog.json) IS committed; see that README.
 # Anchored: an unanchored "library/" also swallows tools/library, the code.
-/library/
+# ⚠️ NO TRAILING SLASH. `/library/` matches a DIRECTORY only, and a worktree
+# reaches the store through a SYMLINK to the main checkout's `library` — which
+# that pattern does not match, so `git add -A` committed the symlink (a
+# machine-local absolute path) into a benchmark commit on 2026-09-09. `/library`
+# matches both and is still anchored, so `tools/library` is untouched.
+/library
 
 # Rehearsal/distillation label roots are BUILD PRODUCTS of
 # benchmarks/omr-labeling-survey-2026-09/build_rehearsal_versions.py — they copy
