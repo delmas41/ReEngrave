@@ -696,6 +696,14 @@
           "gathered_indirectly_by": []
         },
         {
+          "quantity": "clef_position",
+          "kind": "measurement",
+          "gathered_by": [
+            "gather_clef"
+          ],
+          "gathered_indirectly_by": []
+        },
+        {
           "quantity": "clef_located",
           "kind": "measurement",
           "gathered_by": [
@@ -756,7 +764,8 @@
       ],
       "checkable": "mixed",
       "checked_by": [
-        "implied pitches: this staff's own measured positions under this candidate must fall in the instrument's written range (clef_correction.propose_clef)",
+        "implied pitches: this staff's own measured positions under this candidate must fall in the instrument's written range (clef_correction.propose_clef) -- \u26a0\ufe0f DECLARED AND NOT IMPLEMENTED, and it cannot be here: it needs the INSTRUMENT, which abstains on 22 of 22 and 27 of 27 staves of the two scanned pages measured. `inventory --check` lists it",
+        "the glyph stands ON this staff: a measure cell is the staff plus four staff spaces of air, so a neighbour's clef lands in it -- and unlike the range test this needs NO identity",
         "key-signature slot fit: the measured accidental RUN fits this candidate's slot table and not another's -- needs NO identity",
         "continuity: a part's clef is stable across systems unless a change is printed"
       ],
@@ -768,11 +777,13 @@
       ],
       "composed_from": [
         "clef_glyph",
+        "clef_position",
         "clef_located",
         "clef_seed"
       ],
       "readings": [
         "clef_glyph",
+        "clef_position",
         "clef_located",
         "clef_seed"
       ],

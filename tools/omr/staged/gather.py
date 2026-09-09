@@ -335,20 +335,13 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
         c = by_key.get((sub.page, sub.system, sub.staff, sub.cell))
         if c is None:
             continue
-        lines = list(c.staff_line_ys_canonical or [])
-        if len(lines) < 2:
+        grid = _cell_grid(c)
+        if grid is None:
             log.abstain(sub, Q.NOTEHEAD_STAFF_POSITION,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         reason=ABSTAIN.NO_STAFF_GEOMETRY)
             continue
-        gaps = [lines[i + 1] - lines[i] for i in range(len(lines) - 1)]
-        half_step = (sum(gaps) / len(gaps)) / 2.0
-        top_y = lines[0]
-        if half_step <= 0:
-            log.abstain(sub, Q.NOTEHEAD_STAFF_POSITION,
-                        reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
-                        reason=ABSTAIN.NO_STAFF_GEOMETRY)
-            continue
+        top_y, half_step = grid
         for gi, d in enumerate(dets):
             if not d.smufl_name.startswith(_NOTEHEAD_PREFIX):
                 continue
@@ -822,6 +815,26 @@ def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _cell_grid(cell: Any) -> Optional[Tuple[float, float]]:
+    """`(top_y, half_step)` for a cell, in its own canonical frame.
+
+    ⚠️ ONE SPELLING, USED TWICE. `gather_notehead_positions` computed this
+    inline and threw it away, so the only thing on the record in cell
+    coordinates was a notehead's position -- and a consumer asking "where is
+    this OTHER glyph, in staff steps" had nothing to ask with. That is the
+    pattern this architecture exists to kill, one layer down from where it was
+    already caught (`pitch_resolver` rounding `pos_float` away).
+    """
+    lines = list(getattr(cell, "staff_line_ys_canonical", None) or [])
+    if len(lines) < 2:
+        return None
+    gaps = [lines[i + 1] - lines[i] for i in range(len(lines) - 1)]
+    half_step = (sum(gaps) / len(gaps)) / 2.0
+    if half_step <= 0:
+        return None
+    return float(lines[0]), float(half_step)
+
+
 def gather_clef(log: Log, cells: Sequence[Any],
                 local: Dict[int, Tuple[int, int]],
                 detections: Dict[str, List[Any]]) -> None:
@@ -835,12 +848,19 @@ def gather_clef(log: Log, cells: Sequence[Any],
     correlation machinery stays for the cases where two rows really are one
     signal; this particular duplicate simply ceases to exist.
     """
+    by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+
     for cell_key, dets in detections.items():
         sub = Subject.from_key(cell_key)
         if sub.cell != 0:
             continue          # a clef is read at the head of the staff
         staff_sub = R.staff(sub.page, sub.system, sub.staff)
         frame = frame_cell(0)
+        grid = _cell_grid(by_key.get((sub.page, sub.system, sub.staff, 0)))
         clefs = [d for d in dets if d.smufl_name in _CLEF_CLASSES]
         if not clefs:
             log.abstain(staff_sub, Q.CLEF_GLYPH, reader=READERS.DETECTOR,
@@ -850,11 +870,45 @@ def gather_clef(log: Log, cells: Sequence[Any],
         # candidates ARE recorded (`clef_evidence["contest"]`, 29 writer
         # references) and read by nobody, and the winner takes the staff at
         # any confidence because there is no floor anywhere.
+        # ⚠️ WHERE THE GLYPH SITS ON *THIS* STAFF, IN STAFF STEPS -- the same
+        # measurement a notehead gets, and for the same reason. A measure cell
+        # is the staff plus four staff spaces of air, so on a conductor's page
+        # a NEIGHBOURING staff's clef lands in this staff's cell: measured on
+        # Brahms 1 p.2, five staves each detect one `clefG` AND one `clefF`,
+        # at nearly the same x and 250-350 canonical px apart in y, and the
+        # adjudicator scores them 3.0 against 3.0 and abstains
+        # `margin_below_floor`. Sixty-seven notes on Beethoven p.3 have no
+        # pitch for exactly that reason.
+        #
+        # ⚠️ RECORDED, NOT ACTED ON. Which of the two is this staff's is an
+        # arbitration with its own evidence and its own right to abstain, and
+        # a filter here would make that decision invisibly. `position_steps`
+        # is measured DOWN FROM THE TOP LINE in half-spaces, so a five-line
+        # staff spans 0..+8 and anything far outside that is standing off the
+        # staff.
         for d in clefs:
             log.observe(staff_sub, Q.CLEF_GLYPH, d.smufl_name,
                         reader=READERS.DETECTOR, frame=frame,
                         score=float(d.confidence),
                         y_center=d.y_center, x_center=d.x_center)
+
+        # ⚠️ A SEPARATE ROW FROM A SEPARATE READER, and it has to be. Every
+        # `CLEF_GLYPH` row here shares a reader, a frame and a quantity, so
+        # the correlation rule calls them ONE SIGNAL and `tally` counts the
+        # group once -- a term citing a glyph row is absorbed by that glyph's
+        # own detector term. Measured: 1.5 beside 3.0 left the contest at 3.0
+        # against 3.0. The GRID is a different reader and its evidence stands
+        # on its own.
+        if grid is None:
+            log.abstain(staff_sub, Q.CLEF_POSITION, reader=READERS.GEOMETRY,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+        else:
+            top_y, half_step = grid
+            for d in clefs:
+                log.observe(staff_sub, Q.CLEF_POSITION,
+                            (d.y_center - top_y) / half_step,
+                            reader=READERS.GEOMETRY, frame=frame,
+                            glyph=d.smufl_name, y_center=d.y_center)
 
 
 #: The locator's own branch names -> our abstention vocabulary. Where a name

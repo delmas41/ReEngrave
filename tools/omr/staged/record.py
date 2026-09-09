@@ -319,6 +319,21 @@ class Q(_Vocab):
     CLEF_GLYPH = "clef_glyph"                # detector's clef, with frame
     CLEF_LOCATED = "clef_located"            # CV locator: shape, line, symmetry
     CLEF_REFUSAL_BRANCH = "clef_refusal_branch"   # which veto the locator hit
+    #: ⚠️ WHERE A CLEF GLYPH STANDS ON THIS STAFF, in half-spaces measured DOWN
+    #: from the top line -- the same measurement a notehead gets, from the same
+    #: grid, and for the same reason.
+    #:
+    #: ⚠️⚠️ IT IS A SEPARATE ROW FROM A SEPARATE READER BECAUSE A DETAIL FIELD
+    #: ON THE GLYPH ROW CANNOT WORK, and that is structural rather than
+    #: stylistic. Every `CLEF_GLYPH` row on a staff shares a reader, a frame
+    #: and a quantity, so `Evidence.correlated_groups` calls them ONE SIGNAL
+    #: and `tally` counts the group once, taking its strongest term. A term
+    #: citing a glyph row is therefore absorbed by that glyph's own detector
+    #: term -- measured: a 1.5 added beside a 3.0 left the contest at 3.0
+    #: against 3.0. **No refinement of the DETECTOR's evidence can break a
+    #: clef contest**; a tie-breaker has to come from another reader, and the
+    #: staff's measured line grid is one.
+    CLEF_POSITION = "clef_position"
     CLEF_SEED = "clef_seed"                  # the dossier's clef
     KEYSIG_RUN_POSITION = "keysig_run_position"   # accidental positions, NO clef
     KEYSIG_MARKER = "keysig_marker"          # detector keySharp/keyFlat

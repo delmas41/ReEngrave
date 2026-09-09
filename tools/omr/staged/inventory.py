@@ -85,9 +85,14 @@ KNOWN_GAPS: Dict[str, str] = {
         "⚠️ NOT MERELY INERT: this quantity is the clef's OWN FIRST "
         "`checked_by` entry (implied pitches against the instrument's written "
         "range) and the body never reads it, so a declared constraint names a "
-        "check the code does not run. The machinery exists in "
-        "`ownership._range_veto`. Wiring it is a decision with its own "
-        "measurement, not a cleanup.",
+        "check the code does not run. ⚠️⚠️ AND IT CANNOT BE WIRED ON A SCAN, "
+        "MEASURED 2026-09-09: the range test needs the INSTRUMENT, which "
+        "abstains `no_evidence` on 22 of 22 and 27 of 27 staves of the two "
+        "scanned pages -- so it would reach NONE of the population it was "
+        "filed to fix. What did reach it is `Q.CLEF_POSITION`, which needs no "
+        "identity. The declaration stays because the check is real where a "
+        "dossier or a margin label exists; what changed is that nobody should "
+        "reach for it as the fix for an abstaining clef on a scan.",
     "key_signature declares 'keysig_marker'":
         "inert declaration; the decision reads `keysig_clef_fit`, which the "
         "markers already feed in GATHER.",
