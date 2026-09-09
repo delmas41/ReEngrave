@@ -694,6 +694,66 @@ and slurs (843 over two pages) need `arc_kind` + `arc_owner`; dynamics (489)
 need the `f`+`f` → `ff` spelling; articulations (37) need the nearest-notehead
 attach. ⚠️ **`fermata` (35) and `ornament` (6) still have NO QUANTITY.**
 
+### A note is joined to its beam by its STEM — bar sums on perfect ink
+
+`A-DUR-8` said bar sums are wrong on a clean LilyPond engraving, blocking the
+whole bar-sum family, and asked for the two faults behind it to be worked
+apart. **Fault 1 is fixed; Fault 2 is diagnosed to one cause.** Staged path
+only — `tools/omr/rhythm.py` is untouched, so no engraved or scan figure moves.
+Findings:
+[benchmarks/omr-staged-duration-beams-2026-09/FINDINGS.md](benchmarks/omr-staged-duration-beams-2026-09/FINDINGS.md).
+
+⚠️⚠️ **A BEAM STROKE RUNS FROM THE FIRST STEM IT JOINS TO THE LAST, AND A STEM
+STANDS AT THE SIDE OF ITS NOTEHEAD** — so the OUTER note of every beamed group
+has its centre roughly half a notehead width past the stroke's end, and
+`_beam_levels` was testing exactly that centre. Measured on
+`beethoven-sym5-mvt4` m203-218 at 23 parts: **114 narrowed durations have a
+stem of their own head meeting a beam** the centre test calls
+`none_over_this_note`, and the overshoot clusters at **0.35-0.47 notehead
+widths** — the stem offset and nothing else. `BEAM_EDGE_TOLERANCE_WIDTHS` then
+caught them as POSSIBLE, and `_bar_lengths_for` collapses a range to
+`candidates[0]`, which `Ruling.narrow` orders by support — **so "it is one of
+these" was consumed as if it had decided, always as the LONGER note.**
+
+⚠️ **`Q.STEM` was declared in `wants` AND `composed_from`, carried its own
+`KNOWN_GAPS` entry, and was read by nothing** — 916 rows on a three-page
+record, inside the decision whose docstring calls the beam level its fragile
+input. *The value existed and nothing read it*, and this time it was not
+harmless.
+
+Assessable bars **12 → 14**, correct **7 → 10**, `narrowed` **147 → 29**, and
+no bar goes right-to-wrong. ⚠️ **The candidate-policy question DISSOLVES**:
+`A-DUR-8` measured that "take the lowest candidate" fixes one page and breaks
+another and refused it as a fudge that fits; under the stem tier `top` and
+`lowest` agree on **every bar of all three pages**, which is the claim that the
+ambiguity was an artefact of the association rather than a reading.
+
+⚠️ **The rule needs NO CONSTANT and is ADDITIVE.** Attachment is BOX OVERLAP,
+measured before it was written: of 707 stem/beam pairs overlapping in x, 685
+also overlap in y and the 22 that do not are **35 px or more** apart with
+nothing in 1-34; 819 heads take exactly one stem and the nearest miss is 94 px
+but for three at 1-2 px. It can only turn a POSSIBLE into a CERTAIN, so a page
+whose stems are not read is unchanged — and **stem-ONLY was measured and
+refused** (same bars, 60 narrowed against 16). ⚠️ The y guard is UNEXERCISED by
+this fixture (a tolerance sweep 0→64 px moves one row and no bar) and is
+therefore tested directly on synthetic ink, with its positive control inside
+the test; four mutation arms are red on the intended tests.
+
+⚠️⚠️ **FAULT 2 IS THE SAME FAMILY AND IS NOT FIXED: `Q.FLAG` AND `Q.AUG_DOT`
+NEVER REACH A DURATION.** `gather_rhythm_marks` writes them at the MARK's own
+glyph subject; `adjudicate_duration` reads them on the NOTEHEAD's. **134 flag
+rows, 157 dot rows, 0 on a notehead subject, 0 durations carrying a dot,
+`beam_evidence == "flag"` zero times.** It accounts for both directions of the
+residual, confirmed against the encoding the page was RENDERED FROM: m211 reads
+`quarter + 8th-rest` × 4 = **6.0** where the truth holds **100 eighths** (the
+missing flag), and m207/m208 read a plain half at **2.0** where 8 parts play a
+**dotted half** (the missing dot). ⚠️ `DOT_ABOVE_NOTE_MAX_SPACES` /
+`DOT_BELOW_NOTE_MAX_SPACES` sit in the staged module with a paragraph of
+measured justification and are **used by nothing in it**. It did not need the
+crop `A-DUR-8` asked for — the record answered it and the truth encoding
+confirmed it. ⚠️ **Do not tune `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR`
+until it is fixed**: four bars are still wrong.
+
 ### A meter CHANGE printed as a `C` was detected on 23 staves and dropped
 
 Found by the boundary measurement above, fixed the same day, **no flag** —

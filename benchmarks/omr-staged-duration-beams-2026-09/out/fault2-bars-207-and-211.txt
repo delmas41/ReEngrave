@@ -1,0 +1,17 @@
+# Bar 211 (page 1 cell 5), truth 4/4 -- twenty of 23 staves agree on 6.0.
+# The truth encoding says m211 holds 100 EIGHTHS and 80 eighth rests.
+staff  0  sum= 6.00  1.0:noteheadBlackI  0.5:rest8th  1.0:noteheadBlackO  0.5:rest8th  1.0:noteheadBlackI  0.5:rest8th  1.0:noteheadBlackO  0.5:rest8th
+staff  1  sum= 6.00  1.0:noteheadBlackO  0.5:rest8th  1.0:noteheadBlackI  0.5:rest8th  1.0:noteheadBlackO+noteheadBlackO  0.5:rest8th  1.0:noteheadBlackI  0.5:rest8th
+staff  2  sum= 1.00  1.0:noteheadBlackO
+staff  3  sum= 6.00  1.0:noteheadBlackI  0.5:rest8th  1.0:noteheadBlackO  0.5:rest8th  1.0:noteheadBlackI  0.5:rest8th  1.0:noteheadBlackO  0.5:rest8th
+staff  4  sum= 6.00  1.0:noteheadBlackI  0.5:rest8th  1.0:noteheadBlackO  0.5:rest8th  1.0:noteheadBlackO  0.5:rest8th  1.0:noteheadBlackO  0.5:rest8th
+staff  5  sum= 6.00  1.0:noteheadBlackO  0.5:rest8th  1.0:noteheadBlackI  0.5:rest8th  1.0:noteheadBlackO  0.5:rest8th  1.0:noteheadBlackI  0.5:rest8th
+cell 1/5 sums: [(6.0, 20), (1.0, 1), (0.5, 1), (4.0, 1)]
+
+# Bar 207 (page 1 cell 1), truth 3/4 -- seven of 13 agree on 2.0.
+# The truth encoding says 8 parts play a DOTTED HALF there.
+staff  0  sum= 4.00  4.0:restWhole
+staff  1  sum= 1.00  1.0:noteheadHalfIn
+staff  2  sum= 4.00  4.0:restWhole
+staff  3  sum= 2.00  2.0:noteheadHalfOn
+cell 1/1 sums: [(4.0, 10), (2.0, 7), (3.0, 4), (1.0, 1), (1.5, 1)]

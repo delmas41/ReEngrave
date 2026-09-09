@@ -1,0 +1,19 @@
+# Rows a duration verdict could read, and where they LAND.
+# stem/beam_stroke are CELL-scoped by design (0 on a notehead subject is
+# correct); flag/aug_dot are GLYPH-scoped and land on the MARK's own
+# glyph, while adjudicate_duration reads them on the NOTEHEAD's.
+
+before {'decided': 1304, 'narrowed': 147}
+   beam_evidence {'reader_declined': 538, None: 333, 'read': 287, 'none_over_this_note': 293}
+   durations carrying a dot: 0
+   flag (glyph-scoped): 134 rows, on a notehead subject: 0
+   aug_dot (glyph-scoped): 157 rows, on a notehead subject: 0
+   stem (cell-scoped): 916 rows, on a notehead subject: 0
+   beam_stroke (cell-scoped): 307 rows, on a notehead subject: 0
+after {'decided': 1407, 'narrowed': 29}
+   beam_evidence {'reader_declined': 538, None: 318, 'read': 405, 'none_over_this_note': 175}
+   durations carrying a dot: 0
+   flag (glyph-scoped): 134 rows, on a notehead subject: 0
+   aug_dot (glyph-scoped): 157 rows, on a notehead subject: 0
+   stem (cell-scoped): 916 rows, on a notehead subject: 0
+   beam_stroke (cell-scoped): 307 rows, on a notehead subject: 0

@@ -724,6 +724,40 @@ the ones that do are RIGHT.
 ⚠️ **The errors run LONG** (3.5, 4.5, 5.0, 6.0 vs 4.0) on a page with no
 missing ink — a diagnosis to open, not a conclusion.
 
+⚠️⚠️ **THE DIAGNOSIS IS DONE (2026-09-09) AND IT IS TWO FAULTS, ONE OF THEM
+FIXED. BOTH ARE THE SAME FAMILY: A MARK IS GATHERED AND THE DECISION READS IT
+IN THE WRONG PLACE.** See
+[`benchmarks/omr-staged-duration-beams-2026-09/FINDINGS.md`](../../../benchmarks/omr-staged-duration-beams-2026-09/FINDINGS.md).
+
+* ✅ **FIXED — a note is joined to its beam by its STEM.** A beam stroke runs
+  from the first stem it joins to the last, and a stem stands at the SIDE of
+  its notehead, so the OUTER note of every beamed group has its centre roughly
+  half a notehead width past the stroke's end — measured, the overshoot
+  clusters at **0.35-0.47 notehead widths**. `_beam_levels` tested that centre,
+  so 114 narrowed durations read `none_over_this_note` while a stem of the head
+  demonstrably met the beam; `BEAM_EDGE_TOLERANCE_WIDTHS` then caught them as
+  POSSIBLE and `_bar_lengths_for` collapsed the range to its LONGEST candidate.
+  ⚠️ **`Q.STEM` was declared in `wants` and `composed_from`, carried a
+  `KNOWN_GAPS` entry, and was read by nothing** — 916 rows on a three-page
+  record. `_stem_joined` reads it as an ADDITIVE tier beside the centre test.
+  Assessable bars **12 → 14, correct 7 → 10**, `narrowed` **147 → 29**, no bar
+  right-to-wrong. ⚠️ The candidate-policy question DISSOLVES: under the stem
+  tier `top` and `lowest` agree on every bar, which is the claim that the
+  ambiguity was an artefact of the association.
+* ⚠️ **DIAGNOSED, NOT FIXED — `Q.FLAG` and `Q.AUG_DOT` never reach a
+  duration.** `gather_rhythm_marks` writes them at the MARK's own glyph
+  subject; `adjudicate_duration` reads them on the NOTEHEAD's. Measured: 134
+  flag rows and 157 dot rows, **0 on a notehead subject, 0 durations carrying a
+  dot, `beam_evidence == "flag"` 0 times.** It accounts for both directions of
+  the residual, confirmed against the encoding the page was rendered from:
+  m211 reads `quarter + 8th-rest` × 4 = **6.0** where the truth is **100
+  eighths** (the missing flag), and m207/m208 read a plain half, **2.0**, where
+  8 parts play a **dotted half** (the missing dot). ⚠️ The staged module's own
+  `DOT_ABOVE_NOTE_MAX_SPACES` / `DOT_BELOW_NOTE_MAX_SPACES`, with a paragraph
+  of measured justification, are **used by nothing in it** — the attachment
+  that comment describes is never performed. **This is the next unit of work**,
+  and it moves durations in the SHORTENING direction on a larger population.
+
 ⚠️ **AND IT HAS A MEASURED COST ALREADY.** `A-DUR-2` records that only the
 BENEFIT of the carry was measured. On the engraved fixture at bar 155 a
 **correct** carry is refused — 4 bars agree, 4 disagree, +1.0 against a floor
@@ -739,8 +773,11 @@ find the sums correct. **Do not tune `METER_CARRY_FLOOR` or
 `METER_FROM_BARS_FLOOR` against this** — that is fitting a constant to a
 broken input.
 
-**Blast radius.** No behaviour changed for this entry; it is a measurement that
-re-ranks the work. n = 2 changes in 1 movement of 1 work.
+**Blast radius.** The measurement changed no behaviour; the stem tier above
+does, and only on the staged path (`tools/omr/rhythm.py` is untouched, so no
+engraved or scan figure moves). n = 2 changes in 1 movement of 1 work, and
+**the four bars that stay wrong are exactly the un-fixed half** — the two
+faults are independent by measurement now, not by claim.
 
 ### A-DUR-6 · ⚠️⚠️ THE TARGET MODEL — a meter is decided PER BAR, from layered evidence
 
@@ -771,7 +808,7 @@ rather than defaulted.
 | 3 | this bar's own duration sum | ✅ `_bar_lengths_for` |
 | 4 | the same bar's sum on every other staff | ✅ the per-bar modal vote |
 | 5 | the surrounding bars' sums | ⚠️ PARTIAL — forward of a candidate (`_bar_run`), and now the whole system's own bars as a proposer of the LENGTH (`A-DUR-7`) |
-| 6 | beat subdivision agrees with the meter | ❌ not built; beams are gathered, grouping is not read |
+| 6 | beat subdivision agrees with the meter | ❌ not built; beams are gathered, grouping is not read — ⚠️ and a note is now joined to its beam by its STEM (`A-DUR-8`), which is the association such a rule would need |
 | 7 | undefined blobs of ink | ❌ not built — see A-DUR-5 |
 
 **Three things to carry into building it, each paid for by a measurement here:**

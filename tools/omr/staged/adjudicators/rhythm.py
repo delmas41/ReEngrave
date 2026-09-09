@@ -99,7 +99,85 @@ def _kept_beams(ev: Evidence, cell):
 BEAM_EDGE_TOLERANCE_WIDTHS = 1.0
 
 
-def _beam_levels(beams, x_center, width):
+def _boxes_overlap(a, b) -> bool:
+    """Do two (x, y, w, h) boxes share any area? No tolerance, and none needed.
+
+    ⚠️ MEASURED RATHER THAN CHOSEN. Over the 707 stem/beam pairs of the
+    engraved Beethoven 5 iv fixture that overlap in x, 685 also overlap in y
+    and the 22 that do not are separated by **35 px or more** -- nothing sits
+    in 1-34, so a tolerance would be decoration. Notehead/stem attachment
+    separates the same way: 819 heads take exactly one stem, and where none
+    overlaps the nearest is 94 px away but for three pairs at 1-2 px.
+    """
+    ax, ay, aw, ah = a
+    bx, by, bw, bh = b
+    return (ax <= bx + bw and ax + aw >= bx
+            and ay <= by + bh and ay + ah >= by)
+
+
+def _xywh(row) -> Optional[Tuple[float, float, float, float]]:
+    v = row.value
+    if not isinstance(v, (list, tuple)) or len(v) < 4:
+        return None
+    return (float(v[0]), float(v[1]), float(v[2]), float(v[3]))
+
+
+def _xywh_head(value) -> Optional[Tuple[float, float, float, float]]:
+    """`Q.GLYPH_BOX` is `(smufl_name, x, y, w, h)` -- the name comes FIRST.
+
+    ⚠️ Its own consumers already index past it (`x_center = v[1] + v[3]/2`),
+    so the offset is not new; it is spelled once here so a second reader of
+    the same row cannot get it wrong.
+    """
+    if not isinstance(value, (list, tuple)) or len(value) < 5:
+        return None
+    return (float(value[1]), float(value[2]),
+            float(value[3]), float(value[4]))
+
+
+def _stem_joined(beams, stems, head_box):
+    """The beams THIS notehead's stem reaches: (rows, the stems used).
+
+    ⚠️⚠️ A NOTE IS JOINED TO A BEAM BY ITS STEM, AND TESTING THE NOTEHEAD'S
+    CENTRE INSTEAD IS WHY BAR SUMS WERE WRONG ON PERFECT INK. A beam stroke
+    runs from the FIRST stem it joins to the LAST, and a stem stands at the
+    SIDE of its notehead -- so the outer note of every beamed group has its
+    centre roughly half a notehead width PAST the stroke's end. Measured on
+    the engraved fixture: 114 narrowed durations have a stem that meets a
+    beam while the centre test reads `none_over_this_note`, and the overshoot
+    clusters at **0.35-0.47 notehead widths**, which is the stem offset and
+    nothing else. `BEAM_EDGE_TOLERANCE_WIDTHS` then caught them as POSSIBLE,
+    so the reading came out as a RANGE that a consumer had to collapse -- and
+    `_bar_lengths_for` collapsed it to the longest.
+
+    ⚠️ ADDITIVE, NEVER SUBTRACTIVE. This is a second tier beside the centre
+    test, in the shape `_dedupe_cross_staff_detections`'s ledger ladder
+    already has: it can only turn a POSSIBLE into a CERTAIN, so a page whose
+    stems are not read behaves exactly as before. Stem-ONLY was measured and
+    refused -- same bars, but 60 narrowed against 16, because a head whose
+    stem the CV missed then loses its beam entirely.
+
+    ⚠️ THE Y HALF OF THE OVERLAP IS UNEXERCISED BY THAT FIXTURE and is tested
+    directly instead: on a clean engraving every beam sits at its stems' ends,
+    so sweeping a y tolerance 0-64 px moves one row and no bar. It is kept
+    because a stem in another octave crossing a beam's column is real ink and
+    the x test alone would join them.
+    """
+    if head_box is None:
+        return [], []
+    attached = [s for s in stems
+                if _xywh(s) and _boxes_overlap(_xywh(s), head_box)]
+    if not attached:
+        return [], []
+    joined = []
+    for b in beams:
+        box = _xywh(b)
+        if box and any(_boxes_overlap(_xywh(s), box) for s in attached):
+            joined.append(b)
+    return joined, attached
+
+
+def _beam_levels(beams, x_center, width, joined=()):
     """How many strokes cover this notehead's column: (CERTAIN, POSSIBLE).
 
     ⚠️ THE LEVEL IS AN INTERPRETATION OVER STROKES, WHICH IS WHY IT IS
@@ -113,14 +191,18 @@ def _beam_levels(beams, x_center, width):
     strokes were on the record and intact -- if the INTERPRETATION collapses at
     the first opportunity.
     """
+    joined_ids = {b.id for b in joined}
     if x_center is None:
-        return (0, 0)
+        # ⚠️ No box means no head to attach a stem to either, so `joined` is
+        # empty here by construction -- it is read rather than assumed zero so
+        # the two callers cannot drift apart.
+        return (len(joined_ids), len(joined_ids))
     pad = (width or 0.0) * BEAM_EDGE_TOLERANCE_WIDTHS
     certain = possible = 0
     for b in beams:
         x0 = b.detail.get("x0", 0)
         x1 = b.detail.get("x1", 0)
-        if x0 <= x_center <= x1:
+        if b.id in joined_ids or x0 <= x_center <= x1:
             certain += 1
             possible += 1
         elif x0 - pad <= x_center <= x1 + pad:
@@ -206,9 +288,21 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
 
     cell = ev.subject.at(Kind.CELL)
     kept, cv, yolo = _kept_beams(ev, cell)
-    certain, possible = _beam_levels(kept, x_center, head_width)
+    # ⚠️ `Q.STEM` WAS DECLARED IN `wants` AND `composed_from` AND READ BY
+    # NOTHING -- this project's own named anti-pattern, inside the decision
+    # whose docstring calls the beam level its fragile input. The stems were
+    # gathered (916 rows on a three-page fixture) and the association that
+    # needs them was being made on the notehead's centre instead.
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    head_box = None
+    if box:
+        hb = _xywh_head(box[-1].value)
+        head_box = hb
+    joined, attached = _stem_joined(kept, stems, head_box)
+    certain, possible = _beam_levels(kept, x_center, head_width, joined)
     levels = certain
     used.extend(b.id for b in kept)
+    used.extend(s.id for s in attached)
 
     # ⚠️ THREE STATES, AND THEY MUST NOT COLLAPSE INTO ONE. A duration that is
     # right BECAUSE THE BEAMS WERE READ and one that is right because the note
@@ -257,6 +351,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     shared = {"head": str(head), "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),
               "yolo_kept": len(kept) - len(cv),
+              "stems_attached": len(attached), "beams_by_stem": len(joined),
               "levels_certain": certain, "levels_possible": possible}
 
     # ⚠️ WHERE THE BEAM READING IS A RANGE, SO IS THE DURATION. Narrowing is

@@ -401,3 +401,184 @@ class TestTheRemainingConsequences(unittest.TestCase):
             with self.subTest(rule=r.consequence.value):
                 evaluate.check_downhill(r.cause, r.effect)
                 self.assertGreater(len(r.bound), 40)
+
+
+def _stem(log, *, x, y, w=4, h=60):
+    """One CV stem stroke, cell-scoped -- the real row shape.
+
+    ⚠️ A stem stands at the SIDE of its notehead and reaches from it to the
+    beam; both attachments are decided by BOX OVERLAP and nothing else.
+    """
+    return log.observe(CELL, Q.STEM, (x, y, w, h),
+                       reader=READERS.CV_LINES, frame="cell:0",
+                       x0=x, x1=x + w, y_center=y + h / 2.0,
+                       image="no_staff", staff_lines_erased=True)
+
+
+class TestANoteIsJoinedToItsBeamByItsSTEM(unittest.TestCase):
+    """⚠️⚠️ THE FAULT: a beam stroke runs from the FIRST stem it joins to the
+    LAST, and a stem stands at the SIDE of its notehead -- so the OUTER note
+    of every beamed group has its centre roughly half a notehead width past
+    the stroke's end. Testing that centre reads `none_over_this_note` on a
+    CLEAN ENGRAVING, `BEAM_EDGE_TOLERANCE_WIDTHS` catches it as POSSIBLE, and
+    the duration comes out as a range a consumer then collapses -- to the
+    LONGEST, because `Ruling.narrow` orders by support.
+
+    Measured on an engraved Beethoven 5 iv fixture: 114 narrowed durations
+    have a stem meeting a beam while the centre test says nothing is over the
+    note, and the overshoot clusters at 0.35-0.47 notehead widths.
+    """
+
+    def _last_note_of_a_group(self, log, *, with_stem):
+        """A head whose centre is PAST the stroke's end, stem-up.
+
+        The stroke ends at 140; the head spans 135-155, so its centre (145)
+        is 5 px past -- inside `BEAM_EDGE_TOLERANCE_WIDTHS` (20 px here) and
+        outside the stroke. The stem sits at the head's left edge, 135-139,
+        and rises to meet the beam.
+        """
+        _beam(log, y=40, x0=60, x1=140)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        if with_stem:
+            _stem(log, x=135, y=38, h=60)      # 38..98: meets the beam at 40
+        return g
+
+    def test_the_centre_test_alone_leaves_it_AMBIGUOUS(self):
+        """The control, and the reason this is not a free win: without the
+        stem the reading really IS a range, and it stays one."""
+        log = Log()
+        g = self._last_note_of_a_group(log, with_stem=False)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "beams_ambiguous")
+        self.assertEqual(v.detail["beam_evidence"], "none_over_this_note")
+        # ⚠️ AND THE COLLAPSE BIASES LONG: the top candidate is the QUARTER.
+        self.assertEqual(v.candidates[0].value["beats"], 1.0)
+
+    def test_a_stem_that_reaches_the_beam_DECIDES_it(self):
+        log = Log()
+        g = self._last_note_of_a_group(log, with_stem=True)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)          # one beam level
+        self.assertEqual(v.detail["beam_evidence"], "read")
+        self.assertEqual(v.detail["beams_by_stem"], 1)
+        self.assertEqual(v.detail["stems_attached"], 1)
+
+    def test_the_stem_is_in_the_BASIS(self):
+        """⚠️ `Q.STEM` was declared in `wants` and `composed_from` and read by
+        nothing. A row that decides a verdict must be traceable from it."""
+        log = Log()
+        _beam(log, y=40, x0=60, x1=140)
+        s = _stem(log, x=135, y=38, h=60)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        adjudicate.run(log)
+        self.assertIn(s.id, log.verdict(Q.DURATION, g).basis)
+
+    def test_a_stem_that_misses_the_beam_in_Y_does_NOT_join(self):
+        """⚠️ THE GUARD, AND IT IS UNEXERCISED BY THE ENGRAVED FIXTURE -- which
+        is why it is tested directly. Over that fixture's 707 stem/beam pairs
+        overlapping in x, 685 also overlap in y and the 22 that do not are
+        separated by 35 px or more, so nothing there sits near the edge. A
+        stem in another octave crossing a beam's column is the case this
+        refuses, and without it the x test alone would join them.
+        """
+        log = Log()
+        _beam(log, y=40, x0=60, x1=140)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 300, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=250, h=60)        # 250..310 -- nowhere near y=40
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.detail["beams_by_stem"], 0)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        # ⚠️ THE POSITIVE CONTROL, INSIDE THE TEST. Without it this passes for
+        # free the moment the stem tier dies -- everything narrows then.
+        log2 = Log()
+        _beam(log2, y=40, x0=60, x1=140)
+        g2 = R.glyph(0, 0, 0, 0, 0)
+        log2.observe(g2, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                     reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log2.observe(g2, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                     reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log2, x=135, y=38, h=60)        # the SAME stem, reaching y=40
+        adjudicate.run(log2)
+        self.assertEqual(log2.verdict(Q.DURATION, g2).outcome, Outcome.DECIDED)
+
+    def test_ANOTHER_notes_stem_does_not_join_this_one(self):
+        """Attachment is to THIS notehead's box. A stem elsewhere in the cell
+        reaches the same beam and says nothing about this head."""
+        log = Log()
+        _beam(log, y=40, x0=60, x1=140)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=70, y=38, h=60)          # some other note's stem
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.detail["stems_attached"], 0)
+        self.assertEqual(v.detail["beams_by_stem"], 0)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        # ⚠️ THE POSITIVE CONTROL: move that same stem onto THIS head and it
+        # decides. Otherwise the test passes for free when the tier dies.
+        log2 = Log()
+        _beam(log2, y=40, x0=60, x1=140)
+        g2 = R.glyph(0, 0, 0, 0, 0)
+        log2.observe(g2, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                     reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log2.observe(g2, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                     reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log2, x=135, y=38, h=60)
+        adjudicate.run(log2)
+        self.assertEqual(log2.verdict(Q.DURATION, g2).outcome, Outcome.DECIDED)
+
+    def test_it_is_ADDITIVE_never_subtractive(self):
+        """A note whose centre IS inside the stroke decides exactly as before,
+        stems or no stems -- so a page whose stems are not read is unchanged.
+        """
+        for stems in (False, True):
+            with self.subTest(stems=stems):
+                log = Log()
+                _beam(log, y=40, x0=60, x1=200)
+                g = R.glyph(0, 0, 0, 0, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 120, 90, 20, 16),
+                            reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+                if stems:
+                    _stem(log, x=120, y=38, h=60)
+                adjudicate.run(log)
+                v = log.verdict(Q.DURATION, g)
+                self.assertEqual(v.outcome, Outcome.DECIDED)
+                self.assertEqual(v.value["beats"], 0.5)
+
+    def test_two_stacked_strokes_both_join_through_one_stem(self):
+        """Sixteenths: the stem crosses both strokes, so the level is TWO."""
+        log = Log()
+        _beam(log, y=40, x0=60, x1=140)
+        _beam(log, y=56, x0=60, x1=140)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=38, h=60)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.25)

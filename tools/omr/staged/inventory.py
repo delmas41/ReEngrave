@@ -113,10 +113,12 @@ KNOWN_GAPS: Dict[str, str] = {
         "from the beam box (`rhythm._beamed_groups`); the staged decision "
         "groups by 'exactly as many heads as the digit claims' in the cell "
         "instead, so the beam is declared and unused.",
-    "duration declares 'stem'":
-        "inert declaration. `adjudicate_duration` DOES read `beam_stroke` -- "
-        "both come from `gather_cv_lines` -- but nothing reads the stem: no "
-        "stem-direction or stem-presence tier exists on this path.",
+    # ⚠️ `duration declares 'stem'` LEFT THIS LIST 2026-09-09. It was inert
+    # for as long as it stood, and it was not harmless: `adjudicate_duration`
+    # associated a beam with a note by the NOTEHEAD'S CENTRE, which sits half
+    # a notehead width past the stroke's end for the outer note of every
+    # beamed group. `_stem_joined` reads the stems the declaration always
+    # named. See `benchmarks/omr-staged-duration-beams-2026-09/FINDINGS.md`.
     "meter declares 'dossier_fact'":
         "inert declaration; no dossier is supplied on the scan path by "
         "protocol.",

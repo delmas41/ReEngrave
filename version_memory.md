@@ -16,6 +16,39 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-09 (late night) — a note is joined to its beam by its STEM
+
+Acts on `benchmarks/omr-staged-meter-engraved-2026-09/FINDINGS.md` §6, which
+separated the wrong bar sums into two independent faults and asked for them to
+be worked apart. **Fault 1 fixed, Fault 2 diagnosed to one cause.** Staged path
+only — `tools/omr/rhythm.py` untouched, so no engraved or scan figure moves.
+
+* `_stem_joined` / `_boxes_overlap` in `staged/adjudicators/rhythm.py`. A beam
+  stroke runs from the FIRST stem it joins to the LAST and a stem stands at the
+  SIDE of its notehead, so the outer note of every beamed group has its centre
+  ~half a notehead width past the stroke's end — 114 narrowed durations on the
+  engraved Beethoven 5 iv fixture, overshoot clustering at 0.35-0.47 widths.
+  ⚠️ **`Q.STEM` was declared in `wants` and `composed_from`, had its own
+  `KNOWN_GAPS` entry, and was read by nothing.** That entry is deleted;
+  `inventory --check` and `health --check` exit 0.
+* Assessable bars **12 → 14**, correct **7 → 10**, `narrowed` **147 → 29**, no
+  bar right-to-wrong. The candidate-policy question dissolves — under the stem
+  tier `top` and `lowest` agree on every bar, where §6 measured them differing.
+* Additive, never subtractive; attachment is BOX OVERLAP with no constant (the
+  two separations measured at 35 px and 94 px of empty margin). Stem-only
+  refused. The y guard is unexercised by the fixture and is tested directly,
+  with its positive control inside the test. Four mutation arms red.
+* ⚠️ **Fault 2, diagnosed and NOT fixed: `Q.FLAG` and `Q.AUG_DOT` are gathered
+  on the MARK's own glyph subject and read on the NOTEHEAD's**, so 134 flag and
+  157 dot rows reach zero durations. Confirmed against the truth encoding —
+  m211 reads 6.0 where the truth is 100 eighths (missing flag), m207/m208 read
+  2.0 where 8 parts play a dotted half (missing dot). The staged module's own
+  dot-window constants are used by nothing in it. Next unit of work.
+* `benchmarks/omr-staged-duration-beams-2026-09/` — FINDINGS, four probes and
+  their outputs. `A-DUR-8` updated in place; CLAUDE.md gains a section.
+
+---
+
 ## 2026-09-09 (night) — the engraved render, DENSE texture: bar sums are wrong on perfect ink
 
 Sean: *"now do the engraved render to settle it"*. ⚠️ **A SIBLING SESSION DID
