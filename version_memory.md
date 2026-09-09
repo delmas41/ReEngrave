@@ -5,6 +5,45 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-09 (evening) — the clef's neighbour, the meter's missing half, and three wrong inferences
+
+- **`Q.CLEF_POSITION`** — where each clef glyph stands on THIS staff, in
+  half-spaces from the top line. Five of six abstaining staves were an exact
+  `{treble: 3.0, bass: 3.0}` tie caused by a NEIGHBOURING staff's clef landing
+  in the cell's four spaces of padding. Clef decided 20→21 of 22 and 23→27 of
+  27; pitches 835→881 and 1,329→1,470; `no_pitch` 67→54 and 75→**0**.
+  ⚠️ Two controls: 19/19 decided staves unchanged (0 would flip), and the
+  REGISTER of the newly-decided staves matches the established bass staves.
+- ⚠️ **The structural finding is bigger than the fix**: every `CLEF_GLYPH` row
+  on a staff shares reader+frame+quantity, so `tally` counts them as ONE
+  correlated group and takes the strongest term. **No refinement of the
+  detector's own evidence can break a clef contest** — a tie-breaker must come
+  from another reader, which is why the position is a GEOMETRY row.
+- **`METER_COVERAGE_FLOOR`** — the half of the legacy meter rule the staged
+  vote had dropped. Agreement was divided by the staves that SPOKE, so 3 of 11
+  shipped a 4/4 at share 1.0 on a page that prints no time signature (truth
+  2/4, 18 parts). Coverage and agreement now report apart, with their own
+  reasons. ⚠️ It bore on `size_measure_rest` from the same day: with a WRONG
+  meter that consequence fired and laundered the error into a `measure="yes"`
+  claim; now the system abstains and `measure_rests_read` goes 19 → 0.
+- ⚠️ **A second meter fault filed, not fixed**: Brahms p2 reads `9/4` where the
+  truth is `9/8` — the denominator digit, at NCC 0.42–0.53, with `9/8` a
+  candidate and not even the runner-up. Never tune this family on one edition.
+- **`probe_beam_mix.py`** — CV, YOLO and the bar sum together. The bar sum can
+  settle only 13 and 6 of 142 and 296 narrowed notes, because half the bars
+  have no meter.
+
+⚠️⚠️ **THREE OF MY OWN INFERENCES WERE WRONG, each one step from being
+reported.** (1) The written-range test as the fix for an abstaining clef — it
+needs the instrument, which abstains on 22/22 and 27/27 staves. (2) "The
+staff-line erasure is destroying the beam rung" — 98 strokes against 609, and
+rendering ONE CELL killed it: 557 of the 609 (91%) sit on a staff line. (3)
+"Durations are systematically doubled" — the bar sum counted every chord member
+separately; 83 of the 94 4.0-bars are a lone whole rest. **A number large
+enough to be convincing is not evidence about its own cause.**
+
+---
+
 ## 2026-09-09 (later) — GATHER: the five families detected and read by nothing, and rests end to end
 
 The lever the morning's tools identified, taken. Five notation families reached
