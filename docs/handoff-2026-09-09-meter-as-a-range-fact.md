@@ -92,6 +92,14 @@ disappears; `reconcile_duration` fires **13 → 47**. Controls that did NOT move
   the meter that page actually prints, it **refuses that too** (−1.0 against
   −3.0). Its durations are noise and a noisy page refuses everything. A
   movement boundary on a page that READS WELL is unmeasured.
+  ✅ **ANSWERED 2026-09-09, and it was the wrong name for the case** — the
+  decision never asks whether a movement started, only whether the carried
+  meter FITS. On p.63 of this same document the carried `2/4` is refused at
+  **−6.0** (1 agree / 8 disagree) and the same bars name **3.0 at +5.0**, the
+  printed `3/4`. ⚠️ A movement-START page is still unmeasured and this
+  document has none that reads well (p.17, p.32, p.44 all located, all bad).
+  See `docs/handoff-2026-09-09-bars-name-a-length.md` and
+  `benchmarks/omr-staged-meter-from-bars-2026-09/FINDINGS.md` §4b.
 * ⚠️ **The bar-math half is barely exercised.** Even on p.62 it contributed
   `0 fit / 0 not`: the whole-rest exclusion removes exactly the post-change
   bars, because a change is typically followed by most instruments resting.

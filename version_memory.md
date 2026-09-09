@@ -16,6 +16,73 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-09 (night) — the boundary case, found; and a refusal that was blocking every rung behind it
+
+Sean: *"go find that movement boundary on a page that reads well"*. Done, and
+the answer changed the question.
+
+- ✅ **"A MOVEMENT BOUNDARY" WAS THE WRONG NAME FOR THE OPEN CASE.**
+  `adjudicate_meter` never asks whether a movement started — only whether the
+  carried meter FITS. So the case needed is *a page whose carried meter is
+  WRONG and whose bars read well*, and this document has one: **p.63**,
+  mid-Finale, where the last READ meter is p.1's `2/4` and the print is `3/4`.
+  The carry is refused at **−6.0** (1 agree / 8 disagree) and **−7.0** (0/8),
+  and the same bars name **3.0 at +5.0**. ⚠️ **That is the discrimination the
+  *Andante* could not give** — there the refusal is SAFE but not
+  discriminating, because that page refuses the correct meter too.
+- ⚠️⚠️ **AND ON THIS DOCUMENT NO MOVEMENT-START PAGE READS WELL.** All three
+  were located by rendering page tops — **p.17** *Andante* 3/8, **p.32**
+  Scherzo 3/4 (*"Allegro ♩=96"*, full instrument names, a printed 3/4),
+  **p.44** Finale 4/4 — and all three fail: assessable bars 4/1/2, 2/3/8 and
+  **0**. p.32's best system reads 3.0 ×4 against 2.0 ×2 and 5.0 ×2 → support
+  **0**, under the floor. ⚠️ **The two failures have OPPOSITE causes, which is
+  why this looks structural**: a movement opening is either sparse — most
+  instruments resting, and a lone whole rest may never corroborate a meter —
+  or a dense tutti, the texture this reader is worst at. Both ends of the
+  distribution are bad pages. **The remaining route is the ENGRAVED one**
+  (`orchestral_eval` on `beethoven--symphony-5--mvt4`), unspent.
+- ⚠️ A top-margin heuristic was tried first for locating movement starts and
+  **missed p.17**, the one known boundary — this print does not indent a
+  movement start. Discarded rather than trusted.
+- ⚠️⚠️ **THE HUNT FOUND A BUG: A REFUSAL WAS BLOCKING THE RUNGS BEHIND IT.**
+  With BOTH flags on, p.63 abstained `carry_outweighed_by_the_bars` —
+  *identical to carry-only* — while the same page off the carry named length
+  3.0. `adjudicate_meter` chained its fallbacks with `or`, and **`_carry_meter`
+  returns a truthy `Ruling` when it DECIDES and also when the bars OUTWEIGH
+  it**, so the chain stopped at a refusal: the bar reader was unreachable
+  behind the refusal it had itself caused, at exactly the case both mechanisms
+  exist for. ⚠️ **Half the gap predates `OMR_METER_FROM_BARS`** — `_change_only`
+  sat behind the same `or`, so a refused carry also suppressed a meter change
+  printed on its own system.
+- **`_meter_fallbacks`** replaces the chain and orders the rungs by what each
+  KNOWS, never by which is newer: (1) a carry the bars corroborated — it names
+  an engraving that was READ; (2) this system's own bars — self-checking
+  arithmetic, which outranks a carry those same bars just refused; (3) a change
+  printed on this system; (4) failing all three, the **most informative refusal
+  rather than the last one tried** — one naming the bar length beats one naming
+  only the carry's support, which beats a bare "nothing here".
+- **Measured on p.63, both flags**: `63/0` `carry_outweighed_by_the_bars` −6.0
+  → **`bars_name_a_length_without_a_form`, length 3.0, +5.0**; `63/2` −7.0 →
+  **length 3.0, +4.0**; `63/1` **unchanged**, because with 2 assessable bars
+  the carry's refusal really is the most informative thing available.
+- **Controls, all measured, all clean**: carry-only on p.63 **identical** to
+  before the fix; `--pages 0-2` with either flag **identical**; the *Andante*
+  with both flags on **still refuses all three systems** (−3.0,
+  `carry_not_corroborated`, −1.0) — the bars are now asked there and still name
+  nothing, which is the mechanism working rather than being bypassed.
+- **Two more mutation arms** (11 total): reverting to the `or`-chain turns 3
+  tests RED, and reporting the LAST refusal instead of the most informative
+  turns 3 RED.
+- Suite **3376 passed / 11 skipped / 0 failed**, source md5 checked identical
+  before and after the run; `inventory --check` and `health --check` both 0.
+- Five documents carried the superseded *"a movement boundary on a page that
+  READS WELL is unmeasured"* claim and **all five were updated together** —
+  CLAUDE.md, both handoffs, `ASSUMPTIONS.md` (A-DUR-2 and A-DUR-7) and
+  `omr-staged-meter-carry-2026-09/FINDINGS.md` — because one fact held in
+  several places is how a figure goes stale in three of four of them.
+
+---
+
 ## 2026-09-09 (night) — the bars may name a LENGTH; only ink may name the ENGRAVING
 
 The first ranked task of `docs/handoff-2026-09-09-meter-as-a-range-fact.md` §5

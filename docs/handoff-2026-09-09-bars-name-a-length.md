@@ -30,6 +30,16 @@ separates them, because it is the same arithmetic. So:
 * where none exists it abstains **`bars_name_a_length_without_a_form`**,
   recording the length, the support, and every spelling that length could be.
 
+**And a second change, found by hunting the boundary above:**
+`adjudicate_meter` chained its fallbacks with `or`, but `_carry_meter` returns
+a `Ruling` when it DECIDES *and* when the bars OUTWEIGH it — both truthy — so
+**a refusal stopped the chain and the rungs behind it were never asked.**
+`_meter_fallbacks` replaces it, ordering by what each rung KNOWS: a
+corroborated carry, then this system's own bars, then a printed change, then
+the **most informative refusal rather than the last one tried**. ⚠️ Half of
+that gap predates `OMR_METER_FROM_BARS`: a system whose carry was refused
+could not report a meter change printed on it either.
+
 ⚠️ **The LETTER is never borrowed.** `raw` reaches `staged.export` as
 `symbol="common"` / `"cut"` — a positive claim that a `C` is PRINTED on a
 system that printed nothing we could read. Borrowed meters are spelled in
@@ -48,6 +58,9 @@ throughout. Carry OFF in every arm, so nothing else is in play.
 | `--pages 1,17` (*Andante*) | **all three systems unchanged** — the control holds with no special case |
 | `--pages 1,63` | two systems record **length 3.0, forms `3/4` `6/8` `12/16`** — **truth `3/4`, hand-read** — while refusing to borrow the `2/4` standing in front of them |
 | flag OFF, `--pages 0-2` | matches the artefact committed **before** this session on every subject, outcome, reason and value |
+| `--pages 1,63`, **carry ON** | the carried `2/4` is refused at **−6.0** (1 agree/8 disagree) and **−7.0** (0/8) — ⚠️ the discrimination the *Andante* could not give |
+| `--pages 1,63`, **both flags** | after the §4 fix: **length 3.0 at +5.0 and +4.0** where before it abstained on the carry's refusal |
+| `--pages 1,17`, **both flags** | all three *Andante* systems still refuse — the bars are asked and name nothing |
 
 In the file (pages 0-2): `empty_bars_padded_without_meter` **47 → 0**,
 `measure_rests_read` 92 → **169**, `written.notes` 648 → 665,
@@ -76,14 +89,19 @@ both 0.
 * **And what differs is what each can be WRONG about.** The carry reaches
   across a movement boundary and is stopped only by the bars refusing it;
   this cannot reach across one at all, because it never looks at another
-  system. **The case that separates them — a movement boundary on a page that
-  READS WELL — is unmeasured**, for the same reason the previous handoff
-  gives: the one boundary on this document is a page whose bars are noise.
+  system.
+* ✅ **THE CASE THAT SEPARATES THEM IS NOW MEASURED — see §2b and §4b.** It was
+  never a "movement boundary": the mechanism does not ask whether a movement
+  started, only whether the carried meter fits. On **p.63** the carried `2/4`
+  is refused at **−6.0 (1 agree / 8 disagree)** and the same bars name **3.0
+  at +5.0**, which is the printed `3/4`. ⚠️ What is still unmeasured is a
+  movement-START page specifically, and on this document **there is no such
+  page to measure** — all three were located and all three read badly.
 * ✅ **The `3/4` on p.63 IS hand-read.** It was written up as an inference
   first; the pages were then rendered and looked at, because that row is what
   the abstaining branch rests on. **p.62 prints `147` at top-left and p.63
   prints `160`**, and the reference's 3/4 runs 155-208.
-* **n = 20 systems on 15 pages, 1 document, 1 publisher** — and of those, **two**
+* **n = 24 systems on 17 pages, 1 document, 1 publisher** — and of those, **two**
   systems exercise the deciding branch and **two** the abstaining one.
 * ⚠️ **The bars are not fully independent witnesses.** The per-bar cross-staff
   majority is the only thing standing against a systematic duration misread,
@@ -140,23 +158,34 @@ both 0.
    Surya self-disables. That is a real failure to explain, not an
    environmental skip, and it is easy to mistake for a regression.
 
-**Nine mutation arms were run**, clearing
-`~/Library/Caches/com.apple.python/<abs path>/` between each. Eight turned
-tests RED; the ninth is item 2.
+**Eleven mutation arms were run**, clearing
+`~/Library/Caches/com.apple.python/<abs path>/` between each. Ten turned
+tests RED; the eleventh is item 2.
 
 ---
 
 ## 5. THE NEXT WORK, RANKED
 
-### 1. ⚠️ THE CASE THAT SEPARATES THE TWO MECHANISMS — go and find one
+### 1. ✅ DONE — and the answer changed the question. What is left is ENGRAVED.
 
-A movement boundary on a page that **reads well**. It is the open question of
-both this handoff and the last one, and it is now the single highest-value
-measurement on the table because **two shipped mechanisms are indistinguishable
-without it**. §11 of `omr-staged-meter-carry-2026-09/FINDINGS.md` names the
-route and it is still unspent: render `beethoven--symphony-5--mvt4` (which
-changes 4/4 → 3/4 → 4/4 → 2/2) through LilyPond with `orchestral_eval`, so
-reading quality is not the confound. If the rule fires there it is a rule.
+The case that separates the two mechanisms was found and measured (§2, §4b):
+**p.63**, where the carried `2/4` is refused at −6.0 and the same bars name
+3.0 at +5.0. It is not a movement boundary and never needed to be — the
+mechanism asks whether the carried meter FITS, not whether a movement started.
+
+⚠️ **A movement-START page is a different matter, and on this document there
+is not one that reads well.** All three were located (p.17 *Andante*, p.32
+Scherzo, p.44 Finale) and all three fail — **for opposite reasons**: an
+opening is either sparse (most instruments resting, and a lone whole rest may
+never corroborate) or a dense tutti, which is the texture the reader is worst
+at. p.32's best system gets 8 assessable bars and still scores **0**.
+
+**So the remaining route is the ENGRAVED one**, unspent since §11 of
+`omr-staged-meter-carry-2026-09/FINDINGS.md`: render
+`beethoven--symphony-5--mvt4` (4/4 → 3/4 → 4/4 → 2/2) through LilyPond with
+`orchestral_eval`, where legibility is not the confound. If the rule fires
+there it is a rule; if it does not, no amount of scan work would have said
+so.
 
 ### 2. A SECOND DOCUMENT AND PUBLISHER
 

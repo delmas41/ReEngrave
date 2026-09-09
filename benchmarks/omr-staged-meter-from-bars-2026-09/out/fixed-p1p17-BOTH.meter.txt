@@ -1,0 +1,4 @@
+system/1/0       decided   voted                                2/4
+system/17/0      abstained carry_outweighed_by_the_bars         None  support=-3.0 (0+/4-)
+system/17/1      abstained carry_not_corroborated               None
+system/17/2      abstained carry_outweighed_by_the_bars         None  support=-1.0 (0+/2-)

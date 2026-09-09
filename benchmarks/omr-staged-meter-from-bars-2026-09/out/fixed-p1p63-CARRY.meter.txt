@@ -1,0 +1,4 @@
+system/1/0       decided   voted                                2/4
+system/63/0      abstained carry_outweighed_by_the_bars         None  support=-6.0 (1+/8-)
+system/63/1      abstained carry_outweighed_by_the_bars         None  support=-1.0 (0+/2-)
+system/63/2      abstained carry_outweighed_by_the_bars         None  support=-7.0 (0+/8-)

@@ -823,3 +823,135 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
         self.assertFalse(hasattr(rhythm_mod, "METER_FROM_BARS_MIN_ASSESSABLE"),
                          "a gate that cannot fire reads as a protection that "
                          "is not there — see the constant's own note")
+
+
+class TestARefusalMayNotBlockALaterRung(unittest.TestCase):
+    """⚠️⚠️ AN ABSTENTION IS NOT AN ANSWER, and chaining the meter's fallbacks
+    with `or` treated it as one.
+
+    `_carry_meter` returns a `Ruling` both when it decides and when the bars
+    OUTWEIGH it, and both are truthy — so `a() or b() or c()` stopped at a
+    refusal and never asked the rungs behind it. Measured on Beethoven 5 /
+    Litolff p.63: the carried `2/4` is refused at −6.0 (1 agree / 8 disagree),
+    and with `OMR_METER_FROM_BARS` ALSO on the page still abstained
+    `carry_outweighed_by_the_bars` — the bar reader unreachable behind the
+    refusal it had itself caused. Off its own flag the same page names length
+    3.0 at +5.0, which is the printed 3/4.
+    """
+
+    def _bars(self, log, page, per_cell, *, n_staves=4):
+        for st in range(n_staves):
+            for c, beats in enumerate(per_cell):
+                cell, g = R.cell(page, 0, st, c), R.glyph(page, 0, st, c, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 100, 0, 20, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": beats, "written": beats,
+                           "duration_type": "quarter", "dots": 0},
+                    decider="t", reason="head_and_marks"))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 100.0,
+                                       "kind": "chord"}]},
+                    decider="t", reason="x_clustered"))
+
+    def _log(self, per_cell, *, sources=((0, (2, 4)),), dst_page=2):
+        """`sources` are (page, (num, den)) systems that READ their meter."""
+        log = Log()
+        subs = [R.system(pg, 0) for pg, _m in sources] + [R.system(dst_page, 0)]
+        for sysj in subs:
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=12, decider="t", reason="counted"))
+        for pg, meter in sources:
+            for i in range(12):
+                log.observe(R.staff(pg, 0, i), Q.METER_TEMPLATE, meter,
+                            reader=READERS.TEMPLATE, frame="header_window",
+                            score=0.7, raw="%d/%d" % meter)
+        self._bars(log, dst_page, per_cell)
+        return log, R.system(dst_page, 0)
+
+    def _run(self, log, *, carry, from_bars):
+        import os
+        log.freeze()
+        adjudicate._ensure_decisions()
+        spec = adjudicate.REGISTRY[Q.METER]
+        env = {rhythm_mod.METER_CARRY_ENV: "1" if carry else None,
+               rhythm_mod.METER_FROM_BARS_ENV: "1" if from_bars else None}
+        prev = {k: os.environ.get(k) for k in env}
+        try:
+            for k, v in env.items():
+                os.environ.pop(k, None) if v is None else os.environ.update({k: v})
+            for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
+                adjudicate.adjudicate_one(log, spec, sysj)
+        finally:
+            for k, v in prev.items():
+                os.environ.pop(k, None) if v is None else os.environ.update({k: v})
+
+    def test_the_carry_alone_is_refused_by_bars_that_read_well(self):
+        """The control: the bars DO discriminate against a wrong carry when
+        they can speak. This is the p.63 shape — 6 bars of 3.0 against a
+        carried 2/4."""
+        log, dst = self._log([3.0] * 6)
+        self._run(log, carry=True, from_bars=False)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "carry_outweighed_by_the_bars")
+        self.assertEqual(v.detail["bars_disagree"], 6)
+
+    def test_a_REFUSED_carry_does_not_block_the_bars(self):
+        """⚠️ THE BUG. With both mechanisms on, the refused carry used to be
+        returned as the answer and the bars were never asked."""
+        log, dst = self._log([3.0] * 6)
+        self._run(log, carry=True, from_bars=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertEqual(v.reason, "bars_name_a_length_without_a_form")
+        self.assertEqual(v.detail["length"], 3.0)
+        self.assertEqual(v.detail["support"], 6.0)
+
+    def test_a_refused_carry_gives_way_to_a_DECIDED_bar_length(self):
+        """⚠️ SEAN'S ORDERING AT THE CASE IT WAS WRITTEN FOR: a movement
+        boundary. The carry says 2/4 and is refused by bars that say 3.0; an
+        earlier system READ a 3/4, so the length can be spelled — and the
+        answer is the new movement's meter, not the old one's."""
+        log, dst = self._log([3.0] * 6,
+                             sources=((0, (3, 4)), (1, (2, 4))))
+        self._run(log, carry=True, from_bars=True)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "derived_from_bars")
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (3, 4))
+        self.assertEqual(v.detail["form_borrowed_from"], R.system(0, 0).to_key())
+
+    def test_a_CORROBORATED_carry_still_wins(self):
+        """The ordering is by what each rung KNOWS, not a preference for the
+        newer mechanism: a carry the bars agree with names an engraving that
+        was actually read, and nothing here displaces it."""
+        log, dst = self._log([2.0] * 6)
+        self._run(log, carry=True, from_bars=True)
+        self.assertEqual(log.verdict(Q.METER, dst).reason, "carried")
+
+    def test_the_most_informative_refusal_is_the_one_reported(self):
+        """⚠️ NOT THE LAST ONE TRIED. When nothing decides, a refusal naming
+        the BAR LENGTH tells a reader more than one naming only the carry's
+        support, which tells more than a bare "nothing here"."""
+        log, dst = self._log([3.0] * 6)
+        self._run(log, carry=True, from_bars=True)
+        d = log.verdict(Q.METER, dst).detail
+        self.assertIn("length", d)
+        self.assertIn("candidate_forms", d)
+
+    def test_flags_off_is_unchanged(self):
+        log, dst = self._log([3.0] * 6)
+        self._run(log, carry=False, from_bars=False)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_evidence")
