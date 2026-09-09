@@ -471,6 +471,83 @@ that exact page; the exporter honours it anyway and puts
 `join_decided`/`join_used` in the coverage report, because an exporter that
 quietly disagrees with a decision is how a measured judgement goes missing.
 
+### GATHER — the five families that were detected and read by nothing
+
+The lever the three tools above identified, taken the same day.
+`gather.gather_glyph_families` emits one typed row per glyph for **rests,
+arcs, wedges, dynamic letters and articulation marks**. Findings:
+[benchmarks/omr-staged-gather-2026-09/FINDINGS.md](benchmarks/omr-staged-gather-2026-09/FINDINGS.md).
+
+⚠️ **Routed by CLASS, never by the detector's `category`, and the hairpins are
+why.** `dynamicDiminuendoHairpin` carries category `dynamic` AND a name
+starting with `dynamic`, so a prefix test alone spells a crescendo into a
+dynamic word. Articulations are the mirror: all ten `artic*` classes carry
+category `ornament`, shared with `ornamentTrill`, `fermataAbove` and
+`arpeggiato`.
+
+⚠️ **THE STUBS NOW ABSTAIN ON THEIR OWN POPULATION.** A stub with no
+`subjects_from` runs on every subject at its scope, so `arc_owner` abstained
+**once per detection** — 2,728 rows on Beethoven p3, its 199 real subjects
+inside 2,529 no-ops, an abstention meaning "there was a glyph here" rather
+than "I could not read this arc". Now 199. `wedge_anchor` writes **nothing at
+all** on a page that prints no hairpin, which is silence where there is
+nothing to decide.
+
+**Rests go end to end.** `adjudicate_duration`'s domain is now the TUPLE
+`(notehead_class, rest)` — ⚠️ **one question, "how long is this event", for
+two kinds of ink**; a separate `rest_duration` quantity would make every
+consumer ask twice for one fact. The value comes from
+`rhythm._REST_DURATIONS`, **imported rather than restated**, including the
+entries it deliberately omits: `restHBar` / `restHNr` name no single value, so
+the decision abstains `unreadable_rest` rather than inventing one.
+
+⚠️ **The bar-length convention is a CONSEQUENCE, not part of the reading.**
+`consequences.size_measure_rest` (`meter` → `duration`, CELL scope): a bar
+whose only standing duration is one dotless `restWhole` takes the BAR's
+length. Its evidence is the CELL's contents and the SETTLED meter, neither of
+which `adjudicate_duration` has when it reads one glyph. All six cases the
+legacy fix was priced on hold — including that it **fires in 4/4 where the
+number does not move**, because the MARKING (`measure="yes"`, no `<type>`) is
+the point and not the arithmetic, and that it **refuses a lone quarter rest**,
+which is the 34-edit lesson.
+
+⚠️⚠️ **AND IT EXPOSED A REAL HAZARD IN `reconcile_duration`.** That rule
+offers a DECIDED event its own beam level ±1, so a lone 4.0 whole rest in a
+2/4 bar would land EXACTLY on 2.0 and be UNIQUE — **the right number by the
+wrong reasoning**, exported as a HALF rest with `<type>half</type>` where the
+engraving prints a measure rest with no type at all. A rest carries no beam to
+re-read; rests are excluded there. ⚠️ A second latent bug arrived with the
+second writer: reconcile summed `log.verdicts(...)` — every ROW, not the
+standing one — so a superseded duration would be double-counted.
+`_standing()` resolves it once, for both rules.
+
+| | beet5 p3 | brahms p2 |
+|---|--:|--:|
+| rests written | **209 + 19 measure rests** | **338 + 11** |
+| bars padded because we read NOTHING | 148 → **48** | 60 → **4** |
+| detected glyphs the record cannot carry | 761 → **533** | 1,270 → **920** |
+
+⚠️ **`empty_bars_padded` is reported apart from `measure_rests_read`.** The
+first is a bar we read NOTHING in; the second a bar where a whole rest was
+actually read. Conflating them reports a page as full of measure rests when
+what it is full of is unread bars.
+
+⚠️⚠️ **THE DERIVED CHECK FOUND A DETECTOR FAULT NOBODY WAS LOOKING FOR.**
+`coverage()` now derives what no family claims — `NOT_NOTATION` excuses a
+class only WITH A WRITTEN REASON, so the default for an unthought-of class is
+*reported*. What it left is **`arpeggiato`, 98 and 86 over two pages**, and
+neither work prints ninety arpeggios a page: median **56×388** and **40×243**
+boxes at confidence **0.39** and **0.35**, against noteheads' 146×131 at 0.67.
+A 1:7 tall thin box at half a notehead's confidence is a **stem or a
+barline**. It is deliberately NOT excused into `NOT_NOTATION` — `arpeggiato`
+really is a notation family, and burying it there would hide the misread
+rather than record it.
+
+**Still unrepresented, and now one piece of work each rather than two:** ties
+and slurs (843 over two pages) need `arc_kind` + `arc_owner`; dynamics (489)
+need the `f`+`f` → `ff` spelling; articulations (37) need the nearest-notehead
+attach. ⚠️ **`fermata` (35) and `ornament` (6) still have NO QUANTITY.**
+
 ### Four claims of the 2026-09-09 handoff, corrected
 
 1. ***"`tuplet_ratio` produced no row — page or wiring?"*** **The page, with a

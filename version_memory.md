@@ -5,6 +5,48 @@ every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
 
 ---
 
+## 2026-09-09 (later) — GATHER: the five families detected and read by nothing, and rests end to end
+
+The lever the morning's tools identified, taken. Five notation families reached
+`GLYPH_BOX` and no typed row, so four stubs could not have been filled where
+they stood and rests had nowhere to go at all.
+
+- **`gather.gather_glyph_families`** — one typed row per glyph for rests, arcs,
+  wedges, dynamic letters and articulation marks. `Q.REST` is new; the other
+  four quantities existed and were observed by nothing. ⚠️ Routed by CLASS,
+  never by the detector's `category`: `dynamicDiminuendoHairpin` is a WEDGE
+  wearing the `dynamic` category and prefix, and all ten `artic*` classes carry
+  category `ornament`.
+- **The stubs abstain on their own population now.** `arc_owner` ran on every
+  subject at its scope — 2,728 abstentions on one page around 199 real
+  subjects. With `subjects_from` it is 199, and `wedge_anchor` writes NOTHING
+  on a page that prints no hairpin.
+- **Rests reach the file.** `adjudicate_duration`'s domain is the tuple
+  `(notehead_class, rest)` — one question for two kinds of ink. Values from
+  `rhythm._REST_DURATIONS`, imported; `restHBar` abstains `unreadable_rest`.
+- **The bar convention is a CONSEQUENCE**, `size_measure_rest` (meter →
+  duration, CELL). All six priced cases hold, including firing in 4/4 where the
+  number does not move and refusing a lone quarter rest.
+- ⚠️ **It exposed a real hazard in `reconcile_duration`**: a lone 4.0 whole rest
+  in a 2/4 bar would land exactly at 2.0 and be UNIQUE — the right number by
+  the wrong reasoning, exported as a HALF rest with a `<type>`. Rests excluded.
+  ⚠️ And a second latent bug came with the second writer: reconcile summed
+  every verdict ROW, so a superseded duration would double-count.
+- ⚠️ **The derived unclaimed-class check found a DETECTOR fault nobody was
+  looking for**: `arpeggiato` 98 + 86 over two pages, median 56×388 and 40×243
+  boxes at confidence 0.39 and 0.35 — a stem or a barline, not an arpeggio
+  sign. Not excused into `NOT_NOTATION`, because that would hide it.
+- **Three checks fired on this work**: ten now-stale `KNOWN_GAPS` entries were
+  evicted; a latent `NameError` in `_problems` surfaced the moment a domain was
+  not directly gathered; and `test_an_unsatisfiable_want_is_reported` followed
+  its own written instruction and became a test of the DISTINCTION.
+
+Rests written 209+19 and 338+11 of 228 and 350; bars padded because we read
+nothing 148 → 48 and 60 → 4; detected-and-unrepresented 761 → 533 and
+1,270 → 920. Both balance, both parse under music21.
+
+---
+
 ## 2026-09-09 — the staged pipeline gets an inventory, an EXPORTER and a health report; and the record turns out not to hold rests
 
 The three ranked tasks of `docs/handoff-2026-09-09-staged-accounting.md`, done
