@@ -112,6 +112,28 @@ explained in `rhythm.py`'s own prose; the check makes it mechanical.
 declared quantity "appeared in the source" and nothing could ever be flagged.
 A zero is a suspect, not a result.
 
+### Two of the twelve are worth opening, and both were confirmed by grep
+
+⚠️ **`clef` declares `notehead_staff_position` and never reads it — and that
+is its OWN FIRST `checked_by` ENTRY.** The decorator says the clef is checked
+by *"implied pitches: this staff's own measured positions under this candidate
+must fall in the instrument's written range (`clef_correction.propose_clef`)"*,
+and `grep -n NOTEHEAD_STAFF_POSITION tools/omr/staged/adjudicators/clef.py`
+returns **two lines, `implicates` and `wants`, and nothing in the body**.
+`adjudicate_clef` scores detector, locator and carry terms, the instrument's
+expected clef, and the key-signature slot fit — the written-range test is not
+among them. So a declared constraint names a check the code does not run, and
+without this report nothing says so. The machinery exists one module over:
+`ownership._range_veto` implements exactly that test for glyph ownership.
+
+⚠️ **`glyph_owner`'s declaration is MISDIRECTED rather than merely inert.**
+`_range_veto` does read a staff position — from
+`band_row.detail["position_in_candidate"]`, a field of the
+`glyph_band_distance` row — so the dependency is real and the `wants` entry
+names the wrong quantity for it. The consequence is not cosmetic: a
+`notehead_staff_position` row going missing would never be recorded as
+`missing` on this verdict, because the decision never asks for one.
+
 ## 6. Per stage — where the tests are, and where they are not
 
 | stage | tests |

@@ -524,6 +524,19 @@ it**, which is the standing observation that `_dedupe_cross_staff_detections`
 the rewrite and now loud. ⚠️ That check reported **zero** when first written,
 because `inspect.getsource` includes the decorator and `wants` lives there.
 
+⚠️⚠️ **Two of the twelve are worth opening, both confirmed by grep.**
+`adjudicate_clef` declares `notehead_staff_position` and never reads it — and
+that is its **own first `checked_by` entry**, *"implied pitches: this staff's
+own measured positions under this candidate must fall in the instrument's
+written range"*. `grep -n NOTEHEAD_STAFF_POSITION …/clef.py` returns two
+lines, `implicates` and `wants`, **and nothing in the body**: a declared
+constraint naming a check the code does not run. The machinery exists one
+module over, in `ownership._range_veto`. And `glyph_owner`'s declaration is
+**misdirected rather than inert** — `_range_veto` does read a staff position,
+out of `band_row.detail["position_in_candidate"]`, so the `wants` entry names
+the wrong quantity for a real dependency and a missing
+`notehead_staff_position` row could never be recorded as `missing` there.
+
 ---
 
 ## The central score library
