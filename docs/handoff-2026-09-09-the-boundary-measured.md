@@ -178,13 +178,39 @@ the `segments` that already exist.** ⚠️ Price the false positives first — 
 and §2b record **nine false segments on two scanned pages**, and each would
 propagate forward under (2) and (3) instead of staying put.
 
-### 2. ⚠️ THE SCAN SIDE IS A READING PROBLEM, AND IT IS NOW MEASURED
+### 2. ✅ THE SCAN SIDE — OPENED, and half of it was NOT a reading problem
 
-`9/8` read as `9/4`; five spurious `4/4` changes just clearing a floor of 3.0.
-The lever is the meter GLYPH readers (`_meter_from_digits` on the detector's
-boxes, and `time_signature_locator` at the header), not the weighing. A
-CAUTIONARY signature at a line end also needs a notion of its own — it is the
-only false positive the engraved arms produce, and both printings show it.
+Done. Of the nine false segments on the two scanned pages, **five were one
+system proposing the SAME meter at five consecutive bars**: `_meter_changes`
+compared every candidate against the system's OPENING and never against the
+segment already accepted. ⚠️ The same comparison was **losing a real change in
+the other direction** — a movement going `3/4 → 4/4 → 3/4` recorded the
+departure and dropped the RETURN, which Beethoven 9's finale does repeatedly.
+Fixed by comparing against the meter IN FORCE; no threshold.
+**False segments across the two scans 9 → 4, no true change lost, every
+engraved row identical.**
+
+⚠️ **Two geometric hypotheses were measured and REFUTED first** — "a stack is
+two digits aligned in x and adjacent in y" (TRUE `dy` 32-548 vs FALSE 26-555,
+complete overlap) and "the false ones sit at `x_canonical == 0`" (1 of 110 TRUE,
+4 of 50 FALSE once restricted to clean two-digit stacks). The first table that
+made the second look decisive was pooling contaminated groups and reporting
+their min.
+
+**What the scan still gets wrong**, measured and not fixed:
+* the opening `9/8` is voted **`9/4`** — the header template reader returns
+  `[9, 4]` on 10 staves at **0.500-0.531** against a `min_score` of 0.50, where
+  page 0's correct `6/8` reads 0.656-0.750 on 14 of 14;
+* the CAUTIONARY is read as a change on the system that prints it, on both
+  printings;
+* the real change to `6/8` is missed — one `timeSig1` detected, no pair.
+
+⚠️⚠️ **The first two have the SAME repair available and it is §1's**: the
+cautionary at the end of page 0 is the same meter as page 1's opening, and the
+DETECTOR reads it correctly as `9` over `8` on 10 and 20 staves. **The document
+holds the right answer one system earlier and nothing carries it forward.**
+Feeding a cautionary to the next system's opening is carry/borrow — so it lands
+naturally in the segments session, not in a new reader.
 
 ### 3. UNCHANGED FROM THE LAST HANDOFF
 
