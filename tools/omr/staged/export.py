@@ -932,6 +932,38 @@ NOT_NOTATION: Dict[str, str] = {
 _IN_ATTRIBUTES = frozenset({"clef", "key", "time", "tuplet"})
 
 
+#: Every status `coverage()` can assign. ⚠️ A CLOSED SET, asserted: a status
+#: not listed here lands in the census's `unaccounted` bucket, which a test
+#: requires to be empty. That is what stops a future status from being
+#: invented and quietly belonging to no headline.
+_STATUSES = ("emitted", "decided_but_unwritten", "decided_uncounted",
+             "abstained", "stub", "starved", "NO_QUANTITY")
+
+
+def _census(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Every family row, filed under its status — a PARTITION, not a filter.
+
+    ⚠️ The two headlines are selections and therefore cannot say where a
+    family WENT. This can: the counts sum to the number of rows, so a family
+    that leaves one bucket has to appear in another.
+    """
+    out: Dict[str, Any] = {s: [] for s in _STATUSES}
+    out["unaccounted"] = []
+    for r in rows:
+        # ⚠️ EXACTLY ONE BUCKET PER ROW. The first draft of this used
+        # `setdefault(status, unaccounted).append(...)` and THEN appended
+        # again inside an `if status not in _STATUSES` guard, so an unknown
+        # status was filed twice and `n_filed` over-counted -- a balance
+        # check that lies is worse than none, which is this module's own
+        # lesson about `symbol_ledger.coverage_check`.
+        bucket = r["status"] if r["status"] in _STATUSES else "unaccounted"
+        out[bucket].append(r["family"])
+    out["n_families"] = len(rows)
+    out["n_filed"] = sum(len(v) for v in out.values() if isinstance(v, list))
+    out["balanced"] = out["n_filed"] == len(rows)
+    return out
+
+
 def _claims(family: str, cls: str) -> bool:
     """Does `family` claim this detector class — LONGEST PREFIX WINS.
 
@@ -1119,6 +1151,21 @@ def coverage(result: Dict[str, Any],
         "decided_and_unwritten": unwritten,
         "decided_and_unwritten_total": sum(unwritten.values()),
         "decided_uncounted": uncounted,
+        # ⚠️⚠️ THE CENSUS EXISTS BECAUSE BOTH HEADLINES ARE STATUS FILTERS,
+        # AND A FILTER CANNOT SAY WHERE A FAMILY WENT. Raised by the
+        # meter/boundary session against this very fix: `dynamic` left
+        # `detected_and_unrepresented` silently the day it stopped being a
+        # stub, and adding a SECOND filtered headline reproduces that surprise
+        # one level up -- the next family to change status moves between the
+        # two, or out of both, with no line anywhere saying so.
+        #
+        # A census over EVERY row cannot do that: a family that leaves one
+        # bucket must appear in another, because the buckets partition the
+        # rows rather than selecting from them. `_STATUSES` is the closed set
+        # and `unaccounted` is the escape hatch that must always be empty --
+        # the same inversion `NOT_NOTATION` uses, where the default for
+        # something nobody has thought about is *reported*.
+        "status_census": _census(rows),
     }
 
 

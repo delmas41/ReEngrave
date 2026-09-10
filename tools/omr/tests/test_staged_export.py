@@ -853,3 +853,109 @@ class TestTheStatusThatNamesAnExportGapCanActuallyFIRE(unittest.TestCase):
         rep = SX.coverage(page, written={"notes": 1})
         self.assertNotIn("dynamic", rep["detected_and_unrepresented"])
         self.assertIn("dynamic", rep["decided_and_unwritten"])
+
+
+class TestAFamilyCannotLeaveEVERYBucket(unittest.TestCase):
+    """⚠️ RAISED BY THE METER/BOUNDARY SESSION AGAINST THIS FIX, and it was
+    right. Both headlines are status FILTERS, and a filter cannot say where a
+    family went: `dynamic` left `detected_and_unrepresented` silently the day
+    it stopped being a stub, and adding a second filtered headline reproduces
+    that surprise one level up.
+
+    The census is a PARTITION, so a family that leaves one bucket must appear
+    in another.
+    """
+
+    def _rep(self, **written):
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        page["record"]["observations"].append(
+            _obs(970, "glyph/0/0/0/0/9", Q.GLYPH_BOX,
+                 ["dynamicForte", 300, 90, 20, 20], category="dynamic"))
+        page["record"]["verdicts"].append(_vrd(
+            971, "cell/0/0/0/0", Q.DYNAMIC, ["f"], reason="spelled"))
+        page["record"]["verdicts"][-1]["detail"] = {
+            "words": [{"text": "f", "spelled": True, "x_page": 300.0}]}
+        return SX.coverage(page, written=dict(written))
+
+    def test_every_family_is_filed_exactly_once(self):
+        rep = self._rep(notes=1)
+        c = rep["status_census"]
+        self.assertTrue(c["balanced"])
+        self.assertEqual(c["n_filed"], c["n_families"])
+        self.assertEqual(c["n_families"], len(SX.FAMILIES))
+
+    def test_nothing_lands_in_UNACCOUNTED(self):
+        """⚠️ The escape hatch must always be empty. A status invented later
+        and belonging to no headline shows up HERE rather than nowhere — the
+        same inversion `NOT_NOTATION` uses, where the default for something
+        nobody thought about is *reported*."""
+        self.assertEqual(self._rep(notes=1)["status_census"]["unaccounted"], [])
+
+    def test_a_family_that_CHANGES_bucket_is_still_filed(self):
+        """The exact motion that started this: `dynamic` moves from
+        `decided_but_unwritten` to `emitted` when the exporter writes it. It
+        must be visible in the census on BOTH sides, never absent from one."""
+        before = self._rep(notes=1)["status_census"]
+        after = self._rep(notes=1, dynamics=1)["status_census"]
+        self.assertIn("dynamic", before["decided_but_unwritten"])
+        self.assertNotIn("dynamic", before["emitted"])
+        self.assertIn("dynamic", after["emitted"])
+        self.assertNotIn("dynamic", after["decided_but_unwritten"])
+        for c in (before, after):
+            self.assertTrue(c["balanced"])
+
+    def test_an_UNKNOWN_status_is_filed_once_not_twice(self):
+        """⚠️ The first draft double-counted it — `setdefault` into
+        `unaccounted` and then an `if` that appended again — so `n_filed`
+        over-counted and `balanced` would have gone False for the wrong
+        reason. A balance check that lies is worse than none."""
+        rows = [{"family": "made_up", "status": "a_status_nobody_declared"},
+                {"family": "note", "status": "emitted"}]
+        c = SX._census(rows)
+        self.assertEqual(c["unaccounted"], ["made_up"])
+        self.assertEqual(c["n_filed"], 2)
+        self.assertTrue(c["balanced"])
+
+
+class TestTheDotIsONEFactUnderALiveDurationReader(unittest.TestCase):
+    """⚠️ FLAGGED BY THE DURATION-READER SESSION: `adjudicate_duration` gained
+    flag/dot attachment, so `Q.DURATION` verdicts now carry `dots` where ZERO
+    did before — 156 on a 3-page engraved fixture. This exporter reads
+    `max(dur["dots"], derived_dots)`, so a path that was dead is now live
+    under it.
+
+    The `max` is the paid-for rule — summing them wrote a double-dotted
+    quarter for every single-dotted one, 82 edits on one fixture — and it is
+    only SAFE while `written` already encodes the dot. Verified on a fresh run
+    of Beethoven 5 p3 after the merge: **0 disagreements over 865 decided
+    durations** between `dots` and what `written` implies. ⚠️ Only 1 of those
+    865 carried a dot at all, because the detector fires ~35 dots over 2347
+    noteheads on a scan against 157 over 1118 on an engraving — so that run is
+    a weak exercise of the path and these tests are the real guard.
+    """
+
+    def _one(self, written, dots):
+        page = _one_staff_page(
+            notes=[("C4", {"beats": written, "written": written, "dots": dots})])
+        xml, _ = SX.to_musicxml(page)
+        return xml
+
+    def test_a_dotted_value_is_not_double_dotted(self):
+        """written=1.5 implies one dot AND the verdict says one dot: `max`
+        must give ONE, never two."""
+        xml = self._one(1.5, 1)
+        self.assertEqual(xml.count("<dot/>"), 1)
+
+    def test_a_verdict_dot_on_an_undotted_written_value_still_writes_one(self):
+        """`max` takes the verdict's dot even where the arithmetic implies
+        none — that is what makes it a `max` and not an `and`."""
+        self.assertEqual(self._one(1.0, 1).count("<dot/>"), 1)
+
+    def test_no_dots_anywhere_is_still_no_dots(self):
+        self.assertEqual(self._one(1.0, 0).count("<dot/>"), 0)
+
+    def test_the_exporter_takes_MAX_and_not_a_SUM(self):
+        """Anti-drift on the 82-edit lesson: a sum would write two."""
+        import inspect
+        src = inspect.getsource(SX._place_notes)
+        self.assertIn('max(int(dur.get("dots") or 0), derived_dots)', src)
