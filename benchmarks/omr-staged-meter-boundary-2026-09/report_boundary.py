@@ -135,8 +135,20 @@ def length_of(raw):
 
 
 def meters(path):
-    rec = json.loads(Path(path).read_text())["record"]
-    return [v for v in rec["verdicts"] if v["quantity"] == "meter"]
+    """Every `meter` verdict of a run, from the full record OR the reduction.
+
+    ⚠️ THE COMMITTED ARTEFACT IS THE REDUCTION, AND IT COULD NOT BE READ BACK.
+    `.gitignore` keeps `out/*.json` (2-10 MB build products) and commits
+    `out/*.meter.json` as "what every claim in FINDINGS.md is read off" -- but
+    this function took only the full record's shape, so `--tally` reported
+    every fixture `(not run)` on a fresh clone and the published baseline was
+    not checkable without re-transcribing six fixtures. The reduction is a
+    bare list of these same verdicts; both shapes are accepted.
+    """
+    blob = json.loads(Path(path).read_text())
+    if isinstance(blob, list):                       # the committed reduction
+        return [v for v in blob if v.get("quantity") == "meter"]
+    return [v for v in blob["record"]["verdicts"] if v["quantity"] == "meter"]
 
 
 def durations(path, page):
@@ -298,7 +310,7 @@ TALLY_SET = (
 )
 
 
-def tally(out_dir):
+def tally(out_dir, prefix=None):
     """Printed meter changes against proposed ones, per fixture.
 
     ⚠️ COUNTS SEGMENTS, NOT VERDICTS. A `voted` system can carry a wrong
@@ -308,7 +320,21 @@ def tally(out_dir):
     """
     print(f"{'':34s} {'printed':>8} {'proposed':>9} {'found':>6} {'FALSE':>6}")
     for name, tag, label in TALLY_SET:
+        if prefix:
+            # ⚠️ THE RUN GENERATION IS A PREFIX, AND SCORING ONE MUST NOT MEAN
+            # EDITING THE TRUTH TABLE. `m2`, `m3`, `m4` are successive
+            # re-measurements of the SAME six fixtures against the SAME
+            # hand-read truths; baking one generation into `TALLY_SET` meant a
+            # re-run could only be scored by rewriting the table it is scored
+            # against, which is how a truth table drifts toward its own data.
+            name = prefix + name.split("-", 1)[0].lstrip("m0123456789") \
+                   + "-" + name.split("-", 1)[1]
         f = Path(out_dir) / f"{name}.json"
+        if not f.is_file():
+            # ⚠️ The full record is a build product; the reduction is what is
+            # committed. Prefer the record when a run is present, fall back to
+            # the reduction so a fresh clone can still check the baseline.
+            f = Path(out_dir) / f"{name}.meter.json"
         if not f.is_file():
             print(f"{label:34s} {'(not run)':>31}")
             continue
@@ -335,6 +361,9 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("files", nargs="*")
     ap.add_argument("--tag", default="boundary-m150-180")
+    ap.add_argument("--prefix", default=None,
+                    help="run generation to score, e.g. m4 -- the truth "
+                         "tables are keyed on the FIXTURE, never the run")
     ap.add_argument("--control", choices=("bars", "durations"), default=None,
                     help="bars: the meter decisions' own `bar_lengths_seen` "
                          "must agree (always valid). durations: the raw "
@@ -347,7 +376,7 @@ if __name__ == "__main__":
                          "fixture set, engraved rows against scanned ones")
     a = ap.parse_args()
     if a.tally:
-        tally(a.tally)
+        tally(a.tally, a.prefix)
         raise SystemExit(0)
     if a.control:
         assert len(a.files) == 2, "--control takes exactly two runs"

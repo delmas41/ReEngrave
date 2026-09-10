@@ -91,6 +91,113 @@ only — `tools/omr/rhythm.py` untouched, so no engraved or scan figure moves.
 * `benchmarks/omr-staged-duration-beams-2026-09/` — FINDINGS, four probes and
   their outputs. `A-DUR-8` updated in place; CLAUDE.md gains a section.
 
+## 2026-09-09 — `Q.METER`'s segments reach the file
+
+The top-ranked item of `docs/handoff-2026-09-09-the-boundary-measured.md` §5.
+Three gaps found by `grep` and left unbuilt, which are one piece of work.
+
+**What was wrong.** The staged export took ONE meter per staff-run, so a
+printed mid-system meter change could not reach a MusicXML file at all — and
+`record.meter_at`, whose docstring says it *is* how a bar's meter is read, was
+called by nothing but its own tests. The carry took its source's OPENING and
+deleted its segments. And a system whose meter came from a READ change could
+be neither a carry nor a form source.
+
+**What it is worth, engraved** (controlled A/B on saved records): Brahms 1 iv's
+cut-common — read on 24 staves of 24 at support 74.0 — went from reaching NO
+file to `{4/4(common): 24, 2/2(cut): 24}`; Litolff's printed `3/4` moved from
+measure 8, the first bar of its system, to **measure 16, its ninth**, where the
+hand-read truth puts it.
+
+⚠️⚠️ **THE CAUTIONARY HALF OF THIS ENTRY WAS A DUPLICATE AND HAS BEEN DROPPED
+— see the entry above.** A sibling session reached the same finding
+independently, from the same Brahms page 0 courtesy, and landed first.
+**Theirs is kept and is the better rule on REACH**: it discriminates on the
+LAST CELL of each staff and so catches the Breitkopf scan's courtesy too,
+which mine explicitly could not — that degenerate final cell holds five
+detections, so nothing lies left of the glyph and the left-fraction reads
+0.000 there. Theirs also carries an escape mine lacked (a last-cell candidate
+whose OWN BAR FITS is still a change).
+
+⚠️ The measurement is NOT lost, and it is worth more as a second reading than
+as a second implementation: scored per reading, the corpus's one visible
+cautionary sits at **1.000 on all 19 staves (38 rows, min = median = max)**
+against **≤ 0.118 for every other segment, true or false**. Two sessions, two
+discriminators — ink-position and cell-ordinal — one conclusion. Recorded in
+`benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md`.
+
+⚠️ **`git log --all -S` BEFORE BUILDING would not have caught this** — the
+sibling's commit did not exist when this work started. What would have caught
+it sooner is that both sessions were named in the same handoff's §5.
+
+**Tally: ENGRAVED 4 printed / 4 found / 1 → 0 false; SCANNED 2 / 1 / 9
+unchanged.** 1 of 9 false segments removed, 0 of 4 true positives lost. ⚠️ The
+scan being untouched is the expected result — its false segments all read
+0.000, at the head of their bars, so they are misreads and no placement rule
+can reach them.
+
+`OMR_METER_SEGMENTS` gates the export half only; the other two travel behind
+the existing meter flags. The cautionary rule is unflagged.
+
+⚠️⚠️ **FLIPPED ON THE SAME DAY (Sean), and the flip OVERRIDES the standing
+objection rather than resolving it.** It shipped off on **n** — the mechanism
+was never in doubt, the scan's READING was — and that objection is now priced:
+on Brahms 1 / Breitkopf p.1-2 the default takes `<time>` elements from **41 to
+138** (`4/4` 13 → 96 from the five spurious one-staff changes, plus 14 spurious
+`9/8` from the courtesy the rule cannot reach on that degenerate cell), so **a
+scan can now export a meter change its page does not print**. Every engraved
+fixture gains only correct changes and 4 of 9 boundary records are
+byte-identical either way. The lever is the meter GLYPH readers. ⚠️ The OFF
+test is a **deny-list**: with the default on, the allow-list form the other
+default-on flags use would let an empty value or a typo silently restore the
+bug — caught by a test written for the flip, which failed on its first run.
+
+⚠️⚠️ **AND THAT TEST THEN FOUND FIVE SHIPPED FLAGS WITH THE SAME FAULT.**
+`OMR_SLOT_STITCH`, `OMR_MOVEMENT_REFERENCE`, `OMR_ROSTER` and
+`OMR_LABEL_MERGE_QUALITY` were default-ON allow-lists — a typo or an empty
+value silently turned a shipped default OFF. `OMR_INSTRUMENT_CLEF_DEFAULT`
+(both reads) was the MIRROR: default-OFF written as a deny-list, so a typo
+switched it ON. All six sites corrected; the convention is now a section of
+CLAUDE.md and a DERIVED guard,
+`tools/omr/tests/test_flag_default_direction.py` (9 default-ON, 10
+default-OFF, all consistent). ⚠️ The guard decides default-ON by EVALUATING
+the predicate on its own default rather than reading the default string —
+`OMR_CHOIR_GROUPING` and `OMR_BRACKET_COLUMNS` default to `""` and are ON, and
+a first version reported both as faults. ⚠️ Its positive control earned its
+keep on the first run: the AST descent stepped THROUGH `environ.get` onto
+`os.environ`, so the scan matched nothing and both real assertions passed
+vacuously — the third vacuous-check instance recorded in this file.
+
+⚠️⚠️ **THREE CLAIMS OF MY OWN, CORRECTED IN FLIGHT, and the first is the one
+worth carrying.** The first measurement arm came back BYTE-IDENTICAL to its
+baseline — while five unit tests and three mutation arms were green. `gather`
+files `Q.METER_GLYPH` on the **STAFF** with the bar in `detail["cell"]`; my
+fixture filed it on a **GLYPH**, and `subject.at(Kind.CELL)` returns None for a
+staff, so the rule read no boxes on any real page. **A fixture that does not
+match GATHER tests the test**, and the pre-existing
+`TestAMeterChangeIsReadFromTheInk` fixture had the same mismatch, which is why
+the bug had somewhere to hide. The shape is now asserted against the gather
+site by AST. Then: a cautionary belongs to a READING, not to a cell. And
+*"both cautionaries read 1.000"* was a probe bug — it pooled every staff at a
+cell instead of the staves that READ the segment; the corpus holds exactly
+one. **What caught all three was a number that did not move, and a number that
+was too good.**
+
+⚠️ **`inventory._HELPER_DEPTH` 3 → 6 WAS ALSO REVERTED, and the sibling's fix
+is the better one.** Both sessions hit the same inert-`wants` report from the
+same cause; I raised the checker's depth (measured first: 17 inert at 3, 16 at
+4, 15 at 5 and every depth beyond, so nothing standing was retired), they
+moved the READ up a level so the chain matches every other fact the function
+uses. Theirs is right — *the fix is the one the check was pointing at, not a
+workaround* — and the carry's cell-count read now follows it, so the
+instrument is left as every other session expects it.
+
+Also: `report_boundary.py --tally` can now read the
+committed `.meter.json` reduction, so the published baseline is checkable on a
+fresh clone with no weights.
+
+`benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md`. Suite 3419 passed.
+
 ---
 
 ## 2026-09-09 (night) — the engraved render, DENSE texture: bar sums are wrong on perfect ink
@@ -295,6 +402,12 @@ Suite **3407 passed, 11 skipped**.
 [benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md) §4c.
 
 ---
+
+*(Two sessions inserted here on the same day. They are INDEPENDENT — the
+boundary measurement did not need the fallback-ordering fix and vice versa —
+and they compose: the ordering fix is what lets a REFUSED carry give way to the
+bars, and the boundary fixtures are what say whether either is right. Neither
+block has been rewritten to tidy the sort.)*
 
 ## 2026-09-09 — The meter boundary, MEASURED: two mechanisms told apart, and a `C` change that reached nothing
 
