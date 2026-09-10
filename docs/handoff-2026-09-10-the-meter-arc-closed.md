@@ -9,8 +9,27 @@ everything after it. Its predecessor chain
 governs the design, and **the metric is still not the goal — the staged
 pipeline is.**
 
-**Everything below is on `main` at `e6932034` unless a line says otherwise.**
-Nothing of this thread is unmerged.
+**Everything below was on `main` at `e6932034`, 2026-09-10, unless a line says
+otherwise.** Nothing of this thread is unmerged.
+
+⚠️ **THAT SHA IS A TIMESTAMP, NOT A CLAIM THAT MAIN IS STILL THERE** — and this
+line said so badly enough that the same document needed correcting once for it
+already (see §7, where a merge falsified a table three hours after it was
+verified). **Re-check anything load-bearing against `origin/main` rather than
+against this file.** The claims below that are most likely to rot first, with
+how to test each in one command:
+
+| claim | check |
+|---|---|
+| both meter flags still default `0` | `grep 'METER_CARRY_ENV, "0"' tools/omr/staged/adjudicators/rhythm.py` |
+| the recorded `cautionary` is read by NOTHING (§6 rank 1) | `grep -rn 'cautionary' tools/omr --include='*.py' \| grep -v tests` — writer only |
+| `score_margin` is read by nothing (§5) | `grep -rn score_margin tools/ \| grep -v tests` |
+| the suite count | run it |
+
+**Re-verified 2026-09-10 after the staged-pipeline branch landed: all four
+still hold, and the suite is now 3531 passed / 11 skipped** (it read 3474 when
+this file was written; that number moved because 57 tests arrived with that
+branch, not because anything here changed).
 
 ---
 
@@ -22,7 +41,7 @@ Nothing of this thread is unmerged.
 | `OMR_METER_CARRY` | still **`0`**. Objections (1) boundary and (2) second document are RETIRED. A NEW one took their place — see §4 |
 | `OMR_METER_FROM_BARS` | still **`0`**, same reason |
 | shipped default-ON, no flag | the letter meter (`C`/`¢`), the meter **in force**, the **cautionary** |
-| suite | **3474 passed, 11 skipped** |
+| suite | **3531 passed, 11 skipped** (2026-09-10, after the staged-pipeline landing) |
 | benchmark | `benchmarks/omr-staged-meter-boundary-2026-09/` — FINDINGS.md is the full account; §4c and §4d are the parts that bound other work |
 
 ---
