@@ -1124,8 +1124,13 @@ a control.
 built for the reused-arm case reintroduced it in its own fallback — twice,
 both times by returning a string that compares equal to itself (`"unknown"`,
 and `""` from a `subprocess.run` without `check=True`, which reports a failed
-command as empty stdout and raises nothing). **The fallback is where it hides,
-because it is the branch nobody exercises and nobody writes a test for.**
+command as empty stdout and raises nothing). ⚠️⚠️ **A GUARD'S FALLBACK BRANCH IS THE ONE PLACE WHERE "CANNOT TELL" GETS
+SILENTLY CONVERTED INTO A DEFINITE ANSWER** — here into *"same tree"*, and in a
+sibling session's provenance stamp into *"clean"* (`git rev-parse` succeeding
+while `git status` failed left a record naming a COMMIT with dirtiness unknown,
+which the consumer read as clean). **Neither conversion is ever the safe
+default**, and neither branch runs on a machine with git and a clean checkout —
+which is every machine anyone develops on.
 The rule that fixes it is the one a dirty tree already forces: *anything that
 cannot uniquely name a tree must never compare equal to anything, including
 itself.* Taxonomy from the staged-pipeline session; instances from both.
