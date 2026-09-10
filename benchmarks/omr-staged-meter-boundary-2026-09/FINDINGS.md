@@ -671,6 +671,29 @@ would be mixing them — silently, exactly as a wrong coordinate frame does.
 about its cell count** (`{8: 14}`, `{7: 21}`, `{9: 23}` …). So the shared key
 holds throughout this corpus and no result above is affected.
 
+**And the JOIN that rule depends on was verified too, not inferred.**
+`_last_cell_per_staff` keys off `Q.MEASURE_PARTITION` verdict subjects while
+`_meter_changes` groups `Q.METER_GLYPH` rows by `subject.staff` — two dicts
+built from different quantities and joined by staff index. Across all 10
+systems that read a meter glyph: **every glyph-reading staff has a partition
+entry, zero orphans.** (There was indirect evidence already — the cautionaries
+fire 2 of 2, which cannot happen unless those lookups hit.)
+
+⚠️ **If that join ever DID break it would fail CLOSED and SILENTLY**:
+`last_cell.get(st)` returns `None`, the `all(...)` is False, no candidate is
+ever classified a cautionary, and the rule degrades to exactly the behaviour it
+replaced. Safe direction, no signal. Not guarded, for the same reason as
+below — but worth knowing which way it falls.
+
+⚠️⚠️ **THIS IS THE THIRD INSTANCE OF ONE PATTERN IN A DAY, and the third came
+from another session**: a quantity gathered in CANONICAL coordinates answering
+a cross-staff question (`arc_owner`), a per-staff CELL INDEX used as a
+system-wide key (here), and `Subject.glyph`, which counts within its CELL and
+is therefore wrong at `Kind.SYSTEM` (the onset-column work). **A per-container
+ordinal used as a cross-container key** — and the reason it keeps happening is
+that the wrong key still RESOLVES, so nothing raises. ⚠️ Of the three, the
+frame at least announces itself in a field name; an ordinal does not.
+
 ⚠️ It is recorded as a bounded latent hazard rather than guarded, because
 **there are zero observed instances to build a guard against** — and it is also
 why the `all`-not-`any` distinction in the cautionary rule could only be pinned
