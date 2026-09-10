@@ -905,6 +905,34 @@ adjacent in y"* (TRUE `dy` 32-548 vs FALSE 26-555 — total overlap) and *"the
 false ones sit at `x_canonical == 0`"* (decisive in a per-cell table; **1 of 110
 TRUE vs 4 of 50 FALSE** once restricted to clean two-digit stacks).
 
+### ⚠️⚠️ The bars are not an independent umpire over a bad reading
+
+Found 2026-09-09 while trying to fix a scanned `9/8` voted as `9/4`. The
+document holds its own answer — a CAUTIONARY one system earlier reads `9/8` on
+nine staves from the DETECTOR's digit pairs — so the design was to put both
+readings to the system's OWN BARS, in the carry's existing currency, with no
+new constant. **Its precondition was measured first and fails: not one of that
+system's seven bars clears the cross-staff quorum.**
+
+⚠️ **THE GENERAL FORM BOUNDS EVERY BAR-ARBITRATED RULE IN THE STAGED PIPELINE:
+the case that most needs an arbiter is the case where the arbiter is silent.**
+A page whose meter the reader mangles is a page whose ink is degraded, and the
+same degradation stops its bars from summing. `OMR_METER_CARRY`,
+`OMR_METER_FROM_BARS` and the change detector's bar terms all lean on bar sums
+as a second witness, and all three lose that witness exactly where the first
+witness is worst. It is why they fail SAFE rather than usefully on a bad page,
+and why "the bars will catch it" is not a design.
+
+⚠️ Two other routes were measured and refused on the same fault:
+`score_margin` — computed by the locator, written by GATHER, **read by
+nothing** — does NOT separate (TRUE 0.0681-0.3840 vs FALSE 0.0675); and staff-
+line removal is not the cause (the same `9/4` wins with the lines intact). The
+absolute SCORE does separate with an empty interval (0.531 to 0.656 against
+`min_score` 0.50), but that constant is `time_signature_locator`'s, shared with
+the legacy path and set on an 11-source corpus — 7 correct / 1 wrong over 4
+documents is not the evidence to move it on. See
+[benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md) §4c.
+
 ### ⚠️⚠️ `Q.METER` carries `segments` and NOTHING DOWNSTREAM READS THEM
 
 Measured 2026-09-09 on an engraved Brahms 1 finale printing `C` → `¢` at bar
