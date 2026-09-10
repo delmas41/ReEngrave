@@ -166,3 +166,45 @@ argument, which reached the same conclusion by reading rather than running:
 `_rest_ruling` touches only `.score`, `.value` and `.id` on a `Q.REST` row and
 **never reads `.detail`**, so added detail fields cannot reach a duration. Two
 routes, one answer — and the run is the one that could have gone red.
+
+### ⚠️ The boundary of that principle — and my own example of it was WRONG
+
+The general form, agreed with the meter/boundary session: *wherever the first
+reader is worst, the second is most often absent — and an availability or
+agreement rate quoted as ONE number averages two populations that behave
+differently.*
+
+I offered a scope note: it holds where both readers depend on the **same ink**,
+and would not follow for readers with independent failure modes — *a margin
+label and a clef, say, where the label can be crisp on a page whose staves are
+broken.*
+
+⚠️⚠️ **THAT COUNTEREXAMPLE IS FALSE ON THIS CORPUS AND I ASSERTED IT WITHOUT
+CHECKING.** `CLAUDE.md:4285`, measured over the 20-row scan gate: of the
+unresolved non-treble staves — the entire population a label could ever help —
+**29 of 29 have no label printed at all.** The margin label and the clef DO
+fall silent together there.
+
+⚠️ But they fail together for a **different reason**, and that is the part
+worth keeping: not because the ink is degraded, but because the engraver
+omitted the label on continuation systems. So the refined boundary, which is
+the meter session's and came out of my error:
+
+> **Two readers can be correlated through the DOCUMENT'S CONVENTIONS, not only
+> through its ink.**
+
+That is a wider hazard than the one I was scoping, and it is not measured —
+it needs measuring rather than asserting, which is exactly what I failed to do.
+
+⚠️ The same-ink form has clean examples on both sides in this repo, which is
+what makes it evidenced rather than stated: **correlated** — bar sums and meter
+glyphs, arc-grammar heads and arc class, and a roster at
+`source_kind: "page"`, which CLAUDE.md already calls *"an OMR output of the
+same raster"* and REFUSES; **independent** — a dossier fact, and the catalog
+`works` tier at `source_kind: "catalog"`, *"independent of the truth
+MusicXML"*.
+
+So the hazard is the reason `source_kind` is load-bearing, reached from a new
+direction: an arbiter carrying `page` fails together with what it arbitrates.
+**If you want a second witness that does not fall silent exactly when it is
+needed, it must not come off the same raster.**
