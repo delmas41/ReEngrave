@@ -512,6 +512,104 @@ gate nobody had exercised: a cautionary is a SYSTEM-WIDE event, so a staff that
 still has a bar after the glyph contradicts it, and the safe reading of a
 contradiction keeps the change.
 
+### ⚠️⚠️ THE `9/4`: DIAGNOSED IN FULL, THREE HYPOTHESES REFUTED, AND NOT FIXED
+
+The last scan fault, opened. Brahms 1 / Breitkopf page 1 prints `9/8` on every
+staff of its first system and the template reader votes **`9/4`**.
+
+**What the reader actually did** (`min_score=0.0`, the whole score table, from
+the reader's own header crops rather than from the page):
+
+| | winner | score | runner-up | `9/8` |
+|---|---|--:|---|--:|
+| page 0, the correct `6/8` | `6/8` | **0.656-0.750** | `9/8` at 0.53-0.63 | 2nd on 13 of 14 |
+| page 1, the wrong `9/4` | `9/4` | **0.445-0.531** | `6/4` / `C` at 0.42-0.47 | **top-4 on only 3 of 14** |
+
+The numerator is right and the denominator is wrong, and `9/8` is not even the
+runner-up. ⚠️ **Page 1's WINNER scores below page 0's RUNNER-UP** — the
+signature of matching noise rather than a meter.
+
+**Hypothesis 1 — staff-line removal is tearing the digits apart. REFUTED.**
+`locate_time_signature` deliberately reads `image_no_staff`, on a measured
+ground (with the lines in, a barline matched as a `1` on two staves of twelve
+of Beethoven 5 p.1), and the crop does look shredded: the `9` reads as a `U`
+and the `8` as an `A`. **But scoring both variants of every header, page 1
+still reads `9/4` with the lines INTACT**, at *lower* scores (0.416-0.463).
+The erasure is not the cause.
+
+**Hypothesis 2 — the recorded `score_margin` separates a good vote from a bad
+one. REFUTED, and it is the more useful negative.** ⚠️ `score_margin` is
+computed by the locator, written onto every `Q.METER_TEMPLATE` row by GATHER,
+and **read by nothing** — the "value existed and nothing read it" pattern
+again, so it looks like a free discriminator. Measured over 8 system votes on
+4 documents: **TRUE 0.0681-0.3840, FALSE 0.0675.** A gap of **0.0006**. It does
+not separate, and a gate built on it would have looked principled and done
+nothing.
+
+⚠️⚠️ **AND NO STRUCTURAL SIGNAL CATCHES IT EITHER: the wrong reading is
+UNANIMOUS.** All 10 staves that spoke agree (`share` 1.0), so coverage and
+agreement floors both pass. **Cross-staff agreement is not independent evidence
+when every staff feeds the SAME reader the SAME typeface** — `A-DUR-6`'s
+"the bars are not fully independent witnesses", arriving in the meter reader.
+
+**What DOES separate is the absolute score, and its interval is empty:**
+
+| | n | median score |
+|---|--:|--:|
+| TRUE system votes | 7 | 0.744-0.781 (min staff 0.656) |
+| the FALSE one | 1 | **0.514** (max staff 0.531) |
+
+Nothing lies between **0.531 and 0.656**, and `min_score` is **0.50**.
+
+⚠️ **NOT SHIPPED, and the reason is scope rather than doubt.** `min_score`
+belongs to `time_signature_locator`, which the LEGACY `transcribe` path shares;
+its current value was set on an 11-source corpus, and the vote's agreement
+floor was moved 0.5 → 0.70 on 12-correct/1-wrong evidence from that same
+corpus. Raising it on **7 correct / 1 wrong over 4 documents** would be tuning
+on a fraction of the evidence the constant was set with, and pricing it means
+re-running the eleven-work engraved benchmark and the 20-row scan gate. That is
+its own piece of work.
+
+**Hypothesis 3 — the CAUTIONARY plus the BARS can settle it with no threshold.
+REFUTED, and this is the one that was designed before it was tested.**
+
+The cautionary one system earlier reads `9/8` on **9 staves**, from the
+DETECTOR's digit pairs rather than from template correlation — an independent
+reader agreeing with the print, already on the record. Two readings of ONE
+printed fact. Nothing here may pick between them by confidence, and n = 1 is
+far too little to fit a rule — **but Sean's ordering says arithmetic that
+checks itself outranks what can only be read, and `9/4` is 9.0 quarter notes
+against `9/8`'s 4.5.** So the design was: put both to the system's OWN BARS in
+the carry's existing signed-term currency, reusing `_score_bars`; no new
+constant, and fail safe when the bars cannot speak.
+
+**Its precondition was measured first** (`probe_cautionary_arbiter.py`, driving
+the real stages and building a real `Evidence`, so the bars are exactly the
+ones `_corroborate` would see):
+
+| system | voted | bars that reach the quorum | `9/4` | `9/8` |
+|---|---|--:|---|---|
+| p0 s0 | `6/8` ✓ | 2 | −2.0 | −2.0 |
+| **p1 s0** | **`9/4`** ✗ | **0 of 7** | *cannot speak* | *cannot speak* |
+| p1 s1 | `4/4` ✗ | 1 | *cannot speak* | *cannot speak* |
+
+**On the exact system where the arbitration is needed, not one bar clears the
+quorum.** The route is dead there, and no amount of design saves it.
+
+⚠️⚠️ **AND THE GENERAL HAZARD IS WORTH MORE THAN THE DEAD ROUTE: the case that
+most needs an arbiter is the case where the arbiter is silent.** A page whose
+meter the template reader mangles is a page whose ink is degraded — and the
+same degradation is what stops its bars from summing. The bars are not an
+independent umpire over a bad reading; they fail together with it. This is the
+*Andante*'s "when the page cannot speak, abstain" arriving from the other
+direction, and it bounds every bar-arbitrated rule this benchmark has built.
+
+⚠️ **The cautionary route is not dead in the OTHER case** — a system that
+ABSTAINS needs no arbitration, because there is nothing to overturn, and a
+cautionary is ink naming that system's meter. **Reach on this corpus: ZERO** —
+no system that abstains here is preceded by a recorded cautionary — so it is
+recorded as available and unbuilt rather than shipped untested.
+
 ### The two fixes together
 
 | | printed | proposed | found | FALSE |
@@ -545,6 +643,38 @@ So of the ten false segments §4b reported across the six fixtures, **five were
 bookkeeping, two were cautionaries, and three are detector false positives** —
 and the one remaining reading fault that matters (`9/4`) has its answer sitting
 on the record one system earlier.
+
+## 4e. ⚠️ THE FRAME AUDIT — clean, and the analogous hazard is the CELL INDEX
+
+Prompted by a finding from the staged-pipeline session: `gather_glyph_families`
+was emitting CANONICAL coordinates only, so `arc_owner`'s declared input sat in
+a frame that cannot answer a cross-staff question — and **`coverage()` reported
+that family as `stub`, not `starved`, because the quantity WAS being gathered.**
+A quantity can be gathered in the wrong frame and look fed.
+
+**Audited against every meter rule this benchmark shipped, and they are clean.**
+Only `_meter_from_digits` reads a coordinate at all (`y_center`, to tell a
+numerator from a denominator) — and `_meter_changes` splits its rows **by staff
+before calling it**, so the comparison is always within one staff's cell, where
+canonical IS the right frame. `_meter_from_letter`, `_last_cell_per_staff`,
+`_score_bars` and `_bar_lengths_for` read no coordinate.
+
+⚠️ **BUT THE SAME HAZARD EXISTS HERE IN A DIFFERENT CURRENCY: the CELL INDEX is
+a per-staff quantity used as a system-wide key.** `_score_bars` takes a
+cross-staff majority of bar lengths keyed on `cell.cell`, and
+`_last_cell_per_staff` exists precisely because *"the staves of one system do
+not always agree about how many bars they hold"*. Where they disagree, cell `N`
+on one staff and cell `N` on another are **different bars**, and the majority
+would be mixing them — silently, exactly as a wrong coordinate frame does.
+
+**Measured over all 16 systems of the five fixtures: every one is UNANIMOUS
+about its cell count** (`{8: 14}`, `{7: 21}`, `{9: 23}` …). So the shared key
+holds throughout this corpus and no result above is affected.
+
+⚠️ It is recorded as a bounded latent hazard rather than guarded, because
+**there are zero observed instances to build a guard against** — and it is also
+why the `all`-not-`any` distinction in the cautionary rule could only be pinned
+by a synthetic test: on real data here the two are identical.
 
 ## 5. ⚠️⚠️ THREE GAPS, ONE PIECE OF WORK — the segments are read and nothing downstream uses them
 

@@ -9,11 +9,19 @@ failure; the first draft of the FINDINGS this belongs to did exactly that.
 import json, sys
 from collections import Counter
 rec = json.load(open(sys.argv[1]))["record"]
+# "page.system:c0-c1=beats" -- ⚠️ THE SYSTEM IS PART OF THE KEY. A cell index
+# RESTARTS at 0 on each system of a page (measured: Litolff p.2 runs 0-15 then
+# 0-14), so keying on (page, cell) alone merges system 0's third bar with
+# system 1's third bar into one pseudo-bar. It survived four pages of a
+# uniform-meter document unnoticed and was caught by the first fixture whose
+# truth is NOT uniform.
 TRUTH = {}
 for spec in sys.argv[2].split(","):
-    where, b = spec.split("="); pg, cells = where.split(":")
+    where, b = spec.split("="); page_sys, cells = where.split(":")
+    pg, _, sy = page_sys.partition(".")
     a, _, z = cells.partition("-")
-    for c in range(int(a), int(z or a) + 1): TRUTH[(int(pg), c)] = float(b)
+    for c in range(int(a), int(z or a) + 1):
+        TRUTH[(int(pg), int(sy or 0), c)] = float(b)
 dur = {v["subject"]: v for v in rec["verdicts"] if v["quantity"] == "duration"}
 events = {v["subject"]: v for v in rec["verdicts"] if v["quantity"] == "event"}
 rests = {o["subject"] for o in rec["observations"]
@@ -27,7 +35,7 @@ bars = {}
 for key, ev in events.items():
     if ev["outcome"] != "decided": continue
     _, p, sy, st, ce = key.split("/")
-    if (int(p), int(ce)) not in TRUTH: continue
+    if (int(p), int(sy), int(ce)) not in TRUTH: continue
     gl = lambda i: f"glyph/{p}/{sy}/{st}/{ce}/{i}"
     evs = (ev.get("value") or {}).get("events") or []
     if any(gl(i) in rests for e in evs for i in (e.get("glyphs") or [])): continue
@@ -36,11 +44,11 @@ for key, ev in events.items():
         bs = [beats(dur.get(gl(i))) for i in (e.get("glyphs") or [])]
         bs = [b for b in bs if b]
         if bs: total += Counter(bs).most_common(1)[0][0]
-    if total > 0: bars.setdefault((int(p), int(ce)), []).append(round(total, 4))
+    if total > 0: bars.setdefault((int(p), int(sy), int(ce)), []).append(round(total, 4))
 ok = tot = 0; out = []
 for k in sorted(bars):
     L = bars[k]; mode, n = Counter(L).most_common(1)[0]
     if len(L) >= 3 and n / len(L) >= 0.5:
         tot += 1; good = abs(mode - TRUTH[k]) < 1e-6; ok += good
-        out.append(f"p{k[0]}c{k[1]}={mode}{'' if good else '*'}({n}/{len(L)})")
+        out.append(f"p{k[0]}s{k[1]}c{k[2]}={mode}{'' if good else '*'}({n}/{len(L)})")
 print(f"assessable {tot}  correct {ok}   " + " ".join(out))

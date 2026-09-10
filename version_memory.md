@@ -16,6 +16,35 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-09 (late night, 4) — the SECOND PUBLISHER, and it corrects arm 1
+
+Brahms 1 mvt1 / **Breitkopf & Härtel**, pdf pages 0-3 (14/27/28/28 staves), the
+outstanding unknown from the first scan arm. Truth read off the encoding
+(`6/8`, one bar of `9/8` at m8, `6/8`) with its placement corroborated by our
+segmentation matching the window EXACTLY on pages 1-3. Control **4365 of 4365**.
+
+* **IT HOLDS AND IS FAR LARGER**: per-staff readings right **42 → 108 of 493**.
+  With the rule OFF **not one of eight assessable bars is right**, four reading
+  exactly **4.0 in a 6/8 movement** — a beam missed. With it on, six of eight.
+* ⚠️⚠️ **IT CORRECTS ARM 1'S GENERALISATION.** "The marks half does nothing on a
+  scan" was about THAT DOCUMENT: Litolff `984073` is catalogued *low-res
+  bitonal* and fires 49 flags / 35 dots; Breitkopf fires **371 / 656**, and
+  there the marks half alone is worth **+13** where on Litolff it was **0**.
+  One more publisher was enough to break a claim generalised from one.
+* ⚠️ **The halves are SUPER-ADDITIVE** — +15 and +13 alone, **+66** together —
+  and the mechanism is the bar: a bar is right only when every note in it is.
+* ⚠️ Costs larger too: 27 right → wrong against 93 the other way (3.4:1), and
+  the contradiction rate **27.5%** against 18.9% (Litolff) and 2.7% (engraved):
+  three points, ordered by ink quality. ⚠️ And 108 of 493 is **22%** — a large
+  RELATIVE gain on a page still mostly wrong.
+* ⚠️ The `9/8` bar the fixture was chosen for is **unassessable**: 23 staves,
+  23 different lengths.
+* ⚠️ **No arm has priced a WRONG stem directly.** The contradiction rate says
+  one of two readings is wrong without saying which; settling it needs per-note
+  truth on a scan, which nothing in this repo has.
+
+---
+
 ## 2026-09-09 (late night, 3) — the SCAN arm: the two halves come apart
 
 The unknown the two duration fixes were landed with, measured. Litolff
@@ -41,10 +70,18 @@ truth is 2.0.
   112** flagged notes; scan **7 of 37** — 2.7% vs **18.9%**. Real and bounded.
   **No gate added** — gating on print quality would be fitted to one scan of
   one publisher, against a cost of one reading in 733.
+* ⚠️⚠️ **The BAR-level figures of this arm were wrong when first published**
+  (44/43 → 49/48): the probes keyed a bar on `(page, cell)` and a cell index
+  RESTARTS at 0 on each system of a page, so two bars were merged into one
+  pseudo-bar and scored. Four pages of a UNIFORM-meter document could not
+  expose it; the first fixture whose truth is not uniform did. Corrected to
+  **71/67 → 78/74**; direction unchanged, and the merged version had also been
+  hiding losses (one bar dropping out of the quorum where there are four).
+  Per-staff readings were keyed on the full event subject and did not move.
 * ⚠️ A second publisher's scan is still unmeasured, and this thread already has
   a result that held on a second document and broke on a second publisher's
   scan. The scan's bar sums were **already nearly right where assessable at
-  all** (43/44 → 48/49); what moved is how MANY bars can speak.
+  all** (67/71 → 74/78); what moved is how MANY bars can speak.
 * ⚠️ Two caches were written for `_cell_boxes` and both were deleted: a module
   dict keyed on `id(log)` went red in a minute (CPython recycles an id), and
   `Log` has `__slots__` so nothing can hang off it. The ~5-minute cost of one
@@ -335,6 +372,62 @@ one is unchanged at **−8.0** — **the swing widens 14.0 → 16.0.** The six-f
 tally is identical to the row. ⚠️ The `+6.0` entries below are left as measured;
 a recorded transition is a frozen fact and this is a new measurement, not a
 correction of an old one.
+
+---
+
+## 2026-09-09 — The `9/4`: three routes measured and refused, and the hazard that outlasts them
+
+**What:** no code change. `probe_cautionary_arbiter.py`, the full diagnosis of
+the last scan fault of the meter arc, and the reason each route is refused.
+
+Brahms 1 / Breitkopf p.1 prints `9/8` on every staff and the template reader
+votes **`9/4`** — the numerator right, the denominator wrong, and `9/8` not
+even the runner-up on 11 of 14 staves.
+
+1. **Staff-line removal is tearing the digits apart. REFUTED.** The crop does
+   look shredded (the `9` reads as a `U`, the `8` as an `A`) and the locator
+   deliberately uses `image_no_staff`. Scoring BOTH variants of every header:
+   page 1 still reads `9/4` with the lines INTACT, at lower scores.
+2. **`score_margin` separates a good vote from a bad one. REFUTED, and the
+   more useful negative.** It is computed by the locator, written by GATHER
+   onto every row, and **read by nothing** — so it looks like a free
+   discriminator. Over 8 system votes on 4 documents: TRUE 0.0681-0.3840,
+   FALSE 0.0675. **A gap of 0.0006.** A gate on it would have looked
+   principled and done nothing.
+3. **The CAUTIONARY plus the BARS settle it with no threshold. REFUTED on its
+   PRECONDITION, which was measured before anything was built.** The design
+   was sound — the cautionary one system earlier reads `9/8` on nine staves
+   from the DETECTOR's digit pairs, an independent reader, and Sean's ordering
+   says arithmetic that checks itself arbitrates between two readings (9.0 ql
+   against 4.5). **But on the exact system that votes `9/4`, not one of its
+   seven bars clears the cross-staff quorum.**
+
+⚠️⚠️ **THE HAZARD IS WORTH MORE THAN THE THREE DEAD ROUTES: the case that most
+needs an arbiter is the case where the arbiter is silent.** A page whose meter
+the reader mangles is a page whose ink is degraded, and the same degradation
+stops its bars from summing. **The bars are not an independent umpire over a
+bad reading — they fail together with it.** That bounds `OMR_METER_CARRY`,
+`OMR_METER_FROM_BARS` and the change detector's bar terms alike, and it is why
+all three fail SAFE rather than usefully on a bad page. *"The bars will catch
+it" is not a design.*
+
+⚠️ **And no structural signal catches this one either: the wrong reading is
+UNANIMOUS** across all 10 staves that spoke, so coverage and agreement floors
+both pass. Cross-staff agreement is not independent evidence when every staff
+feeds the SAME reader the SAME typeface.
+
+**What DOES separate is the absolute score** — TRUE 0.656-0.781, FALSE 0.514,
+**nothing between 0.531 and 0.656** against a `min_score` of **0.50**. Not
+taken: that constant is `time_signature_locator`'s, shared with the legacy
+`transcribe` path and set on an 11-source corpus; 7 correct / 1 wrong over 4
+documents is a fraction of the evidence behind it, and pricing a change means
+re-running the eleven-work engraved benchmark and the 20-row scan gate.
+
+⚠️ Confirms the segments session landed and closed all three gaps this
+benchmark reported (export consumes `record.meter_at`; the carry takes the
+source's END meter; `METER_SOURCE_REASONS` replaces the voted-only gate).
+**Nothing yet reads the recorded `cautionary`** — the abstaining-system half of
+route 3 needs no arbitration and stays available, at reach ZERO on this corpus.
 
 ---
 

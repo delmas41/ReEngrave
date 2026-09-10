@@ -795,7 +795,7 @@ dots over 2347 noteheads**, against 134 and 157 over 1118 on an engraving. A
 DETECTION limit, the same shape already recorded for hairpins.
 
 ⚠️⚠️ **IT IS NOT FREE, AND ONLY THE PER-STAFF VIEW SHOWS IT.** At bar level
-**0 bars go right → wrong** and 6 become assessable, all right — but that is
+**0 bars go right → wrong** and 11 become assessable, all right — but that is
 the cross-staff quorum working, not the rule being harmless. Underneath, **54
 readings go wrong → right and 26 go RIGHT → wrong**: a 2:1 trade. On the
 engraving every move was one way, so this is exactly what a perfect-ink fixture
@@ -809,10 +809,53 @@ added**: switching the flag half off by print quality would be a rule fitted to
 one scan of one publisher, and the measured cost of leaving it on is one net
 reading in 733.
 
-⚠️ **A SECOND PUBLISHER'S SCAN IS STILL UNMEASURED**, and this thread already
+⚠️⚠️ **AND A SECOND PUBLISHER'S SCAN NOW EXISTS AND CORRECTS THE ABOVE.**
+Brahms 1 mvt1 / **Breitkopf & Härtel**, pdf pages 0-3 (14/27/28/28 staves),
+truth read off the encoding (`6/8`, one bar of `9/8` at m8, `6/8`) and its
+placement corroborated by our segmentation matching the window EXACTLY on pages
+1-3 (15, 15, 21). Control **4365 of 4365**.
+
+**It HOLDS and is far larger**: per-staff readings right **42 → 108 of 493**,
+and with the rule OFF **not one of the eight assessable bars is right** — four
+of them reading exactly **4.0 in a 6/8 movement**, the signature of a beam
+missed. With it on, six of eight are 3.0.
+
+⚠️ **It corrects the claim above: "the marks half does nothing on a scan" was
+about THAT DOCUMENT.** Litolff `984073` is catalogued *"low-res bitonal"* and
+fires 49 flag boxes and 35 dots; Breitkopf fires **371 and 656**, and there the
+marks half alone is worth **+13** where on Litolff it was worth **0**. Read
+every "on a scan" above as "on that scan".
+
+⚠️ **The two halves are SUPER-ADDITIVE — +15 and +13 separately, +66 together**
+— and the mechanism is the bar: a bar is right only when EVERY note in it is,
+so a bar holding one beam-missed and one flag-missed note stays wrong until
+both are repaired.
+
+⚠️ **The costs are larger too**: 27 readings go RIGHT → wrong against 93 the
+other way (3.4:1), and the contradiction rate is **27.5%** against Litolff's
+18.9% and the engraving's 2.7% — three points, ordered engraved < Litolff <
+Breitkopf, i.e. **the worse the ink, the more the flag half picks up**. ⚠️ And
+the page is read badly whatever we do: 108 of 493 is **22%** against Litolff's
+59%, so this is a large RELATIVE gain on a document that is still mostly wrong.
+⚠️ The `9/8` bar the fixture was chosen for is **unassessable** — its 23 staves
+read 23 different lengths — so the quorum correctly declines the one bar the
+document was picked for.
+
+⚠️⚠️ **AND THE BAR-LEVEL FIGURES OF THAT ARM WERE WRONG WHEN FIRST PUBLISHED
+(44/43 → 49/48), FOR A REASON WORTH MORE THAN THE NUMBERS.** The probes keyed a
+bar on `(page, cell)`, and **a cell index RESTARTS at 0 on each system of a
+page** — so system 0's third bar and system 1's third bar were merged into one
+pseudo-bar and then scored. Four pages of a UNIFORM-meter document could not
+expose it; the first fixture whose truth is not uniform did, immediately. The
+corrected figures are **71/67 → 78/74**, the direction is unchanged, and the
+merged version had ALSO been hiding losses — it reported one bar dropping out
+of the quorum where there are four. ⚠️ Per-staff readings were keyed on the full
+event subject all along and did not move, which is why the headline survived.
+
+✅ **THE SECOND PUBLISHER IS MEASURED (above)**, and this thread already
 has a case where a result held on a second document and broke on a second
 publisher's scan. ⚠️ **The scan bar sums were already nearly right where they
-were assessable at all** (43 of 44 → 48 of 49); what moved is how MANY bars can
+were assessable at all** (67 of 71 → 74 of 78); what moved is how MANY bars can
 speak. Re-pricing `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` still needs
 that second publisher first.
 

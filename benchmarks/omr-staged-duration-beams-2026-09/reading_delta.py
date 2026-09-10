@@ -47,10 +47,35 @@ def readings(path):
     return out
 
 
+def _truth_map(spec):
+    """⚠️ THE SYSTEM IS PART OF THE KEY -- a cell index restarts at 0 on each
+    system of a page."""
+    if "=" not in spec:
+        return float(spec)
+    out = {}
+    for part in spec.split(","):
+        where, b = part.split("="); page_sys, cells = where.split(":")
+        pg, _, sy = page_sys.partition(".")
+        a, _, z = cells.partition("-")
+        for c in range(int(a), int(z or a) + 1):
+            out[(int(pg), int(sy or 0), c)] = float(b)
+    return out
+
+
 def main():
-    off, on, truth = readings(sys.argv[1]), readings(sys.argv[2]), float(sys.argv[3])
+    off, on = readings(sys.argv[1]), readings(sys.argv[2])
+    spec = _truth_map(sys.argv[3])
+
+    def truth_of(key):
+        if isinstance(spec, float):
+            return spec
+        _, p, sy, st, ce = key.split("/")
+        return spec.get((int(p), int(sy), int(ce)))
     t = Counter()
     for k in set(off) | set(on):
+        truth = truth_of(k)
+        if truth is None:
+            continue
         a, b = off.get(k), on.get(k)
         ra = a is not None and abs(a - truth) < 1e-6
         rb = b is not None and abs(b - truth) < 1e-6
@@ -65,8 +90,10 @@ def main():
     tot = sum(t.values())
     for k, n in t.most_common():
         print(f"   {n:5d}  ({n/tot:5.1%})  {k}")
-    print(f"   {sum(1 for v in off.values() if abs(v-truth)<1e-6):5d} right OFF"
-          f"  ->  {sum(1 for v in on.values() if abs(v-truth)<1e-6):5d} right ON"
+    def right(d):
+        return sum(1 for k, v in d.items()
+                   if truth_of(k) is not None and abs(v - truth_of(k)) < 1e-6)
+    print(f"   {right(off):5d} right OFF  ->  {right(on):5d} right ON"
           f"   of {tot} readings")
 
 
