@@ -152,6 +152,23 @@ Everything else is unchanged: the forward fixture identical on all 4 pages,
 Litolff `--pages 0-2` identical on every subject, outcome, reason and value,
 and p.62's `3/4` at cell 8 preserved to the unit.
 
+## 4d. ⚠️⚠️ THE HAZARD THAT BOUNDS EVERY BAR-ARBITRATED RULE HERE
+
+Found by the `9/4`'s third refutation and worth more than the dead route:
+**the case that most needs an arbiter is the case where the arbiter is
+silent.** A page whose meter the template reader mangles is a page whose ink is
+degraded — and the same degradation is what stops its bars from summing. On the
+Breitkopf system that votes `9/4`, NOT ONE of its seven bars clears the
+cross-staff quorum.
+
+The bars are not an independent umpire over a bad reading; **they fail together
+with it.** That bounds the carry, the bar-named length, and the change
+detector's bar terms alike — all three lean on bar sums as a second witness,
+and all three lose that witness exactly where the first one is worst. It is the
+*Andante*'s *"when the page cannot speak, abstain"* arriving from the other
+direction, and it is why every one of those mechanisms fails SAFE rather than
+usefully on a bad page.
+
 ## 5. THE NEXT WORK, RANKED
 
 ### 1. ⚠️⚠️ THE SEGMENTS ARE READ AND NOTHING DOWNSTREAM USES THEM — three gaps, ONE fix
@@ -205,7 +222,17 @@ their min.
   bar there, so it is recorded as `cautionary` rather than proposed as a
   change. All four TRUE changes in the corpus sit at a non-last cell and both
   cautionaries at a last cell, checked BEFORE the rule was written;
-* the real change to `6/8` is missed — one `timeSig1` detected, no pair.
+* the real change to `6/8` is missed — one `timeSig1` detected, no pair;
+* ⚠️ **the `9/4` is DIAGNOSED IN FULL and NOT FIXED**, with three routes
+  measured and refuted: staff-line removal is not the cause (it reads `9/4`
+  with the lines intact too), `score_margin` does not separate (TRUE
+  0.0681-0.3840 against the FALSE 0.0675 — a gap of 0.0006, and it is a
+  quantity GATHER records and nothing reads), and the cautionary-plus-bars
+  route dies on its precondition — **not one of that system's seven bars
+  clears the cross-staff quorum**. What DOES separate is the absolute score
+  (TRUE 0.656-0.781, FALSE 0.514, nothing between 0.531 and 0.656 against a
+  `min_score` of 0.50) — but that constant lives in `time_signature_locator`,
+  which the legacy path shares, and was set on an 11-source corpus.
 
 **Both fixes together: false meter changes 10 → 3 across the six fixtures,
 every true change still found, and the ENGRAVED arms are now clean — 4 printed,
