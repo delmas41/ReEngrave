@@ -1093,6 +1093,42 @@ iterates `adjudicate.REGISTRY` / `ORDER` with covering every decision emptied
 it in one line — the discipline tests iterate the registry to assert
 declaration properties. **A check that cannot fail is worse than no check**;
 the clause is gone and its absence is pinned. The bounded case (`stubs()`) IS
+
+⚠️⚠️ **SEVEN INSTANCES ACROSS TWO SESSIONS, 2026-09-09, AND THEY SPLIT INTO TWO
+FAMILIES THAT NEED DIFFERENT REPAIRS.** Worth the split because the fix does
+not transfer between them:
+
+* **A control that computes the wrong thing.** `symbol_ledger.coverage_check`
+  computed and read by nothing; the `EMPTY CELLS: none` above; a status census
+  that double-counted an unknown status so `balanced` would have gone False for
+  the wrong reason; an A/B whose records named no tree, so *"nothing moved"*
+  could not be told from *"you compared a file with itself"*.
+  **Fix: make it able to fail.**
+* **A control that was never testing what its name says.** `readjudicate.py
+  --control` run against a GATHER change, where it rebuilds a `Log` from a
+  SAVED record so the change never enters and it passes 2993/2993 by
+  construction; a benchmark arm silently reused from an earlier tree, so the
+  comparison reports "identical" whatever the change did; and a shell
+  `edit && commit && merge && push && echo LANDED` that printed **LANDED**
+  while the edit's assertion had FAILED and main was untouched.
+  **Fix: state the contract, then check it holds for THIS use.**
+
+⚠️ **The second family is the harder one: the instrument is working perfectly
+and the fault is in the sentence someone attached to it.** The `&&` chain is
+the purest case — nothing malfunctioned, and a `&&` chain verifies only that
+each step EXITED ZERO, never that it DID ANYTHING; a no-op merge exits zero
+correctly. That is not a control that was wrong, it is a control that was never
+a control.
+
+⚠️ And a guard can contain the failure it guards against: the tree-stamp guard
+built for the reused-arm case reintroduced it in its own fallback — twice,
+both times by returning a string that compares equal to itself (`"unknown"`,
+and `""` from a `subprocess.run` without `check=True`, which reports a failed
+command as empty stdout and raises nothing). **The fallback is where it hides,
+because it is the branch nobody exercises and nobody writes a test for.**
+The rule that fixes it is the one a dirty tree already forces: *anything that
+cannot uniquely name a tree must never compare equal to anything, including
+itself.* Taxonomy from the staged-pipeline session; instances from both.
 resolved.
 
 ⚠️ **A `wants` entry the decision never reads is INERT** — found by a test
