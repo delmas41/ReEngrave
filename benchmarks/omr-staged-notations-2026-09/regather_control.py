@@ -52,14 +52,63 @@ import json
 import sys
 
 
-def verdicts(path):
-    r = json.load(open(path))["record"]
+def verdicts(doc):
     return {(v["quantity"], v["subject"]):
             (v["outcome"], json.dumps(v["value"], sort_keys=True))
-            for v in r["verdicts"]}
+            for v in doc["record"]["verdicts"]}
 
 
-def main(before, after):
+def check_provenance(before, after, allow_unstamped=False):
+    """⚠️ REFUSE AN UNPROVENANCED A/B — exit non-zero rather than report one.
+
+    "MOVED: nothing" reads as *my change is inert*. It is equally consistent
+    with having compared two runs of the SAME tree, or a file with itself, and
+    NOTHING in the output would say so. That is the cached-arm trap the
+    meter session found in its own `run_arms.py`; this is the same shape one
+    layer down, and it was live here until the records carried a stamp.
+
+    ⚠️ A DIRTY TREE IS NEVER EQUAL TO ITSELF: a SHA cannot tell two sets of
+    uncommitted edits apart, so two dirty stamps prove neither sameness nor
+    difference and are refused. Rule adopted from the meter session.
+    """
+    pa = before.get("provenance") or {}
+    pb = after.get("provenance") or {}
+    print(f"BEFORE tree: {pa.get('commit') or '(unstamped)'}"
+          f"{'  ⚠️ DIRTY' if pa.get('dirty') else ''}")
+    print(f"AFTER  tree: {pb.get('commit') or '(unstamped)'}"
+          f"{'  ⚠️ DIRTY' if pb.get('dirty') else ''}")
+    problems = []
+    if not pa.get("commit") or not pb.get("commit"):
+        problems.append(
+            "one or both records carry no provenance -- they predate the "
+            "stamp, or were written by something that does not set it")
+    elif pa["commit"] == pb["commit"] and not (pa.get("dirty") or pb.get("dirty")):
+        problems.append(
+            f"both records were built from the SAME clean tree "
+            f"({pa['commit'][:12]}): this comparison cannot show a code "
+            f"change and 'MOVED: nothing' would mean nothing")
+    if pa.get("dirty") or pb.get("dirty"):
+        problems.append(
+            "a DIRTY tree is never equal to itself -- a SHA cannot tell two "
+            "sets of uncommitted edits apart, so this pair proves neither "
+            "sameness nor difference")
+    if not problems:
+        return
+    for p in problems:
+        print(f"⚠️ REFUSED: {p}", file=sys.stderr)
+    if allow_unstamped:
+        print("⚠️ --allow-unstamped: continuing anyway. The result below is "
+              "NOT evidence about a code change.", file=sys.stderr)
+        return
+    print("Re-run with distinct committed trees, or pass --allow-unstamped "
+          "if you know what this pair is and why.", file=sys.stderr)
+    raise SystemExit(2)
+
+
+def main(before_path, after_path, allow_unstamped=False):
+    before = json.load(open(before_path))
+    after = json.load(open(after_path))
+    check_provenance(before, after, allow_unstamped)
     a, b = verdicts(before), verdicts(after)
     qs = {q for q, _ in a} | {q for q, _ in b}
     print("%-24s %7s %7s %8s" % ("quantity", "before", "after", "changed"))
@@ -79,4 +128,8 @@ def main(before, after):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    # ⚠️ No pipe in the usage line, deliberately: `| tail` EATS THE EXIT CODE,
+    # which this project has been bitten by before and which would make the
+    # refusal above look like it worked while returning 0.
+    args = [a for a in sys.argv[1:] if a != "--allow-unstamped"]
+    main(args[0], args[1], "--allow-unstamped" in sys.argv)

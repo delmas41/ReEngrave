@@ -161,6 +161,23 @@ measured moving between runs on byte-identical code, so 23 quantities
 returning identical across two full runs is what makes the `arc_kind` delta
 attributable rather than assumed.
 
+⚠️⚠️ **AND THE COMPARISON ITSELF WAS UNPROVENANCED WHEN I RAN IT.** The staged
+result JSON recorded NOTHING about which tree built it, so `MOVED: nothing`
+would have been indistinguishable from *"you compared two runs of the same
+tree"* or *"you compared a file with itself"* — the cached-arm trap the
+meter/boundary session found in its own `run_arms.py`, one layer down. My
+comparison was sound because I remembered which tree produced each file, which
+is **a habit and not a mechanism**.
+
+Closed: `staged/__main__.py` now stamps every record with its commit and a
+`dirty` flag, and `regather_control.py` **exits non-zero** rather than report
+an unstamped or same-tree pair. ⚠️ A DIRTY tree is never equal to itself — a
+SHA cannot tell two sets of uncommitted edits apart — a rule adopted from the
+meter session rather than re-derived. The committed artefact is regenerated
+with `--allow-unstamped` so it carries its own caveat instead of looking
+clean, and the refusal is verified to exit 2 **without a pipe**, because
+`| tail` eats exit codes.
+
 This is the empirical half of the duration-reader session's code-level
 argument, which reached the same conclusion by reading rather than running:
 `_rest_ruling` touches only `.score`, `.value` and `.id` on a `Q.REST` row and

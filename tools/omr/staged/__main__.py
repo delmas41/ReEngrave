@@ -40,6 +40,29 @@ def parse_pages(spec: str) -> list:
     return out
 
 
+def _provenance() -> dict:
+    """The commit this record was built from, and whether the tree was dirty.
+
+    ⚠️ Best-effort and NEVER fatal: a record that cannot name its tree is
+    still a valid record, and refusing to write one would trade a real
+    transcription for a metadata nicety. It is the CONSUMER's job to refuse an
+    unstamped comparison, which is where the decision belongs -- writing is
+    not the place that can be wrong about it.
+    """
+    import subprocess
+    out = {"commit": None, "dirty": None}
+    try:
+        out["commit"] = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL,
+            cwd=str(Path(__file__).resolve().parent)).decode().strip()
+        out["dirty"] = bool(subprocess.check_output(
+            ["git", "status", "--porcelain"], stderr=subprocess.DEVNULL,
+            cwd=str(Path(__file__).resolve().parent)).decode().strip())
+    except Exception as exc:                       # noqa: BLE001
+        out["error"] = f"{type(exc).__name__}: {exc}"
+    return out
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(
         description="The staged pipeline: GATHER -> ADJUDICATE -> EVALUATE")
@@ -81,6 +104,19 @@ def main(argv=None) -> int:
         legacy=legacy.load(args.against) if args.against else None,
         progress=args.progress)
 
+    # ⚠️⚠️ WHICH TREE BUILT THIS RECORD. Without it, comparing two records is
+    # an unprovenanced A/B: `regather_control.py` reporting "MOVED: nothing"
+    # reads as "my change is inert" when it is equally consistent with having
+    # compared two runs of the SAME tree, or a file with itself. That is the
+    # cached-arm trap the meter session found in its own `run_arms.py`, one
+    # layer down -- and the shape this project keeps paying for, where the
+    # failure is never a wrong answer but a RIGHT-LOOKING one.
+    #
+    # ⚠️ A DIRTY TREE IS NEVER EQUAL TO ITSELF: a SHA cannot tell two sets of
+    # uncommitted edits apart, so `dirty` is recorded and any consumer must
+    # refuse to treat two dirty stamps as different-or-same. That rule is the
+    # meter session's, adopted rather than re-derived.
+    result["provenance"] = _provenance()
     text = json.dumps(result, indent=2, default=str)
     if args.out:
         Path(args.out).write_text(text)
