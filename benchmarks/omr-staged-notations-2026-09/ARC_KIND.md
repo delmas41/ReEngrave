@@ -225,3 +225,22 @@ So the hazard is the reason `source_kind` is load-bearing, reached from a new
 direction: an arbiter carrying `page` fails together with what it arbitrates.
 **If you want a second witness that does not fall silent exactly when it is
 needed, it must not come off the same raster.**
+
+⚠️⚠️ **THE RULE WAS NOT NEW TODAY — IT WAS UNNAMED, AND THIS REPO HAD ALREADY
+APPLIED IT ONCE.** Found by the meter/boundary session verifying my 29-of-29
+rather than quoting it onward. CLAUDE.md's probability-gates section argues for
+`clef_register_warning` on exactly this ground: *"It needs NO instrument label,
+which is what makes it worth having: 29 of 29 unresolved non-treble staves on
+the scan corpus have no label printed at all, so it is the evidence that
+survives exactly where label evidence is structurally unavailable."* That is a
+second witness chosen **because it does not fall silent with the first** —
+reached independently in the clef area, written down, and never generalised.
+Three instances: the `source_kind` tiers, `clef_register_warning`, and the
+meter's bars.
+
+⚠️ **And the same 29 does DOUBLE DUTY, which is worth separating before anyone
+cites it from here.** At `CLAUDE.md:4285` it is evidence that *label reading
+cannot lift the clef number* — a REACH statement about a population. At
+`CLAUDE.md:2300` it is the *justification for a label-free witness* — the
+silent-arbiter rule. Same number, two conclusions, and only the second is this
+one.
