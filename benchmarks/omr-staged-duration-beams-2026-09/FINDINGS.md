@@ -360,6 +360,21 @@ answer never moves. **No gate is added.** A rule that switched the flag half
 off by print quality would be fitted to one scan of one publisher, and the
 measured cost of leaving it on here is one reading in 733.
 
+## 6e. ⚠️ AN INDEPENDENT SESSION CORROBORATED IT FROM THE OTHER END
+
+Worth recording because it was not asked for and did not come from this
+measurement. The sibling meter session re-ran its own boundary arms on top of
+this duration work and reports the carry's discrimination on the engraved
+`beethoven-sym5-mvt4` widening from **+6.0 / −8.0 to +8.0 / −8.0** — a swing of
+14.0 → **16.0**, with the true meter's bars going 7-fit/2-not to 8-fit/1-not —
+attributing it to *"a sibling's DURATION work [making] the bars read better,
+which is the dependency the design predicts"*.
+
+⚠️ **It is corroboration of the bar-sum repair, not of the meter mechanism**,
+and it is one page of one document either way. What makes it worth a line is
+that the two sessions measured different quantities on different fixtures and
+the direction agrees.
+
 ## 7. WHAT THIS DOES NOT ESTABLISH
 
 * ⚠️⚠️ **n = 1 DOCUMENT, 1 FIXTURE, 3 PAGES, ENGRAVED.** "Every bar right" is a

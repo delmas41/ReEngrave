@@ -1,0 +1,98 @@
+[
+  {
+    "id": "vrd:009856",
+    "subject": "system/0/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "C",
+      "segments": [
+        {
+          "numerator": 4,
+          "denominator": 4,
+          "raw": "C",
+          "from_cell": 0
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "voted",
+    "used": [
+      "obs:004833",
+      "obs:004835",
+      "obs:004837",
+      "obs:004839",
+      "obs:004841",
+      "obs:004843",
+      "obs:004845",
+      "obs:004847",
+      "obs:004849",
+      "obs:004851",
+      "obs:004853",
+      "obs:004855",
+      "obs:004857",
+      "obs:004859",
+      "obs:004861",
+      "obs:004863",
+      "obs:004865",
+      "obs:004867",
+      "obs:004869",
+      "obs:004871",
+      "obs:004873",
+      "obs:004875",
+      "obs:004877"
+    ],
+    "missing": [],
+    "declined": [],
+    "excluded": [],
+    "candidates": [],
+    "margin": 1.0,
+    "supersedes": null,
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 23
+    },
+    "n_considered": 552,
+    "n_basis": 2479,
+    "n_correlated": 90
+  },
+  {
+    "id": "vrd:009857",
+    "subject": "system/3/0",
+    "quantity": "meter",
+    "outcome": "abstained",
+    "value": null,
+    "decider": "adjudicate_meter",
+    "reason": "carry_outweighed_by_the_bars",
+    "used": [],
+    "missing": [],
+    "declined": [
+      "meter_glyph",
+      "meter_template"
+    ],
+    "excluded": [],
+    "candidates": [],
+    "margin": null,
+    "supersedes": null,
+    "detail": {
+      "carried_from": "system/0/0",
+      "pages_since_read": 3,
+      "instead_of": "no_evidence",
+      "source_share": 1.0,
+      "source_staves_spoke": 23,
+      "support": -8.0,
+      "floor": 2.0,
+      "bars_agree": 0,
+      "bars_disagree": 9,
+      "bar_lengths_seen": {
+        "3.0": 8,
+        "5.0": 1
+      }
+    },
+    "n_considered": 607,
+    "n_basis": 3945,
+    "n_correlated": 215
+  }
+]
