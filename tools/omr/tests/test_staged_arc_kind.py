@@ -12,7 +12,7 @@ import unittest
 from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401  registers them
 from tools.omr.staged import record as R
-from tools.omr.staged.record import Log, Q, READERS
+from tools.omr.staged.record import Log, Outcome, Q, READERS
 
 
 def _log_with(arc_class, heads, *, arc_x=(100.0, 300.0), arc_y=(40.0, 60.0)):
@@ -56,6 +56,28 @@ class TestTheReadingDecides(unittest.TestCase):
         log, _cell = _log_with(arc_class, heads)
         v = _decide(log)
         self.assertIsNotNone(v, "arc_kind produced no verdict at all")
+        # ⚠️ ASSERT THE OUTCOME EXPLICITLY, NOT ONLY THE VALUE. Added because
+        # `health --check` went RED on `arc_kind: no test asserts it DECIDES`
+        # the moment this decision landed on main.
+        #
+        # ⚠️⚠️ AND MY FIRST RATIONALE FOR THIS LINE WAS FALSE, kept here
+        # because the correction is the point. I wrote that `Ruling.narrow`
+        # also carries a value, so a decision that started narrowing would
+        # have passed the value-only assertions. **It does not**:
+        # `Ruling.narrow` sets `value=None` unconditionally
+        # (`adjudicate.py`), so on this API a non-DECIDED verdict NEVER
+        # carries a value — and a mutation making this decision narrow was
+        # caught by the OLD assertion, not the new one. I asserted a mechanism
+        # instead of checking it, in a test comment, on the day this repo
+        # catalogued eight instances of exactly that.
+        #
+        # So what this line actually buys is LEGIBILITY, not power: the old
+        # test did establish deciding, but only through an API invariant the
+        # reader has to already know. Stating it makes the claim machine-
+        # readable — which is what the textual classifier needs — and removes
+        # the dependence on that invariant, so this test survives a `narrow`
+        # that ever starts carrying a value.
+        self.assertEqual(v.outcome, Outcome.DECIDED)
         return v
 
     def test_a_tie_class_decides_tie(self):
@@ -99,6 +121,7 @@ class TestTheGrammarAbstainsRatherThanGuessing(unittest.TestCase):
     def test_one_flanked_head_gives_NO_grammar(self):
         log, _ = _log_with("slur", [(150.0, 3)])
         v = _decide(log)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value, "slur", "the reading still decides")
         self.assertIsNone(v.detail["grammar"]["says"])
         self.assertIn("fewer than two", v.detail["grammar"]["why"])
