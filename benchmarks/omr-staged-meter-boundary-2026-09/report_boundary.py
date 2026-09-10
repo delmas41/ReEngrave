@@ -301,12 +301,12 @@ def show(path, tag):
 #: ⚠️ The ENGRAVED and SCANNED rows of the same music are the isolating pair —
 #: same work, same measures, same code, one difference.
 TALLY_SET = (
-    ("m4brahms1eng-OFF", "brahms1-m1-22", "Brahms 1 i   ENGRAVED"),
-    ("m4brahms1scan-OFF", "brahms1-317803", "Brahms 1 i   BREITKOPF SCAN"),
-    ("m4brahms4eng-OFF", "brahms4-m386-412", "Brahms 1 iv  ENGRAVED (C -> cut)"),
-    ("m4full-CARRY", "boundary-m150-180", "Beethoven 5 iv ENGRAVED (fwd)"),
-    ("m4rev-OFF", "boundary-m204-232", "Beethoven 5 iv ENGRAVED (rev)"),
-    ("m4lit6162-OFF", "litolff-984073", "Beethoven 5  LITOLFF SCAN"),
+    ("m5brahms1eng-OFF", "brahms1-m1-22", "Brahms 1 i   ENGRAVED"),
+    ("m5brahms1scan-OFF", "brahms1-317803", "Brahms 1 i   BREITKOPF SCAN"),
+    ("m5brahms4eng-OFF", "brahms4-m386-412", "Brahms 1 iv  ENGRAVED (C -> cut)"),
+    ("m5full-CARRY", "boundary-m150-180", "Beethoven 5 iv ENGRAVED (fwd)"),
+    ("m5rev-OFF", "boundary-m204-232", "Beethoven 5 iv ENGRAVED (rev)"),
+    ("m5lit6162-OFF", "litolff-984073", "Beethoven 5  LITOLFF SCAN"),
 )
 
 

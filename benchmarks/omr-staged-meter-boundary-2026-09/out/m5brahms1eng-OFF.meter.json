@@ -1,0 +1,203 @@
+[
+  {
+    "id": "vrd:026475",
+    "subject": "system/0/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 6,
+      "denominator": 8,
+      "raw": "6/8",
+      "segments": [
+        {
+          "numerator": 6,
+          "denominator": 8,
+          "raw": "6/8",
+          "from_cell": 0
+        }
+      ],
+      "cautionary": {
+        "from_cell": 6,
+        "numerator": 9,
+        "denominator": 8,
+        "raw": "9/8",
+        "support": 57.0,
+        "staves_reading_it": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          12,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "bars_fit": 0,
+        "bars_contradict": 0,
+        "loose_digits": 0,
+        "cautionary": true
+      }
+    },
+    "decider": "adjudicate_meter",
+    "reason": "voted",
+    "used": [
+      "obs:010064",
+      "obs:010069",
+      "obs:010074",
+      "obs:010079",
+      "obs:010084",
+      "obs:010089",
+      "obs:010094",
+      "obs:010101",
+      "obs:010107",
+      "obs:010112",
+      "obs:010117",
+      "obs:010125",
+      "obs:010131",
+      "obs:010139",
+      "obs:010145",
+      "obs:010150",
+      "obs:010155",
+      "obs:010160",
+      "obs:010165",
+      "obs:010170",
+      "obs:010175"
+    ],
+    "missing": [],
+    "declined": [],
+    "excluded": [],
+    "candidates": [],
+    "margin": 1.0,
+    "supersedes": null,
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 21
+    },
+    "n_considered": 990,
+    "n_basis": 4227,
+    "n_correlated": 139
+  },
+  {
+    "id": "vrd:026476",
+    "subject": "system/1/0",
+    "quantity": "meter",
+    "outcome": "decided",
+    "value": {
+      "numerator": 9,
+      "denominator": 8,
+      "raw": "9/8",
+      "segments": [
+        {
+          "numerator": 9,
+          "denominator": 8,
+          "raw": "9/8",
+          "from_cell": 0
+        },
+        {
+          "from_cell": 1,
+          "numerator": 6,
+          "denominator": 8,
+          "raw": "6/8",
+          "support": 60.0,
+          "staves_reading_it": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "bars_fit": 0,
+          "bars_contradict": 3
+        }
+      ]
+    },
+    "decider": "adjudicate_meter",
+    "reason": "voted",
+    "used": [
+      "obs:017512",
+      "obs:017517",
+      "obs:017522",
+      "obs:017527",
+      "obs:017532",
+      "obs:017537",
+      "obs:017542",
+      "obs:017547",
+      "obs:017552",
+      "obs:017557",
+      "obs:017562",
+      "obs:017567",
+      "obs:017572",
+      "obs:017577",
+      "obs:017582",
+      "obs:017587",
+      "obs:017592",
+      "obs:017597",
+      "obs:017602",
+      "obs:017607",
+      "obs:017612"
+    ],
+    "missing": [],
+    "declined": [],
+    "excluded": [],
+    "candidates": [],
+    "margin": 1.0,
+    "supersedes": null,
+    "detail": {
+      "share": 1.0,
+      "n_staves_spoke": 21
+    },
+    "n_considered": 1059,
+    "n_basis": 3591,
+    "n_correlated": 109
+  },
+  {
+    "id": "vrd:026477",
+    "subject": "system/2/0",
+    "quantity": "meter",
+    "outcome": "abstained",
+    "value": null,
+    "decider": "adjudicate_meter",
+    "reason": "no_evidence",
+    "used": [],
+    "missing": [],
+    "declined": [
+      "meter_glyph",
+      "meter_template"
+    ],
+    "excluded": [],
+    "candidates": [],
+    "margin": null,
+    "supersedes": null,
+    "detail": {},
+    "n_considered": 527,
+    "n_basis": 1783,
+    "n_correlated": 53
+  }
+]

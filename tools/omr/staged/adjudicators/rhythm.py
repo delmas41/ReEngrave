@@ -31,7 +31,7 @@ from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
 from collections import Counter
 
 from ..record import (ABSTAIN, Kind, Outcome, Q, READERS, Scope, State,
-                      Subject, cell as R_cell, meter_at)
+                      Subject, meter_at)
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -99,7 +99,236 @@ def _kept_beams(ev: Evidence, cell):
 BEAM_EDGE_TOLERANCE_WIDTHS = 1.0
 
 
-def _beam_levels(beams, x_center, width):
+def _boxes_overlap(a, b) -> bool:
+    """Do two (x, y, w, h) boxes share any area? No tolerance, and none needed.
+
+    ⚠️ MEASURED RATHER THAN CHOSEN. Over the 707 stem/beam pairs of the
+    engraved Beethoven 5 iv fixture that overlap in x, 685 also overlap in y
+    and the 22 that do not are separated by **35 px or more** -- nothing sits
+    in 1-34, so a tolerance would be decoration. Notehead/stem attachment
+    separates the same way: 819 heads take exactly one stem, and where none
+    overlaps the nearest is 94 px away but for three pairs at 1-2 px.
+    """
+    ax, ay, aw, ah = a
+    bx, by, bw, bh = b
+    return (ax <= bx + bw and ax + aw >= bx
+            and ay <= by + bh and ay + ah >= by)
+
+
+def _xywh(row) -> Optional[Tuple[float, float, float, float]]:
+    v = row.value
+    if not isinstance(v, (list, tuple)) or len(v) < 4:
+        return None
+    return (float(v[0]), float(v[1]), float(v[2]), float(v[3]))
+
+
+def _xywh_head(value) -> Optional[Tuple[float, float, float, float]]:
+    """`Q.GLYPH_BOX` is `(smufl_name, x, y, w, h)` -- the name comes FIRST.
+
+    ⚠️ Its own consumers already index past it (`x_center = v[1] + v[3]/2`),
+    so the offset is not new; it is spelled once here so a second reader of
+    the same row cannot get it wrong.
+    """
+    if not isinstance(value, (list, tuple)) or len(value) < 5:
+        return None
+    return (float(value[1]), float(value[2]),
+            float(value[3]), float(value[4]))
+
+
+def _stem_joined(beams, stems, head_box):
+    """The beams THIS notehead's stem reaches: (rows, the stems used).
+
+    ⚠️⚠️ A NOTE IS JOINED TO A BEAM BY ITS STEM, AND TESTING THE NOTEHEAD'S
+    CENTRE INSTEAD IS WHY BAR SUMS WERE WRONG ON PERFECT INK. A beam stroke
+    runs from the FIRST stem it joins to the LAST, and a stem stands at the
+    SIDE of its notehead -- so the outer note of every beamed group has its
+    centre roughly half a notehead width PAST the stroke's end. Measured on
+    the engraved fixture: 114 narrowed durations have a stem that meets a
+    beam while the centre test reads `none_over_this_note`, and the overshoot
+    clusters at **0.35-0.47 notehead widths**, which is the stem offset and
+    nothing else. `BEAM_EDGE_TOLERANCE_WIDTHS` then caught them as POSSIBLE,
+    so the reading came out as a RANGE that a consumer had to collapse -- and
+    `_bar_lengths_for` collapsed it to the longest.
+
+    ⚠️ ADDITIVE, NEVER SUBTRACTIVE. This is a second tier beside the centre
+    test, in the shape `_dedupe_cross_staff_detections`'s ledger ladder
+    already has: it can only turn a POSSIBLE into a CERTAIN, so a page whose
+    stems are not read behaves exactly as before. Stem-ONLY was measured and
+    refused -- same bars, but 60 narrowed against 16, because a head whose
+    stem the CV missed then loses its beam entirely.
+
+    ⚠️ THE Y HALF OF THE OVERLAP IS UNEXERCISED BY THAT FIXTURE and is tested
+    directly instead: on a clean engraving every beam sits at its stems' ends,
+    so sweeping a y tolerance 0-64 px moves one row and no bar. It is kept
+    because a stem in another octave crossing a beam's column is real ink and
+    the x test alone would join them.
+    """
+    if head_box is None:
+        return [], []
+    attached = [s for s in stems
+                if _xywh(s) and _boxes_overlap(_xywh(s), head_box)]
+    if not attached:
+        return [], []
+    joined = []
+    for b in beams:
+        box = _xywh(b)
+        if box and any(_boxes_overlap(_xywh(s), box) for s in attached):
+            joined.append(b)
+    return joined, attached
+
+
+#: `flag8thUp` -> 1 level, `flag16thDown` -> 2, and so on. DERIVED from
+#: `rhythm._FLAG_DURATIONS` rather than restated, so the two cannot drift.
+#:
+#: ⚠️⚠️ A FLAG CLASS NAMES A VALUE, IT IS NOT A TALLY. `adjudicate_duration`
+#: did `levels = len(flags)`, so a single `flag16thUp` -- one glyph, two
+#: levels -- read as an EIGHTH. Counting glyphs is right for beam strokes,
+#: which are drawn one per level, and wrong for flags, which are drawn as one
+#: glyph however many hooks it has.
+def _flag_levels_table() -> Dict[str, int]:
+    from ...rhythm import _FLAG_DURATIONS
+    out: Dict[str, int] = {}
+    for name, (beats, _type) in _FLAG_DURATIONS.items():
+        levels = 0
+        v = 1.0
+        while v > beats + 1e-9:
+            v /= 2.0
+            levels += 1
+        out[name] = levels
+    return out
+
+
+_FLAG_LEVELS = _flag_levels_table()
+
+
+def _flag_levels_for(value) -> Optional[int]:
+    return _FLAG_LEVELS.get(str(value).lower())
+
+
+def _attached_flags(ev: Evidence, cell, attached_stems):
+    """The flags on THIS notehead's stem: (rows, levels).
+
+    ⚠️⚠️ `Q.FLAG` IS GATHERED ON THE FLAG'S OWN GLYPH SUBJECT AND WAS READ ON
+    THE NOTEHEAD'S, so not one of 134 rows on a three-page record ever reached
+    a duration -- `beam_evidence == "flag"` fired ZERO times. `ev.rows(Q.FLAG)`
+    asks the subject under adjudication, and a flag is a different detection
+    with its own glyph index. The mark had to be ATTACHED and nothing attached
+    it.
+
+    ⚠️ THE ATTACHMENT IS THE STEM, AND HERE THAT IS STRICTLY BETTER THAN THE
+    LEGACY RULE. `rhythm._flag_for_notehead` matches on x-centre proximity and
+    says in its own docstring that it cannot enforce stem direction because
+    "the notehead's stem direction isn't reliably available from a 0-stem
+    detector". On this path the stems ARE available -- `gather_cv_lines`
+    reads them -- so a flag is claimed only where it touches a stem that
+    touches this head. A flag is drawn FROM the stem's far end, so the two
+    boxes meet.
+
+    Measured on the engraved Beethoven 5 iv fixture: m211 prints 100 eighths
+    and 80 eighth rests, and every one of those eighths was read as a QUARTER
+    -- four `quarter + 8th-rest` pairs summing to 6.0 in a 4/4 bar, on 20 of
+    23 staves.
+    """
+    # ⚠️ NO `if not attached_stems: return` FAST PATH. One was written and a
+    # mutation arm SURVIVED it -- `any()` over an empty list is already False,
+    # so the early return was a second spelling of a rule that lives one line
+    # below, and a rule a mutation cannot break is a protection that is not
+    # there. Deleted rather than propped up with a test.
+    boxes = {r.subject.to_key(): r for r in ev.rows(
+        Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)}
+    out = []
+    for f in ev.rows(Q.FLAG, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        box_row = boxes.get(f.subject.to_key())
+        box = _xywh_head(box_row.value) if box_row else None
+        if box is None:
+            continue
+        if any(_boxes_overlap(_xywh(st), box) for st in attached_stems
+               if _xywh(st)):
+            out.append(f)
+    # ⚠️ THE MAX, NOT THE SUM. Two flag detections on one stem are two
+    # readings of one glyph, not two glyphs; a 16th flag alone already says
+    # two levels.
+    levels = 0
+    for f in out:
+        lv = _flag_levels_for(f.value)
+        if lv:
+            levels = max(levels, lv)
+    return out, levels
+
+
+def _attached_dots(ev: Evidence, cell, head_box, space):
+    """The augmentation dots belonging to THIS notehead.
+
+    ⚠️ `Q.AUG_DOT` had the same fault as `Q.FLAG` -- 157 rows on a three-page
+    record, ZERO durations carrying a dot -- and the two constants written for
+    exactly this decision, `DOT_ABOVE_NOTE_MAX_SPACES` and
+    `DOT_BELOW_NOTE_MAX_SPACES`, sat here with a paragraph of measured
+    justification and were **used by nothing in this module**.
+
+    ⚠️ THE GEOMETRY IS THE PAID-FOR ONE, in its own units. A dot is printed to
+    the RIGHT of its note, and NOT at its note's height: a note in a space
+    takes its dot in the same space, a note ON A LINE takes it in the space
+    ABOVE. Over 116 dots the signed offsets are bimodal -- 52 at 0.00 spaces,
+    52 at +0.50, nothing between +0.57 and +3.75 -- so the window is
+    asymmetric, and the asymmetry is what decides a double stop, where the
+    lower dot is equidistant from both noteheads and a symmetric window ties.
+
+    ⚠️ AND THE CLAIM IS RECIPROCAL, WHICH IS WHAT MAKES A PER-GLYPH DECISION
+    SAFE. The legacy rule assigns each dot to its own nearest target, globally;
+    this decision sees one notehead. So a dot is claimed only where THIS head
+    is the best target the dot has in the cell -- the same assignment, asked
+    from the other end, so two heads can never both take one dot.
+    """
+    if head_box is None or not space:
+        return []
+    boxes = {r.subject.to_key(): r for r in ev.rows(
+        Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)}
+    heads = []
+    for r in ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        box_row = boxes.get(r.subject.to_key())
+        b = _xywh_head(box_row.value) if box_row else None
+        if b is not None:
+            heads.append((r.subject.to_key(), b))
+    mine = None
+    for key, b in heads:
+        if b == head_box and key == ev.subject.to_key():
+            mine = key
+    if mine is None:
+        mine = ev.subject.to_key()
+
+    max_above = max(1.0, space * DOT_ABOVE_NOTE_MAX_SPACES)
+    max_below = max(1.0, space * DOT_BELOW_NOTE_MAX_SPACES)
+    out = []
+    for d in ev.rows(Q.AUG_DOT, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        box_row = boxes.get(d.subject.to_key())
+        db = _xywh_head(box_row.value) if box_row else None
+        if db is None:
+            continue
+        dot_x_left, dot_w = db[0], db[2]
+        dot_y = db[1] + db[3] / 2.0
+        best, best_score = None, float("inf")
+        for key, hb in heads:
+            hx_right = hb[0] + hb[2]
+            if hx_right > dot_x_left:
+                continue                      # the note must be to the LEFT
+            hy = hb[1] + hb[3] / 2.0
+            above = hy - dot_y                # positive: the dot sits HIGHER
+            if above > max_above or above < -max_below:
+                continue
+            dx = dot_x_left - hx_right
+            if dx > max(dot_w, 12) * 5:
+                continue
+            score = dx + abs(hy - dot_y) * 2
+            if score < best_score:
+                best_score, best = score, key
+        if best == mine:
+            out.append(d)
+    return out
+
+
+def _beam_levels(beams, x_center, width, joined=()):
     """How many strokes cover this notehead's column: (CERTAIN, POSSIBLE).
 
     ⚠️ THE LEVEL IS AN INTERPRETATION OVER STROKES, WHICH IS WHY IT IS
@@ -113,14 +342,18 @@ def _beam_levels(beams, x_center, width):
     strokes were on the record and intact -- if the INTERPRETATION collapses at
     the first opportunity.
     """
+    joined_ids = {b.id for b in joined}
     if x_center is None:
-        return (0, 0)
+        # ⚠️ No box means no head to attach a stem to either, so `joined` is
+        # empty here by construction -- it is read rather than assumed zero so
+        # the two callers cannot drift apart.
+        return (len(joined_ids), len(joined_ids))
     pad = (width or 0.0) * BEAM_EDGE_TOLERANCE_WIDTHS
     certain = possible = 0
     for b in beams:
         x0 = b.detail.get("x0", 0)
         x1 = b.detail.get("x1", 0)
-        if x0 <= x_center <= x1:
+        if b.id in joined_ids or x0 <= x_center <= x1:
             certain += 1
             possible += 1
         elif x0 - pad <= x_center <= x1 + pad:
@@ -146,7 +379,7 @@ def _head_class(ev: Evidence) -> Optional[str]:
                    Q.STEM, Q.REST),
     scope=Kind.GLYPH,
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM,
-           Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST),
+           Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE),
     reasons=("head_and_marks", "beams_ambiguous", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest"),
     mode=Mode.ADDITIVE,
@@ -206,9 +439,21 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
 
     cell = ev.subject.at(Kind.CELL)
     kept, cv, yolo = _kept_beams(ev, cell)
-    certain, possible = _beam_levels(kept, x_center, head_width)
+    # ⚠️ `Q.STEM` WAS DECLARED IN `wants` AND `composed_from` AND READ BY
+    # NOTHING -- this project's own named anti-pattern, inside the decision
+    # whose docstring calls the beam level its fragile input. The stems were
+    # gathered (916 rows on a three-page fixture) and the association that
+    # needs them was being made on the notehead's centre instead.
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    head_box = None
+    if box:
+        hb = _xywh_head(box[-1].value)
+        head_box = hb
+    joined, attached = _stem_joined(kept, stems, head_box)
+    certain, possible = _beam_levels(kept, x_center, head_width, joined)
     levels = certain
     used.extend(b.id for b in kept)
+    used.extend(s.id for s in attached)
 
     # ⚠️ THREE STATES, AND THEY MUST NOT COLLAPSE INTO ONE. A duration that is
     # right BECAUSE THE BEAMS WERE READ and one that is right because the note
@@ -223,16 +468,21 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     else:
         beam_evidence = "none_over_this_note"
 
-    flags = ev.rows(Q.FLAG)
-    if flags and not levels:
+    flags, flag_levels = _attached_flags(ev, cell, attached)
+    if flag_levels and not levels:
         # A flag says the same thing a beam does for an unbeamed note.
-        levels = len(flags)
+        levels = flag_levels
         used.extend(r.id for r in flags)
         beam_evidence = "flag"
     beats = base / (2 ** levels) if levels else base
 
     # dots lengthen: each adds half of what stands so far.
-    dots = ev.rows(Q.AUG_DOT)
+    space_row = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                        subject=cell)
+    space = float(space_row[-1].value) if space_row else None
+    if space_row:
+        used.append(space_row[-1].id)
+    dots = _attached_dots(ev, cell, head_box, space)
     n_dots = len(dots)
     used.extend(r.id for r in dots)
     total, add = beats, beats
@@ -257,6 +507,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     shared = {"head": str(head), "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),
               "yolo_kept": len(kept) - len(cv),
+              "stems_attached": len(attached), "beams_by_stem": len(joined),
+              "flags_attached": len(flags), "flag_levels": flag_levels,
+              "dots_attached": n_dots,
+              "staff_space": space,
               "levels_certain": certain, "levels_possible": possible}
 
     # ⚠️ WHERE THE BEAM READING IS A RANGE, SO IS THE DURATION. Narrowing is
@@ -959,69 +1213,7 @@ W_CHANGE_BAR_CONTRADICTS = -1.0
 #: ⚠️ At 3.0 a single staff reading a complete meter clears it and two
 #: contradicting bars sink it again -- the same structural ordering the carry
 #: uses, with the glyph in the place the carry gives to a prior reading.
-#: Which verdicts may be carried from, or have their spelling borrowed.
-#:
-#: ⚠️⚠️ IT WAS `reason == "voted"` ALONE, AND THAT EXCLUDED INK. A
-#: `change_only` verdict's value is a meter READ on this system's own staves
-#: -- `_meter_changes` builds it from `Q.METER_GLYPH` rows and weighs it
-#: against the bars -- so refusing it as a source refused exactly the evidence
-#: the gate exists to require. Beethoven 5 / Litolff p.62 is the case: it
-#: reads the printed `3/4` at the bar the reference names, on a system whose
-#: opening is unknown, and no later system could be handed it.
-#:
-#: ⚠️ WHAT STAYS OUT IS WHAT A CARRY WOULD CHAIN ONTO. `carried` is another
-#: system's answer repeated, and `derived_from_bars` is arithmetic with a
-#: BORROWED spelling -- neither is ink on the source's own page, so admitting
-#: either would make `pages_since_read` a lie about the distance back to ink.
-#: That is the property `_carry_meter`'s docstring already claims and this
-#: keeps.
-METER_SOURCE_REASONS = ("voted", "change_only")
-
-
 METER_CHANGE_FLOOR = 3.0
-
-
-#: How much of a bar's OWN ink may stand to the LEFT of a meter glyph before
-#: that glyph stops being a change to THIS bar and becomes a COURTESY
-#: signature announcing the next system's.
-#:
-#: ⚠️⚠️ A CAUTIONARY IS STANDARD ENGRAVING AND `_meter_changes` HAD NO NOTION
-#: OF IT: any glyph in a cell after the first was a change. The engraving fact
-#: is that a change is printed immediately after the barline that OPENS its
-#: bar, so the bar's music lies to its right; a courtesy stands after the
-#: system's final barline, so the music lies to its left.
-#:
-#: MEASURED over every segment the boundary benchmark proposes, per READING
-#: (the staves that actually read it — see `_meter_changes`, and the note
-#: below about what pooling a whole cell does to this number):
-#:
-#:   the one cautionary in the corpus   1.000  (19 staves, 38 rows,
-#:                                              min = median = max)
-#:   every other segment, true or false  <= 0.118
-#:
-#: So the constant sits in an empty interval from 0.118 to 1.000. 0.5 is the
-#: middle of it and means "the bar's music is mostly behind the glyph".
-#:
-#: ⚠️⚠️ THE CORPUS CONTAINS EXACTLY ONE CAUTIONARY THIS CAN SEE, AND AN
-#: EARLIER DRAFT OF THIS COMMENT CLAIMED TWO. That draft's figures came from a
-#: probe that pooled EVERY staff with a glyph at the cell instead of the
-#: staves that read the segment, which turned Litolff p.61's mixture of three
-#: different readings into a single 1.000. Measured properly, that page's
-#: false `C` is read on ONE staff at 0.118 — at the HEAD of its bar — so it is
-#: a misread, not a courtesy, and this rule is right not to touch it.
-#:
-#: ⚠️ IT ALSO DOES NOT REACH THE BREITKOPF SCAN'S OWN COURTESY, which both
-#: printings of Brahms 1 page 0 engrave. That degenerate final cell holds five
-#: detections against the engraved arm's several hundred, so the glyph reads
-#: 0.000 — there is no music left of it because almost none was found. That is
-#: the READING failing, which is what FINDINGS §4b concludes about the whole of
-#: that fixture; widening this rule to reach it would fit a placement rule to
-#: a detection gap.
-#:
-#: ⚠️ THE FRACTION IS UNIT-FREE ON PURPOSE. Position within the CELL separates
-#: too, but needs the cell's width, and the widths run 298 to 2048 px on these
-#: pages. Comparing the glyph to the bar's own ink needs no width at all.
-METER_CAUTIONARY_LEFT_FRACTION = 0.5
 
 
 #: The meters the repertoire actually prints, from the template reader's own
@@ -1139,77 +1331,82 @@ def _bar_run(bars: dict, from_cell: int, expected: float) -> tuple:
     return fits, misses
 
 
-def _looks_cautionary(ev: Evidence, staff_rows) -> bool:
-    """Does this bar's own music stand to the LEFT of its meter glyph?
+def _last_cell_per_staff(ev: Evidence) -> dict:
+    """Each staff of this system -> the index of its LAST measure cell.
 
-    A courtesy signature is printed after the system's FINAL BARLINE to
-    announce the next system's meter. It governs no bar here, so a segment
-    built on it would re-size the last bar of this system to a meter the page
-    never applies to it -- measured as the one false positive BOTH printings
-    of Brahms 1 page 0 produce.
-
-    ⚠️ THE COMPARISON IS AGAINST THE BAR'S OTHER INK, NOT THE CELL'S WIDTH.
-    See `METER_CAUTIONARY_LEFT_FRACTION` for why, and for what this rule
-    knowingly does not reach.
-
-    ⚠️ TIME-SIGNATURE INK IS EXCLUDED FROM THE COMPARISON SET, or a meter
-    glyph would be scored partly against its own other digit.
+    ⚠️ PER STAFF, NOT PER SYSTEM, because the staves of one system do not
+    always agree about how many bars they hold — on the Breitkopf Brahms the
+    scan reads 8 cells where the print has 7 bars, and the extra one is the
+    trailing sliver the cautionary sits in.
     """
-    fractions = []
-    for r in staff_rows:
-        x = (r.detail or {}).get("x")
-        if x is None:
+    out = {}
+    for v in ev.verdicts(Q.MEASURE_PARTITION, scope=Scope.SELF_AND_DESCENDANTS):
+        if v.outcome is not Outcome.DECIDED or not isinstance(v.value, int):
             continue
-        # ⚠️⚠️ THE CELL IS BUILT FROM THE ROW'S `cell` DETAIL, NOT FROM ITS
-        # SUBJECT, AND GETTING THAT WRONG COST A WHOLE MEASUREMENT ROUND.
-        # `gather` files `Q.METER_GLYPH` against the STAFF -- the cell is in
-        # `detail` -- so `r.subject.at(Kind.CELL)` returns None (a cell is
-        # DEEPER than a staff), this function bailed before reading a single
-        # box, and every candidate looked non-cautionary. The unit tests
-        # passed throughout because their fixture filed the glyphs on GLYPH
-        # subjects, which no gather site does: a fixture that does not match
-        # what GATHER emits tests the test.
-        staff = r.subject.at(Kind.STAFF)
-        cell_index = (r.detail or {}).get("cell")
-        if staff is None or cell_index is None:
-            continue
-        cell = R_cell(staff.page, staff.system, staff.staff, int(cell_index))
-        boxes = ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
-                        subject=cell)
-        xs = []
-        for b in boxes:
-            if (b.frame or "") != (r.frame or ""):
-                continue
-            v = b.value
-            if not isinstance(v, (list, tuple)) or len(v) < 5:
-                continue
-            if str(v[0]).startswith("timeSig"):
-                continue
-            xs.append((float(v[1]) + float(v[3])) / 2.0)
-        if not xs:
-            continue
-        fractions.append(sum(1 for q in xs if q < x) / len(xs))
-    if not fractions:
-        # ⚠️ NO OPINION IS NOT A CAUTIONARY. A bar we read no other ink in
-        # cannot say where its music sits, and refusing the change there would
-        # be this rule deciding on absence.
-        return False
-    fractions.sort()
-    median = fractions[len(fractions) // 2]
-    return median > METER_CAUTIONARY_LEFT_FRACTION
+        staff = getattr(v.subject, "staff", None)
+        if staff is not None and v.value > 0:
+            out[staff] = v.value - 1
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# A CAUTIONARY IS NOT A CHANGE. (A-METER-5)
+#
+# An engraver announcing a new meter prints it TWICE: once after the final
+# barline of the system that is ending -- the courtesy, or cautionary,
+# signature -- and once at the head of the system that is beginning. The first
+# governs NO BAR. It is a statement about the next system.
+#
+# `_meter_changes` had no notion of one: any meter glyph past cell 0 was a
+# change. Measured on Brahms 1 mvt 1, whose LilyPond render and whose Breitkopf
+# scan both print a cautionary `9/8` after page 0's last barline, it proposed a
+# change at that page's last cell in BOTH printings -- support 57.0 engraved
+# (19 staves) and 26.5 scanned -- and the segment would re-size a bar the
+# cautionary does not govern.
+#
+# ⚠️ THE RULE IS THE ENGRAVING CONVENTION, NOT A FITTED THRESHOLD: a change is
+# put at a system's START, and the cautionary exists precisely so it can be.
+# So a meter standing in a system's LAST cell is the announcement, not the
+# change -- unless the bar it would govern says otherwise, which is the one
+# thing that could distinguish a genuine last-bar change from a courtesy.
+#
+# Measured over every change in this corpus: **all four TRUE changes sit at a
+# non-last cell** (Litolff p.62 cell 8 of 13, Brahms 1 mvt 1 cell 1 of 8,
+# Beethoven 5 mvt 4 cell 3 of 9, Brahms 1 mvt 4 cell 6 of 8) and **both
+# cautionaries sit at a last cell**, 6 of 7 and 7 of 8.
+#
+# ⚠️ IT IS RECORDED, NOT DISCARDED. A cautionary states the meter of the NEXT
+# system, and the document's own answer to a misread opening is often exactly
+# that -- on the Breitkopf scan the opening `9/8` is voted `9/4` while the
+# cautionary one system earlier reads `9` over `8` on ten and twenty staves.
+# Consuming it belongs with the carry, so it goes on the record where the carry
+# can find it rather than being dropped here.
+# ─────────────────────────────────────────────────────────────────────────────
 
 
 def _meter_changes(ev: Evidence, opening: dict, bars: dict,
-                   out_cautionary: Optional[list] = None) -> list:
+                   last_cell: dict) -> tuple:
     """Every mid-system meter change this system's own evidence supports.
 
-    Returns segment dicts, in bar order, each with `from_cell` and the terms
-    that carried it. The GLYPH opens each candidate; the bar math confirms it,
-    refuses it, or chooses between two staves that read it differently.
+    Takes its facts as arguments — `opening`, `bars` and `last_cell` — rather
+    than reaching for them, which is how `bars` already worked. ⚠️ The
+    inconsistency was surfaced by `inventory._never_read`, which follows a
+    decision's own helpers to depth 3: with `last_cell` fetched HERE the read
+    sat one level too deep and `measure_partition` was reported as an inert
+    `wants` entry. The check was right that the call chain was one link longer
+    than the others, and moving the fetch beside `_bar_lengths_for` is the fix
+    the report was pointing at — not a workaround for it.
+
+    Returns `(changes, cautionaries)` — segment dicts in bar order, each with
+    `from_cell` and the terms that carried it. The GLYPH opens each candidate;
+    the bar math confirms it, refuses it, or chooses between two staves that
+    read it differently.
+
+    ⚠️ A CAUTIONARY IS SEPARATED OUT RATHER THAN DROPPED — see `A-METER-5`
+    above. It is a statement about the NEXT system and governs nothing here.
     """
-    if out_cautionary is None:
-        out_cautionary = []
     rows = ev.rows(Q.METER_GLYPH, scope=Scope.SELF_AND_DESCENDANTS)
+    cautionaries: list = []
     by_cell: dict = {}
     for r in rows:
         cell = (r.detail or {}).get("cell")
@@ -1218,7 +1415,6 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
         by_cell.setdefault(int(cell), []).append(r)
 
     out = []
-    cautionary: list = []
     # ⚠️⚠️ THE METER IN FORCE, NOT THE OPENING — and comparing against the
     # opening was TWO bugs, both measured.
     #
@@ -1278,23 +1474,6 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
             # readers cannot drift apart about what a meter is.
             if (num, den) not in _PLAUSIBLE_METERS:
                 continue
-            # ⚠️⚠️ THE COURTESY IS REFUSED PER READING, NOT PER CELL, and the
-            # difference is the whole of whether it reaches a real page. It is
-            # not weak evidence for a change here; it is strong evidence about
-            # the NEXT system, so it is refused before anything is scored
-            # rather than weighed against the bars.
-            #
-            # ⚠️ Asked of the CELL, it does not fire where it matters.
-            # Beethoven 5 / Litolff p.61 cell 3 carries three staves reading
-            # three different things -- staff 0 at the head of its bar, staff
-            # 3 likewise, and staff 16 a `C` standing after ALL of its bar's
-            # music. Only staff 16's reading is a courtesy, and it is the one
-            # that WINS; requiring every staff of the cell to agree meant the
-            # rule stayed silent and the false `C` shipped. A cautionary
-            # belongs to the staves that read it.
-            if all(_looks_cautionary(ev, per_staff[st]) for st in staves):
-                cautionary.append((cell, raw))
-                continue
             expected = float(num) * 4.0 / float(den)
             fits, misses = _bar_run(bars, cell, expected)
             terms = [Term(f"glyph_pair_staff_{st}", W_CHANGE_GLYPH_PAIR)
@@ -1320,20 +1499,19 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
                 best = cand
         if best is None or best["support"] < METER_CHANGE_FLOOR:
             continue
+        # ⚠️ THE CAUTIONARY TEST COMES BEFORE THE RESTATEMENT ONE, because a
+        # courtesy signature is not a restatement of anything on THIS system —
+        # it names the next one, and calling it a restatement would lose it.
+        reading = best["staves_reading_it"]
+        if (reading and all(last_cell.get(st) == cell for st in reading)
+                and not best["bars_fit"]):
+            cautionaries.append(dict(best, cautionary=True))
+            continue
         if (best["numerator"], best["denominator"]) == in_force:
             continue                      # a RESTATEMENT, not a change
         out.append(best)
-        # ⚠️ IN FORCE ADVANCES ONLY ON AN ACCEPTED CHANGE. A candidate refused
-        # as a COURTESY `continue`s above without touching this, which is
-        # right: a signature announcing the next system does not change what
-        # governs the bars of this one.
         in_force = (best["numerator"], best["denominator"])
-    # ⚠️ REPORTED, NOT DROPPED. A cautionary is real ink that was read on every
-    # staff; what it is not is a change to a bar of THIS system. Recording the
-    # cells keeps a refusal distinguishable from a glyph nobody saw.
-    if cautionary:
-        out_cautionary.extend(cautionary)
-    return out
+    return out, cautionaries
 
 
 def _with_segments(ev: Evidence, opening: dict) -> dict:
@@ -1343,8 +1521,8 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
     nothing changes -- so a consumer never has to ask whether this system is
     the special case. `record.meter_at` is how a bar's meter is read.
     """
-    cautionary: list = []
-    changes = _meter_changes(ev, opening, _bar_lengths_for(ev), cautionary)
+    changes, cautionaries = _meter_changes(ev, opening, _bar_lengths_for(ev),
+                                          _last_cell_per_staff(ev))
     segments = [dict(opening, from_cell=0)]
     for c in changes:
         segments.append({"from_cell": c["from_cell"],
@@ -1355,59 +1533,50 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
                          "bars_fit": c["bars_fit"],
                          "bars_contradict": c["bars_contradict"]})
     out = dict(opening, segments=segments)
-    if cautionary:
-        # ⚠️ ON THE VALUE, NOT IN `detail`, because the NEXT system is the
-        # consumer: a courtesy signature is this system's statement about the
-        # one that follows, and a carry that could read it would have the
-        # answer already. Nothing reads it yet; recording it is what makes
-        # that possible without another pass over the raster.
-        # ⚠️ (cell, raw) pairs: a courtesy names a METER as well as a bar,
-        # and the next system is the consumer that would want both.
-        out["cautionary_cells"] = sorted(cautionary)
+    if cautionaries:
+        # ⚠️ ON THE VALUE, NOT IN `detail`, because it is a fact about the
+        # music the next system opens with — a consumer reading this system's
+        # meter is exactly who needs to find it.
+        out["cautionary"] = cautionaries[-1]
     return out
 
 
-def _meter_in_force_at_end(ev: Evidence, src, value: dict) -> dict:
-    """The source system's LAST meter, not its opening.
-
-    ⚠️⚠️ THE CARRY TOOK THE OPENING AND THREW THE SEGMENTS AWAY. The old line
-    was `{k: v for k, v in found.value.items() if k != "segments"}` -- so a
-    source that PRINTED a change handed on the meter it had already stopped
-    being in. Measured twice on Brahms 1: movement 1's system 2 was handed
-    `9/8`, the ONE bar that opens the source system, instead of the `6/8`
-    governing seven of its eight bars; and movement 4's continuation was
-    handed `C` instead of the `¢` the same system had just read on 24 staves
-    of 24 at support 74.0. Both times the right answer was already on the
-    record, one system back, in the field the carry deleted.
+#: Which verdicts may be carried from, or have their spelling borrowed.
+#:
+#: ⚠️⚠️ IT WAS `reason == "voted"` ALONE, AND THAT EXCLUDED INK. A
+#: `change_only` verdict's value is a meter READ on this system's own staves --
+#: `_meter_changes` builds it from `Q.METER_GLYPH` rows and weighs it against
+#: the bars -- so refusing it as a source refused exactly the evidence the gate
+#: exists to require. Beethoven 5 / Litolff p.62 is the case: it reads the
+#: printed `3/4` at the bar the reference names, on a system whose opening is
+#: unknown, and no later system could be handed it.
+#:
+#: ⚠️ WHAT STAYS OUT IS WHAT A CARRY WOULD CHAIN ONTO. `carried` is another
+#: system's answer repeated, and `derived_from_bars` is arithmetic with a
+#: BORROWED spelling -- neither is ink on the source's own page, so admitting
+#: either would make `pages_since_read` a lie about the distance back to ink.
+def _meter_in_force_at_end(value: dict, n_cells: int) -> dict:
+    """The source system's LAST meter, read off its own `segments`.
 
     ⚠️ THE READ-OFF GOES THROUGH `record.meter_at`, which is the whole reason
-    that helper exists -- its own docstring says it "is how a bar's meter is
-    read" and until now it was called by nothing but its own tests. Asking it
-    for the source's LAST bar is the question a carry has always been asking.
+    that helper exists -- its docstring says it *is* how a bar's meter is read
+    and it was called by nothing but its own tests. Asking it for the source's
+    last bar is the question a carry has always been asking.
 
-    ⚠️ `segments` IS STILL STRIPPED, and must be: they are the SOURCE's bar
-    ranges and mean nothing in this system's numbering. This system's own
-    segments are added by `_with_segments`, from its own ink.
+    ⚠️ THE SOURCE'S OWN BAR-SCOPED FIELDS ARE STRIPPED, and must be: they
+    describe the SOURCE's bar ranges and mean nothing in this system's
+    numbering. This system's own segments are added by `_with_segments`, from
+    its own ink -- including its own `cautionary`, which is a statement about
+    the system AFTER it and travels with neither.
     """
-    n = _cell_count(ev, src)
-    at_end = meter_at(value, n - 1 if n else 0) or value
+    at_end = meter_at(value, n_cells - 1 if n_cells else 0) or value
     return {k: v for k, v in at_end.items()
-            if k not in ("segments", "cautionary_cells", "support",
+            if k not in ("segments", "cautionary", "support",
                          "staves_reading_it", "bars_fit", "bars_contradict",
                          "from_cell")}
 
 
-def _cell_count(ev: Evidence, sub) -> int:
-    """How many bars the system prints, from its own measure partition."""
-    best = 0
-    for v in ev.verdicts(Q.MEASURE_PARTITION, scope=Scope.SELF_AND_DESCENDANTS,
-                         subject=sub):
-        if v.outcome is Outcome.DECIDED:
-            try:
-                best = max(best, int(v.value))
-            except (TypeError, ValueError):
-                continue
-    return best
+METER_SOURCE_REASONS = ("voted", "change_only")
 
 
 def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
@@ -1438,15 +1607,29 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
         # detecting because the new movement's bars simply contradict the old
         # movement's meter -- measured 8 agree / 1 disagree on a continuation
         # page and 1 / 7 on the Andante.
-        # ⚠️⚠️ THE CANDIDATE IS THE SOURCE'S *END* METER, AND CORROBORATING
-        # THE OPENING WAS THE SECOND HALF OF THE SAME BUG. Moving the read-off
-        # below the check left the carry weighing a meter it was not going to
-        # carry: on a source that printed `3/4` and changed to `2/4`, the bars
-        # of the next system measure 2.0 and were scored against `3/4`, so a
-        # correct carry was REFUSED `carry_outweighed_by_the_bars` at -2.0
-        # with 0 agreeing and 3 disagreeing. Found by the test below failing,
-        # not by reading this function.
-        carried = _meter_in_force_at_end(ev, src, found.value)
+        # ⚠️⚠️ THE CANDIDATE IS THE SOURCE'S *END* METER, NOT ITS OPENING.
+        # The old `{k: v for k, v in found.value.items() if k != "segments"}`
+        # handed on the meter a source had already STOPPED being in -- Brahms
+        # 1 i passed the ONE-bar `9/8` that opens its source instead of the
+        # `6/8` governing seven of eight bars, and Brahms 1 iv passed `C`
+        # instead of the `¢` the same system had just read on 24 staves of 24.
+        #
+        # ⚠️ AND CORROBORATING THE OPENING WAS THE SAME BUG'S SECOND HALF:
+        # reading the end meter only AFTER the check left the carry weighing a
+        # meter it was not going to carry, so a correct carry was refused
+        # `carry_outweighed_by_the_bars` at -2.0, 0 agreeing / 3 disagreeing.
+        #
+        # ⚠️ The cell count is fetched HERE and passed down, not read inside
+        # the helper -- the same shape `_meter_changes` uses for `bars` and
+        # `last_cell`, and for the same reason: `inventory._never_read`
+        # follows a decision's own helpers to depth 3, and a `Q.` read one
+        # link further reads as an INERT declaration.
+        n_cells = 0
+        for mp in ev.verdicts(Q.MEASURE_PARTITION,
+                              scope=Scope.SELF_AND_DESCENDANTS, subject=src):
+            if mp.outcome is Outcome.DECIDED and isinstance(mp.value, int):
+                n_cells = max(n_cells, mp.value)
+        carried = _meter_in_force_at_end(found.value, n_cells)
         check = _corroborate(ev, carried)
         if "terms" not in check:
             return Ruling.abstain("carry_not_corroborated",
@@ -1461,8 +1644,6 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
         detail = {"carried_from": src.to_key(),
                   "pages_since_read": pages,
                   "instead_of": instead_of,
-                  "carried_raw": carried.get("raw"),
-                  "source_opening_raw": (found.value or {}).get("raw"),
                   "source_share": (found.detail or {}).get("share"),
                   "source_staves_spoke":
                       (found.detail or {}).get("n_staves_spoke"),
@@ -1556,12 +1737,11 @@ def _form_for_length(ev: Evidence, length: float) -> Optional[dict]:
             continue
         if found.reason not in METER_SOURCE_REASONS:
             continue
-        # ⚠️ EVERY SEGMENT OF THE SOURCE IS ELIGIBLE, NOT JUST ITS OPENING.
-        # A system that printed `6/8` and changed to `9/8` READ BOTH, so both
-        # are spellings this document has evidence for; asking only the
-        # top-level fields would silently skip a source whose opening happens
-        # to be the wrong length while the meter it changed TO is the right
-        # one. This is the same field the carry was deleting.
+        # ⚠️ EVERY SEGMENT OF THE SOURCE IS ELIGIBLE, NOT JUST ITS OPENING. A
+        # system that printed `6/8` and changed to `9/8` READ BOTH, so both are
+        # spellings this document has evidence for; asking only the top-level
+        # fields silently skips a source whose opening happens to be the wrong
+        # length while the meter it changed TO is the right one.
         val = found.value or {}
         for seg in (val.get("segments") or [val]):
             num, den = seg.get("numerator"), seg.get("denominator")
@@ -1635,16 +1815,11 @@ def _change_only(ev: Evidence, why: str, **detail) -> Ruling:
     nowhere to put the `3/4` its print states plainly at bar 155. As segments
     it says the true thing: *unknown until bar 8, 3/4 from there*.
     """
-    cautionary: list = []
-    changes = _meter_changes(ev, {}, _bar_lengths_for(ev), cautionary)
+    changes, cautionaries = _meter_changes(ev, {}, _bar_lengths_for(ev),
+                                          _last_cell_per_staff(ev))
+    if cautionaries:
+        detail = dict(detail, cautionary=cautionaries[-1])
     if not changes:
-        # ⚠️ A SYSTEM WHOSE ONLY GLYPH WAS A COURTESY ABSTAINS FOR A REASON IT
-        # CAN NAME. Beethoven 5 / Litolff p.61 is exactly this: one staff of
-        # seventeen reads a `C` after the final barline, and before the
-        # cautionary rule that became a `change_only` verdict asserting a
-        # meter change the page does not print.
-        if cautionary:
-            detail = dict(detail, cautionary_cells=sorted(cautionary))
         return Ruling.abstain(why, **detail)
     first = changes[0]
     segments = [{"from_cell": c["from_cell"], "numerator": c["numerator"],
@@ -1713,7 +1888,7 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
     composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION),
     scope=Kind.SYSTEM,
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION, Q.DOSSIER_FACT,
-           Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST, Q.GLYPH_BOX,
+           Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST,
            Q.MEASURE_PARTITION),
     reasons=("voted", "no_agreement", "no_evidence",
              "too_few_staves_read_it", "carried",

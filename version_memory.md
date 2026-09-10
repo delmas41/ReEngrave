@@ -16,7 +16,82 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-09-09 — `Q.METER`'s segments reach the file, and a courtesy stops being a change
+## 2026-09-09 (late night, 2) — a MARK must be attached to its notehead
+
+The second of `A-DUR-8`'s two faults, and the same family as the first: a mark
+the page prints is gathered, and the decision that needs it looks in the wrong
+place. **`A-DUR-8` is now CLOSED on this document** — the fixture reads
+**16 assessable bars, all 16 correct**, from 12/7 before either fix.
+
+* **`Q.FLAG` and `Q.AUG_DOT` are gathered on the MARK's own glyph subject and
+  were read on the NOTEHEAD's** — 134 and 157 rows reaching ZERO durations, 0
+  durations carrying a dot, `beam_evidence == "flag"` 0 times. Now 112 flags
+  attached (109 deciding) and 157 dots.
+* A flag hangs on a STEM, which on this path beats the legacy x-centre rule —
+  `_flag_for_notehead`'s own reason for not using it (a 0-stem detector) is
+  stale here. ⚠️ A second bug in the same two lines: `levels = len(flags)`
+  counts GLYPHS, and one `flag16thUp` is one glyph and TWO levels.
+* ⚠️⚠️ **`Q.CELL_STAFF_SPACE` is new because the dot window needed a unit that
+  was not on the record, and it is NOT a constant.** `Q.STAFF_SPACING` is the
+  PAGE's; `CANONICAL_STAFF_SPAN_PX / 4 = 100` is only the nominal, because
+  `_upscale_to_canonical` scales a too-wide cell by WIDTH — **184 of 368 cells
+  read 100 px and the other 184 read 38.5-56**. Gathered where `_cell_grid`
+  already computes it; where no unit exists the dot is DECLINED.
+* The dot claim is RECIPROCAL (this head must be the dot's best target), which
+  is what makes a per-glyph decision safe where the legacy rule assigns
+  globally. `DOT_ABOVE/BELOW_NOTE_MAX_SPACES` had sat in the staged module,
+  measured and justified, **used by nothing in it**.
+* ⚠️ Seven mutation arms red; an EIGHTH survived and **the rule was deleted,
+  not the test** (`if not attached_stems: return` was a second spelling of the
+  `any()` one line below). ⚠️ An existing test was **passing for free** —
+  `test_a_dot_adds_half_of_what_stands` asserted the right arithmetic on a
+  fixture that wrote the dot onto the NOTEHEAD's subject, a shape `gather`
+  never produces.
+* ⚠️ **CLOSED ON ONE ENGRAVED DOCUMENT — do not tune the meter floors on it.**
+  Every attachment rides on classical-CV stems and detector boxes and a scan
+  has fewer and worse of both; all three rules are additive, so the floor is
+  the old behaviour, but the scan gain is unmeasured and so is whether a WRONG
+  stem can hand a note a flag it has not got. That arm is next.
+
+---
+
+## 2026-09-09 (late night) — a note is joined to its beam by its STEM
+
+⚠️ **INDEPENDENT of the two meter blocks it now sits above** (the CAUTIONARY
+rule and the scan-side bookkeeping fix, both landed on main in parallel). This
+touches `adjudicate_duration` and they touch `_meter_changes`; the merge was
+textually clean and the fixture was re-measured on the merged tree.
+
+Acts on `benchmarks/omr-staged-meter-engraved-2026-09/FINDINGS.md` §6, which
+separated the wrong bar sums into two independent faults and asked for them to
+be worked apart. **Fault 1 fixed, Fault 2 diagnosed to one cause.** Staged path
+only — `tools/omr/rhythm.py` untouched, so no engraved or scan figure moves.
+
+* `_stem_joined` / `_boxes_overlap` in `staged/adjudicators/rhythm.py`. A beam
+  stroke runs from the FIRST stem it joins to the LAST and a stem stands at the
+  SIDE of its notehead, so the outer note of every beamed group has its centre
+  ~half a notehead width past the stroke's end — 114 narrowed durations on the
+  engraved Beethoven 5 iv fixture, overshoot clustering at 0.35-0.47 widths.
+  ⚠️ **`Q.STEM` was declared in `wants` and `composed_from`, had its own
+  `KNOWN_GAPS` entry, and was read by nothing.** That entry is deleted;
+  `inventory --check` and `health --check` exit 0.
+* Assessable bars **12 → 14**, correct **7 → 10**, `narrowed` **147 → 29**, no
+  bar right-to-wrong. The candidate-policy question dissolves — under the stem
+  tier `top` and `lowest` agree on every bar, where §6 measured them differing.
+* Additive, never subtractive; attachment is BOX OVERLAP with no constant (the
+  two separations measured at 35 px and 94 px of empty margin). Stem-only
+  refused. The y guard is unexercised by the fixture and is tested directly,
+  with its positive control inside the test. Four mutation arms red.
+* ⚠️ **Fault 2, diagnosed and NOT fixed: `Q.FLAG` and `Q.AUG_DOT` are gathered
+  on the MARK's own glyph subject and read on the NOTEHEAD's**, so 134 flag and
+  157 dot rows reach zero durations. Confirmed against the truth encoding —
+  m211 reads 6.0 where the truth is 100 eighths (missing flag), m207/m208 read
+  2.0 where 8 parts play a dotted half (missing dot). The staged module's own
+  dot-window constants are used by nothing in it. Next unit of work.
+* `benchmarks/omr-staged-duration-beams-2026-09/` — FINDINGS, four probes and
+  their outputs. `A-DUR-8` updated in place; CLAUDE.md gains a section.
+
+## 2026-09-09 — `Q.METER`'s segments reach the file
 
 The top-ranked item of `docs/handoff-2026-09-09-the-boundary-measured.md` §5.
 Three gaps found by `grep` and left unbuilt, which are one piece of work.
@@ -34,11 +109,26 @@ file to `{4/4(common): 24, 2/2(cut): 24}`; Litolff's printed `3/4` moved from
 measure 8, the first bar of its system, to **measure 16, its ninth**, where the
 hand-read truth puts it.
 
-**The false positive it would have propagated: a CAUTIONARY.** A change is
-printed immediately after the barline that OPENS its bar; a courtesy stands
-after the system's final barline. Per reading, the corpus's one visible
-cautionary reads **1.000 on all 19 staves** against **≤ 0.118 for every other
-segment, true or false**.
+⚠️⚠️ **THE CAUTIONARY HALF OF THIS ENTRY WAS A DUPLICATE AND HAS BEEN DROPPED
+— see the entry above.** A sibling session reached the same finding
+independently, from the same Brahms page 0 courtesy, and landed first.
+**Theirs is kept and is the better rule on REACH**: it discriminates on the
+LAST CELL of each staff and so catches the Breitkopf scan's courtesy too,
+which mine explicitly could not — that degenerate final cell holds five
+detections, so nothing lies left of the glyph and the left-fraction reads
+0.000 there. Theirs also carries an escape mine lacked (a last-cell candidate
+whose OWN BAR FITS is still a change).
+
+⚠️ The measurement is NOT lost, and it is worth more as a second reading than
+as a second implementation: scored per reading, the corpus's one visible
+cautionary sits at **1.000 on all 19 staves (38 rows, min = median = max)**
+against **≤ 0.118 for every other segment, true or false**. Two sessions, two
+discriminators — ink-position and cell-ordinal — one conclusion. Recorded in
+`benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md`.
+
+⚠️ **`git log --all -S` BEFORE BUILDING would not have caught this** — the
+sibling's commit did not exist when this work started. What would have caught
+it sooner is that both sessions were named in the same handoff's §5.
 
 **Tally: ENGRAVED 4 printed / 4 found / 1 → 0 false; SCANNED 2 / 1 / 9
 unchanged.** 1 of 9 false segments removed, 0 of 4 true positives lost. ⚠️ The
@@ -93,9 +183,16 @@ cell instead of the staves that READ the segment; the corpus holds exactly
 one. **What caught all three was a number that did not move, and a number that
 was too good.**
 
-Also: `inventory._HELPER_DEPTH` 3 → 6, measured over the whole registry first
-(17 inert at 3, 16 at 4, 15 at 5 and every depth beyond), so no standing
-finding is retired. And `report_boundary.py --tally` can now read the
+⚠️ **`inventory._HELPER_DEPTH` 3 → 6 WAS ALSO REVERTED, and the sibling's fix
+is the better one.** Both sessions hit the same inert-`wants` report from the
+same cause; I raised the checker's depth (measured first: 17 inert at 3, 16 at
+4, 15 at 5 and every depth beyond, so nothing standing was retired), they
+moved the READ up a level so the chain matches every other fact the function
+uses. Theirs is right — *the fix is the one the check was pointing at, not a
+workaround* — and the carry's cell-count read now follows it, so the
+instrument is left as every other session expects it.
+
+Also: `report_boundary.py --tally` can now read the
 committed `.meter.json` reduction, so the published baseline is checkable on a
 fresh clone with no weights.
 
@@ -184,6 +281,54 @@ digits must win) is kept as `TestDigitsWinOverALetterAtTheSameBar`.
   EXPORTER reason that does not apply when the question is per-SYSTEM),
   `hide_change_signature.py`, `probe_narrowed_policy.py` (takes any staged
   record), and `FINDINGS.md`.
+
+---
+
+## 2026-09-09 — A CAUTIONARY is not a change: the engraved arms go clean
+
+**What:** `_meter_changes` now separates a CAUTIONARY (courtesy) time signature
+from a change, and records it on the meter's value
+(`tools/omr/staged/adjudicators/rhythm.py`, `A-METER-5`), plus
+`TestACautionaryIsNotAChange` (8 tests, 6 mutation arms).
+
+**Why:** an engraver announcing a new meter prints it **twice** — once after
+the final barline of the system that is ending, once at the head of the system
+that begins. **The first governs no bar.** Nothing knew that: any glyph past
+cell 0 was a change, so both printings of Brahms 1 mvt 1 proposed one at page
+0's last cell (support **57.0** engraved on 19 staves, **26.5** scanned), and
+the segment would re-size a bar the cautionary does not govern.
+
+⚠️ **THE RULE WAS CHECKED AGAINST THE CORPUS BEFORE IT WAS WRITTEN**, which is
+what separates it from a story that fits: **all four TRUE changes sit at a
+non-last cell** (Litolff p.62 cell 8 of 13, Brahms 1 i cell 1 of 8, Beethoven 5
+iv cell 3 of 9, Brahms 1 iv cell 6 of 8) and **both cautionaries at a last
+cell**. The Litolff headline result is not at a last cell and is untouched.
+A last-cell candidate whose own bar FITS is still a change — the one thing that
+can tell a genuine last-bar change from a courtesy.
+
+⚠️ **RECORDED, NOT DISCARDED**, because it is the document's own answer to the
+next thing this benchmark gets wrong: the cautionary ending page 0 reads
+**`9/8` on 9 staves**, while the opening it announces is voted **`9/4`** at
+0.500-0.531. ⚠️ It is EVIDENCE and not an answer — the same scan records
+another at support **3.5 on ONE staff** out of spurious `timeSig4`s.
+
+**Both meter fixes together: false meter changes 10 → 3 across the six
+fixtures, every true change still found, and the ENGRAVED arms are now clean —
+4 printed, 4 found, 0 false.**
+
+⚠️ **A seventh mutation SURVIVED** (`any` staff at its last cell instead of
+`all`) and a test was written to distinguish them rather than leaving an
+unexercised gate: a cautionary is a SYSTEM-WIDE event, so a staff that still
+has a bar after the glyph contradicts it, and the safe reading keeps the
+change. ⚠️ **`inventory._never_read` then caught the call chain** — it follows
+a decision's helpers to depth 3 and the new read sat at depth 4, so
+`measure_partition` reported as an inert `wants` entry. The chain really was
+one link longer than every other fact that function uses; the fetch moved
+beside `_bar_lengths_for`, behaviour verified identical by re-running both
+cautionary arms.
+
+Suite **3415 passed, 11 skipped**.
+[benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md) §4c.
 
 ---
 

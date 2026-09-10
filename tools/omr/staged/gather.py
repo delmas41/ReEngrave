@@ -366,8 +366,33 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
             log.abstain(sub, Q.NOTEHEAD_STAFF_POSITION,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            # ⚠️ A ONE-LINE PERCUSSION CELL HAS NO POSITION AND STILL HAS A
+            # UNIT. `measure_extractor` writes `staff_line_spacing_canonical`
+            # for exactly this case, in exactly this frame, because a consumer
+            # deriving the unit from the GAPS between rows gets nothing from
+            # one row and falls back to a constant written for another frame.
+            one_line = getattr(c, "staff_line_spacing_canonical", None)
+            if one_line:
+                log.observe(sub, Q.CELL_STAFF_SPACE, float(one_line),
+                            reader=READERS.GEOMETRY,
+                            frame=frame_cell(sub.cell), lines=1)
+            else:
+                log.abstain(sub, Q.CELL_STAFF_SPACE, reader=READERS.GEOMETRY,
+                            frame=frame_cell(sub.cell),
+                            reason=ABSTAIN.NO_STAFF_GEOMETRY)
             continue
         top_y, half_step = grid
+        # ⚠️ THE UNIT ITSELF, WRITTEN DOWN. `_cell_grid`'s own docstring
+        # records that this arithmetic was computed inline and thrown away
+        # once already; the half_step was then kept only INSIDE a notehead's
+        # position, so a consumer asking "how many staff spaces is this
+        # distance" had nothing to ask with -- and `adjudicate_duration`'s dot
+        # window, expressed in staff spaces since 2026-09-01, could not be
+        # evaluated at all. It is not a constant: see `Q.CELL_STAFF_SPACE`.
+        log.observe(sub, Q.CELL_STAFF_SPACE, float(half_step) * 2.0,
+                    reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
+                    half_step=float(half_step), lines=len(
+                        list(getattr(c, "staff_line_ys_canonical", None) or [])))
         for gi, d in enumerate(dets):
             if not d.smufl_name.startswith(_NOTEHEAD_PREFIX):
                 continue

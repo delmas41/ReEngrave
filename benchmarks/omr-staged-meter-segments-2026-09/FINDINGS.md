@@ -49,7 +49,25 @@ from there"* survives into the file instead of being flattened.
 
 ---
 
-## 3. The false positive: a CAUTIONARY
+## 3. The false positive: a CAUTIONARY — built twice, and the other one is kept
+
+⚠️⚠️ **A SIBLING SESSION REACHED THIS INDEPENDENTLY AND LANDED FIRST**
+(`a54a6be6`, `TestACautionaryIsNotAChange`). Their rule discriminates on the
+**LAST CELL** of each staff; this one on how much of the bar's own ink stands
+to the LEFT of the glyph. **Theirs is kept, and it is the better rule on
+reach**: it catches the Breitkopf scan's courtesy too, which this one
+explicitly could not — that degenerate final cell holds five detections, so
+nothing lies left of the glyph and the left-fraction reads 0.000 there. It
+also carries an escape this one lacked: a last-cell candidate whose OWN BAR
+FITS is still a change.
+
+**What survives, and it is worth more than a second implementation would
+be:** an independent second reading of the same engraving convention, from a
+different quantity. Two sessions, two discriminators — ink-position and
+cell-ordinal — one conclusion, on the same fixtures. The measurement below is
+kept for that reason, not as a claim on the code.
+
+### The convention, measured by ink position
 
 `_meter_changes` had no notion of a courtesy signature — any glyph in a cell
 after the first was a change — so the `9/8` Brahms 1 prints **after page 0's

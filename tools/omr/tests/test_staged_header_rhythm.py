@@ -1164,143 +1164,23 @@ class TestARefusalMayNotBlockALaterRung(unittest.TestCase):
         self.assertEqual(v.reason, "no_evidence")
 
 
-class TestACourtesySignatureIsNotAChange(unittest.TestCase):
-    """⚠️⚠️ `_meter_changes` HAD NO NOTION OF A CAUTIONARY: any glyph in a cell
-    after the first was a change. A courtesy signature after a system's final
-    barline announces the NEXT system's meter and governs no bar here, so a
-    segment built on it re-sizes the last bar of this system to a meter the
-    page never applies to it.
-
-    Measured on the boundary benchmark: it is the ONE false positive the
-    engraved arms produce, and removing it takes that family to zero without
-    costing a true change. Over every segment the benchmark proposes, scored
-    per READING, the corpus's single visible cautionary reads **1.000** on all
-    19 staves (38 rows, min = median = max) and every other segment — true or
-    false — reads **at most 0.118**.
-
-    ⚠️ THE CORPUS HAS EXACTLY ONE CAUTIONARY THIS CAN SEE. Litolff p.61's
-    false `C` is read on ONE staff at 0.118, at the HEAD of its bar, so it is
-    a misread rather than a courtesy; and the Breitkopf scan's own courtesy
-    reads 0.000 because that degenerate final cell holds five detections and
-    there is no music left of the glyph to find.
-
-    ⚠️ The Beethoven forward fixture HID it: its cautionary page holds one
-    cell, so the glyph landed at cell 0 and was read as an opening. A one-cell
-    page cannot exercise the rule a seven-cell page breaks.
-    """
-
-    N_STAVES = 4
-
-    def _log(self, *, meter_x, n_cells=3, glyph_cell=2, ink=True,
-             opening=True):
-        """One system reading `3/4`, with a `2/4` printed in `glyph_cell`.
-
-        `meter_x` is the only thing that varies: put it left of the bar's
-        noteheads and it is a change, right of them and it is a courtesy.
-        """
-        log = Log()
-        sysj = R.system(0, 0)
-        log.record(adjudicate.Verdict(
-            id=log._next_id("vrd"), subject=sysj,
-            quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
-            value=self.N_STAVES, decider="t", reason="counted"))
-        for st in range(self.N_STAVES):
-            if opening:
-                log.observe(R.staff(0, 0, st), Q.METER_TEMPLATE, (3, 4),
-                            reader=READERS.TEMPLATE, frame="header_window",
-                            score=0.7, raw="3/4")
-            for klass, y in (("timeSig2", 10.0), ("timeSig4", 30.0)):
-                # ⚠️ ON THE STAFF, WHICH IS WHERE `gather.gather_meter_glyphs`
-                # FILES IT — the cell is in `detail`, not in the subject. An
-                # earlier draft of this fixture used a GLYPH subject, which no
-                # gather site does, and it hid a real bug: `_looks_cautionary`
-                # derived the cell with `subject.at(Kind.CELL)`, got None on
-                # every real row, and read no boxes at all while these tests
-                # stayed green. A fixture that does not match GATHER tests the
-                # test.
-                log.observe(R.staff(0, 0, st),
-                            Q.METER_GLYPH, klass, reader=READERS.DETECTOR,
-                            frame="cell:%d" % glyph_cell, score=0.9,
-                            cell=glyph_cell, x=meter_x, y_center=y,
-                            letter=False)
-            for c in range(n_cells):
-                cell, g = R.cell(0, 0, st, c), R.glyph(0, 0, st, c, 0)
-                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
-                            reader=READERS.DETECTOR, frame="cell:%d" % c,
-                            score=0.9)
-                if ink or c != glyph_cell:
-                    # the bar's own music, centred at x = 500
-                    log.observe(g, Q.GLYPH_BOX,
-                                ("noteheadBlack", 400, 0, 600, 16),
-                                reader=READERS.DETECTOR,
-                                frame="cell:%d" % c, score=0.9)
-                log.record(adjudicate.Verdict(
-                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
-                    outcome=Outcome.DECIDED,
-                    value={"beats": 3.0 if c < glyph_cell else 2.0,
-                           "written": 3.0, "duration_type": "quarter",
-                           "dots": 0},
-                    decider="t", reason="head_and_marks"))
-                log.record(adjudicate.Verdict(
-                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
-                    outcome=Outcome.DECIDED,
-                    value={"events": [{"glyphs": [0], "x": 500.0,
-                                       "kind": "chord"}]},
-                    decider="t", reason="x_clustered"))
-        return log, sysj
-
-    def _run(self, log, sysj):
-        log.freeze()
-        adjudicate._ensure_decisions()
-        adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.METER], sysj)
-        return log.verdict(Q.METER, sysj)
-
-    def _segments(self, v):
-        return (v.value or {}).get("segments") or []
-
-    # ── the control: a real change, printed at the head of its bar ─────────
-
-    def test_a_glyph_BEFORE_the_bars_music_IS_a_change(self):
-        v = self._run(*self._log(meter_x=10.0))
-        self.assertEqual([(s["from_cell"], s["raw"])
-                          for s in self._segments(v)], [(0, "3/4"), (2, "2/4")])
-
-    # ── the fix ───────────────────────────────────────────────────────────
-
-    def test_a_glyph_AFTER_the_bars_music_is_NOT_a_change(self):
-        """⚠️ RUN THIS RED: drop the `_looks_cautionary` guard in
-        `_meter_changes` and a second segment appears, silently re-sizing the
-        last bar of the system."""
-        v = self._run(*self._log(meter_x=900.0))
-        self.assertEqual([(s["from_cell"], s["raw"])
-                          for s in self._segments(v)], [(0, "3/4")])
-
-    def test_the_courtesy_is_RECORDED_not_silently_dropped(self):
-        """It is real ink read on every staff; what it is not is a change to a
-        bar of THIS system. A refusal must stay distinguishable from a glyph
-        nobody saw."""
-        v = self._run(*self._log(meter_x=900.0))
-        self.assertEqual(v.value.get("cautionary_cells"), [(2, "2/4")])
-
-    def test_a_bar_with_no_other_ink_is_NOT_called_a_courtesy(self):
-        """⚠️ NO OPINION IS NOT A CAUTIONARY. A bar we read no other ink in
-        cannot say where its music sits, and refusing there would be the rule
-        deciding on absence — which is exactly what it does on the Breitkopf
-        scan, whose final cell holds nine detections against a normal cell's
-        several hundred."""
-        v = self._run(*self._log(meter_x=900.0, ink=False))
-        self.assertEqual([s["from_cell"] for s in self._segments(v)], [0, 2])
-
-    def test_a_system_whose_ONLY_glyph_is_a_courtesy_abstains_naming_it(self):
-        """Beethoven 5 / Litolff p.61: one staff of seventeen reads a `C`
-        after the final barline, and before this that became a `change_only`
-        verdict asserting a meter change the page does not print."""
-        # no opening reading, so `_change_only` is the only route left
-        v = self._run(*self._log(meter_x=900.0, opening=False))
-        self.assertIs(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual((v.detail or {}).get("cautionary_cells"),
-                         [(2, "2/4")])
-
+# ⚠️⚠️ `TestACourtesySignatureIsNotAChange` STOOD HERE AND WAS REMOVED AS A
+# DUPLICATE. A sibling session reached the same finding independently, from the
+# same Brahms page 0 cautionary, and landed first as `TestACautionaryIsNotAChange`
+# at the foot of this file. Theirs discriminates on the LAST CELL of each staff;
+# mine on how much of the bar's own ink stood to the LEFT of the glyph.
+#
+# THEIRS IS KEPT AND IT IS THE BETTER RULE, on reach: it catches the Breitkopf
+# scan's courtesy too, which mine explicitly could NOT — that degenerate final
+# cell holds five detections, so nothing lies left of the glyph and my rule read
+# 0.000 there. Engraved 1 -> 0 false either way; on the scan theirs reaches one
+# more. It also carries an escape mine lacked (a last-cell candidate whose OWN
+# BAR FITS is still a change).
+#
+# ⚠️ The left-fraction measurement is NOT lost — it is recorded in
+# `benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md` as an independent
+# second reading of the same convention, which is a real cross-check: two
+# sessions, two discriminators, one conclusion.
 
 class TestTheCarryTakesTheMeterInForceAtTheSourcesEND(unittest.TestCase):
     """⚠️⚠️ THE CARRY TOOK THE SOURCE'S OPENING AND DELETED ITS SEGMENTS —
@@ -1458,17 +1338,23 @@ class TestAReadChangeMayBeACarrySource(unittest.TestCase):
 
 
 class TestTheFixturesFileMeterGlyphsWhereGATHERDoes(unittest.TestCase):
-    """⚠️⚠️ A FIXTURE THAT DOES NOT MATCH GATHER TESTS THE TEST, and this one
-    cost a whole measurement round. `gather.gather_meter_glyphs` files
+    """⚠️⚠️ A FIXTURE THAT DOES NOT MATCH GATHER TESTS THE TEST, and this cost
+    a whole measurement round. `gather.gather_meter_glyphs` files
     `Q.METER_GLYPH` against the STAFF and puts the bar in `detail["cell"]`;
-    the fixtures above filed it against a GLYPH. `_looks_cautionary` derived
-    its cell with `subject.at(Kind.CELL)`, which returns None for a staff
-    (a cell is DEEPER), so on every real page it read no boxes and returned
-    False — while five unit tests written on the wrong shape stayed green and
-    the benchmark tally came back byte-identical to its baseline.
+    the fixtures in this file filed it against a GLYPH.
 
-    This asserts the shape against the gather site itself rather than against
-    a remembered string.
+    A cautionary rule written against the wrong shape derived its cell with
+    `subject.at(Kind.CELL)` — which returns None for a staff, because a cell is
+    DEEPER — so on every real page it read nothing and returned False, while
+    five unit tests and three mutation arms stayed green and the benchmark
+    tally came back byte-identical to its baseline. The number that did NOT
+    move is what caught it.
+
+    ⚠️ That rule has since been dropped as a duplicate (see the note above),
+    but the fixture fault it exposed was real, PRE-EXISTING and shared by
+    `TestAMeterChangeIsReadFromTheInk`. This asserts the shape against the
+    gather site itself rather than against a remembered string, so the next
+    fixture written here cannot quietly disagree with what GATHER emits.
     """
 
     def test_gather_files_meter_glyphs_on_a_STAFF_subject(self):
@@ -1488,14 +1374,26 @@ class TestTheFixturesFileMeterGlyphsWhereGATHERDoes(unittest.TestCase):
             self.assertIn("cell", [k.arg for k in c.keywords],
                           "gather stopped putting the bar in `detail`")
 
-    def test_the_cautionary_rule_reads_boxes_for_a_STAFF_filed_glyph(self):
-        """The positive control the zero above needed: with the fixture in the
-        shape gather emits, the rule actually reaches the ink."""
-        t = TestACourtesySignatureIsNotAChange()
-        log, sysj = t._log(meter_x=900.0)
-        v = t._run(log, sysj)
-        self.assertEqual((v.value or {}).get("cautionary_cells"),
-                         [(2, "2/4")])
+    def test_this_files_own_fixtures_agree_with_that(self):
+        """The other half: a guard on GATHER is no use if the fixtures here
+        drift from it independently."""
+        import ast
+        import pathlib as _p
+        src = ast.parse(_p.Path(__file__).read_text())
+        bad = []
+        for n in ast.walk(src):
+            if not (isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
+                    and n.func.attr == "observe"):
+                continue
+            if not any(isinstance(a, ast.Attribute) and a.attr == "METER_GLYPH"
+                       for a in n.args):
+                continue
+            sub = n.args[0] if n.args else None
+            if (isinstance(sub, ast.Call) and isinstance(sub.func, ast.Attribute)
+                    and sub.func.attr != "staff"):
+                bad.append(f"line {n.lineno}: subject is R.{sub.func.attr}(), "
+                           f"but gather files METER_GLYPH on a staff")
+        self.assertEqual(bad, [], "\n".join(bad))
 
 
 class TestDigitsWinOverALetterAtTheSameBar(unittest.TestCase):
@@ -1586,7 +1484,10 @@ class TestAChangeIsAgainstTheMeterInFORCE(unittest.TestCase):
                             score=0.7, raw=opening_raw)
             for cell, num, den in changes:
                 for idx, (digit, y) in enumerate(((num, 10.0), (den, 30.0))):
-                    log.observe(R.glyph(0, 0, st, cell, 900 + idx),
+                    # ⚠️ ON THE STAFF, which is where gather files it — see
+                    # `TestTheFixturesFileMeterGlyphsWhereGATHERDoes`. This
+                    # fixture read `R.glyph(...)` until the guard flagged it.
+                    log.observe(R.staff(0, 0, st),
                                 Q.METER_GLYPH, "timeSig%d" % digit,
                                 reader=READERS.DETECTOR,
                                 frame="cell:%d" % cell, score=0.9, cell=cell,
@@ -1632,3 +1533,167 @@ class TestAChangeIsAgainstTheMeterInFORCE(unittest.TestCase):
         the same meter again two bars later."""
         log, sysj = self._log(opening=None, changes=((3, 4, 4), (6, 4, 4)))
         self.assertEqual(self._segments(log, sysj), [(3, "4/4")])
+
+
+class TestACautionaryIsNotAChange(unittest.TestCase):
+    """⚠️⚠️ An engraver announcing a new meter prints it TWICE — once after the
+    final barline of the system that is ending, once at the head of the system
+    that begins. The first governs NO BAR.
+
+    `_meter_changes` had no notion of one: any glyph past cell 0 was a change.
+    Brahms 1 mvt 1 prints a cautionary `9/8` after page 0's last barline, and
+    BOTH printings proposed a change there — support 57.0 on the LilyPond
+    render (19 staves) and 26.5 on the Breitkopf scan. The segment would
+    re-size a bar the cautionary does not govern.
+
+    ⚠️ Measured over every change in the boundary corpus: all four TRUE changes
+    sit at a NON-last cell, both cautionaries at a LAST cell.
+    """
+
+    N_STAVES = 4
+
+    def _log(self, *, n_cells=7, changes=(), bar_beats=None,
+             opening=(6, 8), opening_raw="6/8"):
+        """`changes` is (cell, numerator, denominator) printed on every staff.
+
+        `bar_beats` maps a cell to the length every staff reads there — the
+        ONLY way a last-cell candidate can prove it governs something.
+        """
+        log = Log()
+        sysj = R.system(0, 0)
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=sysj,
+            quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+            value=self.N_STAVES, decider="t", reason="counted"))
+        for st in range(self.N_STAVES):
+            # `n_cells` may be an int (every staff) or {staff: n} — the staves
+            # of one system do not always agree about how many bars they hold.
+            n_st = n_cells.get(st) if isinstance(n_cells, dict) else n_cells
+            if n_st is not None:
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=R.staff(0, 0, st),
+                    quantity=Q.MEASURE_PARTITION, outcome=Outcome.DECIDED,
+                    value=n_st, decider="t", reason="read"))
+            if opening is not None:
+                log.observe(R.staff(0, 0, st), Q.METER_TEMPLATE, opening,
+                            reader=READERS.TEMPLATE, frame="header_window",
+                            score=0.7, raw=opening_raw)
+            for cell, num, den in changes:
+                for idx, (digit, y) in enumerate(((num, 10.0), (den, 30.0))):
+                    # ⚠️ ON THE STAFF, which is where gather files it — see
+                    # `TestTheFixturesFileMeterGlyphsWhereGATHERDoes`. This
+                    # fixture read `R.glyph(...)` until the guard flagged it.
+                    log.observe(R.staff(0, 0, st),
+                                Q.METER_GLYPH, "timeSig%d" % digit,
+                                reader=READERS.DETECTOR,
+                                frame="cell:%d" % cell, score=0.9, cell=cell,
+                                x=10.0, y_center=y, letter=False)
+            for cell, beats in (bar_beats or {}).items():
+                c, g = R.cell(0, 0, st, cell), R.glyph(0, 0, st, cell, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:%d" % cell,
+                            score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 100, 0, 20, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % cell,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": beats, "written": beats,
+                           "duration_type": "quarter", "dots": 0},
+                    decider="t", reason="head_and_marks"))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=c, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 100.0,
+                                       "kind": "chord"}]},
+                    decider="t", reason="x_clustered"))
+        return log, sysj
+
+    def _verdict(self, log, sysj):
+        log.freeze()
+        adjudicate._ensure_decisions()
+        adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.METER], sysj)
+        return log.verdict(Q.METER, sysj)
+
+    def _segments(self, v):
+        return [(s.get("from_cell"), s.get("raw"))
+                for s in ((v.value or {}).get("segments") or [])]
+
+    # ── what it refuses ────────────────────────────────────────────────────
+
+    def test_a_meter_in_the_LAST_cell_is_a_cautionary(self):
+        """The Brahms 1 page-0 shape: 7 cells, the `9/8` in cell 6."""
+        log, sysj = self._log(n_cells=7, changes=((6, 9, 8),))
+        v = self._verdict(log, sysj)
+        self.assertEqual(self._segments(v), [(0, "6/8")])
+
+    def test_the_cautionary_is_RECORDED_not_discarded(self):
+        """⚠️ It states the meter the NEXT system opens with, and on a scan
+        that is often the document's own answer to a misread opening. Dropping
+        it here would throw away the evidence the carry needs."""
+        log, sysj = self._log(n_cells=7, changes=((6, 9, 8),))
+        c = (self._verdict(log, sysj).value or {}).get("cautionary")
+        self.assertIsNotNone(c)
+        self.assertEqual((c["from_cell"], c["raw"]), (6, "9/8"))
+        self.assertTrue(c["cautionary"])
+
+    # ── what it keeps ──────────────────────────────────────────────────────
+
+    def test_the_SAME_meter_one_cell_earlier_is_a_CHANGE(self):
+        """⚠️ THE POSITIVE CONTROL, IN THE TEST. Without it every assertion
+        above passes for free the moment `_meter_changes` stops proposing
+        anything at all."""
+        log, sysj = self._log(n_cells=7, changes=((5, 9, 8),))
+        self.assertEqual(self._segments(self._verdict(log, sysj)),
+                         [(0, "6/8"), (5, "9/8")])
+
+    def test_a_last_cell_change_whose_OWN_BAR_FITS_is_kept(self):
+        """The escape for a genuine last-bar change: the one thing that can
+        tell it from a courtesy is the bar it claims to govern."""
+        log, sysj = self._log(n_cells=7, changes=((6, 9, 8),),
+                              bar_beats={6: 4.5})
+        self.assertEqual(self._segments(self._verdict(log, sysj)),
+                         [(0, "6/8"), (6, "9/8")])
+
+    def test_with_NO_cell_count_the_rule_does_not_fire(self):
+        """⚠️ A rule that cannot know where the last cell is must not guess.
+        `measure_partition` abstains on a staff with no barline read."""
+        log, sysj = self._log(n_cells=None, changes=((6, 9, 8),))
+        self.assertEqual(self._segments(self._verdict(log, sysj)),
+                         [(0, "6/8"), (6, "9/8")])
+
+    def test_a_cautionary_does_not_suppress_a_REAL_change_earlier_in_the_system(self):
+        """Both on one system: the change stands, the courtesy is set aside."""
+        log, sysj = self._log(n_cells=7, changes=((2, 4, 4), (6, 9, 8)))
+        v = self._verdict(log, sysj)
+        self.assertEqual(self._segments(v), [(0, "6/8"), (2, "4/4")])
+        self.assertEqual((v.value or {})["cautionary"]["raw"], "9/8")
+
+    def test_a_system_with_ONLY_a_cautionary_and_no_opening_still_abstains(self):
+        """The `_change_only` path: nothing on this system is known, and a
+        courtesy signature does not make it known."""
+        log, sysj = self._log(n_cells=7, opening=None, changes=((6, 9, 8),))
+        v = self._verdict(log, sysj)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual((v.detail or {})["cautionary"]["raw"], "9/8")
+
+    def test_ONE_staff_with_a_later_barline_makes_it_a_CHANGE_again(self):
+        """⚠️⚠️ WHY `all` AND NOT `any`, AND THIS TEST EXISTS BECAUSE THE
+        MUTATION SURVIVED WITHOUT IT.
+
+        A cautionary is a SYSTEM-WIDE event: the engraver prints it after the
+        final barline, so on every staff it has no bar after it. A staff that
+        reads the same glyph with a bar still to come is saying the glyph is
+        INSIDE the system — which contradicts `cautionary`, and the safe
+        reading of a contradiction is the one that keeps the change.
+
+        Staves 0-2 hold 7 cells, so cell 6 is their last; staff 3 holds 9, so
+        for it cell 6 is interior. Under `any` this is a cautionary and the
+        change is lost.
+        """
+        log, sysj = self._log(n_cells={0: 7, 1: 7, 2: 7, 3: 9},
+                              changes=((6, 9, 8),))
+        v = self._verdict(log, sysj)
+        self.assertEqual(self._segments(v), [(0, "6/8"), (6, "9/8")])
+        self.assertIsNone((v.value or {}).get("cautionary"))

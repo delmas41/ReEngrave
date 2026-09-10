@@ -311,6 +311,20 @@ class Q(_Vocab):
     # ── page geometry (measurements) ────────────────────────────────────────
     STAFF_LINES = "staff_lines"              # 5 y positions, page px
     STAFF_SPACING = "staff_spacing"          # px between lines
+    #: One staff SPACE in a CELL's own canonical frame, in that frame's px.
+    #:
+    #: ⚠️⚠️ IT IS NOT A CONSTANT AND ASSUMING IT IS WOULD BE WRONG ON HALF THE
+    #: CELLS OF A CONDUCTOR'S PAGE. `CANONICAL_STAFF_SPAN_PX / 4 = 100` is the
+    #: NOMINAL, but `_upscale_to_canonical` scales a too-wide cell by WIDTH
+    #: instead, so its staff stays smaller than canonical. Measured over the
+    #: engraved Beethoven 5 iv fixture, the half-step reads **50 px on 84 cells
+    #: and 28, 23 or 19 px on 67 more** -- less than half the nominal.
+    #:
+    #: ⚠️ It is a DIFFERENT FACT from `STAFF_SPACING`, which is the page's, and
+    #: is kept apart rather than folded in for the reason `Q.GLYPH_BOX`'s
+    #: canonical x had to be: two frames under one name is how a consumer comes
+    #: to compare lengths that were never in the same units.
+    CELL_STAFF_SPACE = "cell_staff_space"
     STAFF_EXTENT = "staff_extent"            # (x_start, x_end)
     STAFF_SKEW = "staff_skew"                # measured tilt/bow
     GAP_BRIDGING = "gap_bridging"            # ink crossing an inter-staff gap

@@ -1,0 +1,11 @@
+# Bar sums off each record's own duration verdicts, shipping policy.
+# fixture: beethoven-sym5-mvt4 m203-218, LilyPond, 23 parts, imgsz2048 weights
+# truth: 0:0-8=3.0,1:0-2=3.0,1:3-8=4.0,2:0-8=4.0
+
+BEFORE          assessable 12  correct 7   p0c0=3.0(5/8) p0c1=3.0(5/8) p0c2=3.0(5/9) p1c0=3.0(5/9) p1c1=2.0*(7/13) p1c2=2.0*(7/13) p1c3=4.0(20/23) p1c4=3.5*(17/23) p1c5=6.0*(20/23) p1c8=4.0(12/22) p2c2=4.0(12/23) p2c3=4.5*(12/23)
++ stem tier     assessable 14  correct 10   p0c0=3.0(5/8) p0c1=3.0(5/8) p0c2=3.0(5/9) p1c0=3.0(5/9) p1c1=2.0*(7/13) p1c2=2.0*(7/13) p1c3=4.0(20/23) p1c4=3.5*(17/23) p1c5=6.0*(20/23) p1c8=4.0(12/22) p2c0=4.0(18/23) p2c1=4.0(13/23) p2c2=4.0(23/23) p2c3=4.0(15/23)
++ flags & dots  assessable 16  correct 16   p0c0=3.0(8/8) p0c1=3.0(8/8) p0c2=3.0(9/9) p1c0=3.0(7/9) p1c1=3.0(10/13) p1c2=3.0(12/13) p1c3=4.0(20/23) p1c4=4.0(21/23) p1c5=4.0(19/23) p1c6=4.0(18/22) p1c7=4.0(14/23) p1c8=4.0(14/22) p2c0=4.0(21/23) p2c1=4.0(18/23) p2c2=4.0(23/23) p2c3=4.0(22/23)
+
+# CONTROL: the stem tier re-measured on the MERGED tree (origin/main's
+# cautionary rule and scan-side meter bookkeeping folded in). Identical.
+  stem/merged   assessable 14  correct 10   p0c0=3.0(5/8) p0c1=3.0(5/8) p0c2=3.0(5/9) p1c0=3.0(5/9) p1c1=2.0*(7/13) p1c2=2.0*(7/13) p1c3=4.0(20/23) p1c4=3.5*(17/23) p1c5=6.0*(20/23) p1c8=4.0(12/22) p2c0=4.0(18/23) p2c1=4.0(13/23) p2c2=4.0(23/23) p2c3=4.0(15/23)

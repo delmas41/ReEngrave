@@ -46,6 +46,11 @@ FIXTURE_OF = {
     "m4full": "boundary-m150-180", "m4rev": "boundary-m204-232",
     "m4brahms1eng": "brahms1-m1-22", "m4brahms4eng": "brahms4-m386-412",
     "m4brahms1scan": "brahms1-317803", "m4lit6162": "litolff-984073",
+    # `m5` = the same arms once more, with a CAUTIONARY separated from a
+    # change (a meter in a system's LAST cell governs no bar here).
+    "m5full": "boundary-m150-180", "m5rev": "boundary-m204-232",
+    "m5brahms1eng": "brahms1-m1-22", "m5brahms4eng": "brahms4-m386-412",
+    "m5brahms1scan": "brahms1-317803", "m5lit6162": "litolff-984073",
 }
 
 

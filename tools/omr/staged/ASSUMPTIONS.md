@@ -692,7 +692,7 @@ it newly speaks for (p.63) name 3.0 with no `voted` 3.0 anywhere to spell it,
 so they take the abstaining branch. See
 `benchmarks/omr-staged-meter-from-bars-2026-09/FINDINGS.md`.
 
-### A-DUR-8 · ⚠️⚠️ BAR SUMS ARE WRONG ON PERFECT INK — the bar-sum family is blocked UPSTREAM
+### A-DUR-8 · ⚠️⚠️ BAR SUMS WERE WRONG ON PERFECT INK — ✅ CLOSED on one engraved document
 
 **MEASUREMENT, not a design decision.**
 *`benchmarks/omr-staged-meter-engraved-2026-09/`, `render_meter_change.py`, `hide_change_signature.py`*
@@ -724,6 +724,48 @@ the ones that do are RIGHT.
 ⚠️ **The errors run LONG** (3.5, 4.5, 5.0, 6.0 vs 4.0) on a page with no
 missing ink — a diagnosis to open, not a conclusion.
 
+⚠️⚠️ **THE DIAGNOSIS IS DONE (2026-09-09) AND IT IS TWO FAULTS, ONE OF THEM
+FIXED. BOTH ARE THE SAME FAMILY: A MARK IS GATHERED AND THE DECISION READS IT
+IN THE WRONG PLACE.** See
+[`benchmarks/omr-staged-duration-beams-2026-09/FINDINGS.md`](../../../benchmarks/omr-staged-duration-beams-2026-09/FINDINGS.md).
+
+* ✅ **FIXED — a note is joined to its beam by its STEM.** A beam stroke runs
+  from the first stem it joins to the last, and a stem stands at the SIDE of
+  its notehead, so the OUTER note of every beamed group has its centre roughly
+  half a notehead width past the stroke's end — measured, the overshoot
+  clusters at **0.35-0.47 notehead widths**. `_beam_levels` tested that centre,
+  so 114 narrowed durations read `none_over_this_note` while a stem of the head
+  demonstrably met the beam; `BEAM_EDGE_TOLERANCE_WIDTHS` then caught them as
+  POSSIBLE and `_bar_lengths_for` collapsed the range to its LONGEST candidate.
+  ⚠️ **`Q.STEM` was declared in `wants` and `composed_from`, carried a
+  `KNOWN_GAPS` entry, and was read by nothing** — 916 rows on a three-page
+  record. `_stem_joined` reads it as an ADDITIVE tier beside the centre test.
+  Assessable bars **12 → 14, correct 7 → 10**, `narrowed` **147 → 29**, no bar
+  right-to-wrong. ⚠️ The candidate-policy question DISSOLVES: under the stem
+  tier `top` and `lowest` agree on every bar, which is the claim that the
+  ambiguity was an artefact of the association.
+* ✅ **FIXED — a MARK must be ATTACHED to its notehead.** `Q.FLAG` and
+  `Q.AUG_DOT` are gathered on the MARK's own glyph subject and were read on the
+  NOTEHEAD's, so **134 flag rows and 157 dot rows reached ZERO durations** — 0
+  durations carrying a dot, `beam_evidence == "flag"` 0 times. It accounted for
+  both directions of the residual, confirmed against the encoding the page was
+  rendered from: m211 read `quarter + 8th-rest` × 4 = **6.0** where the truth
+  holds **100 eighths**, and m207/m208 read a plain half at **2.0** where 8
+  parts play a **dotted half**. Now 112 flags attached (109 deciding) and 157
+  dots, and **the fixture reads 16 assessable bars, all 16 correct**.
+  ⚠️ A flag hangs on a STEM, which on this path beats the legacy x-centre rule
+  (`_flag_for_notehead`'s own docstring says it cannot use the stem because a
+  0-stem detector has none — stale here). ⚠️ A second bug sat in the same two
+  lines: `levels = len(flags)` counts GLYPHS, and one `flag16thUp` is one glyph
+  and TWO levels. ⚠️⚠️ And the dot window needed a unit that was not on the
+  record — `Q.CELL_STAFF_SPACE`, gathered where `_cell_grid` already computes
+  it, because **it is not a constant**: the nominal is
+  `CANONICAL_STAFF_SPAN_PX / 4 = 100`, but `_upscale_to_canonical` scales a
+  too-wide cell by WIDTH, and on this fixture **184 of 368 cells read 100 and
+  the other 184 read 38.5-56**. `DOT_ABOVE_NOTE_MAX_SPACES` /
+  `DOT_BELOW_NOTE_MAX_SPACES` had sat in the staged module, with a paragraph of
+  measured justification, **used by nothing in it**.
+
 ⚠️ **AND IT HAS A MEASURED COST ALREADY.** `A-DUR-2` records that only the
 BENEFIT of the carry was measured. On the engraved fixture at bar 155 a
 **correct** carry is refused — 4 bars agree, 4 disagree, +1.0 against a floor
@@ -739,8 +781,15 @@ find the sums correct. **Do not tune `METER_CARRY_FLOOR` or
 `METER_FROM_BARS_FLOOR` against this** — that is fitting a constant to a
 broken input.
 
-**Blast radius.** No behaviour changed for this entry; it is a measurement that
-re-ranks the work. n = 2 changes in 1 movement of 1 work.
+**Blast radius.** Staged path only (`tools/omr/rhythm.py` untouched, so no
+engraved or scan figure moves). ⚠️⚠️ **THIS ENTRY IS CLOSED ON ONE ENGRAVED
+DOCUMENT AND THAT IS NOT LICENCE TO TUNE THE METER FLOORS.** The blocker it
+named is gone here, so the bar-sum family may be RE-OPENED; re-pricing
+`METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` needs a SCAN arm first — every
+attachment above rides on classical-CV stems and detector boxes, and a scan has
+fewer and worse of both. All three rules are ADDITIVE, so the floor is the old
+behaviour, but the gain on a scan is unmeasured and so is whether a WRONG stem
+can hand a note a flag it does not have. Sixteen bars is not a corpus.
 
 ### A-DUR-6 · ⚠️⚠️ THE TARGET MODEL — a meter is decided PER BAR, from layered evidence
 
@@ -771,7 +820,7 @@ rather than defaulted.
 | 3 | this bar's own duration sum | ✅ `_bar_lengths_for` |
 | 4 | the same bar's sum on every other staff | ✅ the per-bar modal vote |
 | 5 | the surrounding bars' sums | ⚠️ PARTIAL — forward of a candidate (`_bar_run`), and now the whole system's own bars as a proposer of the LENGTH (`A-DUR-7`) |
-| 6 | beat subdivision agrees with the meter | ❌ not built; beams are gathered, grouping is not read |
+| 6 | beat subdivision agrees with the meter | ❌ not built; beams are gathered, grouping is not read — ⚠️ and a note is now joined to its beam by its STEM (`A-DUR-8`), which is the association such a rule would need |
 | 7 | undefined blobs of ink | ❌ not built — see A-DUR-5 |
 
 **Three things to carry into building it, each paid for by a measurement here:**
