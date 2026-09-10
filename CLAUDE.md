@@ -777,12 +777,40 @@ finding that docstring already records, one layer on — and where no unit
 exists the decision **declines the dot** rather than measuring against a number
 written for another frame.
 
-⚠️ **`A-DUR-8` IS CLOSED ON ONE ENGRAVED DOCUMENT AND THAT IS NOT LICENCE TO
-TUNE THE METER FLOORS.** Every attachment here rides on classical-CV stems and
-detector boxes, and a scan has fewer and worse of both. All three rules are
-ADDITIVE, so the floor is the old behaviour — but the gain on a scan is
-unmeasured, and so is whether a WRONG stem can hand a note a flag it does not
-have. **That scan arm is the next thing to run.** Sixteen bars is not a corpus.
+✅ **THE SCAN ARM IS DONE, AND THE TWO HALVES COME APART.** Litolff Beethoven
+5 mvt1, pdf pages 1-4, windows hand-verified, 2/4 throughout — **ONE gather
+adjudicated four times** (`readjudicate.py`), so the arms carry no detector
+jitter, and its `--control` reproduces the pipeline's own **2993 of 2993**
+duration verdicts exactly before any arm is read. **The STEM tier is the whole
+gain there** (per-staff readings right 401 → 430 of 733) and **the MARKS half
+does nothing at all** (401 → 401) — not because the rule fails, but because the
+detector fires **49 flag boxes and 35 dots over 2347 noteheads**, against 134
+and 157 over 1118 on an engraving. A DETECTION limit, the same shape this file
+already records for hairpins.
+
+⚠️⚠️ **IT IS NOT FREE, AND ONLY THE PER-STAFF VIEW SHOWS IT.** At bar level
+**0 bars go right → wrong** and six become assessable, all right — but that is
+the cross-staff quorum working, not the rule being harmless. Underneath, **54
+readings go wrong → right and 26 go RIGHT → wrong**: a 2:1 trade, where on the
+engraving every move went one way. Adding the marks to the stem tier costs
+**one net reading** (430 → 429).
+
+⚠️ **THE FALSE-ATTACHMENT PROBE NEEDS NO TRUTH FILE**: a note under a beam
+carries no flag, so a notehead with a beam level AND a flag on its stem is a
+contradiction — one of the two readings is wrong, and it does not say which, so
+it is a RATE and never a count. **Engraved 3 of 112 flagged notes (2.7%); scan
+7 of 37 (18.9%)** — seven times the rate on a seventh of the population, so the
+worry is real and bounded. **No gate was added**: switching the flag half off by
+print quality would be a rule fitted to one scan of one publisher, against a
+measured cost of one reading in 733.
+
+⚠️ **A SECOND PUBLISHER'S SCAN IS STILL UNMEASURED**, and this same meter
+thread already has a case that held on a second document and broke on a second
+publisher's scan. ⚠️ And the scan's bar sums were **already nearly right where
+they were assessable at all** (43 of 44 → 48 of 49): what moved is how MANY
+bars can speak, not whether they are believed. **Re-pricing
+`METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` still needs that second
+publisher.**
 
 ### A meter CHANGE printed as a `C` was detected on 23 staves and dropped
 

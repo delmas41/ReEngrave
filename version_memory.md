@@ -16,6 +16,43 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-09 (late night, 3) — the SCAN arm: the two halves come apart
+
+The unknown the two duration fixes were landed with, measured. Litolff
+Beethoven 5 mvt1, pdf pages 1-4 (12/22/19/22 staves), windows hand-verified in
+`benchmarks/omr-scan-e2e-2026-09/works.json`, 2/4 throughout so every bar's
+truth is 2.0.
+
+* **ONE gather, four adjudications** (`readjudicate.py`) so the arms carry no
+  detector jitter — and `--control` reproduces the pipeline's own record
+  exactly first: **2993 of 2993** duration verdicts on the scan, 1356 of 1356
+  on the engraving, 0 differ, 0 extra.
+* **The STEM tier is the whole gain on a scan** (per-staff readings right
+  401 → 430 of 733). **The MARKS half does nothing there** (401 → 401), because
+  the detector fires **49 flag boxes and 35 dots over 2347 noteheads** against
+  134 and 157 over 1118 engraved. A DETECTION limit, not a rule limit — the
+  same shape already recorded for hairpins.
+* ⚠️⚠️ **IT IS NOT FREE.** 0 bars go right → wrong, but that is the cross-staff
+  quorum working: underneath, **54 readings go wrong → right and 26 go RIGHT →
+  wrong**. A 2:1 trade, where on the engraving every move went one way. Adding
+  the marks to the stem tier costs one net reading.
+* ⚠️ **A false-attachment probe that needs no truth file**: a note under a beam
+  carries no flag, so a notehead with both is a contradiction. Engraved **3 of
+  112** flagged notes; scan **7 of 37** — 2.7% vs **18.9%**. Real and bounded.
+  **No gate added** — gating on print quality would be fitted to one scan of
+  one publisher, against a cost of one reading in 733.
+* ⚠️ A second publisher's scan is still unmeasured, and this thread already has
+  a result that held on a second document and broke on a second publisher's
+  scan. The scan's bar sums were **already nearly right where assessable at
+  all** (43/44 → 48/49); what moved is how MANY bars can speak.
+* ⚠️ Two caches were written for `_cell_boxes` and both were deleted: a module
+  dict keyed on `id(log)` went red in a minute (CPython recycles an id), and
+  `Log` has `__slots__` so nothing can hang off it. The ~5-minute cost of one
+  scan re-adjudication is RECORDED in the docstring instead; the fix, if it is
+  ever needed, is `Evidence` caching its own row queries for every decision.
+
+---
+
 ## 2026-09-09 (late night, 2) — a MARK must be attached to its notehead
 
 The second of `A-DUR-8`'s two faults, and the same family as the first: a mark

@@ -43,8 +43,14 @@ policy, every page of the fixture. A `*` marks a bar read wrong.
 | | assessable | correct | narrowed verdicts |
 |---|--:|--:|--:|
 | before | 12 | 7 | 147 |
-| **+ the stem tier** (Fault 1) | 14 | 10 | 29 |
-| **+ flags and dots** (Fault 2) | **16** | **16** | 29 |
+| the stem tier alone (Fault 1) | 14 | 10 | 29 |
+| the marks alone (Fault 2) | 13 | 11 | 147 |
+| **both** | **16** | **16** | 29 |
+
+⚠️ **The four arms are ONE gather adjudicated four times** (`readjudicate.py`,
+§6a), so they carry no detector jitter, and the harness reproduces the
+pipeline's own record exactly before any arm is read. The two halves COMPOSE:
+each alone is worth +3 and +4 correct bars, together +9.
 
 **No bar goes from right to wrong at either step**, and the cross-staff
 agreement rises everywhere it was already right: `p0c0` 5 of 8 → **8 of 8**,
@@ -264,26 +270,119 @@ fixture that wrote `Q.AUG_DOT` onto the NOTEHEAD's subject — a subject shape
 helper now emits a dot as what it is: its own detection, with its own glyph
 index and its own box.
 
-## 6. WHAT THIS DOES NOT ESTABLISH
+## 6. ⚠️⚠️ THE SCAN ARM — the stem tier survives, the marks do not REACH, and it is NOT free
+
+Run because §6 of the predecessor named exactly two unknowns and neither could
+be answered on a LilyPond render: **how much survives on a scan**, and
+**whether a wrong stem can hand a note a flag it has not got**. Litolff
+Beethoven 5 mvt1, **pdf pages 1-4** (12 / 22 / 19 / 22 staves), whose windows
+are hand-verified in `benchmarks/omr-scan-e2e-2026-09/works.json` and whose
+movement is **2/4 throughout** — so every bar's truth is 2.0 quarters and no
+per-cell truth table is needed. `out/scan-arm.txt`.
+
+### 6a. ONE GATHER, FOUR ADJUDICATIONS — and the harness proves itself first
+
+⚠️ **Running the staged CLI twice compares two DETECTOR runs as much as two
+rules**, which is how the first engraved before/after disagreed with an offline
+simulation by two bars. `readjudicate.py` rebuilds a `Log` from ONE saved
+record's observations and abstentions and re-runs ADJUDICATE over it, so the
+arms differ only in the rule.
+
+⚠️ **`--control` re-adjudicates with nothing disabled and diffs against the
+record the pipeline wrote**: **2993 of 2993** duration verdicts reproduced
+exactly on the scan, **1356 of 1356** on the engraving, 0 differ, 0 extra. A
+rebuild that does not reproduce the record is not a control, and a silent
+mismatch would make every number below a measurement of the harness.
+
+⚠️ **AND THE ARMS WERE RE-RUN ON THE FINAL TREE.** `_cell_boxes` was extracted
+from the two helpers *while the first pass of arms was in flight* — which
+breaks this repo's own rule about editing a source file mid-run, and the honest
+repair is a control rather than an argument. All three arms were re-run after
+the tree settled and are **byte-identical, md5 for md5**, with `rhythm.py`'s own
+md5 unchanged across them. (An apparent 2549-vs-2449 discrepancy that prompted
+the re-run was a misreading of the harness: `mark_census` counts verdict ROWS,
+including ones `evaluate` later supersedes, and `--control` counts unique
+SUBJECTS.)
+
+### 6b. THE RESULT — and the two halves come apart completely
+
+| | assessable bars | correct | per-staff readings right |
+|---|--:|--:|--:|
+| off (both) | 44 | 43 | 401 of 733 |
+| **the STEM tier alone** | — | — | **430** |
+| **the MARKS alone** | — | — | **401 — unchanged** |
+| on (both) | 49 | 48 | 429 |
+
+**On a scan the stem tier is the entire gain and the marks half does nothing.**
+Not because the rule fails: because the detector finds almost no marks to
+attach. Over four dense scan pages carrying 2347 noteheads it fires **49 flag
+boxes and 35 augmentation dots**; over three engraved pages carrying 1118 it
+fires **134 and 157**. That is a DETECTION limit, and it is the same shape this
+project already records for hairpins — perfect on engravings, ~1% on scans.
+
+### 6c. ⚠️⚠️ IT IS NOT FREE, AND ONLY THE PER-STAFF VIEW SHOWS IT
+
+At bar level the picture is clean — **0 bars right → wrong**, 6 becoming
+assessable and all 6 right. ⚠️ **That cleanliness is the cross-staff quorum
+doing its job, not the rule being harmless.** One bar (`p2c11`) stops clearing
+the quorum, which is an honest abstention replacing a marginal 7-of-13.
+
+Underneath, per (page, cell, staff) reading:
+
+```
+      54  ( 7.4%)  wrong -> RIGHT
+      26  ( 3.5%)  ⚠️ RIGHT -> wrong
+```
+
+**A 2:1 trade, not a free win** — and on the engraving every move was one way,
+so this is precisely what the engraved fixture could not price. Split: the stem
+tier is 49 up / 20 down, the marks 2 up / 2 down. Adding the marks to the stem
+tier costs **one net reading** (430 → 429), well inside the noise of a
+20-reading swing.
+
+### 6d. THE FALSE-ATTACHMENT PROBE — a rate, from the page alone
+
+⚠️ **A note under a beam carries no flag.** An engraver draws one or the other,
+so a notehead with a beam level READ over it AND a flag attached to its stem is
+a contradiction — one of the two readings is wrong. It needs no truth file, and
+it does not say WHICH, so it is a rate to compare between printings and never a
+count of errors.
+
+| | flagged notes | contradictions | rate |
+|---|--:|--:|--:|
+| engraved | 112 | 3 | **2.7%** |
+| **scan** | 37 | 7 | **18.9%** |
+
+**Seven times the rate, on a seventh of the population.** So the worry behind
+this arm is REAL and it is BOUNDED: a scan's stems are worse and the flag half
+does pick up noise from them — and there is so little of it that the bar-level
+answer never moves. **No gate is added.** A rule that switched the flag half
+off by print quality would be fitted to one scan of one publisher, and the
+measured cost of leaving it on here is one reading in 733.
+
+## 7. WHAT THIS DOES NOT ESTABLISH
 
 * ⚠️⚠️ **n = 1 DOCUMENT, 1 FIXTURE, 3 PAGES, ENGRAVED.** "Every bar right" is a
   statement about sixteen bars of one LilyPond render, not about the reader.
   The fixture was chosen because its ink is perfect by construction, which is
   what makes a failure the rule's fault — and equally what stops a success
   from generalising on its own.
-* ⚠️ **A SCAN IS THE UNMEASURED CASE, AND IT IS DIFFERENT IN KIND.** All three
-  attachments run on classical-CV stems and on detector boxes; a scan has
-  fewer and worse of both. Every rule here is ADDITIVE — with no stem read,
-  no flag is claimed and the note behaves exactly as before — so the floor is
-  the old behaviour, but the SIZE of the gain on a scan is not measured, and
-  neither is whether a *wrong* stem can now hand a note a flag it does not
-  have. That is the first thing to run next.
+* ✅ **THE SCAN CASE IS MEASURED — see §6**, on ONE scan of ONE publisher,
+  four pages. The stem tier carries it (+29 net readings); the marks half does
+  not reach (49 flags and 35 dots over 2347 noteheads) and costs one net
+  reading. ⚠️ It is a **2:1 trade at reading level, not a free win**, and the
+  contradiction rate is **18.9% against 2.7% engraved**.
+* ⚠️ **A SECOND PUBLISHER'S SCAN IS STILL UNMEASURED**, and the whole meter
+  thread already has a case where a result held on a second document and broke
+  on a second publisher's scan. Brahms 1 / Breitkopf is in the gate with a
+  hand-verified window and is the obvious next arm.
 * **No OMR-NED figure was taken on either family**, and none applies: the
   legacy exporter does not use this code path.
-* ⚠️ **`A-DUR-8` IS CLOSED ON THIS DOCUMENT AND THAT IS NOT LICENCE TO TUNE
-  THE METER FLOORS.** The blocker it named — bar sums wrong on perfect ink —
-  is gone here, so the bar-sum family can be *re-opened*; re-pricing
-  `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` needs the scan arm above and
-  more than one document first. Sixteen bars is not a corpus.
+* ⚠️ **`A-DUR-8` IS CLOSED ON ONE ENGRAVED DOCUMENT AND THE SCAN IS BETTER,
+  NOT RIGHT.** 48 of 49 assessable bars, against 43 of 44 — the bar sums on a
+  scan were already nearly right where they were assessable at all, and what
+  moved is how MANY bars can speak (44 → 49) rather than whether they are
+  believed. Re-pricing `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` still
+  needs a second publisher first.
 * **The four residual bars are gone, so nothing is left to attribute.** If a
   bar sum is wrong on the next fixture, it is a NEW finding, not this one.

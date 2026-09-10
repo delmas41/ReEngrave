@@ -135,6 +135,29 @@ def _xywh_head(value) -> Optional[Tuple[float, float, float, float]]:
             float(value[3]), float(value[4]))
 
 
+def _cell_boxes(ev: Evidence, cell):
+    """`{glyph key: box row}` for every detection in a cell.
+
+    ⚠️ DELIBERATELY NOT MEMOISED, AND TWO CACHES WERE WRITTEN AND DELETED
+    FIRST. The decision is per GLYPH and this map is per CELL, so it is built
+    once per notehead — on a dense scan cell, ~100 noteheads over ~300
+    detections. A module dict keyed on `id(log)` went red inside a minute
+    (CPython recycles an id the moment an object is collected, so two `Log`s
+    made in sequence share one and the second reads the first's rows); hanging
+    it on the log is impossible, because `Log` has `__slots__`. Both were
+    reverted rather than propped up: a cache needs a rule for when to forget,
+    and a rule that has to be right for a measurement to be right does not
+    belong in the measurement.
+
+    ⚠️ The cost is REAL and is recorded rather than hidden: one adjudication of
+    four Litolff scan pages takes ~5 minutes. If it ever needs fixing, the fix
+    is `Evidence` caching its own row queries — one place, for every decision —
+    not a bolt-on here.
+    """
+    return {r.subject.to_key(): r for r in ev.rows(
+        Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)}
+
+
 def _stem_joined(beams, stems, head_box):
     """The beams THIS notehead's stem reaches: (rows, the stems used).
 
@@ -234,8 +257,7 @@ def _attached_flags(ev: Evidence, cell, attached_stems):
     # so the early return was a second spelling of a rule that lives one line
     # below, and a rule a mutation cannot break is a protection that is not
     # there. Deleted rather than propped up with a test.
-    boxes = {r.subject.to_key(): r for r in ev.rows(
-        Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)}
+    boxes = _cell_boxes(ev, cell)
     out = []
     for f in ev.rows(Q.FLAG, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         box_row = boxes.get(f.subject.to_key())
@@ -281,8 +303,7 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     """
     if head_box is None or not space:
         return []
-    boxes = {r.subject.to_key(): r for r in ev.rows(
-        Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)}
+    boxes = _cell_boxes(ev, cell)
     heads = []
     for r in ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS,
                      subject=cell):

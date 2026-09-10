@@ -1,0 +1,83 @@
+# SCAN ARM — Litolff Beethoven 5 mvt1, pdf pages 1-4, 12/22/19/22 staves.
+# Windows hand-verified in benchmarks/omr-scan-e2e-2026-09/works.json;
+# the movement is 2/4 throughout, so every bar's truth is 2.0 quarters.
+# ONE gather, four adjudications (readjudicate.py) — no detector jitter.
+
+## the harness verifies itself first
+CONTROL: 2993 of 2993 duration verdicts reproduced exactly, 0 differ, +0 extra
+
+## BARS (>=3 staves, >=50% agreeing) — off=all vs ON
+OFF: 44 assessable, 43 correct
+ON : 49 assessable, 48 correct   (truth 2.0)
+     43  unchanged
+      6  became assessable, RIGHT
+      1  stopped being assessable (was right)
+  bars that moved:
+   p1c0                - -> 2.0(3/6)       RIGHT
+   p1c2         2.0(5/6) -> 2.0(3/6)       RIGHT
+   p1c6         2.0(2/3) -> 2.0(3/3)       RIGHT
+   p1c7         2.0(4/5) -> 2.0(3/5)       RIGHT
+   p1c10        2.0(4/4) -> 2.0(3/4)       RIGHT
+   p1c11        2.0(3/5) -> 2.0(4/5)       RIGHT
+   p1c14        2.0(3/4) -> 2.0(4/4)       RIGHT
+   p2c0         2.0(5/9) -> 2.0(6/9)       RIGHT
+   p2c2        4.0(9/15) -> 4.0(8/15)      
+   p2c3       2.0(12/18) -> 2.0(14/18)     RIGHT
+   p2c5        2.0(8/14) -> 2.0(11/14)     RIGHT
+   p2c7         2.0(4/8) -> 2.0(6/8)       RIGHT
+   p2c8         2.0(5/8) -> 2.0(4/8)       RIGHT
+   p2c9                - -> 2.0(7/13)      RIGHT
+   p2c10       2.0(8/15) -> 2.0(10/15)     RIGHT
+   p2c11       2.0(7/13) -> -              was right
+   p2c12       2.0(5/10) -> 2.0(6/10)      RIGHT
+   p2c13               - -> 2.0(6/12)      RIGHT
+   p2c15        2.0(3/6) -> 2.0(5/6)       RIGHT
+   p3c0                - -> 2.0(7/13)      RIGHT
+   p3c2                - -> 2.0(9/16)      RIGHT
+   p3c3        2.0(8/16) -> 2.0(9/16)      RIGHT
+   p3c4        2.0(8/14) -> 2.0(7/14)      RIGHT
+   p3c5        2.0(8/13) -> 2.0(9/13)      RIGHT
+   p3c8         2.0(4/5) -> 2.0(5/5)       RIGHT
+   p3c10        2.0(5/5) -> 2.0(4/5)       RIGHT
+   p4c6       2.0(11/21) -> 2.0(12/21)     RIGHT
+   p4c9       2.0(11/20) -> 2.0(13/20)     RIGHT
+   p4c10               - -> 2.0(13/21)     RIGHT
+
+## PER-STAFF READINGS — finer than the bar mode, and where the cost shows
+-- ON (both halves) --
+     375  (51.2%)  unchanged (right)
+     203  (27.7%)  unchanged (wrong)
+      75  (10.2%)  wrong -> wrong
+      54  ( 7.4%)  wrong -> RIGHT
+      26  ( 3.5%)  ⚠️ RIGHT -> wrong
+     401 right OFF  ->    429 right ON   of 733 readings
+-- the STEM tier alone --
+     381  (52.0%)  unchanged (right)
+     206  (28.1%)  unchanged (wrong)
+      77  (10.5%)  wrong -> wrong
+      49  ( 6.7%)  wrong -> RIGHT
+      20  ( 2.7%)  ⚠️ RIGHT -> wrong
+     401 right OFF  ->    430 right ON   of 733 readings
+-- the MARKS alone --
+     399  (54.4%)  unchanged (right)
+     327  (44.6%)  unchanged (wrong)
+       3  ( 0.4%)  wrong -> wrong
+       2  ( 0.3%)  ⚠️ RIGHT -> wrong
+       2  ( 0.3%)  wrong -> RIGHT
+     401 right OFF  ->    401 right ON   of 733 readings
+
+## CENSUS, and the contradiction probe
+/tmp/dur/scan-off-all.json
+   duration verdicts   {'decided': 2549, 'narrowed': 552}
+   beam_evidence       {None: 754, 'reader_declined': 1001, 'read': 884, 'none_over_this_note': 462}
+   rows available      flag 49  aug_dot 35  stem 1920  beam_stroke 858  cell_staff_space 1180
+   attached            stems 0  beams-by-stem 0  flags 0  dots 0
+   noteheads           2347   with a beam level 884   with a flag 0
+   ⚠️ CONTRADICTIONS   0  (0.0% of flagged notes also carry a beam level)
+/tmp/dur/scan.json
+   duration verdicts   {'decided': 2738, 'narrowed': 357}
+   beam_evidence       {None: 748, 'reader_declined': 998, 'read': 1017, 'none_over_this_note': 302, 'flag': 30}
+   rows available      flag 49  aug_dot 35  stem 1920  beam_stroke 858  cell_staff_space 1180
+   attached            stems 1761  beams-by-stem 947  flags 47  dots 8
+   noteheads           2347   with a beam level 1017   with a flag 37
+   ⚠️ CONTRADICTIONS   7  (18.9% of flagged notes also carry a beam level)
