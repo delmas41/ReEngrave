@@ -6,6 +6,16 @@ as the entry point. That file's redirect still governs — **the metric is not
 the goal, the staged pipeline is** — and its `A-DUR-8` blocker is what this
 session went after.
 
+⚠️⚠️ **A SECOND ARC CLOSED THE SAME DAY AND NEITHER SUPERSEDES THE OTHER.**
+[docs/handoff-2026-09-10-the-meter-arc-closed.md](handoff-2026-09-10-the-meter-arc-closed.md)
+is the METER arc; this is the DURATION arc. They met in one place and it is
+worth knowing which way the dependency runs: that session re-ran its boundary
+arms on top of this work and reports the carry's discrimination widening from
++6.0/−8.0 to **+8.0/−8.0**, attributing it to the durations reading better.
+**So the meter numbers there rest on the duration work here, and not the other
+way round.** Its §6 ranks the scan-side meter READING next; this file's §5 is
+the decisions this arc leaves open.
+
 ⚠️ **Nothing here is a score.** Every number is a control or a diagnosis. The
 whole change is **staged-path only**: `tools/omr/rhythm.py` is untouched, so no
 engraved or scan OMR-NED figure moves, and none was taken.

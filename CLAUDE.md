@@ -26,6 +26,24 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-10-the-meter-arc-closed.md](docs/handoff-2026-09-10-the-meter-arc-closed.md)
+— **the meter arc is CLOSED**: the boundary case measured on engraved fixtures
+(true meter **+8.0** vs false **−8.0**), a second document and publisher (the
+result SPLITS — engraved 4 printed changes / 4 found / **0 false**, a scan of
+the same 22 bars 2 / 1 / 3), and **three rules shipped default-on** (a letter
+meter is a complete meter; a change is against the meter **in force**; a
+**cautionary** is not a change). False meter changes **10 → 3**, no true change
+lost. ⚠️ **Read its §4 and §5 before quoting anything**: the two retired
+objections to `OMR_METER_CARRY` were replaced by a NEW one — on a scan the
+meter GLYPHS are misread badly enough that the weighing never gets a fair
+candidate — and the `9/4` has **three routes measured and refused**, so do not
+re-try them. ⚠️ Its §7 says exactly what is on main and what is only on a
+sibling branch, checked rather than remembered. **§6 ranks the next work: the
+scan-side meter READING, where the document already holds its own answer in a
+recorded `cautionary` that nothing reads.** Its predecessor
+
+⚠️⚠️ **AND READ THIS ONE BESIDE IT — a SECOND arc closed the same day, by a
+different session, and neither supersedes the other.**
 [docs/handoff-2026-09-10-the-duration-reader.md](docs/handoff-2026-09-10-the-duration-reader.md)
 — **`A-DUR-8` IS CLOSED**: bar sums were wrong on perfect ink, it was TWO
 faults, both are fixed, and they were one family — *a mark the page prints is
