@@ -88,3 +88,27 @@ report saying, correctly, that it cannot tell whether they were exported
 because no counter exists. They were not: `<slur>` and `<tied>` are still
 unwritten. **Three stubs remain** (`articulation_owner`, `wedge_anchor`,
 `direction`), and `direction` is the only one still input-starved.
+
+## ⚠️ The arc EXPORT is a separate unit, and here is the number that says so
+
+`_mxl_note` already takes `tied_to_next`, `tied_from_prev` and `slur_states`,
+so rendering is pure reuse — but **an arc crossing a barline is detected
+TWICE**, once per measure cell, and emitting each as its own `<slur>` would
+write two slurs where the music has one. That is why `annotate_slurs` sat
+implemented, tested and UNWIRED from `89277a2` until 2026-09-01 on the legacy
+path.
+
+Measured on this page: **32 of 199 arcs (16.1%) begin within 20 canonical px
+of their cell's left edge** — the cross-barline signature.
+
+⚠️ **And the metric would not catch it.** OMR-NED is symmetric, so it rewards
+emitting MORE symbols: the first cut of the legacy slur work LOWERED pooled
+OMR-NED (0.2449 → 0.2436) while RAISING the edit count and the `wrong slur`
+category. An arc export without the merge could look like an improvement while
+being a regression.
+
+So the remaining work is `_merge_arcs_across_barlines`'s three measured
+constants moved onto this path — a boundary tolerance (0.5 spaces), a
+continuation tolerance (2.0 spaces, a plateau over 1.0–6.0) and a notehead pad
+(0.25 widths) — plus the `number=` allocator and the both-ends-same-voice rule.
+It is its own unit of work with its own measurement, not a bolt-on here.
