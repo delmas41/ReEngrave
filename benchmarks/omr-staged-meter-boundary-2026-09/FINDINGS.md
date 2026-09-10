@@ -57,11 +57,22 @@ offered differs and the page itself does not:
 
 | window | candidate offered | bars | support | outcome |
 |---|---|---|--:|---|
-| `--pages 0-3` | **3/4** (from p2, the true meter) | 7 fit / 2 not | **+6.0** | **`carried` 3/4 — CORRECT** |
+| `--pages 0-3` | **3/4** (from p2, the true meter) | 8 fit / 1 not | **+8.0** | **`carried` 3/4 — CORRECT** |
 | `--pages 0,3` | **4/4** (from p0's `C`, across the boundary) | 0 fit / 9 not | **−8.0** | **`carry_outweighed_by_the_bars` — REFUSED** |
 
-`--pages 2,3` reproduces the first row to the unit (+6.0, 7/2), so the swing is
-the candidate's and not the window's.
+`--pages 2,3` reproduced the first row to the unit, so the swing is the
+candidate's and not the window's.
+
+⚠️ **THE TRUE ROW MOVED, UPWARD, AND THE REASON IS A DEPENDENCY THIS DESIGN
+PREDICTS.** It was **+6.0 (7 fit / 2 not)** until a sibling session's DURATION
+work landed — stems joined to beams by the STEM rather than by the notehead's
+centre, and marks attached to their notehead. Bar sums are this mechanism's
+second witness, so better durations make the bars speak more clearly: the same
+page now reads `{3.0: 8, 5.0: 1}` where it read `{3.0: 7, 5.0: 2}`. The false
+candidate is unchanged at −8.0, so the SWING widened 14.0 → **16.0**. The
+figure below is the current one; the earlier pair is left as measured in
+`version_memory.md`, per this repo's rule that a recorded transition is a
+frozen fact.
 
 ✅ **RE-MEASURED TWICE ON MERGED TREES AND IDENTICAL BOTH TIMES** — the second
 time after a SIBLING session's `_meter_fallbacks` landed on main, which reorders
@@ -75,12 +86,12 @@ commits under this branch while these arms ran, including **221 changed lines
 of `staged/adjudicators/rhythm.py` and 404 of `staged/gather.py`** — and
 `gather.py` is where the `Q.EVENT` / `Q.DURATION` rows these decisions read
 come from. Every arm was re-run after merging rather than assumed to survive
-it (`m2*` runs): the +6.0 / −8.0 pair, the same `bar_lengths_seen`, the same
+it (`m2*`, `m3*` and `m7*` runs): the discriminating pair, the same `bar_lengths_seen`, the same
 reasons, the same §4b tally to the row, and the `C`-change fix still reading
 23 staves of 23 at support 66.0.
 
 **That is the measurement that was missing.** On the *Andante* the true meter
-scored −1.0 and the false one −1.0; here the true one scores +6.0 and the false
+scored −1.0 and the false one −1.0; here the true one scores +8.0 and the false
 one −8.0, on the same nine bars.
 
 **And `OMR_METER_FROM_BARS` reaches the same page independently:**
@@ -90,9 +101,9 @@ one −8.0, on the same nine bars.
 | `--pages 0-3` | length **3.0**, support **+5.0** (7+/2−) | **`derived_from_bars` 3/4**, form borrowed from p2 |
 | `--pages 0,3` | length **3.0**, support **+5.0** | `bars_name_a_length_without_a_form`, forms **`['3/4','6/8','12/16']`** |
 
-The truth is in the shortlist. The +6.0 / +5.0 gap is exactly `W_METER_CARRIED`
-= 1.0, as it should be — the same bars, one mechanism carrying a prior reading
-as an extra term.
+The truth is in the shortlist. The carry's support exceeds the bars' own by
+exactly `W_METER_CARRIED` = 1.0, as it should be — the same bars, one mechanism
+carrying a prior reading as an extra term.
 
 ### What it is worth in the FILE
 
@@ -126,7 +137,7 @@ re-sized 4.0 → 3.0 as `whole_rest_means_the_bar`, plus **2 notes re-read by
 
 So the valid cross-arm control is **`bar_lengths_seen`**, which
 `adjudicate_meter` writes from the durations as they stood BEFORE any
-consequence ran. It is `{'3.0': 7, '5.0': 2}` in every arm and every window
+consequence ran. It is the same in every arm and every window
 that reaches page 3 (`report_boundary.py --control bars`), and the raw duration
 verdicts are identical between arms whose meter outcome is the same
 (`--control durations`, 314 vs 314).

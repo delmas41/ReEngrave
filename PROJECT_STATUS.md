@@ -1,6 +1,6 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-09-09 — the meter boundary MEASURED on engraved fixtures and on a second document and publisher (the result splits: the weighing holds, a second publisher's SCAN does not read the meter), and `Q.METER`'s `segments` found to reach no file at all; before that, four parallel sessions merged; the **metric is no longer the organising goal** and the staged pipeline (GATHER · ADJUDICATE · EVALUATE) is, see the September 8–9 entry below and [CLAUDE.md](CLAUDE.md)'s START HERE pointer. ⚠️ The arc list below is a running history and the entries between 2026-09-03 and 2026-09-08 were never written into this file — read [version_memory.md](version_memory.md) for that week. Previously: 2026-09-02 (two parallel arcs merged: the overnight generalization session — the engraved benchmark widened 3 → 10 works and opened at twice the incumbent error rate, a five-row SCAN benchmark now exists, the cut-common meter bug and two key-signature vote bugs fixed, see [docs/overnight-2026-09-01-summary.md](docs/overnight-2026-09-01-summary.md) — and the day queue's export-gap arc (fermatas, printed accidentals, the coverage check) plus the branch audit, per [docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md); the current accuracy figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section, is generated from `benchmarks/omr-ned-2026-08/current-accuracy.json`, and the suite goes red if the two disagree)
+**Last updated:** 2026-09-09 — the meter boundary MEASURED on engraved fixtures and on a second document and publisher, then the scan side opened: half its damage was BOOKKEEPING rather than reading (false meter changes 10 → 3, the engraved arms now clean), and `Q.METER`'s `segments` found to reach no file at all; before that, four parallel sessions merged; the **metric is no longer the organising goal** and the staged pipeline (GATHER · ADJUDICATE · EVALUATE) is, see the September 8–9 entry below and [CLAUDE.md](CLAUDE.md)'s START HERE pointer. ⚠️ The arc list below is a running history and the entries between 2026-09-03 and 2026-09-08 were never written into this file — read [version_memory.md](version_memory.md) for that week. Previously: 2026-09-02 (two parallel arcs merged: the overnight generalization session — the engraved benchmark widened 3 → 10 works and opened at twice the incumbent error rate, a five-row SCAN benchmark now exists, the cut-common meter bug and two key-signature vote bugs fixed, see [docs/overnight-2026-09-01-summary.md](docs/overnight-2026-09-01-summary.md) — and the day queue's export-gap arc (fermatas, printed accidentals, the coverage check) plus the branch audit, per [docs/branch-assessments-2026-09-02.md](docs/branch-assessments-2026-09-02.md); the current accuracy figure lives in [CLAUDE.md](CLAUDE.md)'s OMR-NED section, is generated from `benchmarks/omr-ned-2026-08/current-accuracy.json`, and the suite goes red if the two disagree)
 
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
@@ -150,7 +150,7 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
   actually PRINTS as well, so the refusal was **safe and not discriminating**.
   Rendering a real meter change ENGRAVED (`beethoven-sym5-mvt4`, 4/4 → 3/4 at
   bar 155) removed legibility as the confound: the same page carries the TRUE
-  meter at **+6.0** and refuses the FALSE one at **−8.0**, and in the file whole
+  meter at **+8.0** and refuses the FALSE one at **−8.0**, and in the file whole
   rests written at 4.0 ql inside a 3.0 ql bar go **196 → 38**. A second document
   and publisher followed — Brahms 1 mvt 1 read ENGRAVED and from the Breitkopf
   SCAN, the *same 22 bars*, differing only in the printing — and the result
@@ -162,7 +162,24 @@ ReEngrave has **two converged tracks** living together on `main`, plus an option
   `Q.METER` carries `segments` and **nothing downstream reads them** —
   `record.meter_at` is called by nothing but its own tests — so the mid-system
   change machinery cannot currently produce a file. Queued as its own session.
-  `benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md`.
+
+  ⚠️⚠️ **Opening the scan side then half-refuted the session's own headline.**
+  *"The block on a second publisher is READING"* was true of where, not of
+  what: **of the ten false meter changes across the six fixtures, five were
+  BOOKKEEPING** — `_meter_changes` compared every candidate against the
+  system's OPENING and never against the segment already accepted, so one
+  system proposed `4/4` at five consecutive bars, **and the same comparison
+  silently deleted every change BACK to the opening meter** (Beethoven 9's
+  finale makes seventeen). Two more were a **CAUTIONARY** — the courtesy
+  signature after a line's final barline announces the NEXT system and governs
+  no bar; it is now separated and RECORDED rather than proposed, and the rule
+  was checked against the corpus before it was written (all four true changes
+  at a non-last cell, both cautionaries at a last cell). **Together: false
+  changes 10 → 3, no true change lost, and the ENGRAVED arms clean at 4
+  printed / 4 found / 0 false.** What is left on the scan is genuinely
+  reading — `9/8` voted `9/4` at 0.500-0.531 — **and the document holds its own
+  answer one system earlier, in the cautionary now on the record.**
+  `benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md` §4c.
 
 ---
 
