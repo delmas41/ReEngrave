@@ -175,6 +175,9 @@ own row queries — one place, every decision.**
 
 ## 5. ⚠️⚠️ DECISIONS THAT NEED A HUMAN — nothing below is started
 
+(§5.5 is the exception: it CLOSED while this handoff was being written,
+and is kept because the correction is the point.)
+
 ### 5.1 The dotted REST — an asymmetry this session INTRODUCED
 
 `_rest_ruling` still does `dots = ev.rows(Q.AUG_DOT)` on the REST's own glyph
@@ -217,27 +220,44 @@ fed.** Three sessions each hit it; it may deserve a name in `ASSUMPTIONS.md`.
 See §3. Not started, and it is a change to shared machinery that would want its
 own measurement.
 
-## 5.5 ⚠️ `health --check` EXITS 1 ON MAIN, AND THE GATE IS WRONG, NOT THE CODE
+## 5.5 ✅ CLOSED — the red `health --check`, and ⚠️ MY FIRST FRAMING OF IT WAS WRONG
 
-Found while landing this handoff, **verified as not a regression from this
-work**: it exits 1 on `origin/main` alone, checked in a throwaway worktree off
-that commit rather than inferred. It reports `arc_kind: no test asserts it
-DECIDES`.
+**Fixed on main and verified at `origin/main` in a throwaway worktree:
+`health --check` exits 0, EMPTY CELLS none.** It is not a decision any more; it
+is here because the way I first described it would have cost the next reader
+something.
 
-⚠️ **The tool prints its own caveat directly above that line** — *"the shape
-classifier is TEXTUAL and undercounts. Confirm any zero with one `grep` before
-believing it."* The grep says it undercounts here:
-`tools/omr/tests/test_staged_arc_kind.py` has `test_a_tie_class_decides_tie`
-and `test_a_slur_class_decides_slur` asserting `v.value == "tie"` / `"slur"`,
-which is that decision deciding — the tests simply never spell the word
-`DECIDED`.
+**What I wrote, and it is wrong:** *"a gate whose own docstring says it
+undercounts, going red on code that is correct"* — a false positive, the
+corrosive kind, a gate crying wolf. ⚠️ **That framing invites a reader to
+discount a working gate, which is the harm it claimed to be warning about.**
 
-**Left unpatched deliberately.** The classifier belongs to the session that
-landed `arc_kind`, and what it should count is theirs to state; a fix from here
-would be guessing at their intent, and this repo has already built one thing
-twice. ⚠️ **What matters for a fresh session is that a red `health --check` on
-main today is this, and not a broken tree** — but do not let that become an
-excuse to stop reading it. `inventory --check` exits 0 and the suite is green.
+**The accurate position**, arrived at by the session that owns the gate, after
+it disagreed with me and then found its own disagreement false:
+
+* I was right that the tests DID establish `arc_kind` deciding —
+  `test_a_tie_class_decides_tie` asserts `v.value == "tie"`, and
+  `Ruling.narrow` sets `value=None` **unconditionally** (checked:
+  `adjudicate.py` `return Ruling(value=None, ...)`), so on this API a
+  non-DECIDED verdict never carries a value.
+* ⚠️ **But only through an API invariant the reader has to already know.** The
+  classifier was right about the TEXT: no test spelled the outcome. So the
+  gate was **correctly reporting that a claim was IMPLICIT** — which is exactly
+  the one job its docstring reserves for itself, *point at the EMPTY cells, not
+  grade the full ones* — and the `grep` it tells you to run is what resolved it.
+* The added assertion buys **legibility, not power**. It makes the claim
+  machine-readable and drops the dependence on that invariant.
+
+⚠️ **And the fix I suggested first was the worse of the two, for a reason I had
+not checked.** I offered "teach the classifier that asserting a `value` is
+asserting a decision". `assertIsNone(v.value)` appears in ABSTENTION tests in at
+least three files, so that marker would have credited abstention tests as
+decides and **WEAKENED the gate** — the direction that hides problems. A
+suggestion aimed at making a red gate green, which is the wrong instinct.
+
+**Carry this rather than the number:** *a check that says a claim is implicit is
+not a false positive.* Verifying the claim by hand and concluding "the code is
+fine, the gate is noisy" is how a working gate stops being read.
 
 ## 6. OPERATIONAL
 

@@ -16,6 +16,33 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-10 — ⚠️ a correction to my own §5.5: the gate was not crying wolf
+
+`health --check` went red on main while this handoff landed. I reported it
+rather than patching it (it was the arc session's on both counts) and they have
+since fixed it — verified at `origin/main` in a throwaway worktree, **exit 0**.
+
+⚠️ **But my FRAMING of it was wrong and is corrected in the handoff.** I called
+it *"a gate whose own docstring says it undercounts, going red on code that is
+correct"* — a false positive, the corrosive kind. It is better described as
+**a gate correctly reporting that a claim was IMPLICIT**. Both halves matter:
+the tests DID establish `arc_kind` deciding (`Ruling.narrow` sets `value=None`
+unconditionally, so on this API a non-DECIDED verdict never carries a value —
+checked), but only through an API invariant a reader must already know. The
+classifier was right about the TEXT, which is the job its docstring reserves
+for itself, and the `grep` it tells you to run is what resolved it.
+
+⚠️ **And the fix I suggested first was the worse one, for a reason I had not
+checked**: "teach the classifier that asserting a `value` is deciding" would
+have credited ABSTENTION tests (`assertIsNone(v.value)`, three files) as
+decides and WEAKENED the gate — a suggestion aimed at making a red gate green.
+
+**The lesson, which outlives the incident:** a check that says a claim is
+implicit is not a false positive. Verifying it by hand and concluding "the code
+is fine, the gate is noisy" is how a working gate stops being read.
+
+---
+
 ## 2026-09-10 — handoff: the duration reader, and the decisions left open
 
 `docs/handoff-2026-09-10-the-duration-reader.md` is the new entry point;
