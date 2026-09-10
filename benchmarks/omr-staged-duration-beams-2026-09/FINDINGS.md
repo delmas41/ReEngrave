@@ -270,7 +270,9 @@ fixture that wrote `Q.AUG_DOT` onto the NOTEHEAD's subject — a subject shape
 helper now emits a dot as what it is: its own detection, with its own glyph
 index and its own box.
 
-## 6. ⚠️⚠️ THE SCAN ARM — the stem tier survives, the marks do not REACH, and it is NOT free
+## 6. ⚠️⚠️ THE SCAN ARMS — TWO PUBLISHERS, and the second corrects the first
+
+### 6-LITOLFF. the stem tier survives, the marks do not reach THIS document, and it is NOT free
 
 Run because §6 of the predecessor named exactly two unknowns and neither could
 be answered on a LilyPond render: **how much survives on a scan**, and
@@ -396,6 +398,73 @@ and it is one page of one document either way. What makes it worth a line is
 that the two sessions measured different quantities on different fixtures and
 the direction agrees.
 
+## 6f. ⚠️⚠️ THE SECOND PUBLISHER — it HOLDS, it is BIGGER, and it corrects §6b
+
+Brahms 1 mvt 1 / **Breitkopf & Härtel**, pdf pages 0-3 (14 / 27 / 28 / 28
+staves), windows hand-verified in the same `works.json`. Run because §6 said a
+second publisher's scan was the outstanding unknown, and because this thread
+already has a result that held on a second document and broke on a second
+publisher's scan. `out/scan-arm-2-brahms.txt`.
+
+**The truth is read off the reference encoding, not remembered**: `m1 = 6/8`
+(3.0 quarters), **`m8 = 9/8` (4.5)**, `m9` onward `6/8`. ⚠️ And the placement is
+corroborated rather than assumed — our segmentation is **exact on pages 1-3**
+(15, 15, 21 bars against the window's 15, 15, 21), which independently puts m8
+at `p1 s0 c0`. Page 0 prints 7 bars and we segment 8, so its extra cell has no
+truth and is excluded. The control passes here too: **4365 of 4365**.
+
+| | bars assessable | correct | per-staff readings right (of 493) |
+|---|--:|--:|--:|
+| off (both) | 8 | **0** | 42 |
+| the MARKS alone | — | — | 55 |
+| the STEM tier alone | — | — | 57 |
+| **on (both)** | 8 | **6** | **108** |
+
+⚠️⚠️ **WITH THE RULE OFF, NOT ONE OF THE EIGHT ASSESSABLE BARS IS RIGHT** — and
+four of them read exactly **4.0 in a 6/8 movement**, which is the signature of a
+beam missed and a note read too long. With it on, six of eight are 3.0.
+
+### 6f-i. IT CORRECTS §6b: "the marks half does nothing on a scan" was about THAT DOCUMENT
+
+§6b concluded from Litolff that the marks half does not reach a scan, because
+the detector fired 49 flag boxes and 35 dots over 2347 noteheads. On Breitkopf
+it fires **371 flags and 656 dots** over 3337 — seven and nineteen times as
+many — and the marks half alone is worth **+13 readings** where on Litolff it
+was worth **exactly 0**.
+
+⚠️ **So the limit is the DOCUMENT, not the printing.** Litolff `984073` is
+catalogued in `works.json` as *"low-res bitonal"*; Breitkopf is not. A
+generalisation from one scan to "scans" was the wrong shape, and one more
+publisher was enough to break it. **Anything that reads "on a scan" in §6
+should be read as "on that scan".**
+
+### 6f-ii. ⚠️ THE TWO HALVES ARE SUPER-ADDITIVE, AND THE MECHANISM IS THE BAR
+
+Separately they are worth +15 and +13; together **+66**. That is not a
+measurement error, it is what a bar sum is: a bar is right only when **every**
+note in it is right, so a bar holding one beam-missed note and one flag-missed
+note stays wrong until BOTH are repaired, and neither half can claim it alone.
+It also means the Litolff arm's near-additivity (+29 and +0, together +28) was
+a property of one half being inert there, not evidence that the halves are
+independent.
+
+### 6f-iii. THE COSTS, WHICH ARE LARGER TOO
+
+* **27 readings go RIGHT → wrong** against 93 wrong → right — a **3.4:1** trade,
+  better than Litolff's 2:1, but the losses are real and bigger.
+* **The contradiction rate is 27.5%** (76 of 276 flagged notes also carry a beam
+  level), against Litolff's 18.9% and the engraving's 2.7%. The ordering
+  engraved < Litolff < Breitkopf now has three points and is the honest way to
+  quote it: **the worse the ink, the more the flag half picks up.**
+* ⚠️ **The page is read badly whatever we do.** 108 of 493 readings right is
+  **22%**, against Litolff's 59% — so this is a large RELATIVE gain (2.6×) on a
+  document that is still mostly wrong, and quoting the ratio without the base
+  would be the misleading half.
+* ⚠️ **The 9/8 bar is unassessable and does not enter the score.** Its 23 staves
+  read 23 different lengths (best agreement 3 of 23), so the quorum correctly
+  declines it. The one bar this fixture was chosen for is the one it cannot
+  speak about — which is itself the density finding again, not a new one.
+
 ## 7. WHAT THIS DOES NOT ESTABLISH
 
 * ⚠️⚠️ **n = 1 DOCUMENT, 1 FIXTURE, 3 PAGES, ENGRAVED.** "Every bar right" is a
@@ -408,10 +477,15 @@ the direction agrees.
   not reach (49 flags and 35 dots over 2347 noteheads) and costs one net
   reading. ⚠️ It is a **2:1 trade at reading level, not a free win**, and the
   contradiction rate is **18.9% against 2.7% engraved**.
-* ⚠️ **A SECOND PUBLISHER'S SCAN IS STILL UNMEASURED**, and the whole meter
-  thread already has a case where a result held on a second document and broke
-  on a second publisher's scan. Brahms 1 / Breitkopf is in the gate with a
-  hand-verified window and is the obvious next arm.
+* ✅ **THE SECOND PUBLISHER IS MEASURED — see §6f.** It HOLDS and is larger
+  (+66 readings against +28), and it **corrects** §6b: the marks half is inert
+  on Litolff because that document is low-res bitonal, not because scans are
+  scans. ⚠️ Three publishers is still three, and all three are 19th-century
+  German orchestral prints.
+* ⚠️ **NO ARM HAS PRICED A WRONG STEM DIRECTLY.** The contradiction rate
+  (2.7% / 18.9% / 27.5% across the three) is a proxy that says one of two
+  readings is wrong without saying which. Settling it needs per-note truth on a
+  scan, which nothing in this repo has.
 * **No OMR-NED figure was taken on either family**, and none applies: the
   legacy exporter does not use this code path.
 * ⚠️ **`A-DUR-8` IS CLOSED ON ONE ENGRAVED DOCUMENT AND THE SCAN IS BETTER,

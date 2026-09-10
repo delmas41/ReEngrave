@@ -16,6 +16,35 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-09 (late night, 4) — the SECOND PUBLISHER, and it corrects arm 1
+
+Brahms 1 mvt1 / **Breitkopf & Härtel**, pdf pages 0-3 (14/27/28/28 staves), the
+outstanding unknown from the first scan arm. Truth read off the encoding
+(`6/8`, one bar of `9/8` at m8, `6/8`) with its placement corroborated by our
+segmentation matching the window EXACTLY on pages 1-3. Control **4365 of 4365**.
+
+* **IT HOLDS AND IS FAR LARGER**: per-staff readings right **42 → 108 of 493**.
+  With the rule OFF **not one of eight assessable bars is right**, four reading
+  exactly **4.0 in a 6/8 movement** — a beam missed. With it on, six of eight.
+* ⚠️⚠️ **IT CORRECTS ARM 1'S GENERALISATION.** "The marks half does nothing on a
+  scan" was about THAT DOCUMENT: Litolff `984073` is catalogued *low-res
+  bitonal* and fires 49 flags / 35 dots; Breitkopf fires **371 / 656**, and
+  there the marks half alone is worth **+13** where on Litolff it was **0**.
+  One more publisher was enough to break a claim generalised from one.
+* ⚠️ **The halves are SUPER-ADDITIVE** — +15 and +13 alone, **+66** together —
+  and the mechanism is the bar: a bar is right only when every note in it is.
+* ⚠️ Costs larger too: 27 right → wrong against 93 the other way (3.4:1), and
+  the contradiction rate **27.5%** against 18.9% (Litolff) and 2.7% (engraved):
+  three points, ordered by ink quality. ⚠️ And 108 of 493 is **22%** — a large
+  RELATIVE gain on a page still mostly wrong.
+* ⚠️ The `9/8` bar the fixture was chosen for is **unassessable**: 23 staves,
+  23 different lengths.
+* ⚠️ **No arm has priced a WRONG stem directly.** The contradiction rate says
+  one of two readings is wrong without saying which; settling it needs per-note
+  truth on a scan, which nothing in this repo has.
+
+---
+
 ## 2026-09-09 (late night, 3) — the SCAN arm: the two halves come apart
 
 The unknown the two duration fixes were landed with, measured. Litolff
