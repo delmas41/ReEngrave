@@ -512,7 +512,7 @@ gate nobody had exercised: a cautionary is a SYSTEM-WIDE event, so a staff that
 still has a bar after the glyph contradicts it, and the safe reading of a
 contradiction keeps the change.
 
-### ⚠️⚠️ THE `9/4`: DIAGNOSED IN FULL, TWO HYPOTHESES REFUTED, AND NOT FIXED
+### ⚠️⚠️ THE `9/4`: DIAGNOSED IN FULL, THREE HYPOTHESES REFUTED, AND NOT FIXED
 
 The last scan fault, opened. Brahms 1 / Breitkopf page 1 prints `9/8` on every
 staff of its first system and the template reader votes **`9/4`**.
@@ -570,12 +570,45 @@ on a fraction of the evidence the constant was set with, and pricing it means
 re-running the eleven-work engraved benchmark and the 20-row scan gate. That is
 its own piece of work.
 
-⚠️ **The other route needs no threshold at all and is already half-built**: the
-CAUTIONARY one system earlier reads `9/8` on **9 staves**, from the DETECTOR's
-digit pairs rather than from template correlation — an independent reader
-agreeing with the print. It is on the record. Consuming it would overturn a
-READ meter, which is neither the carry (that serves ABSTAINING systems) nor the
-form-borrow, so it is a new mechanism and belongs with the segments work.
+**Hypothesis 3 — the CAUTIONARY plus the BARS can settle it with no threshold.
+REFUTED, and this is the one that was designed before it was tested.**
+
+The cautionary one system earlier reads `9/8` on **9 staves**, from the
+DETECTOR's digit pairs rather than from template correlation — an independent
+reader agreeing with the print, already on the record. Two readings of ONE
+printed fact. Nothing here may pick between them by confidence, and n = 1 is
+far too little to fit a rule — **but Sean's ordering says arithmetic that
+checks itself outranks what can only be read, and `9/4` is 9.0 quarter notes
+against `9/8`'s 4.5.** So the design was: put both to the system's OWN BARS in
+the carry's existing signed-term currency, reusing `_score_bars`; no new
+constant, and fail safe when the bars cannot speak.
+
+**Its precondition was measured first** (`probe_cautionary_arbiter.py`, driving
+the real stages and building a real `Evidence`, so the bars are exactly the
+ones `_corroborate` would see):
+
+| system | voted | bars that reach the quorum | `9/4` | `9/8` |
+|---|---|--:|---|---|
+| p0 s0 | `6/8` ✓ | 2 | −2.0 | −2.0 |
+| **p1 s0** | **`9/4`** ✗ | **0 of 7** | *cannot speak* | *cannot speak* |
+| p1 s1 | `4/4` ✗ | 1 | *cannot speak* | *cannot speak* |
+
+**On the exact system where the arbitration is needed, not one bar clears the
+quorum.** The route is dead there, and no amount of design saves it.
+
+⚠️⚠️ **AND THE GENERAL HAZARD IS WORTH MORE THAN THE DEAD ROUTE: the case that
+most needs an arbiter is the case where the arbiter is silent.** A page whose
+meter the template reader mangles is a page whose ink is degraded — and the
+same degradation is what stops its bars from summing. The bars are not an
+independent umpire over a bad reading; they fail together with it. This is the
+*Andante*'s "when the page cannot speak, abstain" arriving from the other
+direction, and it bounds every bar-arbitrated rule this benchmark has built.
+
+⚠️ **The cautionary route is not dead in the OTHER case** — a system that
+ABSTAINS needs no arbitration, because there is nothing to overturn, and a
+cautionary is ink naming that system's meter. **Reach on this corpus: ZERO** —
+no system that abstains here is preceded by a recorded cautionary — so it is
+recorded as available and unbuilt rather than shipped untested.
 
 ### The two fixes together
 
