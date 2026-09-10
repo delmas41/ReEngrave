@@ -233,6 +233,10 @@ class Cell:
     staff: int
     index: int
     detections: List[Dict[str, Any]] = field(default_factory=list)
+    #: `(x_page, kind, text)` -- EXACTLY the shape `_mxl_empty_measure` and
+    #: `_mxl_direction` already take, so the renderers are reused rather than
+    #: re-spelled. `kind` is "dynamics" or "words".
+    directions: List[Tuple[float, str, str]] = field(default_factory=list)
 
 
 @dataclass
@@ -285,6 +289,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         run.name = name if isinstance(name, str) else None
 
     dropped = _place_notes(rec, runs)
+    _place_directions(rec, runs)
 
     # ── the join ────────────────────────────────────────────────────────────
     join = rec.value(Q.PART_PARTITION, "document") or {}
@@ -475,6 +480,66 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
     return dict(dropped)
 
 
+def _place_directions(rec: Record, runs: Dict[str, StaffRun]) -> None:
+    """Every decided dynamic word, in the cell its DECISION filed it on.
+
+    ⚠️⚠️ THIS FUNCTION EXISTS BECAUSE `adjudicate_dynamic` STOPPED BEING A
+    STUB AND NOTHING READ IT. The decision landed 2026-09-09, decides, and
+    files a verdict per cell — and `grep '<dynamics' staged/export.py`
+    returned ZERO, as did the same grep for every other `<notations>` and
+    `<direction>` child. *The value existed and nothing read it*, this
+    project's highest-yield pattern, occurring inside the architecture built
+    to stop it.
+
+    ⚠️ AND THE COVERAGE HEADLINE HID IT RATHER THAN SHOWING IT.
+    `detected_and_unrepresented_total` counts only NO_QUANTITY / starved /
+    stub, so the day `dynamic` started deciding, ~284 glyphs (beet5-p3) and
+    ~205 (brahms-p2) LEFT the headline with nothing reaching a file. The
+    status that carried them is `decided_but_unwritten`, which `coverage()`
+    already computes. A headline that improves when the file does not change
+    is the shape this repo has paid for repeatedly; read that status beside
+    it.
+
+    ⚠️ OWNERSHIP IS NOT RE-ASKED HERE, unlike `_place_notes`. A dynamic letter
+    cut from the cell above is moved by `adjudicate_dynamic` itself, which
+    queries `Q.GLYPH_OWNER` across the system and keeps only the letters this
+    staff owns — both directions of the move. So the CELL the verdict is filed
+    on is already the answer, and asking again would be a second, differently
+    spelled ownership rule.
+
+    ⚠️ A NARROWED VERDICT WRITES NOTHING, DELIBERATELY. An unspellable run
+    (`Ruling.narrow`, "there is a mark here and I cannot spell it") is not
+    `decided`, so `rec.value` returns None and it never reaches the file. That
+    is `OMR_PARTIAL_DYNAMICS`, which was built, measured over the 20-row scan
+    gate and REFUSED: `complete` costs +15 edits with NOT ONE ROW BETTER,
+    `other` +30. Do not resurrect it on this path without re-pricing it here.
+    """
+    for key, run in runs.items():
+        for cell_index in range(run.n_measures):
+            sub = f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
+            words = rec.value(Q.DYNAMIC, sub)
+            if not isinstance(words, list) or not words:
+                continue
+            verdict = rec.verdict(Q.DYNAMIC, sub) or {}
+            detail = verdict.get("detail") or {}
+            # ⚠️ THE X IS THE DECISION'S OWN, IN PAGE PIXELS, and it is only
+            # used to ORDER marks within one bar. It is NOT compared against a
+            # notehead box: `Q.GLYPH_BOX` carries a CANONICAL x, measured
+            # inside one cell rescaled so the staff span is constant, and
+            # mixing the two frames is exactly the fault that made
+            # `Q.ONSET_COLUMN` unreachable until a page frame was added.
+            by_text = {w.get("text"): w for w in (detail.get("words") or [])
+                       if isinstance(w, dict)}
+            cell = run.cells.setdefault(
+                cell_index, Cell(run.page, run.system, run.staff, cell_index))
+            for text in words:
+                w = by_text.get(text) or {}
+                x = w.get("x_page")
+                cell.directions.append(
+                    (float(x) if x is not None else 0.0, "dynamics", str(text)))
+            cell.directions.sort()
+
+
 def _tuplet_for(rec: Record, run: StaffRun, cell_index: int,
                 glyph_index: Optional[int]) -> Optional[Dict[str, Any]]:
     ratio = rec.value(
@@ -600,7 +665,9 @@ def _part_xml(part: Sequence[StaffRun], pid: str, divisions: int,
                     include_divisions=first))
                 prev = {"clef": run.clef, "key": key, "time": meter}
                 first = False
-            events = _events(run.cells.get(i))
+            cell_here = run.cells.get(i)
+            directions = list(cell_here.directions) if cell_here else []
+            events = _events(cell_here)
             if not events:
                 # ⚠️ COUNTED AS `empty_bars_padded`, NOT AS A MEASURE REST.
                 # We read NOTHING in this bar; a bar where we actually read a
@@ -626,9 +693,31 @@ def _part_xml(part: Sequence[StaffRun], pid: str, divisions: int,
                 counters["empty_bars_padded"] += 1
                 if meter is None:
                     counters["empty_bars_padded_without_meter"] += 1
+                # ⚠️ A BAR WITH NO NOTES STILL CARRIES ITS MARKS. The legacy
+                # exporter dropped dynamics on exactly this branch for a month
+                # (`_mxl_empty_measure`'s own docstring), and it takes a SCAN
+                # to see it -- an engraved page puts an event in every bar. The
+                # staged path is fed the marks from the start rather than
+                # rediscovering that.
                 lines.extend(_legacy._mxl_empty_measure(
-                    meter, divisions, None, "      "))
+                    meter, divisions, directions or None, "      "))
+                counters["dynamics"] += len(directions)
             else:
+                # ⚠️ AT THE HEAD OF THE BAR, AND THAT IS A DECLARED
+                # SIMPLIFICATION, NOT AN OVERSIGHT. The legacy events path
+                # places a dynamic against its NEAREST NOTE
+                # (`_direction_slots`); this path cannot, because the marks
+                # carry a PAGE x and the noteheads a CANONICAL one, and
+                # comparing the two is precisely the frame error that made
+                # `Q.ONSET_COLUMN` report 1,062 columns of nothing. A
+                # `<direction>` carries no duration and is legal at offset 0,
+                # so the bar head is the honest answer until the record
+                # carries one frame for both. ⚠️ Placement is also exactly
+                # what stops a correctly recovered `sf` from PAIRING with a
+                # truth, so do not read a flat metric here as this being free.
+                lines.extend(_legacy._mxl_direction((kind, text), "      ")
+                             for _x, kind, text in directions)
+                counters["dynamics"] += len(directions)
                 lines.extend(_measure_events_xml(events, divisions, counters))
             lines.append("    </measure>")
     lines.append("  </part>")
@@ -796,7 +885,7 @@ FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
     "slur": (Q.ARC_KIND, ("slur",), ()),
     "tie": (Q.ARC_KIND, ("tie",), ()),
     "articulation": (Q.ARTICULATION_OWNER, ("artic",), ()),
-    "dynamic": (Q.DYNAMIC, ("dynamic",), ()),
+    "dynamic": (Q.DYNAMIC, ("dynamic",), ("dynamics",)),
     "wedge": (Q.WEDGE_ANCHOR, ("dynamicCrescendoHairpin",
                                "dynamicDiminuendoHairpin"), ()),
     "direction": (Q.DIRECTION, (), ()),
@@ -836,6 +925,38 @@ NOT_NOTATION: Dict[str, str] = {
     "repeatDot": "repeat barlines are a KNOWN GAP of the legacy exporter too",
     "barline": "structure; `measure_partition` decides the bars",
 }
+
+
+#: Families whose value reaches the file inside `<attributes>` rather than as
+#: an element of their own, so no per-family counter can see them.
+_IN_ATTRIBUTES = frozenset({"clef", "key", "time", "tuplet"})
+
+
+def _claims(family: str, cls: str) -> bool:
+    """Does `family` claim this detector class — LONGEST PREFIX WINS.
+
+    ⚠️⚠️ A PLAIN PREFIX TEST DOUBLE-COUNTS THE HAIRPINS, AND `gather.py`
+    ALREADY SAYS WHY. `dynamicCrescendoHairpin` and
+    `dynamicDiminuendoHairpin` carry a name starting with `dynamic`, so under
+    a plain test they were counted by BOTH the `dynamic` family (prefix
+    `dynamic`) and the `wedge` family (which names them exactly) — and where
+    both were unrepresented the headline total charged the same ink twice.
+    `gather_glyph_families` is routed by CLASS "never by the detector's
+    `category`" for precisely this glyph, and the coverage table had the fault
+    that finding exists to prevent, one module over.
+
+    Longest prefix wins, so `wedge`'s 23-character exact name beats
+    `dynamic`'s 7. Derived, so a future family that overlaps an existing one
+    resolves the same way without a hand-written exclusion.
+    """
+    low = cls.lower()
+    best, owner = 0, None
+    for name, (_q, prefixes, _c) in FAMILIES.items():
+        for pre in prefixes:
+            pl = pre.lower()
+            if low.startswith(pl) and len(pl) > best:
+                best, owner = len(pl), name
+    return owner == family
 
 
 def _unclaimed(detected: Dict[str, int]) -> Dict[str, int]:
@@ -887,8 +1008,7 @@ def coverage(result: Dict[str, Any],
     rows: List[Dict[str, Any]] = []
     for family, (quantity, prefixes, counter_keys) in sorted(FAMILIES.items()):
         n_detected = sum(n for cls, n in detected.items()
-                         if any(cls.lower().startswith(p.lower())
-                                for p in prefixes))
+                         if _claims(family, cls))
         row: Dict[str, Any] = {
             "family": family,
             "quantity": quantity,
@@ -931,12 +1051,39 @@ def coverage(result: Dict[str, Any],
                     f"would still produce nothing")
         elif row["written"]:
             row["status"] = "emitted"
+        elif decided and family in _IN_ATTRIBUTES:
+            # ⚠️ These reach the file inside `<attributes>`, which has no
+            # per-family counter to read. Named apart so they are not
+            # mistaken for the unwritten case below.
+            row["status"] = "emitted"
+        elif decided and counter_keys:
+            # ⚠️⚠️ THE STATUS THIS REPORT EXISTS FOR, AND IT WAS UNREACHABLE
+            # UNTIL 2026-09-09. The branch order was `elif decided: ... elif
+            # written is not None: "decided_but_unwritten" if decided`, so the
+            # third branch consumed every decided family and the fourth could
+            # only ever see `decided == 0` — the guard on a dead branch. A
+            # decision that decided and reached no file was reported as
+            # `decided`, which reads like success.
+            #
+            # It was found by the controlled A/B for the dynamics wiring: the
+            # BEFORE arm wrote zero `<dynamics>` and still reported
+            # `decided_but_unwritten: []`. *A check that cannot fail is worse
+            # than no check* — `health.py` learned the same lesson from a
+            # clause that emptied its own EMPTY CELLS list in one line.
+            row["status"] = "decided_but_unwritten"
+            row["why"] = (
+                f"`{quantity}` decided {decided} times and the exporter wrote "
+                f"none of this family — the record carries it and the FILE "
+                f"does not, which is an exporter gap, not a reading one")
         elif decided:
-            row["status"] = "emitted" if family in (
-                "clef", "key", "time", "tuplet") else "decided"
-        elif written is not None:
-            # the exporter ran and wrote none of this family
-            row["status"] = "decided_but_unwritten" if decided else "abstained"
+            # ⚠️ NO COUNTER EXISTS, so this row cannot say whether the family
+            # reached the file. Reported as its own state rather than folded
+            # into `decided`: an unmeasurable family must not read as a
+            # measured success.
+            row["status"] = "decided_uncounted"
+            row["why"] = (
+                "decided, but this family has no exporter counter, so whether "
+                "it reached the file is UNKNOWN to this report")
         else:
             row["status"] = "abstained"
         rows.append(row)
@@ -944,6 +1091,11 @@ def coverage(result: Dict[str, Any],
     unread = {r["family"]: r["detector_glyphs"] for r in rows
               if r["status"] in ("NO_QUANTITY", "starved", "stub")
               and r["detector_glyphs"]}
+    unwritten = {r["family"]: r["detector_glyphs"] for r in rows
+                 if r["status"] == "decided_but_unwritten"
+                 and r["detector_glyphs"]}
+    uncounted = [r["family"] for r in rows
+                 if r["status"] == "decided_uncounted"]
     return {
         "families": rows,
         # ⚠️ Ink of a kind no family and no reason accounts for. Derived, so a
@@ -953,6 +1105,20 @@ def coverage(result: Dict[str, Any],
         # ⚠️ THE HEADLINE: ink the detector found and the record cannot carry.
         "detected_and_unrepresented": unread,
         "detected_and_unrepresented_total": sum(unread.values()),
+        # ⚠️⚠️ THE SECOND HEADLINE, AND IT MEASURES A DIFFERENT FAULT.
+        # The first is a RECORD gap: no quantity, a stub, or a stub whose
+        # input is not gathered. This is an EXPORT gap: the decision decided,
+        # the record carries the answer, and no file received it. They must be
+        # reported apart because the repair differs — one is "write an
+        # adjudicator", the other is "read the verdict you already have".
+        #
+        # ⚠️ AND KEEPING THEM APART IS WHY THE FIRST FELL BY ~284 GLYPHS ON
+        # beet5-p3 THE DAY `dynamic` STOPPED BEING A STUB, WITH NOTHING
+        # REACHING A FILE. A headline that improves because a family changed
+        # BUCKET is the shape this repo has paid for repeatedly; quote both.
+        "decided_and_unwritten": unwritten,
+        "decided_and_unwritten_total": sum(unwritten.values()),
+        "decided_uncounted": uncounted,
     }
 
 
