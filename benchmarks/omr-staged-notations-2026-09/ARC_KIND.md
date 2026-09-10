@@ -78,3 +78,51 @@ failed 8 of 10; the real idiom is `log.freeze(); adjudicate.run(log)`. The
 harness also refused the `Q.GLYPH_BOX` read until it was DECLARED
 (`UndeclaredEvidence`) — `Evidence` doing its job, so that `missing` and
 `declined` can mean something.
+
+## ⚠️⚠️ The arbiter is silent where it is most needed — a peer's principle, tested here
+
+The question is **not mine**. It comes from the meter/boundary session, stated
+as a principle: *the case that most needs an arbiter is the case where the
+arbiter is silent.* A page whose meter the reader mangles is a page whose ink
+is degraded, and the same degradation stops its bars from summing — on the
+Breitkopf system misreading `9/8` as `9/4`, **not one of its seven bars clears
+the cross-staff quorum**.
+
+`arc_kind` has the same shape, and it holds. Detector confidence as the
+ink-quality proxy, 199 arcs, `probe_arc_grammar_confidence.py`:
+
+| population | n | median conf | q1–q3 |
+|---|--:|--:|---|
+| grammar AVAILABLE | 81 | **0.563** | 0.353–0.734 |
+| grammar MISSING | 118 | **0.408** | 0.321–0.644 |
+| …and AGREES with the reading | 42 | **0.694** | 0.522–0.797 |
+| …and DISAGREES | 39 | **0.391** | 0.305–0.626 |
+
+Two things fall out.
+
+**1. The grammar is absent disproportionately on the weaker readings** (0.408
+against 0.563). It is silent where a reading most needs checking — the peer's
+principle, in a second mechanism, on a different page.
+
+**2. And it sharpens: among arcs the grammar CAN speak about, disagreement
+tracks confidence hard — 0.391 against 0.694.** The agreement rate is not flat
+across the page; it collapses on weakly-read arcs.
+
+⚠️⚠️ **THIS DOES NOT SAY WHICH READING IS WRONG, AND THE TWO EXPLANATIONS ARE
+OPPOSITE.** Either (a) the disagreements are where the DETECTOR is wrong, and
+the grammar is right there — in which case a confidence-gated veto would help;
+or (b) the ink is bad, so BOTH readings are unreliable and a veto would swap
+one unreliable reading for another. **The data cannot separate them**, and
+reading it as (a) is exactly the mistake the flag/beam contradiction probe
+warns about: it is a RATE and never a count.
+
+⚠️ **What it DOES establish is that a flat agreement rate is the wrong summary.**
+The 51.9% figure above is an average over two populations that behave
+differently, and a future pricing of `OMR_ARC_RECLASS` on this path must
+stratify by confidence rather than quote one number.
+
+⚠️ **NOT GATED ON, deliberately — n = 1 page, 1 document.** This is precisely
+the restraint the meter letter path already records: *"Confidence separates
+the populations cleanly (0.887–0.927 engraved, 0.377–0.560 scan) and is
+deliberately not gated on — four rows on two documents is not a threshold."*
+199 arcs on one page is not a threshold either.
