@@ -91,12 +91,18 @@ the cross-staff quorum**.
 `arc_kind` has the same shape, and it holds. Detector confidence as the
 ink-quality proxy, 199 arcs, `probe_arc_grammar_confidence.py`:
 
+⚠️ **The last two rows are a split of AVAILABLE, not of MISSING** — 42 + 39 =
+81. They are labelled rather than indented, because an earlier draft of this
+table put them under MISSING and a reader trusting the nesting got the exact
+OPPOSITE of the finding: it read as the grammar both being unable to speak
+about those arcs and agreeing with them. Caught by the meter/boundary session.
+
 | population | n | median conf | q1–q3 |
 |---|--:|--:|---|
+| grammar MISSING (no pair of heads) | 118 | **0.408** | 0.321–0.644 |
 | grammar AVAILABLE | 81 | **0.563** | 0.353–0.734 |
-| grammar MISSING | 118 | **0.408** | 0.321–0.644 |
-| …and AGREES with the reading | 42 | **0.694** | 0.522–0.797 |
-| …and DISAGREES | 39 | **0.391** | 0.305–0.626 |
+| — of the 81 available, AGREES with the reading | 42 | **0.694** | 0.522–0.797 |
+| — of the 81 available, DISAGREES | 39 | **0.391** | 0.305–0.626 |
 
 Two things fall out.
 

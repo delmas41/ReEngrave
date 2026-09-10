@@ -43,11 +43,18 @@ def main(path):
         print(f"  {name:<24} n={len(c):3d}  median={st.median(c):.3f}  "
               f"q1={c[len(c)//4]:.3f} q3={c[3*len(c)//4]:.3f}")
 
+    # ⚠️ MISSING FIRST, then AVAILABLE and ITS OWN SPLIT. The first version
+    # printed AVAILABLE, MISSING, "...and AGREES", "...and DISAGREES", so the
+    # two `...and` lines read as children of MISSING when they are a split of
+    # AVAILABLE (42 + 39 = 81, not 118). The label carries it now, not the
+    # order, so a reader cannot get the finding backwards from either this
+    # output or the table it feeds.
     print(f"arcs decided: {len(v)}")
-    row("grammar AVAILABLE", have)
     row("grammar MISSING", none)
-    row("  ...and AGREES", ag)
-    row("  ...and DISAGREES", dis)
+    row("grammar AVAILABLE", have)
+    row("  of available, AGREES", ag)
+    row("  of available, DISAGREES", dis)
+    assert len(ag) + len(dis) == len(have), "the split must partition AVAILABLE"
     for nm, xs in (("available", have), ("missing", none)):
         f = [x["detail"]["grammar"]["flanked_heads"] for x in xs]
         print(f"  flanked heads, {nm:<10} mean={st.mean(f):.2f}")
