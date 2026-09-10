@@ -192,8 +192,12 @@ class TestTheFindingsAreStillTrue(unittest.TestCase):
         If either half moves, this fails and FINDINGS.md must be re-read.
         """
         starv = GC.stub_starvation()
-        self.assertEqual(len(starv), 5,
-                         f"expected 5 declared stubs, got {sorted(starv)}")
+        # ⚠️ FOUR since 2026-09-09: `arc_kind` was filled, so it left this
+        # list. The count is asserted so that filling or ADDING a stub is a
+        # deliberate edit here rather than a silent drift — which is what this
+        # guard is for.
+        self.assertEqual(len(starv), 4,
+                         f"expected 4 declared stubs, got {sorted(starv)}")
         self.assertNotIn("DYNAMIC", starv,
                          "`dynamic` graduated: adjudicator written and input "
                          "gathered. A stub roster that keeps a graduated "

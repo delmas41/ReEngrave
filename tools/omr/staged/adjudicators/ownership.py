@@ -221,25 +221,105 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
         "a TIE joins two heads of the SAME staff step; an arc whose flanked heads sit on different steps is a SLUR",
     ),
     implicates=(Q.ARC_KIND, Q.NOTEHEAD_STAFF_POSITION, Q.CLEF),
-    composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION),
+    composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX),
     scope=Kind.GLYPH,
-    wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION),
+    # ⚠️ `Q.GLYPH_BOX` is declared because a notehead's STEP row carries no x:
+    # the step is joined to a position through the box on the SAME glyph. The
+    # harness refused the read until it was declared (`UndeclaredEvidence`),
+    # which is `Evidence` doing its job -- a decision may only read what it
+    # says it reads, so `missing` and `declined` can mean something.
+    wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX),
     subjects_from=Q.ARC_BOX,
-    reasons=("tie", "slur", "no_evidence"),
+    reasons=("tie", "slur", "no_arc_box", "no_evidence"),
     mode=Mode.ADDITIVE,
-    stub=True,
 )
 def adjudicate_arc_kind(ev: Evidence) -> Ruling:
-    """⚠️ DECLARED STUB, and one with a measured REFUSAL attached.
+    """Is this arc a TIE or a SLUR — the reading decides, the grammar RECORDS.
 
-    The position-grammar veto exists (`OMR_ARC_RECLASS`) and is default-off
-    for a measured reason: engraved 0.1306 -> 0.1306 (+2 edits) but scan
-    0.8387 -> 0.8391, +130 edits, ALL of them in the tie->slur half. Compare
-    STAFF STEPS, never spelled pitches -- the far head of a cross-barline tie
-    does not restate its accidental, so a spelled-pitch key breaks
-    truth-matched ties. If any half ever defaults on it is slur->tie.
+    ⚠️⚠️ THIS DECISION SHIPS WITH A MEASURED REFUSAL ATTACHED AND MUST NOT
+    QUIETLY UNDO IT. The position-grammar veto exists as `OMR_ARC_RECLASS`
+    and is default-OFF for a priced reason: engraved 0.1306 -> 0.1306
+    (+2 edits, 24 firings) but scan 0.8387 -> 0.8391, **+130 edits, ALL of
+    them in the tie->slur half** -- because a scan's resolved pitch at an
+    arc's ends is downstream of exactly what scans get wrong. Turning the
+    grammar into a GATE here would enable half a refused flag by the back
+    door, on the path with the least measurement behind it.
+
+    So the DETECTOR'S CLASS DECIDES and the grammar is recorded beside it.
+    That is this project's governing principle applied literally -- additive
+    evidence, never a gate (A-GROUP-3) -- and it is the strictly more useful
+    of the two, because until now NOTHING on this path recorded either. The
+    disagreement rate between reading and grammar is a number no arm has ever
+    produced; `detail["grammar"]` is where it accumulates, and a later session
+    can price the veto on this path from the record alone.
+
+    ⚠️ STAFF STEPS, NEVER SPELLED PITCHES. The far head of a cross-barline tie
+    does not restate its accidental and the resolver spells it plain, so a
+    spelled-pitch key breaks truth-matched ties (+21 engraved edits, every
+    loss a same-step `F#4 -> F4` pair). `Q.NOTEHEAD_STAFF_POSITION` is a
+    STEP -- measured off the staff lines, clef-free -- which is why it and not
+    `Q.PITCH` is the input.
+
+    ⚠️ THE FLANKED HEADS ARE READ IN THE CELL'S OWN CANONICAL FRAME, and here
+    that is CORRECT rather than a lapse: both the arc and the heads it flanks
+    were cut from ONE cell, so they share a frame by construction. It is
+    `arc_owner` -- which asks about OTHER staves -- that needs page pixels.
     """
-    return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
+    arcs = ev.rows(Q.ARC_BOX)
+    if not arcs:
+        return Ruling.abstain("no_arc_box")
+    arc = arcs[0]
+    kind = "tie" if str(arc.value).lower().startswith("tie") else "slur"
+
+    # ⚠️ AN ARC IS NARROWER THAN THE RUN IT BINDS -- it is drawn BETWEEN its
+    # outer noteheads, so its ink stops inside both outer centres. The legacy
+    # pairing pads the box by a notehead width for exactly this reason;
+    # unpadded, the Contrabass read `n1 -> n4` in every bar whose truth is
+    # `n0 -> n5`. Here the pad is expressed in the arc's own height, which is
+    # the only size this row carries.
+    pad = max(float(arc.detail.get("y1", 0)) - float(arc.detail.get("y0", 0)),
+              1.0)
+    x0 = float(arc.detail.get("x0", 0)) - pad
+    x1 = float(arc.detail.get("x1", 0)) + pad
+
+    cell = ev.subject.at(Kind.CELL)
+    boxes = {r.subject.to_key(): r for r in
+             ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell)}
+    flanked = []
+    for row in ev.rows(Q.NOTEHEAD_STAFF_POSITION,
+                       scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        box = boxes.get(row.subject.to_key())
+        if box is None:
+            continue
+        value = box.value
+        if not isinstance(value, (list, tuple)) or len(value) < 5:
+            continue
+        xc = float(value[1]) + float(value[3]) / 2.0
+        if x0 <= xc <= x1:
+            flanked.append((xc, row.detail.get("rounded"), row.id))
+    flanked.sort()
+
+    grammar = {"flanked_heads": len(flanked), "reading": kind}
+    if len(flanked) >= 2:
+        first, last = flanked[0], flanked[-1]
+        same_step = (first[1] is not None and first[1] == last[1])
+        grammar.update(
+            first_step=first[1], last_step=last[1],
+            says="tie" if same_step else "slur",
+            # ⚠️ RECORDED, NOT ACTED ON. See the docstring: the tie->slur
+            # half of this comparison measured +130 edits on a scan.
+            agrees_with_reading=((kind == "tie") == bool(same_step)))
+    else:
+        grammar["says"] = None
+        grammar["why"] = ("fewer than two noteheads under the arc's padded "
+                          "span -- no pair to compare steps across")
+
+    return Ruling(value=kind, reason=kind,
+                  used=(arc.id,) + tuple(f[2] for f in flanked),
+                  detail={"grammar": grammar,
+                          "detector_class": str(arc.value),
+                          "confidence": arc.score})
 
 
 @decision(

@@ -247,8 +247,22 @@ class TestCoverageNamesTheFourZEROS(unittest.TestCase):
         page = _one_staff_page(notes=[("C4", QUARTER)])
         rep = SX.coverage(page)
         by = {r["family"]: r for r in rep["families"]}
-        self.assertEqual(by["slur"]["status"], "stub",
-                         "arc_box is gathered now: this is a plain stub")
+        # ⚠️ `slur` LEFT this census on 2026-09-09 when `arc_kind` stopped
+        # being a stub. `articulation` is the plain-stub case now; `direction`
+        # is the starved one. Asserting the DISTINCTION, never a census —
+        # which is why this test survived a stub being filled with a one-line
+        # edit rather than a rewrite.
+        self.assertEqual(by["articulation"]["status"], "stub",
+                         "articulation_mark is gathered: a plain stub")
+        # ⚠️ `direction` reports `stub`, NOT `starved`, and the two tools
+        # disagree about it on purpose-by-accident: `coverage()` calls a
+        # quantity fed when a gather SITE exists, and `Q.DIRECTION_WORD` has
+        # one that only ever ABSTAINS (`gather_coverage`'s "abstain-only"
+        # category). So a rung that runs and reads nothing is "gathered" here
+        # and "starved" there. Asserted as it IS rather than as it reads,
+        # with the divergence named — an undocumented disagreement between
+        # two derived inventories is how one of them quietly stops being
+        # believed.
         self.assertEqual(by["direction"]["status"], "stub")
         # and the mechanism that reports `starved` still works
         import tools.omr.staged.inventory as inv
