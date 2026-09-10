@@ -41,10 +41,18 @@ truth is 2.0.
   112** flagged notes; scan **7 of 37** — 2.7% vs **18.9%**. Real and bounded.
   **No gate added** — gating on print quality would be fitted to one scan of
   one publisher, against a cost of one reading in 733.
+* ⚠️⚠️ **The BAR-level figures of this arm were wrong when first published**
+  (44/43 → 49/48): the probes keyed a bar on `(page, cell)` and a cell index
+  RESTARTS at 0 on each system of a page, so two bars were merged into one
+  pseudo-bar and scored. Four pages of a UNIFORM-meter document could not
+  expose it; the first fixture whose truth is not uniform did. Corrected to
+  **71/67 → 78/74**; direction unchanged, and the merged version had also been
+  hiding losses (one bar dropping out of the quorum where there are four).
+  Per-staff readings were keyed on the full event subject and did not move.
 * ⚠️ A second publisher's scan is still unmeasured, and this thread already has
   a result that held on a second document and broke on a second publisher's
   scan. The scan's bar sums were **already nearly right where assessable at
-  all** (43/44 → 48/49); what moved is how MANY bars can speak.
+  all** (67/71 → 74/78); what moved is how MANY bars can speak.
 * ⚠️ Two caches were written for `_cell_boxes` and both were deleted: a module
   dict keyed on `id(log)` went red in a minute (CPython recycles an id), and
   `Log` has `__slots__` so nothing can hang off it. The ~5-minute cost of one

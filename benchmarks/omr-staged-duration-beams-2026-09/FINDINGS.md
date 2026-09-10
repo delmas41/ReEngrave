@@ -315,10 +315,22 @@ SUBJECTS.)
 
 | | assessable bars | correct | per-staff readings right |
 |---|--:|--:|--:|
-| off (both) | 44 | 43 | 401 of 733 |
+| off (both) | 71 | 67 | 401 of 733 |
 | **the STEM tier alone** | — | — | **430** |
 | **the MARKS alone** | — | — | **401 — unchanged** |
-| on (both) | 49 | 48 | 429 |
+| on (both) | **78** | **74** | 429 |
+
+⚠️⚠️ **THE BAR FIGURES WERE WRONG WHEN FIRST PUBLISHED AND THE CORRECTION IS
+WORTH MORE THAN THE NUMBERS.** They read 44/43 → 49/48, because the probes
+keyed a bar on `(page, cell)` — and **a cell index RESTARTS at 0 on each system
+of a page** (measured: Litolff p.2 runs 0-15, then 0-14), so system 0's third
+bar and system 1's third bar were being merged into one pseudo-bar and then
+scored. It survived four pages unnoticed because this document's truth is
+UNIFORM, so merging changed which pseudo-bars cleared the quorum and nothing
+else; it was caught by the FIRST fixture whose truth is not uniform. The key is
+now `(page, system, cell)`. ⚠️ Per-staff readings were keyed on the full event
+subject all along and are **unaffected** — which is why the headline result did
+not move.
 
 **On a scan the stem tier is the entire gain and the marks half does nothing.**
 Not because the rule fails: because the detector finds almost no marks to
@@ -329,10 +341,12 @@ project already records for hairpins — perfect on engravings, ~1% on scans.
 
 ### 6c. ⚠️⚠️ IT IS NOT FREE, AND ONLY THE PER-STAFF VIEW SHOWS IT
 
-At bar level the picture is clean — **0 bars right → wrong**, 6 becoming
-assessable and all 6 right. ⚠️ **That cleanliness is the cross-staff quorum
-doing its job, not the rule being harmless.** One bar (`p2c11`) stops clearing
-the quorum, which is an honest abstention replacing a marginal 7-of-13.
+At bar level the picture is clean — **0 bars right → wrong**, 11 becoming
+assessable and all 11 right. ⚠️ **That cleanliness is the cross-staff quorum
+doing its job, not the rule being harmless.** Four bars stop clearing the
+quorum, which is an honest abstention replacing a marginal majority — and the
+merged-key version of this table reported only ONE of those four, so the
+merging was hiding real losses as well as inflating nothing.
 
 Underneath, per (page, cell, staff) reading:
 

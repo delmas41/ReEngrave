@@ -797,7 +797,7 @@ and 157 over 1118 on an engraving. A DETECTION limit, the same shape this file
 already records for hairpins.
 
 ⚠️⚠️ **IT IS NOT FREE, AND ONLY THE PER-STAFF VIEW SHOWS IT.** At bar level
-**0 bars go right → wrong** and six become assessable, all right — but that is
+**0 bars go right → wrong** and eleven become assessable, all right — but that is
 the cross-staff quorum working, not the rule being harmless. Underneath, **54
 readings go wrong → right and 26 go RIGHT → wrong**: a 2:1 trade, where on the
 engraving every move went one way. Adding the marks to the stem tier costs
@@ -812,10 +812,21 @@ worry is real and bounded. **No gate was added**: switching the flag half off by
 print quality would be a rule fitted to one scan of one publisher, against a
 measured cost of one reading in 733.
 
+⚠️⚠️ **AND THE BAR-LEVEL FIGURES OF THAT ARM WERE WRONG WHEN FIRST PUBLISHED
+(44/43 → 49/48), FOR A REASON WORTH MORE THAN THE NUMBERS.** The probes keyed a
+bar on `(page, cell)`, and **a cell index RESTARTS at 0 on each system of a
+page** — so system 0's third bar and system 1's third bar were merged into one
+pseudo-bar and then scored. Four pages of a UNIFORM-meter document could not
+expose it; the first fixture whose truth is not uniform did, immediately. The
+corrected figures are **71/67 → 78/74**, the direction is unchanged, and the
+merged version had ALSO been hiding losses — it reported one bar dropping out
+of the quorum where there are four. ⚠️ Per-staff readings were keyed on the full
+event subject all along and did not move, which is why the headline survived.
+
 ⚠️ **A SECOND PUBLISHER'S SCAN IS STILL UNMEASURED**, and this same meter
 thread already has a case that held on a second document and broke on a second
 publisher's scan. ⚠️ And the scan's bar sums were **already nearly right where
-they were assessable at all** (43 of 44 → 48 of 49): what moved is how MANY
+they were assessable at all** (67 of 71 → 74 of 78): what moved is how MANY
 bars can speak, not whether they are believed. **Re-pricing
 `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` still needs that second
 publisher.**
