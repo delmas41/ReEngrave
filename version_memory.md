@@ -16,6 +16,45 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-09 (late night, 2) — a MARK must be attached to its notehead
+
+The second of `A-DUR-8`'s two faults, and the same family as the first: a mark
+the page prints is gathered, and the decision that needs it looks in the wrong
+place. **`A-DUR-8` is now CLOSED on this document** — the fixture reads
+**16 assessable bars, all 16 correct**, from 12/7 before either fix.
+
+* **`Q.FLAG` and `Q.AUG_DOT` are gathered on the MARK's own glyph subject and
+  were read on the NOTEHEAD's** — 134 and 157 rows reaching ZERO durations, 0
+  durations carrying a dot, `beam_evidence == "flag"` 0 times. Now 112 flags
+  attached (109 deciding) and 157 dots.
+* A flag hangs on a STEM, which on this path beats the legacy x-centre rule —
+  `_flag_for_notehead`'s own reason for not using it (a 0-stem detector) is
+  stale here. ⚠️ A second bug in the same two lines: `levels = len(flags)`
+  counts GLYPHS, and one `flag16thUp` is one glyph and TWO levels.
+* ⚠️⚠️ **`Q.CELL_STAFF_SPACE` is new because the dot window needed a unit that
+  was not on the record, and it is NOT a constant.** `Q.STAFF_SPACING` is the
+  PAGE's; `CANONICAL_STAFF_SPAN_PX / 4 = 100` is only the nominal, because
+  `_upscale_to_canonical` scales a too-wide cell by WIDTH — **184 of 368 cells
+  read 100 px and the other 184 read 38.5-56**. Gathered where `_cell_grid`
+  already computes it; where no unit exists the dot is DECLINED.
+* The dot claim is RECIPROCAL (this head must be the dot's best target), which
+  is what makes a per-glyph decision safe where the legacy rule assigns
+  globally. `DOT_ABOVE/BELOW_NOTE_MAX_SPACES` had sat in the staged module,
+  measured and justified, **used by nothing in it**.
+* ⚠️ Seven mutation arms red; an EIGHTH survived and **the rule was deleted,
+  not the test** (`if not attached_stems: return` was a second spelling of the
+  `any()` one line below). ⚠️ An existing test was **passing for free** —
+  `test_a_dot_adds_half_of_what_stands` asserted the right arithmetic on a
+  fixture that wrote the dot onto the NOTEHEAD's subject, a shape `gather`
+  never produces.
+* ⚠️ **CLOSED ON ONE ENGRAVED DOCUMENT — do not tune the meter floors on it.**
+  Every attachment rides on classical-CV stems and detector boxes and a scan
+  has fewer and worse of both; all three rules are additive, so the floor is
+  the old behaviour, but the scan gain is unmeasured and so is whether a WRONG
+  stem can hand a note a flag it has not got. That arm is next.
+
+---
+
 ## 2026-09-09 (late night) — a note is joined to its beam by its STEM
 
 ⚠️ **INDEPENDENT of the two meter blocks it now sits above** (the CAUTIONARY

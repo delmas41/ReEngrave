@@ -1,19 +1,29 @@
 # Rows a duration verdict could read, and where they LAND.
 # stem/beam_stroke are CELL-scoped by design (0 on a notehead subject is
-# correct); flag/aug_dot are GLYPH-scoped and land on the MARK's own
-# glyph, while adjudicate_duration reads them on the NOTEHEAD's.
+# correct). flag/aug_dot are GLYPH-scoped and land on the MARK's own
+# glyph; until 2026-09-09 adjudicate_duration read them on the NOTEHEAD's.
 
-before {'decided': 1304, 'narrowed': 147}
-   beam_evidence {'reader_declined': 538, None: 333, 'read': 287, 'none_over_this_note': 293}
-   durations carrying a dot: 0
-   flag (glyph-scoped): 134 rows, on a notehead subject: 0
-   aug_dot (glyph-scoped): 157 rows, on a notehead subject: 0
-   stem (cell-scoped): 916 rows, on a notehead subject: 0
-   beam_stroke (cell-scoped): 307 rows, on a notehead subject: 0
-after {'decided': 1407, 'narrowed': 29}
-   beam_evidence {'reader_declined': 538, None: 318, 'read': 405, 'none_over_this_note': 175}
-   durations carrying a dot: 0
-   flag (glyph-scoped): 134 rows, on a notehead subject: 0
-   aug_dot (glyph-scoped): 157 rows, on a notehead subject: 0
-   stem (cell-scoped): 916 rows, on a notehead subject: 0
-   beam_stroke (cell-scoped): 307 rows, on a notehead subject: 0
+ before         {'decided': 1304, 'narrowed': 147}
+    beam_evidence {'reader_declined': 538, None: 333, 'read': 287, 'none_over_this_note': 293}
+    durations carrying a dot: 0   flags attached: 0   dots attached: 0
+    flag (glyph-scoped): 134 rows, on a notehead subject: 0
+    aug_dot (glyph-scoped): 157 rows, on a notehead subject: 0
+    stem (cell-scoped): 916 rows, on a notehead subject: 0
+    beam_stroke (cell-scoped): 307 rows, on a notehead subject: 0
+    cell_staff_space (cell-scoped): 0 rows, on a notehead subject: 0
+ + stem tier    {'decided': 1407, 'narrowed': 29}
+    beam_evidence {'reader_declined': 538, None: 318, 'read': 405, 'none_over_this_note': 175}
+    durations carrying a dot: 0   flags attached: 0   dots attached: 0
+    flag (glyph-scoped): 134 rows, on a notehead subject: 0
+    aug_dot (glyph-scoped): 157 rows, on a notehead subject: 0
+    stem (cell-scoped): 916 rows, on a notehead subject: 0
+    beam_stroke (cell-scoped): 307 rows, on a notehead subject: 0
+    cell_staff_space (cell-scoped): 0 rows, on a notehead subject: 0
+ + flags & dots {'decided': 1420, 'narrowed': 29}
+    beam_evidence {'reader_declined': 442, None: 331, 'flag': 109, 'read': 405, 'none_over_this_note': 162}
+    durations carrying a dot: 156   flags attached: 112   dots attached: 157
+    flag (glyph-scoped): 134 rows, on a notehead subject: 0
+    aug_dot (glyph-scoped): 157 rows, on a notehead subject: 0
+    stem (cell-scoped): 916 rows, on a notehead subject: 0
+    beam_stroke (cell-scoped): 307 rows, on a notehead subject: 0
+    cell_staff_space (cell-scoped): 368 rows, on a notehead subject: 0

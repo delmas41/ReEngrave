@@ -692,7 +692,7 @@ it newly speaks for (p.63) name 3.0 with no `voted` 3.0 anywhere to spell it,
 so they take the abstaining branch. See
 `benchmarks/omr-staged-meter-from-bars-2026-09/FINDINGS.md`.
 
-### A-DUR-8 · ⚠️⚠️ BAR SUMS ARE WRONG ON PERFECT INK — the bar-sum family is blocked UPSTREAM
+### A-DUR-8 · ⚠️⚠️ BAR SUMS WERE WRONG ON PERFECT INK — ✅ CLOSED on one engraved document
 
 **MEASUREMENT, not a design decision.**
 *`benchmarks/omr-staged-meter-engraved-2026-09/`, `render_meter_change.py`, `hide_change_signature.py`*
@@ -744,19 +744,27 @@ IN THE WRONG PLACE.** See
   right-to-wrong. ⚠️ The candidate-policy question DISSOLVES: under the stem
   tier `top` and `lowest` agree on every bar, which is the claim that the
   ambiguity was an artefact of the association.
-* ⚠️ **DIAGNOSED, NOT FIXED — `Q.FLAG` and `Q.AUG_DOT` never reach a
-  duration.** `gather_rhythm_marks` writes them at the MARK's own glyph
-  subject; `adjudicate_duration` reads them on the NOTEHEAD's. Measured: 134
-  flag rows and 157 dot rows, **0 on a notehead subject, 0 durations carrying a
-  dot, `beam_evidence == "flag"` 0 times.** It accounts for both directions of
-  the residual, confirmed against the encoding the page was rendered from:
-  m211 reads `quarter + 8th-rest` × 4 = **6.0** where the truth is **100
-  eighths** (the missing flag), and m207/m208 read a plain half, **2.0**, where
-  8 parts play a **dotted half** (the missing dot). ⚠️ The staged module's own
-  `DOT_ABOVE_NOTE_MAX_SPACES` / `DOT_BELOW_NOTE_MAX_SPACES`, with a paragraph
-  of measured justification, are **used by nothing in it** — the attachment
-  that comment describes is never performed. **This is the next unit of work**,
-  and it moves durations in the SHORTENING direction on a larger population.
+* ✅ **FIXED — a MARK must be ATTACHED to its notehead.** `Q.FLAG` and
+  `Q.AUG_DOT` are gathered on the MARK's own glyph subject and were read on the
+  NOTEHEAD's, so **134 flag rows and 157 dot rows reached ZERO durations** — 0
+  durations carrying a dot, `beam_evidence == "flag"` 0 times. It accounted for
+  both directions of the residual, confirmed against the encoding the page was
+  rendered from: m211 read `quarter + 8th-rest` × 4 = **6.0** where the truth
+  holds **100 eighths**, and m207/m208 read a plain half at **2.0** where 8
+  parts play a **dotted half**. Now 112 flags attached (109 deciding) and 157
+  dots, and **the fixture reads 16 assessable bars, all 16 correct**.
+  ⚠️ A flag hangs on a STEM, which on this path beats the legacy x-centre rule
+  (`_flag_for_notehead`'s own docstring says it cannot use the stem because a
+  0-stem detector has none — stale here). ⚠️ A second bug sat in the same two
+  lines: `levels = len(flags)` counts GLYPHS, and one `flag16thUp` is one glyph
+  and TWO levels. ⚠️⚠️ And the dot window needed a unit that was not on the
+  record — `Q.CELL_STAFF_SPACE`, gathered where `_cell_grid` already computes
+  it, because **it is not a constant**: the nominal is
+  `CANONICAL_STAFF_SPAN_PX / 4 = 100`, but `_upscale_to_canonical` scales a
+  too-wide cell by WIDTH, and on this fixture **184 of 368 cells read 100 and
+  the other 184 read 38.5-56**. `DOT_ABOVE_NOTE_MAX_SPACES` /
+  `DOT_BELOW_NOTE_MAX_SPACES` had sat in the staged module, with a paragraph of
+  measured justification, **used by nothing in it**.
 
 ⚠️ **AND IT HAS A MEASURED COST ALREADY.** `A-DUR-2` records that only the
 BENEFIT of the carry was measured. On the engraved fixture at bar 155 a
@@ -773,11 +781,15 @@ find the sums correct. **Do not tune `METER_CARRY_FLOOR` or
 `METER_FROM_BARS_FLOOR` against this** — that is fitting a constant to a
 broken input.
 
-**Blast radius.** The measurement changed no behaviour; the stem tier above
-does, and only on the staged path (`tools/omr/rhythm.py` is untouched, so no
-engraved or scan figure moves). n = 2 changes in 1 movement of 1 work, and
-**the four bars that stay wrong are exactly the un-fixed half** — the two
-faults are independent by measurement now, not by claim.
+**Blast radius.** Staged path only (`tools/omr/rhythm.py` untouched, so no
+engraved or scan figure moves). ⚠️⚠️ **THIS ENTRY IS CLOSED ON ONE ENGRAVED
+DOCUMENT AND THAT IS NOT LICENCE TO TUNE THE METER FLOORS.** The blocker it
+named is gone here, so the bar-sum family may be RE-OPENED; re-pricing
+`METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` needs a SCAN arm first — every
+attachment above rides on classical-CV stems and detector boxes, and a scan has
+fewer and worse of both. All three rules are ADDITIVE, so the floor is the old
+behaviour, but the gain on a scan is unmeasured and so is whether a WRONG stem
+can hand a note a flag it does not have. Sixteen bars is not a corpus.
 
 ### A-DUR-6 · ⚠️⚠️ THE TARGET MODEL — a meter is decided PER BAR, from layered evidence
 

@@ -177,6 +177,157 @@ def _stem_joined(beams, stems, head_box):
     return joined, attached
 
 
+#: `flag8thUp` -> 1 level, `flag16thDown` -> 2, and so on. DERIVED from
+#: `rhythm._FLAG_DURATIONS` rather than restated, so the two cannot drift.
+#:
+#: ⚠️⚠️ A FLAG CLASS NAMES A VALUE, IT IS NOT A TALLY. `adjudicate_duration`
+#: did `levels = len(flags)`, so a single `flag16thUp` -- one glyph, two
+#: levels -- read as an EIGHTH. Counting glyphs is right for beam strokes,
+#: which are drawn one per level, and wrong for flags, which are drawn as one
+#: glyph however many hooks it has.
+def _flag_levels_table() -> Dict[str, int]:
+    from ...rhythm import _FLAG_DURATIONS
+    out: Dict[str, int] = {}
+    for name, (beats, _type) in _FLAG_DURATIONS.items():
+        levels = 0
+        v = 1.0
+        while v > beats + 1e-9:
+            v /= 2.0
+            levels += 1
+        out[name] = levels
+    return out
+
+
+_FLAG_LEVELS = _flag_levels_table()
+
+
+def _flag_levels_for(value) -> Optional[int]:
+    return _FLAG_LEVELS.get(str(value).lower())
+
+
+def _attached_flags(ev: Evidence, cell, attached_stems):
+    """The flags on THIS notehead's stem: (rows, levels).
+
+    ⚠️⚠️ `Q.FLAG` IS GATHERED ON THE FLAG'S OWN GLYPH SUBJECT AND WAS READ ON
+    THE NOTEHEAD'S, so not one of 134 rows on a three-page record ever reached
+    a duration -- `beam_evidence == "flag"` fired ZERO times. `ev.rows(Q.FLAG)`
+    asks the subject under adjudication, and a flag is a different detection
+    with its own glyph index. The mark had to be ATTACHED and nothing attached
+    it.
+
+    ⚠️ THE ATTACHMENT IS THE STEM, AND HERE THAT IS STRICTLY BETTER THAN THE
+    LEGACY RULE. `rhythm._flag_for_notehead` matches on x-centre proximity and
+    says in its own docstring that it cannot enforce stem direction because
+    "the notehead's stem direction isn't reliably available from a 0-stem
+    detector". On this path the stems ARE available -- `gather_cv_lines`
+    reads them -- so a flag is claimed only where it touches a stem that
+    touches this head. A flag is drawn FROM the stem's far end, so the two
+    boxes meet.
+
+    Measured on the engraved Beethoven 5 iv fixture: m211 prints 100 eighths
+    and 80 eighth rests, and every one of those eighths was read as a QUARTER
+    -- four `quarter + 8th-rest` pairs summing to 6.0 in a 4/4 bar, on 20 of
+    23 staves.
+    """
+    # ⚠️ NO `if not attached_stems: return` FAST PATH. One was written and a
+    # mutation arm SURVIVED it -- `any()` over an empty list is already False,
+    # so the early return was a second spelling of a rule that lives one line
+    # below, and a rule a mutation cannot break is a protection that is not
+    # there. Deleted rather than propped up with a test.
+    boxes = {r.subject.to_key(): r for r in ev.rows(
+        Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)}
+    out = []
+    for f in ev.rows(Q.FLAG, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        box_row = boxes.get(f.subject.to_key())
+        box = _xywh_head(box_row.value) if box_row else None
+        if box is None:
+            continue
+        if any(_boxes_overlap(_xywh(st), box) for st in attached_stems
+               if _xywh(st)):
+            out.append(f)
+    # ⚠️ THE MAX, NOT THE SUM. Two flag detections on one stem are two
+    # readings of one glyph, not two glyphs; a 16th flag alone already says
+    # two levels.
+    levels = 0
+    for f in out:
+        lv = _flag_levels_for(f.value)
+        if lv:
+            levels = max(levels, lv)
+    return out, levels
+
+
+def _attached_dots(ev: Evidence, cell, head_box, space):
+    """The augmentation dots belonging to THIS notehead.
+
+    ⚠️ `Q.AUG_DOT` had the same fault as `Q.FLAG` -- 157 rows on a three-page
+    record, ZERO durations carrying a dot -- and the two constants written for
+    exactly this decision, `DOT_ABOVE_NOTE_MAX_SPACES` and
+    `DOT_BELOW_NOTE_MAX_SPACES`, sat here with a paragraph of measured
+    justification and were **used by nothing in this module**.
+
+    ⚠️ THE GEOMETRY IS THE PAID-FOR ONE, in its own units. A dot is printed to
+    the RIGHT of its note, and NOT at its note's height: a note in a space
+    takes its dot in the same space, a note ON A LINE takes it in the space
+    ABOVE. Over 116 dots the signed offsets are bimodal -- 52 at 0.00 spaces,
+    52 at +0.50, nothing between +0.57 and +3.75 -- so the window is
+    asymmetric, and the asymmetry is what decides a double stop, where the
+    lower dot is equidistant from both noteheads and a symmetric window ties.
+
+    ⚠️ AND THE CLAIM IS RECIPROCAL, WHICH IS WHAT MAKES A PER-GLYPH DECISION
+    SAFE. The legacy rule assigns each dot to its own nearest target, globally;
+    this decision sees one notehead. So a dot is claimed only where THIS head
+    is the best target the dot has in the cell -- the same assignment, asked
+    from the other end, so two heads can never both take one dot.
+    """
+    if head_box is None or not space:
+        return []
+    boxes = {r.subject.to_key(): r for r in ev.rows(
+        Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)}
+    heads = []
+    for r in ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        box_row = boxes.get(r.subject.to_key())
+        b = _xywh_head(box_row.value) if box_row else None
+        if b is not None:
+            heads.append((r.subject.to_key(), b))
+    mine = None
+    for key, b in heads:
+        if b == head_box and key == ev.subject.to_key():
+            mine = key
+    if mine is None:
+        mine = ev.subject.to_key()
+
+    max_above = max(1.0, space * DOT_ABOVE_NOTE_MAX_SPACES)
+    max_below = max(1.0, space * DOT_BELOW_NOTE_MAX_SPACES)
+    out = []
+    for d in ev.rows(Q.AUG_DOT, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        box_row = boxes.get(d.subject.to_key())
+        db = _xywh_head(box_row.value) if box_row else None
+        if db is None:
+            continue
+        dot_x_left, dot_w = db[0], db[2]
+        dot_y = db[1] + db[3] / 2.0
+        best, best_score = None, float("inf")
+        for key, hb in heads:
+            hx_right = hb[0] + hb[2]
+            if hx_right > dot_x_left:
+                continue                      # the note must be to the LEFT
+            hy = hb[1] + hb[3] / 2.0
+            above = hy - dot_y                # positive: the dot sits HIGHER
+            if above > max_above or above < -max_below:
+                continue
+            dx = dot_x_left - hx_right
+            if dx > max(dot_w, 12) * 5:
+                continue
+            score = dx + abs(hy - dot_y) * 2
+            if score < best_score:
+                best_score, best = score, key
+        if best == mine:
+            out.append(d)
+    return out
+
+
 def _beam_levels(beams, x_center, width, joined=()):
     """How many strokes cover this notehead's column: (CERTAIN, POSSIBLE).
 
@@ -228,7 +379,7 @@ def _head_class(ev: Evidence) -> Optional[str]:
                    Q.STEM, Q.REST),
     scope=Kind.GLYPH,
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM,
-           Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST),
+           Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE),
     reasons=("head_and_marks", "beams_ambiguous", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest"),
     mode=Mode.ADDITIVE,
@@ -317,16 +468,21 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     else:
         beam_evidence = "none_over_this_note"
 
-    flags = ev.rows(Q.FLAG)
-    if flags and not levels:
+    flags, flag_levels = _attached_flags(ev, cell, attached)
+    if flag_levels and not levels:
         # A flag says the same thing a beam does for an unbeamed note.
-        levels = len(flags)
+        levels = flag_levels
         used.extend(r.id for r in flags)
         beam_evidence = "flag"
     beats = base / (2 ** levels) if levels else base
 
     # dots lengthen: each adds half of what stands so far.
-    dots = ev.rows(Q.AUG_DOT)
+    space_row = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                        subject=cell)
+    space = float(space_row[-1].value) if space_row else None
+    if space_row:
+        used.append(space_row[-1].id)
+    dots = _attached_dots(ev, cell, head_box, space)
     n_dots = len(dots)
     used.extend(r.id for r in dots)
     total, add = beats, beats
@@ -352,6 +508,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               "cv_beams": len(cv), "yolo_beams": len(yolo),
               "yolo_kept": len(kept) - len(cv),
               "stems_attached": len(attached), "beams_by_stem": len(joined),
+              "flags_attached": len(flags), "flag_levels": flag_levels,
+              "dots_attached": n_dots,
+              "staff_space": space,
               "levels_certain": certain, "levels_possible": possible}
 
     # ⚠️ WHERE THE BEAM READING IS A RANGE, SO IS THE DURATION. Narrowing is

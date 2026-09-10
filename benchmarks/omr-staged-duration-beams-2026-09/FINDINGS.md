@@ -1,4 +1,4 @@
-# The duration reader — a note is joined to its beam by its STEM
+# The duration reader — a MARK must be attached to its notehead
 
 ⚠️ **No benchmark was run and nothing here is a score.** Every number is a
 control or a diagnosis. The change is **staged-pipeline only** — the legacy
@@ -8,8 +8,13 @@ moves.
 Acts on
 [`benchmarks/omr-staged-meter-engraved-2026-09/FINDINGS.md`](../omr-staged-meter-engraved-2026-09/FINDINGS.md)
 §6, which separated **two independent faults** in the bar sums and asked for
-them to be worked apart. **Fault 1 is FIXED here. Fault 2 is DIAGNOSED here to
-a single cause, and is not fixed** — it is the next unit of work.
+them to be worked apart. **Both are fixed**, in that order and in two commits,
+and they turned out to be **one family**: a mark the page prints is gathered,
+and the decision that needs it looks in the wrong place.
+
+⚠️⚠️ **THE FIXTURE NOW READS EVERY BAR CORRECTLY — 16 assessable, 16 right,
+from 12 assessable and 7 right.** `A-DUR-8` is closed on this document. It is
+ONE document; see §7.
 
 **The fixture.** `beethoven-sym5-mvt4` bars 203-218, rendered through LilyPond
 at 23 parts with every part playing every bar (`render_meter_change.py`), so
@@ -29,26 +34,27 @@ python3 benchmarks/omr-staged-duration-beams-2026-09/barsum.py staged.json \
 
 ---
 
-## 1. THE RESULT — assessable bars 12 → 14, correct 7 → **10**
+## 1. THE RESULT — 12 assessable / 7 right → 14/10 → **16/16**
 
 Off each record's **own** duration verdicts, under the **shipping** candidate
 policy, every page of the fixture. A `*` marks a bar read wrong.
+`out/barsums.txt` carries the three arms in full.
 
-```
-BEFORE  assessable 12  correct  7   p0c0=3.0 p0c1=3.0 p0c2=3.0 p1c0=3.0
-                                    p1c1=2.0* p1c2=2.0* p1c3=4.0 p1c4=3.5*
-                                    p1c5=6.0* p1c8=4.0 p2c2=4.0 p2c3=4.5*
-AFTER   assessable 14  correct 10   … p2c0=4.0 p2c1=4.0 p2c2=4.0 p2c3=4.0
-```
+| | assessable | correct | narrowed verdicts |
+|---|--:|--:|--:|
+| before | 12 | 7 | 147 |
+| **+ the stem tier** (Fault 1) | 14 | 10 | 29 |
+| **+ flags and dots** (Fault 2) | **16** | **16** | 29 |
 
-**No bar goes from right to wrong.** One wrong bar is repaired (`p2c3`
-4.5 → 4.0) and two bars become assessable at all, both correct. `narrowed`
-duration verdicts fall **147 → 29**.
+**No bar goes from right to wrong at either step**, and the cross-staff
+agreement rises everywhere it was already right: `p0c0` 5 of 8 → **8 of 8**,
+`p2c3` 15 of 23 → **22 of 23**.
 
-⚠️ **The four bars that stay wrong are EXACTLY Fault 2 and they do not move** —
-`p1c1`, `p1c2` at 2.0, `p1c4` at 3.5, `p1c5` at 6.0, reproducing §6's own
-counts (17 of 23 and 20 of 23) to the staff. That the two faults are
-independent is now a measurement, not a claim.
+⚠️ **The four bars Fault 1 could not touch were EXACTLY Fault 2 and did not
+move under it** — `p1c1`/`p1c2` at 2.0, `p1c4` at 3.5, `p1c5` at 6.0,
+reproducing §6's own counts (17 of 23 and 20 of 23) to the staff. That the two
+faults were independent is a measurement, not a claim; and all four are right
+once the marks are attached.
 
 ## 2. THE MECHANISM — a beam ends at a stem, and a stem is not a centre
 
@@ -148,26 +154,28 @@ every stem in the cell counts as attached, `M3` stem tier disabled, `M4`
 joined ids ignored in `_beam_levels`): 1, 1, 4 and 4 failures of 7. The two
 tests that survive M3/M4 are the two CONTROLS, which must pass on both trees.
 
-## 5. ⚠️⚠️ FAULT 2 — DIAGNOSED, ONE CAUSE, AND IT IS THE SAME FAMILY
+## 5. ⚠️⚠️ FAULT 2 — THE SAME FAMILY: A MARK MUST BE ATTACHED TO ITS NOTEHEAD
 
 §6 said this one *"most needs a crop in front of a human"*. It did not need
 one: the record answered it, and the encoding the page was **rendered from**
 then confirmed it, which is stronger evidence than a crop.
 
 **`Q.FLAG` and `Q.AUG_DOT` are gathered on the MARK's own glyph subject and
-read on the NOTEHEAD's, so not one of them ever reaches a duration.**
+were read on the NOTEHEAD's, so not one of them ever reached a duration.**
 `gather_rhythm_marks` writes them at `R.glyph(..., gi)` — the flag's or the
-dot's own detection index — while `adjudicate_duration` does `ev.rows(Q.FLAG)`
-and `ev.rows(Q.AUG_DOT)` on the notehead's subject. Measured on this record:
+dot's own detection index — while `adjudicate_duration` did `ev.rows(Q.FLAG)`
+and `ev.rows(Q.AUG_DOT)` on the notehead's subject:
 
 ```
-flag    (glyph-scoped): 134 rows, on a notehead subject: 0
-aug_dot (glyph-scoped): 157 rows, on a notehead subject: 0
-durations carrying a dot: 0        beam_evidence == "flag": 0
+                     before                 after
+flag    (glyph-scoped)   134 rows, 0 read     112 attached, 109 deciding
+aug_dot (glyph-scoped)   157 rows, 0 read     157 attached
+durations carrying a dot          0                        156
+beam_evidence == "flag"           0                        109
 ```
 
-⚠️ It accounts for **both directions** of Fault 2, checked against the truth
-encoding measure by measure:
+⚠️ It accounted for **both directions** of the residual, checked against the
+truth encoding measure by measure:
 
 | bar | we read | truth says |
 |---|---|---|
@@ -176,27 +184,106 @@ encoding measure by measure:
 
 ⚠️ And the two constants the adjudicator carries for exactly this —
 `DOT_ABOVE_NOTE_MAX_SPACES` / `DOT_BELOW_NOTE_MAX_SPACES`, with a paragraph of
-measured justification about Brahms's double stops — **are declared in the
-staged module and used by nothing in it**; only the legacy `rhythm.py` reads
-its own copies. The attachment the comment describes is never performed.
+measured justification about Brahms's double stops — **were declared in the
+staged module and used by nothing in it**. The attachment that comment
+describes was never performed.
 
-**So the repair is the same shape as this session's**: a mark that belongs to a
-notehead must be ATTACHED to it, and the attachment is the adjudicator's job.
-The dot's gate is already measured and written down; the flag's is not, and a
-flag attaches at the STEM's far end, so it should be read through the stem tier
-this session just built rather than by proximity to the head.
+### 5a. A FLAG HANGS ON A STEM, and here that beats the legacy rule
 
-⚠️ **It is deliberately NOT done here.** It is a second fix, it changes
-durations in the SHORTENING direction on a much larger population than 114
-rows, and §6's instruction was to work the two faults separately.
+`rhythm._flag_for_notehead` matches a flag to a notehead on **x-centre
+proximity**, and says in its own docstring why: it cannot enforce stem
+direction because *"the notehead's stem direction isn't reliably available from
+a 0-stem detector"*. ⚠️ **On this path it is** — `gather_cv_lines` reads the
+stems, 916 rows on this record — so that limitation is stale here. A flag is
+drawn FROM the stem's far end, so a flag is claimed only where its box meets a
+stem whose box meets this head: the same `_boxes_overlap` primitive Fault 1
+introduced, reused rather than restated.
+
+⚠️⚠️ **AND A SECOND BUG WAS IN THE SAME TWO LINES: `levels = len(flags)`.** A
+flag class NAMES A VALUE — a single `flag16thUp` is one glyph and TWO levels —
+so counting glyphs would have read every sixteenth as an eighth. Counting is
+right for beam strokes, which are drawn one per level, and wrong for flags.
+`_FLAG_LEVELS` is derived from `rhythm._FLAG_DURATIONS` rather than restated.
+
+### 5b. A DOT NEEDS A UNIT, AND THE UNIT IS NOT A CONSTANT
+
+The dot window is expressed in staff spaces, and there was **no staff-space
+unit on the record in the cell's own frame**. `Q.STAFF_SPACING` exists and is
+the PAGE's (41.25 px here) while every glyph box in a cell is canonical
+(a notehead is ~128 px wide) — two frames, and comparing them is the substrate
+error this project keeps paying for.
+
+⚠️⚠️ **THE NOMINAL WOULD HAVE BEEN WRONG ON HALF THE CELLS.**
+`CANONICAL_STAFF_SPAN_PX / 4 = 100` is what a cell gets *if* it is scaled by
+height, but `_upscale_to_canonical` scales a too-wide cell by **width**
+instead. Measured over this fixture's 368 cells:
+
+```
+px per staff SPACE:  100 x184   56 x59   46 x56   38 x15   99 x14
+                      47 x13    55 x10   98 x9    39 x8
+min 38.5   max 100.0
+```
+
+**Exactly half the cells are under 60 px.** A hardcoded 100 would have made
+the dot window two to three times too generous on them.
+
+So `Q.CELL_STAFF_SPACE` is gathered where `_cell_grid` already computes it —
+whose own docstring records that this arithmetic *"was computed inline and
+thrown away"* once before, and was then kept only INSIDE a notehead's
+position. It is the same finding one layer on. A one-line percussion cell has
+no gaps to derive it from and gets the unit `measure_extractor` already writes
+for exactly that case; where neither exists the decision **declines the dot**
+rather than measuring against a number written for another frame.
+
+### 5c. THE CLAIM IS RECIPROCAL
+
+The legacy rule assigns each dot to its own nearest target, globally. A staged
+decision sees ONE notehead, so it asks the same question from the other end: a
+dot is claimed only where **this** head is the best target the dot has in the
+cell. Two heads can never both take one dot — which is the double-stop case
+the asymmetric window exists for.
+
+### 5d. THE ARMS
+
+Seven mutation arms, all red on the intended tests: flags read on the
+notehead's own subject (4 failures), flag levels counted as glyphs (1), dots
+read on the notehead's own subject (6), the dot window made symmetric (1), the
+reciprocal check dropped (1), a flag not required to touch a stem (2), a
+missing unit defaulting to 100 (1).
+
+⚠️⚠️ **AN EIGHTH ARM SURVIVED AND THE RULE WAS DELETED, NOT THE TEST.**
+`_attached_flags` opened with `if not attached_stems: return [], 0`. It could
+not be broken, because `any()` over an empty list is already False — a second
+spelling of a rule that lives one line below. A rule a mutation cannot break is
+a protection that is not there.
+
+⚠️ **AND AN EXISTING TEST WAS PASSING FOR FREE.**
+`test_a_dot_adds_half_of_what_stands` asserted the right arithmetic on a
+fixture that wrote `Q.AUG_DOT` onto the NOTEHEAD's subject — a subject shape
+`gather` never produces. It went green for as long as the bug lived. The
+helper now emits a dot as what it is: its own detection, with its own glyph
+index and its own box.
 
 ## 6. WHAT THIS DOES NOT ESTABLISH
 
-* **n = 1 document, 1 fixture, 3 pages, engraved.** A scan has fewer CV stems,
-  so the tier reaches less there; it cannot reach less than zero, since it is
-  additive, but the SIZE of the gain on a scan is unmeasured.
-* **No scan arm was run**, and no OMR-NED figure was taken on either family —
-  the legacy exporter does not use this code path at all.
-* **The bar sums are still wrong on four bars** and will be until Fault 2 is
-  fixed, so `OMR_METER_CARRY` / `OMR_METER_FROM_BARS` are **not** re-priced by
-  this and neither floor should be touched. `A-DUR-8` stands, halved.
+* ⚠️⚠️ **n = 1 DOCUMENT, 1 FIXTURE, 3 PAGES, ENGRAVED.** "Every bar right" is a
+  statement about sixteen bars of one LilyPond render, not about the reader.
+  The fixture was chosen because its ink is perfect by construction, which is
+  what makes a failure the rule's fault — and equally what stops a success
+  from generalising on its own.
+* ⚠️ **A SCAN IS THE UNMEASURED CASE, AND IT IS DIFFERENT IN KIND.** All three
+  attachments run on classical-CV stems and on detector boxes; a scan has
+  fewer and worse of both. Every rule here is ADDITIVE — with no stem read,
+  no flag is claimed and the note behaves exactly as before — so the floor is
+  the old behaviour, but the SIZE of the gain on a scan is not measured, and
+  neither is whether a *wrong* stem can now hand a note a flag it does not
+  have. That is the first thing to run next.
+* **No OMR-NED figure was taken on either family**, and none applies: the
+  legacy exporter does not use this code path.
+* ⚠️ **`A-DUR-8` IS CLOSED ON THIS DOCUMENT AND THAT IS NOT LICENCE TO TUNE
+  THE METER FLOORS.** The blocker it named — bar sums wrong on perfect ink —
+  is gone here, so the bar-sum family can be *re-opened*; re-pricing
+  `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` needs the scan arm above and
+  more than one document first. Sixteen bars is not a corpus.
+* **The four residual bars are gone, so nothing is left to attribute.** If a
+  bar sum is wrong on the next fixture, it is a NEW finding, not this one.

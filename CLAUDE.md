@@ -694,11 +694,14 @@ and slurs (843 over two pages) need `arc_kind` + `arc_owner`; dynamics (489)
 need the `f`+`f` → `ff` spelling; articulations (37) need the nearest-notehead
 attach. ⚠️ **`fermata` (35) and `ornament` (6) still have NO QUANTITY.**
 
-### A note is joined to its beam by its STEM — bar sums on perfect ink
+### A MARK must be attached to its notehead — bar sums on perfect ink
 
 `A-DUR-8` said bar sums are wrong on a clean LilyPond engraving, blocking the
 whole bar-sum family, and asked for the two faults behind it to be worked
-apart. **Fault 1 is fixed; Fault 2 is diagnosed to one cause.** Staged path
+apart. **Both are fixed, and they were one family**: a mark the page prints is
+gathered, and the decision that needs it looks in the wrong place. On the
+fixture — `beethoven-sym5-mvt4` m203-218 at 23 parts — assessable bars go
+**12 → 14 → 16** and correct **7 → 10 → 16**, i.e. every bar right. Staged path
 only — `tools/omr/rhythm.py` is untouched, so no engraved or scan figure moves.
 Findings:
 [benchmarks/omr-staged-duration-beams-2026-09/FINDINGS.md](benchmarks/omr-staged-duration-beams-2026-09/FINDINGS.md).
@@ -739,20 +742,47 @@ this fixture (a tolerance sweep 0→64 px moves one row and no bar) and is
 therefore tested directly on synthetic ink, with its positive control inside
 the test; four mutation arms are red on the intended tests.
 
-⚠️⚠️ **FAULT 2 IS THE SAME FAMILY AND IS NOT FIXED: `Q.FLAG` AND `Q.AUG_DOT`
-NEVER REACH A DURATION.** `gather_rhythm_marks` writes them at the MARK's own
-glyph subject; `adjudicate_duration` reads them on the NOTEHEAD's. **134 flag
-rows, 157 dot rows, 0 on a notehead subject, 0 durations carrying a dot,
-`beam_evidence == "flag"` zero times.** It accounts for both directions of the
-residual, confirmed against the encoding the page was RENDERED FROM: m211 reads
-`quarter + 8th-rest` × 4 = **6.0** where the truth holds **100 eighths** (the
-missing flag), and m207/m208 read a plain half at **2.0** where 8 parts play a
-**dotted half** (the missing dot). ⚠️ `DOT_ABOVE_NOTE_MAX_SPACES` /
-`DOT_BELOW_NOTE_MAX_SPACES` sit in the staged module with a paragraph of
-measured justification and are **used by nothing in it**. It did not need the
-crop `A-DUR-8` asked for — the record answered it and the truth encoding
-confirmed it. ⚠️ **Do not tune `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR`
-until it is fixed**: four bars are still wrong.
+⚠️⚠️ **FAULT 2 WAS THE SAME FAMILY: `Q.FLAG` AND `Q.AUG_DOT` REACHED NO
+DURATION AT ALL.** `gather_rhythm_marks` writes them at the MARK's own glyph
+subject; `adjudicate_duration` read them on the NOTEHEAD's. **134 flag rows,
+157 dot rows, 0 on a notehead subject, 0 durations carrying a dot,
+`beam_evidence == "flag"` zero times.** It accounted for both directions of the
+residual, confirmed against the encoding the page was RENDERED FROM: m211 read
+`quarter + 8th-rest` × 4 = **6.0** where the truth holds **100 eighths**, and
+m207/m208 read a plain half at **2.0** where 8 parts play a **dotted half**. It
+did not need the crop `A-DUR-8` asked for. Now **112 flags attached (109
+deciding) and 157 dots**, and the fixture reads every bar right.
+
+⚠️ **A FLAG HANGS ON A STEM**, which on this path beats the legacy rule:
+`rhythm._flag_for_notehead` matches on x-centre proximity and says in its own
+docstring that it cannot use the stem because *"the notehead's stem direction
+isn't reliably available from a 0-stem detector"* — stale here, since
+`gather_cv_lines` reads 916 of them. ⚠️ A second bug sat in the same two lines:
+`levels = len(flags)` counts GLYPHS, and one `flag16thUp` is one glyph and
+**two** levels; `_FLAG_LEVELS` is derived from `rhythm._FLAG_DURATIONS`.
+⚠️ `DOT_ABOVE_NOTE_MAX_SPACES` / `DOT_BELOW_NOTE_MAX_SPACES` had sat in the
+staged module with a paragraph of measured justification and were **used by
+nothing in it**; the claim is now RECIPROCAL (a dot is taken only where THIS
+head is the best target it has), which is what makes a per-glyph decision safe
+where the legacy rule assigns globally.
+
+⚠️⚠️ **AND THE DOT WINDOW NEEDED A UNIT THAT WAS NOT ON THE RECORD — WHICH IS
+NOT A CONSTANT.** `Q.STAFF_SPACING` is the PAGE's (41.25 px) while a cell's
+glyph boxes are canonical (a notehead ~128 px wide). The nominal is
+`CANONICAL_STAFF_SPAN_PX / 4 = 100`, but `_upscale_to_canonical` scales a
+too-wide cell by **WIDTH** instead: on this fixture **184 of 368 cells read
+100 px and the other 184 read 38.5-56**. So `Q.CELL_STAFF_SPACE` is gathered
+where `_cell_grid` already computes it — the same *computed-and-thrown-away*
+finding that docstring already records, one layer on — and where no unit
+exists the decision **declines the dot** rather than measuring against a number
+written for another frame.
+
+⚠️ **`A-DUR-8` IS CLOSED ON ONE ENGRAVED DOCUMENT AND THAT IS NOT LICENCE TO
+TUNE THE METER FLOORS.** Every attachment here rides on classical-CV stems and
+detector boxes, and a scan has fewer and worse of both. All three rules are
+ADDITIVE, so the floor is the old behaviour — but the gain on a scan is
+unmeasured, and so is whether a WRONG stem can hand a note a flag it does not
+have. **That scan arm is the next thing to run.** Sixteen bars is not a corpus.
 
 ### A meter CHANGE printed as a `C` was detected on 23 staves and dropped
 
