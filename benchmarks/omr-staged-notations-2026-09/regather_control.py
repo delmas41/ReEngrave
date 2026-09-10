@@ -20,6 +20,32 @@ is expensive (~80 s/page here) and it is the only thing that can go red.
 measured moving between runs on byte-identical code, so a quantity that comes
 back identical across two full runs is evidence the delta is attributable.
 
+⚠️⚠️ **AND THE BOUNDARY OF THAT CLAIM IS NARROWER THAN IT READS. DO NOT QUOTE
+THIS AS "THE PIPELINE IS DETERMINISTIC".** What two identical runs show is that
+the STAGED path is reproducible run-to-run ON THE PAGE MEASURED. It does NOT
+contradict, and says nothing about, two measured facts at other layers:
+
+  * DETECTOR confidences move between runs on byte-identical code -- the
+    hairpin work measured 0.83 -> 0.69 on one box (`omr-hairpins-2026-09`
+    FINDINGS §6), which is why a from-scratch rebuild there reproduced the
+    categorical result and NOT the pooled edit count;
+  * the legacy scan gate has a **±6 edit** noise floor on the 20-row era
+    (`omr-merge-verification-2026-09`), so a per-row delta smaller than that
+    is not evidence.
+
+Both are about layers this instrument does not touch. A verdict can be stable
+while the confidence underneath it moves, because most decisions read a
+confidence as a TIER or an argmax rather than a value -- so identical verdicts
+are the weaker claim, and the right one to make.
+
+⚠️ Two independent observations of the staged path's run-to-run stability
+exist, on different documents and run for different reasons: this one (24
+quantities, Beethoven 5 / Litolff p3, across the page-box fields), and the
+duration-reader session's engraved Beethoven 5 iv fixture, whose bar sums came
+back identical bar-for-bar and count-for-count (14 assessable, 10 correct,
+same staff tallies) across an `origin/main` merge. Theirs is quoted here, not
+reproduced here.
+
     python3 regather_control.py BEFORE.json AFTER.json
 """
 import json
