@@ -1151,6 +1151,32 @@ Taxonomy from the staged-pipeline session; instances from both, and the widening
 is theirs after their third instance showed the narrow rule would still permit
 it.
 
+⚠️⚠️ **THE SAME DEFECT APPEARED AT THREE LEVELS IN ONE DAY, and that is more
+useful than any of the three:** the CODE converting *"cannot tell"* into a
+definite answer; a TEST named for a hazard it does not reach (`…refuses_even_
+WITH_a_stamp` wrote a stamp, so the mutant that needs BOTH sides `None` walked
+past it); and a TEST SUITE not reaching the half its own commit message
+describes (a provenance file covering the WRITER while every refusal in the
+consumer — the whole point of the guard — was covered by nothing, and deleting
+the `raise` outright passed 4/4 green). **In each case the GREEN RESULT is what
+stopped the search.**
+
+⚠️ **Two things follow for how to run a mutation battery, both learned by
+shipping without them:**
+* **One red arm is not a battery.** Running a single mutation, seeing red, and
+  stopping is the reassurance that hides the rest — measured, five of six
+  survived behind one that did not.
+* **A battery of REFUSAL tests can pass by refusing everything**, so it needs a
+  POSITIVE control in the same class: *this input is accepted*. Verified here
+  in both directions — mutating the guard to refuse everything fails exactly
+  the accept test, and deleting the refusal fails four others.
+
+⚠️ Do not over-credit the instrument: a mutation battery found the TEST-level
+faults, and nothing else did — but the `&&` chain was found by checking
+`origin/main`, the unreachable status by reading a branch order, and a split
+sentence by `git blame` disagreeing with the truth. **Different rungs need
+different instruments**, which is the same lesson as the two families above.
+
 ⚠️ **A `wants` entry the decision never reads is INERT** — found by a test
 that asserted the opposite and failed. `Evidence` fills `missing`/`declined`
 only for quantities actually queried, so a declaration nothing reads records
