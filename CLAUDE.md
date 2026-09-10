@@ -1092,7 +1092,7 @@ All closed in `tools/omr/tests/test_staged_stage_contract.py`.
 iterates `adjudicate.REGISTRY` / `ORDER` with covering every decision emptied
 it in one line — the discipline tests iterate the registry to assert
 declaration properties. **A check that cannot fail is worse than no check**;
-the clause is gone and its absence is pinned. The bounded case (`stubs()`) IS
+the clause is gone and its absence is pinned. The bounded case (`stubs()`) IS resolved.
 
 ⚠️⚠️ **SEVEN INSTANCES ACROSS TWO SESSIONS, 2026-09-09, AND THEY SPLIT INTO TWO
 FAMILIES THAT NEED DIFFERENT REPAIRS.** Worth the split because the fix does
@@ -1131,10 +1131,25 @@ while `git status` failed left a record naming a COMMIT with dirtiness unknown,
 which the consumer read as clean). **Neither conversion is ever the safe
 default**, and neither branch runs on a machine with git and a clean checkout —
 which is every machine anyone develops on.
-The rule that fixes it is the one a dirty tree already forces: *anything that
-cannot uniquely name a tree must never compare equal to anything, including
-itself.* Taxonomy from the staged-pipeline session; instances from both.
-resolved.
+⚠️ **AND THE RULE MUST BE STATED WIDER THAN THE FIRST TWO INSTANCES, or it does
+not cover the third.** *"Anything that cannot uniquely name a tree must never
+compare equal to anything, including itself"* is about EQUALITY, and it is the
+right repair for a fallback that returns `"unknown"` or `""`. It would not have
+prevented the half-named tree: nothing was compared there at all — one fact was
+simply absent, and a falsy `None` was read downstream as **clean**. So the
+governing form is one clause wider and covers all three:
+
+> **A fallback must never convert *"cannot tell"* into a definite answer** —
+> not into *"same"*, and not into *"clean"*.
+
+The equality rule is the special case for values that get compared; the wider
+one also catches a MISSING fact being read as a negative. ⚠️ Two repairs follow
+and they are different: make the unnameable case unrepresentable (`None` rather
+than a magic string), and make the HALF-named case unrepresentable (the commit
+and the dirty flag are atomic, and a consumer refuses `dirty is None` outright).
+Taxonomy from the staged-pipeline session; instances from both, and the widening
+is theirs after their third instance showed the narrow rule would still permit
+it.
 
 ⚠️ **A `wants` entry the decision never reads is INERT** — found by a test
 that asserted the opposite and failed. `Evidence` fills `missing`/`declined`
