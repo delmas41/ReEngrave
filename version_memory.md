@@ -16,6 +16,27 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-10 — handoff: the duration reader, and the decisions left open
+
+`docs/handoff-2026-09-10-the-duration-reader.md` is the new entry point;
+CLAUDE.md's START HERE repointed at it. It carries the three duration entries
+below as one arc — `A-DUR-8` closed, two scan arms, three instrument defects —
+and its **§5 is the part a fresh session needs**: the decisions nobody has
+ruled on.
+
+* ⚠️ **§5.1 the dotted REST**, parked and unclaimed by both sessions: the same
+  fault fixed for noteheads, one branch over, worth **1 dot of 848**, and the
+  asymmetry is now WORSE than the consistent gap it replaced.
+* **§5.2** whether closing `A-DUR-8` re-opens the bar-sum family (the standing
+  objection is a scanned publisher misreading meter GLYPHS — a READING problem).
+* **§5.3** a shared name for a fault three sessions hit in one day: a per-staff
+  or per-cell quantity used as if it were system-wide. ⚠️ `coverage()` cannot
+  see one of its shapes — a quantity can be gathered in the WRONG FRAME and
+  look fed.
+* **§5.4** `Evidence` caching its own row queries.
+
+---
+
 ## 2026-09-09 (late night, 4) — the SECOND PUBLISHER, and it corrects arm 1
 
 Brahms 1 mvt1 / **Breitkopf & Härtel**, pdf pages 0-3 (14/27/28/28 staves), the

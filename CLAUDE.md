@@ -26,6 +26,27 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-10-the-duration-reader.md](docs/handoff-2026-09-10-the-duration-reader.md)
+— **`A-DUR-8` IS CLOSED**: bar sums were wrong on perfect ink, it was TWO
+faults, both are fixed, and they were one family — *a mark the page prints is
+gathered and the decision that needs it looks in the wrong place*. A note is
+joined to its beam by its **STEM** (`Q.STEM` was declared in `wants` and read
+by nothing, 916 rows); `Q.FLAG` and `Q.AUG_DOT` are gathered on the MARK's own
+glyph and were read on the NOTEHEAD's, so 134 and 157 rows reached **zero**
+durations. The engraved fixture goes **12 assessable / 7 correct → 16 / 16**.
+⚠️ Read its **§4 before quoting anything**: three documents, and closing
+`A-DUR-8` is **not licence to tune `METER_CARRY_FLOOR` or
+`METER_FROM_BARS_FLOOR`**. ⚠️⚠️ Its **§5 is the DECISIONS a human still owes**,
+led by a **dotted REST** — the same fault one branch over, left unfixed and
+worth 1 dot of 848, so the module now handles dots for noteheads and silently
+not for rests, **which is worse than the consistent gap it replaced**. ⚠️ Its
+**§3 is three defects found in this session's OWN measuring tools** — a bar key
+that merged two bars because a cell index restarts per system, a control that
+would have passed vacuously and was caught before it ran, and a mutation arm
+that survived, so the RULE was deleted rather than the test. ⚠️ The scan side is
+measured on **two publishers and the second corrected the first**: *"the marks
+half does nothing on a scan"* was true of a *low-res bitonal* document, not of
+scans. Its predecessor
 [docs/handoff-2026-09-09-the-boundary-measured.md](docs/handoff-2026-09-09-the-boundary-measured.md)
 — **the case that separates the two meter mechanisms is MEASURED**, on a real
 meter change rendered ENGRAVED so legibility is not the confound
