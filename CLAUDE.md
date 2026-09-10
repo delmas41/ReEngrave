@@ -1114,7 +1114,27 @@ not transfer between them:
   **Fix: state the contract, then check it holds for THIS use.**
 
 ⚠️ **The second family is the harder one: the instrument is working perfectly
-and the fault is in the sentence someone attached to it.** The `&&` chain is
+and the fault is in the sentence someone attached to it.**
+
+⚠️⚠️ **`git blame` ON A LINE IS NOT EVIDENCE ABOUT WHO BROKE THE PARAGRAPH**, and
+it is the purest member of that family because the tool is not merely working —
+it is answering, confidently, a different question than the one asked. Blame
+attributes a SURVIVING LINE to its original author; it cannot attribute a
+SPLIT. Measured here: an orphaned `resolved.` was blamed to a commit from the
+previous day and read as somebody else's merge artefact, when an anchored
+markdown insertion had landed between `The bounded case (\`stubs()\`) IS` and
+its own `resolved.`, orphaning the tail of a sentence. ⚠️ Anchored string
+replacement into prose is how this happens, and it is how most of this file
+gets edited — **check that the line you anchored to is not mid-sentence.**
+
+⚠️ And it nearly stayed, on TWO independent-looking signals: a sibling
+session's *"looks like a merge artefact"* and a blame that agreed. Both were
+correct about the line and both wrong about the cause, because both rested on
+the same assumption — that the line's author wrote it where it now sits.
+**Correlated witnesses again, with the correlation running through a shared
+ASSUMPTION rather than shared ink or a shared convention** — a third door onto
+the silent-arbiter room above. ⚠️ Recorded as an observation and explicitly NOT
+measured: n = 1, and neither session claims otherwise. The `&&` chain is
 the purest case — nothing malfunctioned, and a `&&` chain verifies only that
 each step EXITED ZERO, never that it DID ANYTHING; a no-op merge exits zero
 correctly. That is not a control that was wrong, it is a control that was never
