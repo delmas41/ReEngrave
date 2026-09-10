@@ -512,6 +512,71 @@ gate nobody had exercised: a cautionary is a SYSTEM-WIDE event, so a staff that
 still has a bar after the glyph contradicts it, and the safe reading of a
 contradiction keeps the change.
 
+### ⚠️⚠️ THE `9/4`: DIAGNOSED IN FULL, TWO HYPOTHESES REFUTED, AND NOT FIXED
+
+The last scan fault, opened. Brahms 1 / Breitkopf page 1 prints `9/8` on every
+staff of its first system and the template reader votes **`9/4`**.
+
+**What the reader actually did** (`min_score=0.0`, the whole score table, from
+the reader's own header crops rather than from the page):
+
+| | winner | score | runner-up | `9/8` |
+|---|---|--:|---|--:|
+| page 0, the correct `6/8` | `6/8` | **0.656-0.750** | `9/8` at 0.53-0.63 | 2nd on 13 of 14 |
+| page 1, the wrong `9/4` | `9/4` | **0.445-0.531** | `6/4` / `C` at 0.42-0.47 | **top-4 on only 3 of 14** |
+
+The numerator is right and the denominator is wrong, and `9/8` is not even the
+runner-up. ⚠️ **Page 1's WINNER scores below page 0's RUNNER-UP** — the
+signature of matching noise rather than a meter.
+
+**Hypothesis 1 — staff-line removal is tearing the digits apart. REFUTED.**
+`locate_time_signature` deliberately reads `image_no_staff`, on a measured
+ground (with the lines in, a barline matched as a `1` on two staves of twelve
+of Beethoven 5 p.1), and the crop does look shredded: the `9` reads as a `U`
+and the `8` as an `A`. **But scoring both variants of every header, page 1
+still reads `9/4` with the lines INTACT**, at *lower* scores (0.416-0.463).
+The erasure is not the cause.
+
+**Hypothesis 2 — the recorded `score_margin` separates a good vote from a bad
+one. REFUTED, and it is the more useful negative.** ⚠️ `score_margin` is
+computed by the locator, written onto every `Q.METER_TEMPLATE` row by GATHER,
+and **read by nothing** — the "value existed and nothing read it" pattern
+again, so it looks like a free discriminator. Measured over 8 system votes on
+4 documents: **TRUE 0.0681-0.3840, FALSE 0.0675.** A gap of **0.0006**. It does
+not separate, and a gate built on it would have looked principled and done
+nothing.
+
+⚠️⚠️ **AND NO STRUCTURAL SIGNAL CATCHES IT EITHER: the wrong reading is
+UNANIMOUS.** All 10 staves that spoke agree (`share` 1.0), so coverage and
+agreement floors both pass. **Cross-staff agreement is not independent evidence
+when every staff feeds the SAME reader the SAME typeface** — `A-DUR-6`'s
+"the bars are not fully independent witnesses", arriving in the meter reader.
+
+**What DOES separate is the absolute score, and its interval is empty:**
+
+| | n | median score |
+|---|--:|--:|
+| TRUE system votes | 7 | 0.744-0.781 (min staff 0.656) |
+| the FALSE one | 1 | **0.514** (max staff 0.531) |
+
+Nothing lies between **0.531 and 0.656**, and `min_score` is **0.50**.
+
+⚠️ **NOT SHIPPED, and the reason is scope rather than doubt.** `min_score`
+belongs to `time_signature_locator`, which the LEGACY `transcribe` path shares;
+its current value was set on an 11-source corpus, and the vote's agreement
+floor was moved 0.5 → 0.70 on 12-correct/1-wrong evidence from that same
+corpus. Raising it on **7 correct / 1 wrong over 4 documents** would be tuning
+on a fraction of the evidence the constant was set with, and pricing it means
+re-running the eleven-work engraved benchmark and the 20-row scan gate. That is
+its own piece of work.
+
+⚠️ **The other route needs no threshold at all and is already half-built**: the
+CAUTIONARY one system earlier reads `9/8` on **9 staves**, from the DETECTOR's
+digit pairs rather than from template correlation — an independent reader
+agreeing with the print. It is on the record. Consuming it would overturn a
+READ meter, which is neither the carry (that serves ABSTAINING systems) nor the
+form-borrow, so it is a new mechanism and belongs with the segments work.
+
 ### The two fixes together
 
 | | printed | proposed | found | FALSE |
