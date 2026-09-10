@@ -773,6 +773,24 @@ fourth instance of *a control that cannot fail* turned up in a sibling session.
 ⚠️ The stamp is written only AFTER the run succeeds, so a failed arm leaves
 none and is re-run rather than trusted.
 
+⚠️⚠️ **AND THE FIRST DRAFT OF THAT GUARD REINTRODUCED THE BUG IN ITS OWN
+FALLBACK, TWICE, BOTH TIMES BY RETURNING A STRING THAT COMPARES EQUAL TO
+ITSELF.** `except Exception: return "unknown"` made two arms on a machine
+without git match and silently reuse; and `subprocess.run` **without
+`check=True`** returns a failed command as empty stdout with no exception
+raised, so outside a git checkout the id was `""` and two empty stamps matched
+too — that path never reached the `except` at all. **The rule a dirty tree
+already forced is the general one: anything that cannot uniquely name a tree
+must never compare equal to anything, including itself.** Now `None`, and the
+caller writes no stamp — which the reader already refuses on. One mechanism, no
+special values.
+
+⚠️ Writing stays best-effort and never fatal: a record that cannot name its tree
+is still a valid arm, and refusing to write one would trade real work for
+metadata. **All the refusing happens at READ time**, which is where the
+information about *"am I comparing?"* actually is. (A new arm also DELETES any
+stale stamp beside it, so it can never inherit an older tree's claim.)
+
 ⚠️ **`env $VARS python3 ...` in zsh does not word-split.** `run_arms.py` hands
 `subprocess` an environment dict and sets BOTH flags explicitly in every arm,
 including to `"0"`, so an arm can neither inherit a flag from the shell nor

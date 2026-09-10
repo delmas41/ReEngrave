@@ -22,6 +22,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+from typing import Optional
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -41,21 +42,41 @@ ARMS = {
 }
 
 
-def _tree_id() -> str:
-    """The commit this tree is at, plus a dirty marker.
+def _tree_id() -> Optional[str]:
+    """The commit this tree is at, or None when that cannot be established.
 
-    ⚠️ A DIRTY TREE IS NEVER EQUAL TO ITSELF, deliberately: the SHA alone
-    cannot distinguish two different sets of uncommitted edits, so an arm
-    produced from one is never treated as reusable for another.
+    ⚠️⚠️ NONE IS THE WHOLE POINT, AND THE FIRST DRAFT GOT IT WRONG TWICE — both
+    times by returning a string that COMPARES EQUAL TO ITSELF.
+
+      * `except Exception: return "unknown"` — two arms built on a machine
+        without git both stamped `"unknown"`, matched, and were silently
+        reused. That is the exact failure this guard exists to prevent,
+        reintroduced in its own fallback.
+      * worse, and it never reached that `except`: `subprocess.run` WITHOUT
+        `check=True` returns a non-zero exit as an empty stdout, no exception
+        raised — so outside a git repo `sha` was `""`, the whole id was `""`,
+        and two empty stamps matched too.
+
+    So the rule is the one a DIRTY tree already forced: **anything that cannot
+    uniquely name a tree must never compare equal to anything, including
+    itself.** Expressed as None rather than as a clever string, and the caller
+    then writes NO stamp — which the reader already refuses on. One mechanism,
+    no special values.
+
+    ⚠️ A dirty tree returns None for the same reason: a SHA cannot tell two
+    sets of uncommitted edits apart, so it proves neither sameness nor
+    difference.
     """
     try:
         sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT,
-                             capture_output=True, text=True).stdout.strip()
+                             capture_output=True, text=True, check=True)
         dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT,
-                               capture_output=True, text=True).stdout.strip()
+                               capture_output=True, text=True, check=True)
     except Exception:                                         # noqa: BLE001
-        return "unknown"
-    return f"{sha}-dirty-{time.time():.0f}" if dirty else sha
+        return None
+    if dirty.stdout.strip() or not sha.stdout.strip():
+        return None
+    return sha.stdout.strip()
 
 
 def run(pdf: Path, pages: str, tag: str, arm: str, force: bool,
@@ -73,11 +94,15 @@ def run(pdf: Path, pages: str, tag: str, arm: str, force: bool,
         # cannot. Refusing costs a re-run; reusing costs a published number
         # that is wrong, and the asymmetry is not close.
         was = stamp.read_text().strip() if stamp.is_file() else None
-        if was == here:
+        # ⚠️ `here is not None` is load-bearing: without it an unnameable tree
+        # (None) would match a missing stamp (None) and skip.
+        if here is not None and was == here:
             print(f"  {arm}: exists and was built from THIS tree ({here}) "
                   f"-- skipping")
             return out
-        why = ("no tree stamp beside it" if was is None
+        why = ("this tree cannot be named (dirty, or not a git checkout), so "
+               "no reuse can be proved" if here is None
+               else "no tree stamp beside it" if was is None
                else f"built from {was}, this tree is {here}")
         if not reuse_stale:
             raise SystemExit(
@@ -102,7 +127,15 @@ def run(pdf: Path, pages: str, tag: str, arm: str, force: bool,
     (HERE / "out" / f"{tag}-{arm}.err").write_text(proc.stderr)
     if proc.returncode != 0:
         raise SystemExit(f"{arm} FAILED (exit {proc.returncode}); see .err")
-    stamp.write_text(here + "\n")
+    # ⚠️ WRITING IS BEST-EFFORT AND NEVER FATAL: a record that cannot name its
+    # tree is still a valid arm, and refusing to write one would trade real
+    # work for metadata. It simply makes no claim — and the READER refuses on
+    # the absence, which is where the information about "am I comparing?"
+    # actually is.
+    if here is not None:
+        stamp.write_text(here + "\n")
+    elif stamp.is_file():
+        stamp.unlink()          # never let a NEW arm inherit an OLD stamp
     print(f"  {arm}: {time.time() - t0:.0f}s  carry="
           f"{env['OMR_METER_CARRY']} bars={env['OMR_METER_FROM_BARS']}  -> {out.name}")
     return out
