@@ -12,6 +12,23 @@ and compares every duration verdict against the ones the pipeline wrote. A
 rebuild that does not reproduce the record is not a control, and a silent
 mismatch would make every number here a measurement of the harness.
 
+⚠️⚠️ WHAT THIS IS BLIND TO, stated because a green result here has already been
+about to be reported as evidence for something it could not test. It isolates
+ADJUDICATE over a FIXED gather. It therefore CANNOT see any GATHER change --
+new rows, new fields, a changed frame -- because those never enter the rebuild.
+`--control` would pass 2993/2993 across such a change and prove nothing. The
+only instrument for "did GATHER change what ADJUDICATE sees" is two full
+re-gathers (`benchmarks/omr-staged-notations-2026-09/regather_control.py`);
+`reexport_arm.py` has the mirror blind spot on the export side.
+
+⚠️ AND `--out` DOES NOT WRITE A PIPELINE RECORD. It writes `{"record": ...}`
+and nothing else, so an arm is missing every sibling key the CLI emits --
+`adjudication`, `agreement`, `evaluation`, `stubs`, `summary`, and since
+2026-09-10 the `provenance` stamp (commit + `dirty`). That is fine for the
+probes here, which read `["record"]` and nothing else, and it means an arm must
+NOT be fed to anything that checks provenance: it would read as unprovenanced
+because this tool never had it to copy, not because the run was untrustworthy.
+
     python3 .../readjudicate.py <staged.json> --control
     python3 .../readjudicate.py <staged.json> --off marks --out /tmp/off.json
 """

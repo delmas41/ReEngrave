@@ -248,10 +248,18 @@ excuse to stop reading it. `inventory --check` exits 0 and the suite is green.
 * Timings: a staged run is ~2 min for 3 engraved pages, ~12 min for 4 Litolff
   pages, ~20 min for 4 Brahms pages. One `readjudicate` arm is ~5-9 min on a
   scan record. The full suite is ~9-10 min.
-* ⚠️ A sibling session holds `claude/staged-pipeline-progress-bf3b29`
-  (`<direction>` emission and the arc adjudicators, **not on main**). It reads
-  `Q.DURATION` at `staged/export.py:386`; this work writes it. Clean seam,
-  confirmed both ways.
+* ✅ That sibling branch **has since landed on main** (`<direction>` emission,
+  `arc_kind` and `arc_owner`, the page-box fields, a `provenance` stamp on every
+  record, and `coverage()`'s `status_census`). Live stubs are now **three** —
+  `articulation_owner`, `direction`, `wedge_anchor` — and only `direction` is
+  input-starved.
+* ⚠️ **A `readjudicate --out` arm is NOT a pipeline record.** It writes
+  `{"record": ...}` only, so it lacks `adjudication`, `agreement`,
+  `evaluation`, `stubs`, `summary` and the new `provenance` stamp. Fine for the
+  probes here, which read `["record"]` — but **do not feed an arm to anything
+  that checks provenance**: it would read as unprovenanced because this tool
+  never had it to copy, not because the run was untrustworthy. Nothing refuses
+  one today; this is written down before something does.
 
 ```bash
 python3 benchmarks/omr-staged-meter-engraved-2026-09/render_meter_change.py \
