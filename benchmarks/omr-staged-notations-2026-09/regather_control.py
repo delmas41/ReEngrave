@@ -87,6 +87,16 @@ def check_provenance(before, after, allow_unstamped=False):
             f"both records were built from the SAME clean tree "
             f"({pa['commit'][:12]}): this comparison cannot show a code "
             f"change and 'MOVED: nothing' would mean nothing")
+    # ⚠️⚠️ UNKNOWN DIRTINESS IS NOT CLEAN. `dirty is None` means the writer
+    # could not determine it, and reading a falsy None as "clean" is the same
+    # class of bug as a magic-string fallback comparing equal to itself: it
+    # lets a pair of dirty trees pass as attributable. A tree that cannot say
+    # whether it is dirty has not been uniquely named.
+    if pa.get("dirty") is None or pb.get("dirty") is None:
+        problems.append(
+            "one or both records do not record WHETHER the tree was dirty -- "
+            "unknown dirtiness is not clean, and a half-named tree is not a "
+            "named tree")
     if pa.get("dirty") or pb.get("dirty"):
         problems.append(
             "a DIRTY tree is never equal to itself -- a SHA cannot tell two "

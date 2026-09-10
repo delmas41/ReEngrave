@@ -50,16 +50,36 @@ def _provenance() -> dict:
     not the place that can be wrong about it.
     """
     import subprocess
+    here = str(Path(__file__).resolve().parent)
+
+    def git(*args):
+        # ⚠️ `check_output`, NEVER `subprocess.run` without `check=True`: run
+        # returns a non-zero exit as EMPTY STDOUT WITH NO EXCEPTION, so
+        # outside a git checkout the id would be `""` -- and two empty stamps
+        # compare EQUAL. The meter session hit exactly that in its own guard.
+        return subprocess.check_output(
+            ["git", *args], stderr=subprocess.DEVNULL, cwd=here).decode().strip()
+
     out = {"commit": None, "dirty": None}
     try:
-        out["commit"] = subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL,
-            cwd=str(Path(__file__).resolve().parent)).decode().strip()
-        out["dirty"] = bool(subprocess.check_output(
-            ["git", "status", "--porcelain"], stderr=subprocess.DEVNULL,
-            cwd=str(Path(__file__).resolve().parent)).decode().strip())
+        # ⚠️⚠️ THE TWO FACTS ARE ATOMIC, AND THAT IS THE WHOLE POINT. An
+        # earlier version set `commit` first and `dirty` second inside one
+        # `try`, so a `git status` that failed left a record claiming a COMMIT
+        # with dirtiness UNKNOWN -- and a consumer reading `dirty` as falsy
+        # would call that tree CLEAN. A half-named tree is not a named tree.
+        #
+        # The general rule, from the meter session generalising my own dirty
+        # rule back at me: ANYTHING THAT CANNOT UNIQUELY NAME A TREE MUST
+        # NEVER COMPARE EQUAL TO ANYTHING, INCLUDING ITSELF. So both fields
+        # are set together or neither is, and `None` is the only failure
+        # value -- no magic string like "unknown", which two failing machines
+        # would share.
+        commit = git("rev-parse", "HEAD")
+        dirty = bool(git("status", "--porcelain"))
+        out["commit"], out["dirty"] = commit, dirty
     except Exception as exc:                       # noqa: BLE001
-        out["error"] = f"{type(exc).__name__}: {exc}"
+        out = {"commit": None, "dirty": None,
+               "error": f"{type(exc).__name__}: {exc}"}
     return out
 
 
