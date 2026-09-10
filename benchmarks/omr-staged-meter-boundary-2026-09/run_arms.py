@@ -41,11 +41,52 @@ ARMS = {
 }
 
 
+def _tree_id() -> str:
+    """The commit this tree is at, plus a dirty marker.
+
+    ⚠️ A DIRTY TREE IS NEVER EQUAL TO ITSELF, deliberately: the SHA alone
+    cannot distinguish two different sets of uncommitted edits, so an arm
+    produced from one is never treated as reusable for another.
+    """
+    try:
+        sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT,
+                             capture_output=True, text=True).stdout.strip()
+        dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT,
+                               capture_output=True, text=True).stdout.strip()
+    except Exception:                                         # noqa: BLE001
+        return "unknown"
+    return f"{sha}-dirty-{time.time():.0f}" if dirty else sha
+
+
 def run(pdf: Path, pages: str, tag: str, arm: str, force: bool,
-        weights: str = WEIGHTS) -> Path:
+        weights: str = WEIGHTS, reuse_stale: bool = False) -> Path:
     out = HERE / "out" / f"{tag}-{arm}.json"
+    stamp = out.with_suffix(".tree.txt")
+    here = _tree_id()
     if out.is_file() and not force:
-        print(f"  {arm}: exists, skipping ({out.name}) -- pass --force to redo")
+        # ⚠️⚠️ A CACHED ARM IS A CONTROL THAT CANNOT FAIL, and this harness had
+        # the trap its own docstring warns about for `scan_eval`: an arm
+        # re-run after a CODE CHANGE was silently reused, so the comparison
+        # reported "identical" and the change looked inert. Nothing about the
+        # output invited suspicion -- which is exactly the failure mode.
+        # So a skip must PROVE the arm came from this tree, and refuse when it
+        # cannot. Refusing costs a re-run; reusing costs a published number
+        # that is wrong, and the asymmetry is not close.
+        was = stamp.read_text().strip() if stamp.is_file() else None
+        if was == here:
+            print(f"  {arm}: exists and was built from THIS tree ({here}) "
+                  f"-- skipping")
+            return out
+        why = ("no tree stamp beside it" if was is None
+               else f"built from {was}, this tree is {here}")
+        if not reuse_stale:
+            raise SystemExit(
+                f"  {arm}: REFUSING to reuse {out.name} -- {why}.\n"
+                f"  A cached arm compared against a fresh one reports "
+                f"'identical' whatever your change did.\n"
+                f"  Re-run it (--force), give this run its own --tag, or "
+                f"pass --reuse-stale if you truly mean to.")
+        print(f"  {arm}: ⚠️ REUSING STALE {out.name} -- {why} (--reuse-stale)")
         return out
     env = dict(os.environ)
     env["OMR_SURYA_KEEP_ALIVE"] = "0"       # unattended: own the worker
@@ -61,6 +102,7 @@ def run(pdf: Path, pages: str, tag: str, arm: str, force: bool,
     (HERE / "out" / f"{tag}-{arm}.err").write_text(proc.stderr)
     if proc.returncode != 0:
         raise SystemExit(f"{arm} FAILED (exit {proc.returncode}); see .err")
+    stamp.write_text(here + "\n")
     print(f"  {arm}: {time.time() - t0:.0f}s  carry="
           f"{env['OMR_METER_CARRY']} bars={env['OMR_METER_FROM_BARS']}  -> {out.name}")
     return out
@@ -73,10 +115,14 @@ if __name__ == "__main__":
     ap.add_argument("--tag", required=True)
     ap.add_argument("--arms", default="OFF,CARRY,BARS,BOTH")
     ap.add_argument("--force", action="store_true")
+    ap.add_argument("--reuse-stale", action="store_true",
+                    help="reuse an arm this tree did not build. Only ever "
+                         "correct when you know the change cannot reach it.")
     ap.add_argument("--weights", default=WEIGHTS,
                     help="scan input needs the hollow graft, not the engraved "
                          "checkpoint -- the staged CLI does no weight routing")
     a = ap.parse_args()
     print(f"{a.tag}: pages {a.pages}")
     for arm in a.arms.split(","):
-        run(Path(a.pdf), a.pages, a.tag, arm.strip(), a.force, a.weights)
+        run(Path(a.pdf), a.pages, a.tag, arm.strip(), a.force, a.weights,
+            a.reuse_stale)
