@@ -760,6 +760,19 @@ python3 $B/summarize.py            # the committed extracts + REPORT.txt
 committed is `out/*.meter.json` and `out/REPORT.txt`, which is what every
 figure above is read off.
 
+⚠️⚠️ **A SKIPPED ARM MUST PROVE IT CAME FROM THIS TREE, and this harness had
+the trap its own docstring warned about for `scan_eval`.** `run_arms.py`
+returned an existing output untouched, with nothing recording WHICH TREE built
+it — so an arm re-run after a code change was silently reused, the comparison
+reported "identical", and the change looked inert. **Nothing about the output
+invited suspicion**, which is the whole failure mode. It now stamps the commit
+(and refuses to call a DIRTY tree equal to itself) beside every arm and
+**exits non-zero** rather than reuse one it cannot vouch for; `--force` re-runs,
+`--reuse-stale` overrides loudly. Found by auditing my own instruments after a
+fourth instance of *a control that cannot fail* turned up in a sibling session.
+⚠️ The stamp is written only AFTER the run succeeds, so a failed arm leaves
+none and is re-run rather than trusted.
+
 ⚠️ **`env $VARS python3 ...` in zsh does not word-split.** `run_arms.py` hands
 `subprocess` an environment dict and sets BOTH flags explicitly in every arm,
 including to `"0"`, so an arm can neither inherit a flag from the shell nor
