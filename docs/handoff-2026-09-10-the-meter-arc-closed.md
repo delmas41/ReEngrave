@@ -182,15 +182,31 @@ in the same files all day. **Verified against `origin/main`, not from memory:**
 | export consumes `record.meter_at` (a meter change can reach a file) | ✅ yes |
 | the carry takes the source's **END** meter, not its opening | ✅ yes |
 | `METER_SOURCE_REASONS` replaces the `voted`-only source gate | ✅ yes |
-| dynamics reaching the file, `status_census`, `decided_uncounted`, `ARC_KIND.md` | ❌ **their branch only** |
+| dynamics reaching the file, `status_census`, `decided_uncounted`, `ARC_KIND.md` | ✅ **yes — landed 2026-09-10, see below** |
 
-⚠️ **THE `NOTES.md` ENTRY ABOUT `decided_but_unwritten` IS CURRENT, NOT STALE.**
-I called it stale in conversation; **checked against main, it is accurate** —
-the branch order there still lets `elif decided:` swallow every decided family,
-so the status is still unreachable on main. Their fix is on their branch. **It
-becomes stale the moment that branch lands**, and they are tracking its removal
-plus turning the `ARC_KIND.md` citation in CLAUDE.md into a link, in the same
-PR. ⚠️ If you land their branch, do both.
+⚠️⚠️ **THIS ROW READ "❌ their branch only" AND THE PARAGRAPH BELOW IT READ
+"CURRENT, NOT STALE". BOTH WERE TRUE WHEN WRITTEN AND THE MERGE FALSIFIED
+THEM** — corrected here by the staged-pipeline session as part of landing,
+because a handoff that survives the event it predicts becomes a work order to
+redo finished work. That is *fixed-then-kept-open-in-prose*, which this repo
+has recorded three times.
+
+The original text, kept because the correction is the point: *"THE `NOTES.md`
+ENTRY ABOUT `decided_but_unwritten` IS CURRENT, NOT STALE. I called it stale in
+conversation; checked against main, it is accurate — the branch order there
+still lets `elif decided:` swallow every decided family, so the status is still
+unreachable on main. Their fix is on their branch. **It becomes stale the
+moment that branch lands**, and they are tracking its removal plus turning the
+`ARC_KIND.md` citation in CLAUDE.md into a link, in the same PR. ⚠️ If you land
+their branch, do both."*
+
+**Both were done in that landing merge**: the `NOTES.md` entry is REMOVED
+(`grep -c decided_but_unwritten NOTES.md` → 0) and the `ARC_KIND.md` citation
+in CLAUDE.md is a link, with its own "deliberately un-linked, not on main yet"
+clause removed so the sentence does not contradict itself. ⚠️ The prediction in
+that paragraph was exactly right, which is why it was worth writing — the
+failure mode is not predicting the staleness, it is leaving the prediction
+sitting there after the event.
 
 ---
 
