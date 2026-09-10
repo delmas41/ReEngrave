@@ -177,6 +177,23 @@ digits must win) is kept as `TestDigitsWinOverALetterAtTheSameBar`.
 
 ---
 
+## 2026-09-09 — Re-measured on the DURATION work, and the discrimination widened
+
+⚠️ **A FIGURE THIS SESSION RECORDED HAS MOVED, UPWARD, AND THE REASON IS A
+DEPENDENCY THE DESIGN PREDICTS.** A sibling session landed the upstream beam
+repair (a note joined to its beam by its STEM, and a MARK attached to its
+notehead — 272 lines of `rhythm.py`). Bar sums are the meter mechanisms' second
+witness, so better durations make the bars speak more clearly.
+
+Re-running every arm: the boundary page now reads `{3.0: 8, 5.0: 1}` where it
+read `{3.0: 7, 5.0: 2}`, so the TRUE carry goes **+6.0 → +8.0** while the false
+one is unchanged at **−8.0** — **the swing widens 14.0 → 16.0.** The six-fixture
+tally is identical to the row. ⚠️ The `+6.0` entries below are left as measured;
+a recorded transition is a frozen fact and this is a new measurement, not a
+correction of an old one.
+
+---
+
 ## 2026-09-09 — A CAUTIONARY is not a change: the engraved arms go clean
 
 **What:** `_meter_changes` now separates a CAUTIONARY (courtesy) time signature

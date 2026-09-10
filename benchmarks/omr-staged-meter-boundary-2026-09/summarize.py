@@ -51,6 +51,14 @@ FIXTURE_OF = {
     "m5full": "boundary-m150-180", "m5rev": "boundary-m204-232",
     "m5brahms1eng": "brahms1-m1-22", "m5brahms4eng": "brahms4-m386-412",
     "m5brahms1scan": "brahms1-317803", "m5lit6162": "litolff-984073",
+    # `m7` = re-measured once more after a sibling's DURATION work landed
+    # (stem->beam joining, marks attached to noteheads: 272 lines of
+    # rhythm.py). Bar sums feed every meter mechanism here, so this is a
+    # re-run and not an assumption.
+    "m7full": "boundary-m150-180", "m7p0p3": "boundary-m150-180",
+    "m7rev": "boundary-m204-232", "m7brahms1eng": "brahms1-m1-22",
+    "m7brahms4eng": "brahms4-m386-412",
+    "m7brahms1scan": "brahms1-317803", "m7lit6162": "litolff-984073",
 }
 
 
