@@ -69,7 +69,8 @@ class TestDynamicNamingIsResolvedButBounded(unittest.TestCase):
         hit = [r for r in rows
                if r["test"] == "test_each_stub_abstains_with_not_implemented_and_records_it"]
         self.assertTrue(hit, "the test this asserts about has been renamed")
-        self.assertIn("ARC_OWNER", hit[0]["quantities"])
+        # ⚠️ ARC_OWNER left this list on 2026-09-09 when it was filled.
+        self.assertIn("WEDGE_ANCHOR", hit[0]["quantities"])
 
     def test_iterating_the_REGISTRY_does_NOT_credit_every_decision(self):
         """⚠️ THE ONE THAT KEEPS THE REPORT HONEST. Resolving `REGISTRY` /
