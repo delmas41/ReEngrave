@@ -604,6 +604,14 @@ independent umpire over a bad reading; they fail together with it. This is the
 *Andante*'s "when the page cannot speak, abstain" arriving from the other
 direction, and it bounds every bar-arbitrated rule this benchmark has built.
 
+⚠️ **SCOPE, AND IT MATTERS — the hazard needs BOTH readers on the SAME INK.**
+It does not follow for two readers with independent failure modes: a dossier
+fact, or a roster at `source_kind: "catalog"`, does not fall silent because a
+raster is bad. That is exactly why this project refuses the `page` tier where
+it admits the `catalog` one — **an arbiter that comes off the same raster fails
+together with what it arbitrates.** Boundary contributed by the staged-pipeline
+session after testing the general form on `arc_kind`.
+
 ⚠️ **The cautionary route is not dead in the OTHER case** — a system that
 ABSTAINS needs no arbitration, because there is nothing to overturn, and a
 cautionary is ink naming that system's meter. **Reach on this corpus: ZERO** —

@@ -971,15 +971,34 @@ day, independently, by the staged-pipeline session.** `arc_kind`'s position
 grammar needs two detected heads under the arc and can speak about only **81 of
 199 arcs**; the arcs it CANNOT speak about are the weaker readings (median
 detector confidence **0.408** against **0.563**). So the shape is a property of
-any rule whose ARBITER is itself read off the page: **wherever the first reader
-is worst, the second is most often absent — and an availability rate quoted as
-one number averages two populations that behave differently** (among the 81 it
+any rule whose arbiter is read off **THE SAME INK** as the reading it
+arbitrates: **wherever the first reader is worst, the second is most often
+absent — and an availability rate quoted as one number averages two populations
+that behave differently** (among the 81 it
 can speak about, agreement tracks confidence hard: agrees n=42 at 0.694,
 disagrees n=39 at 0.391). ⚠️ n = 1 page there, confidence is a PROXY for ink
 quality and not a measurement of it, and neither result says WHICH reading is
 wrong. Write-up: `benchmarks/omr-staged-notations-2026-09/ARC_KIND.md` on
 `claude/staged-pipeline-progress-bf3b29` — deliberately un-linked, it is not on
 main yet.
+
+⚠️⚠️ **THE SCOPE CONDITION IS LOAD-BEARING AND THE REPO ALREADY ENCODES IT.**
+The hazard needs BOTH readers to depend on the same ink — bar sums and meter
+glyphs do, arc-grammar heads and arc class do. It does **not** follow for two
+readers with independent failure modes, and this project has those: a
+**dossier** supplies the meter, measure count, clef and key from a MusicXML
+file, and the catalog's `works` tier supplies a roster at
+`source_kind: "catalog"`, *"independent of the truth MusicXML"*. Neither goes
+silent because a raster is bad.
+
+**So this hazard is the reason `source_kind` is load-bearing**, stated from the
+other direction: an arbiter carrying `source_kind: "page"` is *"an OMR output
+of the same raster"* and fails TOGETHER with what it arbitrates — which is why
+the `editions` tier is refused where the `works` tier is admitted. ⚠️ The
+practical form: **if you want a second witness that does not fall silent
+exactly when it is needed, it must not come off the same raster.** Boundary
+contributed by the staged-pipeline session; the `source_kind` connection is
+this file's own distinction, arriving from a new direction.
 
 ⚠️ Two other routes were measured and refused on the same fault:
 `score_margin` — computed by the locator, written by GATHER, **read by
