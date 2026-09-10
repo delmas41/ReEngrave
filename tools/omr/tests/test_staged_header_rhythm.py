@@ -863,7 +863,11 @@ class TestAMeterChangeIsReadFromTheInk(unittest.TestCase):
                 # ⚠️ `y_center` differs per digit on purpose: it is the WHOLE
                 # of what tells a numerator from a denominator.
                 y = 10.0 if klass.endswith(("2", "3", "6", "9", "12")) else 30.0
-                log.observe(R.glyph(0, 0, st, cell, 90 + len(klass)),
+                # ⚠️ ON THE STAFF — see `gather.gather_meter_glyphs`. This
+                # fixture used a GLYPH subject until 2026-09-09, and that
+                # mismatch is what let `_looks_cautionary` read no boxes on
+                # every real page while its own tests stayed green.
+                log.observe(R.staff(0, 0, st),
                             Q.METER_GLYPH, klass, reader=READERS.DETECTOR,
                             frame="cell:%d" % cell, score=0.9, cell=cell,
                             x=10.0, y_center=y,
@@ -1160,6 +1164,238 @@ class TestARefusalMayNotBlockALaterRung(unittest.TestCase):
         self.assertEqual(v.reason, "no_evidence")
 
 
+# ⚠️⚠️ `TestACourtesySignatureIsNotAChange` STOOD HERE AND WAS REMOVED AS A
+# DUPLICATE. A sibling session reached the same finding independently, from the
+# same Brahms page 0 cautionary, and landed first as `TestACautionaryIsNotAChange`
+# at the foot of this file. Theirs discriminates on the LAST CELL of each staff;
+# mine on how much of the bar's own ink stood to the LEFT of the glyph.
+#
+# THEIRS IS KEPT AND IT IS THE BETTER RULE, on reach: it catches the Breitkopf
+# scan's courtesy too, which mine explicitly could NOT — that degenerate final
+# cell holds five detections, so nothing lies left of the glyph and my rule read
+# 0.000 there. Engraved 1 -> 0 false either way; on the scan theirs reaches one
+# more. It also carries an escape mine lacked (a last-cell candidate whose OWN
+# BAR FITS is still a change).
+#
+# ⚠️ The left-fraction measurement is NOT lost — it is recorded in
+# `benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md` as an independent
+# second reading of the same convention, which is a real cross-check: two
+# sessions, two discriminators, one conclusion.
+
+class TestTheCarryTakesTheMeterInForceAtTheSourcesEND(unittest.TestCase):
+    """⚠️⚠️ THE CARRY TOOK THE SOURCE'S OPENING AND DELETED ITS SEGMENTS —
+    `{k: v for k, v in found.value.items() if k != "segments"}` — so a source
+    that PRINTED a change handed on the meter it had already stopped being in.
+
+    Measured twice on Brahms 1: movement 1's system 2 was handed `9/8`, the
+    ONE bar that opens the source system, instead of the `6/8` governing seven
+    of its eight bars; and movement 4's continuation was handed `C` instead of
+    the `¢` the same system had just read on 24 staves of 24 at support 74.0.
+    Both times the answer was already on the record, one system back, in the
+    field the carry threw away.
+    """
+
+    N_STAVES = 4
+
+    def _bars(self, log, page, beats, n_bars=3, n_staves=None):
+        for st in range(n_staves or self.N_STAVES):
+            for c in range(n_bars):
+                cell, g = R.cell(page, 0, st, c), R.glyph(page, 0, st, c, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 400, 0, 600, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": beats, "written": beats,
+                           "duration_type": "quarter", "dots": 0},
+                    decider="t", reason="head_and_marks"))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 500.0,
+                                       "kind": "chord"}]},
+                    decider="t", reason="x_clustered"))
+
+    def _log(self, *, source_changes, dst_beats=2.0):
+        """Page 0 reads `3/4` and (optionally) changes to `2/4` at its bar 1;
+        page 1 reads nothing and its bars measure 2.0 — the meter the source
+        ENDS in, not the one it opens with."""
+        log = Log()
+        src, dst = R.system(0, 0), R.system(1, 0)
+        for sysj in (src, dst):
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=self.N_STAVES, decider="t", reason="counted"))
+        for st in range(self.N_STAVES):
+            log.observe(R.staff(0, 0, st), Q.METER_TEMPLATE, (3, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw="3/4")
+            if source_changes:
+                for klass, y in (("timeSig2", 10.0), ("timeSig4", 30.0)):
+                    log.observe(R.staff(0, 0, st),
+                                Q.METER_GLYPH, klass, reader=READERS.DETECTOR,
+                                frame="cell:1", score=0.9, cell=1,
+                                x=10.0, y_center=y, letter=False)
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=R.staff(0, 0, st),
+                quantity=Q.MEASURE_PARTITION, outcome=Outcome.DECIDED,
+                value=3, decider="t", reason="barlines"))
+        self._bars(log, 0, 2.0)
+        # ⚠️ The destination's bars are the SECOND witness and must match the
+        # meter actually being carried, or the carry is refused on its own
+        # (correct) terms and the test measures nothing about which meter was
+        # chosen. 2.0 for the changed source (`2/4`), 3.0 for the control.
+        self._bars(log, 1, dst_beats)
+        return log, src, dst
+
+    def _run(self, log):
+        import os
+        log.freeze()
+        adjudicate._ensure_decisions()
+        spec = adjudicate.REGISTRY[Q.METER]
+        prev = os.environ.get(rhythm_mod.METER_CARRY_ENV)
+        os.environ[rhythm_mod.METER_CARRY_ENV] = "1"
+        try:
+            for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
+                adjudicate.adjudicate_one(log, spec, sysj)
+        finally:
+            if prev is None:
+                os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
+            else:
+                os.environ[rhythm_mod.METER_CARRY_ENV] = prev
+
+    def test_a_source_that_CHANGED_hands_on_what_it_changed_TO(self):
+        """⚠️ RUN THIS RED: restore the old
+        `{k: v for k, v in found.value.items() if k != "segments"}` and the
+        carried meter comes back `3/4`, the bar the source had already left."""
+        log, src, dst = self._log(source_changes=True)
+        self._run(log)
+        self.assertEqual(
+            [(s["from_cell"], s["raw"])
+             for s in log.verdict(Q.METER, src).value["segments"]],
+            [(0, "3/4"), (1, "2/4")])
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "carried")
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (2, 4))
+
+    def test_the_SOURCES_segments_do_not_travel(self):
+        """They are the SOURCE's bar ranges and mean nothing in this system's
+        numbering. This system's own segments come from its own ink."""
+        log, _src, dst = self._log(source_changes=True)
+        self._run(log)
+        segs = log.verdict(Q.METER, dst).value["segments"]
+        self.assertEqual([(s["from_cell"], s["raw"]) for s in segs],
+                         [(0, "2/4")])
+
+    def test_a_source_with_NO_change_is_unaffected(self):
+        """The control: where the source never changed, opening and end are
+        the same meter and the carry behaves exactly as it always did."""
+        log, _src, dst = self._log(source_changes=False, dst_beats=3.0)
+        self._run(log)
+        v = log.verdict(Q.METER, dst)
+        self.assertEqual(v.reason, "carried")
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (3, 4))
+
+
+class TestAReadChangeMayBeACarrySource(unittest.TestCase):
+    """⚠️ THE GATE WAS `reason == "voted"` ALONE, AND THAT EXCLUDED INK. A
+    `change_only` verdict's value is a meter READ on its own system's staves
+    and weighed against its own bars, so refusing it as a source refused
+    exactly the evidence the gate exists to require.
+
+    Beethoven 5 / Litolff p.62 is the case: it reads the printed `3/4` at the
+    bar the reference names, on a system whose opening is unknown — and no
+    later system could be handed it.
+
+    ⚠️ WHAT STAYS OUT IS WHAT A CARRY WOULD CHAIN ONTO: `carried` is another
+    system's answer repeated and `derived_from_bars` is arithmetic with a
+    borrowed spelling, so admitting either would make `pages_since_read` a lie
+    about the distance back to ink.
+    """
+
+    def test_the_admissible_reasons_are_the_ones_that_READ_ink(self):
+        self.assertEqual(set(rhythm_mod.METER_SOURCE_REASONS),
+                         {"voted", "change_only"})
+
+    def test_a_carry_is_NOT_a_source_so_a_carry_never_chains(self):
+        self.assertNotIn("carried", rhythm_mod.METER_SOURCE_REASONS)
+
+    def test_a_borrowed_form_is_NOT_a_source(self):
+        self.assertNotIn("derived_from_bars", rhythm_mod.METER_SOURCE_REASONS)
+
+    def test_every_admissible_reason_is_one_the_decision_can_actually_emit(self):
+        """⚠️ A source list naming a reason no decision produces is inert, and
+        would read as protection that is not there."""
+        spec = adjudicate.REGISTRY[Q.METER]
+        for reason in rhythm_mod.METER_SOURCE_REASONS:
+            self.assertIn(reason, spec.reasons)
+
+
+class TestTheFixturesFileMeterGlyphsWhereGATHERDoes(unittest.TestCase):
+    """⚠️⚠️ A FIXTURE THAT DOES NOT MATCH GATHER TESTS THE TEST, and this cost
+    a whole measurement round. `gather.gather_meter_glyphs` files
+    `Q.METER_GLYPH` against the STAFF and puts the bar in `detail["cell"]`;
+    the fixtures in this file filed it against a GLYPH.
+
+    A cautionary rule written against the wrong shape derived its cell with
+    `subject.at(Kind.CELL)` — which returns None for a staff, because a cell is
+    DEEPER — so on every real page it read nothing and returned False, while
+    five unit tests and three mutation arms stayed green and the benchmark
+    tally came back byte-identical to its baseline. The number that did NOT
+    move is what caught it.
+
+    ⚠️ That rule has since been dropped as a duplicate (see the note above),
+    but the fixture fault it exposed was real, PRE-EXISTING and shared by
+    `TestAMeterChangeIsReadFromTheInk`. This asserts the shape against the
+    gather site itself rather than against a remembered string, so the next
+    fixture written here cannot quietly disagree with what GATHER emits.
+    """
+
+    def test_gather_files_meter_glyphs_on_a_STAFF_subject(self):
+        import ast
+        import inspect
+        from tools.omr.staged import gather
+        src = ast.parse(inspect.getsource(gather))
+        calls = [n for n in ast.walk(src)
+                 if isinstance(n, ast.Call)
+                 and isinstance(n.func, ast.Attribute)
+                 and n.func.attr == "observe"
+                 and any(isinstance(a, ast.Attribute) and a.attr == "METER_GLYPH"
+                         for a in n.args)]
+        self.assertTrue(calls, "no gather site observes METER_GLYPH")
+        for c in calls:
+            # the bar index travels as a keyword, NOT in the subject
+            self.assertIn("cell", [k.arg for k in c.keywords],
+                          "gather stopped putting the bar in `detail`")
+
+    def test_this_files_own_fixtures_agree_with_that(self):
+        """The other half: a guard on GATHER is no use if the fixtures here
+        drift from it independently."""
+        import ast
+        import pathlib as _p
+        src = ast.parse(_p.Path(__file__).read_text())
+        bad = []
+        for n in ast.walk(src):
+            if not (isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
+                    and n.func.attr == "observe"):
+                continue
+            if not any(isinstance(a, ast.Attribute) and a.attr == "METER_GLYPH"
+                       for a in n.args):
+                continue
+            sub = n.args[0] if n.args else None
+            if (isinstance(sub, ast.Call) and isinstance(sub.func, ast.Attribute)
+                    and sub.func.attr != "staff"):
+                bad.append(f"line {n.lineno}: subject is R.{sub.func.attr}(), "
+                           f"but gather files METER_GLYPH on a staff")
+        self.assertEqual(bad, [], "\n".join(bad))
+
+
 class TestDigitsWinOverALetterAtTheSameBar(unittest.TestCase):
     """⚠️ THE ONE THING `TestAMeterChangeIsReadFromTheInk` DOES NOT COVER:
     precedence when ONE staff carries a letter AND digits at the same bar.
@@ -1248,7 +1484,10 @@ class TestAChangeIsAgainstTheMeterInFORCE(unittest.TestCase):
                             score=0.7, raw=opening_raw)
             for cell, num, den in changes:
                 for idx, (digit, y) in enumerate(((num, 10.0), (den, 30.0))):
-                    log.observe(R.glyph(0, 0, st, cell, 900 + idx),
+                    # ⚠️ ON THE STAFF, which is where gather files it — see
+                    # `TestTheFixturesFileMeterGlyphsWhereGATHERDoes`. This
+                    # fixture read `R.glyph(...)` until the guard flagged it.
+                    log.observe(R.staff(0, 0, st),
                                 Q.METER_GLYPH, "timeSig%d" % digit,
                                 reader=READERS.DETECTOR,
                                 frame="cell:%d" % cell, score=0.9, cell=cell,
@@ -1341,7 +1580,10 @@ class TestACautionaryIsNotAChange(unittest.TestCase):
                             score=0.7, raw=opening_raw)
             for cell, num, den in changes:
                 for idx, (digit, y) in enumerate(((num, 10.0), (den, 30.0))):
-                    log.observe(R.glyph(0, 0, st, cell, 900 + idx),
+                    # ⚠️ ON THE STAFF, which is where gather files it — see
+                    # `TestTheFixturesFileMeterGlyphsWhereGATHERDoes`. This
+                    # fixture read `R.glyph(...)` until the guard flagged it.
+                    log.observe(R.staff(0, 0, st),
                                 Q.METER_GLYPH, "timeSig%d" % digit,
                                 reader=READERS.DETECTOR,
                                 frame="cell:%d" % cell, score=0.9, cell=cell,

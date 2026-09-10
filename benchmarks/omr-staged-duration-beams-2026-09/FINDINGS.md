@@ -294,6 +294,13 @@ exactly on the scan, **1356 of 1356** on the engraving, 0 differ, 0 extra. A
 rebuild that does not reproduce the record is not a control, and a silent
 mismatch would make every number below a measurement of the harness.
 
+⚠️ **AND THE CONTROL WAS RE-RUN AFTER `Q.METER`'s SEGMENTS LANDED.** PR #29
+made a meter change reach a file, and `evaluate`'s `size_measure_rest` and
+`reconcile_duration` both consume the meter — so a duration could have moved
+underneath these figures without anyone touching the duration code. It did not:
+on the merged tree the control still reports **2993 of 2993 reproduced exactly,
+0 differ, 0 extra**, so every scan figure below stands unchanged.
+
 ⚠️ **AND THE ARMS WERE RE-RUN ON THE FINAL TREE.** `_cell_boxes` was extracted
 from the two helpers *while the first pass of arms was in flight* — which
 breaks this repo's own rule about editing a source file mid-run, and the honest

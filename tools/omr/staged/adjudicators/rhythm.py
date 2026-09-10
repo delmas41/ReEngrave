@@ -31,7 +31,7 @@ from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
 from collections import Counter
 
 from ..record import (ABSTAIN, Kind, Outcome, Q, READERS, Scope, State,
-                      Subject)
+                      Subject, meter_at)
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -1562,6 +1562,44 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
     return out
 
 
+#: Which verdicts may be carried from, or have their spelling borrowed.
+#:
+#: ⚠️⚠️ IT WAS `reason == "voted"` ALONE, AND THAT EXCLUDED INK. A
+#: `change_only` verdict's value is a meter READ on this system's own staves --
+#: `_meter_changes` builds it from `Q.METER_GLYPH` rows and weighs it against
+#: the bars -- so refusing it as a source refused exactly the evidence the gate
+#: exists to require. Beethoven 5 / Litolff p.62 is the case: it reads the
+#: printed `3/4` at the bar the reference names, on a system whose opening is
+#: unknown, and no later system could be handed it.
+#:
+#: ⚠️ WHAT STAYS OUT IS WHAT A CARRY WOULD CHAIN ONTO. `carried` is another
+#: system's answer repeated, and `derived_from_bars` is arithmetic with a
+#: BORROWED spelling -- neither is ink on the source's own page, so admitting
+#: either would make `pages_since_read` a lie about the distance back to ink.
+def _meter_in_force_at_end(value: dict, n_cells: int) -> dict:
+    """The source system's LAST meter, read off its own `segments`.
+
+    ⚠️ THE READ-OFF GOES THROUGH `record.meter_at`, which is the whole reason
+    that helper exists -- its docstring says it *is* how a bar's meter is read
+    and it was called by nothing but its own tests. Asking it for the source's
+    last bar is the question a carry has always been asking.
+
+    ⚠️ THE SOURCE'S OWN BAR-SCOPED FIELDS ARE STRIPPED, and must be: they
+    describe the SOURCE's bar ranges and mean nothing in this system's
+    numbering. This system's own segments are added by `_with_segments`, from
+    its own ink -- including its own `cautionary`, which is a statement about
+    the system AFTER it and travels with neither.
+    """
+    at_end = meter_at(value, n_cells - 1 if n_cells else 0) or value
+    return {k: v for k, v in at_end.items()
+            if k not in ("segments", "cautionary", "support",
+                         "staves_reading_it", "bars_fit", "bars_contradict",
+                         "from_cell")}
+
+
+METER_SOURCE_REASONS = ("voted", "change_only")
+
+
 def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
     """The nearest preceding system whose meter was READ, or None.
 
@@ -1581,7 +1619,7 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
         found = ev.verdict(Q.METER, subject=src)
         if found is None or found.outcome is not Outcome.DECIDED:
             continue
-        if found.reason != "voted":
+        if found.reason not in METER_SOURCE_REASONS:
             continue
         pages = (here.page or 0) - (src.page or 0)
         # ⚠️⚠️ THE SECOND WITNESS, AND IT IS WHAT MAKES THE CARRY SAFE
@@ -1590,7 +1628,30 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
         # detecting because the new movement's bars simply contradict the old
         # movement's meter -- measured 8 agree / 1 disagree on a continuation
         # page and 1 / 7 on the Andante.
-        check = _corroborate(ev, found.value)
+        # ⚠️⚠️ THE CANDIDATE IS THE SOURCE'S *END* METER, NOT ITS OPENING.
+        # The old `{k: v for k, v in found.value.items() if k != "segments"}`
+        # handed on the meter a source had already STOPPED being in -- Brahms
+        # 1 i passed the ONE-bar `9/8` that opens its source instead of the
+        # `6/8` governing seven of eight bars, and Brahms 1 iv passed `C`
+        # instead of the `¢` the same system had just read on 24 staves of 24.
+        #
+        # ⚠️ AND CORROBORATING THE OPENING WAS THE SAME BUG'S SECOND HALF:
+        # reading the end meter only AFTER the check left the carry weighing a
+        # meter it was not going to carry, so a correct carry was refused
+        # `carry_outweighed_by_the_bars` at -2.0, 0 agreeing / 3 disagreeing.
+        #
+        # ⚠️ The cell count is fetched HERE and passed down, not read inside
+        # the helper -- the same shape `_meter_changes` uses for `bars` and
+        # `last_cell`, and for the same reason: `inventory._never_read`
+        # follows a decision's own helpers to depth 3, and a `Q.` read one
+        # link further reads as an INERT declaration.
+        n_cells = 0
+        for mp in ev.verdicts(Q.MEASURE_PARTITION,
+                              scope=Scope.SELF_AND_DESCENDANTS, subject=src):
+            if mp.outcome is Outcome.DECIDED and isinstance(mp.value, int):
+                n_cells = max(n_cells, mp.value)
+        carried = _meter_in_force_at_end(found.value, n_cells)
+        check = _corroborate(ev, carried)
         if "terms" not in check:
             return Ruling.abstain("carry_not_corroborated",
                                   carried_from=src.to_key(),
@@ -1621,7 +1682,6 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
         # ⚠️ A CARRIED METER IS STILL SUBJECT TO A CHANGE PRINTED ON THIS
         # SYSTEM. The carry says what the music was doing; a time signature
         # standing at bar N says it stopped doing it there.
-        carried = {k: v for k, v in found.value.items() if k != "segments"}
         return Ruling(value=_with_segments(ev, carried), reason="carried",
                       used=(found.id,), margin=support, detail=detail)
     return None
@@ -1696,17 +1756,23 @@ def _form_for_length(ev: Evidence, length: float) -> Optional[dict]:
         found = ev.verdict(Q.METER, subject=src)
         if found is None or found.outcome is not Outcome.DECIDED:
             continue
-        if found.reason != "voted":
+        if found.reason not in METER_SOURCE_REASONS:
             continue
-        num, den = (found.value or {}).get("numerator"), \
-                   (found.value or {}).get("denominator")
-        if not num or not den:
-            continue
-        if abs(float(num) * 4.0 / float(den) - length) > 1e-6:
-            continue
-        return {"numerator": int(num), "denominator": int(den),
-                "source": src.to_key(), "source_raw": (found.value or {}).get("raw"),
-                "source_id": found.id}
+        # ⚠️ EVERY SEGMENT OF THE SOURCE IS ELIGIBLE, NOT JUST ITS OPENING. A
+        # system that printed `6/8` and changed to `9/8` READ BOTH, so both are
+        # spellings this document has evidence for; asking only the top-level
+        # fields silently skips a source whose opening happens to be the wrong
+        # length while the meter it changed TO is the right one.
+        val = found.value or {}
+        for seg in (val.get("segments") or [val]):
+            num, den = seg.get("numerator"), seg.get("denominator")
+            if not num or not den:
+                continue
+            if abs(float(num) * 4.0 / float(den) - length) > 1e-6:
+                continue
+            return {"numerator": int(num), "denominator": int(den),
+                    "source": src.to_key(), "source_raw": seg.get("raw"),
+                    "source_id": found.id}
     return None
 
 

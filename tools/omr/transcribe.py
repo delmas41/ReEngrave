@@ -4606,9 +4606,11 @@ def _contextual_call_kwargs(
         # a detected-treble header on a Viola/Bassoon/Timpani staff, and an
         # implausible mid-staff clef change (violin→bass, viola→bass). See
         # clef_correction.py and benchmarks/omr-clef-string-staves-2026-09.
+        # ⚠️ ALLOW-LIST: default-OFF, so a typo must not switch it ON. See
+        # the twin read in `contextual.py`.
         "instrument_clef_default": os.environ.get(
             "OMR_INSTRUMENT_CLEF_DEFAULT", "0").strip().lower()
-        not in ("0", "", "false", "no", "off"),
+        in ("1", "true", "yes", "on"),
     }
 
 
