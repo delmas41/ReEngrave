@@ -702,6 +702,121 @@ and slurs (843 over two pages) need `arc_kind` + `arc_owner`; dynamics (489)
 need the `f`+`f` → `ff` spelling; articulations (37) need the nearest-notehead
 attach. ⚠️ **`fermata` (35) and `ornament` (6) still have NO QUANTITY.**
 
+### The EXPORTER was the bottleneck, not the decisions — and three reporting defects behind it
+
+2026-09-10. `staged/export.py` read **nine quantities** and emitted **zero** of
+all nine `<notations>` / `<direction>` children. `adjudicate_dynamic` had
+stopped being a stub the day before, decides, and files a verdict per cell —
+and `grep '<dynamics' staged/export.py` returned **0**. *The value existed and
+nothing read it*, inside the architecture built to stop it. Findings:
+[benchmarks/omr-staged-notations-2026-09/FINDINGS.md](benchmarks/omr-staged-notations-2026-09/FINDINGS.md),
+[ARC_KIND.md](benchmarks/omr-staged-notations-2026-09/ARC_KIND.md),
+[ARC_OWNER.md](benchmarks/omr-staged-notations-2026-09/ARC_OWNER.md).
+
+**Dynamics reach the file.** `_place_directions` mirrors `_place_notes` and
+renders through the LEGACY `_mxl_direction` / `_mxl_empty_measure`, which
+already take `(x, kind, text)` — no new renderer. MEASURED with one gather
+exported twice (Beethoven 5 / Litolff `984073` `--pages 2`): `<dynamics>`
+**0 → 80**, notes 589 and rests 228 identical, balance holds, and with the
+`<direction>` lines removed the two files are **byte-identical**. music21 reads
+back 80 Dynamic objects on 11 parts.
+
+⚠️ Marks go at the HEAD of the bar, a DECLARED simplification: the legacy path
+places a dynamic against its nearest note, and this one cannot, because the
+marks carry a PAGE x and the noteheads a CANONICAL one. Comparing them is the
+frame error that made `Q.ONSET_COLUMN` report 1,062 columns of nothing.
+
+⚠️ A narrowed (unspellable) verdict writes NOTHING — that is
+`OMR_PARTIAL_DYNAMICS`, measured over the 20-row gate and REFUSED (+15 edits,
+**not one row better**). The refusal is inherited, not re-litigated.
+
+**`arc_kind` and `arc_owner` are filled** — 199 arcs decide on that page.
+**Three stubs remain** (`articulation_owner`, `wedge_anchor`, `direction`), and
+only `direction` is still input-starved.
+
+⚠️ `arc_kind` lets the DETECTOR'S CLASS decide and only RECORDS the position
+grammar, honouring `OMR_ARC_RECLASS`'s measured refusal — and **the record now
+supports that refusal independently**: the grammar is available on 81 of 199
+arcs and where available it agrees **42** / disagrees **39**, a coin flip, with
+28 of the 39 in the expensive tie→slur direction. It is a RATE, not a count of
+errors.
+
+⚠️ `arc_owner` moves **12 of 199**, and **every move is to an ADJACENT staff**
+— ±1, six each way, zero exceptions. Nothing in the rule knows about adjacency;
+it fell out, and it is the measure-cell padding signature. Moved arcs sit
+3.80–9.24 spaces from their own heads (6 of 12 cover NOTHING there); arcs that
+stay sit at a median 0.530. Constants are IMPORTED from `export.py`, never
+restated.
+
+⚠️⚠️ **`gather_glyph_families` WAS GATHERING IN A FRAME THAT COULD NOT ANSWER.**
+It emitted CANONICAL coordinates only, so `arc_owner`'s declared input was
+present and could not answer its own cross-staff question — the fault
+`Q.ONSET_COLUMN` paid for. Page pixels are carried beside them now, DECLINED
+rather than defaulted. **A quantity can be gathered in the WRONG FRAME and look
+fed**: `coverage()` reports it as `stub`, not `starved`.
+
+⚠️ **`<part-group>` was scoped and NOT built — zero reach, measured.**
+`group_symbol` abstains `no_identity` on **22 of 22 staves** because
+`instrument` abstains `no_evidence`. *Measure REACH before accuracy.*
+
+⚠️ **The arc EXPORT is a separate unit and the number says so: 32 of 199 arcs
+(16.1%) begin at their cell's left edge**, the cross-barline signature. Emitting
+each half as its own `<slur>` writes two where the music has one — and OMR-NED
+would not catch it, because the metric is symmetric and the legacy slur work's
+first cut LOWERED pooled OMR-NED while RAISING the edit count. It needs
+`_merge_arcs_across_barlines`'s three measured constants moved across first.
+
+#### The reporting defects the A/B found — read `status_census`, not a headline
+
+⚠️⚠️ **`decided_but_unwritten` WAS UNREACHABLE.** `elif decided:` consumed
+every decided family, so the fourth branch only ever saw `decided == 0` — the
+guard on a dead branch, and a decision that reached no file read as `decided`.
+Found by the controlled A/B, not by review, and independently derived by a
+sibling session from the control flow. Repaired, plus `decided_uncounted` for a
+family with **no counter** ("the report cannot tell" is a different fact from
+"wrote zero").
+
+⚠️ **TWO HEADLINES, because they are two faults.**
+`detected_and_unrepresented` is a RECORD gap (no quantity, a stub, a starved
+stub); `decided_and_unwritten` is an EXPORT gap. The repairs differ — *write an
+adjudicator* against *read the verdict you already have*. Keeping them apart is
+why the first fell ~284 glyphs on beet5-p3 the day `dynamic` started deciding
+**with nothing reaching a file**.
+
+⚠️⚠️ **AND BOTH ARE FILTERS, SO PREFER `status_census`.** A filter cannot say
+where a family WENT. The census is a PARTITION over every family row with an
+`unaccounted` bucket a test requires to be empty. **If you want a coverage
+figure as a control, use the census.**
+
+⚠️ The hairpins were **counted twice** — `dynamicCrescendoHairpin` starts with
+`dynamic`, so both the `dynamic` and `wedge` families claimed it, the fault
+`gather_glyph_families` is routed by CLASS to prevent. `_claims` is
+longest-prefix-wins, derived.
+
+#### Provenance: a record now names the tree that built it
+
+`staged/__main__.py` stamps `provenance` (commit + `dirty`) on every record,
+and
+[regather_control.py](benchmarks/omr-staged-notations-2026-09/regather_control.py)
+**exits non-zero** on an unstamped pair, two records from the same clean tree,
+or any dirty tree. ⚠️ Without it, `MOVED: nothing` was indistinguishable from
+*"you compared a file with itself"*.
+
+⚠️ **Three instruments, three blind spots, and they are named in their own
+docstrings** because the next person runs the tool without reading the
+write-up: `readjudicate.py` isolates ADJUDICATE over a FIXED gather and is
+blind by construction to a GATHER change; `reexport_arm.py` has the
+mirror-image blind spot; only **two full re-gathers** answer *"did GATHER
+change what ADJUDICATE sees"*. Run on this change: of 24 quantities exactly one
+moved (`arc_kind`, the change under test), `duration` 939 → 939.
+
+⚠️ **Do NOT quote that as "the pipeline is deterministic".** It shows the
+STAGED path is reproducible on the page measured, and says nothing about
+DETECTOR confidences moving on byte-identical code (0.83 → 0.69 on one hairpin
+box) or the legacy gate's ±6 edit floor. A verdict can be stable while the
+confidence under it moves, because most decisions read a confidence as a TIER
+or an argmax rather than a value.
+
 ### A MARK must be attached to its notehead — bar sums on perfect ink
 
 `A-DUR-8` said bar sums are wrong on a clean LilyPond engraving, blocking the
@@ -978,9 +1093,8 @@ that behave differently** (among the 81 it
 can speak about, agreement tracks confidence hard: agrees n=42 at 0.694,
 disagrees n=39 at 0.391). ⚠️ n = 1 page there, confidence is a PROXY for ink
 quality and not a measurement of it, and neither result says WHICH reading is
-wrong. Write-up: `benchmarks/omr-staged-notations-2026-09/ARC_KIND.md` on
-`claude/staged-pipeline-progress-bf3b29` — deliberately un-linked, it is not on
-main yet.
+wrong. Write-up:
+[benchmarks/omr-staged-notations-2026-09/ARC_KIND.md](benchmarks/omr-staged-notations-2026-09/ARC_KIND.md).
 
 ⚠️⚠️ **THE SCOPE CONDITION IS LOAD-BEARING AND THE REPO ALREADY ENCODES IT.**
 The hazard needs BOTH readers to depend on the same ink — bar sums and meter

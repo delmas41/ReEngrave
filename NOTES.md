@@ -14,51 +14,6 @@ day again. The ranked residue plus the closed dead ends are in that file;
 
 ---
 
-## 🚨 HANDED OFF (2026-09-09): `decided_but_unwritten` is UNREACHABLE, so the coverage report's `decided` bucket conflates two things
-
-⚠️ **Recorded here because it lives nowhere else.** Found while checking a
-coordination message from the session holding `tools/omr/staged/export.py`;
-told them directly, but a peer message is not the tree, and this repo's own
-rule is that the tree outranks any ledger.
-
-`export.py`'s status ladder (around `:932`):
-
-```python
-elif row["written"]:   -> "emitted"
-elif decided:          -> "emitted" if family in (clef, key, time, tuplet) else "decided"
-elif written is not None:
-    row["status"] = "decided_but_unwritten" if decided else "abstained"
-```
-
-**`elif decided:` catches every decided row first**, so the branch below runs
-only when `decided` is FALSE — where its own ternary yields `"abstained"`.
-**The string `decided_but_unwritten` can never be produced.** It is asserted by
-no test and appears in no committed artefact, which is what you would expect of
-a status nobody has ever seen.
-
-**Why it matters, and it is not cosmetic.** `"decided"` therefore covers two
-different situations that a reader of the report cannot tell apart:
-
-* a family the exporter RAN and wrote none of — `dynamic` today, which stopped
-  being a stub in the 2026-09-09 merge while `grep -c "<dynamics>"
-  tools/omr/staged/export.py` is still **0**;
-* a family with no writing step at all.
-
-⚠️ **AND IT SILENTLY MOVES THE HEADLINE.** `detected_and_unrepresented_total`
-is built from `status in ("NO_QUANTITY", "starved", "stub")` (`:944`), so a
-family leaving `stub` leaves the headline **whether or not anything reaches the
-file**. Quoting that total as a before/after across the 09-09 merge will show
-an improvement no file received. Quote `decided` beside it — **not**
-`decided_but_unwritten`, which is the natural thing to reach for and does not
-exist.
-
-**Status: reported, not fixed.** `export.py` was being actively rewritten by
-another session (the notations/direction half — dynamics, part-group, arcs)
-when this was found, so it was left to them rather than edited underneath them.
-⚠️ **Check whether the branch is already reachable before acting on this.**
-
----
-
 ## 🅿️ PARKED (Sean, 2026-09-03): re-try the template-read elements — time signatures first — under the new labeling system
 
 Not urgent, but **must not get lost** (Sean asked for exactly that). The

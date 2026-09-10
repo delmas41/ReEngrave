@@ -16,6 +16,32 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-10 — merged to main: the notations half of the staged exporter
+
+**`claude/staged-pipeline-progress-bf3b29` landed.** The block below is that
+work as it was written on the branch; this heading records the merge, the two
+tidy-ups that were held for it, and what is left.
+
+- **Tidy-ups done at merge time, both tracked from the day they arose**: the
+  meter/boundary session's `NOTES.md` entry about `decided_but_unwritten` is
+  REMOVED (its fix is now on main, so the note and the fix arrive together —
+  deleting it earlier would have been *fixed-then-kept-open* in reverse), and
+  the `ARC_KIND.md` citation in CLAUDE.md is now a LINK, with its
+  "deliberately un-linked, not on main yet" clause removed in the same edit.
+- ⚠️ **NOT DONE, and deliberately**: the arc EXPORT. `arc_kind` and
+  `arc_owner` decide, and `<slur>` / `<tied>` still reach no file — the arcs
+  report `decided_uncounted`, which is the report saying it cannot tell. It
+  needs `_merge_arcs_across_barlines`'s three measured constants first, because
+  **32 of 199 arcs (16.1%) cross a barline** and emitting each half separately
+  writes two slurs where the music has one. ⚠️ OMR-NED would score that as an
+  improvement.
+- ⚠️ **Also open, unclaimed by two sessions**: `_rest_ruling` reads `Q.AUG_DOT`
+  on the rest's own glyph, so **a dotted rest is read as undotted** — the fault
+  fixed for noteheads, one branch over, which makes the asymmetry now WORSE
+  than the consistent gap it replaced. Worth **1 dot of 848** on three
+  documents, so near-zero payoff; the duration-reader session measured it and
+  neither session claimed it.
+
 ## 2026-09-09 (late night, 5) — the exporter reads nine quantities, and three defects behind that
 
 **Branch `claude/staged-pipeline-progress-bf3b29`.** The staged exporter was
