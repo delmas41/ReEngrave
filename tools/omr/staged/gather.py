@@ -695,7 +695,10 @@ def _artic_side(name: str) -> Optional[str]:
     return None
 
 
-def gather_glyph_families(log: Log, detections: Dict[str, List[Any]]) -> None:
+def gather_glyph_families(log: Log, detections: Dict[str, List[Any]],
+                          cells: Sequence[Any] = (),
+                          local: Optional[Dict[int, Tuple[int, int]]] = None
+                          ) -> None:
     """Rests, arcs and articulation marks.
 
     ⚠️ EVERY ONE OF THESE WAS DETECTED AND READ BY NOTHING until 2026-09-09.
@@ -717,9 +720,30 @@ def gather_glyph_families(log: Log, detections: Dict[str, List[Any]]) -> None:
     hairpin is anchored by its edges (its ink does not overlap the notes it
     binds at all -- 0 of 4 on Mahler), and `f`+`f` becomes `ff` by x-adjacency.
     """
+    # ⚠️⚠️ THE PAGE FRAME, AND WITHOUT IT `arc_owner` COULD NOT HAVE BEEN
+    # WRITTEN. This function shipped 2026-09-09 emitting CANONICAL coordinates
+    # only -- measured inside ONE cell rescaled so the staff span is constant,
+    # so two staves' values are not the same quantity. `adjudicate_arc_owner`
+    # asks "whose noteheads does this arc hug" of EVERY staff in the system,
+    # which is a cross-staff comparison, so the stub's declared input was
+    # present and in a frame that could not answer its own question.
+    #
+    # That is exactly the fault `Q.ONSET_COLUMN` paid for -- it reported 1,062
+    # columns at 76.6% corroborated, 699 of them agreeing to the FLOAT, which
+    # no scan does. ⚠️ And `coverage()` cannot see this shape: it reports the
+    # family as `stub` (input gathered), not `starved`. A quantity can be
+    # gathered in the WRONG FRAME and look fed.
+    by_key = {}
+    for c in (cells or ()):
+        key = (local or {}).get(c.staff_index)
+        if key is not None:
+            by_key[R.cell(c.page_index, key[0], key[1],
+                          c.measure_index).to_key()] = c
+
     for cell_key, dets in detections.items():
         sub = Subject.from_key(cell_key)
         frame = frame_cell(sub.cell)
+        cell_obj = by_key.get(cell_key)
         for gi, d in enumerate(dets):
             g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
             name = d.smufl_name
@@ -728,6 +752,20 @@ def gather_glyph_families(log: Log, detections: Dict[str, List[Any]]) -> None:
                 y0=d.y_canonical, y1=d.y_canonical + d.height_canonical,
                 x_center=d.x_center, y_center=d.y_center,
             )
+            # ⚠️ DECLINED, NEVER DEFAULTED TO THE CELL FRAME, the same rule
+            # `gather_detections` and `gather_dynamic_letters` follow: a glyph
+            # whose page position is unknown and one measured at page x 1841
+            # are different facts, and only the second may reach a cross-staff
+            # consumer.
+            page_box = _page_box(cell_obj, d) if cell_obj is not None else None
+            if page_box is None:
+                box["frame_note"] = (
+                    "no page box: cell has no bbox_page_px/upscale_factor")
+            else:
+                px0, py0, px1, py1 = page_box
+                box.update(bbox_page_px=[px0, py0, px1, py1],
+                           x_center_page=(px0 + px1) / 2.0,
+                           y_center_page=(py0 + py1) / 2.0)
             common = dict(reader=READERS.DETECTOR, frame=frame,
                           score=float(d.confidence))
 
@@ -1905,7 +1943,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_notehead_positions(log, cells, local, detections)
         gather_ownership_evidence(log, pws, cells, local, detections)
         gather_rhythm_marks(log, cells, local, detections)
-        gather_glyph_families(log, detections)
+        gather_glyph_families(log, detections, cells, local)
         # ⚠️ AFTER detection (the letters ARE detections, and the CV wedge
         # search blanks the point detections out of the ink first) and BEFORE
         # direction text, which subtracts every detection from the page: these

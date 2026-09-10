@@ -37,6 +37,110 @@ ruled on.
 
 ---
 
+## 2026-09-10 — merged to main: the notations half of the staged exporter
+
+**`claude/staged-pipeline-progress-bf3b29` landed.** The block below is that
+work as it was written on the branch; this heading records the merge, the two
+tidy-ups that were held for it, and what is left.
+
+- **Tidy-ups done at merge time, both tracked from the day they arose**: the
+  meter/boundary session's `NOTES.md` entry about `decided_but_unwritten` is
+  REMOVED (its fix is now on main, so the note and the fix arrive together —
+  deleting it earlier would have been *fixed-then-kept-open* in reverse), and
+  the `ARC_KIND.md` citation in CLAUDE.md is now a LINK, with its
+  "deliberately un-linked, not on main yet" clause removed in the same edit.
+- ⚠️ **NOT DONE, and deliberately**: the arc EXPORT. `arc_kind` and
+  `arc_owner` decide, and `<slur>` / `<tied>` still reach no file — the arcs
+  report `decided_uncounted`, which is the report saying it cannot tell. It
+  needs `_merge_arcs_across_barlines`'s three measured constants first, because
+  **32 of 199 arcs (16.1%) cross a barline** and emitting each half separately
+  writes two slurs where the music has one. ⚠️ OMR-NED would score that as an
+  improvement.
+- ⚠️ **Also open, unclaimed by two sessions**: `_rest_ruling` reads `Q.AUG_DOT`
+  on the rest's own glyph, so **a dotted rest is read as undotted** — the fault
+  fixed for noteheads, one branch over, which makes the asymmetry now WORSE
+  than the consistent gap it replaced. Worth **1 dot of 848** on three
+  documents, so near-zero payoff; the duration-reader session measured it and
+  neither session claimed it.
+
+## 2026-09-09 (late night, 5) — the exporter reads nine quantities, and three defects behind that
+
+**Branch `claude/staged-pipeline-progress-bf3b29`.** The staged exporter was
+the bottleneck, not the decisions: it read nine quantities and emitted **zero**
+of all nine `<notations>` / `<direction>` children.
+
+- **Dynamics reach the file.** `adjudicate_dynamic` stopped being a stub on
+  2026-09-09 and decides; `grep '<dynamics' staged/export.py` was **0**. *The
+  value existed and nothing read it*, inside the architecture built to stop it.
+  `_place_directions` mirrors `_place_notes` and renders through the LEGACY
+  `_mxl_direction` / `_mxl_empty_measure`, which already take `(x, kind, text)`.
+  **MEASURED, one gather exported twice** (Beethoven 5 / Litolff 984073
+  `--pages 2`): `<dynamics>` **0 → 80**, notes 589 and rests 228 identical,
+  balance holds, and with the `<direction>` lines removed the two files are
+  **byte-identical**; music21 reads back 80 Dynamic objects on 11 parts.
+- ⚠️⚠️ **`decided_but_unwritten` WAS UNREACHABLE.** `elif decided:` consumed
+  every decided family, so the fourth branch only ever saw `decided == 0` — the
+  guard on a dead branch, and a decision that reached no file read as
+  `decided`. Found by the A/B, not by review, and **independently derived by
+  the meter/boundary session from the control flow**. Repaired, plus
+  `decided_uncounted` for a family with no counter.
+- ⚠️ **Two headlines, because they are two faults:** `detected_and_unrepresented`
+  (a RECORD gap — no quantity, a stub, a starved stub) and
+  `decided_and_unwritten` (an EXPORT gap). Keeping them apart is why the first
+  fell ~284 glyphs on beet5-p3 the day `dynamic` started deciding with nothing
+  exported.
+- ⚠️ **And `status_census` because BOTH are filters** — raised by the
+  meter/boundary session against this fix, and right: a filter cannot say where
+  a family WENT. The census is a PARTITION over every row, with an
+  `unaccounted` bucket a test requires to be empty. ⚠️ Its first draft
+  double-counted an unknown status; a balance check that lies is worse than
+  none.
+- ⚠️ **The hairpins were counted twice.** `dynamicCrescendoHairpin` starts with
+  `dynamic`, so both the `dynamic` and `wedge` families claimed it — the fault
+  `gather_glyph_families` is routed by CLASS to prevent, one module over.
+  `_claims` is now longest-prefix-wins, derived.
+- **`arc_kind` and `arc_owner` filled** — 199 arcs decide on that page. THREE
+  stubs remain; only `direction` is still input-starved.
+  - The DETECTOR'S CLASS decides and the position grammar only RECORDS,
+    honouring `OMR_ARC_RECLASS`'s measured refusal. **And the record now
+    supports that refusal independently**: grammar available on 81 of 199,
+    agreeing **42** and disagreeing **39** — a coin flip — with 28 of the 39 in
+    the expensive tie→slur direction.
+  - ⚠️⚠️ **The arbiter is silent where it is most needed** — the meter
+    session's principle, tested here: grammar-MISSING arcs have median
+    confidence **0.408** against **0.563** available, and among those it can
+    speak about, DISAGREEMENT tracks confidence hard (**0.391** vs **0.694**).
+    So the 51.9% agreement rate is an average over two populations and a future
+    pricing must stratify. **Not gated on: n = 1 page.**
+  - `arc_owner` moves **12 of 199**, and **every move is to an ADJACENT
+    staff** — ±1, six each way, zero exceptions. Nothing in the rule knows
+    about adjacency. Moved arcs sit 3.80–9.24 spaces from their own heads (6
+    of 12 cover nothing there); arcs that stay sit at a median 0.530.
+  - ⚠️ **`gather_glyph_families` was gathering in a frame that could not
+    answer**: canonical coordinates only, so `arc_owner`'s declared input was
+    present and could not answer its own cross-staff question — the fault
+    `Q.ONSET_COLUMN` paid for. **A quantity can be gathered in the WRONG FRAME
+    and look fed**; `coverage()` reports it as `stub`, not `starved`.
+  - ⚠️ **Two mutations survived the first eleven `arc_owner` tests** and that is
+    the finding: no fixture exercised a near rival or a head whose owner
+    differed from its subject — precisely the population the rule exists for.
+- ⚠️ **`<part-group>` scoped and NOT built.** `group_symbol` abstains
+  `no_identity` on 22 of 22 staves because `instrument` abstains `no_evidence`.
+  Zero reach — measure REACH before accuracy.
+- ⚠️ **The arc EXPORT is a separate unit**, and the number says so: **32 of 199
+  arcs (16.1%)** begin at their cell's left edge, the cross-barline signature.
+  Emitting each half as its own `<slur>` writes two where the music has one,
+  and OMR-NED would not catch it — the metric is symmetric and the legacy
+  slur work's first cut LOWERED pooled OMR-NED while RAISING the edit count.
+- ⚠️ **The dot path went LIVE under this exporter** (duration-reader session's
+  merge): `Q.DURATION` now carries `dots` where zero did before, and
+  `_place_notes` takes `max(dur["dots"], derived_dots)`. Checked on a fresh
+  run: **0 disagreements over 865 decided durations** between `dots` and what
+  `written` implies. ⚠️ Only 1 of 865 carried a dot — a scan fires ~35 dots
+  over 2347 noteheads against 157 over 1118 engraved — so that run is a weak
+  exercise and four tests are the real guard.
+
+
 ## 2026-09-09 (late night, 4) — the SECOND PUBLISHER, and it corrects arm 1
 
 Brahms 1 mvt1 / **Breitkopf & Härtel**, pdf pages 0-3 (14/27/28/28 staves), the
@@ -1283,6 +1387,15 @@ early in the process."* Right, and the record said so three ways.
   (which also proves the run deterministic, so the delta is attributable);
   `no_pitch` 54 → 54 and `detected_and_unrepresented` 659 → 659 both unchanged,
   because a meter says nothing about pitch and reads no new ink.
+  - ⚠️ **THE `659 → 659` IS NO LONGER REPRODUCIBLE, AND THE FIGURE IS LEFT
+    STANDING ANYWAY.** It was a CONTROL THAT DID NOT MOVE, which is the safe
+    usage and is why the conclusion above is unaffected — but
+    `detected_and_unrepresented` counts only `NO_QUANTITY`/`starved`/`stub`,
+    and on 2026-09-09 `dynamic`, `arc_kind` and `arc_owner` stopped being
+    stubs, so the same run now reports a smaller number for reasons that have
+    nothing to do with the meter. Re-derive it before reusing it as a control;
+    `status_census` is the field that cannot move this way. History is not
+    rewritten here — the number was true of the tree that produced it.
 - ⚠️ **A −1 was chased rather than rounded off**: rests 433 → 432. Not a lost
   rest — P4 m44 had been PADDED because its only note had no duration, and the
   note is now written. One of the 18 recoveries, arriving in the rest column.

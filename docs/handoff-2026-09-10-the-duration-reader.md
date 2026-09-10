@@ -130,7 +130,11 @@ quoting any of them.
    honest contract: it isolates ADJUDICATE over a FIXED gather; `reexport_arm.py`
    has the mirror blind spot; the uncovered middle is *"did GATHER change what
    ADJUDICATE sees"*, and only a full re-gather answers that. The sibling then
-   ran one: **`duration 939 → 939, 0 changed`**.
+   ran one: **`duration 939 → 939, 0 changed`**
+   (`benchmarks/omr-staged-notations-2026-09/out/regather-control-beet5-p3.txt`),
+   ⚠️ **and that gather change has since LANDED ON MAIN** — checked on the
+   merged tree, it adds FIELDS to existing rows and no `log.observe`/`abstain`
+   at any scope, so the figures in §2 stand without re-deriving.
 3. ⚠️ **A MUTATION ARM SURVIVED AND I DELETED THE RULE, NOT THE TEST.**
    `_attached_flags` opened with `if not attached_stems: return [], 0`, which
    cannot be broken because `any()` over an empty list is already False — a

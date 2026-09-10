@@ -1,0 +1,47 @@
+⚠️ THIS PAIR IS UNSTAMPED AND THE TOOL NOW REFUSES IT BY DEFAULT.
+Regenerated with --allow-unstamped so the file carries its own caveat rather
+than looking clean.
+
+Both records predate the `provenance` stamp (added 2026-09-09, the same day).
+I know what the pair is from the session that produced it -- BEFORE is the
+step-1 tree (dynamics wiring only), AFTER is that tree plus the page-box
+fields on Q.ARC_BOX/Q.REST/Q.ARTICULATION_MARK plus adjudicate_arc_kind -- but
+NOTHING IN EITHER FILE RECORDS THAT. The comparison was sound because I
+remembered, which is a habit and not a mechanism; that is precisely the gap
+the stamp closes, and it is why the tool refuses rather than reports.
+
+The result below stands on the session's own account of the two runs. A future
+re-derivation should use two STAMPED records and will not need this paragraph.
+
+⚠️ REFUSED: one or both records carry no provenance -- they predate the stamp, or were written by something that does not set it
+⚠️ --allow-unstamped: continuing anyway. The result below is NOT evidence about a code change.
+BEFORE tree: (unstamped)
+AFTER  tree: (unstamped)
+quantity                  before   after  changed
+accidental                    49      49        0
+arc_kind                     199     199      199  <-- MOVED
+arc_owner                    199     199        0
+articulation_owner            15      15        0
+clef                          22      22        0
+direction                    341     341        0
+duration                     939     939        0
+dynamic                      341     341        0
+event                        314     314        0
+glyph_owner                  518     518        0
+group_symbol                   2       2        0
+instrument                    22      22        0
+key_signature                 22      22        0
+measure_partition             22      22        0
+meter                          2       2        0
+onset_column                   2       2        0
+part_partition                 1       1        0
+pitch                        816     816        0
+slot_index                    22      22        0
+staff_group                   22      22        0
+staff_ordinal                 22      22        0
+system_membership              2       2        0
+system_staff_count             2       2        0
+tuplet_ratio                   1       1        0
+
+MOVED: arc_kind
+⚠️ Every quantity but the one under test must read 0. A quantity that moves is a finding, not noise.

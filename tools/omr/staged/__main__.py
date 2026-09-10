@@ -40,6 +40,49 @@ def parse_pages(spec: str) -> list:
     return out
 
 
+def _provenance() -> dict:
+    """The commit this record was built from, and whether the tree was dirty.
+
+    ⚠️ Best-effort and NEVER fatal: a record that cannot name its tree is
+    still a valid record, and refusing to write one would trade a real
+    transcription for a metadata nicety. It is the CONSUMER's job to refuse an
+    unstamped comparison, which is where the decision belongs -- writing is
+    not the place that can be wrong about it.
+    """
+    import subprocess
+    here = str(Path(__file__).resolve().parent)
+
+    def git(*args):
+        # ⚠️ `check_output`, NEVER `subprocess.run` without `check=True`: run
+        # returns a non-zero exit as EMPTY STDOUT WITH NO EXCEPTION, so
+        # outside a git checkout the id would be `""` -- and two empty stamps
+        # compare EQUAL. The meter session hit exactly that in its own guard.
+        return subprocess.check_output(
+            ["git", *args], stderr=subprocess.DEVNULL, cwd=here).decode().strip()
+
+    out = {"commit": None, "dirty": None}
+    try:
+        # ⚠️⚠️ THE TWO FACTS ARE ATOMIC, AND THAT IS THE WHOLE POINT. An
+        # earlier version set `commit` first and `dirty` second inside one
+        # `try`, so a `git status` that failed left a record claiming a COMMIT
+        # with dirtiness UNKNOWN -- and a consumer reading `dirty` as falsy
+        # would call that tree CLEAN. A half-named tree is not a named tree.
+        #
+        # The general rule, from the meter session generalising my own dirty
+        # rule back at me: ANYTHING THAT CANNOT UNIQUELY NAME A TREE MUST
+        # NEVER COMPARE EQUAL TO ANYTHING, INCLUDING ITSELF. So both fields
+        # are set together or neither is, and `None` is the only failure
+        # value -- no magic string like "unknown", which two failing machines
+        # would share.
+        commit = git("rev-parse", "HEAD")
+        dirty = bool(git("status", "--porcelain"))
+        out["commit"], out["dirty"] = commit, dirty
+    except Exception as exc:                       # noqa: BLE001
+        out = {"commit": None, "dirty": None,
+               "error": f"{type(exc).__name__}: {exc}"}
+    return out
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(
         description="The staged pipeline: GATHER -> ADJUDICATE -> EVALUATE")
@@ -81,6 +124,19 @@ def main(argv=None) -> int:
         legacy=legacy.load(args.against) if args.against else None,
         progress=args.progress)
 
+    # ⚠️⚠️ WHICH TREE BUILT THIS RECORD. Without it, comparing two records is
+    # an unprovenanced A/B: `regather_control.py` reporting "MOVED: nothing"
+    # reads as "my change is inert" when it is equally consistent with having
+    # compared two runs of the SAME tree, or a file with itself. That is the
+    # cached-arm trap the meter session found in its own `run_arms.py`, one
+    # layer down -- and the shape this project keeps paying for, where the
+    # failure is never a wrong answer but a RIGHT-LOOKING one.
+    #
+    # ⚠️ A DIRTY TREE IS NEVER EQUAL TO ITSELF: a SHA cannot tell two sets of
+    # uncommitted edits apart, so `dirty` is recorded and any consumer must
+    # refuse to treat two dirty stamps as different-or-same. That rule is the
+    # meter session's, adopted rather than re-derived.
+    result["provenance"] = _provenance()
     text = json.dumps(result, indent=2, default=str)
     if args.out:
         Path(args.out).write_text(text)

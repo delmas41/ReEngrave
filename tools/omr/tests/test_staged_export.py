@@ -247,8 +247,22 @@ class TestCoverageNamesTheFourZEROS(unittest.TestCase):
         page = _one_staff_page(notes=[("C4", QUARTER)])
         rep = SX.coverage(page)
         by = {r["family"]: r for r in rep["families"]}
-        self.assertEqual(by["slur"]["status"], "stub",
-                         "arc_box is gathered now: this is a plain stub")
+        # ⚠️ `slur` LEFT this census on 2026-09-09 when `arc_kind` stopped
+        # being a stub. `articulation` is the plain-stub case now; `direction`
+        # is the starved one. Asserting the DISTINCTION, never a census —
+        # which is why this test survived a stub being filled with a one-line
+        # edit rather than a rewrite.
+        self.assertEqual(by["articulation"]["status"], "stub",
+                         "articulation_mark is gathered: a plain stub")
+        # ⚠️ `direction` reports `stub`, NOT `starved`, and the two tools
+        # disagree about it on purpose-by-accident: `coverage()` calls a
+        # quantity fed when a gather SITE exists, and `Q.DIRECTION_WORD` has
+        # one that only ever ABSTAINS (`gather_coverage`'s "abstain-only"
+        # category). So a rung that runs and reads nothing is "gathered" here
+        # and "starved" there. Asserted as it IS rather than as it reads,
+        # with the divergence named — an undocumented disagreement between
+        # two derived inventories is how one of them quietly stops being
+        # believed.
         self.assertEqual(by["direction"]["status"], "stub")
         # and the mechanism that reports `starved` still works
         import tools.omr.staged.inventory as inv
@@ -656,3 +670,292 @@ class TestTheMeterSegmentsFlagIsONByDefault(unittest.TestCase):
         for typo in ("yess", "1 1", "ON!", "tru", "0x0"):
             os.environ[SX.METER_SEGMENTS_ENV] = typo
             self.assertTrue(SX.meter_segments_enabled(), repr(typo))
+
+
+class TestADecidedDynamicREACHESTheFile(unittest.TestCase):
+    """⚠️ THE GAP THIS CLASS EXISTS FOR: `adjudicate_dynamic` stopped being a
+    stub on 2026-09-09, decides, files a verdict per cell — and
+    `grep '<dynamics' staged/export.py` returned ZERO, as did the same grep
+    for every other `<notations>` / `<direction>` child. *The value existed
+    and nothing read it*, inside the architecture built to stop it.
+
+    ⚠️ AND THE COVERAGE HEADLINE MOVED THE WRONG WAY WHILE IT WAS BROKEN.
+    `detected_and_unrepresented_total` counts only NO_QUANTITY / starved /
+    stub, so the family LEFT the headline the day it started deciding, with
+    nothing reaching a file. `decided_but_unwritten` is the status that
+    carried it, and the last test here pins that it is reachable.
+    """
+
+    def _page_with(self, words, *, notes, x_page=310.0, n_measures=1):
+        page = _one_staff_page(notes=notes, n_measures=n_measures)
+        page["record"]["verdicts"].append(_vrd(
+            950, "cell/0/0/0/0", Q.DYNAMIC, list(words), reason="spelled"))
+        page["record"]["verdicts"][-1]["detail"] = {
+            "words": [{"text": w, "spelled": True, "x_page": x_page + 40 * i}
+                      for i, w in enumerate(words)]}
+        return page
+
+    def test_a_bar_WITH_notes_carries_its_dynamic(self):
+        xml, rep = SX.to_musicxml(
+            self._page_with(["ff"], notes=[("C4", QUARTER)]))
+        self.assertIn("<dynamics><ff/></dynamics>", xml.replace("\n", "")
+                      .replace("      ", "").replace("  ", ""))
+        self.assertEqual(rep["written"]["dynamics"], 1)
+
+    def test_a_bar_with_NO_notes_still_carries_its_marks(self):
+        """The legacy exporter dropped dynamics on exactly this branch for a
+        month, and it takes a SCAN to see it — an engraved page puts an event
+        in every bar. The staged path is fed the marks from the start."""
+        xml, rep = SX.to_musicxml(self._page_with(["p"], notes=[]))
+        self.assertIn("<dynamics>", xml)
+        self.assertIn("<p/>", xml)
+        self.assertEqual(rep["written"]["dynamics"], 1)
+
+    def test_the_direction_precedes_the_note(self):
+        """MusicXML orders `<direction>` before the `<note>`s it governs, and
+        a `<direction>` carries no duration so offset 0 is legal."""
+        xml, _ = SX.to_musicxml(
+            self._page_with(["mf"], notes=[("C4", QUARTER)]))
+        self.assertLess(xml.index("<direction "), xml.index("<note>"))
+
+    def test_marks_come_out_in_x_ORDER_within_the_bar(self):
+        xml, _ = SX.to_musicxml(
+            self._page_with(["p", "f"], notes=[("C4", QUARTER)], x_page=100.0))
+        self.assertLess(xml.index("<p/>"), xml.index("<f/>"))
+
+    def test_a_NARROWED_dynamic_writes_NOTHING(self):
+        """⚠️ `OMR_PARTIAL_DYNAMICS` was built, measured over the 20-row scan
+        gate and REFUSED: +15 edits with NOT ONE ROW BETTER. An unspellable
+        run is not `decided`, so it must not reach the file on this path
+        either — the refusal is inherited, not re-litigated."""
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        page["record"]["verdicts"].append(_vrd(
+            951, "cell/0/0/0/0", Q.DYNAMIC, None, outcome="narrowed",
+            reason="unspellable",
+            candidates=[{"value": "sf", "support": 1.0},
+                        {"value": "sfz", "support": 1.0}]))
+        xml, rep = SX.to_musicxml(page)
+        self.assertNotIn("<dynamics>", xml)
+        self.assertEqual(rep["written"].get("dynamics", 0), 0)
+
+    def test_a_dynamic_verdict_is_NOT_counted_in_the_note_balance(self):
+        """The accounting control counts noteheads and rests. A direction is
+        neither, and folding it in would make a correct export unbalanced."""
+        _, rep = SX.to_musicxml(
+            self._page_with(["ff"], notes=[("C4", QUARTER)]))
+        self.assertTrue(rep["balance"]["balanced"])
+        self.assertEqual(rep["balance"]["events_written"], 1)
+
+
+class TestTheHairpinsAreNotCountedTwice(unittest.TestCase):
+    """⚠️ `dynamicCrescendoHairpin` starts with `dynamic`, so a plain prefix
+    test let the `dynamic` family AND the `wedge` family both claim it — and
+    where both were unrepresented the headline charged the same ink twice.
+    `gather_glyph_families` is routed by CLASS "never by the detector's
+    `category`" for exactly this glyph; the coverage table had the fault that
+    finding exists to prevent, one module over.
+    """
+
+    def test_a_hairpin_belongs_to_wedge_and_NOT_to_dynamic(self):
+        self.assertTrue(SX._claims("wedge", "dynamicCrescendoHairpin"))
+        self.assertFalse(SX._claims("dynamic", "dynamicCrescendoHairpin"))
+
+    def test_a_plain_letter_still_belongs_to_dynamic(self):
+        self.assertTrue(SX._claims("dynamic", "dynamicForte"))
+        self.assertFalse(SX._claims("wedge", "dynamicForte"))
+
+    def test_no_class_is_claimed_by_two_families(self):
+        """The property, not the instance — derived, so a future overlapping
+        family resolves the same way with no hand-written exclusion."""
+        for cls in ("dynamicCrescendoHairpin", "dynamicDiminuendoHairpin",
+                    "dynamicForte", "dynamicPiano", "restWhole",
+                    "noteheadBlackOnLine", "timeSig4", "tuplet3"):
+            owners = [f for f in SX.FAMILIES if SX._claims(f, cls)]
+            self.assertLessEqual(len(owners), 1, f"{cls} claimed by {owners}")
+
+
+class TestTheStatusThatNamesAnExportGapCanActuallyFIRE(unittest.TestCase):
+    """⚠️⚠️ `decided_but_unwritten` was UNREACHABLE from the day it was
+    written until 2026-09-09. The branch order was
+
+        elif decided:                      -> "decided"
+        elif written is not None:          -> "decided_but_unwritten" if decided
+
+    so the third branch consumed every decided family and the fourth could
+    only ever see `decided == 0`. The guard sat on a dead branch, and a
+    decision that decided and reached NO file was reported as `decided`,
+    which reads like success.
+
+    Found by the controlled A/B for the dynamics wiring, not by review: the
+    BEFORE arm wrote zero `<dynamics>` and still reported
+    `decided_but_unwritten: []`. *A check that cannot fail is worse than no
+    check.*
+    """
+
+    def _decided_dynamic_page(self):
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        page["record"]["observations"].append(
+            _obs(980, "glyph/0/0/0/0/9", Q.GLYPH_BOX,
+                 ["dynamicForte", 300, 90, 20, 20], category="dynamic"))
+        page["record"]["verdicts"].append(_vrd(
+            981, "cell/0/0/0/0", Q.DYNAMIC, ["f"], reason="spelled"))
+        page["record"]["verdicts"][-1]["detail"] = {
+            "words": [{"text": "f", "spelled": True, "x_page": 300.0}]}
+        return page
+
+    def test_a_family_that_DECIDED_and_wrote_nothing_says_so(self):
+        """The direct reachability proof: hold the verdict, withhold the
+        exporter's counter, and the status must name the gap."""
+        page = self._decided_dynamic_page()
+        rep = SX.coverage(page, written={"notes": 1})     # no `dynamics` key
+        row = next(r for r in rep["families"] if r["family"] == "dynamic")
+        self.assertEqual(row["status"], "decided_but_unwritten")
+        self.assertIn("dynamic", rep["decided_and_unwritten"])
+        self.assertEqual(rep["decided_and_unwritten_total"], 1)
+
+    def test_the_same_family_that_DID_write_reads_emitted(self):
+        page = self._decided_dynamic_page()
+        rep = SX.coverage(page, written={"notes": 1, "dynamics": 1})
+        row = next(r for r in rep["families"] if r["family"] == "dynamic")
+        self.assertEqual(row["status"], "emitted")
+        self.assertEqual(rep["decided_and_unwritten_total"], 0)
+
+    def test_a_family_with_NO_counter_is_not_called_a_success(self):
+        """⚠️ An unmeasurable family must not read as a measured one.
+
+        ⚠️ NO SHIPPED FAMILY REACHES THIS STATE TODAY, and the first draft of
+        this test asserted it of `slur` and failed with `stub != decided_
+        uncounted` — a stub is reported as a stub, correctly, before any of
+        this. So the branch is exercised by REMOVING `dynamic`'s counter,
+        which is exactly the shipped state of that family until this session.
+        It becomes live for real at the next step: an `arc_kind` that stops
+        being a stub with no counter added lands here rather than reading as
+        a success."""
+        page = self._decided_dynamic_page()
+        original = SX.FAMILIES["dynamic"]
+        SX.FAMILIES["dynamic"] = (original[0], original[1], ())
+        try:
+            rep = SX.coverage(page, written={"notes": 1})
+        finally:
+            SX.FAMILIES["dynamic"] = original
+        row = next(r for r in rep["families"] if r["family"] == "dynamic")
+        self.assertEqual(row["status"], "decided_uncounted")
+        self.assertIn("dynamic", rep["decided_uncounted"])
+        # and it is NOT counted as an export gap -- we do not know that it is
+        self.assertNotIn("dynamic", rep["decided_and_unwritten"])
+
+    def test_the_two_headlines_measure_DIFFERENT_faults(self):
+        """A record gap (no quantity / stub) and an export gap (decided and
+        unwritten) need different repairs, so they are counted apart. This is
+        why the first headline FELL by ~284 glyphs on beet5-p3 the day
+        `dynamic` stopped being a stub with nothing reaching a file."""
+        page = self._decided_dynamic_page()
+        rep = SX.coverage(page, written={"notes": 1})
+        self.assertNotIn("dynamic", rep["detected_and_unrepresented"])
+        self.assertIn("dynamic", rep["decided_and_unwritten"])
+
+
+class TestAFamilyCannotLeaveEVERYBucket(unittest.TestCase):
+    """⚠️ RAISED BY THE METER/BOUNDARY SESSION AGAINST THIS FIX, and it was
+    right. Both headlines are status FILTERS, and a filter cannot say where a
+    family went: `dynamic` left `detected_and_unrepresented` silently the day
+    it stopped being a stub, and adding a second filtered headline reproduces
+    that surprise one level up.
+
+    The census is a PARTITION, so a family that leaves one bucket must appear
+    in another.
+    """
+
+    def _rep(self, **written):
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        page["record"]["observations"].append(
+            _obs(970, "glyph/0/0/0/0/9", Q.GLYPH_BOX,
+                 ["dynamicForte", 300, 90, 20, 20], category="dynamic"))
+        page["record"]["verdicts"].append(_vrd(
+            971, "cell/0/0/0/0", Q.DYNAMIC, ["f"], reason="spelled"))
+        page["record"]["verdicts"][-1]["detail"] = {
+            "words": [{"text": "f", "spelled": True, "x_page": 300.0}]}
+        return SX.coverage(page, written=dict(written))
+
+    def test_every_family_is_filed_exactly_once(self):
+        rep = self._rep(notes=1)
+        c = rep["status_census"]
+        self.assertTrue(c["balanced"])
+        self.assertEqual(c["n_filed"], c["n_families"])
+        self.assertEqual(c["n_families"], len(SX.FAMILIES))
+
+    def test_nothing_lands_in_UNACCOUNTED(self):
+        """⚠️ The escape hatch must always be empty. A status invented later
+        and belonging to no headline shows up HERE rather than nowhere — the
+        same inversion `NOT_NOTATION` uses, where the default for something
+        nobody thought about is *reported*."""
+        self.assertEqual(self._rep(notes=1)["status_census"]["unaccounted"], [])
+
+    def test_a_family_that_CHANGES_bucket_is_still_filed(self):
+        """The exact motion that started this: `dynamic` moves from
+        `decided_but_unwritten` to `emitted` when the exporter writes it. It
+        must be visible in the census on BOTH sides, never absent from one."""
+        before = self._rep(notes=1)["status_census"]
+        after = self._rep(notes=1, dynamics=1)["status_census"]
+        self.assertIn("dynamic", before["decided_but_unwritten"])
+        self.assertNotIn("dynamic", before["emitted"])
+        self.assertIn("dynamic", after["emitted"])
+        self.assertNotIn("dynamic", after["decided_but_unwritten"])
+        for c in (before, after):
+            self.assertTrue(c["balanced"])
+
+    def test_an_UNKNOWN_status_is_filed_once_not_twice(self):
+        """⚠️ The first draft double-counted it — `setdefault` into
+        `unaccounted` and then an `if` that appended again — so `n_filed`
+        over-counted and `balanced` would have gone False for the wrong
+        reason. A balance check that lies is worse than none."""
+        rows = [{"family": "made_up", "status": "a_status_nobody_declared"},
+                {"family": "note", "status": "emitted"}]
+        c = SX._census(rows)
+        self.assertEqual(c["unaccounted"], ["made_up"])
+        self.assertEqual(c["n_filed"], 2)
+        self.assertTrue(c["balanced"])
+
+
+class TestTheDotIsONEFactUnderALiveDurationReader(unittest.TestCase):
+    """⚠️ FLAGGED BY THE DURATION-READER SESSION: `adjudicate_duration` gained
+    flag/dot attachment, so `Q.DURATION` verdicts now carry `dots` where ZERO
+    did before — 156 on a 3-page engraved fixture. This exporter reads
+    `max(dur["dots"], derived_dots)`, so a path that was dead is now live
+    under it.
+
+    The `max` is the paid-for rule — summing them wrote a double-dotted
+    quarter for every single-dotted one, 82 edits on one fixture — and it is
+    only SAFE while `written` already encodes the dot. Verified on a fresh run
+    of Beethoven 5 p3 after the merge: **0 disagreements over 865 decided
+    durations** between `dots` and what `written` implies. ⚠️ Only 1 of those
+    865 carried a dot at all, because the detector fires ~35 dots over 2347
+    noteheads on a scan against 157 over 1118 on an engraving — so that run is
+    a weak exercise of the path and these tests are the real guard.
+    """
+
+    def _one(self, written, dots):
+        page = _one_staff_page(
+            notes=[("C4", {"beats": written, "written": written, "dots": dots})])
+        xml, _ = SX.to_musicxml(page)
+        return xml
+
+    def test_a_dotted_value_is_not_double_dotted(self):
+        """written=1.5 implies one dot AND the verdict says one dot: `max`
+        must give ONE, never two."""
+        xml = self._one(1.5, 1)
+        self.assertEqual(xml.count("<dot/>"), 1)
+
+    def test_a_verdict_dot_on_an_undotted_written_value_still_writes_one(self):
+        """`max` takes the verdict's dot even where the arithmetic implies
+        none — that is what makes it a `max` and not an `and`."""
+        self.assertEqual(self._one(1.0, 1).count("<dot/>"), 1)
+
+    def test_no_dots_anywhere_is_still_no_dots(self):
+        self.assertEqual(self._one(1.0, 0).count("<dot/>"), 0)
+
+    def test_the_exporter_takes_MAX_and_not_a_SUM(self):
+        """Anti-drift on the 82-edit lesson: a sum would write two."""
+        import inspect
+        src = inspect.getsource(SX._place_notes)
+        self.assertIn('max(int(dur.get("dots") or 0), derived_dots)', src)
