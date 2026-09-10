@@ -1000,6 +1000,29 @@ exactly when it is needed, it must not come off the same raster.** Boundary
 contributed by the staged-pipeline session; the `source_kind` connection is
 this file's own distinction, arriving from a new direction.
 
+⚠️⚠️ **AND THIS FILE HAS ALREADY APPLIED THE RULE ONCE WITHOUT NAMING IT.**
+The *Decisions made without a probability* section argues for
+`clef_register_warning` on exactly this ground: *"It needs NO instrument label,
+which is what makes it worth having: 29 of 29 unresolved non-treble staves on
+the scan corpus have no label printed at all"*. That is a second witness chosen
+BECAUSE it does not fall silent with the first — this rule, reached
+independently in the clef area and never generalised. Three instances: the
+`source_kind` tiers, `clef_register_warning`, and the meter's bars.
+
+⚠️ **A SECOND, WIDER FORM IS OPEN AND DELIBERATELY UNMEASURED: two readers can
+be correlated through the DOCUMENT'S CONVENTIONS rather than through its ink.**
+The 29 of 29 is that form, not the ink one — an engraver omitting labels on
+continuation systems is not a degradation of anything. **No number is claimed
+for it here.** ⚠️ The design note for whoever measures it, from the
+staged-pipeline session and worth having BEFORE the study is built: **the two
+have different signatures and only one is gradual.** Ink correlation is graded
+and appears as a confidence gradient (their arcs: 0.408 against 0.563, and
+0.391 against 0.694 inside the available set). A convention correlation is a
+**cliff** — the label is printed or it is not — so a study that goes looking by
+stratifying on confidence sees a flat, uninformative population and finds
+nothing. Which is roughly how 29 of 29 stayed invisible until somebody counted
+them.
+
 ⚠️ Two other routes were measured and refused on the same fault:
 `score_margin` — computed by the locator, written by GATHER, **read by
 nothing** — does NOT separate (TRUE 0.0681-0.3840 vs FALSE 0.0675); and staff-
