@@ -644,6 +644,38 @@ bookkeeping, two were cautionaries, and three are detector false positives** —
 and the one remaining reading fault that matters (`9/4`) has its answer sitting
 on the record one system earlier.
 
+## 4e. ⚠️ THE FRAME AUDIT — clean, and the analogous hazard is the CELL INDEX
+
+Prompted by a finding from the staged-pipeline session: `gather_glyph_families`
+was emitting CANONICAL coordinates only, so `arc_owner`'s declared input sat in
+a frame that cannot answer a cross-staff question — and **`coverage()` reported
+that family as `stub`, not `starved`, because the quantity WAS being gathered.**
+A quantity can be gathered in the wrong frame and look fed.
+
+**Audited against every meter rule this benchmark shipped, and they are clean.**
+Only `_meter_from_digits` reads a coordinate at all (`y_center`, to tell a
+numerator from a denominator) — and `_meter_changes` splits its rows **by staff
+before calling it**, so the comparison is always within one staff's cell, where
+canonical IS the right frame. `_meter_from_letter`, `_last_cell_per_staff`,
+`_score_bars` and `_bar_lengths_for` read no coordinate.
+
+⚠️ **BUT THE SAME HAZARD EXISTS HERE IN A DIFFERENT CURRENCY: the CELL INDEX is
+a per-staff quantity used as a system-wide key.** `_score_bars` takes a
+cross-staff majority of bar lengths keyed on `cell.cell`, and
+`_last_cell_per_staff` exists precisely because *"the staves of one system do
+not always agree about how many bars they hold"*. Where they disagree, cell `N`
+on one staff and cell `N` on another are **different bars**, and the majority
+would be mixing them — silently, exactly as a wrong coordinate frame does.
+
+**Measured over all 16 systems of the five fixtures: every one is UNANIMOUS
+about its cell count** (`{8: 14}`, `{7: 21}`, `{9: 23}` …). So the shared key
+holds throughout this corpus and no result above is affected.
+
+⚠️ It is recorded as a bounded latent hazard rather than guarded, because
+**there are zero observed instances to build a guard against** — and it is also
+why the `all`-not-`any` distinction in the cautionary rule could only be pinned
+by a synthetic test: on real data here the two are identical.
+
 ## 5. ⚠️⚠️ THREE GAPS, ONE PIECE OF WORK — the segments are read and nothing downstream uses them
 
 Found by the measurements above, all three confirmed by `grep`, and **none
