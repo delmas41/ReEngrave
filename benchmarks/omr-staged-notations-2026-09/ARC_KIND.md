@@ -132,3 +132,37 @@ the restraint the meter letter path already records: *"Confidence separates
 the populations cleanly (0.887–0.927 engraved, 0.377–0.560 scan) and is
 deliberately not gated on — four rows on two documents is not a threshold."*
 199 arcs on one page is not a threshold either.
+
+## The GATHER change moved nothing — two full re-gathers, not a re-adjudication
+
+⚠️ **THE TWO CHEAP INSTRUMENTS ARE BOTH BLIND TO THIS**, established by the
+duration-reader session catching itself about to report a vacuous pass.
+`readjudicate.py` rebuilds a `Log` from a SAVED record's observations, so a
+gather change never enters the rebuild and it passes **by construction**;
+`reexport_arm.py` has the mirror-image blind spot on the export side. The
+uncovered middle is *"did GATHER change what ADJUDICATE sees"*, and the only
+instrument for it is two full runs of the same page.
+
+`regather_control.py`, Beethoven 5 / Litolff `984073` `--pages 2`, before and
+after the page-box fields landed on `Q.ARC_BOX` / `Q.REST` /
+`Q.ARTICULATION_MARK`:
+
+| | |
+|---|--:|
+| quantities compared | 24 |
+| quantities that MOVED | **1 — `arc_kind`, the change under test** |
+| `duration` | 939 → 939, **0 changed** |
+| `pitch` | 816 → 816, 0 changed |
+| `event` | 314 → 314, 0 changed |
+| `glyph_owner` | 518 → 518, 0 changed |
+
+⚠️ It doubles as a DETERMINISM control: detection confidences have been
+measured moving between runs on byte-identical code, so 23 quantities
+returning identical across two full runs is what makes the `arc_kind` delta
+attributable rather than assumed.
+
+This is the empirical half of the duration-reader session's code-level
+argument, which reached the same conclusion by reading rather than running:
+`_rest_ruling` touches only `.score`, `.value` and `.id` on a `Q.REST` row and
+**never reads `.detail`**, so added detail fields cannot reach a duration. Two
+routes, one answer — and the run is the one that could have gone red.

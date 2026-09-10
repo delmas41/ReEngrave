@@ -1,0 +1,28 @@
+quantity                  before   after  changed
+accidental                    49      49        0
+arc_kind                     199     199      199  <-- MOVED
+arc_owner                    199     199        0
+articulation_owner            15      15        0
+clef                          22      22        0
+direction                    341     341        0
+duration                     939     939        0
+dynamic                      341     341        0
+event                        314     314        0
+glyph_owner                  518     518        0
+group_symbol                   2       2        0
+instrument                    22      22        0
+key_signature                 22      22        0
+measure_partition             22      22        0
+meter                          2       2        0
+onset_column                   2       2        0
+part_partition                 1       1        0
+pitch                        816     816        0
+slot_index                    22      22        0
+staff_group                   22      22        0
+staff_ordinal                 22      22        0
+system_membership              2       2        0
+system_staff_count             2       2        0
+tuplet_ratio                   1       1        0
+
+MOVED: arc_kind
+⚠️ Every quantity but the one under test must read 0. A quantity that moves is a finding, not noise.
