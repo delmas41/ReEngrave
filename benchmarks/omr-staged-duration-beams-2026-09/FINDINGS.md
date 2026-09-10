@@ -109,6 +109,13 @@ pipeline.** A live `--pages 0-2` run reproduces the simulation in both
 directions (narrowed 147 → 29 against a predicted 149 → 16; the residue is
 `reconcile_duration`, which the offline simulation does not run).
 
+⚠️ **AND IT WAS RE-MEASURED ON THE MERGED TREE.** `origin/main` moved under
+this branch with the CAUTIONARY rule and the scan-side meter bookkeeping fix
+(`_meter_changes`, `_last_cell_per_staff`), which the merge folded into the
+same file. A live run after the merge is **identical bar for bar and count for
+count** — 14 assessable, 10 correct, the same staff tallies. `out/barsums.txt`
+carries all three arms.
+
 ## 4. THE RULE — box overlap, and NO CONSTANT
 
 A stem is attached to a notehead, and joined to a beam, when their **boxes
