@@ -604,6 +604,14 @@ independent umpire over a bad reading; they fail together with it. This is the
 *Andante*'s "when the page cannot speak, abstain" arriving from the other
 direction, and it bounds every bar-arbitrated rule this benchmark has built.
 
+⚠️ **SCOPE, AND IT MATTERS — the hazard needs BOTH readers on the SAME INK.**
+It does not follow for two readers with independent failure modes: a dossier
+fact, or a roster at `source_kind: "catalog"`, does not fall silent because a
+raster is bad. That is exactly why this project refuses the `page` tier where
+it admits the `catalog` one — **an arbiter that comes off the same raster fails
+together with what it arbitrates.** Boundary contributed by the staged-pipeline
+session after testing the general form on `arc_kind`.
+
 ⚠️ **The cautionary route is not dead in the OTHER case** — a system that
 ABSTAINS needs no arbitration, because there is nothing to overturn, and a
 cautionary is ink naming that system's meter. **Reach on this corpus: ZERO** —
@@ -671,6 +679,29 @@ would be mixing them — silently, exactly as a wrong coordinate frame does.
 about its cell count** (`{8: 14}`, `{7: 21}`, `{9: 23}` …). So the shared key
 holds throughout this corpus and no result above is affected.
 
+**And the JOIN that rule depends on was verified too, not inferred.**
+`_last_cell_per_staff` keys off `Q.MEASURE_PARTITION` verdict subjects while
+`_meter_changes` groups `Q.METER_GLYPH` rows by `subject.staff` — two dicts
+built from different quantities and joined by staff index. Across all 10
+systems that read a meter glyph: **every glyph-reading staff has a partition
+entry, zero orphans.** (There was indirect evidence already — the cautionaries
+fire 2 of 2, which cannot happen unless those lookups hit.)
+
+⚠️ **If that join ever DID break it would fail CLOSED and SILENTLY**:
+`last_cell.get(st)` returns `None`, the `all(...)` is False, no candidate is
+ever classified a cautionary, and the rule degrades to exactly the behaviour it
+replaced. Safe direction, no signal. Not guarded, for the same reason as
+below — but worth knowing which way it falls.
+
+⚠️⚠️ **THIS IS THE THIRD INSTANCE OF ONE PATTERN IN A DAY, and the third came
+from another session**: a quantity gathered in CANONICAL coordinates answering
+a cross-staff question (`arc_owner`), a per-staff CELL INDEX used as a
+system-wide key (here), and `Subject.glyph`, which counts within its CELL and
+is therefore wrong at `Kind.SYSTEM` (the onset-column work). **A per-container
+ordinal used as a cross-container key** — and the reason it keeps happening is
+that the wrong key still RESOLVES, so nothing raises. ⚠️ Of the three, the
+frame at least announces itself in a field name; an ordinal does not.
+
 ⚠️ It is recorded as a bounded latent hazard rather than guarded, because
 **there are zero observed instances to build a guard against** — and it is also
 why the `all`-not-`any` distinction in the cautionary rule could only be pinned
@@ -728,6 +759,37 @@ python3 $B/summarize.py            # the committed extracts + REPORT.txt
 ⚠️ **The records are gitignored build products** (2-10 MB each). What is
 committed is `out/*.meter.json` and `out/REPORT.txt`, which is what every
 figure above is read off.
+
+⚠️⚠️ **A SKIPPED ARM MUST PROVE IT CAME FROM THIS TREE, and this harness had
+the trap its own docstring warned about for `scan_eval`.** `run_arms.py`
+returned an existing output untouched, with nothing recording WHICH TREE built
+it — so an arm re-run after a code change was silently reused, the comparison
+reported "identical", and the change looked inert. **Nothing about the output
+invited suspicion**, which is the whole failure mode. It now stamps the commit
+(and refuses to call a DIRTY tree equal to itself) beside every arm and
+**exits non-zero** rather than reuse one it cannot vouch for; `--force` re-runs,
+`--reuse-stale` overrides loudly. Found by auditing my own instruments after a
+fourth instance of *a control that cannot fail* turned up in a sibling session.
+⚠️ The stamp is written only AFTER the run succeeds, so a failed arm leaves
+none and is re-run rather than trusted.
+
+⚠️⚠️ **AND THE FIRST DRAFT OF THAT GUARD REINTRODUCED THE BUG IN ITS OWN
+FALLBACK, TWICE, BOTH TIMES BY RETURNING A STRING THAT COMPARES EQUAL TO
+ITSELF.** `except Exception: return "unknown"` made two arms on a machine
+without git match and silently reuse; and `subprocess.run` **without
+`check=True`** returns a failed command as empty stdout with no exception
+raised, so outside a git checkout the id was `""` and two empty stamps matched
+too — that path never reached the `except` at all. **The rule a dirty tree
+already forced is the general one: anything that cannot uniquely name a tree
+must never compare equal to anything, including itself.** Now `None`, and the
+caller writes no stamp — which the reader already refuses on. One mechanism, no
+special values.
+
+⚠️ Writing stays best-effort and never fatal: a record that cannot name its tree
+is still a valid arm, and refusing to write one would trade real work for
+metadata. **All the refusing happens at READ time**, which is where the
+information about *"am I comparing?"* actually is. (A new arm also DELETES any
+stale stamp beside it, so it can never inherit an older tree's claim.)
 
 ⚠️ **`env $VARS python3 ...` in zsh does not word-split.** `run_arms.py` hands
 `subprocess` an environment dict and sets BOTH flags explicitly in every arm,

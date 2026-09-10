@@ -966,6 +966,63 @@ as a second witness, and all three lose that witness exactly where the first
 witness is worst. It is why they fail SAFE rather than usefully on a bad page,
 and why "the bars will catch it" is not a design.
 
+✅ **AND IT IS NOT ABOUT BAR SUMS — corroborated on a second mechanism the same
+day, independently, by the staged-pipeline session.** `arc_kind`'s position
+grammar needs two detected heads under the arc and can speak about only **81 of
+199 arcs**; the arcs it CANNOT speak about are the weaker readings (median
+detector confidence **0.408** against **0.563**). So the shape is a property of
+any rule whose arbiter is read off **THE SAME INK** as the reading it
+arbitrates: **wherever the first reader is worst, the second is most often
+absent — and an availability rate quoted as one number averages two populations
+that behave differently** (among the 81 it
+can speak about, agreement tracks confidence hard: agrees n=42 at 0.694,
+disagrees n=39 at 0.391). ⚠️ n = 1 page there, confidence is a PROXY for ink
+quality and not a measurement of it, and neither result says WHICH reading is
+wrong. Write-up: `benchmarks/omr-staged-notations-2026-09/ARC_KIND.md` on
+`claude/staged-pipeline-progress-bf3b29` — deliberately un-linked, it is not on
+main yet.
+
+⚠️⚠️ **THE SCOPE CONDITION IS LOAD-BEARING AND THE REPO ALREADY ENCODES IT.**
+The hazard needs BOTH readers to depend on the same ink — bar sums and meter
+glyphs do, arc-grammar heads and arc class do. It does **not** follow for two
+readers with independent failure modes, and this project has those: a
+**dossier** supplies the meter, measure count, clef and key from a MusicXML
+file, and the catalog's `works` tier supplies a roster at
+`source_kind: "catalog"`, *"independent of the truth MusicXML"*. Neither goes
+silent because a raster is bad.
+
+**So this hazard is the reason `source_kind` is load-bearing**, stated from the
+other direction: an arbiter carrying `source_kind: "page"` is *"an OMR output
+of the same raster"* and fails TOGETHER with what it arbitrates — which is why
+the `editions` tier is refused where the `works` tier is admitted. ⚠️ The
+practical form: **if you want a second witness that does not fall silent
+exactly when it is needed, it must not come off the same raster.** Boundary
+contributed by the staged-pipeline session; the `source_kind` connection is
+this file's own distinction, arriving from a new direction.
+
+⚠️⚠️ **AND THIS FILE HAS ALREADY APPLIED THE RULE ONCE WITHOUT NAMING IT.**
+The *Decisions made without a probability* section argues for
+`clef_register_warning` on exactly this ground: *"It needs NO instrument label,
+which is what makes it worth having: 29 of 29 unresolved non-treble staves on
+the scan corpus have no label printed at all"*. That is a second witness chosen
+BECAUSE it does not fall silent with the first — this rule, reached
+independently in the clef area and never generalised. Three instances: the
+`source_kind` tiers, `clef_register_warning`, and the meter's bars.
+
+⚠️ **A SECOND, WIDER FORM IS OPEN AND DELIBERATELY UNMEASURED: two readers can
+be correlated through the DOCUMENT'S CONVENTIONS rather than through its ink.**
+The 29 of 29 is that form, not the ink one — an engraver omitting labels on
+continuation systems is not a degradation of anything. **No number is claimed
+for it here.** ⚠️ The design note for whoever measures it, from the
+staged-pipeline session and worth having BEFORE the study is built: **the two
+have different signatures and only one is gradual.** Ink correlation is graded
+and appears as a confidence gradient (their arcs: 0.408 against 0.563, and
+0.391 against 0.694 inside the available set). A convention correlation is a
+**cliff** — the label is printed or it is not — so a study that goes looking by
+stratifying on confidence sees a flat, uninformative population and finds
+nothing. Which is roughly how 29 of 29 stayed invisible until somebody counted
+them.
+
 ⚠️ Two other routes were measured and refused on the same fault:
 `score_margin` — computed by the locator, written by GATHER, **read by
 nothing** — does NOT separate (TRUE 0.0681-0.3840 vs FALSE 0.0675); and staff-
@@ -1035,8 +1092,120 @@ All closed in `tools/omr/tests/test_staged_stage_contract.py`.
 iterates `adjudicate.REGISTRY` / `ORDER` with covering every decision emptied
 it in one line — the discipline tests iterate the registry to assert
 declaration properties. **A check that cannot fail is worse than no check**;
-the clause is gone and its absence is pinned. The bounded case (`stubs()`) IS
-resolved.
+the clause is gone and its absence is pinned. The bounded case (`stubs()`) IS resolved.
+
+⚠️⚠️ **SEVEN INSTANCES ACROSS TWO SESSIONS, 2026-09-09, AND THEY SPLIT INTO TWO
+FAMILIES THAT NEED DIFFERENT REPAIRS.** Worth the split because the fix does
+not transfer between them:
+
+* **A control that computes the wrong thing.** `symbol_ledger.coverage_check`
+  computed and read by nothing; the `EMPTY CELLS: none` above; a status census
+  that double-counted an unknown status so `balanced` would have gone False for
+  the wrong reason; an A/B whose records named no tree, so *"nothing moved"*
+  could not be told from *"you compared a file with itself"*.
+  **Fix: make it able to fail.**
+* **A control that was never testing what its name says.** `readjudicate.py
+  --control` run against a GATHER change, where it rebuilds a `Log` from a
+  SAVED record so the change never enters and it passes 2993/2993 by
+  construction; a benchmark arm silently reused from an earlier tree, so the
+  comparison reports "identical" whatever the change did; and a shell
+  `edit && commit && merge && push && echo LANDED` that printed **LANDED**
+  while the edit's assertion had FAILED and main was untouched.
+  **Fix: state the contract, then check it holds for THIS use.**
+
+⚠️ **The second family is the harder one: the instrument is working perfectly
+and the fault is in the sentence someone attached to it.**
+
+⚠️⚠️ **`git blame` ON A LINE IS NOT EVIDENCE ABOUT WHO BROKE THE PARAGRAPH**, and
+it is the purest member of that family because the tool is not merely working —
+it is answering, confidently, a different question than the one asked. Blame
+attributes a SURVIVING LINE to its original author; it cannot attribute a
+SPLIT. Measured here: an orphaned `resolved.` was blamed to a commit from the
+previous day and read as somebody else's merge artefact, when an anchored
+markdown insertion had landed between `The bounded case (\`stubs()\`) IS` and
+its own `resolved.`, orphaning the tail of a sentence. ⚠️ Anchored string
+replacement into prose is how this happens, and it is how most of this file
+gets edited — **check that the line you anchored to is not mid-sentence.**
+
+⚠️ And it nearly stayed, on TWO independent-looking signals: a sibling
+session's *"looks like a merge artefact"* and a blame that agreed. Both were
+correct about the line and both wrong about the cause, because both rested on
+the same assumption — that the line's author wrote it where it now sits.
+**Correlated witnesses again, with the correlation running through a shared
+ASSUMPTION rather than shared ink or a shared convention** — a third door onto
+the silent-arbiter room above. ⚠️ Recorded as an observation and explicitly NOT
+measured: n = 1, and neither session claims otherwise. The `&&` chain is
+the purest case — nothing malfunctioned, and a `&&` chain verifies only that
+each step EXITED ZERO, never that it DID ANYTHING; a no-op merge exits zero
+correctly. That is not a control that was wrong, it is a control that was never
+a control.
+
+⚠️ And a guard can contain the failure it guards against: the tree-stamp guard
+built for the reused-arm case reintroduced it in its own fallback — twice,
+both times by returning a string that compares equal to itself (`"unknown"`,
+and `""` from a `subprocess.run` without `check=True`, which reports a failed
+command as empty stdout and raises nothing). ⚠️⚠️ **A GUARD'S FALLBACK BRANCH IS THE ONE PLACE WHERE "CANNOT TELL" GETS
+SILENTLY CONVERTED INTO A DEFINITE ANSWER** — here into *"same tree"*, and in a
+sibling session's provenance stamp into *"clean"* (`git rev-parse` succeeding
+while `git status` failed left a record naming a COMMIT with dirtiness unknown,
+which the consumer read as clean). **Neither conversion is ever the safe
+default**, and neither branch runs on a machine with git and a clean checkout —
+which is every machine anyone develops on.
+⚠️ **AND THE RULE MUST BE STATED WIDER THAN THE FIRST TWO INSTANCES, or it does
+not cover the third.** *"Anything that cannot uniquely name a tree must never
+compare equal to anything, including itself"* is about EQUALITY, and it is the
+right repair for a fallback that returns `"unknown"` or `""`. It would not have
+prevented the half-named tree: nothing was compared there at all — one fact was
+simply absent, and a falsy `None` was read downstream as **clean**. So the
+governing form is one clause wider and covers all three:
+
+> **A fallback must never convert *"cannot tell"* into a definite answer** —
+> not into *"same"*, and not into *"clean"*.
+
+The equality rule is the special case for values that get compared; the wider
+one also catches a MISSING fact being read as a negative. ⚠️ Two repairs follow
+and they are different: make the unnameable case unrepresentable (`None` rather
+than a magic string), and make the HALF-named case unrepresentable (the commit
+and the dirty flag are atomic, and a consumer refuses `dirty is None` outright).
+Taxonomy from the staged-pipeline session; instances from both, and the widening
+is theirs after their third instance showed the narrow rule would still permit
+it.
+
+⚠️⚠️ **THE SAME DEFECT APPEARED AT THREE LEVELS IN ONE DAY, and that is more
+useful than any of the three:** the CODE converting *"cannot tell"* into a
+definite answer; a TEST named for a hazard it does not reach (`…refuses_even_
+WITH_a_stamp` wrote a stamp, so the mutant that needs BOTH sides `None` walked
+past it); and a TEST SUITE not reaching the half its own commit message
+describes (a provenance file covering the WRITER while every refusal in the
+consumer — the whole point of the guard — was covered by nothing, and deleting
+the `raise` outright passed 4/4 green). **In each case the GREEN RESULT is what
+stopped the search.**
+
+⚠️ **AND THE TWO TEST FAULTS FAIL DIFFERENTLY, WHICH IS WHY BOTH ARE WORTH
+NAMING.** The suite that covered only the writer is the bigger HOLE — it
+reached the wrong half of the mechanism. The test named for a hazard it does
+not reach is the better CAMOUFLAGE: a file that visibly covers one function is
+at least honest about its scope, whereas a name reads as coverage of the thing
+it names. **The name is what a reviewer trusts, and the only part they cannot
+check by reading** — the body can be read, the assertion can be read, and
+neither says which hazard the inputs actually reach. Only a mutation does.
+Framing from the staged-pipeline session.
+
+⚠️ **Two things follow for how to run a mutation battery, both learned by
+shipping without them:**
+* **One red arm is not a battery.** Running a single mutation, seeing red, and
+  stopping is the reassurance that hides the rest — measured, five of six
+  survived behind one that did not.
+* **A battery of REFUSAL tests can pass by refusing everything**, so it needs a
+  POSITIVE control in the same class: *this input is accepted*. Verified here
+  in both directions — mutating the guard to refuse everything fails exactly
+  the accept test, and deleting the refusal fails four others.
+
+⚠️ Do not over-credit the instrument: a mutation battery found the TEST-level
+faults, and nothing else did — but the `&&` chain was found by checking
+`origin/main`, the unreachable status by reading a branch order, and a split
+sentence by `git blame` disagreeing with the truth. **Different rungs need
+different instruments**, which is the same lesson as the two families above.
 
 ⚠️ **A `wants` entry the decision never reads is INERT** — found by a test
 that asserted the opposite and failed. `Evidence` fills `missing`/`declined`
