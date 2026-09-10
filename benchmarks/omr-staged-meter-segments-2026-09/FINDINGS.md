@@ -217,9 +217,9 @@ for the flip, which failed on the first attempt.
 ```bash
 B=benchmarks/omr-staged-meter-boundary-2026-09
 WS=tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
-python3 $B/run_arms.py --pdf $B/fixtures/brahms1-m1-22.pdf --pages 0-2 --tag m7brahms1eng --arms OFF
+python3 $B/run_arms.py --pdf $B/fixtures/brahms1-m1-22.pdf --pages 0-2 --tag <gen>brahms1eng --arms OFF
 # ... the other six, see §7 of the boundary FINDINGS for the full set
-PYTHONPATH=$PWD python3 $B/report_boundary.py --tally $B/out --prefix m7
+PYTHONPATH=$PWD python3 $B/report_boundary.py --tally $B/out --prefix <gen>
 ```
 
 ⚠️ `--tally` reads the committed `out/*.meter.json` reduction when a full
@@ -231,3 +231,17 @@ gitignored full record's shape.
 ⚠️ `--prefix` scores a run GENERATION against truth tables keyed on the
 FIXTURE. Baking a generation into `TALLY_SET` meant a re-run could only be
 scored by editing the table it is scored against.
+
+⚠️⚠️ **THE GENERATION PREFIX IS NOT NAMESPACED PER SESSION, AND TWO SESSIONS
+COLLIDED ON `m7`.** Both produced `out/m7*.json` for the same fixtures on the
+same day, and the merge surfaced it as seven add/add conflicts. The records
+AGREE on every verdict — page 0's courtesy refused, page 1's real change found
+— which is an accidental but real cross-check of two independent
+implementations. The committed `m7` files are the SIBLING's, because theirs is
+the rule that shipped. **Pick a prefix nobody else is using**, or better, one
+that names the session.
+
+⚠️ **The left-fraction figures in §3 are read off the PRE-FIX records
+(`m3*`), which are committed** — necessarily, since after the fix the
+cautionary is refused and its segment is absent from the record. They are a
+measurement of the convention, not of the shipped code's output.

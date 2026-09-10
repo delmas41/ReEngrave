@@ -39,11 +39,11 @@ runs differ ONLY in which earlier page is in the window:
 
 | candidate offered | bars | support | outcome |
 |---|---|--:|---|
-| **3/4**, the true meter | 7 fit / 2 not | **+6.0** | **`carried` 3/4 — CORRECT** |
+| **3/4**, the true meter | 8 fit / 1 not | **+8.0** | **`carried` 3/4 — CORRECT** |
 | **4/4**, across the boundary | 0 fit / 9 not | **−8.0** | **refused** |
 
 On the *Andante* the true meter scored −1.0 and the false one −1.0. Here they
-are +6.0 and −8.0 **on the same nine bars**. `OMR_METER_FROM_BARS` reaches the
+are **+8.0 and −8.0 on the same nine bars** — a swing of 16.0. ⚠️ The true row was +6.0 (7 fit / 2 not) until a sibling's DURATION work landed; better durations make the bars speak more clearly, which is the dependency this design predicts rather than a surprise. `OMR_METER_FROM_BARS` reaches the
 same page independently (length 3.0 at +5.0; `derived_from_bars` **3/4** where
 a 3/4 is available to borrow the spelling from, and
 `bars_name_a_length_without_a_form` with `['3/4','6/8','12/16']` where only a
