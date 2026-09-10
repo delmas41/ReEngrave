@@ -375,6 +375,36 @@ correction of an old one.
 
 ---
 
+## 2026-09-10 — The meter arc closed, and a handoff that says what is on main
+
+**What:** `docs/handoff-2026-09-10-the-meter-arc-closed.md`, and CLAUDE.md's
+START HERE repointed at it. No code change.
+
+The arc that ran from *"the bars can name a LENGTH"* through the boundary
+measurement to the `9/4` is finished, and the entry point now states it in one
+place: what shipped (three default-on rules, false meter changes **10 → 3**, no
+true change lost), what is measured (true meter **+8.0** against a false
+**−8.0**, and the second document/publisher SPLIT), what is refused (three
+routes for the `9/4`, each with the measurement that killed it), and what is
+ranked next.
+
+⚠️ **Its §7 exists because "what landed" was wrong twice in conversation.**
+Every row is checked against `origin/main` rather than remembered: the three
+gaps this benchmark reported ARE on main (export consumes `record.meter_at`,
+the carry takes the source's END meter, `METER_SOURCE_REASONS`), while the
+sibling session's dynamics/census/`ARC_KIND.md` work is on its branch only.
+
+⚠️ **AND IT CORRECTS ME ABOUT MY OWN NOTES.md ENTRY.** I called the
+`decided_but_unwritten` note stale; checked against main it is **accurate** —
+the branch order there still lets `elif decided:` swallow every decided family,
+so the status is still unreachable on main. It becomes stale when the sibling
+branch lands, and that branch's owner is tracking its removal. ⚠️ The check that
+found this was a grep returning **0** for a heading that contains backticks:
+a miss reading exactly like a clean result, which is the ninth instance of
+that family today and the reason §7 exists at all.
+
+---
+
 ## 2026-09-09 — The `9/4`: three routes measured and refused, and the hazard that outlasts them
 
 **What:** no code change. `probe_cautionary_arbiter.py`, the full diagnosis of
