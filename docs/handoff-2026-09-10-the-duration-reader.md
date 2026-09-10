@@ -217,6 +217,28 @@ fed.** Three sessions each hit it; it may deserve a name in `ASSUMPTIONS.md`.
 See §3. Not started, and it is a change to shared machinery that would want its
 own measurement.
 
+## 5.5 ⚠️ `health --check` EXITS 1 ON MAIN, AND THE GATE IS WRONG, NOT THE CODE
+
+Found while landing this handoff, **verified as not a regression from this
+work**: it exits 1 on `origin/main` alone, checked in a throwaway worktree off
+that commit rather than inferred. It reports `arc_kind: no test asserts it
+DECIDES`.
+
+⚠️ **The tool prints its own caveat directly above that line** — *"the shape
+classifier is TEXTUAL and undercounts. Confirm any zero with one `grep` before
+believing it."* The grep says it undercounts here:
+`tools/omr/tests/test_staged_arc_kind.py` has `test_a_tie_class_decides_tie`
+and `test_a_slur_class_decides_slur` asserting `v.value == "tie"` / `"slur"`,
+which is that decision deciding — the tests simply never spell the word
+`DECIDED`.
+
+**Left unpatched deliberately.** The classifier belongs to the session that
+landed `arc_kind`, and what it should count is theirs to state; a fix from here
+would be guessing at their intent, and this repo has already built one thing
+twice. ⚠️ **What matters for a fresh session is that a red `health --check` on
+main today is this, and not a broken tree** — but do not let that become an
+excuse to stop reading it. `inventory --check` exits 0 and the suite is green.
+
 ## 6. OPERATIONAL
 
 * Four symlinks in a worktree: `library`, `tools/omr/training/data/weights`,
