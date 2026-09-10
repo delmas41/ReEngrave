@@ -1181,6 +1181,16 @@ consumer — the whole point of the guard — was covered by nothing, and deleti
 the `raise` outright passed 4/4 green). **In each case the GREEN RESULT is what
 stopped the search.**
 
+⚠️ **AND THE TWO TEST FAULTS FAIL DIFFERENTLY, WHICH IS WHY BOTH ARE WORTH
+NAMING.** The suite that covered only the writer is the bigger HOLE — it
+reached the wrong half of the mechanism. The test named for a hazard it does
+not reach is the better CAMOUFLAGE: a file that visibly covers one function is
+at least honest about its scope, whereas a name reads as coverage of the thing
+it names. **The name is what a reviewer trusts, and the only part they cannot
+check by reading** — the body can be read, the assertion can be read, and
+neither says which hazard the inputs actually reach. Only a mutation does.
+Framing from the staged-pipeline session.
+
 ⚠️ **Two things follow for how to run a mutation battery, both learned by
 shipping without them:**
 * **One red arm is not a battery.** Running a single mutation, seeing red, and
