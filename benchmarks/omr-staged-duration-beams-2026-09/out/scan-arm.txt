@@ -1,47 +1,61 @@
-# SCAN ARM — Litolff Beethoven 5 mvt1, pdf pages 1-4, 12/22/19/22 staves.
+# SCAN ARM 1 — Litolff Beethoven 5 mvt1, pdf pages 1-4 (12/22/19/22 staves).
 # Windows hand-verified in benchmarks/omr-scan-e2e-2026-09/works.json;
 # the movement is 2/4 throughout, so every bar's truth is 2.0 quarters.
 # ONE gather, four adjudications (readjudicate.py) — no detector jitter.
+#
+# ⚠️ THE BAR FIGURES BELOW ARE THE CORRECTED ONES. The first pass keyed
+# bars on (page, cell), and a cell index RESTARTS at 0 on each system of
+# a page — so two bars were merged into one pseudo-bar. Caught by the
+# SECOND document, whose truth is not uniform. Per-staff readings were
+# keyed on the full subject all along and are unaffected.
 
 ## the harness verifies itself first
 CONTROL: 2993 of 2993 duration verdicts reproduced exactly, 0 differ, +0 extra
 
 ## BARS (>=3 staves, >=50% agreeing) — off=all vs ON
-OFF: 44 assessable, 43 correct
-ON : 49 assessable, 48 correct   (truth 2.0)
-     43  unchanged
-      6  became assessable, RIGHT
-      1  stopped being assessable (was right)
+OFF: 71 assessable, 67 correct
+ON : 78 assessable, 74 correct
+     66  unchanged
+     11  became assessable, RIGHT
+      4  stopped being assessable (was right)
+      1  wrong -> wrong (moved)
   bars that moved:
-   p1c0                - -> 2.0(3/6)       RIGHT
-   p1c2         2.0(5/6) -> 2.0(3/6)       RIGHT
-   p1c6         2.0(2/3) -> 2.0(3/3)       RIGHT
-   p1c7         2.0(4/5) -> 2.0(3/5)       RIGHT
-   p1c10        2.0(4/4) -> 2.0(3/4)       RIGHT
-   p1c11        2.0(3/5) -> 2.0(4/5)       RIGHT
-   p1c14        2.0(3/4) -> 2.0(4/4)       RIGHT
-   p2c0         2.0(5/9) -> 2.0(6/9)       RIGHT
-   p2c2        4.0(9/15) -> 4.0(8/15)      
-   p2c3       2.0(12/18) -> 2.0(14/18)     RIGHT
-   p2c5        2.0(8/14) -> 2.0(11/14)     RIGHT
-   p2c7         2.0(4/8) -> 2.0(6/8)       RIGHT
-   p2c8         2.0(5/8) -> 2.0(4/8)       RIGHT
-   p2c9                - -> 2.0(7/13)      RIGHT
-   p2c10       2.0(8/15) -> 2.0(10/15)     RIGHT
-   p2c11       2.0(7/13) -> -              was right
-   p2c12       2.0(5/10) -> 2.0(6/10)      RIGHT
-   p2c13               - -> 2.0(6/12)      RIGHT
-   p2c15        2.0(3/6) -> 2.0(5/6)       RIGHT
-   p3c0                - -> 2.0(7/13)      RIGHT
-   p3c2                - -> 2.0(9/16)      RIGHT
-   p3c3        2.0(8/16) -> 2.0(9/16)      RIGHT
-   p3c4        2.0(8/14) -> 2.0(7/14)      RIGHT
-   p3c5        2.0(8/13) -> 2.0(9/13)      RIGHT
-   p3c8         2.0(4/5) -> 2.0(5/5)       RIGHT
-   p3c10        2.0(5/5) -> 2.0(4/5)       RIGHT
-   p4c6       2.0(11/21) -> 2.0(12/21)     RIGHT
-   p4c9       2.0(11/20) -> 2.0(13/20)     RIGHT
-   p4c10               - -> 2.0(13/21)     RIGHT
+   p1s0c0                - -> 2.0(3/6)       RIGHT
+   p1s0c2         2.0(5/6) -> 2.0(3/6)       RIGHT
+   p1s0c6         2.0(2/3) -> 2.0(3/3)       RIGHT
+   p1s0c7         2.0(4/5) -> 2.0(3/5)       RIGHT
+   p1s0c10        2.0(4/4) -> 2.0(3/4)       RIGHT
+   p1s0c11        2.0(3/5) -> 2.0(4/5)       RIGHT
+   p1s0c14        2.0(3/4) -> 2.0(4/4)       RIGHT
+   p2s0c0         2.0(3/5) -> 2.0(4/5)       RIGHT
+   p2s0c3       2.0(10/11) -> 2.0(9/11)      RIGHT
+   p2s0c9         2.0(2/3) -> -              was right
+   p2s0c10        2.0(2/4) -> 2.0(3/4)       RIGHT
+   p2s0c15        2.0(3/6) -> 2.0(5/6)       RIGHT
+   p2s1c1         2.5(2/4) -> 1.5(2/4)       
+   p2s1c3                - -> 2.0(5/7)       RIGHT
+   p2s1c4                - -> 2.0(3/6)       RIGHT
+   p2s1c5                - -> 2.0(6/7)       RIGHT
+   p2s1c7         2.0(4/7) -> 2.0(6/7)       RIGHT
+   p2s1c8         2.0(4/6) -> 2.0(3/6)       RIGHT
+   p2s1c9                - -> 2.0(6/10)      RIGHT
+   p2s1c10       2.0(6/11) -> 2.0(7/11)      RIGHT
+   p2s1c11        2.0(4/8) -> -              was right
+   p2s1c13               - -> 2.0(5/10)      RIGHT
+   p2s1c14               - -> 2.0(5/10)      RIGHT
+   p3s0c0                - -> 2.0(5/9)       RIGHT
+   p3s0c3                - -> 2.0(6/11)      RIGHT
+   p3s0c4        2.0(5/10) -> -              was right
+   p3s0c5         2.0(5/9) -> 2.0(6/9)       RIGHT
+   p3s1c0                - -> 2.0(2/4)       RIGHT
+   p3s1c4         2.0(3/4) -> 2.0(4/4)       RIGHT
+   p3s1c8         2.0(4/5) -> 2.0(5/5)       RIGHT
+   p4s0c3         2.0(5/9) -> 2.0(6/9)       RIGHT
+   p4s0c13        2.0(6/9) -> 2.0(5/9)       RIGHT
+   p4s1c3        2.0(5/10) -> -              was right
+   p4s1c6        2.0(6/11) -> 2.0(7/11)      RIGHT
+   p4s1c9                - -> 2.0(7/11)      RIGHT
+   p4s1c10       2.0(5/10) -> 2.0(8/10)      RIGHT
 
 ## PER-STAFF READINGS — finer than the bar mode, and where the cost shows
 -- ON (both halves) --
@@ -62,12 +76,12 @@ ON : 49 assessable, 48 correct   (truth 2.0)
      399  (54.4%)  unchanged (right)
      327  (44.6%)  unchanged (wrong)
        3  ( 0.4%)  wrong -> wrong
-       2  ( 0.3%)  ⚠️ RIGHT -> wrong
        2  ( 0.3%)  wrong -> RIGHT
+       2  ( 0.3%)  ⚠️ RIGHT -> wrong
      401 right OFF  ->    401 right ON   of 733 readings
 
 ## CENSUS, and the contradiction probe
-/tmp/dur/scan-off-all.json
+/tmp/dur/re-scan-off-all.json
    duration verdicts   {'decided': 2549, 'narrowed': 552}
    beam_evidence       {None: 754, 'reader_declined': 1001, 'read': 884, 'none_over_this_note': 462}
    rows available      flag 49  aug_dot 35  stem 1920  beam_stroke 858  cell_staff_space 1180
