@@ -1306,6 +1306,13 @@ tree that FINISHED the run; the code that RAN is whatever was on disk when each
 module was FIRST IMPORTED — and the stamp reports neither.** Cost: two gathers,
 ~50 min. The recipe: land every tracked edit BEFORE the run, and commit any
 untracked benchmark file in the first two minutes.
+⚠️ **THREE FACTS ABOUT THAT ONE IMPORT ORDER ARE NOW RECORDED AND THEY ARE NOT
+THE SAME FACT**: the exporter is imported AFTER the gather (an edit mid-run
+REACHES it); an already-imported module keeps its code (an edit mid-run does
+NOT reach it); and `staged/__main__.py` writes the record JSON BEFORE it
+imports the exporter, which is what the tie-chain section below turns into a
+structural argument about where a decision can live. Found by three sessions
+in two days, each from a different direction.
 
 ⚠️ **`counters["dynamics"] += len(directions)` COUNTED EVERY ENTRY OF THE
 LIST**, so a `<words>` would have been billed to the `dynamic` family and
