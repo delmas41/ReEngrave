@@ -32,8 +32,12 @@ PDF = ("library/editions/beethoven/symphony-5-op67/"
        "beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--"
        "imslp984073.pdf")
 PAGES = [1, 2, 3, 4]
-#: The four clefs `key_signature_geometry` has a slot table for — the same
-#: tuple GATHER walks, imported rather than restated so the two cannot drift.
+
+# ⚠️ `_SLOT_TABLE_CLEFS` — the four clefs `key_signature_geometry` has a slot
+# table for — is IMPORTED from `staged.gather` inside `run()` rather than
+# restated here, so the probe cannot drift from the clefs GATHER actually
+# walks. A probe asking a different question from the pipeline is the
+# "control that was never testing what its name says" failure.
 
 
 def run(clef_source: str) -> list[dict]:
