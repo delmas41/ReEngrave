@@ -223,8 +223,9 @@ def group_chords_in_measure(
         # both read `nh["tied_to_next"]` per head. Reading the event-level
         # flag and writing it at the chord's first note put the tie on the
         # WRONG NOTE wherever an upper member was the tied one — measured at
-        # 53 + 68 elements over 22 stored scan transcriptions and 1 over the
-        # 11 engraved works (`benchmarks/omr-chord-tie-2026-09/`).
+        # 62 relocated marks plus 12 the event flag could not express at
+        # all, over 11 stored scan rows, and ONE mark over the 11 engraved
+        # works (`benchmarks/omr-chord-tie-2026-09/`).
         #
         # ⚠️ These stay, because LILYPOND WANTS EXACTLY THIS SHAPE: `~` after
         # a chord is a chord-level post-event which LilyPond resolves against

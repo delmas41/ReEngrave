@@ -3277,8 +3277,9 @@ def _mxl_voice_events(
     articulation, ornament and fermata marks are. Reading the EVENT flag and
     writing it at `ni == 0` put the mark on the WRONG NOTE wherever an upper
     member was the tied one — `group_chords_in_measure` sorts lowest-first, so
-    a tied top voice handed its tie to the bass. Measured at 53 + 68 elements
-    over 22 stored scan transcriptions and 1 over the 11 engraved works
+    a tied top voice handed its tie to the bass. Measured at 62 relocated
+    marks plus 12 the event-level flag could not express at all, over 11
+    stored scan rows, and at ONE mark over the 11 engraved works
     (`benchmarks/omr-chord-tie-2026-09/FINDINGS.md`).
     """
     lines: list[str] = []

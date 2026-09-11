@@ -2219,7 +2219,7 @@ class TestAChordTieIsWrittenOnTheTiedNote:
 
     PRICED ON BOTH FAMILIES before it was repaired
     (`benchmarks/omr-chord-tie-2026-09/FINDINGS.md`): 1 element over the 11
-    engraved works, 121 over 22 stored scan transcriptions.
+    engraved works; 62 relocated and 12 added over 11 stored scan rows.
     """
 
     @staticmethod
