@@ -47,8 +47,13 @@ become the ninth complete recorder that recorded nothing.
 `group_symbol`, `instrument`, `slot_index`, `part_partition`, `clef`,
 `key_signature`, `glyph_owner`, `tuplet_ratio`, `duration`, `meter`.
 
-**Stubs: 6** — `arc_owner`, `arc_kind`, `articulation_owner`, `wedge_anchor`,
-`dynamic`, `direction`. Each is a *declared* stub (`stub=True`), abstains with
+**Stubs: 1 at 2026-09-10** — `direction`, the only one that was ever
+input-starved. ⚠️ **Run `python3 -m tools.omr.staged.gather_coverage`; this
+line is a snapshot and a hand-counted figure in this repo has rotted at least
+three times.** The original six were `arc_owner`, `arc_kind`,
+`articulation_owner`, `wedge_anchor`, `dynamic`, `direction`; five graduated
+between 09-09 and 09-10, each landing with its emission and its counter rather
+than alone. Each is a *declared* stub (`stub=True`), abstains with
 `ABSTAIN.NOT_IMPLEMENTED`, and its docstring says what it needs. ⚠️ A stub is
 fine; a MISSING decision is not, because a missing one is indistinguishable
 from one that always abstains.
@@ -152,7 +157,7 @@ seen is a deletion with extra steps.
 | D5 | **GATHER out-parameters instead of the translating layer** | A-BUILD-1. The end state, but it touches a dozen files the OLD path runs through — the opposite of "alongside" | a `log` kwarg per reader; deletes the `mirror=True` rows |
 | D6 | **`Q.BRACKET_BLOCK` / `Q.GAP_BRIDGING` are MIRRORS**, re-derived rather than the reader's own word | the mirror is honest and marked; converting it is D5 | `_assign_groups` emitting its own branch |
 | D7 | **`Mode.ADDITIVE` needs an expiry** | A-GROUP-3: correct while an incumbent exists, should not calcify | a decision, not an edit |
-| D8 | **The six remaining stubs** — `arc_owner`, `arc_kind`, `articulation_owner`, `wedge_anchor`, `dynamic`, `direction` | ordinary remaining work, not a deferral of a fix | each is a declared stub and says what it needs |
+| D8 | **The remaining stub** — `direction` alone at 2026-09-10; the other five of the original six (`arc_owner`, `arc_kind`, `articulation_owner`, `wedge_anchor`, `dynamic`) are written | ordinary remaining work, not a deferral of a fix | `Q.DIRECTION_WORD` needs a GATHERER first — it is the only one that was ever two pieces of work |
 | D9 | **`join_parts` consequence** | blocked: it is the consequence of the decision a pre-registered gate falsified, and `adjudicate_part_partition` correctly abstains there | pricing that abstention first |
 | D10 | **Document-wide slot reference** | blocked: `build_reference` picking a lineup from one system once named 149 Brahms staves an instrument the work has not got | the `OMR_SPAN_REFERENCE_FIT=off` replay |
 | D11 | **`W_KEYSIG_FIT` (1.5) exceeds `MARGIN_FLOOR` (1.0)**, so a lone key-signature fit decides a clef | a weight, not a defect; changing it without evidence is guessing twice | a sweep, once measuring is allowed. ⚠️ Lower the WEIGHT, not the floor — A-CLEF-6 says the floor carries two jobs |

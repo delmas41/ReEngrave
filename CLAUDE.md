@@ -738,6 +738,11 @@ say *and the page is never read for it either*.
 
 **Merged-tree state, measured** (`python3 -m tools.omr.staged.gather_coverage`,
 pinned by `test_every_declared_stub_is_reported_with_its_input_state`):
+⚠️ **THIS PARAGRAPH IS A SNAPSHOT AND THE TOOL IS THE COUNT** — at 2026-09-10
+**ONE stub remains, `direction`, and it is the input-starved one**. The
+sentence below is kept as the state on the day it was written, because the
+four graduations since are what the sections after it record. Run
+`gather_coverage`; do not quote either number.
 **five stubs remain** — `arc_kind`, `arc_owner`, `articulation_owner`,
 `wedge_anchor`, `direction` — and **only `direction` is still input-starved**.
 `gather_glyph_families` now files `ARC_BOX` and `ARTICULATION_MARK`, and
@@ -894,7 +899,11 @@ frame error that made `Q.ONSET_COLUMN` report 1,062 columns of nothing.
 
 **`arc_kind` and `arc_owner` are filled** — 199 arcs decide on that page.
 **Three stubs remain** (`articulation_owner`, `wedge_anchor`, `direction`), and
-only `direction` is still input-starved.
+only `direction` is still input-starved. ⚠️ **That was the state on
+2026-09-10 morning; `articulation_owner` and then `wedge_anchor` graduated the
+same day and `stubs()` is now `('direction',)`** — see the wedge section
+below. The number is the TOOL's (`inventory`, `gather_coverage`), never this
+line's.
 
 ⚠️ `arc_kind` lets the DETECTOR'S CLASS decide and only RECORDS the position
 grammar, honouring `OMR_ARC_RECLASS`'s measured refusal — and **the record now
@@ -1136,6 +1145,74 @@ and then died on a `NameError` from an edit made four minutes into it. **Run a
 long gather WITHOUT `--musicxml` and export separately.** Editing anything at
 all, including an untracked file under `benchmarks/`, makes
 `provenance.dirty` true.
+
+### Hairpins reach the file — and the LAST declared stub is now `direction`
+
+2026-09-10, no flag. `adjudicate_wedge_anchor` was the last of the six
+original stubs whose input was already gathered; all four of those are now
+written and **`stubs()` is `('direction',)`**, which is also the only one that
+was ever input-starved. Findings:
+[benchmarks/omr-staged-wedge-2026-09/FINDINGS.md](benchmarks/omr-staged-wedge-2026-09/FINDINGS.md).
+
+⚠️⚠️ **REACH IS THE FIRST NUMBER AND ONE DOCUMENT HAS NONE.** `Q.WEDGE_BOX` is
+**0 on Litolff `984073` p1-3** and **47 on Breitkopf Brahms 1 p0-3** (46
+`cv_hairpins`, 1 `detector`). Measured on Litolff this family produces a clean
+zero that means nothing, so `wedge_arm.py` prints reach first and **exits
+non-zero declaring itself DEAD** at zero. **Brahms is its only fixture.**
+
+⚠️ **THE ONE DESIGN DECISION: the legacy function was SPLIT, not called and not
+ported.** `_legacy._wedge_anchors` wants the exporter's `measures` shims and
+three MEASURED constants (`_WEDGE_ANCHOR_PAD_NOTEHEADS`, `_WEDGE_START_RULE`,
+`_WEDGE_STOP_REACH_NOTEHEADS`). Calling it from the exporter is the
+`_pair_arcs` precedent and would leave the decision with **nothing to decide**;
+restating the constants would give this project two copies of numbers it paid
+to measure once. So the rule moved into `_wedge_anchors_from_candidates`, which
+takes page-pixel candidates and an OPAQUE payload — the legacy path passes
+detection dicts, the staged one subject keys — and the constants stay in one
+place. **The legacy path is byte-identical, proved by a control that CAN
+fail.**
+
+⚠️⚠️ **THE OBVIOUS BYTE-IDENTITY CONTROL WAS VACUOUS AND IS WORTH REMEMBERING.**
+Exporting three committed transcriptions before and after and comparing md5s
+passed — and `grep -c '<wedge'` on every one of them is **ZERO**, because the
+detector fires on a hairpin ~never on a scan, so none of those files calls the
+function at all. The committed control drives `_wedge_anchors` DIRECTLY over
+twelve synthetic cases and **prints how many ANSWERED (10 of 12) as its own
+positive control**, exiting non-zero on zero.
+
+⚠️⚠️ **ITS `ORDER` POSITION WAS WRONG AND NO TEST COULD HAVE FOUND IT.** Placed
+beside `fermata_owner` and `ornament_owner` — its natural home, all three
+taking subjects from a glyph row — it ran BEFORE `Q.VOICES` and **read `None`
+every time**, the `Q.STEM` shape again. No behavioural test reaches it, because
+*"one voice"* and *"voices unknown"* give the SAME ANSWER on every one-voice
+page, which is every fixture in the suite. **`inventory --check` found it in
+one line** by comparing `wants` against `ORDER`. ⚠️ Moving it then exposed a
+latent bug the unreachable branch had hidden: `State.DECIDED`, where `State`
+holds READ/DECLINED/ABSENT and the outcome enum is `Outcome`. *A branch that
+cannot be reached cannot be wrong, and cannot be right either.*
+
+⚠️⚠️ **AND `coverage()` UNDER-REPORTED THIS VERY FAMILY 47x.** `detector_glyphs`
+is counted over `Q.GLYPH_BOX` — the DETECTOR's class space — so ink a
+CLASSICAL-CV rung read is invisible: the wedge row said `detector_glyphs: 1`
+against 47 `Q.WEDGE_BOX` rows. **Anyone sizing this work off the headline read
+its reach as 1.** `cv_glyphs` / `ink_rows` are DERIVED from the registry's own
+`subjects_from` (never a hand-written family list), the two readers stay
+reported APART because `gather_wedge_boxes` emits both so a consumer can
+choose, and the headlines now read `ink_rows`.
+
+⚠️ **The mutation battery's first run reported 9 of 19 arms not red**, and all
+nine were worth having: **2 BAD ANCHORS** (`Ruling.abstain(` and the notehead
+category filter each occur TWICE in `ownership.py` — the arm would have mutated
+`arc_owner`, which is how the fermata battery silently mutated a different
+function), **1 EQUIVALENT MUTANT of my own writing**, and **6 genuine test
+gaps**. One arm was answered by **deleting code**: an idempotence guard whose
+rule could not fire, because `build()` makes fresh detection dicts every call.
+
+⚠️ **The element ORDER is the pairing, not a style** — music21 binds a
+`crescendo` to the next note it parses and a `stop` to the last one, so the
+open goes before its event and the stop after, and **no count would notice** a
+mistake. ⚠️ **A cell index is not a part ordinal** — it restarts per system,
+the `(page, cell)` defect that made the duration arm's bar figures wrong.
 
 ### A MARK must be attached to its notehead — bar sums on perfect ink
 
