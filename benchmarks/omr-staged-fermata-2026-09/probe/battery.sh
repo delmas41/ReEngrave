@@ -16,8 +16,11 @@
 # ago will pick up whatever `export.py` says when it reaches EXPORT — measured
 # the hard way: a gather finished and then died on a NameError from an edit
 # made four minutes into it.
-T="tools/omr/tests/test_staged_fermata_owner.py tools/omr/tests/test_staged_voices.py tools/omr/tests/test_staged_event.py tools/omr/tests/test_staged_export.py"
-EXPECT=156
+# ⚠️ `test_staged_glyph_families.py` IS IN THIS LIST BECAUSE IT WAS NOT, AND
+# TWO GATHER ARMS REPORTED SURVIVED FOR IT. A battery whose test list does
+# not reach the file it mutates measures its own scope, not the code.
+T="tools/omr/tests/test_staged_fermata_owner.py tools/omr/tests/test_staged_voices.py tools/omr/tests/test_staged_event.py tools/omr/tests/test_staged_export.py tools/omr/tests/test_staged_glyph_families.py"
+EXPECT=179
 
 check() {  # -> RED | SURVIVED | BROKEN
   local out; out=$(python3 -m pytest ${=T} -q 2>&1 | tail -3)
@@ -76,8 +79,10 @@ arm $E '    f_written = int(counters.get("fermatas", 0))||    f_written = fermat
 # ── stem direction and voices ─────────────────────────────────────────────
 arm $R 'answers.add(_legacy_stems._stem_direction(_Shim(sx, sy, sw, sh), group))||answers.add("up")' \
        "every stem points UP"
-arm $R 'for h in heads||for h in heads[:1]' \
-       "direction from ONE head, not the stem's whole group (the double stop)"
+# ⚠️ ANCHORED ON THE WHOLE EXPRESSION, not on `for h in heads` -- that string
+# occurs THREE times in this file and the first is in `adjudicate_tuplet`, so
+# the arm mutated a different function and reported SURVIVED.
+arm $R 'group = [_Shim(*_xywh_head(h.value)) for h in heads||group = [_Shim(*head_box)] or [_Shim(*_xywh_head(h.value)) for h in heads' "direction from ONE head, not the stems whole group (the double stop)"
 arm $R 'if len(answers) != 1:||if False:' \
        "opposing stems no longer abstain — the last one read wins"
 arm $R 'return bool(theirs) and mine not in theirs||return False' \
@@ -86,7 +91,7 @@ arm $R 'blocked = True||blocked = False' \
        "a blocked head is no longer reported as separated"
 arm $R '"rests_in_every_voice": rests if n > 1 else []||"rests_in_every_voice": []' \
        "the duplicated rests are not named"
-arm $E 'streams = _voice_split(rec, run, cell_index, events)||streams = None' \
+arm $E 'streams = _voice_split(rec, run, cell_index, events, why)||streams = None' \
        "EXPORT: the voices verdict is never read"
 arm $E 'breaks, voice_of)||breaks, {})' \
        "EXPORT: the arc pairing is handed an EMPTY voice map again"

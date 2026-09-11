@@ -1757,6 +1757,24 @@ class TestFermatasReachTheFile(unittest.TestCase):
         self.assertEqual(bal["absorbed_by_a_shared_event"], 1)
         self.assertTrue(bal["balanced"])
 
+    def test_a_mark_owned_by_a_NON_FIRST_chord_member_still_reaches_the_file(self):
+        """⚠️ FOUND BY A MUTATION ARM, not by review. `group_chords_in_measure`
+        sorts a chord LOWEST NOTE FIRST, and `adjudicate_fermata_owner` names
+        whichever member its x test picked — so reading the hoist off the
+        chord's FIRST head alone loses every fermata owned by any other
+        member, and every test above happened to own the first.
+        """
+        page = _one_staff_page(notes=[("C4", QUARTER), ("E4", QUARTER)])
+        for i, o in enumerate(
+                [o for o in page["record"]["observations"]
+                 if o["quantity"] == Q.GLYPH_BOX]):
+            o["value"][1] = 100                # one chord...
+            o["value"][2] = 100 - 20 * i       # ...glyph 1 is the UPPER note
+        _add_fermata(page, 9, 100, owner_gi=1)  # ...so it sorts LAST
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(len(ET.fromstring(xml).findall(".//fermata")), 1)
+        self.assertEqual(rep["written"]["fermatas"], 1)
+
     def test_an_abstained_mark_is_COUNTED_not_swallowed(self):
         page = _add_fermata(_one_staff_page(notes=[("C4", QUARTER)]),
                             9, 100, outcome="abstained", reason="no_carrier")
