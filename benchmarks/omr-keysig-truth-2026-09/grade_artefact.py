@@ -95,8 +95,18 @@ def grade_clef(r: dict) -> str:
 
 def main(argv: list[str]) -> int:
     truth = load_truth()
-    smap = json.loads(MAP.read_text())
+    # `--map` grades a DIFFERENT system map — the point being that the map is
+    # `export_arm.py`'s output, asserted against its own XML measure-for-
+    # measure, so grading a regenerated map grades a regenerated file. With no
+    # flag it grades the artefact Sean was given.
+    path = (pathlib.Path(argv[argv.index("--map") + 1])
+            if "--map" in argv else MAP)
+    smap = json.loads(path.read_text())
     rs = rows(truth, smap)
+    print(f"map: {path}")
+    prov = smap.get("provenance")
+    if prov is not None:
+        print(f"provenance: {prov}")
 
     print(f"REACH: {len(rs)} printed staff-systems over "
           f"{len(truth['systems'])} systems, 4 pdf pages.\n")
@@ -158,8 +168,9 @@ def main(argv: list[str]) -> int:
             print("\nDEAD INSTRUMENT: no staff carries a key signature at "
                   "all — this is not a result, it is a broken input.")
             return 2
-    json.dump(rs, (HERE / "grade-before.json").open("w"), indent=1)
-    print(f"\nwrote {HERE / 'grade-before.json'}")
+    name = "grade-before.json" if path == MAP else "grade-after.json"
+    json.dump(rs, (HERE / name).open("w"), indent=1)
+    print(f"\nwrote {HERE / name}")
     return 0
 
 
