@@ -74,3 +74,56 @@ how often S6's precondition is even met before measuring whether S6 is right.**
 case where the arbiter is silent*. S4 needs a stem; a page whose stems are not
 read gets no answer from it, and that is likely to be the same page whose arcs
 are worst.
+
+---
+
+# ⚠️⚠️ A SEPARATE CORRECTION, SAME DAY — recorded here because it is the same
+# failure shape: the MANAGER PARAPHRASED SEAN AND THE PARAPHRASE WAS MEASURED
+
+Sean's observation 3 said: *"Many whole note rest which equal 2 beats are
+showing up as a **single quarter note**."* The manager briefed it as a quarter
+**REST**. The rest-sizing job then proved — rigorously, with an empty interval,
+0 of 209 overlapping — that our quarter rests **are** genuinely quarter rests.
+
+**That answered a question Sean had not asked.** He clarified: *"in bars where
+it should be just whole note rest in two four. It's showing an actual quarter
+note, not a quarter note rest."*
+
+**Measured on the current tree, one re-export of the shared record:**
+
+| | |
+|---|--:|
+| bars whose ENTIRE content is one PITCHED note | **118** |
+| ...of which the bar is UNDERFULL | **44** |
+| ...of which the lone note is a QUARTER in a 2/4 bar | **26** |
+
+Named examples: `P1 m45 C5`, `P1 m85 D5`, `P1 m88 D5`, `P1 m89 D5`,
+`P2 m49 F5`, `P2 m87 A5` — each `dur=96` against a bar of `192`.
+
+⚠️ **This is a DIFFERENT fault from the one that was repaired.** The rest work
+closed *a whole rest is not sized to the bar* (the meter, an empty interval,
+92/92 against 0/195). This one is **a pitched note standing where the page
+prints silence** — a false positive, or a note attributed to the wrong staff,
+not a mis-sized rest. **Neither the rest job nor the arc job was looking at
+it**, and the bar-fill figure it contributes to (18.4% of bars SHORT) was
+reported without anybody opening the short bars.
+
+⚠️ **The plausible mechanism, stated as a hypothesis and NOT measured**: in 2/4
+an engraver fills a silent bar with one centred WHOLE REST, which is a small
+filled rectangle hanging under a staff line — and a notehead is a small filled
+oval. **They are confusable ink.** The arc-recovery work already found the
+mirror of this on the same document: a `restWhole` detected at 0.56 *"where no
+whole rest exists"*. ⚠️ **Do not build on that guess** — the last three jobs
+each refuted the mechanism their brief proposed.
+
+⚠️ **The manager's own probe of this failed**: it guessed the record's schema
+(`rows` / `log`) and reported `n=0` for both arms, which is the shape of a
+clean zero that is really a dead instrument. The record's top level is
+`record / summary / adjudication / agreement / evaluation / stubs /
+provenance`. **Use the reader API, not a hand-rolled walk**, and print a
+positive control before any zero.
+
+**The lesson, which is this file's own subject matter arriving one level up:
+Sean's words are the truth statement, and a paraphrase of them is not.** The
+rules S1-S6 above are recorded VERBATIM before being indexed for exactly this
+reason.
