@@ -1182,6 +1182,17 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 counters["empty_bars_padded"] += 1
                 if meter is None:
                     counters["empty_bars_padded_without_meter"] += 1
+                # ⚠️ THE FOURTH PLACE A TWO-VOICE VERDICT CAN GO, and without
+                # it the split's accounting is a FILTER rather than a
+                # PARTITION. The record read two streams among notes the
+                # exporter then wrote none of, so this bar never reaches
+                # `_measure_xml` at all and neither refusal counter sees it.
+                # Measured on Litolff `984073` p1-3: 19 two-voice verdicts =
+                # 11 written + 5 straddled + 1 empty stream + **2 here**.
+                vv = rec.verdict(Q.VOICES, R_cell_key(run, i))
+                if (vv and vv["outcome"] == "decided"
+                        and int((vv["value"] or {}).get("n_voices") or 1) > 1):
+                    counters["two_voice_bars_in_an_unread_bar"] += 1
                 # ⚠️ A BAR WITH NO NOTES STILL CARRIES ITS MARKS. The legacy
                 # exporter dropped dynamics on exactly this branch for a month
                 # (`_mxl_empty_measure`'s own docstring), and it takes a SCAN
@@ -1215,7 +1226,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
 
 
 def _voice_split(rec: Record, run: StaffRun, cell_index: int,
-                 events: List[Dict[str, Any]]
+                 events: List[Dict[str, Any]],
+                 why: Optional[List[str]] = None
                  ) -> Optional[List[List[Dict[str, Any]]]]:
     """This bar's events partitioned into voices, or None for one stream.
 
@@ -1232,6 +1244,7 @@ def _voice_split(rec: Record, run: StaffRun, cell_index: int,
     could) falls to voice 1, which is where `split_events_into_voices` puts
     an unknown-direction event too.
     """
+    why = [] if why is None else why
     v = rec.verdict(Q.VOICES, R_cell_key(run, cell_index))
     if not v or v["outcome"] != "decided":
         return None
@@ -1240,7 +1253,27 @@ def _voice_split(rec: Record, run: StaffRun, cell_index: int,
         return None
     streams = [set(vs) for vs in (value.get("voices") or [])]
     if len(streams) < 2:
+        why.append("the_verdict_names_fewer_than_two_streams")
         return None
+    # ⚠️⚠️ A REST MAY BE IN EVERY STREAM. NOTHING ELSE MAY, AND THIS BAR IS
+    # REFUSED WHERE SOMETHING ELSE IS -- found by the accounting control on the
+    # second document this ran against, not by review.
+    #
+    # `Q.VOICES` partitions `Q.EVENT`'s groups, and `Q.EVENT` groups every
+    # notehead the record READ; this function's `events` come from
+    # `group_chords_in_measure`, which groups only the ones the exporter can
+    # WRITE. So the two groupings need not agree, and a chord the exporter
+    # formed can span two of the record's streams -- writing every one of its
+    # notes TWICE. Measured on Litolff `984073` p1-3: **7 chord events**, three
+    # of three notes and four of two, which is the 17 extra the balance
+    # reported to the unit (1880 written against 1863 in the log).
+    #
+    # ⚠️ THE REFUSAL IS THE POINT, NOT A MAJORITY VOTE. Picking the stream
+    # holding most of the chord's notes would be the EXPORTER deciding a
+    # question the record did not answer -- the same overreach as collapsing a
+    # narrowed duration by argmax, which this module refuses one screen up. A
+    # bar it cannot place is written as one voice and COUNTED.
+    in_both = set(value.get("rests_in_every_voice") or ())
     out: List[List[Dict[str, Any]]] = [[] for _ in streams]
     for ev in events:
         glyphs = {d.get("glyph") for d in (ev.get("noteheads") or [])}
@@ -1248,12 +1281,13 @@ def _voice_split(rec: Record, run: StaffRun, cell_index: int,
         if rest.get("glyph"):
             glyphs.add(rest["glyph"])
         indices = {_glyph_index(g) for g in glyphs if g}
-        placed = False
-        for i, s in enumerate(streams):
-            if indices & s:
-                out[i].append(ev)
-                placed = True
-        if not placed:
+        hit = [i for i, s in enumerate(streams) if indices & s]
+        if len(hit) > 1 and not indices <= in_both:
+            why.append("event_straddles_two_streams")
+            return None
+        for i in hit:
+            out[i].append(ev)
+        if not hit:
             out[0].append(ev)
     if any(not s for s in out):
         # ⚠️ A STREAM THE EXPORTER COULD NOT FILL IS NO SPLIT AT ALL. The
@@ -1261,6 +1295,7 @@ def _voice_split(rec: Record, run: StaffRun, cell_index: int,
         # one of them was dropped on the way out, writing an empty
         # `<backup>`-separated voice puts a `<backup>` in the file for
         # nothing.
+        why.append("a_stream_has_no_written_note")
         return None
     return out
 
@@ -1288,8 +1323,15 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
     and this exporter passed it an EMPTY dict. The rule was present, inert,
     and indistinguishable from one that had run and found nothing.
     """
-    streams = _voice_split(rec, run, cell_index, events)
+    # ⚠️ THE REASONS ARE COUNTED APART, because their repairs differ: an
+    # event straddling two streams is two GROUPINGS disagreeing, while a
+    # stream with no written note is a bar whose notes the exporter dropped.
+    # A single "refused" total would send the next reader to the wrong place.
+    why: List[str] = []
+    streams = _voice_split(rec, run, cell_index, events, why)
     if streams is None:
+        for reason in why:
+            counters["two_voice_bars_refused_" + reason] += 1
         lines, _units = _measure_events_xml(events, divisions, counters)
         return lines
     counters["two_voice_bars"] += 1
@@ -1304,9 +1346,17 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
     # is an EQUALITY and a rest written once per voice would break it for
     # correct behaviour. Naming the duplicate is what keeps the control able
     # to fail for the right reason.
-    counters["rests_duplicated_across_voices"] += sum(
-        1 for ev in streams[1] if ev.get("kind") == "rest"
-        and any(ev is other for other in streams[0]))
+    shared = [ev for ev in streams[1] if ev.get("kind") == "rest"
+              and any(ev is other for other in streams[0])]
+    counters["rests_duplicated_across_voices"] += len(shared)
+    # ⚠️ AND THE MARKS ON IT, for the same reason. A fermata on a shared rest
+    # produces TWO `<fermata>` elements from ONE mark, which would make
+    # `fermata_balance` -- `written + not_written <= marks_in_log` -- go False
+    # for correct behaviour. Counting the duplicate is what keeps that control
+    # able to fail for the RIGHT reason. Found by predicting it and writing
+    # the test, not by a page: no bar of the measured document holds one.
+    counters["fermatas_duplicated_across_voices"] += sum(
+        1 for ev in shared if (ev.get("rest") or {}).get("fermata"))
     return out
 
 
@@ -1541,13 +1591,16 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     report["fermatas_not_written"] = dict(fermatas_dropped)
     report["fermatas_not_written_total"] = sum(fermatas_dropped.values())
     f_written = int(counters.get("fermatas", 0))
+    f_dup = int(counters.get("fermatas_duplicated_across_voices", 0))
+    f_elements = f_written - f_dup        # ...one per MARK, not per element
     report["fermata_balance"] = {
         "marks_in_log": fermata_marks,
         "written": f_written,
+        "duplicated_across_voices": f_dup,
         "not_written": report["fermatas_not_written_total"],
         "absorbed_by_a_shared_event": (
-            fermata_marks - f_written - report["fermatas_not_written_total"]),
-        "balanced": (f_written + report["fermatas_not_written_total"]
+            fermata_marks - f_elements - report["fermatas_not_written_total"]),
+        "balanced": (f_elements + report["fermatas_not_written_total"]
                      <= fermata_marks),
     }
     # ⚠️⚠️ THE ACCOUNTING CONTROL, AND IT IS READ. Every notehead the log

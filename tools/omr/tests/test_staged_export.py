@@ -1853,6 +1853,66 @@ class TestTwoVoicesReachTheFile(unittest.TestCase):
         self.assertEqual(len(root.findall(".//backup")), 0)
         self.assertEqual({v.text for v in root.iter("voice")}, {"1"})
 
+    def test_a_chord_STRADDLING_two_streams_refuses_the_split(self):
+        """⚠️⚠️ FOUND BY THE ACCOUNTING CONTROL ON A REAL PAGE, NOT BY REVIEW.
+        `Q.VOICES` partitions `Q.EVENT`'s groups — every notehead the record
+        READ — while the exporter groups only the ones it can WRITE, so the
+        two groupings need not agree and a chord the exporter formed can span
+        two of the record's streams. Every one of its notes was then written
+        TWICE: 7 such events on Litolff `984073` p1-3, which is the 17 extra
+        the balance reported to the unit.
+
+        ⚠️ REFUSED, NOT MAJORITY-VOTED. Picking the stream holding most of the
+        chord's notes would be the EXPORTER deciding a question the record did
+        not answer — the same overreach as collapsing a narrowed duration by
+        argmax, which this module refuses one screen up.
+        """
+        page = _one_staff_page(notes=[("C4", QUARTER), ("E4", QUARTER)])
+        for o in page["record"]["observations"]:          # one chord
+            if o["quantity"] == Q.GLYPH_BOX:
+                o["value"][1] = 100
+        page["record"]["verdicts"].append(
+            _vrd(950, "cell/0/0/0/0", Q.VOICES,
+                 {"n_voices": 2, "voices": [[0], [1]],
+                  "rests_in_every_voice": []}, reason="two_voices"))
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(len(ET.fromstring(xml).findall(".//backup")), 0)
+        self.assertEqual(
+            rep["written"]["two_voice_bars_refused_event_straddles_two_streams"],
+            1)
+        self.assertTrue(rep["balance"]["balanced"])
+        self.assertEqual(len(ET.fromstring(xml).findall(".//note")), 2,
+                         "the straddling chord was written twice")
+
+    def test_the_refusals_are_counted_APART(self):
+        """Their repairs differ — two groupings disagreeing against a bar
+        whose notes were dropped — so one total would send the next reader to
+        the wrong place."""
+        page = _one_staff_page(notes=[("C4", QUARTER), (None, QUARTER)])
+        page["record"]["verdicts"].append(
+            _vrd(950, "cell/0/0/0/0", Q.VOICES,
+                 {"n_voices": 2, "voices": [[0], [1]],
+                  "rests_in_every_voice": []}, reason="two_voices"))
+        _xml, rep = SX.to_musicxml(page)
+        self.assertEqual(
+            rep["written"]["two_voice_bars_refused_a_stream_has_no_written_note"],
+            1)
+        self.assertNotIn(
+            "two_voice_bars_refused_event_straddles_two_streams",
+            rep["written"])
+
+    def test_a_FERMATA_on_a_shared_rest_does_not_break_its_balance(self):
+        """⚠️ A rest is written once per voice, so ONE mark can produce TWO
+        `<fermata>` elements — and the fermata control is `written +
+        not_written <= marks_in_log`, which that would break for correct
+        behaviour."""
+        page = _two_voice_page(rest_gi=7)
+        _add_fermata(page, 9, 300, owner_gi=7)
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(len(ET.fromstring(xml).findall(".//fermata")), 2)
+        self.assertTrue(rep["fermata_balance"]["balanced"],
+                        rep["fermata_balance"])
+
     def test_a_stream_the_exporter_could_not_FILL_is_no_split_at_all(self):
         """⚠️ The verdict saw two voices among the notes it READ. If every
         note of one stream was dropped on the way out (no pitch, a narrowed

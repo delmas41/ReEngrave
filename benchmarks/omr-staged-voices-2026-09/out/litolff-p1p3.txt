@@ -1,0 +1,36 @@
+record    : /tmp/voi/staged.json
+provenance: commit=87b5e9298463aef3237a2edf25370bb5ad741407 dirty=False
+
+── REACH ──
+  CV stem rows        : 1189
+  noteheads read      : 1339
+
+── STEM DIRECTION ──
+  decided    stem_projection    up     466
+  abstained  no_stem            None   436
+  decided    stem_projection    down   371
+  abstained  stems_disagree     None   66
+  decided 837 of 1339 noteheads (62.5%)
+  ⚠️ `no_stem` is ORDINARY (a whole note has none, and on a scan a stem is often missed); `stems_disagree` is ink we cannot read.
+
+── VOICES ──
+  abstained  nothing_to_split     59
+  decided    one_voice            775
+  decided    two_voices           19
+  bars the record says hold TWO streams: 19
+
+── THE DIVISI GUARD (was `not_implemented`) ──
+  per bar: {'no_direction_decided': 419, 'ran': 375}
+  chords SEPARATED that x alone would have merged: 4
+
+── EXPORT ──
+  two-voice bars      : 11
+  <backup> elements   : 11
+  rests duplicated    : 11
+  balance             : {"events_in_log": 1863, "noteheads_in_log": 1339, "rests_in_log": 524, "events_written": 1599, "rests_duplicated_across_voices": 11, "events_not_written": 264, "balanced": true}
+  arcs not written    : {"arc_binds_fewer_than_two_notes": 362, "arc_ends_in_one_chord": 43}
+
+── THE ARM (voices verdicts removed) ──
+  file identical      : False
+  counters that moved : {'ties': (48, 49), 'rests_duplicated_across_voices': (11, None), 'tie_spans_marked': (59, 60), 'rests': (443, 432), 'two_voice_bars_refused': (6, None), 'two_voice_bars': (11, None)}
+  ⚠️ NOTHING MOVING HERE IS A REAL ANSWER, NOT A NULL RESULT: it means the page holds no bar the record reads as two streams.
