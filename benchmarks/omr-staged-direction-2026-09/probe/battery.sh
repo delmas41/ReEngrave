@@ -70,9 +70,9 @@ arm $G '        _direction_cells_abstain(log, cells, local,
                                  note="no OCR rung available")
         return||        return' \
        "GATHER: the blind state never reaches a CELL, so the decision is never asked"
-arm $G 'if os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() in (
-            "0", "", "false", "no", "off"):||if os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() not in (
-            "1", "true", "yes", "on"):' \
+arm $G 'enabled = os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() not in (
+        "0", "", "false", "no", "off")||enabled = os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() in (
+        "1", "true", "yes", "on")' \
        "GATHER: the default-ON flag read as an allow-list (a typo blinds it)"
 
 # ── GATHER: the shim, and the corner/width hazard ─────────────────────────

@@ -2108,12 +2108,20 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                                  note="direction_text did not import")
         return
 
-    if os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() in (
-            "0", "", "false", "no", "off"):
-        # ⚠️ The flag is read the way a DEFAULT-ON flag must be read -- an off
-        # WORD, never an allow-list -- so a typo leaves the reader ON rather
-        # than silently restoring a blind page. See CLAUDE.md, "A flag's OFF
-        # test must follow its DEFAULT".
+    # ⚠️ A DEFAULT-ON FLAG, READ AS A DENY-LIST, so a typo leaves the reader ON
+    # rather than silently blinding the page. See CLAUDE.md, "A flag's OFF test
+    # must follow its DEFAULT".
+    # ⚠️⚠️ AND THE PREDICATE IS THE *ON* TEST, NOT THE OFF TEST, WHICH IS A
+    # CONVENTION AND NOT A PREFERENCE. `test_flag_default_direction.py` walks
+    # the AST for `os.environ.get(<FLAG>, <default>)` compared to a literal
+    # word set and decides default-ON by EVALUATING THE PREDICATE ON ITS OWN
+    # DEFAULT -- so the equivalent `... in (off words)` spelled as a refusal
+    # reads to that guard as a default-OFF deny-list and is reported as "a typo
+    # would turn it ON". The two spellings are logically identical and only one
+    # is checkable. Caught by that guard on the full suite, not by review.
+    enabled = os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
+    if not enabled:
         log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
                     frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
                     note="OMR_DIRECTION_TEXT is off")

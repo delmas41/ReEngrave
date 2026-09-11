@@ -1,0 +1,14 @@
+========================================================================
+STAGED accepted : 10
+LEGACY accepted : 10
+========================================================================
+ page text                      staged  legacy
+    0 espr. e legato                 1       1
+    0 pesante                        1       1
+    1 Cresc.                         1       1
+    1 arco                           1       1
+    1 dim.                           2       2
+    1 pizz.                          3       3
+    1 unis.                          1       1
+
+7 of 7 (page, text) pairs agree exactly

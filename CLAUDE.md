@@ -738,11 +738,12 @@ say *and the page is never read for it either*.
 
 **Merged-tree state, measured** (`python3 -m tools.omr.staged.gather_coverage`,
 pinned by `test_every_declared_stub_is_reported_with_its_input_state`):
-⚠️ **THIS PARAGRAPH IS A SNAPSHOT AND THE TOOL IS THE COUNT** — at 2026-09-10
-**ONE stub remains, `direction`, and it is the input-starved one**. The
+⚠️ **THIS PARAGRAPH IS A SNAPSHOT AND THE TOOL IS THE COUNT** — at
+2026-09-11 **NO stub remains: `adjudicate.stubs()` is `()`**, `direction`
+having been the last and the only one that was ever input-starved. The
 sentence below is kept as the state on the day it was written, because the
-four graduations since are what the sections after it record. Run
-`gather_coverage`; do not quote either number.
+five graduations since are what the sections after it record. Run
+`gather_coverage`; do not quote any number from this block.
 **five stubs remain** — `arc_kind`, `arc_owner`, `articulation_owner`,
 `wedge_anchor`, `direction` — and **only `direction` is still input-starved**.
 `gather_glyph_families` now files `ARC_BOX` and `ARTICULATION_MARK`, and
@@ -901,9 +902,8 @@ frame error that made `Q.ONSET_COLUMN` report 1,062 columns of nothing.
 **Three stubs remain** (`articulation_owner`, `wedge_anchor`, `direction`), and
 only `direction` is still input-starved. ⚠️ **That was the state on
 2026-09-10 morning; `articulation_owner` and then `wedge_anchor` graduated the
-same day and `stubs()` is now `('direction',)`** — see the wedge section
-below. The number is the TOOL's (`inventory`, `gather_coverage`), never this
-line's.
+same day, and `direction` on 2026-09-11 — `stubs()` is now `()`.** The number
+is the TOOL's (`inventory`, `gather_coverage`), never this line's.
 
 ⚠️ `arc_kind` lets the DETECTOR'S CLASS decide and only RECORDS the position
 grammar, honouring `OMR_ARC_RECLASS`'s measured refusal — and **the record now
@@ -1241,6 +1241,110 @@ rather than a silent pass**. Final: **21 arms, all red, positive control red.**
 open goes before its event and the stop after, and **no count would notice** a
 mistake. ⚠️ **A cell index is not a part ordinal** — it restarts per system,
 the `(page, cell)` defect that made the duration arm's bar figures wrong.
+
+### Direction words reach the file — the LAST stub, and PHASE 1 IS COMPLETE
+
+2026-09-11, no flag. **`adjudicate.stubs()` is `()`.** `direction` was the
+sixth and last of the original declared stubs and the only one that was ever
+TWO pieces of work — `Q.DIRECTION_WORD` was the last input-starved quantity on
+the record, so writing the adjudicator alone would have produced nothing.
+Gatherer, adjudicator, emission and counter landed together. Findings:
+[benchmarks/omr-staged-direction-2026-09/FINDINGS.md](benchmarks/omr-staged-direction-2026-09/FINDINGS.md).
+
+⚠️⚠️ **REACH FIRST, AND THIS FAMILY HAS *THREE* WAYS OF BEING EMPTY.** Litolff
+`984073` p1-3: **42 word-shaped candidates, 2 accepted**. Breitkopf Brahms 1
+p0-3: **56 candidates, 10 accepted**. The third emptiness is the one the job is
+about — **a machine with neither `.venv-surya` nor Tesseract reads zero
+directions on EVERY page, identically to a page that prints none** — so
+`direction_arm.py` names the rungs that ran before any other line and exits
+non-zero declaring itself DEAD. Both rungs were live for every figure here.
+⚠️ *"inside a system vs a margin"* is answered BY CONSTRUCTION: `find_candidates`
+clamps every band to the staff's own `x_start..x_end`, so **0 candidates are
+ever in a margin**; all 98 are `placement: below` and the `above` band is
+UNEXERCISED by both documents.
+
+**MEASURED**, one gather exported twice: `<words>` **0 → 2** and **0 → 10**,
+`<dynamics>` **132 → 132** and **181 → 181**, notes and rests identical, and
+with the `<words>` blocks removed the two files are **byte-identical**. music21
+reads back exactly 2 `TextExpression` objects on the Litolff file.
+
+⚠️⚠️ **THE STATE MACHINE IS THE PRODUCT, NOT THE TWELVE WORDS.**
+`read_directions`'s own docstring says its report is *"the only way to tell a
+page with no text from a reader that could not run"* — **and nothing consumed
+it**. Now: `READER_UNAVAILABLE` (no rung) and `OUT_OF_SCOPE` (flag off) are
+ABSTENTIONS; `NO_INK` (the CV proposed nothing) and `NO_READING` /
+`NOT_IN_LEXICON` (a rung ran and it was not accepted) are a **DECISION with an
+empty value**, because *"this bar carries no words"* is a definite answer and a
+fallback must never convert *cannot tell* into one. Both write nothing to the
+file, and that is right — MusicXML cannot say *"a reader could not run here"*.
+⚠️ The page-wide reason is filed on EVERY CELL as well as the page, because
+`subjects_from` means a blind page would otherwise have no `Q.DIRECTION`
+subject at all and would report `decided: 0, abstained: {}` — a family never
+ASKED, indistinguishable from one asked and silent. ⚠️ `ABSTAIN.NO_READING` is
+a new vocabulary word: Surya *"either reads a crop or says nothing"* (53 of 74
+crops silent on one page) while Tesseract read 72 of 74 and the LEXICON refused
+most of them, and folding the two hides which rung is the limit.
+
+⚠️⚠️ **THE SHIM IS EQUIVALENT TO `transcribe`'s PAGE DICT, AND THAT IS THE
+CONTROL THAT MATTERED.** The wiring does not re-implement the reader — it hands
+it a `page_dict` built from GATHER's cells and detections — so the whole risk
+is that the shim differs, and a wrong `bbox_page` convention or a missing
+measure span **does not raise**; it looks exactly like *"this document has few
+directions"*. Running the LEGACY path over the same four Brahms pages:
+**10 accepted vs 10, and 7 of 7 `(page, text)` pairs agree exactly**, on two
+INDEPENDENT detection runs. ⚠️ The text SET is compared as well as the count,
+because *10 == 10* over different words is coincidence-as-diagnosis.
+⚠️ EQUIVALENCE, not truth: **no word has been checked against the print.**
+
+⚠️⚠️ **AN EDIT DURING A RUN DOES NOT REACH AN ALREADY-IMPORTED MODULE — THE
+MIRROR OF THE HAZARD THIS FILE ALREADY RECORDS.** A 32-minute gather finished
+GATHER and died in ADJUDICATE on a bug fixed on disk five minutes in: the
+traceback's line numbers came from the NEW file, the executing code was the OLD
+one. The recorded form is *"`staged/__main__.py` imports the exporter AFTER the
+gather"*; this is the other direction. **A stamp taken at the end names the
+tree that FINISHED the run; the code that RAN is whatever was on disk when each
+module was FIRST IMPORTED — and the stamp reports neither.** Cost: two gathers,
+~50 min. The recipe: land every tracked edit BEFORE the run, and commit any
+untracked benchmark file in the first two minutes.
+
+⚠️ **`counters["dynamics"] += len(directions)` COUNTED EVERY ENTRY OF THE
+LIST**, so a `<words>` would have been billed to the `dynamic` family and
+`direction` would have read `decided_but_unwritten` with its elements in the
+file. `_count_directions` derives the key from the `kind` `_mxl_direction`
+already takes. ⚠️ `direction_balance` is an **EXACT EQUALITY** with two NAMED
+residue buckets, not the `<=` that hid ten hairpins a day earlier.
+
+⚠️ **`coverage()` UNDER-REPORTS THIS FAMILY 21× AND 5.6×** — the row reads
+`cv_glyphs: 2` and `10` because `_non_detector_ink` counts OBSERVATIONS (the
+ACCEPTED words) while the family's ink is the 42 and 56 CANDIDATES. Same shape
+as the wedge's 1-against-47, from the other direction: there the CV reader was
+invisible to the class space, here the REFUSALS are invisible to the row count.
+**Deliberately not fixed** — counting abstentions as ink moves every family at
+once. ⚠️ `detector_glyphs: 0` here is correct BY CONSTRUCTION: a direction word
+is not in the 208-class space, `textDynamic` being the class Phase 3.4 collapsed.
+
+⚠️ **A FOURTH `declared input that could never answer`:** the decision read
+`ev.rows(Q.DIRECTION_WORD)` at the default `Scope.EXACT` while words are
+gathered on GLYPH subjects, so it could never see one. **Neither
+`inventory --check` nor `gather_coverage` can catch that** — the `wants` entry
+IS read and the quantity IS gathered — and only a test asserting a word comes
+out did. Four instances, four different instruments.
+
+⚠️ **Closing the last stub turned EIGHT test assertions RED ON SUCCESS**, each
+asserting a stub EXISTS. None was deleted and none was replaced by
+`assertEqual(stubs(), ())` alone — an empty set is what a broken derivation
+returns too. Each now asserts the empty roster AND exercises the mechanism on a
+stub declared for the test. **An assertion that a stub exists is a property of
+the BUILD'S PROGRESS, not of the mechanism.**
+
+⚠️ **What is NOT established: accuracy** (no word checked against the print),
+**recall** (42 and 56 are what the CV proposed, not what the pages print), and
+n = 2 documents / 7 pages / 12 words, so nothing here is a rate. **Brahms pages
+2-3 yield 20 candidates and ZERO accepted words, unopened.** The ranked next
+step is to move the two OCR rungs into the record as INDEPENDENT readings —
+today `read_directions` returns only winners, so a refused candidate cannot be
+split into *the decoder was silent* and *the lexicon refused*, and that is the
+one change that would make this decision more than a state machine.
 
 ### A MARK must be attached to its notehead — bar sums on perfect ink
 
@@ -3117,9 +3221,11 @@ instance recorded in this file. It was caught by a trial merge, not by review.
 this section was written and the heading above it said so, which is the
 hand-counted figure rotting exactly as the *"153 tests"* one did. Run
 `gather_coverage`; do not quote this sentence). Two more
-are declared and only ever ABSTAINED on (`DIRECTION_WORD`, `SYSTEMIC_COLUMN`).
-**One decision is still starved** — `DIRECTION` wants `DIRECTION_WORD`, whose
-gatherer is itself a stub. It was six.
+are declared and only ever ABSTAINED on — ⚠️ **`DIRECTION_WORD` LEFT THAT
+LIST ON 2026-09-11**, so at the time of writing it is `SYSTEMIC_COLUMN` alone;
+run the tool. **NO decision is starved any more.** `DIRECTION` was the last
+one: its gatherer was itself a stub, `gather_direction_words` replaced it, and
+`adjudicate.stubs()` is now `()`. It was six.
 
 ⚠️ **THE TWO FAULTS ARE STILL DIFFERENT.** *Not gathered*: no row carries it —
 `fermata` is the clean case, detected 36-for-36 on Beethoven 5, exported, and

@@ -1,0 +1,19 @@
+ARM 0 positive control: SURVIVED  (expected SURVIVED)
+RED: GATHER: a blind machine reads as a page with no words
+RED: GATHER: a page with no words reads as a blind machine
+RED: GATHER: a refused candidate reads as no ink at all
+RED: GATHER: the blind state never reaches a CELL, so the decision is never asked
+RED: GATHER: the default-ON flag read as an allow-list (a typo blinds it)
+RED: GATHER: a CORNER box handed to a reader that reads WIDTHS
+RED: GATHER: a WIDTH span handed to a reader that reads CORNERS
+RED: GATHER: readings joined to candidates by position, not by identity
+RED: ADJUDICATE: the declared input can never answer (default scope)
+RED: ADJUDICATE: blindness decided as an empty bar
+RED: ADJUDICATE: words emitted in gather order, not in page-x order
+RED: ADJUDICATE: a read-and-empty bar abstains instead of deciding
+RED: EXPORT: the decision decides into no file
+RED: EXPORT: a word rendered as a <dynamics>
+RED: EXPORT: one counter again — a word billed to the dynamic family
+RED: EXPORT: the family loses its counter and cannot say what reached the file
+RED: EXPORT: the balance regresses to the <= that hid ten hairpins
+RED: EXPORT: the residue bucket stops counting
