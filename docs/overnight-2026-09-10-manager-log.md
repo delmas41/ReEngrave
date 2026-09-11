@@ -249,3 +249,43 @@ so: a `start -> stop` dict loses a head that begins two links and read
 two notes** on a document that plainly holds longer ones. *A plausible
 aggregate is not evidence that its parts are real*, for the second recorded
 time.
+
+### Job 4 — the chord tie, repaired and PRICED
+
+Dispatched in parallel with job 3, off `818d8e26`. **Not a wiring job** — a
+measured correctness defect handed over with its price already taken, which is
+exactly the handoff job 2 was right to make rather than to do.
+
+The crux is a stated convention that is **wrong for MusicXML**, and the brief
+leads with it because the symmetric-looking line three rows below is CORRECT:
+
+> a `<tied>` element carries **no `number=`** — it binds the two notes it names.
+> A `<slur>` does carry one and legitimately attaches once per chord.
+
+So the slur hoist beside it must NOT be "fixed by symmetry", and the brief says
+so by name. The repair itself deletes a lossy collapse rather than adding a
+rule: the per-note flags already survive on the group members, so the renderer
+can read each note's own flag instead of the event-level `any()`.
+
+⚠️ **The pricing is the job, not the patch.** `voicing.py` is shared with the
+legacy exporter, so this reaches the 11-work engraved benchmark and the 20-row
+scan gate. Four traps were carried in by name, each already paid for here:
+`scan_eval` **caches by default** and a cached A/B reports *identical on every
+row* — the clean result a change like this hopes for, whose only tell is the
+wall clock; the gate's **±6 edit** noise floor; OMR-NED's symmetry
+**rewarding under-prediction**; and the real possibility that **the metric is
+blind to this entirely** — the same number of `<tied>` elements is written
+either way, just on different notes, which is precisely the whole-rest
+convention's situation (identical on both families while the symbol ledger
+recorded 1,251 corrections). If the metric cannot see it, the ledger scores it.
+
+⚠️ One judgement was named rather than left to be discovered: **LilyPond's `~`
+is a chord-level suffix and cannot express a per-note tie.** The two exporters
+may legitimately diverge — `_lily_wedge_plan` set that precedent by dropping
+what it cannot express rather than approximating — but the choice must be
+stated, not made silently.
+
+The brief ends by making a **measured refusal an acceptable outcome**: if the
+price is unacceptable, come back with the number. This repo's refusals are
+among its most valuable entries and an agent that believes it must ship will
+ship anyway.
