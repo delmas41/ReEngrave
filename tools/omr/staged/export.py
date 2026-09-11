@@ -456,6 +456,14 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
     under `owned_by_another_staff`; see `A.is_relocated_copy` for why dropping
     can never lose ink the owner's staff does not already hold, and for the
     one exception (a swap) that it can.
+
+    ⚠️ THE OLD DOCSTRING'S WARNING STILL STANDS AND IS EASY TO LOSE HERE.
+    It read: *exporting by SUBJECT would put Violin 1's high A on the timpani
+    — the documented failure that cost 263 edits.* That is still true of
+    placing by subject ALONE. This places by subject AND REFUSES the copy the
+    owner disowns, so the timpani's copy is never written and Violin 1's own
+    copy — which a contest guarantees exists — is. Delete the refusal and keep
+    the subject placement and the 263-edit failure comes straight back.
     """
     dropped: Dict[str, int] = collections.Counter()
     for o in rec.obs_of(Q.GLYPH_BOX):
