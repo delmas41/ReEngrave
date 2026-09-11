@@ -1151,7 +1151,11 @@ all, including an untracked file under `benchmarks/`, makes
 2026-09-10, no flag. `adjudicate_wedge_anchor` was the last of the six
 original stubs whose input was already gathered; all four of those are now
 written and **`stubs()` is `('direction',)`**, which is also the only one that
-was ever input-starved. Findings:
+was ever input-starved. ⚠️ **That was true for one day — `direction` graduated
+on 2026-09-11 and `stubs()` is now `()`; see the section below.** The heading
+above is kept as written because the rest of this section is the wedge
+measurement, but do not read it as current state: **the number is the TOOL's
+(`inventory`, `gather_coverage`), never a heading's.** Findings:
 [benchmarks/omr-staged-wedge-2026-09/FINDINGS.md](benchmarks/omr-staged-wedge-2026-09/FINDINGS.md).
 
 ⚠️⚠️ **REACH IS THE FIRST NUMBER AND ONE DOCUMENT HAS NONE.** `Q.WEDGE_BOX` is
