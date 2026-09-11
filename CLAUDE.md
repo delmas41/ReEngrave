@@ -57,6 +57,25 @@ including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-11-phase-2-opened.md](docs/handoff-2026-09-11-phase-2-opened.md)
+— **the newest. PHASE 2 IS OPEN AND THERE IS STILL NO CLEANUP COUNT** — Sean
+read one page against the print and **declined to count**, which is the
+instrument working. Five of his seven observations are answered (key
+signatures **33 → 44 of 75**; `<slur>` **32 → 40**; `ffff` **11 → 2**; notes
+**1,793 → 1,618**; the measure math traced to **one missing function
+argument**). ⚠️ **Read its §3 before quoting anything**: the one OPEN
+observation is a **pitched note standing where the page prints silence** (118
+bars, 26 a lone quarter in a 2/4 bar) — and it is open *because the manager
+paraphrased "quarter note" as "quarter rest"* and a job rigorously answered the
+wrong question. ⚠️ **§5 holds two decisions waiting on Sean**
+(`OMR_METER_CARRY`, bars-that-add-up **38% → 69%**; and the part join costing
+**12 parts → 75 fragments**, one predicate to revert). ⚠️⚠️ **§6 is THREE
+BRANCHES OF UNVERIFIED WIP** stopped at a usage cap — no suite, no controls —
+led by `claude/slot-index-by-name`, the ranked next work. **§7 is Sean's stage
+ruling on the IMSLP roster** (ADJUDICATE, not INFER, on the `source_kind`
+doctrine). ⚠️ **§10 is the pattern of the week: five of six jobs came back by
+REFUTING the mechanism their brief proposed**, and every refutation was worth
+more than the repair. Its predecessor
 [docs/handoff-2026-09-10-three-families-wired.md](docs/handoff-2026-09-10-three-families-wired.md)
 — **the newest**: Phase 1 items 1, 2 and 4 done (**fermata**, **stem_direction
 + voices**, **ornament**), `NO_VOCABULARY` **7 → 2**, and no family in
