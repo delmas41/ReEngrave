@@ -100,3 +100,56 @@ not contain a tie-break); and whether `export.py:3282`'s
 `tied_to_next=(tied_to_next and ni == 0)` has the **chord-first-member** defect
 the fermata work found one week ago in a different function. That last one was
 put in as *look, do not assume in either direction*.
+
+**LANDED** — merged at `4ef4a21b`. Suite on the MERGED tree: **3,707 passed /
+11 skipped**, matching the branch's claim and +46 over the 3,661 baseline.
+`health --check`, `inventory --check`, `gather_coverage` all exit 0.
+Findings: [benchmarks/omr-staged-wedge-2026-09/FINDINGS.md](../benchmarks/omr-staged-wedge-2026-09/FINDINGS.md).
+
+`<wedge>` **0 → 20** on Brahms, byte-identical outside the wedge elements,
+music21 reading back exactly 20. **46 of 47 decided, 1 abstained
+`no_page_frame`** — and that one is precisely the box-less `detector` row, so
+the abstention branch is exercised by the page rather than merely defended.
+**`stubs()` is now `('direction',)` — one left.**
+
+⚠️ **Its own report of what it got wrong is the most useful part**, and two
+items are worth carrying:
+
+* **A `wants`-shaped ordering bug that NO behavioural test could have found.**
+  Placed beside the fermata in `ORDER`, `wedge_anchor` ran *before* `Q.VOICES`
+  and read `None` every time — and *"one voice"* and *"voices unknown"* give
+  the same answer on every one-voice page, so the page cannot tell them apart.
+  `inventory --check` caught it. That is the *silent arbiter* shape arriving in
+  a new place: **the test that would distinguish the two readings is the one
+  the corpus cannot supply.**
+* **A byte-identity control that was VACUOUS and nearly shipped.** Exporting
+  three committed transcriptions before/after matched — and `grep -c '<wedge'`
+  on all three is **zero**, so the code never ran. This is CLAUDE.md's second
+  family (*a control that was never testing what its name says*) for the eighth
+  recorded time. Replaced with a probe that drives the function directly and
+  prints how many cases ANSWERED (10 of 12) as its own positive control.
+
+⚠️ It also shipped and then found **its own accounting bug**: a per-part head
+index made *"not in this part"* and *"never written"* the same condition, so
+ten decided hairpins were counted by nobody while the balance reported
+`True` — **because it had been written as `<=`**. The previous session's
+warning (§2 of the three-families handoff: relaxing the balance to an
+inequality would have shipped a real bug) **came true within a day, in a new
+counter, written by someone who had read the warning.** It is now an exact
+equality: 20 + 26 = 46.
+
+⚠️ Its mutation battery paid **twice** — 9 of 19 arms not red on the first run
+(2 mis-anchored onto `arc_owner`, 1 equivalent mutant, **6 genuine gaps**), and
+it caught more again after the repair. Final: 21 arms red, positive control
+red.
+
+#### A hazard it found in passing, recorded and deliberately NOT fixed
+
+The Brahms record is stamped `e3d0d455, dirty: false` — **a commit that did not
+exist when the run began.** `_provenance()` reads git at the END, so a long
+gather started on tree A and finished on tree B is stamped B, and **a clean
+stamp is no evidence the tree was clean while the page was read.**
+`regather_control.py` compares exactly those stamps to decide whether two
+records may be compared. Queued as its own job: fixing it means stamping at the
+START as well, and whether a mismatched pair should then REFUSE is a decision
+rather than an edit.
