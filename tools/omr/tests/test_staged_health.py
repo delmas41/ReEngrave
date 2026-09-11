@@ -69,8 +69,18 @@ class TestDynamicNamingIsResolvedButBounded(unittest.TestCase):
         hit = [r for r in rows
                if r["test"] == "test_each_stub_abstains_with_not_implemented_and_records_it"]
         self.assertTrue(hit, "the test this asserts about has been renamed")
-        # ⚠️ ARC_OWNER left this list on 2026-09-09 when it was filled.
-        self.assertIn("WEDGE_ANCHOR", hit[0]["quantities"])
+        # ⚠️ ARC_OWNER left this list on 2026-09-09 when it was filled, and
+        # WEDGE_ANCHOR on 2026-09-10. What is asserted is the MECHANISM —
+        # that iterating `stubs()` credits whatever is currently a stub — so
+        # the exemplar is read from `stubs()` rather than named, and this test
+        # stops needing an edit every time one graduates. ⚠️ It is NOT a
+        # vacuous assertion: with `direction` the only stub left, naming a
+        # graduated quantity here would assert something FALSE, and asserting
+        # an empty list would be the `EMPTY CELLS: none` failure this file
+        # exists to prevent — so the non-emptiness is required too.
+        self.assertTrue(A.stubs(), "no stub left to exercise this")
+        for quantity in A.stubs():
+            self.assertIn(quantity.upper(), hit[0]["quantities"])
 
     def test_iterating_the_REGISTRY_does_NOT_credit_every_decision(self):
         """⚠️ THE ONE THAT KEEPS THE REPORT HONEST. Resolving `REGISTRY` /

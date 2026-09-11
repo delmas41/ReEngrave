@@ -789,6 +789,153 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
     return dict(dropped)
 
 
+def _part_cells_in_order(part: Sequence[StaffRun]
+                         ) -> List[Tuple[StaffRun, int]]:
+    """`(run, cell_index)` for each bar of a part, in `_flatten_part`'s order.
+
+    ⚠️ IT EXISTS TO GIVE A BAR A PART-WIDE ORDINAL, which a cell index is
+    NOT: a cell index RESTARTS AT 0 on every system, so system 0's third bar
+    and system 1's third bar share the number 3. That is not a hypothetical --
+    it is the defect that made the duration arm's bar-level figures wrong when
+    first published (`(page, cell)` merged two bars into one pseudo-bar), and
+    a wedge numbered against it would let a hairpin in system 1 close a
+    hairpin still open in system 0.
+
+    ⚠️ THE ORDER MUST MATCH `_flatten_part`'S AND IS ASSERTED TO, rather than
+    trusted: `test_staged_wedges` checks that this list is exactly as long as
+    that function's measure sequence, so the two cannot drift apart silently.
+    """
+    out: List[Tuple[StaffRun, int]] = []
+    for run in part:
+        for i in range(run.n_measures):
+            out.append((run, i))
+    return out
+
+
+def _place_wedges(rec: Record, parts: Sequence[Sequence[StaffRun]],
+                  counters: Dict[str, int]) -> Dict[str, int]:
+    """Every decided hairpin, onto the two notes its ANCHOR names.
+
+    ⚠️⚠️ IT LANDS WITH THE ADJUDICATOR, NEVER AFTER IT, which is now this
+    file's own repeated lesson rather than a preference: `adjudicate_dynamic`
+    and `arc_kind` each spent a day deciding into no file, and the day
+    `articulation_owner`'s docstring called its repair "write the
+    adjudicator" the tree said THREE — adjudicator, emission, counter.
+
+    ⚠️ NO GEOMETRY HERE, UNLIKE `_pair_arcs`, AND THE READER IS WHY. An arc is
+    cut in two by the per-measure crop, so the exporter has to merge it across
+    barlines before it can be paired; `hairpin_detection` reads the whole page
+    one staff-band at a time, so a CV hairpin is never cut and
+    `adjudicate_wedge_anchor` has already named both ends. What is left here
+    is serialisation: give each hairpin a `number=` and mark its two notes.
+
+    ⚠️ A PART PASS, NOT A MEASURE ONE, because `number=` is allocated against
+    what else is OPEN — two hairpins overlapping in one part need two levels,
+    and a per-measure pass cannot see the overlap.
+
+    ⚠️ `_number_spans` IS IMPORTED AND CALLED, with `_MAX_WEDGE_NUMBER` rather
+    than the slur ceiling: a `<slur number="1">` and a `<wedge number="1">`
+    name different things, so the two families are numbered independently and
+    that function's docstring says so.
+
+    ⚠️ NOTHING IS COUNTED HERE. The count happens where the ELEMENT is
+    written, in `_measure_events_xml` — the `FAMILIES` rule, and the one the
+    arc export learned by reporting 55 slurs into a file holding 23. A mark
+    set on a note that `voicing` then folds into a chord is set and not
+    necessarily written.
+
+    ⚠️⚠️ THE HEAD INDEX IS BUILT OVER EVERY PART AT ONCE, AND THE FIRST CUT
+    BUILT IT PER PART AND LOST TEN HAIRPINS SILENTLY. Inside a per-part loop,
+    "this anchor is not in `heads`" has two meanings — *it belongs to another
+    part* and *`_place_notes` never wrote it* — and a hairpin whose BOTH ends
+    were unwritten looked like the first to EVERY part, so no part counted it
+    and none reported it. Measured on Breitkopf Brahms 1 p0-3: 46 decided, 20
+    written, 16 counted as dropped and **10 accounted for nowhere**, sitting in
+    `wedge_balance`'s `absorbed_by_a_shared_event` residue while its `<=`
+    stayed True. Indexing globally collapses the two meanings into one, so a
+    hairpin is accounted for exactly once — *a shortfall that is not counted is
+    indistinguishable from ink that was never read*, and this file says so in
+    three other places.
+    """
+    dropped: Dict[str, int] = collections.Counter()
+    heads: Dict[str, Tuple[Dict[str, Any], int, int]] = {}
+    for pi, part in enumerate(parts):
+        for n, (run, i) in enumerate(_part_cells_in_order(part)):
+            cell = run.cells.get(i)
+            if cell is None:
+                continue
+            for det in cell.detections:
+                if det.get("category") == "notehead" and det.get("glyph"):
+                    heads[str(det["glyph"])] = (det, n, pi)
+
+    by_part: Dict[int, List[Tuple[Any, ...]]] = collections.defaultdict(list)
+    for o in rec.obs_of(Q.WEDGE_BOX):
+        sub = o["subject"]
+        v = rec.verdict(Q.WEDGE_ANCHOR, sub)
+        if not v or v["outcome"] != "decided":
+            continue
+        value = v["value"] or []
+        if len(value) != 2:
+            dropped["wedge_verdict_names_no_pair"] += 1
+            continue
+        first = heads.get(str(value[0]))
+        last = heads.get(str(value[1]))
+        if first is None and last is None:
+            # ⚠️ THE TEN. Both anchors are notes `_place_notes` never wrote —
+            # no pitch, or a duration `adjudicate_duration` narrowed and the
+            # exporter refuses to argmax. The hairpin was READ and DECIDED and
+            # has nothing left to hang on; reported under its own name rather
+            # than the one-end case, because the repairs differ.
+            dropped["wedge_neither_anchor_written"] += 1
+            continue
+        if first is None or last is None:
+            dropped["wedge_anchor_note_not_written"] += 1
+            continue
+        if first[2] != last[2]:
+            # ⚠️ A hairpin cannot open in one `<part>` and close in another:
+            # MusicXML pairs it within one part's stream. Counted, not bent.
+            dropped["wedge_ends_in_two_parts"] += 1
+            continue
+        detail = v.get("detail") or {}
+        kind = detail.get("kind")
+        if kind not in ("crescendo", "diminuendo"):
+            dropped["wedge_verdict_names_no_kind"] += 1
+            continue
+        by_part[first[2]].append((
+            (first[1], float(detail.get("start_x_page") or 0.0)),
+            (last[1], float(detail.get("stop_x_page") or 0.0)),
+            first[0], last[0], str(kind)))
+
+    for pi in sorted(by_part):
+        spans = by_part[pi]
+
+        # ⚠️ NO IDEMPOTENCE GUARD HERE, UNLIKE `annotate_wedges_in_staff`, and
+        # the difference is whose dicts these are. The legacy pass mutates the
+        # PIPELINE'S OWN result, so it clears `wedge_states` first or a second
+        # run stacks marks; `build()` constructs fresh `Cell` objects and
+        # fresh detection dicts on every call, so there is nothing to clear.
+        # A clearing loop was written here, a mutation arm DELETED it and the
+        # suite stayed green — the rule could not fire, so the code went
+        # rather than acquiring a test that could not reach it. Idempotence is
+        # still asserted, at the level where it is real: two exports of one
+        # record are byte-identical.
+        numbered = _legacy._number_spans(spans, _legacy._MAX_WEDGE_NUMBER)
+        if len(numbered) < len(spans):
+            # ⚠️ The third place a spanner can vanish, and it is SILENCE IN
+            # THE FILE, not silence in the report: `_number_spans` DROPS a
+            # span past the ceiling rather than reusing a live number.
+            dropped["wedge_past_the_number_ceiling"] += len(spans) - len(numbered)
+        for number, (_a, _b, first_det, last_det, kind) in numbered:
+            # ⚠️ THE OPENING MARK CARRIES THE KIND AND THE CLOSING ONE THE
+            # WORD "stop" — MusicXML's own spelling, and what
+            # `voicing._chord_span_states` tests for when it decides which
+            # marks a chord carries ("an opening mark is anything that is not
+            # a stop").
+            first_det.setdefault("wedge_states", []).append((number, kind))
+            last_det.setdefault("wedge_states", []).append((number, "stop"))
+    return dict(dropped)
+
+
 def _flatten_part(part: Sequence[StaffRun]):
     """One measure sequence for a whole part, with each measure's geometry.
 
@@ -1437,6 +1584,21 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
         # ONE carrier and a chord's members share an x, so which member it
         # named is an artefact of glyph order and must not decide anything.
         ev_fermata = any(h.get("fermata") for h in heads)
+        # ⚠️⚠️ A HAIRPIN OPENS BEFORE THE NOTE IT COVERS AND CLOSES AFTER IT,
+        # and that element ORDER is the pairing rather than a style: music21
+        # attaches a `crescendo` to the next note it PARSES and a `stop` to
+        # the last note it parsed, so writing both on one side of the note
+        # would silently change which notes the wedge spans. The legacy
+        # `_mxl_voice_events` splits them the same way for the same reason.
+        for _number, _kind in (ev.get("wedge_states") or ()):
+            if _kind != "stop":
+                out.append(_legacy._mxl_wedge(_number, _kind, "      "))
+                # ⚠️ COUNTED HERE, AT THE RENDER, where the ELEMENT is
+                # written -- the `FAMILIES` rule, and the one the arc export
+                # learned by reporting 55 slurs into a file holding 23. A mark
+                # SET on a notehead that `voicing` then drops is attached and
+                # not written; only this site can tell.
+                counters["wedges"] += 1
         for n, head in enumerate(heads):
             # ⚠️ LOWEST NOTE FIRST — `group_chords_in_measure` already sorts
             # the group that way and the order is load-bearing: MusicXML takes
@@ -1528,6 +1690,11 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 counters["accidentals"] += 1
             if n == 0:
                 units += max(1, int(round(beats * divisions)))
+        # ⚠️ AFTER the chord's notes, for the reason above: the `stop` binds
+        # to the last note music21 parsed, which is this event.
+        for _number, _kind in (ev.get("wedge_states") or ()):
+            if _kind == "stop":
+                out.append(_legacy._mxl_wedge(_number, _kind, "      "))
     return out, units
 
 
@@ -1579,6 +1746,10 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # and the two spellings are one character apart -- an arc counted in both
     # halves would be silently overwritten rather than summed.
     arcs_dropped += collections.Counter(_pair_arcs(rec, parts, counters))
+    # ⚠️ A PART PASS TOO, and for the `number=` half of the same reason: two
+    # hairpins overlapping in one part need two levels, which no per-measure
+    # pass can see. Unlike the arcs it needs no merge -- see `_place_wedges`.
+    wedges_dropped = collections.Counter(_place_wedges(rec, parts, counters))
 
     part_list: List[str] = []
     parts_xml: List[str] = []
@@ -1654,6 +1825,41 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "not_written": report["ornaments_not_written_total"],
         "balanced": orn_marks == (int(counters.get("ornaments", 0))
                                   + report["ornaments_not_written_total"]),
+    }
+    # ⚠️ THE WEDGE CONTROL IS A PARTITION OF THE HAIRPIN ROWS, NOT AN
+    # EQUALITY OF WRITTEN-PLUS-DROPPED, and the difference is the ABSTENTIONS.
+    # Unlike an ornament, most of this family never reaches `_place_wedges` at
+    # all: `adjudicate_wedge_anchor` abstains `no_anchor` on a staff whose
+    # notes the detector missed and `no_page_frame` on the detector's own
+    # box-less row. Those are decisions, not export drops, and folding them
+    # into `not_written` would report a reading limit as an exporter gap --
+    # the exact confusion `coverage()`'s two headlines exist to keep apart.
+    wedge_rows = len(rec.obs_of(Q.WEDGE_BOX))
+    w_decided = len([v for v in rec.verdicts_of(Q.WEDGE_ANCHOR)
+                     if v["outcome"] == "decided"])
+    report["wedges_not_written"] = dict(wedges_dropped)
+    report["wedges_not_written_total"] = sum(wedges_dropped.values())
+    report["wedge_balance"] = {
+        "rows_in_log": wedge_rows,
+        "decided": w_decided,
+        "abstained": wedge_rows - w_decided,
+        "written": int(counters.get("wedges", 0)),
+        "not_written": report["wedges_not_written_total"],
+        # ⚠️⚠️ AN EQUALITY, AND IT WAS A `<=` FOR ONE AFTERNOON. Written as an
+        # inequality with a named `absorbed_by_a_shared_event` residue, it
+        # reported `balanced: True` while TEN decided hairpins on the Brahms
+        # record were accounted for NOWHERE — a per-part head index made "not
+        # in this part" and "never written" indistinguishable, so a hairpin
+        # with both ends unwritten was skipped by every part and counted by
+        # none. **The `<=` is what let it pass.** The fermata control needs an
+        # inequality because its hoist genuinely collapses several marks into
+        # one element; nothing collapses here, one hairpin is one decision, so
+        # every decided hairpin is written or counted and the control says so.
+        # The wider lesson is this file's own: the cheapest way to make a
+        # control unable to fail is to widen it while teaching it about a
+        # legitimate-sounding exception.
+        "balanced": (int(counters.get("wedges", 0))
+                     + report["wedges_not_written_total"]) == w_decided,
     }
     fermata_marks = len(rec.obs_of(Q.FERMATA_MARK))
     report["fermatas_not_written"] = dict(fermatas_dropped)
@@ -1746,7 +1952,7 @@ FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
     "articulation": (Q.ARTICULATION_OWNER, ("artic",), ("articulations",)),
     "dynamic": (Q.DYNAMIC, ("dynamic",), ("dynamics",)),
     "wedge": (Q.WEDGE_ANCHOR, ("dynamicCrescendoHairpin",
-                               "dynamicDiminuendoHairpin"), ()),
+                               "dynamicDiminuendoHairpin"), ("wedges",)),
     "direction": (Q.DIRECTION, (), ()),
     "ornament": (Q.ORNAMENT_OWNER, ("ornament", "tremolo"), ("ornaments",)),
     "fermata": (Q.FERMATA_OWNER, ("fermata",), ("fermatas",)),
@@ -1871,6 +2077,41 @@ def _unclaimed(detected: Dict[str, int]) -> Dict[str, int]:
     return dict(sorted(out.items(), key=lambda kv: -kv[1]))
 
 
+#: Readers whose rows the `Q.GLYPH_BOX` census ALREADY counts. ⚠️ Derived
+#: from nothing and hand-written on purpose, and it is two names rather than
+#: one: `gather_detections` files `Q.GLYPH_BOX` under `DETECTOR`, and the
+#: header crop's rows under `DETECTOR_HEADER`. A row from either would be
+#: double-counted if it were added again below.
+_DETECTOR_READERS = frozenset({"detector", "detector_header"})
+
+
+def _non_detector_ink(rec: "Record", quantity: Optional[str]) -> int:
+    """Rows of this family's OWN ink that the detector never produced.
+
+    ⚠️ DERIVED FROM THE REGISTRY, never a hand-written list of families. A
+    decision's `subjects_from` names the quantity whose rows ARE its
+    population -- that is what `subjects_from` means and why `arc_owner`
+    stopped abstaining 2,728 times a page -- so the family's ink is exactly
+    that quantity's observations. Counting the ones whose `reader` is not the
+    detector adds each CV reading once and no detector reading twice.
+
+    ⚠️ A FAMILY WITH NO `subjects_from` RETURNS ZERO, which is correct rather
+    than defensive: its population is the detector's own glyphs, already
+    counted. Returning "unknown" here and letting the caller guess would be
+    the fallback converting *cannot tell* into a definite answer that this
+    repo has now paid for three times in one day -- so the case that cannot
+    be answered is the case that genuinely has nothing to add.
+    """
+    if quantity is None:
+        return 0
+    spec = A.REGISTRY.get(quantity)
+    source = getattr(spec, "subjects_from", None) if spec is not None else None
+    if not source:
+        return 0
+    return sum(1 for o in rec.obs_of(source)
+               if str(o.get("reader")) not in _DETECTOR_READERS)
+
+
 def coverage(result: Dict[str, Any],
              written: Optional[Dict[str, int]] = None) -> Dict[str, Any]:
     """For every notation family: did it come out, and if not, WHY NOT.
@@ -1900,10 +2141,28 @@ def coverage(result: Dict[str, Any],
     for family, (quantity, prefixes, counter_keys) in sorted(FAMILIES.items()):
         n_detected = sum(n for cls, n in detected.items()
                          if _claims(family, cls))
+        n_cv = _non_detector_ink(rec, quantity)
         row: Dict[str, Any] = {
             "family": family,
             "quantity": quantity,
             "detector_glyphs": n_detected,
+            # ⚠️⚠️ INK THE DETECTOR NEVER SAW, AND THE HEADLINE MUST READ THIS.
+            # `detected` above is built from `Q.GLYPH_BOX`, which is the
+            # DETECTOR's class space -- so a family a CLASSICAL-CV rung reads
+            # is invisible to it. Measured on the Breitkopf Brahms 1 p0-3
+            # record: `wedge` reported `detector_glyphs: 1` while the record
+            # held **47** `Q.WEDGE_BOX` rows, 46 of them from `cv_hairpins`.
+            # Anyone sizing the wedge work off the coverage headline read its
+            # reach as 1 instead of 47 -- a 47x under-report of the only
+            # family whose ink comes from a CV reader.
+            #
+            # Reported APART rather than folded in, because "the detector
+            # found this" and "a CV rung found this" are different facts about
+            # the page: `gather_wedge_boxes` emits both readers precisely so a
+            # consumer can decide which to believe, and a single merged number
+            # would destroy that on the way to the report.
+            "cv_glyphs": n_cv,
+            "ink_rows": n_detected + n_cv,
             "written": sum((written or {}).get(k, 0) for k in counter_keys),
         }
         if quantity is None:
@@ -1979,12 +2238,16 @@ def coverage(result: Dict[str, Any],
             row["status"] = "abstained"
         rows.append(row)
 
-    unread = {r["family"]: r["detector_glyphs"] for r in rows
+    # ⚠️ `ink_rows`, NOT `detector_glyphs`, since 2026-09-10 — see the column's
+    # own note. The headlines are about INK THE PAGE HOLDING that nothing
+    # carries, and which reader found it is irrelevant to that question while
+    # being decisive for the number: on `wedge` the two differ 1 against 47.
+    unread = {r["family"]: r["ink_rows"] for r in rows
               if r["status"] in ("NO_QUANTITY", "starved", "stub")
-              and r["detector_glyphs"]}
-    unwritten = {r["family"]: r["detector_glyphs"] for r in rows
+              and r["ink_rows"]}
+    unwritten = {r["family"]: r["ink_rows"] for r in rows
                  if r["status"] == "decided_but_unwritten"
-                 and r["detector_glyphs"]}
+                 and r["ink_rows"]}
     uncounted = [r["family"] for r in rows
                  if r["status"] == "decided_uncounted"]
     return {

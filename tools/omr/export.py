@@ -41,7 +41,7 @@ import sys
 from collections import Counter
 from fractions import Fraction
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from .voicing import group_chords_in_measure, split_events_into_voices
 from .rhythm import backfill_page_time_signatures
@@ -2912,6 +2912,19 @@ def _wedge_anchors(
     page runs `m5 -> m6`, ending on the next bar's downbeat, which is where
     hairpins ordinarily end. Anything wider would let a staff that rests for
     four bars donate an anchor from the far side of them.
+
+    ⚠️ THE RULE ITSELF LIVES IN `_wedge_anchors_from_candidates` BELOW, and
+    this function is now only the part that knows about `measures` dicts —
+    finding the window and reading each bar's noteheads out of it. The split
+    is not tidiness: the STAGED pipeline's `adjudicate_wedge_anchor` decides
+    the same question from the record, where there are no `measures` shims,
+    and the alternative was restating `_WEDGE_ANCHOR_PAD_NOTEHEADS`,
+    `_WEDGE_START_RULE` and `_WEDGE_STOP_REACH_NOTEHEADS` over there. Each of
+    those is MEASURED (see their own comments) and this project has paid for
+    a number it measured once and then kept two copies of; importing is the
+    established answer (`LETTER_METERS`, `rhythm._REST_DURATIONS`, the
+    arc-attribution constants). So the constants, and the rule that reads
+    them, stay here and the staged decision supplies page-pixel candidates.
     """
     first_m, last_m = segments[0][0], segments[-1][0]
     left = segments[0][1][0]
@@ -2925,6 +2938,33 @@ def _wedge_anchors(
             box = det["bbox_page"]
             candidates.append((m_idx, box[0] + box[2] / 2.0, det))
             widths.append(float(box[2]))
+    return _wedge_anchors_from_candidates(
+        candidates, widths, left, right,
+        lambda det: voice_of.get(id(det), 0))
+
+
+def _wedge_anchors_from_candidates(
+    candidates: list[tuple[int, float, Any]],
+    widths: list[float],
+    left: float,
+    right: float,
+    voice_of: Callable[[Any], int],
+) -> tuple[tuple[int, float], tuple[int, float], Any, Any] | None:
+    """`_wedge_anchors`' rule, over candidates somebody else gathered.
+
+    `candidates` is `(measure_index, notehead x-centre, payload)` in PAGE
+    PIXELS and `widths` the same heads' widths; `payload` is opaque and comes
+    straight back out, so the legacy path passes its detection dicts and the
+    staged adjudicator passes record subject keys. `voice_of` maps a payload
+    to its voice index.
+
+    ⚠️ THE FRAME IS PAGE PIXELS AND BOTH CALLERS MUST SUPPLY THAT. The legacy
+    caller reads `bbox_page`; the staged one reads `bbox_page_px` and ABSTAINS
+    where a row has none, rather than falling back to the cell's canonical
+    frame. Two staves' canonical frames coincide by construction, which is the
+    fault that made `Q.ONSET_COLUMN` report 1,062 columns of nothing and the
+    one `arc_owner` was repaired for.
+    """
     # ⚠️ ONE ANCHOR IS ENOUGH — Sean's rule, 2026-09-05. This required TWO
     # candidate noteheads, which throws the hairpin away in exactly the case a
     # scan produces most: the ink is read correctly, the bar it belongs to is
@@ -2955,8 +2995,8 @@ def _wedge_anchors(
     # context. The stop is chosen from the start's voice rather than the two
     # being compared afterwards, so a staff with a second voice loses coverage
     # rather than losing the hairpin.
-    voice = voice_of.get(id(start[2]), 0)
-    same_voice = [c for c in candidates if voice_of.get(id(c[2]), 0) == voice]
+    voice = voice_of(start[2])
+    same_voice = [c for c in candidates if voice_of(c[2]) == voice]
     # ⚠️ THE RIGHT EDGE ADMITS TWO READINGS AND THE PAGE CANNOT BE ASKED WHICH.
     # A hairpin can END ON a note — `... \\!` on the next attack, which is where
     # a crescendo into a downbeat stops — or it can END UNDER one, drawn in the

@@ -1,0 +1,6 @@
+========================================================================
+REACH: 0 Q.WEDGE_BOX rows
+  by reader     : {}
+  with page box : 0  (the rest can only abstain)
+  provenance    : {'commit': '0982864e0f31eb98e9a5c82abf784960a9946c1e', 'dirty': True}
+⚠️ INSTRUMENT DEAD on this document — nothing to measure.

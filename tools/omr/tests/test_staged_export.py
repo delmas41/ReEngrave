@@ -279,15 +279,67 @@ class TestCoverageNamesTheFourZEROS(unittest.TestCase):
         page = _one_staff_page(notes=[("C4", QUARTER)])
         rep = SX.coverage(page)
         by = {r["family"]: r for r in rep["families"]}
-        # ⚠️ THE PLAIN-STUB EXEMPLAR HAS CHANGED TWICE AND THE TEST HAS NOT.
-        # `slur` left this census on 2026-09-09 when `arc_kind` stopped being a
-        # stub; `articulation` left it on 2026-09-10 when
-        # `articulation_owner` did. `wedge` is the plain-stub case now and
-        # `direction` is still the starved one. Asserting the DISTINCTION,
-        # never a census — which is why each of those took a one-line edit
-        # here rather than a rewrite.
-        self.assertEqual(by["wedge"]["status"], "stub",
-                         "wedge_box is gathered: a plain stub")
+        # ⚠️⚠️ THE PLAIN-STUB EXEMPLAR HAS NOW RUN OUT, AND THAT IS WHY THIS
+        # TEST CHANGED SHAPE RATHER THAN LOSING A LINE. `slur` left this
+        # census on 2026-09-09 when `arc_kind` stopped being a stub;
+        # `articulation` and then `wedge` left it on 2026-09-10. `direction`
+        # is the ONLY stub left, so there is no longer a second real family to
+        # contrast it with — and quietly deleting the assertion would leave a
+        # test named for a DISTINCTION that no longer checks one, which is the
+        # `EMPTY CELLS: none` failure in `health.py` arriving by a different
+        # road. The distinction is asserted against a SYNTHETIC starved stub
+        # instead, which exercises the real branch in `coverage()`.
+        #
+        # ⚠️ `abstained` IS THE SYSTEM WORKING, and it is the honest status for
+        # this fixture: the page prints no hairpin, so there is nothing to
+        # decide. What matters is that it is no longer `stub` — the difference
+        # between "nobody wrote the rule" and "the rule ran and the page held
+        # none of this family" is the whole point of the four zeros.
+        self.assertEqual(by["wedge"]["status"], "abstained",
+                         "wedge_anchor is written now: a page with no hairpin "
+                         "abstains, it does not report a stub")
+
+    def test_the_STARVED_branch_is_still_reachable(self):
+        """The positive control for the line above: `starved` has no real
+        family today, so prove the branch can still fire.
+
+        ⚠️ A STATUS NO INPUT CAN PRODUCE IS A DEAD BRANCH, and this report has
+        shipped one before — `decided_but_unwritten` was unreachable for a day
+        because an `elif decided:` above it consumed every decided family.
+        Reached here with a fake quantity whose stub `wants` something no
+        gatherer and no adjudicator provides, which is exactly what `starved`
+        means.
+        """
+        import dataclasses
+        from unittest import mock
+        from tools.omr.staged import adjudicate as A
+
+        A._ensure_decisions()
+        real = A.REGISTRY[SX.Q.DIRECTION]
+        fake = dataclasses.replace(
+            real, quantity="a_quantity_nothing_gathers",
+            wants=("a_quantity_no_rung_produces",), stub=True,
+            subjects_from=None)
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        with mock.patch.dict(A.REGISTRY,
+                             {"a_quantity_nothing_gathers": fake}), \
+                mock.patch.dict(
+                    SX.FAMILIES,
+                    {"a_fake_family": ("a_quantity_nothing_gathers",
+                                       (), ())}):
+            rep = SX.coverage(page)
+        by = {r["family"]: r for r in rep["families"]}
+        self.assertEqual(by["a_fake_family"]["status"], "starved")
+        self.assertIn("never gathered", by["a_fake_family"]["why"])
+
+    def test_the_last_stub_is_the_only_stub(self):
+        """`direction` alone, asserted POSITIVELY so that a family regressing
+        to a stub fails here rather than passing quietly."""
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        by = {r["family"]: r for r in SX.coverage(page)["families"]}
+        stubs = sorted(f for f, r in by.items()
+                       if r["status"] in ("stub", "starved"))
+        self.assertEqual(stubs, ["direction"])
         # ⚠️ `direction` reports `stub`, NOT `starved`, and the two tools
         # disagree about it on purpose-by-accident: `coverage()` calls a
         # quantity fed when a gather SITE exists, and `Q.DIRECTION_WORD` has
@@ -308,6 +360,394 @@ class TestCoverageNamesTheFourZEROS(unittest.TestCase):
         by = {r["family"]: r for r in rep["families"]}
         self.assertEqual(by["note"]["status"], "emitted")
         self.assertNotIn("note", rep["detected_and_unrepresented"])
+
+
+def _with_wedge(page, *, gi, start, stop, kind="crescendo",
+                start_cell=0, stop_cell=0, start_x=0.0, stop_x=100.0,
+                outcome="decided", reason="nearest_either_side"):
+    """A `Q.WEDGE_BOX` row plus its `Q.WEDGE_ANCHOR` verdict, gather's shape."""
+    sub = f"glyph/0/0/0/{start_cell}/{gi}"
+    page["record"]["observations"].append(
+        _obs(500 + gi, sub, Q.WEDGE_BOX, kind,
+             bbox_page_px=[start_x, 160.0, stop_x, 168.0]))
+    v = _vrd(950 + gi, sub, Q.WEDGE_ANCHOR,
+             [start, stop] if outcome == "decided" else None,
+             outcome=outcome, reason=reason)
+    v["detail"] = {"kind": kind, "start_cell": start_cell,
+                   "stop_cell": stop_cell,
+                   "start_x_page": start_x, "stop_x_page": stop_x}
+    page["record"]["verdicts"].append(v)
+    return page
+
+
+class TestHairpinsReachTheFile(unittest.TestCase):
+    """⚠️⚠️ THE THIRD LEG. `adjudicate_dynamic` and `arc_kind` each spent a
+    day deciding into no file, and the day `articulation_owner`'s docstring
+    called its repair "write the adjudicator" the tree said THREE —
+    adjudicator, emission, counter. `grep -c '<wedge' staged/export.py` was
+    ZERO until 2026-09-10 while `Q.WEDGE_ANCHOR` existed to be read.
+    """
+
+    def _two_note_page(self):
+        return _one_staff_page(notes=[("C4", QUARTER), ("D4", QUARTER)])
+
+    def test_a_decided_hairpin_becomes_a_wedge_pair(self):
+        page = _with_wedge(self._two_note_page(), gi=90,
+                           start="glyph/0/0/0/0/0", stop="glyph/0/0/0/0/1")
+        xml, rep = SX.to_musicxml(page)
+        wedges = ET.fromstring(xml).findall(".//wedge")
+        self.assertEqual([w.get("type") for w in wedges],
+                         ["crescendo", "stop"])
+        self.assertEqual(rep["written"]["wedges"], 1)
+
+    def test_the_OPENING_mark_precedes_its_note_and_the_STOP_follows(self):
+        """⚠️ THE ELEMENT ORDER IS THE PAIRING, NOT A STYLE. music21 attaches
+        a `crescendo` to the next note it PARSES and a `stop` to the last note
+        it parsed, so writing both on one side of the note silently changes
+        WHICH NOTES the hairpin spans — and no count would notice."""
+        page = _with_wedge(self._two_note_page(), gi=90,
+                           start="glyph/0/0/0/0/0", stop="glyph/0/0/0/0/1")
+        xml, _ = SX.to_musicxml(page)
+        measure = ET.fromstring(xml).find(".//measure")
+        tags = [el.tag for el in measure
+                if el.tag in ("note", "direction")]
+        # direction, note, note, direction — open BEFORE, stop AFTER.
+        self.assertEqual(tags, ["direction", "note", "note", "direction"])
+
+    def test_the_kind_reaches_the_element(self):
+        page = _with_wedge(self._two_note_page(), gi=90,
+                           start="glyph/0/0/0/0/0", stop="glyph/0/0/0/0/1",
+                           kind="diminuendo")
+        xml, _ = SX.to_musicxml(page)
+        self.assertEqual(
+            ET.fromstring(xml).find(".//wedge").get("type"), "diminuendo")
+
+    def test_two_overlapping_hairpins_take_distinct_numbers(self):
+        page = _one_staff_page(notes=[("C4", QUARTER), ("D4", QUARTER),
+                                      ("E4", QUARTER), ("F4", QUARTER)])
+        page = _with_wedge(page, gi=90, start="glyph/0/0/0/0/0",
+                           stop="glyph/0/0/0/0/2", start_x=5.0, stop_x=205.0)
+        page = _with_wedge(page, gi=91, start="glyph/0/0/0/0/1",
+                           stop="glyph/0/0/0/0/3", kind="diminuendo",
+                           start_x=105.0, stop_x=305.0)
+        xml, rep = SX.to_musicxml(page)
+        numbers = {w.get("number")
+                   for w in ET.fromstring(xml).findall(".//wedge")}
+        self.assertEqual(numbers, {"1", "2"})
+        self.assertEqual(rep["written"]["wedges"], 2)
+
+    def test_an_ABSTAINED_hairpin_writes_nothing_and_is_not_a_drop(self):
+        """⚠️ AN ABSTENTION IS NOT AN EXPORT GAP. `no_anchor` on a staff whose
+        notes the detector missed is a READING limit; folding it into
+        `wedges_not_written` would report it as an exporter fault, which is
+        exactly the confusion `coverage()`'s two headlines exist to prevent."""
+        page = _with_wedge(self._two_note_page(), gi=90, start=None,
+                           stop=None, outcome="abstained", reason="no_anchor")
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(ET.fromstring(xml).findall(".//wedge"), [])
+        self.assertEqual(rep["written"].get("wedges", 0), 0)
+        self.assertEqual(rep["wedges_not_written_total"], 0)
+        self.assertEqual(rep["wedge_balance"]["abstained"], 1)
+        self.assertEqual(rep["wedge_balance"]["decided"], 0)
+
+    def test_an_anchor_whose_note_never_reached_a_cell_is_COUNTED(self):
+        """A shortfall that is not counted is indistinguishable from ink that
+        was never read."""
+        page = _with_wedge(self._two_note_page(), gi=90,
+                           start="glyph/0/0/0/0/0",
+                           stop="glyph/0/0/0/0/77")
+        _xml, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["wedges_not_written"],
+                         {"wedge_anchor_note_not_written": 1})
+
+    def test_a_hairpin_with_NEITHER_anchor_written_is_counted(self):
+        """⚠️⚠️ THE TEN. The first cut built its head index PER PART, so "this
+        anchor is not here" meant both *it belongs to another part* and
+        *`_place_notes` never wrote it* — and a hairpin with BOTH ends
+        unwritten looked like the first to EVERY part, so no part counted it
+        and none reported it. Measured on Breitkopf Brahms 1 p0-3: 46 decided,
+        20 written, 16 counted, **10 accounted for nowhere**, with
+        `wedge_balance` reporting `balanced: True` because it was a `<=`.
+
+        Reported under its OWN name, not folded into the one-end case: one is
+        "the hairpin lost an end", the other "it has nothing at all", and the
+        repairs differ.
+        """
+        page = _with_wedge(self._two_note_page(), gi=90,
+                           start="glyph/0/0/0/0/88",
+                           stop="glyph/0/0/0/0/89")
+        _xml, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["wedges_not_written"],
+                         {"wedge_neither_anchor_written": 1})
+
+    def test_a_hairpin_on_ANOTHER_part_is_counted_ONCE(self):
+        """⚠️⚠️ THE PER-PART HAZARD ITSELF, and the single-part test above
+        cannot reach it. Two parts, and the hairpin's anchors are on part 2.
+        Under a PER-PART head index, part 1 sees both ends missing and counts
+        it as `wedge_neither_anchor_written` while part 2 writes it — the same
+        hairpin in two buckets, `written + not_written > decided`, and the
+        balance broken. The bug the first cut shipped only becomes visible
+        with more than one part, which is why it survived every other test in
+        this class.
+        """
+        obs, vrd, n = [], [], 0
+        for st in (0, 1):
+            for gi in (0, 1):
+                sub = f"glyph/0/0/{st}/0/{gi}"
+                obs.append(_obs(n, sub, Q.GLYPH_BOX,
+                                ["noteheadBlackOnLine", 100 * gi, 50, 40, 40],
+                                category="notehead"))
+                n += 1
+                obs.append(_obs(n, sub, Q.NOTEHEAD_CLASS,
+                                "noteheadBlackOnLine"))
+                n += 1
+                vrd.append(_vrd(n, sub, Q.PITCH, "CD"[gi] + "4"))
+                n += 1
+                vrd.append(_vrd(n, sub, Q.DURATION, QUARTER))
+                n += 1
+            vrd.append(_vrd(900 + st, f"staff/0/0/{st}",
+                            Q.MEASURE_PARTITION, 1))
+            vrd.append(_vrd(910 + st, f"staff/0/0/{st}", Q.CLEF, "treble"))
+        vrd.append(_vrd(920, "system/0/0", Q.SYSTEM_STAFF_COUNT, 2))
+        vrd.append(_vrd(930, "document", Q.PART_PARTITION,
+                        {"join": "ordinal", "staves_per_system": 2},
+                        reason="ordinal"))
+        # the hairpin lives on the SECOND staff, i.e. the second part
+        sub = "glyph/0/0/1/0/90"
+        obs.append(_obs(500, sub, Q.WEDGE_BOX, "crescendo",
+                        bbox_page_px=[5.0, 160.0, 205.0, 168.0]))
+        v = _vrd(950, sub, Q.WEDGE_ANCHOR,
+                 ["glyph/0/0/1/0/0", "glyph/0/0/1/0/1"])
+        v["detail"] = {"kind": "crescendo", "start_cell": 0, "stop_cell": 0,
+                       "start_x_page": 5.0, "stop_x_page": 205.0}
+        vrd.append(v)
+
+        _xml, rep = SX.to_musicxml(_log_json(obs, vrd))
+        self.assertEqual(rep["written"]["parts"], 2, "fixture needs 2 parts")
+        b = rep["wedge_balance"]
+        self.assertEqual(b["decided"], 1)
+        self.assertEqual(b["written"], 1)
+        self.assertEqual(rep["wedges_not_written"], {},
+                         "part 1 must not count another part's hairpin as "
+                         "unwritten — that is the per-part index bug")
+        self.assertEqual(b["written"] + b["not_written"], b["decided"])
+
+    def test_the_balance_is_an_EQUALITY_and_can_fail(self):
+        """⚠️ IT WAS A `<=` FOR ONE AFTERNOON AND THAT IS WHAT LET THE TEN
+        PASS. Nothing collapses several hairpins into one element — unlike the
+        fermata hoist, which genuinely needs an inequality — so every decided
+        hairpin is written or counted, exactly."""
+        page = self._two_note_page()
+        page = _with_wedge(page, gi=90, start="glyph/0/0/0/0/0",
+                           stop="glyph/0/0/0/0/1")
+        page = _with_wedge(page, gi=91, start="glyph/0/0/0/0/88",
+                           stop="glyph/0/0/0/0/89", start_x=50.0)
+        _xml, rep = SX.to_musicxml(page)
+        b = rep["wedge_balance"]
+        self.assertEqual(b["decided"], 2)
+        self.assertEqual(b["written"] + b["not_written"], b["decided"])
+        self.assertTrue(b["balanced"])
+        self.assertNotIn("absorbed_by_a_shared_event", b,
+                         "a named residue bucket is what made the `<=` look "
+                         "principled; there is nothing for it to hold")
+
+    def test_the_balance_partitions_the_hairpin_rows(self):
+        page = _with_wedge(self._two_note_page(), gi=90,
+                           start="glyph/0/0/0/0/0", stop="glyph/0/0/0/0/1")
+        _xml, rep = SX.to_musicxml(page)
+        b = rep["wedge_balance"]
+        self.assertEqual(b["rows_in_log"], 1)
+        self.assertEqual(b["decided"] + b["abstained"], b["rows_in_log"])
+        self.assertTrue(b["balanced"])
+
+    def test_exporting_twice_does_not_stack_marks(self):
+        """The legacy pass is idempotent and so is this one — a second export
+        of one record must not open two hairpins on one note."""
+        page = _with_wedge(self._two_note_page(), gi=90,
+                           start="glyph/0/0/0/0/0", stop="glyph/0/0/0/0/1")
+        first, _ = SX.to_musicxml(page)
+        second, _ = SX.to_musicxml(page)
+        self.assertEqual(first, second)
+
+    def test_removing_the_wedge_elements_leaves_the_file_UNCHANGED(self):
+        """The control that makes the number above a RESULT: a hairpin must
+        add `<wedge>` and move nothing else."""
+        plain, _ = SX.to_musicxml(self._two_note_page())
+        page = _with_wedge(self._two_note_page(), gi=90,
+                           start="glyph/0/0/0/0/0", stop="glyph/0/0/0/0/1")
+        withw, _ = SX.to_musicxml(page)
+        # ⚠️ `_mxl_wedge` emits a FIVE-LINE `<direction>` block, not a bare
+        # element, so the whole block is removed — stripping only the `<wedge`
+        # line would leave an empty `<direction>` and the control would pass
+        # while the file had changed shape.
+        lines, stripped = withw.splitlines(), []
+        i = 0
+        while i < len(lines):
+            if (lines[i].strip() == '<direction placement="below">'
+                    and i + 2 < len(lines) and "<wedge" in lines[i + 2]):
+                i += 5
+                continue
+            stripped.append(lines[i])
+            i += 1
+        self.assertIn("<wedge", withw)          # the control is LIVE
+        self.assertEqual("\n".join(stripped).rstrip("\n"), plain.rstrip("\n"))
+
+    def test_the_family_row_reports_EMITTED_once_a_hairpin_is_written(self):
+        """⚠️ `FAMILIES["wedge"]` carried an EMPTY counter tuple until
+        2026-09-10, so the row could only ever read `decided_uncounted` — "the
+        report cannot tell". A family with no counter cannot report success."""
+        page = _with_wedge(self._two_note_page(), gi=90,
+                           start="glyph/0/0/0/0/0", stop="glyph/0/0/0/0/1")
+        _xml, rep = SX.to_musicxml(page)
+        cov = SX.coverage(page, rep["written"])
+        row = next(r for r in cov["families"] if r["family"] == "wedge")
+        self.assertEqual(row["status"], "emitted")
+        self.assertEqual(row["written"], 1)
+
+
+    def test_a_verdict_naming_no_KIND_is_counted_not_guessed(self):
+        """⚠️ `<wedge type=...>` needs the direction, and a verdict that names
+        none cannot be given one — the exporter would be deciding a question
+        the record did not answer, which is the overreach `_place_notes`
+        refuses one screen up when it declines to argmax a narrowed
+        duration."""
+        page = _with_wedge(self._two_note_page(), gi=90,
+                           start="glyph/0/0/0/0/0", stop="glyph/0/0/0/0/1")
+        page["record"]["verdicts"][-1]["detail"]["kind"] = "sideways"
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(ET.fromstring(xml).findall(".//wedge"), [])
+        self.assertEqual(rep["wedges_not_written"],
+                         {"wedge_verdict_names_no_kind": 1})
+
+
+class TestCVReadInkIsNotUnderREPORTED(unittest.TestCase):
+    """⚠️⚠️ THE COVERAGE HEADLINE MIS-SIZED THIS VERY FAMILY. `detector_glyphs`
+    is counted over `Q.GLYPH_BOX` — the DETECTOR's class space — so ink a
+    CLASSICAL-CV rung read is invisible to it. Measured on the Breitkopf
+    Brahms 1 p0-3 record: `wedge` reported `detector_glyphs: 1` against **47**
+    `Q.WEDGE_BOX` rows, 46 of them `cv_hairpins`. Anyone sizing the wedge work
+    off that headline read its reach as 1 instead of 47.
+    """
+
+    def _page_with_cv_hairpins(self, n):
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        for i in range(n):
+            o = _obs(400 + i, f"glyph/0/0/0/0/{80 + i}", Q.WEDGE_BOX,
+                     "crescendo", bbox_page_px=[0.0, 1.0, 2.0, 3.0])
+            o["reader"] = "cv_hairpins"
+            page["record"]["observations"].append(o)
+        return page
+
+    def test_cv_rows_are_counted_as_ink(self):
+        rep = SX.coverage(self._page_with_cv_hairpins(46))
+        row = next(r for r in rep["families"] if r["family"] == "wedge")
+        self.assertEqual(row["cv_glyphs"], 46)
+        self.assertEqual(row["ink_rows"], 46 + row["detector_glyphs"])
+
+    def test_a_DETECTOR_row_is_not_counted_TWICE(self):
+        """The detector's own `Q.WEDGE_BOX` row mirrors a `Q.GLYPH_BOX` row
+        the census already holds; adding it again would inflate the headline
+        in the other direction."""
+        page = self._page_with_cv_hairpins(2)
+        page["record"]["observations"].append(
+            _obs(470, "glyph/0/0/0/0/90", Q.WEDGE_BOX, "crescendo"))
+        row = next(r for r in SX.coverage(page)["families"]
+                   if r["family"] == "wedge")
+        self.assertEqual(row["cv_glyphs"], 2)
+
+    def test_the_two_readers_are_reported_APART(self):
+        """⚠️ `gather_wedge_boxes` emits both readers precisely so a consumer
+        can decide which to believe; one merged number destroys that."""
+        row = next(r for r in SX.coverage(self._page_with_cv_hairpins(3))
+                   ["families"] if r["family"] == "wedge")
+        self.assertIn("detector_glyphs", row)
+        self.assertIn("cv_glyphs", row)
+
+    def test_the_HEADLINE_reads_ink_rows_not_detector_glyphs(self):
+        """The point of the fix: an unrepresented CV family must appear in
+        `detected_and_unrepresented` at its real size."""
+        page = self._page_with_cv_hairpins(46)
+        # force the family into an unrepresented status the headline reads
+        rows = SX.coverage(page)["families"]
+        wedge = next(r for r in rows if r["family"] == "wedge")
+        self.assertEqual(wedge["ink_rows"], 46 + wedge["detector_glyphs"])
+        self.assertGreater(wedge["ink_rows"], wedge["detector_glyphs"])
+
+    def test_a_family_with_no_subjects_from_adds_nothing(self):
+        """⚠️ NOT a fallback converting *cannot tell* into a definite answer:
+        a family whose population IS the detector's glyphs has nothing to
+        add, so zero is the true number rather than a stand-in."""
+        page = self._page_with_cv_hairpins(1)
+        self.assertEqual(SX._non_detector_ink(SX.Record(page), None), 0)
+
+
+class TestACellIndexIsNotAPartOrdinal(unittest.TestCase):
+    def test_the_bar_order_matches_the_one_the_arcs_are_merged_along(self):
+        """⚠️ A CELL INDEX RESTARTS AT 0 ON EVERY SYSTEM, so system 0's third
+        bar and system 1's third bar share the number 3. That is the defect
+        that made the duration arm's bar-level figures wrong when first
+        published, and a wedge numbered against it would let a hairpin in one
+        system close one still open in another. Asserted against
+        `_flatten_part` rather than trusted, so the two orders cannot drift.
+        """
+        page = _one_staff_page(notes=[("C4", QUARTER)], n_measures=3)
+        rec = SX.Record(page)
+        parts, *_ = SX.build(rec)
+        for part in parts:
+            measures, *_ = SX._flatten_part(part)
+            self.assertEqual(len(SX._part_cells_in_order(part)), len(measures))
+
+    def test_two_systems_ONE_BAR_EACH_get_DISTINCT_ordinals(self):
+        """⚠️⚠️ THE HAZARD ITSELF, and the length check above cannot reach it.
+        This page prints one bar per system, so BOTH bars are cell index 0 —
+        keyed on the cell index they are one pseudo-bar, which is exactly the
+        `(page, cell)` defect that made the duration arm's bar-level figures
+        wrong when first published. A hairpin numbered against that key could
+        let system 1 close one still open in system 0.
+        """
+        parts, *_ = SX.build(SX.Record(_two_system_page(arcs=[])))
+        for part in parts:
+            order = SX._part_cells_in_order(part)
+            cells = [i for _run, i in order]
+            if len(order) < 2:
+                continue
+            # the cell INDEX repeats...
+            self.assertEqual(cells, sorted(cells))
+            # ...and the ORDINAL does not.
+            self.assertEqual(len(set(range(len(order)))), len(order))
+            self.assertEqual(len({id(run) for run, _i in order}), len(order),
+                             "each bar of this fixture is its own staff run")
+
+    def test_two_hairpins_in_SUCCESSIVE_systems_do_not_read_as_overlapping(self):
+        """⚠️ THE HAZARD END TO END. This fixture puts both systems at the SAME
+        page x, so under a cell-index key the two hairpins have IDENTICAL span
+        positions and `_number_spans` — which only closes a number when a span
+        ends STRICTLY before the next begins — is forced to spend a second
+        level on them. Under the part ordinal they are sequential and both
+        take number 1. The file is valid either way, which is why only naming
+        the NUMBER catches it.
+        """
+        page = _two_system_page(arcs=[])
+        for sysi in range(2):
+            sub = f"glyph/0/{sysi}/0/0/{700 + sysi}"
+            page["record"]["observations"].append(
+                _obs(480 + sysi, sub, Q.WEDGE_BOX, "crescendo",
+                     bbox_page_px=[60.0, 160.0, 200.0, 168.0]))
+            v = _vrd(980 + sysi, sub, Q.WEDGE_ANCHOR,
+                     [f"glyph/0/{sysi}/0/0/{sysi * 4}",
+                      f"glyph/0/{sysi}/0/0/{sysi * 4 + 1}"])
+            v["detail"] = {"kind": "crescendo", "start_cell": 0,
+                           "stop_cell": 0, "start_x_page": 60.0,
+                           "stop_x_page": 200.0}
+            page["record"]["verdicts"].append(v)
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["written"]["wedges"], 2)
+        numbers = {w.get("number")
+                   for w in ET.fromstring(xml).findall(".//wedge")}
+        self.assertEqual(numbers, {"1"},
+                         "two hairpins in successive systems are sequential, "
+                         "not overlapping — a second number means the bar "
+                         "ordinal restarted per system")
 
 
 class TestThePartJoinIsTheVERDICTS(unittest.TestCase):
