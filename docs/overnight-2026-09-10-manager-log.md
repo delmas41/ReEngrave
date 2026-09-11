@@ -1005,3 +1005,66 @@ document, 1 publisher, 4 pages, on the *low-res bitonal* end of the corpus.
 **Breitkopf Brahms 1 is where every figure here should be re-measured** — a
 print whose slurs sit over noteheads rather than stems would show a different
 offset distribution and a different reach.
+
+---
+
+## Sean's ruling: WHERE THE IMSLP ROSTER BELONGS
+
+Sean, 2026-09-11: *"Does adjudicate take into account the instrument list from
+IMSLP? or should that happen in a different stage, like INFER?"*
+
+**Answer given and adopted: ADJUDICATE takes the roster; INFER does not need
+it.** Recorded because it settles a stage-boundary question that will come up
+again, and the reasoning is the repo's own:
+
+* A roster is **evidence about ONE thing** — `'larinetti in A'` against a
+  roster holding Clarinet resolves to Clarinet. A reading with an external
+  witness, not a weighing. Already built and measured on the LEGACY path as
+  `OMR_ROSTER_LABELS`: 20 of 1,422 real margin labels change, **28 of 28
+  firings hand-adjudicated correct**.
+* ⚠️⚠️ **The structural argument is CLAUDE.md's own doctrine**: *if you want a
+  second witness that does not fall silent exactly when it is needed, it must
+  not come off the same raster.* The roster is `source_kind: "catalog"` and
+  **does not go silent when the scan is bad** — which is precisely the property
+  that makes it ordinary ADJUDICATE evidence rather than something needing to
+  be weighed. INFER exists for witnesses that ARE correlated; this one is not.
+* **INFER is for the residue** — two staves both plausibly "Horn", a global fit
+  over partial names — and the plan says build it only AFTER the first cleanup
+  count, which is what says which abstentions are worth resolving.
+
+⚠️ **And the roster is NOT required for the slot-index job**, which is the
+point that keeps it unblocked: the docstring's rule is a MONOTONE ALIGNMENT of
+read names, deterministic, `slots.align`. The roster is an optional second
+witness, measured after.
+
+⚠️⚠️ **A SECOND MISSING PRODUCER, THE SAME BUG AS `pdf_path`, FOUND WHILE
+ANSWERING THIS.** `pipeline.py` threads `roster` through BOTH entry points and
+**`staged/__main__.py` has no roster argument at all** — so nothing can supply
+one, and `roster_entry` abstains `out_of_scope` on every run. That is the
+second instance in two days of *a parameter threaded end to end with no
+producer*; the first cost 75 staves their margin labels on every staged run
+ever made. **Worth a derived check rather than a third discovery.**
+
+### The state of the joiner when this was asked — three states, not one
+
+Checked against the tree rather than the agent's summary:
+
+| | parts | what it is |
+|---|--:|---|
+| old record, re-exported on current main | **12** | the graft intact (`join_used: slot`, `fragmented: False`) |
+| fresh gather, default | **75 fragments** | honest, unusable as a score |
+| fresh gather, `--surya` | **75 fragments** | 50 labels read, 48 parts named, **still fragments** |
+
+⚠️ The first row is the `readjudicate` blind spot again — the refusal lives in
+ADJUDICATE and replaying a saved record replays saved verdicts. ⚠️⚠️ **The
+third row is the one that matters and it is the job**: reading labels does not
+currently un-fragment anything, because **50 slots carry reason `named` and the
+VALUE is still the ordinal on all 75.** The label reaches the record and does
+not reach the slot.
+
+Dispatched `claude/slot-index-by-name` with the roster question settled above,
+INFER explicitly out of scope, and the recorded failure mode named: the
+whole-work run's 7 residual errors are an **off-by-three in this very monotone
+DP** (12 staves against a 17-slot reference deleted 12/13/14 instead of
+9/10/11), and `OMR_SPAN_REFERENCE_FIT` is a 149-staff regression from the same
+path.
