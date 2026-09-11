@@ -727,7 +727,6 @@ ORDER: Tuple[str, ...] = (
     # reason: its carriers are `Q.GLYPH_BOX` rows, so it needs no
     # verdict of any kind.
     Q.ORNAMENT_OWNER,
-    Q.WEDGE_ANCHOR,
     # rhythm
     # ⚠️ TUPLET BEFORE DURATION. `adjudicate_duration` reads the tuplet
     # verdict to scale its beats, so a tuplet decided afterwards would arrive
@@ -761,6 +760,19 @@ ORDER: Tuple[str, ...] = (
     # system. Answering the same question twice would let the two
     # answers disagree.
     Q.ONSET_COLUMN,
+    # ⚠️⚠️ AFTER `VOICES`, AND IT SAT BESIDE THE FERMATA UNTIL THE INVENTORY
+    # SAID OTHERWISE. Both ends of a hairpin must come from ONE voice --
+    # MusicXML pairs a wedge within a `<voice>` stream, so a start in voice 1
+    # closed by a stop in voice 2 leaves both ends unpaired and the file
+    # malformed rather than merely wrong. Placed with the other glyph-owner
+    # decisions it ran BEFORE `Q.VOICES` was decided and read None every time:
+    # a declared input that could never answer, which is the fault
+    # `arc_owner`'s frame bug and `Q.STEM`'s 916 unread rows are both
+    # instances of. Caught in one line by `inventory --check`, which knows the
+    # ORDER and the `wants` and compares them -- not by review, and not by any
+    # test, because "one voice" and "voices unknown" produce the SAME ANSWER
+    # on every page that has only one voice.
+    Q.WEDGE_ANCHOR,
     Q.METER,
     # text
     Q.DYNAMIC,

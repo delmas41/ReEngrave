@@ -245,14 +245,21 @@ class TestTheFindingsAreStillTrue(unittest.TestCase):
         If either half moves, this fails and FINDINGS.md must be re-read.
         """
         starv = GC.stub_starvation()
-        # ⚠️ TWO since 2026-09-10. `arc_kind` and `arc_owner` left this list on
-        # 09-09; `articulation_owner` left it on 09-10, landing with its
-        # emission and its counter rather than alone. The count is asserted so
-        # that filling or ADDING a stub is a deliberate edit here rather than a
-        # silent drift — which is what this guard is for.
-        self.assertEqual(len(starv), 2,
-                         f"expected 2 declared stubs, got {sorted(starv)}")
-        for graduated in ("DYNAMIC", "ARTICULATION_OWNER"):
+        # ⚠️ ONE since 2026-09-10. `arc_kind` and `arc_owner` left this list on
+        # 09-09; `articulation_owner` and then `wedge_anchor` left it on 09-10,
+        # each landing with its emission and its counter rather than alone.
+        # The count is asserted so that filling or ADDING a stub is a
+        # deliberate edit here rather than a silent drift — which is what this
+        # guard is for.
+        #
+        # ⚠️⚠️ THE ONE THAT REMAINS IS THE STARVED ONE, which is the shape this
+        # finding predicted: every stub whose input was already gathered was
+        # "one repair — write the adjudicator", and all four have now been
+        # written. `direction` is the only one that was ever TWO pieces of
+        # work, and it is the only one left.
+        self.assertEqual(len(starv), 1,
+                         f"expected 1 declared stub, got {sorted(starv)}")
+        for graduated in ("DYNAMIC", "ARTICULATION_OWNER", "WEDGE_ANCHOR"):
             self.assertNotIn(graduated, starv,
                              f"`{graduated}` graduated: adjudicator written "
                              "and input gathered. A stub roster that keeps a "

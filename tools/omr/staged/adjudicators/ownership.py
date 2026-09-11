@@ -17,7 +17,8 @@ from typing import Dict, List, Optional, Tuple
 
 from ... import transcribe as _legacy_articulation
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
-from ..record import ABSTAIN, Kind, Q, Scope, State
+from .. import record as R
+from ..record import ABSTAIN, Kind, Outcome, Q, Scope, State
 
 # ⚠️ ASSUMED WEIGHTS (A-OWN-1). Ordered to match the tiers the existing code
 # already applies in this order; none is measured.
@@ -576,24 +577,191 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
                 "confidence": mark.score})
 
 
+#: How far either side of a hairpin's own cell a notehead may stand and still
+#: anchor it. ⚠️ NOT A NEW CONSTANT: it is `_wedge_anchors`' own `+1` measure
+#: window, which that function's docstring justifies ("the truth's own
+#: crescendo on that page runs `m5 -> m6`, ending on the next bar's downbeat")
+#: and which is enforced there by `lo, hi = first_m - 1, last_m + 1`. Stated
+#: as a name here because the staged path has no `measures` list to slice.
+_WEDGE_WINDOW_CELLS = 1
+
+
 @decision(
     quantity=Q.WEDGE_ANCHOR,
     composed_from=(Q.WEDGE_BOX, Q.GLYPH_BOX),
     scope=Kind.GLYPH,
-    wants=(Q.WEDGE_BOX, Q.GLYPH_BOX),
+    wants=(Q.WEDGE_BOX, Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.VOICES),
     subjects_from=Q.WEDGE_BOX,
-    reasons=("nearest_either_side", "no_anchor", "no_evidence"),
+    reasons=("nearest_either_side", "no_anchor", "no_page_frame",
+             "no_evidence"),
     mode=Mode.ADDITIVE,
-    stub=True,
 )
 def adjudicate_wedge_anchor(ev: Evidence) -> Ruling:
-    """⚠️ DECLARED STUB. A slur is drawn OVER its notes; a hairpin BETWEEN
-    them, so an overlap test scores 0 of 4 and the edges must be read as
-    POINTERS. Nearest-either-side pairs 4 of 8 truth hairpins and gets all 4
-    right; "the last note at or before the edge" pairs 1, because the ink
-    begins slightly BEFORE the note it starts on.
+    """The two notes one hairpin opens and closes on.
+
+    ⚠️ A SLUR IS DRAWN OVER ITS NOTES; A HAIRPIN BETWEEN THEM, which is where
+    these two spanners stop being one problem. `_noteheads_under` -- the
+    obvious reuse, and the first thing tried when the legacy rule was built --
+    returns NOTHING: measured on the Mahler 5 fixture, the Trumpet's
+    diminuendo spans page x 5922-6068 in a bar whose only notehead spans
+    5817-5897, not one pixel of overlap, and an overlap test scores 0 of 4. So
+    the edges are POINTERS, and `_WEDGE_START_RULE` is `nearest` rather than
+    the "last note at or before the edge" that looks right -- measured, the
+    ink begins 26 px LEFT of the note it starts on, so `before` reaches back
+    past the answer and pairs 1 of 8 against `nearest`'s 4 of 4 exact.
+
+    ⚠️⚠️ THE RULE IS `export._wedge_anchors_from_candidates`, IMPORTED AND
+    CALLED, NOT PORTED -- and that was the one design decision this wiring
+    needed. Its three constants (`_WEDGE_ANCHOR_PAD_NOTEHEADS`,
+    `_WEDGE_START_RULE`, `_WEDGE_STOP_REACH_NOTEHEADS`) are each MEASURED and
+    each carries a paragraph of justification; restating them here would give
+    this project two copies of numbers it paid to measure once, which is the
+    drift `LETTER_METERS`, `rhythm._REST_DURATIONS` and the arc-attribution
+    constants are all imported to prevent. The alternative -- calling the
+    whole legacy function from the EXPORTER, the `_pair_arcs` precedent --
+    was refused for a different reason: it would leave this decision with
+    nothing to decide, and the point of the stage is that the answer and the
+    evidence for it are on the record. So the legacy function was SPLIT: the
+    half that knows about `measures` shims stayed, the RULE moved into a pure
+    core taking page-pixel candidates, and the legacy path is byte-identical
+    (`benchmarks/omr-staged-wedge-2026-09/probe/legacy_identity.py`).
+
+    ⚠️ PAGE PIXELS, AND A ROW WITHOUT THEM ABSTAINS. `gather_wedge_boxes`
+    emits from two readers: `cv_hairpins`, which searches one staff's band at
+    a time in page pixels and carries `bbox_page_px`, and the DETECTOR, whose
+    row carries a cell-frame box and no page box at all. Two staves' canonical
+    frames coincide by construction, so comparing a cell-frame wedge against a
+    page-frame notehead is the frame error that made `Q.ONSET_COLUMN` report
+    1,062 columns of nothing. `no_page_frame` is therefore a REAL branch and
+    not a defensive one -- on the Breitkopf Brahms 1 record it is exactly 1 row
+    of 47.
+
+    ⚠️ NO MERGE ACROSS BARLINES, and that is a property of the READER rather
+    than a simplification. `_merge_arcs_across_barlines` exists because cells
+    are cut per measure and an arc crossing a barline is DETECTED AS TWO;
+    `hairpin_detection` reads the WHOLE PAGE one staff-band at a time, so a CV
+    hairpin is never cut. One row is one hairpin, and `segments` collapses to
+    the single box this subject carries.
+
+    ⚠️ THE HEADS ARE THE OWNER'S, NOT THE CELL'S -- `arc_owner`'s rule, for
+    its reason: a cross-staff duplicate is filed on the staff that DETECTED
+    it, so grouping by subject would anchor a hairpin against a page nobody
+    sees. `glyph_owner` is decided before this runs (A-ORDER-2), so its answer
+    is simply available.
+
+    ⚠️ A NOTE NO `Q.VOICES` VERDICT MENTIONS IS VOICE 0, which is not a guess:
+    it is the identical default `_paired_spans` and `_voice_of_notehead`
+    already apply, so a bar whose voices were never decided behaves exactly as
+    the legacy path does. `voices_read` is recorded on the verdict so a reader
+    can tell "one voice" from "voices unknown" -- the two are the same NUMBER
+    and different FACTS.
     """
-    return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
+    from ...export import _wedge_anchors_from_candidates
+
+    wedges = ev.rows(Q.WEDGE_BOX)
+    if not wedges:
+        return Ruling.abstain("no_evidence")
+    wedge = wedges[0]
+    box = wedge.detail.get("bbox_page_px")
+    if not box or len(box) != 4:
+        return Ruling.abstain("no_page_frame",
+                              reader=wedge.reader,
+                              kind=str(wedge.value),
+                              note=("this reader files a cell-frame box; "
+                                    "comparing it to a page-frame notehead "
+                                    "is the Q.ONSET_COLUMN frame error"))
+    # ⚠️ CORNERS, NOT WIDTH. `bbox_page_px` is `[x0, y0, x1, y1]` and the
+    # legacy `segments` are `[x, y, w, h]`; both conventions live in this repo
+    # and confusing them does not raise -- it silently reads a 140px hairpin
+    # as a 1190px one, which is the mutation that survived every assertion in
+    # the arc export's first battery. The pure core takes `left` and `right`
+    # outright so neither caller has to spell a width.
+    left, right = float(box[0]), float(box[2])
+
+    cell = ev.subject.at(Kind.CELL)
+    here = cell.cell if cell is not None else None
+    own = ev.subject.at(Kind.STAFF).to_key()
+    system = ev.subject.at(Kind.SYSTEM)
+
+    candidates: List[Tuple[int, float, str]] = []
+    widths: List[float] = []
+    voice_of: Dict[str, int] = {}
+    for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                       subject=system):
+        if row.detail.get("category") != "notehead":
+            continue
+        hbox = row.detail.get("bbox_page_px")
+        if not hbox or len(hbox) != 4:
+            continue
+        head_cell = row.subject.at(Kind.CELL)
+        if head_cell is None or here is None:
+            continue
+        if abs(int(head_cell.cell) - int(here)) > _WEDGE_WINDOW_CELLS:
+            continue
+        owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
+        staff_key = (owner.value if owner is not None and owner.value
+                     else row.subject.at(Kind.STAFF).to_key())
+        if str(staff_key) != str(own):
+            continue
+        x0, _y0, x1, _y1 = (float(v) for v in hbox)
+        candidates.append((int(head_cell.cell), (x0 + x1) / 2.0,
+                           row.subject.to_key()))
+        widths.append(x1 - x0)
+
+    if not candidates:
+        return Ruling.abstain("no_anchor", kind=str(wedge.value),
+                              window_cells=_WEDGE_WINDOW_CELLS,
+                              note="no notehead this staff owns in the "
+                                   "hairpin's own bar or either neighbour")
+
+    voices_read = 0
+    seen_cells = {c[0] for c in candidates}
+    for c_index in sorted(seen_cells):
+        sub = R.cell(ev.subject.page, ev.subject.system,
+                     ev.subject.staff, c_index)
+        v = ev.verdict(Q.VOICES, subject=sub)
+        if not v or v.outcome != Outcome.DECIDED:
+            continue
+        value = v.value or {}
+        if int(value.get("n_voices") or 1) < 2:
+            continue
+        voices_read += 1
+        in_both = set(value.get("rests_in_every_voice") or ())
+        for number, glyphs in enumerate(value.get("voices") or (), start=1):
+            for gi in set(glyphs) - in_both:
+                voice_of[R.glyph(ev.subject.page, ev.subject.system,
+                                 ev.subject.staff, c_index, gi).to_key()] = \
+                    number
+
+    anchors = _wedge_anchors_from_candidates(
+        candidates, widths, left, right, lambda key: voice_of.get(key, 0))
+    if anchors is None:
+        # ⚠️ The core returns None only where the stop would precede the
+        # start, which its own comment calls impossible; reported as
+        # `no_anchor` with the reason named rather than silently.
+        return Ruling.abstain("no_anchor", kind=str(wedge.value),
+                              note="the rule found a stop before its start")
+
+    (start_cell, start_x), (stop_cell, stop_x), start_key, stop_key = anchors
+    return Ruling(
+        value=[str(start_key), str(stop_key)],
+        reason="nearest_either_side",
+        used=(wedge.id,),
+        # ⚠️ THE KIND TRAVELS WITH THE ANCHOR, as it does for an articulation:
+        # `<wedge type="crescendo">` needs the direction, and an exporter
+        # holding only the two note keys would have to re-read the hairpin's
+        # class to get it -- the re-derivation this stage exists to remove.
+        detail={"kind": str(wedge.value),
+                "start_cell": int(start_cell), "stop_cell": int(stop_cell),
+                "start_x_page": float(start_x), "stop_x_page": float(stop_x),
+                "left_page": left, "right_page": right,
+                "n_candidates": len(candidates),
+                "reader": wedge.reader,
+                # ⚠️ "one voice" and "voices unknown" are the same number and
+                # different facts; the second is what a later reader needs to
+                # know before trusting a cross-voice refusal that never fired.
+                "voices_read": voices_read,
+                "degenerate": (start_cell, start_x) == (stop_cell, stop_x)})
 
 
 #: Detector categories a fermata can hang over. ⚠️ BOTH, AND THE REST IS THE
