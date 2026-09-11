@@ -296,7 +296,8 @@ def main(argv=None):
     with sheet.open("w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow([
-            "page", "system", "staff_slot", "part_name", "measures_in_file",
+            "page", "system", "staff_slot_top_to_bottom", "part_name",
+            "bars_PRINTED_on_this_system", "measures_in_file",
             "proposed_missing_staff_systems",
             "proposed_missing_bars_nothing_read", "proposed_missing_notes_held_back",
             "proposed_missing_reasons",
@@ -311,6 +312,7 @@ def main(argv=None):
             for i, r in enumerate(entry["staves"]):
                 w.writerow([
                     s["page"], s["system"], i, r["part_name"],
+                    s["bars_printed_range"] or "",
                     f"{r['first_measure']}-{r['last_measure']}",
                     ("" if s["proposed_missing_staff_systems"] is None
                      else s["proposed_missing_staff_systems"]) if i == 0 else "",
@@ -321,7 +323,7 @@ def main(argv=None):
                 ])
         w.writerow([])
         w.writerow(["TOTALS (human only — never sum a proposed_ column)",
-                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""])
+                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""])
 
     print(f"wrote {sheet}")
     print(f"systems={len(systems)}  "
