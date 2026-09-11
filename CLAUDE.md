@@ -1352,6 +1352,116 @@ alone (*never blanket-kill by name*), and the consequence is that **an
 unattended whole-movement run cannot currently be budgeted** — that, and not
 the page count, is what bounded the artefact.
 
+### PHASE 2 obs. 4 — "almost no ties or slurs are converting", opened
+
+2026-09-11, no flag. Sean's fourth observation, taken to the ink. Findings:
+[benchmarks/omr-arc-recovery-2026-09/FINDINGS.md](benchmarks/omr-arc-recovery-2026-09/FINDINGS.md).
+
+⚠️ **REACH FIRST, AND THE DENOMINATOR IS HAND-VERIFIED.** The `works.json`
+windows put these four pages at reference **mm 1-112**, whose truth holds
+**111 slurs and 300 tie links** against our **32 and 80** — so Sean's *"almost
+no"* is an understatement of the right sign. ⚠️ A PAGE truth is not an ENCODING
+truth, twice in our favour: MusicXML writes a `<slur>` at each END, and the
+Litolff plate condenses **18 encoded parts onto 12 printed staves**. No recall
+rate is claimed from that pair, only the ORDER of the shortfall.
+
+⚠️⚠️ **THE DETECTOR IS NOT SHORT OF ARCS — IT IS LONG: 721 merged groups
+against 411 encoded curves**, and **550 of the 721 (76.3%) bind fewer than two
+heads**, reproducing this file's recorded 76% to the tenth. So the duplicate
+-detections repair landed hours earlier did **not** reach the arcs, exactly as
+its own report said. *A session that began from "we do not detect enough arcs"
+would have gone the wrong way.*
+
+⚠️ **Four stories that read like causes, each measured and refuted**: the
+refused arcs are not weak ink (confidence **0.522** refused vs **0.473**
+bound), not short junk (width **6.23** vs **6.40** staff spaces), not
+misplaced (779 of 779 segments lie inside the bar they were placed in), and not
+mostly duplicates. ⚠️ **The brief's leading hypothesis is the SMALLEST bucket
+and is bounded at 66**: `_noteheads_under` really does see only what
+`_place_notes` survived, so the 554 held-back notes are invisible to it — and
+that is worth **at most 66 of 550 refusals (12%)**, because the held-back heads
+mostly are not under an arc anyway.
+
+⚠️⚠️ **THE LARGEST SINGLE CAUSE IS A DETECTION GAP AND THE CROP NAMES IT.**
+**108 of 550 refused groups sit in bars where the detector produced NO
+notehead.** On Litolff p.3 s1 st0 c3 the print shows a slur over **six**
+legible noteheads and the record's whole content for that bar is a `tie` at
+0.83, a `restWhole` at **0.56** where no whole rest is printed, an
+`accidentalFlat`, a `staff` and a `ledgerLine`. The arc is the most confident
+detection on the bar. ⚠️ Stated as a COUNT and never as a recall rate: the
+record holds 2,347 gathered noteheads against 1,965 encoded notes over 18 parts
+condensed to 12 staves, so we over-produce globally while missing locally.
+
+**SHIPPED: an arc is drawn to a STEM, not to a notehead** — the `_beam_levels`
+fault one family over, and the same repair. A beam stroke *"runs from the FIRST
+stem it joins to the LAST, and a stem stands at the SIDE of its notehead"*, and
+an arc over stemmed notes is drawn stem-top to stem-top for the same reason;
+measured here the distance from an arc's edge to the nearest head centre
+outside it has median **0.52 notehead widths**. ⚠️⚠️ **WIDENING
+`_SLUR_ARC_PAD_NOTEHEADS` WAS MEASURED AND REFUSED** — that constant sits in an
+interval the engraved Brahms fixture left EMPTY (54 of 75 within 0.19, the next
+at 0.32) and on this document the same distribution is a **smooth slope with no
+gap anywhere**, so a pad read off it would be fitted to a wish. ⚠️ **`Q.STEM`
+was gathered and read by nothing on this path** (1,920 rows on one record) —
+the third time that quantity has been found unread. The rule is **ADDITIVE**
+(a probe can only make a head REACHABLE; the span's endpoints stay the notehead
+centres), needs **no new constant**, imports `_stem_joined`'s box-overlap
+attachment, and converts `Q.STEM`'s canonical box to page pixels **using the
+head as its own ruler** — a per-cell affine gives the identical answer at
+residual **0.00 px**.
+
+**MEASURED**, one record exported twice: `<slur>` **32 → 40**, `<tied>`
+**80 → 91**, `arc_binds_fewer_than_two_notes` **551 → 519**; notes, rests,
+dynamics, articulations, fermatas and accidentals **all identical**, the note
+SEQUENCE unchanged (2460 == 2460), the balance still an EQUALITY, and tie
+starts resolving onto a note of their own pitch **27.5% → 30.8%** (one-sided,
+and it does not fix the known pairing defect — 63 of 91 still resolve onto
+nothing). The legacy path passes no probes and a test asserts that at the seam.
+**Mutation battery 8 arms, all red, positive control red.**
+
+⚠️ **The obvious byte control was WRONG and its failure is the evidence**:
+stripping `<slur>`/`<tied>` and comparing the rest FAILED — on `<tie>`
+(MusicXML writes the sounding `<tie>` in the note AND the notational `<tied>`
+in `<notations>`, so one tie is TWO elements) and on the `<notations>` wrapper
+emptying. Rather than widen the strip until it passed, the control was made
+STRUCTURAL (the note sequence) with the strip kept beside it naming the whole
+family.
+
+⚠️⚠️ **REFUSED, WITH ITS REACH: the cross-barline reach.** The same crops show
+a second failure on the same arcs — the slur runs from the chord at the end of
+bar N to the chord at the start of bar N+1, its ink stops AT the barline, and
+its continuation fragment in bar N+1 is ~0 px wide because that chord sits at
+the bar's very beginning, so `_merge_arcs_across_barlines` has nothing to join
+to. Modelled, it is worth **+13 alone and +19 on top of the stem rule**, and
+the two are **SUPER-ADDITIVE (171 → 199 → 218)** for the reason the duration
+reader records: each repair alone leaves the arc binding ONE head, which is
+still refused. **It is refused because the window it needs sits on a
+distribution of ENGRAVING, not of this arc** — a bar's first note is 2.0-2.5
+staff spaces past the barline on all 282 edge-reaching arcs, so any window wide
+enough to admit it admits every next-bar first note and the rule degenerates to
+*"an arc touching a barline lands on the next bar's first note"*. That is a
+tie-break among candidates the ink does not distinguish — **INFER-shaped work**,
+recorded with its reach so a session holding the print can adjudicate it.
+
+⚠️ **A second defect found and deliberately NOT repaired: `_place_arcs` has no
+dedupe.** 48 pairs of arcs are placed in ONE cell at IoU ≥ 0.7, **19 of them
+detected on two different staves**, and several pairs disagree about their own
+kind (one slur and one tie at IoU 0.995). Every arc goes to the cell its OWNER
+names, so where one printed curve is detected twice BOTH copies are placed —
+precisely the shape `_place_notes` was repaired for the same day
+(`A.is_relocated_copy`), one family over. It is not the cause of Sean's
+observation and an arc has no `is_relocated_copy` equivalent, so it is its own
+job with its own reach to measure.
+
+⚠️ **What is NOT established**: accuracy (no added arc checked against the
+print), and **n = 1 document, 1 publisher, 4 pages** — Litolff `984073` is the
+*low-res bitonal* scan this file already calls the pessimistic end of the
+corpus, and **Breitkopf Brahms 1 is where the stem-offset median and every
+reach figure here should be re-measured**, because a print whose slurs are
+drawn over noteheads rather than over stems would show a different
+distribution. The ENGRAVED family is untouched **by construction** and was not
+measured.
+
 ### Direction words reach the file — the LAST stub, and PHASE 1 IS COMPLETE
 
 2026-09-11, no flag. **`adjudicate.stubs()` is `()`.** `direction` was the
