@@ -2930,6 +2930,58 @@ class TestHairpins:
         ])
         assert annotate_wedges_in_staff(staff) == 0
 
+    def test_BOTH_ends_are_chosen_from_ONE_voice(self):
+        """MusicXML pairs a wedge WITHIN a `<voice>` stream and LilyPond within
+        a Voice context, so a start in voice 1 closed by a stop in voice 2
+        leaves both ends unpaired and the file malformed rather than merely
+        wrong. `_wedge_anchors` picks the stop from the START's voice, so a
+        staff with a second voice loses coverage rather than losing the
+        hairpin.
+
+        ⚠️ EXERCISED ON THE PURE CORE, because that is where the filter lives
+        and because reaching two voices through `split_events_into_voices`
+        would make this a test of the voice SPLITTER. A mutation battery found
+        this gap: deleting the filter survived every existing hairpin test.
+        """
+        from tools.omr.export import _wedge_anchors_from_candidates as core
+        cands = [(0, 15.0, "a"), (0, 75.0, "b"), (0, 95.0, "c")]
+        widths = [10.0, 10.0, 10.0]
+        # everything in one voice: the far note may close it
+        one = core(cands, widths, 30.0, 92.0, lambda k: 0)
+        assert one is not None and one[3] == "c"
+        # "c" now belongs to a different voice and may NOT close voice 0's
+        # hairpin, so the stop falls back inside the start's own voice.
+        split = core(cands, widths, 30.0, 92.0,
+                     lambda k: 1 if k == "c" else 0)
+        assert split is not None and split[3] == "b"
+
+    def test_the_legacy_caller_still_hands_the_core_its_VOICE_MAP(self):
+        """⚠️ THE SEAM, ASSERTED. The refactor split the rule out so the staged
+        adjudicator could reach it; if the legacy wrapper stopped forwarding
+        `voice_of` the core would silently see one voice, every existing
+        hairpin test would stay green, and the 3-of-75 malformed-slur class of
+        bug would come back for wedges. Caught by a mutation arm, not review.
+        """
+        import tools.omr.export as E
+        seen = []
+        real = E._wedge_anchors_from_candidates
+
+        def spy(cands, widths, left, right, voice_of):
+            seen.append([voice_of(c[2]) for c in cands])
+            return real(cands, widths, left, right, voice_of)
+
+        head_a, head_b = _slur_head(10), _slur_head(70)
+        staff = _slur_staff([[head_a, head_b, _hairpin(30, 68)]])
+        E._wedge_anchors_from_candidates = spy
+        try:
+            E._wedge_anchors(staff["measures"], [(0, [30, 60, 38, 8])],
+                             {id(head_b): 7})
+        finally:
+            E._wedge_anchors_from_candidates = real
+        assert seen and 7 in seen[0], (
+            "the legacy wrapper must key its voice map by id(detection) and "
+            f"forward it; the core saw {seen}")
+
     def test_marks_ride_up_onto_the_event(self):
         """`group_chords_in_measure` lifts them the way it lifts slur marks,
         so the exporters see them on the event and not on the notehead."""
