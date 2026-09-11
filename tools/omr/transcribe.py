@@ -2387,6 +2387,37 @@ def _detections_for_cell(
             n_clipped_dropped)
 
 
+#: How far apart, in STAFF SPACES, the two heads of one tie may sit vertically
+#: and still count as ONE STAFF POSITION.
+#:
+#: A tie joins one pitch to itself, and one pitch is one staff position — so a
+#: correct tie's two heads are at the same y. `_pair_ties_in_cell`'s own
+#: docstring has said exactly that since it was written ("real tied notes are
+#: at the same y-position by definition") and NEITHER rule has ever used it:
+#: both pick each side independently by minimum dx, inside a y window of three
+#: notehead heights that admits five staff positions either way.
+#:
+#: NOT a tuned value. Measured over every paired link of the eleven engraved
+#: fixtures (`benchmarks/omr-tie-pairing-2026-09/probe/dy_vs_pitch.py`), in
+#: units of the staff's own average notehead height, which is one staff space:
+#:
+#:     links whose two heads read the SAME pitch   n=47   max 0.168
+#:     ...plus the same-STEP spelling pairs        n=11   max 0.034
+#:     links whose heads read ONE STEP apart       n= 8   min 0.435
+#:     links whose heads read further apart        n= 4   min 0.906
+#:
+#: An EMPTY interval from 0.168 to 0.435, and a diatonic step is half a staff
+#: space by construction, so the gap is where the geometry says it must be.
+#: 0.25 sits in the middle of it rather than on either edge.
+#:
+#: ⚠️ On a SCAN the interval is NOT empty (same-pitch max 0.238 against a
+#: step-apart minimum of 0.013) and that is a measurement of the PITCH READING,
+#: not of this constant: those links are two heads at one staff position whose
+#: resolved pitches disagree. Which is why this rule is expressed in boxes and
+#: never consults a pitch.
+TIE_SAME_POSITION_MAX_SPACES = 0.25
+
+
 def _pair_ties_in_staff(staff_dict: dict[str, Any]) -> int:
     """Cross-cell tie pairing for a single staff.
 
@@ -2396,6 +2427,28 @@ def _pair_ties_in_staff(staff_dict: dict[str, Any]) -> int:
     to the first of measure N+1) get caught. Complements the within-cell
     pass in `_pair_ties_in_cell`; flag-setting is idempotent so the two
     passes don't fight.
+
+    ⚠️ THE TWO SIDES ARE CHOSEN TOGETHER, NOT INDEPENDENTLY, and that is the
+    whole of the 2026-09-11 repair. Picking the nearest head in x on each side
+    separately is the "distance is nearly a coin flip" failure this project has
+    already recorded for noteheads, hairpins and dynamic letters: the y window
+    is three notehead heights, so on a dense staff several positions qualify
+    and nothing prefers the one the arc actually binds. Among the pairs the
+    dx windows already admit, a pair whose two heads sit at ONE STAFF POSITION
+    (`TIE_SAME_POSITION_MAX_SPACES`) outranks one that does not.
+
+    ⚠️ ADDITIVE AND COMPARATIVE. It re-chooses only among candidates the old
+    rule already accepted, so it can never create a tie the old rule refused
+    nor refuse one it accepted — the exported tie COUNT is unchanged by
+    construction and every delta is a relocation. Where no candidate pair
+    sits at one position it falls through to the old nearest-in-x answer
+    rather than abstaining, because abstaining would change the population
+    and is a separate, unpriced decision.
+
+    ⚠️ It reads BOXES and never a pitch. The same claim off `pitch` would be
+    `export.OMR_ARC_RECLASS`'s tie→slur veto, which is measured and REFUSED on
+    scans precisely because a scan's resolved pitch at an arc's ends is
+    downstream of what scans get wrong.
 
     Mutates `staff_dict` in place. Returns the number of NEW pairs
     created (pairs already set by the within-cell pass aren't counted).
@@ -2437,11 +2490,8 @@ def _pair_ties_in_staff(staff_dict: dict[str, Any]) -> int:
         tie_right = tx0 + tw
         tie_yc = ty0 + th / 2.0
 
-        best_left = None
-        best_left_dx = float("inf")
-        best_right = None
-        best_right_dx = float("inf")
-
+        lefts: list[tuple[float, float, dict[str, Any]]] = []
+        rights: list[tuple[float, float, dict[str, Any]]] = []
         for xc, yc, w, det in nh_list:
             if abs(yc - tie_yc) > y_tol:
                 continue
@@ -2450,14 +2500,36 @@ def _pair_ties_in_staff(staff_dict: dict[str, Any]) -> int:
             # ties still pair even when the next-measure notehead is a
             # bit further away due to the barline space.
             dx_left = tie_left - xc
-            if 0 <= dx_left < w * 3 and dx_left < best_left_dx:
-                best_left = det
-                best_left_dx = dx_left
+            if 0 <= dx_left < w * 3:
+                lefts.append((dx_left, yc, det))
             # Stop notehead: x-center at or just right of tie's right edge
             dx_right = xc - tie_right
-            if 0 <= dx_right < w * 3 and dx_right < best_right_dx:
-                best_right = det
-                best_right_dx = dx_right
+            if 0 <= dx_right < w * 3:
+                rights.append((dx_right, yc, det))
+
+        best_left = min(lefts, key=lambda t: t[0])[2] if lefts else None
+        best_right = min(rights, key=lambda t: t[0])[2] if rights else None
+
+        # The two sides, chosen TOGETHER — but ONLY where the independent rule
+        # above already produced a pair. Keeping that guard is what makes this
+        # a pure RELOCATION: the set of arcs that pair is untouched, so the
+        # exported tie COUNT cannot move and every delta an A/B reports is a
+        # mark landing somewhere else. Rescuing an arc whose two nearest heads
+        # are the SAME detection would be a second, unpriced change.
+        if (
+            best_left is not None
+            and best_right is not None
+            and best_left is not best_right
+        ):
+            at_one_position = [
+                (dxl + dxr, dl, dr)
+                for dxl, yl, dl in lefts for dxr, yr, dr in rights
+                if dl is not dr
+                and abs(yl - yr) / avg_nh_h <= TIE_SAME_POSITION_MAX_SPACES
+            ]
+            if at_one_position:
+                _, best_left, best_right = min(at_one_position,
+                                               key=lambda t: t[0])
 
         if (
             best_left is not None

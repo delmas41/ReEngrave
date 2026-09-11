@@ -2213,15 +2213,31 @@ def _tie_flank_pair(
     A MIRROR of `transcribe._pair_ties_in_staff`'s pairing relation, on the
     same `bbox_page` data: start = the head whose x-centre sits at or left of
     the arc's left edge, nearest, within 3 of its own widths; stop likewise on
-    the right; both within a y-tolerance of 3 average head heights. Mirrored
-    rather than imported because `transcribe` drags the whole detection stack
-    in with it, and pinned against the original by
+    the right; both within a y-tolerance of 3 average head heights — and then,
+    among the pairs those windows admit, one whose two heads sit at ONE STAFF
+    POSITION (`transcribe.TIE_SAME_POSITION_MAX_SPACES`) outranks one that does
+    not. Mirrored rather than imported because `transcribe` drags the whole
+    detection stack in with it — the CONSTANT is imported, so only the
+    arithmetic is restated — and pinned against the original by
     `test_export.TestArcReclass.test_flank_pair_mirrors_transcribes_pairing`.
+
+    ⚠️ The same-position preference was added to `transcribe` on 2026-09-11 and
+    mirrored here the same hour. Letting them drift would make this veto clear
+    ONE pair's tie flags while the export keeps ANOTHER's — the mirror is not a
+    tidiness rule, it is the only thing that makes the veto's bookkeeping
+    correct.
 
     A tie arc FLANKS its heads — it spans the gap between them — which is why
     slur coverage (`_noteheads_under`, centres inside the box) is the wrong
     question for finding them.
     """
+    # Imported INSIDE the call, not at module scope: `transcribe` pulls the
+    # whole detection stack (ultralytics, opencv) in with it, and `export` is
+    # deliberately importable without any of that. The import is cached after
+    # the first arc, and it is an import rather than a restatement so the two
+    # rules cannot drift on the one number they share.
+    from .transcribe import TIE_SAME_POSITION_MAX_SPACES
+
     if not staff_heads:
         return None
     tx0, ty0, tw, th = arc_bp
@@ -2229,8 +2245,8 @@ def _tie_flank_pair(
     tie_yc = ty0 + th / 2.0
     avg_h = sum(h["bbox_page"][3] for h in staff_heads) / len(staff_heads)
     y_tol = max(avg_h * 3, 30)
-    best_left = best_right = None
-    best_left_dx = best_right_dx = float("inf")
+    lefts: list[tuple[float, float, dict[str, Any]]] = []
+    rights: list[tuple[float, float, dict[str, Any]]] = []
     for det in staff_heads:
         bp = det["bbox_page"]
         xc = bp[0] + bp[2] / 2.0
@@ -2238,13 +2254,23 @@ def _tie_flank_pair(
         if abs(yc - tie_yc) > y_tol:
             continue
         dx_left = tie_left - xc
-        if 0 <= dx_left < bp[2] * 3 and dx_left < best_left_dx:
-            best_left, best_left_dx = det, dx_left
+        if 0 <= dx_left < bp[2] * 3:
+            lefts.append((dx_left, yc, det))
         dx_right = xc - tie_right
-        if 0 <= dx_right < bp[2] * 3 and dx_right < best_right_dx:
-            best_right, best_right_dx = det, dx_right
+        if 0 <= dx_right < bp[2] * 3:
+            rights.append((dx_right, yc, det))
+    best_left = min(lefts, key=lambda t: t[0])[2] if lefts else None
+    best_right = min(rights, key=lambda t: t[0])[2] if rights else None
     if best_left is None or best_right is None or best_left is best_right:
         return None
+    at_one_position = [
+        (dxl + dxr, dl, dr)
+        for dxl, yl, dl in lefts for dxr, yr, dr in rights
+        if dl is not dr
+        and abs(yl - yr) / avg_h <= TIE_SAME_POSITION_MAX_SPACES
+    ]
+    if at_one_position:
+        _, best_left, best_right = min(at_one_position, key=lambda t: t[0])
     return best_left, best_right
 
 
