@@ -1375,7 +1375,10 @@ metric. Same call as `_lily_wedge_plan`.
 by `tie_starts_on_an_upper_chord_note`: a counter naming an element the
 exporter no longer writes is the *control that computes the wrong thing*.
 
-⚠️⚠️ **TWO PROCESS LESSONS, both from the instruments rather than the code.**
+Full suite **3741 passed / 11 skipped** (baseline 3728 / 11); `health --check`,
+`inventory --check`, `gather_coverage` all exit 0.
+
+⚠️⚠️ **THREE PROCESS LESSONS, all from the instruments rather than the code.**
 (1) **A mutation battery `git checkout`s the files it mutates, so an A/B arm
 that reads the WORKING TREE is not isolated from it** — the two were running
 together, the first three-arm run was discarded, and the arms were re-run
@@ -1386,7 +1389,17 @@ never asserted on either path, the staged counter's distinguishing case (two
 tied heads in one chord) could not be built from a page fixture, and nothing
 asserted the event-level flag is still the `any()` LilyPond reads. *One red arm
 is not a battery* — six were red immediately and would have been reported as a
-pass.
+pass. (3) ⚠️ **A STARVED TEST RUN READS EXACTLY LIKE A HANG, AND PYTEST'S OWN
+TIMER HIDES IT.** On a machine at load 7 the suite stalled twice at the same
+position and was nearly reported as hung; the process's CPU clock said starved,
+and what NAMED it was mapping the dot count onto `--collect-only`'s ordered list
+and finding a test whose own docstring prices it (`instruments.lookup` at
+23-136 ms per string over a 1,422-label corpus). ⚠️ **Then pytest reported
+`577.54s` for a run that took hours of wall clock** — that figure is TEST time,
+not elapsed, so it is precisely the number that would make a starved run look
+normal in a log. And diagnosing the stall by running candidate tests in parallel
+added two more pytest processes to the same saturated machine: **the instrument
+competed with its subject.**
 
 ### A MARK must be attached to its notehead — bar sums on perfect ink
 
