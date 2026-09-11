@@ -460,6 +460,97 @@ class TestHairpinsReachTheFile(unittest.TestCase):
         self.assertEqual(rep["wedges_not_written"],
                          {"wedge_anchor_note_not_written": 1})
 
+    def test_a_hairpin_with_NEITHER_anchor_written_is_counted(self):
+        """⚠️⚠️ THE TEN. The first cut built its head index PER PART, so "this
+        anchor is not here" meant both *it belongs to another part* and
+        *`_place_notes` never wrote it* — and a hairpin with BOTH ends
+        unwritten looked like the first to EVERY part, so no part counted it
+        and none reported it. Measured on Breitkopf Brahms 1 p0-3: 46 decided,
+        20 written, 16 counted, **10 accounted for nowhere**, with
+        `wedge_balance` reporting `balanced: True` because it was a `<=`.
+
+        Reported under its OWN name, not folded into the one-end case: one is
+        "the hairpin lost an end", the other "it has nothing at all", and the
+        repairs differ.
+        """
+        page = _with_wedge(self._two_note_page(), gi=90,
+                           start="glyph/0/0/0/0/88",
+                           stop="glyph/0/0/0/0/89")
+        _xml, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["wedges_not_written"],
+                         {"wedge_neither_anchor_written": 1})
+
+    def test_a_hairpin_on_ANOTHER_part_is_counted_ONCE(self):
+        """⚠️⚠️ THE PER-PART HAZARD ITSELF, and the single-part test above
+        cannot reach it. Two parts, and the hairpin's anchors are on part 2.
+        Under a PER-PART head index, part 1 sees both ends missing and counts
+        it as `wedge_neither_anchor_written` while part 2 writes it — the same
+        hairpin in two buckets, `written + not_written > decided`, and the
+        balance broken. The bug the first cut shipped only becomes visible
+        with more than one part, which is why it survived every other test in
+        this class.
+        """
+        obs, vrd, n = [], [], 0
+        for st in (0, 1):
+            for gi in (0, 1):
+                sub = f"glyph/0/0/{st}/0/{gi}"
+                obs.append(_obs(n, sub, Q.GLYPH_BOX,
+                                ["noteheadBlackOnLine", 100 * gi, 50, 40, 40],
+                                category="notehead"))
+                n += 1
+                obs.append(_obs(n, sub, Q.NOTEHEAD_CLASS,
+                                "noteheadBlackOnLine"))
+                n += 1
+                vrd.append(_vrd(n, sub, Q.PITCH, "CD"[gi] + "4"))
+                n += 1
+                vrd.append(_vrd(n, sub, Q.DURATION, QUARTER))
+                n += 1
+            vrd.append(_vrd(900 + st, f"staff/0/0/{st}",
+                            Q.MEASURE_PARTITION, 1))
+            vrd.append(_vrd(910 + st, f"staff/0/0/{st}", Q.CLEF, "treble"))
+        vrd.append(_vrd(920, "system/0/0", Q.SYSTEM_STAFF_COUNT, 2))
+        vrd.append(_vrd(930, "document", Q.PART_PARTITION,
+                        {"join": "ordinal", "staves_per_system": 2},
+                        reason="ordinal"))
+        # the hairpin lives on the SECOND staff, i.e. the second part
+        sub = "glyph/0/0/1/0/90"
+        obs.append(_obs(500, sub, Q.WEDGE_BOX, "crescendo",
+                        bbox_page_px=[5.0, 160.0, 205.0, 168.0]))
+        v = _vrd(950, sub, Q.WEDGE_ANCHOR,
+                 ["glyph/0/0/1/0/0", "glyph/0/0/1/0/1"])
+        v["detail"] = {"kind": "crescendo", "start_cell": 0, "stop_cell": 0,
+                       "start_x_page": 5.0, "stop_x_page": 205.0}
+        vrd.append(v)
+
+        _xml, rep = SX.to_musicxml(_log_json(obs, vrd))
+        self.assertEqual(rep["written"]["parts"], 2, "fixture needs 2 parts")
+        b = rep["wedge_balance"]
+        self.assertEqual(b["decided"], 1)
+        self.assertEqual(b["written"], 1)
+        self.assertEqual(rep["wedges_not_written"], {},
+                         "part 1 must not count another part's hairpin as "
+                         "unwritten — that is the per-part index bug")
+        self.assertEqual(b["written"] + b["not_written"], b["decided"])
+
+    def test_the_balance_is_an_EQUALITY_and_can_fail(self):
+        """⚠️ IT WAS A `<=` FOR ONE AFTERNOON AND THAT IS WHAT LET THE TEN
+        PASS. Nothing collapses several hairpins into one element — unlike the
+        fermata hoist, which genuinely needs an inequality — so every decided
+        hairpin is written or counted, exactly."""
+        page = self._two_note_page()
+        page = _with_wedge(page, gi=90, start="glyph/0/0/0/0/0",
+                           stop="glyph/0/0/0/0/1")
+        page = _with_wedge(page, gi=91, start="glyph/0/0/0/0/88",
+                           stop="glyph/0/0/0/0/89", start_x=50.0)
+        _xml, rep = SX.to_musicxml(page)
+        b = rep["wedge_balance"]
+        self.assertEqual(b["decided"], 2)
+        self.assertEqual(b["written"] + b["not_written"], b["decided"])
+        self.assertTrue(b["balanced"])
+        self.assertNotIn("absorbed_by_a_shared_event", b,
+                         "a named residue bucket is what made the `<=` look "
+                         "principled; there is nothing for it to hold")
+
     def test_the_balance_partitions_the_hairpin_rows(self):
         page = _with_wedge(self._two_note_page(), gi=90,
                            start="glyph/0/0/0/0/0", stop="glyph/0/0/0/0/1")

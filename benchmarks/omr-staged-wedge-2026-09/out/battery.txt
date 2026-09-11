@@ -12,6 +12,8 @@ baseline: green
   [red         ] every hairpin takes number 1
   [red         ] the kind check is dropped — any verdict is a hairpin
   [red         ] a missing anchor note is silently swallowed
+  [red         ] a hairpin with NEITHER anchor written is swallowed
+  [red         ] the head index sees only the FIRST part
   [red         ] the counter fires at the ATTACH, not at the render
   [red         ] the part ordinal is the CELL index (restarts per system)
   [red         ] CV-read ink is invisible to the headline again
@@ -21,4 +23,4 @@ baseline: green
 
   [red         ] POSITIVE CONTROL: the decision refuses every input
 
-19 arms, 0 not red
+21 arms, 0 not red

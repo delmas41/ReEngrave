@@ -843,22 +843,71 @@ def _place_wedges(rec: Record, parts: Sequence[Sequence[StaffRun]],
     arc export learned by reporting 55 slurs into a file holding 23. A mark
     set on a note that `voicing` then folds into a chord is set and not
     necessarily written.
+
+    ⚠️⚠️ THE HEAD INDEX IS BUILT OVER EVERY PART AT ONCE, AND THE FIRST CUT
+    BUILT IT PER PART AND LOST TEN HAIRPINS SILENTLY. Inside a per-part loop,
+    "this anchor is not in `heads`" has two meanings — *it belongs to another
+    part* and *`_place_notes` never wrote it* — and a hairpin whose BOTH ends
+    were unwritten looked like the first to EVERY part, so no part counted it
+    and none reported it. Measured on Breitkopf Brahms 1 p0-3: 46 decided, 20
+    written, 16 counted as dropped and **10 accounted for nowhere**, sitting in
+    `wedge_balance`'s `absorbed_by_a_shared_event` residue while its `<=`
+    stayed True. Indexing globally collapses the two meanings into one, so a
+    hairpin is accounted for exactly once — *a shortfall that is not counted is
+    indistinguishable from ink that was never read*, and this file says so in
+    three other places.
     """
     dropped: Dict[str, int] = collections.Counter()
-    for part in parts:
-        order = {(id(run), i): n
-                 for n, (run, i) in enumerate(_part_cells_in_order(part))}
-        heads: Dict[str, Tuple[Dict[str, Any], int]] = {}
-        for run in part:
-            for i, cell in run.cells.items():
-                n = order.get((id(run), i))
-                if n is None:
-                    continue
-                for det in cell.detections:
-                    if det.get("category") == "notehead" and det.get("glyph"):
-                        heads[str(det["glyph"])] = (det, n)
-        if not heads:
+    heads: Dict[str, Tuple[Dict[str, Any], int, int]] = {}
+    for pi, part in enumerate(parts):
+        for n, (run, i) in enumerate(_part_cells_in_order(part)):
+            cell = run.cells.get(i)
+            if cell is None:
+                continue
+            for det in cell.detections:
+                if det.get("category") == "notehead" and det.get("glyph"):
+                    heads[str(det["glyph"])] = (det, n, pi)
+
+    by_part: Dict[int, List[Tuple[Any, ...]]] = collections.defaultdict(list)
+    for o in rec.obs_of(Q.WEDGE_BOX):
+        sub = o["subject"]
+        v = rec.verdict(Q.WEDGE_ANCHOR, sub)
+        if not v or v["outcome"] != "decided":
             continue
+        value = v["value"] or []
+        if len(value) != 2:
+            dropped["wedge_verdict_names_no_pair"] += 1
+            continue
+        first = heads.get(str(value[0]))
+        last = heads.get(str(value[1]))
+        if first is None and last is None:
+            # ⚠️ THE TEN. Both anchors are notes `_place_notes` never wrote —
+            # no pitch, or a duration `adjudicate_duration` narrowed and the
+            # exporter refuses to argmax. The hairpin was READ and DECIDED and
+            # has nothing left to hang on; reported under its own name rather
+            # than the one-end case, because the repairs differ.
+            dropped["wedge_neither_anchor_written"] += 1
+            continue
+        if first is None or last is None:
+            dropped["wedge_anchor_note_not_written"] += 1
+            continue
+        if first[2] != last[2]:
+            # ⚠️ A hairpin cannot open in one `<part>` and close in another:
+            # MusicXML pairs it within one part's stream. Counted, not bent.
+            dropped["wedge_ends_in_two_parts"] += 1
+            continue
+        detail = v.get("detail") or {}
+        kind = detail.get("kind")
+        if kind not in ("crescendo", "diminuendo"):
+            dropped["wedge_verdict_names_no_kind"] += 1
+            continue
+        by_part[first[2]].append((
+            (first[1], float(detail.get("start_x_page") or 0.0)),
+            (last[1], float(detail.get("stop_x_page") or 0.0)),
+            first[0], last[0], str(kind)))
+
+    for pi in sorted(by_part):
+        spans = by_part[pi]
 
         # ⚠️ NO IDEMPOTENCE GUARD HERE, UNLIKE `annotate_wedges_in_staff`, and
         # the difference is whose dicts these are. The legacy pass mutates the
@@ -870,35 +919,6 @@ def _place_wedges(rec: Record, parts: Sequence[Sequence[StaffRun]],
         # rather than acquiring a test that could not reach it. Idempotence is
         # still asserted, at the level where it is real: two exports of one
         # record are byte-identical.
-        spans: List[Tuple[Any, ...]] = []
-        for o in rec.obs_of(Q.WEDGE_BOX):
-            sub = o["subject"]
-            v = rec.verdict(Q.WEDGE_ANCHOR, sub)
-            if not v or v["outcome"] != "decided":
-                continue
-            value = v["value"] or []
-            if len(value) != 2:
-                dropped["wedge_verdict_names_no_pair"] += 1
-                continue
-            first = heads.get(str(value[0]))
-            last = heads.get(str(value[1]))
-            if first is None or last is None:
-                # Not this part's hairpin, or an anchor `_place_notes` never
-                # wrote (no pitch, a narrowed duration). The two are told
-                # apart by whether EITHER end is here.
-                if first is not None or last is not None:
-                    dropped["wedge_anchor_note_not_written"] += 1
-                continue
-            detail = v.get("detail") or {}
-            kind = detail.get("kind")
-            if kind not in ("crescendo", "diminuendo"):
-                dropped["wedge_verdict_names_no_kind"] += 1
-                continue
-            (first_det, first_n), (last_det, last_n) = first, last
-            spans.append(((first_n, float(detail.get("start_x_page") or 0.0)),
-                          (last_n, float(detail.get("stop_x_page") or 0.0)),
-                          first_det, last_det, str(kind)))
-
         numbered = _legacy._number_spans(spans, _legacy._MAX_WEDGE_NUMBER)
         if len(numbered) < len(spans):
             # ⚠️ The third place a spanner can vanish, and it is SILENCE IN
@@ -1825,16 +1845,21 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "abstained": wedge_rows - w_decided,
         "written": int(counters.get("wedges", 0)),
         "not_written": report["wedges_not_written_total"],
-        # ⚠️ A hairpin decided on a part whose OTHER end reached no cell is
-        # counted; one decided on a part with no heads at all cannot be, so
-        # this is `<=` BY CONSTRUCTION and says so rather than pretending to
-        # an equality it cannot hold. `absorbed_by_a_shared_event` is the
-        # named residue, exactly as the fermata control does it.
-        "absorbed_by_a_shared_event": (
-            w_decided - int(counters.get("wedges", 0))
-            - report["wedges_not_written_total"]),
+        # ⚠️⚠️ AN EQUALITY, AND IT WAS A `<=` FOR ONE AFTERNOON. Written as an
+        # inequality with a named `absorbed_by_a_shared_event` residue, it
+        # reported `balanced: True` while TEN decided hairpins on the Brahms
+        # record were accounted for NOWHERE — a per-part head index made "not
+        # in this part" and "never written" indistinguishable, so a hairpin
+        # with both ends unwritten was skipped by every part and counted by
+        # none. **The `<=` is what let it pass.** The fermata control needs an
+        # inequality because its hoist genuinely collapses several marks into
+        # one element; nothing collapses here, one hairpin is one decision, so
+        # every decided hairpin is written or counted and the control says so.
+        # The wider lesson is this file's own: the cheapest way to make a
+        # control unable to fail is to widen it while teaching it about a
+        # legitimate-sounding exception.
         "balanced": (int(counters.get("wedges", 0))
-                     + report["wedges_not_written_total"]) <= w_decided,
+                     + report["wedges_not_written_total"]) == w_decided,
     }
     fermata_marks = len(rec.obs_of(Q.FERMATA_MARK))
     report["fermatas_not_written"] = dict(fermatas_dropped)

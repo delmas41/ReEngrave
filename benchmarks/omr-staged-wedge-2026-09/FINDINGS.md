@@ -181,7 +181,7 @@ definite answer.
 
 ---
 
-## 6. THE MUTATION BATTERY — 9 of 19 arms were not red on the first run
+## 6. THE MUTATION BATTERY — 9 of 19 not red on the first run, and it went on paying
 
 `probe/battery.py`: **18 arms plus a POSITIVE CONTROL in the same class** (the
 decision refuses every input, which must go red or the accept-side tests are
@@ -208,6 +208,15 @@ moved the RULE. Two of the fermata battery's survivors were *"the test list did
 not include the tests that reach the file it mutates"* — a battery whose tests
 cannot see the mutation measures its own scope, not the code.
 
+⚠️⚠️ **AND IT PAID AGAIN AFTER THE ACCOUNTING FIX, WHICH IS THE POINT OF
+RE-RUNNING IT.** Three arms added for §8's repair reported: one SURVIVED
+because the fixture had a single part and the hazard needs two (a genuine gap,
+now closed by `test_a_hairpin_on_ANOTHER_part_is_counted_ONCE`); one went
+`BAD ANCHOR (matches 0)` because restructuring the code had moved the line it
+named — **reported as an error rather than a silent pass, which is exactly why
+a zero-match anchor is not a skip**; and one is an EQUIVALENT MUTANT by design
+(§8). Final state: **21 arms, all red, positive control red.**
+
 ---
 
 ## 7. TWO HAZARDS THE EMISSION HAD TO AVOID
@@ -230,6 +239,81 @@ most of this family never reaches the exporter at all, and folding
 `no_anchor`/`no_page_frame` into `not_written` would report a READING limit as
 an exporter gap — the confusion `coverage()`'s two headlines exist to keep
 apart. The `Unbalanced` control is untouched and stays an EQUALITY.
+
+---
+
+## 8. THE NUMBERS
+
+ONE gather (Breitkopf Brahms 1 `317803` p0-3, 4 pages), **adjudicated over the
+pipeline's own verdicts and exported twice**. `wedge_only_arm.py` replays the
+record's `Q.GLYPH_OWNER` and `Q.VOICES` unchanged and re-runs `wedge_anchor`
+alone, so the decision's INPUTS are byte-for-byte the pipeline's and only the
+rule differs. Full output in `out/brahms-p0p3.txt`.
+
+| | |
+|---|--:|
+| `Q.WEDGE_BOX` rows | **47** (46 `cv_hairpins`, 1 `detector`) |
+| rows carrying a page box | 46 |
+| **decided** `nearest_either_side` | **46** |
+| abstained `no_page_frame` | **1** — exactly the detector's box-less row |
+| crescendo / diminuendo | 30 / 16 |
+| under ONE note (start == stop) | 10 |
+| bars whose `Q.VOICES` was read | **29 of 46** |
+| candidate heads per hairpin | min 6, median 19, max 37 |
+
+**`<wedge>` 0 → 20**, and the file is **identical outside the `<wedge>`
+elements**: notes 2687, rests 989, measure rests 105, slurs 227, ties 349,
+dynamics 181, articulations 153, ornaments 3 — **every one unchanged**.
+music21 reads back **exactly 20 DynamicWedge** (16 Crescendo, 4 Diminuendo),
+**13 binding two notes and 7 binding one** — so the counter and the file agree,
+and the arc export's *55 reported into a file holding 23* does not recur.
+
+⚠️ **29 OF 46 IS THE `ORDER` BUG'S PRICE, MEASURED.** Before the reorder in §4
+those 29 hairpins chose their stop with the voice filter reading `None`. It is
+not shown that any answer CHANGED — only that the input was live on 63% of the
+population rather than on none of it.
+
+### ⚠️⚠️ The residue was opened, and it was a bug of mine
+
+The first export read **46 decided, 20 written, 16 counted as dropped — and 10
+accounted for NOWHERE**, sitting in a `absorbed_by_a_shared_event` bucket while
+`wedge_balance` reported `balanced: True` **because it was a `<=`**.
+
+`probe/where_did_ten_go.py` opened it rather than naming it — and deliberately
+did not check the first suspicion (*"they are the 10 degenerate ones"*, believed
+only because 10 == 10, which is coincidence-as-diagnosis):
+
+| | n |
+|---|--:|
+| ONE end reached a cell (counted as dropped) | 16 |
+| both ends written, distinct notes | 13 |
+| **NEITHER end reached a cell** | **10** |
+| degenerate: one note, start == stop | 7 |
+
+**The head index was built PER PART**, so *"this anchor is not in `heads`"* meant
+both *it belongs to another part* and *`_place_notes` never wrote it* — and a
+hairpin with BOTH ends unwritten looked like the first to EVERY part, so no part
+counted it and none reported it. Indexing globally collapses the two, and the
+balance is now an **EQUALITY**: 20 written + 26 counted = 46 decided, with the
+ten under their own name `wedge_neither_anchor_written`.
+
+⚠️ **The `<=` is what let it pass, and widening a control while teaching it
+about a legitimate-sounding exception is how a control stops being one.** The
+fermata balance genuinely needs an inequality — its hoist collapses several
+marks into one element. Nothing collapses here.
+
+⚠️ **A KNOWN EQUIVALENT MUTANT, named rather than chased**: with the index
+global, `written + not_written` is ALWAYS exactly `decided`, so `<=` and `==`
+agree on every input the code can produce. The `==` is kept as the guard
+against a future regression and is held OUT of `ARMS`, because an arm that can
+never go red trains the next reader to ignore the list.
+
+⚠️ **`wedge_neither_anchor_written` = 10 and `wedge_anchor_note_not_written` =
+16 are DETECTION/READING figures, not export ones.** 26 of 46 decided hairpins
+lost an anchor because `_place_notes` never wrote the note — no pitch, or a
+duration `adjudicate_duration` narrowed and the exporter refuses to argmax.
+That is the same shape this repo records for the arcs (76% of merged arcs bind
+fewer than two noteheads) and belongs upstream.
 
 ---
 
@@ -283,3 +367,26 @@ apart. The `Unbalanced` control is untouched and stays an EQUALITY.
   `Q.DIRECTION_WORD` has no gatherer.
 * **The `no_anchor` rate is a DETECTION figure** and belongs with the hairpin
   reading work (`OMR_CV_HAIRPINS`), not with this rule.
+
+---
+
+## 12. ⚠️ A HAZARD IN THE PROVENANCE STAMP, FOUND IN PASSING
+
+The Brahms gather started at commit `dfc6f409` and its record is stamped
+`e3d0d455, dirty: false` — a commit that **did not exist when the run began**.
+`_provenance()` reads git at the END of the run, so a long gather started on
+tree A and finished on tree B is stamped B, and a CLEAN stamp is no evidence
+that the tree was clean while the reading happened.
+
+It cost nothing here: this arm re-adjudicates with the current tree anyway, and
+the GATHER half of that record is the same code either way (`gather.py` is
+untouched). But it is the same shape as the hazard handoff §8 already records
+for the EXPORTER — `staged/__main__.py` imports it after the gather, so an edit
+made mid-run reaches it — and the stamp is the half that was not noticed.
+
+**A stamp taken at the end names the tree that FINISHED the run, not the one
+that ran it.** `regather_control.py` compares two such stamps to decide whether
+two records are comparable; for a run long enough to span a commit, that
+comparison is weaker than it looks. Recorded, not fixed — fixing it means
+stamping at the START as well, and whether the pair should then refuse a
+mismatch is a decision, not an edit.

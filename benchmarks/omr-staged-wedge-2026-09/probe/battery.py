@@ -87,6 +87,15 @@ ARMS = [
     ("a missing anchor note is silently swallowed", EXP,
      'dropped["wedge_anchor_note_not_written"] += 1',
      "pass"),
+    # ⚠️ THE TEN, as an arm. This is the bug the first cut shipped: a per-part
+    # head index made "not in this part" and "never written" the same
+    # condition, and a hairpin with both ends unwritten was counted by nobody.
+    ("a hairpin with NEITHER anchor written is swallowed", EXP,
+     'dropped["wedge_neither_anchor_written"] += 1',
+     "pass"),
+    ("the head index sees only the FIRST part", EXP,
+     "for pi, part in enumerate(parts):\n        for n, (run, i) in enumerate(_part_cells_in_order(part)):",
+     "for pi, part in enumerate(parts[:1]):\n        for n, (run, i) in enumerate(_part_cells_in_order(part)):"),
     ("the counter fires at the ATTACH, not at the render", EXP,
      'counters["wedges"] += 1',
      "pass"),
@@ -96,10 +105,12 @@ ARMS = [
     # EQUIVALENT MUTANT, not a coverage gap, and it "survived" for that reason
     # alone. The hazard is the ordinal restarting per system, so the mutation
     # is to key the bar on its cell index instead.
+    # ⚠️ THIS ANCHOR WENT STALE WHEN THE HEAD INDEX MOVED and the battery
+    # reported `BAD ANCHOR (matches 0)` rather than a green pass — which is
+    # the whole reason a zero-match anchor is an error here and not a skip.
     ("the part ordinal is the CELL index (restarts per system)", EXP,
-     "for n, (run, i) in enumerate(_part_cells_in_order(part))}",
-     "for n, (run, i) in enumerate(_part_cells_in_order(part))"
-     " for n in [i]}"),
+     "heads[str(det['glyph'])] = (det, n, pi)".replace("'", '"'),
+     "heads[str(det['glyph'])] = (det, i, pi)".replace("'", '"')),
 
     # ── the coverage reporting gap ───────────────────────────────────────
     ("CV-read ink is invisible to the headline again", EXP,
@@ -117,6 +128,20 @@ ARMS = [
      "same_voice = [c for c in candidates if voice_of(c[2]) == voice]",
      "same_voice = list(candidates)"),
 ]
+
+#: ⚠️ ONE KNOWN EQUIVALENT MUTANT, NAMED RATHER THAN CHASED. Turning the wedge
+#: balance's `==` back into `<=` survives, and it is not a coverage gap: once
+#: the head index is global, `written + not_written` is ALWAYS exactly
+#: `decided`, so the two spellings agree on every input the code can produce.
+#: The `==` is kept because it is the guard against a FUTURE regression
+#: reintroducing a residue — which is exactly what the `<=` hid for one
+#: afternoon — and because an equivalent mutant is a fact about the current
+#: code, not a licence to loosen the check. It is deliberately NOT in `ARMS`:
+#: an arm that can never go red would be reported as a survivor every run and
+#: would train the next reader to ignore the list.
+_EQUIVALENT_BY_DESIGN = ("the balance goes back to a tolerant <=", EXP,
+                         '+ report["wedges_not_written_total"]) == w_decided,',
+                         '+ report["wedges_not_written_total"]) <= w_decided,')
 
 #: ⚠️ THE POSITIVE CONTROL, IN THE SAME CLASS AS THE REFUSAL ARMS. If the
 #: accept-side tests do not reach the code, refusing everything survives.
