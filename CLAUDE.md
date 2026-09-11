@@ -46,6 +46,12 @@ fall silent TOGETHER. **Build it only AFTER the first cleanup count**, which is
 what says which abstentions are worth resolving.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-10-the-target-changed.md](docs/handoff-2026-09-10-the-target-changed.md)
+— **the newest**, and it supersedes the RANKINGS of the three handoffs below
+(not their measurements). Read it with the plan linked above it. The three
+2026-09-10 handoffs that follow are still correct about what they measured.
+
+
 [docs/handoff-2026-09-10-arcs-reach-the-file.md](docs/handoff-2026-09-10-arcs-reach-the-file.md)
 — **the newest, and the shortest to read**: the arc export is CLOSED (`<slur>`
 0 → 46, `<tied>` 0 → 98, byte-identical outside the arc elements, partition
