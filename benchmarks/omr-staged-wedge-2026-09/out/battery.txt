@@ -1,0 +1,24 @@
+baseline: green
+
+  [red         ] the page-frame refusal never fires (cell frame used instead)
+  [red         ] the wedge box is read as WIDTH not corners
+  [red         ] the window reaches two bars instead of one
+  [red         ] ownership is ignored — the cell's own heads anchor it
+  [red         ] rests anchor a hairpin as well as noteheads
+  [red         ] the anchor names the stop twice
+  [red         ] a head with no page box is used anyway
+  [red         ] the STOP is written before the note, not after
+  [red         ] the OPENING mark is not written at all
+  [red         ] every hairpin takes number 1
+  [red         ] the kind check is dropped — any verdict is a hairpin
+  [red         ] a missing anchor note is silently swallowed
+  [red         ] the counter fires at the ATTACH, not at the render
+  [red         ] the part ordinal is the CELL index (restarts per system)
+  [red         ] CV-read ink is invisible to the headline again
+  [red         ] the non-detector count includes the detector's own rows
+  [red         ] the legacy caller stops passing its voice map
+  [red         ] the pure core ignores the voice filter
+
+  [red         ] POSITIVE CONTROL: the decision refuses every input
+
+19 arms, 0 not red
