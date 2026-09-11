@@ -192,16 +192,19 @@ class TestTheFindingsAreStillTrue(unittest.TestCase):
         If either half moves, this fails and FINDINGS.md must be re-read.
         """
         starv = GC.stub_starvation()
-        # ⚠️ THREE since 2026-09-09: `arc_kind` and `arc_owner` were filled,
-        # so they left this list. The count is asserted so that filling or
-        # ADDING a stub is a deliberate edit here rather than a silent drift —
-        # which is what this guard is for.
-        self.assertEqual(len(starv), 3,
-                         f"expected 3 declared stubs, got {sorted(starv)}")
-        self.assertNotIn("DYNAMIC", starv,
-                         "`dynamic` graduated: adjudicator written and input "
-                         "gathered. A stub roster that keeps a graduated "
-                         "entry describes history, not the pipeline.")
+        # ⚠️ TWO since 2026-09-10. `arc_kind` and `arc_owner` left this list on
+        # 09-09; `articulation_owner` left it on 09-10, landing with its
+        # emission and its counter rather than alone. The count is asserted so
+        # that filling or ADDING a stub is a deliberate edit here rather than a
+        # silent drift — which is what this guard is for.
+        self.assertEqual(len(starv), 2,
+                         f"expected 2 declared stubs, got {sorted(starv)}")
+        for graduated in ("DYNAMIC", "ARTICULATION_OWNER"):
+            self.assertNotIn(graduated, starv,
+                             f"`{graduated}` graduated: adjudicator written "
+                             "and input gathered. A stub roster that keeps a "
+                             "graduated entry describes history, not the "
+                             "pipeline.")
         starved = {q for q, v in starv.items() if v["ungathered_inputs"]}
         self.assertEqual(starved, {"DIRECTION"},
                          "only the reading gap should still be starved; the "

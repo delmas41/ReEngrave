@@ -247,13 +247,15 @@ class TestCoverageNamesTheFourZEROS(unittest.TestCase):
         page = _one_staff_page(notes=[("C4", QUARTER)])
         rep = SX.coverage(page)
         by = {r["family"]: r for r in rep["families"]}
-        # ⚠️ `slur` LEFT this census on 2026-09-09 when `arc_kind` stopped
-        # being a stub. `articulation` is the plain-stub case now; `direction`
-        # is the starved one. Asserting the DISTINCTION, never a census —
-        # which is why this test survived a stub being filled with a one-line
-        # edit rather than a rewrite.
-        self.assertEqual(by["articulation"]["status"], "stub",
-                         "articulation_mark is gathered: a plain stub")
+        # ⚠️ THE PLAIN-STUB EXEMPLAR HAS CHANGED TWICE AND THE TEST HAS NOT.
+        # `slur` left this census on 2026-09-09 when `arc_kind` stopped being a
+        # stub; `articulation` left it on 2026-09-10 when
+        # `articulation_owner` did. `wedge` is the plain-stub case now and
+        # `direction` is still the starved one. Asserting the DISTINCTION,
+        # never a census — which is why each of those took a one-line edit
+        # here rather than a rewrite.
+        self.assertEqual(by["wedge"]["status"], "stub",
+                         "wedge_box is gathered: a plain stub")
         # ⚠️ `direction` reports `stub`, NOT `starved`, and the two tools
         # disagree about it on purpose-by-accident: `coverage()` calls a
         # quantity fed when a gather SITE exists, and `Q.DIRECTION_WORD` has
@@ -1517,3 +1519,155 @@ class TestTheCounterCountsWhatREACHEDTheFile(unittest.TestCase):
         w = rep["written"]
         written = w.get("slurs", 0) + w.get("ties", 0)
         self.assertEqual(written + rep["arcs_not_written_total"], 2)
+
+
+class TestArticulationsReachTheFile(unittest.TestCase):
+    """⚠️ THE ADJUDICATOR AND THE EMISSION LANDED TOGETHER, and this class is
+    why. `adjudicate_dynamic` decided for a day with `grep '<dynamics'`
+    returning zero; `arc_kind` decided 199 arcs a page with no `<slur>`. Both
+    were found by forensics INSIDE the architecture built to stop it. A stub
+    whose adjudicator lands alone is a fresh `decided_and_unwritten` row.
+    """
+
+    def _page(self, marks, notes=(("C4", QUARTER), ("D4", QUARTER))):
+        """`marks` = [(notehead_index, articulation_kind)]."""
+        page = _one_staff_page(notes=list(notes), meter={
+            "numerator": 4, "denominator": 4, "raw": "4/4"})
+        for k, (gi, kind) in enumerate(marks):
+            sub = f"glyph/0/0/0/0/{900 + k}"
+            page["record"]["observations"].append(
+                _obs(900 + k, sub, Q.ARTICULATION_MARK,
+                     f"artic{kind.capitalize()}Above", side="above",
+                     x0=100 * gi, x1=100 * gi + 6, y0=0, y1=6))
+            page["record"]["verdicts"].append(
+                _vrd(900 + k, sub, Q.ARTICULATION_OWNER,
+                     f"glyph/0/0/0/0/{gi}", reason="nearest_on_declared_side"))
+            page["record"]["verdicts"][-1]["detail"] = {"articulation": kind}
+        return page
+
+    def test_a_decided_articulation_is_written_onto_its_note(self):
+        xml, rep = SX.to_musicxml(self._page([(0, "staccato")]))
+        root = ET.fromstring(xml)
+        notes = list(root.iter("note"))
+        kinds = [[c.tag for c in a]
+                 for n in notes
+                 for a in n.iter("articulations")]
+        self.assertEqual(kinds, [["staccato"]])
+        self.assertEqual(rep["written"]["articulations"], 1)
+
+    def test_the_KIND_travels__a_tenuto_is_not_a_staccato(self):
+        xml, _ = SX.to_musicxml(self._page([(1, "tenuto")]))
+        self.assertIn("<tenuto/>", xml)
+        self.assertNotIn("<staccato/>", xml)
+
+    def test_with_no_marks_the_file_is_byte_identical(self):
+        """The control: this pass may not touch a page that prints none."""
+        a, _ = SX.to_musicxml(self._page([]))
+        b, _ = SX.to_musicxml(self._page([]))
+        self.assertEqual(a, b)
+        self.assertNotIn("<articulations>", a)
+
+    def test_a_mark_whose_note_was_never_written_is_COUNTED(self):
+        """⚠️ A shortfall that is not counted is indistinguishable from ink
+        that was never read. The owner names a glyph no cell holds."""
+        page = self._page([])
+        sub = "glyph/0/0/0/0/950"
+        page["record"]["observations"].append(
+            _obs(950, sub, Q.ARTICULATION_MARK, "articStaccatoAbove",
+                 side="above", x0=0, x1=6, y0=0, y1=6))
+        page["record"]["verdicts"].append(
+            _vrd(950, sub, Q.ARTICULATION_OWNER, "glyph/0/0/0/0/777",
+                 reason="nearest_on_declared_side"))
+        page["record"]["verdicts"][-1]["detail"] = {"articulation": "staccato"}
+        _xml, rep = SX.to_musicxml(page)
+        self.assertEqual(
+            rep["articulations_not_written"].get(
+                "artic_owning_notehead_not_written"), 1)
+        self.assertTrue(rep["articulation_balance"]["balanced"])
+
+    def test_an_abstained_mark_is_counted_BY_ITS_REASON(self):
+        page = self._page([])
+        sub = "glyph/0/0/0/0/951"
+        page["record"]["observations"].append(
+            _obs(951, sub, Q.ARTICULATION_MARK, "articulationStaccato",
+                 x0=0, x1=6, y0=0, y1=6))
+        page["record"]["verdicts"].append(
+            _vrd(951, sub, Q.ARTICULATION_OWNER, None, outcome="abstained",
+                 reason="no_side_declared"))
+        _xml, rep = SX.to_musicxml(page)
+        self.assertEqual(
+            rep["articulations_not_written"].get("artic_no_side_declared"), 1)
+
+    def test_the_balance_is_a_PARTITION_over_every_gathered_mark(self):
+        page = self._page([(0, "staccato"), (1, "accent")])
+        _xml, rep = SX.to_musicxml(page)
+        b = rep["articulation_balance"]
+        self.assertEqual(b["marks_in_log"], b["written"] + b["not_written"])
+        self.assertTrue(b["balanced"])
+
+    def test_EVERY_member_of_a_chord_wears_its_own_mark(self):
+        """⚠️ NOT the slur rule. A span goes on the chord's FIRST note because
+        MusicXML takes it as the chord's representative; an articulation is not
+        a span, and hoisting three staccati onto the first note would write one
+        dot where the page prints three."""
+        page = _one_staff_page(notes=[("C4", QUARTER), ("E4", QUARTER)], meter={
+            "numerator": 4, "denominator": 4, "raw": "4/4"})
+        # put both heads at the same x so they group as one chord
+        for o in page["record"]["observations"]:
+            if o["quantity"] == Q.GLYPH_BOX and o["value"][0].startswith("note"):
+                o["value"][1] = 100
+        for k, gi in enumerate((0, 1)):
+            sub = f"glyph/0/0/0/0/{960 + k}"
+            page["record"]["observations"].append(
+                _obs(960 + k, sub, Q.ARTICULATION_MARK, "articStaccatoAbove",
+                     side="above", x0=100, x1=106, y0=0, y1=6))
+            page["record"]["verdicts"].append(
+                _vrd(960 + k, sub, Q.ARTICULATION_OWNER,
+                     f"glyph/0/0/0/0/{gi}", reason="nearest_on_declared_side"))
+            page["record"]["verdicts"][-1]["detail"] = {
+                "articulation": "staccato"}
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(xml.count("<staccato/>"), 2)
+        self.assertEqual(rep["written"]["articulations"], 2)
+
+    def test_the_placement_pass_IS_CALLED(self):
+        """⚠️ AN AST CHECK. The whole failure mode this class exists for is a
+        pass that runs and a file that does not change, so the call site is
+        asserted rather than inferred from a green behavioural test."""
+        import inspect
+        src = inspect.getsource(SX.build)
+        self.assertIn("_place_articulations(rec, runs)", src)
+
+    def test_the_counter_lives_where_the_ELEMENT_is_written(self):
+        """⚠️ Not where the mark is ATTACHED. The two numbers differ, and a
+        counter at the attach reports the first while claiming the second —
+        the arc export reported 55 slurs into a file holding 23.
+
+        ⚠️ DERIVED, not a named function. The first draft asserted the counter
+        was in `_part_xml` and failed because the render lives one function
+        down in `_measure_events_xml` — and repointing a test at whichever
+        function happens to pass is how a test gets named for a hazard it does
+        not reach. So: the counter must sit in the SAME function that calls
+        `_mxl_note`, whichever that is.
+        """
+        import ast
+        import inspect
+        tree = ast.parse(inspect.getsource(SX))
+        renders, counts = set(), set()
+        for fn in ast.walk(tree):
+            if not isinstance(fn, ast.FunctionDef):
+                continue
+            body = ast.dump(fn)
+            if "_mxl_note" in body:
+                renders.add(fn.name)
+            if "'articulations'" in body and "counters" in body:
+                counts.add(fn.name)
+        self.assertTrue(renders, "nothing calls _mxl_note any more")
+        self.assertTrue(
+            renders & counts,
+            f"the articulation counter is in {counts or 'nowhere'} and the "
+            f"note is rendered in {renders}")
+        self.assertNotIn(
+            'counters["articulations"]',
+            inspect.getsource(SX._place_articulations),
+            "the counter is at the ATTACH, which reports a different number")

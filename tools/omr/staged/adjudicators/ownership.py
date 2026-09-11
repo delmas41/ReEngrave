@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple
 
+from ... import transcribe as _legacy_articulation
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
@@ -461,17 +462,118 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
     scope=Kind.GLYPH,
     wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX),
     subjects_from=Q.ARTICULATION_MARK,
-    reasons=("nearest_on_declared_side", "no_notehead", "no_evidence"),
+    reasons=("nearest_on_declared_side", "no_notehead", "no_side_declared",
+             "no_evidence"),
     mode=Mode.ADDITIVE,
-    stub=True,
 )
 def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
-    """⚠️ DECLARED STUB. Give each mark to the notehead nearest it in x on
-    the side ITS OWN CLASS NAMES, within 0.75 notehead WIDTHS -- the unit,
-    not the mark's own bounding box, which is the mistake the augmentation-dot
-    gate made. A mark with no notehead on the correct side stays unattached.
+    """Which notehead a staccato, accent, marcato, tenuto or staccatissimo is
+    printed against.
+
+    The rule is the one the engraving makes true and it is NOT re-derived here:
+    a mark is printed directly above or below its notehead, so it goes to the
+    notehead nearest it in X **on the side its own class names**, within
+    `_ARTIC_MAX_DX_NOTEHEAD_WIDTHS`. `transcribe._attach_articulations_in_cell`
+    has said that since the seventh export gap was closed, and its constant is
+    IMPORTED rather than restated -- it was swept over eight engraved works and
+    sits on a flat plateau (0.50 through 2.50 identical, 197 placed at
+    precision 0.980) with a cliff below at 0.30, so this project has paid for
+    that number once.
+
+    ⚠️ THE UNIT IS A NOTEHEAD WIDTH, NOT THE MARK'S OWN BOX. That is the
+    mistake the augmentation-dot gate made and paid 193 edits for: a mark's
+    bounding box is small and mostly detector noise, so a threshold derived
+    from it moves with the noise rather than with the engraving.
+
+    ⚠️ A MARK WITH NO NOTEHEAD ON THE CORRECT SIDE ABSTAINS rather than taking
+    the nearest thing available. 21 of 218 across the legacy corpus do, and
+    abstaining there is why that precision is 0.980 -- a mark labelled `Above`
+    sitting below every notehead in the cell belongs to none of them.
+
+    ⚠️ THE CELL'S OWN CANONICAL FRAME IS CORRECT HERE, and saying so matters
+    because the sibling decision one function up needs the opposite. An
+    articulation and the notehead it names were cut from ONE cell, so they
+    share a frame by construction; it is `arc_owner`, which asks about OTHER
+    staves, that needs page pixels. A canonical x compared across two staves
+    is meaningless -- the fault that made `Q.ONSET_COLUMN` report 1,062
+    columns of nothing.
+
+    ⚠️ `no_side_declared` HAS ZERO REACH ON THE DOCUMENT THIS LANDED WITH and
+    is here anyway. `class_aliases.COARSER_THAN_CANONICAL` records
+    `articulationAccent` / `Staccato` / `Tenuto` as coarser spellings that
+    carry no side, and `_artic_side` returns None for them rather than
+    guessing. All 24 marks on Litolff `984073` p1-3 name a side, so that branch
+    is unexercised by the page and is tested directly instead.
     """
-    return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
+    marks = ev.rows(Q.ARTICULATION_MARK)
+    if not marks:
+        return Ruling.abstain("no_evidence")
+    mark = marks[0]
+    kind = _legacy_articulation.articulation_kind(str(mark.value))
+    if kind is None:
+        # The class names no side, or names a mark outside the five MusicXML
+        # articulations the legacy rule exports. Recorded as its own reason:
+        # "I could not read this mark" and "there was no notehead for it" send
+        # the next reader to different places.
+        return Ruling.abstain("no_side_declared",
+                              detector_class=str(mark.value))
+    name, above = kind
+
+    cell = ev.subject.at(Kind.CELL)
+    heads = [r for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                                subject=cell)
+             if (r.detail or {}).get("category") == "notehead"
+             and isinstance(r.value, (list, tuple)) and len(r.value) >= 5]
+    if not heads:
+        return Ruling.abstain("no_notehead", articulation=name)
+
+    # ⚠️ THE MEDIAN NOTEHEAD WIDTH, exactly as the legacy pass takes it -- one
+    # clipped or merged detection must not set the limit for the whole cell.
+    widths = sorted(float(h.value[3]) for h in heads)
+    nh_width = widths[len(widths) // 2] or 1.0
+    limit = nh_width * _legacy_articulation._ARTIC_MAX_DX_NOTEHEAD_WIDTHS
+
+    mx = (float(mark.detail.get("x0", 0.0))
+          + float(mark.detail.get("x1", 0.0))) / 2.0
+    my = (float(mark.detail.get("y0", 0.0))
+          + float(mark.detail.get("y1", 0.0))) / 2.0
+
+    best: Optional[Tuple[float, object]] = None
+    for h in heads:
+        _cls, hx, hy, hw, hh = h.value[:5]
+        hyc = float(hy) + float(hh) / 2.0
+        # ⚠️ LARGER CANONICAL y IS LOWER ON THE PAGE, so a mark printed ABOVE
+        # its notehead has the SMALLER y of the two. Stated because the sign
+        # is the whole of the side test and reads backwards.
+        if above and my >= hyc:
+            continue
+        if not above and my <= hyc:
+            continue
+        dx = abs(mx - (float(hx) + float(hw) / 2.0))
+        if dx > limit:
+            continue
+        if best is None or dx < best[0]:
+            best = (dx, h)
+    if best is None:
+        return Ruling.abstain("no_notehead", articulation=name,
+                              side="above" if above else "below",
+                              notehead_width=nh_width,
+                              limit_canonical_px=limit)
+
+    dx, head = best
+    return Ruling(
+        value=head.subject.to_key(), reason="nearest_on_declared_side",
+        used=(mark.id, head.id),
+        # ⚠️ THE KIND TRAVELS WITH THE OWNER. The quantity names the NOTEHEAD,
+        # and an exporter holding only that would have to re-read the mark's
+        # class to know whether to write `<staccato/>` or `<accent/>` -- which
+        # is the re-derivation this stage exists to remove.
+        detail={"articulation": name,
+                "side": "above" if above else "below",
+                "dx_canonical_px": dx,
+                "dx_notehead_widths": (dx / nh_width) if nh_width else None,
+                "detector_class": str(mark.value),
+                "confidence": mark.score})
 
 
 @decision(

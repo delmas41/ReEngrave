@@ -349,6 +349,11 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     # reason that has nothing to do with notes -- a control reporting a defect
     # it was not built to see, which is worse than one that stays silent.
     arcs_dropped = collections.Counter(_place_arcs(rec, runs))
+    # ⚠️ AFTER `_place_notes`, because a mark hangs on a notehead that has
+    # already reached a cell -- and reported in its OWN bucket for the same
+    # reason the arcs are: an articulation is not a note, and folding it into
+    # `dropped` would make the note balance raise on a different family.
+    artics_dropped = _place_articulations(rec, runs)
 
     # ── the join ────────────────────────────────────────────────────────────
     join = rec.value(Q.PART_PARTITION, "document") or {}
@@ -420,7 +425,11 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         "fragmented": used == "fragments",
         **provenance_extra,
     }
-    return parts, provenance, dropped, arcs_dropped
+    # ⚠️ ITS OWN SLOT, not folded into `arcs_dropped`. Two families' drops in
+    # one counter is the shape `_claims` was made longest-prefix-wins to
+    # prevent: a hairpin claimed by both `dynamic` and `wedge` was counted
+    # twice, and a reader cannot unpick one number into two afterwards.
+    return parts, provenance, dropped, arcs_dropped, artics_dropped
 
 
 def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
@@ -818,6 +827,51 @@ def _arcs_by_kind(measures, arcs, kinds, spacings, tops, breaks
     return out, n_groups
 
 
+def _place_articulations(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
+    """Every decided articulation, onto the notehead its OWNER names.
+
+    ⚠️⚠️ THIS FUNCTION LANDS WITH THE ADJUDICATOR, NOT AFTER IT, AND THAT IS
+    THE WHOLE POINT. `adjudicate_dynamic` stopped being a stub and nothing read
+    it for a day; `arc_kind` decided 199 arcs a page with `grep '<slur'`
+    returning zero. Both were found by forensics inside the architecture built
+    to stop exactly that. A stub whose adjudicator lands alone is not progress,
+    it is a fresh `decided_and_unwritten` row.
+
+    ⚠️ THE JOIN IS THE NOTEHEAD'S SUBJECT KEY, which `_place_notes` already
+    stamps on every detection as `glyph`. Joining on canonical coordinates
+    instead would re-derive, approximately, a fact the record states exactly.
+
+    ⚠️ A MARK WHOSE OWNING NOTEHEAD NEVER REACHED A CELL IS COUNTED, not
+    swallowed -- a note can be decided and still be dropped by `_place_notes`
+    (no pitch, a narrowed duration), and the mark then has nothing to hang on.
+    That is a shortfall, and a shortfall that is not counted is
+    indistinguishable from ink that was never read.
+    """
+    dropped: Dict[str, int] = collections.Counter()
+    heads: Dict[str, Dict[str, Any]] = {}
+    for run in runs.values():
+        for cell in run.cells.values():
+            for det in cell.detections:
+                if det.get("category") == "notehead" and det.get("glyph"):
+                    heads[str(det["glyph"])] = det
+    for o in rec.obs_of(Q.ARTICULATION_MARK):
+        sub = o["subject"]
+        v = rec.verdict(Q.ARTICULATION_OWNER, sub)
+        if not v or v["outcome"] != "decided":
+            dropped["artic_" + (v["reason"] if v else "absent")] += 1
+            continue
+        head = heads.get(str(v["value"]))
+        if head is None:
+            dropped["artic_owning_notehead_not_written"] += 1
+            continue
+        name = (v.get("detail") or {}).get("articulation")
+        if not name:
+            dropped["artic_verdict_names_no_kind"] += 1
+            continue
+        head.setdefault("articulations", []).append(str(name))
+    return dict(dropped)
+
+
 def _place_directions(rec: Record, runs: Dict[str, StaffRun]) -> None:
     """Every decided dynamic word, in the cell its DECISION filed it on.
 
@@ -1107,8 +1161,22 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 tied_to_next=bool(ev.get("tied_to_next")) if n == 0 else False,
                 tied_from_prev=(bool(ev.get("tied_from_prev"))
                                 if n == 0 else False),
+                # ⚠️ PER HEAD, NOT PER EVENT -- unlike the slur and tie marks
+                # just above, which sit on the chord's FIRST note because
+                # MusicXML takes that note as the chord's representative for a
+                # SPAN. An articulation is not a span: each member of a chord
+                # wears its own staccato, and hoisting them onto the first
+                # would write one dot where the page prints three.
+                articulations=(head.get("articulations") or None),
                 accidental=head.get("accidental")))
             counters["notes"] += 1
+            # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and not
+            # where the mark was ATTACHED. The two numbers are different: a
+            # mark attached to a notehead that `_place_notes` then dropped is
+            # attached and not written, and a counter at the attach would
+            # report the first while claiming the second. The arc export
+            # learned this by reporting 55 slurs into a file holding 23.
+            counters["articulations"] += len(head.get("articulations") or ())
             if n == 0:
                 # ⚠️⚠️ COUNTED HERE, AT THE RENDER, AND NOT WHERE THE MARK WAS
                 # SET -- because the two numbers are DIFFERENT and the first
@@ -1159,7 +1227,7 @@ def _rest_xml(ev: Dict[str, Any], divisions: int,
 def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     """The file, and the record of what did not reach it."""
     rec = Record(result)
-    parts, provenance, dropped, arcs_dropped = build(rec)
+    parts, provenance, dropped, arcs_dropped, artics_dropped = build(rec)
     divisions = _divisions(parts)
     counters: Dict[str, int] = collections.Counter()
     # ⚠️ AFTER the parts are joined and BEFORE any measure is rendered. A part
@@ -1212,6 +1280,20 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             arcs_dropped["arc_ends_in_one_chord"] += lost
     report["arcs_not_written"] = dict(arcs_dropped)
     report["arcs_not_written_total"] = sum(arcs_dropped.values())
+    # ⚠️ A THIRD PARTITION, AND IT IS ASSERTED RATHER THAN HOPED FOR. Every
+    # gathered articulation mark is either written onto a note or counted here
+    # -- the same control the notes get, on a family whose whole population is
+    # small enough that one silent loss would be a large share of it.
+    report["articulations_not_written"] = dict(artics_dropped)
+    report["articulations_not_written_total"] = sum(artics_dropped.values())
+    marks_in_log = len(rec.obs_of(Q.ARTICULATION_MARK))
+    report["articulation_balance"] = {
+        "marks_in_log": marks_in_log,
+        "written": int(counters.get("articulations", 0)),
+        "not_written": report["articulations_not_written_total"],
+        "balanced": marks_in_log == (int(counters.get("articulations", 0))
+                                     + report["articulations_not_written_total"]),
+    }
     # ⚠️⚠️ THE ACCOUNTING CONTROL, AND IT IS READ. Every notehead the log
     # holds is either written or counted as not-written; the two must sum to
     # the `notehead_class` rows exactly. An unbalanced export is an
@@ -1277,7 +1359,7 @@ FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
     "rest": (Q.REST, ("rest",), ("rests", "measure_rests_read")),
     "slur": (Q.ARC_KIND, ("slur",), ("slurs",)),
     "tie": (Q.ARC_KIND, ("tie",), ("ties",)),
-    "articulation": (Q.ARTICULATION_OWNER, ("artic",), ()),
+    "articulation": (Q.ARTICULATION_OWNER, ("artic",), ("articulations",)),
     "dynamic": (Q.DYNAMIC, ("dynamic",), ("dynamics",)),
     "wedge": (Q.WEDGE_ANCHOR, ("dynamicCrescendoHairpin",
                                "dynamicDiminuendoHairpin"), ()),

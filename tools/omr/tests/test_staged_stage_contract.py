@@ -290,7 +290,7 @@ class TestEveryDeclaredStubKeepsItsPromise(unittest.TestCase):
         _entries` to prevent. Its graduation is pinned below rather than
         merely un-asserted.
         """
-        for quantity in (Q.ARTICULATION_OWNER, Q.WEDGE_ANCHOR, Q.DIRECTION):
+        for quantity in (Q.WEDGE_ANCHOR, Q.DIRECTION):
             self.assertIn(quantity, adjudicate.stubs())
 
     def test_dynamic_and_the_ARCS_have_GRADUATED_from_the_stub_roster(self):
@@ -298,10 +298,11 @@ class TestEveryDeclaredStubKeepsItsPromise(unittest.TestCase):
         silent regression to a stub fails here rather than passing quietly.
 
         ⚠️ `Q.ARC_KIND` and `Q.ARC_OWNER` joined `Q.DYNAMIC` here on
-        2026-09-09. Three of the six original stubs are now filled and THREE
-        REMAIN — `articulation_owner`, `wedge_anchor`, `direction`, the last
-        of which is the only one still input-starved."""
-        for quantity in (Q.DYNAMIC, Q.ARC_KIND, Q.ARC_OWNER):
+        2026-09-09 and `Q.ARTICULATION_OWNER` on 2026-09-10. Four of the six
+        original stubs are now filled and TWO REMAIN — `wedge_anchor` and
+        `direction`, the latter still the only input-starved one."""
+        for quantity in (Q.DYNAMIC, Q.ARC_KIND, Q.ARC_OWNER,
+                         Q.ARTICULATION_OWNER):
             self.assertNotIn(quantity, adjudicate.stubs())
         spec = adjudicate.REGISTRY[Q.DYNAMIC]
         self.assertFalse(spec.stub)
