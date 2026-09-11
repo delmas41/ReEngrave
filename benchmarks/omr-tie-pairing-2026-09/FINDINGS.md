@@ -630,7 +630,16 @@ gives for it.
   cannot mean "both empty".
 * **`off = 2530` reproduces another session's arm to the edit** on a different
   instrument.
+* **Full suite: `3755 passed, 11 skipped`** in 581.70 s of TEST time, against
+  a baseline on `main` of **3741 / 11**. The arithmetic is exact — this branch
+  adds 14 tests and 3741 + 14 = 3755 — which is a cheaper control than reading
+  the number alone. ⚠️ `581.70s` is TEST time and not elapsed, the figure that
+  would make a starved run look normal in a log; the wall clock was checked
+  separately and agreed here.
 * **`health --check`, `inventory --check` and `gather_coverage` all exit 0.**
+  ⚠️ `gather_coverage` reads 75 declared / 41 observed where CLAUDE.md's prose
+  says 69 / 39 — that line already carries its own warning not to be quoted,
+  and the tool is the count. Nothing here changed it.
 * **Mutation battery**: [`probe/battery.sh`](probe/battery.sh), results in
   [`out/battery.txt`](out/battery.txt). Every mutation is anchored on a WHOLE
   expression and refused unless it applies exactly once; "NOT APPLIED" is a
