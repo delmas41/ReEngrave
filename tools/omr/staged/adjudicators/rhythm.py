@@ -2323,6 +2323,170 @@ def _stems_on(head_box, stems):
     return [s for s in stems if _xywh(s) and _boxes_overlap(_xywh(s), head_box)]
 
 
+#: A WHOLE REST's ink, in the units it has to be measured in.
+#:
+#: ⚠️ STAFF SPACES, NEVER PIXELS. The staves of one plate differ in spacing and
+#: the DPI differs between runs, so a pixel constant here would be a property
+#: of one render of one page.
+#:
+#: Measured on Beethoven 5 / Litolff `984073` pp.1-4, over the document's OWN
+#: 395 correctly-detected `restWhole` glyphs against its own 2,347 noteheads:
+#: a whole rest is 0.67 spaces tall (p05-p95 0.46-0.84) at aspect 2.17
+#: (1.63-3.09); a notehead is 1.31 tall (0.70-1.67) at aspect 1.14
+#: (0.90-2.24). All three cuts sit on a PLATEAU -- the height anywhere in
+#: 0.80-1.10 flags the same 20 glyphs, the aspect floor anywhere in 1.4-1.8
+#: flags 20-23 before falling off a cliff at 1.9, and the position tolerance
+#: anywhere in 0.75-1.25 flags 18-20.
+WHOLE_REST_INK_MAX_HEIGHT_SPACES = 0.85
+WHOLE_REST_INK_MIN_ASPECT = 1.8
+#: ⚠️ AN UPPER BOUND AS WELL, AND IT COSTS ONE REAL CATCH ON PURPOSE. A single
+#: glyph on the measured page is squat, in the rest's own position, and has
+#: aspect 5.49 -- a long thin bar of ink, which the crop shows is a beam or
+#: staff-line residue and certainly not a notehead. It is ALSO not a whole
+#: rest, and this decision may only claim what it can support: the 19 genuine
+#: catches top out at 2.352, so the bound sits in an empty interval
+#: (2.352 .. 5.49) and the excluded glyph stays a known, named residue rather
+#: than a right answer reached by a wrong description.
+WHOLE_REST_INK_MAX_ASPECT = 3.5
+#: Where a whole rest HANGS -- under the second staff line from the top. With
+#: the bottom line 0 and one step per half space, its body spans step 6 down
+#: to step 5, so its centre is 5.5. ⚠️ NOT A TUNED NUMBER: it is the engraving
+#: convention, and the document corroborates it -- 253 of its 395 detected
+#: whole rests measure EXACTLY 5.5 and 342 are within one step of it.
+WHOLE_REST_STEP = 5.5
+#: ⚠️ The tolerance is SCAN WANDER and nothing else. CLAUDE.md records staves
+#: on scans tilting and bowing 8-17 page px across their width, which on this
+#: plate is 0.2-0.4 staff spaces, i.e. 0.4-0.8 of a step. One step is that,
+#: rounded out.
+WHOLE_REST_STEP_TOLERANCE = 1.0
+
+
+def _staff_step(page_box, line_ys, spacing) -> Optional[float]:
+    """This ink's centre as a STAFF STEP, bottom line 0, one step per half space.
+
+    ⚠️ Everything is in PAGE pixels: `Q.STAFF_LINES` and `Q.STAFF_SPACING` are
+    filed in the page frame and `Q.GLYPH_BOX` carries `bbox_page_px` beside its
+    canonical box. Mixing the two frames is the fault `Q.ONSET_COLUMN` paid for
+    -- two staves' canonical frames coincide by construction.
+    """
+    if not page_box or len(page_box) != 4 or not line_ys or not spacing:
+        return None
+    try:
+        bottom = max(float(y) for y in line_ys)
+        half = float(spacing) / 2.0
+    except (TypeError, ValueError):
+        return None
+    if half <= 0:
+        return None
+    return (bottom - (float(page_box[1]) + float(page_box[3])) / 2.0) / half
+
+
+@decision(
+    quantity=Q.NOTEHEAD_IS_A_WHOLE_REST,
+    composed_from=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING),
+    scope=Kind.GLYPH,
+    wants=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING),
+    subjects_from=Q.NOTEHEAD_CLASS,
+    reasons=("shape_and_position_agree", "not_rest_shaped",
+             "not_at_the_rest_position", "no_page_frame", "no_staff_geometry"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_notehead_is_a_whole_rest(ev: Evidence) -> Ruling:
+    """Is this glyph the detector called a notehead actually a WHOLE REST?
+
+    ⚠️⚠️ SEAN, 2026-09-11, reading the file against the print: *"in bars where
+    it should be just whole note rest in two four. It's showing an actual
+    quarter note, not a quarter note rest."* A pitched note standing where the
+    page prints silence is the worst-shaped error this pipeline makes, because
+    a MISSING note leaves a visible gap and an INVENTED one has to be found
+    and deleted. That asymmetry is why this is a decision and not a tolerated
+    misread.
+
+    ⚠️ TWO WITNESSES, AND THE RULE IS THEIR AGREEMENT. Neither is admissible
+    alone, and this is measured rather than asserted:
+
+      * SHAPE alone flags 174 of 2,347 noteheads on the measured pages. A
+        hand-adjudicated random sample of the ones NOT at the rest position
+        holds real (heavily bled) noteheads, beam fragments and pieces of the
+        word *cresc.* -- so shape alone would delete real music.
+      * POSITION alone flags 310 of 2,347, and is nearly uninformative on its
+        own: that band is where C5 and D5 live in treble, which is ordinary
+        music.
+      * TOGETHER they flag 20, and all 20 were cropped and looked at against
+        the print. NINETEEN are unmistakable whole rests; the twentieth is a
+        long bar of ink that is not a notehead either and is excluded by
+        `WHOLE_REST_INK_MAX_ASPECT` rather than claimed.
+
+    This is the structure `_drop_unladdered_noteheads` already states for the
+    same family of problem -- *neither signal sufficient alone* -- and the
+    reason CONFIDENCE is not among the witnesses: the flagged glyphs do sit
+    low (median 0.344 against 0.655) but CLAUDE.md records a confidence filter
+    measured and refused for the dynamics, at 233 good letters lost to remove
+    half of 35 bad ones.
+
+    ⚠️ IT DOES NOT RECLASSIFY. A `True` verdict is consumed by the exporter as
+    a refusal to write a NOTE, and nothing manufactures a `Q.REST` row: what
+    the page holds is a GATHER fact and this is an ADJUDICATE decision. The
+    bar then falls to the exporter's existing padded measure rest, which says
+    *we read nothing here* -- weaker than *we read silence*, and true.
+
+    ⚠️ A LOWER BOUND ON THE FAULT, NOT A MEASUREMENT OF IT. Scored against the
+    document's own correctly-read whole rests, these cuts re-describe 336 of
+    396 of them; the other 60 are ink this rule cannot recognise, so a phantom
+    note whose rest is one of those shapes is not caught here.
+    """
+    box_rows = ev.rows(Q.GLYPH_BOX)
+    page_box = None
+    for r in box_rows:
+        page_box = (r.detail or {}).get("bbox_page_px") or page_box
+    if not page_box:
+        # ⚠️ DECLINED, NOT DEFAULTED. `gather_detections` carries the page box
+        # beside the canonical one and omits it rather than inventing one; the
+        # canonical frame cannot answer a question about the staff's lines.
+        return Ruling.abstain("no_page_frame")
+
+    staff = ev.subject.at(Kind.STAFF)
+    lines = ev.rows(Q.STAFF_LINES, scope=Scope.SELF_AND_ANCESTORS, subject=staff)
+    space = ev.rows(Q.STAFF_SPACING, scope=Scope.SELF_AND_ANCESTORS, subject=staff)
+    if not lines or not space:
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+    step = _staff_step(page_box, lines[-1].value, space[-1].value)
+    if step is None:
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+
+    try:
+        spacing = float(space[-1].value)
+        w = (float(page_box[2]) - float(page_box[0])) / spacing
+        h = (float(page_box[3]) - float(page_box[1])) / spacing
+    except (TypeError, ValueError, ZeroDivisionError):
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+    if h <= 0:
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+    aspect = w / h
+
+    used = tuple(r.id for r in (box_rows[-1:] + lines[-1:] + space[-1:]))
+    detail = {"height_spaces": round(h, 3), "aspect": round(aspect, 3),
+              "staff_step": round(step, 3)}
+
+    rest_shaped = (h < WHOLE_REST_INK_MAX_HEIGHT_SPACES
+                   and WHOLE_REST_INK_MIN_ASPECT < aspect
+                   < WHOLE_REST_INK_MAX_ASPECT)
+    at_the_slot = abs(step - WHOLE_REST_STEP) <= WHOLE_REST_STEP_TOLERANCE
+
+    if rest_shaped and at_the_slot:
+        return Ruling(value=True, reason="shape_and_position_agree",
+                      used=used, detail=detail)
+    # ⚠️ FALSE IS A DECISION AND ITS REASON NAMES WHICH WITNESS REFUSED --
+    # "the ink is not rest-shaped" and "it is rest-shaped but stands where no
+    # whole rest can" are different facts about the page, and folding them
+    # together would hide that the second is the population a shape-only rule
+    # would have deleted.
+    return Ruling(value=False,
+                  reason=("not_at_the_rest_position" if rest_shaped
+                          else "not_rest_shaped"),
+                  used=used, detail=detail)
+
+
 @decision(
     quantity=Q.STEM_DIRECTION,
     composed_from=(Q.STEM, Q.GLYPH_BOX),

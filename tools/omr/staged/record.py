@@ -551,6 +551,40 @@ class Q(_Vocab):
     #: a substring test, and why this is a separate name rather than a detail
     #: field on that row.
     STEM_DIRECTION = "stem_direction"
+    #: Whether a glyph the detector called a NOTEHEAD is in fact the ink of a
+    #: WHOLE REST -- `True`, `False`, or an abstention where it cannot be told.
+    #:
+    #: ⚠️ IT EXISTS BECAUSE SEAN READ THE FILE AGAINST THE PRINT AND SAID SO:
+    #: *"in bars where it should be just whole note rest in two four. It's
+    #: showing an actual quarter note, not a quarter note rest."* A pitched
+    #: note standing where the page prints silence is the worst shape of
+    #: error this pipeline makes -- a missing note leaves a visible gap, an
+    #: invented one has to be hunted down and deleted -- so the asymmetry is
+    #: the reason this is a decision at all rather than a tolerated misread.
+    #:
+    #: ⚠️ TWO WITNESSES, AND NEITHER IS SUFFICIENT ALONE -- the rule
+    #: `_drop_unladdered_noteheads` already states for the same family of
+    #: problem. SHAPE: a notehead is an oval about one staff space tall, a
+    #: whole rest is a bar of ink about two-thirds of a space tall and one
+    #: and a half wide. POSITION: a whole rest HANGS UNDER THE SECOND LINE
+    #: FROM THE TOP, a placement the engraver has no freedom about, so its
+    #: centre sits at one staff step whatever the clef, key or music.
+    #:
+    #: ⚠️ POSITION ALONE IS NEARLY USELESS AND MUST NEVER BE USED ALONE: that
+    #: band is where C5 and D5 live in treble, which is ordinary music --
+    #: measured, 302 of 2347 noteheads stand there and almost all are real.
+    #: SHAPE alone is not enough either: 174 of 2347 are squat and wide, and a
+    #: hand-adjudicated sample of the ones OFF the rest position holds real
+    #: (heavily bled) noteheads, beam fragments and parts of the word
+    #: *cresc.* -- not whole rests. It is the AGREEMENT that is the evidence.
+    #:
+    #: ⚠️ THE VALUE IS NOT CONSUMED AS A RECLASSIFICATION. A `True` verdict
+    #: stops the exporter writing a NOTE there and is counted; it does not
+    #: manufacture a `Q.REST` row, because that is a GATHER fact and this is
+    #: an ADJUDICATE decision. The bar then falls to the exporter's existing
+    #: padded measure rest -- *we read nothing here*, which is weaker than
+    #: *we read silence* and is the true statement.
+    NOTEHEAD_IS_A_WHOLE_REST = "notehead_is_a_whole_rest"
     #: A bar's 1-2 VOICE STREAMS, as a partition of its glyphs.
     #:
     #: ⚠️ MUSICXML PAIRS `<slur>` WITHIN A `<voice>`, so this is not a

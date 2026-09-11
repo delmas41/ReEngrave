@@ -2653,3 +2653,71 @@ class TestTheLegacyArcPathIsUntouched(unittest.TestCase):
         from tools.omr import export as LX
         src = inspect.getsource(LX._pair_slurs_in_run)
         self.assertNotIn("x_probes", src)
+
+
+class TestInkTheRecordCallsAWholeRestIsNotWrittenAsANote(unittest.TestCase):
+    """⚠️⚠️ SEAN, 2026-09-11: *"in bars where it should be just whole note rest
+    in two four. It's showing an actual quarter note, not a quarter note
+    rest."* A pitched note where the page prints silence is worse than a
+    missing one -- the reader has to hunt it down -- so a `True`
+    `notehead_is_a_whole_rest` verdict must reach the FILE, not merely the
+    record. This is the `dynamic`-decides-and-nothing-writes-it shape, asserted
+    before it can happen again."""
+
+    def _page(self, *, flagged):
+        page = _one_staff_page(notes=[("C5", QUARTER), ("D5", QUARTER)])
+        if flagged:
+            page["record"]["verdicts"].append(
+                _vrd(950, "glyph/0/0/0/0/0", Q.NOTEHEAD_IS_A_WHOLE_REST, True,
+                     reason="shape_and_position_agree"))
+        return page
+
+    def test_the_flagged_note_does_not_reach_the_file(self):
+        def pitches(xml):
+            return [p.find("step").text + p.find("octave").text
+                    for p in ET.fromstring(xml).iter("pitch")]
+        # ⚠️ The BASE arm is the positive control: without the verdict both
+        # notes are written, so a fixture that wrote neither could not be told
+        # from a rule that works.
+        self.assertEqual(pitches(SX.to_musicxml(self._page(flagged=False))[0]),
+                         ["C5", "D5"])
+        self.assertEqual(pitches(SX.to_musicxml(self._page(flagged=True))[0]),
+                         ["D5"])
+
+    def test_it_is_COUNTED_and_the_balance_still_holds(self):
+        """⚠️ The accounting control stays an EQUALITY. A refusal that is not
+        counted is how `Unbalanced` stops being able to fire."""
+        _, report = SX.to_musicxml(self._page(flagged=True))
+        self.assertEqual(report["notes_not_written"]["ink_is_a_whole_rest"], 1)
+        self.assertTrue(report["balance"]["balanced"])
+
+    def test_a_FALSE_verdict_changes_nothing(self):
+        """The POSITIVE CONTROL: the decision writes a verdict on every
+        notehead and all but a handful are `False`, so a `False` that dropped
+        notes would be catastrophic and silent."""
+        page = self._page(flagged=False)
+        page["record"]["verdicts"].append(
+            _vrd(951, "glyph/0/0/0/0/0", Q.NOTEHEAD_IS_A_WHOLE_REST, False,
+                 reason="not_rest_shaped"))
+        base, _ = SX.to_musicxml(self._page(flagged=False))
+        self.assertEqual(SX.to_musicxml(page)[0], base)
+
+    def test_an_ABSTENTION_changes_nothing(self):
+        page = self._page(flagged=False)
+        page["record"]["verdicts"].append(
+            _vrd(952, "glyph/0/0/0/0/0", Q.NOTEHEAD_IS_A_WHOLE_REST, None,
+                 outcome="abstained", reason="no_page_frame"))
+        base, _ = SX.to_musicxml(self._page(flagged=False))
+        self.assertEqual(SX.to_musicxml(page)[0], base)
+
+    def test_a_REST_is_never_refused_by_this_rule(self):
+        """A `Q.REST` row is a reading of the page; this decision's domain is
+        noteheads only, and the exporter must not apply it to a rest even if a
+        verdict somehow names one."""
+        page = _add_rest(_one_staff_page(notes=[]), 5, "restWhole",
+                         {"beats": 4.0, "written": 4.0, "dots": 0})
+        page["record"]["verdicts"].append(
+            _vrd(953, "glyph/0/0/0/0/5", Q.NOTEHEAD_IS_A_WHOLE_REST, True))
+        xml, report = SX.to_musicxml(page)
+        self.assertEqual(len([r for r in ET.fromstring(xml).iter("rest")]), 1)
+        self.assertNotIn("ink_is_a_whole_rest", report["notes_not_written"])
