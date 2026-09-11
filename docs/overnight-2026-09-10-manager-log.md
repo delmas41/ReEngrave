@@ -185,3 +185,67 @@ byte-identity control passing while the code never runs**; and **a mutation
 battery anchored on a fragment that occurs three times**, silently mutating a
 different function. The `<=` balance warning was repeated in the strongest
 terms available — it has now been ignored once by someone who had read it.
+
+**LANDED as an ARGUED NEGATIVE** — merged at `5f57e183`. Suite on the MERGED
+tree **3,728 passed / 11 skipped** (3,707 + 21); `NO VOCABULARY` still reads
+**2**, which is the negative standing rather than being papered over. Findings:
+[benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md](../benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md).
+
+**No `Q.TIE_LINK` was built, and that is the right answer.** The reason is
+structural and closes the item rather than deferring it: **nothing below EXPORT
+can contribute a record row at all.** `staged/__main__.py` writes the record
+JSON *before* it imports the exporter, and a part is built inside `export.build`
+from `Q.PART_PARTITION` — so the merge that makes two detected halves one tie
+has no home in the record. EVALUATE is excluded separately, on the plan's own
+testable rule: `_paired_spans` prefers the first head's VOICE over dropping the
+span, which is a tie-break, and **no EVALUATE consequence may contain one.**
+
+⚠️ The handoff's framing of this item (*"the exporter ALREADY sets both flags;
+what is missing is a quantity NAMING the chain"*) was accurate and **stopped one
+step short** — it did not say the record has no way to receive one. That is now
+written into `NO_VOCABULARY` itself, where the next person meets it.
+
+REACH, measured by calling the exporter's own functions so the figure cannot
+drift from what the exporter does:
+
+| | Litolff p1-3 | Brahms p0-3 |
+|---|--:|--:|
+| tie LINKS / CHAINS | 59 / 46 | 632 / 275 |
+| chains longer than two notes | 4 | **82** |
+| crossing a system break | **0** | 2 |
+
+⚠️ **One document would have got two things wrong**: on Litolff the
+system-break case looks IMPOSSIBLE and every chain looks like a pair. The
+second publisher correcting the first, for what is now at least the fifth time
+in this thread.
+
+#### ⚠️⚠️ The defect it found is worth more than the quantity would have been
+
+**A chord's tie is written on the wrong note.** `<tied>` carries no `number=`
+and joins the two notes it names, but `voicing.group_chords_in_measure` hoists
+the flag onto the EVENT with `any()` and the renderer writes it at `n == 0` —
+so a chord whose UPPER member is tied gets the tie on its LOWEST note.
+Measured: **17 of 48 written ties on Litolff (35%) and 103 of 349 on Brahms
+(29%)** land on a note carrying no tie — **two publishers agreeing to within
+six points**, which is what makes it structural rather than one page's luck.
+
+⚠️ It is the **fermata bug's shape, one week later, in a different function and
+worse**: that one LOST a mark, this one puts a mark on the WRONG NOTE.
+⚠️ **Correctly NOT fixed here.** The hoist is in `voicing.py`, shared with the
+legacy exporter and therefore with the 11-work engraved benchmark, and the
+repair moves hundreds of elements — *a wiring pass may not change behaviour it
+has not priced*, which is the plan's §2b applied to the agent's own temptation.
+It is now counted on every run. **Queued.**
+
+⚠️ A second defect, found and fixed: `FAMILIES` maps **both** `tie` and `slur`
+to `Q.ARC_KIND` and `coverage()` credited **each with the whole population** —
+`decided: 514` where the split is 270/244. A reader comparing `decided 514`
+against `written 49` would have concluded the exporter drops 465 ties. Now
+attributed by value, derived from `FAMILIES` itself.
+
+⚠️ Its own first reach probe failed in the way this repo predicts, and it said
+so: a `start -> stop` dict loses a head that begins two links and read
+`{2: 50}` — **a plausible histogram whose tell was that not one chain exceeded
+two notes** on a document that plainly holds longer ones. *A plausible
+aggregate is not evidence that its parts are real*, for the second recorded
+time.
