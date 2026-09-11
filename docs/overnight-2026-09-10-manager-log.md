@@ -684,3 +684,78 @@ creates.
 that orders the sheet carries its own disclaimer — the weights are DISPLAY
 ORDER, read by nothing, and are *"not a claim that a staff costs thirty
 notes"*.
+
+---
+
+## Phase 2 STOPPED at the calibration page — and that is the instrument working
+
+Sean took the page-1 pass, and the verdict is **"we are pretty far off and need
+to do some more work before any calibration or more pages."** No count was
+taken, deliberately, and **that is the right outcome from a calibration page**:
+the plan's whole reason for fixing categories first is that a count taken over
+output this wrong would measure the WIRING, and it says so.
+
+⚠️ **He gave seven observations, and they are worth more than a total would
+have been**, because five of them name a mechanism rather than a quantity.
+Recorded verbatim, then grounded in the file before any agent was briefed —
+because *a convincing reading of someone else's report is not evidence about
+its cause*, a lesson this repo has paid for repeatedly.
+
+| # | Sean, reading the print | grounded in the exported file |
+|--:|---|---|
+| 1 | the time signature is correct | `2/4` everywhere ✅ |
+| 2 | key sigs should be **3 flats** except **Cl. 1 flat**, **Tr/Cor none** | `<fifths>` ∈ {−3, −2, −1, **1**, **7**}, and **five parts CHANGE key mid-part** |
+| 3 | whole rests worth 2 beats come out as a single quarter | `divisions=96` → a 2/4 bar is **192**; the file writes **466 rests at 384** and **217 at 96**, with only **108** correct measure rests |
+| 4 | almost no ties or slurs convert | 32 slur starts, 84 tie starts over 4 pages |
+| 5 | none of the measure math makes sense | downstream of 3 |
+| 6 | doubled notes on a staff, two of the same note on one stem | see below |
+| 7 | the page prints only `ff`; ours has extra `f`s | `ff` 47, `f` 63, **`fff` 10, `ffff` 11** |
+
+### ⚠️⚠️ TWO OF THE SEVEN ARE ONE CAUSE, AND IT IS A MISSING CALL
+
+`grep -rn "dedupe" tools/omr/staged/*.py` returns **two hits and both are prose
+inside docstrings**. The legacy path calls `_dedupe_cross_staff_detections` at
+`transcribe.py:5557`; **the staged path calls nothing.** So the same ink
+detected twice is written twice — which is a doubled notehead on one stem, and
+is very likely why a printed `ff` assembles as `ffff`.
+
+⚠️ It was already half-recorded from another direction and nobody joined it up:
+the fermata wiring measured *"the 13 'absorbed' marks are DUPLICATE DETECTIONS,
+not chords — 13 carriers named by exactly two marks each, overlapping boxes,
+one confident and one not."* **Duplicates were known to be in the record; what
+they COST was never asked.** That is the cleanup count doing its job on its
+first outing — it did not need a number to find this, only a human looking at
+the page.
+
+### ⚠️ The rest arithmetic names its own mechanism
+
+466 rests at **twice** the bar length and 217 at **half** it, against 108 that
+are right. CLAUDE.md already holds the convention (*a whole-rest glyph means
+the BAR*) and the consequence that applies it (`size_measure_rest`) — which
+needs the **settled meter**, and the artefact's own FINDINGS record the meter
+as decided on **ONE system of seven**, with `empty_bars_padded_without_meter`
+at 162. ⚠️ So this is likely `OMR_METER_CARRY`, **held OFF on `n` = one
+document**, visibly costing the human on the first real page anyone looked at.
+The plan predicted exactly this use: *a cleanup count is what says which
+abstentions are worth resolving.* ⚠️ It is NOT dispatched yet, deliberately —
+a duplicated whole rest is not a LONE whole rest, so the dedupe job may move
+these numbers before anyone prices the meter.
+
+### The jobs, and why these two first
+
+| job | covers | why now |
+|---|---|---|
+| `claude/staged-duplicate-detections` | 6 and 7 | one cause, two symptoms, and it pollutes every measurement downstream |
+| `claude/key-signature-truth` | 2 | **a hand-read truth for a whole page exists**, which this project almost never has |
+| *(held)* rests / measure math | 3 and 5 | downstream of dedupe — price it after |
+| *(held)* ties and slurs | 4 | CLAUDE.md already measures **76% of merged arcs bind fewer than two noteheads** and calls that residue the DETECTOR's; likely reach-limited, and partly repaired by dedupe |
+
+⚠️ The key-signature brief carries the three hazards this repo has already
+recorded for that module — *`fit_key_signature` may not infer* (its own
+recorded failure is **seven sharps on a four-sharp page**, and P7 now reads
+seven sharps), *it may not carry across systems*, and *it inherits the clef
+problem* (a wrong clef yields wrong signatures rather than abstentions —
+measured, bass staves defaulted to treble read 3 flats as **2 sharps**, which
+is the `-2` in the table). **The brief says plainly that "this is a clef
+problem wearing a key-signature costume" is an acceptable answer** and worth
+more than a repair in the wrong module.
