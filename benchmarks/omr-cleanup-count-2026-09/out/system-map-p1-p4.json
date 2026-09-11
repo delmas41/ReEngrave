@@ -1,0 +1,913 @@
+{
+ "_README": "Which exported measures belong to which PRINTED system. Derived by calling export.build; asserted against the emitted XML measure-for-measure.",
+ "record": "benchmarks/omr-cleanup-count-2026-09/out/record-p1-p4.json",
+ "provenance": {
+  "commit": "9d4ccc85b9a77652f7166c31b10dbb615176d50c",
+  "dirty": true
+ },
+ "part_join": {
+  "join_decided": "slot",
+  "join_used": "slot",
+  "join_reason": "slot",
+  "systems": [
+   "1/0",
+   "2/0",
+   "2/1",
+   "3/0",
+   "3/1",
+   "4/0",
+   "4/1"
+  ],
+  "staves_per_system": [
+   8,
+   11,
+   12
+  ],
+  "parts": 12,
+  "fragmented": false,
+  "slots": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "stranded": 0
+ },
+ "systems": [
+  {
+   "page": 1,
+   "system": 0,
+   "staves": [
+    {
+     "part_index": 0,
+     "part_id": "P1",
+     "part_name": "Staff p1-s0-0",
+     "staff": 0,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    },
+    {
+     "part_index": 1,
+     "part_id": "P2",
+     "part_name": "Staff p1-s0-1",
+     "staff": 1,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    },
+    {
+     "part_index": 2,
+     "part_id": "P3",
+     "part_name": "Staff p1-s0-2",
+     "staff": 2,
+     "clef": "treble",
+     "fifths": -1,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    },
+    {
+     "part_index": 3,
+     "part_id": "P4",
+     "part_name": "Staff p1-s0-3",
+     "staff": 3,
+     "clef": "bass",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    },
+    {
+     "part_index": 4,
+     "part_id": "P5",
+     "part_name": "Staff p1-s0-4",
+     "staff": 4,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    },
+    {
+     "part_index": 5,
+     "part_id": "P6",
+     "part_name": "Staff p1-s0-5",
+     "staff": 5,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    },
+    {
+     "part_index": 6,
+     "part_id": "P7",
+     "part_name": "Staff p1-s0-6",
+     "staff": 6,
+     "clef": "bass",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    },
+    {
+     "part_index": 7,
+     "part_id": "P8",
+     "part_name": "Staff p1-s0-7",
+     "staff": 7,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    },
+    {
+     "part_index": 8,
+     "part_id": "P9",
+     "part_name": "Staff p1-s0-8",
+     "staff": 8,
+     "clef": "treble",
+     "fifths": -3,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    },
+    {
+     "part_index": 9,
+     "part_id": "P10",
+     "part_name": "Staff p1-s0-9",
+     "staff": 9,
+     "clef": "alto",
+     "fifths": -1,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    },
+    {
+     "part_index": 10,
+     "part_id": "P11",
+     "part_name": "Staff p1-s0-10",
+     "staff": 10,
+     "clef": "bass",
+     "fifths": -3,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    },
+    {
+     "part_index": 11,
+     "part_id": "P12",
+     "part_name": "Staff p1-s0-11",
+     "staff": 11,
+     "clef": "bass",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 1,
+     "last_measure": 16
+    }
+   ]
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staves": [
+    {
+     "part_index": 0,
+     "part_id": "P1",
+     "part_name": "Staff p1-s0-0",
+     "staff": 0,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 17,
+     "last_measure": 32
+    },
+    {
+     "part_index": 1,
+     "part_id": "P2",
+     "part_name": "Staff p1-s0-1",
+     "staff": 1,
+     "clef": "treble",
+     "fifths": -3,
+     "n_measures": 16,
+     "first_measure": 17,
+     "last_measure": 32
+    },
+    {
+     "part_index": 2,
+     "part_id": "P3",
+     "part_name": "Staff p1-s0-2",
+     "staff": 2,
+     "clef": "treble",
+     "fifths": -1,
+     "n_measures": 16,
+     "first_measure": 17,
+     "last_measure": 32
+    },
+    {
+     "part_index": 3,
+     "part_id": "P4",
+     "part_name": "Staff p1-s0-3",
+     "staff": 3,
+     "clef": "bass",
+     "fifths": -3,
+     "n_measures": 16,
+     "first_measure": 17,
+     "last_measure": 32
+    },
+    {
+     "part_index": 4,
+     "part_id": "P5",
+     "part_name": "Staff p1-s0-4",
+     "staff": 4,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 17,
+     "last_measure": 32
+    },
+    {
+     "part_index": 5,
+     "part_id": "P6",
+     "part_name": "Staff p1-s0-5",
+     "staff": 5,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 17,
+     "last_measure": 32
+    },
+    {
+     "part_index": 6,
+     "part_id": "P7",
+     "part_name": "Staff p1-s0-6",
+     "staff": 6,
+     "clef": "bass",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 17,
+     "last_measure": 32
+    },
+    {
+     "part_index": 7,
+     "part_id": "P8",
+     "part_name": "Staff p1-s0-7",
+     "staff": 7,
+     "clef": "treble",
+     "fifths": -3,
+     "n_measures": 16,
+     "first_measure": 17,
+     "last_measure": 32
+    },
+    {
+     "part_index": 8,
+     "part_id": "P9",
+     "part_name": "Staff p1-s0-8",
+     "staff": 8,
+     "clef": "treble",
+     "fifths": 1,
+     "n_measures": 16,
+     "first_measure": 17,
+     "last_measure": 32
+    },
+    {
+     "part_index": 9,
+     "part_id": "P10",
+     "part_name": "Staff p1-s0-9",
+     "staff": 9,
+     "clef": "alto",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 17,
+     "last_measure": 32
+    },
+    {
+     "part_index": 10,
+     "part_id": "P11",
+     "part_name": "Staff p1-s0-10",
+     "staff": 10,
+     "clef": "bass",
+     "fifths": -1,
+     "n_measures": 16,
+     "first_measure": 17,
+     "last_measure": 32
+    }
+   ]
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staves": [
+    {
+     "part_index": 0,
+     "part_id": "P1",
+     "part_name": "Staff p1-s0-0",
+     "staff": 0,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 33,
+     "last_measure": 47
+    },
+    {
+     "part_index": 1,
+     "part_id": "P2",
+     "part_name": "Staff p1-s0-1",
+     "staff": 1,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 33,
+     "last_measure": 47
+    },
+    {
+     "part_index": 2,
+     "part_id": "P3",
+     "part_name": "Staff p1-s0-2",
+     "staff": 2,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 33,
+     "last_measure": 47
+    },
+    {
+     "part_index": 3,
+     "part_id": "P4",
+     "part_name": "Staff p1-s0-3",
+     "staff": 3,
+     "clef": "tenor",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 33,
+     "last_measure": 47
+    },
+    {
+     "part_index": 4,
+     "part_id": "P5",
+     "part_name": "Staff p1-s0-4",
+     "staff": 4,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 33,
+     "last_measure": 47
+    },
+    {
+     "part_index": 5,
+     "part_id": "P6",
+     "part_name": "Staff p1-s0-5",
+     "staff": 5,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 33,
+     "last_measure": 47
+    },
+    {
+     "part_index": 6,
+     "part_id": "P7",
+     "part_name": "Staff p1-s0-6",
+     "staff": 6,
+     "clef": "bass",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 33,
+     "last_measure": 47
+    },
+    {
+     "part_index": 7,
+     "part_id": "P8",
+     "part_name": "Staff p1-s0-7",
+     "staff": 7,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 33,
+     "last_measure": 47
+    },
+    {
+     "part_index": 8,
+     "part_id": "P9",
+     "part_name": "Staff p1-s0-8",
+     "staff": 8,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 33,
+     "last_measure": 47
+    },
+    {
+     "part_index": 9,
+     "part_id": "P10",
+     "part_name": "Staff p1-s0-9",
+     "staff": 9,
+     "clef": null,
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 33,
+     "last_measure": 47
+    },
+    {
+     "part_index": 10,
+     "part_id": "P11",
+     "part_name": "Staff p1-s0-10",
+     "staff": 10,
+     "clef": "bass",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 33,
+     "last_measure": 47
+    }
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staves": [
+    {
+     "part_index": 0,
+     "part_id": "P1",
+     "part_name": "Staff p1-s0-0",
+     "staff": 0,
+     "clef": "treble",
+     "fifths": -2,
+     "n_measures": 16,
+     "first_measure": 48,
+     "last_measure": 63
+    },
+    {
+     "part_index": 1,
+     "part_id": "P2",
+     "part_name": "Staff p1-s0-1",
+     "staff": 1,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 48,
+     "last_measure": 63
+    },
+    {
+     "part_index": 2,
+     "part_id": "P3",
+     "part_name": "Staff p1-s0-2",
+     "staff": 2,
+     "clef": "treble",
+     "fifths": -1,
+     "n_measures": 16,
+     "first_measure": 48,
+     "last_measure": 63
+    },
+    {
+     "part_index": 3,
+     "part_id": "P4",
+     "part_name": "Staff p1-s0-3",
+     "staff": 3,
+     "clef": "bass",
+     "fifths": -1,
+     "n_measures": 16,
+     "first_measure": 48,
+     "last_measure": 63
+    },
+    {
+     "part_index": 4,
+     "part_id": "P5",
+     "part_name": "Staff p1-s0-4",
+     "staff": 4,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 48,
+     "last_measure": 63
+    },
+    {
+     "part_index": 5,
+     "part_id": "P6",
+     "part_name": "Staff p1-s0-5",
+     "staff": 5,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 48,
+     "last_measure": 63
+    },
+    {
+     "part_index": 6,
+     "part_id": "P7",
+     "part_name": "Staff p1-s0-6",
+     "staff": 6,
+     "clef": "bass",
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 48,
+     "last_measure": 63
+    },
+    {
+     "part_index": 7,
+     "part_id": "P8",
+     "part_name": "Staff p1-s0-7",
+     "staff": 7,
+     "clef": "treble",
+     "fifths": -3,
+     "n_measures": 16,
+     "first_measure": 48,
+     "last_measure": 63
+    },
+    {
+     "part_index": 8,
+     "part_id": "P9",
+     "part_name": "Staff p1-s0-8",
+     "staff": 8,
+     "clef": "treble",
+     "fifths": 1,
+     "n_measures": 16,
+     "first_measure": 48,
+     "last_measure": 63
+    },
+    {
+     "part_index": 9,
+     "part_id": "P10",
+     "part_name": "Staff p1-s0-9",
+     "staff": 9,
+     "clef": null,
+     "fifths": null,
+     "n_measures": 16,
+     "first_measure": 48,
+     "last_measure": 63
+    },
+    {
+     "part_index": 10,
+     "part_id": "P11",
+     "part_name": "Staff p1-s0-10",
+     "staff": 10,
+     "clef": "bass",
+     "fifths": -3,
+     "n_measures": 16,
+     "first_measure": 48,
+     "last_measure": 63
+    }
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staves": [
+    {
+     "part_index": 0,
+     "part_id": "P1",
+     "part_name": "Staff p1-s0-0",
+     "staff": 0,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 18,
+     "first_measure": 64,
+     "last_measure": 81
+    },
+    {
+     "part_index": 1,
+     "part_id": "P2",
+     "part_name": "Staff p1-s0-1",
+     "staff": 1,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 18,
+     "first_measure": 64,
+     "last_measure": 81
+    },
+    {
+     "part_index": 2,
+     "part_id": "P3",
+     "part_name": "Staff p1-s0-2",
+     "staff": 2,
+     "clef": "bass",
+     "fifths": -1,
+     "n_measures": 18,
+     "first_measure": 64,
+     "last_measure": 81
+    },
+    {
+     "part_index": 3,
+     "part_id": "P4",
+     "part_name": "Staff p1-s0-3",
+     "staff": 3,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 18,
+     "first_measure": 64,
+     "last_measure": 81
+    },
+    {
+     "part_index": 4,
+     "part_id": "P5",
+     "part_name": "Staff p1-s0-4",
+     "staff": 4,
+     "clef": "treble",
+     "fifths": -3,
+     "n_measures": 18,
+     "first_measure": 64,
+     "last_measure": 81
+    },
+    {
+     "part_index": 5,
+     "part_id": "P6",
+     "part_name": "Staff p1-s0-5",
+     "staff": 5,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 18,
+     "first_measure": 64,
+     "last_measure": 81
+    },
+    {
+     "part_index": 6,
+     "part_id": "P7",
+     "part_name": "Staff p1-s0-6",
+     "staff": 6,
+     "clef": "alto",
+     "fifths": 7,
+     "n_measures": 18,
+     "first_measure": 64,
+     "last_measure": 81
+    },
+    {
+     "part_index": 7,
+     "part_id": "P8",
+     "part_name": "Staff p1-s0-7",
+     "staff": 7,
+     "clef": "bass",
+     "fifths": -3,
+     "n_measures": 18,
+     "first_measure": 64,
+     "last_measure": 81
+    }
+   ]
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staves": [
+    {
+     "part_index": 0,
+     "part_id": "P1",
+     "part_name": "Staff p1-s0-0",
+     "staff": 0,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 82,
+     "last_measure": 96
+    },
+    {
+     "part_index": 1,
+     "part_id": "P2",
+     "part_name": "Staff p1-s0-1",
+     "staff": 1,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 82,
+     "last_measure": 96
+    },
+    {
+     "part_index": 2,
+     "part_id": "P3",
+     "part_name": "Staff p1-s0-2",
+     "staff": 2,
+     "clef": "treble",
+     "fifths": -1,
+     "n_measures": 15,
+     "first_measure": 82,
+     "last_measure": 96
+    },
+    {
+     "part_index": 3,
+     "part_id": "P4",
+     "part_name": "Staff p1-s0-3",
+     "staff": 3,
+     "clef": "bass",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 82,
+     "last_measure": 96
+    },
+    {
+     "part_index": 4,
+     "part_id": "P5",
+     "part_name": "Staff p1-s0-4",
+     "staff": 4,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 82,
+     "last_measure": 96
+    },
+    {
+     "part_index": 5,
+     "part_id": "P6",
+     "part_name": "Staff p1-s0-5",
+     "staff": 5,
+     "clef": "treble",
+     "fifths": 1,
+     "n_measures": 15,
+     "first_measure": 82,
+     "last_measure": 96
+    },
+    {
+     "part_index": 6,
+     "part_id": "P7",
+     "part_name": "Staff p1-s0-6",
+     "staff": 6,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 82,
+     "last_measure": 96
+    },
+    {
+     "part_index": 7,
+     "part_id": "P8",
+     "part_name": "Staff p1-s0-7",
+     "staff": 7,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 82,
+     "last_measure": 96
+    },
+    {
+     "part_index": 8,
+     "part_id": "P9",
+     "part_name": "Staff p1-s0-8",
+     "staff": 8,
+     "clef": null,
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 64,
+     "last_measure": 78
+    },
+    {
+     "part_index": 9,
+     "part_id": "P10",
+     "part_name": "Staff p1-s0-9",
+     "staff": 9,
+     "clef": null,
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 64,
+     "last_measure": 78
+    },
+    {
+     "part_index": 10,
+     "part_id": "P11",
+     "part_name": "Staff p1-s0-10",
+     "staff": 10,
+     "clef": "bass",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 64,
+     "last_measure": 78
+    }
+   ]
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staves": [
+    {
+     "part_index": 0,
+     "part_id": "P1",
+     "part_name": "Staff p1-s0-0",
+     "staff": 0,
+     "clef": "treble",
+     "fifths": -3,
+     "n_measures": 15,
+     "first_measure": 97,
+     "last_measure": 111
+    },
+    {
+     "part_index": 1,
+     "part_id": "P2",
+     "part_name": "Staff p1-s0-1",
+     "staff": 1,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 97,
+     "last_measure": 111
+    },
+    {
+     "part_index": 2,
+     "part_id": "P3",
+     "part_name": "Staff p1-s0-2",
+     "staff": 2,
+     "clef": "treble",
+     "fifths": -1,
+     "n_measures": 15,
+     "first_measure": 97,
+     "last_measure": 111
+    },
+    {
+     "part_index": 3,
+     "part_id": "P4",
+     "part_name": "Staff p1-s0-3",
+     "staff": 3,
+     "clef": "bass",
+     "fifths": -1,
+     "n_measures": 15,
+     "first_measure": 97,
+     "last_measure": 111
+    },
+    {
+     "part_index": 4,
+     "part_id": "P5",
+     "part_name": "Staff p1-s0-4",
+     "staff": 4,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 97,
+     "last_measure": 111
+    },
+    {
+     "part_index": 5,
+     "part_id": "P6",
+     "part_name": "Staff p1-s0-5",
+     "staff": 5,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 97,
+     "last_measure": 111
+    },
+    {
+     "part_index": 6,
+     "part_id": "P7",
+     "part_name": "Staff p1-s0-6",
+     "staff": 6,
+     "clef": null,
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 97,
+     "last_measure": 111
+    },
+    {
+     "part_index": 7,
+     "part_id": "P8",
+     "part_name": "Staff p1-s0-7",
+     "staff": 7,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 97,
+     "last_measure": 111
+    },
+    {
+     "part_index": 8,
+     "part_id": "P9",
+     "part_name": "Staff p1-s0-8",
+     "staff": 8,
+     "clef": "treble",
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 79,
+     "last_measure": 93
+    },
+    {
+     "part_index": 9,
+     "part_id": "P10",
+     "part_name": "Staff p1-s0-9",
+     "staff": 9,
+     "clef": "alto",
+     "fifths": -3,
+     "n_measures": 15,
+     "first_measure": 79,
+     "last_measure": 93
+    },
+    {
+     "part_index": 10,
+     "part_id": "P11",
+     "part_name": "Staff p1-s0-10",
+     "staff": 10,
+     "clef": null,
+     "fifths": null,
+     "n_measures": 15,
+     "first_measure": 79,
+     "last_measure": 93
+    }
+   ]
+  }
+ ]
+}

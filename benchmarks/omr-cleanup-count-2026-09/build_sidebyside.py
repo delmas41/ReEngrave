@@ -124,6 +124,7 @@ def slice_measures(xml_text, wanted):
         dst = ET.SubElement(out, "part", {"id": pid})
         carried = {}
         first = True
+        kept = []
         for m in src.findall("measure"):
             n = int(m.get("number"))
             att = m.find("attributes")
@@ -147,6 +148,24 @@ def slice_measures(xml_text, wanted):
                     for i, t in enumerate(need):
                         att.insert(i, carried[t])
                 first = False
+            kept.append(m)
+        # ⚠️⚠️ RENUMBERED 1..n WITHIN THE SLICE, AND THE REASON IS A REAL
+        # DEFECT IN THE FILE RATHER THAN A RENDERING PREFERENCE. A part whose
+        # staff is SUPPRESSED on a system gets no measures for those bars, so
+        # from Litolff p.4 onward P9-P11 are eighteen bars behind P1-P8 and
+        # `<measure number="82">` names a different instant in different
+        # parts. Verovio says so out loud -- `Mismatching measure number 87`
+        # -- and would drop measures rather than render them.
+        #
+        # The slice therefore aligns by ORDINAL, which is what the PRINT does:
+        # the fourth bar of this system is the fourth bar of this system on
+        # every staff. That is right for looking at, and it is NOT a repair --
+        # the file still carries the defect and FINDINGS.md §3 records it. A
+        # staff that genuinely read a different NUMBER of bars still comes out
+        # visibly short here, which is the one thing this alignment must not
+        # hide.
+        for i, m in enumerate(kept, 1):
+            m.set("number", str(i))
             dst.append(m)
     return ET.tostring(out, encoding="unicode")
 
@@ -192,9 +211,9 @@ section{background:#fff;border:1px solid #ddd7c9;border-radius:6px;margin:0 0 26
 table.facts{border-collapse:collapse;font-size:12.5px;margin:6px 0 2px}
 table.facts td,table.facts th{border:1px solid #e6e0d2;padding:3px 8px;text-align:left}
 table.facts th{background:#faf7ef;font-weight:600}
-.note{background:#fff8e6;border-left:3px solid #d9a441;padding:7px 11px;
+.msg{background:#fff8e6;border-left:3px solid #d9a441;padding:7px 11px;
       font-size:12.5px;margin:8px 0}
-.bad{background:#fdecec;border-left-color:#c0504d}
+.msg.bad{background:#fdecec;border-left-color:#c0504d}
 code{background:#f1ede2;padding:1px 4px;border-radius:3px;font-size:12px}
 """
 
@@ -237,7 +256,13 @@ def main(argv=None):
             pi = rendered[page]
             name = f"p{page}-s{sysi}.png"
             crop_px, size = crop_system(pi.rgb, band, crops / name)
-            crop_rel = f"crops/{name}"
+            # ⚠️ EMBEDDED, not linked. The repo's root .gitignore excludes
+            # `benchmarks/**/crops/` -- rasters are build products here -- so a
+            # linked crop would leave the committed HTML showing seven broken
+            # images to anyone who had not re-run the gather, which is the one
+            # reader this artefact is FOR. One self-contained file instead.
+            crop_rel = ("data:image/png;base64,"
+                        + base64.b64encode((crops / name).read_bytes()).decode())
         wanted = {r["part_id"]: (r["first_measure"], r["last_measure"])
                   for r in entry["staves"]}
         svg = None
@@ -246,14 +271,26 @@ def main(argv=None):
             svg = render_svg(tk, slice_measures(xml_text, wanted), 3000)
         except Exception as exc:                       # noqa: BLE001
             err = f"{type(exc).__name__}: {exc}"
-        rows.append({"page": page, "system": sysi, "staves": entry["staves"],
+        # ⚠️ THE CONTROL ON THE ENGRAVED HALF. Verovio silently DROPS what it
+        # cannot place -- it printed "Mismatching measure number 87" and kept
+        # going before the slice was renumbered -- so a row could look
+        # complete while showing fewer notes than the file holds, and the
+        # human would count real music as missing. The glyph count in the SVG
+        # is compared with the count in the FILE for exactly these bars, and a
+        # disagreement is shown as a banner on that row rather than logged.
+        drawn_notes = svg.count('class="note"') if svg else 0
+        drawn_rests = (svg.count('class="rest"') + svg.count('class="mRest"')
+                       + svg.count('class="multiRest"')) if svg else 0
+        rows.append({"drawn_notes": drawn_notes, "drawn_rests": drawn_rests,
+                     "page": page, "system": sysi, "staves": entry["staves"],
                      "crop": crop_rel, "crop_px": crop_px, "svg": svg,
                      "svg_error": err, "prop": by_sys.get(key, {})})
 
     rows.sort(key=lambda r: (-(r["prop"].get("attention_score") or 0),
                              r["page"], r["system"]))
 
-    parts_html = [f"<style>{CSS}</style>",
+    parts_html = ['<meta charset="utf-8">',
+                  f"<style>{CSS}</style>",
                   "<header><h1>Beethoven 5, movement 1 — Litolff 1870 (IMSLP 984073) "
                   "— the print beside our output</h1>",
                   f"<div class='sub'>{len(rows)} printed systems, ordered by "
@@ -277,9 +314,9 @@ def main(argv=None):
         if r["crop"]:
             parts_html.append(
                 f"<a href='{r['crop']}' target='_blank' title='open full size'>"
-                f"<img src='{r['crop']}' loading='lazy'></a>")
+                f"<img src='{r['crop']}'></a>")
         else:
-            parts_html.append("<div class='note bad'>no crop: the record carries "
+            parts_html.append("<div class='msg bad'>no crop: the record carries "
                               "no page-pixel band for this system.</div>")
         parts_html.append("</div>")
         parts_html.append("<div class='lbl'>our output, the same bars</div>"
@@ -287,15 +324,31 @@ def main(argv=None):
         if r["svg"]:
             parts_html.append(r["svg"])
         else:
-            parts_html.append(f"<div class='note bad'>Verovio did not render this "
+            parts_html.append(f"<div class='msg bad'>Verovio did not render this "
                               f"slice: {html.escape(str(r['svg_error']))}</div>")
         parts_html.append("</div>")
+        want_n, want_r = p.get("notes_written"), p.get("rests_written")
+        if r["svg"] and (r["drawn_notes"] != want_n or r["drawn_rests"] != want_r):
+            parts_html.append(
+                f"<div class='msg bad'>⚠️ the engraved half does NOT show "
+                f"everything the file holds: drawn {r['drawn_notes']} notes / "
+                f"{r['drawn_rests']} rests against {want_n} / {want_r} in the "
+                f"file for these bars. Count from the FILE, not from this "
+                f"picture, until that is explained.</div>")
+        elif r["svg"]:
+            parts_html.append(
+                f"<div class='msg'>control: the engraved half draws exactly "
+                f"what the file holds for these bars — {want_n} notes, "
+                f"{want_r} rests.</div>")
 
         parts_html.append("<div class='lbl'>what the machine PROPOSES here "
                           "(never a count)</div><table class='facts'>"
                           "<tr><th>fact</th><th>value</th></tr>")
-        for k in ("staves_printed", "bars_printed_per_staff", "bars_exported",
+        for k in ("staves_printed", "bars_printed_range",
+                  "bars_printed_minus_bars_read",
+                  "bars_printed_per_staff", "bars_exported",
                   "proposed_missing_staff_systems",
+                  "parts_disagree_about_the_bar_by",
                   "proposed_missing_bars_nothing_read",
                   "proposed_missing_notes_held_back",
                   "proposed_spurious_arpeggiato_detections",

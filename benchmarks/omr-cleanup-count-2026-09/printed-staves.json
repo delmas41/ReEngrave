@@ -4,14 +4,15 @@
  "_scope": "pdf pages 1-4 only. A page with no entry gets NO proposal -- never a guess, and never a zero standing in for one.",
  "source": "benchmarks/omr-scan-e2e-2026-09/works.json rows beethoven-sym5-mvt1-984073-p1 .. p4",
  "edition": "beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+ "_bars": "`bars` is each system's PRINTED measure range, from the same works.json rows. Those windows are established by the plate's OWN printed system-start measure numbers -- 17 and 34 on p.2, 49 and 65 on p.3, 83 and 98 on p.4 -- chained from the hand-verified p.1 window of mm 1-16. So the bar COUNT of a system is a fact about the print, like the staff count, and not an OMR reading.",
  "pages": {
-  "1": {"systems": [12], "page_n_staves": 12,
+  "1": {"systems": [12], "page_n_staves": 12, "bars": [[1, 16]],
         "note": "one system, the full 12-staff lineup"},
-  "2": {"systems": [11, 11], "page_n_staves": 22,
+  "2": {"systems": [11, 11], "page_n_staves": 22, "bars": [[17, 33], [34, 48]],
         "note": "from p.2 the lineup condenses by one: Violoncello and Basso share the bottom string staff"},
-  "3": {"systems": [11, 8], "page_n_staves": 19,
+  "3": {"systems": [11, 8], "page_n_staves": 19, "bars": [[49, 64], [65, 82]],
         "note": "system 2 suppresses Oboi, Trombe and Timpani"},
-  "4": {"systems": [11, 11], "page_n_staves": 22,
+  "4": {"systems": [11, 11], "page_n_staves": 22, "bars": [[83, 97], [98, 112]],
         "note": "both systems print 11 but the LINEUPS DIFFER: system 1 suppresses Timpani and SPLITS the bottom staff; system 2 keeps Timpani and condenses it again"}
  }
 }

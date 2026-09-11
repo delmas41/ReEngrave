@@ -193,13 +193,42 @@ def main(argv=None):
         pr = printed.get(str(page))
         n_printed = None
         prop_missing_staves = None
+        printed_bars = None
+        bar_delta = None
         if pr and sysi < len(pr["systems"]):
             n_printed = pr["systems"][sysi]
             prop_missing_staves = max(0, n_printed - len(entry["staves"]))
+        if pr and sysi < len(pr.get("bars", [])):
+            lo, hi = pr["bars"][sysi]
+            printed_bars = f"{lo}-{hi}"
+            # ⚠️ A FACT, NOT A PROPOSAL, and the distinction is deliberate.
+            # The printed bar count is hand-read, so unlike everything else
+            # here it COULD support a `spurious` proposal when we emit more
+            # bars than the page prints. It is left as a fact for the human
+            # because `CATEGORIES.md` section 3 -- committed before any of
+            # this existed -- fixes the machine's contribution as being about
+            # ABSENCE only, and widening that quietly, after seeing the data,
+            # is exactly the fitting the commit order exists to rule out.
+            bar_delta = (hi - lo + 1) - max(
+                (r["n_measures"] for r in entry["staves"]), default=0)
+
+        # ⚠️ A STRUCTURAL DEFECT VISIBLE ONLY ACROSS PARTS, and the reason the
+        # side-by-side has to renumber. A part whose staff is SUPPRESSED on an
+        # earlier system gets no measures for those bars, so its measure
+        # numbers run behind the parts that played and `<measure number="82">`
+        # names a different instant in different parts of one file. Recorded
+        # per system where it SHOWS, not where it was caused.
+        firsts = sorted({r["first_measure"] for r in entry["staves"]})
+        out_of_sync = (max(firsts) - min(firsts)) if len(firsts) > 1 else 0
 
         score = (3 * n_blank_exported + prop_missing_notes
-                 + 30 * (prop_missing_staves or 0))
+                 + 30 * (prop_missing_staves or 0)
+                 + 30 * (1 if out_of_sync else 0))
         why = []
+        if out_of_sync:
+            why.append(f"the parts DISAGREE about which bar this is — "
+                       f"{len(firsts)} different measure numbers for one "
+                       f"printed system, {out_of_sync} apart")
         if prop_missing_staves:
             why.append(f"the print carries {n_printed} staves here and we "
                        f"exported {len(entry['staves'])}")
@@ -209,6 +238,10 @@ def main(argv=None):
             why.append(f"{n_blank_exported} bar(s) exported with nothing read in them")
         if prop_missing_notes:
             why.append(f"{prop_missing_notes} gathered note(s) held out of the file")
+        if bar_delta:
+            why.append(f"the print has {abs(bar_delta)} "
+                       f"{'more' if bar_delta > 0 else 'fewer'} bar(s) here "
+                       f"than we read")
         if not why:
             why.append("nothing proposed — the machine sees no absence here")
         systems.append({
@@ -225,7 +258,10 @@ def main(argv=None):
             "proposed_missing_notes_held_back": prop_missing_notes,
             "proposed_missing_notes_by_reason": dict(h),
             "staves_printed": n_printed,
+            "bars_printed_range": printed_bars,
+            "bars_printed_minus_bars_read": bar_delta,
             "proposed_missing_staff_systems": prop_missing_staves,
+            "parts_disagree_about_the_bar_by": out_of_sync,
             "proposed_spurious": None,
             "attention_score": score,
             "why": "; ".join(why),
