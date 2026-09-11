@@ -759,3 +759,97 @@ measured, bass staves defaulted to treble read 3 flats as **2 sharps**, which
 is the `-2` in the table). **The brief says plainly that "this is a clef
 problem wearing a key-signature costume" is an acceptable answer** and worth
 more than a repair in the wrong module.
+
+### Key signatures — LANDED, and it refuted the manager's leading hypothesis again
+
+Merged at `2c07f225`. Suite **3,791 / 11** (3,779 + exactly its 12 tests);
+health, inventory, `gather_coverage`, `export_coverage` all 0. Findings:
+[benchmarks/omr-keysig-truth-2026-09/FINDINGS.md](../benchmarks/omr-keysig-truth-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE BRIEF ASKED WHETHER THIS WAS "A CLEF PROBLEM WEARING A
+KEY-SIGNATURE COSTUME" AND SAID YES WOULD BE THE MORE VALUABLE ANSWER. IT IS
+NO.** Over the same 75 printed staves the clef reads **68 correct / 6
+abstained / 1 wrong**, and **all ten wrong key readings sit on a
+correctly-read clef**. The single wrong clef (Fagotti, bass header with a
+tenor change at bar 37) costs an **abstention**, not a wrong key —
+`run_fits_no_slot_table` doing its job. ⚠️ The `-2` that looked like the
+recorded *bass-defaulted-to-treble reads 3 flats as 2 sharps* signature is
+NOT that; the manager offered that reading in the brief and it did not
+survive.
+
+**Graded twice, because the FILE CANNOT SAY "I could not tell"** — an
+abstained key exports no `<key>`, which reads as no accidentals:
+
+| | correct | wrong | abstained |
+|---|--:|--:|--:|
+| READING before | 16 | 10 | 49 |
+| READING after | **35** | 15 | 25 |
+| FILE before | 33 | — | 42 wrong |
+| FILE after | **44** | — | 31 wrong |
+
+12 gained, **1 lost and NAMED** (a Corni abstention that was accidentally
+right became a template `-1`). ⚠️⚠️ **17 of the 33 "before" right rows were
+ABSTENTIONS landing on a horn/trumpet/timpani** — which print no signature
+anyway — **so a count of parts reading `-3` was never the score**, and the
+staff→instrument join is what makes this gradeable at all. Sean's one sentence
+about Cl./Tr./Cor. is the whole enabling fact.
+
+#### ⚠️⚠️ THE BIGGEST CAUSE WAS A FOURTH MECHANISM NOBODY NAMED — AN EMPTY CROP
+
+**Eleven of 75 header crops contained no clef and no key signature at all.**
+Every window is 16.0 staff spaces except those eleven at **6.1-6.2**.
+`system_left_edge` takes the **MINIMUM** of one estimate per staff; on p.2
+system 1 the eleven estimates are `331, 345, 345, 263, 334, …` and the fourth
+under-runs its siblings by ~70 px (4.5 staff spaces), so **the minimum PREFERS
+the outlier and it decides the window for all eleven staves.**
+
+⚠️ **ONE CAUSE, TWO DIFFERENT FAILURES, AND THE SECOND IS THE FAMILIAR ONE:**
+the locator **abstained**; the template found a *"clean window"* and answered a
+confident **`fifths: 0`** — **a key signature fabricated from an empty crop.**
+That is *a fallback converting "cannot tell" into a definite answer*, the rule
+this file already states in its widest form.
+
+⚠️ **THE TREE IS NARROWER THAN THE REPORT AND THE TREE IS RIGHT.** The summary
+said the repair *"swaps a statistic (min → median)"*; `system_left_edge`'s own
+docstring says **the under-run is NOT repaired** — a second statistic is
+computed ALONGSIDE the minimum so a bad `x0` now costs a window that is too
+**WIDE** (which both readers survive) instead of an empty one. The direct
+clamp was measured and **refused**: 3 correct readings lost for 6 new wrong,
+moving 19 windows to fix 11. **Read the docstring, not the summary.**
+
+#### It re-ranked the next work AWAY from itself
+
+⚠️ **12 of 75 staff-systems are joined to the WRONG INSTRUMENT**, on the two
+systems whose lineup is not canonical (8 staves; 11 with Timpani tacet and
+Vc/Basso printed apart) — both stitched by ORDINAL. **P7's seven sharps are
+the Timpani's part carrying a reading taken from the VIOLA.** That is
+`_stitch_slots`, not the key reader. And the **cross-system vote** that would
+fix most of the remaining key residue is **blocked on that same join** —
+keyed on it, it would carry the viola's `7` onto the timpani, which is
+`StaffCandidate.can_carry`'s own recorded hazard arriving from a new
+direction.
+
+**So the PART JOIN is the ranked lever**, named by the job rather than by the
+manager, and it is plausibly also Sean's *"none of the measure math makes
+sense"*.
+
+#### Refused, and docs corrected
+
+Refused: `max_inferred_ratio` (the `7` — one staff of 75, documented rationale
+pointing the other way), the `x0` clamp, every locator/template threshold, and
+the cross-system vote (blocked on the join). ⚠️ **Nothing was tuned.**
+
+Corrected in place: `system_left_edge`'s docstring asserted the invariant that
+makes the minimum safe — *"can only ever be too far right and never too far
+left"* — **measured FALSE**; `ASSUMPTIONS.md` **D20 closed**; and
+`adjudicate_key_signature`'s `checked_by` names `key_signature_corroboration`
+as *"CONSUMED, default-ON"* while it is imported only by `transcribe.py` and
+is **unreachable from the staged path** — with two inert `wants` entries
+beside it (`KEYSIG_MARKER` is a THIRD reader, gathered and read by nothing).
+
+⚠️ **Declared, not buried**: the after-grade is a **three-arm probe**
+reproducing the shipped artefact on 71 of 75 — both repairs are GATHER
+changes, so `readjudicate` is structurally blind to them — and **the
+end-to-end re-gather did NOT complete**, so **no regenerated `<fifths>` table
+is claimed**. `grade_artefact.py --map` is committed to finish it. n = 1
+document, 1 publisher.
