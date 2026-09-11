@@ -302,10 +302,21 @@ All four are closed; the second run is all-red with ARM 0 SURVIVED.
   minute. Recorded as *in flight with no failure so far*, and deliberately not
   as a green figure that was not observed. `health --check`,
   `inventory --check` and `gather_coverage` all exit 0.
-  ⚠️ A slow run was nearly misdiagnosed as a HANG, twice, because two polls
-  happened to land on the same dot count — **a stalled progress bar under
-  contention is indistinguishable from a hang until you check the process's
-  CPU clock**, and the test at that position passes standalone in 30s.
+  ⚠️⚠️ **A SLOW RUN WAS NEARLY MISDIAGNOSED AS A HANG, TWICE**, because two
+  polls landed on the same dot count and then two separate runs stalled at the
+  same position. **A stalled progress bar under contention is
+  indistinguishable from a hang** until you check the process's CPU clock — it
+  was accruing seconds, so it was starved, not stuck. What finally named it was
+  neither: mapping the dot count onto `--collect-only`'s ordered test list and
+  reading the test at that index, whose **own docstring prices it**
+  (`test_voting_off_the_alias_is_the_same_answer_as_voting_off_the_text`:
+  *"`instruments.lookup` costs 23-136 ms per string … 21.98 s on Ravel's 427"*,
+  run over every document of a 1,422-label corpus). It is the most expensive
+  test in the suite, pre-existing, and untouched by this change.
+  ⚠️ **And I made it worse**: diagnosing it by running candidate tests in
+  parallel put a second and third pytest on a machine already at load 7, which
+  starved the run I was diagnosing. **The instrument competed with its
+  subject.**
 
 ---
 
