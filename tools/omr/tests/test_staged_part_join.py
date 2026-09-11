@@ -179,6 +179,77 @@ class TestThePartJoinRefusesAGraft(unittest.TestCase):
         self.assertEqual(v.reason, "ordinal")
         self.assertEqual(v.value["join"], "ordinal")
 
+    def test_a_GAPPED_slot_table_is_still_used_to_join(self):
+        """⚠️⚠️ THE POSITIVE CONTROL THE OTHER TESTS COULD NOT SUPPLY, AND A
+        MUTATION IS WHY IT EXISTS. Bypassing `_slots_are_ordinals` entirely
+        (`if usable:`) refuses EVERY document and left the suite green: every
+        refusal test was satisfied by a rule that refuses unconditionally.
+
+        ⚠️ The population is UNREACHABLE END TO END TODAY, and that is a
+        finding rather than a testing inconvenience: `adjudicate_slot_index`
+        returns the staff's own ordinal on every page, so no real record has
+        ever carried a gapped table. The verdicts are therefore injected, and
+        `Q.SLOT_INDEX` is held out of the order so nothing overwrites them --
+        which is the honest way to exercise a branch the pipeline cannot yet
+        reach, as against pretending it can."""
+        from tools.omr.staged.adjudicate import REGISTRY, _ensure_decisions
+        from tools.omr.staged.record import Verdict
+
+        _ensure_decisions()
+        log = Log()
+        for s, n in ((0, 11), (1, 8)):
+            log.observe(R.system(0, s), Q.SYSTEM_STAFF_COUNT, n,
+                        reader=READERS.GEOMETRY, frame="system")
+            for i in range(n):
+                log.observe(R.staff(0, s, i), Q.STAFF_ORDINAL, i,
+                            reader=READERS.GEOMETRY, frame="system")
+        log.freeze()
+
+        # system 1 suppresses slots 1, 5 and 6 -- the Litolff p.3 shape, as a
+        # reference alignment with deletions would report it
+        gapped = {0: list(range(11)), 1: [0, 2, 3, 4, 7, 8, 9, 10]}
+        for s, values in gapped.items():
+            for i, slot in enumerate(values):
+                log.record(Verdict(
+                    id=log._next_id("vrd"), subject=R.staff(0, s, i),
+                    quantity=Q.SLOT_INDEX, outcome=Outcome.DECIDED,
+                    value=slot, decider="injected", reason="named"))
+
+        adjudicate.run(log, order=(Q.SYSTEM_STAFF_COUNT,
+                                   Q.PART_PARTITION))
+        v = log.verdict(Q.PART_PARTITION, R.DOCUMENT)
+        self.assertEqual(v.reason, "slot")
+        self.assertEqual(v.value["join"], "slot")
+        self.assertEqual(v.value["slots"], list(range(11)))
+
+    def test_no_slots_at_all_is_a_DIFFERENT_refusal(self):
+        """⚠️ TWO REFUSALS, TWO REASONS, AND THEY MUST NOT COLLAPSE. *"No slot
+        was decided"* and *"every slot is the staff's position"* are different
+        facts needing different repairs -- the first wants a reader, the second
+        wants a reference lineup -- and a `deduced_anchor` that cannot say
+        which sends the next person to the wrong module.
+
+        ⚠️ THIS TEST EXISTS BECAUSE A MUTATION SURVIVED. Bypassing
+        `_slots_are_ordinals` entirely (`if usable:`) refuses every document
+        and left the suite GREEN: the refusal tests were all satisfied by a
+        rule that refuses unconditionally, which is exactly what a battery of
+        refusal tests does when nothing in it can distinguish them."""
+        log = Log()
+        for s, n in ((0, 3), (1, 2)):
+            log.observe(R.system(0, s), Q.SYSTEM_STAFF_COUNT, n,
+                        reader=READERS.GEOMETRY, frame="system")
+            for i in range(n):
+                # the staff subject exists, but nothing supplies an ORDINAL,
+                # so `adjudicate_slot_index` abstains `no_ordinal`
+                log.observe(R.staff(0, s, i), Q.STAFF_SPACING, 41.25,
+                            reader=READERS.GEOMETRY, frame="page")
+        adjudicate.run(log)
+        self.assertIs(log.verdict(Q.SLOT_INDEX, R.staff(0, 0, 0)).outcome,
+                      Outcome.ABSTAINED)
+        v = log.verdict(Q.PART_PARTITION, R.DOCUMENT)
+        self.assertEqual(v.reason, "deduced_anchor")
+        self.assertEqual(v.value["reason"], "slots_unusable")
+
     def test_the_slots_really_were_the_ordinals(self):
         """⚠️ The premise, asserted rather than assumed. If
         `adjudicate_slot_index` ever starts producing a gapped table this test

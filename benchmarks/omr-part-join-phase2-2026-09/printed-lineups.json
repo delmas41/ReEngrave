@@ -1,0 +1,53 @@
+{
+  "_README": "WHICH INSTRUMENT each printed staff of each printed system carries, for pdf pages 1-4 of this edition. This is what the ordinal join is wrong about, and nothing machine-readable in the repo held it.",
+
+  "_provenance": "TWO INDEPENDENT SOURCES THAT AGREE, and neither is a reading of the same raster the join is made from.\n  (1) HAND-READ: benchmarks/omr-cleanup-count-2026-09/printed-staves.json, whose per-system counts and prose notes ('system 2 suppresses Oboi, Trombe and Timpani'; 'system 1 suppresses Timpani and SPLITS the bottom staff; system 2 keeps Timpani and condenses it again') were transcribed from the hand-verified works.json rows.\n  (2) OCR: the margin labels the page itself prints, read by probe/margin_label_reach.py (out/margin-label-reach.log, 50 labels over 75 staves). The opening system reads 12 of 12 -- Flauti, Oboi, Clarinetti, Fagotti, Corni, Trombe, Timpani, Violino I, Violino II, Viola, Violoncello, Basso -- which is where `full` below comes from; and page 3's 8-stave system reads Fl./Cl./Fag./Cor., NO Ob., which is source (2) confirming source (1)'s suppression list on the one system that matters most.",
+
+  "_why_two_sources": "CLAUDE.md's standing hazard: an arbiter read off the same raster as the reading it arbitrates falls silent exactly where it is needed. Source (1) is a human on the print and cannot. Source (2) can -- and it is used only as CORROBORATION of (1), never alone. Where they disagreed, nothing would be written here; they do not.",
+
+  "_not_established": "The lineup is named ONLY for pdf pages 1-4 of ONE edition of ONE movement. Nothing here is a claim about page 5 onward, about another Litolff plate, or about any other publisher.",
+
+  "full": ["Flauti", "Oboi", "Clarinetti", "Fagotti", "Corni", "Trombe",
+           "Timpani", "Violino I", "Violino II", "Viola",
+           "Violoncello", "Basso"],
+
+  "systems": [
+    {"page": 1, "system": 0, "staves": 12,
+     "lineup": ["Flauti", "Oboi", "Clarinetti", "Fagotti", "Corni", "Trombe",
+                "Timpani", "Violino I", "Violino II", "Viola",
+                "Violoncello", "Basso"],
+     "note": "the full lineup; Violoncello and Basso on separate staves"},
+
+    {"page": 2, "system": 0, "staves": 11,
+     "lineup": ["Flauti", "Oboi", "Clarinetti", "Fagotti", "Corni", "Trombe",
+                "Timpani", "Violino I", "Violino II", "Viola",
+                "Violoncello e Basso"],
+     "note": "from p.2 the bottom two strings share one staff"},
+
+    {"page": 2, "system": 1, "staves": 11,
+     "lineup": ["Flauti", "Oboi", "Clarinetti", "Fagotti", "Corni", "Trombe",
+                "Timpani", "Violino I", "Violino II", "Viola",
+                "Violoncello e Basso"]},
+
+    {"page": 3, "system": 0, "staves": 11,
+     "lineup": ["Flauti", "Oboi", "Clarinetti", "Fagotti", "Corni", "Trombe",
+                "Timpani", "Violino I", "Violino II", "Viola",
+                "Violoncello e Basso"]},
+
+    {"page": 3, "system": 1, "staves": 8,
+     "lineup": ["Flauti", "Clarinetti", "Fagotti", "Corni",
+                "Violino I", "Violino II", "Viola", "Violoncello e Basso"],
+     "note": "suppresses Oboi, Trombe and Timpani. THE SUPPRESSIONS ARE INTERIOR, which is the whole of the defect: every staff below the first one shifts up under an ordinal join."},
+
+    {"page": 4, "system": 0, "staves": 11,
+     "lineup": ["Flauti", "Oboi", "Clarinetti", "Fagotti", "Corni", "Trombe",
+                "Violino I", "Violino II", "Viola",
+                "Violoncello", "Basso"],
+     "note": "suppresses Timpani and SPLITS the bottom staff again. Equal COUNT to its neighbour, different LINEUP -- the failure shape adjudicate_part_partition's own docstring names and does not address."},
+
+    {"page": 4, "system": 1, "staves": 11,
+     "lineup": ["Flauti", "Oboi", "Clarinetti", "Fagotti", "Corni", "Trombe",
+                "Timpani", "Violino I", "Violino II", "Viola",
+                "Violoncello e Basso"]}
+  ]
+}
