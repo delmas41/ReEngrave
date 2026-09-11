@@ -367,3 +367,45 @@ priced* never forbade the repair, it named its precondition.
 ⚠️ **The general lesson for this manager role: a report saying "docs corrected"
 is a claim about the tree and is one grep from being checked.** It was checked
 here because CLAUDE.md has a standing warning about exactly this shape.
+
+### Job 5 — tie pairing: GEOMETRY in, PITCH out
+
+Dispatched off `0b1efb31`, in parallel with job 3. **A diagnosis-first job**,
+and the brief says so in its first line: *do not open with a fix*. The defect
+has been invisible for months; naming its cause is worth more than a rushed
+patch, and **a diagnosis with no repair was declared a complete deliverable.**
+
+`_pair_ties_in_staff` (`transcribe.py:2390`) pairs a tie's two flanking
+noteheads by **page-pixel geometry** and sets two booleans. It **records no
+link** — and `<tied>` carries no `number=`, so the ends are re-associated
+downstream **by pitch**. Two mechanisms, no shared identifier.
+
+⚠️ **The boundary case is the gift and the brief leads with it.**
+`mozart-sym41-mvt1` is **8 of 9 wrong**; `beethoven-sym5-mvt1` is **11 of 11
+right** — both ENGRAVED, where the pitch reading is near-perfect, **so the
+pitch reading is ruled out as the confound and the pairing is the only
+suspect.** That is an unusually clean separation for this project. Four
+hypotheses were handed over unprivileged, with a note that the answer may be
+more than one — the leading one being that Mozart 41's Viola plays **divisi
+double stops**, which CLAUDE.md already records as distorting that work's note
+recall, and which is *exactly* the geometry (two heads a third apart at one x)
+that a nearest-flanking-head rule gets wrong.
+
+⚠️ **The invariant is what makes this measurable at scale with no truth file**:
+a tie joins two notes of the SAME pitch — that is what a tie IS, and
+`record.Checkable` already encodes it. So a pairing that binds a third is
+**provably** wrong off the print. The brief forbids weakening it to make a rule
+pass, and allows exactly one exception, handled as a spelling question rather
+than a tolerance: enharmonics.
+
+⚠️ One boundary drawn in advance, because it is the difference between a fix
+and a fabrication: **using the pitch invariant as a VETO is legitimate; using
+it to SEARCH for a same-pitch partner is not obviously so** — that manufactures
+ties between notes that merely share a pitch. Priced apart if attempted.
+
+⚠️ And one trap specific to this job, which would otherwise have produced a
+confident zero: **`_pair_ties_in_staff` runs inside `transcribe`, not inside
+`export`**, so the export-only A/B that every recent job has rightly preferred
+is **structurally blind to this change**. Named in the brief as something to
+check *before* trusting a zero — a control that cannot see its subject is this
+repo's single most repeated instrument failure.
