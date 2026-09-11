@@ -289,6 +289,24 @@ def gather_detections(log: Log, cells: Sequence[Any],
                         frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
                         frame_note="cell carries no bbox_page_px")
 
+        # ⚠️⚠️ THIS ASKS THE DETECTOR A DIFFERENT QUESTION FROM THE ONE THE
+        # LEGACY PATH ASKS, AND EVERY MEASURED FIGURE IN THIS REPO IS THE
+        # LEGACY ONE'S. `transcribe()` defaults to `iou_threshold=0.5,
+        # agnostic_nms=True`; this call passes neither, so it takes
+        # `YoloDetector.detect`'s own defaults, `0.7` and **False**. Class-wise
+        # NMS never compares `noteheadHalfInSpace` with `noteheadBlackInSpace`
+        # — the detector's own docstring names that as exactly what
+        # `agnostic_nms` is for ("the same region can fire multiple
+        # semantically-similar class predictions") — so one notehead survives
+        # as three rows at IoU 0.91-0.96, each with its own duration verdict.
+        # Measured on the committed Litolff Beethoven 5 p1-4 record: 284
+        # same-cell notehead pairs and 143 same-cell dynamic-letter pairs.
+        #
+        # ⚠️ NOT CHANGED HERE, because changing it changes the DETECTION SET
+        # and is therefore a GATHER change that only two full re-gathers can
+        # price — see `benchmarks/omr-staged-dedupe-2026-09/FINDINGS.md` §6,
+        # which ranks it first and gives the recipe. It is recorded rather
+        # than quietly fixed so the next reader does not have to find it again.
         dets = detector.detect(c, conf_threshold=conf_threshold, imgsz=imgsz)
         if not dets:
             log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.DETECTOR,
@@ -432,7 +450,27 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
 
 _LEDGER_CLASS = "ledgerLine"
 
-#: Two boxes are the same ink if they overlap this much. (A-OWN-3)
+#: Two boxes are the same ink if they overlap this much.
+#:
+#: ⚠️⚠️ THIS RESTATES A MEASURED CONSTANT AT A DIFFERENT VALUE, AND ITS
+#: JUSTIFICATION DOES NOT EXIST. It cited `(A-OWN-3)`; `grep -rn A-OWN-3
+#: tools/ benchmarks/ docs/` returns this line and nothing else — the
+#: assumption record was never written. The same question is answered on the
+#: legacy path by `transcribe._CROSS_STAFF_DUPLICATE_IOU = 0.3`, which was
+#: SWEPT over three orchestral works at 0.25/0.3/0.4/0.5
+#: (`benchmarks/omr-orchestral-e2e/DEDUPE_THRESHOLD.md`) and is the LOWEST
+#: value costing no correctly-matched note on any of them.
+#:
+#: ⚠️ 0.5 therefore leaves a band of real cross-staff duplicates UNCONTESTED:
+#: measured on the committed Litolff Beethoven 5 p1-4 record, 134 of 636
+#: overlapping cross-staff groups carry no `Q.GLYPH_OWNER` verdict at all, so
+#: both copies are written with the ownership question never asked.
+#:
+#: ⚠️ IT IS DELIBERATELY LEFT AT 0.5 HERE. Importing the measured 0.3 is a
+#: GATHER change — `readjudicate` and `reexport_arm` are both structurally
+#: blind to it — so it needs two full re-gathers to price, and shipping it
+#: unpriced is the thing this project does not do. Ranked, with the recipe, in
+#: `benchmarks/omr-staged-dedupe-2026-09/FINDINGS.md` §6.
 CONTEST_IOU = 0.5
 
 #: Expected ledger rungs between a notehead and its staff.

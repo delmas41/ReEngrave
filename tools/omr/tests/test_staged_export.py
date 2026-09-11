@@ -211,6 +211,84 @@ class TestTheAccountingControl(unittest.TestCase):
             SX._place_notes = original
 
 
+class TestAContestIsWrittenOnce(unittest.TestCase):
+    """⚠️ SEAN'S SYMPTOM, AS A TEST: *"2 of the same note next to each other
+    connected to the same stem"*.
+
+    Two staves detect ONE printed notehead; `glyph_owner` gives it to staff 0.
+    Until 2026-09-11 `_place_notes` MOVED staff 1's copy onto staff 0, which
+    already held its own — so one piece of ink became two `<note>` elements at
+    one pitch in one chord. It is now refused and COUNTED, so the accounting
+    control stays an EQUALITY and can still fail.
+    """
+
+    def _two_staff_contest(self, *, owner="staff/0/0/0"):
+        page = _one_staff_page(notes=[("C4", QUARTER)])
+        rec = page["record"]
+        # staff 1's copy of the SAME ink
+        twin = "glyph/0/0/1/0/0"
+        rec["observations"].append(
+            _obs(500, twin, Q.GLYPH_BOX,
+                 ["noteheadBlackOnLine", 0, 50, 40, 40], category="notehead"))
+        rec["observations"].append(
+            _obs(501, twin, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine"))
+        rec["verdicts"].append(_vrd(502, twin, Q.PITCH, "C4"))
+        rec["verdicts"].append(_vrd(503, twin, Q.DURATION, QUARTER))
+        # both copies name the same owner — the measured case, 245 of 248
+        rec["verdicts"].append(
+            _vrd(504, twin, Q.GLYPH_OWNER, owner, reason="distance"))
+        rec["verdicts"].append(
+            _vrd(505, "glyph/0/0/0/0/0", Q.GLYPH_OWNER, owner,
+                 reason="distance"))
+        rec["verdicts"].append(
+            _vrd(906, "staff/0/0/1", Q.MEASURE_PARTITION, 1))
+        rec["verdicts"].append(_vrd(907, "staff/0/0/1", Q.CLEF, "treble"))
+        for v in rec["verdicts"]:
+            if v["quantity"] == Q.SYSTEM_STAFF_COUNT:
+                v["value"] = 2
+            if v["quantity"] == Q.PART_PARTITION:
+                v["value"] = {"join": "ordinal", "staves_per_system": 2}
+        return page
+
+    def test_the_owner_writes_it_and_the_other_staff_does_not(self):
+        xml, rep = SX.to_musicxml(self._two_staff_contest())
+        root = ET.fromstring(xml)
+        # ⚠️ PITCHED notes only: the staff that loses its copy now has an
+        # empty bar, and an empty bar correctly takes a whole-measure rest.
+        pitches = [n.findtext("pitch/step") for n in root.iter("note")
+                   if n.find("pitch") is not None]
+        self.assertEqual(pitches, ["C"], "one piece of ink, one <note>")
+        self.assertEqual(rep["notes_not_written"]["owned_by_another_staff"], 1)
+
+    def test_the_balance_stays_an_EQUALITY(self):
+        """⚠️ A dropped copy must be COUNTED. CLAUDE.md records two separate
+        occasions where widening this control to `<=` hid a real bug."""
+        _xml, rep = SX.to_musicxml(self._two_staff_contest())
+        b = rep["balance"]
+        self.assertEqual(b["noteheads_in_log"], 2)
+        self.assertEqual(b["events_written"] + b["events_not_written"], 2)
+        self.assertTrue(b["balanced"])
+
+    def test_an_UNCONTESTED_note_is_still_written(self):
+        """The positive control in the same class: the refusal above cannot be
+        passing by refusing every note."""
+        xml, rep = SX.to_musicxml(_one_staff_page(notes=[("C4", QUARTER)]))
+        self.assertEqual(len([n for n in ET.fromstring(xml).iter("note")
+                              if n.find("pitch") is not None]), 1)
+        self.assertNotIn("owned_by_another_staff", rep["notes_not_written"])
+
+    def test_the_copy_the_OWNER_keeps_is_its_OWN(self):
+        """⚠️ NAMING WHICH COPY, not counting them. With the owner set to
+        staff 1 the surviving `<note>` must be in part 2, not part 1 — a rule
+        that merely kept 'the first' would pass the count and fail here."""
+        xml, _rep = SX.to_musicxml(self._two_staff_contest(owner="staff/0/0/1"))
+        root = ET.fromstring(xml)
+        with_notes = [p.get("id") for p in root.findall("part")
+                      if any(n.find("pitch") is not None
+                             for n in p.iter("note"))]
+        self.assertEqual(with_notes, ["P2"])
+
+
 class TestCoverageNamesTheFourZEROS(unittest.TestCase):
     def test_a_family_with_NO_QUANTITY_is_named_and_its_ink_counted(self):
         """⚠️ THE FINDING THIS MODULE EXISTS TO SURFACE — and as of

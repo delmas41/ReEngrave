@@ -98,43 +98,69 @@ class TestSpellingTheWord(unittest.TestCase):
         self.assertEqual(v.value, ["ff"])
 
 
-class TestOwnershipMovesTheLetter(unittest.TestCase):
-    """⚠️ THE FIX. Remove the `Q.GLYPH_OWNER` query and both of these go RED."""
+class TestOwnershipResolvesTheContest(unittest.TestCase):
+    """⚠️ THE FIX. Remove the `Q.GLYPH_OWNER` query and these go RED.
+
+    ⚠️⚠️ THIS CLASS WAS REWRITTEN 2026-09-11 BECAUSE ITS FIXTURE WAS A PAGE
+    GATHER CANNOT PRODUCE. It filed ONE letter and a contest over it, and then
+    asserted the owning staff *gained* a letter it never detected — but
+    `gather_contested_glyphs` files a `Q.GLYPH_BAND_DISTANCE` row only where
+    TWO same-class detections on DIFFERENT staves overlap, so a lone letter is
+    never contested and never offered to another staff at all. The test passed,
+    and the behaviour it certified (a moved letter that is kept) is exactly how
+    one printed `ff` reached the exported file as `ffff`.
+
+    *A fixture that does not match GATHER tests the test* — the same shape
+    CLAUDE.md already records for `Q.METER_GLYPH`. The premise is now pinned
+    against the gather site by `TestOneLetterIsNeverContested` below, so the
+    fixture cannot drift back.
+    """
 
     def _log(self):
         log = Log()
-        # ONE letter, detected in the UPPER staff's cell because that cell's
-        # padding reaches down into the gap the LOWER staff prints into --
-        # and contested, with the LOWER staff nearer.
-        g = R.glyph(0, 0, 0, 0, 0)
-        _letter(log, g, "p", 100.0, 110.0)
-        _contest(log, g, winner=LOWER, loser=UPPER)
-        # ⚠️ LOAD-BEARING, and it is why `gather_dynamic_letters` writes an
-        # abstention for EVERY cell rather than only for cells that had
-        # detections: a decision's subjects come from the rows in the log, so
-        # a staff with no dynamic letter of its own has no `Q.DYNAMIC` subject
-        # -- and a letter moved onto it by ownership would be silently lost.
-        # Delete this line and the recovery test goes RED.
-        log.abstain(R.cell(0, 0, 1, 0), Q.DYNAMIC_LETTER,
-                    reader=READERS.DETECTOR, frame="cell:0",
-                    reason=ABSTAIN.NO_INK)
+        # TWO detections of ONE printed letter: the LOWER staff prints it, and
+        # the UPPER staff's cell padding reaches down into the same ink. This
+        # is what a real contest looks like on the record.
+        g_upper = R.glyph(0, 0, 0, 0, 0)
+        g_lower = R.glyph(0, 0, 1, 0, 0)
+        _letter(log, g_upper, "p", 100.0, 110.0)
+        _letter(log, g_lower, "p", 100.0, 110.0)
+        _contest(log, g_upper, winner=LOWER, loser=UPPER)
+        _contest(log, g_lower, winner=LOWER, loser=UPPER)
         log.freeze()
         adjudicate.run(log)
-        assert log.verdict(Q.GLYPH_OWNER, g).value == LOWER.to_key()
+        assert log.verdict(Q.GLYPH_OWNER, g_upper).value == LOWER.to_key()
+        assert log.verdict(Q.GLYPH_OWNER, g_lower).value == LOWER.to_key()
         return log
 
-    def test_the_owning_staff_GETS_the_letter_it_never_detected(self):
+    def test_the_owning_staff_writes_the_letter_ONCE(self):
+        """⚠️ ONCE. Both copies name the LOWER staff as owner — measured at 245
+        of 248 cross-staff notehead pairs on Litolff Beethoven 5 p1-4 — so
+        keeping both is what spelled `p` twice."""
         log = self._log()
         v = log.verdict(Q.DYNAMIC, R.cell(0, 0, 1, 0))
         self.assertEqual(v.value, ["p"])
-        self.assertEqual(v.detail["letters_moved_in"], 1)
+        self.assertEqual(v.detail["letters"], 1)
+        self.assertEqual(v.detail["letters_dropped_as_duplicate"], 1)
 
-    def test_the_detecting_staff_LOSES_it(self):
+    def test_the_other_staff_LOSES_its_copy(self):
         log = self._log()
         v = log.verdict(Q.DYNAMIC, R.cell(0, 0, 0, 0))
         self.assertEqual(v.value, [])
         self.assertEqual(v.reason, "owned_elsewhere")
         self.assertEqual(v.detail["letters_moved_out"], 1)
+
+    def test_an_UNCONTESTED_letter_stays_where_it_was_cut(self):
+        """The positive control in the same class: without a contest nothing is
+        dropped, so the refusal above cannot be passing by refusing everything.
+        """
+        log = Log()
+        _letter(log, R.glyph(0, 0, 0, 0, 0), "p", 100.0, 110.0)
+        log.freeze()
+        adjudicate.run(log)
+        v = log.verdict(Q.DYNAMIC, R.cell(0, 0, 0, 0))
+        self.assertEqual(v.value, ["p"])
+        self.assertEqual(v.detail["letters_dropped_as_duplicate"], 0)
 
 
 class TestSilenceIsNotAnAnswer(unittest.TestCase):

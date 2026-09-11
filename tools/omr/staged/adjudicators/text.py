@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Tuple
 
-from ..adjudicate import Candidate, Checkable, Evidence, Mode, Ruling, decision
+from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
+                          decision, is_relocated_copy)
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
 
@@ -77,15 +78,27 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
     **83% of re-attributed letters are the target staff's SOLE evidence** --
     the mark exists once, in the wrong cell, and it is sole evidence *because
     `_dedupe_cross_staff_detections` already deleted the twin by distance*. A
-    gate deletes it a second time. The letter has to MOVE, which is an
-    ownership question, which is why this reads `Q.GLYPH_OWNER` rather than a
-    threshold. That adjudicator already exists and already has a ladder /
-    range / distance tier stack; nothing here re-implements it.
+    gate deletes it a second time. So this asks ownership rather than a
+    threshold; that adjudicator already exists and already has a ladder /
+    range / distance tier stack, and nothing here re-implements it.
+
+    ⚠️⚠️ **THAT MEASUREMENT IS THE LEGACY PATH'S AND ITS CONCLUSION DOES NOT
+    CARRY HERE — CORRECTED 2026-09-11.** The sole-evidence case exists there
+    *because the dedupe ran first*. On this path it did not, so the twin is
+    still on the record, and a letter this staff is handed from another cell
+    is a SECOND COPY of a letter this staff already has. Keeping it is how one
+    printed `ff` reached the file as `ffff`. Worse, the rescue the paragraph
+    above credits is **structurally unreachable here**: `glyph_owner`'s domain
+    is `subjects_from=Q.GLYPH_BAND_DISTANCE`, the CONTESTED population, so a
+    letter with no twin is never offered to another staff at all — its verdict
+    names its own staff, `reason="no_contest"`, and it stays where it was cut.
 
     So a letter belongs to this cell when the ownership verdict names this
-    cell's STAFF, whatever cell it was cut from -- and a letter cut from this
-    cell whose owner is another staff is dropped from it, both directions of
-    the same move.
+    cell's STAFF **and it was cut from this staff** — a letter cut from here
+    and owned elsewhere is dropped as the neighbour's, and a letter cut
+    elsewhere and owned here is dropped as this staff's own duplicate. The two
+    drops are reported apart (`letters_moved_out`,
+    `letters_dropped_as_duplicate`) because only the second is redundant.
 
     ⚠️ **THE ASSEMBLY RULE IS DELIBERATELY THE EXPORTER'S, UNCHANGED**, so
     that the only difference between this and the shipped path is the
@@ -130,7 +143,7 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
                       detail={"letters": 0, "scope": "system"})
 
     kept: List[Tuple[float, float, float, str, Any]] = []
-    moved_in = moved_out = no_frame = 0
+    dup_dropped = moved_out = no_frame = 0
     for row in rows:
         if row.subject.cell != ev.subject.cell:
             continue
@@ -141,7 +154,26 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         if owned_by != mine:
             moved_out += (home == mine)
             continue
-        moved_in += (home != mine)
+        if is_relocated_copy(row.subject, owned_by):
+            # ⚠️⚠️ A LETTER WHOSE HOME IS ANOTHER STAFF IS A SECOND COPY, NOT
+            # A RESCUE, AND THE DOCSTRING ABOVE USED TO CLAIM OTHERWISE.
+            # `glyph_owner` speaks only about the CONTESTED population
+            # (`subjects_from=Q.GLYPH_BAND_DISTANCE`), so a letter it hands to
+            # this staff was detected in this staff's own cell too. Keeping
+            # both is how one printed `ff` reached the file as `ffff`: on
+            # Litolff Beethoven 5 p1-4 every one of the 21 long f/p words
+            # traces to an overlapping letter pair, and 11 `ffff` + 10 `fff`
+            # stood on a page Sean says prints only `ff`.
+            #
+            # The "83% of re-attributed letters are the target staff's SOLE
+            # evidence" measurement is the LEGACY path's, where
+            # `_dedupe_cross_staff_detections` had already deleted the twin
+            # before the letters were read. Here it has not, and the sole-
+            # evidence case cannot reach this branch at all: a letter with no
+            # twin is uncontested, so its verdict names its own staff and it
+            # is never offered to another.
+            dup_dropped += 1
+            continue
         letter = _letter_of(row)
         geom = _geometry(row)
         if letter is None:
@@ -181,7 +213,8 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
     unspellable = [w for w in words if not w["spelled"]]
     detail: Dict[str, Any] = {
         "words": words, "letters": len(kept),
-        "letters_moved_in": moved_in, "letters_moved_out": moved_out,
+        "letters_dropped_as_duplicate": dup_dropped,
+        "letters_moved_out": moved_out,
         "letters_without_page_box": no_frame,
         "assembly": "x_adjacency_max_letter_width_page_px",
     }

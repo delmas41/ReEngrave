@@ -439,14 +439,23 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
 
 
 def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
-    """Every decided note, in the cell its OWNER puts it in.
+    """Every decided note, ONCE PER PIECE OF INK.
 
-    ⚠️ THE OWNER, NOT THE SUBJECT. A measure cell is cut with padding above
-    and below so ledger notes are not sliced off, so on a conductor's page the
-    same ink is detected once per staff and `glyph_owner` arbitrates. The
-    subject coordinate records where the glyph was FOUND; the verdict records
-    whose it IS. Exporting by subject would put Violin 1's high A on the
-    timpani — the documented failure that cost 263 edits.
+    ⚠️ A measure cell is cut with padding above and below so ledger notes are
+    not sliced off, so on a conductor's page the same ink is detected once per
+    staff and `glyph_owner` arbitrates. The subject coordinate records where
+    the glyph was FOUND; the verdict records whose it IS.
+
+    ⚠️⚠️ AND UNTIL 2026-09-11 THIS FUNCTION HONOURED THAT VERDICT BY MOVING
+    THE COPY, WHICH DOUBLED IT. Both members of a contest name the same owner
+    (measured: 245 of 248 cross-staff notehead pairs on Litolff Beethoven 5
+    p1-4), so relocating each of them put two `<note>` elements at one pitch
+    into one bar — 688 relocations on four pages. The legacy
+    `_dedupe_cross_staff_detections` DELETES the loser; the staged path had
+    the same decision and consumed it as a move. It is now a refusal, counted
+    under `owned_by_another_staff`; see `A.is_relocated_copy` for why dropping
+    can never lose ink the owner's staff does not already hold, and for the
+    one exception (a swap) that it can.
     """
     dropped: Dict[str, int] = collections.Counter()
     for o in rec.obs_of(Q.GLYPH_BOX):
@@ -490,8 +499,19 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
             continue
 
         owner = rec.value(Q.GLYPH_OWNER, sub)
-        home = owner if isinstance(owner, str) else _staff_key(
-            s["page"] or 0, s["system"] or 0, s["staff"] or 0)
+        if A.is_relocated_copy(sub, owner):
+            # ⚠️⚠️ THE CONTEST IS RESOLVED BY REFUSING THE COPY, NOT BY
+            # MOVING IT. See `A.is_relocated_copy`: `glyph_owner`'s domain is
+            # the CONTESTED population, so a verdict naming another staff
+            # means that staff holds this ink too — and writing this row as
+            # well put BOTH copies in the owner's bar, at one pitch, on one
+            # stem. That is Sean's *"2 of the same note next to each other
+            # connected to the same stem"*, and it is what the legacy
+            # `_dedupe_cross_staff_detections` achieves by DELETING the loser
+            # rather than relocating it.
+            dropped["owned_by_another_staff"] += 1
+            continue
+        home = _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0)
         run = runs.get(home)
         if run is None:
             # The owner names a staff with no `measure_partition` verdict, so
@@ -1258,12 +1278,13 @@ def _place_directions(rec: Record, runs: Dict[str, StaffRun]) -> None:
     is the shape this repo has paid for repeatedly; read that status beside
     it.
 
-    ⚠️ OWNERSHIP IS NOT RE-ASKED HERE, unlike `_place_notes`. A dynamic letter
-    cut from the cell above is moved by `adjudicate_dynamic` itself, which
-    queries `Q.GLYPH_OWNER` across the system and keeps only the letters this
-    staff owns — both directions of the move. So the CELL the verdict is filed
-    on is already the answer, and asking again would be a second, differently
-    spelled ownership rule.
+    ⚠️ OWNERSHIP IS NOT RE-ASKED HERE, unlike `_place_notes`.
+    `adjudicate_dynamic` queries `Q.GLYPH_OWNER` across the system and keeps a
+    letter only where the owner names this staff AND the letter was cut from
+    it — so the CELL the verdict is filed on is already the answer, and asking
+    again would be a second, differently spelled ownership rule. The two
+    decisions apply ONE rule (`A.is_relocated_copy`) at two stages, which is
+    why the rule and its argument live in `adjudicate.py` rather than twice.
 
     ⚠️ A NARROWED VERDICT WRITES NOTHING, DELIBERATELY. An unspellable run
     (`Ruling.narrow`, "there is a mark here and I cannot spell it") is not

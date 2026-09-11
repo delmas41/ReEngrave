@@ -25,7 +25,7 @@ import functools
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import (Any, Callable, Dict, FrozenSet, Iterable, List, Optional,
-                    Sequence, Set, Tuple)
+                    Sequence, Set, Tuple, Union)
 
 from .record import (ABSTAIN, Abstention, Candidate, Kind, Log, Observation,
                      Outcome, Q, Scope, State, Subject, Verdict)
@@ -613,6 +613,45 @@ def by_checkability() -> Dict[str, Tuple[str, ...]]:
 def stubs() -> Tuple[str, ...]:
     """Every decision that is DECLARED not implemented."""
     return tuple(sorted(q for q, s in REGISTRY.items() if s.stub))
+
+
+def is_relocated_copy(subject: Union[Subject, str],
+                      owner_value: Optional[Any]) -> bool:
+    """Does this glyph row name ANOTHER staff as its owner?
+
+    ⚠️⚠️ WHY THAT MEANS "DROP IT" AND NOT "MOVE IT", WHICH IS THE WHOLE POINT.
+    `adjudicate_glyph_owner` declares `subjects_from=Q.GLYPH_BAND_DISTANCE`,
+    and `gather_contested_glyphs` files a band-distance row ONLY for a glyph
+    that overlaps a SAME-CLASS glyph on ANOTHER staff. So a glyph with an
+    ownership verdict naming a different staff has a TWIN on that staff BY
+    CONSTRUCTION -- the contest is built from the pair. Relocating the copy
+    therefore puts a second element on a staff that already holds one; it can
+    never rescue ink that is only in the wrong cell, because such ink is
+    UNCONTESTED and its verdict names its own staff (`reason="no_contest"`).
+
+    ⚠️ THE CONTRAST WITH `arc_owner` IS EXACT AND IS WHY THIS IS NOT A GENERAL
+    RULE ABOUT OWNERSHIP. That decision's domain is `subjects_from=Q.ARC_BOX`
+    -- every arc, contested or not -- so it CAN move an arc onto a staff that
+    detected nothing, and CLAUDE.md records six of its twelve moves doing
+    exactly that. Applying this rule there would delete real arcs. It is a
+    property of `glyph_owner`'s DOMAIN, not of ownership, and
+    `test_staged_dedupe.py` asserts that domain off the registry so widening
+    it goes red rather than silently making this unsafe.
+
+    ⚠️ THE ONE WAY IT CAN LOSE INK is a SWAP -- every member of one contest
+    naming somebody else, so every copy is dropped. Measured on Litolff
+    Beethoven 5 p1-4: **1 of 636 contest groups, and it is a dynamic letter;
+    zero noteheads.** It is not structurally impossible, only rare, so the
+    drop is COUNTED and `probe/contest_groups.py` reports it. Making it
+    impossible needs the twin SUBJECT on the record, which is a GATHER change
+    -- see FINDINGS §6.
+    """
+    if not isinstance(owner_value, str) or not owner_value:
+        return False
+    sub = (subject if isinstance(subject, Subject)
+           else Subject.from_key(str(subject)))
+    own = sub.at(Kind.STAFF)
+    return own is not None and own.to_key() != owner_value
 
 
 # ─────────────────────────────────────────────────────────────────────────────
