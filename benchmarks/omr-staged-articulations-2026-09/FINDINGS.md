@@ -92,7 +92,74 @@ The engraved corpus is a different world: one Mozart 40 page alone detects 102
 staccati, and musicdiff charged back exactly 102 `insarticulation` edits for
 them. **Nothing here should be read as a rate for engravings.**
 
-<!--ARM-->
+## 4. THE RESULT — Litolff `984073` p1-3
+
+One gather, adjudicated twice, the rule stubbed out in the off arm.
+
+| | OFF | ON |
+|---|--:|--:|
+| `<articulations>` in the file | 0 | **14** |
+| marks decided | 0 | 18 |
+| marks abstained `no_notehead` | — | 6 |
+| decided but owning notehead not written | — | 4 |
+| notes / rests / slurs / ties / dynamics | 1075/432/23/49/132 | **identical** |
+
+**The partition closes both ways**: 24 = 18 decided + 6 abstained, and
+18 − 4 = 14 written. `articulation_balance` reports `balanced: True`.
+Kinds written: 13 staccato, 1 tenuto.
+
+⚠️ **THE CONTROL LINE WAS A FALSE ALARM AND THE PROBE WAS AT FAULT.** The arm
+reported *"outside the `<articulations>` blocks, the two files are DIFFERENT"*
+while every family count was identical to the unit. `_mxl_note` emits
+`<notations>` only when that list is non-empty, so a note whose ONLY mark is an
+articulation gains a **wrapper** as well as the block inside it — and the
+line-based strip removed the block and left the wrapper. **A control firing on
+its own side effect**, which is how a real regression hides behind an expected
+one. Replaced with a structural strip (drop the articulation elements, then
+drop any `<notations>` left childless), proven on a minimal fixture where the
+structural strip says IDENTICAL and the line-based one says DIFFERENT with the
+wrapper as the only delta. ⚠️ The arm now also **NAMES** any difference it
+reports rather than only flagging one — a control that says "different" and
+stops sends the next reader to diff two 50k-line files by hand.
+
+### 4b. ⚠️ Does the ENGRAVED constant hold on a scan? On this evidence, yes.
+
+Distance from each attached mark to its notehead, in the constant's own unit
+(limit **0.75**):
+
+```
+n=18   min 0.003   median 0.095   max 0.435
+0.003 0.037 0.040 0.052 0.054 0.070 0.074 0.081 0.085 0.095
+0.116 0.119 0.121 0.126 0.163 0.213 0.221 0.435
+```
+
+**The whole population sits under 0.44 against a cut at 0.75** — which is what
+a plateau looks like from the inside. ⚠️ This is the question the arc work
+forced: `_SLUR_ARC_PAD_NOTEHEADS` was measured the same way on an engraved page
+and **its plateau does not exist on a scan**. This constant survives its first
+look. ⚠️ n = 18, and it says nothing about the 6 marks that were REFUSED.
+
+---
+
+## 4c. THE SECOND PUBLISHER — reach measured, arm NOT yet run
+
+Breitkopf Brahms 1 p0-3, gathered 2026-09-10: **196 articulation marks** —
+95 `articStaccatoAbove`, 81 `Below`, 7 `articStaccatissimoAbove`, 7
+`articAccentAbove`, 2 `articTenutoBelow`, 2 `articStaccatissimoBelow`, 1
+`articAccentBelow`, 1 `articTenutoAbove`. **110 above / 86 below, and again
+ZERO declaring no side** — so `no_side_declared` has zero reach on BOTH
+publishers, and the coarse spellings `class_aliases` records never appear in
+either scan.
+
+⚠️ **The arm on that record was still running when this was written.** Its
+reach is reported because reach is a property of the record; **no result is
+claimed.** ⚠️ And that record was gathered by a tree that PREDATES this change
+(its saved verdicts read `not_implemented: 196`, "DECLARED STUBS: 3"). GATHER
+is untouched by this work so re-adjudicating it is a valid A/B — but it is a
+pre-change tree's record, which is the *"benchmark arm silently reused from an
+earlier tree"* shape this repo already records, so it is written down rather
+than kept in someone's head.
+
 
 ---
 
