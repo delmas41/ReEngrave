@@ -1,0 +1,223 @@
+{
+ "fixtures": "/Users/seanjohnson/Desktop/ReEngrave/benchmarks/omr-orchestral-e2e/fixtures",
+ "n_rows": 11,
+ "arms": [
+  "off",
+  "on"
+ ],
+ "rows": [
+  {
+   "row_id": "beethoven-sym3-mvt1",
+   "transcription_md5": "0625f39094647d2e29f6bdb23ccea1e3",
+   "off": {
+    "omr_ned": 0.1398176291793313,
+    "omr_ed": 230,
+    "tied_start": 2,
+    "tied_stop": 2,
+    "md5": "cfcac2c2844c7699ca54dfe9013cea0f"
+   },
+   "on": {
+    "omr_ned": 0.1386018237082067,
+    "omr_ed": 228,
+    "tied_start": 1,
+    "tied_stop": 1,
+    "md5": "8881fb3c86cf0d5aa63f1dcba1900dd2"
+   }
+  },
+  {
+   "row_id": "beethoven-sym5-mvt1",
+   "transcription_md5": "a5f77798f0c0a25caf63cd76f6200ff5",
+   "off": {
+    "omr_ned": 0.0421875,
+    "omr_ed": 54,
+    "tied_start": 11,
+    "tied_stop": 11,
+    "md5": "cfca3646ac94f3497b37c75a1099ac87"
+   },
+   "on": {
+    "omr_ned": 0.0429352068696331,
+    "omr_ed": 55,
+    "tied_start": 11,
+    "tied_stop": 11,
+    "md5": "6a52ff3bcde8178305696bc11d2a9f74"
+   }
+  },
+  {
+   "row_id": "brahms-sym1-mvt1",
+   "transcription_md5": "2cbbf469baccffe07cd5d85c6ceb199f",
+   "off": {
+    "omr_ned": 0.1287104015964081,
+    "omr_ed": 516,
+    "tied_start": 44,
+    "tied_stop": 45,
+    "md5": "7b5c2eb1672ddd6ec0a73373a60b1cea"
+   },
+   "on": {
+    "omr_ned": 0.13016426082628174,
+    "omr_ed": 523,
+    "tied_start": 44,
+    "tied_stop": 45,
+    "md5": "87b3d14927a3f74be3a41eabdbc96de8"
+   }
+  },
+  {
+   "row_id": "brahms-sym4-mvt1",
+   "transcription_md5": "c13236c7bfe478a4ff74736ca4675555",
+   "off": {
+    "omr_ned": 0.2136387852956846,
+    "omr_ed": 401,
+    "tied_start": 7,
+    "tied_stop": 7,
+    "md5": "724deb6c6dfb177ba02305939d224043"
+   },
+   "on": {
+    "omr_ned": 0.21215351812366737,
+    "omr_ed": 398,
+    "tied_start": 6,
+    "tied_stop": 6,
+    "md5": "adae507e5f1f11f49d269867f2ad8841"
+   }
+  },
+  {
+   "row_id": "bruckner-sym5-mvt1",
+   "transcription_md5": "3fef7a86206bb4ce043cb0344527a2aa",
+   "off": {
+    "omr_ned": 0.09641595153962645,
+    "omr_ed": 191,
+    "tied_start": 4,
+    "tied_stop": 4,
+    "md5": "a5ab5127920ebaec0759346f0173bf9f"
+   },
+   "on": {
+    "omr_ned": 0.09788092835519677,
+    "omr_ed": 194,
+    "tied_start": 3,
+    "tied_stop": 3,
+    "md5": "c56e7e692095527024e82f3779fb24c5"
+   }
+  },
+  {
+   "row_id": "dvorak-sym9-mvt4",
+   "transcription_md5": "dda4998775d196fd8892fb78c87de200",
+   "off": {
+    "omr_ned": 0.33804809052333806,
+    "omr_ed": 239,
+    "tied_start": 0,
+    "tied_stop": 0,
+    "md5": "670476c3bc0e036c3d27b97871d4c6b2"
+   },
+   "on": {
+    "omr_ned": 0.33804809052333806,
+    "omr_ed": 239,
+    "tied_start": 0,
+    "tied_stop": 0,
+    "md5": "670476c3bc0e036c3d27b97871d4c6b2"
+   }
+  },
+  {
+   "row_id": "mahler-sym5-mvt1",
+   "transcription_md5": "1bfda25f57de98c75af90ca68666154b",
+   "off": {
+    "omr_ned": 0.020887728459530026,
+    "omr_ed": 40,
+    "tied_start": 2,
+    "tied_stop": 2,
+    "md5": "2dd1620ba2c116badd2bdf345f0582d6"
+   },
+   "on": {
+    "omr_ned": 0.02139874739039666,
+    "omr_ed": 41,
+    "tied_start": 2,
+    "tied_stop": 2,
+    "md5": "c12b4f37350b5062897ddd560e019881"
+   }
+  },
+  {
+   "row_id": "mozart-sym40-mvt1",
+   "transcription_md5": "cb3bde7dd2f3472a110cd2e668411b49",
+   "off": {
+    "omr_ned": 0.14146658014276445,
+    "omr_ed": 218,
+    "tied_start": 0,
+    "tied_stop": 0,
+    "md5": "03b00e057afba467c0307e48f53cdfbd"
+   },
+   "on": {
+    "omr_ned": 0.14146658014276445,
+    "omr_ed": 218,
+    "tied_start": 0,
+    "tied_stop": 0,
+    "md5": "03b00e057afba467c0307e48f53cdfbd"
+   }
+  },
+  {
+   "row_id": "mozart-sym41-mvt1",
+   "transcription_md5": "4401e608844cfe87822f9cad94757c9a",
+   "off": {
+    "omr_ned": 0.10776599384194321,
+    "omr_ed": 315,
+    "tied_start": 9,
+    "tied_stop": 9,
+    "md5": "5df9cb97b06133a3145833c460916b40"
+   },
+   "on": {
+    "omr_ned": 0.10807113543091655,
+    "omr_ed": 316,
+    "tied_start": 1,
+    "tied_stop": 1,
+    "md5": "bfdb89eee9e7ee8378a2a6a4b5d25deb"
+   }
+  },
+  {
+   "row_id": "tchaikovsky-sym4-mvt2",
+   "transcription_md5": "51a1c39a9bff177e3747b515afb93762",
+   "off": {
+    "omr_ned": 0.03875968992248062,
+    "omr_ed": 60,
+    "tied_start": 0,
+    "tied_stop": 0,
+    "md5": "2348fbebbd35e701801a06e4c5c84300"
+   },
+   "on": {
+    "omr_ned": 0.03875968992248062,
+    "omr_ed": 60,
+    "tied_start": 0,
+    "tied_stop": 0,
+    "md5": "2348fbebbd35e701801a06e4c5c84300"
+   }
+  },
+  {
+   "row_id": "tchaikovsky-sym6-mvt2",
+   "transcription_md5": "e92d16c4b3f5e793d17b26e4d89c9954",
+   "off": {
+    "omr_ned": 0.18549511854951187,
+    "omr_ed": 266,
+    "tied_start": 0,
+    "tied_stop": 0,
+    "md5": "c0e1df7fe8f5b29538ba032e951cf483"
+   },
+   "on": {
+    "omr_ned": 0.18549511854951187,
+    "omr_ed": 266,
+    "tied_start": 0,
+    "tied_stop": 0,
+    "md5": "c0e1df7fe8f5b29538ba032e951cf483"
+   }
+  }
+ ],
+ "summed_edits": {
+  "off": 2530,
+  "on": 2538
+ },
+ "tied": {
+  "off": [
+   79,
+   80
+  ],
+  "on": [
+   68,
+   69
+  ]
+ },
+ "files_that_differ": 7
+}

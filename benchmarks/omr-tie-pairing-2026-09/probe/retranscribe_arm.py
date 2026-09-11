@@ -51,19 +51,30 @@ _EXPORT = (
 
 
 def _strip(obj):
-    """The record with every tie flag removed, for the detection-set control."""
-    out = copy.deepcopy(obj)
-    for page in out.get("pages", []):
+    """Just the DETECTIONS, tie flags removed — the control's whole subject.
+
+    ⚠️ Comparing the whole record was tried and is the WRONG question: it also
+    catches the weights PATH (the two trees differ by construction), a
+    millisecond timing field, and — the one that mattered — which OCR engine
+    the direction reader used. The first run of this arm excluded all eleven
+    rows because the base tree had no `.venv-surya` beside it, so Surya
+    self-disabled there and Tesseract read the words instead. That is
+    CLAUDE.md's own documented worktree trap ("makes a --direction-text run
+    score without the direction reader while looking like a normal run"),
+    arriving inside a control built to catch something else. Both trees now
+    carry the symlink, and the comparison asks only what the change could
+    possibly move.
+    """
+    out = []
+    for page in obj.get("pages", []):
         for sys_ in page.get("systems", []):
             for staff in sys_.get("staves", []):
                 for m in staff.get("measures", []):
                     for det in m.get("detections", []):
+                        d = copy.deepcopy(det)
                         for f in _FLAGS:
-                            det.pop(f, None)
-    # `runtime` and any timing field are wall-clock and differ by construction.
-    out.pop("runtime", None)
-    for page in out.get("pages", []):
-        page.pop("runtime", None)
+                            d.pop(f, None)
+                        out.append(d)
     return out
 
 

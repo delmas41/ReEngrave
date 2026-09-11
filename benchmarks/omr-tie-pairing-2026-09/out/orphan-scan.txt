@@ -1,0 +1,14 @@
+file                                            flagged  ORPHAN   of which a NEIGHBOUR staff has the tie
+bach-brandenburg3-mvt1-468678-p1.restamp-compo       42       1                                        0
+beethoven-sym5-mvt1-575951-p1.restamp-composed       15       0                                        0
+beethoven-sym5-mvt1-575951-p2.restamp-composed       52       0                                        0
+beethoven-sym5-mvt1-984073-p1.restamp-composed        2       0                                        0
+beethoven-sym5-mvt1-984073-p2.restamp-composed       30       0                                        0
+brahms-sym1-mvt1-317803-p1.restamp-composed.om       56       2                                        0
+brahms-sym1-mvt1-317803-p2.restamp-composed.om      195       1                                        0
+dvorak-sym9-mvt1-405834-p5.restamp-composed.om       20       0                                        0
+dvorak-sym9-mvt1-405834-p6.restamp-composed.om       24       1                                        0
+mahler-sym5-mvt1-local-p2.restamp-composed.omr        2       0                                        0
+mahler-sym5-mvt1-local-p3.restamp-composed.omr       22       0                                        0
+
+POOLED                                              460       5                                        0

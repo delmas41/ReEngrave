@@ -196,6 +196,22 @@ voice carry a `tied_from_prev` head of the SAME pitch?
 | 11 engraved works | 79 | 56 | **20 (25%)** | 3 |
 | 11 stored scan rows | 237 | 58 | **64 (27%)** | **115 (49%)** |
 
+⚠️⚠️ **CORRECTED 2026-09-11 — THIS TABLE OVERSTATES THE DEFECT, AND SO DOES §9
+ITEM 1'S FRAMING OF IT.** `pairing_pitches.py` compares SPELLED pitches, and
+`export._pitch_step` exists in this repo because that is the wrong key: the far
+head of a cross-barline tie does not restate its accidental, so the resolver
+spells it plain. **11 of these 20 engraved links and 11 of the 64 scan ones are
+same-STEP pairs** (`F#4 -> F4`, `D#5 -> D5`) where the pairing is RIGHT and the
+invariant is wrong. ⚠️ And §9 item 1 reasons that on an engraved page the pitch
+reading is near-perfect so *"the pairing is the only suspect"* — there is a
+third suspect it does not list, the arc's CLASS, and on the boundary case it
+handed over (`mozart-sym41-mvt1`, 8 of 9) it is the one: that page prints ONE
+tie and FORTY-FOUR slurs, `beethoven-sym5-mvt1`'s prints thirteen ties and no
+slur at all, and the detector fires 13 `tie` on the first. Split three ways the
+engraved 20 is **11 spelling artefact + 8 misclassified slur + 4 pairing**, and
+only the last is what §9 item 1 sends a session to fix. See
+[benchmarks/omr-tie-pairing-2026-09/FINDINGS.md](../omr-tie-pairing-2026-09/FINDINGS.md).
+
 The scan pairs are not near misses. From `beethoven-575951-p2`, whose 19
 resolvable links include 14 different-pitch ones:
 
@@ -371,7 +387,16 @@ All four are closed; the second run is all-red with ARM 0 SURVIVED.
 
 ## 9. WHAT A NEXT SESSION SHOULD DO, ranked
 
-1. ⚠️⚠️ **THE TIE PAIRING, `transcribe._pair_ties_in_staff`.** 64 of 237
+1. ⚠️⚠️ **DONE 2026-09-11, AND THE PREMISE BELOW IS CORRECTED — read the note
+   under §5's table before this item.** The engraved 20 is three populations,
+   only 4 of them the pairing's; the boundary case is the arc's CLASS; and the
+   pairing repair that DID follow from it is a geometry rule (the two sides of
+   a tie are chosen together, at one staff position) with a mirror in
+   `export._tie_flank_pair`. A SECOND defect fell out of it: 27 of 148 engraved
+   tie flags have no tie glyph in their staff, because
+   `_dedupe_cross_staff_detections` runs AFTER both tie passes and deletes the
+   glyph without the flags. The original text follows.
+   **THE TIE PAIRING, `transcribe._pair_ties_in_staff`.** 64 of 237
    resolvable scan links and 20 of 79 engraved links bind two different pitches,
    and that is now visible in the exported file instead of masked.
    `probe/pairing_pitches.py` is the instrument and needs no truth file, so it

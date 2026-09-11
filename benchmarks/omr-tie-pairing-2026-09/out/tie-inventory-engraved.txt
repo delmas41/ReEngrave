@@ -1,0 +1,15 @@
+work                            truth     off      on   over-emission
+beethoven-sym3-mvt1                 3       2       1   off:-1  on:-2
+beethoven-sym5-mvt1                16      11      11   off:-5  on:-5
+brahms-sym1-mvt1                   52      44      44   off:-8  on:-8
+brahms-sym4-mvt1                    6       7       6   off:+1  on:+0
+bruckner-sym5-mvt1                  6       4       3   off:-2  on:-3
+dvorak-sym9-mvt4                    0       0       0   off:+0  on:+0
+mahler-sym5-mvt1                    2       2       2   off:+0  on:+0
+mozart-sym40-mvt1                   0       0       0   off:+0  on:+0
+mozart-sym41-mvt1                   1       9       1   off:+8  on:+0
+tchaikovsky-sym4-mvt2               0       0       0   off:+0  on:+0
+tchaikovsky-sym6-mvt2               0       0       0   off:+0  on:+0
+POOLED                             86      79      68
+absolute over/under-emission vs truth: off=-7  on=-18
+summed |per-work error|: off=25  on=18
