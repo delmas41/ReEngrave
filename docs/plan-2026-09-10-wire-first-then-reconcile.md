@@ -352,19 +352,43 @@ count is read as *"what should we fix next"* and never as *"are we winning".*
 
 In order, because a few block others:
 
-1. **`fermata`** — 63 on Litolff, `_mxl_note` already takes `fermata=`.
-2. **`voices` / `stem_direction`** — blocks arc quality; MusicXML pairs
-   `<slur>` WITHIN a `<voice>` and the staged export passes an EMPTY voice map.
-3. **`wedge_anchor`** — Brahms only (47 there, **0** on Litolff). Needs a
-   renderer AND the arc merge.
-4. **`ornament`** — fermata's shape, much smaller reach (7).
-5. **`tied_to_next` / `_from_prev`** — the tie CHAIN, distinct from one arc.
+1. ✅ **`fermata`** — **CLOSED 2026-09-10** (`0982864e`). 63 marks → 51
+   decided → **37 `<fermata>`**, byte-identical outside them. ⚠️ 26 of 51
+   carriers are RESTS, the `nearest_in_bar` fallback fired ZERO times, and the
+   13 "absorbed" marks are duplicate DETECTIONS rather than chords.
+2. ✅ **`voices` / `stem_direction`** — **CLOSED 2026-09-10** (`eb87d300`).
+   Three rules were inert, not missing; the divisi guard now RUNS and one tie
+   span is refused. ⚠️ The accounting control RAISED and was right: two
+   grouping rules nothing forces to agree wrote 17 notes twice.
+3. **`wedge_anchor`** — Brahms only (47 there, **0** on Litolff). ⚠️ **THIS
+   LINE WAS WRONG AND IS CORRECTED IN PLACE, checked against the tree:**
+   `export._mxl_wedge` IS a reusable renderer, and the arc merge is NOT needed
+   — 46 of 47 `Q.WEDGE_BOX` rows are `cv_hairpins` carrying page pixels from a
+   reader that searches one staff BAND across the whole page, so its hairpins
+   are never cut by a barline. What is open is a STAGE-BOUNDARY question: the
+   legacy anchor rule wants the exporter's `measures` shims and three measured
+   constants. See `handoff-2026-09-10-three-families-wired.md` §6.
+4. ✅ **`ornament`** — **CLOSED 2026-09-10** (`830bfccb`). ⚠️ It closes the
+   QUANTITY and closes **no detection gap**: the detector fires ZERO
+   `tremolo1`-`5` over 34,115 detections.
+5. **`tied_to_next` / `_from_prev`** — the tie CHAIN, distinct from one arc,
+   and the last two entries in `NO_VOCABULARY`. ⚠️ The exporter ALREADY sets
+   both flags from `_pair_arcs`; what is missing is a quantity NAMING the
+   chain, so this is *the record catching up with the exporter* — the opposite
+   direction from every other item on this list.
 6. **`direction`** — two jobs: `Q.DIRECTION_WORD` is the last starved input.
 
 **Exit condition:** `gather_coverage` reports no family that the detector reads
-and the record cannot name, except those with a WRITTEN reason (`tremolo` — the
-detector fires none; `arpeggiato` — 212 misread stems; `accidental` — scope,
-not a mark).
+and the record cannot name, except those with a WRITTEN reason (`arpeggiato` —
+212 misread stems; `accidental` — scope, not a mark). ⚠️ **`tremolo` has left
+that list of exceptions and is now NAMED** (`Q.ORNAMENT_MARK`) — the detector
+still fires none, so naming it changed nothing on any page, which is exactly
+the distinction the exit condition has to keep: *the record can express it* is
+not *the page supplies it*.
+
+**Progress, 2026-09-10:** `NO_VOCABULARY` **7 → 2**, and **no family in
+`FAMILIES` is quantity-less** (asserted derivedly, so the next regression is
+loud).
 
 ### Phase 2 — COUNT
 
