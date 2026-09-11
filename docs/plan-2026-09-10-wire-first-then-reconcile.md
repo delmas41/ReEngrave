@@ -86,17 +86,23 @@ and the first draft of this table was wrong in exactly that way.
 
 | family | Litolff p1-3 | Brahms p0-3 | state |
 |---|--:|--:|---|
-| **fermata** | **63** | 0 | NO QUANTITY |
+| **fermata** | **63** | 0 | ✅ wired 2026-09-10 |
 | articulation | 24 | 196 | ✅ wired 2026-09-10 |
-| **wedge** (hairpin) | **0** | **47** | stub, input fed |
-| ornament (trill/turn/mordent) | 0 | 7 | NO QUANTITY |
-| tremolo | 0 | 0 | detector fires none |
+| **wedge** (hairpin) | **0** | **47** | stub, input fed — see item 3 below |
+| ornament (trill/turn/mordent) | 0 | 7 | ✅ wired 2026-09-10 |
+| tremolo | 0 | 0 | ✅ NAMED 2026-09-10 — detector still fires none |
 | arpeggiato | 212 | 214 | ⚠️ MISREADS, not a family |
 | accidental | 155 | 733 | deliberately not its own quantity |
 | direction (words) | — | — | stub, input STARVED |
-| voices / voice_index | — | — | NO QUANTITY, derived not detected |
-| stem_direction | — | — | NO QUANTITY, derived |
+| voices / voice_index | — | — | ✅ wired 2026-09-10 |
+| stem_direction | — | — | ✅ wired 2026-09-10 |
 | tied_to_next / _from_prev | — | — | NO QUANTITY, the tie CHAIN |
+
+⚠️ **The `state` column is kept CURRENT rather than frozen as a snapshot**, on
+the same reasoning as `export_coverage.KNOWN_GAPS`: a closed entry that stays
+open in prose reads as a live work order, which this repo has paid for twice
+(the accents claim, and the `Tp.` branch). The REACH columns are the original
+measurement and do not move.
 
 ### What that re-ranks
 
