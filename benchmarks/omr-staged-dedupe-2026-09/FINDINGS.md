@@ -207,9 +207,96 @@ which this repair does not reach.
 
 ---
 
-## 4. THE PRICE — one gather, adjudicated and exported twice
+## 4. THE PRICE — one gather, the two halves measured apart
 
-<!--AB-->
+⚠️ **THE TWO HALVES ARE MEASURED BY TWO INSTRUMENTS, EACH WITH ITS OWN
+CONTROL, BECAUSE EACH HAS A BLIND SPOT THE OTHER DOES NOT.**
+`export_only_arm.py` exports one record twice and is structurally blind to the
+dynamics (those verdicts are baked into the saved record, so its `<dynamics>`
+figures are identical BY CONSTRUCTION and not by measurement).
+`dynamics_arm.py` replays the saved `Q.GLYPH_OWNER` verdicts and re-runs ONLY
+`Q.DYNAMIC` — sound because that decision reads nothing else — and is blind to
+the notes. `ab_arm.py` does both at once and is the slow instrument.
+
+⚠️ **NEITHER CAN SEE A GATHER CHANGE.** The two divergences in §6.1 and §6.2
+are not priced by anything here.
+
+### 4a. The notes — `export_only_arm.py`
+
+One record, exported twice by ONE tree, only the predicate differing:
+
+| | base | fix |
+|---|--:|--:|
+| pitched `<note>` | 1,793 | **1,618** |
+| chord events (2+ on one stem) | 397 | 357 |
+| ... with a REPEATED pitch | **122** | **108** |
+| excess `<note>` in those chords | 133 | 117 |
+| rests | 825 | 842 |
+| `<slur>` / `<tied>` | 70 / 171 | 64 / 158 |
+| `<articulations>` | 63 | 47 |
+| `<dynamics>` / `<words>` / `<fermata>` | 174 / 6 / 41 | identical |
+| measures / parts | 1,183 / 12 | identical |
+
+**176 notes refused** as `owned_by_another_staff`. The pitched count falls by
+175 and the rests rise by 17: a bar emptied by a refusal correctly takes a
+whole-measure rest. Slurs, ties and articulations fall because each binds a
+notehead that is no longer written twice.
+
+**The accounting control is an EQUALITY on both arms** (2,993 in log = written
++ not-written), and `status_census.unaccounted` is empty on both.
+
+⚠️ **REPEATED-PITCH CHORDS FALL BY ONLY 14, NOT TO ZERO — AND THAT IS THE
+RESULT AGREEING WITH ITSELF.** The remainder is the SAME-CELL population
+(§6.1), which this repair structurally cannot reach: a same-staff pair is never
+a contest, so ownership never speaks about it. A repair that took this to zero
+would have been doing something it could not justify.
+
+⚠️⚠️ **THE BASE ARM IS NOT THE ARTEFACT SEAN LOOKED AT, AND THE DIFFERENCE
+CANNOT BE ATTRIBUTED.** That file reports **421 chord events / 182 repeated /
+206 excess** where today's `origin/main` reports **397 / 122 / 133** on the same
+record — identical pitched-note count (1,793) and identical `notes_not_written`
+(339 + 215), so the difference is in chord GROUPING. It cannot be attributed
+because **`export_arm.py` writes no provenance stamp**: the record names the
+tree that GATHERED it and nothing names the tree that EXPORTED it, hours later
+in a separate process. The base→fix delta is one tree and stands; the artefact's
+absolute numbers are not this arm's baseline.
+
+### 4b. The dynamics — `dynamics_arm.py`
+
+**CONTROL: 1,148 of 1,148 `Q.DYNAMIC` verdicts identical** to the ones the
+pipeline itself wrote, before either arm is read. **155 letters refused** as
+this staff's own duplicate.
+
+| word | base | fix | |
+|---|--:|--:|---|
+| `f` | 63 | 77 | |
+| `ff` | 47 | **39** | ⚠️ see below |
+| `p` | 15 | 31 | |
+| `sf` | 9 | **34** | runs that could not be spelled now can |
+| `pp` | 17 | **2** | |
+| `fff` | 10 | 8 | |
+| `ffff` | **11** | **2** | |
+| `ppp` | 1 | 0 | |
+| `mf` / `fp` | 1 / 0 | 1 / 1 | |
+
+The mechanism is visible in the shape: the assembly rule joins letters by
+x-adjacency, and two boxes of ONE letter sit at the same x — so a doubled `p`
+assembled as `pp` and a doubled `s`+`f` assembled as an unspellable run that
+reached no file at all. Refusing the duplicate turns `pp` into `p`, `ffff` into
+`ff`, and 25 unspellable runs into `sf`.
+
+⚠️⚠️ **AND `ff` 47 → 39 IS AN UNADJUDICATED COST, NOT A WIN. ONLY THE PRINT CAN
+SAY.** Sean says the page prints `ff` and nothing else. Eight words left that
+spelling, and both readings are available from the record alone: either they
+were one printed `f` detected twice (the repair is right), or they were a real
+`ff` whose second letter this staff detected only once (the repair is wrong and
+cost a mark). **This session did not look at the page**, so it is 8 things a
+human might have to put back — the same shape as the voices work's 31 refused
+ties, and it must not be quoted as a recovery.
+
+⚠️ `fff` 10 → 8 rather than to zero, for the §6.1 reason: a same-cell duplicate
+survives both arms.
+
 
 ---
 
@@ -237,7 +324,26 @@ this staff; those are now refused, so it is `letters_dropped_as_duplicate`.
 `letters_moved_out` is unchanged and reported apart, because only one of the two
 drops is redundant.
 
-<!--MUTATION-->
+⚠️ **THE MUTATION BATTERY: 9 ARMS, ALL RED, NO BAD ANCHORS**
+(`mutants.py`). *One red arm is not a battery*, and a battery of REFUSAL tests
+can pass by refusing everything — so "the rule ALWAYS fires" is a **positive
+control in the same class** and must fail the UNCONTESTED tests specifically,
+which it does. A BAD ANCHOR exits non-zero rather than reading as a pass,
+because this repo has silently mutated a different function that way twice.
+
+⚠️ **THE FIRST RUN HAD ONE SURVIVOR AND IT WAS A GENUINE GAP**: deleting
+`gather_ownership_evidence`'s `gi.staff == gj.staff` guard changed nothing,
+because every fixture held at most one copy per staff — so **nothing asserted
+that a contest is CROSS-staff**. `test_TWO_copies_IN_ONE_STAFF_are_NOT_a_contest`
+closes it, and it matters beyond the guard: it is the property that makes §6.1
+a separate job rather than part of this one.
+
+⚠️⚠️ **AND THE FIRST A/B RUN WAS DISCARDED.** The battery checks out the files
+it mutates and was running beside it — the collision CLAUDE.md already records
+costing a session its first three-arm run, reproduced here by the author of the
+battery's own warning. The arms were re-run alone on a clean, committed tree,
+and the battery's docstring now says so at the top.
+
 
 ---
 
@@ -258,9 +364,14 @@ drops is redundant.
   is a different thing. Removing a duplicate makes the file MORE correct only if
   the surviving copy is the right one, and this session did not test that — the
   same-cell triple above shows the copies can disagree about class and duration.
-* **The A/B is adjudicate-and-export only** and is structurally blind to the two
-  GATHER divergences below — it rebuilds from a saved record, so a gather change
-  never enters. Do not read §4 as pricing them.
+* **Both arms are adjudicate-and-export only** and are structurally blind to the
+  two GATHER divergences below — each rebuilds from a saved record, so a gather
+  change never enters. Do not read §4 as pricing them.
+* ⚠️⚠️ **THE DYNAMICS DELTA IS NOT SHOWN TO BE AN IMPROVEMENT.** `ffff` 11 → 2
+  is unambiguous (no dynamic is spelled with four `f`s), but `ff` 47 → 39 and
+  `pp` 17 → 2 are REDISTRIBUTIONS whose direction only the print can settle.
+  The repair is justified by what the record says — two boxes, one piece of ink
+  — and not by any measurement of the file being more correct.
 
 ### 6.1 ⚠️ RANKED FIRST: the staged gather asks the detector a different question
 
