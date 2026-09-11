@@ -385,6 +385,25 @@ class Q(_Vocab):
     TUPLET_MARKER = "tuplet_marker"          # digit or bracket, with its span
     ARC_BOX = "arc_box"                      # slur/tie ink, before attribution
     ARTICULATION_MARK = "articulation_mark"  # mark + the side its class names
+    #: A FERMATA glyph -- the pause sign, `fermataAbove` / `fermataBelow`.
+    #:
+    #: ⚠️ IT IS ITS OWN FAMILY AND NOT AN ARTICULATION, and the separation is
+    #: the engraving's, not a taxonomy preference. An articulation is printed
+    #: against ONE NOTEHEAD on the side its class names; a fermata hangs over
+    #: whatever is SOUNDING beneath it, which on a conductor's page is most
+    #: often a whole-bar REST. `export._mxl_note` already keeps them apart for
+    #: exactly that reason -- `<fermata>` is emitted outside the
+    #: `<articulations>` block precisely because a rest can carry one and a
+    #: staccato cannot.
+    #:
+    #: ⚠️ The class names a SIDE (`Above` / `Below`) and this quantity records
+    #: it, but nothing reads it yet: `_mxl_note` writes `<fermata
+    #: type="upright"/>` unconditionally. Recorded rather than dropped, so the
+    #: day the renderer learns `inverted` the reading is already on the
+    #: record. ⚠️ It is NOT the articulation side test either -- that side
+    #: says which notehead a mark may name, and a fermata's does not: a
+    #: `fermataAbove` over a bar's only rest stands above ink it belongs to.
+    FERMATA_MARK = "fermata_mark"
     WEDGE_BOX = "wedge_box"                  # hairpin ink
     DYNAMIC_LETTER = "dynamic_letter"        # one letter, before spelling
 
@@ -478,6 +497,16 @@ class Q(_Vocab):
     ARC_KIND = "arc_kind"                    # tie | slur
     TUPLET_RATIO = "tuplet_ratio"
     ARTICULATION_OWNER = "articulation_owner"
+    #: Which EVENT -- notehead or rest -- a fermata hangs over.
+    #:
+    #: ⚠️ THE VALUE IS A GLYPH SUBJECT AND THE CONSUMER MUST HOIST IT. A
+    #: fermata over a chord is ONE pause over the whole chord, so the exporter
+    #: writes it on the chord's FIRST `<note>` (MusicXML's representative for a
+    #: span) rather than on each member -- the opposite of
+    #: `Q.ARTICULATION_OWNER`, where every member of a chord wears its own
+    #: staccato. Naming one glyph and hoisting is how a per-glyph decision
+    #: stays a per-glyph decision.
+    FERMATA_OWNER = "fermata_owner"
     WEDGE_ANCHOR = "wedge_anchor"
     DYNAMIC = "dynamic"                      # the spelled word
     DIRECTION = "direction"                  # the accepted direction text

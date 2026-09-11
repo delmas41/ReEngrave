@@ -214,21 +214,34 @@ class TestTheAccountingControl(unittest.TestCase):
 class TestCoverageNamesTheFourZEROS(unittest.TestCase):
     def test_a_family_with_NO_QUANTITY_is_named_and_its_ink_counted(self):
         """⚠️ THE FINDING THIS MODULE EXISTS TO SURFACE, still live for
-        fermatas and ornaments: a family nobody has decided exists, with the
-        detector's own count of it beside the zero. **Rests were the worst
-        case and are no longer in it** — `Q.REST` landed 2026-09-09 — which is
-        why this test moved to a family that still has none rather than being
-        deleted."""
+        ornaments: a family nobody has decided exists, with the detector's own
+        count of it beside the zero. **It has now moved TWICE** — off `rest`
+        when `Q.REST` landed 2026-09-09, and off `fermata` when
+        `Q.FERMATA_OWNER` landed 2026-09-10 — and each move is the right
+        outcome: a closed gap must leave the list, or the report stops
+        describing the pipeline and starts describing its history.
+
+        ⚠️ Counted by CLASS. `ornamentTrill` carries the detector's `ornament`
+        CATEGORY, which it shares with all ten `artic*` classes and with
+        `fermata*`; counting by category reported 300 ornaments on a page
+        holding none."""
         page = _one_staff_page(notes=[("C4", QUARTER)])
         page["record"]["observations"].append(
             _obs(500, "glyph/0/0/0/0/9", Q.GLYPH_BOX,
-                 ["fermataAbove", 10, 10, 20, 20], category="ornament"))
+                 ["ornamentTrill", 10, 10, 20, 20], category="ornament"))
         rep = SX.coverage(page)
-        f = next(r for r in rep["families"] if r["family"] == "fermata")
+        f = next(r for r in rep["families"] if r["family"] == "ornament")
         self.assertEqual(f["status"], "NO_QUANTITY")
         self.assertIsNone(f["quantity"])
         self.assertEqual(f["detector_glyphs"], 1)
-        self.assertEqual(rep["detected_and_unrepresented"]["fermata"], 1)
+        self.assertEqual(rep["detected_and_unrepresented"]["ornament"], 1)
+
+    def test_the_quantityless_families_are_DECLARED_so_the_next_one_is_loud(self):
+        """⚠️ DERIVED, so a family that quietly loses its quantity fails here
+        rather than dropping out of the headline. The set shrinks as the
+        wiring pass runs; it must never grow silently."""
+        blank = {fam for fam, (q, _c, _ct) in SX.FAMILIES.items() if q is None}
+        self.assertEqual(blank, {"ornament"}, blank)
 
     def test_rests_are_NO_LONGER_a_NO_QUANTITY_family(self):
         """The gap this file recorded on 2026-09-09 morning, closed the same
@@ -238,6 +251,13 @@ class TestCoverageNamesTheFourZEROS(unittest.TestCase):
         rest = next(r for r in rep["families"] if r["family"] == "rest")
         self.assertEqual(rest["quantity"], Q.REST)
         self.assertNotEqual(rest["status"], "NO_QUANTITY")
+
+    def test_fermatas_are_NO_LONGER_a_NO_QUANTITY_family(self):
+        """Closed 2026-09-10, and named here for the same reason rests are."""
+        rep = SX.coverage(_one_staff_page(notes=[("C4", QUARTER)]))
+        f = next(r for r in rep["families"] if r["family"] == "fermata")
+        self.assertEqual(f["quantity"], Q.FERMATA_OWNER)
+        self.assertNotEqual(f["status"], "NO_QUANTITY")
 
     def test_a_starved_stub_is_reported_apart_from_a_plain_stub(self):
         """⚠️ `starved` means the adjudicator is a stub AND its input is never
@@ -1671,3 +1691,92 @@ class TestArticulationsReachTheFile(unittest.TestCase):
             'counters["articulations"]',
             inspect.getsource(SX._place_articulations),
             "the counter is at the ATTACH, which reports a different number")
+
+
+def _add_fermata(page, gi, x, cls="fermataAbove", *, owner_gi=None,
+                 outcome="decided", reason="contains_the_mark"):
+    """A fermata mark plus its owner verdict, in the shape gather emits."""
+    sub = f"glyph/0/0/0/0/{gi}"
+    page["record"]["observations"].append(
+        _obs(500 + gi, sub, Q.FERMATA_MARK, cls, x0=x, x1=x + 14,
+             y0=0, y1=10, side="above"))
+    v = _vrd(550 + gi, sub, Q.FERMATA_OWNER,
+             None if owner_gi is None else f"glyph/0/0/0/0/{owner_gi}",
+             outcome=outcome, reason=reason)
+    v["detail"] = {"carrier": "notehead"}
+    page["record"]["verdicts"].append(v)
+    return page
+
+
+class TestFermatasReachTheFile(unittest.TestCase):
+    """⚠️ THE THIRD LEG. `articulation_owner` established that a stub's
+    "one repair" is three -- adjudicator, emission, counter -- and both
+    `adjudicate_dynamic` and `arc_kind` decided into no file for a day."""
+
+    def test_a_fermata_on_a_note_is_written_and_counted(self):
+        page = _add_fermata(_one_staff_page(notes=[("C4", QUARTER)]),
+                            9, 100, owner_gi=0)
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(len(ET.fromstring(xml).findall(".//fermata")), 1)
+        self.assertEqual(rep["written"]["fermatas"], 1)
+
+    def test_a_fermata_on_a_REST_is_written(self):
+        """⚠️ The commonest carrier on a conductor's page, and the case the
+        articulation path structurally cannot reach: `_mxl_note` keeps
+        `<fermata>` OUTSIDE the `<articulations>` block for exactly this."""
+        page = _one_staff_page(notes=[])
+        _add_rest(page, 0, "restWhole", {"beats": 4.0, "written": 4.0,
+                                         "dots": 0, "measure_rest": True})
+        _add_fermata(page, 9, 300, owner_gi=0)
+        xml, rep = SX.to_musicxml(page)
+        root = ET.fromstring(xml)
+        self.assertEqual(len(root.findall(".//fermata")), 1)
+        self.assertIsNotNone(root.find(".//note/rest"))
+        self.assertEqual(rep["written"]["fermatas"], 1)
+
+    def test_two_marks_on_ONE_CHORD_write_ONE_fermata(self):
+        """⚠️ HOISTED, unlike an articulation. One pause hangs over the whole
+        chord, so it goes on the chord's first `<note>`; each member wearing
+        its own would print three where the page prints one.
+
+        ⚠️ And the balance must NOT call that a loss -- which is why the
+        fermata control is a partition and not an equality.
+        """
+        page = _one_staff_page(notes=[("C4", QUARTER), ("E4", QUARTER)])
+        # Both heads at the same x: `group_chords_in_measure` makes one chord.
+        for o in page["record"]["observations"]:
+            if o["quantity"] == Q.GLYPH_BOX:
+                o["value"][1] = 100
+        _add_fermata(page, 9, 100, owner_gi=0)
+        _add_fermata(page, 10, 100, owner_gi=1)
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(len(ET.fromstring(xml).findall(".//fermata")), 1)
+        self.assertEqual(rep["written"]["fermatas"], 1)
+        bal = rep["fermata_balance"]
+        self.assertEqual(bal["marks_in_log"], 2)
+        self.assertEqual(bal["absorbed_by_a_shared_event"], 1)
+        self.assertTrue(bal["balanced"])
+
+    def test_an_abstained_mark_is_COUNTED_not_swallowed(self):
+        page = _add_fermata(_one_staff_page(notes=[("C4", QUARTER)]),
+                            9, 100, outcome="abstained", reason="no_carrier")
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(len(ET.fromstring(xml).findall(".//fermata")), 0)
+        self.assertEqual(rep["fermatas_not_written"]["fermata_no_carrier"], 1)
+        self.assertTrue(rep["fermata_balance"]["balanced"])
+
+    def test_a_mark_whose_owner_was_never_written_is_counted(self):
+        """A note can be decided and still dropped (no pitch, a narrowed
+        duration), and the pause then has nothing to hang on."""
+        page = _add_fermata(_one_staff_page(notes=[(None, QUARTER)]),
+                            9, 100, owner_gi=0)
+        _xml, rep = SX.to_musicxml(page)
+        self.assertEqual(
+            rep["fermatas_not_written"]["fermata_owning_glyph_not_written"], 1)
+
+    def test_a_page_with_no_fermata_writes_none(self):
+        """The positive control's other half: a family that writes one mark
+        wherever asked would pass every test above."""
+        _xml, rep = SX.to_musicxml(_one_staff_page(notes=[("C4", QUARTER)]))
+        self.assertEqual(rep["written"].get("fermatas", 0), 0)
+        self.assertEqual(rep["fermata_balance"]["marks_in_log"], 0)

@@ -718,6 +718,11 @@ ORDER: Tuple[str, ...] = (
     Q.ARC_OWNER,
     Q.ARC_KIND,
     Q.ARTICULATION_OWNER,
+    # ⚠️ BESIDE THE ARTICULATION AND NOT AFTER THE RHYTHM. A fermata's
+    # carriers are noteheads and RESTS, both of which are GATHER rows
+    # (`Q.GLYPH_BOX`), so this needs no verdict of any kind -- putting it
+    # after `Q.EVENT` would imply a dependency it does not have.
+    Q.FERMATA_OWNER,
     Q.WEDGE_ANCHOR,
     # rhythm
     # ⚠️ TUPLET BEFORE DURATION. `adjudicate_duration` reads the tuplet

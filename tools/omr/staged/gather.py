@@ -692,6 +692,13 @@ def gather_rhythm_marks(log: Log, cells: Sequence[Any],
 _ARC_CLASSES = ("tie", "slur")
 _ARTIC_PREFIX = "artic"
 _REST_PREFIX = "rest"
+#: ⚠️ `fermata` AND NOT `artic`. The 208-class space spells the pause sign
+#: `fermataAbove` / `fermataBelow`, which share the detector's `ornament`
+#: CATEGORY with all ten `artic*` classes, `ornamentTrill` and `arpeggiato` --
+#: so a category-keyed router would file a fermata as an articulation, and an
+#: articulation's own attach rule (nearest notehead on the side its class
+#: names) is the wrong rule for a mark that most often hangs over a REST.
+_FERMATA_PREFIX = "fermata"
 
 
 def _artic_side(name: str) -> Optional[str]:
@@ -703,6 +710,12 @@ def _artic_side(name: str) -> Optional[str]:
     attach pass requires the geometry to AGREE with the side when there is
     one. So this returns None rather than guessing, and the adjudicator gets a
     row that says "no side declared" instead of a wrong one.
+
+    ⚠️ IT HAS A SECOND CALLER WITH DIFFERENT SEMANTICS, and saying so is the
+    point. `Q.FERMATA_MARK` records the same suffix, but for a fermata the side
+    is NOT an attach constraint -- a `fermataAbove` hangs over whatever sounds
+    beneath it, including a whole-bar rest it stands well above. This function
+    reads a NAME; what the side is allowed to MEAN belongs to each adjudicator.
     """
     if name.endswith("Above"):
         return "above"
@@ -715,7 +728,7 @@ def gather_glyph_families(log: Log, detections: Dict[str, List[Any]],
                           cells: Sequence[Any] = (),
                           local: Optional[Dict[int, Tuple[int, int]]] = None
                           ) -> None:
-    """Rests, arcs and articulation marks.
+    """Rests, arcs, articulation marks and fermatas.
 
     ⚠️ EVERY ONE OF THESE WAS DETECTED AND READ BY NOTHING until 2026-09-09.
     Measured over four real conductor's pages, the ink that reached
@@ -800,6 +813,15 @@ def gather_glyph_families(log: Log, detections: Dict[str, List[Any]],
                             side=_artic_side(name))
             elif name.lower().startswith(_REST_PREFIX):
                 log.observe(g, Q.REST, name, **common, **box)
+            elif name.lower().startswith(_FERMATA_PREFIX):
+                # ⚠️ THE SIDE IS RECORDED AND NOTHING READS IT, deliberately.
+                # `export._mxl_note` writes `<fermata type="upright"/>`
+                # unconditionally, so `fermataBelow` has nowhere to go today --
+                # and a reading thrown away at the gather site is how this
+                # project's most-repeated bug starts. Written down here, read
+                # later or never.
+                log.observe(g, Q.FERMATA_MARK, name, **common, **box,
+                            side=_artic_side(name))
 
 
 # ─────────────────────────────────────────────────────────────────────────────

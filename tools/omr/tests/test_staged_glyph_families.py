@@ -89,6 +89,43 @@ class TestEachFamilyGetsATypedRow(unittest.TestCase):
         self.assertIsNone(rows[0].detail["side"])
 
 
+class TestAFermataIsItsOwnFamilyAndNotAnArticulation(unittest.TestCase):
+    """⚠️ THE ROUTER IS BY CLASS AND THIS IS WHERE THAT EARNS ITS KEEP.
+    `fermataAbove` carries the detector's `ornament` CATEGORY — the same one
+    all ten `artic*` classes carry, and `ornamentTrill` and `arpeggiato` with
+    them — so a category-keyed router files a pause as an articulation, and
+    the articulation attach rule (nearest notehead on the side the class
+    names) is exactly wrong for a mark that most often hangs over a REST.
+    """
+
+    def test_a_fermata_is_observed_as_a_fermata(self):
+        log = _log(Det("fermataAbove", category="ornament"))
+        rows = log.rows(Q.FERMATA_MARK, CELL,
+                        scope=Scope.SELF_AND_DESCENDANTS)
+        self.assertEqual(rows[0].value, "fermataAbove")
+        self.assertEqual(rows[0].detail["side"], "above")
+
+    def test_a_fermata_is_NOT_an_articulation_mark(self):
+        log = _log(Det("fermataAbove", category="ornament"))
+        self.assertEqual(_values(log, Q.ARTICULATION_MARK), [])
+
+    def test_an_articulation_is_NOT_a_fermata_mark(self):
+        """The mirror, because one shared category makes the confusion run
+        both ways and a one-directional test would pass with both routed
+        into either bucket."""
+        log = _log(Det("articStaccatoAbove", category="ornament"))
+        self.assertEqual(_values(log, Q.FERMATA_MARK), [])
+
+    def test_a_fermataBelow_records_its_side(self):
+        """Nothing reads it — `_mxl_note` writes `type="upright"`
+        unconditionally — and it is recorded anyway. A reading discarded at
+        the gather site is how this project's most-repeated bug starts."""
+        log = _log(Det("fermataBelow", category="ornament"))
+        rows = log.rows(Q.FERMATA_MARK, CELL,
+                        scope=Scope.SELF_AND_DESCENDANTS)
+        self.assertEqual(rows[0].detail["side"], "below")
+
+
 class TestAHairpinIsNeverReadAsALetter(unittest.TestCase):
     """⚠️ THE HAZARD IS UNCHANGED; ITS OWNER MOVED.
     `dynamicDiminuendoHairpin` carries the detector's `dynamic` category AND a
@@ -161,7 +198,7 @@ class TestItDecidesNothing(unittest.TestCase):
     def test_a_glyph_of_no_family_gets_no_typed_row(self):
         log = _log(Det("beam"), Det("staff", x=0), Det("ledgerLine", x=50))
         for q in (Q.REST, Q.ARC_BOX, Q.WEDGE_BOX, Q.DYNAMIC_LETTER,
-                  Q.ARTICULATION_MARK):
+                  Q.ARTICULATION_MARK, Q.FERMATA_MARK):
             self.assertEqual(_values(log, q), [], q)
 
 
@@ -180,6 +217,7 @@ class TestTheStubsNowHaveARealDomain(unittest.TestCase):
             Q.ARTICULATION_OWNER: Q.ARTICULATION_MARK,
             Q.WEDGE_ANCHOR: Q.WEDGE_BOX,
             Q.DYNAMIC: Q.DYNAMIC_LETTER,
+            Q.FERMATA_OWNER: Q.FERMATA_MARK,
         }
         for quantity, domain in expected.items():
             self.assertEqual(adjudicate.REGISTRY[quantity].subjects_from,

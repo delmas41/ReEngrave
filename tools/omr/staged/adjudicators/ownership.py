@@ -594,3 +594,120 @@ def adjudicate_wedge_anchor(ev: Evidence) -> Ruling:
     begins slightly BEFORE the note it starts on.
     """
     return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
+
+
+#: Detector categories a fermata can hang over. ⚠️ BOTH, AND THE REST IS THE
+#: POINT: on a conductor's page the commonest carrier of a pause is a
+#: whole-bar rest, not a note. `export.annotate_fermatas` says so in its own
+#: docstring and pairs against notes and rests alike; a notehead-only rule
+#: would miss the case the mark exists for.
+_FERMATA_CARRIERS = ("notehead", "rest")
+
+
+@decision(
+    quantity=Q.FERMATA_OWNER,
+    composed_from=(Q.FERMATA_MARK, Q.GLYPH_BOX),
+    scope=Kind.GLYPH,
+    wants=(Q.FERMATA_MARK, Q.GLYPH_BOX),
+    subjects_from=Q.FERMATA_MARK,
+    reasons=("contains_the_mark", "nearest_in_bar", "no_carrier",
+             "no_evidence"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_fermata_owner(ev: Evidence) -> Ruling:
+    """What a fermata hangs over — a notehead or a rest, in its own bar.
+
+    ⚠️ THE RULE IS `export.annotate_fermatas`'s AND IS NOT RE-DERIVED. A
+    fermata belongs to whatever is SOUNDING under it, so the pairing is BY X
+    ALONE and never by pitch: the mark's centre inside a carrier's x-span, or
+    failing that the nearest carrier centre in the bar. That reading was paid
+    for when the sixth export gap was closed -- Beethoven 5 detects 36
+    fermatas against a truth of 36 -- and the `<fermata>` element it produces
+    is already emitted by `_mxl_note`.
+
+    ⚠️ THE FALLBACK IS LOAD-BEARING, NOT SLOPPY, and the legacy docstring says
+    why: a fermata over a bar's only rest is engraved at the BAR's middle
+    while the rest glyph sits at its own centre, so a containment-only rule
+    misses the commonest case of all. The two branches are reported APART
+    (`contains_the_mark` / `nearest_in_bar`) so a reader can tell a mark that
+    stood over its carrier from one that merely stood nearest it -- the
+    distinction a single reason would destroy.
+
+    ⚠️ IT IS NOT AN ARTICULATION AND THE SIDE IS NOT A CONSTRAINT. The sibling
+    decision above requires the notehead to be on the side the mark's own class
+    names; that rule is wrong here, because a `fermataAbove` over a whole-bar
+    rest stands above ink it belongs to. The side is recorded on
+    `Q.FERMATA_MARK` and read by nothing -- `_mxl_note` writes
+    `type="upright"` unconditionally -- rather than being pressed into service
+    as a test it cannot pass.
+
+    ⚠️ THE CELL'S CANONICAL FRAME IS CORRECT HERE, for the same reason it is
+    correct for an articulation and WRONG for `arc_owner`: the mark and its
+    carrier were cut from ONE cell, so they share a frame by construction.
+    This decision never looks at another staff -- ⚠️ which is also its known
+    limit. A fermata is printed above the staff and a measure cell is padded
+    above, so a mark can land in the cell of the staff ABOVE the one that
+    prints it, exactly as a hairpin does. Nothing arbitrates that here; it is
+    recorded as a limit rather than guessed at.
+
+    ⚠️ NO DISTANCE CONSTANT, deliberately. The legacy rule has none -- the bar
+    bounds the search -- and inventing one would be tuning a family on its
+    first day against one document, which is what the wiring pass exists to
+    avoid. What the record gets instead is `dx_canonical_px` on every verdict,
+    so a constant can be read off a measured population later.
+    """
+    marks = ev.rows(Q.FERMATA_MARK)
+    if not marks:
+        return Ruling.abstain("no_evidence")
+    mark = marks[0]
+
+    cell = ev.subject.at(Kind.CELL)
+    carriers = [r for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                                   subject=cell)
+                if (r.detail or {}).get("category") in _FERMATA_CARRIERS
+                and isinstance(r.value, (list, tuple)) and len(r.value) >= 5]
+    if not carriers:
+        # ⚠️ A REAL POPULATION, NOT A DEFENSIVE BRANCH: 9 of the 46 cells
+        # holding a fermata on Litolff `984073` p1-3 carry neither a notehead
+        # nor a rest. The mark was read and there is nothing in that bar for it
+        # to hang on, which is a gap in the READING and is reported as one.
+        return Ruling.abstain("no_carrier", detector_class=str(mark.value))
+
+    mx = (float(mark.detail.get("x0", 0.0))
+          + float(mark.detail.get("x1", 0.0))) / 2.0
+
+    def _span(row):
+        _cls, x, _y, w, _h = row.value[:5]
+        return float(x), float(x) + float(w)
+
+    # ⚠️ DETERMINISTIC ORDER. A chord's members share an x by definition, so
+    # several carriers can contain the mark; the exporter HOISTS a fermata to
+    # its event's first note either way, but a verdict that moved between runs
+    # would make every A/B on this family unreadable.
+    carriers.sort(key=lambda r: (_span(r)[0], r.subject.glyph or 0))
+
+    hit = next((r for r in carriers
+                if _span(r)[0] <= mx <= _span(r)[1]), None)
+    if hit is not None:
+        reason = "contains_the_mark"
+    else:
+        hit = min(carriers,
+                  key=lambda r: (abs(sum(_span(r)) / 2.0 - mx),
+                                 r.subject.glyph or 0))
+        reason = "nearest_in_bar"
+
+    lo, hi = _span(hit)
+    return Ruling(
+        value=hit.subject.to_key(), reason=reason,
+        used=(mark.id, hit.id),
+        # ⚠️ THE CARRIER'S KIND TRAVELS WITH THE OWNER, the same rule
+        # `articulation_owner` follows for its mark's kind: an exporter holding
+        # only a subject key would have to re-read the glyph to know whether it
+        # is hanging the pause on a note or on a rest.
+        detail={"carrier": (hit.detail or {}).get("category"),
+                "carrier_class": str(hit.value[0]),
+                "dx_canonical_px": abs((lo + hi) / 2.0 - mx),
+                "n_carriers": len(carriers),
+                "side": (mark.detail or {}).get("side"),
+                "detector_class": str(mark.value),
+                "confidence": mark.score})

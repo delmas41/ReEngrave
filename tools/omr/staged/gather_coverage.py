@@ -318,6 +318,12 @@ LEGACY_TO_Q: Dict[str, str] = {
     "slur_states": "ARC_OWNER",
     "wedge_states": "WEDGE_ANCHOR",
     "articulations": "ARTICULATION_OWNER",
+    # ⚠️ THE VERDICT, NOT THE MARK, exactly as `articulations` maps to the
+    # OWNER above: the legacy event key means "this event carries a pause",
+    # which is a decision about what the ink hangs over and not the ink
+    # itself. `Q.FERMATA_MARK` is the reading. CLOSED 2026-09-10; it was in
+    # `NO_VOCABULARY`.
+    "fermata": "FERMATA_OWNER",
     "direction_texts": "DIRECTION",
     "detections": "GLYPH_BOX",
     "bbox_page_px": "GLYPH_BOX",
@@ -366,9 +372,6 @@ NO_VOCABULARY: Dict[str, str] = {
         "`transcribe._pair_ties_in_staff`. `Q.ARC_KIND` decides tie-vs-slur "
         "for one arc; nothing names the CHAIN a tie makes between two events."),
     "tied_from_prev": "the other end of the same chain; see `tied_to_next`.",
-    "fermata": (
-        "read by the detector and emitted by the exporter -- Beethoven 5 "
-        "detects 36 against a truth of 36 and 35 reach the file. No `Q`."),
     "ornaments": (
         "trill / turn / mordent / tremolo, attached by "
         "`transcribe._attach_ornaments_in_cell`. The tenth export gap. "
@@ -568,7 +571,7 @@ FAMILY_TO_Q: Dict[str, Optional[str]] = {
     "coda": None,
     "dynamic": "DYNAMIC_LETTER",
     "f": "CLEF_GLYPH",
-    "fermata": None,
+    "fermata": "FERMATA_MARK",   # ⚠️ CLOSED 2026-09-10; was None
     "fingering": "TUPLET_MARKER",  # ⚠️ `fingering3` IS a triplet digit here
     "flag": "FLAG",
     "g": "CLEF_GLYPH",

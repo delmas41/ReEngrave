@@ -354,6 +354,10 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     # reason the arcs are: an articulation is not a note, and folding it into
     # `dropped` would make the note balance raise on a different family.
     artics_dropped = _place_articulations(rec, runs)
+    # ⚠️ ITS OWN BUCKET, for the same reason the arcs and articulations have
+    # one: a fermata is not a note, and folding its shortfall into `dropped`
+    # would make the note-accounting control raise about a different family.
+    fermatas_dropped = _place_fermatas(rec, runs)
 
     # ── the join ────────────────────────────────────────────────────────────
     join = rec.value(Q.PART_PARTITION, "document") or {}
@@ -429,7 +433,8 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     # one counter is the shape `_claims` was made longest-prefix-wins to
     # prevent: a hairpin claimed by both `dynamic` and `wedge` was counted
     # twice, and a reader cannot unpick one number into two afterwards.
-    return parts, provenance, dropped, arcs_dropped, artics_dropped
+    return (parts, provenance, dropped, arcs_dropped, artics_dropped,
+            fermatas_dropped)
 
 
 def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
@@ -872,6 +877,52 @@ def _place_articulations(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, in
     return dict(dropped)
 
 
+def _place_fermatas(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
+    """Every decided fermata, onto the notehead or rest its OWNER names.
+
+    ⚠️⚠️ IT LANDS WITH THE ADJUDICATOR, NEVER AFTER IT. `articulation_owner`
+    established the cost of the other order in this file's own history: the
+    stub's docstring called the repair "write the adjudicator" and the tree
+    said THREE -- adjudicator, emission, and the `FAMILIES` counter -- so an
+    adjudicator alone would have produced a fresh `decided_and_unwritten` row,
+    the bucket the arc session had just emptied. `adjudicate_dynamic` and
+    `arc_kind` both spent a day deciding into no file.
+
+    ⚠️ THE JOIN IS THE SUBJECT KEY, which `_place_notes` stamps on every
+    detection -- rests included -- as `glyph`. Joining on coordinates would
+    re-derive, approximately, a fact the record states exactly.
+
+    ⚠️ A MARK IS SET ON THE CARRIER, NOT COUNTED HERE. The count happens where
+    the ELEMENT is written, which is the rule `FAMILIES` states and the arc
+    export learned by reporting 55 slurs into a file holding 23: a fermata set
+    on the third member of a chord is HOISTED to that chord's first note, so
+    marks set and elements written are genuinely different numbers.
+    """
+    dropped: Dict[str, int] = collections.Counter()
+    carriers: Dict[str, Dict[str, Any]] = {}
+    for run in runs.values():
+        for cell in run.cells.values():
+            for det in cell.detections:
+                if det.get("glyph"):
+                    carriers[str(det["glyph"])] = det
+    for o in rec.obs_of(Q.FERMATA_MARK):
+        sub = o["subject"]
+        v = rec.verdict(Q.FERMATA_OWNER, sub)
+        if not v or v["outcome"] != "decided":
+            dropped["fermata_" + (v["reason"] if v else "absent")] += 1
+            continue
+        carrier = carriers.get(str(v["value"]))
+        if carrier is None:
+            # The owner names a glyph `_place_notes` never wrote — no pitch, a
+            # narrowed duration — so the pause has nothing to hang on. A
+            # shortfall that is not counted is indistinguishable from ink that
+            # was never read.
+            dropped["fermata_owning_glyph_not_written"] += 1
+            continue
+        carrier["fermata"] = True
+    return dict(dropped)
+
+
 def _place_directions(rec: Record, runs: Dict[str, StaffRun]) -> None:
     """Every decided dynamic word, in the cell its DECISION filed it on.
 
@@ -1126,6 +1177,15 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
         heads = ev.get("noteheads") or []
         tup = next((h["tuplet"] for h in heads
                     if isinstance(h.get("tuplet"), dict)), None)
+        # ⚠️ HOISTED TO THE EVENT, UNLIKE AN ARTICULATION. One fermata hangs
+        # over a whole chord, so it goes on the chord's FIRST `<note>` --
+        # MusicXML's representative for anything spanning the chord, the same
+        # place the slur and tie marks go. Each member wearing its own would
+        # write three pause signs where the page prints one. `any` and not
+        # "the first head that carries it": `adjudicate_fermata_owner` names
+        # ONE carrier and a chord's members share an x, so which member it
+        # named is an artefact of glyph order and must not decide anything.
+        ev_fermata = any(h.get("fermata") for h in heads)
         for n, head in enumerate(heads):
             # ⚠️ LOWEST NOTE FIRST — `group_chords_in_measure` already sorts
             # the group that way and the order is load-bearing: MusicXML takes
@@ -1168,6 +1228,7 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # wears its own staccato, and hoisting them onto the first
                 # would write one dot where the page prints three.
                 articulations=(head.get("articulations") or None),
+                fermata=(ev_fermata if n == 0 else False),
                 accidental=head.get("accidental")))
             counters["notes"] += 1
             # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and not
@@ -1178,6 +1239,13 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
             # learned this by reporting 55 slurs into a file holding 23.
             counters["articulations"] += len(head.get("articulations") or ())
             if n == 0:
+                # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and
+                # ONCE PER EVENT rather than once per mark. Two fermatas
+                # decided onto two members of one chord produce ONE
+                # `<fermata>`, and a counter at the attach site would claim
+                # two. That gap is what `fermata_balance` reports.
+                if ev_fermata:
+                    counters["fermatas"] += 1
                 # ⚠️⚠️ COUNTED HERE, AT THE RENDER, AND NOT WHERE THE MARK WAS
                 # SET -- because the two numbers are DIFFERENT and the first
                 # cut reported the wrong one. `voicing._chord_span_states`
@@ -1219,15 +1287,23 @@ def _rest_xml(ev: Dict[str, Any], divisions: int,
         counters["rests"] += 1
         _lily, xml_type, dots = _legacy._duration_to_lily_xml(
             ev.get("duration_type") or "quarter", int(ev.get("dots") or 0))
+    # ⚠️ A REST CARRIES A FERMATA AND AN ARTICULATION DOES NOT, which is why
+    # `_mxl_note` keeps `<fermata>` outside the `<articulations>` block. On a
+    # conductor's page the whole-bar rest is the COMMONEST carrier of a pause.
+    fermata = bool(det.get("fermata"))
+    if fermata:
+        counters["fermatas"] += 1
     return [_legacy._mxl_note(
         None, "", xml_type, dots, beats, divisions, is_chord=False,
-        is_rest=True, indent="      ", voice=1, measure_rest=measure_rest)]
+        is_rest=True, indent="      ", voice=1, measure_rest=measure_rest,
+        fermata=fermata)]
 
 
 def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     """The file, and the record of what did not reach it."""
     rec = Record(result)
-    parts, provenance, dropped, arcs_dropped, artics_dropped = build(rec)
+    (parts, provenance, dropped, arcs_dropped, artics_dropped,
+     fermatas_dropped) = build(rec)
     divisions = _divisions(parts)
     counters: Dict[str, int] = collections.Counter()
     # ⚠️ AFTER the parts are joined and BEFORE any measure is rendered. A part
@@ -1293,6 +1369,28 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "not_written": report["articulations_not_written_total"],
         "balanced": marks_in_log == (int(counters.get("articulations", 0))
                                      + report["articulations_not_written_total"]),
+    }
+    # ⚠️ THE FERMATA BALANCE IS A PARTITION AND DELIBERATELY NOT AN EQUALITY,
+    # which is the one place it differs from the articulation control above. A
+    # fermata is HOISTED to its chord's first note, so two marks decided onto
+    # two members of one chord write ONE `<fermata>` -- `written + not_written`
+    # is then legitimately SHORT of `marks_in_log`, and an equality control
+    # would report an instrument defect for correct behaviour. What is
+    # asserted instead is that nothing goes missing UNACCOUNTED: every mark is
+    # written, counted as not-written, or absorbed into an element another mark
+    # on the same event already wrote.
+    fermata_marks = len(rec.obs_of(Q.FERMATA_MARK))
+    report["fermatas_not_written"] = dict(fermatas_dropped)
+    report["fermatas_not_written_total"] = sum(fermatas_dropped.values())
+    f_written = int(counters.get("fermatas", 0))
+    report["fermata_balance"] = {
+        "marks_in_log": fermata_marks,
+        "written": f_written,
+        "not_written": report["fermatas_not_written_total"],
+        "absorbed_by_a_shared_event": (
+            fermata_marks - f_written - report["fermatas_not_written_total"]),
+        "balanced": (f_written + report["fermatas_not_written_total"]
+                     <= fermata_marks),
     }
     # ⚠️⚠️ THE ACCOUNTING CONTROL, AND IT IS READ. Every notehead the log
     # holds is either written or counted as not-written; the two must sum to
@@ -1365,7 +1463,7 @@ FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
                                "dynamicDiminuendoHairpin"), ()),
     "direction": (Q.DIRECTION, (), ()),
     "ornament": (None, ("ornament", "tremolo"), ()),
-    "fermata": (None, ("fermata",), ()),
+    "fermata": (Q.FERMATA_OWNER, ("fermata",), ("fermatas",)),
     "clef": (Q.CLEF, ("clef",), ()),
     "key": (Q.KEY_SIGNATURE, ("key",), ()),
     "time": (Q.METER, ("timeSig",), ()),

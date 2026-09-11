@@ -163,11 +163,27 @@ class TestTheFindingsAreStillTrue(unittest.TestCase):
         self.assertEqual(GC.LEGACY_TO_Q["kind"], "EVENT")
 
     def test_what_is_STILL_unnamed(self) -> None:
-        """The seven that survive, so a future closure is a loud failure."""
+        """The six that survive, so a future closure is a loud failure.
+
+        ⚠️ It was SEVEN until 2026-09-10, when `fermata` left for
+        `LEGACY_TO_Q` — `Q.FERMATA_MARK` reads the ink and `Q.FERMATA_OWNER`
+        decides what it hangs over. The count in this docstring is the kind of
+        hand-written figure that has rotted three times in this repo; the
+        assertion below is the authority, not the sentence.
+        """
         self.assertEqual(
             sorted(GC.NO_VOCABULARY),
-            ["fermata", "ornaments", "stem_direction", "tied_from_prev",
+            ["ornaments", "stem_direction", "tied_from_prev",
              "tied_to_next", "voice_index", "voices"])
+
+    def test_the_fermata_gap_is_CLOSED_and_stays_accounted(self) -> None:
+        """Closed 2026-09-10. A closed gap must leave `NO_VOCABULARY` or the
+        report describes the pipeline's history rather than the pipeline —
+        and it must land in `LEGACY_TO_Q` rather than falling out of both."""
+        self.assertIn("fermata", GC.LEGACY_TO_Q)
+        self.assertNotIn("fermata", GC.NO_VOCABULARY)
+        self.assertEqual(GC.LEGACY_TO_Q["fermata"], "FERMATA_OWNER")
+        self.assertEqual(GC.FAMILY_TO_Q["fermata"], "FERMATA_MARK")
 
     def test_every_declared_stub_is_reported_with_its_input_state(self) -> None:
         """⚠️ THE STRUCTURAL FINDING, AND THE MERGE THAT HALF-CLOSED IT.
