@@ -382,7 +382,19 @@ NO_VOCABULARY: Dict[str, str] = {
     "tied_to_next": (
         "tie state carried on the notehead, chained across barlines by "
         "`transcribe._pair_ties_in_staff`. `Q.ARC_KIND` decides tie-vs-slur "
-        "for one arc; nothing names the CHAIN a tie makes between two events."),
+        "for one arc; nothing names the CHAIN a tie makes between two events. "
+        "⚠️ MEASURED AND DELIBERATELY LEFT OPEN, 2026-09-10 -- a chain is a "
+        "fact about a PART (10 of 59 links cross a barline on Litolff "
+        "`984073` p1-3 and 140 of 632 on Breitkopf Brahms 1 p0-3; 2 cross a "
+        "SYSTEM BREAK), and the part is built inside `staged/export.build` "
+        "AFTER `Q.PART_PARTITION` is read and after `staged/__main__` has "
+        "already written the record JSON -- so EXPORT cannot contribute a "
+        "row and no stage below it has the part. A per-arc or per-staff-run "
+        "quantity would reach 630 of 632 links and would be a SECOND pairing "
+        "that can disagree with the exporter's, which is worse than the gap. "
+        "The exporter now REPORTS the chain instead "
+        "(`written.tie_links_marked` / `tie_chains_marked`). See "
+        "`benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md`."),
     "tied_from_prev": "the other end of the same chain; see `tied_to_next`.",
 }
 
