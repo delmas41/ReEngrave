@@ -1,0 +1,41 @@
+{
+  "_README": "The key signature and clef of every printed staff of Litolff Beethoven 5 mvt 1, pdf pages 1-4 (the four pages the first cleanup count covers). HAND-READ OFF THE PRINT at 600 dpi, staff by staff, and independently corroborated by the project owner reading the same pages: 'the key signatures are inconsistent - they should all be 3 flats (Cm/Eb maj) except Cl. which is 1 flat and the tr and cor which have no key signature.' HE DID NOT MENTION THE TIMPANI. The print gives it NO key signature (Timpani in C.G., bass clef, empty header) and that is the ordinary convention, so the hand reading ADDS one staff to his statement rather than contradicting it; every staff he did name agrees to the accidental. Nothing here is derived from a MusicXML encoding, from a dossier, or from any pipeline output.",
+  "_UNIT": "fifths, the MusicXML sense: negative is flats. 0 means a header with NO accidentals printed, which is a positive reading and not an abstention.",
+  "_WHY_INSTRUMENT": "The truth is a function of the INSTRUMENT, not of the page: clarinets in B-flat are written a tone up, so a 3-flat concert key prints 1 flat for them; horns in E-flat and trumpets and timpani in C are written with no signature at all, the ordinary 19th-century convention. So this table can be, and was, stated per instrument BEFORE any output was looked at.",
+  "instruments": {
+    "Flauti":      {"clef": "treble", "fifths": -3},
+    "Oboi":        {"clef": "treble", "fifths": -3},
+    "Clarinetti":  {"clef": "treble", "fifths": -1, "note": "in B-flat"},
+    "Fagotti":     {"clef": "bass",   "fifths": -3},
+    "Corni":       {"clef": "treble", "fifths":  0, "note": "in Es, no signature"},
+    "Trombe":      {"clef": "treble", "fifths":  0, "note": "in C, no signature"},
+    "Timpani":     {"clef": "bass",   "fifths":  0, "note": "in C.G., no signature"},
+    "Violino I":   {"clef": "treble", "fifths": -3},
+    "Violino II":  {"clef": "treble", "fifths": -3},
+    "Viola":       {"clef": "alto",   "fifths": -3},
+    "Violoncello": {"clef": "bass",   "fifths": -3},
+    "Basso":       {"clef": "bass",   "fifths": -3},
+    "Violoncello e Basso": {"clef": "bass", "fifths": -3, "note": "the two condensed on one staff"}
+  },
+  "_LINEUPS": "Which instruments a system PRINTS, top to bottom, hand-read off each system's own margin labels and brace. The lineups are NOT all the same and that is the point: three different 11-staff lineups occur, so a staff's ordinal within its system does not name its instrument.",
+  "systems": [
+    {"page": 1, "system": 0, "first_measure": 1,
+     "lineup": ["Flauti","Oboi","Clarinetti","Fagotti","Corni","Trombe","Timpani","Violino I","Violino II","Viola","Violoncello","Basso"],
+     "note": "the opening page: every staff labelled in full, and the only system of the four pages that prints Violoncello and Basso apart AND the timpani."},
+    {"page": 2, "system": 0, "first_measure": 17,
+     "lineup": ["Flauti","Oboi","Clarinetti","Fagotti","Corni","Trombe","Timpani","Violino I","Violino II","Viola","Violoncello e Basso"]},
+    {"page": 2, "system": 1, "first_measure": 34,
+     "lineup": ["Flauti","Oboi","Clarinetti","Fagotti","Corni","Trombe","Timpani","Violino I","Violino II","Viola","Violoncello e Basso"],
+     "clef_note": "the Fagotti staff opens in BASS clef with 3 flats and changes to TENOR clef at bar 37. The header is bass."},
+    {"page": 3, "system": 0, "first_measure": 49,
+     "lineup": ["Flauti","Oboi","Clarinetti","Fagotti","Corni","Trombe","Timpani","Violino I","Violino II","Viola","Violoncello e Basso"]},
+    {"page": 3, "system": 1, "first_measure": 65,
+     "lineup": ["Flauti","Clarinetti","Fagotti","Corni","Violino I","Violino II","Viola","Violoncello e Basso"],
+     "note": "EIGHT staves: Oboi, Trombe and Timpani are tacet and suppressed. Labelled Fl./Cl./Fag./Cor. and four unlabelled string staves."},
+    {"page": 4, "system": 0, "first_measure": 83,
+     "lineup": ["Flauti","Oboi","Clarinetti","Fagotti","Corni","Trombe","Violino I","Violino II","Viola","Violoncello","Basso"],
+     "note": "ELEVEN staves, but NOT the usual eleven: the Timpani is suppressed and the Violoncello and Basso are printed APART (both labelled mid-staff). A join that trusts the staff COUNT gets this system wrong."},
+    {"page": 4, "system": 1, "first_measure": 98,
+     "lineup": ["Flauti","Oboi","Clarinetti","Fagotti","Corni","Trombe","Timpani","Violino I","Violino II","Viola","Violoncello e Basso"]}
+  ]
+}
