@@ -289,3 +289,81 @@ The brief ends by making a **measured refusal an acceptable outcome**: if the
 price is unacceptable, come back with the number. This repo's refusals are
 among its most valuable entries and an agent that believes it must ship will
 ship anyway.
+
+**LANDED** — merged at `11b8866b` (+ the branch's last two commits). Suite on
+the MERGED tree, run here rather than taken on trust: **3,741 passed / 11
+skipped** (3,728 + 13). Findings:
+[benchmarks/omr-chord-tie-2026-09/FINDINGS.md](../benchmarks/omr-chord-tie-2026-09/FINDINGS.md).
+
+**The repair is essentially free and it is not the headline.** Engraved
+**2532 → 2530** edits; scan (11 rows) **34,731 → 34,739**, +8 at 0.023%, and a
+third measurement-only arm SPLITS that +8: **relocation alone is +2, the twelve
+newly-expressible marks are +6** — the metric's under-prediction reward,
+charged for writing ties the record says are there. Shipping the cheaper
+relocation-only arm was **refused on exactly that ground**, which is the right
+call: it would have withheld twelve correct marks to please a metric.
+
+⚠️ **Every moved element was adjudicated, not sampled** — and with no print,
+because the record carries its own test: `record.Checkable`'s rule that *a
+tie's two ends must be the same pitch*. The one engraved element ties
+**G2 → D5** before and **D5 → D5** after. Decisive.
+
+#### ⚠️⚠️ The finding that outranks the repair
+
+**`transcribe._pair_ties_in_staff` pairs tie ends by GEOMETRY; `<tied>`
+resolves by PITCH.** **20 of 79 engraved links (25%) and 64 of 237 scan links
+(27%) bind two notes of different pitch** — thirds — and a further **115 of 237
+scan links (49%) have no end in the next event at all.** No renderer can write
+those correctly.
+
+⚠️ **The old hoist was MASKING it**, by writing both ends at the chord's bottom
+note so that any two chords sharing a bottom pitch agreed by accident. The
+proof the mask was accidental is the sharpest thing in the report: **the base
+arm resolves 60 ties where the record supports at most 58.** So the +8 is not
+the repair being wrong — it is a defect becoming *visible*.
+
+**The boundary case is handed over ready to run**, and it is the good kind —
+two ENGRAVED pages where the pitch reading is near-perfect, so the pairing is
+the only suspect: `mozart-sym41-mvt1` **8 of 9 wrong** against
+`beethoven-sym5-mvt1` **11 of 11 right**. `probe/pairing_pitches.py` needs no
+truth file.
+
+⚠️ **LilyPond diverges, deliberately and on evidence rather than on principle**:
+`~` after a chord resolves BY PITCH, verified by compiling both cases
+(`<c e g>~ <c e>` ties silently; `<c e g>~ <d f a>` warns three times), **so the
+defect does not exist there** and the exporter was left alone.
+
+#### ⚠️ Two instrument failures worth more than their fixes
+
+* **A race it created and caught**: the mutation battery `git checkout`s the
+  file it mutates while a three-arm A/B was reading the live worktree — and
+  `export.py` was in fact left mutated. Both killed, arms re-run against
+  snapshot trees, and the clean results **checked** (the snapshot run
+  reproduces 34739 and 2530 to the edit) rather than argued.
+* ⚠️⚠️ **`pytest` reported `577.54s` for a run that took hours of wall clock.**
+  That is TEST time, not elapsed — *the number that makes a starved run look
+  normal in a log*. Under a load average above 7 from sibling sessions it twice
+  nearly reported a starved run as a HANG, and what separated the two was the
+  process CPU clock, not the progress bar. ⚠️ And diagnosing it by running
+  candidates in parallel made it worse: **the instrument competed with its
+  subject.** Carry this into any overnight run on a loaded machine.
+
+#### ⚠️ A correction I had to make MYSELF, and it is the named failure
+
+The agent reported the tie-chain findings doc and CLAUDE.md *"both corrected in
+place"*. **CLAUDE.md was; the findings doc was not** — §2 still read
+**NOT FIXED, DELIBERATELY** with no supersession note, one day after it was
+fixed. That is *fixed-then-kept-open-in-prose*, the documentation dual of
+detected-then-dropped, which this repo has now paid for three times (the
+accents claim, the `Tp.` branch, this).
+
+⚠️ **The governing file being right is what makes the stale copy dangerous**:
+whoever opens the findings doc first meets a work order that no longer exists,
+and nothing contradicts them. Supersession note added here, with the original
+reasoning explicitly NOT retracted — declining to change unpriced shared
+behaviour was correct, and *a wiring pass may not change behaviour it has not
+priced* never forbade the repair, it named its precondition.
+
+⚠️ **The general lesson for this manager role: a report saying "docs corrected"
+is a claim about the tree and is one grep from being checked.** It was checked
+here because CLAUDE.md has a standing warning about exactly this shape.

@@ -183,6 +183,28 @@ wiring pass may connect a decision; it may not change behaviour it has not
 priced.** It is counted so the size of it appears on every run instead of in
 one probe.
 
+> ✅✅ **SUPERSEDED THE NEXT DAY — IT IS FIXED.** The heading above says
+> *NOT FIXED, DELIBERATELY*, and leaving it to stand would be
+> **fixed-then-kept-open-in-prose**, the documentation dual of
+> detected-then-dropped, which this repo has paid for twice (the accents claim
+> and the `Tp.` branch) and which reads as a live work order rather than as
+> history. The price this section says was unaffordable was then TAKEN:
+> **engraved 2532 → 2530, scan 34,731 → 34,739 (+8, 0.023%)** — see
+> [../omr-chord-tie-2026-09/FINDINGS.md](../omr-chord-tie-2026-09/FINDINGS.md).
+>
+> ⚠️ **The REASONING above was sound and is not retracted.** Declining to
+> change unpriced shared behaviour was correct; what was missing was the price,
+> and this section says so in its own last line. The two decisions are
+> consistent, and that matters more than either — *a wiring pass may not change
+> behaviour it has not priced* did not forbid the repair, it named its
+> precondition.
+>
+> ⚠️ **This note was added by the overnight manager, not by the session that
+> did the repair**, which reported both documents corrected and had corrected
+> only `CLAUDE.md`. **The governing file being right is exactly what makes the
+> stale copy dangerous** — whoever reads this findings doc first meets a work
+> order that no longer exists.
+
 ⚠️ **The previous session already flagged the question and declined it for a
 different reason** — `test_a_TIE_on_a_chord_also_marks_one_note` says first-note
 is *"the LEGACY position, MATCHED rather than RE-DECIDED"*, because a staged
