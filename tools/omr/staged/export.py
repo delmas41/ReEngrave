@@ -720,6 +720,96 @@ def _voice_of_notehead(rec: Record, part: Sequence[StaffRun]
     return out
 
 
+def _stem_boxes_by_cell(rec: Record) -> Dict[str, List[Tuple[float, ...]]]:
+    """`cell subject -> [(x, y, w, h)]`, in the CELL's own canonical frame.
+
+    ⚠️ `Q.STEM` is filed on the CELL, in canonical coordinates, and carries NO
+    page box -- `gather_cv_lines` reads an ERASED cell image and never
+    converts. That is the *gathered in a frame that cannot answer* shape this
+    file already records for `gather_glyph_families`, and it is why
+    `_stem_probes` converts through the HEAD rather than asking for a page box
+    that is not there.
+    """
+    out: Dict[str, List[Tuple[float, ...]]] = collections.defaultdict(list)
+    for o in rec.obs_of(Q.STEM):
+        v = o["value"]
+        if isinstance(v, (list, tuple)) and len(v) >= 4:
+            out[o["subject"]].append(tuple(float(x) for x in v[:4]))
+    return dict(out)
+
+
+def _stem_probes(rec: Record, part: Sequence[StaffRun],
+                 stems: Dict[str, List[Tuple[float, ...]]]
+                 ) -> Dict[int, List[float]]:
+    """`id(detection) -> [the page x of this note's STEM]`.
+
+    ⚠️⚠️ AN ARC OVER STEMMED NOTES IS DRAWN FROM STEM TOP TO STEM TOP, AND A
+    STEM STANDS AT THE SIDE OF ITS NOTEHEAD -- so the curve's ink stops about
+    half a notehead width INSIDE both outer head CENTRES, which is the only
+    position `_noteheads_under` measures. This project has already paid for
+    exactly this mechanism once, one family over: `_beam_levels` tested a
+    head's centre against a beam stroke that *"runs from the FIRST stem it
+    joins to the LAST"*, the overshoot clustered at **0.35-0.47 notehead
+    widths**, and the repair was not a tolerance -- it was to join the note to
+    the beam BY ITS STEM. Measured here on Litolff Beethoven 5 p1-4 the same
+    quantity has median **0.52** notehead widths.
+
+    ⚠️ AND THE OBVIOUS ALTERNATIVE -- WIDENING THE PAD -- IS MEASURED AND
+    REFUSED. `_SLUR_ARC_PAD_NOTEHEADS` sits in an interval the Brahms engraved
+    fixture left EMPTY (54 of 75 within 0.19, the next at 0.32). On this
+    document the same distribution is a smooth slope with no gap anywhere
+    (`probe/pad_gap.py`), so a pad chosen here would be fitted to a wish
+    rather than read off the ink. The stem is not a wider tolerance; it is the
+    position the arc is actually drawn to.
+
+    ⚠️ ADDITIVE, NEVER SUBTRACTIVE, in the shape `_stem_joined` and the ledger
+    ladder already have: a probe can only make a head REACHABLE, so a page
+    whose stems the CV never read behaves exactly as before, and the span's
+    own endpoints stay the notehead centres.
+
+    ⚠️ THE FRAME CONVERSION USES THE HEAD AS ITS OWN RULER and needs no fit.
+    The head carries BOTH boxes -- canonical (`Q.GLYPH_BOX`) and page
+    (`bbox_page`, which `_place_notes` already put on the detection) -- so the
+    stem's canonical offset from the head scales by that head's own
+    width ratio. A per-cell affine fit over the glyph rows gives the identical
+    answer (residual 0.00 px, `probe/stem_reach.py`); this is the same number
+    without a second reader that could drift.
+
+    ⚠️ THE ATTACHMENT RULE IS `_stem_joined`'S, IMPORTED. A head takes the
+    stem whose box overlaps its own -- measured, not chosen: 819 heads take
+    exactly one stem and the nearest miss is 94 px.
+    """
+    from .adjudicators.rhythm import _boxes_overlap
+    probes: Dict[int, List[float]] = {}
+    for run in part:
+        for cell_index, cell in run.cells.items():
+            key = f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
+            pool = stems.get(key)
+            if not pool:
+                continue
+            for det in cell.detections:
+                if det.get("category") != "notehead":
+                    continue
+                page = det.get("bbox_page")
+                canon = det.get("bbox")
+                if not page or not canon or len(page) != 4 or len(canon) != 4:
+                    continue
+                hw = float(canon[2])
+                if hw <= 0:
+                    continue
+                head_box = tuple(float(v) for v in canon)
+                mine = [s for s in pool if _boxes_overlap(s, head_box)]
+                if not mine:
+                    continue
+                scale = float(page[2]) / hw
+                head_cx_canon = float(canon[0]) + hw / 2.0
+                head_cx_page = float(page[0]) + float(page[2]) / 2.0
+                probes[id(det)] = [
+                    head_cx_page + (s[0] + s[2] / 2.0 - head_cx_canon) * scale
+                    for s in mine]
+    return probes
+
+
 def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                counters: Dict[str, int]) -> Dict[str, int]:
     """Join each part's arcs across its barlines and mark the notes they bind.
@@ -746,12 +836,19 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
     prevent.
     """
     dropped: Dict[str, int] = collections.Counter()
+    stems = _stem_boxes_by_cell(rec)
     for part in parts:
         measures, per_measure_arcs, kinds, spacings, tops, breaks = \
             _flatten_part(part)
         if not measures or not any(per_measure_arcs):
             continue
         voice_of = _voice_of_notehead(rec, part)
+        # ⚠️ An arc is drawn to a note's STEM, not to its head. See
+        # `_stem_probes`: this is the `_beam_levels` fault one family over,
+        # and the pad that would otherwise have to grow sits in an interval
+        # this document leaves FULL.
+        x_probes = _stem_probes(rec, part, stems)
+        counters["arc_notes_reachable_at_a_stem"] += len(x_probes)
         # ⚠️⚠️ A BAR WHOSE GEOMETRY IS MISSING SWALLOWS ITS ARCS SILENTLY, and
         # counting them is the whole difference between a gap and a hole.
         # `_merge_arcs_across_barlines` opens each bar with "no box, or no
@@ -781,7 +878,8 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
         n_spans = 0
         for kind, pools in by_kind.items():
             spans = _legacy._paired_spans(measures, pools, spacings, tops,
-                                          breaks, voice_of)
+                                          breaks, voice_of,
+                                          x_probes=x_probes)
             n_spans += len(spans)
             if kind == "tie":
                 # ⚠️⚠️ THE CHAIN IS COUNTED HERE BECAUSE THIS IS THE ONLY
