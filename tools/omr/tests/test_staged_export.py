@@ -1558,7 +1558,8 @@ CELL_W, CELL_H = 500.0, 120.0
 SPACE = 10.0
 
 
-def _arc_page(*, arcs, n_measures=1, kinds=None, gap=0.0, chord_on=None):
+def _arc_page(*, arcs, n_measures=1, kinds=None, gap=0.0, chord_on=None,
+              stems=(), head_page_scale=1.0):
     """A one-staff part whose bars carry `arcs`, each `(cell, x0, x1)`.
 
     Boxes are PAGE pixels: cell `m` spans `PX + m*(CELL_W+gap)` to that plus
@@ -1582,10 +1583,16 @@ def _arc_page(*, arcs, n_measures=1, kinds=None, gap=0.0, chord_on=None):
         for k in range(4):
             hx = x0 + 60 + k * 110
             sub = f"glyph/0/0/0/{m}/{gi}"
+            # ⚠️ `head_page_scale` makes the canonical and PAGE widths differ,
+            # so a reader that used a canonical offset as a page one is wrong
+            # by a factor rather than by nothing. At 1.0 the two frames agree
+            # in every width and a frame error is INVISIBLE -- the trap the
+            # arc-export battery already paid for.
+            hw_page = 30 * head_page_scale
             obs.append(_obs(n, sub, Q.GLYPH_BOX,
                             ["noteheadBlackOnLine", 60 + k * 110, 50, 30, 26],
                             category="notehead",
-                            bbox_page_px=[hx, PY + 50, hx + 30, PY + 76]))
+                            bbox_page_px=[hx, PY + 50, hx + hw_page, PY + 76]))
             n += 1
             obs.append(_obs(n, sub, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine"))
             n += 1
@@ -1620,6 +1627,10 @@ def _arc_page(*, arcs, n_measures=1, kinds=None, gap=0.0, chord_on=None):
         vrd.append(_vrd(n, sub, Q.ARC_KIND, kinds.get(a, "slur")))
         n += 1
         vrd.append(_vrd(n, sub, Q.ARC_OWNER, "staff/0/0/0"))
+        n += 1
+
+    for st, (m, sx, sy, sw, sh) in enumerate(stems):
+        obs.append(_obs(n, f"cell/0/0/0/{m}", Q.STEM, [sx, sy, sw, sh]))
         n += 1
 
     obs.append(_obs(n, "staff/0/0/0", Q.STAFF_SPACING, SPACE))
@@ -2503,3 +2514,122 @@ class TestTwoVoicesReachTheFile(unittest.TestCase):
         xml, rep = SX.to_musicxml(page)
         self.assertEqual(len(ET.fromstring(xml).findall(".//backup")), 0)
         self.assertEqual(rep["written"].get("two_voice_bars", 0), 0)
+
+
+class TestAnArcIsDrawnToAStemNotToANotehead(unittest.TestCase):
+    """⚠️⚠️ THE `_beam_levels` FAULT, ONE FAMILY OVER.
+
+    An arc over stemmed notes is drawn from STEM TOP to STEM TOP, and a stem
+    stands at the SIDE of its notehead — so the curve's ink stops about half a
+    notehead width INSIDE both outer head CENTRES, which is the only position
+    `_noteheads_under` measures. `_beam_levels` tested exactly that centre
+    against a beam stroke and read bar sums wrong on perfect ink; the repair
+    there was to join the note to the beam BY ITS STEM, and this is the same
+    repair on the same evidence.
+
+    ⚠️ ADDITIVE. A stem can only make a head REACHABLE, so a page whose stems
+    the CV never read behaves exactly as before — asserted, not assumed.
+    """
+
+    #: An arc that starts PAST head 1's centre (page 1185, pad 7.5) and stops
+    #: on head 2's (page 1295). One head — refused. Head 1's stem is at page
+    #: 1194, inside.
+    ARC = [(0, 195, 290)]
+    #: canonical (x, y, w, h), overlapping head 1's canonical box 170..200
+    STEM = (0, 190, 40, 8, 60)
+
+    def _pitches(self, xml):
+        """The pitch of every note carrying a slur end. ⚠️ NAMES THE NOTES.
+        Counting spans cannot see a relocation or a frame error; this can."""
+        root = ET.fromstring(xml)
+        out = []
+        for n in root.iter("note"):
+            if n.find(".//slur") is None:
+                continue
+            p = n.find("pitch")
+            out.append(((p.findtext("step") or "") + (p.findtext("octave") or ""),
+                        n.find(".//slur").get("type")))
+        return out
+
+    def test_without_a_stem_the_arc_binds_ONE_head_and_is_refused(self):
+        _xml, rep = SX.to_musicxml(_arc_page(arcs=self.ARC))
+        self.assertEqual(rep["written"].get("slurs", 0), 0)
+        self.assertEqual(
+            rep["arcs_not_written"]["arc_binds_fewer_than_two_notes"], 1)
+
+    def test_with_its_stem_the_arc_binds_D4_to_E4(self):
+        xml, rep = SX.to_musicxml(_arc_page(arcs=self.ARC, stems=[self.STEM]))
+        self.assertEqual(rep["written"]["slurs"], 1)
+        self.assertEqual(self._pitches(xml), [("D4", "start"), ("E4", "stop")])
+
+    def test_a_stem_that_touches_no_head_changes_nothing(self):
+        """`_stem_joined`'s BOX OVERLAP rule, imported — a stem in the gap
+        between two heads belongs to neither."""
+        away = (0, 215, 40, 8, 60)          # canonical 215..223: no head there
+        _xml, rep = SX.to_musicxml(_arc_page(arcs=self.ARC, stems=[away]))
+        self.assertEqual(rep["written"].get("slurs", 0), 0)
+        self.assertEqual(rep["written"]["arc_notes_reachable_at_a_stem"], 0)
+
+    def test_a_head_already_under_the_arc_is_not_double_counted(self):
+        """The probe is a second way IN, not a second note."""
+        xml, rep = SX.to_musicxml(
+            _arc_page(arcs=[(0, 90, 300)], stems=[self.STEM]))
+        self.assertEqual(rep["written"]["slurs"], 1)
+        self.assertEqual(self._pitches(xml), [("D4", "start"), ("E4", "stop")])
+
+    def test_the_counter_counts_notes_that_have_a_stem(self):
+        _xml, rep = SX.to_musicxml(_arc_page(arcs=self.ARC, stems=[self.STEM]))
+        self.assertEqual(rep["written"]["arc_notes_reachable_at_a_stem"], 1)
+
+
+class TestTheStemsPageXIsScaledNotCopied(unittest.TestCase):
+    """⚠️⚠️ `Q.STEM` IS CANONICAL AND THE ARC IS IN PAGE PIXELS, and at scale
+    1.0 the two spellings agree in every coordinate — which is how this
+    project has already paid for a frame confusion twice (the corner/width box
+    that turned a 140px arc into a 1190px one and passed every assertion).
+
+    So this fixture makes the page head TWICE the canonical width. A reader
+    that used the stem's canonical offset as a PAGE offset lands at page
+    1212.5 where the stem is at 1225, and the arc — which begins at 1232 with
+    a pad of 15 — reaches the second and not the first. The test is red for
+    that mutant and green only for the scaled conversion.
+    """
+
+    SCALE = 2.0
+    ARC = [(0, 232, 300)]
+    STEM = (0, 196, 40, 3, 60)              # canonical centre 197.5
+
+    def test_the_stem_is_converted_through_the_heads_own_width(self):
+        _xml, rep = SX.to_musicxml(
+            _arc_page(arcs=self.ARC, stems=[self.STEM],
+                      head_page_scale=self.SCALE))
+        self.assertEqual(rep["written"]["slurs"], 1)
+
+    def test_and_without_the_stem_that_arc_binds_one_head(self):
+        """The positive control: the arc itself does not reach head 1."""
+        _xml, rep = SX.to_musicxml(
+            _arc_page(arcs=self.ARC, head_page_scale=self.SCALE))
+        self.assertEqual(rep["written"].get("slurs", 0), 0)
+
+
+class TestTheLegacyArcPathIsUntouched(unittest.TestCase):
+    """`x_probes` defaults to None, and the legacy exporter passes nothing —
+    asserted at the seam rather than trusted, because the whole claim of this
+    change is that the engraved family cannot move."""
+
+    def test_noteheads_under_with_no_probes_is_the_old_reading(self):
+        from tools.omr import export as LX
+        det = {"category": "notehead", "pitch": "C4", "duration_beats": 1.0,
+               "bbox_page": [1000.0, 10.0, 30.0, 26.0]}
+        measures = [{"detections": [det]}]
+        seg = [(0, [1030.0, 0.0, 100.0, 20.0])]   # starts PAST the centre 1015
+        self.assertEqual(LX._noteheads_under(measures, seg), [])
+        self.assertEqual(
+            len(LX._noteheads_under(measures, seg,
+                                    x_probes={id(det): [1035.0]})), 1)
+
+    def test_the_legacy_slur_pass_passes_no_probes(self):
+        import inspect
+        from tools.omr import export as LX
+        src = inspect.getsource(LX._pair_slurs_in_run)
+        self.assertNotIn("x_probes", src)

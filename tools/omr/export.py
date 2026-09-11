@@ -2591,9 +2591,18 @@ def _noteheads_under(
     measures: list[dict[str, Any]],
     segments: list[tuple[int, list[int]]],
     pad_notehead_widths: float = _SLUR_ARC_PAD_NOTEHEADS,
+    x_probes: dict[int, list[float]] | None = None,
 ) -> list[tuple[int, float, dict[str, Any]]]:
     """`(measure_index, x_centre, detection)` for the noteheads a slur covers,
     in playing order.
+
+    `x_probes` maps `id(detection)` to EXTRA page-x positions at which that
+    note may be reached — today only its STEM. It is an ADDITIONAL way in and
+    never a replacement: the reported `x_centre` is still the notehead's, so
+    playing order and the span's own endpoints are unchanged, and a caller
+    that passes nothing behaves exactly as before. See
+    `staged.export._stem_probes` for why a stem is the right second position
+    and for the measurement behind it.
 
     THE ARC IS NARROWER THAN THE RUN IT BINDS, so its box is padded — the same
     correction `rhythm._beamed_groups` makes to a beam box, for the same kind of
@@ -2618,7 +2627,10 @@ def _noteheads_under(
         for det in heads:
             box = det["bbox_page"]
             x_centre = box[0] + box[2] / 2.0
-            if ax - pad <= x_centre <= ax + aw + pad:
+            xs = [x_centre]
+            if x_probes:
+                xs.extend(x_probes.get(id(det)) or ())
+            if any(ax - pad <= x <= ax + aw + pad for x in xs):
                 covered.append((m_idx, x_centre, det))
     covered.sort(key=lambda t: (t[0], t[1]))
     return covered
@@ -2748,6 +2760,7 @@ def _paired_spans(
     voice_of: dict[int, int],
     reclass: bool = False,
     order: dict[int, tuple[int, int]] | None = None,
+    x_probes: dict[int, list[float]] | None = None,
 ) -> list[tuple[tuple[int, float], tuple[int, float],
                 dict[str, Any], dict[str, Any]]]:
     """`(start_key, stop_key, first_notehead, last_notehead)` per SLUR.
@@ -2765,7 +2778,7 @@ def _paired_spans(
     spans = []
     for segments in _merge_arcs_across_barlines(
             measures, per_measure_boxes, spacings, tops, breaks):
-        covered = _noteheads_under(measures, segments)
+        covered = _noteheads_under(measures, segments, x_probes=x_probes)
         # Two adjacent same-pitch heads and nothing else under the (merged)
         # arc: the tie configuration, whatever the detector called it — the
         # OMR_ARC_RECLASS slur->tie veto, applied before the span filters
