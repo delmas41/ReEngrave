@@ -2237,13 +2237,13 @@ class TestAChordTieIsWrittenOnTheTiedNote:
         return result, measure["detections"][tied_index]["pitch"]
 
     @staticmethod
-    def _tied_pitches(xml):
+    def _tied_pitches(xml, kind="start"):
         """WHICH pitches carry a tie -- never how many ties there are. A
         count cannot see a mark that MOVED, and moving one is the whole
         defect."""
         out = []
         for note in ET.fromstring(xml).iter("note"):
-            if note.find('.//tied[@type="start"]') is None:
+            if note.find('.//tied[@type="%s"]' % kind) is None:
                 continue
             pitch = note.find("pitch")
             out.append(pitch.findtext("step") + pitch.findtext("octave"))
@@ -2265,6 +2265,22 @@ class TestAChordTieIsWrittenOnTheTiedNote:
         measure["detections"][2]["tied_to_next"] = True
         xml = to_musicxml(result)
         assert sorted(self._tied_pitches(xml)) == ["C4", "E4"]
+
+    def test_the_STOP_lands_on_the_pitch_that_carries_it_too(self):
+        """⚠️ THE OTHER END, AND IT NEEDED ITS OWN TEST: a mutation battery
+        arm restoring the hoist for `tied_from_prev` alone SURVIVED the first
+        run, because every assertion above names only the start. Both ends are
+        separate flags, separate arguments and separate elements."""
+        for index in range(4):
+            result = _tiny_result()
+            measure = result["pages"][0]["systems"][0]["staves"][0][
+                "measures"][0]
+            for i, d in enumerate(measure["detections"]):
+                d["bbox"] = d["bbox_page"] = [10, 10 + 8 * i, 5, 5]
+            measure["detections"][index]["tied_from_prev"] = True
+            pitch = measure["detections"][index]["pitch"]
+            xml = to_musicxml(result)
+            assert self._tied_pitches(xml, "stop") == [pitch], index
 
     def test_an_untied_chord_writes_NONE(self):
         """The positive control in the same class: a renderer that tied every

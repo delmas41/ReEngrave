@@ -18,6 +18,7 @@ report could not express before:
 ⚠️ Every test here was run RED against `origin/main` before it was kept.
 """
 
+import collections
 import unittest
 import xml.etree.ElementTree as ET
 
@@ -331,6 +332,73 @@ class TestATieOnAChordIsWrittenOnTheTiedNote(unittest.TestCase):
             self.assertEqual(len(root.findall('.//tied[@type="start"]')), 1)
             self.assertEqual(len(root.findall('.//tied[@type="stop"]')), 1)
             self.assertEqual(len(root.findall(".//note/chord")), 1)
+
+
+def _chord_event(**flags):
+    """A two-note chord event, built the way `group_chords_in_measure` builds
+    one: LOWEST FIRST. `flags` names per-head tie flags by head index."""
+    heads = []
+    for i, pitch in enumerate(("C4", "G4")):
+        head = {"pitch": pitch, "duration_beats": 1.0,
+                "duration_type": "quarter", "dots": 0}
+        for key, idx in flags.items():
+            if i in (idx if isinstance(idx, (list, tuple)) else (idx,)):
+                head[key] = True
+        heads.append(head)
+    return {"kind": "chord", "duration_beats": 1.0,
+            "duration_type": "quarter", "dots": 0, "rest": None,
+            "noteheads": heads,
+            "tied_to_next": any(h.get("tied_to_next") for h in heads),
+            "tied_from_prev": any(h.get("tied_from_prev") for h in heads)}
+
+
+class TestTheStagedRendererWritesAndCountsPerHead(unittest.TestCase):
+    """⚠️ CALLED DIRECTLY, because the arc pipeline cannot build the case that
+    matters. `_paired_spans` refuses two ends on one DETECTION, so a page
+    fixture cannot easily produce a chord with TWO tied members -- and a
+    mutation battery arm restoring the per-EVENT counter SURVIVED for exactly
+    that reason. On the stored scan rows that case is 6 events, and it is the
+    half the old event-level flag could not express at all.
+    """
+
+    def _render(self, event):
+        counters: dict = collections.defaultdict(int)
+        lines, _units = SX._measure_events_xml([event], 4, counters)
+        return "\n".join(lines), counters
+
+    def test_a_tie_on_the_upper_head_is_written_there(self):
+        xml, counters = self._render(_chord_event(tied_to_next=1))
+        notes = ET.fromstring("<m>" + xml + "</m>").findall("note")
+        self.assertEqual(len(notes), 2)
+        self.assertIsNone(notes[0].find('.//tied[@type="start"]'))
+        self.assertIsNotNone(notes[1].find('.//tied[@type="start"]'))
+        self.assertEqual(counters["ties"], 1)
+        self.assertEqual(counters["tie_starts_on_an_upper_chord_note"], 1)
+
+    def test_a_STOP_on_the_upper_head_is_written_there(self):
+        xml, counters = self._render(_chord_event(tied_from_prev=1))
+        notes = ET.fromstring("<m>" + xml + "</m>").findall("note")
+        self.assertIsNone(notes[0].find('.//tied[@type="stop"]'))
+        self.assertIsNotNone(notes[1].find('.//tied[@type="stop"]'))
+        self.assertEqual(counters["tie_stops_on_an_upper_chord_note"], 1)
+
+    def test_TWO_tied_members_write_TWO_and_are_counted_TWICE(self):
+        """⚠️ THE COUNTER SAYS WHAT REACHED THE FILE, which is the `FAMILIES`
+        rule, so it must rise with the elements. A per-EVENT count reports 1
+        for a chord the exporter wrote 2 ties into."""
+        xml, counters = self._render(_chord_event(tied_to_next=(0, 1)))
+        self.assertEqual(xml.count('<tie type="start"/>'), 2)
+        self.assertEqual(counters["ties"], 2)
+        self.assertEqual(counters["tie_starts_on_an_upper_chord_note"], 1)
+
+    def test_an_untied_chord_writes_and_counts_NOTHING(self):
+        """The positive control in the same class: a renderer that tied every
+        member would pass all three tests above."""
+        xml, counters = self._render(_chord_event())
+        self.assertNotIn("<tie ", xml)
+        self.assertEqual(counters["ties"], 0)
+        self.assertEqual(counters["tie_starts_on_an_upper_chord_note"], 0)
+        self.assertEqual(counters["notes"], 2)
 
 
 class TestTheTieChainNumbersAreCONSISTENTWithEachOther(unittest.TestCase):
