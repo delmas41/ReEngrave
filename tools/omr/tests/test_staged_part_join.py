@@ -251,16 +251,27 @@ class TestThePartJoinRefusesAGraft(unittest.TestCase):
         self.assertEqual(v.value["reason"], "slots_unusable")
 
     def test_the_slots_really_were_the_ordinals(self):
-        """⚠️ The premise, asserted rather than assumed. If
-        `adjudicate_slot_index` ever starts producing a gapped table this test
-        goes red and the refusal above stops being the right one -- which is
-        the signal the next repair needs."""
+        """⚠️ The premise, asserted rather than assumed.
+
+        ⚠️⚠️ AND IT WENT RED ON 2026-09-11, WHICH IS WHAT ITS OWN PREVIOUS
+        DOCSTRING SAID IT WOULD DO: *"if `adjudicate_slot_index` ever starts
+        producing a gapped table this test goes red ... which is the signal
+        the next repair needs"*. The short system's staves no longer take the
+        ordinal -- nothing supplies a margin label in this fixture, so every
+        one of them ABSTAINS -- `reference_names_nothing`, because the
+        reference lineup names nothing to pair against, which is a different
+        fact from "this staff has no name" and is reported as one. The FULL system is unchanged, and that is the half the
+        refusal below rests on: one contiguous system's table is still the
+        ordinal, so `part_partition` still refuses."""
         log = _two_systems([11, 8])
         adjudicate.run(log)
-        for s, n in ((0, 11), (1, 8)):
-            got = [log.verdict(Q.SLOT_INDEX, R.staff(0, s, i)).value
-                   for i in range(n)]
-            self.assertEqual(got, list(range(n)))
+        full = [log.verdict(Q.SLOT_INDEX, R.staff(0, 0, i)).value
+                for i in range(11)]
+        self.assertEqual(full, list(range(11)))
+        for i in range(8):
+            v = log.verdict(Q.SLOT_INDEX, R.staff(0, 1, i))
+            self.assertIs(v.outcome, Outcome.ABSTAINED)
+            self.assertEqual(v.reason, "reference_names_nothing")
 
 
 def _vrd(i, subject, quantity, value, outcome="decided", reason="x"):
