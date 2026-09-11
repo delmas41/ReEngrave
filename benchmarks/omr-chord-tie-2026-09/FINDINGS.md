@@ -291,8 +291,21 @@ mechanism it only half exercises.**
 
 All four are closed; the second run is all-red with ARM 0 SURVIVED.
 
-* **Full suite** `3737 passed, 11 skipped` (baseline on `main` 3728 / 11).
-  `health --check`, `inventory --check` and `gather_coverage` all exit 0.
+* **Full suite.** A complete run on the REPAIR commit is green —
+  **3729 passed, 11 skipped** (baseline on `main` 3728 / 11). The run over the
+  final tree collects **3752**, and every file this branch touches is green on
+  its own: `test_export.py` 320, `test_voicing.py` 48,
+  `test_staged_tie_chain.py` 26, `test_staged_export.py`. ⚠️ **The final
+  full-suite run was still in flight when this was written**, with **zero `F`
+  or `E` through 2,143 of 3,752** — the machine was carrying a load average
+  above 7 from sibling sessions and the run was accruing seconds of CPU per
+  minute. Recorded as *in flight with no failure so far*, and deliberately not
+  as a green figure that was not observed. `health --check`,
+  `inventory --check` and `gather_coverage` all exit 0.
+  ⚠️ A slow run was nearly misdiagnosed as a HANG, twice, because two polls
+  happened to land on the same dot count — **a stalled progress bar under
+  contention is indistinguishable from a hang until you check the process's
+  CPU clock**, and the test at that position passes standalone in 30s.
 
 ---
 
