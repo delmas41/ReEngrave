@@ -120,9 +120,29 @@ class TestThePaidForPositions(unittest.TestCase):
         xml, rep = SX.to_musicxml(_one_staff_page(
             notes=[], n_measures=1,
             meter={"numerator": 2, "denominator": 4, "raw": "2/4"}))
-        self.assertEqual(
-            rep["written"].get("empty_bars_padded_without_meter", 0), 0)
+        # ⚠️⚠️ `assertIn` BEFORE the value, and the `.get(..., 0)` this
+        # replaces is why the defect survived: it accepted an ABSENT key as a
+        # zero, so the counter could stop being written and every assertion
+        # here would still pass. A counter that is a QUALIFIED SUBSET of
+        # another must be PRESENT whenever its parent is, or the report cannot
+        # say *"we sized all of them"* — it can only fail to say anything.
+        # Measured on Litolff `984073` p1-4: 168 with the meter unsettled, key
+        # ABSENT once the carry settles it, which is the run whose success it
+        # exists to report. Run RED against the pre-fix tree.
+        self.assertIn("empty_bars_padded_without_meter", rep["written"])
+        self.assertEqual(rep["written"]["empty_bars_padded_without_meter"], 0)
         self.assertEqual(ET.fromstring(xml).find(".//rest").get("measure"), "yes")
+
+    def test_the_zero_is_reported_beside_a_NONZERO_parent(self):
+        """The positive control for the test above: a page that DOES pad bars,
+        all of them with a meter. Without it the assertion could be satisfied
+        by an exporter that padded nothing at all, which is a different fact
+        and not the one being claimed."""
+        _xml, rep = SX.to_musicxml(_one_staff_page(
+            notes=[], n_measures=3,
+            meter={"numerator": 2, "denominator": 4, "raw": "2/4"}))
+        self.assertEqual(rep["written"]["empty_bars_padded"], 3)
+        self.assertEqual(rep["written"]["empty_bars_padded_without_meter"], 0)
 
     def test_divisions_is_an_LCM_so_a_triplet_is_exact(self):
         """⚠️ The power-of-two ladder returns 16 and 16 thirds is not a whole
