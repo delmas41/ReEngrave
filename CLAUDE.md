@@ -46,8 +46,23 @@ fall silent TOGETHER. **Build it only AFTER the first cleanup count**, which is
 what says which abstentions are worth resolving.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-10-three-families-wired.md](docs/handoff-2026-09-10-three-families-wired.md)
+— **the newest**: Phase 1 items 1, 2 and 4 done (**fermata**, **stem_direction
++ voices**, **ornament**), `NO_VOCABULARY` **7 → 2**, and no family in
+`FAMILIES` quantity-less. ⚠️ Read its **§2 before quoting anything**: the
+accounting control RAISED on a real page and was right — two grouping rules
+nothing forces to agree wrote 17 notes twice — and the episode is an argument
+for keeping that control an EQUALITY rather than relaxing it to `<=`. ⚠️ Its
+**§3** says which numbers are NOT results (the fermata fallback fired zero
+times; the 13 "absorbed" marks are duplicate DETECTIONS; the divisi guard
+separated FOUR chords and one tie span is now refused, both needing a human).
+⚠️ Its **§6 corrects the wedge scoping in the handoff below** — a renderer
+exists and the arc merge is unnecessary, checked against the tree. **§7 is
+what is left of Phase 1**, and **§8 the operational hazard**: the staged CLI
+imports the EXPORTER after the gather, so run a long gather without
+`--musicxml`. It changes NONE of the plan's targets. Its predecessor
 [docs/handoff-2026-09-10-the-target-changed.md](docs/handoff-2026-09-10-the-target-changed.md)
-— **the newest**, and it supersedes the RANKINGS of the three handoffs below
+— the TARGET change, and it supersedes the RANKINGS of the three handoffs below
 (not their measurements). Read it with the plan linked above it. The three
 2026-09-10 handoffs that follow are still correct about what they measured.
 
@@ -1021,6 +1036,85 @@ DETECTOR confidences moving on byte-identical code (0.83 → 0.69 on one hairpin
 box) or the legacy gate's ±6 edit floor. A verdict can be stable while the
 confidence under it moves, because most decisions read a confidence as a TIER
 or an argmax rather than a value.
+
+### Three families wired in one pass — fermata, voices, ornaments
+
+2026-09-10, no flag, **Phase 1 of the wire-first plan**. Findings:
+[benchmarks/omr-staged-fermata-2026-09/FINDINGS.md](benchmarks/omr-staged-fermata-2026-09/FINDINGS.md),
+[benchmarks/omr-staged-voices-2026-09/FINDINGS.md](benchmarks/omr-staged-voices-2026-09/FINDINGS.md).
+
+**`gather_coverage`'s `NO_VOCABULARY` went 7 → 2** (`tied_to_next` /
+`tied_from_prev` remain) and **no family in `FAMILIES` is quantity-less any
+more**, asserted derivedly. Each family landed **all three legs at once** —
+adjudicator, emission, counter — because a stub's "one repair" is three.
+
+| family | reach | what reached the file |
+|---|--:|---|
+| **fermata** | Litolff p1-3: **63** glyphs, Brahms: **0** | 51 decided → **37 `<fermata>`**, byte-identical outside them |
+| **stem_direction** | **1,189** CV stem rows | 837 of 1,339 noteheads (62.5%) get a direction |
+| **voices** | — | 19 bars two-stream → **11 written with a `<backup>`** |
+| **ornament** | Litolff **0**, Brahms **7** | ⚠️ see below — it closes NO detection gap |
+
+⚠️⚠️ **26 OF 51 FERMATA CARRIERS ARE RESTS, and that is why the router is by
+CLASS.** `fermataAbove` carries the detector's `ornament` CATEGORY, shared with
+all ten `artic*` classes — so a category-keyed router would apply the
+articulation attach rule (*nearest notehead on the side the class names*),
+which **structurally cannot reach more than half of this population**. ⚠️ The
+`nearest_in_bar` fallback fired **ZERO** times, so the page does not exercise
+it. ⚠️ The 13 "absorbed" marks are **DUPLICATE DETECTIONS, not chords** — the
+hoist is doing dedupe work it was not designed for, which is a DETECTION figure
+and not a fermata reading one.
+
+⚠️⚠️ **THREE RULES WERE PRESENT AND NONE COULD FIRE, which is worse than a
+missing rule**: the divisi guard reported `divisi_guard: "not_implemented"`,
+`export._events`'s `_directions_conflict` never saw a direction, and
+`_paired_spans` was handed an **EMPTY `voice_of` map** — so its one-voice rule
+was inert and *indistinguishable from one that ran and found nothing*. With
+them live, the guard **SEPARATED 4 chords** x alone would have merged and **one
+tie span is now refused**. ⚠️ Four, not four hundred, and both need a human
+against the print before either is a win.
+
+⚠️⚠️ **THE ACCOUNTING CONTROL RAISED ON A REAL PAGE AND IT WAS RIGHT.**
+`Unbalanced: 1863 in the log, 1616 written and 264 dropped` — 17 over.
+**`Q.VOICES` partitions `Q.EVENT`'s groups (every notehead the record READ)
+while `export._events` groups only the ones it can WRITE**, the two groupings
+are not forced to agree, and a chord the exporter formed spanning two streams
+had every note written TWICE: **7 such events, 3×3 + 4×2 = 17, to the unit.**
+The repair is a REFUSAL, not a majority vote — picking the stream holding most
+of the chord's notes would be the exporter deciding a question the record did
+not answer. ⚠️ **It is an argument for keeping that balance an EQUALITY**: the
+rests-in-both-voices convention had just forced a subtraction into it and the
+temptation was to relax it to `<=`, which **would have shipped this bug**.
+
+⚠️ **ORNAMENT CLOSES A QUANTITY AND CLOSES NO DETECTION GAP.**
+`export_coverage.KNOWN_GAPS` records the eleven-work truth's only ornaments as
+twelve `<tremolo>` against a detector producing **ZERO** tremolo detections
+over 34,115. Its gather asks `transcribe._ORNAMENT_KINDS` rather than
+prefix-matching, because **`tremolo1`-`5` ARE ornaments whose class names do
+not begin `ornament`**.
+
+⚠️ **THE PREVIOUS HANDOFF'S WEDGE SCOPING IS WRONG IN OUR FAVOUR AND WAS
+CHECKED AGAINST THE TREE**: `_mxl_wedge` IS a reusable renderer, and the arc
+merge is unnecessary for the rows that matter — **46 of 47 `Q.WEDGE_BOX` rows
+are `cv_hairpins` carrying page pixels**, and that reader searches one staff
+BAND across the whole page, so its hairpins are never cut by a barline. What is
+open is a STAGE-BOUNDARY question (the legacy anchor rule wants the exporter's
+shims and three measured constants), not plumbing.
+
+⚠️ **A MUTATION BATTERY'S FIRST RUN REPORTED FOUR SURVIVORS AND THREE WERE THE
+BATTERY'S OWN FAULTS** — a test list that did not include the gather tests (*a
+battery whose tests do not reach the file it mutates measures its own scope*),
+and an arm anchored on `for h in heads`, which occurs three times in
+`rhythm.py` with the first in a different function. The fourth was a genuine
+gap and is closed.
+
+⚠️⚠️ **OPERATIONAL, MEASURED THE HARD WAY: `staged/__main__.py` IMPORTS THE
+EXPORTER *AFTER* THE GATHER.** A run that started eight minutes ago picks up
+whatever `export.py` says when it reaches EXPORT — a gather finished cleanly
+and then died on a `NameError` from an edit made four minutes into it. **Run a
+long gather WITHOUT `--musicxml` and export separately.** Editing anything at
+all, including an untracked file under `benchmarks/`, makes
+`provenance.dirty` true.
 
 ### A MARK must be attached to its notehead — bar sums on perfect ink
 
