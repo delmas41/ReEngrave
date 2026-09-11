@@ -264,9 +264,11 @@ quantity it optimises. It says the rule is now SELF-CONSISTENT. What it does
 not say is whether the pair is the printed one — two spurious detections at one
 position agree perfectly. **Read it as reach, never as accuracy.**
 
-⚠️ **The engraved reach is +1 link.** §4's engraved table is why: that family is
-already 70 of 70 self-consistent, so there is almost nothing for this to find
-there. The repair is addressed to the scan.
+⚠️ **The engraved reach is +1 link, on ONE work.** Asked per work, exactly one
+of the eleven changes at all: `bruckner-sym5-mvt1`, 3 same-position pairs → 4.
+§4's engraved table is why — that family is already 70 of 70 self-consistent,
+so there is almost nothing for this to find there. **The repair is addressed to
+the scan**, where the same probe reads 122 → 183.
 
 ---
 
@@ -428,16 +430,20 @@ work                 truth   off    on
 mozart-sym41-mvt1        1     9     1     +8 over-emission -> EXACTLY RIGHT
 brahms-sym4-mvt1         6     7     6     +1 -> +0
 beethoven-sym3-mvt1      3     2     1     -1 -> -2
-bruckner-sym5-mvt1       6     4     3     -2 -> -3
+bruckner-sym5-mvt1       6     4     4     -2 -> -2   (was -3 before §5b)
 summed |per-work error|       25    17
 ```
 
-⚠️ **The two rows that get "worse" are removals of provably-impossible ties.**
-Both works already under-detect, so removing a step-different link pushes the
-count further below a truth it was never going to reach. **The inventory metric
-cannot tell a wrong removal from a right one on an under-detecting page**,
-which is why the firing split above is reported beside it and neither is quoted
-alone.
+⚠️ **The one row that gets "worse" is the removal of a provably-impossible
+tie.** That work already under-detects, so removing a step-different link
+pushes the count further below a truth it was never going to reach. **The
+inventory metric cannot tell a wrong removal from a right one on an
+under-detecting page**, which is why the firing split above is reported beside
+it and neither is quoted alone.
+
+⚠️ `bruckner-sym5-mvt1` was −3 before §5b's mirror landed and is −2 after: **the
+pairing repair removed a veto firing**, which is the same interaction as the
+197 → 137 above, arriving on a second instrument.
 
 Scan, same instrument (`reexport_arm.py`): `off = 34739`, `on = 34888`,
 **+149** — CLAUDE.md records +130 at an older baseline, and the pre-mirror run
