@@ -232,7 +232,8 @@ def _close(run: List[Tuple[float, float, float, str, Any]]) -> Dict[str, Any]:
     # gets a refusal back, rather than producing no subject and reporting a
     # silent `decided: 0`.
     subjects_from=Q.DIRECTION_WORD,
-    reasons=("in_lexicon", "no_words", "reader_unavailable", "out_of_scope"),
+    reasons=("in_lexicon", "no_words", "reader_unavailable", "out_of_scope",
+             "no_detections"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_direction(ev: Evidence) -> Ruling:
@@ -280,7 +281,15 @@ def adjudicate_direction(ev: Evidence) -> Ruling:
     `read_directions`, a change to the reader itself. That is not a wiring
     change and is deliberately not made here.
     """
-    rows = ev.rows(Q.DIRECTION_WORD)
+    # ⚠️ SELF_AND_DESCENDANTS, AND THE DEFAULT WOULD HAVE READ NOTHING. A
+    # word is gathered on the CANDIDATE's own glyph subject -- one row per
+    # piece of word-shaped ink -- while the page-wide states are filed on the
+    # CELL. `Scope.EXACT` sees only the second, so with the default this
+    # decision would have reported `no_words` on every bar that HAS a word:
+    # the "declared input that could never answer" shape, which this path has
+    # now hit three times (`Q.STEM`'s 916 unread rows, `arc_owner`'s frame,
+    # `wedge_anchor`'s ORDER position).
+    rows = ev.rows(Q.DIRECTION_WORD, scope=Scope.SELF_AND_DESCENDANTS)
     if rows:
         # ⚠️ ORDERED BY PAGE x, the only frame these carry. It is used to
         # order marks WITHIN one bar and is never compared against a notehead
@@ -303,7 +312,8 @@ def adjudicate_direction(ev: Evidence) -> Ruling:
                       used=tuple(r.id for r in rows),
                       detail={"words": words, "n_words": len(words)})
 
-    blocked = [a for a in ev.refusals(Q.DIRECTION_WORD)
+    blocked = [a for a in ev.refusals(Q.DIRECTION_WORD,
+                       scope=Scope.SELF_AND_DESCENDANTS)
                if a.reason in (ABSTAIN.READER_UNAVAILABLE,
                                ABSTAIN.NOT_IMPLEMENTED)]
     if blocked:
@@ -312,16 +322,23 @@ def adjudicate_direction(ev: Evidence) -> Ruling:
         return Ruling.abstain(ABSTAIN.READER_UNAVAILABLE,
                               blocked_rows=len(blocked),
                               note=(blocked[0].detail or {}).get("note"))
-    off = [a for a in ev.refusals(Q.DIRECTION_WORD)
+    off = [a for a in ev.refusals(Q.DIRECTION_WORD,
+                       scope=Scope.SELF_AND_DESCENDANTS)
            if a.reason == ABSTAIN.OUT_OF_SCOPE]
     if off:
         return Ruling.abstain(ABSTAIN.OUT_OF_SCOPE, blocked_rows=len(off))
 
-    refusals = ev.refusals(Q.DIRECTION_WORD)
+    refusals = ev.refusals(Q.DIRECTION_WORD,
+                       scope=Scope.SELF_AND_DESCENDANTS)
     if not refusals:
-        # No row of any kind: the gatherer never spoke about this cell, which
-        # it is built never to do. Reported rather than assumed away.
-        return Ruling.abstain(ABSTAIN.ABSENT)
+        # No row of any kind. `subjects_from` means this cannot be reached
+        # from a real gather -- a subject EXISTS because a row named it -- so
+        # this is the unreachable-by-construction case, reported rather than
+        # assumed away. ⚠️ `NO_DETECTIONS` and not a new word: the vocabulary
+        # already names "this reader produced no row here", and inventing a
+        # second spelling for it would make a typo indistinguishable from an
+        # absent reading, which is what the closed vocabulary is for.
+        return Ruling.abstain(ABSTAIN.NO_DETECTIONS)
     reasons: Dict[str, int] = {}
     for a in refusals:
         reasons[str(a.reason)] = reasons.get(str(a.reason), 0) + 1
