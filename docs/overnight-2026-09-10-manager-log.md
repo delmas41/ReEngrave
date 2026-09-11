@@ -153,3 +153,35 @@ stamp is no evidence the tree was clean while the page was read.**
 records may be compared. Queued as its own job: fixing it means stamping at the
 START as well, and whether a mismatched pair should then REFUSE is a decision
 rather than an edit.
+
+### Job 3 — `direction` (the LAST declared stub)
+
+Dispatched off `9f1ea83e`, in parallel with job 2. Job 1's `<direction>`
+emission work is already IN main, so the collision that kept this item back
+earlier tonight no longer exists.
+
+⚠️ **It is two jobs, not one**, which is why it was left for last:
+`Q.DIRECTION_WORD` is the last input-starved quantity on the record, so the
+gatherer must be written as well as the adjudicator. The READING half already
+exists on the legacy path (`direction_text.py`, default-on, gated on a
+181-word musical lexicon that CLAUDE.md marks *never loosen*) and the brief
+forbids rebuilding it.
+
+**The one line that matters most in that brief** is CLAUDE.md's own governing
+rule, because this family walks straight into it: the direction reader
+**self-disables where neither `.venv-surya` nor Tesseract exists**, so
+
+> A fallback must never convert *"cannot tell"* into a definite answer.
+
+An unavailable OCR rung gathering zero words is otherwise indistinguishable
+from a page with no words printed on it. Making those two states
+unrepresentable-as-one is the acceptance condition, ahead of any coverage
+figure.
+
+Three hazards measured in the last 24 hours were carried in by name, because
+each has already cost someone a re-run: **ORDER placement** (a decision reading
+`None` from a quantity settled later, which no page can detect); **a
+byte-identity control passing while the code never runs**; and **a mutation
+battery anchored on a fragment that occurs three times**, silently mutating a
+different function. The `<=` balance warning was repeated in the strongest
+terms available — it has now been ignored once by someone who had read it.
