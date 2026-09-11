@@ -630,6 +630,7 @@ gives for it.
   cannot mean "both empty".
 * **`off = 2530` reproduces another session's arm to the edit** on a different
   instrument.
+* **`health --check`, `inventory --check` and `gather_coverage` all exit 0.**
 * **Mutation battery**: [`probe/battery.sh`](probe/battery.sh), results in
   [`out/battery.txt`](out/battery.txt). Every mutation is anchored on a WHOLE
   expression and refused unless it applies exactly once; "NOT APPLIED" is a
