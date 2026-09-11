@@ -1611,6 +1611,78 @@ normal in a log. And diagnosing the stall by running candidate tests in parallel
 added two more pytest processes to the same saturated machine: **the instrument
 competed with its subject.**
 
+### The key signature, against a HAND-READ print truth — and it is not the clef
+
+2026-09-11, no flag. Phase 2: Sean named key signatures as one of seven
+complaints on the first cleanup artefact, and stated the whole answer —
+*"they should all be 3 flats (Cm/Eb maj) except Cl. which is 1 flat and the tr
+and cor which have no key signature"* — so for once there is a per-staff truth
+for a whole page. Findings:
+[benchmarks/omr-keysig-truth-2026-09/FINDINGS.md](benchmarks/omr-keysig-truth-2026-09/FINDINGS.md).
+
+⚠️⚠️ **IT IS NOT A CLEF PROBLEM, and that was the first thing asked.** Over the
+75 printed staves of pdf pages 1-4 the clef reads **68 correct / 6 abstained /
+1 wrong**, and **all ten wrong key readings sit on a correctly-read clef**. The
+one wrong clef costs an ABSTENTION, not a wrong key — `run_fits_no_slot_table`
+working as designed. So the documented *"the reader inherits the clef problem"*
+is true and is not what is happening here.
+
+⚠️ **TWO GRADES, because the file cannot say *"I could not tell"*.** READING
+**16 correct / 10 wrong / 49 abstained**; FILE **33 right / 42 wrong** — a
+staff whose key abstained exports no `<key>` at all, which is no accidentals to
+any reader, so an abstention is **right in the file** on the 18 staff-systems
+that genuinely print none and wrong on the other 57. **17 of the 33 "right"
+rows are abstentions that happen to land on a horn, trumpet or timpani.**
+A count of parts reading `-3` is not the score.
+
+⚠️⚠️ **THE BIGGEST SINGLE CAUSE WAS NOT A READER: ELEVEN HEADER CROPS CONTAINED
+NO CLEF AND NO KEY SIGNATURE AT ALL.** Every window on six systems is 16.00
+staff spaces; on p2/s1 all eleven are **6.1-6.2**, holding the margin label and
+the systemic rule and no music. `measure_header_window` kept the system's own
+opening rule out of the measure barlines by a margin measured from `x0` — and
+`x0` comes from `system_left_edge`, **the MINIMUM of one estimate per staff**,
+so one staff under-running its ten siblings by 70 px moved `x0` left, the rule
+cleared the margin, and the window ended ON it. ⚠️ `system_left_edge`'s
+docstring asserts the invariant that makes the minimum safe (*"can only ever be
+too far right and never too far left"*) and **it is false**; corrected in place.
+**Fixed by anchoring that one margin on the MEDIAN of the same estimates
+(`system_left_consensus`) — same test, same constant, different statistic.**
+Windows with a `barline` right edge 12 → 1, and no other window moves.
+
+⚠️⚠️ **AND IT MADE THE TWO READERS FAIL IN DIFFERENT-LOOKING WAYS WITH ONE
+CAUSE.** The locator found no run and abstained; the template found a *clean
+window* and answered a confident `fifths: 0` — **a key signature fabricated out
+of a crop containing none**. *The reader that can say "zero" is the one that
+must never be given an empty window*, and nothing connected those two facts
+until the crops were looked at.
+
+**`ASSUMPTIONS.md` D20 is CLOSED**: `key_signature_template` is now a second
+witness in GATHER, answering **GAPS ONLY** — the legacy path's own measured
+precedence, inherited rather than re-decided, since letting the fuller reading
+win is already priced and refused there. Over the 75 staves the locator decides
+16 correctly and the template 28, and they are **complementary, not ranked**
+(page 1: template 12 of 12, locator 2). ⚠️ It is filed under a NEW quantity
+`Q.KEYSIG_TEMPLATE_FIT` **because `adjudicate_clef` weighs `Q.KEYSIG_CLEF_FIT`
+rows** and pooling them would move the CLEF decision — asserted by a test with
+a positive control that the contest was decidable at all.
+
+**Together: READING 16/10/49 → 35/15/25, FILE 33 right → 44.** 12 staff-systems
+become right and **1 becomes wrong** (a Corni abstention that was accidentally
+right became a template `-1`), named rather than netted away.
+
+⚠️ **44 of 75 is not a good page and the ranked next step is NOT a key reader.**
+**12 of the 75 staff-systems are joined to the wrong instrument** — both
+non-canonical systems (8 staves, and 11 staves with the Timpani tacet and Vc/Bass
+printed APART) are stitched by ORDINAL, so **`P7`'s seven sharps are the
+Timpani's part carrying a reading taken from the VIOLA**. A cross-system vote
+is the big lever (`key_signature_vote.reconcile` exists, took WTC I p.17 from
+6/10 to 10/10, and the staged path consumes NONE of it) and is **deliberately
+not built**, because keyed on that join it would carry the viola's 7 onto the
+timpani — `StaffCandidate.can_carry`'s own recorded hazard. ⚠️ Nothing was
+tuned: `max_inferred_ratio` (the `7`) and every locator/template threshold were
+left alone, and clamping `x0` itself was measured and REFUSED (it costs the
+locator 3 correct and 6 new wrong).
+
 ### A MARK must be attached to its notehead — bar sums on perfect ink
 
 `A-DUR-8` said bar sums are wrong on a clean LilyPond engraving, blocking the
