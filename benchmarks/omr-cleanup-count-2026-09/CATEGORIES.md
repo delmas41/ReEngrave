@@ -196,6 +196,35 @@ artefact are added in a LATER commit, marked as such.
 
 ---
 
+## 4b. Worked examples FROM THE ARTEFACT — added in a later commit, as §4 promised
+
+⚠️ **Added 2026-09-11, after the artefact existed, in its own commit.** The
+definitions above are unchanged and were not revisited; this section only shows
+them meeting real output. If any of these had *forced* a definition to change,
+the change would have arrived as its own commit saying so — and none did, which
+is itself worth recording.
+
+| what the artefact actually shows | category | scope | why, under §0-§2 |
+|---|---|---|---|
+| from p.4 onward P9-P11 hold 93 measures against P1-P8's 111, so `<measure number="82">` names a different instant in different parts (FINDINGS §3a) | `wrong` | `other` — see below | the music may be right; the FILE's alignment is not |
+| P12 stops after bar 16, because the 12-staff lineup condenses to 11 at p.2 | `missing` | `staff-system` | one gesture per system where that part is absent — §2b, and the structural fix is counted apart from anything wrong in the notes |
+| 178 bars come out with no event where only 66 hold no gathered ink — so **112 bars had ink and produced nothing** | `missing` | `staff-bar` | the human re-enters the bar: one gesture, §0 |
+| six systems of seven carry no `<time>`, so their measure rests are unsized and carry no `measure="yes"` | `wrong` | `staff-system` | an attribute in the right place with the wrong (absent) value — §2a's rule, at system scope |
+| twelve `<part-name>` elements reading `Staff p1-s0-0` … `-11` | `wrong` | `staff-system` | one rename each; ⚠️ **or `would-not-notice` if the editor renames parts anyway** — a genuine judgement call and exactly the kind §2c exists to make visible rather than hide |
+| `arpeggiato` ×377 detections on the four pages | **not counted at all** | — | no quantity claims them, so none reaches the file; there is nothing for the human to delete. ⚠️ This is the one place §4's own first example needs a qualifier: the misread is real, but it is only `spurious` **if it reaches the file**, and here it does not |
+
+⚠️ **THE ONE THING THE ARTEFACT PUSHED BACK ON: `scope` needs `other` and the
+closed list earned its escape hatch.** "The parts disagree about which bar they
+are in" is repaired once, for the whole file, by inserting rest measures into
+three parts — which is neither `page` nor `staff-system` nor anything else in
+§0's list. It is recorded as `other` **with a description**, which §0 says is
+*"a finding about this scheme, not a judgement call made silently"*. It is
+hereby the finding: **a fix whose scope is THE DOCUMENT is missing from the
+vocabulary**, and the next counter should decide whether to add it rather than
+inherit an `other` row.
+
+---
+
 ## 5. What this scheme does NOT establish
 
 * **It is not a metric and must not be driven down.** The plan: *the moment it
