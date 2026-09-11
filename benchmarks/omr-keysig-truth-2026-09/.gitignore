@@ -1,0 +1,11 @@
+# ⚠️ The staged RECORD is ~130 MB for four pages and is not committable, which
+# is the standing state for records in this repo (see
+# `benchmarks/omr-cleanup-count-2026-09/.gitignore`). Everything DERIVED from
+# it IS committed -- the MusicXML, the system map, the coverage report and the
+# grade -- so §9's confirmation can be checked from a checkout, and only
+# re-deriving the record itself needs the gather re-run.
+out/record-*.json
+out/*.log
+# Build products: `dump_headers.py` writes the header crops here, and the
+# repo's root .gitignore already excludes `benchmarks/**/crops/`.
+crops/
