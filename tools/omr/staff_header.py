@@ -302,10 +302,12 @@ def system_left_edge(
     spaces — into the margin. The minimum PREFERS it, and it then decides the
     header window of all eleven staves. So the wall rule does not make the
     minimum safe in general; it made it safe on the one system this docstring
-    was written from. The under-run is NOT repaired here, because every
-    candidate repair measured moved the left edge of all seventy-five windows
-    on those four pages and the two that were tried cost more than they
-    returned (`benchmarks/omr-keysig-truth-2026-09/FINDINGS.md` §5, arm B).
+    was written from. The under-run is NOT repaired here. The one candidate
+    repair that was measured — clamping `x0` so it cannot begin left of the
+    system's opening rule — moves NINETEEN of the seventy-five windows on
+    those four pages instead of the eleven that are broken, and costs the key
+    locator 3 correct readings and 6 new wrong ones
+    (`benchmarks/omr-keysig-truth-2026-09/FINDINGS.md` §6, arm B).
     What IS repaired is the consequence: `measure_header_window` no longer
     lets a mis-placed `x0` promote the system's opening rule to a measure
     boundary, so an under-running estimate now costs a window that is too WIDE
