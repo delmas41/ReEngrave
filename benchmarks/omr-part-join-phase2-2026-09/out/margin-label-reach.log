@@ -1,0 +1,59 @@
+PDF   : /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-aa1165fdca7efa9e7/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf
+rungs : text_layer=always  surya=True  tesseract=True
+
+page 1: 12 staves, 12 labels
+     staff  0  'Flauti.'                    conf=high alias=flauti
+     staff  1  'Obol.'                      conf=low alias=oboi
+     staff  2  'Clarinetti in B.'           conf=high alias=clarinetti
+     staff  3  'Fagotti.'                   conf=high alias=fagotti
+     staff  4  'Corni in Es.'               conf=medium alias=corni
+     staff  5  'Trombe in C.'               conf=high alias=trombe
+     staff  6  'Timpani in C.G.'            conf=high alias=timpani
+     staff  7  'Violino I.'                 conf=high alias=violino
+     staff  8  'Violino II.'                conf=high alias=violino
+     staff  9  'Viola.'                     conf=high alias=viola
+     staff 10  'Violoncello.'               conf=high alias=violoncello
+     staff 11  'Basso.'                     conf=high alias=basso
+page 2: 22 staves, 14 labels
+     staff  0  'Fl.'                        conf=high alias=fl
+     staff  1  'Ob.'                        conf=high alias=ob
+     staff  2  'Cl.'                        conf=high alias=cl
+     staff  3  'Fag.'                       conf=high alias=fag
+     staff  4  'Cor.'                       conf=high alias=cor
+     staff  5  'Tr.'                        conf=high alias=tr
+     staff  6  'Tp.'                        conf=high alias=tp
+     staff 11  'Fl.'                        conf=high alias=fl
+     staff 12  'Ob.'                        conf=high alias=ob
+     staff 13  'Cl.'                        conf=high alias=cl
+     staff 14  'Fag.'                       conf=high alias=fag
+     staff 15  'Cor.'                       conf=high alias=cor
+     staff 16  'Tr.'                        conf=high alias=tr
+     staff 17  'Tp.'                        conf=high alias=tp
+page 3: 19 staves, 11 labels
+     staff  0  'Fl.'                        conf=high alias=fl
+     staff  1  'Ob.'                        conf=high alias=ob
+     staff  2  'Cl.'                        conf=high alias=cl
+     staff  3  'Fag.'                       conf=high alias=fag
+     staff  4  'Cor.'                       conf=high alias=cor
+     staff  5  'Tr.'                        conf=high alias=tr
+     staff  6  'Tp.'                        conf=high alias=tp
+     staff 11  'Fl.'                        conf=high alias=fl
+     staff 12  'Cl.'                        conf=high alias=cl
+     staff 13  'Fag.'                       conf=high alias=fag
+     staff 14  'Cor.'                       conf=high alias=cor
+page 4: 22 staves, 13 labels
+     staff  0  'Fl.'                        conf=high alias=fl
+     staff  1  'Ob.'                        conf=high alias=ob
+     staff  2  'Cl.'                        conf=high alias=cl
+     staff  3  'Fag.'                       conf=high alias=fag
+     staff  4  'Cor.'                       conf=high alias=cor
+     staff  5  'Tr.'                        conf=high alias=tr
+     staff 11  'Fl.'                        conf=high alias=fl
+     staff 12  'Ob.'                        conf=high alias=ob
+     staff 13  'Cl.'                        conf=high alias=cl
+     staff 14  'Fag.'                       conf=high alias=fag
+     staff 15  'Cor.'                       conf=high alias=cor
+     staff 16  'Tr.'                        conf=high alias=tr
+     staff 17  'Tp.'                        conf=high alias=tp
+
+TOTAL: 50 labels over 75 staves

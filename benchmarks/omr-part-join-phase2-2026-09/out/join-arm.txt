@@ -1,0 +1,73 @@
+provenance: {'commit': '3f160a9061d1679b8530f031edab4404b9bfebba', 'dirty': True}
+
+========================================================================
+REACH
+========================================================================
+  Q.MARGIN_LABEL observations : 50
+  Q.MARGIN_LABEL abstentions  : 25  {'no_ink': 25}
+     staff/1/0/0            'Flauti.'
+     staff/1/0/1            'Obol.'
+     staff/1/0/10           'Violoncello.'
+     staff/1/0/11           'Basso.'
+     staff/1/0/2            'Clarinetti in B.'
+     staff/1/0/3            'Fagotti.'
+     staff/1/0/4            'Corni in Es.'
+     staff/1/0/5            'Trombe in C.'
+     staff/1/0/6            'Timpani in C.G.'
+     staff/1/0/7            'Violino I.'
+     staff/1/0/8            'Violino II.'
+     staff/1/0/9            'Viola.'
+     staff/2/0/0            'Fl.'
+     staff/2/0/1            'Ob.'
+     staff/2/0/2            'Cl.'
+     staff/2/0/3            'Fag.'
+     staff/2/0/4            'Cor.'
+     staff/2/0/5            'Tr.'
+     staff/2/0/6            'Tp.'
+     staff/2/1/0            'Fl.'
+     staff/2/1/1            'Ob.'
+     staff/2/1/2            'Cl.'
+     staff/2/1/3            'Fag.'
+     staff/2/1/4            'Cor.'
+     staff/2/1/5            'Tr.'
+     staff/2/1/6            'Tp.'
+     staff/3/0/0            'Fl.'
+     staff/3/0/1            'Ob.'
+     staff/3/0/2            'Cl.'
+     staff/3/0/3            'Fag.'
+     staff/3/0/4            'Cor.'
+     staff/3/0/5            'Tr.'
+     staff/3/0/6            'Tp.'
+     staff/3/1/0            'Fl.'
+     staff/3/1/1            'Cl.'
+     staff/3/1/2            'Fag.'
+     staff/3/1/3            'Cor.'
+     staff/4/0/0            'Fl.'
+     staff/4/0/1            'Ob.'
+     staff/4/0/2            'Cl.'
+     staff/4/0/3            'Fag.'
+     staff/4/0/4            'Cor.'
+     staff/4/0/5            'Tr.'
+     staff/4/1/0            'Fl.'
+     staff/4/1/1            'Ob.'
+     staff/4/1/2            'Cl.'
+     staff/4/1/3            'Fag.'
+     staff/4/1/4            'Cor.'
+     staff/4/1/5            'Tr.'
+     staff/4/1/6            'Tp.'
+
+========================================================================
+IDENTITY AND THE JOIN
+========================================================================
+  instrument        75 verdicts  outcomes {'decided': 50, 'abstained': 25}  reasons {'label': 50, 'no_evidence': 25}
+  slot_index        75 verdicts  outcomes {'decided': 75}  reasons {'named': 50, 'full_lineup': 25}
+  part_partition     1 verdicts  outcomes {'decided': 1}  reasons {'deduced_anchor': 1}
+  part_partition value: {"join": "ordinal", "reason": "slots_are_ordinals"}
+
+========================================================================
+THE EXPORT
+========================================================================
+  part_join: {"join_decided": "ordinal", "join_used": "fragments", "join_reason": "deduced_anchor", "systems": ["1/0", "2/0", "2/1", "3/0", "3/1", "4/0", "4/1"], "staves_per_system": [8, 11, 12], "parts": 75, "fragmented": true}
+  parts: 75
+  measures-per-part histogram: {18: 8, 16: 34, 15: 33}
+  total measures: 1183

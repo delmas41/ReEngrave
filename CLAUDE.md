@@ -1565,6 +1565,134 @@ drawn over noteheads rather than over stems would show a different
 distribution. The ENGRAVED family is untouched **by construction** and was not
 measured.
 
+### PHASE 2 observation 5 — "none of the measure math makes sense", and the one argument underneath it
+
+2026-09-11, no flag. Sean's observation 5 on the cleanup artefact. **It is ONE
+defect with two faces, and the second was found independently the same day by
+the key-signature session on a different observation.** Findings:
+[benchmarks/omr-part-join-phase2-2026-09/](benchmarks/omr-part-join-phase2-2026-09/).
+
+**THE PARTITION, EXACTLY** (`probe/partition.py --check`, derived from the
+EXPORTER'S OWN system map, which was asserted measure-for-measure against the
+XML when it was built — so these are the file's numbers, not a reconstruction):
+a part present on all 7 systems holds **111**; `P9-P11` are `111 − 18`, missing
+**p3/s1**, the 8-stave system; `P12` is `111 − 95`, present on p1/s0 alone.
+`8×111 + 3×93 + 16 = 1183`, the file's own measure count, **balancing on every
+part with nothing unexplained** — the standard the `entire staff` separation
+set. ⚠️ Measures are numbered **cumulatively within a part**, so p4/s0 starts
+at **64 or 82 depending on the part** and p4/s1 at 79 or 97: that is Verovio's
+`Mismatching measure number 87`, to the bar.
+
+⚠️⚠️ **THE CHAIN IS FIVE LINKS AND THE FIRST IS A MISSING ARGUMENT.**
+`pipeline.run_staged` took `pdf_path`, RASTERISED with it and **dropped it**,
+so `gather_margin_labels` filed `not_implemented: "no pdf_path supplied to
+gather()"` on **75 of 75 staves — on every staged run this repo has ever
+made**. `grep -rn 'pdf_path='` found exactly one supplying call site in the
+tree: `gather()`'s own forward to the reader. **A parameter with no producer.**
+Then `instrument` abstains `no_evidence` 75/75 → `slot_index` falls to the
+staff's own ordinal (**all 75, reason `full_lineup`, whose own detail reads
+"positional: no identity was read here"**) → `part_partition` reports
+`join: "slot"` over that table → the exporter joins systems of **12, 11 and 8**
+staves by POSITION. ⚠️ *The value existed and nothing read it*, in its sharpest
+form yet: **a reader reporting "not implemented" on a page that prints
+labels.**
+
+⚠️⚠️ **A VALUE CAN BE HONEST AT ITS OWN SCOPE AND A GUESS AT THE CONSUMER'S**,
+and that is the generalisable finding. `adjudicate_slot_index`'s docstring says
+in terms that it *"makes no document-wide claim"*; `adjudicate_part_partition`
+consumed it as one. The circularity filter cannot see it — it excludes a
+DEDUCED identity and has nothing to say about a slot that was **never an
+identity at all**. ⚠️ The reason word is wrong too: `full_lineup` is reported
+for the **8-stave** system, a vocabulary asserting what the code never checked.
+
+⚠️⚠️ **AND A THIRD DOCUMENTATION SHAPE, THE MIRROR OF
+*fixed-then-kept-open-in-prose*: A RULE DESCRIBED IN A DOCSTRING AND NEVER
+BUILT.** `adjudicate_slot_index` states, in bold, *"A FULL-LINEUP SYSTEM PAIRS
+BY POSITION; A SHORTER ONE MUST NOT … a short system pairs by INSTRUMENT NAME
+in order of appearance, and abstains where the name was not read."* **The
+function contains no such branch**: it returns `int(ordinal.value)` on every
+path, and `count` is read only to test it for `None`. A reader — human or
+agent — who trusts the docstring concludes the tacet case is handled. This is
+worse than a stale claim about the past, because it reads as a claim about the
+code in front of you. ⚠️ **The cheap check is the one this file already
+prescribes for prose: the claim is mechanically falsifiable.** A docstring
+naming a discriminator implies a branch; `grep` the function for the quantity
+it would have to read.
+
+**THE GRAFT: 12 of 75 staff-systems carry a different instrument from the part
+they are filed under** — `{p3/s1: 7, p4/s0: 5}` — reproducing from the MEASURE
+MATH the figure the key-signature session reached from the KEY SIGNATURES,
+including **P7, the Timpani part, holding the VIOLA's staff on p3/s1**, which
+is where its seven sharps came from. Two quantities, two sessions, one number
+and one named staff. ⚠️ **The suppressions are INTERIOR** (Oboi is 2nd of 11,
+Timpani 7th) — a score dropping only its LAST staves would join by ordinal
+correctly. ⚠️ Four further rows are **CONDENSATION** (`Violoncello` vs
+`Violoncello e Basso`), derived from the printed label's own `e` and reported
+apart: conflating them inflates the count to 16.
+
+⚠️⚠️ **A CORRECT JOIN MAKES THE MEASURE NUMBERS *WORSE*, AND THAT DECIDES THE
+ORDER OF REPAIRS.** Grouping every printed staff-system under the instrument
+the PAGE prints there gives **111 / 93 / 78 / 31**, not equal parts — Timpani
+falls to 78 because the plate suppresses it on two systems. **So the eight
+parts that read 111 today read 111 BECAUSE the graft lends them another
+instrument's bars.** Three repairs, and the order is load-bearing: (1) the JOIN
+must stop guessing; (2) a measure must be numbered by its place in the
+DOCUMENT's bar sequence rather than its part's own running count — which alone
+makes `<measure number=N>` mean one instant, writes no music and needs no
+meter; (3) the tacet spans must be PADDED. ⚠️ **Padding first would have hidden
+the graft** — the numbers would line up and the wrong notes would remain,
+which is worse, because a graft counted as a note error ranks the work into the
+wrong module. ⚠️ And padding needs a bar length: the meter is decided on **1
+system of 7** here and `OMR_METER_CARRY` is off on **n**.
+
+**SHIPPED: (1) `run_staged` forwards `pdf_path`**, with `--surya` / `--ocr`
+opt-in on the staged CLI. **REACH, measured first** (`probe/margin_label_reach.py`,
+no weights): the cascade reads **50 labels over 75 staves** — **12 of 12 on the
+opening system**, naming the full lineup — while the free text-layer rung reads
+**0 of 75** on this 1870 scan, which is why the OCR rungs are the ones that
+matter and why they are not defaulted on (CLAUDE.md measures Surya at ~75% of a
+whole-work run). ⚠️⚠️ **And page 3's 8-stave system reads `Fl.` `Cl.` `Fag.`
+`Cor.` — no `Ob.`: the PRINT itself confirming the suppression**, so the
+anchors a name-based pairing needs sit exactly where the graft is (the
+suppressed families are winds and brass, which this edition labels on every
+system; the unlabelled strings sit below them).
+**(2) `adjudicate_part_partition` refuses a slot table that is the ordinal** —
+`_slots_are_ordinals`, true when every system's slots are exactly `0..n-1`, so
+the table expressed no suppression and joining on it IS the ordinal join that
+branch just refused. ⚠️ **STRUCTURAL, not a reason string**: `slot_index`
+returns the ordinal under BOTH its reasons, so a provenance filter would admit
+the identical graft the moment a label is read — which repair (1) now makes
+happen. ⚠️ **One-sided, and the cost is stated**: a score suppressing only its
+LAST staves has a genuine table that is also contiguous, and this refuses a
+join that would have been right.
+
+⚠️ **COST: 12 parts → 75 fragment parts on this document**, taken deliberately
+and one predicate to revert. The argument is that **the graft is silent and
+fragments are loud** — a Timpani part holding the Viola's bars and key
+signature reads as wrong notes, and mis-ranking the work is the one failure a
+cleanup count exists to prevent. The exporter's fragment fallback already calls
+itself *"still right: the alternative is grafting"*.
+
+⚠️ **The mutation battery's first run reported two problems and BOTH were its
+own**: an anchor occurring twice (the two `pdf_path` forwards differ by one
+space of indentation, and the first draft mutated the wrong one — the fermata
+battery's fault repeated), and a SURVIVOR — bypassing `_slots_are_ordinals` so
+that *everything* refuses left the suite green, because **every refusal test
+was satisfied by a rule that refuses unconditionally**. That is this file's own
+*a battery of refusal tests can pass by refusing everything*, arriving against
+its author. Closed by a test injecting a GAPPED slot table — ⚠️ which has to
+INJECT, because a gapped table is **unreachable end to end today**: no real
+record has ever carried one.
+
+⚠️ **What is NOT established**: that the 50 labels are RIGHT (reach, not
+accuracy — `Obol.` reads at `low` confidence); that a name-based join would
+land every staff; anything about a second publisher; and **the `p4/s0` vs
+`p4/s1` shape is untouched** — two systems, 11 staves each, DIFFERENT lineups,
+which the equal-count branch still accepts and where 5 of the 12 grafts live.
+**The ranked next work is `adjudicate_slot_index` implementing the short-system
+rule its own docstring already states**, reusing `slots.align` rather than
+restating it, and reading its `build_reference` warning first.
+
 ### Direction words reach the file — the LAST stub, and PHASE 1 IS COMPLETE
 
 2026-09-11, no flag. **`adjudicate.stubs()` is `()`.** `direction` was the

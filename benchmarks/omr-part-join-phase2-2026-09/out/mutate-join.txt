@@ -1,0 +1,13 @@
+refusal never fires                            -> 1 failed, 168 passed, 5 warnings in 6.35s
+refusal always fires                           -> 1 failed, 168 passed, 5 warnings in 6.32s
+contiguity relaxed to distinctness             -> 2 failed, 167 passed, 5 warnings in 6.48s
+slots pooled instead of grouped by system      -> 2 failed, 167 passed, 5 warnings in 6.42s
+an empty table reads as the ordinal            -> 1 failed, 168 passed, 5 warnings in 6.45s
+the ordinal branch loses its early return      -> 1 failed, 168 passed, 5 warnings in 6.42s
+run_staged_on does not forward pdf_path to gather -> 1 failed, 168 passed, 5 warnings in 6.40s
+run_staged drops pdf_path on the way to run_staged_on -> 1 failed, 168 passed, 5 warnings in 6.28s
+the surya rung is not forwarded                -> 1 failed, 168 passed, 5 warnings in 8.45s
+POSITIVE CONTROL (a no-op edit)                -> 169 passed, 5 warnings in 8.08s
+restored                                       -> 169 passed, 5 warnings in 6.40s
+
+9 arms, 0 problems

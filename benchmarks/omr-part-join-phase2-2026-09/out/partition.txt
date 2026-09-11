@@ -1,0 +1,109 @@
+==============================================================================
+1. THE SYSTEMS
+==============================================================================
+system      staves bars/staff   lineup
+p1/s0           12        16   12 printed
+p2/s0           11        16   11 printed
+p2/s1           11        15   11 printed
+p3/s0           11        16   11 printed
+p3/s1            8        18   8 printed
+p4/s0           11        15   11 printed
+p4/s1           11        15   11 printed
+
+==============================================================================
+2. THE PARTITION -- every part's measures, and where they came from
+==============================================================================
+part     meas   p1/s0  p2/s0  p2/s1  p3/s0  p3/s1  p4/s0  p4/s1
+P1        111      16    16    15    16    18    15    15
+P2        111      16    16    15    16    18    15    15
+P3        111      16    16    15    16    18    15    15
+P4        111      16    16    15    16    18    15    15
+P5        111      16    16    15    16    18    15    15
+P6        111      16    16    15    16    18    15    15
+P7        111      16    16    15    16    18    15    15
+P8        111      16    16    15    16    18    15    15
+P9         93      16    16    15    16    --    15    15
+P10        93      16    16    15    16    --    15    15
+P11        93      16    16    15    16    --    15    15
+P12        16      16    --    --    --    --    --    --
+
+   histogram: {111: 8, 93: 3, 16: 1}
+
+==============================================================================
+3. THE IDENTITY -- a part is short by exactly the systems it misses
+==============================================================================
+   a part present on every system holds  111 measures
+   P1    111 = 111 - 0    missing nothing
+   P2    111 = 111 - 0    missing nothing
+   P3    111 = 111 - 0    missing nothing
+   P4    111 = 111 - 0    missing nothing
+   P5    111 = 111 - 0    missing nothing
+   P6    111 = 111 - 0    missing nothing
+   P7    111 = 111 - 0    missing nothing
+   P8    111 = 111 - 0    missing nothing
+   P9     93 = 111 - 18   missing p3/s1
+   P10    93 = 111 - 18   missing p3/s1
+   P11    93 = 111 - 18   missing p3/s1
+   P12    16 = 111 - 95   missing p2/s0, p2/s1, p3/s0, p3/s1, p4/s0, p4/s1
+
+   total measures in the file : 1183
+   total staff-systems        : 75
+
+==============================================================================
+4. THE GRAFT -- which staff-systems the join put on another part
+==============================================================================
+A part's instrument is taken from the FIRST system it appears on.
+Every later staff-system whose printed instrument differs is a
+span of one instrument's music filed under another's <part>.
+
+part  part's instrument      system    printed there            bars
+P2    Oboi                   p3/s1      Clarinetti               18
+P3    Clarinetti             p3/s1      Fagotti                  18
+P4    Fagotti                p3/s1      Corni                    18
+P5    Corni                  p3/s1      Violino I                18
+P6    Trombe                 p3/s1      Violino II               18
+P7    Timpani                p3/s1      Viola                    18
+P7    Timpani                p4/s0      Violino I                15
+P8    Violino I              p3/s1      Violoncello e Basso      18
+P8    Violino I              p4/s0      Violino II               15
+P9    Violino II             p4/s0      Viola                    15
+P10   Viola                  p4/s0      Violoncello              15
+P11   Violoncello            p4/s0      Basso                    15
+
+   GRAFTED staff-systems (a different instrument): 12 of 75
+   by system: {'p3/s1': 7, 'p4/s0': 5}
+
+   reported apart -- CONDENSATION, the same player on a shared
+   staff, which is not a wrong instrument:
+     P11   Violoncello            p2/s0      Violoncello e Basso      16
+     P11   Violoncello            p2/s1      Violoncello e Basso      15
+     P11   Violoncello            p3/s0      Violoncello e Basso      16
+     P11   Violoncello            p4/s1      Violoncello e Basso      15
+   condensation staff-systems: 4
+
+==============================================================================
+5. ⚠️  WHAT A CORRECT JOIN WOULD GIVE -- and it is not equal parts
+==============================================================================
+Grouping each printed staff-system under the instrument the PAGE
+prints there, with no join error at all:
+
+   Flauti                    111
+   Oboi                       93
+   Clarinetti                111
+   Fagotti                   111
+   Corni                     111
+   Trombe                     93
+   Timpani                    78
+   Violino I                 111
+   Violino II                111
+   Viola                     111
+   Violoncello                31
+   Basso                      31
+   Violoncello e Basso        80
+
+   ⚠️ The spread does NOT close. A tacet instrument has no printed
+   staff, so a correct join gives it FEWER measures, not the same
+   number -- and the parts that read 111 today read 111 BECAUSE
+   the graft lends them another instrument's bars.
+
+The partition balances exactly, on every part.

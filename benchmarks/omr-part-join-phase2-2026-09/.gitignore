@@ -1,0 +1,2 @@
+# The staged record is ~130 MB and is a build product of run_gather.sh.
+out/record-*.json
