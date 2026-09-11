@@ -1,0 +1,2258 @@
+{
+ "base": [
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": null,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Violoncello",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 11,
+   "instrument": "Basso",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 6.22
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 6.12
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 6.12
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 6.22
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 6.22
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 6.22
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 6.22
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 6.22
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 6.22
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 6.03
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": -2,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": 1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": null,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 2,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 3,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 5,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 6,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": 7,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 7,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 15.94
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": 3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": 1,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -2,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Violoncello",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Basso",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -2,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -2,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": -1,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  }
+ ],
+ "A": [
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": null,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Violoncello",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 11,
+   "instrument": "Basso",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -2,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": -2,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": 1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": null,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 2,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 3,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 5,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 6,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": 7,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 7,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 15.94
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": 3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": 1,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -2,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Violoncello",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Basso",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -2,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -2,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": -1,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  }
+ ],
+ "B": [
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": 1,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Violoncello",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "staff": 11,
+   "instrument": "Basso",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -2,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": null,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": 0,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": 1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": null,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 2,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 3,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 5,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 6,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": 7,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 7,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -3,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 15.16
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 14.92
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 14.46
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": 3,
+   "tpl_fifths": null,
+   "width_spaces": 15.16
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 14.92
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": 1,
+   "tpl_fifths": 0,
+   "width_spaces": 14.92
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 6,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -2,
+   "width_spaces": 14.92
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 7,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": -4,
+   "tpl_fifths": null,
+   "width_spaces": 14.92
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 8,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 9,
+   "instrument": "Violoncello",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 10,
+   "instrument": "Basso",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -3,
+   "width_spaces": 14.92
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 0,
+   "instrument": "Flauti",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": -2,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 1,
+   "instrument": "Oboi",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": -2,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 2,
+   "instrument": "Clarinetti",
+   "truth_fifths": -1,
+   "loc_fifths": null,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 3,
+   "instrument": "Fagotti",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 4,
+   "instrument": "Corni",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": -1,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 5,
+   "instrument": "Trombe",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 6,
+   "instrument": "Timpani",
+   "truth_fifths": 0,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 7,
+   "instrument": "Violino I",
+   "truth_fifths": -3,
+   "loc_fifths": -1,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 8,
+   "instrument": "Violino II",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 9,
+   "instrument": "Viola",
+   "truth_fifths": -3,
+   "loc_fifths": -3,
+   "tpl_fifths": null,
+   "width_spaces": 16.0
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "staff": 10,
+   "instrument": "Violoncello e Basso",
+   "truth_fifths": -3,
+   "loc_fifths": null,
+   "tpl_fifths": null,
+   "width_spaces": null
+  }
+ ]
+}

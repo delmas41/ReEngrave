@@ -66,6 +66,7 @@ cell; everything else sees the pipeline it saw before.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Sequence
 
 import numpy as np
 
@@ -290,10 +291,75 @@ def system_left_edge(
 
     — nine of them stopped at a barline, two walked back to the real edge, and
     the minimum (279) is right to within a couple of pixels.
+
+    ⚠️ THE "NEVER TOO FAR LEFT" CLAIM IS FALSE, MEASURED 2026-09-11, AND THE
+    MINIMUM IS ONLY AS GOOD AS ITS WORST ESTIMATE. On Beethoven 5 / Litolff
+    p.2 system 1 the eleven estimates are
+
+        331, 345, 345, 263, 334, 334, 335, 347, 336, 336, 346
+
+    and the fourth under-runs its ten siblings by about 70 px — 4.5 staff
+    spaces — into the margin. The minimum PREFERS it, and it then decides the
+    header window of all eleven staves. So the wall rule does not make the
+    minimum safe in general; it made it safe on the one system this docstring
+    was written from. The under-run is NOT repaired here, because every
+    candidate repair measured moved the left edge of all seventy-five windows
+    on those four pages and the two that were tried cost more than they
+    returned (`benchmarks/omr-keysig-truth-2026-09/FINDINGS.md` §5, arm B).
+    What IS repaired is the consequence: `measure_header_window` no longer
+    lets a mis-placed `x0` promote the system's opening rule to a measure
+    boundary, so an under-running estimate now costs a window that is too WIDE
+    — which both key readers survive — instead of one that is empty.
+    """
+    cands = system_left_estimates(pws, system_index, config)
+    return min(cands) if cands else None
+
+
+def system_left_estimates(
+    pws: PageWithStaves,
+    system_index: int,
+    config: HeaderWindowConfig = DEFAULT_CONFIG,
+) -> list[int]:
+    """Every staff's own estimate of where this system's staves begin.
+
+    Split out because the two consumers want DIFFERENT statistics of the same
+    measurement, and taking one for the other is what
+    `measure_header_window` was bitten by:
+
+      * where the window BEGINS wants the MINIMUM — generous on purpose, since
+        starting a few spaces early costs nothing and starting late loses the
+        clef;
+      * how far right a barline must stand before it is a measure boundary
+        rather than the system's opening rule wants the CONSENSUS, because a
+        margin measured from an outlier is no margin at all.
     """
     staves = [s for s in pws.staves if s.system_index == system_index]
-    cands = [c for c in (_staff_left_candidate(pws, s, config) for s in staves) if c is not None]
-    return min(cands) if cands else None
+    return [c for c in (_staff_left_candidate(pws, s, config) for s in staves)
+            if c is not None]
+
+
+def system_left_consensus(
+    pws: PageWithStaves,
+    system_index: int,
+    config: HeaderWindowConfig = DEFAULT_CONFIG,
+    *,
+    estimates: Sequence[int] | None = None,
+) -> int | None:
+    """Where this system's staves begin, as the MEDIAN of the per-staff
+    estimates rather than the minimum.
+
+    ⚠️ THE MEDIAN AND NOT THE MEAN, because the estimates carry a documented
+    heavy tail on ONE side: a staff whose anchor landed deep inside the music
+    walks left only as far as the first barline it meets and reports a value
+    hundreds of pixels too large — 788, 983 and 1058 all occur on the four
+    pages this was measured on. A mean follows those; a median does not.
+    """
+    cands = (list(estimates) if estimates is not None
+             else system_left_estimates(pws, system_index, config))
+    if not cands:
+        return None
+    ordered = sorted(cands)
+    return int(ordered[len(ordered) // 2])
 
 
 def measure_header_window(
@@ -302,6 +368,7 @@ def measure_header_window(
     config: HeaderWindowConfig = DEFAULT_CONFIG,
     *,
     left_edge: int | None = None,
+    left_consensus: int | None = None,
 ) -> HeaderWindow | None:
     """Measure the header window of one staff. Returns None when the staff has
     no usable ink profile — abstaining rather than guessing a window, so a
@@ -309,11 +376,19 @@ def measure_header_window(
 
     `left_edge` supplies an already-computed system left edge (see
     `header_cells_for_page`, which measures each system once); when it is None
-    the system's edge is measured here.
+    the system's edge is measured here. `left_consensus` is the MEDIAN of the
+    same per-staff estimates and decides only how far right a barline must
+    stand to be a measure boundary — see the comment on that test, and
+    `system_left_estimates` for why one measurement has two statistics.
     """
     spacing = max(1.0, staff.line_spacing_px)
-    if left_edge is None:
-        left_edge = system_left_edge(pws, staff.system_index, config)
+    if left_edge is None or left_consensus is None:
+        estimates = system_left_estimates(pws, staff.system_index, config)
+        if left_edge is None:
+            left_edge = min(estimates) if estimates else None
+        if left_consensus is None:
+            left_consensus = system_left_consensus(
+                pws, staff.system_index, config, estimates=estimates)
     if left_edge is None:
         return None
     x0 = max(0, left_edge - int(round(config.left_margin_spaces * spacing)))
@@ -324,9 +399,33 @@ def measure_header_window(
 
     # The system's first barline that is far enough right to be a measure
     # boundary rather than the system's own initial rule.
+    #
+    # ⚠️ THE TEST IS UNCHANGED; ITS ANCHOR IS NOT, AND THE ANCHOR WAS THE BUG.
+    # This margin used to be measured from `x0`, which comes from
+    # `system_left_edge` — the MINIMUM of one estimate per staff. A minimum is
+    # only as good as its worst estimate, so a single staff that under-runs
+    # into the margin drags `x0` left, the system's own initial rule then
+    # clears `min_w`, and the window ends ON that rule with no music in it.
+    # Measured on Beethoven 5 / Litolff p.2 system 1: ten of eleven staves
+    # estimate 331-347 and the eleventh estimates 263, and every header window
+    # on that system came out 6.2 staff spaces wide — the margin label and the
+    # rule — against 16.0 on every other system of those four pages. A clef
+    # alone is about 4 spaces and a 3-flat signature about 8, so nothing
+    # readable was in any of them, and BOTH key readers failed there in
+    # different-looking ways with one cause: `key_signature_locator` found no
+    # run and abstained, and `key_signature_template` found a clean window and
+    # answered a confident `0` — a key signature FABRICATED from a crop that
+    # contained none.
+    #
+    # So the margin is measured from the system's CONSENSUS left edge instead.
+    # The minimum is the right statistic for choosing where a window BEGINS
+    # (there it is deliberately generous, and a too-early start costs
+    # nothing), and the wrong one for asking how far right a barline has to
+    # stand before it stops being the opening rule. No constant changes.
+    anchor = left_consensus if left_consensus is not None else left_edge
     candidates = [
         bl.x for bl in pws.barlines
-        if bl.system_index == staff.system_index and bl.x >= x0 + min_w
+        if bl.system_index == staff.system_index and bl.x >= anchor + min_w
     ]
     if candidates and min(candidates) <= x0 + max_w:
         x1, right_from = min(candidates), "barline"
@@ -394,13 +493,17 @@ def header_windows_for_page(
     """
     out: dict[int, HeaderWindow] = {}
     for system_index in sorted({s.system_index for s in pws.staves}):
-        left = system_left_edge(pws, system_index, config)
-        if left is None:
+        estimates = system_left_estimates(pws, system_index, config)
+        if not estimates:
             continue
+        left = min(estimates)
+        consensus = system_left_consensus(pws, system_index, config,
+                                          estimates=estimates)
         for staff in pws.staves:
             if staff.system_index != system_index:
                 continue
-            window = measure_header_window(pws, staff, config, left_edge=left)
+            window = measure_header_window(pws, staff, config, left_edge=left,
+                                           left_consensus=consensus)
             if window is not None:
                 out[staff.staff_index] = window
     return out
