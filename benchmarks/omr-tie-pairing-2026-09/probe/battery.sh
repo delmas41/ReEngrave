@@ -66,16 +66,20 @@ arm $R '                and abs(yl - yr) / avg_nh_h <= TIE_SAME_POSITION_MAX_SPA
             ]||                and abs(yl - yr) / avg_nh_h > TIE_SAME_POSITION_MAX_SPACES
             ]' \
        "TRANSCRIBE: invert the window — prefer heads at DIFFERENT positions"
-arm $R '                (dxl + dxr, dl, dr)
-                for dxl, yl, dl in lefts for dxr, yr, dr in rights||                (dxl + dxr, dl, dr)
-                for dxr, yl, dl in lefts for dxl, yr, dr in rights' \
-       "TRANSCRIBE: swap the two dx terms in the tie-break"
 arm $R '                _, best_left, best_right = min(at_one_position,
                                                key=lambda t: t[0])||                _, best_left, best_right = max(at_one_position,
                                                key=lambda t: t[0])' \
        "TRANSCRIBE: take the FURTHEST same-position pair, not the nearest"
-arm $R '            best_left, best_right = best[2], best[5]||            best_left, best_right = best[5], best[2]' \
-       "TRANSCRIBE: swap start and stop (expected NOT APPLIED — that line is gone)"
+# ⚠️ An arm swapping start and stop in the tie-break was written and REMOVED:
+# the line it anchored on does not exist (the branch unpacks a 3-tuple), so the
+# harness correctly reported NOT APPLIED. A harness failure is not a survivor,
+# and an arm that can never apply is not a test — it is noise in the report.
+#
+# ⚠️ An arm swapping the two dx terms of the tie-break is an EQUIVALENT MUTANT
+# and is also removed: `dxl + dxr` is symmetric, so relabelling the loop
+# variables cannot change the answer. It SURVIVED on the first run, and that is
+# a property of the arithmetic rather than a gap in the tests. Recorded here so
+# nobody writes it again.
 
 # ── the export MIRROR, which the veto's bookkeeping depends on ───────────────
 arm $E '    if at_one_position:

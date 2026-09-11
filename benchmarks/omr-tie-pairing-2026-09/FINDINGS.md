@@ -637,3 +637,28 @@ gives for it.
   branch could all go red on a suite that simply refuses every tie, so **ARM P
   is the positive control in the same class** — it stops the branch being
   entered at all, and the suite must still go red.
+
+### 11a. The battery, and its two survivors
+
+First run: **six RED, two SURVIVED**, with ARM 0 and the NOT-APPLIED report
+both behaving. Both survivors were adjudicated rather than argued away, and
+they are different things:
+
+* **`min` → `max` among same-position pairs (take the FURTHEST) SURVIVED, and
+  it is a REAL GAP.** Every test above offers exactly ONE same-position pair,
+  and a rule that takes the furthest of one takes the same one. Closed by
+  `TestTheTieBreakAmongSamePositionPairs`, which offers two — on the start
+  side and on the stop side, because the tie-break sums two terms and a test
+  naming only the start reaches half the hazard. *One red arm is not a
+  battery*, and this is what the rest of it bought.
+* **Swapping the two dx terms SURVIVED and is an EQUIVALENT MUTANT**, not a
+  gap: `dxl + dxr` is symmetric, so relabelling the loop variables cannot
+  change the answer. The arm is REMOVED and the reason recorded in the
+  battery's own source, so nobody writes it again.
+
+⚠️ A third arm reported **NOT APPLIED** — it anchored on a line the branch does
+not contain. The harness treats that as a harness failure and not a survivor,
+which is the whole reason the anchor must be a whole expression; the arm is
+removed rather than left printing noise.
+
+Second run: **nine arms, all RED**, ARM 0 SURVIVED at 333 passed.

@@ -178,3 +178,33 @@ class TestTheExportMirrorAgrees:
         left, right = pair
         assert mine == {(left["bbox_page"][0], "tied_to_next"),
                         (right["bbox_page"][0], "tied_from_prev")}
+
+
+class TestTheTieBreakAmongSamePositionPairs:
+    """Among pairs at ONE staff position, the NEAREST in x wins.
+
+    ⚠️ Added after a mutation battery SURVIVOR: turning that `min` into a `max`
+    — take the FURTHEST same-position pair — passed every test above, because
+    each of them offers only ONE same-position pair, and a rule that picks the
+    furthest of one picks the same one. *One red arm is not a battery*, and
+    this is what the rest of it bought.
+    """
+
+    def test_the_nearer_of_two_same_position_starts_wins(self):
+        far = head(22, 100, pitch="C4")
+        near = head(40, 100, pitch="C4")
+        stop = head(80, 100, pitch="C4")
+        st = staff(far, near, stop, tie(55, 75, 100))
+        _pair_ties_in_staff(st)
+        assert flagged(st) == {(40, "tied_to_next"), (80, "tied_from_prev")}
+
+    def test_the_nearer_of_two_same_position_stops_wins(self):
+        """The stop side too — the tie-break sums two terms, and a test naming
+        only the start reaches half the hazard, which is exactly the survivor
+        the chord-tie battery found one session ago."""
+        start = head(20, 100, pitch="C4")
+        near = head(58, 100, pitch="C4")
+        far = head(78, 100, pitch="C4")
+        st = staff(start, near, far, tie(35, 55, 100))
+        _pair_ties_in_staff(st)
+        assert flagged(st) == {(20, "tied_to_next"), (58, "tied_from_prev")}
