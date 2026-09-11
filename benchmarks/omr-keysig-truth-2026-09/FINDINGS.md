@@ -380,3 +380,28 @@ counting the smaller half.
 key settles, so the **one new wrong reading** (a Corni `-1` where the print has
 none) now re-spells that staff's notes as well — one staff-system of 75, and
 the reason the new harm is named in §7 rather than netted against the 12 gains.
+
+---
+
+## 11. What the second reader COSTS
+
+Measured on page 1 (12 staves, 4 candidate clefs each, 48 calls per reader):
+
+| reader | calls | wall | per call |
+|---|--:|--:|--:|
+| `key_signature_locator` (already there) | 48 | 2.23 s | 47 ms |
+| `key_signature_template` (added) | 48 | 2.06 s | 43 ms |
+
+So GATHER's key-signature stage roughly **doubles**, at about **2 seconds per
+12-staff page**. Against a four-page gather that is Surya-bound and takes tens
+of minutes, it is not a consideration — but it is measured rather than waved
+at, because "ask a second reader" is the kind of change that is cheap here and
+would not be on a whole 88-page work (about 3 minutes added, still small
+beside that run's direction-text half, which this repo already prices at 75%
+of wall clock).
+
+⚠️ **Both readers are asked once per CANDIDATE clef rather than once with the
+settled one**, which is what makes it four calls and not one. That is GATHER's
+existing design and not something this change introduced: the slot table is
+chosen by the clef, so asking with a guess is guessing twice, and *which*
+clefs the run fits is itself evidence about the clef.
