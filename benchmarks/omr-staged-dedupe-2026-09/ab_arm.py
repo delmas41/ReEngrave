@@ -24,8 +24,18 @@ reproduce the record is not a control, and a silent mismatch would make every
 number below a measurement of this harness.
 
 ⚠️ The base arm is restored IN PROCESS by monkeypatching the one predicate,
-not by a git checkout — a checkout would move the adjudicators too and the
-delta would stop being attributable to this change alone.
+not by a checkout of the tree — a checkout would move the adjudicators too and
+the delta would stop being attributable to this change alone.
+
+⚠️⚠️ **IT DID NOT PRODUCE THE FIGURES IN FINDINGS §4, AND SAYING SO MATTERS.**
+On the four-page Litolff record its BASE arm alone had not finished after 55
+minutes of wall clock at 99% CPU, so it was stopped. §4 is measured by the two
+SPLIT instruments instead — `export_only_arm.py` (the notes, ~1 minute) and
+`dynamics_arm.py` (the dynamics, seconds, with a 1148/1148 control) — each of
+which covers exactly what the other is blind to. This file is kept because the
+joint measurement is the right instrument on a smaller record, and because both
+split arms import their helpers from it. **Do not quote a number from it that
+it has not been run to produce.**
 """
 from __future__ import annotations
 

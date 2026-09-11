@@ -1,4 +1,0 @@
-record provenance: {'commit': '9d4ccc85b9a77652f7166c31b10dbb615176d50c', 'dirty': True}
-⚠️ the record was gathered on a DIRTY or unstamped tree. Both arms inherit that equally, so the DELTA stands; the ABSOLUTE figures carry the caveat.
-
-=== BASE ARM: honour the owner by MOVING (pre-repair) ===
