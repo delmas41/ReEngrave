@@ -1057,6 +1057,109 @@ box) or the legacy gate's ±6 edit floor. A verdict can be stable while the
 confidence under it moves, because most decisions read a confidence as a TIER
 or an argmax rather than a value.
 
+### Rests are not sized to the bar, and `size_measure_rest` is not why
+
+2026-09-11, Sean's cleanup observation 3 (*"Many whole note rest which equal 2
+beats are showing up as a single quarter note — which doesnt even make sense
+because the measure needs 2 quarters to be filled"*). ONE staged record
+(Litolff Beethoven 5 mvt 1, pdf p1-4, 2/4 throughout), adjudicated four times
+and exported four times. Findings:
+[benchmarks/omr-rest-sizing-2026-09/FINDINGS.md](benchmarks/omr-rest-sizing-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE CONSEQUENCE HAS NO FAULT AND THE CROSS-TAB IS AN EMPTY INTERVAL.**
+Over the bars the convention covers — one standing duration, a dotless
+`restWhole`, nothing else — `size_measure_rest` fires on **92 of 92** where the
+meter is DECIDED and **0 of 195** where it abstained. The meter is decided on
+**1 system of 7**. The whole population is the meter.
+
+⚠️ **THE HEADLINE POPULATION IS NOT ALL RESTS.** The 471 rests written at 4.0
+quarters in a 2.0-quarter bar decompose **to the unit**: **303** are
+`restWhole` glyphs the record READ and **168** are bars the record holds no
+duration for at all, padded by the exporter (`empty_bars_padded_without_meter`).
+A third of the worst population is *a bar we read NOTHING in*, not a mis-sized
+rest — same cause, different repair.
+
+⚠️⚠️ **THE OBSERVATION IS NOT ABOUT THOSE RESTS, AND ASKING THE RENDERER IS
+WHAT SETTLED IT.** Sean's words name a GLYPH and our fault is a DURATION, so
+they are one complaint only if the renderer turns one into the other.
+**Verovio draws our unsized 4.0 whole rest as a WHOLE rest** (checked, three
+cases). And the 209 `restQuarter` are **not misread whole rests**: box aspect
+h/w separates with an **EMPTY INTERVAL** — `restWhole` median 0.46 max 0.91,
+`restQuarter` median 2.66 min 1.40, **0 of 209 overlapping**, at the highest
+median confidence of any rest class. ⚠️ That is SHAPE consistency and it is
+**one-sided** — `arpeggiato` fires 377 times on this same document as *"a stem
+or a barline"*, the same tall thin shape — so it rules one hypothesis out and
+establishes nothing positive.
+
+⚠️⚠️ **WHAT HIS EYE WAS REPORTING IS A BAR THAT DOES NOT ADD UP, AND NOTHING IN
+THE PIPELINE REPORTED IT: only 38.0% of the 1,183 exported bars sum to the
+`<time>` the same file declares** — 43.6% OVERFULL, 18.4% SHORT. 428 of the 516
+overfull bars hold an unsized whole rest. A reader of the coverage report sees
+`empty_bars_padded_without_meter: 168` and `measure_rests_read: 92` and cannot
+get from those to 43.6%. `probe/bar_fill.py` asks it; its `--check` fails only
+when the instrument assessed **nothing**, deliberately **never** on a threshold
+— a bar-fill number used as a gate is gamed by emitting FEWER symbols, which is
+the direction that makes the file worse and the trap OMR-NED's symmetry already
+set.
+
+**MEASURED, one gather adjudicated four times** (`rest_sizing_arm.py`; the
+control reproduces **2993 of 2993** duration verdicts, and the OFF arm's file
+is identical to the pipeline's own **outside the `<dynamics>` blocks** — those
+differ because this record predates the dedupe repair and `dynamic` is an
+ADJUDICATE decision, the manager's finding arriving from the other direction):
+with `OMR_METER_CARRY=1` all six abstaining systems decide **`carried` 2/4** at
+support **+6 / +13 / +9 / +18 / +9 / +7** against a floor of 2.0; rests at 4.0
+**471 → 115**, at 2.0 **109 → 465**, `measure_rests_read` **92 → 280**,
+`empty_bars_padded_without_meter` **168 → 0**, and **bars that add up
+449 → 819 of 1183 (38.0% → 69.2%)**.
+
+⚠️⚠️ **`OMR_METER_FROM_BARS=1` REACHES THE SAME METER ON ALL SIX SYSTEMS AND
+THE THREE FILES ARE BYTE-IDENTICAL** (carry / bars / both, one md5). Its
+support is **exactly 1.0 lower in every row** — that is `W_METER_CARRIED`, so
+the bar evidence is identical and the carry contributes only its own term. It
+matters because **the bars reader cannot cross a movement boundary**, so this
+result does not rest on the carry's one real hazard.
+
+⚠️ **BLAST RADIUS, stated rather than buried**: the arm also moves **72 note
+`<type>` values** and notes 1618 → 1620. That is `reconcile_duration` — settling
+the meter feeds the pipeline's one sanctioned loop — and **none of the 72 has
+been checked against the print.**
+
+⚠️ **THE FIXPOINT STAYS CLOSED, AND THE GUARD IN THE TREE IS STRONGER THAN THE
+`OMR_METER_CARRY` ROW ABOVE DESCRIBES IT**: `_bar_lengths_for` excludes **ANY
+bar holding a whole rest**, not merely a bar whose only event is one, because
+`Q.EVENT`'s grouping and `size_measure_rest`'s population can disagree about
+whether a rest is alone. **Nothing in this work widens the corroboration
+basis** — which is a statement about what was *not* changed, and the
+load-bearing one. Priced: the exclusion removes **17-111 bars per system** here
+and leaves 6-17 assessable, so on worse ink this repair goes **quiet rather
+than wrong**.
+
+⚠️ **RECOMMENDATION, NOT A CHANGE: default `OMR_METER_CARRY` ON.** The flag is
+held off on **n**, and the plan says a cleanup count is what says which
+abstentions are worth resolving — this is that evidence, on the first page
+anyone read against the print. **The flip is Sean's.** ⚠️ The standing blocking
+objection is untouched and this document cannot touch it: its one read meter is
+CORRECT, so the carry is never handed a wrong candidate to weigh. **The cheapest
+thing that would settle it is the same arm on Breitkopf Brahms 1 p0-3**, whose
+meter reading is known bad — if a misread `9/4` propagates across four pages,
+that is the unmeasured cost side, and this bar-fill number is where it shows.
+
+⚠️ **ONE CODE CHANGE, in the rest path**: `empty_bars_padded_without_meter` was
+incremented only on the bad branch, so it was **ABSENT** from the report once
+every padded bar had a meter — *"we sized all 184 correctly"* and *"this figure
+was never computed"* read identically. It is now written unconditionally.
+⚠️ **The test that should have caught it used `.get(..., 0)`**, which accepts an
+absent key as a zero, so the counter could stop being written and every
+assertion would still pass. Same lesson as `decided_uncounted`, arriving in the
+rest path. Mutation battery: **4 arms, all red, positive control green.**
+
+⚠️ **REFUSED**: widening `size_measure_rest` to the ~92 bars that come out lone
+only because the exporter wrote **730 fewer notes than the record holds** —
+its evidence would become *what the exporter failed to write*, which is both a
+guess about silence and an **uphill** dependency (EVALUATE runs before EXPORT);
+and sizing the 168 unread bars from a meter we do not have.
+
 ### Three families wired in one pass — fermata, voices, ornaments
 
 2026-09-10, no flag, **Phase 1 of the wire-first plan**. Findings:

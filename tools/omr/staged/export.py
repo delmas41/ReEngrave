@@ -1635,8 +1635,20 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 # is stated here so that the day a rest quantity lands, the
                 # rule has a home rather than being rediscovered.
                 counters["empty_bars_padded"] += 1
-                if meter is None:
-                    counters["empty_bars_padded_without_meter"] += 1
+                # ⚠️ WRITTEN EVEN WHEN IT IS ZERO, and the `+= 0` is the whole
+                # point rather than a clumsy `if`. This counter is a QUALIFIED
+                # SUBSET of the one above it, so while it was incremented only
+                # on the bad branch it was simply ABSENT from the report when
+                # every padded bar had a meter — and a reader could not tell
+                # *"we sized all 184 of them correctly"* from *"this figure was
+                # never computed"*. Measured: on Litolff `984073` p1-4 it reads
+                # 168 with the meter unsettled and VANISHES once it is settled,
+                # which is exactly the run whose success it was supposed to
+                # report. Same lesson as `decided_uncounted` — "the report
+                # cannot tell" is a different fact from "wrote zero" — arriving
+                # in the rest path.
+                counters["empty_bars_padded_without_meter"] += (
+                    1 if meter is None else 0)
                 # ⚠️ THE FOURTH PLACE A TWO-VOICE VERDICT CAN GO, and without
                 # it the split's accounting is a FILTER rather than a
                 # PARTITION. The record read two streams among notes the
