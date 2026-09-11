@@ -1246,6 +1246,101 @@ open goes before its event and the stop after, and **no count would notice** a
 mistake. ⚠️ **A cell index is not a part ordinal** — it restarts per system,
 the `(page, cell)` defect that made the duration arm's bar figures wrong.
 
+### PHASE 2 — the cleanup count: the artefact is built and the COUNT IS SEAN'S
+
+2026-09-11, no code outside `benchmarks/`. Phase 2 of
+[docs/plan-2026-09-10-wire-first-then-reconcile.md](docs/plan-2026-09-10-wire-first-then-reconcile.md)
+— Sean's own target, *"how much work would I have to do to clean it up"*. A
+session built the INSTRUMENT and the ARTEFACT and **stopped where judgement
+begins**. Open
+[benchmarks/omr-cleanup-count-2026-09/README.md](benchmarks/omr-cleanup-count-2026-09/README.md);
+the pass itself is described in
+[docs/handoff-2026-09-11-the-cleanup-count-is-yours-to-take.md](docs/handoff-2026-09-11-the-cleanup-count-is-yours-to-take.md).
+Findings:
+[benchmarks/omr-cleanup-count-2026-09/FINDINGS.md](benchmarks/omr-cleanup-count-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THERE IS NO COUNT YET, AND THE NUMBER OF FIX-ACTIONS IS NOT A METRIC.**
+The plan: *the moment it becomes a number to drive down it will be gamed the
+way OMR-NED was* — and the two are gamed in OPPOSITE directions, that metric
+rewarding MORE symbols and a cleanup count FEWER. It is read as *what should we
+fix next*, never as *are we winning*.
+
+**`CATEGORIES.md` is committed ALONE and FIRST**, before a page was gathered,
+because the plan says twice that the categories must be fixed before looking
+*"or the count fits itself to what was found"* — and commit order is the only
+form of that claim a later reader can check. The unit is a **FIX-ACTION with a
+declared SCOPE**, not an element and not a bar, because the question is about
+work and work is gestures; right-pitch/wrong-duration is **one `wrong`**
+(splitting it reintroduces exactly the amplification that makes musicdiff's
+buckets unrankable); an unpaired staff is **one unit at scope `staff-system`**
+with structural and content fixes counted apart; and `would-not-notice` is
+**the EDITOR's eye**, named, with a `missable` flag kept separate so cost-zero
+cannot absorb cost-hidden.
+
+⚠️ **The machine proposes ONLY about absence, and `proposed_spurious` is null
+on every row BY DESIGN** — deciding it needs the print, and the machine has the
+record and the file, neither of which is the print. Its two proposals are
+LOWER BOUNDS on `missing` and **neither is a lower bound on the count**: a note
+the detector never saw is invisible to both.
+
+⚠️ **REACH: pdf pages 1-4 of ~16, mm 1-112 of 502 (22.3%), 7 printed systems**
+— the boundary is the last hand-verified `works.json` window row, because past
+it nobody has checked which printed bar a system starts at and a side-by-side
+that mislabels its bars is worse than none. The four pages do cover **all four
+structural shapes the plate prints**. ⚠️⚠️ **And it is the PESSIMISTIC end of
+the corpus**: Litolff `984073` is the *low-res bitonal* scan this file already
+records firing 49 flags/35 dots against Breitkopf's 371/656, **so a second
+publisher could change the RANKING and not just the number.**
+
+**What the four pages produce**: 12 parts, 1,183 measures, 1,793 notes of 2,347
+gathered noteheads, **554 held back** (`duration_narrowed` 339, `no_pitch`
+215), 32 slurs + 84 ties of 779 decided arc rows (**538 refused for binding
+fewer than two notes**), 174 dynamics of 485 letters, 41 fermatas, 6 direction
+words. **Staff counts match the print on 7 systems of 7** and bar counts on 6
+of 7 (p.2 system 1 reads 16 where the plate prints 17).
+⚠️ `detected_and_unrepresented_total` is **0** and `status_census` reports no
+stub, starved, NO_QUANTITY or unaccounted family — **Phase 1 standing up on a
+real four-page run.**
+
+⚠️⚠️ **THREE DEFECTS THE INSTRUMENT FOUND AND DELIBERATELY DID NOT FIX**
+(Phase 3 is ranked BY the count; fixing the loudest thing first is the
+ranking-by-cheapness the plan exists to replace):
+1. **THE PARTS OF THE FILE DISAGREE ABOUT WHICH BAR THEY ARE IN.** A part whose
+   staff is SUPPRESSED on a system gets no measures for those bars, so from
+   p.4 onward P9-P11 hold **93 measures against P1-P8's 111** and
+   `<measure number="82">` names a different instant in different parts of one
+   file. **P12 is the same defect's other form** — the lineup condenses at p.2
+   and that part simply STOPS after bar 16. Found because Verovio said
+   `Mismatching measure number 87` out loud.
+2. **The meter is decided on ONE system of seven** (`too_few_staves_read_it` 4,
+   `no_evidence` 2), and `empty_bars_padded_without_meter` is 162 — a meter is
+   printed at a movement's start and nowhere else, which is what
+   `OMR_METER_CARRY` is for and it is off on **n**. *A flag held back for want
+   of a second document, visibly costing the human on the first* — which is
+   exactly what a cleanup count is for.
+3. **No part has a name**: all twelve `<part-name>` read `Staff p1-s0-N`,
+   `instrument` having produced nothing on 22 of 22 staves. The
+   `group_symbol` `no_identity` figure this file already records, confirmed to
+   reach the FILE.
+
+⚠️ **66 bars hold no gathered ink at all; 178 come out with no event.** So on
+**112 bars the page gave us ink and no event came out** — `missing` to the
+human either way and a completely different repair for us, which is the
+ABSENT/DECLINED distinction the record exists to keep.
+
+⚠️⚠️ **AND A CORRECTION TO THIS FILE'S OWN SURYA ESCAPE, PAID FOR IN WALL
+CLOCK.** *"The escape for an UNATTENDED run: `OMR_SURYA_KEEP_ALIVE=0` … a
+worker per page owns its own process"* is **false when a resident server
+already exists**: Surya attaches through its own sentinel
+(`~/.cache/datalab/surya/llamacpp_server.json`), which named a four-day-old
+shared `llama-server`, and the flag governs whether we ask for it to be KEPT —
+not whether we get our own. One page cost ~6 minutes queued behind a sibling
+session while the main process sat at a **frozen CPU clock**, the picture this
+file warns reads as a hang; the child's clock was ticking. The run was left
+alone (*never blanket-kill by name*), and the consequence is that **an
+unattended whole-movement run cannot currently be budgeted** — that, and not
+the page count, is what bounded the artefact.
+
 ### Direction words reach the file — the LAST stub, and PHASE 1 IS COMPLETE
 
 2026-09-11, no flag. **`adjudicate.stubs()` is `()`.** `direction` was the

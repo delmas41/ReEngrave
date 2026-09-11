@@ -1,0 +1,8 @@
+# ⚠️ The staged RECORD is 132 MB for four pages and is not committable, which
+# is the standing state for records in this repo. Everything DERIVED from it is
+# committed -- the file, the system map, the coverage report, the proposals,
+# the sheet, the HTML and the crops -- so the artefact opens from a checkout
+# and every number in FINDINGS.md can be re-derived without it. What needs the
+# record is re-deriving the proposals, and `run_gather.sh` reproduces it.
+out/record-*.json
+out/*.log
