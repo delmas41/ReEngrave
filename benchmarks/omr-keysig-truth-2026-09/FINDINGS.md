@@ -405,3 +405,69 @@ settled one**, which is what makes it four calls and not one. That is GATHER's
 existing design and not something this change introduced: the slot table is
 chosen by the clef, so asking with a guess is guessing twice, and *which*
 clefs the run fits is itself evidence about the clef.
+
+---
+
+## 12. The end-to-end confirmation: PARTIAL, and what it does and does not show
+
+⚠️ **The controlled measurement in §7 is the probe, not a re-gather, and that
+is deliberate rather than a shortfall.** Both repairs are GATHER changes — a
+new quantity and a change to header geometry — so `readjudicate.py` is
+STRUCTURALLY BLIND to them (it rebuilds from a saved record, and a new
+quantity never enters) and `reexport_arm.py` has the mirror blind spot. Only
+two full re-gathers can answer *"did GATHER change what ADJUDICATE sees"*, and
+a re-gather carries detector jitter, which this repo has measured at
+confidence swings of 0.83 → 0.69 on byte-identical code. The probe runs three
+arms off ONE page load and has none of that.
+
+**What was nonetheless attempted, and what it established.** A full staged run
+over the same four pages on the landed tree:
+
+⚠️ **RUN 1 STARVED, exactly as this repo's own escape clause says it would.**
+`OMR_SURYA_KEEP_ALIVE=0` does NOT buy a private worker when a resident server
+already exists — Surya attaches through its own sentinel — and a four-day-old
+shared `llama-server` was serving a sibling session. The main process sat at
+**0.0% CPU** for ~25 minutes after page 2's last cell, which is the "frozen
+clock" picture that reads as a hang. It was killed **by its own PID** and the
+shared server was left alone.
+
+**RUN 2 ran Surya-free** (`OMR_DIRECTION_TEXT=0` and the `.venv-surya` symlink
+moved aside), which is sound here because **no key-signature reader touches
+Surya** — the header is read from geometry — and `instrument` already abstains
+on 22 of 22 staves with Surya present. It stayed at 98-100% CPU throughout,
+completed GATHER on all four pages, and reached ADJUDICATE:
+
+    adjudicate clef:          472 verdicts so far
+    adjudicate key_signature: 547 verdicts so far
+
+The counter is CUMULATIVE, so **`adjudicate_key_signature` produced exactly
+75 verdicts — one per printed staff, and the same 75 as the hand-read truth.**
+`staff_group`, `measure_partition`, `staff_ordinal`, `instrument`, `slot_index`
+and `clef` each produce 75 too, and `system_membership` 7, matching the seven
+printed systems.
+
+⚠️⚠️ **SO WHAT IS CONFIRMED IS THE WIRING, NOT THE FILE.** The repaired GATHER
+runs to completion on a real four-page record, the new
+`Q.KEYSIG_TEMPLATE_FIT` rows do not break it, and the key decision reaches
+every printed staff. **The exported MusicXML was NOT produced**: the run was
+stopped after `adjudicate_glyph_owner` had spent ~40 minutes at 100% CPU, a
+decision this change does not touch and which a parallel session is actively
+reworking. So there is no regenerated `<fifths>` table here, and §7's numbers
+rest on the probe and its 71-of-75 reproduction of the shipped artefact.
+
+**To finish it:** re-run `run_gather.sh`'s command against
+`out/record-after.json`, then
+
+```bash
+python3 benchmarks/omr-cleanup-count-2026-09/export_arm.py \
+        --record benchmarks/omr-keysig-truth-2026-09/out/record-after.json \
+        --tag after --out-dir benchmarks/omr-keysig-truth-2026-09/out
+python3 benchmarks/omr-keysig-truth-2026-09/grade_artefact.py \
+        --map benchmarks/omr-keysig-truth-2026-09/out/system-map-after.json
+```
+
+`grade_artefact.py --map` exists for exactly this and is committed; it writes
+`grade-after.json`. ⚠️ Read the result as a CONFIRMATION that the mechanism
+reaches a file, never as a controlled delta against the shipped artefact —
+that comparison carries detector jitter and, if run Surya-free, the absence of
+`<words>` as well.
