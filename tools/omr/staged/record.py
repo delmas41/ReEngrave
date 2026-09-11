@@ -460,6 +460,24 @@ class Q(_Vocab):
     #: it. Vacuous where no accidentals were found, and a 0-accidental key fits
     #: every clef -- so it covers different staves from the range test.
     KEYSIG_CLEF_FIT = "keysig_clef_fit"
+    #: ⚠️ The TEMPLATE reader's answer to the same question, and it is a
+    #: SEPARATE quantity rather than more rows under `KEYSIG_CLEF_FIT` for two
+    #: reasons, only one of which is tidiness.
+    #:
+    #: The load-bearing one: `adjudicate_clef` reads `KEYSIG_CLEF_FIT` and
+    #: raises one `Term` per row, so filing a second reader's fits there would
+    #: silently double the weight of this evidence in the CLEF contest — a
+    #: reading change leaking into a decision it was never measured against.
+    #: Two readers on one crop are also not two independent signals in the
+    #: sense `Evidence.independent` means.
+    #:
+    #: The second: the two readers fail in opposite directions and this repo
+    #: has paid to know it. `key_signature_locator` loses accidentals to
+    #: broken ink and under-counts; `key_signature_template` can match
+    #: spurious ink and OVER-count, which is why `key_signature_template`
+    #: refuses to infer a slot at all. Reported apart, a consumer can express
+    #: the measured precedence; pooled, it cannot.
+    KEYSIG_TEMPLATE_FIT = "keysig_template_fit"
     METER_GLYPH = "meter_glyph"              # timeSig digits / C / cut-C
     METER_TEMPLATE = "meter_template"        # the template reader's score
 

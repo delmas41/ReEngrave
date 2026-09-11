@@ -1713,6 +1713,8 @@ def gather_key_signature(log: Log, pws: Any, cells: Sequence[Any],
             if positions is None:
                 positions = [b[0] for b in found.boxes]
 
+        _gather_keysig_template(log, sub, crop)
+
         if not fitted_any:
             # ⚠️ Two different states collapse here and the detail says which:
             # a run that fits NO slot table, and a header with no run at all.
@@ -1725,6 +1727,57 @@ def gather_key_signature(log: Log, pws: Any, cells: Sequence[Any],
         log.observe(sub, Q.KEYSIG_RUN_POSITION, positions or [],
                     reader=READERS.CV_HEADER, frame=FRAME_HEADER_WINDOW,
                     n_accidentals=len(positions or []))
+
+
+def _gather_keysig_template(log: Log, sub: Subject, crop: Any) -> None:
+    """The SECOND key-signature reader — `key_signature_template`.
+
+    ⚠️ WHY A SECOND ONE AT ALL. `ASSUMPTIONS.md` D20 records that GATHER read
+    key signatures with `key_signature_locator` alone, *"the weaker of the two
+    readers this repo has, by a margin measured on the very page the first
+    shadow run used"* -- `transcribe.py:1521` puts the locator at 2 of 12
+    staves on Beethoven 5 p.1 given the correct clef and this reader at 11.
+    Measured on pdf pages 1-4 of that edition against a hand-read print
+    truth, over 75 printed staves: the locator decides 16 correctly and this
+    reader 28, and they are COMPLEMENTARY rather than ranked -- on page 1 the
+    template reads all twelve staves right and the locator two, and on page 2
+    system 0 the locator reads five right and the template four different
+    ones.
+
+    ⚠️ IT IS ASKED ONCE PER CANDIDATE CLEF, exactly as the locator is, and for
+    the same reason: the slot table is chosen by the clef, and a reader given
+    a guessed clef is guessing twice.
+
+    ⚠️ IT IS NOT ASKED FOR `positions`, AND NOT FILED UNDER
+    `Q.KEYSIG_CLEF_FIT`. See that quantity's note: `adjudicate_clef` weighs
+    those rows, so pooling the two readers there would move the CLEF decision,
+    which nothing has measured.
+
+    ⚠️ A `fifths` OF 0 FROM THIS READER IS A POSITIVE CLAIM, not an
+    abstention -- `read_key_signature`'s own docstring says so: *"`fifths` 0
+    when the window between clef and meter is clean -- that is a positive
+    reading of 'no signature here'."* It is exactly the claim the locator
+    cannot make, which is why it reaches the horns, trumpets and timpani that
+    genuinely print none; and it is exactly the claim that is WRONG when the
+    window is empty for some other reason, which is why the header-window
+    repair in `staff_header.measure_header_window` had to land first.
+    """
+    try:
+        from ..key_signature_template import read_key_signature
+    except Exception:                                         # noqa: BLE001
+        return
+    for candidate in _SLOT_TABLE_CLEFS:
+        try:
+            read = read_key_signature(crop, candidate)
+        except Exception:                                     # noqa: BLE001
+            continue
+        if read is None:
+            continue
+        log.observe(sub, Q.KEYSIG_TEMPLATE_FIT, candidate,
+                    reader=READERS.TEMPLATE, frame=FRAME_HEADER_WINDOW,
+                    n_accidentals=abs(read.fifths),
+                    accidental=read.accidental,
+                    fifths=read.fifths)
 
 
 def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
