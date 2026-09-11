@@ -1,0 +1,13 @@
+beethoven-sym3-mvt1.omr.json                           from=   2 same=   0 DIFF=   1 no_end=   1
+beethoven-sym5-mvt1.omr.json                           from=  11 same=  11 DIFF=   0 no_end=   0
+brahms-sym1-mvt1.omr.json                              from=  44 same=  37 DIFF=   6 no_end=   1
+brahms-sym4-mvt1.omr.json                              from=   7 same=   4 DIFF=   3 no_end=   0
+bruckner-sym5-mvt1.omr.json                            from=   4 same=   3 DIFF=   0 no_end=   1
+dvorak-sym9-mvt4.omr.json                              from=   0 same=   0 DIFF=   0 no_end=   0
+mahler-sym5-mvt1.omr.json                              from=   2 same=   0 DIFF=   2 no_end=   0
+mozart-sym40-mvt1.omr.json                             from=   0 same=   0 DIFF=   0 no_end=   0
+mozart-sym41-mvt1.omr.json                             from=   9 same=   1 DIFF=   8 no_end=   0
+tchaikovsky-sym4-mvt2.omr.json                         from=   0 same=   0 DIFF=   0 no_end=   0
+tchaikovsky-sym6-mvt2.omr.json                         from=   0 same=   0 DIFF=   0 no_end=   0
+
+  pooled: DIFFERENT_pitch=20  links_from=79  no_next_event_end=3  same_pitch=56

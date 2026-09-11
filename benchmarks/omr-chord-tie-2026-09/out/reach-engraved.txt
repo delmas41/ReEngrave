@@ -1,0 +1,13 @@
+11 files
+  chord_events                                 99
+  chord_notes                                  204
+  events                                       3048
+  notes                                        1557
+  tie_flag_events_from_prev                    80
+  tie_flag_events_to_next                      79
+  tie_from_prev_event_with_no_flagged_note     0
+  tie_from_prev_on_an_unflagged_note           0
+  tie_to_next_event_with_no_flagged_note       0
+  tie_to_next_on_an_unflagged_note             1
+  under_emitted_from_prev                      0
+  under_emitted_to_next                        0

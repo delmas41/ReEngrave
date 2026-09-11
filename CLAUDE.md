@@ -1298,10 +1298,11 @@ pitches. Litolff p1-3: of 48 written ties **17 land on a note that carries
 none** (and 15 of the stops); Brahms p0-3 **103 of 349** and 101 — **35% and
 29%, two publishers agreeing to within six points.** **Under-emission is the
 SMALLER half (1 event on Litolff)** — the failure is *wrong note*, not *missing
-note*. ⚠️ **NOT FIXED**: the hoist is in `voicing.py`, shared with
-the LEGACY exporter and so with the 11-work engraved benchmark, and the repair
-moves hundreds of elements on a scan — a wiring pass may not change behaviour
-it has not priced. Counted so the size is on every run.
+note*. ⚠️⚠️ **IT WAS NOT FIXED THERE, AND IT IS FIXED NOW — see the section
+below, which also records that repairing it uncovered a bigger defect
+underneath.** The reason it was deferred stands as written: the hoist is in
+`voicing.py`, shared with the LEGACY exporter, so *a wiring pass may not change
+behaviour it has not priced* — the pricing was a separate job and is done.
 
 ⚠️ Controls: one gather exported twice, this exporter against `origin/main`'s —
 **the MusicXML is BYTE-IDENTICAL on BOTH documents** while the coverage reports differ
@@ -1310,6 +1311,79 @@ needs. Mutation battery **8 arms, all red**, including a positive control in
 the same class; ⚠️ **a ninth arm SURVIVED and was an EQUIVALENT mutant** — a
 guard in front of an assignment cannot change the outcome, so the guard was
 DELETED rather than tested around.
+
+### The chord tie is REPAIRED — and it was masking a bigger defect
+
+2026-09-11, no flag. The job above, priced and done. Both MusicXML renderers
+read `tied_to_next` / `tied_from_prev` off the **HEAD** instead of the event's
+`any()`. Findings:
+[benchmarks/omr-chord-tie-2026-09/FINDINGS.md](benchmarks/omr-chord-tie-2026-09/FINDINGS.md).
+
+**REACH FIRST**, over the stored `.omr.json` files the A/B then re-exports:
+**62 marks RELOCATE and 12 are ADDED** on 11 scan rows (a chord with two
+genuinely tied members got one `<tied>` and now gets two); on the 11 engraved
+works it is **ONE** mark, relocating. ⚠️ **An event flag with no flagged head
+under it occurs ZERO times over all 33 transcriptions**, which is why the
+repair DELETES a branch rather than adding a fallback — there was nothing to
+fall back from, and a fallback would have guessed which note is tied.
+
+**PRICED export-only, one gather exported by two trees, so the transcribe half
+is byte-identical and the delta carries no detector jitter.** ENGRAVED
+**2532 → 2530 edits**, 1 of 11 files moving, the `<tied>` COUNT unchanged.
+SCAN (11 stored rows of the 20-row gate) **34,731 → 34,739**, `<tied>` 231 →
+237 starts. ⚠️ **A third, measurement-only arm splits that +8**: relocation
+alone is **+2** and the 12 added marks are **+6** — the metric's
+under-prediction reward, the same trade the articulation ship took at +97.
+⚠️ The ±6 noise floor does NOT apply: two exports of one transcription set are
+deterministic.
+
+⚠️ **The single engraved element was adjudicated and is decisive**: the base
+file ties **G2 → D5** across a barline and the fix ties **D5 → D5**. No print
+was needed — `record.Checkable`'s own rule is that a tie's two ends must be the
+same pitch.
+
+⚠️⚠️ **AND THAT RULE, RUN OVER THE WHOLE FILE, IS THE REAL FINDING: A QUARTER
+OF THE TIE PAIRINGS BIND TWO DIFFERENT PITCHES.** `transcribe._pair_ties_in_staff`
+flags a LEFT head and a RIGHT head by GEOMETRY and records no link between
+them; `<tied>` carries no `number=` and resolves BY PITCH, so a pairing whose
+ends differ in pitch **cannot be written correctly by any renderer**. The old
+hoist wrote both ends at the chord's LOWEST note and therefore MASKED such a
+pairing whenever two chords shared their bottom pitch. Measured with
+`probe/pairing_pitches.py`, no truth file: **20 of 79 engraved links (25%) and
+64 of 237 scan links (27%)** bind different pitches — thirds, not near misses
+(`F4→A4`, `E5→G5`, `Ab3→C4`) — and a further **115 of 237 scan links (49%) have
+no end in the next event at all**. ⚠️⚠️ The proof that the mask was accidental:
+scored on that invariant the base arm **resolves 60 ties where the record
+supports at most 58**, while the fix lands at 57. ⚠️ The check is ONE-SIDED (an
+unresolved tie is certainly wrong; a resolved one may still be invented) and
+does not say WHICH end is wrong — the pairing, or the pitch read on one head.
+**The pairing is the ranked next work, and the ENGRAVED 20 is where to start**,
+because there the pitch reading is near-perfect and the pairing is left as the
+only suspect.
+
+⚠️ **LilyPond is deliberately left alone and diverges.** `~` after a chord is a
+chord-level post-event LilyPond resolves against the following chord BY PITCH —
+verified by compiling `out/lily_tie_semantics.ly`, where `<c e g>~ <c e>` ties c
+and e silently and `<c e g>~ <d f a>` warns three times — so the defect does not
+exist there, and `<c~ e g>` would be an unpriced change to an exporter with no
+metric. Same call as `_lily_wedge_plan`.
+
+⚠️ `tie_starts_written_on_an_untied_note` is **replaced, not pinned at zero**,
+by `tie_starts_on_an_upper_chord_note`: a counter naming an element the
+exporter no longer writes is the *control that computes the wrong thing*.
+
+⚠️⚠️ **TWO PROCESS LESSONS, both from the instruments rather than the code.**
+(1) **A mutation battery `git checkout`s the files it mutates, so an A/B arm
+that reads the WORKING TREE is not isolated from it** — the two were running
+together, the first three-arm run was discarded, and the arms were re-run
+against snapshot trees only. CLAUDE.md's staged-gather warning, one family
+over. (2) **FOUR of ten arms survived the first battery and all four were real
+gaps**, each a test naming a mechanism it only half exercised: the tie STOP was
+never asserted on either path, the staged counter's distinguishing case (two
+tied heads in one chord) could not be built from a page fixture, and nothing
+asserted the event-level flag is still the `any()` LilyPond reads. *One red arm
+is not a battery* — six were red immediately and would have been reported as a
+pass.
 
 ### A MARK must be attached to its notehead — bar sums on perfect ink
 
