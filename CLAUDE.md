@@ -1137,6 +1137,75 @@ long gather WITHOUT `--musicxml` and export separately.** Editing anything at
 all, including an untracked file under `benchmarks/`, makes
 `provenance.dirty` true.
 
+### The tie CHAIN — an argued NEGATIVE, and two defects found measuring it
+
+2026-09-10/11, no flag. Phase 1 item 5 of the wiring plan, and **the only item
+that runs the other way: the EXPORTER already does the job and the RECORD
+cannot name it.** `tied_to_next` / `tied_from_prev` are the last two entries in
+`gather_coverage.NO_VOCABULARY` and **they STAY there** — no `Q.TIE_LINK` was
+built, deliberately. Findings:
+[benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md](benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md).
+
+⚠️⚠️ **WHY NOT: a chain is a fact about a PART and EXPORT cannot write a record
+row.** `staged/__main__.py` writes the record JSON **before** it imports the
+exporter, and the part is built inside `staged/export.build` from
+`Q.PART_PARTITION` — so the merge that makes two detected halves ONE tie has no
+home below EXPORT. A `Kind.STAFF` decision would reach 630 of 632 links and
+would be **a SECOND pairing that can disagree with the exporter's**, with the
+FILE following the exporter; a per-arc decision adds nothing, because
+`adjudicate_arc_kind` already records the flanked head pair inside the cell.
+**A quantity nothing reads would have emptied `NO_VOCABULARY` for free while
+changing nothing** — the *`wants` entry the decision never reads is INERT*
+anti-pattern, bought with a green line. The entry now carries the measured
+boundary instead.
+
+**REACH** (one fresh gather each, the exporter's own pairing): Litolff
+`984073` p1-3 **270 tie arcs → 261 merged groups → 59 LINKS → 46 CHAINS**, 4
+longer than two notes, 10 crossing a barline, **0** crossing a system break;
+Breitkopf Brahms 1 `317803` p0-3 **1658 → 1227 → 632 LINKS → 275 CHAINS**, 82
+longer than two, 140 crossing a barline, **2** crossing a system break, with
+chains running to **nine** notes. ⚠️ **The dominant number is the DETECTOR's**:
+362 and 762 merged arcs bind fewer than two noteheads and are refused, the same
+76% the arc export already records, arriving from the tie side — so 59 links is
+not a recovery rate. ⚠️ **Litolff alone would have made the system-break case
+look impossible and the chain look like a pair**, which is why both documents
+were gathered.
+
+**What shipped is that the exporter SAYS what it did**, plus two defects:
+
+⚠️⚠️ **`tie` AND `slur` SHARE `Q.ARC_KIND` AND THE CENSUS GAVE BOTH ROWS THE
+WHOLE POPULATION** — each read `decided: 514` where the real split is 270 ties
+and 244 slurs, which `detector_glyphs` had right one column to the left. A
+reader comparing `decided 514` with `written 49` would conclude the exporter
+drops 465 ties. Now attributed by VALUE, **derived from `FAMILIES` itself**
+rather than a fourth hand-written column, with the partition asserted; an
+abstention on a shared quantity names no kind and is reported ONCE, as
+`abstained_without_a_family`.
+
+⚠️⚠️ **A TIE ON A CHORD CAN LAND ON A NOTE THAT CARRIES NO TIE, AND IT IS NOW
+A NUMBER.** `<slur>` carries a `number=` and hangs off the chord's
+representative `<note>`; `<tied>` carries none and joins **the two notes it
+names** — `_pair_arcs` says so in its own docstring and the renderer ignores
+it. `voicing.group_chords_in_measure` hoists the flag onto the EVENT with
+`any()` and the renderer writes it at `n == 0`, so a chord whose **upper**
+member is tied gets the tie on its **lowest** note: a tie between two different
+pitches. Litolff p1-3: of 48 written ties **17 land on a note that carries
+none** (and 15 of the stops); Brahms p0-3 **103 of 349** and 101 — **35% and
+29%, two publishers agreeing to within six points.** **Under-emission is the
+SMALLER half (1 event on Litolff)** — the failure is *wrong note*, not *missing
+note*. ⚠️ **NOT FIXED**: the hoist is in `voicing.py`, shared with
+the LEGACY exporter and so with the 11-work engraved benchmark, and the repair
+moves hundreds of elements on a scan — a wiring pass may not change behaviour
+it has not priced. Counted so the size is on every run.
+
+⚠️ Controls: one gather exported twice, this exporter against `origin/main`'s —
+**the MusicXML is BYTE-IDENTICAL on BOTH documents** while the coverage reports differ
+exactly where intended, which is the positive control a byte-identical file
+needs. Mutation battery **8 arms, all red**, including a positive control in
+the same class; ⚠️ **a ninth arm SURVIVED and was an EQUIVALENT mutant** — a
+guard in front of an assignment cannot change the outcome, so the guard was
+DELETED rather than tested around.
+
 ### A MARK must be attached to its notehead — bar sums on perfect ink
 
 `A-DUR-8` said bar sums are wrong on a clean LilyPond engraving, blocking the
