@@ -548,3 +548,89 @@ right.
 family is absent, the record can now say whether **the page has none**, **the
 detector found none**, or **a decision abstained**. Three different facts, and
 the brief requires them reported apart.
+
+### Job 5 — tie pairing: LANDED, and it refuted the brief
+
+Merged at `753d5965`. Suite on the MERGED tree **3,779 passed / 11 skipped**
+(3,765 + 14, exact). Findings:
+[benchmarks/omr-tie-pairing-2026-09/FINDINGS.md](../benchmarks/omr-tie-pairing-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE BRIEF WAS WRONG AND THAT IS THE RESULT.** I wrote that because both
+boundary pages read pitch near-perfectly, *"the pitch reading is ruled out as
+the confound and the pairing is the only suspect."* **There was a third suspect
+and on that case it is the one — the arc's CLASS.** One `grep` settles it:
+
+| | truth `<tied>` | truth `<slur>` | detected `tie` | detected `slur` |
+|---|--:|--:|--:|--:|
+| `mozart-sym41-mvt1` | **2** (one tie) | **88** (44 slurs) | 13 | 60 |
+| `beethoven-sym5-mvt1` | **27** | **0** | 17 | 2 |
+
+Mozart's page prints essentially **no ties**, so 12 of 13 `tie` detections are
+false — and a false tie lands on whatever two notes a **slur** connects.
+Beethoven's page prints **zero slurs**, so a class error there is impossible by
+construction. **The 8-of-9 against 11-of-11 is what the pages PRINT**, not how
+they are paired. My "only suspect" framing enumerated two causes and asserted
+the remainder; the agent counted a third.
+
+⚠️ **And the 25% headline was three populations wearing one number.** Split:
+**SPELLING 11** (same staff STEP, accidental differs — **the PROBE is wrong,
+not the pairing**: it compares *spelled* pitches, and `export._pitch_step`
+exists in this repo precisely because that is the wrong key), **STEP_APART 8**
+(the class), **WIDE 4** (the pairing). So the engraved pairing defect is
+**5.7% of links, not 25%** — a number I had passed on twice.
+
+**The decisive instrument needs no truth file and is the durable part**: a
+tie's two heads are at ONE staff position, so box-y is a *second reading* of
+each link. **Engraved 70 of 70 on the diagonal, zero off it.** The scan breaks
+in one direction only — 25 links at one position whose pitches disagree anyway
+(pitch-reading faults, not pairing) and 108 of 302 genuinely far apart.
+
+**Repaired**: the two flanking heads are now chosen **together**, a pair at one
+staff position outranking one that is not — additive, comparative, **reading
+boxes and never pitch**, which is what keeps it clear of `OMR_ARC_RECLASS`'s
+measured refusal. ⚠️ **The missing premise was already written down**:
+`_pair_ties_in_cell`'s own docstring says *"real tied notes are at the same
+y-position by definition"* — **and neither rule ever used it.** *The value
+existed and nothing read it*, in a docstring this time.
+
+⚠️ Price: engraved **0 edits** with both files DIFFERING — one `<tied
+type="stop">` relocates per work and **OMR-NED charges nothing, because it
+pairs by pitch**. Scan **unmeasured and declared so**: reach is there
+(same-position links 122 → 183) but the ±6 floor cannot resolve it and the
+cheap routes are closed. Refuted with evidence and worth not re-trying:
+**divisi double stops** (the candidates are successive notes, dx 47 and 115 —
+no chord in any link) and **arc span** (flanking is exact, 2-4 px).
+
+#### ⚠️ A second, unrecorded defect — found by a control FAILING
+
+`_pair_ties_in_cell` and `_pair_ties_in_staff` set flags; then
+`_dedupe_cross_staff_detections` runs **later** and deletes the losing copy of a
+contested tie **without its flags**. **27 of 148 engraved tie flags have no tie
+glyph in their staff, and 27 of 27 are explained by the next staff down holding
+it.** ⚠️ It also means **a stored `.omr.json` cannot be replayed faithfully** —
+which bears on every export-only arm this project runs. Not repaired; it needs
+`Q.TIE_LINK`, **now with a third independent symptom** and a stronger case than
+job 2 could make.
+
+#### Instrument failures, and one is CLAUDE.md's own documented trap
+
+1. Its first re-transcribe A/B excluded **11 of 11 rows** because the base tree
+   had **no `.venv-surya`**, so Surya self-disabled and Tesseract read the words
+   — **the worktree symlink trap, from inside a control built for something
+   else.** The four-symlink warning exists for exactly this and still caught
+   someone who had read it.
+2. The run then **wedged on the shared Surya server**; restarted under
+   `OMR_SURYA_KEEP_ALIVE=0`, **only its own PIDs killed**, `llama-server` left
+   alone. The standing rule held under pressure.
+3. `counterfactual.py` counts link **properties, not identity** — it named one
+   reachable work and the arm moved two. ⚠️ ***Counting cannot see a
+   relocation; only naming the notes can*** — the same lesson the arc-export
+   session learned (a frame error is invisible to a span count) arriving from a
+   third direction.
+
+⚠️ It also corrected `OMR_ARC_RECLASS`'s row in CLAUDE.md, whose engraved
+figure **predated the chord-tie repair landed six hours earlier** (2530 → 2536,
++6, not +2; scan +149, not +130) and whose *"all +130 is in the tie→slur half"*
+is true and **not actionable as stated** — that half is FOUR rules, only one is
+provable, and on the three works where it fires alone the arm is **−4 edits**.
+**The refusal still stands.**
