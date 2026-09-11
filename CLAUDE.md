@@ -45,6 +45,17 @@ uncalibrated probability is WORSE than none (ECE 0.1277), and two readers can
 fall silent TOGETHER. **Build it only AFTER the first cleanup count**, which is
 what says which abstentions are worth resolving.
 
+⚠️⚠️ **PHASE 2 IS OPEN AND THE FIRST REPAIR IS IN: A CONTEST IS RESOLVED, NOT
+RELOCATED** (2026-09-11) — two of Sean's seven complaints about the first
+cleanup artefact are ONE cause, and it is *not* the missing dedupe pass it
+looks like. `adjudicate_glyph_owner` decides every cross-staff contest
+correctly; **nothing consumed the verdict as a resolution**, so both copies
+were MOVED onto the owner and one piece of ink became two notes, or a printed
+`ff` became `ffff`. **688 of 1,386 ownership verdicts relocate and every one
+doubles.** See the section *A CONTEST is RESOLVED, not relocated* below —
+including the **two GATHER divergences it found and deliberately did not
+change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
+
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
 [docs/handoff-2026-09-10-three-families-wired.md](docs/handoff-2026-09-10-three-families-wired.md)
 — **the newest**: Phase 1 items 1, 2 and 4 done (**fermata**, **stem_direction
@@ -1412,6 +1423,17 @@ NOT reach it); and `staged/__main__.py` writes the record JSON BEFORE it
 imports the exporter, which is what the tie-chain section below turns into a
 structural argument about where a decision can live. Found by three sessions
 in two days, each from a different direction.
+⚠️⚠️ **A FOURTH FACT ABOUT THE SAME IMPORT ORDER, AND IT IS THE ONE THAT LOOKS
+LIKE A BROKEN CHANGE: a SOURCE-LEVEL TEST FAILS ON A MID-RUN EDIT.** Measured
+2026-09-11 — `test_staged_voices.TestTheExporterReadsIt` asserts on
+`inspect.getsource(export._voice_of_notehead)`, and `getsource` reads the file
+FROM DISK using the line numbers the module carried when it was IMPORTED. Edit
+`export.py` while the suite is running and the executing code is the old one
+while the source read back is the new one, so the assertion fails on a function
+that is perfectly correct. **The failure is attributed to the change under
+test**, which is the expensive part: a full run reported `1 failed, 3792
+passed` and the test passed in isolation. **Do not edit `tools/` while a suite
+is running, and re-run before believing a single source-level failure.**
 
 ⚠️ **`counters["dynamics"] += len(directions)` COUNTED EVERY ENTRY OF THE
 LIST**, so a `<words>` would have been billed to the `dynamic` family and
@@ -1682,6 +1704,162 @@ timpani — `StaffCandidate.can_carry`'s own recorded hazard. ⚠️ Nothing was
 tuned: `max_inferred_ratio` (the `7`) and every locator/template threshold were
 left alone, and clamping `x0` itself was measured and REFUSED (it costs the
 locator 3 correct and 6 new wrong).
+
+### A CONTEST is RESOLVED, not relocated — one piece of ink, one element
+
+2026-09-11, no flag. **Phase 2's first repair, and it came from Sean's own
+words rather than from a metric**: *"there are a lot of doubled notes on a
+staff that dont make sense (2 of the same note next to each other connected to
+the same stem)"* and *"the score has only ff all the way down and ours has
+extra fs"*. Findings:
+[benchmarks/omr-staged-dedupe-2026-09/FINDINGS.md](benchmarks/omr-staged-dedupe-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE BRIEF'S HYPOTHESIS — "the staged path never dedupes duplicate
+detections" — IS WRONG IN ITS MECHANISM AND RIGHT IN ITS SYMPTOM, AND THE
+CORRECTION IS THE FINDING.** The staged path is not missing the decision.
+`adjudicate_glyph_owner` runs on every cross-staff contest and gets **245 of
+248** notehead pairs to agree on one owner. What was missing is that **nothing
+consumed the verdict as a RESOLUTION**: `export._place_notes` and
+`adjudicate_dynamic` both honoured ownership by **MOVING** the copy to the
+owner's staff, and BOTH copies of a contest name the same owner — so one piece
+of ink arrived twice, on one staff, in one bar. *The legacy
+`_dedupe_cross_staff_detections` DELETES the loser; this RELOCATED it.*
+**688 of 1,386 ownership verdicts relocate, and every one of them doubles.**
+
+⚠️ **WHY DROPPING IS SAFE, AND WHY IT IS NOT A RULE ABOUT OWNERSHIP.**
+`glyph_owner` declares `subjects_from=Q.GLYPH_BAND_DISTANCE` — the CONTESTED
+population — and `gather_ownership_evidence` files a band row only where two
+same-class detections on DIFFERENT staves overlap. So a relocated glyph has a
+twin BY CONSTRUCTION and relocating can never rescue ink that exists only in
+the wrong cell: **0 of the 688 carry `reason="no_contest"`**, which is what
+that claim predicts, checked rather than assumed. ⚠️⚠️ **`arc_owner` is the
+exact counter-example and the rule must never reach it**: its domain is every
+`Q.ARC_BOX`, so it CAN move an arc onto a staff that detected nothing, and this
+file already records six of its twelve moves doing so. Both domains are
+asserted off the REGISTRY, so widening `glyph_owner`'s goes RED rather than
+silently making the drop unsafe.
+
+⚠️ **THE `ffff` IS ONE PRINTED `ff`, NAMED RATHER THAN COUNTED.** The four
+letters of `cell/1/0/7/0` are `glyph/1/0/**7**/0/1` and `glyph/1/0/**8**/0/3`
+at page x 899, and `glyph/1/0/**7**/0/3` and `glyph/1/0/**8**/0/1` at x 920 —
+two staves, two x positions. **21 of 21** cells carrying a long f/p word hold
+an overlapping letter pair, so there is no residue to explain.
+
+⚠️⚠️ **THE ONE HAZARD IS A SWAP** — every member of a contest naming somebody
+else, so every copy is refused. Measured over 636 cross-staff contest groups:
+**1 swap, and it is a dynamic letter; zero noteheads**; 457 groups keep exactly
+one. It is not structurally impossible, only rare, so the drop is COUNTED
+(`owned_by_another_staff`, `letters_dropped_as_duplicate`) and the accounting
+control stays an **EQUALITY**.
+
+⚠️⚠️ **AN EXISTING TEST ASSERTED THE BEHAVIOUR THIS REMOVES, ON A PAGE GATHER
+CANNOT PRODUCE.** `TestOwnershipMovesTheLetter` filed ONE letter plus a contest
+over it and asserted the owning staff GAINED a letter it never detected — but a
+lone glyph is never contested, so that page does not exist, and the behaviour
+the test certified is exactly how a printed `ff` reached the file as `ffff`.
+*A fixture that does not match GATHER tests the test*, the shape this file
+already records for `Q.METER_GLYPH`. The premise is now pinned by **running**
+`gather_ownership_evidence` — one copy yields no contest, two copies do (the
+positive control), and **two copies in ONE staff do not**, which a mutation arm
+found and nothing else did.
+
+⚠️⚠️ **TWO GATHER DIVERGENCES WERE FOUND, MEASURED, AND DELIBERATELY NOT
+CHANGED** — each changes the DETECTION SET, so `readjudicate` and
+`reexport_arm` are both structurally blind to it and only two full re-gathers
+can price one. Both are now documented at their site rather than left to be
+re-discovered:
+
+1. **`gather.py:292` asks the detector a different question from the one every
+   measured figure in this repo was taken under.** It passes neither
+   `iou_threshold` nor `agnostic_nms`, taking `YoloDetector.detect`'s own
+   defaults `0.7` / **`False`** where `transcribe()` passes `0.5` / **`True`**.
+   Class-wise NMS never compares `noteheadHalfInSpace` with
+   `noteheadBlackInSpace` — the detector's own docstring names that as exactly
+   what `agnostic_nms` is for — so one notehead survives as three rows at IoU
+   0.91-0.96, **each with its own duration verdict (1.0, 0.5, 1.0)**. Measured
+   on Litolff p.1, all 192 cells, through the pipeline's own `prepare_pages`:
+   **55 overlapping same-category pairs against 16**, 755 detections against
+   709. ⚠️ The legacy arm still leaves 16, so this is not a complete fix for
+   the same-cell population.
+2. **`CONTEST_IOU = 0.5` restates the measured `_CROSS_STAFF_DUPLICATE_IOU =
+   0.3` and cites an assumption record that does not exist** — `grep -rn
+   A-OWN-3` returns that one line and nothing else, and the commit that
+   introduced it argues for the population, not the value. Cost, measured:
+   **134 of 636 overlapping cross-staff groups carry no ownership verdict at
+   all**, so both copies are written with the question never asked.
+
+⚠️ **A FLAT IoU RULE INSIDE A CELL WOULD DELETE REAL INK — do not try it.** The
+first same-cell dynamic pair found is two `dynamicF` at IoU **0.317**, 21 px
+apart, **both real: the two `f`s of a printed `ff`**, whose boxes are wider
+than the gap between them. Over 255 same-cell dynamic pairs the centre offset
+spreads 72 / 87 / 93 / 3 across `<0.25w` / `0.25-0.5w` / `0.5-0.75w` /
+`>=0.75w` — **the populations do not separate**, widest empty interval 0.097.
+Noteheads DO separate (405 of 458 under 0.25w), which is a fact about
+noteheads and not a threshold to carry across families. It is why the repair
+resolves a CONTEST, a question the record already answers, instead of
+thresholding geometry.
+
+**MEASURED**, two instruments each with its own control, because each has a
+blind spot the other does not. **NOTES** (one record exported twice by one
+tree): pitched `<note>` **1,793 → 1,618**, **176 refused** as
+`owned_by_another_staff`, repeated-pitch chord events **122 → 108**, rests
+825 → 842 (a bar emptied by a refusal correctly takes a measure rest), slurs
+70 → 64 and ties 171 → 158 and articulations 63 → 47 (each binds a notehead),
+measures and parts identical, and the accounting control an **EQUALITY** on
+both arms with `status_census.unaccounted` empty. **DYNAMICS** (control:
+**1,148 of 1,148** `Q.DYNAMIC` verdicts identical to the pipeline's own before
+either arm is read; 155 letters refused): `ffff` **11 → 2**, `fff` 10 → 8,
+`ppp` 1 → 0, and `sf` **9 → 34** as runs of doubled letters that spelled
+nothing become spellable.
+
+⚠️⚠️ **AND `ff` 47 → 39 IS AN UNADJUDICATED COST, NOT A WIN.** Eight words left
+that spelling and the record supports both readings — one printed `f` detected
+twice (the repair is right), or a real `ff` whose second letter this staff saw
+once (the repair cost a mark). **Only the print can say, and this session did
+not look at it**: 8 things a human might have to put back, the same shape as
+the voices work's 31 refused ties. The repair is justified by what the record
+says — two boxes, one piece of ink — and **not** by any measurement of the file
+being more correct.
+
+⚠️ **Repeated-pitch chords fall by 14 and NOT to zero, which is the result
+agreeing with itself**: the remainder is the SAME-CELL population, which a
+contest-based repair structurally cannot reach because a same-staff pair is
+never a contest. A repair that took it to zero would have been doing something
+it could not justify.
+
+⚠️ **THE BASE ARM IS NOT THE ARTEFACT SEAN LOOKED AT AND THE DIFFERENCE CANNOT
+BE ATTRIBUTED**: that file reports 421 chord events / 182 repeated / 206 excess
+where today's main reports 397 / 122 / 133 on the SAME record, with identical
+pitched-note count and identical `notes_not_written` — so the difference is in
+chord GROUPING, and **`export_arm.py` writes no provenance stamp**. The record
+names the tree that GATHERED it and nothing names the tree that EXPORTED it,
+hours later in a separate process. *A cleanup artefact whose own numbers cannot
+be reproduced is a gap worth closing before the next count.*
+
+⚠️ **A FOURTH SITE STILL RELOCATES AND IS NOT REPAIRED HERE**: `arc_owner` and
+`wedge_anchor` build their per-staff head sets by mapping every notehead to its
+OWNER, so a contested head enters the owner's set TWICE. `arc_owner`'s own
+comment justifies that grouping as giving *"the head set a READER would see"*
+and cites the legacy path — where `_dedupe_cross_staff_detections` has already
+deleted the twin, so there the set holds one. **Today the claim is false and
+the set holds two.** Unmeasured, unpriced, and ranked in FINDINGS §6.6 rather
+than folded into an arm that was already running.
+
+⚠️ **THE PROBE'S OWN FIRST RUN WAS WRONG**: it reported 152 extra duplicates
+across PAGES, because a page-pixel box is a fact about ONE page and two pages
+superimpose exactly — the `Q.ONSET_COLUMN` frame fault, arriving in a measuring
+instrument this time. ⚠️ **And the first A/B run was DISCARDED**: the mutation
+battery `git checkout`s the files it mutates and was running beside it, the
+collision this file already records costing a session its first three-arm run —
+the battery's own docstring now says so, and the arms were re-run alone.
+
+⚠️ **What is NOT established: ACCURACY.** Nothing here was checked against the
+print. That one printed `ff` is two letters is Sean's reading, not a
+measurement, and removing a duplicate makes the file more correct only if the
+SURVIVING copy is the right one — which this session did not test, and the
+same-cell triple above shows the copies can disagree about both class and
+duration. n = 1 document, 1 publisher, 4 pages of ~16, on the pessimistic
+*low-res bitonal* end of the corpus.
 
 ### A MARK must be attached to its notehead — bar sums on perfect ink
 
