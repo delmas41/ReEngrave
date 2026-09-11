@@ -264,11 +264,18 @@ quantity it optimises. It says the rule is now SELF-CONSISTENT. What it does
 not say is whether the pair is the printed one — two spurious detections at one
 position agree perfectly. **Read it as reach, never as accuracy.**
 
-⚠️ **The engraved reach is +1 link, on ONE work.** Asked per work, exactly one
-of the eleven changes at all: `bruckner-sym5-mvt1`, 3 same-position pairs → 4.
-§4's engraved table is why — that family is already 70 of 70 self-consistent,
-so there is almost nothing for this to find there. **The repair is addressed to
-the scan**, where the same probe reads 122 → 183.
+⚠️ **The engraved reach is +1 link, and only one of the eleven works moves this
+count**: `bruckner-sym5-mvt1`, 3 same-position pairs → 4. §4's engraved table is
+why — that family is already 70 of 70 self-consistent, so there is almost
+nothing for this to find there. **The repair is addressed to the scan**, where
+the same probe reads 122 → 183.
+
+⚠️⚠️ **THIS PROBE COUNTS PROPERTIES, NOT IDENTITY, AND THEREFORE UNDERSTATES
+WHAT MOVES.** A relocation between two heads that are BOTH at one staff position
+and BOTH the same pitch changes none of these columns and still writes a
+different note element. §7a's arm moved a `<tied>` on `brahms-sym1-mvt1`, a work
+this probe reports as unchanged on every column. Use it as a ceiling on property
+improvement, never as a count of links that move.
 
 ---
 
@@ -345,7 +352,70 @@ each fixture is read again, by each tree.
 whose `transcribe.py` is identical, and **excludes any row whose DETECTIONS
 moved** rather than folding the detector's jitter into the delta.
 
-<!--RESULT-->
+Run on the two works the reach probe named, each re-read by each tree:
+
+```
+                       base          fix
+brahms-sym1-mvt1     351 edits / 44 <tied>     351 / 44    (+0)
+bruckner-sym5-mvt1   199 edits /  4 <tied>     199 /  4    (+0)
+
+comparable rows: 2 of 2   (excluded because detections moved: 0)
+summed edits  base=550   fix=550   delta +0
+<tied> starts base=48    fix=48
+tie FLAGS     base=[48, 49]   fix=[48, 48]
+```
+
+**Zero edits, and the tie COUNT is held at 48 exactly as the design requires.**
+
+⚠️⚠️ **AND THE ARM IS NOT DEAD — BOTH FILES DIFFER, WHICH IS THE CONTROL THAT
+MAKES THE ZERO A RESULT.** The probe prints a warning when no row moves, so it
+was checked rather than assumed:
+
+```
+bruckner-sym5-mvt1: files DIFFER
+1770d1769
+<         <tie type="stop"/>
+1773,1775d1771
+<         <notations>
+<           <tied type="stop"/>
+<         </notations>
+1784a1781
+>         <tie type="stop"/>
+```
+
+One `<tied type="stop">` moves from one note to another, on each work, and
+**OMR-NED charges nothing for it** — the metric pairs by pitch, so a stop
+relocated onto a note of the same pitch is invisible to it. That is a result
+about the METRIC as much as about the change, and it is the third time this
+thread has hit it.
+
+⚠️ `tie FLAGS` falls 49 → 48 while the exported `<tied>` COUNT holds at 48:
+two arcs now share an endpoint head, so one head carries a flag that two arcs
+set. The number of PAIRS is unchanged; the number of FLAGGED HEADS can fall.
+Reported apart because they are different facts.
+
+⚠️ **`comparable rows: 2 of 2, excluded 0`** is the same control that excluded
+**11 of 11** on the first run (§9 item 10). It is the reason these two rows can
+be read at all.
+
+⚠️⚠️ **TWO ROWS, NOT ELEVEN, AND THE REACH PROBE THAT PICKED THEM IS ITSELF
+LIMITED.** The full eleven-work sweep was abandoned: `OMR_SURYA_KEEP_ALIVE=1`
+is set in this environment and the run wedged on the SHARED Surya server (a
+child at 0.0% CPU with its CPU clock frozen for five minutes — the stall
+CLAUDE.md documents), so it was restarted under the documented unattended
+escape `OMR_SURYA_KEEP_ALIVE=0`, which pays a ~70 s model load per page and is
+far slower. ⚠️ **Only this session's own PIDs were killed**; the shared
+`llama-server` was left alone.
+
+⚠️ **`counterfactual.py` named ONE reachable work and the arm moved TWO**, and
+that is a limitation worth carrying: **it counts link PROPERTIES (is the pair
+at one staff position, is it the same pitch), not link IDENTITY.** A relocation
+between two heads that are both at one position and both the same pitch changes
+no count and still writes a different note element. On the freshly-read Brahms
+record it reports `shipped == argmin_dy` on every column, and the file moved
+anyway. *Counting cannot see a relocation; only naming the NOTES can* — the
+arc-export session's lesson, arriving on a different instrument.
+
 
 ### 7b. SCAN — NOT MEASURED, and the reason is not cost alone
 
@@ -459,7 +529,14 @@ gives for it.
   the tie's own pitch invariant, the boxes' own y, or a truth ENCODING's
   element count.
 * **The scan price of the repair is unmeasured** (§7b), and §5c says the scan
-  is where its whole reach lies. The engraved arm is the only priced arm.
+  is where its whole reach lies. The engraved arm is the only priced arm, and
+  it is **TWO WORKS**, not eleven (§7a) — chosen by a reach probe that is itself
+  known to understate what moves.
+* **The engraved zero is a zero on two works.** It means *this relocation costs
+  nothing on OMR-NED*, which the exported diff shows is partly a fact about the
+  metric (it pairs by pitch, so a stop moved onto a same-pitch note is
+  invisible). It does **not** mean the relocation is correct — no print was
+  consulted.
 * **§5c's +52 is self-consistency, not accuracy** — its own warning.
 * **11 of the 20 scan rows**, one page each, and the engraved tie population is
   small (70 paired links, four of them WIDE).

@@ -3,52 +3,8 @@
  "fix": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a7d02cdf5621037ea",
  "rows": [
   {
-   "row_id": "beethoven-sym3-mvt1",
-   "detections_identical": false,
-   "base": {
-    "omr_ed": 276,
-    "omr_ned": 0.16717141126589946,
-    "tied_start": 2,
-    "tie_flags": [
-     2,
-     2
-    ]
-   },
-   "fix": {
-    "omr_ed": 261,
-    "omr_ned": 0.15760869565217392,
-    "tied_start": 2,
-    "tie_flags": [
-     2,
-     2
-    ]
-   }
-  },
-  {
-   "row_id": "beethoven-sym5-mvt1",
-   "detections_identical": false,
-   "base": {
-    "omr_ed": 84,
-    "omr_ned": 0.0660377358490566,
-    "tied_start": 11,
-    "tie_flags": [
-     11,
-     11
-    ]
-   },
-   "fix": {
-    "omr_ed": 68,
-    "omr_ned": 0.052795031055900624,
-    "tied_start": 11,
-    "tie_flags": [
-     11,
-     11
-    ]
-   }
-  },
-  {
    "row_id": "brahms-sym1-mvt1",
-   "detections_identical": false,
+   "detections_identical": true,
    "base": {
     "omr_ed": 351,
     "omr_ned": 0.08468033775633294,
@@ -69,30 +25,8 @@
    }
   },
   {
-   "row_id": "brahms-sym4-mvt1",
-   "detections_identical": false,
-   "base": {
-    "omr_ed": 418,
-    "omr_ned": 0.22305229455709713,
-    "tied_start": 7,
-    "tie_flags": [
-     7,
-     7
-    ]
-   },
-   "fix": {
-    "omr_ed": 421,
-    "omr_ned": 0.22453333333333333,
-    "tied_start": 7,
-    "tie_flags": [
-     7,
-     7
-    ]
-   }
-  },
-  {
    "row_id": "bruckner-sym5-mvt1",
-   "detections_identical": false,
+   "detections_identical": true,
    "base": {
     "omr_ed": 199,
     "omr_ned": 0.10015098137896326,
@@ -109,159 +43,27 @@
     "tie_flags": [
      4,
      4
-    ]
-   }
-  },
-  {
-   "row_id": "dvorak-sym9-mvt4",
-   "detections_identical": false,
-   "base": {
-    "omr_ed": 239,
-    "omr_ned": 0.33804809052333806,
-    "tied_start": 0,
-    "tie_flags": [
-     0,
-     0
-    ]
-   },
-   "fix": {
-    "omr_ed": 239,
-    "omr_ned": 0.33804809052333806,
-    "tied_start": 0,
-    "tie_flags": [
-     0,
-     0
-    ]
-   }
-  },
-  {
-   "row_id": "mahler-sym5-mvt1",
-   "detections_identical": false,
-   "base": {
-    "omr_ed": 139,
-    "omr_ned": 0.06977911646586345,
-    "tied_start": 2,
-    "tie_flags": [
-     2,
-     2
-    ]
-   },
-   "fix": {
-    "omr_ed": 139,
-    "omr_ned": 0.06977911646586345,
-    "tied_start": 2,
-    "tie_flags": [
-     2,
-     2
-    ]
-   }
-  },
-  {
-   "row_id": "mozart-sym40-mvt1",
-   "detections_identical": false,
-   "base": {
-    "omr_ed": 222,
-    "omr_ned": 0.1442495126705653,
-    "tied_start": 0,
-    "tie_flags": [
-     0,
-     0
-    ]
-   },
-   "fix": {
-    "omr_ed": 222,
-    "omr_ned": 0.1442495126705653,
-    "tied_start": 0,
-    "tie_flags": [
-     0,
-     0
-    ]
-   }
-  },
-  {
-   "row_id": "mozart-sym41-mvt1",
-   "detections_identical": false,
-   "base": {
-    "omr_ed": 315,
-    "omr_ned": 0.10776599384194321,
-    "tied_start": 9,
-    "tie_flags": [
-     9,
-     9
-    ]
-   },
-   "fix": {
-    "omr_ed": 301,
-    "omr_ned": 0.10248552945182159,
-    "tied_start": 9,
-    "tie_flags": [
-     9,
-     9
-    ]
-   }
-  },
-  {
-   "row_id": "tchaikovsky-sym4-mvt2",
-   "detections_identical": false,
-   "base": {
-    "omr_ed": 76,
-    "omr_ned": 0.0494148244473342,
-    "tied_start": 0,
-    "tie_flags": [
-     0,
-     0
-    ]
-   },
-   "fix": {
-    "omr_ed": 85,
-    "omr_ned": 0.05508749189889825,
-    "tied_start": 0,
-    "tie_flags": [
-     0,
-     0
-    ]
-   }
-  },
-  {
-   "row_id": "tchaikovsky-sym6-mvt2",
-   "detections_identical": false,
-   "base": {
-    "omr_ed": 303,
-    "omr_ned": 0.21114982578397212,
-    "tied_start": 0,
-    "tie_flags": [
-     0,
-     0
-    ]
-   },
-   "fix": {
-    "omr_ed": 303,
-    "omr_ned": 0.21114982578397212,
-    "tied_start": 0,
-    "tie_flags": [
-     0,
-     0
     ]
    }
   }
  ],
  "summed_edits_comparable_rows": {
-  "base": 0,
-  "fix": 0
+  "base": 550,
+  "fix": 550
  },
  "tied_starts_comparable_rows": {
-  "base": 0,
-  "fix": 0
+  "base": 48,
+  "fix": 48
  },
  "tie_flags": {
   "base": [
-   79,
-   80
+   48,
+   49
   ],
   "fix": [
-   79,
-   79
+   48,
+   48
   ]
  },
- "rows_excluded_detections_moved": 11
+ "rows_excluded_detections_moved": 0
 }
