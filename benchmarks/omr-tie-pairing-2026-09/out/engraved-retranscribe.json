@@ -1,0 +1,69 @@
+{
+ "base": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-overnight-manager-handoff-08261d/38d17bd5-8332-4b46-a174-055bd7fd0a17/scratchpad/tiebase",
+ "fix": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a7d02cdf5621037ea",
+ "rows": [
+  {
+   "row_id": "brahms-sym1-mvt1",
+   "detections_identical": true,
+   "base": {
+    "omr_ed": 351,
+    "omr_ned": 0.08468033775633294,
+    "tied_start": 44,
+    "tie_flags": [
+     44,
+     45
+    ]
+   },
+   "fix": {
+    "omr_ed": 351,
+    "omr_ned": 0.08468033775633294,
+    "tied_start": 44,
+    "tie_flags": [
+     44,
+     44
+    ]
+   }
+  },
+  {
+   "row_id": "bruckner-sym5-mvt1",
+   "detections_identical": true,
+   "base": {
+    "omr_ed": 199,
+    "omr_ned": 0.10015098137896326,
+    "tied_start": 4,
+    "tie_flags": [
+     4,
+     4
+    ]
+   },
+   "fix": {
+    "omr_ed": 199,
+    "omr_ned": 0.10015098137896326,
+    "tied_start": 4,
+    "tie_flags": [
+     4,
+     4
+    ]
+   }
+  }
+ ],
+ "summed_edits_comparable_rows": {
+  "base": 550,
+  "fix": 550
+ },
+ "tied_starts_comparable_rows": {
+  "base": 48,
+  "fix": 48
+ },
+ "tie_flags": {
+  "base": [
+   48,
+   49
+  ],
+  "fix": [
+   48,
+   48
+  ]
+ },
+ "rows_excluded_detections_moved": 0
+}

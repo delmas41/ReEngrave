@@ -1,0 +1,14 @@
+file                                            flagged  ORPHAN   of which a NEIGHBOUR staff has the tie
+beethoven-sym3-mvt1.omr.json                          3       0                                        0
+beethoven-sym5-mvt1.omr.json                         22       5                                        5
+brahms-sym1-mvt1.omr.json                            82      15                                       15
+brahms-sym4-mvt1.omr.json                            11       7                                        7
+bruckner-sym5-mvt1.omr.json                           8       0                                        0
+dvorak-sym9-mvt4.omr.json                             0       0                                        0
+mahler-sym5-mvt1.omr.json                             4       0                                        0
+mozart-sym40-mvt1.omr.json                            0       0                                        0
+mozart-sym41-mvt1.omr.json                           18       0                                        0
+tchaikovsky-sym4-mvt2.omr.json                        0       0                                        0
+tchaikovsky-sym6-mvt2.omr.json                        0       0                                        0
+
+POOLED                                              148      27                                       27

@@ -238,6 +238,19 @@ Anything the exporter decided could never reach the file that the record is.
 | a per-arc decision at `Kind.GLYPH`, like `arc_kind` | ⚠️ **it would add nothing.** `adjudicate_arc_kind` already computes the flanked head pair *within one cell* and records `flanked_heads` / `first_step` / `last_step` in `detail["grammar"]`. Within a cell the pair is already recoverable; **the cross-cell chain is the only thing missing**, and that is precisely what a per-arc decision cannot see. |
 | a `Kind.STAFF` decision over one staff run | reaches **630 of 632** links (the 2 system-break crossings are out of scope by construction) — but it would be a **SECOND pairing that can disagree with the exporter's**, with the FILE following the exporter. Two copies of a number this project paid to measure once is the drift `LETTER_METERS` and the arc constants are imported to prevent. |
 
+⚠️⚠️ **A THIRD SYMPTOM ARRIVED 2026-09-11 AND IT STRENGTHENS THIS ARGUMENT
+RATHER THAN OVERTURNING IT.** `_pair_ties_in_staff` records no link, so when
+`_dedupe_cross_staff_detections` (`transcribe.py:5557`) deletes a contested tie
+glyph AFTER both tie passes (`:2289`, `:5356`), the FLAGS that glyph set stay
+behind: **27 of 148 engraved tie flags sit in a staff holding no tie glyph, and
+27 of 27 are explained by the next staff down holding it.** Nothing can clear
+them without knowing which glyph set which flag. ⚠️ And the third route's
+refusal above — *"a SECOND pairing that can disagree with the exporter's"* — was
+paid for the same day: repairing the pairing in `transcribe` required mirroring
+it into `export._tie_flank_pair` by hand, with the constant imported, because
+the two copies already exist. See
+[benchmarks/omr-tie-pairing-2026-09/FINDINGS.md](../omr-tie-pairing-2026-09/FINDINGS.md) §6.
+
 **And the shape that would have made it non-decorative — the exporter reading
 the record's links instead of computing its own — requires extracting
 `build` / `StaffRun` / `_flatten_part` / `_arcs_by_kind` out of `export.py`

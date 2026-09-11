@@ -1,0 +1,6 @@
+# Re-derivable arm working directories: exported MusicXML and re-transcribed
+# records. Large, reproducible from the probes, and never quoted directly —
+# every figure in FINDINGS.md is in a committed `out/*.txt` or `out/*.json`.
+out/arms/
+out/retx/
+out/repair/

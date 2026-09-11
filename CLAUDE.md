@@ -606,7 +606,7 @@ ReEngrave/
 | `OMR_CONDENSED_PARTS` | `0` (off) | **Measured, dormant, and blocked on a count source.** A condensed staff (`Flauti`, `Corni`, `Violoncello e Basso`) carries several reference parts; we emit one, and every unmatched truth part is charged a whole staff. On this, a staff carrying `condensed_parts: N>1` emits N parts. The convention is MEASURED, not assumed: over every condensed staff-measure in the truths, silent 51.5% + unison 18.3% = **69.8% is exact duplication** (divisi 27.6% is approximated by duplication, so the figures are a floor). Ceiling with oracle counts: scan pool **−4,195 edits alone, −4,557 with `OMR_SLOT_STITCH`** (they compose, and the split cancels stitch's `entire staff` penalty); `entire staff` 8,453 → 2,060. ⚠️ **The page cannot supply the count.** Staves carrying the SAME printed label are encoded as 1 part in some editions and >1 in others (Litolff/Simrock/Breitkopf `Viola` = 1, Peters `Violen` = 2), so whether a reference splits is a property of the ENCODING, not the engraving; a label-derived rule is 74/74 on Beethoven/Brahms and **+2,181 edits on Dvořák**, and eleven page-side signals separate the two populations no better than chance (best ensemble 0.526 vs the `always 1` baseline's 0.538). `=all` splits fragments too (measured +904, for reproduction only). Flag-off is byte-identical (22/22 fixtures). See [benchmarks/omr-condensed-parts-2026-09/FINDINGS.md](benchmarks/omr-condensed-parts-2026-09/FINDINGS.md). |
 | `OMR_SLOT_STITCH` | **`1` ON since 2026-09-08 (Sean's call)** → join staves into parts by contextual SLOT where the ordinal join refuses. Never scored worse (−240 raw / −2,278 page-normalised); flipped once the separated `entire staff` bucket showed its 3 rows own **46.3% of the unassessable symbol mass**, and because the blast radius is confined to rows the ordinal join has ALREADY refused (10 of 11 exports byte-identical). Canary: `slot_stitch_canary.py`, 30 stitched parts with label evidence, 0 disagreements. `0` restores the fragments. See the knobs table. |
 | `OMR_CONDENSED_PARTS` | `0` off (default) → emit one part per player on a condensed staff; `all` splits fragments too. Ceiling −4,557 scan edits with slot stitch, but the COUNT cannot come from the page. See the knobs table. |
-| `OMR_ARC_RECLASS` | `0` (off) | **Measured, deliberately NOT shipped.** Export-time tie/slur grammar veto (`docs/position-grammar-confusables-2026-09-04.md` §2 ARC, R3 shape): a slur-classed arc covering exactly two adjacent same-pitch heads of one voice becomes a tie; a tie-classed arc whose flanked pair sits on different STAFF STEPS, or with a third event of its voice under its span, becomes a slur — the vetoed arc widened to the flanked centres and split at cell boundaries so the ordinary barline merge rejoins it. Compares steps, never spelled pitches: the far head of a cross-barline tie does not restate its accidental and the resolver spells it plain, so the naive spelled-pitch key broke truth-matched ties (+21 engraved edits, every loss a same-step `F#4→F4` pair). Priced on both families: engraved **0.1306 → 0.1306, +2 edits, 24 firings**; scan **0.8387 → 0.8391, +130 edits — REFUSED**, because a scan's resolved pitch at an arc's ends is downstream of exactly what scans get wrong (`wrong note` = 26% of that pool), and per-direction attribution puts ALL +130 in the tie→slur half while slur→tie alone is edit-free and moves the tie inventory toward truth (420 → 462 of 805 elements). If any half ever defaults on it is slur→tie; tie→slur is blocked on ANCHORS, not grammar (R4). Flag-off is byte-identical, asserted per work and per row. See [benchmarks/omr-export-gaps-2026-09/FINDINGS.md](benchmarks/omr-export-gaps-2026-09/FINDINGS.md). |
+| `OMR_ARC_RECLASS` | `0` (off) | **Measured, deliberately NOT shipped.** Export-time tie/slur grammar veto (`docs/position-grammar-confusables-2026-09-04.md` §2 ARC, R3 shape): a slur-classed arc covering exactly two adjacent same-pitch heads of one voice becomes a tie; a tie-classed arc whose flanked pair sits on different STAFF STEPS, or with a third event of its voice under its span, becomes a slur — the vetoed arc widened to the flanked centres and split at cell boundaries so the ordinary barline merge rejoins it. Compares steps, never spelled pitches: the far head of a cross-barline tie does not restate its accidental and the resolver spells it plain, so the naive spelled-pitch key broke truth-matched ties (+21 engraved edits, every loss a same-step `F#4→F4` pair). Priced on both families: engraved **0.1306 → 0.1306, +2 edits, 24 firings**; scan **0.8387 → 0.8391, +130 edits — REFUSED**, because a scan's resolved pitch at an arc's ends is downstream of exactly what scans get wrong (`wrong note` = 26% of that pool), and per-direction attribution puts ALL +130 in the tie→slur half while slur→tie alone is edit-free and moves the tie inventory toward truth (420 → 462 of 805 elements). If any half ever defaults on it is slur→tie; tie→slur is blocked on ANCHORS, not grammar (R4). ⚠️⚠️ **RE-PRICED 2026-09-11 and the tie→slur half is FOUR RULES that do not behave alike — "all +130 is in the tie→slur half" is true and is not actionable as stated.** On the engraved family `tie_to_slur_flagged_diff_pitch` (PROVABLE: the arc's own flanked pair sits a staff step or more apart, which no tie can) fires **12** times and the three works where it fires ALONE are **−4 edits, i.e. BETTER**; every edit-positive work fires a `span` or `unpaired` rule, which are INFERRED (a measure the detector left empty spends no ordinal). Scored against the tie INVENTORY rather than a symmetric metric that rewards under-prediction, the veto takes `mozart-sym41-mvt1` from **8 ties over its truth to exactly right** (that page prints ONE tie and forty-four slurs) and summed per-work error 25 → 18. ⚠️ The engraved figure in this row is **stale**: on the post-chord-tie tree it is **2530 → 2536, +6**, not +2, and the scan re-measures at **+149**, not +130 (pre-mirror the same arms read +8 and +144 — the tie-pairing repair moves what this veto sees, because `_tie_flank_pair` re-derives the pairing relation; **step-different flanked pairs on the scan fall 197 → 137**). **The refusal stands** — and `benchmarks/omr-tie-pairing-2026-09/FINDINGS.md` §4 is now the direct evidence for the reason this row already gives, a grid of box-y against resolved pitch in which **25 scan links sit at ONE staff position and disagree about pitch anyway**. See [benchmarks/omr-tie-pairing-2026-09/FINDINGS.md](benchmarks/omr-tie-pairing-2026-09/FINDINGS.md). Flag-off is byte-identical, asserted per work and per row. See [benchmarks/omr-export-gaps-2026-09/FINDINGS.md](benchmarks/omr-export-gaps-2026-09/FINDINGS.md). |
 | `OMR_CHOIR_GROUPING`  | `1` (on) | **On by default since 2026-09-05** (Sean's call, coupled with the Bach row's pool re-admission; the re-stamped 11-row baseline is recorded beside WIDENED_BASELINE_2026-09-04.md). Two cues for choir-grouped / differently-indented pages, both riding this one flag. The Bach Brandenburg 3 stress row shatters (6 "systems", 122 measure-cells vs 10) because the wide connectivity window and cue A's band are both anchored on the page-MEDIAN `x_start`, and on a page whose systems are indented differently (792–836 vs 178–200) the median lands between the modes and cuts the full-width system's bracket + systemic barline out of the scan — while the page is also choir-barred (interior barlines stop at choir edges), so nothing else crosses its choir gaps. **Cue B** (merge-only mirror of cue A, `system_grouping.py`): a break the wide rule made for lack of evidence is re-examined in the cue-A band anchored at the PAIR's own left edge; a crossing column there cancels the break. A cue-B merge is exempt from cue A's re-split (the cues act on disjoint gap sets — bridging > 0 vs == 0). **Cue C** (`measure_extractor.py`): a system whose staves form ≥2 bracket-groups (≥ half in multi-staff groups) AND that holds a **window-blind internal gap** — a gap nothing in-window crosses, the choir-barred signature, impossible for a true open score — is never flipped into open-score mode, so a merged rhythm-unison tutti's aligned stems stop out-voting its barlines. ⚠️ Bracket-groups ALONE was falsified on the engraved benchmark (LilyPond open scores manufacture "groups" from bridging jitter; pooled 0.1306 → 0.8560, nine works' barlines deleted) and repaired before shipping — do not loosen the second condition. Flag ON: Bach row 0.9241 → **0.8152** OMR-NED, 6735 → 6236 edits, 122 → 11 cells vs true 10; all ten pooled scan rows byte-identical (pooled 0.8387 untouched); the 11-work engraved benchmark **edit-for-edit identical** (0.1306 / 2745) and the `boulanger` structure canary byte-identical; 969-page library probe: 757 examined break-gaps read 0 ×735 / ≥4 ×22 with nothing at 1–3, and the 10 pages that change were each hand-adjudicated toward the truth (7 exact heals incl. both operas' vocal systems; zero false merges). Flag OFF: byte-identical by construction (Bach flag-off hash-matches the widened-graft baseline fixture). Re-admitting the Bach row to the scan pool is coupled to a default-ON decision and a re-stamped pool. See `benchmarks/omr-choir-grouping-2026-09/FINDINGS.md`. |
 | `OMR_BRACKET_COLUMNS` | `1` (on) | **On by default since 2026-09-07** (Sean's call). Which staves form a bracket GROUP — the instrument-family boundaries. ⚠️ **Nothing detects a bracket**: `bracket` is not in the 208-class space (only `tupletbracket`, a tuplet marker), and `gap_bridging_counts` counts *columns of ink crossing each inter-staff gap* knowing nothing about what the ink is. Family boundaries are INFERRED from where the interior barlines stop. The fault was a UNIT error: that count is `(crossing objects) × (each object's width)`, mixing systemic columns (bracket, systemic barline, interior barlines — same x in every gap) with incidental ink (stems, slurs, measure numbers — no shared x). On Beethoven 5 / Litolff p.38 the two systems print the same 12 staves; system 1's winds|brass gap keeps 3 crossing runs, system 0's keeps 9 with six at no barline column — 52 px against a median of 66 → 0.788 → no split. **No threshold could have worked**: the numerator is ~3 spanning objects and the denominator is *how many bars the system prints*, so the ratio is ≈ `3/(n_bars+3)` and crosses 0.5 near three bars a system; over 2841 gaps the largest value below the cut is **0.4962** and the smallest above is **0.5000**. This rule counts systemic COLUMNS instead and drops any cluster crossing *every* gap (a constant on both sides of a ratio is not neutral). Within-page instability **0.384 → 0.055** over 144 pages and all five publishers; the 0.5 constant moves onto an EMPTY interval (0.3333 / 0.7778). ⚠️ `BRACKET_COLUMN_MIN_EVIDENCE = 3` is load-bearing — a LilyPond render bars per staff, a 25-staff Bruckner system carries two crossing columns total, and without the floor the rule manufactured **11 groups** from it, which is `OMR_CHOIR_GROUPING` cue C's falsification arriving by the same road. **Why it is ON**: it shipped OFF at zero measured edits (exports byte-identical on 11 of 11 engraved fixtures and both exposed scan-gate pages; an exact cue-C control found zero reachable pages across 144), asking to be flipped alongside the measurement that turns *"the readings agree"* into *"the readings are RIGHT"*. That measurement arrived the same day from the independent bracket-READING investigation, against hand-read print truth: Bach / Peters printed 3|3|3 — pixel rule **16/22**, this rule **22/22**; Brahms / Breitkopf printed 9|5 — pixel rule **0/15**, this rule **15/15**. The incumbent is not merely unstable, it is wrong on 15 of 15 Brahms systems. Set `0` to restore the pixel rule. See [benchmarks/omr-bracket-stability-2026-09/FINDINGS.md](benchmarks/omr-bracket-stability-2026-09/FINDINGS.md) and [benchmarks/omr-bracket-reading-2026-09/FINDINGS.md](benchmarks/omr-bracket-reading-2026-09/FINDINGS.md) (which also measures that READING the bracket loses to inferring it — 5/22 and 1/15 — and that two of five publishers print no family bracket at all). |
 | `OMR_KEYSIG_CORROBORATION` | `1` (on) | **On by default since 2026-09-07** (Sean's call). Reverts a mid-staff key-signature change that no other staff of the same system corroborates changing AT THE SAME BAR — a key change is printed at one bar of one system, on every staff of that system, so the BAR is the shared fact even where the VALUE differs by transposition. Measured over 11 scanned + 11 engraved stored transcriptions: **7 of 7** spurious mid-staff flips on the scan corpus are stopped (5 of the 7 had already been rejected once by the cross-page header vote and the mid-staff reader overturned it anyway), flag-ON changes 5 of 11 scan fixtures and 0 of 11 engraved (the engraved family prints no later-cell key markers at all). ⚠️ **The corpus contains ZERO real mid-staff key changes, so only the BENEFIT is measured — the cost of a wrong revert is not**, and there is concrete reason to expect it non-trivial: later-cell key markers appear on only 15 cells across 193 scanned staves with no two sharing a bar, so a genuine mid-staff change would more likely fail its own witness test than pass it. Shipped ON anyway because the guard is structurally the WEAKER of two possible claims (needing only that another staff changes at the same bar, not that it reads the same key) and fails safe relative to the untaken alternative. Flag OFF is byte-identical by construction — verified with `diff` against `main`'s output on one scan and one engraved fixture, controlled by a before/before run of the unchanged tree first. See `tools/omr/key_signature_corroboration.py` and `benchmarks/omr-keysig-corroboration-2026-09/`. |
@@ -2766,6 +2766,92 @@ works this benchmark used to consist of is an EIGHTH triplet, one stroke and one
 group, so the fault could not appear there; `mozart-sym41-mvt1` prints 40 groups
 of triplet sixteenths and cost 464 edits for it. Identical member sets are
 collapsed.
+
+---
+
+## A tie's two heads are at ONE STAFF POSITION — and three causes wore one name
+
+2026-09-11, no flag. `transcribe._pair_ties_in_staff` paired a tie glyph with
+its two flanking noteheads by picking the nearest head in x **on each side
+INDEPENDENTLY**, inside a y window three notehead heights tall — which admits
+five staff positions either way — with nothing preferring the position the arc
+actually binds. The "distance is nearly a coin flip" shape this file already
+records for noteheads, hairpins and dynamic letters, arriving a fourth time.
+Findings:
+[benchmarks/omr-tie-pairing-2026-09/FINDINGS.md](benchmarks/omr-tie-pairing-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE HANDOVER THAT SENT A SESSION AT THIS WAS WRONG ABOUT WHAT IT IS, AND
+THE CORRECTION IS WORTH MORE THAN THE REPAIR.** The chord-tie session measured
+that *"a quarter of the tie pairings bind two notes of DIFFERENT PITCH"* and
+reasoned that an engraved page's pitch reading is near-perfect, so the pairing
+is the only suspect. Opened, the engraved 20 of 79 is **THREE populations**:
+
+| | engraved | scan | whose fault |
+|---|--:|--:|---|
+| same STEP, accidental differs (**SPELLING**) | **11** | 11 | ⚠️ **the PROBE's** — it compares SPELLED pitches |
+| exactly ONE staff step apart (**STEP_APART**) | **8** | 71 | the arc's CLASS |
+| further apart (**WIDE**) | **4** | 122 | the PAIRING |
+
+⚠️ **`pairing_pitches.py` compares spelled pitches and `export._pitch_step`
+exists in this repo because that is the wrong key** — the far head of a
+cross-barline tie does not restate its accidental and the resolver spells it
+plain. So more than half the engraved figure is the instrument.
+
+⚠️⚠️ **THE BOUNDARY CASE IS THE PAGE'S ARC POPULATION, NOT THE PAIRING.**
+`mozart-sym41-mvt1` was handed over as 8 of 9 WRONG against
+`beethoven-sym5-mvt1`'s 11 of 11 right. One `grep` settles it: Mozart's truth
+holds **2 `<tied>` and 88 `<slur>` elements — one printed tie and forty-four
+slurs — and the detector fires 13 `tie`**; Beethoven's holds **27 `<tied>` and
+ZERO `<slur>`**, so on that page a class error is impossible by construction.
+Twelve of Mozart's thirteen tie detections are false, and a false `tie` lands on
+whatever two notes a slur connects — every one of its nine bad links is a rising
+STEP with the flanking heads 2-4 px from the arc's edge. ⚠️ The exposure orders
+by **tie OVER-DETECTION, not slur share**: `brahms-sym1-mvt1` prints MORE slurs
+than Mozart (164 elements) and produces zero step-apart links, because it also
+prints 99 `<tied>`. ⚠️ Two hypotheses are REFUTED and should not be re-tried:
+**divisi double stops** (Mozart's two left candidates stand at dx 47 and 115 —
+successive notes, no chord is involved in any of its links) and **the arc's
+span** (the flanking is exact).
+
+**THE REPAIR.** Among the pairs the dx windows already admit, one whose two
+heads sit at **ONE STAFF POSITION** outranks one that does not; among equals,
+the nearest in x. ⚠️ **The missing premise was already written down and read by
+nothing**: `_pair_ties_in_cell`'s own docstring says *"real tied notes are at
+the same y-position by definition"* and neither rule ever used it.
+`TIE_SAME_POSITION_MAX_SPACES = 0.25` sits in a **MEASURED empty interval**
+(engraved same-pitch links max **0.168**, one-step-apart links min **0.435**)
+and a diatonic step is half a staff space by construction. ⚠️ It is **ADDITIVE
+and COMPARATIVE** — it runs only where the old rule already paired both sides,
+so the exported tie COUNT cannot move and every delta is a relocation — and it
+reads **BOXES, never a pitch**, which is what keeps it clear of
+`OMR_ARC_RECLASS`'s tie→slur veto, measured and REFUSED on scans. Reach, as an
+upper bound on any pairing-choice repair: links whose two heads sit at one staff
+position **scan 122 → 183, engraved 58 → 59**. ⚠️⚠️ **That is SELF-CONSISTENCY,
+not accuracy** — both heads are on one staff, so same-y and same-pitch are near
+equivalent and the rule is being scored by a quantity it optimises.
+`export._tie_flank_pair` is mirrored in the same commit (the veto's flag
+bookkeeping depends on it) with the constant IMPORTED, not restated.
+
+⚠️ **THE SCAN PRICE IS UNMEASURED AND THAT IS WHERE THE REACH IS.** An
+export-only arm is **structurally blind** (the pairing runs in `transcribe`;
+`grep _pair_ties_in_staff tools/omr/export.py` returns three hits and all three
+are comments), the replay escape is refused below, and the 20-row gate's ±6
+noise floor cannot resolve a ~60-link relocation.
+
+⚠️⚠️ **AND A SECOND, UNRECORDED DEFECT FELL OUT OF A CONTROL FAILING: 27 of 148
+ENGRAVED TIE FLAGS (18%) HAVE NO TIE GLYPH IN THEIR STAFF, AND 27 OF 27 ARE
+EXPLAINED BY THE NEXT STAFF DOWN HOLDING IT.** The ordering is the whole of it —
+`_pair_ties_in_cell` at `transcribe.py:2289` and `_pair_ties_in_staff` at
+`:5356` both set flags, and `_dedupe_cross_staff_detections` runs at `:5557`.
+A padded measure cell detects the neighbour's tie too, **both copies pair**,
+then dedupe deletes the losing copy **and the flags it set stay behind** — so a
+staff exports a `<tied>` for ink the pipeline itself decided was not its own,
+while the staff that owns the arc gains nothing because pairing already ran.
+Scan side is 5 of 460 (the duplicate is usually never detected there). ⚠️ **NOT
+REPAIRED** — it needs the flags to name which glyph set them, which is
+`Q.TIE_LINK`, now with a **third** symptom. ⚠️ It also means **a stored
+`.omr.json` cannot be replayed faithfully**, a constraint on every future tie
+measurement.
 
 ---
 
