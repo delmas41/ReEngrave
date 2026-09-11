@@ -496,3 +496,55 @@ state on \<date\>"* guard; this one relied on the superseding section sitting
 below it, which does not help a reader arriving by search. Same guard added.
 **Second manager-side prose correction in two jobs** — worth noting as a
 pattern rather than as two incidents.
+
+---
+
+## PHASE 1 IS CLOSED — what the night bought
+
+| | at `dfc6f409` (start) | at `1659a299` |
+|---|---|---|
+| declared stubs | `arc_kind`, `arc_owner`, `articulation_owner`, `wedge_anchor`, `direction` → **5**, three days earlier | **`()`** |
+| `NO_VOCABULARY` | 2 | 2, **now with a written reason** |
+| suite | 3,661 | **3,765** |
+
+⚠️ **The exit condition is the plan's, not a headline**: *`gather_coverage`
+reports no family the detector reads and the record cannot name, except those
+with a WRITTEN reason.* The two survivors (`tied_to_next` / `tied_from_prev`)
+acquired theirs tonight — job 2's argued negative, which established that
+**nothing below EXPORT can contribute a record row at all**. So the condition is
+met by an argument rather than by a build, which is the honest way for it to be
+met and is why that negative was worth more than the quantity would have been.
+
+### Job 6 — the Phase 2 instrument
+
+Dispatched off `1659a299`, in parallel with job 5. Phase 2 is *"one movement,
+one human pass"* — **Sean's judgement, not an agent's** — so the brief's first
+constraint is a prohibition: **you are not doing the count.** A machine
+pre-pass is allowed and must be labelled as a proposal *in the artefact*, never
+merged into the human's marks.
+
+⚠️ **The plan's ordering constraint is the heart of it and it is ENFORCEABLE.**
+*Fix the categories BEFORE looking, or the count fits itself to what was
+found.* So `CATEGORIES.md` is committed **first and alone**, and `git log` is
+the proof; a later revision must be a NEW commit saying what changed, never an
+amend. That turns a discipline into an artefact.
+
+The four categories are the plan's (**missing / wrong / spurious /
+would-not-notice**) and are not the agent's to replace — but **the definitions
+are the real work**, and four hard calls were handed over by name because each
+has already broken a metric here: whether a right-pitch/wrong-duration note is
+one *wrong* or a *missing* plus a *spurious* (OMR-NED's answer to that is what
+made its buckets unrankable); whether a failed staff is one item or many
+(attributing by the `entire staff` bucket **systematically under-counts
+fragmentation**); **whose eye** *would-not-notice* refers to — engraver, player
+or editor, which differ; and what the UNIT is, since a human cleaning up works
+in **fix-actions** and that is what Sean's question asks about.
+
+⚠️ The artefact must be ordered **by where the human's time goes, not by page
+number** — a structurally failed page must not sit behind thirteen that are 95%
+right.
+
+⚠️ And the one thing Phase 1 bought is what this artefact has to spend: when a
+family is absent, the record can now say whether **the page has none**, **the
+detector found none**, or **a decision abstained**. Three different facts, and
+the brief requires them reported apart.
