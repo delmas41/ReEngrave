@@ -204,6 +204,13 @@ from `Q.STEM`.
   is how a control stops being one* — the control was made STRUCTURAL and the
   strip kept beside it with the whole family named.
 * **the accounting balance stays an EQUALITY**, both arms.
+* **the arc partition stays EXACT across the change**: written + not-written ==
+  the merged-group count in BOTH arms (112 + 609 == 721, and 131 + 590 == 721).
+  ⚠️ This is the control that catches the arc-export session's own defect —
+  *a counter placed where the mark is SET measures the decision and reports it
+  as the file* — arriving from the other side, on a change that moves 19 marks.
+* **the status census stays a PARTITION with `unaccounted` empty** — 14
+  families filed of 14, `balanced: true`, identical either side.
 * **the tie same-pitch invariant** (`record.Checkable`'s own rule, needs no
   print): tie starts resolving onto a next note of the same pitch **27.5% →
   30.8%**. ⚠️ ONE-SIDED — an unresolved tie is certainly wrong, a resolved one
