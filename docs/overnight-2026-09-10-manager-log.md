@@ -70,3 +70,33 @@ class space and 46 of the 47 came from the `cv_hairpins` rung. **A family whose
 ink comes from a CV reader is under-reported by that headline** — anyone
 sizing this work off the coverage report reads its reach as 1. Folded into the
 job as a reporting fix rather than left as a footnote.
+
+### Job 2 — the tie CHAIN (`tied_to_next` / `tied_from_prev`)
+
+Dispatched **in parallel** with job 1 on Sean's instruction: a Brahms 4-page
+gather is ~45 minutes of pure waiting, and one-at-a-time was costing that time
+for nothing. Chosen as the parallel job on a **collision** argument rather than
+a priority one — it is the one Phase 1 item that barely touches
+`staged/export.py`, because the exporter ALREADY sets both flags
+(`staged/export.py:765-766`, from `_pair_arcs`). Job 1 is working in the
+`<direction>` / `<wedge>` emission path; these two do not meet.
+
+⚠️ **It runs the OPPOSITE direction from every other wiring item, and that is
+its whole hazard.** Everywhere else the record knows something no file carries.
+Here the exporter already does the job and the RECORD cannot name it — so the
+failure mode is not a missing feature, it is a **decorative quantity**: one
+that closes `gather_coverage`'s last two `NO VOCABULARY` entries, reports
+green, and is read by nothing. CLAUDE.md already names that shape (*a `wants`
+entry the decision never reads is INERT*). The brief sets the bar accordingly:
+**the quantity must be READ by something, or the job returns an argued
+negative** — and an argued negative was declared an acceptable deliverable up
+front, so the agent is not pushed into shipping a green line.
+
+Three things it was told to settle before writing code, not during: what the
+SUBJECT of a chain is (a chain is not one arc, and `Q.ARC_KIND` already decides
+per-arc); which STAGE owns it (a chain may be *entailed* rather than
+adjudicated, which would make it an EVALUATE consequence — and EVALUATE may
+not contain a tie-break); and whether `export.py:3282`'s
+`tied_to_next=(tied_to_next and ni == 0)` has the **chord-first-member** defect
+the fermata work found one week ago in a different function. That last one was
+put in as *look, do not assume in either direction*.
