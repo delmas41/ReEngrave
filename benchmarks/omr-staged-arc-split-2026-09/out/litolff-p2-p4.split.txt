@@ -1,0 +1,13 @@
+REACH: 514 arc_box rows, 53 staff-runs, 12 parts
+       drops BEFORE pairing: none
+
+MERGED GROUPS: 476   (refused 361, paired 115)
+  A_no_head_anywhere_in_the_arcs_own_bars     170  (47.1%)
+  B_bars_hold_heads_none_under_the_span       109  (30.2%)
+  C_exactly_one_head_under_the_span            82  (22.7%)
+
+⚠️ A RATE, NEVER A COUNT OF ERRORS, and the base rate is the point -- a sibling staff playing under this x is a CANDIDATE for `arc_owner` only if it is rarer among the arcs that DID pair:
+  A_no_head_anywhere_in_the_arcs_own_bars     163 of 170  (95.9%)
+  B_bars_hold_heads_none_under_the_span       104 of 109  (95.4%)
+  C_exactly_one_head_under_the_span            75 of 82   (91.5%)
+  PAIRED (the null)                           106 of 115  (92.2%)   <- base rate

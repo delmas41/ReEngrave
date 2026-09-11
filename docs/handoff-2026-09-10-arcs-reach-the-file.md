@@ -183,12 +183,38 @@ before "fixing" the merge.
 
 ## 8. THE NEXT WORK, RANKED
 
-### 1. ⚠️ The bucket this session created: 361 arcs binding fewer than two notes
+### 1. ✅ CLOSED 2026-09-10 — the 361 is split, and both repairs it invited are REFUSED
 
-The export half is done; this is the DETECTOR. Before writing anything, **split
-that 361**: arcs over notes that exist but were not detected, vs arcs whose
-notes are there and the pad/geometry missed. Those need different repairs and
-the number does not currently distinguish them.
+**Done by the next session**, marked here rather than left standing.
+`benchmarks/omr-staged-arc-split-2026-09/`. It needed nothing but the record —
+no truth file, no second document, no re-gather — because the staged export
+passes `voice_of={}`, so every refusal is the two-note minimum.
+
+**170 (47.1%) A** no head anywhere in the arc's own bars · **109 (30.2%) B**
+bars hold heads, none under the span · **82 (22.7%) C** exactly one head.
+`170+109+82+115 = 476` and `115−43 = 72 = 23+49`, closed both ways.
+
+⚠️ **So "the remaining three quarters are the DETECTOR's" — the sentence this
+entry replaces — is about half right.** At most 47% is *nothing was read
+there*, and that is an UPPER bound because a wrong-staff arc lands in A too.
+
+⚠️⚠️ **Both obvious repairs are refused by their own controls.** `arc_owner`:
+a sibling staff plays under the arc's x for 95.9% of A — against a **base rate
+of 92.2%** among the arcs that DID pair, so it is a base-rate artefact, not a
+signal. And **widening `_SLUR_ARC_PAD_NOTEHEADS` is refused**: B decays
+smoothly to 3 notehead widths with **no plateau**, so the gap that constant was
+read off on an ENGRAVED page does not exist on this scan and widening just
+reaches further with nothing to stop at.
+
+**The bucket is therefore bounded and parked, not next work.** What is left is
+~279 detector/geometry against 82 one-ended, with no cheap constant available.
+
+The original entry, kept because the correction is the point:
+
+> The export half is done; this is the DETECTOR. Before writing anything,
+> **split that 361**: arcs over notes that exist but were not detected, vs arcs
+> whose notes are there and the pad/geometry missed. Those need different
+> repairs and the number does not currently distinguish them.
 
 ### 2. Breitkopf Brahms 1 — ONE fixture, THREE open questions
 
