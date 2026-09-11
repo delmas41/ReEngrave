@@ -853,3 +853,86 @@ changes, so `readjudicate` is structurally blind to them — and **the
 end-to-end re-gather did NOT complete**, so **no regenerated `<fifths>` table
 is claimed**. `grade_artefact.py --map` is committed to finish it. n = 1
 document, 1 publisher.
+
+---
+
+## Items 3, 4 and 5 — three agents, and how the collisions are managed
+
+Sean: *"send agents out to work on 3,4 and 5 1 agent each manage them for
+collisions."* Dispatched off `e98338cf`.
+
+### ⚠️⚠️ THE BASELINE WAS RE-TAKEN FIRST, AND RE-TAKING IT FOUND SOMETHING
+
+The numbers in the first triage came from the artefact built **before** dedupe
+and the key-signature work landed. Re-exporting the SAME committed record on
+the current tree:
+
+| | shipped artefact | current main |
+|---|--:|--:|
+| pitched `<note>` | 1793 | **1618** |
+| `ffff` / `fff` | 11 / 10 | **11 / 10 — unmoved** |
+| rest duration 384 (2× the bar) | 466 | **471** |
+| rest duration 96 (½ the bar) | 217 | **218** |
+| slur starts / tie starts | 32 / 84 | 32 / **80** |
+| measures per part | 111×8, 93×3, 16×1 | **unchanged** |
+
+⚠️⚠️ **THE DYNAMICS NOT MOVING IS NOT A FAILED FIX — IT IS THE `readjudicate`
+BLIND SPOT ARRIVING IN THE MANAGER'S OWN HANDS.** The dedupe repair has two
+halves: `export._place_notes` (EXPORT) and `adjudicate_dynamic` (ADJUDICATE).
+**Re-exporting a SAVED record replays saved verdicts**, so the export half
+shows (1793 → 1618, matching that job's claim to the unit) and the adjudicate
+half cannot. The same is true of every key-signature repair, which are GATHER
+changes. **A re-export is a partial instrument and says so.** This is now
+stated in all three briefs, because a sibling reporting "my change did
+nothing" off a re-export would be reporting the instrument.
+
+### The collision plan — ownership by PATH, not by file
+
+All three items live partly in `tools/omr/staged/export.py`. That is
+unavoidable; it is the exporter. So ownership is assigned by **path within
+it**, named in every brief, with each agent told who else is in the file and
+which regions are not theirs:
+
+| agent | branch | owns |
+|---|---|---|
+| **3 rests** | `claude/rests-sized-to-the-bar` | `consequences.size_measure_rest`, the REST emission path, meter carry in `rhythm.py`, `OMR_METER_CARRY` |
+| **4 arcs** | `claude/arcs-not-converting` | `_pair_arcs`, `_merge_arcs_across_barlines`, `annotate_slurs_*`, the slur/tie emission block, `arc_kind`/`arc_owner` |
+| **5 measure math** | `claude/measure-math-part-join` | `_stitch_slots`, `Q.PART_PARTITION`, part building + measure numbering, the coverage join fields |
+
+⚠️ **One deliberate overlap is pre-negotiated rather than forbidden**: if
+agent 5 concludes the repair is to PAD the suppressed spans, that is the REST
+path and belongs to agent 3. Its brief tells it to **say so and coordinate
+rather than edit**, because *"do not silently write measure rests"* is cheaper
+to enforce than a merge conflict is to untangle. Each is told to append ONE
+CLAUDE.md section and that the manager will resolve the additive conflict —
+which is what the last pair produced and it took one scripted edit.
+
+⚠️ **The 132 MB record is gitignored and existed only inside one agent's
+worktree.** Three parallel jobs would each have paid ~45 minutes to re-gather
+it. Staged READ-ONLY at `library/_shared-records/beethoven5-p1-p4.record.json`
+(md5 `d3620ba9cb70fc93f6b7ee91b6cbe40a`) and named in all three briefs.
+
+### What each was told NOT to do, and why that is the manager's job
+
+* **3** — `OMR_METER_CARRY` is the obvious lever and is OFF on `n`. The brief
+  carries the recorded hazard that **a lone whole rest may not corroborate a
+  meter**, because it stands for the bar whatever the meter and its 4.0 is our
+  own default — *and that is exactly the population this job works on*, so it
+  must say how it avoids the fixpoint. **Measure and recommend; the default
+  flip is Sean's.**
+* **4** — told to assume it is **mostly NOT an export bug**, because the tree
+  already measures **76% of merged arcs binding fewer than two noteheads** and
+  calls that residue the DETECTOR's. Forbidden to emit an arc binding fewer
+  than two heads (an INVALID file), to re-open `OMR_ARC_RECLASS` (measured and
+  refused twice), or to chase OMR-NED (symmetric, and it *rewards* emitting
+  more). Told that **"this is a detection ceiling of size N" is a complete
+  answer.**
+* **5** — forbidden the tempting repair: making `_stitch_slots` join by
+  ordinal across disagreeing systems is **exactly what its refusal exists to
+  prevent** and would graft one instrument's music onto another. Told that
+  *"this is blocked on instrument identity, which abstains on 22 of 22 staves
+  here"* is a first-class answer.
+
+All three are told that a refutation of the brief is a first-class result —
+**two of the last three jobs came back that way**, and both were worth more
+than their repair.
