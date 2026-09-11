@@ -1,0 +1,7 @@
+# Build products, on this repo's standing convention that a raster is
+# regenerated rather than committed (`run_gather.sh` + `build_sidebyside.py`
+# reproduce both from the library). Everything a reader needs to CHECK the
+# reasoning -- the record, the file, the system map, the proposals, the sheet
+# and the HTML -- is committed.
+out/crops/
+out/*.log
