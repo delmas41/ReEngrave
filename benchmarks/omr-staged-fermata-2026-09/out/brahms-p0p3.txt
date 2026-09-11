@@ -1,0 +1,7 @@
+record   : /tmp/brm/staged.json
+provenance: commit=46c3ac006db728c3d63566b1c13f27e3e6e9f55a dirty=False
+
+── REACH ──
+  fermata glyphs, by CLASS: {}
+  cells holding one       : 0
+  ⚠️ ZERO. Nothing below is a result about this change.

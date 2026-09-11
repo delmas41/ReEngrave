@@ -136,7 +136,12 @@ Everything here is a count or an md5.
   `type="upright"` unconditionally, so `fermataBelow` has nowhere to go today.
   Written onto the record rather than dropped at the gather site.
 * **One document, one publisher.** The second fixture in hand carries zero
-  fermatas, so nothing here has been seen on a second printing.
+  fermatas, so nothing here has been seen on a second printing — and the arm
+  was RUN there to prove the instrument says so:
+  `benchmarks/omr-staged-fermata-2026-09/out/brahms-p0p3.txt` reads
+  *"fermata glyphs, by CLASS: {} ... ⚠️ ZERO. Nothing below is a result about
+  this change."* and stops. **That is the arm's own negative control**, and it
+  is the reason the reach block is printed before anything else.
 * ⚠️ **The `no_carrier` 12 is a READING shortfall, not a fermata one.** Those
   bars hold a pause and no notehead and no rest that we read — the mark is
   right and the bar is empty.

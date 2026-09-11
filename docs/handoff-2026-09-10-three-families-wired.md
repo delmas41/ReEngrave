@@ -25,8 +25,9 @@ docstring called the repair *"write the adjudicator"*, and both
 `tied_to_next` / `tied_from_prev` — the tie CHAIN, which is Phase 1 item 5.
 **No family in `FAMILIES` is quantity-less any more**, asserted derivedly.
 
-Suite **3,63x passed** (run it; do not quote this line). `health --check`,
-`inventory --check`, `gather_coverage` green, `unaccounted 0`.
+Full suite **3,661 passed / 11 skipped** (was 3,586). `health --check`,
+`inventory --check`, `gather_coverage` green, `status_census.unaccounted`
+empty on both documents.
 
 ---
 
@@ -98,6 +99,52 @@ streams → **11 written with a `<backup>`**, 5 refused (straddle), 1 refused
 is unmeasured. ⚠️ **One tie span is now refused** — the one-voice rule firing
 for the first time on this path. Whether that tie is real needs a human; n = 1
 and no claim is made either way.
+
+### the second publisher — and it changes the reading
+
+Brahms 1 / Breitkopf p0-3 was gathered on a CLEAN tree (`46c3ac00`,
+`dirty: false`) and every family was re-measured on it.
+
+| | Litolff p1-3 | Brahms p0-3 |
+|---|--:|--:|
+| stem direction decided | **62.5%** | **53.7%** |
+| chords the divisi guard SEPARATED | 4 | **80** |
+| bars read as two streams | 19 | **112** |
+| ...written with a `<backup>` | 11 | 64 |
+| ...refused, event straddles two streams | 5 (26.3%) | 31 (**27.7%**) |
+| **ties the one-voice rule refuses** | **1** | **22** |
+| **slurs it refuses** | 0 | **9** |
+
+⚠️⚠️ **THE STRADDLE RATE IS THE SAME ON BOTH — 26.3% and 27.7% — so *two
+grouping rules nothing forces to agree* is STRUCTURAL, not one page's
+accident.** It is the largest single reason a decided split does not reach the
+file, and the first thing to look at if two-voice coverage matters.
+
+⚠️⚠️ **AND THE ARC COST IS NOT "ONE TIE".** On Brahms the one-voice rule
+removes **31 spanners** from the output. Each is either a correct refusal or a
+wrong voice split and **only the print can say which** — on a cleanup count it
+is 31 things a human might have to put back. **Nothing here is adjudicated,
+and it must not be read as a win.**
+
+✅ **THE PREVIOUS SESSION'S UNFINISHED ARTICULATION ARM IS CLOSED, from the
+fresh record rather than by re-adjudicating the old one**: 196 marks → **156
+decided** (`nearest_on_declared_side`), 40 `no_notehead`, **153 written**. Its
+`>40 min and it did not finish` was a `readjudicate` rebuild; a fresh gather
+already carries the verdicts, so no rebuild was needed. ⚠️ That is a RESULT,
+not the A/B the arm was written for — the A/B still needs the rebuild.
+
+**Ornament on its only non-zero fixture: 7 marks → 4 decided, 3 `no_notehead`,
+3 written.** Fermata reach there is **ZERO**, and the arm was run anyway to
+prove it says so and stops — its own negative control.
+
+### ⚠️ A REPORTING GAP FOUND IN PASSING — it mis-sizes the NEXT item
+
+`coverage()` reports **wedge** as `detector_glyphs: 1` while the record holds
+**47** `Q.WEDGE_BOX` rows, 46 from `cv_hairpins`. The count is over the
+DETECTOR's class space, and a hairpin the CV rung read was never a detector
+detection. **A family whose ink comes from a CV rung is under-reported by that
+headline** — anyone sizing `wedge_anchor` off the coverage report would read
+its reach as 1 instead of 47.
 
 ---
 

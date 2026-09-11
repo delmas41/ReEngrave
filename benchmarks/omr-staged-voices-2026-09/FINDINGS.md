@@ -143,14 +143,81 @@ way.**
 
 ---
 
+## 4b. ⚠️⚠️ THE SECOND PUBLISHER, AND THE COST IS 20× LARGER THERE
+
+Brahms 1 / Breitkopf p0-3, 14 parts, clean tree `46c3ac00`, `dirty: false`.
+
+| | Litolff `984073` p1-3 | Brahms 1 / Breitkopf p0-3 |
+|---|--:|--:|
+| CV stem rows | 1,189 | **2,305** |
+| noteheads read | 1,339 | 3,337 |
+| **direction decided** | **62.5%** | **53.7%** |
+| `stems_disagree` | 66 | 17 |
+| divisi guard RAN on | 375 bars | 483 bars |
+| **chords SEPARATED** | **4** | **80** |
+| bars read as two streams | 19 | **112** |
+| ...written with a `<backup>` | 11 | **64** |
+| ...refused, event straddles | 5 | **31** |
+| ...refused, a stream is empty | 1 | 12 |
+| ...the bar was written empty | 2 | 5 |
+
+Both partitions are exact (`11+5+1+2 = 19`, `64+31+12+5 = 112`).
+
+⚠️ **THE STRADDLE RATE IS THE SAME ON BOTH PUBLISHERS — 26.3% and 27.7%.**
+So *two grouping rules nothing forces to agree* is **structural**, not a
+property of one page: on roughly a quarter of the bars the record calls
+two-voiced, the exporter's own chords span both streams and the split is
+refused. That is the largest single reason a decided split does not reach the
+file, and it is the first thing to look at if two-voice coverage matters.
+
+⚠️⚠️ **AND THE ARC COST IS NOT "ONE TIE". On Brahms the one-voice rule
+refuses 22 ties and 9 slurs**, where on Litolff it refused one tie:
+
+| | with voices | without |
+|---|--:|--:|
+| `tie_spans_marked` | 632 | **676** |
+| `ties` | 349 | **371** |
+| `slur_spans_marked` | 272 | **291** |
+| `slurs` | 227 | **236** |
+
+**NONE OF THIS IS ADJUDICATED.** `_paired_spans` exists because a span whose
+ends land in different voices is UNPAIRED at both and makes the file INVALID,
+and it prefers the longest run within one voice over dropping — so each of
+these is either a correct refusal or a wrong voice split, and **the print is
+the only thing that can say which.** ⚠️ It must not be read as a win: the rule
+now removes 31 spanners from one document's output, which on the cleanup count
+is 31 things a human might have to put back.
+
+⚠️ **The direction rate FALLS on the second publisher** (62.5% → 53.7%), so
+how much of a page this mechanism can speak about is a property of the
+printing, not a constant.
+
+### ⚠️ A REPORTING GAP FOUND IN PASSING, AND IT MATTERS FOR THE NEXT ITEM
+
+`coverage()` reports the **wedge** family as `detector_glyphs: 1` on this
+record — while the record holds **47 `Q.WEDGE_BOX` rows**, 46 of them from
+`cv_hairpins`. The count is over the DETECTOR's class space (`Q.GLYPH_BOX`
+rows whose class name is in the family's list), and a hairpin the CV rung read
+was never a detector detection, so it has no such row.
+
+**So a family whose ink is read by a CV rung is under-reported by that
+headline, and wedge is exactly that family.** Anyone sizing `wedge_anchor`
+off the coverage report would read its reach as **1** instead of **47**.
+Nothing is wrong with the wedge rows; the headline is counting the wrong
+population for this one family.
+
+---
+
 ## 5. WHAT IS NOT CLAIMED
 
 * **No accuracy claim.** Nothing here compares a voice split against the print.
 * **The 4 separated chords are a COUNT, not a win.** x-only grouping would have
   merged them; whether the page prints divisi there is unmeasured.
-* **One document, one publisher**, and 62.5% of noteheads get a direction at
-  all — so on this scan the whole mechanism is silent on more than a third of
-  the notes, by design (`no_stem` never blocks a merge).
+* ⚠️ **TWO documents and two publishers now** (see §4b), and the direction rate
+  FALLS on the second — 62.5% → 53.7% — so how much of a page this mechanism
+  can speak about is a property of the printing. On both, the whole mechanism
+  is silent on a third to a half of the notes, by design (`no_stem` never
+  blocks a merge).
 * **`stems_disagree` at 66 is unexplained.** It may be real divisi, or two CV
   strokes on one stem. Nothing here separates them.
 
