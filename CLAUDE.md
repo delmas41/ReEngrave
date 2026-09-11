@@ -1287,14 +1287,15 @@ rather than a fourth hand-written column, with the partition asserted; an
 abstention on a shared quantity names no kind and is reported ONCE, as
 `abstained_without_a_family`.
 
-⚠️⚠️ **A TIE ON A CHORD CAN LAND ON A NOTE THAT CARRIES NO TIE, AND IT IS NOW
-A NUMBER.** `<slur>` carries a `number=` and hangs off the chord's
-representative `<note>`; `<tied>` carries none and joins **the two notes it
-names** — `_pair_arcs` says so in its own docstring and the renderer ignores
-it. `voicing.group_chords_in_measure` hoists the flag onto the EVENT with
-`any()` and the renderer writes it at `n == 0`, so a chord whose **upper**
-member is tied gets the tie on its **lowest** note: a tie between two different
-pitches. Litolff p1-3: of 48 written ties **17 land on a note that carries
+⚠️⚠️ **A TIE ON A CHORD COULD LAND ON A NOTE THAT CARRIES NO TIE, AND THIS
+SESSION MADE IT A NUMBER** (it is REPAIRED one section down — the description
+that follows is the defect AS FOUND, in the past tense). `<slur>` carries a
+`number=` and hangs off the chord's representative `<note>`; `<tied>` carries
+none and joins **the two notes it names** — `_pair_arcs` said so in its own
+docstring and the renderer ignored it. `voicing.group_chords_in_measure` hoists
+the flag onto the EVENT with `any()` and the renderer wrote it at `n == 0`, so
+a chord whose **upper** member is tied got the tie on its **lowest** note: a
+tie between two different pitches. Litolff p1-3: of 48 written ties **17 land on a note that carries
 none** (and 15 of the stops); Brahms p0-3 **103 of 349** and 101 — **35% and
 29%, two publishers agreeing to within six points.** **Under-emission is the
 SMALLER half (1 event on Litolff)** — the failure is *wrong note*, not *missing
