@@ -41,7 +41,13 @@ own worker; **never `pkill -f` anything while it runs** — one machine has one
 shared server and killing it by name has already cost a sibling agent a
 multi-hour transcription.
 
-The page crops under `out/crops/` are build products and are gitignored, like
-every other raster in this repo. Everything a reader needs to check the
-reasoning — the record, the file, the map, the proposals, the sheet — is
-committed.
+**The HTML is self-contained** — the crops are embedded in it, because the
+repo's root `.gitignore` excludes `benchmarks/**/crops/` and a linked crop
+would show anyone who had not re-run the gather seven broken images. The
+`out/crops/*.png` written beside it are build products.
+
+The only thing NOT committed is the staged **record**, which is 132 MB for four
+pages. Everything derived from it is: the file, the system map, the coverage
+report, the proposals, the sheet and the HTML — so every figure in FINDINGS.md
+can be checked from a checkout, and only re-deriving the proposals needs the
+gather re-run.
