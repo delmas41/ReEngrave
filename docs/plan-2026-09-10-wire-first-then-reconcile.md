@@ -145,6 +145,115 @@ sessions have now declined to answer it, deliberately.
 
 ---
 
+---
+
+## 5-PRE. THE FIVE STAGES, AND WHAT EACH IS ALLOWED TO DO
+
+⚠️ **Sean, 2026-09-10: *"I thought evaluate had more of that (infer) built into
+how it evaluated."*** It nearly does, and the line is sharper than it looks.
+Traced through ONE REAL NOTE from the committed Litolff record —
+`glyph/1/0/2/4/1`, page 1, staff 2, cell 4 — rather than an invented example.
+
+### GATHER — write down what is on the page. Decide NOTHING.
+
+```
+glyph_box               = noteheadHalfInSpace at (136,694) 147x150   conf 0.299
+notehead_class          = noteheadHalfInSpace                        conf 0.299
+notehead_staff_position = 7.38                        (geometry, NO confidence)
+```
+
+Four rows, two readers. ⚠️ The position carries no confidence **because it is a
+ruler reading, not a guess** — the distinction GATHER exists to preserve.
+Nothing here is a conclusion, not even *"this is a note"*.
+
+### ADJUDICATE — one question, one answer, and the evidence for it
+
+```
+duration = {beats: 1.0, written: 1.0, dots: 0, beam_levels: 1}   "head_and_marks"
+  detail : head=noteheadHalfInSpace, cv_beams=1, stems_attached=2,
+           beams_by_stem=1, flags_attached=0, dots_attached=0, levels_certain=1
+  missing: aug_dot, flag, rest, tuplet_ratio
+```
+
+**It read a QUARTER where the detector said HALF** — a beam is attached to the
+stem and a beamed note cannot be a half note, so the evidence beat the class
+name. ⚠️ Note `missing`: what it looked for and did NOT find is recorded, which
+is what makes the verdict arguable later.
+
+### EVALUATE — consequences, but ONLY where the answer is FORCED
+
+```
+pitch    = F4                     restate_pitch      basis: [position, clef]
+duration = {beats: 2.0, reconciled: True}  reconcile_duration  supersedes: vrd:025258
+```
+
+Two different characters in one stage. `restate_pitch` is **entailment**:
+position 7.38 under the settled clef IS F4. `reconcile_duration` is the one
+that looks like judgement — the meter settled, the bar did not sum, so the note
+was re-read and **corrected back to 2.0, the half note the detector called at
+0.299 in the first place.** ADJUDICATE was wrong and EVALUATE fixed it.
+
+⚠️⚠️ **AND IT IS STILL NOT INFERENCE, BECAUSE OF ONE WORD IN ITS OWN RULE:**
+
+> *"where more than one re-reading lands the bar exactly, NOTHING changes and
+> the warning stands."*
+
+Had two lengths both fixed the bar, it would have done nothing. **EVALUATE acts
+where the answer is FORCED and goes silent where it is merely LIKELY.** That is
+deduction under constraint, not judgement — and it is the property that stops
+the repair laundering a guess.
+
+⚠️ **Note also what it CANNOT reach.** That bar sits in a system with eleven
+other staves playing the same stretch of time, and **no consequence in EVALUATE
+looks sideways at them.** Every one is vertical: `cause -> effect`, from a
+settled decision down to what depends on it.
+
+### INFER (proposed) — what is most likely, given everything at once
+
+Same note, one detail changed: suppose TWO re-readings had both fixed the bar.
+Today nothing happens, the note stays a quarter, the bar stays wrong, and a
+warning nobody reads is filed. **INFER begins exactly there**, and it has what
+EVALUATE structurally cannot touch: the other eleven staves' readings of the
+same bar, the SUPERSEDED verdict still in the record with its working, the
+0.299 the exporter treats as identical to 0.98, and how crowded the bar is
+(which says what agreement is worth). It writes its answer **labelled as
+inferred, with its basis.**
+
+### EXPORT — write the file, and count what did not reach it
+
+### The table
+
+| stage | the question it answers | acts when |
+|---|---|---|
+| **GATHER** | what is on the page? | always — it decides nothing |
+| **ADJUDICATE** | what does this ONE thing mean, and on what evidence? | it can read it; else abstains |
+| **EVALUATE** | what follows NECESSARILY from what we now know? | the answer is **forced** |
+| **INFER** | what is most LIKELY, given everything at once? | the answer is **best** |
+| **EXPORT** | write it, and count what did not make it | always |
+
+⚠️ **THE TESTABLE FORM OF THE BOUNDARY, and it is assertable:** *no EVALUATE
+consequence may contain a tie-break.* One exists today (`reconcile_duration`'s
+uniqueness test) and it refuses rather than choosing. If a consequence ever
+starts choosing, the stage boundary has moved and nobody will have noticed.
+
+⚠️ **WHY IT IS A SEPARATE STAGE AND NOT A WIDENED `EVALUATE`.** The
+"only when forced" rule is LOAD-BEARING — its own docstring calls it what
+"stops the repair laundering a guess". Keeping the stages apart is what keeps a
+property SAYABLE:
+
+> Everything in the record before EXPORT was **read** or **entailed**.
+> Everything after INFER was read, entailed, or **inferred — and labelled**.
+
+**The boundary between the stages is exactly where the guarantee changes**,
+which is the right place for one.
+
+⚠️ **NAMING.** `reconcile_duration` is already a consequence INSIDE EVALUATE,
+so "RECONCILE" puts one word on both sides of the line it draws. **INFER** is
+used below. Sean, 2026-09-10: *"I don't care what it is called."* — so the name
+is this document's, and the distinction is the part that matters.
+
+---
+
 ## 5. THE FOURTH STAGE — Sean's design, and what already feeds it
 
 > *"a 4th stage or some form of back end on the adjudication stage that starts
@@ -156,8 +265,8 @@ sessions have now declined to answer it, deliberately.
 > to determine on their own."*
 
 **This reflects the structure closely, and the pipeline has been ACCUMULATING
-its inputs while deliberately refusing to spend them.** Working name:
-**RECONCILE**, after EVALUATE and before EXPORT — it needs settled decisions
+its inputs while deliberately refusing to spend them.** Working name: **INFER**
+(see 5-PRE for why not RECONCILE), after EVALUATE and before EXPORT — it needs settled decisions
 AND their consequences before it can weigh anything.
 
 ### 5a. What is already saved for it
@@ -226,8 +335,59 @@ together with what it arbitrates; the catalog tier does not.
 
 ---
 
-## 6. THE ORDER, IN ONE LINE
+## 6. THE PLAN OF ATTACK — refined
 
-**Wire everything honestly → take the first cleanup count on one real movement
-→ let that count rank the quality work → build RECONCILE for the abstentions it
-says are worth resolving.**
+### The goal, stated so it can be checked
+
+> **One real scanned orchestral movement, end to end. Put the output beside the
+> print. Count what a human would have to fix.**
+
+⚠️ It is a RANKING instrument, not a metric to optimise. The moment it becomes
+a number to drive down, it will be gamed the way OMR-NED was — that metric
+rewards emitting MORE symbols, and a cleanup count rewards emitting FEWER.
+**Both failure modes are real and they point opposite ways**, which is why the
+count is read as *"what should we fix next"* and never as *"are we winning".*
+
+### Phase 1 — WIRE (no tuning, abstain freely)
+
+In order, because a few block others:
+
+1. **`fermata`** — 63 on Litolff, `_mxl_note` already takes `fermata=`.
+2. **`voices` / `stem_direction`** — blocks arc quality; MusicXML pairs
+   `<slur>` WITHIN a `<voice>` and the staged export passes an EMPTY voice map.
+3. **`wedge_anchor`** — Brahms only (47 there, **0** on Litolff). Needs a
+   renderer AND the arc merge.
+4. **`ornament`** — fermata's shape, much smaller reach (7).
+5. **`tied_to_next` / `_from_prev`** — the tie CHAIN, distinct from one arc.
+6. **`direction`** — two jobs: `Q.DIRECTION_WORD` is the last starved input.
+
+**Exit condition:** `gather_coverage` reports no family that the detector reads
+and the record cannot name, except those with a WRITTEN reason (`tremolo` — the
+detector fires none; `arpeggiato` — 212 misread stems; `accidental` — scope,
+not a mark).
+
+### Phase 2 — COUNT
+
+One movement, one human pass, categories fixed in advance:
+**missing** / **wrong** / **spurious** / **would-not-notice**. ⚠️ Fix those
+categories BEFORE looking, or the count fits itself to what was found.
+
+### Phase 3 — FIX, ranked by the count
+
+Not by cheapness, which is what ranked the work until now.
+
+### Phase 4 — INFER, for the abstentions the count says are worth it
+
+⚠️ **Not before Phase 2.** The count is what says which abstentions matter;
+building first would be guessing at that in advance, which is the thing this
+plan exists to stop. ⚠️ **The first piece is calibration from the score
+library** — a bar sum is `Checkable.CHECKABLE` and can be proved against its own
+meter with no truth file, which is the escape from the ECE 0.1277 failure.
+
+### What is NOT in any phase
+
+* `METER_CARRY_FLOOR` / `METER_FROM_BARS_FLOOR` — `A-DUR-8` §5.2 asks a HUMAN.
+  Three sessions have declined to answer. **Do not tune them as a side effect.**
+* `A-DUR-5` unclassified ink — Sean's standing request, but it is new
+  CAPABILITY (a raster pass in GATHER), not a connection. Ranked separately.
+* The scan-side meter READING — blocked on a corpus, not on code.

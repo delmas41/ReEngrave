@@ -599,6 +599,75 @@ ReEngrave/
 
 ---
 
+## The five stages, and what each is ALLOWED to do
+
+⚠️ **The stage a change belongs in is decided by ONE question: does the answer
+FOLLOW, or is it merely BEST?** Traced through one real note from a committed
+record (`glyph/1/0/2/4/1`, Litolff `984073` p1) rather than an invented example;
+the full trace is in
+[docs/plan-2026-09-10-wire-first-then-reconcile.md](docs/plan-2026-09-10-wire-first-then-reconcile.md)
+§5-PRE.
+
+| stage | the question | acts when |
+|---|---|---|
+| **GATHER** | what is on the page? | always — it decides NOTHING |
+| **ADJUDICATE** | what does this ONE thing mean, and on what evidence? | it can read it; else abstains |
+| **EVALUATE** | what follows NECESSARILY from what we now know? | the answer is **forced** |
+| **INFER** *(proposed, Sean 2026-09-10)* | what is most LIKELY, given everything at once? | the answer is **best** |
+| **EXPORT** | write it, and count what did not make it | always |
+
+**The worked example, in one paragraph.** The detector calls a glyph
+`noteheadHalfInSpace` at confidence **0.299**, and geometry measures its staff
+position at **7.38 with no confidence at all** — a ruler reading is not a guess,
+and GATHER keeps that distinction. ADJUDICATE reads its duration as a
+**QUARTER**, against the detector's own class name, because a beam is attached
+to its stem and a beamed note cannot be a half note — recording `missing:
+aug_dot, flag, rest, tuplet_ratio`, i.e. what it looked for and did not find.
+EVALUATE then does two different things under one name: `restate_pitch` derives
+**F4** from position + clef, which is pure entailment; and `reconcile_duration`
+notices the bar does not sum, re-reads the note and **corrects it back to 2.0**,
+the half note the detector called in the first place. **So ADJUDICATE was wrong
+and EVALUATE fixed it.**
+
+⚠️⚠️ **AND THAT IS STILL NOT INFERENCE, BECAUSE OF ONE WORD IN ITS OWN RULE** —
+*"where more than one re-reading lands the bar exactly, NOTHING changes and the
+warning stands."* Had two lengths both fixed the bar it would have done
+nothing. **EVALUATE acts where the answer is FORCED and goes silent where it is
+merely LIKELY**, which is what its docstring calls the thing that "stops the
+repair laundering a guess".
+
+⚠️ **WHAT EVALUATE STRUCTURALLY CANNOT REACH: sideways.** Every consequence is
+`cause -> effect`, vertical, from a settled decision down to what depends on
+it. That bar sits in a system with eleven other staves playing the same stretch
+of time and **no consequence can look at them.** Sean's efficiency insight —
+*"we don't need much info from a particular symbol because we have what we need
+elsewhere"* — is entirely horizontal, and there is nowhere in the current
+architecture for it to live. `Q.ONSET_COLUMN` measured that redundancy (**1,483
+real instants against a phase-shuffled null's 2,409**) and **nothing consumes
+it.**
+
+⚠️ **THE BOUNDARY IS ASSERTABLE, and should be asserted: *no EVALUATE
+consequence may contain a tie-break.*** Exactly one comes close today and it
+REFUSES rather than choosing. If a consequence ever starts choosing, the stage
+boundary has moved and nothing will have noticed.
+
+⚠️ **WHY INFER IS A SEPARATE STAGE AND NOT A WIDENED `EVALUATE`.** Keeping them
+apart is what keeps a property SAYABLE: *everything in the record before EXPORT
+was READ or ENTAILED; everything after INFER was read, entailed, or INFERRED —
+and labelled.* **The boundary is exactly where the guarantee changes**, which is
+the right place for one. ⚠️ Its inputs are ALREADY BUILT AND CONSUMED BY
+NOTHING: `Ruling.narrow`'s candidates and their `support` (174 narrowed
+durations on one page, which `staged/export.py` reaches and REFUSES to argmax —
+correctly, and that refusal must stay), `Verdict.correlated`, the groups
+layer's `unanimous`/`majority`/`split`, and `Q.ONSET_COLUMN`. ⚠️ Its two
+hazards are already paid for here: **an uncalibrated probability is WORSE than
+none** (ECE 0.1277, failing worst at the top of the range), and **two readers
+can fall silent TOGETHER** (*the bars are not an independent umpire over a bad
+reading*), so a stage counting correlated witnesses as independent
+double-counts one. ⚠️ **Build it only AFTER the first cleanup count.**
+
+---
+
 ## The staged pipeline: an inventory, an exporter, and a health report
 
 The 2026-09-09 handoff's three ranked tasks, done — and **each one found
