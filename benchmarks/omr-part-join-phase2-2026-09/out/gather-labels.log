@@ -1204,3 +1204,35 @@ ADJUDICATE
   adjudicate voices: 11298 verdicts so far
   adjudicate onset_column: 11305 verdicts so far
   adjudicate wedge_anchor: 11306 verdicts so far
+  adjudicate meter: 11313 verdicts so far
+  adjudicate dynamic: 12496 verdicts so far
+  adjudicate direction: 13679 verdicts so far
+GROUPS
+  groups meter_across_staves: 7 facts, 0 disagree
+  groups measure_count_across_staves: 7 facts, 0 disagree
+  groups instrument_across_systems: 31 facts, 0 disagree
+  groups clef_across_systems: 31 facts, 2 disagree
+  groups staff_group_across_systems: 31 facts, 1 disagree
+  groups key_signature_across_systems: 31 facts, 8 disagree
+EVALUATE
+  evaluate name_part: 50 fired so far
+  evaluate restate_pitch: 2163 fired so far
+  evaluate respell_accidental: 2582 fired so far
+  evaluate move_glyph: 3202 fired so far
+  evaluate size_measure_rest: 3294 fired so far
+  evaluate reconcile_duration: 3304 fired so far
+wrote benchmarks/omr-part-join-phase2-2026-09/out/record-labels.json
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'arc_kind': 779, 'arc_owner': 779, 'articulation_owner': 82, 'clef': 70, 'direction': 1183, 'duration': 2636, 'dynamic': 1175, 'event': 1117, 'fermata_owner': 55, 'glyph_owner': 1368, 'group_symbol': 7, 'instrument': 50, 'key_signature': 49, 'measure_partition': 75, 'meter': 1, 'onset_column': 7, 'part_partition': 1, 'slot_index': 75, 'staff_group': 75, 'staff_ordinal': 75, 'stem_direction': 1443, 'system_membership': 7, 'system_staff_count': 7, 'tuplet_ratio': 1, 'voices': 1117, 'wedge_anchor': 1}
+  abstained: {'articulation_owner': {'no_notehead': 16}, 'clef': {'no_candidates': 2, 'margin_below_floor': 3}, 'duration': {'beams_ambiguous': 357}, 'dynamic': {'unspellable': 8}, 'fermata_owner': {'no_carrier': 12}, 'glyph_owner': {'tied': 18}, 'instrument': {'no_evidence': 25}, 'key_signature': {'no_evidence': 17, 'needs_clef': 5, 'run_fits_no_slot_table': 4}, 'meter': {'no_evidence': 2, 'too_few_staves_read_it': 4}, 'ornament_owner': {'no_notehead': 1}, 'stem_direction': {'no_stem': 793, 'stems_disagree': 111}, 'voices': {'nothing_to_split': 66}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 31 facts, 70 witnesses, 20 uninformative, {'none': 0, 'single': 20, 'unanimous': 9, 'majority': 2, 'split': 0}
+  instrument_across_systems: 31 facts, 50 witnesses, 24 uninformative, {'none': 8, 'single': 16, 'unanimous': 7, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 31 facts, 49 witnesses, 21 uninformative, {'none': 2, 'single': 19, 'unanimous': 2, 'majority': 4, 'split': 4}
+  measure_count_across_staves: 7 facts, 75 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 7, 'majority': 0, 'split': 0}
+  meter_across_staves: 7 facts, 25 witnesses, 3 uninformative, {'none': 2, 'single': 1, 'unanimous': 4, 'majority': 0, 'split': 0}
+  staff_group_across_systems: 31 facts, 75 witnesses, 20 uninformative, {'none': 0, 'single': 20, 'unanimous': 10, 'majority': 1, 'split': 0}
+  ⚠️ DISAGREEMENTS: 11 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 3304 fired, 9226 skipped
+── DECLARED STUBS: 0 decisions, 1 consequences
