@@ -178,7 +178,7 @@ class TestTheFindingsAreStillTrue(unittest.TestCase):
         """
         self.assertEqual(
             sorted(GC.NO_VOCABULARY),
-            ["ornaments", "tied_from_prev", "tied_to_next"])
+            ["tied_from_prev", "tied_to_next"])
 
     def test_the_fermata_gap_is_CLOSED_and_stays_accounted(self) -> None:
         """Closed 2026-09-10. A closed gap must leave `NO_VOCABULARY` or the
@@ -199,6 +199,19 @@ class TestTheFindingsAreStillTrue(unittest.TestCase):
             self.assertNotIn(key, GC.NO_VOCABULARY, key)
         self.assertEqual(GC.LEGACY_TO_Q["stem_direction"], "STEM_DIRECTION")
         self.assertEqual(GC.LEGACY_TO_Q["voices"], "VOICES")
+
+    def test_the_ornament_gap_is_CLOSED_and_stays_accounted(self) -> None:
+        """⚠️ CLOSING IT CLOSES NO DETECTION GAP, and the two must not be
+        confused: `export_coverage.KNOWN_GAPS` records the eleven-work truth's
+        only ornaments as twelve `<tremolo>` against a detector producing ZERO
+        tremolo detections. The RECORD can now name the family; the PAGE still
+        supplies none of it."""
+        self.assertIn("ornaments", GC.LEGACY_TO_Q)
+        self.assertNotIn("ornaments", GC.NO_VOCABULARY)
+        self.assertEqual(GC.FAMILY_TO_Q["ornament"], "ORNAMENT_MARK")
+        self.assertEqual(GC.FAMILY_TO_Q["tremolo"], "ORNAMENT_MARK",
+                         "tremolo1-5 are ornaments whose class names do not "
+                         "begin `ornament` -- one table, one quantity")
 
     def test_STEM_and_STEM_DIRECTION_stay_DIFFERENT_quantities(self) -> None:
         """⚠️ The reason `q_covering` is not a substring test, now that both

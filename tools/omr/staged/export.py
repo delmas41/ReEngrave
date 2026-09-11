@@ -358,6 +358,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     # one: a fermata is not a note, and folding its shortfall into `dropped`
     # would make the note-accounting control raise about a different family.
     fermatas_dropped = _place_fermatas(rec, runs)
+    ornaments_dropped = _place_ornaments(rec, runs)
 
     # ── the join ────────────────────────────────────────────────────────────
     join = rec.value(Q.PART_PARTITION, "document") or {}
@@ -434,7 +435,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     # prevent: a hairpin claimed by both `dynamic` and `wedge` was counted
     # twice, and a reader cannot unpick one number into two afterwards.
     return (parts, provenance, dropped, arcs_dropped, artics_dropped,
-            fermatas_dropped)
+            fermatas_dropped, ornaments_dropped)
 
 
 def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
@@ -969,6 +970,52 @@ def _place_fermatas(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
     return dict(dropped)
 
 
+def _place_ornaments(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
+    """Every decided ornament, onto the notehead its OWNER names.
+
+    ⚠️ PER HEAD, LIKE AN ARTICULATION AND UNLIKE A FERMATA -- and the split is
+    the engraving's. One pause hangs over a whole chord, so a fermata is
+    HOISTED to the chord's first `<note>`; a trill is played on a NOTE, and a
+    chord can carry one on any subset of its members. `_mxl_note` takes
+    `ornaments=` per note for exactly that reason.
+
+    ⚠️ THE SHAPE IS `_place_articulations`'s and the shortfalls are counted the
+    same way: a mark whose owning notehead never reached a cell is COUNTED, not
+    swallowed, because a shortfall that is not counted is indistinguishable
+    from ink that was never read.
+    """
+    dropped: Dict[str, int] = collections.Counter()
+    heads: Dict[str, Dict[str, Any]] = {}
+    for run in runs.values():
+        for cell in run.cells.values():
+            for det in cell.detections:
+                if det.get("category") == "notehead" and det.get("glyph"):
+                    heads[str(det["glyph"])] = det
+    for o in rec.obs_of(Q.ORNAMENT_MARK):
+        sub = o["subject"]
+        v = rec.verdict(Q.ORNAMENT_OWNER, sub)
+        if not v or v["outcome"] != "decided":
+            dropped["ornament_" + (v["reason"] if v else "absent")] += 1
+            continue
+        head = heads.get(str(v["value"]))
+        if head is None:
+            dropped["ornament_owning_notehead_not_written"] += 1
+            continue
+        detail = v.get("detail") or {}
+        kind = detail.get("ornament")
+        if not kind:
+            dropped["ornament_verdict_names_no_kind"] += 1
+            continue
+        entry: Dict[str, Any] = {"kind": str(kind)}
+        # ⚠️ A TREMOLO'S STROKE COUNT, AND ONLY A TREMOLO'S. The legacy entry
+        # omits the key entirely for every other mark rather than writing a
+        # null, and `_mxl_ornament_elements` reads it that way.
+        if detail.get("strokes") is not None:
+            entry["strokes"] = int(detail["strokes"])
+        head.setdefault("ornaments", []).append(entry)
+    return dict(dropped)
+
+
 def _place_directions(rec: Record, runs: Dict[str, StaffRun]) -> None:
     """Every decided dynamic word, in the cell its DECISION filed it on.
 
@@ -1433,6 +1480,10 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # wears its own staccato, and hoisting them onto the first
                 # would write one dot where the page prints three.
                 articulations=(head.get("articulations") or None),
+                # ⚠️ PER HEAD, like the articulations and unlike the fermata:
+                # a trill is played on a NOTE, so a chord can carry one on any
+                # subset of its members.
+                ornaments=(head.get("ornaments") or None),
                 fermata=(ev_fermata if n == 0 else False),
                 accidental=head.get("accidental")))
             counters["notes"] += 1
@@ -1443,6 +1494,11 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
             # report the first while claiming the second. The arc export
             # learned this by reporting 55 slurs into a file holding 23.
             counters["articulations"] += len(head.get("articulations") or ())
+            # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and only
+            # for the kinds `_mxl_ornament_elements` can spell -- the counter
+            # says what reached the FILE, which is the `FAMILIES` rule.
+            counters["ornaments"] += len(
+                _legacy._mxl_ornament_elements(head.get("ornaments") or []))
             if n == 0:
                 # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and
                 # ONCE PER EVENT rather than once per mark. Two fermatas
@@ -1511,7 +1567,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     """The file, and the record of what did not reach it."""
     rec = Record(result)
     (parts, provenance, dropped, arcs_dropped, artics_dropped,
-     fermatas_dropped) = build(rec)
+     fermatas_dropped, ornaments_dropped) = build(rec)
     divisions = _divisions(parts)
     counters: Dict[str, int] = collections.Counter()
     # ⚠️ AFTER the parts are joined and BEFORE any measure is rendered. A part
@@ -1587,6 +1643,18 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # asserted instead is that nothing goes missing UNACCOUNTED: every mark is
     # written, counted as not-written, or absorbed into an element another mark
     # on the same event already wrote.
+    # ⚠️ PER HEAD, so this IS an equality -- unlike the fermata control one
+    # paragraph down, where the hoist collapses several marks into one element.
+    report["ornaments_not_written"] = dict(ornaments_dropped)
+    report["ornaments_not_written_total"] = sum(ornaments_dropped.values())
+    orn_marks = len(rec.obs_of(Q.ORNAMENT_MARK))
+    report["ornament_balance"] = {
+        "marks_in_log": orn_marks,
+        "written": int(counters.get("ornaments", 0)),
+        "not_written": report["ornaments_not_written_total"],
+        "balanced": orn_marks == (int(counters.get("ornaments", 0))
+                                  + report["ornaments_not_written_total"]),
+    }
     fermata_marks = len(rec.obs_of(Q.FERMATA_MARK))
     report["fermatas_not_written"] = dict(fermatas_dropped)
     report["fermatas_not_written_total"] = sum(fermatas_dropped.values())
@@ -1680,7 +1748,7 @@ FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
     "wedge": (Q.WEDGE_ANCHOR, ("dynamicCrescendoHairpin",
                                "dynamicDiminuendoHairpin"), ()),
     "direction": (Q.DIRECTION, (), ()),
-    "ornament": (None, ("ornament", "tremolo"), ()),
+    "ornament": (Q.ORNAMENT_OWNER, ("ornament", "tremolo"), ("ornaments",)),
     "fermata": (Q.FERMATA_OWNER, ("fermata",), ("fermatas",)),
     "clef": (Q.CLEF, ("clef",), ()),
     "key": (Q.KEY_SIGNATURE, ("key",), ()),

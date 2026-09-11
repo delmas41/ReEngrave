@@ -213,35 +213,44 @@ class TestTheAccountingControl(unittest.TestCase):
 
 class TestCoverageNamesTheFourZEROS(unittest.TestCase):
     def test_a_family_with_NO_QUANTITY_is_named_and_its_ink_counted(self):
-        """⚠️ THE FINDING THIS MODULE EXISTS TO SURFACE, still live for
-        ornaments: a family nobody has decided exists, with the detector's own
-        count of it beside the zero. **It has now moved TWICE** — off `rest`
-        when `Q.REST` landed 2026-09-09, and off `fermata` when
-        `Q.FERMATA_OWNER` landed 2026-09-10 — and each move is the right
-        outcome: a closed gap must leave the list, or the report stops
-        describing the pipeline and starts describing its history.
+        """⚠️ THE FINDING THIS MODULE EXISTS TO SURFACE — and as of
+        2026-09-10 **no real family is in it any more**, which is why this
+        test now runs against a SYNTHETIC one.
+
+        It has moved three times: off `rest` when `Q.REST` landed, off
+        `fermata` and then off `ornament` when those were wired. A closed gap
+        must leave the list or the report describes the pipeline's history
+        rather than the pipeline — but the STATUS must stay covered, because a
+        future detector class will land in it and *a check that cannot fail is
+        worse than no check.* The derived test below is what asserts the real
+        table is empty.
 
         ⚠️ Counted by CLASS. `ornamentTrill` carries the detector's `ornament`
-        CATEGORY, which it shares with all ten `artic*` classes and with
-        `fermata*`; counting by category reported 300 ornaments on a page
-        holding none."""
+        CATEGORY, shared with all ten `artic*` classes and with `fermata*`;
+        counting by category reported 300 ornaments on a page holding none.
+        """
         page = _one_staff_page(notes=[("C4", QUARTER)])
         page["record"]["observations"].append(
             _obs(500, "glyph/0/0/0/0/9", Q.GLYPH_BOX,
                  ["ornamentTrill", 10, 10, 20, 20], category="ornament"))
-        rep = SX.coverage(page)
+        original = SX.FAMILIES
+        SX.FAMILIES = {**original, "ornament": (None, ("ornament",), ())}
+        try:
+            rep = SX.coverage(page)
+        finally:
+            SX.FAMILIES = original
         f = next(r for r in rep["families"] if r["family"] == "ornament")
         self.assertEqual(f["status"], "NO_QUANTITY")
         self.assertIsNone(f["quantity"])
         self.assertEqual(f["detector_glyphs"], 1)
         self.assertEqual(rep["detected_and_unrepresented"]["ornament"], 1)
 
-    def test_the_quantityless_families_are_DECLARED_so_the_next_one_is_loud(self):
-        """⚠️ DERIVED, so a family that quietly loses its quantity fails here
-        rather than dropping out of the headline. The set shrinks as the
-        wiring pass runs; it must never grow silently."""
+    def test_NO_family_is_quantityless_any_more(self):
+        """⚠️ DERIVED, and the finding itself: every notation family the
+        exporter knows about now names a quantity. A family that quietly
+        LOSES one fails here rather than dropping out of the headline."""
         blank = {fam for fam, (q, _c, _ct) in SX.FAMILIES.items() if q is None}
-        self.assertEqual(blank, {"ornament"}, blank)
+        self.assertEqual(blank, set(), blank)
 
     def test_rests_are_NO_LONGER_a_NO_QUANTITY_family(self):
         """The gap this file recorded on 2026-09-09 morning, closed the same
@@ -252,12 +261,15 @@ class TestCoverageNamesTheFourZEROS(unittest.TestCase):
         self.assertEqual(rest["quantity"], Q.REST)
         self.assertNotEqual(rest["status"], "NO_QUANTITY")
 
-    def test_fermatas_are_NO_LONGER_a_NO_QUANTITY_family(self):
-        """Closed 2026-09-10, and named here for the same reason rests are."""
+    def test_fermatas_and_ornaments_are_NO_LONGER_NO_QUANTITY_families(self):
+        """Both closed 2026-09-10, and named here for the same reason rests
+        are: a closed gap must leave the list."""
         rep = SX.coverage(_one_staff_page(notes=[("C4", QUARTER)]))
-        f = next(r for r in rep["families"] if r["family"] == "fermata")
-        self.assertEqual(f["quantity"], Q.FERMATA_OWNER)
-        self.assertNotEqual(f["status"], "NO_QUANTITY")
+        for family, quantity in (("fermata", Q.FERMATA_OWNER),
+                                 ("ornament", Q.ORNAMENT_OWNER)):
+            f = next(r for r in rep["families"] if r["family"] == family)
+            self.assertEqual(f["quantity"], quantity, family)
+            self.assertNotEqual(f["status"], "NO_QUANTITY", family)
 
     def test_a_starved_stub_is_reported_apart_from_a_plain_stub(self):
         """⚠️ `starved` means the adjudicator is a stub AND its input is never

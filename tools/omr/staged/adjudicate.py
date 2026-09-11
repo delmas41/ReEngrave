@@ -723,6 +723,10 @@ ORDER: Tuple[str, ...] = (
     # (`Q.GLYPH_BOX`), so this needs no verdict of any kind -- putting it
     # after `Q.EVENT` would imply a dependency it does not have.
     Q.FERMATA_OWNER,
+    # ⚠️ Beside the fermata and the articulation, and for the same
+    # reason: its carriers are `Q.GLYPH_BOX` rows, so it needs no
+    # verdict of any kind.
+    Q.ORNAMENT_OWNER,
     Q.WEDGE_ANCHOR,
     # rhythm
     # ⚠️ TUPLET BEFORE DURATION. `adjudicate_duration` reads the tuplet

@@ -404,6 +404,26 @@ class Q(_Vocab):
     #: says which notehead a mark may name, and a fermata's does not: a
     #: `fermataAbove` over a bar's only rest stands above ink it belongs to.
     FERMATA_MARK = "fermata_mark"
+    #: A TRILL, TURN, INVERTED TURN, MORDENT or TREMOLO glyph.
+    #:
+    #: ⚠️ THE TENTH EXPORT GAP'S FAMILY, and the one that does NOT close with
+    #: this quantity. `export_coverage.KNOWN_GAPS` records the engraved count
+    #: as a DETECTION problem: the eleven-work truth's only ornaments are
+    #: twelve `<tremolo>`, and the detector produces ZERO `tremolo1`-`5`
+    #: detections against a positive control of 34,115 detections over 11
+    #: committed transcriptions. So this names the ink where there IS ink and
+    #: says nothing about the ink there is not.
+    #:
+    #: ⚠️ `strokes` IS RECORDED AND IS A TREMOLO'S ONLY. The class states it
+    #: (`tremolo3`), no other ornament carries one, and `_mxl_ornament_elements`
+    #: needs it -- so it travels on the row rather than being re-derived from
+    #: the class name by a second reader.
+    #:
+    #: ⚠️ THE SIDE IS `None` FOR A TREMOLO, and that is not a gap: a tremolo
+    #: rides the STEM and sits on whichever side that is, so its class states
+    #: no side and the geometry test is SKIPPED rather than guessed. The other
+    #: four are printed above.
+    ORNAMENT_MARK = "ornament_mark"
     WEDGE_BOX = "wedge_box"                  # hairpin ink
     DYNAMIC_LETTER = "dynamic_letter"        # one letter, before spelling
 
@@ -541,6 +561,15 @@ class Q(_Vocab):
     #: staccato. Naming one glyph and hoisting is how a per-glyph decision
     #: stays a per-glyph decision.
     FERMATA_OWNER = "fermata_owner"
+    #: Which NOTEHEAD an ornament is printed against.
+    #:
+    #: ⚠️ A NOTEHEAD, NEVER A REST -- the one place this differs from
+    #: `Q.FERMATA_OWNER`, which shares its shape. A trill is played ON a note;
+    #: a pause hangs over whatever is sounding, most often a whole-bar rest.
+    #: `_mxl_note` says the same thing from the other side: it refuses
+    #: `<ornaments>` on a rest (`if not is_rest`) and emits `<fermata>`
+    #: regardless.
+    ORNAMENT_OWNER = "ornament_owner"
     WEDGE_ANCHOR = "wedge_anchor"
     DYNAMIC = "dynamic"                      # the spelled word
     DIRECTION = "direction"                  # the accepted direction text

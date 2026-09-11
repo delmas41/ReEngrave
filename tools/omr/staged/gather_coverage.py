@@ -335,6 +335,12 @@ LEGACY_TO_Q: Dict[str, str] = {
     # so the two paths cannot disagree about a file's `<backup>` arithmetic.
     "voices": "VOICES",
     "voice_index": "VOICES",
+    # ⚠️ THE VERDICT, and ⚠️ CLOSING IT CLOSES NO DETECTION GAP.
+    # `export_coverage.KNOWN_GAPS` records the eleven-work truth's only
+    # ornaments as twelve `<tremolo>` against a detector producing ZERO
+    # tremolo detections over 34,115 -- so the record can now NAME this family
+    # and the page still supplies none of it.
+    "ornaments": "ORNAMENT_OWNER",
     "direction_texts": "DIRECTION",
     "detections": "GLYPH_BOX",
     "bbox_page_px": "GLYPH_BOX",
@@ -378,10 +384,6 @@ NO_VOCABULARY: Dict[str, str] = {
         "`transcribe._pair_ties_in_staff`. `Q.ARC_KIND` decides tie-vs-slur "
         "for one arc; nothing names the CHAIN a tie makes between two events."),
     "tied_from_prev": "the other end of the same chain; see `tied_to_next`.",
-    "ornaments": (
-        "trill / turn / mordent / tremolo, attached by "
-        "`transcribe._attach_ornaments_in_cell`. The tenth export gap. "
-        "`Q.ARTICULATION_MARK` is a different family and does not cover it."),
 }
 
 
@@ -578,7 +580,7 @@ FAMILY_TO_Q: Dict[str, Optional[str]] = {
     "keyboard": None,            # keyboardPedal*
     "ledger": "GLYPH_LADDER",
     "notehead": "NOTEHEAD_CLASS",
-    "ornament": None,
+    "ornament": "ORNAMENT_MARK",  # ⚠️ CLOSED 2026-09-10; was None
     "ottava": None,
     "repeat": None,
     "rest": "REST",              # ⚠️ CLOSED on main 2026-09-09; was None
@@ -589,7 +591,11 @@ FAMILY_TO_Q: Dict[str, Optional[str]] = {
     "strings": None,             # stringsDownBow / stringsUpBow
     "tie": "ARC_BOX",
     "time": "METER_GLYPH",
-    "tremolo": None,
+    # ⚠️ THE SAME QUANTITY AS `ornament`, because `_ORNAMENT_KINDS` is one
+    # table: `tremolo1`-`5` are ornaments whose class names do not begin
+    # `ornament`, which is exactly why the gather asks that table rather than
+    # matching a prefix.
+    "tremolo": "ORNAMENT_MARK",
     "tuplet": "TUPLET_MARKER",
     "unpitched": None,
 }

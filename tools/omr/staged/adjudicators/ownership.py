@@ -711,3 +711,109 @@ def adjudicate_fermata_owner(ev: Evidence) -> Ruling:
                 "side": (mark.detail or {}).get("side"),
                 "detector_class": str(mark.value),
                 "confidence": mark.score})
+
+
+@decision(
+    quantity=Q.ORNAMENT_OWNER,
+    composed_from=(Q.ORNAMENT_MARK, Q.GLYPH_BOX),
+    scope=Kind.GLYPH,
+    wants=(Q.ORNAMENT_MARK, Q.GLYPH_BOX),
+    subjects_from=Q.ORNAMENT_MARK,
+    reasons=("nearest_on_declared_side", "nearest_either_side", "no_notehead",
+             "no_evidence"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_ornament_owner(ev: Evidence) -> Ruling:
+    """Which notehead a trill, turn, mordent or tremolo is printed against.
+
+    ⚠️ THE RULE IS `transcribe._attach_ornaments_in_cell`'S AND THE CONSTANT
+    IS IMPORTED: the nearest notehead in x on the side the mark's class names,
+    within `_ORNAMENT_MAX_DX_NOTEHEAD_WIDTHS`. The unit is a NOTEHEAD WIDTH and
+    not the mark's own box, which is the mistake the augmentation-dot gate paid
+    193 edits for.
+
+    ⚠️⚠️ THAT CONSTANT IS DECLARED UNMEASURED BY ITS OWN AUTHOR AND IS
+    IMPORTED ANYWAY. Unlike the articulation limit it sits on no swept
+    plateau, because there is no corpus to sweep it on -- across 7,090
+    committed artifacts there is not ONE `tremolo1`-`5` detection and the 33
+    trill/turn/mordent detections carry no per-mark truth. Importing it keeps
+    ONE unmeasured number in the tree instead of two that can drift; it does
+    not make it measured, and a sweep is still owed.
+
+    ⚠️ A NOTEHEAD, NEVER A REST -- the one place this differs from
+    `fermata_owner`, whose shape it otherwise shares. A trill is played ON a
+    note. `_mxl_note` says the same from the other side: it refuses
+    `<ornaments>` on a rest (`if not is_rest`) while emitting `<fermata>`
+    regardless.
+
+    ⚠️ A TREMOLO'S SIDE IS `None` AND THE GEOMETRY TEST IS THEN SKIPPED, not
+    guessed -- it rides the STEM and sits on whichever side that is, which the
+    legacy rule states explicitly (`above is None`). The two branches are
+    reported apart (`nearest_on_declared_side` / `nearest_either_side`) so a
+    reader can tell a placement that satisfied a side constraint from one that
+    had none to satisfy.
+
+    ⚠️ ZERO REACH ON BOTH DOCUMENTS IN HAND at the time of writing, and this
+    quantity closes NO detection gap: `export_coverage.KNOWN_GAPS` records the
+    eleven-work truth's only ornaments as twelve `<tremolo>` against a detector
+    that produces ZERO tremolo detections. Measure REACH before accuracy.
+    """
+    marks = ev.rows(Q.ORNAMENT_MARK)
+    if not marks:
+        return Ruling.abstain("no_evidence")
+    mark = marks[0]
+    detail = mark.detail or {}
+    kind = detail.get("kind")
+    side = detail.get("side")
+
+    cell = ev.subject.at(Kind.CELL)
+    heads = [r for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                                subject=cell)
+             if (r.detail or {}).get("category") == "notehead"
+             and isinstance(r.value, (list, tuple)) and len(r.value) >= 5]
+    if not heads:
+        return Ruling.abstain("no_notehead", ornament=kind)
+
+    widths = sorted(float(h.value[3]) for h in heads)
+    nh_width = widths[len(widths) // 2] or 1.0
+    limit = nh_width * _legacy_articulation._ORNAMENT_MAX_DX_NOTEHEAD_WIDTHS
+
+    mx = (float(detail.get("x0", 0.0)) + float(detail.get("x1", 0.0))) / 2.0
+    my = (float(detail.get("y0", 0.0)) + float(detail.get("y1", 0.0))) / 2.0
+
+    best: Optional[Tuple[float, object]] = None
+    for h in heads:
+        _cls, hx, hy, hw, hh = h.value[:5]
+        hyc = float(hy) + float(hh) / 2.0
+        # ⚠️ LARGER CANONICAL y IS LOWER ON THE PAGE, so a mark printed ABOVE
+        # its notehead has the SMALLER y. Stated because the sign is the whole
+        # of the side test and reads backwards.
+        if side == "above" and my >= hyc:
+            continue
+        if side == "below" and my <= hyc:
+            continue
+        dx = abs(mx - (float(hx) + float(hw) / 2.0))
+        if dx > limit:
+            continue
+        if best is None or dx < best[0]:
+            best = (dx, h)
+    if best is None:
+        return Ruling.abstain("no_notehead", ornament=kind, side=side,
+                              notehead_width=nh_width,
+                              limit_canonical_px=limit)
+
+    dx, head = best
+    return Ruling(
+        value=head.subject.to_key(),
+        reason=("nearest_on_declared_side" if side
+                else "nearest_either_side"),
+        used=(mark.id, head.id),
+        # ⚠️ THE KIND AND THE STROKE COUNT TRAVEL WITH THE OWNER, so an
+        # exporter holding only the subject key need not re-read the mark's
+        # class to know whether to write `<trill-mark/>` or a `<tremolo>` of
+        # three strokes -- the re-derivation this stage exists to remove.
+        detail={"ornament": kind, "strokes": detail.get("strokes"),
+                "side": side, "dx_canonical_px": dx,
+                "dx_notehead_widths": (dx / nh_width) if nh_width else None,
+                "detector_class": str(mark.value),
+                "confidence": mark.score})

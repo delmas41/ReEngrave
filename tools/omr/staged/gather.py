@@ -701,6 +701,28 @@ _REST_PREFIX = "rest"
 _FERMATA_PREFIX = "fermata"
 
 
+def _ornament_kind(name: str):
+    """`transcribe.ornament_kind`, CALLED and never copied.
+
+    ⚠️ THE TABLE IS ASKED, NOT PREFIX-MATCHED, and the tremolos are why:
+    `tremolo1`-`5` are ornaments whose class names do not begin `ornament`.
+    `_ORNAMENT_KINDS` also carries the STROKE COUNT and the SIDE, both of
+    which a prefix test would throw away.
+
+    ⚠️ IMPORTED INSIDE THE FUNCTION, AND A FIRST DRAFT GOT THE REASON WRONG —
+    recorded because the wrong reason was plausible and checkable in one line.
+    It is NOT that `transcribe` is unimportable here: the first attempt wrote
+    `from ... import transcribe`, which resolves to `tools.transcribe` from
+    this package depth and fails; `from .. import transcribe` is correct and
+    works. It stays inside the function because `gather.py` imports NOTHING
+    from `tools.omr` at module level today (only `.record`), and `transcribe`
+    pulls in the detector stack — so a module-level import would make every
+    reader of this module pay for it.
+    """
+    from .. import transcribe as _legacy
+    return _legacy.ornament_kind(name)
+
+
 def _artic_side(name: str) -> Optional[str]:
     """The side an articulation's own class NAMES, or None where it does not.
 
@@ -728,7 +750,7 @@ def gather_glyph_families(log: Log, detections: Dict[str, List[Any]],
                           cells: Sequence[Any] = (),
                           local: Optional[Dict[int, Tuple[int, int]]] = None
                           ) -> None:
-    """Rests, arcs, articulation marks and fermatas.
+    """Rests, arcs, articulation marks, fermatas and ornaments.
 
     ⚠️ EVERY ONE OF THESE WAS DETECTED AND READ BY NOTHING until 2026-09-09.
     Measured over four real conductor's pages, the ink that reached
@@ -813,6 +835,22 @@ def gather_glyph_families(log: Log, detections: Dict[str, List[Any]],
                             side=_artic_side(name))
             elif name.lower().startswith(_REST_PREFIX):
                 log.observe(g, Q.REST, name, **common, **box)
+            elif _ornament_kind(name) is not None:
+                # ⚠️ ASKED OF THE LEGACY TABLE, NOT MATCHED ON A PREFIX, and
+                # the tremolos are why: `tremolo1`-`5` are ornaments whose
+                # class names do not begin `ornament`. `_ORNAMENT_KINDS` is
+                # the one place that mapping lives and it carries the STROKE
+                # COUNT and the SIDE with it, both of which a prefix test
+                # would throw away.
+                kind, strokes, above = _ornament_kind(name)
+                log.observe(g, Q.ORNAMENT_MARK, name, **common, **box,
+                            kind=kind, strokes=strokes,
+                            # ⚠️ `None` FOR A TREMOLO IS A FACT, NOT A GAP: it
+                            # rides the STEM and sits on whichever side that
+                            # is, so its class states no side and the geometry
+                            # test is skipped rather than guessed.
+                            side=("above" if above is True
+                                  else "below" if above is False else None))
             elif name.lower().startswith(_FERMATA_PREFIX):
                 # ⚠️ THE SIDE IS RECORDED AND NOTHING READS IT, deliberately.
                 # `export._mxl_note` writes `<fermata type="upright"/>`
