@@ -77,9 +77,10 @@ class TestOneLetterIsNeverContested(unittest.TestCase):
     dynamics docstring credited is structurally unreachable on this path.
     """
 
-    def _band_rows(self, n_copies):
-        """Run the REAL gatherer over a two-staff system holding one glyph in
-        `n_copies` of its staves' cells, and return the band-distance rows.
+    def _band_rows(self, layout):
+        """Run the REAL gatherer over a two-staff system and return the
+        band-distance rows. `layout` maps a staff index to how many copies of
+        ONE piece of ink its cell holds.
 
         ⚠️ Boxes are placed away from the origin deliberately: at (0, 0) a
         corner box and a width box agree in every coordinate, so a frame error
@@ -90,9 +91,10 @@ class TestOneLetterIsNeverContested(unittest.TestCase):
                   _Staff(1, [1300.0, 1310.0, 1320.0, 1330.0, 1340.0])]
         cells = [_Cell(0, 0), _Cell(1, 0)]
         dets = {}
-        for i in range(n_copies):
-            dets[R.cell(0, 0, i, 0).to_key()] = [
-                _Det("noteheadBlackInSpace", 200.0, 1200.0, 20.0, 18.0)]
+        for staff, n in layout.items():
+            dets[R.cell(0, 0, staff, 0).to_key()] = [
+                _Det("noteheadBlackInSpace", 200.0, 1200.0, 20.0, 18.0)
+                for _ in range(n)]
         G.gather_ownership_evidence(
             log, _PWS(staves), cells,
             {st.staff_index: (0, st.staff_index) for st in staves}, dets)
@@ -100,13 +102,27 @@ class TestOneLetterIsNeverContested(unittest.TestCase):
                 if getattr(r, "quantity", None) == Q.GLYPH_BAND_DISTANCE]
 
     def test_ONE_copy_yields_no_contest(self):
-        self.assertEqual(self._band_rows(1), [])
+        self.assertEqual(self._band_rows({0: 1}), [])
 
-    def test_TWO_copies_DO_yield_a_contest(self):
+    def test_TWO_copies_ON_DIFFERENT_STAVES_DO_yield_a_contest(self):
         """⚠️ THE POSITIVE CONTROL IN THE SAME CLASS. Without it the test above
         would pass for any reason at all — a broken fixture, a renamed
         quantity, a gatherer that files nothing ever."""
-        self.assertTrue(self._band_rows(2))
+        self.assertTrue(self._band_rows({0: 1, 1: 1}))
+
+    def test_TWO_copies_IN_ONE_STAFF_are_NOT_a_contest(self):
+        """⚠️⚠️ THE SAME-CELL DUPLICATE IS A DIFFERENT PROBLEM AND OWNERSHIP
+        NEVER SPEAKS ABOUT IT. `gather_ownership_evidence` skips a pair sharing
+        a staff, so one cell holding the same ink twice produces no verdict and
+        this repair cannot reach it — which is why FINDINGS §6.1 ranks the
+        detector's NMS parameters as separate, unpriced work rather than
+        folding it in here.
+
+        Found by a mutation arm: deleting the `gi.staff == gj.staff` guard
+        survived the battery's first run, because every fixture had at most one
+        copy per staff.
+        """
+        self.assertEqual(self._band_rows({0: 2}), [])
 
 
 class _Det:
